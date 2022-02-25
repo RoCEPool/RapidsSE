@@ -12,7 +12,7 @@ create table datums (
   dec_col6   DECIMAL(19,2),
   dec_col7   DECIMAL(19,2),
   flt_col8   FLOAT,
-  flt_col9  FLOAT,
+  flt_col9   FLOAT,
   tme_col10  TIME,
   tme_col11  TIME,
   tsp_col12  TIMESTAMP,
@@ -21,13 +21,161 @@ create table datums (
   vch_col15  VARCHAR(32)
 );
 
-load datums "../DATA/Transliterate/datums.csv" ;
+load datums "../DATA/Transliterate/groupBy.csv" ;
+
+
+//explain stage transliterate select int_col0 from datums where int_col0 in (3,5,6,8);
+
+explain stage transliterate select int_col0 from datums order by int_col1, int_col0 DESC;
 
 //select sum(int_col0) from datums;
+
+//explain stage transliterate select sum(int_col0) from datums;
 //select 10+sum(int_col0) from datums;
 //select sum(int_col0)+10 from datums;
 
+//select int_col0 from datums where int_col0 between 3 and 10;
+
+//explain stage transliterate select int_col0 from datums where int_col0 between 3 and 10;;
+//
 /*
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0365
+  stage stageMarker0365 on all partitions :
+    scan rapidsse public datums
+    | filter 2 " type BOOLEAN  }  3 5 6 7 #4 $1 in  "
+    | project 2 " type INTEGER as int_col0 $1 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+explain stage transliterate select sum(int_col0), int_col1 from datums group by int_col1;
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0226
+  stage stageMarker0226 on all partitions :
+    scan rapidsse public datums
+    | project 2 " type INTEGER )  $1 sum  "
+    | combined 0
+    | stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0472
+  stage stageMarker0472 on all partitions :
+    scan rapidsse public datums
+    | aggreg 2 " type INTEGER )  $1 sum  , type INTEGER $2 groupBy  type INTEGER as int_col1 $2 "
+    | combined 0
+    | stageLast
+
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+*/
+
+//select int_col1 + 10, sum(int_col0) from datums group by int_col1 + 10;
+
+//select int_col1, sum(int_col0) from datums group by int_col1;
+//select int_col0, dte_col4, dte_col5 from datums where dte_col4 != DATE'1941-01-01';
+//select min(dec_col6) from datums;
+
+//EXPLAIN stage transliterate SELECT int_col0 FROM datums WHERE int_col1 IN (1000, 2000, 3000, 4000);
+/*
+_lineitem
+CREATE INDEX lineitem_ord ON lineitem(L_ORDERKEY);
+create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+
+
+pipeline Q
+  begin
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_LINEITEM on all partitions :
+    indexscan 2 lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
+                                       UBOUND $I1 TIMESTAMP '1995-01-01 00:00:00' <"
+    | project 2 "type TIMESTAMP L_SHIPDATE"
+
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0181
+  stage stageMarker0181 on all partitions :
+    scan rapidsse public datums
+    | aggreg 2 " type INTEGER $K1 , type INTEGER ) $1 sum groupBy  type INTEGER as int_col1 $2 "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0734
+  stage stageMarker0734 on all partitions :
+    scan rapidsse public datums
+    | filter 2 " type BOOLEAN  } $2 1000  2000  3000  4000  in  "
+    | project 2 " type INTEGER as int_col0 $1 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+//explain stage transliterate select int_col1, sum(int_col0) from datums group by int_col1;
+//select int_col1 from datums;
+
+//explain stage transliterate select min(int_col1-10) from datums;
+//select min(int_col1 - 10) from datums;
+
+
 create table nation (
 	 N_NATIONKEY       INTEGER      NOT NULL,
 	 N_NAME            CHAR(25)     NOT NULL,
@@ -553,6 +701,140 @@ end ;
 
 
 explain stage aggregateSplit, transliterate SELECT * FROM nation JOIN region ON n_regionkey = r_regionkey;
+
+
+****************************************************************
+* Buffer Pool Analysis                                         *
+****************************************************************
+
+  Region /SE_NODE1 0x204800000000 size 51539607552B epoch 1
+
+  BufferPool buffer 1020KB buffers 49152 alloc 5298 free 43853
+
+   Transient TinyHeap   (   1KB) buffers 47     alloc 23287  free 24794
+   Transient SmallHeap  (   4KB) buffers 34     alloc 5451   free 3219
+   Transient MediumHeap (  64KB) buffers 618    alloc 1103   free 8167
+   Transient LargeHeap  (1020KB) buffers 4555   alloc 732    free 3823
+   Transient DataHeap  (1020KB) buffers 0      alloc 0      free 0
+
+  BufferPool Object Summary:
+             ATTACHMAP 1
+         DATATRANSIENT 1
+            FREEBUFFER 43853
+            HEAPBUFFER 5254
+        LARGETRANSIENT 1
+          LARGEVIRTUAL 1
+       MEDIUMTRANSIENT 1
+         MEDIUMVIRTUAL 1
+           QUEUEBUFFER 34
+        SMALLTRANSIENT 1
+          SMALLVIRTUAL 1
+         TINYTRANSIENT 1
+           TINYVIRTUAL 1
+
+  Transient Tiny Heap 1KB Object Summary:
+                  _A__ 926    (size       1B sum   926B use  0%)  *half again!
+                BUCKET 3328   (size      56B sum  182KB use  5%)  *half again!
+                DEVIXT 224    (size     392B sum   85KB use 38%)  *half again!
+                DEVROW 224    (size     376B sum   82KB use 36%)  *half again!
+                   DIC 396    (size     336B sum  129KB use 32%)  *half again!
+         EVENTHANDLERS 42     (size     616B sum   25KB use 60%)
+                  FILE 14     (size     480B sum    6KB use 46%)  *half again!
+           INDEXSTREAM 12     (size      88B sum    1KB use  8%)  *half again!
+                 INPUT 14     (size     152B sum    2KB use 14%)  *half again!
+              INTSTACK 1      (size      32B sum    32B use  3%)  *half again!
+               JOBLIST 5      (size     224B sum    1KB use 21%)  *half again!
+                  JOBS 1      (size      64B sum    64B use  6%)  *half again!
+         LISTEXONODE_t 1163   (size      48B sum   54KB use  4%)  *half again!
+                MARKER 10     (size      88B sum   880B use  8%)  *half again!
+                   NOW 56     (size      72B sum    3KB use  7%)  *half again!
+                OUTPUT 1      (size     168B sum   168B use 16%)  *half again!
+          OPERANDQUEUE 126    (size     248B sum   30KB use 24%)  *half again!
+       PLANNODEBUILDER 583    (size     968B sum  551KB use 94%)
+   PLANNODEBUILDERLIST 369    (size     232B sum   83KB use 22%)  *half again!
+          PLANNODELIST 376    (size     232B sum   85KB use 22%)  *half again!
+                PSXTHD 35     (size     376B sum   12KB use 36%)  *half again!
+                 QUEUE 1      (size     232B sum   232B use 22%)  *half again!
+           ROWTABLEPTN 3328   (size      64B sum  208KB use  6%)  *half again!
+              SEDEPUTY 1      (size      64B sum    64B use  6%)  *half again!
+           SENCOMPILER 56     (size     176B sum    9KB use 17%)  *half again!
+              SKIPLIST 406    (size      88B sum   34KB use  8%)  *half again!
+              SKIPNODE 5610   (size      48B sum  262KB use  4%)  *half again!
+                SOCKET 3      (size     744B sum    2KB use 72%)
+               STARTER 1      (size     248B sum   248B use 24%)  *half again!
+              STMTLIST 256    (size     232B sum   58KB use 22%)  *half again!
+        SYSTEMSCHEDULE 1      (size     320B sum   320B use 31%)  *half again!
+                 TABLE 54     (size     560B sum   29KB use 54%)
+              TABLEPTN 52     (size     248B sum   12KB use 24%)  *half again!
+              TASKLIST 6      (size     272B sum    1KB use 26%)  *half again!
+             TASKQUEUE 1      (size     224B sum   224B use 21%)  *half again!
+                  TEXT 340    (size      40B sum   13KB use  3%)  *half again!
+                THREAD 35     (size     696B sum   23KB use 67%)
+           THREADQUEUE 1      (size     264B sum   264B use 25%)  *half again!
+         THREADSCRATCH 35     (size     216B sum    7KB use 21%)  *half again!
+                   TUB 2      (size      56B sum   112B use  5%)  *half again!
+                 TXSET 2      (size     280B sum   560B use 27%)  *half again!
+                  WORD 5190   (size     312B sum    1MB use 30%)  *half again!
+  [23287 objects ; 22MB of blocks]
+
+  Transient Small Heap 4KB Object Summary:
+             BUCKETVEC 52     (size     544B sum   27KB use 13%)  *into tiny
+             CODEBLOCK 5190   (size    4056B sum   20MB use 99%)
+                  GRID 1      (size     184B sum   184B use  4%)  *into tiny
+        INTERNALTABLES 1      (size     144B sum   144B use  3%)  *into tiny
+        OBJECTSNAPSHOT 2      (size    2992B sum    5KB use 73%)
+              PIPELINE 13     (size    2560B sum   32KB use 62%)
+          SESSIONARRAY 1      (size    2288B sum    2KB use 55%)
+                 STAGE 13     (size    2328B sum   29KB use 56%)
+             STAGESPEC 13     (size     264B sum    3KB use  6%)  *into tiny
+                 STATS 42     (size     240B sum    9KB use  5%)  *into tiny
+                STREAM 13     (size    2432B sum   30KB use 59%)
+           TABLEPTNVEC 54     (size     544B sum   28KB use 13%)  *into tiny
+                  TASK 56     (size    3360B sum  183KB use 82%)
+  [5451 objects ; 21MB of blocks]
+
+  Transient Medium Heap 64KB Object Summary:
+          INDEXTREEVEC 52     (size     160B sum    8KB use  0%)  *into small
+                IDXVEC 54     (size     160B sum    8KB use  0%)  *into small
+                   JOB 14     (size   43040B sum  588KB use 65%)
+                  NODE 1      (size     728B sum   728B use  1%)  *into small
+             NUMBERING 1      (size   11864B sum   11KB use 18%)
+                    OP 42     (size    5952B sum  244KB use  9%)
+          OPERANDWATCH 42     (size    1808B sum   74KB use  2%)  *into small
+                OPSPEC 42     (size   38600B sum    1MB use 58%)
+          PIPELINESPEC 13     (size     248B sum    3KB use  0%)  *into small
+                 STACK 168    (size   65368B sum   10MB use 99%)
+                TAGSET 666    (size   38216B sum   24MB use 58%)
+             THREADVEC 2      (size   33000B sum   64KB use 50%)
+                 TOTUP 6      (size   11864B sum   69KB use 18%)
+  [1103 objects ; 68MB of blocks]
+
+  Transient Large Heap 1020KB Object Summary:
+         BUCKETMAP_dyn 55     (size    1392B sum   74KB use  0%)  *into medium
+               CHARSER 14     (size   96728B sum    1MB use  9%)
+            LOCALCHAIN 57     (size  394216B sum   21MB use 37%)
+             LOGICUNIT 56     (size   86032B sum    4MB use  8%)
+                PTNMAP 1      (size   65776B sum   64KB use  6%)
+              SEPROMPT 1      (size   85480B sum   83KB use  8%)
+               SESSION 256    (size   81544B sum   19MB use  7%)
+              SHARDDEF 54     (size   97720B sum    5MB use  9%)
+             STREAMDEF 54     (size   97808B sum    5MB use  9%)
+              TOKENVEC 184    (size  403552B sum   70MB use 38%)
+  [732 objects ; 729MB of blocks]
+
+  Transient Data Heap 1020KB Object Summary:
+  [0 objects ; 0B of blocks]
+
+
+success: 0 rows affected
+[NODE1 pid=5393 1N (20 cores 3.600Ghz 20MB L3) 4P 24T 48GB release] se> space;
+
+metadata: (nodeName VARCHAR,totalSpace VARCHAR,inUseSpace VARCHAR,freeSpace VARCHAR)
+
+row: ('NODE1','48GB','1007MB','47GB')
+
+success: 1 rows fetched
+[NODE1 pid=5393 1N (20 cores 3.600Ghz 20MB L3) 4P 24T 48GB release] se>
 
 */
 

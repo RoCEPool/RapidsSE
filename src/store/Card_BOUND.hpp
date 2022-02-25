@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_CandidateIndex.hpp -- Candidate Index                                 */
+/* Card_BOUND.hpp -- Abstract Bound                                           */
 /*============================================================================*/
 #pragma once
 
@@ -9,18 +9,16 @@
 
 namespace STORE
 {
-  class Card_CandidateIndex : public Card
-  {
+  class Card_CmpPred;
+
+  class Card_BOUND : public Card
+  {  
   public:
-    void* operator new(size_t);
-    void  operator delete(void*);
-  
-    Card_CandidateIndex(Index* pIndex);
-   ~Card_CandidateIndex(void) noexcept(false);
+    Card_BOUND(eCK eCard);
+   ~Card_BOUND(void) noexcept(false);
   };
 
-  Card_CandidateIndex* _pCard_CandidateIndex(void* aAddr);
-  bool _bIsCard_CandidateIndex(void* aAddr);
+  //Card_BOUND* _pCard_BOUND(void* aAddr);
 }
 
 /*============================================================================*/

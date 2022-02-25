@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* Card_ByPred.hpp -- By Predicate                                            */
+/* Card_CandIndex.hpp -- Candidate Index                                      */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Card_PRED.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_ByPred : public Card_PRED
-  {  
+  class Card_CandIndex : public Card
+  {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_ByPred(void);
-   ~Card_ByPred(void) noexcept(false);
+    Card_CandIndex(Index* pIndex);
+   ~Card_CandIndex(void) noexcept(false);
   };
 
-  Card_ByPred* _pCard_ByPred(void* aAddr);
-  bool _bIsCard_ByPred(void* aAddr);
+  Card_CandIndex* _pCard_CandIndex(void* aAddr);
+  bool _bIsCard_CandIndex(void* aAddr);
 }
 
 /*============================================================================*/

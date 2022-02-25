@@ -18,14 +18,20 @@ LOG = logging.getLogger(__name__)
 
 
 def record_job_start(all_configs: AllConfigs,
-                     bamboo_build: string,
+                     bamboo_plan_key: string,
+                     bamboo_build_num: int,
                      git_hash: string,
+                     git_branch: string,
                      invoking_user: string,
-                     tags: {}) -> int:
+                     tags: {}) -> (int, [(string, int)]):
     """
     Record records in the database about starting the job.
-    Returns the jobResultId of the partial row created in the jobResults table.
+    Returns a tuple containing the jobResultId of the partial row created in the
+    jobResults table, as well as a list of tuples containing test_paths and
+    their corresponding test_ids.
     """
+
+    LOG.info("About to validate & record job settings")
 
     token = septest.db.dbhelper.get_auth_token()
     connect_params: {} = septest.db.dbhelper.get_connect_params()
@@ -39,17 +45,23 @@ def record_job_start(all_configs: AllConfigs,
         # cluster and tests tables. If not then we need to create a record. If a record
         # exists then we need to check that the configuration hasn't changed in the
         # config files.
-        hw_id      = __create_hardware_record(cur, all_configs.get_hardware())
-        cluster_id = __create_cluster_record(cur, all_configs.get_cluster())
-        job_id     = __create_jobs_record(cur, all_configs, hw_id, cluster_id)
-        test_ids   = __create_test_records(cur, all_configs.get_job())
+        hw_id       = __create_hardware_record(cur, all_configs.get_hardware())
+        cluster_id  = __create_cluster_record(cur, all_configs.get_cluster())
+        job_id      = __create_jobs_record(cur, all_configs, hw_id, cluster_id)
+        test_tuples = __create_test_records(cur, all_configs.get_job())
 
         # Now create some records for beginning the job
-        job_result_id = __create_jobresult_record(cur, job_id, bamboo_build, git_hash, invoking_user)
+        job_result_id = __create_jobresult_record(cur,
+                                                  job_id,
+                                                  bamboo_plan_key,
+                                                  bamboo_build_num,
+                                                  git_hash,
+                                                  git_branch,
+                                                  invoking_user)
 
         # add any tags to the tags table for this job_result_id
         __create_tags(cur, job_result_id, tags)
-        return job_result_id
+        return job_result_id, test_tuples
 
     # Database connection will be automatically closed at this point
 
@@ -85,7 +97,7 @@ def __create_hardware_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyco
 
         if row is None:
             #  Should never happen
-            msg = f"Could not retrieve the hardware_id when inserting a new row into the hardware table"
+            msg = "Could not retrieve the hardware_id when inserting a new row into the hardware table"
             raise errors.DatabaseError(msg)
 
         row_id = row[0]
@@ -162,7 +174,7 @@ def __create_cluster_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycop
 
         if row is None:
             #  Should never happen
-            msg = f"Could not retrieve the cluster_id when inserting a new row into the cluster table"
+            msg = "Could not retrieve the cluster_id when inserting a new row into the cluster table"
             raise errors.DatabaseError(msg)
 
         row_id = row[0]
@@ -215,16 +227,16 @@ def __create_test_records(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.
                           job_config: JobConfig) -> [int]:
     """Creates records for the test files if one does not already exist.
        If a record does exist then it validates that the fields haven't changed.
-       Returns the id of the test row created or the matching test row found.
+       Returns a list of (test_path, test_id) tuples of the test row created or the matching test row found.
     """
 
-    test_ids = []
+    test_tuples: [(string, int)] = []
 
     for test_path in job_config.get_test_paths():
         test_id = __create_test_record(cur, test_path)
-        test_ids.append(test_id)
+        test_tuples.append((test_path, test_id))
 
-    return test_ids
+    return test_tuples
 
 
 def __create_test_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCursor[typing.Any]],
@@ -253,7 +265,7 @@ def __create_test_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
 
         if row is None:
             #  Should never happen
-            msg = f"Could not retrieve the test_id when inserting a new row into the tests table"
+            msg = "Could not retrieve the test_id when inserting a new row into the tests table"
             raise errors.DatabaseError(msg)
 
         row_id = row[0]
@@ -317,7 +329,7 @@ def __create_jobs_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
 
         if row is None:
             #  Should never happen
-            msg = f"Could not retrieve the job_id when inserting a new row into the jobs table"
+            msg = "Could not retrieve the job_id when inserting a new row into the jobs table"
             raise errors.DatabaseError(msg)
 
         row_id = row[0]
@@ -372,8 +384,10 @@ def __create_jobs_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
 
 def __create_jobresult_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCursor[typing.Any]],
                               job_id: string,
-                              bamboo_build: string,
+                              bamboo_plan_key: string,
+                              bamboo_build_num: int,
                               git_hash: string,
+                              git_branch: string,
                               invoking_user: string = None) -> int:
     """
     Create a record in the jobs table to indicate that a job has started.
@@ -381,16 +395,19 @@ def __create_jobresult_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyc
     """
 
     sql = "INSERT INTO jobResults " \
-          "(jobId, bambooBuild, gitHash, invokingUser, timedOut, startTime, testsExecuted, testsPassed, testsFailed)" \
-          "VALUES (%s, %s, %s, %s, %s, NOW(), %s, %s, %s) " \
+          "(jobId, bambooPlan, bambooBuild, gitHash, gitBranch, invokingUser, " \
+          "timedOut, startTime, testsExecuted, testsPassed, testsFailed)" \
+          "VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s, %s, %s) " \
           "RETURNING jobResultId"
-    data = (job_id,                                                         # jobId
-            bamboo_build,                                                   # bambooBuild
-            git_hash,                                                       # gitHash
-            "SYSTEM" if invoking_user is None else invoking_user,           # invokingUser
-            False,                                                          # timedOut
-            0,                                                              # testsExecuted
-            0,                                                              # testsPassed
+    data = (job_id,  # jobId
+            bamboo_plan_key,    # bambooPlan
+            bamboo_build_num,   # bambooBuild
+            git_hash,           # gitHash
+            git_branch,         # gitBranch
+            "SYSTEM" if invoking_user is None else invoking_user,  # invokingUser
+            False,              # timedOut
+            0,                  # testsExecuted
+            0,                  # testsPassed
             0)                                                              # testsFailed
 
     LOG.debug(f"Creating a new entry in the jobResults table for job_id {job_id}")

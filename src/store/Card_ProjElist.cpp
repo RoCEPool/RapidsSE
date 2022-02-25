@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_Expr.cpp -- Expression                                                */
+/* Card_ProjElist.cpp -- List of Project Expressions                          */
 /*============================================================================*/
 
-#include "Card_Expr.hpp"
+#include "Card_ProjElist.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Expr,CK_EXPR)
-__aNewFunction(Card_Expr,CN_CARD)
-__vDeleteFunction(Card_Expr,CN_CARD)
+__pCastFunction_Card(STORE,Card_ProjElist,CK_PROJELIST)
+__aNewFunction(Card_ProjElist,CN_CARD)
+__vDeleteFunction(Card_ProjElist,CN_CARD)
 
-__bIsCard(STORE,Card_Expr,CK_EXPR)
+__bIsCard(STORE,Card_ProjElist,CK_PROJELIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Expr::Card_Expr(void)
-: Card(CK_EXPR)
+Card_ProjElist::Card_ProjElist(void)
+: Card(CK_PROJELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -30,7 +30,7 @@ Card_Expr::Card_Expr(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Expr::~Card_Expr(void) noexcept(false)
+Card_ProjElist::~Card_ProjElist(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

@@ -1,31 +1,28 @@
 /*============================================================================*/
-/* Card_Predicate.cpp -- Predicate                                            */
+/* Card_TypedExpr.cpp -- Typed Expression                                     */
 /*============================================================================*/
 
-#include "Card_Predicate.hpp"
-
-#include "Card_Term.hpp"
+#include "Card_TypedExpr.hpp"
+#include "Card_BoolExpr.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Predicate,CK_PREDICATE)
-__aNewFunction(Card_Predicate,CN_CARD)
-__vDeleteFunction(Card_Predicate,CN_CARD)
+__pCastFunction_Card(STORE,Card_TypedExpr,CK_TYPEDEXPR)
+__aNewFunction(Card_TypedExpr,CN_CARD)
+__vDeleteFunction(Card_TypedExpr,CN_CARD)
 
-__bIsCard(STORE,Card_Predicate,CK_PREDICATE)
+__bIsCard(STORE,Card_TypedExpr,CK_TYPEDEXPR)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Predicate::Card_Predicate(void)
-: Card(CK_PREDICATE)
+Card_TypedExpr::Card_TypedExpr(void)
+: Card(CK_TYPEDEXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //m_bPrintNm = false;
-  
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -34,35 +31,56 @@ Card_Predicate::Card_Predicate(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Predicate::~Card_Predicate(void) noexcept(false)
+Card_TypedExpr::~Card_TypedExpr(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* to expr                                                                    */
-/*----------------------------------------------------------------------------*/
-void Card_Predicate::vToExpr(Stz* szExpr)
+Card_CmpPred* Card_TypedExpr::pFindBound(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  szExpr->vCopy(""_Stz);
+  Card_BoolExpr* pCard_BoolExpr = _pCard_BoolExpr(pFindSubCard(CK_BOOLEXPR));
   
-  i8 nSubCards = nItems();
-  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card_Term* pCard_Term = _pCard_Term(pGet(i_Sub));
-    
-    Stz* szTerm = pCard_Term->szGetProperty((i8)0);
-    
-    if (i_Sub)
-      szExpr->vConcat(" "_Stz);
+  Card_CmpPred* pCard_CmpPred =
+    pCard_BoolExpr->pFindBound(pIndex,eBound);
+ 
+  return pCard_CmpPred;
+}
 
-    szExpr->vConcat(szTerm);
-  }
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_TypedExpr::bHasBounds(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_BoolExpr* pCard_BoolExpr = _pCard_BoolExpr(pFindSubCard(CK_BOOLEXPR));
+  
+  bool bHas = pCard_BoolExpr->bHasBounds(pIndex);
+  
+  return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_TypedExpr::vReduceFilter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_BoolExpr* pCard_BoolExpr = _pCard_BoolExpr(pFindSubCard(CK_BOOLEXPR));
+  
+  pCard_BoolExpr->vCullByKids();
+  
+  if (pCard_BoolExpr->nItems())
+    return;
+  
+  vRemove(pCard_BoolExpr);
+  delete pCard_BoolExpr;
 }
 
 /*============================================================================*/

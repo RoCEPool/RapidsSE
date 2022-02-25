@@ -1,29 +1,27 @@
 /*============================================================================*/
-/* Card_CandidateIndex.cpp -- Candidate Index                                 */
+/* Card_CalcExpr.cpp -- Calculation Predicate                                 */
 /*============================================================================*/
 
-#include "Card_CandidateIndex.hpp"
+#include "Card_CalcExpr.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_CandidateIndex,CK_CANDIDATEINDEX)
-__aNewFunction(Card_CandidateIndex,CN_CARD)
-__vDeleteFunction(Card_CandidateIndex,CN_CARD)
+__pCastFunction_Card(STORE,Card_CalcExpr,CK_CALCEXPR)
+__aNewFunction(Card_CalcExpr,CN_CARD)
+__vDeleteFunction(Card_CalcExpr,CN_CARD)
 
-__bIsCard(STORE,Card_CandidateIndex,CK_CANDIDATEINDEX)
+__bIsCard(STORE,Card_CalcExpr,CK_CALCEXPR)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CandidateIndex::Card_CandidateIndex(Index* pIndex)
-: Card(CK_CANDIDATEINDEX)
+Card_CalcExpr::Card_CalcExpr(void)
+: Card_PRED(CK_CALCEXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-   vIndex(pIndex);
-  
+      
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -32,7 +30,7 @@ Card_CandidateIndex::Card_CandidateIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_CandidateIndex::~Card_CandidateIndex(void) noexcept(false)
+Card_CalcExpr::~Card_CalcExpr(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

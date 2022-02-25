@@ -1,27 +1,27 @@
 /*============================================================================*/
-/* Card_ByPred.cpp -- By Predicate                                            */
+/* Card_EBound.cpp -- Equi-Bound                                              */
 /*============================================================================*/
 
-#include "Card_ByPred.hpp"
+#include "Card_EBound.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_ByPred,CK_BYPRED)
-__aNewFunction(Card_ByPred,CN_CARD)
-__vDeleteFunction(Card_ByPred,CN_CARD)
+__pCastFunction_Card(STORE,Card_EBound,CK_EBOUND)
+__aNewFunction(Card_EBound,CN_CARD)
+__vDeleteFunction(Card_EBound,CN_CARD)
 
-__bIsCard(STORE,Card_ByPred,CK_BYPRED)
+__bIsCard(STORE,Card_EBound,CK_EBOUND)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ByPred::Card_ByPred(void)
-: Card_PRED(CK_BYPRED)
+Card_EBound::Card_EBound(void)
+: Card_BOUND(CK_EBOUND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
+  
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -30,7 +30,7 @@ Card_ByPred::Card_ByPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ByPred::~Card_ByPred(void) noexcept(false)
+Card_EBound::~Card_EBound(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

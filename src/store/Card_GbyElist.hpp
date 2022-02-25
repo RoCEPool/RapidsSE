@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Projection.hpp -- Projection                                          */
+/* Card_GbyElist.hpp -- List of Group By Expressions                          */
 /*============================================================================*/
 #pragma once
 
@@ -9,18 +9,18 @@
 
 namespace STORE
 {
-  class Card_Projection : public Card
+  class Card_GbyElist : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Projection(void);
-   ~Card_Projection(void) noexcept(false);
+    Card_GbyElist(void);
+   ~Card_GbyElist(void) noexcept(false);
   };
 
-  Card_Projection* _pCard_Projection(void* aAddr);
-  bool _bIsCard_Projection(void* aAddr);
+  Card_GbyElist* _pCard_GbyElist(void* aAddr);
+  bool _bIsCard_GbyElist(void* aAddr);
 }
 
 /*============================================================================*/

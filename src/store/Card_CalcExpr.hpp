@@ -1,28 +1,26 @@
 /*============================================================================*/
-/* Card_Expr.hpp -- Expression                                                */
+/* Card_CalcExpr.hpp -- Calculation Predicate                                 */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Card.hpp"
-
-namespace STORE { class Card_Atom; }
+#include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_Expr : public Card
-  {
+  class Card_CalcExpr : public Card_PRED
+  {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Expr(void);
-   ~Card_Expr(void) noexcept(false);
+    Card_CalcExpr(void);
+   ~Card_CalcExpr(void) noexcept(false);
   };
 
-  Card_Expr* _pCard_Expr(void* aAddr);
-  bool _bIsCard_Expr(void* aAddr);
+  Card_CalcExpr* _pCard_CalcExpr(void* aAddr);
+  bool _bIsCard_CalcExpr(void* aAddr);
 }
 
 /*============================================================================*/

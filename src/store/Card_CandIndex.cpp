@@ -1,27 +1,29 @@
 /*============================================================================*/
-/* Card_ProjectPred.cpp -- Project Predicate                                  */
+/* Card_CandIndex.cpp -- Candidate Index                                 */
 /*============================================================================*/
 
-#include "Card_ProjectPred.hpp"
+#include "Card_CandIndex.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_ProjectPred,CK_PROJECTPRED)
-__aNewFunction(Card_ProjectPred,CN_CARD)
-__vDeleteFunction(Card_ProjectPred,CN_CARD)
+__pCastFunction_Card(STORE,Card_CandIndex,CK_CANDINDEX)
+__aNewFunction(Card_CandIndex,CN_CARD)
+__vDeleteFunction(Card_CandIndex,CN_CARD)
 
-__bIsCard(STORE,Card_ProjectPred,CK_PROJECTPRED)
+__bIsCard(STORE,Card_CandIndex,CK_CANDINDEX)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ProjectPred::Card_ProjectPred(void)
-: Card_PRED(CK_PROJECTPRED)
+Card_CandIndex::Card_CandIndex(Index* pIndex)
+: Card(CK_CANDINDEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-      
+
+   vIndex(pIndex);
+  
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -30,7 +32,7 @@ Card_ProjectPred::Card_ProjectPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ProjectPred::~Card_ProjectPred(void) noexcept(false)
+Card_CandIndex::~Card_CandIndex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

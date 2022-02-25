@@ -43,6 +43,19 @@ static Stz* aYG_15s[]
   /*    */ "ENUMS"_Stz,
 };
 
+static Stz* aYG_weave[]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*    */ "all nodes"_Stz,
+  /*    */ "all partitions"_Stz,
+  /*    */ "all partitions on origin"_Stz,
+  /*    */ "next node"_Stz,
+  /*    */ "origin"_Stz,
+
+  /*    */ "ENUMS"_Stz,
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

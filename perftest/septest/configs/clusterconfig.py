@@ -22,6 +22,8 @@ class ClusterConfig:
     C_SHM            = "shm"
     C_THREADS        = "threads"
     C_PARTITIONS     = "partitions"
+    C_DIR            = "dir"
+    C_PORT           = "port"
     C_PARAMS         = "params"
 
     def __init__(self, path: string):
@@ -30,6 +32,8 @@ class ClusterConfig:
         self.shm = -1
         self.threads = -1
         self.partitions = -1
+        self.dir = ""
+        self.port = -1
         self.params = ""
 
         # Make the clusterConfigParser.sh file executable
@@ -63,6 +67,8 @@ class ClusterConfig:
         self.shm        = output[self.C_SHM]
         self.threads    = output[self.C_THREADS]
         self.partitions = output[self.C_PARTITIONS]
+        self.dir        = output[self.C_DIR]
+        self.port       = output[self.C_PORT]
         self.params     = output[self.C_PARAMS]
 
     def __str__(self):
@@ -71,6 +77,8 @@ class ClusterConfig:
             f"  shared mem = {self.get_shared_mem()}\n" \
             f"  threads    = {self.get_threads()}\n" \
             f"  partitions = {self.get_partitions()}\n" \
+            f"  dir        = {self.get_dir()}\n" \
+            f"  port       = {self.get_port()}\n" \
             f"  params     = \"{self.get_params()}\""
         return s
 
@@ -89,6 +97,12 @@ class ClusterConfig:
 
     def get_partitions(self) -> int:
         return self.partitions
+
+    def get_dir(self) -> string:
+        return self.dir
+
+    def get_port(self) -> int:
+        return self.port
 
     def get_params(self) -> string:
         return self.params

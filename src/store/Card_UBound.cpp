@@ -1,27 +1,27 @@
 /*============================================================================*/
-/* Card_FilterPred.cpp -- Filter Predicate                                    */
+/* Card_UBound.cpp -- Upper Bound                                             */
 /*============================================================================*/
 
-#include "Card_FilterPred.hpp"
+#include "Card_UBound.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_FilterPred,CK_FILTERPRED)
-__aNewFunction(Card_FilterPred,CN_CARD)
-__vDeleteFunction(Card_FilterPred,CN_CARD)
+__pCastFunction_Card(STORE,Card_UBound,CK_UBOUND)
+__aNewFunction(Card_UBound,CN_CARD)
+__vDeleteFunction(Card_UBound,CN_CARD)
 
-__bIsCard(STORE,Card_FilterPred,CK_FILTERPRED)
+__bIsCard(STORE,Card_UBound,CK_UBOUND)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_FilterPred::Card_FilterPred(void)
-: Card_PRED(CK_FILTERPRED)
+Card_UBound::Card_UBound(void)
+: Card_BOUND(CK_UBOUND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-      
+  
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -30,7 +30,7 @@ Card_FilterPred::Card_FilterPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_FilterPred::~Card_FilterPred(void) noexcept(false)
+Card_UBound::~Card_UBound(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

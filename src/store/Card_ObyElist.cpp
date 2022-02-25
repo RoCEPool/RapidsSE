@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_ByList.cpp -- List of By                                              */
+/* Card_ObyElist.cpp -- List of Order By Expressions                          */
 /*============================================================================*/
 
-#include "Card_ByList.hpp"
+#include "Card_ObyElist.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_ByList,CK_BYLIST)
-__aNewFunction(Card_ByList,CN_CARD)
-__vDeleteFunction(Card_ByList,CN_CARD)
+__pCastFunction_Card(STORE,Card_ObyElist,CK_PROJELIST)
+__aNewFunction(Card_ObyElist,CN_CARD)
+__vDeleteFunction(Card_ObyElist,CN_CARD)
 
-__bIsCard(STORE,Card_ByList,CK_BYLIST)
+__bIsCard(STORE,Card_ObyElist,CK_PROJELIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ByList::Card_ByList(void)
-: Card(CK_BYLIST)
+Card_ObyElist::Card_ObyElist(void)
+: Card(CK_PROJELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -30,7 +30,7 @@ Card_ByList::Card_ByList(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ByList::~Card_ByList(void) noexcept(false)
+Card_ObyElist::~Card_ObyElist(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

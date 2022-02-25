@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* Card_By.hpp -- By                                                          */
+/* Card_UBound.hpp -- Upper Bound                                             */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_BOUND.hpp"
 
 namespace STORE
 {
-  class Card_By : public Card
+  class Card_UBound : public Card_BOUND
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_By(void);
-   ~Card_By(void) noexcept(false);
+    Card_UBound(void);
+   ~Card_UBound(void) noexcept(false);
   };
 
-  Card_By* _pCard_By(void* aAddr);
-  bool _bIsCard_By(void* aAddr);
+  Card_UBound* _pCard_UBound(void* aAddr);
+  bool _bIsCard_UBound(void* aAddr);
 }
 
 /*============================================================================*/

@@ -3,6 +3,9 @@ import string
 import boto3
 import pathlib
 
+# Psycopg3 basic usage:
+#   https://www.psycopg.org/psycopg3/docs/basic/usage.html
+
 # Various constants needed
 C_ENDPOINT  = "postgres-database.cgkt3r1odnaa.us-east-1.rds.amazonaws.com"
 C_PORT      = "5432"

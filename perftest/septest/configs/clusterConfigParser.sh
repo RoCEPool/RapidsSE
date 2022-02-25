@@ -10,6 +10,8 @@
 #       "shm": 32,
 #       "threads": 16,
 #       "partitions": 8,
+#       "dir": "/opt/rapidsse",
+#       "port": 5432,
 #       "params": ""
 #     }
 #
@@ -56,6 +58,8 @@ numNodes="${#NODE_LIST[@]}"
 shm="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_MEM_KEY}")"
 threads="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_THREADS_KEY}")"
 partitions="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_PARTITIONS_KEY}")"
+dir="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_DIR_KEY}")"
+port="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_PORT_KEY}")"
 params="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_PARAMS_KEY}")"
 
 # Write out the results in a JSON format for easy parsing by Python
@@ -65,6 +69,8 @@ cat << EOF
   "shm": ${shm},
   "threads": ${threads},
   "partitions": ${partitions},
+  "dir": "${dir}",
+  "port": ${port},
   "params": "${params}"
 }
 EOF

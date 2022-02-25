@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* Card_AggregPred.hpp -- Aggregate Predicate                                 */
+/* Card_RBound.hpp -- Range-Bound                                             */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Card_PRED.hpp"
+#include "Card_BOUND.hpp"
 
 namespace STORE
 {
-  class Card_AggregPred : public Card_PRED
-  {  
+  class Card_RBound : public Card_BOUND
+  {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_AggregPred(void);
-   ~Card_AggregPred(void) noexcept(false);
+    Card_RBound(void);
+   ~Card_RBound(void) noexcept(false);
   };
 
-  Card_AggregPred* _pCard_AggregPred(void* aAddr);
-  bool _bIsCard_AggregPred(void* aAddr);
+  Card_RBound* _pCard_RBound(void* aAddr);
+  bool _bIsCard_RBound(void* aAddr);
 }
 
 /*============================================================================*/

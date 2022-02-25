@@ -1,26 +1,31 @@
 /*============================================================================*/
-/* Card_ProjectPred.hpp -- Project Predicate                                  */
+/* Card_TypedExpr.hpp -- Typed Expression                                     */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
+#include "Card.hpp"
 #include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_ProjectPred : public Card_PRED
+  class Card_TypedExpr : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_ProjectPred(void);
-   ~Card_ProjectPred(void) noexcept(false);
+    Card_TypedExpr(void);
+   ~Card_TypedExpr(void) noexcept(false);
+    
+    Card_CmpPred* pFindBound(Index* pIndex, eBK eBound);
+    bool bHasBounds(Index* pIndex);
+    void vReduceFilter(void);
   };
 
-  Card_ProjectPred* _pCard_ProjectPred(void* aAddr);
-  bool _bIsCard_ProjectPred(void* aAddr);
+  Card_TypedExpr* _pCard_TypedExpr(void* aAddr);
+  bool _bIsCard_TypedExpr(void* aAddr);
 }
 
 /*============================================================================*/

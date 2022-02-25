@@ -36,6 +36,7 @@ namespace STORE
    ~Index(void) noexcept(false);
   
     Stz*   pAnalyze(void);
+    void   vAnalyze(i8& nBuffers, i8& nEntries);
     void   vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nEntries);
     i8     nColumns(void);
     Column* pGetColumn(i8 iColumn);

@@ -46,23 +46,33 @@ namespace STORE
     void    vAppendStreamDef(StreamDefBase* pStreamDef, Stz* sColPrefix);
     void    vApplyOrder(StreamDefBase* pStreamDef_apply);
     void    vAsString(String* pString);
+  
     i8      nColumns(void);
+  
     bool    bIsDuplicateName(Column* pColumn);
+  
     Column* pFindColumn(Stz* sColumnNm);
+  
     Column* pGetColumn(i8 i_Col);
     Column* pGetOrder(i8 i_Order);
+  
     void    vListContents(i8 i_Depth);
     Location* pLocation(void);
+  
     i8      nOrders(void);
+  
     eEC     eParseCmd(Stz* szCmd);
     void    vPrint(void);
+  
     bool    bReplicated(void);
     void    vReplicated(bool bReplicated);
     void    vResetPointers(void);
     RowPix* pRowPix(void);
     i8      jRowSize(void);
+  
     void    vStreamDefNm(Stz* szStreamDefNm);
     Stz*    szStreamDefNm(void);
+  
     i8      jTableSize(void);
     void    vToColPix(RowPix* pRowPix, bool bPtnHash);
     void    vToRowPix(RowPix* pRowPix, bool bPtnHash);

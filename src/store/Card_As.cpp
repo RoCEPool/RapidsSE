@@ -22,7 +22,7 @@ Card_As::Card_As(Stz* szAsNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAsNm(szAsNm);
+  vAs(szAsNm);
     
   _checkInitialised_(CN_CARD);
   

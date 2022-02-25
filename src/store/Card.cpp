@@ -1,6 +1,4 @@
-/*============================================================================*/
-/* Card.cpp -- Abstract Card                                                  */
-/*============================================================================*/
+
 
 #include "Card.hpp"
 #include "Board.hpp"
@@ -8,6 +6,55 @@
 
 #include "eST.h"
 #include "eXK.h"
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+CardSet::CardSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+          
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+CardSet::~CardSet(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  for (Card* pCard = pPop(); pCard; pCard = pPop())
+    delete pCard;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardSet::vRemoveCards(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  i8 nCards = nItems();
+  for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
+    Card* pCard = pGet(i_Card);
+    if (! pCard->bIsCard(eCard))
+      continue;
+    
+    vRemove(pCard);
+    i_Card--;
+    nCards--;
+  }
+}
+
+
+
+/*============================================================================*/
+/* Card.cpp -- Abstract Card                                                  */
+/*============================================================================*/
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -123,16 +170,6 @@ eCK Card::eCard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put header                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vCardHeader(Ribbon* pRibbon)
-{
-  _static_
-
-  pRibbon->vSput(FR_HEAD,pRibbon->iLogicalColumn());
-}
-
-/*----------------------------------------------------------------------------*/
 /* get card no                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Card::iCardNo(void)
@@ -239,6 +276,10 @@ Card* Card::pFindSubCard(eCK eCard)
       pFoundCard = pSubCard;
       break;
     }
+    
+    pFoundCard = pSubCard->pFindSubCard(eCard);
+    if (pFoundCard)
+      break;
   }
   
   delete pSubCard_I;
@@ -352,6 +393,66 @@ Stz* Card::szGetPropertyNm(i8 i_Property)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does card have the EBound property ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasEBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return false;
+
+  bool bHas = m_pProperties->bHasName("EBound"_Stz);
+
+  return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set/reset the EBound property                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vHasEBound(bool bHasEBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bHasEBound) {
+    vAddProperty("EBound"_Stz);
+    return;
+  }
+  
+  vCutProperty("EBound"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* does card have the LBound property ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasLBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return false;
+
+  bool bHas = m_pProperties->bHasName("LBound"_Stz);
+
+  return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set/reset the LBound property                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vHasLBound(bool bHasLBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bHasLBound) {
+    vAddProperty("LBound"_Stz);
+    return;
+  }
+  
+  vCutProperty("LBound"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* does card have given property ?                                            */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasProperty(Stz* szName)
@@ -364,6 +465,36 @@ bool Card::bHasProperty(Stz* szName)
   bool bHas = m_pProperties->bHasName(szName);
 
   return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does card have the UBound property ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasUBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return false;
+
+  bool bHas = m_pProperties->bHasName("UBound"_Stz);
+
+  return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set/reset the UBound property                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vHasUBound(bool bHasUBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bHasUBound) {
+    vAddProperty("UBound"_Stz);
+    return;
+  }
+  
+  vCutProperty("UBound"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,6 +540,28 @@ Stz* Card::szPropertyNm(i8 i_Property)
   Stz* szName = m_pProperties->szName(i_Property);
   
   return szName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given subcard (recursive)                                           */
+/*----------------------------------------------------------------------------*/
+void Card::vRemoveSubCard(Card* pCardRemove)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+  
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+    
+    if (pSubCard == pCardRemove) {
+      vRemove(pCardRemove);
+      break;
+    }
+    pSubCard->vRemoveSubCard(pCardRemove);
+   }
+  
+  delete pSubCard_I;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -589,45 +742,23 @@ void Card::vAggLvl(eAL eAggLvl)
 /*----------------------------------------------------------------------------*/
 /* get as name                                                                */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szAsNm(void)
+Stz* Card::szAs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Stz* szAsNm = szGetProperty("szAsNm"_Stz);
+  Stz* szAs = szGetProperty("szAs"_Stz);
 
-  return szAsNm;
+  return szAs;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set as name                                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vAsNm(Stz* szAsNm)
+void Card::vAs(Stz* szAs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szAsNm"_Stz,szAsNm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get atom name                                                              */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szAtom(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Stz* szAsNm = szGetProperty("szAtom"_Stz);
-
-  return szAsNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set atom name                                                              */
-/*----------------------------------------------------------------------------*/
-void Card::vAtom(Stz* szAtom)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("szAtom"_Stz,szAtom);
+  vAddProperty("szAs"_Stz,szAs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -637,16 +768,33 @@ eBK Card::eBound(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szTerm = this->szTerm();
+  eRO eRelOp = this->eRelOp();
   
-       if (szTerm->bSame("<"_Stz))       return BK_UBOUND;
-  else if (szTerm->bSame("<="_Stz))      return BK_UBOUND;
-  else if (szTerm->bSame("="_Stz))       return BK_EBOUND;
-  else if (szTerm->bSame("=="_Stz))      return BK_EBOUND;
-  else if (szTerm->bSame(">="_Stz))      return BK_LBOUND;
-  else if (szTerm->bSame(">"_Stz))       return BK_LBOUND;
+  switch (eRelOp) {
+    case RO_LESS_THAN:     return BK_UBOUND;
+    case RO_LESS_EQUAL:    return BK_UBOUND;
+    case RO_EQUAL_TO:      return BK_EBOUND;
+    case RO_GREATER_EQUAL: return BK_LBOUND;
+    case RO_GREATER_THAN:  return BK_LBOUND;
+      
+    default:
+      vTrace("%s(%lld): unexpected eRelOp %lld %s\n"_Stz
+             ,__func__
+             ,(i8)__LINE__
+             ,(i8)eRelOp
+             ,aRO[eRelOp]);
+      RASSERT(0);
+      break;
+  }
   
-  else return BK_NONE;
+//       if (szTerm->bSame("<"_Stz))       return BK_UBOUND;
+//  else if (szTerm->bSame("<="_Stz))      return BK_UBOUND;
+//  else if (szTerm->bSame("="_Stz))       return BK_EBOUND;
+//  else if (szTerm->bSame("=="_Stz))      return BK_EBOUND;
+//  else if (szTerm->bSame(">="_Stz))      return BK_LBOUND;
+//  else if (szTerm->bSame(">"_Stz))       return BK_LBOUND;
+//
+//  else return BK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -769,17 +917,30 @@ bool Card::bIsAggOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-       if (szAtom->bSame("avg"_Stz))      return true;
-  else if (szAtom->bSame("count"_Stz))    return true;
-  else if (szAtom->bSame("countAll"_Stz)) return true;
-  else if (szAtom->bSame("max"_Stz))      return true;
-  else if (szAtom->bSame("min"_Stz))      return true;
-//  else if (szAtom->bSame("stddev"_Stz))   return true;
-  else if (szAtom->bSame("sum"_Stz))      return true;
+       if (szTerm->bSame("avg"_Stz))      return true;
+  else if (szTerm->bSame("count"_Stz))    return true;
+  else if (szTerm->bSame("countAll"_Stz)) return true;
+  else if (szTerm->bSame("max"_Stz))      return true;
+  else if (szTerm->bSame("min"_Stz))      return true;
+//  else if (szTerm->bSame("stddev"_Stz))   return true;
+  else if (szTerm->bSame("sum"_Stz))      return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsCard(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (eCard == this->eCard())
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -789,10 +950,10 @@ bool Card::bIsOrdinalColumnAtom(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-  char acFirst  = szAtom->azChar()[0];
-  char acSecond = szAtom->azChar()[1];
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
 
   if ('$' == acFirst && StrLib::bIsDigit(acSecond))
     return true;
@@ -807,10 +968,10 @@ bool Card::bIsOrdinalIndexAtom(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-  char acFirst  = szAtom->azChar()[0];
-  char acSecond = szAtom->azChar()[1];
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
 
   if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond))
     return true;
@@ -826,7 +987,7 @@ bool Card::bIsOrdinalColumnTerm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szTerm = szGetProperty("szTerm"_Stz);
-  vTrace("bIsOrdinalColumnTerm: %s\n"_Stz,szTerm);
+  //vTrace("bIsOrdinalColumnTerm: %s\n"_Stz,szTerm);
   
   char acFirst  = szTerm->azChar()[0];
   char acSecond = szTerm->azChar()[1];
@@ -856,15 +1017,34 @@ bool Card::bIsOrdinalIndexTerm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCK eCard = this->eCard();
+  
+  switch (eCard) {
+    case CK_BOOLEXPR:
+    case CK_ORPRED:
+    case CK_ANDPRED:
+      return true;
+      
+    default: return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this atom same as argument?                                             */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsSame(Stz* szArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-  if (szAtom->bSame(szArg))
+  if (szTerm->bSame(szArg))
     return true;
   else
     return false;
@@ -877,9 +1057,9 @@ bool Card::bIsSeparator(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-  if (szAtom->bSame(","_Stz))
+  if (szTerm->bSame(","_Stz))
     return true;
   else
     return false;
@@ -976,8 +1156,8 @@ i8 Card::iOrdinalColumnValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
-  i8 i_Ord = StrLib::iGleanInt(szAtom->azChar());
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
+  i8 i_Ord = StrLib::iGleanInt(szTerm->azChar());
   
   return i_Ord;
 }
@@ -989,8 +1169,8 @@ i8 Card::iOrdinalIndexValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
-  i8 i_Ord = StrLib::iGleanInt(szAtom->azChar());
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
+  i8 i_Ord = StrLib::iGleanInt(szTerm->azChar());
   
   return i_Ord;
 }
@@ -1052,25 +1232,45 @@ void Card::vRank(i8 iRank)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get query name                                                             */
+/* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szRows(void)
+eRO Card::eRelOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = this->szTerm();
+  
+       if (szTerm->bSame("<"_Stz))       return RO_LESS_THAN;
+  else if (szTerm->bSame("<="_Stz))      return RO_LESS_EQUAL;
+  else if (szTerm->bSame("="_Stz))       return RO_EQUAL_TO;
+  else if (szTerm->bSame("=="_Stz))      return RO_EQUAL_TO;
+  else if (szTerm->bSame("!="_Stz))      return RO_NOT_EQUAL;
+  else if (szTerm->bSame(">="_Stz))      return RO_GREATER_EQUAL;
+  else if (szTerm->bSame(">"_Stz))       return RO_GREATER_THAN;
+  
+  else return RO_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row limit                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Card::nRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Stz* szRows = szGetProperty("szRows"_Stz);
+  i8 nRows = iGetProperty("nRows"_Stz);
 
-  return szRows;
+  return nRows;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set query name                                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vRows(Stz* szRows)
+void Card::vRows(i8 nRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szRows"_Stz,szRows);
+  vAddProperty("nRows"_Stz,nRows);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1310,33 +1510,35 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  s32 sName;
-    
-  if (m_bPrintNm) {
-    
-    if (-1 == m_iCardNo) {
-      sName.vSprint("%s%s x%lld"_Stz
-                    ,Stz::szDots(iDepth)
-                    ,szCardNm()
-                    ,nItems()
-                    );
-      pRibbon->vSprint("%-18s%c%c"_Stz
-                       ,sName.szStz()
-                       ,m_cMark1
-                       ,m_cMark2
-                       );
-    }
-    else {
-      sName.vSprint("%s%lld)%s"_Stz
-                    ,Stz::szDots(iDepth)
-                    ,m_iCardNo
-                    ,szCardNm()
-                    );
-
-      pRibbon->vSprint("%s"_Stz,sName.szStz());
-    }
-  }
+//  s32 sName;
+//
+//  if (m_bPrintNm) {
+//
+//    if (-1 == m_iCardNo) {
+//      sName.vSprint("%s%s x%lld"_Stz
+//                    ,Stz::szDots(iDepth)
+//                    ,szCardNm()
+//                    ,nItems()
+//                    );
+//    }
+//    else {
+//      sName.vSprint("%s%lld)%s"_Stz
+//                    ,Stz::szDots(iDepth)
+//                    ,m_iCardNo
+//                    ,szCardNm()
+//                    );
+//
+//      //pRibbon->vSprint("%s"_Stz,sName.szStz());
+//    }
+//    pRibbon->vSprint("%-18s%c%c"_Stz
+//                     ,sName.szStz()
+//                     ,m_cMark1
+//                     ,m_cMark2
+//                     );
+//  }
   
+  vPrintName(pRibbon,iDepth);
+
   vPrintDetails(pRibbon,iDepth);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1363,67 +1565,71 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
   
   switch (eCard) {
 
-    case CK_AGGREG:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_AGGREGPRED:    vPrintProperties    (pRibbon,iDepth); break;
-    case CK_ANDPRED:       vPrintProperties    (pRibbon,iDepth); break;
-    case CK_AS:            vPrintProperties    (pRibbon,iDepth); break;
+    case CK_AGGELIST:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_AGGREG:            vPrintProperties(pRibbon,iDepth); break;
+    case CK_ANDPRED:           vPrintProperties(pRibbon,iDepth); break;
+    case CK_AS:                vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_BOOLEXPR:          vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_CALCEXPR:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_CANDINDEX:     vCandIndexPrint     (pRibbon,iDepth); break;
+    case CK_COMBINE:           vPrintProperties(pRibbon,iDepth); break;
+    case CK_CORRSUBQUERY:      vPrintProperties(pRibbon,iDepth); break;
+    case CK_CMPPRED:           vPrintProperties(pRibbon,iDepth); break;
+    case CK_CREATETABLE:       vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_DEBUG:             vPrintProperties(pRibbon,iDepth); break;
+    case CK_DROPTABLE:         vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_EBOUND:            vPrintProperties(pRibbon,iDepth); break;
+    case CK_EXISTS:            vPrintProperties(pRibbon,iDepth); break;
           
-    case CK_BY:            vPrintProperties    (pRibbon,iDepth); break;
-    case CK_BYLIST:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_BYPRED:        vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_CANDIDATEINDEX:vCandidateIndexPrint(pRibbon,iDepth); break;
-    case CK_COMBINE:       vPrintProperties    (pRibbon,iDepth); break;
-    case CK_COMPAREPRED:   vPrintProperties    (pRibbon,iDepth); break;
-    case CK_CORRSUBQUERY:  vPrintProperties    (pRibbon,iDepth); break;
-    case CK_CREATETABLE:   vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_DEBUG:         vPrintProperties    (pRibbon,iDepth); break;
-    case CK_DROPTABLE:     vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_EXISTS:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_EXPR:          vPrintProperties    (pRibbon,iDepth); break;
-    case CK_FILTER:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_FILTERPRED:    vPrintProperties    (pRibbon,iDepth); break;
-
-    case CK_HASH:          vPrintProperties    (pRibbon,iDepth); break;
-    case CK_HASHCAST:      vPrintProperties    (pRibbon,iDepth); break;
-    case CK_HAVING:        vPrintProperties    (pRibbon,iDepth); break;
+    case CK_FILTER:            vPrintProperties(pRibbon,iDepth); break;
+    
+    case CK_GBYELIST:          vPrintProperties(pRibbon,iDepth); break;
+    
+    case CK_HASH:              vPrintProperties(pRibbon,iDepth); break;
+    case CK_HASHCAST:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_HAVING:            vPrintProperties(pRibbon,iDepth); break;
            
     case CK_INDEX:         vIndexPrint         (pRibbon,iDepth); break;
-    case CK_INDEXJOIN:     vPrintProperties    (pRibbon,iDepth); break;
-    case CK_INDEXPRED:     vPrintProperties    (pRibbon,iDepth); break;
+    case CK_INDEXJOIN:         vPrintProperties(pRibbon,iDepth); break;
+    case CK_INDEXPRED:         vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXSCAN:     vIndexScanPrint     (pRibbon,iDepth); break;
           
-    case CK_LBOUND:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_LIMIT:         vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_MAINSUBQUERY:  vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_NODECAST:      vPrintProperties    (pRibbon,iDepth); break;
-    case CK_NONCSUBQUERY:  vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_ON:            vPrintProperties    (pRibbon,iDepth); break;
-    case CK_ORDAGG:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_ORIGINCAST:    vPrintProperties    (pRibbon,iDepth); break;
-    case CK_ORPRED:        vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_PREDICATE:     vPrintProperties    (pRibbon,iDepth); break;
-    case CK_PROJECT:       vPrintProperties    (pRibbon,iDepth); break;
-    case CK_PROJECTION:    vProjectionPrint    (pRibbon,iDepth); break;
-    case CK_PROJECTPRED:   vPrintProperties    (pRibbon,iDepth); break;
+    case CK_LBOUND:            vPrintProperties(pRibbon,iDepth); break;
+    case CK_LIMIT:             vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_MAINSUBQUERY:      vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_NODECAST:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_NONCSUBQUERY:      vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_OBYELIST:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_ON:                vPrintProperties(pRibbon,iDepth); break;
+    case CK_ORDAGG:            vPrintProperties(pRibbon,iDepth); break;
+    case CK_ORIGINCAST:        vPrintProperties(pRibbon,iDepth); break;
+    case CK_ORPRED:            vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_PROJECT:           vPrintProperties(pRibbon,iDepth); break;
+    case CK_PROJELIST:         vPrintProperties(pRibbon,iDepth); break;
+    
+    case CK_RBOUND:            vPrintProperties(pRibbon,iDepth); break;
           
     case CK_SCAN:          vScanPrint          (pRibbon,iDepth); break;
-    case CK_SEND:          vPrintProperties    (pRibbon,iDepth); break;
-    case CK_SORT:          vPrintProperties    (pRibbon,iDepth); break;
-    case CK_STAGE:         vPrintProperties    (pRibbon,iDepth); break;
+    case CK_SEND:              vPrintProperties(pRibbon,iDepth); break;
+    case CK_SORT:              vPrintProperties(pRibbon,iDepth); break;
+    case CK_STAGE:         vStagePrint         (pRibbon,iDepth); break;
     case CK_STREAMDEF:     vStreamDefPrint     (pRibbon,iDepth); break;
           
-    case CK_TABLE:         vPrintProperties    (pRibbon,iDepth); break;
+    case CK_TABLE:             vPrintProperties(pRibbon,iDepth); break;
     case CK_TERM:          vTermPrint          (pRibbon,iDepth); break;
-    case CK_TERMLIST:      vPrintProperties    (pRibbon,iDepth); break;
-    case CK_TYPE:          vPrintProperties    (pRibbon,iDepth); break;
+    case CK_TYPE:              vPrintProperties(pRibbon,iDepth); break;
+    case CK_TYPEDEXPR:     vProjectionPrint    (pRibbon,iDepth); break;
 
+    case CK_UBOUND:            vPrintProperties(pRibbon,iDepth); break;
+      
     default:
       vTrace("SWITCH %s: Unknown eCard %lld %s\n"_Stz
              ,__func__
@@ -1435,6 +1641,69 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
   }
   
 }
+
+/*----------------------------------------------------------------------------*/
+/* put header                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintHeader(Ribbon* pRibbon)
+{
+  _static_
+
+  pRibbon->vSput(FR_HEAD,pRibbon->iLogicalColumn());
+  
+  // "--%02lld--------------=="_Stz
+  // "--00--------------=="_Stz
+  // "--P00.G00.U00-----=="_Stz
+  
+//  pRibbon->vSprint("--P%02lld.G%02lld.O%02lld-----=="_Stz
+//                   ,(i8)0
+//                   ,(i8)0
+//                   ,pRibbon->iLogicalColumn());
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  s32 sName;
+    
+  if (m_bPrintNm) {
+    
+    if (-1 == m_iCardNo) {
+      sName.vSprint("%s%s x%lld"_Stz
+                    ,Stz::szDots(iDepth)
+                    ,szCardNm()
+                    ,nItems()
+                    );
+//      pRibbon->vSprint("%-18s%c%c"_Stz
+//                       ,sName.szStz()
+//                       ,m_cMark1
+//                       ,m_cMark2
+//                       );
+    }
+    else {
+      sName.vSprint("%s%lld)%s"_Stz
+                    ,Stz::szDots(iDepth)
+                    ,m_iCardNo
+                    ,szCardNm()
+                    );
+
+      //pRibbon->vSprint("%s"_Stz,sName.szStz());
+    }
+    pRibbon->vSprint("%-18s%c%c"_Stz
+                     ,sName.szStz()
+                     ,m_cMark1
+                     ,m_cMark2
+                     );
+  }
+  
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* print by piece                                                             */
@@ -1470,7 +1739,11 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName)
       }
         
       case TN_OBJECT: {
-        pRibbon->vSput(FR_TEXT,"TN_OBJECT"_Stz);
+        Stz* szName = szGetPropertyNm(i_Property);
+        Object* pObject = pGetProperty(i_Property);
+        pRibbon->vSprintRight("%s->  "_Stz,szName);
+        pRibbon->vSprintRight("%p"_Stz,pObject);
+        pRibbon->vSprintRight("%s"_Stz,aCN[pObject->eGetClassNo()]);
         break;
       }
         
@@ -1500,19 +1773,28 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName)
 /*----------------------------------------------------------------------------*/
 /* print candidate index                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vCandidateIndexPrint(Ribbon* pRibbon, i8 iDepth)
+void Card::vCandIndexPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CandidateIndex* pCard_CandidateIndex = _pCard_CandidateIndex(this);
+  Card_CandIndex* pCard_CandIndex = _pCard_CandIndex(this);
   
-  pRibbon->vSput(FR_NAME,pCard_CandidateIndex->pIndex()->szIndexNm());
+  Index* pIndex = pCard_CandIndex->pIndex();
   
-  IndexDef* pIndexDef = pCard_CandidateIndex->pIndex()->pIndexDef();
+  pRibbon->vSput(FR_NAME,pIndex->szIndexNm());
+  
+  IndexDef* pIndexDef = pIndex->pIndexDef();
   pRibbon->vSput(FR_TEXT
                  ,pIndexDef->bIsUnique()
                     ? "unique"_Stz : "not unique"_Stz
                  );
+  
+  i8 nBuffers = 0;
+  i8 nEntries = 0;
+  pIndex->vAnalyze(nBuffers,nEntries);
+  pRibbon->vSprintRight("buffers %lld"_Stz,nBuffers);
+  pRibbon->vSprintRight("entries %lld"_Stz,nEntries);
+
   
   i8 nColumns = pIndexDef->nColumns();
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -1579,23 +1861,6 @@ void Card::vOnPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print predicate                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vPredicatePrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Predicate* pCard_Predicate = _pCard_Predicate(this);
-
-  pRibbon->vSput(FR_DOTS
-                 ,Stz::szDots(iDepth)
-                 ,pCard_Predicate->m_iCardNo
-                 ,pCard_Predicate->szCardNm()
-                 );
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* print projection card onto given ribbon                                    */
 /*----------------------------------------------------------------------------*/
 void Card::vProjectionPrint(Ribbon* pRibbon, i8 iDepth)
@@ -1604,7 +1869,7 @@ void Card::vProjectionPrint(Ribbon* pRibbon, i8 iDepth)
   
   //vTrace("vProjectionPrint\n"_Stz);
   
-  Card_Projection* pCardProjection = _pCard_Projection(this);
+  Card_TypedExpr* pCardProjection = _pCard_TypedExpr(this);
 
   vPrintProperties(pRibbon,iDepth);
 }
@@ -1672,6 +1937,11 @@ void Card::vStagePrint(Ribbon* pRibbon, i8 iDepth)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Stage* pCard_Stage = _pCard_Stage(this);
+//  vTrace("vStagePrint %s %lld,%lld\n"_Stz
+//         ,pCard_Stage->szStageNm()
+//         ,pRibbon->iLine()
+//         ,pRibbon->iChar()
+//         );
   
   pRibbon->vSput(FR_NAME,pCard_Stage->szStageNm());
   pRibbon->vSput(FR_TEXT,aYG_15s[pCard_Stage->eStageTopology()]);
@@ -1782,7 +2052,7 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  if (szEnum->bSame("eStageTopology"_Stz)) return aST[iEnum];
+  if (szEnum->bSame("eStageTopology"_Stz)) return aYG[iEnum];
   if (szEnum->bSame("eSendKind"_Stz))      return aXK[iEnum];
 
   return nullptr; //"**unknown**"_Stz;

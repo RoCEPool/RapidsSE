@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 boto3 = "*"
 psycopg = {extras = ["binary"], version = "*"}
+botocore = "*"
 
 [dev-packages]
 flake8 = "*"

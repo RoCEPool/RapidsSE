@@ -35,10 +35,13 @@ def main() -> int:
 
     # Extract the command line arguments
     arg_parser = argparse.ArgumentParser(C_PROG_RUN, description="Run the SE Performance Test")
-    arg_parser.add_argument("--job",   "-j",  type=non_empty_string, required=True)
-    arg_parser.add_argument("--build", "-b",  type=non_empty_string, required=True)
-    arg_parser.add_argument("--hash",         type=ascii, required=False, default='')
-    arg_parser.add_argument("--tags",  "-t",  nargs='*', action=KeyValue)
+    arg_parser.add_argument("--job",         type=non_empty_string, required=True)
+    arg_parser.add_argument("--planKey",     type=non_empty_string, required=True)
+    arg_parser.add_argument("--buildNum",    type=int, required=True)
+    arg_parser.add_argument("--hash",        type=str, required=False, default="")
+    arg_parser.add_argument("--branch",      type=str, required=False, default="")
+    arg_parser.add_argument("--user",        type=str, required=False, default="SYSTEM")
+    arg_parser.add_argument("--tags",  "-t", nargs='*', action=KeyValue)
 
     args = arg_parser.parse_args()
     LOG.debug("Got the following arguments:  %s", args)
@@ -48,14 +51,26 @@ def main() -> int:
         return 1
 
     job_path = args.job
-    bamboo_build_str = args.build
+    bamboo_plan_key = args.planKey
+    bamboo_build_num = args.buildNum
     tags = args.tags
-    git_hash = ""
+    git_hash = args.hash
+    git_branch = args.branch
+    invoking_user = args.user
 
     if len(git_hash) == 0:
         git_hash = get_git_hash_from_system()
 
-    jobrunner = JobRunner(job_path, bamboo_build_str, git_hash, tags)
+    if len(git_branch) == 0:
+        git_branch = get_git_branch_from_system()
+
+    jobrunner = JobRunner(job_path,
+                          bamboo_plan_key,
+                          bamboo_build_num,
+                          git_hash,
+                          git_branch,
+                          invoking_user,
+                          tags)
     jobrunner.run_job()
     return 0
 
@@ -109,7 +124,29 @@ def get_git_hash_from_system() -> string:
         raise
 
     completion_status.check_returncode()
-    return completion_status.stdout.strip()
+    git_hash = completion_status.stdout.strip()
+    LOG.debug(f"Got git hash from system: {git_hash}")
+    return git_hash
+
+
+def get_git_branch_from_system() -> string:
+    command = 'git branch --show-current'.split(' ')
+
+    try:
+        completion_status: subprocess.CompletedProcess = \
+            subprocess.run(command,
+                           capture_output=True,
+                           check=True,
+                           text=True)
+
+    except subprocess.CalledProcessError:
+        LOG.error("Could not get the git branch")
+        raise
+
+    completion_status.check_returncode()
+    git_branch = completion_status.stdout.strip()
+    LOG.debug(f"Got git branch from system: {git_branch}")
+    return git_branch
 
 
 if __name__ == '__main__':
@@ -123,4 +160,3 @@ if __name__ == '__main__':
     except errors.SeptestError as e:
         LOG.error(e, exc_info=e.should_print_trace)
         sys.exit(1)
-

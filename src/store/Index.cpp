@@ -135,25 +135,31 @@ void Index::vPostRecv(void* aIndex)
 /*----------------------------------------------------------------------------*/
 /* analyze the index                                                          */
 /*----------------------------------------------------------------------------*/
-void Index::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nEntries)
+void Index::vAnalyze(i8& nBuffers, i8& nEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  i8 nEntriesTotal = 0;
-  i8 nBuffersTotal = 0;
-  
-  IndexTree* pIndexTree = m_pTable->pTablePtn(i_TablePtn)->pIndexTree(m_iIndexNo);
-  EntBuffer *pIndexBuffer = pIndexTree->pRootBuffer();
+  i8 nPtnsPerNode = AM::SYSARGS::nPtnsPerNode();
   
   nBuffers = 0;
   nEntries = 0;
-  
+
+  for (i8 i_TablePtn = 0; i_TablePtn < nPtnsPerNode; i_TablePtn++)
+    vAnalyze(i_TablePtn,nBuffers,nEntries);
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze the index                                                          */
+/*----------------------------------------------------------------------------*/
+void Index::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nEntries)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+    
+  IndexTree* pIndexTree = m_pTable->pTablePtn(i_TablePtn)->pIndexTree(m_iIndexNo);
+  EntBuffer *pIndexBuffer = pIndexTree->pRootBuffer();
+    
   if (pIndexBuffer)
     pIndexBuffer->vAnalyze(nBuffers, nEntries);
-  
-  nEntriesTotal += nEntries;
-  nBuffersTotal += nBuffers;
-  
 }
 
 /*----------------------------------------------------------------------------*/

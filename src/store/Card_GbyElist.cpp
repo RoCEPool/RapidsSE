@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_Projection.cpp -- Projection                                          */
+/* Card_GbyElist.cpp -- List of Group By Expressions                          */
 /*============================================================================*/
 
-#include "Card_Projection.hpp"
+#include "Card_GbyElist.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Projection,CK_PROJECTION)
-__aNewFunction(Card_Projection,CN_CARD)
-__vDeleteFunction(Card_Projection,CN_CARD)
+__pCastFunction_Card(STORE,Card_GbyElist,CK_GBYELIST)
+__aNewFunction(Card_GbyElist,CN_CARD)
+__vDeleteFunction(Card_GbyElist,CN_CARD)
 
-__bIsCard(STORE,Card_Projection,CK_PROJECTION)
+__bIsCard(STORE,Card_GbyElist,CK_GBYELIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Projection::Card_Projection(void)
-: Card(CK_PROJECTION)
+Card_GbyElist::Card_GbyElist(void)
+: Card(CK_GBYELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -30,7 +30,7 @@ Card_Projection::Card_Projection(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Projection::~Card_Projection(void) noexcept(false)
+Card_GbyElist::~Card_GbyElist(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

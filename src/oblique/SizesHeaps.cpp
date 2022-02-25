@@ -199,7 +199,6 @@
 #include "TccLock.hpp"
 #include "ToBktCrw.hpp"
 #include "ToBktRow.hpp"
-#include "Tools.hpp"
 #include "TraceLock.hpp"
 #include "TraceMultiLock.hpp"
 #include "Tub.hpp"
@@ -231,6 +230,7 @@
 #include "PagingMetrics.hpp"
 #include "Rule.hpp"
 #include "Rules.hpp"
+#include "Action.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -259,6 +259,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'A' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__A__
   { sizeof(AccessPath),         HT_T_MEDIUM  ,0 FILL }, // CN_ACCESSPATH
+  { sizeof(Action),             HT_T_TINY    ,0 FILL }, // CN_ACTION
   { sizeof(AggTimer),           HT_T_TINY    ,0 FILL }, // CN_AGGTIMER
   { 0,                          HT_INVALID   ,0 FILL }, // CN_AM
   { sizeof(Api),                HT_INVALID   ,0 FILL }, // CN_API
@@ -620,7 +621,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Token),              HT_T_TINY    ,0 FILL }, // CN_TOKEN
   { sizeof(TokenVec),           HT_T_LARGE   ,0 FILL }, // CN_TOKENVEC
   { sizeof(ToNstRow),           HT_T_MEDIUM  ,0 FILL }, // CN_TONSTROW
-  { sizeof(Tools),              HT_T_TINY    ,0 FILL }, // CN_TOOLS
   { sizeof(ToPtnCrw),           HT_T_LARGE   ,0 FILL }, // CN_TOPTNCRW
   { sizeof(ToPtnRow),           HT_T_LARGE   ,0 FILL }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 FILL }, // CN_TOROW

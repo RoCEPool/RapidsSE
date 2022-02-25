@@ -1,39 +1,44 @@
 /*============================================================================*/
-/* Card_ComparePred.cpp -- Compare Predicate                                  */
+/* Action.cpp -- Optimiser Actions                                            */
 /*============================================================================*/
 
-#include "Card_ComparePred.hpp"
+#include "Action.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_ComparePred,CK_COMPAREPRED)
-__aNewFunction(Card_ComparePred,CN_CARD)
-__vDeleteFunction(Card_ComparePred,CN_CARD)
+__pCastFunction(STORE,Action,CN_ACTION)
+__aNewFunction(Action,CN_ACTION)
+__vDeleteFunction(Action,CN_ACTION)
+__aFooterFunction(Action)
 
-__bIsCard(STORE,Card_ComparePred,CK_COMPAREPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ComparePred::Card_ComparePred(void)
-: Card_PRED(CK_COMPAREPRED)
+Action::Action(void)
+: Object(CN_ACTION)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACTION,_FOOTER_);
 
-  _checkInitialised_(CN_CARD);
+  _checkInitialised_(CN_ACTION);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ACTION,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ComparePred::~Card_ComparePred(void) noexcept(false)
+Action::~Action(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ACTION,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -7,7 +7,7 @@ import psycopg
 
 import septest.errors as errors
 import septest.db.dbhelper
-from septest.runners.results import TestResult
+from septest.results import TestResult
 
 # Create a main logger
 LOG = logging.getLogger(__name__)
@@ -59,12 +59,12 @@ def __update_job_result_row(cur: typing.Union[psycopg.Cursor[typing.Any], psycop
           "testsFailed = (%s), " \
           "testsSkipped = (%s) " \
           "WHERE jobResultId = (%s)"
-    data = (job_timed_out,  # timedOut
-            tests_executed, # testsExecuted
-            tests_passed,   # testsPassed
-            tests_failed,   # testsFailed
-            tests_skipped,  # testsSkipped
-            job_result_id)  # jobResultId
+    data = (job_timed_out,   # timedOut
+            tests_executed,  # testsExecuted
+            tests_passed,    # testsPassed
+            tests_failed,    # testsFailed
+            tests_skipped,   # testsSkipped
+            job_result_id)   # jobResultId
 
     LOG.debug(f"About to record the job results in the jobResults table for jobResultsId {job_result_id}")
     cur.execute(sql, data)
@@ -119,7 +119,7 @@ def __create_test_result_row(cur: typing.Union[psycopg.Cursor[typing.Any], psyco
 
     if row is None:
         #  Should never happen
-        msg = f"Could not retrieve the testResultId when inserting a new row into the testResults table"
+        msg = "Could not retrieve the testResultId when inserting a new row into the testResults table"
         raise errors.DatabaseError(msg)
 
     test_result_id = row[0]

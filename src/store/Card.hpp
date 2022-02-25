@@ -8,6 +8,7 @@
 #include "eAL.h"
 #include "eBK.h"
 #include "eCK.h"
+#include "eRO.h"
 #include "eTE.h"
 #include "eYG.h"
 #include "eXK.h"
@@ -19,12 +20,24 @@
 
 
 namespace STORE { class Board;
-                  class Card_Properties; class Card_Term; }
+                  class Card; class Card_Properties; class Card_Term; }
 
 namespace STORE
 {
+  class CardSet : public ListExo2_t<Card>
+  {
+  public:
+    CardSet(void);
+   ~CardSet(void) noexcept(false);
+
+    void vRemoveCards(eCK eCard);
+
+  };
+
+
+
   class Card : public Object
-             , public ListExo2_t<Card>
+             , public CardSet // ListExo2_t<Card>
   {
   protected:
     eCK  m_eCard;
@@ -57,7 +70,6 @@ namespace STORE
     void vAddProperty(Stz* szName, Stz* szValue);
 
     eCK  eCard(void);
-    void vCardHeader(Ribbon* pRibbon);
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
@@ -78,8 +90,14 @@ namespace STORE
     Stz*    szGetProperty(Stz* szName);
     Stz*    szGetPropertyNm(i8 i_Property);
 
+    bool bHasEBound(void);
+    void vHasEBound(bool bHasEBound);
+    bool bHasLBound(void);
+    void vHasLBound(bool bHasLBound);
     bool bHasProperty(Stz* szName);
-  
+    bool bHasUBound(void);
+    void vHasUBound(bool bHasUBound);
+
     char cMark1(void);
     void vMark1(char cMark1);
     char cMark2(void);
@@ -89,6 +107,7 @@ namespace STORE
     eTN  eProperty(i8 i_Property);
     Stz* szPropertyNm(i8 i_Property);
 
+    void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(void);
 
     void vTransferAll(Card* pCards);
@@ -105,10 +124,8 @@ namespace STORE
   
     eAL  eAggLvl(void);
     void vAggLvl(eAL eAggLvl);
-    Stz* szAsNm(void);
-    void vAsNm(Stz* szAsNm);
-    Stz* szAtom(void);
-    void vAtom(Stz* szAtom);
+    Stz* szAs(void);
+    void vAs(Stz* szAsNm);
   
     eBK  eBound(void);
   
@@ -124,10 +141,12 @@ namespace STORE
     Index* pIndex(void);
     void vIndex(Index* pIndex);
     bool bIsAggOp(void);
+    bool bIsCard(eCK eCard);
     bool bIsOrdinalColumnAtom(void);
     bool bIsOrdinalIndexAtom(void);
     bool bIsOrdinalColumnTerm(void);
     bool bIsOrdinalIndexTerm(void);
+    bool bIsPred(void);
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
 
@@ -146,8 +165,9 @@ namespace STORE
 
     i8   iRank(void);
     void vRank(i8 iRank);
-    Stz* szRows(void);
-    void vRows(Stz* szRows);
+    eRO  eRelOp(void);
+    i8   nRows(void);
+    void vRows(i8 nRows);
   
     eXK  eSendKind(void);
     void vSendKind(eXK eSendKind);
@@ -174,13 +194,14 @@ namespace STORE
   
     void vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard);
     void vPrintDetails(Ribbon* pRibbon, i8 iDepth);
+    void vPrintHeader(Ribbon* pRibbon);
+    void vPrintName(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName=true);
 
-    void vCandidateIndexPrint(Ribbon* pRibbon, i8 iDepth);
+    void vCandIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vIndexScanPrint(Ribbon* pRibbon, i8 iDepth);
     void vOnPrint(Ribbon* pRibbon, i8 iDepth);
-    void vPredicatePrint(Ribbon* pRibbon, i8 iDepth);
     void vProjectionPrint(Ribbon* pRibbon, i8 iDepth);
     void vScanPrint(Ribbon* pRibbon, i8 iDepth);
     void vSortPrint(Ribbon* pRibbon, i8 iDepth);
@@ -195,76 +216,6 @@ namespace STORE
   
   protected:
     Footer* aFooter(void);
-  
-  
-  
-  /*
-  
-    Card_Aggreg
-    Card_AggregPred
-    Card_AndPred
-    Card_As
-
-    Card_By
-    Card_ByList
-    Card_ByPred
-
-    Card_Combine
-    Card_ComparePred
-    Card_CorrSubquery
-    Card_CreateTable
-
-    Card_Debug
-    Card_DropTable
-
-    Card_Exists
-    Card_Expr
-
-    Card_Filter
-
-    Card_Hash
-    Card_HashCast
-    Card_Having
-
-    Card_Index
-    Card_IndexJoin
-    Card_IndexPred
-    Card_IndexScan
-
-    Card_Limit
-
-    Card_MainSubquery
-
-    Card_NodeCast
-    Card_NoncSubquery
-
-    Card_On
-    Card_OrdAgg
-    Card_OriginCast
-    Card_OrPred
-
-    Card_PART
-    Card_PRED
-    Card_Predicate
-    Card_Project
-    Card_Projection
-    Card_ProjectPred
-
-    Card_Scan
-    Card_Send
-    Card_Sort
-    Card_Stage
-    Card_StreamDef
-
-    Card_Table
-    Card_Term
-    Card_TermList
-    Card_Type
-
-    Card_UNIT
-
-  */
-  
   };
 
   Card* _pCard(void* aAddr);
