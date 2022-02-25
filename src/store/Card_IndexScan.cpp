@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_IndexScan,CK_INDEXSCAN)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexScan::Card_IndexScan(void)
-: Card_UNIT(CK_INDEXSCAN)
+: Card_MAIN(CK_INDEXSCAN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

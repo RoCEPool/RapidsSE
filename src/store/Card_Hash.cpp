@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Hash,CK_HASH)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Hash::Card_Hash(void)
-: Card_UNIT(CK_HASH)
+: Card_MAIN(CK_HASH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

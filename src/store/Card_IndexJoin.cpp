@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_IndexJoin,CK_INDEXJOIN)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexJoin::Card_IndexJoin(Index* pIndex)
-: Card_UNIT(CK_INDEXJOIN)
+: Card_MAIN(CK_INDEXJOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
