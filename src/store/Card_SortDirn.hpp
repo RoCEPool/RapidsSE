@@ -15,7 +15,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_SortDirn(void);
+    Card_SortDirn(Stz* szDirn);
    ~Card_SortDirn(void) noexcept(false);
   };
 

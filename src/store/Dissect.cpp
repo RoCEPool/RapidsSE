@@ -885,6 +885,23 @@ Card_ProjElist* Dissect::pCollectProjElist(Card_TermSeq* pCard_TermSeq)
 }
 
 /*----------------------------------------------------------------------------*/
+/* collect <sortDirn> terms :                                                 */
+/*----------------------------------------------------------------------------*/
+Card_SortDirn* Dissect::pCollectSortDirn(Card_TermSeq* pCard_TermSeq)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  // AS
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
+  Stz* szDirn = pCard_Term->szTerm();
+  RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
+
+  Card_SortDirn* pCard_SortDirn = new Card_SortDirn(szDirn);
+
+  return pCard_SortDirn;
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect <type> terms : TYPE <columnType>                                   */
 /*----------------------------------------------------------------------------*/
 Card_Type* Dissect::pCollectType(Card_TermSeq* pCard_TermSeq)
@@ -967,9 +984,10 @@ Card_TypedExpr* Dissect::pCollectTypedCalc(Card_TermSeq* pCard_TermSeq)
   if (pCard_head
       && (pCard_head->bIsSame("ASC"_Stz) ||
           pCard_head->bIsSame("DESC"_Stz))) {
-    
-    pCard_head = pCard_TermSeq->pPop();
-    pCard_TypedExpr->vAppend(pCard_head);
+
+    //pCard_head = pCard_TermSeq->pPop();
+    Card_SortDirn* pCard_SortDirn = pCollectSortDirn(pCard_TermSeq);
+    pCard_TypedExpr->vAppend(pCard_SortDirn);
   }
   
   return pCard_TypedExpr;

@@ -864,6 +864,28 @@ void Card::vColumn2(Column* pColumn2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get sort direction                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szDirn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Stz* szDirn = szGetProperty("szDirn"_Stz);
+
+  return szDirn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set sort dirn                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vDirn(Stz* szDirn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  vAddProperty("szDirn"_Stz,szDirn);
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if the expr has an aggregate op                                       */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasAggOp(void)

@@ -142,6 +142,7 @@ namespace STORE
     Card_GbyElist*  pCollectGbyElist   (Card_TermSeq* pCard_TermSeq);
     Card_ObyElist*  pCollectObyElist   (Card_TermSeq* pCard_TermSeq);
     Card_ProjElist* pCollectProjElist  (Card_TermSeq* pCard_TermSeq);
+    Card_SortDirn*  pCollectSortDirn   (Card_TermSeq* pCard_TermSeq);
     Card_Type*      pCollectType       (Card_TermSeq* pCard_TermSeq);
     Card_TypedExpr* pCollectTypedBool  (Card_TermSeq* pCard_TermSeq);
     Card_TypedExpr* pCollectTypedCalc  (Card_TermSeq* pCard_TermSeq);

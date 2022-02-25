@@ -136,6 +136,9 @@ namespace STORE
     Column* pColumn2(void);
     void vColumn2(Column* pColumn2);
 
+    Stz* szDirn(void);
+    void vDirn(Stz* szAsNm);
+  
     bool bHasAggOp(void);
     Card_Term* pHeadTerm(void);
 
