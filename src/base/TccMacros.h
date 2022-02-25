@@ -76,7 +76,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BETWEEN
 
-#define _BET_INTINT(eErrorCode)                                                \
+#define _BET_INTINT(eErrorCode)                                             \
   {                                                                         \
     iArg1 = *(--paW);                                                       \
     iArg2 = *(--paW);                                                       \
@@ -104,22 +104,28 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INEXPR
 
-#define _INX_INTINT(eErrorCode)                                            \
+#define _INX_INTINT(eErrorCode)                                             \
   {                                                                         \
     bFilterResult = 0;                                                      \
     iArg1 = *(--paW);                                                       \
-    iInCount = *(--paW);                                                    \
-    while(iInCount--) {                                                     \
-      iArg2 = *(--paW);                                                     \
-      if (iArg1 == iArg2) {                                                 \
-         bFilterResult = 1;                                                 \
-         break;                                                             \
+    if (eErrorCode != EC_NONE ||                                            \
+        iArg1 == C_DATUM_NULL) {                                            \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      iInCount = *(--paW);                                                  \
+      while(iInCount--) {                                                   \
+        iArg2 = *(--paW);                                                   \
+        if (iArg1 == iArg2) {                                               \
+           bFilterResult = 1;                                               \
+           break;                                                           \
+        }                                                                   \
       }                                                                     \
+      while(iInCount-- > 0) {                                               \
+        iArg2 = *(--paW);                                                   \
+      }                                                                     \
+      *(paW++) = bFilterResult;                                             \
     }                                                                       \
-    while(iInCount-- > 0) {                                                 \
-      iArg2 = *(--paW);                                                     \
-    }                                                                       \
-    *(paW++) = bFilterResult;                                               \
   }
 
 #define _ASSIGN_IFTRUE(iArgTo)                                              \
