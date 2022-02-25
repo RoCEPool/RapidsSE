@@ -159,6 +159,7 @@ void Dissect::vDissectOp(i8 i_OpSpec)
   else if (szOpNm->bSame("indexScan"_Stz))  vDissectIndexScan(m_pOpSpec);
   else if (szOpNm->bSame("limit"_Stz))      vDissectLimit    (m_pOpSpec);
   else if (szOpNm->bSame("ordagg"_Stz))     vDissectOrdAgg   (m_pOpSpec);
+  else if (szOpNm->bSame("orderBy"_Stz))    vDissectSort     (m_pOpSpec);
   else if (szOpNm->bSame("output"_Stz))     vDissectOutput   (m_pOpSpec);
   else if (szOpNm->bSame("pulse"_Stz))      vDissectPulse    (m_pOpSpec);
   else if (szOpNm->bSame("project"_Stz))    vDissectProject  (m_pOpSpec);
@@ -471,7 +472,7 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : ordAgg <compiled>                                         */
+/* dissect opspec : ordAgg <compiled> <expr>                                  */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
 {
@@ -630,13 +631,36 @@ void Dissect::vDissectSink(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : NOT YET IMPLEMENTED                                       */
+/* dissect opspec : orderBy <compiled> <expr>                                 */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectSort(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  // to be completed ...
+  TagSet* pArgTags = pOpSpec->pArgTags();
+  //pArgTags->vDumpSet(true);
+  i8 nTags = pArgTags->nItems();
+  
+  Stz* szExpr = nullptr;
+  if (2 == nTags) {
+    szExpr = pArgTags->szValue(1);
+  }
+  else {
+    vTrace("Error: only %lld tags in ordagg argTags\n"_Stz,nTags);
+    NEVER_REACH;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Card_Sort* pCard_Sort = new Card_Sort;
+  
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
+  Card_ObyElist* pCard_ObyElist = pCollectObyElist(pCard_TermSeq);
+
+  pCard_Sort->vAppend(pCard_ObyElist);
+
+  delete pCard_TermSeq;
+  m_pBoard->vAppend(pCard_Sort);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -759,8 +783,11 @@ Card_CalcExpr* Dissect::pCollectCalcExpr(Card_TermSeq* pCard_TermSeq)
     if (pCard_Term_popped->bIsSame(")"_Stz))
       continue;
     
-    if (pCard_Term_popped->bIsSame("GROUPBY"_Stz) ||
-        pCard_Term_popped->bIsSeparator()) {
+    if (   pCard_Term_popped->bIsSame("ASC"_Stz)
+        || pCard_Term_popped->bIsSame("DESC"_Stz)
+        || pCard_Term_popped->bIsSame("GROUPBY"_Stz)
+        || pCard_Term_popped->bIsSeparator()
+        ) {
       pCard_TermSeq->vPush(pCard_Term_popped);
       break;
     }
@@ -803,57 +830,6 @@ Card_GbyElist* Dissect::pCollectGbyElist(Card_TermSeq* pCard_TermSeq)
 
   return pCard_GbyElist;
 }
-/*----------------------------------------------------------------------------*/
-//Card_GbyElist* Dissect::pCollectGbyElist(Card_TermSeq* pCard_TermSeq)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-//
-//  Card_Term* pCard_Term_groupBy = pCard_TermSeq->pPopTerm();
-//  RASSERT(pCard_Term_groupBy->bIsSame("GROUPBY"_Stz));
-//
-//  Card_GbyElist* pCard_ByList = new Card_GbyElist;
-//
-//  while (Card_Term* pCard_Term_typeLit = pCard_TermSeq->pPopTerm()) {
-//
-//    Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;
-//
-//    // type boolean
-//    Card_Term* pCard_Term_type = pCard_TermSeq->pPopTerm();
-//    //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
-//    Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
-//    pCard_TypedExpr->vAppend(pCard_Type);
-//
-//    Card_Term* pCard_Term_test = pCard_TermSeq->pPopTerm();
-//
-//    if (pCard_Term_test->bIsSame("as"_Stz)) {
-//      // as name
-//      Card_Term* pCard_Term_as = pCard_Term_test;
-//      RASSERT(pCard_Term_as->bIsSame("as"_Stz));
-//      Card_Term* pCard_Term_asNm = pCard_TermSeq->pPopTerm();
-//      Stz* szAsNm = pCard_Term_asNm->szTerm();
-//      Card_As* pCard_As = new Card_As(szAsNm);
-//      pCard_TypedExpr->vAppend(pCard_As);
-//    }
-//    else {
-//      pCard_TermSeq->vPush(pCard_Term_test);
-//    }
-//
-//    // by predicate
-//
-//    Card_CalcExpr* pCard_CalcExpr = pCollectCalcExpr(pCard_TermSeq);
-//    pCard_TypedExpr->vAppend(pCard_CalcExpr);
-//
-//    pCard_ByList->vAppend(pCard_TypedExpr);
-//
-//    Card_Term* pCard_Term = pCard_TermSeq->pPopTerm();
-//    if (! pCard_Term)
-//      break;
-//    if (pCard_Term->bIsSeparator())
-//      break;
-//  }
-//
-//  return pCard_ByList;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* collect <orderBy> terms :                                                  */
@@ -863,6 +839,21 @@ Card_ObyElist* Dissect::pCollectObyElist(Card_TermSeq* pCard_TermSeq)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
   Card_ObyElist* pCard_ObyElist = new Card_ObyElist;
+
+  Card_Term* pCard_Term_head = nullptr;
+  while ( (pCard_Term_head = pCard_TermSeq->pHeadTerm()) ) {
+        
+    // SEPARATOR
+    if (pCard_Term_head->bIsSeparator()) {
+      pCard_TermSeq->pPop();
+      continue;
+    }
+        
+    // TYPE <type> [ AS <as> ] <calcExpr>
+    Card_TypedExpr* pCard_TypedExpr = pCollectTypedCalc(pCard_TermSeq);
+    
+    pCard_ObyElist->vAppend(pCard_TypedExpr);
+  }
 
   return pCard_ObyElist;
 }
@@ -971,6 +962,15 @@ Card_TypedExpr* Dissect::pCollectTypedCalc(Card_TermSeq* pCard_TermSeq)
   // <boolPred>
   Card_CalcExpr* pCard_CalcExpr = pCollectCalcExpr(pCard_TermSeq);
   pCard_TypedExpr->vAppend(pCard_CalcExpr);
+  
+  pCard_head = pCard_TermSeq->pHead();
+  if (pCard_head
+      && (pCard_head->bIsSame("ASC"_Stz) ||
+          pCard_head->bIsSame("DESC"_Stz))) {
+    
+    pCard_head = pCard_TermSeq->pPop();
+    pCard_TypedExpr->vAppend(pCard_head);
+  }
   
   return pCard_TypedExpr;
 }

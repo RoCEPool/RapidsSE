@@ -8,17 +8,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_ObyElist,CK_PROJELIST)
+__pCastFunction_Card(STORE,Card_ObyElist,CK_OBYELIST)
 __aNewFunction(Card_ObyElist,CN_CARD)
 __vDeleteFunction(Card_ObyElist,CN_CARD)
 
-__bIsCard(STORE,Card_ObyElist,CK_PROJELIST)
+__bIsCard(STORE,Card_ObyElist,CK_OBYELIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_ObyElist::Card_ObyElist(void)
-: Card(CK_PROJELIST)
+: Card(CK_OBYELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

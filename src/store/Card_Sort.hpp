@@ -15,7 +15,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Sort(Column* pColumn, Table* pTable);
+    Card_Sort(void);
    ~Card_Sort(void) noexcept(false);
   };
 
