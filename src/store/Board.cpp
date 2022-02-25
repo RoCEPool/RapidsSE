@@ -406,17 +406,17 @@ void Board::vRankCandidateIndex(Card_CandIndex* pCard_CandIndex)
   
     if (m_pFilter->pFindBound(pIndex,BK_EBOUND)) {
       bEBound = true;
-      pCard_CandIndex->vAddProperty("EBOUND"_Stz);
+      pCard_CandIndex->vHasEBound(true);//vAddProperty("EBOUND"_Stz);
     }
     
     if (m_pFilter->pFindBound(pIndex,BK_LBOUND)) {
       bLBound = true;
-      pCard_CandIndex->vAddProperty("LBOUND"_Stz);
+      pCard_CandIndex->vHasLBound(true);//vAddProperty("LBOUND"_Stz);
     }
     
     if (m_pFilter->pFindBound(pIndex,BK_UBOUND)) {
       bUBound = true;
-      pCard_CandIndex->vAddProperty("UBOUND"_Stz);
+      pCard_CandIndex->vHasUBound(true);//vAddProperty("UBOUND"_Stz);
     }
   }
 

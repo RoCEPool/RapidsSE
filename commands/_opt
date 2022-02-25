@@ -31,12 +31,12 @@ select P_PARTKEY , P_NAME , P_BRAND
 select P_PARTKEY , P_NAME , P_BRAND
   from part
   where
-        p_partkey > 19980
+    //    p_partkey > 19980
     //    p_partkey < 10
     //    p_partkey = 19980
 
-    //    p_partkey > 19900 and p_partkey < 19920
-    and p_brand = 'Brand#15'
+        p_partkey > 19900 and p_partkey < 19920
+    //and p_brand = 'Brand#15'
     
   //order by p_partkey
   
