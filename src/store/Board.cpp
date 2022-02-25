@@ -694,7 +694,8 @@ bool Board::bFind_Scan_Filter(void)
     
     vScan(_pCard_Scan(pTestScan));
 
-    vTable(m_pScan->pTable());
+    Card_Table* pCard_Table = _pCard_Table(pTestScan->pFindSubCard(CK_TABLE));
+    vTable(pCard_Table->pTable());
     
     vFilter(_pCard_Filter(pTestFilter));
 
@@ -1017,11 +1018,10 @@ void Board::vResolve_GenerativeStreamDefs(void)
     if (_bIsCard_Scan(pGenerativeUnit)) {
       Card_Scan* pCard_Scan = _pCard_Scan(pGenerativeUnit);
 
-//      Card_Table* pCard_Table
-//        = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
-//      Table* pTable = _pTable(pCard_Table->pTable());
+      Card_Table* pCard_Table = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
+      Table* pTable = pCard_Table->pTable();
       
-      Table* pTable = pCard_Scan->pTable();
+//      Table* pTable = pCard_Scan->pTable();
 
       
       StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());

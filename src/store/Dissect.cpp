@@ -586,8 +586,12 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
 
   Table* pTable = AM::pTableFind(szTableNm);
 
+  Card_Table* pCard_Table = new Card_Table(pTable);
+  
   Card_Scan* pCard_Scan = new Card_Scan;
-  pCard_Scan->vTable(pTable);
+  //pCard_Scan->vTable(pTable);
+  pCard_Scan->vAppend(pCard_Table);
+
 
   m_pBoard->vAppend(pCard_Scan);
 }

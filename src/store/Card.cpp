@@ -1931,8 +1931,11 @@ void Card::vScanPrint(Ribbon* pRibbon, i8 iDepth)
   
   //vTrace("vScanPrint\n"_Stz);
   
-  Card_Scan* pCardScan = _pCard_Scan(this);
-  Table* pTable = pCardScan->pTable();
+  Card_Scan* pCard_Scan = _pCard_Scan(this);
+  
+  Card_Table* pCard_Table = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
+  
+  Table* pTable = pCard_Table->pTable();
 
   pRibbon->vSput(FR_NAME,pTable->szTableNm());
 
@@ -2090,7 +2093,6 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 
   return nullptr; //"**unknown**"_Stz;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
