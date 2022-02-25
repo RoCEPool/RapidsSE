@@ -4,6 +4,7 @@
 
 #include "Card_Project.hpp"
 
+#include "Card_AggElist.hpp"
 #include "Card_As.hpp"
 #include "Card_CalcExpr.hpp"
 #include "Card_ProjElist.hpp"
@@ -86,7 +87,7 @@ StreamDef* Card_Project::pProduceStreamDef(void)
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
   /* examine given projective part and add its projected column to streamDef*/
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  auto vAddColumn = [&pStreamDef_projected](Card* pProjectivePart) mutable
+  auto vAddColumn = [&pStreamDef_projected](Card* pProjective) mutable
   {
     // a projection card will either be an aggreg or a project
 //    ASSERT(_bIsCard_Aggreg(pItem_Projection) ||
@@ -104,7 +105,7 @@ StreamDef* Card_Project::pProduceStreamDef(void)
   
     // TYPE (mandatory)
     Card_Type* pElement_Type
-      = _pCard_Type(pProjectivePart->pFindSubCard(CK_TYPE));
+      = _pCard_Type(pProjective->pFindSubCard(CK_TYPE));
     if (pElement_Type) {
       eColumn = Column::eColumn(pElement_Type->szType());
       //vTrace("vAddColumn: Type %s\n"_Stz,pElement_Type->szType());
@@ -112,7 +113,7 @@ StreamDef* Card_Project::pProduceStreamDef(void)
   
     // AS (optional)
     Card_As* pElement_As
-      = _pCard_As(pProjectivePart->pFindSubCard(CK_AS));
+      = _pCard_As(pProjective->pFindSubCard(CK_AS));
     if (pElement_As) {
       sColNm = pElement_As->szAs();
       //vTrace("vAddColumn: As %s\n"_Stz,sColNm.azChar());
@@ -138,7 +139,7 @@ StreamDef* Card_Project::pProduceStreamDef(void)
     // ...or a PROJECTPRED element
   
     Card_CalcExpr* pElement_ProjectPred
-      = _pCard_CalcExpr(pProjectivePart->pFindSubCard(CK_CALCEXPR));
+      = _pCard_CalcExpr(pProjective->pFindSubCard(CK_CALCEXPR));
 
     if (pElement_ProjectPred) {
       Card_Term* pCard_Term = _pCard_Term(pElement_ProjectPred->pGet(0));
@@ -163,20 +164,23 @@ StreamDef* Card_Project::pProduceStreamDef(void)
   //
   
   
-  Card_ProjElist* pCard_ProjElist =
-    _pCard_ProjElist(pFindSubCard(CK_PROJELIST));
+  Card_ELIST* pCard_ELIST;
   
-  ListExoIter2_t<Card>* pUnit_I = pCard_ProjElist->pNewIter();
+  pCard_ELIST = _pCard_AggElist(pFindSubCard(CK_AGGELIST));
+  if (! pCard_ELIST)
+    pCard_ELIST = _pCard_ProjElist(pFindSubCard(CK_PROJELIST));
 
-  while (pUnit_I->bHasNext()) {
-    Card* pUnit = pUnit_I->pNext();
+  ListExoIter2_t<Card>* pSubCard_I = pCard_ELIST->pNewIter();
+
+  while (pSubCard_I->bHasNext()) {
+    Card* pUnit = pSubCard_I->pNext();
     
     eCK eCard = pUnit->eCard();
     if (CK_TYPEDEXPR == eCard)
       vAddColumn(pUnit);
   }
   
-  delete pUnit_I;
+  delete pSubCard_I;
 
   return pStreamDef_projected;
 }

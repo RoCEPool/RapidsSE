@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_GbyElist,CK_GBYELIST)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_GbyElist::Card_GbyElist(void)
-: Card(CK_GBYELIST)
+: Card_ELIST(CK_GBYELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

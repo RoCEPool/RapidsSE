@@ -384,7 +384,7 @@ void Weave::vOpScan(Card_Scan* pCard_Scan)
   
   vScan(sExpr,pCard_Scan);
 
-  Table* pTable = pCard_Scan->pTable();
+  Table* pTable = pCard_Scan->pFindSubCard(CK_TABLE)->pTable();
   
   Stz* szTableNm = pTable->szTableNm();
 
