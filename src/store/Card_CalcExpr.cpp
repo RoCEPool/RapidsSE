@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_CalcExpr,CK_CALCEXPR)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CalcExpr::Card_CalcExpr(void)
-: Card_PRED(CK_CALCEXPR)
+: Card_EXPR(CK_CALCEXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
