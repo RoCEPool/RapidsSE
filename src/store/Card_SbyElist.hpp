@@ -9,18 +9,18 @@
 
 namespace STORE
 {
-  class Card_ObyElist : public Card
+  class Card_SbyElist : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_ObyElist(void);
-   ~Card_ObyElist(void) noexcept(false);
+    Card_SbyElist(void);
+   ~Card_SbyElist(void) noexcept(false);
   };
 
-  Card_ObyElist* _pCard_ObyElist(void* aAddr);
-  bool _bIsCard_ObyElist(void* aAddr);
+  Card_SbyElist* _pCard_SbyElist(void* aAddr);
+  bool _bIsCard_SbyElist(void* aAddr);
 }
 
 /*============================================================================*/

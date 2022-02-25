@@ -48,7 +48,6 @@ enum eCK // card kind
   /* */ CK_NODECAST,
   /* */ CK_NONCSUBQUERY,
   
-  /* */ CK_OBYELIST,
   /* */ CK_ON,
   /* */ CK_ORDAGG,
   /* */ CK_ORIGINCAST,
@@ -59,6 +58,7 @@ enum eCK // card kind
 
   /* */ CK_RBOUND,
   
+  /* */ CK_SBYELIST,
   /* */ CK_SCAN,
   /* */ CK_SEND,
   /* */ CK_SORT,
@@ -122,7 +122,6 @@ static Stz* aCK[]
   /* */ "CK_NODECAST"_Stz,        // CK_NODECAST
   /* */ "CK_NONCSUBQUERY"_Stz,    // CK_NONCSUBQUERY
   
-  /* */ "CK_OBYELIST"_Stz,        // CK_OBYELIST
   /* */ "CK_ON"_Stz,              // CK_ON
   /* */ "CK_ORDAGG"_Stz,          // CK_ORDAGG
   /* */ "CK_ORIGINCAST"_Stz,      // CK_ORIGINCAST
@@ -133,6 +132,7 @@ static Stz* aCK[]
 
   /* */ "CK_RBOUND"_Stz,          // CK_RBOUND
 
+  /* */ "CK_SBYELIST"_Stz,        // CK_SBYELIST
   /* */ "CK_SCAN"_Stz,            // CK_SEND
   /* */ "CK_SEND"_Stz,            // CK_SCAN
   /* */ "CK_SORT"_Stz,            // CK_SORT
@@ -196,7 +196,6 @@ static Stz* aCK_short[]
   /* */ "nodeCast"_Stz,        // CK_NODECAST
   /* */ "noncSubquery"_Stz,    // CK_NONCSUBQUERY
   
-  /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "on"_Stz,              // CK_ON
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
   /* */ "originCast"_Stz,      // CK_ORIGINCAST
@@ -207,6 +206,7 @@ static Stz* aCK_short[]
 
   /* */ "rbound"_Stz,          // CK_RBOUND
   
+  /* */ "sbyElist"_Stz,        // CK_SBYELIST
   /* */ "scan"_Stz,            // CK_SEND
   /* */ "send"_Stz,            // CK_SCAN
   /* */ "sort"_Stz,            // CK_SORT

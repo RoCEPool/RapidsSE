@@ -50,7 +50,6 @@
 #include "Card_NodeCast.hpp"
 #include "Card_NoncSubquery.hpp"
 
-#include "Card_ObyElist.hpp"
 #include "Card_On.hpp"
 #include "Card_OrdAgg.hpp"
 #include "Card_OriginCast.hpp"
@@ -61,6 +60,7 @@
 
 #include "Card_RBound.hpp"
 
+#include "Card_SbyElist.hpp"
 #include "Card_Scan.hpp"
 #include "Card_Send.hpp"
 #include "Card_Sort.hpp"
@@ -140,8 +140,8 @@ namespace STORE
     Card_BoolExpr*  pCollectBoolExpr   (Card_TermSeq* pCard_TermSeq);
     Card_CalcExpr*  pCollectCalcExpr   (Card_TermSeq* pCard_TermSeq);
     Card_GbyElist*  pCollectGbyElist   (Card_TermSeq* pCard_TermSeq);
-    Card_ObyElist*  pCollectObyElist   (Card_TermSeq* pCard_TermSeq);
     Card_ProjElist* pCollectProjElist  (Card_TermSeq* pCard_TermSeq);
+    Card_SbyElist*  pCollectSbyElist   (Card_TermSeq* pCard_TermSeq);
     Card_SortDirn*  pCollectSortDirn   (Card_TermSeq* pCard_TermSeq);
     Card_Type*      pCollectType       (Card_TermSeq* pCard_TermSeq);
     Card_TypedExpr* pCollectTypedBool  (Card_TermSeq* pCard_TermSeq);
