@@ -739,7 +739,7 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
       else
         bFirstExpr = true;
 
-      // get the next projectedColumn from the iterator
+      // get the next orderItem from the iterator
       QueryNode *pOrderItem = static_cast<QueryNode *>(pIter->pNext());
       ASSERT(pOrderItem);
       ASSERT(OrderItem::bIsOfType(pOrderItem));
@@ -747,17 +747,18 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
       RASSERT(pBackend->m_pColExprList);
       RASSERT(pCorrelatedExprs);
 
-      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pOrderItem, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+      QueryNode* pExprNode = OrderItem::pExprNode(pOrderItem);
+
+      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
       RASSERT(pOrdinalExpr);
 
       //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pOrderItem, ""_Stz);
-      vAppendExpr(pBackend, pOrderItem, pOrdinalExpr, ""_Stz"");
+      vAppendExpr(pBackend, pExprNode, pOrdinalExpr, nullptr);
       delete pOrdinalExpr;
 
       sPipeline->vCatSprint(" %s "_Stz, OrderItem::bIsAscending(pOrderItem) ? "ASC" : "DESC");
     }
     delete pIter;
-
   }
 
   sPipeline->vCatSprint(" \""_Stz);
