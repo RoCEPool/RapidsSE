@@ -5,11 +5,11 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_OBJECT.hpp"
 
 namespace STORE
 {
-  class Card_StreamDef : public Card
+  class Card_StreamDef : public Card_OBJECT
   {  
   public:
     void* operator new(size_t);

@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Index,CK_INDEX)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Index::Card_Index(Index* pIndex)
-: Card_SUB(CK_INDEX)
+: Card_OBJECT(CK_INDEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
