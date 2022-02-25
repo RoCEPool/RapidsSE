@@ -137,6 +137,7 @@ namespace STORE
     void vColumn2(Column* pColumn2);
 
     bool bHasAggOp(void);
+    Card_Term* pHeadTerm(void);
 
     Index* pIndex(void);
     void vIndex(Index* pIndex);

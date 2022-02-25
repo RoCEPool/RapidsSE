@@ -669,28 +669,28 @@ Card_AggElist* Dissect::pCollectAggElist(Card_TermSeq* pCard_TermSeq)
   // aggregate sequences
   
   Card_TypedExpr* pCard_TypedExpr = nullptr;
-  Card_Term* pCard_Term_popped = nullptr;
+  Card_Term* pCard_Term_head = nullptr;
   
-  while ( (pCard_Term_popped = pCard_TermSeq->pPopTerm()) ) {
+  while ( (pCard_Term_head = pCard_TermSeq->pPopTerm()) ) {
     
     // GROUPBY
     
-    if (pCard_Term_popped->bIsSame("GROUPBY"_Stz)) {
-      pCard_TermSeq->vPush(pCard_Term_popped);
+    if (pCard_Term_head->bIsSame("GROUPBY"_Stz)) {
+      pCard_TermSeq->vPush(pCard_Term_head);
       break;
     }
     
     // SEPARATOR
     
-    if (pCard_Term_popped->bIsSeparator())
+    if (pCard_Term_head->bIsSeparator())
       continue;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
     // TYPE
     
-    if (pCard_Term_popped->bIsSame("TYPE"_Stz)) {
-      pCard_TermSeq->vPush(pCard_Term_popped);
+    if (pCard_Term_head->bIsSame("TYPE"_Stz)) {
+      pCard_TermSeq->vPush(pCard_Term_head);
       if (! pCard_TypedExpr)
         pCard_TypedExpr = new Card_TypedExpr;
       
@@ -702,8 +702,8 @@ Card_AggElist* Dissect::pCollectAggElist(Card_TermSeq* pCard_TermSeq)
     
     // AS
     
-    if (pCard_Term_popped->bIsSame("AS"_Stz)) {
-      pCard_TermSeq->vPush(pCard_Term_popped);
+    if (pCard_Term_head->bIsSame("AS"_Stz)) {
+      pCard_TermSeq->vPush(pCard_Term_head);
       if (! pCard_TypedExpr)
         pCard_TypedExpr = new Card_TypedExpr;
 
@@ -714,7 +714,7 @@ Card_AggElist* Dissect::pCollectAggElist(Card_TermSeq* pCard_TermSeq)
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
-    pCard_TermSeq->vPush(pCard_Term_popped);
+    pCard_TermSeq->vPush(pCard_Term_head);
     
     // PROJECT/AGGREG
 
