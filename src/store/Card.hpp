@@ -124,6 +124,8 @@ namespace STORE
   
     eAL  eAggLvl(void);
     void vAggLvl(eAL eAggLvl);
+    bool bAggOp(void);
+    void vAggOp(void);
     Stz* szAs(void);
     void vAs(Stz* szAsNm);
   

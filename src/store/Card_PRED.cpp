@@ -106,7 +106,7 @@ void Card_PRED::vReplaceOrdinals(StreamDef* pStreamDef, Index* pIndex)
       Column* pColumn = pStreamDef->pGetColumn(i_Col);
       Stz* szColNm = pColumn->szColNm();
 
-      pCard_Term->vAddProperty("szTerm"_Stz,szColNm);
+      pCard_Term->vTerm(szColNm);
 
       return;
     }
@@ -122,7 +122,7 @@ void Card_PRED::vReplaceOrdinals(StreamDef* pStreamDef, Index* pIndex)
       Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
       Stz* szIdxColNm = pIdxColumn->szColNm();
     
-      pCard_Term->vAddProperty("szTerm"_Stz,szIdxColNm);
+      pCard_Term->vTerm(szIdxColNm);
 
       return;
     }

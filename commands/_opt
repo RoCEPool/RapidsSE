@@ -38,7 +38,7 @@ select P_PARTKEY , P_NAME , P_BRAND
     //    p_partkey > 19900 and p_partkey < 19920
     and p_brand = 'Brand#15'
     
-  order by p_partkey
+  //order by p_partkey
   
   //limit 5
 ;

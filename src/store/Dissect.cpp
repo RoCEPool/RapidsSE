@@ -793,7 +793,7 @@ Card_CalcExpr* Dissect::pCollectCalcExpr(Card_TermSeq* pCard_TermSeq)
     }
     
     if (pCard_Term_popped->bIsAggOp())
-      pCard_CalcExpr->vAddProperty("bAggOp"_Stz);
+      pCard_CalcExpr->vAggOp();
 
     pCard_CalcExpr->vAppend(pCard_Term_popped);
   }
