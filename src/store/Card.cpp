@@ -1644,7 +1644,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_INDEX:         vIndexPrint                  (pRibbon,iDepth); break;
     case CK_INDEXJOIN:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXPRED:                  vPrintProperties(pRibbon,iDepth); break;
-    case CK_INDEXSCAN:     vIndexScanPrint              (pRibbon,iDepth); break;
+    case CK_INDEXSCAN:                  vPrintProperties(pRibbon,iDepth); break;
           
     case CK_LBOUND:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_LIMIT:                      vPrintProperties(pRibbon,iDepth); break;
@@ -1886,12 +1886,14 @@ void Card::vIndexScanPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(this);
-  
-  Index* pIndex = pCard_IndexScan->pIndex();
+  NEVER_REACH;
 
-  pRibbon->vSput(FR_NAME,pIndex->szIndexNm());
-
+//  Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(this);
+//  
+//  Index* pIndex = pCard_IndexScan->pIndex();
+//
+//  pRibbon->vSput(FR_NAME,pIndex->szIndexNm());
+//
 }
 
 /*----------------------------------------------------------------------------*/
