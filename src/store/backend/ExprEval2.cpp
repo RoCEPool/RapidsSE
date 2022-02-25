@@ -400,6 +400,36 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
+    if (pTkn->bSame("EXTRACT_DAY"_Stz)) {
+      ePreExp = PE_XDY;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("EXTRACT_HOUR"_Stz)) {
+      ePreExp = PE_XHR;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("EXTRACT_MIN"_Stz)) {
+      ePreExp = PE_XMN;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("EXTRACT_MONTH"_Stz)) {
+      ePreExp = PE_XMT;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("EXTRACT_SECOND"_Stz)) {
+      ePreExp = PE_XSC;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bSame("EXTRACT_YEAR"_Stz)) {
       ePreExp = PE_XYR;
       pTkn = pTknVec->pNextToken();

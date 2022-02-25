@@ -2686,6 +2686,41 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the extract_day expression
+    if (pTkn->bSame("extract_day"_Stz)) {
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the extract_hour expression
+    if (pTkn->bSame("extract_hour"_Stz)) {
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the extract_min expression
+    if (pTkn->bSame("extract_min"_Stz)) {
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the extract_month expression
+    if (pTkn->bSame("extract_month"_Stz)) {
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the extract_second expression
+    if (pTkn->bSame("extract_second"_Stz)) {
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the between expression
     if (pTkn->bSame("extract_year"_Stz)) {
       vPushFunc(pExprStack, pExprType, ePreExp);
