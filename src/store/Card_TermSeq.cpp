@@ -46,7 +46,7 @@ Card_TermSeq::~Card_TermSeq(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eTE Card_TermSeq::eTopTermEval(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_Term* pCard_Term = _pCard_Term(pHead());
   
