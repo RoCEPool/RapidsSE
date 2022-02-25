@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_MAIN.hpp -- Abstract Unit                                             */
+/* Card_MAIN.hpp -- Abstract Main-Card                                        */
 /*============================================================================*/
 #pragma once
 
@@ -16,7 +16,7 @@ namespace STORE
    ~Card_MAIN(void) noexcept(false);
   };
 
-  Card_MAIN* _pCard_Unit(void* aAddr);
+  Card_MAIN* _pCard_MAIN(void* aAddr);
 }
 
 /*============================================================================*/
