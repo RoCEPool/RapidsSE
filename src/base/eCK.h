@@ -62,6 +62,7 @@ enum eCK // card kind
   /* */ CK_SCAN,
   /* */ CK_SEND,
   /* */ CK_SORT,
+  /* */ CK_SORTDIRN,
   /* */ CK_STAGE,
   /* */ CK_STREAMDEF,
   
@@ -135,6 +136,7 @@ static Stz* aCK[]
   /* */ "CK_SCAN"_Stz,            // CK_SEND
   /* */ "CK_SEND"_Stz,            // CK_SCAN
   /* */ "CK_SORT"_Stz,            // CK_SORT
+  /* */ "CK_SORTDIRN"_Stz,        // CK_SORTDIRN
   /* */ "CK_STAGE"_Stz,           // CK_STAGE
   /* */ "CK_STREAMDEF"_Stz,       // CK_STREAMDEF
   
@@ -208,6 +210,7 @@ static Stz* aCK_short[]
   /* */ "scan"_Stz,            // CK_SEND
   /* */ "send"_Stz,            // CK_SCAN
   /* */ "sort"_Stz,            // CK_SORT
+  /* */ "sortDirn"_Stz,        // CK_SORTDIRN
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "streamDef"_Stz,       // CK_STREAMDEF
   
