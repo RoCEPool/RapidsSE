@@ -204,13 +204,7 @@ namespace STORE
     void vPrintName(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName=true);
 
-    void vCandIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
-    void vIndexScanPrint(Ribbon* pRibbon, i8 iDepth);
-    void vOnPrint(Ribbon* pRibbon, i8 iDepth);
-    void vScanPrint(Ribbon* pRibbon, i8 iDepth);
-    void vSortPrint(Ribbon* pRibbon, i8 iDepth);
-    void vStagePrint(Ribbon* pRibbon, i8 iDepth);
     void vStreamDefPrint(Ribbon* pRibbon, i8 iDepth);
     void vTablePrint(Ribbon* pRibbon, i8 iDepth);
     void vTermPrint(Ribbon* pRibbon, i8 iDepth);

@@ -73,7 +73,7 @@ namespace STORE
 
    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    bool bAdd_CandidateIndexes         (void);
+    bool bAdd_CandIndexes         (void);
 
     void vAdd_IndexScan                (void);
 

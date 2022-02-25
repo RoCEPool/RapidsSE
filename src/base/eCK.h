@@ -183,7 +183,7 @@ static Stz* aCK_short[]
   /* */ "hashCast"_Stz,        // CK_HASHCAST
   /* */ "having"_Stz,          // CK_HAVING
   
-  /* */ "index"_Stz,           // CK_INDEX
+  /* */ "{index}"_Stz,         // CK_INDEX
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
   /* */ "indexPred"_Stz,       // CK_INDEXPRED
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
@@ -212,9 +212,9 @@ static Stz* aCK_short[]
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "sortDirn"_Stz,        // CK_SORTDIRN
   /* */ "stage"_Stz,           // CK_STAGE
-  /* */ "streamDef"_Stz,       // CK_STREAMDEF
+  /* */ "{streamDef}"_Stz,     // CK_STREAMDEF
   
-  /* */ "table"_Stz,           // CK_TABLE
+  /* */ "{table}"_Stz,         // CK_TABLE
   /* */ "term"_Stz,            // CK_TERM
   /* */ "termSeq"_Stz,         // CK_TERMSEQ
   /* */ "type"_Stz,            // CK_TYPE

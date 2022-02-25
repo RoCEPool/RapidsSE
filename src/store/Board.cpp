@@ -206,7 +206,7 @@ void Board::vCandidateIndex(Card_CandIndex* pCandidateIndex)
   if (m_pCandidateIndex) {
     m_pCandidateIndex->vMark2('m');
     
-    m_pIndex = m_pCandidateIndex->pIndex();
+    vIndex(m_pCandidateIndex->pFindSubCard(CK_INDEX)->pIndex());
   }
 }
 
@@ -400,23 +400,23 @@ void Board::vRankCandidateIndex(Card_CandIndex* pCard_CandIndex)
   bool bLBound = false;
   bool bUBound = false;
 
-  Index* pIndex = pCard_CandIndex->pIndex();
+  Index* pIndex = pCard_CandIndex->pFindSubCard(CK_INDEX)->pIndex();
   
   if (m_pFilter->bHasBounds(pIndex)) {
   
     if (m_pFilter->pFindBound(pIndex,BK_EBOUND)) {
       bEBound = true;
-      pCard_CandIndex->vHasEBound(true);//vAddProperty("EBOUND"_Stz);
+      pCard_CandIndex->vHasEBound(true);
     }
     
     if (m_pFilter->pFindBound(pIndex,BK_LBOUND)) {
       bLBound = true;
-      pCard_CandIndex->vHasLBound(true);//vAddProperty("LBOUND"_Stz);
+      pCard_CandIndex->vHasLBound(true);
     }
     
     if (m_pFilter->pFindBound(pIndex,BK_UBOUND)) {
       bUBound = true;
-      pCard_CandIndex->vHasUBound(true);//vAddProperty("UBOUND"_Stz);
+      pCard_CandIndex->vHasUBound(true);
     }
   }
 
@@ -441,7 +441,7 @@ void Board::vRankCandidateIndex(Card_CandIndex* pCard_CandIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Board::bAdd_CandidateIndexes(void)
+bool Board::bAdd_CandIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -460,15 +460,13 @@ bool Board::bAdd_CandidateIndexes(void)
   i8 i_Filter = i_Find(m_pScan) + 1;
   Card_Filter* pCard_Filter = _pCard_Filter(pGet(i_Filter));
 
-
-  Card_CandIndex* pCard_CandIndex = nullptr;
-  
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     Index* pIndex = pIdxVec->pGet(i_Index);
     //vTrace("Index %s\n"_Stz,pIndex->szIndexNm());
     
-    pCard_CandIndex =
-      new Card_CandIndex(pIndex);
+    Card_CandIndex* pCard_CandIndex = new Card_CandIndex;
+    Card_Index* pCard_Index = new Card_Index(pIndex);
+    pCard_CandIndex->vAppend(pCard_Index);
     
     vInsertAfter(pCard_CandIndex,pCard_Filter);
   }
@@ -1195,7 +1193,7 @@ void Board::vOptimise_Board(void)
     
     vPrintBoard("bFind_Scan_Filter >> "_Stz);
     
-    bool bAdded = bAdd_CandidateIndexes();
+    bool bAdded = bAdd_CandIndexes();
     UNUSED(bAdded);
     vPrintBoard("bAdd_CandidateIndexes >> "_Stz);
 

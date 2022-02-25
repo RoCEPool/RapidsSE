@@ -1621,7 +1621,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_BOOLEXPR:                   vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_CALCEXPR:                   vPrintProperties(pRibbon,iDepth); break;
-    case CK_CANDINDEX:     vCandIndexPrint              (pRibbon,iDepth); break;
+    case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_COMBINE:                    vPrintProperties(pRibbon,iDepth); break;
     case CK_CORRSUBQUERY:               vPrintProperties(pRibbon,iDepth); break;
     case CK_CMPPRED:                    vPrintProperties(pRibbon,iDepth); break;
@@ -1820,42 +1820,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName)
 
 
 /*----------------------------------------------------------------------------*/
-/* print candidate index                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::vCandIndexPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_CandIndex* pCard_CandIndex = _pCard_CandIndex(this);
-  
-  Index* pIndex = pCard_CandIndex->pIndex();
-  
-  pRibbon->vSput(FR_NAME,pIndex->szIndexNm());
-  
-  IndexDef* pIndexDef = pIndex->pIndexDef();
-  pRibbon->vSput(FR_TEXT
-                 ,pIndexDef->bIsUnique()
-                    ? "unique"_Stz : "not unique"_Stz
-                 );
-
-  i8 nColumns = pIndexDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pIdxCol = pIndexDef->pGetColumn(i_Col);
-    
-    pRibbon->vSput(FR_ATOM_SQUARE,pIdxCol->szColNm());
-  }
-
-  i8 nBuffers = 0;
-  i8 nEntries = 0;
-  pIndex->vAnalyze(nBuffers,nEntries);
-  pRibbon->vSprintRight("buffers %lld"_Stz,nBuffers);
-  pRibbon->vSprintRight("entries %lld"_Stz,nEntries);
-
-  vPrintProperties(pRibbon,iDepth);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print table                                                                */
+/* print {index}                                                              */
 /*----------------------------------------------------------------------------*/
 void Card::vIndexPrint(Ribbon* pRibbon, i8 iDepth)
 {
@@ -1864,6 +1829,7 @@ void Card::vIndexPrint(Ribbon* pRibbon, i8 iDepth)
   Card_Index* pCard_Index = _pCard_Index(this);
   Index* pIndex = pCard_Index->pIndex();
   IndexDef* pIndexDef = pIndex->pIndexDef();
+  Table* pTable = pIndex->pTable();
 
   pRibbon->vSput(FR_NAME,pIndex->szIndexNm());
   
@@ -1872,6 +1838,8 @@ void Card::vIndexPrint(Ribbon* pRibbon, i8 iDepth)
                     ? "unique"_Stz : "not unique"_Stz
                  );
   
+  pRibbon->vSput(FR_NAME,pTable->szTableNm());
+
   i8 nIdxCols = pIndexDef->nColumns();
   for (i8 i_Col = 0; i_Col < nIdxCols; i_Col++) {
     Column* pIdxCol = pIndexDef->pGetColumn(i_Col);
@@ -1882,124 +1850,15 @@ void Card::vIndexPrint(Ribbon* pRibbon, i8 iDepth)
   i8 nBuffers = 0;
   i8 nEntries = 0;
   pIndex->vAnalyze(nBuffers,nEntries);
-  pRibbon->vSprintRight("buffers %lld"_Stz,nBuffers);
-  pRibbon->vSprintRight("entries %lld"_Stz,nEntries);
+  pRibbon->vSprintRight(" %lld buffers"_Stz,nBuffers);
+  pRibbon->vSprintRight(" %lld entries"_Stz,nEntries);
 
   //vPrintProperties(pRibbon,iDepth);
 }
 
-/*----------------------------------------------------------------------------*/
-/* print indexScan                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vIndexScanPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  NEVER_REACH;
-
-//  Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(this);
-//
-//  Index* pIndex = pCard_IndexScan->pIndex();
-//
-//  pRibbon->vSput(FR_NAME,pIndex->szIndexNm());
-//
-}
 
 /*----------------------------------------------------------------------------*/
-/* print on                                                                   */
-/*----------------------------------------------------------------------------*/
-void Card::vOnPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_On* pCardOn = _pCard_On(this);
-  
-  //pRibbon->vSprint("%15s"_Stz,"ON="_Stz);
-  pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn1()->szColNm());
-  pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn2()->szColNm());
-}
-
-/*----------------------------------------------------------------------------*/
-/* print scan card onto given ribbon                                          */
-/*----------------------------------------------------------------------------*/
-void Card::vScanPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  NEVER_REACH;
-  
-  //vTrace("vScanPrint\n"_Stz);
-  
-//  Card_Scan* pCard_Scan = _pCard_Scan(this);
-//
-//  Card_Table* pCard_Table = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
-//
-//  Table* pTable = pCard_Table->pTable();
-//
-//  pRibbon->vSput(FR_NAME,pTable->szTableNm());
-//
-//  if (pRibbon->iArea())
-//    return;
-//
-//  //pCardTable->vPrintPartition(pRibbon);
-//  ShardDef* pShardDef = pTable->pShardDef();
-//  Column* pColumn = pShardDef->pGetColumn(0);
-//
-//  pRibbon->vSput(FR_ATOM_SLASH,pColumn->szColNm());
-//
-//
-//  //pCardTable->vPrintSize(pRibbon);
-//  StreamDef* pStreamDef = pTable->pStreamDef();
-//
-//  pRibbon->vSput(FR_SIZE,pStreamDef->jTableSize());
-//
-//
-//  //pCardTable->vPrintPrimary(pRibbon);
-//  IdxVec*   pIdxVec    = pTable->pIdxVec();
-//  Index*    pIndex     = pIdxVec->pGet(0);
-//  IndexDef* pIndexDef  = pIndex->pIndexDef();
-//  Column*   pIdxColumn = pIndexDef->pGetColumn(0);
-//
-//  pRibbon->vSput(FR_ATOM_SQUARE,pIdxColumn->szColNm());
-}
-
-/*----------------------------------------------------------------------------*/
-/* print sort                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vSortPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Sort* pCard_Sort = _pCard_Sort(this);
-  
-  s32 sBy;
-
-  sBy.vSprint("+%s+"_Stz,pCard_Sort->pColumn()->szColNm());
-
-  pRibbon->vSprint("%15s"_Stz,sBy.szStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* print stage                                                                */
-/*----------------------------------------------------------------------------*/
-void Card::vStagePrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Stage* pCard_Stage = _pCard_Stage(this);
-//  vTrace("vStagePrint %s %lld,%lld\n"_Stz
-//         ,pCard_Stage->szStageNm()
-//         ,pRibbon->iLine()
-//         ,pRibbon->iChar()
-//         );
-  
-  pRibbon->vSput(FR_NAME,pCard_Stage->szStageNm());
-  pRibbon->vSput(FR_TEXT,aYG_15s[pCard_Stage->eStageTopology()]);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* print stream def piece                                                     */
+/* print {streamdef}                                                          */
 /*----------------------------------------------------------------------------*/
 void Card::vStreamDefPrint(Ribbon* pRibbon, i8 iDepth)
 {
@@ -2026,7 +1885,7 @@ void Card::vStreamDefPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print table card onto given ribbon                                         */
+/* print {table}                                                              */
 /*----------------------------------------------------------------------------*/
 void Card::vTablePrint(Ribbon* pRibbon, i8 iDepth)
 {
@@ -2077,7 +1936,8 @@ void Card::vTermPrint(Ribbon* pRibbon, i8 iDepth)
 }
 
 
-
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 
 /*----------------------------------------------------------------------------*/
@@ -2087,6 +1947,7 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
+  if (szEnum->bSame("eAggLvl"_Stz))        return aAL[iEnum];
   if (szEnum->bSame("eStageTopology"_Stz)) return aYG[iEnum];
   if (szEnum->bSame("eSendKind"_Stz))      return aXK[iEnum];
 
