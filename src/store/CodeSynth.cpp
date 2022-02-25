@@ -2686,6 +2686,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the between expression
+    if (pTkn->bSame("extract_year"_Stz)) {
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the in expression
     if (pTkn->bSame("in"_Stz)) {
       i_Tkn++;
@@ -3842,22 +3849,75 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sOperation;
-
-  eDM eExpr1 = (eDM)pTypeStack->iPop();
-  eDM eExpr2 = (eDM)pTypeStack->iPop();
+  eDM eExpr1;
+  eDM eExpr2;
 
   switch(ePreExp) {
 
     case PE_BET:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      eExpr2 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_Bet[eExpr1][eExpr2]];
       sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_BOL);
       break;
 
     case PE_INX:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      eExpr2 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_Inx[eExpr1][eExpr2]];
       sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_BOL);
+      break;
+
+    case PE_XDY:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      sOperation = aFM[eMacro_ExtractDay[eExpr1]];
+      sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_INT);
+      break;
+
+    case PE_XHR:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      sOperation = aFM[eMacro_ExtractHour[eExpr1]];
+      sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_INT);
+      break;
+
+    case PE_XMN:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      sOperation = aFM[eMacro_ExtractMinute[eExpr1]];
+      sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_INT);
+      break;
+
+    case PE_XMT:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      sOperation = aFM[eMacro_ExtractMonth[eExpr1]];
+      sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_INT);
+      break;
+
+    case PE_XSC:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      sOperation = aFM[eMacro_ExtractSecond[eExpr1]];
+      sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_INT);
+      break;
+
+    case PE_XYR:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      sOperation = aFM[eMacro_ExtractYear[eExpr1]];
+      sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_INT);
       break;
 
     default:

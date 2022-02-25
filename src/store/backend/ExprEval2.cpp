@@ -400,8 +400,8 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
-    if (pTkn->bSame("EXTRACT"_Stz)) {
-      ePreExp = PE_EXT;
+    if (pTkn->bSame("EXTRACT_YEAR"_Stz)) {
+      ePreExp = PE_XYR;
       pTkn = pTknVec->pNextToken();
       continue;
     }

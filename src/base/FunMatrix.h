@@ -40,6 +40,34 @@ static eDM eMacro_CastResult[DM_ENUMS][DM_ENUMS] = {
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// EXTRACT OPERATORS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+static eFM eMacro_ExtractDay[DM_ENUMS] =
+    // NONE    BCD        BOL      DTE         FLT      INT      IVL      IVY      TME      TSP         VCH      UNK
+    { FM_NONE, FM_NONE,   FM_NONE, FM_DAY_DTE, FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_DAY_TSP, FM_NONE, FM_NONE    };
+
+static eFM eMacro_ExtractMonth[DM_ENUMS] =
+    // NONE    BCD        BOL      DTE           FLT      INT      IVL      IVY      TME      TSP          VCH      UNK
+    { FM_NONE, FM_NONE,   FM_NONE, FM_MONTH_DTE, FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_MONTH_TSP, FM_NONE, FM_NONE    };
+
+static eFM eMacro_ExtractYear[DM_ENUMS] =
+    // NONE    BCD        BOL      DTE          FLT      INT      IVL      IVY,     TME      TSP          VCH      UNK
+    { FM_NONE, FM_NONE,   FM_NONE, FM_YEAR_DTE, FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_YEAR_TSP, FM_NONE, FM_NONE    };
+
+static eFM eMacro_ExtractHour[DM_ENUMS] =
+    // NONE    BCD        BOL      DTE      FLT      INT      IVL      IVY      TME          TSP          VCH      UNK
+    { FM_NONE, FM_NONE,   FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_HOUR_TME, FM_HOUR_TSP, FM_NONE, FM_NONE    };
+
+static eFM eMacro_ExtractMinute[DM_ENUMS] =
+    // NONE    BCD        BOL      DTE      FLT      INT      IVL      IVY      TME            TSP          VCH      UNK
+    { FM_NONE, FM_NONE,   FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_MINUTE_TME, FM_MINUTE_TSP, FM_NONE, FM_NONE    };
+
+static eFM eMacro_ExtractSecond[DM_ENUMS] =
+    // NONE    BCD        BOL      DTE      FLT      INT      IVL      IVY      TME            TSP            VCH      UNK
+    { FM_NONE, FM_NONE,   FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_SECOND_TME, FM_SECOND_TSP, FM_NONE, FM_NONE    };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // MATHEMATICAL OPERATORS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

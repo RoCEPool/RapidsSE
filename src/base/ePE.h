@@ -13,7 +13,12 @@ enum ePE // predicate expression
   /*  5 */ PE_CSE, // case
   /*  5 */ PE_CST, // cast
   /*  6 */ PE_EXP, // expression
-  /*  7 */ PE_EXT, // extract
+  /*  7 */ PE_XDY, // extract day
+  /*  7 */ PE_XHR, // extract hour
+  /*  7 */ PE_XMN, // extract min
+  /*  7 */ PE_XMT, // extract month
+  /*  7 */ PE_XSC, // extract second
+  /*  7 */ PE_XYR, // extract year
   /*  8 */ PE_GBY, // group by
   /*  9 */ PE_LIK, // like
   /* 10 */ PE_MAX, // max

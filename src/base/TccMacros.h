@@ -189,6 +189,22 @@
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// EXTRACTS
+
+#define _YEAR_TSP(eErrorCode)                                                 \
+  {                                                                           \
+    xTsp1.m_iAsI8 = *(--paW);                                                 \
+    if (eErrorCode != EC_NONE ||                                              \
+        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                      \
+        *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                         \
+    else {                                                                    \
+      *(paW++) = C_YEAR_BASE + xTsp1.m_uYearDelta;                            \
+    }                                                                         \
+  }
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // NULL TESTS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // do we need separate macros for all datatypes??? Not sure

@@ -135,6 +135,22 @@ enum eFM : u2 // function macros
   /*  */ FM_DUP_VCH,             // dup vch
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // extract operators
+
+  /*  */ FM_DAY_DTE,             // day from dte
+  /*  */ FM_DAY_TSP,             // day from tsp
+  /*  */ FM_HOUR_TME,            // hour from tme
+  /*  */ FM_HOUR_TSP,            // hour from tsp
+  /*  */ FM_MINUTE_TME,          // min from tme
+  /*  */ FM_MINUTE_TSP,          // min from tsp
+  /*  */ FM_MONTH_DTE,           // month from dte
+  /*  */ FM_MONTH_TSP,           // month from tsp
+  /*  */ FM_SECOND_TME,          // sec from tme
+  /*  */ FM_SECOND_TSP,          // sec from tsp
+  /*  */ FM_YEAR_DTE,            // year from year
+  /*  */ FM_YEAR_TSP,            // year from tsp
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // in expression operators
 
   /*  */ FM_INX_BCDBCD,           // bcd in bcd,...
@@ -394,6 +410,22 @@ static Stz* aFM[]
   /*  */ "_DUP_VCH"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // extract operators
+
+  /*  */ "_DAY_DTE"_Stz,
+  /*  */ "_DAY_TSP"_Stz,
+  /*  */ "_HOUR_TME"_Stz,
+  /*  */ "_HOUR_TSP"_Stz,
+  /*  */ "_MINUTE_TME"_Stz,
+  /*  */ "_MINUTE_TSP"_Stz,
+  /*  */ "_MONTH_DTE"_Stz,
+  /*  */ "_MONTH_TSP"_Stz,
+  /*  */ "_SECOND_TME"_Stz,
+  /*  */ "_SECOND_TSP"_Stz,
+  /*  */ "_YEAR_DTE"_Stz,
+  /*  */ "_YEAR_TSP"_Stz,
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // in expression operators
 
   /*  */ "_INX_BCDBCD"_Stz,

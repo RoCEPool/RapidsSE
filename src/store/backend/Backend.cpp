@@ -48,6 +48,7 @@
 #include "ExprList.hpp"
 
 #include "Expr.hpp"
+#include "ExtractExpr.hpp"
 #include "ComparisonExpr.hpp"
 #include "EqExpr.hpp"
 #include "ExistsExpr.hpp"
@@ -1227,6 +1228,27 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     //if (bDeleteOrdExpr)
     //  delete pOrdinalExpr;
+    return GraphNav::WALK_CONTINUE;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // literal
+
+  if (ExtractExpr::bIsOfType(pOrdinalExpr)) {
+
+    s32 sExtractType;
+
+    ExtractField::eEF eExtractField = ExtractExpr::eExtractField(_pQueryNode(pOrdinalExpr));
+    sExtractType =  ExtractField::szExtractFieldType(eExtractField);
+    StrLib::vToLower(sExtractType.azChar());
+
+    QueryNode* pExpr = ExtractExpr::pSourceExpr(_pQueryNode(pOrdinalExpr));
+
+    // Walk the expr node plan graph
+    //GraphNav::bGlobalWalk(pExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
+
+    sPipeline->vCatSprint(" extract_%s "_Stz, sExtractType.azChar());
+
     return GraphNav::WALK_CONTINUE;
   }
 
