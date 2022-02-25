@@ -2007,35 +2007,20 @@ void Card::vStreamDefPrint(Ribbon* pRibbon, i8 iDepth)
   StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
   if (! pStreamDef)
     return;
-
-  s32 sOrder;
-  
-  i8 nOrders = pStreamDef->nOrders();
-  for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
-    Column* pColumn = pStreamDef->pGetOrder(i_Ord);
-  
-//    sOrder.vSprint("[%s]"_Stz,pColumn->szColNm());
-//
-//    pRibbon->vSprint("%15s"_Stz
-//                     ,sOrder.szStz()
-//                     );
-    
-    pRibbon->vSput(FR_ATOM_SQUARE
-                     ,pColumn->szColNm()
-                     );
-  }
-
   
   i8 nColumns = pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     Column* pColumn = pStreamDef->pGetColumn(i_Col);
     
-    pRibbon->vSput(FR_SDEF_COLUMN
-                     ,pColumn->szColNm()
-                     ,pColumn->cTypeShort()
-                     );
+    pRibbon->vSput(FR_SDEF_COLUMN,pColumn->szColNm(),pColumn->cTypeShort());
   }
 
+  i8 nOrders = pStreamDef->nOrders();
+  for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
+    Column* pOrdCol = pStreamDef->pGetOrder(i_Ord);
+      
+    pRibbon->vSput(FR_ATOM_SQUARE,pOrdCol->szColNm());
+  }
 }
 
 /*----------------------------------------------------------------------------*/

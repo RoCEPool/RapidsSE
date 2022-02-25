@@ -488,27 +488,41 @@ void Board::vAdd_IndexScan(void)
   Card_IndexScan* pCard_IndexScan = new Card_IndexScan(m_pIndex);
 
   Card_BOUND* pCard_BOUND;
+  Card_PRED*  pCard_PRED;
 
   if (m_pComparePred_ebound) {
     pCard_BOUND = new Card_EBound;
-    pCard_BOUND->vAppend(m_pComparePred_ebound->pDup());
+    
+    pCard_PRED = m_pComparePred_ebound->pDup();
+    pCard_PRED->vHasEBound(true);
+    pCard_BOUND->vAppend(pCard_PRED);
   }
   else
   if (m_pComparePred_lbound && m_pComparePred_ubound) {
     pCard_BOUND = new Card_RBound;
-    pCard_BOUND->vAppend(m_pComparePred_lbound->pDup());
-    pCard_BOUND->vAppend(m_pComparePred_ubound->pDup());
-
+    
+    pCard_PRED = m_pComparePred_lbound->pDup();
+    pCard_PRED->vHasLBound(true);
+    pCard_BOUND->vAppend(pCard_PRED);
+    
+    pCard_PRED = m_pComparePred_ubound->pDup();
+    pCard_PRED->vHasUBound(true);
+    pCard_BOUND->vAppend(pCard_PRED);
   }
   else
   if (m_pComparePred_lbound) {
     pCard_BOUND = new Card_LBound;
-    pCard_BOUND->vAppend(m_pComparePred_lbound->pDup());
-
+    
+    pCard_PRED = m_pComparePred_lbound->pDup();
+    pCard_PRED->vHasLBound(true);
+    pCard_BOUND->vAppend(pCard_PRED);
   }
   else
   if (m_pComparePred_ubound) {
     pCard_BOUND = new Card_UBound;
+    
+    pCard_PRED = m_pComparePred_ubound->pDup();
+    pCard_PRED->vHasUBound(true);
     pCard_BOUND->vAppend(m_pComparePred_ubound->pDup());
   }
   else {
