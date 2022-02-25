@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 CardSet::CardSet(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  //_precondition_(_ADDRESS_,_FOOTER_);
           
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  //_postcondition_(_ADDRESS_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +23,7 @@ CardSet::CardSet(void)
 /*----------------------------------------------------------------------------*/
 CardSet::~CardSet(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  //_precondition_(_ADDRESS_,_FOOTER_);
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
@@ -35,7 +35,7 @@ CardSet::~CardSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void CardSet::vRemoveCards(eCK eCard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  //_precondition_(_ADDRESS_,_FOOTER_);
   
   i8 nCards = nItems();
   for (i8 i_Card = 0; i_Card < nCards; i_Card++) {

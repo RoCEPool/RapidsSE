@@ -209,7 +209,7 @@ bool Card_PRED::bHasBounds_pred(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 void Card_PRED::vReducePred(Card_PRED* pCard_PRED_child)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   this->vDump();
   pCard_PRED_child->vDump();

@@ -652,9 +652,9 @@ void Board::vCut_Scan(void)
   
   vRemove(m_pScan);
   
-  delete m_pScan;
-  
   vScan(nullptr);
+
+  delete m_pScan;  
 }
 
 /*----------------------------------------------------------------------------*/
