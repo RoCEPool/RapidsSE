@@ -50,6 +50,15 @@ enum eFM : u2 // function macros
   /*  */ FM_SUB_INTINT,           // int * int
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // between operators
+
+  /*  */ FM_BET_BCDBCD,           // between bcd bcd
+  /*  */ FM_BET_FLTFLT,           // between flt flt
+  /*  */ FM_BET_INTINT,           // between int int
+  /*  */ FM_BET_UNKXYZ,           // between unk xyz
+  /*  */ FM_BET_XYZUNK,           // between xyz unk
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast operators
 
   /*  */ FM_BCD_TOFLT,          // bcd to flt
@@ -113,7 +122,6 @@ enum eFM : u2 // function macros
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // duplicate operators
 
-  // push
   /*  */ FM_DUP_BOL,             // dup bol
   /*  */ FM_DUP_BCD,             // dup bcd
   /*  */ FM_DUP_DTE,             // dup dte
@@ -125,6 +133,22 @@ enum eFM : u2 // function macros
   /*  */ FM_DUP_TSP,             // dup tsp
   /*  */ FM_DUP_UNK,             // dup unk
   /*  */ FM_DUP_VCH,             // dup vch
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // in expression operators
+
+  /*  */ FM_INX_BCDBCD,           // bcd in bcd,...
+  /*  */ FM_INX_BOLBOL,           // bol in bol,...
+  /*  */ FM_INX_DTEDTE,           // dte in dte,...
+  /*  */ FM_INX_FLTFLT,           // flt in flt,...
+  /*  */ FM_INX_INTINT,           // int in int,...
+  /*  */ FM_INX_IVLIVL,           // ivl in ivl,...
+  /*  */ FM_INX_IVYIVY,           // ivy in ivy,...
+  /*  */ FM_INX_TMETME,           // tme in tme,...
+  /*  */ FM_INX_TSPTSP,           // tsp in tsp,...
+  /*  */ FM_INX_VCHVCH,           // vch in vch,...
+  /*  */ FM_INX_UNKXYZ,           // unk in xyz,...
+  /*  */ FM_INX_XYZUNK,           // xyz in unk,...
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // logical operators
@@ -286,6 +310,15 @@ static Stz* aFM[]
   /*  */ "_SUB_INTINT"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // between operators
+
+  /*  */ "_BET_BCDBCD"_Stz,
+  /*  */ "_BET_FLTFLT"_Stz,
+  /*  */ "_BET_INTINT"_Stz,
+  /*  */ "_BET_UNKXYZ"_Stz,
+  /*  */ "_BET_XYZUNK"_Stz,
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast operators
 
   /*  */ "_BCD_TOFLT"_Stz,
@@ -347,7 +380,7 @@ static Stz* aFM[]
   /*  */ "_VCH_TOUNK"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push
+  // duplicates
   /*  */ "_DUP_BOL"_Stz,
   /*  */ "_DUP_BCD"_Stz,
   /*  */ "_DUP_DTE"_Stz,
@@ -359,6 +392,22 @@ static Stz* aFM[]
   /*  */ "_DUP_TSP"_Stz,
   /*  */ "_DUP_UNK"_Stz,
   /*  */ "_DUP_VCH"_Stz,
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // in expression operators
+
+  /*  */ "_INX_BCDBCD"_Stz,
+  /*  */ "_INX_BOLBOL"_Stz,
+  /*  */ "_INX_DTEDTE"_Stz,
+  /*  */ "_INX_FLTFLT"_Stz,
+  /*  */ "_INX_INTINT"_Stz,
+  /*  */ "_INX_IVLIVL"_Stz,
+  /*  */ "_INX_IVYIVY"_Stz,
+  /*  */ "_INX_TMETME"_Stz,
+  /*  */ "_INX_TSPTSP"_Stz,
+  /*  */ "_INX_VCHVCH"_Stz,
+  /*  */ "_INX_UNKXYZ"_Stz,
+  /*  */ "_INX_XYZUNK"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // logical operators
@@ -387,7 +436,7 @@ static Stz* aFM[]
   /*  */ "_PSH_UNK"_Stz,
   /*  */ "_PSH_VCH"_Stz,
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // relational operators
 
   // equal

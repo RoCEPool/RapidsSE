@@ -1000,6 +1000,27 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     if (InExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" } "_Stz);
+
+      QueryNode* pLeftExpr = InExpr::pLeftExpr(pOrdinalExpr);
+
+      PlanNodeIter* pRightIter = InExpr::pRightExprIter(pOrdinalExpr);
+      i8 iInExprCount = 0;
+      while (pRightIter->bHasNext()) {
+        iInExprCount++;
+        QueryNode* pChild = _pQueryNode(pRightIter->pNext());
+        ASSERT(Expr::bIsOfType(pChild));
+
+        // Walk the expr node plan graph
+        GraphNav::bGlobalWalk(pChild, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
+      }
+
+      delete pRightIter;
+
+      sPipeline->vCatSprint(" #%lld "_Stz, iInExprCount);
+      GraphNav::bGlobalWalk(pLeftExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
+      sPipeline->vCatSprint(" in "_Stz);
+
+      return GraphNav::WALK_ABORT;
     }
 
     //delete pOrdinalExpr;

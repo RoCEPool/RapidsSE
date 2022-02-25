@@ -93,6 +93,12 @@ eEC ExprEval2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u
 
     if (pTkn->bIsName()) {
 
+      // skip index column
+      if (pTkn->szChars()->bContains("#"_Stz)) {
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // skip date / time / timestamp
       if (pTkn->bSame("DATE"_Stz) ||  pTkn->bSame("TIME"_Stz) || pTkn->bSame("TIMESTAMP"_Stz)) {
@@ -455,6 +461,11 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     }
 
     if (pTkn->bIsName()) {
+
+      if (pTkn->szChars()->bContains("#"_Stz)) {
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
 
       if (eExprKind == EK_AGGGBY) {
         iGroupByCol++;

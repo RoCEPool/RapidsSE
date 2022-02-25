@@ -180,6 +180,8 @@ namespace STORE {
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eCastType);
     void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn);
+    void vPushCount(TypedStack *pExprStack, IntStack *pExprType, Token *pTkn);
+    void vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp);
     void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eLiteral);
     void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     bool bPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, eEK eExprKind, Token *pTkn);
@@ -187,7 +189,7 @@ namespace STORE {
 
     void vGenerateExpr(char *sExpr, TypedStack* pPostStack,
                        eEK eExprKind, bool bHashRows, StreamDef *pStreamDef);
-
+    void vGenerateInExpr(void);
     void vTopIndexTraversal(IndexDef *pIndexDef);
 
     Stz *szInfix(TypedStack *pExprStack, i8 iProject);

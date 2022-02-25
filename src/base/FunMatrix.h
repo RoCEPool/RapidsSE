@@ -196,6 +196,25 @@ static eFM eMacro_Neg[DM_ENUMS] =
     { FM_NONE, FM_NEG_BCD, FM_NONE,  FM_NONE,  FM_NEG_FLT,  FM_NEG_INT,  FM_NONE,    FM_NONE, FM_NONE, FM_NONE,  FM_NONE, FM_NONE    };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BETWEEN
+
+static eFM eMacro_Bet[DM_ENUMS][DM_ENUMS] = {
+           //   NONE     BCD            BOL       DTE           FLT            INT            IVL         IVY           TME         TSP            VCH      UNK
+/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,    FM_NONE,    FM_NONE,      FM_NONE,    FM_NONE, FM_NONE        },
+/*  1 BCD  */ { FM_NONE, FM_BET_BCDBCD, FM_NONE,  FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,    FM_NONE,    FM_NONE,      FM_NONE,    FM_NONE, FM_BET_XYZUNK  },
+/*  2 BOL  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,    FM_NONE,    FM_NONE,      FM_NONE,    FM_NONE, FM_NONE        },
+/*  3 DTE  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,      FM_NONE,       FM_NONE/*?*/,  FM_NONE,    FM_NONE,    FM_NONE/*?*/, FM_NONE,    FM_NONE, FM_BET_XYZUNK  },
+/*  4 FLT  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,      FM_BET_FLTFLT, FM_NONE,       FM_NONE,    FM_NONE,    FM_NONE,      FM_NONE,    FM_NONE, FM_BET_XYZUNK  },
+/*  5 INT  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE/*?*/, FM_NONE,       FM_BET_INTINT, FM_NONE,    FM_NONE,    FM_NONE,      FM_NONE,    FM_NONE, FM_BET_XYZUNK  },
+/*  6 IVL  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,    FM_NONE,    FM_NONE,      FM_NONE,    FM_NONE, FM_BET_XYZUNK  },
+/*  7 IVY  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,    FM_NONE,    FM_NONE,      FM_NONE,    FM_NONE, FM_BET_XYZUNK  },
+/*  8 TME  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE/*?*/, FM_NONE,       FM_NONE/*?*/,  FM_NONE,    FM_NONE,    FM_NONE,      FM_NONE,    FM_NONE, FM_BET_XYZUNK  },
+/*  9 TSP  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,    FM_NONE,    FM_NONE,      FM_NONE,    FM_NONE, FM_BET_XYZUNK  },
+/* 10 VCH  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,    FM_NONE,    FM_NONE,      FM_NONE,    FM_NONE, FM_BET_XYZUNK  },
+/* 11 UNK  */ { FM_NONE, FM_BET_UNKXYZ, FM_NONE,  FM_NONE,      FM_BET_UNKXYZ, FM_BET_UNKXYZ, FM_NONE,    FM_NONE,    FM_NONE,      FM_NONE,    FM_NONE, FM_BET_UNKXYZ  }
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // DUP
 
 static eFM eMacro_Dup[DM_ENUMS] =
@@ -209,6 +228,24 @@ static eFM eMacro_Push[DM_ENUMS] =
     // NONE     BCD          BOL           DTE           FLT           INT           IVL          IVY,         TME          TSP           VCH          UNK
     { FM_NONE,  FM_PSH_BCD,  FM_PSH_BOL,   FM_PSH_DTE,   FM_PSH_FLT,   FM_PSH_INT,   FM_PSH_IVL,  FM_PSH_IVY,  FM_PSH_TME,  FM_PSH_TSP,   FM_PSH_VCH,  FM_PSH_UNK    };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INX ( in expression)
+
+static eFM eMacro_Inx[DM_ENUMS][DM_ENUMS] = {
+           //   NONE     BCD            BOL            DTE            FLT            INT            IVL            IVY            TME            TSP            VCH            UNK
+/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE        },
+/*  1 BCD  */ { FM_NONE, FM_INX_BCDBCD, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_INX_XYZUNK  },
+/*  2 BOL  */ { FM_NONE, FM_NONE,       FM_INX_BOLBOL, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE        },
+/*  3 DTE  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_INX_DTEDTE, FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE,       FM_INX_XYZUNK  },
+/*  4 FLT  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_INX_FLTFLT, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_INX_XYZUNK  },
+/*  5 INT  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_INX_INTINT, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_INX_XYZUNK  },
+/*  6 IVL  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_INX_IVLIVL, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_INX_XYZUNK  },
+/*  7 IVY  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_INX_IVYIVY, FM_NONE,       FM_NONE,       FM_NONE,       FM_INX_XYZUNK  },
+/*  8 TME  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE,       FM_INX_TMETME, FM_NONE,       FM_NONE,       FM_INX_XYZUNK  },
+/*  9 TSP  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_INX_TSPTSP, FM_NONE,       FM_INX_XYZUNK  },
+/* 10 VCH  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_INX_VCHVCH, FM_INX_XYZUNK  },
+/* 11 UNK  */ { FM_NONE, FM_INX_UNKXYZ, FM_INX_UNKXYZ, FM_INX_UNKXYZ, FM_INX_UNKXYZ, FM_INX_UNKXYZ, FM_INX_UNKXYZ, FM_INX_UNKXYZ, FM_INX_UNKXYZ, FM_INX_UNKXYZ, FM_INX_UNKXYZ, FM_INX_UNKXYZ  }
+};
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // SUBTRACT
 

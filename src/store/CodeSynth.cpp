@@ -702,6 +702,8 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
   // generate the init stub
   vGenerateInitStub("INDEXSCAN-OP"_Stz, sLabel);
 
+  StrLib::vAppendString(&m_azCodeCrs, "\n    i_CurrentRow = -1;");
+
   // generate the code for the index scan expr
   vGenerateExpr((char *) sIndexScanExpr, nullptr, EK_INDEXSCAN, false, m_pStreamDefLft);
 
@@ -861,6 +863,8 @@ void CodeSynth::vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz *sReturnLabel, 
   // generate the init stub
   vGenerateInitStub("INFLATE-CRW"_Stz, sLabel);
 
+  StrLib::vAppendString(&m_azCodeCrs, "\n    i_CurrentRow = -1;");
+
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
@@ -916,6 +920,8 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel) {
 
   // generate the init stub
   vGenerateInitStub("INFLATE-ROW"_Stz, sLabel);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    i_CurrentRow = -1;");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each row
@@ -1564,6 +1570,7 @@ void CodeSynth::vGenerateInitStub(Stz* szComment, Stz* sLabel) {
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    paW = &aCombinedT->m_aW[0];");
+
   StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[0] = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[1] = 10;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[2] = 100;");
@@ -2518,6 +2525,17 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     pTkn = m_pTokenVec->pGet(i_Tkn);
 #ifdef WITH_DEBUG_VERSION
     vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+
+    // dump the TypeStack
+    vTrace("--------------------------------------\n"_Stz);
+    vTrace("EXPRTYPE:\n"_Stz);
+    i8 nExpr = pExprType->nItems() - 1;
+
+    while ( nExpr >= 0) {
+      eDM eType = (eDM)pExprType->iPeek(nExpr--);
+      vTrace("%s\n"_Stz, aDM[eType]);
+    }
+    vTrace("--------------------------------------\n"_Stz);
 #endif
 
     if (pTkn->bSame(","_Stz)) {
@@ -2626,6 +2644,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // push the hash in expr list count
+    if (pTkn->szChars()->bContains("#"_Stz)) {
+      vPushCount(pExprStack, pExprType, pTkn);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // push the ordinal column on the expr stack
     if (pTkn->szChars()->bContains("$"_Stz)) {
       if ( ! bPushOrdCol(pExprStack, pExprType, eExprKind, pTkn)) {
@@ -2653,9 +2678,18 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the cast expression type
+    // get the between expression
     if (pTkn->bSame("between"_Stz)) {
       i_Tkn++;
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the in expression
+    if (pTkn->bSame("in"_Stz)) {
+      i_Tkn++;
+      vPushFunc(pExprStack, pExprType, ePreExp);
       continue;
     }
 
@@ -2845,10 +2879,21 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col, i_DupCtr);
 
 #ifdef WITH_DEBUG_VERSION
+
+  // dump the TypeStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("EXPRTYPE:\n"_Stz);
+  i8 nExpr = pExprType->nItems() - 1;
+
+  while ( nExpr >= 0) {
+    eDM eType = (eDM)pExprType->iPeek(nExpr--);
+    vTrace("%s\n"_Stz, aDM[eType]);
+  }
+
   // dump the ExprStack
   vTrace("--------------------------------------\n"_Stz);
   vTrace("EXPRSTACK:\n"_Stz);
-  i8 nExpr = m_pExprStack->nValues() - 1;
+  nExpr = m_pExprStack->nValues() - 1;
 
   while ( nExpr >= 0) {
     pTypedCell = m_pExprStack->aPeekItem(nExpr--);
@@ -3311,6 +3356,29 @@ void CodeSynth::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, Stream
 }
 
 /*----------------------------------------------------------------------------*/
+/* push count                                                                 */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPushCount(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s256 sOperation;
+  eDM eExprType;
+
+  Stz *sCount = pTkn->szChars() + 1;
+  i8 iCount = sCount->iToI8();
+  sOperation.vSprintCat("_PSH_INT(%lld)"_Stz, iCount);
+  pExprStack->vPushStz(sOperation);
+
+  // pop out iCount values off the typeStack
+  while (iCount--)
+    eExprType = (eDM)pTypeStack->iPop();
+
+  // push type once
+  pTypeStack->vPush(eExprType);
+}
+
+/*----------------------------------------------------------------------------*/
 /* push integer literal                                                       */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn, eDM eLiteral) {
@@ -3696,16 +3764,6 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       break;
 
     case EK_FILTER:
-      switch(ePreExp) {
-        case PE_BET:
-          sPush.vSprint("_BET_INTINT(aCombinedT->m_iErrorCode)\n"_Stz);
-          pExprStack->vPushStz(sPush);
-          break;
-        case PE_EXP:
-          break;
-        default:
-          NEVER_REACH;
-      }
       pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
       break;
 
@@ -3746,17 +3804,6 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
 
     case EK_PROJECT:
 
-      switch(ePreExp) {
-        case PE_EXP:
-        case PE_CST:
-           break;
-        case PE_BET:
-          sPush.vSprint("_BET_INTINT()\n"_Stz);
-          pExprStack->vPushStz(sPush);
-          break;
-        default:
-          NEVER_REACH;
-      }
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
       sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
@@ -3784,6 +3831,38 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       NEVER_REACH;
   }
 
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* push assign column on the exprStack                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s256 sOperation;
+
+  eDM eExpr1 = (eDM)pTypeStack->iPop();
+  eDM eExpr2 = (eDM)pTypeStack->iPop();
+
+  switch(ePreExp) {
+
+    case PE_BET:
+      sOperation = aFM[eMacro_Bet[eExpr1][eExpr2]];
+      sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      break;
+
+    case PE_INX:
+      sOperation = aFM[eMacro_Inx[eExpr1][eExpr2]];
+      sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      break;
+
+    default:
+      NEVER_REACH;
+  }
 
 }
 
@@ -3961,6 +4040,30 @@ void CodeSynth::vTopIndexTraversal(IndexDef* pIndexDef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate code for IN expr                                                  */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateInExpr(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    bFilterResult = 0;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iArg1 = *(--paW);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iInCount = *(--paW);");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    while(iInCount--) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      iArg2 = *(--paW);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      if (iArg1 == iArg2) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n         bFilterResult = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n         break;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    while(iInCount-- > 0) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      iArg2 = *(--paW);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    *(paW++) = bFilterResult;");
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate code for check for process row                                    */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vGenerateProcessRow(Stz* sLabel)
@@ -4003,9 +4106,14 @@ void CodeSynth::vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent)
   while ( nExpr >= 0) {
     pTypedCell = pTypedStack->aPeekItem(nExpr--);
     Stz* sExpr = pTypedCell->szStz();
-    sCopy.vSprint("\n    %s%s"_Stz, sIndent, sExpr->azChar());
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  }
+//    if (sExpr->bSame("_INX"_Stz)) {
+//      vGenerateInExpr();
+//    }
+//    else {
+      sCopy.vSprint("\n    %s%s"_Stz, sIndent, sExpr->azChar());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    }
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
