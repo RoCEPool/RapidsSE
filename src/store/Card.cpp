@@ -1665,14 +1665,14 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_RBOUND:                     vPrintProperties(pRibbon,iDepth); break;
                     
     case CK_SBYELIST:                   vPrintProperties(pRibbon,iDepth); break;
-    case CK_SCAN:          vScanPrint                   (pRibbon,iDepth); break;
+    case CK_SCAN:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_SEND:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_SORT:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_SORTDIRN:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGE:         vStagePrint                  (pRibbon,iDepth); break;
     case CK_STREAMDEF:     vStreamDefPrint              (pRibbon,iDepth); break;
           
-    case CK_TABLE:                      vPrintProperties(pRibbon,iDepth); break;
+    case CK_TABLE:         vTablePrint                  (pRibbon,iDepth); break;
     case CK_TERM:          vTermPrint                   (pRibbon,iDepth); break;
     case CK_TYPE:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_TYPEDEXPR:     vProjectionPrint             (pRibbon,iDepth); break;
@@ -1929,39 +1929,41 @@ void Card::vScanPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
+  NEVER_REACH;
+  
   //vTrace("vScanPrint\n"_Stz);
   
-  Card_Scan* pCard_Scan = _pCard_Scan(this);
-  
-  Card_Table* pCard_Table = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
-  
-  Table* pTable = pCard_Table->pTable();
-
-  pRibbon->vSput(FR_NAME,pTable->szTableNm());
-
-  if (pRibbon->iArea())
-    return;
-  
-  //pCardTable->vPrintPartition(pRibbon);
-  ShardDef* pShardDef = pTable->pShardDef();
-  Column* pColumn = pShardDef->pGetColumn(0);
-  
-  pRibbon->vSput(FR_ATOM_SLASH,pColumn->szColNm());
-
-  
-  //pCardTable->vPrintSize(pRibbon);
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  pRibbon->vSput(FR_SIZE,pStreamDef->jTableSize());
-
-  
-  //pCardTable->vPrintPrimary(pRibbon);
-  IdxVec*   pIdxVec    = pTable->pIdxVec();
-  Index*    pIndex     = pIdxVec->pGet(0);
-  IndexDef* pIndexDef  = pIndex->pIndexDef();
-  Column*   pIdxColumn = pIndexDef->pGetColumn(0);
-  
-  pRibbon->vSput(FR_ATOM_SQUARE,pIdxColumn->szColNm());
+//  Card_Scan* pCard_Scan = _pCard_Scan(this);
+//  
+//  Card_Table* pCard_Table = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
+//  
+//  Table* pTable = pCard_Table->pTable();
+//
+//  pRibbon->vSput(FR_NAME,pTable->szTableNm());
+//
+//  if (pRibbon->iArea())
+//    return;
+//  
+//  //pCardTable->vPrintPartition(pRibbon);
+//  ShardDef* pShardDef = pTable->pShardDef();
+//  Column* pColumn = pShardDef->pGetColumn(0);
+//  
+//  pRibbon->vSput(FR_ATOM_SLASH,pColumn->szColNm());
+//
+//  
+//  //pCardTable->vPrintSize(pRibbon);
+//  StreamDef* pStreamDef = pTable->pStreamDef();
+//
+//  pRibbon->vSput(FR_SIZE,pStreamDef->jTableSize());
+//
+//  
+//  //pCardTable->vPrintPrimary(pRibbon);
+//  IdxVec*   pIdxVec    = pTable->pIdxVec();
+//  Index*    pIndex     = pIdxVec->pGet(0);
+//  IndexDef* pIndexDef  = pIndex->pIndexDef();
+//  Column*   pIdxColumn = pIndexDef->pGetColumn(0);
+//  
+//  pRibbon->vSput(FR_ATOM_SQUARE,pIdxColumn->szColNm());
 }
 
 /*----------------------------------------------------------------------------*/
