@@ -809,15 +809,6 @@ eBK Card::eBound(void)
       RASSERT(0);
       break;
   }
-  
-//       if (szTerm->bSame("<"_Stz))       return BK_UBOUND;
-//  else if (szTerm->bSame("<="_Stz))      return BK_UBOUND;
-//  else if (szTerm->bSame("="_Stz))       return BK_EBOUND;
-//  else if (szTerm->bSame("=="_Stz))      return BK_EBOUND;
-//  else if (szTerm->bSame(">="_Stz))      return BK_LBOUND;
-//  else if (szTerm->bSame(">"_Stz))       return BK_LBOUND;
-//
-//  else return BK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1846,21 +1837,20 @@ void Card::vCandIndexPrint(Ribbon* pRibbon, i8 iDepth)
                  ,pIndexDef->bIsUnique()
                     ? "unique"_Stz : "not unique"_Stz
                  );
-  
+
+  i8 nColumns = pIndexDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    Column* pIdxCol = pIndexDef->pGetColumn(i_Col);
+    
+    pRibbon->vSput(FR_ATOM_SQUARE,pIdxCol->szColNm());
+  }
+
   i8 nBuffers = 0;
   i8 nEntries = 0;
   pIndex->vAnalyze(nBuffers,nEntries);
   pRibbon->vSprintRight("buffers %lld"_Stz,nBuffers);
   pRibbon->vSprintRight("entries %lld"_Stz,nEntries);
 
-  
-  i8 nColumns = pIndexDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = pIndexDef->pGetColumn(i_Col);
-    
-    pRibbon->vSput(FR_NAME,pColumn->szColNm());
-  }
-  
   vPrintProperties(pRibbon,iDepth);
 }
 
@@ -1883,9 +1873,9 @@ void Card::vIndexPrint(Ribbon* pRibbon, i8 iDepth)
   
   i8 nColumns = pIndexDef->nColumns();
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = pIndexDef->pGetColumn(i_Col);
+    Column* pIdxCol = pIndexDef->pGetColumn(i_Col);
     
-    pRibbon->vSput(FR_NAME,pColumn->szColNm());
+    pRibbon->vSput(FR_ATOM_SQUARE,pIdxCol->szColNm());
   }
 }
 
