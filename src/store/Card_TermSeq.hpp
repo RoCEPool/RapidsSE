@@ -5,12 +5,12 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_SUB.hpp"
 #include "eTE.h"
 
 namespace STORE
 {
-  class Card_TermSeq : public Card
+  class Card_TermSeq : public Card_SUB
   {  
   public:
     void* operator new(size_t);

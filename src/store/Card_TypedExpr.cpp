@@ -19,7 +19,7 @@ __bIsCard(STORE,Card_TypedExpr,CK_TYPEDEXPR)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TypedExpr::Card_TypedExpr(void)
-: Card(CK_TYPEDEXPR)
+: Card_SUB(CK_TYPEDEXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

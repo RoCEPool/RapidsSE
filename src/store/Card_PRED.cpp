@@ -16,7 +16,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_PRED::Card_PRED(eCK eCard)
-: Card(eCard)
+: Card_SUB(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

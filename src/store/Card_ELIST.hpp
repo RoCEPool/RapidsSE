@@ -5,12 +5,11 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
-#include "Card.hpp"
+#include "Card_SUB.hpp"
 
 namespace STORE
 {
-  class Card_ELIST : public Card
+  class Card_ELIST : public Card_SUB
   {  
   public:
     Card_ELIST(eCK eCard);

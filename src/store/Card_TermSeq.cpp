@@ -20,7 +20,7 @@ __bIsCard(STORE,Card_TermSeq,CK_TERMSEQ)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TermSeq::Card_TermSeq(void)
-: Card(CK_TERMSEQ)
+: Card_SUB(CK_TERMSEQ)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

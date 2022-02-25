@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_SortDirn,CK_SORTDIRN)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_SortDirn::Card_SortDirn(Stz* szDirn)
-: Card(CK_SORTDIRN)
+: Card_SUB(CK_SORTDIRN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
