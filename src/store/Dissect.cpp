@@ -424,7 +424,7 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 
   Table* pTable = AM::pTableFind(szTableNm);
   Index* pIndex = pTable->pFindIndex(szIndexNm);
-  Card_IndexScan* pCard_IndexScan = new Card_IndexScan(pIndex);
+  Card_IndexScan* pCard_IndexScan = new Card_IndexScan;
 
   Card_Table* pCard_Table = new Card_Table(pTable);
   pCard_IndexScan->vAppend(pCard_Table);

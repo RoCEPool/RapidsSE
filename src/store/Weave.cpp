@@ -320,7 +320,7 @@ void Weave::vOpIndexScan(Card_IndexScan* pCard_IndexScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  Index* pIndex = pCard_IndexScan->pIndex();
+  Index* pIndex = pCard_IndexScan->pFindSubCard(CK_INDEX)->pIndex();
   s4K sExpr;
   
   vIndexScan(sExpr,pCard_IndexScan);

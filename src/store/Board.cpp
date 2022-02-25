@@ -485,7 +485,7 @@ void Board::vAdd_IndexScan(void)
   
   //m_pFilter->vDump();
 
-  Card_IndexScan* pCard_IndexScan = new Card_IndexScan(m_pIndex);
+  Card_IndexScan* pCard_IndexScan = new Card_IndexScan;
 
   Card_Index* pCard_Index = new Card_Index(m_pIndex);
   pCard_IndexScan->vAppend(pCard_Index);
