@@ -22,6 +22,33 @@
   EC_NONE                                                                  \
 )
 
+#define _OF_BCDSUB                                                         \
+(                                                                          \
+  (bcdArg1.m_iMantissa < 0 &&                                              \
+  bcdArg2.m_iMantissa > C_BCD_MAX + bcdArg1.m_iMantissa) ?                 \
+  EC_ARITHMETIC_OVERFLOW :                                                 \
+  (bcdArg1.m_iMantissa > 0 &&                                              \
+  bcdArg2.m_iMantissa < C_BCD_MIN + bcdArg1.m_iMantissa) ?                 \
+  EC_ARITHMETIC_UNDERFLOW :                                                \
+  EC_NONE                                                                  \
+)
+
+#define _OF_BCDMUL                                                         \
+(                                                                          \
+  (bcdArg1.m_iMantissa == 0 || bcdArg2.m_iMantissa == 0) ?                 \
+  EC_NONE :                                                                \
+  (bcdArg1.m_iMantissa == -1 && bcdArg2.m_iMantissa == C_BCD_MIN) ?        \
+  EC_ARITHMETIC_OVERFLOW :                                                 \
+  (bcdArg1.m_iMantissa == C_BCD_MIN && bcdArg2.m_iMantissa == -1) ?        \
+  EC_ARITHMETIC_OVERFLOW :                                                 \
+  (bcdArg2.m_iMantissa > C_BCD_MAX / bcdArg1.m_iMantissa) ?                \
+  EC_ARITHMETIC_OVERFLOW :                                                 \
+  (bcdArg1.m_iMantissa != -1 &&                                            \
+  bcdArg2.m_iMantissa < C_BCD_MIN / bcdArg1.m_iMantissa) ?                 \
+  EC_ARITHMETIC_OVERFLOW :                                                 \
+  EC_NONE                                                                  \
+)
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Overflow detection i8
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -109,7 +136,44 @@
   NEVER_REACH;
 
 #define _SUB_BCDBCD(eErrorCode) \
-  NEVER_REACH;
+  {                                                                        \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    if (eErrorCode != EC_NONE ||                                           \
+        bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+        if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                          \
+          *paW++ = bcdArg2.m_iAsI8;                                        \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+          _RESCALE_BCD(eErrorCode)                                         \
+          bcdArg1.m_iAsI8 = *(--paW);                                      \
+          bcdArg2.m_iAsI8 = *(--paW);                                      \
+        }                                                                  \
+        else if(bcdArg1.m_iScale > bcdArg2.m_iScale) {                     \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+          *paW++ = bcdArg2.m_iAsI8;                                        \
+          _RESCALE_BCD(eErrorCode)                                         \
+          bcdArg2.m_iAsI8 = *(--paW);                                      \
+          bcdArg1.m_iAsI8 = *(--paW);                                      \
+        }                                                                  \
+        if(eErrorCode != EC_NONE) {                                        \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        eErrorCode = _OF_BCDSUB;                                           \
+        if(eErrorCode != EC_NONE) {                                        \
+          *paW++ = C_DATUM_NULL;                                           \
+        }                                                                  \
+        else {                                                             \
+          bcdArg1.m_iMantissa = bcdArg1.m_iMantissa - bcdArg2.m_iMantissa; \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+        }                                                                  \
+      }                                                                    \
+    }                                                                      \
+  }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FLOAT
