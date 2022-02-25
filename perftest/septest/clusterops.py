@@ -8,6 +8,9 @@ import septest.errors as errors
 
 LOG = logging.getLogger(__name__)
 
+# How long to wait before killing the RapidsSE installation?
+C_INSTALL_TIMEOUT_SEC = 60
+
 
 def build_installer() -> pathlib.Path:
     """
@@ -102,6 +105,7 @@ def customise_cluster_cfg_hostnames(cluster_cfg_path: pathlib.Path,
 
     new_content = "".join(new_lines)
     config_copy.write(new_content)
+    config_copy.flush()
 
     LOG.info(f"Customised temporary cluster config file written out to {config_copy.name}")
     LOG.debug(f"Customised config file contents:\n{new_content}")
@@ -116,22 +120,31 @@ def install_rapidsse(install_file: pathlib.Path, cluster_config_path: pathlib.Pa
     assert install_file.exists()
     assert cluster_config_path.exists()
 
-    command = [str(install_file), "--", "--config", str(cluster_config_path), "--script"]
+    command = [str(install_file), "--quiet", "--",
+               "--script", "--debug", "--config", str(cluster_config_path)]
 
-    LOG.info(f"About to install the RapidsSE cluster with the customised cluster config file "
-             f"at: {str(cluster_config_path)}")
+    LOG.info(f"About to install the RapidsSE cluster with the following command: {' '.join(command)}")
 
     try:
-        subprocess.run(command,
-                       capture_output=True,
-                       check=True,
-                       shell=True,
-                       text=True)
+        result = subprocess.run(command,
+                                capture_output=True,
+                                check=True,
+                                shell=False,
+                                timeout=C_INSTALL_TIMEOUT_SEC,
+                                text=True)
 
     except subprocess.CalledProcessError as e:
         msg = f"Error while installing RapidsSE." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
         raise errors.InstallationError(msg)
+
+    except subprocess.TimeoutExpired as e:
+        msg = f"Installation of RapidsSE timed out after {e.timeout} seconds." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.InstallationError(msg)
+
+    LOG.debug(f"Installation output (stdout):\n{result.stdout}")
 
     LOG.info("RapidsSE cluster installed successfully")

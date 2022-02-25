@@ -417,7 +417,7 @@ def __create_jobresult_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyc
     assert row is not None
 
     job_result_id = row[0]
-    LOG.debug(f"Got jobResultId of {job_result_id}")
+    LOG.info(f"Got jobResultId of {job_result_id}")
     return job_result_id
 
 
