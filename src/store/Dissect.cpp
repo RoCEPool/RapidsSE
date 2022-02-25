@@ -691,45 +691,46 @@ Card_AggElist* Dissect::pCollectAggElist(Card_TermSeq* pCard_TermSeq)
     
     // TYPE
     
-    if (pCard_Term_head->bIsSame("TYPE"_Stz)) {
-      //pCard_TermSeq->vPush(pCard_Term_head);
-      if (! pCard_TypedExpr)
-        pCard_TypedExpr = new Card_TypedExpr;
-      
-      // column type (e.g. BOOLEAN)
-      Card_Type* pCard_Type = pCollectType(pCard_TermSeq);
-      pCard_TypedExpr->vAppend(pCard_Type);
-      continue;
-    }
-    
-    // AS
-    
-    if (pCard_Term_head->bIsSame("AS"_Stz)) {
-      //pCard_TermSeq->vPush(pCard_Term_head);
-      if (! pCard_TypedExpr)
-        pCard_TypedExpr = new Card_TypedExpr;
+//    if (pCard_Term_head->bIsSame("TYPE"_Stz)) {
+//      //pCard_TermSeq->vPush(pCard_Term_head);
+//      if (! pCard_TypedExpr)
+//        pCard_TypedExpr = new Card_TypedExpr;
+//
+//      // column type (e.g. BOOLEAN)
+//      Card_Type* pCard_Type = pCollectType(pCard_TermSeq);
+//      pCard_TypedExpr->vAppend(pCard_Type);
+//      continue;
+//    }
+//
+//    // AS
+//
+//    if (pCard_Term_head->bIsSame("AS"_Stz)) {
+//      //pCard_TermSeq->vPush(pCard_Term_head);
+//      if (! pCard_TypedExpr)
+//        pCard_TypedExpr = new Card_TypedExpr;
+//
+//      Card_As* pCard_As = pCollectAs(pCard_TermSeq);
+//      pCard_TypedExpr->vAppend(pCard_As);
+//      continue;
+//    }
+//
+//
+//    // PROJECT/AGGREG
+//
+//    if (! pCard_TypedExpr)
+//      pCard_TypedExpr = new Card_TypedExpr;
+//
+//    // PREDICATE
+//
+//    Card_CalcExpr* pCard_CalcExpr = pCollectCalcExpr(pCard_TermSeq);
+//    pCard_TypedExpr->vAppend(pCard_CalcExpr);
 
-      Card_As* pCard_As = pCollectAs(pCard_TermSeq);
-      pCard_TypedExpr->vAppend(pCard_As);
-      continue;
-    }
-    
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    
-    //pCard_TermSeq->vPush(pCard_Term_head);
-    
-    // PROJECT/AGGREG
 
-    if (! pCard_TypedExpr)
-      pCard_TypedExpr = new Card_TypedExpr;
+    pCard_TypedExpr = pCollectTypedCalc(pCard_TermSeq);
     
-    // PREDICATE
-    
-    Card_CalcExpr* pCard_CalcExpr = pCollectCalcExpr(pCard_TermSeq);
-    pCard_TypedExpr->vAppend(pCard_CalcExpr);
     pCard_AggElist->vAppend(pCard_TypedExpr);
     pCard_TypedExpr = nullptr;
-
   }
   
   return pCard_AggElist;
