@@ -43,18 +43,18 @@ void Card_PRED::vCullByKids(void)
   
   i8 nChildCards = nItems();
   for (i8 i_ChildCard = 0; i_ChildCard < nChildCards; i_ChildCard++) {
-    Card* pChild = pGet(i_ChildCard);
-    if (! pChild->bIsPred())
+    Card* pCard_Child = pGet(i_ChildCard);
+    if (! pCard_Child->bIsPred())
       continue;
     
-    Card_PRED* pChildPRED = (Card_PRED*)pChild;
+    Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_Child;
     
-    pChildPRED->vCullByKids();
+    pCard_ChildPRED->vCullByKids();
     
-    if (0 == pChildPRED->nItems()) {
+    if (0 == pCard_ChildPRED->nItems()) {
     
-      vRemove(pChildPRED);
-      delete pChildPRED;
+      vRemove(pCard_ChildPRED);
+      delete pCard_ChildPRED;
     
       i_ChildCard--;
       nChildCards--;
@@ -62,12 +62,12 @@ void Card_PRED::vCullByKids(void)
       continue;
     }
     
-    if (1 == pChildPRED->nItems()) {
+    if (1 == pCard_ChildPRED->nItems()) {
 
-      Card_PRED* pKidPRED = (Card_PRED*)pChild->pPop();
+      Card_PRED* pCard_KidPRED = (Card_PRED*)pCard_Child->pPop();
 
-      vReplace(pChildPRED,pKidPRED);
-      delete pChildPRED;
+      vReplace(pCard_ChildPRED,pCard_KidPRED);
+      delete pCard_ChildPRED;
     
       continue;
     }

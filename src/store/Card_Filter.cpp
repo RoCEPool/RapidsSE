@@ -124,7 +124,7 @@ void Card_Filter::vReduceFilter(void)
   Card_TypedExpr* pCard_TypedExpr =
     _pCard_TypedExpr(pFindSubCard(CK_TYPEDEXPR));
 
-  pCard_TypedExpr->vReduceFilter();
+  pCard_TypedExpr->vReduceBoolExpr();
 }
 
 /*----------------------------------------------------------------------------*/

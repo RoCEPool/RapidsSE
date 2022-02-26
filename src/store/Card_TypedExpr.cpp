@@ -68,19 +68,36 @@ bool Card_TypedExpr::bHasBounds(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_TypedExpr::vReduceFilter(void)
+void Card_TypedExpr::vReduceBoolExpr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_BoolExpr* pCard_BoolExpr = _pCard_BoolExpr(pFindSubCard(CK_BOOLEXPR));
+
+  Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_BoolExpr->pGet(0);
+
+  pCard_ChildPRED->vCullByKids();
   
-  pCard_BoolExpr->vCullByKids();
   
-  if (pCard_BoolExpr->nItems())
+  if (1 == pCard_ChildPRED->nItems()) {
+
+    Card_PRED* pCard_KidPRED = (Card_PRED*)pCard_ChildPRED->pPop();
+
+    pCard_BoolExpr->vReplace(pCard_ChildPRED,pCard_KidPRED);
+    delete pCard_ChildPRED;
+    
+    pCard_ChildPRED = pCard_KidPRED;
+  }
+  
+  
+  if (pCard_ChildPRED->nItems())
     return;
   
+  pCard_BoolExpr->vRemove(pCard_ChildPRED);
   vRemove(pCard_BoolExpr);
+
   delete pCard_BoolExpr;
+  delete pCard_ChildPRED;
 }
 
 /*============================================================================*/

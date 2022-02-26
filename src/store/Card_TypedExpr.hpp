@@ -21,7 +21,7 @@ namespace STORE
     
     Card_CmpPred* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
-    void vReduceFilter(void);
+    void vReduceBoolExpr(void);
   };
 
   Card_TypedExpr* _pCard_TypedExpr(void* aAddr);
