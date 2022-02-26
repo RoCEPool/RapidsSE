@@ -128,7 +128,7 @@ Stz* Weave::szWeavedStmt(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : pipeline <name>                                               */
+/* weave : pipeline <name>                                                    */
 /*----------------------------------------------------------------------------*/
 void Weave::vPipeline(void)
 {
@@ -138,7 +138,7 @@ void Weave::vPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : tag ... endTag                                                */
+/* weave : tag ... endTag                                                     */
 /*----------------------------------------------------------------------------*/
 void Weave::vTags(void)
 {
@@ -148,7 +148,7 @@ void Weave::vTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : begin                                                         */
+/* weave : begin                                                              */
 /*----------------------------------------------------------------------------*/
 void Weave::vBegin(void)
 {
@@ -158,7 +158,7 @@ void Weave::vBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : end ;                                                         */
+/* weave : end ;                                                              */
 /*----------------------------------------------------------------------------*/
 void Weave::vEnd(void)
 {
@@ -172,7 +172,7 @@ void Weave::vEnd(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : stage S00 on origin :                                         */
+/* weave : stage S00 on origin :                                              */
 /*----------------------------------------------------------------------------*/
 void Weave::vStageFirst(void)
 {
@@ -188,7 +188,7 @@ void Weave::vStageFirst(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : stage Snn on ??? :                                            */
+/* weave : stage Snn on ??? :                                                 */
 /*----------------------------------------------------------------------------*/
 void Weave::vStageNext(Card_Stage* pCard_Stage)
 {
@@ -209,7 +209,7 @@ void Weave::vStageNext(Card_Stage* pCard_Stage)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : stage Snn on origin :                                         */
+/* weave : stage Snn on origin :                                              */
 /*----------------------------------------------------------------------------*/
 void Weave::vStageLast(void)
 {
@@ -233,7 +233,7 @@ void Weave::vStageLast(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : aggreg <compiled> <expr>                                      */
+/* weave : aggreg <compiled> <expr>                                           */
 /*----------------------------------------------------------------------------*/
 void Weave::vOpAggreg(Card_Aggreg* pCard_Aggreg)
 {
@@ -250,7 +250,7 @@ void Weave::vOpAggreg(Card_Aggreg* pCard_Aggreg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : combine                                                       */
+/* weave : combine 0                                                          */
 /*----------------------------------------------------------------------------*/
 void Weave::vOpCombine(Card_Combine* pCard_Combine)
 {
@@ -267,7 +267,7 @@ void Weave::vOpCombine(Card_Combine* pCard_Combine)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : filter <compiled> <expr>                                      */
+/* weave : filter <compiled> <expr>                                           */
 /*----------------------------------------------------------------------------*/
 void Weave::vOpFilter(Card_Filter* pCard_Filter)
 {
@@ -284,7 +284,7 @@ void Weave::vOpFilter(Card_Filter* pCard_Filter)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : indexJoin <compiled> <tableNm> <indexNm> <expr>               */
+/* weave : indexJoin <compiled> <tableNm> <indexNm> <expr>                    */
 /*----------------------------------------------------------------------------*/
 void Weave::vOpIndexJoin(Card_IndexJoin* pCard_IndexJoin)
 {
@@ -314,7 +314,7 @@ void Weave::vOpIndexJoin(Card_IndexJoin* pCard_IndexJoin)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : indexScan <compiled> <tableNm> <indexNm> <expr>               */
+/* weave : indexScan <compiled> <tableNm> <indexNm> <expr>                    */
 /*----------------------------------------------------------------------------*/
 void Weave::vOpIndexScan(Card_IndexScan* pCard_IndexScan)
 {
@@ -336,7 +336,7 @@ void Weave::vOpIndexScan(Card_IndexScan* pCard_IndexScan)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : limit <compiled> <rows>                                       */
+/* weave : limit <compiled> <rows>                                            */
 /*----------------------------------------------------------------------------*/
 void Weave::vOpLimit(Card_Limit* pCard_Limit)
 {
@@ -353,7 +353,7 @@ void Weave::vOpLimit(Card_Limit* pCard_Limit)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : project <compiled> <expr>                                     */
+/* weave : project <compiled> <expr>                                          */
 /*----------------------------------------------------------------------------*/
 void Weave::vOpProject(Card_Project* pCard_Project)
 {
@@ -370,7 +370,7 @@ void Weave::vOpProject(Card_Project* pCard_Project)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : scan <tableNm>                                                */
+/* weave : scan <tableNm>                                                     */
 /*----------------------------------------------------------------------------*/
 void Weave::vOpScan(Card_Scan* pCard_Scan)
 {
@@ -395,7 +395,7 @@ void Weave::vOpScan(Card_Scan* pCard_Scan)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : sort ???                                                      */
+/* weave : sort ???                                                           */
 /*----------------------------------------------------------------------------*/
 void Weave::vOpSort(Card_Sort* pCard_Sort)
 {
@@ -415,30 +415,12 @@ void Weave::vOpSort(Card_Sort* pCard_Sort)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* expr for combine                                                           */
-/*----------------------------------------------------------------------------*/
-void Weave::vCombine(Stz* szRpnExpr, Card_Combine* pCard_Combine)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* expr for aggreg                                                            */
+/* produce <expr> for aggreg op                                               */
 /*----------------------------------------------------------------------------*/
 void Weave::vAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  //  Card* pByListCard = pBoard_I->pNext();
-  //  if (! pByListCard || CK_GBYELIST != pByListCard->eCard())
-  //    return;
     
-  //Card_ByList* pCard_ByList = _pCard_ByList(pByListCard);
-  
   Card_AggElist* pCard_AggElist =
     _pCard_AggElist(pCard_Aggreg->pFindSubCard(CK_AGGELIST));
 
@@ -455,10 +437,42 @@ void Weave::vAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
     vTypedExpr(szRpnExpr,pCard_TypedExpr);
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Card_GbyElist* pCard_GbyElist =
+    _pCard_GbyElist(pCard_Aggreg->pFindSubCard(CK_GBYELIST));
+  
+  if (! pCard_GbyElist)
+    return;
+
+  szRpnExpr->vConcat(" groupBy "_Stz);
+
+  nSubCards = pCard_GbyElist->nItems();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pCard_SUB = pCard_GbyElist->pGet(i_SubCard);
+    if (! pCard_SUB->bIsCard(CK_TYPEDEXPR))
+      return;
+    
+    if (i_SubCard)
+      szRpnExpr->vConcat(" , "_Stz);
+
+    Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pCard_SUB);
+    vTypedExpr(szRpnExpr,pCard_TypedExpr);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
-/* expr for filter                                                            */
+/* expr for combine                                                           */
+/*----------------------------------------------------------------------------*/
+void Weave::vCombine(Stz* szRpnExpr, Card_Combine* pCard_Combine)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  // ???
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for filter op                                               */
 /*----------------------------------------------------------------------------*/
 void Weave::vFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
 {
@@ -476,15 +490,17 @@ void Weave::vFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
 }
 
 /*----------------------------------------------------------------------------*/
-/* expr for filter                                                            */
+/* produce <expr> for indexJoin op                                            */
 /*----------------------------------------------------------------------------*/
 void Weave::vIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  // ????
 }
 
 /*----------------------------------------------------------------------------*/
-/* expr for indexScan                                                         */
+/* produce <expr> for indexScan op                                            */
 /*----------------------------------------------------------------------------*/
 void Weave::vIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
 {
@@ -633,7 +649,7 @@ void Weave::vIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
 }
 
 /*----------------------------------------------------------------------------*/
-/* expr for limit                                                             */
+/* produce <expr> for limit op                                                */
 /*----------------------------------------------------------------------------*/
 void Weave::vLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
 {
@@ -645,7 +661,7 @@ void Weave::vLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
 }
 
 /*----------------------------------------------------------------------------*/
-/* expr for project                                                           */
+/* produce <expr> for project op                                              */
 /*----------------------------------------------------------------------------*/
 void Weave::vProject(Stz* szRpnExpr, Card_Project* pCard_Project)
 {
@@ -677,7 +693,7 @@ void Weave::vProject(Stz* szRpnExpr, Card_Project* pCard_Project)
 }
 
 /*----------------------------------------------------------------------------*/
-/* expr for scan                                                              */
+/* produce <expr> for scan op                                                 */
 /*----------------------------------------------------------------------------*/
 void Weave::vScan(Stz* szRpnExpr, Card_Scan* pCard_Scan)
 {
@@ -685,7 +701,7 @@ void Weave::vScan(Stz* szRpnExpr, Card_Scan* pCard_Scan)
 }
 
 /*----------------------------------------------------------------------------*/
-/* expr for sort                                                              */
+/* produce <expr> for sort op                                                 */
 /*----------------------------------------------------------------------------*/
 void Weave::vSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
 {
@@ -698,7 +714,7 @@ void Weave::vSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
 
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : filter <compiled> <expr>                                      */
+/* produce <expr> for pCard_BoolExpr                                          */
 /*----------------------------------------------------------------------------*/
 void Weave::vBoolExpr(Stz* szRpnExpr, Card_BoolExpr* pCard_BoolExpr)
 {
@@ -710,7 +726,7 @@ void Weave::vBoolExpr(Stz* szRpnExpr, Card_BoolExpr* pCard_BoolExpr)
 
 
 /*----------------------------------------------------------------------------*/
-/* expr for predicate                                                         */
+/* produce <expr> for pCard_CalcExpr                                          */
 /*----------------------------------------------------------------------------*/
 void Weave::vCalcExpr(Stz* szRpnExpr, Card_CalcExpr* pCard_CalcExpr)
 {
@@ -741,7 +757,7 @@ void Weave::vCalcExpr(Stz* szRpnExpr, Card_CalcExpr* pCard_CalcExpr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* expr for projection                                                        */
+/* produce <expr> for pCard_TypedExpr                                         */
 /*----------------------------------------------------------------------------*/
 void Weave::vTypedExpr(Stz* szRpnExpr, Card_TypedExpr* pCard_TypedExpr)
 {
@@ -780,7 +796,7 @@ void Weave::vTypedExpr(Stz* szRpnExpr, Card_TypedExpr* pCard_TypedExpr)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* expr for as                                                                */
+/* produce <expr> for pCard_As                                                */
 /*----------------------------------------------------------------------------*/
 void Weave::vAs(Stz* szRpnExpr, Card_As* pCard_As)
 {
@@ -790,7 +806,7 @@ void Weave::vAs(Stz* szRpnExpr, Card_As* pCard_As)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : filter <compiled> <expr>                                      */
+/* produce <expr> for pCard_Term                                              */
 /*----------------------------------------------------------------------------*/
 void Weave::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
 {
@@ -800,7 +816,7 @@ void Weave::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : filter <compiled> <expr>                                      */
+/* produce <expr> for pCard_Type                                              */
 /*----------------------------------------------------------------------------*/
 void Weave::vType(Stz* szRpnExpr, Card_Type* pCard_Type)
 {
@@ -813,7 +829,7 @@ void Weave::vType(Stz* szRpnExpr, Card_Type* pCard_Type)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : filter <compiled> <expr>                                      */
+/* produce <expr> for pCard_PRED                                              */
 /*----------------------------------------------------------------------------*/
 void Weave::vPred(Stz* szRpnExpr, Card_PRED* pCard_PRED)
 {
@@ -849,7 +865,7 @@ void Weave::vPred(Stz* szRpnExpr, Card_PRED* pCard_PRED)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : filter <compiled> <expr>                                      */
+/* produce <expr> for pCard_OrExpr                                            */
 /*----------------------------------------------------------------------------*/
 void Weave::vPredOr(Stz* szRpnExpr, Card_OrPred* pCard_OrPred)
 {
@@ -865,7 +881,7 @@ void Weave::vPredOr(Stz* szRpnExpr, Card_OrPred* pCard_OrPred)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : filter <compiled> <expr>                                      */
+/* produce <expr> for pCard_AndExpr                                           */
 /*----------------------------------------------------------------------------*/
 void Weave::vPredAnd(Stz* szRpnExpr, Card_AndPred* pCard_AndPred)
 {
@@ -881,7 +897,7 @@ void Weave::vPredAnd(Stz* szRpnExpr, Card_AndPred* pCard_AndPred)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : filter <compiled> <expr>                                      */
+/* produce <expr> for pCard_CmpExpr                                           */
 /*----------------------------------------------------------------------------*/
 void Weave::vPredCmp(Stz* szRpnExpr, Card_CmpPred* pCard_CmpPred)
 {
@@ -931,7 +947,7 @@ void Weave::vConcat_vargs(Stz* aFormat, va_list xArgs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end stage                                                                  */
+/* end-of-line after stage                                                    */
 /*----------------------------------------------------------------------------*/
 void Weave::vEolStage(void)
 {
@@ -941,7 +957,7 @@ void Weave::vEolStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end op                                                                     */
+/* end-of-line after op                                                       */
 /*----------------------------------------------------------------------------*/
 void Weave::vEolOp(void)
 {
@@ -951,7 +967,7 @@ void Weave::vEolOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pre stage                                                                  */
+/* spaceing before stage                                                      */
 /*----------------------------------------------------------------------------*/
 void Weave::vPreStage(void)
 {
@@ -961,7 +977,7 @@ void Weave::vPreStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tab op                                                                     */
+/* tab before op                                                              */
 /*----------------------------------------------------------------------------*/
 void Weave::vTabOp(void)
 {
@@ -974,7 +990,7 @@ void Weave::vTabOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tab op                                                                     */
+/* tab before commented op                                                    */
 /*----------------------------------------------------------------------------*/
 void Weave::vTabOp_commented(void)
 {
@@ -987,7 +1003,7 @@ void Weave::vTabOp_commented(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tab stage                                                                  */
+/* tab before stage                                                           */
 /*----------------------------------------------------------------------------*/
 void Weave::vTabStage(void)
 {
