@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_TermSeq.hpp -- Sequence of Terms                                      */
+/* Card_RpnTerms.hpp -- RPN Sequence of Terms                                 */
 /*============================================================================*/
 #pragma once
 
@@ -10,21 +10,21 @@
 
 namespace STORE
 {
-  class Card_TermSeq : public Card_SUB
+  class Card_RpnTerms : public Card_SUB
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_TermSeq(void);
-   ~Card_TermSeq(void) noexcept(false);
+    Card_RpnTerms(void);
+   ~Card_RpnTerms(void) noexcept(false);
     
     eTE eTopTermEval(void);
 
   };
 
-  Card_TermSeq* _pCard_TermSeq(void* aAddr);
-  bool _bIsCard_TermSeq(void* aAddr);
+  Card_RpnTerms* _pCard_RpnTerms(void* aAddr);
+  bool _bIsCard_RpnTerms(void* aAddr);
 }
 
 /*============================================================================*/

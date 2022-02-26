@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* Card_TermSeq.cpp -- Sequence of Terms                                      */
+/* Card_RpnTerms.cpp -- RPN Sequence of Terms                                 */
 /*============================================================================*/
 
-#include "Card_TermSeq.hpp"
+#include "Card_RpnTerms.hpp"
 #include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-//__pCastFunction(STORE,Card_TermSeq,CN_CARD_TERMLIST)
-__pCastFunction_Card(STORE,Card_TermSeq,CK_TERMSEQ)
-__aNewFunction(Card_TermSeq,CN_CARD)
-__vDeleteFunction(Card_TermSeq,CN_CARD)
+//__pCastFunction(STORE,Card_RpnTerms,CN_CARD_TERMLIST)
+__pCastFunction_Card(STORE,Card_RpnTerms,CK_TERMSEQ)
+__aNewFunction(Card_RpnTerms,CN_CARD)
+__vDeleteFunction(Card_RpnTerms,CN_CARD)
 
-__bIsCard(STORE,Card_TermSeq,CK_TERMSEQ)
+__bIsCard(STORE,Card_RpnTerms,CK_TERMSEQ)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_TermSeq::Card_TermSeq(void)
+Card_RpnTerms::Card_RpnTerms(void)
 : Card_SUB(CK_TERMSEQ)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -32,7 +32,7 @@ Card_TermSeq::Card_TermSeq(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_TermSeq::~Card_TermSeq(void) noexcept(false)
+Card_RpnTerms::~Card_RpnTerms(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -44,7 +44,7 @@ Card_TermSeq::~Card_TermSeq(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* evaluate top term                                                          */
 /*----------------------------------------------------------------------------*/
-eTE Card_TermSeq::eTopTermEval(void)
+eTE Card_RpnTerms::eTopTermEval(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
