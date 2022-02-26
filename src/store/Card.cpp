@@ -1898,17 +1898,17 @@ void Card::vTablePrint(Ribbon* pRibbon, i8 iDepth)
   
   //pCardTable->vPrintSize(pRibbon);
   StreamDef* pStreamDef = pTable->pStreamDef();
-
-  pRibbon->vSput(FR_SIZE,pStreamDef->jTableSize());
-
   
   //pCardTable->vPrintPrimary(pRibbon);
   IdxVec*   pIdxVec    = pTable->pIdxVec();
-  Index*    pIndex     = pIdxVec->pGet(0);
-  IndexDef* pIndexDef  = pIndex->pIndexDef();
-  Column*   pIdxColumn = pIndexDef->pGetColumn(0);
-  
-  pRibbon->vSput(FR_ATOM_SQUARE,pIdxColumn->szColNm());
+//  Index*    pIndex     = pIdxVec->pGet(0);
+//  IndexDef* pIndexDef  = pIndex->pIndexDef();
+//  Column*   pIdxColumn = pIndexDef->pGetColumn(0);
+//   pRibbon->vSput(FR_ATOM_SQUARE,pIdxColumn->szColNm());
+
+  //pRibbon->vSput(FR_SIZE,pStreamDef->jTableSize());
+  pRibbon->vSprintRight(" %lld buffers"_Stz,pStreamDef->jTableSize());
+  pRibbon->vSprintRight(" %lld indexes"_Stz,pIdxVec->nItems());
 }
 
 /*----------------------------------------------------------------------------*/
