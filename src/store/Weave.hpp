@@ -57,30 +57,30 @@ namespace STORE
     void vOpScan     (Card_Scan*      pCard_Scan);
     void vOpSort     (Card_Sort*      pCard_Sort);
 
-    void vAggreg     (Stz* szExpr, Card_Aggreg*      pCard_Aggreg);
-    void vCombine    (Stz* szExpr, Card_Combine*     pCard_Combine);
-    void vFilter     (Stz* szExpr, Card_Filter*      pCard_Filter);
-    void vIndexJoin  (Stz* szExpr, Card_IndexJoin*   pCard_IndexJoin);
-    void vIndexScan  (Stz* szExpr, Card_IndexScan*   pCard_IndexScan);
-    void vLimit      (Stz* szExpr, Card_Limit*       pCard_Limit);
-    void vProject    (Stz* szExpr, Card_Project*     pCard_Project);
-    void vScan       (Stz* szExpr, Card_Scan*        pCard_Scan);
-    void vSort       (Stz* szExpr, Card_Sort*        pCard_Sort);
+    void vAggreg     (Stz* szRpnExpr, Card_Aggreg*      pCard_Aggreg);
+    void vCombine    (Stz* szRpnExpr, Card_Combine*     pCard_Combine);
+    void vFilter     (Stz* szRpnExpr, Card_Filter*      pCard_Filter);
+    void vIndexJoin  (Stz* szRpnExpr, Card_IndexJoin*   pCard_IndexJoin);
+    void vIndexScan  (Stz* szRpnExpr, Card_IndexScan*   pCard_IndexScan);
+    void vLimit      (Stz* szRpnExpr, Card_Limit*       pCard_Limit);
+    void vProject    (Stz* szRpnExpr, Card_Project*     pCard_Project);
+    void vScan       (Stz* szRpnExpr, Card_Scan*        pCard_Scan);
+    void vSort       (Stz* szRpnExpr, Card_Sort*        pCard_Sort);
 
-    void vFilterPred (Stz* szExpr, Card_BoolExpr*  pCard_BoolExpr);
-    void vProjection (Stz* szExpr, Card_TypedExpr*  pCard_TypedExpr);
-    void vProjectPred(Stz* szExpr, Card_CalcExpr* pCard_CalcExpr);
+    void vBoolExpr   (Stz* szRpnExpr, Card_BoolExpr*    pCard_BoolExpr);
+    void vCalcExpr   (Stz* szRpnExpr, Card_CalcExpr*    pCard_CalcExpr);
+    void vTypedExpr  (Stz* szRpnExpr, Card_TypedExpr*   pCard_TypedExpr);
 
-    void vPred       (Stz* szExpr, Card_PRED*        pCard_PRED);
-    void vPredOr     (Stz* szExpr, Card_OrPred*      pCard_OrPred);
-    void vPredAnd    (Stz* szExpr, Card_AndPred*     pCard_AndPred);
-    void vPredCompare(Stz* szExpr, Card_CmpPred* pCard_CmpPred);
-  
-    void vAs         (Stz* szExpr, Card_As*   pCard_As);
-    void vTerm       (Stz* szExpr, Card_Term* pCard_Term);
-    void vType       (Stz* szExpr, Card_Type* pCard_Type);
+    void vAs         (Stz* szRpnExpr, Card_As*   pCard_As);
+    void vTerm       (Stz* szRpnExpr, Card_Term* pCard_Term);
+    void vType       (Stz* szRpnExpr, Card_Type* pCard_Type);
 
- 
+    void vPred       (Stz* szRpnExpr, Card_PRED*        pCard_PRED);
+    void vPredOr     (Stz* szRpnExpr, Card_OrPred*      pCard_OrPred);
+    void vPredAnd    (Stz* szRpnExpr, Card_AndPred*     pCard_AndPred);
+    void vPredCompare(Stz* szRpnExpr, Card_CmpPred*     pCard_CmpPred);
+
+
     void vConcat(Stz* aFormat, ...);
     void vConcat_vargs(Stz* aFormat, va_list xArgs);
 
