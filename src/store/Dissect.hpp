@@ -32,7 +32,6 @@
 #include "Card_GbyElist.hpp"
 
 #include "Card_Hash.hpp"
-#include "Card_HashCast.hpp"
 #include "Card_Having.hpp"
 
 #include "Card_Index.hpp"
@@ -45,12 +44,10 @@
 
 #include "Card_MainSubquery.hpp"
 
-#include "Card_NodeCast.hpp"
 #include "Card_NoncSubquery.hpp"
 
 #include "Card_On.hpp"
 #include "Card_OrdAgg.hpp"
-#include "Card_OriginCast.hpp"
 #include "Card_OrPred.hpp"
 
 #include "Card_Project.hpp"

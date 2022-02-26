@@ -30,7 +30,6 @@ enum eCK // card kind
   /* */ CK_GBYELIST,
 
   /* */ CK_HASH,
-  /* */ CK_HASHCAST,
   /* */ CK_HAVING,
   
   /* */ CK_INDEX,
@@ -43,12 +42,10 @@ enum eCK // card kind
   
   /* */ CK_MAINSUBQUERY,
   
-  /* */ CK_NODECAST,
   /* */ CK_NONCSUBQUERY,
   
   /* */ CK_ON,
   /* */ CK_ORDAGG,
-  /* */ CK_ORIGINCAST,
   /* */ CK_ORPRED,
   
   /* */ CK_PROJECT,
@@ -102,7 +99,6 @@ static Stz* aCK[]
   /* */ "CK_GBYELIST"_Stz,        // CK_GBYELIST
   
   /* */ "CK_HASH"_Stz,            // CK_HASH
-  /* */ "CK_HASHCAST"_Stz,        // CK_HASHCAST
   /* */ "CK_HAVING"_Stz,          // CK_HAVING
   
   /* */ "CK_INDEX"_Stz,           // CK_INDEX
@@ -115,12 +111,10 @@ static Stz* aCK[]
   
   /* */ "CK_MAINSUBQUERY"_Stz,    // CK_MAINSUBQUERY
   
-  /* */ "CK_NODECAST"_Stz,        // CK_NODECAST
   /* */ "CK_NONCSUBQUERY"_Stz,    // CK_NONCSUBQUERY
   
   /* */ "CK_ON"_Stz,              // CK_ON
   /* */ "CK_ORDAGG"_Stz,          // CK_ORDAGG
-  /* */ "CK_ORIGINCAST"_Stz,      // CK_ORIGINCAST
   /* */ "CK_ORPRED"_Stz,          // CK_ORPRED
   
   /* */ "CK_PROJECT"_Stz,         // CK_PROJECT
@@ -174,7 +168,6 @@ static Stz* aCK_short[]
   /* */ "gbyElist"_Stz,        // CK_GBYELIST
 
   /* */ "hash"_Stz,            // CK_HASH
-  /* */ "hashCast"_Stz,        // CK_HASHCAST
   /* */ "having"_Stz,          // CK_HAVING
   
   /* */ "{index}"_Stz,         // CK_INDEX
@@ -187,12 +180,10 @@ static Stz* aCK_short[]
   
   /* */ "mainSubquery"_Stz,    // CK_MAINSUBQUERY
   
-  /* */ "nodeCast"_Stz,        // CK_NODECAST
   /* */ "noncSubquery"_Stz,    // CK_NONCSUBQUERY
   
   /* */ "on"_Stz,              // CK_ON
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
-  /* */ "originCast"_Stz,      // CK_ORIGINCAST
   /* */ "orPred"_Stz,          // CK_ORPRED
   
   /* */ "project"_Stz,         // CK_PROJECT

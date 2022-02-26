@@ -1636,7 +1636,6 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_GBYELIST:                   vPrintProperties(pRibbon,iDepth); break;
               
     case CK_HASH:                       vPrintProperties(pRibbon,iDepth); break;
-    case CK_HASHCAST:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_HAVING:                     vPrintProperties(pRibbon,iDepth); break;
            
     case CK_INDEX:         vIndexPrint                  (pRibbon,iDepth); break;
@@ -1649,12 +1648,10 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
                         
     case CK_MAINSUBQUERY:               vPrintProperties(pRibbon,iDepth); break;
                         
-    case CK_NODECAST:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_NONCSUBQUERY:               vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_ON:                         vPrintProperties(pRibbon,iDepth); break;
     case CK_ORDAGG:                     vPrintProperties(pRibbon,iDepth); break;
-    case CK_ORIGINCAST:                 vPrintProperties(pRibbon,iDepth); break;
     case CK_ORPRED:                     vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_PROJECT:                    vPrintProperties(pRibbon,iDepth); break;
