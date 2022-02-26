@@ -448,6 +448,9 @@ void Weave::vAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
     if (! pCard_SUB->bIsCard(CK_TYPEDEXPR))
       return;
     
+    if (i_SubCard)
+      szRpnExpr->vConcat(" , "_Stz);
+
     Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pCard_SUB);
     vTypedExpr(szRpnExpr,pCard_TypedExpr);
   }
@@ -713,6 +716,9 @@ void Weave::vCalcExpr(Stz* szRpnExpr, Card_CalcExpr* pCard_CalcExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
+  if (pCard_CalcExpr->bAggOp())
+    szRpnExpr->vConcat(" )"_Stz);
+  
   i8 nSubCards = pCard_CalcExpr->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
     Card* pCard = pCard_CalcExpr->pGet(i_SubCard);
@@ -829,7 +835,7 @@ void Weave::vPred(Stz* szRpnExpr, Card_PRED* pCard_PRED)
       break;
       
     case CK_CMPPRED:
-      vPredCompare(szRpnExpr,_pCard_CmpPred(pCard_PRED));
+      vPredCmp(szRpnExpr,_pCard_CmpPred(pCard_PRED));
       break;
 
     default:
@@ -877,7 +883,7 @@ void Weave::vPredAnd(Stz* szRpnExpr, Card_AndPred* pCard_AndPred)
 /*----------------------------------------------------------------------------*/
 /* reassemble : filter <compiled> <expr>                                      */
 /*----------------------------------------------------------------------------*/
-void Weave::vPredCompare(Stz* szRpnExpr, Card_CmpPred* pCard_CmpPred)
+void Weave::vPredCmp(Stz* szRpnExpr, Card_CmpPred* pCard_CmpPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   

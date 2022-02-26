@@ -71,21 +71,21 @@ namespace STORE
     void vCalcExpr   (Stz* szRpnExpr, Card_CalcExpr*    pCard_CalcExpr);
     void vTypedExpr  (Stz* szRpnExpr, Card_TypedExpr*   pCard_TypedExpr);
 
-    void vAs         (Stz* szRpnExpr, Card_As*   pCard_As);
-    void vTerm       (Stz* szRpnExpr, Card_Term* pCard_Term);
-    void vType       (Stz* szRpnExpr, Card_Type* pCard_Type);
+    void vAs         (Stz* szRpnExpr, Card_As*          pCard_As);
+    void vTerm       (Stz* szRpnExpr, Card_Term*        pCard_Term);
+    void vType       (Stz* szRpnExpr, Card_Type*        pCard_Type);
 
     void vPred       (Stz* szRpnExpr, Card_PRED*        pCard_PRED);
     void vPredOr     (Stz* szRpnExpr, Card_OrPred*      pCard_OrPred);
     void vPredAnd    (Stz* szRpnExpr, Card_AndPred*     pCard_AndPred);
-    void vPredCompare(Stz* szRpnExpr, Card_CmpPred*     pCard_CmpPred);
+    void vPredCmp    (Stz* szRpnExpr, Card_CmpPred*     pCard_CmpPred);
 
 
     void vConcat(Stz* aFormat, ...);
     void vConcat_vargs(Stz* aFormat, va_list xArgs);
 
-    void vEolStage(void);
     void vEolOp(void);
+    void vEolStage(void);
 
     void vPreStage(void);
   
