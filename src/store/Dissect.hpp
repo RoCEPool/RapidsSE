@@ -21,10 +21,8 @@
 #include "Card_Combine.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_CorrSubquery.hpp"
-#include "Card_CreateTable.hpp"
 
 #include "Card_Debug.hpp"
-#include "Card_DropTable.hpp"
 
 #include "Card_EBound.hpp"
 #include "Card_Exists.hpp"

@@ -1625,10 +1625,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_COMBINE:                    vPrintProperties(pRibbon,iDepth); break;
     case CK_CORRSUBQUERY:               vPrintProperties(pRibbon,iDepth); break;
     case CK_CMPPRED:                    vPrintProperties(pRibbon,iDepth); break;
-    case CK_CREATETABLE:                vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_DEBUG:                      vPrintProperties(pRibbon,iDepth); break;
-    case CK_DROPTABLE:                  vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_EBOUND:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_EXISTS:                     vPrintProperties(pRibbon,iDepth); break;

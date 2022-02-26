@@ -19,10 +19,8 @@ enum eCK // card kind
   /* */ CK_COMBINE,
   /* */ CK_CORRSUBQUERY,
   /* */ CK_CMPPRED,
-  /* */ CK_CREATETABLE,
   
   /* */ CK_DEBUG,
-  /* */ CK_DROPTABLE,
   
   /* */ CK_EBOUND,
   /* */ CK_EXISTS,
@@ -93,10 +91,8 @@ static Stz* aCK[]
   /* */ "CK_COMBINE"_Stz,         // CK_COMBINE
   /* */ "CK_CORRSUBQUERY"_Stz,    // CK_CORRSUBQUERY
   /* */ "CK_CMPPRED"_Stz,         // CK_CMPPRED
-  /* */ "CK_CREATETABLE"_Stz,     // CK_CREATETABLE
   
   /* */ "CK_DEBUG"_Stz,           // CK_DEBUG
-  /* */ "CK_DROPTABLE"_Stz,       // CK_DROPTABLE
   
   /* */ "CK_EBOUND"_Stz,          // CK_EBOUND
   /* */ "CK_EXISTS"_Stz,          // CK_EXISTS
@@ -167,11 +163,9 @@ static Stz* aCK_short[]
   /* */ "combine"_Stz,         // CK_COMBINE
   /* */ "corrSubquery"_Stz,    // CK_CORRSUBQUERY
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
-  /* */ "createTable"_Stz,     // CK_CREATETABLE
-  
+
   /* */ "debug"_Stz,           // CK_DEBUG
-  /* */ "dropTable"_Stz,       // CK_DROPTABLE
-  
+
   /* */ "ebound"_Stz,          // CK_EBOUND
   /* */ "exists"_Stz,          // CK_EXISTS
   
