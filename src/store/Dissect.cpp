@@ -184,9 +184,9 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
-  Stz* szExpr = nullptr;
+  Stz* szRpnExpr = nullptr;
   if (2 == nTags) {
-    szExpr = pArgTags->szValue(1);
+    szRpnExpr = pArgTags->szValue(1);
   }
   else {
     vTrace("Error: only %lld tags in aggreg argTags\n"_Stz,nTags);
@@ -203,7 +203,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate expression list
   
-  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szRpnExpr);
   Card_AggElist* pCard_AggElist = pCollectAggElist(pCard_TermSeq);
 
   pCard_Aggreg->vAppend(pCard_AggElist);
@@ -284,9 +284,9 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
-  Stz* szExpr = nullptr;
+  Stz* szRpnExpr = nullptr;
   if (2 == nTags) {
-    szExpr = pArgTags->szValue(1);
+    szRpnExpr = pArgTags->szValue(1);
   }
   else {
     vTrace("Error: only %lld tags in filter argTags\n"_Stz,nTags);
@@ -298,7 +298,7 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   
   Card_Filter* pCard_Filter = new Card_Filter;
   
-  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szRpnExpr);
   Card_TypedExpr* pCard_TypedExpr = pCollectTypedBool(pCard_TermSeq);
   pCard_Filter->vAppend(pCard_TypedExpr);
 
@@ -329,9 +329,9 @@ void Dissect::vDissectHash(OpSpec* pOpSpec)
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
-  Stz* szExpr = nullptr;
+  Stz* szRpnExpr = nullptr;
   if (2 == nTags) {
-    szExpr = pArgTags->szValue(1);
+    szRpnExpr = pArgTags->szValue(1);
   }
   else {
     vTrace("Error: only %lld tags in hash argTags\n"_Stz,nTags);
@@ -340,7 +340,7 @@ void Dissect::vDissectHash(OpSpec* pOpSpec)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szRpnExpr);
   
   Card_Hash* pCard_Hash = new Card_Hash;
   pCard_Hash->vTransferAll(pCard_TermSeq);
@@ -363,11 +363,11 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
   
   Stz* szTableNm = nullptr;
   Stz* szIndexNm = nullptr;
-  Stz* szExpr = nullptr;
+  Stz* szRpnExpr = nullptr;
   if (4 == nTags) {
     szTableNm = pArgTags->szValue(1);
     szIndexNm = pArgTags->szValue(2);
-    szExpr = pArgTags->szValue(3);
+    szRpnExpr = pArgTags->szValue(3);
   }
   else {
     vTrace("Error: only %lld tags in indexJoin argTags\n"_Stz,nTags);
@@ -387,7 +387,7 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
   Card_Index* pCard_Index = new Card_Index(pIndex);
   pCard_IndexJoin->vAppend(pCard_Index);
 
-  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szRpnExpr);
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
   pCard_IndexPred->vTransferAll(pCard_TermSeq);
   pCard_IndexJoin->vAppend(pCard_IndexPred);
@@ -409,11 +409,11 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 
   Stz* szTableNm = nullptr;
   Stz* szIndexNm = nullptr;
-  Stz* szExpr    = nullptr;
+  Stz* szRpnExpr    = nullptr;
   if (4 == nTags) {
     szTableNm = pArgTags->szValue(1);
     szIndexNm = pArgTags->szValue(2);
-    szExpr = pArgTags->szValue(3);
+    szRpnExpr = pArgTags->szValue(3);
   }
   else {
     vTrace("Error: only %lld tags in indexScan argTags\n"_Stz,nTags);
@@ -432,7 +432,7 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
   Card_Index* pCard_Index = new Card_Index(pIndex);
   pCard_IndexScan->vAppend(pCard_Index);
 
-  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szRpnExpr);
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
   pCard_IndexPred->vTransferAll(pCard_TermSeq);
   pCard_IndexScan->vAppend(pCard_IndexPred);
@@ -482,9 +482,9 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
-  Stz* szExpr = nullptr;
+  Stz* szRpnExpr = nullptr;
   if (2 == nTags) {
-    szExpr = pArgTags->szValue(1);
+    szRpnExpr = pArgTags->szValue(1);
   }
   else {
     vTrace("Error: only %lld tags in ordagg argTags\n"_Stz,nTags);
@@ -498,7 +498,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   
   Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg("partition"_Stz);
   
-  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szRpnExpr);
   Card_AggElist* pCard_AggElist = pCollectAggElist(pCard_TermSeq);
 
   pCard_OrdAgg->vAppend(pCard_AggElist);
@@ -538,9 +538,9 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
-  Stz* szExpr = nullptr;
+  Stz* szRpnExpr = nullptr;
   if (2 == nTags) {
-    szExpr = pArgTags->szValue(1);
+    szRpnExpr = pArgTags->szValue(1);
   }
   else {
     vTrace("Error: only %lld tags in project argTags\n"_Stz,nTags);
@@ -551,7 +551,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
 
   Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
   
-  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szRpnExpr);
   Card_ProjElist* pCard_ProjElist = pCollectProjElist(pCard_TermSeq);
   pCard_Project->vAppend(pCard_ProjElist);
 
@@ -644,9 +644,9 @@ void Dissect::vDissectSort(OpSpec* pOpSpec)
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
-  Stz* szExpr = nullptr;
+  Stz* szRpnExpr = nullptr;
   if (2 == nTags) {
-    szExpr = pArgTags->szValue(1);
+    szRpnExpr = pArgTags->szValue(1);
   }
   else {
     vTrace("Error: only %lld tags in ordagg argTags\n"_Stz,nTags);
@@ -657,7 +657,7 @@ void Dissect::vDissectSort(OpSpec* pOpSpec)
   
   Card_Sort* pCard_Sort = new Card_Sort;
   
-  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szRpnExpr);
   Card_SbyElist* pCard_ObyElist = pCollectSbyElist(pCard_TermSeq);
 
   pCard_Sort->vAppend(pCard_ObyElist);
@@ -1078,13 +1078,13 @@ void Dissect::vEvalCmpPred(Card_BoolExpr* pCard_BoolExpr,
 /*----------------------------------------------------------------------------*/
 /* convert expr string into term list                                         */
 /*----------------------------------------------------------------------------*/
-Card_TermSeq* Dissect::pToTermSeq(Stz* szExpr)
+Card_TermSeq* Dissect::pToTermSeq(Stz* szRpnExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   Card_TermSeq* pCard_TermSeq = new Card_TermSeq;
     
-  TokenVec* pTokenVec = TokenVec::pTokeniseSen(szExpr);
+  TokenVec* pTokenVec = TokenVec::pTokeniseSen(szRpnExpr);
     
   i8 nTokens = pTokenVec->nItems();
   for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {

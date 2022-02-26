@@ -144,7 +144,7 @@ namespace STORE
     void            vEvalCmpPred       (Card_BoolExpr* pCard_BoolExpr,
                                         Card_TermSeq*  pCard_TermSeq);
   
-    Card_TermSeq*   pToTermSeq(Stz* szExpr);
+    Card_TermSeq*   pToTermSeq(Stz* szRpnExpr);
 
   private:
     Footer* aFooter(void);
