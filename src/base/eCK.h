@@ -17,7 +17,6 @@ enum eCK // card kind
   /* */ CK_CALCEXPR,
   /* */ CK_CANDINDEX,
   /* */ CK_COMBINE,
-  /* */ CK_CORRSUBQUERY,
   /* */ CK_CMPPRED,
   
   /* */ CK_DEBUG,
@@ -39,11 +38,7 @@ enum eCK // card kind
   
   /* */ CK_LBOUND,
   /* */ CK_LIMIT,
-  
-  /* */ CK_MAINSUBQUERY,
-  
-  /* */ CK_NONCSUBQUERY,
-  
+    
   /* */ CK_ON,
   /* */ CK_ORDAGG,
   /* */ CK_ORPRED,
@@ -86,7 +81,6 @@ static Stz* aCK[]
   /* */ "CK_CALCEXPR"_Stz,        // CK_CALCEXPR
   /* */ "CK_CANDINDEX"_Stz,       // CK_CANDINDEX
   /* */ "CK_COMBINE"_Stz,         // CK_COMBINE
-  /* */ "CK_CORRSUBQUERY"_Stz,    // CK_CORRSUBQUERY
   /* */ "CK_CMPPRED"_Stz,         // CK_CMPPRED
   
   /* */ "CK_DEBUG"_Stz,           // CK_DEBUG
@@ -108,11 +102,7 @@ static Stz* aCK[]
   
   /* */ "CK_LBOUND"_Stz,          // CK_LBOUND
   /* */ "CK_LIMIT"_Stz,           // CK_LIMIT
-  
-  /* */ "CK_MAINSUBQUERY"_Stz,    // CK_MAINSUBQUERY
-  
-  /* */ "CK_NONCSUBQUERY"_Stz,    // CK_NONCSUBQUERY
-  
+    
   /* */ "CK_ON"_Stz,              // CK_ON
   /* */ "CK_ORDAGG"_Stz,          // CK_ORDAGG
   /* */ "CK_ORPRED"_Stz,          // CK_ORPRED
@@ -155,7 +145,6 @@ static Stz* aCK_short[]
   /* */ "calcExpr"_Stz,        // CK_CALCEXPR
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "combine"_Stz,         // CK_COMBINE
-  /* */ "corrSubquery"_Stz,    // CK_CORRSUBQUERY
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
 
   /* */ "debug"_Stz,           // CK_DEBUG
@@ -177,11 +166,7 @@ static Stz* aCK_short[]
   
   /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "limit"_Stz,           // CK_LIMIT
-  
-  /* */ "mainSubquery"_Stz,    // CK_MAINSUBQUERY
-  
-  /* */ "noncSubquery"_Stz,    // CK_NONCSUBQUERY
-  
+    
   /* */ "on"_Stz,              // CK_ON
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
   /* */ "orPred"_Stz,          // CK_ORPRED

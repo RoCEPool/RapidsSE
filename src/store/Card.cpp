@@ -1623,7 +1623,6 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_CALCEXPR:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_COMBINE:                    vPrintProperties(pRibbon,iDepth); break;
-    case CK_CORRSUBQUERY:               vPrintProperties(pRibbon,iDepth); break;
     case CK_CMPPRED:                    vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_DEBUG:                      vPrintProperties(pRibbon,iDepth); break;
@@ -1645,11 +1644,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
           
     case CK_LBOUND:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_LIMIT:                      vPrintProperties(pRibbon,iDepth); break;
-                        
-    case CK_MAINSUBQUERY:               vPrintProperties(pRibbon,iDepth); break;
-                        
-    case CK_NONCSUBQUERY:               vPrintProperties(pRibbon,iDepth); break;
-                        
+                                                
     case CK_ON:                         vPrintProperties(pRibbon,iDepth); break;
     case CK_ORDAGG:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_ORPRED:                     vPrintProperties(pRibbon,iDepth); break;

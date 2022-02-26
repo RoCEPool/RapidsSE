@@ -20,7 +20,6 @@
 #include "Card_CandIndex.hpp"
 #include "Card_Combine.hpp"
 #include "Card_CmpPred.hpp"
-#include "Card_CorrSubquery.hpp"
 
 #include "Card_Debug.hpp"
 
@@ -41,10 +40,6 @@
 
 #include "Card_LBound.hpp"
 #include "Card_Limit.hpp"
-
-#include "Card_MainSubquery.hpp"
-
-#include "Card_NoncSubquery.hpp"
 
 #include "Card_On.hpp"
 #include "Card_OrdAgg.hpp"
