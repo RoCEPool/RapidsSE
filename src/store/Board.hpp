@@ -72,16 +72,6 @@ namespace STORE
 
     void vRankCandidateIndex(Card_CandIndex* pCard_CandIndex);
   
-    void vResolveAggreg    (Card_Aggreg*    pCard_Aggreg);
-    void vResolveFilter    (Card_Filter*    pCard_Filter);
-    void vResolveHaving    (Card_Having*    pCard_Having);
-    void vResolveIndexJoin (Card_IndexJoin* pCard_IndexJoin);
-    void vResolveIndexScan (Card_IndexScan* pCard_IndexScan);
-    void vResolveOrdAgg    (Card_OrdAgg*    pCard_OrdAgg);
-    void vResolveProject   (Card_Project*   pCard_Project);
-    void vResolveScan      (Card_Scan*      pCard_Scan);
-    void vResolveSort      (Card_Scan*      pCard_Scan);
-
     void vCardResolve      (Card*           pCard);
     void vTermResolve      (Card_Term*      pCard_Term);
 
@@ -116,12 +106,6 @@ namespace STORE
   
     void vRenumber_Cards               (void);
   
-    void vReplace_Ordinals             (void);
-  
-    void vResolve_GenerativeStreamDefs (void);
-  
-    void vResolve_ProjectiveStreamDefs (void);
-
     void vResolve_Symbols              (void);
 
    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
