@@ -16,10 +16,7 @@ namespace STORE
   public:
     Card_PRED(eCK eCard);
    ~Card_PRED(void) noexcept(false);
-    
-     void vReplaceOrdinals(StreamDef* pStreamDef,
-                           Index*     pIndex=nullptr);
-  
+      
     void vCullByKids(void);
     Card_CmpPred* pFindBound_pred(Index* pIndex, eBK eBound);
     bool bHasBounds_pred (Index* pIndex);

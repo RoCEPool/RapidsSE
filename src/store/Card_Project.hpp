@@ -17,9 +17,6 @@ namespace STORE
   
     Card_Project(eCK eCard);
    ~Card_Project(void) noexcept(false);
-    
-    StreamDef* pProduceStreamDef(void);
-
   };
 
   Card_Project* _pCard_Project(void* aAddr);
