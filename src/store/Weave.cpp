@@ -243,7 +243,7 @@ void Weave::vOpAggreg(Card_Aggreg* pCard_Aggreg)
 
   s4K sRpnExpr;
   
-  vAggreg(sRpnExpr,pCard_Aggreg);
+  vRpnAggreg(sRpnExpr,pCard_Aggreg);
 
   vTabOp();
   vConcat("aggreg    2 \"%s\""_Stz,sRpnExpr.szStz());
@@ -262,7 +262,7 @@ void Weave::vOpCombine(Card_Combine* pCard_Combine)
 
   s4K sRpnExpr;
   
-  vCombine(sRpnExpr,pCard_Combine);
+  vRpnCombine(sRpnExpr,pCard_Combine);
 
   vTabOp();
   vConcat("combined  0"_Stz);
@@ -281,7 +281,7 @@ void Weave::vOpFilter(Card_Filter* pCard_Filter)
 
   s4K sRpnExpr;
   
-  vFilter(sRpnExpr,pCard_Filter);
+  vRpnFilter(sRpnExpr,pCard_Filter);
   
   vTabOp();
   vConcat("filter    2 \"%s\""_Stz,sRpnExpr.szStz());
@@ -300,7 +300,7 @@ void Weave::vOpIndexJoin(Card_IndexJoin* pCard_IndexJoin)
 
   s4K sRpnExpr;
   
-  vIndexJoin(sRpnExpr,pCard_IndexJoin);
+  vRpnIndexJoin(sRpnExpr,pCard_IndexJoin);
 
   Index* pIndex = pCard_IndexJoin->pIndex();
   Stz* szIndexNm = pIndex->szIndexNm();
@@ -327,7 +327,7 @@ void Weave::vOpIndexScan(Card_IndexScan* pCard_IndexScan)
   Index* pIndex = pCard_IndexScan->pFindSubCard(CK_INDEX)->pIndex();
   s4K sRpnExpr;
   
-  vIndexScan(sRpnExpr,pCard_IndexScan);
+  vRpnIndexScan(sRpnExpr,pCard_IndexScan);
 
   vTabOp();
   vConcat("indexScan 2 %s %s \"%s\""_Stz
@@ -350,7 +350,7 @@ void Weave::vOpLimit(Card_Limit* pCard_Limit)
   
   s4K sRpnExpr;
   
-  vLimit(sRpnExpr,pCard_Limit);
+  vRpnLimit(sRpnExpr,pCard_Limit);
 
   vTabOp();
   vConcat("limit     2 %s"_Stz,sRpnExpr.szStz());
@@ -369,7 +369,7 @@ void Weave::vOpOrdAgg(Card_Aggreg* pCard_Aggreg)
 
   s4K sRpnExpr;
   
-  vAggreg(sRpnExpr,pCard_Aggreg);
+  vRpnAggreg(sRpnExpr,pCard_Aggreg);
 
   vTabOp();
   vConcat("aggreg    2 \"%s\""_Stz,sRpnExpr.szStz());
@@ -388,7 +388,7 @@ void Weave::vOpProject(Card_Project* pCard_Project)
   
   s4K sRpnExpr;
   
-  vProject(sRpnExpr,pCard_Project);
+  vRpnProject(sRpnExpr,pCard_Project);
   
   vTabOp();
   vConcat("project   2 \"%s\""_Stz,sRpnExpr.szStz());
@@ -407,7 +407,7 @@ void Weave::vOpScan(Card_Scan* pCard_Scan)
 
   s4K sRpnExpr;
   
-  vScan(sRpnExpr,pCard_Scan);
+  vRpnScan(sRpnExpr,pCard_Scan);
 
   Table* pTable = pCard_Scan->pFindSubCard(CK_TABLE)->pTable();
   
@@ -430,7 +430,7 @@ void Weave::vOpSort(Card_Sort* pCard_Sort)
   
   s4K sRpnExpr;
   
-  vSort(sRpnExpr,pCard_Sort);
+  vRpnSort(sRpnExpr,pCard_Sort);
 
   vTabOp_commented();
   vConcat("sort      /*???*/"_Stz);
@@ -444,7 +444,7 @@ void Weave::vOpSort(Card_Sort* pCard_Sort)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for aggreg op                                               */
 /*----------------------------------------------------------------------------*/
-void Weave::vAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
+void Weave::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
     
@@ -491,7 +491,7 @@ void Weave::vAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
 /*----------------------------------------------------------------------------*/
 /* expr for combine                                                           */
 /*----------------------------------------------------------------------------*/
-void Weave::vCombine(Stz* szRpnExpr, Card_Combine* pCard_Combine)
+void Weave::vRpnCombine(Stz* szRpnExpr, Card_Combine* pCard_Combine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -501,7 +501,7 @@ void Weave::vCombine(Stz* szRpnExpr, Card_Combine* pCard_Combine)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for filter op                                               */
 /*----------------------------------------------------------------------------*/
-void Weave::vFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
+void Weave::vRpnFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -519,7 +519,7 @@ void Weave::vFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexJoin op                                            */
 /*----------------------------------------------------------------------------*/
-void Weave::vIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
+void Weave::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -529,7 +529,7 @@ void Weave::vIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexScan op                                            */
 /*----------------------------------------------------------------------------*/
-void Weave::vIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
+void Weave::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -678,7 +678,7 @@ void Weave::vIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for limit op                                                */
 /*----------------------------------------------------------------------------*/
-void Weave::vLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
+void Weave::vRpnLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -690,7 +690,7 @@ void Weave::vLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for project op                                              */
 /*----------------------------------------------------------------------------*/
-void Weave::vProject(Stz* szRpnExpr, Card_Project* pCard_Project)
+void Weave::vRpnProject(Stz* szRpnExpr, Card_Project* pCard_Project)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -722,7 +722,7 @@ void Weave::vProject(Stz* szRpnExpr, Card_Project* pCard_Project)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for scan op                                                 */
 /*----------------------------------------------------------------------------*/
-void Weave::vScan(Stz* szRpnExpr, Card_Scan* pCard_Scan)
+void Weave::vRpnScan(Stz* szRpnExpr, Card_Scan* pCard_Scan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
 }
@@ -730,7 +730,7 @@ void Weave::vScan(Stz* szRpnExpr, Card_Scan* pCard_Scan)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for sort op                                                 */
 /*----------------------------------------------------------------------------*/
-void Weave::vSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
+void Weave::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
 }
