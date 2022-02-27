@@ -50,11 +50,11 @@ Weave::~Weave(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get optimised pipeline statement                                           */
 /*----------------------------------------------------------------------------*/
-Stz* Weave::szWeavedStmt(void)
+Stz* Weave::szOptStmt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  return m_sWeavedStmt;
+  return m_sOptStmt;
 }
 
 
@@ -117,28 +117,10 @@ void Weave::vCard(Card* pCard)
   
   eCK eCard = pCard->eCard();
   
-  switch (eCard) {
-      
-    case CK_STAGE:      vStageNext  (_pCard_Stage(pCard));       break;
-              
-    case CK_AGGREG:     vOpAggreg   (_pCard_Aggreg(pCard));      break;
-    case CK_COMBINE:    vOpCombine  (_pCard_Combine(pCard));     break;
-    case CK_FILTER:     vOpFilter   (_pCard_Filter(pCard));      break;
-    case CK_INDEXJOIN:  vOpIndexJoin(_pCard_IndexJoin(pCard));   break;
-    case CK_INDEXSCAN:  vOpIndexScan(_pCard_IndexScan(pCard));   break;
-    case CK_LIMIT:      vOpLimit    (_pCard_Limit(pCard));       break;
-    case CK_PROJECT:    vOpProject  (_pCard_Project(pCard));     break;
-    case CK_SCAN:       vOpScan     (_pCard_Scan(pCard));        break;
-  //case CK_SORT:       vOpSort     (_pCard_Sort(pCard));        break;
-
-    case CK_STREAMDEF:
-      break;
-
-    default:
-      //{;}
-      vTrace("  skipping %s\n"_Stz,aCK[eCard]);
-  }
-  
+  if (CK_STAGE == eCard)
+    vStageNext(_pCard_Stage(pCard));
+  else
+    vOp(pCard);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -966,7 +948,7 @@ void Weave::vConcat_vargs(Stz* aFormat, va_list xArgs)
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
  
-  m_sWeavedStmt.vConcat((Stz*)caFormatted);
+  m_sOptStmt.vConcat((Stz*)caFormatted);
   
   //vTrace("%s"_Stz,caFormatted);
 }
@@ -1046,7 +1028,7 @@ void Weave::vTabStage(void)
 /*----------------------------------------------------------------------------*/
 /* weave a revised/optimised statement from given board                       */
 /*----------------------------------------------------------------------------*/
-void Weave::vWeaveOptimisedStmt(Board* pBoard)
+void Weave::vWeaveOptStmt(Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   

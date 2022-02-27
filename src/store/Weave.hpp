@@ -20,7 +20,7 @@ namespace STORE
     i8 m_i_Stage;
     i8 m_i_Op_stage;
   
-    s48K m_sWeavedStmt;
+    s48K m_sOptStmt;
 
   private:
     // must be last
@@ -33,8 +33,8 @@ namespace STORE
     Weave(void);
    ~Weave(void) noexcept(false);
   
-    void vWeaveOptimisedStmt(Board* m_pBoard);
-    Stz* szWeavedStmt(void);
+    void vWeaveOptStmt(Board* m_pBoard);
+    Stz* szOptStmt(void);
 
   private:
   
