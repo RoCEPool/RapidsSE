@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* Card_TypedExpr.cpp -- Typed Expression                                     */
+/* Card_Expr.cpp -- Typed Expression                                     */
 /*============================================================================*/
 
-#include "Card_TypedExpr.hpp"
-#include "Card_BoolExpr.hpp"
+#include "Card_Expr.hpp"
+#include "Card_ExprBool.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_TypedExpr,CK_TYPEDEXPR)
-__aNewFunction(Card_TypedExpr,CN_CARD)
-__vDeleteFunction(Card_TypedExpr,CN_CARD)
+__pCastFunction_Card(STORE,Card_Expr,CK_EXPR)
+__aNewFunction(Card_Expr,CN_CARD)
+__vDeleteFunction(Card_Expr,CN_CARD)
 
-__bIsCard(STORE,Card_TypedExpr,CK_TYPEDEXPR)
+__bIsCard(STORE,Card_Expr,CK_EXPR)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_TypedExpr::Card_TypedExpr(void)
-: Card_SUB(CK_TYPEDEXPR)
+Card_Expr::Card_Expr(void)
+: Card_SUB(CK_EXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -31,7 +31,7 @@ Card_TypedExpr::Card_TypedExpr(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_TypedExpr::~Card_TypedExpr(void) noexcept(false)
+Card_Expr::~Card_Expr(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -39,14 +39,14 @@ Card_TypedExpr::~Card_TypedExpr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_PredCmp* Card_TypedExpr::pFindBound(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_Expr::pFindBound(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_BoolExpr* pCard_BoolExpr = _pCard_BoolExpr(pFindSubCard(CK_BOOLEXPR));
+  Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pFindSubCard(CK_EXPRBOOL));
   
   Card_PredCmp* pCard_PredCmp =
-    pCard_BoolExpr->pFindBound(pIndex,eBound);
+    pCard_ExprBool->pFindBound(pIndex,eBound);
  
   return pCard_PredCmp;
 }
@@ -54,13 +54,13 @@ Card_PredCmp* Card_TypedExpr::pFindBound(Index* pIndex, eBK eBound)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_TypedExpr::bHasBounds(Index* pIndex)
+bool Card_Expr::bHasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_BoolExpr* pCard_BoolExpr = _pCard_BoolExpr(pFindSubCard(CK_BOOLEXPR));
+  Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pFindSubCard(CK_EXPRBOOL));
   
-  bool bHas = pCard_BoolExpr->bHasBounds(pIndex);
+  bool bHas = pCard_ExprBool->bHasBounds(pIndex);
   
   return bHas;
 }
@@ -68,13 +68,13 @@ bool Card_TypedExpr::bHasBounds(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_TypedExpr::vReduceBoolExpr(void)
+void Card_Expr::vReduceBoolExpr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_BoolExpr* pCard_BoolExpr = _pCard_BoolExpr(pFindSubCard(CK_BOOLEXPR));
+  Card_ExprBool* pCard_ExprBool = _pCard_ExprBool(pFindSubCard(CK_EXPRBOOL));
 
-  Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_BoolExpr->pGet(0);
+  Card_PRED* pCard_ChildPRED = (Card_PRED*)pCard_ExprBool->pGet(0);
 
   pCard_ChildPRED->vCullByKids();
   
@@ -83,7 +83,7 @@ void Card_TypedExpr::vReduceBoolExpr(void)
 
     Card_PRED* pCard_KidPRED = (Card_PRED*)pCard_ChildPRED->pPop();
 
-    pCard_BoolExpr->vReplace(pCard_ChildPRED,pCard_KidPRED);
+    pCard_ExprBool->vReplace(pCard_ChildPRED,pCard_KidPRED);
     delete pCard_ChildPRED;
     
     pCard_ChildPRED = pCard_KidPRED;
@@ -93,10 +93,10 @@ void Card_TypedExpr::vReduceBoolExpr(void)
   if (pCard_ChildPRED->nItems())
     return;
   
-  pCard_BoolExpr->vRemove(pCard_ChildPRED);
-  vRemove(pCard_BoolExpr);
+  pCard_ExprBool->vRemove(pCard_ChildPRED);
+  vRemove(pCard_ExprBool);
 
-  delete pCard_BoolExpr;
+  delete pCard_ExprBool;
   delete pCard_ChildPRED;
 }
 

@@ -1098,7 +1098,7 @@ bool Card::bIsPred(void)
   eCK eCard = this->eCard();
   
   switch (eCard) {
-    case CK_BOOLEXPR:
+    case CK_EXPRBOOL:
     case CK_PREDOR:
     case CK_PREDAND:
       return true;
@@ -1642,9 +1642,9 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_PREDAND:                    vPrintProperties(pRibbon,iDepth); break;
     case CK_AS:                         vPrintProperties(pRibbon,iDepth); break;
                         
-    case CK_BOOLEXPR:                   vPrintProperties(pRibbon,iDepth); break;
+    case CK_EXPRBOOL:                   vPrintProperties(pRibbon,iDepth); break;
                         
-    case CK_CALCEXPR:                   vPrintProperties(pRibbon,iDepth); break;
+    case CK_EXPRCALC:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_COMBINE:                    vPrintProperties(pRibbon,iDepth); break;
     case CK_PREDCMP:                    vPrintProperties(pRibbon,iDepth); break;
@@ -1689,7 +1689,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_TABLE:         vTablePrint                  (pRibbon,iDepth); break;
     case CK_TERM:          vTermPrint                   (pRibbon,iDepth); break;
     case CK_TYPE:                       vPrintProperties(pRibbon,iDepth); break;
-    case CK_TYPEDEXPR:                  vPrintProperties(pRibbon,iDepth); break;
+    case CK_EXPR:                  vPrintProperties(pRibbon,iDepth); break;
 
     case CK_UBOUND:                     vPrintProperties(pRibbon,iDepth); break;
       

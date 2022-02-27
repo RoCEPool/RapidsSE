@@ -14,9 +14,9 @@
 #include "Card_PredAnd.hpp"
 #include "Card_As.hpp"
 
-#include "Card_BoolExpr.hpp"
+#include "Card_ExprBool.hpp"
 
-#include "Card_CalcExpr.hpp"
+#include "Card_ExprCalc.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_Combine.hpp"
 #include "Card_PredCmp.hpp"
@@ -62,7 +62,7 @@
 #include "Card_Table.hpp"
 #include "Card_Term.hpp"
 #include "Card_Type.hpp"
-#include "Card_TypedExpr.hpp"
+#include "Card_Expr.hpp"
 
 #include "Card_UBound.hpp"
 
@@ -127,21 +127,21 @@ namespace STORE
 
     Card_AggElist*  pCollectAggElist   (Card_RpnTerms* pCard_RpnTerms);
     Card_As*        pCollectAs         (Card_RpnTerms* pCard_RpnTerms);
-    Card_BoolExpr*  pCollectBoolExpr   (Card_RpnTerms* pCard_RpnTerms);
-    Card_CalcExpr*  pCollectCalcExpr   (Card_RpnTerms* pCard_RpnTerms);
+    Card_ExprBool*  pCollectBoolExpr   (Card_RpnTerms* pCard_RpnTerms);
+    Card_ExprCalc*  pCollectCalcExpr   (Card_RpnTerms* pCard_RpnTerms);
     Card_GbyElist*  pCollectGbyElist   (Card_RpnTerms* pCard_RpnTerms);
     Card_ProjElist* pCollectProjElist  (Card_RpnTerms* pCard_RpnTerms);
     Card_SbyElist*  pCollectSbyElist   (Card_RpnTerms* pCard_RpnTerms);
     Card_SortDirn*  pCollectSortDirn   (Card_RpnTerms* pCard_RpnTerms);
     Card_Type*      pCollectType       (Card_RpnTerms* pCard_RpnTerms);
-    Card_TypedExpr* pCollectTypedBool  (Card_RpnTerms* pCard_RpnTerms);
-    Card_TypedExpr* pCollectTypedCalc  (Card_RpnTerms* pCard_RpnTerms);
+    Card_Expr*      pCollectTypedBool  (Card_RpnTerms* pCard_RpnTerms);
+    Card_Expr*      pCollectTypedCalc  (Card_RpnTerms* pCard_RpnTerms);
 
-    void            vOrPred  (Card_BoolExpr* pCard_BoolExpr,
+    void            vOrPred  (Card_ExprBool* pCard_ExprBool,
                               Card_RpnTerms* pCard_RpnTerms);
-    void            vAndPred (Card_BoolExpr* pCard_BoolExpr,
+    void            vAndPred (Card_ExprBool* pCard_ExprBool,
                               Card_RpnTerms* pCard_RpnTerms);
-    void            vCmpPred (Card_BoolExpr* pCard_BoolExpr,
+    void            vCmpPred (Card_ExprBool* pCard_ExprBool,
                               Card_RpnTerms* pCard_RpnTerms);
   
     Card_RpnTerms* pToRpnTerms(Stz* szRpnExpr);

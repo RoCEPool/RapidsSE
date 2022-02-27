@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_BoolExpr.cpp -- Boolean Predicate                                     */
+/* Card_ExprBool.cpp -- Boolean Predicate                                     */
 /*============================================================================*/
 
-#include "Card_BoolExpr.hpp"
+#include "Card_ExprBool.hpp"
 #include "Card_PRED.hpp"
 #include "Card_PredCmp.hpp"
 
@@ -10,17 +10,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_BoolExpr,CK_BOOLEXPR)
-__aNewFunction(Card_BoolExpr,CN_CARD)
-__vDeleteFunction(Card_BoolExpr,CN_CARD)
+__pCastFunction_Card(STORE,Card_ExprBool,CK_EXPRBOOL)
+__aNewFunction(Card_ExprBool,CN_CARD)
+__vDeleteFunction(Card_ExprBool,CN_CARD)
 
-__bIsCard(STORE,Card_BoolExpr,CK_BOOLEXPR)
+__bIsCard(STORE,Card_ExprBool,CK_EXPRBOOL)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_BoolExpr::Card_BoolExpr(void)
-: Card_EXPRESSION(CK_BOOLEXPR)
+Card_ExprBool::Card_ExprBool(void)
+: Card_EXPRESSION(CK_EXPRBOOL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
@@ -32,7 +32,7 @@ Card_BoolExpr::Card_BoolExpr(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_BoolExpr::~Card_BoolExpr(void) noexcept(false)
+Card_ExprBool::~Card_ExprBool(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -40,7 +40,7 @@ Card_BoolExpr::~Card_BoolExpr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_PredCmp* Card_BoolExpr::pFindBound(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_ExprBool::pFindBound(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -54,7 +54,7 @@ Card_PredCmp* Card_BoolExpr::pFindBound(Index* pIndex, eBK eBound)
 /*----------------------------------------------------------------------------*/
 /* does filterPred have some bound wrt given index?                           */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolExpr::bHasBounds(Index* pIndex)
+bool Card_ExprBool::bHasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -68,7 +68,7 @@ bool Card_BoolExpr::bHasBounds(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolExpr::vReduceExpr(void)
+void Card_ExprBool::vReduceExpr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

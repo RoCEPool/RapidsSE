@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_TypedExpr.hpp -- Typed Expression                                     */
+/* Card_Expr.hpp -- Typed Expression                                     */
 /*============================================================================*/
 #pragma once
 
@@ -10,22 +10,22 @@
 
 namespace STORE
 {
-  class Card_TypedExpr : public Card_SUB
+  class Card_Expr : public Card_SUB
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_TypedExpr(void);
-   ~Card_TypedExpr(void) noexcept(false);
+    Card_Expr(void);
+   ~Card_Expr(void) noexcept(false);
     
     Card_PredCmp* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
     void vReduceBoolExpr(void);
   };
 
-  Card_TypedExpr* _pCard_TypedExpr(void* aAddr);
-  bool _bIsCard_TypedExpr(void* aAddr);
+  Card_Expr* _pCard_Expr(void* aAddr);
+  bool _bIsCard_Expr(void* aAddr);
 }
 
 /*============================================================================*/

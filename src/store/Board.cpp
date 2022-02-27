@@ -579,7 +579,7 @@ Card_StreamDef* Board::pNewStreamDef(Card_ELIST* pCard_ELIST)
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
     Card* pSubCard = pCard_ELIST->pGetCard(i_SubCard,eSubCard);
     
-    if (CK_TYPEDEXPR != eSubCard)
+    if (CK_EXPR != eSubCard)
       continue;
     
     s32 sColNm  = "(unknown)"_Stz;
@@ -597,11 +597,11 @@ Card_StreamDef* Board::pNewStreamDef(Card_ELIST* pCard_ELIST)
     if (pCard_As)
       sColNm = pCard_As->szAs();
     else {
-      Card_CalcExpr* pCard_CalcExpr
-        = _pCard_CalcExpr(pSubCard->pFindSubCard(CK_CALCEXPR));
+      Card_ExprCalc* pCard_ExprCalc
+        = _pCard_ExprCalc(pSubCard->pFindSubCard(CK_EXPRCALC));
 
-      if (pCard_CalcExpr) {
-        Card_Term* pCard_Term = _pCard_Term(pCard_CalcExpr->pGet(0));
+      if (pCard_ExprCalc) {
+        Card_Term* pCard_Term = _pCard_Term(pCard_ExprCalc->pGet(0));
         sColNm = pCard_Term->szTerm();
       }
     }

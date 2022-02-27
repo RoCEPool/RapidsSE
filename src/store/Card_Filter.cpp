@@ -6,7 +6,7 @@
 
 #include "Card_PredCmp.hpp"
 #include "Card_Term.hpp"
-#include "Card_TypedExpr.hpp"
+#include "Card_Expr.hpp"
 #include "Card_Type.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -47,10 +47,10 @@ bool Card_Filter::bCull(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_TypedExpr* pCard_TypedExpr =
-    _pCard_TypedExpr(pFindSubCard(CK_TYPEDEXPR));
+  Card_Expr* pCard_Expr =
+    _pCard_Expr(pFindSubCard(CK_EXPR));
 
-  if (pCard_TypedExpr->pFindSubCard(CK_BOOLEXPR))
+  if (pCard_Expr->pFindSubCard(CK_EXPRBOOL))
     return false;
   
   return true;
@@ -91,10 +91,10 @@ Card_PredCmp* Card_Filter::pFindBound(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_TypedExpr* pCard_TypedExpr =
-    _pCard_TypedExpr(pFindSubCard(CK_TYPEDEXPR));
+  Card_Expr* pCard_Expr =
+    _pCard_Expr(pFindSubCard(CK_EXPR));
 
-  Card_PredCmp* pCard_PredCmp = pCard_TypedExpr->pFindBound(pIndex,eBound);
+  Card_PredCmp* pCard_PredCmp = pCard_Expr->pFindBound(pIndex,eBound);
   
   return pCard_PredCmp;
 }
@@ -106,10 +106,10 @@ bool Card_Filter::bHasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_TypedExpr* pCard_TypedExpr =
-    _pCard_TypedExpr(pFindSubCard(CK_TYPEDEXPR));
+  Card_Expr* pCard_Expr =
+    _pCard_Expr(pFindSubCard(CK_EXPR));
   
-  bool bHas = pCard_TypedExpr->bHasBounds(pIndex);
+  bool bHas = pCard_Expr->bHasBounds(pIndex);
   
   return bHas;
 }
@@ -121,10 +121,10 @@ void Card_Filter::vReduceFilter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_TypedExpr* pCard_TypedExpr =
-    _pCard_TypedExpr(pFindSubCard(CK_TYPEDEXPR));
+  Card_Expr* pCard_Expr =
+    _pCard_Expr(pFindSubCard(CK_EXPR));
 
-  pCard_TypedExpr->vReduceBoolExpr();
+  pCard_Expr->vReduceBoolExpr();
 }
 
 /*----------------------------------------------------------------------------*/

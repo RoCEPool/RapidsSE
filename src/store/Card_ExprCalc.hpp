@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_BoolExpr.hpp -- Boolean Predicate                                     */
+/* Card_ExprCalc.hpp -- Calculation Predicate                                 */
 /*============================================================================*/
 #pragma once
 
@@ -9,22 +9,18 @@
 
 namespace STORE
 {
-  class Card_BoolExpr : public Card_EXPRESSION
+  class Card_ExprCalc : public Card_EXPRESSION
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_BoolExpr(void);
-   ~Card_BoolExpr(void) noexcept(false);
-    
-    Card_PredCmp* pFindBound(Index* pIndex, eBK eBound);
-    bool bHasBounds(Index* pIndex);
-    void vReduceExpr(void);
+    Card_ExprCalc(void);
+   ~Card_ExprCalc(void) noexcept(false);
   };
 
-  Card_BoolExpr* _pCard_BoolExpr(void* aAddr);
-  bool _bIsCard_BoolExpr(void* aAddr);
+  Card_ExprCalc* _pCard_ExprCalc(void* aAddr);
+  bool _bIsCard_ExprCalc(void* aAddr);
 }
 
 /*============================================================================*/

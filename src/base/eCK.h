@@ -11,9 +11,7 @@ enum eCK // card kind
   /* */ CK_AGGREG,
   /* */ CK_AS,
   
-  /* */ CK_BOOLEXPR,
   
-  /* */ CK_CALCEXPR,
   /* */ CK_CANDINDEX,
   /* */ CK_COMBINE,
   
@@ -21,7 +19,10 @@ enum eCK // card kind
   
   /* */ CK_EBOUND,
   /* */ CK_EXISTS,
-  
+  /* */ CK_EXPR,
+  /* */ CK_EXPRBOOL,
+  /* */ CK_EXPRCALC,
+
   /* */ CK_FILTER,
 
   /* */ CK_GBYELIST,
@@ -60,7 +61,6 @@ enum eCK // card kind
   /* */ CK_TERM,
   /* */ CK_TERMSEQ,
   /* */ CK_TYPE,
-  /* */ CK_TYPEDEXPR,
 
   /* */ CK_UBOUND,
   
@@ -75,9 +75,6 @@ static Stz* aCK[]
   /* */ "CK_AGGREG"_Stz,          // CK_AGGREG
   /* */ "CK_AS"_Stz,              // CK_AS
   
-  /* */ "CK_BOOLEXPR"_Stz,        // CK_BOOLEXPR
-
-  /* */ "CK_CALCEXPR"_Stz,        // CK_CALCEXPR
   /* */ "CK_CANDINDEX"_Stz,       // CK_CANDINDEX
   /* */ "CK_COMBINE"_Stz,         // CK_COMBINE
   
@@ -85,6 +82,9 @@ static Stz* aCK[]
   
   /* */ "CK_EBOUND"_Stz,          // CK_EBOUND
   /* */ "CK_EXISTS"_Stz,          // CK_EXISTS
+  /* */ "CK_EXPR"_Stz,            // CK_EXPR
+  /* */ "CK_EXPRBOOL"_Stz,        // CK_EXPRBOOL
+  /* */ "CK_EXPRCALC"_Stz,        // CK_EXPRCALC
   
   /* */ "CK_FILTER"_Stz,          // CK_FILTER
 
@@ -124,7 +124,6 @@ static Stz* aCK[]
   /* */ "CK_TERM"_Stz,            // CK_TERM
   /* */ "CK_TERMSEQ"_Stz,         // CK_TERMSEQ
   /* */ "CK_TYPE"_Stz,            // CK_TYPE
-  /* */ "CK_TYPEDEXPR"_Stz,       // CK_TYPEDEXPR
 
   /* */ "CK_UBOUND"_Stz,          // CK_UBOUND
   
@@ -139,9 +138,6 @@ static Stz* aCK_short[]
   /* */ "aggreg"_Stz,          // CK_AGGREG
   /* */ "as"_Stz,              // CK_AS
   
-  /* */ "boolExpr"_Stz,        // CK_BOOLEXPR
-  
-  /* */ "calcExpr"_Stz,        // CK_CALCEXPR
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "combine"_Stz,         // CK_COMBINE
 
@@ -149,7 +145,10 @@ static Stz* aCK_short[]
 
   /* */ "ebound"_Stz,          // CK_EBOUND
   /* */ "exists"_Stz,          // CK_EXISTS
-  
+  /* */ "expr"_Stz,            // CK_EXPR
+  /* */ "exprBool"_Stz,        // CK_EXPRBOOL
+  /* */ "exprCalc"_Stz,        // CK_EXPRCALC
+
   /* */ "filter"_Stz,          // CK_FILTER
 
   /* */ "gbyElist"_Stz,        // CK_GBYELIST
@@ -188,7 +187,6 @@ static Stz* aCK_short[]
   /* */ "term"_Stz,            // CK_TERM
   /* */ "termSeq"_Stz,         // CK_TERMSEQ
   /* */ "type"_Stz,            // CK_TYPE
-  /* */ "typedExpr"_Stz,       // CK_TYPEDEXPR
 
   /* */ "ubound"_Stz,          // CK_UBOUND
   
