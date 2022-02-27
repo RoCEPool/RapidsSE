@@ -43,11 +43,13 @@ namespace STORE
     void vBegin       (void);
     void vEnd         (void);
 
+    void vCard        (Card* pCard);
+  
     void vStageFirst  (void);
     void vStageNext   (Card_Stage* pCard_Stage);
     void vStageLast   (void);
 
-    void vOp          (void);
+    void vOp          (Card* pCard);
 
     void vOpAggreg    (Card_Aggreg*    pCard_Aggreg);
     void vOpCombine   (Card_Combine*   pCard_Combine);

@@ -48,70 +48,6 @@ Weave::~Weave(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/* weave a revised/optimised statement from given board                       */
-/*----------------------------------------------------------------------------*/
-void Weave::vWeaveOptimisedStmt(Board* pBoard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  //vPrintBoardSummary();
-
-  m_pBoard = pBoard;
-  
-  //vTrace("Build Pipeline\n"_Stz);
-
-  ListExoIter2_t<Card>* pBoard_I = m_pBoard->pNewIter();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vPipeline();
-  vTags();
-  vBegin();
-
-  vStageFirst();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  while (pBoard_I->bHasNext()) {
-    Card* pCard = pBoard_I->pNext();
-
-    eCK eCard = pCard->eCard();
-    
-    switch (eCard) {
-        
-      case CK_STAGE:      vStageNext  (_pCard_Stage(pCard));       break;
-                
-      case CK_AGGREG:     vOpAggreg   (_pCard_Aggreg(pCard));      break;
-      case CK_COMBINE:    vOpCombine  (_pCard_Combine(pCard));     break;
-      case CK_FILTER:     vOpFilter   (_pCard_Filter(pCard));      break;
-      case CK_INDEXJOIN:  vOpIndexJoin(_pCard_IndexJoin(pCard));   break;
-      case CK_INDEXSCAN:  vOpIndexScan(_pCard_IndexScan(pCard));   break;
-      case CK_LIMIT:      vOpLimit    (_pCard_Limit(pCard));       break;
-      case CK_PROJECT:    vOpProject  (_pCard_Project(pCard));     break;
-      case CK_SCAN:       vOpScan     (_pCard_Scan(pCard));        break;
-    //case CK_SORT:       vOpSort     (_pCard_Sort(pCard));        break;
-
-      case CK_STREAMDEF:
-        break;
-
-      default:
-        //{;}
-        vTrace("  skipping %s\n"_Stz,aCK[eCard]);
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vStageLast();
-
-  vEnd();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  delete pBoard_I;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get optimised pipeline statement                                           */
 /*----------------------------------------------------------------------------*/
 Stz* Weave::szWeavedStmt(void)
@@ -166,6 +102,43 @@ void Weave::vEnd(void)
 
   vConcat("\n"_Stz);
   vConcat("end ;\n"_Stz);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* weave a card                                                               */
+/*----------------------------------------------------------------------------*/
+void Weave::vCard(Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  eCK eCard = pCard->eCard();
+  
+  switch (eCard) {
+      
+    case CK_STAGE:      vStageNext  (_pCard_Stage(pCard));       break;
+              
+    case CK_AGGREG:     vOpAggreg   (_pCard_Aggreg(pCard));      break;
+    case CK_COMBINE:    vOpCombine  (_pCard_Combine(pCard));     break;
+    case CK_FILTER:     vOpFilter   (_pCard_Filter(pCard));      break;
+    case CK_INDEXJOIN:  vOpIndexJoin(_pCard_IndexJoin(pCard));   break;
+    case CK_INDEXSCAN:  vOpIndexScan(_pCard_IndexScan(pCard));   break;
+    case CK_LIMIT:      vOpLimit    (_pCard_Limit(pCard));       break;
+    case CK_PROJECT:    vOpProject  (_pCard_Project(pCard));     break;
+    case CK_SCAN:       vOpScan     (_pCard_Scan(pCard));        break;
+  //case CK_SORT:       vOpSort     (_pCard_Sort(pCard));        break;
+
+    case CK_STREAMDEF:
+      break;
+
+    default:
+      //{;}
+      vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,6 +204,33 @@ void Weave::vStageLast(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* weave a card                                                               */
+/*----------------------------------------------------------------------------*/
+void Weave::vOp(Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  eCK eCard = pCard->eCard();
+  
+  switch (eCard) {
+                    
+    case CK_AGGREG:     vOpAggreg   (_pCard_Aggreg   (pCard));  break;
+    case CK_COMBINE:    vOpCombine  (_pCard_Combine  (pCard));  break;
+    case CK_FILTER:     vOpFilter   (_pCard_Filter   (pCard));  break;
+    case CK_INDEXJOIN:  vOpIndexJoin(_pCard_IndexJoin(pCard));  break;
+    case CK_INDEXSCAN:  vOpIndexScan(_pCard_IndexScan(pCard));  break;
+    case CK_LIMIT:      vOpLimit    (_pCard_Limit    (pCard));  break;
+    case CK_PROJECT:    vOpProject  (_pCard_Project  (pCard));  break;
+    case CK_SCAN:       vOpScan     (_pCard_Scan     (pCard));  break;
+    case CK_SORT:       vOpSort     (_pCard_Sort     (pCard));  break;
+
+    default:
+      //{;}
+      vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* weave : aggreg <compiled> <expr>                                           */
@@ -1036,6 +1036,77 @@ void Weave::vTabStage(void)
   
   vConcat("  "_Stz);
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* weave a revised/optimised statement from given board                       */
+/*----------------------------------------------------------------------------*/
+void Weave::vWeaveOptimisedStmt(Board* pBoard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  //vPrintBoardSummary();
+
+  m_pBoard = pBoard;
+  
+  //vTrace("Build Pipeline\n"_Stz);
+
+  ListExoIter2_t<Card>* pBoard_I = m_pBoard->pNewIter();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vPipeline();
+  vTags();
+  vBegin();
+
+  vStageFirst();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  while (pBoard_I->bHasNext()) {
+    Card* pCard = pBoard_I->pNext();
+
+    eCK eCard = pCard->eCard();
+    
+    switch (eCard) {
+        
+      case CK_STAGE:      vStageNext  (_pCard_Stage(pCard));       break;
+                
+      case CK_AGGREG:     vOpAggreg   (_pCard_Aggreg(pCard));      break;
+      case CK_COMBINE:    vOpCombine  (_pCard_Combine(pCard));     break;
+      case CK_FILTER:     vOpFilter   (_pCard_Filter(pCard));      break;
+      case CK_INDEXJOIN:  vOpIndexJoin(_pCard_IndexJoin(pCard));   break;
+      case CK_INDEXSCAN:  vOpIndexScan(_pCard_IndexScan(pCard));   break;
+      case CK_LIMIT:      vOpLimit    (_pCard_Limit(pCard));       break;
+      case CK_PROJECT:    vOpProject  (_pCard_Project(pCard));     break;
+      case CK_SCAN:       vOpScan     (_pCard_Scan(pCard));        break;
+    //case CK_SORT:       vOpSort     (_pCard_Sort(pCard));        break;
+
+      case CK_STREAMDEF:
+        break;
+
+      default:
+        //{;}
+        vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vStageLast();
+
+  vEnd();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  delete pBoard_I;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
