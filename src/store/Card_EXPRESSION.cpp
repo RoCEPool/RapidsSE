@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_EXPR.cpp -- Abstract Expression                                       */
+/* Card_EXPRESSION.cpp -- Abstract Expression                                 */
 /*============================================================================*/
 
-#include "Card_EXPR.hpp"
+#include "Card_EXPRESSION.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_EXPR::Card_EXPR(eCK eCard)
+Card_EXPRESSION::Card_EXPRESSION(eCK eCard)
 : Card_PRED(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -22,7 +22,7 @@ Card_EXPR::Card_EXPR(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_EXPR::~Card_EXPR(void) noexcept(false)
+Card_EXPRESSION::~Card_EXPRESSION(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

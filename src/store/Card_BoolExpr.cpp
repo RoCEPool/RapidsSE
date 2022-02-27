@@ -20,7 +20,7 @@ __bIsCard(STORE,Card_BoolExpr,CK_BOOLEXPR)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_BoolExpr::Card_BoolExpr(void)
-: Card_EXPR(CK_BOOLEXPR)
+: Card_EXPRESSION(CK_BOOLEXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       

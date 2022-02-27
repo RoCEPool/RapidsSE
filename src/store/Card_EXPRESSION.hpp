@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_EXPR.hpp -- Abstract Expression                                       */
+/* Card_EXPRESSION.hpp -- Abstract Expression                                       */
 /*============================================================================*/
 #pragma once
 
@@ -9,14 +9,14 @@
 
 namespace STORE
 {
-  class Card_EXPR : public Card_PRED
+  class Card_EXPRESSION : public Card_PRED
   {  
   public:
-    Card_EXPR(eCK eCard);
-   ~Card_EXPR(void) noexcept(false);
+    Card_EXPRESSION(eCK eCard);
+   ~Card_EXPRESSION(void) noexcept(false);
   };
 
-  Card_EXPR* _pCard_EXPR(void* aAddr);
+  Card_EXPRESSION* _pCard_EXPRESSION(void* aAddr);
 }
 
 /*============================================================================*/
