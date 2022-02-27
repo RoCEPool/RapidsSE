@@ -68,18 +68,18 @@ namespace STORE
     void vScan       (Stz* szRpnExpr, Card_Scan*        pCard_Scan);
     void vSort       (Stz* szRpnExpr, Card_Sort*        pCard_Sort);
 
-    void vBoolExpr   (Stz* szRpnExpr, Card_ExprBool*    pCard_ExprBool);
-    void vCalcExpr   (Stz* szRpnExpr, Card_ExprCalc*    pCard_ExprCalc);
-    void vTypedExpr  (Stz* szRpnExpr, Card_Expr*        pCard_Expr);
-
-    void vAs         (Stz* szRpnExpr, Card_As*          pCard_As);
-    void vTerm       (Stz* szRpnExpr, Card_Term*        pCard_Term);
-    void vType       (Stz* szRpnExpr, Card_Type*        pCard_Type);
+    void vExpr       (Stz* szRpnExpr, Card_Expr*        pCard_Expr);
+    void vExprBool   (Stz* szRpnExpr, Card_ExprBool*    pCard_ExprBool);
+    void vExprCalc   (Stz* szRpnExpr, Card_ExprCalc*    pCard_ExprCalc);
 
     void vPred       (Stz* szRpnExpr, Card_PRED*        pCard_PRED);
     void vPredOr     (Stz* szRpnExpr, Card_PredOr*      pCard_PredOr);
     void vPredAnd    (Stz* szRpnExpr, Card_PredAnd*     pCard_PredAnd);
     void vPredCmp    (Stz* szRpnExpr, Card_PredCmp*     pCard_PredCmp);
+
+    void vAs         (Stz* szRpnExpr, Card_As*          pCard_As);
+    void vTerm       (Stz* szRpnExpr, Card_Term*        pCard_Term);
+    void vType       (Stz* szRpnExpr, Card_Type*        pCard_Type);
 
 
     void vConcat(Stz* aFormat, ...);
