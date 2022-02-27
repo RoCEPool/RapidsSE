@@ -452,7 +452,7 @@ void Board::vResolveAggreg(Card_Aggreg* pCard_Aggreg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  // aggreg: 0) aggElist ; 1) gbyList
+  // aggreg: 0) aggElist ; 1) gbyElist
   
   
 }
@@ -546,11 +546,171 @@ void Board::vResolveSort(Card_Scan* pCard_Scan)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vCardResolve(Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+    
+  eCK eSubCard;
+  
+  Card_ELIST* pCard_ELIST;
+  Card_Index* pCard_Index;
+  Card_Table* pCard_Table;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //pCard->vDump();
+  
+  i8 nSubCards = pCard->nItems();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pSubCard = pCard->pGetCard(i_SubCard,eSubCard);
+   
+    if (CK_INDEX == eSubCard) {
+      vIndex(pSubCard->pIndex());
+      continue;
+    }
+
+    if (CK_STREAMDEF == eSubCard) {
+      vStreamDef(pSubCard->pStreamDef());
+      continue;
+    }
+
+    if (CK_TABLE == eSubCard) {
+      vTable(pSubCard->pTable());
+      continue;
+    }
+
+    if (CK_TERM == eSubCard) {
+      vTermResolve(_pCard_Term(pSubCard));
+      continue;
+    }
+    
+    vCardResolve(pSubCard);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCard_ELIST = (Card_ELIST*)pCard->pFindSubCard(CK_AGGELIST);
+  if (pCard_ELIST) {
+    Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_ELIST);
+    pCard->vAppend(pCard_StreamDef);
+    StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
+    vStreamDef(pStreamDef);
+  }
+  
+  pCard_ELIST = (Card_ELIST*)pCard->pFindSubCard(CK_PROJELIST);
+  if (pCard_ELIST) {
+    Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_ELIST);
+    pCard->vAppend(pCard_StreamDef);
+    StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
+    vStreamDef(pStreamDef);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pCard_Index = _pCard_Index(pCard->pFindSubCard(CK_INDEX));
+  if (pCard_Index) {
+    Index* pIndex = pCard_Index->pIndex();
+    vIndex(pIndex);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  
+  pCard_Table = _pCard_Table(pCard->pFindSubCard(CK_TABLE));
+  if (pCard_Table) {
+    Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_Table);
+    pCard->vAppend(pCard_StreamDef);
+    StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
+    vStreamDef(pStreamDef);
+  }
+
+}
+ 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vTermResolve(Card_Term* pCard_Term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (pCard_Term->bIsOrdinalStreamTerm()) {
+
+    i8 i_Ord = pCard_Term->iOrdinalStreamColNo();
+    i8 i_Col = i_Ord - 1;
+
+    Column* pColumn = m_pStreamDef->pGetColumn(i_Col);
+    Stz* szColNm = pColumn->szColNm();
+
+    pCard_Term->vTerm(szColNm);
+
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (m_pIndex && pCard_Term->bIsOrdinalIndexTerm()) {
+    
+    i8 i_IdxOrd = pCard_Term->iOrdinalIndexColNo();
+    i8 i_IdxCol = i_IdxOrd - 1;
+
+    Column* pIdxColumn = m_pIndex->pGetColumn(i_IdxCol);
+    Stz* szIdxColNm = pIdxColumn->szColNm();
+  
+    pCard_Term->vTerm(szIdxColNm);
+
+    return;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_StreamDef* Board::pNewStreamDef(Card_ELIST* pCard_ELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  return nullptr;
+  StreamDef* pStreamDef = new StreamDef;
+
+  eCK eSubCard;
+  i8 nSubCards = pCard_ELIST->nItems();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pSubCard = pCard_ELIST->pGetCard(i_SubCard,eSubCard);
+    
+    if (CK_TYPEDEXPR != eSubCard)
+      continue;
+    
+    s32 sColNm  = "(unknown)"_Stz;
+    eCT eColumn = CT_NONE;;
+    i8  iLength = 0;
+    i8  iScale  = 0;
+
+    // TYPE (mandatory)
+    Card_Type* pCard_Type = _pCard_Type(pSubCard->pFindSubCard(CK_TYPE));
+    if (pCard_Type)
+      eColumn = Column::eColumn(pCard_Type->szType());
+
+    // AS (optional)
+    Card_As* pCard_As = _pCard_As(pSubCard->pFindSubCard(CK_AS));
+    if (pCard_As)
+      sColNm = pCard_As->szAs();
+    else {
+      Card_CalcExpr* pCard_CalcExpr
+        = _pCard_CalcExpr(pSubCard->pFindSubCard(CK_CALCEXPR));
+
+      if (pCard_CalcExpr) {
+        Card_Term* pCard_Term = _pCard_Term(pCard_CalcExpr->pGet(0));
+        sColNm = pCard_Term->szTerm();
+      }
+    }
+  
+    //vTrace("pNewStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
+    pStreamDef->vAddColumn(sColNm,eColumn,iLength,iScale);
+  }
+  
+  Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+  
+  return pCard_StreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -560,7 +720,13 @@ Card_StreamDef* Board::pNewStreamDef(Card_Table* pCard_Table)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  return nullptr;
+  Table* pTable = pCard_Table->pTable();
+    
+  StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
+  
+  Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+
+  return pCard_StreamDef;
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -1298,45 +1464,58 @@ void Board::vResolve_Symbols(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  eCK eCard;
-
   i8 nMainCards = nItems();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetCard(i_Main,eCard);
-  
-    switch (eCard) {
-      
-      case CK_AGGREG:    vResolveAggreg   (_pCard_Aggreg   (pMainCard)); break;
-      case CK_FILTER:    vResolveFilter   (_pCard_Filter   (pMainCard)); break;
-      case CK_HAVING:    vResolveHaving   (_pCard_Having   (pMainCard)); break;
-      case CK_INDEXJOIN: vResolveIndexJoin(_pCard_IndexJoin(pMainCard)); break;
-      case CK_INDEXSCAN: vResolveIndexScan(_pCard_IndexScan(pMainCard)); break;
-      case CK_ORDAGG:    vResolveOrdAgg   (_pCard_OrdAgg   (pMainCard)); break;
-      case CK_PROJECT:   vResolveProject  (_pCard_Project  (pMainCard)); break;
-      case CK_SCAN:      vResolveScan     (_pCard_Scan     (pMainCard)); break;
-
-      case CK_CANDINDEX: continue;
-      case CK_COMBINE:   continue;
-      case CK_DEBUG:     continue;
-      case CK_HASH:      continue;
-      case CK_LIMIT:     continue;
-      case CK_SEND:      continue;
-      case CK_SORT:      continue;
-      case CK_STAGE:     continue;
-
-      default:
-        vTrace("SWITCH %s: Unexpected eCard %lld\n"_Stz
-               ,__func__
-               ,(i8)eCard
-               ,aCK[eCard]
-               );
-        RASSERT(0);
-        break;
-
-    }
+    Card* pMainCard = pGetCard(i_Main);
+    
+    vCardResolve(pMainCard);
   }
-
+  
 }
+/*----------------------------------------------------------------------------*/
+//void Board::vResolve_Symbols(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  eCK eCard;
+//
+//  i8 nMainCards = nItems();
+//  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+//    Card* pMainCard = pGetCard(i_Main,eCard);
+//
+//    switch (eCard) {
+//
+//      case CK_AGGREG:    vResolveAggreg   (_pCard_Aggreg   (pMainCard)); break;
+//      case CK_FILTER:    vResolveFilter   (_pCard_Filter   (pMainCard)); break;
+//      case CK_HAVING:    vResolveHaving   (_pCard_Having   (pMainCard)); break;
+//      case CK_INDEXJOIN: vResolveIndexJoin(_pCard_IndexJoin(pMainCard)); break;
+//      case CK_INDEXSCAN: vResolveIndexScan(_pCard_IndexScan(pMainCard)); break;
+//      case CK_ORDAGG:    vResolveOrdAgg   (_pCard_OrdAgg   (pMainCard)); break;
+//      case CK_PROJECT:   vResolveProject  (_pCard_Project  (pMainCard)); break;
+//      case CK_SCAN:      vResolveScan     (_pCard_Scan     (pMainCard)); break;
+//
+//      case CK_CANDINDEX: continue;
+//      case CK_COMBINE:   continue;
+//      case CK_DEBUG:     continue;
+//      case CK_HASH:      continue;
+//      case CK_LIMIT:     continue;
+//      case CK_SEND:      continue;
+//      case CK_SORT:      continue;
+//      case CK_STAGE:     continue;
+//
+//      default:
+//        vTrace("SWITCH %s: Unexpected eCard %lld\n"_Stz
+//               ,__func__
+//               ,(i8)eCard
+//               ,aCK[eCard]
+//               );
+//        RASSERT(0);
+//        break;
+//
+//    }
+//  }
+//
+//}
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -1352,17 +1531,20 @@ void Board::vOptimise_Board(void)
 
   vPrintBoard("vDissectSpec >> "_Stz);
 
-  vResolve_GenerativeStreamDefs();
-  vPrintBoard("vResolve_GenerativeStreamDefs >> "_Stz);
- 
-  vReplace_Ordinals();
-  vPrintBoard("vReplace_Ordinals >> "_Stz);
-
-  vResolve_ProjectiveStreamDefs();
-  vPrintBoard("vResolve_ProjectiveStreamDefs >> "_Stz);
-
-  vReplace_Ordinals();
-  vPrintBoard("vReplace_Ordinals >> "_Stz);
+//  vResolve_GenerativeStreamDefs();
+//  vPrintBoard("vResolve_GenerativeStreamDefs >> "_Stz);
+//
+//  vReplace_Ordinals();
+//  vPrintBoard("vReplace_Ordinals >> "_Stz);
+//
+//  vResolve_ProjectiveStreamDefs();
+//  vPrintBoard("vResolve_ProjectiveStreamDefs >> "_Stz);
+//
+//  vReplace_Ordinals();
+//  vPrintBoard("vReplace_Ordinals >> "_Stz);
+  
+  vResolve_Symbols();
+  vPrintBoard("vResolve_Symbols >> "_Stz);
 
 
   // optional

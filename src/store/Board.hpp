@@ -82,6 +82,9 @@ namespace STORE
     void vResolveScan      (Card_Scan*      pCard_Scan);
     void vResolveSort      (Card_Scan*      pCard_Scan);
 
+    void vCardResolve      (Card*           pCard);
+    void vTermResolve      (Card_Term*      pCard_Term);
+
     Card_StreamDef* pNewStreamDef(Card_ELIST* pCard_ELIST);
     Card_StreamDef* pNewStreamDef(Card_Table* pCard_Table);
 

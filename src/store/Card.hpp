@@ -152,7 +152,7 @@ namespace STORE
     bool bIsCard(eCK eCard);
     bool bIsOrdinalColumnAtom(void);
     bool bIsOrdinalIndexAtom(void);
-    bool bIsOrdinalColumnTerm(void);
+    bool bIsOrdinalStreamTerm(void);
     bool bIsOrdinalIndexTerm(void);
     bool bIsPred(void);
     bool bIsSame(Stz* szArg);
@@ -163,8 +163,8 @@ namespace STORE
 
     Stz* szOption(void);
     void vOption(Stz* szOption);
-    i8   iOrdinalColumnValue(void);
-    i8   iOrdinalIndexValue(void);
+    i8   iOrdinalStreamColNo(void);
+    i8   iOrdinalIndexColNo(void);
 
     Card_Term* pPopTerm(void);
   

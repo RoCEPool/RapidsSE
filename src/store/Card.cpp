@@ -1054,7 +1054,7 @@ bool Card::bIsOrdinalIndexAtom(void)
 /*----------------------------------------------------------------------------*/
 /* is atom a column ordinal?                                                  */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsOrdinalColumnTerm(void)
+bool Card::bIsOrdinalStreamTerm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1224,7 +1224,7 @@ void Card::vOption(Stz* szOption)
 /*----------------------------------------------------------------------------*/
 /* get ordinal column value                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Card::iOrdinalColumnValue(void)
+i8 Card::iOrdinalStreamColNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1237,7 +1237,7 @@ i8 Card::iOrdinalColumnValue(void)
 /*----------------------------------------------------------------------------*/
 /* get ordinal index value                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Card::iOrdinalIndexValue(void)
+i8 Card::iOrdinalIndexColNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

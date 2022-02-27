@@ -98,9 +98,9 @@ void Card_PRED::vReplaceOrdinals(StreamDef* pStreamDef, Index* pIndex)
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // an ordinal can appear as a column ordinal
   
-    if (pCard_Term->bIsOrdinalColumnTerm()) {
+    if (pCard_Term->bIsOrdinalStreamTerm()) {
 
-      i8 i_Ord = pCard_Term->iOrdinalColumnValue();
+      i8 i_Ord = pCard_Term->iOrdinalStreamColNo();
       i8 i_Col = i_Ord - 1;
 
       Column* pColumn = pStreamDef->pGetColumn(i_Col);
@@ -116,7 +116,7 @@ void Card_PRED::vReplaceOrdinals(StreamDef* pStreamDef, Index* pIndex)
   
     if (pIndex && pCard_Term->bIsOrdinalIndexTerm()) {
       
-      i8 i_IdxOrd = pCard_Term->iOrdinalIndexValue();
+      i8 i_IdxOrd = pCard_Term->iOrdinalIndexColNo();
       i8 i_IdxCol = i_IdxOrd - 1;
 
       Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
