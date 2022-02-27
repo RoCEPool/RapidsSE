@@ -193,6 +193,69 @@ static Stz* aCK_short[]
   /* */ "ENUMS"_Stz
 };
 
+static Stz* aCK_op[]
+{
+  /* */ "NONE"_Stz,
+    
+  /* */ "(none)"_Stz           // CK_AGGELIST
+  /* */ "aggreg    2"_Stz      // CK_AGGREG
+  /* */ "(none)"_Stz           // CK_AS
+  
+  /* */ "(none)"_Stz           // CK_CANDINDEX
+  /* */ "combined  0"_Stz      // CK_COMBINE
+
+  /* */ "(none)"_Stz           // CK_DEBUG
+
+  /* */ "(none)"_Stz           // CK_EBOUND
+  /* */ "(none)"_Stz           // CK_EXISTS
+  /* */ "(none)"_Stz           // CK_EXPR
+  /* */ "(none)"_Stz           // CK_EXPRBOOL
+  /* */ "(none)"_Stz           // CK_EXPRCALC
+
+  /* */ "filter    2"_Stz      // CK_FILTER
+
+  /* */ "(none)"_Stz           // CK_GBYELIST
+
+  /* */ "(none)"_Stz           // CK_HASH
+  /* */ "(none)"_Stz           // CK_HAVING
+  
+  /* */ "(none)"_Stz           // CK_INDEX
+  /* */ "indexJoin 2"_Stz      // CK_INDEXJOIN
+  /* */ "(none)"_Stz           // CK_INDEXPRED
+  /* */ "indexScan 2"_Stz      // CK_INDEXSCAN
+  
+  /* */ "(none)"_Stz           // CK_LBOUND
+  /* */ "limit     2"_Stz      // CK_LIMIT
+    
+  /* */ "(none)"_Stz           // CK_ON
+  /* */ "ordagg    2"_Stz      // CK_ORDAGG
+  
+  /* */ "(none)"_Stz           // CK_PREDAND
+  /* */ "(none)"_Stz           // CK_PREDCMP
+  /* */ "(none)"_Stz           // CK_PREDOR
+  /* */ "project   2"_Stz      // CK_PROJECT
+  /* */ "(none)"_Stz           // CK_PROJELIST
+
+  /* */ "(none)"_Stz           // CK_RBOUND
+  
+  /* */ "(none)"_Stz           // CK_SBYELIST
+  /* */ "(none)"_Stz           // CK_SEND
+  /* */ "scan       "_Stz      // CK_SCAN
+  /* */ "sort       "_Stz      // CK_SORT
+  /* */ "(none)"_Stz           // CK_SORTDIRN
+  /* */ "(none)"_Stz           // CK_STAGE
+  /* */ "(none)"_Stz           // CK_STREAMDEF
+  
+  /* */ "(none)"_Stz           // CK_TABLE
+  /* */ "(none)"_Stz           // CK_TERM
+  /* */ "(none)"_Stz           // CK_TERMSEQ
+  /* */ "(none)"_Stz           // CK_TYPE
+
+  /* */ "(none)"_Stz           // CK_UBOUND
+  
+  /* */ "ENUMS"_Stz
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
