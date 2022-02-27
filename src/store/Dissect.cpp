@@ -179,7 +179,9 @@ void Dissect::vDissectOp(i8 i_OpSpec)
 void Dissect::vDissectAggreg(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-    
+  
+  // 0) aggElist ; 1) gbyList
+ 
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
@@ -231,6 +233,8 @@ void Dissect::vDissectCombined(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
       
+  // 0) combined :
+
   Card_Combine* pCard_Combine = new Card_Combine;
 
   m_pBoard->vAppend(pCard_Combine);
@@ -280,6 +284,8 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
+  // filter : 0) filtElist
+
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
@@ -324,6 +330,8 @@ void Dissect::vDissectHash(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
+  // hash : 0) calcExpr??
+
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
@@ -356,6 +364,8 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
+  // indexJoin : 0) {table} 1) {index} 2) indexPred
+  
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
@@ -400,7 +410,9 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-    
+
+  // indexScan : 0) {table} 1) {index} 2) indexPred
+
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
@@ -445,7 +457,9 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 void Dissect::vDissectLimit(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-    
+  
+  // limit : 0) rows
+
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
@@ -474,6 +488,8 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
 void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  // ordAgg : 0) aggElist
     
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
@@ -510,7 +526,7 @@ void Dissect::vDissectOutput(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
       
-  // ignored
+  // outPut :
 }
 
 /*----------------------------------------------------------------------------*/
@@ -520,7 +536,7 @@ void Dissect::vDissectPulse(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  // ignored
+  // pulse :
 }
 
 /*----------------------------------------------------------------------------*/
@@ -529,7 +545,9 @@ void Dissect::vDissectPulse(OpSpec* pOpSpec)
 void Dissect::vDissectProject(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-    
+  
+  // project : 0) projElist
+  
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
@@ -562,6 +580,8 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
+  // scan : 0) {table}
+
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
@@ -597,6 +617,8 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
+  // send :
+
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
@@ -625,7 +647,7 @@ void Dissect::vDissectSink(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  // ignored
+  // sink :
 }
 
 /*----------------------------------------------------------------------------*/
@@ -635,6 +657,8 @@ void Dissect::vDissectSort(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
+  // sort : 0) ???
+
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
@@ -668,7 +692,7 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  // ignored
+  // start :
 }
 
 

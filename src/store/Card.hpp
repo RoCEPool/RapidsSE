@@ -30,8 +30,10 @@ namespace STORE
     CardSet(void);
    ~CardSet(void) noexcept(false);
 
-    void vRemoveCards(eCK eCard);
+    Card* pGetCard(i8 i_Card);
+    Card* pGetCard(i8 i_Card, eCK& reCard);
 
+    void vRemoveCards(eCK eCard);
   };
 
 

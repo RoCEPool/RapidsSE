@@ -27,10 +27,10 @@ namespace STORE
     Card_Scan*       m_pScan;
     Card_Stage*      m_pStage;
 
-    Index* m_pIndex;
-    Table* m_pTable;
+    Index*     m_pIndex;
+    StreamDef* m_pStreamDef;
+    Table*     m_pTable;
 
-  
   private:
     // must be last
     Footer m_xFooter;
@@ -63,6 +63,7 @@ namespace STORE
     void vStage(Card_Stage* pStage);
 
     void vIndex(Index* pIndex);
+    void vStreamDef(StreamDef* pStreamDef);
     void vTable(Table* pTable);
 
     void vResetRegisters(void);
@@ -70,10 +71,23 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     void vRankCandidateIndex(Card_CandIndex* pCard_CandIndex);
-
-   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    bool bAdd_CandIndexes         (void);
+    void vResolveAggreg    (Card_Aggreg*    pCard_Aggreg);
+    void vResolveFilter    (Card_Filter*    pCard_Filter);
+    void vResolveHaving    (Card_Having*    pCard_Having);
+    void vResolveIndexJoin (Card_IndexJoin* pCard_IndexJoin);
+    void vResolveIndexScan (Card_IndexScan* pCard_IndexScan);
+    void vResolveOrdAgg    (Card_OrdAgg*    pCard_OrdAgg);
+    void vResolveProject   (Card_Project*   pCard_Project);
+    void vResolveScan      (Card_Scan*      pCard_Scan);
+    void vResolveSort      (Card_Scan*      pCard_Scan);
+
+    Card_StreamDef* pNewStreamDef(Card_ELIST* pCard_ELIST);
+    Card_StreamDef* pNewStreamDef(Card_Table* pCard_Table);
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  
+    bool bAdd_CandIndexes              (void);
 
     void vAdd_IndexScan                (void);
 
@@ -104,7 +118,9 @@ namespace STORE
     void vResolve_GenerativeStreamDefs (void);
   
     void vResolve_ProjectiveStreamDefs (void);
-  
+
+    void vResolve_Symbols              (void);
+
    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     void vOptimise_Board(void);

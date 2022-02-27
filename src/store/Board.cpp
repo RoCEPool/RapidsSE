@@ -36,8 +36,9 @@ Board::Board(Stz* szQueryNm)
   m_pScan               = nullptr;
   m_pStage              = nullptr;
 
-  m_pIndex = nullptr;
-  m_pTable = nullptr;
+  m_pIndex     = nullptr;
+  m_pStreamDef = nullptr;
+  m_pTable     = nullptr;
 
   _checkInitialised_(CN_BOARD);
 
@@ -353,6 +354,16 @@ void Board::vIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vStreamDef(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  m_pStreamDef = pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -378,6 +389,7 @@ void Board::vResetRegisters(void)
   vStage(nullptr);
 
   vIndex(nullptr);
+  vStreamDef(nullptr);
   vTable(nullptr);
 }
 
@@ -433,6 +445,123 @@ void Board::vRankCandidateIndex(Card_CandIndex* pCard_CandIndex)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolveAggreg(Card_Aggreg* pCard_Aggreg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  // aggreg: 0) aggElist ; 1) gbyList
+  
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolveFilter(Card_Filter* pCard_Filter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  // filter: 0) filtElist
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolveHaving(Card_Having* pCard_Having)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  // having : 0) haveElist
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolveIndexJoin(Card_IndexJoin* pCard_IndexJoin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  // indexJoin : 0) {table} 1) {index} 2) indexPred
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolveIndexScan(Card_IndexScan* pCard_IndexScan)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  // indexScan : 0) {table} 1) {index} 2) indexPred
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolveOrdAgg(Card_OrdAgg* pCard_OrdAgg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  // ordAgg : 0) aggElist
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolveProject(Card_Project* pCard_Project)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  // project : 0) projElist
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolveScan(Card_Scan* pCard_Scan)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  // scan : 0) {table}
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolveSort(Card_Scan* pCard_Scan)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  // sort : 0) ???
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_StreamDef* Board::pNewStreamDef(Card_ELIST* pCard_ELIST)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_StreamDef* Board::pNewStreamDef(Card_Table* pCard_Table)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  return nullptr;
+}
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //
@@ -1162,6 +1291,52 @@ void Board::vResolve_ProjectiveStreamDefs(void)
   vWalk(vGenerate);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResolve_Symbols(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  eCK eCard;
+
+  i8 nMainCards = nItems();
+  for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
+    Card* pMainCard = pGetCard(i_Main,eCard);
+  
+    switch (eCard) {
+      
+      case CK_AGGREG:    vResolveAggreg   (_pCard_Aggreg   (pMainCard)); break;
+      case CK_FILTER:    vResolveFilter   (_pCard_Filter   (pMainCard)); break;
+      case CK_HAVING:    vResolveHaving   (_pCard_Having   (pMainCard)); break;
+      case CK_INDEXJOIN: vResolveIndexJoin(_pCard_IndexJoin(pMainCard)); break;
+      case CK_INDEXSCAN: vResolveIndexScan(_pCard_IndexScan(pMainCard)); break;
+      case CK_ORDAGG:    vResolveOrdAgg   (_pCard_OrdAgg   (pMainCard)); break;
+      case CK_PROJECT:   vResolveProject  (_pCard_Project  (pMainCard)); break;
+      case CK_SCAN:      vResolveScan     (_pCard_Scan     (pMainCard)); break;
+
+      case CK_CANDINDEX: continue;
+      case CK_COMBINE:   continue;
+      case CK_DEBUG:     continue;
+      case CK_HASH:      continue;
+      case CK_LIMIT:     continue;
+      case CK_SEND:      continue;
+      case CK_SORT:      continue;
+      case CK_STAGE:     continue;
+
+      default:
+        vTrace("SWITCH %s: Unexpected eCard %lld\n"_Stz
+               ,__func__
+               ,(i8)eCard
+               ,aCK[eCard]
+               );
+        RASSERT(0);
+        break;
+
+    }
+  }
+
+}
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -1179,14 +1354,17 @@ void Board::vOptimise_Board(void)
 
   vResolve_GenerativeStreamDefs();
   vPrintBoard("vResolve_GenerativeStreamDefs >> "_Stz);
-  
+ 
   vReplace_Ordinals();
   vPrintBoard("vReplace_Ordinals >> "_Stz);
 
   vResolve_ProjectiveStreamDefs();
   vPrintBoard("vResolve_ProjectiveStreamDefs >> "_Stz);
 
-  
+  vReplace_Ordinals();
+  vPrintBoard("vReplace_Ordinals >> "_Stz);
+
+
   // optional
   
   if (bFind_Scan_Filter()) {

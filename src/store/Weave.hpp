@@ -53,6 +53,7 @@ namespace STORE
     void vOpIndexJoin(Card_IndexJoin* pCard_IndexJoin);
     void vOpIndexScan(Card_IndexScan* pCard_IndexScan);
     void vOpLimit    (Card_Limit*     pCard_Limit);
+    void vOpOrdAgg   (Card_Aggreg*    pCard_Aggreg);
     void vOpProject  (Card_Project*   pCard_Project);
     void vOpScan     (Card_Scan*      pCard_Scan);
     void vOpSort     (Card_Sort*      pCard_Sort);
