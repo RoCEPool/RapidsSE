@@ -1029,10 +1029,10 @@ void Dissect::vOrPred(Card_BoolExpr* pCard_BoolExpr,
   Card_PRED* pCard_PRED_a = (Card_PRED*)(pCard_BoolExpr->pPop());
   Card_PRED* pCard_PRED_b = (Card_PRED*)(pCard_BoolExpr->pPop());
 
-  Card_OrPred* pCard_OrPred = new Card_OrPred;
-  pCard_OrPred->vAppend(pCard_PRED_b);
-  pCard_OrPred->vAppend(pCard_PRED_a);
-  pCard_BoolExpr->vAppend(pCard_OrPred);
+  Card_PredOr* pCard_PredOr = new Card_PredOr;
+  pCard_PredOr->vAppend(pCard_PRED_b);
+  pCard_PredOr->vAppend(pCard_PRED_a);
+  pCard_BoolExpr->vAppend(pCard_PredOr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1049,10 +1049,10 @@ void Dissect::vAndPred(Card_BoolExpr* pCard_BoolExpr,
   Card_PRED* pCard_PRED_a = (Card_PRED*)(pCard_BoolExpr->pPop());
   Card_PRED* pCard_PRED_b = (Card_PRED*)(pCard_BoolExpr->pPop());
 
-  Card_AndPred* pCard_AndPred = new Card_AndPred;
-  pCard_AndPred->vAppend(pCard_PRED_b);
-  pCard_AndPred->vAppend(pCard_PRED_a);
-  pCard_BoolExpr->vAppend(pCard_AndPred);
+  Card_PredAnd* pCard_PredAnd = new Card_PredAnd;
+  pCard_PredAnd->vAppend(pCard_PRED_b);
+  pCard_PredAnd->vAppend(pCard_PRED_a);
+  pCard_BoolExpr->vAppend(pCard_PredAnd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1063,30 +1063,30 @@ void Dissect::vCmpPred(Card_BoolExpr* pCard_BoolExpr,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-  Card_CmpPred* pCard_CmpPred = new Card_CmpPred;
+  Card_PredCmp* pCard_PredCmp = new Card_PredCmp;
 
   // <col> | <literal>
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
   //Stz* szTerm = pCard_Term->szTerm();
   eTE eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_OTHER == eTermEval);
-  pCard_CmpPred->vAppend(pCard_Term);
+  pCard_PredCmp->vAppend(pCard_Term);
 
   // <col> | <literal>
   pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
   //szTerm = pCard_Term->szTerm();
   eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_OTHER == eTermEval);
-  pCard_CmpPred->vAppend(pCard_Term);
+  pCard_PredCmp->vAppend(pCard_Term);
 
   // < | <= | == | != | >= | >
   pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
   //szTerm = pCard_Term->szTerm();
   eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_COMPARE == eTermEval);
-  pCard_CmpPred->vAppend(pCard_Term);
+  pCard_PredCmp->vAppend(pCard_Term);
   
-  pCard_BoolExpr->vAppend(pCard_CmpPred);
+  pCard_BoolExpr->vAppend(pCard_PredCmp);
 }
 
 /*----------------------------------------------------------------------------*/

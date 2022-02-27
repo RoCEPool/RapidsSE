@@ -18,9 +18,9 @@ namespace STORE
 
     // registers
     Card_CandIndex*  m_pCandidateIndex;
-    Card_CmpPred*    m_pComparePred_ebound;
-    Card_CmpPred*    m_pComparePred_lbound;
-    Card_CmpPred*    m_pComparePred_ubound;
+    Card_PredCmp*    m_pComparePred_ebound;
+    Card_PredCmp*    m_pComparePred_lbound;
+    Card_PredCmp*    m_pComparePred_ubound;
     Card_Filter*     m_pFilter;
     Card_IndexScan*  m_pIndexScan;
     Card_Project*    m_pProject;
@@ -53,9 +53,9 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     void vCandidateIndex(Card_CandIndex* pCandidateIndex);
-    void vComparePred_ebound(Card_CmpPred* pComparePred);
-    void vComparePred_lbound(Card_CmpPred* pComparePred);
-    void vComparePred_ubound(Card_CmpPred* pComparePred);
+    void vComparePred_ebound(Card_PredCmp* pComparePred);
+    void vComparePred_lbound(Card_PredCmp* pComparePred);
+    void vComparePred_ubound(Card_PredCmp* pComparePred);
     void vFilter(Card_Filter* pFilter);
     void vIndexScan(Card_IndexScan* pIndexScan);
     void vProject(Card_Project* pProject);

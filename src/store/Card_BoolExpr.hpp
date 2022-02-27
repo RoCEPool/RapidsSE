@@ -18,7 +18,7 @@ namespace STORE
     Card_BoolExpr(void);
    ~Card_BoolExpr(void) noexcept(false);
     
-    Card_CmpPred* pFindBound(Index* pIndex, eBK eBound);
+    Card_PredCmp* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
     void vReduceExpr(void);
   };

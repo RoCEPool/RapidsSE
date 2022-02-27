@@ -11,7 +11,7 @@
 
 #include "Card_AggElist.hpp"
 #include "Card_Aggreg.hpp"
-#include "Card_AndPred.hpp"
+#include "Card_PredAnd.hpp"
 #include "Card_As.hpp"
 
 #include "Card_BoolExpr.hpp"
@@ -19,7 +19,7 @@
 #include "Card_CalcExpr.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_Combine.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_PredCmp.hpp"
 
 #include "Card_Debug.hpp"
 
@@ -43,7 +43,7 @@
 
 #include "Card_On.hpp"
 #include "Card_OrdAgg.hpp"
-#include "Card_OrPred.hpp"
+#include "Card_PredOr.hpp"
 
 #include "Card_Project.hpp"
 #include "Card_ProjElist.hpp"

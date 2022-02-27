@@ -9,7 +9,7 @@
 
 namespace STORE
 {
-  class Card_CmpPred;
+  class Card_PredCmp;
 
   class Card_BOUND : public Card_SUB
   {  

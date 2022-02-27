@@ -533,7 +533,7 @@ void Weave::vIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  Card_CmpPred* pCard_CmpPred;
+  Card_PredCmp* pCard_PredCmp;
   Card_Term* pCard_Term;
   Stz* szTerm;
   
@@ -547,18 +547,18 @@ void Weave::vIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
   if (pCard_LBound) {
     szRpnExpr->vConcat("LBOUND"_Stz);
     
-    pCard_CmpPred = _pCard_CmpPred(pCard_LBound->pGet(0));
+    pCard_PredCmp = _pCard_PredCmp(pCard_LBound->pGet(0));
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(0));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" $I1"_Stz);
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(1));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(1));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" "_Stz);
     szRpnExpr->vConcat(szTerm);
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(2));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(2));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" "_Stz);
     szRpnExpr->vConcat(szTerm);
@@ -572,18 +572,18 @@ void Weave::vIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
   if (pCard_UBound) {
     szRpnExpr->vConcat("UBOUND"_Stz);
     
-    pCard_CmpPred = _pCard_CmpPred(pCard_UBound->pGet(0));
+    pCard_PredCmp = _pCard_PredCmp(pCard_UBound->pGet(0));
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(0));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" $I1"_Stz);
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(1));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(1));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" "_Stz);
     szRpnExpr->vConcat(szTerm);
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(2));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(2));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" "_Stz);
     szRpnExpr->vConcat(szTerm);
@@ -597,36 +597,36 @@ void Weave::vIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
   if (pCard_RBound) {
     szRpnExpr->vConcat("LBOUND"_Stz);
     
-    pCard_CmpPred = _pCard_CmpPred(pCard_RBound->pGet(0));
+    pCard_PredCmp = _pCard_PredCmp(pCard_RBound->pGet(0));
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(0));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" $I1"_Stz);
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(1));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(1));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" "_Stz);
     szRpnExpr->vConcat(szTerm);
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(2));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(2));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" "_Stz);
     szRpnExpr->vConcat(szTerm);
     
     szRpnExpr->vConcat( " UBOUND"_Stz);
     
-    pCard_CmpPred = _pCard_CmpPred(pCard_RBound->pGet(1));
+    pCard_PredCmp = _pCard_PredCmp(pCard_RBound->pGet(1));
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(0));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" $I1"_Stz);
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(1));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(1));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" "_Stz);
     szRpnExpr->vConcat(szTerm);
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(2));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(2));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" "_Stz);
     szRpnExpr->vConcat(szTerm);
@@ -636,20 +636,20 @@ void Weave::vIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
     = _pCard_EBound(pCard_IndexScan->pFindSubCard(CK_EBOUND));
   
   if (pCard_EBound) {
-    pCard_CmpPred = _pCard_CmpPred(pCard_EBound->pGet(0));
+    pCard_PredCmp = _pCard_PredCmp(pCard_EBound->pGet(0));
     
     szRpnExpr->vConcat("LBOUND"_Stz);
     
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(0));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" $I1"_Stz);
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(1));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(1));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" "_Stz);
     szRpnExpr->vConcat(szTerm);
 
-//    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(2));
+//    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(2));
 //    szTerm = pCard_Term->szTerm();
 //    szRpnExpr->vConcat(" "_Stz);
 //    szRpnExpr->vConcat(szTerm);
@@ -657,16 +657,16 @@ void Weave::vIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
 
     szRpnExpr->vConcat( " UBOUND"_Stz);
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(0));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(0));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" $I1"_Stz);
 
-    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(1));
+    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(1));
     szTerm = pCard_Term->szTerm();
     szRpnExpr->vConcat(" "_Stz);
     szRpnExpr->vConcat(szTerm);
 
-//    pCard_Term = _pCard_Term(pCard_CmpPred->pGet(2));
+//    pCard_Term = _pCard_Term(pCard_PredCmp->pGet(2));
 //    szTerm = pCard_Term->szTerm();
 //    szRpnExpr->vConcat(" "_Stz);
 //    szRpnExpr->vConcat(szTerm);
@@ -870,15 +870,15 @@ void Weave::vPred(Stz* szRpnExpr, Card_PRED* pCard_PRED)
   switch (eCard) {
     
     case CK_ORPRED:
-      vPredOr(szRpnExpr,_pCard_OrPred(pCard_PRED));
+      vPredOr(szRpnExpr,_pCard_PredOr(pCard_PRED));
       break;
       
     case CK_ANDPRED:
-      vPredAnd(szRpnExpr,_pCard_AndPred(pCard_PRED));
+      vPredAnd(szRpnExpr,_pCard_PredAnd(pCard_PRED));
       break;
       
     case CK_CMPPRED:
-      vPredCmp(szRpnExpr,_pCard_CmpPred(pCard_PRED));
+      vPredCmp(szRpnExpr,_pCard_PredCmp(pCard_PRED));
       break;
 
     default:
@@ -894,14 +894,14 @@ void Weave::vPred(Stz* szRpnExpr, Card_PRED* pCard_PRED)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for pCard_OrExpr                                            */
 /*----------------------------------------------------------------------------*/
-void Weave::vPredOr(Stz* szRpnExpr, Card_OrPred* pCard_OrPred)
+void Weave::vPredOr(Stz* szRpnExpr, Card_PredOr* pCard_PredOr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
     
-  Card_PRED* pCard0 = (Card_PRED*)pCard_OrPred->pGet(0);
+  Card_PRED* pCard0 = (Card_PRED*)pCard_PredOr->pGet(0);
   vPred(szRpnExpr,pCard0);
 
-  Card_PRED* pCard1 = (Card_PRED*)pCard_OrPred->pGet(1);
+  Card_PRED* pCard1 = (Card_PRED*)pCard_PredOr->pGet(1);
   vPred(szRpnExpr,pCard1);
 
   szRpnExpr->vConcat(" or"_Stz);
@@ -910,14 +910,14 @@ void Weave::vPredOr(Stz* szRpnExpr, Card_OrPred* pCard_OrPred)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for pCard_AndExpr                                           */
 /*----------------------------------------------------------------------------*/
-void Weave::vPredAnd(Stz* szRpnExpr, Card_AndPred* pCard_AndPred)
+void Weave::vPredAnd(Stz* szRpnExpr, Card_PredAnd* pCard_PredAnd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  Card_PRED* pCard0 = (Card_PRED*)pCard_AndPred->pGet(0);
+  Card_PRED* pCard0 = (Card_PRED*)pCard_PredAnd->pGet(0);
   vPred(szRpnExpr,pCard0);
 
-  Card_PRED* pCard1 = (Card_PRED*)pCard_AndPred->pGet(1);
+  Card_PRED* pCard1 = (Card_PRED*)pCard_PredAnd->pGet(1);
   vPred(szRpnExpr,pCard1);
 
   szRpnExpr->vConcat(" and"_Stz);
@@ -926,17 +926,17 @@ void Weave::vPredAnd(Stz* szRpnExpr, Card_AndPred* pCard_AndPred)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for pCard_CmpExpr                                           */
 /*----------------------------------------------------------------------------*/
-void Weave::vPredCmp(Stz* szRpnExpr, Card_CmpPred* pCard_CmpPred)
+void Weave::vPredCmp(Stz* szRpnExpr, Card_PredCmp* pCard_PredCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  Card_Term* pCard_Term0 = _pCard_Term(pCard_CmpPred->pGet(0));
+  Card_Term* pCard_Term0 = _pCard_Term(pCard_PredCmp->pGet(0));
   vTerm(szRpnExpr,pCard_Term0);
 
-  Card_Term* pCard_Term1 = _pCard_Term(pCard_CmpPred->pGet(1));
+  Card_Term* pCard_Term1 = _pCard_Term(pCard_PredCmp->pGet(1));
   vTerm(szRpnExpr,pCard_Term1);
   
-  Card_Term* pCard_Term2 = _pCard_Term(pCard_CmpPred->pGet(2));
+  Card_Term* pCard_Term2 = _pCard_Term(pCard_PredCmp->pGet(2));
   vTerm(szRpnExpr,pCard_Term2);
 }
 

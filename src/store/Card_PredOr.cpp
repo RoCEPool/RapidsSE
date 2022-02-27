@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* Card_OrPred.cpp -- Or Predicate                                            */
+/* Card_PredOr.cpp -- Or Predicate                                            */
 /*============================================================================*/
 
-#include "Card_OrPred.hpp"
+#include "Card_PredOr.hpp"
 #include "Card_PRED.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_PredCmp.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_OrPred,CK_ORPRED)
-__aNewFunction(Card_OrPred,CN_CARD)
-__vDeleteFunction(Card_OrPred,CN_CARD)
+__pCastFunction_Card(STORE,Card_PredOr,CK_ORPRED)
+__aNewFunction(Card_PredOr,CN_CARD)
+__vDeleteFunction(Card_PredOr,CN_CARD)
 
-__bIsCard(STORE,Card_OrPred,CK_ORPRED)
+__bIsCard(STORE,Card_PredOr,CK_ORPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OrPred::Card_OrPred(void)
+Card_PredOr::Card_PredOr(void)
 : Card_PRED(CK_ORPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -32,7 +32,7 @@ Card_OrPred::Card_OrPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_OrPred::~Card_OrPred(void) noexcept(false)
+Card_PredOr::~Card_PredOr(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -41,16 +41,16 @@ Card_OrPred::~Card_OrPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_OrPred::pFindBound_or(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_PredOr::pFindBound_or(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (Card_CmpPred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
+  if (Card_PredCmp* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
     return pFound;
 
   Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (Card_CmpPred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
+  if (Card_PredCmp* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
     return pFound;
 
   return nullptr;
@@ -59,7 +59,7 @@ Card_CmpPred* Card_OrPred::pFindBound_or(Index* pIndex, eBK eBound)
 /*----------------------------------------------------------------------------*/
 /* does orPred have some bound on given index?                                */
 /*----------------------------------------------------------------------------*/
-bool Card_OrPred::bHasBounds_or(Index* pIndex)
+bool Card_PredOr::bHasBounds_or(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

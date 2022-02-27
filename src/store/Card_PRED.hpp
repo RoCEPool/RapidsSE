@@ -9,7 +9,7 @@
 
 namespace STORE
 {
-  class Card_CmpPred;
+  class Card_PredCmp;
 
   class Card_PRED : public Card_SUB
   {  
@@ -18,7 +18,7 @@ namespace STORE
    ~Card_PRED(void) noexcept(false);
       
     void vCullByKids(void);
-    Card_CmpPred* pFindBound_pred(Index* pIndex, eBK eBound);
+    Card_PredCmp* pFindBound_pred(Index* pIndex, eBK eBound);
     bool bHasBounds_pred (Index* pIndex);
     
     bool bReduciblePred(void);

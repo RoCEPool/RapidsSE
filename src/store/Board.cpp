@@ -214,7 +214,7 @@ void Board::vCandidateIndex(Card_CandIndex* pCandidateIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vComparePred_ebound(Card_CmpPred* pComparePred)
+void Board::vComparePred_ebound(Card_PredCmp* pComparePred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -230,7 +230,7 @@ void Board::vComparePred_ebound(Card_CmpPred* pComparePred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vComparePred_lbound(Card_CmpPred* pComparePred)
+void Board::vComparePred_lbound(Card_PredCmp* pComparePred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -246,7 +246,7 @@ void Board::vComparePred_lbound(Card_CmpPred* pComparePred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vComparePred_ubound(Card_CmpPred* pComparePred)
+void Board::vComparePred_ubound(Card_PredCmp* pComparePred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -775,18 +775,18 @@ void Board::vAdd_IndexScan(void)
 //
 //  m_pFilter->vDump();
 //
-//  Card_CmpPred* pCard_CmpPred =
-//    _pCard_CmpPred(m_pFilter->pFindSubCard(CK_CMPPRED));
+//  Card_PredCmp* pCard_PredCmp =
+//    _pCard_PredCmp(m_pFilter->pFindSubCard(CK_CMPPRED));
 //
-//  pCard_CmpPred->vDump();
+//  pCard_PredCmp->vDump();
 //
 //  Card_LBound* pCard_LBound = new Card_LBound;
 //
 //
-//  i8 nTerms = pCard_CmpPred->nItems();
+//  i8 nTerms = pCard_PredCmp->nItems();
 //  for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
 //    Card_Term* pCard_Term =
-//      _pCard_Term(pCard_CmpPred->pGet(i_Term));
+//      _pCard_Term(pCard_PredCmp->pGet(i_Term));
 //
 //    Stz* szTerm = pCard_Term->szTerm();
 //
@@ -917,13 +917,13 @@ void Board::vMark_ComparePreds(void)
       
     case 1: {
       // lower bound or upper bound
-      Card_CmpPred* pComparePred_lbound =
+      Card_PredCmp* pComparePred_lbound =
         m_pFilter->pFindBound(m_pIndex,BK_LBOUND);
       if (pComparePred_lbound) {
         vComparePred_lbound(pComparePred_lbound);
         break;
       }
-      Card_CmpPred* pComparePred_ubound =
+      Card_PredCmp* pComparePred_ubound =
         m_pFilter->pFindBound(m_pIndex,BK_UBOUND);
       if (pComparePred_ubound) {
         vComparePred_ubound(pComparePred_ubound);
@@ -934,11 +934,11 @@ void Board::vMark_ComparePreds(void)
 
     case 2: {
       // lower bound and upper bound
-      Card_CmpPred* pComparePred_lbound =
+      Card_PredCmp* pComparePred_lbound =
         m_pFilter->pFindBound(m_pIndex,BK_LBOUND);
       if (pComparePred_lbound)
         vComparePred_lbound(pComparePred_lbound);
-      Card_CmpPred* pComparePred_ubound =
+      Card_PredCmp* pComparePred_ubound =
         m_pFilter->pFindBound(m_pIndex,BK_UBOUND);
       if (pComparePred_ubound)
         vComparePred_ubound(pComparePred_ubound);
@@ -947,7 +947,7 @@ void Board::vMark_ComparePreds(void)
       
     case 3: {
       // equi-bound
-      Card_CmpPred* pComparePred_ebound =
+      Card_PredCmp* pComparePred_ebound =
         m_pFilter->pFindBound(m_pIndex,BK_EBOUND);
       if (pComparePred_ebound)
         vComparePred_ebound(pComparePred_ebound);

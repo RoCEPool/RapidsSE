@@ -4,7 +4,7 @@
 
 #include "Card_Filter.hpp"
 
-#include "Card_CmpPred.hpp"
+#include "Card_PredCmp.hpp"
 #include "Card_Term.hpp"
 #include "Card_TypedExpr.hpp"
 #include "Card_Type.hpp"
@@ -70,11 +70,11 @@ void Card_Filter::vToExpr(Stz* szExpr)
   szExpr->vConcat("type "_Stz);
   szExpr->vConcat(pCard_Type->szType());
 
-  Card_CmpPred* pCard_CmpPred = _pCard_CmpPred(pGet(1));
+  Card_PredCmp* pCard_PredCmp = _pCard_PredCmp(pGet(1));
   
-  i8 nSubCards = pCard_CmpPred->nItems();
+  i8 nSubCards = pCard_PredCmp->nItems();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card_Term* pCard_Term = _pCard_Term(pCard_CmpPred->pGet(i_Sub));
+    Card_Term* pCard_Term = _pCard_Term(pCard_PredCmp->pGet(i_Sub));
     
     Stz* szTerm = pCard_Term->szTerm();
     
@@ -87,16 +87,16 @@ void Card_Filter::vToExpr(Stz* szExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_Filter::pFindBound(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_Filter::pFindBound(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_TypedExpr* pCard_TypedExpr =
     _pCard_TypedExpr(pFindSubCard(CK_TYPEDEXPR));
 
-  Card_CmpPred* pCard_CmpPred = pCard_TypedExpr->pFindBound(pIndex,eBound);
+  Card_PredCmp* pCard_PredCmp = pCard_TypedExpr->pFindBound(pIndex,eBound);
   
-  return pCard_CmpPred;
+  return pCard_PredCmp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,11 +130,11 @@ void Card_Filter::vReduceFilter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Filter::bRemoveBound(Card_CmpPred* pCard_CmpPred)
+bool Card_Filter::bRemoveBound(Card_PredCmp* pCard_PredCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
-  vRemoveSubCard(pCard_CmpPred);
+  vRemoveSubCard(pCard_PredCmp);
   
   return true;
 }

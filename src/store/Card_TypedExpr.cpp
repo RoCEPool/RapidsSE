@@ -39,16 +39,16 @@ Card_TypedExpr::~Card_TypedExpr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_TypedExpr::pFindBound(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_TypedExpr::pFindBound(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_BoolExpr* pCard_BoolExpr = _pCard_BoolExpr(pFindSubCard(CK_BOOLEXPR));
   
-  Card_CmpPred* pCard_CmpPred =
+  Card_PredCmp* pCard_PredCmp =
     pCard_BoolExpr->pFindBound(pIndex,eBound);
  
-  return pCard_CmpPred;
+  return pCard_PredCmp;
 }
 
 /*----------------------------------------------------------------------------*/

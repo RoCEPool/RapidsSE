@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* Card_AndPred.cpp -- And Predicate                                          */
+/* Card_PredAnd.cpp -- And Predicate                                          */
 /*============================================================================*/
 
-#include "Card_AndPred.hpp"
+#include "Card_PredAnd.hpp"
 #include "Card_PRED.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_PredCmp.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_AndPred,CK_ANDPRED)
-__aNewFunction(Card_AndPred,CN_CARD)
-__vDeleteFunction(Card_AndPred,CN_CARD)
+__pCastFunction_Card(STORE,Card_PredAnd,CK_ANDPRED)
+__aNewFunction(Card_PredAnd,CN_CARD)
+__vDeleteFunction(Card_PredAnd,CN_CARD)
 
-__bIsCard(STORE,Card_AndPred,CK_ANDPRED)
+__bIsCard(STORE,Card_PredAnd,CK_ANDPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AndPred::Card_AndPred(void)
+Card_PredAnd::Card_PredAnd(void)
 : Card_PRED(CK_ANDPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -32,7 +32,7 @@ Card_AndPred::Card_AndPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_AndPred::~Card_AndPred(void) noexcept(false)
+Card_PredAnd::~Card_PredAnd(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -41,16 +41,16 @@ Card_AndPred::~Card_AndPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_AndPred::pFindBound_and(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_PredAnd::pFindBound_and(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (Card_CmpPred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
+  if (Card_PredCmp* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
     return pFound;
 
   Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (Card_CmpPred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
+  if (Card_PredCmp* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
     return pFound;
 
   return nullptr;
@@ -59,7 +59,7 @@ Card_CmpPred* Card_AndPred::pFindBound_and(Index* pIndex, eBK eBound)
 /*----------------------------------------------------------------------------*/
 /* does this andPred have some bound on index?                                */
 /*----------------------------------------------------------------------------*/
-bool Card_AndPred::bHasBounds_and(Index* pIndex)
+bool Card_PredAnd::bHasBounds_and(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

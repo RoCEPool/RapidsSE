@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_CmpPred.cpp -- Compare Predicate                                      */
+/* Card_PredCmp.cpp -- Compare Predicate                                      */
 /*============================================================================*/
 
-#include "Card_CmpPred.hpp"
+#include "Card_PredCmp.hpp"
 #include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_CmpPred,CK_CMPPRED)
-__aNewFunction(Card_CmpPred,CN_CARD)
-__vDeleteFunction(Card_CmpPred,CN_CARD)
+__pCastFunction_Card(STORE,Card_PredCmp,CK_CMPPRED)
+__aNewFunction(Card_PredCmp,CN_CARD)
+__vDeleteFunction(Card_PredCmp,CN_CARD)
 
-__bIsCard(STORE,Card_CmpPred,CK_CMPPRED)
+__bIsCard(STORE,Card_PredCmp,CK_CMPPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred::Card_CmpPred(void)
+Card_PredCmp::Card_PredCmp(void)
 : Card_PRED(CK_CMPPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -31,7 +31,7 @@ Card_CmpPred::Card_CmpPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred::~Card_CmpPred(void) noexcept(false)
+Card_PredCmp::~Card_PredCmp(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -43,7 +43,7 @@ Card_CmpPred::~Card_CmpPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get bound of this compare op                                               */
 /*----------------------------------------------------------------------------*/
-eBK Card_CmpPred::eBound(void)
+eBK Card_PredCmp::eBound(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -58,7 +58,7 @@ eBK Card_CmpPred::eBound(void)
 /*----------------------------------------------------------------------------*/
 /* get relational operator of this compare op                                 */
 /*----------------------------------------------------------------------------*/
-eRO Card_CmpPred::eRelOp(void)
+eRO Card_PredCmp::eRelOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -73,11 +73,11 @@ eRO Card_CmpPred::eRelOp(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_CmpPred::pDup(void)
+Card_PredCmp* Card_PredCmp::pDup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_CmpPred* pComparePred = new Card_CmpPred;
+  Card_PredCmp* pComparePred = new Card_PredCmp;
   
   i8 nTerms = this->nItems();
   for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
@@ -94,7 +94,7 @@ Card_CmpPred* Card_CmpPred::pDup(void)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_CmpPred::pFindBound_compare(Index* pIndex, eBK eBound)
+Card_PredCmp* Card_PredCmp::pFindBound_compare(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -114,11 +114,11 @@ Card_CmpPred* Card_CmpPred::pFindBound_compare(Index* pIndex, eBK eBound)
 /*----------------------------------------------------------------------------*/
 /* is this comparePred a bound on given index?                                */
 /*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bHasBounds_compare(Index* pIndex)
+bool Card_PredCmp::bHasBounds_compare(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  //Card_Term* pTerm1 = _pCard_Term(pCard_CmpPred->pGet(1));
+  //Card_Term* pTerm1 = _pCard_Term(pCard_PredCmp->pGet(1));
   
   Card_Term* pTerm2 = _pCard_Term(pGet(2));
   if (BK_NONE == pTerm2->eBound())

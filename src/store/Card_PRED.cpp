@@ -4,9 +4,9 @@
 
 #include "Card_PRED.hpp"
 #include "Card_Term.hpp"
-#include "Card_OrPred.hpp"
-#include "Card_AndPred.hpp"
-#include "Card_CmpPred.hpp"
+#include "Card_PredOr.hpp"
+#include "Card_PredAnd.hpp"
+#include "Card_PredCmp.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -79,7 +79,7 @@ void Card_PRED::vCullByKids(void)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_PRED::pFindBound_pred(Index* pIndex,
+Card_PredCmp* Card_PRED::pFindBound_pred(Index* pIndex,
                                              eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -89,13 +89,13 @@ Card_CmpPred* Card_PRED::pFindBound_pred(Index* pIndex,
   switch (eCard) {
     
     case CK_ORPRED:
-      return _pCard_OrPred(this)->pFindBound_or(pIndex,eBound);
+      return _pCard_PredOr(this)->pFindBound_or(pIndex,eBound);
       
     case CK_ANDPRED:
-      return _pCard_AndPred(this)->pFindBound_and(pIndex,eBound);
+      return _pCard_PredAnd(this)->pFindBound_and(pIndex,eBound);
       
     case CK_CMPPRED:
-      return _pCard_CmpPred(this)->pFindBound_compare(pIndex,eBound);
+      return _pCard_PredCmp(this)->pFindBound_compare(pIndex,eBound);
 
     default:
       vTrace("pFindBound_pred: unexpected eCard %lld %s\n"_Stz
@@ -120,13 +120,13 @@ bool Card_PRED::bHasBounds_pred(Index* pIndex)
   switch (eCard) {
     
     case CK_ORPRED:
-      return _pCard_OrPred(this)->bHasBounds_or(pIndex);
+      return _pCard_PredOr(this)->bHasBounds_or(pIndex);
       
     case CK_ANDPRED:
-      return _pCard_AndPred(this)->bHasBounds_and(pIndex);
+      return _pCard_PredAnd(this)->bHasBounds_and(pIndex);
       
     case CK_CMPPRED:
-      return _pCard_CmpPred(this)->bHasBounds_compare(pIndex);
+      return _pCard_PredCmp(this)->bHasBounds_compare(pIndex);
 
     default:
       vTrace("bHasBounds_pred: unexpected eCard %lld %s\n"_Stz
