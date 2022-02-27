@@ -776,7 +776,7 @@ void Board::vAdd_IndexScan(void)
 //  m_pFilter->vDump();
 //
 //  Card_PredCmp* pCard_PredCmp =
-//    _pCard_PredCmp(m_pFilter->pFindSubCard(CK_CMPPRED));
+//    _pCard_PredCmp(m_pFilter->pFindSubCard(CK_PREDCMP));
 //
 //  pCard_PredCmp->vDump();
 //

@@ -9,7 +9,6 @@ enum eCK // card kind
     
   /* */ CK_AGGELIST,
   /* */ CK_AGGREG,
-  /* */ CK_ANDPRED,
   /* */ CK_AS,
   
   /* */ CK_BOOLEXPR,
@@ -17,7 +16,6 @@ enum eCK // card kind
   /* */ CK_CALCEXPR,
   /* */ CK_CANDINDEX,
   /* */ CK_COMBINE,
-  /* */ CK_CMPPRED,
   
   /* */ CK_DEBUG,
   
@@ -41,8 +39,10 @@ enum eCK // card kind
     
   /* */ CK_ON,
   /* */ CK_ORDAGG,
-  /* */ CK_ORPRED,
   
+  /* */ CK_PREDAND,
+  /* */ CK_PREDCMP,
+  /* */ CK_PREDOR,
   /* */ CK_PROJECT,
   /* */ CK_PROJELIST,
 
@@ -73,7 +73,6 @@ static Stz* aCK[]
   
   /* */ "CK_AGGELIST"_Stz,        // CK_AGGELIST
   /* */ "CK_AGGREG"_Stz,          // CK_AGGREG
-  /* */ "CK_ANDPRED"_Stz,         // CK_ANDPRED
   /* */ "CK_AS"_Stz,              // CK_AS
   
   /* */ "CK_BOOLEXPR"_Stz,        // CK_BOOLEXPR
@@ -81,7 +80,6 @@ static Stz* aCK[]
   /* */ "CK_CALCEXPR"_Stz,        // CK_CALCEXPR
   /* */ "CK_CANDINDEX"_Stz,       // CK_CANDINDEX
   /* */ "CK_COMBINE"_Stz,         // CK_COMBINE
-  /* */ "CK_CMPPRED"_Stz,         // CK_CMPPRED
   
   /* */ "CK_DEBUG"_Stz,           // CK_DEBUG
   
@@ -105,8 +103,10 @@ static Stz* aCK[]
     
   /* */ "CK_ON"_Stz,              // CK_ON
   /* */ "CK_ORDAGG"_Stz,          // CK_ORDAGG
-  /* */ "CK_ORPRED"_Stz,          // CK_ORPRED
   
+  /* */ "CK_PREDAND"_Stz,         // CK_PREDAND
+  /* */ "CK_PREDCMP"_Stz,         // CK_PREDCMP
+  /* */ "CK_PREDOR"_Stz,          // CK_PREDOR
   /* */ "CK_PROJECT"_Stz,         // CK_PROJECT
   /* */ "CK_PROJELIST"_Stz,       // CK_PROJELIST
 
@@ -137,7 +137,6 @@ static Stz* aCK_short[]
     
   /* */ "aggElist"_Stz,        // CK_AGGELIST
   /* */ "aggreg"_Stz,          // CK_AGGREG
-  /* */ "andPred"_Stz,         // CK_ANDPRED
   /* */ "as"_Stz,              // CK_AS
   
   /* */ "boolExpr"_Stz,        // CK_BOOLEXPR
@@ -145,7 +144,6 @@ static Stz* aCK_short[]
   /* */ "calcExpr"_Stz,        // CK_CALCEXPR
   /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "combine"_Stz,         // CK_COMBINE
-  /* */ "cmpPred"_Stz,         // CK_CMPPRED
 
   /* */ "debug"_Stz,           // CK_DEBUG
 
@@ -169,8 +167,10 @@ static Stz* aCK_short[]
     
   /* */ "on"_Stz,              // CK_ON
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
-  /* */ "orPred"_Stz,          // CK_ORPRED
   
+  /* */ "predAnd"_Stz,         // CK_PREDAND
+  /* */ "predCmp"_Stz,         // CK_PREDCMP
+  /* */ "predOr"_Stz,          // CK_PREDOR
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projElist"_Stz,       // CK_PROJELIST
 

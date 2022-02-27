@@ -1099,8 +1099,8 @@ bool Card::bIsPred(void)
   
   switch (eCard) {
     case CK_BOOLEXPR:
-    case CK_ORPRED:
-    case CK_ANDPRED:
+    case CK_PREDOR:
+    case CK_PREDAND:
       return true;
       
     default: return false;
@@ -1639,7 +1639,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
 
     case CK_AGGELIST:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_AGGREG:                     vPrintProperties(pRibbon,iDepth); break;
-    case CK_ANDPRED:                    vPrintProperties(pRibbon,iDepth); break;
+    case CK_PREDAND:                    vPrintProperties(pRibbon,iDepth); break;
     case CK_AS:                         vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_BOOLEXPR:                   vPrintProperties(pRibbon,iDepth); break;
@@ -1647,7 +1647,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_CALCEXPR:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_CANDINDEX:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_COMBINE:                    vPrintProperties(pRibbon,iDepth); break;
-    case CK_CMPPRED:                    vPrintProperties(pRibbon,iDepth); break;
+    case CK_PREDCMP:                    vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_DEBUG:                      vPrintProperties(pRibbon,iDepth); break;
                         
@@ -1671,7 +1671,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
                                                 
     case CK_ON:                         vPrintProperties(pRibbon,iDepth); break;
     case CK_ORDAGG:                     vPrintProperties(pRibbon,iDepth); break;
-    case CK_ORPRED:                     vPrintProperties(pRibbon,iDepth); break;
+    case CK_PREDOR:                     vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_PROJECT:                    vPrintProperties(pRibbon,iDepth); break;
     case CK_PROJELIST:                  vPrintProperties(pRibbon,iDepth); break;

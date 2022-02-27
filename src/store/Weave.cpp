@@ -869,15 +869,15 @@ void Weave::vPred(Stz* szRpnExpr, Card_PRED* pCard_PRED)
   
   switch (eCard) {
     
-    case CK_ORPRED:
+    case CK_PREDOR:
       vPredOr(szRpnExpr,_pCard_PredOr(pCard_PRED));
       break;
       
-    case CK_ANDPRED:
+    case CK_PREDAND:
       vPredAnd(szRpnExpr,_pCard_PredAnd(pCard_PRED));
       break;
       
-    case CK_CMPPRED:
+    case CK_PREDCMP:
       vPredCmp(szRpnExpr,_pCard_PredCmp(pCard_PRED));
       break;
 
