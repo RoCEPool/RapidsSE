@@ -148,7 +148,7 @@ namespace STORE
 
     Card_RpnTerms* pToRpnTerms(Stz* szRpnExpr);
   
-    Stz* szCheckRpnExpr(TagSet* pArgTags, i8 i_Expr);
+    Stz* szCheckLastArg(TagSet* pArgTags, i8 i_Last);
     void vCheckArgs(TagSet* pArgTags, i8 nArgs);
   
   private:

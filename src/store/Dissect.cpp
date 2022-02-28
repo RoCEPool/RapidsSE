@@ -189,7 +189,7 @@ Card* Dissect::pCard_Aggreg(TagSet* pArgTags)
   
   // 0) aggElist ; 1) gbyList
    
-  Stz* szRpnExpr = szCheckRpnExpr(pArgTags,1);
+  Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -253,17 +253,8 @@ Card* Dissect::pCard_Consume(TagSet* pArgTags)
 Card* Dissect::pCard_Debug(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-  
-  i8 nTags = pArgTags->nItems();
-  
-  Stz* szOption = nullptr;
-  if (2 == nTags) {
-    szOption = pArgTags->szValue(1);
-  }
-  else {
-    vTrace("Error: only %lld tags in debug argTags\n"_Stz,nTags);
-    NEVER_REACH;
-  }
+    
+  Stz* szOption = szCheckLastArg(pArgTags,0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -281,16 +272,7 @@ Card* Dissect::pCard_Filter(TagSet* pArgTags)
     
   // filter : 0) filtElist
 
-  i8 nTags = pArgTags->nItems();
-  
-  Stz* szRpnExpr = nullptr;
-  if (2 == nTags) {
-    szRpnExpr = pArgTags->szValue(1);
-  }
-  else {
-    vTrace("Error: only %lld tags in filter argTags\n"_Stz,nTags);
-    NEVER_REACH;
-  }
+  Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -330,17 +312,8 @@ Card* Dissect::pCard_Hash(TagSet* pArgTags)
   
   // hash : 0) calcExpr??
 
-  i8 nTags = pArgTags->nItems();
-  
-  Stz* szRpnExpr = nullptr;
-  if (2 == nTags) {
-    szRpnExpr = pArgTags->szValue(1);
-  }
-  else {
-    vTrace("Error: only %lld tags in hash argTags\n"_Stz,nTags);
-    NEVER_REACH;
-  }
-    
+  Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
@@ -483,17 +456,8 @@ Card* Dissect::pCard_OrdAgg(TagSet* pArgTags)
   
   // ordAgg : 0) aggElist
     
-  i8 nTags = pArgTags->nItems();
-  
-  Stz* szRpnExpr = nullptr;
-  if (2 == nTags) {
-    szRpnExpr = pArgTags->szValue(1);
-  }
-  else {
-    vTrace("Error: only %lld tags in ordagg argTags\n"_Stz,nTags);
-    NEVER_REACH;
-  }
-  
+  Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_bSawAggOp = true;
@@ -541,17 +505,8 @@ Card* Dissect::pCard_Project(TagSet* pArgTags)
   
   // project : 0) projElist
   
-  i8 nTags = pArgTags->nItems();
-  
-  Stz* szRpnExpr = nullptr;
-  if (2 == nTags) {
-    szRpnExpr = pArgTags->szValue(1);
-  }
-  else {
-    vTrace("Error: only %lld tags in project argTags\n"_Stz,nTags);
-    NEVER_REACH;
-  }
-  
+  Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
@@ -1088,13 +1043,13 @@ Card_Type* Dissect::pType(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Dissect::szCheckRpnExpr(TagSet* pArgTags, i8 i_Expr)
+Stz* Dissect::szCheckLastArg(TagSet* pArgTags, i8 i_Last)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-  vCheckArgs(pArgTags,i_Expr + 1);
+  vCheckArgs(pArgTags,i_Last + 1);
   
-  Stz* szRpnExpr = pArgTags->szValue(i_Expr);
+  Stz* szRpnExpr = pArgTags->szValue(i_Last);
 
   return szRpnExpr;
 }
