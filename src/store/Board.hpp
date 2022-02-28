@@ -80,38 +80,44 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    bool bAdd_CandIndexes              (void);
+    bool bAdd_CandIndexes            (void);
 
-    void vAdd_IndexScan                (void);
+    void vAdd_IndexScan              (void);
 
-    void vCull_Filter                  (void);
+    void vCull_Filter                (void);
   
-    void vCut_CandidateIndexes         (void);
+    void vCut_CandidateIndexes       (void);
   
-    void vCut_ComparePreds             (void);
+    void vCut_ComparePreds           (void);
   
-    void vCut_Scan                     (void);
+    void vCut_Scan                   (void);
   
-    bool bFind_Scan_Filter             (void);
+    bool bFind_Scan_Filter           (bool bMark);
   
-    void vMark_ComparePreds            (void);
+    void vMark_ComparePreds          (void);
   
-    void vOrder_ProjectiveStreamDefs   (void);
+    void vOrder_ProjectiveStreamDefs (void);
   
-    bool bPick_CandidateIndex          (void);
+    bool bPick_CandidateIndex        (void);
 
-    void vRank_CandidateIndexes        (void);
+    void vRank_CandidateIndexes      (void);
   
-    void vReduce_Filter                (void);
+    void vReduce_Filter              (void);
   
-    void vRenumber_Cards               (void);
+    void vRenumber_Cards             (void);
   
-    void vResolve_Symbols              (void);
+    void vResolve_Symbols            (void);
 
-   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+ 
+    bool bMay_Scan_Filter_to_IndexScan  (void);
   
-    void vOptimise_Board(void);
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
+    bool bRule_Scan_Filter_to_IndexScan (void);
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+ 
   private:
       Footer* aFooter(void);
   };

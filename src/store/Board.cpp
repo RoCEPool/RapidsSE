@@ -875,7 +875,7 @@ void Board::vCut_Scan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Board::bFind_Scan_Filter(void)
+bool Board::bFind_Scan_Filter(bool bMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -893,12 +893,14 @@ bool Board::bFind_Scan_Filter(void)
     if (CK_FILTER != pTestFilter->eCard())
       continue;
     
-    vScan(_pCard_Scan(pTestScan));
+    if (bMark)
+      vScan(_pCard_Scan(pTestScan));
 
     Card_Table* pCard_Table = _pCard_Table(pTestScan->pFindSubCard(CK_TABLE));
     vTable(pCard_Table->pTable());
     
-    vFilter(_pCard_Filter(pTestFilter));
+    if (bMark)
+      vFilter(_pCard_Filter(pTestFilter));
 
     return true;
   }
@@ -1106,71 +1108,81 @@ void Board::vResolve_Symbols(void)
   
 }
 
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vOptimise_Board(void)
+bool Board::bMay_Scan_Filter_to_IndexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-
-  vPrintBoard("vDissectSpec >> "_Stz);
+  bool bMay = bFind_Scan_Filter(false);
   
-  vResolve_Symbols();
-  vPrintBoard("vResolve_Symbols >> "_Stz);
+  return bMay;
+}
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-  // optional
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Board::bRule_Scan_Filter_to_IndexScan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  bool bMay = bFind_Scan_Filter(true);
+  RASSERT(bMay);
   
-  if (bFind_Scan_Filter()) {
-    
-    vPrintBoard("bFind_Scan_Filter >> "_Stz);
-    
-    bool bAdded = bAdd_CandIndexes();
-    UNUSED(bAdded);
-    vPrintBoard("bAdd_CandidateIndexes >> "_Stz);
+  vPrintBoard("bFind_Scan_Filter >> "_Stz);
+  
+  bool bAdded = bAdd_CandIndexes();
+  UNUSED(bAdded);
+  vPrintBoard("bAdd_CandidateIndexes >> "_Stz);
 
-    vRank_CandidateIndexes();
-    vPrintBoard("vRank_CandidateIndexes >> "_Stz);
+  vRank_CandidateIndexes();
+  vPrintBoard("vRank_CandidateIndexes >> "_Stz);
+  
+  bool bPicked = bPick_CandidateIndex();
+  vPrintBoard("bPick_CandidateIndex >> "_Stz);
     
-    bool bPicked = bPick_CandidateIndex();
-    vPrintBoard("bPick_CandidateIndex >> "_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (! bPicked) {
     
+    vCut_CandidateIndexes();
+    vPrintBoard("vCut_CandidateIndexes >> "_Stz);
     
-    if (bPicked) {
-      vMark_ComparePreds();
-      vPrintBoard("vMark_ComparePreds >> "_Stz);
-      
-      vAdd_IndexScan();
-      vPrintBoard("vAdd_IndexScan >> "_Stz);
-
-      vCut_ComparePreds();
-      vPrintBoard("vCut_ComparePreds >> "_Stz);
-      
-      vReduce_Filter();
-      vPrintBoard("vReduce_Filter >> "_Stz);
-      
-      vCull_Filter();
-      vPrintBoard("vCull_Filter >> "_Stz);
-      
-      vCut_Scan();
-      vPrintBoard("vCut_Scan >> "_Stz);
-      
-      vCut_CandidateIndexes();
-      vPrintBoard("vCut_CandidateIndexes >> "_Stz);
-      
-      vOrder_ProjectiveStreamDefs();
-      vPrintBoard("vOrder_ProjectiveStreamDefs >> "_Stz);
-    }
-    
-    vResetRegisters();
+    return false;
   }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vMark_ComparePreds();
+  vPrintBoard("vMark_ComparePreds >> "_Stz);
   
-  Cue::vGetReturn("$$$$$$ >>"_Stz);
+  vAdd_IndexScan();
+  vPrintBoard("vAdd_IndexScan >> "_Stz);
+
+  vCut_ComparePreds();
+  vPrintBoard("vCut_ComparePreds >> "_Stz);
+  
+  vReduce_Filter();
+  vPrintBoard("vReduce_Filter >> "_Stz);
+  
+  vCull_Filter();
+  vPrintBoard("vCull_Filter >> "_Stz);
+  
+  vCut_Scan();
+  vPrintBoard("vCut_Scan >> "_Stz);
+  
+  vCut_CandidateIndexes();
+  vPrintBoard("vCut_CandidateIndexes >> "_Stz);
+  
+  vOrder_ProjectiveStreamDefs();
+  vPrintBoard("vOrder_ProjectiveStreamDefs >> "_Stz);
+  
+  return true;
 }
 
 /*============================================================================*/

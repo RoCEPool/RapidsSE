@@ -93,11 +93,8 @@ void Optimiser::vOptimise(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Board* pBoard = m_pBench->pGet(0);
+  vOptimise_Board();
 
-  pBoard->vOptimise_Board();
-  
-  
   return;
 }
 
@@ -114,6 +111,37 @@ Stz* Optimiser::szWeave(void)
   Stz* szPipeline = m_pWeave->szOptStmt();
 
   return szPipeline;
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vOptimise_Board(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  Board* pBoard = m_pBench->pGet(0);
+  
+  pBoard->vPrintBoard("vDissectSpec >> "_Stz);
+  
+  pBoard->vResolve_Symbols();
+  pBoard->vPrintBoard("vResolve_Symbols >> "_Stz);
+
+  // rules
+  
+  if (pBoard->bMay_Scan_Filter_to_IndexScan()) {
+    
+    bool bRun = pBoard->bRule_Scan_Filter_to_IndexScan();
+    UNUSED(bRun);
+    
+    pBoard->vResetRegisters();
+  }
+  
+  Cue::vGetReturn("$$$$$$ >>"_Stz);
 }
 
 /*============================================================================*/

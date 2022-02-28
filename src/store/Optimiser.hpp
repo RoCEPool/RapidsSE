@@ -39,8 +39,9 @@ namespace STORE
 
     Stz* szWeave(void);
 
-
   private:
+
+    void vOptimise_Board(void);
 
     Footer* aFooter(void);
   };
