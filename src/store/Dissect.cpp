@@ -190,27 +190,22 @@ Card* Dissect::pCard_Aggreg(TagSet* pArgTags)
   // 0) aggElist ; 1) gbyList
    
   Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
 
   m_bSawAggOp = true;
-  
   eAL eAggLvl = m_pStageSpec->eAggegLevel();
   Card_Aggreg* pCard_Aggreg = new Card_Aggreg(eAggLvl);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate expression list
   
-  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
   Card_AggElist* pCard_AggElist = pAggElist(pCard_RpnTerms);
-
   pCard_Aggreg->vAppend(pCard_AggElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect optional group by
   
   if (pCard_RpnTerms->nItems()) {
-
     Card_GbyElist* pCard_ByList = pGbyElist(pCard_RpnTerms);
     pCard_Aggreg->vAppend(pCard_ByList);
   }
@@ -244,6 +239,7 @@ Card* Dissect::pCard_Consume(TagSet* pArgTags)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   // ignored
+  
   return nullptr;
 }
 
@@ -255,9 +251,6 @@ Card* Dissect::pCard_Debug(TagSet* pArgTags)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
   Stz* szOption = szCheckLastArg(pArgTags,0);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   Card_Debug* pCard_Debug = new Card_Debug(szOption);
   
   return pCard_Debug;
@@ -273,34 +266,29 @@ Card* Dissect::pCard_Filter(TagSet* pArgTags)
   // filter : 0) filtElist
 
   Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
-    
+  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
+
+  Card_Filter* pCard_Filter = new Card_Filter;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Card_Filter* pCard_Filter = new Card_Filter;
-  
-  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
-  
-  
-  
-  
   Card_Expr* pCard_Expr = pExpr_b(pCard_RpnTerms);
-
-  
-  
   pCard_Filter->vAppend(pCard_Expr);
 
-  delete pCard_RpnTerms;
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (! m_bSawAggOp) {
+    delete pCard_RpnTerms;
     return pCard_Filter;
   }
+  else {
+    Card_Having* pCard_Having = new Card_Having;
+    pCard_Having->vTransferAll(pCard_Filter);
+    delete pCard_Filter;
   
-  Card_Having* pCard_Having = new Card_Having;
-  pCard_Having->vTransferAll(pCard_Filter);
-  
-  delete pCard_Filter;
-  
-  return pCard_Having;
+    delete pCard_RpnTerms;
+    return pCard_Having;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -313,13 +301,15 @@ Card* Dissect::pCard_Hash(TagSet* pArgTags)
   // hash : 0) calcExpr??
 
   Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
+  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
 
+  Card_Hash* pCard_Hash = new Card_Hash;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
-  
-  Card_Hash* pCard_Hash = new Card_Hash;
   pCard_Hash->vTransferAll(pCard_RpnTerms);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete pCard_RpnTerms;
 
@@ -335,7 +325,6 @@ Card* Dissect::pCard_IndexJoin(TagSet* pArgTags)
     
   // indexJoin : 0) {table} 1) {index} 2) indexPred
   
-
   i8 nTags = pArgTags->nItems();
   
   Stz* szTableNm = nullptr;
@@ -429,10 +418,10 @@ Card* Dissect::pCard_Limit(TagSet* pArgTags)
 
   i8 nRows = iCheckLastArg(pArgTags,1);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   Card_Limit* pCard_Limit = new Card_Limit(nRows);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   
   return pCard_Limit;
 }
 
@@ -446,18 +435,18 @@ Card* Dissect::pCard_OrdAgg(TagSet* pArgTags)
   // ordAgg : 0) aggElist
     
   Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
 
   m_bSawAggOp = true;
-
   Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg("partition"_Stz);
   
-  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Card_AggElist* pCard_AggElist = pAggElist(pCard_RpnTerms);
-
   pCard_OrdAgg->vAppend(pCard_AggElist);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   delete pCard_RpnTerms;
 
   return pCard_OrdAgg;
@@ -470,18 +459,20 @@ Card* Dissect::pCard_Output(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
       
-  // outPut :
+  // ignored
+  
   return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : pulse once                                                 */
+/* dissect opspec : pulse once                                                */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Pulse(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  // pulse :
+  // ignored
+  
   return nullptr;
 }
 
@@ -495,15 +486,17 @@ Card* Dissect::pCard_Project(TagSet* pArgTags)
   // project : 0) projElist
   
   Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
 
   Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
   Card_ProjElist* pCard_ProjElist = pProjElist(pCard_RpnTerms);
   pCard_Project->vAppend(pCard_ProjElist);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   delete pCard_RpnTerms;
 
   return pCard_Project;
@@ -554,12 +547,11 @@ Card* Dissect::pCard_Send(TagSet* pArgTags)
   // send :
 
   eXK eSendKind = (eXK)iCheckLastArg(pArgTags,0);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
- 
+
   Card_Send* pCard_Send = new Card_Send(eSendKind);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   return pCard_Send;
 }
 
@@ -571,6 +563,7 @@ Card* Dissect::pCard_Sink(TagSet* pArgTags)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   // sink :
+  
   return nullptr;
 }
 
@@ -584,16 +577,17 @@ Card* Dissect::pCard_Sort(TagSet* pArgTags)
   // sort : 0) ???
 
   Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
+  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
+
+  Card_Sort* pCard_Sort = new Card_Sort;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+  Card_SbyElist* pCard_ObyElist = pSbyElist(pCard_RpnTerms);
+  pCard_Sort->vAppend(pCard_ObyElist);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Card_Sort* pCard_Sort = new Card_Sort;
-  
-  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
-  Card_SbyElist* pCard_ObyElist = pSbyElist(pCard_RpnTerms);
-
-  pCard_Sort->vAppend(pCard_ObyElist);
-
   delete pCard_RpnTerms;
 
   return pCard_Sort;
@@ -607,6 +601,7 @@ Card* Dissect::pCard_Start(TagSet* pArgTags)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
   // start :
+  
   return nullptr;
 }
 
