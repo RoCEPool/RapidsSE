@@ -27,6 +27,7 @@ enum eCK // card kind
   /* */ CK_FILTER,
 
   /* */ CK_GBYELIST,
+  /* */ CK_GENERATE,
 
   /* */ CK_HASH,
   /* */ CK_HAVING,
@@ -35,11 +36,16 @@ enum eCK // card kind
   /* */ CK_INDEXJOIN,
   /* */ CK_INDEXPRED,
   /* */ CK_INDEXSCAN,
+
+  /* */ CK_KIND,
   
   /* */ CK_LBOUND,
   /* */ CK_LIMIT,
-    
+  
+  /* */ CK_MODE,
+
   /* */ CK_ON,
+  /* */ CK_OPTION,
   /* */ CK_ORDAGG,
   
   /* */ CK_PREDAND,
@@ -49,10 +55,12 @@ enum eCK // card kind
   /* */ CK_PROJELIST,
 
   /* */ CK_RBOUND,
-  
+  /* */ CK_ROWS,
+
   /* */ CK_SBYELIST,
   /* */ CK_SCAN,
   /* */ CK_SEND,
+  /* */ CK_SENDS,
   /* */ CK_SORT,
   /* */ CK_STAGE,
   /* */ CK_STREAMDEF,
@@ -90,7 +98,8 @@ static Stz* aCK[]
   /* */ "CK_FILTER"_Stz,          // CK_FILTER
 
   /* */ "CK_GBYELIST"_Stz,        // CK_GBYELIST
-  
+  /* */ "CK_GENERATE"_Stz,        // CK_GENERATE
+
   /* */ "CK_HASH"_Stz,            // CK_HASH
   /* */ "CK_HAVING"_Stz,          // CK_HAVING
   
@@ -98,11 +107,16 @@ static Stz* aCK[]
   /* */ "CK_INDEXJOIN"_Stz,       // CK_INDEXJOIN
   /* */ "CK_INDEXPRED"_Stz,       // CK_INDEXPRED
   /* */ "CK_INDEXSCAN"_Stz,       // CK_INDEXSCAN
-  
+
+  /* */ "CK_KIND"_Stz,            // CK_KIND
+
   /* */ "CK_LBOUND"_Stz,          // CK_LBOUND
   /* */ "CK_LIMIT"_Stz,           // CK_LIMIT
-    
+
+  /* */ "CK_MODE"_Stz,            // CK_MODE
+
   /* */ "CK_ON"_Stz,              // CK_ON
+  /* */ "CK_OPTION"_Stz,          // CK_OPTION
   /* */ "CK_ORDAGG"_Stz,          // CK_ORDAGG
   
   /* */ "CK_PREDAND"_Stz,         // CK_PREDAND
@@ -112,10 +126,12 @@ static Stz* aCK[]
   /* */ "CK_PROJELIST"_Stz,       // CK_PROJELIST
 
   /* */ "CK_RBOUND"_Stz,          // CK_RBOUND
+  /* */ "CK_ROWS"_Stz,            // CK_ROWS
 
   /* */ "CK_SBYELIST"_Stz,        // CK_SBYELIST
   /* */ "CK_SCAN"_Stz,            // CK_SCAN
   /* */ "CK_SEND"_Stz,            // CK_SEND
+  /* */ "CK_SENDS"_Stz,           // CK_SENDS
   /* */ "CK_SORT"_Stz,            // CK_SORT
   /* */ "CK_STAGE"_Stz,           // CK_STAGE
   /* */ "CK_STREAMDEF"_Stz,       // CK_STREAMDEF
@@ -153,6 +169,7 @@ static Stz* aCK_short[]
   /* */ "filter"_Stz,          // CK_FILTER
 
   /* */ "gbyElist"_Stz,        // CK_GBYELIST
+  /* */ "generate"_Stz,        // CK_GENERATE
 
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "having"_Stz,          // CK_HAVING
@@ -162,10 +179,15 @@ static Stz* aCK_short[]
   /* */ "indexPred"_Stz,       // CK_INDEXPRED
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
   
+  /* */ "kind"_Stz,            // CK_KIND
+
   /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "limit"_Stz,           // CK_LIMIT
-    
+
+  /* */ "mode"_Stz,            // CK_MODE
+
   /* */ "on"_Stz,              // CK_ON
+  /* */ "option"_Stz,          // CK_OPTION
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
   
   /* */ "predAnd"_Stz,         // CK_PREDAND
@@ -175,10 +197,12 @@ static Stz* aCK_short[]
   /* */ "projElist"_Stz,       // CK_PROJELIST
 
   /* */ "rbound"_Stz,          // CK_RBOUND
-  
+  /* */ "rows"_Stz,            // CK_ROWS
+
   /* */ "sbyElist"_Stz,        // CK_SBYELIST
   /* */ "scan"_Stz,            // CK_SCAN
   /* */ "send"_Stz,            // CK_SEND
+  /* */ "sends"_Stz,           // CK_SENDS
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "{streamDef}"_Stz,     // CK_STREAMDEF
@@ -216,6 +240,7 @@ static Stz* aCK_op[]
   /* */ "filter    2"_Stz,     // CK_FILTER
 
   /* */ "(none)"_Stz,          // CK_GBYELIST
+  /* */ "(none)"_Stz,          // CK_GENERATE
 
   /* */ "(none)"_Stz,          // CK_HASH
   /* */ "(none)"_Stz,          // CK_HAVING
@@ -225,10 +250,13 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_INDEXPRED
   /* */ "indexScan 2"_Stz,     // CK_INDEXSCAN
   
+  /* */ "(none)"_Stz,          // CK_KIND
+  
   /* */ "(none)"_Stz,          // CK_LBOUND
   /* */ "limit     2"_Stz,     // CK_LIMIT
     
   /* */ "(none)"_Stz,          // CK_ON
+  /* */ "(none)"_Stz,          // CK_OPTION
   /* */ "ordagg    2"_Stz,     // CK_ORDAGG
   
   /* */ "(none)"_Stz,          // CK_PREDAND
@@ -238,10 +266,12 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_PROJELIST
 
   /* */ "(none)"_Stz,          // CK_RBOUND
-  
+  /* */ "(none)"_Stz,          // CK_ROWS
+
   /* */ "(none)"_Stz,          // CK_SBYELIST
   /* */ "scan       "_Stz,     // CK_SCAN
   /* */ "(none)"_Stz,          // CK_SEND
+  /* */ "(none)"_Stz,          // CK_SENDS
   /* */ "sort       "_Stz,     // CK_SORT
   /* */ "(none)"_Stz,          // CK_STAGE
   /* */ "(none)"_Stz,          // CK_STREAMDEF

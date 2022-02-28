@@ -443,7 +443,7 @@ Card* Dissect::pCard_Output(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : pulse <mode>                                                     */
+/* dissect : pulse <szMode>                                                   */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Pulse(TagSet* pArgTags)
 {
