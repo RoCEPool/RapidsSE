@@ -150,25 +150,25 @@ void Dissect::vOp(i8 i_OpSpec)
   Card* pCard;
   Stz* szOpNm = m_pOpSpec->szOpNm();
   
-       if (szOpNm->bSame("aggreg"_Stz))    pCard = vDissectAggreg   (m_pOpSpec);
-  else if (szOpNm->bSame("combined"_Stz))  pCard = vDissectCombined (m_pOpSpec);
-  else if (szOpNm->bSame("consumeOp"_Stz)) pCard = vDissectConsume  (m_pOpSpec);
-  else if (szOpNm->bSame("debug"_Stz))     pCard = vDissectDebug    (m_pOpSpec);
-  else if (szOpNm->bSame("filter"_Stz))    pCard = vDissectFilter   (m_pOpSpec);
-  else if (szOpNm->bSame("hash"_Stz))      pCard = vDissectHash     (m_pOpSpec);
-  else if (szOpNm->bSame("indexJoin"_Stz)) pCard = vDissectIndexJoin(m_pOpSpec);
-  else if (szOpNm->bSame("indexScan"_Stz)) pCard = vDissectIndexScan(m_pOpSpec);
-  else if (szOpNm->bSame("limit"_Stz))     pCard = vDissectLimit    (m_pOpSpec);
-  else if (szOpNm->bSame("ordagg"_Stz))    pCard = vDissectOrdAgg   (m_pOpSpec);
-  else if (szOpNm->bSame("orderBy"_Stz))   pCard = vDissectSort     (m_pOpSpec);
-  else if (szOpNm->bSame("output"_Stz))    pCard = vDissectOutput   (m_pOpSpec);
-  else if (szOpNm->bSame("pulse"_Stz))     pCard = vDissectPulse    (m_pOpSpec);
-  else if (szOpNm->bSame("project"_Stz))   pCard = vDissectProject  (m_pOpSpec);
-  else if (szOpNm->bSame("scan"_Stz))      pCard = vDissectScan     (m_pOpSpec);
-  else if (szOpNm->bSame("send"_Stz))      pCard = vDissectSend     (m_pOpSpec);
-  else if (szOpNm->bSame("sink"_Stz))      pCard = vDissectSink     (m_pOpSpec);
-  else if (szOpNm->bSame("sort"_Stz))      pCard = vDissectSort     (m_pOpSpec);
-  else if (szOpNm->bSame("start"_Stz))     pCard = vDissectStart    (m_pOpSpec);
+       if (szOpNm->bSame("aggreg"_Stz))    pCard = pCard_Aggreg   (m_pOpSpec);
+  else if (szOpNm->bSame("combined"_Stz))  pCard = pCard_Combined (m_pOpSpec);
+  else if (szOpNm->bSame("consumeOp"_Stz)) pCard = pCard_Consume  (m_pOpSpec);
+  else if (szOpNm->bSame("debug"_Stz))     pCard = pCard_Debug    (m_pOpSpec);
+  else if (szOpNm->bSame("filter"_Stz))    pCard = pCard_Filter   (m_pOpSpec);
+  else if (szOpNm->bSame("hash"_Stz))      pCard = pCard_Hash     (m_pOpSpec);
+  else if (szOpNm->bSame("indexJoin"_Stz)) pCard = pCard_IndexJoin(m_pOpSpec);
+  else if (szOpNm->bSame("indexScan"_Stz)) pCard = pCard_IndexScan(m_pOpSpec);
+  else if (szOpNm->bSame("limit"_Stz))     pCard = pCard_Limit    (m_pOpSpec);
+  else if (szOpNm->bSame("ordagg"_Stz))    pCard = pCard_OrdAgg   (m_pOpSpec);
+  else if (szOpNm->bSame("orderBy"_Stz))   pCard = pCard_Sort     (m_pOpSpec);
+  else if (szOpNm->bSame("output"_Stz))    pCard = pCard_Output   (m_pOpSpec);
+  else if (szOpNm->bSame("pulse"_Stz))     pCard = pCard_Pulse    (m_pOpSpec);
+  else if (szOpNm->bSame("project"_Stz))   pCard = pCard_Project  (m_pOpSpec);
+  else if (szOpNm->bSame("scan"_Stz))      pCard = pCard_Scan     (m_pOpSpec);
+  else if (szOpNm->bSame("send"_Stz))      pCard = pCard_Send     (m_pOpSpec);
+  else if (szOpNm->bSame("sink"_Stz))      pCard = pCard_Sink     (m_pOpSpec);
+  else if (szOpNm->bSame("sort"_Stz))      pCard = pCard_Sort     (m_pOpSpec);
+  else if (szOpNm->bSame("start"_Stz))     pCard = pCard_Start    (m_pOpSpec);
   else {
     vTrace("Skipping OpSpec %s\n"_Stz,szOpNm);
     pCard = nullptr;
@@ -182,7 +182,7 @@ void Dissect::vOp(i8 i_OpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : aggreg <compiled> <rpnExpr>                               */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectAggreg(OpSpec* pOpSpec)
+Card* Dissect::pCard_Aggreg(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -235,7 +235,7 @@ Card* Dissect::vDissectAggreg(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : combined <generate>                                       */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectCombined(OpSpec* pOpSpec)
+Card* Dissect::pCard_Combined(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
       
@@ -249,7 +249,7 @@ Card* Dissect::vDissectCombined(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : consumeOp <sends>                                         */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectConsume(OpSpec* pOpSpec)
+Card* Dissect::pCard_Consume(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -260,7 +260,7 @@ Card* Dissect::vDissectConsume(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : debug <option>                                            */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectDebug(OpSpec* pOpSpec)
+Card* Dissect::pCard_Debug(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -287,7 +287,7 @@ Card* Dissect::vDissectDebug(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : filter <compiled> <rpnExpr>                               */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectFilter(OpSpec* pOpSpec)
+Card* Dissect::pCard_Filter(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -338,7 +338,7 @@ Card* Dissect::vDissectFilter(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : hash <compiled> <rpnExpr>                                 */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectHash(OpSpec* pOpSpec)
+Card* Dissect::pCard_Hash(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -372,7 +372,7 @@ Card* Dissect::vDissectHash(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : indexJoin <compiled> <tableNm> <indexNm> <rpnExpr>        */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
+Card* Dissect::pCard_IndexJoin(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -420,7 +420,7 @@ Card* Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : indexScan <compiled> <tableNm> <indexNm> <rpnExpr>        */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectIndexScan(OpSpec* pOpSpec)
+Card* Dissect::pCard_IndexScan(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -467,7 +467,7 @@ Card* Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : limit <compiled> <nRows>                                  */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectLimit(OpSpec* pOpSpec)
+Card* Dissect::pCard_Limit(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -498,7 +498,7 @@ Card* Dissect::vDissectLimit(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : ordAgg <compiled> <rpnExpr>                               */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
+Card* Dissect::pCard_OrdAgg(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -536,7 +536,7 @@ Card* Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : output                                                    */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectOutput(OpSpec* pOpSpec)
+Card* Dissect::pCard_Output(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
       
@@ -547,7 +547,7 @@ Card* Dissect::vDissectOutput(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : pulse once                                                 */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectPulse(OpSpec* pOpSpec)
+Card* Dissect::pCard_Pulse(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -558,7 +558,7 @@ Card* Dissect::vDissectPulse(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : project <compiled> <rpnExpr>                              */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectProject(OpSpec* pOpSpec)
+Card* Dissect::pCard_Project(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -593,7 +593,7 @@ Card* Dissect::vDissectProject(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : scan [ <catalogNm> <schemaNm> ] <tableNm>                 */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectScan(OpSpec* pOpSpec)
+Card* Dissect::pCard_Scan(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -630,7 +630,7 @@ Card* Dissect::vDissectScan(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : send <sendKind>                                           */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectSend(OpSpec* pOpSpec)
+Card* Dissect::pCard_Send(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -660,7 +660,7 @@ Card* Dissect::vDissectSend(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : sink                                                      */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectSink(OpSpec* pOpSpec)
+Card* Dissect::pCard_Sink(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -671,7 +671,7 @@ Card* Dissect::vDissectSink(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : orderBy <compiled> <rpnExpr>                              */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectSort(OpSpec* pOpSpec)
+Card* Dissect::pCard_Sort(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -707,7 +707,7 @@ Card* Dissect::vDissectSort(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : start                                                     */
 /*----------------------------------------------------------------------------*/
-Card* Dissect::vDissectStart(OpSpec* pOpSpec)
+Card* Dissect::pCard_Start(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
