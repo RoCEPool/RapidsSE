@@ -1682,7 +1682,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_SCAN:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_SEND:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_SORT:                       vPrintProperties(pRibbon,iDepth); break;
-    case CK_SORTDIRN:                   vPrintProperties(pRibbon,iDepth); break;
+    case CK_DIRECTION:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGE:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_STREAMDEF:     vStreamDefPrint              (pRibbon,iDepth); break;
           

@@ -9,18 +9,18 @@
 
 namespace STORE
 {
-  class Card_SortDirn : public Card_SUB
+  class Card_Direction : public Card_SUB
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_SortDirn(Stz* szDirn);
-   ~Card_SortDirn(void) noexcept(false);
+    Card_Direction(Stz* szDirn);
+   ~Card_Direction(void) noexcept(false);
   };
 
-  Card_SortDirn* _pCard_SortDirn(void* aAddr);
-  bool _bIsCard_SortDirn(void* aAddr);
+  Card_Direction* _pCard_Direction(void* aAddr);
+  bool _bIsCard_Direction(void* aAddr);
 }
 
 /*============================================================================*/

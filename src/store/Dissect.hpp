@@ -55,7 +55,7 @@
 #include "Card_Scan.hpp"
 #include "Card_Send.hpp"
 #include "Card_Sort.hpp"
-#include "Card_SortDirn.hpp"
+#include "Card_Direction.hpp"
 #include "Card_Stage.hpp"
 #include "Card_StreamDef.hpp"
 
@@ -142,9 +142,9 @@ namespace STORE
     void vPredCmp (Card_ExprBool* pCard_ExprBool,
                    Card_RpnTerms* pCard_RpnTerms);
   
-    Card_As*       pCollectAs       (Card_RpnTerms* pCard_RpnTerms);
-    Card_SortDirn* pCollectSortDirn (Card_RpnTerms* pCard_RpnTerms);
-    Card_Type*     pCollectType     (Card_RpnTerms* pCard_RpnTerms);
+    Card_As*        pCollectAs       (Card_RpnTerms* pCard_RpnTerms);
+    Card_Direction* pCollectSortDirn (Card_RpnTerms* pCard_RpnTerms);
+    Card_Type*      pCollectType     (Card_RpnTerms* pCard_RpnTerms);
 
     Card_RpnTerms* pToRpnTerms(Stz* szRpnExpr);
 

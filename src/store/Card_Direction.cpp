@@ -2,23 +2,23 @@
 /* Card_SortDirn.cpp -- Sort Direction                                        */
 /*============================================================================*/
 
-#include "Card_SortDirn.hpp"
+#include "Card_Direction.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_SortDirn,CK_SORTDIRN)
-__aNewFunction(Card_SortDirn,CN_CARD)
-__vDeleteFunction(Card_SortDirn,CN_CARD)
+__pCastFunction_Card(STORE,Card_Direction,CK_DIRECTION)
+__aNewFunction(Card_Direction,CN_CARD)
+__vDeleteFunction(Card_Direction,CN_CARD)
 
-__bIsCard(STORE,Card_SortDirn,CK_SORTDIRN)
+__bIsCard(STORE,Card_Direction,CK_DIRECTION)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_SortDirn::Card_SortDirn(Stz* szDirn)
-: Card_SUB(CK_SORTDIRN)
+Card_Direction::Card_Direction(Stz* szDirn)
+: Card_SUB(CK_DIRECTION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -32,7 +32,7 @@ Card_SortDirn::Card_SortDirn(Stz* szDirn)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_SortDirn::~Card_SortDirn(void) noexcept(false)
+Card_Direction::~Card_Direction(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

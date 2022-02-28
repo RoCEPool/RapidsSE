@@ -884,7 +884,7 @@ Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
       && (pCard_Term_head->bIsSame("ASC"_Stz) ||
           pCard_Term_head->bIsSame("DESC"_Stz))) {
 
-    Card_SortDirn* pCard_SortDirn = pCollectSortDirn(pCard_RpnTerms);
+    Card_Direction* pCard_SortDirn = pCollectSortDirn(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_SortDirn);
   }
   
@@ -1067,7 +1067,7 @@ Card_As* Dissect::pCollectAs(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* collect <sortDirn> terms :                                                 */
 /*----------------------------------------------------------------------------*/
-Card_SortDirn* Dissect::pCollectSortDirn(Card_RpnTerms* pCard_RpnTerms)
+Card_Direction* Dissect::pCollectSortDirn(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -1076,7 +1076,7 @@ Card_SortDirn* Dissect::pCollectSortDirn(Card_RpnTerms* pCard_RpnTerms)
   Stz* szDirn = pCard_Term->szTerm();
   RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
 
-  Card_SortDirn* pCard_SortDirn = new Card_SortDirn(szDirn);
+  Card_Direction* pCard_SortDirn = new Card_Direction(szDirn);
 
   return pCard_SortDirn;
 }

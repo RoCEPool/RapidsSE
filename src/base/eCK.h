@@ -16,7 +16,8 @@ enum eCK // card kind
   /* */ CK_COMBINE,
   
   /* */ CK_DEBUG,
-  
+  /* */ CK_DIRECTION,
+
   /* */ CK_EBOUND,
   /* */ CK_EXISTS,
   /* */ CK_EXPR,
@@ -53,7 +54,6 @@ enum eCK // card kind
   /* */ CK_SCAN,
   /* */ CK_SEND,
   /* */ CK_SORT,
-  /* */ CK_SORTDIRN,
   /* */ CK_STAGE,
   /* */ CK_STREAMDEF,
   
@@ -79,7 +79,8 @@ static Stz* aCK[]
   /* */ "CK_COMBINE"_Stz,         // CK_COMBINE
   
   /* */ "CK_DEBUG"_Stz,           // CK_DEBUG
-  
+  /* */ "CK_DIRECTION"_Stz,       // CK_DIRECTION
+
   /* */ "CK_EBOUND"_Stz,          // CK_EBOUND
   /* */ "CK_EXISTS"_Stz,          // CK_EXISTS
   /* */ "CK_EXPR"_Stz,            // CK_EXPR
@@ -116,7 +117,6 @@ static Stz* aCK[]
   /* */ "CK_SCAN"_Stz,            // CK_SCAN
   /* */ "CK_SEND"_Stz,            // CK_SEND
   /* */ "CK_SORT"_Stz,            // CK_SORT
-  /* */ "CK_SORTDIRN"_Stz,        // CK_SORTDIRN
   /* */ "CK_STAGE"_Stz,           // CK_STAGE
   /* */ "CK_STREAMDEF"_Stz,       // CK_STREAMDEF
   
@@ -142,6 +142,7 @@ static Stz* aCK_short[]
   /* */ "combine"_Stz,         // CK_COMBINE
 
   /* */ "debug"_Stz,           // CK_DEBUG
+  /* */ "direction"_Stz,       // CK_DIRECTION
 
   /* */ "ebound"_Stz,          // CK_EBOUND
   /* */ "exists"_Stz,          // CK_EXISTS
@@ -179,7 +180,6 @@ static Stz* aCK_short[]
   /* */ "scan"_Stz,            // CK_SCAN
   /* */ "send"_Stz,            // CK_SEND
   /* */ "sort"_Stz,            // CK_SORT
-  /* */ "sortDirn"_Stz,        // CK_SORTDIRN
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "{streamDef}"_Stz,     // CK_STREAMDEF
   
@@ -205,6 +205,7 @@ static Stz* aCK_op[]
   /* */ "combined  0"_Stz,     // CK_COMBINE
 
   /* */ "(none)"_Stz,          // CK_DEBUG
+  /* */ "(none)"_Stz,          // CK_DIRECTION
 
   /* */ "(none)"_Stz,          // CK_EBOUND
   /* */ "(none)"_Stz,          // CK_EXISTS
@@ -242,7 +243,6 @@ static Stz* aCK_op[]
   /* */ "scan       "_Stz,     // CK_SCAN
   /* */ "(none)"_Stz,          // CK_SEND
   /* */ "sort       "_Stz,     // CK_SORT
-  /* */ "(none)"_Stz,          // CK_SORTDIRN
   /* */ "(none)"_Stz,          // CK_STAGE
   /* */ "(none)"_Stz,          // CK_STREAMDEF
   
