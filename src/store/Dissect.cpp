@@ -181,7 +181,7 @@ void Dissect::vOp(i8 i_OpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : aggreg <compiled> <rpnExpr>                               */
+/* dissect opspec : aggreg <iCompiled> <szRpnExpr>                            */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Aggreg(TagSet* pArgTags)
 {
@@ -189,8 +189,7 @@ Card* Dissect::pCard_Aggreg(TagSet* pArgTags)
   
   // 0) aggElist ; 1) gbyList
    
-  Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
-  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
+  Card_RpnTerms* pCard_RpnTerms = pCheckLastArg(pArgTags,1);
 
   m_bSawAggOp = true;
   eAL eAggLvl = m_pStageSpec->eAggegLevel();
@@ -218,7 +217,7 @@ Card* Dissect::pCard_Aggreg(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : combined <generate>                                       */
+/* dissect opspec : combined <iGenerate>                                      */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Combined(TagSet* pArgTags)
 {
@@ -232,7 +231,7 @@ Card* Dissect::pCard_Combined(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : consumeOp <sends>                                         */
+/* dissect opspec : consumeOp <nSends>                                        */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Consume(TagSet* pArgTags)
 {
@@ -244,7 +243,7 @@ Card* Dissect::pCard_Consume(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : debug <option>                                            */
+/* dissect opspec : debug <iOption>                                           */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Debug(TagSet* pArgTags)
 {
@@ -257,7 +256,7 @@ Card* Dissect::pCard_Debug(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : filter <compiled> <rpnExpr>                               */
+/* dissect opspec : filter <iCompiled> <szRpnExpr>                            */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Filter(TagSet* pArgTags)
 {
@@ -265,8 +264,7 @@ Card* Dissect::pCard_Filter(TagSet* pArgTags)
     
   // filter : 0) filtElist
 
-  Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
-  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
+  Card_RpnTerms* pCard_RpnTerms = pCheckLastArg(pArgTags,1);
 
   Card_Filter* pCard_Filter = new Card_Filter;
 
@@ -292,7 +290,7 @@ Card* Dissect::pCard_Filter(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : hash <compiled> <rpnExpr>                                 */
+/* dissect opspec : hash <iCompiled> <szRpnExpr>                              */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Hash(TagSet* pArgTags)
 {
@@ -300,8 +298,7 @@ Card* Dissect::pCard_Hash(TagSet* pArgTags)
   
   // hash : 0) calcExpr??
 
-  Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
-  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
+  Card_RpnTerms* pCard_RpnTerms = pCheckLastArg(pArgTags,1);
 
   Card_Hash* pCard_Hash = new Card_Hash;
   
@@ -317,7 +314,7 @@ Card* Dissect::pCard_Hash(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : indexJoin <compiled> <tableNm> <indexNm> <rpnExpr>        */
+/* dissect opspec : indexJoin <iCompiled> <szTableNm> <szIndexNm> <szRpnExpr> */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_IndexJoin(TagSet* pArgTags)
 {
@@ -363,7 +360,7 @@ Card* Dissect::pCard_IndexJoin(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : indexScan <compiled> <tableNm> <indexNm> <rpnExpr>        */
+/* dissect opspec : indexScan <iCompiled> <szTableNm> <szIndexNm> <szRpnExpr> */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_IndexScan(TagSet* pArgTags)
 {
@@ -408,7 +405,7 @@ Card* Dissect::pCard_IndexScan(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : limit <compiled> <nRows>                                  */
+/* dissect opspec : limit <iCompiled> <nRows>                                 */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Limit(TagSet* pArgTags)
 {
@@ -426,7 +423,7 @@ Card* Dissect::pCard_Limit(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : ordAgg <compiled> <rpnExpr>                               */
+/* dissect opspec : ordAgg <iCompiled> <szRpnExpr>                            */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_OrdAgg(TagSet* pArgTags)
 {
@@ -434,8 +431,7 @@ Card* Dissect::pCard_OrdAgg(TagSet* pArgTags)
   
   // ordAgg : 0) aggElist
     
-  Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
-  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
+  Card_RpnTerms* pCard_RpnTerms = pCheckLastArg(pArgTags,1);
 
   m_bSawAggOp = true;
   Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg("partition"_Stz);
@@ -477,7 +473,7 @@ Card* Dissect::pCard_Pulse(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : project <compiled> <rpnExpr>                              */
+/* dissect opspec : project <iCompiled> <szRpnExpr>                           */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Project(TagSet* pArgTags)
 {
@@ -485,8 +481,7 @@ Card* Dissect::pCard_Project(TagSet* pArgTags)
   
   // project : 0) projElist
   
-  Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
-  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
+  Card_RpnTerms* pCard_RpnTerms = pCheckLastArg(pArgTags,1);
 
   Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
 
@@ -503,7 +498,7 @@ Card* Dissect::pCard_Project(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : scan [ <catalogNm> <schemaNm> ] <tableNm>                 */
+/* dissect opspec : scan [ <szCatalogNm> <szSchemaNm> ] <szTableNm>           */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Scan(TagSet* pArgTags)
 {
@@ -538,7 +533,7 @@ Card* Dissect::pCard_Scan(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : send <sendKind>                                           */
+/* dissect opspec : send <iSendKind>                                           */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Send(TagSet* pArgTags)
 {
@@ -568,7 +563,7 @@ Card* Dissect::pCard_Sink(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect opspec : orderBy <compiled> <rpnExpr>                              */
+/* dissect opspec : orderBy <iCompiled> <szRpnExpr>                           */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Sort(TagSet* pArgTags)
 {
@@ -576,8 +571,7 @@ Card* Dissect::pCard_Sort(TagSet* pArgTags)
     
   // sort : 0) ???
 
-  Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
-  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
+  Card_RpnTerms* pCard_RpnTerms = pCheckLastArg(pArgTags,1);
 
   Card_Sort* pCard_Sort = new Card_Sort;
 
