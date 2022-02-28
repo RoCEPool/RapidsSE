@@ -1028,6 +1028,22 @@ i8 Dissect::iCheckLastArg(TagSet* pArgTags, i8 i_Last)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_RpnTerms* Dissect::pCheckLastArg(TagSet* pArgTags, i8 i_Last)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  vCheckArgs(pArgTags,i_Last + 1);
+  
+  Stz* szRpnExpr = pArgTags->szValue(i_Last);
+  
+  Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
+
+  return pCard_RpnTerms;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Stz* Dissect::szCheckLastArg(TagSet* pArgTags, i8 i_Last)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);

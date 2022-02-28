@@ -148,9 +148,10 @@ namespace STORE
 
     Card_RpnTerms* pToRpnTerms(Stz* szRpnExpr);
   
-    i8   iCheckLastArg(TagSet* pArgTags, i8 i_Last);
-    Stz* szCheckLastArg(TagSet* pArgTags, i8 i_Last);
-    void vCheckArgs(TagSet* pArgTags, i8 nArgs);
+    i8             iCheckLastArg (TagSet* pArgTags, i8 i_Last);
+    Card_RpnTerms* pCheckLastArg (TagSet* pArgTags, i8 i_Last);
+    Stz*           szCheckLastArg(TagSet* pArgTags, i8 i_Last);
+    void           vCheckArgs    (TagSet* pArgTags, i8 nArgs);
   
   private:
     Footer* aFooter(void);
