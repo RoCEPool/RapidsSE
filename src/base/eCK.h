@@ -63,6 +63,7 @@ enum eCK // card kind
   /* */ CK_SENDS,
   /* */ CK_SORT,
   /* */ CK_STAGE,
+  /* */ CK_STAGETOPO,
   /* */ CK_STREAMDEF,
   
   /* */ CK_TABLE,
@@ -135,6 +136,7 @@ static Stz* aCK[]
   /* */ "CK_SENDS"_Stz,           // CK_SENDS
   /* */ "CK_SORT"_Stz,            // CK_SORT
   /* */ "CK_STAGE"_Stz,           // CK_STAGE
+  /* */ "CK_STAGETOPO"_Stz,       // CK_STAGETOPO
   /* */ "CK_STREAMDEF"_Stz,       // CK_STREAMDEF
   
   /* */ "CK_TABLE"_Stz,           // CK_TABLE
@@ -207,6 +209,7 @@ static Stz* aCK_short[]
   /* */ "sends"_Stz,           // CK_SENDS
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
+  /* */ "stageTopo"_Stz,       // CK_STAGETOPO
   /* */ "{streamDef}"_Stz,     // CK_STREAMDEF
   
   /* */ "{table}"_Stz,         // CK_TABLE
@@ -279,6 +282,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_SENDS
   /* */ "sort       "_Stz,     // CK_SORT
   /* */ "(none)"_Stz,          // CK_STAGE
+  /* */ "(none)"_Stz,          // CK_STAGETOPO
   /* */ "(none)"_Stz,          // CK_STREAMDEF
   
   /* */ "(none)"_Stz,          // CK_TABLE

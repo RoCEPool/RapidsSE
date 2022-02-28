@@ -149,7 +149,7 @@ void Weave::vStageNext(Card_Stage* pCard_Stage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  eYG eStageTopology = pCard_Stage->eStageTopology();
+  eYG eStageTopo = pCard_Stage->pFindSubCard(CK_STAGETOPO)->eStageTopo();
   
   vTabOp();  vConcat("next"_Stz);  vEolOp();
 
@@ -157,7 +157,7 @@ void Weave::vStageNext(Card_Stage* pCard_Stage)
   vTabStage();
   vConcat("stage S%02lld on %s : "_Stz
           ,m_i_Stage++
-          ,aYG_weave[eStageTopology]);
+          ,aYG_weave[eStageTopo]);
   vEolStage();
   
   m_i_Op_stage = 0;

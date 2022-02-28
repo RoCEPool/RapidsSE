@@ -465,7 +465,7 @@ void Board::vCardResolve(Card* pCard)
   i8 nSubCards = pCard->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
     Card* pSubCard = pCard->pGetCard(i_SubCard,eSubCard);
-   
+       
     if (CK_INDEX == eSubCard) {
       vIndex(pSubCard->pIndex());
       continue;

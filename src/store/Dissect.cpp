@@ -118,17 +118,18 @@ void Dissect::vStage(i8 i_StageSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
  
   //Stz* szStageNm = m_pStageSpec->szStageNm();
-  eYG eStageTopology = m_pStageSpec->eStageTopology();
-  
+  eYG eStageTopo = m_pStageSpec->eStageTopology();
+  Card_Stage* pCard_Stage = new Card_Stage;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+    
   s32 sRevisedStageNm;
   sRevisedStageNm.vSprint("stage%c"_Stz,'A' + i_StageSpec);
-  Card_Stage* pCard_Stage = new Card_Stage(eStageTopology);
-  
   Card_Name* pCard_Name = new Card_Name(sRevisedStageNm.szStz());
   pCard_Stage->vAppend(pCard_Name);
 
+  Card_StageTopo* pCard_StageTopo = new Card_StageTopo(eStageTopo);
+  pCard_Stage->vAppend(pCard_StageTopo);
   
   m_pBoard->vAppend(pCard_Stage);
 

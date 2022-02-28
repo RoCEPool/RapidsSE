@@ -1490,23 +1490,23 @@ void Card::vStageNm(Stz* szStageNm)
 /*----------------------------------------------------------------------------*/
 /* get stage topology                                                         */
 /*----------------------------------------------------------------------------*/
-eYG Card::eStageTopology(void)
+eYG Card::eStageTopo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  eYG eStageTopology = (eYG)iGetProperty("eStageTopology"_Stz);
+  eYG eStageTopo = (eYG)iGetProperty("eStageTopo"_Stz);
 
-  return eStageTopology;
+  return eStageTopo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set stage topology                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vStageTopology(eYG  eStageTopology)
+void Card::vStageTopo(eYG  eStageTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("eStageTopology"_Stz,eStageTopology);
+  vAddProperty("eStageTopo"_Stz,eStageTopo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1791,6 +1791,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_SORT:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_DIRECTION:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGE:                      vPrintProperties(pRibbon,iDepth); break;
+    case CK_STAGETOPO:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_STREAMDEF:  vStreamDefPrint                 (pRibbon,iDepth); break;
           
     case CK_TABLE:      vTablePrint                     (pRibbon,iDepth); break;

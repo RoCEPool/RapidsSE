@@ -194,8 +194,8 @@ namespace STORE
     void vSends(i8 iSends);
     Stz* szStageNm(void);
     void vStageNm(Stz* szStageNm);
-    eYG  eStageTopology(void);
-    void vStageTopology(eYG  eStageTopology);
+    eYG  eStageTopo(void);
+    void vStageTopo(eYG  eStageTopology);
     StreamDef* pStreamDef(void);
     void vStreamDef(StreamDef* pStreamDef);
 
