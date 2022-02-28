@@ -304,10 +304,29 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   Card_Filter* pCard_Filter = new Card_Filter;
   
   Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
-  Card_Expr* pCard_Expr = pCollectTypedBool(pCard_RpnTerms);
-  pCard_Filter->vAppend(pCard_Expr);
+  
+  
+  
+  
+  Card_Expr* pCard_Expr = new Card_Expr;
+
+  // <type>
+  Card_Type* pCard_Type = pCollectType(pCard_RpnTerms);
+  pCard_Expr->vAppend(pCard_Type);
+
+  // <boolExpr>
+  Card_ExprBool* pCard_ExprBool = pCollectBoolExpr(pCard_RpnTerms);
+  pCard_Expr->vAppend(pCard_ExprBool);
 
   
+  
+  
+  
+  
+  
+  
+  pCard_Filter->vAppend(pCard_Expr);
+
   delete pCard_RpnTerms;
 
   if (! m_bSawAggOp) {
@@ -766,15 +785,15 @@ Card_ExprBool* Dissect::pCollectBoolExpr(Card_RpnTerms* pCard_RpnTerms)
     switch (eTopTerm) {
       
       case TE_AND:
-        vAndPred(pCard_ExprBool,pCard_RpnTerms);
+        vPredAnd(pCard_ExprBool,pCard_RpnTerms);
         break;
         
       case TE_OR:
-        vOrPred(pCard_ExprBool,pCard_RpnTerms);
+        vPredOr(pCard_ExprBool,pCard_RpnTerms);
         break;
         
       case TE_OTHER:
-        vCmpPred(pCard_ExprBool,pCard_RpnTerms);
+        vPredCmp(pCard_ExprBool,pCard_RpnTerms);
         break;
         
       default:
@@ -943,27 +962,6 @@ Card_Type* Dissect::pCollectType(Card_RpnTerms* pCard_RpnTerms)
   return pCard_Type;
 }
 
-/*----------------------------------------------------------------------------*/
-/* evaluate typed boolean expr : TYPE <type> <boolExpr>                       */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Dissect::pCollectTypedBool(Card_RpnTerms* pCard_RpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-   
-  //pCard_RpnTerms->vDump();
-
-  Card_Expr* pCard_Expr = new Card_Expr;
-
-  // <type>
-  Card_Type* pCard_Type = pCollectType(pCard_RpnTerms);
-  pCard_Expr->vAppend(pCard_Type);
-
-  // <boolExpr>
-  Card_ExprBool* pCard_ExprBool = pCollectBoolExpr(pCard_RpnTerms);
-  pCard_Expr->vAppend(pCard_ExprBool);
-  
-  return pCard_Expr;
-}
 
 /*----------------------------------------------------------------------------*/
 /* eval typed calc expr : TYPE <type> [ AS <as> ] <calcExpr> [ ASC | DESC ]   */
@@ -1018,7 +1016,7 @@ Card_Expr* Dissect::pCollectTypedCalc(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* append or predicates from term list onto Card_ExprBool                     */
 /*----------------------------------------------------------------------------*/
-void Dissect::vOrPred(Card_ExprBool* pCard_ExprBool,
+void Dissect::vPredOr(Card_ExprBool* pCard_ExprBool,
                       Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
@@ -1038,7 +1036,7 @@ void Dissect::vOrPred(Card_ExprBool* pCard_ExprBool,
 /*----------------------------------------------------------------------------*/
 /* append and predicates from term list onto Card_ExprBool                    */
 /*----------------------------------------------------------------------------*/
-void Dissect::vAndPred(Card_ExprBool* pCard_ExprBool,
+void Dissect::vPredAnd(Card_ExprBool* pCard_ExprBool,
                        Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
@@ -1058,7 +1056,7 @@ void Dissect::vAndPred(Card_ExprBool* pCard_ExprBool,
 /*----------------------------------------------------------------------------*/
 /* append cmp predicates from term list onto Card_ExprBool                    */
 /*----------------------------------------------------------------------------*/
-void Dissect::vCmpPred(Card_ExprBool* pCard_ExprBool,
+void Dissect::vPredCmp(Card_ExprBool* pCard_ExprBool,
                        Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);

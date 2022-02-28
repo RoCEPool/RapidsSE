@@ -134,15 +134,14 @@ namespace STORE
     Card_SbyElist*  pCollectSbyElist   (Card_RpnTerms* pCard_RpnTerms);
     Card_SortDirn*  pCollectSortDirn   (Card_RpnTerms* pCard_RpnTerms);
     Card_Type*      pCollectType       (Card_RpnTerms* pCard_RpnTerms);
-    Card_Expr*      pCollectTypedBool  (Card_RpnTerms* pCard_RpnTerms);
     Card_Expr*      pCollectTypedCalc  (Card_RpnTerms* pCard_RpnTerms);
 
-    void            vOrPred  (Card_ExprBool* pCard_ExprBool,
-                              Card_RpnTerms* pCard_RpnTerms);
-    void            vAndPred (Card_ExprBool* pCard_ExprBool,
-                              Card_RpnTerms* pCard_RpnTerms);
-    void            vCmpPred (Card_ExprBool* pCard_ExprBool,
-                              Card_RpnTerms* pCard_RpnTerms);
+    void vPredOr  (Card_ExprBool* pCard_ExprBool,
+                   Card_RpnTerms* pCard_RpnTerms);
+    void vPredAnd (Card_ExprBool* pCard_ExprBool,
+                   Card_RpnTerms* pCard_RpnTerms);
+    void vPredCmp (Card_ExprBool* pCard_ExprBool,
+                   Card_RpnTerms* pCard_RpnTerms);
   
     Card_RpnTerms* pToRpnTerms(Stz* szRpnExpr);
 
