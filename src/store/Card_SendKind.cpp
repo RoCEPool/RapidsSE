@@ -1,28 +1,28 @@
 /*============================================================================*/
-/* Card_Kind.cpp -- Kind                                                      */
+/* Card_SendKind.cpp -- Kind                                                      */
 /*============================================================================*/
 
-#include "Card_Kind.hpp"
+#include "Card_SendKind.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Kind,CK_KIND)
-__aNewFunction(Card_Kind,CN_CARD)
-__vDeleteFunction(Card_Kind,CN_CARD)
+__pCastFunction_Card(STORE,Card_SendKind,CK_SENDKIND)
+__aNewFunction(Card_SendKind,CN_CARD)
+__vDeleteFunction(Card_SendKind,CN_CARD)
 
-__bIsCard(STORE,Card_Kind,CK_KIND)
+__bIsCard(STORE,Card_SendKind,CK_SENDKIND)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Kind::Card_Kind(i8 iKind)
-: Card_SUB(CK_KIND)
+Card_SendKind::Card_SendKind(eXK eSendKind)
+: Card_SUB(CK_SENDKIND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vKind(iKind);
+  vSendKind(eSendKind);
   
   _checkInitialised_(CN_CARD);
   
@@ -32,7 +32,7 @@ Card_Kind::Card_Kind(i8 iKind)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Kind::~Card_Kind(void) noexcept(false)
+Card_SendKind::~Card_SendKind(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

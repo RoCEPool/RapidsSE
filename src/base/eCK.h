@@ -36,8 +36,6 @@ enum eCK // card kind
   /* */ CK_INDEXPRED,
   /* */ CK_INDEXSCAN,
 
-  /* */ CK_KIND,
-  
   /* */ CK_LBOUND,
   /* */ CK_LIMIT,
   
@@ -59,6 +57,7 @@ enum eCK // card kind
   /* */ CK_SBYELIST,
   /* */ CK_SCAN,
   /* */ CK_SEND,
+  /* */ CK_SENDKIND,
   /* */ CK_SENDS,
   /* */ CK_SORT,
   /* */ CK_STAGE,
@@ -107,8 +106,6 @@ static Stz* aCK[]
   /* */ "CK_INDEXPRED"_Stz,       // CK_INDEXPRED
   /* */ "CK_INDEXSCAN"_Stz,       // CK_INDEXSCAN
 
-  /* */ "CK_KIND"_Stz,            // CK_KIND
-
   /* */ "CK_LBOUND"_Stz,          // CK_LBOUND
   /* */ "CK_LIMIT"_Stz,           // CK_LIMIT
 
@@ -130,6 +127,7 @@ static Stz* aCK[]
   /* */ "CK_SBYELIST"_Stz,        // CK_SBYELIST
   /* */ "CK_SCAN"_Stz,            // CK_SCAN
   /* */ "CK_SEND"_Stz,            // CK_SEND
+  /* */ "CK_SENDKIND"_Stz,        // CK_SENDKIND
   /* */ "CK_SENDS"_Stz,           // CK_SENDS
   /* */ "CK_SORT"_Stz,            // CK_SORT
   /* */ "CK_STAGE"_Stz,           // CK_STAGE
@@ -178,8 +176,6 @@ static Stz* aCK_short[]
   /* */ "indexPred"_Stz,       // CK_INDEXPRED
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
   
-  /* */ "kind"_Stz,            // CK_KIND
-
   /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "limit"_Stz,           // CK_LIMIT
 
@@ -201,6 +197,7 @@ static Stz* aCK_short[]
   /* */ "sbyElist"_Stz,        // CK_SBYELIST
   /* */ "scan"_Stz,            // CK_SCAN
   /* */ "send"_Stz,            // CK_SEND
+  /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "sends"_Stz,           // CK_SENDS
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
@@ -249,8 +246,6 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_INDEXPRED
   /* */ "indexScan 2"_Stz,     // CK_INDEXSCAN
   
-  /* */ "(none)"_Stz,          // CK_KIND
-  
   /* */ "(none)"_Stz,          // CK_LBOUND
   /* */ "limit     2"_Stz,     // CK_LIMIT
     
@@ -272,6 +267,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_SBYELIST
   /* */ "scan       "_Stz,     // CK_SCAN
   /* */ "(none)"_Stz,          // CK_SEND
+  /* */ "(none)"_Stz,          // CK_SENDKIND
   /* */ "(none)"_Stz,          // CK_SENDS
   /* */ "sort       "_Stz,     // CK_SORT
   /* */ "(none)"_Stz,          // CK_STAGE

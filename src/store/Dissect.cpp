@@ -535,8 +535,8 @@ Card* Dissect::pCard_Send(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // eSendKind
   
-  Card_Kind* pCard_Kind = new Card_Kind(eSendKind);
-  pCard_Send->vAppend(pCard_Kind);
+  Card_SendKind* pCard_SendKind = new Card_SendKind(eSendKind);
+  pCard_Send->vAppend(pCard_SendKind);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

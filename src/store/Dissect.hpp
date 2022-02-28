@@ -39,8 +39,6 @@
 #include "Card_IndexPred.hpp"
 #include "Card_IndexScan.hpp"
 
-#include "Card_Kind.hpp"
-
 #include "Card_LBound.hpp"
 #include "Card_Limit.hpp"
 
@@ -61,6 +59,7 @@
 #include "Card_SbyElist.hpp"
 #include "Card_Scan.hpp"
 #include "Card_Send.hpp"
+#include "Card_SendKind.hpp"
 #include "Card_Sends.hpp"
 #include "Card_Sort.hpp"
 #include "Card_Direction.hpp"

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Kind.hpp -- Kind                                                      */
+/* Card_SendKind.hpp -- Kind                                                      */
 /*============================================================================*/
 #pragma once
 
@@ -9,18 +9,18 @@
 
 namespace STORE
 {
-  class Card_Kind : public Card_SUB
+  class Card_SendKind : public Card_SUB
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Kind(i8 iKind);
-   ~Card_Kind(void) noexcept(false);
+    Card_SendKind(eXK eSendKind);
+   ~Card_SendKind(void) noexcept(false);
   };
 
-  Card_Kind* _pCard_Kind(void* aAddr);
-  bool _bIsCard_Kind(void* aAddr);
+  Card_SendKind* _pCard_SendKind(void* aAddr);
+  bool _bIsCard_SendKind(void* aAddr);
 }
 
 /*============================================================================*/
