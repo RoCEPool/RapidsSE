@@ -147,7 +147,10 @@ namespace STORE
     Card_Type*      pType     (Card_RpnTerms* pCard_RpnTerms);
 
     Card_RpnTerms* pToRpnTerms(Stz* szRpnExpr);
-
+  
+    Stz* szCheckRpnExpr(TagSet* pArgTags, i8 i_Expr);
+    void vCheckArgs(TagSet* pArgTags, i8 nArgs);
+  
   private:
     Footer* aFooter(void);
   };

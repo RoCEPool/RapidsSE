@@ -188,17 +188,8 @@ Card* Dissect::pCard_Aggreg(TagSet* pArgTags)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   // 0) aggElist ; 1) gbyList
- 
-  i8 nTags = pArgTags->nItems();
-  
-  Stz* szRpnExpr = nullptr;
-  if (2 == nTags) {
-    szRpnExpr = pArgTags->szValue(1);
-  }
-  else {
-    vTrace("Error: only %lld tags in aggreg argTags\n"_Stz,nTags);
-    NEVER_REACH;
-  }
+   
+  Stz* szRpnExpr = szCheckRpnExpr(pArgTags,1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1092,6 +1083,36 @@ Card_Type* Dissect::pType(Card_RpnTerms* pCard_RpnTerms)
   Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
 
   return pCard_Type;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Dissect::szCheckRpnExpr(TagSet* pArgTags, i8 i_Expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  vCheckArgs(pArgTags,i_Expr + 1);
+  
+  Stz* szRpnExpr = pArgTags->szValue(i_Expr);
+
+  return szRpnExpr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Dissect::vCheckArgs(TagSet* pArgTags, i8 nArgs)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  i8 nTags = pArgTags->nItems();
+    
+  if (nArgs != nTags) {
+    Stz* szOpNm = m_pOpSpec->szOpNm();
+    vTrace("Error: only %lld tags in %s argTags\n"_Stz,nTags,szOpNm);
+    NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
