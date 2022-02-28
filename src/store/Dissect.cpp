@@ -66,12 +66,12 @@ void Dissect::vDissectSpec(Bench* pBench, PipelineSpec* pPipelineSpec)
     for (i8 i_SubPipeline = 0; i_SubPipeline < nSubPipelines; i_SubPipeline++) {
       m_pPipelineSpec = pSubPipelines->pGet(i_SubPipeline);
       
-      vDissectPipeline();
+      vPipeline();
     }
   }
   
   m_pPipelineSpec = pPipelineSpec;
-  vDissectPipeline();
+  vPipeline();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -87,7 +87,7 @@ void Dissect::vDissectSpec(Bench* pBench, PipelineSpec* pPipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectPipeline(void)
+void Dissect::vPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -106,14 +106,14 @@ void Dissect::vDissectPipeline(void)
   for (i8 i_StageSpec = 1; i_StageSpec < nStageSpecs - 1; i_StageSpec++) {
     m_pStageSpec = m_pPipelineSpec->pGet(i_StageSpec);
     
-    vDissectStage(i_StageSpec);
+    vStage(i_StageSpec);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect stage spec                                                         */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectStage(i8 i_StageSpec)
+void Dissect::vStage(i8 i_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
  
@@ -136,14 +136,14 @@ void Dissect::vDissectStage(i8 i_StageSpec)
   for (i8 i_OpSpec = 0; i_OpSpec < nOpSpecs; i_OpSpec++) {
     m_pOpSpec = m_pStageSpec->pGet(i_OpSpec);
     
-    vDissectOp(i_OpSpec);
+    vOp(i_OpSpec);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect op spec                                                            */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectOp(i8 i_OpSpec)
+void Dissect::vOp(i8 i_OpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -835,7 +835,7 @@ Card_Expr* Dissect::pExpr_b(Card_RpnTerms* pCard_RpnTerms)
   Card_Expr* pCard_Expr = new Card_Expr;
 
   // <type>
-  Card_Type* pCard_Type = pCollectType(pCard_RpnTerms);
+  Card_Type* pCard_Type = pType(pCard_RpnTerms);
   pCard_Expr->vAppend(pCard_Type);
 
   // <boolExpr>
@@ -870,7 +870,7 @@ Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
   Card* pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head->bIsSame("AS"_Stz)) {
         
-    Card_As* pCard_As = pCollectAs(pCard_RpnTerms);
+    Card_As* pCard_As = pAs(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_As);
   }
   
@@ -884,7 +884,7 @@ Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
       && (pCard_Term_head->bIsSame("ASC"_Stz) ||
           pCard_Term_head->bIsSame("DESC"_Stz))) {
 
-    Card_Direction* pCard_SortDirn = pCollectSortDirn(pCard_RpnTerms);
+    Card_Direction* pCard_SortDirn = pDirection(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_SortDirn);
   }
   
@@ -1047,7 +1047,7 @@ void Dissect::vPredCmp(Card_ExprBool* pCard_ExprBool,
 /*----------------------------------------------------------------------------*/
 /* collect <as> terms : AS <name>                                             */
 /*----------------------------------------------------------------------------*/
-Card_As* Dissect::pCollectAs(Card_RpnTerms* pCard_RpnTerms)
+Card_As* Dissect::pAs(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -1067,7 +1067,7 @@ Card_As* Dissect::pCollectAs(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* collect <sortDirn> terms :                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Direction* Dissect::pCollectSortDirn(Card_RpnTerms* pCard_RpnTerms)
+Card_Direction* Dissect::pDirection(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -1084,7 +1084,7 @@ Card_Direction* Dissect::pCollectSortDirn(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* collect <type> terms : TYPE <columnType>                                   */
 /*----------------------------------------------------------------------------*/
-Card_Type* Dissect::pCollectType(Card_RpnTerms* pCard_RpnTerms)
+Card_Type* Dissect::pType(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   

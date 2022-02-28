@@ -102,9 +102,9 @@ namespace STORE
     void vDissectSpec(Bench* pBench, PipelineSpec* pPipelineSpec);
   
   private:
-    void vDissectPipeline(void);
-    void vDissectStage(i8 i_StageSpec);
-    void vDissectOp(i8 i_OpSpec);
+    void vPipeline(void);
+    void vStage(i8 i_StageSpec);
+    void vOp(i8 i_OpSpec);
 
     void vDissectAggreg   (OpSpec* pOpSpec);
     void vDissectCombined (OpSpec* pOpSpec);
@@ -142,9 +142,9 @@ namespace STORE
     void vPredCmp (Card_ExprBool* pCard_ExprBool,
                    Card_RpnTerms* pCard_RpnTerms);
   
-    Card_As*        pCollectAs       (Card_RpnTerms* pCard_RpnTerms);
-    Card_Direction* pCollectSortDirn (Card_RpnTerms* pCard_RpnTerms);
-    Card_Type*      pCollectType     (Card_RpnTerms* pCard_RpnTerms);
+    Card_As*        pAs       (Card_RpnTerms* pCard_RpnTerms);
+    Card_Direction* pDirection(Card_RpnTerms* pCard_RpnTerms);
+    Card_Type*      pType     (Card_RpnTerms* pCard_RpnTerms);
 
     Card_RpnTerms* pToRpnTerms(Stz* szRpnExpr);
 
