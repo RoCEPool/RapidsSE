@@ -73,11 +73,42 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO TSP
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#define _DTE_TOTSP(iErrorCode) \
-  NEVER_REACH;
+#define _DTE_TOTSP(iErrorCode)                                             \
+  {                                                                        \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+    if (iErrorCode != EC_NONE ||                                           \
+      xDte1.m_iAsI8 == C_DATUM_NULL) {                                     \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      xTsp1.m_iAsI8 = 0;                                                   \
+                                                                           \
+      xTsp1.m_uDay = xDte1.m_uDay;                                         \
+      xTsp1.m_uMonth = xDte1.m_uMonth;                                     \
+      xTsp1.m_uYearDelta = xDte1.m_uYearDelta;                             \
+      *paW++ = xTsp1.m_iAsI8;                                              \
+    }                                                                      \
+  }
 
-#define _TME_TOTSP(iErrorCode) \
-  NEVER_REACH;
+#define _TME_TOTSP(iErrorCode)                                             \
+  {                                                                        \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+    if (iErrorCode != EC_NONE ||                                           \
+      xTme1.m_iAsI8 == C_DATUM_NULL) {                                     \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      xTsp1.m_uMicro = xTme1.m_uMicro;                                     \
+      xTsp1.m_uSecond = xTme1.m_uSecond;                                   \
+      xTsp1.m_uMinute = xTme1.m_uMinute;                                   \
+      xTsp1.m_uHour = xTme1.m_uHour;                                       \
+                                                                           \
+      xTsp1.m_uDay = 1;                                                    \
+      xTsp1.m_uMonth = 1;                                                  \
+      xTsp1.m_uYearDelta = 0;                                              \
+      *paW++ = xTsp1.m_iAsI8;                                              \
+    }                                                                      \
+  }
 
 #define _VCH_TOTSP(iErrorCode) \
   NEVER_REACH;
