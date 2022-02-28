@@ -124,12 +124,12 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    eAL  eAggLvl(void);
-    void vAggLvl(eAL eAggLvl);
+    eAL  eAggLevel(void);
+    void vAggLevel(eAL eAggLevel);
     bool bAggOp(void);
     void vAggOp(void);
     Stz* szAs(void);
-    void vAs(Stz* szAsNm);
+    void vAs(Stz* szAs);
   
     eBK  eBound(void);
   

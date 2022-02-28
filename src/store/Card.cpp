@@ -744,23 +744,23 @@ void Card::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 /*----------------------------------------------------------------------------*/
 /* get aggregate level                                                        */
 /*----------------------------------------------------------------------------*/
-eAL Card::eAggLvl(void)
+eAL Card::eAggLevel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  eAL eAggLvl = (eAL)iGetProperty("eAggLvl"_Stz);
+  eAL eAggLevel = (eAL)iGetProperty("eAggLevel"_Stz);
   
-  return eAggLvl;
+  return eAggLevel;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set aggregate level                                                        */
 /*----------------------------------------------------------------------------*/
-void Card::vAggLvl(eAL eAggLvl)
+void Card::vAggLevel(eAL eAggLvl)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("eAggLvl"_Stz,eAggLvl);
+  vAddProperty("eAggLevel"_Stz,eAggLvl);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1736,6 +1736,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
   switch (eCard) {
 
     case CK_AGGELIST:                   vPrintProperties(pRibbon,iDepth); break;
+    case CK_AGGLEVEL:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_AGGREG:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_AS:                         vPrintProperties(pRibbon,iDepth); break;
                         
@@ -2068,7 +2069,7 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  if (szEnum->bSame("eAggLvl"_Stz))     return aAL[iEnum];
+  if (szEnum->bSame("eAggLevel"_Stz))   return aAL[iEnum];
   if (szEnum->bSame("eStageTopo"_Stz))  return aYG[iEnum];
   if (szEnum->bSame("eSendKind"_Stz))   return aXK[iEnum];
 

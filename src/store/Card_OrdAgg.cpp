@@ -17,12 +17,10 @@ __bIsCard(STORE,Card_OrdAgg,CK_ORDAGG)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OrdAgg::Card_OrdAgg(eAL eAggLvl)
+Card_OrdAgg::Card_OrdAgg(void)
 : Card_Project(CK_ORDAGG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAggLvl(eAggLvl);
 
   _checkInitialised_(CN_CARD);
   

@@ -10,6 +10,7 @@
 #include "Card.hpp"
 
 #include "Card_AggElist.hpp"
+#include "Card_AggLevel.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_PredAnd.hpp"
 #include "Card_As.hpp"

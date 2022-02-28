@@ -194,9 +194,12 @@ Card* Dissect::pCard_Aggreg(TagSet* pArgTags)
      
   m_bSawAggOp = true;
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,1);
-  eAL eAggLvl = m_pStageSpec->eAggegLevel();
-  Card_Aggreg* pCard_Aggreg = new Card_Aggreg(eAggLvl);
+  Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
   
+  eAL eAggLevel = m_pStageSpec->eAggegLevel();
+  Card_AggLevel* pCard_AggLevel = new Card_AggLevel(eAggLevel);
+  pCard_Aggreg->vAppend(pCard_AggLevel);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
   
@@ -430,9 +433,12 @@ Card* Dissect::pCard_OrdAgg(TagSet* pArgTags)
       
   m_bSawAggOp = true;
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,1);
-  eAL eAggLvl = m_pStageSpec->eAggegLevel();
-  Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg(eAggLvl);
+  Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg;
   
+  eAL eAggLevel = m_pStageSpec->eAggegLevel();
+  Card_AggLevel* pCard_AggLevel = new Card_AggLevel(eAggLevel);
+  pCard_OrdAgg->vAppend(pCard_AggLevel);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
 
