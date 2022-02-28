@@ -206,7 +206,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   // aggregate expression list
   
   Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
-  Card_AggElist* pCard_AggElist = pCollectAggElist(pCard_RpnTerms);
+  Card_AggElist* pCard_AggElist = pAggElist(pCard_RpnTerms);
 
   pCard_Aggreg->vAppend(pCard_AggElist);
 
@@ -215,7 +215,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   
   if (pCard_RpnTerms->nItems()) {
 
-    Card_GbyElist* pCard_ByList = pCollectGbyElist(pCard_RpnTerms);
+    Card_GbyElist* pCard_ByList = pGbyElist(pCard_RpnTerms);
     pCard_Aggreg->vAppend(pCard_ByList);
   }
   
@@ -308,21 +308,8 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   
   
   
-  Card_Expr* pCard_Expr = new Card_Expr;
+  Card_Expr* pCard_Expr = pExpr_b(pCard_RpnTerms);
 
-  // <type>
-  Card_Type* pCard_Type = pCollectType(pCard_RpnTerms);
-  pCard_Expr->vAppend(pCard_Type);
-
-  // <boolExpr>
-  Card_ExprBool* pCard_ExprBool = pCollectExprBool(pCard_RpnTerms);
-  pCard_Expr->vAppend(pCard_ExprBool);
-
-  
-  
-  
-  
-  
   
   
   pCard_Filter->vAppend(pCard_Expr);
@@ -530,7 +517,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg("partition"_Stz);
   
   Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
-  Card_AggElist* pCard_AggElist = pCollectAggElist(pCard_RpnTerms);
+  Card_AggElist* pCard_AggElist = pAggElist(pCard_RpnTerms);
 
   pCard_OrdAgg->vAppend(pCard_AggElist);
 
@@ -585,7 +572,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
   Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
   
   Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
-  Card_ProjElist* pCard_ProjElist = pCollectProjElist(pCard_RpnTerms);
+  Card_ProjElist* pCard_ProjElist = pProjElist(pCard_RpnTerms);
   pCard_Project->vAppend(pCard_ProjElist);
 
   delete pCard_RpnTerms;
@@ -696,7 +683,7 @@ void Dissect::vDissectSort(OpSpec* pOpSpec)
   Card_Sort* pCard_Sort = new Card_Sort;
   
   Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
-  Card_SbyElist* pCard_ObyElist = pCollectSbyElist(pCard_RpnTerms);
+  Card_SbyElist* pCard_ObyElist = pSbyElist(pCard_RpnTerms);
 
   pCard_Sort->vAppend(pCard_ObyElist);
 
@@ -722,7 +709,7 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* collect <agg> terms :                                                      */
 /*----------------------------------------------------------------------------*/
-Card_AggElist* Dissect::pCollectAggElist(Card_RpnTerms* pCard_RpnTerms)
+Card_AggElist* Dissect::pAggElist(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -743,7 +730,7 @@ Card_AggElist* Dissect::pCollectAggElist(Card_RpnTerms* pCard_RpnTerms)
     }
         
     // TYPE <type> [ AS <as> ] <calcExpr>
-    Card_Expr* pCard_Expr = pCollectExpr(pCard_RpnTerms);
+    Card_Expr* pCard_Expr = pExpr_c(pCard_RpnTerms);
     pCard_AggElist->vAppend(pCard_Expr);
   }
   
@@ -753,7 +740,7 @@ Card_AggElist* Dissect::pCollectAggElist(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* collect <groupby> terms :  GROUPBY { <type> [<as>] <by> }                  */
 /*----------------------------------------------------------------------------*/
-Card_GbyElist* Dissect::pCollectGbyElist(Card_RpnTerms* pCard_RpnTerms)
+Card_GbyElist* Dissect::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -772,7 +759,7 @@ Card_GbyElist* Dissect::pCollectGbyElist(Card_RpnTerms* pCard_RpnTerms)
     }
         
     // TYPE <type> [ AS <as> ] <calcExpr>
-    Card_Expr* pCard_Expr = pCollectExpr(pCard_RpnTerms);
+    Card_Expr* pCard_Expr = pExpr_c(pCard_RpnTerms);
     
     pCard_GbyElist->vAppend(pCard_Expr);
   }
@@ -783,7 +770,7 @@ Card_GbyElist* Dissect::pCollectGbyElist(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* collect <project> terms :                                                  */
 /*----------------------------------------------------------------------------*/
-Card_ProjElist* Dissect::pCollectProjElist(Card_RpnTerms* pCard_RpnTerms)
+Card_ProjElist* Dissect::pProjElist(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -799,7 +786,7 @@ Card_ProjElist* Dissect::pCollectProjElist(Card_RpnTerms* pCard_RpnTerms)
     }
         
     // TYPE <type> [ AS <as> ] <calcExpr>
-    Card_Expr* pCard_Expr = pCollectExpr(pCard_RpnTerms);
+    Card_Expr* pCard_Expr = pExpr_c(pCard_RpnTerms);
     pCard_ProjElist->vAppend(pCard_Expr);
   }
   
@@ -809,7 +796,7 @@ Card_ProjElist* Dissect::pCollectProjElist(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* collect <orderBy> terms :                                                  */
 /*----------------------------------------------------------------------------*/
-Card_SbyElist* Dissect::pCollectSbyElist(Card_RpnTerms* pCard_RpnTerms)
+Card_SbyElist* Dissect::pSbyElist(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -825,7 +812,7 @@ Card_SbyElist* Dissect::pCollectSbyElist(Card_RpnTerms* pCard_RpnTerms)
     }
         
     // TYPE <type> [ AS <as> ] <calcExpr>
-    Card_Expr* pCard_Expr = pCollectExpr(pCard_RpnTerms);
+    Card_Expr* pCard_Expr = pExpr_c(pCard_RpnTerms);
     
     pCard_SbyElist->vAppend(pCard_Expr);
   }
@@ -839,7 +826,30 @@ Card_SbyElist* Dissect::pCollectSbyElist(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* eval typed calc expr : TYPE <type> [ AS <as> ] <calcExpr> [ ASC | DESC ]   */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Dissect::pCollectExpr(Card_RpnTerms* pCard_RpnTerms)
+Card_Expr* Dissect::pExpr_b(Card_RpnTerms* pCard_RpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+   
+  //pCard_RpnTerms->vDump();
+
+  Card_Expr* pCard_Expr = new Card_Expr;
+
+  // <type>
+  Card_Type* pCard_Type = pCollectType(pCard_RpnTerms);
+  pCard_Expr->vAppend(pCard_Type);
+
+  // <boolExpr>
+  Card_ExprBool* pCard_ExprBool = pExprBool(pCard_RpnTerms);
+  pCard_Expr->vAppend(pCard_ExprBool);
+
+
+  return pCard_Expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* eval typed calc expr : TYPE <type> [ AS <as> ] <calcExpr> [ ASC | DESC ]   */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
    
@@ -865,7 +875,7 @@ Card_Expr* Dissect::pCollectExpr(Card_RpnTerms* pCard_RpnTerms)
   }
   
   // <calcExpr>
-  Card_ExprCalc* pCard_ExprCalc = pCollectExprCalc(pCard_RpnTerms);
+  Card_ExprCalc* pCard_ExprCalc = pExprCalc(pCard_RpnTerms);
   pCard_Expr->vAppend(pCard_ExprCalc);
   
   // [ ASC | DESC ]
@@ -884,7 +894,7 @@ Card_Expr* Dissect::pCollectExpr(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* evaluate boolean predicate termlist                                        */
 /*----------------------------------------------------------------------------*/
-Card_ExprBool* Dissect::pCollectExprBool(Card_RpnTerms* pCard_RpnTerms)
+Card_ExprBool* Dissect::pExprBool(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -922,7 +932,7 @@ Card_ExprBool* Dissect::pCollectExprBool(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* collect <predicate>                                                        */
 /*----------------------------------------------------------------------------*/
-Card_ExprCalc* Dissect::pCollectExprCalc(Card_RpnTerms* pCard_RpnTerms)
+Card_ExprCalc* Dissect::pExprCalc(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 

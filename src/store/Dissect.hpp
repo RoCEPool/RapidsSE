@@ -125,14 +125,15 @@ namespace STORE
     void vDissectSort     (OpSpec* pOpSpec);
     void vDissectStart    (OpSpec* pOpSpec);
 
-    Card_AggElist*  pCollectAggElist   (Card_RpnTerms* pCard_RpnTerms);
-    Card_GbyElist*  pCollectGbyElist   (Card_RpnTerms* pCard_RpnTerms);
-    Card_ProjElist* pCollectProjElist  (Card_RpnTerms* pCard_RpnTerms);
-    Card_SbyElist*  pCollectSbyElist   (Card_RpnTerms* pCard_RpnTerms);
+    Card_AggElist*  pAggElist   (Card_RpnTerms* pCard_RpnTerms);
+    Card_GbyElist*  pGbyElist   (Card_RpnTerms* pCard_RpnTerms);
+    Card_ProjElist* pProjElist  (Card_RpnTerms* pCard_RpnTerms);
+    Card_SbyElist*  pSbyElist   (Card_RpnTerms* pCard_RpnTerms);
 
-    Card_Expr*      pCollectExpr       (Card_RpnTerms* pCard_RpnTerms);
-    Card_ExprBool*  pCollectExprBool   (Card_RpnTerms* pCard_RpnTerms);
-    Card_ExprCalc*  pCollectExprCalc   (Card_RpnTerms* pCard_RpnTerms);
+    Card_Expr*      pExpr_b     (Card_RpnTerms* pCard_RpnTerms);
+    Card_Expr*      pExpr_c     (Card_RpnTerms* pCard_RpnTerms);
+    Card_ExprBool*  pExprBool   (Card_RpnTerms* pCard_RpnTerms);
+    Card_ExprCalc*  pExprCalc   (Card_RpnTerms* pCard_RpnTerms);
   
     void vPredOr  (Card_ExprBool* pCard_ExprBool,
                    Card_RpnTerms* pCard_RpnTerms);
@@ -141,9 +142,9 @@ namespace STORE
     void vPredCmp (Card_ExprBool* pCard_ExprBool,
                    Card_RpnTerms* pCard_RpnTerms);
   
-    Card_As*        pCollectAs         (Card_RpnTerms* pCard_RpnTerms);
-    Card_SortDirn*  pCollectSortDirn   (Card_RpnTerms* pCard_RpnTerms);
-    Card_Type*      pCollectType       (Card_RpnTerms* pCard_RpnTerms);
+    Card_As*       pCollectAs       (Card_RpnTerms* pCard_RpnTerms);
+    Card_SortDirn* pCollectSortDirn (Card_RpnTerms* pCard_RpnTerms);
+    Card_Type*     pCollectType     (Card_RpnTerms* pCard_RpnTerms);
 
     Card_RpnTerms* pToRpnTerms(Stz* szRpnExpr);
 
