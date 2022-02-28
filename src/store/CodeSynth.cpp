@@ -2028,7 +2028,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, bo
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the postt aggregatation
+  // generate the code for the post aggregation
   vGenerateExprCode(pPostStack, ""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2044,7 +2044,10 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, bo
 
   StrLib::vAppendString(&m_azCodeCrs, "\n      iElemSize = 0;");
 
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+  ePE ePreExp = PE_NONE;
+  i8 iExprStack = pIndexDef->nColumns();
+  i8 iIndexCol;
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++, iExprStack++) {
 
     StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - ");
     sCopy.vSprint("\n      // column %lld"_Stz, i_Col);
@@ -2057,9 +2060,11 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, bo
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is column in the key ?
-    Column* pIndexColumn = pIndexDef->pFindColumn(pColumn->szColNm());
+    //Column* pIndexColumn = pIndexDef->pFindColumn(pColumn->szColNm());
 
-    if (pIndexColumn) {
+    ePreExp = (ePE)m_pPreExpStack->iPeek(iExprStack);
+
+    if (ePreExp == PE_GKY) {
 
       // cannot be an aggregate
       //RASSERT(ePreExp == PE_NONE);
@@ -2126,14 +2131,17 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, bo
         }
       }
       else {
+        // get the index col no maching the streamDef column no
+        i8 iIndexCol = pIndexDef->iGetColumn(pColumn->iColumnNo());
         sCopy.vSprint("\n      p%s->%s = ((struct Ent_int*)aCombinedT->%s)->m_iIntElm0 + (%lld*8);\n"_Stz,
                       xRowRef[m_eStencilTo].m_szInclude,
                       sColNm.azChar(),
                       bTop ? "m_aEntIntTOP"_Stz : "m_aEntIntPL"_Stz,
-                      pIndexColumn->iColumnNo());
+                      iIndexCol);
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       }
 
+      iIndexCol++;
       continue;
     }
 
@@ -2479,7 +2487,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   bool bIndexJoin = false;
   bool bLowerBound = false;
   bool bUpperBound = false;
-  bool bGroupByKey = false;
+  bool bGroupBy    = false;
 
   TypedCell *pTypedCell;
   TypedStack *pExprStack;
@@ -2488,6 +2496,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   Token *pTkn;
 
   i8 i_Col = 0;
+  i8 i_ExprStack = 0;
   i8 i_DupCtr = 1;
   i8 iValue;
   eDM eType;
@@ -2504,7 +2513,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the predicate expression
   //RASSERT(m_pPreExpStack);
-  ePE ePreExp = m_pPreExpStack ? (ePE)m_pPreExpStack->iPeek(i_Col) : PE_NONE;
+  ePE ePreExp = m_pPreExpStack ? (ePE)m_pPreExpStack->iPeek(i_ExprStack) : PE_NONE;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set working ExprStack to be the post aggregate expression stack
@@ -2543,23 +2552,73 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       pExprStack = m_pExprStack;
 
-      if ( bGroupByKey ) {
-        bGroupByKey = false;
-        if (eExprKind == EK_ORDAGG)
-          vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, PE_NONE, pTkn, i_Col,
-                         i_DupCtr);
-      }
-      else {
+      // push assign column
+      vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col,
+                     i_DupCtr);
 
-        // push assign column
-        vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col,
-                       i_DupCtr);
+      if (ePreExp != PE_GKY)
         i_Col++;
-      }
+
+      i_ExprStack++;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to the next predicate expression
-      ePreExp = (ePE)m_pPreExpStack->iPeek(i_Col);
+      ePreExp = (ePE)m_pPreExpStack->iPeek(i_ExprStack);
+
+      if ( ! bGroupBy) {
+        if (ePreExp == PE_ALL ||
+            ePreExp == PE_CNT ||
+            ePreExp == PE_MIN ||
+            ePreExp == PE_MAX ||
+            ePreExp == PE_SUM) {
+          pExprStack = pPostStack;
+        } else
+          pExprStack = m_pExprStack;
+      }
+
+      continue;
+    }
+
+    if (pTkn->bSame("groupby"_Stz)) {
+
+      bGroupBy = true;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the groupby  stack
+      pExprStack = m_pGrpByStack;
+      eExprKind = EK_GROUPBY;
+
+      continue;
+    }
+
+//    if (pTkn->bSame("ord_groupby"_Stz)) {
+//
+//      vPushAssignCol(m_pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col, i_DupCtr);
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // set working ExprStack to be the lower bound  stack
+//      pExprStack = m_pGrpByStack;
+//      eExprKind = EK_GROUPBY;
+//
+//      continue;
+//    }
+
+    if (pTkn->bSame("aggregates"_Stz)) {
+
+      bGroupBy = false;
+
+      // push assign column
+      vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col,
+                     i_DupCtr);
+
+      eExprKind = EK_AGGGBY;
+
+      i_Col = 0;
+      i_ExprStack++;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // move to the next predicate expression
+      ePreExp = (ePE)m_pPreExpStack->iPeek(i_ExprStack);
 
       if (ePreExp == PE_ALL ||
           ePreExp == PE_CNT ||
@@ -2570,36 +2629,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       }
       else
         pExprStack = m_pExprStack;
-
-      continue;
-    }
-
-    if (pTkn->bSame("groupby"_Stz)) {
-
-      if ( bGroupByKey) {
-        bGroupByKey = false;
-      }
-      else {
-        vPushAssignCol(m_pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col, i_DupCtr);
-      }
-
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working ExprStack to be the lower bound  stack
-      pExprStack = m_pGrpByStack;
-      eExprKind = EK_GROUPBY;
-
-      continue;
-    }
-
-    if (pTkn->bSame("ord_groupby"_Stz)) {
-
-      vPushAssignCol(m_pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col, i_DupCtr);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working ExprStack to be the lower bound  stack
-      pExprStack = m_pGrpByStack;
-      eExprKind = EK_GROUPBY;
 
       continue;
     }
@@ -2653,9 +2682,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // push the ordinal column on the expr stack
     if (pTkn->szChars()->bContains("$"_Stz)) {
-      if ( ! bPushOrdCol(pExprStack, pExprType, eExprKind, pTkn)) {
-        bGroupByKey = true;
-      }
+      vPushOrdCol(pExprStack, pExprType, eExprKind, pTkn);
       continue;
     }
 
@@ -3555,7 +3582,7 @@ void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
-bool CodeSynth::bPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eExprKind, Token* pTkn) {
+void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eExprKind, Token* pTkn) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -3572,43 +3599,23 @@ bool CodeSynth::bPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eE
 
   // skip index column
   if (pTkn->szChars()->bContains("I"_Stz)) {
-    return true;
+    return;
   }
 
   // ignore right columns
   if (pTkn->szChars()->bContains("R"_Stz)) {
     RASSERT(0);
-    return true;
+    return;
   }
 
   // ignore if column ordinal relative to the group by key
   if (pTkn->szChars()->bContains("K"_Stz)) {
-
-     RASSERT(eExprKind == EK_AGGGBY);
-     return false;
+     return;
   }
 
   // ignore if column ordinal relative to the group by key
   if (pTkn->szChars()->bContains("O"_Stz)) {
-
-    RASSERT(eExprKind == EK_ORDAGG);
-
-//    sOrdinalColumn = pTkn->szChars() + 2;
-//
-//    i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-//
-//    // look for the column in the indexDef
-//    if (i_ColumnOrdinal > nColumns)
-//      RASSERT(0);
-//
-//    // get the column
-//    pColumn = m_pIndexDef->pGetColumn(i_ColumnOrdinal);
-//
-//    vMakeColumnNm(m_pStreamDefLft, sColumn, m_eStencilFrom, i_ColumnOrdinal);
-//
-//    sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
-//    m_pInitStack->vPushStz(sPush);
-    return false;
+    return;
   }
 
   // column ordinal relative to the left join table
@@ -3665,8 +3672,6 @@ bool CodeSynth::bPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eE
     m_pNullStack->vPushStz(sPush);
     m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
   }
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3781,6 +3786,10 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       break;
 
     case EK_AGGGBY:
+
+      if (ePreExp == PE_GKY)
+        break;
+
       // make the column name
       vMakeColumnNm(m_pStreamDefOut, sColNm, m_eStencilTo, i_Col);
 
@@ -3800,6 +3809,7 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       break;
 
     case EK_GROUPBY:
+      RASSERT(ePreExp == PE_GBY);
       if (m_pIndexDef->nColumns() > 1) {
         vTrace("Warning: Multicolumn indexes not supported\n"_Stz);
         RASSERT(m_pIndexDef->nColumns() == 1);
@@ -4040,7 +4050,7 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
     //if (ePreExp != PE_NONE) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the postt aggregatation
+      // generate the code for the post aggregation
       vGenerateExprCode(pPostStack, ""_Stz);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

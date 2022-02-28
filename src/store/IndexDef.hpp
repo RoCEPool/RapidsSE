@@ -45,11 +45,13 @@ namespace STORE
     static void vPostRecv(void* aIndexDef);
 
     void    vAddColumn(Stz* szColumnNm, eCT eColumnType);
+
     i8      nColumns(void);
     i8*     aiaColSet(void);
     void    vDetermineKeyKind(void);
     Column* pFindColumn(Stz* szColumnNm);
     Column* pGetColumn(i8 i_Column);
+    i8     iGetColumn(i8 iColSet);
     Stz*   szIndexNm(void);
     void   vIndexNm(Stz* szIndexNm);
     eIT    eIndexType(void);
@@ -61,6 +63,7 @@ namespace STORE
     void   vKeyKind(eKE eKeyKind);
     void   vListContents(i8 i_Depth);
     Location* pLocation(void);
+    void   vSetColSet(i8 iColumnNo, i8 iColumnSet);
     Stz*   szTableNm(void);
     void   vTableNm(Stz* szTableNm);
     eEC    eParse(Table* pTable, Stz* szCmd);

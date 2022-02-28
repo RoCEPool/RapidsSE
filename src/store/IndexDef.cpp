@@ -111,7 +111,9 @@ IndexDef::IndexDef(IndexDef* pIndexDef)
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     m_xaColumn[i_Col].vCopy(pIndexDef->pGetColumn(i_Col));
 
-    m_iaColSet[i_Col] = pIndexDef->pGetColumn(i_Col)->iColumnNo();
+    //m_iaColSet[i_Col] = pIndexDef->pGetColumn(i_Col)->iColumnNo();
+    i8* paiColSet = pIndexDef->aiaColSet();
+    m_iaColSet[i_Col] = paiColSet[i_Col];
     m_iaColSet[i_Col + 1] = -1;
   }
   
@@ -563,6 +565,20 @@ Column* IndexDef::pGetColumn(i8 iColumn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get index column no matching aiColSet                                      */
+/*----------------------------------------------------------------------------*/
+i8 IndexDef::iGetColumn(i8 iColSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    if (m_iaColSet[i_Col] == iColSet);
+      return i_Col;
+  }
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get location                                                               */
 /*----------------------------------------------------------------------------*/
 Location* IndexDef::pLocation(void)
@@ -580,6 +596,16 @@ void IndexDef::vResetPointers(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   // no pointers need to be reset
+}
+
+/*----------------------------------------------------------------------------*/
+/* set ColSet No                                                              */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vSetColSet(i8 iColumnNo, i8 iColumnSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  m_iaColSet[iColumnNo] = iColumnSet;
 }
 
 /*----------------------------------------------------------------------------*/

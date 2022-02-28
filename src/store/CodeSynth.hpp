@@ -184,7 +184,7 @@ namespace STORE {
     void vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp);
     void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eLiteral);
     void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
-    bool bPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, eEK eExprKind, Token *pTkn);
+    void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, eEK eExprKind, Token *pTkn);
     void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
 
     void vGenerateExpr(char *sExpr, TypedStack* pPostStack,
