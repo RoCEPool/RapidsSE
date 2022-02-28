@@ -11,25 +11,26 @@ namespace STORE
                         public WspConvergent_t<C_64KB,void,void>
   {
   private:
-    s256 m_sStreamDefNm; // streamDef name
+    s256 m_sStreamDefNm;  // streamDef name
     
-    bool m_bReplicated;  // replicated stream/table?
+    bool m_bReplicated;   // replicated stream/table?
   
     Location m_oLocation; // logical location of stream def
 
-    i8     m_nColumns;                    // total columns
+    i8     m_nColumns;    // total columns
     Column m_xaColumn[C_MAX_DEFCOLUMNS];  // array of columns
 
-    RowPix m_oRowPix;                     // row pix
-    i8     m_jRowSize;                    // size of fixed size row
-    i8     m_jTableSize;                  // estimate of table size
+    RowPix m_oRowPix;     // row pix
+    i8     m_jRowSize;    // size of fixed size row
+    i8     m_jTableSize;  // estimate of table size
 
-    i8     m_nOrders;
+    i8     m_nOrders;     // number of orderBy columns
+    b8     m_bUnique;     // is the stream unnique
     i8     m_iaOrder[C_MAX_STREAM_ORDER]; // array of stream order columns
 
   public:
     StreamDefBase(eCN eClassNo);
-    StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDefBase);
+    StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDef_arg);
 
    ~StreamDefBase(void) noexcept(false);
 
@@ -77,6 +78,9 @@ namespace STORE
     void    vToColPix(RowPix* pRowPix, bool bPtnHash);
     void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
     void    vToMetadata(Stz* sMetaData);
+
+    bool    bUnique(void);
+    void    vUnique(bool bUnique);
 
   private:
     

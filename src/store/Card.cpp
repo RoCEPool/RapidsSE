@@ -2004,6 +2004,11 @@ void Card::vStreamDefPrint(Ribbon* pRibbon, i8 iDepth)
       
     pRibbon->vSput(FR_ATOM_SQUARE,pOrdCol->szColNm());
   }
+  
+  pRibbon->vSput(FR_TEXT
+                 ,pStreamDef->bUnique()
+                    ? "unique"_Stz : "not unique"_Stz
+                 );
 }
 
 /*----------------------------------------------------------------------------*/

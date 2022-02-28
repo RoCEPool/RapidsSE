@@ -30,7 +30,7 @@ StreamDefBase::StreamDefBase(eCN eClassNo)
   m_sStreamDefNm = ""_Stz;
 
   m_nColumns = 0;
-  //m_xaColumn[C_MAX_DEFCOLUMNS];
+  MemLib::vZero(m_xaColumn,sizeof(m_xaColumn),eClassNo);
 
   //m_oRowPix;
 
@@ -38,6 +38,7 @@ StreamDefBase::StreamDefBase(eCN eClassNo)
   m_jTableSize = 0;
 
   m_nOrders = 0;
+  m_bUnique = false;
   MemLib::vZero(m_iaOrder,sizeof(m_iaOrder),eClassNo);
   
   //_checkInitialised_(eClassNo);
@@ -48,26 +49,29 @@ StreamDefBase::StreamDefBase(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StreamDefBase::StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDefBase)
+StreamDefBase::StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDef_arg)
 : Definition(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
-  m_bReplicated = false;
-  m_sStreamDefNm = pStreamDefBase->m_sStreamDefNm;
-  m_nColumns = pStreamDefBase->m_nColumns;
+  m_bReplicated  = false;
+  m_sStreamDefNm = pStreamDef_arg->m_sStreamDefNm;
+  m_nColumns     = pStreamDef_arg->m_nColumns;
 
-  for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++) {
-    m_xaColumn[i_DefCol].vCopy(&pStreamDefBase->m_xaColumn[i_DefCol]);
-  }
+  MemLib::vZero(m_xaColumn,sizeof(m_xaColumn),eClassNo);
+  for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++)
+    m_xaColumn[i_DefCol].vCopy(&pStreamDef_arg->m_xaColumn[i_DefCol]);
 
   //m_oRowPix;
 
-  m_jRowSize = pStreamDefBase->m_jRowSize;
+  m_jRowSize = pStreamDef_arg->m_jRowSize;
 
-  m_nOrders = 0;
+  m_nOrders  = pStreamDef_arg->m_nOrders;
+  m_bUnique  = pStreamDef_arg->m_bUnique;
   MemLib::vZero(m_iaOrder,sizeof(m_iaOrder),eClassNo);
-
+  for (i8 i_Order = 0; i_Order < m_nOrders; i_Order++)
+    m_iaOrder[i_Order] = pStreamDef_arg->m_iaOrder[i_Order];
+    
   //_checkInitialised_(CN_STREAMDEF);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -616,6 +620,26 @@ void StreamDefBase::vToMetadata(Stz* sMetadata)
   }
 
   sMetadata->vConcat(")"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the ordered stream unique?                                              */
+/*----------------------------------------------------------------------------*/
+bool StreamDefBase::bUnique(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bUnique;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is the ordered stream unique?                                          */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vUnique(bool bUnique)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bUnique = bUnique;
 }
 
 

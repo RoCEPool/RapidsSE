@@ -756,7 +756,9 @@ void Board::vAdd_IndexScan(void)
     pStreamDef->vAddOrder(i_Col);
   }
   
-  
+  bool bUnique = pIndexDef->bIsUnique();
+  pStreamDef->vUnique(bUnique);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
