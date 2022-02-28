@@ -85,6 +85,7 @@
   (iArg1 == C_I8_MIN && iArg2 == -1) ? EC_ARITHMETIC_OVERFLOW :            \
   EC_NONE                                                                  \
 )
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BCD
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -129,11 +130,45 @@
     }                                                                      \
   }
 
-#define _DIV_BCDBCD(eErrorCode) \
+#define _DIV_BCDBCD(eErrorCode)                                            \
   NEVER_REACH;
 
-#define _MUL_BCDBCD(eErrorCode) \
-  NEVER_REACH;
+//ALKA: replace max_col_decimal with decimal value in table column definition
+#define _MUL_BCDBCD(eErrorCode)                                            \
+  {                                                                        \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    if (eErrorCode != EC_NONE ||                                           \
+        bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      eErrorCode = _OF_BCDMUL;                                             \
+      if(eErrorCode != EC_NONE) {                                          \
+          *paW++ = C_DATUM_NULL;                                           \
+      }                                                                    \
+      else {                                                               \
+        i8 max_col_decimal = 2;                                            \
+        bcdArg1.m_iMantissa = bcdArg1.m_iMantissa * bcdArg2.m_iMantissa;   \
+        i8 tmpScale = bcdArg1.m_iScale + bcdArg2.m_iScale;                 \
+        if(tmpScale > max_col_decimal) {                                   \
+          bcdArg1.m_iMantissa /= iaPow10[tmpScale - max_col_decimal - 1];  \
+          if(bcdArg1.m_iMantissa % 10 >= 5) {                              \
+            bcdArg1.m_iMantissa = (bcdArg1.m_iMantissa / 10) + 1;          \
+          }                                                                \
+          else {                                                           \
+            bcdArg1.m_iMantissa = bcdArg1.m_iMantissa / 10;                \
+          }                                                                \
+          bcdArg1.m_iScale = max_col_decimal;                              \
+        }                                                                  \
+        else {                                                             \
+          bcdArg1.m_iScale = tmpScale;                                     \
+        }                                                                  \
+        *paW++ = bcdArg1.m_iAsI8;                                          \
+      }                                                                    \
+    }                                                                      \
+  }
 
 #define _SUB_BCDBCD(eErrorCode) \
   {                                                                        \
@@ -213,7 +248,6 @@
   {                                                                        \
     iArg1 = *(--paW);                                                      \
     iArg2 = *(--paW);                                                      \
-    printf("arg1 = %d; arg2 = %d\n", iArg1, iArg2);                        \
     if (eErrorCode == EC_NONE &&                                           \
         iArg2 != C_DATUM_NULL) {                                           \
       *paW++ = ++iArg1;                                                    \
