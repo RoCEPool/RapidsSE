@@ -29,7 +29,9 @@
       bcdArg1.m_iAsI8 == C_DATUM_NULL) {                                   \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
-    *paW++ = bcdArg1.m_iMantissa / iaPow10[bcdArg1.m_iScale];              \
+    else {                                                                 \
+      *paW++ = bcdArg1.m_iMantissa / iaPow10[bcdArg1.m_iScale];            \
+    }                                                                      \
   }
 
 #define _INT_TOINT(iErrorCode) \
