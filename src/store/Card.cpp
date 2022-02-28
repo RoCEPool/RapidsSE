@@ -1232,6 +1232,28 @@ void Card::vMode(Stz* szMode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get mode                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Stz* szName = szGetProperty("szName"_Stz);
+
+  return szName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set mode                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vName(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  vAddProperty("szName"_Stz,szName);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get option                                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Card::iOption(void)
@@ -1741,13 +1763,13 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_INDEXPRED:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXSCAN:                  vPrintProperties(pRibbon,iDepth); break;
           
-    case CK_SENDKIND:                       vPrintProperties(pRibbon,iDepth); break;
-      
     case CK_LBOUND:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_LIMIT:                      vPrintProperties(pRibbon,iDepth); break;
                                                 
     case CK_MODE:                       vPrintProperties(pRibbon,iDepth); break;
-      
+
+    case CK_NAME:                       vPrintProperties(pRibbon,iDepth); break;
+
     case CK_ON:                         vPrintProperties(pRibbon,iDepth); break;
     case CK_OPTION:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_ORDAGG:                     vPrintProperties(pRibbon,iDepth); break;
@@ -1764,6 +1786,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_SBYELIST:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_SCAN:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_SEND:                       vPrintProperties(pRibbon,iDepth); break;
+    case CK_SENDKIND:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_SENDS:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_SORT:                       vPrintProperties(pRibbon,iDepth); break;
     case CK_DIRECTION:                  vPrintProperties(pRibbon,iDepth); break;

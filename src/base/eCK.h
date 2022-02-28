@@ -41,6 +41,8 @@ enum eCK // card kind
   
   /* */ CK_MODE,
 
+  /* */ CK_NAME,
+
   /* */ CK_ON,
   /* */ CK_OPTION,
   /* */ CK_ORDAGG,
@@ -110,6 +112,8 @@ static Stz* aCK[]
   /* */ "CK_LIMIT"_Stz,           // CK_LIMIT
 
   /* */ "CK_MODE"_Stz,            // CK_MODE
+
+  /* */ "CK_NAME"_Stz,            // CK_NAME
 
   /* */ "CK_ON"_Stz,              // CK_ON
   /* */ "CK_OPTION"_Stz,          // CK_OPTION
@@ -181,6 +185,8 @@ static Stz* aCK_short[]
 
   /* */ "mode"_Stz,            // CK_MODE
 
+  /* */ "name"_Stz,            // CK_NAME
+
   /* */ "on"_Stz,              // CK_ON
   /* */ "option"_Stz,          // CK_OPTION
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
@@ -250,7 +256,9 @@ static Stz* aCK_op[]
   /* */ "limit     2"_Stz,     // CK_LIMIT
     
   /* */ "(none)"_Stz,          // CK_MODE
-  
+
+  /* */ "(none)"_Stz,          // CK_NAME
+
   /* */ "(none)"_Stz,          // CK_ON
   /* */ "(none)"_Stz,          // CK_OPTION
   /* */ "ordagg    2"_Stz,     // CK_ORDAGG

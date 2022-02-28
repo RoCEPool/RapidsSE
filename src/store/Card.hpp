@@ -167,6 +167,9 @@ namespace STORE
     Stz* szMode(void);
     void vMode(Stz* szMode);
   
+    Stz* szName(void);
+    void vName(Stz* szMode);
+
     i8   iOption(void);
     void vOption(i8 iOption);
     Stz* szOption(void);

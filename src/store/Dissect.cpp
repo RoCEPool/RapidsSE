@@ -124,8 +124,12 @@ void Dissect::vStage(i8 i_StageSpec)
   
   s32 sRevisedStageNm;
   sRevisedStageNm.vSprint("stage%c"_Stz,'A' + i_StageSpec);
-  Card_Stage* pCard_Stage = new Card_Stage(sRevisedStageNm.szStz(),
-                                           eStageTopology);
+  Card_Stage* pCard_Stage = new Card_Stage(eStageTopology);
+  
+  Card_Name* pCard_Name = new Card_Name(sRevisedStageNm.szStz());
+  pCard_Stage->vAppend(pCard_Name);
+
+  
   m_pBoard->vAppend(pCard_Stage);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

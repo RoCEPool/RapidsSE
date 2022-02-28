@@ -44,6 +44,8 @@
 
 #include "Card_Mode.hpp"
 
+#include "Card_Name.hpp"
+
 #include "Card_On.hpp"
 #include "Card_Option.hpp"
 #include "Card_OrdAgg.hpp"
