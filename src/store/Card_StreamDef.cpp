@@ -62,6 +62,7 @@ void Card_StreamDef::vApplyOrder(StreamDef* pStreamDef_apply)
     pStreamDef->vAddOrder(pColumn->iColumnNo());
   }
   
+  pStreamDef->vUnique(pStreamDef_apply->bUnique());
 }
 
 /*============================================================================*/
