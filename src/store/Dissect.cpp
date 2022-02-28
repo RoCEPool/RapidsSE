@@ -430,7 +430,8 @@ Card* Dissect::pCard_OrdAgg(TagSet* pArgTags)
       
   m_bSawAggOp = true;
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,1);
-  Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg("partition"_Stz);
+  eAL eAggLvl = m_pStageSpec->eAggegLevel();
+  Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg(eAggLvl);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
