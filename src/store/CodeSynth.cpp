@@ -3163,6 +3163,9 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
   // make the column name
   vMakeColumnNmStruct(m_pStreamDefOut, sColumn, i_DupCtr, i_Col);
 
+  sStructColumn.vSprint("p%s->%s"_Stz,
+                        xRowRef[m_eStencilTo], sColumn.azChar());
+
   if (eExprKind == EK_AGGGBY) {
 //    if (bHashRows)
 //      sStructColumn.vSprint("p%s_pot->%s"_Stz,
@@ -3180,8 +3183,6 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
 
     RASSERT(eExprKind == EK_AGGREG ||
             eExprKind == EK_ORDAGG)
-    sStructColumn.vSprint("p%s->%s"_Stz,
-                          xRowRef[m_eStencilTo], sColumn.azChar());
     sOperation.vSprint("_ASSIGN(%s)"_Stz, sStructColumn.azChar());
     m_pInitStack->vPushStr(sOperation);
   }
@@ -3198,10 +3199,20 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
       break;
 
     case PE_CNT:
-      // push col on both stacks
-      sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
-      pExprStack->vPushStr(sOperation);
-      pPostStack->vPushStr(sOperation);
+      if (eExprKind == EK_AGGGBY) {
+        // push col on both stacks
+        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_Col);
+        pExprStack->vPushStr(sOperation);
+        pPostStack->vPushStr(sOperation);
+      }
+      else {
+        RASSERT(eExprKind == EK_AGGREG ||
+                eExprKind == EK_ORDAGG);
+        // push col on both stacks
+        sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
+        pExprStack->vPushStr(sOperation);
+        pPostStack->vPushStr(sOperation);
+      }
 
       sOperation.vSprint("_INC_IFNOTNULL(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStr(sOperation);
@@ -3582,23 +3593,22 @@ bool CodeSynth::bPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eE
 
     RASSERT(eExprKind == EK_ORDAGG);
 
-    RASSERT(eExprKind == EK_ORDAGG);
-    sOrdinalColumn = pTkn->szChars() + 2;
-
-    i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-
-    // look for the column in the indexDef
-    if (i_ColumnOrdinal > nColumns)
-      RASSERT(0);
-
-    // get the column
-    pColumn = m_pIndexDef->pGetColumn(i_ColumnOrdinal);
-
-    vMakeColumnNm(m_pStreamDefLft, sColumn, m_eStencilFrom, i_ColumnOrdinal);
-
-    sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
-    m_pInitStack->vPushStz(sPush);
-    return true;
+//    sOrdinalColumn = pTkn->szChars() + 2;
+//
+//    i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+//
+//    // look for the column in the indexDef
+//    if (i_ColumnOrdinal > nColumns)
+//      RASSERT(0);
+//
+//    // get the column
+//    pColumn = m_pIndexDef->pGetColumn(i_ColumnOrdinal);
+//
+//    vMakeColumnNm(m_pStreamDefLft, sColumn, m_eStencilFrom, i_ColumnOrdinal);
+//
+//    sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
+//    m_pInitStack->vPushStz(sPush);
+    return false;
   }
 
   // column ordinal relative to the left join table

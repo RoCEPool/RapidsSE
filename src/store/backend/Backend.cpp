@@ -443,6 +443,39 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
     pBackend->vAppendNextOp("aggreg 2 \""_Stz);
     pBackend->m_bCombinedOp = true;
 
+    // Get the groupBy from ProjectOp
+    sPipeline->vCatSprint(" groupBy "_Stz);
+    bFirstExpr = false;
+
+    QueryNode *pGroupByList = AggregateOp::pGroupByList(pNode);
+    PlanNodeIter *pGroupByIter = pGroupByList->pNewChildrenIter();
+    while (pGroupByIter->bHasNext()) {
+
+      // append comma
+      if (bFirstExpr)
+        sPipeline->vCatSprint(" ,"_Stz);
+      else
+        bFirstExpr = true;
+
+      // get the next groupByExpr from the iterator
+      QueryNode *pGroupByExpr = static_cast<QueryNode *>(pGroupByIter->pNext());
+      ASSERT(pGroupByExpr);
+
+      RASSERT(pBackend->m_pColExprList);
+      RASSERT(pCorrelatedExprs);
+
+      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pGroupByExpr, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+      RASSERT(pOrdinalExpr);
+
+      //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pGroupByExpr, nullptr);
+      vAppendExpr(pBackend, pGroupByExpr, pOrdinalExpr, nullptr);
+      delete pOrdinalExpr;
+    }
+
+    // Get the aggregate expressions
+    sPipeline->vCatSprint(" aggregates "_Stz);
+    bFirstExpr = false;
+
     // get a plan node iterator
     PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
     i8 iChild = -1;
@@ -494,34 +527,6 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
     delete pOrdinalProjectedColumns;
     delete pIter;
 
-    // Get the groupBy from ProjectOp
-    sPipeline->vCatSprint(" groupBy "_Stz);
-    bFirstExpr = false;
-
-    QueryNode *pGroupByList = AggregateOp::pGroupByList(pNode);
-    PlanNodeIter *pGroupByIter = pGroupByList->pNewChildrenIter();
-    while (pGroupByIter->bHasNext()) {
-
-      // append comma
-      if (bFirstExpr)
-        sPipeline->vCatSprint(" ,"_Stz);
-      else
-        bFirstExpr = true;
-
-      // get the next groupByExpr from the iterator
-      QueryNode *pGroupByExpr = static_cast<QueryNode *>(pGroupByIter->pNext());
-      ASSERT(pGroupByExpr);
-
-      RASSERT(pBackend->m_pColExprList);
-      RASSERT(pCorrelatedExprs);
-
-      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pGroupByExpr, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
-      RASSERT(pOrdinalExpr);
-
-      //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pGroupByExpr, nullptr);
-      vAppendExpr(pBackend, pGroupByExpr, pOrdinalExpr, nullptr);
-      delete pOrdinalExpr;
-    }
     delete pGroupByIter;
   }
 

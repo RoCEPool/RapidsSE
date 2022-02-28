@@ -587,7 +587,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // get the project kind
       eExprKind = pLogicUnit->m_eExprKind;
 
-      RASSERT(eExprKind == EK_AGGGBY);
+      //RASSERT(eExprKind == EK_AGGGBY);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupAggreg(pCombined, pStream, pOp);

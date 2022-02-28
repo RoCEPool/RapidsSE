@@ -314,6 +314,7 @@ load datums "../DATA/Transliterate/groupBy.csv" ;
 success
 
 //------------------------------------------------------------------------------
+/*
 select int_col1, sum(int_col0) from datums group by int_col1;
 rows:
  (null,3)
@@ -323,6 +324,7 @@ rows:
  (5000,12)
  (7000,7)
  (8000,17)
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  between

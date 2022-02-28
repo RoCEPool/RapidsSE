@@ -196,7 +196,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
   i8 iProjectColumn = 1;
   i8 iGroupByCol = C_UNKNOWN;
 
-  bool bGroupByKey = false;
+  bool bGroupBy = false;
   eExprKind = EK_PROJECT;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -221,20 +221,53 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a GROUPBY ?
+    if (pTkn->bSame("GROUPBY"_Stz)) {
+
+      eExprKind = EK_AGGGBY;
+      bGroupBy = true;
+      pIndexDef->vIndexNm("gby_idx"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // aggregates list
+    if (pTkn->bSame("aggregates"_Stz)) {
+
+      bGroupBy = false;
+
+      vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+
+      iProjectColumn = 1;
+      sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
+      pColumnExpr->vColumnNm(sColumnNm);
+
+      ePreExp = PE_EXP;
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // comma
     if (pTkn->bSame(","_Stz)) {
 
-        if (eExprKind != EK_AGGGBY && eExprKind != EK_ORDAGG) {
+        if (ePreExp == PE_GKY) {
+          vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+
+          sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
+          pColumnExpr->vColumnNm(sColumnNm);
+
+          pPreExpStack->vPush(ePreExp);
+        }
+        else {
           vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
           sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
           pColumnExpr->vColumnNm(sColumnNm);
 
-          if (bGroupByKey)
-            bGroupByKey = false;
-          else
-            pPreExpStack->vPush(ePreExp);
-
+          pPreExpStack->vPush(ePreExp);
           ePreExp = PE_EXP;
       }
 
@@ -458,38 +491,6 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // is it a GROUPBY ?
-    if (pTkn->bSame("GROUPBY"_Stz)) {
-
-      // add the last column to the streamDefOut
-      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-      pPreExpStack->vPush(ePreExp);
-
-      ePreExp = PE_NONE;
-
-      eExprKind = EK_AGGGBY;
-      pIndexDef->vIndexNm("gby_idx"_Stz);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // is it a ORD_GROUPBY ?
-    if (pTkn->bSame("ORD_GROUPBY"_Stz)) {
-
-      // add the last column to the streamDefOut
-      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-      pPreExpStack->vPush(ePreExp);
-
-      ePreExp = PE_NONE;
-
-      eExprKind = EK_ORDAGG;
-      pIndexDef->vIndexNm("gby_idx"_Stz);
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
     if (pTkn->bIsName()) {
 
       if (pTkn->szChars()->bContains("#"_Stz)) {
@@ -497,34 +498,9 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
         continue;
       }
 
-      if (eExprKind == EK_AGGGBY) {
-        iGroupByCol++;
-
-        // extract column name
-        if (pTkn->szChars()->bContains("$"_Stz)) {
-          // get the column ordinal
-          Stz* sOrdinalColumn = pTkn->szChars() + 1;
-          i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-
-          // look for the column in the streamDefLft
-          i8 nColumns = pStreamDefIn->nColumns();
-          if (i_ColumnOrdinal > nColumns) {
-            eError = EC_INVALID_COMMAND;
-            return eError;
-          }
-          Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
-          pColumnExpr->vColumnNm(pColumn->szColNm());
-
-          // set bit on in the select list as well
-          BitLib::vSetOn(*puSelectColumns, i_ColumnOrdinal);
-        }
-        else
-          pColumnExpr->vColumnNm(pTkn->szChars());
-      }
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // set bit for ordinal columns not already encountered
-      else if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set bit for ordinal columns not already encountered
+      if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
 
         // skip index column
         if (pTkn->szChars()->bContains("I"_Stz)) {
@@ -539,41 +515,22 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
         }
 
         i8 i_ColumnOrdinal = C_UNKNOWN;
+
         // ignore if column ordinal relative to the group by key
         if (pTkn->szChars()->bContains("K"_Stz)) {
           pTkn = pTknVec->pNextToken();
-          bGroupByKey = true;
 
           sOrdinalColumn = pTkn->szChars() + 2;
           i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 
-          // look for the column in the streamDefLft
-          i8 nColumns = pStreamDefIn->nColumns();
+          // look for the column in the indexDef
+          i8 nColumns = pIndexDef->nColumns();
           if (i_ColumnOrdinal > nColumns) {
             eError = EC_INVALID_COMMAND;
             break;
           }
 
-          vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
-
-          continue;
-        }
-
-        // column ordinal relative, ordered aggregate relative to the group by key
-        if (pTkn->szChars()->bContains("O"_Stz)) {
-          pTkn = pTknVec->pNextToken();
-
-          sOrdinalColumn = pTkn->szChars() + 2;
-          i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-
-          // look for the column in the streamDefLft
-          i8 nColumns = pStreamDefIn->nColumns();
-          if (i_ColumnOrdinal > nColumns) {
-            eError = EC_INVALID_COMMAND;
-            break;
-          }
-
-          vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+          ePreExp = PE_GKY;
 
           continue;
         }
@@ -616,17 +573,36 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
           continue;
         }
       } else {
-        // should be a symbolic column name
-        // look for the column in the streamDefLft
-        Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
+        // could be a symbolic column name
 
-        if (! pColumn ) {
-          vTrace("***Invalid Column %s***\n"_Stz,pTkn->szChars());
-          eError = EC_INVALID_COMMAND;
-          break;
+        // look for the column in the indexDef
+        Column *pGbyColumn = pIndexDef ? pIndexDef->pFindColumn(pTkn->szChars()) : nullptr;
+
+        if ( pGbyColumn ) {
+          // should already be in the streamDef
+          Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
+          RASSERT(pColumn);
+
+          // select bit should be on
+          i8 iColumn = pColumn->iColumnNo();
+          RASSERT(BitLib::bIsOn(*puSelectColumns, iColumn));
+
+          ePreExp = PE_GKY;
+
         }
-        i8 iColumn = pColumn->iColumnNo();
-        BitLib::vSetOn(*puSelectColumns, iColumn);
+        else {
+          // look for the column in the streamDefLft
+          Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
+
+          if (! pColumn ) {
+            vTrace("***Invalid Column %s***\n"_Stz,pTkn->szChars());
+            eError = EC_INVALID_COMMAND;
+            break;
+          }
+          i8 iColumn = pColumn->iColumnNo();
+          BitLib::vSetOn(*puSelectColumns, iColumn);
+        }
+
       }
 
     }
@@ -634,18 +610,12 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     pTkn = pTknVec->pNextToken();
   }
 
-//  if (eExprKind == EK_AGGGBY) {
-//    vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
-//  }
-//  else {
+  // push the predicate expression
+  pPreExpStack->vPush(ePreExp);
 
-  if (eExprKind != EK_AGGGBY && eExprKind != EK_ORDAGG) {
-    // add the last column to the streamDefOut
+  // add the last column to the streamDefOut
+  if (ePreExp != PE_GKY)
     vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-
-    if ( ! bGroupByKey)
-      pPreExpStack->vPush(ePreExp);
-  }
 
   L_RETURN:
 
