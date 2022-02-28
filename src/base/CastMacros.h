@@ -22,8 +22,15 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO INTEGER
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#define _BCD_TOINT(iErrorCode) \
-  NEVER_REACH;
+#define _BCD_TOINT(iErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    if (iErrorCode != EC_NONE ||                                           \
+      bcdArg1.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    *paW++ = bcdArg1.m_iMantissa / iaPow10[bcdArg1.m_iScale];              \
+  }
 
 #define _INT_TOINT(iErrorCode) \
   NEVER_REACH;
