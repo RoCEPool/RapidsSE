@@ -147,30 +147,36 @@ void Dissect::vOp(i8 i_OpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
+  Card* pCard;
   Stz* szOpNm = m_pOpSpec->szOpNm();
   
-       if (szOpNm->bSame("aggreg"_Stz))     vDissectAggreg   (m_pOpSpec);
-  else if (szOpNm->bSame("combined"_Stz))   vDissectCombined (m_pOpSpec);
-  else if (szOpNm->bSame("consumeOp"_Stz))  vDissectConsume  (m_pOpSpec);
-  else if (szOpNm->bSame("debug"_Stz))      vDissectDebug    (m_pOpSpec);
-  else if (szOpNm->bSame("filter"_Stz))     vDissectFilter   (m_pOpSpec);
-  else if (szOpNm->bSame("hash"_Stz))       vDissectHash     (m_pOpSpec);
-  else if (szOpNm->bSame("indexJoin"_Stz))  vDissectIndexJoin(m_pOpSpec);
-  else if (szOpNm->bSame("indexScan"_Stz))  vDissectIndexScan(m_pOpSpec);
-  else if (szOpNm->bSame("limit"_Stz))      vDissectLimit    (m_pOpSpec);
-  else if (szOpNm->bSame("ordagg"_Stz))     vDissectOrdAgg   (m_pOpSpec);
-  else if (szOpNm->bSame("orderBy"_Stz))    vDissectSort     (m_pOpSpec);
-  else if (szOpNm->bSame("output"_Stz))     vDissectOutput   (m_pOpSpec);
-  else if (szOpNm->bSame("pulse"_Stz))      vDissectPulse    (m_pOpSpec);
-  else if (szOpNm->bSame("project"_Stz))    vDissectProject  (m_pOpSpec);
-  else if (szOpNm->bSame("scan"_Stz))       vDissectScan     (m_pOpSpec);
-  else if (szOpNm->bSame("send"_Stz))       vDissectSend     (m_pOpSpec);
-  else if (szOpNm->bSame("sink"_Stz))       vDissectSink     (m_pOpSpec);
-  else if (szOpNm->bSame("sort"_Stz))       vDissectSort     (m_pOpSpec);
-  else if (szOpNm->bSame("start"_Stz))      vDissectStart    (m_pOpSpec);
+       if (szOpNm->bSame("aggreg"_Stz))    pCard = vDissectAggreg   (m_pOpSpec);
+  else if (szOpNm->bSame("combined"_Stz))  pCard = vDissectCombined (m_pOpSpec);
+  else if (szOpNm->bSame("consumeOp"_Stz)) pCard = vDissectConsume  (m_pOpSpec);
+  else if (szOpNm->bSame("debug"_Stz))     pCard = vDissectDebug    (m_pOpSpec);
+  else if (szOpNm->bSame("filter"_Stz))    pCard = vDissectFilter   (m_pOpSpec);
+  else if (szOpNm->bSame("hash"_Stz))      pCard = vDissectHash     (m_pOpSpec);
+  else if (szOpNm->bSame("indexJoin"_Stz)) pCard = vDissectIndexJoin(m_pOpSpec);
+  else if (szOpNm->bSame("indexScan"_Stz)) pCard = vDissectIndexScan(m_pOpSpec);
+  else if (szOpNm->bSame("limit"_Stz))     pCard = vDissectLimit    (m_pOpSpec);
+  else if (szOpNm->bSame("ordagg"_Stz))    pCard = vDissectOrdAgg   (m_pOpSpec);
+  else if (szOpNm->bSame("orderBy"_Stz))   pCard = vDissectSort     (m_pOpSpec);
+  else if (szOpNm->bSame("output"_Stz))    pCard = vDissectOutput   (m_pOpSpec);
+  else if (szOpNm->bSame("pulse"_Stz))     pCard = vDissectPulse    (m_pOpSpec);
+  else if (szOpNm->bSame("project"_Stz))   pCard = vDissectProject  (m_pOpSpec);
+  else if (szOpNm->bSame("scan"_Stz))      pCard = vDissectScan     (m_pOpSpec);
+  else if (szOpNm->bSame("send"_Stz))      pCard = vDissectSend     (m_pOpSpec);
+  else if (szOpNm->bSame("sink"_Stz))      pCard = vDissectSink     (m_pOpSpec);
+  else if (szOpNm->bSame("sort"_Stz))      pCard = vDissectSort     (m_pOpSpec);
+  else if (szOpNm->bSame("start"_Stz))     pCard = vDissectStart    (m_pOpSpec);
   else {
     vTrace("Skipping OpSpec %s\n"_Stz,szOpNm);
+    pCard = nullptr;
   }
+  
+  if (pCard)
+    m_pBoard->vAppend(pCard);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,9 +228,7 @@ Card* Dissect::vDissectAggreg(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete pCard_RpnTerms;
-  
-  m_pBoard->vAppend(pCard_Aggreg);
-  
+    
   return pCard_Aggreg;
 }
 
@@ -239,7 +243,6 @@ Card* Dissect::vDissectCombined(OpSpec* pOpSpec)
 
   Card_Combine* pCard_Combine = new Card_Combine;
 
-  m_pBoard->vAppend(pCard_Combine);
   return pCard_Combine;
 }
 
@@ -278,7 +281,6 @@ Card* Dissect::vDissectDebug(OpSpec* pOpSpec)
 
   Card_Debug* pCard_Debug = new Card_Debug(szOption);
   
-  m_pBoard->vAppend(pCard_Debug);
   return pCard_Debug;
 }
 
@@ -322,7 +324,6 @@ Card* Dissect::vDissectFilter(OpSpec* pOpSpec)
   delete pCard_RpnTerms;
 
   if (! m_bSawAggOp) {
-    m_pBoard->vAppend(pCard_Filter);
     return pCard_Filter;
   }
   
@@ -331,7 +332,6 @@ Card* Dissect::vDissectFilter(OpSpec* pOpSpec)
   
   delete pCard_Filter;
   
-  m_pBoard->vAppend(pCard_Having);
   return pCard_Having;
 }
 
@@ -366,7 +366,6 @@ Card* Dissect::vDissectHash(OpSpec* pOpSpec)
 
   delete pCard_RpnTerms;
 
-  m_pBoard->vAppend(pCard_Hash);
   return pCard_Hash;
 }
 
@@ -415,10 +414,7 @@ Card* Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
   
   delete pCard_RpnTerms;
   
-  m_pBoard->vAppend(pCard_IndexJoin);
-  
   return pCard_IndexJoin;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -465,8 +461,6 @@ Card* Dissect::vDissectIndexScan(OpSpec* pOpSpec)
   pCard_IndexScan->vAppend(pCard_IndexPred);
   delete pCard_RpnTerms;
   
-  m_pBoard->vAppend(pCard_IndexScan);
-  
   return pCard_IndexScan;
 }
 
@@ -498,7 +492,6 @@ Card* Dissect::vDissectLimit(OpSpec* pOpSpec)
   
   Card_Limit* pCard_Limit = new Card_Limit(nRows);
   
-  m_pBoard->vAppend(pCard_Limit);
   return pCard_Limit;
 }
 
@@ -536,7 +529,7 @@ Card* Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   pCard_OrdAgg->vAppend(pCard_AggElist);
 
   delete pCard_RpnTerms;
-  m_pBoard->vAppend(pCard_OrdAgg);
+
   return pCard_OrdAgg;
 }
 
@@ -593,7 +586,7 @@ Card* Dissect::vDissectProject(OpSpec* pOpSpec)
   pCard_Project->vAppend(pCard_ProjElist);
 
   delete pCard_RpnTerms;
-  m_pBoard->vAppend(pCard_Project);
+
   return pCard_Project;
 }
 
@@ -631,7 +624,6 @@ Card* Dissect::vDissectScan(OpSpec* pOpSpec)
   Card_Scan* pCard_Scan = new Card_Scan;
   pCard_Scan->vAppend(pCard_Table);
 
-  m_pBoard->vAppend(pCard_Scan);
   return pCard_Scan;
 }
 
@@ -662,7 +654,6 @@ Card* Dissect::vDissectSend(OpSpec* pOpSpec)
 
   Card_Send* pCard_Send = new Card_Send(eSendKind);
 
-  m_pBoard->vAppend(pCard_Send);
   return pCard_Send;
 }
 
@@ -709,7 +700,7 @@ Card* Dissect::vDissectSort(OpSpec* pOpSpec)
   pCard_Sort->vAppend(pCard_ObyElist);
 
   delete pCard_RpnTerms;
-  m_pBoard->vAppend(pCard_Sort);
+
   return pCard_Sort;
 }
 
