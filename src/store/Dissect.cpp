@@ -427,18 +427,7 @@ Card* Dissect::pCard_Limit(TagSet* pArgTags)
   
   // limit : 0) rows
 
-  i8 nTags = pArgTags->nItems();
-
-  Stz* szRows = nullptr;
-  i8 nRows = -1;
-  if (2 == nTags) {
-    szRows = pArgTags->szValue(1);
-    nRows = szRows->iToI8();
-  }
-  else {
-    vTrace("Error: only %lld tags in limit argTags\n"_Stz,nTags);
-    NEVER_REACH;
-  }
+  i8 nRows = iCheckLastArg(pArgTags,1);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -564,20 +553,11 @@ Card* Dissect::pCard_Send(TagSet* pArgTags)
     
   // send :
 
-  i8 nTags = pArgTags->nItems();
+  eXK eSendKind = (eXK)iCheckLastArg(pArgTags,0);
   
-  if (1 == nTags) {
-    //szSendKind = pArgTags->szValue((i8)0);
-  }
-  else {
-    vTrace("Error: only %lld tags in send argTags\n"_Stz,nTags);
-    NEVER_REACH;
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  eXK eSendKind = (eXK)pArgTags->iValue((i8)0);
-
+ 
   Card_Send* pCard_Send = new Card_Send(eSendKind);
 
   return pCard_Send;
@@ -603,17 +583,8 @@ Card* Dissect::pCard_Sort(TagSet* pArgTags)
     
   // sort : 0) ???
 
-  i8 nTags = pArgTags->nItems();
-  
-  Stz* szRpnExpr = nullptr;
-  if (2 == nTags) {
-    szRpnExpr = pArgTags->szValue(1);
-  }
-  else {
-    vTrace("Error: only %lld tags in ordagg argTags\n"_Stz,nTags);
-    NEVER_REACH;
-  }
-  
+  Stz* szRpnExpr = szCheckLastArg(pArgTags,1);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Card_Sort* pCard_Sort = new Card_Sort;
@@ -1038,6 +1009,20 @@ Card_Type* Dissect::pType(Card_RpnTerms* pCard_RpnTerms)
   Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
 
   return pCard_Type;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Dissect::iCheckLastArg(TagSet* pArgTags, i8 i_Last)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  vCheckArgs(pArgTags,i_Last + 1);
+  
+  i8 iArg = pArgTags->iValue(i_Last);
+
+  return iArg;
 }
 
 /*----------------------------------------------------------------------------*/
