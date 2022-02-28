@@ -246,9 +246,15 @@ Card* Dissect::pCard_Debug(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Stz* szOption = szArgCheckLast(pArgTags,0);
-  Card_Debug* pCard_Debug = new Card_Debug(szOption);
+  i8 iOption = iArgCheckLast(pArgTags,0);
+  Card_Debug* pCard_Debug = new Card_Debug;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iOption
+  
+  Card_Option* pCard_Option = new Card_Option(iOption);
+  pCard_Debug->vAppend(pCard_Option);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   return pCard_Debug;
@@ -399,10 +405,14 @@ Card* Dissect::pCard_Limit(TagSet* pArgTags)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   i8 nRows = iArgCheckLast(pArgTags,1);
-  Card_Limit* pCard_Limit = new Card_Limit(nRows);
+  Card_Limit* pCard_Limit = new Card_Limit;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   
+  // nRows
+  
+  Card_Rows* pCard_Rows = new Card_Rows(nRows);
+  pCard_Limit->vAppend(pCard_Rows);
+
   return pCard_Limit;
 }
 
@@ -513,17 +523,23 @@ Card* Dissect::pCard_Scan(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : send <iSendKind>                                                 */
+/* dissect : send <eSendKind>                                                 */
 /*----------------------------------------------------------------------------*/
 Card* Dissect::pCard_Send(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
   eXK eSendKind = (eXK)iArgCheckLast(pArgTags,0);
-  Card_Send* pCard_Send = new Card_Send(eSendKind);
+  Card_Send* pCard_Send = new Card_Send;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // eSendKind
   
+  Card_Kind* pCard_Kind = new Card_Kind(eSendKind);
+  pCard_Send->vAppend(pCard_Kind);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   return pCard_Send;
 }
 

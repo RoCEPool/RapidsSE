@@ -15,7 +15,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Debug(Stz* szOption);
+    Card_Debug(void);
    ~Card_Debug(void) noexcept(false);
   };
 

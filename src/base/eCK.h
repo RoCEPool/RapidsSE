@@ -11,7 +11,6 @@ enum eCK // card kind
   /* */ CK_AGGREG,
   /* */ CK_AS,
   
-  
   /* */ CK_CANDINDEX,
   /* */ CK_COMBINE,
   
@@ -255,6 +254,8 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_LBOUND
   /* */ "limit     2"_Stz,     // CK_LIMIT
     
+  /* */ "(none)"_Stz,          // CK_MODE
+  
   /* */ "(none)"_Stz,          // CK_ON
   /* */ "(none)"_Stz,          // CK_OPTION
   /* */ "ordagg    2"_Stz,     // CK_ORDAGG
