@@ -5,11 +5,14 @@ import tempfile
 import string
 
 import septest.errors as errors
+from septest.configs.clusterconfig import ClusterConfig
 
 LOG = logging.getLogger(__name__)
 
 # How long to wait before killing the RapidsSE installation?
 C_INSTALL_TIMEOUT_SEC = 60
+C_CLUSTER_START_CMD = "startSE.sh"
+C_CLUSTER_PROMPT_CMD = "prompt.sh"
 
 
 def build_installer() -> pathlib.Path:
@@ -18,7 +21,7 @@ def build_installer() -> pathlib.Path:
     Assumes we are running from the <proj_root>/perftest directory
     """
     LOG.info("About to invoke the RapidsSE installer packager script to build and package RapidsSE.")
-    # TODO: Remove the NO_MOD_CHECK below
+    # TODO: Remove the NO_MOD_CHECK and NO_BUILD below
     command = "NO_MOD_CHECK=1 NO_BUILD=1 ../installer/packaging/package.sh"
 
     try:
@@ -148,3 +151,71 @@ def install_rapidsse(install_file: pathlib.Path, cluster_config_path: pathlib.Pa
     LOG.debug(f"Installation output (stdout):\n{result.stdout}")
 
     LOG.info("RapidsSE cluster installed successfully")
+
+
+def start_rapidsse(ip_addr: string, cluster_cfg: ClusterConfig):
+
+    start_command = f"{cluster_cfg.get_dir()}/{C_CLUSTER_START_CMD}"
+
+    ssh_command = ["ssh",
+                   "-q",
+                   "-o", "BatchMode=yes",
+                   "-o", "StrictHostKeyChecking=no",
+                   ip_addr,
+                   start_command]
+
+    LOG.info(f"About to start the RapidsSE cluster with the following command: {' '.join(ssh_command)}")
+
+    try:
+        # subprocess.run(cmd,
+        result = subprocess.run(ssh_command,
+                                capture_output=True,
+                                check=True,
+                                text=True)
+
+    except subprocess.CalledProcessError as e:
+        msg = f"Error while starting the RapidsSE cluster." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg)
+
+    LOG.debug(f"Cluster start output (stdout):\n{result.stdout}")
+    LOG.info("RapidsSE cluster started successfully")
+
+
+def run_dummy_statement(ip_addr: string, cluster_cfg: ClusterConfig):
+
+    dummy_command = f"echo -e \"SELECT 1;\nbye;\" | {cluster_cfg.get_dir()}/{C_CLUSTER_PROMPT_CMD}"
+    command_timeout = 10  # seconds
+
+    ssh_command = ["ssh",
+                   "-q",
+                   "-o", "BatchMode=yes",
+                   "-o", "StrictHostKeyChecking=no",
+                   ip_addr,
+                   dummy_command]
+
+    LOG.info(f"About to run a dummy command on the RapidsSE cluster: {' '.join(ssh_command)}")
+
+    try:
+        # subprocess.run(cmd,
+        result = subprocess.run(ssh_command,
+                                capture_output=True,
+                                check=True,
+                                timeout=command_timeout,
+                                text=True)
+
+    except subprocess.CalledProcessError as e:
+        msg = f"Error while running a dummy command on the RapidsSE cluster." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg)
+
+    except subprocess.TimeoutExpired as e:
+        msg = f"Execution of a dummy command on the RapidsSE cluster timed out after {e.timeout} seconds." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg)
+
+    LOG.debug(f"Cluster dummy command output (stdout):\n{result.stdout}")
+    LOG.info("RapidsSE dummy command ran successfully")

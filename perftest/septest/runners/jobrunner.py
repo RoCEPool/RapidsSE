@@ -155,6 +155,9 @@ class JobRunner:
         (self.instance_ids, self.ip_addresses) = ec2.start_instances(self.all_configs.get_hardware(),
                                                                      C_EC2_BOOT_TIMEOUT_SEC)
 
+        assert len(self.instance_ids) > 0
+        assert len(self.ip_addresses) > 0
+
         # Copy and modify the cluster config file for the AWS hosts that were started.
         orig_cluster_cfg = pathlib.Path(self.all_configs.get_job().get_resolved_cluster_config_path())
         self.custom_cluster_config = clusterops.customise_cluster_cfg_hostnames(orig_cluster_cfg,
@@ -163,7 +166,11 @@ class JobRunner:
         # Install the cluster using the cluster config
         clusterops.install_rapidsse(installer_path, pathlib.Path(self.custom_cluster_config.name))
 
-        # TODO: start the cluster (remotely)
+        # Start the cluster on the remote nodes
+        clusterops.start_rapidsse(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Run a dummy command on the prompt to help validate the cluster
+        clusterops.run_dummy_statement(self.ip_addresses[0], self.all_configs.cluster_config)
 
     def __run_tests(self):
         """Run each of the tests specified in this job file

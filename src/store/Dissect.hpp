@@ -126,16 +126,14 @@ namespace STORE
     void vDissectStart    (OpSpec* pOpSpec);
 
     Card_AggElist*  pCollectAggElist   (Card_RpnTerms* pCard_RpnTerms);
-    Card_As*        pCollectAs         (Card_RpnTerms* pCard_RpnTerms);
-    Card_ExprBool*  pCollectBoolExpr   (Card_RpnTerms* pCard_RpnTerms);
-    Card_ExprCalc*  pCollectCalcExpr   (Card_RpnTerms* pCard_RpnTerms);
     Card_GbyElist*  pCollectGbyElist   (Card_RpnTerms* pCard_RpnTerms);
     Card_ProjElist* pCollectProjElist  (Card_RpnTerms* pCard_RpnTerms);
     Card_SbyElist*  pCollectSbyElist   (Card_RpnTerms* pCard_RpnTerms);
-    Card_SortDirn*  pCollectSortDirn   (Card_RpnTerms* pCard_RpnTerms);
-    Card_Type*      pCollectType       (Card_RpnTerms* pCard_RpnTerms);
-    Card_Expr*      pCollectTypedCalc  (Card_RpnTerms* pCard_RpnTerms);
 
+    Card_Expr*      pCollectExpr       (Card_RpnTerms* pCard_RpnTerms);
+    Card_ExprBool*  pCollectExprBool   (Card_RpnTerms* pCard_RpnTerms);
+    Card_ExprCalc*  pCollectExprCalc   (Card_RpnTerms* pCard_RpnTerms);
+  
     void vPredOr  (Card_ExprBool* pCard_ExprBool,
                    Card_RpnTerms* pCard_RpnTerms);
     void vPredAnd (Card_ExprBool* pCard_ExprBool,
@@ -143,6 +141,10 @@ namespace STORE
     void vPredCmp (Card_ExprBool* pCard_ExprBool,
                    Card_RpnTerms* pCard_RpnTerms);
   
+    Card_As*        pCollectAs         (Card_RpnTerms* pCard_RpnTerms);
+    Card_SortDirn*  pCollectSortDirn   (Card_RpnTerms* pCard_RpnTerms);
+    Card_Type*      pCollectType       (Card_RpnTerms* pCard_RpnTerms);
+
     Card_RpnTerms* pToRpnTerms(Stz* szRpnExpr);
 
   private:
