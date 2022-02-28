@@ -176,7 +176,7 @@ void Dissect::vOp(i8 i_OpSpec)
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : aggreg <compiled> <rpnExpr>                               */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectAggreg(OpSpec* pOpSpec)
+Card* Dissect::vDissectAggreg(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -224,12 +224,14 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   delete pCard_RpnTerms;
   
   m_pBoard->vAppend(pCard_Aggreg);
+  
+  return pCard_Aggreg;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : combined <generate>                                       */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectCombined(OpSpec* pOpSpec)
+Card* Dissect::vDissectCombined(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
       
@@ -238,22 +240,24 @@ void Dissect::vDissectCombined(OpSpec* pOpSpec)
   Card_Combine* pCard_Combine = new Card_Combine;
 
   m_pBoard->vAppend(pCard_Combine);
+  return pCard_Combine;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : consumeOp <sends>                                         */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectConsume(OpSpec* pOpSpec)
+Card* Dissect::vDissectConsume(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   // ignored
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : debug <option>                                            */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectDebug(OpSpec* pOpSpec)
+Card* Dissect::vDissectDebug(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -275,12 +279,13 @@ void Dissect::vDissectDebug(OpSpec* pOpSpec)
   Card_Debug* pCard_Debug = new Card_Debug(szOption);
   
   m_pBoard->vAppend(pCard_Debug);
+  return pCard_Debug;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : filter <compiled> <rpnExpr>                               */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectFilter(OpSpec* pOpSpec)
+Card* Dissect::vDissectFilter(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -318,7 +323,7 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
 
   if (! m_bSawAggOp) {
     m_pBoard->vAppend(pCard_Filter);
-    return;
+    return pCard_Filter;
   }
   
   Card_Having* pCard_Having = new Card_Having;
@@ -327,12 +332,13 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   delete pCard_Filter;
   
   m_pBoard->vAppend(pCard_Having);
+  return pCard_Having;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : hash <compiled> <rpnExpr>                                 */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectHash(OpSpec* pOpSpec)
+Card* Dissect::vDissectHash(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -361,12 +367,13 @@ void Dissect::vDissectHash(OpSpec* pOpSpec)
   delete pCard_RpnTerms;
 
   m_pBoard->vAppend(pCard_Hash);
+  return pCard_Hash;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : indexJoin <compiled> <tableNm> <indexNm> <rpnExpr>        */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
+Card* Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -408,12 +415,16 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
   
   delete pCard_RpnTerms;
   
-  m_pBoard->vAppend(pCard_IndexJoin);}
+  m_pBoard->vAppend(pCard_IndexJoin);
+  
+  return pCard_IndexJoin;
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : indexScan <compiled> <tableNm> <indexNm> <rpnExpr>        */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
+Card* Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -455,12 +466,14 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
   delete pCard_RpnTerms;
   
   m_pBoard->vAppend(pCard_IndexScan);
+  
+  return pCard_IndexScan;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : limit <compiled> <nRows>                                  */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectLimit(OpSpec* pOpSpec)
+Card* Dissect::vDissectLimit(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -486,12 +499,13 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
   Card_Limit* pCard_Limit = new Card_Limit(nRows);
   
   m_pBoard->vAppend(pCard_Limit);
+  return pCard_Limit;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : ordAgg <compiled> <rpnExpr>                               */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
+Card* Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -523,32 +537,35 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
 
   delete pCard_RpnTerms;
   m_pBoard->vAppend(pCard_OrdAgg);
+  return pCard_OrdAgg;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : output                                                    */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectOutput(OpSpec* pOpSpec)
+Card* Dissect::vDissectOutput(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
       
   // outPut :
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : pulse once                                                 */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectPulse(OpSpec* pOpSpec)
+Card* Dissect::vDissectPulse(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
   // pulse :
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : project <compiled> <rpnExpr>                              */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectProject(OpSpec* pOpSpec)
+Card* Dissect::vDissectProject(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -577,12 +594,13 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
 
   delete pCard_RpnTerms;
   m_pBoard->vAppend(pCard_Project);
+  return pCard_Project;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : scan [ <catalogNm> <schemaNm> ] <tableNm>                 */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectScan(OpSpec* pOpSpec)
+Card* Dissect::vDissectScan(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -614,12 +632,13 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
   pCard_Scan->vAppend(pCard_Table);
 
   m_pBoard->vAppend(pCard_Scan);
+  return pCard_Scan;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : send <sendKind>                                           */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectSend(OpSpec* pOpSpec)
+Card* Dissect::vDissectSend(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -644,22 +663,24 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
   Card_Send* pCard_Send = new Card_Send(eSendKind);
 
   m_pBoard->vAppend(pCard_Send);
+  return pCard_Send;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : sink                                                      */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectSink(OpSpec* pOpSpec)
+Card* Dissect::vDissectSink(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   // sink :
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : orderBy <compiled> <rpnExpr>                              */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectSort(OpSpec* pOpSpec)
+Card* Dissect::vDissectSort(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -689,16 +710,18 @@ void Dissect::vDissectSort(OpSpec* pOpSpec)
 
   delete pCard_RpnTerms;
   m_pBoard->vAppend(pCard_Sort);
+  return pCard_Sort;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect opspec : start                                                     */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectStart(OpSpec* pOpSpec)
+Card* Dissect::vDissectStart(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
   // start :
+  return nullptr;
 }
 
 
