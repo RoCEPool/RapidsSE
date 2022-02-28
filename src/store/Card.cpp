@@ -2068,9 +2068,9 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  if (szEnum->bSame("eAggLvl"_Stz))        return aAL[iEnum];
-  if (szEnum->bSame("eStageTopology"_Stz)) return aYG[iEnum];
-  if (szEnum->bSame("eSendKind"_Stz))      return aXK[iEnum];
+  if (szEnum->bSame("eAggLvl"_Stz))     return aAL[iEnum];
+  if (szEnum->bSame("eStageTopo"_Stz))  return aYG[iEnum];
+  if (szEnum->bSame("eSendKind"_Stz))   return aXK[iEnum];
 
   return nullptr; //"**unknown**"_Stz;
 }
