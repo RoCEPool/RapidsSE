@@ -133,7 +133,6 @@
 #define _DIV_BCDBCD(eErrorCode)                                            \
   NEVER_REACH;
 
-//ALKA: replace max_col_decimal with decimal value in table column definition
 #define _MUL_BCDBCD(eErrorCode)                                            \
   {                                                                        \
     bcdArg2.m_iAsI8 = *(--paW);                                            \
@@ -149,7 +148,7 @@
           *paW++ = C_DATUM_NULL;                                           \
       }                                                                    \
       else {                                                               \
-        i8 max_col_decimal = 2;                                            \
+        i8 max_col_decimal = TMP_TBLCOL_SCALE;                             \
         bcdArg1.m_iMantissa = bcdArg1.m_iMantissa * bcdArg2.m_iMantissa;   \
         i8 tmpScale = bcdArg1.m_iScale + bcdArg2.m_iScale;                 \
         if(tmpScale > max_col_decimal) {                                   \

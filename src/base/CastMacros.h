@@ -86,8 +86,54 @@
 #define _BOL_TOVCH(iErrorCode) \
   NEVER_REACH;
 
-#define _BCD_TOVCH(iErrorCode) \
-  NEVER_REACH;
+#define _BCD_TOVCH(iErrorCode, szDstArea)                                  \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    if (iErrorCode != EC_NONE ||                                           \
+      bcdArg1.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      i8 max_col_decimal = TMP_TBLCOL_SCALE;                               \
+      i8 bNegative = 0;                                                    \
+                                                                           \
+      if (bcdArg1.m_iMantissa < 0) {                                       \
+        bcdArg1.m_iMantissa = -bcdArg1.m_iMantissa;                        \
+        bNegative = 1;                                                     \
+      }                                                                    \
+                                                                           \
+      char *p = szDstArea, *q = szDstArea;                                 \
+      if(bcdArg1.m_iScale == 0) {                                          \
+        while(max_col_decimal) {                                           \
+          *p++ = '0';                                                      \
+          max_col_decimal--;                                               \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        while (bcdArg1.m_iScale) {                                         \
+          *p++ = (bcdArg1.m_iMantissa % 10) + '0';                         \
+          bcdArg1.m_iMantissa /= 10ll;                                     \
+          bcdArg1.m_iScale--;                                              \
+        }                                                                  \
+      }                                                                    \
+      *p++ = '.';                                                          \
+      while (bcdArg1.m_iMantissa) {                                        \
+        *p++ = (bcdArg1.m_iMantissa % 10) + '0';                           \
+        bcdArg1.m_iMantissa /= 10ll;                                       \
+      }                                                                    \
+      if (bNegative)                                                       \
+        *p++ = '-';                                                        \
+                                                                           \
+        *p = '\0';                                                         \
+        while (--p > q) {                                                  \
+          char c = *p;                                                     \
+          *p = *q;                                                         \
+          *q++ = c;                                                        \
+        }                                                                  \
+      *paW++ = (i8)szDstArea;                                              \
+      szDstArea += strlen(szDstArea) + 1;                                  \
+    }                                                                      \
+  }
 
 #define _TME_TOVCH(iErrorCode, szDstArea)                                  \
   {                                                                        \
