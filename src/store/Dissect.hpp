@@ -29,6 +29,7 @@
 #include "Card_Filter.hpp"
 
 #include "Card_GbyElist.hpp"
+#include "Card_Generate.hpp"
 
 #include "Card_Hash.hpp"
 #include "Card_Having.hpp"
@@ -38,10 +39,15 @@
 #include "Card_IndexPred.hpp"
 #include "Card_IndexScan.hpp"
 
+#include "Card_Kind.hpp"
+
 #include "Card_LBound.hpp"
 #include "Card_Limit.hpp"
 
+#include "Card_Mode.hpp"
+
 #include "Card_On.hpp"
+#include "Card_Option.hpp"
 #include "Card_OrdAgg.hpp"
 #include "Card_PredOr.hpp"
 
@@ -49,11 +55,13 @@
 #include "Card_ProjElist.hpp"
 
 #include "Card_RBound.hpp"
+#include "Card_Rows.hpp"
 #include "Card_RpnTerms.hpp"
 
 #include "Card_SbyElist.hpp"
 #include "Card_Scan.hpp"
 #include "Card_Send.hpp"
+#include "Card_Sends.hpp"
 #include "Card_Sort.hpp"
 #include "Card_Direction.hpp"
 #include "Card_Stage.hpp"

@@ -924,6 +924,28 @@ void Card::vDirn(Stz* szDirn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get generate                                                               */
+/*----------------------------------------------------------------------------*/
+i8 Card::iGenerate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  i8 iGenerate = iGetProperty("iGenerate"_Stz);
+  
+  return iGenerate;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set generate                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vGenerate(i8 iGenerate)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  vAddProperty("iGenerate"_Stz,iGenerate);
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if the expr has an aggregate op                                       */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasAggOp(void)
@@ -1138,6 +1160,28 @@ bool Card::bIsSeparator(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get kind                                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Card::iKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  i8 iKind = iGetProperty("iKind"_Stz);
+  
+  return iKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set kind                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vKind(i8 iKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  vAddProperty("iKind"_Stz,iKind);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get level                                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szLevel(void)
@@ -1197,6 +1241,50 @@ void Card::vMark2(char cMark2)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_cMark2 = cMark2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get mode                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szMode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Stz* szMode = szGetProperty("szMode"_Stz);
+
+  return szMode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set mode                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vMode(Stz* szMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  vAddProperty("szMode"_Stz,szMode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get option                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 Card::iOption(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  i8 iOption = iGetProperty("iOption"_Stz);
+  
+  return iOption;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set option                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vOption(i8 iOption)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  vAddProperty("iOption"_Stz,iOption);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1365,6 +1453,28 @@ void Card::vSendKind(eXK eSendKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("eSendKind"_Stz,eSendKind);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sends                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Card::iSends(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  i8 iSends = iGetProperty("iSends"_Stz);
+  
+  return iSends;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set sends                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vSends(i8 iSends)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  vAddProperty("iSends"_Stz,iSends);
 }
 
 /*----------------------------------------------------------------------------*/

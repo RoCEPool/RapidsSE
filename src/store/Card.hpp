@@ -143,6 +143,9 @@ namespace STORE
     Stz* szDirn(void);
     void vDirn(Stz* szAsNm);
   
+    i8   iGenerate(void);
+    void vGenerate(i8 iGenerate);
+  
     bool bHasAggOp(void);
     Card_Term* pHeadTerm(void);
 
@@ -158,9 +161,17 @@ namespace STORE
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
 
+    i8   iKind(void);
+    void vKind(i8 iKind);
+  
     Stz* szLevel(void);
-    void vLevel(Stz* szLeve);
+    void vLevel(Stz* szLevel);
 
+    Stz* szMode(void);
+    void vMode(Stz* szMode);
+  
+    i8   iOption(void);
+    void vOption(i8 iOption);
     Stz* szOption(void);
     void vOption(Stz* szOption);
     i8   iOrdinalStreamColNo(void);
@@ -179,6 +190,8 @@ namespace STORE
   
     eXK  eSendKind(void);
     void vSendKind(eXK eSendKind);
+    i8   iSends(void);
+    void vSends(i8 iSends);
     Stz* szStageNm(void);
     void vStageNm(Stz* szStageNm);
     eYG  eStageTopology(void);
