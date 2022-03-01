@@ -35,13 +35,22 @@ def main() -> int:
 
     # Extract the command line arguments
     arg_parser = argparse.ArgumentParser(C_PROG_RUN, description="Run the SE Performance Test")
-    arg_parser.add_argument("--job",         type=non_empty_string, required=True)
-    arg_parser.add_argument("--planKey",     type=non_empty_string, required=True)
-    arg_parser.add_argument("--buildNum",    type=int, required=True)
-    arg_parser.add_argument("--hash",        type=str, required=False, default="")
-    arg_parser.add_argument("--branch",      type=str, required=False, default="")
-    arg_parser.add_argument("--user",        type=str, required=False, default="SYSTEM")
-    arg_parser.add_argument("--tags",  "-t", nargs='*', action=KeyValue)
+    arg_parser.add_argument("--job",         type=non_empty_string, required=True,
+                            help="Path to the job file to be executed.")
+    arg_parser.add_argument("--planKey",     type=non_empty_string, required=True,
+                            help="The name of the Bamboo that this run belongs to (e.g. SE-PERF).")
+    arg_parser.add_argument("--buildNum",    type=int, required=True,
+                            help="The Bamboo build number within the Bamboo plan that this run corresponds to.")
+    arg_parser.add_argument("--hash",        type=str, required=False, default="",
+                            help="The git hash of being tested.")
+    arg_parser.add_argument("--branch",      type=str, required=False, default="",
+                            help="The git branch being tested.")
+    arg_parser.add_argument("--user",        type=str, required=False, default="SYSTEM",
+                            help="The name of the user who manually invoked this run.")
+    arg_parser.add_argument("--tags",  "-t", nargs='*', action=KeyValue,
+                            help="A set of key/value pairs that are associated and saved with this run.")
+    arg_parser.add_argument("--archiveMetrics", action='store_true', required=False, default=False,
+                            help="If present, the raw metric files will be collected and archived in Bamboo.")
 
     args = arg_parser.parse_args()
     LOG.debug("Got the following arguments:  %s", args)
@@ -57,6 +66,7 @@ def main() -> int:
     git_hash = args.hash
     git_branch = args.branch
     invoking_user = args.user
+    archive_metrics = args.archiveMetrics
 
     if len(git_hash) == 0:
         git_hash = get_git_hash_from_system()
@@ -70,6 +80,7 @@ def main() -> int:
                           git_hash,
                           git_branch,
                           invoking_user,
+                          archive_metrics,
                           tags)
     jobrunner.run_job()
     return 0

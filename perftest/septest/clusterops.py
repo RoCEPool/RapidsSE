@@ -5,6 +5,7 @@ import tempfile
 import string
 
 import septest.errors as errors
+import septest.ssh as ssh
 from septest.configs.clusterconfig import ClusterConfig
 
 LOG = logging.getLogger(__name__)
@@ -156,22 +157,12 @@ def install_rapidsse(install_file: pathlib.Path, cluster_config_path: pathlib.Pa
 def start_rapidsse(ip_addr: string, cluster_cfg: ClusterConfig):
 
     start_command = f"{cluster_cfg.get_dir()}/{C_CLUSTER_START_CMD}"
+    timeout = 90
 
-    ssh_command = ["ssh",
-                   "-q",
-                   "-o", "BatchMode=yes",
-                   "-o", "StrictHostKeyChecking=no",
-                   ip_addr,
-                   start_command]
-
-    LOG.info(f"About to start the RapidsSE cluster with the following command: {' '.join(ssh_command)}")
+    LOG.info(f"About to start the RapidsSE cluster with the following command: {start_command}")
 
     try:
-        # subprocess.run(cmd,
-        result = subprocess.run(ssh_command,
-                                capture_output=True,
-                                check=True,
-                                text=True)
+        result = ssh.run_ssh(ip_addr, start_command, timeout)
 
     except subprocess.CalledProcessError as e:
         msg = f"Error while starting the RapidsSE cluster." \
@@ -188,22 +179,10 @@ def run_dummy_statement(ip_addr: string, cluster_cfg: ClusterConfig):
     dummy_command = f"echo -e \"SELECT 1;\nbye;\" | {cluster_cfg.get_dir()}/{C_CLUSTER_PROMPT_CMD}"
     command_timeout = 10  # seconds
 
-    ssh_command = ["ssh",
-                   "-q",
-                   "-o", "BatchMode=yes",
-                   "-o", "StrictHostKeyChecking=no",
-                   ip_addr,
-                   dummy_command]
-
-    LOG.info(f"About to run a dummy command on the RapidsSE cluster: {' '.join(ssh_command)}")
+    LOG.info(f"About to run a dummy command on the RapidsSE cluster: {dummy_command}")
 
     try:
-        # subprocess.run(cmd,
-        result = subprocess.run(ssh_command,
-                                capture_output=True,
-                                check=True,
-                                timeout=command_timeout,
-                                text=True)
+        result = ssh.run_ssh(ip_addr, dummy_command, command_timeout)
 
     except subprocess.CalledProcessError as e:
         msg = f"Error while running a dummy command on the RapidsSE cluster." \
