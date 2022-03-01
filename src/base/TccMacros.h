@@ -357,12 +357,12 @@
 
 #define _ISNOTNULL() \
   {                  \
-  iArg1 = *(--paW);                                                         \
-  (*paW++) = (iArg1 != C_DATUM_NULL ? 1 : 0);                               \
+  iArg1 = *(--paW);                                                          \
+  (*paW++) = (iArg1 != C_DATUM_NULL ? 1 : 0);                                \
 }
 
-#define _ISNULL()                                                           \
-  iArg1 = *(--paW);                                                         \
+#define _ISNULL()                                                            \
+  iArg1 = *(--paW);                                                          \
   (*paW++) = (iArg1 == C_DATUM_NULL ? 1 : 0);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -379,7 +379,7 @@
       *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
-      *(paW++) = (i8)StrLib_bMatch(szArg2, szArg1);                         \
+      *(paW++) = (i8)StrLib_bLike(szArg2, szArg1);                          \
     }                                                                       \
   }
 

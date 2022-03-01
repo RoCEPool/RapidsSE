@@ -165,7 +165,7 @@ DynamicSymbol xaSymbolSet1[]
   { "aTub_AllotRow"_Stz,               (const void *)Tub::aAllotRow              },
   { "vTub_RowStrSize"_Stz,             (const void *)Tub::vRowStrSize            },
 
-  { "StrLib_bMatch"_Stz,               (const void *)StrLib::bMatch              },
+  { "StrLib_bLike"_Stz,                (const void *)StrLib::bLike              },
   { "StrLib_iWordFlipBack"_Stz,        (const void *)StrLib::iWordFlipBack       },
 
   { "vNeverReach"_Stz,                 (const void *)vNeverReach                 },

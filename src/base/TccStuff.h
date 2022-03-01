@@ -413,7 +413,7 @@ void  vPot_RowStrSize(void* pPot, i8 iMixin, i8 nRowStrSize);
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
 
-i8    StrLib_bMatch(char* azStr, char* azRegExp);
+i8    StrLib_bLike(char* azStr, char* azRegExp);
 i8    StrLib_iWordFlipBack(char* aDst, char* aSrc);
 
 /*============================================================================*/

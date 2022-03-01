@@ -1509,7 +1509,6 @@ void CodeSynth::vGenerateErrorCheck(void) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n      return 0;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
