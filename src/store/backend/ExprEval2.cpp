@@ -477,6 +477,12 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
+    if (pTkn->bSame("LIKE"_Stz)) {
+      ePreExp = PE_LKE;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bSame("SUBSTRING2"_Stz)) {
       ePreExp = PE_SS2;
       pTkn = pTknVec->pNextToken();

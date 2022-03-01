@@ -2768,6 +2768,14 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the like expression
+    if (pTkn->bSame("like"_Stz)) {
+      i_Tkn++;
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the substring2 expression
     if (pTkn->bSame("substring2"_Stz)) {
       i_Tkn++;
@@ -3947,6 +3955,14 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
+      break;
+
+    case PE_LKE:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      eExpr2 = (eDM)pTypeStack->iPop();
+      sOperation.vConcat("_LIKE(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_VCH);
       break;
 
     case PE_SS2:

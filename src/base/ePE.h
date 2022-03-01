@@ -16,7 +16,7 @@ enum ePE // predicate expression
   /*  8 */ PE_EXT, // extract
   /*  9 */ PE_GBY, // group by (TO GO)
   /* 10 */ PE_GKY, // group by key
-  /* 11 */ PE_LIK, // like
+  /* 11 */ PE_LKE, // like
   /* 12 */ PE_MAX, // max
   /* 13 */ PE_MIN, // min
   /* 14 */ PE_INX, // in expression list
@@ -45,7 +45,7 @@ static Stz* aPE[]
     /*   8 */ "EXT"_Stz,
     /*   9 */ "GBY"_Stz,
     /*  10 */ "GKY"_Stz,
-    /*  11 */ "LIK"_Stz,
+    /*  11 */ "LKE"_Stz,
     /*  12 */ "MAX"_Stz,
     /*  13 */ "MIN"_Stz,
     /*  14 */ "INX"_Stz,

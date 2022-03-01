@@ -34,6 +34,15 @@ static Stz* szaAscii[128] = {
 
 
 /*----------------------------------------------------------------------------*/
+/* match: search for regexp anywhere in given string                          */
+/*----------------------------------------------------------------------------*/
+i8 StrLib_iMatch(char* azStr, char* azRegExp) {
+  _static_
+
+  return StrLib::bMatch(azStr, azRegExp);
+}
+
+/*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
 /*----------------------------------------------------------------------------*/
 i8 StrLib_iWordFlipBack(char* aDst, char* aSrc) {

@@ -368,6 +368,21 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // STRING FUNCTIONS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _LIKE(eErrorCode)                                                   \
+  {                                                                         \
+    szArg1 = (char*)*(--paW);                                               \
+    szArg2 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        szArg1  == (char*)C_DATUM_NULL ||                                   \
+        szArg2  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      *(paW++) = (i8)StrLib_bMatch(szArg2, szArg1);                         \
+    }                                                                       \
+  }
+
 #define _STR_SUBSTRING2(szDstArea, eErrorCode)                              \
   {                                                                         \
     i8 iStart = *(--paW);                                                   \

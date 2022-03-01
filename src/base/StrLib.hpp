@@ -246,6 +246,7 @@ namespace BASE
 
   };
 
+  i8 StrLib_iMatch(char* azStr, char* azRegExp);
   i8 StrLib_iWordFlipBack(char* aDst, char* aSrc);
 
 }
