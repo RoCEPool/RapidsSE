@@ -422,6 +422,10 @@ TypedStack* CodeSynth::pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelL
   // create post aggregation stack
   pPostStack = new TypedStack(KK_DATA_STACK);
 
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // populate the payload key");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntIntPL->m_iIntElm0 = 0;");
+
   // generate the expression code
   vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGGBY, bHashRows, m_pStreamDefLft);
 
@@ -2098,7 +2102,9 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, bo
 
 
           StrLib::vAppendString(&m_azCodeCrs,"\n      _PSH_INT((i8)szSrcStz)");
-          StrLib::vAppendString(&m_azCodeCrs,"\n      if (_ISNOTNULL()) {");
+          StrLib::vAppendString(&m_azCodeCrs,"\n      _ISNULL();");
+          StrLib::vAppendString(&m_azCodeCrs,"\n      _ASSIGN(bNullResult);");
+          StrLib::vAppendString(&m_azCodeCrs,"\n      if (!bNullResult) {");
 
           sCopy.vSprint("\n        p%s->%s = iOffset;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -3810,10 +3816,10 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
 
     case EK_GROUPBY:
       RASSERT(ePreExp == PE_GBY);
-      if (m_pIndexDef->nColumns() > 1) {
-        vTrace("Warning: Multicolumn indexes not supported\n"_Stz);
-        RASSERT(m_pIndexDef->nColumns() == 1);
-      }
+//      if (m_pIndexDef->nColumns() > 1) {
+//        vTrace("Warning: Multicolumn indexes not supported\n"_Stz);
+//        RASSERT(m_pIndexDef->nColumns() == 1);
+//      }
 
       if (m_pIndexDef->eKeyKind()) {
         sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyPL)\n"_Stz);
