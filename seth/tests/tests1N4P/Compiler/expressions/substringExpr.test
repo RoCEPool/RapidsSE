@@ -311,13 +311,13 @@ rows: (*,'explainPlan','
 
 // Extract with a NULL FROM argument
 // TODO: Enable when SUBSTRING is supported in the execution engine
-//SELECT SUBSTRING (n_name, NULL, 2) FROM nation LIMIT 1;
-//rows: (NULL)
+SELECT SUBSTRING (n_name, NULL, 2) FROM nation LIMIT 1;
+rows: (NULL)
 
 // Extract with a NULL LENGTH argument
 // TODO: Enable when SUBSTRING is supported in the execution engine
-//SELECT SUBSTRING (n_name, 1, NULL) FROM nation LIMIT 1;
-//rows: (NULL)
+SELECT SUBSTRING (n_name, 1, NULL) FROM nation LIMIT 1;
+rows: (NULL)
 
 
 // Leave off the length parameter
@@ -353,8 +353,8 @@ failure contains: 'Value is out of range: SUBSTRING LENGTH value: -10'
 
 // Test that a zero length returns an empty string
 // TODO: enable once supported in the execution engine
-//SELECT SUBSTRING(n_name, 1, 0) FROM nation LIMIT 1;
-//rows: ('')
+SELECT SUBSTRING(n_name, 1, 0) FROM nation LIMIT 1;
+rows: ('')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
