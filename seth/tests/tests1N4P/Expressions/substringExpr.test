@@ -208,13 +208,12 @@ rows:
  (null)
 
 // Extract with a NULL FROM argument
-//SELECT SUBSTRING (n_name, NULL, 2) FROM nation LIMIT 1;
-//rows: (NULL)
+SELECT SUBSTRING (n_name, NULL, 2) FROM nation LIMIT 1;
+rows: (NULL)
 
 // Extract with a NULL LENGTH argument
-// TODO: Enable when SUBSTRING is supported in the execution engine
-//SELECT SUBSTRING (n_name, 1, NULL) FROM nation LIMIT 1;
-//rows: (NULL)
+SELECT SUBSTRING (n_name, 1, NULL) FROM nation LIMIT 1;
+rows: (NULL)
 
 // start position as 0 (assumes 1)
 SELECT SUBSTRING(n_name, 0, 2) FROM nation;
@@ -275,9 +274,8 @@ rows:
  ('UNITED STATES')
 
 // Test that a zero length returns an empty string
-// TODO: enable once supported in the execution engine
-//SELECT SUBSTRING(n_name, 1, 0) FROM nation LIMIT 1;
-//rows: ('')
+SELECT SUBSTRING(n_name, 1, 0) FROM nation LIMIT 1;
+rows: ('')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
