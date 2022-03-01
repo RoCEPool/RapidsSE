@@ -32,6 +32,7 @@ class JobRunner:
                  git_hash: string,
                  git_branch: string,
                  invoking_user: string,
+                 archive_metrics: bool,
                  tags: dict):
 
         # Parse the job file and the hardware and cluster configs that it references
@@ -54,6 +55,9 @@ class JobRunner:
         # username. e.g. "craig.mcintyre"
         self.invoking_user: string = invoking_user
 
+        # Do we want to collect and save the metrics in bamboo afterwards?
+        self.archive_metrics = archive_metrics
+
         # A dictionary of key/value pairs that are stored with the job results
         self.tags: {} = tags
 
@@ -62,7 +66,8 @@ class JobRunner:
         self.test_end_ts = None     # timestamp of when the tests completed being executed
         self.job_end_ts = None      # timestamp of when the job completed
 
-        self.job_result_id = -1
+        self.job_result_id = -1     # ID of this result instance running a given job
+        self.job_id = -1            # ID of the job definition
         self.test_tuples: [(string, int)] = None  # tuple of resolved test path and associated test_id
         self.test_results = []
 
@@ -135,8 +140,8 @@ class JobRunner:
 
     def __setup_job(self):
         """Do all the pre-requisites before we can start to run the tests"""
-        # job_result_id = septest.db.jobstart.record_job_start(self.all_configs,
-        (job_result_id, test_tuples) = \
+
+        (job_result_id, job_id, test_tuples) = \
             septest.db.jobstart.record_job_start(self.all_configs,
                                                  self.bamboo_plan_key,
                                                  self.bamboo_build_num,
@@ -146,6 +151,7 @@ class JobRunner:
                                                  self.tags)
 
         self.job_result_id = job_result_id
+        self.job_id = job_id
         self.test_tuples = test_tuples
 
         # Compile RapidsSE and build the installer
@@ -153,7 +159,9 @@ class JobRunner:
 
         # Start up the necessary AWS hosts
         (self.instance_ids, self.ip_addresses) = ec2.start_instances(self.all_configs.get_hardware(),
-                                                                     C_EC2_BOOT_TIMEOUT_SEC)
+                                                                     C_EC2_BOOT_TIMEOUT_SEC,
+                                                                     self.job_result_id,
+                                                                     self.job_id)
 
         assert len(self.instance_ids) > 0
         assert len(self.ip_addresses) > 0
@@ -172,6 +180,13 @@ class JobRunner:
         # Run a dummy command on the prompt to help validate the cluster
         clusterops.run_dummy_statement(self.ip_addresses[0], self.all_configs.cluster_config)
 
+        # Copy the JDBC driver to the installation dir of the first host
+        clusterops.copy_jdbc_driver(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Write/Copy a jmeter property file to the installation dir of the first host to
+        # set the classpath to find the above JDBC driver.
+        clusterops.write_jmeter_property_file(self.ip_addresses[0], self.all_configs.cluster_config)
+
     def __run_tests(self):
         """Run each of the tests specified in this job file
             This should be run in a thread with a suitable timeout period.
@@ -180,14 +195,17 @@ class JobRunner:
 
         continue_on_test_failure = self.all_configs.get_job().get_continue_on_test_failure()
         skip_remaining_tests = False
+        test_seq = 0
 
         for (test_path, test_id) in self.test_tuples:
+            test_seq += 1
 
             if skip_remaining_tests:
                 self.__skip_test(test_path, test_id)
                 continue
 
-            test_runner = TestRunner(test_path, test_id, self.job_result_id)
+            test_runner = TestRunner(test_path, test_id, self.job_result_id, test_seq,
+                                     self.all_configs.get_cluster(), self.ip_addresses[0])
             test_runner.run_test()
             test_result = test_runner.result
             self.test_results.append(test_result)
@@ -209,6 +227,7 @@ class JobRunner:
     def __gather_results(self):
         """Collect all results, logs and artifacts from the machines used to run the tests"""
         pass
+        # TODO: Gather metrics if self.archive_metrics is true
 
     def __cleanup_job(self):
         """Common cleanup operations after a job has completed, successfully or not"""

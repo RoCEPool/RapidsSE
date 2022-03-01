@@ -60,6 +60,8 @@ C_SUBNET_ID_PREFERENCE = [
     C_SUBNET_MAP[C_AVAIL_1E]
 ]
 
+C_ROOT_EBS_DEVICE = "/dev/xvda"
+C_VOLUME_SIZE_GB = 20
 C_SECURITY_GROUP_ID = "sg-0af380e49a6c6b7eb"    # Private security group (all in/outbound traffic allowed)
 C_KEYPAIR_ID = "key-0b5ebe74924256d94"
 C_KEYPAIR_NAME = "aws_rapidsse"
@@ -97,7 +99,8 @@ def describe_instances():
     pprint.pprint(response)
 
 
-def start_instances(cfg: HardwareConfig, timeout_sec: float) -> ([string], [string]):
+def start_instances(cfg: HardwareConfig, timeout_sec: float,
+                    job_result_id: int, job_id: int) -> ([string], [string]):
     """
     Starts up AWS EC2 instances according to the hardware configuration
     and waits until they have booted and are ready to be used.
@@ -124,6 +127,15 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float) -> ([string], [stri
         "InstanceInitiatedShutdownBehavior": "terminate",
         "ImageId": cfg.get_image_id(),
         "KeyName": C_KEYPAIR_NAME,
+        "BlockDeviceMappings": [
+            {
+                "DeviceName": C_ROOT_EBS_DEVICE,
+                "Ebs": {
+                    "DeleteOnTermination": True,
+                    "VolumeSize": C_VOLUME_SIZE_GB
+                }
+            }
+        ],
         "Monitoring": {
             "Enabled": False
         },
@@ -136,10 +148,19 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float) -> ([string], [stri
         },
         "TagSpecifications": [{
             "ResourceType": "instance",
-            "Tags": [{
-                "Key": "PerfTest",
-                "Value": ""
-            }]
+            "Tags": [
+                {
+                    "Key": "PerfTest",
+                    "Value": ""
+                },
+                {
+                    "Key": "jobResultId",
+                    "Value": str(job_result_id)
+                },
+                {
+                    "Key": "jobId",
+                    "Value": str(job_id)
+                }]
         }]}
 
     if LOG.isEnabledFor(logging.DEBUG):

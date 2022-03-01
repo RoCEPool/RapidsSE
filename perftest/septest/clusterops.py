@@ -5,6 +5,7 @@ import tempfile
 import string
 
 import septest.errors as errors
+import septest.ssh as ssh
 from septest.configs.clusterconfig import ClusterConfig
 
 LOG = logging.getLogger(__name__)
@@ -13,6 +14,12 @@ LOG = logging.getLogger(__name__)
 C_INSTALL_TIMEOUT_SEC = 60
 C_CLUSTER_START_CMD = "startSE.sh"
 C_CLUSTER_PROMPT_CMD = "prompt.sh"
+
+C_JDBC_DRIVER_DIR = pathlib.Path("../seth/bin")
+C_JDBC_DRIVER_GLOB = "rapidsse-jdbc-*.*.*.jar"
+
+# Cached path to the found JDBC driver
+C_JDBC_DRIVER: pathlib.Path = None
 
 
 def build_installer() -> pathlib.Path:
@@ -153,25 +160,15 @@ def install_rapidsse(install_file: pathlib.Path, cluster_config_path: pathlib.Pa
     LOG.info("RapidsSE cluster installed successfully")
 
 
-def start_rapidsse(ip_addr: string, cluster_cfg: ClusterConfig):
+def start_rapidsse(host: string, cluster_cfg: ClusterConfig):
 
     start_command = f"{cluster_cfg.get_dir()}/{C_CLUSTER_START_CMD}"
+    timeout = 90
 
-    ssh_command = ["ssh",
-                   "-q",
-                   "-o", "BatchMode=yes",
-                   "-o", "StrictHostKeyChecking=no",
-                   ip_addr,
-                   start_command]
-
-    LOG.info(f"About to start the RapidsSE cluster with the following command: {' '.join(ssh_command)}")
+    LOG.info(f"About to start the RapidsSE cluster with the following command: {start_command}")
 
     try:
-        # subprocess.run(cmd,
-        result = subprocess.run(ssh_command,
-                                capture_output=True,
-                                check=True,
-                                text=True)
+        result = ssh.run_ssh(host, start_command, timeout)
 
     except subprocess.CalledProcessError as e:
         msg = f"Error while starting the RapidsSE cluster." \
@@ -183,27 +180,15 @@ def start_rapidsse(ip_addr: string, cluster_cfg: ClusterConfig):
     LOG.info("RapidsSE cluster started successfully")
 
 
-def run_dummy_statement(ip_addr: string, cluster_cfg: ClusterConfig):
+def run_dummy_statement(host: string, cluster_cfg: ClusterConfig):
 
     dummy_command = f"echo -e \"SELECT 1;\nbye;\" | {cluster_cfg.get_dir()}/{C_CLUSTER_PROMPT_CMD}"
     command_timeout = 10  # seconds
 
-    ssh_command = ["ssh",
-                   "-q",
-                   "-o", "BatchMode=yes",
-                   "-o", "StrictHostKeyChecking=no",
-                   ip_addr,
-                   dummy_command]
-
-    LOG.info(f"About to run a dummy command on the RapidsSE cluster: {' '.join(ssh_command)}")
+    LOG.info(f"About to run a dummy command on the RapidsSE cluster: {dummy_command}")
 
     try:
-        # subprocess.run(cmd,
-        result = subprocess.run(ssh_command,
-                                capture_output=True,
-                                check=True,
-                                timeout=command_timeout,
-                                text=True)
+        result = ssh.run_ssh(host, dummy_command, command_timeout)
 
     except subprocess.CalledProcessError as e:
         msg = f"Error while running a dummy command on the RapidsSE cluster." \
@@ -219,3 +204,91 @@ def run_dummy_statement(ip_addr: string, cluster_cfg: ClusterConfig):
 
     LOG.debug(f"Cluster dummy command output (stdout):\n{result.stdout}")
     LOG.info("RapidsSE dummy command ran successfully")
+
+
+def copy_jdbc_driver(host: string, cluster_cfg: ClusterConfig):
+    """
+    Copy the RapidsSE JDBC driver to the installation directory of the given host.
+    """
+
+    src = find_local_jdbc_driver()
+    dest = f"{host}:{cluster_cfg.get_dir()}/{src.name}"
+
+    LOG.info(f"About to copy the JDBC driver to the first node of the cluster at: {dest}")
+
+    try:
+        ssh.run_scp(str(src), dest, 10)
+
+    except subprocess.CalledProcessError as e:
+        msg = f"Error while copying RapidsSE JDBC Driver to the first node." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg)
+
+    except subprocess.TimeoutExpired as e:
+        msg = f"Copying of RapidsSE JDBC Driver to the first node timed out after {e.timeout} seconds." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg)
+
+    LOG.info("Copied the JDBC driver successfully")
+
+
+def find_local_jdbc_driver() -> pathlib.Path:
+    """
+    Finds the SE JDBC driver in the repository. Returns a Path object for it.
+    """
+
+    global C_JDBC_DRIVER
+
+    if C_JDBC_DRIVER is not None:
+        return C_JDBC_DRIVER
+
+    matches = sorted(C_JDBC_DRIVER_DIR.glob(C_JDBC_DRIVER_GLOB), reverse=True)
+    assert len(matches) > 0, f"No SE JDBC driver found in path: {C_JDBC_DRIVER_DIR}"
+
+    C_JDBC_DRIVER = pathlib.Path(matches[0])
+    assert C_JDBC_DRIVER.exists()
+
+    return C_JDBC_DRIVER
+
+
+def write_jmeter_property_file(host: string, cluster_cfg: ClusterConfig):
+    """
+    Generates a JMeter user property file and writes it to the node
+    """
+    lines = [f"user.classpath={cluster_cfg.get_dir()}"]
+    content = "\n".join(lines)
+
+    local_file = tempfile.NamedTemporaryFile(delete=True)
+    local_file.write(content)
+    local_file.flush()
+
+    dest = f"{host}:{get_remote_jmeter_property_file_path(cluster_cfg)}"
+
+    LOG.info(f"About to copy the JMeter user properties file to the first node of the cluster at: {dest}")
+
+    try:
+        ssh.run_scp(local_file.name, dest, 10)
+
+    except subprocess.CalledProcessError as e:
+        msg = f"Error while JMeter user properties file to the first node." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg)
+
+    except subprocess.TimeoutExpired as e:
+        msg = f"Copying of JMeter user properties file to the first node timed out after {e.timeout} seconds." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg)
+
+    LOG.info("Copied the JMeter user properties file successfully")
+
+
+def get_remote_jmeter_property_file_path(cluster_cfg: ClusterConfig) -> string:
+    """
+    Returns the full path and filename of the jmeter user properties file
+    to be used when executing jmeter.
+    """
+    return f"{cluster_cfg.get_dir()}/jmeter.properties"

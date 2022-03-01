@@ -63,3 +63,9 @@ class Ec2InstanceTimeoutError(Ec2Error):
         if instance_ids is None:
             instance_ids = []
         self.instance_ids = instance_ids
+
+
+class NotImplementedYet(SeptestError):
+    """Errors that come up from unhandled situations"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

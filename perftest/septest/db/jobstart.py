@@ -23,12 +23,12 @@ def record_job_start(all_configs: AllConfigs,
                      git_hash: string,
                      git_branch: string,
                      invoking_user: string,
-                     tags: {}) -> (int, [(string, int)]):
+                     tags: {}) -> (int, int, [(string, int)]):
     """
     Record records in the database about starting the job.
     Returns a tuple containing the jobResultId of the partial row created in the
-    jobResults table, as well as a list of tuples containing test_paths and
-    their corresponding test_ids.
+    jobResults table, the jobId of the job definition, as well as a list of tuples
+    containing test_paths and their corresponding test_ids.
     """
 
     LOG.info("About to validate & record job settings")
@@ -61,7 +61,7 @@ def record_job_start(all_configs: AllConfigs,
 
         # add any tags to the tags table for this job_result_id
         __create_tags(cur, job_result_id, tags)
-        return job_result_id, test_tuples
+        return job_result_id, job_id, test_tuples
 
     # Database connection will be automatically closed at this point
 
