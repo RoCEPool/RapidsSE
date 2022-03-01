@@ -2050,7 +2050,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, bo
 
   ePE ePreExp = PE_NONE;
   i8 iExprStack = pIndexDef->nColumns();
-  i8 iIndexCol;
+
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++, iExprStack++) {
 
     StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - ");
@@ -2147,7 +2147,6 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, bo
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       }
 
-      iIndexCol++;
       continue;
     }
 
@@ -2763,6 +2762,22 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the in expression
     if (pTkn->bSame("in"_Stz)) {
+      i_Tkn++;
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the substring2 expression
+    if (pTkn->bSame("substring2"_Stz)) {
+      i_Tkn++;
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the substring3 expression
+    if (pTkn->bSame("substring3"_Stz)) {
       i_Tkn++;
       vPushFunc(pExprStack, pExprType, ePreExp);
       continue;
@@ -3912,6 +3927,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
   s256 sOperation;
   eDM eExpr1;
   eDM eExpr2;
+  eDM eExpr3;
 
   switch(ePreExp) {
 
@@ -3931,6 +3947,23 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
+      break;
+
+    case PE_SS2:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      eExpr2 = (eDM)pTypeStack->iPop();
+      sOperation.vConcat("_STR_SUBSTRING2((char*)szStrArea, aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_VCH);
+      break;
+
+    case PE_SS3:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      eExpr2 = (eDM)pTypeStack->iPop();
+      eExpr3 = (eDM)pTypeStack->iPop();
+      sOperation.vConcat("_STR_SUBSTRING3((char*)szStrArea, aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_VCH);
       break;
 
     case PE_XDY:

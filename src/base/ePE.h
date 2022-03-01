@@ -20,7 +20,8 @@ enum ePE // predicate expression
   /* 12 */ PE_MAX, // max
   /* 13 */ PE_MIN, // min
   /* 14 */ PE_INX, // in expression list
-  /* 15 */ PE_SUB, // substring
+  /* 15 */ PE_SS2, // substring with 2 params
+  /*    */ PE_SS3, // substring with 3 params
   /* 16 */ PE_SUM, // sum
   /* 17 */ PE_XDY, // extract day
   /* 18 */ PE_XHR, // extract hour
@@ -48,7 +49,8 @@ static Stz* aPE[]
     /*  12 */ "MAX"_Stz,
     /*  13 */ "MIN"_Stz,
     /*  14 */ "INX"_Stz,
-    /*  15 */ "SUB"_Stz,
+    /*  15 */ "SS2"_Stz,
+    /*     */ "SS3"_Stz,
     /*  16 */ "SUM"_Stz,
     /*  17 */ "XDY"_Stz,
     /*  18 */ "XHR"_Stz,

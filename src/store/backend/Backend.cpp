@@ -60,6 +60,7 @@
 #include "BetweenExpr.hpp"
 #include "LikeExpr.hpp"
 #include "InExpr.hpp"
+#include "SubstringExpr.hpp"
 
 #include "LogicExpr.hpp"
 #include "AndExpr.hpp"
@@ -1237,7 +1238,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // literal
+  // extract
 
   if (ExtractExpr::bIsOfType(pOrdinalExpr)) {
 
@@ -1246,11 +1247,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
     ExtractField::eEF eExtractField = ExtractExpr::eExtractField(_pQueryNode(pOrdinalExpr));
     sExtractType =  ExtractField::szExtractFieldType(eExtractField);
     StrLib::vToLower(sExtractType.azChar());
-
-    QueryNode* pExpr = ExtractExpr::pSourceExpr(_pQueryNode(pOrdinalExpr));
-
-    // Walk the expr node plan graph
-    //GraphNav::bGlobalWalk(pExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
 
     sPipeline->vCatSprint(" extract_%s "_Stz, sExtractType.azChar());
 
@@ -1402,6 +1398,21 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       NEVER_REACH;
     }
 
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // substring
+
+  if (SubstringExpr::bIsOfType(pOrdinalExpr)) {
+
+    QueryNode* pLengthExprNode = SubstringExpr::pLengthExpr(_pQueryNode(pOrdinalExpr));
+
+    if (pLengthExprNode)
+      sPipeline->vCatSprint(" substring3 "_Stz);
+    else
+      sPipeline->vCatSprint(" substring2 "_Stz);
+
+    return GraphNav::WALK_CONTINUE;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

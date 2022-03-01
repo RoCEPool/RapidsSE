@@ -1,0 +1,299 @@
+/*----------------------------------------------------------------------------*/
+/* SUBSTRING expressions                                                      */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+load nation "../DATA/TPCH/nation.tbl" ;
+success
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  SUBSTRING expressions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Extract from a columnRef
+SELECT SUBSTRING(n_name, 1, 2) FROM nation;
+rows:
+ ('AL)
+ ('AR)
+ ('BR')
+ ('CA')
+ ('EG')
+ ('ET')
+ ('FR')
+ ('GE')
+ ('IN')
+ ('IN')
+ ('IR')
+ ('IR')
+ ('JA')
+ ('JO')
+ ('KE')
+ ('MO')
+ ('MO')
+ ('PE')
+ ('CH')
+ ('RO')
+ ('SA')
+ ('VI')
+ ('RU')
+ ('UN')
+ ('UN')
+
+// Extract from a literal
+SELECT SUBSTRING('abcdef', 1, 2) FROM nation;
+rows:
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+ ('ab')
+
+
+// Extract from a subquery
+//ALKA: COME BACK TO THIS
+//SELECT SUBSTRING((SELECT n_name FROM nation LIMIT 1), 1, 2) FROM nation;
+
+
+// Extract from a boolean
+EXPLAIN SELECT SUBSTRING(true, 1, 2) FROM nation;
+rows:
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+ ('TR')
+
+
+// Extract from a null
+SELECT SUBSTRING(NULL, 1, 2) FROM nation;
+rows:
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+
+
+// Extract with a null      FROM argument
+SELECT SUBSTRING(n_name, NULL, 2) FROM nation;
+rows:
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+
+// Extract with a null      LENGTH argument
+SELECT SUBSTRING(n_name, 1, NULL) FROM nation;
+rows:
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+ (null)
+
+// Extract with a NULL FROM argument
+//SELECT SUBSTRING (n_name, NULL, 2) FROM nation LIMIT 1;
+//rows: (NULL)
+
+// Extract with a NULL LENGTH argument
+// TODO: Enable when SUBSTRING is supported in the execution engine
+//SELECT SUBSTRING (n_name, 1, NULL) FROM nation LIMIT 1;
+//rows: (NULL)
+
+// start position as 0 (assumes 1)
+SELECT SUBSTRING(n_name, 0, 2) FROM nation;
+ ('A')
+ ('A')
+ ('B')
+ ('C')
+ ('E')
+ ('E')
+ ('F')
+ ('G')
+ ('I')
+ ('I')
+ ('I')
+ ('I')
+ ('J')
+ ('J')
+ ('K')
+ ('M')
+ ('M')
+ ('P')
+ ('C')
+ ('R')
+ ('S')
+ ('V')
+ ('R')
+ ('U')
+ ('U')
+
+// Leave off the length parameter
+SELECT SUBSTRING(n_name, 1) FROM nation;
+rows:
+ ('ALGERIA')
+ ('ARGENTINA')
+ ('BRAZIL')
+ ('CANADA')
+ ('EGYPT')
+ ('ETHIOPIA')
+ ('FRANCE')
+ ('GERMANY')
+ ('INDIA')
+ ('INDONESIA')
+ ('IRAN')
+ ('IRAQ')
+ ('JAPAN')
+ ('JORDAN')
+ ('KENYA')
+ ('MOROCCO')
+ ('MOZAMBIQUE')
+ ('PERU')
+ ('CHINA')
+ ('ROMANIA')
+ ('SAUDI ARABIA')
+ ('VIETNAM')
+ ('RUSSIA')
+ ('UNITED KINGDOM')
+ ('UNITED STATES')
+
+// Test that a zero length returns an empty string
+// TODO: enable once supported in the execution engine
+//SELECT SUBSTRING(n_name, 1, 0) FROM nation LIMIT 1;
+//rows: ('')
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+  DROP TABLE region;
+  mute
+}

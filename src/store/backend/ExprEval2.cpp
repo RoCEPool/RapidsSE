@@ -477,8 +477,14 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
-    if (pTkn->bSame("SUB"_Stz)) {
-      ePreExp = PE_SUB;
+    if (pTkn->bSame("SUBSTRING2"_Stz)) {
+      ePreExp = PE_SS2;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("SUBSTRING3"_Stz)) {
+      ePreExp = PE_SS3;
       pTkn = pTknVec->pNextToken();
       continue;
     }

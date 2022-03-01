@@ -40,7 +40,7 @@
   *paW++ = iArg;
 
 #define _PSH_VCH(szArg1)  \
-  (char*)(*paW++) = szArg1;
+  *paW++ = (i8)szArg1;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -364,6 +364,59 @@
 #define _ISNULL()                                                           \
   iArg1 = *(--paW);                                                         \
   (*paW++) = (iArg1 == C_DATUM_NULL ? 1 : 0);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// STRING FUNCTIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _STR_SUBSTRING2(szDstArea, eErrorCode)                              \
+  {                                                                         \
+    i8 iStart = *(--paW);                                                   \
+    szArg1 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        iStart  == C_DATUM_NULL ||                                          \
+        szArg1  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      char* szDstStz;                                                       \
+      if (iStart == 0) {                                                    \
+        iStart = 1;                                                         \
+        iLength--;                                                          \
+      }                                                                     \
+      szSrcStz = (char*)(szArg1 + iStart - 1);                              \
+      szDstStz = szDstArea;                                                 \
+      while (*szSrcStz)                                                     \
+        *szDstStz++ = *szSrcStz++;                                          \
+      *szDstStz = '\0';                                                     \
+      *(paW++) = (i8)szDstArea;                                             \
+    }                                                                       \
+  }
+
+#define _STR_SUBSTRING3(szDstArea, eErrorCode)                              \
+  {                                                                         \
+    i8 iLength = *(--paW);                                                  \
+    i8 iStart = *(--paW);                                                   \
+    szArg1 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        iLength == C_DATUM_NULL ||                                          \
+        iStart  == C_DATUM_NULL ||                                          \
+        szArg1  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      char* szDstStz;                                                       \
+      if (iStart == 0) {                                                    \
+        iStart = 1;                                                         \
+        iLength--;                                                          \
+      }                                                                     \
+      szSrcStz = (char*)(szArg1 + iStart - 1);                              \
+      szDstStz = szDstArea;                                                 \
+      while (*szSrcStz && iLength--)                                        \
+        *szDstStz++ = *szSrcStz++;                                          \
+      *szDstStz = '\0';                                                     \
+      *(paW++) = (i8)szDstArea;                                             \
+    }                                                                       \
+  }
 
 /*============================================================================*/
 /* end                                                                        */

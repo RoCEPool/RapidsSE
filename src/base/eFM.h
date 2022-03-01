@@ -274,7 +274,8 @@ enum eFM : u2 // function macros
   // string operators
   /*  */ FM_STR_COMPARE,      // string compare
   /*  */ FM_STR_LIKE,         // string like
-  /*  */ FM_STR_SUBSTRING,    // string substring
+  /*  */ FM_STR_SUBSTRING2,   // string substring
+  /*  */ FM_STR_SUBSTRING3,   // string substring
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date operators
@@ -546,7 +547,8 @@ static Stz* aFM[]
   // string operators
   /*  */ "_STR_COMPARE"_Stz,
   /*  */ "_STR_LIKE"_Stz,
-  /*  */ "_STR_SUBSTRING"_Stz,
+  /*  */ "_STR_SUBSTRING2"_Stz,
+  /*  */ "_STR_SUBSTRING3"_Stz,
 
   // date operators
   /*  */ "_DTE_NOW"_Stz,
