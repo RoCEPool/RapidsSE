@@ -23,7 +23,6 @@ bool STORE::bOpt_add(Optimiser* pOptimiser, TokenVec* pTknVec)
   
   if (pTknVec->pGet(1)->bSame("*"_Stz)) {
     for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
-      
       pCardCtl->vPrint(i_Card,1);
     }
   }
@@ -33,7 +32,6 @@ bool STORE::bOpt_add(Optimiser* pOptimiser, TokenVec* pTknVec)
     if (CK_NONE == eCard)
       return false;
     
-     
     pCardCtl->vPrint(eCard,1);
   }
   
@@ -70,7 +68,8 @@ bool STORE::bOpt_sub(Optimiser* pOptimiser, TokenVec* pTknVec)
   
   if (pTknVec->pGet(1)->bSame("*"_Stz)) {
     for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
-      
+      if (Card::bIsMain((eCK)i_Card))
+        continue;
       pCardCtl->vPrint(i_Card,0);
     }
   }

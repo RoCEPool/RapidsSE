@@ -132,6 +132,34 @@ Card::~Card(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/* is eCK a main card?                                                        */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsMain(eCK eCard)
+{
+  _static_
+  
+  switch (eCard) {
+    case CK_AGGREG:
+    case CK_COMBINE:
+    case CK_FILTER:
+    case CK_HASH:
+    case CK_INDEXJOIN:
+    case CK_INDEXSCAN:
+    case CK_LIMIT:
+    case CK_ORDAGG:
+    case CK_PROJECT:
+    case CK_SCAN:
+    case CK_SEND:
+    case CK_SORT:
+    case CK_STAGE:
+      return true;
+      
+    default:
+      return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* find eCK by name                                                           */
 /*----------------------------------------------------------------------------*/
 eCK Card::eToECard(Stz* szName)
@@ -1729,9 +1757,10 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
 //                     );
 //  }
   
-  vPrintName(pRibbon,iDepth);
-
-  vPrintDetails(pRibbon,iDepth);
+  if (_pCardCtl(pRibbon->pCtl())->iPrint(m_eCard)) {
+    vPrintName(pRibbon,iDepth);
+    vPrintDetails(pRibbon,iDepth);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
