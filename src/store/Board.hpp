@@ -96,6 +96,8 @@ namespace STORE
   
     void vCut_Scan                   (void);
   
+    bool bFind_Scan_AggGby           (bool bMark);
+  
     bool bFind_Scan_Filter           (bool bMark);
   
     void vMark_ComparePreds          (void);
@@ -113,13 +115,33 @@ namespace STORE
     void vResolve_Symbols            (void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
- 
-    bool bMay_Scan_Filter_to_IndexScan  (void);
+
+    /* rule 00 */ bool bMay_AggGby_Sort_to_AggGby      (void);
+  
+    /* rule 00 */ bool bMay_ordStream_AggGby_to_OrdAgg (void);
+
+    /* rule 00 */ bool bMay_OrdAgg_Sort_to_OrdAgg      (void);
+  
+    /* rule 00 */ bool bMay_Scan_AggGby_to_IndexScan   (void);
+
+    /* rule 00 */ bool bMay_Scan_Filter_to_IndexScan   (void); // implemented
+  
+    /* rule 00 */ bool bMay_Scan_Sort_to_IndexScan     (void);
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    bool bRule_Scan_Filter_to_IndexScan (void);
+    /* rule 00 */ bool bRule_AggGby_Sort_to_AggGby     (void);
+  
+    /* rule 00 */ bool bRule_ordStream_AggGby_to_OrdAgg(void);
+  
+    /* rule 00 */ bool bRule_OrdAgg_Sort_to_OrdAgg     (void);
+  
+    /* rule 00 */ bool bRule_Scan_AggGby_to_IndexScan  (void);
+  
+    /* rule 00 */ bool bRule_Scan_Filter_to_IndexScan  (void); // implemented
 
+    /* rule 00 */ bool bRule_Scan_Sort_to_IndexScan    (void);
+  
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
  
   private:

@@ -28,15 +28,17 @@ select P_PARTKEY , P_NAME , P_BRAND
 */
 
 
-/*
+
 select   sum(P_PARTKEY)
        , P_BRAND
   from part
-  group by p_brand
+ where p_partkey > 19900 and p_partkey < 19920
+ group by p_brand
+ order by p_brand
 ;
-*/
 
 
+/*
 select P_PARTKEY , P_NAME , P_BRAND
   from part
   where
@@ -51,7 +53,7 @@ select P_PARTKEY , P_NAME , P_BRAND
   
   //limit 5
 ;
-
+*/
 
 
 select sum(P_PARTKEY) , P_BRAND

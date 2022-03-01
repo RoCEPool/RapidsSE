@@ -886,6 +886,16 @@ void Board::vCut_Scan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Board::bFind_Scan_AggGby(bool bMark)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Board::bFind_Scan_Filter(bool bMark)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -1123,7 +1133,55 @@ void Board::vResolve_Symbols(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* may 00: AggGby + (Sort) => AggGby                                          */
+/*----------------------------------------------------------------------------*/
+bool Board::bMay_AggGby_Sort_to_AggGby(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  bool bMay = false;
+  
+  return bMay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* may 00: ordered stream + (AggGby) => OrdAgg ?                              */
+/*----------------------------------------------------------------------------*/
+bool Board::bMay_ordStream_AggGby_to_OrdAgg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  bool bMay = false;
+  
+  return bMay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* may 00: OrdAgg + (Sort) => OrdAgg ?                                        */
+/*----------------------------------------------------------------------------*/
+bool Board::bMay_OrdAgg_Sort_to_OrdAgg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  bool bMay = false;
+  
+  return bMay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* may 00: (Scan) + (AggGby) => IndexScan ?                                   */
+/*----------------------------------------------------------------------------*/
+bool Board::bMay_Scan_AggGby_to_IndexScan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  bool bMay = false;
+  
+  return bMay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* may 00: (Scan) + (Filter) => IndexScan ?                                   */
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_Scan_Filter_to_IndexScan(void)
 {
@@ -1135,10 +1193,66 @@ bool Board::bMay_Scan_Filter_to_IndexScan(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* may 00: (Scan) + (Sort) => IndexScan ?                                     */
+/*----------------------------------------------------------------------------*/
+bool Board::bMay_Scan_Sort_to_IndexScan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  bool bMay = false;
+  
+  return bMay;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* rule 00: OrdAgg + (sort) => OrdAgg                                         */
+/*----------------------------------------------------------------------------*/
+bool Board::bRule_AggGby_Sort_to_AggGby(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  bool bMay = false;
+  
+  return bMay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* rule 00: ordered stream + (AggGby) => OrdAgg                               */
+/*----------------------------------------------------------------------------*/
+bool Board::bRule_ordStream_AggGby_to_OrdAgg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* rule 00: OrdAgg + (Sort) => OrdAgg                                         */
+/*----------------------------------------------------------------------------*/
+bool Board::bRule_OrdAgg_Sort_to_OrdAgg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  bool bMay = false;
+  
+  return bMay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* rule: (Scan) + (AggGby) => IndexScan                                       */
+/*----------------------------------------------------------------------------*/
+bool Board::bRule_Scan_AggGby_to_IndexScan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* may: (Scan) + (Filter) => IndexScan                                        */
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_Scan_Filter_to_IndexScan(void)
 {
@@ -1195,6 +1309,19 @@ bool Board::bRule_Scan_Filter_to_IndexScan(void)
   
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* rule: (Scan) + (Sort) => IndexScan                                         */
+/*----------------------------------------------------------------------------*/
+bool Board::bRule_Scan_Sort_to_IndexScan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  bool bMay = false;
+  
+  return bMay;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
