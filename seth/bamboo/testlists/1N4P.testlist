@@ -5,6 +5,7 @@
 
 ../../tests/dummyTests/testList
 ../../tests/tests1N4P/DataTypes/testList
+../../tests/tests1N4P/Expressions/testList
 ../../tests/tests1N4P/Regression/testList
 ../../tests/tests1N4P/Combined/testList
 //../../tests/tests1N4P/Transliterate/testList

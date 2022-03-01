@@ -381,7 +381,6 @@
       char* szDstStz;                                                       \
       if (iStart == 0) {                                                    \
         iStart = 1;                                                         \
-        iLength--;                                                          \
       }                                                                     \
       szSrcStz = (char*)(szArg1 + iStart - 1);                              \
       szDstStz = szDstArea;                                                 \

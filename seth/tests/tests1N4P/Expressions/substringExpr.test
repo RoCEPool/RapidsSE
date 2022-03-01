@@ -28,8 +28,8 @@ success
 // Extract from a columnRef
 SELECT SUBSTRING(n_name, 1, 2) FROM nation;
 rows:
- ('AL)
- ('AR)
+ ('AL')
+ ('AR')
  ('BR')
  ('CA')
  ('EG')
@@ -90,7 +90,7 @@ rows:
 
 
 // Extract from a boolean
-EXPLAIN SELECT SUBSTRING(true, 1, 2) FROM nation;
+SELECT SUBSTRING(true, 1, 2) FROM nation;
 rows:
  ('TR')
  ('TR')
@@ -218,6 +218,7 @@ rows:
 
 // start position as 0 (assumes 1)
 SELECT SUBSTRING(n_name, 0, 2) FROM nation;
+rows:
  ('A')
  ('A')
  ('B')
