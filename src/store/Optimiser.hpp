@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Bench.hpp"
+#include "CardCtl.hpp"
 #include "Dissect.hpp"
 #include "Rules.hpp"
 #include "Weave.hpp"
@@ -19,6 +20,7 @@ namespace STORE
     PipelineSpec* m_pUnOptPipelineSpec;
   
     Bench*   m_pBench;
+    CardCtl* m_pCardCtl;
     Dissect* m_pDissect;
     Rules*   m_pRules;
     Weave*   m_pWeave;

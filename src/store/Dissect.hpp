@@ -8,6 +8,7 @@
 #include "eTE.h"
 
 #include "Card.hpp"
+#include "CardCtl.hpp"
 
 #include "Card_AggElist.hpp"
 #include "Card_AggLevel.hpp"

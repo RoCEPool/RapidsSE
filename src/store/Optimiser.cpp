@@ -29,6 +29,7 @@ Optimiser::Optimiser(PipelineSpec* pUnOptPipelineSpec,
   m_pUnOptPipelineSpec = pUnOptPipelineSpec;
   
   m_pBench   = new Bench;
+  m_pCardCtl = new CardCtl;
   m_pDissect = new Dissect;
   m_pRules   = new Rules;
   m_pWeave   = new Weave;
@@ -46,6 +47,7 @@ Optimiser::~Optimiser(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
   delete m_pBench;
+  delete m_pCardCtl;
   delete m_pDissect;
   delete m_pRules;
   delete m_pWeave;
@@ -126,7 +128,7 @@ void Optimiser::vOptimise_Board(void)
 
   Board* pBoard = m_pBench->pGet(0);
   
-  pBoard->vOptimiser(this);
+  pBoard->vOptimiser(this,m_pCardCtl);
   
   pBoard->vPrintBoard("vDissectSpec >> "_Stz);
   

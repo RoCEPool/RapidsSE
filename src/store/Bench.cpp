@@ -53,7 +53,7 @@ void Bench::vPrintBench(void)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board* pBoard = this->pGet(i_Board);
     
-    Ribbon* pRibbon = new Ribbon(0);
+    Ribbon* pRibbon = new Ribbon(nullptr,0);
   
     pBoard->vPinCards(pRibbon,i_Board);
     pRibbon->vPrintRibbon();

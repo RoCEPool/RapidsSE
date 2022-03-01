@@ -231,6 +231,7 @@
 #include "Rule.hpp"
 #include "Rules.hpp"
 #include "Action.hpp"
+#include "CardCtl.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -289,6 +290,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'C' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__C__
   { sizeof(Card),               HT_T_SMALL   ,0 FILL }, // CN_CARD
+  { sizeof(CardCtl),            HT_T_SMALL   ,0 FILL }, // CN_CARDCTL
   { sizeof(Catalog),            HT_INVALID   ,0 FILL }, // CN_CATALOG
   { sizeof(CellSingle),         HT_INVALID   ,0 FILL }, // CN_CELLSIGN:E
   { sizeof(Charser),            HT_T_LARGE   ,0 FILL }, // CN_CHARSER

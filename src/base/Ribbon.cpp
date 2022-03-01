@@ -18,9 +18,11 @@ __aFooterFunction(Ribbon)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Ribbon::Ribbon(i8 iArea, i8 nMaxAcross)
+Ribbon::Ribbon(Object* pCtl, i8 iArea, i8 nMaxAcross)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+  
+  m_pCtl = pCtl;
   
   m_iArea = iArea;
   
@@ -100,6 +102,16 @@ i8 Ribbon::iChar(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   return m_i_Char;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ctl                                                                    */
+/*----------------------------------------------------------------------------*/
+Object* Ribbon::pCtl(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  return m_pCtl;
 }
 
 /*----------------------------------------------------------------------------*/
