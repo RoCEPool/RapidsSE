@@ -42,7 +42,7 @@ def build_installer() -> pathlib.Path:
         msg = f"Error while compiling RapidsSE and building the installer." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
-        raise errors.CompilationError(msg)
+        raise errors.CompilationError(msg) from e
 
     # Find the installer file that was built
     install_file_path = pathlib.Path("../installer/output").resolve()
@@ -147,13 +147,13 @@ def install_rapidsse(install_file: pathlib.Path, cluster_config_path: pathlib.Pa
         msg = f"Error while installing RapidsSE." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
-        raise errors.InstallationError(msg)
+        raise errors.InstallationError(msg) from e
 
     except subprocess.TimeoutExpired as e:
         msg = f"Installation of RapidsSE timed out after {e.timeout} seconds." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
-        raise errors.InstallationError(msg)
+        raise errors.InstallationError(msg) from e
 
     LOG.debug(f"Installation output (stdout):\n{result.stdout}")
 
@@ -174,7 +174,7 @@ def start_rapidsse(host: string, cluster_cfg: ClusterConfig):
         msg = f"Error while starting the RapidsSE cluster." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
-        raise errors.ClusterError(msg)
+        raise errors.ClusterError(msg) from e
 
     LOG.debug(f"Cluster start output (stdout):\n{result.stdout}")
     LOG.info("RapidsSE cluster started successfully")
@@ -194,13 +194,13 @@ def run_dummy_statement(host: string, cluster_cfg: ClusterConfig):
         msg = f"Error while running a dummy command on the RapidsSE cluster." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
-        raise errors.ClusterError(msg)
+        raise errors.ClusterError(msg) from e
 
     except subprocess.TimeoutExpired as e:
         msg = f"Execution of a dummy command on the RapidsSE cluster timed out after {e.timeout} seconds." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
-        raise errors.ClusterError(msg)
+        raise errors.ClusterError(msg) from e
 
     LOG.debug(f"Cluster dummy command output (stdout):\n{result.stdout}")
     LOG.info("RapidsSE dummy command ran successfully")
@@ -223,13 +223,13 @@ def copy_jdbc_driver(host: string, cluster_cfg: ClusterConfig):
         msg = f"Error while copying RapidsSE JDBC Driver to the first node." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
-        raise errors.ClusterError(msg)
+        raise errors.ClusterError(msg) from e
 
     except subprocess.TimeoutExpired as e:
         msg = f"Copying of RapidsSE JDBC Driver to the first node timed out after {e.timeout} seconds." \
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
-        raise errors.ClusterError(msg)
+        raise errors.ClusterError(msg) from e
 
     LOG.info("Copied the JDBC driver successfully")
 
@@ -257,31 +257,34 @@ def write_jmeter_property_file(host: string, cluster_cfg: ClusterConfig):
     """
     Generates a JMeter user property file and writes it to the node
     """
-    lines = [f"user.classpath={cluster_cfg.get_dir()}"]
+    lines = [
+        "# Classpath to find the RapidsSE JDBC driver",
+        f"user.classpath={cluster_cfg.get_dir()}"
+    ]
     content = "\n".join(lines)
 
-    local_file = tempfile.NamedTemporaryFile(delete=True)
-    local_file.write(content)
-    local_file.flush()
+    with tempfile.NamedTemporaryFile(mode="w", delete=True, encoding="utf-8") as local_file:
+        local_file.write(content)
+        local_file.flush()
 
-    dest = f"{host}:{get_remote_jmeter_property_file_path(cluster_cfg)}"
+        dest = f"{host}:{get_remote_jmeter_property_file_path(cluster_cfg)}"
 
-    LOG.info(f"About to copy the JMeter user properties file to the first node of the cluster at: {dest}")
+        LOG.info(f"About to copy the JMeter user properties file to the first node of the cluster at: {dest}")
 
-    try:
-        ssh.run_scp(local_file.name, dest, 10)
+        try:
+            ssh.run_scp(local_file.name, dest, 10)
 
-    except subprocess.CalledProcessError as e:
-        msg = f"Error while JMeter user properties file to the first node." \
-              f"\nStdout Output:\n{e.stdout}" \
-              f"\nStderr Output:\n{e.stderr}"
-        raise errors.ClusterError(msg)
+        except subprocess.CalledProcessError as e:
+            msg = f"Error while JMeter user properties file to the first node." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
 
-    except subprocess.TimeoutExpired as e:
-        msg = f"Copying of JMeter user properties file to the first node timed out after {e.timeout} seconds." \
-              f"\nStdout Output:\n{e.stdout}" \
-              f"\nStderr Output:\n{e.stderr}"
-        raise errors.ClusterError(msg)
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying of JMeter user properties file to the first node timed out after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
 
     LOG.info("Copied the JMeter user properties file successfully")
 

@@ -175,24 +175,24 @@ class JobConfig:
         return resolved_test_paths
 
     @staticmethod
-    def __validate_path(path_str: string, key_name: string, config_file_path: string):
+    def __validate_path(path_str: string, key_name: string, job_cfg_file_path: string):
         """Validates that a path referenced from a config file actually exists and is a file"""
         if path_str is None:
-            msg = f"Config file field {key_name} must have a valid path in file: {config_file_path}"
+            msg = f"Config file field {key_name} must have a valid path in file: {job_cfg_file_path}"
             raise ConfigurationError(msg)
 
         path_obj = pathlib.Path(path_str)
         resolved_path = path_obj
 
         if not path_obj.is_absolute():
-            resolved_path = (os.path.dirname(config_file_path) / path_obj).resolve()
+            resolved_path = (os.path.dirname(job_cfg_file_path) / path_obj).resolve()
 
         if not resolved_path.exists():
             msg = f"The config file at {path_str} referenced from field {key_name} in " \
-                  f"config file {config_file_path} does not exist"
+                  f"config file {job_cfg_file_path} does not exist"
             raise ConfigurationError(msg)
 
         if not resolved_path.is_file():
             msg = f"The config file at {path_str} referenced from field " \
-                  f"{key_name} in config file {config_file_path} is not a file"
+                  f"{key_name} in config file {job_cfg_file_path} is not a file"
             raise ConfigurationError(msg)
