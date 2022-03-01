@@ -180,6 +180,13 @@ class JobRunner:
         # Run a dummy command on the prompt to help validate the cluster
         clusterops.run_dummy_statement(self.ip_addresses[0], self.all_configs.cluster_config)
 
+        # Copy the JDBC driver to the installation dir of the first host
+        clusterops.copy_jdbc_driver(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Write/Copy a jmeter property file to the installation dir of the first host to
+        # set the classpath to find the above JDBC driver.
+        clusterops.write_jmeter_property_file(self.ip_addresses[0], self.all_configs.cluster_config)
+
     def __run_tests(self):
         """Run each of the tests specified in this job file
             This should be run in a thread with a suitable timeout period.
