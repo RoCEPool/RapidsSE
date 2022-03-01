@@ -13,7 +13,7 @@ from septest import ssh
 
 LOG = logging.getLogger(__name__)
 
-C_JMETER_EXTS = [".jmx", ".jtl", ".jmeter", ".jmetre"]
+C_JMETER_EXTS = ["jmx", "jtl", "jmeter", "jmetre"]
 
 
 class TestRunner:
@@ -32,7 +32,7 @@ class TestRunner:
         self.ip_addr = ip_addr
         self.remote_dir = pathlib.Path(cluster_config.get_dir()).joinpath(
             "perftests",
-            "j{:04d}_t{:2d}_seq{:2d}_{:s}".format(job_result_id, test_id, test_seq, self.test_name)
+            "j{:04d}_t{:02d}_{:02d}_{:s}".format(job_result_id, test_id, test_seq, self.test_name)
         )
         self.remote_test_file = None
         self.result = TestResult(self.test_name, test_id, job_result_id, self.remote_dir)
@@ -94,13 +94,13 @@ class TestRunner:
             msg = f"Error while copying a test file from {src} to {dest}." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg)
+            raise errors.ClusterError(msg) from e
 
         except subprocess.TimeoutExpired as e:
             msg = f"Copying test file from {src} to {dest} timed out after {e.timeout} seconds." \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg)
+            raise errors.ClusterError(msg) from e
 
         LOG.info(f"Successfully copied the test file from {src} to {dest}")
 
@@ -122,14 +122,14 @@ class TestRunner:
             msg = f"Error while creating the following remote directory: {self.ip_addr}:{str(self.remote_dir)}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg)
+            raise errors.ClusterError(msg) from e
 
         except subprocess.TimeoutExpired as e:
             msg = f"Creation of remote directory timed out after {e.timeout} seconds: " \
                   f"{self.ip_addr}:{str(self.remote_dir)}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg)
+            raise errors.ClusterError(msg) from e
 
         LOG.debug(f"Successfully created the remote directory: {self.ip_addr}:{str(self.remote_dir)}")
 
@@ -148,24 +148,23 @@ class TestRunner:
         file as well.
         """
 
-        dest = f"{self.ip_addr}:{self.remote_test_file}"
-        rm_command = f"rm {dest}"
+        rm_command = f"rm -f {self.remote_test_file}"
 
-        LOG.debug(f"About to remove the remote test file at {dest}")
+        LOG.debug(f"About to remove the remote test file at {self.remote_test_file}")
 
         try:
             ssh.run_ssh(self.ip_addr, rm_command, 10)
 
         except subprocess.CalledProcessError as e:
-            msg = f"Error while remote test file at {dest}" \
+            msg = f"Error while remote test file at {self.remote_test_file}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg)
+            raise errors.ClusterError(msg) from e
 
         except subprocess.TimeoutExpired as e:
-            msg = f"Deletion of remote test file at {dest} timed out after {e.timeout} seconds: " \
+            msg = f"Deletion of remote test file at {self.remote_test_file} timed out after {e.timeout} seconds: " \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.ClusterError(msg)
+            raise errors.ClusterError(msg) from e
 
-        LOG.debug(f"Successfully deleted the remote test file at {dest}")
+        LOG.debug(f"Successfully deleted the remote test file at {self.remote_test_file}")

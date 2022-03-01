@@ -52,7 +52,7 @@ class ClusterConfig:
         except subprocess.CalledProcessError as e:
             msg = f"Could not parse the cluster config file at: {self.path}\n" \
                   f"Got the following stderr output:\n  {e.stderr}"
-            raise ConfigurationError(msg)
+            raise ConfigurationError(msg) from e
 
         status.check_returncode()
 

@@ -113,12 +113,12 @@ class JobRunner:
             last_error = e
             # Extract out the Instance IDs so they can be terminated in the finally() section
             self.instance_ids = e.instance_ids
-            raise e
+            raise
 
         except Exception as e:
             LOG.error(e)
             last_error = e
-            raise e
+            raise
 
         finally:
             # (4) Cleanup

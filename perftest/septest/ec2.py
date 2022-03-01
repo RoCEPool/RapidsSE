@@ -174,7 +174,7 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float,
 
     except botocore.exceptions.ClientError as e:
         if e.response["Error"]["Code"] != "DryRunOperation":
-            raise e
+            raise
 
     # Try each subnet in order of preference
     last_error = None
@@ -243,7 +243,7 @@ def terminate_instances(instance_ids: [string]):
         client.terminate_instances(DryRun=True, **kwargs)
     except botocore.exceptions.ClientError as e:
         if e.response["Error"]["Code"] != "DryRunOperation":
-            raise e
+            raise
 
     LOG.info(f"About to terminate {len(instance_ids)} instance(s): {str(instance_ids)}")
     response = client.terminate_instances(DryRun=False, **kwargs)

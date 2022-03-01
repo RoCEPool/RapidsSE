@@ -232,7 +232,7 @@ def __create_test_records(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.
 
     test_tuples: [(string, int)] = []
 
-    for test_path in job_config.get_test_paths():
+    for test_path in job_config.get_resolved_test_paths():
         test_id = __create_test_record(cur, test_path)
         test_tuples.append((test_path, test_id))
 
