@@ -7,6 +7,11 @@
 #include "ShardDef.hpp"
 #include "Cue.hpp"
 
+#include "OptimiserFun.hpp"
+#include "OptimiserCatalog.hpp"
+
+extern OptimiserCatalog gxOptimiserCatalog;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -131,8 +136,11 @@ void Board::vPrintBoard(Stz* szCue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
+  L_Entry:
+  
   bool bCue   = true;
   bool bPrint = true;
+  bool bExecuted = false;
 
   vRenumber_Cards();
   
@@ -158,9 +166,45 @@ void Board::vPrintBoard(Stz* szCue)
   if (bCR)
     vTrace("\n"_Stz);
 
-  if (bCue)
-    Cue::vGetReturn(szCue);
+  if (! bCue)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+  s4K sInput;
+  Cue::vGetInput(szCue,sInput);
+    
+  if (! sInput.nLength()) {
+    return;
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  TokenVec* pTknVec = TokenVec::pTokeniseSen(sInput);
+  
+  i8 nTokens = pTknVec->nTokens();
+  
+  OptimiserFun* pOptFun = nullptr;
+  
+  if (0 == nTokens)
+    goto L_Exit;
+  
+  if (1 == nTokens)
+    pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
+                                           nullptr);
+  else
+  if (2 == nTokens)
+    pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
+                                           pTknVec->pGet(1)->szChars());
 
+  if (pOptFun)
+    bExecuted = pOptFun->m_fpOptFun(m_pOptimiser,pTknVec);
+
+  L_Exit:
+   delete pTknVec;
+  
+  if (bExecuted)
+    goto L_Entry;
 }
 
 /*----------------------------------------------------------------------------*/

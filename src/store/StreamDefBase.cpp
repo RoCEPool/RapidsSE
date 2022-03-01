@@ -30,7 +30,7 @@ StreamDefBase::StreamDefBase(eCN eClassNo)
   m_sStreamDefNm = ""_Stz;
 
   m_nColumns = 0;
-  MemLib::vZero(m_xaColumn,sizeof(m_xaColumn),eClassNo);
+  //MemLib::vZero(m_xaColumn,sizeof(m_xaColumn),eClassNo);
 
   //m_oRowPix;
 
@@ -58,7 +58,7 @@ StreamDefBase::StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDef_arg)
   m_sStreamDefNm = pStreamDef_arg->m_sStreamDefNm;
   m_nColumns     = pStreamDef_arg->m_nColumns;
 
-  MemLib::vZero(m_xaColumn,sizeof(m_xaColumn),eClassNo);
+  //MemLib::vZero(m_xaColumn,sizeof(m_xaColumn),eClassNo);
   for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++)
     m_xaColumn[i_DefCol].vCopy(&pStreamDef_arg->m_xaColumn[i_DefCol]);
 

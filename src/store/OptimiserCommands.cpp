@@ -7,10 +7,15 @@
 /*----------------------------------------------------------------------------*/
 /* optimiser a                                                                */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOptimser_a(Optimiser* pOptimiser)
+bool STORE::bOptimser_a(Optimiser* pOptimiser, TokenVec* pTokenVec)
 {
   vTrace("bOptimser_a\n"_Stz);
   
+  s4K sCmd;
+  pTokenVec->vToTknString(sCmd);
+  
+  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
+
   return true;
 }
 
@@ -20,6 +25,7 @@ OptimiserFun __Optimiser_a
   "a"_Stz,            // command first word
   nullptr,            // command second word
   bOptimser_a,        // function to call
+  0,0,                // spare
   "description of a"_Stz
 );
 
@@ -27,9 +33,14 @@ OptimiserFun __Optimiser_a
 /*----------------------------------------------------------------------------*/
 /* optimiser b                                                                */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOptimser_b(Optimiser* pOptimiser)
+bool STORE::bOptimser_b(Optimiser* pOptimiser, TokenVec* pTokenVec)
 {
   vTrace("bOptimser_b\n"_Stz);
+  
+  s4K sCmd;
+  pTokenVec->vToTknString(sCmd);
+  
+  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
   
   return true;
 }
@@ -40,6 +51,7 @@ OptimiserFun __Optimiser_b
   "b"_Stz,            // command first word
   nullptr,            // command second word
   bOptimser_b,        // function to call
+  0,0,                // spare
   "description of b"_Stz
 );
 

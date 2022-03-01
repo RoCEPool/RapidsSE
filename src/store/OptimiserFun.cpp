@@ -13,7 +13,10 @@ extern OptimiserCatalog gxOptimiserCatalog;
 OptimiserFun::OptimiserFun(Stz* szName,
                            Stz* szCommand1,
                            Stz* szCommand2,
-                           bool (*fpOptFun)(Optimiser* pOptimiser),
+                           bool (*fpOptFun)(Optimiser* pOptimiser,
+                                            TokenVec* pTokenVec),
+                           i8   iSpare0,
+                           i8   iSpare1,
                            Stz* szDescription
                            )
 {
@@ -21,6 +24,8 @@ OptimiserFun::OptimiserFun(Stz* szName,
   m_szCommand1    = szCommand1;
   m_szCommand2    = szCommand2;
   m_fpOptFun      = fpOptFun;
+  m_iSpare0       = iSpare0;
+  m_iSpare1       = iSpare1;
   m_szDescription = szDescription;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
