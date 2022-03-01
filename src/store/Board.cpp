@@ -193,7 +193,6 @@ void Board::vPrintBoard(Stz* szCue)
     pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
                                            nullptr);
   else
-  if (2 == nTokens)
     pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
                                            pTknVec->pGet(1)->szChars());
 

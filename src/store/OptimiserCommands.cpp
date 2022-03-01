@@ -5,54 +5,96 @@
 #include "OptimiserCommands.hpp"
 
 /*----------------------------------------------------------------------------*/
-/* optimiser a                                                                */
+/* add                                                                        */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOptimser_a(Optimiser* pOptimiser, TokenVec* pTokenVec)
+bool STORE::bOpt_add(Optimiser* pOptimiser, TokenVec* pTknVec)
 {
-  vTrace("bOptimser_a\n"_Stz);
+  vTrace("bOpt_add\n"_Stz);
   
   s4K sCmd;
-  pTokenVec->vToTknString(sCmd);
+  pTknVec->vToTknString(sCmd);
   
   vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
+  
+  CardCtl* pCardCtl = pOptimiser->pCardCtl();
 
+  if (pTknVec->nItems() < 2)
+    return false;
+  
+  if (pTknVec->pGet(1)->bSame("*"_Stz)) {
+    for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
+      
+      pCardCtl->vPrint(i_Card,1);
+    }
+  }
+  else {
+    Stz* szName = pTknVec->pGet(1)->szChars();
+    eCK eCard = Card::eToECard(szName);
+    if (CK_NONE == eCard)
+      return false;
+    
+     
+    pCardCtl->vPrint(eCard,1);
+  }
+  
   return true;
 }
 
-OptimiserFun __Optimiser_a
+OptimiserFun __Opt_add
 (
-  "Optimiser_a"_Stz,  // name of the prompt function
-  "a"_Stz,            // command first word
+  "add"_Stz,          // name of the prompt function
+  "+"_Stz,            // command first word
   nullptr,            // command second word
-  bOptimser_a,        // function to call
+  bOpt_add,           // function to call
   0,0,                // spare
-  "description of a"_Stz
+  "add card print"_Stz
 );
 
 
 /*----------------------------------------------------------------------------*/
-/* optimiser b                                                                */
+/* sub                                                                        */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOptimser_b(Optimiser* pOptimiser, TokenVec* pTokenVec)
+bool STORE::bOpt_sub(Optimiser* pOptimiser, TokenVec* pTknVec)
 {
   vTrace("bOptimser_b\n"_Stz);
   
   s4K sCmd;
-  pTokenVec->vToTknString(sCmd);
+  pTknVec->vToTknString(sCmd);
   
   vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
+  
+  CardCtl* pCardCtl = pOptimiser->pCardCtl();
+  
+  if (pTknVec->nItems() < 2)
+    return false;
+  
+  if (pTknVec->pGet(1)->bSame("*"_Stz)) {
+    for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
+      
+      pCardCtl->vPrint(i_Card,0);
+    }
+  }
+  else {
+    Stz* szName = pTknVec->pGet(1)->szChars();
+    eCK eCard = Card::eToECard(szName);
+    if (CK_NONE == eCard)
+      return false;
+    
+    
+    pCardCtl->vPrint(eCard,0);
+  }
   
   return true;
 }
 
-OptimiserFun __Optimiser_b
+OptimiserFun __Opt_sub
 (
-  "Optimiser_b"_Stz,  // name of the prompt function
-  "b"_Stz,            // command first word
+  "sub"_Stz,          // name of the prompt function
+  "-"_Stz,            // command first word
   nullptr,            // command second word
-  bOptimser_b,        // function to call
+  bOpt_sub,           // function to call
   0,0,                // spare
-  "description of b"_Stz
+  "remove card print"_Stz
 );
 
 /*============================================================================*/

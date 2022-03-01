@@ -63,7 +63,8 @@ namespace STORE
     Card(eCK eCard);
    ~Card(void) noexcept(false);
 
-
+    static eCK eToECard(Stz* szName);
+  
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
     void vAddProperty(Stz* szName);

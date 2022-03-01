@@ -37,6 +37,8 @@ namespace STORE
 
     static void vRepair(Object* pObject);
 
+    CardCtl* pCardCtl(void);
+  
     void vOptimise(void);
 
     Stz* szWeave(void);

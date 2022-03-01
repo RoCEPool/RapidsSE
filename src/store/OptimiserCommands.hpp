@@ -8,9 +8,9 @@
 
 namespace STORE
 {
-  bool bOptimser_a(Optimiser* pOptimiser, TokenVec* pTokenVec);
+  bool bOpt_add(Optimiser* pOptimiser, TokenVec* pTokenVec);
 
-  bool bOptimser_b(Optimiser* pOptimiser, TokenVec* pTokenVec);
+  bool bOpt_sub(Optimiser* pOptimiser, TokenVec* pTokenVec);
 }
 
 /*============================================================================*/
