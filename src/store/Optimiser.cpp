@@ -126,6 +126,8 @@ void Optimiser::vOptimise_Board(void)
 
   Board* pBoard = m_pBench->pGet(0);
   
+  pBoard->vOptimiser(this);
+  
   pBoard->vPrintBoard("vDissectSpec >> "_Stz);
   
   pBoard->vResolve_Symbols();

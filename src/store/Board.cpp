@@ -23,8 +23,9 @@ Board::Board(Stz* szQueryNm)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-        
-  m_sQueryNm = szQueryNm;
+      
+  m_pOptimiser = nullptr;
+  m_sQueryNm   = szQueryNm;
   
   m_pCandidateIndex     = nullptr;
   m_pComparePred_ebound = nullptr;
@@ -58,6 +59,16 @@ Board::~Board(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* set optimiser                                                              */
+/*----------------------------------------------------------------------------*/
+void Board::vOptimiser(Optimiser* pOptimiser)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  m_pOptimiser = pOptimiser;
+}
 
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */

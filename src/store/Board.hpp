@@ -14,6 +14,8 @@ namespace STORE
               , public CardSet // public ListExo2_t<Card>
   {
   protected:
+    Optimiser* m_pOptimiser;
+  
     s32 m_sQueryNm;
 
     // registers
@@ -41,7 +43,9 @@ namespace STORE
   
     Board(Stz* szCardNm);
    ~Board(void) noexcept(false);
-     
+
+    void vOptimiser(Optimiser* pOptimiser);
+
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
     void vPrintBoard(Stz* szCue);
 
