@@ -44,31 +44,6 @@
   
   STD_PATH_TAG
   "
-  procedure projectColumns
-    parameters $table $etc
-    begin
-
-    stage stageA on origin :
-      start | pulse once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | project 2 $etc
-      | combined 0
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  
-  STD_PATH_TAG
-  "
   procedure range
     parameters $table $index $etc
     begin

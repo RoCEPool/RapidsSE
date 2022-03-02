@@ -1,13 +1,13 @@
 --------------------------------------------------------------------------------
--- aggregRows tests
+-- project aggregates tests
 --------------------------------------------------------------------------------
 
-//trackMemory;
-//success;
+trackMemory;
+success;
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "type decimal ) $7 sum";
-failure contains: "Table does not exist"
+select sum(L_QUANTITY) from lineitem;
+failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -37,88 +37,64 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type decimal ) $7 sum";
+select sum(L_DISCOUNT) from lineitem;
 rows:
-  (0.00)
-  (0.22)
-  (0.49)
+  (0.71)
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type integer ) $1 sum";
+select sum(L_QUANTITY) from lineitem;
 rows:
-  (6)
-  (2)
-  (9)
+  (299.00)
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type integer ) $4 sum";
+select sum(L_ORDERKEY) from lineitem;
 rows:
- (1)
- (6)
- (21)
+  (17)
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type integer ) $4 sum , type integer ) $1 sum";
+select sum(L_LINENUMBER) from lineitem;
 rows:
- (21,6)
- (6,9)
- (1,2)
+ (28)
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type integer ) $1 count";
+select sum(L_LINENUMBER), sum(L_ORDERKEY) from lineitem;
 rows:
- (6)
- (3)
- (1)
+ (28,17)
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type integer ) countAll";
+select count(L_ORDERKEY) from lineitem;
 rows:
- (6)
- (3)
- (1)
-
-//------------------------------------------------------------------------------
-// sum($1)
-projectColumns lineitem "type integer ) $1 sum";
-rows:
- (6)
- (2)
- (9)
-
-//------------------------------------------------------------------------------
-// 1 + sum($1)
-//ALKA: UNCOMMENT
-/*
-projectColumns lineitem "type integer 1 ) $1 sum + ";
-rows:
- (7)
- (3)
  (10)
-*/
+
+//------------------------------------------------------------------------------
+select count(L_ORDERKEY) from lineitem;
+rows:
+ (10)
+
+//------------------------------------------------------------------------------
+select 1 + sum(L_ORDERKEY) from lineitem;
+rows:
+ (18)
+
 //------------------------------------------------------------------------------
 // sum($1) + 1
-projectColumns lineitem "type integer ) $1 sum 1 + ";
+select sum(L_ORDERKEY) + 1 from lineitem;
 rows:
- (7)
- (3)
- (10)
+ (18)
 
 //------------------------------------------------------------------------------
 // sum(1+$1)
-projectColumns lineitem "type integer ) 1 $1 + sum ";
+select sum(L_ORDERKEY+ 1) from lineitem;
 rows:
- (12)
- (3)
- (12)
+ (27)
 
 //------------------------------------------------------------------------------
 // drop the table
 drop table lineitem;
 success;
 
-//MemoryLeaks;
-//rows: 0
+MemoryLeaks;
+rows: 0
 
 CLEANUP {
   

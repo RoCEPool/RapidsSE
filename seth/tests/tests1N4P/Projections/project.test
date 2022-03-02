@@ -6,8 +6,8 @@ trackMemory;
 success;
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type decimal $7";
-failure contains: "Table does not exist"
+select L_DISCOUNT from lineitem;
+failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -33,7 +33,7 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type decimal $7";
+select L_DISCOUNT from lineitem;
 rows: 0
 
 // load data
@@ -41,14 +41,7 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-projectColumns lineitem " type decimal ) $7 sum ";
-rows:
-  (0.00)
-  (0.22)
-  (0.49)
-
-//------------------------------------------------------------------------------
-projectColumns lineitem "type integer $2";
+select L_PARTKEY from lineitem;
 rows:
   (1551894)
   (673091)
@@ -62,7 +55,7 @@ rows:
   (1284483)
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type decimal $7";
+select L_DISCOUNT from lineitem;
 rows:
   (0.04)
   (0.09)
@@ -76,7 +69,7 @@ rows:
   (0.06)
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type varchar $9";
+select L_RETURNFLAG from lineitem;
 rows:
   ('N')
   ('N')
@@ -90,7 +83,7 @@ rows:
   ('A')
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type date $11";
+select L_SHIPDATE from lineitem;
 rows:
  (DATE '1993-11-09')
  (DATE '1994-02-02')
@@ -104,7 +97,7 @@ rows:
  (DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type varchar $16";
+select L_COMMENT from lineitem;
 rows:
   ('egular courts above the')
   ('ly final dependencies: slyly bold ')
@@ -118,7 +111,7 @@ rows:
   ('nal foxes wake. ')
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type integer as a 2 , type date as b $11" ;
+select 2 as a , L_SHIPDATE as b from lineitem;
 rows:
   (2, DATE '1993-11-09')
   (2, DATE '1994-02-02')
@@ -132,7 +125,7 @@ rows:
   (2, DATE '1997-01-28')
 
 //------------------------------------------------------------------------------
-projectColumns lineitem type date $11, type decimal $6 2.0 *, type decimal $6;
+select L_SHIPDATE , L_EXTENDEDPRICE * 2.0, L_EXTENDEDPRICE from lineitem;
 rows:
  (DATE '1993-11-09',141644.30,70822.15)
  (DATE '1994-02-02',172167.30,86083.65)
@@ -146,23 +139,21 @@ rows:
  (DATE '1997-01-28',126132.64,63066.32)
 
 //------------------------------------------------------------------------------
-//ALKA: UNCOMMENT
-/*
-projectColumns lineitem type decimal $6, type decimal $7, type decimal $6 $7 *;
+select L_EXTENDEDPRICE, L_DISCOUNT, L_EXTENDEDPRICE * L_DISCOUNT from lineitem;
 rows:
- (33078.94,0.04,1323.15)
+ (33078.94,0.04,1323.16)
  (38306.16,0.09,3447.55)
- (15479.68,0.10,1547.96)
+ (15479.68,0.10,1547.97)
  (34616.68,0.09,3115.50)
  (28974.00,0.10,2897.40)
  (44842.88,0.07,3139.00)
  (63066.32,0.00,0.00)
- (70822.15,0.10,7082.21)
- (86083.65,0.06,5165.01)
+ (70822.15,0.10,7082.22)
+ (86083.65,0.06,5165.02)
  (39620.34,0.06,2377.22)
-*/
+
  //------------------------------------------------------------------------------
- projectColumns lineitem type integer $1, type varchar $16, type date $11, type decimal $7, type integer $1;
+ select L_ORDERKEY, L_COMMENT, L_SHIPDATE, L_DISCOUNT, L_ORDERKEY from lineitem;
  rows:
   (3,' unusual accounts. eve',DATE '1993-11-09',0.10,3)
   (3,'ongside of the furiously brave acco',DATE '1994-02-02',0.06,3)
@@ -176,9 +167,7 @@ rows:
   (2,'ven requests. deposits breach a',DATE '1997-01-28',0.00,2)
 
 //------------------------------------------------------------------------------
-//ALKA: UNCOMMENT
-/*
- projectColumns lineitem type integer 1, type integer 2, type null null;
+ select 1, 2, null from lineitem;
  rows:
   (1,2,null)
   (1,2,null)
@@ -190,7 +179,7 @@ rows:
   (1,2,null)
   (1,2,null)
   (1,2,null)
-*/
+
 //------------------------------------------------------------------------------
 // drop the table
 drop table lineitem;

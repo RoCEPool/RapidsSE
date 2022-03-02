@@ -647,6 +647,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
   L_RETURN:
 
+#ifdef _DEBUG
   // dump the PreExp stack
   vTrace("--------------------------------------\n"_Stz);
   vTrace("PREEXPSTACK:\n"_Stz);
@@ -656,6 +657,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     i8 iValue = pPreExpStack->iPeek(nExpr--);
     vTrace("%s\n"_Stz, aPE[iValue]);
   }
+#endif
 
   delete pColumnExpr;
   delete pTknVec;

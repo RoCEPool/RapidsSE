@@ -4,10 +4,10 @@
 # This is a recursive testList file.
 
 ../../tests/dummyTests/testList
-../../tests/tests1N4P/Aggregates/testList
-../../tests/tests1N4P/Filter/testList
 ../../tests/tests1N4P/DataTypes/testList
 ../../tests/tests1N4P/Expressions/testList
+../../tests/tests1N4P/Filter/testList
+../../tests/tests1N4P/Projections/testList
 ../../tests/tests1N4P/Regression/testList
 ../../tests/tests1N4P/Combined/testList
 //../../tests/tests1N4P/Transliterate/testList
