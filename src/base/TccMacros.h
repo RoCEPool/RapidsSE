@@ -67,7 +67,7 @@
 
 #define _ASSIGN_TO_ENTINT(iArgTo)                                           \
   iArg1 = *(--paW);                                                         \
-  vEntWrk_appendElementEntInt(iArgTo,iArg1)
+  vEntWrk_appendElementEntInt(iArgTo,iArg1);
 
 #define _ASSIGN_TO_ENTSTZ(iArgTo)                                           \
   szArg1 = (char*)*(--paW);                                                 \
@@ -136,10 +136,6 @@
   else                                                                      \
     --paW;                                                                  \
  }
-
-#define _ASSIGN_TO_ENTINT(iArgTo)                                           \
-  iArg1 = *(--paW);                                                         \
-  vEntWrk_appendElementEntInt(iArgTo,iArg1)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // DUPS

@@ -2554,7 +2554,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
 
-      pExprStack = m_pExprStack;
+      if (ePreExp != PE_GBY)
+        pExprStack = m_pExprStack;
 
       // push assign column
       vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col,
@@ -3848,7 +3849,15 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
         pExprStack->vPushStz(sPush);
       }
       else {
-        sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkPL)\n"_Stz);
+        Column* pColumn = m_pIndexDef->pGetColumn(i_Col);
+
+        if (pColumn->eColumnType() == CT_VARCHAR ||
+            pColumn->eColumnType() == CT_CHAR) {
+          sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkPL)\n"_Stz);
+        }
+        else {
+          sPush.vSprint("_ASSIGN_TO_ENTINT(aCombinedT->m_aEntWrkPL)\n"_Stz);
+        }
         pExprStack->vPushStz(sPush);
       }
       break;
