@@ -8,6 +8,18 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TO BCD
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _FLT_TOBCD(iErrorCode) \
+  NEVER_REACH;
+
+#define _INT_TOBCD(iErrorCode) \
+  NEVER_REACH;
+
+#define _VCH_TOBCD(iErrorCode) \
+  NEVER_REACH;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TO FLOAT
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #define _BCD_TOFLT(iErrorCode) \

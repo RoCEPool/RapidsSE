@@ -233,6 +233,18 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it an ORDGROUPBY ?
+    if (pTkn->bSame("ORDGROUPBY"_Stz)) {
+
+      eExprKind = EK_AGGORD;
+      bGroupBy = true;
+      ePreExp = PE_GBY;
+      //pIndexDef->vIndexNm("gby_idx"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // aggregates list
     if (pTkn->bSame("aggregates"_Stz)) {
 

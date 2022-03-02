@@ -1164,13 +1164,13 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
   pPostStack = new TypedStack(KK_DATA_STACK);
 
   // generate the expression code
-  vGenerateExpr((char *) sProjectExpr, pPostStack, EK_ORDAGG, bHashRows, m_pStreamDefLft);
+  vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGORD, bHashRows, m_pStreamDefLft);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate processRow check
   vGenerateProcessRow(sLabelLoop);
 
-  RASSERT(eExprKind == EK_ORDAGG);
+  //RASSERT(eExprKind == EK_AGGORD);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate ordered gby
@@ -1790,10 +1790,14 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // allocate a projectRow from the tub");
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProjectInit = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init code for each aggregate column expression
   //vGenerateAggInitCode(pPreExpStack);
+
+  vGenerateExprCode(m_pGrpByStack, "  "_Stz);
+
   vGenerateExprCode(m_pInitStack, "  "_Stz);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
@@ -1805,9 +1809,11 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
   i8 i_DupCtr = 1;
   for (i8 i_Col = 0; i_Col < m_pIndexDef->nColumns(); i_Col++) {
     Column* pColumn = m_pIndexDef->pGetColumn(i_Col);
-    //sColNm = pColumn->szColNm();
-    //StrLib::vToUpper((char*)sColNm.azChar());
-    vMakeIdxColNmStruct(m_pIndexDef, sColNm, i_Col);
+
+    // get the index col no maching the streamDef column no
+    i8 iIndexCol = m_pIndexDef->iGetColumn(pColumn->iColumnNo());
+
+    vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, iIndexCol);
 
     // NOT SURE: COME BACK
     // make the column name
@@ -2561,8 +2567,9 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col,
                      i_DupCtr);
 
-      if (ePreExp != PE_GKY)
+      if (ePreExp != PE_GKY || (ePreExp == PE_GKY && eExprKind == EK_AGGORD))
         i_Col++;
+
 
       i_ExprStack++;
 
@@ -2596,17 +2603,17 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       continue;
     }
 
-//    if (pTkn->bSame("ord_groupby"_Stz)) {
-//
-//      vPushAssignCol(m_pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col, i_DupCtr);
-//
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // set working ExprStack to be the lower bound  stack
-//      pExprStack = m_pGrpByStack;
-//      eExprKind = EK_GROUPBY;
-//
-//      continue;
-//    }
+    if (pTkn->bSame("ordGroupby"_Stz)) {
+
+      bGroupBy = true;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the groupby  stack
+      pExprStack = m_pGrpByStack;
+      eExprKind = EK_ORDGROUPBY;
+
+      continue;
+    }
 
     if (pTkn->bSame("aggregates"_Stz)) {
 
@@ -2616,7 +2623,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col,
                      i_DupCtr);
 
-      eExprKind = EK_AGGGBY;
+      if (eExprKind == EK_GROUPBY)
+        eExprKind = EK_AGGGBY;
+      else {
+        RASSERT(eExprKind == EK_ORDGROUPBY);
+        eExprKind = EK_AGGORD;
+      }
+
 
       i_Col = 0;
       i_ExprStack++;
@@ -2679,9 +2692,19 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // push the hash in expr list count
+    // strings in query can have "#Brand3" etc
+    // need a better solution...
+    // TODO: ALKA cleanup
     if (pTkn->szChars()->bContains("#"_Stz)) {
-      vPushCount(pExprStack, pExprType, pTkn);
-      continue;
+      char *sHash = (char*)(pTkn->szChars());
+      if (sHash[0] == '#') {
+        char *sCount = (char*)(pTkn->szChars() + 1);
+        if (StrLib::bIsDigit(sCount[0])) {
+          vPushCount(pExprStack, pExprType, pTkn);
+          continue;
+        }
+      }
+
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3238,7 +3261,7 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
     vInitAgg(ePreExp, eExprType);
 
     RASSERT(eExprKind == EK_AGGREG ||
-            eExprKind == EK_ORDAGG)
+            eExprKind == EK_AGGORD)
     sOperation.vSprint("_ASSIGN(%s)"_Stz, sStructColumn.azChar());
     m_pInitStack->vPushStr(sOperation);
   }
@@ -3263,7 +3286,7 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
       }
       else {
         RASSERT(eExprKind == EK_AGGREG ||
-                eExprKind == EK_ORDAGG);
+                eExprKind == EK_AGGORD);
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
         pExprStack->vPushStr(sOperation);
@@ -3315,7 +3338,7 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
       }
       else {
         RASSERT(eExprKind == EK_AGGREG ||
-                eExprKind == EK_ORDAGG);
+                eExprKind == EK_AGGORD);
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
         pExprStack->vPushStr(sOperation);
@@ -3768,6 +3791,7 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
 
   s256 sColNm;
   s256 sPush;
+  Column* pColumn;
 
   //RASSERT(pExprStack != pPostStack);
 
@@ -3792,7 +3816,11 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
         pPostStack->vReset();
       break;
 
-    case EK_ORDAGG:
+    case EK_AGGORD:
+
+      if (ePreExp == PE_GKY)
+        break;
+
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
 
@@ -3839,17 +3867,13 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
 
     case EK_GROUPBY:
       RASSERT(ePreExp == PE_GBY);
-//      if (m_pIndexDef->nColumns() > 1) {
-//        vTrace("Warning: Multicolumn indexes not supported\n"_Stz);
-//        RASSERT(m_pIndexDef->nColumns() == 1);
-//      }
 
       if (m_pIndexDef->eKeyKind()) {
         sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyPL)\n"_Stz);
         pExprStack->vPushStz(sPush);
       }
       else {
-        Column* pColumn = m_pIndexDef->pGetColumn(i_Col);
+        pColumn = m_pIndexDef->pGetColumn(i_Col);
 
         if (pColumn->eColumnType() == CT_VARCHAR ||
             pColumn->eColumnType() == CT_CHAR) {
@@ -3860,6 +3884,19 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
         }
         pExprStack->vPushStz(sPush);
       }
+      break;
+
+    case EK_ORDGROUPBY:
+      RASSERT(ePreExp == PE_GBY);
+
+//      if (m_pIndexDef->eKeyKind()) {
+//        sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyPL)\n"_Stz);
+//        pExprStack->vPushStz(sPush);
+//      }
+
+      vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+      sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      pExprStack->vPushStz(sPush);
       break;
 
     case EK_FILTER:

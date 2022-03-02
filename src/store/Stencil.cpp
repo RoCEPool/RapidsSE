@@ -714,7 +714,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // get the project kind
       eExprKind = pLogicUnit->m_eExprKind;
-      RASSERT(eExprKind == EK_ORDAGG);
+      //RASSERT(eExprKind == EK_ORDAGG);
 
       bHasOrdAgg = true;
 
