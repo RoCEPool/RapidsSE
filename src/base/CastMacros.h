@@ -13,8 +13,38 @@
 #define _FLT_TOBCD(iErrorCode) \
   NEVER_REACH;
 
-#define _INT_TOBCD(iErrorCode) \
-  NEVER_REACH;
+#define _INT_TOBCD(iErrorCode)                                             \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    if (iErrorCode != EC_NONE ||                                           \
+      iArg1 == C_DATUM_NULL) {                                             \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      if(iArg1 > C_BCD_MAX) {                                              \
+        iErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else if(iArg1 < (i8) C_BCD_MIN) {                                    \
+        iErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        i8 max_col_decimal = TMP_TBLCOL_SCALE;                             \
+        bcdArg1.m_iMantissa = iArg1;                                       \
+        bcdArg2.m_iMantissa = iaPow10[max_col_decimal];                    \
+        iErrorCode = _OF_BCDMUL;                                           \
+        if(iErrorCode != EC_NONE) {                                        \
+          *paW++ = C_DATUM_NULL;                                           \
+        }                                                                  \
+        else {                                                             \
+          bcdArg1.m_iMantissa *= bcdArg2.m_iMantissa;                      \
+          bcdArg1.m_iScale = max_col_decimal;                              \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+        }                                                                  \
+      }                                                                    \
+    }                                                                      \
+  }
 
 #define _VCH_TOBCD(iErrorCode) \
   NEVER_REACH;
