@@ -292,54 +292,6 @@ void Board::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPredCmp_ebound(Card_PredCmp* pPredCmp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  if (m_pPredCmp_ebound)
-    m_pPredCmp_ebound->vMark2(' ');
-  
-  m_pPredCmp_ebound = pPredCmp;
-  
-  if (m_pPredCmp_ebound)
-    m_pPredCmp_ebound->vMark2('E');
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vPredCmp_lbound(Card_PredCmp* pPredCmp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  if (m_pPredCmp_lbound)
-    m_pPredCmp_lbound->vMark2(' ');
-  
-  m_pPredCmp_lbound = pPredCmp;
-  
-  if (m_pPredCmp_lbound)
-    m_pPredCmp_lbound->vMark2('L');
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vPredCmp_ubound(Card_PredCmp* pPredCmp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  if (m_pPredCmp_ubound)
-    m_pPredCmp_ubound->vMark2(' ');
-  
-  m_pPredCmp_ubound = pPredCmp;
-  
-  if (m_pPredCmp_ubound)
-    m_pPredCmp_ubound->vMark2('U');
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vAggreg(Card_Aggreg* pAggreg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -483,6 +435,16 @@ void Board::vScan(Card_Scan* pScan)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vSend(Card_Send* pSend)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+    
+  m_pSend = pSend;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vSort(Card_Sort* pSort)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -506,7 +468,53 @@ void Board::vStage(Card_Stage* pStage)
     m_pStage->vMark2('m');
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPredCmp_ebound(Card_PredCmp* pPredCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (m_pPredCmp_ebound)
+    m_pPredCmp_ebound->vMark2(' ');
+  
+  m_pPredCmp_ebound = pPredCmp;
+  
+  if (m_pPredCmp_ebound)
+    m_pPredCmp_ebound->vMark2('E');
+}
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPredCmp_lbound(Card_PredCmp* pPredCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (m_pPredCmp_lbound)
+    m_pPredCmp_lbound->vMark2(' ');
+  
+  m_pPredCmp_lbound = pPredCmp;
+  
+  if (m_pPredCmp_lbound)
+    m_pPredCmp_lbound->vMark2('L');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPredCmp_ubound(Card_PredCmp* pPredCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (m_pPredCmp_ubound)
+    m_pPredCmp_ubound->vMark2(' ');
+  
+  m_pPredCmp_ubound = pPredCmp;
+  
+  if (m_pPredCmp_ubound)
+    m_pPredCmp_ubound->vMark2('U');
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -541,23 +549,94 @@ void Board::vTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Board::bInRegister(Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (pCard == m_pAggreg)    return true;
+  if (pCard == m_pCandIndex) return true;
+  if (pCard == m_pCombine)   return true;
+  if (pCard == m_pFilter)    return true;
+  if (pCard == m_pHash)      return true;
+  if (pCard == m_pIndexJoin) return true;
+  if (pCard == m_pIndexScan) return true;
+  if (pCard == m_pLimit)     return true;
+  if (pCard == m_pOrdAgg)    return true;
+  if (pCard == m_pProject)   return true;
+  if (pCard == m_pScan)      return true;
+  if (pCard == m_pSend)      return true;
+  if (pCard == m_pSort)      return true;
+  if (pCard == m_pStage)     return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vResetRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
+  vAggreg   (nullptr);
   vCandIndex(nullptr);
+  vCombine  (nullptr);
+  vFilter   (nullptr);
+  vHash     (nullptr);
+  vIndexJoin(nullptr);
+  vIndexScan(nullptr);
+  vLimit    (nullptr);
+  vOrdAgg   (nullptr);
+  vProject  (nullptr);
+  vScan     (nullptr);
+  vSend     (nullptr);
+  vSort     (nullptr);
+  vStage    (nullptr);
+
   vPredCmp_ebound(nullptr);
   vPredCmp_lbound(nullptr);
   vPredCmp_ubound(nullptr);
-  vFilter(nullptr);
-  vIndexScan(nullptr);
-  vProject(nullptr);
-  vScan(nullptr);
-  vStage(nullptr);
-
-  vIndex(nullptr);
+  
+  vIndex    (nullptr);
   vStreamDef(nullptr);
-  vTable(nullptr);
+  vTable    (nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vSetRegister(Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  eCK eCard = pCard->eCard();
+  
+  switch (eCard) {
+    case CK_AGGREG:       vAggreg   (_pCard_Aggreg   (pCard));
+    case CK_CANDINDEX:    vCandIndex(_pCard_CandIndex(pCard));
+    case CK_COMBINE:      vCombine  (_pCard_Combine  (pCard));
+    case CK_FILTER:       vFilter   (_pCard_Filter   (pCard));
+    case CK_HASH:         vHash     (_pCard_Hash     (pCard));
+    case CK_INDEXJOIN:    vIndexJoin(_pCard_IndexJoin(pCard));
+    case CK_INDEXSCAN:    vIndexScan(_pCard_IndexScan(pCard));
+    case CK_LIMIT:        vLimit    (_pCard_Limit    (pCard));
+    case CK_ORDAGG:       vOrdAgg   (_pCard_OrdAgg   (pCard));
+    case CK_PROJECT:      vProject  (_pCard_Project  (pCard));
+    case CK_SCAN:         vScan     (_pCard_Scan     (pCard));
+    case CK_SEND:         vSend     (_pCard_Send     (pCard));
+    case CK_SORT:         vSort     (_pCard_Sort     (pCard));
+    case CK_STAGE:        vStage    (_pCard_Stage    (pCard));
+      
+    default:
+      vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
+             ,__func__
+             ,(i8)eCard
+             ,aCK[eCard]
+             );
+      RASSERT(0);
+      break;
+  }
+
 }
 
 

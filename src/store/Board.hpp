@@ -77,6 +77,7 @@ namespace STORE
     void vOrdAgg   (Card_OrdAgg*    pOrdAgg);
     void vProject  (Card_Project*   pProject);
     void vScan     (Card_Scan*      pScan);
+    void vSend     (Card_Send*      pSend);
     void vSort     (Card_Sort*      pSort);
     void vStage    (Card_Stage*     pStage);
 
@@ -84,14 +85,14 @@ namespace STORE
     void vPredCmp_lbound(Card_PredCmp* pPredCmp);
     void vPredCmp_ubound(Card_PredCmp* pPredCmp);
 
-
     void vIndex    (Index*     pIndex);
     void vStreamDef(StreamDef* pStreamDef);
     void vTable    (Table*     pTable);
 
-    void vInRegister(Card* pCard);
+    bool bInRegister(Card* pCard);
     void vResetRegisters(void);
-  
+    void vSetRegister(Card* pCard);
+
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     void vRankCandidateIndex(Card_CandIndex* pCard_CandIndex);

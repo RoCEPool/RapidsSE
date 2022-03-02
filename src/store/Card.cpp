@@ -140,6 +140,7 @@ bool Card::bIsMain(eCK eCard)
   
   switch (eCard) {
     case CK_AGGREG:
+    case CK_CANDINDEX:
     case CK_COMBINE:
     case CK_FILTER:
     case CK_HASH:
