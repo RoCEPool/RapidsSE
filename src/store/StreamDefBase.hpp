@@ -5,6 +5,9 @@
 
 #include "Definition.hpp"
 
+#include "eSD.h"
+
+
 namespace STORE
 {
   class StreamDefBase : public Definition,
@@ -27,6 +30,7 @@ namespace STORE
     i8     m_nOrders;     // number of orderBy columns
     b8     m_bUnique;     // is the stream unnique
     i8     m_iaOrder[C_MAX_STREAM_ORDER]; // array of stream order columns
+    eSD    m_eaDirection[C_MAX_STREAM_ORDER]; // array of sort direction
 
   public:
     StreamDefBase(eCN eClassNo);
@@ -42,7 +46,7 @@ namespace STORE
 
     void    vAddColumn(Stz* sColumnNm, eCT eColumnType,
                        i8 iColumnLength, i8 iColumnScale);
-    void    vAddOrder(i8 i_Column);
+    void    vAddOrder(i8 i_Column, eSD eDirection=SD_ASC);
     void    vAppendStreamDef(StreamDefBase* pStreamDef);
     void    vAppendStreamDef(StreamDefBase* pStreamDef, Stz* sColPrefix);
     void    vApplyOrder(StreamDefBase* pStreamDef_apply);
@@ -50,6 +54,9 @@ namespace STORE
   
     i8      nColumns(void);
   
+    eSD     eDirection(i8 i_Order);
+    void    vDirection(i8 i_Order, eSD eDirection);
+
     bool    bIsDuplicateName(Column* pColumn);
   
     Column* pFindColumn(Stz* sColumnNm);

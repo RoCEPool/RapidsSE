@@ -40,7 +40,8 @@ StreamDefBase::StreamDefBase(eCN eClassNo)
   m_nOrders = 0;
   m_bUnique = false;
   MemLib::vZero(m_iaOrder,sizeof(m_iaOrder),eClassNo);
-  
+  MemLib::vZero(m_eaDirection,sizeof(m_eaDirection),eClassNo);
+
   //_checkInitialised_(eClassNo);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -69,9 +70,12 @@ StreamDefBase::StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDef_arg)
   m_nOrders  = pStreamDef_arg->m_nOrders;
   m_bUnique  = pStreamDef_arg->m_bUnique;
   MemLib::vZero(m_iaOrder,sizeof(m_iaOrder),eClassNo);
-  for (i8 i_Order = 0; i_Order < m_nOrders; i_Order++)
+  MemLib::vZero(m_eaDirection,sizeof(m_eaDirection),eClassNo);
+  for (i8 i_Order = 0; i_Order < m_nOrders; i_Order++) {
     m_iaOrder[i_Order] = pStreamDef_arg->m_iaOrder[i_Order];
-    
+    m_eaDirection[i_Order] = pStreamDef_arg->m_eaDirection[i_Order];
+  }
+  
   //_checkInitialised_(CN_STREAMDEF);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -157,11 +161,14 @@ void StreamDefBase::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength
 /*----------------------------------------------------------------------------*/
 /* add a column to the stream order                                           */
 /*----------------------------------------------------------------------------*/
-void StreamDefBase::vAddOrder(i8 i_Column)
+void StreamDefBase::vAddOrder(i8 i_Column, eSD eDirection)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_iaOrder[m_nOrders++] = i_Column;
+  m_iaOrder[m_nOrders]     = i_Column;
+  m_eaDirection[m_nOrders] = eDirection;
+  
+  m_nOrders++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,6 +267,26 @@ i8 StreamDefBase::nColumns(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   return m_nColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get direction order                                                        */
+/*----------------------------------------------------------------------------*/
+eSD StreamDefBase::eDirection(i8 i_Order)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_eaDirection[i_Order];
+}
+
+/*----------------------------------------------------------------------------*/
+/* set direction order                                                        */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vDirection(i8 i_Order, eSD eDirection)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_eaDirection[i_Order] = eDirection;
 }
 
 /*----------------------------------------------------------------------------*/

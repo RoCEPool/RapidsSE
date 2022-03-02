@@ -11,7 +11,7 @@ enum eSD // sort direction
   /*  3 */ SD_ENUMS
 };
 
-static Stz* aSK[]
+static Stz* aSD[]
 {
   /*  0 */ "SD_NONE"_Stz,
   /*  1 */ "SD_ASC"_Stz,
