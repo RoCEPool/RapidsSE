@@ -735,6 +735,9 @@ void Board::vCardResolve(Card* pCard)
     pCard->vAppend(pCard_StreamDef);
     StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
     vStreamDef(pStreamDef);
+    
+    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+    pCard->vAppend(pCard_StreamElist);
   }
 
 }

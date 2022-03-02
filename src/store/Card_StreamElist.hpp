@@ -16,6 +16,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_StreamElist(void);
+    Card_StreamElist(StreamDef* pStreamDef);
    ~Card_StreamElist(void) noexcept(false);
   };
 

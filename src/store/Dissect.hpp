@@ -13,20 +13,18 @@
 #include "Card_AggElist.hpp"
 #include "Card_AggLevel.hpp"
 #include "Card_Aggreg.hpp"
-#include "Card_PredAnd.hpp"
 #include "Card_As.hpp"
 
-#include "Card_ExprBool.hpp"
-
-#include "Card_ExprCalc.hpp"
 #include "Card_CandIndex.hpp"
 #include "Card_Combine.hpp"
-#include "Card_PredCmp.hpp"
 
 #include "Card_Debug.hpp"
+#include "Card_Direction.hpp"
 
 #include "Card_EBound.hpp"
 #include "Card_Exists.hpp"
+#include "Card_ExprBool.hpp"
+#include "Card_ExprCalc.hpp"
 
 #include "Card_Filter.hpp"
 
@@ -51,8 +49,10 @@
 #include "Card_On.hpp"
 #include "Card_Option.hpp"
 #include "Card_OrdAgg.hpp"
-#include "Card_PredOr.hpp"
 
+#include "Card_PredAnd.hpp"
+#include "Card_PredCmp.hpp"
+#include "Card_PredOr.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjElist.hpp"
 
@@ -66,10 +66,10 @@
 #include "Card_SendKind.hpp"
 #include "Card_Sends.hpp"
 #include "Card_Sort.hpp"
-#include "Card_Direction.hpp"
 #include "Card_Stage.hpp"
 #include "Card_StageTopo.hpp"
 #include "Card_StreamDef.hpp"
+#include "Card_StreamElist.hpp"
 
 #include "Card_Table.hpp"
 #include "Card_Term.hpp"
