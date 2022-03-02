@@ -4,6 +4,7 @@
 # This is a recursive testList file.
 
 ../../tests/dummyTests/testList
+../../tests/tests1N4P/Aggregates/testList
 ../../tests/tests1N4P/DataTypes/testList
 ../../tests/tests1N4P/Expressions/testList
 ../../tests/tests1N4P/Regression/testList

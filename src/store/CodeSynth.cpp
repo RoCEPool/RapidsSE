@@ -3345,7 +3345,8 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
         pPostStack->vPushStr(sOperation);
       }
 
-      sOperation.vSprint("_ADD_INTINT(aCombinedT->m_iErrorCode)"_Stz);
+      sOperation = aFM[eMacro_Add[eExprType][eExprType]];
+      sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStr(sOperation);
       break;
 
