@@ -66,6 +66,7 @@ enum eCK // card kind
   /* */ CK_STAGE,
   /* */ CK_STAGETOPO,
   /* */ CK_STREAMDEF,
+  /* */ CK_STREAMELIST,
   
   /* */ CK_TABLE,
   /* */ CK_TERM,
@@ -140,7 +141,8 @@ static Stz* aCK[]
   /* */ "CK_STAGE"_Stz,           // CK_STAGE
   /* */ "CK_STAGETOPO"_Stz,       // CK_STAGETOPO
   /* */ "CK_STREAMDEF"_Stz,       // CK_STREAMDEF
-  
+  /* */ "CK_STREAMLIST"_Stz,      // CK_STREAMELIST
+
   /* */ "CK_TABLE"_Stz,           // CK_TABLE
   /* */ "CK_TERM"_Stz,            // CK_TERM
   /* */ "CK_TERMSEQ"_Stz,         // CK_TERMSEQ
@@ -214,7 +216,8 @@ static Stz* aCK_short[]
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stageTopo"_Stz,       // CK_STAGETOPO
   /* */ "{streamDef}"_Stz,     // CK_STREAMDEF
-  
+  /* */ "streamElist"_Stz,     // CK_STREAMELIST
+
   /* */ "{table}"_Stz,         // CK_TABLE
   /* */ "term"_Stz,            // CK_TERM
   /* */ "termSeq"_Stz,         // CK_TERMSEQ
@@ -288,7 +291,8 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_STAGE
   /* */ "(none)"_Stz,          // CK_STAGETOPO
   /* */ "(none)"_Stz,          // CK_STREAMDEF
-  
+  /* */ "(none)"_Stz,          // CK_STREAMELIST
+
   /* */ "(none)"_Stz,          // CK_TABLE
   /* */ "(none)"_Stz,          // CK_TERM
   /* */ "(none)"_Stz,          // CK_TERMSEQ

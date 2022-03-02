@@ -1833,7 +1833,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_STAGE:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGETOPO:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_STREAMDEF:  vStreamDefPrint                 (pRibbon,iDepth); break;
-          
+    case CK_STREAMELIST:                vPrintProperties(pRibbon,iDepth); break;
+
     case CK_TABLE:      vTablePrint                     (pRibbon,iDepth); break;
     case CK_TERM:       vTermPrint                      (pRibbon,iDepth); break;
     case CK_TYPE:                       vPrintProperties(pRibbon,iDepth); break;
