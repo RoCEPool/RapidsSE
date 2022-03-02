@@ -51,162 +51,8 @@ else
 fi
 
 
-# Partition, format and mount the instance stores if they are not already mounted.
-# This needs to be done whenever the instance is stopped, but not when it is rebooted.
-
-echo
-echo "*** Installing the SSD mount script ***"
-echo
-cat << 'EOF' >> "/etc/rc.d/rc.local"
-
 # ----------------------------------------------------------------------------------------
-# Setup the SSDs on each boot
-
-LOCAL_USER="ec2-user"
-if [[ -f /etc/system-release ]] && [[ "$(cat /etc/system-release)" =~ 'CentOS Linux' ]]; then
-  LOCAL_USER="centos"
-fi
-
-if ! mount | grep "/mnt/disk1" &>/dev/null; then
-
-  # Get the name of the device (sans "/dev/") that the root filesystem is mounted on.
-  # e.g. /dev/nvme0n1 --> nvme0n1
-  # We don't want to partition/format this disk!
-  root_device=$(df -h | grep -E "^/dev/" | cut -d ' ' -f 1 | cut -c 6-)
-
-  # Get the list of block devices in the system.
-  ssds=($(lsblk -d -n -o NAME))
-  counter=0
-
-  for device in "${ssds[@]}"
-  do
-    # ignore block devices that are a subset of the device the root filesystem is mounted on.
-    if [[ "${root_device}" =~ ^"${device}".* ]]
-    then
-      # ignore this device
-      echo "Ignoring root device ${device}"
-      continue
-    fi
-
-    device="/dev/${device}"
-
-    echo "Partitioning device ${device}"
-
-    (
-      echo "o"  # Create DOS partition table
-      echo "n"  # Create a new partition
-      echo "p"  # New partition is a primary partition
-      echo "1"  # Partition #1
-      echo ""   # Start the new partition at the first sector
-      echo ""   # Make the new partition as big as possible
-      echo "w"  # write the changes and exit
-    ) | fdisk "${device}" || exit
-
-    sleep 1
-
-    # Get the partition name
-    partition=$(lsblk -l -n -p -oNAME "${device}" | tail -n 1)
-
-    echo "Formatting partition ${partition}"
-    counter=$((counter + 1))
-    mount_point="/mnt/disk${counter}"
-
-    mkfs.ext4 -E nodiscard -m0 "${partition}" || exit
-
-    echo "Mounting partition ${partition} to ${mount_point}"
-
-    mkdir -p "${mount_point}"
-    mount -o discard "${partition}" "${mount_point}" || exit
-    chown -R "${LOCAL_USER}":wheel "${mount_point}"
-    chmod g+w "${mount_point}"
-
-    MOUNTS+=("${mount_point}")
-  done
-fi
-EOF
-
-# Run the above script
-echo
-echo "*** Running the SSD mount script ***"
-echo
-chmod +x /etc/rc.d/rc.local
-bash /etc/rc.d/rc.local
-
-# ----------------------------------------------------------------------------------------
-# Give more memory to /dev/shm. Use 95% of system memory
-echo "Updating size of /dev/shm to 95% of system memory"
-SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
-{
-  echo ""
-  echo "# Set /dev/shm to 95% of system memory"
-  echo "tmpfs     /dev/shm     tmpfs     defaults,size=${SHM_SIZE:-500}g     0 0 "
-} >>/etc/fstab
-mount -o remount /dev/shm
-
-# ----------------------------------------------------------------------------------------
-# DNS (Route 53) resolution
-# This will force unqualified names to tried with the .local domain name and
-# then be looked up in DNS.
-echo
-echo "*** Setting DNS domain name search qualifier ***"
-echo
-echo "search local" >> /etc/resolv.conf
-
-# ----------------------------------------------------------------------------------------
-# /etc/hosts shortcuts
-echo
-echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
-echo
-echo "192.168.0.5 ci.rapidsdata.com" >> /etc/hosts
-# Otherwise it costs us money when we transfer data via the elastic IP associated with
-# this URL.
-
-# ----------------------------------------------------------------------------------------
-# Change permissions to allow for writing to /opt
-echo
-echo "*** Setting /opt permissions ***"
-echo
-chown root:wheel /opt
-chmod g+w /opt
-
-# ----------------------------------------------------------------------------------------
-# Apply any package updates
-echo
-echo "*** Installing updates and necessary packages ***"
-echo
-amazon-linux-extras install -y epel
-yum update -y
-yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip
-yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet
-
-if [ "${OS_DIST}" = "${CENTOS7}" ]; then
-  yum install -y epel-release
-  yum install -y java vim mysql python3 jq
-fi
-
-git lfs install
-
-# ----------------------------------------------------------------------------------------
-# Installing AWS CLI
-if ! which aws; then
-  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-  unzip awscliv2.zip
-  ./aws/install
-fi
-
-# ----------------------------------------------------------------------------------------
-# Setting JAVA_HOME
-echo
-echo "*** Setting JAVA_HOME ***"
-echo
-cat << EOF > /etc/profile.d/java_home.sh
-#!/bin/bash
-export JAVA_HOME="$(readlink -f /usr/bin/java | sed "s:/bin/java::")"
-EOF
-
-
-# ----------------------------------------------------------------------------------------
-# Set up SSH.
+# Set up SSH. We do this early so that we can still login if something goes wrong later on.
 echo
 echo "*** Installing a common internal SSH key ***"
 echo
@@ -349,6 +195,161 @@ chown centos:centos /mnt/disk1/id_rsa
 
 fi
 
+# ----------------------------------------------------------------------------------------
+
+
+# Partition, format and mount the instance stores if they are not already mounted.
+# This needs to be done whenever the instance is stopped, but not when it is rebooted.
+
+echo
+echo "*** Installing the SSD mount script ***"
+echo
+cat << 'EOF' >> "/etc/rc.d/rc.local"
+
+# ----------------------------------------------------------------------------------------
+# Setup the SSDs on each boot
+
+LOCAL_USER="ec2-user"
+if [[ -f /etc/system-release ]] && [[ "$(cat /etc/system-release)" =~ 'CentOS Linux' ]]; then
+  LOCAL_USER="centos"
+fi
+
+if ! mount | grep "/mnt/disk1" &>/dev/null; then
+
+  # Get the name of the device (sans "/dev/") that the root filesystem is mounted on.
+  # e.g. /dev/nvme0n1 --> nvme0n1
+  # We don't want to partition/format this disk!
+  root_device=$(df -h | grep -E "^/dev/" | cut -d ' ' -f 1 | cut -c 6-)
+
+  # Get the list of block devices in the system.
+  ssds=($(lsblk -d -n -o NAME))
+  counter=0
+
+  for device in "${ssds[@]}"
+  do
+    # ignore block devices that are a subset of the device the root filesystem is mounted on.
+    if [[ "${root_device}" =~ ^"${device}".* ]]
+    then
+      # ignore this device
+      echo "Ignoring root device ${device}"
+      continue
+    fi
+
+    device="/dev/${device}"
+
+    echo "Partitioning device ${device}"
+
+    (
+      echo "o"  # Create DOS partition table
+      echo "n"  # Create a new partition
+      echo "p"  # New partition is a primary partition
+      echo "1"  # Partition #1
+      echo ""   # Start the new partition at the first sector
+      echo ""   # Make the new partition as big as possible
+      echo "w"  # write the changes and exit
+    ) | fdisk "${device}" || exit
+
+    sleep 1
+
+    # Get the partition name
+    partition=$(lsblk -l -n -p -oNAME "${device}" | tail -n 1)
+
+    echo "Formatting partition ${partition}"
+    counter=$((counter + 1))
+    mount_point="/mnt/disk${counter}"
+
+    mkfs.ext4 -E nodiscard -m0 "${partition}" || exit
+
+    echo "Mounting partition ${partition} to ${mount_point}"
+
+    mkdir -p "${mount_point}"
+    mount -o discard "${partition}" "${mount_point}" || exit
+    chown -R "${LOCAL_USER}":wheel "${mount_point}"
+    chmod g+w "${mount_point}"
+
+    MOUNTS+=("${mount_point}")
+  done
+fi
+EOF
+
+# Run the above script
+echo
+echo "*** Running the SSD mount script ***"
+echo
+chmod +x /etc/rc.d/rc.local
+bash /etc/rc.d/rc.local
+
+# ----------------------------------------------------------------------------------------
+# Give more memory to /dev/shm. Use 95% of system memory
+echo "Updating size of /dev/shm to 95% of system memory"
+SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
+{
+  echo ""
+  echo "# Set /dev/shm to 95% of system memory"
+  echo "tmpfs     /dev/shm     tmpfs     defaults,size=${SHM_SIZE:-500}g     0 0 "
+} >>/etc/fstab
+mount -o remount /dev/shm
+
+# ----------------------------------------------------------------------------------------
+# DNS (Route 53) resolution
+# This will force unqualified names to tried with the .local domain name and
+# then be looked up in DNS.
+echo
+echo "*** Setting DNS domain name search qualifier ***"
+echo
+echo "search local" >> /etc/resolv.conf
+
+# ----------------------------------------------------------------------------------------
+# /etc/hosts shortcuts
+echo
+echo "*** Adding 192.168.0.5 as a shortcut for ci.rapidsdata.com to /etc/hosts ***"
+echo
+echo "192.168.0.5 ci.rapidsdata.com" >> /etc/hosts
+# Otherwise it costs us money when we transfer data via the elastic IP associated with
+# this URL.
+
+# ----------------------------------------------------------------------------------------
+# Change permissions to allow for writing to /opt
+echo
+echo "*** Setting /opt permissions ***"
+echo
+chown root:wheel /opt
+chmod g+w /opt
+
+# ----------------------------------------------------------------------------------------
+# Apply any package updates
+echo
+echo "*** Installing updates and necessary packages ***"
+echo
+amazon-linux-extras install -y epel
+yum update -y
+yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip
+yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet jmeter
+
+if [ "${OS_DIST}" = "${CENTOS7}" ]; then
+  yum install -y epel-release
+  yum install -y java vim mysql python3 jq
+fi
+
+git lfs install
+
+# ----------------------------------------------------------------------------------------
+# Installing AWS CLI
+if ! which aws; then
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  unzip awscliv2.zip
+  ./aws/install
+fi
+
+# ----------------------------------------------------------------------------------------
+# Setting JAVA_HOME
+echo
+echo "*** Setting JAVA_HOME ***"
+echo
+cat << EOF > /etc/profile.d/java_home.sh
+#!/bin/bash
+export JAVA_HOME="$(readlink -f /usr/bin/java | sed "s:/bin/java::")"
+EOF
 
 # ----------------------------------------------------------------------------------------
 # Spot instance interruption notification
