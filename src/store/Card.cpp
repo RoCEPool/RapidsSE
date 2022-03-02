@@ -2040,7 +2040,13 @@ void Card::vStreamDefPrint(Ribbon* pRibbon, i8 iDepth)
   for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
     Column* pOrdCol = pStreamDef->pGetOrder(i_Ord);
       
-    pRibbon->vSput(FR_ATOM_SQUARE,pOrdCol->szColNm());
+    //pRibbon->vSput(FR_ATOM_SQUARE,pOrdCol->szColNm());
+    
+    pRibbon->vSprintRight("[%s %s]"_Stz
+                          ,pOrdCol->szColNm()
+                          ,aSD_short[pStreamDef->eDirection(i_Ord)]
+                          );
+
   }
   
   pRibbon->vSput(FR_TEXT
