@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2164
 
 # This is a generic cloud-init script that can be used when starting a new EC2 instance.
 
@@ -324,7 +325,7 @@ echo
 amazon-linux-extras install -y epel
 yum update -y
 yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip
-yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet jmeter
+yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet
 
 if [ "${OS_DIST}" = "${CENTOS7}" ]; then
   yum install -y epel-release
@@ -332,6 +333,31 @@ if [ "${OS_DIST}" = "${CENTOS7}" ]; then
 fi
 
 git lfs install
+
+# ----------------------------------------------------------------------------------------
+# Install JMeter to /opt/jmeter
+pushd "$(pwd)"
+cd /opt
+JMETER_VER="5.4.3"
+JMETER_NAME="apache-jmeter-${JMETER_VER}"
+JMETER_FILE="${JMETER_NAME}.tgz"
+curl "https://dlcdn.apache.org//jmeter/binaries/${JMETER_FILE}" -o "${JMETER_FILE}"
+tar xvzf "${JMETER_FILE}"
+rm -f "$JMETER_FILE"
+ln -s "${JMETER_NAME}" jmeter
+chown -R ec2-user:ec2-user "${JMETER_NAME}"
+chown    ec2-user:ec2-user jmeter
+popd
+
+# Add this JMeter installation to the PATH for the ec2-user
+bash_profile="${OS_HOME_DIR}/.bash_profile"
+
+{
+  echo "";
+  # shellcheck disable=SC2016
+  echo 'export PATH=/opt/jmeter/bin:${PATH}';
+  echo "";
+} >>"${bash_profile}"
 
 # ----------------------------------------------------------------------------------------
 # Installing AWS CLI
