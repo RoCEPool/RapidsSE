@@ -8,11 +8,11 @@
 
 namespace STORE
 {
-  bool bOpt_add    (Optimiser* pOptimiser, TokenVec* pTknVec);
+  bool bOpt_add    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
-  bool bOpt_depth  (Optimiser* pOptimiser, TokenVec* pTknVec);
+  bool bOpt_depth  (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
-  bool bOpt_sub    (Optimiser* pOptimiser, TokenVec* pTknVec);
+  bool bOpt_sub    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 }
 
 /*============================================================================*/

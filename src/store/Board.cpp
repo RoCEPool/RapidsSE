@@ -136,6 +136,8 @@ void Board::vPrintBoard(Stz* szCue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
+  i8 iAction = 1;
+
   L_Entry:
   
   bool bCue   = true;
@@ -171,6 +173,8 @@ void Board::vPrintBoard(Stz* szCue)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
+  L_Input:
+  
   s4K sInput;
   Cue::vGetInput(szCue,sInput);
     
@@ -196,14 +200,25 @@ void Board::vPrintBoard(Stz* szCue)
     pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
                                            pTknVec->pGet(1)->szChars());
 
+  iAction = 0;
   if (pOptFun)
-    bExecuted = pOptFun->m_fpOptFun(m_pOptimiser,pTknVec);
+    bExecuted = pOptFun->m_fpOptFun(m_pOptimiser,pTknVec,iAction);
 
   L_Exit:
    delete pTknVec;
   
-  if (bExecuted)
-    goto L_Entry;
+  if (bExecuted) {
+    if (0 == iAction)
+      goto L_Entry;
+    else
+    if (1 == iAction)
+      goto L_Input;
+    else
+    if (2 == iAction)
+      return;
+    else
+      NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

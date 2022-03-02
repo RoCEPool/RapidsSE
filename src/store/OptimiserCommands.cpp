@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* add                                                                        */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_add(Optimiser* pOptimiser, TokenVec* pTknVec)
+bool STORE::bOpt_add(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_add\n"_Stz);
   
@@ -50,9 +50,9 @@ OptimiserFun __Opt_add
 
 
 /*----------------------------------------------------------------------------*/
-/* depth                                                                        */
+/* depth                                                                      */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_depth(Optimiser* pOptimiser, TokenVec* pTknVec)
+bool STORE::bOpt_depth(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_depth\n"_Stz);
   
@@ -67,6 +67,7 @@ bool STORE::bOpt_depth(Optimiser* pOptimiser, TokenVec* pTknVec)
   
   if (pTknVec->nItems() < 2) {
     vTrace("depth : %lld\n"_Stz,iDepth);
+    riAction = 1;
     return true;
   }
   
@@ -93,7 +94,7 @@ OptimiserFun __Opt_depth
 /*----------------------------------------------------------------------------*/
 /* sub                                                                        */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_sub(Optimiser* pOptimiser, TokenVec* pTknVec)
+bool STORE::bOpt_sub(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOptimser_b\n"_Stz);
   
