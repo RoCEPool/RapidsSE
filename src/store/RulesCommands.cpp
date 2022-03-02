@@ -86,7 +86,7 @@ RulesFun __Rule_r2
   "r2"_Stz,  // name of the function
   "r2"_Stz,  // command first word
   nullptr,   // command second word
-  bRule_r0,  // function to call
+  bRule_r2,  // function to call
   0,0,       // spare
   "rule 2"_Stz
 );
