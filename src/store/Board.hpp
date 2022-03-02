@@ -65,7 +65,8 @@ namespace STORE
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
+    // registers
+  
     void vAggreg   (Card_Aggreg*    pAggreg);
     void vCandIndex(Card_CandIndex* pCandIndex);
     void vCombine  (Card_Combine*   pCombine);
@@ -89,9 +90,9 @@ namespace STORE
     void vStreamDef(StreamDef* pStreamDef);
     void vTable    (Table*     pTable);
 
-    bool bInRegister(Card* pCard);
+    bool bInRegister    (Card* pCard);
     void vResetRegisters(void);
-    void vSetRegister(Card* pCard);
+    void vSetRegister   (Card* pCard);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

@@ -103,7 +103,7 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();
 
-  Ribbon* pSubRibbon = new Ribbon(m_pCardCtl,0);
+  Ribbon* pSubRibbon = new Ribbon(m_pCardCtl,this,0);
   
 
   ListExoIter2_t<Card>* pBoard_I = pNewIter();
@@ -159,7 +159,7 @@ void Board::vPrintBoard(Stz* szCue)
   if (! bPrint)
     return;
   
-  Ribbon* pRibbon = new Ribbon(m_pCardCtl,0);
+  Ribbon* pRibbon = new Ribbon(m_pCardCtl,this,0);
 
   vPinCards(pRibbon,0);
   pRibbon->vPrintRibbon();
@@ -305,15 +305,10 @@ void Board::vAggreg(Card_Aggreg* pAggreg)
 void Board::vCandIndex(Card_CandIndex* pCandidateIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  if (m_pCandIndex)
-    m_pCandIndex->vMark2(' ');
-  
+    
   m_pCandIndex = pCandidateIndex;
   
   if (m_pCandIndex) {
-    m_pCandIndex->vMark2('m');
-    
     vIndex(m_pCandIndex->pFindSubCard(CK_INDEX)->pIndex());
   }
 }
@@ -335,13 +330,7 @@ void Board::vFilter(Card_Filter* pFilter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
     
-  if (m_pFilter)
-    m_pFilter->vMark2(' ');
-
   m_pFilter = pFilter;
-  
-  if (m_pFilter)
-    m_pFilter->vMark2('m');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -370,14 +359,8 @@ void Board::vIndexJoin(Card_IndexJoin* pIndexJoin)
 void Board::vIndexScan(Card_IndexScan* pIndexScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  if (m_pIndexScan)
-    m_pIndexScan->vMark2(' ');
-  
+    
   m_pIndexScan = pIndexScan;
-  
-  if (m_pIndexScan)
-    m_pIndexScan->vMark2('m');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -407,13 +390,7 @@ void Board::vProject(Card_Project* pProject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  if (m_pProject)
-    m_pProject->vMark2(' ');
-  
   m_pProject = pProject;
-  
-  if (m_pProject)
-    m_pProject->vMark2('m');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -423,13 +400,7 @@ void Board::vScan(Card_Scan* pScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  if (m_pScan)
-    m_pScan->vMark2(' ');
-  
   m_pScan = pScan;
-  
-  if (m_pScan)
-    m_pScan->vMark2('m');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -459,13 +430,7 @@ void Board::vStage(Card_Stage* pStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  if (m_pStage)
-    m_pStage->vMark2(' ');
-  
   m_pStage = pStage;
-  
-  if (m_pStage)
-    m_pStage->vMark2('m');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1554,7 +1519,6 @@ bool Board::bRule_Scan_Sort_to_IndexScan(void)
   
   return bMay;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

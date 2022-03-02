@@ -17,7 +17,8 @@ namespace BASE
   private:
 
     Object* m_pCtl;
-  
+    Object* m_pSurface;
+
     i8 m_iArea;  // which subject area is this (sub)ribbon?
   
     i8 m_i_Base; // base line for physical columns
@@ -42,7 +43,8 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Ribbon(Object* pCtl, i8 iArea, i8 nMaxAcross=C_RIBBON_ACROSS);
+    Ribbon(Object* pCtl, Object* pSurface,
+           i8 iArea, i8 nMaxAcross=C_RIBBON_ACROSS);
    ~Ribbon(void) noexcept(false);
 
     i8   iArea(void);
@@ -77,7 +79,8 @@ namespace BASE
     void vSprint(Stz* szFormat, ...);
     void vSprintRight(Stz* szFormat, ...);
     void vSput(i8 i_Fmt, ...);
-  
+    Object* pSurface(void);
+
     Stz* szText(i8 i_Line);
     i8   nTitleLines(void);
     void vTitleLines(i8 nTitleLines);
