@@ -77,6 +77,7 @@
 #include "Card_Expr.hpp"
 
 #include "Card_UBound.hpp"
+#include "Card_Unique.hpp"
 
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"

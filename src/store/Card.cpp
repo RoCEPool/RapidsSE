@@ -1840,7 +1840,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_TYPE:                       vPrintProperties(pRibbon,iDepth); break;
 
     case CK_UBOUND:                     vPrintProperties(pRibbon,iDepth); break;
-      
+    case CK_UNIQUE:                     vPrintProperties(pRibbon,iDepth); break;
+
     default:
       vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
              ,__func__
