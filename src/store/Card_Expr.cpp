@@ -5,6 +5,11 @@
 #include "Card_Expr.hpp"
 #include "Card_ExprBool.hpp"
 
+#include "Card_Type.hpp"
+#include "Card_As.hpp"
+#include "Card_ExprCalc.hpp"
+#include "Card_Direction.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -25,6 +30,35 @@ Card_Expr::Card_Expr(void)
 
   _checkInitialised_(CN_CARD);
   
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Expr::Card_Expr(Column* pColumn)
+: Card_SUB(CK_EXPR)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+  
+  // type
+  Card_Type* pCard_Type = new Card_Type(pColumn);
+  vAppend(pCard_Type);
+  
+  // as
+  Card_As* pCard_As = new Card_As(pColumn);
+  vAppend(pCard_As);
+
+  // exprCalc
+  Card_ExprCalc* pCard_ExprCalc = new Card_ExprCalc(pColumn);
+  vAppend(pCard_ExprCalc);
+
+  // direction
+  Card_Direction* pCard_Direction = new Card_Direction(pColumn);
+  vAppend(pCard_Direction);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 

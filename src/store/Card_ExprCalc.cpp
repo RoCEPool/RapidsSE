@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card_ExprCalc.hpp"
+#include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -22,6 +23,22 @@ Card_ExprCalc::Card_ExprCalc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
+  _checkInitialised_(CN_CARD);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_ExprCalc::Card_ExprCalc(Column* pColumn)
+: Card_EXPRESSION(CK_EXPRCALC)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+      
+  Card_Term* pCard_Term = new Card_Term(pColumn);
+  vAppend(pCard_Term);
+  
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

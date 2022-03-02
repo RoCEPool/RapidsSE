@@ -16,6 +16,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_Direction(Stz* szDirn);
+    Card_Direction(Column* pColumn);
    ~Card_Direction(void) noexcept(false);
   };
 

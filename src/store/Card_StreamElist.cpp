@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "Card_StreamElist.hpp"
+#include "Card_Name.hpp"
+#include "Card_Expr.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -37,6 +39,8 @@ Card_StreamElist::Card_StreamElist(StreamDef* pStreamDef)
 
   _checkInitialised_(CN_CARD);
   
+  vPopulate(pStreamDef);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
@@ -47,6 +51,30 @@ Card_StreamElist::~Card_StreamElist(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_StreamElist::vPopulate(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  i8 nCols = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+    
+//    Card_Name* pCard_Name = new Card_Name(pColumn->szColNm());
+//    vAppend(pCard_Name);
+    
+    Card_Expr* pCard_Expr = new Card_Expr(pColumn);
+    vAppend(pCard_Expr);
+  }
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

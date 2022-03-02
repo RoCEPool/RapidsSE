@@ -30,6 +30,21 @@ Card_Type::Card_Type(Stz* szType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Type::Card_Type(Column* pColumn)
+: Card_SUB(CK_TYPE)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vType(aCT[pColumn->eColumnType()]);
+  
+  _checkInitialised_(CN_CARD);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Type::~Card_Type(void) noexcept(false)

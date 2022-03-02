@@ -18,6 +18,7 @@ namespace STORE
   
     Card_Term(Stz* szTerm);
     Card_Term(Token* pTkn);
+    Card_Term(Column* pColumn);
    ~Card_Term(void) noexcept(false);
   };
 

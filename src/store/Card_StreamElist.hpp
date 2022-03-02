@@ -18,6 +18,9 @@ namespace STORE
     Card_StreamElist(void);
     Card_StreamElist(StreamDef* pStreamDef);
    ~Card_StreamElist(void) noexcept(false);
+    
+  private:
+    void vPopulate(StreamDef* pStreamDef);
   };
 
   Card_StreamElist* _pCard_StreamElist(void* aAddr);
