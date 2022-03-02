@@ -50,6 +50,47 @@ OptimiserFun __Opt_add
 
 
 /*----------------------------------------------------------------------------*/
+/* depth                                                                        */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_depth(Optimiser* pOptimiser, TokenVec* pTknVec)
+{
+  vTrace("bOpt_depth\n"_Stz);
+  
+  s4K sCmd;
+  pTknVec->vToTknString(sCmd);
+  
+  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
+  
+  CardCtl* pCardCtl = pOptimiser->pCardCtl();
+
+  i8 iDepth = pCardCtl->iDepth();
+  
+  if (pTknVec->nItems() < 2) {
+    vTrace("depth : %lld\n"_Stz,iDepth);
+    return true;
+  }
+  
+  iDepth = pTknVec->pGet(1)->iToI8();
+  //if (iDepth < 1)
+  //  iDepth = 99;
+  
+  pCardCtl->vDepth(iDepth);
+  
+  return true;
+}
+
+OptimiserFun __Opt_depth
+(
+  "depth"_Stz,        // name of the prompt function
+  "depth"_Stz,        // command first word
+  nullptr,            // command second word
+  bOpt_depth,         // function to call
+  0,0,                // spare
+  "set print depth limit"_Stz
+);
+
+
+/*----------------------------------------------------------------------------*/
 /* sub                                                                        */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_sub(Optimiser* pOptimiser, TokenVec* pTknVec)

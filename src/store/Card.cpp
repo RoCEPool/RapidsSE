@@ -1730,34 +1730,13 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-//  s32 sName;
-//
-//  if (m_bPrintNm) {
-//
-//    if (-1 == m_iCardNo) {
-//      sName.vSprint("%s%s x%lld"_Stz
-//                    ,Stz::szDots(iDepth)
-//                    ,szCardNm()
-//                    ,nItems()
-//                    );
-//    }
-//    else {
-//      sName.vSprint("%s%lld)%s"_Stz
-//                    ,Stz::szDots(iDepth)
-//                    ,m_iCardNo
-//                    ,szCardNm()
-//                    );
-//
-//      //pRibbon->vSprint("%s"_Stz,sName.szStz());
-//    }
-//    pRibbon->vSprint("%-18s%c%c"_Stz
-//                     ,sName.szStz()
-//                     ,m_cMark1
-//                     ,m_cMark2
-//                     );
-//  }
+  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
+
+  if (iDepth > pCardCtl->iDepth())
+    return;
   
-  if (_pCardCtl(pRibbon->pCtl())->iPrint(m_eCard)) {
+    
+  if (pCardCtl->iPrint(m_eCard)) {
     vPrintName(pRibbon,iDepth);
     vPrintDetails(pRibbon,iDepth);
   }
