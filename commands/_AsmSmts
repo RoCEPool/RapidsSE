@@ -231,10 +231,6 @@ select
     l_linestatus order by
     l_returnflag, l_linestatus;
 
-//aggregRows lineitem "type integer $4 , type decimal ) $7 sum , type decimal ) $5 sum groupby type integer $4";
-
-//aggregRows lineitem "type integer $1 , type decimal ) $7 sum groupby type integer $1" ;
-
 //projectColumns_I lineitem "1";
 //projectColumns_I lineitem "l_discount , 1";
 
@@ -381,11 +377,6 @@ end ;
 
  //select l_orderkey + 1 , sum (l_discount) from lineitem;
 
-//aggregRows_I lineitem "l_discount sum , l_orderkey";
-
-//aggregRows_I lineitem "L_LINENUMBER 1 + , L_ORDERKEY sum";
-
-//aggregRows_I lineitem "l_discount sum";
 
 //UnionAll_I lineitem orders l_orderkey;
 
@@ -412,18 +403,6 @@ pipeline unionAll_I
     output | sink | stageA
 
 end ;
-
-
-//aggregRows_I lineitem "l_orderkey , sum ( l_discount ) ";
-
-//aggregRows_I lineitem "l_orderkey , sum ( l_discount ) group by l_orderkey" ;
-//aggregRows_I lineitem "sum ( l_linenumber ) , l_orderkey , sum ( l_discount ) group by l_orderkey" ;
-
-
-//projectColumns_I lineitem " l_orderkey , l_discount ";
-
-
-//aggregRows_I lineitem "sum ( l_discount )";
 
 
 //limitRows lineitem 2;
@@ -461,21 +440,13 @@ begin
 
 projectColumns_I lineitem L_COMMENT;
 
-aggregRows_I lineitem "sum ( L_ORDERKEY )";
-
-aggregRows_I lineitem "sum ( L_ORDERKEY ) , sum ( L_LINENUMBER )";
-aggregRows_I lineitem "sum ( L_LINENUMBER )";
-aggregRows_I lineitem "sum ( L_COMMENT )";
-
-
 projectColumns_I lineitem 2;
 projectColumns lineitem 2;
 projectColumns_I lineitem "l_partkey";
 projectColumns lineitem "l_partkey , l_partKey 2 * , l_partKey 2.0 * ";
 
 //filterRows lineitem "l_discount 0.04 >= <>";
-aggregRows_I lineitem "sum ( l_discount ) ";
-aggregRows lineitem "sum ( l_discount ) ";
+
 filterRows lineitem "l_orderkey 1 == <>";
 
 pipeline Query6

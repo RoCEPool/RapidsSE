@@ -2543,7 +2543,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
 #ifdef WITH_DEBUG_VERSION
-    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // dump the TypeStack
     vTrace("--------------------------------------\n"_Stz);

@@ -15,56 +15,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-
-  STD_PATH_TAG
-  "
-  procedure aggregRows_I
-    parameters $table $etc
-    begin
-
-    stage stageA on origin :
-      start | pulse once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | aggreg 2 $etc
-      | combined 0
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  STD_PATH_TAG
-  "
-  procedure aggregRows
-    parameters $table $etc
-    begin
-
-    stage stageA on origin :
-      start | pulse once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | aggreg 2 $etc
-      | combined 0
-      | stageC
-
-    stage stageC on origin :
-     output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
   
   STD_PATH_TAG
   "

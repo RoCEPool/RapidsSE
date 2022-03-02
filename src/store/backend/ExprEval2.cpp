@@ -218,7 +218,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
   while ( pTkn ) {
 
-    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a GROUPBY ?
