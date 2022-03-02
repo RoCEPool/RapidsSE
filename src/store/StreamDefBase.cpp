@@ -260,6 +260,20 @@ void StreamDefBase::vAsString(String* pString)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 StreamDefBase::iColumnOrder(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  for (i8 i_Ord = 0; i_Ord < m_nOrders; i_Ord++)
+    if (i_Col == m_iaOrder[i_Ord])
+      return i_Ord;
+  
+  return -1;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get no of columns in subset of streamDef                                   */
 /*----------------------------------------------------------------------------*/
 i8 StreamDefBase::nColumns(void)
@@ -287,30 +301,6 @@ void StreamDefBase::vDirection(i8 i_Order, eSD eDirection)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_eaDirection[i_Order] = eDirection;
-}
-
-/*----------------------------------------------------------------------------*/
-/* check if column name is a duplicate in the streamDef                       */
-/*----------------------------------------------------------------------------*/
-bool StreamDefBase::bIsDuplicateName(Column* pColumn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  bool bFound = false;
-
-  for (i8 i_Column = 0; i_Column < m_nColumns; i_Column++) {
-
-    Column* pCol = & m_xaColumn[i_Column];
-
-    if (pCol->szColNm()->bSame(pColumn->szColNm())) {
-
-      if (bFound)
-        return true;
-
-      bFound = true;
-    }
-  }
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,6 +341,44 @@ Column* StreamDefBase::pGetOrder(i8 i_Order)
   i8 i_Column = m_iaOrder[i_Order];
   
   return &m_xaColumn[i_Column];
+}
+
+/*----------------------------------------------------------------------------*/
+/* check if column name is a duplicate in the streamDef                       */
+/*----------------------------------------------------------------------------*/
+bool StreamDefBase::bIsDuplicateName(Column* pColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  bool bFound = false;
+
+  for (i8 i_Column = 0; i_Column < m_nColumns; i_Column++) {
+
+    Column* pCol = & m_xaColumn[i_Column];
+
+    if (pCol->szColNm()->bSame(pColumn->szColNm())) {
+
+      if (bFound)
+        return true;
+
+      bFound = true;
+    }
+  }
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is column an ordered column?                                               */
+/*----------------------------------------------------------------------------*/
+bool StreamDefBase::bIsOrder(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  for (i8 i_Ord = 0; i_Ord < m_nOrders; i_Ord++)
+    if (i_Col == m_iaOrder[i_Ord])
+      return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

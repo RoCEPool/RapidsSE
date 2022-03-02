@@ -56,8 +56,8 @@ Card_Expr::Card_Expr(Column* pColumn)
   vAppend(pCard_ExprCalc);
 
   // direction
-  Card_Direction* pCard_Direction = new Card_Direction(pColumn);
-  vAppend(pCard_Direction);
+  //Card_Direction* pCard_Direction = new Card_Direction(pColumn);
+  //vAppend(pCard_Direction);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

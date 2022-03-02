@@ -52,18 +52,20 @@ namespace STORE
     void    vApplyOrder(StreamDefBase* pStreamDef_apply);
     void    vAsString(String* pString);
   
+    i8      iColumnOrder(i8 i_Col);
     i8      nColumns(void);
-  
+ 
     eSD     eDirection(i8 i_Order);
     void    vDirection(i8 i_Order, eSD eDirection);
 
-    bool    bIsDuplicateName(Column* pColumn);
-  
     Column* pFindColumn(Stz* sColumnNm);
   
     Column* pGetColumn(i8 i_Col);
     Column* pGetOrder(i8 i_Order);
   
+    bool    bIsDuplicateName(Column* pColumn);
+    bool    bIsOrder(i8 i_Col);
+
     void    vListContents(i8 i_Depth);
     Location* pLocation(void);
   
