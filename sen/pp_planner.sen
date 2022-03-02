@@ -15,32 +15,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  STD_PATH_TAG
-  "
-  procedure limitRows
-    parameters $table $rows
-    begin
-
-    stage stageA on origin :
-      start | pulse once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | limit 2 $rows
-      | combined 0
-      | stageC
-
-    stage stageC on origin :
-      limit 2 $rows
-      | combined 0
-      | output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
   
   STD_PATH_TAG
   "

@@ -6,8 +6,8 @@ trackMemory;
 success;
 
 //------------------------------------------------------------------------------
-limitRows lineitem 4 ;
-failure contains: "Table does not exist"
+select * from lineitem limit 4;
+failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -33,7 +33,7 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-limitRows lineitem 4;
+select * from lineitem limit 4;
 rows: 0
 
 // load data
@@ -41,11 +41,11 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-limitRows lineitem 4;
+select * from lineitem limit 4;
 rows: 4
 
 //------------------------------------------------------------------------------
-limitRows lineitem 7;
+select * from lineitem limit 7;
 rows: 7
 
 //------------------------------------------------------------------------------

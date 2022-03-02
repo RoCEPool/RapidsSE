@@ -1,21 +1,12 @@
 
-projectAggreg$_I.test
-projectAggreg$.test
-
 indexJoin.test
 indexScan.test
-
-limitRows.test
-
 loopJoinBroadcast.test
 //loopJoinBroadcastLO.test
 loopJoinHashcast.test
 loopJoinHashcastLO.test
 loopJoinUnicast.test
 loopJoinUnicastLO.test
-
-projectColumns$_I.test
-projectColumns$.test
 
 unionAll$_I.test
 unionAll$.test
