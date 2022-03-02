@@ -121,7 +121,7 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
       pSubRibbon->vNextColumn();
     pCard->vPrintHeader(pSubRibbon);
 
-    pCard->vPrintCard(pSubRibbon,0,this);
+    pCard->vPrintCard(pSubRibbon,0,0);
   }
      
   pRibbon->vPinRibbon(1,0,pSubRibbon);
@@ -137,7 +137,8 @@ void Board::vPrintBoard(Stz* szCue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   i8 iAction = 1;
-
+  TokenVec* pTknVec = nullptr;
+  
   L_Entry:
   
   bool bCue   = true;
@@ -184,7 +185,12 @@ void Board::vPrintBoard(Stz* szCue)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  TokenVec* pTknVec = TokenVec::pTokeniseSen(sInput);
+  if (pTknVec) {
+    delete pTknVec;
+    pTknVec = nullptr;
+  }
+  
+  pTknVec = TokenVec::pTokeniseSen(sInput);
   
   i8 nTokens = pTknVec->nTokens();
   
@@ -195,29 +201,40 @@ void Board::vPrintBoard(Stz* szCue)
   
   if (1 == nTokens)
     pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
-                                           nullptr);
+                                          nullptr);
   else
     pOptFun = gxOptimiserCatalog.pFindFun(pTknVec->pGet(0)->szChars(),
-                                           pTknVec->pGet(1)->szChars());
+                                          pTknVec->pGet(1)->szChars());
 
+  if (! pOptFun) {
+    vTrace("Unknown command\n"_Stz);
+    delete pTknVec;
+    goto L_Input;
+  }
+    
   iAction = 0;
-  if (pOptFun)
-    bExecuted = pOptFun->m_fpOptFun(m_pOptimiser,pTknVec,iAction);
+  bExecuted = pOptFun->m_fpOptFun(m_pOptimiser,pTknVec,iAction);
 
-  L_Exit:
-   delete pTknVec;
+  L_Next:
   
-  if (bExecuted) {
-    if (0 == iAction)
-      goto L_Entry;
-    else
-    if (1 == iAction)
-      goto L_Input;
-    else
-    if (2 == iAction)
-      return;
-    else
-      NEVER_REACH;
+  if (! bExecuted)
+    goto L_Input;
+  
+  if (0 == iAction)
+    goto L_Entry;
+  else
+  if (1 == iAction)
+    goto L_Input;
+  else
+  if (2 == iAction)
+    return;
+  else
+    NEVER_REACH;
+  
+L_Exit:
+  if (pTknVec) {
+    delete pTknVec;
+    pTknVec = nullptr;
   }
 }
 

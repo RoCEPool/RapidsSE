@@ -215,7 +215,7 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    void vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard);
+    void vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iSee);
     void vPrintDetails(Ribbon* pRibbon, i8 iDepth);
     void vPrintHeader(Ribbon* pRibbon);
     void vPrintName(Ribbon* pRibbon, i8 iDepth);

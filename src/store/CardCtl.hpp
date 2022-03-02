@@ -13,9 +13,10 @@ namespace STORE
   {
   protected:
     i8 m_iDepth;
+  
+    i8 m_iaBelow[CK_ENUMS];
     i8 m_iaForm[CK_ENUMS];
     i8 m_iaPrint[CK_ENUMS];
-    i8 m_iaSee[CK_ENUMS];
 
   protected:
     // must be last
@@ -28,6 +29,9 @@ namespace STORE
     CardCtl(void);
    ~CardCtl(void) noexcept(false);
 
+    i8 iBelow(i8 i_Card);
+    void vBelow(i8 i_Card, i8 iBelow);
+  
     i8 iDepth(void);
     void vDepth(i8 iDepth);
 
@@ -37,8 +41,6 @@ namespace STORE
     i8 iPrint(i8 i_Card);
     void vPrint(i8 i_Card, i8 iPrint);
 
-    i8 iSee(i8 i_Card);
-    void vSee(i8 i_Card, i8 iForm);
   
   protected:
     Footer* aFooter(void);

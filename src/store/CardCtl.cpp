@@ -25,8 +25,8 @@ CardCtl::CardCtl(void)
   
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
     vForm(i_Card,1);
-    vPrint(i_Card,1);
-    vSee(i_Card,0);
+    vPrint(i_Card,0);
+    vBelow(i_Card,0);
   }
   
   _checkInitialised_(CN_CARDCTL);
@@ -46,6 +46,28 @@ CardCtl::~CardCtl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get iBelow for card                                                        */
+/*----------------------------------------------------------------------------*/
+i8 CardCtl::iBelow(i8 i_Card)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  i8 iBelow = m_iaBelow[i_Card];
+  
+  return iBelow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set iBelow for card                                                        */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vBelow(i8 i_Card, i8 iBelow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  m_iaBelow[i_Card] = iBelow;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get print depth                                                            */
@@ -109,28 +131,6 @@ void CardCtl::vPrint(i8 i_Card, i8 iPrint)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
   m_iaPrint[i_Card] = iPrint;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get iSee for card                                                          */
-/*----------------------------------------------------------------------------*/
-i8 CardCtl::iSee(i8 i_Card)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  i8 iSee = m_iaSee[i_Card];
-  
-  return iSee;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set iSee for card                                                          */
-/*----------------------------------------------------------------------------*/
-void CardCtl::vSee(i8 i_Card, i8 iSee)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  m_iaSee[i_Card] = iSee;
 }
 
 /*============================================================================*/

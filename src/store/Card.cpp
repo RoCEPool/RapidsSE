@@ -1726,17 +1726,16 @@ void Card::vType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
+void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iBelow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
-
-  if (iDepth > pCardCtl->iDepth())
-    return;
   
-    
-  if (pCardCtl->iPrint(m_eCard)) {
+  if (pCardCtl->iBelow(m_eCard))
+    iBelow = pCardCtl->iBelow(m_eCard);
+
+  if (iDepth <= pCardCtl->iDepth() || iBelow || pCardCtl->iPrint(m_eCard)) {
     vPrintName(pRibbon,iDepth);
     vPrintDetails(pRibbon,iDepth);
   }
@@ -1747,7 +1746,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
   while (pCard_I->bHasNext()) {
     Card* pCard = pCard_I->pNext();
 
-    pCard->vPrintCard(pRibbon,iDepth + 1,pBoard);
+    pCard->vPrintCard(pRibbon,iDepth + 1,iBelow);
   }
 
   delete pCard_I;
@@ -1763,88 +1762,6 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
   
   eCK eCard = this->eCard();
   
-  CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
-  
-  i8 iPrint = pCardCtl->iPrint(eCard);
-  
-  switch (eCard) {
-
-    case CK_AGGELIST:    if (! iPrint) return; break;
-    case CK_AGGLEVEL:    if (! iPrint) return; break;
-    case CK_AGGREG:      if (! iPrint) return; break;
-    case CK_AS:          if (! iPrint) return; break;
-
-    case CK_CANDINDEX:   if (! iPrint) return; break;
-    case CK_COMBINE:     if (! iPrint) return; break;
-
-    case CK_DEBUG:       if (! iPrint) return; break;
-
-    case CK_EBOUND:      if (! iPrint) return; break;
-    case CK_EXISTS:      if (! iPrint) return; break;
-    case CK_EXPR:        if (! iPrint) return; break;
-    case CK_EXPRBOOL:    if (! iPrint) return; break;
-    case CK_EXPRCALC:    if (! iPrint) return; break;
-
-    case CK_FILTER:      if (! iPrint) return; break;
-
-    case CK_GBYELIST:    if (! iPrint) return; break;
-    case CK_GENERATE:    if (! iPrint) return; break;
-
-    case CK_HASH:        if (! iPrint) return; break;
-    case CK_HAVING:      if (! iPrint) return; break;
-
-    case CK_INDEX:       if (! iPrint) return; break;
-    case CK_INDEXJOIN:   if (! iPrint) return; break;
-    case CK_INDEXPRED:   if (! iPrint) return; break;
-    case CK_INDEXSCAN:   if (! iPrint) return; break;
-
-    case CK_LBOUND:      if (! iPrint) return; break;
-    case CK_LIMIT:       if (! iPrint) return; break;
-
-    case CK_MODE:        if (! iPrint) return; break;
-
-    case CK_NAME:        if (! iPrint) return; break;
-
-    case CK_ON:          if (! iPrint) return; break;
-    case CK_OPTION:      if (! iPrint) return; break;
-    case CK_ORDAGG:      if (! iPrint) return; break;
-
-    case CK_PREDAND:     if (! iPrint) return; break;
-    case CK_PREDCMP:     if (! iPrint) return; break;
-    case CK_PREDOR:      if (! iPrint) return; break;
-    case CK_PROJECT:     if (! iPrint) return; break;
-    case CK_PROJELIST:   if (! iPrint) return; break;
-
-    case CK_RBOUND:      if (! iPrint) return; break;
-    case CK_ROWS:        if (! iPrint) return; break;
-
-    case CK_SBYELIST:    if (! iPrint) return; break;
-    case CK_SCAN:        if (! iPrint) return; break;
-    case CK_SEND:        if (! iPrint) return; break;
-    case CK_SENDKIND:    if (! iPrint) return; break;
-    case CK_SENDS:       if (! iPrint) return; break;
-    case CK_SORT:        if (! iPrint) return; break;
-    case CK_DIRECTION:   if (! iPrint) return; break;
-    case CK_STAGE:       if (! iPrint) return; break;
-    case CK_STAGETOPO:   if (! iPrint) return; break;
-    case CK_STREAMDEF:   if (! iPrint) return; break;
-
-    case CK_TABLE:       if (! iPrint) return; break;
-    case CK_TERM:        if (! iPrint) return; break;
-    case CK_TYPE:        if (! iPrint) return; break;
-
-    case CK_UBOUND:      if (! iPrint) return; break;
-      
-    default:
-      vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
-             ,__func__
-             ,(i8)eCard
-             ,aCK[eCard]
-             );
-      RASSERT(0);
-      break;
-  }
-
   switch (eCard) {
 
     case CK_AGGELIST:                   vPrintProperties(pRibbon,iDepth); break;

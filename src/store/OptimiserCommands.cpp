@@ -18,19 +18,26 @@ bool STORE::bOpt_add(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   CardCtl* pCardCtl = pOptimiser->pCardCtl();
 
-  if (pTknVec->nItems() < 2)
+  i8 nTkns = pTknVec->nItems();
+  if (nTkns < 2)
     return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pTknVec->pGet(1)->bSame("*"_Stz)) {
     for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
       pCardCtl->vPrint(i_Card,1);
     }
+    return true;
   }
-  else {
-    Stz* szName = pTknVec->pGet(1)->szChars();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  for (i8 i_Tkn = 1; i_Tkn < nTkns; i_Tkn++) {
+    Stz* szName = pTknVec->pGet(i_Tkn)->szChars();
     eCK eCard = Card::eToECard(szName);
     if (CK_NONE == eCard)
-      return false;
+      continue;
     
     pCardCtl->vPrint(eCard,1);
   }
@@ -48,6 +55,57 @@ OptimiserFun __Opt_add
   "add card print"_Stz
 );
 
+/*----------------------------------------------------------------------------*/
+/* below                                                                      */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_below(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+{
+  vTrace("bOpt_below\n"_Stz);
+  
+  s4K sCmd;
+  pTknVec->vToTknString(sCmd);
+  
+  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
+  
+  CardCtl* pCardCtl = pOptimiser->pCardCtl();
+
+  i8 nTkns = pTknVec->nItems();
+  if (pTknVec->nItems() < 2)
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (pTknVec->pGet(1)->bSame("*"_Stz)) {
+    for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
+      pCardCtl->vBelow(i_Card,1);
+    }
+    
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (i8 i_Tkn = 1; i_Tkn < nTkns; i_Tkn++) {
+    Stz* szName = pTknVec->pGet(i_Tkn)->szChars();
+    eCK eCard = Card::eToECard(szName);
+    if (CK_NONE == eCard)
+      continue;
+    
+    pCardCtl->vBelow(eCard,1);
+  }
+  
+  return true;
+}
+
+OptimiserFun __Opt_below
+(
+  "below"_Stz,        // name of the prompt function
+  "below"_Stz,        // command first word
+  nullptr,            // command second word
+  bOpt_below,         // function to call
+  0,0,                // spare
+  "set card below"_Stz
+);
 
 /*----------------------------------------------------------------------------*/
 /* depth                                                                      */
@@ -65,7 +123,8 @@ bool STORE::bOpt_depth(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 
   i8 iDepth = pCardCtl->iDepth();
   
-  if (pTknVec->nItems() < 2) {
+  i8 nTkns = pTknVec->nItems();
+  if (nTkns < 2) {
     vTrace("depth : %lld\n"_Stz,iDepth);
     riAction = 1;
     return true;
@@ -90,6 +149,59 @@ OptimiserFun __Opt_depth
   "set print depth limit"_Stz
 );
 
+/*----------------------------------------------------------------------------*/
+/* form                                                                       */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_form(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+{
+  vTrace("bOpt_form\n"_Stz);
+  
+  s4K sCmd;
+  pTknVec->vToTknString(sCmd);
+  
+  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
+  
+  CardCtl* pCardCtl = pOptimiser->pCardCtl();
+
+  i8 nTkns = pTknVec->nItems();
+  if (nTkns < 3)
+    return false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 iForm = pTknVec->pGet(1)->iToI8();
+  
+  if (pTknVec->pGet(2)->bSame("*"_Stz)) {
+    for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
+      pCardCtl->vForm(i_Card,iForm);
+    }
+    
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  for (i8 i_Tkn = 2; i_Tkn < nTkns; i_Tkn++) {
+    Stz* szName = pTknVec->pGet(i_Tkn)->szChars();
+    eCK eCard = Card::eToECard(szName);
+    if (CK_NONE == eCard)
+      continue;
+    
+    pCardCtl->vForm(eCard,iForm);
+  }
+  
+  return true;
+}
+
+OptimiserFun __Opt_form
+(
+  "form"_Stz,         // name of the prompt function
+  "form"_Stz,         // command first word
+  nullptr,            // command second word
+  bOpt_form,          // function to call
+  0,0,                // spare
+  "set card print form"_Stz
+);
 
 /*----------------------------------------------------------------------------*/
 /* hide                                                                        */
@@ -105,21 +217,29 @@ bool STORE::bOpt_hide(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   CardCtl* pCardCtl = pOptimiser->pCardCtl();
 
-  if (pTknVec->nItems() < 2)
+  i8 nTkns = pTknVec->nItems();
+  if (nTkns < 2)
     return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pTknVec->pGet(1)->bSame("*"_Stz)) {
     for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
-      pCardCtl->vSee(i_Card,0);
+      pCardCtl->vBelow(i_Card,0);
     }
+    
+    return true;
   }
-  else {
-    Stz* szName = pTknVec->pGet(1)->szChars();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  for (i8 i_Tkn = 1; i_Tkn < nTkns; i_Tkn++) {
+    Stz* szName = pTknVec->pGet(i_Tkn)->szChars();
     eCK eCard = Card::eToECard(szName);
     if (CK_NONE == eCard)
       return false;
     
-    pCardCtl->vSee(eCard,0);
+    pCardCtl->vBelow(eCard,0);
   }
   
   return true;
@@ -136,47 +256,25 @@ OptimiserFun __Opt_hide
 );
 
 /*----------------------------------------------------------------------------*/
-/* see                                                                        */
+/* print                                                                       */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_see(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_reprint(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
-  vTrace("bOpt_see\n"_Stz);
+  vTrace("bOpt_reprint\n"_Stz);
   
-  s4K sCmd;
-  pTknVec->vToTknString(sCmd);
-  
-  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
-  
-  CardCtl* pCardCtl = pOptimiser->pCardCtl();
-
-  if (pTknVec->nItems() < 2)
-    return false;
-  
-  if (pTknVec->pGet(1)->bSame("*"_Stz)) {
-    for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
-      pCardCtl->vSee(i_Card,1);
-    }
-  }
-  else {
-    Stz* szName = pTknVec->pGet(1)->szChars();
-    eCK eCard = Card::eToECard(szName);
-    if (CK_NONE == eCard)
-      return false;
-    
-    pCardCtl->vSee(eCard,1);
-  }
+  riAction = 0;
   
   return true;
 }
 
-OptimiserFun __Opt_see
+OptimiserFun __Opt_reprint
 (
-  "see"_Stz,          // name of the prompt function
-  "see"_Stz,          // command first word
+  "reprint"_Stz,      // name of the prompt function
+  "."_Stz,            // command first word
   nullptr,            // command second word
-  bOpt_see,           // function to call
+  bOpt_reprint,       // function to call
   0,0,                // spare
-  "set card see"_Stz
+  "reprint board"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +282,7 @@ OptimiserFun __Opt_see
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_sub(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
-  vTrace("bOptimser_b\n"_Stz);
+  vTrace("bOpt_sub\n"_Stz);
   
   s4K sCmd;
   pTknVec->vToTknString(sCmd);
@@ -193,22 +291,28 @@ bool STORE::bOpt_sub(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   
   CardCtl* pCardCtl = pOptimiser->pCardCtl();
   
-  if (pTknVec->nItems() < 2)
+  i8 nTkns = pTknVec->nItems();
+  if (nTkns < 2)
     return false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (pTknVec->pGet(1)->bSame("*"_Stz)) {
     for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
       if (Card::bIsMain((eCK)i_Card))
         continue;
       pCardCtl->vPrint(i_Card,0);
     }
+    return true;
   }
-  else {
-    Stz* szName = pTknVec->pGet(1)->szChars();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  for (i8 i_Tkn = 1; i_Tkn < nTkns; i_Tkn++) {
+    Stz* szName = pTknVec->pGet(i_Tkn)->szChars();
     eCK eCard = Card::eToECard(szName);
     if (CK_NONE == eCard)
-      return false;
-    
+      continue;
     
     pCardCtl->vPrint(eCard,0);
   }
