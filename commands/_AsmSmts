@@ -234,11 +234,6 @@ select
 //projectColumns_I lineitem "1";
 //projectColumns_I lineitem "l_discount , 1";
 
-//filterRows lineitem "l_orderkey 1 == <>";
-
-//filterRows lineitem "1 1 == <>";
-
-
 //select l_orderkey from rapidsse.public.lineitem;
 
 //select L_ORDERKEY + 1 , sum(L_QUANTITY) from lineitem group by l_orderkey + 1;
@@ -432,9 +427,6 @@ begin
 
  end ;
 
-///traceOp filterRows_I lineitem " sum ( l_discount ) ";
-
-
 // group by l_orderkey";
 
 
@@ -444,10 +436,6 @@ projectColumns_I lineitem 2;
 projectColumns lineitem 2;
 projectColumns_I lineitem "l_partkey";
 projectColumns lineitem "l_partkey , l_partKey 2 * , l_partKey 2.0 * ";
-
-//filterRows lineitem "l_discount 0.04 >= <>";
-
-filterRows lineitem "l_orderkey 1 == <>";
 
 pipeline Query6
 begin
@@ -518,32 +506,6 @@ begin
   stage stageC on origin :
     output | sink | stageA
 end;
-
-
-projectColumns_I lineitem sum(l_discount);
-projectColumns_I lineitem sum(l_extendedPrice l_discount *);
-projectColumns_I lineitem "DATE '1994-01-01'";
-projectColumns_I lineitem 2 as a , l_extendedPrice as b;
-projectColumns_I lineitem l_extendedPrice , 2;
-projectColumns_I lineitem 2, l_extendedPrice;
-projectColumns_I lineitem l_extendedPrice;
-projectColumns_I lineitem as x l_extendedPrice;
-projectColumns_I lineitem l_extendedPrice 0 >= ;
-projectColumns_I lineitem l_shipdate, l_extendedPrice 2 *, l_extendedPrice;
-projectColumns_I lineitem l_extendedPrice, 2 as number;
-projectColumns_I lineitem l_extendedPrice, l_discount, L_COMMENT;
-
-filterRows_I lineitem "l_discount 0.04 >= <>";
-filterRows_I lineitem "l_discount 0.04 >= <> l_discount 0.06 <= <>";
-filterRows_I lineitem "l_discount 0.05 0.01 - >= <> l_discount 0.05 0.01 + <= <>";
-filterRows_I lineitem "l_discount 0.04 >= <> l_discount 0.06 <= <> l_quantity 24.0 < <>";
-filterRows_I lineitem "l_discount 0.04 >= l_discount 0.06 <= l_quantity 24.0 < and and <>";
-filterRows_I lineitem "l_shipdate DATE '1994-01-01' >=  <> l_shipdate DATE '1995-01-01' < <>";
-filterRows_I lineitem "l_shipdate DATE '1994-01-01' >=  <>";
-filterRows lineitem "l_shipdate > DATE '1994-01-01' <>";
-
-indexScan_I lineitem lineitem_idx2 "30 >= 50 <";
-indexScan_I lineitem lineitem_idx1  "'1994-01-01' >=  '1995-01-01' <";
 
 
 pipeline QueryScan6
