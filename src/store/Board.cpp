@@ -33,15 +33,24 @@ Board::Board(Stz* szQueryNm)
   m_pCardCtl   = nullptr;
   m_sQueryNm   = szQueryNm;
   
-  m_pCandidateIndex     = nullptr;
-  m_pComparePred_ebound = nullptr;
-  m_pComparePred_lbound = nullptr;
-  m_pComparePred_ubound = nullptr;
-  m_pFilter             = nullptr;
-  m_pIndexScan          = nullptr;
-  m_pProject            = nullptr;
-  m_pScan               = nullptr;
-  m_pStage              = nullptr;
+  m_pPredCmp_ebound = nullptr;
+  m_pPredCmp_lbound = nullptr;
+  m_pPredCmp_ubound = nullptr;
+  
+  m_pAggreg    = nullptr;
+  m_pCandIndex = nullptr;
+  m_pCombine   = nullptr;
+  m_pFilter    = nullptr;
+  m_pHash      = nullptr;
+  m_pIndexJoin = nullptr;
+  m_pIndexScan = nullptr;
+  m_pLimit     = nullptr;
+  m_pOrdAgg    = nullptr;
+  m_pProject   = nullptr;
+  m_pScan      = nullptr;
+  m_pSend      = nullptr;
+  m_pSort      = nullptr;
+  m_pStage     = nullptr;
 
   m_pIndex     = nullptr;
   m_pStreamDef = nullptr;
@@ -283,68 +292,88 @@ void Board::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vCandidateIndex(Card_CandIndex* pCandidateIndex)
+void Board::vPredCmp_ebound(Card_PredCmp* pPredCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  if (m_pCandidateIndex)
-    m_pCandidateIndex->vMark2(' ');
+  if (m_pPredCmp_ebound)
+    m_pPredCmp_ebound->vMark2(' ');
   
-  m_pCandidateIndex = pCandidateIndex;
+  m_pPredCmp_ebound = pPredCmp;
   
-  if (m_pCandidateIndex) {
-    m_pCandidateIndex->vMark2('m');
+  if (m_pPredCmp_ebound)
+    m_pPredCmp_ebound->vMark2('E');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPredCmp_lbound(Card_PredCmp* pPredCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (m_pPredCmp_lbound)
+    m_pPredCmp_lbound->vMark2(' ');
+  
+  m_pPredCmp_lbound = pPredCmp;
+  
+  if (m_pPredCmp_lbound)
+    m_pPredCmp_lbound->vMark2('L');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPredCmp_ubound(Card_PredCmp* pPredCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (m_pPredCmp_ubound)
+    m_pPredCmp_ubound->vMark2(' ');
+  
+  m_pPredCmp_ubound = pPredCmp;
+  
+  if (m_pPredCmp_ubound)
+    m_pPredCmp_ubound->vMark2('U');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vAggreg(Card_Aggreg* pAggreg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
     
-    vIndex(m_pCandidateIndex->pFindSubCard(CK_INDEX)->pIndex());
+  m_pAggreg = pAggreg;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vCandIndex(Card_CandIndex* pCandidateIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (m_pCandIndex)
+    m_pCandIndex->vMark2(' ');
+  
+  m_pCandIndex = pCandidateIndex;
+  
+  if (m_pCandIndex) {
+    m_pCandIndex->vMark2('m');
+    
+    vIndex(m_pCandIndex->pFindSubCard(CK_INDEX)->pIndex());
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vComparePred_ebound(Card_PredCmp* pComparePred)
+void Board::vCombine(Card_Combine* pCombine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  if (m_pComparePred_ebound)
-    m_pComparePred_ebound->vMark2(' ');
-  
-  m_pComparePred_ebound = pComparePred;
-  
-  if (m_pComparePred_ebound)
-    m_pComparePred_ebound->vMark2('E');
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vComparePred_lbound(Card_PredCmp* pComparePred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  if (m_pComparePred_lbound)
-    m_pComparePred_lbound->vMark2(' ');
-  
-  m_pComparePred_lbound = pComparePred;
-  
-  if (m_pComparePred_lbound)
-    m_pComparePred_lbound->vMark2('L');
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vComparePred_ubound(Card_PredCmp* pComparePred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  if (m_pComparePred_ubound)
-    m_pComparePred_ubound->vMark2(' ');
-  
-  m_pComparePred_ubound = pComparePred;
-  
-  if (m_pComparePred_ubound)
-    m_pComparePred_ubound->vMark2('U');
+    
+  m_pCombine = pCombine;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -366,6 +395,26 @@ void Board::vFilter(Card_Filter* pFilter)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vHash(Card_Hash* pHash)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+    
+  m_pHash = pHash;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vIndexJoin(Card_IndexJoin* pIndexJoin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+    
+  m_pIndexJoin = pIndexJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vIndexScan(Card_IndexScan* pIndexScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -377,6 +426,26 @@ void Board::vIndexScan(Card_IndexScan* pIndexScan)
   
   if (m_pIndexScan)
     m_pIndexScan->vMark2('m');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vLimit(Card_Limit* pLimit)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+    
+  m_pLimit = pLimit;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vOrdAgg(Card_OrdAgg* pOrdAgg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+    
+  m_pOrdAgg = pOrdAgg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,6 +478,16 @@ void Board::vScan(Card_Scan* pScan)
   
   if (m_pScan)
     m_pScan->vMark2('m');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vSort(Card_Sort* pSort)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+    
+  m_pSort = pSort;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -466,10 +545,10 @@ void Board::vResetRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  vCandidateIndex(nullptr);
-  vComparePred_ebound(nullptr);
-  vComparePred_lbound(nullptr);
-  vComparePred_ubound(nullptr);
+  vCandIndex(nullptr);
+  vPredCmp_ebound(nullptr);
+  vPredCmp_lbound(nullptr);
+  vPredCmp_ubound(nullptr);
   vFilter(nullptr);
   vIndexScan(nullptr);
   vProject(nullptr);
@@ -777,40 +856,40 @@ void Board::vAdd_IndexScan(void)
   Card_BOUND* pCard_BOUND;
   Card_PRED*  pCard_PRED;
 
-  if (m_pComparePred_ebound) {
+  if (m_pPredCmp_ebound) {
     pCard_BOUND = new Card_EBound;
     
-    pCard_PRED = m_pComparePred_ebound->pDup();
+    pCard_PRED = m_pPredCmp_ebound->pDup();
     pCard_PRED->vHasEBound(true);
     pCard_BOUND->vAppend(pCard_PRED);
   }
   else
-  if (m_pComparePred_lbound && m_pComparePred_ubound) {
+  if (m_pPredCmp_lbound && m_pPredCmp_ubound) {
     pCard_BOUND = new Card_RBound;
     
-    pCard_PRED = m_pComparePred_lbound->pDup();
+    pCard_PRED = m_pPredCmp_lbound->pDup();
     pCard_PRED->vHasLBound(true);
     pCard_BOUND->vAppend(pCard_PRED);
     
-    pCard_PRED = m_pComparePred_ubound->pDup();
+    pCard_PRED = m_pPredCmp_ubound->pDup();
     pCard_PRED->vHasUBound(true);
     pCard_BOUND->vAppend(pCard_PRED);
   }
   else
-  if (m_pComparePred_lbound) {
+  if (m_pPredCmp_lbound) {
     pCard_BOUND = new Card_LBound;
     
-    pCard_PRED = m_pComparePred_lbound->pDup();
+    pCard_PRED = m_pPredCmp_lbound->pDup();
     pCard_PRED->vHasLBound(true);
     pCard_BOUND->vAppend(pCard_PRED);
   }
   else
-  if (m_pComparePred_ubound) {
+  if (m_pPredCmp_ubound) {
     pCard_BOUND = new Card_UBound;
     
-    pCard_PRED = m_pComparePred_ubound->pDup();
+    pCard_PRED = m_pPredCmp_ubound->pDup();
     pCard_PRED->vHasUBound(true);
-    pCard_BOUND->vAppend(m_pComparePred_ubound->pDup());
+    pCard_BOUND->vAppend(m_pPredCmp_ubound->pDup());
   }
   else {
     RASSERT(0);
@@ -854,9 +933,9 @@ void Board::vAdd_IndexScan(void)
   
   vIndexScan(pCard_IndexScan);
   
-//  vComparePred_ebound(nullptr);
-//  vComparePred_lbound(nullptr);
-//  vComparePred_ubound(nullptr);
+//  vPredCmp_ebound(nullptr);
+//  vPredCmp_lbound(nullptr);
+//  vPredCmp_ubound(nullptr);
 }
 /*----------------------------------------------------------------------------*/
 //void Board::vAdd_IndexScan(void)
@@ -926,24 +1005,22 @@ void Board::vCut_CandidateIndexes(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vCut_ComparePreds(void)
+void Board::vCut_PredCmps(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  if (m_pComparePred_ebound)
-    m_pFilter->vRemoveSubCard(m_pComparePred_ebound);
+  if (m_pPredCmp_ebound)
+    m_pFilter->vRemoveSubCard(m_pPredCmp_ebound);
   
-  if (m_pComparePred_lbound)
-    m_pFilter->vRemoveSubCard(m_pComparePred_lbound);
+  if (m_pPredCmp_lbound)
+    m_pFilter->vRemoveSubCard(m_pPredCmp_lbound);
   
-  if (m_pComparePred_ubound)
-    m_pFilter->vRemoveSubCard(m_pComparePred_ubound);
+  if (m_pPredCmp_ubound)
+    m_pFilter->vRemoveSubCard(m_pPredCmp_ubound);
   
-  
-  vComparePred_ebound(nullptr);
-  vComparePred_lbound(nullptr);
-  vComparePred_ubound(nullptr);
-
+  vPredCmp_ebound(nullptr);
+  vPredCmp_lbound(nullptr);
+  vPredCmp_ubound(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1009,26 +1086,26 @@ bool Board::bFind_Scan_Filter(bool bMark)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vMark_ComparePreds(void)
+void Board::vMark_PredCmps(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  i8 iRank = m_pCandidateIndex->iRank();
+  i8 iRank = m_pCandIndex->iRank();
   
   switch (iRank) {
       
     case 1: {
       // lower bound or upper bound
-      Card_PredCmp* pComparePred_lbound =
+      Card_PredCmp* pPredCmp_lbound =
         m_pFilter->pFindBound(m_pIndex,BK_LBOUND);
-      if (pComparePred_lbound) {
-        vComparePred_lbound(pComparePred_lbound);
+      if (pPredCmp_lbound) {
+        vPredCmp_lbound(pPredCmp_lbound);
         break;
       }
-      Card_PredCmp* pComparePred_ubound =
+      Card_PredCmp* pPredCmp_ubound =
         m_pFilter->pFindBound(m_pIndex,BK_UBOUND);
-      if (pComparePred_ubound) {
-        vComparePred_ubound(pComparePred_ubound);
+      if (pPredCmp_ubound) {
+        vPredCmp_ubound(pPredCmp_ubound);
         break;
       }
       break;
@@ -1036,23 +1113,23 @@ void Board::vMark_ComparePreds(void)
 
     case 2: {
       // lower bound and upper bound
-      Card_PredCmp* pComparePred_lbound =
+      Card_PredCmp* pPredCmp_lbound =
         m_pFilter->pFindBound(m_pIndex,BK_LBOUND);
-      if (pComparePred_lbound)
-        vComparePred_lbound(pComparePred_lbound);
-      Card_PredCmp* pComparePred_ubound =
+      if (pPredCmp_lbound)
+        vPredCmp_lbound(pPredCmp_lbound);
+      Card_PredCmp* pPredCmp_ubound =
         m_pFilter->pFindBound(m_pIndex,BK_UBOUND);
-      if (pComparePred_ubound)
-        vComparePred_ubound(pComparePred_ubound);
+      if (pPredCmp_ubound)
+        vPredCmp_ubound(pPredCmp_ubound);
       break;
     }
       
     case 3: {
       // equi-bound
-      Card_PredCmp* pComparePred_ebound =
+      Card_PredCmp* pPredCmp_ebound =
         m_pFilter->pFindBound(m_pIndex,BK_EBOUND);
-      if (pComparePred_ebound)
-        vComparePred_ebound(pComparePred_ebound);
+      if (pPredCmp_ebound)
+        vPredCmp_ebound(pPredCmp_ebound);
       break;
     }
 
@@ -1122,11 +1199,11 @@ bool Board::bPick_CandidateIndex(void)
   }
 
   if (! pCard_CandIndex) {
-    vCandidateIndex(nullptr);
+    vCandIndex(nullptr);
     return false;
   }
   
-  vCandidateIndex(pCard_CandIndex);
+  vCandIndex(pCard_CandIndex);
 
   return true;
 }
@@ -1360,14 +1437,14 @@ bool Board::bRule_Scan_Filter_to_IndexScan(void)
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vMark_ComparePreds();
-  vPrintBoard("vMark_ComparePreds >>> "_Stz);
+  vMark_PredCmps();
+  vPrintBoard("vMark_PredCmps >>> "_Stz);
   
   vAdd_IndexScan();
   vPrintBoard("vAdd_IndexScan >>> "_Stz);
 
-  vCut_ComparePreds();
-  vPrintBoard("vCut_ComparePreds >>> "_Stz);
+  vCut_PredCmps();
+  vPrintBoard("vCut_PredCmps >>> "_Stz);
   
   vReduce_Filter();
   vPrintBoard("vReduce_Filter >>> "_Stz);

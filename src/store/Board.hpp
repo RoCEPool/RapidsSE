@@ -20,15 +20,24 @@ namespace STORE
     s32 m_sQueryNm;
 
     // registers
-    Card_CandIndex*  m_pCandidateIndex;
-    Card_PredCmp*    m_pComparePred_ebound;
-    Card_PredCmp*    m_pComparePred_lbound;
-    Card_PredCmp*    m_pComparePred_ubound;
+    Card_Aggreg*     m_pAggreg;
+    Card_CandIndex*  m_pCandIndex;
+    Card_Combine*    m_pCombine;
     Card_Filter*     m_pFilter;
+    Card_Hash*       m_pHash;
+    Card_IndexJoin*  m_pIndexJoin;
     Card_IndexScan*  m_pIndexScan;
+    Card_Limit*      m_pLimit;
+    Card_OrdAgg*     m_pOrdAgg;
     Card_Project*    m_pProject;
     Card_Scan*       m_pScan;
+    Card_Send*       m_pSend;
+    Card_Sort*       m_pSort;
     Card_Stage*      m_pStage;
+
+    Card_PredCmp*    m_pPredCmp_ebound;
+    Card_PredCmp*    m_pPredCmp_lbound;
+    Card_PredCmp*    m_pPredCmp_ubound;
 
     Index*     m_pIndex;
     StreamDef* m_pStreamDef;
@@ -57,20 +66,30 @@ namespace STORE
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    void vCandidateIndex(Card_CandIndex* pCandidateIndex);
-    void vComparePred_ebound(Card_PredCmp* pComparePred);
-    void vComparePred_lbound(Card_PredCmp* pComparePred);
-    void vComparePred_ubound(Card_PredCmp* pComparePred);
-    void vFilter(Card_Filter* pFilter);
+    void vAggreg   (Card_Aggreg*    pAggreg);
+    void vCandIndex(Card_CandIndex* pCandIndex);
+    void vCombine  (Card_Combine*   pCombine);
+    void vFilter   (Card_Filter*    pFilter);
+    void vHash     (Card_Hash*      pHash);
+    void vIndexJoin(Card_IndexJoin* pIndexJoin);
     void vIndexScan(Card_IndexScan* pIndexScan);
-    void vProject(Card_Project* pProject);
-    void vScan(Card_Scan* pScan);
-    void vStage(Card_Stage* pStage);
+    void vLimit    (Card_Limit*     pLimit);
+    void vOrdAgg   (Card_OrdAgg*    pOrdAgg);
+    void vProject  (Card_Project*   pProject);
+    void vScan     (Card_Scan*      pScan);
+    void vSort     (Card_Sort*      pSort);
+    void vStage    (Card_Stage*     pStage);
 
-    void vIndex(Index* pIndex);
+    void vPredCmp_ebound(Card_PredCmp* pPredCmp);
+    void vPredCmp_lbound(Card_PredCmp* pPredCmp);
+    void vPredCmp_ubound(Card_PredCmp* pPredCmp);
+
+
+    void vIndex    (Index*     pIndex);
     void vStreamDef(StreamDef* pStreamDef);
-    void vTable(Table* pTable);
+    void vTable    (Table*     pTable);
 
+    void vInRegister(Card* pCard);
     void vResetRegisters(void);
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -93,7 +112,7 @@ namespace STORE
   
     void vCut_CandidateIndexes       (void);
   
-    void vCut_ComparePreds           (void);
+    void vCut_PredCmps               (void);
   
     void vCut_Scan                   (void);
   
@@ -101,7 +120,7 @@ namespace STORE
   
     bool bFind_Scan_Filter           (bool bMark);
   
-    void vMark_ComparePreds          (void);
+    void vMark_PredCmps              (void);
   
     void vOrder_ProjectiveStreamDefs (void);
   
