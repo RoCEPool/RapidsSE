@@ -1338,51 +1338,51 @@ bool Board::bRule_Scan_Filter_to_IndexScan(void)
   bool bMay = bFind_Scan_Filter(true);
   RASSERT(bMay);
   
-  vPrintBoard("bFind_Scan_Filter >> "_Stz);
+  vPrintBoard("bFind_Scan_Filter >>> "_Stz);
   
   bool bAdded = bAdd_CandIndexes();
   UNUSED(bAdded);
-  vPrintBoard("bAdd_CandidateIndexes >> "_Stz);
+  vPrintBoard("bAdd_CandidateIndexes >>> "_Stz);
 
   vRank_CandidateIndexes();
-  vPrintBoard("vRank_CandidateIndexes >> "_Stz);
+  vPrintBoard("vRank_CandidateIndexes >>> "_Stz);
   
   bool bPicked = bPick_CandidateIndex();
-  vPrintBoard("bPick_CandidateIndex >> "_Stz);
+  vPrintBoard("bPick_CandidateIndex >>> "_Stz);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (! bPicked) {
     
     vCut_CandidateIndexes();
-    vPrintBoard("vCut_CandidateIndexes >> "_Stz);
+    vPrintBoard("vCut_CandidateIndexes >>> "_Stz);
     
     return false;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vMark_ComparePreds();
-  vPrintBoard("vMark_ComparePreds >> "_Stz);
+  vPrintBoard("vMark_ComparePreds >>> "_Stz);
   
   vAdd_IndexScan();
-  vPrintBoard("vAdd_IndexScan >> "_Stz);
+  vPrintBoard("vAdd_IndexScan >>> "_Stz);
 
   vCut_ComparePreds();
-  vPrintBoard("vCut_ComparePreds >> "_Stz);
+  vPrintBoard("vCut_ComparePreds >>> "_Stz);
   
   vReduce_Filter();
-  vPrintBoard("vReduce_Filter >> "_Stz);
+  vPrintBoard("vReduce_Filter >>> "_Stz);
   
   vCull_Filter();
-  vPrintBoard("vCull_Filter >> "_Stz);
+  vPrintBoard("vCull_Filter >>> "_Stz);
   
   vCut_Scan();
-  vPrintBoard("vCut_Scan >> "_Stz);
+  vPrintBoard("vCut_Scan >>> "_Stz);
   
   vCut_CandidateIndexes();
-  vPrintBoard("vCut_CandidateIndexes >> "_Stz);
+  vPrintBoard("vCut_CandidateIndexes >>> "_Stz);
   
   vOrder_ProjectiveStreamDefs();
-  vPrintBoard("vOrder_ProjectiveStreamDefs >> "_Stz);
+  vPrintBoard("vOrder_ProjectiveStreamDefs >>> "_Stz);
   
   return true;
 }
