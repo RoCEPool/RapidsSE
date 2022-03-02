@@ -658,6 +658,9 @@ Card_GbyElist* Dissect::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
     // TYPE <type> [ AS <as> ] <calcExpr>
     Card_Expr* pCard_Expr = pExpr_c(pCard_RpnTerms);
     
+    Card_Direction* pCard_Direction = new Card_Direction(aSD_short[SD_ASC]);
+    pCard_Expr->vAppend(pCard_Direction);
+    
     pCard_GbyElist->vAppend(pCard_Expr);
   }
 
