@@ -15,6 +15,7 @@ namespace STORE
     i8 m_iDepth;
     i8 m_iaForm[CK_ENUMS];
     i8 m_iaPrint[CK_ENUMS];
+    i8 m_iaSee[CK_ENUMS];
 
   protected:
     // must be last
@@ -36,6 +37,9 @@ namespace STORE
     i8 iPrint(i8 i_Card);
     void vPrint(i8 i_Card, i8 iPrint);
 
+    i8 iSee(i8 i_Card);
+    void vSee(i8 i_Card, i8 iForm);
+  
   protected:
     Footer* aFooter(void);
   };

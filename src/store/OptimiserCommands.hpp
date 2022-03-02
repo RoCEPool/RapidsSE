@@ -12,6 +12,10 @@ namespace STORE
 
   bool bOpt_depth  (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
+  bool bOpt_hide   (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
+
+  bool bOpt_see    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
+
   bool bOpt_sub    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 }
 
