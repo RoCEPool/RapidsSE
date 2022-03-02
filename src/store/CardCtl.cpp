@@ -24,7 +24,7 @@ CardCtl::CardCtl(void)
   m_iDepth = 99;
   
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++) {
-    vForm(i_Card,1);
+    vForm(i_Card,0);
     vPrint(i_Card,0);
     vBelow(i_Card,0);
   }

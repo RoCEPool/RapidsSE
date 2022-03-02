@@ -1736,7 +1736,16 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iBelow)
     iBelow = pCardCtl->iBelow(m_eCard);
 
   if (iDepth <= pCardCtl->iDepth() || iBelow || pCardCtl->iPrint(m_eCard)) {
-    vPrintName(pRibbon,iDepth);
+    
+    i8 iForm = pCardCtl->iForm(m_eCard);
+    
+    if (iForm) {
+      if (! m_pProperties)
+        vPrintName(pRibbon,iDepth);
+    }
+    else {
+      vPrintName(pRibbon,iDepth);
+    }
     vPrintDetails(pRibbon,iDepth);
   }
   
