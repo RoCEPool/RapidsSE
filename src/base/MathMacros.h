@@ -35,17 +35,6 @@
 
 #define _OF_BCDMUL                                                         \
 (                                                                          \
-  (bcdArg1.m_iMantissa == 0 || bcdArg2.m_iMantissa == 0) ?                 \
-  EC_NONE :                                                                \
-  (bcdArg1.m_iMantissa == -1 && bcdArg2.m_iMantissa == C_BCD_MIN) ?        \
-  EC_ARITHMETIC_OVERFLOW :                                                 \
-  (bcdArg1.m_iMantissa == C_BCD_MIN && bcdArg2.m_iMantissa == -1) ?        \
-  EC_ARITHMETIC_OVERFLOW :                                                 \
-  (bcdArg2.m_iMantissa > C_BCD_MAX / bcdArg1.m_iMantissa) ?                \
-  EC_ARITHMETIC_OVERFLOW :                                                 \
-  (bcdArg1.m_iMantissa != -1 &&                                            \
-  bcdArg2.m_iMantissa < C_BCD_MIN / bcdArg1.m_iMantissa) ?                 \
-  EC_ARITHMETIC_OVERFLOW :                                                 \
   EC_NONE                                                                  \
 )
 
