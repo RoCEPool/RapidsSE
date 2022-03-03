@@ -281,7 +281,7 @@ void TagSet::vDelete(Stz* szName)
     if (TN_STRING == xTagSet.eToken(i_Tag))
       vInsert(xTagSet.szName(i_Tag),xTagSet.szValue(i_Tag));
     else
-    if (TN_STRING == xTagSet.eToken(i_Tag))
+    if (TN_OBJECT == xTagSet.eToken(i_Tag))
       vInsert(xTagSet.szName(i_Tag),xTagSet.pValue(i_Tag));
     else
       vInsert(xTagSet.szName(i_Tag),xTagSet.iValue(i_Tag));
