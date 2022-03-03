@@ -69,9 +69,8 @@ SELECT n_name LIKE null FROM NATION LIMIT 1;
 rows: (null)
 
 -- Runtime test Null escape should return null
-// TODO: Enable when supported
-//SELECT n_name LIKE 'abc' ESCAPE null FROM NATION LIMIT 1;
-//rows: (null)
+SELECT n_name LIKE 'abc' ESCAPE null FROM NATION LIMIT 1;
+rows: (null)
 
 -- Cannot use non-strings in the predicand
 EXPLAIN SELECT 1 LIKE 'abc' FROM NATION LIMIT 1;
@@ -154,9 +153,8 @@ SELECT 'abcdef' LIKE '%_' FROM nation LIMIT 1;
 rows: (true)
 
 -- Runtime test that escape works with a single character
-// TODO: Enable when supported
-//SELECT 'abc_def' LIKE 'abc#_def' ESCAPE '#' FROM NATION LIMIT 1;
-//rows: (true)
+SELECT 'abc_def' LIKE 'abc#_def' ESCAPE '#' FROM NATION LIMIT 1;
+rows: (true)
 
 -- Runtime test that there is no default escape character if escape is not specified (1)
 // TODO: Enable when supported
@@ -164,9 +162,8 @@ rows: (true)
 //rows: (false)
 
 -- Runtime test that there is no default escape character if escape is not specified (2)
-// TODO: Enable when supported
-//SELECT 'abc_def' LIKE 'abc#_def' FROM NATION LIMIT 1;
-//rows: (false)
+SELECT 'abc_def' LIKE 'abc#_def' FROM NATION LIMIT 1;
+rows: (false)
 
 -- Test in the EXPLAIN output that there is no default escape character if escape is not specified (3)
 EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' FROM NATION LIMIT 1;
@@ -276,14 +273,12 @@ EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#', n_name FROM nation 
 failure contains: 'Subquery cannot project more than one column'
 
 -- Runtime test: that the escape character can be matched by duplicating it (1)
-// TODO: Enable when supported
-//SELECT 'abc#def' LIKE 'abc##def' ESCAPE '#' FROM NATION LIMIT 1;
-//rows: (true)
+SELECT 'abc#def' LIKE 'abc##def' ESCAPE '#' FROM NATION LIMIT 1;
+rows: (true)
 
 -- Runtime test: that the escape character can be matched by duplicating it (2)
-// TODO: Enable when supported
-//SELECT 'abc#def' LIKE 'abc##_ef' ESCAPE '#' FROM NATION LIMIT 1;
-//rows: (true)
+SELECT 'abc#def' LIKE 'abc##_ef' ESCAPE '#' FROM NATION LIMIT 1;
+rows: (true)
 
 -- Runtime test: test ESCAPE '', which disables any escaping
 // TODO: Enable when supported
@@ -291,9 +286,8 @@ failure contains: 'Subquery cannot project more than one column'
 //rows: (false)
 
 -- Runtime test: that LIKE is not case sensitive
-// TODO: Enable when supported
-//SELECT 'abcdef' LIKE 'ABCDEF' FROM NATION LIMIT 1;
-//rows: (false)
+SELECT 'abcdef' LIKE 'ABCDEF' FROM NATION LIMIT 1;
+rows: (false)
 
 
 -- Explain of LIKE in SELECT list

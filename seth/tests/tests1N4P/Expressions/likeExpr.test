@@ -69,6 +69,16 @@ rows:
  ('GERMANY')
  ('PERU')
 
+SELECT n_name FROM nation where n_name LIKE 'ALGE_IA' ;
+rows:
+ ('ALGERIA')
+
+SELECT n_name FROM nation where n_name LIKE 'ALGE$_IA' ESCAPE '$' ;
+rows: 0
+
+SELECT 'abc_def' LIKE 'abc#_def' ESCAPE '#' FROM NATION LIMIT 1;
+rows: (true)
+
 drop table nation;
 success
 

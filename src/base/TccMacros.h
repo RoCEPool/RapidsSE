@@ -365,7 +365,7 @@
 // STRING FUNCTIONS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _LIKE(eErrorCode)                                                   \
+#define _LIKE2(eErrorCode)                                                  \
   {                                                                         \
     szArg1 = (char*)*(--paW);                                               \
     szArg2 = (char*)*(--paW);                                               \
@@ -375,7 +375,22 @@
       *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
-      *(paW++) = StrLib_iLike(szArg2, szArg1);                              \
+      *(paW++) = StrLib_iLike2(szArg2, szArg1);                             \
+    }                                                                       \
+  }
+
+#define _LIKE3(eErrorCode)                                                  \
+  {                                                                         \
+    szArg1 = (char*)*(--paW);                                               \
+    szArg2 = (char*)*(--paW);                                               \
+    szArg3 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        szArg1  == (char*)C_DATUM_NULL ||                                   \
+        szArg2  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      *(paW++) = StrLib_iLike3(szArg3, szArg2, *szArg1);                    \
     }                                                                       \
   }
 

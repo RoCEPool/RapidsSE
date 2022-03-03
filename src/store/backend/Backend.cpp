@@ -1221,7 +1221,10 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 //    }
 
     else if (LikeExpr::bIsOfType(pOrdinalExpr)) {
-      sPipeline->vCatSprint(" like "_Stz);
+      if (pOrdinalExpr->nChildren() == 2)
+        sPipeline->vCatSprint(" like2 "_Stz);
+      else
+        sPipeline->vCatSprint(" like3 "_Stz);
     }
 
     else if (InExpr::bIsOfType(pOrdinalExpr)) {

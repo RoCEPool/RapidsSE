@@ -489,8 +489,14 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
-    if (pTkn->bSame("LIKE"_Stz)) {
-      ePreExp = PE_LKE;
+    if (pTkn->bSame("LIKE2"_Stz)) {
+      ePreExp = PE_LK2;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("LIKE3"_Stz)) {
+      ePreExp = PE_LK3;
       pTkn = pTknVec->pNextToken();
       continue;
     }

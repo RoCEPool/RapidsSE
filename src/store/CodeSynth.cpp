@@ -2709,9 +2709,24 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // push the ordinal column on the expr stack
+    // TODO: ALKA cleanup
     if (pTkn->szChars()->bContains("$"_Stz)) {
-      vPushOrdCol(pExprStack, pExprType, eExprKind, pTkn);
-      continue;
+      char *sDollar = (char*)(pTkn->szChars());
+      if (sDollar[0] == '$') {
+        char *sNext = (char*)(pTkn->szChars() + 1);
+        if (StrLib::bIsDigit(sNext[0])) {
+          vPushOrdCol(pExprStack, pExprType, eExprKind, pTkn);
+          continue;
+        }
+        else {
+          char *sNext = (char*)(pTkn->szChars() + 2);
+          if (StrLib::bIsDigit(sNext[0])) {
+            vPushOrdCol(pExprStack, pExprType, eExprKind, pTkn);
+            continue;
+          }
+        }
+      }
+
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2792,7 +2807,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the like expression
-    if (pTkn->bSame("like"_Stz)) {
+    if (pTkn->bSame("like2"_Stz)) {
+      i_Tkn++;
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    if (pTkn->bSame("like3"_Stz)) {
       i_Tkn++;
       vPushFunc(pExprStack, pExprType, ePreExp);
       continue;
@@ -4003,10 +4024,19 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_BOL);
       break;
 
-    case PE_LKE:
+    case PE_LK2:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_LIKE(aCombinedT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_LIKE2(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_VCH);
+      break;
+
+    case PE_LK3:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      eExpr2 = (eDM)pTypeStack->iPop();
+      eExpr3 = (eDM)pTypeStack->iPop();
+      sOperation.vConcat("_LIKE3(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_VCH);
       break;

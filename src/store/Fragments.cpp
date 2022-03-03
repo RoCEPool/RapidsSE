@@ -265,6 +265,7 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    char* szStrArea;"
       "\n    char* szArg1;"
       "\n    char* szArg2;"
+      "\n    char* szArg3;"
       "\n    m8*   amCellAddress;"
       "\n    i8    bFilterResult;"
       "\n    i8    bNullResult;"
