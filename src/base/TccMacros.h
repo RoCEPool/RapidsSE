@@ -375,7 +375,7 @@
       *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
-      *(paW++) = (i8)StrLib_bLike(szArg2, szArg1);                          \
+      *(paW++) = StrLib_iLike(szArg2, szArg1);                              \
     }                                                                       \
   }
 

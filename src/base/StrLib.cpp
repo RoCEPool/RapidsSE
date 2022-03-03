@@ -39,7 +39,8 @@ static Stz* szaAscii[128] = {
 i8 StrLib_iLike(char* azStr, char* azRegExp) {
   _static_
 
-  return StrLib::bLike(azStr, azRegExp);
+  i8 i = StrLib::iLike(azStr, azRegExp);
+  return i;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2861,9 +2862,9 @@ i8 StrLib::nLengthNonBlank(const char* s, const char cTerm, i8 iMax)
 }
 
 /*----------------------------------------------------------------------------*/
-/* like: search for regexp anywhere in given string                          */
+/* like: search for regexp anywhere in given string                           */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bLike(char* azStr, char* azRegExp)
+i8 StrLib::iLike(char* azStr, char* azRegExp)
 {
   /*
 
@@ -2871,53 +2872,46 @@ bool StrLib::bLike(char* azStr, char* azRegExp)
 
       c  matches any literal character c
       _  matches any single character
-      %  matches zero or more occurrences of the any character
+      %  matches zero or more occurrences of any character
 
    */
 
-  do { /* must look even if string is empty */
+  s256 sMatchRegExp;
 
-    if (bLikeHere(azStr,azRegExp))
-      return true;
+  char *s = azRegExp;
+  char *d = sMatchRegExp.azChar();
 
-  } while (*azStr++ != '\0');
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* bLikeHere: search for regexp at beginning of string                        */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bLikeHere(char* azStr, char* azRegExp)
-{
-  if (azRegExp[0] == '\0')
+  // handle empty string and empty regular expression
+  if (*azStr == '\0' && *s == '\0') {
     return true;
+  }
 
-  if (azRegExp[0] == '%')
-    return bLikePercent(azStr,azRegExp+2,azRegExp[0]);
+  // handle empty regular expression
+  if (*s == '\0') {
+    return false;
+  }
 
-  if (azRegExp[0] == '$' && azRegExp[1] == '\0')
-    return (*azStr == '\0');
+  while (*s) {
 
-  if (*azStr != '\0' && (azRegExp[0] == '.' || azRegExp[0] == *azStr))
-    return bMatchHere(azStr+1,azRegExp+1);
+    // replace '%' with '.*'
+    if (*s == '%') {
+      *d++ = '.';
+      *d++ = '*';
+    }
 
-  return false;
-}
+    // replace '_' with '.'
+    else if (*s == '_') {
+      *d++ = '.';
+    }
+    else
+      *d++ = *s;
 
-/*----------------------------------------------------------------------------*/
-/* bLikePercent: search for %regexp at beginning of string                    */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bLikePercent(char* azStr, char* azRegExp, char cChr)
-{
-  do { /* a * matches zero or more instances */
+    s++;
+  }
 
-    if (bLikeHere(azStr,azRegExp))
-      return true;
+  *d++ = '\0';
 
-  } while (*azStr != '\0' && cChr == '_');
-
-  return false;
+  return bMatch(azStr, sMatchRegExp.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2955,9 +2949,11 @@ bool StrLib::bMatch(char* azStr, char* azRegExp)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bMatchHere(char* azStr, char* azRegExp)
 {
-  if (azRegExp[0] == '\0')
+
+  //if (azRegExp[0] == '\0')
+  if (azRegExp[0] == '\0' && *azStr == '\0')
     return true;
-  
+
   if (azRegExp[1] == '*')
     return bMatchStar(azStr,azRegExp+2,azRegExp[0]);
   

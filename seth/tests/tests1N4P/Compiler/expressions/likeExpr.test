@@ -37,44 +37,36 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 -- Runtime test: empty pattern
-// TODO: Enable when supported
-//SELECT n_name LIKE '' FROM nation LIMIT 1;
-//rows: (false)
+SELECT n_name LIKE '' FROM nation LIMIT 1;
+rows: (false)
 
 -- Runtime test:  empty predicand
-// TODO: Enable when supported
-//SELECT '' LIKE 'Australia' FROM nation LIMIT 1;
-//rows: (false)
+SELECT '' LIKE 'Australia' FROM nation LIMIT 1;
+rows: (false)
 
 -- Runtime test: Empty predicand and pattern
-// TODO: Enable when supported
-//SELECT '' LIKE '' FROM nation LIMIT 1;
-//rows: (true)
+SELECT '' LIKE '' FROM nation LIMIT 1;
+rows: (true)
 
 -- Runtime test: Equal predicand and pattern
-// TODO: Enable when supported
-//SELECT 'abc' LIKE 'abc' FROM nation LIMIT 1;
-//rows: (true)
+SELECT 'abc' LIKE 'abc' FROM nation LIMIT 1;
+rows: (true)
 
 -- Add a trailing space in predicand
-// TODO: Enable when supported
-//SELECT 'abc ' LIKE 'abc' FROM nation LIMIT 1;
-//rows: (false)
+SELECT 'abc ' LIKE 'abc' FROM nation LIMIT 1;
+rows: (false)
 
 -- Runtime test: Add a trailing space in pattern
-// TODO: Enable when supported
-//SELECT 'abc' LIKE 'abc ' FROM nation LIMIT 1;
-//rows: (false)
+SELECT 'abc' LIKE 'abc ' FROM nation LIMIT 1;
+rows: (false)
 
 -- Runtime test Null predicant should return null
-// TODO: Enable when supported
-//SELECT NULL LIKE 'abc' FROM NATION LIMIT 1;
-//rows: (null)
+SELECT NULL LIKE 'abc' FROM NATION LIMIT 1;
+rows: (null)
 
 -- Runtime test Null pattern should return null
-// TODO: Enable when supported
-//SELECT n_name LIKE null FROM NATION LIMIT 1;
-//rows: (null)
+SELECT n_name LIKE null FROM NATION LIMIT 1;
+rows: (null)
 
 -- Runtime test Null escape should return null
 // TODO: Enable when supported
@@ -94,9 +86,8 @@ EXPLAIN SELECT 'abc' LIKE 'abc' ESCAPE 1 FROM NATION LIMIT 1;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 -- Runtime test NOT LIKE
-// TODO: Enable when supported
-//SELECT 'abc' NOT LIKE 'abc' FROM nation LIMIT 1;
-//rows: (false)
+SELECT 'abc' NOT LIKE 'abc' FROM nation LIMIT 1;
+rows: (false)
 
 -- test EXPLAIN output of NOT LIKE
 EXPLAIN SELECT 'abc' NOT LIKE 'abc' FROM nation LIMIT 1;
@@ -119,59 +110,48 @@ rows: (*,'explainPlan','
 
 
 -- Runtime test '_' matches a single character
-// TODO: Enable when supported
-//SELECT 'abcdef' LIKE 'abc_ef' FROM nation LIMIT 1;
-//rows: (true)
+SELECT 'abcdef' LIKE 'abc_ef' FROM nation LIMIT 1;
+rows: (true)
 
 -- Runtime test multiple '_' matches
-// TODO: Enable when supported
-//SELECT 'abcdef' LIKE 'a_c_ef' FROM nation LIMIT 1;
-//rows: (true)
+SELECT 'abcdef' LIKE 'a_c_ef' FROM nation LIMIT 1;
+rows: (true)
 
 -- Runtime test multiple '_' consecutive matches
-// TODO: Enable when supported
-//SELECT 'abcdef' LIKE 'ab__ef' FROM nation LIMIT 1;
-//rows: (true)
+SELECT 'abcdef' LIKE 'ab__ef' FROM nation LIMIT 1;
+rows: (true)
 
 -- Runtime test '%' matches zero or more characters (1)
-// TODO: Enable when supported
-//SELECT 'abcdef' LIKE 'ab%ef' FROM nation LIMIT 1;
-//rows: (true)
+SELECT 'abcdef' LIKE 'ab%ef' FROM nation LIMIT 1;
+rows: (true)
 
 -- Runtime test '%' matches zero or more characters (2)
-// TODO: Enable when supported
-//SELECT 'abcdef' LIKE '%bcdef' FROM nation LIMIT 1;
-//rows: (true)
+SELECT 'abcdef' LIKE '%bcdef' FROM nation LIMIT 1;
+rows: (true)
 
 -- Runtime test '%' matches zero or more characters (3)
-// TODO: Enable when supported
-//SELECT 'abcdef' LIKE 'abcde%' FROM nation LIMIT 1;
-//rows: (true)
+SELECT 'abcdef' LIKE 'abcde%' FROM nation LIMIT 1;
+rows: (true)
 
 -- Runtime test '%' matches zero or more characters (4)
-// TODO: Enable when supported
-//SELECT 'abcdef' LIKE '%a%b%c%d%e%f%' FROM nation LIMIT 1;
-//rows: (true)
+SELECT 'abcdef' LIKE '%a%b%c%d%e%f%' FROM nation LIMIT 1;
+rows: (true)
 
 -- Runtime test multiple consecutive '%' characters
-// TODO: Enable when supported
-//SELECT 'abcdef' LIKE 'ab%%%ef' FROM nation LIMIT 1;
-//rows: (true)
+SELECT 'abcdef' LIKE 'ab%%%ef' FROM nation LIMIT 1;
+rows: (true)
 
 -- Runtime test combination of '_' and '%' (1)
-// TODO: Enable when supported
-//SELECT 'abcdef' LIKE 'a_c%f' FROM nation LIMIT 1;
-//rows: (true)
+SELECT 'abcdef' LIKE 'a_c%f' FROM nation LIMIT 1;
+rows: (true)
 
 -- Runtime test combination of '_' and '%' (2)
-// TODO: Enable when supported
-//SELECT 'abcdef' LIKE '%e_' FROM nation LIMIT 1;
-//rows: (true)
+SELECT 'abcdef' LIKE '%e_' FROM nation LIMIT 1;
+rows: (true)
 
 -- Runtime test combination of '_' and '%' (3)
-// TODO: Enable when supported
-//SELECT 'abcdef' LIKE '%_' FROM nation LIMIT 1;
-//rows: (true)
+SELECT 'abcdef' LIKE '%_' FROM nation LIMIT 1;
+rows: (true)
 
 -- Runtime test that escape works with a single character
 // TODO: Enable when supported

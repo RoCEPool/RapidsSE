@@ -161,9 +161,7 @@ namespace BASE
     static i8    nLength(const char* s, const char cTerm, i8 iMax);
     static i8    nLengthNonBlank(const char* s, const char cTerm, i8 iMax);
 
-    static bool  bLike(char* azStr, char* azRegExp);
-    static bool  bLikeHere(char* azStr, char* azRegExp);
-    static bool  bLikePercent(char* azStr, char* azRegExp, char cChr);
+    static i8    iLike(char* azStr, char* azRegExp);
 
     static bool  bMatch(char* azStr, char* azRegExp);
     static bool  bMatchHere(char* azStr, char* azRegExp);
