@@ -51,6 +51,7 @@ Board::Board(Stz* szQueryNm)
   m_pSend      = nullptr;
   m_pSort      = nullptr;
   m_pStage     = nullptr;
+  m_pReg_Stream = nullptr;
 
   m_pIndex     = nullptr;
   m_pStreamDef = nullptr;
@@ -173,6 +174,10 @@ void Board::vPrintBoard(Stz* szCue)
   }
   if (m_pIndex) {
     vTrace("m_pIndex : %s"_Stz,m_pIndex->szIndexNm());
+    bCR = true;
+  }
+  if (m_pReg_Stream) {
+    vTrace("m_pReg_Stream : %llp"_Stz,m_pReg_Stream);
     bCR = true;
   }
   if (bCR)
@@ -436,6 +441,16 @@ void Board::vStage(Card_Stage* pStage)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vReg_Stream(Card_Stream* pStream)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  m_pReg_Stream = pStream;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vPredCmp_ebound(Card_PredCmp* pPredCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -532,7 +547,8 @@ bool Board::bInRegister(Card* pCard)
   if (pCard == m_pSend)      return true;
   if (pCard == m_pSort)      return true;
   if (pCard == m_pStage)     return true;
-  
+  if (pCard == m_pReg_Stream)     return true;
+
   return false;
 }
 
@@ -557,6 +573,7 @@ void Board::vResetRegisters(void)
   vSend     (nullptr);
   vSort     (nullptr);
   vStage    (nullptr);
+  vReg_Stream(nullptr);
 
   vPredCmp_ebound(nullptr);
   vPredCmp_lbound(nullptr);
@@ -659,7 +676,7 @@ void Board::vRankCandidateIndex(Card_CandIndex* pCard_CandIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vCardResolve(Card* pCard)
+void Board::vResolveCard(Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
     
@@ -682,6 +699,11 @@ void Board::vCardResolve(Card* pCard)
       continue;
     }
 
+    if (CK_STREAM == eSubCard) {
+      vReg_Stream(_pCard_Stream(pSubCard));
+      continue;
+    }
+
     if (CK_STREAMDEF == eSubCard) {
       vStreamDef(pSubCard->pStreamDef());
       continue;
@@ -693,11 +715,11 @@ void Board::vCardResolve(Card* pCard)
     }
 
     if (CK_TERM == eSubCard) {
-      vTermResolve(_pCard_Term(pSubCard));
+      vResolveTerm(_pCard_Term(pSubCard));
       continue;
     }
     
-    vCardResolve(pSubCard);
+    vResolveCard(pSubCard);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -718,6 +740,7 @@ void Board::vCardResolve(Card* pCard)
   
   pCard_ELIST = (Card_ELIST*)pCard->pFindSubCard(CK_PROJELIST);
   if (pCard_ELIST) {
+    
     Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_ELIST);
     pCard->vAppend(pCard_StreamDef);
     StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
@@ -751,6 +774,7 @@ void Board::vCardResolve(Card* pCard)
   
     Card_Stream* pCard_Stream = new Card_Stream;
     pCard->vAppend(pCard_Stream);
+    vReg_Stream(pCard_Stream);
 
     Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
     pCard_Stream->vAppend(pCard_StreamElist);
@@ -761,7 +785,7 @@ void Board::vCardResolve(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vTermResolve(Card_Term* pCard_Term)
+void Board::vResolveTerm(Card_Term* pCard_Term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -1377,7 +1401,7 @@ void Board::vResolve_Symbols(void)
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
     Card* pMainCard = pGetCard(i_Main);
     
-    vCardResolve(pMainCard);
+    vResolveCard(pMainCard);
   }
   
 }

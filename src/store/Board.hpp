@@ -34,6 +34,8 @@ namespace STORE
     Card_Send*       m_pSend;
     Card_Sort*       m_pSort;
     Card_Stage*      m_pStage;
+    Card_Stream*     m_pReg_Stream;
+
 
     Card_PredCmp*    m_pPredCmp_ebound;
     Card_PredCmp*    m_pPredCmp_lbound;
@@ -81,6 +83,7 @@ namespace STORE
     void vSend     (Card_Send*      pSend);
     void vSort     (Card_Sort*      pSort);
     void vStage    (Card_Stage*     pStage);
+    void vReg_Stream(Card_Stream*   pStream);
 
     void vPredCmp_ebound(Card_PredCmp* pPredCmp);
     void vPredCmp_lbound(Card_PredCmp* pPredCmp);
@@ -98,8 +101,8 @@ namespace STORE
 
     void vRankCandidateIndex(Card_CandIndex* pCard_CandIndex);
   
-    void vCardResolve      (Card*           pCard);
-    void vTermResolve      (Card_Term*      pCard_Term);
+    void vResolveCard      (Card*           pCard);
+    void vResolveTerm      (Card_Term*      pCard_Term);
 
     Card_StreamDef* pNewStreamDef(Card_ELIST* pCard_ELIST);
     Card_StreamDef* pNewStreamDef(Card_Table* pCard_Table);
