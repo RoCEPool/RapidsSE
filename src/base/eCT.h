@@ -90,8 +90,8 @@ static char cCT_char[]
   /*  7 */ 'l', // interval day to second
   /*  8 */ 'y', // interval year to month
   /*  9 */ 't', // time
-  /* 10 */ 'p', // timestamp
-  /* 11 */ 's', // varchar
+  /* 10 */ 's', // timestamp
+  /* 11 */ 'v', // varchar
   /* 12 */ 'x', // unknown
   /* 13 */ '?'
 };

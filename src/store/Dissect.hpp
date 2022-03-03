@@ -68,6 +68,7 @@
 #include "Card_Sort.hpp"
 #include "Card_Stage.hpp"
 #include "Card_StageTopo.hpp"
+#include "Card_Stream.hpp"
 #include "Card_StreamDef.hpp"
 #include "Card_StreamElist.hpp"
 

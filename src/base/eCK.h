@@ -222,7 +222,7 @@ static Stz* aCK_short[]
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stageTopo"_Stz,       // CK_STAGETOPO
-  /* */ "streamDef"_Stz,       // CK_STREAM
+  /* */ "stream"_Stz,          // CK_STREAM
   /* */ "{streamDef}"_Stz,     // CK_STREAMDEF
   /* */ "streamElist"_Stz,     // CK_STREAMELIST
 

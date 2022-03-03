@@ -735,9 +735,12 @@ void Board::vCardResolve(Card* pCard)
     pCard->vAppend(pCard_StreamDef);
     StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
     vStreamDef(pStreamDef);
-    
+  
+    Card_Stream* pCard_Stream = new Card_Stream;
+    pCard->vAppend(pCard_Stream);
+
     Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
-    pCard->vAppend(pCard_StreamElist);
+    pCard_Stream->vAppend(pCard_StreamElist);
   }
 
 }
@@ -953,6 +956,14 @@ void Board::vAdd_IndexScan(void)
   Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
   
   pCard_IndexScan->vAppend(pCard_StreamDef);
+  
+  
+  Card_Stream* pCard_Stream = new Card_Stream;
+  pCard_IndexScan->vAppend(pCard_Stream);
+
+  Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+  pCard_Stream->vAppend(pCard_StreamElist);
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the stream order
