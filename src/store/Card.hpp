@@ -216,13 +216,14 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     void vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iSee);
-    void vPrintDetails(Ribbon* pRibbon, i8 iDepth);
+    void vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune);
     void vPrintHeader(Ribbon* pRibbon);
     void vPrintName(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName=true);
 
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vStreamDefPrint(Ribbon* pRibbon, i8 iDepth);
+    void vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, bool& bPrune);
     void vTablePrint(Ribbon* pRibbon, i8 iDepth);
     void vTermPrint(Ribbon* pRibbon, i8 iDepth);
 

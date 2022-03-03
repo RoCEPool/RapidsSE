@@ -19,6 +19,8 @@ namespace STORE
     Card_StreamElist(StreamDef* pStreamDef);
    ~Card_StreamElist(void) noexcept(false);
     
+    bool bSimpleDef(void);
+    
   private:
     void vPopulate(StreamDef* pStreamDef);
   };

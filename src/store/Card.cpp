@@ -1731,6 +1731,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iBelow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  bool bPrune = false;
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
   
   if (pCardCtl->iBelow(m_eCard))
@@ -1747,8 +1748,11 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iBelow)
     else {
       vPrintName(pRibbon,iDepth);
     }
-    vPrintDetails(pRibbon,iDepth);
+    vPrintDetails(pRibbon,iDepth,bPrune);
   }
+  
+  if (bPrune)
+    return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1766,7 +1770,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iBelow)
 /*----------------------------------------------------------------------------*/
 /* print card onto given ribbon                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
+void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -1833,14 +1837,16 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_STAGE:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGETOPO:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_STREAMDEF:  vStreamDefPrint                 (pRibbon,iDepth); break;
-    case CK_STREAMELIST:                vPrintProperties(pRibbon,iDepth); break;
-
     case CK_TABLE:      vTablePrint                     (pRibbon,iDepth); break;
     case CK_TERM:       vTermPrint                      (pRibbon,iDepth); break;
     case CK_TYPE:                       vPrintProperties(pRibbon,iDepth); break;
 
     case CK_UBOUND:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_UNIQUE:                     vPrintProperties(pRibbon,iDepth); break;
+    
+    case CK_STREAMELIST:
+      vStreamElistPrint(pRibbon,iDepth,bPrune);
+      break;
 
     default:
       vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
@@ -2053,6 +2059,48 @@ void Card::vStreamDefPrint(Ribbon* pRibbon, i8 iDepth)
                  ,pStreamDef->bUnique()
                     ? "unique"_Stz : "not unique"_Stz
                  );
+}
+
+/*----------------------------------------------------------------------------*/
+/* print StreamElist                                                          */
+/*----------------------------------------------------------------------------*/
+void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_StreamElist* pCard_StreamElist = _pCard_StreamElist(this);
+
+  if (! pCard_StreamElist->bSimpleDef()) {
+    vPrintProperties(pRibbon,iDepth);
+    return;
+  }
+
+  // expr
+    // type
+    // as
+    // exprCalc
+      // term
+  
+  eCK eSubCard;
+  i8 nSubs = this->nItems();
+  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+    Card* pSubCard = pGetCard(i_Sub,eSubCard);
+    if (CK_EXPR != eSubCard)
+      continue;
+    
+    Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
+
+    Card_Type* pCard_Type = _pCard_Type(pCard_Expr->pFindSubCard(CK_TYPE));
+    Card_As*   pCard_As   = _pCard_As  (pCard_Expr->pFindSubCard(CK_AS));
+
+    pRibbon->vSprintRight("%s %c"_Stz
+                          ,pCard_As->szAs()
+                          ,'?'
+                          );
+
+  }
+  
+  bPrune = true;
 }
 
 /*----------------------------------------------------------------------------*/
