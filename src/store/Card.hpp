@@ -211,6 +211,7 @@ namespace STORE
     void vTerm(Stz* szTerm);
     eTE  eTermEval(void);
     Stz* szType(void);
+    char cTypeShort(void);
     void vType(Stz* szType);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

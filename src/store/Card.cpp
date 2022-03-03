@@ -1709,6 +1709,23 @@ Stz* Card::szType(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return typeShort                                                           */
+/*----------------------------------------------------------------------------*/
+char Card::cTypeShort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Stz* szType = szGetProperty("szType"_Stz);
+  
+  for (i8 i_CT = 0; i_CT < CT_ENUMS; i_CT++) {
+    if (szType->bSame(aCT[i_CT]))
+      return cCT_char[i_CT];
+  }
+
+  return cCT_char[CT_ENUMS];
+}
+
+/*----------------------------------------------------------------------------*/
 /* set type                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card::vType(Stz* szType)
@@ -2095,7 +2112,7 @@ void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
 
     pRibbon->vSprintRight("%s %c"_Stz
                           ,pCard_As->szAs()
-                          ,'?'
+                          ,pCard_Type->cTypeShort()
                           );
 
   }
