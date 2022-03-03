@@ -47,7 +47,8 @@ enum eCK // card kind
   /* */ CK_ON,
   /* */ CK_OPTION,
   /* */ CK_ORDAGG,
-  
+  /* */ CK_ORDERELIST,
+
   /* */ CK_PREDAND,
   /* */ CK_PREDCMP,
   /* */ CK_PREDOR,
@@ -65,6 +66,7 @@ enum eCK // card kind
   /* */ CK_SORT,
   /* */ CK_STAGE,
   /* */ CK_STAGETOPO,
+  /* */ CK_STREAM,
   /* */ CK_STREAMDEF,
   /* */ CK_STREAMELIST,
   
@@ -123,7 +125,8 @@ static Stz* aCK[]
   /* */ "CK_ON"_Stz,              // CK_ON
   /* */ "CK_OPTION"_Stz,          // CK_OPTION
   /* */ "CK_ORDAGG"_Stz,          // CK_ORDAGG
-  
+  /* */ "CK_ORDERELIST"_Stz,      // CK_ORDERELIST
+
   /* */ "CK_PREDAND"_Stz,         // CK_PREDAND
   /* */ "CK_PREDCMP"_Stz,         // CK_PREDCMP
   /* */ "CK_PREDOR"_Stz,          // CK_PREDOR
@@ -141,6 +144,7 @@ static Stz* aCK[]
   /* */ "CK_SORT"_Stz,            // CK_SORT
   /* */ "CK_STAGE"_Stz,           // CK_STAGE
   /* */ "CK_STAGETOPO"_Stz,       // CK_STAGETOPO
+  /* */ "CK_STREAM"_Stz,          // CK_STREAM
   /* */ "CK_STREAMDEF"_Stz,       // CK_STREAMDEF
   /* */ "CK_STREAMLIST"_Stz,      // CK_STREAMELIST
 
@@ -199,7 +203,8 @@ static Stz* aCK_short[]
   /* */ "on"_Stz,              // CK_ON
   /* */ "option"_Stz,          // CK_OPTION
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
-  
+  /* */ "orderElist"_Stz,      // CK_ORDERELIST
+
   /* */ "predAnd"_Stz,         // CK_PREDAND
   /* */ "predCmp"_Stz,         // CK_PREDCMP
   /* */ "predOr"_Stz,          // CK_PREDOR
@@ -217,6 +222,7 @@ static Stz* aCK_short[]
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "stageTopo"_Stz,       // CK_STAGETOPO
+  /* */ "streamDef"_Stz,       // CK_STREAM
   /* */ "{streamDef}"_Stz,     // CK_STREAMDEF
   /* */ "streamElist"_Stz,     // CK_STREAMELIST
 
@@ -275,7 +281,8 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_ON
   /* */ "(none)"_Stz,          // CK_OPTION
   /* */ "ordagg    2"_Stz,     // CK_ORDAGG
-  
+  /* */ "(none)"_Stz,          // CK_ORDERELIST
+
   /* */ "(none)"_Stz,          // CK_PREDAND
   /* */ "(none)"_Stz,          // CK_PREDCMP
   /* */ "(none)"_Stz,          // CK_PREDOR
@@ -293,6 +300,7 @@ static Stz* aCK_op[]
   /* */ "sort       "_Stz,     // CK_SORT
   /* */ "(none)"_Stz,          // CK_STAGE
   /* */ "(none)"_Stz,          // CK_STAGETOPO
+  /* */ "(none)"_Stz,          // CK_STREAM
   /* */ "(none)"_Stz,          // CK_STREAMDEF
   /* */ "(none)"_Stz,          // CK_STREAMELIST
 

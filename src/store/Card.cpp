@@ -1834,7 +1834,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_ON:                         vPrintProperties(pRibbon,iDepth); break;
     case CK_OPTION:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_ORDAGG:                     vPrintProperties(pRibbon,iDepth); break;
-      
+    case CK_ORDERELIST:                 vPrintProperties(pRibbon,iDepth); break;
+
     case CK_PREDAND:                    vPrintProperties(pRibbon,iDepth); break;
     case CK_PREDCMP:                    vPrintProperties(pRibbon,iDepth); break;
     case CK_PREDOR:                     vPrintProperties(pRibbon,iDepth); break;
@@ -1853,6 +1854,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_DIRECTION:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGE:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGETOPO:                  vPrintProperties(pRibbon,iDepth); break;
+    case CK_STREAM:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_STREAMDEF:  vStreamDefPrint                 (pRibbon,iDepth); break;
     case CK_TABLE:      vTablePrint                     (pRibbon,iDepth); break;
     case CK_TERM:       vTermPrint                      (pRibbon,iDepth); break;
