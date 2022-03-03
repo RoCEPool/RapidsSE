@@ -315,6 +315,32 @@ void Card::vDump(i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* duplicate this card and its sub cards                                      */
+/*----------------------------------------------------------------------------*/
+Card* Card::pDuplicate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card* pCard_dup = new Card(m_eCard);
+  
+  i8 nSubCards = this->nItems();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pSubCard = pGetCard(i_SubCard);
+    
+    Card* pSubCard_dup = pSubCard->pDuplicate();
+    
+    if (pSubCard->m_pProperties) {
+      pSubCard_dup->vPropertiesEnsure();
+      pSubCard_dup->pProperties()->vCopy(pSubCard->m_pProperties);
+    }
+    
+    pCard_dup->vAppend(pSubCard_dup);
+  }
+  
+  return pCard_dup;
+}
+
+/*----------------------------------------------------------------------------*/
 /* call closure for each sub-card                                             */
 /*----------------------------------------------------------------------------*/
 void Card::vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
@@ -613,6 +639,17 @@ TagSet* Card::pProperties(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ensure this card has a m_pProperties                                       */
+/*----------------------------------------------------------------------------*/
+void Card::vPropertiesEnsure(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name of property                                                       */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szPropertyNm(i8 i_Property)
@@ -693,7 +730,7 @@ bool Card::bSame(Card* pCard_arg)
   }
   else {
     RASSERT(! m_pProperties);
-    RASSERT(pProperties_arg);
+    RASSERT(! pProperties_arg);
   }
   
   eCK eSubCard;

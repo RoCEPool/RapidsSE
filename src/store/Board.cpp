@@ -1235,6 +1235,9 @@ void Board::vOrder_ProjectiveStreamDefs(void)
   StreamDef* pStreamDef_scan =
     m_pIndexScan->pFindSubCard(CK_STREAMDEF)->pStreamDef();
 
+  Card_Stream* pCard_Stream_src =
+    _pCard_Stream(m_pIndexScan->pFindSubCard(CK_STREAM));
+
   i8 nCards = nItems();
   
   for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
@@ -1249,6 +1252,21 @@ void Board::vOrder_ProjectiveStreamDefs(void)
       _pCard_StreamDef(pCard_Project->pFindSubCard(CK_STREAMDEF));
 
     pCard_StreamDef->vApplyOrder(pStreamDef_scan);
+    
+    //--- --- ---
+
+    if (! pCard_Stream_src)
+      continue;
+    
+    Card_Stream* pCard_Stream_dst =
+      _pCard_Stream(pCard_Project->pFindSubCard(CK_STREAM));
+    if (! pCard_Stream_dst)
+      continue;
+
+    pCard_Stream_dst->vApplyOrder(pCard_Stream_src);
+    
+    //--- --- ---
+    
   }
   
 }

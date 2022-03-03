@@ -80,6 +80,7 @@ namespace STORE
     void vCutProperty(Stz* szName);
   
     void vDump(i8 iDepth=0);
+    Card* pDuplicate(void);
   
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                       eCK eCard=CK_NONE);
@@ -110,6 +111,7 @@ namespace STORE
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
     TagSet* pProperties(void);
+    void vPropertiesEnsure(void);
     Stz* szPropertyNm(i8 i_Property);
 
     void vRemoveSubCard(Card* pCardRemove);
