@@ -603,6 +603,16 @@ eTN Card::eProperty(i8 i_Property)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get properties                                                             */
+/*----------------------------------------------------------------------------*/
+TagSet* Card::pProperties(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_pProperties;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name of property                                                       */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szPropertyNm(i8 i_Property)
@@ -658,6 +668,48 @@ void Card::vRenumberSubCards(void)
    }
   
   delete pSubCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card same as arg?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card::bSame(Card* pCard_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  TagSet* pProperties_arg = pCard_arg->pProperties();
+  if (m_pProperties) {
+    if (pProperties_arg) {
+      if (! m_pProperties->bSame(pProperties_arg))
+        return false;
+    }
+    else {
+      return false;
+    }
+  }
+  else
+  if (pProperties_arg) {
+    return false;
+  }
+  else {
+    RASSERT(! m_pProperties);
+    RASSERT(pProperties_arg);
+  }
+  
+  eCK eSubCard;
+  i8 nSubs = this->nItems();
+  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+    Card* pSubCard = pGetCard(i_Sub,eSubCard);
+    
+    Card* pSubCard_arg = pCard_arg->pFindSubCard(eSubCard);
+    if (! pSubCard_arg)
+      return false;
+
+    if (! pSubCard->bSame(pSubCard_arg))
+      return false;
+  }
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

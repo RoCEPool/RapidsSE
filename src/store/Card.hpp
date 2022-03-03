@@ -109,11 +109,14 @@ namespace STORE
 
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
+    TagSet* pProperties(void);
     Stz* szPropertyNm(i8 i_Property);
 
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(void);
 
+    bool bSame(Card* pCard_arg);
+  
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
                        Card* pAt=nullptr, bool bAfter=true);

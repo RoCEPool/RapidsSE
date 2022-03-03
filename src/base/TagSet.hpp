@@ -72,7 +72,9 @@ namespace BASE
   
     void vSprint(Stz* sArgs,
                  bool bParenth=true, bool bNames=false, bool bDecode=false);
+    bool bSame(TagSet* pTagSet_arg);
   
+    Tag* pTag(i8 i_Tag);
     eTN  eToken(i8 i_Tag);
     void vToString(Stz* szStz);
 
