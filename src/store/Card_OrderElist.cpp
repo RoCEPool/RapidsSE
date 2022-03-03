@@ -32,14 +32,14 @@ Card_OrderElist::Card_OrderElist(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OrderElist::Card_OrderElist(StreamDef* pStreamDef)
+Card_OrderElist::Card_OrderElist(Index* pIndex)
 : Card_ELIST(CK_ORDERELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   _checkInitialised_(CN_CARD);
   
-  vPopulate(pStreamDef);
+  vPopulate(pIndex);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -53,38 +53,27 @@ Card_OrderElist::~Card_OrderElist(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_OrderElist::bSimpleDef(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OrderElist::vPopulate(StreamDef* pStreamDef)
+void Card_OrderElist::vPopulate(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  i8 nCols = pStreamDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    Column* pColumn = pStreamDef->pGetColumn(i_Col);
-    
-//    Card_Name* pCard_Name = new Card_Name(pColumn->szColNm());
-//    vAppend(pCard_Name);
-    
-    Card_Expr* pCard_Expr = new Card_Expr(pColumn);
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+  i8 nIdxCols = pIndexDef->nColumns();
+  
+  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
+
+    Column* pIdxCol = pIndexDef->pGetColumn(i_IdxCol);
+
+    Card_Expr* pCard_Expr = new Card_Expr(pIdxCol);
     vAppend(pCard_Expr);
   }
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -16,13 +16,12 @@ namespace STORE
     void  operator delete(void*);
   
     Card_OrderElist(void);
-    Card_OrderElist(StreamDef* pStreamDef);
+    Card_OrderElist(Index* pIndex);
    ~Card_OrderElist(void) noexcept(false);
     
-    bool bSimpleDef(void);
     
   private:
-    void vPopulate(StreamDef* pStreamDef);
+    void vPopulate(Index* pIndex);
   };
 
   Card_OrderElist* _pCard_OrderElist(void* aAddr);

@@ -993,7 +993,17 @@ void Board::vAdd_IndexScan(void)
     i8 i_Col = pColumn->iColumnNo();
     pStreamDef->vAddOrder(i_Col);
   }
+
+
+
   
+  Card_OrderElist* pCard_OrderElist = new Card_OrderElist(m_pIndex);
+  pCard_Stream->vAppend(pCard_OrderElist);
+
+  
+  
+  
+
   bool bUnique = pIndexDef->bIsUnique();
   pStreamDef->vUnique(bUnique);
 
