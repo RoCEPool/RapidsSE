@@ -72,6 +72,7 @@
 #include "Card_Stream.hpp"
 #include "Card_StreamDef.hpp"
 #include "Card_StreamElist.hpp"
+#include "Card_SubSet.hpp"
 
 #include "Card_Table.hpp"
 #include "Card_Term.hpp"

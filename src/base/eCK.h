@@ -69,7 +69,8 @@ enum eCK // card kind
   /* */ CK_STREAM,
   /* */ CK_STREAMDEF,
   /* */ CK_STREAMELIST,
-  
+  /* */ CK_SUBSET,
+
   /* */ CK_TABLE,
   /* */ CK_TERM,
   /* */ CK_TERMSEQ,
@@ -147,6 +148,7 @@ static Stz* aCK[]
   /* */ "CK_STREAM"_Stz,          // CK_STREAM
   /* */ "CK_STREAMDEF"_Stz,       // CK_STREAMDEF
   /* */ "CK_STREAMLIST"_Stz,      // CK_STREAMELIST
+  /* */ "CK_SUBSET"_Stz,          // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,           // CK_TABLE
   /* */ "CK_TERM"_Stz,            // CK_TERM
@@ -225,6 +227,7 @@ static Stz* aCK_short[]
   /* */ "stream"_Stz,          // CK_STREAM
   /* */ "{streamDef}"_Stz,     // CK_STREAMDEF
   /* */ "streamElist"_Stz,     // CK_STREAMELIST
+  /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "{table}"_Stz,         // CK_TABLE
   /* */ "term"_Stz,            // CK_TERM
@@ -303,6 +306,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_STREAM
   /* */ "(none)"_Stz,          // CK_STREAMDEF
   /* */ "(none)"_Stz,          // CK_STREAMELIST
+  /* */ "(none)"_Stz,          // CK_SUBSET
 
   /* */ "(none)"_Stz,          // CK_TABLE
   /* */ "(none)"_Stz,          // CK_TERM

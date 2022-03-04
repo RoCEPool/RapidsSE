@@ -1893,7 +1893,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_COMBINE:                    vPrintProperties(pRibbon,iDepth); break;
                         
     case CK_DEBUG:                      vPrintProperties(pRibbon,iDepth); break;
-                        
+    case CK_DIRECTION:                  vPrintProperties(pRibbon,iDepth); break;
+
     case CK_EBOUND:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_EXISTS:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_EXPR:                       vPrintProperties(pRibbon,iDepth); break;
@@ -1940,18 +1941,19 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_SENDKIND:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_SENDS:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_SORT:                       vPrintProperties(pRibbon,iDepth); break;
-    case CK_DIRECTION:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGE:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGETOPO:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_STREAM:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_STREAMDEF:  vStreamDefPrint                 (pRibbon,iDepth); break;
+    case CK_SUBSET:                     vPrintProperties(pRibbon,iDepth); break;
+      
     case CK_TABLE:      vTablePrint                     (pRibbon,iDepth); break;
     case CK_TERM:       vTermPrint                      (pRibbon,iDepth); break;
     case CK_TYPE:                       vPrintProperties(pRibbon,iDepth); break;
 
     case CK_UBOUND:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_UNIQUE:                     vPrintProperties(pRibbon,iDepth); break;
-    
+ 
     case CK_STREAMELIST:
       vStreamElistPrint(pRibbon,iDepth,bPrune);
       break;
