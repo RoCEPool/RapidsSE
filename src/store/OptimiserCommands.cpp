@@ -4,6 +4,10 @@
 
 #include "OptimiserCommands.hpp"
 
+#include "OptimiserCatalog.hpp"
+
+extern OptimiserCatalog gxOptimiserCatalog;
+
 /*----------------------------------------------------------------------------*/
 /* add                                                                        */
 /*----------------------------------------------------------------------------*/
@@ -204,7 +208,39 @@ OptimiserFun __Opt_form
 );
 
 /*----------------------------------------------------------------------------*/
-/* hide                                                                        */
+/* hide                                                                       */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_help(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+{
+  gxOptimiserCatalog.vHelp();
+  
+  riAction = 1;
+  
+  return true;
+}
+
+OptimiserFun __Opt_help_0
+(
+  "help"_Stz,         // name of the prompt function
+  "?"_Stz,            // command first word
+  nullptr,            // command second word
+  bOpt_help,          // function to call
+  0,0,                // spare
+  "help"_Stz
+);
+
+OptimiserFun __Opt_help_1
+(
+  "help"_Stz,         // name of the prompt function
+  "help"_Stz,         // command first word
+  nullptr,            // command second word
+  bOpt_help,          // function to call
+  0,0,                // spare
+  "help"_Stz
+);
+
+/*----------------------------------------------------------------------------*/
+/* hide                                                                       */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_hide(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {

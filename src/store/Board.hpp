@@ -21,20 +21,20 @@ namespace STORE
     s32 m_sQueryNm;
 
     // registers
-    Card_Aggreg*     m_pAggreg;
-    Card_CandIndex*  m_pCandIndex;
-    Card_Combine*    m_pCombine;
-    Card_Filter*     m_pFilter;
-    Card_Hash*       m_pHash;
-    Card_IndexJoin*  m_pIndexJoin;
-    Card_IndexScan*  m_pIndexScan;
-    Card_Limit*      m_pLimit;
-    Card_OrdAgg*     m_pOrdAgg;
-    Card_Project*    m_pProject;
-    Card_Scan*       m_pScan;
-    Card_Send*       m_pSend;
-    Card_Sort*       m_pSort;
-    Card_Stage*      m_pStage;
+    Card_Aggreg*     m_pReg_Aggreg;
+    Card_CandIndex*  m_pReg_CandIndex;
+    Card_Combine*    m_pReg_Combine;
+    Card_Filter*     m_pReg_Filter;
+    Card_Hash*       m_pReg_Hash;
+    Card_IndexJoin*  m_pReg_IndexJoin;
+    Card_IndexScan*  m_pReg_IndexScan;
+    Card_Limit*      m_pReg_Limit;
+    Card_OrdAgg*     m_pReg_OrdAgg;
+    Card_Project*    m_pReg_Project;
+    Card_Scan*       m_pReg_Scan;
+    Card_Send*       m_pReg_Send;
+    Card_Sort*       m_pReg_Sort;
+    Card_Stage*      m_pReg_Stage;
     Card_Stream*     m_pReg_Stream;
 
     Card_PredCmp*    m_pPredCmp_ebound;
@@ -70,20 +70,20 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // registers
   
-    void vAggreg   (Card_Aggreg*    pAggreg);
-    void vCandIndex(Card_CandIndex* pCandIndex);
-    void vCombine  (Card_Combine*   pCombine);
-    void vFilter   (Card_Filter*    pFilter);
-    void vHash     (Card_Hash*      pHash);
-    void vIndexJoin(Card_IndexJoin* pIndexJoin);
-    void vIndexScan(Card_IndexScan* pIndexScan);
-    void vLimit    (Card_Limit*     pLimit);
-    void vOrdAgg   (Card_OrdAgg*    pOrdAgg);
-    void vProject  (Card_Project*   pProject);
-    void vScan     (Card_Scan*      pScan);
-    void vSend     (Card_Send*      pSend);
-    void vSort     (Card_Sort*      pSort);
-    void vStage    (Card_Stage*     pStage);
+    void vReg_Aggreg   (Card_Aggreg*    pAggreg);
+    void vReg_CandIndex(Card_CandIndex* pCandIndex);
+    void vReg_Combine  (Card_Combine*   pCombine);
+    void vReg_Filter   (Card_Filter*    pFilter);
+    void vReg_Hash     (Card_Hash*      pHash);
+    void vReg_IndexJoin(Card_IndexJoin* pIndexJoin);
+    void vReg_IndexScan(Card_IndexScan* pIndexScan);
+    void vReg_Limit    (Card_Limit*     pLimit);
+    void vReg_OrdAgg   (Card_OrdAgg*    pOrdAgg);
+    void vReg_Project  (Card_Project*   pProject);
+    void vReg_Scan     (Card_Scan*      pScan);
+    void vReg_Send     (Card_Send*      pSend);
+    void vReg_Sort     (Card_Sort*      pSort);
+    void vReg_Stage    (Card_Stage*     pStage);
     void vReg_Stream(Card_Stream*   pStream);
 
     void vPredCmp_ebound(Card_PredCmp* pPredCmp);

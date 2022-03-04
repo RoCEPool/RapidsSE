@@ -38,6 +38,25 @@ OptimiserFun* OptimiserCatalog::pFindFun(Stz* szCommand1, Stz* szCommand2)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* help                                                                       */
+/*----------------------------------------------------------------------------*/
+void OptimiserCatalog::vHelp(void)
+{
+  _outsideOfPool_
+  
+  for (i8 i_Fun = 0; i_Fun < m_nFunctions; i_Fun++) {
+
+    vTrace("%-6s : %s\n"_Stz
+           ,m_aaFun[i_Fun]->m_szCommand1
+           ,m_aaFun[i_Fun]->m_szDescription
+           );
+  }
+  
+}
+
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

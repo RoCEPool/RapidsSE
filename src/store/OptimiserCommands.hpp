@@ -16,6 +16,8 @@ namespace STORE
 
   bool bOpt_form    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
+  bool bOpt_help    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
+
   bool bOpt_hide    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
   bool bOpt_reprint (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);

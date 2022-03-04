@@ -13,6 +13,7 @@ namespace STORE
 
   public:
     OptimiserFun* pFindFun(Stz* szCommand1, Stz* szCommand2);
+    void vHelp(void);
   };
 }
 
