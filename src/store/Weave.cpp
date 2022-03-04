@@ -18,11 +18,12 @@ __aFooterFunction(Weave)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Weave::Weave(void)
+Weave::Weave(Optimiser* pOptimiser)
 : Object(CN_WEAVE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
         
+  m_pOptimiser = pOptimiser;
   m_pBoard = nullptr;
   
   m_i_Stage = 0;

@@ -7,6 +7,7 @@
 #include "ShardDef.hpp"
 #include "Cue.hpp"
 
+#include "Optimiser.hpp"
 #include "OptimiserFun.hpp"
 #include "OptimiserCatalog.hpp"
 
@@ -24,13 +25,12 @@ __aFooterFunction(Board)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Board::Board(Stz* szQueryNm)
+Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
 : Object(CN_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
       
-  m_pOptimiser = nullptr;
-  m_pCardCtl   = nullptr;
+  m_pOptimiser = pOptimiser;
   m_sQueryNm   = szQueryNm;
   
   m_pPredCmp_ebound = nullptr;
@@ -89,17 +89,6 @@ void Board::vClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set optimiser                                                              */
-/*----------------------------------------------------------------------------*/
-void Board::vOptimiser(Optimiser* pOptimiser, CardCtl* pCardCtl)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  m_pOptimiser = pOptimiser;
-  m_pCardCtl   = pCardCtl;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
 void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
@@ -116,7 +105,7 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();
 
-  Ribbon* pSubRibbon = new Ribbon(m_pCardCtl,this,0);
+  Ribbon* pSubRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
   
 
   ListExoIter2_t<Card>* pBoard_I = pNewIter();
@@ -172,7 +161,7 @@ void Board::vPrintBoard(Stz* szCue)
   if (! bPrint)
     return;
   
-  Ribbon* pRibbon = new Ribbon(m_pCardCtl,this,0);
+  Ribbon* pRibbon = new Ribbon(m_pOptimiser->pCardCtl(),this,0);
 
   vPinCards(pRibbon,0);
   pRibbon->vPrintRibbon();

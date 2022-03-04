@@ -19,13 +19,15 @@ __aFooterFunction(Dissect)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dissect::Dissect(void)
+Dissect::Dissect(Optimiser* pOptimiser)
 : Object(CN_DISSECT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
         
+  m_pOptimiser    = pOptimiser;
   m_pBench        = nullptr;
   m_pBoard        = nullptr;
+  
   m_pPipelineSpec = nullptr;
   m_pStageSpec    = nullptr;
   m_pOpSpec       = nullptr;
@@ -95,7 +97,7 @@ void Dissect::vPipeline(void)
   //TagSet* pJobTags = m_pPipelineSpec->pJobTags();
   //pJobTags->vDumpSet(true);
 
-  m_pBoard = new Board("Board"_Stz);
+  m_pBoard = new Board(m_pOptimiser, "Board"_Stz);
   m_pBoard->vQueryNm(szPipelineNm);
 
   m_pBench->vAppend(m_pBoard);

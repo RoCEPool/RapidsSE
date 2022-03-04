@@ -17,11 +17,13 @@ __aFooterFunction(Bench)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Bench::Bench(void)
+Bench::Bench(Optimiser* pOptimiser)
 : Object(CN_BENCH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
+  m_pOptimiser = pOptimiser;
+  
   _checkInitialised_(CN_BENCH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);

@@ -15,6 +15,7 @@ namespace STORE
   {
   protected:
   
+    Optimiser* m_pOptimiser;
     Board* m_pBoard;
     
     i8 m_i_Stage;
@@ -30,10 +31,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Weave(void);
+    Weave(Optimiser* pOptimser);
    ~Weave(void) noexcept(false);
   
-    void vWeaveOptStmt(Board* m_pBoard);
+    void vWeaveOptStmt(Board* pBoard);
     Stz* szOptStmt(void);
 
   private:

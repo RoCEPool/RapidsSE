@@ -32,11 +32,12 @@ Optimiser::Optimiser(PipelineSpec* pUnOptPipelineSpec,
   m_iOptimiserLvl = iOptimiserLvl;
   m_pUnOptPipelineSpec = pUnOptPipelineSpec;
   
-  m_pBench   = new Bench;
   m_pCardCtl = new CardCtl;
-  m_pDissect = new Dissect;
+  
+  m_pBench   = new Bench(this);
+  m_pDissect = new Dissect(this);
   m_pRules   = new Rules;
-  m_pWeave   = new Weave;
+  m_pWeave   = new Weave(this);
 
   _checkInitialised_(CN_OPTIMISER);
   
@@ -188,9 +189,7 @@ void Optimiser::vOptimise_Board(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   Board* pBoard = m_pBench->pGet(0);
-  
-  pBoard->vOptimiser(this,m_pCardCtl);
-  
+    
   pBoard->vPrintBoard("vDissectSpec >> "_Stz);
   
   pBoard->vResolve_Symbols();

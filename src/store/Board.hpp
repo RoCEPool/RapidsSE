@@ -16,7 +16,6 @@ namespace STORE
   {
   protected:
     Optimiser* m_pOptimiser;
-    CardCtl*   m_pCardCtl;
 
     s32 m_sQueryNm;
 
@@ -54,13 +53,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(Stz* szCardNm);
+    Board(Optimiser* pOptimiser, Stz* szCardNm);
    ~Board(void) noexcept(false);
 
     void vClear(void);
   
-    void vOptimiser(Optimiser* pOptimiser, CardCtl* pCardCtl);
-
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
     void vPrintBoard(Stz* szCue);
 
