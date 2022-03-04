@@ -20,7 +20,8 @@
 
 
 namespace STORE { class Board;
-                  class Card; class Card_Properties; class Card_Term; }
+                  class Card; class Card_Properties;
+                  class Card_SubSet; class Card_Term; }
 
 namespace STORE
 {
@@ -80,8 +81,9 @@ namespace STORE
     void vCutProperty(Stz* szName);
   
     void vDump(i8 iDepth=0);
-    Card* pDuplicate(void);
-  
+    Card* pDupCardAndSubCards(void);
+    Card_SubSet* pDupSubCards(void);
+
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                       eCK eCard=CK_NONE);
   

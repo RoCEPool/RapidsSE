@@ -81,7 +81,7 @@ void Card_Stream::vApplyOrder(Card_Stream* pCard_Stream_src)
       pCard_OrderElist_dst = new Card_OrderElist;
     
     Card_Expr* pCard_Expr_dst =
-      _pCard_Expr(pCard_Expr_src->pDuplicate());
+      _pCard_Expr(pCard_Expr_src->pDupCardAndSubCards());
 
     pCard_OrderElist_dst->vAppend(pCard_Expr_dst);
   }

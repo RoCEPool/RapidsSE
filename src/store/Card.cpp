@@ -317,7 +317,7 @@ void Card::vDump(i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* duplicate this card and its sub cards                                      */
 /*----------------------------------------------------------------------------*/
-Card* Card::pDuplicate(void)
+Card* Card::pDupCardAndSubCards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -327,7 +327,7 @@ Card* Card::pDuplicate(void)
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
     Card* pSubCard = pGetCard(i_SubCard);
     
-    Card* pSubCard_dup = pSubCard->pDuplicate();
+    Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
     
     if (pSubCard->m_pProperties) {
       pSubCard_dup->vPropertiesEnsure();
@@ -338,6 +338,32 @@ Card* Card::pDuplicate(void)
   }
   
   return pCard_dup;
+}
+
+/*----------------------------------------------------------------------------*/
+/* duplicate the sub cards                                                    */
+/*----------------------------------------------------------------------------*/
+Card_SubSet* Card::pDupSubCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_SubSet* pCard_SubSet = new Card_SubSet;
+  
+  i8 nSubCards = this->nItems();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pSubCard = pGetCard(i_SubCard);
+    
+    Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
+    
+    if (pSubCard->m_pProperties) {
+      pSubCard_dup->vPropertiesEnsure();
+      pSubCard_dup->pProperties()->vCopy(pSubCard->m_pProperties);
+    }
+    
+    pCard_SubSet->vAppend(pSubCard_dup);
+  }
+  
+  return pCard_SubSet;
 }
 
 /*----------------------------------------------------------------------------*/
