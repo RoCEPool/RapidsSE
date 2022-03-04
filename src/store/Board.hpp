@@ -42,7 +42,6 @@ namespace STORE
     Card_PredCmp*    m_pPredCmp_ubound;
 
     Index*     m_pIndex;
-    StreamDef* m_pStreamDef;
     Table*     m_pTable;
 
   private:
@@ -90,7 +89,6 @@ namespace STORE
     void vPredCmp_ubound(Card_PredCmp* pPredCmp);
 
     void vIndex    (Index*     pIndex);
-    void vStreamDef(StreamDef* pStreamDef);
     void vTable    (Table*     pTable);
 
     bool bInRegister    (Card* pCard);

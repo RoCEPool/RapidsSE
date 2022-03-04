@@ -54,7 +54,6 @@ Board::Board(Stz* szQueryNm)
   m_pReg_Stream = nullptr;
 
   m_pIndex     = nullptr;
-  m_pStreamDef = nullptr;
   m_pTable     = nullptr;
 
   _checkInitialised_(CN_BOARD);
@@ -509,16 +508,6 @@ void Board::vIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vStreamDef(StreamDef* pStreamDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  m_pStreamDef = pStreamDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -580,7 +569,6 @@ void Board::vResetRegisters(void)
   vPredCmp_ubound(nullptr);
   
   vIndex    (nullptr);
-  vStreamDef(nullptr);
   vTable    (nullptr);
 }
 
@@ -704,11 +692,6 @@ void Board::vResolveCard(Card* pCard)
       continue;
     }
 
-    if (CK_STREAMDEF == eSubCard) {
-      vStreamDef(pSubCard->pStreamDef());
-      continue;
-    }
-
     if (CK_TABLE == eSubCard) {
       vTable(pSubCard->pTable());
       continue;
@@ -729,7 +712,6 @@ void Board::vResolveCard(Card* pCard)
     Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_ELIST);
     pCard->vAppend(pCard_StreamDef);
     StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
-    vStreamDef(pStreamDef);
     
     Card_Stream* pCard_Stream = new Card_Stream;
     pCard->vAppend(pCard_Stream);
@@ -778,7 +760,6 @@ void Board::vResolveCard(Card* pCard)
     Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_Table);
     pCard->vAppend(pCard_StreamDef);
     StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
-    vStreamDef(pStreamDef);
   
     Card_Stream* pCard_Stream = new Card_Stream;
     pCard->vAppend(pCard_Stream);
