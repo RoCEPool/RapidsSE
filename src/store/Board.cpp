@@ -741,10 +741,10 @@ void Board::vResolveCard(Card* pCard)
   pCard_ELIST = (Card_ELIST*)pCard->pFindSubCard(CK_PROJELIST);
   if (pCard_ELIST) {
     
-    Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_ELIST);
-    pCard->vAppend(pCard_StreamDef);
-    StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
-    vStreamDef(pStreamDef);
+//    Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_ELIST);
+//    pCard->vAppend(pCard_StreamDef);
+//    StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
+//    vStreamDef(pStreamDef);
     
     
     Card_Stream* pCard_Stream = new Card_Stream;
@@ -1264,8 +1264,8 @@ void Board::vOrder_ProjectiveStreamDefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  StreamDef* pStreamDef_scan =
-    m_pIndexScan->pFindSubCard(CK_STREAMDEF)->pStreamDef();
+//  StreamDef* pStreamDef_scan =
+//    m_pIndexScan->pFindSubCard(CK_STREAMDEF)->pStreamDef();
 
   Card_Stream* pCard_Stream_src =
     _pCard_Stream(m_pIndexScan->pFindSubCard(CK_STREAM));
@@ -1279,12 +1279,12 @@ void Board::vOrder_ProjectiveStreamDefs(void)
       continue;
     
     Card_Project* pCard_Project = _pCard_Project(pCard);
-    
-    Card_StreamDef* pCard_StreamDef =
-      _pCard_StreamDef(pCard_Project->pFindSubCard(CK_STREAMDEF));
 
-    pCard_StreamDef->vApplyOrder(pStreamDef_scan);
-    
+//    Card_StreamDef* pCard_StreamDef =
+//      _pCard_StreamDef(pCard_Project->pFindSubCard(CK_STREAMDEF));
+//
+//    pCard_StreamDef->vApplyOrder(pStreamDef_scan);
+//
     //--- --- ---
 
     if (! pCard_Stream_src)
