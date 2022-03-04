@@ -66,6 +66,7 @@ params="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_PARAMS_KEY}")"
 cat << EOF
 {
   "numNodes": ${numNodes},
+  "firstNodeName": "${FIRST_NODE_NAME}",
   "shm": ${shm},
   "threads": ${threads},
   "partitions": ${partitions},

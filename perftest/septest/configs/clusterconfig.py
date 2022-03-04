@@ -15,20 +15,22 @@ LOG = logging.getLogger(__name__)
 class ClusterConfig:
     """Encapsulates a cluster config file and hides how it is implemented and parsed."""
 
-    C_PARSER_FILE    = "clusterConfigParser.sh"
-    C_PARSER_PATH    = str((pathlib.Path(__file__).parent / C_PARSER_FILE).resolve())
-    C_COMMON_FN_PATH = "../bootstrap/common.fn"
-    C_NUM_NODES      = "numNodes"
-    C_SHM            = "shm"
-    C_THREADS        = "threads"
-    C_PARTITIONS     = "partitions"
-    C_DIR            = "dir"
-    C_PORT           = "port"
-    C_PARAMS         = "params"
+    C_PARSER_FILE     = "clusterConfigParser.sh"
+    C_PARSER_PATH     = str((pathlib.Path(__file__).parent / C_PARSER_FILE).resolve())
+    C_COMMON_FN_PATH  = "../bootstrap/common.fn"
+    C_NUM_NODES       = "numNodes"
+    C_FIRST_NODE_NAME = "firstNodeName"
+    C_SHM             = "shm"
+    C_THREADS         = "threads"
+    C_PARTITIONS      = "partitions"
+    C_DIR             = "dir"
+    C_PORT            = "port"
+    C_PARAMS          = "params"
 
     def __init__(self, path: string):
         self.path = path
         self.num_nodes = -1
+        self.first_node_name = ""
         self.shm = -1
         self.threads = -1
         self.partitions = -1
@@ -63,17 +65,19 @@ class ClusterConfig:
             raise ConfigurationError(f"Parsing of cluster config file resulted in no output: {path}")
 
         output = json.loads(status.stdout, strict=False)
-        self.num_nodes  = output[self.C_NUM_NODES]
-        self.shm        = output[self.C_SHM]
-        self.threads    = output[self.C_THREADS]
-        self.partitions = output[self.C_PARTITIONS]
-        self.dir        = output[self.C_DIR]
-        self.port       = output[self.C_PORT]
-        self.params     = output[self.C_PARAMS]
+        self.num_nodes       = output[self.C_NUM_NODES]
+        self.first_node_name = output[self.C_FIRST_NODE_NAME]
+        self.shm             = output[self.C_SHM]
+        self.threads         = output[self.C_THREADS]
+        self.partitions      = output[self.C_PARTITIONS]
+        self.dir             = output[self.C_DIR]
+        self.port            = output[self.C_PORT]
+        self.params          = output[self.C_PARAMS]
 
     def __str__(self):
         s = f"<ClusterConfig>\n" \
             f"  num nodes  = {self.get_num_nodes()}\n" \
+            f"  first node = {self.get_first_node_name()}\n" \
             f"  shared mem = {self.get_shared_mem()}\n" \
             f"  threads    = {self.get_threads()}\n" \
             f"  partitions = {self.get_partitions()}\n" \
@@ -88,6 +92,9 @@ class ClusterConfig:
 
     def get_num_nodes(self) -> int:
         return self.num_nodes
+
+    def get_first_node_name(self) -> string:
+        return self.first_node_name
 
     def get_shared_mem(self) -> decimal:
         return self.shm

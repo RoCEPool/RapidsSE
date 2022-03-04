@@ -135,6 +135,10 @@ class TestRunner:
 
     def __run_jmeter_test(self):
         # TODO: Implement this
+        # TODO: Need to run from the bin subdirectory of the install dir.
+        #       Also need to set LD_LIBRARY_PATH=.
+        # TODO: Example:
+        #       LD_LIBRARY_PATH=. jmeter -n -p ../jmeter.properties -t ../tests/createAndDropTables.jmx -l ../tests/createAndDropTables.log
         pass
 
     def __collect_metrics(self):
