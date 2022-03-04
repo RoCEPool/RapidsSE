@@ -367,7 +367,7 @@ OptimiserFun __Opt_sub
 );
 
 /*----------------------------------------------------------------------------*/
-/* sub                                                                        */
+/* weave                                                                      */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
@@ -393,6 +393,49 @@ OptimiserFun __Opt_weave
   bOpt_weave,           // function to call
   0,0,                // spare
   "weave statement from cards"_Stz
+);
+
+/*----------------------------------------------------------------------------*/
+/* write                                                                      */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_write(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+{
+  vTrace("bOpt_write\n"_Stz);
+  
+  s4K sCmd;
+  pTknVec->vToTknString(sCmd);
+  
+  Stz* szStmt = pOptimiser->szWeave();
+  Stz* szQueryNm = pOptimiser->pBoard()->szQueryNm();
+
+  s256 sPath;
+  sPath.vSprint("/tmp/%s.txt"_Stz,szQueryNm);
+  
+  File* pFile = new File(pOptimiser);
+  
+  pFile->bOpenWrite(sPath);
+  
+  pFile->vPrint("%s"_Stz,szStmt);
+
+  pFile->vClose();
+  
+  delete pFile;
+  
+  vTrace("%s written\n"_Stz,sPath.szStz());
+  
+  riAction = 1;
+  
+  return true;
+}
+
+OptimiserFun __Opt_write
+(
+  "write"_Stz,        // name of the prompt function
+  "write"_Stz,        // command first word
+  nullptr,            // command second word
+  bOpt_write,           // function to call
+  0,0,                // spare
+  "write statement to file"_Stz
 );
 
 /*============================================================================*/

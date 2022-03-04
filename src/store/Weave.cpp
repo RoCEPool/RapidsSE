@@ -1012,6 +1012,8 @@ void Weave::vWeaveOptStmt(Board* pBoard)
   
   //vPrintBoardSummary();
 
+  m_sOptStmt = ""_Stz;
+  
   m_pBoard = pBoard;
   
   //vTrace("Build Pipeline\n"_Stz);

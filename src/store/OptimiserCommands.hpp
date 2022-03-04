@@ -25,6 +25,8 @@ namespace STORE
   bool bOpt_sub     (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
   bool bOpt_weave   (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
+
+  bool bOpt_write   (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 }
 
 /*============================================================================*/

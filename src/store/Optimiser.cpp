@@ -75,6 +75,18 @@ void Optimiser::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get top board                                                              */
+/*----------------------------------------------------------------------------*/
+Board* Optimiser::pBoard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  Board* pBoard = m_pBench->pGet(0);
+
+  return pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cardCtl                                                                */
 /*----------------------------------------------------------------------------*/
 CardCtl* Optimiser::pCardCtl(void)
@@ -117,7 +129,7 @@ Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Board* pBoard = m_pBench->pGet(0);
+  Board* pBoard = this->pBoard();
   m_pWeave->vWeaveOptStmt(pBoard);
 
   Stz* szPipeline = m_pWeave->szOptStmt();

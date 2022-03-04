@@ -37,6 +37,8 @@ namespace STORE
 
     static void vRepair(Object* pObject);
 
+    Board* pBoard(void);
+  
     CardCtl* pCardCtl(void);
   
     void vOptimise(void);
