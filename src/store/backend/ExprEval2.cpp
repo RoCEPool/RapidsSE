@@ -501,6 +501,36 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
+    if (pTkn->bSame("MATCHLEADING"_Stz)) {
+      ePreExp = PE_MLE;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MATCHMIDDLE1"_Stz)) {
+      ePreExp = PE_MM1;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MATCHMIDDLE2"_Stz)) {
+      ePreExp = PE_MM2;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MATCHMIDDLE3"_Stz)) {
+      ePreExp = PE_MM3;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MATCHTRAILING"_Stz)) {
+      ePreExp = PE_MTR;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bSame("SUBSTRING2"_Stz)) {
       ePreExp = PE_SS2;
       pTkn = pTknVec->pNextToken();

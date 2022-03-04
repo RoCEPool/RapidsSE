@@ -394,6 +394,76 @@
     }                                                                       \
   }
 
+#define _MATCH_LEADING(eErrorCode)                                          \
+  {                                                                         \
+    szArg1 = (char*)*(--paW);                                               \
+    szArg2 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        szArg1  == (char*)C_DATUM_NULL ||                                   \
+        szArg2  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      NEVER_REACH;                                                          \
+    }                                                                       \
+  }
+
+#define _MATCH_MIDDLE1(eErrorCode)                                          \
+  {                                                                         \
+    szArg1 = (char*)*(--paW);                                               \
+    szArg2 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        szArg1  == (char*)C_DATUM_NULL ||                                   \
+        szArg2  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      NEVER_REACH;                                                          \
+    }                                                                       \
+  }
+
+#define _MATCH_MIDDLE2(eErrorCode)                                          \
+  {                                                                         \
+    szArg1 = (char*)*(--paW);                                               \
+    szArg2 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        szArg1  == (char*)C_DATUM_NULL ||                                   \
+        szArg2  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      NEVER_REACH;                                                          \
+    }                                                                       \
+  }
+
+#define _MATCH_MIDDLE3(eErrorCode)                                          \
+  {                                                                         \
+    szArg1 = (char*)*(--paW);                                               \
+    szArg2 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        szArg1  == (char*)C_DATUM_NULL ||                                   \
+        szArg2  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      NEVER_REACH;                                                          \
+    }                                                                       \
+  }
+
+#define _MATCH_TRAILING(eErrorCode)                                         \
+  {                                                                         \
+    szArg1 = (char*)*(--paW);                                               \
+    szArg2 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        szArg1  == (char*)C_DATUM_NULL ||                                   \
+        szArg2  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      NEVER_REACH;                                                          \
+    }                                                                       \
+  }
+
 #define _STR_SUBSTRING2(szDstArea, eErrorCode)                              \
   {                                                                         \
     i8 iStart = *(--paW);                                                   \

@@ -2815,6 +2815,31 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       continue;
     }
 
+    if (pTkn->bSame("matchLeading"_Stz)) {
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    if (pTkn->bSame("matchMiddle1"_Stz)) {
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    if (pTkn->bSame("matchMiddle2"_Stz)) {
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    if (pTkn->bSame("matchMiddle3"_Stz)) {
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
+    if (pTkn->bSame("matchTrailing"_Stz)) {
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the substring2 expression
     if (pTkn->bSame("substring2"_Stz)) {
@@ -4000,6 +4025,8 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
 
   switch(ePreExp) {
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // BETWEEN OPERATOR
     case PE_BET:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
@@ -4009,6 +4036,8 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_BOL);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // IN EXPRESSIONS LIST OPERATOR
     case PE_INX:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
@@ -4018,6 +4047,8 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_BOL);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // LIKE OPERATOR
     case PE_LK2:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
@@ -4026,6 +4057,8 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_BOL);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // LIKE OPERATOR with ESCAPE
     case PE_LK3:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
@@ -4035,6 +4068,59 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_BOL);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // MATCH LEADING (ABD%)
+    case PE_MLE:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      eExpr2 = (eDM)pTypeStack->iPop();
+      sOperation.vConcat("_MATCH_LEADING(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_BOL);
+      break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // MATCH  MIDDLE 1 (%ABC%)
+    case PE_MM1:
+      // match leading
+      eExpr1 = (eDM)pTypeStack->iPop();
+      eExpr2 = (eDM)pTypeStack->iPop();
+      sOperation.vConcat("_MATCH_MIDDLE1(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_BOL);
+      break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // MATCH MIDDLE 2 (%ABC%DEF%)
+    case PE_MM2:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      eExpr2 = (eDM)pTypeStack->iPop();
+      sOperation.vConcat("_MATCH_MIDDLE2(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_BOL);
+      break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // MATCH MIDDLE 3 (%ABC%DEF%GHI%)
+    case PE_MM3:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      eExpr2 = (eDM)pTypeStack->iPop();
+      sOperation.vConcat("_MATCH_MIDDLE3(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_BOL);
+      break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // MATCH TRAILING (%ABC)
+    case PE_MTR:
+      eExpr1 = (eDM)pTypeStack->iPop();
+      eExpr2 = (eDM)pTypeStack->iPop();
+      sOperation.vConcat("_MATCH_TRAILING(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_BOL);
+      break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // LIKE OPERATOR
     case PE_SS2:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
@@ -4043,6 +4129,8 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_VCH);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // LIKE OPERATOR
     case PE_SS3:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
@@ -4052,6 +4140,8 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_VCH);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // LIKE OPERATOR
     case PE_XDY:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractDay[eExpr1]];
@@ -4060,6 +4150,8 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_INT);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // LIKE OPERATOR
     case PE_XHR:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractHour[eExpr1]];
@@ -4068,6 +4160,8 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_INT);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // LIKE OPERATOR
     case PE_XMN:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractMinute[eExpr1]];
@@ -4076,6 +4170,8 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_INT);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // LIKE OPERATOR
     case PE_XMT:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractMonth[eExpr1]];
@@ -4084,6 +4180,8 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_INT);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // LIKE OPERATOR
     case PE_XSC:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractSecond[eExpr1]];
@@ -4092,6 +4190,8 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_INT);
       break;
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // LIKE OPERATOR
     case PE_XYR:
       eExpr1 = (eDM)pTypeStack->iPop();
       sOperation = aFM[eMacro_ExtractYear[eExpr1]];
