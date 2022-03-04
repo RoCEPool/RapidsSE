@@ -55,6 +55,8 @@ Board::Board(Stz* szQueryNm)
 
   m_pIndex     = nullptr;
   m_pTable     = nullptr;
+  
+  MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_BOARD);
 
   _checkInitialised_(CN_BOARD);
 
@@ -513,6 +515,26 @@ void Board::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Board::bFlag(i8 i_Flag)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  return m_baFlag[i_Flag];
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vFlag(i8 i_Flag, bool bFlag)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  m_baFlag[i_Flag] = bFlag;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1286,8 +1308,15 @@ bool Board::bMay_AggGby_Sort_to_AggGby(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+#ifdef RULE_NO
+  #undef RULE_NO
+#endif
+  
+#define RULE_NO RN_ZERO
+  
   bool bMay = false;
   
+  vFlag(RULE_NO,bMay);
   return bMay;
 }
 
@@ -1298,8 +1327,15 @@ bool Board::bMay_ordStream_AggGby_to_OrdAgg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+#ifdef RULE_NO
+  #undef RULE_NO
+#endif
+  
+#define RULE_NO 1
+  
   bool bMay = false;
   
+  vFlag(RULE_NO,bMay);
   return bMay;
 }
 
@@ -1309,9 +1345,16 @@ bool Board::bMay_ordStream_AggGby_to_OrdAgg(void)
 bool Board::bMay_OrdAgg_Sort_to_OrdAgg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+#ifdef RULE_NO
+  #undef RULE_NO
+#endif
+  
+#define RULE_NO 2
 
   bool bMay = false;
   
+  vFlag(RULE_NO,bMay);
   return bMay;
 }
 
@@ -1321,9 +1364,16 @@ bool Board::bMay_OrdAgg_Sort_to_OrdAgg(void)
 bool Board::bMay_Scan_AggGby_to_IndexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+#ifdef RULE_NO
+  #undef RULE_NO
+#endif
+  
+#define RULE_NO 3
 
   bool bMay = false;
   
+  vFlag(RULE_NO,bMay);
   return bMay;
 }
 
@@ -1333,9 +1383,16 @@ bool Board::bMay_Scan_AggGby_to_IndexScan(void)
 bool Board::bMay_Scan_Filter_to_IndexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+#ifdef RULE_NO
+  #undef RULE_NO
+#endif
+  
+#define RULE_NO 4
 
   bool bMay = bFind_Scan_Filter(false);
   
+  vFlag(RULE_NO,bMay);
   return bMay;
 }
 
@@ -1346,8 +1403,15 @@ bool Board::bMay_Scan_Sort_to_IndexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+#ifdef RULE_NO
+  #undef RULE_NO
+#endif
+  
+#define RULE_NO 5
+
   bool bMay = false;
   
+  vFlag(RULE_NO,bMay);
   return bMay;
 }
 
@@ -1361,6 +1425,12 @@ bool Board::bRule_AggGby_Sort_to_AggGby(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+#ifdef RULE_NO
+  #undef RULE_NO
+#endif
+  
+#define RULE_NO 0
+
   bool bMay = false;
   
   return bMay;
@@ -1373,6 +1443,12 @@ bool Board::bRule_ordStream_AggGby_to_OrdAgg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
+#ifdef RULE_NO
+  #undef RULE_NO
+#endif
+  
+#define RULE_NO 1
+
   return false;
 }
 
@@ -1382,6 +1458,12 @@ bool Board::bRule_ordStream_AggGby_to_OrdAgg(void)
 bool Board::bRule_OrdAgg_Sort_to_OrdAgg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+#ifdef RULE_NO
+  #undef RULE_NO
+#endif
+  
+#define RULE_NO 2
 
   bool bMay = false;
   
@@ -1395,6 +1477,12 @@ bool Board::bRule_Scan_AggGby_to_IndexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
+#ifdef RULE_NO
+  #undef RULE_NO
+#endif
+  
+#define RULE_NO 3
+
   return false;
 }
 
@@ -1404,6 +1492,12 @@ bool Board::bRule_Scan_AggGby_to_IndexScan(void)
 bool Board::bRule_Scan_Filter_to_IndexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+#ifdef RULE_NO
+  #undef RULE_NO
+#endif
+  
+#define RULE_NO 4
 
   bool bMay = bFind_Scan_Filter(true);
   RASSERT(bMay);
@@ -1463,6 +1557,12 @@ bool Board::bRule_Scan_Filter_to_IndexScan(void)
 bool Board::bRule_Scan_Sort_to_IndexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+#ifdef RULE_NO
+  #undef RULE_NO
+#endif
+  
+#define RULE_NO 5
 
   bool bMay = false;
   

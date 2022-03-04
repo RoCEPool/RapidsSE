@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Dissect.hpp"
+#include "eRN.h"
 
 
 namespace STORE
@@ -36,7 +37,6 @@ namespace STORE
     Card_Stage*      m_pStage;
     Card_Stream*     m_pReg_Stream;
 
-
     Card_PredCmp*    m_pPredCmp_ebound;
     Card_PredCmp*    m_pPredCmp_lbound;
     Card_PredCmp*    m_pPredCmp_ubound;
@@ -44,6 +44,8 @@ namespace STORE
     Index*     m_pIndex;
     Table*     m_pTable;
 
+    bool m_baFlag[RN_ENUMS];
+  
   private:
     // must be last
     Footer m_xFooter;
@@ -90,6 +92,9 @@ namespace STORE
 
     void vIndex    (Index*     pIndex);
     void vTable    (Table*     pTable);
+
+    bool bFlag(i8 i_Flag);
+    void vFlag(i8 i_Flag, bool bFlag);
 
     bool bInRegister    (Card* pCard);
     void vResetRegisters(void);
