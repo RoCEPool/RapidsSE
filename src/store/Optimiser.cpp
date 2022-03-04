@@ -36,7 +36,6 @@ Optimiser::Optimiser(PipelineSpec* pUnOptPipelineSpec,
   
   m_pBench   = new Bench(this);
   m_pDissect = new Dissect(this);
-  m_pRules   = new Rules;
   m_pWeave   = new Weave(this);
 
   _checkInitialised_(CN_OPTIMISER);
@@ -51,10 +50,10 @@ Optimiser::~Optimiser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
-  delete m_pBench;
   delete m_pCardCtl;
+  
+  delete m_pBench;
   delete m_pDissect;
-  delete m_pRules;
   delete m_pWeave;
 }
 

@@ -228,8 +228,6 @@
 #include "DerefMetrics.hpp"
 #include "ThreadScratch.hpp"
 #include "PagingMetrics.hpp"
-#include "Rule.hpp"
-#include "Rules.hpp"
 #include "Action.hpp"
 #include "CardCtl.hpp"
 
@@ -512,8 +510,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RU_Cpu),             HT_INVALID   ,0 FILL }, // CN_RUCPU
   { 0,/*sizeof(RU_Dir)*/        HT_INVALID   ,0 FILL }, // CN_RUDIR
   { 0,/*sizeof(RU_File)*/       HT_INVALID   ,0 FILL }, // CN_RUFILE
-  { sizeof(Rule),               HT_T_TINY    ,0 FILL }, // CN_RULE
-  { sizeof(Rules),              HT_T_TINY    ,0 FILL }, // CN_RULES
   { sizeof(RU_Memory),          HT_INVALID   ,0 FILL }, // CN_RUMEMORY
   { 0,/*sizeof(RU_Mutex)*/      HT_INVALID   ,0 FILL }, // CN_RUMUTEX
   { 0,/*sizeof(RU_Pass)*/       HT_INVALID   ,0 FILL }, // CN_RUPASS

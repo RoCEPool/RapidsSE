@@ -8,7 +8,6 @@
 #include "Bench.hpp"
 #include "CardCtl.hpp"
 #include "Dissect.hpp"
-#include "Rules.hpp"
 #include "Weave.hpp"
 
 namespace STORE
@@ -21,10 +20,10 @@ namespace STORE
   
     PipelineSpec* m_pUnOptPipelineSpec;
   
-    Bench*   m_pBench;
     CardCtl* m_pCardCtl;
+  
+    Bench*   m_pBench;
     Dissect* m_pDissect;
-    Rules*   m_pRules;
     Weave*   m_pWeave;
 
     // must be last
