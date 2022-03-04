@@ -366,6 +366,35 @@ OptimiserFun __Opt_sub
   "remove card print"_Stz
 );
 
+/*----------------------------------------------------------------------------*/
+/* sub                                                                        */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+{
+  vTrace("bOpt_weave\n"_Stz);
+  
+  s4K sCmd;
+  pTknVec->vToTknString(sCmd);
+  
+  vTrace("%s\n"_Stz
+         ,pOptimiser->szWeave()
+         );
+  
+  riAction = 1;
+  
+  return true;
+}
+
+OptimiserFun __Opt_weave
+(
+  "weave"_Stz,        // name of the prompt function
+  "weave"_Stz,        // command first word
+  nullptr,            // command second word
+  bOpt_weave,           // function to call
+  0,0,                // spare
+  "weave statement from cards"_Stz
+);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

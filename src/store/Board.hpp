@@ -84,7 +84,7 @@ namespace STORE
     void vReg_Send     (Card_Send*      pSend);
     void vReg_Sort     (Card_Sort*      pSort);
     void vReg_Stage    (Card_Stage*     pStage);
-    void vReg_Stream(Card_Stream*   pStream);
+    void vReg_Stream   (Card_Stream*   pStream);
 
     void vPredCmp_ebound(Card_PredCmp* pPredCmp);
     void vPredCmp_lbound(Card_PredCmp* pPredCmp);
