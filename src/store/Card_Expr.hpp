@@ -20,6 +20,7 @@ namespace STORE
     Card_Expr(Column* pColumn);
    ~Card_Expr(void) noexcept(false);
     
+    void vAsEnsure(void);
     Card_PredCmp* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
     void vReduceBoolExpr(void);

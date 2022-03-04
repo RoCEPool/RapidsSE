@@ -612,6 +612,7 @@ Card_AggElist* Dissect::pAggElist(Card_RpnTerms* pCard_RpnTerms)
 
   Card_AggElist* pCard_AggElist = new Card_AggElist;
   
+  i8 iCardNo = 0;
   Card_Term* pCard_Term_head = nullptr;
   while ( (pCard_Term_head = pCard_RpnTerms->pHeadTerm()) ) {
     
@@ -628,6 +629,9 @@ Card_AggElist* Dissect::pAggElist(Card_RpnTerms* pCard_RpnTerms)
         
     // TYPE <type> [ AS <as> ] <calcExpr>
     Card_Expr* pCard_Expr = pExpr_c(pCard_RpnTerms);
+    pCard_Expr->vCardNo(++iCardNo);
+    pCard_Expr->vAsEnsure();
+
     pCard_AggElist->vAppend(pCard_Expr);
   }
   
@@ -647,6 +651,7 @@ Card_GbyElist* Dissect::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
   Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
   RASSERT(pCard_Term_head->bIsSame("GROUPBY"_Stz));
 
+  i8 iCardNo = 0;
   while ( (pCard_Term_head = pCard_RpnTerms->pHeadTerm()) ) {
         
     // SEPARATOR
@@ -657,6 +662,8 @@ Card_GbyElist* Dissect::pGbyElist(Card_RpnTerms* pCard_RpnTerms)
         
     // TYPE <type> [ AS <as> ] <calcExpr>
     Card_Expr* pCard_Expr = pExpr_c(pCard_RpnTerms);
+    pCard_Expr->vCardNo(++iCardNo);
+    pCard_Expr->vAsEnsure();
     
     Card_Direction* pCard_Direction = new Card_Direction(aSD_short[SD_ASC]);
     pCard_Expr->vAppend(pCard_Direction);
@@ -774,6 +781,7 @@ Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
     pCard_Expr->vAppend(pCard_As);
   }
   
+  
   // <calcExpr>
   Card_ExprCalc* pCard_ExprCalc = pExprCalc(pCard_RpnTerms);
   pCard_Expr->vAppend(pCard_ExprCalc);
@@ -787,7 +795,7 @@ Card_Expr* Dissect::pExpr_c(Card_RpnTerms* pCard_RpnTerms)
     Card_Direction* pCard_SortDirn = pDirection(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_SortDirn);
   }
-  
+    
   return pCard_Expr;
 }
 

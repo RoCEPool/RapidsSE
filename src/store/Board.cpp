@@ -709,15 +709,24 @@ void Board::vResolveCard(Card* pCard)
 
   pCard_ELIST = (Card_ELIST*)pCard->pFindSubCard(CK_AGGELIST);
   if (pCard_ELIST) {
-    Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_ELIST);
-    pCard->vAppend(pCard_StreamDef);
-    StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
+    
+//    Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_ELIST);
+//    pCard->vAppend(pCard_StreamDef);
+//    StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
     
     Card_Stream* pCard_Stream = new Card_Stream;
     pCard->vAppend(pCard_Stream);
 
-    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+//    pCard_Stream->vAppend(pCard_StreamElist);
+    
+    Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
+    Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
+    pCard_StreamElist->vTransferAll(pCard_SubSet);
     pCard_Stream->vAppend(pCard_StreamElist);
+    delete pCard_SubSet;
+    
+    vReg_Stream(pCard_Stream);
   }
   
   pCard_ELIST = (Card_ELIST*)pCard->pFindSubCard(CK_PROJELIST);
@@ -726,7 +735,6 @@ void Board::vResolveCard(Card* pCard)
 //    Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_ELIST);
 //    pCard->vAppend(pCard_StreamDef);
 //    StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
-//    vStreamDef(pStreamDef);
     
     
     Card_Stream* pCard_Stream = new Card_Stream;

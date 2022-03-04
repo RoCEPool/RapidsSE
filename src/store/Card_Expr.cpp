@@ -73,6 +73,24 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Expr::vAsEnsure(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_As* pCard_As = _pCard_As(pFindSubCard(CK_AS));
+  if (pCard_As)
+    return;
+  
+  s32 sAs;
+  sAs.vSprint("COL__%lld"_Stz,m_iCardNo);
+  
+  pCard_As = new Card_As(sAs);
+  vAppend(pCard_As);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_PredCmp* Card_Expr::pFindBound(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
