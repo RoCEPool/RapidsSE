@@ -103,7 +103,6 @@ namespace STORE
     void vResolveTerm      (Card_Term*      pCard_Term);
 
     Card_StreamDef* pNewStreamDef(Card_ELIST* pCard_ELIST);
-    Card_StreamDef* pNewStreamDef(Card_Table* pCard_Table);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

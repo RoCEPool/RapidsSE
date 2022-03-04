@@ -765,10 +765,13 @@ void Board::vResolveCard(Card* pCard)
   
   pCard_Table = _pCard_Table(pCard->pFindSubCard(CK_TABLE));
   if (pCard_Table) {
-    Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_Table);
-    pCard->vAppend(pCard_StreamDef);
-    StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
-  
+//    Card_StreamDef* pCard_StreamDef = pNewStreamDef(pCard_Table);
+//    pCard->vAppend(pCard_StreamDef);
+//    StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
+
+    StreamDef* pStreamDef = pCard_Table->pTable()->pStreamDef();
+
+    
     Card_Stream* pCard_Stream = new Card_Stream;
     pCard->vAppend(pCard_Stream);
     vReg_Stream(pCard_Stream);
@@ -886,22 +889,6 @@ Card_StreamDef* Board::pNewStreamDef(Card_ELIST* pCard_ELIST)
   
   Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
   
-  return pCard_StreamDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_StreamDef* Board::pNewStreamDef(Card_Table* pCard_Table)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  Table* pTable = pCard_Table->pTable();
-    
-  StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
-  
-  Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
-
   return pCard_StreamDef;
 }
 
