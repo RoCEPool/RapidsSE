@@ -797,18 +797,41 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
+//  if (pCard_Term->bIsOrdinalStreamTerm()) {
+//
+//    i8 i_Ord = pCard_Term->iOrdinalStreamColNo();
+//    i8 i_Col = i_Ord - 1;
+//
+//    Column* pColumn = m_pStreamDef->pGetColumn(i_Col);
+//    Stz* szColNm = pColumn->szColNm();
+//
+//    pCard_Term->vTerm(szColNm);
+//
+//    return;
+//  }
   if (pCard_Term->bIsOrdinalStreamTerm()) {
 
     i8 i_Ord = pCard_Term->iOrdinalStreamColNo();
     i8 i_Col = i_Ord - 1;
 
-    Column* pColumn = m_pStreamDef->pGetColumn(i_Col);
-    Stz* szColNm = pColumn->szColNm();
+    //Column* pColumn = m_pStreamDef->pGetColumn(i_Col);
+    //Stz* szColNm = pColumn->szColNm();
 
-    pCard_Term->vTerm(szColNm);
+    Card_StreamElist* pCard_StreamElist_src =
+      _pCard_StreamElist(m_pReg_Stream->pFindSubCard(CK_STREAMELIST));
+
+    Card_Expr* pCard_Expr_src = _pCard_Expr(pCard_StreamElist_src->pGet(i_Col));
+
+    Card_Term* pCard_Term_src =
+      _pCard_Term(pCard_Expr_src->pFindSubCard(CK_TERM));
+
+    Stz* szColNm_resolved = pCard_Term_src->szTerm();
+    
+    pCard_Term->vTerm(szColNm_resolved);
 
     return;
   }
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -818,9 +841,9 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
     i8 i_IdxCol = i_IdxOrd - 1;
 
     Column* pIdxColumn = m_pIndex->pGetColumn(i_IdxCol);
-    Stz* szIdxColNm = pIdxColumn->szColNm();
+    Stz* szIdxColNm_resolved = pIdxColumn->szColNm();
   
-    pCard_Term->vTerm(szIdxColNm);
+    pCard_Term->vTerm(szIdxColNm_resolved);
 
     return;
   }
