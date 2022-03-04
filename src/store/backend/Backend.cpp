@@ -1253,7 +1253,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
             if (szPattern[0] == '%')
               sPipeline->vCatSprint(" %lld matchTrailing "_Stz, iLength);
             else if (szPattern[iLength-1] == '%')
-              sPipeline->vCatSprint(" matchLeading "_Stz);
+              sPipeline->vCatSprint(" %lld matchLeading "_Stz, iLength);
             else
               sPipeline->vCatSprint(" like2 "_Stz);
             break;

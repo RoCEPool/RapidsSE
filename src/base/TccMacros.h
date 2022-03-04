@@ -394,8 +394,19 @@
     }                                                                       \
   }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// _MATCH_LEADING
+// matches given string with leading characters (before %) of the pattern
+// e.g pattern is : ABC% ; matches first 3 characters with ABC
+// parameters:
+// szArg2 : string
+// szArg1 : regular expression
+// iArg1  : length of the regular expression
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 #define _MATCH_LEADING(eErrorCode)                                          \
   {                                                                         \
+    iArg1  = (i8)*(--paW);                                                  \
     szArg1 = (char*)*(--paW);                                               \
     szArg2 = (char*)*(--paW);                                               \
     if (eErrorCode != EC_NONE ||                                            \
@@ -404,7 +415,18 @@
       *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
-      NEVER_REACH;                                                          \
+      char* r = szArg1;                                                     \
+      char* s = szArg2;                                                     \
+                                                                            \
+      while (iArg1--)                                                       \
+      {                                                                     \
+        if (*r++ != *s++) {                                                 \
+          *(paW++) = 0;                                                     \
+          break;                                                            \
+        }                                                                   \
+      }                                                                     \
+      if (iArg1 == 0)                                                       \
+        *(paW++) = 1;                                                       \
     }                                                                       \
   }
 
@@ -450,11 +472,15 @@
     }                                                                       \
   }
 
-
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// _MATCH_TRAILING
+// matches given string with trailing characters (following %) of the pattern
+// e.g pattern is : %ABC ; matches last 3 characters with ABC
 // parameters:
-// szArg2 : expression
+// szArg2 : string
 // szArg1 : regular expression
 // iArg1  : length of the regular expression
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #define _MATCH_TRAILING(eErrorCode)                                         \
   {                                                                         \
