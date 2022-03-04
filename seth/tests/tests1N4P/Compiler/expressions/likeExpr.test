@@ -285,14 +285,12 @@ SELECT 'abc#def' LIKE 'abc##_ef' ESCAPE '#' FROM NATION LIMIT 1;
 rows: (true)
 
 -- Runtime test: test ESCAPE '', which disables any escaping
-// TODO: Enable when supported
-//SELECT 'abc#def' LIKE 'abc#_ef' ESCAPE '' FROM NATION LIMIT 1;
-//rows: (false)
+SELECT 'abc#def' LIKE 'abc#_ef' ESCAPE '' FROM NATION LIMIT 1;
+rows: (true)
 
 -- Runtime test: that LIKE is not case sensitive
 SELECT 'abcdef' LIKE 'ABCDEF' FROM NATION LIMIT 1;
 rows: (false)
-
 
 -- Explain of LIKE in SELECT list
 EXPLAIN SELECT 'abc' LIKE 'abc' FROM nation LIMIT 1;
