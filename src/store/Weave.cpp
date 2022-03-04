@@ -1013,6 +1013,8 @@ void Weave::vWeaveOptStmt(Board* pBoard)
   
   //vPrintBoardSummary();
 
+  m_i_Stage = 0;
+  m_i_Op_stage = 0;
   m_sOptStmt = ""_Stz;
   
   m_pBoard = pBoard;

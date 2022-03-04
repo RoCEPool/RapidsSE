@@ -20,7 +20,6 @@ namespace STORE
     
     i8 m_i_Stage;
     i8 m_i_Op_stage;
-  
     s48K m_sOptStmt;
 
   private:
