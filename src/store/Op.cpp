@@ -1451,6 +1451,7 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
   else
   if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CSVBUF)) {
     CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+    UNUSED(pCsvBuffer);
     vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz
            ,pStage()->szStageNm()
            ,szOpNm()
@@ -1597,6 +1598,7 @@ Operand* Op::pPopOoOLeft(void)
   eCN eClassNo = pOperand->eGetClassNo();
   if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_CRWBUF)) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+    UNUSED(pCrwBuffer);
     vTrace("[%6s %10s]-Pipein  : CrwBuffer (%lld rows)\n"_Stz
            ,pStage()->szStageNm()
            ,szOpNm()
@@ -1606,6 +1608,7 @@ Operand* Op::pPopOoOLeft(void)
   else
   if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_CSVBUF)) {
     CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+    UNUSED(pCsvBuffer);
     vTrace("[%6s %10s]-Pipein  : CsvBuffer\n"_Stz
            ,pStage()->szStageNm()
            ,szOpNm()
@@ -1614,6 +1617,7 @@ Operand* Op::pPopOoOLeft(void)
   else
   if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_ROWBUF)) {
     RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+    UNUSED(pRowBuffer);
     vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows)\n"_Stz
            ,pStage()->szStageNm()
            ,szOpNm()
