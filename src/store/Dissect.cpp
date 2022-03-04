@@ -25,7 +25,6 @@ Dissect::Dissect(Optimiser* pOptimiser)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
         
   m_pOptimiser    = pOptimiser;
-  m_pBench        = nullptr;
   m_pBoard        = nullptr;
   
   m_pPipelineSpec = nullptr;
@@ -56,12 +55,10 @@ Dissect::~Dissect(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dissect pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectSpec(Bench* pBench, PipelineSpec* pPipelineSpec)
+Board* Dissect::pDissectSpec(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-      
-  m_pBench = pBench;
-  
+        
   SubPipelines* pSubPipelines = pPipelineSpec->pSubPipelines();
   if (pSubPipelines) {
     i8 nSubPipelines = pSubPipelines->nItems();
@@ -80,6 +77,8 @@ void Dissect::vDissectSpec(Bench* pBench, PipelineSpec* pPipelineSpec)
   m_pStageSpec = nullptr;
   m_pOpSpec    = nullptr;
   m_bSawAggOp  = false;
+  
+  return m_pBoard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +99,7 @@ void Dissect::vPipeline(void)
   m_pBoard = new Board(m_pOptimiser, "Board"_Stz);
   m_pBoard->vQueryNm(szPipelineNm);
 
-  m_pBench->vAppend(m_pBoard);
+  //m_pBench->vAppend(m_pBoard);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

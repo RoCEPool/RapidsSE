@@ -22,14 +22,12 @@ __aFooterFunction(Optimiser)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Optimiser::Optimiser(PipelineSpec* pUnOptPipelineSpec,
-                     TagSet* p_JobTags,
-                     i8 iOptimiserLvl)
+                     TagSet* p_JobTags)
 : Object(CN_OPTIMISER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
   m_p_JobTags = p_JobTags;
-  m_iOptimiserLvl = iOptimiserLvl;
   m_pUnOptPipelineSpec = pUnOptPipelineSpec;
   
   m_pCardCtl = new CardCtl;
@@ -85,7 +83,7 @@ Board* Optimiser::pBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Board* pBoard = m_pBench->pGet(0);
+  Board* pBoard = m_pBench->pHead();
 
   return pBoard;
 }
@@ -106,19 +104,14 @@ CardCtl* Optimiser::pCardCtl(void)
 void Optimiser::vOptimise(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-  
-  if (! m_iOptimiserLvl)
-    return;
- 
-    
+   
   SP_PipelineSpec spPipelineSpec(m_pUnOptPipelineSpec);
   vTrace("Optimiser: %s\n"_Stz,spPipelineSpec.sz());
-    
-  if (1 == m_iOptimiserLvl)
-    return;
+      
+  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipelineSpec);
   
-  m_pDissect->vDissectSpec(m_pBench,m_pUnOptPipelineSpec);
-  
+  m_pBench->vAppend(pBoard);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vOptimise_Board();
@@ -156,7 +149,9 @@ void Optimiser::vToPipelineSpec(Stz* szStmt)
   
   delete m_pBench->pPop();
   
-  m_pDissect->vDissectSpec(m_pBench,m_pUnOptPipelineSpec);
+  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipelineSpec);
+
+  m_pBench->vAppend(pBoard);
 
   delete pDynamo;
 }
@@ -187,7 +182,7 @@ void Optimiser::vOptimise_Board(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Board* pBoard = m_pBench->pGet(0);
+  Board* pBoard = m_pBench->pHead();
     
   pBoard->vPrintBoard("vDissectSpec >> "_Stz);
   

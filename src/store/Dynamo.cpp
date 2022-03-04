@@ -100,9 +100,9 @@ void Dynamo::vOptimise(void)
   
   Job* pJob = MY::pJob();
   
-  Stz* szPipelineNm = m_p_PipelineSpec->szPipelineNm();
+//  Stz* szPipelineNm = m_p_PipelineSpec->szPipelineNm();
   
-  i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
+//  i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
 
 //  if (   ! iOptimiserLvl
 //      || ! pJob->bIsOriginator()
@@ -121,8 +121,7 @@ void Dynamo::vOptimise(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec,
-                                        m_p_JobTags,
-                                        iOptimiserLvl);
+                                        m_p_JobTags);
   pOptimiser->vOptimise();
 
   Stz* szWeavedStmt = pOptimiser->szWeave();

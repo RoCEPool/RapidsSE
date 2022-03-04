@@ -16,7 +16,6 @@ namespace STORE
   {
   private:
     TagSet* m_p_JobTags;
-    i8 m_iOptimiserLvl;
   
     PipelineSpec* m_pUnOptPipelineSpec;
   
@@ -34,8 +33,7 @@ namespace STORE
     void  operator delete(void*);
   
     Optimiser(PipelineSpec* pUnOptPipelineSpec,
-              TagSet* p_JobTags,
-              i8 iOptimiserLvl);
+              TagSet* p_JobTags);
   
    ~Optimiser(void) noexcept(false);
 

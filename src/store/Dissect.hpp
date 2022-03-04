@@ -115,8 +115,7 @@ namespace STORE
     Dissect(Optimiser* pOptimiser);
    ~Dissect(void) noexcept(false);
   
-    void vDissectSpec(Bench* pBench,
-                      PipelineSpec* pPipelineSpec);
+    Board* pDissectSpec(PipelineSpec* pPipelineSpec);
   
   private:
     void vPipeline(void);
