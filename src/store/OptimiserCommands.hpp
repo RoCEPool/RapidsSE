@@ -12,6 +12,8 @@ namespace STORE
 
   bool bOpt_below   (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
+  bool bOpt_clear   (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
+
   bool bOpt_depth   (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
   bool bOpt_form    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
@@ -19,6 +21,8 @@ namespace STORE
   bool bOpt_help    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
   bool bOpt_hide    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
+
+  bool bOpt_load    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
   bool bOpt_reprint (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 

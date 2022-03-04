@@ -379,7 +379,7 @@ void Weave::vArgScan(Stz* szOpArgs, Card_Scan* pCard_Scan)
   Table* pTable = pCard_Scan->pFindSubCard(CK_TABLE)->pTable();
   
   Stz* szTableNm = pTable->szTableNm();
-  m_i_Op_stage++;
+  //m_i_Op_stage++;
   
   szOpArgs->vCatSprint("%s"_Stz,szTableNm);
 }

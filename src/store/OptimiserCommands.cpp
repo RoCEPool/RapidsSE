@@ -112,6 +112,30 @@ OptimiserFun __Opt_below
 );
 
 /*----------------------------------------------------------------------------*/
+/* clear                                                                      */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_clear(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+{
+  Board* pBoard = pOptimiser->pBoard();
+  
+  pBoard->vClear();
+
+  riAction = 1;
+  
+  return true;
+}
+
+OptimiserFun __Opt_clear
+(
+  "clear"_Stz,        // name of the prompt function
+  "clear"_Stz,        // command first word
+  nullptr,            // command second word
+  bOpt_clear,         // function to call
+  0,0,                // spare
+  "clear"_Stz
+);
+
+/*----------------------------------------------------------------------------*/
 /* depth                                                                      */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_depth(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
@@ -289,6 +313,58 @@ OptimiserFun __Opt_hide
   bOpt_hide,          // function to call
   0,0,                // spare
   "clear card see"_Stz
+);
+
+/*----------------------------------------------------------------------------*/
+/* load                                                                       */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_load(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+{
+  vTrace("bOpt_write\n"_Stz);
+
+  Board* pBoard = pOptimiser->pBoard();
+  pBoard->vClear();
+
+  s256 sPath;
+  sPath.vSprint("/tmp/%s"_Stz,"unamed.txt"_Stz);
+  
+  File* pFile = new File(pOptimiser);
+
+  bool bOpened = pFile->bOpenRead(sPath);
+  if (! bOpened) {
+    pFile->vClose();
+    delete pFile;
+    return false;
+  }
+
+  s48K sStmt;
+  i8 nBytesRead = pFile->nReadFile(sStmt);
+  if (! nBytesRead) {
+    pFile->vClose();
+    delete pFile;
+    return false;
+  }
+
+  vTrace("Loaded (%lld bytes):\n%s\n"_Stz
+         ,nBytesRead
+         ,sStmt.szStz());
+
+  pFile->vClose();
+  delete pFile;
+  
+  pOptimiser->vToPipelineSpec(sStmt);
+
+  return true;
+}
+
+OptimiserFun __Opt_load
+(
+  "load"_Stz,         // name of the prompt function
+  "load"_Stz,         // command first word
+  nullptr,            // command second word
+   bOpt_load,         // function to call
+  0,0,                // spare
+  "load statement from file"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

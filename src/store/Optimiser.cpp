@@ -5,6 +5,8 @@
 #include "Optimiser.hpp"
 #include "Cue.hpp"
 
+#include "Dynamo.hpp"
+
 #include "SP_PipelineSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -20,11 +22,13 @@ __aFooterFunction(Optimiser)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Optimiser::Optimiser(PipelineSpec* pUnOptPipelineSpec,
+                     TagSet* p_JobTags,
                      i8 iOptimiserLvl)
 : Object(CN_OPTIMISER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
+  m_p_JobTags = p_JobTags;
   m_iOptimiserLvl = iOptimiserLvl;
   m_pUnOptPipelineSpec = pUnOptPipelineSpec;
   
@@ -120,6 +124,41 @@ void Optimiser::vOptimise(void)
   vOptimise_Board();
 
   return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set m_pUnOptPipelineSpec                                                   */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vPipelineSpec(PipelineSpec* pUnOptPipelineSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+    
+  if (m_pUnOptPipelineSpec) {
+    //delete m_pUnOptPipelineSpec;                                        LEAK!
+    m_pUnOptPipelineSpec = nullptr;
+  }
+  
+  m_pUnOptPipelineSpec = pUnOptPipelineSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* run dynamo                                                                 */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vToPipelineSpec(Stz* szStmt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  Dynamo* pDynamo = new Dynamo(szStmt,m_p_JobTags);
+  
+  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
+  
+  vPipelineSpec(pPipelineSpec);
+  
+  delete m_pBench->pPop();
+  
+  m_pDissect->vDissectSpec(m_pBench,m_pUnOptPipelineSpec);
+
+  delete pDynamo;
 }
 
 /*----------------------------------------------------------------------------*/

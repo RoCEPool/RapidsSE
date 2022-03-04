@@ -78,6 +78,17 @@ Board::~Board(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/* clear the board                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vClear(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  vResetRegisters();
+  vDeleteAllCards();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set optimiser                                                              */
 /*----------------------------------------------------------------------------*/
 void Board::vOptimiser(Optimiser* pOptimiser, CardCtl* pCardCtl)
@@ -537,6 +548,18 @@ void Board::vFlag(i8 i_Flag, bool bFlag)
   m_baFlag[i_Flag] = bFlag;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vDeleteAllCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  while (Card* pCard = pPop())
+    delete pCard;
+}
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -558,7 +581,7 @@ bool Board::bInRegister(Card* pCard)
   if (pCard == m_pReg_Send)      return true;
   if (pCard == m_pReg_Sort)      return true;
   if (pCard == m_pReg_Stage)     return true;
-  if (pCard == m_pReg_Stream)     return true;
+  if (pCard == m_pReg_Stream)    return true;
 
   return false;
 }

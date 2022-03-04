@@ -57,6 +57,8 @@ namespace STORE
     Board(Stz* szCardNm);
    ~Board(void) noexcept(false);
 
+    void vClear(void);
+  
     void vOptimiser(Optimiser* pOptimiser, CardCtl* pCardCtl);
 
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
@@ -96,6 +98,7 @@ namespace STORE
     bool bFlag(i8 i_Flag);
     void vFlag(i8 i_Flag, bool bFlag);
 
+    void vDeleteAllCards(void);
     bool bInRegister    (Card* pCard);
     void vResetRegisters(void);
     void vSetRegister   (Card* pCard);

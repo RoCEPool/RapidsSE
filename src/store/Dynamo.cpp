@@ -120,7 +120,9 @@ void Dynamo::vOptimise(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec,iOptimiserLvl);
+  Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec,
+                                        m_p_JobTags,
+                                        iOptimiserLvl);
   pOptimiser->vOptimise();
 
   Stz* szWeavedStmt = pOptimiser->szWeave();
