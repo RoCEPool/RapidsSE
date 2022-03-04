@@ -37,6 +37,9 @@ CREATE TABLE substringTest (
 );
 success
 
+load nation "../DATA/TPCH/nation.tbl" ;
+success
+
 trackmemory;
 success
 

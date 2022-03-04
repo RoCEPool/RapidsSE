@@ -1216,15 +1216,82 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       sPipeline->vCatSprint(" exists "_Stz);
     }
 
-//    else if (BetweenExpr::bIsOfType(pOrdinalExpr)) {
-//      sPipeline->vCatSprint(" between "_Stz);
-//    }
-
     else if (LikeExpr::bIsOfType(pOrdinalExpr)) {
-      if (pOrdinalExpr->nChildren() == 2)
-        sPipeline->vCatSprint(" like2 "_Stz);
-      else
+
+      if (pOrdinalExpr->nChildren() == 2) {
+
+        // get the pattern
+        QueryNode* pPattern   = LikeExpr::pPattern(_pQueryNode(pOrdinalExpr));
+
+        // check for a null pattern
+        if ( pPattern->bIsNullValue() ) {
+          sPipeline->vCatSprint(" like2 "_Stz);
+          return GraphNav::WALK_CONTINUE;
+        }
+
+        // get the pattern
+        char* szPattern = (char*)pPattern->szValue();
+
+        // find first occurence of _ in pattern
+        i8 iUnderScore = StrLib::iFind(szPattern, '_');
+        if (iUnderScore != C_UNKNOWN) {
+          sPipeline->vCatSprint(" like2 "_Stz);
+          return GraphNav::WALK_CONTINUE;
+        }
+
+        // special case of LIKE
+
+        // find length of the pattern string
+        i8 iLength = StrLib::nLength(szPattern);
+
+        // find no of occurences of %
+        i8 iPercentages = StrLib::iOccurrence(szPattern, '%');
+
+        switch (iPercentages) {
+          case 1:
+            // leading / trailing %
+            if (szPattern[0] == '%')
+              sPipeline->vCatSprint(" matchTrailing "_Stz);
+            else if (szPattern[iLength-1] == '%')
+              sPipeline->vCatSprint(" matchLeading "_Stz);
+            else
+              sPipeline->vCatSprint(" like2 "_Stz);
+            break;
+
+          case 2:
+            // leading and trailing
+            if (szPattern[0] == '%' && szPattern[iLength-1] == '%')
+              sPipeline->vCatSprint(" matchMiddle "_Stz);
+            else
+              sPipeline->vCatSprint(" like2 "_Stz);
+            break;
+
+          case 3:
+            //leading and trailing and one in the middle
+            if (szPattern[0] == '%' && szPattern[iLength-1] == '%')
+              sPipeline->vCatSprint(" matchLeadingTrailing1 "_Stz);
+            else
+              sPipeline->vCatSprint(" like2 "_Stz);
+            break;
+
+          case 4:
+            //leading and trailing and two in the middle
+            if (szPattern[0] == '%' && szPattern[iLength-1] == '%')
+              sPipeline->vCatSprint(" matcheadingTrailing2 "_Stz);
+            else
+              sPipeline->vCatSprint(" like2 "_Stz);
+            break;
+
+          default:
+            sPipeline->vCatSprint(" like2 "_Stz);
+            break;
+        }
+
+      }
+      else {
         sPipeline->vCatSprint(" like3 "_Stz);
+      }
+
     }
 
     else if (InExpr::bIsOfType(pOrdinalExpr)) {

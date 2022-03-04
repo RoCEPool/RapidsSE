@@ -2543,7 +2543,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
 #ifdef WITH_DEBUG_VERSION
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // dump the TypeStack
     vTrace("--------------------------------------\n"_Stz);
@@ -2750,7 +2750,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the between expression
     if (pTkn->bSame("between"_Stz)) {
-      i_Tkn++;
       vPushFunc(pExprStack, pExprType, ePreExp);
       continue;
     }
@@ -2800,7 +2799,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the in expression
     if (pTkn->bSame("in"_Stz)) {
-      i_Tkn++;
       vPushFunc(pExprStack, pExprType, ePreExp);
       continue;
     }
@@ -2808,13 +2806,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the like expression
     if (pTkn->bSame("like2"_Stz)) {
-      i_Tkn++;
       vPushFunc(pExprStack, pExprType, ePreExp);
       continue;
     }
 
     if (pTkn->bSame("like3"_Stz)) {
-      i_Tkn++;
       vPushFunc(pExprStack, pExprType, ePreExp);
       continue;
     }
@@ -2822,7 +2818,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the substring2 expression
     if (pTkn->bSame("substring2"_Stz)) {
-      i_Tkn++;
       vPushFunc(pExprStack, pExprType, ePreExp);
       continue;
     }
@@ -2830,7 +2825,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the substring3 expression
     if (pTkn->bSame("substring3"_Stz)) {
-      i_Tkn++;
       vPushFunc(pExprStack, pExprType, ePreExp);
       continue;
     }
@@ -4029,7 +4023,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       eExpr2 = (eDM)pTypeStack->iPop();
       sOperation.vConcat("_LIKE2(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
-      pTypeStack->vPush(DM_VCH);
+      pTypeStack->vPush(DM_BOL);
       break;
 
     case PE_LK3:
@@ -4038,7 +4032,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       eExpr3 = (eDM)pTypeStack->iPop();
       sOperation.vConcat("_LIKE3(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
-      pTypeStack->vPush(DM_VCH);
+      pTypeStack->vPush(DM_BOL);
       break;
 
     case PE_SS2:
