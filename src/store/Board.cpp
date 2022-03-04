@@ -1005,38 +1005,48 @@ void Board::vAdd_IndexScan(void)
   pCard_IndexScan->vAppend(pCard_BOUND);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StreamDef* pStreamDef_scan = m_pScan->pFindSubCard(CK_STREAMDEF)->pStreamDef();
+  // set the stream elist
 
-  StreamDef* pStreamDef = pStreamDef_scan->pDup();
+  StreamDef* pStreamDef = m_pIndex->pTable()->pStreamDef();
+
+  //StreamDef* pStreamDef_scan = m_pScan->pFindSubCard(CK_STREAMDEF)->pStreamDef();
+
+  //StreamDef* pStreamDef = pStreamDef_scan->pDup();
  
-  Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+  //Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
   
-  pCard_IndexScan->vAppend(pCard_StreamDef);
+  //pCard_IndexScan->vAppend(pCard_StreamDef);
   
   
   Card_Stream* pCard_Stream = new Card_Stream;
   pCard_IndexScan->vAppend(pCard_Stream);
 
   Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+  
+  
+  
+  //Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
+
+  
+  
   pCard_Stream->vAppend(pCard_StreamElist);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the stream order
   
-  IndexDef* pIndexDef = m_pIndex->pIndexDef();
-  i8 nIdxCols = pIndexDef->nColumns();
-  
-  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
-
-    Column* pIdxCol = pIndexDef->pGetColumn(i_IdxCol);
-    Stz* szIdxColNm = pIdxCol->szColNm();
-
-    Column* pColumn = pStreamDef->pFindColumn(szIdxColNm);
-    i8 i_Col = pColumn->iColumnNo();
-    pStreamDef->vAddOrder(i_Col);
-  }
+//  IndexDef* pIndexDef = m_pIndex->pIndexDef();
+//  i8 nIdxCols = pIndexDef->nColumns();
+//
+//  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
+//
+//    Column* pIdxCol = pIndexDef->pGetColumn(i_IdxCol);
+//    Stz* szIdxColNm = pIdxCol->szColNm();
+//
+//    Column* pColumn = pStreamDef->pFindColumn(szIdxColNm);
+//    i8 i_Col = pColumn->iColumnNo();
+//    pStreamDef->vAddOrder(i_Col);
+//  }
 
 
 
@@ -1048,8 +1058,8 @@ void Board::vAdd_IndexScan(void)
   
   
 
-  bool bUnique = pIndexDef->bIsUnique();
-  pStreamDef->vUnique(bUnique);
+  //bool bUnique = pIndexDef->bIsUnique();
+  //pStreamDef->vUnique(bUnique);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
