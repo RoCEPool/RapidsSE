@@ -102,8 +102,6 @@ namespace STORE
     void vResolveCard      (Card*           pCard);
     void vResolveTerm      (Card_Term*      pCard_Term);
 
-    Card_StreamDef* pNewStreamDef(Card_ELIST* pCard_ELIST);
-
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     bool bAdd_CandIndexes            (void);

@@ -842,56 +842,6 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
 
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_StreamDef* Board::pNewStreamDef(Card_ELIST* pCard_ELIST)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  StreamDef* pStreamDef = new StreamDef;
-
-  eCK eSubCard;
-  i8 nSubCards = pCard_ELIST->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pSubCard = pCard_ELIST->pGetCard(i_SubCard,eSubCard);
-    
-    if (CK_EXPR != eSubCard)
-      continue;
-    
-    s32 sColNm  = "(unknown)"_Stz;
-    eCT eColumn = CT_NONE;;
-    i8  iLength = 0;
-    i8  iScale  = 0;
-
-    // TYPE (mandatory)
-    Card_Type* pCard_Type = _pCard_Type(pSubCard->pFindSubCard(CK_TYPE));
-    if (pCard_Type)
-      eColumn = Column::eColumn(pCard_Type->szType());
-
-    // AS (optional)
-    Card_As* pCard_As = _pCard_As(pSubCard->pFindSubCard(CK_AS));
-    if (pCard_As)
-      sColNm = pCard_As->szAs();
-    else {
-      Card_ExprCalc* pCard_ExprCalc
-        = _pCard_ExprCalc(pSubCard->pFindSubCard(CK_EXPRCALC));
-
-      if (pCard_ExprCalc) {
-        Card_Term* pCard_Term = _pCard_Term(pCard_ExprCalc->pGet(0));
-        sColNm = pCard_Term->szTerm();
-      }
-    }
-  
-    //vTrace("pNewStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
-    pStreamDef->vAddColumn(sColNm,eColumn,iLength,iScale);
-  }
-  
-  Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
-  
-  return pCard_StreamDef;
-}
-
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
