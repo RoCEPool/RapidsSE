@@ -20,6 +20,8 @@ C_JDBC_DRIVER_GLOB = "rapidsse-jdbc-*.*.*.jar"
 
 # Cached path to the found JDBC driver
 C_JDBC_DRIVER: pathlib.Path = None
+C_JDBC_URL_FMT = 'jdbc:rapidsse:{0}/bin/rapidsse?extraargs="--name {1} ' \
+                 '--sen ../sen --commands ../commands --appendTrace"'
 
 
 def build_installer() -> pathlib.Path:
@@ -257,9 +259,16 @@ def write_jmeter_property_file(host: string, cluster_cfg: ClusterConfig):
     """
     Generates a JMeter user property file and writes it to the node
     """
+
+    jdbc_url = C_JDBC_URL_FMT.format(cluster_cfg.get_dir(), cluster_cfg.get_first_node_name())
+
     lines = [
         "# Classpath to find the RapidsSE JDBC driver",
-        f"user.classpath={cluster_cfg.get_dir()}"
+        f"user.classpath={cluster_cfg.get_dir()}",
+        "",
+        "# JDBC driver URL to use",
+        f'JDBC_URL={jdbc_url}',
+        ""
     ]
     content = "\n".join(lines)
 
