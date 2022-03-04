@@ -450,8 +450,15 @@
     }                                                                       \
   }
 
+
+// parameters:
+// szArg2 : expression
+// szArg1 : regular expression
+// iArg1  : length of the regular expression
+
 #define _MATCH_TRAILING(eErrorCode)                                         \
   {                                                                         \
+    iArg1  = (i8)*(--paW);                                                  \
     szArg1 = (char*)*(--paW);                                               \
     szArg2 = (char*)*(--paW);                                               \
     if (eErrorCode != EC_NONE ||                                            \
@@ -460,7 +467,22 @@
       *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
-      NEVER_REACH;                                                          \
+      char* r = szArg1 + iArg1 - 1;                                         \
+      char* s = szArg2;                                                     \
+                                                                            \
+      while (*s)                                                            \
+        s++;                                                                \
+      s--;                                                                  \
+                                                                            \
+      while (*r != '%')                                                     \
+      {                                                                     \
+        if (*r-- != *s--) {                                                 \
+          *(paW++) = 0;                                                     \
+          break;                                                            \
+        }                                                                   \
+      }                                                                     \
+      if (*(++r) == '%')                                                    \
+        *(paW++) = 1;                                                       \
     }                                                                       \
   }
 
