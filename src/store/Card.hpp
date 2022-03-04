@@ -230,7 +230,6 @@ namespace STORE
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName=true);
 
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
-    void vStreamDefPrint(Ribbon* pRibbon, i8 iDepth);
     void vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, bool& bPrune);
     void vTablePrint(Ribbon* pRibbon, i8 iDepth);
     void vTermPrint(Ribbon* pRibbon, i8 iDepth);

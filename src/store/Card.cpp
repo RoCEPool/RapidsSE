@@ -1970,7 +1970,6 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_STAGE:                      vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGETOPO:                  vPrintProperties(pRibbon,iDepth); break;
     case CK_STREAM:                     vPrintProperties(pRibbon,iDepth); break;
-    case CK_STREAMDEF:  vStreamDefPrint                 (pRibbon,iDepth); break;
     case CK_SUBSET:                     vPrintProperties(pRibbon,iDepth); break;
       
     case CK_TABLE:      vTablePrint                     (pRibbon,iDepth); break;
@@ -2158,44 +2157,6 @@ void Card::vIndexPrint(Ribbon* pRibbon, i8 iDepth)
   //vPrintProperties(pRibbon,iDepth);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* print {streamdef}                                                          */
-/*----------------------------------------------------------------------------*/
-void Card::vStreamDefPrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(this);
-  StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
-  if (! pStreamDef)
-    return;
-  
-  i8 nColumns = pStreamDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = pStreamDef->pGetColumn(i_Col);
-    
-    pRibbon->vSput(FR_SDEF_COLUMN,pColumn->szColNm(),pColumn->cTypeShort());
-  }
-
-  i8 nOrders = pStreamDef->nOrders();
-  for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
-    Column* pOrdCol = pStreamDef->pGetOrder(i_Ord);
-      
-    //pRibbon->vSput(FR_ATOM_SQUARE,pOrdCol->szColNm());
-    
-    pRibbon->vSprintRight("[%s %s]"_Stz
-                          ,pOrdCol->szColNm()
-                          ,aSD_short[pStreamDef->eDirection(i_Ord)]
-                          );
-
-  }
-  
-  pRibbon->vSput(FR_TEXT
-                 ,pStreamDef->bUnique()
-                    ? "unique"_Stz : "not unique"_Stz
-                 );
-}
 
 /*----------------------------------------------------------------------------*/
 /* print StreamElist                                                          */

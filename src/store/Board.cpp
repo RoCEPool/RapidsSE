@@ -945,25 +945,11 @@ void Board::vAdd_IndexScan(void)
   // set the stream elist
 
   StreamDef* pStreamDef = m_pIndex->pTable()->pStreamDef();
-
-  //StreamDef* pStreamDef_scan = m_pScan->pFindSubCard(CK_STREAMDEF)->pStreamDef();
-
-  //StreamDef* pStreamDef = pStreamDef_scan->pDup();
- 
-  //Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
-  
-  //pCard_IndexScan->vAppend(pCard_StreamDef);
-  
   
   Card_Stream* pCard_Stream = new Card_Stream;
   pCard_IndexScan->vAppend(pCard_Stream);
 
   Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
-  
-  
-  
-  //Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
-
   
   
   pCard_Stream->vAppend(pCard_StreamElist);
@@ -972,28 +958,8 @@ void Board::vAdd_IndexScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the stream order
   
-//  IndexDef* pIndexDef = m_pIndex->pIndexDef();
-//  i8 nIdxCols = pIndexDef->nColumns();
-//
-//  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
-//
-//    Column* pIdxCol = pIndexDef->pGetColumn(i_IdxCol);
-//    Stz* szIdxColNm = pIdxCol->szColNm();
-//
-//    Column* pColumn = pStreamDef->pFindColumn(szIdxColNm);
-//    i8 i_Col = pColumn->iColumnNo();
-//    pStreamDef->vAddOrder(i_Col);
-//  }
-
-
-
-  
   Card_OrderElist* pCard_OrderElist = new Card_OrderElist(m_pIndex);
   pCard_Stream->vAppend(pCard_OrderElist);
-
-  
-  
-  
 
   //bool bUnique = pIndexDef->bIsUnique();
   //pStreamDef->vUnique(bUnique);
@@ -1009,43 +975,6 @@ void Board::vAdd_IndexScan(void)
 //  vPredCmp_lbound(nullptr);
 //  vPredCmp_ubound(nullptr);
 }
-/*----------------------------------------------------------------------------*/
-//void Board::vAdd_IndexScan(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-//
-//  m_pFilter->vDump();
-//
-//  Card_PredCmp* pCard_PredCmp =
-//    _pCard_PredCmp(m_pFilter->pFindSubCard(CK_PREDCMP));
-//
-//  pCard_PredCmp->vDump();
-//
-//  Card_LBound* pCard_LBound = new Card_LBound;
-//
-//
-//  i8 nTerms = pCard_PredCmp->nItems();
-//  for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
-//    Card_Term* pCard_Term =
-//      _pCard_Term(pCard_PredCmp->pGet(i_Term));
-//
-//    Stz* szTerm = pCard_Term->szTerm();
-//
-//    Card_Term* pCard_Term_lbound = new Card_Term(szTerm);
-//
-//
-//    pCard_LBound->vAppend(pCard_Term_lbound);
-//  }
-//
-//  Card_IndexScan* pCard_IndexScan =
-//    new Card_IndexScan(m_pCandidateIndex->pIndex());
-//
-//
-//  pCard_IndexScan->vAppend(pCard_LBound);
-//
-//  vInsertBefore(pCard_IndexScan,m_pScan);
-//
-//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -1223,9 +1152,6 @@ void Board::vOrder_ProjectiveStreamDefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-//  StreamDef* pStreamDef_scan =
-//    m_pIndexScan->pFindSubCard(CK_STREAMDEF)->pStreamDef();
-
   Card_Stream* pCard_Stream_src =
     _pCard_Stream(m_pIndexScan->pFindSubCard(CK_STREAM));
 
@@ -1239,11 +1165,6 @@ void Board::vOrder_ProjectiveStreamDefs(void)
     
     Card_Project* pCard_Project = _pCard_Project(pCard);
 
-//    Card_StreamDef* pCard_StreamDef =
-//      _pCard_StreamDef(pCard_Project->pFindSubCard(CK_STREAMDEF));
-//
-//    pCard_StreamDef->vApplyOrder(pStreamDef_scan);
-//
     //--- --- ---
 
     if (! pCard_Stream_src)
