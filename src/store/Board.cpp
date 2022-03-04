@@ -750,8 +750,16 @@ void Board::vResolveCard(Card* pCard)
     Card_Stream* pCard_Stream = new Card_Stream;
     pCard->vAppend(pCard_Stream);
 
-    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+//    Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
+//    pCard_Stream->vAppend(pCard_StreamElist);
+    
+    Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
+    Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
+    pCard_StreamElist->vTransferAll(pCard_SubSet);
     pCard_Stream->vAppend(pCard_StreamElist);
+    delete pCard_SubSet;
+    
+    vReg_Stream(pCard_Stream);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
