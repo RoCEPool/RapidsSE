@@ -141,9 +141,13 @@ void Optimiser::vToPipelineSpec(Stz* szStmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Dynamo* pDynamo = new Dynamo(szStmt,m_p_JobTags);
-  
-  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
+//  Dynamo* pDynamo = new Dynamo(szStmt,m_p_JobTags);
+//
+//  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
+//
+//  delete pDynamo;
+
+  PipelineSpec*pPipelineSpec = Dynamo::pToPipelineSpec(szStmt,m_p_JobTags);
   
   vPipelineSpec(pPipelineSpec);
   
@@ -153,7 +157,6 @@ void Optimiser::vToPipelineSpec(Stz* szStmt)
 
   m_pBench->vAppend(pBoard);
 
-  delete pDynamo;
 }
 
 /*----------------------------------------------------------------------------*/
