@@ -119,19 +119,7 @@ void Dynamo::vOptimise(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   Job* pJob = MY::pJob();
-  
-//  Stz* szPipelineNm = m_p_PipelineSpec->szPipelineNm();
-  
-//  i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
-
-//  if (   ! iOptimiserLvl
-//      || ! pJob->bIsOriginator()
-//      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
-//      || ! m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
-//      ||   m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
-//      )
-//    return;
-    
+      
   if (! bWillOptimise())
     return;
   
@@ -140,8 +128,10 @@ void Dynamo::vOptimise(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec,
-                                        m_p_JobTags);
+  Optimiser* pOptimiser = new Optimiser(m_p_JobTags);
+  
+  pOptimiser->vDissect(m_p_PipelineSpec);
+                                        
   pOptimiser->vOptimise();
 
   Stz* szWeavedStmt = pOptimiser->szWeave();

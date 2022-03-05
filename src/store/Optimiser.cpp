@@ -21,14 +21,13 @@ __aFooterFunction(Optimiser)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Optimiser::Optimiser(PipelineSpec* pUnOptPipelineSpec,
-                     TagSet* p_JobTags)
+Optimiser::Optimiser(TagSet* p_JobTags)
 : Object(CN_OPTIMISER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
   m_p_JobTags = p_JobTags;
-  m_pUnOptPipelineSpec = pUnOptPipelineSpec;
+  m_pUnOptPipelineSpec = nullptr;
   
   m_pCardCtl = new CardCtl;
   
@@ -99,22 +98,24 @@ CardCtl* Optimiser::pCardCtl(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* run                                                                        */
+/* dissect                                                                    */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vOptimise(void)
+void Optimiser::vDissect(PipelineSpec* pUnOptPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
    
+  m_pUnOptPipelineSpec = pUnOptPipelineSpec;
+  
   SP_PipelineSpec spPipelineSpec(m_pUnOptPipelineSpec);
   vTrace("Optimiser: %s\n"_Stz,spPipelineSpec.sz());
       
   Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipelineSpec);
   
-  m_pBench->vAppend(pBoard);
+  m_pBench->vPush(pBoard);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vOptimise_Board();
+  vOptimise();
 
   return;
 }
@@ -137,17 +138,12 @@ void Optimiser::vPipelineSpec(PipelineSpec* pUnOptPipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* run dynamo                                                                 */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vToPipelineSpec(Stz* szStmt)
+void Optimiser::vToPipelineSpec(Stz* szPipelineStmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-//  Dynamo* pDynamo = new Dynamo(szStmt,m_p_JobTags);
-//
-//  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
-//
-//  delete pDynamo;
-
-  PipelineSpec*pPipelineSpec = Dynamo::pToPipelineSpec(szStmt,m_p_JobTags);
+  PipelineSpec*pPipelineSpec =
+    Dynamo::pToPipelineSpec(szPipelineStmt,m_p_JobTags);
   
   vPipelineSpec(pPipelineSpec);
   
@@ -181,7 +177,7 @@ Stz* Optimiser::szWeave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vOptimise_Board(void)
+void Optimiser::vOptimise(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 

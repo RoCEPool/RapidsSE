@@ -32,8 +32,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Optimiser(PipelineSpec* pUnOptPipelineSpec,
-              TagSet* p_JobTags);
+    Optimiser(TagSet* p_JobTags);
   
    ~Optimiser(void) noexcept(false);
 
@@ -43,20 +42,18 @@ namespace STORE
   
     CardCtl* pCardCtl(void);
   
-  
-    void vLoad(Stz* szSmt);
-
+    void vDissect(PipelineSpec* pUnOptPipelineSpec);
+   
     void vOptimise(void);
-
+  
     void vPipelineSpec(PipelineSpec* pUnOptPipelineSpec);
 
-    void vToPipelineSpec(Stz* szStmt);
+    void vToPipelineSpec(Stz* szPipelineStmt);
   
     Stz* szWeave(void);
 
   private:
 
-    void vOptimise_Board(void);
 
     Footer* aFooter(void);
   };
