@@ -117,7 +117,7 @@ OptimiserFun __Opt_below
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_clear(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
-  Board* pBoard = pOptimiser->pBoard();
+  Board* pBoard = pOptimiser->pHeadBoard();
   
   pBoard->vClear();
 
@@ -323,7 +323,7 @@ bool STORE::bOpt_load(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_write\n"_Stz);
 
-  Board* pBoard = pOptimiser->pBoard();
+  Board* pBoard = pOptimiser->pHeadBoard();
   pBoard->vClear();
 
   s256 sPath;
@@ -487,7 +487,7 @@ bool STORE::bOpt_write(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   pTknVec->vToTknString(sCmd);
   
   Stz* szStmt = pOptimiser->szWeave();
-  Stz* szQueryNm = pOptimiser->pBoard()->szQueryNm();
+  Stz* szQueryNm = pOptimiser->pHeadBoard()->szQueryNm();
 
   s256 sPath;
   sPath.vSprint("/tmp/%s.txt"_Stz,szQueryNm);

@@ -38,7 +38,7 @@ namespace STORE
 
     static void vRepair(Object* pObject);
 
-    Board* pBoard(void);
+    Board* pHeadBoard(void);
   
     CardCtl* pCardCtl(void);
   
@@ -49,7 +49,11 @@ namespace STORE
     void vOptimise(void);
   
     void vPipelineSpec(PipelineSpec* pUnOptPipelineSpec);
+  
+    void vPopBoard(void);
 
+    void vPushBoard(Board* pBoard);
+ 
     void vToPipelineSpec(PipelineSpec* pPipelineSpec);
   
     Stz* szWeave(void);

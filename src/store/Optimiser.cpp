@@ -78,7 +78,7 @@ void Optimiser::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* get top board                                                              */
 /*----------------------------------------------------------------------------*/
-Board* Optimiser::pBoard(void)
+Board* Optimiser::pHeadBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
@@ -146,6 +146,29 @@ void Optimiser::vPipelineSpec(PipelineSpec* pUnOptPipelineSpec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop & delete top board                                                     */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vPopBoard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  Board* pBoard = m_pBench->pPop();
+
+  if (pBoard)
+    delete pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop & delete top board                                                     */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vPushBoard(Board* pBoard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  m_pBench->vPush(pBoard);
+}
+
+/*----------------------------------------------------------------------------*/
 /* run dynamo                                                                 */
 /*----------------------------------------------------------------------------*/
 void Optimiser::vToPipelineSpec(PipelineSpec* pPipelineSpec)
@@ -169,7 +192,7 @@ Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Board* pBoard = this->pBoard();
+  Board* pBoard = this->pHeadBoard();
   m_pWeave->vWeaveOptStmt(pBoard);
 
   Stz* szPipeline = m_pWeave->szOptStmt();
