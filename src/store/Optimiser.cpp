@@ -121,6 +121,16 @@ void Optimiser::vDissect(PipelineSpec* pUnOptPipelineSpec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get cardCtl                                                                */
+/*----------------------------------------------------------------------------*/
+TagSet* Optimiser::pJobTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_p_JobTags;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set m_pUnOptPipelineSpec                                                   */
 /*----------------------------------------------------------------------------*/
 void Optimiser::vPipelineSpec(PipelineSpec* pUnOptPipelineSpec)
@@ -138,13 +148,10 @@ void Optimiser::vPipelineSpec(PipelineSpec* pUnOptPipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* run dynamo                                                                 */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vToPipelineSpec(Stz* szPipelineStmt)
+void Optimiser::vToPipelineSpec(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-
-  PipelineSpec*pPipelineSpec =
-    Dynamo::pToPipelineSpec(szPipelineStmt,m_p_JobTags);
-  
+ 
   vPipelineSpec(pPipelineSpec);
   
   delete m_pBench->pPop();

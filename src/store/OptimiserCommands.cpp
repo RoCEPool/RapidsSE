@@ -5,6 +5,7 @@
 #include "OptimiserCommands.hpp"
 
 #include "OptimiserCatalog.hpp"
+#include "Dynamo.hpp"
 
 extern OptimiserCatalog gxOptimiserCatalog;
 
@@ -337,8 +338,8 @@ bool STORE::bOpt_load(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
     return false;
   }
 
-  s48K sStmt;
-  i8 nBytesRead = pFile->nReadFile(sStmt);
+  s48K sPipelineStmt;
+  i8 nBytesRead = pFile->nReadFile(sPipelineStmt);
   if (! nBytesRead) {
     pFile->vClose();
     delete pFile;
@@ -347,12 +348,16 @@ bool STORE::bOpt_load(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 
   vTrace("Loaded (%lld bytes):\n%s\n"_Stz
          ,nBytesRead
-         ,sStmt.szStz());
+         ,sPipelineStmt.szStz());
 
   pFile->vClose();
   delete pFile;
   
-  pOptimiser->vToPipelineSpec(sStmt);
+  PipelineSpec* pPipelineSpec =
+    Dynamo::pToPipelineSpec(sPipelineStmt,
+                            pOptimiser->pJobTags());
+
+  pOptimiser->vToPipelineSpec(pPipelineSpec);
 
   return true;
 }

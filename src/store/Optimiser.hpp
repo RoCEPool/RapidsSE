@@ -44,11 +44,13 @@ namespace STORE
   
     void vDissect(PipelineSpec* pUnOptPipelineSpec);
    
+    TagSet* pJobTags(void);
+  
     void vOptimise(void);
   
     void vPipelineSpec(PipelineSpec* pUnOptPipelineSpec);
 
-    void vToPipelineSpec(Stz* szPipelineStmt);
+    void vToPipelineSpec(PipelineSpec* pPipelineSpec);
   
     Stz* szWeave(void);
 
