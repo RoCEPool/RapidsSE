@@ -1979,6 +1979,10 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_UBOUND:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_UNIQUE:                     vPrintProperties(pRibbon,iDepth); break;
  
+    case CK_BOARD:
+      NEVER_REACH;
+      break;
+
     case CK_STREAMELIST:
       vStreamElistPrint(pRibbon,iDepth,bPrune);
       break;

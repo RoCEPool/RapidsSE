@@ -17,18 +17,18 @@ extern OptimiserCatalog gxOptimiserCatalog;
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Board,CN_BOARD)
-__aNewFunction(Board,CN_BOARD)
-__vDeleteFunction(Board,CN_BOARD)
+__pCastFunction(STORE,Board,CN_CARD)
+__aNewFunction(Board,CN_CARD)
+__vDeleteFunction(Board,CN_CARD)
 __aFooterFunction(Board)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
-: Object(CN_BOARD)
+: Card(CK_BOARD)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
   m_pOptimiser = pOptimiser;
   m_sQueryNm   = szQueryNm;
@@ -56,11 +56,12 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
   m_pIndex     = nullptr;
   m_pTable     = nullptr;
   
-  MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_BOARD);
+  MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_CARD);
 
-  _checkInitialised_(CN_BOARD);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  //_checkInitialised_(CN_CARD);
+  _checkInitialisedSize_(sizeof(Board));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,7 +69,7 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
 /*----------------------------------------------------------------------------*/
 Board::~Board(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 
@@ -82,7 +83,7 @@ Board::~Board(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Board::vClear(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vResetRegisters();
   vDeleteAllCards();
@@ -93,7 +94,7 @@ void Board::vClear(void)
 /*----------------------------------------------------------------------------*/
 void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! nItems())
     return;
@@ -145,7 +146,7 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
 /*----------------------------------------------------------------------------*/
 void Board::vPrintBoard(Stz* szCue)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   i8 iAction = 1;
   TokenVec* pTknVec = nullptr;
@@ -258,7 +259,7 @@ L_Exit:
 /*----------------------------------------------------------------------------*/
 Stz* Board::szQueryNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   return m_sQueryNm;
 }
@@ -268,7 +269,7 @@ Stz* Board::szQueryNm(void)
 /*----------------------------------------------------------------------------*/
 void Board::vQueryNm(Stz* szQueryNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_sQueryNm = szQueryNm;
 }
@@ -278,7 +279,7 @@ void Board::vQueryNm(Stz* szQueryNm)
 /*----------------------------------------------------------------------------*/
 void Board::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   ListExoIter2_t<Card>* pBoard_I = pNewIter();
 
@@ -300,7 +301,7 @@ void Board::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_Aggreg(Card_Aggreg* pAggreg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   m_pReg_Aggreg = pAggreg;
 }
@@ -310,7 +311,7 @@ void Board::vReg_Aggreg(Card_Aggreg* pAggreg)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_CandIndex(Card_CandIndex* pCandidateIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   m_pReg_CandIndex = pCandidateIndex;
   
@@ -324,7 +325,7 @@ void Board::vReg_CandIndex(Card_CandIndex* pCandidateIndex)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_Combine(Card_Combine* pCombine)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   m_pReg_Combine = pCombine;
 }
@@ -334,7 +335,7 @@ void Board::vReg_Combine(Card_Combine* pCombine)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_Filter(Card_Filter* pFilter)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   m_pReg_Filter = pFilter;
 }
@@ -344,7 +345,7 @@ void Board::vReg_Filter(Card_Filter* pFilter)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_Hash(Card_Hash* pHash)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   m_pReg_Hash = pHash;
 }
@@ -354,7 +355,7 @@ void Board::vReg_Hash(Card_Hash* pHash)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_IndexJoin(Card_IndexJoin* pIndexJoin)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   m_pReg_IndexJoin = pIndexJoin;
 }
@@ -364,7 +365,7 @@ void Board::vReg_IndexJoin(Card_IndexJoin* pIndexJoin)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_IndexScan(Card_IndexScan* pIndexScan)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   m_pReg_IndexScan = pIndexScan;
 }
@@ -374,7 +375,7 @@ void Board::vReg_IndexScan(Card_IndexScan* pIndexScan)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_Limit(Card_Limit* pLimit)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   m_pReg_Limit = pLimit;
 }
@@ -384,7 +385,7 @@ void Board::vReg_Limit(Card_Limit* pLimit)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_OrdAgg(Card_OrdAgg* pOrdAgg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   m_pReg_OrdAgg = pOrdAgg;
 }
@@ -394,7 +395,7 @@ void Board::vReg_OrdAgg(Card_OrdAgg* pOrdAgg)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_Project(Card_Project* pProject)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_pReg_Project = pProject;
 }
@@ -404,7 +405,7 @@ void Board::vReg_Project(Card_Project* pProject)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_Scan(Card_Scan* pScan)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_pReg_Scan = pScan;
 }
@@ -414,7 +415,7 @@ void Board::vReg_Scan(Card_Scan* pScan)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_Send(Card_Send* pSend)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   m_pReg_Send = pSend;
 }
@@ -424,7 +425,7 @@ void Board::vReg_Send(Card_Send* pSend)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_Sort(Card_Sort* pSort)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   m_pReg_Sort = pSort;
 }
@@ -434,7 +435,7 @@ void Board::vReg_Sort(Card_Sort* pSort)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_Stage(Card_Stage* pStage)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_pReg_Stage = pStage;
 }
@@ -444,7 +445,7 @@ void Board::vReg_Stage(Card_Stage* pStage)
 /*----------------------------------------------------------------------------*/
 void Board::vReg_Stream(Card_Stream* pStream)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_pReg_Stream = pStream;
 }
@@ -454,7 +455,7 @@ void Board::vReg_Stream(Card_Stream* pStream)
 /*----------------------------------------------------------------------------*/
 void Board::vPredCmp_ebound(Card_PredCmp* pPredCmp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   if (m_pPredCmp_ebound)
     m_pPredCmp_ebound->vMark2(' ');
@@ -470,7 +471,7 @@ void Board::vPredCmp_ebound(Card_PredCmp* pPredCmp)
 /*----------------------------------------------------------------------------*/
 void Board::vPredCmp_lbound(Card_PredCmp* pPredCmp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   if (m_pPredCmp_lbound)
     m_pPredCmp_lbound->vMark2(' ');
@@ -486,7 +487,7 @@ void Board::vPredCmp_lbound(Card_PredCmp* pPredCmp)
 /*----------------------------------------------------------------------------*/
 void Board::vPredCmp_ubound(Card_PredCmp* pPredCmp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   if (m_pPredCmp_ubound)
     m_pPredCmp_ubound->vMark2(' ');
@@ -502,7 +503,7 @@ void Board::vPredCmp_ubound(Card_PredCmp* pPredCmp)
 /*----------------------------------------------------------------------------*/
 void Board::vIndex(Index* pIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_pIndex = pIndex;
 }
@@ -512,7 +513,7 @@ void Board::vIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 void Board::vTable(Table* pTable)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_pTable = pTable;
 }
@@ -522,7 +523,7 @@ void Board::vTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 bool Board::bFlag(i8 i_Flag)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   return m_baFlag[i_Flag];
 }
@@ -532,7 +533,7 @@ bool Board::bFlag(i8 i_Flag)
 /*----------------------------------------------------------------------------*/
 void Board::vFlag(i8 i_Flag, bool bFlag)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_baFlag[i_Flag] = bFlag;
 }
@@ -543,7 +544,7 @@ void Board::vFlag(i8 i_Flag, bool bFlag)
 /*----------------------------------------------------------------------------*/
 void Board::vDeleteAllCards(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   while (Card* pCard = pPop())
     delete pCard;
@@ -554,7 +555,7 @@ void Board::vDeleteAllCards(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bInRegister(Card* pCard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   if (pCard == m_pReg_Aggreg)    return true;
   if (pCard == m_pReg_CandIndex) return true;
@@ -580,7 +581,7 @@ bool Board::bInRegister(Card* pCard)
 /*----------------------------------------------------------------------------*/
 void Board::vResetRegisters(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vReg_Aggreg   (nullptr);
   vReg_CandIndex(nullptr);
@@ -611,7 +612,7 @@ void Board::vResetRegisters(void)
 /*----------------------------------------------------------------------------*/
 void Board::vSetRegister(Card* pCard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   eCK eCard = pCard->eCard();
   
@@ -653,7 +654,7 @@ void Board::vSetRegister(Card* pCard)
 /*----------------------------------------------------------------------------*/
 void Board::vRankCandidateIndex(Card_CandIndex* pCard_CandIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   RASSERT(m_pReg_Filter);
   
@@ -700,7 +701,7 @@ void Board::vRankCandidateIndex(Card_CandIndex* pCard_CandIndex)
 /*----------------------------------------------------------------------------*/
 void Board::vResolveCard(Card* pCard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   eCK eSubCard;
   
@@ -803,7 +804,7 @@ void Board::vResolveCard(Card* pCard)
 /*----------------------------------------------------------------------------*/
 void Board::vResolveTerm(Card_Term* pCard_Term)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
 //  if (pCard_Term->bIsOrdinalStreamTerm()) {
 //
@@ -867,7 +868,7 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
 /*----------------------------------------------------------------------------*/
 bool Board::bAdd_CandIndexes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   IdxVec* pIdxVec = m_pTable->pIdxVec();
   if (! pIdxVec) {
@@ -903,7 +904,7 @@ bool Board::bAdd_CandIndexes(void)
 /*----------------------------------------------------------------------------*/
 void Board::vAdd_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   //m_pFilter->vDump();
 
@@ -997,7 +998,7 @@ void Board::vAdd_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 void Board::vCull_Filter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   if (! m_pReg_Filter->bCull())
     return;
@@ -1014,7 +1015,7 @@ void Board::vCull_Filter(void)
 /*----------------------------------------------------------------------------*/
 void Board::vCut_CandidateIndexes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vRemoveCards(CK_CANDINDEX);
 }
@@ -1024,7 +1025,7 @@ void Board::vCut_CandidateIndexes(void)
 /*----------------------------------------------------------------------------*/
 void Board::vCut_PredCmps(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   if (m_pPredCmp_ebound)
     m_pReg_Filter->vRemoveSubCard(m_pPredCmp_ebound);
@@ -1045,7 +1046,7 @@ void Board::vCut_PredCmps(void)
 /*----------------------------------------------------------------------------*/
 void Board::vCut_Scan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vRemove(m_pReg_Scan);
   
@@ -1059,7 +1060,7 @@ void Board::vCut_Scan(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bFind_Scan_AggGby(bool bMark)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   return false;
 }
@@ -1069,7 +1070,7 @@ bool Board::bFind_Scan_AggGby(bool bMark)
 /*----------------------------------------------------------------------------*/
 bool Board::bFind_Scan_Filter(bool bMark)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vReg_Scan(nullptr);
   
@@ -1105,7 +1106,7 @@ bool Board::bFind_Scan_Filter(bool bMark)
 /*----------------------------------------------------------------------------*/
 void Board::vMark_PredCmps(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   i8 iRank = m_pReg_CandIndex->iRank();
   
@@ -1166,7 +1167,7 @@ void Board::vMark_PredCmps(void)
 /*----------------------------------------------------------------------------*/
 void Board::vOrder_ProjectiveStreamDefs(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_Stream* pCard_Stream_src =
     _pCard_Stream(m_pReg_IndexScan->pFindSubCard(CK_STREAM));
@@ -1204,7 +1205,7 @@ void Board::vOrder_ProjectiveStreamDefs(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bPick_CandidateIndex(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   i8 iBestRank = -1;
   Card_CandIndex* pCard_CandIndex = nullptr;
@@ -1240,7 +1241,7 @@ bool Board::bPick_CandidateIndex(void)
 /*----------------------------------------------------------------------------*/
 void Board::vRank_CandidateIndexes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   //m_pFilter->vMark2('0');
                     
@@ -1265,7 +1266,7 @@ void Board::vRank_CandidateIndexes(void)
 /*----------------------------------------------------------------------------*/
 void Board::vReduce_Filter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   if (! m_pReg_Filter)
     return;
@@ -1280,7 +1281,7 @@ void Board::vReduce_Filter(void)
 /*----------------------------------------------------------------------------*/
 void Board::vRenumber_Cards(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   ListExoIter2_t<Card>* pBoard_I = pNewIter();
 
@@ -1299,7 +1300,7 @@ void Board::vRenumber_Cards(void)
 /*----------------------------------------------------------------------------*/
 void Board::vResolve_Symbols(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   i8 nMainCards = nItems();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
@@ -1318,7 +1319,7 @@ void Board::vResolve_Symbols(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_AggGby_Sort_to_AggGby(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1337,7 +1338,7 @@ bool Board::bMay_AggGby_Sort_to_AggGby(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_ordStream_AggGby_to_OrdAgg(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1356,7 +1357,7 @@ bool Board::bMay_ordStream_AggGby_to_OrdAgg(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_OrdAgg_Sort_to_OrdAgg(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1375,7 +1376,7 @@ bool Board::bMay_OrdAgg_Sort_to_OrdAgg(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_Scan_AggGby_to_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1394,7 +1395,7 @@ bool Board::bMay_Scan_AggGby_to_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_Scan_Filter_to_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1413,7 +1414,7 @@ bool Board::bMay_Scan_Filter_to_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bMay_Scan_Sort_to_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1435,7 +1436,7 @@ bool Board::bMay_Scan_Sort_to_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_AggGby_Sort_to_AggGby(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1453,7 +1454,7 @@ bool Board::bRule_AggGby_Sort_to_AggGby(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_ordStream_AggGby_to_OrdAgg(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1469,7 +1470,7 @@ bool Board::bRule_ordStream_AggGby_to_OrdAgg(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_OrdAgg_Sort_to_OrdAgg(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1487,7 +1488,7 @@ bool Board::bRule_OrdAgg_Sort_to_OrdAgg(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_Scan_AggGby_to_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1503,7 +1504,7 @@ bool Board::bRule_Scan_AggGby_to_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_Scan_Filter_to_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO
@@ -1568,7 +1569,7 @@ bool Board::bRule_Scan_Filter_to_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 bool Board::bRule_Scan_Sort_to_IndexScan(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 #ifdef RULE_NO
   #undef RULE_NO

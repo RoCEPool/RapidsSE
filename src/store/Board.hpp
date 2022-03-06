@@ -11,8 +11,9 @@
 
 namespace STORE
 {
-  class Board : public Object
-              , public CardSet // public ListExo2_t<Card>
+  class Board //: public Object
+              //, public CardSet // public ListExo2_t<Card>
+              : public Card
   {
   protected:
     Optimiser* m_pOptimiser;
