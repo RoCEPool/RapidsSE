@@ -87,78 +87,78 @@ static Stz* aCK[]
 {
   /* */ "NONE"_Stz,
   
-  /* */ "CK_AGGELIST"_Stz,        // CK_AGGELIST
-  /* */ "CK_AGGLEVEL"_Stz,        // CK_AGGLEVEL
-  /* */ "CK_AGGREG"_Stz,          // CK_AGGREG
-  /* */ "CK_AS"_Stz,              // CK_AS
+  /* */ "CK_AGGELIST"_Stz,     // CK_AGGELIST
+  /* */ "CK_AGGLEVEL"_Stz,     // CK_AGGLEVEL
+  /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
+  /* */ "CK_AS"_Stz,           // CK_AS
   
-  /* */ "CK_BOARD"_Stz,           // CK_BOARD
+  /* */ "CK_BOARD"_Stz,        // CK_BOARD
 
-  /* */ "CK_CANDINDEX"_Stz,       // CK_CANDINDEX
-  /* */ "CK_COMBINE"_Stz,         // CK_COMBINE
+  /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
+  /* */ "CK_COMBINE"_Stz,      // CK_COMBINE
   
-  /* */ "CK_DEBUG"_Stz,           // CK_DEBUG
-  /* */ "CK_DIRECTION"_Stz,       // CK_DIRECTION
+  /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
+  /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
 
-  /* */ "CK_EBOUND"_Stz,          // CK_EBOUND
-  /* */ "CK_EXISTS"_Stz,          // CK_EXISTS
-  /* */ "CK_EXPR"_Stz,            // CK_EXPR
-  /* */ "CK_EXPRBOOL"_Stz,        // CK_EXPRBOOL
-  /* */ "CK_EXPRCALC"_Stz,        // CK_EXPRCALC
+  /* */ "CK_EBOUND"_Stz,       // CK_EBOUND
+  /* */ "CK_EXISTS"_Stz,       // CK_EXISTS
+  /* */ "CK_EXPR"_Stz,         // CK_EXPR
+  /* */ "CK_EXPRBOOL"_Stz,     // CK_EXPRBOOL
+  /* */ "CK_EXPRCALC"_Stz,     // CK_EXPRCALC
   
-  /* */ "CK_FILTER"_Stz,          // CK_FILTER
+  /* */ "CK_FILTER"_Stz,       // CK_FILTER
 
-  /* */ "CK_GBYELIST"_Stz,        // CK_GBYELIST
-  /* */ "CK_GENERATE"_Stz,        // CK_GENERATE
+  /* */ "CK_GBYELIST"_Stz,     // CK_GBYELIST
+  /* */ "CK_GENERATE"_Stz,     // CK_GENERATE
 
-  /* */ "CK_HASH"_Stz,            // CK_HASH
-  /* */ "CK_HAVING"_Stz,          // CK_HAVING
+  /* */ "CK_HASH"_Stz,         // CK_HASH
+  /* */ "CK_HAVING"_Stz,       // CK_HAVING
   
-  /* */ "CK_INDEX"_Stz,           // CK_INDEX
-  /* */ "CK_INDEXJOIN"_Stz,       // CK_INDEXJOIN
-  /* */ "CK_INDEXPRED"_Stz,       // CK_INDEXPRED
-  /* */ "CK_INDEXSCAN"_Stz,       // CK_INDEXSCAN
+  /* */ "CK_INDEX"_Stz,        // CK_INDEX
+  /* */ "CK_INDEXJOIN"_Stz,    // CK_INDEXJOIN
+  /* */ "CK_INDEXPRED"_Stz,    // CK_INDEXPRED
+  /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
-  /* */ "CK_LBOUND"_Stz,          // CK_LBOUND
-  /* */ "CK_LIMIT"_Stz,           // CK_LIMIT
+  /* */ "CK_LBOUND"_Stz,       // CK_LBOUND
+  /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
 
-  /* */ "CK_MODE"_Stz,            // CK_MODE
+  /* */ "CK_MODE"_Stz,         // CK_MODE
 
-  /* */ "CK_NAME"_Stz,            // CK_NAME
+  /* */ "CK_NAME"_Stz,         // CK_NAME
 
-  /* */ "CK_ON"_Stz,              // CK_ON
-  /* */ "CK_OPTION"_Stz,          // CK_OPTION
-  /* */ "CK_ORDAGG"_Stz,          // CK_ORDAGG
-  /* */ "CK_ORDERELIST"_Stz,      // CK_ORDERELIST
+  /* */ "CK_ON"_Stz,           // CK_ON
+  /* */ "CK_OPTION"_Stz,       // CK_OPTION
+  /* */ "CK_ORDAGG"_Stz,       // CK_ORDAGG
+  /* */ "CK_ORDERELIST"_Stz,   // CK_ORDERELIST
 
-  /* */ "CK_PREDAND"_Stz,         // CK_PREDAND
-  /* */ "CK_PREDCMP"_Stz,         // CK_PREDCMP
-  /* */ "CK_PREDOR"_Stz,          // CK_PREDOR
-  /* */ "CK_PROJECT"_Stz,         // CK_PROJECT
-  /* */ "CK_PROJELIST"_Stz,       // CK_PROJELIST
+  /* */ "CK_PREDAND"_Stz,      // CK_PREDAND
+  /* */ "CK_PREDCMP"_Stz,      // CK_PREDCMP
+  /* */ "CK_PREDOR"_Stz,       // CK_PREDOR
+  /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
+  /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
 
-  /* */ "CK_RBOUND"_Stz,          // CK_RBOUND
-  /* */ "CK_ROWS"_Stz,            // CK_ROWS
+  /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
+  /* */ "CK_ROWS"_Stz,         // CK_ROWS
 
-  /* */ "CK_SBYELIST"_Stz,        // CK_SBYELIST
-  /* */ "CK_SCAN"_Stz,            // CK_SCAN
-  /* */ "CK_SEND"_Stz,            // CK_SEND
-  /* */ "CK_SENDKIND"_Stz,        // CK_SENDKIND
-  /* */ "CK_SENDS"_Stz,           // CK_SENDS
-  /* */ "CK_SORT"_Stz,            // CK_SORT
-  /* */ "CK_STAGE"_Stz,           // CK_STAGE
-  /* */ "CK_STAGETOPO"_Stz,       // CK_STAGETOPO
-  /* */ "CK_STREAM"_Stz,          // CK_STREAM
-  /* */ "CK_STREAMLIST"_Stz,      // CK_STREAMELIST
-  /* */ "CK_SUBSET"_Stz,          // CK_SUBSET
+  /* */ "CK_SBYELIST"_Stz,     // CK_SBYELIST
+  /* */ "CK_SCAN"_Stz,         // CK_SCAN
+  /* */ "CK_SEND"_Stz,         // CK_SEND
+  /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
+  /* */ "CK_SENDS"_Stz,        // CK_SENDS
+  /* */ "CK_SORT"_Stz,         // CK_SORT
+  /* */ "CK_STAGE"_Stz,        // CK_STAGE
+  /* */ "CK_STAGETOPO"_Stz,    // CK_STAGETOPO
+  /* */ "CK_STREAM"_Stz,       // CK_STREAM
+  /* */ "CK_STREAMLIST"_Stz,   // CK_STREAMELIST
+  /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
-  /* */ "CK_TABLE"_Stz,           // CK_TABLE
-  /* */ "CK_TERM"_Stz,            // CK_TERM
-  /* */ "CK_TERMSEQ"_Stz,         // CK_TERMSEQ
-  /* */ "CK_TYPE"_Stz,            // CK_TYPE
+  /* */ "CK_TABLE"_Stz,        // CK_TABLE
+  /* */ "CK_TERM"_Stz,         // CK_TERM
+  /* */ "CK_TERMSEQ"_Stz,      // CK_TERMSEQ
+  /* */ "CK_TYPE"_Stz,         // CK_TYPE
 
-  /* */ "CK_UBOUND"_Stz,          // CK_UBOUND
-  /* */ "CK_UNIQUE"_Stz,          // CK_UNIQUE
+  /* */ "CK_UBOUND"_Stz,       // CK_UBOUND
+  /* */ "CK_UNIQUE"_Stz,       // CK_UNIQUE
 
   /* */ "ENUMS"_Stz
 };
