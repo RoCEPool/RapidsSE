@@ -103,10 +103,10 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    void vRankCandidateIndex(Card_CandIndex* pCard_CandIndex);
+    void vRankCandIndex(Card_CandIndex* pCard_CandIndex);
   
-    void vResolveCard      (Card*           pCard);
-    void vResolveTerm      (Card_Term*      pCard_Term);
+    void vResolveCard(Card*           pCard);
+    void vResolveTerm(Card_Term*      pCard_Term);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

@@ -652,7 +652,7 @@ void Board::vSetRegister(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vRankCandidateIndex(Card_CandIndex* pCard_CandIndex)
+void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -1255,7 +1255,7 @@ void Board::vRank_CandidateIndexes(void)
 
     Card_CandIndex* pCard_CandIndex = _pCard_CandIndex(pCard);
     
-    vRankCandidateIndex(pCard_CandIndex);
+    vRankCandIndex(pCard_CandIndex);
     
   }
   

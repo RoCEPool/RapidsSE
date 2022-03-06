@@ -252,6 +252,8 @@ static Stz* aCK_op[]
   /* */ "aggreg    2"_Stz,     // CK_AGGREG
   /* */ "(none)"_Stz,          // CK_AS
 
+  /* */ "(none)"_Stz,          // CK_BOARD
+
   /* */ "(none)"_Stz,          // CK_CANDINDEX
   /* */ "combined  0"_Stz,     // CK_COMBINE
 
