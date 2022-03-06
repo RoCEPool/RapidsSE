@@ -12,7 +12,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_MAIN::Card_MAIN(eCK eCard)
-: Card(eCard)
+: Card(eCard,GC_MAIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       

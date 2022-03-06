@@ -93,12 +93,13 @@ __aFooterFunction(Card)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard)
+Card::Card(eCK eCard, eGC eCatg)
 : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
         
   m_eCard    = eCard;
+  m_eCatg    = eCatg;
   m_iCardNo  = -1;
   
   m_cMark1   = ' ';
@@ -321,7 +322,7 @@ Card* Card::pDupCardAndSubCards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card* pCard_dup = new Card(m_eCard);
+  Card* pCard_dup = new Card(m_eCard,m_eCatg);
   
   i8 nSubCards = this->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {

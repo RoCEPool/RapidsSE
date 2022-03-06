@@ -8,6 +8,7 @@
 #include "eAL.h"
 #include "eBK.h"
 #include "eCK.h"
+#include "eGC.h"
 #include "eRO.h"
 #include "eTE.h"
 #include "eYG.h"
@@ -44,6 +45,7 @@ namespace STORE
   {
   protected:
     eCK  m_eCard;
+    eGC  m_eCatg;
     i8   m_iCardNo;
   
     char m_cMark1;
@@ -61,7 +63,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card(eCK eCard);
+    Card(eCK eCard, eGC eCatg);
    ~Card(void) noexcept(false);
 
     static bool bIsMain(eCK eCard);
