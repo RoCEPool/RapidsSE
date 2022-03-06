@@ -715,7 +715,7 @@ void Board::vResolveCard(Card* pCard)
   
   i8 nSubCards = pCard->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pSubCard = pCard->pGetCard(i_SubCard,eSubCard);
+    Card* pSubCard = pCard->pGetSubCard(i_SubCard,eSubCard);
        
     if (CK_INDEX == eSubCard) {
       vIndex(pSubCard->pIndex());
@@ -1017,7 +1017,7 @@ void Board::vCut_CandidateIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vRemoveCards(CK_CANDINDEX);
+  vRemoveSubCards(CK_CANDINDEX);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1304,7 +1304,7 @@ void Board::vResolve_Symbols(void)
   
   i8 nMainCards = nItems();
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
-    Card* pMainCard = pGetCard(i_Main);
+    Card* pMainCard = pGetSubCard(i_Main);
     
     vResolveCard(pMainCard);
   }

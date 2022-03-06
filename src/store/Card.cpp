@@ -34,7 +34,7 @@ CardSet::~CardSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* CardSet::pGetCard(i8 i_Card)
+Card* CardSet::pGetSubCard(i8 i_Card)
 {
   Card* pCard = pGet(i_Card);
   return pCard;
@@ -43,7 +43,7 @@ Card* CardSet::pGetCard(i8 i_Card)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* CardSet::pGetCard(i8 i_Card, eCK& reCard)
+Card* CardSet::pGetSubCard(i8 i_Card, eCK& reCard)
 {
   Card* pCard = pGet(i_Card);
   
@@ -58,19 +58,19 @@ Card* CardSet::pGetCard(i8 i_Card, eCK& reCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardSet::vRemoveCards(eCK eCard)
+void CardSet::vRemoveSubCards(eCK eCard)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
   
-  i8 nCards = nItems();
-  for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
-    Card* pCard = pGet(i_Card);
-    if (! pCard->bIsCard(eCard))
+  i8 nSubCards = nItems();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pSubCard = pGetSubCard(i_SubCard);
+    if (! pSubCard->bIsCard(eCard))
       continue;
     
-    vRemove(pCard);
-    i_Card--;
-    nCards--;
+    vRemove(pSubCard);
+    i_SubCard--;
+    nSubCards--;
   }
 }
 
@@ -246,6 +246,16 @@ eCK Card::eCard(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get card category                                                          */
+/*----------------------------------------------------------------------------*/
+eGC Card::eCatg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return m_eCatg;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get card no                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Card::iCardNo(void)
@@ -312,7 +322,7 @@ void Card::vDump(i8 iDepth)
   
   i8 nSubCards = nItems();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
-    pGet(i_Sub)->vDump(iDepth+1);
+    pGetSubCard(i_Sub)->vDump(iDepth+1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -326,7 +336,7 @@ Card* Card::pDupCardAndSubCards(void)
   
   i8 nSubCards = this->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pSubCard = pGetCard(i_SubCard);
+    Card* pSubCard = pGetSubCard(i_SubCard);
     
     Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
     
@@ -352,7 +362,7 @@ Card_SubSet* Card::pDupSubCards(void)
   
   i8 nSubCards = this->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pSubCard = pGetCard(i_SubCard);
+    Card* pSubCard = pGetSubCard(i_SubCard);
     
     Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
     
@@ -416,7 +426,7 @@ bool Card::bEquivalent(Card* pCard_arg)
   eCK eSubCard;
   i8 nSubs = this->nItems();
   for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-    Card* pSubCard = pGetCard(i_Sub,eSubCard);
+    Card* pSubCard = pGetSubCard(i_Sub,eSubCard);
     
     Card* pSubCard_arg = pCard_arg->pFindSubCard(eSubCard);
     if (! pSubCard_arg)
@@ -2186,7 +2196,7 @@ void Card::vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
   eCK eSubCard;
   i8 nSubs = this->nItems();
   for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-    Card* pSubCard = pGetCard(i_Sub,eSubCard);
+    Card* pSubCard = pGetSubCard(i_Sub,eSubCard);
     if (CK_EXPR != eSubCard)
       continue;
     

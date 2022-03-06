@@ -32,10 +32,10 @@ namespace STORE
     CardSet(void);
    ~CardSet(void) noexcept(false);
 
-    Card* pGetCard(i8 i_Card);
-    Card* pGetCard(i8 i_Card, eCK& reCard);
+    Card* pGetSubCard(i8 i_SubCard);
+    Card* pGetSubCard(i8 i_SubCard, eCK& reCard);
 
-    void vRemoveCards(eCK eCard);
+    void vRemoveSubCards(eCK eCard);
   };
 
 
@@ -77,6 +77,7 @@ namespace STORE
     void vAddProperty(Stz* szName, Stz* szValue);
 
     eCK  eCard(void);
+    eGC  eCatg(void);
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);

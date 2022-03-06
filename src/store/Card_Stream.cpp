@@ -70,9 +70,9 @@ void Card_Stream::vApplyOrder(Card_Stream* pCard_Stream_src)
       break;
     
     Card_Expr* pCard_Expr_src =
-      _pCard_Expr(pCard_OrderElist_src->pGetCard(i_Expr));
+      _pCard_Expr(pCard_OrderElist_src->pGetSubCard(i_Expr));
     Card_Expr* pCard_Expr_tst =
-      _pCard_Expr(pCard_StreamElist_dst->pGetCard(i_Expr));
+      _pCard_Expr(pCard_StreamElist_dst->pGetSubCard(i_Expr));
 
     if (! pCard_Expr_tst->bEquivalent(pCard_Expr_src))
       break;
