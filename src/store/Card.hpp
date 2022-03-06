@@ -88,7 +88,8 @@ namespace STORE
 
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                       eCK eCard=CK_NONE);
-  
+    bool bEquivalent(Card* pCard_arg);
+
     Card* pFindSubCard(eCK eCard);
 
     i8      iGetProperty(i8 i_Property);
@@ -121,8 +122,6 @@ namespace STORE
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(void);
 
-    bool bSame(Card* pCard_arg);
-  
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
                        Card* pAt=nullptr, bool bAfter=true);
