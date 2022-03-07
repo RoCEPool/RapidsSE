@@ -175,7 +175,7 @@ bool STORE::bOpt_cut(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
     delete pSubCard; //TEMP
   }
 
-  pBoard->vRenumber_Cards();
+  pBoard->vRenumberCards();
   
   return true;
 }

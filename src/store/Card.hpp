@@ -132,6 +132,7 @@ namespace STORE
     Stz* szPropertyNm(i8 i_Property);
 
     void vRemoveSubCard(Card* pCardRemove);
+    void vRenumberCards(void);
     void vRenumberSubCards(void);
 
     i8   nSubCards(void);

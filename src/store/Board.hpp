@@ -162,7 +162,6 @@ namespace STORE
   
     void vReduce_Filter              (void);
   
-    void vRenumber_Cards             (void);
   
     void vResolve_Symbols            (void);
 

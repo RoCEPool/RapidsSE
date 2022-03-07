@@ -1039,6 +1039,26 @@ void Card::vRemoveSubCard(Card* pCardRemove)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vRenumberCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  ListExoIter2_t<Card>* pBoard_I = pNewIter();
+
+  i8 iCardNo = 0;
+  while (pBoard_I->bHasNext()) {
+    Card* pCard = pBoard_I->pNext();
+    
+    pCard->vCardNo(iCardNo++);
+    pCard->vRenumberSubCards();
+  }
+  
+  delete pBoard_I;
+}
+
+/*----------------------------------------------------------------------------*/
 /* renumber cards                                                             */
 /*----------------------------------------------------------------------------*/
 void Card::vRenumberSubCards(void)

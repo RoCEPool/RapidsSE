@@ -348,7 +348,7 @@ void Board::vPrintBoard(Stz* szCue)
   bool bPrint = true;
   bool bExecuted = false;
 
-  vRenumber_Cards();
+  vRenumberCards();
   
   if (! bPrint)
     return;
@@ -1487,26 +1487,6 @@ void Board::vReduce_Filter(void)
   m_pReg_Filter->vReduceFilter();
   
   
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vRenumber_Cards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  ListExoIter2_t<Card>* pBoard_I = pNewIter();
-
-  i8 iCardNo = 0;
-  while (pBoard_I->bHasNext()) {
-    Card* pCard = pBoard_I->pNext();
-    
-    pCard->vCardNo(iCardNo++);
-    pCard->vRenumberSubCards();
-  }
-  
-  delete pBoard_I;
 }
 
 /*----------------------------------------------------------------------------*/
