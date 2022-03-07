@@ -13,8 +13,7 @@ namespace STORE
   class CardRegs : public Object
   {
   protected:
-    Card* m_paCard[CK_ENUMS];
-    b8    m_baFlag[CK_ENUMS];
+    Card* m_paCardReg[CK_ENUMS];
 
   protected:
     // must be last
@@ -27,6 +26,13 @@ namespace STORE
     CardRegs(void);
    ~CardRegs(void) noexcept(false);
   
+    Card* pCardReg(eCK eCard);
+    void  vCardReg(Card* pCard);
+
+    void  vClearCardRegs(void);
+
+    bool  bInCardReg(Card* pCard);
+
   protected:
     Footer* aFooter(void);
   };

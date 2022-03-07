@@ -21,8 +21,7 @@ CardRegs::CardRegs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
         
-  MemLib::vZero(m_paCard,sizeof(m_paCard),CN_CARDREGS);
-  MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_CARDREGS);
+  MemLib::vZero(m_paCardReg,sizeof(m_paCardReg),CN_CARDREGS);
 
   _checkInitialised_(CN_CARDREGS);
 
@@ -43,16 +42,53 @@ CardRegs::~CardRegs(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get iBelow for card                                                        */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-//i8 CardRegs::iBelow(i8 i_Card)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
-//
-//  i8 iBelow = m_iaBelow[i_Card];
-//
-//  return iBelow;
-//}
+Card* CardRegs::pCardReg(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+
+  Card* pCard = m_paCardReg[eCard];
+  
+  return pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardRegs::vCardReg(Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+
+  eCK eCard = pCard->eCard();
+
+  m_paCardReg[eCard] = pCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardRegs::vClearCardRegs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+
+  MemLib::vZero(m_paCardReg,sizeof(m_paCardReg),CN_CARDREGS);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardRegs::bInCardReg(Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+
+  eCK eCard = pCard->eCard();
+  
+  if (pCard == m_paCardReg[eCard])
+    return true;
+  
+  return false;
+}
 
 /*============================================================================*/
 /* end                                                                        */
