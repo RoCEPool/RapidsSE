@@ -65,19 +65,20 @@ begin
     scan lineitem
     | filter 2 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
     | aggreg 2 "
-      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+              type VARCHAR as L_LINESTATUS L_LINESTATUS
+      aggregates
+
       type DECIMAL as SUM_QTY )  L_QUANTITY sum  ,
       type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
-      type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  sum  ,
-      type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  1  L_TAX +  *  sum  ,
+      type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  sum  ,
+      type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1.0  L_DISCOUNT -  *  1.0  L_TAX +  *  sum  ,
       type INTEGER as CNT_EXTENDEDPRICE ) L_EXTENDEDPRICE count  ,
       type INTEGER as CNT_QTY )  L_QUANTITY count  ,
       type DECIMAL as SUM_DISCOUNT ) L_DISCOUNT sum  ,
       type INTEGER as CNT_DISCOUNT ) L_DISCOUNT count  ,
-      type INTEGER as COUNT_ORDER ) countall
-      groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-               type VARCHAR as L_LINESTATUS L_LINESTATUS "
+      type INTEGER as COUNT_ORDER ) countall"
+
     | combined 0
     | next
 
@@ -85,8 +86,10 @@ begin
 
     stage G_AGG_N on all nodes :
       aggreg 2 "
-        type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-        type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+        groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+                type VARCHAR as L_LINESTATUS L_LINESTATUS
+        aggregates
+
         type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
         type DECIMAL as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
         type DECIMAL as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
@@ -95,16 +98,17 @@ begin
         type INTEGER as CNT_QTY           ) CNT_QTY sum  ,
         type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
         type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
-        type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
-        groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-                type VARCHAR as L_LINESTATUS L_LINESTATUS "
+        type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum"
+
     | combined 0
     | next
 
   stage G_AGG_O on origin :
     aggreg 2 "
-      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+              type VARCHAR as L_LINESTATUS L_LINESTATUS
+      aggregates
+
       type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
       type DECIMAL as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
       type DECIMAL as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
@@ -113,9 +117,8 @@ begin
       type INTEGER as CNT_QTY           ) CNT_QTY sum  ,
       type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
       type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
-      type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
-      groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-               type VARCHAR as L_LINESTATUS L_LINESTATUS "
+      type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum"
+
       | combined 0
       | next
 
@@ -149,6 +152,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // Q1 with smlAgg
+/*
 pipeline Q1
 begin
 
@@ -160,8 +164,12 @@ begin
   // ∀ LINEITEM σ L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
     scan lineitem
+
     | filter 2 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
     | smlAgg 2 "
+      groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+               type VARCHAR as L_LINESTATUS L_LINESTATUS
+      aggreagtes
       type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL as SUM_QTY )  L_QUANTITY sum  ,
@@ -172,9 +180,8 @@ begin
       type INTEGER as CNT_QTY )  L_QUANTITY count  ,
       type DECIMAL as SUM_DISCOUNT ) L_DISCOUNT sum  ,
       type INTEGER as CNT_DISCOUNT ) L_DISCOUNT count  ,
-      type INTEGER as COUNT_ORDER ) countall
-      groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-               type VARCHAR as L_LINESTATUS L_LINESTATUS "
+      type INTEGER as COUNT_ORDER ) countall"
+
     | combined 0
     | next
 
@@ -182,6 +189,9 @@ begin
 
     stage G_AGG_N on all nodes :
       smlAgg 2 "
+        groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+                type VARCHAR as L_LINESTATUS L_LINESTATUS
+        aggregates
         type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
         type VARCHAR as L_LINESTATUS L_LINESTATUS ,
         type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
@@ -192,14 +202,16 @@ begin
         type INTEGER as CNT_QTY           ) CNT_QTY sum  ,
         type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
         type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
-        type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
-        groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-                type VARCHAR as L_LINESTATUS L_LINESTATUS "
+        type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum"
+
     | combined 0
     | next
 
   stage G_AGG_O on origin :
     smlAgg 2 "
+      groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+               type VARCHAR as L_LINESTATUS L_LINESTATUS
+      aggregates
       type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
@@ -210,9 +222,7 @@ begin
       type INTEGER as CNT_QTY           ) CNT_QTY sum  ,
       type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
       type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
-      type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
-      groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-               type VARCHAR as L_LINESTATUS L_LINESTATUS "
+      type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum"
       | combined 0
       | next
 
@@ -243,7 +253,7 @@ rows:
   ('N','F',1041.00,1614635.42,*,*,27.39,42490.40,1.04,38)
   ('N','O',75062.00,112768276.42,*,*,25.56,38408.81,1.04,2936)
   ('R','F',36470.00,54082045.78,*,*,25.04,37144.26,1.05,1456)
-
+*/
 //------------------------------------------------------------------------------
 // drop the tables
 drop table lineitem;
