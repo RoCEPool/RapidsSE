@@ -35,6 +35,8 @@ Optimiser::Optimiser(TagSet* p_JobTags)
   m_pDissect = new Dissect(this);
   m_pWeave   = new Weave(this);
 
+  m_pPaste   = new Card_SubSet;
+
   _checkInitialised_(CN_OPTIMISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
@@ -52,6 +54,8 @@ Optimiser::~Optimiser(void) noexcept(false)
   delete m_pBench;
   delete m_pDissect;
   delete m_pWeave;
+  
+  delete m_pPaste;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,18 +78,6 @@ void Optimiser::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get top board                                                              */
-/*----------------------------------------------------------------------------*/
-Board* Optimiser::pHeadBoard(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-
-  Board* pBoard = m_pBench->pHead();
-
-  return pBoard;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get cardCtl                                                                */
@@ -121,6 +113,18 @@ void Optimiser::vDissect(PipelineSpec* pUnOptPipelineSpec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get top board                                                              */
+/*----------------------------------------------------------------------------*/
+Board* Optimiser::pHeadBoard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  Board* pBoard = m_pBench->pHead();
+
+  return pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cardCtl                                                                */
 /*----------------------------------------------------------------------------*/
 TagSet* Optimiser::pJobTags(void)
@@ -128,6 +132,16 @@ TagSet* Optimiser::pJobTags(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   return m_p_JobTags;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get paste buffer                                                          */
+/*----------------------------------------------------------------------------*/
+Card_SubSet* Optimiser::pPaste(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_pPaste;
 }
 
 /*----------------------------------------------------------------------------*/

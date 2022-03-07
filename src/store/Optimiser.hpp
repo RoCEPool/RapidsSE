@@ -24,6 +24,8 @@ namespace STORE
     Bench*   m_pBench;
     Dissect* m_pDissect;
     Weave*   m_pWeave;
+  
+    Card_SubSet* m_pPaste;
 
     // must be last
     Footer m_xFooter;
@@ -38,20 +40,19 @@ namespace STORE
 
     static void vRepair(Object* pObject);
 
-    Board* pHeadBoard(void);
-  
     CardCtl* pCardCtl(void);
   
     void vDissect(PipelineSpec* pUnOptPipelineSpec);
-   
+
+    Board* pHeadBoard(void);
+
     TagSet* pJobTags(void);
   
     void vOptimise(void);
   
+    Card_SubSet* pPaste(void);
     void vPipelineSpec(PipelineSpec* pUnOptPipelineSpec);
-  
     void vPopBoard(void);
-
     void vPushBoard(Board* pBoard);
  
     void vToPipelineSpec(PipelineSpec* pPipelineSpec);
