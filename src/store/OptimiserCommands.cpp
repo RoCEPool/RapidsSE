@@ -429,6 +429,50 @@ OptimiserFun __Opt_reprint
 );
 
 /*----------------------------------------------------------------------------*/
+/* set card registers                                                         */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_set(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+{
+  vTrace("bOpt_set\n"_Stz);
+
+  Card* pMainCard = nullptr;
+  Board* pBoard = pOptimiser->pHeadBoard();
+
+  i8 nTkns = pTknVec->nItems();
+  
+  if (nTkns < 2) {
+    vTrace("Error: bOpt_set <card>\n"_Stz);
+    return false;
+  }
+  
+  Token* pTkn = pTknVec->pGet(1);
+
+  if (pTkn->bIsInteger()) {
+    i8 i_MainCard = pTkn->iToI8();
+    pMainCard = pBoard->pGetMainCard(i_MainCard);
+  }
+  else {
+    Stz* szCardNm = pTkn->szChars();
+    pMainCard = pBoard->pFindMain(szCardNm);
+  }
+  
+  if (pMainCard)
+    pBoard->vSetRegister(pMainCard);
+  
+  return true;
+}
+
+OptimiserFun __Opt_set
+(
+  "set"_Stz,          // name of the prompt function
+  "set"_Stz,          // command first word
+  nullptr,            // command second word
+  bOpt_set,           // function to call
+  0,0,                // spare
+  "set card registers"_Stz
+);
+
+/*----------------------------------------------------------------------------*/
 /* sub                                                                        */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_sub(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)

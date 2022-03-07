@@ -118,6 +118,23 @@ Card* Board::pGetMainCard(i8 i_MainCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* Board::pGetMainCard(i8 i_MainCard, eCK& reCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card* pMainCard = pGet(i_MainCard);
+  
+  if (pMainCard)
+    reCard = pMainCard->eCard();
+  else
+    reCard = CK_NONE;
+
+  return pMainCard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
 void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
@@ -624,6 +641,25 @@ void Board::vFlag(i8 i_Flag, bool bFlag)
   m_baFlag[i_Flag] = bFlag;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* Board::pFindMain(Stz* szCardNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  eCK eCard = Card::eToECard(szCardNm);
+  
+  i8 nMainCards = this->nMainCards();
+  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+    Card* pMainCard = pGetMainCard(i_MainCard);
+    
+    if (pMainCard->eCard() == eCard)
+      return pMainCard;
+  }
+  
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -707,20 +743,20 @@ void Board::vSetRegister(Card* pCard)
   eCK eCard = pCard->eCard();
   
   switch (eCard) {
-    case CK_AGGREG:       vReg_Aggreg   (_pCard_Aggreg   (pCard));
-    case CK_CANDINDEX:    vReg_CandIndex(_pCard_CandIndex(pCard));
-    case CK_COMBINE:      vReg_Combine  (_pCard_Combine  (pCard));
-    case CK_FILTER:       vReg_Filter   (_pCard_Filter   (pCard));
-    case CK_HASH:         vReg_Hash     (_pCard_Hash     (pCard));
-    case CK_INDEXJOIN:    vReg_IndexJoin(_pCard_IndexJoin(pCard));
-    case CK_INDEXSCAN:    vReg_IndexScan(_pCard_IndexScan(pCard));
-    case CK_LIMIT:        vReg_Limit    (_pCard_Limit    (pCard));
-    case CK_ORDAGG:       vReg_OrdAgg   (_pCard_OrdAgg   (pCard));
-    case CK_PROJECT:      vReg_Project  (_pCard_Project  (pCard));
-    case CK_SCAN:         vReg_Scan     (_pCard_Scan     (pCard));
-    case CK_SEND:         vReg_Send     (_pCard_Send     (pCard));
-    case CK_SORT:         vReg_Sort     (_pCard_Sort     (pCard));
-    case CK_STAGE:        vReg_Stage    (_pCard_Stage    (pCard));
+    case CK_AGGREG:       vReg_Aggreg   (_pCard_Aggreg   (pCard)); break;
+    case CK_CANDINDEX:    vReg_CandIndex(_pCard_CandIndex(pCard)); break;
+    case CK_COMBINE:      vReg_Combine  (_pCard_Combine  (pCard)); break;
+    case CK_FILTER:       vReg_Filter   (_pCard_Filter   (pCard)); break;
+    case CK_HASH:         vReg_Hash     (_pCard_Hash     (pCard)); break;
+    case CK_INDEXJOIN:    vReg_IndexJoin(_pCard_IndexJoin(pCard)); break;
+    case CK_INDEXSCAN:    vReg_IndexScan(_pCard_IndexScan(pCard)); break;
+    case CK_LIMIT:        vReg_Limit    (_pCard_Limit    (pCard)); break;
+    case CK_ORDAGG:       vReg_OrdAgg   (_pCard_OrdAgg   (pCard)); break;
+    case CK_PROJECT:      vReg_Project  (_pCard_Project  (pCard)); break;
+    case CK_SCAN:         vReg_Scan     (_pCard_Scan     (pCard)); break;
+    case CK_SEND:         vReg_Send     (_pCard_Send     (pCard)); break;
+    case CK_SORT:         vReg_Sort     (_pCard_Sort     (pCard)); break;
+    case CK_STAGE:        vReg_Stage    (_pCard_Stage    (pCard)); break;
       
     default:
       vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz

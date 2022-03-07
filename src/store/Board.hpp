@@ -63,6 +63,7 @@ namespace STORE
     void vClear(void);
   
     Card* pGetMainCard(i8 i_MainCard);
+    Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
   
     i8   nMainCards(void);
   
@@ -108,6 +109,7 @@ namespace STORE
 
     bool bFlag(i8 i_Flag);
     void vFlag(i8 i_Flag, bool bFlag);
+    Card* pFindMain(Stz* szCardNm);
 
     void vDeleteAllCards(void);
     bool bInRegister    (Card* pCard);

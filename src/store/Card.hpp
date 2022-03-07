@@ -113,6 +113,10 @@ namespace STORE
     bool bHasUBound(void);
     void vHasUBound(bool bHasUBound);
 
+    bool bIsMain(void);
+    bool bIsOther(void);
+    bool bIsSub(void);
+
     char cMark1(void);
     void vMark1(char cMark1);
     char cMark2(void);
@@ -159,7 +163,7 @@ namespace STORE
 
     Stz* szDirn(void);
     void vDirn(Stz* szAsNm);
-  
+
     i8   iGenerate(void);
     void vGenerate(i8 iGenerate);
   
