@@ -1175,8 +1175,8 @@ void Board::vAdd_IndexScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the stream order
   
-  Card_OrderElist* pCard_OrderElist = new Card_OrderElist(m_pIndex);
-  pCard_Stream->vAppend(pCard_OrderElist);
+  Card_ObyElist* pCard_ObyElist = new Card_ObyElist(m_pIndex);
+  pCard_Stream->vAppend(pCard_ObyElist);
 
   //bool bUnique = pIndexDef->bIsUnique();
   //pStreamDef->vUnique(bUnique);

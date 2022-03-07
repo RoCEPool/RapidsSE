@@ -211,7 +211,7 @@ bool Card::bIsSub(eCK eCard)
               
     case CK_ON:
     case CK_OPTION:
-    case CK_ORDERELIST:
+    case CK_OBYELIST:
               
     case CK_PREDAND:
     case CK_PREDCMP:
@@ -253,7 +253,7 @@ eCK Card::eParentECard(eCK eChild)
     case CK_AGGELIST:   return CK_AGGREG;
     case CK_EXPR:       return CK_FILTER;
     case CK_GBYELIST:   return CK_AGGREG;
-    case CK_ORDERELIST: return CK_STREAM;
+    case CK_OBYELIST: return CK_STREAM;
     case CK_PROJELIST:  return CK_PROJECT;
     case CK_SBYELIST:   return CK_SORT;
 
@@ -331,7 +331,7 @@ eGC Card::eToECatg(eCK eCard)
     case CK_ON:                          return GC_SUB;
     case CK_OPTION:                      return GC_SUB;
     case CK_ORDAGG:     return GC_MAIN;
-    case CK_ORDERELIST:                  return GC_SUB;
+    case CK_OBYELIST:                  return GC_SUB;
               
     case CK_PREDAND:                     return GC_SUB;
     case CK_PREDCMP:                     return GC_SUB;
@@ -2238,7 +2238,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_ON:                         vPrintProperties(pRibbon,iDepth); break;
     case CK_OPTION:                     vPrintProperties(pRibbon,iDepth); break;
     case CK_ORDAGG:                     vPrintProperties(pRibbon,iDepth); break;
-    case CK_ORDERELIST:                 vPrintProperties(pRibbon,iDepth); break;
+    case CK_OBYELIST:                 vPrintProperties(pRibbon,iDepth); break;
 
     case CK_PREDAND:                    vPrintProperties(pRibbon,iDepth); break;
     case CK_PREDCMP:                    vPrintProperties(pRibbon,iDepth); break;

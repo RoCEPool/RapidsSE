@@ -46,10 +46,10 @@ enum eCK // card kind
 
   /* */ CK_NAME,
 
+  /* */ CK_OBYELIST,
   /* */ CK_ON,
   /* */ CK_OPTION,
   /* */ CK_ORDAGG,
-  /* */ CK_ORDERELIST,
 
   /* */ CK_PREDAND,
   /* */ CK_PREDCMP,
@@ -126,10 +126,10 @@ static Stz* aCK[]
 
   /* */ "CK_NAME"_Stz,         // CK_NAME
 
+  /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_ON"_Stz,           // CK_ON
   /* */ "CK_OPTION"_Stz,       // CK_OPTION
   /* */ "CK_ORDAGG"_Stz,       // CK_ORDAGG
-  /* */ "CK_ORDERELIST"_Stz,   // CK_ORDERELIST
 
   /* */ "CK_PREDAND"_Stz,      // CK_PREDAND
   /* */ "CK_PREDCMP"_Stz,      // CK_PREDCMP
@@ -206,10 +206,10 @@ static Stz* aCK_short[]
 
   /* */ "name"_Stz,            // CK_NAME
 
+  /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "on"_Stz,              // CK_ON
   /* */ "option"_Stz,          // CK_OPTION
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
-  /* */ "orderElist"_Stz,      // CK_ORDERELIST
 
   /* */ "predAnd"_Stz,         // CK_PREDAND
   /* */ "predCmp"_Stz,         // CK_PREDCMP
@@ -286,10 +286,10 @@ static Stz* aCK_op[]
 
   /* */ "(none)"_Stz,          // CK_NAME
 
+  /* */ "(none)"_Stz,          // CK_OBYELIST
   /* */ "(none)"_Stz,          // CK_ON
   /* */ "(none)"_Stz,          // CK_OPTION
   /* */ "ordagg    2"_Stz,     // CK_ORDAGG
-  /* */ "(none)"_Stz,          // CK_ORDERELIST
 
   /* */ "(none)"_Stz,          // CK_PREDAND
   /* */ "(none)"_Stz,          // CK_PREDCMP

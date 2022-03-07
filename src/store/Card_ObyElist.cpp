@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_OrderElist.cpp -- List of Order Expressions                           */
+/* Card_ObyElist.cpp -- List of Order-By Expressions                          */
 /*============================================================================*/
 
-#include "Card_OrderElist.hpp"
+#include "Card_ObyElist.hpp"
 #include "Card_Name.hpp"
 #include "Card_Expr.hpp"
 
@@ -10,17 +10,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_OrderElist,CK_ORDERELIST)
-__aNewFunction(Card_OrderElist,CN_CARD)
-__vDeleteFunction(Card_OrderElist,CN_CARD)
+__pCastFunction_Card(STORE,Card_ObyElist,CK_OBYELIST)
+__aNewFunction(Card_ObyElist,CN_CARD)
+__vDeleteFunction(Card_ObyElist,CN_CARD)
 
-__bIsCard(STORE,Card_OrderElist,CK_ORDERELIST)
+__bIsCard(STORE,Card_ObyElist,CK_OBYELIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OrderElist::Card_OrderElist(void)
-: Card_ELIST(CK_ORDERELIST)
+Card_ObyElist::Card_ObyElist(void)
+: Card_ELIST(CK_OBYELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -32,8 +32,8 @@ Card_OrderElist::Card_OrderElist(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OrderElist::Card_OrderElist(Index* pIndex)
-: Card_ELIST(CK_ORDERELIST)
+Card_ObyElist::Card_ObyElist(Index* pIndex)
+: Card_ELIST(CK_OBYELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -47,7 +47,7 @@ Card_OrderElist::Card_OrderElist(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_OrderElist::~Card_OrderElist(void) noexcept(false)
+Card_ObyElist::~Card_ObyElist(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -59,7 +59,7 @@ Card_OrderElist::~Card_OrderElist(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OrderElist::vPopulate(Index* pIndex)
+void Card_ObyElist::vPopulate(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

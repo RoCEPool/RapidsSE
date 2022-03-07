@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_OrderElist.hpp -- List of Order Expressions                           */
+/* Card_ObyElist.hpp -- List of Order-By Expressions                          */
 /*============================================================================*/
 #pragma once
 
@@ -9,23 +9,23 @@
 
 namespace STORE
 {
-  class Card_OrderElist : public Card_ELIST
+  class Card_ObyElist : public Card_ELIST
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_OrderElist(void);
-    Card_OrderElist(Index* pIndex);
-   ~Card_OrderElist(void) noexcept(false);
+    Card_ObyElist(void);
+    Card_ObyElist(Index* pIndex);
+   ~Card_ObyElist(void) noexcept(false);
     
     
   private:
     void vPopulate(Index* pIndex);
   };
 
-  Card_OrderElist* _pCard_OrderElist(void* aAddr);
-  bool _bIsCard_OrderElist(void* aAddr);
+  Card_ObyElist* _pCard_ObyElist(void* aAddr);
+  bool _bIsCard_ObyElist(void* aAddr);
 }
 
 /*============================================================================*/
