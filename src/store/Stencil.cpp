@@ -1706,13 +1706,16 @@ Shape* Stencil::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil) {
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
   Op *pPrevOp = pStream->pGet(i_Op - 1);
+  sLabelPrev = ""_Stz;
   if (pPrevOp->szOpNm()->bSame("ordAgg"_Stz)) {
     RASSERT(bLastFilter);
     sLabelPrev.vSprint("L_%s_%d"_Stz, pPrevOp->szOpNm(), i_Op - 1);
-    pCodeSynth->vSynthFilterOrdAgg(sFilterExpr, sLabel, sLabelPrev);
-  } else {
-    pCodeSynth->vSynthFilter(sFilterExpr, sLabel);
+    pCodeSynth->vSynthFilter(sFilterExpr, true, sLabel, sLabelPrev);
   }
+  else {
+    pCodeSynth->vSynthFilter(sFilterExpr, false, sLabel, sLabelPrev);
+  }
+
   pShape->vCodeSynthB(pCodeSynth);
 
   return pShape;

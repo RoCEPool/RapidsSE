@@ -95,14 +95,14 @@ namespace STORE {
 
     void vSynthEosTop(IndexDef *pIndexDef);
 
-    void vSynthFilter(Stz *sFilterExpr, Stz *sLabel);
+    void vSynthFilter(Stz *sFilterExpr, bool bOrdAgg, Stz *sLabel, Stz* sLabelPrev);
 
     void vSynthFilterOrdAgg(Stz *sFilterExpr, Stz *sLabel, Stz *sLabelPrev);
 
     void vSynthIndexJoin(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
                          Stz *sJoinExpr, Stz *sLabel, Stz *sLabelNext, u8 uSelectColumns);
 
-    void vSynthIndexScan(Stz *sIndexScanExpr, Stz *sLabel, Stz *sNextLabel, u8 uSelectColumns);
+    void vSynthIndexScan(Stz *sIndexScanExpr, Stz *sLabel, Stz *sLabelNext, u8 uSelectColumns);
 
     void vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz *sReturnLabel, u8 *puSelectColumns);
 

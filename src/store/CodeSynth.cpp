@@ -473,7 +473,7 @@ void CodeSynth::vSynthEosTop(IndexDef* pIndexDef) {
 /*----------------------------------------------------------------------------*/
 /* synthesize the filter expression                                           */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel)
+void CodeSynth::vSynthFilter(Stz* sFilterExpr, bool bOrdAgg, Stz* sLabel, Stz* sLabelPrev)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -496,9 +496,16 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel)
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (bFilterResult) { ");
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
+  if (bOrdAgg)
+    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AddRowToTub;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    } else { ");
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate goto sLabelPrev for filter after ordered aggregate
+  if ( ! sLabelPrev->bSame(""_Stz) )
+    vGenerateGoto(sLabelPrev);
 
   // cleanup
   m_pExprStack->vReset();
@@ -698,7 +705,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 /* synthesize the index scan                                                  */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
-                                Stz* sLabelNext, u8 uSelectColumns) {
+                                Stz* sLabelNext,u8 uSelectColumns) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s4K sCopy;
@@ -764,7 +771,6 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
     StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
     StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
@@ -1810,10 +1816,10 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
   for (i8 i_Col = 0; i_Col < m_pIndexDef->nColumns(); i_Col++) {
     Column* pColumn = m_pIndexDef->pGetColumn(i_Col);
 
-    // get the index col no maching the streamDef column no
+    // get the index col no matching the streamDef column no
     i8 iIndexCol = m_pIndexDef->iGetColumn(pColumn->iColumnNo());
 
-    vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, iIndexCol);
+    vMakeColumnNmStruct(m_pStreamDefLft, sColNm, i_DupCtr, iIndexCol);
 
     // NOT SURE: COME BACK
     // make the column name
@@ -1857,7 +1863,6 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
   StrLib::vAppendString(&m_azCodeCrs, "\n   else {");
   StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_iProjectInit = 0;");
-
   sCopy.vSprint("\n     goto %s;"_Stz, sLabelNext);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
