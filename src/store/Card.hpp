@@ -63,10 +63,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card(eCK eCard, eGC eCatg);
+    Card(eCK eCard);
    ~Card(void) noexcept(false);
 
     static bool bIsMain(eCK eCard);
+    static bool bIsOther(eCK eCard);
     static bool bIsSub(eCK eCard);
     static eCK  eToECard(Stz* szCardNm);
     static eGC  eToECatg(eCK eCard);

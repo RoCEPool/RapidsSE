@@ -93,13 +93,13 @@ __aFooterFunction(Card)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, eGC eCatg)
+Card::Card(eCK eCard)
 : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-        
+          
   m_eCard    = eCard;
-  m_eCatg    = eCatg;
+  m_eCatg    = Card::eToECatg(eCard);
   m_iCardNo  = C_UNKNOWN;
   
   m_cMark1   = ' ';
@@ -154,6 +154,23 @@ bool Card::bIsMain(eCK eCard)
     case CK_SEND:
     case CK_SORT:
     case CK_STAGE:
+      return true;
+      
+    default:
+      return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* is eCK an other card?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsOther(eCK eCard)
+{
+  _static_
+  
+  switch (eCard) {
+    case CK_BOARD:
+    case CK_RPNTERMS:
       return true;
       
     default:
@@ -303,6 +320,7 @@ eGC Card::eToECatg(eCK eCard)
                             
     case CK_RBOUND:                      return GC_SUB;
     case CK_ROWS:                        return GC_SUB;
+    case CK_RPNTERMS:                                     return GC_OTHER;
 
     case CK_SBYELIST:                    return GC_SUB;
     case CK_SCAN:       return GC_MAIN;
@@ -318,7 +336,6 @@ eGC Card::eToECatg(eCK eCard)
                     
     case CK_TABLE:                       return GC_SUB;
     case CK_TERM:                        return GC_SUB;
-    case CK_RPNTERMS:                                     return GC_OTHER;
     case CK_TYPE:                        return GC_SUB;
               
     case CK_UBOUND:                      return GC_SUB;
@@ -503,7 +520,7 @@ Card* Card::pDupCardAndSubCards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card* pCard_dup = new Card(m_eCard,m_eCatg);
+  Card* pCard_dup = new Card(m_eCard);
   
   i8 nSubCards = this->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
