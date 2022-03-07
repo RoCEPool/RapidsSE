@@ -62,7 +62,7 @@ namespace STORE
     Board(Optimiser* pOptimiser, Stz* szCardNm);
    ~Board(void) noexcept(false);
 
-    i8   nCards(void);
+    i8   nMainCards(void);
     void vClear(void);
   
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
