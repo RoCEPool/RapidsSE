@@ -5,12 +5,12 @@
 
 #include "BASE.h"
 
-#include "Card_SUB.hpp"
+#include "Card_OTHER.hpp"
 #include "eTE.h"
 
 namespace STORE
 {
-  class Card_RpnTerms : public Card_SUB
+  class Card_RpnTerms : public Card_OTHER
   {  
   public:
     void* operator new(size_t);

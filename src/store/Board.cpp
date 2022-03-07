@@ -26,7 +26,7 @@ __aFooterFunction(Board)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
-: Card(CK_BOARD,GC_MAIN)
+: Card_OTHER(CK_BOARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       

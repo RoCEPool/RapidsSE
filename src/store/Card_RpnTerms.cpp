@@ -20,7 +20,7 @@ __bIsCard(STORE,Card_RpnTerms,CK_RPNTERMS)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RpnTerms::Card_RpnTerms(void)
-: Card_SUB(CK_RPNTERMS)
+: Card_OTHER(CK_RPNTERMS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
