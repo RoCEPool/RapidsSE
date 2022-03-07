@@ -149,32 +149,33 @@ bool STORE::bOpt_cut(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
     return false;
   }
   
-  Token* pTkn = pTknVec->pGet(1);
-  Stz* szCard = pTkn->szChars();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Card* pMainCard = nullptr;
   Card* pSubCard = nullptr;
   Board* pBoard = pOptimiser->pHeadBoard();
   
-  pBoard->vSearch(szCard,pMainCard,pSubCard);
-
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pMainCard) {
-    pBoard->vCutSubCard(pMainCard);
-    delete pMainCard; //TEMP
-  }
-  else
-  if (pSubCard) {
-    Card* pParentCard = pBoard->pFindParent(pSubCard);
-    pParentCard->vCutSubCard(pSubCard);
-    
-    delete pSubCard; //TEMP
-  }
+  for (i8 i_Tkn = 1; i_Tkn < nTkns; i_Tkn++) {
+    Token* pTkn = pTknVec->pGet(i_Tkn);
+    Stz* szCard = pTkn->szChars();
 
+    pBoard->vSearch(szCard,pMainCard,pSubCard);
+    
+    if (pMainCard) {
+      pBoard->vCutSubCard(pMainCard);
+      delete pMainCard; //TEMP
+    }
+    else
+    if (pSubCard) {
+      Card* pParentCard = pBoard->pFindParent(pSubCard);
+      pParentCard->vCutSubCard(pSubCard);
+      
+      delete pSubCard; //TEMP
+    }
+  }
+  
   pBoard->vRenumberCards();
   
   return true;
@@ -495,8 +496,6 @@ bool STORE::bOpt_set(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
     return false;
   }
   
-  Token* pTkn = pTknVec->pGet(1);
-  Stz* szCard = pTkn->szChars();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -504,19 +503,25 @@ bool STORE::bOpt_set(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   Card* pSubCard = nullptr;
   Board* pBoard = pOptimiser->pHeadBoard();
   
-  pBoard->vSearch(szCard,pMainCard,pSubCard);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (pMainCard) {
-    pBoard->vSetRegister(pMainCard);
-    pBoard->vReg_Last(pMainCard);
-  }
-  else
-  if (pSubCard) {
-    pBoard->vReg_Last(pSubCard);
-  }
 
+  for (i8 i_Tkn = 1; i_Tkn < nTkns; i_Tkn++) {
+    Token* pTkn = pTknVec->pGet(i_Tkn);
+    Stz* szCard = pTkn->szChars();
+
+    pBoard->vSearch(szCard,pMainCard,pSubCard);
+      
+    if (pMainCard) {
+      pBoard->vSetRegister(pMainCard);
+      pBoard->vReg_Last(pMainCard);
+    }
+    else
+    if (pSubCard) {
+      pBoard->vSetRegister(pSubCard);
+      pBoard->vReg_Last(pSubCard);
+    }
+  }
+  
   return true;
 }
 

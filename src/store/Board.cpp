@@ -824,7 +824,10 @@ void Board::vSetRegister(Card* pCard)
     case CK_SEND:         vReg_Send     (_pCard_Send     (pCard)); break;
     case CK_SORT:         vReg_Sort     (_pCard_Sort     (pCard)); break;
     case CK_STAGE:        vReg_Stage    (_pCard_Stage    (pCard)); break;
-      
+
+    case CK_GBYELIST:     vReg_GbyElist (_pCard_GbyElist (pCard)); break;
+    case CK_SBYELIST:     vReg_SbyElist (_pCard_SbyElist (pCard)); break;
+
     default:
       vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
              ,__func__
