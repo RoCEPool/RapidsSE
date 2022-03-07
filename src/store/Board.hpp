@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Dissect.hpp"
+#include "CardRegs.hpp"
 #include "eRN.h"
 
 
@@ -51,6 +52,8 @@ namespace STORE
     Table*     m_pTable;
 
     bool m_baFlag[RN_ENUMS];
+  
+    CardRegs* m_pCardRegs;
   
   private:
     // must be last

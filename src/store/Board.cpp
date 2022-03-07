@@ -65,6 +65,8 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
   m_pTable     = nullptr;
   
   MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_CARD);
+  
+  m_pCardRegs = new CardRegs;
 
   //_checkInitialised_(CN_CARD);
   _checkInitialisedSize_(sizeof(Board));
@@ -78,6 +80,8 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
 Board::~Board(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  delete m_pCardRegs;
 }
 
 
