@@ -1215,6 +1215,19 @@ bool Card::bIsCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a sub-class of card_MAIN?                                          */
+/*----------------------------------------------------------------------------*/
+bool Card::bIs_MAIN(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (GC_MAIN == m_eCatg)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is atom a column ordinal?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsOrdinalColumnAtom(void)
@@ -1331,6 +1344,19 @@ bool Card::bIsSeparator(void)
   Stz* szTerm = szGetProperty("szTerm"_Stz);
 
   if (szTerm->bSame(","_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a sub-class of card_SUB?                                           */
+/*----------------------------------------------------------------------------*/
+bool Card::bIs_SUB(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (GC_SUB == m_eCatg)
     return true;
   else
     return false;
@@ -2019,10 +2045,10 @@ void Card::vPrintHeader(Ribbon* pRibbon)
 
   //pRibbon->vSput(FR_HEAD,pRibbon->iLogicalColumn());
   
-  Board* pBoard = _pBoard(pRibbon->pSurface());
-  pRibbon->vSprint("%c-%02lld--------------=="_Stz
-                   ,pBoard->bInRegister(this) ? 'R' : '-'
+  //pRibbon->vSprint("--%02lld--------------=="_Stz
+  pRibbon->vSprint("--%02lld--%02lld----------=="_Stz
                    ,pRibbon->iLogicalColumn()
+                   ,m_iCardNo
                    );
 
 }
@@ -2036,29 +2062,36 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
 
   s32 sName;
     
+  Board* pBoard = _pBoard(pRibbon->pSurface());
+
   if (m_bPrintNm) {
     
-    if (-1 == m_iCardNo) {
-      sName.vSprint("%s%s x%lld"_Stz
+    //if (-1 == m_iCardNo) {
+    if (bIs_MAIN()) {
+      sName.vSprint("%s%s%s x%lld"_Stz
+                    ,pBoard->bInRegister(this) ? "R "_Stz : ""_Stz
                     ,Stz::szDots(iDepth)
                     ,szCardNm()
                     ,nItems()
                     );
-//      pRibbon->vSprint("%-18s%c%c"_Stz
-//                       ,sName.szStz()
-//                       ,m_cMark1
-//                       ,m_cMark2
-//                       );
+    }
+    else
+    if (bIs_SUB()) {
+      sName.vSprint("%s%lld)%s%s"_Stz
+                    ,Stz::szDots(iDepth)
+                    ,m_iCardNo
+                    ,pBoard->bInRegister(this) ? "R "_Stz : ""_Stz
+                    ,szCardNm()
+                    );
     }
     else {
-      sName.vSprint("%s%lld)%s"_Stz
-                    ,Stz::szDots(iDepth)
+      sName.vSprint("%s%lld %s"_Stz
+                    ,pBoard->bInRegister(this) ? "R "_Stz : ""_Stz
                     ,m_iCardNo
                     ,szCardNm()
                     );
-
-      //pRibbon->vSprint("%s"_Stz,sName.szStz());
     }
+    
     pRibbon->vSprint("%-18s%c%c"_Stz
                      ,sName.szStz()
                      ,m_cMark1

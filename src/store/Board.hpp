@@ -105,8 +105,8 @@ namespace STORE
 
     void vRankCandIndex(Card_CandIndex* pCard_CandIndex);
   
-    void vResolveCard(Card*           pCard);
-    void vResolveTerm(Card_Term*      pCard_Term);
+    void vResolveAll(Card*        pAnyCard);
+    void vResolveTerm(Card_Term*  pCard_Term);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

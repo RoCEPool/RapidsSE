@@ -168,9 +168,11 @@ namespace STORE
     bool bIsOrdinalIndexAtom(void);
     bool bIsOrdinalStreamTerm(void);
     bool bIsOrdinalIndexTerm(void);
+    bool bIs_MAIN(void);
     bool bIsPred(void);
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
+    bool bIs_SUB(void);
 
     Stz* szLevel(void);
     void vLevel(Stz* szLevel);

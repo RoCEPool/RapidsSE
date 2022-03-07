@@ -699,11 +699,10 @@ void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vResolveCard(Card* pCard)
+void Board::vResolveAll(Card* pAnyCard) // recursive
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
-  eCK eSubCard;
   
   Card_ELIST* pCard_ELIST;
   Card_Index* pCard_Index;
@@ -713,9 +712,10 @@ void Board::vResolveCard(Card* pCard)
   
   //pCard->vDump();
   
-  i8 nSubCards = pCard->nItems();
+  eCK eSubCard;
+  i8 nSubCards = pAnyCard->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pSubCard = pCard->pGetSubCard(i_SubCard,eSubCard);
+    Card* pSubCard = pAnyCard->pGetSubCard(i_SubCard,eSubCard);
        
     if (CK_INDEX == eSubCard) {
       vIndex(pSubCard->pIndex());
@@ -737,16 +737,16 @@ void Board::vResolveCard(Card* pCard)
       continue;
     }
     
-    vResolveCard(pSubCard);
+    vResolveAll(pSubCard);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCard_ELIST = (Card_ELIST*)pCard->pFindSubCard(CK_AGGELIST);
+  pCard_ELIST = (Card_ELIST*)pAnyCard->pFindSubCard(CK_AGGELIST);
   if (pCard_ELIST) {
         
     Card_Stream* pCard_Stream = new Card_Stream;
-    pCard->vAppend(pCard_Stream);
+    pAnyCard->vAppend(pCard_Stream);
     
     Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
     Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
@@ -757,11 +757,11 @@ void Board::vResolveCard(Card* pCard)
     vReg_Stream(pCard_Stream);
   }
   
-  pCard_ELIST = (Card_ELIST*)pCard->pFindSubCard(CK_PROJELIST);
+  pCard_ELIST = (Card_ELIST*)pAnyCard->pFindSubCard(CK_PROJELIST);
   if (pCard_ELIST) {
         
     Card_Stream* pCard_Stream = new Card_Stream;
-    pCard->vAppend(pCard_Stream);
+    pAnyCard->vAppend(pCard_Stream);
     
     Card_SubSet* pCard_SubSet = pCard_ELIST->pDupSubCards();
     Card_StreamElist* pCard_StreamElist = new Card_StreamElist;
@@ -774,7 +774,7 @@ void Board::vResolveCard(Card* pCard)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pCard_Index = _pCard_Index(pCard->pFindSubCard(CK_INDEX));
+  pCard_Index = _pCard_Index(pAnyCard->pFindSubCard(CK_INDEX));
   if (pCard_Index) {
     Index* pIndex = pCard_Index->pIndex();
     vIndex(pIndex);
@@ -783,14 +783,14 @@ void Board::vResolveCard(Card* pCard)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   
-  pCard_Table = _pCard_Table(pCard->pFindSubCard(CK_TABLE));
+  pCard_Table = _pCard_Table(pAnyCard->pFindSubCard(CK_TABLE));
   if (pCard_Table) {
 
     StreamDef* pStreamDef = pCard_Table->pTable()->pStreamDef();
 
     
     Card_Stream* pCard_Stream = new Card_Stream;
-    pCard->vAppend(pCard_Stream);
+    pAnyCard->vAppend(pCard_Stream);
     vReg_Stream(pCard_Stream);
 
     Card_StreamElist* pCard_StreamElist = new Card_StreamElist(pStreamDef);
@@ -1306,7 +1306,7 @@ void Board::vResolve_Symbols(void)
   for (i8 i_Main = 0; i_Main < nMainCards; i_Main++) {
     Card* pMainCard = pGetSubCard(i_Main);
     
-    vResolveCard(pMainCard);
+    vResolveAll(pMainCard);
   }
   
 }
