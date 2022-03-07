@@ -10,17 +10,17 @@
 /*----------------------------------------------------------------------------*/
 
 //__pCastFunction(STORE,Card_RpnTerms,CN_CARD_TERMLIST)
-__pCastFunction_Card(STORE,Card_RpnTerms,CK_TERMSEQ)
+__pCastFunction_Card(STORE,Card_RpnTerms,CK_RPNTERMS)
 __aNewFunction(Card_RpnTerms,CN_CARD)
 __vDeleteFunction(Card_RpnTerms,CN_CARD)
 
-__bIsCard(STORE,Card_RpnTerms,CK_TERMSEQ)
+__bIsCard(STORE,Card_RpnTerms,CK_RPNTERMS)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RpnTerms::Card_RpnTerms(void)
-: Card_SUB(CK_TERMSEQ)
+: Card_SUB(CK_RPNTERMS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

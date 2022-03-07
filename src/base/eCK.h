@@ -59,6 +59,7 @@ enum eCK // card kind
 
   /* */ CK_RBOUND,
   /* */ CK_ROWS,
+  /* */ CK_RPNTERMS,
 
   /* */ CK_SBYELIST,
   /* */ CK_SCAN,
@@ -74,7 +75,6 @@ enum eCK // card kind
 
   /* */ CK_TABLE,
   /* */ CK_TERM,
-  /* */ CK_TERMSEQ,
   /* */ CK_TYPE,
 
   /* */ CK_UBOUND,
@@ -139,6 +139,7 @@ static Stz* aCK[]
 
   /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
   /* */ "CK_ROWS"_Stz,         // CK_ROWS
+  /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
 
   /* */ "CK_SBYELIST"_Stz,     // CK_SBYELIST
   /* */ "CK_SCAN"_Stz,         // CK_SCAN
@@ -154,7 +155,6 @@ static Stz* aCK[]
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
   /* */ "CK_TERM"_Stz,         // CK_TERM
-  /* */ "CK_TERMSEQ"_Stz,      // CK_TERMSEQ
   /* */ "CK_TYPE"_Stz,         // CK_TYPE
 
   /* */ "CK_UBOUND"_Stz,       // CK_UBOUND
@@ -219,6 +219,7 @@ static Stz* aCK_short[]
 
   /* */ "rbound"_Stz,          // CK_RBOUND
   /* */ "rows"_Stz,            // CK_ROWS
+  /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
 
   /* */ "sbyElist"_Stz,        // CK_SBYELIST
   /* */ "scan"_Stz,            // CK_SCAN
@@ -234,7 +235,6 @@ static Stz* aCK_short[]
 
   /* */ "{table}"_Stz,         // CK_TABLE
   /* */ "term"_Stz,            // CK_TERM
-  /* */ "termSeq"_Stz,         // CK_TERMSEQ
   /* */ "type"_Stz,            // CK_TYPE
 
   /* */ "ubound"_Stz,          // CK_UBOUND
@@ -299,6 +299,7 @@ static Stz* aCK_op[]
 
   /* */ "(none)"_Stz,          // CK_RBOUND
   /* */ "(none)"_Stz,          // CK_ROWS
+  /* */ "(none)"_Stz,          // CK_RPNTERMS
 
   /* */ "(none)"_Stz,          // CK_SBYELIST
   /* */ "scan       "_Stz,     // CK_SCAN
@@ -314,7 +315,6 @@ static Stz* aCK_op[]
 
   /* */ "(none)"_Stz,          // CK_TABLE
   /* */ "(none)"_Stz,          // CK_TERM
-  /* */ "(none)"_Stz,          // CK_TERMSEQ
   /* */ "(none)"_Stz,          // CK_TYPE
 
   /* */ "(none)"_Stz,          // CK_UBOUND

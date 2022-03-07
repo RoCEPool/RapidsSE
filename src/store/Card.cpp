@@ -162,14 +162,78 @@ bool Card::bIsMain(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find eCK by name                                                           */
+/* is eCK a sub card?                                                         */
 /*----------------------------------------------------------------------------*/
-eCK Card::eToECard(Stz* szName)
+bool Card::bIsSub(eCK eCard)
+{
+  _static_
+  
+  switch (eCard) {
+    case CK_AGGELIST:
+    case CK_AGGLEVEL:
+    case CK_AS:
+                      
+    case CK_DIRECTION:
+              
+    case CK_EBOUND:
+    case CK_EXPR:
+    case CK_EXPRBOOL:
+    case CK_EXPRCALC:
+              
+    case CK_GBYELIST:
+    case CK_GENERATE:
+                      
+    case CK_INDEX:
+    case CK_INDEXPRED:
+                        
+    case CK_LBOUND:
+                      
+    case CK_MODE:
+              
+    case CK_NAME:
+              
+    case CK_ON:
+    case CK_OPTION:
+    case CK_ORDERELIST:
+              
+    case CK_PREDAND:
+    case CK_PREDCMP:
+    case CK_PREDOR:
+    case CK_PROJELIST:
+                      
+    case CK_RBOUND:
+    case CK_ROWS:
+              
+    case CK_SBYELIST:
+    case CK_SENDKIND:
+    case CK_SENDS:
+    case CK_STAGETOPO:
+    case CK_STREAM:
+    case CK_STREAMELIST:
+    case CK_SUBSET:
+                    
+    case CK_TABLE:
+    case CK_TERM:
+    case CK_TYPE:
+              
+    case CK_UBOUND:
+    case CK_UNIQUE:
+      return true;
+      
+    default:
+      return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* find eCK by card name                                                      */
+/*----------------------------------------------------------------------------*/
+eCK Card::eToECard(Stz* szCardNm)
 {
   _static_
   
   s32 sName;
-  sName.vSprint("CK_%s"_Stz,szName);
+  sName.vSprint("CK_%s"_Stz,szCardNm);
   
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++)
     if (aCK[i_Card]->bSame(sName))
@@ -179,7 +243,7 @@ eCK Card::eToECard(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find eCK by name                                                           */
+/* find eGC by eCK                                                            */
 /*----------------------------------------------------------------------------*/
 eGC Card::eToECatg(eCK eCard)
 {
@@ -192,6 +256,8 @@ eGC Card::eToECatg(eCK eCard)
     case CK_AGGREG:     return GC_MAIN;
     case CK_AS:                          return GC_SUB;
                                    
+    case CK_BOARD:                                      return GC_OTHER;
+      
     case CK_CANDINDEX:  return GC_MAIN;
     case CK_COMBINE:    return GC_MAIN;
                                     
@@ -237,7 +303,7 @@ eGC Card::eToECatg(eCK eCard)
                             
     case CK_RBOUND:                      return GC_SUB;
     case CK_ROWS:                        return GC_SUB;
-              
+
     case CK_SBYELIST:                    return GC_SUB;
     case CK_SCAN:       return GC_MAIN;
     case CK_SEND:       return GC_MAIN;
@@ -252,15 +318,12 @@ eGC Card::eToECatg(eCK eCard)
                     
     case CK_TABLE:                       return GC_SUB;
     case CK_TERM:                        return GC_SUB;
+    case CK_RPNTERMS:                                     return GC_OTHER;
     case CK_TYPE:                        return GC_SUB;
               
     case CK_UBOUND:                      return GC_SUB;
     case CK_UNIQUE:                      return GC_SUB;
   
-    case CK_BOARD:
-      NEVER_REACH;
-      break;
-
     default:
       vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
              ,__func__
@@ -270,8 +333,19 @@ eGC Card::eToECatg(eCK eCard)
       RASSERT(0);
       break;
   }
+}
 
+/*----------------------------------------------------------------------------*/
+/* find eGC by card name                                                      */
+/*----------------------------------------------------------------------------*/
+eGC Card::eToECatg(Stz* szCardNm)
+{
+  _static_
+  
+  eCK eCard = Card::eToECard(szCardNm);
+  eGC eCatg = Card::eToECatg(eCard);
 
+  return eCatg;
 }
 
 

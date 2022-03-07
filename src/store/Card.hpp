@@ -67,9 +67,10 @@ namespace STORE
    ~Card(void) noexcept(false);
 
     static bool bIsMain(eCK eCard);
-    static eCK  eToECard(Stz* szName);
+    static bool bIsSub(eCK eCard);
+    static eCK  eToECard(Stz* szCardNm);
     static eGC  eToECatg(eCK eCard);
-    static eGC  eToECatg(Stz* szName);
+    static eGC  eToECatg(Stz* szCardNm);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
