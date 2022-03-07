@@ -26,11 +26,11 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | hash 0 "type INTEGER $1"
+    | hash 2 "type INTEGER $1"
     | stageC hashcast
 
   stage stageC on all partitions :
-    indexJoin 1 lineitem lineitem_idx2 "BOUND $I1 $L1 =="
+    indexJoin 2 lineitem lineitem_idx2 "BOUND $I1 $L1 =="
     | stageD
 
   stage stageD on origin :
@@ -56,11 +56,11 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | hash 0 "type INTEGER $1"
+    | hash 2 "type INTEGER $1"
     | stageC hashcast
 
   stage stageC on all partitions :
-    indexJoin 1 lineitem lineitem_idx2 "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 2 lineitem lineitem_idx2 "LEFTOUTER BOUND $I1 $L1 =="
     | stageD
 
   stage stageD on origin :
