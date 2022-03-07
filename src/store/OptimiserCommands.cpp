@@ -137,6 +137,68 @@ OptimiserFun __Opt_clear
 );
 
 /*----------------------------------------------------------------------------*/
+/* compare cards                                                              */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_cmp(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+{
+  vTrace("bOpt_cut\n"_Stz);
+  i8 nTkns = pTknVec->nItems();
+  
+  if (nTkns < 3) {
+    vTrace("Error -- usage is: cmp <card> <card>\n"_Stz);
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Board* pBoard = pOptimiser->pHeadBoard();
+
+  Token* pTkn_A = pTknVec->pGet(1);
+  Stz* szCard_A = pTkn_A->szChars();
+
+  Card* pCard_A = pBoard->pSearch(szCard_A);
+  if (! pCard_A) {
+    vTrace("Error -- no such card: %s\n"_Stz,szCard_A);
+    return false;
+  }
+
+  Token* pTkn_B = pTknVec->pGet(2);
+  Stz* szCard_B = pTkn_B->szChars();
+
+  Card* pCard_B = pBoard->pSearch(szCard_B);
+  if (! pCard_B) {
+    vTrace("Error -- no such card: %s\n"_Stz,szCard_B);
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (pCard_A->bEquivalent(pCard_B)) {
+    pCard_A->vMark1('E');
+    pCard_A->vMark2('Q');
+    pCard_B->vMark1('E');
+    pCard_B->vMark2('Q');
+  }
+  else {
+    pCard_A->vMark1('N');
+    pCard_A->vMark2('E');
+    pCard_B->vMark1('N');
+    pCard_B->vMark2('E');
+  }
+  return true;
+}
+
+OptimiserFun __Opt_cmp
+(
+  "cmp"_Stz,          // name of the prompt function
+  "cmp"_Stz,          // command first word
+  nullptr,            // command second word
+  bOpt_cmp,           // function to call
+  0,0,                // spare
+  "compare cards"_Stz
+);
+
+/*----------------------------------------------------------------------------*/
 /* cut card                                                                   */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_cut(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)

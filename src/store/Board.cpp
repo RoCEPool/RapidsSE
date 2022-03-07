@@ -778,6 +778,36 @@ void Board::vResetRegisters(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card* Board::pSearch(Stz* szCardNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card* pCard = nullptr;
+  if (szCardNm->bIsInteger()) {
+    i8 i_MainCard = szCardNm->iToI8();
+    pCard = pGetMainCard(i_MainCard);
+    
+    return pCard;
+  }
+
+  pCard = pFindMain(szCardNm);
+  if (pCard)
+    return pCard;
+  
+  Card*pLastCard = pReg_LastSet_main();
+  if (pLastCard) {
+    eCK eCard = Card::eToECard(szCardNm);
+    pCard = pLastCard->pFindSubCard(eCard);
+    
+    return pCard;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
