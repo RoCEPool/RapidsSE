@@ -179,6 +179,103 @@ eCK Card::eToECard(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find eCK by name                                                           */
+/*----------------------------------------------------------------------------*/
+eGC Card::eToECatg(eCK eCard)
+{
+  _static_
+  
+  switch (eCard) {
+
+    case CK_AGGELIST:                    return GC_SUB;
+    case CK_AGGLEVEL:                    return GC_SUB;
+    case CK_AGGREG:     return GC_MAIN;
+    case CK_AS:                          return GC_SUB;
+                                   
+    case CK_CANDINDEX:  return GC_MAIN;
+    case CK_COMBINE:    return GC_MAIN;
+                                    
+    case CK_DEBUG:      return GC_MAIN;
+    case CK_DIRECTION:                   return GC_SUB;
+              
+    case CK_EBOUND:                      return GC_SUB;
+    case CK_EXISTS:     return GC_MAIN;
+    case CK_EXPR:                        return GC_SUB;
+    case CK_EXPRBOOL:                    return GC_SUB;
+    case CK_EXPRCALC:                    return GC_SUB;
+              
+    case CK_FILTER:     return GC_MAIN;
+                            
+    case CK_GBYELIST:                    return GC_SUB;
+    case CK_GENERATE:                    return GC_SUB;
+              
+    case CK_HASH:       return GC_MAIN;
+    case CK_HAVING:     return GC_MAIN;
+                          
+    case CK_INDEX:                       return GC_SUB;
+    case CK_INDEXJOIN:  return GC_MAIN;
+    case CK_INDEXPRED:                   return GC_SUB;
+    case CK_INDEXSCAN:  return GC_MAIN;
+                        
+    case CK_LBOUND:                      return GC_SUB;
+    case CK_LIMIT:      return GC_MAIN;
+                                    
+    case CK_MODE:                        return GC_SUB;
+              
+    case CK_NAME:                        return GC_SUB;
+              
+    case CK_ON:                          return GC_SUB;
+    case CK_OPTION:                      return GC_SUB;
+    case CK_ORDAGG:     return GC_MAIN;
+    case CK_ORDERELIST:                  return GC_SUB;
+              
+    case CK_PREDAND:                     return GC_SUB;
+    case CK_PREDCMP:                     return GC_SUB;
+    case CK_PREDOR:                      return GC_SUB;
+    case CK_PROJECT:    return GC_MAIN;
+    case CK_PROJELIST:                   return GC_SUB;
+                            
+    case CK_RBOUND:                      return GC_SUB;
+    case CK_ROWS:                        return GC_SUB;
+              
+    case CK_SBYELIST:                    return GC_SUB;
+    case CK_SCAN:       return GC_MAIN;
+    case CK_SEND:       return GC_MAIN;
+    case CK_SENDKIND:                    return GC_SUB;
+    case CK_SENDS:                       return GC_SUB;
+    case CK_SORT:       return GC_MAIN;
+    case CK_STAGE:      return GC_MAIN;
+    case CK_STAGETOPO:                   return GC_SUB;
+    case CK_STREAM:                      return GC_SUB;
+    case CK_STREAMELIST:                 return GC_SUB;
+    case CK_SUBSET:                      return GC_SUB;
+                    
+    case CK_TABLE:                       return GC_SUB;
+    case CK_TERM:                        return GC_SUB;
+    case CK_TYPE:                        return GC_SUB;
+              
+    case CK_UBOUND:                      return GC_SUB;
+    case CK_UNIQUE:                      return GC_SUB;
+  
+    case CK_BOARD:
+      NEVER_REACH;
+      break;
+
+    default:
+      vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
+             ,__func__
+             ,(i8)eCard
+             ,aCK[eCard]
+             );
+      RASSERT(0);
+      break;
+  }
+
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -2045,12 +2142,14 @@ void Card::vPrintHeader(Ribbon* pRibbon)
 
   //pRibbon->vSput(FR_HEAD,pRibbon->iLogicalColumn());
   
-  //pRibbon->vSprint("--%02lld--------------=="_Stz
-  pRibbon->vSprint("--%02lld--%02lld----------=="_Stz
-                   ,pRibbon->iLogicalColumn()
+  //pRibbon->vSprint("--%02lld--%02lld----------=="_Stz
+  //                 ,pRibbon->iLogicalColumn()
+  //                 ,m_iCardNo
+  //                 );
+  
+  pRibbon->vSprint("--%02lld--------------=="_Stz
                    ,m_iCardNo
                    );
-
 }
 
 /*----------------------------------------------------------------------------*/
