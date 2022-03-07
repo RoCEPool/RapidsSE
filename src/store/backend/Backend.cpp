@@ -1261,7 +1261,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
           case 2:
             // leading and trailing
             if (szPattern[0] == '%' && szPattern[iLength-1] == '%')
-              sPipeline->vCatSprint(" matchMiddle1 "_Stz);
+              sPipeline->vCatSprint(" %lld matchMiddle "_Stz, iLength);
             else
               sPipeline->vCatSprint(" like2 "_Stz);
             break;
@@ -1269,7 +1269,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
           case 3:
             //leading and trailing and one in the middle
             if (szPattern[0] == '%' && szPattern[iLength-1] == '%')
-              sPipeline->vCatSprint(" matchMiddle2 "_Stz);
+              sPipeline->vCatSprint(" %lld matchMiddle1 "_Stz, iLength);
             else
               sPipeline->vCatSprint(" like2 "_Stz);
             break;
@@ -1277,7 +1277,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
           case 4:
             //leading and trailing and two in the middle
             if (szPattern[0] == '%' && szPattern[iLength-1] == '%')
-              sPipeline->vCatSprint(" matchMiddle3 "_Stz);
+              sPipeline->vCatSprint(" %lld matchMiddle2 "_Stz, iLength);
             else
               sPipeline->vCatSprint(" like2 "_Stz);
             break;

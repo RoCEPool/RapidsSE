@@ -394,6 +394,41 @@
     }                                                                       \
   }
 
+
+#define _MATCH_STRSTR(str,substr,len,bMatch)                                \
+  {                                                                         \
+    char* a = str;                                                          \
+    char* b = substr;                                                       \
+    i8 l = len;                                                             \
+                                                                            \
+    while(*a != '\0') {                                                     \
+      if (*a != *b) {                                                       \
+        a++;                                                                \
+        continue;                                                           \
+      }                                                                     \
+                                                                            \
+      bMatch = 1;                                                           \
+                                                                            \
+      char* s = a;                                                          \
+      while (l--) {                                                         \
+        if (*s++ != *b++) {                                                 \
+          bMatch = 0;                                                       \
+          break;                                                            \
+        }                                                                   \
+      }                                                                     \
+      if (bMatch) {                                                         \
+        break;                                                              \
+      }                                                                     \
+      b = substr;                                                           \
+      l = len;                                                              \
+      a++;                                                                  \
+    }                                                                       \
+                                                                            \
+    if ( bMatch) {                                                          \
+      str = a+len;                                                          \
+    }                                                                       \
+  }
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // _MATCH_LEADING
 // matches given string with leading characters (before %) of the pattern
@@ -430,6 +465,46 @@
     }                                                                       \
   }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// _MATCH_MIDDLE
+// matches given string with middle characters (between 2 %) of the pattern
+// e.g pattern is : %ABC% ; matches middle 3 characters with ABC
+// parameters:
+// szArg2 : string
+// szArg1 : regular expression
+// iArg1  : length of the regular expression
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _MATCH_MIDDLE(eErrorCode)                                           \
+  {                                                                         \
+     iArg1  = (i8)*(--paW);                                                 \
+     szArg1 = (char*)*(--paW);                                              \
+    szArg2 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        szArg1  == (char*)C_DATUM_NULL ||                                   \
+        szArg2  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      i8 bMatch = 0;                                                        \
+      i8 iLen = iArg1 - 2;                                                  \
+      char* sub = szArg1 + 1;                                               \
+      char* str = szArg2;                                                   \
+      _MATCH_STRSTR(str, sub, iLen, bMatch)                                 \
+      *(paW++) = bMatch;                                                    \
+    }                                                                       \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// _MATCH_MIDDLE1
+// matches given string with middle characters (between 2 %) of the pattern
+// e.g pattern is : %ABC%DEF% ; matches middle 3 characters with ABC
+// parameters:
+// szArg2 : string
+// szArg1 : regular expression
+// iArg1  : length of the regular expression
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 #define _MATCH_MIDDLE1(eErrorCode)                                          \
   {                                                                         \
     szArg1 = (char*)*(--paW);                                               \
@@ -445,20 +520,6 @@
   }
 
 #define _MATCH_MIDDLE2(eErrorCode)                                          \
-  {                                                                         \
-    szArg1 = (char*)*(--paW);                                               \
-    szArg2 = (char*)*(--paW);                                               \
-    if (eErrorCode != EC_NONE ||                                            \
-        szArg1  == (char*)C_DATUM_NULL ||                                   \
-        szArg2  == (char*)C_DATUM_NULL) {                                   \
-      *(paW++) = C_DATUM_NULL;                                              \
-    }                                                                       \
-    else {                                                                  \
-      NEVER_REACH;                                                          \
-    }                                                                       \
-  }
-
-#define _MATCH_MIDDLE3(eErrorCode)                                          \
   {                                                                         \
     szArg1 = (char*)*(--paW);                                               \
     szArg2 = (char*)*(--paW);                                               \

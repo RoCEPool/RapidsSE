@@ -21,9 +21,9 @@ enum ePE // predicate expression
   /* 12 */ PE_MAX, // max
   /* 13 */ PE_MIN, // min
   /*    */ PE_MLE, // match leading ABD%
-  /*    */ PE_MM1, // match middle %ABC%
-  /*    */ PE_MM2, // match middle with %ABC%DEF%
-  /*    */ PE_MM3, // match middle %ABC%DEF%GHI%
+  /*    */ PE_MMD , // match middle %ABC%
+  /*    */ PE_MM1, // match with one & in the middle %ABC%DEF%
+  /*    */ PE_MM2, // match with 2 % in the middle %ABC%DEF%GHI%
   /*    */ PE_MTR, // match trailing %ABC
   /* 14 */ PE_INX, // in expression list
   /* 15 */ PE_SS2, // substring with 2 params
@@ -56,9 +56,9 @@ static Stz* aPE[]
     /*  12 */ "MAX"_Stz,
     /*  13 */ "MIN"_Stz,
     /*     */ "MLE"_Stz,
+    /*     */ "MMD"_Stz,
     /*     */ "MM1"_Stz,
     /*     */ "MM2"_Stz,
-    /*     */ "MM3"_Stz,
     /*     */ "MTR"_Stz,
     /*  14 */ "INX"_Stz,
     /*  15 */ "SS2"_Stz,

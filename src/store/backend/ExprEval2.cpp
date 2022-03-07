@@ -507,6 +507,12 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
+    if (pTkn->bSame("MATCHMIDDLE"_Stz)) {
+      ePreExp = PE_MMD;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bSame("MATCHMIDDLE1"_Stz)) {
       ePreExp = PE_MM1;
       pTkn = pTknVec->pNextToken();
@@ -515,12 +521,6 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
     if (pTkn->bSame("MATCHMIDDLE2"_Stz)) {
       ePreExp = PE_MM2;
-      pTkn = pTknVec->pNextToken();
-      continue;
-    }
-
-    if (pTkn->bSame("MATCHMIDDLE3"_Stz)) {
-      ePreExp = PE_MM3;
       pTkn = pTknVec->pNextToken();
       continue;
     }

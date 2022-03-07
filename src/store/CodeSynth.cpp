@@ -2832,17 +2832,17 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       continue;
     }
 
+    if (pTkn->bSame("matchMiddle"_Stz)) {
+      vPushFunc(pExprStack, pExprType, ePreExp);
+      continue;
+    }
+
     if (pTkn->bSame("matchMiddle1"_Stz)) {
       vPushFunc(pExprStack, pExprType, ePreExp);
       continue;
     }
 
     if (pTkn->bSame("matchMiddle2"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
-      continue;
-    }
-
-    if (pTkn->bSame("matchMiddle3"_Stz)) {
       vPushFunc(pExprStack, pExprType, ePreExp);
       continue;
     }
@@ -4091,9 +4091,19 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // MATCH  MIDDLE 1 (%ABC%)
-    case PE_MM1:
+    // MATCH  MIDDLE (%ABC%)
+    case PE_MMD:
       // match leading
+      eExpr1 = (eDM)pTypeStack->iPop();
+      eExpr2 = (eDM)pTypeStack->iPop();
+      sOperation.vConcat("_MATCH_MIDDLE(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStz(sOperation);
+      pTypeStack->vPush(DM_BOL);
+      break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // MATCH MIDDLE 1 (%ABC%DEF%)
+    case PE_MM1:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
       sOperation.vConcat("_MATCH_MIDDLE1(aCombinedT->m_iErrorCode)"_Stz);
@@ -4102,21 +4112,11 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // MATCH MIDDLE 2 (%ABC%DEF%)
+    // MATCH MIDDLE 2 (%ABC%DEF%GHI%)
     case PE_MM2:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
       sOperation.vConcat("_MATCH_MIDDLE2(aCombinedT->m_iErrorCode)"_Stz);
-      pExprStack->vPushStz(sOperation);
-      pTypeStack->vPush(DM_BOL);
-      break;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // MATCH MIDDLE 3 (%ABC%DEF%GHI%)
-    case PE_MM3:
-      eExpr1 = (eDM)pTypeStack->iPop();
-      eExpr2 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_MATCH_MIDDLE3(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
       break;

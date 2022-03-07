@@ -23,11 +23,8 @@ success
 SELECT n_name FROM nation where n_name LIKE '' ;
 rows: 0
 
-// TODO : enable once optimized special cases of LIKE in place
-/*
 SELECT n_name FROM nation where n_name LIKE '%' ;
 rows: 25
-*/
 
 SELECT n_name FROM nation where n_name LIKE '_%_' ;
 rows: 25
@@ -35,12 +32,9 @@ rows: 25
 SELECT n_name FROM nation where n_name LIKE 'ALG' ;
 rows: 0
 
-// TODO : enable once optimized special cases of LIKE in place
-/*
 SELECT n_name FROM nation where n_name LIKE 'ALG%' ;
 rows:
   ('ALGERIA')
-*/
 
 SELECT n_name FROM nation where n_name LIKE '_LG%' ;
 rows:
@@ -49,8 +43,6 @@ rows:
 SELECT n_name FROM nation where n_name LIKE '_ALG%' ;
 rows: 0
 
-// TODO : enable once optimized special cases of LIKE in place
-/*
 SELECT n_name FROM nation where n_name LIKE '%IA' ;
 rows:
   ('ALGERIA')
@@ -60,10 +52,7 @@ rows:
   ('ROMANIA')
   ('SAUDI ARABIA')
   ('RUSSIA')
-*/
 
-// TODO : enable once optimized special cases of LIKE in place
-/*
 SELECT n_name FROM nation where n_name LIKE '%_IA' ;
 rows:
   ('ALGERIA')
@@ -73,16 +62,17 @@ rows:
   ('ROMANIA')
   ('SAUDI ARABIA')
   ('RUSSIA')
-*/
 
-// TODO : enable once optimized special cases of LIKE in place
-/*
 SELECT n_name FROM nation where n_name LIKE '%ER%' ;
 rows:
  ('ALGERIA')
  ('GERMANY')
  ('PERU')
-*/
+
+SELECT n_name FROM nation where n_name LIKE '%ITED%' ;
+rows:
+ ('UNITED KINGDOM')
+ ('UNITED STATES')
 
 SELECT n_name FROM nation where n_name LIKE 'ALGE_IA' ;
 rows:
