@@ -65,21 +65,28 @@ namespace STORE
 
     void vClear(void);
   
+    void vDeleteAllCards(void);
+  
+    Card* pFindMain(Stz* szCardNm);
+    bool bFlag(i8 i_Flag);
+    void vFlag(i8 i_Flag, bool bFlag);
+  
     Card* pGetMainCard(i8 i_MainCard);
     Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
   
+    void vIndex    (Index*     pIndex);
+    bool bInRegister    (Card* pCard);
+
     i8   nMainCards(void);
   
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
+    void vPredCmp_ebound(Card_PredCmp* pPredCmp);
+    void vPredCmp_lbound(Card_PredCmp* pPredCmp);
+    void vPredCmp_ubound(Card_PredCmp* pPredCmp);
     void vPrintBoard(Stz* szCue);
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
-  
-    void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
-  
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-    // registers
   
     void vReg_Aggreg   (Card_Aggreg*    pAggreg);
     void vReg_CandIndex(Card_CandIndex* pCandIndex);
@@ -111,21 +118,14 @@ namespace STORE
     Card* pReg_LastSet_other(void);
     Card* pReg_LastSet_sub  (void);
 
-    void vPredCmp_ebound(Card_PredCmp* pPredCmp);
-    void vPredCmp_lbound(Card_PredCmp* pPredCmp);
-    void vPredCmp_ubound(Card_PredCmp* pPredCmp);
-
-    void vIndex    (Index*     pIndex);
-    void vTable    (Table*     pTable);
-
-    bool bFlag(i8 i_Flag);
-    void vFlag(i8 i_Flag, bool bFlag);
-    Card* pFindMain(Stz* szCardNm);
-
-    void vDeleteAllCards(void);
-    bool bInRegister    (Card* pCard);
     void vResetRegisters(void);
-    void vSetRegister   (Card* pCard);
+  
+    void vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard);
+    void vSetRegister(Card* pCard);
+
+    void vTable(Table*     pTable);
+
+    void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

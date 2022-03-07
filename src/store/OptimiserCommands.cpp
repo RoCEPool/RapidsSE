@@ -434,38 +434,25 @@ OptimiserFun __Opt_reprint
 bool STORE::bOpt_set(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_set\n"_Stz);
-
-  Card* pMainCard = nullptr;
-  Card* pSubCard = nullptr;
-  Card* pLastCard = nullptr;
-  Board* pBoard = pOptimiser->pHeadBoard();
-
   i8 nTkns = pTknVec->nItems();
   
   if (nTkns < 2) {
-    vTrace("Error: bOpt_set <card>\n"_Stz);
+    vTrace("Error -- usage is: set <card>\n"_Stz);
     return false;
   }
   
   Token* pTkn = pTknVec->pGet(1);
+  Stz* szCard = pTkn->szChars();
 
-  if (pTkn->bIsInteger()) {
-    i8 i_MainCard = pTkn->iToI8();
-    pMainCard = pBoard->pGetMainCard(i_MainCard);
-  }
-  else {
-    Stz* szCardNm = pTkn->szChars();
-    pMainCard = pBoard->pFindMain(szCardNm);
-    
-    if (! pMainCard) {
-      pLastCard = pBoard->pReg_LastSet_main();
-      if (pLastCard) {
-        eCK eCard = Card::eToECard(szCardNm);
-        pSubCard = pLastCard->pFindSubCard(eCard);
-      }
-    }
-      
-  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Card* pMainCard = nullptr;
+  Card* pSubCard = nullptr;
+  Board* pBoard = pOptimiser->pHeadBoard();
+  
+  pBoard->vSearch(szCard,pMainCard,pSubCard);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pMainCard) {
     pBoard->vSetRegister(pMainCard);

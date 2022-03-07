@@ -87,18 +87,6 @@ Board::~Board(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/* get number of cards                                                        */
-/*----------------------------------------------------------------------------*/
-i8 Board::nMainCards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  i8 nCards = this->nItems();
-  
-  return nCards;
-}
-
-/*----------------------------------------------------------------------------*/
 /* clear the board                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vClear(void)
@@ -107,6 +95,17 @@ void Board::vClear(void)
   
   vResetRegisters();
   vDeleteAllCards();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vDeleteAllCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  while (Card* pCard = pPop())
+    delete pCard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,6 +134,102 @@ Card* Board::pGetMainCard(i8 i_MainCard, eCK& reCard)
     reCard = CK_NONE;
 
   return pMainCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* Board::pFindMain(Stz* szCardNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  eCK eCard = Card::eToECard(szCardNm);
+  
+  i8 nMainCards = this->nMainCards();
+  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
+    Card* pMainCard = pGetMainCard(i_MainCard);
+    
+    if (pMainCard->eCard() == eCard)
+      return pMainCard;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Board::bFlag(i8 i_Flag)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  return m_baFlag[i_Flag];
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vFlag(i8 i_Flag, bool bFlag)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  m_baFlag[i_Flag] = bFlag;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  m_pIndex = pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Board::bInRegister(Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  if (pCard == m_pReg_Aggreg)    return true;
+  if (pCard == m_pReg_CandIndex) return true;
+  if (pCard == m_pReg_Combine)   return true;
+  if (pCard == m_pReg_Filter)    return true;
+  if (pCard == m_pReg_Hash)      return true;
+  if (pCard == m_pReg_IndexJoin) return true;
+  if (pCard == m_pReg_IndexScan) return true;
+  if (pCard == m_pReg_Limit)     return true;
+  if (pCard == m_pReg_OrdAgg)    return true;
+  if (pCard == m_pReg_Project)   return true;
+  if (pCard == m_pReg_Scan)      return true;
+  if (pCard == m_pReg_Send)      return true;
+  if (pCard == m_pReg_Sort)      return true;
+  if (pCard == m_pReg_Stage)     return true;
+  if (pCard == m_pReg_Stream)    return true;
+
+  if (pCard == m_pReg_GbyElist)  return true;
+  if (pCard == m_pReg_SbyElist)  return true;
+
+  if (pCard == m_pReg_LastSet)        return true;
+  if (pCard == m_pReg_LastSet_main)   return true;
+  if (pCard == m_pReg_LastSet_other)  return true;
+  if (pCard == m_pReg_LastSet_sub)    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of cards                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Board::nMainCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  i8 nCards = this->nItems();
+  
+  return nCards;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,6 +282,54 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   pRibbon->vPinRibbon(1,0,pSubRibbon);
   
   delete pSubRibbon;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPredCmp_ebound(Card_PredCmp* pPredCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  if (m_pPredCmp_ebound)
+    m_pPredCmp_ebound->vMark2(' ');
+  
+  m_pPredCmp_ebound = pPredCmp;
+  
+  if (m_pPredCmp_ebound)
+    m_pPredCmp_ebound->vMark2('E');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPredCmp_lbound(Card_PredCmp* pPredCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  if (m_pPredCmp_lbound)
+    m_pPredCmp_lbound->vMark2(' ');
+  
+  m_pPredCmp_lbound = pPredCmp;
+  
+  if (m_pPredCmp_lbound)
+    m_pPredCmp_lbound->vMark2('L');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPredCmp_ubound(Card_PredCmp* pPredCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  if (m_pPredCmp_ubound)
+    m_pPredCmp_ubound->vMark2(' ');
+  
+  m_pPredCmp_ubound = pPredCmp;
+  
+  if (m_pPredCmp_ubound)
+    m_pPredCmp_ubound->vMark2('U');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -321,28 +464,6 @@ void Board::vQueryNm(Stz* szQueryNm)
   
   m_sQueryNm = szQueryNm;
 }
-
-/*----------------------------------------------------------------------------*/
-/* call closure for each board                                                */
-/*----------------------------------------------------------------------------*/
-void Board::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  ListExoIter2_t<Card>* pBoard_I = pNewIter();
-
-  while (pBoard_I->bHasNext()) {
-    Card* pCard = pBoard_I->pNext();
-    
-    pCard->vWalkAllCards(f_vClosure);
-  }
-  delete pBoard_I;
-}
-
-
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -622,159 +743,6 @@ Card* Board::pReg_LastSet_sub(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPredCmp_ebound(Card_PredCmp* pPredCmp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  if (m_pPredCmp_ebound)
-    m_pPredCmp_ebound->vMark2(' ');
-  
-  m_pPredCmp_ebound = pPredCmp;
-  
-  if (m_pPredCmp_ebound)
-    m_pPredCmp_ebound->vMark2('E');
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vPredCmp_lbound(Card_PredCmp* pPredCmp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  if (m_pPredCmp_lbound)
-    m_pPredCmp_lbound->vMark2(' ');
-  
-  m_pPredCmp_lbound = pPredCmp;
-  
-  if (m_pPredCmp_lbound)
-    m_pPredCmp_lbound->vMark2('L');
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vPredCmp_ubound(Card_PredCmp* pPredCmp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  if (m_pPredCmp_ubound)
-    m_pPredCmp_ubound->vMark2(' ');
-  
-  m_pPredCmp_ubound = pPredCmp;
-  
-  if (m_pPredCmp_ubound)
-    m_pPredCmp_ubound->vMark2('U');
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_pIndex = pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_pTable = pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Board::bFlag(i8 i_Flag)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  return m_baFlag[i_Flag];
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vFlag(i8 i_Flag, bool bFlag)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_baFlag[i_Flag] = bFlag;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card* Board::pFindMain(Stz* szCardNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  eCK eCard = Card::eToECard(szCardNm);
-  
-  i8 nMainCards = this->nMainCards();
-  for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
-    Card* pMainCard = pGetMainCard(i_MainCard);
-    
-    if (pMainCard->eCard() == eCard)
-      return pMainCard;
-  }
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vDeleteAllCards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  while (Card* pCard = pPop())
-    delete pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Board::bInRegister(Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  if (pCard == m_pReg_Aggreg)    return true;
-  if (pCard == m_pReg_CandIndex) return true;
-  if (pCard == m_pReg_Combine)   return true;
-  if (pCard == m_pReg_Filter)    return true;
-  if (pCard == m_pReg_Hash)      return true;
-  if (pCard == m_pReg_IndexJoin) return true;
-  if (pCard == m_pReg_IndexScan) return true;
-  if (pCard == m_pReg_Limit)     return true;
-  if (pCard == m_pReg_OrdAgg)    return true;
-  if (pCard == m_pReg_Project)   return true;
-  if (pCard == m_pReg_Scan)      return true;
-  if (pCard == m_pReg_Send)      return true;
-  if (pCard == m_pReg_Sort)      return true;
-  if (pCard == m_pReg_Stage)     return true;
-  if (pCard == m_pReg_Stream)    return true;
-
-  if (pCard == m_pReg_GbyElist)  return true;
-  if (pCard == m_pReg_SbyElist)  return true;
-
-  if (pCard == m_pReg_LastSet)        return true;
-  if (pCard == m_pReg_LastSet_main)   return true;
-  if (pCard == m_pReg_LastSet_other)  return true;
-  if (pCard == m_pReg_LastSet_sub)    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vResetRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -805,6 +773,31 @@ void Board::vResetRegisters(void)
   
   vIndex    (nullptr);
   vTable    (nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  if (szCardNm->bIsInteger()) {
+    i8 i_MainCard = szCardNm->iToI8();
+    rpMainCard = pGetMainCard(i_MainCard);
+    
+    return;
+  }
+
+  rpMainCard = pFindMain(szCardNm);
+  
+  if (! rpMainCard) {
+    Card*pLastCard = pReg_LastSet_main();
+    if (pLastCard) {
+      eCK eCard = Card::eToECard(szCardNm);
+      rpSubCard = pLastCard->pFindSubCard(eCard);
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -842,6 +835,33 @@ void Board::vSetRegister(Card* pCard)
       break;
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* call closure for each board                                                */
+/*----------------------------------------------------------------------------*/
+void Board::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  ListExoIter2_t<Card>* pBoard_I = pNewIter();
+
+  while (pBoard_I->bHasNext()) {
+    Card* pCard = pBoard_I->pNext();
+    
+    pCard->vWalkAllCards(f_vClosure);
+  }
+  delete pBoard_I;
 }
 
 

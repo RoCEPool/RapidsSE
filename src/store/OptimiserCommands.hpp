@@ -14,6 +14,8 @@ namespace STORE
 
   bool bOpt_clear   (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
+  bool bOpt_cut     (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
+
   bool bOpt_depth   (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
   bool bOpt_form    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
