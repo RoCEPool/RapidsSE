@@ -64,7 +64,7 @@ namespace STORE
    ~Board(void) noexcept(false);
 
     void vClear(void);
-  
+
     void vDeleteAllCards(void);
   
     Card* pFindMain(Stz* szCardNm);

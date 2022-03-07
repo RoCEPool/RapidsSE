@@ -137,6 +137,60 @@ OptimiserFun __Opt_clear
 );
 
 /*----------------------------------------------------------------------------*/
+/* cut card                                                                   */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_cut(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+{
+  vTrace("bOpt_cut\n"_Stz);
+  i8 nTkns = pTknVec->nItems();
+  
+  if (nTkns < 2) {
+    vTrace("Error -- usage is: cut <card>\n"_Stz);
+    return false;
+  }
+  
+  Token* pTkn = pTknVec->pGet(1);
+  Stz* szCard = pTkn->szChars();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Card* pMainCard = nullptr;
+  Card* pSubCard = nullptr;
+  Board* pBoard = pOptimiser->pHeadBoard();
+  
+  pBoard->vSearch(szCard,pMainCard,pSubCard);
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (pMainCard) {
+    pBoard->vCutSubCard(pMainCard);
+    delete pMainCard; //TEMP
+  }
+  else
+  if (pSubCard) {
+    Card* pParentCard = pBoard->pFindParent(pSubCard);
+    pParentCard->vCutSubCard(pSubCard);
+    
+    delete pSubCard; //TEMP
+  }
+
+  pBoard->vRenumber_Cards();
+  
+  return true;
+}
+
+OptimiserFun __Opt_cut
+(
+  "cut"_Stz,          // name of the prompt function
+  "cut"_Stz,          // command first word
+  nullptr,            // command second word
+  bOpt_cut,           // function to call
+  0,0,                // spare
+  "cut card"_Stz
+);
+
+/*----------------------------------------------------------------------------*/
 /* depth                                                                      */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_depth(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)

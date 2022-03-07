@@ -87,7 +87,8 @@ namespace STORE
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
     void vCutProperty(Stz* szName);
-  
+    void vCutSubCard(Card* pSubCard);
+
     void vDump(i8 iDepth=0);
     Card* pDupCardAndSubCards(void);
     Card_SubSet* pDupSubCards(void);
@@ -96,6 +97,7 @@ namespace STORE
                       eCK eCard=CK_NONE);
     bool bEquivalent(Card* pCard_arg);
 
+    Card* pFindParent(Card* pSubCard_arg);
     Card* pFindSubCard(eCK eCard);
 
     i8      iGetProperty(i8 i_Property);

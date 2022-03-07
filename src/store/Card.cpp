@@ -512,6 +512,16 @@ void Card::vCutProperty(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vCutSubCard(Card* pSubCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  this->vRemove(pSubCard);
+}
+
+/*----------------------------------------------------------------------------*/
 /* dum card and its sub cards                                                 */
 /*----------------------------------------------------------------------------*/
 void Card::vDump(i8 iDepth)
@@ -650,6 +660,26 @@ bool Card::bEquivalent(Card* pCard_arg)
   }
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find parent of given arg                                                   */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindParent(Card* pSubCard_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  i8 nSubCards = this->nSubCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card* pSubCard = pGetSubCard(i_Sub);
+    
+    if (pSubCard_arg == pSubCard)
+      return this;
+    
+    pSubCard->pFindParent(pSubCard_arg);
+  }
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
