@@ -1207,7 +1207,7 @@ bool Board::bPick_CandidateIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 iBestRank = -1;
+  i8 iBestRank = C_UNKNOWN;
   Card_CandIndex* pCard_CandIndex = nullptr;
   
   i8 nCards = nItems();
@@ -1285,10 +1285,11 @@ void Board::vRenumber_Cards(void)
   
   ListExoIter2_t<Card>* pBoard_I = pNewIter();
 
+  i8 iCardNo = 0;
   while (pBoard_I->bHasNext()) {
     Card* pCard = pBoard_I->pNext();
     
-    pCard->vCardNo(-1);
+    pCard->vCardNo(iCardNo++);
     pCard->vRenumberSubCards();
   }
   

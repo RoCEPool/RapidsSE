@@ -100,7 +100,7 @@ Card::Card(eCK eCard, eGC eCatg)
         
   m_eCard    = eCard;
   m_eCatg    = eCatg;
-  m_iCardNo  = -1;
+  m_iCardNo  = C_UNKNOWN;
   
   m_cMark1   = ' ';
   m_cMark2   = ' ';
@@ -2066,7 +2066,6 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
 
   if (m_bPrintNm) {
     
-    //if (-1 == m_iCardNo) {
     if (bIs_MAIN()) {
       sName.vSprint("%s%s%s x%lld"_Stz
                     ,pBoard->bInRegister(this) ? "R "_Stz : ""_Stz
