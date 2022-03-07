@@ -23,14 +23,22 @@ class TestResult:
         self.test_skipped: bool = True
         self.metrics: [(string, decimal)] = []
         self.remote_dir = remote_dir   # where the raw metrics are saved
+        self.stdout: string = None
+        self.stderr: string = None
 
     def set_test_started(self):
         self.start_time = datetime.datetime.now()
 
-    def set_test_ended(self, test_passed: bool, test_skipped: bool):
+    def set_test_ended(self, test_passed: bool, test_skipped: bool, stdout: string = None, stderr: string = None):
         self.end_time = datetime.datetime.now()
         self.test_passed = test_passed
         self.test_skipped = test_skipped
+        self.stdout = stdout
+        self.stderr = stderr
 
-    def add_metric(self, name: string, value: decimal):
-        self.metrics.append((name, value))
+    def add_metric(self, name: string, value: decimal, ts: datetime.datetime = None):
+        
+        if ts is None:
+            ts = datetime.datetime.now()
+
+        self.metrics.append((name, value, ts))

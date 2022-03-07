@@ -6,6 +6,7 @@ import os.path
 import pathlib
 import subprocess
 
+import clusterops
 from septest.results import TestResult
 from septest import errors
 from septest.configs.clusterconfig import ClusterConfig
@@ -45,9 +46,6 @@ class TestRunner:
         LOG.info(f"Running test:  {self.test_name} (ID: {self.test_id})")
 
         self.result.set_test_started()
-        test_passed = True
-        test_skipped = False
-
         self.__copy_test_file()
 
         # Run the test
@@ -57,12 +55,11 @@ class TestRunner:
         else:
             raise errors.NotImplementedYet("Only JMeter test files (*.[jmx | jtl | jmeter]) are currently supported")
 
-        self.result.set_test_ended(test_passed, test_skipped)
         self.__collect_metrics()
         self.__cleanup_test_file()
 
         LOG.info(f"Finished test: {self.test_name} (ID: {self.test_id}). "
-                 f"Result = {'SUCCESS' if test_passed else 'FAILURE'}")
+                 f"Result = {'SUCCESS' if self.result.test_passed else 'FAILURE'}")
 
     @staticmethod
     def get_test_name_from_path(test_path: string) -> string:
@@ -134,15 +131,51 @@ class TestRunner:
         LOG.debug(f"Successfully created the remote directory: {self.ip_addr}:{str(self.remote_dir)}")
 
     def __run_jmeter_test(self):
-        # TODO: Implement this
-        # TODO: Need to run from the bin subdirectory of the install dir.
-        #       Also need to set LD_LIBRARY_PATH=.
-        # TODO: Example:
-        #       LD_LIBRARY_PATH=. jmeter -n -p ../jmeter.properties -t ../tests/createAndDropTables.jmx -l ../tests/createAndDropTables.log
-        pass
+        """
+        Executes the JMeter test file and sets the result and end time of the test.
+        """
+        # Where did we copy the jmeter properties file to?
+        jmeter_properties_path = clusterops.get_remote_jmeter_property_file_path(self.cluster_config)
+        cluster_bin_dir = f"{self.cluster_config.get_dir()}/bin"
+        log_file_path = self.__remote_log_file_path()
+
+        # We need to run jmeter from the <install>/bin directory so that the JDBC driver
+        # can invoke the SE prompt and the SE prompt can find libRapidsSE.so.
+        # We also need to set the LD_LIBRARY_PATH too.
+        jmeter_command = f"cd {cluster_bin_dir} && " \
+                         "LD_LIBRARY_PATH=. jmeter -n " \
+                         f"-p {jmeter_properties_path} " \
+                         f"-t {self.remote_test_file} " \
+                         f"-l {log_file_path}"
+
+        LOG.debug(f"About to remove the JMeter command: {jmeter_command}")
+
+        try:
+            ssh.run_ssh(self.ip_addr, jmeter_command)
+            LOG.info(f"Successfully ran the JMeter file at {self.ip_addr}:{self.remote_test_file}")
+
+            # Record the test completion result
+            self.result.set_test_ended(test_passed=True, test_skipped=False)
+
+        except subprocess.CalledProcessError as e:
+            msg = f"Error while trying to execute JMeter file at {self.ip_addr}:{self.remote_test_file}" \
+                  f"\n\nStdout Output:\n{e.stdout}" \
+                  f"\n\nStderr Output:\n{e.stderr}\n"
+            self.result.set_test_ended(test_passed=False, test_skipped=False, stdout=e.stdout, stderr=e.stderr)
+            LOG.error(msg)
+
+    def __remote_log_file_path(self):
+        """
+        Returns the path of the log file that JMeter will produce on the first node.
+        """
+        remote_path = f"{self.remote_dir}/{self.test_name}.log"
+        return remote_path
 
     def __collect_metrics(self):
         # TODO: Implement this
+        # Copy any metrics files from the remote node
+        # Parse the metrics
+        # Add them to the results.
         pass
 
     def __cleanup_test_file(self):
