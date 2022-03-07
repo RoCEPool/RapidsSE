@@ -35,6 +35,9 @@ namespace STORE
     Card_Stage*      m_pReg_Stage;
     Card_Stream*     m_pReg_Stream;
 
+    Card_GbyElist*   m_pReg_GbyElist;
+    Card_SbyElist*   m_pReg_SbyElist;
+
     Card*            m_pReg_LastSet;
     Card*            m_pReg_LastSet_main;
     Card*            m_pReg_LastSet_other;
@@ -94,11 +97,19 @@ namespace STORE
     void vReg_Stage    (Card_Stage*     pStage);
     void vReg_Stream   (Card_Stream*    pStream);
 
+    void vReg_GbyElist (Card_GbyElist*  pGbyElist);
+    void vReg_SbyElist (Card_SbyElist*  pSbyElist);
+  
     void vReg_Last         (Card*           pCard);
     void vReg_LastSet      (Card*           pCard);
     void vReg_LastSet_main (Card*           pCard);
     void vReg_LastSet_other(Card*           pCard);
     void vReg_LastSet_sub  (Card*           pCard);
+
+    Card* pReg_LastSet      (void);
+    Card* pReg_LastSet_main (void);
+    Card* pReg_LastSet_other(void);
+    Card* pReg_LastSet_sub  (void);
 
     void vPredCmp_ebound(Card_PredCmp* pPredCmp);
     void vPredCmp_lbound(Card_PredCmp* pPredCmp);

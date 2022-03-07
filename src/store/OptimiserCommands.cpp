@@ -436,6 +436,8 @@ bool STORE::bOpt_set(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   vTrace("bOpt_set\n"_Stz);
 
   Card* pMainCard = nullptr;
+  Card* pSubCard = nullptr;
+  Card* pLastCard = nullptr;
   Board* pBoard = pOptimiser->pHeadBoard();
 
   i8 nTkns = pTknVec->nItems();
@@ -454,11 +456,26 @@ bool STORE::bOpt_set(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   else {
     Stz* szCardNm = pTkn->szChars();
     pMainCard = pBoard->pFindMain(szCardNm);
+    
+    if (! pMainCard) {
+      pLastCard = pBoard->pReg_LastSet_main();
+      if (pLastCard) {
+        eCK eCard = Card::eToECard(szCardNm);
+        pSubCard = pLastCard->pFindSubCard(eCard);
+      }
+    }
+      
   }
   
-  if (pMainCard)
+  if (pMainCard) {
     pBoard->vSetRegister(pMainCard);
-  
+    pBoard->vReg_Last(pMainCard);
+  }
+  else
+  if (pSubCard) {
+    pBoard->vReg_Last(pSubCard);
+  }
+
   return true;
 }
 

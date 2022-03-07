@@ -250,11 +250,12 @@ eCK Card::eParentECard(eCK eChild)
   _static_
   
   switch (eChild) {
-    case CK_AGGELIST:  return CK_AGGREG;
-    case CK_EXPR:      return CK_FILTER;
-    case CK_GBYELIST:  return CK_AGGREG;
-    case CK_PROJELIST: return CK_PROJECT;
-    case CK_SBYELIST:  return CK_SORT;
+    case CK_AGGELIST:   return CK_AGGREG;
+    case CK_EXPR:       return CK_FILTER;
+    case CK_GBYELIST:   return CK_AGGREG;
+    case CK_ORDERELIST: return CK_STREAM;
+    case CK_PROJELIST:  return CK_PROJECT;
+    case CK_SBYELIST:   return CK_SORT;
 
     default:
       return CK_NONE;
