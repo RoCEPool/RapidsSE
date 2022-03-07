@@ -1,15 +1,4 @@
-
 indexJoin.test
 indexScan.test
-loopJoinBroadcast.test
-//loopJoinBroadcastLO.test
-loopJoinHashcast.test
-loopJoinHashcastLO.test
-loopJoinUnicast.test
-loopJoinUnicastLO.test
-
-unionAll$_I.test
-unionAll$.test
-
-query6_I.test
+unionAll.test
 query6.test

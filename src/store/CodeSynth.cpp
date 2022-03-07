@@ -491,6 +491,13 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, bool bOrdAgg, Stz* sLabel, Stz* s
   vGenerateStencilCast();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate processRow check
+  if ( ! sLabelPrev->bSame(""_Stz) )
+    vGenerateProcessRow("sLabelPrev"_Stz);
+  else
+    vGenerateProcessRow("L_AdvanceNextRow"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate code for the expression
   vGenerateExprCode(m_pExprStack, ""_Stz);
 
