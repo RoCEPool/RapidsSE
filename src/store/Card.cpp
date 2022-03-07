@@ -243,6 +243,26 @@ bool Card::bIsSub(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get parent eCK of child eCK                                                */
+/*----------------------------------------------------------------------------*/
+eCK Card::eParentECard(eCK eChild)
+{
+  _static_
+  
+  switch (eChild) {
+    case CK_AGGELIST:  return CK_AGGREG;
+    case CK_EXPR:      return CK_FILTER;
+    case CK_GBYELIST:  return CK_AGGREG;
+    case CK_PROJELIST: return CK_PROJECT;
+    case CK_SBYELIST:  return CK_SORT;
+
+    default:
+      return CK_NONE;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* find eCK by card name                                                      */
 /*----------------------------------------------------------------------------*/
 eCK Card::eToECard(Stz* szCardNm)

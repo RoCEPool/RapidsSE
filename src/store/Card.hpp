@@ -69,6 +69,7 @@ namespace STORE
     static bool bIsMain(eCK eCard);
     static bool bIsOther(eCK eCard);
     static bool bIsSub(eCK eCard);
+    static eCK  eParentECard(eCK eChildCard);
     static eCK  eToECard(Stz* szCardNm);
     static eGC  eToECatg(eCK eCard);
     static eGC  eToECatg(Stz* szCardNm);
