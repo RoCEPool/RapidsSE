@@ -197,6 +197,8 @@ bool Card::bIsSub(eCK eCard)
     case CK_EXPRBOOL:
     case CK_EXPRCALC:
               
+    case CK_FILTELIST:
+      
     case CK_GBYELIST:
     case CK_GENERATE:
                       
@@ -252,8 +254,9 @@ eCK Card::eParentECard(eCK eChild)
   switch (eChild) {
     case CK_AGGELIST:   return CK_AGGREG;
     case CK_EXPR:       return CK_FILTER;
+    case CK_FILTELIST:  return CK_FILTER;
     case CK_GBYELIST:   return CK_AGGREG;
-    case CK_OBYELIST: return CK_STREAM;
+    case CK_OBYELIST:   return CK_STREAM;
     case CK_PROJELIST:  return CK_PROJECT;
     case CK_SBYELIST:   return CK_SORT;
 
@@ -309,7 +312,8 @@ eGC Card::eToECatg(eCK eCard)
     case CK_EXPRCALC:                    return GC_SUB;
               
     case CK_FILTER:     return GC_MAIN;
-                            
+    case CK_FILTELIST:                   return GC_SUB;
+
     case CK_GBYELIST:                    return GC_SUB;
     case CK_GENERATE:                    return GC_SUB;
               
@@ -2216,7 +2220,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune)
     case CK_EXPRCALC:                   vPrintProperties(pRibbon,iDepth); break;
 
     case CK_FILTER:                     vPrintProperties(pRibbon,iDepth); break;
-              
+    case CK_FILTELIST:                  vPrintProperties(pRibbon,iDepth); break;
+
     case CK_GBYELIST:                   vPrintProperties(pRibbon,iDepth); break;
     case CK_GENERATE:                   vPrintProperties(pRibbon,iDepth); break;
 

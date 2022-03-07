@@ -27,6 +27,7 @@ enum eCK // card kind
   /* */ CK_EXPRCALC,
 
   /* */ CK_FILTER,
+  /* */ CK_FILTELIST,
 
   /* */ CK_GBYELIST,
   /* */ CK_GENERATE,
@@ -107,6 +108,7 @@ static Stz* aCK[]
   /* */ "CK_EXPRCALC"_Stz,     // CK_EXPRCALC
   
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
+  /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
 
   /* */ "CK_GBYELIST"_Stz,     // CK_GBYELIST
   /* */ "CK_GENERATE"_Stz,     // CK_GENERATE
@@ -187,6 +189,7 @@ static Stz* aCK_short[]
   /* */ "exprCalc"_Stz,        // CK_EXPRCALC
 
   /* */ "filter"_Stz,          // CK_FILTER
+  /* */ "filtElist"_Stz,       // CK_FILTELIST
 
   /* */ "gbyElist"_Stz,        // CK_GBYELIST
   /* */ "generate"_Stz,        // CK_GENERATE
@@ -267,6 +270,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_EXPRCALC
 
   /* */ "filter    2"_Stz,     // CK_FILTER
+  /* */ "(none)"_Stz,          // CK_FILTELIST
 
   /* */ "(none)"_Stz,          // CK_GBYELIST
   /* */ "(none)"_Stz,          // CK_GENERATE
