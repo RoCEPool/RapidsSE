@@ -88,7 +88,7 @@ void Bench::vRenumberCards(void)
       Card* pWorkUnit = pBoard_I->pNext();
       
       pWorkUnit->vCardNo(-1);
-      pWorkUnit->vRenumberSubCards();
+      pWorkUnit->vRenumberCards();
     }
     delete pBoard_I;
 

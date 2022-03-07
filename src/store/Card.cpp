@@ -1052,31 +1052,10 @@ void Card::vRenumberCards(void)
     Card* pCard = pBoard_I->pNext();
     
     pCard->vCardNo(iCardNo++);
-    pCard->vRenumberSubCards();
+    pCard->vRenumberCards();
   }
   
   delete pBoard_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/* renumber cards                                                             */
-/*----------------------------------------------------------------------------*/
-void Card::vRenumberSubCards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
-  
-  i8 i_SubCard = 0;
-  while (pSubCard_I->bHasNext()) {
-    Card* pSubCard = pSubCard_I->pNext();
-    
-    pSubCard->vCardNo(i_SubCard++);
-    
-    pSubCard->vRenumberSubCards();
-   }
-  
-  delete pSubCard_I;
 }
 
 /*----------------------------------------------------------------------------*/

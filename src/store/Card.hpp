@@ -133,8 +133,7 @@ namespace STORE
 
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberCards(void);
-    void vRenumberSubCards(void);
-
+ 
     i8   nSubCards(void);
   
     void vTransferAll(Card* pCards);
