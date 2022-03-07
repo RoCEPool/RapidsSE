@@ -107,6 +107,17 @@ void Board::vClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* Board::pGetMainCard(i8 i_MainCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card* pMainCard = pGet(i_MainCard);
+  return pMainCard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
 void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
@@ -1155,11 +1166,11 @@ bool Board::bFind_Scan_Filter(bool bMark)
   
   i8 nMainCards = this->nMainCards();
   for (i8 i_MainCard = 0; i_MainCard < nMainCards-1; i_MainCard++) {
-    Card* pTestScan = pGet(i_MainCard);
+    Card* pTestScan = pGetMainCard(i_MainCard);
     if (CK_SCAN != pTestScan->eCard())
       continue;
 
-    Card* pTestFilter = pGet(i_MainCard+1);
+    Card* pTestFilter = pGetMainCard(i_MainCard+1);
     if (CK_FILTER != pTestFilter->eCard())
       continue;
     
@@ -1251,11 +1262,11 @@ void Board::vOrder_ProjectiveStreamDefs(void)
 
   i8 nMainCards = this->nMainCards();
   for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
-    Card* pCard = pGet(i_MainCard);
-    if (CK_PROJECT != pCard->eCard())
+    Card* pMainCard = pGetMainCard(i_MainCard);
+    if (CK_PROJECT != pMainCard->eCard())
       continue;
     
-    Card_Project* pCard_Project = _pCard_Project(pCard);
+    Card_Project* pCard_Project = _pCard_Project(pMainCard);
 
     //--- --- ---
 
@@ -1287,11 +1298,11 @@ bool Board::bPick_CandidateIndex(void)
   
   i8 nMainCards = this->nMainCards();
   for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
-    Card* pCard = pGet(i_MainCard);
-    if (CK_CANDINDEX != pCard->eCard())
+    Card* pMainCard = pGetMainCard(i_MainCard);
+    if (CK_CANDINDEX != pMainCard->eCard())
       continue;
 
-    Card_CandIndex* pCadIdx = _pCard_CandIndex(pCard);
+    Card_CandIndex* pCadIdx = _pCard_CandIndex(pMainCard);
 
     i8 iRank = pCadIdx->iRank();
     if (iRank > iBestRank) {
@@ -1321,11 +1332,11 @@ void Board::vRank_CandidateIndexes(void)
                     
   i8 nMainCards = this->nMainCards();
   for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
-    Card* pCard = pGet(i_MainCard);
-    if (CK_CANDINDEX != pCard->eCard())
+    Card* pMainCard = pGetMainCard(i_MainCard);
+    if (CK_CANDINDEX != pMainCard->eCard())
       continue;
 
-    Card_CandIndex* pCard_CandIndex = _pCard_CandIndex(pCard);
+    Card_CandIndex* pCard_CandIndex = _pCard_CandIndex(pMainCard);
     
     vRankCandIndex(pCard_CandIndex);
     
@@ -1377,7 +1388,7 @@ void Board::vResolve_Symbols(void)
   
   i8 nMainCards = this->nMainCards();
   for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {
-    Card* pMainCard = pGetSubCard(i_MainCard);
+    Card* pMainCard = pGetMainCard(i_MainCard);
     
     vResolveAll(pMainCard);
   }
