@@ -127,6 +127,8 @@ namespace STORE
     void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(void);
 
+    i8   nSubCards(void);
+  
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
                        Card* pAt=nullptr, bool bAfter=true);

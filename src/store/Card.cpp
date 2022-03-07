@@ -62,7 +62,7 @@ void CardSet::vRemoveSubCards(eCK eCard)
 {
   //_precondition_(_ADDRESS_,_FOOTER_);
   
-  i8 nSubCards = nItems();
+  i8 nSubCards = this->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
     Card* pSubCard = pGetSubCard(i_SubCard);
     if (! pSubCard->bIsCard(eCard))
@@ -508,7 +508,7 @@ void Card::vDump(i8 iDepth)
          ,sProperties.szStz()
          );
   
-  i8 nSubCards = nItems();
+  i8 nSubCards = this->nSubCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
     pGetSubCard(i_Sub)->vDump(iDepth+1);
 }
@@ -522,7 +522,7 @@ Card* Card::pDupCardAndSubCards(void)
   
   Card* pCard_dup = new Card(m_eCard);
   
-  i8 nSubCards = this->nItems();
+  i8 nSubCards = this->nSubCards();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
     Card* pSubCard = pGetSubCard(i_SubCard);
     
@@ -548,7 +548,7 @@ Card_SubSet* Card::pDupSubCards(void)
   
   Card_SubSet* pCard_SubSet = new Card_SubSet;
   
-  i8 nSubCards = this->nItems();
+  i8 nSubCards = this->nSubCards();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
     Card* pSubCard = pGetSubCard(i_SubCard);
     
@@ -612,8 +612,8 @@ bool Card::bEquivalent(Card* pCard_arg)
   }
   
   eCK eSubCard;
-  i8 nSubs = this->nItems();
-  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+  i8 nSubCards = this->nSubCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
     Card* pSubCard = pGetSubCard(i_Sub,eSubCard);
     
     Card* pSubCard_arg = pCard_arg->pFindSubCard(eSubCard);
@@ -972,6 +972,18 @@ void Card::vRenumberSubCards(void)
    }
   
   delete pSubCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of sub-cards                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Card::nSubCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nSubs = nItems();
+  
+  return nSubs;
 }
 
 /*----------------------------------------------------------------------------*/
