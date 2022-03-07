@@ -24,6 +24,8 @@ namespace STORE
 
   bool bOpt_load    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
+  bool bOpt_name    (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
+
   bool bOpt_reprint (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);
 
   bool bOpt_sub     (Optimiser* pOpt, TokenVec* pTknVec, i8& riAction);

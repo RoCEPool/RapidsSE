@@ -373,6 +373,40 @@ OptimiserFun __Opt_load
 );
 
 /*----------------------------------------------------------------------------*/
+/* set queru name                                                             */
+/*----------------------------------------------------------------------------*/
+bool STORE::bOpt_name(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+{
+  vTrace("bOpt_name\n"_Stz);
+
+  riAction = 1;
+
+  Board* pBoard = pOptimiser->pHeadBoard();
+
+  i8 nTkns = pTknVec->nItems();
+  
+  if (nTkns < 2) {
+    vTrace("QueryNm : %s\n"_Stz,pBoard->szQueryNm());
+    return true;
+  }
+  
+  Stz* szQueryNm = pTknVec->pGet(1)->szChars();
+  pBoard->vQueryNm(szQueryNm);
+  
+  return true;
+}
+
+OptimiserFun __Opt_name
+(
+  "name"_Stz,         // name of the prompt function
+  "name"_Stz,          // command first word
+  nullptr,            // command second word
+  bOpt_name,       // function to call
+  0,0,                // spare
+  "get/set query name"_Stz
+);
+
+/*----------------------------------------------------------------------------*/
 /* print                                                                       */
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_reprint(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
