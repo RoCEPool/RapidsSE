@@ -264,13 +264,7 @@ void Board::vPredCmp_ebound(Card_PredCmp* pPredCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  if (m_pPredCmp_ebound__)
-    m_pPredCmp_ebound__->vMark2(' ');
-  
   m_pPredCmp_ebound__ = pPredCmp;
-  
-  if (m_pPredCmp_ebound__)
-    m_pPredCmp_ebound__->vMark2('E');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,14 +283,9 @@ Card_PredCmp* Board::pPredCmp_lbound(void)
 void Board::vPredCmp_lbound(Card_PredCmp* pPredCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  if (m_pPredCmp_lbound__)
-    m_pPredCmp_lbound__->vMark2(' ');
-  
+    
   m_pPredCmp_lbound__ = pPredCmp;
   
-  if (m_pPredCmp_lbound__)
-    m_pPredCmp_lbound__->vMark2('L');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -315,14 +304,8 @@ Card_PredCmp* Board::pPredCmp_ubound(void)
 void Board::vPredCmp_ubound(Card_PredCmp* pPredCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  if (m_pPredCmp_ubound__)
-    m_pPredCmp_ubound__->vMark2(' ');
-  
+    
   m_pPredCmp_ubound__ = pPredCmp;
-  
-  if (m_pPredCmp_ubound__)
-    m_pPredCmp_ubound__->vMark2('U');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -991,10 +974,6 @@ void Board::vAdd_IndexScan(void)
   vInsertBefore(pCard_IndexScan,pReg_Scan);
   
   vReg_IndexScan(pCard_IndexScan);
-  
-//  vPredCmp_ebound(nullptr);
-//  vPredCmp_lbound(nullptr);
-//  vPredCmp_ubound(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1135,12 +1114,14 @@ void Board::vMark_PredCmps(void)
       pReg_Filter->pFindBound(pIndex,BK_LBOUND);
       if (pPredCmp_lbound) {
         vPredCmp_lbound(pPredCmp_lbound);
+        pPredCmp_lbound->vMark2('L');
         break;
       }
       Card_PredCmp* pPredCmp_ubound =
       pReg_Filter->pFindBound(pIndex,BK_UBOUND);
       if (pPredCmp_ubound) {
         vPredCmp_ubound(pPredCmp_ubound);
+        pPredCmp_ubound->vMark2('U');
         break;
       }
       break;
@@ -1150,12 +1131,16 @@ void Board::vMark_PredCmps(void)
       // lower bound and upper bound
       Card_PredCmp* pPredCmp_lbound =
       pReg_Filter->pFindBound(pIndex,BK_LBOUND);
-      if (pPredCmp_lbound)
+      if (pPredCmp_lbound) {
         vPredCmp_lbound(pPredCmp_lbound);
+        pPredCmp_lbound->vMark2('L');
+      }
       Card_PredCmp* pPredCmp_ubound =
       pReg_Filter->pFindBound(pIndex,BK_UBOUND);
-      if (pPredCmp_ubound)
+      if (pPredCmp_ubound) {
         vPredCmp_ubound(pPredCmp_ubound);
+        pPredCmp_ubound->vMark2('U');
+      }
       break;
     }
       
@@ -1163,8 +1148,10 @@ void Board::vMark_PredCmps(void)
       // equi-bound
       Card_PredCmp* pPredCmp_ebound =
       pReg_Filter->pFindBound(pIndex,BK_EBOUND);
-      if (pPredCmp_ebound)
+      if (pPredCmp_ebound) {
         vPredCmp_ebound(pPredCmp_ebound);
+        pPredCmp_ebound->vMark2('U');
+      }
       break;
     }
 
