@@ -435,14 +435,17 @@ void Board::vReg_CandIndex(Card_CandIndex* pCandidateIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
-  if (pCandidateIndex)
-    m_pCardRegs->vCardReg(pCandidateIndex);
-  else
-    m_pCardRegs->vClearCardReg(CK_CANDINDEX);
-  
-//  if (m_pReg_CandIndex__) {
-//    vIndex(m_pReg_CandIndex__->pFindSubCard(CK_INDEX)->pIndex());
-//  }
+  m_pCardRegs->vCardReg(CK_CANDINDEX,pCandidateIndex);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Filter* Board::pReg_Filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+    
+  return _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,6 +461,16 @@ void Board::vReg_Filter(Card_Filter* pFilter)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_IndexScan* Board::pReg_IndexScan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+    
+  return _pCard_IndexScan(m_pCardRegs->pCardReg(CK_INDEXSCAN));
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vReg_IndexScan(Card_IndexScan* pIndexScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -468,11 +481,31 @@ void Board::vReg_IndexScan(Card_IndexScan* pIndexScan)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Scan* Board::pReg_Scan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+    
+  return _pCard_Scan(m_pCardRegs->pCardReg(CK_SCAN));
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vReg_Scan(Card_Scan* pScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_pReg_Scan = pScan;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Stream* Board::pReg_Stream(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+    
+  return _pCard_Stream(m_pCardRegs->pCardReg(CK_STREAM));
 }
 
 /*----------------------------------------------------------------------------*/
