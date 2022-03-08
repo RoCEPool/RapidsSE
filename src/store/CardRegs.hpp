@@ -29,6 +29,7 @@ namespace STORE
     Card* pCardReg(eCK eCard);
     void  vCardReg(Card* pCard);
 
+    void  vClearCardReg(eCK eCard);
     void  vClearCardRegs(void);
 
     bool  bInCardReg(Card* pCard);

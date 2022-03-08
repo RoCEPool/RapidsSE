@@ -68,6 +68,16 @@ void CardRegs::vCardReg(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void CardRegs::vClearCardReg(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+
+  m_paCardReg[eCard] = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void CardRegs::vClearCardRegs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
