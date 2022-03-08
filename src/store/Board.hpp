@@ -46,9 +46,6 @@ namespace STORE
     Card* pGetMainCard(i8 i_MainCard);
     Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
   
-    Index* pIndex(void);
-    void vIndex(Index* pIndex);
-
     i8   nMainCards(void);
   
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
@@ -60,9 +57,6 @@ namespace STORE
       
     Card* pSearch(Stz* szCardNm);
     void vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard);
-
-    Table* pTable(void);
-    void vTable(Table* pTable);
 
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 

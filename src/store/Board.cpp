@@ -161,26 +161,6 @@ void Board::vFlag(i8 i_Flag, bool bFlag)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Index* Board::pIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  return m_pCardRegs->pIndex();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_pCardRegs->vIndex(pIndex);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of cards                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Board::nMainCards(void)
@@ -406,26 +386,6 @@ void Board::vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard)
   
   eCK eCard = Card::eToECard(szCardNm);
   rpSubCard = m_pCardRegs->pSearchReg(eCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Table* Board::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  return m_pCardRegs->pTable();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_pCardRegs->vTable(pTable);
 }
 
 /*----------------------------------------------------------------------------*/
