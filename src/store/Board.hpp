@@ -57,14 +57,7 @@ namespace STORE
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
-  
-    Card_IndexScan* pReg_IndexScan(void);
-    void vReg_IndexScan(Card_IndexScan* pIndexScan);
-    Card_Scan* pReg_Scan(void);
-    void vReg_Scan(Card_Scan* pScan);
-    Card_Stream* pReg_Stream(void);
-    void vReg_Stream(Card_Stream* pStream);
-  
+    
     void vResetRegisters(void);
   
     Card* pSearch(Stz* szCardNm);
