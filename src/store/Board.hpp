@@ -41,7 +41,7 @@ namespace STORE
     Card_PredCmp*    m_pPredCmp_ubound;
 
     Index*     m_pIndex__;
-    Table*     m_pTable;
+    Table*     m_pTable__;
 
     bool m_baFlag[RN_ENUMS];
   
@@ -106,7 +106,8 @@ namespace STORE
     void vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard);
     void vSetRegister(Card* pCard);
 
-    void vTable(Table*     pTable);
+    Table* pTable(void);
+    void vTable(Table* pTable);
 
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 

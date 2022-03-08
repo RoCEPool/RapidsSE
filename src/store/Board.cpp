@@ -54,7 +54,7 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
   m_pReg_Stream    = nullptr;
 
   m_pIndex__     = nullptr;
-  m_pTable     = nullptr;
+  m_pTable__     = nullptr;
   
   MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_CARD);
   
@@ -703,11 +703,21 @@ void Board::vSetRegister(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Table* Board::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  return m_pTable__;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  m_pTable = pTable;
+  m_pTable__ = pTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -953,8 +963,10 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
 bool Board::bAdd_CandIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  IdxVec* pIdxVec = m_pTable->pIdxVec();
+ 
+  Table* pTable = this->pTable();
+
+  IdxVec* pIdxVec = pTable->pIdxVec();
   if (! pIdxVec) {
     vTrace("No IdxVec\n"_Stz);
     return false;
