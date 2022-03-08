@@ -10,8 +10,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TO BCD
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#define _FLT_TOBCD(iErrorCode) \
-  NEVER_REACH;
 
 #define _INT_TOBCD(iErrorCode)                                             \
   {                                                                        \
@@ -53,13 +51,183 @@
 //  TO FLOAT
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #define _BCD_TOFLT(iErrorCode) \
-  NEVER_REACH;
+{                                                                        \
+  bcdArg1.m_iAsI8 = *(--paW);                                            \
+  if (iErrorCode != EC_NONE ||                                           \
+    bcdArg1.m_iAsI8 == C_DATUM_NULL) {                                   \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                       \
+    fltArg1.m_dFlt = (d8)(bcdArg1.m_iMantissa / iaPow10[bcdArg1.m_iScale]);            \
+    *paW++ = fltArg1.m_iAsI8 ;            \
+  }                                                                      \
+}
 
+// INT to Float
 #define _INT_TOFLT(iErrorCode) \
-  NEVER_REACH;
+{                                                                        \
+    fltArg1.m_iAsI8 = *(--paW);                                                      \
+    if (iErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                             \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      if(fltArg1.m_dFlt > (d8)C_FLT_MAX) {                                              \
+        iErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else if(fltArg1.m_dFlt < (d8) C_FLT_MIN) {                                    \
+        iErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+      *paW++ = fltArg1.m_iAsI8;                                        \
+      }                                                                    \
+    }                                                                      \
+}
 
-#define _VCH_TOFLT(iErrorCode) \
-  NEVER_REACH;
+// FLT
+//union Flt_T {
+//  d8 m_dFlt;
+//  i8 m_iAsI8;
+//};
+
+// Float to int is just drop the decimal digits?
+#define _FLT_TOINT(iErrorCode) \
+{                              \
+  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  if (iErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                             \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    if(fltArg1.m_iAsI8 > (i8)C_INT_MAX) {                                              \
+      iErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+      *paW++ = C_DATUM_NULL;                                             \
+    }                                                                    \
+    else if(fltArg1.m_iAsI8 < (i8) C_INT_MIN) {                                    \
+      iErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
+      *paW++ = C_DATUM_NULL;                                             \
+    }                                                                    \
+    else {                     \
+      fltArg1.m_iAsI8 = iArg1;                         \
+      *paW++ = (i8)fltArg1.m_dFlt;                                        \
+    }                          \
+  }                                                                      \
+}
+
+// Float to BCD, WARNING this might not be correct
+#define _FLT_TOBCD(iErrorCode) \
+{                              \
+fltArg1.m_iAsI8 = *(--paW);                                                      \
+  if (iErrorCode != EC_NONE ||                                           \
+  fltArg1.m_iAsI8 == C_DATUM_NULL) {                                             \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+  if(fltArg1.m_iAsI8 > (i8)C_BCD_MAX) {                                              \
+    iErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+    *paW++ = C_DATUM_NULL;                                             \
+  }                                                                    \
+  else if(fltArg1.m_iAsI8 < (i8) C_BCD_MIN) {                                    \
+    iErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
+    *paW++ = C_DATUM_NULL;                                             \
+  }                                                                    \
+  else {                     \
+    i8 cnt=0; \
+    d8 dt = fltArg1.m_dFlt - (i8)(fltArg1.m_dFlt);                               \
+    if (fltArg1.m_dFlt < 0 ) dt = dt * -1;                          \
+    while (dt >= 0.0000001 ){   \
+      dt = dt * 10;                   \
+      cnt++;                          \
+      dt = dt - (i8)(dt);             \
+    }                          \
+    if (cnt > 19) cnt = 19;                          \
+    bcdArg1.m_iMantissa   = iArg1;                   \
+    bcdArg1.m_iScale = cnt;                          \
+    *paW++ = bcdArg1.m_iAsI8;                                        \
+  }                          \
+}
+
+// how many decimal places , 10?
+//WARNING do we need to length of string?
+
+#define _FLT_TOVCH(iErrorCode, szStrArea) \
+{                                                         \
+  fltArg1.m_iAsI8 = *(--paW);                                            \
+  if (iErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                   \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    char *pS = szStrArea;                             \
+    char *pS1 = szStrArea;                                     \
+    i8 iVal;                                    \
+    i8 iDecs;                                    \
+    if (fltArg1.m_iAsI8 < 0) {                                     \
+      fltArg1.m_dFlt -= 0.00000000005;                                     \
+      iDecs = (i8)(fltArg1.m_dFlt * -10000000000) % 10000000000;        \
+      iVal = (i8)(-1 * fltArg1.m_dFlt);                                 \
+    }                                   \
+    else {                                                              \
+      fltArg1.m_dFlt += 0.00000000005;                                  \
+      iDecs = (i8)(fltArg1.m_dFlt * 10000000000) % 10000000000;         \
+      iVal = (i8)fltArg1.m_dFlt;                                        \
+    }                                                                   \
+    for (i8 i=0; i< 10; i++) {                                          \
+      *pS++ = (iDecs % 10) + '0';                                     \
+      iDecs /= 10;                                                  \
+    }                                                               \
+    *pS++ = '.';                                                    \
+    if (iVal == 0)                                                  \
+      *pS++ = '0' ;                                                 \
+    else {                                                          \
+      while (iVal > 0) {                                            \
+      *pS++ = (iVal % 10) + '0';                                    \
+        iVal /= 10;                                                 \
+      }                                                             \
+    }                                    \
+    if (fltArg1.m_dFlt < 0.0) *pS++ = '-';                                          \
+    *pS = '\0';                                                                     \
+    while (--pS > pS1) {                                                            \
+      char c = *pS;                                                                 \
+      *pS = *pS1;                                                                   \
+      *pS1++ = c;                                                                   \
+    }                                                                     \
+    *paW++ = (i8)szStrArea;                                               \
+  }                                                                       \
+}
+
+// STRING TO FLT, Not sure how the string is passed to the macro
+#define _VCH_TOFLT(iErrorCode, szStrArea) \
+{                                                                         \
+  char *pS = szStrArea;                             \
+  if (iErrorCode != EC_NONE ||                                           \
+    pS == C_DATUM_NULL) {                                   \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                          \
+                                          \
+    i8 len=0, n=0,i=0;                    \
+    d8 f=1.0,val=0.0;                     \
+    while(pS[len])len++;                  \
+    if(!len) {                            \
+      *paW++ = C_DATUM_NULL;              \
+    }                                     \
+    else {                                \
+      while(i<len && pS[i]!='.')          \
+        n=10*n +(pS[i++]-'0');            \
+      i++;                                \
+      while(i<len)                        \
+      {                                   \
+        f*=0.1;                           \
+        val+=f*(pS[i++]-'0');             \
+      }                                   \
+      fltArg1.m_dFlt = (val+n);           \
+      *paW++ = fltArg1.m_iAsI8;           \
+   }                                      \
+ }                                        \
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO INTEGER
@@ -81,6 +249,8 @@
 
 #define _VCH_TOINT(iErrorCode) \
   NEVER_REACH;
+
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TO DATE
@@ -308,8 +478,7 @@
       szDstArea += strlen(szDstArea) + 1;                                  \
     }                                                                      \
 }
-#define _FLT_TOVCH(iErrorCode) \
-  NEVER_REACH;
+
 
 #define _INT_TOVCH(iErrorCode, szDstArea)                                  \
   {                                                                        \
