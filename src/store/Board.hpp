@@ -21,14 +21,9 @@ namespace STORE
 
     // registers
 
-     // Card_Filter*     m_pReg_Filter;
-      //Card_IndexScan*  m_pReg_IndexScan;
-      //Card_Scan*       m_pReg_Scan;
-      Card_Stream*     m_pReg_Stream;
-
-    Card_PredCmp*    m_pPredCmp_ebound;
-    Card_PredCmp*    m_pPredCmp_lbound;
-    Card_PredCmp*    m_pPredCmp_ubound;
+    Card_PredCmp*    m_pPredCmp_ebound__;
+    Card_PredCmp*    m_pPredCmp_lbound__;
+    Card_PredCmp*    m_pPredCmp_ubound__;
 
     bool m_baFlag[RN_ENUMS];
   
@@ -63,8 +58,12 @@ namespace STORE
     i8   nMainCards(void);
   
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
+  
+    Card_PredCmp* pPredCmp_ebound(void);
     void vPredCmp_ebound(Card_PredCmp* pPredCmp);
+    Card_PredCmp* pPredCmp_lbound(void);
     void vPredCmp_lbound(Card_PredCmp* pPredCmp);
+    Card_PredCmp* pPredCmp_ubound(void);
     void vPredCmp_ubound(Card_PredCmp* pPredCmp);
     void vPrintBoard(Stz* szCue);
 

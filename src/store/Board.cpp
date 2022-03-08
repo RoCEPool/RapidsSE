@@ -33,13 +33,10 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
   m_pOptimiser = pOptimiser;
   m_sQueryNm   = szQueryNm;
   
-  m_pPredCmp_ebound = nullptr;
-  m_pPredCmp_lbound = nullptr;
-  m_pPredCmp_ubound = nullptr;
-  
+  m_pPredCmp_ebound__ = nullptr;
+  m_pPredCmp_lbound__ = nullptr;
+  m_pPredCmp_ubound__ = nullptr;
 
-  m_pReg_Stream    = nullptr;
-  
   MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_CARD);
   
   m_pCardRegs = new CardRegs;
@@ -253,17 +250,37 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_PredCmp* Board::pPredCmp_ebound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  return m_pPredCmp_ebound__;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vPredCmp_ebound(Card_PredCmp* pPredCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  if (m_pPredCmp_ebound)
-    m_pPredCmp_ebound->vMark2(' ');
+  if (m_pPredCmp_ebound__)
+    m_pPredCmp_ebound__->vMark2(' ');
   
-  m_pPredCmp_ebound = pPredCmp;
+  m_pPredCmp_ebound__ = pPredCmp;
   
-  if (m_pPredCmp_ebound)
-    m_pPredCmp_ebound->vMark2('E');
+  if (m_pPredCmp_ebound__)
+    m_pPredCmp_ebound__->vMark2('E');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_PredCmp* Board::pPredCmp_lbound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  return m_pPredCmp_lbound__;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,13 +290,23 @@ void Board::vPredCmp_lbound(Card_PredCmp* pPredCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  if (m_pPredCmp_lbound)
-    m_pPredCmp_lbound->vMark2(' ');
+  if (m_pPredCmp_lbound__)
+    m_pPredCmp_lbound__->vMark2(' ');
   
-  m_pPredCmp_lbound = pPredCmp;
+  m_pPredCmp_lbound__ = pPredCmp;
   
-  if (m_pPredCmp_lbound)
-    m_pPredCmp_lbound->vMark2('L');
+  if (m_pPredCmp_lbound__)
+    m_pPredCmp_lbound__->vMark2('L');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_PredCmp* Board::pPredCmp_ubound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  return m_pPredCmp_ubound__;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,13 +316,13 @@ void Board::vPredCmp_ubound(Card_PredCmp* pPredCmp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  if (m_pPredCmp_ubound)
-    m_pPredCmp_ubound->vMark2(' ');
+  if (m_pPredCmp_ubound__)
+    m_pPredCmp_ubound__->vMark2(' ');
   
-  m_pPredCmp_ubound = pPredCmp;
+  m_pPredCmp_ubound__ = pPredCmp;
   
-  if (m_pPredCmp_ubound)
-    m_pPredCmp_ubound->vMark2('U');
+  if (m_pPredCmp_ubound__)
+    m_pPredCmp_ubound__->vMark2('U');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -512,7 +539,7 @@ void Board::vReg_Stream(Card_Stream* pStream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  m_pReg_Stream = pStream;
+  m_pCardRegs->vCardReg(CK_STREAM,pStream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -784,28 +811,16 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-//  if (pCard_Term->bIsOrdinalStreamTerm()) {
-//
-//    i8 i_Ord = pCard_Term->iOrdinalStreamColNo();
-//    i8 i_Col = i_Ord - 1;
-//
-//    Column* pColumn = m_pStreamDef->pGetColumn(i_Col);
-//    Stz* szColNm = pColumn->szColNm();
-//
-//    pCard_Term->vTerm(szColNm);
-//
-//    return;
-//  }
+  
+  Card_Stream* pReg_Stream = this->pReg_Stream();
+
   if (pCard_Term->bIsOrdinalStreamTerm()) {
 
     i8 i_Ord = pCard_Term->iOrdinalStreamColNo();
     i8 i_Col = i_Ord - 1;
 
-    //Column* pColumn = m_pStreamDef->pGetColumn(i_Col);
-    //Stz* szColNm = pColumn->szColNm();
-
     Card_StreamElist* pCard_StreamElist_src =
-      _pCard_StreamElist(m_pReg_Stream->pFindSubCard(CK_STREAMELIST));
+      _pCard_StreamElist(pReg_Stream->pFindSubCard(CK_STREAMELIST));
 
     Card_Expr* pCard_Expr_src = _pCard_Expr(pCard_StreamElist_src->pGet(i_Col));
 
@@ -894,7 +909,10 @@ void Board::vAdd_IndexScan(void)
   Card_IndexScan* pCard_IndexScan = new Card_IndexScan;
   Card_Scan* pReg_Scan = this->pReg_Scan();
 
-
+  Card_PredCmp* pReg_ebound = this->pPredCmp_ebound();
+  Card_PredCmp* pReg_lbound = this->pPredCmp_lbound();
+  Card_PredCmp* pReg_ubound = this->pPredCmp_ubound();
+  
   Index* pIndex = this->pIndex();
   Card_Index* pCard_Index = new Card_Index(pIndex);
   pCard_IndexScan->vAppend(pCard_Index);
@@ -903,40 +921,40 @@ void Board::vAdd_IndexScan(void)
   Card_BOUND* pCard_BOUND;
   Card_PRED*  pCard_PRED;
 
-  if (m_pPredCmp_ebound) {
+  if (pReg_ebound) {
     pCard_BOUND = new Card_EBound;
     
-    pCard_PRED = m_pPredCmp_ebound->pDup();
+    pCard_PRED = pReg_ebound->pDup();
     pCard_PRED->vHasEBound(true);
     pCard_BOUND->vAppend(pCard_PRED);
   }
   else
-  if (m_pPredCmp_lbound && m_pPredCmp_ubound) {
+  if (pReg_lbound && pReg_ubound) {
     pCard_BOUND = new Card_RBound;
     
-    pCard_PRED = m_pPredCmp_lbound->pDup();
+    pCard_PRED = pReg_lbound->pDup();
     pCard_PRED->vHasLBound(true);
     pCard_BOUND->vAppend(pCard_PRED);
     
-    pCard_PRED = m_pPredCmp_ubound->pDup();
+    pCard_PRED = pReg_ubound->pDup();
     pCard_PRED->vHasUBound(true);
     pCard_BOUND->vAppend(pCard_PRED);
   }
   else
-  if (m_pPredCmp_lbound) {
+  if (pReg_lbound) {
     pCard_BOUND = new Card_LBound;
     
-    pCard_PRED = m_pPredCmp_lbound->pDup();
+    pCard_PRED = pReg_lbound->pDup();
     pCard_PRED->vHasLBound(true);
     pCard_BOUND->vAppend(pCard_PRED);
   }
   else
-  if (m_pPredCmp_ubound) {
+  if (pReg_ubound) {
     pCard_BOUND = new Card_UBound;
     
-    pCard_PRED = m_pPredCmp_ubound->pDup();
+    pCard_PRED = pReg_ubound->pDup();
     pCard_PRED->vHasUBound(true);
-    pCard_BOUND->vAppend(m_pPredCmp_ubound->pDup());
+    pCard_BOUND->vAppend(pReg_ubound->pDup());
   }
   else {
     RASSERT(0);
@@ -1017,14 +1035,18 @@ void Board::vCut_PredCmps(void)
   
   Card_Filter* pReg_Filter = this->pReg_Filter();
 
-  if (m_pPredCmp_ebound)
-    pReg_Filter->vRemoveSubCard(m_pPredCmp_ebound);
+  Card_PredCmp* pReg_ebound = this->pPredCmp_ebound();
+  Card_PredCmp* pReg_lbound = this->pPredCmp_lbound();
+  Card_PredCmp* pReg_ubound = this->pPredCmp_ubound();
+
+  if (pReg_ebound)
+    pReg_Filter->vRemoveSubCard(pReg_ebound);
   
-  if (m_pPredCmp_lbound)
-    pReg_Filter->vRemoveSubCard(m_pPredCmp_lbound);
+  if (pReg_lbound)
+    pReg_Filter->vRemoveSubCard(pReg_lbound);
   
-  if (m_pPredCmp_ubound)
-    pReg_Filter->vRemoveSubCard(m_pPredCmp_ubound);
+  if (pReg_ubound)
+    pReg_Filter->vRemoveSubCard(pReg_ubound);
   
   vPredCmp_ebound(nullptr);
   vPredCmp_lbound(nullptr);
@@ -1045,7 +1067,7 @@ void Board::vCut_Scan(void)
   
   vReg_Scan(nullptr);
 
-  delete pReg_Scan;  
+  delete pReg_Scan;
 }
 
 /*----------------------------------------------------------------------------*/
