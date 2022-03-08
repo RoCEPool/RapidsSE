@@ -667,6 +667,15 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the orderByOp
+    if (pOp->szOpNm()->bSame("sort"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil);
+      vAppend(pShape);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the projectOP
     if (pOp->szOpNm()->bSame("project"_Stz)) {
 
@@ -2062,6 +2071,60 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
                                           sLabelLoop,
                                           pCombined->aCombinedT()->m_iHashRows);
 
+  pShape->vCodeSynthA(pCodeSynth);
+
+  return pShape;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch sort                                                                */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s4K sLabel;
+  s4K sLabelNext;
+  s4K sLabelPrev;
+
+  i8 i_Op = pOp->i_Op();
+  CodeSynth *pCodeSynth;
+
+  // get filter expr from OP
+  TagSet* pOpTags = pOp->pOpTags();
+  Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
+
+  // get the streamDefs
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+  // get the indexDef
+  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefGby);
+
+  // get the sort type stack
+  IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
+
+  // create a new shape for this OP
+  Shape *pShape = new Shape;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the streamDef
+  pCodeSynth = new CodeSynth(pStreamDefOut, SR_AT);
+  pCodeSynth->vSynthStruct(0);
+  pShape->vStructSynthA(pCodeSynth);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the row projection
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexDef, pPreExpStack, ePrevStencil, SR_AT);
+
+  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
+  pCodeSynth->vSynthSort( pLogicUnit->m_eExprKind,
+                            sProjectExpr,
+                            sLabel,
+                            sLabelNext,
+                            pCombined->aCombinedT()->m_iHashRows);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;

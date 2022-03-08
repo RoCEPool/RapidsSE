@@ -123,6 +123,8 @@ namespace STORE {
     bool bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop,
                       bool bHashRows);
 
+    void vSynthSort(eEK eExprKind, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, bool bHashRows);
+
     void vSynthStruct(u8 uSelectColumns);
 
     void vSynthStructArray(u8 uSelectColumns);

@@ -1269,6 +1269,45 @@ bool CodeSynth::bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, St
 }
 
 /*----------------------------------------------------------------------------*/
+/* synthesize sort                                                            */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vSynthSort(eEK eExprKind,Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext,
+                             bool bHashRows) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s4K sCopy;
+  TypedStack* pPostStack;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  vGenerateInitStub("ORDAGG-OP"_Stz, sLabel);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  vGenerateStencilCast();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create post aggregation stack
+  pPostStack = new TypedStack(KK_DATA_STACK);
+
+  // generate the expression code
+  vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGORD, bHashRows, m_pStreamDefLft);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate processRow check
+  //vGenerateProcessRow(sLabelLoop);
+
+  //RASSERT(eExprKind == EK_AGGORD);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate sort
+  //vSort(sLabelNext, sLabelLoop);
+
+  // cleanup
+  m_pExprStack->vReset();
+}
+
+/*----------------------------------------------------------------------------*/
 /* synthesize the streamDef into a struct                                     */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthStruct(u8 uSelectColumns) {

@@ -107,8 +107,10 @@ static const i8 C_MAX_SHAPES = 32;
     Shape* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchLabel(Combined* pCombined, Stream* pStream, Op* pOp);
     Shape* pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop);
+    Shape* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                          eSR ePrevStencil, Stz* sLabelLoop);
+    Shape* pSketchOrderBy(Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pOp,
                                       eSR ePrevStencil, Stz* sLabelLoop);
