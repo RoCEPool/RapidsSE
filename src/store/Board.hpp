@@ -40,9 +40,6 @@ namespace STORE
     Card_PredCmp*    m_pPredCmp_lbound;
     Card_PredCmp*    m_pPredCmp_ubound;
 
-    Index*     m_pIndex__;
-    Table*     m_pTable__;
-
     bool m_baFlag[RN_ENUMS];
   
     CardRegs* m_pCardRegs;

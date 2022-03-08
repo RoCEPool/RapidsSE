@@ -23,6 +23,9 @@ CardRegs::CardRegs(void)
         
   MemLib::vZero(m_paCardReg,sizeof(m_paCardReg),CN_CARDREGS);
 
+  m_pIndex = nullptr;
+  m_pTable = nullptr;
+
   _checkInitialised_(CN_CARDREGS);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
@@ -103,6 +106,26 @@ bool CardRegs::bInCardReg(Card* pCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Index* CardRegs::pIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+  
+  return m_pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardRegs::vIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+  
+  m_pIndex = pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card* CardRegs::pSearchReg(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
@@ -121,6 +144,26 @@ Card* CardRegs::pSearchReg(eCK eCard)
   }
   
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Table* CardRegs::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+  
+  return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardRegs::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+  
+  m_pTable = pTable;
 }
 
 /*============================================================================*/

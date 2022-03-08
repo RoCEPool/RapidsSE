@@ -52,9 +52,6 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
   m_pReg_Sort      = nullptr;
   m_pReg_Stage     = nullptr;
   m_pReg_Stream    = nullptr;
-
-  m_pIndex__     = nullptr;
-  m_pTable__     = nullptr;
   
   MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_CARD);
   
@@ -189,7 +186,7 @@ Index* Board::pIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  return m_pIndex__;
+  return m_pCardRegs->pIndex();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,7 +196,7 @@ void Board::vIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  m_pIndex__ = pIndex;
+  m_pCardRegs->vIndex(pIndex);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -707,7 +704,7 @@ Table* Board::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  return m_pTable__;
+  return m_pCardRegs->pTable();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -717,7 +714,7 @@ void Board::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  m_pTable__ = pTable;
+  m_pCardRegs->vTable(pTable);
 }
 
 /*----------------------------------------------------------------------------*/
