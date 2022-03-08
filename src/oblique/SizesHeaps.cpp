@@ -231,6 +231,7 @@
 #include "Action.hpp"
 #include "CardCtl.hpp"
 #include "CardRegs.hpp"
+#include "RuleCtl.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -512,6 +513,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RU_Cpu),             HT_INVALID   ,0 FILL }, // CN_RUCPU
   { 0,/*sizeof(RU_Dir)*/        HT_INVALID   ,0 FILL }, // CN_RUDIR
   { 0,/*sizeof(RU_File)*/       HT_INVALID   ,0 FILL }, // CN_RUFILE
+  { sizeof(RuleCtl),            HT_T_TINY    ,0 FILL }, // CN_RULECTL
   { sizeof(RU_Memory),          HT_INVALID   ,0 FILL }, // CN_RUMEMORY
   { 0,/*sizeof(RU_Mutex)*/      HT_INVALID   ,0 FILL }, // CN_RUMUTEX
   { 0,/*sizeof(RU_Pass)*/       HT_INVALID   ,0 FILL }, // CN_RUPASS
