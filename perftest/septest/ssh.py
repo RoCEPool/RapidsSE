@@ -30,7 +30,7 @@ def run_ssh(host: string, command: string, timeout: float = None) -> subprocess.
     return result
 
 
-def run_scp(src: string, dest: string, timeout: float = None):
+def run_scp(src: string, dest: string, timeout: float = None, recursive: bool = False):
     """
     Copies a src filespec to a dest filespec using SCP.
     Either src or dest should be in the form "<host>:<path>".
@@ -40,9 +40,14 @@ def run_scp(src: string, dest: string, timeout: float = None):
     scp_command = ["scp",
                    "-q",
                    "-o", "BatchMode=yes",
-                   "-o", "StrictHostKeyChecking=no",
-                   src,
-                   dest]
+                   "-o", "StrictHostKeyChecking=no"
+                   ]
+
+    if recursive:
+        scp_command.append("-r")
+
+    scp_command.append(src)
+    scp_command.append(dest)
 
     LOG.debug(f"About to run SCP command: {' '.join(scp_command)}")
 

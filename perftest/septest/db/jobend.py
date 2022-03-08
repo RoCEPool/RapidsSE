@@ -1,5 +1,6 @@
+import datetime
 import string
-import decimal
+from decimal import Decimal
 import typing
 import logging
 
@@ -133,24 +134,26 @@ def __create_metric_result_rows(cur: typing.Union[psycopg.Cursor[typing.Any], ps
     Creates rows in the metricResults table.
     """
 
-    for (metric_name, metric_value) in test_result.metrics:
-        __create_metric_result_row(cur, test_result_id, metric_name, metric_value)
+    for (metric_name, metric_value, metric_ts) in test_result.metrics:
+        __create_metric_result_row(cur, test_result_id, metric_name, metric_value, metric_ts)
 
 
 def __create_metric_result_row(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCursor[typing.Any]],
                                test_result_id: int,
                                metric_name: string,
-                               metric_value: decimal):
+                               metric_value: Decimal,
+                               metric_ts: datetime.datetime):
     """
     Creates a row in the metricResults table.
     """
 
     sql = "INSERT INTO metricResults " \
-          "(testResultId, metricName, metricValue) " \
-          "VALUES (%s, %s, %s)"
+          "(testResultId, metricName, metricValue, metricTs) " \
+          "VALUES (%s, %s, %s, %s)"
     data = (test_result_id,  # testResultId
             metric_name,     # metricName
-            metric_value)    # metricValue
+            metric_value,    # metricValue
+            metric_ts)       # metricTs
 
     LOG.debug(f"Creating a new entry in the metricResults table for metric_name {metric_name}, "
               f"testResultId {test_result_id}")
