@@ -39,9 +39,6 @@ namespace STORE
     void  vCardReg(Card* pCard);
     void  vCardReg(eCK eCard, Card* pCard);
   
-    void  vClearCardReg(eCK eCard);
-    void  vClearCardRegs(void);
-
     bool  bInCardReg(Card* pCard);
     Index* pIndex(void);
     void vIndex(Index* pIndex);
@@ -52,6 +49,8 @@ namespace STORE
     void vPredCmp_lbound(Card_PredCmp* pPredCmp);
     Card_PredCmp* pPredCmp_ubound(void);
     void vPredCmp_ubound(Card_PredCmp* pPredCmp);
+
+    void  vResetCardRegs(void);
 
     Card* pSearchReg(eCK eCard);
 

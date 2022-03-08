@@ -76,7 +76,8 @@ void Board::vClear(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vResetRegisters();
+  m_pCardRegs->vResetCardRegs();
+  
   vDeleteAllCards();
 }
 
@@ -358,29 +359,6 @@ void Board::vQueryNm(Stz* szQueryNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_sQueryNm = szQueryNm;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vResetRegisters(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_pCardRegs->vCardReg(CK_CANDINDEX,nullptr);
-
-  m_pCardRegs->vCardReg(CK_FILTER,nullptr);
-  m_pCardRegs->vCardReg(CK_INDEXSCAN,nullptr);
-  m_pCardRegs->vCardReg(CK_SCAN,nullptr);
-  m_pCardRegs->vCardReg(CK_STREAM,nullptr);
-
-  m_pCardRegs->vPredCmp_ebound(nullptr);
-  m_pCardRegs->vPredCmp_lbound(nullptr);
-  m_pCardRegs->vPredCmp_ubound(nullptr);
-  
-  vIndex    (nullptr);
-  vTable    (nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

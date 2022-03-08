@@ -226,7 +226,8 @@ void Optimiser::vOptimise(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   Board* pBoard = m_pBench->pHead();
-    
+  CardRegs* pCardRegs = pBoard->pCardRegs();
+
   pBoard->vPrintBoard("vDissectSpec >> "_Stz);
   
   pBoard->vResolve_Symbols();
@@ -239,7 +240,7 @@ void Optimiser::vOptimise(void)
     bool bRun = pBoard->bRule_Scan_Filter_to_IndexScan();
     UNUSED(bRun);
     
-    pBoard->vResetRegisters();
+    pCardRegs->vResetCardRegs();
   }
   
   Cue::vGetReturn("$$$$$$ >>"_Stz);

@@ -57,9 +57,7 @@ namespace STORE
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
-    
-    void vResetRegisters(void);
-  
+      
     Card* pSearch(Stz* szCardNm);
     void vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard);
 
