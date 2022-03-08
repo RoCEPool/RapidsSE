@@ -1,12 +1,16 @@
 """Runs a test file"""
-
+import datetime
+import glob
 import string
 import logging
 import os.path
 import pathlib
 import subprocess
+import tempfile
+import csv
+import decimal
 
-import clusterops
+from septest import clusterops
 from septest.results import TestResult
 from septest import errors
 from septest.configs.clusterconfig import ClusterConfig
@@ -14,7 +18,30 @@ from septest import ssh
 
 LOG = logging.getLogger(__name__)
 
-C_JMETER_EXTS = ["jmx", "jtl", "jmeter", "jmetre"]
+C_JMETER_BINARY = "/opt/jmeter/bin/jmeter"
+C_JMETER_EXTS = ["jmx", "jmeter"]
+C_TEST_DIR_FMT = "j{:04d}_t{:02d}_{:02d}_{:s}"
+C_SCP_TIMEOUT_SEC = 60
+
+# CSV fields
+C_CSV_LABEL = "label"
+C_CSV_SUCCESS = "success"
+C_CSV_LATENCY = "Latency"
+C_CSV_TIMESTAMP = "timestamp"
+C_CSV_FAILUREMSG = "failureMessage"
+C_CSV_CONNECT = "Connect"
+
+C_MANDATORY_CSV_FIELDS = [
+    C_CSV_LABEL,
+    C_CSV_SUCCESS,
+    C_CSV_LATENCY
+]
+
+C_OPTIONAL_CSV_FIELDS = [
+    C_CSV_TIMESTAMP,
+    C_CSV_FAILUREMSG,
+    C_CSV_CONNECT
+]
 
 
 class TestRunner:
@@ -27,16 +54,17 @@ class TestRunner:
 
         self.local_test_file = pathlib.Path(test_path)
         self.test_name = self.get_test_name_from_path(test_path)
+        self.job_result_id = job_result_id
         self.test_id = test_id
         self.test_seq = test_seq
         self.cluster_config = cluster_config
         self.ip_addr = ip_addr
-        self.remote_dir = pathlib.Path(cluster_config.get_dir()).joinpath(
+        self.remote_test_dir = pathlib.Path(cluster_config.get_dir()).joinpath(
             "perftests",
-            "j{:04d}_t{:02d}_{:02d}_{:s}".format(job_result_id, test_id, test_seq, self.test_name)
+            C_TEST_DIR_FMT.format(job_result_id, test_id, test_seq, self.test_name)
         )
         self.remote_test_file = None
-        self.result = TestResult(self.test_name, test_id, job_result_id, self.remote_dir)
+        self.result = TestResult(self.test_name, test_id, job_result_id, self.remote_test_dir)
 
         assert self.local_test_file.exists()
         assert (self.test_name is not None) and (len(self.test_name) > 0)
@@ -76,7 +104,7 @@ class TestRunner:
         self.__create_remote_dir()
 
         test_filename = os.path.basename(self.local_test_file)
-        self.remote_test_file = self.remote_dir / test_filename
+        self.remote_test_file = self.remote_test_dir / test_filename
 
         command_timeout = 10  # seconds
         src = str(self.local_test_file)
@@ -108,7 +136,7 @@ class TestRunner:
         """
 
         # Create a directory to hold the test file and associated metrics
-        mkdir_command = f"mkdir -p {str(self.remote_dir)}"
+        mkdir_command = f"mkdir -p {str(self.remote_test_dir)}"
 
         LOG.debug(f"About to make a directory to hold the test file on host {self.ip_addr}: {mkdir_command}")
 
@@ -116,19 +144,19 @@ class TestRunner:
             ssh.run_ssh(self.ip_addr, mkdir_command, 10)
 
         except subprocess.CalledProcessError as e:
-            msg = f"Error while creating the following remote directory: {self.ip_addr}:{str(self.remote_dir)}" \
+            msg = f"Error while creating the following remote directory: {self.ip_addr}:{str(self.remote_test_dir)}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e
 
         except subprocess.TimeoutExpired as e:
             msg = f"Creation of remote directory timed out after {e.timeout} seconds: " \
-                  f"{self.ip_addr}:{str(self.remote_dir)}" \
+                  f"{self.ip_addr}:{str(self.remote_test_dir)}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e
 
-        LOG.debug(f"Successfully created the remote directory: {self.ip_addr}:{str(self.remote_dir)}")
+        LOG.debug(f"Successfully created the remote directory: {self.ip_addr}:{str(self.remote_test_dir)}")
 
     def __run_jmeter_test(self):
         """
@@ -136,19 +164,23 @@ class TestRunner:
         """
         # Where did we copy the jmeter properties file to?
         jmeter_properties_path = clusterops.get_remote_jmeter_property_file_path(self.cluster_config)
-        cluster_bin_dir = f"{self.cluster_config.get_dir()}/bin"
         log_file_path = self.__remote_log_file_path()
+        rapidsse_bin_dir = f"{self.cluster_config.get_dir()}/bin"
 
         # We need to run jmeter from the <install>/bin directory so that the JDBC driver
         # can invoke the SE prompt and the SE prompt can find libRapidsSE.so.
-        # We also need to set the LD_LIBRARY_PATH too.
-        jmeter_command = f"cd {cluster_bin_dir} && " \
-                         "LD_LIBRARY_PATH=. jmeter -n " \
+        # We need to set the LD_LIBRARY_PATH so that the rapidsse binary can find the libRapidsSE.so.
+        # If we tried to run this on MacOS then we would need to run jmeter from the
+        # <install_dir>/bin directory because the rapidsse executable has a dependency on
+        # the file "../bin/libRapidsse.dylib"
+        jmeter_command = f"cd {self.remote_test_dir} && " \
+                         f"LD_LIBRARY_PATH={rapidsse_bin_dir} " \
+                         f"{C_JMETER_BINARY} -n " \
                          f"-p {jmeter_properties_path} " \
                          f"-t {self.remote_test_file} " \
                          f"-l {log_file_path}"
 
-        LOG.debug(f"About to remove the JMeter command: {jmeter_command}")
+        LOG.debug(f"About to execute the JMeter command: {jmeter_command}")
 
         try:
             ssh.run_ssh(self.ip_addr, jmeter_command)
@@ -168,15 +200,162 @@ class TestRunner:
         """
         Returns the path of the log file that JMeter will produce on the first node.
         """
-        remote_path = f"{self.remote_dir}/{self.test_name}.log"
+        remote_path = f"{self.remote_test_dir}/{self.test_name}.log"
         return remote_path
 
     def __collect_metrics(self):
         # TODO: Implement this
-        # Copy any metrics files from the remote node
-        # Parse the metrics
-        # Add them to the results.
-        pass
+        # Create a local temporary directory to hold the metrics from the remote node
+        dir_prefix = C_TEST_DIR_FMT.format(self.job_result_id, self.test_id, self.test_seq, self.test_name)
+
+        with tempfile.TemporaryDirectory(prefix=dir_prefix) as temp_dir:
+            # Copy the metrics to this directory
+            self.__copy_remote_metrics_locally(temp_dir)
+
+            # Parse the metrics and add them to the results.
+            # We look for both *.csv and *.tsv files.
+            csv_list = glob.glob(f"{temp_dir}/*.csv")
+            tsv_list = glob.glob(f"{temp_dir}/*.tsv")
+
+            if len(csv_list) == 0 and len(tsv_list) == 0:
+                LOG.info(f"No metric files were produced by test {self.test_name}")
+
+            for csv_metric in csv_list:
+                assert os.path.exists(csv_metric)
+                if not self.__parse_csv_metrics(csv_metric):
+                    return
+
+            for tsv_metric in tsv_list:
+                assert os.path.exists(tsv_metric)
+                if not self.__parse_tsv_metric(tsv_metric):
+                    return
+
+    def __copy_remote_metrics_locally(self, temp_dir: tempfile.TemporaryDirectory):
+        """
+        Copies metric files from a remote host to a local temporary directory
+        """
+
+        LOG.debug("About to copy metrics files from remote node to local directory")
+        src_spec = f"{self.ip_addr}:{self.remote_test_dir}/*"
+
+        try:
+            ssh.run_scp(src=src_spec, dest=temp_dir, timeout=C_SCP_TIMEOUT_SEC)
+
+        except subprocess.CalledProcessError as e:
+            msg = f"Error while copying metrics from remote path: {src_spec}" \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying of metrics from remote path at {src_spec} timed out after {e.timeout} seconds: " \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+    def __parse_csv_metrics(self, metric_file: string) -> bool:
+        """
+        Parses a single CSV file containing test metrics and saves the metrics into the result.
+        Returns false if an error is encountered.
+        """
+        with open(metric_file, newline='') as csvfile:
+            reader = csv.DictReader(csvfile, dialect='excel')
+            fieldnames = reader.fieldnames
+
+            # Must have these fields minimum: label, success, Latency
+            # Optional fields that can be used: timestamp, failureMessage, Connect
+
+            # Check that the mandatory fields are in the file
+            for mandatory_field in C_MANDATORY_CSV_FIELDS:
+                if mandatory_field not in fieldnames:
+                    pass
+                    errmsg = f"Could not process metrics file {os.path.basename(metric_file)} because " \
+                             f"it does not have the mandatory field \"{mandatory_field}\""
+                    LOG.error(errmsg)
+                    # Mark the test as having failed
+                    self.result.test_passed = False
+                    self.result.stderr = errmsg
+                    return False
+
+            has_timestamp_field = (C_CSV_TIMESTAMP in fieldnames)
+            has_failuremsg_field = (C_CSV_FAILUREMSG in fieldnames)
+            has_connect_field = (C_CSV_CONNECT in fieldnames)
+
+            for row in reader:
+                label = row[C_CSV_LABEL]
+                latency_str = row[C_CSV_LATENCY]
+                success = row[C_CSV_SUCCESS]
+
+                if not success:
+                    failuremsg = row[C_CSV_FAILUREMSG] if has_failuremsg_field else None
+                    if failuremsg is None:
+                        errmsg = f"Statement with label \"{label}\" failed with an error"
+                    else:
+                        errmsg = f"Statement with label \"{label}\" failed with error: {failuremsg}"
+                    LOG.error(errmsg)
+
+                    # Mark the test as having failed
+                    self.result.test_passed = False
+                    self.result.stderr = errmsg
+                    return False
+
+                # Convert the latency string into a numeric
+                try:
+                    latency = decimal.Decimal(latency_str)
+
+                except ValueError:
+                    errmsg = f"Statement with label \"{label}\" failed because the " \
+                             f"\"{C_CSV_LATENCY}\" field is not numeric"
+                    LOG.error(errmsg)
+                    # Mark the test as having failed
+                    self.result.test_passed = False
+                    self.result.stderr = errmsg
+                    return False
+
+                # Subtract the connect field from the latency field, if it exists
+                if has_connect_field:
+                    try:
+                        connect = decimal.Decimal(row[C_CSV_CONNECT])
+                        latency -= connect
+
+                    except ValueError:
+                        errmsg = f"Statement with label \"{label}\" failed because the " \
+                                 f"\"{C_CSV_CONNECT}\" field is not numeric"
+                        LOG.error(errmsg)
+                        # Mark the test as having failed
+                        self.result.test_passed = False
+                        self.result.stderr = errmsg
+                        return False
+
+                # Is there a timestamp field we can use?
+                timestamp = None
+                if has_timestamp_field:
+                    timestamp_str = row[C_CSV_TIMESTAMP]
+
+                    # Convert the offset from epoch to a datetime
+                    try:
+                        timestamp = datetime.datetime.fromtimestamp(float(timestamp_str) / 1000)
+
+                    except ValueError:
+                        errmsg = f"Statement with label \"{label}\" failed because the " \
+                                 f"\"{C_CSV_TIMESTAMP}\" field couldn't be converted to datetime object"
+                        LOG.error(errmsg)
+                        # Mark the test as having failed
+                        self.result.test_passed = False
+                        self.result.stderr = errmsg
+                        return False
+
+                # Record the metric
+                self.result.add_metric(label, latency, timestamp)
+
+        return True
+
+    def __parse_tsv_metric(self):
+        """
+        Parses a single TSV file containing test metrics and saves the metrics into the result.
+        Returns false if an error is encountered.
+        """
+        return True
 
     def __cleanup_test_file(self):
         """

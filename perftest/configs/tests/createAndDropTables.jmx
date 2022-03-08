@@ -895,7 +895,7 @@
               <connectTime>true</connectTime>
             </value>
           </objProp>
-          <stringProp name="filename">metrics/createDropTables.csv</stringProp>
+          <stringProp name="filename">createAndDropTables.csv</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>
