@@ -40,7 +40,7 @@ namespace STORE
     Card_PredCmp*    m_pPredCmp_lbound;
     Card_PredCmp*    m_pPredCmp_ubound;
 
-    Index*     m_pIndex;
+    Index*     m_pIndex__;
     Table*     m_pTable;
 
     bool m_baFlag[RN_ENUMS];
@@ -70,7 +70,8 @@ namespace STORE
     Card* pGetMainCard(i8 i_MainCard);
     Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
   
-    void vIndex    (Index*     pIndex);
+    Index* pIndex(void);
+    void vIndex(Index* pIndex);
 
     i8   nMainCards(void);
   

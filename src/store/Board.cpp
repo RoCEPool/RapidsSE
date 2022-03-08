@@ -53,7 +53,7 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
   m_pReg_Stage     = nullptr;
   m_pReg_Stream    = nullptr;
 
-  m_pIndex     = nullptr;
+  m_pIndex__     = nullptr;
   m_pTable     = nullptr;
   
   MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_CARD);
@@ -185,11 +185,21 @@ void Board::vFlag(i8 i_Flag, bool bFlag)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Index* Board::pIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  return m_pIndex__;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  m_pIndex = pIndex;
+  m_pIndex__ = pIndex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -332,22 +342,6 @@ void Board::vPrintBoard(Stz* szCue)
 
   delete pRibbon;
   
-  bool bCR = false;
-  if (m_pTable) {
-    vTrace("m_pTable : %s ; "_Stz,m_pTable->szTableNm());
-    bCR = true;
-  }
-  if (m_pIndex) {
-    vTrace("m_pIndex : %s"_Stz,m_pIndex->szIndexNm());
-    bCR = true;
-  }
-  if (m_pReg_Stream) {
-    vTrace("m_pReg_Stream : %llp"_Stz,m_pReg_Stream);
-    bCR = true;
-  }
-  if (bCR)
-    vTrace("\n"_Stz);
-
   if (! bCue)
     return;
   
@@ -933,12 +927,13 @@ void Board::vResolveTerm(Card_Term* pCard_Term)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (m_pIndex && pCard_Term->bIsOrdinalIndexTerm()) {
+  Index* pIndex = this->pIndex();
+  if (pIndex && pCard_Term->bIsOrdinalIndexTerm()) {
     
     i8 i_IdxOrd = pCard_Term->iOrdinalIndexColNo();
     i8 i_IdxCol = i_IdxOrd - 1;
 
-    Column* pIdxColumn = m_pIndex->pGetColumn(i_IdxCol);
+    Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
     Stz* szIdxColNm_resolved = pIdxColumn->szColNm();
   
     pCard_Term->vTerm(szIdxColNm_resolved);
@@ -999,7 +994,8 @@ void Board::vAdd_IndexScan(void)
 
   Card_IndexScan* pCard_IndexScan = new Card_IndexScan;
 
-  Card_Index* pCard_Index = new Card_Index(m_pIndex);
+  Index* pIndex = this->pIndex();
+  Card_Index* pCard_Index = new Card_Index(pIndex);
   pCard_IndexScan->vAppend(pCard_Index);
 
   
@@ -1050,7 +1046,7 @@ void Board::vAdd_IndexScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the stream elist
 
-  StreamDef* pStreamDef = m_pIndex->pTable()->pStreamDef();
+  StreamDef* pStreamDef = pIndex->pTable()->pStreamDef();
   
   Card_Stream* pCard_Stream = new Card_Stream;
   pCard_IndexScan->vAppend(pCard_Stream);
@@ -1064,7 +1060,7 @@ void Board::vAdd_IndexScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the stream order
   
-  Card_ObyElist* pCard_ObyElist = new Card_ObyElist(m_pIndex);
+  Card_ObyElist* pCard_ObyElist = new Card_ObyElist(pIndex);
   pCard_Stream->vAppend(pCard_ObyElist);
 
   //bool bUnique = pIndexDef->bIsUnique();
@@ -1196,19 +1192,21 @@ void Board::vMark_PredCmps(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   i8 iRank = m_pReg_CandIndex->iRank();
-  
+ 
+  Index* pIndex = this->pIndex();
+
   switch (iRank) {
       
     case 1: {
       // lower bound or upper bound
       Card_PredCmp* pPredCmp_lbound =
-        m_pReg_Filter->pFindBound(m_pIndex,BK_LBOUND);
+        m_pReg_Filter->pFindBound(pIndex,BK_LBOUND);
       if (pPredCmp_lbound) {
         vPredCmp_lbound(pPredCmp_lbound);
         break;
       }
       Card_PredCmp* pPredCmp_ubound =
-        m_pReg_Filter->pFindBound(m_pIndex,BK_UBOUND);
+        m_pReg_Filter->pFindBound(pIndex,BK_UBOUND);
       if (pPredCmp_ubound) {
         vPredCmp_ubound(pPredCmp_ubound);
         break;
@@ -1219,11 +1217,11 @@ void Board::vMark_PredCmps(void)
     case 2: {
       // lower bound and upper bound
       Card_PredCmp* pPredCmp_lbound =
-        m_pReg_Filter->pFindBound(m_pIndex,BK_LBOUND);
+        m_pReg_Filter->pFindBound(pIndex,BK_LBOUND);
       if (pPredCmp_lbound)
         vPredCmp_lbound(pPredCmp_lbound);
       Card_PredCmp* pPredCmp_ubound =
-        m_pReg_Filter->pFindBound(m_pIndex,BK_UBOUND);
+        m_pReg_Filter->pFindBound(pIndex,BK_UBOUND);
       if (pPredCmp_ubound)
         vPredCmp_ubound(pPredCmp_ubound);
       break;
@@ -1232,7 +1230,7 @@ void Board::vMark_PredCmps(void)
     case 3: {
       // equi-bound
       Card_PredCmp* pPredCmp_ebound =
-        m_pReg_Filter->pFindBound(m_pIndex,BK_EBOUND);
+        m_pReg_Filter->pFindBound(pIndex,BK_EBOUND);
       if (pPredCmp_ebound)
         vPredCmp_ebound(pPredCmp_ebound);
       break;
