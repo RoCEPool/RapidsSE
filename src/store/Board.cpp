@@ -38,7 +38,6 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
   m_pPredCmp_ubound = nullptr;
   
 
-  m_pReg_Filter    = nullptr;
   m_pReg_IndexScan = nullptr;
   m_pReg_Scan      = nullptr;
   m_pReg_Stream    = nullptr;
@@ -455,7 +454,7 @@ void Board::vReg_Filter(Card_Filter* pFilter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
-  m_pReg_Filter = pFilter;
+  m_pCardRegs->vCardReg(CK_FILTER,pFilter);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -635,7 +634,9 @@ void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  RASSERT(m_pReg_Filter);
+  Card_Filter* pReg_Filter = this->pReg_Filter();
+  
+  RASSERT(pReg_Filter);
   
   i8 iRank = 0;
   bool bEBound = false;
@@ -644,19 +645,19 @@ void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
 
   Index* pIndex = pCard_CandIndex->pFindSubCard(CK_INDEX)->pIndex();
   
-  if (m_pReg_Filter->bHasBounds(pIndex)) {
+  if (pReg_Filter->bHasBounds(pIndex)) {
   
-    if (m_pReg_Filter->pFindBound(pIndex,BK_EBOUND)) {
+    if (pReg_Filter->pFindBound(pIndex,BK_EBOUND)) {
       bEBound = true;
       pCard_CandIndex->vHasEBound(true);
     }
     
-    if (m_pReg_Filter->pFindBound(pIndex,BK_LBOUND)) {
+    if (pReg_Filter->pFindBound(pIndex,BK_LBOUND)) {
       bLBound = true;
       pCard_CandIndex->vHasLBound(true);
     }
     
-    if (m_pReg_Filter->pFindBound(pIndex,BK_UBOUND)) {
+    if (pReg_Filter->pFindBound(pIndex,BK_UBOUND)) {
       bUBound = true;
       pCard_CandIndex->vHasUBound(true);
     }
@@ -983,12 +984,14 @@ void Board::vCull_Filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  if (! m_pReg_Filter->bCull())
+  Card_Filter* pReg_Filter = this->pReg_Filter();
+
+  if (! pReg_Filter->bCull())
     return;
   
-  vRemove(m_pReg_Filter);
+  vRemove(pReg_Filter);
   
-  delete m_pReg_Filter;
+  delete pReg_Filter;
 
   vReg_Filter(nullptr);
 }
@@ -1010,14 +1013,16 @@ void Board::vCut_PredCmps(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
+  Card_Filter* pReg_Filter = this->pReg_Filter();
+
   if (m_pPredCmp_ebound)
-    m_pReg_Filter->vRemoveSubCard(m_pPredCmp_ebound);
+    pReg_Filter->vRemoveSubCard(m_pPredCmp_ebound);
   
   if (m_pPredCmp_lbound)
-    m_pReg_Filter->vRemoveSubCard(m_pPredCmp_lbound);
+    pReg_Filter->vRemoveSubCard(m_pPredCmp_lbound);
   
   if (m_pPredCmp_ubound)
-    m_pReg_Filter->vRemoveSubCard(m_pPredCmp_ubound);
+    pReg_Filter->vRemoveSubCard(m_pPredCmp_ubound);
   
   vPredCmp_ebound(nullptr);
   vPredCmp_lbound(nullptr);
@@ -1089,6 +1094,8 @@ void Board::vMark_PredCmps(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
+  Card_Filter* pReg_Filter = this->pReg_Filter();
+
   i8 iRank = pReg_CandIndex()->iRank();
  
   Index* pIndex = this->pIndex();
@@ -1098,13 +1105,13 @@ void Board::vMark_PredCmps(void)
     case 1: {
       // lower bound or upper bound
       Card_PredCmp* pPredCmp_lbound =
-        m_pReg_Filter->pFindBound(pIndex,BK_LBOUND);
+      pReg_Filter->pFindBound(pIndex,BK_LBOUND);
       if (pPredCmp_lbound) {
         vPredCmp_lbound(pPredCmp_lbound);
         break;
       }
       Card_PredCmp* pPredCmp_ubound =
-        m_pReg_Filter->pFindBound(pIndex,BK_UBOUND);
+      pReg_Filter->pFindBound(pIndex,BK_UBOUND);
       if (pPredCmp_ubound) {
         vPredCmp_ubound(pPredCmp_ubound);
         break;
@@ -1115,11 +1122,11 @@ void Board::vMark_PredCmps(void)
     case 2: {
       // lower bound and upper bound
       Card_PredCmp* pPredCmp_lbound =
-        m_pReg_Filter->pFindBound(pIndex,BK_LBOUND);
+      pReg_Filter->pFindBound(pIndex,BK_LBOUND);
       if (pPredCmp_lbound)
         vPredCmp_lbound(pPredCmp_lbound);
       Card_PredCmp* pPredCmp_ubound =
-        m_pReg_Filter->pFindBound(pIndex,BK_UBOUND);
+      pReg_Filter->pFindBound(pIndex,BK_UBOUND);
       if (pPredCmp_ubound)
         vPredCmp_ubound(pPredCmp_ubound);
       break;
@@ -1128,7 +1135,7 @@ void Board::vMark_PredCmps(void)
     case 3: {
       // equi-bound
       Card_PredCmp* pPredCmp_ebound =
-        m_pReg_Filter->pFindBound(pIndex,BK_EBOUND);
+      pReg_Filter->pFindBound(pIndex,BK_EBOUND);
       if (pPredCmp_ebound)
         vPredCmp_ebound(pPredCmp_ebound);
       break;
@@ -1247,10 +1254,12 @@ void Board::vReduce_Filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  if (! m_pReg_Filter)
+  Card_Filter* pReg_Filter = this->pReg_Filter();
+
+  if (! pReg_Filter)
     return;
   
-  m_pReg_Filter->vReduceFilter();
+  pReg_Filter->vReduceFilter();
   
   
 }
