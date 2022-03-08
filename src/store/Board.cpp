@@ -38,7 +38,6 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
   m_pPredCmp_ubound = nullptr;
   
 
-  m_pReg_IndexScan = nullptr;
   m_pReg_Scan      = nullptr;
   m_pReg_Stream    = nullptr;
   
@@ -474,7 +473,7 @@ void Board::vReg_IndexScan(Card_IndexScan* pIndexScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
-  m_pReg_IndexScan = pIndexScan;
+  m_pCardRegs->vCardReg(CK_INDEXSCAN,pIndexScan);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1159,8 +1158,10 @@ void Board::vOrder_ProjectiveStreamDefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
+  Card_IndexScan* pReg_IndexScan = this->pReg_IndexScan();
+
   Card_Stream* pCard_Stream_src =
-    _pCard_Stream(m_pReg_IndexScan->pFindSubCard(CK_STREAM));
+    _pCard_Stream(pReg_IndexScan->pFindSubCard(CK_STREAM));
 
   i8 nMainCards = this->nMainCards();
   for (i8 i_MainCard = 0; i_MainCard < nMainCards; i_MainCard++) {

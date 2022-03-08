@@ -22,7 +22,7 @@ namespace STORE
     // registers
 
      // Card_Filter*     m_pReg_Filter;
-      Card_IndexScan*  m_pReg_IndexScan;
+      //Card_IndexScan*  m_pReg_IndexScan;
       Card_Scan*       m_pReg_Scan;
       Card_Stream*     m_pReg_Stream;
 
