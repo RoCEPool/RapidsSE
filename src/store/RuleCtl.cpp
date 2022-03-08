@@ -21,6 +21,8 @@ RuleCtl::RuleCtl(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RULECTL,_FOOTER_);
           
+  MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_CARD);
+
   _checkInitialised_(CN_RULECTL);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RULECTL,_FOOTER_);
@@ -38,6 +40,26 @@ RuleCtl::~RuleCtl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool RuleCtl::bFlag(i8 i_Flag)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RULECTL,_FOOTER_);
+  
+  return m_baFlag[i_Flag];
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void RuleCtl::vFlag(i8 i_Flag, bool bFlag)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RULECTL,_FOOTER_);
+  
+  m_baFlag[i_Flag] = bFlag;
+}
 
 /*============================================================================*/
 /* end                                                                        */

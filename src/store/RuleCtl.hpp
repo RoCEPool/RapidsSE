@@ -6,12 +6,15 @@
 #include "BASE.h"
 
 #include "eCK.h"
+#include "eRN.h"
 
 namespace STORE
 {
   class RuleCtl : public Object
   {
   protected:
+  
+    b8 m_baFlag[RN_ENUMS];
 
   protected:
     // must be last
@@ -24,6 +27,9 @@ namespace STORE
     RuleCtl(void);
    ~RuleCtl(void) noexcept(false);
   
+    bool bFlag(i8 i_Flag);
+    void vFlag(i8 i_Flag, bool bFlag);
+
   protected:
     Footer* aFooter(void);
   };

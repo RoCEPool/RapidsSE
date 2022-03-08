@@ -32,11 +32,10 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
       
   m_pOptimiser = pOptimiser;
   m_sQueryNm   = szQueryNm;
-  
-  MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_CARD);
-  
+   
   m_pCardRegs = new CardRegs;
-
+  m_pRuleCtl  = new RuleCtl;
+  
   //_checkInitialised_(CN_CARD);
   _checkInitialisedSize_(sizeof(Board));
   
@@ -51,6 +50,7 @@ Board::~Board(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   delete m_pCardRegs;
+  delete m_pRuleCtl;
 }
 
 
@@ -138,26 +138,6 @@ Card* Board::pFindMain(Stz* szCardNm)
   }
   
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Board::bFlag(i8 i_Flag)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  return m_baFlag[i_Flag];
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vFlag(i8 i_Flag, bool bFlag)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_baFlag[i_Flag] = bFlag;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1097,7 +1077,7 @@ bool Board::bMay_AggGby_Sort_to_AggGby(void)
   
   bool bMay = false;
   
-  vFlag(RULE_NO,bMay);
+  m_pRuleCtl->vFlag(RULE_NO,bMay);
   return bMay;
 }
 
@@ -1116,7 +1096,7 @@ bool Board::bMay_ordStream_AggGby_to_OrdAgg(void)
   
   bool bMay = false;
   
-  vFlag(RULE_NO,bMay);
+  m_pRuleCtl->vFlag(RULE_NO,bMay);
   return bMay;
 }
 
@@ -1135,7 +1115,7 @@ bool Board::bMay_OrdAgg_Sort_to_OrdAgg(void)
 
   bool bMay = false;
   
-  vFlag(RULE_NO,bMay);
+  m_pRuleCtl->vFlag(RULE_NO,bMay);
   return bMay;
 }
 
@@ -1154,7 +1134,7 @@ bool Board::bMay_Scan_AggGby_to_IndexScan(void)
 
   bool bMay = false;
   
-  vFlag(RULE_NO,bMay);
+  m_pRuleCtl->vFlag(RULE_NO,bMay);
   return bMay;
 }
 
@@ -1173,7 +1153,7 @@ bool Board::bMay_Scan_Filter_to_IndexScan(void)
 
   bool bMay = bFind_Scan_Filter(false);
   
-  vFlag(RULE_NO,bMay);
+  m_pRuleCtl->vFlag(RULE_NO,bMay);
   return bMay;
 }
 
@@ -1192,7 +1172,7 @@ bool Board::bMay_Scan_Sort_to_IndexScan(void)
 
   bool bMay = false;
   
-  vFlag(RULE_NO,bMay);
+  m_pRuleCtl->vFlag(RULE_NO,bMay);
   return bMay;
 }
 
@@ -1211,10 +1191,8 @@ bool Board::bRule_AggGby_Sort_to_AggGby(void)
 #endif
   
 #define RULE_NO 0
-
-  bool bMay = false;
   
-  return bMay;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1246,9 +1224,7 @@ bool Board::bRule_OrdAgg_Sort_to_OrdAgg(void)
   
 #define RULE_NO 2
 
-  bool bMay = false;
-  
-  return bMay;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1345,9 +1321,7 @@ bool Board::bRule_Scan_Sort_to_IndexScan(void)
   
 #define RULE_NO 5
 
-  bool bMay = false;
-  
-  return bMay;
+  return false;
 }
 
 /*============================================================================*/

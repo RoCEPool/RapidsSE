@@ -7,8 +7,7 @@
 
 #include "Dissect.hpp"
 #include "CardRegs.hpp"
-#include "eRN.h"
-
+#include "RuleCtl.hpp"
 
 namespace STORE
 {
@@ -19,10 +18,9 @@ namespace STORE
 
     s32 m_sQueryNm;
 
-    bool m_baFlag[RN_ENUMS];
-  
     CardRegs* m_pCardRegs;
-  
+    RuleCtl*  m_pRuleCtl;
+
   private:
     // must be last
     Footer m_xFooter;
@@ -40,9 +38,7 @@ namespace STORE
     void vDeleteAllCards(void);
   
     Card* pFindMain(Stz* szCardNm);
-    bool bFlag(i8 i_Flag);
-    void vFlag(i8 i_Flag, bool bFlag);
-  
+ 
     Card* pGetMainCard(i8 i_MainCard);
     Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
   
