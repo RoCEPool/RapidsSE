@@ -599,100 +599,100 @@ void Board::vReg_Stream(Card_Stream* pStream)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vReg_Last(Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vReg_LastSet(pCard);
-
-  if (pCard->bIs_MAIN())
-    vReg_LastSet_main(pCard);
-  else
-  if (pCard->bIs_SUB())
-    vReg_LastSet_sub(pCard);
-  else
-    vReg_LastSet_other(pCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReg_LastSet(Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_pReg_LastSet = pCard;
-}
+//void Board::vReg_Last(Card* pCard)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  vReg_LastSet(pCard);
+//
+//  if (pCard->bIs_MAIN())
+//    vReg_LastSet_main(pCard);
+//  else
+//  if (pCard->bIs_SUB())
+//    vReg_LastSet_sub(pCard);
+//  else
+//    vReg_LastSet_other(pCard);
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vReg_LastSet_main(Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_pReg_LastSet_main = pCard;
-}
+//void Board::vReg_LastSet(Card* pCard)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  m_pReg_LastSet = pCard;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vReg_LastSet_other(Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_pReg_LastSet_other = pCard;
-}
+//void Board::vReg_LastSet_main(Card* pCard)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  m_pReg_LastSet_main = pCard;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vReg_LastSet_sub(Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_pReg_LastSet_sub = pCard;
-}
+//void Board::vReg_LastSet_other(Card* pCard)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  m_pReg_LastSet_other = pCard;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* Board::pReg_LastSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  return m_pReg_LastSet;
-}
+//void Board::vReg_LastSet_sub(Card* pCard)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  m_pReg_LastSet_sub = pCard;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* Board::pReg_LastSet_main(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  return m_pReg_LastSet_main;
-}
+//Card* Board::pReg_LastSet(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  return m_pReg_LastSet;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* Board::pReg_LastSet_other(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  return m_pReg_LastSet_other;
-}
+//Card* Board::pReg_LastSet_main(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  return m_pReg_LastSet_main;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card* Board::pReg_LastSet_sub(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  return m_pReg_LastSet_sub;
-}
+//Card* Board::pReg_LastSet_other(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  return m_pReg_LastSet_other;
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+//Card* Board::pReg_LastSet_sub(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  return m_pReg_LastSet_sub;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -717,9 +717,9 @@ void Board::vResetRegisters(void)
   vReg_Stage    (nullptr);
   vReg_Stream   (nullptr);
   
-  vReg_LastSet_main (nullptr);
-  vReg_LastSet_other(nullptr);
-  vReg_LastSet_sub  (nullptr);
+//  vReg_LastSet_main (nullptr);
+//  vReg_LastSet_other(nullptr);
+//  vReg_LastSet_sub  (nullptr);
 
   vPredCmp_ebound(nullptr);
   vPredCmp_lbound(nullptr);
@@ -748,15 +748,10 @@ Card* Board::pSearch(Stz* szCardNm)
   if (pCard)
     return pCard;
   
-  Card*pLastCard = pReg_LastSet_main();
-  if (pLastCard) {
-    eCK eCard = Card::eToECard(szCardNm);
-    pCard = pLastCard->pFindSubCard(eCard);
-    
-    return pCard;
-  }
-  
-  return nullptr;
+  eCK eCard = Card::eToECard(szCardNm);
+  pCard = m_pCardRegs->pSearchReg(eCard);
+
+  return pCard;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -104,16 +104,16 @@ namespace STORE
     void vReg_Stage    (Card_Stage*     pStage);
     void vReg_Stream   (Card_Stream*    pStream);
   
-    void vReg_Last         (Card*           pCard);
-    void vReg_LastSet      (Card*           pCard);
-    void vReg_LastSet_main (Card*           pCard);
-    void vReg_LastSet_other(Card*           pCard);
-    void vReg_LastSet_sub  (Card*           pCard);
+//    void vReg_Last         (Card*           pCard);
+//    void vReg_LastSet      (Card*           pCard);
+//    void vReg_LastSet_main (Card*           pCard);
+//    void vReg_LastSet_other(Card*           pCard);
+//    void vReg_LastSet_sub  (Card*           pCard);
 
-    Card* pReg_LastSet      (void);
-    Card* pReg_LastSet_main (void);
-    Card* pReg_LastSet_other(void);
-    Card* pReg_LastSet_sub  (void);
+//    Card* pReg_LastSet      (void);
+//    Card* pReg_LastSet_main (void);
+//    Card* pReg_LastSet_other(void);
+//    Card* pReg_LastSet_sub  (void);
 
     void vResetRegisters(void);
   
