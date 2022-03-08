@@ -1261,26 +1261,29 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
           case 2:
             // leading and trailing
             if (szPattern[0] == '%' && szPattern[iLength-1] == '%')
-              sPipeline->vCatSprint(" %lld matchMiddle "_Stz, iLength);
+              sPipeline->vCatSprint(" %lld matchMiddle "_Stz, iLength-2);
             else
               sPipeline->vCatSprint(" like2 "_Stz);
             break;
 
           case 3:
             //leading and trailing and one in the middle
-            if (szPattern[0] == '%' && szPattern[iLength-1] == '%')
-              sPipeline->vCatSprint(" %lld matchMiddle1 "_Stz, iLength);
+            if (szPattern[0] == '%' && szPattern[iLength-1] == '%') {
+              i8 iLength1 = StrLib::iFind(szPattern+1, '%');
+              i8 iLength2 = iLength - iLength1 - 3;
+              sPipeline->vCatSprint(" %lld %lld matchMiddle1 "_Stz, iLength1, iLength2);
+            }
             else
               sPipeline->vCatSprint(" like2 "_Stz);
             break;
 
-          case 4:
-            //leading and trailing and two in the middle
-            if (szPattern[0] == '%' && szPattern[iLength-1] == '%')
-              sPipeline->vCatSprint(" %lld matchMiddle2 "_Stz, iLength);
-            else
-              sPipeline->vCatSprint(" like2 "_Stz);
-            break;
+//          case 4:
+//            //leading and trailing and two in the middle
+//            if (szPattern[0] == '%' && szPattern[iLength-1] == '%')
+//              sPipeline->vCatSprint(" %lld matchMiddle2 "_Stz, iLength);
+//            else
+//              sPipeline->vCatSprint(" like2 "_Stz);
+//            break;
 
           default:
             sPipeline->vCatSprint(" like2 "_Stz);

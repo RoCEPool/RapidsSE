@@ -4113,13 +4113,13 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // MATCH MIDDLE 2 (%ABC%DEF%GHI%)
-    case PE_MM2:
-      eExpr1 = (eDM)pTypeStack->iPop();
-      eExpr2 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_MATCH_MIDDLE2(aCombinedT->m_iErrorCode)"_Stz);
-      pExprStack->vPushStz(sOperation);
-      pTypeStack->vPush(DM_BOL);
-      break;
+//    case PE_MM2:
+//      eExpr1 = (eDM)pTypeStack->iPop();
+//      eExpr2 = (eDM)pTypeStack->iPop();
+//      sOperation.vConcat("_MATCH_MIDDLE2(aCombinedT->m_iErrorCode)"_Stz);
+//      pExprStack->vPushStz(sOperation);
+//      pTypeStack->vPush(DM_BOL);
+//      break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // MATCH TRAILING (%ABC)

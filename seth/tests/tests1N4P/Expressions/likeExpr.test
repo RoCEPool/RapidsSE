@@ -74,6 +74,10 @@ rows:
  ('UNITED KINGDOM')
  ('UNITED STATES')
 
+select n_name from nation where n_name like '%TED%ING%';
+rows:
+ ('UNITED KINGDOM')
+
 SELECT n_name FROM nation where n_name LIKE 'ALGE_IA' ;
 rows:
  ('ALGERIA')
