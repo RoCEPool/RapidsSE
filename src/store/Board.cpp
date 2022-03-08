@@ -53,9 +53,6 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
   m_pReg_Stage     = nullptr;
   m_pReg_Stream    = nullptr;
 
-  m_pReg_GbyElist  = nullptr;
-  m_pReg_SbyElist  = nullptr;
-
   m_pReg_LastSet       = nullptr;
   m_pReg_LastSet_main  = nullptr;
   m_pReg_LastSet_other = nullptr;
@@ -599,29 +596,6 @@ void Board::vReg_Stream(Card_Stream* pStream)
   m_pReg_Stream = pStream;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReg_GbyElist(Card_GbyElist* pGbyElist)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  m_pReg_GbyElist = pGbyElist;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReg_SbyElist(Card_SbyElist* pSbyElist)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  m_pReg_SbyElist = pSbyElist;
-}
-
-
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -831,9 +805,6 @@ void Board::vSetRegister(Card* pCard)
     case CK_SEND:         vReg_Send     (_pCard_Send     (pCard)); break;
     case CK_SORT:         vReg_Sort     (_pCard_Sort     (pCard)); break;
     case CK_STAGE:        vReg_Stage    (_pCard_Stage    (pCard)); break;
-
-    case CK_GBYELIST:     vReg_GbyElist (_pCard_GbyElist (pCard)); break;
-    case CK_SBYELIST:     vReg_SbyElist (_pCard_SbyElist (pCard)); break;
 
     default:
       vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
