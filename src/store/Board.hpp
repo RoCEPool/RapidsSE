@@ -66,6 +66,7 @@ namespace STORE
     Board(Optimiser* pOptimiser, Stz* szCardNm);
    ~Board(void) noexcept(false);
 
+    CardRegs* pCardRegs(void);
     void vClear(void);
 
     void vDeleteAllCards(void);
@@ -78,7 +79,6 @@ namespace STORE
     Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
   
     void vIndex    (Index*     pIndex);
-    bool bInRegister    (Card* pCard);
 
     i8   nMainCards(void);
   

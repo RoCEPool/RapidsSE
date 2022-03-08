@@ -90,6 +90,29 @@ bool CardRegs::bInCardReg(Card* pCard)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card* CardRegs::pSearchReg(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+
+  for (i8 i_Reg = 0; i_Reg < CK_ENUMS; i_Reg++) {
+    Card* pCard = m_paCardReg[i_Reg];
+    if (! pCard)
+      continue;
+    
+    if (eCard == pCard->eCard())
+      return pCard;
+    
+    Card* pChildCard = pCard->pFindSubCard(eCard);
+    if (pChildCard)
+      return pChildCard;
+  }
+  
+  return nullptr;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

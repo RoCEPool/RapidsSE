@@ -32,6 +32,8 @@ namespace STORE
     void  vClearCardRegs(void);
 
     bool  bInCardReg(Card* pCard);
+  
+    Card* pSearchReg(eCK eCard);
 
   protected:
     Footer* aFooter(void);

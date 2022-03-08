@@ -91,6 +91,16 @@ Board::~Board(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/* get card registers                                                         */
+/*----------------------------------------------------------------------------*/
+CardRegs* Board::pCardRegs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  return m_pCardRegs;
+}
+
+/*----------------------------------------------------------------------------*/
 /* clear the board                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vClear(void)
@@ -188,40 +198,6 @@ void Board::vIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_pIndex = pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Board::bInRegister(Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  if (pCard == m_pReg_Aggreg)    return true;
-  if (pCard == m_pReg_CandIndex) return true;
-  if (pCard == m_pReg_Combine)   return true;
-  if (pCard == m_pReg_Filter)    return true;
-  if (pCard == m_pReg_Hash)      return true;
-  if (pCard == m_pReg_IndexJoin) return true;
-  if (pCard == m_pReg_IndexScan) return true;
-  if (pCard == m_pReg_Limit)     return true;
-  if (pCard == m_pReg_OrdAgg)    return true;
-  if (pCard == m_pReg_Project)   return true;
-  if (pCard == m_pReg_Scan)      return true;
-  if (pCard == m_pReg_Send)      return true;
-  if (pCard == m_pReg_Sort)      return true;
-  if (pCard == m_pReg_Stage)     return true;
-  if (pCard == m_pReg_Stream)    return true;
-
-  if (pCard == m_pReg_GbyElist)  return true;
-  if (pCard == m_pReg_SbyElist)  return true;
-
-  if (pCard == m_pReg_LastSet)        return true;
-  if (pCard == m_pReg_LastSet_main)   return true;
-  if (pCard == m_pReg_LastSet_other)  return true;
-  if (pCard == m_pReg_LastSet_sub)    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -824,14 +800,11 @@ void Board::vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard)
   }
 
   rpMainCard = pFindMain(szCardNm);
+  if (rpMainCard)
+    return;
   
-  if (! rpMainCard) {
-    Card*pLastCard = pReg_LastSet_main();
-    if (pLastCard) {
-      eCK eCard = Card::eToECard(szCardNm);
-      rpSubCard = pLastCard->pFindSubCard(eCard);
-    }
-  }
+  eCK eCard = Card::eToECard(szCardNm);
+  rpSubCard = m_pCardRegs->pSearchReg(eCard);
 }
 
 /*----------------------------------------------------------------------------*/

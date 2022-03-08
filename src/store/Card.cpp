@@ -2350,12 +2350,13 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
   s32 sName;
     
   Board* pBoard = _pBoard(pRibbon->pSurface());
+  CardRegs* pCardRegs = pBoard->pCardRegs();
 
   if (m_bPrintNm) {
     
     if (bIs_MAIN()) {
       sName.vSprint("%s%s%s x%lld"_Stz
-                    ,pBoard->bInRegister(this) ? "R "_Stz : ""_Stz
+                    ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
                     ,Stz::szDots(iDepth)
                     ,szCardNm()
                     ,nItems()
@@ -2366,13 +2367,13 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
       sName.vSprint("%s%lld)%s%s"_Stz
                     ,Stz::szDots(iDepth)
                     ,m_iCardNo
-                    ,pBoard->bInRegister(this) ? "R "_Stz : ""_Stz
+                    ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
                     ,szCardNm()
                     );
     }
     else {
       sName.vSprint("%s%lld %s"_Stz
-                    ,pBoard->bInRegister(this) ? "R "_Stz : ""_Stz
+                    ,pCardRegs->bInCardReg(this) ? "R "_Stz : ""_Stz
                     ,m_iCardNo
                     ,szCardNm()
                     );

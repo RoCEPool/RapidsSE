@@ -6,6 +6,7 @@
 
 #include "OptimiserCatalog.hpp"
 #include "Dynamo.hpp"
+#include "CardRegs.hpp"
 
 extern OptimiserCatalog gxOptimiserCatalog;
 
@@ -564,7 +565,8 @@ bool STORE::bOpt_set(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   Card* pMainCard = nullptr;
   Card* pSubCard = nullptr;
   Board* pBoard = pOptimiser->pHeadBoard();
-  
+  CardRegs* pCardRegs = pBoard->pCardRegs();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   for (i8 i_Tkn = 1; i_Tkn < nTkns; i_Tkn++) {
@@ -574,13 +576,15 @@ bool STORE::bOpt_set(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
     pBoard->vSearch(szCard,pMainCard,pSubCard);
       
     if (pMainCard) {
-      pBoard->vSetRegister(pMainCard);
-      pBoard->vReg_Last(pMainCard);
+      //pBoard->vSetRegister(pMainCard);
+      //pBoard->vReg_Last(pMainCard);
+      pCardRegs->vCardReg(pMainCard);
     }
     else
     if (pSubCard) {
-      pBoard->vSetRegister(pSubCard);
-      pBoard->vReg_Last(pSubCard);
+      //pBoard->vSetRegister(pSubCard);
+      //pBoard->vReg_Last(pSubCard);
+      pCardRegs->vCardReg(pSubCard);
     }
   }
   
