@@ -38,7 +38,7 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
   m_pPredCmp_ubound = nullptr;
   
   m_pReg_Aggreg    = nullptr;
-  m_pReg_CandIndex = nullptr;
+  m_pReg_CandIndex__ = nullptr;
   m_pReg_Combine   = nullptr;
   m_pReg_Filter    = nullptr;
   m_pReg_Hash      = nullptr;
@@ -441,15 +441,25 @@ void Board::vReg_Aggreg(Card_Aggreg* pAggreg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_CandIndex* Board::pReg_CandIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+    
+  return m_pReg_CandIndex__;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vReg_CandIndex(Card_CandIndex* pCandidateIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
-  m_pReg_CandIndex = pCandidateIndex;
+  m_pReg_CandIndex__ = pCandidateIndex;
   
-  if (m_pReg_CandIndex) {
-    vIndex(m_pReg_CandIndex->pFindSubCard(CK_INDEX)->pIndex());
-  }
+//  if (m_pReg_CandIndex__) {
+//    vIndex(m_pReg_CandIndex__->pFindSubCard(CK_INDEX)->pIndex());
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -658,43 +668,6 @@ void Board::vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard)
   
   eCK eCard = Card::eToECard(szCardNm);
   rpSubCard = m_pCardRegs->pSearchReg(eCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vSetRegister(Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  eCK eCard = pCard->eCard();
-  
-  switch (eCard) {
-    case CK_AGGREG:       vReg_Aggreg   (_pCard_Aggreg   (pCard)); break;
-    case CK_CANDINDEX:    vReg_CandIndex(_pCard_CandIndex(pCard)); break;
-    case CK_COMBINE:      vReg_Combine  (_pCard_Combine  (pCard)); break;
-    case CK_FILTER:       vReg_Filter   (_pCard_Filter   (pCard)); break;
-    case CK_HASH:         vReg_Hash     (_pCard_Hash     (pCard)); break;
-    case CK_INDEXJOIN:    vReg_IndexJoin(_pCard_IndexJoin(pCard)); break;
-    case CK_INDEXSCAN:    vReg_IndexScan(_pCard_IndexScan(pCard)); break;
-    case CK_LIMIT:        vReg_Limit    (_pCard_Limit    (pCard)); break;
-    case CK_ORDAGG:       vReg_OrdAgg   (_pCard_OrdAgg   (pCard)); break;
-    case CK_PROJECT:      vReg_Project  (_pCard_Project  (pCard)); break;
-    case CK_SCAN:         vReg_Scan     (_pCard_Scan     (pCard)); break;
-    case CK_SEND:         vReg_Send     (_pCard_Send     (pCard)); break;
-    case CK_SORT:         vReg_Sort     (_pCard_Sort     (pCard)); break;
-    case CK_STAGE:        vReg_Stage    (_pCard_Stage    (pCard)); break;
-
-    default:
-      vTrace("SWITCH %s: Missing case for eCard %lld %s\n"_Stz
-             ,__func__
-             ,(i8)eCard
-             ,aCK[eCard]
-             );
-      RASSERT(0);
-      break;
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1200,7 +1173,7 @@ void Board::vMark_PredCmps(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  i8 iRank = m_pReg_CandIndex->iRank();
+  i8 iRank = pReg_CandIndex()->iRank();
  
   Index* pIndex = this->pIndex();
 
@@ -1323,6 +1296,7 @@ bool Board::bPick_CandidateIndex(void)
   }
   
   vReg_CandIndex(pCard_CandIndex);
+  vIndex(pCard_CandIndex->pFindSubCard(CK_INDEX)->pIndex());
 
   return true;
 }

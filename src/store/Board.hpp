@@ -21,7 +21,7 @@ namespace STORE
 
     // registers
     Card_Aggreg*     m_pReg_Aggreg;
-    Card_CandIndex*  m_pReg_CandIndex;
+    Card_CandIndex*  m_pReg_CandIndex__;
     Card_Combine*    m_pReg_Combine;
     Card_Filter*     m_pReg_Filter;
     Card_Hash*       m_pReg_Hash;
@@ -82,6 +82,7 @@ namespace STORE
     void vQueryNm(Stz* szQueryNm);
   
     void vReg_Aggreg   (Card_Aggreg*    pAggreg);
+    Card_CandIndex* pReg_CandIndex(void );
     void vReg_CandIndex(Card_CandIndex* pCandIndex);
     void vReg_Combine  (Card_Combine*   pCombine);
     void vReg_Filter   (Card_Filter*    pFilter);
@@ -101,7 +102,6 @@ namespace STORE
   
     Card* pSearch(Stz* szCardNm);
     void vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard);
-    void vSetRegister(Card* pCard);
 
     Table* pTable(void);
     void vTable(Table* pTable);
