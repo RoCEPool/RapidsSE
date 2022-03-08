@@ -20,21 +20,11 @@ namespace STORE
     s32 m_sQueryNm;
 
     // registers
-    Card_Aggreg*     m_pReg_Aggreg;
-    Card_CandIndex*  m_pReg_CandIndex__;
-    Card_Combine*    m_pReg_Combine;
-    Card_Filter*     m_pReg_Filter;
-    Card_Hash*       m_pReg_Hash;
-    Card_IndexJoin*  m_pReg_IndexJoin;
-    Card_IndexScan*  m_pReg_IndexScan;
-    Card_Limit*      m_pReg_Limit;
-    Card_OrdAgg*     m_pReg_OrdAgg;
-    Card_Project*    m_pReg_Project;
-    Card_Scan*       m_pReg_Scan;
-    Card_Send*       m_pReg_Send;
-    Card_Sort*       m_pReg_Sort;
-    Card_Stage*      m_pReg_Stage;
-    Card_Stream*     m_pReg_Stream;
+
+      Card_Filter*     m_pReg_Filter;
+      Card_IndexScan*  m_pReg_IndexScan;
+      Card_Scan*       m_pReg_Scan;
+      Card_Stream*     m_pReg_Stream;
 
     Card_PredCmp*    m_pPredCmp_ebound;
     Card_PredCmp*    m_pPredCmp_lbound;
@@ -81,21 +71,11 @@ namespace STORE
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
   
-    void vReg_Aggreg   (Card_Aggreg*    pAggreg);
     Card_CandIndex* pReg_CandIndex(void );
     void vReg_CandIndex(Card_CandIndex* pCandIndex);
-    void vReg_Combine  (Card_Combine*   pCombine);
     void vReg_Filter   (Card_Filter*    pFilter);
-    void vReg_Hash     (Card_Hash*      pHash);
-    void vReg_IndexJoin(Card_IndexJoin* pIndexJoin);
     void vReg_IndexScan(Card_IndexScan* pIndexScan);
-    void vReg_Limit    (Card_Limit*     pLimit);
-    void vReg_OrdAgg   (Card_OrdAgg*    pOrdAgg);
-    void vReg_Project  (Card_Project*   pProject);
     void vReg_Scan     (Card_Scan*      pScan);
-    void vReg_Send     (Card_Send*      pSend);
-    void vReg_Sort     (Card_Sort*      pSort);
-    void vReg_Stage    (Card_Stage*     pStage);
     void vReg_Stream   (Card_Stream*    pStream);
   
     void vResetRegisters(void);

@@ -37,20 +37,10 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
   m_pPredCmp_lbound = nullptr;
   m_pPredCmp_ubound = nullptr;
   
-  m_pReg_Aggreg    = nullptr;
-  m_pReg_CandIndex__ = nullptr;
-  m_pReg_Combine   = nullptr;
+
   m_pReg_Filter    = nullptr;
-  m_pReg_Hash      = nullptr;
-  m_pReg_IndexJoin = nullptr;
   m_pReg_IndexScan = nullptr;
-  m_pReg_Limit     = nullptr;
-  m_pReg_OrdAgg    = nullptr;
-  m_pReg_Project   = nullptr;
   m_pReg_Scan      = nullptr;
-  m_pReg_Send      = nullptr;
-  m_pReg_Sort      = nullptr;
-  m_pReg_Stage     = nullptr;
   m_pReg_Stream    = nullptr;
   
   MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_CARD);
@@ -431,21 +421,11 @@ void Board::vQueryNm(Stz* szQueryNm)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vReg_Aggreg(Card_Aggreg* pAggreg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  m_pReg_Aggreg = pAggreg;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card_CandIndex* Board::pReg_CandIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
-  return m_pReg_CandIndex__;
+  return _pCard_CandIndex(m_pCardRegs->pCardReg(CK_CANDINDEX));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -455,21 +435,14 @@ void Board::vReg_CandIndex(Card_CandIndex* pCandidateIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
-  m_pReg_CandIndex__ = pCandidateIndex;
+  if (pCandidateIndex)
+    m_pCardRegs->vCardReg(pCandidateIndex);
+  else
+    m_pCardRegs->vClearCardReg(CK_CANDINDEX);
   
 //  if (m_pReg_CandIndex__) {
 //    vIndex(m_pReg_CandIndex__->pFindSubCard(CK_INDEX)->pIndex());
 //  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReg_Combine(Card_Combine* pCombine)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  m_pReg_Combine = pCombine;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -485,26 +458,6 @@ void Board::vReg_Filter(Card_Filter* pFilter)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vReg_Hash(Card_Hash* pHash)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  m_pReg_Hash = pHash;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReg_IndexJoin(Card_IndexJoin* pIndexJoin)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  m_pReg_IndexJoin = pIndexJoin;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vReg_IndexScan(Card_IndexScan* pIndexScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -515,71 +468,11 @@ void Board::vReg_IndexScan(Card_IndexScan* pIndexScan)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vReg_Limit(Card_Limit* pLimit)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  m_pReg_Limit = pLimit;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReg_OrdAgg(Card_OrdAgg* pOrdAgg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  m_pReg_OrdAgg = pOrdAgg;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReg_Project(Card_Project* pProject)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_pReg_Project = pProject;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vReg_Scan(Card_Scan* pScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   m_pReg_Scan = pScan;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReg_Send(Card_Send* pSend)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  m_pReg_Send = pSend;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReg_Sort(Card_Sort* pSort)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  m_pReg_Sort = pSort;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReg_Stage(Card_Stage* pStage)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  m_pReg_Stage = pStage;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -599,20 +492,10 @@ void Board::vResetRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vReg_Aggreg   (nullptr);
   vReg_CandIndex(nullptr);
-  vReg_Combine  (nullptr);
   vReg_Filter   (nullptr);
-  vReg_Hash     (nullptr);
-  vReg_IndexJoin(nullptr);
   vReg_IndexScan(nullptr);
-  vReg_Limit    (nullptr);
-  vReg_OrdAgg   (nullptr);
-  vReg_Project  (nullptr);
   vReg_Scan     (nullptr);
-  vReg_Send     (nullptr);
-  vReg_Sort     (nullptr);
-  vReg_Stage    (nullptr);
   vReg_Stream   (nullptr);
   
   vPredCmp_ebound(nullptr);
