@@ -360,45 +360,6 @@ void Board::vQueryNm(Stz* szQueryNm)
   m_sQueryNm = szQueryNm;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_CandIndex* Board::pReg_CandIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  return _pCard_CandIndex(m_pCardRegs->pCardReg(CK_CANDINDEX));
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReg_CandIndex(Card_CandIndex* pCandidateIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  m_pCardRegs->vCardReg(CK_CANDINDEX,pCandidateIndex);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Filter* Board::pReg_Filter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  return _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vReg_Filter(Card_Filter* pFilter)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
-  m_pCardRegs->vCardReg(CK_FILTER,pFilter);
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -467,8 +428,10 @@ void Board::vResetRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vReg_CandIndex(nullptr);
-  vReg_Filter   (nullptr);
+  m_pCardRegs->vCardReg(CK_CANDINDEX,nullptr);
+
+  //vReg_Filter   (nullptr);
+  m_pCardRegs->vCardReg(CK_FILTER,nullptr);
   vReg_IndexScan(nullptr);
   vReg_Scan     (nullptr);
   vReg_Stream   (nullptr);
@@ -577,7 +540,7 @@ void Board::vRankCandIndex(Card_CandIndex* pCard_CandIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_Filter* pReg_Filter = this->pReg_Filter();
+  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
   
   RASSERT(pReg_Filter);
   
@@ -918,7 +881,7 @@ void Board::vCull_Filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_Filter* pReg_Filter = this->pReg_Filter();
+  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
 
   if (! pReg_Filter->bCull())
     return;
@@ -927,7 +890,8 @@ void Board::vCull_Filter(void)
   
   delete pReg_Filter;
 
-  vReg_Filter(nullptr);
+  //vReg_Filter(nullptr);
+  m_pCardRegs->vCardReg(CK_FILTER,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -947,7 +911,7 @@ void Board::vCut_PredCmps(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_Filter* pReg_Filter = this->pReg_Filter();
+  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
 
   Card_PredCmp* pReg_ebound = m_pCardRegs->pPredCmp_ebound();
   Card_PredCmp* pReg_lbound = m_pCardRegs->pPredCmp_lbound();
@@ -1020,7 +984,8 @@ bool Board::bFind_Scan_Filter(bool bMark)
     vTable(pCard_Table->pTable());
     
     if (bMark)
-      vReg_Filter(_pCard_Filter(pTestFilter));
+      //vReg_Filter(_pCard_Filter(pTestFilter));
+      m_pCardRegs->vCardReg(CK_FILTER,pTestFilter);
 
     return true;
   }
@@ -1035,9 +1000,12 @@ void Board::vMark_PredCmps(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_Filter* pReg_Filter = this->pReg_Filter();
+  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
 
-  i8 iRank = pReg_CandIndex()->iRank();
+  Card_CandIndex* pCard_CandIndex =
+    _pCard_CandIndex(m_pCardRegs->pCardReg(CK_CANDINDEX));
+
+  i8 iRank = pCard_CandIndex->iRank();
  
   Index* pIndex = this->pIndex();
 
@@ -1165,11 +1133,13 @@ bool Board::bPick_CandidateIndex(void)
   }
 
   if (! pCard_CandIndex) {
-    vReg_CandIndex(nullptr);
+    //vReg_CandIndex(nullptr);
+    m_pCardRegs->vCardReg(CK_CANDINDEX,nullptr);
     return false;
   }
   
-  vReg_CandIndex(pCard_CandIndex);
+  //vReg_CandIndex(pCard_CandIndex);
+  m_pCardRegs->vCardReg(CK_CANDINDEX,pCard_CandIndex);
   vIndex(pCard_CandIndex->pFindSubCard(CK_INDEX)->pIndex());
 
   return true;
@@ -1193,9 +1163,7 @@ void Board::vRank_CandidateIndexes(void)
     Card_CandIndex* pCard_CandIndex = _pCard_CandIndex(pMainCard);
     
     vRankCandIndex(pCard_CandIndex);
-    
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1205,14 +1173,12 @@ void Board::vReduce_Filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_Filter* pReg_Filter = this->pReg_Filter();
+  Card_Filter* pReg_Filter = _pCard_Filter(m_pCardRegs->pCardReg(CK_FILTER));
 
   if (! pReg_Filter)
     return;
   
   pReg_Filter->vReduceFilter();
-  
-  
 }
 
 /*----------------------------------------------------------------------------*/
