@@ -23,6 +23,10 @@ CardRegs::CardRegs(void)
         
   MemLib::vZero(m_paCardReg,sizeof(m_paCardReg),CN_CARDREGS);
 
+  m_pPredCmp_ebound = nullptr;
+  m_pPredCmp_lbound = nullptr;
+  m_pPredCmp_ubound = nullptr;
+
   m_pIndex = nullptr;
   m_pTable = nullptr;
 
@@ -131,6 +135,66 @@ void CardRegs::vIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
   
   m_pIndex = pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_PredCmp* CardRegs::pPredCmp_ebound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+  
+  return m_pPredCmp_ebound;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardRegs::vPredCmp_ebound(Card_PredCmp* pPredCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+  
+  m_pPredCmp_ebound = pPredCmp;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_PredCmp* CardRegs::pPredCmp_lbound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+  
+  return m_pPredCmp_lbound;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardRegs::vPredCmp_lbound(Card_PredCmp* pPredCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+    
+  m_pPredCmp_lbound = pPredCmp;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_PredCmp* CardRegs::pPredCmp_ubound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+  
+  return m_pPredCmp_ubound;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardRegs::vPredCmp_ubound(Card_PredCmp* pPredCmp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDREGS,_FOOTER_);
+    
+  m_pPredCmp_ubound = pPredCmp;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Card.hpp"
+#include "Card_PredCmp.hpp"
 #include "eCK.h"
 
 namespace STORE
@@ -13,7 +14,12 @@ namespace STORE
   class CardRegs : public Object
   {
   protected:
+  
     Card* m_paCardReg[CK_ENUMS];
+
+    Card_PredCmp*    m_pPredCmp_ebound;
+    Card_PredCmp*    m_pPredCmp_lbound;
+    Card_PredCmp*    m_pPredCmp_ubound;
 
     Index*     m_pIndex;
     Table*     m_pTable;
@@ -39,6 +45,13 @@ namespace STORE
     bool  bInCardReg(Card* pCard);
     Index* pIndex(void);
     void vIndex(Index* pIndex);
+
+    Card_PredCmp* pPredCmp_ebound(void);
+    void vPredCmp_ebound(Card_PredCmp* pPredCmp);
+    Card_PredCmp* pPredCmp_lbound(void);
+    void vPredCmp_lbound(Card_PredCmp* pPredCmp);
+    Card_PredCmp* pPredCmp_ubound(void);
+    void vPredCmp_ubound(Card_PredCmp* pPredCmp);
 
     Card* pSearchReg(eCK eCard);
 
