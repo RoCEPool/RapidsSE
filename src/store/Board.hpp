@@ -19,12 +19,6 @@ namespace STORE
 
     s32 m_sQueryNm;
 
-    // registers
-
-    Card_PredCmp*    m_pPredCmp_ebound__;
-    Card_PredCmp*    m_pPredCmp_lbound__;
-    Card_PredCmp*    m_pPredCmp_ubound__;
-
     bool m_baFlag[RN_ENUMS];
   
     CardRegs* m_pCardRegs;
@@ -59,12 +53,6 @@ namespace STORE
   
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
   
-    Card_PredCmp* pPredCmp_ebound(void);
-    void vPredCmp_ebound(Card_PredCmp* pPredCmp);
-    Card_PredCmp* pPredCmp_lbound(void);
-    void vPredCmp_lbound(Card_PredCmp* pPredCmp);
-    Card_PredCmp* pPredCmp_ubound(void);
-    void vPredCmp_ubound(Card_PredCmp* pPredCmp);
     void vPrintBoard(Stz* szCue);
 
     Stz* szQueryNm(void);
