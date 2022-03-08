@@ -38,7 +38,6 @@ Board::Board(Optimiser* pOptimiser, Stz* szQueryNm)
   m_pPredCmp_ubound = nullptr;
   
 
-  m_pReg_Scan      = nullptr;
   m_pReg_Stream    = nullptr;
   
   MemLib::vZero(m_baFlag,sizeof(m_baFlag),CN_CARD);
@@ -493,7 +492,7 @@ void Board::vReg_Scan(Card_Scan* pScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  m_pReg_Scan = pScan;
+  m_pCardRegs->vCardReg(CK_SCAN,pScan);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -850,6 +849,8 @@ bool Board::bAdd_CandIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
  
+  Card_Scan* pReg_Scan = this->pReg_Scan();
+
   Table* pTable = this->pTable();
 
   IdxVec* pIdxVec = pTable->pIdxVec();
@@ -864,7 +865,7 @@ bool Board::bAdd_CandIndexes(void)
     return false;
   }
   
-  i8 i_Filter = i_Find(m_pReg_Scan) + 1;
+  i8 i_Filter = i_Find(pReg_Scan) + 1;
   Card_Filter* pCard_Filter = _pCard_Filter(pGet(i_Filter));
 
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
@@ -891,6 +892,8 @@ void Board::vAdd_IndexScan(void)
   //m_pFilter->vDump();
 
   Card_IndexScan* pCard_IndexScan = new Card_IndexScan;
+  Card_Scan* pReg_Scan = this->pReg_Scan();
+
 
   Index* pIndex = this->pIndex();
   Card_Index* pCard_Index = new Card_Index(pIndex);
@@ -967,7 +970,7 @@ void Board::vAdd_IndexScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  vInsertBefore(pCard_IndexScan,m_pReg_Scan);
+  vInsertBefore(pCard_IndexScan,pReg_Scan);
   
   vReg_IndexScan(pCard_IndexScan);
   
@@ -1035,11 +1038,14 @@ void Board::vCut_Scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vRemove(m_pReg_Scan);
+  Card_Scan* pReg_Scan = this->pReg_Scan();
+
+
+  vRemove(pReg_Scan);
   
   vReg_Scan(nullptr);
 
-  delete m_pReg_Scan;  
+  delete pReg_Scan;  
 }
 
 /*----------------------------------------------------------------------------*/
