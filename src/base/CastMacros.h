@@ -198,10 +198,11 @@ fltArg1.m_iAsI8 = *(--paW);                                                     
   }                                                                       \
 }
 
-// STRING TO FLT, Not sure how the string is passed to the macro
-#define _VCH_TOFLT(iErrorCode, szStrArea) \
+// varchar TO FLT
+#define _VCH_TOFLT(iErrorCode) \
 {                                                                         \
-  char *pS = szStrArea;                             \
+  iArg1 = *(--paW);                               \
+  char *pS = (char*)iArg1;                             \
   if (iErrorCode != EC_NONE ||                                           \
     pS == C_DATUM_NULL) {                                   \
     *paW++ = C_DATUM_NULL;                                               \
