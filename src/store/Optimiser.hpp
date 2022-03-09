@@ -45,6 +45,8 @@ namespace STORE
     CardCtl* pCardCtl(void);
   
     void vDissect(PipelineSpec* pUnOptPipelineSpec);
+  
+    Drafter* pDrafter(void);
 
     Board* pHeadBoard(void);
 

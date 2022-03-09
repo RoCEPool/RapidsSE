@@ -115,6 +115,16 @@ void Optimiser::vDissect(PipelineSpec* pUnOptPipelineSpec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get drafter                                                                */
+/*----------------------------------------------------------------------------*/
+Drafter* Optimiser::pDrafter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_pDrafter;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get top board                                                              */
 /*----------------------------------------------------------------------------*/
 Board* Optimiser::pHeadBoard(void)
