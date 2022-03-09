@@ -218,7 +218,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
   while ( pTkn ) {
 
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a GROUPBY ?
@@ -240,6 +240,17 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       bGroupBy = true;
       ePreExp = PE_GBY;
       //pIndexDef->vIndexNm("gby_idx"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a SORT ?
+    if (pTkn->bSame("SORT"_Stz)) {
+
+      eExprKind = EK_SORT;
+      ePreExp = PE_SRT;
+      pIndexDef->vIndexNm("srt_idx"_Stz);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -377,6 +388,16 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip negate op
     if (pTkn->bSame("negate"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip ascending/ descending
+    if (pTkn->bSame("ASC"_Stz) || pTkn->bSame("DESC"_Stz)) {
+      vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+      pPreExpStack->vPush(ePreExp);
+      pTkn = pTknVec->pNextToken();
       continue;
     }
 
@@ -679,7 +700,8 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
   pPreExpStack->vPush(ePreExp);
 
   // add the last column to the streamDefOut
-  vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+  if (ePreExp != PE_SRT)
+    vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
   L_RETURN:
 

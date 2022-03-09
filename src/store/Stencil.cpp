@@ -671,8 +671,19 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupSort(pCombined, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil);
       vAppend(pShape);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSketchEosSort(pCombined, pStream, pOp);
+      bGeneratePotTub = false;
+      bGenerateFun3 = false;
+
+      ePrevStencil = SR_AT;
+
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -943,6 +954,12 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     // generate the code for the keyExistsOp
     if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
       vSetupKeyExists(pCombined, pStream, pOp);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the sortOP
+    if (pOp->szOpNm()->bSame("sort"_Stz)) {
+      vSetupSort(pCombined, pStream, pOp);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1310,6 +1327,29 @@ void Stencil::vSetupProjectExp(Combined* pCombined, Stream* pStream, Op* pOp) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* set up for sort                                                            */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  eKE eKind;
+
+  // get the indexDef
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+
+  pCombined->aCombinedT()->m_aIndexDefSrt = new IndexDef(pIndexDef);
+  pCombined->aCombinedT()->m_aIndexTreeSrt = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkSRT, 1, pIndexDef->eKeyKind());
+
+  // delete the indexdef in the LU of OP
+  // not the correct place... will come back to it
+  delete *pLogicUnit->m_xpIndexDef;
+  pLogicUnit->m_xpIndexDef = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set up for scan                                                            */
 /*----------------------------------------------------------------------------*/
 void Stencil::vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp) {
@@ -1417,6 +1457,53 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
 
   // get the indexDef
   IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefGby);
+
+  // get the aggregate type stack
+  IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append code for EOSMARKER handling
+
+  vAppendFuncHeader3();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the streamDef
+  pCodeSynth = new CodeSynth(pStreamDefOut,SR_AT);
+  pCodeSynth->vSynthStruct(0);
+  m_pShapeEOS->vStructSynthA(pCodeSynth);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // payload to buffer
+  pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, nullptr, pPreExpStack, SR_NONE, SR_AT);
+
+  pCodeSynth->vSynthEosPayload(pIndexDef, m_pPostStack);
+  m_pShapeEOS->vCodeSynthA(pCodeSynth);
+
+  // delete the postStack. No longer needed
+  delete m_pPostStack;
+  m_pPostStack = nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append concluding code
+  Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch code for Eos fun3 for sort OP                                       */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  CodeSynth *pCodeSynth;
+  s256 szStageNm;
+  s256 sLabel;
+
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+  // get the indexDef
+  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefSrt);
 
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -2100,7 +2187,7 @@ Shape* Stencil::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR e
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   // get the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefGby);
+  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefSrt);
 
   // get the sort type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);

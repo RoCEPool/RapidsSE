@@ -356,6 +356,17 @@ struct Combined_T
   void*   m_aEntKeyPL;
   struct Ent_int* m_aEntIntPL;
 
+  // sort
+  i8*     m_aiSrtPayload;
+  void*   m_aSrtPayloadRow;
+  char*   m_racSrtPayloadArea;
+  void*   m_aIndexTreeSrt;
+  void*   m_aIndexDefSrt;
+  void*   m_aEntBufferSRT;
+  void*   m_aEntWrkSRT;
+  void*   m_aEntKeySRT;
+  struct Ent_int* m_aEntIntSRT;
+
   // top
   i8      m_iTopInit;
   i8*     m_aiTopPayload;

@@ -15,10 +15,18 @@
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  // cleanup the pot
-  PotRlu[].cleanup
+  // will be null if table not found
+  StreamDefLft[].isNull not if
+    StreamDefLft[].delete
+  then
 
-  //Counter0[] cleanUpAsm
+  StreamDefOut[].isNull not if
+    StreamDefOut[].delete
+  then
+
+  IndexDef[].isNull not if
+    IndexDef[].delete
+  then
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
@@ -37,8 +45,11 @@
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 
+  // new an indexDef
+  indexDef[].new
+
   // generate selectColumns bitmap from expr and streamDefIn
-  <expr> nullptr StreamDefLft[] StreamDefOut[].generate to eError
+  <expr> indexDef[] StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if

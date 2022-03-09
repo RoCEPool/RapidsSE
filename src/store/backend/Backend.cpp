@@ -734,7 +734,7 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
   // Iterate each projected expression
   if (pOrderItemList->bHasChildren()) {
 
-    pBackend->vAppendNextOp("orderBy 2 \""_Stz);
+    pBackend->vAppendNextOp("sort 2 \""_Stz);
 //    sPipeline->vCatSprint(
 //        "    orderBy 0 \""
 //        ""_Stz);

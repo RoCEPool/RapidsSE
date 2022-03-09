@@ -5,34 +5,36 @@
 
 enum eEK // expression kind
 {
-  /* 0 */ EK_NONE=0,
-  /* 1 */ EK_AGGGBY,    // aggregate with group by
-  /*   */ EK_AGGORD,    // aggregate with ordered group by
-  /* 2 */ EK_AGGREG,    // projection with aggreagte
-  /* 3 */ EK_FILTER,    // filter
-  /* 4 */ EK_GROUPBY,   // group by expression
-  /* 5 */ EK_INDEXJOIN, // index scan
-  /* 6 */ EK_INDEXSCAN, // index scan
-  /* 4 */ EK_ORDGROUPBY, // group by expression with ordAgg
-  /* 8 */ EK_PROJECT,   // projection
-  /* 9 */ EK_TOP,       // top
+  /*   */ EK_NONE=0,
+  /*   */ EK_AGGGBY,     // aggregate with group by
+  /*   */ EK_AGGORD,     // aggregate with ordered group by
+  /*   */ EK_AGGREG,     // projection with aggreagte
+  /*   */ EK_FILTER,     // filter
+  /*   */ EK_GROUPBY,    // group by expression
+  /*   */ EK_INDEXJOIN,  // index scan
+  /*   */ EK_INDEXSCAN,  // index scan
+  /*   */ EK_ORDGROUPBY, // group by expression with ordAgg
+  /*   */ EK_PROJECT,    // projection
+  /*   */ EK_SORT,       // sort
+  /*   */ EK_TOP,        // top
 
   /*10 */ ET_ENUMS
 };
 
 static Stz* aEK[]
 {
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "AGGGBY"_Stz,
+  /*   */ "NONE"_Stz,
+  /*   */ "AGGGBY"_Stz,
   /*   */ "AGGORD"_Stz,
-  /* 2 */ "AGGREG"_Stz,
-  /* 3 */ "FILTER"_Stz,
-  /* 4 */ "GROUPBY"_Stz,
-  /* 5 */ "INDEXJOIN"_Stz,
-  /* 6 */ "INDEXSCAN"_Stz,
-  /* 7 */ "EK_ORDGROUPBY"_Stz,
-  /* 8 */ "PROJECT"_Stz,
-  /* 9 */ "TOP"_Stz,
+  /*   */ "AGGREG"_Stz,
+  /*   */ "FILTER"_Stz,
+  /*   */ "GROUPBY"_Stz,
+  /*   */ "INDEXJOIN"_Stz,
+  /*   */ "INDEXSCAN"_Stz,
+  /*   */ "EK_ORDGROUPBY"_Stz,
+  /*   */ "PROJECT"_Stz,
+  /*   */ "SORT"_Stz,
+  /*   */ "TOP"_Stz,
 
   /*10 */ "ENUMS"_Stz
 };

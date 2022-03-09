@@ -6,6 +6,7 @@
 #include "TinyC.hpp"
 #include "Tub.hpp"
 #include "ePE.h"
+#include "ePL.h"
 #include "eEK.h"
 #include "eFM.h"
 #include "IndexDef.hpp"
@@ -154,6 +155,8 @@ namespace STORE {
 
     void vGeneratePrjGby(IndexDef *pIndexDef);
 
+    void vGenerateSort(IndexDef* pIndexDef);
+
     void vGenerateStencilCast(void);
     void vGenerateStencilCastTo(void);
     void vGenerateErrorCheck(void);
@@ -172,7 +175,7 @@ namespace STORE {
 
     void vPayloadStore(IndexDef *pIndexDef);
 
-    void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack, bool bTop);
+    void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad);
 
     void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack);
 
