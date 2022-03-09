@@ -53,7 +53,6 @@ namespace STORE
     Card* pSearch(Stz* szCardNm);
     void vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard);
 
-    void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

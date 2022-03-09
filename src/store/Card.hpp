@@ -144,7 +144,6 @@ namespace STORE
     void vTransferTill(Card* pCards, Card* pTill,
                        Card* pAt=nullptr, bool bAfter=true);
   
-    void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

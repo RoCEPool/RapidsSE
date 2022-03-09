@@ -1173,24 +1173,6 @@ void Card::vTransferTill(Card* pCards, Card* pTill,
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* call closure for this card and each sub-card                               */
-/*----------------------------------------------------------------------------*/
-void Card::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  f_vClosure(this);
-  
-  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
-
-  while (pSubCard_I->bHasNext()) {
-    Card* pSubCard = pSubCard_I->pNext();
-    
-    pSubCard->vWalkAllCards(f_vClosure);
-  }
-  delete pSubCard_I;
-}
 
 
 /*----------------------------------------------------------------------------*/

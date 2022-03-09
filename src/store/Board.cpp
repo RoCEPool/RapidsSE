@@ -368,22 +368,6 @@ void Board::vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard)
   rpSubCard = m_pCardRegs->pSearchReg(eCard);
 }
 
-/*----------------------------------------------------------------------------*/
-/* call closure for each board                                                */
-/*----------------------------------------------------------------------------*/
-void Board::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  ListExoIter2_t<Card>* pBoard_I = pNewIter();
-
-  while (pBoard_I->bHasNext()) {
-    Card* pCard = pBoard_I->pNext();
-    
-    pCard->vWalkAllCards(f_vClosure);
-  }
-  delete pBoard_I;
-}
 
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//

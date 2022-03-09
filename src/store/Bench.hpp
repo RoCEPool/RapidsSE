@@ -28,9 +28,6 @@ namespace STORE
     void vPrintBench(void);
     void vRenumberCards(void);
 
-    void vWalkUnits(std::function<void(Card* pCard)> f_vClosure);
-    void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
-
   private:
     Footer* aFooter(void);
   };

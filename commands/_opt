@@ -20,11 +20,14 @@ optimiserLvl 2;
 
 tag <optimise> = 1 ;
 
-
-select P_PARTKEY , P_NAME , P_BRAND
+select   sum(P_PARTKEY)
+       , P_BRAND
   from part
-  where p_partkey > 1000 and p_partkey < 2000
+ where p_partkey > 19900 and p_partkey < 19920
+ group by p_brand
+ order by p_brand
 ;
+
 
 select sum(P_PARTKEY) , P_BRAND
   from part
@@ -34,13 +37,11 @@ select sum(P_PARTKEY) , P_BRAND
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /*
-select   sum(P_PARTKEY)
-       , P_BRAND
+select P_PARTKEY , P_NAME , P_BRAND
   from part
- where p_partkey > 19900 and p_partkey < 19920
- group by p_brand
- order by p_brand
+  where p_partkey > 1000 and p_partkey < 2000
 ;
+
 */
 
 
