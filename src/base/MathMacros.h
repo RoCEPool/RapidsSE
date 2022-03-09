@@ -202,17 +202,155 @@
 // FLOAT
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _ADD_FLTFLT(eErrorCode) \
-  NEVER_REACH;
 
-#define _DIV_FLTFLT(eErrorCode) \
-  NEVER_REACH;
+
+#define _ADD_FLTFLT(eErrorCode) \
+{                                                                        \
+  fltArg2.m_iAsI8 = *(--paW);                                                      \
+  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  if (eErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    eErrorCode = EC_NONE;                                                \
+    if(eErrorCode != EC_NONE)                                            \
+    {                                                                    \
+      *paW++ = C_DATUM_NULL;                                             \
+    }                           \
+    else { \
+      if(fltArg1.m_dFlt >= C_FLT_MAX ||                              \
+        fltArg2.m_dFlt >= C_FLT_MAX) {  \
+        eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else if(fltArg1.m_dFlt <  C_FLT_MIN ||                         \
+        fltArg2.m_dFlt < C_FLT_MIN) { \
+        eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else                                                                 \
+      {                                                                    \
+        fltArg1.m_dFlt += fltArg2.m_dFlt;                                  \
+        if(fltArg1.m_dFlt > C_FLT_MAX) {                                   \
+        eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+          *paW++ = C_DATUM_NULL;                        \
+        }                        \
+        else                        \
+          *paW++ = fltArg1.m_iAsI8;                                          \
+      }                                                                    \
+    }                                                                      \
+  }                                                                        \
+}
+
+
+#define _DIV_FLTFLT(eErrorCode)                                            \
+{                                                                        \
+  fltArg2.m_iAsI8 = *(--paW);                                                      \
+  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  if (eErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                           \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                           \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    if (fltArg2.m_iAsI8 == 0) {                                                    \
+      *paW++ = C_DATUM_NULL;                                            \
+      eErrorCode = EC_DIVIDE_BY_ZERO;                                   \
+    }                                                                    \
+    else {                                                               \
+      if(fltArg1.m_dFlt > C_FLT_MAX ||                              \
+        fltArg2.m_dFlt > C_FLT_MAX) {  \
+        eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else if(fltArg1.m_dFlt <  C_FLT_MIN ||                         \
+        fltArg2.m_dFlt < C_FLT_MIN) { \
+        eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                       \
+      else {                                                             \
+        *paW++ = fltArg1.m_iAsI8 / fltArg2.m_iAsI8;                      \
+      }                                                                  \
+    }                                                                    \
+  }                                                                      \
+}
+
+
+#define _SUB_FLTFLT(eErrorCode)                                            \
+{                                                                        \
+  fltArg2.m_iAsI8 = *(--paW);                                                      \
+  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  if (eErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                           \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                           \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+      if (fltArg2.m_iAsI8 == 0) {                                                    \
+        *paW++ = C_DATUM_NULL;                                            \
+        eErrorCode = EC_DIVIDE_BY_ZERO;                                   \
+      }                                                                    \
+      else {                                                               \
+        if(fltArg1.m_dFlt > C_FLT_MAX ||                              \
+          fltArg2.m_dFlt > C_FLT_MAX) {  \
+          eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+          *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else if(fltArg1.m_dFlt <  C_FLT_MIN ||                         \
+        fltArg2.m_dFlt < C_FLT_MIN) { \
+        eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                       \
+      else {                                                             \
+        fltArg1.m_dFlt -= fltArg2.m_dFlt;                                                                   \
+        *paW++ = fltArg1.m_iAsI8;                      \
+      }                                                                  \
+    }                                                                    \
+  }                                                                      \
+}
+
+
 
 #define _MUL_FLTFLT(eErrorCode) \
-  NEVER_REACH;
+{                                                                        \
+  fltArg2.m_iAsI8 = *(--paW);                                                      \
+  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  if (eErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                           \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                           \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    if (fltArg2.m_iAsI8 == 0) {                                                    \
+        *paW++ = C_DATUM_NULL;                                            \
+        eErrorCode = EC_DIVIDE_BY_ZERO;                                   \
+    }                                                                    \
+    else {                                                               \
+      if(fltArg1.m_dFlt > C_FLT_MAX ||                              \
+        fltArg2.m_dFlt > C_FLT_MAX) {  \
+        eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else if(fltArg1.m_dFlt <  C_FLT_MIN ||                         \
+        fltArg2.m_dFlt < C_FLT_MIN) { \
+        eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                       \
+      else {                                                             \
+        fltArg1.m_dFlt *= fltArg2.m_dFlt;                        \
+        if(fltArg1.m_dFlt > C_FLT_MAX) {                                   \
+          eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+          *paW++ = C_DATUM_NULL;                        \
+        }                        \
+        else                                              \
+          *paW++ = fltArg1.m_iAsI8 ;                      \
+      }                                                                  \
+    }                                                                    \
+  }                                                                      \
+}
 
-#define _SUB_FLTFLT(eErrorCode) \
-  NEVER_REACH;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INTEGER

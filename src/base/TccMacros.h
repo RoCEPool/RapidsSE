@@ -18,8 +18,11 @@
 #define _PSH_DTE(iArg)  \
   *paW++ = iArg;
 
-#define _PSH_FLT(dArg)  \
-  *paW++ = (i8)dArg;
+#define _PSH_FLT(dArg)        \
+{                             \
+  fltArg1.m_dFlt =   dArg;    \
+  *paW++ = fltArg1.m_iAsI8;   \
+}
 
 #define _PSH_INT(iArg) \
   *paW++ = iArg;

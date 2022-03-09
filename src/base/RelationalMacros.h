@@ -211,7 +211,90 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FLOAT
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _EQ_FLTFLT(eErrorCode)                                             \
+{                                                                        \
+  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  fltArg2.m_iAsI8 = *(--paW);                                           \
+  if (eErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                           \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                           \
+    *paW++ = 0;                                                          \
+  }                                                                      \
+  else {                                                                 \
+  *paW++ = fltArg2.m_dFlt == fltArg1.m_dFlt ? 1 : 0;                                             \
+  }                                                                      \
+}
 
+#define _GE_IFLTFLT(eErrorCode)                                             \
+{                                                                        \
+  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  fltArg2.m_iAsI8 = *(--paW);                                                    \
+  if (eErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                           \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                           \
+    *paW++ = 0;                                                          \
+  }                                                                      \
+  else {                                                                 \
+  *paW++ = fltArg2.m_dFlt >= fltArg1.m_dFlt ? 1 : 0;                                             \
+  }                                                                      \
+}
+
+#define _GT_FLTFLT(eErrorCode)                                             \
+{                                                                        \
+  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  fltArg2.m_iAsI8 = *(--paW);                                                      \
+  if (eErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                           \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                           \
+    *paW++ = 0;                                                          \
+  }                                                                      \
+  else {                                                                 \
+    *paW++ = fltArg2.m_dFlt > fltArg1.m_dFlt ? 1 : 0;                                      \
+  }                                                                      \
+}
+
+#define _LE_FLTFLT(eErrorCode)                                             \
+{                                                                        \
+  fltArg1.m_iAsI8 = *(--paW);                                                        \
+  fltArg2.m_iAsI8 = *(--paW);                                                      \
+                                                                           \
+  if (eErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                           \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                           \
+    *paW++ = 0;                                                          \
+  }                                                                      \
+  else {                                                                \
+    *paW++ = fltArg2.m_dFlt <= fltArg1.m_dFlt ? 1 : 0;                                             \
+  }                                                                      \
+}
+
+#define _LT_FLTFLT(eErrorCode)                                             \
+{                                                                        \
+  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  fltArg2.m_iAsI8 = *(--paW);                                                      \
+  if (eErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                           \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                           \
+    *paW++ = 0;                                                          \
+  }                                                                      \
+  else {                                                                 \
+    *paW++ = fltArg2.m_dFlt < fltArg1.m_dFlt ? 1 : 0;                                      \
+  }                                                                      \
+}
+
+#define _NE_FLTFLT(eErrorCode)                                             \
+{                                                                        \
+  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  fltArg2.m_iAsI8 = *(--paW);                                                                     \
+  if (eErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                           \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                           \
+    *paW++ = 0;                                                          \
+  }                                                                      \
+  else {                                                                 \
+    *paW++ = fltArg2.m_dFlt != fltArg1.m_dFlt ? 1: 0;                                             \
+  }                                                                      \
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INTEGER

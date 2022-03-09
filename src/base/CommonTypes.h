@@ -10,6 +10,15 @@ typedef i8 tXN; // opaque type for transaction number
 static const i8 C_BCD_MIN = -140737488355328;
 static const i8 C_BCD_MAX = 140737488355327;
 
+// MaxFloat64
+static const d8 C_FLT_MAX = 1.797693134862315708145274237317043567981e+308;
+// min Float 64
+static const d8 C_FLT_MIN = 2.2250738585072014e-308;
+
+static const i8 C_INT_MIN = (-9223372036854775807LL - 1);
+static const i8 C_INT_MAX = 9223372036854775807LL;
+
+
 //static const i8 C_ERA_0 =  0; // 1900
 //static const i8 C_ERA_1 = 92; // 1992
 //static const i8 C_ERA_2 = 99; // 1999

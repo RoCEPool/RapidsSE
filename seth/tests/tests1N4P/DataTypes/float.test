@@ -1,0 +1,306 @@
+/*----------------------------------------------------------------------------*/
+/* float.test -- FLOAT DATUM tests                                            */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+success
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/DataTypes/dataTypes.csv" ;
+success
+
+//------------------------------------------------------------------------------
+select flt_col8 from datums;
+rows:
+  (1)
+  (2)
+  (3)
+  (4)
+  (5)
+  (6)
+  (7)
+  (8)
+  (9)
+  (10)
+  (11)
+  (12)
+  (13)
+
+//------------------------------------------------------------------------------
+select int_col1 from datums;
+rows:
+  (null)
+  (0)
+  (-922)
+  (1000)
+  (2000)
+  (4000)
+  (5000)
+  (6000)
+  (7000)
+  (8000)
+  (9000)
+  (10000)
+  (922)
+
+//------------------------------------------------------------------------------
+select int_col1 + 2 from datums;
+rows:
+  (null)
+  (2)
+  (-920)
+  (1002)
+  (2002)
+  (4002)
+  (5002)
+  (6002)
+  (7002)
+  (8002)
+  (9002)
+  (10002)
+  (924)
+
+select cast (int_col0 as varchar)  , cast (int_col1 as varchar) from datums;
+rows:
+ ('1','1000')
+ ('2','2000')
+ ('3',null)
+ ('4','4000')
+ ('5','5000')
+ ('6','6000')
+ ('7','7000')
+ ('8','8000')
+ ('9','9000')
+ ('10','10000')
+ ('11','-922')
+ ('12','922')
+ ('13','0')
+
+// aggregates : sum
+select sum(int_col0) from datums;
+rows: (91)
+
+select 10 + sum(int_col0) from datums;
+rows: (101)
+
+select sum(int_col0) + 10 from datums;
+rows: (101)
+
+select sum(10 + int_col0) from datums;
+rows: (221)
+
+select sum(int_col0 + 10) from datums;
+rows: (221)
+
+select sum(int_col0 + int_col0) from datums;
+rows: (182)
+
+select sum(int_col0) + sum(int_col0) from datums;
+rows: (182)
+
+// aggregates : min
+
+select min(int_col0) from datums;
+rows: (1)
+
+select 10 + min(int_col0) from datums;
+rows: (11)
+
+select min(int_col0) + 10 from datums;
+rows: (11)
+
+select min(10 + int_col0) from datums;
+rows: (11)
+
+select min(int_col0 + 10) from datums;
+rows: (11)
+
+select min(int_col0 + int_col0) from datums;
+rows: (2)
+
+select min(int_col0) + min(int_col0) from datums;
+rows: (2)
+
+// aggregates : min (with nulls and min/max ints)
+/*
+select min(int_col1) from datums;
+rows: (-9223372036854775806)
+
+select 10 + min(int_col1) from datums;
+rows: (-9223372036854775796)
+
+select min(int_col1) + 10 from datums;
+rows: (-9223372036854775796)
+
+select min(10 + int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+
+select min(int_col1 + 10) from datums;
+failure contains: 'Arithmetic overflow'
+
+select min(int_col1 + int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+
+select min(int_col1) + min(int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+*/
+// aggregates : max
+
+select max(int_col0) from datums;
+rows: (13)
+
+select 10 + max(int_col0) from datums;
+rows: (23)
+
+select max(int_col0) + 10 from datums;
+rows: (23)
+
+select max(10 + int_col0) from datums;
+rows: (23)
+
+select max(int_col0 + 10) from datums;
+rows: (23)
+
+select max(int_col0 + int_col0) from datums;
+rows: (26)
+
+select max(int_col0) + max(int_col0) from datums;
+rows: (26)
+
+// aggregates : max (with nulls and min/max ints)
+/*
+select max(int_col1) from datums;
+rows: (9223372036854775806)
+
+select 10 + max(int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+
+select max(int_col1) + 10 from datums;
+failure contains: 'Arithmetic overflow'
+
+select max(10 + int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+
+select max(int_col1 + 10) from datums;
+failure contains: 'Arithmetic overflow'
+
+select max(int_col1 + int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+
+select max(int_col1) + max(int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+*/
+
+// drop the table
+drop table datums;
+success
+
+/*
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/DataTypes/dataTypesOver.csv" ;
+success
+
+//------------------------------------------------------------------------------
+select int_col0 from datums;
+rows:
+  (1)
+  (2)
+  (3)
+  (4)
+  (5)
+  (6)
+  (7)
+  (8)
+  (9)
+  (10)
+  (11)
+  (12)
+  (13)
+
+//------------------------------------------------------------------------------
+select int_col1 from datums;
+rows:
+  (null)
+  (0)
+  (-9223372036854775806)
+  (1000)
+  (2000)
+  (4000)
+  (5000)
+  (6000)
+  (7000)
+  (8000)
+  (9000)
+  (10000)
+  (9223372036854775806)
+
+//------------------------------------------------------------------------------
+select int_col1 + 2 from datums;
+failure contains: "OVERFLOW"
+
+// drop the table
+drop table datums;
+success
+*/
+
+// get memory leaks
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  // drop the table
+  drop table datums;
+  mute
+
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
