@@ -1413,7 +1413,7 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
 
     // is the column part of the aggregate group by key ?
-    Column* pIndexColumn = pIndexDef->pFindColumn(pColumn->szColNm());
+    Column* pIndexColumn = pIndexDef->pFindColumn(i_Col);
 
     if (pIndexColumn) {
       continue;
@@ -2114,7 +2114,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
       break;
 
     case PL_TOP:
-      sPayLoad = "m_aiTopPayLoad"_Stz;
+      sPayLoad = "m_aiTopPayload"_Stz;
       sPayLoadRow = "m_aTopPayloadRow"_Stz;
       sEntInt = "m_aEntIntTOP"_Stz;
       break;
@@ -2766,12 +2766,22 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     if (pTkn->bSame("sort"_Stz)) {
 
-      bGroupBy = true;
-
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the expression  stack
       pExprStack = m_pExprStack;
       eExprKind = EK_SORT;
+
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the top expression
+    if (pTkn->bSame("top"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the expression  stack
+      pExprStack = m_pExprStack;
+      eExprKind = EK_TOP;
 
       continue;
     }

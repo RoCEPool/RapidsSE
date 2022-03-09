@@ -71,6 +71,10 @@
 
   // generate selectColumns bitmap from expr and streamDefIn
   //<expr> StreamDefLft[].selectColumns to eError
+
+  // streamDefLft[] is streamDefOut[]
+  StreamDefLft[].duplicate to StreamDefOut[]
+
   <expr> nullptr StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
@@ -81,10 +85,8 @@
     exit
   then
 
-  // delete the streamDefOut[]. Not needed for filter
+  // HACK
   StreamDefOut[].delete
-
-  // evaluate the expression
   StreamDefLft[].duplicate to StreamDefOut[]
 
   StreamDefLft[].duplicate to Pipein[]

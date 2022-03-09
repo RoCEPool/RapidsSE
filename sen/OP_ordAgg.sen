@@ -27,10 +27,6 @@
     StreamDefOut[].delete
   then
 
-  IndexDef[].isNull not if
-    IndexDef[].delete
-  then
-
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
   ZK_M_CLEANING_handler
@@ -48,11 +44,10 @@
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 
-  // create an indexDef[]
-  indexDef[].new
+  IndexDef[].new
 
   // generate streamDefOut from expr and streamDefIn
-  <expr> indexDef[] StreamDefLft[] StreamDefOut[].generate to eError
+  <expr> IndexDef[] StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -83,8 +78,8 @@
   op__topology
 
   Counter0[] 2 == if
-    find: aggreg_ComCleaning   ZK_M_CLEANING      op[].handler!
-    find: aggreg_ComStreamDef  ZK_D_STREAMDEF     op[].handler!
+    find: ordAgg_ComCleaning   ZK_M_CLEANING      op[].handler!
+    find: ordAgg_ComStreamDef  ZK_D_STREAMDEF     op[].handler!
   else
     0 assert
   then

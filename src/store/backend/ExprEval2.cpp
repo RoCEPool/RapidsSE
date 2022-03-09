@@ -195,6 +195,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
   s32 sColumnNm;
   i8 iProjectColumn = 1;
   i8 iGroupByCol = C_UNKNOWN;
+  i8 i_ColumnOrdinal = C_UNKNOWN;
 
   bool bGroupBy = false;
   eExprKind = EK_PROJECT;
@@ -218,7 +219,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
   while ( pTkn ) {
 
-    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a GROUPBY ?
@@ -239,7 +240,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       eExprKind = EK_AGGORD;
       bGroupBy = true;
       ePreExp = PE_GBY;
-      //pIndexDef->vIndexNm("gby_idx"_Stz);
+      pIndexDef->vIndexNm("ordgby_idx"_Stz);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -256,12 +257,27 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a TOP ?
+    if (pTkn->bSame("TOP"_Stz)) {
+
+      eExprKind = EK_TOP;
+      ePreExp = PE_TOP;
+      pIndexDef->vIndexNm("top_idx"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // aggregates list
     if (pTkn->bSame("aggregates"_Stz)) {
 
       bGroupBy = false;
 
       vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+
+      // set the column no in the indexDef w.r to the streamDef
+      pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
+
       pPreExpStack->vPush(ePreExp);
 
       iProjectColumn = 1;
@@ -278,23 +294,30 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     // comma
     if (pTkn->bSame(","_Stz)) {
 
-        if (bGroupBy) {
-          vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
-          pPreExpStack->vPush(ePreExp);
+      if (bGroupBy) {
+        vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
 
-          sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
-          pColumnExpr->vColumnNm(sColumnNm);
+        // set the column no in the indexDef w.r to the streamDef
+        pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
 
-        }
-        else {
-          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-          pPreExpStack->vPush(ePreExp);
+        pPreExpStack->vPush(ePreExp);
 
-          sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
-          pColumnExpr->vColumnNm(sColumnNm);
+      } else if (ePreExp == PE_TOP) {
+        vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
 
-          ePreExp = PE_EXP;
-        }
+        // set the column no in the indexDef w.r to the streamDef
+        pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
+
+        pPreExpStack->vPush(ePreExp);
+      } else {
+        vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+        pPreExpStack->vPush(ePreExp);
+
+        ePreExp = PE_EXP;
+      }
+
+      sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
+      pColumnExpr->vColumnNm(sColumnNm);
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -597,8 +620,6 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
           continue;
         }
 
-        i8 i_ColumnOrdinal = C_UNKNOWN;
-
         // ignore if column ordinal relative to the group by key
         if (pTkn->szChars()->bContains("K"_Stz)) {
 
@@ -670,8 +691,8 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
           RASSERT(pColumn);
 
           // select bit should be on
-          i8 iColumn = pColumn->iColumnNo();
-          RASSERT(BitLib::bIsOn(*puSelectColumns, iColumn));
+          i_ColumnOrdinal = pColumn->iColumnNo();
+          RASSERT(BitLib::bIsOn(*puSelectColumns, i_ColumnOrdinal));
 
           ePreExp = PE_GKY;
 
@@ -685,8 +706,9 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
             eError = EC_INVALID_COMMAND;
             break;
           }
-          i8 iColumn = pColumn->iColumnNo();
-          BitLib::vSetOn(*puSelectColumns, iColumn);
+          i_ColumnOrdinal = pColumn->iColumnNo();
+          BitLib::vSetOn(*puSelectColumns, i_ColumnOrdinal);
+
         }
 
       }
@@ -699,13 +721,21 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
   // push the predicate expression
   pPreExpStack->vPush(ePreExp);
 
+  // add the last column to the indexDef
+  if (ePreExp == PE_TOP) {
+    vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+
+    // set the column no in the indexDef w.r to the streamDef
+    pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
+  }
+
   // add the last column to the streamDefOut
-  if (ePreExp != PE_SRT)
+  if (ePreExp != PE_SRT && ePreExp != PE_TOP)
     vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
   L_RETURN:
 
-#ifdef _DEBUG
+#ifdef WITH_DEBUG_VERSION
   // dump the PreExp stack
   vTrace("--------------------------------------\n"_Stz);
   vTrace("PREEXPSTACK:\n"_Stz);
@@ -714,6 +744,18 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
   while ( nExpr >= 0) {
     i8 iValue = pPreExpStack->iPeek(nExpr--);
     vTrace("%s\n"_Stz, aPE[iValue]);
+  }
+
+  // dump the streamDefOut
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("STREAMDEFOUT:\n"_Stz);
+  pStreamDefOut->vPrint();
+
+  // dump the indexDef
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("INDEXDEF:\n"_Stz);
+  if (pIndexDef) {
+    pIndexDef->vPrint();
   }
 #endif
 

@@ -292,6 +292,31 @@ void IndexDef::vListContents(i8 i_Depth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print the stream def                                                       */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  vTrace("IndexDef %s\n"_Stz,m_sIndexNm.szStz());
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    Column* pColumn = pGetColumn(i_Col);
+
+    vTrace("Column %02lld StreamDef_Col %02lld %s type %s length %lld scale %lld datum %s %s %s\n"_Stz,
+           pColumn->iColumnNo(),
+           m_iaColSet[i_Col],
+           pColumn->szColNm(),
+           aCT[pColumn->eColumnType()],
+           pColumn->iColumnLength(),
+           pColumn->iColumnScale(),
+           aDM[pColumn->eDatum()],
+           pColumn->bIsNullable() ? "nullable"_Stz : "not null"_Stz,
+           pColumn->bIsPtnKey() ? "partitionKey"_Stz : ""_Stz);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the table name                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* IndexDef::szTableNm(void)
@@ -554,6 +579,22 @@ Column* IndexDef::pFindColumn(Stz* szColumnNm)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* find column with given no matching aizColSet                               */
+/*----------------------------------------------------------------------------*/
+Column* IndexDef::pFindColumn(i8 i_ColSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    if (m_iaColSet[i_Col] == i_ColSet) {
+      Column* pColumn = & m_xaColumn[i_Col];
+      return pColumn;
+    }
+  }
+
+  return nullptr;
+}
 /*----------------------------------------------------------------------------*/
 /* get index column vector                                                    */
 /*----------------------------------------------------------------------------*/

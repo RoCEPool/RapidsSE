@@ -127,8 +127,9 @@ void Step::vStreamDefOutGenerate(void)
   s4K sExpr;
   m_pDataStack->vPopStr(sExpr, __func__);
 
-  m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
-  //m_p_TaskLogicUnit->m_xpIndexDef     = new IndexDef;
+  if (m_p_TaskLogicUnit->m_xpStreamDefOut.bIsNull())
+    m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
+
   m_p_TaskLogicUnit->m_xpPreExpStack = new IntStack;
 
   StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;

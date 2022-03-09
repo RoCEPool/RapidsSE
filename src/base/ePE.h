@@ -30,6 +30,7 @@ enum ePE // predicate expression
   /*   */ PE_SS2, // substring with 2 params
   /*   */ PE_SS3, // substring with 3 params
   /*   */ PE_SUM, // sum
+  /*   */ PE_TOP, // top
   /*   */ PE_XDY, // extract day
   /*   */ PE_XHR, // extract hour
   /*   */ PE_XMN, // extract min
@@ -66,6 +67,7 @@ static Stz* aPE[]
   /*   */ "SS2"_Stz,
   /*   */ "SS3"_Stz,
   /*   */ "SUM"_Stz,
+  /*   */ "TOP"_Stz,
   /*   */ "XDY"_Stz,
   /*   */ "XHR"_Stz,
   /*   */ "XMN"_Stz,

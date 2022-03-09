@@ -184,17 +184,41 @@ begin
      | first
    end ;
 
-   rows: 5996
+rows: 5996
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  basic ordered aggregate
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY  type integer $1 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | top 2 "total" 2
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+rows:
+*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 DROP TABLE lineitem;
 success
 
 DROP TABLE orders;
 success
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  Check for memory leaks
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 memoryleaks;
 rows: 0

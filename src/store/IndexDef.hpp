@@ -50,6 +50,7 @@ namespace STORE
     i8*     aiaColSet(void);
     void    vDetermineKeyKind(void);
     Column* pFindColumn(Stz* szColumnNm);
+    Column* pFindColumn(i8 i_ColSet);
     Column* pGetColumn(i8 i_Column);
     i8     iGetColumn(i8 iColSet);
     Stz*   szIndexNm(void);
@@ -63,6 +64,7 @@ namespace STORE
     void   vKeyKind(eKE eKeyKind);
     void   vListContents(i8 i_Depth);
     Location* pLocation(void);
+    void   vPrint(void);
     void   vSetColSet(i8 iColumnNo, i8 iColumnSet);
     Stz*   szTableNm(void);
     void   vTableNm(Stz* szTableNm);
