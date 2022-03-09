@@ -33,6 +33,7 @@ Optimiser::Optimiser(TagSet* p_JobTags)
   
   m_pBench   = new Bench(this);
   m_pDissect = new Dissect(this);
+  m_pDrafter = new Drafter(this);
   m_pWeave   = new Weave(this);
 
   m_pPaste   = new Card_SubSet;
@@ -53,6 +54,7 @@ Optimiser::~Optimiser(void) noexcept(false)
   
   delete m_pBench;
   delete m_pDissect;
+  delete m_pDrafter;
   delete m_pWeave;
   
   delete m_pPaste;

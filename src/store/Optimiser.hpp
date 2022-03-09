@@ -8,6 +8,7 @@
 #include "Bench.hpp"
 #include "CardCtl.hpp"
 #include "Dissect.hpp"
+#include "Drafter.hpp"
 #include "Weave.hpp"
 
 namespace STORE
@@ -23,6 +24,7 @@ namespace STORE
   
     Bench*   m_pBench;
     Dissect* m_pDissect;
+    Drafter* m_pDrafter;
     Weave*   m_pWeave;
   
     Card_SubSet* m_pPaste;

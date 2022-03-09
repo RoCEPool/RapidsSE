@@ -14,12 +14,11 @@ namespace STORE
   class Board : public Card_OTHER
   {
   protected:
+    s32 m_sQueryNm;
     Optimiser* m_pOptimiser;
 
-    s32 m_sQueryNm;
-
-    CardRegs* m_pCardRegs;
-    RuleCtl*  m_pRuleCtl;
+    CardRegs*  m_pCardRegs;
+    RuleCtl*   m_pRuleCtl;
 
   private:
     // must be last
@@ -29,7 +28,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(Optimiser* pOptimiser, Stz* szCardNm);
+    Board(Stz* szQueryNm, Optimiser* pOptimiser);
    ~Board(void) noexcept(false);
 
     CardRegs* pCardRegs(void);

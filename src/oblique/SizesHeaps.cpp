@@ -232,6 +232,7 @@
 #include "CardCtl.hpp"
 #include "CardRegs.hpp"
 #include "RuleCtl.hpp"
+#include "Drafter.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -323,6 +324,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(DicStack),           HT_T_TINY    ,0 FILL }, // CN_DICSTACK
   { sizeof(Dir),                HT_T_TINY    ,0 FILL }, // CN_DIR
   { sizeof(Dissect),            HT_T_TINY    ,0 FILL }, // CN_DISSECT
+  { sizeof(Drafter),            HT_T_TINY    ,0 FILL }, // CN_DRAFTER
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_DTEVAL
   { sizeof(Dynamo),             HT_T_TINY    ,0 FILL }, // CN_DYNAMO
 

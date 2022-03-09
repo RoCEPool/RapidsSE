@@ -96,7 +96,7 @@ void Dissect::vPipeline(void)
   //TagSet* pJobTags = m_pPipelineSpec->pJobTags();
   //pJobTags->vDumpSet(true);
 
-  m_pBoard = new Board(m_pOptimiser, "Board"_Stz);
+  m_pBoard = new Board("Board"_Stz,m_pOptimiser);
   m_pBoard->vQueryNm(szPipelineNm);
 
   //m_pBench->vAppend(m_pBoard);
