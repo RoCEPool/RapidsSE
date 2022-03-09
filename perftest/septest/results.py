@@ -46,6 +46,8 @@ class TestResult:
         """
         Add a metric to this test result.
         """
+        assert value >= 0, f"Got a negative metric value for metric \"{name}\""
+
         if ts is None:
             ts = datetime.datetime.now()
 

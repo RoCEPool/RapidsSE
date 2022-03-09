@@ -21,7 +21,7 @@ C_JDBC_DRIVER_GLOB = "rapidsse-jdbc-*.*.*.jar"
 # Cached path to the found JDBC driver
 C_JDBC_DRIVER: pathlib.Path = None
 C_JDBC_URL_FMT = 'jdbc:rapidsse:{0}/bin/rapidsse?extraargs="--name {1} ' \
-                 '--sen ../sen --commands ../commands --appendTrace"'
+                 '--sen {0}/sen --commands {0}/commands --appendTrace"'
 
 
 def build_installer() -> pathlib.Path:
