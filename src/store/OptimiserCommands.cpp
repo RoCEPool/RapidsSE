@@ -16,14 +16,16 @@ extern OptimiserCatalog gxOptimiserCatalog;
 bool STORE::bOpt_add(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_add\n"_Stz);
-  
-  s4K sCmd;
-  pTknVec->vToTknString(sCmd);
-  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
+//  s4K sCmd;
+//  pTknVec->vToTknString(sCmd);
+//  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   
-  
   Drafter* pDrafter = pOptimiser->pDrafter();
+  bool bResult = pDrafter->bAdd(pTknVec,riAction);
+  UNUSED(bResult);
   
   
   CardCtl* pCardCtl = pOptimiser->pCardCtl();
@@ -71,14 +73,12 @@ OptimiserFun __Opt_add
 bool STORE::bOpt_below(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_below\n"_Stz);
-  
-  s4K sCmd;
-  pTknVec->vToTknString(sCmd);
-  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
-  
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   
   Drafter* pDrafter = pOptimiser->pDrafter();
+  bool bResult = pDrafter->bBelow(pTknVec,riAction);
+  UNUSED(bResult);
 
   
   CardCtl* pCardCtl = pOptimiser->pCardCtl();
@@ -126,8 +126,14 @@ OptimiserFun __Opt_below
 /*----------------------------------------------------------------------------*/
 bool STORE::bOpt_clear(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
+  vTrace("bOpt_clear\n"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
   
   Drafter* pDrafter = pOptimiser->pDrafter();
+  bool bResult = pDrafter->bClear(pTknVec,riAction);
+  UNUSED(bResult);
 
   
   Board* pBoard = pOptimiser->pHeadBoard();
@@ -155,8 +161,8 @@ OptimiserFun __Opt_clear
 bool STORE::bOpt_cmp(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_cut\n"_Stz);
-  i8 nTkns = pTknVec->nItems();
   
+  i8 nTkns = pTknVec->nItems();
   if (nTkns < 3) {
     vTrace("Error -- usage is: cmp <card> <card>\n"_Stz);
     return false;
@@ -165,7 +171,8 @@ bool STORE::bOpt_cmp(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Drafter* pDrafter = pOptimiser->pDrafter();
-
+  bool bResult = pDrafter->bCmp(pTknVec,riAction);
+  UNUSED(bResult);
   
   
   Board* pBoard = pOptimiser->pHeadBoard();
@@ -221,8 +228,8 @@ OptimiserFun __Opt_cmp
 bool STORE::bOpt_cut(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_cut\n"_Stz);
-  i8 nTkns = pTknVec->nItems();
   
+  i8 nTkns = pTknVec->nItems();
   if (nTkns < 2) {
     vTrace("Error -- usage is: cut <card>\n"_Stz);
     return false;
@@ -231,6 +238,8 @@ bool STORE::bOpt_cut(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Drafter* pDrafter = pOptimiser->pDrafter();
+  bool bResult = pDrafter->bCut(pTknVec,riAction);
+  UNUSED(bResult);
 
   
   
@@ -280,13 +289,13 @@ OptimiserFun __Opt_cut
 bool STORE::bOpt_depth(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_depth\n"_Stz);
-  s4K sCmd;
-  pTknVec->vToTknString(sCmd);
-  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   
   
   Drafter* pDrafter = pOptimiser->pDrafter();
+  bool bResult = pDrafter->bDepth(pTknVec,riAction);
+  UNUSED(bResult);
 
   
   
@@ -326,13 +335,12 @@ OptimiserFun __Opt_depth
 bool STORE::bOpt_form(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_form\n"_Stz);
-  s4K sCmd;
-  pTknVec->vToTknString(sCmd);
-  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   
   Drafter* pDrafter = pOptimiser->pDrafter();
-
+  bool bResult = pDrafter->bForm(pTknVec,riAction);
+  UNUSED(bResult);
   
   
   CardCtl* pCardCtl = pOptimiser->pCardCtl();
@@ -415,13 +423,13 @@ OptimiserFun __Opt_help_1
 bool STORE::bOpt_hide(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_hide\n"_Stz);
-  s4K sCmd;
-  pTknVec->vToTknString(sCmd);
-  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   
   
   Drafter* pDrafter = pOptimiser->pDrafter();
+  bool bResult = pDrafter->bHide(pTknVec,riAction);
+  UNUSED(bResult);
 
   
   CardCtl* pCardCtl = pOptimiser->pCardCtl();
@@ -470,9 +478,12 @@ OptimiserFun __Opt_hide
 bool STORE::bOpt_load(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_write\n"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   
   Drafter* pDrafter = pOptimiser->pDrafter();
+  bool bResult = pDrafter->bLoad(pTknVec,riAction);
+  UNUSED(bResult);
 
   
   
@@ -531,10 +542,13 @@ OptimiserFun __Opt_load
 bool STORE::bOpt_name(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_name\n"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   
   
   Drafter* pDrafter = pOptimiser->pDrafter();
+  bool bResult = pDrafter->bName(pTknVec,riAction);
+  UNUSED(bResult);
 
   
   
@@ -571,10 +585,13 @@ OptimiserFun __Opt_name
 bool STORE::bOpt_reprint(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_reprint\n"_Stz);
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   
   
   Drafter* pDrafter = pOptimiser->pDrafter();
+  bool bResult = pDrafter->bReprint(pTknVec,riAction);
+  UNUSED(bResult);
 
   
   
@@ -600,16 +617,19 @@ bool STORE::bOpt_set(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_set\n"_Stz);
   i8 nTkns = pTknVec->nItems();
-  
   if (nTkns < 2) {
     vTrace("Error -- usage is: set <card>\n"_Stz);
     return false;
   }
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
   
   Drafter* pDrafter = pOptimiser->pDrafter();
+  bool bResult = pDrafter->bSet(pTknVec,riAction);
+  UNUSED(bResult);
 
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Card* pMainCard = nullptr;
@@ -653,12 +673,12 @@ OptimiserFun __Opt_set
 bool STORE::bOpt_sub(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_sub\n"_Stz);
-  s4K sCmd;
-  pTknVec->vToTknString(sCmd);
-  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   
   Drafter* pDrafter = pOptimiser->pDrafter();
+  bool bResult = pDrafter->bSub(pTknVec,riAction);
+  UNUSED(bResult);
 
   
   CardCtl* pCardCtl = pOptimiser->pCardCtl();
@@ -708,9 +728,9 @@ OptimiserFun __Opt_sub
 bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_weave\n"_Stz);
-    
-  Drafter* pDrafter = pOptimiser->pDrafter();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Drafter* pDrafter = pOptimiser->pDrafter();
   bool bResult = pDrafter->bWeave(pTknVec,riAction);
   
   return bResult;
@@ -732,12 +752,13 @@ OptimiserFun __Opt_weave
 bool STORE::bOpt_write(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 {
   vTrace("bOpt_write\n"_Stz);
-  s4K sCmd;
-  pTknVec->vToTknString(sCmd);
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   
   
   Drafter* pDrafter = pOptimiser->pDrafter();
+  bool bResult = pDrafter->bWrite(pTknVec,riAction);
+  UNUSED(bResult);
 
   
   Stz* szStmt = pOptimiser->szWeave();
