@@ -133,7 +133,7 @@ namespace STORE {
     void vSynthTop(IndexDef *pIndexDef, Stz *sKeyExpr, i8 iTopCount, Stz *sLabel, Stz *sLabelLoop);
 
   private:
-    void vFindKey(IndexDef *pIndexDef);
+    void vFindKey(IndexDef *pIndexDef, ePL ePayload);
 
     void vGenerateAssign(u8 uSelectColumns);
 

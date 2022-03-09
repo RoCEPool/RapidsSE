@@ -518,6 +518,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, bool bOrdAgg, Stz* sLabel, Stz* s
   m_pExprStack->vReset();
 }
 
+//TODO: to go
 /*----------------------------------------------------------------------------*/
 /* synthesize the filter expression after an ordAgg op                        */
 /*----------------------------------------------------------------------------*/
@@ -1157,7 +1158,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection                                                  */
 /*----------------------------------------------------------------------------*/
-  void CodeSynth::vSynthOrdAgg(eEK eExprKind,Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext,
+void CodeSynth::vSynthOrdAgg(eEK eExprKind, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext,
                                Stz* sLabelLoop, bool bHashRows) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -1759,17 +1760,39 @@ void CodeSynth::vGenerateStencilCastTo(void) {
 /*----------------------------------------------------------------------------*/
 /* generate code for Project aggregates with groupby                          */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vFindKey(IndexDef* pIndexDef) {
+void CodeSynth::vFindKey(IndexDef* pIndexDef, ePL ePayLoad) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
+  s256 sIndexTree;
+  s256 sEntKey;
+  s256 sCopy;
+
   // find the key in the indexTree
+
+  switch(ePayLoad) {
+
+    case PL_GBY:
+      sIndexTree = "m_aIndexTreeGby"_Stz;
+      sEntKey = "m_aEntKeyPL"_Stz;
+      break;
+
+    case PL_SRT:
+      sIndexTree = "m_aIndexTreeGby"_Stz;
+      sEntKey = "m_aEntKeySRT"_Stz;
+      break;
+
+    default:
+      NEVER_REACH;
+  }
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // find key in payload index");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aEntFound = aIndexTree_findEntry(aCombinedT->m_aIndexTreeGby, aCombinedT->m_aEntKeyPL);");
+  sCopy.vSprint("\n    aEntFound = aIndexTree_findEntry(aCombinedT->%s, aCombinedT->%s);"_Stz,
+                sIndexTree.azChar(), sEntKey.azChar());
+  StrLib::vAppendString(&m_azCodeCrs,sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( !aEntFound ) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // key not found");
@@ -1979,7 +2002,6 @@ void CodeSynth::vPayloadStore(IndexDef* pIndexDef) {
 
   s4K  sInfix;
   s4K  sCopy;
-  i8   i_Col;
 
   // create the payload
 
@@ -2100,6 +2122,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
     default:
       NEVER_REACH;
   }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast the ProjectRow to eStencilTo structure
   sCastRow.vSprint("\n      p%s = (struct %s*)aCombinedT->%s;\n"_Stz,
@@ -2416,7 +2439,7 @@ void CodeSynth::vGeneratePrjGby(IndexDef* pIndexDef) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the key in the indexTree
-  vFindKey(pIndexDef);
+  vFindKey(pIndexDef, PL_GBY);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2432,7 +2455,7 @@ void CodeSynth::vGenerateSort(IndexDef* pIndexDef) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the key in the indexTree
-  vFindKey(pIndexDef);
+  vFindKey(pIndexDef, PL_SRT);
 }
 
 /*----------------------------------------------------------------------------*/
