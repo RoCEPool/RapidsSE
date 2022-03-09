@@ -43,6 +43,15 @@ C_OPTIONAL_CSV_FIELDS = [
     C_CSV_CONNECT
 ]
 
+# TSV fields
+C_TSV_LABEL = "label"
+C_TSV_VALUE = "value"
+
+C_MANDATORY_TSV_FIELDS = [
+    C_TSV_LABEL,
+    C_TSV_VALUE
+]
+
 
 class TestRunner:
     """
@@ -83,8 +92,8 @@ class TestRunner:
         else:
             raise errors.NotImplementedYet("Only JMeter test files (*.[jmx | jtl | jmeter]) are currently supported")
 
-        self.__collect_metrics()
         self.__cleanup_test_file()
+        self.__collect_metrics()
 
         LOG.info(f"Finished test: {self.test_name} (ID: {self.test_id}). "
                  f"Result = {'SUCCESS' if self.result.test_passed else 'FAILURE'}")
@@ -204,7 +213,6 @@ class TestRunner:
         return remote_path
 
     def __collect_metrics(self):
-        # TODO: Implement this
         # Create a local temporary directory to hold the metrics from the remote node
         dir_prefix = C_TEST_DIR_FMT.format(self.job_result_id, self.test_id, self.test_seq, self.test_name)
 
@@ -230,7 +238,9 @@ class TestRunner:
                 if not self.__parse_tsv_metric(tsv_metric):
                     return
 
-    def __copy_remote_metrics_locally(self, temp_dir: tempfile.TemporaryDirectory):
+            LOG.info(f"Extracted a total of {str(len(self.result.metrics))} metrics")
+
+    def __copy_remote_metrics_locally(self, temp_dir: string):
         """
         Copies metric files from a remote host to a local temporary directory
         """
@@ -253,11 +263,17 @@ class TestRunner:
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e
 
+        file_list = os.listdir(temp_dir)
+        LOG.debug("Copied the following files from the remote node:\n%s", '\n  '.join(file_list))
+
     def __parse_csv_metrics(self, metric_file: string) -> bool:
         """
         Parses a single CSV file containing test metrics and saves the metrics into the result.
         Returns false if an error is encountered.
         """
+
+        LOG.debug(f"Parsing CSV metrics file: {os.path.basename(metric_file)}")
+
         with open(metric_file, newline='') as csvfile:
             reader = csv.DictReader(csvfile, dialect='excel')
             fieldnames = reader.fieldnames
@@ -268,7 +284,6 @@ class TestRunner:
             # Check that the mandatory fields are in the file
             for mandatory_field in C_MANDATORY_CSV_FIELDS:
                 if mandatory_field not in fieldnames:
-                    pass
                     errmsg = f"Could not process metrics file {os.path.basename(metric_file)} because " \
                              f"it does not have the mandatory field \"{mandatory_field}\""
                     LOG.error(errmsg)
@@ -284,16 +299,38 @@ class TestRunner:
             for row in reader:
                 label = row[C_CSV_LABEL]
                 latency_str = row[C_CSV_LATENCY]
-                success = row[C_CSV_SUCCESS]
+                success = row[C_CSV_SUCCESS].lower() == "true"
+
+                # Check if label is null or an empty string (it shouldn't ever be)
+                if (label is None) or (len(label) == 0):
+                    errmsg = f"Value for field \"{C_CSV_LABEL}\" in test {os.path.basename(metric_file)} " \
+                             f"must not be a null or empty string value"
+                    LOG.error(errmsg)
+                    # Mark the test as having failed
+                    self.result.test_passed = False
+                    self.result.stderr = errmsg
+                    return False
 
                 if not success:
                     failuremsg = row[C_CSV_FAILUREMSG] if has_failuremsg_field else None
                     if failuremsg is None:
-                        errmsg = f"Statement with label \"{label}\" failed with an error"
+                        errmsg = f"Statement with label \"{label}\" in test {os.path.basename(metric_file)} " \
+                                 f"failed with an error"
                     else:
-                        errmsg = f"Statement with label \"{label}\" failed with error: {failuremsg}"
+                        errmsg = f"Statement with label \"{label}\" in test {os.path.basename(metric_file)} " \
+                                 f"failed with error: {failuremsg}"
                     LOG.error(errmsg)
 
+                    # Mark the test as having failed
+                    self.result.test_passed = False
+                    self.result.stderr = errmsg
+                    return False
+
+                # Check that latency_str is not null or an empty string
+                if (latency_str is None) or (len(latency_str) == 0):
+                    errmsg = f"Value for field \"{C_CSV_LATENCY}\" in test {os.path.basename(metric_file)} " \
+                             f"must not be a null or empty string value"
+                    LOG.error(errmsg)
                     # Mark the test as having failed
                     self.result.test_passed = False
                     self.result.stderr = errmsg
@@ -305,7 +342,7 @@ class TestRunner:
 
                 except ValueError:
                     errmsg = f"Statement with label \"{label}\" failed because the " \
-                             f"\"{C_CSV_LATENCY}\" field is not numeric"
+                             f"\"{C_CSV_LATENCY}\" field is not numeric in test {os.path.basename(metric_file)}"
                     LOG.error(errmsg)
                     # Mark the test as having failed
                     self.result.test_passed = False
@@ -320,7 +357,7 @@ class TestRunner:
 
                     except ValueError:
                         errmsg = f"Statement with label \"{label}\" failed because the " \
-                                 f"\"{C_CSV_CONNECT}\" field is not numeric"
+                                 f"\"{C_CSV_CONNECT}\" field is not numeric in test {os.path.basename(metric_file)}"
                         LOG.error(errmsg)
                         # Mark the test as having failed
                         self.result.test_passed = False
@@ -338,7 +375,8 @@ class TestRunner:
 
                     except ValueError:
                         errmsg = f"Statement with label \"{label}\" failed because the " \
-                                 f"\"{C_CSV_TIMESTAMP}\" field couldn't be converted to datetime object"
+                                 f"\"{C_CSV_TIMESTAMP}\" field couldn't be converted to datetime object " \
+                                 f"in test {os.path.basename(metric_file)}"
                         LOG.error(errmsg)
                         # Mark the test as having failed
                         self.result.test_passed = False
@@ -350,11 +388,67 @@ class TestRunner:
 
         return True
 
-    def __parse_tsv_metric(self):
+    def __parse_tsv_metric(self, metric_file: string) -> bool:
         """
         Parses a single TSV file containing test metrics and saves the metrics into the result.
         Returns false if an error is encountered.
         """
+
+        LOG.debug(f"Parsing TSV metrics file: {os.path.basename(metric_file)}")
+
+        with open(metric_file, newline='') as csvfile:
+            reader = csv.DictReader(csvfile, dialect='excel-tab')
+            fieldnames = reader.fieldnames
+
+            for mandatory_field in C_MANDATORY_TSV_FIELDS:
+                if (mandatory_field not in fieldnames) and (mandatory_field.lower() not in fieldnames):
+                    errmsg = f"Could not process metrics file {os.path.basename(metric_file)} because " \
+                             f"it does not have the mandatory field \"{mandatory_field}\""
+                    LOG.error(errmsg)
+                    # Mark the test as having failed
+                    self.result.test_passed = False
+                    self.result.stderr = errmsg
+                    return False
+
+            for row in reader:
+                label = row[C_TSV_LABEL]
+
+                # Check if label is null or an empty string
+                if (label is None) or (len(label) == 0):
+                    errmsg = f"Value for field \"{C_TSV_LABEL}\" in test {os.path.basename(metric_file)} " \
+                             f"must not be a null or empty string value"
+                    LOG.error(errmsg)
+                    # Mark the test as having failed
+                    self.result.test_passed = False
+                    self.result.stderr = errmsg
+                    return False
+
+                # Read the value and convert the value string into a numeric
+                value_str = row[C_TSV_VALUE]
+
+                if (value_str is None) or (len(value_str) == 0):
+                    errmsg = f"Value for field \"{C_TSV_VALUE}\" in test {os.path.basename(metric_file)} " \
+                             f"must not be a null or empty string value"
+                    LOG.error(errmsg)
+                    # Mark the test as having failed
+                    self.result.test_passed = False
+                    self.result.stderr = errmsg
+                    return False
+
+                try:
+                    value = decimal.Decimal(value_str)
+
+                except ValueError:
+                    errmsg = f"Statement with label \"{label}\" failed because the " \
+                             f"\"{C_TSV_VALUE}\" field is not numeric in test {os.path.basename(metric_file)}"
+                    LOG.error(errmsg)
+                    # Mark the test as having failed
+                    self.result.test_passed = False
+                    self.result.stderr = errmsg
+                    return False
+
+                self.result.add_metric(label, value)
+
         return True
 
     def __cleanup_test_file(self):
