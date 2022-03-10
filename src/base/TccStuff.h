@@ -370,8 +370,8 @@ struct Combined_T
   // top
   i8      m_iTopInit;
   i8*     m_aiTopPayload;
-  char*   m_racTopPayloadArea;
   void*   m_aTopPayloadRow;
+  char*   m_racTopPayloadArea;
   void*   m_aIndexTreeTOP;
   void*   m_aIndexDefTOP;
   void*   m_aEntBufferTOP;

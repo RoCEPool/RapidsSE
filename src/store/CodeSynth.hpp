@@ -171,13 +171,11 @@ namespace STORE {
 
     void vPayloadAgg(IndexDef *pIndexDef);
 
-    void vPayloadKey(IndexDef *pIndexDef, Stz *szEntWrk, Stz *szEntKey);
-
-    void vPayloadStore(IndexDef *pIndexDef);
+    void vPayloadStore(IndexDef *pIndexDef, ePL ePayLoad);
 
     void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad);
 
-    void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack);
+    void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad);
 
     void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, ePE ePreExp, eEK eExprKind, eDM eExprType, bool bHashRows, i8 i_Col, i8& i_DupCtr);
     void vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, IntStack* pTypeStack, eEK eExprKind,

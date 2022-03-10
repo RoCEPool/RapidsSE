@@ -419,6 +419,8 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     // skip ascending/ descending
     if (pTkn->bSame("ASC"_Stz) || pTkn->bSame("DESC"_Stz)) {
       vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+      // set the column no in the indexDef w.r to the streamDef
+      pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
       pPreExpStack->vPush(ePreExp);
       pTkn = pTknVec->pNextToken();
       continue;
@@ -634,7 +636,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
           }
 
           // set the column no in the indexDef w.r to the streamDef
-          pIndexDef->vSetColSet(i_ColumnOrdinal , iProjectColumn - 1);
+          pIndexDef->vSetColSet(i_ColumnOrdinal , iProjectColumn - 2);
 
           ePreExp = PE_GKY;
 
@@ -683,9 +685,9 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
         // could be a symbolic column name
 
         // look for the column in the indexDef
-        Column *pGbyColumn = pIndexDef ? pIndexDef->pFindColumn(pTkn->szChars()) : nullptr;
+        Column *pIdxColumn = pIndexDef ? pIndexDef->pFindColumn(pTkn->szChars()) : nullptr;
 
-        if ( pGbyColumn ) {
+        if ( pIdxColumn ) {
           // should already be in the streamDef
           Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
           RASSERT(pColumn);
