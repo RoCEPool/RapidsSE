@@ -277,11 +277,18 @@ class JobRunner:
         # self.archive_metrics is false and a given test is successful.
         # If a test fails, or if self.archive_metrics is true then we keep those artifacts.
 
+        collect_logs = False
+
         for test_result in self.test_results:
-            if test_result.test_passed and self.archive_metrics is False:
+            if test_result.test_passed is False:
+                collect_logs = True
+
+            elif self.archive_metrics is False:     # test must have passed
                 self.__delete_test_artifact_dir(test_result.test_id, test_result.test_path)
 
-        # TODO: Need to gather SE logs if any test fails.
+        # Need to gather SE logs if any test fails.
+        if collect_logs:
+            clusterops.get_rapidsse_logs(self.ip_addresses[0], self.all_configs.cluster_config, self.result_path)
 
     def __cleanup_job(self):
         """Common cleanup operations after a job has completed, successfully or not"""

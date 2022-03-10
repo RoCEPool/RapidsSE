@@ -474,7 +474,8 @@ class TestRunner:
             raise errors.ClusterError(msg) from e
 
         except subprocess.TimeoutExpired as e:
-            msg = f"Deletion of removing remote test file at {self.remote_test_file} timed out after {e.timeout} seconds: " \
+            msg = f"Deletion of removing remote test file at {self.remote_test_file} " \
+                  f"timed out after {e.timeout} seconds: " \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e

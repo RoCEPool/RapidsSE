@@ -989,10 +989,9 @@
             <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
               <stringProp name="FileSaver.filename">nationResult.tsv</stringProp>
               <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
+              <boolProp name="FileSaver.successonly">true</boolProp>
               <boolProp name="FileSaver.skipsuffix">true</boolProp>
               <boolProp name="FileSaver.skipautonumber">true</boolProp>
-              <boolProp name="FileSaver.ignoreTC">false</boolProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
