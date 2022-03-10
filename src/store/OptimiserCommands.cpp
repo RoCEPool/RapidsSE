@@ -32,7 +32,8 @@ OptimiserFun __Opt_add
   nullptr,            // command second word
   bOpt_add,           // function to call
   0,0,                // spare
-  "add card print"_Stz
+  "add card print"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +55,8 @@ OptimiserFun __Opt_below
   nullptr,            // command second word
   bOpt_below,         // function to call
   0,0,                // spare
-  "set card below"_Stz
+  "set card below"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +78,8 @@ OptimiserFun __Opt_clear
   nullptr,            // command second word
   bOpt_clear,         // function to call
   0,0,                // spare
-  "clear"_Stz
+  "clear"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -98,7 +101,8 @@ OptimiserFun __Opt_cmp
   nullptr,            // command second word
   bOpt_cmp,           // function to call
   0,0,                // spare
-  "compare cards"_Stz
+  "compare cards"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -120,7 +124,8 @@ OptimiserFun __Opt_cut
   nullptr,            // command second word
   bOpt_cut,           // function to call
   0,0,                // spare
-  "cut card"_Stz
+  "cut card"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +147,8 @@ OptimiserFun __Opt_depth
   nullptr,            // command second word
   bOpt_depth,         // function to call
   0,0,                // spare
-  "set print depth limit"_Stz
+  "set print depth limit"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +170,8 @@ OptimiserFun __Opt_form
   nullptr,            // command second word
   bOpt_form,          // function to call
   0,0,                // spare
-  "set card print form"_Stz
+  "set card print form"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -186,7 +193,8 @@ OptimiserFun __Opt_help_0
   nullptr,            // command second word
   bOpt_help,          // function to call
   0,0,                // spare
-  "help"_Stz
+  "help"_Stz,
+ "usage???"_Stz
 );
 
 OptimiserFun __Opt_help_1
@@ -196,7 +204,8 @@ OptimiserFun __Opt_help_1
   nullptr,            // command second word
   bOpt_help,          // function to call
   0,0,                // spare
-  "help"_Stz
+  "help"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -218,7 +227,8 @@ OptimiserFun __Opt_hide
   nullptr,            // command second word
   bOpt_hide,          // function to call
   0,0,                // spare
-  "clear card see"_Stz
+  "clear card see"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -240,7 +250,8 @@ OptimiserFun __Opt_load
   nullptr,            // command second word
    bOpt_load,         // function to call
   0,0,                // spare
-  "load statement from file"_Stz
+  "load statement from file"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -262,7 +273,8 @@ OptimiserFun __Opt_name
   nullptr,            // command second word
   bOpt_name,       // function to call
   0,0,                // spare
-  "get/set query name"_Stz
+  "get/set query name"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -284,7 +296,8 @@ OptimiserFun __Opt_reprint
   nullptr,            // command second word
   bOpt_reprint,       // function to call
   0,0,                // spare
-  "reprint board"_Stz
+  "reprint board"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -306,7 +319,8 @@ OptimiserFun __Opt_set
   nullptr,            // command second word
   bOpt_set,           // function to call
   0,0,                // spare
-  "set card registers"_Stz
+  "set card registers"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -328,7 +342,8 @@ OptimiserFun __Opt_sub
   nullptr,            // command second word
   bOpt_sub,           // function to call
   0,0,                // spare
-  "remove card print"_Stz
+  "remove card print"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -350,7 +365,8 @@ OptimiserFun __Opt_weave
   nullptr,            // command second word
   bOpt_weave,           // function to call
   0,0,                // spare
-  "weave statement from cards"_Stz
+  "weave statement from cards"_Stz,
+  "usage???"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -372,7 +388,8 @@ OptimiserFun __Opt_write
   nullptr,            // command second word
   bOpt_write,         // function to call
   0,0,                // spare
-  "write statement to file"_Stz
+  "write statement to file"_Stz,
+  "usage???"_Stz
 );
 
 /*============================================================================*/

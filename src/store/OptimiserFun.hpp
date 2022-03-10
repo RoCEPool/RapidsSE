@@ -23,6 +23,7 @@ namespace STORE
     i8   m_iSpare0;
     i8   m_iSpare1;
     Stz* m_szDescription; // description of the command
+    Stz* m_szUsage;
 
   public:
     OptimiserFun(Stz* szName,
@@ -33,7 +34,8 @@ namespace STORE
                                   i8&        riAction),
                  i8   iSpare0,
                  i8   iSpare1,
-                 Stz* szDescription
+                 Stz* szDescription,
+                 Stz* szUsage
                  );
   };
 }

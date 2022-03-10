@@ -18,7 +18,8 @@ OptimiserFun::OptimiserFun(Stz* szName,
                                             i8&        riAction),
                            i8   iSpare0,
                            i8   iSpare1,
-                           Stz* szDescription
+                           Stz* szDescription,
+                           Stz* szUsage
                            )
 {
   m_szName        = szName;
@@ -28,6 +29,7 @@ OptimiserFun::OptimiserFun(Stz* szName,
   m_iSpare0       = iSpare0;
   m_iSpare1       = iSpare1;
   m_szDescription = szDescription;
+  m_szUsage       = szUsage;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
