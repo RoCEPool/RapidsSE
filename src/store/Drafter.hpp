@@ -27,31 +27,31 @@ namespace STORE
 
     static void vRepair(Object* pObject);
 
-    bool bAdd     (TokenVec* pTknVec, i8& riAction);
+    bool bAdd     (TokenVec* pTknVec, eOA& reOptAct);
 
-    bool bBelow   (TokenVec* pTknVec, i8& riAction);
+    bool bBelow   (TokenVec* pTknVec, eOA& reOptAct);
 
-    bool bClear   (TokenVec* pTknVec, i8& riAction);
-    bool bCmp     (TokenVec* pTknVec, i8& riAction);
-    bool bCut     (TokenVec* pTknVec, i8& riAction);
+    bool bClear   (TokenVec* pTknVec, eOA& reOptAct);
+    bool bCmp     (TokenVec* pTknVec, eOA& reOptAct);
+    bool bCut     (TokenVec* pTknVec, eOA& reOptAct);
 
-    bool bDepth   (TokenVec* pTknVec, i8& riAction);
+    bool bDepth   (TokenVec* pTknVec, eOA& reOptAct);
   
-    bool bForm    (TokenVec* pTknVec, i8& riAction);
+    bool bForm    (TokenVec* pTknVec, eOA& reOptAct);
 
-    bool bHide    (TokenVec* pTknVec, i8& riAction);
+    bool bHide    (TokenVec* pTknVec, eOA& reOptAct);
 
-    bool bLoad    (TokenVec* pTknVec, i8& riAction);
+    bool bLoad    (TokenVec* pTknVec, eOA& reOptAct);
 
-    bool bName    (TokenVec* pTknVec, i8& riAction);
+    bool bName    (TokenVec* pTknVec, eOA& reOptAct);
 
-    bool bReprint (TokenVec* pTknVec, i8& riAction);
+    bool bReprint (TokenVec* pTknVec, eOA& reOptAct);
 
-    bool bSet     (TokenVec* pTknVec, i8& riAction);
-    bool bSub     (TokenVec* pTknVec, i8& riAction);
+    bool bSet     (TokenVec* pTknVec, eOA& reOptAct);
+    bool bSub     (TokenVec* pTknVec, eOA& reOptAct);
 
-    bool bWeave   (TokenVec* pTknVec, i8& riAction);
-    bool bWrite   (TokenVec* pTknVec, i8& riAction);
+    bool bWeave   (TokenVec* pTknVec, eOA& reOptAct);
+    bool bWrite   (TokenVec* pTknVec, eOA& reOptAct);
   
   private:
     Footer* aFooter(void);

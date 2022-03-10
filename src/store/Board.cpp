@@ -211,7 +211,7 @@ void Board::vPrintBoard(Stz* szCue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  i8 iAction = 1;
+  eOA eOptAct = OA_ENTRY;
   TokenVec* pTknVec = nullptr;
   
   L_Entry:
@@ -275,21 +275,21 @@ void Board::vPrintBoard(Stz* szCue)
     goto L_Input;
   }
     
-  iAction = 0;
-  bExecuted = pOptFun->m_fpOptFun(m_pOptimiser,pTknVec,iAction);
+  eOptAct = OA_ENTRY;
+  bExecuted = pOptFun->m_fpOptFun(m_pOptimiser,pTknVec,eOptAct);
 
   L_Next:
   
   if (! bExecuted)
     goto L_Input;
   
-  if (0 == iAction)
+  if (OA_ENTRY == eOptAct)
     goto L_Entry;
   else
-  if (1 == iAction)
+  if (OA_INPUT == eOptAct)
     goto L_Input;
   else
-  if (2 == iAction)
+  if (OA_EXIT == eOptAct)
     return;
   else
     NEVER_REACH;

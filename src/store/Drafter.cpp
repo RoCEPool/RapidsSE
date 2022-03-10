@@ -63,7 +63,7 @@ void Drafter::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* add                                                                        */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bAdd(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bAdd(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -97,7 +97,7 @@ bool Drafter::bAdd(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* below                                                                      */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bBelow(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bBelow(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -132,7 +132,7 @@ bool Drafter::bBelow(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* clear                                                                      */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bClear(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bClear(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -140,7 +140,7 @@ bool Drafter::bClear(TokenVec* pTknVec, i8& riAction)
   
   pBoard->vClear();
 
-  riAction = 1;
+  reOptAct = OA_ENTRY;
   
   return true;
 }
@@ -148,7 +148,7 @@ bool Drafter::bClear(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* compare                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bCmp(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bCmp(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -200,7 +200,7 @@ bool Drafter::bCmp(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* cut                                                                        */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bCut(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bCut(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -245,7 +245,7 @@ bool Drafter::bCut(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* depth                                                                      */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bDepth(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bDepth(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -254,7 +254,7 @@ bool Drafter::bDepth(TokenVec* pTknVec, i8& riAction)
   i8 nTkns = pTknVec->nItems();
   if (nTkns < 2) {
     vTrace("depth : %lld\n"_Stz,iDepth);
-    riAction = 1;
+    reOptAct = OA_ENTRY;
     return true;
   }
   
@@ -270,7 +270,7 @@ bool Drafter::bDepth(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* form                                                                       */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bForm(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bForm(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -307,7 +307,7 @@ bool Drafter::bForm(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* add                                                                        */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bHide(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bHide(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -342,7 +342,7 @@ bool Drafter::bHide(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* load                                                                       */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bLoad(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bLoad(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -388,7 +388,7 @@ bool Drafter::bLoad(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* name                                                                       */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bName(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bName(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -410,11 +410,11 @@ bool Drafter::bName(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* reprint                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bReprint(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bReprint(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
   
-  riAction = 0;
+  reOptAct = OA_ENTRY;
   
   return true;
 }
@@ -422,7 +422,7 @@ bool Drafter::bReprint(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* set                                                                        */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bSet(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bSet(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -462,7 +462,7 @@ bool Drafter::bSet(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* sub                                                                        */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bSub(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bSub(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -498,7 +498,7 @@ bool Drafter::bSub(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* weave                                                                      */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bWeave(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bWeave(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -506,7 +506,7 @@ bool Drafter::bWeave(TokenVec* pTknVec, i8& riAction)
          ,m_pOptimiser->szWeave()
          );
   
-  riAction = 1;
+  reOptAct = OA_INPUT;
   
   return true;
 }
@@ -514,7 +514,7 @@ bool Drafter::bWeave(TokenVec* pTknVec, i8& riAction)
 /*----------------------------------------------------------------------------*/
 /* write                                                                      */
 /*----------------------------------------------------------------------------*/
-bool Drafter::bWrite(TokenVec* pTknVec, i8& riAction)
+bool Drafter::bWrite(TokenVec* pTknVec, eOA& reOptAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
 
@@ -536,7 +536,7 @@ bool Drafter::bWrite(TokenVec* pTknVec, i8& riAction)
   
   vTrace("%s written\n"_Stz,sPath.szStz());
   
-  riAction = 1;
+  reOptAct = OA_INPUT;
   
   return true;
 }

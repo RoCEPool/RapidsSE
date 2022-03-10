@@ -13,7 +13,7 @@ extern OptimiserCatalog gxOptimiserCatalog;
 /*----------------------------------------------------------------------------*/
 /* cardCtl: add                                                               */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_add(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_add(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_add\n"_Stz);
 //  s4K sCmd;
@@ -21,7 +21,7 @@ bool STORE::bOpt_add(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
 //  vTrace("Cmd : %s\n"_Stz,sCmd.szStz());
 
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bAdd(pTknVec,riAction);
+  bool bResult = pDrafter->bAdd(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -39,12 +39,12 @@ OptimiserFun __Opt_add
 /*----------------------------------------------------------------------------*/
 /* cardCtl: below                                                             */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_below(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_below(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_below\n"_Stz);
 
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bBelow(pTknVec,riAction);
+  bool bResult = pDrafter->bBelow(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -62,12 +62,12 @@ OptimiserFun __Opt_below
 /*----------------------------------------------------------------------------*/
 /* drafter: clear                                                             */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_clear(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_clear(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_clear\n"_Stz);
   
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bClear(pTknVec,riAction);
+  bool bResult = pDrafter->bClear(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -85,12 +85,12 @@ OptimiserFun __Opt_clear
 /*----------------------------------------------------------------------------*/
 /* drafter: compare cards                                                     */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_cmp(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_cmp(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_cut\n"_Stz);
 
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bCmp(pTknVec,riAction);
+  bool bResult = pDrafter->bCmp(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -108,12 +108,12 @@ OptimiserFun __Opt_cmp
 /*----------------------------------------------------------------------------*/
 /* drafter: cut card                                                          */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_cut(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_cut(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_cut\n"_Stz);
   
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bCut(pTknVec,riAction);
+  bool bResult = pDrafter->bCut(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -131,12 +131,12 @@ OptimiserFun __Opt_cut
 /*----------------------------------------------------------------------------*/
 /* cardCtl: depth                                                             */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_depth(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_depth(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_depth\n"_Stz);
   
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bDepth(pTknVec,riAction);
+  bool bResult = pDrafter->bDepth(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -154,12 +154,12 @@ OptimiserFun __Opt_depth
 /*----------------------------------------------------------------------------*/
 /* cardCtl: form                                                              */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_form(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_form(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_form\n"_Stz);
   
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bForm(pTknVec,riAction);
+  bool bResult = pDrafter->bForm(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -177,11 +177,11 @@ OptimiserFun __Opt_form
 /*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_help(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_help(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   gxOptimiserCatalog.vHelp();
   
-  riAction = 1;
+  reOptAct = OA_INPUT;
   
   return true;
 }
@@ -211,12 +211,12 @@ OptimiserFun __Opt_help_1
 /*----------------------------------------------------------------------------*/
 /* cardCtl: hide                                                              */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_hide(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_hide(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_hide\n"_Stz);
     
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bHide(pTknVec,riAction);
+  bool bResult = pDrafter->bHide(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -234,12 +234,12 @@ OptimiserFun __Opt_hide
 /*----------------------------------------------------------------------------*/
 /* drafter: load                                                              */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_load(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_load(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_write\n"_Stz);
   
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bLoad(pTknVec,riAction);
+  bool bResult = pDrafter->bLoad(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -257,12 +257,12 @@ OptimiserFun __Opt_load
 /*----------------------------------------------------------------------------*/
 /* drafter: set query name                                                    */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_name(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_name(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_name\n"_Stz);
   
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bName(pTknVec,riAction);
+  bool bResult = pDrafter->bName(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -280,12 +280,12 @@ OptimiserFun __Opt_name
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_reprint(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_reprint(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_reprint\n"_Stz);
   
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bReprint(pTknVec,riAction);
+  bool bResult = pDrafter->bReprint(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -303,12 +303,12 @@ OptimiserFun __Opt_reprint
 /*----------------------------------------------------------------------------*/
 /* drafter: set card registers                                                */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_set(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_set(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_set\n"_Stz);
   
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bSet(pTknVec,riAction);
+  bool bResult = pDrafter->bSet(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -326,12 +326,12 @@ OptimiserFun __Opt_set
 /*----------------------------------------------------------------------------*/
 /* cardCtl: sub                                                               */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_sub(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_sub(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_sub\n"_Stz);
   
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bSub(pTknVec,riAction);
+  bool bResult = pDrafter->bSub(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -349,12 +349,12 @@ OptimiserFun __Opt_sub
 /*----------------------------------------------------------------------------*/
 /* drafter: weave                                                             */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_weave(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_weave\n"_Stz);
   
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bWeave(pTknVec,riAction);
+  bool bResult = pDrafter->bWeave(pTknVec,reOptAct);
   return bResult;
 }
 
@@ -372,12 +372,12 @@ OptimiserFun __Opt_weave
 /*----------------------------------------------------------------------------*/
 /* drafter: write                                                             */
 /*----------------------------------------------------------------------------*/
-bool STORE::bOpt_write(Optimiser* pOptimiser, TokenVec* pTknVec, i8& riAction)
+bool STORE::bOpt_write(Optimiser* pOptimiser, TokenVec* pTknVec, eOA& reOptAct)
 {
   vTrace("bOpt_write\n"_Stz);
   
   Drafter* pDrafter = pOptimiser->pDrafter();
-  bool bResult = pDrafter->bWrite(pTknVec,riAction);
+  bool bResult = pDrafter->bWrite(pTknVec,reOptAct);
   return bResult;
 }
 

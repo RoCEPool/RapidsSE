@@ -4,6 +4,7 @@
 #pragma once
 
 #include "BASE.h"
+#include "eOA.h"
 
 namespace STORE { class Optimiser; }
 
@@ -18,7 +19,7 @@ namespace STORE
   
     bool (*m_fpOptFun)(Optimiser* pOptimiser,
                        TokenVec*  pTknVec,
-                       i8&        riAction);
+                       eOA&       reOptAct);
   
     i8   m_iSpare0;
     i8   m_iSpare1;
@@ -31,7 +32,7 @@ namespace STORE
                  Stz* szCommand2,
                  bool (*fpOptFun)(Optimiser* pOptimiser,
                                   TokenVec*  pTokenVec,
-                                  i8&        riAction),
+                                  eOA&       reOptAct),
                  i8   iSpare0,
                  i8   iSpare1,
                  Stz* szDescription,
