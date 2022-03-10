@@ -1,5 +1,7 @@
 """"Runs a job"""
 import datetime
+import os
+import shutil
 import string
 import logging
 import threading
@@ -21,6 +23,9 @@ LOG = logging.getLogger(__name__)
 # and be ready to use?
 C_EC2_BOOT_TIMEOUT_SEC = 300
 
+# The format specification for the artifact directory for each test result
+C_TEST_ARTIFACT_FMT = "tid{:02d}-{}"
+
 
 class JobRunner:
     """Coordinates and runs a job, specified by a job config file"""
@@ -33,6 +38,7 @@ class JobRunner:
                  git_branch: string,
                  invoking_user: string,
                  archive_metrics: bool,
+                 result_path: string,
                  tags: dict):
 
         # Parse the job file and the hardware and cluster configs that it references
@@ -58,6 +64,9 @@ class JobRunner:
         # Do we want to collect and save the metrics in bamboo afterwards?
         self.archive_metrics = archive_metrics
 
+        # Where to save the overall results and archived files?
+        self.result_path = result_path
+
         # A dictionary of key/value pairs that are stored with the job results
         self.tags: {} = tags
 
@@ -69,7 +78,7 @@ class JobRunner:
         self.job_result_id = -1     # ID of this result instance running a given job
         self.job_id = -1            # ID of the job definition
         self.test_tuples: [(string, int)] = None  # tuple of resolved test path and associated test_id
-        self.test_results = []
+        self.test_results: [TestResult] = []
 
         self.instance_ids = []  # EC2 instance IDs
         self.ip_addresses = []  # EC2 instance private IP addresses
@@ -154,6 +163,9 @@ class JobRunner:
         self.job_id = job_id
         self.test_tuples = test_tuples
 
+        # Clear out any contents of the result and artifacts directory
+        self.__delete_results_dir_contents()
+
         # Compile RapidsSE and build the installer
         installer_path = clusterops.build_installer()
 
@@ -204,8 +216,12 @@ class JobRunner:
                 self.__skip_test(test_path, test_id)
                 continue
 
+            # Make the directory where this test will store artifacts
+            artifact_dir = self.__make_test_artifact_dir(test_id, test_path)
+
             test_runner = TestRunner(test_path, test_id, self.job_result_id, test_seq,
-                                     self.all_configs.get_cluster(), self.ip_addresses[0])
+                                     self.all_configs.get_cluster(), self.ip_addresses[0],
+                                     artifact_dir)
             test_runner.run_test()
             test_result = test_runner.result
             self.test_results.append(test_result)
@@ -224,10 +240,48 @@ class JobRunner:
         test_result.test_skipped = True
         self.test_results.append(test_result)
 
+    def __delete_results_dir_contents(self):
+        """
+        Remove the contents of the results directory.
+        """
+        # Simplest way is to delete the entire directory and then recreate it.
+        LOG.debug(f"Clearing the contents of results & artifacts directory: {self.result_path}")
+
+        shutil.rmtree(self.result_path, ignore_errors=True)
+        os.makedirs(self.result_path, exist_ok=True)
+
+    def __make_test_artifact_dir(self, test_id: int, test_path: string) -> string:
+        """
+        Make a directory for storing test artifacts and logs.
+        """
+        artifact_name = C_TEST_ARTIFACT_FMT.format(test_id, TestRunner.get_test_name_from_path(test_path))
+        artifact_dir = pathlib.Path(self.result_path) / artifact_name
+
+        LOG.debug(f"Making artifact dir: {str(artifact_dir)}")
+        os.makedirs(str(artifact_dir), exist_ok=True)
+        return str(artifact_dir)
+
+    def __delete_test_artifact_dir(self, test_id: int, test_path: string):
+        """
+        Delete the directory (and all content) that stores test artifacts and logs.
+        """
+        artifact_name = C_TEST_ARTIFACT_FMT.format(test_id, TestRunner.get_test_name_from_path(test_path))
+        artifact_dir = pathlib.Path(self.result_path) / artifact_name
+
+        LOG.debug(f"Deleting artifact dir: {str(artifact_dir)}")
+        shutil.rmtree(str(artifact_dir), ignore_errors=True)
+
     def __gather_results(self):
         """Collect all results, logs and artifacts from the machines used to run the tests"""
-        pass
-        # TODO: Gather metrics if self.archive_metrics is true
+        # We gather test artifacts by default. Need to delete test artifacts if
+        # self.archive_metrics is false and a given test is successful.
+        # If a test fails, or if self.archive_metrics is true then we keep those artifacts.
+
+        for test_result in self.test_results:
+            if test_result.test_passed and self.archive_metrics is False:
+                self.__delete_test_artifact_dir(test_result.test_id, test_result.test_path)
+
+        # TODO: Need to gather SE logs if any test fails.
 
     def __cleanup_job(self):
         """Common cleanup operations after a job has completed, successfully or not"""

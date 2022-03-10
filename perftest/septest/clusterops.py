@@ -133,7 +133,9 @@ def install_rapidsse(install_file: pathlib.Path, cluster_config_path: pathlib.Pa
     assert cluster_config_path.exists()
 
     command = [str(install_file), "--quiet", "--",
-               "--script", "--debug", "--config", str(cluster_config_path)]
+               "--script", "--config", str(cluster_config_path)]
+
+    # Note: Can add in "--debug" as a parameter to the above list
 
     LOG.info(f"About to install the RapidsSE cluster with the following command: {' '.join(command)}")
 

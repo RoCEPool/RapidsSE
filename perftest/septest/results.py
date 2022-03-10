@@ -13,7 +13,9 @@ class TestResult:
     Holds result information about running a test.
     """
 
-    def __init__(self, test_name: string, test_id: int, job_result_id: int, remote_dir: pathlib.Path):
+    def __init__(self, test_path: string, test_name: string, test_id: int,
+                 job_result_id: int, remote_dir: pathlib.Path):
+        self.test_path = test_path
         self.test_name = test_name
         self.test_id: int = test_id
         self.job_result_id: int = job_result_id
