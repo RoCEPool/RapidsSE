@@ -1256,6 +1256,11 @@ public:
   void vOpStageNmFetch(void);
   void vOpTagSetFetch(void);
 
+  // optimiser
+  void vOptimiserDelete(void);
+  void vOptimiserOptimise(void);
+  void vOptimiserNew(void);
+
   // operand
   void vOperandToParcel(void);
 
