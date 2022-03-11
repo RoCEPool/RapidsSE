@@ -1476,7 +1476,7 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
   // payload to buffer
   pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, nullptr, pPreExpStack, SR_NONE, SR_AT);
 
-  pCodeSynth->vSynthEosPayload(pIndexDef, m_pPostStack);
+  pCodeSynth->vSynthEosPayload(pIndexDef, m_pPostStack, PL_GBY);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   // delete the postStack. No longer needed
@@ -1523,7 +1523,7 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   // payload to buffer
   pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, nullptr, pPreExpStack, SR_NONE, SR_AT);
 
-  pCodeSynth->vSynthEosPayload(pIndexDef, m_pPostStack);
+  pCodeSynth->vSynthEosPayload(pIndexDef, m_pPostStack, PL_SRT);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   // delete the postStack. No longer needed
@@ -2206,7 +2206,7 @@ Shape* Stencil::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR e
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexDef, pPreExpStack, ePrevStencil, SR_AT);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
+  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
   pCodeSynth->vSynthSort( pLogicUnit->m_eExprKind,
                             sProjectExpr,
                             sLabel,

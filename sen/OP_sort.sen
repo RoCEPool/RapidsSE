@@ -62,7 +62,7 @@
   // delete the streamDefOut[]. Not needed for sort
   StreamDefOut[].delete
 
-  // evaluate the expression
+  // duplicate the streamDefLeft as streamDefOut
   StreamDefLft[].duplicate to StreamDefOut[]
 
   StreamDefLft[].duplicate to Pipein[]

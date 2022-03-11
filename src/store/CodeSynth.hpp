@@ -92,7 +92,7 @@ namespace STORE {
     void vSynthAllocPotRow(TypedStack* pPostStack, Stz *sHashExpr, bool bEosHandler,
                            Stz *sLabel, Stz *sLabelNext);
 
-    void vSynthEosPayload(IndexDef *pIndexDef, TypedStack* pPostStack);
+    void vSynthEosPayload(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad);
 
     void vSynthEosTop(IndexDef *pIndexDef);
 
