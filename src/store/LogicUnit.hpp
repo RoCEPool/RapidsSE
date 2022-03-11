@@ -35,11 +35,13 @@
 #include "BucketInfo.hpp"
 #include "StreamDefRht.hpp"
 #include "Stencil.hpp"
+#include "Stencil.hpp"
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
 #include "PipelineSpec.hpp"
 #include "NamedBuffer.hpp"
+#include "Optimiser.hpp"
 
 #include "IndexTree.hpp"
 #include "JobMetrics.hpp"
@@ -217,7 +219,8 @@ namespace STORE
 
     REG<Op,             CN_OP            > m_xpOp;
     REG<Operand,        CN_NONE          > m_xpOperandOoO;
-  
+    REG<Optimiser,      CN_OPTIMISER     > m_xpOptimiser;
+
     REG<PathIdentifier, CN_PATHIDENTIFIER> m_xpPathIdentifier;
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
     REG<Operand,        CN_NONE          > m_xpPipein;

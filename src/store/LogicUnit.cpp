@@ -139,6 +139,8 @@ LogicUnit::LogicUnit(void)
 
 ,             m_xpOp(this,RF_NONE,         nullptr,                 LR_OP)
 ,     m_xpOperandOoO(this,RF_REPAIR_NONE,  nullptr,                 LR_OPERANDOOO)
+,      m_xpOptimiser(this,RF_REPAIR_DELETE,  nullptr,               LR_OPTIMISER)
+
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, LR_PATHIDENTIFIER)
 ,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_PARCEL)
 ,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                 LR_PIPEIN)
