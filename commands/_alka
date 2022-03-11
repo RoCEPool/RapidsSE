@@ -23,108 +23,98 @@ create table datums (
 
 load datums "../DATA/Transliterate/groupBy.csv" ;
 
-
-//explain stage transliterate select int_col0 from datums where int_col0 in (3,5,6,8);
-
-explain stage transliterate select int_col0 from datums order by int_col1, int_col0 DESC;
-
-//select sum(int_col0) from datums;
-
-//explain stage transliterate select sum(int_col0) from datums;
-//select 10+sum(int_col0) from datums;
-//select sum(int_col0)+10 from datums;
-
-//select int_col0 from datums where int_col0 between 3 and 10;
-
-//explain stage transliterate select int_col0 from datums where int_col0 between 3 and 10;;
-//
-/*
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0365
-  stage stageMarker0365 on all partitions :
-    scan rapidsse public datums
-    | filter 2 " type BOOLEAN  }  3 5 6 7 #4 $1 in  "
-    | project 2 " type INTEGER as int_col0 $1 "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-
-explain stage transliterate select sum(int_col0), int_col1 from datums group by int_col1;
-
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0226
-  stage stageMarker0226 on all partitions :
-    scan rapidsse public datums
-    | project 2 " type INTEGER )  $1 sum  "
-    | combined 0
-    | stageLast
-    stage stageLast on origin :
-      output
-      | sink
-      | stageStart
-  end ;
-
-
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0472
-  stage stageMarker0472 on all partitions :
-    scan rapidsse public datums
-    | aggreg 2 " type INTEGER )  $1 sum  , type INTEGER $2 groupBy  type INTEGER as int_col1 $2 "
-    | combined 0
-    | stageLast
-
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-*/
-
-//select int_col1 + 10, sum(int_col0) from datums group by int_col1 + 10;
-
-//select int_col1, sum(int_col0) from datums group by int_col1;
-//select int_col0, dte_col4, dte_col5 from datums where dte_col4 != DATE'1941-01-01';
-//select min(dec_col6) from datums;
-
-//EXPLAIN stage transliterate SELECT int_col0 FROM datums WHERE int_col1 IN (1000, 2000, 3000, 4000);
-/*
-_lineitem
-CREATE INDEX lineitem_ord ON lineitem(L_ORDERKEY);
+create table LineItem
+(
+ L_ORDERKEY      INTEGER       NOT NULL,
+ L_PARTKEY       INTEGER       NOT NULL,
+ L_SUPPKEY       INTEGER       NOT NULL,
+ L_LINENUMBER    INTEGER       NOT NULL,
+ L_QUANTITY      DECIMAL(15,2) NOT NULL,
+ L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+ L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+ L_TAX           DECIMAL(15,2) NOT NULL,
+ L_RETURNFLAG    CHAR(1)       NOT NULL,
+ L_LINESTATUS    CHAR(1)       NOT NULL,
+ L_SHIPDATE      DATE NOT      NULL,
+ L_COMMITDATE    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
+ L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
+ L_SHIPMODE      CHAR(10)      NOT NULL,
+ L_COMMENT       VARCHAR(44)   NOT NULL
+ );
+CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
 create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
-load lineitem "../TPCH/SF_0001/lineitem.csv";
 
+_nation
+_region
+_orders;
+_part;
+CREATE INDEX orders_idx1 ON orders(O_CUSTKEY);
+CREATE INDEX orders_idx2 ON orders(O_ORDERKEY);
 
+create index IxR_REGIONKEY on REGION (R_REGIONKEY);
+create index IxR_NAME on REGION (R_NAME);
+
+///time load region "<tpch_dir>/region.<suffix>";
+/time load nation "<tpch_dir>/nation.<suffix>";
+///time load lineitem "<tpch_dir>/lineitem.<suffix>";
+///time load orders "<tpch_dir>/orders.<suffix>";
+///time load part "<tpch_dir>/part.<suffix>";
+///time load orders "../DATA/TPCH/orders10.csv";
+//load lineitem "../TPCH/SF_0001/lineitem.csv";
+
+explain stage transliterate select n_regionkey from nation order by N_REGIONKEY;
+
+//verbose enable;
+
+//select sum(int_col0), int_col1 from datums group by int_col1;
+
+//explain stage transliterate  select sum(int_col0), int_col1 from datums group by int_col1;
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0123
+  stage stageMarker0123 on all partitions :
+    scan rapidsse public nation
+    | project 2 " type INTEGER as n_nationkey $1 , type INTEGER as n_regionKey $3 "
+    | sort 2 " type INTEGER as n_nationkey $1 ASC "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*
 pipeline Q
-  begin
-  stage first on origin :
+begin
+  stage stageStart on origin :
     start
     | pulse once
     | next
-
-  stage Gs_LINEITEM on all partitions :
-    indexscan 2 lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
-                                       UBOUND $I1 TIMESTAMP '1995-01-01 00:00:00' <"
-    | project 2 "type TIMESTAMP L_SHIPDATE"
-
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | top 2 "TOP type DECIMAL total" 2
     | combined 0
-    | stageLast
+    | next
+
+  stage stageB on all nodes :
+    ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $1 , type decimal as total )  $2 sum  "
+    //| top 2 "TOP type DECIMAL total" 2
+    | combined 0
+    | next
+
+  stage stageC on origin :
+    ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $1 , type decimal as total )  $2 sum  "
+    | top 2 "TOP type DECIMAL total" 2
+    | combined 0
+    | next
+
   stage stageLast on origin :
     output
     | sink
@@ -137,10 +127,11 @@ begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker0181
-  stage stageMarker0181 on all partitions :
-    scan rapidsse public datums
-    | aggreg 2 " type INTEGER $K1 , type INTEGER ) $1 sum groupBy  type INTEGER as int_col1 $2 "
+    | next
+  stage stageMarker0123 on all partitions :
+    scan rapidsse public nation
+    | project 2 " type INTEGER as n_regionkey $3 "
+    | sort 2 " sort type INTEGER as n_regionkey $1 ASC  "
     | combined 0
     | next
   stage stageLast on origin :
@@ -148,86 +139,40 @@ begin
     | sink
     | stageStart
 end ;
+*/
 
+//explain stage transliterate select int_col0 from datums where int_col0 in (3,5,6,8);
+//explain stage transliterate select int_col0 from datums order by int_col1, int_col0 DESC;
+//select sum(int_col0) from datums;
+//explain stage transliterate select sum(int_col0) from datums;
+//select 10+sum(int_col0) from datums;
+//select sum(int_col0)+10 from datums;
+//select int_col0 from datums where int_col0 between 3 and 10;
+//explain stage transliterate select int_col0 from datums where int_col0 between 3 and 10;;
 
-pipeline unamed
+//SELECT n_name FROM nation where n_name LIKE '%ITED%' ;
+
+/*
+pipeline indexScanTest
 begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0734
-  stage stageMarker0734 on all partitions :
-    scan rapidsse public datums
-    | filter 2 " type BOOLEAN  } $2 1000  2000  3000  4000  in  "
-    | project 2 " type INTEGER as int_col0 $1 "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
+ stage stageA on origin :
+   start
+   | pulse once
+   | stageB
+
+ stage stageB on all partitions :
+   indexScan 2 orders orders_idx2 "BOUND $I1 5 =="
+   | combined 0
+   | stageC
+
+ stage stageC on origin :
+   output
+   | sink
+   | stageA
+
 end ;
 
 
-//explain stage transliterate select int_col1, sum(int_col0) from datums group by int_col1;
-//select int_col1 from datums;
-
-//explain stage transliterate select min(int_col1-10) from datums;
-//select min(int_col1 - 10) from datums;
-
-
-create table nation (
-	 N_NATIONKEY       INTEGER      NOT NULL,
-	 N_NAME            CHAR(25)     NOT NULL,
-	 N_REGIONKEY       INTEGER      NOT NULL,
-	 N_COMMENT         VARCHAR(152)
-);
-
-create table region (
-	 R_REGIONKEY       INTEGER      NOT NULL,
-	 R_NAME            CHAR(25)     NOT NULL,
-	 R_COMMENT         VARCHAR(152)
-);
-
-create index IxR_REGIONKEY on REGION (R_REGIONKEY);
-create index IxR_NAME on REGION (R_NAME);
-
-_lineitem
-_orders
-CREATE INDEX lineitem_ord ON lineitem(L_ORDERKEY);
-
-/time load region "<tpch_dir>/region.<suffix>";
-/time load nation "<tpch_dir>/nation.<suffix>";
-///time load lineitem "<tpch_dir>/lineitem.<suffix>";
-
-///time load lineitem "../DATA/TPCH/lineitem10.csv";
-load lineitem "../TPCH/SF_0001/lineitem.csv";
-load orders "../TPCH/SF_0001/orders.csv";
-//select 1 from t;
-
-create table T1 (
-	 a       INTEGER,
-	 b       INTEGER,
-	 c       INTEGER,
-	 d       VARCHAR(15)
-) partition by (c);
-
-create table T2 (
-	 a       INTEGER,
-	 b       INTEGER,
-	 c       INTEGER,
-	 d       VARCHAR(15)
-);
-create index T2_a on T2 (a);
-load T1 "../DATA/Joins/T1.csv" ;
-load T2 "../DATA/Joins/T2.csv" ;
-
-
-
-//select cast(int_col0+1, decimal) from datums;
-//select vch_col15 from datums;
-//select 22 from datums;
-CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
 
 pipeline Q4
 begin
@@ -268,573 +213,5 @@ begin
 end ;
 
 
-pipeline indexJoinTest
-begin
-  stage stageA on origin :
-    start
-    | pulse once
-    | stageB
-
-  stage stageB on all partitions :
-    scan nation
-    | indexJoin 2 region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
-    | combined 0
-    | stageD
-
-  stage stageD on origin :
-    output | sink | stageA
-
-end ;
-
-select 1 from t;
-
-trackMemory;
-select int_col1 + 10 from datums where int_col1 > 3000;
-memoryLeaks;
-
-
-//select vch_col15 , COUNT(int_col1) from datums GROUP BY vch_col15;
-//explain stage transliterate SELECT * FROM nation WHERE EXISTS ( SELECT r_name FROM region );
-
-
-//select int_col0/int_col0 from datums;
-
-//select N_NATIONKEY + 20 from nation;
-//select n_nationkey from nation;
-//select N_NAME from nation;
-
-//select 'alka' from nation;
-
-explain select int_col0 from datums where int_col0 between 1 and 7;
-
 //SELECT 'abcdef' LIKE 'a_c%f' FROM nation LIMIT 1;
-
-explain stage transliterate SELECT * FROM nation WHERE EXISTS ( SELECT r_name FROM region );
-
-
-select sum(int_col0+1) from datums;
-explain with_names stage aggregateSplit SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
-
-EXPLAIN SELECT
-  n_nationkey,
-  n_nationkey IN ( SELECT n_nationkey FROM nation  )
-FROM
-  nation n1;
-
-EXPLAIN stage transliterate SELECT
-  n_nationkey,
-  n_nationkey IN ( SELECT n_nationkey FROM nation  )
-FROM
-  nation n1;
-
-explain stage transliterate SELECT n_name FROM nation WHERE n_nationkey+1 IN (1, 2, 3, 4);
-
-//EXPLAIN stage transliterate SELECT * FROM nation n1 WHERE n_regionkey IN ( SELECT r_regionkey FROM region WHERE n1.n_name != r_name  );
-
-
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0139
-  stage stageMarker0139 on all partitions :
-    scan rapidsse public nation
-    | project 2 " type INTEGER 1  , type INTEGER )  $1 sum  "
-    | combined 0
-    | stageMarker0142
-  stage stageMarker0142 on all nodes :
-    project 2 " type INTEGER $1 , type INTEGER )  $2 sum  "
-    | combined 0
-    | stageMarker0145
-  stage stageMarker0145 on origin :
-    project 2 " type INTEGER $1 , type INTEGER )  $2 sum  "
-    | filter 2 " type BOOLEAN  $2 0  >  "
-    | project 2 " type INTEGER $1 "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-
-
-explain with_names stage aggregateSplit SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
-
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0700
-  stage stageMarker0700 on all partitions :
-    scan rapidsse public nation
-    | aggreg 2 " type INTEGER $1 $3 +  1  +  , type INTEGER )  $3 sum  , type INTEGER $K1 groupBy  type INTEGER $1 $3 +  "
-    | combined 0
-    | stageMarker0703
-  stage stageMarker0703 on all nodes :
-    aggreg 2 " type INTEGER $1 , type INTEGER )  $2 sum  , type INTEGER $K1 groupBy  type INTEGER $3 "
-    | combined 0
-    | stageMarker0706
-  stage stageMarker0706 on origin :
-    aggreg 2 " type INTEGER $1 , type INTEGER )  $2 sum  , type INTEGER $K1 groupBy  type INTEGER $3 "
-    | project 2 " type INTEGER $1 , type INTEGER $2 "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-
-
-create table T1 (
-	 a       INTEGER,
-	 b       INTEGER,
-	 c       INTEGER,
-	 d       VARCHAR(15)
-) ;
-
-
-create table T2 (
-	 a       INTEGER,
-	 b       INTEGER,
-	 c       INTEGER,
-	 d       VARCHAR(15)
-);
-
-
-create index T2_a on T2 (a);
-
-
-load T1 "../DATA/Joins/T1.csv" ;
-
-
-load T2 "../DATA/Joins/T2.csv" ;
-
-
-select sum(a) as x, sum(b) as x from T1;
-select a,a,b,b from T1;
-
-
-select * from T1 ?*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a *?
-  join T2 on T1.a = T2.a;
-
-
-
-
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker7252
-  stage stageMarker7252 on all partitions :
-    scan rapidsse public T1
-    | next
-  stage stageMarker7255 on all partitions :
-    indexJoin 2 T2 T2_a " BOUND $L1 $I1 ==  "
-    | combined 0
-    | next
-//stage stageMarker7258 on all partitions :
-    //project 2 " type INTEGER as a $1 , type INTEGER as b $2 , type INTEGER as c $3 , type VARCHAR as d $4 , type INTEGER as a $5 , type INTEGER as b $6 , type INTEGER as c $7 , type VARCHAR as d $8 "
-
-    //| combined 0
-    //| stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-memoryLeaks;
-
-
-
-//drop table region;
-//drop table nation;
-
-
-
-
-
-
-_lineitem;
-//load lineitem "../DATA/TPCH/lineitem10.csv";
-
-/time load nation "<tpch_dir>/nation.<suffix>";
-create table datums (
-int_col0   INTEGER,
-int_col1   INTEGER,
-bol_col2   BOOLEAN,
-bol_col3   BOOLEAN,
-dte_col4   DATE,
-dte_col5   DATE,
-dec_col6   DECIMAL(19,2),
-dec_col7   DECIMAL(19,2),
-flt_col8   FLOAT,
-flt_col9   FLOAT,
-tme_col10  TIME,
-tme_col11  TIME,
-tsp_col12  TIMESTAMP,
-tsp_col13  TIMESTAMP,
-vch_col14  VARCHAR(32),
-vch_col15  VARCHAR(32)
-);
-
-load datums "../DATA/Transliterate/date.csv" ;
-select * from datums;
-
-
-
-
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0130
-  stage stageMarker0130 on all partitions :
-    scan rapidsse public nation
-    //| combined 0
-    | stageMarker0133
-  stage stageMarker0133 on all partitions :
-    indexJoin 2 region IxR_REGIONKEY " BOUND $L1 $I1 ==  "
-    | combined 0
-    | stageMarker0136
-  stage stageMarker0136 on all partitions :
-    project 2 " type INTEGER as n_nationkey $1 , type VARCHAR as r_name $6 "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | next
-  stage stageMarker0130 on all partitions :
-    scan rapidsse public nation
-    | indexJoin 2 region IxR_REGIONKEY " BOUND $L1 $I1 ==  "
-    | combined 0
-    | next
-  stage stageMarker0136 on all partitions :
-    project 2 " type INTEGER as n_nationkey $1 , type VARCHAR as r_name $6 "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-
-select * from region;
-
-//SELECT 2*(n_nationkey + 1) FROM nation GROUP BY n_nationkey;
-
-
-
-//SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
-
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0138
-  stage stageMarker0138 on all partitions :
-    scan rapidsse public nation
-    | aggreg 2 " type INTEGER 2  $1 1  +  *  , type INTEGER )  $3 sum  , type INTEGER as n_nationkey $1 groupBy  type INTEGER as n_nationkey $1 "
-    | combined 0
-    | stageMarker0141
-  stage stageMarker0141 on all nodes :
-    aggreg 2 " type INTEGER $1 , type INTEGER )  $2 sum  , type INTEGER as n_nationkey $3 groupBy  type INTEGER as n_nationkey $3 "
-    | combined 0
-    | stageMarker0144
-  stage stageMarker0144 on origin :
-    aggreg 2 " type INTEGER $1 , type INTEGER )  $2 sum  , type INTEGER as n_nationkey $3 groupBy  type INTEGER as n_nationkey $3 "
-    //| project 2 " type INTEGER $1 , type INTEGER $2 "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-
-pipeline dropAllTables
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | next
-  stage stageA on next node :
-    | metaScan __listContents
-    //callProc "drop table region"
-    | next
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-*/
-
-/*
-pipeline is
-begin
- stage stageA on origin :
-   start | pulse once | stageB
-
- stage stageB on all partitions :
-   Scan region
-   | project 2 "type INTEGER $1"
-   | limit 2 2
-   | combined 0
-   | stageC
-
- stage stageC on origin:
-   output | sink | stageA
-end;
-*/
-
-
-
-
-
-
-/*
-
-trackMemory;
-explain stage aggregateSplit, transliterate
- SELECT * FROM nation ?*+ joinAlgorithm = index , joinIndex = IxR_REGIONKEY , joinRouting = hashcast  , hashkey = n_regionkey *?
-   JOIN region ON n_regionkey = r_regionkey;
-memoryLeaks;
-
-SELECT * FROM nation JOIN region ON n_regionkey = r_regionkey;
-
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0242
-  stage stageMarker0242 on all partitions :
-    scan rapidsse public nation
-    | hash 1 " type INTEGER n_regionkey"
-    | stageMarker0245 hashcast
-  stage stageMarker0245 on all partitions :
-    indexJoin 1 region IxR_REGIONKEY " BOUND $L3 $I1 ==  "
-    | stageMarker0248
-  stage stageMarker0248 on all partitions :
-    project 0 " type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 , type INTEGER as R_REGIONKEY $5 , type VARCHAR as R_NAME $6 , type VARCHAR as R_COMMENT $7 "
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-
-pipeline unnamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker1035
-  stage stageMarker1035 on all partitions :
-    scan rapidsse public nation
-    | stageMarker1038 ?*broadcast*?
-  stage stageMarker1038 on all partitions :
-    ?*scanRight rapidsse public region*?
-    indexJoin 0 region IxR_REGIONKEY "BOUND $L3 $I1 =="
-    | stageMarker1041
-  stage stageMarker1041 on all partitions :
-    project 0 " type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 , type INTEGER as R_REGIONKEY $5 , type VARCHAR as R_NAME $6 , type VARCHAR as R_COMMENT $7 "
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-*/
-
-/*
-  pipeline unnamed
-  begin
-    stage stageStart on origin :
-      start
-      | pulse once
-      | stageMarker0436
-    stage stageMarker0436 on all partitions :
-      scan rapidsse public nation
-      | stageMarker0439
-    stage stageMarker0439 on all partitions :
-      indexJoin 1 region IxR_REGIONKEY " BOUND $L3 $I1 ==  "
-      | stageMarker0442
-    stage stageMarker0442 on all partitions :
-      project 0 " type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 , type INTEGER as R_REGIONKEY $5 , type VARCHAR as R_NAME $6 , type VARCHAR as R_COMMENT $7 "
-      | stageLast
-    stage stageLast on origin :
-      output
-      | sink
-      | stageStart
-  end ;
-
-  explain with_names stage aggregateSplit , transliterate ?*+ joinAlgorithm = index  *?
-    SELECT * FROM nation JOIN region ON n_regionkey = r_regionkey;
-
-    explain with_names stage aggregateSplit , transliterate
-      SELECT * FROM nation JOIN region ON n_regionkey = r_regionkey;
-
-
-
-explain stage aggregateSplit, transliterate SELECT * FROM nation JOIN region ON n_regionkey = r_regionkey;
-
-
-****************************************************************
-* Buffer Pool Analysis                                         *
-****************************************************************
-
-  Region /SE_NODE1 0x204800000000 size 51539607552B epoch 1
-
-  BufferPool buffer 1020KB buffers 49152 alloc 5298 free 43853
-
-   Transient TinyHeap   (   1KB) buffers 47     alloc 23287  free 24794
-   Transient SmallHeap  (   4KB) buffers 34     alloc 5451   free 3219
-   Transient MediumHeap (  64KB) buffers 618    alloc 1103   free 8167
-   Transient LargeHeap  (1020KB) buffers 4555   alloc 732    free 3823
-   Transient DataHeap  (1020KB) buffers 0      alloc 0      free 0
-
-  BufferPool Object Summary:
-             ATTACHMAP 1
-         DATATRANSIENT 1
-            FREEBUFFER 43853
-            HEAPBUFFER 5254
-        LARGETRANSIENT 1
-          LARGEVIRTUAL 1
-       MEDIUMTRANSIENT 1
-         MEDIUMVIRTUAL 1
-           QUEUEBUFFER 34
-        SMALLTRANSIENT 1
-          SMALLVIRTUAL 1
-         TINYTRANSIENT 1
-           TINYVIRTUAL 1
-
-  Transient Tiny Heap 1KB Object Summary:
-                  _A__ 926    (size       1B sum   926B use  0%)  *half again!
-                BUCKET 3328   (size      56B sum  182KB use  5%)  *half again!
-                DEVIXT 224    (size     392B sum   85KB use 38%)  *half again!
-                DEVROW 224    (size     376B sum   82KB use 36%)  *half again!
-                   DIC 396    (size     336B sum  129KB use 32%)  *half again!
-         EVENTHANDLERS 42     (size     616B sum   25KB use 60%)
-                  FILE 14     (size     480B sum    6KB use 46%)  *half again!
-           INDEXSTREAM 12     (size      88B sum    1KB use  8%)  *half again!
-                 INPUT 14     (size     152B sum    2KB use 14%)  *half again!
-              INTSTACK 1      (size      32B sum    32B use  3%)  *half again!
-               JOBLIST 5      (size     224B sum    1KB use 21%)  *half again!
-                  JOBS 1      (size      64B sum    64B use  6%)  *half again!
-         LISTEXONODE_t 1163   (size      48B sum   54KB use  4%)  *half again!
-                MARKER 10     (size      88B sum   880B use  8%)  *half again!
-                   NOW 56     (size      72B sum    3KB use  7%)  *half again!
-                OUTPUT 1      (size     168B sum   168B use 16%)  *half again!
-          OPERANDQUEUE 126    (size     248B sum   30KB use 24%)  *half again!
-       PLANNODEBUILDER 583    (size     968B sum  551KB use 94%)
-   PLANNODEBUILDERLIST 369    (size     232B sum   83KB use 22%)  *half again!
-          PLANNODELIST 376    (size     232B sum   85KB use 22%)  *half again!
-                PSXTHD 35     (size     376B sum   12KB use 36%)  *half again!
-                 QUEUE 1      (size     232B sum   232B use 22%)  *half again!
-           ROWTABLEPTN 3328   (size      64B sum  208KB use  6%)  *half again!
-              SEDEPUTY 1      (size      64B sum    64B use  6%)  *half again!
-           SENCOMPILER 56     (size     176B sum    9KB use 17%)  *half again!
-              SKIPLIST 406    (size      88B sum   34KB use  8%)  *half again!
-              SKIPNODE 5610   (size      48B sum  262KB use  4%)  *half again!
-                SOCKET 3      (size     744B sum    2KB use 72%)
-               STARTER 1      (size     248B sum   248B use 24%)  *half again!
-              STMTLIST 256    (size     232B sum   58KB use 22%)  *half again!
-        SYSTEMSCHEDULE 1      (size     320B sum   320B use 31%)  *half again!
-                 TABLE 54     (size     560B sum   29KB use 54%)
-              TABLEPTN 52     (size     248B sum   12KB use 24%)  *half again!
-              TASKLIST 6      (size     272B sum    1KB use 26%)  *half again!
-             TASKQUEUE 1      (size     224B sum   224B use 21%)  *half again!
-                  TEXT 340    (size      40B sum   13KB use  3%)  *half again!
-                THREAD 35     (size     696B sum   23KB use 67%)
-           THREADQUEUE 1      (size     264B sum   264B use 25%)  *half again!
-         THREADSCRATCH 35     (size     216B sum    7KB use 21%)  *half again!
-                   TUB 2      (size      56B sum   112B use  5%)  *half again!
-                 TXSET 2      (size     280B sum   560B use 27%)  *half again!
-                  WORD 5190   (size     312B sum    1MB use 30%)  *half again!
-  [23287 objects ; 22MB of blocks]
-
-  Transient Small Heap 4KB Object Summary:
-             BUCKETVEC 52     (size     544B sum   27KB use 13%)  *into tiny
-             CODEBLOCK 5190   (size    4056B sum   20MB use 99%)
-                  GRID 1      (size     184B sum   184B use  4%)  *into tiny
-        INTERNALTABLES 1      (size     144B sum   144B use  3%)  *into tiny
-        OBJECTSNAPSHOT 2      (size    2992B sum    5KB use 73%)
-              PIPELINE 13     (size    2560B sum   32KB use 62%)
-          SESSIONARRAY 1      (size    2288B sum    2KB use 55%)
-                 STAGE 13     (size    2328B sum   29KB use 56%)
-             STAGESPEC 13     (size     264B sum    3KB use  6%)  *into tiny
-                 STATS 42     (size     240B sum    9KB use  5%)  *into tiny
-                STREAM 13     (size    2432B sum   30KB use 59%)
-           TABLEPTNVEC 54     (size     544B sum   28KB use 13%)  *into tiny
-                  TASK 56     (size    3360B sum  183KB use 82%)
-  [5451 objects ; 21MB of blocks]
-
-  Transient Medium Heap 64KB Object Summary:
-          INDEXTREEVEC 52     (size     160B sum    8KB use  0%)  *into small
-                IDXVEC 54     (size     160B sum    8KB use  0%)  *into small
-                   JOB 14     (size   43040B sum  588KB use 65%)
-                  NODE 1      (size     728B sum   728B use  1%)  *into small
-             NUMBERING 1      (size   11864B sum   11KB use 18%)
-                    OP 42     (size    5952B sum  244KB use  9%)
-          OPERANDWATCH 42     (size    1808B sum   74KB use  2%)  *into small
-                OPSPEC 42     (size   38600B sum    1MB use 58%)
-          PIPELINESPEC 13     (size     248B sum    3KB use  0%)  *into small
-                 STACK 168    (size   65368B sum   10MB use 99%)
-                TAGSET 666    (size   38216B sum   24MB use 58%)
-             THREADVEC 2      (size   33000B sum   64KB use 50%)
-                 TOTUP 6      (size   11864B sum   69KB use 18%)
-  [1103 objects ; 68MB of blocks]
-
-  Transient Large Heap 1020KB Object Summary:
-         BUCKETMAP_dyn 55     (size    1392B sum   74KB use  0%)  *into medium
-               CHARSER 14     (size   96728B sum    1MB use  9%)
-            LOCALCHAIN 57     (size  394216B sum   21MB use 37%)
-             LOGICUNIT 56     (size   86032B sum    4MB use  8%)
-                PTNMAP 1      (size   65776B sum   64KB use  6%)
-              SEPROMPT 1      (size   85480B sum   83KB use  8%)
-               SESSION 256    (size   81544B sum   19MB use  7%)
-              SHARDDEF 54     (size   97720B sum    5MB use  9%)
-             STREAMDEF 54     (size   97808B sum    5MB use  9%)
-              TOKENVEC 184    (size  403552B sum   70MB use 38%)
-  [732 objects ; 729MB of blocks]
-
-  Transient Data Heap 1020KB Object Summary:
-  [0 objects ; 0B of blocks]
-
-
-success: 0 rows affected
-[NODE1 pid=5393 1N (20 cores 3.600Ghz 20MB L3) 4P 24T 48GB release] se> space;
-
-metadata: (nodeName VARCHAR,totalSpace VARCHAR,inUseSpace VARCHAR,freeSpace VARCHAR)
-
-row: ('NODE1','48GB','1007MB','47GB')
-
-success: 1 rows fetched
-[NODE1 pid=5393 1N (20 cores 3.600Ghz 20MB L3) 4P 24T 48GB release] se>
-
-*/
 
