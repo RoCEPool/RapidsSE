@@ -234,6 +234,7 @@
 #include "RuleCtl.hpp"
 #include "Drafter.hpp"
 #include "SectionSpec.hpp"
+#include "Section.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -529,6 +530,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Scheduler),          HT_INVALID   ,0 FILL }, // CN_SCHEDULER
   { sizeof(Schema),             HT_T_TINY    ,0 FILL }, // CN_SCHEMA
   { sizeof(SeApi),              HT_T_LARGE   ,0 FILL }, // CN_SEAPI
+  { sizeof(Section),            HT_T_SMALL   ,0 FILL }, // CN_SECTION
   { sizeof(SectionSpec),        HT_T_TINY    ,0 FILL }, // CN_SECTIONSPEC
   { sizeof(SeDeputy),           HT_T_TINY    ,0 FILL }, // CN_SEDEPUTY
   { sizeof(SeeMe),              HT_INVALID   ,0 FILL }, // CN_SEEME

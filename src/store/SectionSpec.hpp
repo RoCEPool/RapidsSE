@@ -34,6 +34,9 @@ namespace STORE
     SectionSpec(Stz* szSectionNm, PipelineSpec* pPipelineSpec);
    ~SectionSpec(void) noexcept(false);
      
+    Stz* szSectionNm(void);
+    i8 i_SectionSpec(void);
+
     Footer* aFooter(void);
 };
 
