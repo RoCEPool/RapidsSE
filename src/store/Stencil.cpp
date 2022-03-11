@@ -1339,9 +1339,9 @@ void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
 
-  pCombined->aCombinedT()->m_aIndexDefSrt = new IndexDef(pIndexDef);
-  pCombined->aCombinedT()->m_aIndexTreeSrt = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkSRT, 1, pIndexDef->eKeyKind());
+  pCombined->aCombinedT()->m_aIndexDefPL = new IndexDef(pIndexDef);
+  pCombined->aCombinedT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, 1, pIndexDef->eKeyKind());
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -1503,7 +1503,7 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // get the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefSrt);
+  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefPL);
 
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -2187,7 +2187,7 @@ Shape* Stencil::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR e
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   // get the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefSrt);
+  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefPL);
 
   // get the sort type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);

@@ -1784,8 +1784,8 @@ void CodeSynth::vFindKey(IndexDef* pIndexDef, ePL ePayLoad) {
       break;
 
     case PL_SRT:
-      sIndexTree = "m_aIndexTreeSrt"_Stz;
-      sEntKey = "m_aEntKeySRT"_Stz;
+      sIndexTree = "m_aIndexTreePL"_Stz;
+      sEntKey = "m_aEntKeyPL"_Stz;
       break;
 
     case PL_TOP:
@@ -1979,9 +1979,9 @@ void CodeSynth::vPayloadStore(IndexDef* pIndexDef, ePL ePayLoad) {
       break;
 
     case PL_SRT:
-      sIndexTree = "m_aIndexTreeSrt"_Stz;
-      sPayload = "m_aiSrtPayload"_Stz;
-      sEntInt = "m_aEntIntSRT"_Stz;
+      sIndexTree = "m_aIndexTreePL"_Stz;
+      sPayload = "m_aiPayload"_Stz;
+      sEntInt = "m_aEntIntPL"_Stz;
       break;
 
     case PL_TOP:
@@ -2099,9 +2099,9 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
       break;
 
     case PL_SRT:
-      sPayLoad = "m_aiSrtPayload"_Stz;
-      sPayLoadRow = "m_aSrtPayloadRow"_Stz;
-      sEntInt = "m_aEntIntSRT"_Stz;
+      sPayLoad = "m_aiPayload"_Stz;
+      sPayLoadRow = "m_aPayloadRow"_Stz;
+      sEntInt = "m_aEntIntPL"_Stz;
       break;
 
     case PL_TOP:
@@ -2318,12 +2318,12 @@ void CodeSynth::vPayloadTraversal(IndexDef* pIndexDef, TypedStack* pPostStack, e
       break;
 
     case PL_SRT:
-      sIndexTree = "m_aIndexTreeSrt"_Stz;
-      sEntBuffer = "m_aEntBufferSRT"_Stz;
-      sEntInt = "m_aEntIntSRT"_Stz;
-      sPayload = "m_aiSrtPayload"_Stz;
-      sPayloadRow = "m_aSrtPayloadRow"_Stz;
-      sPayloadArea = "m_racSrtPayloadArea"_Stz;
+      sIndexTree = "m_aIndexTreePL"_Stz;
+      sEntBuffer = "m_aEntBufferPL"_Stz;
+      sEntInt = "m_aEntIntPL"_Stz;
+      sPayload = "m_aiPayload"_Stz;
+      sPayloadRow = "m_aPayloadRow"_Stz;
+      sPayloadArea = "m_racPayloadArea"_Stz;
       break;
 
     case PL_TOP:
@@ -2506,7 +2506,7 @@ void CodeSynth::vGenerateSort(IndexDef* pIndexDef) {
   s256 sCopy;
   s256 sPayLoad;
 
-  sPayLoad = "m_aiSrtPayload"_Stz;
+  sPayLoad = "m_aiPayload"_Stz;
 
 
   StrLib::vAppendString(&m_azCodeCrs, "\n      iElemSize = 0;");
@@ -4248,7 +4248,7 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       //RASSERT(ePreExp == PE_SRT);
 
       if (m_pIndexDef->eKeyKind()) {
-        sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeySRT)\n"_Stz);
+        sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyPL)\n"_Stz);
         pExprStack->vPushStz(sPush);
       }
       else {
@@ -4256,10 +4256,10 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
 
         if (pColumn->eColumnType() == CT_VARCHAR ||
             pColumn->eColumnType() == CT_CHAR) {
-          sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkSRT)\n"_Stz);
+          sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkPL)\n"_Stz);
         }
         else {
-          sPush.vSprint("_ASSIGN_TO_ENTINT(aCombinedT->m_aEntWrkSRT)\n"_Stz);
+          sPush.vSprint("_ASSIGN_TO_ENTINT(aCombinedT->m_aEntWrkPL)\n"_Stz);
         }
         pExprStack->vPushStz(sPush);
       }

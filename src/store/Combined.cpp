@@ -114,17 +114,6 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aEntBottomPL     = nullptr;
   m_xCombinedT.m_aEntIntPL      = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();
 
-  // sort (orderby)
-  m_xCombinedT.m_aiSrtPayload      = nullptr;
-  m_xCombinedT.m_aSrtPayloadRow    = nullptr;
-  m_xCombinedT.m_racSrtPayloadArea = nullptr;
-  m_xCombinedT.m_aIndexTreeSrt  = nullptr;
-  m_xCombinedT.m_aIndexDefSrt   = nullptr;
-  m_xCombinedT.m_aEntBufferSRT  = nullptr;
-  m_xCombinedT.m_aEntWrkSRT     = (void*)&pLogicUnit->m_oEntWrkSRT;
-  m_xCombinedT.m_aEntKeySRT     = ((EntWrk*)m_xCombinedT.m_aEntWrkSRT)->aKey();
-  m_xCombinedT.m_aEntIntSRT     = (Ent_int*)pLogicUnit->m_oEntWrkSRT.aEnt();
-
   // top
   m_xCombinedT.m_iTopInit         = 0;
   m_xCombinedT.m_iInsertCntTOP    = 0;
