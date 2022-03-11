@@ -55,7 +55,7 @@ namespace STORE
     void vOptimise(void);
   
     Card_SubSet* pPaste(void);
-    void vPipelineSpec(PipelineSpec* pUnOptPipelineSpec);
+    void vPipelineSpec(PipelineSpec* pUnOptPlineSpec);
     void vPopBoard(void);
     void vPushBoard(Board* pBoard);
  

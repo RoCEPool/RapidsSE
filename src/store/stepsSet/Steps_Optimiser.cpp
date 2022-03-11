@@ -18,11 +18,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Optimiser(void)
 {
-  vAddStep("Optimiser[].delete"_Stz ,        &Step::vOptimiserDelete);
-  vAddStep("Optimiser[].new"_Stz,            &Step::vOptimiserNew);
-  vAddStep("Optimiser[].optimise"_Stz,       &Step::vOptimiserOptimise);
-  vAddStep("Optimiser[].pipelineStmt!"_Stz,  &Step::vOptimiserPipelineStmtStore);
-  vAddStep("Optimiser[].weaved@"_Stz,        &Step::vOptimiserWeavedFetch);
+  vAddStep("Optimiser[].delete"_Stz ,      &Step::vOptimiserDelete);
+  vAddStep("Optimiser[].dissect"_Stz,      &Step::vOptimiserDissect);
+  vAddStep("Optimiser[].new"_Stz,          &Step::vOptimiserNew);
+  vAddStep("Optimiser[].optimise"_Stz,     &Step::vOptimiserOptimise);
+  vAddStep("Optimiser[].weave"_Stz,        &Step::vOptimiserWeave);
 }
 
 
@@ -33,6 +33,22 @@ void Step::vOptimiserDelete(void)
 {
   ENTRY();
     
+  m_p_TaskLogicUnit->m_xpOptimiser.vDeleteComponent();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Optimiser[].dissect -- dissed unoptimised pipeline spec                    */
+/*----------------------------------------------------------------------------*/
+void Step::vOptimiserDissect(void)
+{
+  ENTRY();
+    
+  PipelineSpec* pUnOptPlineSpec =
+    _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
+
+  m_p_TaskLogicUnit->m_xpOptimiser->vDissect(pUnOptPlineSpec);
 
   EXIT();
 }
@@ -65,37 +81,28 @@ void Step::vOptimiserNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Optimiser[].optimise -- optimise a pipeline statement                      */
+/* Optimiser[].optimise -- optimise a pipeline                                */
 /*----------------------------------------------------------------------------*/
 void Step::vOptimiserOptimise(void)
 {
   ENTRY();
     
-  m_p_TaskLogicUnit->m_xpOptimiser.vDeleteComponent();
-
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Optimiser[].pipelineStmtStore -- store unoptimised pipeline statement      */
-/*----------------------------------------------------------------------------*/
-void Step::vOptimiserPipelineStmtStore(void)
-{
-  ENTRY();
-    
+  m_p_TaskLogicUnit->m_xpOptimiser->vOptimise();
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Optimiser[].weavedFetch -- fetch optimised pipeline statement              */
+/* Optimiser[].weave -- weave optimised pipeline statement                    */
 /*----------------------------------------------------------------------------*/
-void Step::vOptimiserWeavedFetch(void)
+void Step::vOptimiserWeave(void)
 {
   ENTRY();
     
+  Stz* szOptPlineStmt = m_p_TaskLogicUnit->m_xpOptimiser->szWeave();
 
+  m_pDataStack->vPushStz(szOptPlineStmt);
+  
   EXIT();
 }
 

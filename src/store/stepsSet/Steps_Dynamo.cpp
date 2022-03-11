@@ -33,9 +33,38 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dynamo(void)
 {
+  vAddStep("Dynamo::compileOnly"_Stz,  &Step::vDynamoCompileOnly);
   vAddStep("Dynamo::compileStmt"_Stz,  &Step::vDynamoCompileStmt);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Dynamo::compileOnly -- compile pipeline statement into a pipelines spec    */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoCompileOnly(void)
+{
+  ENTRY();
+    
+  s4K sPipelineStmt;
+  m_pDataStack->vPopStr(sPipelineStmt,__func__);
+
+  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob_task->pJobTags());
+  
+  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
+
+  delete pDynamo;
+
+  if (pPipelineSpec) {
+    m_pDataStack->vPushPtr(pPipelineSpec);
+    m_pDataStack->vPushInt(EC_NONE);
+  }
+  else {
+    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
+
+  }
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* Dynamo::compileStmt -- compile pipeline statement into a pipelines spec    */
