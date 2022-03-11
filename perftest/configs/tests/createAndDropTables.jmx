@@ -644,7 +644,7 @@
                 <connectTime>true</connectTime>
               </value>
             </objProp>
-            <stringProp name="filename">createTable.csv</stringProp>
+            <stringProp name="filename">createTableGroup.csv</stringProp>
           </ResultCollector>
           <hashTree/>
         </hashTree>
@@ -939,7 +939,7 @@
                 <connectTime>true</connectTime>
               </value>
             </objProp>
-            <stringProp name="filename">DropTable.csv</stringProp>
+            <stringProp name="filename">DropTableGroup.csv</stringProp>
           </ResultCollector>
           <hashTree/>
         </hashTree>
@@ -995,6 +995,39 @@
             </ResultSaver>
             <hashTree/>
           </hashTree>
+          <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+            <boolProp name="ResultCollector.error_logging">true</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>false</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>false</code>
+                <message>false</message>
+                <threadName>false</threadName>
+                <dataType>false</dataType>
+                <encoding>false</encoding>
+                <assertions>false</assertions>
+                <subresults>true</subresults>
+                <responseData>false</responseData>
+                <samplerData>false</samplerData>
+                <xml>false</xml>
+                <fieldNames>true</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>false</responseDataOnError>
+                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <connectTime>true</connectTime>
+              </value>
+            </objProp>
+            <stringProp name="TestPlan.comments">This exists only to write error messages, should one eventuate.</stringProp>
+            <stringProp name="filename">nationGroup.csv</stringProp>
+          </ResultCollector>
+          <hashTree/>
         </hashTree>
       </hashTree>
     </hashTree>

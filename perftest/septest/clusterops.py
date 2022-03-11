@@ -1,3 +1,4 @@
+import os.path
 import pathlib
 import logging
 import subprocess
@@ -12,8 +13,10 @@ LOG = logging.getLogger(__name__)
 
 # How long to wait before killing the RapidsSE installation?
 C_INSTALL_TIMEOUT_SEC = 60
+C_GENERAL_SSH_TIMEOUT_SEC = 60
 C_CLUSTER_START_CMD = "startSE.sh"
 C_CLUSTER_PROMPT_CMD = "prompt.sh"
+C_CLUSTER_COLLECT_LOGS_CMD = "collectLogs.sh"
 
 C_JDBC_DRIVER_DIR = pathlib.Path("../seth/bin")
 C_JDBC_DRIVER_GLOB = "rapidsse-jdbc-*.*.*.jar"
@@ -133,7 +136,9 @@ def install_rapidsse(install_file: pathlib.Path, cluster_config_path: pathlib.Pa
     assert cluster_config_path.exists()
 
     command = [str(install_file), "--quiet", "--",
-               "--script", "--debug", "--config", str(cluster_config_path)]
+               "--script", "--config", str(cluster_config_path)]
+
+    # Note: Can add in "--debug" as a parameter to the above list
 
     LOG.info(f"About to install the RapidsSE cluster with the following command: {' '.join(command)}")
 
@@ -304,3 +309,50 @@ def get_remote_jmeter_property_file_path(cluster_cfg: ClusterConfig) -> string:
     to be used when executing jmeter.
     """
     return f"{cluster_cfg.get_dir()}/jmeter.properties"
+
+
+def get_rapidsse_logs(host: string, cluster_cfg: ClusterConfig, dest_path: string):
+    """
+    Gets the log files from each RapidsSE node and copies them to a local directory.
+    """
+    assert os.path.exists(dest_path), f"dest_path does not exist: {dest_path}"
+
+    LOG.debug("About to collect logs files from the RapidsSE cluster")
+
+    command = f"cd {cluster_cfg.get_dir()} && " \
+              f"./{C_CLUSTER_COLLECT_LOGS_CMD} >/dev/null && " \
+              f"ls -1 logs-*.tar.gz | sort -r | head -n 1"
+
+    try:
+        result = ssh.run_ssh(host, command, C_GENERAL_SSH_TIMEOUT_SEC)
+
+    except subprocess.CalledProcessError as e:
+        msg = f"Error while collecting the RapidsSE log files." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg) from e
+
+    except subprocess.TimeoutExpired as e:
+        msg = f"Collecting the RapidsSE log files timed out after {e.timeout} seconds." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg) from e
+
+    log_file_name = result.stdout.strip()
+    src_file = f"{host}:{cluster_cfg.get_dir()}/{log_file_name}"
+    LOG.debug(f"About to copy the RapidsSE log file from: {src_file}")
+
+    try:
+        ssh.run_scp(src_file, dest_path, C_GENERAL_SSH_TIMEOUT_SEC)
+
+    except subprocess.CalledProcessError as e:
+        msg = f"Error while copying RapidsSE log files from the cluster." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg) from e
+
+    except subprocess.TimeoutExpired as e:
+        msg = f"Copying of the RapidsSE log files from the cluster timed out after {e.timeout} seconds." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg) from e

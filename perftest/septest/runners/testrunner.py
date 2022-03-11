@@ -6,7 +6,6 @@ import logging
 import os.path
 import pathlib
 import subprocess
-import tempfile
 import csv
 import decimal
 
@@ -59,7 +58,7 @@ class TestRunner:
     """
 
     def __init__(self, test_path: string, test_id: int, job_result_id: int, test_seq: int,
-                 cluster_config: ClusterConfig, ip_addr: string):
+                 cluster_config: ClusterConfig, ip_addr: string, artifact_dir: string):
 
         self.local_test_file = pathlib.Path(test_path)
         self.test_name = self.get_test_name_from_path(test_path)
@@ -68,12 +67,13 @@ class TestRunner:
         self.test_seq = test_seq
         self.cluster_config = cluster_config
         self.ip_addr = ip_addr
+        self.artifact_dir = artifact_dir
         self.remote_test_dir = pathlib.Path(cluster_config.get_dir()).joinpath(
             "perftests",
             C_TEST_DIR_FMT.format(job_result_id, test_id, test_seq, self.test_name)
         )
         self.remote_test_file = None
-        self.result = TestResult(self.test_name, test_id, job_result_id, self.remote_test_dir)
+        self.result = TestResult(test_path, self.test_name, test_id, job_result_id, self.remote_test_dir)
 
         assert self.local_test_file.exists()
         assert (self.test_name is not None) and (len(self.test_name) > 0)
@@ -83,7 +83,7 @@ class TestRunner:
         LOG.info(f"Running test:  {self.test_name} (ID: {self.test_id})")
 
         self.result.set_test_started()
-        self.__copy_test_file()
+        self.__copy_test_file_to_remote_node()
 
         # Run the test
         splits = str(self.local_test_file).lower().rsplit(".", 1)
@@ -103,7 +103,7 @@ class TestRunner:
         """Returns the test name given its path"""
         return os.path.basename(test_path).rsplit(sep=".", maxsplit=1)[0]
 
-    def __copy_test_file(self):
+    def __copy_test_file_to_remote_node(self):
         """
         Copy the local test file to the remote node where it will be executed.
         """
@@ -213,34 +213,33 @@ class TestRunner:
         return remote_path
 
     def __collect_metrics(self):
-        # Create a local temporary directory to hold the metrics from the remote node
-        dir_prefix = C_TEST_DIR_FMT.format(self.job_result_id, self.test_id, self.test_seq, self.test_name)
 
-        with tempfile.TemporaryDirectory(prefix=dir_prefix) as temp_dir:
-            # Copy the metrics to this directory
-            self.__copy_remote_metrics_locally(temp_dir)
+        assert os.path.exists(self.artifact_dir), f"Artifact directory does not exist: {self.artifact_dir}"
 
-            # Parse the metrics and add them to the results.
-            # We look for both *.csv and *.tsv files.
-            csv_list = glob.glob(f"{temp_dir}/*.csv")
-            tsv_list = glob.glob(f"{temp_dir}/*.tsv")
+        # Copy the metrics to this directory
+        self.__copy_remote_metrics_locally()
 
-            if len(csv_list) == 0 and len(tsv_list) == 0:
-                LOG.info(f"No metric files were produced by test {self.test_name}")
+        # Parse the metrics and add them to the results.
+        # We look for both *.csv and *.tsv files.
+        csv_list = glob.glob(f"{self.artifact_dir}/*.csv")
+        tsv_list = glob.glob(f"{self.artifact_dir}/*.tsv")
 
-            for csv_metric in csv_list:
-                assert os.path.exists(csv_metric)
-                if not self.__parse_csv_metrics(csv_metric):
-                    return
+        if len(csv_list) == 0 and len(tsv_list) == 0:
+            LOG.info(f"No metric files were produced by test {self.test_name}")
 
-            for tsv_metric in tsv_list:
-                assert os.path.exists(tsv_metric)
-                if not self.__parse_tsv_metric(tsv_metric):
-                    return
+        for csv_metric in csv_list:
+            assert os.path.exists(csv_metric)
+            if not self.__parse_csv_metrics(csv_metric):
+                return
 
-            LOG.info(f"Extracted a total of {str(len(self.result.metrics))} metrics")
+        for tsv_metric in tsv_list:
+            assert os.path.exists(tsv_metric)
+            if not self.__parse_tsv_metric(tsv_metric):
+                return
 
-    def __copy_remote_metrics_locally(self, temp_dir: string):
+        LOG.info(f"Extracted a total of {str(len(self.result.metrics))} metrics")
+
+    def __copy_remote_metrics_locally(self):
         """
         Copies metric files from a remote host to a local temporary directory
         """
@@ -249,7 +248,7 @@ class TestRunner:
         src_spec = f"{self.ip_addr}:{self.remote_test_dir}/*"
 
         try:
-            ssh.run_scp(src=src_spec, dest=temp_dir, timeout=C_SCP_TIMEOUT_SEC)
+            ssh.run_scp(src=src_spec, dest=self.artifact_dir, timeout=C_SCP_TIMEOUT_SEC)
 
         except subprocess.CalledProcessError as e:
             msg = f"Error while copying metrics from remote path: {src_spec}" \
@@ -263,7 +262,7 @@ class TestRunner:
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e
 
-        file_list = os.listdir(temp_dir)
+        file_list = os.listdir(self.artifact_dir)
         LOG.debug("Copied the following files from the remote node:\n%s", '\n  '.join(file_list))
 
     def __parse_csv_metrics(self, metric_file: string) -> bool:
@@ -273,6 +272,7 @@ class TestRunner:
         """
 
         LOG.debug(f"Parsing CSV metrics file: {os.path.basename(metric_file)}")
+        metrics_added = 0
 
         with open(metric_file, newline='') as csvfile:
             reader = csv.DictReader(csvfile, dialect='excel')
@@ -313,7 +313,7 @@ class TestRunner:
 
                 if not success:
                     failuremsg = row[C_CSV_FAILUREMSG] if has_failuremsg_field else None
-                    if failuremsg is None:
+                    if (failuremsg is None) or (len(failuremsg) == 0):
                         errmsg = f"Statement with label \"{label}\" in test {os.path.basename(metric_file)} " \
                                  f"failed with an error"
                     else:
@@ -385,7 +385,9 @@ class TestRunner:
 
                 # Record the metric
                 self.result.add_metric(label, latency, timestamp)
+                metrics_added += 1
 
+        LOG.info(f"Found {metrics_added} metrics from file {metric_file}")
         return True
 
     def __parse_tsv_metric(self, metric_file: string) -> bool:
@@ -466,13 +468,14 @@ class TestRunner:
             ssh.run_ssh(self.ip_addr, rm_command, 10)
 
         except subprocess.CalledProcessError as e:
-            msg = f"Error while remote test file at {self.remote_test_file}" \
+            msg = f"Error while removing remote test file at {self.remote_test_file}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e
 
         except subprocess.TimeoutExpired as e:
-            msg = f"Deletion of remote test file at {self.remote_test_file} timed out after {e.timeout} seconds: " \
+            msg = f"Deletion of removing remote test file at {self.remote_test_file} " \
+                  f"timed out after {e.timeout} seconds: " \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
             raise errors.ClusterError(msg) from e
