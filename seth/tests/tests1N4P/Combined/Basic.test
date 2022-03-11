@@ -1,8 +1,8 @@
 /*----------------------------------------------------------------------------*/
 /* Basic CombinedOP tests                                                     */
 /*----------------------------------------------------------------------------*/
-trackmemory;
-success
+//trackmemory;
+//success
 
 create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
@@ -187,6 +187,62 @@ begin
 rows: 5996
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  basic orderby
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0143
+  stage stageMarker0143 on all partitions :
+    scan rapidsse public lineitem
+    | project 2 " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
+    | sort 2 " type INTEGER as l_partkey $1 ASC  "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows: 6000
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  basic top
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_SHIPDATE "lbound $I1 TIMESTAMP '1900-01-01 00:00:00' >= "
+    | project 2 "type INTEGER $1 , type TIMESTAMP L_SHIPDATE"
+    | top 2 "TOP type TIMESTAMP $2" 2
+    | combined 0
+    | next
+  stage stageA on all nodes :
+    top 2 "TOP type TIMESTAMP $2" 2
+    | combined 0
+    | next
+  stage stageA on origin :
+    top 2 "TOP type TIMESTAMP $2" 2
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+ordered rows:
+ (1117,DATE '1998-11-25')
+ (221,DATE '1998-11-27')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic ordered aggregate
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /*
@@ -232,8 +288,8 @@ success
 DROP TABLE orders;
 success
 
-memoryleaks;
-rows: 0
+//memoryleaks;
+//rows: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup

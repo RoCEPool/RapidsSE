@@ -92,8 +92,6 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_racStrAreaSavP = nullptr;
 
   // project (agg)
-  m_xCombinedT.m_nAggRows = 0;
-  m_xCombinedT.m_iProcessRow    = 1;
   m_xCombinedT.m_iRowsProcessed = 0;
   m_xCombinedT.m_aRowSingleAgg  = nullptr;
   m_xCombinedT.m_aRowCellArrayAgg = nullptr;
@@ -101,11 +99,15 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_racStrAreaSavAgg  = nullptr;
 
   // project (gby/payload)
+  m_xCombinedT.m_nAggRows = 0;
+  m_xCombinedT.m_iProcessRow    = 1;
+
+  // payload (gby/srt/top)
   m_xCombinedT.m_aiPayload      = nullptr;
   m_xCombinedT.m_aPayloadRow    = nullptr;
   m_xCombinedT.m_racPayloadArea = nullptr;
-  m_xCombinedT.m_aIndexTreeGby  = nullptr;
-  m_xCombinedT.m_aIndexDefGby   = nullptr;
+  m_xCombinedT.m_aIndexTreePL   = nullptr;
+  m_xCombinedT.m_aIndexDefPL    = nullptr;
   m_xCombinedT.m_aEntBufferPL   = nullptr;
   m_xCombinedT.m_aEntWrkPL      = (void*)&pLogicUnit->m_oEntWrkPL;
   m_xCombinedT.m_aEntKeyPL      = ((EntWrk*)m_xCombinedT.m_aEntWrkPL)->aKey();

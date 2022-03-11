@@ -343,14 +343,16 @@ struct Combined_T
   char*   m_racStrAreaAgg;
   char*   m_racStrAreaSavAgg;
 
-  // project (gby/payload)
+  // project (gby)
   i8      m_nAggRows;
   i8      m_iProcessRow;
+
+  // payload (gby/srt/top)
   i8*     m_aiPayload;
   void*   m_aPayloadRow;
   char*   m_racPayloadArea;
-  void*   m_aIndexTreeGby;
-  void*   m_aIndexDefGby;
+  void*   m_aIndexTreePL;
+  void*   m_aIndexDefPL;
   void*   m_aEntBufferPL;
   void*   m_aEntWrkPL;
   void*   m_aEntKeyPL;

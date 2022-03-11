@@ -105,7 +105,7 @@ void Step::vCombinedExecute(void)
     //EOSMARKER
     // nothing to do
   }
-  //IndexTree* pIndexTree = (IndexTree*)aCombinedT->m_aIndexTreeGby;
+  //IndexTree* pIndexTree = (IndexTree*)aCombinedT->m_aIndexTreePL;
   //pIndexTree->vDump(false);
 
   aCombinedT->m_eStrInflateRule = SI_STRAREA_OFS;
@@ -117,13 +117,13 @@ void Step::vCombinedExecute(void)
 
   // EOS marker handler done ?
   if ( afFun ==  m_p_TaskLogicUnit->m_afFun3 ) {
-    IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreeGby);
+    IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreePL);
     delete pIndexTree;
-    aCombinedT->m_aIndexTreeGby = nullptr;
+    aCombinedT->m_aIndexTreePL = nullptr;
 
-    IndexDef* pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefGby);
+    IndexDef* pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefPL);
     delete pIndexDef;
-    aCombinedT->m_aIndexDefGby = nullptr;
+    aCombinedT->m_aIndexDefPL = nullptr;
 
     pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreeTOP);
     delete pIndexTree;

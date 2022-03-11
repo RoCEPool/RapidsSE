@@ -1779,7 +1779,7 @@ void CodeSynth::vFindKey(IndexDef* pIndexDef, ePL ePayLoad) {
   switch(ePayLoad) {
 
     case PL_GBY:
-      sIndexTree = "m_aIndexTreeGby"_Stz;
+      sIndexTree = "m_aIndexTreePL"_Stz;
       sEntKey = "m_aEntKeyPL"_Stz;
       break;
 
@@ -1973,7 +1973,7 @@ void CodeSynth::vPayloadStore(IndexDef* pIndexDef, ePL ePayLoad) {
   switch(ePayLoad) {
 
     case PL_GBY:
-      sIndexTree = "m_aIndexTreeGby"_Stz;
+      sIndexTree = "m_aIndexTreePL"_Stz;
       sPayload = "m_aiPayload"_Stz;
       sEntInt = "m_aEntIntPL"_Stz;
       break;
@@ -2309,7 +2309,7 @@ void CodeSynth::vPayloadTraversal(IndexDef* pIndexDef, TypedStack* pPostStack, e
   switch(ePayLoad) {
 
     case PL_GBY:
-      sIndexTree = "m_aIndexTreeGby"_Stz;
+      sIndexTree = "m_aIndexTreePL"_Stz;
       sEntBuffer = "m_aEntBufferPL"_Stz;
       sEntInt = "m_aEntIntPL"_Stz;
       sPayload = "m_aiPayload"_Stz;

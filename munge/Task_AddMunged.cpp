@@ -5862,7 +5862,7 @@ void Task::vAddMunged(Task* )
     "  // delete the streamDefOut[]. Not needed for sort\n"
     "  StreamDefOut[].delete\n"
     "\n"
-    "  // evaluate the expression\n"
+    "  // duplicate the streamDefLeft as streamDefOut\n"
     "  StreamDefLft[].duplicate to StreamDefOut[]\n"
     "\n"
     "  StreamDefLft[].duplicate to Pipein[]\n"

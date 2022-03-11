@@ -1921,7 +1921,7 @@ i8 Op::nTmpIndexSize(void)
   if (! aCombinedT)
     return -7;
 
-  IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreeGby);
+  IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreePL);
   if (! pIndexTree)
     return -6;
   
