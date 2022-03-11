@@ -1260,6 +1260,8 @@ public:
   void vOptimiserDelete(void);
   void vOptimiserOptimise(void);
   void vOptimiserNew(void);
+  void vOptimiserPipelineStmtStore(void);
+  void vOptimiserWeavedFetch(void);
 
   // operand
   void vOperandToParcel(void);
