@@ -1347,6 +1347,7 @@ public:
 
   void vPipelineSpecDelete(void);
   void vPipelineSpecGet(void);
+  void vPipelineSpecSet(void);
 
 
   // plan

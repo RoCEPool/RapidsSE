@@ -386,6 +386,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("PipelineSpec[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PipelineSpec[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("PlanOperand[]"_Stz)) {
     pCurrentWord->vEncodeCall("PlanOperand[].set"_Stz);
     EXIT();

@@ -36,6 +36,7 @@ void Step::vAddSteps_PipelineSpec(void)
   vAddStep("PipelineSpec[]"_Stz,          &Step::vPipelineSpecGet);
   vAddStep("PipelineSpec[].delete"_Stz,   &Step::vPipelineSpecDelete);
   vAddStep("PipelineSpec[].get"_Stz,      &Step::vPipelineSpecGet);
+  vAddStep("PipelineSpec[].set"_Stz,      &Step::vPipelineSpecSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,6 +69,20 @@ void Step::vPipelineSpecGet(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* PipelineSpec[].set -- set pipelineSpec                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineSpecSet(void)
+{
+  ENTRY();
+  
+  m_p_TaskLogicUnit->m_xpPipelineSpec =
+    _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
