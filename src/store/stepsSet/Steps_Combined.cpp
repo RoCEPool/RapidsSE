@@ -125,14 +125,6 @@ void Step::vCombinedExecute(void)
     delete pIndexDef;
     aCombinedT->m_aIndexDefPL = nullptr;
 
-    pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreeTOP);
-    delete pIndexTree;
-    aCombinedT->m_aIndexTreeTOP = nullptr;
-
-    pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefTOP);
-    delete pIndexDef;
-    aCombinedT->m_aIndexDefTOP = nullptr;
-
   }
 
   // push error

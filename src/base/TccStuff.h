@@ -356,6 +356,7 @@ struct Combined_T
   void*   m_aEntBufferPL;
   void*   m_aEntWrkPL;
   void*   m_aEntKeyPL;
+  void*   m_aEntBottomPL;
   struct Ent_int* m_aEntIntPL;
 
   // sort
@@ -371,17 +372,7 @@ struct Combined_T
 
   // top
   i8      m_iTopInit;
-  i8*     m_aiTopPayload;
-  void*   m_aTopPayloadRow;
-  char*   m_racTopPayloadArea;
-  void*   m_aIndexTreeTOP;
-  void*   m_aIndexDefTOP;
-  void*   m_aEntBufferTOP;
-  void*   m_aEntBottomTOP;
-  void*   m_aEntWrkTOP;
-  void*   m_aEntKeyTOP;
   i8      m_iInsertCntTOP;
-  struct Ent_int* m_aEntIntTOP;
 
   // limit
   i8     m_iLimitRows;
