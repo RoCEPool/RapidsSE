@@ -92,9 +92,7 @@ namespace STORE {
     void vSynthAllocPotRow(TypedStack* pPostStack, Stz *sHashExpr, bool bEosHandler,
                            Stz *sLabel, Stz *sLabelNext);
 
-    void vSynthEosPayload(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad);
-
-    void vSynthEosTop(IndexDef *pIndexDef);
+    void vSynthEos(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad);
 
     void vSynthFilter(Stz *sFilterExpr, bool bOrdAgg, Stz *sLabel, Stz* sLabelPrev);
 
@@ -193,7 +191,6 @@ namespace STORE {
     void vGenerateExpr(char *sExpr, TypedStack* pPostStack,
                        eEK eExprKind, bool bHashRows, StreamDef *pStreamDef);
     void vGenerateInExpr(void);
-    void vTopIndexTraversal(IndexDef *pIndexDef);
 
     Stz *szInfix(TypedStack *pExprStack, i8 iProject);
 

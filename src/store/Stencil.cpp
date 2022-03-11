@@ -1476,7 +1476,7 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
   // payload to buffer
   pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, nullptr, pPreExpStack, SR_NONE, SR_AT);
 
-  pCodeSynth->vSynthEosPayload(pIndexDef, m_pPostStack, PL_GBY);
+  pCodeSynth->vSynthEos(pIndexDef, m_pPostStack, PL_GBY);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   // delete the postStack. No longer needed
@@ -1523,7 +1523,7 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   // payload to buffer
   pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, nullptr, pPreExpStack, SR_NONE, SR_AT);
 
-  pCodeSynth->vSynthEosPayload(pIndexDef, m_pPostStack, PL_SRT);
+  pCodeSynth->vSynthEos(pIndexDef, m_pPostStack, PL_SRT);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   // delete the postStack. No longer needed
@@ -1566,7 +1566,7 @@ void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // indextree to buffer
   pCodeSynth = new CodeSynth(nullptr, pStreamDefLft, nullptr, pPreExpStack, SR_NONE, SR_PT);
-  pCodeSynth->vSynthEosTop(pIndexDef);
+  pCodeSynth->vSynthEos(pIndexDef, nullptr, PL_TOP);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

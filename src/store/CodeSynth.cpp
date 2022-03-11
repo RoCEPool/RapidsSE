@@ -451,24 +451,12 @@ TypedStack* CodeSynth::pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelL
 /*----------------------------------------------------------------------------*/
 /* synthesize the EOS                                                         */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthEosPayload(IndexDef* pIndexDef, TypedStack* pPostStack, ePL ePayLoad) {
+void CodeSynth::vSynthEos(IndexDef* pIndexDef, TypedStack* pPostStack, ePL ePayLoad) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate payload traversal
   vPayloadTraversal(pIndexDef, pPostStack, ePayLoad);
-}
-
-/*----------------------------------------------------------------------------*/
-/* synthesize the EOS                                                         */
-/*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthEosTop(IndexDef* pIndexDef) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate index traversal
-  //vTopIndexTraversal(pIndexDef);
-  vPayloadTraversal(pIndexDef, nullptr, PL_TOP);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4465,49 +4453,6 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate goto
   vGenerateGoto(sLabelNext);
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate code for processing EOF with the TOP index                        */
-/*----------------------------------------------------------------------------*/
-void CodeSynth::vTopIndexTraversal(IndexDef* pIndexDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // TOP INDEX TRAVERSAL");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  // begin iterating the payload index
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntIntPL = (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreePL, &aCombinedT->m_aEntBufferPL);");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    while (aCombinedT->m_aEntIntPL) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      // allocate a topPayloadRow from the tub");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aPayloadRow = (byte*)aTub_AllotRow(aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea);");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  // calculate the payload address
-  if (pIndexDef->eKeyKind()) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aCombinedT->m_aEntIntPL");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                  + sizeof(struct Ent_int)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                  + 8);");
-  }
-  else {
-    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aCombinedT->m_aEntIntPL");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                  + sizeof(struct Ent_int)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                  + ((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                  + 8);");
-  }
-
-  vPayloadToBuffer(pIndexDef, nullptr, PL_TOP);
-
-  // go to next entry
-  StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_aEntIntTOP = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferPL, aCombinedT->m_aEntIntPL);");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   }");
 }
 
 /*----------------------------------------------------------------------------*/
