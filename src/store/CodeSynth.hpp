@@ -143,6 +143,8 @@ namespace STORE {
 
     void vGenerateInitStub(Stz *szComment, Stz *sLabel);
 
+    void vGenerateInitVars(void);
+
     void vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz *sExpr);
 
     void vGenerateProcessRow(Stz *sLabel);

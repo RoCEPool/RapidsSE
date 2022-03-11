@@ -454,6 +454,9 @@ TypedStack* CodeSynth::pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelL
 void CodeSynth::vSynthEos(IndexDef* pIndexDef, TypedStack* pPostStack, ePL ePayLoad) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
+  // generate the init variables
+  vGenerateInitVars();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate payload traversal
   vPayloadTraversal(pIndexDef, pPostStack, ePayLoad);
@@ -710,6 +713,9 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
   // generate the init stub
   vGenerateInitStub("INDEXSCAN-OP"_Stz, sLabel);
 
+  // generate the init variables
+  vGenerateInitVars();
+
   StrLib::vAppendString(&m_azCodeCrs, "\n    i_CurrentRow = -1;");
 
   // generate the code for the index scan expr
@@ -870,6 +876,9 @@ void CodeSynth::vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz *sReturnLabel, 
   // generate the init stub
   vGenerateInitStub("INFLATE-CRW"_Stz, sLabel);
 
+  // generate the init variables
+  vGenerateInitVars();
+
   StrLib::vAppendString(&m_azCodeCrs, "\n    i_CurrentRow = -1;");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -927,6 +936,9 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel) {
 
   // generate the init stub
   vGenerateInitStub("INFLATE-ROW"_Stz, sLabel);
+
+  // generate the init variables
+  vGenerateInitVars();
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    i_CurrentRow = -1;");
 
@@ -1618,7 +1630,16 @@ void CodeSynth::vGenerateInitStub(Stz* szComment, Stz* sLabel) {
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   sCopy.vSprint("\n  %s:"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+}
 
+/*----------------------------------------------------------------------------*/
+/* generate code for initialization of varaibles                              */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateInitVars(void) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    paW = &aCombinedT->m_aW[0];");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[0] = 1;");
@@ -1636,6 +1657,7 @@ void CodeSynth::vGenerateInitStub(Stz* szComment, Stz* sLabel) {
   StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[12] = 1000000000000;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[13] = 10000000000000;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[14] = 100000000000000;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3246,9 +3268,10 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
   // generate the init stub
   vGenerateInitStub("POT"_Stz, sLabel);
 
-  // generate inFix from postFix
-  //vToInfix((char*)sHashExpr, nullptr, EK_NONE, true, m_pStreamDefLft);
-  //RASSERT(m_pExprStack->nValues() == 1);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init variables
+  vGenerateInitVars();
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
@@ -4343,6 +4366,10 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
   vGenerateInitStub("TUB"_Stz, sLabel);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init variables
+  vGenerateInitVars();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate rows processed check
