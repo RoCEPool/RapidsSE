@@ -84,6 +84,7 @@ namespace BASE
     bool bOpenMode(Stz* szFilePath, Stz* aOpenMode);
     bool bOpenRead(Stz* szFilePath);
     bool bOpenWrite(Stz* szFilePath);
+    void vPreAllocate(i8 nOffset, i8 nBytes);
     void vPrint(va_list args, Stz* aFormat);
     void vPrint(Stz* aFormat,...);
     i8   nReadBytes(void* aDst, i8 nBytes);
