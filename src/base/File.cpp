@@ -725,12 +725,14 @@ void File::vPreAllocate(i8 nOffset, i8 nBytes)
   }
 
   i8 fd = fileno(m_aFile);
+#ifdef WITH_LINUX
   if(posix_fallocate(fd, nOffset, nBytes) != 0)
   {
     m_oSysCall.vFailure(0);
     vTrace("File::vPreAllocate: posix_fallocate failed: %s"_Stz,m_sPath.azChar());
     return;
   }
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
