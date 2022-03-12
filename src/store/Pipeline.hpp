@@ -7,7 +7,6 @@
 
 namespace STORE { class Stage; class PipelineSpec; }
 
-
 #ifdef WITH_PIPELINE_SECTION
 
 namespace STORE

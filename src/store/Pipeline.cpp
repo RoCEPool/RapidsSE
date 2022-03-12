@@ -468,7 +468,6 @@ void Pipeline::vWalkLambda(
   }
 }
 
-
 // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -912,7 +911,6 @@ void Pipeline::vWalkLambda(
     pStage->vWalkLambda(iDepth+1,f_vClosure);
   }
 }
-
 
 #endif // WITH_PIPELINE_SECTION
 
