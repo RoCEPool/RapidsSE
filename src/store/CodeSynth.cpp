@@ -411,6 +411,10 @@ TypedStack* CodeSynth::pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelL
   s4K sCopy;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create post aggregation stack
+  pPostStack = new TypedStack(KK_DATA_STACK);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
   vGenerateInitStub("AGGREG-OP"_Stz, sLabel);
 
@@ -418,16 +422,22 @@ TypedStack* CodeSynth::pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelL
   // generate the stencil
   vGenerateStencilCast();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create post aggregation stack
-  pPostStack = new TypedStack(KK_DATA_STACK);
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // populate the payload key");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntIntPL->m_iIntElm0 = 0;");
-
   // generate the expression code
   vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGGBY, bHashRows, m_pStreamDefLft);
+
+//
+//  StrLib::vAppendString(&m_azCodeCrs, "\n");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    // populate the payload key");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntIntPL->m_iIntElm0 = 0;");
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate processRow check
+  //  vGenerateProcessRow(sLabelLoop);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // populate payload key
+  vPayloadKey(m_pGrpByStack);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate processRow check
@@ -1355,19 +1365,8 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   // generate the code for the projected expressions
   vGenerateExpr((char *) sKeyExpr, nullptr, EK_TOP, false, m_pStreamDefLft);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // populate the payload key");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  // reset the key size / m_nElmSeqSize
-  StrLib::vAppendString(&m_azCodeCrs, "    aCombinedT->m_aEntIntPL->m_iIntElm0 = 0;");
-
-  vGenerateExprCode(m_pExprStack, ""_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the key in the indexTree
-  //vFindKey(pIndexDef, PL_TOP);
+  // populate the TOP payload key
+  vPayloadKey(m_pExprStack);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pay load store
@@ -2027,6 +2026,25 @@ void CodeSynth::vPayloadAgg(IndexDef* pIndexDef) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate code for populating the payload Key                               */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPayloadKey(TypedStack* pExprStack) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // populate the payload key");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntIntPL->m_iIntElm0 = 0;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the payload key
+  vGenerateExprCode(pExprStack, ""_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate code for processing EOF                                           */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, ePL ePayLoad)
@@ -2335,10 +2353,6 @@ void CodeSynth::vGeneratePrjGby(IndexDef* pIndexDef) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the payload key
-  vGenerateExprCode(m_pGrpByStack, ""_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the key in the indexTree
   vFindKey(pIndexDef, PL_GBY);
 }
@@ -2350,17 +2364,9 @@ void CodeSynth::vGenerateSort(IndexDef* pIndexDef) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // populate the payload key");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  // reset the key size / m_nElmSeqSize
-  StrLib::vAppendString(&m_azCodeCrs, "    aCombinedT->m_aEntIntPL->m_iIntElm0 = 0;");
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the expr stack code
-  vGenerateExprCode(m_pExprStack, ""_Stz);
+  // populate the SORT payload key
+  vPayloadKey(m_pExprStack);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // store the payload values
