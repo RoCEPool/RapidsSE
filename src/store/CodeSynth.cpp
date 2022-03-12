@@ -1367,89 +1367,8 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   vPayloadKey(m_pExprStack);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pay load store
-  //vPayloadStore(pIndexDef, PL_TOP)
-
-  // create the payload
-  i8 nPayloadBytes = (m_pStreamDefOut->nColumns() - pIndexDef->nColumns()) * 8;
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // create the payload");
-  sCopy.vSprint("\n    vEnt_payloadCreate(aCombinedT->m_aEntIntPL, %lld);"_Stz, nPayloadBytes);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  sCopy.vSprint("\n    aEntInserted = aIndexTree_insertEntTop(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_aEntBottomPL,%lld);"_Stz,
-                iTopCount);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aEntInserted) {");
-
-  // calculate the payload address
-  if (pIndexDef->eKeyKind()) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                + sizeof(struct Ent_int)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                + 8);");
-  }
-  else {
-    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                + sizeof(struct Ent_int)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                + ((struct Ent_int*)aEntInserted)->m_iIntElm0");
-    StrLib::vAppendString(&m_azCodeCrs, "\n                + 8);");
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-  }
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // for each projected column
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      // populate the top payload");
-
-  i8 iPayLoad = 0;
-  i8 i_DupCtr = 1;
-  s256 sColNm;
-  for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
-
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-    StrLib::vAppendString(&m_azCodeCrs, "\n       // - - - - - - - - - - - - - - - ");
-    sCopy.vSprint("\n       // column %lld"_Stz, i_Col);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-    Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-
-    // is the column part of the aggregate group by key ?
-    Column* pIndexColumn = pIndexDef->pFindColumn(i_Col);
-
-    if (pIndexColumn) {
-      continue;
-    }
-
-    // make the column name
-    vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-
-    if ((pColumn->eColumnType() == CT_VARCHAR) ||
-        (pColumn->eColumnType() == CT_CHAR)) {
-
-      sCopy.vSprint("\n      szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-      sCopy.vSprint("\n       nSrcSize = 8 - 1; //strlen(szSrcStz);"_Stz);
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-      sCopy.vSprint("\n      szDstStz = (char*)&aCombinedT->m_aiPayload[%lld];"_Stz, iPayLoad );
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-      StrLib::vAppendString(&m_azCodeCrs,"\n      strncpy(szDstStz, szSrcStz, nSrcSize);");
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-    } else {
-      sCopy.vSprint("\n       aCombinedT->m_aiPayload[%lld] = p%s->%s;"_Stz, iPayLoad,
-                    xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    }
-
-    iPayLoad++;
-  }
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+  // insert entry in payload
+  vPayloadInsert(PL_TOP, iTopCount);
 
   sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -1927,6 +1846,102 @@ void CodeSynth::vPayloadCreate(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate code for payload insert for groupby                               */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPayloadInsert(ePL ePayload, i8 iTopCount) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s4K sCopy;
+
+  switch(ePayload) {
+
+    case PL_SRT:
+      StrLib::vAppendString(&m_azCodeCrs, "\n      aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL);");
+      break;
+
+    case PL_TOP:
+      sCopy.vSprint("\n    aEntInserted = aIndexTree_insertEntTop(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_aEntBottomPL,%lld);"_Stz,
+                    iTopCount);
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      break;
+
+    default:
+      NEVER_REACH;
+  }
+
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aEntInserted) {");
+
+  // calculate the payload address
+  if (m_pIndexDef->eKeyKind()) {
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
+    StrLib::vAppendString(&m_azCodeCrs, "\n                + sizeof(struct Ent_int)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n                + 8);");
+  }
+  else {
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
+    StrLib::vAppendString(&m_azCodeCrs, "\n                + sizeof(struct Ent_int)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n                + ((struct Ent_int*)aEntInserted)->m_iIntElm0");
+    StrLib::vAppendString(&m_azCodeCrs, "\n                + 8);");
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // for each projected column
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      // populate the top payload");
+
+  i8 iPayLoad = 0;
+  i8 i_DupCtr = 1;
+  s256 sColNm;
+  for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
+
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+    StrLib::vAppendString(&m_azCodeCrs, "\n       // - - - - - - - - - - - - - - - ");
+    sCopy.vSprint("\n       // column %lld"_Stz, i_Col);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+    Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
+
+    // is the column part of the aggregate group by key ?
+    Column* pIndexColumn = m_pIndexDef->pFindColumn(i_Col);
+
+    if (pIndexColumn) {
+      continue;
+    }
+
+    // make the column name
+    vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+
+    if ((pColumn->eColumnType() == CT_VARCHAR) ||
+        (pColumn->eColumnType() == CT_CHAR)) {
+
+      sCopy.vSprint("\n      szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+      sCopy.vSprint("\n       nSrcSize = 8 - 1; //strlen(szSrcStz);"_Stz);
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+      sCopy.vSprint("\n      szDstStz = (char*)&aCombinedT->m_aiPayload[%lld];"_Stz, iPayLoad );
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+      StrLib::vAppendString(&m_azCodeCrs,"\n      strncpy(szDstStz, szSrcStz, nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+    } else {
+      sCopy.vSprint("\n       aCombinedT->m_aiPayload[%lld] = p%s->%s;"_Stz, iPayLoad,
+                    xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    }
+
+    iPayLoad++;
+  }
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate code for payload store for groupby                                */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vPayloadStore(IndexDef* pIndexDef) {
@@ -1941,13 +1956,6 @@ void CodeSynth::vPayloadStore(IndexDef* pIndexDef) {
   StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // PAYLOAD STORE");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  // create the payload
-  //i8 nPayloadBytes = (m_pStreamDefOut->nColumns() - pIndexDef->nColumns()) * 8;
-  //StrLib::vAppendString(&m_azCodeCrs, "\n");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n      // create the payload");
-  //sCopy.vSprint("\n      vEnt_payloadCreate(aCombinedT->m_aEntIntPL, %lld);"_Stz, nPayloadBytes);
-  //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
 
   //StrLib::vAppendString(&m_azCodeCrs, "\n      printf(\"PAYLOAD STORE\\n\");");
@@ -2377,6 +2385,11 @@ void CodeSynth::vGenerateSort(void) {
   vPayloadKey(m_pExprStack);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert entry in payload
+  vPayloadInsert(PL_SRT, C_UNKNOWN);
+
+  /*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // store the payload values
   vPayloadStore(m_pIndexDef);
 
@@ -2443,6 +2456,7 @@ void CodeSynth::vGenerateSort(void) {
     }
     iPayLoad++;
   }
+   */
 }
 
 /*----------------------------------------------------------------------------*/

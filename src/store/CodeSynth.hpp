@@ -172,6 +172,7 @@ namespace STORE {
     void vPayloadAgg(IndexDef *pIndexDef);
 
     void vPayloadCreate(void);
+    void vPayloadInsert(ePL ePayload, i8 iTopCount);
     void vPayloadKey(TypedStack* pExprStack);
 
     void vPayloadStore(IndexDef *pIndexDef);
