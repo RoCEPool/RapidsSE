@@ -110,9 +110,9 @@ void Step::vDynamoCompileStmt(void)
   
   if (pPipelineSpec) {
     
-    eEC eError = AM::JOB::ePreExecuteTest(m_pJob_task);
+    //eEC eError = AM::JOB::ePreExecuteTest(m_pJob_task);
     
-    if (EC_NONE == eError) {
+    //if (EC_NONE == eError) {
       
       // a) clean compile, passes pre-execution requirments
       
@@ -135,17 +135,17 @@ void Step::vDynamoCompileStmt(void)
       m_p_TaskLogicUnit->m_xpPipelineSpec = pPipelineSpec;
       m_pDataStack->vPushInt(EC_NONE);
 
-    }
-    else {
+    //}
+    //else {
       
       // b) clean compile, but does not pass pre-execution requirments
 
       //delete pPipelineSpec;
-      pPipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&pPipelineSpec,
-                                    CN_DYNAMO,this,(Stz*)__func__);
-      m_pDataStack->vPushInt(eError);
+      //pPipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&pPipelineSpec,
+      //                              CN_DYNAMO,this,(Stz*)__func__);
+      //m_pDataStack->vPushInt(eError);
       
-    }
+    //}
 
   }
   else {
