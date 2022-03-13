@@ -76,6 +76,7 @@
   
   ErrorCode[] EC_NONE == if
     // + clean compile
+    to PipelineSpec[]
     PipelineSpec[].delete
   else
     // - didnt compile
@@ -181,6 +182,8 @@
   //"pipeline::participant pre dynamo" job[].progress
   <cmd> Dynamo::compileStmt EC_NONE == assert
   //"pipeline::participant post Dynamo::compileStmt" job[].progress
+
+  to PipelineSpec[]
 
   Dynamo[].delete
   

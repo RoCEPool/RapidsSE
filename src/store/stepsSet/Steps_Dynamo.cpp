@@ -132,7 +132,8 @@ void Step::vDynamoCompileStmt(void)
 //        //m_pJob_task->pJobTags()->vDumpSet(true);
 //      }
       
-      m_p_TaskLogicUnit->m_xpPipelineSpec = pPipelineSpec;
+      //m_p_TaskLogicUnit->m_xpPipelineSpec = pPipelineSpec;
+      m_pDataStack->vPushPtr(pPipelineSpec);
       m_pDataStack->vPushInt(EC_NONE);
 
     //}

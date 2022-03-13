@@ -40,6 +40,7 @@
   <cmd> Dynamo::compileStmt to ErrorCode[]
   ErrorCode[] EC_NONE == if
     // clean compile
+    to PipelineSpec[]
     Dynamo[].delete
   else
     //"got error" .
