@@ -159,7 +159,7 @@ namespace STORE {
 
     void vGenerateStencilCast(void);
     void vGenerateStencilCastTo(void);
-    void vGenerateErrorCheck(void);
+    void vGenerateErrorCheck(Stz* sIndent);
 
     void vGenerateStruct(u8 uSelectColumns);
 
@@ -169,12 +169,12 @@ namespace STORE {
 
     void vOrdAggGby(Stz *sLabelNext, Stz *sLabelLoop);
 
-    void vPayloadAgg(IndexDef *pIndexDef);
+    void vPayloadAgg(void);
 
     void vPayloadCreate(void);
     void vPayloadInsert(ePL ePayload, i8 iTopCount);
     void vPayloadKey(TypedStack* pExprStack);
-
+    void vPayloadPopulate(ePL ePayload);
     void vPayloadStore(IndexDef *pIndexDef);
     void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad);
     void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad);
