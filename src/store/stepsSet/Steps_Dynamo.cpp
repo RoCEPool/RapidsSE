@@ -33,11 +33,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dynamo(void)
 {
-  vAddStep("Dynamo[].delete"_Stz,  &Step::vDynamoDelete);
-  vAddStep("Dynamo[].new"_Stz,     &Step::vDynamoNew);
-
-  vAddStep("Dynamo::compileOnly"_Stz,  &Step::vDynamoCompileOnly);
-  vAddStep("Dynamo::compileStmt"_Stz,  &Step::vDynamoCompileStmt);
+  vAddStep("Dynamo[].delete"_Stz,   &Step::vDynamoDelete);
+  vAddStep("Dynamo[].compile"_Stz,  &Step::vDynamoCompile);
+  vAddStep("Dynamo[].new"_Stz,      &Step::vDynamoNew);
 }
 
 
@@ -54,38 +52,9 @@ void Step::vDynamoDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Dynamo::compileOnly -- compile pipeline statement into a pipelines spec    */
+/* Dynamo[].compile -- compile pipeline statement into a pipeline spec        */
 /*----------------------------------------------------------------------------*/
-void Step::vDynamoCompileOnly(void)
-{
-  ENTRY();
-    
-  s4K sPipelineStmt;
-  m_pDataStack->vPopStr(sPipelineStmt,__func__);
-
-  //Dynamo* pDynamo = new Dynamo(m_pJob_task->pJobTags());
-  Dynamo* pDynamo = (* m_p_TaskLogicUnit->m_xpDynamo);
-
-  PipelineSpec* pPipelineSpec = pDynamo->pCompile(sPipelineStmt);
-
-  //delete pDynamo;
-
-  if (pPipelineSpec) {
-    m_pDataStack->vPushPtr(pPipelineSpec);
-    m_pDataStack->vPushInt(EC_NONE);
-  }
-  else {
-    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
-
-  }
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Dynamo::compileStmt -- compile pipeline statement into a pipelines spec    */
-/*----------------------------------------------------------------------------*/
-void Step::vDynamoCompileStmt(void)
+void Step::vDynamoCompile(void)
 {
   ENTRY();
     
@@ -122,7 +91,7 @@ void Step::vDynamoCompileStmt(void)
       }
       
 //      if (bWasOptimised) {
-//        vTrace("vDynamoCompileStmt: was optimised\n"_Stz);
+//        vTrace("vDynamoCompile: was optimised\n"_Stz);
 //        RASSERT(m_pJob_task->bIsOriginator());
 //
 //        //m_pJob_task->pJobTags()->vDumpSet(true);

@@ -72,7 +72,7 @@
 
   Dynamo[].new
 
-  <cmd> Dynamo::compileStmt to ErrorCode[]
+  <cmd> Dynamo[].compile to ErrorCode[]
   
   ErrorCode[] EC_NONE == if
     // + clean compile
@@ -191,8 +191,8 @@
   Dynamo[].new
 
   //"pipeline::participant pre dynamo" job[].progress
-  <cmd> Dynamo::compileStmt EC_NONE == assert
-  //"pipeline::participant post Dynamo::compileStmt" job[].progress
+  <cmd> Dynamo[].compile EC_NONE == assert
+  //"pipeline::participant post Dynamo[].compile" job[].progress
 
   to PipelineSpec[]
 

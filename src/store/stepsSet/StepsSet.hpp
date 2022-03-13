@@ -393,8 +393,7 @@ public:
   void vDstackTuck(void);
 
   void vDynamoDelete(void);
-  void vDynamoCompileOnly(void);
-  void vDynamoCompileStmt(void);
+  void vDynamoCompile(void);
   void vDynamoNew(void);
 
   // encode

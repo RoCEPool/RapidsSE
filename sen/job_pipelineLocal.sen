@@ -37,7 +37,7 @@
   then
 
   Dynamo[].new
-  <cmd> Dynamo::compileStmt to ErrorCode[]
+  <cmd> Dynamo[].compile to ErrorCode[]
   ErrorCode[] EC_NONE == if
     // clean compile
     to PipelineSpec[]
