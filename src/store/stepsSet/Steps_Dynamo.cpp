@@ -102,7 +102,7 @@ void Step::vDynamoCompileStmt(void)
 
   PipelineSpec* pPipelineSpec = pDynamo->pCompile(sPipelineStmt);
   
-  bool bWasOptimised = pDynamo->bWasOptimised();
+  //bool bWasOptimised = pDynamo->bWasOptimised();
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -121,16 +121,16 @@ void Step::vDynamoCompileStmt(void)
         vTraceM("%s\n"_Stz,spPipelineSpec.sz());
       }
       
-      if (bWasOptimised) {
-        vTrace("vDynamoCompileStmt: was optimised\n"_Stz);
-        RASSERT(m_pJob_task->bIsOriginator());
-
-        //m_pJob_task->pJobTags()->vDumpSet(true);
-        //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
-        //m_pJob_task->vCmd(pDynamo->szOptPipelineStmt());
-        //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
-        //m_pJob_task->pJobTags()->vDumpSet(true);
-      }
+//      if (bWasOptimised) {
+//        vTrace("vDynamoCompileStmt: was optimised\n"_Stz);
+//        RASSERT(m_pJob_task->bIsOriginator());
+//
+//        //m_pJob_task->pJobTags()->vDumpSet(true);
+//        //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
+//        //m_pJob_task->vCmd(pDynamo->szOptPipelineStmt());
+//        //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
+//        //m_pJob_task->pJobTags()->vDumpSet(true);
+//      }
       
       m_p_TaskLogicUnit->m_xpPipelineSpec = pPipelineSpec;
       m_pDataStack->vPushInt(EC_NONE);
