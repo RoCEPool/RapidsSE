@@ -70,7 +70,7 @@
   then
 
 
-  "-- would be the pipeline stmt" Dynamo[].new Dynamo[].delete
+  <cmd> Dynamo[].new
 
   <cmd> Dynamo::compileStmt dup
   EC_NONE == if
@@ -82,6 +82,8 @@
     Job[].error!
     DdlLock[].testDrop
   then
+  
+  Dynamo[].delete
 
   // cross check
   PipelineSpec[] not assert
@@ -174,12 +176,14 @@
   // compile the pipeline statement on participants (should not expect an error)
 
 
-  "-- would be the pipeline stmt" Dynamo[].new Dynamo[].delete
+  <cmd> Dynamo[].new
 
   //"pipeline::participant pre dynamo" job[].progress
   <cmd> Dynamo::compileStmt EC_NONE == assert
   //"pipeline::participant post Dynamo::compileStmt" job[].progress
 
+  Dynamo[].delete
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
   
