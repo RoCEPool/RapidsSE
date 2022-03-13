@@ -60,74 +60,23 @@ void Step::vDynamoCompile(void)
     
   s4K sPipelineStmt;
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
-  
-  //LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // use dynamo to compile the pipeline statement
-  
-  //Dynamo* pDynamo = new Dynamo(m_pJob_task->pJobTags());
+      
   Dynamo* pDynamo = (* m_p_TaskLogicUnit->m_xpDynamo);
-
   PipelineSpec* pPipelineSpec = pDynamo->pCompile(sPipelineStmt);
-  
-  //bool bWasOptimised = pDynamo->bWasOptimised();
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test compilation result
-  
+    
   if (pPipelineSpec) {
+    if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
+      SP_PipelineSpec spPipelineSpec(pPipelineSpec);
+      vTraceM("%s\n"_Stz,spPipelineSpec.sz());
+    }
     
-    //eEC eError = AM::JOB::ePreExecuteTest(m_pJob_task);
-    
-    //if (EC_NONE == eError) {
-      
-      // a) clean compile, passes pre-execution requirments
-      
-      if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
-        SP_PipelineSpec spPipelineSpec(pPipelineSpec);
-        vTraceM("%s\n"_Stz,spPipelineSpec.sz());
-      }
-      
-//      if (bWasOptimised) {
-//        vTrace("vDynamoCompile: was optimised\n"_Stz);
-//        RASSERT(m_pJob_task->bIsOriginator());
-//
-//        //m_pJob_task->pJobTags()->vDumpSet(true);
-//        //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
-//        //m_pJob_task->vCmd(pDynamo->szOptPipelineStmt());
-//        //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
-//        //m_pJob_task->pJobTags()->vDumpSet(true);
-//      }
-      
-      //m_p_TaskLogicUnit->m_xpPipelineSpec = pPipelineSpec;
-      m_pDataStack->vPushPtr(pPipelineSpec);
-      m_pDataStack->vPushInt(EC_NONE);
-
-    //}
-    //else {
-      
-      // b) clean compile, but does not pass pre-execution requirments
-
-      //delete pPipelineSpec;
-      //pPipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&pPipelineSpec,
-      //                              CN_DYNAMO,this,(Stz*)__func__);
-      //m_pDataStack->vPushInt(eError);
-      
-    //}
-
+    m_pDataStack->vPushPtr(pPipelineSpec);
+    m_pDataStack->vPushInt(EC_NONE);
   }
   else {
-    
-    // c) failed to compile
-    
     m_pDataStack->vPushInt(EC_INVALID_COMMAND);
-
   }
   
-  //delete pDynamo;
-
   EXIT();
 }
 
