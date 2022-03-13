@@ -90,6 +90,17 @@
   PipelineSpec[] not assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test if distributed job may execute
+  
+  Job[].error@ not if
+    Job[].preExecuteTest to ErrorCode[]
+    ErrorCode[] if
+      ErrorCode[] Job[].error!
+      DdlLock[].testDrop
+    then
+  then
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute the participants of this job and execute them
   
   Job[].error@ not if

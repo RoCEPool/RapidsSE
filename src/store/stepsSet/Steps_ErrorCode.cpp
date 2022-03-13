@@ -28,9 +28,9 @@ void Step::vErrorCodeGet(void)
 {
   ENTRY();
  
-  i8 iError = m_p_TaskLogicUnit->m_eErrorCode_reg;
+  eEC eError = (eEC)m_p_TaskLogicUnit->m_eErrorCode_reg;
   
-  m_pDataStack->vPushInt(iError);
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }
@@ -42,9 +42,9 @@ void Step::vErrorCodeSet(void)
 {
   ENTRY();
     
-  i8 iError = m_pDataStack->iPopInt(__func__);
+  eEC eError = (eEC)m_pDataStack->iPopInt(__func__);
 
-  m_p_TaskLogicUnit->m_eErrorCode_reg = (eEC)iError;
+  m_p_TaskLogicUnit->m_eErrorCode_reg = eError;
 
   EXIT();
 }
