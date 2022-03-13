@@ -27,14 +27,14 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dynamo(Stz* szPipelineStmt, TagSet* p_JobTags);
+    Dynamo(TagSet* p_JobTags);
    ~Dynamo(void) noexcept(false);
 
     static void vRepair(Object* pObject);
     static PipelineSpec* pToPipelineSpec(Stz* szPipelineStmt, TagSet* p_JobTags);
 
     
-    PipelineSpec* pCompile(void);
+    PipelineSpec* pCompile(Stz* szPipelineStmt);
 
     void vOptimise(void);
 

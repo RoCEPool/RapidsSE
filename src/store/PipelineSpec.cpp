@@ -2289,9 +2289,9 @@ bool PipelineSpec::bPass3_include(Stz *szIncludePipNm)
   TagSet *pWrdTagSet = pwMatchedProc->pWrdTagSet();
   pWrdTagSet->vDumpSet();
 
-  Dynamo *pDynamo = new Dynamo(sPipelineSmt.szStz(), pWrdTagSet);
+  Dynamo *pDynamo = new Dynamo(pWrdTagSet);
 
-  PipelineSpec *pIncludePipelineSpec = pDynamo->pCompile();
+  PipelineSpec *pIncludePipelineSpec = pDynamo->pCompile(sPipelineSmt);
 
   delete pDynamo;
 

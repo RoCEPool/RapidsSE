@@ -70,7 +70,7 @@
   then
 
 
-  <cmd> Dynamo[].new
+  Dynamo[].new
 
   <cmd> Dynamo::compileStmt dup
   EC_NONE == if
@@ -176,7 +176,7 @@
   // compile the pipeline statement on participants (should not expect an error)
 
 
-  <cmd> Dynamo[].new
+  Dynamo[].new
 
   //"pipeline::participant pre dynamo" job[].progress
   <cmd> Dynamo::compileStmt EC_NONE == assert

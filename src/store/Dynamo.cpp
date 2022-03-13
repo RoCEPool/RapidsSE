@@ -23,12 +23,11 @@ __aFooterFunction(Dynamo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dynamo::Dynamo(Stz* szPipelineStmt, TagSet* p_JobTags)
+Dynamo::Dynamo(TagSet* p_JobTags)
 : Object(CN_DYNAMO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
-  m_szPipelineStmt = szPipelineStmt;
   m_p_JobTags      = p_JobTags;
   m_p_PipelineSpec = nullptr;
   m_bWasOptimised  = false;
@@ -73,9 +72,9 @@ PipelineSpec* Dynamo::pToPipelineSpec(Stz* szPipelineStmt, TagSet* p_JobTags)
 {
   _static_
   
-  Dynamo* pDynamo = new Dynamo(szPipelineStmt,p_JobTags);
+  Dynamo* pDynamo = new Dynamo(p_JobTags);
   
-  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
+  PipelineSpec* pPipelineSpec = pDynamo->pCompile(szPipelineStmt);
 
   delete pDynamo;
   
@@ -89,10 +88,12 @@ PipelineSpec* Dynamo::pToPipelineSpec(Stz* szPipelineStmt, TagSet* p_JobTags)
 /*----------------------------------------------------------------------------*/
 /* recursively compile the tokenised pipeline statement                       */
 /*----------------------------------------------------------------------------*/
-PipelineSpec* Dynamo::pCompile(void)
+PipelineSpec* Dynamo::pCompile(Stz* szPipelineStmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
         
+  m_szPipelineStmt = szPipelineStmt;
+  
   Scanner* pScanner = new Scanner(m_szPipelineStmt);
   
   if (! (pScanner->pTkn()->bSame("PIPELINE"_Stz) ||

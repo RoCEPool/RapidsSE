@@ -63,9 +63,9 @@ void Step::vDynamoCompileOnly(void)
   s4K sPipelineStmt;
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
 
-  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob_task->pJobTags());
+  Dynamo* pDynamo = new Dynamo(m_pJob_task->pJobTags());
   
-  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
+  PipelineSpec* pPipelineSpec = pDynamo->pCompile(sPipelineStmt);
 
   delete pDynamo;
 
@@ -96,9 +96,9 @@ void Step::vDynamoCompileStmt(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // use dynamo to compile the pipeline statement
   
-  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob_task->pJobTags());
+  Dynamo* pDynamo = new Dynamo(m_pJob_task->pJobTags());
     
-  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
+  PipelineSpec* pPipelineSpec = pDynamo->pCompile(sPipelineStmt);
   
   bool bWasOptimised = pDynamo->bWasOptimised();
   
@@ -166,11 +166,7 @@ void Step::vDynamoNew(void)
 {
   ENTRY();
   
-  s4K sPipelineStmt;
-  m_pDataStack->vPopStr(sPipelineStmt,__func__);
-
-  m_p_TaskLogicUnit->m_xpDynamo =
-    new Dynamo(sPipelineStmt,m_pJob_task->pJobTags());
+  m_p_TaskLogicUnit->m_xpDynamo = new Dynamo(m_pJob_task->pJobTags());
 
   EXIT();
 }
