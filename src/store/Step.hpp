@@ -70,6 +70,7 @@ namespace STORE
     static void vAddSteps_Encode(void);
     static void vAddSteps_EntBuffer(void);
     static void vAddSteps_Env(void);
+    static void vAddSteps_ErrorCode(void);
     static void vAddSteps_ErrorMarker(void);
     static void vAddSteps_Executable(void);
     static void vAddSteps_ExprEval(void);

@@ -333,7 +333,7 @@ LogicUnit::LogicUnit(void)
   // m_ixRowsProcessed;
   // m_ixRowsInvalid;
   // m_ixRowsSkipped;
-  m_eErrorCode = EC_NONE;
+  m_eErrorCode_reg = EC_NONE;
   
   m_eSendKind = XK_NONE;
   

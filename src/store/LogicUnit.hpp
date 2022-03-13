@@ -300,7 +300,7 @@ namespace STORE
     Atomic m_ixRowsProcessed; // rows processed
     Atomic m_ixRowsInvalid;   // invalid rows detected
     Atomic m_ixRowsSkipped;   // rows skipped
-    eEC    m_eErrorCode;      // error code
+    eEC    m_eErrorCode_reg;      // error code
     
     eZK m_ePipeInOperand;
 

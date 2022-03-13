@@ -435,6 +435,10 @@ public:
   // env
   void vEnvGet(void);
 
+  // error code
+  void vErrorCodeGet(void);
+  void vErrorCodeSet(void);
+
   // extractRow
   void vExtractRowCreate(void);
   void vExtractRowDelete(void);
