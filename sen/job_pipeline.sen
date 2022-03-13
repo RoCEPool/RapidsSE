@@ -72,14 +72,14 @@
 
   Dynamo[].new
 
-  <cmd> Dynamo::compileStmt dup
-  EC_NONE == if
+  <cmd> Dynamo::compileStmt to ErrorCode[]
+  
+  ErrorCode[] EC_NONE == if
     // + clean compile
-    discard
     PipelineSpec[].delete
   else
     // - didnt compile
-    Job[].error!
+    ErrorCode[] Job[].error!
     DdlLock[].testDrop
   then
   

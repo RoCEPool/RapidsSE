@@ -37,13 +37,13 @@
   then
 
   Dynamo[].new
-  <cmd> Dynamo::compileStmt dup
-  EC_NONE == if
+  <cmd> Dynamo::compileStmt to ErrorCode[]
+  ErrorCode[] EC_NONE == if
     // clean compile
     Dynamo[].delete
   else
     //"got error" .
-    Job[].error!
+    ErrorCode[] Job[].error!
     
     DdlLock[].testDrop
 
