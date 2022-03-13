@@ -63,11 +63,12 @@ void Step::vDynamoCompileOnly(void)
   s4K sPipelineStmt;
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
 
-  Dynamo* pDynamo = new Dynamo(m_pJob_task->pJobTags());
-  
+  //Dynamo* pDynamo = new Dynamo(m_pJob_task->pJobTags());
+  Dynamo* pDynamo = (* m_p_TaskLogicUnit->m_xpDynamo);
+
   PipelineSpec* pPipelineSpec = pDynamo->pCompile(sPipelineStmt);
 
-  delete pDynamo;
+  //delete pDynamo;
 
   if (pPipelineSpec) {
     m_pDataStack->vPushPtr(pPipelineSpec);
