@@ -33,8 +33,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dynamo(void)
 {
-  vAddStep("Dynamo[].delete"_Stz,  &Step::vDynamoCompileOnly);
-  vAddStep("Dynamo[].new"_Stz,     &Step::vDynamoCompileOnly);
+  vAddStep("Dynamo[].delete"_Stz,  &Step::vDynamoDelete);
+  vAddStep("Dynamo[].new"_Stz,     &Step::vDynamoNew);
 
   vAddStep("Dynamo::compileOnly"_Stz,  &Step::vDynamoCompileOnly);
   vAddStep("Dynamo::compileStmt"_Stz,  &Step::vDynamoCompileStmt);
