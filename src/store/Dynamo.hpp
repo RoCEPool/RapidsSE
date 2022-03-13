@@ -14,8 +14,9 @@ namespace STORE
     friend class STORE::PipelineSpec;
 
   private:
-    Stz*          m_szPipelineStmt;
     TagSet*       m_p_JobTags;       // tag set from job
+    
+    Stz*          m_szPipelineStmt;
     PipelineSpec* m_p_PipelineSpec;  // the pipeline spec
     
     bool          m_bWasOptimised;   // stmt was optimised

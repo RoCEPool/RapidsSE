@@ -29,6 +29,8 @@ Dynamo::Dynamo(TagSet* p_JobTags)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
   m_p_JobTags      = p_JobTags;
+  
+  m_szPipelineStmt = nullptr;
   m_p_PipelineSpec = nullptr;
   m_bWasOptimised  = false;
   //m_sOptPipelineStmt
