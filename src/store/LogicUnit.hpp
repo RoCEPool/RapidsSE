@@ -183,6 +183,7 @@ namespace STORE
     REG<DataBuffer,     CN_NONE          > m_xpDataBuffer;
     REG<Dir,            CN_DIR           > m_xpDir0;
     REG<Dir,            CN_DIR           > m_xpDir1;
+    REG<Dynamo,         CN_DYNAMO        > m_xpDynamo;
 
     REG<Operand,        CN_NONE          > m_xpErrorMarker;
     REG<ExprEval,       CN_EXPREVAL      > m_xpExprEval;

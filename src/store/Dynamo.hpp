@@ -30,7 +30,9 @@ namespace STORE
     Dynamo(Stz* szPipelineStmt, TagSet* p_JobTags);
    ~Dynamo(void) noexcept(false);
 
+    static void vRepair(Object* pObject);
     static PipelineSpec* pToPipelineSpec(Stz* szPipelineStmt, TagSet* p_JobTags);
+
     
     PipelineSpec* pCompile(void);
 

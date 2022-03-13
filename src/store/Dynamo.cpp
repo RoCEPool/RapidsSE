@@ -55,6 +55,18 @@ Dynamo::~Dynamo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* repair a dynamo                                                            */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vRepair(Object* pObject)
+{
+  _static_
+
+  Dynamo* pDynamo = _pDynamo(pObject);
+
+  delete pDynamo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert pipeline statement to pipeline spec                                */
 /*----------------------------------------------------------------------------*/
 PipelineSpec* Dynamo::pToPipelineSpec(Stz* szPipelineStmt, TagSet* p_JobTags)

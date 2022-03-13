@@ -392,8 +392,10 @@ public:
   void vDstackSwap(void);
   void vDstackTuck(void);
 
+  void vDynamoDelete(void);
   void vDynamoCompileOnly(void);
   void vDynamoCompileStmt(void);
+  void vDynamoNew(void);
 
   // encode
   void vEncodeCurrentCall(void);

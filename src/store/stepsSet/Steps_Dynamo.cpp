@@ -33,10 +33,25 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dynamo(void)
 {
+  vAddStep("Dynamo[].delete"_Stz,  &Step::vDynamoCompileOnly);
+  vAddStep("Dynamo[].new"_Stz,     &Step::vDynamoCompileOnly);
+
   vAddStep("Dynamo::compileOnly"_Stz,  &Step::vDynamoCompileOnly);
   vAddStep("Dynamo::compileStmt"_Stz,  &Step::vDynamoCompileStmt);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Dynamo[].delete -- delete dynamo                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoDelete(void)
+{
+  ENTRY();
+
+  m_p_TaskLogicUnit->m_xpDynamo.vDeleteComponent();
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* Dynamo::compileOnly -- compile pipeline statement into a pipelines spec    */
@@ -140,6 +155,22 @@ void Step::vDynamoCompileStmt(void)
   }
   
   delete pDynamo;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Dynamo[].new -- new dynamo                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoNew(void)
+{
+  ENTRY();
+  
+  s4K sPipelineStmt;
+  m_pDataStack->vPopStr(sPipelineStmt,__func__);
+
+  m_p_TaskLogicUnit->m_xpDynamo =
+    new Dynamo(sPipelineStmt,m_pJob_task->pJobTags());
 
   EXIT();
 }
