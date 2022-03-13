@@ -36,10 +36,11 @@
     //system::bpa
   then
 
+  Dynamo[].new
   <cmd> Dynamo::compileStmt dup
   EC_NONE == if
     // clean compile
-    
+    Dynamo[].delete
   else
     //"got error" .
     Job[].error!
@@ -47,7 +48,8 @@
     DdlLock[].testDrop
 
     PipelineSpec[].delete
-        
+    Dynamo[].delete
+
     // cross check
     PipelineSpec[] not assert
 

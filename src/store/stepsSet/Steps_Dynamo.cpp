@@ -96,8 +96,9 @@ void Step::vDynamoCompileStmt(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // use dynamo to compile the pipeline statement
   
-  Dynamo* pDynamo = new Dynamo(m_pJob_task->pJobTags());
-    
+  //Dynamo* pDynamo = new Dynamo(m_pJob_task->pJobTags());
+  Dynamo* pDynamo = (* m_p_TaskLogicUnit->m_xpDynamo);
+
   PipelineSpec* pPipelineSpec = pDynamo->pCompile(sPipelineStmt);
   
   bool bWasOptimised = pDynamo->bWasOptimised();
@@ -154,7 +155,7 @@ void Step::vDynamoCompileStmt(void)
 
   }
   
-  delete pDynamo;
+  //delete pDynamo;
 
   EXIT();
 }
