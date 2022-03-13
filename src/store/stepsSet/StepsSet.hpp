@@ -803,6 +803,7 @@ public:
   void vJobParticipantFetch(void);
   void vJobParticipantFetch_other(void);
   void vJobParticipantStore(void);
+  void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);
   void vJobPhaseFetch_other(void);
   void vJobPhaseStore(void);

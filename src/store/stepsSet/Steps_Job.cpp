@@ -91,7 +91,9 @@ void Step::vAddSteps_Job(void)
     
   vAddStep("Job[].participantNode@"_Stz, &Step::vJobParticipantFetch);
   vAddStep("Job[].participantNode!"_Stz, &Step::vJobParticipantStore);
-  
+
+  vAddStep("Job[].preExecuteTest"_Stz,   &Step::vJobParticipantStore);
+
   vAddStep("Job[].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("Job[].phase!"_Stz,           &Step::vJobPhaseStore);
   
@@ -797,6 +799,20 @@ void Step::vJobParticipantStore(void)
   
   pJob->vParticipantNode(iParticipantNode);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.preExecuteTest -- test if job can be run                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobPreExecuteTest(void)
+{
+  ENTRY();
+  
+  eEC eError = AM::JOB::ePreExecuteTest(m_pJob_task);
+  
+  m_pDataStack->vPushInt(eError);
+
   EXIT();
 }
 
