@@ -2089,11 +2089,9 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
                    xRowRef[m_eStencilTo].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the post aggregation
-  if (pPostStack) {
+  if (pPostStack && pPostStack->nValues()) {
     vGenerateExprCode(pPostStack, ""_Stz);
   }
 
@@ -2105,6 +2103,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
   i8 i_DupCtr = 1;
 
   StrLib::vAppendString(&m_azCodeCrs, "\n      iElemSize = 0;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   ePE ePreExp = PE_NONE;
   i8 iExprStack = pIndexDef->nColumns();
@@ -2124,12 +2123,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
     // is column in the key ?
     Column* pIndexColumn = pIndexDef->pFindColumn(pColumn->iColumnNo());
 
-    //ePreExp = (ePE)m_pPreExpStack->iPeek(iExprStack);
-
     if (pIndexColumn) {
-
-      // cannot be an aggregate
-      //RASSERT(ePreExp == PE_NONE);
 
       if (pIndexDef->eKeyKind() == KE_GENERAL) {
 
@@ -2139,7 +2133,6 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
             pColumn->eColumnType() == CT_CHAR) {
 
           RASSERT(pIndexDef->eKeyKind() == KE_GENERAL);
-
 
           StrLib::vAppendString(&m_azCodeCrs, "\n      szSrcStz = ((char*)(&(((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0)) + 8 + iElemSize);");
 
@@ -2256,48 +2249,50 @@ void CodeSynth::vPayloadTraversal(IndexDef* pIndexDef, TypedStack* pPostStack, e
   s4K sCopy;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allocate ProjectRow
-  //StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"PAYLOAD TRAVERSAL\\n\");");
+  // payload traversal
+
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // PAYLOAD TRAVERSAL");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // payload traversal");
 
   // begin iterating the payload index
-  StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_aEntIntPL = (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreePL, &aCombinedT->m_aEntBufferPL);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntIntPL = (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreePL, &aCombinedT->m_aEntBufferPL);");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n   while (aCombinedT->m_aEntIntPL) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    while (aCombinedT->m_aEntIntPL) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // generate code if limitOP
   if (m_iLimitRows) {
-    sCopy.vSprint("\n   if (aCombinedT->m_iLimitRows <= %lld) { \n"_Stz, m_iLimitRows);
+    sCopy.vSprint("\n    if (aCombinedT->m_iLimitRows <= %lld) { \n"_Stz, m_iLimitRows);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, "     aCombinedT->m_iLimitRows++;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n   }");
-    StrLib::vAppendString(&m_azCodeCrs, "\n   else {");
-    StrLib::vAppendString(&m_azCodeCrs, "\n     break;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n   }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iLimitRows++;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      break;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   }
 
-
+  StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // allocate a projectRow from the tub");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_aPayloadRow = (byte*)aTub_AllotRow(aCombinedT->m_pTub,&aCombinedT->m_racPayloadArea);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aPayloadRow = (byte*)aTub_AllotRow(aCombinedT->m_pTub,&aCombinedT->m_racPayloadArea);");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // calculate the payload address
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aCombinedT->m_aEntIntPL ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n                  + sizeof(struct Ent_int)");
+  StrLib::vAppendString(&m_azCodeCrs, "\n        + sizeof(struct Ent_int)");
   if ( pIndexDef->eKeyKind() == KE_GENERAL) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n                  + ((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0" );
+    StrLib::vAppendString(&m_azCodeCrs, "\n        + ((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0" );
   }
-  StrLib::vAppendString(&m_azCodeCrs, "\n                  + 8);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n        + 8);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   vPayloadToBuffer(pIndexDef, pPostStack, ePayLoad);
 
   // go to next entry
+  StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      // move to next entry ");
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aEntIntPL = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferPL, aCombinedT->m_aEntIntPL);");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");

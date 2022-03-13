@@ -407,23 +407,6 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
 {
   _static_
 
-  char* azHeaders = (char*)
-      "\n"
-      "\n  //#include <stdio.h>"
-      "\n  //#include <string.h>"
-      "\n"
-      "\n  #include \"tcclib.h\" // include libc header for TCC"
-      "\n"
-      "\n  #include \"../src/base/BaseTypes_tcc.h\""
-      "\n  #include \"../src/base/TccStuff.h\""
-      "\n  #include \"../src/base/CastMacros.h\""
-      "\n  #include \"../src/base/LogicalMacros.h\""
-      "\n  #include \"../src/base/MathMacros.h\""
-      "\n  #include \"../src/base/RelationalMacros.h\""
-      "\n  #include \"../src/base/TccMacros.h\""
-      "";
-  StrLib::vAppendString(&azStr,azHeaders);
-
   char* azFrag = (char*)
       "\n"
       "\n  /*--------------------------------------------------------------------*/"
@@ -436,9 +419,7 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
   StrLib::vAppendString(&azStr,szFunSignature->azChar());
 
   azFrag = (char*)
-      "\n"
       "\n  {"
-      "\n"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
