@@ -95,7 +95,7 @@ PipelineSpec* Dynamo::pCompile(void)
   
   if (m_p_PipelineSpec->bCompile()) {
     
-    vOptimise();
+    //vOptimise();
  
     delete pScanner;
     
