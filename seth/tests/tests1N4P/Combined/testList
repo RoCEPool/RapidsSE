@@ -4,7 +4,7 @@ FilterAggreg.test
 FilterProject.test
 FilterJoin.test
 //IndexJoin.test
-//IndexScan.test
+IndexScan.test
 //Q1.test
 //Q3.test
 //Q4.test
