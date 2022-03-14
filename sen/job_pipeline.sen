@@ -78,7 +78,6 @@
   ErrorCode[] EC_NONE == if
     // + clean compile
     to PipelineSpec[]
-    // PipelineSpec[].delete
   else
     // - didnt compile
     ErrorCode[] Job[].error!
@@ -86,9 +85,6 @@
   then
   
   Dynamo[].delete
-
-  // cross check
-  //PipelineSpec[] not assert
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -157,7 +153,6 @@
     // set acks for originator task
     1 Task[].acksRemaining!
 
-
     "pipeline::participant" Job[].entry!
     job::distributeParticipants
     
@@ -184,6 +179,8 @@
       
     Task[].grabLock
       TR_RETIRE_THIS_TASK Task[].transition!
+      
+    HAZARD
 
   else
       
@@ -191,11 +188,13 @@
     JS_SIGNALLED Job[].state!
     Session[].signal
  
-    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!
+    Task[].grabLock
+      TR_DELETE_THIS_TASK Task[].transition!
   
+    HAZARD
+    
   then
 
-  
   HAZARD
 ;
 
@@ -216,6 +215,7 @@
   JobRef[].assertNone
   
   Task[].job@ Job[] equal assert
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job is beginning
@@ -382,7 +382,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end pipeline job                                                           */
+/* end pipeline job on participant node                                       */
 /*----------------------------------------------------------------------------*/
 : pipeline::end ( -- )
 
@@ -393,20 +393,38 @@
   Job[].assertCorrectness
   
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // this job is ending
+
   JP_ENDING Job[].phase!
 
+  DdlLock[].testDrop
+ 
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // this job has ended
+  
   JP_ENDED Job[].phase!
-
-  Job[].removeParticipant
   
 
-  DdlLock[].testDrop
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove job from plist
+  
+  Job[].removeParticipant
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reply to originator
   
   Job[] ended::replyToOrigin
 
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete current task (but not this job)
+
   JS_DELETABLE Job[].state!
   Job[].addRetired
-  
+
   Task[].grabLock
     Job[] job.queueExitDemon
     TR_RETIRE_THIS_TASK Task[].transition!
@@ -415,7 +433,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end pipeline job                                                           */
+/* cancel pipeline job on participant node                                    */
 /*----------------------------------------------------------------------------*/
 : pipeline::cancel ( -- )
 
