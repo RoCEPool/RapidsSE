@@ -19,16 +19,12 @@ void Step::vAddSteps_JobRef(void)
 {
   vAddStep("JobRef[]"_Stz,                 &Step::vJobRefPointer);
 
+  vAddStep("JobRef[].assertNone"_Stz,      &Step::vJobRefAssertNone);
   vAddStep("JobRef[].findOriginator"_Stz,  &Step::vJobFindOriginator);
   vAddStep("JobRef[].findParticipant"_Stz, &Step::vJobFindParticipant);
-
   vAddStep("JobRef[].hasTask"_Stz,         &Step::vJobRefHasTask);
-
-  vAddStep("JobRef[].none"_Stz,            &Step::vJobRefNone);
-
-  vAddStep("JobRef[].returnReference"_Stz, &Step::vJobRefReturn);
   vAddStep("JobRef[].references"_Stz,      &Step::vJobRefReferences);
-  
+  vAddStep("JobRef[].returnReference"_Stz, &Step::vJobRefReturn);
   vAddStep("JobRef[].task@"_Stz,           &Step::vJobRefTaskFetch);
 }
 
@@ -56,7 +52,7 @@ void Step::vJobFindOriginator(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[].findParticipant -- find job from participant job set                  */
+/* JobRef[].findParticipant -- find job from participant job set              */
 /*----------------------------------------------------------------------------*/
 void Step::vJobFindParticipant(void)
 {
@@ -107,9 +103,9 @@ void Step::vJobRefPointer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[].none -- check there is no job reference                           */
+/* JobRef[].assertNone -- check there is no job reference                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJobRefNone(void)
+void Step::vJobRefAssertNone(void)
 {
   ENTRY();
   
@@ -119,7 +115,7 @@ void Step::vJobRefNone(void)
   }
 
   if (m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject())
-    THROW("JobRef[].none : register still has reference to a job"_Stz);
+    THROW("JobRef[].assertNone : register still has reference to a job"_Stz);
   
   EXIT();
 }

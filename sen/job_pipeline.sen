@@ -35,7 +35,7 @@
       Job[].error!
       
       DdlLock[].testDrop
-      JobRef[].none
+      JobRef[].assertNone
 
       Job[].addRetired
       
@@ -175,7 +175,7 @@
   if
       
     DdlLock[].testDrop
-    JobRef[].none
+    JobRef[].assertNone
 
     Job[].addRetired
     
@@ -213,10 +213,13 @@
 
   job[].progressReset
   
-  JobRef[].none
+  JobRef[].assertNone
   
   Task[].job@ Job[] equal assert
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // this job is beginning
+  
   JP_BEGINNING Job[].phase!
   //"pipeline::participant post Job[]..phase!" job[].progress
 
@@ -229,7 +232,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
 
-
   Dynamo[].new
 
   //"pipeline::participant pre dynamo" job[].progress
@@ -240,8 +242,9 @@
 
   Dynamo[].delete
   
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // begin the pipeline job (spawning jobs for ops etc)
+  // begin this pipeline job (spawning jobs for ops etc)
   
   PipelineSpec[] Pipeline[].create
   //"pipeline::participant post Pipeline[].create" job[].progress
@@ -249,28 +252,33 @@
   Pipeline[].spawnOpTasks
   //"pipeline::participant post Pipeline[].spawnOpTasks" job[].progress
 
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // this pipeline job has begun on this node
+  
   JP_BEGUN Job[].phase!
-     
+
+  // what to execute next
   "pipeline::execute" Job[].entry!
-
-
 
   // add job to participant job list
   job[].tscParticipant
-
   Job[].addParticipant
   Job[].assertCorrectness
-  Job[].phase@ JP_BEGINNING assert
+  
 
-
-
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reply to originator
 
   Job[] begun::replyToOrigin
   //"pipeline::participant post begun::replyToOrigin" job[].progress
 
   DdlLock[].testDrop
 
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete current task (but not this job)
+  
   Task[].grabLock
     
     // about to delete task (but not this job) so unlink task and job
@@ -348,7 +356,7 @@
   "pipeline::end" Job[].entry!
 
   DdlLock[].testDrop
-  JobRef[].none
+  JobRef[].assertNone
   
   Job[] executed::replyToOrigin
   

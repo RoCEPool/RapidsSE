@@ -867,7 +867,7 @@ public:
   // job ref
   void vJobRefHasTask(void);
   void vJobRefPointer(void);
-  void vJobRefNone(void);
+  void vJobRefAssertNone(void);
   void vJobRefReturn(void);
   void vJobRefReferences(void);
   void vJobRefTaskFetch(void);
