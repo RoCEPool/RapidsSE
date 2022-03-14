@@ -220,8 +220,6 @@
   JP_BEGINNING Job[].phase!
   //"pipeline::participant post Job[]..phase!" job[].progress
 
-  
-
   <path> str.toStrVec Path[].set
 
   // set participant node of job
@@ -235,17 +233,17 @@
   Dynamo[].new
 
   //"pipeline::participant pre dynamo" job[].progress
-  <cmd> Dynamo[].compile EC_NONE == assert
+  <cmd> Dynamo[].compile
+    EC_NONE == assert
+    to PipelineSpec[]
   //"pipeline::participant post Dynamo[].compile" job[].progress
-
-  to PipelineSpec[]
 
   Dynamo[].delete
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
   
-  Pipeline[].create
+  PipelineSpec[] Pipeline[].create
   //"pipeline::participant post Pipeline[].create" job[].progress
   
   Pipeline[].spawnOpTasks

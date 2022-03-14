@@ -116,20 +116,20 @@ void Step::vPipelineCreate(void)
   ENTRY();
     
   i8 iThisNode = AM::pGrid()->iThisNodeNo();
-  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
 
-  PipelineSpec* pPipelineSpec = *pLogicUnit->m_xpPipelineSpec;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a pipeline
+  // get pipeline spec
   
-  pLogicUnit->m_xpPipeline =
+  PipelineSpec* pPipelineSpec = _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
+  
+  // create pipeline
+  
+  Pipeline* pPipeline =
     new Pipeline(m_pJob_task,pPipelineSpec,m_pJob_task->iOriginatorNode());
   
-  Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
+  m_p_TaskLogicUnit->m_xpPipeline = pPipeline;
     
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump the pipeline
+  // dump pipeline
+  
   if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
     if (iThisNode == 0) {
       SP_Pipeline spPipeline(pPipeline,true);

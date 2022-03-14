@@ -69,7 +69,8 @@
   
   PipelineSpec[] assert
 
-  Pipeline[].create
+  PipelineSpec[] Pipeline[].create
+  
   Pipeline[].spawnOpTasks
 
   // run <pre_execute>
