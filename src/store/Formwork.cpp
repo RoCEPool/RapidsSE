@@ -27,7 +27,7 @@ __vDeleteFunction(Formwork,CN_FORMWORK)
 __aFooterFunction(Formwork)
 
 
-#ifdef WITH_PIPELINE_SECTION
+#ifdef WITH_FORMWORK
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -912,7 +912,7 @@ void Formwork::vWalkLambda(
   }
 }
 
-#endif // WITH_PIPELINE_SECTION
+#endif // WITH_FORMWORK
 
 /*============================================================================*/
 /* end                                                                        */

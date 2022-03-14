@@ -28,7 +28,7 @@ __vDeleteFunction(FormworkSpec, CN_FORMWORKSPEC)
 __aFooterFunction(FormworkSpec)
 
 
-#ifdef WITH_PIPELINE_SECTION
+#ifdef WITH_FORMWORK_SPEC
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -2369,7 +2369,7 @@ void FormworkSpec::vTokenAccept(void)
   m_p_Scanner->vTokenAccept();
 }
 
-#endif // WITH_PIPELINE_SECTION
+#endif // WITH_FORMWORK_SPEC
 
 /*============================================================================*/
 /* end                                                                        */

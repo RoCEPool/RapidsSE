@@ -10,7 +10,7 @@
 namespace STORE { class Dynamo;
                   class StageSpec; class OpSpec; class SubPipelines; }
 
-#ifdef WITH_PIPELINE_SECTION
+#ifdef WITH_FORMWORK_SPEC
 
 namespace STORE
 {
@@ -275,7 +275,7 @@ namespace STORE
   PipelineSpec* _pPipelineSpec(void* aAddr);
 }
 
-#endif // WITH_PIPELINE_SECTION
+#endif // WITH_FORMWORK_SPEC
 
 /*============================================================================*/
 /* end                                                                        */

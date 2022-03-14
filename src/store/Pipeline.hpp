@@ -7,7 +7,7 @@
 
 namespace STORE { class Stage; class PipelineSpec; }
 
-#ifdef WITH_PIPELINE_SECTION
+#ifdef WITH_FORMWORK
 
 namespace STORE
 {
@@ -180,7 +180,7 @@ namespace STORE
   Pipeline* _pPipeline(void* aAddr);
 }
 
-#endif // WITH_PIPELINE_SECTION
+#endif // WITH_FORMWORK
 
 /*============================================================================*/
 /* end                                                                        */

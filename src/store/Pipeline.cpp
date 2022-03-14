@@ -27,7 +27,7 @@ __vDeleteFunction(Pipeline,CN_PIPELINE)
 __aFooterFunction(Pipeline)
 
 
-#ifdef WITH_PIPELINE_SECTION
+#ifdef WITH_FORMWORK
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -912,7 +912,7 @@ void Pipeline::vWalkLambda(
   }
 }
 
-#endif // WITH_PIPELINE_SECTION
+#endif // WITH_FORMWORK
 
 /*============================================================================*/
 /* end                                                                        */
