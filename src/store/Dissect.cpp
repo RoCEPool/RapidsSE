@@ -25,6 +25,7 @@ Dissect::Dissect(Optimiser* pOptimiser)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
         
   m_pOptimiser    = pOptimiser;
+  m_pBench        = nullptr;
   m_pBoard        = nullptr;
   
   m_pPipelineSpec = nullptr;
