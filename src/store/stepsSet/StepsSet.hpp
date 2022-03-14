@@ -2095,6 +2095,7 @@ void vStreamSetNextRow(void);
   void vTagSetAppendStr(void);
   void vTagSetAsStr(void);
   void vTagSetCopy(void);
+  void vTagSetGet(void);
   void vTagSetGetInt(void);
   void vTagSetGetStr(void);
   void vTagSetHasName(void);
@@ -2102,9 +2103,9 @@ void vStreamSetNextRow(void);
   void vTagSetInsertStr(void);
   void vTagSetReplaceInt(void);
   void vTagSetReplaceStr(void);
+  void vTagSetSet(void);
   void vTagSetUpsertStr(void);
   void vTagSetNew(void);
-
 
   // task
   void vTaskAck(void);
