@@ -9,8 +9,9 @@
 /*                               ON ORIGIN                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
+
 /*----------------------------------------------------------------------------*/
-/* launch of a distributed pipeline on originating node                       */
+/* launch a distributed pipeline on originating node                          */
 /*----------------------------------------------------------------------------*/
 : pipeline::origin ( -- <R> )
 
@@ -22,7 +23,7 @@
 
   job[].tscBeginning
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-check
   
   "<preCheck>" Job[].tagSet@ tagSet.hasName if
@@ -50,16 +51,13 @@
   then
 
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // become an originator
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
+  //                           become an originator                           //
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // add this job to originator job list
   Job[].addOriginator
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compile pipeline statement on origin to check its syntax
-    
   "<show_command>" sysargs::tagSet@ tagSet.hasName
   if
     //<cmd> "pipeline::origin: %v\n" .printf
@@ -70,6 +68,9 @@
   then
 
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compile pipeline statement on origin to check its syntax
+    
   Dynamo[].new
 
   <cmd> Dynamo[].compile to ErrorCode[]
@@ -77,7 +78,7 @@
   ErrorCode[] EC_NONE == if
     // + clean compile
     to PipelineSpec[]
-    PipelineSpec[].delete
+    // PipelineSpec[].delete
   else
     // - didnt compile
     ErrorCode[] Job[].error!
@@ -87,9 +88,10 @@
   Dynamo[].delete
 
   // cross check
-  PipelineSpec[] not assert
+  //PipelineSpec[] not assert
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test if distributed job may execute
   
   Job[].error@ not if
@@ -101,13 +103,17 @@
   then
   
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test if optimising
+  
   Job[].error@ not if
     Job[].tagSet@ to TagSet[]
     
     
-    "<optimise>" TagSet[] tagSet.hasName if
+    "<optimise>" TagSet[] tagSet.hasName
+    PipelineSpec[].optimisable
+    and
+    if
       "Would Optimise" .
       <cmd> .
     then
@@ -122,9 +128,22 @@
     Optimiser[].delete
   then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the participants of this job and execute them
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tidy up
+  
+  PipelineSpec[] if
+    PipelineSpec[].delete
+  then
+  
+  //Dynamo[]       not assert
+  //Optimiser[]    not assert
+  PipelineSpec[] not assert
+
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
+  //           distribute participants of this job and execute them           //
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   Job[].error@ not if
     // + compiled without error..
@@ -145,10 +164,11 @@
     Task[].wait
   then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // we're back as the originator
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
+  //                      we're back as the originator                        //
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
+
   Job[].removeOriginator
   
   session::hasCascade@ not
@@ -208,7 +228,7 @@
   grid::thisNode@ Job[].participantNode!
 
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
 
 
@@ -222,7 +242,7 @@
 
   Dynamo[].delete
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
   
   Pipeline[].create

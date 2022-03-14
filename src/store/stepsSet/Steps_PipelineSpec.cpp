@@ -37,7 +37,7 @@ void Step::vAddSteps_PipelineSpec(void)
   vAddStep("PipelineSpec[].delete"_Stz,       &Step::vPipelineSpecDelete);
   vAddStep("PipelineSpec[].get"_Stz,          &Step::vPipelineSpecGet);
   vAddStep("PipelineSpec[].optimisable"_Stz,  &Step::vPipelineSpecOptimisable);
-  vAddStep("PipelineSpec[].set"_Stz,           &Step::vPipelineSpecSet);
+  vAddStep("PipelineSpec[].set"_Stz,          &Step::vPipelineSpecSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,30 @@ void Step::vPipelineSpecOptimisable(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(false);
+  bool bOptimisable = false;
+  
+  PipelineSpec* pPipelineSpec = (* m_p_TaskLogicUnit->m_xpPipelineSpec);
+  
+  
+  
+  Job* pJob = MY::pJob();
+  
+  Stz* szPipelineNm = pPipelineSpec->szPipelineNm();
+  
+  i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
+
+  if (   ! iOptimiserLvl
+      || ! pJob->bIsOriginator()
+      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
+      || ! pPipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
+      ||   pPipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
+      )
+    bOptimisable = false;
+  else
+    bOptimisable = true;
+  
+  
+  m_pDataStack->vPushInt(bOptimisable);
 
   EXIT();
 }
