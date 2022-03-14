@@ -171,6 +171,7 @@ LogicUnit::LogicUnit(void)
 
 ,          m_xpTable(this,RF_SET_NULL,     nullptr,                 LR_TABLE)
 ,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                 LR_TABLEPTN)
+,         m_xpTagSet(this,RF_REPAIR_DELETE,TagSet::vRepair,         LR_TAGSET)
 ,          m_xpTimer(this,RF_REPAIR_DELETE,Timer::vRepair,          LR_TIMER)
 ,          m_xpTinyC(this,RF_REPAIR_DELETE,TinyC::vRepair,          LR_TINYC)
 ,       m_xpToBktCrw(this,RF_REPAIR_DELETE,ToBktCrw::vRepairHashSet,LR_TOBKTCRW)

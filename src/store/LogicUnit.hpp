@@ -250,6 +250,7 @@ namespace STORE
 
     REG<Table,          CN_TABLE         > m_xpTable;
     REG<TablePtn,       CN_TABLEPTN      > m_xpTablePtn;
+    REG<TagSet,         CN_TAGSET        > m_xpTagSet;
     REG<Timer,          CN_TIMER         > m_xpTimer;
     REG<TinyC,          CN_TINYC         > m_xpTinyC;
     REG<ToBktCrw,       CN_TOBKTCRW      > m_xpToBktCrw;

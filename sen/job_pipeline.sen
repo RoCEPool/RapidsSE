@@ -100,6 +100,19 @@
     then
   then
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test if optimising
+  Job[].error@ not if
+    Optimiser[].new
+    
+//    PipelineSpec[] Optimiser[].dissect
+//    Optimiser[].optimise
+//    Optimiser[].weave discard
+
+    Optimiser[].delete
+  then
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute the participants of this job and execute them
   

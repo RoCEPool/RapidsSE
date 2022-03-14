@@ -35,6 +35,8 @@ namespace BASE
     TagSet(void);
    ~TagSet() noexcept(false);
   
+    static void vRepair(Object* pObject);
+
     void vAppend(Stz* szName);
     void vAppend(Stz* szName, i8 iValue);
     void vAppend(Stz* szName, Object* pObject);
