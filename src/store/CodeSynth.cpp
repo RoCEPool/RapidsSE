@@ -3408,10 +3408,20 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
 
   switch (ePreExp) {
     case PE_ALL:
-      // push col on both stacks
-      sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
-      pExprStack->vPushStr(sOperation);
-      pPostStack->vPushStr(sOperation);
+      if (eExprKind == EK_AGGGBY) {
+        // push col on both stacks
+        sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_Col);
+        pExprStack->vPushStr(sOperation);
+        pPostStack->vPushStr(sOperation);
+      }
+      else {
+        RASSERT(eExprKind == EK_AGGREG ||
+                eExprKind == EK_AGGORD);
+        // push col on both stacks
+        sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
+        pExprStack->vPushStr(sOperation);
+        pPostStack->vPushStr(sOperation);
+      }
 
       sOperation.vSprint("_INC_INT(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStr(sOperation);
