@@ -236,6 +236,7 @@
 #include "SectionSpec.hpp"
 #include "Section.hpp"
 #include "FormworkSpec.hpp"
+#include "Formwork.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -351,6 +352,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Flatten), /*yes*/    HT_T_TINY    ,0 FILL }, // CN_FLATTEN
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 FILL }, // CN_FLTVAL
   { sizeof(Format),             HT_T_TINY    ,0 FILL }, // CN_FORMAT
+  { sizeof(Formwork),           HT_T_MEDIUM  ,0 FILL }, // CN_FORMWORK
   { sizeof(FormworkSpec),       HT_T_MEDIUM  ,0 FILL }, // CN_FORMWORKSPEC
   { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 FILL }, // CN_FREEBUFFER
   { sizeof(FreeChunk),          HT_INVALID   ,0 FILL }, // CN_FREECHUNK
