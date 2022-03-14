@@ -33,23 +33,13 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dynamo(void)
 {
-  vAddStep("Dynamo[].delete"_Stz,   &Step::vDynamoDelete);
+  vAddStep("Dynamo[]"_Stz,          &Step::vDynamoGet);
   vAddStep("Dynamo[].compile"_Stz,  &Step::vDynamoCompile);
+  vAddStep("Dynamo[].delete"_Stz,   &Step::vDynamoDelete);
+  vAddStep("Dynamo[].get"_Stz,      &Step::vDynamoGet);
   vAddStep("Dynamo[].new"_Stz,      &Step::vDynamoNew);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* Dynamo[].delete -- delete dynamo                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vDynamoDelete(void)
-{
-  ENTRY();
-
-  m_p_TaskLogicUnit->m_xpDynamo.vDeleteComponent();
-
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* Dynamo[].compile -- compile pipeline statement into a pipeline spec        */
@@ -76,6 +66,33 @@ void Step::vDynamoCompile(void)
   else {
     m_pDataStack->vPushInt(EC_INVALID_COMMAND);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Dynamo[].delete -- delete dynamo                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoDelete(void)
+{
+  ENTRY();
+
+  m_p_TaskLogicUnit->m_xpDynamo.vDeleteComponent();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Dynamo[].get -- get dynamo                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoGet(void)
+{
+  ENTRY();
+
+  if (m_p_TaskLogicUnit->m_xpDynamo.bIsNotNull())
+    m_pDataStack->vPushPtr(* m_p_TaskLogicUnit->m_xpDynamo);
+  else
+    m_pDataStack->vPushPtr(nullptr);
   
   EXIT();
 }

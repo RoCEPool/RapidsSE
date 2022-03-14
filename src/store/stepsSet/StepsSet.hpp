@@ -392,8 +392,9 @@ public:
   void vDstackSwap(void);
   void vDstackTuck(void);
 
-  void vDynamoDelete(void);
   void vDynamoCompile(void);
+  void vDynamoDelete(void);
+  void vDynamoGet(void);
   void vDynamoNew(void);
 
   // encode
@@ -1265,9 +1266,10 @@ public:
 
   // optimiser
   void vOptimiserDelete(void);
+  void vOptimiserDissect(void);
+  void vOptimiserGet(void);
   void vOptimiserOptimise(void);
   void vOptimiserNew(void);
-  void vOptimiserDissect(void);
   void vOptimiserWeave(void);
 
   // operand

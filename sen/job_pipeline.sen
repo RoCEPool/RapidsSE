@@ -136,8 +136,8 @@
     PipelineSpec[].delete
   then
   
-  //Dynamo[]       not assert
-  //Optimiser[]    not assert
+  Dynamo[]       not assert
+  Optimiser[]    not assert
   PipelineSpec[] not assert
 
 

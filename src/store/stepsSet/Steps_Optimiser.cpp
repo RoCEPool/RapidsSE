@@ -18,8 +18,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Optimiser(void)
 {
+  vAddStep("Optimiser[]"_Stz,              &Step::vOptimiserGet);
   vAddStep("Optimiser[].delete"_Stz ,      &Step::vOptimiserDelete);
   vAddStep("Optimiser[].dissect"_Stz,      &Step::vOptimiserDissect);
+  vAddStep("Optimiser[].get"_Stz,          &Step::vOptimiserGet);
   vAddStep("Optimiser[].new"_Stz,          &Step::vOptimiserNew);
   vAddStep("Optimiser[].optimise"_Stz,     &Step::vOptimiserOptimise);
   vAddStep("Optimiser[].weave"_Stz,        &Step::vOptimiserWeave);
@@ -50,6 +52,21 @@ void Step::vOptimiserDissect(void)
 
   m_p_TaskLogicUnit->m_xpOptimiser->vDissect(pUnOptPlineSpec);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Optimiser[].get -- get optimiser                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vOptimiserGet(void)
+{
+  ENTRY();
+
+  if (m_p_TaskLogicUnit->m_xpOptimiser.bIsNotNull())
+    m_pDataStack->vPushPtr(* m_p_TaskLogicUnit->m_xpOptimiser);
+  else
+    m_pDataStack->vPushPtr(nullptr);
+  
   EXIT();
 }
 
