@@ -291,7 +291,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute pipeline job                                                       */
+/* execute pipeline job on participant node                                   */
 /*----------------------------------------------------------------------------*/
 : pipeline::execute ( -- )
 
@@ -299,17 +299,17 @@
   
   Task[].job@ Job[] equal assert
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // this job is executing
+  
   JP_EXECUTING Job[].phase!
 
-  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // set task's dictionary stack from path in job
-
   <path> str.toStrVec Path[].set
   //task::dump
 
+  // acquire ddl lock
   job::acquireDdlLock
-
-  // : pipeline::execute ( -- )
   
   Job[].assertCorrectness
 
@@ -332,13 +332,11 @@
     then
   then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab the task lock
-  
-  Task[].grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
+  
+  Task[].grabLock
   
   //<pipelineNm> "%v execute" .printf
   Pipeline::enqueueStart not if
@@ -351,14 +349,26 @@
 
   then
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // this job has executed
+  
   JP_EXECUTED Job[].phase!
   
+  // what to execute next
   "pipeline::end" Job[].entry!
 
   DdlLock[].testDrop
   JobRef[].assertNone
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reply to originator
   Job[] executed::replyToOrigin
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete current task (but not this job)
   
   Task[].grabLock
   
