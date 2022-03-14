@@ -1,5 +1,5 @@
 Basic.test
-//AggregExpr.test
+AggregExpr.test
 //FilterAggreg.test
 FilterProject.test
 FilterJoin.test

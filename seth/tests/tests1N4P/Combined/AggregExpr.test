@@ -63,36 +63,39 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan lineitem
-     | aggreg 2 " type INTEGER as COL0 L_PARTKEY ,
+     | aggreg 2 " groupby type INTEGER L_PARTKEY
+                  aggregates
+                  type INTEGER as COL0 L_PARTKEY ,
                   type INTEGER as COL1 L_PARTKEY 11 + ,
                   type INTEGER as COL2 12 L_PARTKEY + ,
                   type INTEGER as COL3 ) L_ORDERKEY sum ,
                   type INTEGER as COL4 ) L_ORDERKEY 13 + sum ,
                   type INTEGER as COL5 ) L_ORDERKEY sum ,
-                  type INTEGER as COL6 ) countall
-         groupby type INTEGER L_PARTKEY"
+                  type INTEGER as COL6 ) countall"
      | combined 0
      | next
-   stage stageA on all partitions :
-      aggreg 2 " type INTEGER as COL0 COL0 ,
+   stage stageB on all nodes :
+      aggreg 2 " groupby type INTEGER COL0
+                 aggregates
+                 type INTEGER as COL0 COL0 ,
                  type INTEGER as COL1 COL1 ,
                  type INTEGER as COL2 COL2 ,
                  type INTEGER as COL3 ) COL3 sum ,
                  type INTEGER as COL4 ) COL4 sum ,
                  type INTEGER as COL5 ) COL5 sum ,
-                 type INTEGER as COL6 ) COL6 sum
-          groupby type INTEGER COL0"
+                 type INTEGER as COL6 ) COL6 sum"
       | combined 0
       | next
-   stage stageA on origin :
-       aggreg 2 " type INTEGER as COL0 COL0 ,
-                    type INTEGER as COL1 COL1 ,
-                    type INTEGER as COL2 COL2 ,
-                    type INTEGER as COL3 ) COL3 sum ,
-                    type INTEGER as COL4 ) COL4 sum ,
-                    type INTEGER as COL5 ) COL5 sum 14 + ,
-                    type INTEGER as COL6 ) COL6 sum 2 +
-         groupby type INTEGER COL0"
+   stage stageC on origin :
+       aggreg 2 " groupby type INTEGER COL0
+                  aggregates
+                  type INTEGER as COL0 COL0 ,
+                  type INTEGER as COL1 COL1 ,
+                  type INTEGER as COL2 COL2 ,
+                  type INTEGER as COL3 ) COL3 sum ,
+                  type INTEGER as COL4 ) COL4 sum ,
+                  type INTEGER as COL5 ) COL5 sum 14 + ,
+                  type INTEGER as COL6 ) COL6 sum 2 +"
        | combined 0
        | next
    stage stageLast on origin :
@@ -110,36 +113,39 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan lineitem
-     | aggreg 2 " type INTEGER as COL0 L_PARTKEY ,
+     | aggreg 2 " groupby type INTEGER L_PARTKEY
+                  aggregates
+                  type INTEGER as COL0 $K1 ,
                   type INTEGER as COL1 L_PARTKEY 11 + ,
                   type INTEGER as COL2 12 L_PARTKEY + ,
                   type INTEGER as COL3 ) L_ORDERKEY sum ,
                   type INTEGER as COL4 ) L_ORDERKEY 13 + sum ,
                   type INTEGER as COL5 ) L_ORDERKEY sum ,
-                  type INTEGER as COL6 ) L_ORDERKEY sum
-         groupby type INTEGER L_PARTKEY"
+                  type INTEGER as COL6 ) L_ORDERKEY sum"
      | combined 0
      | next
-   stage stageA on all nodes :
-      aggreg 2 " type INTEGER as COL0 COL0 ,
+   stage stageB on all nodes :
+      aggreg 2 " groupby type INTEGER COL0
+                 aggregates
+                 type INTEGER as COL0 $K1 ,
                  type INTEGER as COL1 COL1 ,
                  type INTEGER as COL2 COL2 ,
                  type INTEGER as COL3 ) COL3 sum ,
                  type INTEGER as COL4 ) COL4 sum ,
                  type INTEGER as COL5 ) COL5 sum ,
-                 type INTEGER as COL6 ) COL5 sum
-          groupby type INTEGER COL0"
+                 type INTEGER as COL6 ) COL5 sum"
       | combined 0
       | next
-   stage stageA on origin :
-       aggreg 2 " type INTEGER as COL0 COL0 ,
-                    type INTEGER as COL1 COL1 ,
-                    type INTEGER as COL2 COL2 ,
-                    type INTEGER as COL3 ) COL3 sum ,
-                    type INTEGER as COL4 ) COL4 sum ,
-                    type INTEGER as COL5 ) COL5 sum 14 + ,
-                    type INTEGER as COL6 14 ) COL6 sum +
-         groupby type INTEGER COL0"
+   stage stageC on origin :
+       aggreg 2 " groupby type INTEGER COL0
+                  aggregates
+                  type INTEGER as COL0 $K1 ,
+                  type INTEGER as COL1 COL1 ,
+                  type INTEGER as COL2 COL2 ,
+                  type INTEGER as COL3 ) COL3 sum ,
+                  type INTEGER as COL4 ) COL4 sum ,
+                  type INTEGER as COL5 ) COL5 sum 14 + ,
+                  type INTEGER as COL6 14 ) COL6 sum + "
        | combined 0
        | next
    stage stageLast on origin :
