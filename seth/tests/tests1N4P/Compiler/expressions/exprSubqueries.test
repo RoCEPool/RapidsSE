@@ -1825,7 +1825,7 @@ unordered rows: (*,'explainPlan','
          » column: (Expr = e.salary ; Ordinal Expr = $8)
          » column: (Alias = avg_salary_in_department ; Expr = __subquery0004(e.department_id) ; Ordinal Expr = __subquery0004($10))
 
--> -> -> -> nestedLoopJoinOp
+-> -> -> -> abstractJoinOp
             » join type: Inner Join
             » predicate: (d.department_id = e.department_id)
             » ordinal predicate: ($11 = $10)

@@ -20,6 +20,7 @@
 #include "StringList.hpp"
 #include "NullLiteral.hpp"
 
+#include "AbstractJoinOp.hpp"
 #include "NestedLoopJoinOp.hpp"
 #include "HashJoinOp.hpp"
 #include "SortMergeJoinOp.hpp"
@@ -89,7 +90,8 @@ void JoinOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   ASSERT(bIsOfType(pNode));
 
   // Manual polymorphism here
-  if      ( NestedLoopJoinOp::bIsOfType(pNode))   {  NestedLoopJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
+  if      (   AbstractJoinOp::bIsOfType(pNode))   {    AbstractJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
+  else if ( NestedLoopJoinOp::bIsOfType(pNode))   {  NestedLoopJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
   else if (       HashJoinOp::bIsOfType(pNode))   {        HashJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
   else if (  SortMergeJoinOp::bIsOfType(pNode))   {   SortMergeJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
   else if (IndexLookupJoinOp::bIsOfType(pNode))   { IndexLookupJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
@@ -107,7 +109,8 @@ void JoinOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainN
   ASSERT(bIsOfType(pNode));
 
   // Manual polymorphism here
-  if      ( NestedLoopJoinOp::bIsOfType(pNode))   {  NestedLoopJoinOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);  }
+  if      (   AbstractJoinOp::bIsOfType(pNode))   {    AbstractJoinOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);  }
+  else if ( NestedLoopJoinOp::bIsOfType(pNode))   {  NestedLoopJoinOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);  }
   else if (       HashJoinOp::bIsOfType(pNode))   {        HashJoinOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);  }
   else if (  SortMergeJoinOp::bIsOfType(pNode))   {   SortMergeJoinOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);  }
   else if (IndexLookupJoinOp::bIsOfType(pNode))   { IndexLookupJoinOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);  }
@@ -175,7 +178,8 @@ void JoinOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pEx
   }
 
   // Manual polymorphism here
-  if      ( NestedLoopJoinOp::bIsOfType(pNode))   {  NestedLoopJoinOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }
+  if      (   AbstractJoinOp::bIsOfType(pNode))   {    AbstractJoinOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }
+  else if ( NestedLoopJoinOp::bIsOfType(pNode))   {  NestedLoopJoinOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }
   else if (       HashJoinOp::bIsOfType(pNode))   {        HashJoinOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }
   else if (  SortMergeJoinOp::bIsOfType(pNode))   {   SortMergeJoinOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }
   else if (IndexLookupJoinOp::bIsOfType(pNode))   { IndexLookupJoinOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }

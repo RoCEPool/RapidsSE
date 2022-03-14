@@ -738,6 +738,17 @@
                         }
                       ],
                       children: [
+
+// Path: /__root__/definitions/object/planObject/sqlOperator/joinOp/abstractJoinOp
+                        {
+                          name: "abstractJoinOp",
+                          value: "A basic (and largely inefficient) join algorithm that uses two nested loops"
+                        },
+// ********************************************************************************************************************
+// NOTE: The join sub-types presented below are now no longer used as the Optimiser is now
+//       taking care of determining the right sort of join to run. However, we are keeping
+//       this code here for now in case it is useful in the future.
+// ********************************************************************************************************************
 // Path: /__root__/definitions/object/planObject/sqlOperator/joinOp/nestedLoopJoinOp
                         {
                           name: "nestedLoopJoinOp",
@@ -767,6 +778,7 @@
                         }
                       ]
                     }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/joinOp
+// ********************************************************************************************************************
 
 // Path: /__root__/definitions/object/planObject/sqlOperator/orderOp
                     {

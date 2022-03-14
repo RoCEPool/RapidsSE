@@ -937,7 +937,7 @@ unordered rows:
       » column: (Expr = __subquery0005.R_NAME ; Ordinal Expr = $6)
       » column: (Expr = __subquery0005.R_COMMENT ; Ordinal Expr = $7)
 
--> -> -> nestedLoopJoinOp
+-> -> -> abstractJoinOp
          » location: all partitions
          » join type: Inner Join
          » predicate: (__subquery0003.n_regionkey = __subquery0005.r_regionkey)
@@ -1343,7 +1343,7 @@ unordered rows:
          » column: (Expr = t1.N_REGIONKEY ; Ordinal Expr = $6)
          » column: (Expr = t1.N_COMMENT ; Ordinal Expr = $7)
 
--> -> -> -> nestedLoopJoinOp
+-> -> -> -> abstractJoinOp
             » location: all partitions
             » join type: Inner Join
             » predicate: (t1.n_regionkey = rapidsse.public.region.r_regionkey)
@@ -1610,7 +1610,7 @@ unordered rows:
       » column: (Expr = t20.R_NAME ; Ordinal Expr = $6)
       » column: (Expr = t20.R_COMMENT ; Ordinal Expr = $7)
 
--> -> -> nestedLoopJoinOp
+-> -> -> abstractJoinOp
          » location: all partitions
          » join type: Cross Join
          » predicate: (true)
@@ -1687,7 +1687,7 @@ unordered rows:
          » column: (Expr = t11.R_NAME ; Ordinal Expr = $6)
          » column: (Expr = t11.R_COMMENT ; Ordinal Expr = $7)
 
--> -> -> -> nestedLoopJoinOp
+-> -> -> -> abstractJoinOp
             » location: all partitions
             » join type: Cross Join
             » predicate: (true)
@@ -1746,7 +1746,7 @@ unordered rows:
          » column: (Expr = t21.N_REGIONKEY ; Ordinal Expr = $6)
          » column: (Expr = t21.N_COMMENT ; Ordinal Expr = $7)
 
--> -> -> -> nestedLoopJoinOp
+-> -> -> -> abstractJoinOp
             » location: all partitions
             » join type: Inner Join
             » predicate: (rapidsse.public.region.r_regionkey = t21.n_regionkey)
@@ -1785,7 +1785,7 @@ unordered rows:
       » column: (Expr = t20.N_REGIONKEY ; Ordinal Expr = $13)
       » column: (Expr = t20.N_COMMENT ; Ordinal Expr = $14)
 
--> -> -> nestedLoopJoinOp
+-> -> -> abstractJoinOp
          » location: all partitions
          » join type: Cross Join
          » predicate: (true)
@@ -1887,7 +1887,7 @@ unordered rows:
          » column: (Expr = t12.N_REGIONKEY ; Ordinal Expr = $6)
          » column: (Expr = t12.N_COMMENT ; Ordinal Expr = $7)
 
--> -> -> -> nestedLoopJoinOp
+-> -> -> -> abstractJoinOp
             » location: all partitions
             » join type: Cross Join
             » predicate: (true)
@@ -1969,7 +1969,7 @@ unordered rows:
          » column: (Expr = t22.R_NAME ; Ordinal Expr = $6)
          » column: (Expr = t22.R_COMMENT ; Ordinal Expr = $7)
 
--> -> -> -> nestedLoopJoinOp
+-> -> -> -> abstractJoinOp
             » location: all partitions
             » join type: Inner Join
             » predicate: (t22.r_regionkey = t21.n_regionkey)
@@ -2010,7 +2010,7 @@ unordered rows:
       » column: (Expr = t20.R_NAME ; Ordinal Expr = $13)
       » column: (Expr = t20.R_COMMENT ; Ordinal Expr = $14)
 
--> -> -> nestedLoopJoinOp
+-> -> -> abstractJoinOp
          » location: all partitions
          » join type: Cross Join
          » predicate: (true)
@@ -2124,7 +2124,7 @@ unordered rows:
          » column: (Expr = t3.R_NAME ; Ordinal Expr = $6)
          » column: (Expr = t3.R_COMMENT ; Ordinal Expr = $7)
 
--> -> -> -> nestedLoopJoinOp
+-> -> -> -> abstractJoinOp
             » join type: Inner Join
             » predicate: (t2.n_regionkey = t3.r_regionkey)
             » ordinal predicate: ($3 = $5)
@@ -2235,7 +2235,7 @@ unordered rows:
          » column: (Expr = t2.N_COMMENT ; Ordinal Expr = $4)
          » column: (Expr = t3.r_regionkey ; Ordinal Expr = $5)
 
--> -> -> -> nestedLoopJoinOp
+-> -> -> -> abstractJoinOp
             » join type: Inner Join
             » predicate: (t2.n_regionkey = t3.r_regionkey)
             » ordinal predicate: ($3 = $5)
@@ -2365,7 +2365,7 @@ unordered rows:
          » column: (Expr = t3.R_NAME ; Ordinal Expr = $6)
          » column: (Expr = t3.R_COMMENT ; Ordinal Expr = $7)
 
--> -> -> -> nestedLoopJoinOp
+-> -> -> -> abstractJoinOp
             » join type: Inner Join
             » predicate: (t2.n_regionkey = t3.r_regionkey)
             » ordinal predicate: ($3 = $5)
@@ -2520,7 +2520,7 @@ unordered rows:
          » column: (Expr = t3.R_NAME ; Ordinal Expr = $6)
          » column: (Expr = t3.R_COMMENT ; Ordinal Expr = $7)
 
--> -> -> -> nestedLoopJoinOp
+-> -> -> -> abstractJoinOp
             » join type: Inner Join
             » predicate: (t2.n_regionkey = t3.r_regionkey)
             » ordinal predicate: ($3 = $5)
