@@ -1025,7 +1025,7 @@
               </value>
             </objProp>
             <stringProp name="TestPlan.comments">This exists only to write error messages, should one eventuate.</stringProp>
-            <stringProp name="filename">nationGroup.csv</stringProp>
+            <stringProp name="filename">nationGroupErrors.csv</stringProp>
           </ResultCollector>
           <hashTree/>
         </hashTree>
