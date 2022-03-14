@@ -31,9 +31,9 @@ void Step::vAddSteps_TagSet(void)
   vAddStep("tagSet.replaceStr"_Stz, &Step::vTagSetReplaceStr);
   vAddStep("tagSet.upsertStr"_Stz,  &Step::vTagSetUpsertStr);
   
-  vAddStep("tagSet[]"_Stz,          &Step::vErrorCodeGet);
-  vAddStep("tagSet[].get"_Stz,      &Step::vErrorCodeGet);
-  vAddStep("tagSet[].set"_Stz,      &Step::vErrorCodeSet);
+  vAddStep("tagSet[]"_Stz,          &Step::vTagSetGet);
+  vAddStep("tagSet[].get"_Stz,      &Step::vTagSetGet);
+  vAddStep("tagSet[].set"_Stz,      &Step::vTagSetSet);
 
 
 }

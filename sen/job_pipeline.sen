@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline::origin ( -- <R> )
 
-  // "pipeline::origin" .
+  //"pipeline::origin" .
   
   Task[].job@ Job[] equal assert
   
@@ -104,6 +104,15 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test if optimising
   Job[].error@ not if
+    Job[].tagSet@ to TagSet[]
+    
+    
+    "<optimise>" TagSet[] tagSet.hasName if
+      "Would Optimise" .
+      <cmd> .
+    then
+
+    
     Optimiser[].new
     
 //    PipelineSpec[] Optimiser[].dissect
