@@ -1,6 +1,6 @@
 Basic.test
 AggregExpr.test
-//FilterAggreg.test
+FilterAggreg.test
 FilterProject.test
 FilterJoin.test
 //IndexJoin.test
