@@ -33,10 +33,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_PipelineSpec(void)
 {
-  vAddStep("PipelineSpec[]"_Stz,          &Step::vPipelineSpecGet);
-  vAddStep("PipelineSpec[].delete"_Stz,   &Step::vPipelineSpecDelete);
-  vAddStep("PipelineSpec[].get"_Stz,      &Step::vPipelineSpecGet);
-  vAddStep("PipelineSpec[].set"_Stz,      &Step::vPipelineSpecSet);
+  vAddStep("PipelineSpec[]"_Stz,              &Step::vPipelineSpecGet);
+  vAddStep("PipelineSpec[].delete"_Stz,       &Step::vPipelineSpecDelete);
+  vAddStep("PipelineSpec[].get"_Stz,          &Step::vPipelineSpecGet);
+  vAddStep("PipelineSpec[].optimisable"_Stz,  &Step::vPipelineSpecOptimisable);
+  vAddStep("PipelineSpec[].set"_Stz,           &Step::vPipelineSpecSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,6 +72,18 @@ void Step::vPipelineSpecGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* PipelineSpec[].optimisable -- is p.spec optimisable / to be optimised?     */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineSpecOptimisable(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* PipelineSpec[].set -- set pipelineSpec                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineSpecSet(void)
@@ -82,7 +95,6 @@ void Step::vPipelineSpecSet(void)
   
   EXIT();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

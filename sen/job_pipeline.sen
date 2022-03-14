@@ -52,10 +52,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // become an originator
-  
-//       1         2         3
-//34567890123456789012345678901234567890
-  Job[].addOriginator             // add this job to originator job list
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // add this job to originator job list
+  Job[].addOriginator
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile pipeline statement on origin to check its syntax
@@ -124,7 +124,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute the participants of this job and execute them
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Job[].error@ not if
     // + compiled without error..
     
@@ -146,6 +147,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we're back as the originator
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Job[].removeOriginator
   

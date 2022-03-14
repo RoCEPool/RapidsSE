@@ -1353,6 +1353,7 @@ public:
 
   void vPipelineSpecDelete(void);
   void vPipelineSpecGet(void);
+  void vPipelineSpecOptimisable(void);
   void vPipelineSpecSet(void);
 
 
