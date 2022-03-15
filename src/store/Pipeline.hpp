@@ -19,8 +19,10 @@ namespace STORE
 
     // -- id, name and kind
     Gid_t<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
-    s32              m_sPipelineNm;  // name of this pipeline
-    // n/a                           // kind
+    s32  m_sPipelineNm;  // name of this pipeline
+
+    // -- substructure
+    Formwork* m_pFormWork; // formwork of this pipeline
 
     // -- belongs to
     Job* m_pPipelineJob;  // which job
@@ -29,6 +31,8 @@ namespace STORE
     PipelineSpec* m_pPipelineSpec; // specification of this pipeline
   
     i8   m_i_Origin;    // originating node
+  
+
   
     // -- -- -- -- -- --
 
@@ -84,7 +88,7 @@ namespace STORE
             std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
 
   private:
-    void vCreateStages();
+    void vCreateFormwork();
 
     Footer* aFooter(void);
   };

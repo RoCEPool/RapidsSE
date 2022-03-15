@@ -23,8 +23,9 @@ namespace STORE
     // n/a                           // kind
 
     // -- belongs to
-    Job* m_pFormworkJob;  // which job
-  
+    Job* m_pFormworkJob;   // which job
+    Pipeline* m_pPipeline; // which pipeline
+
     // -- refers to
     FormworkSpec* m_pFormworkSpec; // specification of this pipeline
   
@@ -84,7 +85,7 @@ namespace STORE
             std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
 
   private:
-    void vCreateStages();
+    void vCreateFormwork();
 
     Footer* aFooter(void);
   };

@@ -41,6 +41,7 @@ Formwork::Formwork(Job* pFormworkJob, FormworkSpec* pFormworkSpec, i8 i_Origin)
   m_sFormworkNm   = pFormworkSpec->szFormworkNm();
   
   m_pFormworkJob  = pFormworkJob;
+  m_pPipeline     = nullptr;
   m_pFormworkSpec = pFormworkSpec;
   m_i_Origin      = i_Origin;
 
@@ -58,7 +59,7 @@ Formwork::Formwork(Job* pFormworkJob, FormworkSpec* pFormworkSpec, i8 i_Origin)
 
   _checkInitialised_(CN_FORMWORK);
   
-  vCreateStages();
+  vCreateFormwork();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
 }
@@ -155,26 +156,6 @@ void Formwork::vDropDebugLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
   
   m_okDebugLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* create the stages of this pipeline                                         */
-/*----------------------------------------------------------------------------*/
-void Formwork::vCreateStages(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
-
-  i8 nStages = m_pFormworkSpec->nItems();
-  for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
-    
-    // get the stageSpec
-    StageSpec* pStageSpec = m_pFormworkSpec->pStageSpec(i_StageSpec);
-    
-    // add a stage from the stageSpec to the stageVec
-    Stage* pStage = new Stage(pStageSpec, this);
-    vAppend(pStage);
-    pStage->vCreateStreams();
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -467,6 +448,31 @@ void Formwork::vWalkLambda(
     pStage->vWalkLambda(iDepth+1,f_vClosure);
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create the formwork for pipeline                                           */
+/*----------------------------------------------------------------------------*/
+void Formwork::vCreateFormwork(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+
+  i8 nStages = m_pFormworkSpec->nItems();
+  for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
+    
+    // get the stageSpec
+    StageSpec* pStageSpec = m_pFormworkSpec->pStageSpec(i_StageSpec);
+    
+    // add a stage from the stageSpec to the stageVec
+    Stage* pStage = new Stage(pStageSpec, this);
+    vAppend(pStage);
+    pStage->vCreateStreams();
+  }
+}
+
 
 // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
