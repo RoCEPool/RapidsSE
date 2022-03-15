@@ -104,9 +104,9 @@ void Dissect::vPipeline(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  i8 nStageSpecs = m_pPipelineSpec->nItems();
+  i8 nStageSpecs = m_pPipelineSpec->nStages();
   for (i8 i_StageSpec = 1; i_StageSpec < nStageSpecs - 1; i_StageSpec++) {
-    m_pStageSpec = m_pPipelineSpec->pGet(i_StageSpec);
+    m_pStageSpec = m_pPipelineSpec->pStageSpec(i_StageSpec);
     
     vStage(i_StageSpec);
   }

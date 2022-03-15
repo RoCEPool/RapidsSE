@@ -36,13 +36,12 @@ __aFooterFunction(PipelineSpec)
 /*----------------------------------------------------------------------------*/
 PipelineSpec::PipelineSpec(Scanner *p_Scanner, TagSet *p_JobTags)
     
-: ListNL_t<StageSpec>(CN_PIPELINESPEC)
+: Object(CN_PIPELINESPEC)
 , LifeGuard_t<PipelineSpec>(this, CN_PIPELINESPEC)
 
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  //m_sPipelineNm   = "(unknown)"_Stz;
   m_pFormworkSpec = new FormworkSpec(p_Scanner,p_JobTags,this);
   m_pSubPipelines = nullptr;
   
@@ -62,12 +61,6 @@ PipelineSpec::PipelineSpec(Scanner *p_Scanner, TagSet *p_JobTags)
 PipelineSpec::~PipelineSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
-
-  while (StageSpec *pStageSpec = pPop())
-    pStageSpec->vGuardedDelete(CN_STAGESPEC, &pStageSpec,
-                               CN_PIPELINESPEC, this, (Stz *) __func__);
-
-  vClear();
   
   if (m_pSubPipelines) {
     
@@ -78,7 +71,8 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
   }
   
   
-  delete m_pFormworkSpec;
+  m_pFormworkSpec->vGuardedDelete(CN_FORMWORKSPEC,&m_pFormworkSpec,
+                                  CN_PIPELINESPEC,this,(Stz*)__func__);;
 }
 
 
@@ -124,13 +118,25 @@ Stz* PipelineSpec::szPipelineNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* number of stages                                                           */
+/*----------------------------------------------------------------------------*/
+i8 PipelineSpec::nStages(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
+
+  i8 nStages = m_pFormworkSpec->nItems();
+  
+  return nStages;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* PipelineSpec::pStageSpec(i8 i_Stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  StageSpec *pStageSpec = pGet(i_Stage);
+  StageSpec *pStageSpec = m_pFormworkSpec->pGet(i_Stage);
 
   return pStageSpec;
 }
@@ -281,6 +287,18 @@ Stz* PipelineSpec::szPipelineNm(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   return m_sPipelineNm.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* number of stages                                                           */
+/*----------------------------------------------------------------------------*/
+i8 PipelineSpec::nStages(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
+
+  i8 nStages = this->nItems();
+  
+  return nStages;
 }
 
 /*----------------------------------------------------------------------------*/

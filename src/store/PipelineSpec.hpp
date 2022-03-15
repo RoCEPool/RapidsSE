@@ -16,7 +16,7 @@ namespace STORE { class Dynamo;
 namespace STORE
 {
   class PipelineSpec
-          : public ListNL_t<StageSpec>
+          : public Object
           , public LifeGuard_t<PipelineSpec>
           , public ListItem_t<PipelineSpec>
   {
@@ -24,8 +24,6 @@ namespace STORE
 
   private:
   
-    //s32  m_sPipelineNm;    // pipeline name
-
     FormworkSpec* m_pFormworkSpec;
 
     SubPipelines* m_pSubPipelines;
@@ -48,6 +46,7 @@ namespace STORE
     bool bCompile(void);
     TagSet* pJobTags(void);
     Stz* szPipelineNm(void);
+    i8 nStages(void);
     StageSpec* pStageSpec(i8 i_Stage);
     SubPipelines* pSubPipelines(void);
 
@@ -98,6 +97,7 @@ namespace STORE
     bool bCompile(void);
     TagSet* pJobTags(void);
     Stz* szPipelineNm(void);
+    i8 nStages(void);
     StageSpec* pStageSpec(i8 i_Stage);
     SubPipelines* pSubPipelines(void);
 

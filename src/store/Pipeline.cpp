@@ -608,7 +608,7 @@ void Pipeline::vCreateStages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  i8 nStages = m_pPipelineSpec->nItems();
+  i8 nStages = m_pPipelineSpec->nStages();
   for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
     
     // get the stageSpec

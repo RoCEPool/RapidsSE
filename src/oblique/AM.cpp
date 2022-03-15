@@ -316,6 +316,18 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     {;}
 
   // -- -- -- -- -- -- -- -- -- -- -- --
+  // formwork spec
+
+  else if (CN_FORMWORKSPEC == eInstance) {
+    if (bTrace)
+      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+
+    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC,  "~PipelineSpec"_Stz)
+            );
+  }
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
   // freeChunk
   
   else if (CN_FREECHUNK == eInstance) {
@@ -467,7 +479,16 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
+#ifdef WITH_FORMWORK_SPEC
+
+    RASSERT( bDELETE_RULE(CN_FORMWORKSPEC, "~FormworkSpec"_Stz) );
+
+#else
+    
     RASSERT( bDELETE_RULE(CN_PIPELINESPEC, "~PipelineSpec"_Stz) );
+    
+#endif
+    
   }
   
 

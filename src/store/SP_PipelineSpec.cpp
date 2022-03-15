@@ -75,7 +75,7 @@ void SP_PipelineSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
 //  vCats(iDepth,
 //        "begin\n"_Stz);
   
-  for (i8 i_Stage = 0; i_Stage < pPipelineSpec->nItems(); i_Stage++) {
+  for (i8 i_Stage = 0; i_Stage < pPipelineSpec->nStages(); i_Stage++) {
     StageSpec* pStageSpec = pPipelineSpec->pStageSpec(i_Stage);
     vCatf(iDepth,
           "  %s"_Stz,spStageSpec.sz(pStageSpec));

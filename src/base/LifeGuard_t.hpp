@@ -99,11 +99,20 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
     {;}
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // formwork
+
+  else if (CN_FORMWORKSPEC == m_eInstance) {
+    if (m_bTrace && bTrace)
+      vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
+             ,aCN[m_eInstance],m_eInstance,m_pInstance);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // logic unit
 
   else if (CN_LOGICUNIT == m_eInstance) {
     if (m_bTrace && bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz
+      vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
              ,aCN[m_eInstance],m_eInstance,m_pInstance);
   }
 
@@ -112,7 +121,7 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
 
   else if (CN_JOB == m_eInstance) {
     if (m_bTrace && bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz
+      vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
              ,aCN[m_eInstance],m_eInstance,m_pInstance);
   }
 
@@ -121,7 +130,7 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
   
   else if (CN_OP == m_eInstance) {
     if (m_bTrace && bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz
+      vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
              ,aCN[m_eInstance],m_eInstance,m_pInstance);
   }
 
@@ -130,7 +139,7 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
   
   else if (CN_OPSPEC == m_eInstance) {
     if (m_bTrace && bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz
+      vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
              ,aCN[m_eInstance],m_eInstance,m_pInstance);
   }
   
@@ -139,7 +148,7 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
 
   else if (CN_PIPELINE == m_eInstance) {
     if (m_bTrace && bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz
+      vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
              ,aCN[m_eInstance],m_eInstance,m_pInstance);
   }
   
@@ -148,7 +157,7 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
     
   else if (CN_PIPELINESPEC == m_eInstance) {
     if (m_bTrace && bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz
+      vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
              ,aCN[m_eInstance],m_eInstance,m_pInstance);
   }
 
@@ -157,7 +166,7 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
   
   else if (CN_STAGE == m_eInstance) {
     if (m_bTrace && bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz
+      vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
              ,aCN[m_eInstance],m_eInstance,m_pInstance);
   }
 
@@ -166,7 +175,7 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
   
   else if (CN_STAGESPEC == m_eInstance) {
     if (m_bTrace && bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz
+      vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
              ,aCN[m_eInstance],m_eInstance,m_pInstance);
   }
   
@@ -176,7 +185,7 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
 
   else if (CN_TASK == m_eInstance) {
     if (m_bTrace && bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz
+      vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
              ,aCN[m_eInstance],m_eInstance,m_pInstance);
   }
 
@@ -185,7 +194,7 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
   
   else if (CN_STREAM == m_eInstance) {
     if (m_bTrace && bTrace)
-      vTrace("new %12s:%-3lld %p\n"_Stz
+      vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
              ,aCN[m_eInstance],m_eInstance,m_pInstance);
   }
 
@@ -193,7 +202,7 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
   // huh???
   
   else {
-    vTrace("new %12s:%-3lld %p\n"_Stz,"(unknown)"_Stz
+    vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz,"(unknown)"_Stz
            ,m_pInstance);
   }
 
