@@ -23,14 +23,15 @@ __aFooterFunction(StageSpec)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StageSpec::StageSpec(Stz* szStageNm,
-                     PipelineSpec* pPipelineSpec)
+                     FormworkSpec* pFormworkSpec)
 : ListNL_t<OpSpec>(CN_STAGESPEC)
 , LifeGuard_t<StageSpec>(this,CN_STAGESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_sStageNm        = szStageNm;
-  m_pPipelineSpec   = pPipelineSpec;
+  m_pPipelineSpec   = nullptr;
+  m_pFormworkSpec   = pFormworkSpec;
 
   m_eStageTopology  = YG_NONE;
   m_eStreamTopology = YS_NONE;

@@ -329,7 +329,7 @@ bool PipelineSpec::bCollectStage(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Stz *szStageNm = pTkn()->szChars();
-  StageSpec *p_StageSpec = new StageSpec(szStageNm, this);
+  StageSpec *p_StageSpec = new StageSpec(szStageNm, nullptr); //this);
   vTokenAccept();
 
   this->vAddStageSpec(p_StageSpec);

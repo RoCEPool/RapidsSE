@@ -11,6 +11,8 @@
 #include "OpSpec.hpp"
 #include "LifeGuard_t.hpp"
 
+namespace STORE { class FormworkSpec; }
+
 #ifdef WITH_FORMWORK_SPEC
 
 namespace STORE
@@ -25,6 +27,7 @@ namespace STORE
     s32  m_sStageNm;    // stage name
 
     PipelineSpec* m_pPipelineSpec; // which pipeline spec
+    FormworkSpec* m_pFormworkSpec; // which formwork spec
 
     eYG  m_eStageTopology;  // stage topoplogy
     eYS  m_eStreamTopology; // stream topoplogy
@@ -43,7 +46,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StageSpec(Stz* szStageNm, PipelineSpec* pPipelineSpec);
+    StageSpec(Stz* szStageNm, FormworkSpec* pFormworkSpec);
    ~StageSpec(void) noexcept(false);
    
     static eYX eCrossTopoCalc(StageSpec* pFromStageSpec,
