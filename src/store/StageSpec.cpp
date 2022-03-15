@@ -19,7 +19,7 @@ __vDeleteFunction(StageSpec,CN_STAGESPEC)
 __aFooterFunction(StageSpec)
 
 
-#ifdef WITH_FORMWORK_SPEC
+#ifdef WITH_FORMWORK
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -550,14 +550,14 @@ void StageSpec::vToPipeStr(Stz* szPipeStr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StageSpec::StageSpec(Stz* szStageNm,
-                     PipelineSpec* pPipelineSpec)
+                     FormworkSpec* pFormworkSpec)
 : ListNL_t<OpSpec>(CN_STAGESPEC)
 , LifeGuard_t<StageSpec>(this,CN_STAGESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_sStageNm        = szStageNm;
-  m_pPipelineSpec   = pPipelineSpec;
+  m_pFormworkSpec   = pFormworkSpec;
 
   m_eStageTopology  = YG_NONE;
   m_eStreamTopology = YS_NONE;
@@ -903,12 +903,12 @@ void StageSpec::vParcelForward(eYF eParcelForward)
 /*----------------------------------------------------------------------------*/
 /* get i_Stage                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec* StageSpec::pPipelineSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  return m_pPipelineSpec;
-}
+//PipelineSpec* StageSpec::pPipelineSpec(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+//
+//  return m_pFormworkSpec->pPipelineSpec();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get specific node                                                          */
@@ -967,7 +967,7 @@ i8 StageSpec::i_StageSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  i8 i_StageSpec = m_pPipelineSpec->iFind(this);
+  i8 i_StageSpec = m_pFormworkSpec->iFind(this);
   
   return i_StageSpec;
 }
@@ -1066,7 +1066,7 @@ void StageSpec::vToPipeStr(Stz* szPipeStr)
 
 }
 
-#endif // WITH_FORMWORK_SPEC
+#endif // WITH_FORMWORK
 
 /*============================================================================*/
 /* end                                                                        */

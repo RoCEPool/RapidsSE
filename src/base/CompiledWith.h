@@ -101,7 +101,7 @@
 
 //#define WITH_PIPELINE_SECTION EndDefine       //
 //#define WITH_FORMWORK EndDefine       //
-#define WITH_FORMWORK_SPEC EndDefine       //
+//#define WITH_FORMWORK EndDefine       //
 
 /*============================================================================*/
 /* end                                                                        */

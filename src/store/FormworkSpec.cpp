@@ -28,7 +28,7 @@ __vDeleteFunction(FormworkSpec, CN_FORMWORKSPEC)
 __aFooterFunction(FormworkSpec)
 
 
-#ifdef WITH_FORMWORK_SPEC
+#ifdef WITH_FORMWORK
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -1207,7 +1207,8 @@ void FormworkSpec::vTokenAccept(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FormworkSpec::FormworkSpec(Scanner *p_Scanner, TagSet *p_JobTags)
+FormworkSpec::FormworkSpec(Scanner *p_Scanner, TagSet *p_JobTags,
+                           PipelineSpec* pPipelineSpec)
     
 : ListNL_t<StageSpec>(CN_FORMWORKSPEC)
 , LifeGuard_t<FormworkSpec>(this, CN_FORMWORKSPEC)
@@ -1216,6 +1217,7 @@ FormworkSpec::FormworkSpec(Scanner *p_Scanner, TagSet *p_JobTags)
   _precondition_(_ADDRESS_, _MAGIC_, CN_FORMWORKSPEC, _FOOTER_);
 
   m_sPipelineNm   = "(unknown)"_Stz;
+  m_pPipelineSpec = pPipelineSpec;
   m_pSubPipelines = nullptr;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1501,7 +1503,7 @@ bool FormworkSpec::bCollectStage(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Stz *szStageNm = pTkn()->szChars();
-  StageSpec *p_StageSpec = new StageSpec(szStageNm,nullptr);//  this);
+  StageSpec *p_StageSpec = new StageSpec(szStageNm, this);
   vTokenAccept();
 
   this->vAddStageSpec(p_StageSpec);
@@ -2293,7 +2295,7 @@ bool FormworkSpec::bPass3_include(Stz *szIncludePipNm)
 
   Dynamo *pDynamo = new Dynamo(pWrdTagSet);
 
-  PipelineSpec *pIncludePipelineSpec = pDynamo->pCompile(sPipelineSmt);
+  PipelineSpec *pIncludePipelineSpec = pDynamo->pCompile(sPipelineSmt.szStz());
 
   delete pDynamo;
 
@@ -2371,7 +2373,7 @@ void FormworkSpec::vTokenAccept(void)
   m_p_Scanner->vTokenAccept();
 }
 
-#endif // WITH_FORMWORK_SPEC
+#endif // WITH_FORMWORK
 
 /*============================================================================*/
 /* end                                                                        */

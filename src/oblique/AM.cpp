@@ -416,22 +416,11 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
-
-#ifdef WITH_FORMWORK_SPEC
     
     RASSERT(   bDELETE_RULE(CN_FORMWORKSPEC, "vFirstSend"_Stz)
             || bDELETE_RULE(CN_FORMWORKSPEC, "vOtherSend"_Stz)
             || bDELETE_RULE(CN_STAGESPEC,    "~StageSpec"_Stz)
             );
-
-#else
-    
-    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC, "vFirstSend"_Stz)
-            || bDELETE_RULE(CN_PIPELINESPEC, "vOtherSend"_Stz)
-            || bDELETE_RULE(CN_STAGESPEC,    "~StageSpec"_Stz)
-            );
-#endif
-    
   }
   
   // -- -- -- -- -- -- -- -- -- -- -- --
@@ -479,19 +468,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
-#ifdef WITH_FORMWORK_SPEC
-
     RASSERT( bDELETE_RULE(CN_FORMWORKSPEC, "~FormworkSpec"_Stz) );
-
-#else
-    
-    RASSERT( bDELETE_RULE(CN_PIPELINESPEC, "~PipelineSpec"_Stz) );
-    
-#endif
-    
   }
   
-
   // -- -- -- -- -- -- -- -- -- -- -- --
   // stream
   
