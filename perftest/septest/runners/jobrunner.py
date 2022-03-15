@@ -26,6 +26,8 @@ C_EC2_BOOT_TIMEOUT_SEC = 300
 # The format specification for the artifact directory for each test result
 C_TEST_ARTIFACT_FMT = "tid{:02d}-{}"
 
+C_JUNIT_FILENAME = "results.xml"
+
 
 class JobRunner:
     """Coordinates and runs a job, specified by a job config file"""
@@ -208,6 +210,7 @@ class JobRunner:
         continue_on_test_failure = self.all_configs.get_job().get_continue_on_test_failure()
         skip_remaining_tests = False
         test_seq = 0
+        got_failures = False
 
         for (test_path, test_id) in self.test_tuples:
             test_seq += 1
@@ -226,10 +229,25 @@ class JobRunner:
             test_result = test_runner.result
             self.test_results.append(test_result)
 
-            if not continue_on_test_failure and test_result.test_passed is False:
-                skip_remaining_tests = True
+            if test_result.test_passed is False:
+                got_failures = True
 
-        LOG.info("Completed execution of all tests.")
+                if continue_on_test_failure is False:
+                    skip_remaining_tests = True
+
+                # If RapidsSE is no longer running then we need to skip all remaining tests
+                # and log this.
+                (se_running, error_msg) = clusterops.is_rapidsse_running(self.ip_addresses[0],
+                                                                         self.all_configs.cluster_config)
+                if se_running is False:
+                    # We can't run any more tests
+                    skip_remaining_tests = True
+                    LOG.error(error_msg)
+
+        if got_failures:
+            LOG.info("Completed execution of tests, with failures.")
+        else:
+            LOG.info("Completed execution of all tests successfully.")
 
     def __skip_test(self, test_path: string, test_id: int):
         # Create a test_result for this skipped test and add it to the result list
@@ -307,4 +325,9 @@ class JobRunner:
         """Record the results of the test into the database and prepare the result files for Bamboo"""
         septest.db.jobend.record_job_results(self.job_result_id, job_timed_out, self.test_results)
 
-        # TODO: prepare result files for Bamboo
+        # Write JUnit result files for Bamboo
+        result_path = pathlib.Path(self.result_path) / C_JUNIT_FILENAME
+        septest.results.summarise_to_junit(self.test_results, result_path)
+
+        # Write out a textual summary too
+        LOG.info(septest.results.summarise_to_string(self.test_results))

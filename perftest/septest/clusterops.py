@@ -17,6 +17,7 @@ C_GENERAL_SSH_TIMEOUT_SEC = 60
 C_CLUSTER_START_CMD = "startSE.sh"
 C_CLUSTER_PROMPT_CMD = "prompt.sh"
 C_CLUSTER_COLLECT_LOGS_CMD = "collectLogs.sh"
+C_CLUSTER_STATUS_CMD = "status.sh"
 
 C_JDBC_DRIVER_DIR = pathlib.Path("../seth/bin")
 C_JDBC_DRIVER_GLOB = "rapidsse-jdbc-*.*.*.jar"
@@ -356,3 +357,30 @@ def get_rapidsse_logs(host: string, cluster_cfg: ClusterConfig, dest_path: strin
               f"\nStdout Output:\n{e.stdout}" \
               f"\nStderr Output:\n{e.stderr}"
         raise errors.ClusterError(msg) from e
+
+
+def is_rapidsse_running(host: string, cluster_cfg: ClusterConfig) -> (bool, string):
+    """
+    Returns a tuple containing a boolean result of whether RapidsSE is running
+    and a string with an error message if it is not.
+    e.g. (True, None) if SE is running, (False, "some_error_msg") if SE is not running.
+    """
+
+    command = f"{cluster_cfg.get_dir()}/{C_CLUSTER_STATUS_CMD}"
+
+    try:
+        ssh.run_ssh(host, command, 30)
+
+    except subprocess.CalledProcessError as e:
+        msg = f"The RapidsSE cluster is not running." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        return False, msg
+
+    except subprocess.TimeoutExpired as e:
+        msg = f"The RapidsSE cluster may not be running as the status check timed out after {e.timeout} seconds." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        return False, msg
+
+    return True, None
