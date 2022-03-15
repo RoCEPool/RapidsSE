@@ -5,8 +5,10 @@
 #include "BASE.h"
 
 #include "OpSpec.hpp"
-#include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
+#include "FormworkSpec.hpp"
+#include "PipelineSpec.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -30,7 +32,6 @@ StageSpec::StageSpec(Stz* szStageNm,
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_sStageNm        = szStageNm;
-  m_pPipelineSpec   = nullptr;
   m_pFormworkSpec   = pFormworkSpec;
 
   m_eStageTopology  = YG_NONE;
@@ -377,12 +378,12 @@ void StageSpec::vParcelForward(eYF eParcelForward)
 /*----------------------------------------------------------------------------*/
 /* get i_Stage                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec* StageSpec::pPipelineSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  return m_pPipelineSpec;
-}
+//PipelineSpec* StageSpec::pPipelineSpec(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+//
+//  return m_pFormworkSpec->pPipelineSpec();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get specific node                                                          */
@@ -441,7 +442,7 @@ i8 StageSpec::i_StageSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  i8 i_StageSpec = m_pPipelineSpec->iFind(this);
+  i8 i_StageSpec = m_pFormworkSpec->iFind(this);
   
   return i_StageSpec;
 }

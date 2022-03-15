@@ -26,7 +26,6 @@ namespace STORE
   private:
     s32  m_sStageNm;    // stage name
 
-    PipelineSpec* m_pPipelineSpec; // which pipeline spec
     FormworkSpec* m_pFormworkSpec; // which formwork spec
 
     eYG  m_eStageTopology;  // stage topoplogy
