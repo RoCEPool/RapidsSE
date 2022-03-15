@@ -43,7 +43,7 @@ PipelineSpec::PipelineSpec(Scanner *p_Scanner, TagSet *p_JobTags)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   m_sPipelineNm   = "(unknown)"_Stz;
-  m_pFormworkSpec = nullptr;
+  m_pFormworkSpec = new FormworkSpec(p_Scanner,p_JobTags,this);
   m_pSubPipelines = nullptr;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,6 +76,9 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
     
     delete m_pSubPipelines;
   }
+  
+  
+  delete m_pFormworkSpec;
 }
 
 

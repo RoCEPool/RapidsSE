@@ -42,20 +42,21 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    PipelineSpec(Scanner* p_Scanner, TagSet* p_JobTags);
+    PipelineSpec(Scanner* p_Scanner, TagSet* p_JobTags); 
    ~PipelineSpec(void) noexcept(false);
   
     bool bCompile(void);
-  
-    void vAddStageSpec(StageSpec* pStageSpec);
-    StageSpec* pFindStageSpec(Stz* szFindNm);
     TagSet* pJobTags(void);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
     SubPipelines* pSubPipelines(void);
 
+  private:
+    void vAddStageSpec(StageSpec* pStageSpec);
+    StageSpec* pFindStageSpec(Stz* szFindNm);
+
     Footer* aFooter(void);
-  
+
   
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -180,13 +181,14 @@ namespace STORE
    ~PipelineSpec(void) noexcept(false);
   
     bool bCompile(void);
-  
-    void vAddStageSpec(StageSpec* pStageSpec);
-    StageSpec* pFindStageSpec(Stz* szFindNm);
     TagSet* pJobTags(void);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
     SubPipelines* pSubPipelines(void);
+
+  private:
+    void vAddStageSpec(StageSpec* pStageSpec);
+    StageSpec* pFindStageSpec(Stz* szFindNm);
 
     Footer* aFooter(void);
   
