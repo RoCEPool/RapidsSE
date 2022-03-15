@@ -33,7 +33,8 @@ __aFooterFunction(FormworkSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FormworkSpec::FormworkSpec(Scanner *p_Scanner, TagSet *p_JobTags)
+FormworkSpec::FormworkSpec(Scanner *p_Scanner, TagSet *p_JobTags,
+                           PipelineSpec* pPipelineSpec)
     
 : ListNL_t<StageSpec>(CN_FORMWORKSPEC)
 , LifeGuard_t<FormworkSpec>(this, CN_FORMWORKSPEC)
@@ -42,6 +43,7 @@ FormworkSpec::FormworkSpec(Scanner *p_Scanner, TagSet *p_JobTags)
   _precondition_(_ADDRESS_, _MAGIC_, CN_FORMWORKSPEC, _FOOTER_);
 
   m_sPipelineNm   = "(unknown)"_Stz;
+  m_pPipelineSpec = pPipelineSpec;
   m_pSubPipelines = nullptr;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,9 +71,9 @@ FormworkSpec::~FormworkSpec(void) noexcept(false)
   
   if (m_pSubPipelines) {
     
-    while (FormworkSpec *pSubFormworkSpec = m_pSubPipelines->pPop())
-      delete pSubFormworkSpec;
-    
+    while (PipelineSpec *pSubPipelineSpec = m_pSubPipelines->pPop())
+      delete pSubPipelineSpec;
+
     delete m_pSubPipelines;
   }
 }
@@ -298,17 +300,17 @@ bool FormworkSpec::bCollectSubPipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_FORMWORKSPEC, _FOOTER_);
 
-  FormworkSpec* pSubFormworkSpec = new FormworkSpec(m_p_Scanner,m_p_JobTags);
+  PipelineSpec* pSubPipelineSpec = new PipelineSpec(m_p_Scanner,m_p_JobTags);
 
-  if (! pSubFormworkSpec->bCompile()) {
-    delete pSubFormworkSpec;
+  if (! pSubPipelineSpec->bCompile()) {
+    delete pSubPipelineSpec;
     return false;
   }
   
   if (! m_pSubPipelines)
     m_pSubPipelines = new SubPipelines;
 
-  m_pSubPipelines->vAppend(pSubFormworkSpec);
+  m_pSubPipelines->vAppend(pSubPipelineSpec);
 
   return true;
 }
@@ -1117,9 +1119,9 @@ bool FormworkSpec::bPass3_include(Stz *szIncludePipNm)
   TagSet *pWrdTagSet = pwMatchedProc->pWrdTagSet();
   pWrdTagSet->vDumpSet();
 
-  Dynamo *pDynamo = new Dynamo(sPipelineSmt.szStz(), pWrdTagSet);
+  Dynamo *pDynamo = new Dynamo(pWrdTagSet);
 
-  FormworkSpec *pIncludeFormworkSpec = pDynamo->pCompile();
+  PipelineSpec *pIncludePipelineSpec = pDynamo->pCompile(sPipelineSmt.szStz());
 
   delete pDynamo;
 

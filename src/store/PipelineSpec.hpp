@@ -8,7 +8,8 @@
 
 
 namespace STORE { class Dynamo;
-                  class StageSpec; class OpSpec; class SubPipelines; }
+                  class FormworkSpec; class StageSpec; class OpSpec;
+                  class SubPipelines; }
 
 #ifdef WITH_FORMWORK_SPEC
 
@@ -24,7 +25,9 @@ namespace STORE
   private:
   
     s32  m_sPipelineNm;    // pipeline name
-    
+
+    FormworkSpec* m_pFormworkSpec;
+
     SubPipelines* m_pSubPipelines;
   
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

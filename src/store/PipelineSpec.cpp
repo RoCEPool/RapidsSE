@@ -6,6 +6,7 @@
 
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
+#include "FormworkSpec.hpp"
 #include "PipelineSpec.hpp"
 #include "SubPipelines.hpp"
 #include "Dynamo.hpp"
@@ -42,6 +43,7 @@ PipelineSpec::PipelineSpec(Scanner *p_Scanner, TagSet *p_JobTags)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   m_sPipelineNm   = "(unknown)"_Stz;
+  m_pFormworkSpec = nullptr;
   m_pSubPipelines = nullptr;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1117,9 +1119,9 @@ bool PipelineSpec::bPass3_include(Stz *szIncludePipNm)
   TagSet *pWrdTagSet = pwMatchedProc->pWrdTagSet();
   pWrdTagSet->vDumpSet();
 
-  Dynamo *pDynamo = new Dynamo(sPipelineSmt.szStz(), pWrdTagSet);
+  Dynamo *pDynamo = new Dynamo(pWrdTagSet);
 
-  PipelineSpec *pIncludePipelineSpec = pDynamo->pCompile();
+  PipelineSpec *pIncludePipelineSpec = pDynamo->pCompile(sPipelineSmt.szStz());
 
   delete pDynamo;
 

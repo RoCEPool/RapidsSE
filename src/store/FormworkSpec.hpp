@@ -25,6 +25,8 @@ namespace STORE
   
     s32  m_sPipelineNm;    // pipeline name
     
+    PipelineSpec* m_pPipelineSpec; // which pipeline spec
+
     SubPipelines* m_pSubPipelines;
   
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -39,7 +41,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    FormworkSpec(Scanner* p_Scanner, TagSet* p_JobTags);
+    FormworkSpec(Scanner* p_Scanner, TagSet* p_JobTags,
+                 PipelineSpec* pPipelineSpec);
    ~FormworkSpec(void) noexcept(false);
   
     bool bCompile(void);
