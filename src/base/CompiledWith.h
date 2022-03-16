@@ -100,7 +100,7 @@
 #define WITH_OPT_HASHCAST EndDefine       //
 
 //#define WITH_PIPELINE_SECTION EndDefine       //
-//#define WITH_FORMWORK EndDefine       //
+#define WITH_FORMWORK EndDefine       //
 
 /*============================================================================*/
 /* end                                                                        */

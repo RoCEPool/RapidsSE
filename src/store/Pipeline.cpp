@@ -34,7 +34,8 @@ __aFooterFunction(Pipeline)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
-: LifeGuard_t<Pipeline>(this,CN_PIPELINE)
+: Object(CN_PIPELINE)
+, LifeGuard_t<Pipeline>(this,CN_PIPELINE)
 , m_okDebugLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
@@ -61,7 +62,8 @@ Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
 
   _checkInitialised_(CN_PIPELINE);
   
-  vCreateFormwork();
+  m_pFormWork = new Formwork(this,pPipelineSpec->pFormworkSpec());
+  //vCreateFormwork();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 }
@@ -73,16 +75,9 @@ Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  i8 nStages = this->nItems();
-  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pGet(i_Stage);
-    
-    pStage->vGuardedDelete(CN_STAGE,&pStage,
-                           CN_PIPELINE,this,(Stz*)__func__);
-  }
-
-  vClear();
-
+  m_pFormWork->vGuardedDelete(CN_FORMWORK,&m_pFormWork,
+                              CN_PIPELINE,this,(Stz*)__func__);
+  
   m_pPipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&m_pPipelineSpec,
                                   CN_PIPELINE,this,(Stz*)__func__);
 }
@@ -118,13 +113,9 @@ bool Pipeline::bCancel(Task* pTriggeringTask)
   if (m_bPulsed)
     return false;
   
-  // get the first stage of the pipeline
-  Stage* pStage = pGet(0);
+  bool bCancelled = m_pFormWork->bCancel(pTriggeringTask);
   
-  // send cancelMarker to the start Op of the first stage of the pipeline
-  pStage->vCancelPipeline(pTriggeringTask);
-  
-  return true;
+  return bCancelled;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,6 +192,16 @@ bool Pipeline::bErrored(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get formwork                                                               */
+/*----------------------------------------------------------------------------*/
+Formwork* Pipeline::pFormwork(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  return m_pFormWork;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get accumumlator                                                           */
 /*----------------------------------------------------------------------------*/
 i8 Pipeline::iGetAccum(i8 i_Accum)
@@ -269,7 +270,7 @@ i8 Pipeline::nOpsOnNode(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  i8 nOps = = m_pFormWork->nOpsOnNode(iNode);
+  i8 nOps = m_pFormWork->nOpsOnNode(iNode);
     
   return nOps;
 }
@@ -361,40 +362,7 @@ void Pipeline::vSetupJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Stage* pStage = pGet(0);
-  
-  i8 nDivs = pStage->nItems();
-  for (i8 i_Stream = 0; i_Stream < nDivs; i_Stream++) {
-    Stream* pStream = pStage->pGet(i_Stream);
-
-    i8 nOps = pStream->nItems();
-    for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-      Op* pOp = pStream->pGet(i_Op);
-      
-      if (pOp->szOpNm()->bSame("limitOp"_Stz)) {
-        m_bPulsedLimit = true;
-        break;
-      }
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  for (i8 i_Stream = 0; i_Stream < nDivs; i_Stream++) {
-    Stream* pStream = pStage->pGet(i_Stream);
-
-    i8 nOps = pStream->nItems();
-    for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-      Op* pOp = pStream->pGet(i_Op);
-
-      if (pOp->szOpNm()->bSame("scan"_Stz)) {
-        m_pOpToPulse = pOp;
-        pOp->vPulsedLimit(true);
-        break;
-      }
-    }
-  }
-  
+  m_pFormWork->vSetupJob();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,18 +371,8 @@ void Pipeline::vSetupJob(void)
 void Pipeline::vSpawnOpTasks(i8 iSessionId, i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-  
-  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
-    
-    Stage* pStage = pGet(i_Stage);
-    
-    for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
-      Stream* pStream = pStage->pGet(i_Stream);
 
-      pStream->vSpawnOpTasks(iSessionId, iNode);
-    }
-  }
-  
+  m_pFormWork->vSpawnOpTasks(iSessionId,iNode);
 }
 
 /*----------------------------------------------------------------------------*/

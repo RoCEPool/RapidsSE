@@ -1019,7 +1019,8 @@ Stage* Op::pNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Stage* pNextStage = m_p_Pipeline_op->pGet(iNextStage());
+  Formwork* pFormwork = m_p_Pipeline_op->pFormwork();
+  Stage* pNextStage = pFormwork->pGet(iNextStage());
   
   return pNextStage;
 }
@@ -1285,7 +1286,9 @@ Stage* Op::pOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Stage* pOtherStage = m_p_Pipeline_op->pGet(iOtherStage());
+  Formwork* pFormWork = m_p_Pipeline_op->pFormwork();
+  
+  Stage* pOtherStage = pFormWork->pGet(iOtherStage());
   
   return pOtherStage;
 }
@@ -1410,7 +1413,8 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
     
   // get the next stage the send is supposed to send to
-  Stage* pDstStage = m_p_Pipeline_op->pGet(iNextStage());
+  Formwork* pFormWork = m_p_Pipeline_op->pFormwork();
+  Stage* pDstStage = pFormWork->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
   

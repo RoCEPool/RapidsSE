@@ -14,6 +14,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
+#include "Formwork.hpp"
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
 #include "Job.hpp"
@@ -182,7 +183,8 @@ void Step::vPipelineEnqueueStart(void)
     AM::vSetAcksRmg(m_pJob_task->pJobTask(),nOps);
   
     // get the first stage of the pipeline
-    Stage* pStage = pPipeline->pGet(0);
+    Formwork* pFormWork = pPipeline->pFormwork();
+    Stage* pStage = pFormWork->pGet(0);
     
     // send startMarker to the start Op of the first stage of the pipeline
     if (pStage->bStartPipeline()) {
@@ -391,8 +393,9 @@ void Step::vPipelinePipeout(void)
   // move to AM
 
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-  
-  Stage*    pStage0   = pPipeline->pGet(0);
+  Formwork* pFormWork = pPipeline->pFormwork();
+
+  Stage*    pStage0   = pFormWork->pGet(0);
   Stream*   pStand0   = pStage0->pGet(0);
   Op*       pOp0      = pStand0->pGet(0);
 

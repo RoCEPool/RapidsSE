@@ -65,8 +65,8 @@ Formwork::~Formwork(void) noexcept(false)
 
   vClear();
 
-  m_pFormworkSpec->vGuardedDelete(CN_FORMWORKSPEC,&m_pFormworkSpec,
-                                  CN_FORMWORK,this,(Stz*)__func__);
+//  m_pFormworkSpec->vGuardedDelete(CN_FORMWORKSPEC,&m_pFormworkSpec,
+//                                  CN_FORMWORK,this,(Stz*)__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,9 +123,11 @@ i8 Formwork::nOpsOnNode(i8 iNode)
   
   i8 nOps = 0;
   
+  i8 i_Origin = m_pPipeline->i_Origin();
+  
   for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
     Stage* pStage = pGet(i_Stage);
-    nOps += pStage->nOpsOnNode(iNode,m_i_Origin);
+    nOps += pStage->nOpsOnNode(iNode,i_Origin);
   }
   
   return nOps;

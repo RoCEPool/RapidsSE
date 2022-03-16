@@ -101,6 +101,15 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // formwork
 
+  else if (CN_FORMWORK == m_eInstance) {
+    if (m_bTrace && bTrace)
+      vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
+             ,aCN[m_eInstance],m_eInstance,m_pInstance);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // formworkSpec
+
   else if (CN_FORMWORKSPEC == m_eInstance) {
     if (m_bTrace && bTrace)
       vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz

@@ -5,6 +5,7 @@
 #include "Discern.hpp"
 
 #include "Pipeline.hpp"
+#include "Formwork.hpp"
 #include "Stage.hpp"
 #include "Stream.hpp"
 #include "Op.hpp"
@@ -22,9 +23,12 @@ i8 Discern::nRdCsvChunk(Pipeline* pPipeline)
   
   i8 nSumQueued = 0;
   
-  i8 nStages = pPipeline->nItems();
+  Formwork* pFormwork = pPipeline->pFormwork();
+
+  
+  i8 nStages = pFormwork->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pPipeline->pGet(i_Stage);
+    Stage* pStage = pFormwork->pGet(i_Stage);
     
     i8 nStreams = pStage->nItems();
     for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {

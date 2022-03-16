@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "Pipeline.hpp"
+#include "Formwork.hpp"
 #include "Grid.hpp"
 
 #include "SP_Formwork.hpp"
@@ -69,8 +70,9 @@ void SP_Formwork::vPipeline(Pipeline* pPipeline, bool bDescend)
         );
   
   if (bDescend) {
-    for (i8 i_Stage = 0; i_Stage < pPipeline->nItems(); i_Stage++ ) {
-      Stage* pStage = pPipeline->pGet(i_Stage);
+    Formwork* pFormWork = pPipeline->pFormwork();
+    for (i8 i_Stage = 0; i_Stage < pFormWork->nItems(); i_Stage++ ) {
+      Stage* pStage = pFormWork->pGet(i_Stage);
       SP_Stage spStage(pStage,true);
       vCatf("%s"_Stz,spStage.sz());
     }

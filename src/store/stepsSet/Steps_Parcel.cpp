@@ -17,6 +17,7 @@
 #include "Stage.hpp"
 #include "StageSpec.hpp"
 #include "Stream.hpp"
+#include "Formwork.hpp"
 #include "PtnMap.hpp"
 #include "Node.hpp"
 #include "Pipeline.hpp"
@@ -87,10 +88,10 @@ void Step::vParcelDemonOut(void)
   // move to AM
   
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-  
-  Stage*    pStage0   = pPipeline->pGet(0);
-  Stream*   pStand0   = pStage0->pGet(0);
-  Op*       pOp0      = pStand0->pGet(0);
+  Formwork* pFormwork = pPipeline->pFormwork();
+  Stage*    pStage0   = pFormwork->pGet(0);
+  Stream*   pStream0  = pStage0->pGet(0);
+  Op*       pOp0      = pStream0->pGet(0);
 
   pOp0->vAppendLeft(pOperand,this);
   // !!!!!!!!!!!!!!
@@ -196,8 +197,8 @@ void Step::vParcelPipeOut(void)
     // move to AM
     
     Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-    
-    Stage*    pStage0   = pPipeline->pGet(0);
+    Formwork* pFormwork = pPipeline->pFormwork();
+    Stage*    pStage0   = pFormwork->pGet(0);
     Stream*   pStand0   = pStage0->pGet(0);
     Op*       pOp0      = pStand0->pGet(0);
 
@@ -218,7 +219,8 @@ void Step::vParcelPipeOut(void)
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
   
   // get the next stage the send is supposed to send to
-  Stage* pDstStage = pPipeline->pGet(pParcel->iDstStage());
+  Formwork* pFormWork = pPipeline->pFormwork();
+  Stage* pDstStage = pFormWork->pGet(pParcel->iDstStage());
   i8 nStreamPtns = pDstStage->nItems();
 
   // get the op to forward to depending on the cross topology

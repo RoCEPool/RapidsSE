@@ -11,8 +11,9 @@ namespace STORE { class Formwork; class Stage; class PipelineSpec; }
 
 namespace STORE
 {
-  class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>,
-                   public LifeGuard_t<Pipeline>
+  class Pipeline : public Object
+                   //public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>,
+                 , public LifeGuard_t<Pipeline>
 
   {
   private:
@@ -68,6 +69,7 @@ namespace STORE
     void vEarlyExit(bool bEarlyExit);
     bool bErrored(void);
     void vErrored(bool bErrored);
+    Formwork* pFormwork(void);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
     i8   i_Origin(void);
