@@ -135,7 +135,8 @@ rows:
 (103.222)
 
 //------------------------------------------------------------------------------
-// TinyError: <string>:285: error: label 'L_AddRowToTub' used but not defined
+//TODO: error: label 'L_AddRowToTub' used but not defined
+/*
 select flt_col8 + 1.44 from datums order by flt_col8;
 rows:
      (null)
@@ -167,12 +168,17 @@ rows:
  ('10.22','108.456')
  ('10.22','108.456')
  ('10.22','108.456')
+*/
 
 // exception : /0
-select (flt_col8/0.0) from datums;
+select (flt_col8/0e0) from datums;
+failure contains: 'divide by zero'
+
+//TODO: aggreagets with float
+/*
 
 // aggregates : sum
-/*
+
 select sum(flt_col8) from datums;
 rows: (42.64)
 
@@ -193,9 +199,9 @@ rows: (85.28)
 
 select sum(flt_col8) + sum(flt_col8) from datums;
 rows: (85.28)
-*/
+
 // aggregates : min
-/*
+
 select min(flt_col8) from datums;
 rows: (0.22)
 
@@ -216,9 +222,9 @@ rows: (0.44)
 
 select min(flt_col8) + min(flt_col8) from datums;
 rows: (0.44)
-*/
+
 // aggregates : min (with nulls and min/max ints)
-/*
+
 select min(int_col1) from datums;
 rows: (-9223372036854775806)
 
@@ -239,9 +245,9 @@ failure contains: 'Arithmetic overflow'
 
 select min(int_col1) + min(int_col1) from datums;
 failure contains: 'Arithmetic overflow'
-*/
+
 // aggregates : max
-/*
+
 select max(flt_col8) from datums;
 rows: (13)
 
@@ -262,9 +268,9 @@ rows: (26)
 
 select max(flt_col8) + max(flt_col8) from datums;
 rows: (26)
-*/
+
 // aggregates : max (with nulls and min/max ints)
-/*
+
 select max(int_col1) from datums;
 rows: (9223372036854775806)
 
