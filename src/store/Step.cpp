@@ -180,7 +180,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegFolder();
   Step::vAddSteps_RegNow();
   Step::vAddSteps_RegPath();
-  Step::vAddSteps_RegTask();
   Step::vAddSteps_RegTimer();
   Step::vAddSteps_RegSends();
   Step::vAddSteps_RowOnce();

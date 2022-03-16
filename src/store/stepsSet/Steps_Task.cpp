@@ -43,6 +43,18 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.profile!"_Stz,        &Step::vTaskProfileStore);
   vAddStep("task.state@"_Stz,          &Step::vTaskStateFetch);
   vAddStep("task.thread"_Stz,          &Step::vTaskThread);
+  
+  vAddStep("Task[]"_Stz,                &Step::vRegTaskGet);
+  vAddStep("Task[].acksRemaining!"_Stz, &Step::vTaskAcksStore);
+  vAddStep("Task[].dropLock"_Stz,       &Step::vTaskDropLock);
+  vAddStep("Task[].grabLock"_Stz,       &Step::vTaskGrabLock);
+  vAddStep("Task[].job@"_Stz,           &Step::vTaskJobFetch);
+  vAddStep("Task[].job!"_Stz,           &Step::vTaskJobStore);
+  vAddStep("Task[].transition!"_Stz,    &Step::vTaskTransitionStore);
+  vAddStep("Task[].wait"_Stz,           &Step::vTaskWait);
+  vAddStep("Task[].yield"_Stz,          &Step::vTaskYield);
+  vAddStep("Task[].yield_opLoop"_Stz,   &Step::vTaskYield_opLoop);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -349,6 +361,162 @@ void Step::vTaskThread(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Task[].get -- get task                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegTaskGet(void)
+{
+  ENTRY();
+    
+  m_pDataStack->vPushPtr(this);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Task[].acksRemaining! -- store value into given tasks m_oAcksRmg_task      */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskAcksStore(void)
+{
+  ENTRY();
+    
+  i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
+  
+  ASSERT(0 == m_oAcksRmg_task.iPrintOnlyValue());
+
+  RASSERT(bIsLocked());
+  
+  vAcksRmg(nAcksRequired);
+  
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Task[].grabLock -- grab this task's lock                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskGrabLock(void)
+{
+  ENTRY();
+    
+  vGrabTaskLock((Stz*)__func__);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Task[].dropLock -- drop this task's lock                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskDropLock(void)
+{
+  ENTRY();
+    
+  vDropTaskLock((Stz*)__func__);
+  
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* task.job@ -- push job of given task                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskJobFetch(void)
+{
+  ENTRY();
+  
+//  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+//
+// Job* pJob = pThatTask->m_pJob;
+//
+//  m_pDataStack->vPushPtr(pJob);
+
+  if (m_pJob_task.bIsNull())
+    AM::SE::vWhereAmI();
+  
+  m_pDataStack->vPushPtr(* m_pJob_task);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.job! -- store job into given task                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskJobStore(void)
+{
+  ENTRY();
+  
+//  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+//
+//  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+//
+//  pThatTask->m_pJob = pJob;
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  m_pJob_task = pJob;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Task[].transition! -- transition store                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskTransitionStore(void)
+{
+  ENTRY();
+  
+  eTR eTransition = (eTR)m_pDataStack->iPopInt(__func__);
+
+  RASSERT(bIsLocked());
+  m_eTransition = eTransition;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Task[].wait -- this task waits for signal                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskWait(void)
+{
+  ENTRY();
+  
+  vScheduleWait();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Task[].yield  -- this task yields                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskYield(void)
+{
+  ENTRY();
+    
+  vGrabTaskLock((Stz*)__func__);
+  vScheduleYield();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Task[].yield  -- this task yields                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskYield_opLoop(void)
+{
+  ENTRY();
+    
+  vGrabTaskLock((Stz*)__func__);
+  RASSERT(bIsLocked());
+  vScheduleYield();
+
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
