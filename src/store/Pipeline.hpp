@@ -74,12 +74,14 @@ namespace STORE
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
     Op*  pOpToPulse(void);
+    void vOpToPulse(Op* pOpToPulse);
     Job* pPipelineJob(void);
     Stz* szPipelineNm(void);
     PipelineSpec* pPipelineSpec(void);
     bool bPulsed(void);
     void vPulsed(bool bPulsed);
     bool bPulsedLimit(void);
+    void vPulsedLimit(bool bPulsedLimit);
     void vSetupJob(void);
     void vSpawnOpTasks(i8 iSessionId, i8 iNode);
     void vWalk(void* aArg);

@@ -14,6 +14,7 @@
 #include "Formwork.hpp"
 #include "FormworkSpec.hpp"
 #include "StageSpec.hpp"
+#include "Pipeline.hpp"
 
 #include "SP_Formwork.hpp"
 
@@ -127,7 +128,7 @@ void Formwork::vSetupJob(void)
       Op* pOp = pStream->pGet(i_Op);
       
       if (pOp->szOpNm()->bSame("limitOp"_Stz)) {
-        m_bPulsedLimit = true;
+        m_pPipeline->vPulsedLimit(true);
         break;
       }
     }
@@ -143,7 +144,7 @@ void Formwork::vSetupJob(void)
       Op* pOp = pStream->pGet(i_Op);
 
       if (pOp->szOpNm()->bSame("scan"_Stz)) {
-        m_pOpToPulse = pOp;
+        m_pPipeline->vOpToPulse(pOp);
         pOp->vPulsedLimit(true);
         break;
       }

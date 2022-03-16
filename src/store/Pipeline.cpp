@@ -292,6 +292,16 @@ Op* Pipeline::pOpToPulse(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set pOpToPulse                                                             */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vOpToPulse(Op* pOpToPulse)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  m_pOpToPulse = pOpToPulse;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pipeline name                                                          */
 /*----------------------------------------------------------------------------*/
 Stz* Pipeline::szPipelineNm(void)
@@ -312,13 +322,23 @@ PipelineSpec* Pipeline::pPipelineSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pulsed                                                                 */
+/* get bPulsedLimit?                                                          */
 /*----------------------------------------------------------------------------*/
 bool Pipeline::bPulsedLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_bPulsed;
+  return m_bPulsedLimit;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bPulsedLimit?                                                          */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vPulsedLimit(bool bPulsedLimit)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  m_bPulsedLimit = bPulsedLimit;
 }
 
 /*----------------------------------------------------------------------------*/
