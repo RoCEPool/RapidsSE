@@ -59,7 +59,7 @@ class TestResult:
         self.metrics.append((name, value, ts))
 
 
-def summarise_to_junit(self, results: [TestResult], dest: pathlib.Path):
+def summarise_to_junit(results: [TestResult], dest: pathlib.Path):
     """
     Writes a summary of the tests as a JUnit XML report, so that Bamboo
     can pick it up and intepret it.
@@ -79,7 +79,8 @@ def summarise_to_junit(self, results: [TestResult], dest: pathlib.Path):
             test_case.add_skipped_info()
 
         elif result.test_passed is False:
-            test_case.add_error_info()
+            error_msg = result.stderr if result.stderr else "No failure information available"
+            test_case.add_failure_info(message=error_msg)
 
         test_cases.append(test_case)
 
@@ -108,20 +109,28 @@ def summarise_to_string(results: [TestResult]) -> string:
             tests_failed += 1
             failed_test_names.append(test_result.test_name)
 
-    failed_tests_str = "\n  ".join(failed_test_names)
+    failed_test_joiner = "\n  - "
+    failed_tests_str = failed_test_joiner.join(failed_test_names)
+    failed_test_desc = ""
+
+    if tests_failed > 0:
+        failed_test_desc = \
+            f"List of failed test names:" \
+            f"{failed_test_joiner}{failed_tests_str}\n" \
+            f"\n" \
 
     summary = f"\n" \
-              f"*******************************************\n" \
+              f"***********************\n" \
               f"  Job Summary\n" \
-              f"*******************************************\n" \
+              f"***********************\n" \
               f"\n" \
-              f"List of failed test names:\n" \
-              f"  {failed_tests_str}" \
+              f"{failed_test_desc}" \
+              f"Tests Passed:     {tests_passed:>3}\n" \
+              f"Tests Failed:     {tests_failed:>3}\n" \
+              f"Tests Skipped:    {tests_skipped:>3}\n" \
               f"\n" \
-              f"Tests Passed:   {tests_passed}\n" \
-              f"Tests Failed:   {tests_failed}\n" \
-              f"Tests Skipped:  {tests_skipped}\n\n" \
-              f"=============   =========\n" \
-              f"Total Tests:    {str(len(results))}"
+              f"=============   =======\n" \
+              f"Total Tests:      {len(results):>3}\n" \
+              f"=============   =======\n"
 
     return summary

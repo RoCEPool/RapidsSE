@@ -116,6 +116,10 @@ class JobRunner:
             self.test_end_ts = datetime.datetime.now()
             job_timed_out = test_thread.is_alive()
 
+            if job_timed_out:
+                LOG.error(f"Job timeout of {self.all_configs.get_job().get_max_duration()} "
+                          f"minutes has been exceeded. Commencing shutdown hooks.")
+
             # (3) Gather results, logs and artifacts
             self.__gather_results()
 
@@ -217,6 +221,7 @@ class JobRunner:
 
             if skip_remaining_tests:
                 self.__skip_test(test_path, test_id)
+                LOG.debug(f"Test {TestRunner.get_test_name_from_path(test_path)} is being skipped.")
                 continue
 
             # Make the directory where this test will store artifacts
@@ -230,6 +235,7 @@ class JobRunner:
             self.test_results.append(test_result)
 
             if test_result.test_passed is False:
+                LOG.debug(f"Test {test_result.test_name} failed")
                 got_failures = True
 
                 if continue_on_test_failure is False:
@@ -243,6 +249,8 @@ class JobRunner:
                     # We can't run any more tests
                     skip_remaining_tests = True
                     LOG.error(error_msg)
+            else:
+                LOG.debug(f"Test {test_result.test_name} passed")
 
         if got_failures:
             LOG.info("Completed execution of tests, with failures.")
@@ -330,4 +338,5 @@ class JobRunner:
         septest.results.summarise_to_junit(self.test_results, result_path)
 
         # Write out a textual summary too
-        LOG.info(septest.results.summarise_to_string(self.test_results))
+        summary_text = septest.results.summarise_to_string(self.test_results)
+        LOG.info(f"\n{summary_text}\n")

@@ -208,6 +208,22 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float,
     if last_error is not None:
         raise last_error
 
+    # Set a Name tag for each instance
+    for n, instance_id in enumerate(instance_ids, start=1):
+        kwargs = {
+            "DryRun": False,
+            "Resources": [instance_id],
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": f"PerfTest{n:02}"
+                }
+            ]
+        }
+        LOG.debug("About to create a Name tag for instance %s", instance_id)
+        response = client.create_tags(**kwargs)
+        LOG.debug(f"Response of create_tags command:\n{pprint.pformat(response)}")
+
     LOG.info("Started %d machines with the following instance-ids: %s", len(instance_ids), str(instance_ids))
     LOG.info("Private IP addresses assigned: %s", str(ip_addresses))
 

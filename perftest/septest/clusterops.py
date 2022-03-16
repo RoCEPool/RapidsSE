@@ -383,4 +383,5 @@ def is_rapidsse_running(host: string, cluster_cfg: ClusterConfig) -> (bool, stri
               f"\nStderr Output:\n{e.stderr}"
         return False, msg
 
+    LOG.debug("RapidsSE is still running!")
     return True, None

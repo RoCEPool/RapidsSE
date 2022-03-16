@@ -87,8 +87,8 @@ class JobConfig:
         """Returns the name of the job file without the last extension"""
         return os.path.basename(self.path).rsplit(sep=".", maxsplit=1)[0]
 
-    def get_max_duration(self) -> int:
-        return self.parser.getint(self.C_SECTION, self.C_DURATION)
+    def get_max_duration(self) -> float:
+        return self.parser.getfloat(self.C_SECTION, self.C_DURATION)
 
     def get_continue_on_test_failure(self) -> bool:
         return self.parser.getboolean(self.C_SECTION, self.C_CONTINUEONFAILURE)
