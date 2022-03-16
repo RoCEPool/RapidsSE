@@ -116,6 +116,10 @@ class JobRunner:
             self.test_end_ts = datetime.datetime.now()
             job_timed_out = test_thread.is_alive()
 
+            if job_timed_out:
+                LOG.error(f"Job timeout of {self.all_configs.get_job().get_max_duration()} "
+                          f"minutes has been exceeded. Commencing shutdown hooks.")
+
             # (3) Gather results, logs and artifacts
             self.__gather_results()
 

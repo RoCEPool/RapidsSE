@@ -324,6 +324,12 @@ class TestRunner:
                     if has_responsemsg_field and not failuremsg:
                         failuremsg = row[C_CSV_RESPONSEMSG]
 
+                    if not failuremsg:
+                        # Is RapidsSE still running?
+                        (is_running, error_msg) = clusterops.is_rapidsse_running(self.ip_addr, self.cluster_config)
+                        if is_running is False:
+                            failuremsg = "RapidsSE is not running and may have crashed"
+
                     if failuremsg:
                         errmsg = f"Statement with label \"{label}\" in test {self.test_name} " \
                                  f"failed with error: {failuremsg}"
