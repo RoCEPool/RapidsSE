@@ -1333,6 +1333,7 @@ public:
 
   // job Pipeline
   void vPipelineCreate(void);
+  void vPipelineOpsOnNodeFetch(void);
   void vPipelineSpawnOpTasks(void);
 
   void vPipelineAddAccum(void);

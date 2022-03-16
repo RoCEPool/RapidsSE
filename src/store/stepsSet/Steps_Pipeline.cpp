@@ -51,6 +51,7 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("pipeline.pipeout"_Stz,        &Step::vPipelinePipeout);
     
   vAddStep("Pipeline[].create"_Stz,       &Step::vPipelineCreate);
+  vAddStep("Pipeline[].opsOnNode@"_Stz,   &Step::vPipelineOpsOnNodeFetch);
   vAddStep("Pipeline[].spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
 }
 
@@ -167,7 +168,7 @@ void Step::vPipelineEnqueueStart(void)
   
   LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
     
-  Pipeline* pPipeline = * pLogicUnit->m_xpPipeline;
+  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
   i8 iThisNode = AM::pGrid()->iThisNodeNo();
   
@@ -350,6 +351,24 @@ void Step::vPipelinePulsedStore(void)
   
   pPipeline->vPulsed(m_pDataStack->iPopBol(__func__));
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pipeline[].opsOnNode@ -- get no of ops executing on this node              */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineOpsOnNodeFetch(void)
+{
+  ENTRY();
+  
+  Pipeline* pPipeline = (* m_p_TaskLogicUnit->m_xpPipeline);
+
+  i8 iThisNode = AM::pGrid()->iThisNodeNo();
+
+  i8 nOps = pPipeline->nOpsOnNode(iThisNode);
+  
+  m_pDataStack->vPushInt(nOps);
+
   EXIT();
 }
 
