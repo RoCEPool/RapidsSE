@@ -350,7 +350,9 @@ struct Combined_T
   // payload (gby/srt/top)
   i8*     m_aiPayload;
   void*   m_aPayloadRow;
+  void*   m_aPayloadCellArray;
   char*   m_racPayloadArea;
+  char*   m_racPayloadAreaSav;
   void*   m_aIndexTreePL;
   void*   m_aIndexDefPL;
   void*   m_aEntBufferPL;

@@ -83,6 +83,8 @@ static const i8 C_MAX_SHAPES = 32;
     u8   uGetSelectColumns(Stream* pStream);
 
     void vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupEosAgg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupEosPayload(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp);
@@ -94,9 +96,10 @@ static const i8 C_MAX_SHAPES = 32;
     void vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
+    void vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                              Stz* sHashExpr);
-    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp);
+                              Op* pHavingFilterOp, Stz* sHashExpr);
+    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Op* pHavingFilterOp);
     void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
 

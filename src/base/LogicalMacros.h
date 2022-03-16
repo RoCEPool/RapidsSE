@@ -38,7 +38,7 @@
      iArg1 = *(--paW);                                                     \
      iArg2 = *(--paW);                                                     \
                                                                            \
-     if (iArg1 == C_DATUM_NULL || iArg2 == C_DATUM_NULL) {                 \                                         \
+     if (iArg1 == C_DATUM_NULL || iArg2 == C_DATUM_NULL) {                 \
        *paW++ = C_DATUM_NULL;                                              \
      }                                                                     \
      else {                                                                \

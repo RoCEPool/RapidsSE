@@ -546,7 +546,7 @@ void Backend::vAppendCallSubQry(Backend* pBackend, QueryNode* pNode)
   _static_
 
   s4K sCallSubqry;
-  String* sPipeline = pBackend->m_sPipeline;
+  //String* sPipeline = pBackend->m_sPipeline;
 
   sCallSubqry.vSprint("call 1 \"%s \""_Stz, SubqueryRefOp::szAliasName(pNode));
   pBackend->vAppendNextOp(sCallSubqry);
@@ -596,11 +596,11 @@ void Backend::vAppendIndexJoinOp(Backend* pBackend, QueryNode* pNode)
   QueryNode* pOrdinalJoinPredicate = JoinOp::pOrdinalJoinPredicate(pNode, pBackend->m_pPlanRoot);
 
   // Get the joinType property
-  eJT eJoinType = JoinOp::eJoinType(pNode);
+  //eJT eJoinType = JoinOp::eJoinType(pNode);
 
   // Get the joinPredicate property
-  QueryNode* pJoinPredicate = JoinOp::pJoinPredicate(pNode);
-  ASSERT(pJoinPredicate);
+  //QueryNode* pJoinPredicate = JoinOp::pJoinPredicate(pNode);
+  //ASSERT(pJoinPredicate);
 
   // save the left child columns
   pBackend->m_bJoinPredicate = true;
@@ -647,7 +647,7 @@ void Backend::vAppendLimitOp(Backend* pBackend, QueryNode* pNode)
 {
   _static_
 
-  String* sPipeline = pBackend->m_sPipeline;
+  //String* sPipeline = pBackend->m_sPipeline;
 
   s256 sLimit;
 
@@ -683,11 +683,11 @@ void Backend::vAppendLoopJoinOp(Backend* pBackend, QueryNode* pNode)
   QueryNode* pOrdinalJoinPredicate = JoinOp::pOrdinalJoinPredicate(pNode, pBackend->m_pPlanRoot);
 
   // Get the joinType property
-  eJT eJoinType = JoinOp::eJoinType(pNode);
+  //eJT eJoinType = JoinOp::eJoinType(pNode);
 
   // Get the joinPredicate property
-  QueryNode* pJoinPredicate = JoinOp::pJoinPredicate(pNode);
-  ASSERT(pJoinPredicate);
+  //QueryNode* pJoinPredicate = JoinOp::pJoinPredicate(pNode);
+  //ASSERT(pJoinPredicate);
 
   // save the left child columns
   pBackend->m_bJoinPredicate = true;

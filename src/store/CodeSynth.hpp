@@ -92,7 +92,7 @@ namespace STORE {
     void vSynthAllocPotRow(TypedStack* pPostStack, Stz *sHashExpr, bool bEosHandler,
                            Stz *sLabel, Stz *sLabelNext);
 
-    void vSynthEos(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad);
+    void vSynthEos(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad, Stz* sLabelNext);
 
     void vSynthFilter(Stz *sFilterExpr, bool bOrdAgg, Stz *sLabel, Stz* sLabelPrev);
 
@@ -177,7 +177,7 @@ namespace STORE {
     void vPayloadPopulate(ePL ePayload);
     void vPayloadStore(IndexDef *pIndexDef);
     void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad);
-    void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad);
+    void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad, Stz* sLabelNext);
 
     void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, ePE ePreExp, eEK eExprKind, eDM eExprType, bool bHashRows, i8 i_Col, i8& i_DupCtr);
     void vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, IntStack* pTypeStack, eEK eExprKind,

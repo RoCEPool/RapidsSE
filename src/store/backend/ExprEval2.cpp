@@ -194,7 +194,6 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
   Stz *sOrdinalColumn;
   s32 sColumnNm;
   i8 iProjectColumn = 1;
-  i8 iGroupByCol = C_UNKNOWN;
   i8 i_ColumnOrdinal = C_UNKNOWN;
 
   bool bGroupBy = false;

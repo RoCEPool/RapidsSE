@@ -224,11 +224,11 @@ begin
     | top 2 "TOP type TIMESTAMP $2" 2
     | combined 0
     | next
-  stage stageA on all nodes :
+  stage stageB on all nodes :
     top 2 "TOP type TIMESTAMP $2" 2
     | combined 0
     | next
-  stage stageA on origin :
+  stage stageC on origin :
     top 2 "TOP type TIMESTAMP $2" 2
     | combined 0
     | next

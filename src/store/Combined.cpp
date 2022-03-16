@@ -105,7 +105,9 @@ Combined::Combined(LogicUnit* pLogicUnit)
   // payload (gby/srt/top)
   m_xCombinedT.m_aiPayload      = nullptr;
   m_xCombinedT.m_aPayloadRow    = nullptr;
+  m_xCombinedT.m_aPayloadCellArray = nullptr;
   m_xCombinedT.m_racPayloadArea = nullptr;
+  m_xCombinedT.m_racPayloadAreaSav = nullptr;
   m_xCombinedT.m_aIndexTreePL   = nullptr;
   m_xCombinedT.m_aIndexDefPL    = nullptr;
   m_xCombinedT.m_aEntBufferPL   = nullptr;
@@ -159,6 +161,9 @@ Combined::~Combined(void) noexcept(false)
   delete pRowSingle;
 
   pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleAgg);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xCombinedT.m_aPayloadRow);
   delete pRowSingle;
 }
 
