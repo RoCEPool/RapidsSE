@@ -7,7 +7,7 @@
 
 #include "LifeGuard_t.hpp"
 
-namespace STORE { class Stream; class StageSpec; }
+namespace STORE { class Formwork; class Stream; class StageSpec; }
 
 #ifdef WITH_FORMWORK
 
@@ -22,7 +22,7 @@ namespace STORE
     i8   m_i_Stage;     // [stage] in pipeline
 
     StageSpec*  m_pStageSpec; // specification of this stage
-    Pipeline*   m_pPipeline;  // which pipeline
+    Formwork*   m_pFormwork;  // which pipeline
   
     // -- -- -- -- -- --
 
@@ -33,7 +33,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Stage(StageSpec* pStageSpec, Pipeline* pPipeline);
+    Stage(StageSpec* pStageSpec, Formwork* pFormwork);
    ~Stage(void) noexcept(false);
       
     void vCancelPipeline(Task* pTriggeringTask);
@@ -41,7 +41,7 @@ namespace STORE
     Stream* pGetStream_byPtnNo(i8 i_Ptn);
     Stream* pGetStream_byStreamNo(i8 i_Stream);
     i8   nOpsOnNode(i8 iNode, i8 iOrigin);
-    Pipeline* pPipeline(void);
+    Formwork* pFormwork(void);
     Op*  pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp);
     i8   i_Stage(void);
     Stz* szStageNm(void);

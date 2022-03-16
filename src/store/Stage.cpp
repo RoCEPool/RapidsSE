@@ -15,6 +15,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
+#include "Formwork.hpp"
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
@@ -38,16 +39,17 @@ __aFooterFunction(Stage)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stage::Stage(StageSpec *pStageSpec, Pipeline *pPipeline)
-    : LifeGuard_t<Stage>(this, CN_STAGE) {
+Stage::Stage(StageSpec *pStageSpec, Formwork* pFormwork)
+    : LifeGuard_t<Stage>(this, CN_STAGE)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  m_sPipelineNm = pPipeline->szPipelineNm();
+  m_sPipelineNm = pFormwork->pPipeline()->szPipelineNm();
   m_sStageNm = pStageSpec->szStageNm();
   m_i_Stage = pStageSpec->i_StageSpec();
 
   m_pStageSpec = pStageSpec;
-  m_pPipeline = pPipeline;
+  m_pFormwork  = pFormwork;
 
   _checkInitialised_(CN_STAGE);
 
@@ -197,10 +199,10 @@ i8 Stage::nOpsOnNode(i8 iNode, i8 iOrigin) {
 /*----------------------------------------------------------------------------*/
 /* get piepline                                                               */
 /*----------------------------------------------------------------------------*/
-Pipeline *Stage::pPipeline(void) {
+Formwork *Stage::pFormwork(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  return m_pPipeline;
+  return m_pFormwork;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -373,7 +375,7 @@ void Stage::vCreateStreams(void) {
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
       tPtnId = C_UNKNOWN;
-      i_Node = m_pPipeline->i_Origin();
+      i_Node = m_pFormwork->pPipeline()->i_Origin();
 
       pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
       vAppend(pStream);
@@ -421,7 +423,7 @@ void Stage::vCreateStreams(void) {
         tPtnId = iPtnNo;
         i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
 
-        if (i_Node == m_pPipeline->i_Origin()) {
+        if (i_Node == m_pFormwork->pPipeline()->i_Origin()) {
           i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
           pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
           vAppend(pStream);

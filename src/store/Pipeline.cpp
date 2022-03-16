@@ -11,6 +11,7 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
+#include "Formwork.hpp"
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
@@ -461,17 +462,7 @@ void Pipeline::vCreateFormwork(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  i8 nStages = m_pPipelineSpec->nItems();
-  for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
-    
-    // get the stageSpec
-    StageSpec* pStageSpec = m_pPipelineSpec->pStageSpec(i_StageSpec);
-    
-    // add a stage from the stageSpec to the stageVec
-    Stage* pStage = new Stage(pStageSpec, this);
-    vAppend(pStage);
-    pStage->vCreateStreams();
-  }
+  m_pFormWork->vCreateFormwork();
 }
 
 

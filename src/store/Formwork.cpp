@@ -34,7 +34,6 @@ __aFooterFunction(Formwork)
 /*----------------------------------------------------------------------------*/
 Formwork::Formwork(Pipeline* pPipeline, FormworkSpec* pFormworkSpec)
 : LifeGuard_t<Formwork>(this,CN_FORMWORK)
-, m_okDebugLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
   
@@ -85,19 +84,29 @@ bool Formwork::bCancel(Task* pTriggeringTask)
   Stage* pStage = pGet(0);
   
   // send cancelMarker to the start Op of the first stage of the pipeline
-  pStage->vCancelFormwork(pTriggeringTask);
+  pStage->vCancelPipeline(pTriggeringTask);
   
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pipeline spec                                                          */
+/* get formwork spec                                                          */
 /*----------------------------------------------------------------------------*/
 FormworkSpec* Formwork::pFormworkSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
   
   return m_pFormworkSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pipeline                                                               */
+/*----------------------------------------------------------------------------*/
+Pipeline* Formwork::pPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  
+  return m_pPipeline;
 }
 
 /*----------------------------------------------------------------------------*/

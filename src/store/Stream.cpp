@@ -14,6 +14,7 @@
 #include "Stream.hpp"
 #include "StageSpec.hpp"
 #include "Stage.hpp"
+#include "Formwork.hpp"
 #include "Pipeline.hpp"
 #include "StageSpec.hpp"
 #include "Node.hpp"
@@ -38,13 +39,21 @@ Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
+#ifdef WITH_FORMWORK
+  m_sPipelineNm = pStage->pFormwork()->pPipeline()->szPipelineNm();
+#else
   m_sPipelineNm = pStage->pPipeline()->szPipelineNm();
+#endif
   m_sStageNm    = pStage->szStageNm();
 
   m_pStageSpec = pStageSpec;
   m_pStage     = pStage;
+#ifdef WITH_FORMWORK
+  m_pPipeline  = pStage->pFormwork()->pPipeline();
+#else
   m_pPipeline  = pStage->pPipeline();
-  
+#endif
+
   m_tPtnId     = tPtnId;
   m_i_Node     = i_Node;
   m_i_Stream   = i_Stream;

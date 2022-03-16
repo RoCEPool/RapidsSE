@@ -33,6 +33,7 @@ namespace STORE
     bool bCancel(Task* pTriggeringTask);
 
     FormworkSpec* pFormworkSpec(void);
+    Pipeline* pPipeline(void);
     void vSetupJob(void);
     void vSpawnOpTasks(i8 iSessionId, i8 iNode);
     void vWalk(void* aArg);
@@ -40,9 +41,9 @@ namespace STORE
             i8 iDepth,
             std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
 
-  private:
     void vCreateFormwork();
 
+  private:
     Footer* aFooter(void);
   };
   

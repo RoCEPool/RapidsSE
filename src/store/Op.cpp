@@ -15,6 +15,7 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
+#include "Formwork.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
 #include "StageSpec.hpp"
@@ -922,7 +923,11 @@ Job* Op::pJob(void)
   
   Stream*   pStream   = this->pStream();
   Stage*    pStage    = pStream->pStage();
+#ifdef WITH_FORMWORK
+  Pipeline* pPipeline = pStage->pFormwork()->pPipeline();
+#else
   Pipeline* pPipeline = pStage->pPipeline();
+#endif
   Job*      pJob      = pPipeline->pPipelineJob();
 
   return pJob;

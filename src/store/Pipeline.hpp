@@ -5,7 +5,7 @@
 
 #include "LifeGuard_t.hpp"
 
-namespace STORE { class Stage; class PipelineSpec; }
+namespace STORE { class Formwork; class Stage; class PipelineSpec; }
 
 #ifdef WITH_FORMWORK
 
