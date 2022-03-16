@@ -96,6 +96,16 @@ bool PipelineSpec::bCompile(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* get formwoark spec                                                         */
+/*----------------------------------------------------------------------------*/
+FormworkSpec* PipelineSpec::pFormworkSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  return m_pFormworkSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the job tag set                                                        */
 /*----------------------------------------------------------------------------*/
 TagSet* PipelineSpec::pJobTags(void)

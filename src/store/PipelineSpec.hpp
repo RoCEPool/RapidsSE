@@ -42,6 +42,7 @@ namespace STORE
    ~PipelineSpec(void) noexcept(false);
   
     bool bCompile(void);
+    FormworkSpec* pFormworkSpec(void);
     TagSet* pJobTags(void);
     Stz* szPipelineNm(void);
     i8 nStages(void);
