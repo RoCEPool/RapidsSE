@@ -28,6 +28,7 @@ C_CSV_SUCCESS = "success"
 C_CSV_LATENCY = "Latency"
 C_CSV_TIMESTAMP = "timestamp"
 C_CSV_FAILUREMSG = "failureMessage"
+C_CSV_RESPONSEMSG = "responseMessage"
 C_CSV_CONNECT = "Connect"
 
 C_MANDATORY_CSV_FIELDS = [
@@ -39,6 +40,7 @@ C_MANDATORY_CSV_FIELDS = [
 C_OPTIONAL_CSV_FIELDS = [
     C_CSV_TIMESTAMP,
     C_CSV_FAILUREMSG,
+    C_CSV_RESPONSEMSG,
     C_CSV_CONNECT
 ]
 
@@ -279,7 +281,7 @@ class TestRunner:
             fieldnames = reader.fieldnames
 
             # Must have these fields minimum: label, success, Latency
-            # Optional fields that can be used: timestamp, failureMessage, Connect
+            # Optional fields that can be used: timestamp, failureMessage, responseMessage, Connect
 
             # Check that the mandatory fields are in the file
             for mandatory_field in C_MANDATORY_CSV_FIELDS:
@@ -294,6 +296,7 @@ class TestRunner:
 
             has_timestamp_field = (C_CSV_TIMESTAMP in fieldnames)
             has_failuremsg_field = (C_CSV_FAILUREMSG in fieldnames)
+            has_responsemsg_field = (C_CSV_RESPONSEMSG in fieldnames)
             has_connect_field = (C_CSV_CONNECT in fieldnames)
 
             for row in reader:
@@ -312,13 +315,21 @@ class TestRunner:
                     return False
 
                 if not success:
-                    failuremsg = row[C_CSV_FAILUREMSG] if has_failuremsg_field else None
-                    if (failuremsg is None) or (len(failuremsg) == 0):
-                        errmsg = f"Statement with label \"{label}\" in test {os.path.basename(metric_file)} " \
-                                 f"failed with an error"
-                    else:
-                        errmsg = f"Statement with label \"{label}\" in test {os.path.basename(metric_file)} " \
+                    failuremsg = None
+
+                    # The error message could be in either failureMessage or responseMessage fields
+                    if has_failuremsg_field and not failuremsg:
+                        failuremsg = row[C_CSV_FAILUREMSG]
+
+                    if has_responsemsg_field and not failuremsg:
+                        failuremsg = row[C_CSV_RESPONSEMSG]
+
+                    if failuremsg:
+                        errmsg = f"Statement with label \"{label}\" in test {self.test_name} " \
                                  f"failed with error: {failuremsg}"
+                    else:
+                        errmsg = f"Statement with label \"{label}\" in test {self.test_name} " \
+                                 f"failed with an error"
                     LOG.error(errmsg)
 
                     # Mark the test as having failed
@@ -328,8 +339,8 @@ class TestRunner:
 
                 # Check that latency_str is not null or an empty string
                 if (latency_str is None) or (len(latency_str) == 0):
-                    errmsg = f"Value for field \"{C_CSV_LATENCY}\" in test {os.path.basename(metric_file)} " \
-                             f"must not be a null or empty string value"
+                    errmsg = f"Value for field \"{C_CSV_LATENCY}\" in metric file {os.path.basename(metric_file)} " \
+                             f"for test {self.test_name} must not be a null or empty string value"
                     LOG.error(errmsg)
                     # Mark the test as having failed
                     self.result.test_passed = False
@@ -342,7 +353,8 @@ class TestRunner:
 
                 except ValueError:
                     errmsg = f"Statement with label \"{label}\" failed because the " \
-                             f"\"{C_CSV_LATENCY}\" field is not numeric in test {os.path.basename(metric_file)}"
+                             f"\"{C_CSV_LATENCY}\" field is not numeric in metric file " \
+                             f"{os.path.basename(metric_file)} for test {self.test_name}"
                     LOG.error(errmsg)
                     # Mark the test as having failed
                     self.result.test_passed = False
@@ -357,7 +369,8 @@ class TestRunner:
 
                     except ValueError:
                         errmsg = f"Statement with label \"{label}\" failed because the " \
-                                 f"\"{C_CSV_CONNECT}\" field is not numeric in test {os.path.basename(metric_file)}"
+                                 f"\"{C_CSV_CONNECT}\" field is not numeric in metric file " \
+                                 f"{os.path.basename(metric_file)} for test {self.test_name}"
                         LOG.error(errmsg)
                         # Mark the test as having failed
                         self.result.test_passed = False
@@ -376,7 +389,7 @@ class TestRunner:
                     except ValueError:
                         errmsg = f"Statement with label \"{label}\" failed because the " \
                                  f"\"{C_CSV_TIMESTAMP}\" field couldn't be converted to datetime object " \
-                                 f"in test {os.path.basename(metric_file)}"
+                                 f"in metric file {os.path.basename(metric_file)} for test {self.test_name}"
                         LOG.error(errmsg)
                         # Mark the test as having failed
                         self.result.test_passed = False
