@@ -239,6 +239,7 @@ namespace STORE
     REG<Sends,          CN_SENDS         > m_xpSends;
     REG<ShardDef,       CN_SHARDDEF      > m_xpShardDef;
     REG<Socket,         CN_SOCKET        > m_xpSocket;
+    REG<Stage,          CN_STAGE         > m_xpStage;
     REG<Stats,          CN_STATS         > m_xpStats;
     REG<Stencil,        CN_STENCIL       > m_xpStencil;
     REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefLft;
