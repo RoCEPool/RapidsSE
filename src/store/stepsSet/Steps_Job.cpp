@@ -124,8 +124,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job[].tscCanceling"_Stz,     &Step::vJobTscCanceling);
   vAddStep("job[].tscCanceled"_Stz,      &Step::vJobTscCanceled);
   vAddStep("job[].tscParticipant"_Stz,   &Step::vJobTscParticipant);
-
-  vAddStep("Job[].walk"_Stz,             &Step::vJobWalk);
 }
 
 
@@ -1381,35 +1379,6 @@ void Step::vJobTscParticipant(void)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* Job[].walk -- walk the job                                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vJobWalk(void)
-{
-  ENTRY();
-  
-  Job* pJob = * m_pJob_task;
-
-  //pJob->vWalk(nullptr);
-  
-  auto fClosure = [](Object* pObject, i8 iDepth) {
-    
-    eCN  eClassNo  = pObject->eGetClassNo();
-    Stz* szClassNm = aCN[eClassNo];
-
-    vTrace("%sClosure: %p %s:%03lld\n"_Stz
-           ,Stz::szTab(iDepth)
-           ,pObject
-           ,szClassNm
-           ,eClassNo);
-  };
-  
-  pJob->vWalkLambda(0,fClosure);
-  
-  EXIT();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* Job[].get -- get task                                                      */

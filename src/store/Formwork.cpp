@@ -204,53 +204,6 @@ void Formwork::vSpawnOpTasks(i8 iSessionId, i8 iNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Formwork::vWalk(void* aArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
-
-  eCN eClassNo = eGetClassNo();
-  
-  vTrace("Walk %8s:%ll03d %p\n"_Stz
-         
-         ,aCN[eClassNo]
-         ,(i8)eClassNo
-         ,this
-         );
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  i8 nStages = this->nItems();
-  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pGet(i_Stage);
-    
-    pStage->vWalk(aArg);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Formwork::vWalkLambda(
-                 i8 iDepth,
-                 std::function<void(Object* pObject, i8 iDepth)> f_vClosure)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
-
-  f_vClosure(this,iDepth);
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  i8 nStages = this->nItems();
-  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pGet(i_Stage);
-    
-    pStage->vWalkLambda(iDepth+1,f_vClosure);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -670,53 +623,6 @@ void Formwork::vSpawnOpTasks(i8 iSessionId, i8 iNode)
     }
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Formwork::vWalk(void* aArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
-
-  eCN eClassNo = eGetClassNo();
-  
-  vTrace("Walk %8s:%ll03d %p\n"_Stz
-         
-         ,aCN[eClassNo]
-         ,(i8)eClassNo
-         ,this
-         );
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  i8 nStages = this->nItems();
-  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pGet(i_Stage);
-    
-    pStage->vWalk(aArg);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Formwork::vWalkLambda(
-                 i8 iDepth,
-                 std::function<void(Object* pObject, i8 iDepth)> f_vClosure)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
-
-  f_vClosure(this,iDepth);
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  i8 nStages = this->nItems();
-  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pGet(i_Stage);
-    
-    pStage->vWalkLambda(iDepth+1,f_vClosure);
-  }
 }
 
 #endif // WITH_FORMWORK

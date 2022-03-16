@@ -855,8 +855,6 @@ public:
   void vJobTscCanceled(void);
   void vJobTscParticipant(void);
 
-  void vJobWalk(void);
-
   // job metrics
   void vJobMetricsCollect(void);
   void vJobMetricsDelete(void);

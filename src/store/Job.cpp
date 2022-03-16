@@ -1283,44 +1283,6 @@ void Job::vVerifyJobComposition(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vWalk(void* aArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
-  
-  eCN eClassNo = eGetClassNo();
-  
-  vTrace("Walk %8s:%ll03d %p\n"_Stz
-         
-         ,aCN[eClassNo]
-         ,(i8)eClassNo
-         ,this
-         );
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  Pipeline* pPipeline = this->pPipeline_job();
-  pPipeline->vWalk(aArg);
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vWalkLambda(i8 iDepth,
-                      std::function<void(Object* pObject, i8 iDepth)> f_vClosure)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
-    
-  f_vClosure(this,iDepth);
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  Pipeline* pPipeline = this->pPipeline_job();
-  pPipeline->vWalkLambda(iDepth + 1,f_vClosure);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get was received flag                                                      */
 /*----------------------------------------------------------------------------*/
 bool Job::bWasReceived(void)

@@ -195,10 +195,6 @@ namespace STORE
     i8   nTmpIndexSize(void);
     void vToCmdStr(Stz* szCmdStr);
     void vVerifyOpComposition(void);
-    void vWalk(void* aArg);
-    void vWalkLambda(
-           i8 iDepth,
-           std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
     void vWorkQuanta(i8 iWorkQuanta);
     
   private:

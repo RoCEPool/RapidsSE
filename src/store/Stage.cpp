@@ -295,47 +295,6 @@ bool Stage::bStartPipeline(void) {
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Stage::vWalk(void *aArg) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
-
-  eCN eClassNo = eGetClassNo();
-
-  vTrace("Walk %8s:%ll03d %p\n"_Stz, aCN[eClassNo], (i8) eClassNo, this
-  );
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-
-  i8 nStreams = this->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
-    Stream *pStream = pGet(i_Stream);
-
-    pStream->vWalk(aArg);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Stage::vWalkLambda(
-    i8 iDepth,
-    std::function<void(Object *pObject, i8 iDepth)> f_vClosure) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
-
-  f_vClosure(this, iDepth);
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-
-  i8 nStreams = this->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
-    Stream *pStream = pGet(i_Stream);
-
-    pStream->vWalkLambda(iDepth + 1, f_vClosure);
-  }
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -699,47 +658,6 @@ bool Stage::bStartPipeline(void) {
   }
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Stage::vWalk(void *aArg) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
-
-  eCN eClassNo = eGetClassNo();
-
-  vTrace("Walk %8s:%ll03d %p\n"_Stz, aCN[eClassNo], (i8) eClassNo, this
-  );
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-
-  i8 nStreams = this->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
-    Stream *pStream = pGet(i_Stream);
-
-    pStream->vWalk(aArg);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Stage::vWalkLambda(
-    i8 iDepth,
-    std::function<void(Object *pObject, i8 iDepth)> f_vClosure) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
-
-  f_vClosure(this, iDepth);
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-
-  i8 nStreams = this->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
-    Stream *pStream = pGet(i_Stream);
-
-    pStream->vWalkLambda(iDepth + 1, f_vClosure);
-  }
 }
 
 

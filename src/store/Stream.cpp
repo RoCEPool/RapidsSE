@@ -142,44 +142,6 @@ void Stream::vCreateOps(void)
   } // for
 
 }
-/*----------------------------------------------------------------------------*/
-//void Stream::vCreateOps(void)
-//{
-//  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-//
-//  for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
-//
-//    OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
-//
-//    Op* pOp = new Op(pOpSpec,this);
-//
-//    pOp->vSetTags();
-//
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // form and parse op command string
-//
-//    sSTMT sOpCmd;
-//    pOp->vToCmdStr(sOpCmd);
-//
-//    //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
-//
-//    TokenVec* pTknVec = new TokenVec;
-//    pTknVec->vTokenise(sOpCmd);
-//
-//    bool b = AM::bParseCmd(pTknVec,pOp->pOpTags());
-//    RASSERT(b);
-//
-//    pTknVec->vSetAllTokens();
-//    delete pTknVec;
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//
-//    vAppend(pOp);
-//  }
-//
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get partition this stream needs to run on                                  */
@@ -316,54 +278,6 @@ void Stream::vSynthesiseName(void)
                           m_pStageSpec->szStageNm());
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Stream::vWalk(void* aArg)
-{
-  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-
-  eCN eClassNo = eGetClassNo();
-  
-  vTrace("Walk %8s:%ll03d %p\n"_Stz
-         
-         ,aCN[eClassNo]
-         ,(i8)eClassNo
-         ,this
-         );
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  i8 nOps = this->nItems();
-  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = pGet(i_Op);
-    
-    pOp->vWalk(aArg);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Stream::vWalkLambda(
-               i8 iDepth,
-               std::function<void(Object* pObject, i8 iDepth)> f_vClosure)
-{
-  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-
-  f_vClosure(this,iDepth);
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  i8 nOps = this->nItems();
-  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = pGet(i_Op);
-    
-    pOp->vWalkLambda(iDepth+1,f_vClosure);
-  }
-}
-
 
 /*============================================================================*/
 /* end                                                                        */
