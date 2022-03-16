@@ -3,7 +3,7 @@ arithmetic_int.test
 //arithmetic_float.test
 boolean.test
 count.test
-//date.test
+date.test
 //decimal.test
 //time.test
 filterInteger.test
