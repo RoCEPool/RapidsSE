@@ -160,11 +160,7 @@ Stz* SP_Op::szPath(Op* pOp)
   
   Stream*   pStream   = pOp->pStream();
   Stage*    pStage    = pStream->pStage();
-#ifdef WITH_FORMWORK
   Pipeline* pPipeline = pStage->pFormwork()->pPipeline();
-#else
-  Pipeline* pPipeline = pStage->pPipeline();
-#endif
   
   Job*      pJob      = pPipeline->pPipelineJob();
 
