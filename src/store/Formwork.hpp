@@ -33,6 +33,8 @@ namespace STORE
     bool bCancel(Task* pTriggeringTask);
 
     FormworkSpec* pFormworkSpec(void);
+    Op*  pOp0(void);
+    i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
     void vSetupJob(void);
     void vSpawnOpTasks(i8 iSessionId, i8 iNode);

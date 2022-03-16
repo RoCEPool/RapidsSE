@@ -101,6 +101,36 @@ FormworkSpec* Formwork::pFormworkSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get op 0                                                                   */
+/*----------------------------------------------------------------------------*/
+Op* Formwork::pOp0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  
+  Stage*  pStage0   = pGet(0);
+  Stream* pStand0   = pStage0->pGet(0);
+  Op*     pOp0      = pStand0->pGet(0);
+
+  return pOp0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of ops to be excuted on given node                              */
+/*----------------------------------------------------------------------------*/
+i8 Formwork::nOpsOnNode(i8 iNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  
+  i8 nOps = 0;
+  
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
+    Stage* pStage = pGet(i_Stage);
+    nOps += pStage->nOpsOnNode(iNode,m_i_Origin);
+  }
+  
+  return nOps;
+}
+/*----------------------------------------------------------------------------*/
 /* get pipeline                                                               */
 /*----------------------------------------------------------------------------*/
 Pipeline* Formwork::pPipeline(void)
