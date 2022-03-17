@@ -162,6 +162,7 @@ namespace BASE
     void vJob_task(Job* pJob);
     void vLocalsPop(void);
     void vLocalsPush(void);
+    LogicUnit* pTaskLogicUnit(void);
     void vMutexLock(void);
     void vMutexSignal(void);
     void vMutexUnlock(void);

@@ -85,8 +85,10 @@ namespace STORE
 
 
     // -- logic unit
+#ifndef WITH_TASK_LOGICUNIT_ONLY
     LogicUnit* m_pJobLogicUnit;  // set of registers for task steps    POST_RECV
-
+#endif
+  
   private:
     // -- tasking
     Task* m_pTask;  // task executing this job                         POST_RECV

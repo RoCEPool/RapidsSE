@@ -2988,9 +2988,6 @@ void AM::vIndexEntries(i8 nIndexEntries) {
 void AM::vNextTempName(s32& sName) {
   gpAttachMap->m_oTempName.vNextName(sName);
 }
-void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
-  pTask->vAcksRmg(nAcks);
-}
 void AM::vSteps(Steps* pSteps) {
   gpAttachMap->m_pSteps = pSteps;
 }
@@ -3183,11 +3180,6 @@ void AM::vTaskDump(Task* pTask)
 LogicUnit* AM::pTaskOpLogicUnit(Task* pTask) {
   Op* pOp = pTask->pOp();
   return pOp->pOpLogicUnit();
-}
-
-LogicUnit* AM::pTaskLogicUnit(Task* pTask) {
-  Job* pJob = pTask->pJob_task();
-  return pJob->pJobLogicUnit();
 }
 
 

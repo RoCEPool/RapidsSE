@@ -58,7 +58,9 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   RASSERT(pOpSpec);
   
+#ifndef WITH_TASK_LOGICUNIT_ONLY
   m_pOpLogicUnit = nullptr;
+#endif
 
   m_sOpNm       = pOpSpec->szOpNm();
   //m_sPath
@@ -141,6 +143,7 @@ Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
+#ifndef WITH_TASK_LOGICUNIT_ONLY
   if (m_pOpLogicUnit) {
     RASSERT(this == m_pOpLogicUnit->pOp());
     RASSERT(! m_pOpLogicUnit->pJob());
@@ -156,6 +159,7 @@ Op::~Op(void) noexcept(false)
   else {
     vDebugPoint();
   }
+#endif
   
   if (m_pQueueLeft->nItems() != 0) {
     vTrace("Operand Queue not empty\n"_Stz);
@@ -1119,7 +1123,11 @@ LogicUnit* Op::pOpLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+#ifdef WITH_TASK_LOGICUNIT_ONLY
+  m_pTask->m_p_TaskLogicUnit;
+#else
   return m_pOpLogicUnit;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

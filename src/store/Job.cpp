@@ -671,8 +671,12 @@ LogicUnit* Job::pJobLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  // revised job/op model
+#ifdef WITH_TASK_LOGICUNIT_ONLY
+  m_pTask->m_p_TaskLogicUnit;
+#else
   return m_pJobLogicUnit;
+#endif
+
 }
 
 /*----------------------------------------------------------------------------*/

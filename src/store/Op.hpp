@@ -46,7 +46,9 @@ namespace STORE
     SMA<Pipeline,CN_PIPELINE>  m_p_Pipeline_op; // which pipeline
 
     // -- owns
+#ifndef WITH_TASK_LOGICUNIT_ONLY
     SMA<LogicUnit,CN_LOGICUNIT> m_pOpLogicUnit;  // logic unit of op
+#endif
 
     // -- executed by
     SMA<Task,CN_TASK>      m_pTask;    // which task is currenty executing this op

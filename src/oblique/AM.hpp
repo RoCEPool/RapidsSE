@@ -665,7 +665,6 @@ namespace OBLIQUE
     static void vGrabTaskLock(Task* pTask, Stz* szFunc);
     static void vIndexEntries(i8 nIndexEntries);
     static void vNextTempName(s32& sName);
-    static void vSetAcksRmg(Task* pTask, i8 nAcks);
     static void vSteps(Steps* pSteps);
     static bool bTaskIsLocked(Task* pTask);
     static void vTenants(Word* pTenants);
@@ -791,7 +790,6 @@ namespace OBLIQUE
     static void vTaskFullTrace(Task* pTask);
     static i8   iTaskQueue(Task* pTask);
     static LogicUnit* pTaskOpLogicUnit(Task* pTask);
-    static LogicUnit* pTaskLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);
 
      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
