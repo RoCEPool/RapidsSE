@@ -104,19 +104,19 @@
   Task[].grabLock
 
     Pipeline[].opsOnNode@ to nAcks
-    nAcks not if
-      <pipelineNm> "%v has no ops??" .printf
-      HAZARD
+
+    nAcks if
+      nAcks Task[].acksRemaining!
+    
+      Pipeline[].startPipeline if
+    
+        Marker[].newStartMarker
+        Marker[]\clear Pipeline[].op0@ op.enqueOperand
+      then
+      Task[].wait
+    else
+      Task[].dropLock
     then
-
-    nAcks Task[].acksRemaining!
-    
-    Marker[].newStartMarker
-    
-    Marker[]\clear Pipeline[].op0@ op.enqueOperand
-
-  // wait for all operators to ack this job
-  Task[].wait
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
 

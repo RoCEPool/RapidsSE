@@ -1371,6 +1371,7 @@ public:
   void vPipelineOp0Fetch(void);
   void vPipelineOpsOnNodeFetch(void);
   void vPipelineSpawnOpTasks(void);
+  void vPipelineStartPipeline(void);
 
   void vPipelineAddAccum(void);
   void vPipelineCancelledFetch(void);

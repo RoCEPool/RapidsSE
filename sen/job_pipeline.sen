@@ -340,26 +340,26 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // enqueue start-marker to start op to execute the pipeline job
+  // ???? enqueue start-marker to start op to execute the pipeline job
   
   Task[].grabLock
-  
-    //<pipelineNm> "%v execute" .printf
+
     Pipeline[].opsOnNode@ to nAcks
-    nAcks not if
-      <pipelineNm> "%v has no ops??" .printf
-      HAZARD
+
+    nAcks if
+      nAcks Task[].acksRemaining!
+    
+      Pipeline[].startPipeline if
+    
+        Marker[].newStartMarker
+        Marker[]\clear Pipeline[].op0@ op.enqueOperand
+      then
+      Task[].wait
+    else
+      Task[].dropLock
     then
     
-    nAcks Task[].acksRemaining!
-    
-    Marker[].newStartMarker
-    
-    Marker[]\clear Pipeline[].op0@ op.enqueOperand
-    
-  // wait for all operators to ack this job
-  Task[].wait
-  
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has executed

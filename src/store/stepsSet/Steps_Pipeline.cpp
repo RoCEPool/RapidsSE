@@ -53,6 +53,7 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline[].op0@"_Stz,         &Step::vPipelineOp0Fetch);
   vAddStep("Pipeline[].opsOnNode@"_Stz,   &Step::vPipelineOpsOnNodeFetch);
   vAddStep("Pipeline[].spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
+  vAddStep("Pipeline[].startPipeline"_Stz,&Step::vPipelineStartPipeline);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,13 +320,24 @@ void Step::vPipelineOpsOnNodeFetch(void)
 {
   ENTRY();
   
-  Pipeline* pPipeline = (* m_p_TaskLogicUnit->m_xpPipeline);
-
-  i8 iThisNode = AM::pGrid()->iThisNodeNo();
-
-  i8 nOps = pPipeline->nOpsOnNode(iThisNode);
+//  Pipeline* pPipeline = (* m_p_TaskLogicUnit->m_xpPipeline);
+//  Formwork* pFormWork = pPipeline->pFormwork();
+//
+//  Stage*    pStage0   = pFormWork->pGet(0);
+//
+//  if (pStage0->bStartPipeline()) {
   
-  m_pDataStack->vPushInt(nOps);
+    Pipeline* pPipeline = (* m_p_TaskLogicUnit->m_xpPipeline);
+
+    i8 iThisNode = AM::pGrid()->iThisNodeNo();
+
+    i8 nOps = pPipeline->nOpsOnNode(iThisNode);
+  
+    m_pDataStack->vPushInt(nOps);
+//  }
+//  else {
+//    m_pDataStack->vPushInt(0);
+//  }
 
   EXIT();
 }
@@ -346,6 +358,29 @@ void Step::vPipelineSpawnOpTasks(void)
   
   pPipeline->vSpawnOpTasks(m_pJob_task->m_i_Session, iThisNode);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pipeline[].startPipeline -- test for issueing a start marker               */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineStartPipeline(void)
+{
+  ENTRY();
+  
+  Pipeline* pPipeline = (* m_p_TaskLogicUnit->m_xpPipeline);
+  Formwork* pFormWork = pPipeline->pFormwork();
+
+  Stage*    pStage0   = pFormWork->pGet(0);
+
+  if (pStage0->bStartPipeline()) {
+    
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+  }
+
   EXIT();
 }
 
