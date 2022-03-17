@@ -99,22 +99,24 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab the task lock
+  // enqueue start-marker to start op to execute the pipeline job
+
   Task[].grabLock
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // execute the pipeline job (send startmarker to start)
-  //<pipelineNm> "%v execute" .printf
-  Pipeline[].opsOnNode@ to nAcks
-  nAcks not if
-    <pipelineNm> "%v has no ops??" .printf
-    HAZARD
-  then
+    Pipeline[].opsOnNode@ to nAcks
+    nAcks not if
+      <pipelineNm> "%v has no ops??" .printf
+      HAZARD
+    then
 
-  nAcks Pipeline::enqueueStart
+    nAcks Task[].acksRemaining!
+    
+    Pipeline::enqueueStart
 
   // wait for all operators to ack this job
   Task[].wait
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // remove job from the local job list
   Job[] job.jobList@ JL_DEMON == not if

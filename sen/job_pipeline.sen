@@ -340,14 +340,16 @@
   
   Task[].grabLock
   
-  //<pipelineNm> "%v execute" .printf
-  Pipeline[].opsOnNode@ to nAcks
-  nAcks not if
-    <pipelineNm> "%v has no ops??" .printf
-    HAZARD
-  then
-  
-  nAcks Pipeline::enqueueStart
+    //<pipelineNm> "%v execute" .printf
+    Pipeline[].opsOnNode@ to nAcks
+    nAcks not if
+      <pipelineNm> "%v has no ops??" .printf
+      HAZARD
+    then
+    
+    nAcks Task[].acksRemaining!
+    
+    Pipeline::enqueueStart
 
   // wait for all operators to ack this job
   Task[].wait

@@ -170,19 +170,19 @@ void Step::vPipelineEnqueueStart(void)
     
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get no of operators to be executed on this node
-  
-  i8 nOps = m_pDataStack->iPopInt(__func__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set acks remaining equal to no of operators to be executed on this node
-  if (AM::bDbgTag(C_TAG_DBG_ACKS))
-    vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
-  
-  
-  RASSERT(m_pJob_task->pJobTask() == this);
-  AM::vSetAcksRmg(m_pJob_task->pJobTask(),nOps);
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // get no of operators to be executed on this node
+//
+//  i8 nOps = m_pDataStack->iPopInt(__func__);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // set acks remaining equal to no of operators to be executed on this node
+//  if (AM::bDbgTag(C_TAG_DBG_ACKS))
+//    vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
+//
+//
+//  RASSERT(m_pJob_task->pJobTask() == this);
+//  AM::vSetAcksRmg(m_pJob_task->pJobTask(),nOps);
   
   
   // get the first stage of the pipeline
