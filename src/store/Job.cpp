@@ -675,7 +675,7 @@ LogicUnit* Job::pJobLogicUnit(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
 #ifdef WITH_TASK_LOGICUNIT_ONLY
-  m_pTask->pTaskLogicUnit();
+  return m_pTask->pTaskLogicUnit();
 #else
   return m_pJobLogicUnit;
 #endif
@@ -706,6 +706,7 @@ void Job::vJobTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* new the logic unit for this job                                            */
 /*----------------------------------------------------------------------------*/
+#ifndef WITH_TASK_LOGICUNIT_ONLY
 void Job::vNewJobLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
@@ -715,16 +716,19 @@ void Job::vNewJobLogicUnit(void)
   m_pJobLogicUnit = new LogicUnit;
   m_pJobLogicUnit->vJob(this);
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* null the logic unit for this job                                           */
 /*----------------------------------------------------------------------------*/
+#ifndef WITH_TASK_LOGICUNIT_ONLY
 void Job::vNullJobLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pJobLogicUnit = nullptr;
 }
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* get name of node this came from                                            */
@@ -779,7 +783,8 @@ Pipeline* Job::pPipeline_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Pipeline* pPipeline = * m_pJobLogicUnit->m_xpPipeline;
+  LogicUnit* pLogicUnit = pJobLogicUnit();
+  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
   return pPipeline;
 }
@@ -851,7 +856,7 @@ void Job::vPrintJobContents(void)
          ,aEC[m_eError_job]          // 15
          ,spvSingularOp.sz(m_pSingularOp)  // 17
          ,spvTask.sz(m_pTask)        // 21
-         ,spvJobLogicUnit.sz(m_pJobLogicUnit) // 22
+         ,spvJobLogicUnit.sz(pJobLogicUnit()) // 22
          
          );
   
@@ -905,7 +910,7 @@ void Job::vPrintJobLine(void)
          );
 
   vTrace("logicUnit %p task %p"_Stz
-         ,this->m_pJobLogicUnit
+         ,this->pJobLogicUnit()
          ,this->pJobTask()
          );
 
@@ -966,12 +971,15 @@ void Job::vResetForCascade(Session* pSession)
   m_eJobState = JS_ACTIVE;
 
   // -- d -------------------
+#ifndef WITH_TASK_LOGICUNIT_ONLY
   if (m_pJobLogicUnit) {
     //delete m_pJobLogicUnit;
     //m_pJobLogicUnit = nullptr;
     m_pJobLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pJobLogicUnit,
                                     CN_JOB,this,"vResetForCascade"_Stz);
   }
+#endif
+  
   // m_oJobTags
   // m_xResult ???
   
@@ -1285,8 +1293,8 @@ void Job::vVerifyJobComposition(void)
   RASSERT(EC_NONE == eValidHeader());
   RASSERT(CN_JOB == eGetClassNo());
   aFooter()->vAssertFooter();
-  
-  RASSERT(m_pJobLogicUnit);
+
+  RASSERT(pJobLogicUnit());
 }
 
 /*----------------------------------------------------------------------------*/
