@@ -334,7 +334,12 @@ void Step::vJobAssertCorrectness(void)
   //Job* pJob = m_pJob;
   
   //vTrace("Job[].assertCorrectness\n"_Stz);
-    
+  
+#ifdef WITH_TASK_LOGICUNIT_ONLY
+  RASSERT(m_pJob_task.bIsNotNull());
+  RASSERT(m_pJob_task->pTask() == this);
+#endif
+  
   EXIT();
 }
 

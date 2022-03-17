@@ -212,6 +212,8 @@
 
   job[].progressReset
   
+  Job[].assertCorrectness
+
   JobRef[].assertNone
   
   Task[].job@ Job[] equal assert
@@ -299,6 +301,8 @@
   
   0 locals| nAcks |
   
+  Job[].assertCorrectness
+
   Task[].job@ Job[] equal assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -

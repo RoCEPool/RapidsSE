@@ -409,6 +409,8 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
             || bDELETE_RULE(CN_JOB, "~Job"_Stz            )
             || bDELETE_RULE(CN_JOB, "vResetForCascade"_Stz)
             || bDELETE_RULE(CN_OP,  "~Op"_Stz             )
+            
+            || bDELETE_RULE(CN_TASK,"~Task"_Stz           )
             );
   }
 

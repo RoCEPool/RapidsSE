@@ -204,6 +204,8 @@ namespace STORE
     void vSetFromCascade(Stz* szCascade);
     void vSignalJobMutex(void);
   
+    Task* pTask(void);
+  
     i8   iTimerMsec(void);
     i8   iTimerStart(void);
     void vTimerStart(void);

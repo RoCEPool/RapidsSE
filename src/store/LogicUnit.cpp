@@ -440,9 +440,11 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpTx.bIsNull());
 
   // These registers cannot be NULL if m_pJob is NULL
+#ifndef WITH_TASK_LOGICUNIT_ONLY
   RASSERT( m_pJob || !m_xpHandler.bIsNull() );
   RASSERT( m_pJob || !m_xpOp.bIsNull() );
-
+#endif
+  
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
 

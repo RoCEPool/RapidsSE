@@ -196,8 +196,8 @@ Task::~Task(void) noexcept(false)
   m_pProfile = nullptr;
   
 #ifdef WITH_TASK_LOGICUNIT_ONLY
-  delete m_p_TaskLogicUnit;
-  m_p_TaskLogicUnit = nullptr;
+  m_p_TaskLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_p_TaskLogicUnit,
+                                    CN_TASK,this,(Stz*)__func__);
 #endif
 }
 
