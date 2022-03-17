@@ -202,6 +202,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Stencil();
   Step::vAddSteps_Steps();
   Step::vAddSteps_Str();
+  Step::vAddSteps_Stream();
   Step::vAddSteps_StringA();
   Step::vAddSteps_StreamDefLft();
   Step::vAddSteps_StreamDefOut();

@@ -187,6 +187,7 @@ namespace STORE
     static void vAddSteps_Stencil(void);
     static void vAddSteps_Steps(void);
     static void vAddSteps_Str(void);
+    static void vAddSteps_Stream(void);
     static void vAddSteps_StringA(void);
     static void vAddSteps_StreamDefLft(void);
     static void vAddSteps_StreamDefOut(void);

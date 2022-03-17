@@ -1857,6 +1857,10 @@ public:
   void vStepsStart(void);
   void vStepsWrite(void);
 
+  // stream
+  void vStreamGet(void);
+  void vStreamSet(void);
+
   // string
   void vStrAlgebra(void);
   void vStrCat(void);
