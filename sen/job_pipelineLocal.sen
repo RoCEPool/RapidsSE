@@ -25,6 +25,8 @@
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::local
 
+  0 locals| nAcks |
+  
   Job[].assertCorrectness
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -103,7 +105,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the pipeline job (send startmarker to start)
   //<pipelineNm> "%v execute" .printf
-  Pipeline::enqueueStart if
+  Pipeline[].opsOnNode@ to nAcks
+  
+  nAcks Pipeline::enqueueStart if
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // wait for operators to finish

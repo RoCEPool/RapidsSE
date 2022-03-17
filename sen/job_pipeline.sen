@@ -297,6 +297,8 @@
 
   // "pipeline::execute" .
   
+  0 locals| nAcks |
+  
   Task[].job@ Job[] equal assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -339,14 +341,16 @@
   Task[].grabLock
   
   //<pipelineNm> "%v execute" .printf
-  Pipeline::enqueueStart not if
-    //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
-    Task[].dropLock
-  else
+  Pipeline[].opsOnNode@ to nAcks
+  
+  nAcks Pipeline::enqueueStart if
 
     // wait for all operators to ack this job
     Task[].wait
 
+  else
+    //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
+    Task[].dropLock
   then
   
   

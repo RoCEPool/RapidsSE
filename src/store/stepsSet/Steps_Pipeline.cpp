@@ -170,12 +170,14 @@ void Step::vPipelineEnqueueStart(void)
     
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
-  i8 iThisNode = AM::pGrid()->iThisNodeNo();
+  //i8 iThisNode = AM::pGrid()->iThisNodeNo();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of operators to be executed on this node
-  i8 nOps = pPipeline->nOpsOnNode(iThisNode);
+  //i8 nOps = pPipeline->nOpsOnNode(iThisNode);
   
+  i8 nOps = m_pDataStack->iPopInt(__func__);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set acks remaining equal to no of operators to be executed on this node
   if (nOps) {
