@@ -441,8 +441,18 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Stage[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Stage[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Stats[]"_Stz)) {
     pCurrentWord->vEncodeCall("Stats[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Stream[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Stream[].set"_Stz);
     EXIT();
     return;
   }
