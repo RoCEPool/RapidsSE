@@ -83,8 +83,9 @@ Job::Job(Stz* szJobNm,
   
   // -- d -------------------
   // revised job/op model
+#ifndef WITH_TASK_LOGICUNIT_ONLY
   m_pJobLogicUnit = nullptr;
-
+#endif
   
   // m_oJobTags
   // m_xResult
@@ -159,6 +160,7 @@ Job::~Job(void) noexcept(false)
 
   }
   
+#ifndef WITH_TASK_LOGICUNIT_ONLY
   if (m_pJobLogicUnit) {
     //AM::LOGICUNIT::vDelete(&m_pJobLogicUnit);
     m_pJobLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pJobLogicUnit,
@@ -167,6 +169,7 @@ Job::~Job(void) noexcept(false)
   else if (C_UNKNOWN != m_i_Origin) {
     vDebugPoint();
   }
+#endif
   
   if (m_pTask) {
     m_pTask->vGrabTaskLock((Stz*)__func__);
@@ -672,7 +675,7 @@ LogicUnit* Job::pJobLogicUnit(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
 #ifdef WITH_TASK_LOGICUNIT_ONLY
-  m_pTask->m_p_TaskLogicUnit;
+  m_pTask->pTaskLogicUnit();
 #else
   return m_pJobLogicUnit;
 #endif
