@@ -300,9 +300,9 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 
   i8 nOperands = m_pQueueLeft->iAppendOperand(pOperand);
 
-  if (m_pOpLogicUnit->m_xpStats.bIsNotNull()) {
-    if (nOperands > m_pOpLogicUnit->m_xpStats->m_nMaxQs)
-      m_pOpLogicUnit->m_xpStats->m_nMaxQs = nOperands;
+  if (pOpLogicUnit()->m_xpStats.bIsNotNull()) {
+    if (nOperands > pOpLogicUnit()->m_xpStats->m_nMaxQs)
+      pOpLogicUnit()->m_xpStats->m_nMaxQs = nOperands;
   }
 
 
@@ -1124,7 +1124,7 @@ LogicUnit* Op::pOpLogicUnit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
 #ifdef WITH_TASK_LOGICUNIT_ONLY
-  m_pTask->m_p_TaskLogicUnit;
+  return m_pTask->pTaskLogicUnit();
 #else
   return m_pOpLogicUnit;
 #endif
@@ -1511,10 +1511,12 @@ i8 Op::nPotSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+#ifndef WITH_TASK_LOGICUNIT_ONLY
   if (m_pOpLogicUnit.bIsNull())
     return -9;
-
-  i8 nBuffers = m_pOpLogicUnit->m_nPotSize;
+#endif
+  
+  i8 nBuffers = pOpLogicUnit()->m_nPotSize;
 
   return nBuffers;
 }
@@ -1823,9 +1825,10 @@ void Op::vSpawnOpTask(i8 iSessionId)
 
   vInitOperandHandlers();
 
+#ifndef WITH_TASK_LOGICUNIT_ONLY
   m_pOpLogicUnit = new LogicUnit;
   m_pOpLogicUnit->vOp(this);
-
+#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1919,13 +1922,15 @@ i8 Op::nTmpIndexSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
+#ifndef WITH_TASK_LOGICUNIT_ONLY
   if (m_pOpLogicUnit.bIsNull())
     return -9;
-
-  if (m_pOpLogicUnit->m_xpCombined.bIsNull())
+#endif
+  
+  if (pOpLogicUnit()->m_xpCombined.bIsNull())
     return -8;
 
-  Combined* pCombined = * m_pOpLogicUnit->m_xpCombined;
+  Combined* pCombined = * pOpLogicUnit()->m_xpCombined;
   Combined_T* aCombinedT = pCombined->aCombinedT();
   if (! aCombinedT)
     return -7;
@@ -1961,7 +1966,7 @@ void Op::vVerifyOpComposition(void)
   RASSERT(CN_OP == eGetClassNo());
   aFooter()->vAssertFooter();
   
-  RASSERT(m_pOpLogicUnit);
+  RASSERT(pOpLogicUnit());
 }
 
 /*----------------------------------------------------------------------------*/

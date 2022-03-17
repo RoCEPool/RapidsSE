@@ -706,29 +706,29 @@ void Job::vJobTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* new the logic unit for this job                                            */
 /*----------------------------------------------------------------------------*/
-#ifndef WITH_TASK_LOGICUNIT_ONLY
 void Job::vNewJobLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+#ifndef WITH_TASK_LOGICUNIT_ONLY
   ASSERT(! m_pJobLogicUnit);
 
   m_pJobLogicUnit = new LogicUnit;
   m_pJobLogicUnit->vJob(this);
-}
 #endif
+}
 
 /*----------------------------------------------------------------------------*/
 /* null the logic unit for this job                                           */
 /*----------------------------------------------------------------------------*/
-#ifndef WITH_TASK_LOGICUNIT_ONLY
 void Job::vNullJobLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+#ifndef WITH_TASK_LOGICUNIT_ONLY
   m_pJobLogicUnit = nullptr;
-}
 #endif
+}
 
 /*----------------------------------------------------------------------------*/
 /* get name of node this came from                                            */

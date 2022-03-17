@@ -29,7 +29,10 @@ namespace BASE
                public LifeGuard_t<Task>
   {
   friend class STORE::Step;
-  
+
+  friend class STORE::Op;  // temp
+  friend class STORE::Job; // temp
+
   private:
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // a)
