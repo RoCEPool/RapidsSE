@@ -42,8 +42,17 @@
 #define _PSH_UNK(iArg)  \
   *paW++ = iArg;
 
-#define _PSH_VCH(szArg1)  \
+#define _PSH_VCH(szArg1)     \
   *paW++ = (i8)szArg1;
+
+#define _ALLOC_VCH(szDstArea)                   \
+{                                               \
+  szArg1 = (char*)*(--paW);                     \
+  nSrcSize = strlen(szArg1) + 1;                \
+  strncpy(szDstArea, szArg1, nSrcSize);         \
+  *paW++ = (i8)szDstArea;                       \
+  szDstArea += nSrcSize + 1;                    \
+}
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

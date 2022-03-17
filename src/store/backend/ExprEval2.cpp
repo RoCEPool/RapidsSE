@@ -32,7 +32,9 @@ eEC ExprEval2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u
 
   while ( pTkn ) {
 
+#ifdef WITH_DEBUG_VERSION
     //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // comma
@@ -218,7 +220,9 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
   while ( pTkn ) {
 
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+#ifdef WITH_DEBUG_VERSION
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+#endif
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a GROUPBY ?
@@ -421,6 +425,13 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip null value
     if (pTkn->bSame("null"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip strings
+    if (pTkn->bIsString()) {
       pTkn = pTknVec->pNextToken();
       continue;
     }

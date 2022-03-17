@@ -2442,6 +2442,7 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
   s256 sOperation;
   s32  sInitValue;
   Bcd  xBcd;
+  Flt  xFlt;
   i8   iInitValue = 0;
 
   switch(ePreExp) {
@@ -2546,7 +2547,7 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
           sOperation.vSprintCat("_PSH_BCD(%lld)"_Stz, xBcd.T.m_iAsI8);
           break;
         case DM_FLT:
-          sOperation.vSprintCat("_PSH_FLT(0)"_Stz);
+          sOperation.vSprintCat("_PSH_FLT(0.0e+0)"_Stz);
           break;
         case DM_INT:
           sOperation.vSprintCat("_PSH_INT(0)"_Stz);
@@ -2662,15 +2663,19 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to the next predicate expression
-      ePreExp = (ePE)m_pPreExpStack->iPeek(i_ExprStack);
+      ePreExp = (ePE) m_pPreExpStack->iPeek(i_ExprStack);
 
-      if ( ! bGroupBy) {
-        if (ePreExp == PE_ALL ||
-            ePreExp == PE_CNT ||
-            ePreExp == PE_MIN ||
-            ePreExp == PE_MAX ||
-            ePreExp == PE_SUM) {
-          pExprStack = pPostStack;
+      if (!bGroupBy) {
+        if (eExprKind == EK_AGGGBY ||
+            eExprKind == EK_AGGREG) {
+          if (ePreExp == PE_ALL ||
+              ePreExp == PE_CNT ||
+              ePreExp == PE_MIN ||
+              ePreExp == PE_MAX ||
+              ePreExp == PE_SUM) {
+            pExprStack = pPostStack;
+          } else
+            pExprStack = m_pInitStack;
         } else
           pExprStack = m_pExprStack;
       }
@@ -2717,6 +2722,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
         eExprKind = EK_AGGORD;
       }
 
+      pExprStack = m_pInitStack;
 
       i_Col = 0;
       i_ExprStack++;
@@ -2824,13 +2830,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       if (sDollar[0] == '$') {
         char *sNext = (char*)(pTkn->szChars() + 1);
         if (StrLib::bIsDigit(sNext[0])) {
-          vPushOrdCol(pExprStack, pExprType, eExprKind, pTkn);
+          vPushOrdCol(pExprStack, pExprType, ePreExp, eExprKind, pTkn);
           continue;
         }
         else {
           char *sNext = (char*)(pTkn->szChars() + 2);
           if (StrLib::bIsDigit(sNext[0])) {
-            vPushOrdCol(pExprStack, pExprType, eExprKind, pTkn);
+            vPushOrdCol(pExprStack, pExprType, ePreExp, eExprKind, pTkn);
             continue;
           }
         }
@@ -3023,12 +3029,12 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     if (pTkn->bIsFloat()) {
-      vPushLiteral(pExprStack, pExprType, pTkn, DM_FLT);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_FLT);
       continue;
     }
 
     if (pTkn->bIsInteger()) {
-      vPushLiteral(pExprStack, pExprType, pTkn, DM_INT);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_INT);
       continue;
     }
 
@@ -3040,34 +3046,34 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     if (pTkn->bIsDecimal()) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // push token on the exprStack and type on the ExprType
-      vPushLiteral(pExprStack, pExprType, pTkn, DM_BCD);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_BCD);
       continue;
     }
 
     if (pTkn->bSame("DATE"_Stz) ) {
       i_Tkn++;
       pTkn = m_pTokenVec->pGet(i_Tkn);
-      vPushLiteral(pExprStack, pExprType, pTkn, DM_DTE);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_DTE);
       continue;
     }
 
     if (pTkn->bSame("TIME"_Stz)) {
       i_Tkn++;
       pTkn = m_pTokenVec->pGet(i_Tkn);
-      vPushLiteral(pExprStack, pExprType, pTkn, DM_TME);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_TME);
       continue;
     }
 
     if (pTkn->bSame("TIMESTAMP"_Stz)) {
       i_Tkn++;
       pTkn = m_pTokenVec->pGet(i_Tkn);
-      vPushLiteral(pExprStack, pExprType, pTkn, DM_TSP);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_TSP);
       continue;
     }
 
     if (pTkn->bSame("null"_Stz) ) {
       pTkn = m_pTokenVec->pGet(i_Tkn);
-      vPushLiteral(pExprStack, pExprType, pTkn, DM_UNK);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_UNK);
       continue;
     }
 
@@ -3147,10 +3153,10 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 //      // push token on the exprStack and type on the ExprType
 //      pExprType->vPush(DM_VCH);
 
-      vPushLiteral(pExprStack, pExprType, pTkn, DM_VCH);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_VCH);
     }
     else {
-      vPushColumn(pExprStack, pExprType, pStreamDef, pTkn);
+      vPushColumn(pExprStack, pExprType, pStreamDef, ePreExp, eExprKind, pTkn);
     }
 
   }
@@ -3517,7 +3523,7 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, ePE 
         pPostStack->vPushStr(sOperation);
       }
 
-      sOperation = aFM[eMacro_Add[eExprType][eExprType]];
+      sOperation = aFM[eMacro_Sum[eExprType][eExprType]];
       sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStr(sOperation);
       break;
@@ -3632,12 +3638,23 @@ void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push column                                                                */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamDef* pStreamDef, Token* pTkn) {
+void CodeSynth::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamDef* pStreamDef, ePE ePreExp, eEK eExprKind, Token* pTkn) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sOperation;
   s256 sColumn;
+  TypedStack* pStack;
+
+//  if (eExprKind == EK_AGGREG ||
+//      eExprKind == EK_AGGGBY) {
+//    if (ePreExp == PE_EXP)
+//      pStack = m_pInitStack;
+//    else
+//      pStack = pExprStack;
+//  }
+//  else
+    pStack = pExprStack;
 
   Column *pColumn = pStreamDef->pFindColumn(pTkn->szChars());
 
@@ -3648,7 +3665,7 @@ void CodeSynth::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, Stream
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push token on the exprStack and type on the typeStack
   pTypeStack->vPush(Column::eDatum(pColumn->eColumnType()));
-  pExprStack->vPushStz(sOperation);
+  pStack->vPushStz(sOperation);
 
   // if column nullable generate null check expressions
   if (pColumn->bIsNullable()) {
@@ -3686,7 +3703,8 @@ void CodeSynth::vPushCount(TypedStack* pExprStack, IntStack* pTypeStack, Token* 
 /*----------------------------------------------------------------------------*/
 /* push integer literal                                                       */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn, eDM eLiteral) {
+void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn,
+                             ePE ePreExp, eEK eExprKind, eDM eLiteral) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -3700,37 +3718,45 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
     case DM_BCD:
       vGetValue(DM_BCD, pTkn->azChars(), iValue, dValue);
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
+      pExprStack->vPushStz(sOperation);
       break;
     case DM_DTE:
       vGetValue(DM_DTE, pTkn->azChars(), iValue, dValue);
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
+      pExprStack->vPushStz(sOperation);
       break;
     case DM_FLT:
       vGetValue(DM_FLT, pTkn->azChars(), iValue, dValue);
       sOperation.vSprintCat("(%e)"_Stz, dValue);
+      pExprStack->vPushStz(sOperation);
       break;
     case DM_INT:
       sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
+      pExprStack->vPushStz(sOperation);
       break;
     case DM_TME:
       vGetValue(DM_TME, pTkn->azChars(), iValue, dValue);
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
+      pExprStack->vPushStz(sOperation);
       break;
     case DM_TSP:
       vGetValue(DM_TSP, pTkn->azChars(), iValue, dValue);
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
+      pExprStack->vPushStz(sOperation);
       break;
     case DM_UNK:
       sOperation.vSprintCat("(%lld)"_Stz, C_DATUM_NULL);
+      pExprStack->vPushStz(sOperation);
       break;
     case DM_VCH:
       sOperation.vSprintCat("(\"%s\")"_Stz, pTkn->szChars());
+      pExprStack->vPushStz(sOperation);
+      if (ePreExp == PE_EXP)
+        pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
       break;
     default:
       NEVER_REACH;
   }
-
-  pExprStack->vPushStz(sOperation);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push type on the ExprType
@@ -3807,7 +3833,7 @@ void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eExprKind, Token* pTkn) {
+void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp, eEK eExprKind, Token* pTkn) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -3873,6 +3899,7 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eE
       RASSERT(0);
   }
 
+
   // get the column
   pColumn = m_pStreamDefLft->pGetColumn(i_ColumnOrdinal);
 
@@ -3883,8 +3910,8 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eE
   sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
   pExprStack->vPushStz(sPush);
 
-  //if (eExprKind != EK_GROUPBY)
-  //  m_pInitStack->vPushStz(sPush);
+  if (pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP)
+    pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
 
   // push the type
   pTypeStack->vPush((i8)Column::eDatum(pColumn->eColumnType()));
@@ -3979,7 +4006,10 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       else
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
 
-      pExprStack->vPushStz(sPush);
+      if (ePreExp == PE_EXP)
+        m_pInitStack->vPushStz(sPush);
+      else
+        pExprStack->vPushStz(sPush);
 
       if (pPostStack->nValues() > 1) {
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
@@ -4028,7 +4058,10 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       else
         sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
 
-      pExprStack->vPushStz(sPush);
+      if (ePreExp == PE_EXP)
+        m_pInitStack->vPushStz(sPush);
+      else
+        pExprStack->vPushStz(sPush);
 
       if (pPostStack->nValues() > 1) {
         sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);

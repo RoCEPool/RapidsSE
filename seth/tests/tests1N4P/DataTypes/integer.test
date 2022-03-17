@@ -120,6 +120,29 @@ rows: (182)
 select sum(int_col0) + sum(int_col0) from datums;
 rows: (182)
 
+// aggregates : sum (with nulls)
+
+select sum(int_col1) from datums;
+rows: (52000)
+
+select 10 + sum(int_col1) from datums;
+rows: (52010)
+
+select sum(int_col1) + 10 from datums;
+rows: (52010)
+
+select sum(10 + int_col1) from datums;
+rows: (52120)
+
+select sum(int_col1 + 10) from datums;
+rows: (52120)
+
+select sum(int_col1 + int_col1) from datums;
+rows: (104000)
+
+select sum(int_col1) + sum(int_col1) from datums;
+rows: (104000)
+
 // aggregates : min
 
 select min(int_col0) from datums;

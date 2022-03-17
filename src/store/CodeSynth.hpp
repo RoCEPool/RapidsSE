@@ -184,12 +184,12 @@ namespace STORE {
                         ePE ePreExp, Token* pTkn, i8 i_Col, i8& i_DupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eCastType);
-    void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn);
+    void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, ePE ePreExp, eEK eExprKind, Token *pTkn);
     void vPushCount(TypedStack *pExprStack, IntStack *pExprType, Token *pTkn);
     void vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp);
-    void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eLiteral);
+    void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, ePE ePreExp, eEK eExprKind, eDM eLiteral);
     void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
-    void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, eEK eExprKind, Token *pTkn);
+    void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, ePE ePreExp, eEK eExprKind, Token *pTkn);
     void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
 
     void vGenerateExpr(char *sExpr, TypedStack* pPostStack,

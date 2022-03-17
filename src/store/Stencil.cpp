@@ -1360,7 +1360,7 @@ void Stencil::vSetupProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aRowCellArrayAgg =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
                                       &pCombined->aCombinedT()->m_racStrAreaAgg);
-
+  pCombined->aCombinedT()->m_racStrAreaSavAgg = pCombined->aCombinedT()->m_racStrAreaAgg;
 }
 
 /*----------------------------------------------------------------------------*/
