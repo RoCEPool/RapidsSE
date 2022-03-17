@@ -170,53 +170,43 @@ void Step::vPipelineEnqueueStart(void)
     
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
-  //i8 iThisNode = AM::pGrid()->iThisNodeNo();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of operators to be executed on this node
-  //i8 nOps = pPipeline->nOpsOnNode(iThisNode);
   
   i8 nOps = m_pDataStack->iPopInt(__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set acks remaining equal to no of operators to be executed on this node
-  //if (nOps) {
-    if (AM::bDbgTag(C_TAG_DBG_ACKS))
-      vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
-    AM::vSetAcksRmg(m_pJob_task->pJobTask(),nOps);
+  if (AM::bDbgTag(C_TAG_DBG_ACKS))
+    vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
   
-    // get the first stage of the pipeline
-    //Formwork* pFormWork = pPipeline->pFormwork();
-    //Stage* pStage0 = pFormWork->pGet(0);
-    Stage* pStage0 = pPipeline->pStage0();
+  
+  RASSERT(m_pJob_task->pJobTask() == this);
+  AM::vSetAcksRmg(m_pJob_task->pJobTask(),nOps);
+  
+  
+  // get the first stage of the pipeline
+  Stage* pStage0 = pPipeline->pStage0();
 
-    // send startMarker to the start Op of the first stage of the pipeline
-    if (pStage0->bStartPipeline()) {
-      //pStage->vStartPipeline(this);
-      
-      Stream*  pStream0 = pStage0->pStream0();
-
-      Op* pOp0 = pStream0->pOp0();
-
-      RASSERT(pOp0->szOpNm()->bSame("start"_Stz));
-
-      Operand* pStartMarker = new Marker(OM_STARTMARKER);
-      
-      pOp0->vOpTrace(nullptr,(Stz*)__func__,false,
-                     "// queue StartMarker into pipeline"_Stz);
-
-      pOp0->vAppendLeft(pStartMarker,this);
-
-    }
+  // send startMarker to the start Op of the first stage of the pipeline
+  if (pStage0->bStartPipeline()) {
+    //pStage->vStartPipeline(this);
     
-//    // pipeline job to wait for acks
-//    m_pDataStack->vPushInt(true);
-//  }
-//  else {
-//    // pipeline job has no operators to wait for
-//    m_pDataStack->vPushInt(false);
-//  }
-  
+    Stream*  pStream0 = pStage0->pStream0();
+
+    Op* pOp0 = pStream0->pOp0();
+
+    RASSERT(pOp0->szOpNm()->bSame("start"_Stz));
+
+    Operand* pStartMarker = new Marker(OM_STARTMARKER);
+    
+    pOp0->vOpTrace(nullptr,(Stz*)__func__,false,
+                   "// queue StartMarker into pipeline"_Stz);
+
+    pOp0->vAppendLeft(pStartMarker,this);
+
+  }
+    
   EXIT();
 }
 
