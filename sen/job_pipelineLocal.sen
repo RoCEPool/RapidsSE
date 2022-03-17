@@ -111,8 +111,9 @@
 
     nAcks Task[].acksRemaining!
     
-    Pipeline[].op0@ op.enqueOperand
-    //Pipeline::enqueueStart
+    Marker[].newStartMarker
+    
+    Marker[]\clear Pipeline[].op0@ op.enqueOperand
 
   // wait for all operators to ack this job
   Task[].wait

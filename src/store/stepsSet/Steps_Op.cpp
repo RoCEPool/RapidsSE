@@ -297,12 +297,12 @@ void Step::vOpEnqueOperand(void)
   
   Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
 
-  Operand* pStartMarker = new Marker(OM_STARTMARKER);
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
   pOp->vOpTrace(nullptr,(Stz*)__func__,false,
                  "// queue StartMarker into pipeline"_Stz);
 
-  pOp->vAppendLeft(pStartMarker,this);
+  pOp->vAppendLeft(pOperand,this);
 
   EXIT();
 }

@@ -491,12 +491,12 @@ void Step::vMarkerNewStartMarker(void)
   ASSERT (m_p_TaskLogicUnit->m_xpMarker.bIsNull());
 
   // revised job/op model
-  Op* pOp = *m_pOp;
+  //Op* pOp = *m_pOp;
 
   Operand* pOperand = new Marker(OM_STARTMARKER);
   m_p_TaskLogicUnit->m_xpMarker = pOperand;
 
-  pOp->vOpTrace(pOperand,(Stz*)__func__,true);
+  //pOp->vOpTrace(pOperand,(Stz*)__func__,true);
 
   EXIT();
 }
