@@ -226,6 +226,27 @@ public:
   void vCommandPreJob(void);
   void vCommandSpawnJob(void);
 
+  // counter
+  void vCounterAGet(void);
+  void vCounter0Get(void);
+  void vCounter1Get(void);
+  void vCounter2Get(void);
+  void vCounter3Get(void);
+  void vCounter4Get(void);
+  void vCounter5Get(void);
+  void vCounter6Get(void);
+  void vCounter7Get(void);
+
+  void vCounterASet(void);
+  void vCounter0Set(void);
+  void vCounter1Set(void);
+  void vCounter2Set(void);
+  void vCounter3Set(void);
+  void vCounter4Set(void);
+  void vCounter5Set(void);
+  void vCounter6Set(void);
+  void vCounter7Set(void);
+
   // crwBuffer
   void vCrwBufferDeleteOld(void);
   void vCrwBufferDuplicate(void);
@@ -1245,7 +1266,20 @@ public:
   // olist (originator list)
   void vOlistFindJob(void);
 
-  // operator
+  // op
+  void vOpGet(void);
+  void vOpHandlerEntry(void);
+  void vOpHandlerExit(void);
+  void vOpHandlerFetch(void);
+  void vOpHandlerStore(void);
+  void vOpHandlerAllStore(void);
+  void vOpInit(void);
+  void vOpIsOperandValid(void);
+  void vOpIncHandlerCount(void);
+  void vOpIncOperandCount(void);
+  void vOpPtnIdFetch(void);
+
+// operator
   void vOpAckPipelineJob(void);
   void vOpDownstreamOpStore(void);
   void vOpFindOp(void);
@@ -1511,27 +1545,6 @@ public:
   void vRegSendsIsNull(void);
   void vRegSendsNew(void);
 
-  // reg counter
-  void vCounterAGet(void);
-  void vCounter0Get(void);
-  void vCounter1Get(void);
-  void vCounter2Get(void);
-  void vCounter3Get(void);
-  void vCounter4Get(void);
-  void vCounter5Get(void);
-  void vCounter6Get(void);
-  void vCounter7Get(void);
-
-  void vCounterASet(void);
-  void vCounter0Set(void);
-  void vCounter1Set(void);
-  void vCounter2Set(void);
-  void vCounter3Set(void);
-  void vCounter4Set(void);
-  void vCounter5Set(void);
-  void vCounter6Set(void);
-  void vCounter7Set(void);
-
   // reg folder
   void vRegFolderFindSymbol(void);
 
@@ -1541,18 +1554,6 @@ public:
   // reg now
   void vRegNowGet(void);
 
-  // reg op
-  void vOpGet(void);
-  void vOpHandlerEntry(void);
-  void vOpHandlerExit(void);
-  void vOpHandlerFetch(void);
-  void vOpHandlerStore(void);
-  void vOpHandlerAllStore(void);
-  void vOpInit(void);
-  void vOpIsOperandValid(void);
-  void vOpIncHandlerCount(void);
-  void vOpIncOperandCount(void);
-  void vOpPtnIdFetch(void);
 
   // reg Path
   void vRegPathGet(void);
@@ -1826,6 +1827,10 @@ public:
 
   // steps
   void vExpressionsLockSample(void);
+
+  // stage
+  void vStageGet(void);
+  void vStageSet(void);
 
   // stats
   void vStatsBuffInInc(void);
