@@ -623,22 +623,28 @@ void Constants::vAddConstantsCpp(void)
   // TS_ : task state
   /*  0 */ vAddConstant("TS_NONE"_Stz,       TS_NONE);
   /*  1 */ vAddConstant("TS_BIDING"_Stz,     TS_BIDING);
-  /*  2 */ vAddConstant("TS_EXECUTING"_Stz,  TS_EXECUTING);
   /*  3 */ vAddConstant("TS_COMPLETED"_Stz,  TS_COMPLETED);
-  /*  4 */ vAddConstant("TS_READY"_Stz,      TS_READY);
-  /*  5 */ vAddConstant("TS_SLEEPING"_Stz,   TS_SLEEPING);
-  /*  6 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
-  /*  7 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
+  /*  3 */ vAddConstant("TS_DELETING"_Stz,   TS_DELETING);
+  /*  4 */ vAddConstant("TS_DESISTED"_Stz,   TS_DESISTED);
+  /*  5 */ vAddConstant("TS_EXECUTING"_Stz,  TS_EXECUTING);
+  /*  6 */ vAddConstant("TS_HIBERNATING"_Stz,TS_HIBERNATING);
+  /*  7 */ vAddConstant("TS_READY"_Stz,      TS_READY);
+  /*  8 */ vAddConstant("TS_REAPABLE"_Stz,   TS_REAPABLE);
+  /*  9 */ vAddConstant("TS_RETIRED"_Stz,    TS_RETIRED);
+  /* 10 */ vAddConstant("TS_SLEEPING"_Stz,   TS_SLEEPING);
+  /* 11 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
+  /* 12 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
  
   // TR_ : task transition
-  /*  0 */ vAddConstant("TR_NONE"_Stz,             TR_NONE);
-  /*  1 */ vAddConstant("TR_BIDE_FOR_OPERAND"_Stz, TR_BIDE_FOR_OPERAND);
-  /*  2 */ vAddConstant("TR_DELETE_THIS_TASK"_Stz, TR_DELETE_THIS_TASK);
-  /*  3 */ vAddConstant("TR_RETIRE_THIS_TASK"_Stz, TR_RETIRE_THIS_TASK);
-  /*  4 */ vAddConstant("TR_SLEEP_SOME_TIME"_Stz,  TR_SLEEP_SOME_TIME);
-  /*  5 */ vAddConstant("TR_WAIT_FOR_RESUME"_Stz,  TR_WAIT_FOR_RESUME);
-  /*  6 */ vAddConstant("TR_YIELD_FOR_OTHERS"_Stz, TR_YIELD_FOR_OTHERS);
-  /*  7 */ vAddConstant("TR_ENUMS"_Stz,            TR_ENUMS);
+  /*  0 */ vAddConstant("TR_NONE"_Stz,                TR_NONE);
+  /*  1 */ vAddConstant("TR_BIDE_FOR_OPERAND"_Stz,    TR_BIDE_FOR_OPERAND);
+  /*  2 */ vAddConstant("TR_DELETE_THIS_TASK"_Stz,    TR_DELETE_THIS_TASK);
+  /*  3 */ vAddConstant("TR_HIBERNATE_THIS_TASK"_Stz, TR_HIBERNATE_THIS_TASK);
+  /*  4 */ vAddConstant("TR_RETIRE_THIS_TASK"_Stz,    TR_RETIRE_THIS_TASK);
+  /*  5 */ vAddConstant("TR_SLEEP_SOME_TIME"_Stz,     TR_SLEEP_SOME_TIME);
+  /*  6 */ vAddConstant("TR_WAIT_FOR_RESUME"_Stz,     TR_WAIT_FOR_RESUME);
+  /*  7 */ vAddConstant("TR_YIELD_FOR_OTHERS"_Stz,    TR_YIELD_FOR_OTHERS);
+  /*  8 */ vAddConstant("TR_ENUMS"_Stz,               TR_ENUMS);
   
   // UK_ : function type
   /*  0 */ vAddConstant("UK_NONE"_Stz,       UK_NONE);

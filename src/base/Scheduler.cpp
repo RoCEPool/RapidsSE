@@ -124,6 +124,7 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
     // case where task is over and will be deleted -- -- -- -- -- -- -- -- -- --
       
     case TR_DELETE_THIS_TASK: // task is deleting itself
+    case TR_HIBERNATE_THIS_TASK: // task is hibernating itself
       vTaskSelf_DeleteThisTask(pSelfTask,pThread);
       RASSERT(!pThread->pTask());
       break;
@@ -183,7 +184,8 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
     AM::SE::vWhereAmI();
   
   RASSERT(pSelfTask->bIsLocked());
-  RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eTransition());
+  RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eTransition() ||
+          TR_HIBERNATE_THIS_TASK == pSelfTask->eTransition());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
   UNUSED(pThread);

@@ -287,7 +287,8 @@
     nullptr Job[].task!
     nullptr Task[].job!
     
-    TR_DELETE_THIS_TASK Task[].transition!
+    //TR_DELETE_THIS_TASK Task[].transition!
+    TR_HIBERNATE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
@@ -387,7 +388,8 @@
     nullptr Job[].task!
     nullptr Task[].job!
   
-    TR_DELETE_THIS_TASK Task[].transition!
+    //TR_DELETE_THIS_TASK Task[].transition!
+    TR_HIBERNATE_THIS_TASK Task[].transition!
 
   HAZARD
 ;
