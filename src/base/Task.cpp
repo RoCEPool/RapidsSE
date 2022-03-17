@@ -150,6 +150,10 @@ void Task::vTask(void)
   m_p_TaskLogicUnit = nullptr;
   
   _checkInitialised_(CN_TASK);
+  
+#ifdef WITH_TASK_LOGICUNIT_ONLY
+  m_p_TaskLogicUnit = new LogicUnit;
+#endif
     
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -190,6 +194,11 @@ Task::~Task(void) noexcept(false)
   
   delete m_pProfile;
   m_pProfile = nullptr;
+  
+#ifdef WITH_TASK_LOGICUNIT_ONLY
+  delete m_p_TaskLogicUnit;
+  m_p_TaskLogicUnit = nullptr;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,6 +231,7 @@ void Task::vTaskLoop(void)
   
   vVerifyTaskComposition();
   
+#ifndef  WITH_TASK_LOGICUNIT_ONLY
   if (m_pJob_task.bIsNotNull())
     m_p_TaskLogicUnit = m_pJob_task->pJobLogicUnit();
   else
@@ -229,7 +239,8 @@ void Task::vTaskLoop(void)
     m_p_TaskLogicUnit = m_pOp->pOpLogicUnit();
   else
     NEVER_REACH;
-
+#endif
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   while (TR_NONE == m_eTransition) {
