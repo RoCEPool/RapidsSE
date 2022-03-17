@@ -12533,8 +12533,6 @@ void Task::vAddMunged(Task* )
     "    \n"
     "    Marker[]\\clear Pipeline[].op0@ op.enqueOperand\n"
     "    \n"
-    "    //Pipeline::enqueueStart\n"
-    "\n"
     "  // wait for all operators to ack this job\n"
     "  Task[].wait\n"
     "  \n"

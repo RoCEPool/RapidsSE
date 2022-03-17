@@ -1379,7 +1379,6 @@ public:
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
   void vPipelineErroredStore(void);
-  void vPipelineEnqueueStart(void);
   void vPipelineErroredFetch(void);
   void vPipelineGetAccum(void);
   void vPipelineGrabDebugLock(void);

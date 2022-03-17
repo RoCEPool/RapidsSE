@@ -40,7 +40,6 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline::dropDebugLock"_Stz, &Step::vPipelineDropDebugLock);
   vAddStep("Pipeline::earlyExit@"_Stz,    &Step::vPipelineEarlyExitFetch);
   vAddStep("Pipeline::earlyExit!"_Stz,    &Step::vPipelineEarlyExitStore);
-  vAddStep("Pipeline::enqueueStart"_Stz,  &Step::vPipelineEnqueueStart);
   vAddStep("Pipeline::errored@"_Stz,      &Step::vPipelineErroredFetch);
   vAddStep("Pipeline::errored!"_Stz,      &Step::vPipelineErroredStore);
   vAddStep("Pipeline::getAccum"_Stz,      &Step::vPipelineGetAccum);
@@ -156,52 +155,6 @@ void Step::vPipelineDropDebugLock(void)
   
   pPipeline->vDropDebugLock();
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Pipeline::enqueueStart -- put StartMarker into left queue of start op      */
-/*----------------------------------------------------------------------------*/
-void Step::vPipelineEnqueueStart(void)
-{
-  ENTRY();
-  
-  
-//  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-//
-//  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
-//
-//  // get the first stage of the pipeline
-//  Stage* pStage0 = pPipeline->pStage0();
-//
-//  // send startMarker to the start Op of the first stage of the pipeline
-//  if (pStage0->bStartPipeline()) {
-//
-//    Stream*  pStream0 = pStage0->pStream0();
-//
-//    Op* pOp0 = pStream0->pOp0();
-//
-//    RASSERT(pOp0->szOpNm()->bSame("start"_Stz));
-//
-//    Operand* pStartMarker = new Marker(OM_STARTMARKER);
-//
-//    pOp0->vOpTrace(nullptr,(Stz*)__func__,false,
-//                   "// queue StartMarker into pipeline"_Stz);
-//
-//    pOp0->vAppendLeft(pStartMarker,this);
-//
-//  }
-    
-  
-  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
-
-  Operand* pStartMarker = new Marker(OM_STARTMARKER);
-
-  pOp->vOpTrace(nullptr,(Stz*)__func__,false,
-                 "// queue StartMarker into pipeline"_Stz);
-
-  pOp->vAppendLeft(pStartMarker,this);
-
   EXIT();
 }
 
