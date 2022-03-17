@@ -204,6 +204,19 @@ Formwork *Stage::pFormwork(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* get op 0                                                                   */
+/*----------------------------------------------------------------------------*/
+Op* Stage::pOp0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  Stream* pStream0 = this->pStream0();
+  Op* pOp0 = pStream0->pOp0();
+
+  return pOp0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
 Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp) {
@@ -262,6 +275,18 @@ StageSpec *Stage::pStageSpec(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
   return m_pStageSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream 0                                                               */
+/*----------------------------------------------------------------------------*/
+Stream* Stage::pStream0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  Stream* pStream0 = this->pGet(0);
+
+  return pStream0;
 }
 
 /*----------------------------------------------------------------------------*/

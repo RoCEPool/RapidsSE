@@ -184,24 +184,26 @@ void Step::vPipelineEnqueueStart(void)
     AM::vSetAcksRmg(m_pJob_task->pJobTask(),nOps);
   
     // get the first stage of the pipeline
-    Formwork* pFormWork = pPipeline->pFormwork();
-    Stage* pStage = pFormWork->pGet(0);
-    
+    //Formwork* pFormWork = pPipeline->pFormwork();
+    //Stage* pStage0 = pFormWork->pGet(0);
+    Stage* pStage0 = pPipeline->pStage0();
+
     // send startMarker to the start Op of the first stage of the pipeline
-    if (pStage->bStartPipeline()) {
+    if (pStage0->bStartPipeline()) {
       //pStage->vStartPipeline(this);
       
-      Stream*  pStream = pStage->pGet(0);
+      Stream*  pStream0 = pStage0->pStream0();
 
-      Op* pOp = pStream->pGet(0);
+      Op* pOp0 = pStream0->pOp0();
 
-      RASSERT(pOp->szOpNm()->bSame("start"_Stz));
+      RASSERT(pOp0->szOpNm()->bSame("start"_Stz));
 
-      Operand* pOperand = new Marker(OM_STARTMARKER);
+      Operand* pStartMarker = new Marker(OM_STARTMARKER);
       
-      pOp->vOpTrace(nullptr,(Stz*)__func__,false,"// queue StartMarker into pipeline"_Stz);
+      pOp0->vOpTrace(nullptr,(Stz*)__func__,false,
+                     "// queue StartMarker into pipeline"_Stz);
 
-      pOp->vAppendLeft(pOperand,this);
+      pOp0->vAppendLeft(pStartMarker,this);
 
     }
     

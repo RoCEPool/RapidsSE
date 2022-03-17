@@ -44,6 +44,7 @@ namespace STORE
     i8   i_Node(void);
     i8   i_Stream(void);
 
+    Op*  pOp0(void);
     Pipeline* pPipeline(void);
 
     PtnId  tPtnId(void);

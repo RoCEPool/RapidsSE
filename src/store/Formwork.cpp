@@ -105,9 +105,8 @@ Op* Formwork::pOp0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
   
-  Stage*  pStage0   = pGet(0);
-  Stream* pStand0   = pStage0->pGet(0);
-  Op*     pOp0      = pStand0->pGet(0);
+  Stage*  pStage0 = pGet(0);
+  Op*     pOp0    = pStage0->pOp0();
 
   return pOp0;
 }
@@ -202,6 +201,32 @@ void Formwork::vSpawnOpTasks(i8 iSessionId, i8 iNode)
   }
   
 }
+
+/*----------------------------------------------------------------------------*/
+/* get stage 0                                                                */
+/*----------------------------------------------------------------------------*/
+Stage* Formwork::pStage0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  
+  Stage*  pStage0 = pGet(0);
+
+  return pStage0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream 0                                                               */
+/*----------------------------------------------------------------------------*/
+Stream* Formwork::pStream0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  
+  Stage*  pStage0  = this->pStage0();
+  Stream* pStream0 = pStage0->pStream0();
+
+  return pStream0;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

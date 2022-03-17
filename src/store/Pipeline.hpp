@@ -84,6 +84,8 @@ namespace STORE
     void vPulsedLimit(bool bPulsedLimit);
     void vSetupJob(void);
     void vSpawnOpTasks(i8 iSessionId, i8 iNode);
+    Stage* pStage0(void);
+    Stream* pStream0(void);
 
   private:
     void vCreateFormwork();
