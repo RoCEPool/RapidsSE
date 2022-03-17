@@ -14,6 +14,7 @@
 #include "Op.hpp"
 #include "Pipeline.hpp"
 #include "StageSpec.hpp"
+#include "Marker.hpp"
 
 #include "Job.hpp"
 #include "LogicUnit.hpp"
@@ -46,7 +47,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
   
   
-  vAddStep("Op[].enqueOperand"_Stz,    &Step::vOpEnqueOperand);
+  vAddStep("Op.enqueOperand"_Stz,      &Step::vOpEnqueOperand);
   vAddStep("Op[]"_Stz,                 &Step::vOpGet);
   vAddStep("Op[].handlerEntry"_Stz,    &Step::vOpHandlerEntry);
   vAddStep("Op[].handlerExit"_Stz,     &Step::vOpHandlerExit);
@@ -288,18 +289,21 @@ void Step::vOpStageNameFetch(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* Op[].enqueOperand -- enqueue operand                                       */
+/* Op.enqueOperand -- enqueue operand                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vOpEnqueOperand(void)
 {
   ENTRY();
   
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
 
-  Op* pOp = (* m_p_TaskLogicUnit->m_xpOp);
+  Operand* pStartMarker = new Marker(OM_STARTMARKER);
 
-  pOp->vAppendLeft(pOperand, this);
-  
+  pOp->vOpTrace(nullptr,(Stz*)__func__,false,
+                 "// queue StartMarker into pipeline"_Stz);
+
+  pOp->vAppendLeft(pStartMarker,this);
+
   EXIT();
 }
 
