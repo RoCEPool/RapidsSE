@@ -342,16 +342,15 @@
   
   //<pipelineNm> "%v execute" .printf
   Pipeline[].opsOnNode@ to nAcks
-  
-  nAcks Pipeline::enqueueStart if
-
-    // wait for all operators to ack this job
-    Task[].wait
-
-  else
-    //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
-    Task[].dropLock
+  nAcks not if
+    <pipelineNm> "%v has no ops??" .printf
+    HAZARD
   then
+  
+  nAcks Pipeline::enqueueStart
+
+  // wait for all operators to ack this job
+  Task[].wait
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -

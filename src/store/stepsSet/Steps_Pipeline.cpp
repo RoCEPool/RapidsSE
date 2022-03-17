@@ -180,7 +180,7 @@ void Step::vPipelineEnqueueStart(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set acks remaining equal to no of operators to be executed on this node
-  if (nOps) {
+  //if (nOps) {
     if (AM::bDbgTag(C_TAG_DBG_ACKS))
       vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
     AM::vSetAcksRmg(m_pJob_task->pJobTask(),nOps);
@@ -209,13 +209,13 @@ void Step::vPipelineEnqueueStart(void)
 
     }
     
-    // pipeline job to wait for acks
-    m_pDataStack->vPushInt(true);
-  }
-  else {
-    // pipeline job has no operators to wait for
-    m_pDataStack->vPushInt(false);
-  }
+//    // pipeline job to wait for acks
+//    m_pDataStack->vPushInt(true);
+//  }
+//  else {
+//    // pipeline job has no operators to wait for
+//    m_pDataStack->vPushInt(false);
+//  }
   
   EXIT();
 }

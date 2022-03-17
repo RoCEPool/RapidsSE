@@ -106,18 +106,15 @@
   // execute the pipeline job (send startmarker to start)
   //<pipelineNm> "%v execute" .printf
   Pipeline[].opsOnNode@ to nAcks
-  
-  nAcks Pipeline::enqueueStart if
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // wait for operators to finish
-    //<pipelineNm> grid::thisNodeName@ "(%v) %v waiting on Task[].wait" .printf
-    Task[].wait
-    //<pipelineNm> grid::thisNodeName@ "(%v) %v running" .printf
-  else
-    //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
-    Task[].dropLock
+  nAcks not if
+    <pipelineNm> "%v has no ops??" .printf
+    HAZARD
   then
+
+  nAcks Pipeline::enqueueStart
+
+  // wait for all operators to ack this job
+  Task[].wait
 
   // remove job from the local job list
   Job[] job.jobList@ JL_DEMON == not if
