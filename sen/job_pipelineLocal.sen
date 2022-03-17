@@ -111,6 +111,7 @@
 
     nAcks Task[].acksRemaining!
     
+    Pipeline[].op0@ 
     Pipeline::enqueueStart
 
   // wait for all operators to ack this job

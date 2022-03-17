@@ -46,6 +46,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
   
   
+  vAddStep("Op[].enqueOperand"_Stz,    &Step::vOpEnqueOperand);
   vAddStep("Op[]"_Stz,                 &Step::vOpGet);
   vAddStep("Op[].handlerEntry"_Stz,    &Step::vOpHandlerEntry);
   vAddStep("Op[].handlerExit"_Stz,     &Step::vOpHandlerExit);
@@ -56,8 +57,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op[].isOperandValid"_Stz,  &Step::vOpIsOperandValid);
   vAddStep("Op[].incHandlerCount"_Stz, &Step::vOpIncHandlerCount);
   vAddStep("Op[].incOperandCount"_Stz, &Step::vOpIncOperandCount);
-  vAddStep("Op[].PtnId@"_Stz,          &Step::vOpPtnIdFetch);
-
+  vAddStep("Op[].ptnId@"_Stz,          &Step::vOpPtnIdFetch);
   vAddStep("Op[].stageNm@"_Stz,        &Step::vOpStageNmFetch);
   vAddStep("Op[].tagSet@"_Stz,         &Step::vOpTagSetFetch);
 
@@ -282,6 +282,26 @@ void Step::vOpStageNameFetch(void)
   EXIT();
 }
 
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* Op[].enqueOperand -- enqueue operand                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vOpEnqueOperand(void)
+{
+  ENTRY();
+  
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  Op* pOp = (* m_p_TaskLogicUnit->m_xpOp);
+
+  pOp->vAppendLeft(pOperand, this);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* Op[].get -- get op                                                         */

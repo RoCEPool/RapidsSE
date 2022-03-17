@@ -1267,6 +1267,7 @@ public:
   void vOlistFindJob(void);
 
   // op
+  void vOpEnqueOperand(void);
   void vOpGet(void);
   void vOpHandlerEntry(void);
   void vOpHandlerExit(void);
@@ -1367,6 +1368,7 @@ public:
 
   // job Pipeline
   void vPipelineCreate(void);
+  void vPipelineOp0Fetch(void);
   void vPipelineOpsOnNodeFetch(void);
   void vPipelineSpawnOpTasks(void);
 

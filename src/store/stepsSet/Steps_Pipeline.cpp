@@ -51,6 +51,7 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("pipeline.pipeout"_Stz,        &Step::vPipelinePipeout);
     
   vAddStep("Pipeline[].create"_Stz,       &Step::vPipelineCreate);
+  vAddStep("Pipeline[].op0@"_Stz,         &Step::vPipelineOp0Fetch);
   vAddStep("Pipeline[].opsOnNode@"_Stz,   &Step::vPipelineOpsOnNodeFetch);
   vAddStep("Pipeline[].spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
 }
@@ -166,47 +167,41 @@ void Step::vPipelineEnqueueStart(void)
   ENTRY();
   
   
-  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
+//  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
+//
+//  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
+//
+//  // get the first stage of the pipeline
+//  Stage* pStage0 = pPipeline->pStage0();
+//
+//  // send startMarker to the start Op of the first stage of the pipeline
+//  if (pStage0->bStartPipeline()) {
+//
+//    Stream*  pStream0 = pStage0->pStream0();
+//
+//    Op* pOp0 = pStream0->pOp0();
+//
+//    RASSERT(pOp0->szOpNm()->bSame("start"_Stz));
+//
+//    Operand* pStartMarker = new Marker(OM_STARTMARKER);
+//
+//    pOp0->vOpTrace(nullptr,(Stz*)__func__,false,
+//                   "// queue StartMarker into pipeline"_Stz);
+//
+//    pOp0->vAppendLeft(pStartMarker,this);
+//
+//  }
     
-  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
-    
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // get no of operators to be executed on this node
-//
-//  i8 nOps = m_pDataStack->iPopInt(__func__);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // set acks remaining equal to no of operators to be executed on this node
-//  if (AM::bDbgTag(C_TAG_DBG_ACKS))
-//    vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
-//
-//
-//  RASSERT(m_pJob_task->pJobTask() == this);
-//  AM::vSetAcksRmg(m_pJob_task->pJobTask(),nOps);
   
-  
-  // get the first stage of the pipeline
-  Stage* pStage0 = pPipeline->pStage0();
+  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
 
-  // send startMarker to the start Op of the first stage of the pipeline
-  if (pStage0->bStartPipeline()) {
-    //pStage->vStartPipeline(this);
-    
-    Stream*  pStream0 = pStage0->pStream0();
+  Operand* pStartMarker = new Marker(OM_STARTMARKER);
 
-    Op* pOp0 = pStream0->pOp0();
+  pOp->vOpTrace(nullptr,(Stz*)__func__,false,
+                 "// queue StartMarker into pipeline"_Stz);
 
-    RASSERT(pOp0->szOpNm()->bSame("start"_Stz));
+  pOp->vAppendLeft(pStartMarker,this);
 
-    Operand* pStartMarker = new Marker(OM_STARTMARKER);
-    
-    pOp0->vOpTrace(nullptr,(Stz*)__func__,false,
-                   "// queue StartMarker into pipeline"_Stz);
-
-    pOp0->vAppendLeft(pStartMarker,this);
-
-  }
-    
   EXIT();
 }
 
@@ -345,6 +340,22 @@ void Step::vPipelinePulsedStore(void)
   
   pPipeline->vPulsed(m_pDataStack->iPopBol(__func__));
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pipeline[].op0@ -- fetch op0 of this pipeline                              */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineOp0Fetch(void)
+{
+  ENTRY();
+  
+  Pipeline* pPipeline = (* m_p_TaskLogicUnit->m_xpPipeline);
+  
+  Op* pOp0 = pPipeline->pOp0();
+    
+  m_pDataStack->vPushPtr(pOp0);
+
   EXIT();
 }
 
