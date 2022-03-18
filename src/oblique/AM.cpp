@@ -518,6 +518,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     RASSERT(   bDELETE_RULE(CN_JOB,       "~Job"_Stz)
             || bDELETE_RULE(CN_OP,        "~Op"_Stz)
             || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz)
+            || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_HibernateThisTask"_Stz)
             );
   }
 

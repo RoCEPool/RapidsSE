@@ -2131,6 +2131,7 @@ void vStreamSetNextRow(void);
   void vTaskException(void);
   void vTaskGrabLock(void);
   void vTaskIsAckSet(void);
+  void vTaskIsLUonly(void);
   void vTaskIsWaiting(void);
   void vTaskJobFetch(void);
   void vTaskJobStore(void);

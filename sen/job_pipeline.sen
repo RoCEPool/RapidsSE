@@ -385,9 +385,11 @@
   Task[].grabLock
   
     // about to delete task (but not this job) so unlink task and job
-    nullptr Job[].task!
-    nullptr Task[].job!
-  
+    task::isLUonly not if
+      nullptr Job[].task!
+      nullptr Task[].job!
+    then
+    
     //TR_DELETE_THIS_TASK Task[].transition!
     TR_HIBERNATE_THIS_TASK Task[].transition!
 

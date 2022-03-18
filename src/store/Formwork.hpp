@@ -9,7 +9,7 @@ namespace STORE { class Stage; class FormworkSpec; }
 
 namespace STORE
 {
-  class Formwork : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>,
+  class Formwork : public VectorNL_t<CN_FORMWORK,Stage,C_MAX_STAGES>,
                    public LifeGuard_t<Formwork>
 
   {
