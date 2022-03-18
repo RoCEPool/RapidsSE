@@ -25,7 +25,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::breakPoint"_Stz,     &Step::vTaskBreakPoint);
   vAddStep("task::dump"_Stz,           &Step::vTaskDump);
   vAddStep("task::exception"_Stz,      &Step::vTaskException);
-  vAddStep("task::hasLUonly"_Stz,      &Step::vTaskHasLUonly);
   vAddStep("task::operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
   vAddStep("task::operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
   vAddStep("task::releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
@@ -162,25 +161,6 @@ void Step::vTaskIsAckSet(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* task::hasLUonly -- is WITH TASK LOGICUNIT ONLY?                             */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskHasLUonly(void)
-{
-  ENTRY();
-  
-#ifdef WITH_TASK_LOGICUNIT_ONLY
-
-  m_pDataStack->vPushInt(true);
-
-#else
-
-  m_pDataStack->vPushInt(false);
-
-#endif
-  
-  EXIT();
-}
 /*----------------------------------------------------------------------------*/
 /* task.isWaiting -- is task waiting?                                         */
 /*----------------------------------------------------------------------------*/

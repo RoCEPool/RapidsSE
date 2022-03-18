@@ -71,25 +71,16 @@
   iJobId plist::findJob discard
 
   // stall till job's previous phase (task) has completed
-  task::hasLUonly if
   
-    JobRef[].task@ to pTask_Cancel
-    begin
-          pTask_Cancel task.state@ TS_HIBERNATING !=
-    while
-      "job to be cancelled still has non-hibernating task" .
-      Task[].yield
-    repeat
-    pTask_Cancel task.cycleLock
+  JobRef[].task@ to pTask_Cancel
+  begin
+        pTask_Cancel task.state@ TS_HIBERNATING !=
+  while
+    "job to be cancelled still has non-hibernating task" .
+    Task[].yield
+  repeat
+  pTask_Cancel task.cycleLock
     
-  else
-    begin
-      JobRef[].hasTask
-    while
-      "job still has task" .
-      Task[].yield
-    repeat
-  then
 
   "pipeline::cancel" JobRef[] job.entry!
   JobRef[] job.scheduleNextPhase

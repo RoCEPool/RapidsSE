@@ -72,25 +72,16 @@
   iJobId plist::findJob discard
 
   // stall till job's previous phase (task) has completed
-  task::hasLUonly if
   
-    JobRef[].task@ to pTask_End
-    begin
-          pTask_End task.state@ TS_HIBERNATING !=
-    while
-      "job to be ended still has non-hibernating task" .
-      Task[].yield
-    repeat
-    pTask_End task.cycleLock
+  JobRef[].task@ to pTask_End
+  begin
+        pTask_End task.state@ TS_HIBERNATING !=
+  while
+    "job to be ended still has non-hibernating task" .
+    Task[].yield
+  repeat
+  pTask_End task.cycleLock
     
-  else
-    begin
-      JobRef[].hasTask
-    while
-      "job still has task" .
-      Task[].yield
-    repeat
-  then
 
   JobRef[] job.scheduleNextPhase
   JobRef[].returnReference
