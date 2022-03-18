@@ -286,10 +286,10 @@ select min(int_col1) + min(int_col1) from datums;
 failure contains: 'Arithmetic overflow'
 */
 // aggregates : max
-
+/*
 select max(flt_col8) from datums;
 rows: (10.22)
-/*
+
 select 10 + max(flt_col8) from datums;
 rows: (20)
 
