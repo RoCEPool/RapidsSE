@@ -214,11 +214,49 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to TS_COMPLETED state and is deleted                      */
+/* task transitions to TS_HIBERNATING state (is in plist with job)            */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskSelf_HibernateThisTask(Task* pSelfTask, Thread* pThread)
 {
   _static_
+  
+#ifdef WITH_TASK_LOGICUNIT_ONLY
+
+  //
+  // example: op task has ack'd the pipeline job and now just self-delete
+  //
+  // who delete's the job in these cases?
+  //
+  
+  if (!pSelfTask->bIsLocked())
+    AM::SE::vWhereAmI();
+  
+  RASSERT(pSelfTask->bIsLocked());
+  RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eTransition() ||
+          TR_HIBERNATE_THIS_TASK == pSelfTask->eTransition());
+  RASSERT(TS_DESISTED == pSelfTask->eState());
+  RASSERT(QK_NONE == pSelfTask->eQueue());
+  UNUSED(pThread);
+
+  // add assert on entry point
+
+  pSelfTask->vTranstionClear();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete case: task is to be deleted
+
+  pSelfTask->vState(TS_DELETING);
+  
+  pSelfTask->vDropTaskLock((Stz*)__func__);
+  
+  //delete pSelfTask;
+  
+  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
+                            CN_SCHEDULER,nullptr,(Stz*)__func__);
+
+  /** do not touch task **/
+  
+#else
   
   //
   // example: op task has ack'd the pipeline job and now just self-delete
@@ -253,6 +291,8 @@ void Scheduler::vTaskSelf_HibernateThisTask(Task* pSelfTask, Thread* pThread)
                             CN_SCHEDULER,nullptr,(Stz*)__func__);
 
   /** do not touch task **/
+  
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
