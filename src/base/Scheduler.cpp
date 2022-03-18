@@ -232,8 +232,7 @@ void Scheduler::vTaskSelf_HibernateThisTask(Task* pSelfTask, Thread* pThread)
     AM::SE::vWhereAmI();
   
   RASSERT(pSelfTask->bIsLocked());
-  RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eTransition() ||
-          TR_HIBERNATE_THIS_TASK == pSelfTask->eTransition());
+  RASSERT(TR_HIBERNATE_THIS_TASK == pSelfTask->eTransition());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
   UNUSED(pThread);
@@ -245,14 +244,14 @@ void Scheduler::vTaskSelf_HibernateThisTask(Task* pSelfTask, Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete case: task is to be deleted
 
-  pSelfTask->vState(TS_DELETING);
+  pSelfTask->vState(TS_HIBERNATING);
   
   pSelfTask->vDropTaskLock((Stz*)__func__);
   
   //delete pSelfTask;
   
-  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
-                            CN_SCHEDULER,nullptr,(Stz*)__func__);
+//  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
+//                            CN_SCHEDULER,nullptr,(Stz*)__func__);
 
   /** do not touch task **/
   
