@@ -100,6 +100,11 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
                pThread == pSelfTask->pvThread_DONT_DEREF()));
       break;
       
+    case TR_HIBERNATE_THIS_TASK: // task is hibernating itself
+      vTaskSelf_HibernateThisTask(pSelfTask,pThread);
+      RASSERT(!pThread->pTask());
+      break;
+            
     case TR_SLEEP_SOME_TIME: // task sleeps till wakup time arrives
       vTaskSelf_SleepSomeTime(pSelfTask,pThread);
       RASSERT(! pThread->pTask() ||
@@ -124,7 +129,6 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
     // case where task is over and will be deleted -- -- -- -- -- -- -- -- -- --
       
     case TR_DELETE_THIS_TASK: // task is deleting itself
-    case TR_HIBERNATE_THIS_TASK: // task is hibernating itself
       vTaskSelf_DeleteThisTask(pSelfTask,pThread);
       RASSERT(!pThread->pTask());
       break;
@@ -171,6 +175,48 @@ void Scheduler::vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread)
 /* task transitions to TS_COMPLETED state and is deleted                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
+{
+  _static_
+  
+  //
+  // example: op task has ack'd the pipeline job and now just self-delete
+  //
+  // who delete's the job in these cases?
+  //
+  
+  if (!pSelfTask->bIsLocked())
+    AM::SE::vWhereAmI();
+  
+  RASSERT(pSelfTask->bIsLocked());
+  RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eTransition() ||
+          TR_HIBERNATE_THIS_TASK == pSelfTask->eTransition());
+  RASSERT(TS_DESISTED == pSelfTask->eState());
+  RASSERT(QK_NONE == pSelfTask->eQueue());
+  UNUSED(pThread);
+
+  // add assert on entry point
+
+  pSelfTask->vTranstionClear();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete case: task is to be deleted
+
+  pSelfTask->vState(TS_DELETING);
+  
+  pSelfTask->vDropTaskLock((Stz*)__func__);
+  
+  //delete pSelfTask;
+  
+  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
+                            CN_SCHEDULER,nullptr,(Stz*)__func__);
+
+  /** do not touch task **/
+}
+
+/*----------------------------------------------------------------------------*/
+/* task transitions to TS_COMPLETED state and is deleted                      */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskSelf_HibernateThisTask(Task* pSelfTask, Thread* pThread)
 {
   _static_
   
