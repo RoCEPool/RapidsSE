@@ -282,10 +282,7 @@
     *paW++ = 0;                                                          \
   }                                                                      \
   else {                                                                 \
-    d8 fValue1 = *(d8*)&fltArg1.m_iAsI8;                                 \
-    d8 fValue2 = *(d8*)&fltArg2.m_iAsI8;                                 \
-                                                                         \
-    *paW++ = fValue2 < fValue1 ? 1 : 0; \
+    *paW++ = fltArg2.m_dFlt < fltArg1.m_dFlt ? 1 : 0;                    \
   }                                                                      \
 }
 

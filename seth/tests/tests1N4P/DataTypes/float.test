@@ -35,8 +35,41 @@ success
 // C_D8_MIN = DBL_MIN + DBL_EPSILON;
 // C_D8_MIN = 2.220446e-16
 // C_FLT_MIN is negative of C_FLT_MAX as known as lowest value
+//select sum(flt_col8) from datums;
+//------------------------------------------------------------------------------
 select 0.0e0 < 2.2250738585072014e-308 from datums;
-select 0.0e0 < -1.797693134862315708145274237317043567981e+308 from datums;
+rows:
+(true)
+(true)
+(true)
+(true)
+(true)
+(true)
+(true)
+(true)
+(true)
+(true)
+(true)
+(true)
+(true)
+
+
+select 0.0e0 < -1.7976e+308 from datums;
+rows:
+(false)
+(false)
+(false)
+(false)
+(false)
+(false)
+(false)
+(false)
+(false)
+(false)
+(false)
+(false)
+(false)
+
 //------------------------------------------------------------------------------
 select flt_col8 from datums order by flt_col8;
 rows:
@@ -181,7 +214,7 @@ select (flt_col8/0e0) from datums;
 failure contains: 'divide by zero'
 
 //TODO: aggreagets with float
-/*
+
 
 // aggregates : sum
 
@@ -230,7 +263,7 @@ select min(flt_col8) + min(flt_col8) from datums;
 rows: (0.44)
 
 // aggregates : min (with nulls and min/max ints)
-
+/*
 select min(int_col1) from datums;
 rows: (-9223372036854775806)
 
@@ -251,32 +284,32 @@ failure contains: 'Arithmetic overflow'
 
 select min(int_col1) + min(int_col1) from datums;
 failure contains: 'Arithmetic overflow'
-
+*/
 // aggregates : max
 
 select max(flt_col8) from datums;
-rows: (13)
+rows: (10.22)
 
 select 10 + max(flt_col8) from datums;
-rows: (23)
+rows: (20)
 
 select max(flt_col8) + 10 from datums;
-rows: (23)
+rows: (20.22)
 
 select max(10 + flt_col8) from datums;
-rows: (23)
+rows: (20)
 
 select max(flt_col8 + 10) from datums;
-rows: (23)
+rows: (20.22)
 
-select max(flt_col8 + int_col0) from datums;
-rows: (26)
+select max(flt_col8 + flt_col8) from datums;
+rows: (20.44)
 
 select max(flt_col8) + max(flt_col8) from datums;
-rows: (26)
+rows: (20.44)
 
 // aggregates : max (with nulls and min/max ints)
-
+/*
 select max(int_col1) from datums;
 rows: (9223372036854775806)
 

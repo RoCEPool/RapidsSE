@@ -225,10 +225,10 @@
         eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
         *paW++ = C_DATUM_NULL;                                             \
       }                                                                    \
-      else if(fltArg1.m_dFlt <  C_FLT_MIN ||                         \
-        fltArg2.m_dFlt < C_FLT_MIN) { \
-        eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
-        *paW++ = C_DATUM_NULL;                                             \
+      else if(fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                          \
+        fltArg2.m_dFlt < (d8)-C_FLT_MAX) {                                 \
+          eErrorCode = EC_ARITHMETIC_UNDERFLOW;                            \
+          *paW++ = C_DATUM_NULL;                                           \
       }                                                                    \
       else                                                                 \
       {                                                                    \
@@ -247,10 +247,8 @@
 
 #define _SUM_FLTFLT(eErrorCode)                                          \
 {                                                                        \
-  printf("******\n");                     \
   fltArg2.m_iAsI8 = *(--paW);                                            \
   fltArg1.m_iAsI8 = *(--paW);                                            \
-  printf("%g %g\n", fltArg1.m_dFlt, fltArg2.m_dFlt);                     \
   if (eErrorCode != EC_NONE) {                                           \
     *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
@@ -261,15 +259,14 @@
      *paW++ = fltArg1.m_iAsI8;                                           \
   }                                                                      \
   else {                                                                 \
-    printf("%g %g\n", fltArg1.m_dFlt, fltArg2.m_dFlt);                                                    \
     if (fltArg1.m_dFlt >= C_FLT_MAX ||                                   \
         fltArg2.m_dFlt >= C_FLT_MAX) {                                   \
         eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
       printf("OVERFLOW\n"); \
       *paW++ = C_DATUM_NULL;                                             \
     }                                                                    \
-    else if (fltArg1.m_dFlt <  C_FLT_MIN ||                              \
-             fltArg2.m_dFlt < C_FLT_MIN) {                               \
+    else if (fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                              \
+    fltArg2.m_dFlt < (d8)-C_FLT_MAX) {                                        \
              eErrorCode = EC_ARITHMETIC_UNDERFLOW;                       \
       *paW++ = C_DATUM_NULL;                                             \
     printf("%g %g %g UNDERFLOW\n", fltArg1.m_dFlt, fltArg2.m_dFlt, C_FLT_MIN); \
@@ -302,16 +299,16 @@
       eErrorCode = EC_DIVIDE_BY_ZERO;                                   \
     }                                                                    \
     else {                                                               \
-      if(fltArg1.m_dFlt > C_FLT_MAX ||                              \
+      if(fltArg1.m_dFlt > C_FLT_MAX ||                                   \
         fltArg2.m_dFlt > C_FLT_MAX) {  \
-        eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else if(fltArg1.m_dFlt <  C_FLT_MIN ||                         \
-        fltArg2.m_dFlt < C_FLT_MIN) { \
-        eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                       \
+        eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
+        *paW++ = C_DATUM_NULL;                                           \
+      }                                                                  \
+      else if(fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                        \
+        fltArg2.m_dFlt < (d8)-C_FLT_MAX) {                               \
+          eErrorCode = EC_ARITHMETIC_UNDERFLOW;                          \
+          *paW++ = C_DATUM_NULL;                                         \
+      }                                                                  \
       else {                                                             \
         *paW++ = fltArg1.m_iAsI8 / fltArg2.m_iAsI8;                      \
       }                                                                  \
@@ -340,8 +337,8 @@
           eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
           *paW++ = C_DATUM_NULL;                                             \
       }                                                                    \
-      else if(fltArg1.m_dFlt <  C_FLT_MIN ||                         \
-        fltArg2.m_dFlt < C_FLT_MIN) { \
+      else if(fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                         \
+      fltArg2.m_dFlt < (d8)-C_FLT_MAX) { \
         eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
         *paW++ = C_DATUM_NULL;                                             \
       }                                       \
@@ -375,8 +372,8 @@
         eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
         *paW++ = C_DATUM_NULL;                                             \
       }                                                                    \
-      else if(fltArg1.m_dFlt <  C_FLT_MIN ||                         \
-        fltArg2.m_dFlt < C_FLT_MIN) { \
+      else if(fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                         \
+      fltArg2.m_dFlt < (d8)-C_FLT_MAX) { \
         eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
         *paW++ = C_DATUM_NULL;                                             \
       }                                       \
