@@ -25,13 +25,13 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::breakPoint"_Stz,     &Step::vTaskBreakPoint);
   vAddStep("task::dump"_Stz,           &Step::vTaskDump);
   vAddStep("task::exception"_Stz,      &Step::vTaskException);
-  vAddStep("task::isLUonly"_Stz,       &Step::vTaskIsLUonly);
+  vAddStep("task::hasLUonly"_Stz,      &Step::vTaskHasLUonly);
   vAddStep("task::operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
   vAddStep("task::operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
   vAddStep("task::releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
   vAddStep("task::seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
   vAddStep("task::seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
-  vAddStep("task::seeLogicUnitRegisters"_Stz,  &Step::vTaskSeeLogicUnitRegisters);
+  vAddStep("task::seeLogicUnit"_Stz,   &Step::vTaskSeeLogicUnit);
   vAddStep("task::sleepMsec"_Stz,      &Step::vTaskSleepMsec);
   vAddStep("task::sleepSsec"_Stz,      &Step::vTaskSleepSsec);
   vAddStep("task::sleepUsec"_Stz,      &Step::vTaskSleepUsec);
@@ -163,9 +163,9 @@ void Step::vTaskIsAckSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::isLUonly -- is WITH TASK LOGICUNIT ONLY?                             */
+/* task::hasLUonly -- is WITH TASK LOGICUNIT ONLY?                             */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskIsLUonly(void)
+void Step::vTaskHasLUonly(void)
 {
   ENTRY();
   
@@ -305,9 +305,9 @@ void Step::vTaskSeeLockSets(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::seeLogicUnitRegisters -- see logic Unit registers                    */
+/* task::seeLogicUnit -- see logic Unit registers                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSeeLogicUnitRegisters(void)
+void Step::vTaskSeeLogicUnit(void)
 {
   ENTRY();
 

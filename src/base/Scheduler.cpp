@@ -516,7 +516,8 @@ void Scheduler::vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
   //
   // called from Api::bSpawnJob()
   //
-  RASSERT(TS_NONE == pTaskParticipant->eState());
+  RASSERT(TS_NONE == pTaskParticipant->eState() ||
+          TS_HIBERNATING == pTaskParticipant->eState());
   RASSERT(QK_NONE == pTaskParticipant->eQueue());
   RASSERT(TR_NONE == pTaskParticipant->eTransition());
   

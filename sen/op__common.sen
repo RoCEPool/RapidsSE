@@ -551,7 +551,7 @@
     "op__failureRecovery" .
     task::seeFrameStack
     task::seeLockSets
-    //task::seeLogicUnitRegisters
+    //task::seeLogicUnit
     //grid::seeNodes
   then
   

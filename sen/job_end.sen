@@ -65,17 +65,32 @@
   //
   //grid::thisNodeName@ "(%v) RECEIVED END" .printf
   Job[] locals| pJob_End |
+  0 locals| pTask_End |
 
   // find the job to be executed in the participating jobs
   pJob_End job.id@ locals| iJobId |
   iJobId plist::findJob discard
 
   // stall till job's previous phase (task) has completed
-  begin
-    JobRef[].hasTask
-  while
-    Task[].yield 
-  repeat
+  task::hasLUonly if
+  
+    JobRef[].task@ to pTask_End
+    begin
+          pTask_End task.state@ TS_HIBERNATING !=
+    while
+      "job to be ended still has non-hibernating task" .
+      Task[].yield
+    repeat
+    pTask_End task.cycleLock
+    
+  else
+    begin
+      JobRef[].hasTask
+    while
+      "job still has task" .
+      Task[].yield
+    repeat
+  then
 
   JobRef[] job.scheduleNextPhase
   JobRef[].returnReference

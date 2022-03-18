@@ -67,21 +67,34 @@
   // where: on the participating node
   //
   Job[] locals| pJob_Execute |
+  0 locals| pTask_Execute |
 
   // find the job to be executed in the participating jobs
   pJob_Execute job.id@ locals| iJobId |
   iJobId plist::findJob discard
 
   // stall till job's previous phase (task) has completed
-  begin
-    JobRef[].hasTask
-  while
-    "job still has task" .
-    Task[].yield
-  repeat
+  task::hasLUonly if
+  
+    JobRef[].task@ to pTask_Execute
+    begin
+        pTask_Execute task.state@ TS_HIBERNATING !=
+    while
+      "job to be executed still has non-hibernating task" .
+      Task[].yield
+    repeat
+    pTask_Execute task.cycleLock
+    
+  else
+    begin
+      JobRef[].hasTask
+    while
+      "job still has task" .
+      Task[].yield
+    repeat
+  then
   
   // "execute::execute" .
-
 
   // execute the job on this participating node
   JobRef[] job.scheduleNextPhase // job in participant list ; perform next phase

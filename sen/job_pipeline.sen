@@ -284,7 +284,7 @@
   Task[].grabLock
     
     // about to delete task (but not this job) so unlink task and job
-    task::isLUonly not if
+    task::hasLUonly not if
       nullptr Job[].task!
       nullptr Task[].job!
     then
@@ -387,7 +387,7 @@
   Task[].grabLock
   
     // about to delete task (but not this job) so unlink task and job
-    task::isLUonly not if
+    task::hasLUonly not if
       nullptr Job[].task!
       nullptr Task[].job!
     then
