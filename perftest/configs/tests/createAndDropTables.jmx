@@ -939,7 +939,7 @@
                 <connectTime>true</connectTime>
               </value>
             </objProp>
-            <stringProp name="filename">DropTableGroup.csv</stringProp>
+            <stringProp name="filename">dropTableGroup.csv</stringProp>
           </ResultCollector>
           <hashTree/>
         </hashTree>
