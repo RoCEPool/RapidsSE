@@ -210,6 +210,8 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FLOAT
+#define AS_FLT(x) \
+(    *(d8*)&x   )
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #define _EQ_FLTFLT(eErrorCode)                                             \
 {                                                                          \
@@ -268,6 +270,8 @@
   }                                                                      \
 }
 
+// printf("INT:  %lld ? %lld \n", fltArg2.m_iAsI8, fltArg1.m_iAsI8) ;
+// printf("FLOAT1:  %g ? %g \n", fltArg2.m_dFlt, fltArg1.m_dFlt) ;
 #define _LT_FLTFLT(eErrorCode)                                           \
 {                                                                        \
   fltArg1.m_iAsI8 = *(--paW);                                            \
@@ -278,7 +282,10 @@
     *paW++ = 0;                                                          \
   }                                                                      \
   else {                                                                 \
-    *paW++ = fltArg2.m_dFlt < fltArg1.m_dFlt ? 1 : 0;                    \
+    d8 fValue1 = *(d8*)&fltArg1.m_iAsI8;                                 \
+    d8 fValue2 = *(d8*)&fltArg2.m_iAsI8;                                 \
+                                                                         \
+    *paW++ = fValue2 < fValue1 ? 1 : 0; \
   }                                                                      \
 }
 

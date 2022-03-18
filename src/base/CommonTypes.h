@@ -12,8 +12,9 @@ static const i8 C_BCD_MAX = 140737488355327;
 
 // MaxFloat64
 static const d8 C_FLT_MAX = 1.797693134862315708145274237317043567981e+308;
-// min Float 64
-static const d8 C_FLT_MIN = 2.2250738585072014e-308;
+// min Float 64 based on DBL_MIN = 2.2250738585072014e-308
+// We use the lowest for float/double
+static const d8 C_FLT_MIN = -1.797693134862315708145274237317043567981e+308;
 
 static const i8 C_INT_MIN = (-9223372036854775807LL - 1);
 static const i8 C_INT_MAX = 9223372036854775807LL;

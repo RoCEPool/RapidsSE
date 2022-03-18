@@ -63,6 +63,7 @@ union Edt_T
 union Flt_T {
   d8 m_dFlt;
   i8 m_iAsI8;
+  //d8 dGetFloat() const {return *(d8*)&m_iAsI8;};  tinyC compilation error;
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
