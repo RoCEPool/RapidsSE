@@ -99,7 +99,7 @@
 
 #define WITH_OPT_HASHCAST EndDefine       //
 
-//#define WITH_TASK_LOGICUNIT_ONLY EndDefine       //
+#define WITH_TASK_LOGICUNIT_ONLY EndDefine       //
 
 /*============================================================================*/
 /* end                                                                        */

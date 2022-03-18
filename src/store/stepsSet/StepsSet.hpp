@@ -2124,6 +2124,7 @@ void vStreamSetNextRow(void);
   void vTaskAck(void);
   void vTaskAcksStore(void);
   void vTaskBreakPoint(void);
+  void vTaskCycleLock(void);
   void vTaskDestructorTraceFetch(void);
   void vTaskDestructorTraceStore(void);
   void vTaskDropLock(void);

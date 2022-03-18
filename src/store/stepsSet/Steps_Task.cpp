@@ -37,6 +37,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task::sleepUsec"_Stz,      &Step::vTaskSleepUsec);
 
   vAddStep("task.ack"_Stz,             &Step::vTaskAck);
+  vAddStep("task.cycleLock"_Stz,       &Step::vTaskCycleLock);
   vAddStep("task.isAckSet"_Stz,        &Step::vTaskIsAckSet);
   vAddStep("task.isWaiting"_Stz,       &Step::vTaskIsWaiting);
   vAddStep("task.name@"_Stz,           &Step::vTaskNameFetch);
@@ -59,7 +60,7 @@ void Step::vAddSteps_Task(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.ack -- acknowledge that task of this tasks completion                 */
+/* task.ack -- acknowledge waiting task of this tasks completion              */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskAck(void)
 {
@@ -77,6 +78,22 @@ void Step::vTaskAck(void)
     gpAttachMap->m_oStatistics.Task.m_nAcks++;
 #endif
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.cycleLock -- grab and drop lock of target task                        */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskCycleLock(void)
+{
+  ENTRY();
+  
+  Task* pTargetTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  // cycle the task lock to ensure task has fully entered next state
+  pTargetTask->vGrabTaskLock((Stz*)__func__);
+  pTargetTask->vDropTaskLock((Stz*)__func__);
+
   EXIT();
 }
 
