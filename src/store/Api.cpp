@@ -1076,15 +1076,7 @@ void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
   _static_
   
-#ifdef WITH_TASK_LOGICUNIT_ONLY
-
   vResetTaskForJob(pParticipantJob);
-
-#else
-  
-  // THIS NOW DOESNT READ CORRECTLY
-  vCreateTaskForJob(pParticipantJob);
-#endif
   
   Task* pTaskParticipant = pParticipantJob->pJobTask();
   Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);

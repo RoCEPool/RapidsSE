@@ -58,10 +58,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   
   RASSERT(pOpSpec);
   
-#ifndef WITH_TASK_LOGICUNIT_ONLY
-  m_pOpLogicUnit = nullptr;
-#endif
-
   m_sOpNm       = pOpSpec->szOpNm();
   //m_sPath
   
@@ -142,24 +138,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-#ifndef WITH_TASK_LOGICUNIT_ONLY
-  if (m_pOpLogicUnit) {
-    RASSERT(this == m_pOpLogicUnit->pOp());
-    RASSERT(! m_pOpLogicUnit->pJob());
-
-    //delete m_pOpLogicUnit;
-    //m_pOpLogicUnit = nullptr;
-    
-    LogicUnit* pLogicUnit = *m_pOpLogicUnit;
-    m_pOpLogicUnit = nullptr;
-    pLogicUnit->vGuardedDelete(CN_LOGICUNIT,&pLogicUnit,
-                               CN_OP,this,(Stz*)__func__);
-  }
-  else {
-    vDebugPoint();
-  }
-#endif
   
   if (m_pQueueLeft->nItems() != 0) {
     vTrace("Operand Queue not empty\n"_Stz);
@@ -1123,11 +1101,7 @@ LogicUnit* Op::pOpLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-#ifdef WITH_TASK_LOGICUNIT_ONLY
   return m_pTask->pTaskLogicUnit();
-#else
-  return m_pOpLogicUnit;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1510,12 +1484,7 @@ void Op::vPipeToOutput(Operand* pOperand)
 i8 Op::nPotSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-#ifndef WITH_TASK_LOGICUNIT_ONLY
-  if (m_pOpLogicUnit.bIsNull())
-    return -9;
-#endif
-  
+    
   i8 nBuffers = pOpLogicUnit()->m_nPotSize;
 
   return nBuffers;
@@ -1824,11 +1793,6 @@ void Op::vSpawnOpTask(i8 iSessionId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vInitOperandHandlers();
-
-#ifndef WITH_TASK_LOGICUNIT_ONLY
-  m_pOpLogicUnit = new LogicUnit;
-  m_pOpLogicUnit->vOp(this);
-#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1921,12 +1885,7 @@ void Op::vTask(Task* pTask)
 i8 Op::nTmpIndexSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-#ifndef WITH_TASK_LOGICUNIT_ONLY
-  if (m_pOpLogicUnit.bIsNull())
-    return -9;
-#endif
-  
+    
   if (pOpLogicUnit()->m_xpCombined.bIsNull())
     return -8;
 

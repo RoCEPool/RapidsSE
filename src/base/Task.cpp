@@ -151,9 +151,7 @@ void Task::vTask(void)
   
   _checkInitialised_(CN_TASK);
   
-#ifdef WITH_TASK_LOGICUNIT_ONLY
   m_p_TaskLogicUnit = new LogicUnit;
-#endif
     
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -195,10 +193,8 @@ Task::~Task(void) noexcept(false)
   delete m_pProfile;
   m_pProfile = nullptr;
   
-#ifdef WITH_TASK_LOGICUNIT_ONLY
   m_p_TaskLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_p_TaskLogicUnit,
                                     CN_TASK,this,(Stz*)__func__);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -230,17 +226,7 @@ void Task::vTaskLoop(void)
   ASSERT(PsxThd::pTlsGet(giTLS_TaskKey) == this);
   
   vVerifyTaskComposition();
-  
-#ifndef  WITH_TASK_LOGICUNIT_ONLY
-  if (m_pJob_task.bIsNotNull())
-    m_p_TaskLogicUnit = m_pJob_task->pJobLogicUnit();
-  else
-  if (m_pOp.bIsNotNull())
-    m_p_TaskLogicUnit = m_pOp->pOpLogicUnit();
-  else
-    NEVER_REACH;
-#endif
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   while (TR_NONE == m_eTransition) {

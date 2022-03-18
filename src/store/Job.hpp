@@ -83,11 +83,6 @@ namespace STORE
     Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
   public:
 
-
-    // -- logic unit
-#ifndef WITH_TASK_LOGICUNIT_ONLY
-    LogicUnit* m_pJobLogicUnit;  // set of registers for task steps    POST_RECV
-#endif
   
   private:
     // -- tasking
@@ -182,7 +177,6 @@ namespace STORE
 
 
     void vNewJobLogicUnit(void);
-    void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
   
     i8   iOriginatorNode(void);

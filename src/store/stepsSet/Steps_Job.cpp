@@ -335,10 +335,8 @@ void Step::vJobAssertCorrectness(void)
   
   //vTrace("Job[].assertCorrectness\n"_Stz);
   
-#ifdef WITH_TASK_LOGICUNIT_ONLY
   RASSERT(m_pJob_task.bIsNotNull());
   RASSERT(m_pJob_task->pTask() == this);
-#endif
   
   EXIT();
 }
@@ -1100,9 +1098,7 @@ void Step::vJobShow(void)
 void Step::vJobScheduleNextPhase(void)
 {
   ENTRY();
-  
-#ifdef WITH_TASK_LOGICUNIT_ONLY
-  
+    
   Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Task* pTaskParticipant = pJobParticipant->pJobTask();
@@ -1110,18 +1106,6 @@ void Step::vJobScheduleNextPhase(void)
   
   AM::vScheduleNextPhase(pJobParticipant,this);
 
-#else
-  
-  // example: this job is execute and the jobRef is bootcluster (in ptp list)
-
-  Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Task* pTaskParticipant = pJobParticipant->pJobTask();
-  RASSERT(! pTaskParticipant);
-  
-  AM::vScheduleNextPhase(pJobParticipant,this);
-  
-#endif
   
   EXIT();
 }

@@ -81,11 +81,6 @@ Job::Job(Stz* szJobNm,
   m_eJobState = JS_ACTIVE;
   m_eError_job    = EC_NONE;
   
-  // -- d -------------------
-  // revised job/op model
-#ifndef WITH_TASK_LOGICUNIT_ONLY
-  m_pJobLogicUnit = nullptr;
-#endif
   
   // m_oJobTags
   // m_xResult
@@ -159,18 +154,7 @@ Job::~Job(void) noexcept(false)
     }
 
   }
-  
-#ifndef WITH_TASK_LOGICUNIT_ONLY
-  if (m_pJobLogicUnit) {
-    //AM::LOGICUNIT::vDelete(&m_pJobLogicUnit);
-    m_pJobLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pJobLogicUnit,
-                                    CN_JOB,this,(Stz*)__func__);
-  }
-  else if (C_UNKNOWN != m_i_Origin) {
-    vDebugPoint();
-  }
-#endif
-  
+    
   if (m_pTask) {
     m_pTask->vGrabTaskLock((Stz*)__func__);
     m_pTask->vState(TS_DELETING);
@@ -202,9 +186,6 @@ void Job::vPostRecv(void* aReceivedJob)
   pReceivedJob->vJobList(JL_NONE);
     
   pReceivedJob->vJobTask(nullptr);
-
-  // revised job/op model
-  pReceivedJob->vNullJobLogicUnit();
 
   pReceivedJob->m_pSingularOp = nullptr;
   pReceivedJob->m_pJobMetricsChain = nullptr;
@@ -674,12 +655,7 @@ LogicUnit* Job::pJobLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-#ifdef WITH_TASK_LOGICUNIT_ONLY
   return m_pTask->pTaskLogicUnit();
-#else
-  return m_pJobLogicUnit;
-#endif
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -710,24 +686,6 @@ void Job::vNewJobLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-#ifndef WITH_TASK_LOGICUNIT_ONLY
-  ASSERT(! m_pJobLogicUnit);
-
-  m_pJobLogicUnit = new LogicUnit;
-  m_pJobLogicUnit->vJob(this);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* null the logic unit for this job                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vNullJobLogicUnit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-#ifndef WITH_TASK_LOGICUNIT_ONLY
-  m_pJobLogicUnit = nullptr;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -969,16 +927,6 @@ void Job::vResetForCascade(Session* pSession)
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobState = JS_ACTIVE;
-
-  // -- d -------------------
-#ifndef WITH_TASK_LOGICUNIT_ONLY
-  if (m_pJobLogicUnit) {
-    //delete m_pJobLogicUnit;
-    //m_pJobLogicUnit = nullptr;
-    m_pJobLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pJobLogicUnit,
-                                    CN_JOB,this,"vResetForCascade"_Stz);
-  }
-#endif
   
   // m_oJobTags
   // m_xResult ???
