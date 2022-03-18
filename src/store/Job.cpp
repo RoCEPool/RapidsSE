@@ -108,8 +108,6 @@ Job::Job(Stz* szJobNm,
   m_pJobMetricsChain  = nullptr;
 
   _checkInitialised_(CN_JOB);
-
-  vNewJobLogicUnit();
   
   m_oJobTags.vInsert(C_TAG_DISTID,m_tJobId.iAsI8());
   
@@ -677,15 +675,6 @@ void Job::vJobTask(Task* pTask)
     vDebugPoint();
   
   m_pTask = pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new the logic unit for this job                                            */
-/*----------------------------------------------------------------------------*/
-void Job::vNewJobLogicUnit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
 }
 
 /*----------------------------------------------------------------------------*/

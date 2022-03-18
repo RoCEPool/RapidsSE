@@ -176,7 +176,6 @@ namespace STORE
     void vJobTask(Task* pTask);
 
 
-    void vNewJobLogicUnit(void);
     Stz* szNodeNm(void);
   
     i8   iOriginatorNode(void);

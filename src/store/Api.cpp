@@ -1163,11 +1163,6 @@ void Api::vCreateTaskForJob(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob->vTimerStart();
-  
-  if (! pJob->pJobLogicUnit()) {
-    pJob->vNewJobLogicUnit();
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
