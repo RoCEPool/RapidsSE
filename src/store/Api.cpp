@@ -1173,6 +1173,26 @@ void Api::vCreateTaskForJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset task for given job                                                   */
+/*----------------------------------------------------------------------------*/
+void Api::vResetTaskForJob(Job* pJob)
+{
+  _static_
+    
+  Stz* szEntry = "job::job"_Stz;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Task* pTask = pJob->pTask();
+    
+  vSetTaskInxPtr(pTask,szEntry);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pJob->vTimerStart();
+}
+
+/*----------------------------------------------------------------------------*/
 /* create task for given op                                                   */
 /*----------------------------------------------------------------------------*/
 void Api::vCreateTaskForOp(Op* pOp)
