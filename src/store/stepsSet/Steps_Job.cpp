@@ -1101,6 +1101,17 @@ void Step::vJobScheduleNextPhase(void)
 {
   ENTRY();
   
+#ifdef WITH_TASK_LOGICUNIT_ONLY
+  
+  Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  Task* pTaskParticipant = pJobParticipant->pJobTask();
+  RASSERT(pTaskParticipant);
+  
+  AM::vScheduleNextPhase(pJobParticipant,this);
+
+#else
+  
   // example: this job is execute and the jobRef is bootcluster (in ptp list)
 
   Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
@@ -1109,6 +1120,8 @@ void Step::vJobScheduleNextPhase(void)
   RASSERT(! pTaskParticipant);
   
   AM::vScheduleNextPhase(pJobParticipant,this);
+  
+#endif
   
   EXIT();
 }
