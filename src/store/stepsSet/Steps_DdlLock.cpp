@@ -80,11 +80,6 @@ void Step::vDdlLockNone(void)
 {
   ENTRY();
 
-  if (! pJob_task() || ! pJob_task()->pJobLogicUnit()) {
-    EXIT();
-    return;
-  }
-
   if (LH_HAVE_NO_LOCK != m_p_TaskLogicUnit->m_eDdlLocked)
     THROW("DdlLock[].none : register still has ddl locked"_Stz);
 

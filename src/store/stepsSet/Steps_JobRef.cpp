@@ -109,11 +109,6 @@ void Step::vJobRefAssertNone(void)
 {
   ENTRY();
   
-  if (! pJob_task() || ! pJob_task()->pJobLogicUnit()) {
-    EXIT();
-    return;
-  }
-
   if (m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject())
     THROW("JobRef[].assertNone : register still has reference to a job"_Stz);
   

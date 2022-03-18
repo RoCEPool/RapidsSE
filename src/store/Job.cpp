@@ -647,16 +647,6 @@ TagSet* Job::pJobTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the logic unit                                                         */
-/*----------------------------------------------------------------------------*/
-LogicUnit* Job::pJobLogicUnit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_pTask->pTaskLogicUnit();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
 Task* Job::pJobTask(void)
@@ -730,7 +720,9 @@ Pipeline* Job::pPipeline_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  LogicUnit* pLogicUnit = pJobLogicUnit();
+  Task* pTask = this->pTask();
+  LogicUnit* pLogicUnit = pTask->pTaskLogicUnit();
+
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
   return pPipeline;
@@ -751,6 +743,9 @@ void Job::vPrintJobContents(void)
   SP_Pointer spvOriginatingTask;
   SP_Pointer spvTask;
   SP_Pointer spvJobLogicUnit;
+
+  Task* pTask = this->pTask();
+  LogicUnit* pLogicUnit = pTask->pTaskLogicUnit();
 
   vTrace("See Job %p::\n"_Stz,this);
 
@@ -803,7 +798,7 @@ void Job::vPrintJobContents(void)
          ,aEC[m_eError_job]          // 15
          ,spvSingularOp.sz(m_pSingularOp)  // 17
          ,spvTask.sz(m_pTask)        // 21
-         ,spvJobLogicUnit.sz(pJobLogicUnit()) // 22
+         ,spvJobLogicUnit.sz(pLogicUnit) // 22
          
          );
   
@@ -839,7 +834,7 @@ void Job::vPrintJobLine(void)
            ,this->iParticipantNode()
            );
 
-  LogicUnit* pLogicUnit = this->pJobLogicUnit();
+  LogicUnit* pLogicUnit = m_pTask->pTaskLogicUnit();
   
   if (pLogicUnit) {
     if (pLogicUnit->m_xpPipelineSpec.bIsNotNull())
@@ -857,8 +852,8 @@ void Job::vPrintJobLine(void)
          );
 
   vTrace("logicUnit %p task %p"_Stz
-         ,this->pJobLogicUnit()
-         ,this->pJobTask()
+         ,pLogicUnit
+         ,m_pTask
          );
 
   vTrace("\n"_Stz);
@@ -1240,8 +1235,6 @@ void Job::vVerifyJobComposition(void)
   RASSERT(EC_NONE == eValidHeader());
   RASSERT(CN_JOB == eGetClassNo());
   aFooter()->vAssertFooter();
-
-  RASSERT(pJobLogicUnit());
 }
 
 /*----------------------------------------------------------------------------*/

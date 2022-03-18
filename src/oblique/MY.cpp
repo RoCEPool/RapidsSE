@@ -342,15 +342,9 @@ LogicUnit* MY::pLogicUnit(void)
   
   Task* pTask = MY::pTask();
 
-  Job* pJob = pTask->pJob_task();
-  if (pJob)
-    return pJob->pJobLogicUnit();
-
-  Op* pOp = pTask->pOp();
-  if (pOp)
-    return pOp->pOpLogicUnit();
-
-  return nullptr;
+  LogicUnit* pLogicUnit = pTask->pTaskLogicUnit();
+  
+  return pLogicUnit;
 }
 
 /*----------------------------------------------------------------------------*/
