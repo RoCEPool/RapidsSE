@@ -704,7 +704,7 @@ static Stz* aCN[]
   /* */ "SENDS"_Stz,                // CN_SENDS
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
-  /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONS
+  /* */ "SESSIONS"_Stz,             // CN_SESSIONS
   /* */ "SHAPE"_Stz,                // CN_SHAPE
   /* */ "SHARDDEF"_Stz,             // CN_SHARDDEF
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
