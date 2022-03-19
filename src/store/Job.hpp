@@ -171,8 +171,6 @@ namespace STORE
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
-    void vJobTask(Task* pTask);
-
 
     Stz* szNodeNm(void);
   
@@ -196,7 +194,8 @@ namespace STORE
     void vSignalJobMutex(void);
   
     Task* pTask(void);
-  
+    void vTask(Task* pTask);
+
     i8   iTimerMsec(void);
     i8   iTimerStart(void);
     void vTimerStart(void);

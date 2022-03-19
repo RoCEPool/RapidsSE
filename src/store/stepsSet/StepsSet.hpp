@@ -863,8 +863,6 @@ public:
   void vJobTagSetFetch(void);
   void vJobTaskFetch(void);
   void vJobTaskFetch_other(void);
-  void vJobTaskStore(void);
-  void vJobTaskStore_other(void);
 
   void vJobTscBeginning(void);
   void vJobTscBegun(void);

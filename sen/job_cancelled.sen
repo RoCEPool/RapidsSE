@@ -12,12 +12,6 @@
 
   DdlLock[].testDrop
   
-  // unlink task and job
-  Task[].job@ if
-    //nullptr Task[].job@ job.task!
-    //nullptr Task[].job!
-  then
-
   Task[].grabLock
     Job[] job.queueExitDemon
     TR_RETIRE_THIS_TASK Task[].transition!

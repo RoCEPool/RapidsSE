@@ -69,7 +69,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
 
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch_other);
-  vAddStep("job.task!"_Stz,            &Step::vJobTaskStore_other);
   
   
   vAddStep("Job[]"_Stz,                  &Step::vRegJobGet);
@@ -113,7 +112,6 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("Job[].tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("Job[].task@"_Stz,            &Step::vJobTaskFetch);
-  vAddStep("Job[].task!"_Stz,            &Step::vJobTaskStore);
   
   vAddStep("job[].tscBeginning"_Stz,     &Step::vJobTscBeginning);
   vAddStep("job[].tscBegun"_Stz,         &Step::vJobTscBegun);
@@ -1216,42 +1214,6 @@ void Step::vJobTaskFetch_other(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   m_pDataStack->vPushPtr(pJob->pTask());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job[].task! -- store the task executing the job                            */
-/*----------------------------------------------------------------------------*/
-void Step::vJobTaskStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = * m_pJob_task;
-
-  Task* pTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  // for the moment this should always be null
-  ASSERT(! pTask);
-  pJob->vJobTask(pTask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.task! -- store the task executing the job                              */
-/*----------------------------------------------------------------------------*/
-void Step::vJobTaskStore_other(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Task* pTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  // for the moment this should always be null
-  ASSERT(! pTask);
-  pJob->vJobTask(pTask);
   
   EXIT();
 }

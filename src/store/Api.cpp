@@ -821,7 +821,7 @@ void Api::vCallBootSystem(void)
   Stz* szJobNm = pJob->szJobNm();
   Task* pBootTask = new Task(szJobNm,pJob);
 
-  pJob->vJobTask(pBootTask);
+  pJob->vTask(pBootTask);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
      
@@ -882,7 +882,7 @@ void Api::vCallStartSystem(void)
   Task* pStartTask = new Task(szJobNm,pJob);
   pStartTask->vIsStart(true);
 
-  pJob->vJobTask(pStartTask);
+  pJob->vTask(pStartTask);
   
   vSetTaskInxPtr(pStartTask,"startSystem::startSystem"_Stz);
 
@@ -1156,7 +1156,7 @@ void Api::vCreateTaskForJob(Job* pJob)
 
   Task* pTask = new Task(pJob->szJobNm(),pJob);
 
-  pJob->vJobTask(pTask);
+  pJob->vTask(pTask);
     
   vSetTaskInxPtr(pTask,szEntry);
 

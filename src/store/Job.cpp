@@ -183,7 +183,7 @@ void Job::vPostRecv(void* aReceivedJob)
   
   pReceivedJob->vJobList(JL_NONE);
     
-  pReceivedJob->vJobTask(nullptr);
+  pReceivedJob->vTask(nullptr);
 
   pReceivedJob->m_pSingularOp = nullptr;
   pReceivedJob->m_pJobMetricsChain = nullptr;
@@ -647,19 +647,6 @@ TagSet* Job::pJobTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set task                                                                   */
-/*----------------------------------------------------------------------------*/
-void Job::vJobTask(Task* pTask)
-{
-  ASSERT(! pTask || ! m_pTask);
-  
-  if (! pTask)
-    vDebugPoint();
-  
-  m_pTask = pTask;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get name of node this came from                                            */
 /*----------------------------------------------------------------------------*/
 Stz* Job::szNodeNm(void)
@@ -984,6 +971,18 @@ Task* Job::pTask(void)
   return m_pTask;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set task                                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vTask(Task* pTask)
+{
+  ASSERT(! pTask || ! m_pTask);
+  
+  if (! pTask)
+    vDebugPoint();
+  
+  m_pTask = pTask;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get elapsed time in milliseconds                                           */
