@@ -127,7 +127,7 @@ void Step::vPipelineCreate(void)
   // create pipeline
   
   Pipeline* pPipeline =
-    new Pipeline(m_pJob_task,pPipelineSpec,m_pJob_task->iOriginatorNode());
+    new Pipeline(m_pJob,pPipelineSpec,m_pJob->iOriginatorNode());
   
   m_pLogicUnit->m_xpPipeline = pPipeline;
     
@@ -356,7 +356,7 @@ void Step::vPipelineSpawnOpTasks(void)
   
   Pipeline* pPipeline = * m_pLogicUnit->m_xpPipeline;
   
-  pPipeline->vSpawnOpTasks(m_pJob_task->m_i_Session, iThisNode);
+  pPipeline->vSpawnOpTasks(m_pJob->m_i_Session, iThisNode);
   
   EXIT();
 }

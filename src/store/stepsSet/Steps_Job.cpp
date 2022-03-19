@@ -156,7 +156,7 @@ void Step::vJobAddDemon(void)
   //  AM::pOriginatingJobs()->vDropLock();
   
   
-  AM::vJob_AddDemon(* m_pJob_task);
+  AM::vJob_AddDemon(* m_pJob);
   
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
     
@@ -172,7 +172,7 @@ void Step::vJobAddLocal(void)
   
   //Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  AM::vJob_AddLocal(* m_pJob_task);
+  AM::vJob_AddLocal(* m_pJob);
   
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
     
@@ -194,7 +194,7 @@ void Step::vJobAddOriginator(void)
 //  AM::pOriginatingJobs()->vDropLock();
   
 
-  AM::vJob_AddOriginating(* m_pJob_task);
+  AM::vJob_AddOriginating(* m_pJob);
 
   //vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
       
@@ -214,7 +214,7 @@ void Step::vJobAddParticipant(void)
 //  AM::pParticipatingJobs()->vAddJob(pJob);
 //  AM::pParticipatingJobs()->vDropLock();
   
-  AM::vJob_AddParticipating(* m_pJob_task);
+  AM::vJob_AddParticipating(* m_pJob);
 
   //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
     
@@ -234,7 +234,7 @@ void Step::vJobAddRetired(void)
 //  AM::pParticipatingJobs()->vAddJob(pJob);
 //  AM::pParticipatingJobs()->vDropLock();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
   
   RASSERT(pJob->pTask());
   
@@ -333,8 +333,8 @@ void Step::vJobAssertCorrectness(void)
   
   //vTrace("Job[].assertCorrectness\n"_Stz);
   
-  RASSERT(m_pJob_task.bIsNotNull());
-  RASSERT(m_pJob_task->pTask() == this);
+  RASSERT(m_pJob.bIsNotNull());
+  RASSERT(m_pJob->pTask() == this);
   
   EXIT();
 }
@@ -528,13 +528,13 @@ void Step::vJobEntryFetch(void)
   
   Job* pJob = nullptr;
 
-  if (m_pJob_task.bIsNotNull()) {
+  if (m_pJob.bIsNotNull()) {
     //RASSERT(! *m_pOp);
-    pJob = *m_pJob_task;
+    pJob = *m_pJob;
   }
   else
   if (m_pOp.bIsNotNull()) {
-    RASSERT(m_pJob_task.bIsNull());
+    RASSERT(m_pJob.bIsNull());
     pJob = m_pOp->pPipelineJob();
   }
   else {
@@ -567,7 +567,7 @@ void Step::vJobEntryStore(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
 
   s4K sEntry;
   m_pDataStack->vPopStr(sEntry,__func__);
@@ -603,13 +603,13 @@ void Step::vJobErrorFetch(void)
   
   Job* pJob = nullptr;
 
-  if (m_pJob_task.bIsNotNull()) {
+  if (m_pJob.bIsNotNull()) {
     //RASSERT(! *m_pOp);
-    pJob = *m_pJob_task;
+    pJob = *m_pJob;
   }
   else
   if (m_pOp.bIsNotNull()) {
-    RASSERT(m_pJob_task.bIsNull());
+    RASSERT(m_pJob.bIsNull());
     pJob = m_pOp->pPipelineJob();
   }
   else {
@@ -628,7 +628,7 @@ void Step::vJobErrorStore(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
 
   i8 iJobError = m_pDataStack->iPopAsInt(__func__);
   
@@ -645,7 +645,7 @@ void Step::vJobIdFetch(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
 
   m_pDataStack->vPushInt(pJob->tJobId().iAsI8());
   
@@ -764,7 +764,7 @@ void Step::vJobParticipantFetch(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
 
   m_pDataStack->vPushInt(pJob->iParticipantNode());
   
@@ -792,7 +792,7 @@ void Step::vJobParticipantStore(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
 
   i8 iParticipantNode = m_pDataStack->iPopAsInt(__func__);
   
@@ -808,7 +808,7 @@ void Step::vJobPreExecuteTest(void)
 {
   ENTRY();
   
-  eEC eError = AM::JOB::ePreExecuteTest(m_pJob_task);
+  eEC eError = AM::JOB::ePreExecuteTest(m_pJob);
   
   m_pDataStack->vPushInt(eError);
 
@@ -822,7 +822,7 @@ void Step::vJobPhaseFetch(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
 
   m_pDataStack->vPushInt(pJob->eJobPhase());
   
@@ -850,7 +850,7 @@ void Step::vJobPhaseStore(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
 
   i8 iJobPhase = m_pDataStack->iPopAsInt(__func__);
   
@@ -866,7 +866,7 @@ void Step::vJobProgress(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
   Timer* pProgress = pJob->pProgressTimer();
 
   pProgress->vUpdate();
@@ -888,7 +888,7 @@ void Step::vJobProgressReset(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
   Timer* pProgress = pJob->pProgressTimer();
 
   pProgress->vReset();
@@ -925,7 +925,7 @@ void Step::vJobReapableFetch(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
 
   m_pDataStack->vPushInt(pJob->bReapable());
   
@@ -953,10 +953,10 @@ void Step::vJobReapableStore(void)
 {
   ENTRY();
   
-  if (m_pJob_task.bIsNull())
+  if (m_pJob.bIsNull())
     AM::SE::vWhereAmI();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
 
   i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
   
@@ -991,7 +991,7 @@ void Step::vJobRemoveLocal(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
   
   AM::vJob_RemoveLocal(pJob);
       
@@ -1005,7 +1005,7 @@ void Step::vJobRemoveOriginator(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
   
   AM::vJob_RemoveOriginating(pJob);
   
@@ -1019,7 +1019,7 @@ void Step::vJobRemoveParticipant(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
   
   AM::vJob_RemoveParticipating(pJob);
      
@@ -1033,7 +1033,7 @@ void Step::vJobRemoveRetired(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
   
   AM::vJob_RemoveRetired(pJob);
      
@@ -1137,7 +1137,7 @@ void Step::vJobStateFetch(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob_task;
+  Job* pJob = m_pJob;
 
   m_pDataStack->vPushInt(pJob->eJobState());
   
@@ -1151,7 +1151,7 @@ void Step::vJobStateStore(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob_task;
+  Job* pJob = m_pJob;
 
   i8 iJobState = m_pDataStack->iPopAsInt(__func__);
   
@@ -1172,13 +1172,13 @@ void Step::vJobTagSetFetch(void)
   
   Job* pJob = nullptr;
 
-  if (m_pJob_task.bIsNotNull()) {
+  if (m_pJob.bIsNotNull()) {
     //RASSERT(! *m_pOp);
-    pJob = *m_pJob_task;
+    pJob = *m_pJob;
   }
   else
   if (m_pOp.bIsNotNull()) {
-    RASSERT(m_pJob_task.bIsNull());
+    RASSERT(m_pJob.bIsNull());
     pJob = m_pOp->pPipelineJob();
   }
   else {
@@ -1197,7 +1197,7 @@ void Step::vJobTaskFetch(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job* pJob = * m_pJob;
 
   m_pDataStack->vPushPtr(pJob->pTask());
   
@@ -1225,7 +1225,7 @@ void Step::vJobTscBeginning(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob_task;
+  Job* pJob = m_pJob;
 
   pJob->vTscBeginning(Hardware::iReadTsc());
   
@@ -1337,7 +1337,7 @@ void Step::vJobTscParticipant(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob_task;
+  Job* pJob = m_pJob;
 
   pJob->vTscParticipant(Hardware::iReadTsc());
   
@@ -1355,13 +1355,13 @@ void Step::vRegJobGet(void)
 
   Job* pJob = nullptr;
   
-  if (m_pJob_task.bIsNotNull()) {
+  if (m_pJob.bIsNotNull()) {
     //RASSERT(! *m_pOp);
-    pJob = *m_pJob_task;
+    pJob = *m_pJob;
   }
   else
   if (m_pOp.bIsNotNull()) {
-    RASSERT(m_pJob_task.bIsNull());
+    RASSERT(m_pJob.bIsNull());
     pJob = m_pOp->pPipelineJob();
   }
   else {

@@ -34,78 +34,55 @@ namespace BASE
   friend class STORE::Job; // temp
 
   private:
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // a)
 
-    // -- id, name and kind
-    Gid_t<CN_TASK> m_xTaskId;  // task id in grid
-    s32          m_sTaskNm;  // name of this task
-    // n/a                   // kind
+    Gid_t<CN_TASK>  m_xTaskId;  // task id in grid
+    s32 m_sTaskNm;  // name of this task
+    eTS m_eState;   // task state (running, sleeping, ...)
 
-    // -- belongs to
-    SMA<Job,CN_JOB> m_pJob_task; // which job this task is executing
-    SMA<Op,CN_OP>   m_pOp;  // whic this task is executing
+    SMA<Job,CN_JOB> m_pJob; // which job this task is executing
+    SMA<Op,CN_OP>   m_pOp;  // ... or which op this task is executing
   
-    // -- refers to
     SMA<Thread, CN_THREAD>  m_pThread;  // current thread executing this task
 
-    // -- state
-    eTS m_eState;  // task state (running, sleeping, ...)
-
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // b)
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // c)
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // d)
-
-  
-    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
-
-    Lock         m_okLock;       // lock for this task
+    Lock         m_okLock;        // lock for this task
    
+    bool         m_bIsStart;      // is this the start task?
+    bool         m_bIsImmediate;  // is this an immediate task?
 
-
-    bool         m_bIsStart;     // is this the start task?
-    bool         m_bIsImmediate; // is this an immediate task?
-
-    eTR          m_eTransition;  // schedulre transition request
-    eQK          m_eQueue;       // which queue the task is currently in
-    eEP          m_eEntryPoint;  // task entry point
+    eTR          m_eTransition;   // schedulre transition request
+    eQK          m_eQueue;        // which queue the task is currently in
+    eEP          m_eEntryPoint;   // task entry point
     
-    Decider      m_oAcksRmg_task;     // number of acks still waiting for
-    Wakeup       m_oWakeup;      // wakeup time from sleeping
+    Decider      m_oAcksRmg_task; // number of acks still waiting for
+    Wakeup       m_oWakeup;       // wakeup time from sleeping
 
-    i8           m_iTraceMask;   // tracing mask
+    i8           m_iTraceMask;    // tracing mask
   
-    i8           m_nOperandYield;  //
+    i8           m_nOperandYield; //
   
-    Profile*     m_pProfile;     // runtime profile
+    Profile*     m_pProfile;      // runtime profile
 
-    LockSet      m_oReadLocks;   // read locks currently held by this task/op
-    LockSet      m_oWriteLocks;  // write locks currently held by this task/op
+    LockSet      m_oReadLocks;    // read locks currently held by this task/op
+    LockSet      m_oWriteLocks;   // write locks currently held by this task/op
   
-    LogicUnit*   m_pLogicUnit; // logic unit
+    LogicUnit*   m_pLogicUnit;    // logic unit
 
   public:
-    Word* m_pRecoveryWord;  // sen word called to recover from failure
+    Word*        m_pRecoveryWord; // sen word called to recover from failure
 
-    DicStack m_oDicStack;         // dictionary stack
-    DicStack m_oSaveDicStack;    // save dictionary stack
+    DicStack     m_oDicStack;     // dictionary stack
+    DicStack     m_oSaveDicStack; // save dictionary stack
 
-    CodeCell* m_aInxPtr;         // instruction/cell pointer
+    CodeCell*    m_aInxPtr;       // instruction/cell pointer
 
-    TypedStack*  m_pAuxStack;    // auxiliary stack
-    TypedStack*  m_pDataStack;   // data stack
-    TypedStack*  m_pReturnStack; // return stack
+    TypedStack*  m_pAuxStack;     // auxiliary stack
+    TypedStack*  m_pDataStack;    // data stack
+    TypedStack*  m_pReturnStack;  // return stack
 
-    LocalChain*  m_pLocalsFrame; // locals| | register frame chain
+    LocalChain*  m_pLocalsFrame;  // locals| | register frame chain
 
-    SenCompiler* m_pSenCompiler; // sen word compiler
-    Input*       m_pInput;       // input stream
+    SenCompiler* m_pSenCompiler;  // sen word compiler
+    Input*       m_pInput;        // input stream
   
     Exception    m_xException;
 

@@ -79,13 +79,13 @@ void Step::vOptimiserNew(void)
     
   Job* pJob = nullptr;
 
-  if (m_pJob_task.bIsNotNull()) {
+  if (m_pJob.bIsNotNull()) {
     //RASSERT(! *m_pOp);
-    pJob = *m_pJob_task;
+    pJob = *m_pJob;
   }
   else
   if (m_pOp.bIsNotNull()) {
-    RASSERT(m_pJob_task.bIsNull());
+    RASSERT(m_pJob.bIsNull());
     pJob = m_pOp->pPipelineJob();
   }
   else {

@@ -104,7 +104,7 @@ void Step::vDynamoNew(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpDynamo = new Dynamo(m_pJob_task->pJobTags());
+  m_pLogicUnit->m_xpDynamo = new Dynamo(m_pJob->pJobTags());
 
   EXIT();
 }

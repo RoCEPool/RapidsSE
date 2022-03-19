@@ -84,7 +84,7 @@ Task::Task(Stz* szTaskNm, Job* pJob)
   vTask();
   
   m_sTaskNm = szTaskNm;
-  m_pJob_task    = pJob;
+  m_pJob    = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,14 +309,14 @@ void Task::vVerifyTaskComposition(void)
   RASSERT(CN_TASK == eGetClassNo());
   aFooter()->vAssertFooter();
   
-  if (m_pJob_task.bIsNotNull()) {
+  if (m_pJob.bIsNotNull()) {
     RASSERT(m_pOp.bIsNull());
-    RASSERT(m_sTaskNm.bSame(m_pJob_task->szJobNm()));
-    m_pJob_task->vVerifyJobComposition();
+    RASSERT(m_sTaskNm.bSame(m_pJob->szJobNm()));
+    m_pJob->vVerifyJobComposition();
   }
   else
   if (m_pOp.bIsNotNull()) {
-    RASSERT(m_pJob_task.bIsNull());
+    RASSERT(m_pJob.bIsNull());
     RASSERT(m_sTaskNm.bSame(m_pOp->szOpNm()));
     m_pOp->vVerifyOpComposition();
   }
@@ -378,9 +378,9 @@ void Task::vDumpOnException(void)
  
   vTrace("\n"_Stz);
 
-  if (m_pJob_task.bIsNotNull()) {
+  if (m_pJob.bIsNotNull()) {
     vTrace("1) Task (for Job)\n"_Stz);
-    vTrace("m_pJob_task=%p %s\n"_Stz,*m_pJob_task,m_pJob_task->szJobNm());
+    vTrace("m_pJob_task=%p %s\n"_Stz,*m_pJob,m_pJob->szJobNm());
 
   }
   else
@@ -409,7 +409,7 @@ void Task::vDumpOnException(void)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (m_pJob_task.bIsNotNull()) {
+  if (m_pJob.bIsNotNull()) {
     vTrace("\n"_Stz);
     vTrace("2) Job\n"_Stz);
     
@@ -689,8 +689,8 @@ void Task::vDotPrint(Stz* szFormat, ...)
   sFormatted.vSprintVA(szFormat,vaArgs);
   va_end(vaArgs);
   
-  if (m_pJob_task.bIsNotNull()) {
-    m_pJob_task->vDotPrint(sFormatted);
+  if (m_pJob.bIsNotNull()) {
+    m_pJob->vDotPrint(sFormatted);
   }
   else
   {
@@ -993,7 +993,7 @@ Job* Task::pJob_task(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pJob_task;
+  return m_pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1004,7 +1004,7 @@ void Task::vJob_task(Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   RASSERT(pJob);
-  m_pJob_task = pJob;
+  m_pJob = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
