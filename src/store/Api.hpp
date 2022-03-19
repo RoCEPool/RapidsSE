@@ -82,7 +82,6 @@ namespace STORE
 
   private:
   
-  static void vCreateTaskForJob(Job* pJob);
   static void vCreateTaskForOp(Op* pOp);
   static void vResetTaskForJob(Job* pJob);
 

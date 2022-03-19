@@ -466,20 +466,20 @@ void Api::vSubmitJob(Session* pSession)
 {
   _static_
   
-  Job* pSubmitJob = pSession->m_pSsnJob;
+  Job* pJob = pSession->m_pSsnJob;
 
-  Api::vMutexLock(pSession,pSubmitJob);
+  Api::vMutexLock(pSession,pJob);
 
-  RASSERT(JS_LOCKED == pSubmitJob->eJobState());
+  RASSERT(JS_LOCKED == pJob->eJobState());
 
   
-  RASSERT(! pSubmitJob->pTask());
+  RASSERT(! pJob->pTask());
   
-  vCreateTaskForJob(pSubmitJob);
+  pJob->vSpawnTask();
   
-  pSubmitJob->vTimerStart();
+  pJob->vTimerStart();
   
-  Scheduler::vTaskApi_AddPrompt(pSubmitJob->pTask());
+  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -955,7 +955,7 @@ void Api::vSpawnTask_job(Job* pJob)
   _static_
   
   
-  vCreateTaskForJob(pJob);
+  pJob->vSpawnTask();
   Scheduler::vTaskApi_AddOp(pJob->pTask());
 }
 
@@ -980,7 +980,7 @@ void Api::vSpawnTaskDedicated_job(Job* pJob)
   
   //RASSERT(! pJob->pTask());
   
-  vCreateTaskForJob(pJob);
+  pJob->vSpawnTask();
   Scheduler::vTaskApi_AddDedicated(pJob->pTask());
 }
 
@@ -1007,7 +1007,7 @@ void Api::vSpawnTask_demonJob(Job* pJob)
   
   RASSERT(! pJob->pTask());
 
-  vCreateTaskForJob(pJob);
+  pJob->vSpawnTask();
   Scheduler::vTaskApi_AddService(pJob->pTask());
 }
 
@@ -1018,8 +1018,7 @@ void Api::vSpawnTask_receivedJob(Job* pJob)
 {
   _static_
   
-  
-  vCreateTaskForJob(pJob);
+  pJob->vSpawnTask();
   Scheduler::vTaskApi_AddReceived(pJob->pTask());
 }
 
@@ -1053,8 +1052,8 @@ bool Api::bSpawnTask_session(Job* pJob)
     return false;
   }
   
-  vCreateTaskForJob(pJob);
-  
+  pJob->vSpawnTask();
+
   pJob->vTimerStart();
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 
@@ -1143,29 +1142,6 @@ void Api::vSpinTillAllJobsCompleted(void)
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* create task for given job                                                  */
-/*----------------------------------------------------------------------------*/
-void Api::vCreateTaskForJob(Job* pJob)
-{
-  _static_
-    
-//  Stz* szEntry = "job::job"_Stz;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  Task* pTask = new Task(pJob->szJobNm(),pJob);
-//
-//  pJob->vTask(pTask);
-//
-//  vSetTaskInxPtr(pTask,szEntry);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  pJob->vTimerStart();
-  
-  pJob->vSpawnTask();
-}
 
 /*----------------------------------------------------------------------------*/
 /* reset task for given job                                                   */
