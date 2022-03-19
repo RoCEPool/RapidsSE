@@ -349,14 +349,14 @@ void Step::vPipelineSpawnOpTasks(void)
 {
   ENTRY();
 
-  i8 iThisNode = AM::pGrid()->iThisNodeNo();
+  if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
+    i8 iThisNodeNo = MY::iNodeNo();
+    vTraceM("Spawning operator jobs for this node %lld\n"_Stz,iThisNodeNo);
+  }
   
-  if (AM::TRACE::bVerbose(C_VB_PIPELINE))
-    vTraceM("Spawning operator jobs for node %lld\n"_Stz,iThisNode);
+  Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
   
-  Pipeline* pPipeline = * m_pLogicUnit->m_xpPipeline;
-  
-  pPipeline->vSpawnOpTasks(iThisNode);
+  pPipeline->vSpawnOpTasks();
   
   EXIT();
 }

@@ -741,7 +741,7 @@ void Job::vPrintJobContents(void)
  
          "             pTask "  "%s"    " \n"  // 21
         
-         "     pJobLogicUnit "  "%s"    " \n"  // 22
+         "        pLogicUnit "  "%s"    " \n"  // 22
 
          ""_Stz
          

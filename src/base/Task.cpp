@@ -167,8 +167,6 @@ Task::~Task(void) noexcept(false)
   //RASSERT(! bIsLocked());
   RASSERT(! m_pThread);
 
-  //RASSERT(! m_pJob_task);
-  
   ASSERT(! m_oWriteLocks.nItems());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -380,7 +378,7 @@ void Task::vDumpOnException(void)
 
   if (m_pJob.bIsNotNull()) {
     vTrace("1) Task (for Job)\n"_Stz);
-    vTrace("m_pJob_task=%p %s\n"_Stz,*m_pJob,m_pJob->szJobNm());
+    vTrace("m_pJob=%p %s\n"_Stz,*m_pJob,m_pJob->szJobNm());
 
   }
   else
@@ -460,10 +458,7 @@ void Task::vDumpOnException(void)
 void Task::vExceptionTrace(void)
 {
   _noPreconditions_
-  
-//  if (m_pJob_task->pJobTags()->bHasName("<recover>"_Stz))
-//    return;
-  
+    
   //
   // trace what is relevant for debugging.  could be quite substantial
   //

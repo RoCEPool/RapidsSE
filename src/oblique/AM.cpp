@@ -3200,8 +3200,6 @@ void AM::vTaskFullTrace(Task* pTask)
   if (pJob)
     AM::vJobContentDump(pJob);
   
-  //pJob->pJobLogicUnit()->vContentDump();
-  
   AM::pGrid()->vDsv();
 }
 

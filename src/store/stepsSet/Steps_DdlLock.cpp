@@ -92,12 +92,7 @@ void Step::vDdlLockNone(void)
 void Step::vDdlLockTestDrop(void)
 {
   ENTRY();
-  
-//  if (! pJob() || ! pJob()->pJobLogicUnit()) {
-//    EXIT();
-//    return;
-//  }
-  
+    
   if (m_pLogicUnit)
     AM::MASTERLOCK::vDdlLockTestDrop(m_pLogicUnit);
     

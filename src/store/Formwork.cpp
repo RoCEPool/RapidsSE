@@ -185,7 +185,7 @@ void Formwork::vSetupJob(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operaator jobs for the pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void Formwork::vSpawnOpTasks(i8 iNode)
+void Formwork::vSpawnOpTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
   
@@ -196,7 +196,7 @@ void Formwork::vSpawnOpTasks(i8 iNode)
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
       Stream* pStream = pStage->pGet(i_Stream);
 
-      pStream->vSpawnOpTasks(iNode);
+      pStream->vSpawnOpTasks();
     }
   }
   

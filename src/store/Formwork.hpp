@@ -35,7 +35,7 @@ namespace STORE
     i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
     void vSetupJob(void);
-    void vSpawnOpTasks(i8 iNode);
+    void vSpawnOpTasks(void);
     Stage* pStage0(void);
     Stream* pStream0(void);
 

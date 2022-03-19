@@ -199,16 +199,18 @@ StageSpec* Stream::pStageSpec(void)
 /*----------------------------------------------------------------------------*/
 /* spawn tasks for all operators for partitions of given node                 */
 /*----------------------------------------------------------------------------*/
-void Stream::vSpawnOpTasks(i8 i_ThisNode)
+void Stream::vSpawnOpTasks(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  i8 iThisNodeNo = MY::iNodeNo();
   
   i8 i_OnNode = -1;
   
   if (m_pStageSpec->bNodeTopo()) {
     
     if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
-      if (i_ThisNode != pPipeline()->i_Origin()) {
+      if (iThisNodeNo != pPipeline()->i_Origin()) {
         i_OnNode = m_i_Node;
       }
     }
@@ -221,7 +223,7 @@ void Stream::vSpawnOpTasks(i8 i_ThisNode)
     i_OnNode = AM::pPtnMap()->iWhichNodeNo(m_tPtnId);
   }
   
-  if (i_OnNode == i_ThisNode) {
+  if (i_OnNode == iThisNodeNo) {
     // for each operator in the stage ptn
     for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
       

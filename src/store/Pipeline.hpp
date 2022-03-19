@@ -83,7 +83,7 @@ namespace STORE
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
     void vSetupJob(void);
-    void vSpawnOpTasks(i8 iNode);
+    void vSpawnOpTasks(void);
     Stage* pStage0(void);
     Stream* pStream0(void);
 

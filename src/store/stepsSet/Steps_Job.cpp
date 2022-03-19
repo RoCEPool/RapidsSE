@@ -972,9 +972,6 @@ void Step::vJobReapableStore_other(void)
 {
   ENTRY();
   
-  //if (m_pJob_task.bIsNull())
-  //  AM::SE::vWhereAmI();
-  
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
