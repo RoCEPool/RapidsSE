@@ -237,6 +237,8 @@
 #include "Section.hpp"
 #include "PipeworkSpec.hpp"
 #include "Pipework.hpp"
+#include "SubCall.hpp"
+#include "SubReturn.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -592,7 +594,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(s32),                HT_INVALID   ,0 FILL }, // CN_STRING_T
   { sizeof(StzList),            HT_T_TINY    ,0 FILL }, // CN_STZLIST
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_STZVAL
+  { sizeof(SubCall),            HT_T_TINY    ,0 FILL }, // CN_SUBCALL
   { sizeof(SubPipelines),       HT_T_TINY    ,0 FILL }, // CN_SUBPIPELINES
+  { sizeof(SubReturn),          HT_T_TINY    ,0 FILL }, // CN_SUBRETURN
   { sizeof(SysCall),            HT_INVALID   ,0 FILL }, // CN_SYSCALL
   { sizeof(SysMetrics),         HT_T_TINY    ,0 FILL }, // CN_SYSMETRICS
   { sizeof(SysReport),          HT_T_TINY    ,0 FILL }, // CN_SYSREPORT

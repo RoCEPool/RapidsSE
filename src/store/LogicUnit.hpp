@@ -36,6 +36,8 @@
 #include "StreamDefRht.hpp"
 #include "Stencil.hpp"
 #include "Stencil.hpp"
+#include "SubCall.hpp"
+#include "SubReturn.hpp"
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
@@ -172,7 +174,7 @@ namespace STORE
   
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
     REG<BucketGet,      CN_BUCKETGET     > m_xpBucketGet;
-    REG<BucketGet,      CN_BUCKETINFO     > m_xpBucketInfo;
+    REG<BucketGet,      CN_BUCKETINFO    > m_xpBucketInfo;
     REG<BktMapGet,      CN_BKTMAPGET     > m_xpBktMapGet;
 
     REG<Combined,       CN_COMBINED      > m_xpCombined;
@@ -248,6 +250,8 @@ namespace STORE
     REG<StreamDefRht,   CN_STREAMDEFRHT  > m_xpStreamDefRht;
     REG<Operand,        CN_NONE          > m_xpStreamSet;
     REG<Table,          CN_TABLE         > m_xpStreamSetTable;
+    REG<SubCall,        CN_NONE          > m_xpSubCall;
+    REG<SubReturn,      CN_NONE          > m_xpSubReturn;
     REG<Operand,        CN_NONE          > m_xpSubset;
 
     REG<Table,          CN_TABLE         > m_xpTable;
