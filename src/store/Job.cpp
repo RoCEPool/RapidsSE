@@ -721,7 +721,7 @@ Pipeline* Job::pPipeline_job(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   Task* pTask = this->pTask();
-  LogicUnit* pLogicUnit = pTask->pTaskLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
@@ -745,7 +745,7 @@ void Job::vPrintJobContents(void)
   SP_Pointer spvJobLogicUnit;
 
   Task* pTask = this->pTask();
-  LogicUnit* pLogicUnit = pTask->pTaskLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   vTrace("See Job %p::\n"_Stz,this);
 
@@ -834,7 +834,7 @@ void Job::vPrintJobLine(void)
            ,this->iParticipantNode()
            );
 
-  LogicUnit* pLogicUnit = m_pTask->pTaskLogicUnit();
+  LogicUnit* pLogicUnit = m_pTask->pLogicUnit();
   
   if (pLogicUnit) {
     if (pLogicUnit->m_xpPipelineSpec.bIsNotNull())

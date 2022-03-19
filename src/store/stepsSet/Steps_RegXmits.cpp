@@ -44,10 +44,10 @@ void Step::vRegSendsDelete(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
   delete pSends;
   
-  m_p_TaskLogicUnit->m_xpSends = nullptr;
+  m_pLogicUnit->m_xpSends = nullptr;
   
   EXIT();
 }
@@ -59,7 +59,7 @@ void Step::vRegSendsGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpSends);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpSends);
   
   EXIT();
 }
@@ -71,7 +71,7 @@ void Step::vRegSendsHandleCancelling(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
  
   pSends->vIncCancelling();
   
@@ -87,7 +87,7 @@ void Step::vRegSendsHandleCleaning(void)
 {
   ENTRY();
 
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
 
   pSends->vIncCleaning();
 
@@ -103,7 +103,7 @@ void Step::vRegSendsHandleDataPulse(void)
 {
   ENTRY();
 
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
 
   m_pDataStack->vPushInt(pSends->bDataPulseDone());
   pSends->vIncDataPulse();
@@ -118,7 +118,7 @@ void Step::vRegSendsHandleDestroy(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
   
   pSends->vIncDestroy();
   
@@ -134,7 +134,7 @@ void Step::vRegSendsHandleEnding(void)
 {
   ENTRY();
 
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
 
   pSends->vIncEnding();
 
@@ -150,7 +150,7 @@ void Step::vRegSendsHandleEos(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
   
   pSends->vIncEos();
   
@@ -166,7 +166,7 @@ void Step::vRegSendsHandleErroring(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
   
   pSends->vIncErroring();
   
@@ -182,7 +182,7 @@ void Step::vRegSendsHandleExiting(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
   
   pSends->vIncExiting();
   
@@ -198,7 +198,7 @@ void Step::vRegSendsHandleEnd(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
   
   pSends->vIncEnd();
   
@@ -214,7 +214,7 @@ void Step::vRegSendsHandleLeaving(void)
 {
   ENTRY();
 
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
 
   bool bLeavingDone = pSends->bLeavingDone();
   pSends->vIncLeaving();
@@ -231,7 +231,7 @@ void Step::vRegSendsHandleStart(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
   
   bool bStartDone = pSends->bStartDone();
   pSends->vIncStart();
@@ -248,7 +248,7 @@ void Step::vRegSendsHandleStreamDef(void)
 {
   ENTRY();
   
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
   
   bool bStreamDefDone = pSends->bStreamDefDone();
   
@@ -266,7 +266,7 @@ void Step::vRegSendsHandleStreamDefRht(void)
 {
   ENTRY();
 
-  Sends* pSends = _pSends(*m_p_TaskLogicUnit->m_xpSends);
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
 
   bool bStreamDefRhtDone = pSends->bStreamDefRhtDone();
 
@@ -284,7 +284,7 @@ void Step::vRegSendsIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpSends.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSends.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -300,7 +300,7 @@ void Step::vRegSendsNew(void)
   
   i8 iSends = m_pDataStack->iPopInt(__func__);
   
-  m_p_TaskLogicUnit->m_xpSends = new Sends(iSends);
+  m_pLogicUnit->m_xpSends = new Sends(iSends);
   
   EXIT();
 }

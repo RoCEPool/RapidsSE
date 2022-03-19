@@ -476,9 +476,9 @@ void Step::vParcelDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpParcel);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpParcel);
 
-  m_p_TaskLogicUnit->m_xpParcel = nullptr;
+  m_pLogicUnit->m_xpParcel = nullptr;
 
   EXIT();
 }
@@ -490,7 +490,7 @@ void Step::vParcelGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpParcel);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpParcel);
 
   EXIT();
 }
@@ -502,9 +502,9 @@ void Step::vParcelGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpParcel);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpParcel);
 
-  m_p_TaskLogicUnit->m_xpParcel = nullptr;
+  m_pLogicUnit->m_xpParcel = nullptr;
 
   EXIT();
 }
@@ -516,7 +516,7 @@ void Step::vParcelIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpParcel.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpParcel.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -528,7 +528,7 @@ void Step::vParcelIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpParcel.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpParcel.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -544,7 +544,7 @@ void Step::vParcelSet(void)
 
   ASSERT(! pParcel || m_p_TaskLogicUnit->m_xpParcel.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpParcel = _pParcel(pParcel);
+  m_pLogicUnit->m_xpParcel = _pParcel(pParcel);
 
   EXIT();
 }

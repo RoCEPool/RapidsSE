@@ -38,7 +38,7 @@ void Step::vTinyCCompile(void)
 {
   ENTRY();
 
-  TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
   
   Stencil* pStencil;
   pStencil = _pStencil(m_pDataStack->pPopPtr(__func__));
@@ -59,8 +59,8 @@ void Step::vTinyCDelete(void)
 {
   ENTRY();
     
-  TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
-  m_p_TaskLogicUnit->m_xpTinyC = nullptr;
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
+  m_pLogicUnit->m_xpTinyC = nullptr;
   
   pTinyC->vEnd();
 
@@ -76,7 +76,7 @@ void Step::vTinyCFind(void)
 {
   ENTRY();
 
-  TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
 
   s32 sFunNm;
   m_pDataStack->vPopStr(sFunNm,__func__);
@@ -97,7 +97,7 @@ void Step::vTinyCNew(void)
   ENTRY();
   
   TinyC* pTinyC = new TinyC;
-  m_p_TaskLogicUnit->m_xpTinyC = pTinyC;
+  m_pLogicUnit->m_xpTinyC = pTinyC;
 
   pTinyC->vBegin();
 
@@ -113,9 +113,9 @@ void Step::vTinyCRelocate(void)
 {
   ENTRY();
    
-  TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
 
-  if (pTinyC->bRelocate(m_p_TaskLogicUnit->m_aTinyFunc))
+  if (pTinyC->bRelocate(m_pLogicUnit->m_aTinyFunc))
     m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);
@@ -185,7 +185,7 @@ void Step::vTinyCSymbols(void)
 {
   ENTRY();
     
-  TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
 
   i8 iSymbolSet = m_pDataStack->iPopInt(__func__);
 

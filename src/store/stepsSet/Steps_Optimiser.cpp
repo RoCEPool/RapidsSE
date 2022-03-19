@@ -35,7 +35,7 @@ void Step::vOptimiserDelete(void)
 {
   ENTRY();
     
-  m_p_TaskLogicUnit->m_xpOptimiser.vDeleteComponent();
+  m_pLogicUnit->m_xpOptimiser.vDeleteComponent();
 
   EXIT();
 }
@@ -50,7 +50,7 @@ void Step::vOptimiserDissect(void)
   PipelineSpec* pUnOptPlineSpec =
     _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
 
-  m_p_TaskLogicUnit->m_xpOptimiser->vDissect(pUnOptPlineSpec);
+  m_pLogicUnit->m_xpOptimiser->vDissect(pUnOptPlineSpec);
 
   EXIT();
 }
@@ -62,8 +62,8 @@ void Step::vOptimiserGet(void)
 {
   ENTRY();
 
-  if (m_p_TaskLogicUnit->m_xpOptimiser.bIsNotNull())
-    m_pDataStack->vPushPtr(* m_p_TaskLogicUnit->m_xpOptimiser);
+  if (m_pLogicUnit->m_xpOptimiser.bIsNotNull())
+    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpOptimiser);
   else
     m_pDataStack->vPushPtr(nullptr);
   
@@ -92,7 +92,7 @@ void Step::vOptimiserNew(void)
     NEVER_REACH;
   }
 
-  m_p_TaskLogicUnit->m_xpOptimiser = new Optimiser(pJob->pJobTags());
+  m_pLogicUnit->m_xpOptimiser = new Optimiser(pJob->pJobTags());
 
   EXIT();
 }
@@ -104,7 +104,7 @@ void Step::vOptimiserOptimise(void)
 {
   ENTRY();
     
-  m_p_TaskLogicUnit->m_xpOptimiser->vOptimise();
+  m_pLogicUnit->m_xpOptimiser->vOptimise();
 
   EXIT();
 }
@@ -116,7 +116,7 @@ void Step::vOptimiserWeave(void)
 {
   ENTRY();
     
-  Stz* szOptPlineStmt = m_p_TaskLogicUnit->m_xpOptimiser->szWeave();
+  Stz* szOptPlineStmt = m_pLogicUnit->m_xpOptimiser->szWeave();
 
   m_pDataStack->vPushStz(szOptPlineStmt);
   

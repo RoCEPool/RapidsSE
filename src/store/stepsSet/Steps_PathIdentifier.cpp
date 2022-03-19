@@ -61,7 +61,7 @@ void Step::vPathIdentifierChoosePaths(void)
   
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   for (i8 i_Phrase = 0; i_Phrase < pPathIdentifier->nPhrases(); i_Phrase++)
     pPathIdentifier->vChoosePath(i_Phrase);
@@ -76,7 +76,7 @@ void Step::vPathIdentifierChosenPath(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* pChosenPlan = pPathIdentifier->pChosenPath(i_Phrase);
@@ -93,7 +93,7 @@ void Step::vPathIdentifierDelete(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   delete pPathIdentifier;
   
@@ -107,7 +107,7 @@ void Step::vPathIdentifierFetchTechniqueFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   eAT eFetchTechnique = pPathIdentifier->pChosenPath(i_Phrase)->eAccess();
@@ -124,7 +124,7 @@ void Step::vPathIdentifierGenPaths(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   pPathIdentifier->vGenPaths();
   
@@ -138,7 +138,7 @@ void Step::vPathIdentifierGet(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   m_pDataStack->vPushPtr(pPathIdentifier);
   
@@ -152,7 +152,7 @@ void Step::vPathIdentifierHighKeyFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = pPathIdentifier->pChosenPath(i_Phrase);
@@ -173,7 +173,7 @@ void Step::vPathIdentifierIndexNmFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = pPathIdentifier->pChosenPath(i_Phrase);
@@ -193,7 +193,7 @@ void Step::vPathIdentifierIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpPathIdentifier.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPathIdentifier.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -205,7 +205,7 @@ void Step::vPathIdentifierKeyFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = pPathIdentifier->pChosenPath(i_Phrase);
@@ -226,7 +226,7 @@ void Step::vPathIdentifierLowKeyFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = pPathIdentifier->pChosenPath(i_Phrase);
@@ -247,7 +247,7 @@ void Step::vPathIdentifierMatchPaths(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   pPathIdentifier->vMatchPaths();
   
@@ -261,7 +261,7 @@ void Step::vPathIdentifierNew(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpPathIdentifier = new PathIdentifier;
+  m_pLogicUnit->m_xpPathIdentifier = new PathIdentifier;
   
   EXIT();
 }
@@ -273,7 +273,7 @@ void Step::vPathIdentifierParseWhere(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   s48K sWhere;
   m_pDataStack->vPopStr(sWhere,__func__);
@@ -301,7 +301,7 @@ void Step::vPathIdentifierPhrasesFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   i8 nPhrases = pPathIdentifier->nPhrases();
   
@@ -317,7 +317,7 @@ void Step::vPathIdentifierScorePaths(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   pPathIdentifier->vScorePaths();
   
@@ -333,7 +333,7 @@ void Step::vPathIdentifierSet(void)
 
   PathIdentifier* pPathIdentifier = _pPathIdentifier(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pPathIdentifier || m_p_TaskLogicUnit->m_xpPathIdentifier.bIsNull());
-  m_p_TaskLogicUnit->m_xpPathIdentifier = _pPathIdentifier(pPathIdentifier);
+  m_pLogicUnit->m_xpPathIdentifier = _pPathIdentifier(pPathIdentifier);
   
   EXIT();
 }
@@ -345,7 +345,7 @@ void Step::vPathIdentifierShowPaths(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   pPathIdentifier->vShowPaths();
   
@@ -359,7 +359,7 @@ void Step::vPathIdentifierTableFetch(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   Table* pTable = pPathIdentifier->pTable();
   
@@ -375,7 +375,7 @@ void Step::vPathIdentifierTableStore(void)
 {
   ENTRY();
   
-  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_p_TaskLogicUnit->m_xpPathIdentifier);
+  PathIdentifier* pPathIdentifier = _pPathIdentifier(*m_pLogicUnit->m_xpPathIdentifier);
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   

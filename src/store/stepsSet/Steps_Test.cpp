@@ -365,7 +365,7 @@ void Step::vTestTest22(void)
   i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
   UNUSED(nBytes);
 
-  m_p_TaskLogicUnit->bGenerateAsm(sText);
+  m_pLogicUnit->bGenerateAsm(sText);
   
   EXIT();
 }

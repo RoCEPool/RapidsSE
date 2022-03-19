@@ -35,10 +35,10 @@ void Step::vSubsetGet(void)
 {
   ENTRY();
   
-  if (m_p_TaskLogicUnit->m_xpSubset.bIsNull())
+  if (m_pLogicUnit->m_xpSubset.bIsNull())
     m_pDataStack->vPushPtr(nullptr);
   else
-    m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpSubset);
+    m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpSubset);
   
   EXIT();
 }
@@ -52,8 +52,8 @@ void Step::vSubsetNext(void)
   
   Operand* pNextOperand = nullptr;
   
-  if (*m_p_TaskLogicUnit->m_xpSubset)
-    pNextOperand = m_p_TaskLogicUnit->m_xpSubset->pNextItem();
+  if (*m_pLogicUnit->m_xpSubset)
+    pNextOperand = m_pLogicUnit->m_xpSubset->pNextItem();
   
   m_pDataStack->vPushPtr(pNextOperand);
   
@@ -69,20 +69,20 @@ void Step::vSubsetNextBuffer(void)
   
   Operand* pNextOperand = nullptr;
   
-  if (*m_p_TaskLogicUnit->m_xpSubset) {
-    if (m_p_TaskLogicUnit->m_xpSubset->eGetClassNo() == CN_CRWBUFFER) {
-      CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpSubset);
+  if (*m_pLogicUnit->m_xpSubset) {
+    if (m_pLogicUnit->m_xpSubset->eGetClassNo() == CN_CRWBUFFER) {
+      CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpSubset);
       pNextOperand = pCrwBuffer->pNextLinkedBuffer();
       //m_p_TaskLogicUnit->m_xpSubset = pNextOperand;
     }
     else
-      if (m_p_TaskLogicUnit->m_xpSubset->eGetClassNo() == CN_CSVBUFFER) {
-      CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpSubset);
+      if (m_pLogicUnit->m_xpSubset->eGetClassNo() == CN_CSVBUFFER) {
+      CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpSubset);
       pNextOperand = pCsvBuffer->pNextBuffer();
       //m_p_TaskLogicUnit->m_xpSubset = pNextOperand;
     }
     else {
-      vTrace("Subset class %s\n"_Stz, aCN[m_p_TaskLogicUnit->m_xpSubset->eGetClassNo()]);
+      vTrace("Subset class %s\n"_Stz, aCN[m_pLogicUnit->m_xpSubset->eGetClassNo()]);
       ASSERT(0);
     }
   }
@@ -106,7 +106,7 @@ void Step::vSubsetSet(void)
     UNUSED(pCrwBuffer);
   }
   
-  m_p_TaskLogicUnit->m_xpSubset = pOperand;
+  m_pLogicUnit->m_xpSubset = pOperand;
   
   EXIT();
 }

@@ -342,7 +342,7 @@ LogicUnit* MY::pLogicUnit(void)
   
   Task* pTask = MY::pTask();
 
-  LogicUnit* pLogicUnit = pTask->pTaskLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
   
   return pLogicUnit;
 }

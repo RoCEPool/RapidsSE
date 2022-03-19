@@ -55,9 +55,9 @@ void Step::vPlanOperandDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpPlanOperand);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpPlanOperand);
   
-  m_p_TaskLogicUnit->m_xpPlanOperand = nullptr;
+  m_pLogicUnit->m_xpPlanOperand = nullptr;
   
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vPlanOperandGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpPlanOperand);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPlanOperand);
   
   EXIT();
 }
@@ -81,9 +81,9 @@ void Step::vPlanOperandGetAndClear(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpPlanOperand);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPlanOperand);
   
-  m_p_TaskLogicUnit->m_xpPlanOperand = nullptr;
+  m_pLogicUnit->m_xpPlanOperand = nullptr;
 
   EXIT();
 }
@@ -95,7 +95,7 @@ void Step::vPlanOperandIsNotNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpPlanOperand.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPlanOperand.bIsNull() ? 0 : 1);
   
   EXIT();
 }
@@ -107,7 +107,7 @@ void Step::vPlanOperandIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpPlanOperand.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPlanOperand.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -123,7 +123,7 @@ void Step::vPlanOperandSet(void)
   
   ASSERT(! pPlanOperand || m_p_TaskLogicUnit->m_xpPlanOperand.bIsNull());
   
-  m_p_TaskLogicUnit->m_xpPlanOperand = _pPlanOperand(pPlanOperand);
+  m_pLogicUnit->m_xpPlanOperand = _pPlanOperand(pPlanOperand);
   
   EXIT();
 }

@@ -88,7 +88,7 @@ namespace BASE
     LockSet      m_oReadLocks;   // read locks currently held by this task/op
     LockSet      m_oWriteLocks;  // write locks currently held by this task/op
   
-    LogicUnit*   m_p_TaskLogicUnit; // logic unit from job or op
+    LogicUnit*   m_pLogicUnit; // logic unit
 
   public:
     Word* m_pRecoveryWord;  // sen word called to recover from failure
@@ -165,7 +165,7 @@ namespace BASE
     void vJob_task(Job* pJob);
     void vLocalsPop(void);
     void vLocalsPush(void);
-    LogicUnit* pTaskLogicUnit(void);
+    LogicUnit* pLogicUnit(void);
     void vMutexLock(void);
     void vMutexSignal(void);
     void vMutexUnlock(void);

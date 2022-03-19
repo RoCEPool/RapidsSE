@@ -94,7 +94,7 @@ void Step::vPtnStreamGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpPtnStream);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPtnStream);
   
   EXIT();
 }
@@ -106,7 +106,7 @@ void Step::vPtnStreamIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpPtnStream.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPtnStream.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -187,7 +187,7 @@ void Step::vPtnStreamSet(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpPtnStream = _pPtnStream(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

@@ -45,7 +45,7 @@ void Step::vToRowCompleted(void)
   ENTRY();
   
   //ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
-  ToRow* pToRow = * m_p_TaskLogicUnit->m_xpToRow;
+  ToRow* pToRow = * m_pLogicUnit->m_xpToRow;
 
   RowBuffer* pRowBuffer = pToRow->pFullRowBuffer();
   
@@ -73,15 +73,15 @@ void Step::vToRowCreate(void)
   bool b = AM::bFormatSetFromTagSet(pFmt,pJobTags);
   UNUSED(b);
 
-  StreamDef* pStreamDef = m_p_TaskLogicUnit->m_xpTable->pStreamDef();
+  StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
 
-  BucketMap_dyn* pBucketMap = m_p_TaskLogicUnit->m_xpTable->pBucketMap();
+  BucketMap_dyn* pBucketMap = m_pLogicUnit->m_xpTable->pBucketMap();
 
 
   bool bPtnHash = true;
   ToRow* pToRow = new ToRow(pStreamDef,pBucketMap,pFmt,bPtnHash);
       
-  m_p_TaskLogicUnit->m_xpToRow = pToRow;
+  m_pLogicUnit->m_xpToRow = pToRow;
   
   delete pFmt;
   
@@ -95,11 +95,11 @@ void Step::vToRowDangling(void)
 {
   ENTRY();
   
-  if (m_p_TaskLogicUnit->m_xpToRow.bIsNull()) {
+  if (m_pLogicUnit->m_xpToRow.bIsNull()) {
     m_pDataStack->vPushPtr(nullptr);
   }
   else {
-    ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
+    ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
     RowBuffer* pRowBuffer = pToRow->pDanglingRowBuffer();
     m_pDataStack->vPushPtr(pRowBuffer);
   }
@@ -114,8 +114,8 @@ void Step::vToRowDelete(void)
 {
   ENTRY();
   
-  ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
-  m_p_TaskLogicUnit->m_xpToRow = nullptr;
+  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
+  m_pLogicUnit->m_xpToRow = nullptr;
   
   delete pToRow;
   
@@ -129,7 +129,7 @@ void Step::vToRowFetch(void)
 {
   ENTRY();
   
-  ToRow* pToRow = * m_p_TaskLogicUnit->m_xpToRow;
+  ToRow* pToRow = * m_pLogicUnit->m_xpToRow;
 
   m_pDataStack->vPushPtr(pToRow);
 
@@ -143,7 +143,7 @@ void Step::vToRowRowCountersFetch(void)
 {
   ENTRY();
   
-  ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
+  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
 
   m_pDataStack->vPushInt(pToRow->iRowsSkipped());
   m_pDataStack->vPushInt(pToRow->iRowsInvalid());

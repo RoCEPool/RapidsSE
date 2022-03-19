@@ -40,7 +40,7 @@ void Step::vDevRhtRowRowBufferStore(void)
 
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
-  ( m_p_TaskLogicUnit )->m_pDevRhtRow->m_pRowBuffer = pRowBuffer;
+  ( m_pLogicUnit )->m_pDevRhtRow->m_pRowBuffer = pRowBuffer;
 
   EXIT();
 }
@@ -54,7 +54,7 @@ void Step::vDevRhtRowStreamDefStore(void)
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  ( m_p_TaskLogicUnit )->m_pDevRhtRow->m_pStreamDef = pStreamDef;
+  ( m_pLogicUnit )->m_pDevRhtRow->m_pStreamDef = pStreamDef;
   
   EXIT();
 }

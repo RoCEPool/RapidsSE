@@ -56,7 +56,7 @@ void Step::vFile0Get(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpFile0);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpFile0);
   
   EXIT();
 }
@@ -68,7 +68,7 @@ void Step::vFile0GetEofLocation(void)
 {
   ENTRY();
   
-  File* pFile = *m_p_TaskLogicUnit->m_xpFile0;
+  File* pFile = *m_pLogicUnit->m_xpFile0;
   
   // get the end-of-file location
   pFile->vSeekEnd();
@@ -86,7 +86,7 @@ void Step::vFile0IsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpFile0.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpFile0.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -100,7 +100,7 @@ void Step::vFile0Set(void)
   
   File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
 
-  m_p_TaskLogicUnit->m_xpFile0 = pFile;
+  m_pLogicUnit->m_xpFile0 = pFile;
   
   EXIT();
 }
@@ -112,7 +112,7 @@ void Step::vFile0Size(void)
 {
   ENTRY();
   
-  File* pFile = _pFile(*m_p_TaskLogicUnit->m_xpFile0);
+  File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
   
   m_pDataStack->vPushInt(File::nSize(pFile->sFilePath()));
                          

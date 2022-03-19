@@ -129,7 +129,7 @@ void Step::vPipelineCreate(void)
   Pipeline* pPipeline =
     new Pipeline(m_pJob_task,pPipelineSpec,m_pJob_task->iOriginatorNode());
   
-  m_p_TaskLogicUnit->m_xpPipeline = pPipeline;
+  m_pLogicUnit->m_xpPipeline = pPipeline;
     
   // dump pipeline
   
@@ -304,7 +304,7 @@ void Step::vPipelineOp0Fetch(void)
 {
   ENTRY();
   
-  Pipeline* pPipeline = (* m_p_TaskLogicUnit->m_xpPipeline);
+  Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
   
   Op* pOp0 = pPipeline->pOp0();
     
@@ -327,7 +327,7 @@ void Step::vPipelineOpsOnNodeFetch(void)
 //
 //  if (pStage0->bStartPipeline()) {
   
-    Pipeline* pPipeline = (* m_p_TaskLogicUnit->m_xpPipeline);
+    Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
 
     i8 iThisNode = AM::pGrid()->iThisNodeNo();
 
@@ -354,7 +354,7 @@ void Step::vPipelineSpawnOpTasks(void)
   if (AM::TRACE::bVerbose(C_VB_PIPELINE))
     vTraceM("Spawning operator jobs for node %lld\n"_Stz,iThisNode);
   
-  Pipeline* pPipeline = * m_p_TaskLogicUnit->m_xpPipeline;
+  Pipeline* pPipeline = * m_pLogicUnit->m_xpPipeline;
   
   pPipeline->vSpawnOpTasks(m_pJob_task->m_i_Session, iThisNode);
   
@@ -368,7 +368,7 @@ void Step::vPipelineStartPipeline(void)
 {
   ENTRY();
   
-  Pipeline* pPipeline = (* m_p_TaskLogicUnit->m_xpPipeline);
+  Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
   Formwork* pFormWork = pPipeline->pFormwork();
 
   Stage*    pStage0   = pFormWork->pGet(0);

@@ -58,7 +58,7 @@ void Step::vPipeinBide(void)
 
     }
 
-    m_p_TaskLogicUnit->vSetPipein(pOperand);
+    m_pLogicUnit->vSetPipein(pOperand);
     
   }
 
@@ -67,9 +67,9 @@ void Step::vPipeinBide(void)
   else {
     
     pOperand = pOp->pPopOoOLeft();
-    m_p_TaskLogicUnit->vSetPipein(pOperand);
+    m_pLogicUnit->vSetPipein(pOperand);
     
-    if (m_p_TaskLogicUnit->m_xpPipein.bIsNull()) {
+    if (m_pLogicUnit->m_xpPipein.bIsNull()) {
       RASSERT(bIsLocked());
       vScheduleBide();
     }
@@ -91,10 +91,10 @@ void Step::vPipeinBideNext(void)
   // revised job/op model
     Op* pOp = *m_pOp;
 
-  if (m_p_TaskLogicUnit->m_xpPipein.bIsNull()) {
+  if (m_pLogicUnit->m_xpPipein.bIsNull()) {
     
     if ( (pOperand = pOp->pPopOoOLeft()) ) {
-      m_p_TaskLogicUnit->vSetPipein(pOperand);
+      m_pLogicUnit->vSetPipein(pOperand);
     }
     else {
       NEVER_REACH;
@@ -112,9 +112,9 @@ void Step::vPipeinDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpPipein);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpPipein);
   
-  m_p_TaskLogicUnit->m_xpPipein = nullptr;
+  m_pLogicUnit->m_xpPipein = nullptr;
   
   EXIT();
 }
@@ -126,7 +126,7 @@ void Step::vPipeinGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpPipein);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPipein);
   
   EXIT();
 }
@@ -138,9 +138,9 @@ void Step::vPipeinGetAndClear(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpPipein);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPipein);
   
-  m_p_TaskLogicUnit->m_xpPipein = nullptr;
+  m_pLogicUnit->m_xpPipein = nullptr;
 
   EXIT();
 }
@@ -152,7 +152,7 @@ void Step::vPipeinIsBuffer(void)
 {
   ENTRY();
 
-  Operand* pOperand = *m_p_TaskLogicUnit->m_xpPipein;
+  Operand* pOperand = *m_pLogicUnit->m_xpPipein;
 
   m_pDataStack->vPushInt(pOperand->bIsBuffer() ? 1 : 0);
 
@@ -166,7 +166,7 @@ void Step::vPipeinIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpPipein.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPipein.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -178,7 +178,7 @@ void Step::vPipeinKind(void)
 {
   ENTRY();
     
-  eZK ePipeInOperand = m_p_TaskLogicUnit->m_ePipeInOperand;
+  eZK ePipeInOperand = m_pLogicUnit->m_ePipeInOperand;
   m_pDataStack->vPushInt(ePipeInOperand);
 
   EXIT();
@@ -191,16 +191,16 @@ void Step::vPipeinNext(void)
 {
   ENTRY();
   
-  RASSERT(m_p_TaskLogicUnit->m_xpPipein.bIsNull());
+  RASSERT(m_pLogicUnit->m_xpPipein.bIsNull());
       
   // revised job/op model
     Op* pOp = *m_pOp;
 
   Operand* pOperand = pOp->pPopOoOLeft();
   
-  m_p_TaskLogicUnit->vSetPipein(pOperand);
+  m_pLogicUnit->vSetPipein(pOperand);
   
-  RASSERT(m_p_TaskLogicUnit->m_xpPipein.bIsNotNull());
+  RASSERT(m_pLogicUnit->m_xpPipein.bIsNotNull());
 
   EXIT();
 }
@@ -232,9 +232,9 @@ void Step::vPipeinPipeToOutput(void)
   // revised job/op model
     Op* pOp = *m_pOp;
 
-  pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpPipein);
+  pOp->vPipeToOutput(*m_pLogicUnit->m_xpPipein);
   
-  m_p_TaskLogicUnit->m_xpPipein = nullptr;
+  m_pLogicUnit->m_xpPipein = nullptr;
   
   EXIT();
 }
@@ -253,14 +253,14 @@ void Step::vPipeinSet(void)
   ASSERT(! pOperand || ! pOperand->pPrevItem());
 
   
-  m_p_TaskLogicUnit->m_xpPipein = _pOperand(pOperand);
+  m_pLogicUnit->m_xpPipein = _pOperand(pOperand);
   
-  if (m_p_TaskLogicUnit->m_xpPipein.bIsNull()) {
-    m_p_TaskLogicUnit->m_ePipeInOperand = ZK_NONE;
+  if (m_pLogicUnit->m_xpPipein.bIsNull()) {
+    m_pLogicUnit->m_ePipeInOperand = ZK_NONE;
   }
   else {
     eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
-    m_p_TaskLogicUnit->m_ePipeInOperand = eOperand;
+    m_pLogicUnit->m_ePipeInOperand = eOperand;
   }
   
   EXIT();
@@ -275,9 +275,9 @@ void Step::vPipeinWriteProfile(void)
   
   ASSERT(*m_p_TaskLogicUnit->m_xpPipein);
   
-  Profile* pProfile = _pProfile(*m_p_TaskLogicUnit->m_xpPipein);
+  Profile* pProfile = _pProfile(*m_pLogicUnit->m_xpPipein);
   
-  File* pFile = _pFile(*m_p_TaskLogicUnit->m_xpFile0);
+  File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
   
   pProfile->vWriteReport(pFile);
   

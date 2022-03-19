@@ -47,8 +47,8 @@ void Step::vPipelineSpecDelete(void)
 {
   ENTRY();
    
-  if (m_p_TaskLogicUnit->m_xpPipelineSpec.bIsNotNull()) {
-    m_p_TaskLogicUnit
+  if (m_pLogicUnit->m_xpPipelineSpec.bIsNotNull()) {
+    m_pLogicUnit
       ->m_xpPipelineSpec.vGuardedDeleteComponent(CN_PIPELINESPEC,
                                                  CN_STEP,this,(Stz*)__func__);
   }
@@ -63,8 +63,8 @@ void Step::vPipelineSpecGet(void)
 {
   ENTRY();
 
-  if (m_p_TaskLogicUnit->m_xpPipelineSpec.bIsNotNull())
-    m_pDataStack->vPushPtr(* m_p_TaskLogicUnit->m_xpPipelineSpec);
+  if (m_pLogicUnit->m_xpPipelineSpec.bIsNotNull())
+    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpPipelineSpec);
   else
     m_pDataStack->vPushPtr(nullptr);
 
@@ -80,7 +80,7 @@ void Step::vPipelineSpecOptimisable(void)
   
   bool bOptimisable = false;
   
-  PipelineSpec* pPipelineSpec = (* m_p_TaskLogicUnit->m_xpPipelineSpec);
+  PipelineSpec* pPipelineSpec = (* m_pLogicUnit->m_xpPipelineSpec);
   
   
   
@@ -113,7 +113,7 @@ void Step::vPipelineSpecSet(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpPipelineSpec =
+  m_pLogicUnit->m_xpPipelineSpec =
     _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
   
   EXIT();

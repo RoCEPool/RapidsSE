@@ -55,7 +55,7 @@ void Step::vTablePtnAppendBuffer(void)
   ASSERT(! pDataBuffer->pPrevItem());
 
   // get the tablePtn from the register
-  TablePtn* pTablePtn = _pTablePtn(*m_p_TaskLogicUnit->m_xpTablePtn);
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
   
   // append the buffer to the tablePtn
   
@@ -86,7 +86,7 @@ void Step::vTablePtnAttemptGrabRead(void)
   ENTRY();
   
   // get the tablePtn from the register
-  TablePtn* pTablePtn = _pTablePtn(*m_p_TaskLogicUnit->m_xpTablePtn);
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
 
   // attempt to grab the read lock
   bool bSuccess = pTablePtn->bGrabRead();
@@ -104,7 +104,7 @@ void Step::vTablePtnAttemptGrabWrite(void)
   ENTRY();
   
   // get the tablePtn from the register
-  TablePtn* pTablePtn = _pTablePtn(*m_p_TaskLogicUnit->m_xpTablePtn);
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
 
   // attempt to grab the write lock
   bool bSuccess = pTablePtn->bGrabWrite();
@@ -122,7 +122,7 @@ void Step::vTablePtnDropRead(void)
   ENTRY();
   
   // get the tablePtn from the register
-  TablePtn* pTablePtn = _pTablePtn(*m_p_TaskLogicUnit->m_xpTablePtn);
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
 
     
   // drop the read lock
@@ -139,7 +139,7 @@ void Step::vTablePtnDropWrite(void)
   ENTRY();
   
   // get the tablePtn from the register
-  TablePtn* pTablePtn = _pTablePtn(*m_p_TaskLogicUnit->m_xpTablePtn);
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
 
   // drop the write lock
   pTablePtn->vDropWrite();
@@ -154,7 +154,7 @@ void Step::vTablePtnGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpTablePtn);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTablePtn);
   
   EXIT();
 }
@@ -171,7 +171,7 @@ void Step::vTablePtnPopulateIndex(void)
   
   i8 iIndexNo = pIndex->iIndexNo();
   
-  TablePtn* pTablePtn = *m_p_TaskLogicUnit->m_xpTablePtn;
+  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
   
   bool bPopulated = pTablePtn->bPopulateIndex(iIndexNo);
   
@@ -189,7 +189,7 @@ void Step::vTablePtnRoot(void)
   // Nobody should call this
   vTrace(">>>>>>>>>>>>>>>>>>>>>  Step::vTablePtnRoot\n"_Stz);
   NEVER_REACH;
-  TablePtn* pTablePtn = _pTablePtn(*m_p_TaskLogicUnit->m_xpTablePtn);
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
   
   //m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());
   
@@ -203,7 +203,7 @@ void Step::vTablePtnSet(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTablePtn = _pTablePtn(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -215,7 +215,7 @@ void Step::vTablePtnTruncate(void)
 {
   ENTRY();
   
-  TablePtn* pTablePtn = *m_p_TaskLogicUnit->m_xpTablePtn;
+  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
   pTablePtn->vTruncate();
   
   EXIT();
@@ -231,7 +231,7 @@ void Step::vTablePtnTruncateIndex(void)
   // get the index to be truncated
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
-  TablePtn* pTablePtn = *m_p_TaskLogicUnit->m_xpTablePtn;
+  TablePtn* pTablePtn = *m_pLogicUnit->m_xpTablePtn;
   pTablePtn->vTruncateIndex(pIndex);
   
   EXIT();

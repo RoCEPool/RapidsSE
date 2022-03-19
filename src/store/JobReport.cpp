@@ -525,7 +525,7 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
 
   // get the pipeline
   Task* pTask = pJob->pTask();
-  LogicUnit* pLogicUnit = pTask->pTaskLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -639,7 +639,7 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
   Node*   pThisNode = MY::pNode();
 
   Task* pTask = pJob->pTask();
-  LogicUnit* pLogicUnit = pTask->pTaskLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   // get the pipeline
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);

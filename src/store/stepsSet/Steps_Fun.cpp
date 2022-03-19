@@ -61,7 +61,7 @@ void Step::vFun0Call(void)
 {
   ENTRY();
 
-  bool (*afFun)(void*) = m_p_TaskLogicUnit->m_afFun0;
+  bool (*afFun)(void*) = m_pLogicUnit->m_afFun0;
 
   bool b = (*afFun)(nullptr);
   if (! b)
@@ -77,7 +77,7 @@ void Step::vFun0Get(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt((i8)* m_p_TaskLogicUnit->m_afFun0);
+  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afFun0);
 
   EXIT();
 }
@@ -91,7 +91,7 @@ void Step::vFun0Set(void)
 
   i8 iFun = m_pDataStack->iPopInt(__func__);
 
-  m_p_TaskLogicUnit->m_afFun0 = (bool (*)(void*)) iFun;
+  m_pLogicUnit->m_afFun0 = (bool (*)(void*)) iFun;
 
   EXIT();
 }
@@ -142,7 +142,7 @@ void Step::vFun0Setup(void)
 
 #endif
 
-  if ( m_p_TaskLogicUnit->m_afFun0 )
+  if ( m_pLogicUnit->m_afFun0 )
     m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);
@@ -159,7 +159,7 @@ void Step::vFun1Call(void)
 {
   ENTRY();
 
-  bool (*afFun)(void*) = m_p_TaskLogicUnit->m_afFun1;
+  bool (*afFun)(void*) = m_pLogicUnit->m_afFun1;
 
   bool b = (*afFun)(nullptr);
   if (! b)
@@ -175,7 +175,7 @@ void Step::vFun1Get(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt((i8)* m_p_TaskLogicUnit->m_afFun1);
+  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afFun1);
 
   EXIT();
 }
@@ -189,7 +189,7 @@ void Step::vFun1Set(void)
 
   i8 iFun = m_pDataStack->iPopInt(__func__);
 
-  m_p_TaskLogicUnit->m_afFun1 = (bool (*)(void*)) iFun;
+  m_pLogicUnit->m_afFun1 = (bool (*)(void*)) iFun;
 
   EXIT();
 }
@@ -239,7 +239,7 @@ void Step::vFun1Setup(void)
 
   #endif
 
-  if ( m_p_TaskLogicUnit->m_afFun0 )
+  if ( m_pLogicUnit->m_afFun0 )
     m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);
@@ -257,7 +257,7 @@ void Step::vFun2Call(void)
 {
   ENTRY();
 
-  bool (*afFun)(void*) = m_p_TaskLogicUnit->m_afFun2;
+  bool (*afFun)(void*) = m_pLogicUnit->m_afFun2;
 
   bool b = (*afFun)(nullptr);
   if (! b)
@@ -273,7 +273,7 @@ void Step::vFun2Get(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt((i8)* m_p_TaskLogicUnit->m_afFun2);
+  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afFun2);
 
   EXIT();
 }
@@ -287,7 +287,7 @@ void Step::vFun2Set(void)
 
   i8 iFun = m_pDataStack->iPopInt(__func__);
 
-  m_p_TaskLogicUnit->m_afFun2 = (bool (*)(void*)) iFun;
+  m_pLogicUnit->m_afFun2 = (bool (*)(void*)) iFun;
 
   EXIT();
 }
@@ -337,7 +337,7 @@ void Step::vFun2Setup(void)
 
 #endif
 
-  if ( m_p_TaskLogicUnit->m_afFun0 )
+  if ( m_pLogicUnit->m_afFun0 )
     m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);
@@ -356,7 +356,7 @@ void Step::vFun3Call(void)
 {
   ENTRY();
 
-  bool (*afFun)(void*) = m_p_TaskLogicUnit->m_afFun3;
+  bool (*afFun)(void*) = m_pLogicUnit->m_afFun3;
 
   bool b = (*afFun)(nullptr);
   if (! b)
@@ -372,7 +372,7 @@ void Step::vFun3Get(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt((i8)* m_p_TaskLogicUnit->m_afFun3);
+  m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afFun3);
 
   EXIT();
 }
@@ -386,7 +386,7 @@ void Step::vFun3Set(void)
 
   i8 iFun = m_pDataStack->iPopInt(__func__);
 
-  m_p_TaskLogicUnit->m_afFun3 = (bool (*)(void*)) iFun;
+  m_pLogicUnit->m_afFun3 = (bool (*)(void*)) iFun;
 
   EXIT();
 }
@@ -435,7 +435,7 @@ void Step::vFun3Setup(void)
 
 #endif
 
-  if ( m_p_TaskLogicUnit->m_afFun0 )
+  if ( m_pLogicUnit->m_afFun0 )
     m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);

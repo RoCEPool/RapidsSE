@@ -39,9 +39,9 @@ void Step::vDataBufferDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpDataBuffer);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpDataBuffer);
 
-  m_p_TaskLogicUnit->m_xpDataBuffer = nullptr;
+  m_pLogicUnit->m_xpDataBuffer = nullptr;
 
   EXIT();
 }
@@ -53,7 +53,7 @@ void Step::vDataBufferGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpDataBuffer);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpDataBuffer);
 
   EXIT();
 }
@@ -65,9 +65,9 @@ void Step::vDataBufferGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpDataBuffer);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpDataBuffer);
 
-  m_p_TaskLogicUnit->m_xpDataBuffer = nullptr;
+  m_pLogicUnit->m_xpDataBuffer = nullptr;
 
   EXIT();
 }
@@ -79,7 +79,7 @@ void Step::vDataBufferIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpDataBuffer.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpDataBuffer.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -91,7 +91,7 @@ void Step::vDataBufferIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpDataBuffer.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpDataBuffer.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -107,7 +107,7 @@ void Step::vDataBufferSet(void)
 
   ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpDataBuffer.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpDataBuffer = _pDataBuffer(pOperand);
+  m_pLogicUnit->m_xpDataBuffer = _pDataBuffer(pOperand);
 
   EXIT();
 }

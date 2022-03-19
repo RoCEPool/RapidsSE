@@ -38,9 +38,9 @@ void Step::vOperandOoODelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpOperandOoO);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpOperandOoO);
   
-  m_p_TaskLogicUnit->m_xpOperandOoO = nullptr;
+  m_pLogicUnit->m_xpOperandOoO = nullptr;
   
   EXIT();
 }
@@ -52,7 +52,7 @@ void Step::vOperandOoOGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpOperandOoO);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpOperandOoO);
   
   EXIT();
 }
@@ -64,9 +64,9 @@ void Step::vOperandOoOGetAndClear(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpOperandOoO);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpOperandOoO);
   
-  m_p_TaskLogicUnit->m_xpOperandOoO = nullptr;
+  m_pLogicUnit->m_xpOperandOoO = nullptr;
   
   EXIT();
 }
@@ -78,7 +78,7 @@ void Step::vOperandOoOIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpOperandOoO.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpOperandOoO.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -95,9 +95,9 @@ void Step::vOperandOoONext(void)
   // revised job/op model
     Op* pOp = *m_pOp;
 
-  m_p_TaskLogicUnit->m_xpOperandOoO = pOp->pPopOoO();
+  m_pLogicUnit->m_xpOperandOoO = pOp->pPopOoO();
   
-  if (m_p_TaskLogicUnit->m_xpOperandOoO.bIsNull())
+  if (m_pLogicUnit->m_xpOperandOoO.bIsNull())
     m_pDataStack->vPushInt(false);
   else
     m_pDataStack->vPushInt(true);
@@ -116,9 +116,9 @@ void Step::vOperandOoOPipeToOutput(void)
   // revised job/op model
     Op* pOp = *m_pOp;
 
-  pOp->vPipeToOutput(*m_p_TaskLogicUnit->m_xpOperandOoO);
+  pOp->vPipeToOutput(*m_pLogicUnit->m_xpOperandOoO);
   
-  m_p_TaskLogicUnit->m_xpOperandOoO = nullptr;
+  m_pLogicUnit->m_xpOperandOoO = nullptr;
   
   EXIT();
 }
@@ -132,7 +132,7 @@ void Step::vOperandOoOSet(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpOperandOoO.bIsNull());
-  m_p_TaskLogicUnit->m_xpOperandOoO = _pOperand(pOperand);
+  m_pLogicUnit->m_xpOperandOoO = _pOperand(pOperand);
   
   EXIT();
 }

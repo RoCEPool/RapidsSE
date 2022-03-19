@@ -39,7 +39,7 @@ void Step::vStencilDelete(void)
 //
 //  m_p_TaskLogicUnit->m_xpStencil = nullptr;
 
-  m_p_TaskLogicUnit->m_xpStencil.vDeleteComponent();
+  m_pLogicUnit->m_xpStencil.vDeleteComponent();
 
   EXIT();
 }
@@ -51,7 +51,7 @@ void Step::vStencilGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(* m_p_TaskLogicUnit->m_xpStencil);
+  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpStencil);
 
   EXIT();
 }
@@ -65,7 +65,7 @@ void Step::vStencilNew(void)
   
   //vTrace("vStencilNew\n"_Stz);
   
-  m_p_TaskLogicUnit->m_xpStencil = new Stencil;
+  m_pLogicUnit->m_xpStencil = new Stencil;
 
   EXIT();
 }
@@ -77,16 +77,16 @@ void Step::vStencilSetup(void)
 {
   ENTRY();
 
-  Stencil* pStencil   = * m_p_TaskLogicUnit->m_xpStencil;
+  Stencil* pStencil   = * m_pLogicUnit->m_xpStencil;
 
   Combined* pCombined = _pCombined(m_pDataStack->pPopPtr(__func__));
 
   // get the current stream
-  Op* pOp = _pOp(* m_p_TaskLogicUnit->m_xpOp);
+  Op* pOp = _pOp(* m_pLogicUnit->m_xpOp);
   Stream* pStream = _pStream(pOp->pStream());
 
-  pCombined->aCombinedT()->m_pTub        = *m_p_TaskLogicUnit->m_xpTub;
-  pCombined->aCombinedT()->m_pPot        = *m_p_TaskLogicUnit->m_xpPot;
+  pCombined->aCombinedT()->m_pTub        = *m_pLogicUnit->m_xpTub;
+  pCombined->aCombinedT()->m_pPot        = *m_pLogicUnit->m_xpPot;
 
   pStencil->vSetup(pCombined, pStream);
 
@@ -100,16 +100,16 @@ void Step::vStencilSketch(void)
 {
   ENTRY();
 
-  Stencil* pStencil   = * m_p_TaskLogicUnit->m_xpStencil;
+  Stencil* pStencil   = * m_pLogicUnit->m_xpStencil;
 
   Combined* pCombined = _pCombined(m_pDataStack->pPopPtr(__func__));
 
   // get the current stream
-  Op* pOp = _pOp(* m_p_TaskLogicUnit->m_xpOp);
+  Op* pOp = _pOp(* m_pLogicUnit->m_xpOp);
   Stream* pStream = _pStream(pOp->pStream());
 
-  pCombined->aCombinedT()->m_pTub        = *m_p_TaskLogicUnit->m_xpTub;
-  pCombined->aCombinedT()->m_pPot        = *m_p_TaskLogicUnit->m_xpPot;
+  pCombined->aCombinedT()->m_pTub        = *m_pLogicUnit->m_xpTub;
+  pCombined->aCombinedT()->m_pPot        = *m_pLogicUnit->m_xpPot;
 
   eEC eError = pStencil->eSketch(pCombined, pStream);
 
@@ -130,7 +130,7 @@ void Step::vStencilSourceFetch(void)
 {
   ENTRY();
 
-  Stencil* pStencil = * m_p_TaskLogicUnit->m_xpStencil;
+  Stencil* pStencil = * m_pLogicUnit->m_xpStencil;
   
   Stz* szSource = pStencil->szOpSource();
 

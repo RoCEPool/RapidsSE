@@ -109,7 +109,7 @@ void Step::vNodeGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpNode);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpNode);
 
   EXIT();
 }
@@ -284,7 +284,7 @@ void Step::vNodeSet(void)
   
   ASSERT(! pNode || m_p_TaskLogicUnit->m_xpNode.bIsNull());
   
-  m_p_TaskLogicUnit->m_xpNode = pNode;
+  m_pLogicUnit->m_xpNode = pNode;
 
   EXIT();
 }

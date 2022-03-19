@@ -32,7 +32,7 @@ void Step::vDdlLockDropRead(void)
 {
   ENTRY();
 
-  AM::MASTERLOCK::vDropDdlReadLock(m_p_TaskLogicUnit);
+  AM::MASTERLOCK::vDropDdlReadLock(m_pLogicUnit);
 
   EXIT();
 }
@@ -44,7 +44,7 @@ void Step::vDdlLockDropWrite(void)
 {
   ENTRY();
     
-  AM::MASTERLOCK::vDropDdlWriteLock(m_p_TaskLogicUnit);
+  AM::MASTERLOCK::vDropDdlWriteLock(m_pLogicUnit);
 
   EXIT();
 }
@@ -56,7 +56,7 @@ void Step::vDdlLockGrabRead(void)
 {
   ENTRY();
     
-  AM::MASTERLOCK::vGrabDdlReadLock(m_p_TaskLogicUnit);
+  AM::MASTERLOCK::vGrabDdlReadLock(m_pLogicUnit);
 
   EXIT();
 }
@@ -68,7 +68,7 @@ void Step::vDdlLockGrabWrite(void)
 {
   ENTRY();
     
-  AM::MASTERLOCK::vGrabDdlWriteLock(m_p_TaskLogicUnit);
+  AM::MASTERLOCK::vGrabDdlWriteLock(m_pLogicUnit);
 
   EXIT();
 }
@@ -80,7 +80,7 @@ void Step::vDdlLockNone(void)
 {
   ENTRY();
 
-  if (LH_HAVE_NO_LOCK != m_p_TaskLogicUnit->m_eDdlLocked)
+  if (LH_HAVE_NO_LOCK != m_pLogicUnit->m_eDdlLocked)
     THROW("DdlLock[].none : register still has ddl locked"_Stz);
 
   EXIT();
@@ -98,8 +98,8 @@ void Step::vDdlLockTestDrop(void)
 //    return;
 //  }
   
-  if (m_p_TaskLogicUnit)
-    AM::MASTERLOCK::vDdlLockTestDrop(m_p_TaskLogicUnit);
+  if (m_pLogicUnit)
+    AM::MASTERLOCK::vDdlLockTestDrop(m_pLogicUnit);
     
   EXIT();
 }

@@ -3165,7 +3165,7 @@ void AM::vTaskDump(Task* pTask)
   
   AM::vJobContentDump(pJob);
   
-  LogicUnit* pLogicUnit = pTask->pTaskLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
   
   if (pLogicUnit) {
     if (pLogicUnit->m_xpOp.bIsNotNull())
@@ -3236,7 +3236,7 @@ t8 AM::tThisTLSPespective(void)
 //}
 LogicUnit* AM::pThisTLSLogicUnit(void) {
   Task* pTask = Task::pThisTLSTask();
-  LogicUnit* pLogicUnit = pTask->pTaskLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   return pLogicUnit;
 }
@@ -3253,7 +3253,7 @@ Tx* AM::pThisTLSTx(void) {
   if (! pTask)
     return nullptr;
   
-  LogicUnit* pLogicUnit = pTask->pTaskLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   Tx* pTx = *pLogicUnit->m_xpTx;
   return pTx;

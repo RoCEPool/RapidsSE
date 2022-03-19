@@ -43,7 +43,7 @@ void Step::vJobFindOriginator(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_p_TaskLogicUnit->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
   
   
   m_pDataStack->vPushPtr(pJobFound);
@@ -66,7 +66,7 @@ void Step::vJobFindParticipant(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_p_TaskLogicUnit->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
   
   
   m_pDataStack->vPushPtr(pJobFound);
@@ -81,7 +81,7 @@ void Step::vJobRefHasTask(void)
 {
   ENTRY();
   
-  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
   
   m_pDataStack->vPushInt(pJob->pJobTask() ? true : false);
   
@@ -95,7 +95,7 @@ void Step::vJobRefPointer(void)
 {
   ENTRY();
   
-  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
 
   m_pDataStack->vPushPtr(pJob);
 
@@ -109,7 +109,7 @@ void Step::vJobRefAssertNone(void)
 {
   ENTRY();
   
-  if (m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject())
+  if (m_pLogicUnit->m_xpJobRef.pReferencedObject())
     THROW("JobRef[].assertNone : register still has reference to a job"_Stz);
   
   EXIT();
@@ -122,7 +122,7 @@ void Step::vJobRefReferences(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpJobRef.nReferences());
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpJobRef.nReferences());
   
   EXIT();
 }
@@ -134,8 +134,8 @@ void Step::vJobRefReturn(void)
 {
   ENTRY();
   
-  if (m_p_TaskLogicUnit->m_xpJobRef.bHasReference())
-    m_p_TaskLogicUnit->m_xpJobRef.vReturnRef();
+  if (m_pLogicUnit->m_xpJobRef.bHasReference())
+    m_pLogicUnit->m_xpJobRef.vReturnRef();
 
   EXIT();
 }
@@ -147,7 +147,7 @@ void Step::vJobRefTaskFetch(void)
 {
   ENTRY();
   
-  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
 
   m_pDataStack->vPushPtr(pJob->pJobTask());
 

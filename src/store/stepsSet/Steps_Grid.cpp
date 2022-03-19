@@ -374,9 +374,9 @@ void Step::vGridDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpGrid);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpGrid);
 
-  m_p_TaskLogicUnit->m_xpGrid = nullptr;
+  m_pLogicUnit->m_xpGrid = nullptr;
 
   EXIT();
 }
@@ -388,7 +388,7 @@ void Step::vGridGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpGrid);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpGrid);
 
   EXIT();
 }
@@ -400,9 +400,9 @@ void Step::vGridGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpGrid);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpGrid);
 
-  m_p_TaskLogicUnit->m_xpGrid = nullptr;
+  m_pLogicUnit->m_xpGrid = nullptr;
 
   EXIT();
 }
@@ -414,7 +414,7 @@ void Step::vGridIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpGrid.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpGrid.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -426,7 +426,7 @@ void Step::vGridIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpGrid.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpGrid.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -442,7 +442,7 @@ void Step::vGridSet(void)
 
   ASSERT(! pGrid || m_p_TaskLogicUnit->m_xpGrid.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpGrid = pGrid;
+  m_pLogicUnit->m_xpGrid = pGrid;
 
   EXIT();
 }

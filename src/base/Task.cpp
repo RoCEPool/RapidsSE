@@ -147,11 +147,11 @@ void Task::vTask(void)
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
   
-  m_p_TaskLogicUnit = nullptr;
+  m_pLogicUnit = nullptr;
   
   _checkInitialised_(CN_TASK);
   
-  m_p_TaskLogicUnit = new LogicUnit;
+  m_pLogicUnit = new LogicUnit;
     
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -193,7 +193,7 @@ Task::~Task(void) noexcept(false)
   delete m_pProfile;
   m_pProfile = nullptr;
   
-  m_p_TaskLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_p_TaskLogicUnit,
+  m_pLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pLogicUnit,
                                     CN_TASK,this,(Stz*)__func__);
 }
 
@@ -750,8 +750,8 @@ void Task::vDump(void)
 
   // dump the logicUnit registers
   // revised job/op model
-  if (m_p_TaskLogicUnit)
-    m_p_TaskLogicUnit->vDumpRegisters();
+  if (m_pLogicUnit)
+    m_pLogicUnit->vDumpRegisters();
   
   vTrace("== End Task Dump ============================================\n"_Stz);
   
@@ -1036,11 +1036,11 @@ void Task::vLocalsPush(void)
 /*----------------------------------------------------------------------------*/
 /* push a locals frame                                                        */
 /*----------------------------------------------------------------------------*/
-LogicUnit* Task::pTaskLogicUnit(void)
+LogicUnit* Task::pLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  return m_p_TaskLogicUnit;
+  return m_pLogicUnit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1293,7 +1293,7 @@ void Task::vSeeLogicUnitRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_p_TaskLogicUnit->vDumpRegisters();
+  m_pLogicUnit->vDumpRegisters();
 }
 
 /*----------------------------------------------------------------------------*/

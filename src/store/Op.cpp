@@ -1101,7 +1101,7 @@ LogicUnit* Op::pOpLogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pTask->pTaskLogicUnit();
+  return m_pTask->pLogicUnit();
 }
 
 /*----------------------------------------------------------------------------*/

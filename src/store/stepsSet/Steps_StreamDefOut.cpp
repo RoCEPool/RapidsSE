@@ -56,7 +56,7 @@ void Step::vStreamDefOutAddColumn(void)
   i8 eColLength = (eCT)m_pDataStack->iPopInt(__func__);
   i8 eColScale = (eCT)m_pDataStack->iPopInt(__func__);
   
-  StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
+  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
   
   pStreamDefOut->vAddColumn(sColNm,eColType,eColLength,eColScale);
   
@@ -70,9 +70,9 @@ void Step::vStreamDefOutDelete(void)
 {
   ENTRY();
     
-  StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
+  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
   
-  m_p_TaskLogicUnit->m_xpStreamDefOut = nullptr;
+  m_pLogicUnit->m_xpStreamDefOut = nullptr;
 
   if (pStreamDefOut->eGetClassNo() == CN_STREAMDEF)
     delete pStreamDefOut;
@@ -93,7 +93,7 @@ void Step::vStreamDefOutDuplicate(void)
   
   ASSERT (* m_p_TaskLogicUnit->m_xpStreamDefOut);
   
-  StreamDef* pStreamDef = new StreamDef(* m_p_TaskLogicUnit->m_xpStreamDefOut);
+  StreamDef* pStreamDef = new StreamDef(* m_pLogicUnit->m_xpStreamDefOut);
   
   m_pDataStack->vPushPtr(pStreamDef);
   
@@ -107,7 +107,7 @@ void Step::vStreamDefOutGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(* m_p_TaskLogicUnit->m_xpStreamDefOut);
+  m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpStreamDefOut);
 
   EXIT();
 }
@@ -126,18 +126,18 @@ void Step::vStreamDefOutGenerate(void)
   s4K sExpr;
   m_pDataStack->vPopStr(sExpr, __func__);
 
-  m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
+  m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
   //m_p_TaskLogicUnit->m_xpIndexDef     = new IndexDef;
-  m_p_TaskLogicUnit->m_xpAggTypeStack = new IntStack;
+  m_pLogicUnit->m_xpAggTypeStack = new IntStack;
 
-  StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
-  IntStack*  pAggTypeStack = * m_p_TaskLogicUnit->m_xpAggTypeStack;
+  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
+  IntStack*  pAggTypeStack = * m_pLogicUnit->m_xpAggTypeStack;
 
   ePJ eProjectKind;
 
   eEC eError = ExprEval::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
-                                            pAggTypeStack, eProjectKind, sExpr, &m_p_TaskLogicUnit->m_uSelectColumns);
-  m_p_TaskLogicUnit->m_eProjectKind = eProjectKind;
+                                            pAggTypeStack, eProjectKind, sExpr, &m_pLogicUnit->m_uSelectColumns);
+  m_pLogicUnit->m_eProjectKind = eProjectKind;
 
   //pStreamDefOut->vPrint();
 
@@ -153,7 +153,7 @@ void Step::vStreamDefOutIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpStreamDefOut.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpStreamDefOut.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -168,9 +168,9 @@ void Step::vStreamDefOutJoin(void)
   StreamDef* pStreamDefRht = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   StreamDef* pStreamDefLft = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
+  m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
 
-  StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
+  StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
 
   eEC eError = ExprEval::eJoinStreamDef(pStreamDefLft, pStreamDefRht, pStreamDefOut);
 
@@ -186,7 +186,7 @@ void Step::vStreamDefOutNameFetch(void)
 {
   ENTRY();
     
-  s32 sName = m_p_TaskLogicUnit->m_xpStreamDefOut->szStreamDefNm();
+  s32 sName = m_pLogicUnit->m_xpStreamDefOut->szStreamDefNm();
   
   m_pDataStack->vPushStz(sName);
   
@@ -203,7 +203,7 @@ void Step::vStreamDefOutNameStore(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
 
-  m_p_TaskLogicUnit->m_xpStreamDefOut->vStreamDefNm(sName);
+  m_pLogicUnit->m_xpStreamDefOut->vStreamDefNm(sName);
   
   EXIT();
 }
@@ -215,7 +215,7 @@ void Step::vStreamDefOutNew(void)
 {
   ENTRY();
     
-  m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
+  m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
   
   EXIT();
 }
@@ -229,7 +229,7 @@ void Step::vStreamDefOutNewFromTable(void)
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef(pTable->pStreamDef());
+  m_pLogicUnit->m_xpStreamDefOut = new StreamDef(pTable->pStreamDef());
 
   EXIT();
 }
@@ -241,7 +241,7 @@ void Step::vStreamDefOutPrint(void)
 {
   ENTRY();
     
-  StreamDef* pStreamDefOut = _pStreamDef(*m_p_TaskLogicUnit->m_xpStreamDefOut);
+  StreamDef* pStreamDefOut = _pStreamDef(*m_pLogicUnit->m_xpStreamDefOut);
   
   pStreamDefOut->vPrint();
 
@@ -255,7 +255,7 @@ void Step::vStreamDefOutSet(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

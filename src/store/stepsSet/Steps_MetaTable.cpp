@@ -31,9 +31,9 @@ void Step::vMetaTableListTables(void)
   
   //vTrace("vMetaTableListTable\n"_Stz);
   
-  Pot* pPot = _pPot(m_p_TaskLogicUnit->m_xRluCommon.m_pPot);
+  Pot* pPot = _pPot(m_pLogicUnit->m_xRluCommon.m_pPot);
   
-  pPot->vRowPix(m_p_TaskLogicUnit->m_xpStreamDefLft->pRowPix());
+  pPot->vRowPix(m_pLogicUnit->m_xpStreamDefLft->pRowPix());
   
   bool bNewBuffer;
   RowBuffer* pRowBuffer = nullptr;

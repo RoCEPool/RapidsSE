@@ -40,7 +40,7 @@ void Step::vToBktRowRegCompleted(void)
 {
   ENTRY();
   
-  ToBktRow* pToBktRow = *m_p_TaskLogicUnit->m_xpToBktRow;
+  ToBktRow* pToBktRow = *m_pLogicUnit->m_xpToBktRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -58,7 +58,7 @@ void Step::vToBktRowRegConvert(void)
 {
   ENTRY();
 
-  ToBktRow* pToBktRow = *m_p_TaskLogicUnit->m_xpToBktRow;
+  ToBktRow* pToBktRow = *m_pLogicUnit->m_xpToBktRow;
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -82,7 +82,7 @@ void Step::vToBktRowRegCreate(void)
     
   ToBktRow* pToBktRow = new ToBktRow;
       
-  m_p_TaskLogicUnit->m_xpToBktRow = pToBktRow;
+  m_pLogicUnit->m_xpToBktRow = pToBktRow;
 
   EXIT();
 }
@@ -94,7 +94,7 @@ void Step::vToBktRowRegDangling(void)
 {
   ENTRY();
   
-  ToBktRow* pToBktRow = *m_p_TaskLogicUnit->m_xpToBktRow;
+  ToBktRow* pToBktRow = *m_pLogicUnit->m_xpToBktRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -112,8 +112,8 @@ void Step::vToBktRowRegDelete(void)
 {
   ENTRY();
   
-  ToBktRow* pToBktRow = *m_p_TaskLogicUnit->m_xpToBktRow;
-  m_p_TaskLogicUnit->m_xpToBktRow = nullptr;
+  ToBktRow* pToBktRow = *m_pLogicUnit->m_xpToBktRow;
+  m_pLogicUnit->m_xpToBktRow = nullptr;
   
   delete pToBktRow;
   

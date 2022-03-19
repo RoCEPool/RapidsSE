@@ -123,7 +123,7 @@ void Step::vSqlCompilerAggregateSplit(void) {
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -196,7 +196,7 @@ void Step::vSqlCompilerCorrBySquash(void) {
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -279,7 +279,7 @@ void Step::vSqlCompilerDoExplain(void) {
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
 
   // get the streamSet for explain
-  InfoSet *pInfoSet = _pInfoSet(*(m_p_TaskLogicUnit)->m_xpStreamSet);
+  InfoSet *pInfoSet = _pInfoSet(*(m_pLogicUnit)->m_xpStreamSet);
 
   // Find the explainOp. First get the /__root__/plan node
   QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
@@ -326,7 +326,7 @@ void Step::vSqlCompilerDoExplain(void) {
 
   // Do we need to exit after this stage?
   if (ExplainOp::bExitEarly(pExplainOp)) {
-    m_p_TaskLogicUnit->m_bCompilerToExit = true;
+    m_pLogicUnit->m_bCompilerToExit = true;
     delete pRootNode;
   }
 
@@ -362,7 +362,7 @@ void Step::vSqlCompilerDoExplainTliterate(void) {
   ASSERT(ShadowRoot::bIsExactType(pRootNode));
 
   // get the streamSet for explain
-  InfoSet *pInfoSet = _pInfoSet(*(m_p_TaskLogicUnit)->m_xpStreamSet);
+  InfoSet *pInfoSet = _pInfoSet(*(m_pLogicUnit)->m_xpStreamSet);
 
   // Find the explainOp
   QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
@@ -523,7 +523,7 @@ void Step::vSqlCompilerExprPushdown(void)
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -573,7 +573,7 @@ void Step::vSqlCompilerJoinOptimisation(void)
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -636,7 +636,7 @@ void Step::vSqlCompilerExprValidate(void)
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -752,7 +752,7 @@ void Step::vSqlCompilerNameValidate(void)
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -855,7 +855,7 @@ void Step::vSqlCompilerParser(void)
 
   } catch (Parser::SyntaxException& e) {
     //vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.iLine(), e.iColumn(), e.szError());
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Grid* pGrid = AM::pGrid();
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
@@ -872,7 +872,7 @@ void Step::vSqlCompilerParser(void)
   } catch (Parser::SemanticException& e) {
     //vTrace("SemanticException: %s\n"_Stz, e.szError());
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -948,7 +948,7 @@ void Step::vSqlCompilerPartitionPlan(void)
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -1012,7 +1012,7 @@ void Step::vSqlCompilerPostProject(void)
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -1067,7 +1067,7 @@ void Step::vSqlCompilerProjValidation(void)
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -1122,7 +1122,7 @@ void Step::vSqlCompilerSetOpValidate(void)
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,
@@ -1169,7 +1169,7 @@ void Step::vSqlCompilerStageMarkers(void)
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
-    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                     pGrid->pThisNode()->szNodeNm(),
                                     EC_SEMANTIC_ERROR,

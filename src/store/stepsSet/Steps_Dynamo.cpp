@@ -51,7 +51,7 @@ void Step::vDynamoCompile(void)
   s4K sPipelineStmt;
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
       
-  Dynamo* pDynamo = (* m_p_TaskLogicUnit->m_xpDynamo);
+  Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
   PipelineSpec* pPipelineSpec = pDynamo->pCompile(sPipelineStmt);
     
   if (pPipelineSpec) {
@@ -77,7 +77,7 @@ void Step::vDynamoDelete(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_xpDynamo.vDeleteComponent();
+  m_pLogicUnit->m_xpDynamo.vDeleteComponent();
 
   EXIT();
 }
@@ -89,8 +89,8 @@ void Step::vDynamoGet(void)
 {
   ENTRY();
 
-  if (m_p_TaskLogicUnit->m_xpDynamo.bIsNotNull())
-    m_pDataStack->vPushPtr(* m_p_TaskLogicUnit->m_xpDynamo);
+  if (m_pLogicUnit->m_xpDynamo.bIsNotNull())
+    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpDynamo);
   else
     m_pDataStack->vPushPtr(nullptr);
   
@@ -104,7 +104,7 @@ void Step::vDynamoNew(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpDynamo = new Dynamo(m_pJob_task->pJobTags());
+  m_pLogicUnit->m_xpDynamo = new Dynamo(m_pJob_task->pJobTags());
 
   EXIT();
 }
