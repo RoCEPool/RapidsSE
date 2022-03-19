@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,SubReturn,CN_PIPELINE)
-__aNewFunction(SubReturn,CN_PIPELINE)
-__vDeleteFunction(SubReturn,CN_PIPELINE)
+__pCastFunction(STORE,SubReturn,CN_SUBRETURN)
+__aNewFunction(SubReturn,CN_SUBRETURN)
+__vDeleteFunction(SubReturn,CN_SUBRETURN)
 __aFooterFunction(SubReturn)
 
 
@@ -19,13 +19,15 @@ __aFooterFunction(SubReturn)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SubReturn::SubReturn(void)
-: Object(CN_PIPELINE)
+: Object(CN_SUBRETURN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBRETURN,_FOOTER_);
 
-  _checkInitialised_(CN_PIPELINE);
+  m_pSubCall = nullptr;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  _checkInitialised_(CN_SUBRETURN);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SUBRETURN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +35,7 @@ SubReturn::SubReturn(void)
 /*----------------------------------------------------------------------------*/
 SubReturn::~SubReturn(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBRETURN,_FOOTER_);
   
 }
 
@@ -57,6 +59,38 @@ void SubReturn::vRepair(Object *pObject)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dec remaining acks                                                         */
+/*----------------------------------------------------------------------------*/
+bool SubReturn::bDecRmg(i8& nAcksWereRmg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBCALL,_FOOTER_);
+
+  bool bWasResumed = m_pSubCall->bDecRmg(nAcksWereRmg);
+    
+  return bWasResumed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get subcall                                                                */
+/*----------------------------------------------------------------------------*/
+SubCall* SubReturn::pSubCall(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBCALL,_FOOTER_);
+
+  return m_pSubCall;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set subcall                                                                */
+/*----------------------------------------------------------------------------*/
+void SubReturn::vSubCall(SubCall* pSubCall)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBCALL,_FOOTER_);
+
+  m_pSubCall = pSubCall;
+}
 
 /*============================================================================*/
 /* end                                                                        */

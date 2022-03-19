@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,SubCall,CN_PIPELINE)
-__aNewFunction(SubCall,CN_PIPELINE)
-__vDeleteFunction(SubCall,CN_PIPELINE)
+__pCastFunction(STORE,SubCall,CN_SUBCALL)
+__aNewFunction(SubCall,CN_SUBCALL)
+__vDeleteFunction(SubCall,CN_SUBCALL)
 __aFooterFunction(SubCall)
 
 
@@ -19,13 +19,17 @@ __aFooterFunction(SubCall)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SubCall::SubCall(void)
-: Object(CN_PIPELINE)
+: Object(CN_SUBCALL)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-
-  _checkInitialised_(CN_PIPELINE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBCALL,_FOOTER_);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  // m_oAcksRmg
+  
+  m_pTask = nullptr;
+
+  _checkInitialised_(CN_SUBCALL);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SUBCALL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +37,7 @@ SubCall::SubCall(void)
 /*----------------------------------------------------------------------------*/
 SubCall::~SubCall(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBCALL,_FOOTER_);
   
 }
 
@@ -58,6 +62,52 @@ void SubCall::vRepair(Object *pObject)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dec remaining acks                                                         */
+/*----------------------------------------------------------------------------*/
+bool SubCall::bDecRmg(i8& nAcksWereRmg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBCALL,_FOOTER_);
+
+  if (m_oAcksRmg.bDecAndDecide(nAcksWereRmg)) {
+    
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set remaining acks                                                         */
+/*----------------------------------------------------------------------------*/
+void SubCall::vSetRmg(i8 nAcksRmg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBCALL,_FOOTER_);
+
+  m_oAcksRmg.vSetRemaining(nAcksRmg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get task                                                                   */
+/*----------------------------------------------------------------------------*/
+Task* SubCall::pTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBCALL,_FOOTER_);
+
+  return m_pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task                                                                   */
+/*----------------------------------------------------------------------------*/
+void SubCall::vTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBCALL,_FOOTER_);
+
+  m_pTask = pTask;
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -5,12 +5,16 @@
 
 #include "BASE.h"
 
+#include "SubCall.hpp"
+
 namespace STORE
 {
   class SubReturn : public Object
   {
   private:
-
+  
+    SubCall* m_pSubCall;
+  
     // must be last
     Footer m_xFooter;
  
@@ -22,7 +26,12 @@ namespace STORE
    ~SubReturn(void) noexcept(false);
   
     static void vRepair(Object* pObject);
-  
+
+    bool bDecRmg(i8& nAcksWereRmg);
+
+    SubCall* pSubCall(void);
+    void vSubCall(SubCall* pSubCall);
+
   private:
 
     Footer* aFooter(void);

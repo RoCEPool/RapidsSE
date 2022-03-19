@@ -143,10 +143,6 @@ namespace BASE
     void vLocalsPop(void);
     void vLocalsPush(void);
     LogicUnit* pLogicUnit(void);
-    void vMutexLock(void);
-    void vMutexSignal(void);
-    void vMutexUnlock(void);
-    void vMutexWait(void);
     void vNewInput(void);
     Op*  pOp(void);
     void vOp(Op* pOp);
