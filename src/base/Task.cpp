@@ -989,7 +989,7 @@ bool Task::bIsTaskLocked(void)
 /*----------------------------------------------------------------------------*/
 /* get the job of this task                                                   */
 /*----------------------------------------------------------------------------*/
-Job* Task::pJob_task(void)
+Job* Task::pJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -999,7 +999,7 @@ Job* Task::pJob_task(void)
 /*----------------------------------------------------------------------------*/
 /* set the job of this task                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_task(Job* pJob)
+void Task::vJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 

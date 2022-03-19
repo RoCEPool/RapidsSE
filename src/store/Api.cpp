@@ -935,8 +935,8 @@ void Api::vDeleteImmediate(Task** ppTask)
   *ppTask = nullptr;
 
   pTask->vState(TS_COMPLETED);
-  Job* pJob = pTask->pJob_task();
-  pTask->vJob_task(nullptr);
+  Job* pJob = pTask->pJob();
+  pTask->vJob(nullptr);
   
   //delete pJob;
   if (pJob)

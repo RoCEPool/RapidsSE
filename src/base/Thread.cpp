@@ -273,7 +273,7 @@ void Thread::vLoop_dedicated(void)
   
   m_eThreadState = HS_ASSIGNED;
   
-  while (m_pTask && (m_pTask->pOp() || m_pTask->pJob_task()))
+  while (m_pTask && (m_pTask->pOp() || m_pTask->pJob()))
     m_pTask->vTaskLoop();
 
   Scheduler::vThread_EndThreadLoop(this);

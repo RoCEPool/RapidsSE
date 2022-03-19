@@ -138,8 +138,8 @@ namespace BASE
     bool bIsStart(void);
     void vIsStart(bool bIsStart);
     bool bIsTaskLocked(void);
-    Job* pJob_task(void);
-    void vJob_task(Job* pJob);
+    Job* pJob(void);
+    void vJob(Job* pJob);
     void vLocalsPop(void);
     void vLocalsPush(void);
     LogicUnit* pLogicUnit(void);

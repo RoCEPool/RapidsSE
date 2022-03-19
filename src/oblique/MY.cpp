@@ -317,7 +317,7 @@ Job* MY::pJob(void)
   if (! pTask)
     return nullptr;
   
-  Job* pJob = pTask->pJob_task();
+  Job* pJob = pTask->pJob();
   if (pJob)
     return pJob;
 

@@ -2386,7 +2386,7 @@ void AM::TASK::vRetire(Task* pTask)
     pJob->vDecActiveOps();
   }
   else
-  if (Job* pJob = pTask->pJob_task()) {
+  if (Job* pJob = pTask->pJob()) {
     // retiring job
     //pJob->vReapable(true);
 //    if (pJob->bIsPipelineLocal()) {
@@ -3158,7 +3158,7 @@ void AM::vTaskDump(void) {
 
 void AM::vTaskDump(Task* pTask)
 {
-  Job* pJob = pTask->pJob_task();
+  Job* pJob = pTask->pJob();
     
   if (! pJob)
     return;
@@ -3190,7 +3190,7 @@ LogicUnit* AM::pTaskOpLogicUnit(Task* pTask) {
 
 void AM::vTaskFullTrace(Task* pTask)
 {
-  Job* pJob = pTask->pJob_task();
+  Job* pJob = pTask->pJob();
 
   // dump api state
   //AM::vDumpApi();
@@ -3992,11 +3992,11 @@ bool AM::bTaskIsLocked(Task* pTask) {
 }
 
 Job* AM::pTaskJob(void) {
-  return pThisTLSTask()->pJob_task();
+  return pThisTLSTask()->pJob();
 }
 Job* AM::pTaskJob(Task* pTask) {
   if (pTask)
-    return pTask->pJob_task();
+    return pTask->pJob();
   else
     return nullptr;
 }
