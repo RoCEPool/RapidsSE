@@ -439,13 +439,51 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT(! pTaskWaiting->iAcksRmg_assert_only_());
+//  RASSERT(! pTaskWaiting->iAcksRmg_assert_only_());
+//
+//  // cycle the task lock to ensure task has fully entered wait state
+//  pTaskWaiting->vGrabTaskLock((Stz*)__func__);
+//  pTaskWaiting->vDropTaskLock((Stz*)__func__);
+//
+//  // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
+//  RASSERT(TS_WAITING == pTaskWaiting->eState());
+//  RASSERT(QK_WAITING_SET == pTaskWaiting->eQueue());
+//  RASSERT(TR_NONE == pTaskWaiting->eTransition());
+//
+//  Schedule* pSchedule = AM::pSchedule();
+//
+//  pSchedule->vRemoveWaitingSet(pTaskWaiting);
+//
+//  RASSERT(TS_DESISTED == pTaskWaiting->eState());
+//  RASSERT(QK_NONE == pTaskWaiting->eQueue());
+//  RASSERT(TR_NONE == pTaskWaiting->eTransition());
+//
+//  vScheduleTask(pTaskWaiting);
   
-  // cycle the task lock to ensure task has fully entered wait state
+  vTaskCross_ResumeWaiting(pTaskWaiting,pTaskAcking);
+  // **do not touch task**
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* resume a waiting task (must have no acks remaining)                        */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskCross_ResumeWaiting(Task* pTaskWaiting,
+                                         Task* pTaskResuming)
+{
+  _static_
+    
+  RASSERT(pTaskWaiting->eGetClassNo() == CN_TASK);
+  RASSERT(TS_EXECUTING == pTaskResuming->eState());
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // cycle the task lock to ensure task waiting has fully entered wait state
   pTaskWaiting->vGrabTaskLock((Stz*)__func__);
   pTaskWaiting->vDropTaskLock((Stz*)__func__);
     
-  // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
+  // having cycled the lock, the task should be TS_WAITING and QK_WAITING_SET
   RASSERT(TS_WAITING == pTaskWaiting->eState());
   RASSERT(QK_WAITING_SET == pTaskWaiting->eQueue());
   RASSERT(TR_NONE == pTaskWaiting->eTransition());
@@ -460,8 +498,6 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting,
   
   vScheduleTask(pTaskWaiting);
   // **do not touch task**
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
