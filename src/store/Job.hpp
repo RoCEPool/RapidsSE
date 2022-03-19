@@ -181,6 +181,7 @@ namespace STORE
     Pipeline* pPipeline_job(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
+    void vPostRecv(void);
     Timer*  pProgressTimer(void);
   
     bool bReapable(void);

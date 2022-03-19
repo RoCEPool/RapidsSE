@@ -179,23 +179,8 @@ void Job::vPostRecv(void* aReceivedJob)
 
   pReceivedJob->vInductIntoNode(pReceivedJob);
   
-  pReceivedJob->vWasReceived(true);
+  pReceivedJob->vPostRecv();
   
-  pReceivedJob->vJobList(JL_NONE);
-    
-  pReceivedJob->vTask(nullptr);
-
-  pReceivedJob->m_pSingularOp = nullptr;
-  pReceivedJob->m_pJobMetricsChain = nullptr;
-
-  pReceivedJob->m_okLock.vResetLock();
-  pReceivedJob->m_okLock.vResetStats();
-
-  
-  if (pReceivedJob->bHasTag(C_SEE_JOB))
-    pReceivedJob->vPrintJobContents();
-  
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -787,6 +772,28 @@ void Job::vPrintJobContents(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vPostRecv(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
+  
+  m_bWasReceived = true;
+  
+  m_eJobList = JL_NONE;
+    
+  m_pTask = nullptr;
+
+  m_pSingularOp = nullptr;
+  m_pJobMetricsChain = nullptr;
+
+  m_okLock.vResetLock();
+  m_okLock.vResetStats();
+
+  if (bHasTag(C_SEE_JOB))
+    vPrintJobContents();
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
