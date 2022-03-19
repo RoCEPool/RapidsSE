@@ -1304,6 +1304,24 @@ void Task::vSleepUsec(i8 iMicroseconds)
 /*----------------------------------------------------------------------------*/
 /* set the tasks instruction pointer to run the entry word                    */
 /*----------------------------------------------------------------------------*/
+void Task::vSetInxPtr(Stz* szEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+  
+  Word* pEntryWord = pDicRoot->pFindWord(szEntry);
+  if (! pEntryWord) {
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Unable to find task entry point: %s\n"_Stz,szEntry);
+  }
+  
+  vSetInxPtr(pEntryWord);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the tasks instruction pointer to run the entry word                    */
+/*----------------------------------------------------------------------------*/
 void Task::vSetInxPtr(Word* pEntryWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);

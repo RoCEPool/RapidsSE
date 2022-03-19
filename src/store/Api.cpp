@@ -1150,19 +1150,21 @@ void Api::vCreateTaskForJob(Job* pJob)
 {
   _static_
     
-  Stz* szEntry = "job::job"_Stz;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Task* pTask = new Task(pJob->szJobNm(),pJob);
-
-  pJob->vTask(pTask);
-    
-  vSetTaskInxPtr(pTask,szEntry);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pJob->vTimerStart();
+//  Stz* szEntry = "job::job"_Stz;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  Task* pTask = new Task(pJob->szJobNm(),pJob);
+//
+//  pJob->vTask(pTask);
+//
+//  vSetTaskInxPtr(pTask,szEntry);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  pJob->vTimerStart();
+  
+  pJob->vSpawnTask();
 }
 
 /*----------------------------------------------------------------------------*/

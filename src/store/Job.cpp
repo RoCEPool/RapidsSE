@@ -23,6 +23,7 @@
 #include "Pipeline.hpp"
 #include "Output.hpp"
 #include "Session.hpp"
+#include "Api.hpp"
 
 #include "TagConstants.h"
 
@@ -179,7 +180,7 @@ void Job::vPostRecv(void* aReceivedJob)
 
   pReceivedJob->vInductIntoNode(pReceivedJob);
   
-  pReceivedJob->vPostRecv();                                                                                                                                                                 
+  pReceivedJob->vPostRecv();
   
 }
 
@@ -969,6 +970,18 @@ void Job::vSpawnTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  Stz* szEntry = "job::job"_Stz;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pTask = new Task(szJobNm(),this);
+    
+  //vSetTaskInxPtr(pTask,szEntry);
+  m_pTask->vSetInxPtr(szEntry);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vTimerStart();
 }
 
 /*----------------------------------------------------------------------------*/

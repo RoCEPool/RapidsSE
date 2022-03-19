@@ -78,13 +78,13 @@ namespace STORE
   static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
 
   
-  
+  static void vSetTaskInxPtr(Task* pTask, Stz* szEntryPt);
+
   private:
   
   static void vCreateTaskForJob(Job* pJob);
   static void vCreateTaskForOp(Op* pOp);
   static void vResetTaskForJob(Job* pJob);
-  static void vSetTaskInxPtr(Task* pTask, Stz* szEntryPt);
 
   static void vMutexLock(Session* pSession, Job* pJob);
   static void vMutexUnlock(Session* pSession, Job* pJob);
