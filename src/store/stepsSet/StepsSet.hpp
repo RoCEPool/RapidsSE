@@ -1983,7 +1983,7 @@ public:
   void vStreamSetIsNull(void);
   void vStreamSetName(void);
   void vStreamSetNew(void);
-void vStreamSetNextRow(void);
+  void vStreamSetNextRow(void);
   void vStreamSetReadChunk(void);
   void vStreamSetSet(void);
 
@@ -1993,8 +1993,13 @@ void vStreamSetNextRow(void);
   void vStreamSetTableGet(void);
   void vStreamSetTableSet(void);
 
-  // sub loader
-  void vSubLoaderDelete(void);
+  // sub call
+  void vSubCallGet(void);
+  void vSubCallSet(void);
+
+  // sub return
+  void vSubReturnGet(void);
+  void vSubReturnSet(void);
 
   // subset
   void vSubsetGet(void);
