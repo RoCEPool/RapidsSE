@@ -265,9 +265,9 @@
       printf("OVERFLOW\n"); \
       *paW++ = C_DATUM_NULL;                                             \
     }                                                                    \
-    else if (fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                              \
-    fltArg2.m_dFlt < (d8)-C_FLT_MAX) {                                        \
-             eErrorCode = EC_ARITHMETIC_UNDERFLOW;                       \
+    else if (fltArg1.m_dFlt <  (d8)C_FLT_MIN ||                          \
+      fltArg2.m_dFlt < (d8)C_FLT_MIN) {                                  \
+      eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
       *paW++ = C_DATUM_NULL;                                             \
     printf("%g %g %g UNDERFLOW\n", fltArg1.m_dFlt, fltArg2.m_dFlt, C_FLT_MIN); \
     }                                                                    \
@@ -294,9 +294,9 @@
     *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
-    if (fltArg2.m_iAsI8 == 0) {                                                    \
-      *paW++ = C_DATUM_NULL;                                            \
-      eErrorCode = EC_DIVIDE_BY_ZERO;                                   \
+    if (fltArg2.m_iAsI8 == 0) {                                          \
+      *paW++ = C_DATUM_NULL;                                             \
+      eErrorCode = EC_DIVIDE_BY_ZERO;                                    \
     }                                                                    \
     else {                                                               \
       if(fltArg1.m_dFlt > C_FLT_MAX ||                                   \
@@ -304,8 +304,8 @@
         eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
         *paW++ = C_DATUM_NULL;                                           \
       }                                                                  \
-      else if(fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                        \
-        fltArg2.m_dFlt < (d8)-C_FLT_MAX) {                               \
+      else if(fltArg1.m_dFlt <  C_FLT_MIN ||                             \
+        fltArg2.m_dFlt < C_FLT_MIN) {                                    \
           eErrorCode = EC_ARITHMETIC_UNDERFLOW;                          \
           *paW++ = C_DATUM_NULL;                                         \
       }                                                                  \
@@ -317,30 +317,30 @@
 }
 
 
-#define _SUB_FLTFLT(eErrorCode)                                            \
+#define _SUB_FLTFLT(eErrorCode)                                          \
 {                                                                        \
-  fltArg2.m_iAsI8 = *(--paW);                                                      \
-  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  fltArg2.m_iAsI8 = *(--paW);                                            \
+  fltArg1.m_iAsI8 = *(--paW);                                            \
   if (eErrorCode != EC_NONE ||                                           \
-    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                           \
-    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
     *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
-      if (fltArg2.m_iAsI8 == 0) {                                                    \
-        *paW++ = C_DATUM_NULL;                                            \
-        eErrorCode = EC_DIVIDE_BY_ZERO;                                   \
-      }                                                                    \
-      else {                                                               \
-        if(fltArg1.m_dFlt > C_FLT_MAX ||                              \
+      if (fltArg2.m_iAsI8 == 0) {                                        \
+        *paW++ = C_DATUM_NULL;                                           \
+        eErrorCode = EC_DIVIDE_BY_ZERO;                                  \
+      }                                                                  \
+      else {                                                             \
+        if(fltArg1.m_dFlt > C_FLT_MAX ||                                 \
           fltArg2.m_dFlt > C_FLT_MAX) {  \
-          eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-          *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else if(fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                         \
-      fltArg2.m_dFlt < (d8)-C_FLT_MAX) { \
-        eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
-        *paW++ = C_DATUM_NULL;                                             \
+          eErrorCode = EC_ARITHMETIC_OVERFLOW;                           \
+          *paW++ = C_DATUM_NULL;                                         \
+      }                                                                  \
+      else if(fltArg1.m_dFlt <  C_FLT_MIN ||                             \
+      fltArg2.m_dFlt < C_FLT_MIN) {                                      \
+        eErrorCode = EC_ARITHMETIC_UNDERFLOW;                            \
+        *paW++ = C_DATUM_NULL;                                           \
       }                                       \
       else {                                                             \
         fltArg1.m_dFlt -= fltArg2.m_dFlt;                                                                   \
@@ -384,6 +384,11 @@
           *paW++ = C_DATUM_NULL;                        \
         }                        \
         else                                              \
+        if(fltArg1.m_dFlt < C_FLT_MIN) {                                   \
+          eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+          *paW++ = C_DATUM_NULL;                        \
+        }                                                \
+        else                    \
           *paW++ = fltArg1.m_iAsI8 ;                      \
       }                                                                  \
     }                                                                    \

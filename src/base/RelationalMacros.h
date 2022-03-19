@@ -245,6 +245,7 @@
 {                                                                        \
   fltArg1.m_iAsI8 = *(--paW);                                            \
   fltArg2.m_iAsI8 = *(--paW);                                            \
+                                                                         \
   if (eErrorCode != EC_NONE ||                                           \
     fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
     fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \

@@ -36,6 +36,11 @@ success
 // C_D8_MIN = 2.220446e-16
 // C_FLT_MIN is negative of C_FLT_MAX as known as lowest value
 //select sum(flt_col8) from datums;
+//select flt_col8 / 1.7976e+308 from datums;
+//select flt_col8 * -1.7976e+308 from datums;
+//select max(flt_col8) from datums;
+//select 12.23 > 14.21 from datums;
+//select 0.0e0 > 2.2250738585072014e-308 from datums;
 //------------------------------------------------------------------------------
 select 0.0e0 < 2.2250738585072014e-308 from datums;
 rows:
@@ -286,18 +291,18 @@ select min(int_col1) + min(int_col1) from datums;
 failure contains: 'Arithmetic overflow'
 */
 // aggregates : max
-/*
+
 select max(flt_col8) from datums;
 rows: (10.22)
 
 select 10 + max(flt_col8) from datums;
-rows: (20)
+rows: (20.22)
 
 select max(flt_col8) + 10 from datums;
 rows: (20.22)
 
 select max(10 + flt_col8) from datums;
-rows: (20)
+rows: (20.22)
 
 select max(flt_col8 + 10) from datums;
 rows: (20.22)
@@ -307,7 +312,7 @@ rows: (20.44)
 
 select max(flt_col8) + max(flt_col8) from datums;
 rows: (20.44)
-*/
+
 // aggregates : max (with nulls and min/max ints)
 /*
 select max(int_col1) from datums;

@@ -214,7 +214,7 @@ public:
 
   void vSetMax(void)                { T.m_dFlt = C_D8_MAX; }  // set max value
   void vSetMid(void)                { T.m_dFlt = C_D8_MID; }  // set mid value
-  void vSetMin(void)                { T.m_dFlt = C_D8_MIN; }  // set min value
+  void vSetMin(void)                { T.m_dFlt = -C_D8_MIN; }  // set min value
   void vSetNull(void)          { T.m_iAsI8 = C_DATUM_NULL; }  // set to be null
   void vSetUsual(void)                 { T.m_dFlt = 3.141; }  // set usual value
 
