@@ -11,7 +11,7 @@
 #include "OpSpec.hpp"
 #include "LifeGuard_t.hpp"
 
-namespace STORE { class FormworkSpec; }
+namespace STORE { class PipeworkSpec; }
 
 namespace STORE
 {
@@ -24,7 +24,7 @@ namespace STORE
   private:
     s32  m_sStageNm;    // stage name
 
-    FormworkSpec* m_pFormworkSpec; // which formwork spec
+    PipeworkSpec* m_pPipeworkSpec; // which formwork spec
 
     eYG  m_eStageTopology;  // stage topoplogy
     eYS  m_eStreamTopology; // stream topoplogy
@@ -43,7 +43,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StageSpec(Stz* szStageNm, FormworkSpec* pFormworkSpec);
+    StageSpec(Stz* szStageNm, PipeworkSpec* pPipeworkSpec);
    ~StageSpec(void) noexcept(false);
    
     static eYX eCrossTopoCalc(StageSpec* pFromStageSpec,

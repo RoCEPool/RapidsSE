@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_FormworkSpec.cpp - FormworkSpec sprint helper                           */
+/* SP_PipeworkSpec.cpp - PipeworkSpec sprint helper                           */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -8,7 +8,7 @@
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 
-#include "SP_FormworkSpec.hpp"
+#include "SP_PipeworkSpec.hpp"
 #include "SP_StageSpec.hpp"
 #include "SP_OpSpec.hpp"
 
@@ -16,7 +16,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_FormworkSpec::SP_FormworkSpec(void)
+SP_PipeworkSpec::SP_PipeworkSpec(void)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
@@ -26,7 +26,7 @@ SP_FormworkSpec::SP_FormworkSpec(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_FormworkSpec::SP_FormworkSpec(PipelineSpec* pPipelineSpec)
+SP_PipeworkSpec::SP_PipeworkSpec(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
@@ -38,7 +38,7 @@ SP_FormworkSpec::SP_FormworkSpec(PipelineSpec* pPipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SP_FormworkSpec::~SP_FormworkSpec(void) noexcept(false)
+SP_PipeworkSpec::~SP_PipeworkSpec(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
@@ -50,7 +50,7 @@ SP_FormworkSpec::~SP_FormworkSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_FormworkSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
+void SP_PipeworkSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -95,7 +95,7 @@ void SP_FormworkSpec::vPipelineSpec(PipelineSpec* pPipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-Stz* SP_FormworkSpec::sz(void)
+Stz* SP_PipeworkSpec::sz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -105,7 +105,7 @@ Stz* SP_FormworkSpec::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_FormworkSpec::sz(PipelineSpec* pPipelineSpec)
+Stz* SP_PipeworkSpec::sz(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -122,7 +122,7 @@ Stz* SP_FormworkSpec::sz(PipelineSpec* pPipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SP_FormworkSpec::aFooter(void)
+Footer* SP_PipeworkSpec::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM);
   

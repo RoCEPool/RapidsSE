@@ -1,21 +1,21 @@
 /*============================================================================*/
-/* SP_Formwork.cpp - Pipeline sprint helper                                   */
+/* SP_Pipework.cpp - Pipeline sprint helper                                   */
 /*============================================================================*/
 
 #include "BASE.h"
 
 #include "Pipeline.hpp"
-#include "Formwork.hpp"
+#include "Pipework.hpp"
 #include "Grid.hpp"
 
-#include "SP_Formwork.hpp"
+#include "SP_Pipework.hpp"
 #include "SP_Stage.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Formwork::SP_Formwork(void)
+SP_Pipework::SP_Pipework(void)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
@@ -25,7 +25,7 @@ SP_Formwork::SP_Formwork(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Formwork::SP_Formwork(Pipeline* pPipeline, bool bDescend)
+SP_Pipework::SP_Pipework(Pipeline* pPipeline, bool bDescend)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
@@ -37,7 +37,7 @@ SP_Formwork::SP_Formwork(Pipeline* pPipeline, bool bDescend)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SP_Formwork::~SP_Formwork(void) noexcept(false)
+SP_Pipework::~SP_Pipework(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
@@ -49,7 +49,7 @@ SP_Formwork::~SP_Formwork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_Formwork::vPipeline(Pipeline* pPipeline, bool bDescend)
+void SP_Pipework::vPipeline(Pipeline* pPipeline, bool bDescend)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -70,7 +70,7 @@ void SP_Formwork::vPipeline(Pipeline* pPipeline, bool bDescend)
         );
   
   if (bDescend) {
-    Formwork* pFormWork = pPipeline->pFormwork();
+    Pipework* pFormWork = pPipeline->pPipework();
     for (i8 i_Stage = 0; i_Stage < pFormWork->nItems(); i_Stage++ ) {
       Stage* pStage = pFormWork->pGet(i_Stage);
       SP_Stage spStage(pStage,true);
@@ -83,7 +83,7 @@ void SP_Formwork::vPipeline(Pipeline* pPipeline, bool bDescend)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Formwork::sz(void)
+Stz* SP_Pipework::sz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -93,7 +93,7 @@ Stz* SP_Formwork::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Formwork::sz(Pipeline* pPipeline)
+Stz* SP_Pipework::sz(Pipeline* pPipeline)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -110,7 +110,7 @@ Stz* SP_Formwork::sz(Pipeline* pPipeline)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SP_Formwork::aFooter(void)
+Footer* SP_Pipework::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM);
   

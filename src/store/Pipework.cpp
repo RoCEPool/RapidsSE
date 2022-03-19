@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Formwork.cpp -- Formwork                                                   */
+/* Pipework.cpp -- Pipework                                                   */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -11,60 +11,60 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "Formwork.hpp"
-#include "FormworkSpec.hpp"
+#include "Pipework.hpp"
+#include "PipeworkSpec.hpp"
 #include "StageSpec.hpp"
 #include "Pipeline.hpp"
 
-#include "SP_Formwork.hpp"
+#include "SP_Pipework.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Formwork,CN_FORMWORK)
-__aNewFunction(Formwork,CN_FORMWORK)
-__vDeleteFunction(Formwork,CN_FORMWORK)
-__aFooterFunction(Formwork)
+__pCastFunction(STORE,Pipework,CN_PIPEWORK)
+__aNewFunction(Pipework,CN_PIPEWORK)
+__vDeleteFunction(Pipework,CN_PIPEWORK)
+__aFooterFunction(Pipework)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Formwork::Formwork(Pipeline* pPipeline, FormworkSpec* pFormworkSpec)
-: LifeGuard_t<Formwork>(this,CN_FORMWORK)
+Pipework::Pipework(Pipeline* pPipeline, PipeworkSpec* pPipeworkSpec)
+: LifeGuard_t<Pipework>(this,CN_PIPEWORK)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   m_pPipeline     = pPipeline;
-  m_pFormworkSpec = pFormworkSpec;
+  m_pPipeworkSpec = pPipeworkSpec;
 
-  _checkInitialised_(CN_FORMWORK);
+  _checkInitialised_(CN_PIPEWORK);
   
-  vCreateFormwork();
+  vCreatePipework();
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Formwork::~Formwork(void) noexcept(false)
+Pipework::~Pipework(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   i8 nStages = this->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stage* pStage = pGet(i_Stage);
     
     pStage->vGuardedDelete(CN_STAGE,&pStage,
-                           CN_FORMWORK,this,(Stz*)__func__);
+                           CN_PIPEWORK,this,(Stz*)__func__);
   }
 
   vClear();
 
-//  m_pFormworkSpec->vGuardedDelete(CN_FORMWORKSPEC,&m_pFormworkSpec,
-//                                  CN_FORMWORK,this,(Stz*)__func__);
+//  m_pPipeworkSpec->vGuardedDelete(CN_PIPEWORKSPEC,&m_pPipeworkSpec,
+//                                  CN_PIPEWORK,this,(Stz*)__func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,9 +75,9 @@ Formwork::~Formwork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* cancel the pipeline                                                        */
 /*----------------------------------------------------------------------------*/
-bool Formwork::bCancel(Task* pTriggeringTask)
+bool Pipework::bCancel(Task* pTriggeringTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   // get the first stage of the pipeline
   Stage* pStage = pGet(0);
@@ -91,19 +91,19 @@ bool Formwork::bCancel(Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* get formwork spec                                                          */
 /*----------------------------------------------------------------------------*/
-FormworkSpec* Formwork::pFormworkSpec(void)
+PipeworkSpec* Pipework::pPipeworkSpec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
-  return m_pFormworkSpec;
+  return m_pPipeworkSpec;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get op 0                                                                   */
 /*----------------------------------------------------------------------------*/
-Op* Formwork::pOp0(void)
+Op* Pipework::pOp0(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   Stage*  pStage0 = pGet(0);
   Op*     pOp0    = pStage0->pOp0();
@@ -114,9 +114,9 @@ Op* Formwork::pOp0(void)
 /*----------------------------------------------------------------------------*/
 /* get number of ops to be excuted on given node                              */
 /*----------------------------------------------------------------------------*/
-i8 Formwork::nOpsOnNode(i8 iNode)
+i8 Pipework::nOpsOnNode(i8 iNode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   i8 nOps = 0;
   
@@ -132,9 +132,9 @@ i8 Formwork::nOpsOnNode(i8 iNode)
 /*----------------------------------------------------------------------------*/
 /* get pipeline                                                               */
 /*----------------------------------------------------------------------------*/
-Pipeline* Formwork::pPipeline(void)
+Pipeline* Pipework::pPipeline(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   return m_pPipeline;
 }
@@ -142,9 +142,9 @@ Pipeline* Formwork::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* set up the pipeline job                                                    */
 /*----------------------------------------------------------------------------*/
-void Formwork::vSetupJob(void)
+void Pipework::vSetupJob(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   Stage* pStage = pGet(0);
   
@@ -185,9 +185,9 @@ void Formwork::vSetupJob(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operaator jobs for the pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void Formwork::vSpawnOpTasks(void)
+void Pipework::vSpawnOpTasks(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
     
@@ -205,9 +205,9 @@ void Formwork::vSpawnOpTasks(void)
 /*----------------------------------------------------------------------------*/
 /* get stage 0                                                                */
 /*----------------------------------------------------------------------------*/
-Stage* Formwork::pStage0(void)
+Stage* Pipework::pStage0(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   Stage*  pStage0 = pGet(0);
 
@@ -217,9 +217,9 @@ Stage* Formwork::pStage0(void)
 /*----------------------------------------------------------------------------*/
 /* get stream 0                                                               */
 /*----------------------------------------------------------------------------*/
-Stream* Formwork::pStream0(void)
+Stream* Pipework::pStream0(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   Stage*  pStage0  = this->pStage0();
   Stream* pStream0 = pStage0->pStream0();
@@ -235,15 +235,15 @@ Stream* Formwork::pStream0(void)
 /*----------------------------------------------------------------------------*/
 /* create the formwork for pipeline                                           */
 /*----------------------------------------------------------------------------*/
-void Formwork::vCreateFormwork(void)
+void Pipework::vCreatePipework(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
 
-  i8 nStages = m_pFormworkSpec->nItems();
+  i8 nStages = m_pPipeworkSpec->nItems();
   for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
     
     // get the stageSpec
-    StageSpec* pStageSpec = m_pFormworkSpec->pStageSpec(i_StageSpec);
+    StageSpec* pStageSpec = m_pPipeworkSpec->pStageSpec(i_StageSpec);
     
     // add a stage from the stageSpec to the stageVec
     Stage* pStage = new Stage(pStageSpec, this);

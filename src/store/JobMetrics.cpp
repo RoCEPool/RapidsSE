@@ -9,7 +9,7 @@
 #include "JobList.hpp"
 
 #include "Pipeline.hpp"
-#include "Formwork.hpp"
+#include "Pipework.hpp"
 #include "Stage.hpp"
 #include "Stream.hpp"
 #include "Op.hpp"
@@ -360,7 +360,7 @@ bool JobMetrics::bUpdate(bool bAppendList)
 //  vTrace("  Pipeline %s\n"_Stz
 //         ,pPipelineMetrics->szPipelineNm());
 
-  Formwork* pFormwork = pPipeline->pFormwork();
+  Pipework* pPipework = pPipeline->pPipework();
   while (CN_STAGEMETRICS == eNextClassNo(d_MetricsCursor)) {
     StageMetrics* pStageMetrics = pGetStageMetrics(d_MetricsCursor);
 //    vTrace("    Stage %lld %s\n"_Stz
@@ -368,7 +368,7 @@ bool JobMetrics::bUpdate(bool bAppendList)
 //           ,pStageMetrics->szStageNm());
     
     i8 i_Stage = pStageMetrics->i_Stage();
-    Stage* pStage = pFormwork->pGet(i_Stage);
+    Stage* pStage = pPipework->pGet(i_Stage);
 
     while (CN_STREAMMETRICS == eNextClassNo(d_MetricsCursor)) {
       StreamMetrics* pStreamMetrics = pGetStreamMetrics(d_MetricsCursor);
@@ -450,11 +450,11 @@ void JobMetrics::vCollect(Job* pJob)
   
   new(& m_oMetricsWsp) PipelineMetrics(pPipeline->szPipelineNm());
   
-  Formwork* pFormwork = pPipeline->pFormwork();
+  Pipework* pPipework = pPipeline->pPipework();
   
-  i8 nStages = pFormwork->nItems();
+  i8 nStages = pPipework->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pFormwork->pGet(i_Stage);
+    Stage* pStage = pPipework->pGet(i_Stage);
     
     new(& m_oMetricsWsp) StageMetrics(pStage->i_Stage()
                                       ,pStage->szStageNm());

@@ -15,7 +15,7 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "Formwork.hpp"
+#include "Pipework.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
 #include "StageSpec.hpp"
@@ -905,7 +905,7 @@ Job* Op::pJob(void)
   
   Stream*   pStream   = this->pStream();
   Stage*    pStage    = pStream->pStage();
-  Pipeline* pPipeline = pStage->pFormwork()->pPipeline();
+  Pipeline* pPipeline = pStage->pPipework()->pPipeline();
   Job*      pJob      = pPipeline->pPipelineJob();
 
   return pJob;
@@ -997,8 +997,8 @@ Stage* Op::pNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Formwork* pFormwork = m_p_Pipeline_op->pFormwork();
-  Stage* pNextStage = pFormwork->pGet(iNextStage());
+  Pipework* pPipework = m_p_Pipeline_op->pPipework();
+  Stage* pNextStage = pPipework->pGet(iNextStage());
   
   return pNextStage;
 }
@@ -1264,7 +1264,7 @@ Stage* Op::pOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Formwork* pFormWork = m_p_Pipeline_op->pFormwork();
+  Pipework* pFormWork = m_p_Pipeline_op->pPipework();
   
   Stage* pOtherStage = pFormWork->pGet(iOtherStage());
   
@@ -1391,7 +1391,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
     
   // get the next stage the send is supposed to send to
-  Formwork* pFormWork = m_p_Pipeline_op->pFormwork();
+  Pipework* pFormWork = m_p_Pipeline_op->pPipework();
   Stage* pDstStage = pFormWork->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology

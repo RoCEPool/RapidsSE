@@ -1,22 +1,22 @@
 /*============================================================================*/
-/* Formwork.hpp -- Formwork                                                   */
+/* Pipework.hpp -- Pipework                                                   */
 /*============================================================================*/
 #pragma once
 
 #include "LifeGuard_t.hpp"
 
-namespace STORE { class Stage; class FormworkSpec; }
+namespace STORE { class Stage; class PipeworkSpec; }
 
 namespace STORE
 {
-  class Formwork : public VectorNL_t<CN_FORMWORK,Stage,C_MAX_STAGES>,
-                   public LifeGuard_t<Formwork>
+  class Pipework : public VectorNL_t<CN_PIPEWORK,Stage,C_MAX_STAGES>,
+                   public LifeGuard_t<Pipework>
 
   {
   private:
 
     Pipeline*     m_pPipeline;     // which pipeline
-    FormworkSpec* m_pFormworkSpec; // specification of this formwork
+    PipeworkSpec* m_pPipeworkSpec; // specification of this formwork
   
     // must be last
     Footer m_xFooter;
@@ -25,12 +25,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Formwork(Pipeline* pPipeline, FormworkSpec* pFormworkSpec);
-   ~Formwork(void) noexcept(false);
+    Pipework(Pipeline* pPipeline, PipeworkSpec* pPipeworkSpec);
+   ~Pipework(void) noexcept(false);
   
     bool bCancel(Task* pTriggeringTask);
 
-    FormworkSpec* pFormworkSpec(void);
+    PipeworkSpec* pPipeworkSpec(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
@@ -39,13 +39,13 @@ namespace STORE
     Stage* pStage0(void);
     Stream* pStream0(void);
 
-    void vCreateFormwork();
+    void vCreatePipework();
 
   private:
     Footer* aFooter(void);
   };
   
-  Formwork* _pFormwork(void* aAddr);
+  Pipework* _pPipework(void* aAddr);
 }
 
 /*============================================================================*/

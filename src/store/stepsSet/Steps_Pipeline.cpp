@@ -14,7 +14,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "Formwork.hpp"
+#include "Pipework.hpp"
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
 #include "Job.hpp"
@@ -321,7 +321,7 @@ void Step::vPipelineOpsOnNodeFetch(void)
   ENTRY();
   
 //  Pipeline* pPipeline = (* m_p_TaskLogicUnit->m_xpPipeline);
-//  Formwork* pFormWork = pPipeline->pFormwork();
+//  Pipework* pFormWork = pPipeline->pPipework();
 //
 //  Stage*    pStage0   = pFormWork->pGet(0);
 //
@@ -369,7 +369,7 @@ void Step::vPipelineStartPipeline(void)
   ENTRY();
   
   Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
-  Formwork* pFormWork = pPipeline->pFormwork();
+  Pipework* pFormWork = pPipeline->pPipework();
 
   Stage*    pStage0   = pFormWork->pGet(0);
 
@@ -405,7 +405,7 @@ void Step::vPipelinePipeout(void)
   // move to AM
 
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-  Formwork* pFormWork = pPipeline->pFormwork();
+  Pipework* pFormWork = pPipeline->pPipework();
 
   Stage*    pStage0   = pFormWork->pGet(0);
   Stream*   pStand0   = pStage0->pGet(0);

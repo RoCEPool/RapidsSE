@@ -11,7 +11,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "Formwork.hpp"
+#include "Pipework.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
 
@@ -160,7 +160,7 @@ Stz* SP_Op::szPath(Op* pOp)
   
   Stream*   pStream   = pOp->pStream();
   Stage*    pStage    = pStream->pStage();
-  Pipeline* pPipeline = pStage->pFormwork()->pPipeline();
+  Pipeline* pPipeline = pStage->pPipework()->pPipeline();
   
   Job*      pJob      = pPipeline->pPipelineJob();
 

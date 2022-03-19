@@ -11,7 +11,7 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "Formwork.hpp"
+#include "Pipework.hpp"
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
@@ -60,8 +60,8 @@ Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
 
   _checkInitialised_(CN_PIPELINE);
   
-  m_pFormWork = new Formwork(this,pPipelineSpec->pFormworkSpec());
-  //vCreateFormwork();
+  m_pFormWork = new Pipework(this,pPipelineSpec->pPipeworkSpec());
+  //vCreatePipework();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 }
@@ -73,7 +73,7 @@ Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_pFormWork->vGuardedDelete(CN_FORMWORK,&m_pFormWork,
+  m_pFormWork->vGuardedDelete(CN_PIPEWORK,&m_pFormWork,
                               CN_PIPELINE,this,(Stz*)__func__);
   
   m_pPipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&m_pPipelineSpec,
@@ -192,7 +192,7 @@ bool Pipeline::bErrored(void)
 /*----------------------------------------------------------------------------*/
 /* get formwork                                                               */
 /*----------------------------------------------------------------------------*/
-Formwork* Pipeline::pFormwork(void)
+Pipework* Pipeline::pPipework(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
@@ -406,11 +406,11 @@ Stream* Pipeline::pStream0(void)
 /*----------------------------------------------------------------------------*/
 /* create the formwork for this pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void Pipeline::vCreateFormwork(void)
+void Pipeline::vCreatePipework(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pFormWork->vCreateFormwork();
+  m_pFormWork->vCreatePipework();
 }
 
 /*============================================================================*/

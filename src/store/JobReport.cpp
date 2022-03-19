@@ -15,7 +15,7 @@
 #include "IndexStream.hpp"
 #include "Table.hpp"
 #include "Pipeline.hpp"
-#include "Formwork.hpp"
+#include "Pipework.hpp"
 #include "Stage.hpp"
 #include "LogicUnit.hpp"
 #include "Stream.hpp"
@@ -531,9 +531,9 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // each stage in the pipeline
-  Formwork* pFormwork = pPipeline->pFormwork();
-  for (i8 i_Stage = 0; i_Stage < pFormwork->nItems(); i_Stage++) {
-    Stage* pStage = pFormwork->pGet(i_Stage);
+  Pipework* pPipework = pPipeline->pPipework();
+  for (i8 i_Stage = 0; i_Stage < pPipework->nItems(); i_Stage++) {
+    Stage* pStage = pPipework->pGet(i_Stage);
 
     // each stream in the stage
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
@@ -645,10 +645,10 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
 
   // each stage in the pipeline
-  Formwork* pFormwork = pPipeline->pFormwork();
-  for (i8 i_Stage = 0; i_Stage < pFormwork->nItems(); i_Stage++) {
+  Pipework* pPipework = pPipeline->pPipework();
+  for (i8 i_Stage = 0; i_Stage < pPipework->nItems(); i_Stage++) {
 
-    Stage* pStage = pFormwork->pGet(i_Stage);
+    Stage* pStage = pPipework->pGet(i_Stage);
 
     // each stream in the stage
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {

@@ -235,8 +235,8 @@
 #include "Drafter.hpp"
 #include "SectionSpec.hpp"
 #include "Section.hpp"
-#include "FormworkSpec.hpp"
-#include "Formwork.hpp"
+#include "PipeworkSpec.hpp"
+#include "Pipework.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -352,8 +352,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Flatten), /*yes*/    HT_T_TINY    ,0 FILL }, // CN_FLATTEN
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 FILL }, // CN_FLTVAL
   { sizeof(Format),             HT_T_TINY    ,0 FILL }, // CN_FORMAT
-  { sizeof(Formwork),           HT_T_SMALL   ,0 FILL }, // CN_FORMWORK
-  { sizeof(FormworkSpec),       HT_T_TINY    ,0 FILL }, // CN_FORMWORKSPEC
   { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 FILL }, // CN_FREEBUFFER
   { sizeof(FreeChunk),          HT_INVALID   ,0 FILL }, // CN_FREECHUNK
   { sizeof(FreedNot),           HT_INVALID   ,0 FILL }, // CN_FREEDNOT
@@ -458,35 +456,37 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Optimus),            HT_T_TINY    ,0 FILL }, // CN_OPTIMUS
   { sizeof(OtherOperand),       HT_T_TINY    ,0 FILL }, // CN_OTHEROPERAND
 
-  { 'P' - ('A' - 1),              HT_INVALID   ,0 FILL }, // CN__P__
-  { sizeof(PagingMetrics),        HT_T_LARGE   ,0 FILL }, // CN_PAGINGMETRICS
-  { sizeof(Parcel),               HT_T_TINY    ,0 FILL }, // CN_PARCEL
-  { sizeof(PathIdentifier),       HT_T_MEDIUM  ,0 FILL }, // CN_PATHIDENTIFIER
-  { sizeof(PathVec),              HT_T_MEDIUM  ,0 FILL }, // CN_PATHVEC
-  { sizeof(Permit),               HT_T_TINY    ,0 FILL }, // CN_PERMIT
-  { sizeof(Peruse),               HT_T_MEDIUM  ,0 FILL }, // CN_PERUSE
-  { sizeof(Pipeline),             HT_T_TINY    ,0 FILL }, // CN_PIPELINE
-  { sizeof(PipelineMetrics),      HT_T_TINY    ,0 FILL }, // CN_PIPELINEMETRICS
-  { sizeof(PipelineSpec),         HT_T_TINY    ,0 FILL }, // CN_PIPELINESPEC
-  { sizeof(PlanDefinitionParser), HT_T_MEDIUM  , -8 FILL }, // CN_PLANDEFINITIONPARSER
-  { sizeof(PlannerLock),          HT_T_TINY    ,0 FILL }, // CN_PLANNERLOCK
-  { sizeof(PlanNode),             HT_T_TINY    , -8 FILL }, // CN_PLANNODE
-  { sizeof(PlanNodeBuilder),      HT_T_TINY    ,0 FILL }, // CN_PLANNODEBUILDER
-  { sizeof(PlanNodeBuilderList),  HT_T_TINY    ,0 FILL }, // CN_PLANNODEBUILDERLIST
-  { sizeof(PlanNodeBuilderStack), HT_T_MEDIUM  ,0 FILL }, // CN_PLANNODEBUILDERSTACK
-  { sizeof(PlanNodeList),         HT_T_TINY    ,0 FILL }, // CN_PLANNODELIST
-  { sizeof(PlanOperand),          HT_T_TINY    ,0 FILL }, // CN_PLANOPERAND
-  { sizeof(Pot),                  HT_T_LARGE   ,0 FILL }, // CN_POT
-  { sizeof(Predicate),            HT_T_TINY    ,0 FILL }, // CN_PREDICATE
-  { sizeof(PredicateVec),         HT_T_MEDIUM  ,0 FILL }, // CN_PREDICATEVEC
-  { sizeof(PrimitiveNode),        HT_T_TINY    , -8 FILL }, // CN_PRIMITIVENODE
-  { sizeof(Procedure),            HT_T_MEDIUM  ,0 FILL }, // CN_PROCEDURE
-  { sizeof(Profile),              HT_T_MEDIUM  ,0 FILL }, // CN_PROFILE
-  { sizeof(PsxThd),               HT_T_TINY    ,0 FILL }, // CN_PSXTHD
-  { sizeof(PtnMap),               HT_T_LARGE   ,0 FILL }, // CN_PTNMAP
-  { sizeof(PtnStm_cursor),        HT_T_TINY    ,0 FILL }, // CN_PTNSTMCURSOR
-  { sizeof(PtnStream),            HT_T_TINY    ,0 FILL }, // CN_PTNSTREAM
-  { sizeof(TypedCell),/*yes*/     HT_INVALID   ,0 FILL }, // CN_PTRVAL
+  { 'P' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__P__
+  { sizeof(PagingMetrics),      HT_T_LARGE   ,0 FILL }, // CN_PAGINGMETRICS
+  { sizeof(Parcel),             HT_T_TINY    ,0 FILL }, // CN_PARCEL
+  { sizeof(PathIdentifier),     HT_T_MEDIUM  ,0 FILL }, // CN_PATHIDENTIFIER
+  { sizeof(PathVec),            HT_T_MEDIUM  ,0 FILL }, // CN_PATHVEC
+  { sizeof(Permit),             HT_T_TINY    ,0 FILL }, // CN_PERMIT
+  { sizeof(Peruse),             HT_T_MEDIUM  ,0 FILL }, // CN_PERUSE
+  { sizeof(Pipeline),           HT_T_TINY    ,0 FILL }, // CN_PIPELINE
+  { sizeof(PipelineMetrics),    HT_T_TINY    ,0 FILL }, // CN_PIPELINEMETRICS
+  { sizeof(PipelineSpec),       HT_T_TINY    ,0 FILL }, // CN_PIPELINESPEC
+  { sizeof(Pipework),           HT_T_SMALL   ,0 FILL }, // CN_PIPEWORK
+  { sizeof(PipeworkSpec),       HT_T_TINY    ,0 FILL }, // CN_PIPEWORKSPEC
+  { sizeof(PlanDefinitionParser), HT_T_MEDIUM, -8 FILL }, // CN_PLANDEFINITIONPARSER
+  { sizeof(PlannerLock),        HT_T_TINY    ,0 FILL }, // CN_PLANNERLOCK
+  { sizeof(PlanNode),           HT_T_TINY    , -8 FILL }, // CN_PLANNODE
+  { sizeof(PlanNodeBuilder),    HT_T_TINY    ,0 FILL }, // CN_PLANNODEBUILDER
+  { sizeof(PlanNodeBuilderList),HT_T_TINY    ,0 FILL }, // CN_PLANNODEBUILDERLIST
+  { sizeof(PlanNodeBuilderStack), HT_T_MEDIUM,0 FILL }, // CN_PLANNODEBUILDERSTACK
+  { sizeof(PlanNodeList),       HT_T_TINY    ,0 FILL }, // CN_PLANNODELIST
+  { sizeof(PlanOperand),        HT_T_TINY    ,0 FILL }, // CN_PLANOPERAND
+  { sizeof(Pot),                HT_T_LARGE   ,0 FILL }, // CN_POT
+  { sizeof(Predicate),          HT_T_TINY    ,0 FILL }, // CN_PREDICATE
+  { sizeof(PredicateVec),       HT_T_MEDIUM  ,0 FILL }, // CN_PREDICATEVEC
+  { sizeof(PrimitiveNode),      HT_T_TINY    , -8 FILL }, // CN_PRIMITIVENODE
+  { sizeof(Procedure),          HT_T_MEDIUM  ,0 FILL }, // CN_PROCEDURE
+  { sizeof(Profile),            HT_T_MEDIUM  ,0 FILL }, // CN_PROFILE
+  { sizeof(PsxThd),             HT_T_TINY    ,0 FILL }, // CN_PSXTHD
+  { sizeof(PtnMap),             HT_T_LARGE   ,0 FILL }, // CN_PTNMAP
+  { sizeof(PtnStm_cursor),      HT_T_TINY    ,0 FILL }, // CN_PTNSTMCURSOR
+  { sizeof(PtnStream),          HT_T_TINY    ,0 FILL }, // CN_PTNSTREAM
+  { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_PTRVAL
 
   { 'Q' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__Q__
   { sizeof(QueryNode),          HT_T_TINY    ,-8 FILL }, // CN_QUERYNODE

@@ -5,7 +5,7 @@
 
 #include "LifeGuard_t.hpp"
 
-namespace STORE { class Formwork; class Stage; class PipelineSpec; }
+namespace STORE { class Pipework; class Stage; class PipelineSpec; }
 
 namespace STORE
 {
@@ -21,7 +21,7 @@ namespace STORE
     s32  m_sPipelineNm;  // name of this pipeline
 
     // -- substructure
-    Formwork* m_pFormWork; // formwork of this pipeline
+    Pipework* m_pFormWork; // formwork of this pipeline
 
     // -- belongs to
     Job* m_pPipelineJob;  // which job
@@ -67,7 +67,7 @@ namespace STORE
     void vEarlyExit(bool bEarlyExit);
     bool bErrored(void);
     void vErrored(bool bErrored);
-    Formwork* pFormwork(void);
+    Pipework* pPipework(void);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
     i8   i_Origin(void);
@@ -88,7 +88,7 @@ namespace STORE
     Stream* pStream0(void);
 
   private:
-    void vCreateFormwork();
+    void vCreatePipework();
 
     Footer* aFooter(void);
   };

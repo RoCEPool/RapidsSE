@@ -320,7 +320,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // -- -- -- -- -- -- -- -- -- -- -- --
   // formwork
 
-  else if (CN_FORMWORK == eInstance) {
+  else if (CN_PIPEWORK == eInstance) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
@@ -332,7 +332,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // -- -- -- -- -- -- -- -- -- -- -- --
   // formwork spec
 
-  else if (CN_FORMWORKSPEC == eInstance) {
+  else if (CN_PIPEWORKSPEC == eInstance) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
@@ -433,8 +433,8 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
     
-    RASSERT(   bDELETE_RULE(CN_FORMWORKSPEC, "vFirstSend"_Stz)
-            || bDELETE_RULE(CN_FORMWORKSPEC, "vOtherSend"_Stz)
+    RASSERT(   bDELETE_RULE(CN_PIPEWORKSPEC, "vFirstSend"_Stz)
+            || bDELETE_RULE(CN_PIPEWORKSPEC, "vOtherSend"_Stz)
             || bDELETE_RULE(CN_STAGESPEC,    "~StageSpec"_Stz)
             );
   }
@@ -474,7 +474,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,
              aCN[eDeleter],eDeleter,pDeleter);
 
-    RASSERT( bDELETE_RULE(CN_FORMWORK, "~Formwork"_Stz )
+    RASSERT( bDELETE_RULE(CN_PIPEWORK, "~Pipework"_Stz )
             );
   }
 
@@ -486,7 +486,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
-    RASSERT( bDELETE_RULE(CN_FORMWORKSPEC, "~FormworkSpec"_Stz) );
+    RASSERT( bDELETE_RULE(CN_PIPEWORKSPEC, "~PipeworkSpec"_Stz) );
   }
   
   // -- -- -- -- -- -- -- -- -- -- -- --

@@ -17,7 +17,7 @@
 #include "Stage.hpp"
 #include "StageSpec.hpp"
 #include "Stream.hpp"
-#include "Formwork.hpp"
+#include "Pipework.hpp"
 #include "PtnMap.hpp"
 #include "Node.hpp"
 #include "Pipeline.hpp"
@@ -88,8 +88,8 @@ void Step::vParcelDemonOut(void)
   // move to AM
   
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-  Formwork* pFormwork = pPipeline->pFormwork();
-  Stage*    pStage0   = pFormwork->pGet(0);
+  Pipework* pPipework = pPipeline->pPipework();
+  Stage*    pStage0   = pPipework->pGet(0);
   Stream*   pStream0  = pStage0->pGet(0);
   Op*       pOp0      = pStream0->pGet(0);
 
@@ -197,8 +197,8 @@ void Step::vParcelPipeOut(void)
     // move to AM
     
     Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-    Formwork* pFormwork = pPipeline->pFormwork();
-    Stage*    pStage0   = pFormwork->pGet(0);
+    Pipework* pPipework = pPipeline->pPipework();
+    Stage*    pStage0   = pPipework->pGet(0);
     Stream*   pStand0   = pStage0->pGet(0);
     Op*       pOp0      = pStand0->pGet(0);
 
@@ -219,7 +219,7 @@ void Step::vParcelPipeOut(void)
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
   
   // get the next stage the send is supposed to send to
-  Formwork* pFormWork = pPipeline->pFormwork();
+  Pipework* pFormWork = pPipeline->pPipework();
   Stage* pDstStage = pFormWork->pGet(pParcel->iDstStage());
   i8 nStreamPtns = pDstStage->nItems();
 

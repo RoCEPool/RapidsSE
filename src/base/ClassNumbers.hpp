@@ -103,8 +103,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FLATTEN,
   /* */ CN_FLTVAL,
   /* */ CN_FORMAT,
-  /* */ CN_FORMWORK,
-  /* */ CN_FORMWORKSPEC,
   /* */ CN_FREEBUFFER,
   /* */ CN_FREECHUNK,
   /* */ CN_FREEDNOT,
@@ -219,6 +217,8 @@ enum eCN : u2 // Class Number
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINEMETRICS,
   /* */ CN_PIPELINESPEC,
+  /* */ CN_PIPEWORK,
+  /* */ CN_PIPEWORKSPEC,
   /* */ CN_PLANDEFINITIONPARSER,
   /* */ CN_PLANNERLOCK,
   /* */ CN_PLANNODE,
@@ -514,8 +514,6 @@ static Stz* aCN[]
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
   /* */ "FORMAT"_Stz,               // CN_FORMAT
-  /* */ "FORMWORK"_Stz,             // CN_FORMWORK
-  /* */ "FORMWORKSPEC"_Stz,         // CN_FORMWORKSPEC
   /* */ "FREEBUFFER"_Stz,           // CN_FREEBUFFER
   /* */ "FREECHUNK"_Stz,            // CN_FREECHUNK
   /* */ "FREEDNOT"_Stz,             // CN_FREEDNOT
@@ -630,6 +628,8 @@ static Stz* aCN[]
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
   /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC
+  /* */ "PIPEWORK"_Stz,             // CN_PIPEWORK
+  /* */ "PIPEWORKSPEC"_Stz,         // CN_PIPEWORKSPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
   /* */ "PLANNERLOCK"_Stz,          // CN_PLANNERLOCK
   /* */ "PLANNODE"_Stz,             // CN_PLANNODE
