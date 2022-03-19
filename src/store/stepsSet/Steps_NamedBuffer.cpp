@@ -168,7 +168,7 @@ void Step::vNamedBufferSet(void)
 
   NamedBuffer* pNamedBuffer = _pNamedBuffer(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pNamedBuffer || m_p_TaskLogicUnit->m_xpNamedBuffer.bIsNull());
+  ASSERT(! pNamedBuffer || m_pLogicUnit->m_xpNamedBuffer.bIsNull());
 
   m_pLogicUnit->m_xpNamedBuffer = _pNamedBuffer(pNamedBuffer);
 

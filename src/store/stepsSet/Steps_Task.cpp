@@ -404,7 +404,7 @@ void Step::vTaskAcksStore(void)
     
   i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
   
-  ASSERT(0 == m_oAcksRmg_task.iPrintOnlyValue());
+  ASSERT(0 == m_oAcksRmg.iPrintOnlyValue());
 
   RASSERT(bIsLocked());
   

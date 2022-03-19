@@ -104,7 +104,7 @@ void Step::vBktMapSet(void)
   //vTrace("C++ gets called: vBktMapSet\n"_Stz);
   BktMapGet* pBktMapGet = _pBktMapGet(m_pDataStack->pPopPtr(__func__));
 
-  //ASSERT(! pBktMapGet || m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull());
+  //ASSERT(! pBktMapGet || m_pLogicUnit->m_xpBktMapGet.bIsNull());
 
   m_pLogicUnit->m_xpBktMapGet = pBktMapGet;
 

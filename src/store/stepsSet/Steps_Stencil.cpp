@@ -35,9 +35,9 @@ void Step::vStencilDelete(void)
   
   //vTrace("vStencilDelete\n"_Stz);
   
-//  delete * m_p_TaskLogicUnit->m_xpStencil;
+//  delete * m_pLogicUnit->m_xpStencil;
 //
-//  m_p_TaskLogicUnit->m_xpStencil = nullptr;
+//  m_pLogicUnit->m_xpStencil = nullptr;
 
   m_pLogicUnit->m_xpStencil.vDeleteComponent();
 
@@ -82,8 +82,7 @@ void Step::vStencilSetup(void)
   Combined* pCombined = _pCombined(m_pDataStack->pPopPtr(__func__));
 
   // get the current stream
-  Op* pOp = _pOp(* m_pLogicUnit->m_xpOp);
-  Stream* pStream = _pStream(pOp->pStream());
+  Stream* pStream = _pStream(m_pOp->pStream());
 
   pCombined->aCombinedT()->m_pTub        = *m_pLogicUnit->m_xpTub;
   pCombined->aCombinedT()->m_pPot        = *m_pLogicUnit->m_xpPot;
@@ -105,8 +104,7 @@ void Step::vStencilSketch(void)
   Combined* pCombined = _pCombined(m_pDataStack->pPopPtr(__func__));
 
   // get the current stream
-  Op* pOp = _pOp(* m_pLogicUnit->m_xpOp);
-  Stream* pStream = _pStream(pOp->pStream());
+  Stream* pStream = _pStream(m_pOp->pStream());
 
   pCombined->aCombinedT()->m_pTub        = *m_pLogicUnit->m_xpTub;
   pCombined->aCombinedT()->m_pPot        = *m_pLogicUnit->m_xpPot;

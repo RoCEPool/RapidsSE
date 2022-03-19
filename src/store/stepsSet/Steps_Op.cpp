@@ -314,7 +314,7 @@ void Step::vOpGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpOp);
+  m_pDataStack->vPushPtr(m_pOp);
 
   EXIT();
 }
@@ -361,7 +361,7 @@ void Step::vOpHandlerFetch(void)
 
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
 
-  Word* pHandler = m_pLogicUnit->m_xpOp->pEventHandler(i_OperandKind);
+  Word* pHandler = m_pOp->pEventHandler(i_OperandKind);
     
   m_pDataStack->vPushPtr(pHandler);
 
@@ -379,7 +379,7 @@ void Step::vOpHandlerStore(void)
   
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
 
-  m_pLogicUnit->m_xpOp->vEventHandler(i_OpKind,pHandler);
+  m_pOp->vEventHandler(i_OpKind,pHandler);
     
   EXIT();
 }
@@ -394,7 +394,7 @@ void Step::vOpHandlerAllStore(void)
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
 
   for (i8 i_OpKind = 0; i_OpKind < ZK_ENUMS; i_OpKind++)
-    m_pLogicUnit->m_xpOp->vEventHandler(i_OpKind,pHandler);
+    m_pOp->vEventHandler(i_OpKind,pHandler);
     
   EXIT();
 }
@@ -406,10 +406,10 @@ void Step::vOpInit(void)
 {
   ENTRY();
 
-  // revised job/op model
-  Op* pOp = *m_pOp;
-
-  m_pLogicUnit->m_xpOp = pOp;
+//  // revised job/op model
+//  Op* pOp = *m_pOp;
+//
+//  m_pLogicUnit->m_xpOp = pOp;
 
   EXIT();
 }
@@ -426,8 +426,8 @@ void Step::vOpIsOperandValid(void)
   i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
   
   // skip consumeOp operand validation
-  if ( ! m_pLogicUnit->m_xpOp->szOpNm()->bSame("consumeOP"_Stz))
-    bValid = m_pLogicUnit->m_xpOp->bIsOperandValid(i_OperandKind);
+  if ( ! m_pOp->szOpNm()->bSame("consumeOP"_Stz))
+    bValid = m_pOp->bIsOperandValid(i_OperandKind);
   
   if ( ! bValid )
     RASSERT(0);
@@ -446,7 +446,7 @@ void Step::vOpIncHandlerCount(void)
   
   eZK eEvent = (eZK)m_pDataStack->iPopInt(__func__);
   
-  m_pLogicUnit->m_xpOp->vIncHandlerCount(eEvent);
+  m_pOp->vIncHandlerCount(eEvent);
   
   EXIT();
 }
@@ -460,7 +460,7 @@ void Step::vOpIncOperandCount(void)
   
   eZK eEvent = (eZK) m_pDataStack->iPopInt(__func__);
   
-  m_pLogicUnit->m_xpOp->vIncOperandCount(eEvent);
+  m_pOp->vIncOperandCount(eEvent);
   
   EXIT();
 }
@@ -472,8 +472,7 @@ void Step::vOpPtnIdFetch(void)
 {
   ENTRY();
 
-  Op* pOp = _pOp(*m_pLogicUnit->m_xpOp);
-  PtnId tPtn = pOp->tPtnId();
+  PtnId tPtn = m_pOp->tPtnId();
 
   m_pDataStack->vPushInt(tPtn.uPtnNo());
 

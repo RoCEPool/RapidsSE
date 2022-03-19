@@ -320,7 +320,7 @@ void Step::vPipelineOpsOnNodeFetch(void)
 {
   ENTRY();
   
-//  Pipeline* pPipeline = (* m_p_TaskLogicUnit->m_xpPipeline);
+//  Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
 //  Pipework* pFormWork = pPipeline->pPipework();
 //
 //  Stage*    pStage0   = pFormWork->pGet(0);

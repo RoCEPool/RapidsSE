@@ -44,7 +44,7 @@ void Step::vToRowCompleted(void)
 {
   ENTRY();
   
-  //ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
+  //ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
   ToRow* pToRow = * m_pLogicUnit->m_xpToRow;
 
   RowBuffer* pRowBuffer = pToRow->pFullRowBuffer();

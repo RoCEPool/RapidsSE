@@ -139,7 +139,7 @@ void Step::vRowBufferInsdelIntoTable(void)
 {
   ENTRY();
 
-//  ASSERT(*m_p_TaskLogicUnit->m_xpRowBuffer);
+//  ASSERT(*m_pLogicUnit->m_xpRowBuffer);
 //
 //  Op* pOp = m_pJob->m_pOp;
 //  PtnId tPtnId = pOp->tPtnId();
@@ -147,9 +147,9 @@ void Step::vRowBufferInsdelIntoTable(void)
 //
 
 //  // will delete this buffer
-//  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpRowBuffer);
+//  RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpRowBuffer);
 //  pRowBuffer->vIsPermanent(false);
-//  m_p_TaskLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pRowBuffer);
+//  m_pLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pRowBuffer);
 
   EXIT();
 }
@@ -242,7 +242,7 @@ void Step::vRowBufferSet(void)
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpRowBuffer.bIsNull());
+  ASSERT(! pOperand || m_pLogicUnit->m_xpRowBuffer.bIsNull());
 
   m_pLogicUnit->m_xpRowBuffer = _pRowBuffer(pOperand);
 

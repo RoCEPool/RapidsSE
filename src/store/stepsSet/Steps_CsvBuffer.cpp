@@ -226,7 +226,7 @@ void Step::vCsvBufferNew(void)
 {
   ENTRY();
 
-  ASSERT (m_p_TaskLogicUnit->m_xpCsvBuffer.bIsNull());
+  ASSERT (m_pLogicUnit->m_xpCsvBuffer.bIsNull());
 
   m_pLogicUnit->m_xpCsvBuffer = new CsvBuffer;
 
@@ -255,7 +255,7 @@ void Step::vCsvBufferSet(void)
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpCsvBuffer.bIsNull());
+  ASSERT(! pOperand || m_pLogicUnit->m_xpCsvBuffer.bIsNull());
 
   m_pLogicUnit->m_xpCsvBuffer = _pCsvBuffer(pOperand);
 
@@ -269,15 +269,15 @@ void Step::vCsvBufferWriteToFile0(void)
 {
   ENTRY();
 
-  ASSERT(*m_p_TaskLogicUnit->m_xpCsvBuffer);
-  ASSERT(*m_p_TaskLogicUnit->m_xpFile0);
-  ASSERT(m_p_TaskLogicUnit->m_xpFile0->bIsOpen());
+  ASSERT(*m_pLogicUnit->m_xpCsvBuffer);
+  ASSERT(*m_pLogicUnit->m_xpFile0);
+  ASSERT(m_pLogicUnit->m_xpFile0->bIsOpen());
 
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpCsvBuffer);
   char* aData = (char*)pCsvBuffer->ayDataArea();
 
   m_pLogicUnit->m_xpFile0->vPrint("%s"_Stz,aData);
-  //m_p_TaskLogicUnit->m_xpFile0->vFlush();
+  //m_pLogicUnit->m_xpFile0->vFlush();
 
 
 }

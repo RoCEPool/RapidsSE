@@ -332,7 +332,7 @@ void Step::vPathIdentifierSet(void)
   ENTRY();
 
   PathIdentifier* pPathIdentifier = _pPathIdentifier(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pPathIdentifier || m_p_TaskLogicUnit->m_xpPathIdentifier.bIsNull());
+  ASSERT(! pPathIdentifier || m_pLogicUnit->m_xpPathIdentifier.bIsNull());
   m_pLogicUnit->m_xpPathIdentifier = _pPathIdentifier(pPathIdentifier);
   
   EXIT();

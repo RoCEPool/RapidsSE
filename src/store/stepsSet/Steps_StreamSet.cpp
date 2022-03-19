@@ -872,7 +872,7 @@ void Step::vStreamSetInfoRows(void)
 {
   ENTRY();
   
-  ASSERT ( ! m_p_TaskLogicUnit->m_xpStreamSet.bIsNull() );
+  ASSERT ( ! m_pLogicUnit->m_xpStreamSet.bIsNull() );
   
   StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
@@ -916,7 +916,7 @@ void Step::vStreamSetNew(void)
 {
   ENTRY();
   
-  ASSERT(m_p_TaskLogicUnit->m_xpStreamSet.bIsNull());
+  ASSERT(m_pLogicUnit->m_xpStreamSet.bIsNull());
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -949,7 +949,7 @@ void Step::vStreamSetReadChunk(void)
 {
   ENTRY();
   
-  ASSERT(*m_p_TaskLogicUnit->m_xpStreamSet);
+  ASSERT(*m_pLogicUnit->m_xpStreamSet);
 
   File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
   
@@ -981,7 +981,7 @@ void Step::vStreamSetSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpStreamSet.bIsNull());
+  ASSERT(! pOperand || m_pLogicUnit->m_xpStreamSet.bIsNull());
   m_pLogicUnit->m_xpStreamSet = _pOperand(pOperand);
   
   EXIT();

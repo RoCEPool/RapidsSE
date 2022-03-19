@@ -111,8 +111,8 @@ void Step::vPotDelete(void)
 {
   ENTRY();
 
-//  Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
-//  m_p_TaskLogicUnit->m_xpPot = nullptr;
+//  Pot* pPot = _pPot(*m_pLogicUnit->m_xpPot);
+//  m_pLogicUnit->m_xpPot = nullptr;
 //
 //  delete pPot;
 

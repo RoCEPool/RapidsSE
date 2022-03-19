@@ -589,7 +589,7 @@ void Step::vInfoSetInfoRows(void)
 {
   ENTRY();
   
-  ASSERT ( ! m_p_TaskLogicUnit->m_xpInfoSet.bIsNull() );
+  ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
   
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
   
@@ -629,7 +629,7 @@ void Step::vInfoSetIsProgress(void)
 {
   ENTRY();
   
-  ASSERT ( ! m_p_TaskLogicUnit->m_xpInfoSet.bIsNull() );
+  ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
   
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
   
@@ -647,7 +647,7 @@ void Step::vInfoSetIsTotalUnits(void)
 {
   ENTRY();
   
-  ASSERT ( ! m_p_TaskLogicUnit->m_xpInfoSet.bIsNull() );
+  ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
   
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
   
@@ -679,7 +679,7 @@ void Step::vInfoSetNew(void)
 {
   ENTRY();
   
-  ASSERT(m_p_TaskLogicUnit->m_xpInfoSet.bIsNull());
+  ASSERT(m_pLogicUnit->m_xpInfoSet.bIsNull());
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
@@ -712,7 +712,7 @@ void Step::vInfoSetOpInfosetFetch(void)
 {
   ENTRY();
   
-  ASSERT(*m_p_TaskLogicUnit->m_xpInfoSet);
+  ASSERT(*m_pLogicUnit->m_xpInfoSet);
   
   eOI eOpInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet)->eOpInfoSet();
   
@@ -728,7 +728,7 @@ void Step::vInfoSetOpInfosetStore(void)
 {
   ENTRY();
   
-  ASSERT(*m_p_TaskLogicUnit->m_xpInfoSet);
+  ASSERT(*m_pLogicUnit->m_xpInfoSet);
   
   eOI eOpInfoSet = (eOI)m_pDataStack->iPopInt(__func__);
   
@@ -744,7 +744,7 @@ void Step::vInfoSetRdCsvChunk(void)
 {
   ENTRY();
   
-  ASSERT(*m_p_TaskLogicUnit->m_xpInfoSet);
+  ASSERT(*m_pLogicUnit->m_xpInfoSet);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get file and info arguments
@@ -801,7 +801,7 @@ void Step::vInfoSetSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpInfoSet.bIsNull());
+  ASSERT(! pOperand || m_pLogicUnit->m_xpInfoSet.bIsNull());
   m_pLogicUnit->m_xpInfoSet = _pInfoSet(pOperand);
   
   EXIT();
@@ -814,7 +814,7 @@ void Step::vInfoSetWriteCsv(void)
 {
   ENTRY();
   
-  ASSERT(*m_p_TaskLogicUnit->m_xpInfoSet);
+  ASSERT(*m_pLogicUnit->m_xpInfoSet);
   
   Table* pInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
   

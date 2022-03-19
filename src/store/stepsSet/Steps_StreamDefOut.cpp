@@ -91,7 +91,7 @@ void Step::vStreamDefOutDuplicate(void)
 {
   ENTRY();
   
-  ASSERT (* m_p_TaskLogicUnit->m_xpStreamDefOut);
+  ASSERT (* m_pLogicUnit->m_xpStreamDefOut);
   
   StreamDef* pStreamDef = new StreamDef(* m_pLogicUnit->m_xpStreamDefOut);
   
@@ -127,7 +127,7 @@ void Step::vStreamDefOutGenerate(void)
   m_pDataStack->vPopStr(sExpr, __func__);
 
   m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
-  //m_p_TaskLogicUnit->m_xpIndexDef     = new IndexDef;
+  //m_pLogicUnit->m_xpIndexDef     = new IndexDef;
   m_pLogicUnit->m_xpAggTypeStack = new IntStack;
 
   StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;

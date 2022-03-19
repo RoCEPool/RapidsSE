@@ -62,7 +62,7 @@ void Step::vStreamDefRhtDuplicate(void)
 {
   ENTRY();
 
-  ASSERT (* m_p_TaskLogicUnit->m_xpStreamDefRht);
+  ASSERT (* m_pLogicUnit->m_xpStreamDefRht);
 
   StreamDefRht* pStreamDefRht = new StreamDefRht(* m_pLogicUnit->m_xpStreamDefRht);
 
@@ -116,7 +116,7 @@ void Step::vStreamDefRhtNew(void)
 {
   ENTRY();
 
-  ASSERT (m_p_TaskLogicUnit->m_xpStreamDefRht.bIsNull());
+  ASSERT (m_pLogicUnit->m_xpStreamDefRht.bIsNull());
 
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
@@ -132,7 +132,7 @@ void Step::vStreamDefRhtNewFromTable(void)
 {
   ENTRY();
 
-  ASSERT (m_p_TaskLogicUnit->m_xpStreamDefRht.bIsNull());
+  ASSERT (m_pLogicUnit->m_xpStreamDefRht.bIsNull());
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 

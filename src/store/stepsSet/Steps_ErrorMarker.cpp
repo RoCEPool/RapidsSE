@@ -104,7 +104,7 @@ void Step::vErrorMarkerNewErrorMarker(void)
 {
   ENTRY();
 
-  ASSERT (m_p_TaskLogicUnit->m_xpErrorMarker.bIsNull());
+  ASSERT (m_pLogicUnit->m_xpErrorMarker.bIsNull());
 
   m_pLogicUnit->m_xpErrorMarker = new Marker(OM_ERRORMARKER);
 
@@ -134,7 +134,7 @@ void Step::vErrorMarkerPipeOut(void)
 {
   ENTRY();
 
-  ASSERT(*m_p_TaskLogicUnit->m_xpErrorMarker);
+  ASSERT(*m_pLogicUnit->m_xpErrorMarker);
 
   Op* pOp = *m_pOp;
 
@@ -151,7 +151,7 @@ void Step::vErrorMarkerPipeToOutput(void)
 {
   ENTRY();
 
-  ASSERT(*m_p_TaskLogicUnit->m_xpErrorMarker);
+  ASSERT(*m_pLogicUnit->m_xpErrorMarker);
 
   // revised job/op model
   Op* pOp = *m_pOp;
@@ -172,7 +172,7 @@ void Step::vErrorMarkerSet(void)
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpErrorMarker.bIsNull());
+  ASSERT(! pOperand || m_pLogicUnit->m_xpErrorMarker.bIsNull());
 
   m_pLogicUnit->m_xpErrorMarker = _pOperand(pOperand);
 

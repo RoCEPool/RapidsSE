@@ -296,7 +296,7 @@ void Step::vRegSendsNew(void)
 {
   ENTRY();
   
-  ASSERT (m_p_TaskLogicUnit->m_xpSends.bIsNull());
+  ASSERT (m_pLogicUnit->m_xpSends.bIsNull());
   
   i8 iSends = m_pDataStack->iPopInt(__func__);
   

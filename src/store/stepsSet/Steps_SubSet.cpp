@@ -73,13 +73,13 @@ void Step::vSubsetNextBuffer(void)
     if (m_pLogicUnit->m_xpSubset->eGetClassNo() == CN_CRWBUFFER) {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpSubset);
       pNextOperand = pCrwBuffer->pNextLinkedBuffer();
-      //m_p_TaskLogicUnit->m_xpSubset = pNextOperand;
+      //m_pLogicUnit->m_xpSubset = pNextOperand;
     }
     else
       if (m_pLogicUnit->m_xpSubset->eGetClassNo() == CN_CSVBUFFER) {
       CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpSubset);
       pNextOperand = pCsvBuffer->pNextBuffer();
-      //m_p_TaskLogicUnit->m_xpSubset = pNextOperand;
+      //m_pLogicUnit->m_xpSubset = pNextOperand;
     }
     else {
       vTrace("Subset class %s\n"_Stz, aCN[m_pLogicUnit->m_xpSubset->eGetClassNo()]);

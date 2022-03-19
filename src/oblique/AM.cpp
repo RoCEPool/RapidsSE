@@ -3166,11 +3166,14 @@ void AM::vTaskDump(Task* pTask)
   AM::vJobContentDump(pJob);
   
   LogicUnit* pLogicUnit = pTask->pLogicUnit();
-  
   if (pLogicUnit) {
-    if (pLogicUnit->m_xpOp.bIsNotNull())
-      pLogicUnit->m_xpOp->vDump();
+    //pLogicUnit->vContentDump();
+  }
   
+  Op* pOp = pTask->pOp();
+
+  if (pOp) {
+      pOp->vDump();
     //pLogicUnit->vContentDump();
   }
 

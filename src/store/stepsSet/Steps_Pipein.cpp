@@ -227,7 +227,7 @@ void Step::vPipeinPipeToOutput(void)
 {
   ENTRY();
   
-  ASSERT(*m_p_TaskLogicUnit->m_xpPipein);
+  ASSERT(*m_pLogicUnit->m_xpPipein);
   
   // revised job/op model
     Op* pOp = *m_pOp;
@@ -247,7 +247,7 @@ void Step::vPipeinSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpPipein.bIsNull());
+  ASSERT(! pOperand || m_pLogicUnit->m_xpPipein.bIsNull());
   
   ASSERT(! pOperand || ! pOperand->pNextItem());
   ASSERT(! pOperand || ! pOperand->pPrevItem());
@@ -273,7 +273,7 @@ void Step::vPipeinWriteProfile(void)
 {
   ENTRY();
   
-  ASSERT(*m_p_TaskLogicUnit->m_xpPipein);
+  ASSERT(*m_pLogicUnit->m_xpPipein);
   
   Profile* pProfile = _pProfile(*m_pLogicUnit->m_xpPipein);
   

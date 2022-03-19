@@ -542,7 +542,7 @@ void Step::vParcelSet(void)
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pParcel || m_p_TaskLogicUnit->m_xpParcel.bIsNull());
+  ASSERT(! pParcel || m_pLogicUnit->m_xpParcel.bIsNull());
 
   m_pLogicUnit->m_xpParcel = _pParcel(pParcel);
 

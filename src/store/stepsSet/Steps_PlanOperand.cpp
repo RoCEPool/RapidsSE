@@ -121,7 +121,7 @@ void Step::vPlanOperandSet(void)
   
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(! pPlanOperand || m_p_TaskLogicUnit->m_xpPlanOperand.bIsNull());
+  ASSERT(! pPlanOperand || m_pLogicUnit->m_xpPlanOperand.bIsNull());
   
   m_pLogicUnit->m_xpPlanOperand = _pPlanOperand(pPlanOperand);
   

@@ -190,7 +190,7 @@ void Step::vMetaGetSet(void)
 
   MetaGet* pMeta = _pMetaGet(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pMeta || m_p_TaskLogicUnit->m_xpMetaGet.bIsNull());
+  ASSERT(! pMeta || m_pLogicUnit->m_xpMetaGet.bIsNull());
 
   m_pLogicUnit->m_xpMetaGet = pMeta;
 

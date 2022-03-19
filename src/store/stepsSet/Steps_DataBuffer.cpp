@@ -105,7 +105,7 @@ void Step::vDataBufferSet(void)
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpDataBuffer.bIsNull());
+  ASSERT(! pOperand || m_pLogicUnit->m_xpDataBuffer.bIsNull());
 
   m_pLogicUnit->m_xpDataBuffer = _pDataBuffer(pOperand);
 

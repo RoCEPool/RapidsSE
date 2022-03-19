@@ -282,7 +282,7 @@ void Step::vNodeSet(void)
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(! pNode || m_p_TaskLogicUnit->m_xpNode.bIsNull());
+  ASSERT(! pNode || m_pLogicUnit->m_xpNode.bIsNull());
   
   m_pLogicUnit->m_xpNode = pNode;
 

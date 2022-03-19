@@ -117,7 +117,7 @@ void Step::vBucketSet(void)
   //vTrace("C++ gets called: vBucketSet\n"_Stz);
   BucketGet* pBucketGet = _pBucketGet(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pBucketGet || m_p_TaskLogicUnit->m_xpBucketGet.bIsNull());
+  ASSERT(! pBucketGet || m_pLogicUnit->m_xpBucketGet.bIsNull());
 
   m_pLogicUnit->m_xpBucketGet = pBucketGet;
 

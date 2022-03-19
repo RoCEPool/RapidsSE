@@ -90,7 +90,7 @@ void Step::vOperandOoONext(void)
 {
   ENTRY();
   
-  ASSERT(m_p_TaskLogicUnit->m_xpOperandOoO.bIsNull());
+  ASSERT(m_pLogicUnit->m_xpOperandOoO.bIsNull());
   
   // revised job/op model
     Op* pOp = *m_pOp;
@@ -111,7 +111,7 @@ void Step::vOperandOoOPipeToOutput(void)
 {
   ENTRY();
   
-  ASSERT(*m_p_TaskLogicUnit->m_xpOperandOoO);
+  ASSERT(*m_pLogicUnit->m_xpOperandOoO);
   
   // revised job/op model
     Op* pOp = *m_pOp;
@@ -131,7 +131,7 @@ void Step::vOperandOoOSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpOperandOoO.bIsNull());
+  ASSERT(! pOperand || m_pLogicUnit->m_xpOperandOoO.bIsNull());
   m_pLogicUnit->m_xpOperandOoO = _pOperand(pOperand);
   
   EXIT();

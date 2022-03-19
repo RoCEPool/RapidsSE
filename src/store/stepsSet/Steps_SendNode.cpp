@@ -46,7 +46,7 @@ void Step::vSendNodeSet(void)
   
   Node* pSendNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(! pSendNode || m_p_TaskLogicUnit->m_xpSendNode.bIsNull());
+  ASSERT(! pSendNode || m_pLogicUnit->m_xpSendNode.bIsNull());
   
   m_pLogicUnit->m_xpSendNode = pSendNode;
 

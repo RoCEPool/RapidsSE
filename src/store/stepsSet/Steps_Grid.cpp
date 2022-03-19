@@ -440,7 +440,7 @@ void Step::vGridSet(void)
 
   Grid* pGrid = _pGrid(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pGrid || m_p_TaskLogicUnit->m_xpGrid.bIsNull());
+  ASSERT(! pGrid || m_pLogicUnit->m_xpGrid.bIsNull());
 
   m_pLogicUnit->m_xpGrid = pGrid;
 
