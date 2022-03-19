@@ -106,38 +106,50 @@ namespace STORE
     void vAppendOoO(Operand* pOperand, Task* pTriggeringTask);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
+  
     eYX  eCrossTopology(void);
     eZK  eCurHandler(void);
     Word* pCurWord(void);
+  
     void vDotPrint(Stz* szText);
     Op*  pDownstreamOp(void);
     void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
     void vDump(void);
+  
     Word* pEntryWord(void);
     Word* pEventHandler(void);
+    Word* pEventHandler(i8 i_OperandKind);
+    void vEventHandler(i8 i_OperandKind, Word* pHandler);
+    void vExpr(Stz* sExpr);
+    Stz* szExpr(void);
+
     void vGrabTaskLock(void);
+  
     i8   iHandlerCount(i8 i_Handler);
+  
     void vIncHandlerCount(eZK eEvent);
     void vIncOperandCount(eZK eEvent);
     void vIncWorkDone(void);
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
     bool bIsOperandValid(i8 i_OperandKind);
+  
     i8   iLocalRobinNext(void);
+  
     Job* pJob(void);
+  
     i8   iMetricsQueued(void);
     void vMetricsQueued(i8 iMetricsQueued);
+  
     i8   iNextOp(void);
     Op*  pNextOp(void);
     i8   iNextStage(void);
     Stage* pNextStage(void);
     i8   iNode(void);
+  
     i8   iOperandCount(i8 i_OperandKind);
-    Word* pEventHandler(i8 i_OperandKind);
-    void vEventHandler(i8 i_OperandKind, Word* pHandler);
-    void vExpr(Stz* sExpr);
-    Stz* szExpr(void);
+  
     i8   i_Op(void);
     OperandWatch* pOperandWatch(void);
     LogicUnit* pOpLogicUnit(void);
@@ -168,30 +180,34 @@ namespace STORE
     Operand* pPopOoO(void);
     Operand* pPopOoOLeft(void);
     Operand* pPopRight(void);
-
     PtnId  tPtnId(void);
-
     Operand* pPopLeft(void);
     i8   nPotSize(void);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
+  
     i8   nQueuedOperands(void);
+  
     i8   iRobinNext(void);
+  
     eXK  eSendCast(void);
     void vSendCast(eXK eSendCast);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
-    void vSpawnOpTask(void);
+    void vSpawnTask(void);
     void vSetTags(void);
     Stage* pStage(void);
     Stz* szStageName(void);
     Stream* pStream(void);
     eYS  eStreamTopology_op(void);
+  
     Task* pTask(void);
     void vTask(Task* pTask);
     i8   nTmpIndexSize(void);
     void vToCmdStr(Stz* szCmdStr);
+  
     void vVerifyOpComposition(void);
+  
     void vWorkQuanta(i8 iWorkQuanta);
     
   private:

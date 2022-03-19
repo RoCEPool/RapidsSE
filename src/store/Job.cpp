@@ -179,7 +179,7 @@ void Job::vPostRecv(void* aReceivedJob)
 
   pReceivedJob->vInductIntoNode(pReceivedJob);
   
-  pReceivedJob->vPostRecv();
+  pReceivedJob->vPostRecv();                                                                                                                                                                 
   
 }
 
@@ -962,11 +962,14 @@ void Job::vSingularOp(Op* pSingularOp)
   m_pSingularOp = pSingularOp;
 }
 
-
-
 /*----------------------------------------------------------------------------*/
+/* create and spawn task for job                                              */
 /*----------------------------------------------------------------------------*/
-
+void Job::vSpawnTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+}
 
 /*----------------------------------------------------------------------------*/
 /* get task                                                                   */

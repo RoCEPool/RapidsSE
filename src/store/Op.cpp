@@ -1758,9 +1758,9 @@ void Op::vSetTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn this operator                                                        */
+/* spawn task for this operator                                               */
 /*----------------------------------------------------------------------------*/
-void Op::vSpawnOpTask(void)
+void Op::vSpawnTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
       

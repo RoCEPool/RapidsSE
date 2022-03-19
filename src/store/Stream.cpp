@@ -229,7 +229,7 @@ void Stream::vSpawnOpTasks(void)
       
       Op* pOp = pGet(i_Op);
       
-      pOp->vSpawnOpTask();
+      pOp->vSpawnTask();
     }
   }
   
