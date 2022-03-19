@@ -1760,35 +1760,10 @@ void Op::vSetTags(void)
 /*----------------------------------------------------------------------------*/
 /* spawn this operator                                                        */
 /*----------------------------------------------------------------------------*/
-void Op::vSpawnOpTask(i8 iSessionId)
+void Op::vSpawnOpTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
       
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form and parse op command string
-  
-//  sSTMT sOpCmd;
-//  vToCmdStr(sOpCmd);
-//
-//  //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
-//
-//  TokenVec* pTknVec = new TokenVec;
-//  pTknVec->vTokenise(sOpCmd);
-//
-//  bool b = AM::bParseCmd(pTknVec,&m_oOpTags);
-//  RASSERT(b);
-//
-//  pTknVec->vSetAllTokens();
-//  delete pTknVec;
-  
-  //pOpJobTagSet->vDumpSet();
-  
-//  if (! b) {
-//    //vTrace("Unable to match job syntax\n"_Stz);
-//    vParticipantHasError(true);
-//    return EC_INVALID_COMMAND;
-//  }
-  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

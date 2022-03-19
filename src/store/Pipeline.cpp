@@ -366,11 +366,11 @@ void Pipeline::vSetupJob(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operaator jobs for the pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void Pipeline::vSpawnOpTasks(i8 iSessionId, i8 iNode)
+void Pipeline::vSpawnOpTasks(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pFormWork->vSpawnOpTasks(iSessionId,iNode);
+  m_pFormWork->vSpawnOpTasks(iNode);
 }
 
 /*----------------------------------------------------------------------------*/

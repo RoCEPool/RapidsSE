@@ -193,7 +193,8 @@ namespace STORE
     void vSingularOp(Op* pSingularOp);
     void vSetFromCascade(Stz* szCascade);
     void vSignalJobMutex(void);
-  
+    void vSpawnTask(void);
+
     Task* pTask(void);
     void vTask(Task* pTask);
 

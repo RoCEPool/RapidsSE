@@ -181,7 +181,7 @@ namespace STORE
     void vSendCast(eXK eSendCast);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
-    void vSpawnOpTask(i8 iSessionId);
+    void vSpawnOpTask(void);
     void vSetTags(void);
     Stage* pStage(void);
     Stz* szStageName(void);
