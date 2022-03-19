@@ -238,7 +238,7 @@ void Step::vJobAddRetired(void)
   
   Job* pJob = * m_pJob_task;
   
-  RASSERT(pJob->pJobTask());
+  RASSERT(pJob->pTask());
   
 //  vTrace("Addingd Job %p ID %lld to retired list\n"_Stz,
 //         pJob,
@@ -1101,7 +1101,7 @@ void Step::vJobScheduleNextPhase(void)
     
   Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Task* pTaskParticipant = pJobParticipant->pJobTask();
+  Task* pTaskParticipant = pJobParticipant->pTask();
   RASSERT(pTaskParticipant);
   
   AM::vScheduleNextPhase(pJobParticipant,this);
@@ -1119,7 +1119,7 @@ void Step::vJobSpawn(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Task* pTask = pJob->pJobTask();
+  Task* pTask = pJob->pTask();
   RASSERT(! pTask);
 //  if ( pTask) {
 //    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJob->szJobNm());
@@ -1201,7 +1201,7 @@ void Step::vJobTaskFetch(void)
   
   Job* pJob = * m_pJob_task;
 
-  m_pDataStack->vPushPtr(pJob->pJobTask());
+  m_pDataStack->vPushPtr(pJob->pTask());
   
   EXIT();
 }
@@ -1215,7 +1215,7 @@ void Step::vJobTaskFetch_other(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushPtr(pJob->pJobTask());
+  m_pDataStack->vPushPtr(pJob->pTask());
   
   EXIT();
 }

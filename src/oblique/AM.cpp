@@ -3045,7 +3045,7 @@ void AM::vDumpApi(void) {
   pSessions()->vDump();
 }
 Task* AM::pExecutingTask(Job* pJob) {
-  Task* pTask = pJob->pJobTask();
+  Task* pTask = pJob->pTask();
   return pTask;
 }
 

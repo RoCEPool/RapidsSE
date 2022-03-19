@@ -473,13 +473,13 @@ void Api::vSubmitJob(Session* pSession)
   RASSERT(JS_LOCKED == pSubmitJob->eJobState());
 
   
-  RASSERT(! pSubmitJob->pJobTask());
+  RASSERT(! pSubmitJob->pTask());
   
   vCreateTaskForJob(pSubmitJob);
   
   pSubmitJob->vTimerStart();
   
-  Scheduler::vTaskApi_AddPrompt(pSubmitJob->pJobTask());
+  Scheduler::vTaskApi_AddPrompt(pSubmitJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -609,9 +609,9 @@ bool Api::bReapJob(void)
 
   // delete the reapavle job
   
-  RASSERT(pReapableJob->pJobTask());
-  pReapableJob->pJobTask()->vGrabTaskLock((Stz*)__func__);
-  pReapableJob->pJobTask()->vDropTaskLock((Stz*)__func__);
+  RASSERT(pReapableJob->pTask());
+  pReapableJob->pTask()->vGrabTaskLock((Stz*)__func__);
+  pReapableJob->pTask()->vDropTaskLock((Stz*)__func__);
 
 
   pReapableJob->vGuardedDelete(CN_JOB,&pReapableJob,
@@ -956,7 +956,7 @@ void Api::vSpawnTask_job(Job* pJob)
   
   
   vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddOp(pJob->pJobTask());
+  Scheduler::vTaskApi_AddOp(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -981,7 +981,7 @@ void Api::vSpawnTaskDedicated_job(Job* pJob)
   //RASSERT(! pJob->pTask());
   
   vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddDedicated(pJob->pJobTask());
+  Scheduler::vTaskApi_AddDedicated(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1005,10 +1005,10 @@ void Api::vSpawnTask_demonJob(Job* pJob)
 {
   _static_
   
-  RASSERT(! pJob->pJobTask());
+  RASSERT(! pJob->pTask());
 
   vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddService(pJob->pJobTask());
+  Scheduler::vTaskApi_AddService(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1020,7 +1020,7 @@ void Api::vSpawnTask_receivedJob(Job* pJob)
   
   
   vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddReceived(pJob->pJobTask());
+  Scheduler::vTaskApi_AddReceived(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1041,7 +1041,7 @@ bool Api::bSpawnTask_session(Job* pJob)
   RASSERT(JS_LOCKED == pJob->eJobState());
 
   
-  RASSERT(! pJob->pJobTask());
+  RASSERT(! pJob->pTask());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
@@ -1056,7 +1056,7 @@ bool Api::bSpawnTask_session(Job* pJob)
   vCreateTaskForJob(pJob);
   
   pJob->vTimerStart();
-  Scheduler::vTaskApi_AddPrompt(pJob->pJobTask());
+  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 
   if (! pJob->bHasTag(C_TAG_NOWAIT)) {
     //pSession->m_oMutex.vObserve(true);
@@ -1078,7 +1078,7 @@ void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
   
   vResetTaskForJob(pParticipantJob);
   
-  Task* pTaskParticipant = pParticipantJob->pJobTask();
+  Task* pTaskParticipant = pParticipantJob->pTask();
   Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);
 }
 

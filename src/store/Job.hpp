@@ -171,7 +171,6 @@ namespace STORE
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
-    Task* pJobTask(void);
     void vJobTask(Task* pTask);
 
 
