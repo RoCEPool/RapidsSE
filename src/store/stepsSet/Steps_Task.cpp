@@ -154,7 +154,7 @@ void Step::vTaskIsAckSet(void)
   
   Task* pTaskBeingAcked = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  i8 iIsAckSet = pTaskBeingAcked->m_oAcksRmg_task.bIsSet();
+  i8 iIsAckSet = pTaskBeingAcked->m_oAcksRmg.bIsSet();
     
   m_pDataStack->vPushInt(iIsAckSet);
 

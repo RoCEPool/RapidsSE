@@ -70,7 +70,7 @@ namespace STORE
   
     // -- timer
     Timer   m_oTimer;        // timer (on origin only)
-    Decider m_oAcksRmg_job;  // acks remaining for coordinating 2pc job
+    Decider m_oAcksRmg;      // acks remaining for coordinating 2pc job
     
     eEC     m_eError_job;    // error when starting job
                              // DOUBLE CHECK THIS BELONGS HERE

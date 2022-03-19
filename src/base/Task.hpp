@@ -53,7 +53,7 @@ namespace BASE
     eQK          m_eQueue;        // which queue the task is currently in
     eEP          m_eEntryPoint;   // task entry point
     
-    Decider      m_oAcksRmg_task; // number of acks still waiting for
+    Decider      m_oAcksRmg;      // number of acks still waiting for
     Wakeup       m_oWakeup;       // wakeup time from sleeping
 
     i8           m_iTraceMask;    // tracing mask

@@ -124,7 +124,7 @@ void Task::vTask(void)
   m_eQueue       = QK_NONE;
   m_eEntryPoint  = EP_NONE;
 
-  m_oAcksRmg_task.vCheckInit();
+  m_oAcksRmg.vCheckInit();
   // m_oWakeup
   
   m_iTraceMask   = C_TRACE_NONE;
@@ -512,7 +512,7 @@ i8 Task::iAcksOriginal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iOriginal = m_oAcksRmg_task.nOriginalAcks();
+  i8 iOriginal = m_oAcksRmg.nOriginalAcks();
   
   return iOriginal;
 }
@@ -524,7 +524,7 @@ i8 Task::iAcksRmg_assert_only_(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iRmg = m_oAcksRmg_task.iPrintOnlyValue();
+  i8 iRmg = m_oAcksRmg.iPrintOnlyValue();
   
   return iRmg;
 }
@@ -541,7 +541,7 @@ void Task::vAcksRmg(i8 nAcksRmg)
   if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Task: Setting acks remaining %lld\n"_Stz,nAcksRmg);
 
-  m_oAcksRmg_task.vSetRemaining(nAcksRmg);
+  m_oAcksRmg.vSetRemaining(nAcksRmg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -551,7 +551,7 @@ bool Task::bAcksRmgDec(i8& nAcksWereRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  bool bAmDecider = m_oAcksRmg_task.bDecAndDecide(nAcksWereRemaining);
+  bool bAmDecider = m_oAcksRmg.bDecAndDecide(nAcksWereRemaining);
   
   return bAmDecider;
 }
@@ -1433,7 +1433,7 @@ void Task::vTracePoint(Stz* aMark)
          AM::szNodeNm(),
          AM::iThisNodeNo(),
          szTaskNm(),
-         m_oAcksRmg_task.iPrintOnlyValue(),
+         m_oAcksRmg.iPrintOnlyValue(),
          
          sWordWithCodeCell.azChar(),
          aMark,

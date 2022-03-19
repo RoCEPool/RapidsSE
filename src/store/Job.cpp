@@ -89,7 +89,7 @@ Job::Job(Stz* szJobNm,
   m_pSingularOp  = nullptr;
 
   // -- g -------------------
-  m_oAcksRmg_job.vCheckInit();
+  m_oAcksRmg.vCheckInit();
   m_pTask     = nullptr;
 
   m_iTscParticipant = 0;
@@ -218,7 +218,7 @@ i8 Job::iAcksOriginal(void)
   
   //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
-  i8 iAcksOriginal = m_oAcksRmg_job.nOriginalAcks();
+  i8 iAcksOriginal = m_oAcksRmg.nOriginalAcks();
   
   return iAcksOriginal;
 }
@@ -244,7 +244,7 @@ i8 Job::iAcksRmg_printOnlyValue(void)
   
   //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
-  i8 iAcksRmg = m_oAcksRmg_job.iPrintOnlyValue();
+  i8 iAcksRmg = m_oAcksRmg.iPrintOnlyValue();
   
   return iAcksRmg;
 }
@@ -261,7 +261,7 @@ void Job::vAcksRmg(i8 nAcks)
   if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Job: Setting acks remaining %lld\n"_Stz,nAcks);
 
-  m_oAcksRmg_job.vSetRemaining(nAcks);
+  m_oAcksRmg.vSetRemaining(nAcks);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -271,7 +271,7 @@ bool Job::bAcksRmgDec(i8& nAcksWereRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bAmDecider = m_oAcksRmg_job.bDecAndDecide(nAcksWereRemaining);
+  bool bAmDecider = m_oAcksRmg.bDecAndDecide(nAcksWereRemaining);
   
   return bAmDecider;
 }
@@ -758,7 +758,7 @@ void Job::vPrintJobContents(void)
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
          ,spTimer.sz(& m_oTimer)     // 13
-         ,m_oAcksRmg_job.iPrintOnlyValue() // 14
+         ,m_oAcksRmg.iPrintOnlyValue() // 14
          ,aEC[m_eError_job]          // 15
          ,spvSingularOp.sz(m_pSingularOp)  // 17
          ,spvTask.sz(m_pTask)        // 21
@@ -908,7 +908,7 @@ void Job::vResetForCascade(Session* pSession)
   }
 
   // -- g -------------------
-  m_oAcksRmg_job.vReset();
+  m_oAcksRmg.vReset();
 
   m_pTask = nullptr;
 
