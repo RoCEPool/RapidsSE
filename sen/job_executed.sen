@@ -11,21 +11,17 @@
 /*----------------------------------------------------------------------------*/
 /* send Job_Executed back to originating node                                 */
 /*----------------------------------------------------------------------------*/
-: executed::replyToOrigin ( pJobParticipant -- )
+: executed::replyToOrigin params| pJobParticipant |
 
-  params| pJobParticipant |
-
-  pJobParticipant job.id@ locals| iJobId |
-
-  0 0 0 locals| pJob pJob_Executed error |
-
+  // "executed::replyToOrigin" .
+    
   // new a temporary Job_Executed
-  pJobParticipant job_Executed::new to pJob_Executed
+  pJobParticipant job_Executed::new locals| pJob_Executed |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send the executed job
-  iJobId job::originator@ pJob_Executed job.reply
+  pJobParticipant job.id@ job::originator@ pJob_Executed job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

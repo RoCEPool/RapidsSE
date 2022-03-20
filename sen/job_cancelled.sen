@@ -24,26 +24,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* send Job_Cancelled back to originating node                               */
+/* send Job_Cancelled back to originating node                                */
 /*----------------------------------------------------------------------------*/
-: cancelled::replyToOrigin ( pJobParticipant -- )
+: cancelled::replyToOrigin params| pJobParticipant |
 
-  params| pJobParticipant |
-
-  pJobParticipant job.id@ locals| iJobId |
-
-  0 0 0 locals| pJob pJob_Cancelled error |
-
+  // "cancelled::replyToOrigin" .
+  
   // new a temporary Job_Cancelled
-  pJobParticipant job_Cancelled::new to pJob_Cancelled
+  pJobParticipant job_Cancelled::new locals| pJob_Cancelled |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send the cancelled job
-  iJobId job::originator@ locals| iOriginator |
-  //iOriginator pJob_Cancelled jobCancelled.cancelOriginator!
-
-  iOriginator pJob_Cancelled job.reply
+  pJobParticipant job.id@ job::originator@ pJob_Cancelled job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

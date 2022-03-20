@@ -88,7 +88,7 @@ namespace STORE
     // -- tasking
     Task* m_pTask;  // task executing this job                         POST_RECV
   
-    s4K m_sEntry;   // sen entry code
+    s4K m_sEntryPoint;   // sen entry code
   
     i8  m_iTscParticipant;
 
@@ -141,8 +141,8 @@ namespace STORE
     void vDotPrint(Stz* szText);
     void vDropLock(void);
 
-    Stz* szEntry(void);
-    void vEntry(Stz* szEntry);
+    Stz* szEntryPoint(void);
+    void vEntryPoint(Stz* szEntry);
   
     void vGrabLock(void);
   

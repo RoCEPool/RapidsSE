@@ -349,21 +349,21 @@ void Job::vDotPrint(Stz* szText)
 /*----------------------------------------------------------------------------*/
 /* get the sen entry code                                                     */
 /*----------------------------------------------------------------------------*/
-Stz* Job::szEntry(void)
+Stz* Job::szEntryPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_sEntry;
+  return m_sEntryPoint;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the sen entry code                                                     */
 /*----------------------------------------------------------------------------*/
-void Job::vEntry(Stz* szEntry)
+void Job::vEntryPoint(Stz* szEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_sEntry = szEntry;
+  m_sEntryPoint = szEntry;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -548,7 +548,7 @@ void Step::vJobEntryPointFetch(void)
     NEVER_REACH;
   }
 
-  m_pDataStack->vPushStz(pJob->szEntry());
+  m_pDataStack->vPushStz(pJob->szEntryPoint());
   
   EXIT();
 }
@@ -562,7 +562,7 @@ void Step::vJobEntryFetch_other(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushStz(pJob->szEntry());
+  m_pDataStack->vPushStz(pJob->szEntryPoint());
   
   EXIT();
 }
@@ -579,7 +579,7 @@ void Step::vJobEntryPointStore(void)
   s4K sEntry;
   m_pDataStack->vPopStr(sEntry,__func__);
   
-  pJob->vEntry(sEntry);
+  pJob->vEntryPoint(sEntry);
   
   EXIT();
 }
@@ -596,7 +596,7 @@ void Step::vJobEntryStore_other(void)
   s4K sEntry;
   m_pDataStack->vPopStr(sEntry,__func__);
   
-  pJob->vEntry(sEntry);
+  pJob->vEntryPoint(sEntry);
   
   EXIT();
 }

@@ -15,21 +15,17 @@
 
   // "begun::replyToOrigin" .
   
-  pJobParticipant job.id@ locals| iJobId |
-
-  0 locals| [job] |
-
-  // new a temporary Job_Executed
-  pJobParticipant job_Begun::new to [job]
+  // new a temporary Job_Begun
+  pJobParticipant job_Begun::new locals| pJob_Begun |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send the begun job
-  iJobId job::originator@ [job] job.reply
+  pJobParticipant job.id@ job::originator@ pJob_Begun job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  [job] job.delete
+  pJob_Begun job.delete
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

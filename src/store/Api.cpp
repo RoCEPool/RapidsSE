@@ -198,7 +198,7 @@ void Api::vExecuteJob(Session* pSession)
 
     Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
     
-    pJob->vEntry(szEntry);
+    pJob->vEntryPoint(szEntry);
 
     //AM::pHeaps()->vSetTraceFree(false);
   }
@@ -454,7 +454,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   
   Stz* szEntry = pPrepareJobTags->szValue(C_TAG_ENTRYPOINT);
   
-  pPrepareJob->vEntry(szEntry);
+  pPrepareJob->vEntryPoint(szEntry);
   
   return EC_NONE;
 }
