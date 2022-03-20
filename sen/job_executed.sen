@@ -70,7 +70,7 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].returnReference
-    _job_2pc_delete_
+    [job]:retire
     exit                                                         // *EARLY EXIT*
   then
   //[grid].thisNodeName@ "(%v) EXECUTED AM DECIDER" .printf
@@ -84,7 +84,7 @@
   JobRef[] end::distribute
   JobRef[].returnReference
 
-  _job_2pc_delete_
+  [job]:retire
 ;
 
 /*----------------------------------------------------------------------------*/

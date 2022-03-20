@@ -86,7 +86,7 @@
   JobRef[] job.scheduleNextPhase
   JobRef[].returnReference
   
-  _job_2pc_delete_
+  [job]:retire
 ;
 
 /*----------------------------------------------------------------------------*/

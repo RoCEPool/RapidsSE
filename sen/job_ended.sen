@@ -68,7 +68,7 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].returnReference
-    _job_2pc_delete_
+    [job]:retire
     exit                                                         // *EARLY EXIT*
   then
   //[grid].thisNodeName@ "(%v) ENDED AM DECIDER" .printf
@@ -91,7 +91,7 @@
   JobRef[].task@ task.ack
   JobRef[].returnReference
   
-  _job_2pc_delete_
+  [job]:retire
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -93,7 +93,7 @@
   bAmDecider not if
     JobRef[].returnReference
     cancelled::retire
-    _job_2pc_delete_
+    [job]:retire
     exit                                                         // *EARLY EXIT*
   then
 
@@ -119,7 +119,7 @@
   // delete this completed __cancelled job
   cancelled::retire
   
-  _job_2pc_delete_
+  [job]:retire
 ;
 
 /*----------------------------------------------------------------------------*/

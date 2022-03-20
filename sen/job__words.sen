@@ -223,9 +223,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* 2pc job exits and is deleted immediately                                   */
+/* retire this job and its task                                               */
 /*----------------------------------------------------------------------------*/
-: _job_2pc_delete_
+: [job]:retire
 
   [ddlLock].testDrop
   
