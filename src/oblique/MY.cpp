@@ -439,7 +439,7 @@ Pipeline* MY::pPipeline(void)
   if (! pOp)
     return nullptr;
   
-  return pOp->pPipeline_op();
+  return pOp->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1356,7 +1356,7 @@ bool Op::bPeekOoO(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeline from op                                                       */
 /*----------------------------------------------------------------------------*/
-Pipeline* Op::pPipeline_op(void)
+Pipeline* Op::pPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   

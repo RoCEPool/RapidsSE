@@ -3066,7 +3066,7 @@ Job* AM::pPipelineJob(void)
 {
   Op* pOp = pThisTLSTask()->pOp();
   
-  Job* pPipelineJob = pOp->pPipeline_op()->pPipelineJob();
+  Job* pPipelineJob = pOp->pPipeline()->pPipelineJob();
   
   return pPipelineJob;
 }

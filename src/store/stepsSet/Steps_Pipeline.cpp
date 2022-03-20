@@ -63,8 +63,7 @@ void Step::vPipelineAddAccum(void)
 {
   ENTRY();
   
-  Op* pOp = *m_pOp;
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   i8 i_Accum = m_pDataStack->iPopInt(__func__);
   
@@ -82,10 +81,7 @@ void Step::vPipelineCancelledFetch(void)
 {
   ENTRY();
   
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   // return if pipeline has been cancelled
   m_pDataStack->vPushInt(pPipeline->bCancelled());
@@ -99,11 +95,8 @@ void Step::vPipelineCancelledFetch(void)
 void Step::vPipelineCancelledStore(void)
 {
   ENTRY();
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
 
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   pPipeline->vCancelled(m_pDataStack->iPopInt(__func__));
   
@@ -151,8 +144,7 @@ void Step::vPipelineDropDebugLock(void)
 {
   ENTRY();
   
-  Op* pOp = *m_pOp;
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   pPipeline->vDropDebugLock();
   
@@ -166,10 +158,7 @@ void Step::vPipelineEarlyExitFetch(void)
 {
   ENTRY();
 
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
 
   // return if pipeline has been errored
   m_pDataStack->vPushInt(pPipeline->bEarlyExit());
@@ -184,10 +173,7 @@ void Step::vPipelineEarlyExitStore(void)
 {
   ENTRY();
 
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
 
   pPipeline->vEarlyExit(m_pDataStack->iPopIntBol(__func__));
 
@@ -201,10 +187,7 @@ void Step::vPipelineErroredFetch(void)
 {
   ENTRY();
   
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   // return if pipeline has been errored
   m_pDataStack->vPushInt(pPipeline->bErrored());
@@ -219,9 +202,7 @@ void Step::vPipelineErroredStore(void)
 {
   ENTRY();
   
-  // revised job/op model
-    Op* pOp = *m_pOp;
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   pPipeline->vErrored(m_pDataStack->iPopBol(__func__));
   
@@ -235,8 +216,7 @@ void Step::vPipelineGetAccum(void)
 {
   ENTRY();
   
-  Op* pOp = *m_pOp;
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   i8 i_Accum = m_pDataStack->iPopInt(__func__);
   
@@ -254,8 +234,7 @@ void Step::vPipelineGrabDebugLock(void)
 {
   ENTRY();
   
-  Op* pOp = *m_pOp;
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   pPipeline->vGrabDebugLock();
   
@@ -269,10 +248,7 @@ void Step::vPipelinePulsedFetch(void)
 {
   ENTRY();
   
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   // return if pipeline has been pulsed
   m_pDataStack->vPushInt(pPipeline->bPulsed());
@@ -287,10 +263,7 @@ void Step::vPipelinePulsedStore(void)
 {
   ENTRY();
   
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   pPipeline->vPulsed(m_pDataStack->iPopBol(__func__));
   
@@ -319,25 +292,14 @@ void Step::vPipelineOp0Fetch(void)
 void Step::vPipelineOpsOnNodeFetch(void)
 {
   ENTRY();
-  
-//  Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
-//  Pipework* pFormWork = pPipeline->pPipework();
-//
-//  Stage*    pStage0   = pFormWork->pGet(0);
-//
-//  if (pStage0->bStartPipeline()) {
-  
-    Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
+    
+  Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
 
-    i8 iThisNode = AM::pGrid()->iThisNodeNo();
+  i8 iThisNode = AM::pGrid()->iThisNodeNo();
 
-    i8 nOps = pPipeline->nOpsOnNode(iThisNode);
-  
-    m_pDataStack->vPushInt(nOps);
-//  }
-//  else {
-//    m_pDataStack->vPushInt(0);
-//  }
+  i8 nOps = pPipeline->nOpsOnNode(iThisNode);
+
+  m_pDataStack->vPushInt(nOps);
 
   EXIT();
 }
