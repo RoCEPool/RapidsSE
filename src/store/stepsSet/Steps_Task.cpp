@@ -65,10 +65,10 @@ void Step::vTaskAck(void)
 {
   ENTRY();
   
-  Task* pTaskWaiting = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
   i8 nAcksWereRemaining;
-  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pTaskWaiting,this,
+  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pThatTask,this,
                                                      nAcksWereRemaining);
   UNUSED(bWasQueued);
   
@@ -81,17 +81,17 @@ void Step::vTaskAck(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.cycleLock -- grab and drop lock of target task                        */
+/* task.cycleLock -- grab and drop lock of given task                         */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskCycleLock(void)
 {
   ENTRY();
   
-  Task* pTargetTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
   // cycle the task lock to ensure task has fully entered next state
-  pTargetTask->vGrabTaskLock((Stz*)__func__);
-  pTargetTask->vDropTaskLock((Stz*)__func__);
+  pThatTask->vGrabTaskLock((Stz*)__func__);
+  pThatTask->vDropTaskLock((Stz*)__func__);
 
   EXIT();
 }
@@ -119,7 +119,7 @@ void Step::vTaskDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::exception -- get current exception as a string                       */
+/* task::exception -- get exception of this task as a string                  */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskException(void)
 {
@@ -146,15 +146,15 @@ void Step::vTaskException(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.isAckSet -- is task ack set?                                          */
+/* task.isAckSet -- is ack set for given task?                                */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskIsAckSet(void)
 {
   ENTRY();
   
-  Task* pTaskBeingAcked = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  i8 iIsAckSet = pTaskBeingAcked->m_oAcksRmg.bIsSet();
+  i8 iIsAckSet = pThatTask->m_oAcksRmg.bIsSet();
     
   m_pDataStack->vPushInt(iIsAckSet);
 
@@ -162,24 +162,24 @@ void Step::vTaskIsAckSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.isWaiting -- is task waiting?                                         */
+/* task.isWaiting -- is given task waiting?                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskIsWaiting(void)
 {
   ENTRY();
 
-  Task* pTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
   // should never s=check for DEDICATED tasks
-  RASSERT(pTask->eEntryPoint() != EP_DEDICATED);
+  RASSERT(pThatTask->eEntryPoint() != EP_DEDICATED);
   
-  m_pDataStack->vPushInt(pTask->eState() == TS_WAITING ? true : false);
+  m_pDataStack->vPushInt(pThatTask->eState() == TS_WAITING ? true : false);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.name@ -- fetch task name                                              */
+/* task.name@ -- fetch name of given task                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskNameFetch(void)
 {
@@ -195,7 +195,7 @@ void Step::vTaskNameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::operandYield@ -- operand yield fetch                                  */
+/* task::operandYield@ -- fetch operand yield of this task                    */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskOperandYieldFetch(void)
 {
@@ -207,7 +207,7 @@ void Step::vTaskOperandYieldFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::operandYield! -- operand yield store                                 */
+/* task::operandYield! -- store operand yield of this task                    */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskOperandYieldStore(void)
 {
@@ -219,7 +219,7 @@ void Step::vTaskOperandYieldStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.profile@ -- fetch task profile                                        */
+/* task.profile@ -- fetch this task profile                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskProfileFetch(void)
 {
@@ -234,7 +234,7 @@ void Step::vTaskProfileFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.profile! -- store task profile                                        */
+/* task.profile! -- store this task profile                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskProfileStore(void)
 {
@@ -285,7 +285,7 @@ void Step::vTaskSeeLockSets(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::seeLogicUnit -- see logic Unit registers                    */
+/* task::seeLogicUnit -- see logic Unit registers                             */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSeeLogicUnit(void)
 {
@@ -440,18 +440,12 @@ void Step::vTaskDropLock(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* task.job@ -- push job of given task                                        */
+/* task[].job@ -- push job of this task                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskJobFetch(void)
 {
   ENTRY();
   
-//  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-//
-// Job* pJob = pThatTask->m_pJob;
-//
-//  m_pDataStack->vPushPtr(pJob);
-
   if (m_pJob.bIsNull())
     AM::SE::vWhereAmI();
   
@@ -461,18 +455,12 @@ void Step::vTaskJobFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.job! -- store job into given task                                     */
+/* task[]job! -- store job into this task                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskJobStore(void)
 {
   ENTRY();
-  
-//  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-//
-//  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-//
-//  pThatTask->m_pJob = pJob;
-  
+    
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   m_pJob = pJob;
@@ -481,7 +469,7 @@ void Step::vTaskJobStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Task[].transition! -- transition store                                      */
+/* Task[].transition! -- store transition into this task                      */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskTransitionStore(void)
 {
@@ -496,7 +484,7 @@ void Step::vTaskTransitionStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Task[].wait -- this task waits for signal                                   */
+/* Task[].wait -- this task waits for signal                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskWait(void)
 {
@@ -508,7 +496,7 @@ void Step::vTaskWait(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Task[].yield  -- this task yields                                            */
+/* Task[].yield  -- this task yields                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskYield(void)
 {
@@ -521,7 +509,7 @@ void Step::vTaskYield(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Task[].yield  -- this task yields                                            */
+/* Task[].yield  -- this task yields                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskYield_opLoop(void)
 {
@@ -533,7 +521,6 @@ void Step::vTaskYield_opLoop(void)
 
   EXIT();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

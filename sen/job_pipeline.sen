@@ -16,9 +16,7 @@
 : pipeline::origin ( -- <R> )
 
   //"pipeline::origin" .
-  
-  Task[].job@ Job[] equal assert
-  
+    
   Job[].assertCorrectness
 
   job[].tscBeginning
@@ -216,8 +214,6 @@
 
   JobRef[].assertNone
   
-  Task[].job@ Job[] equal assert
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job is beginning
@@ -232,7 +228,7 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compile the pipeline statement on participants (should not expect an error)
+  // compile pipeline statement into spec (should not expect an error)
 
   Dynamo[].new
 
@@ -246,7 +242,7 @@
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // begin this pipeline job (spawning jobs for ops etc)
+  // create pipeline and spawn tasks for ops from spec
   
   PipelineSpec[] Pipeline[].create
   //"pipeline::participant post Pipeline[].create" job[].progress
@@ -256,7 +252,7 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // this pipeline job has begun on this node
+  // this job has begun on this node
   
   JP_BEGUN Job[].phase!
 
@@ -279,7 +275,7 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete current task (but not this job)
+  // task hibernates
   
   Task[].grabLock
         
@@ -299,7 +295,6 @@
   
   Job[].assertCorrectness
 
-  Task[].job@ Job[] equal assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job is executing
@@ -391,8 +386,6 @@
 
   // "pipeline::end" .
 
-  Task[].job@ Job[] equal assert
-
   Job[].assertCorrectness
   
   
@@ -442,8 +435,6 @@
 
   // "pipeline::cancel" .
   
-  Task[].job@ Job[] equal assert
-
   Job[].assertCorrectness
   
     // [ senCompiler::current@ word.name@ encode::push ] .
