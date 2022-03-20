@@ -77,7 +77,7 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n  static const i8 C_CRW_FIRSTHEAD = 640;"
       "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
       "\n  static const d8 C_FLT_MAX = 1.797693134862315708145274237317043567981e+308;"
-      "\n  static const d8 C_FLT_MIN = 2.2250738585072014e-308;"
+      "\n  static const d8 C_FLT_MIN = -1.797693134862315708145274237317043567981e+308;"
       "\n  static const u8 C_YEAR_BASE  = 1900;"
       "\n  static const i8 TMP_TBLCOL_SCALE  = 2;"//ALKA: replace TMP_TBLCOL_SCALE with scale decimal value in table column definition
       "\n"

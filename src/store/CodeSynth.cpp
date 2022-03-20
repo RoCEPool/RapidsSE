@@ -2470,35 +2470,45 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PE_MIN:
-      switch(eExprType) {
-        case DM_BCD: iInitValue = Bcd::iMaxValue();
+      switch (eExprType) {
+        case DM_BCD:
+          iInitValue = Bcd::iMaxValue();
           sOperation.vSprintCat("_PSH_BCD(%lld)"_Stz, iInitValue);
           break;
-        case DM_BOL: iInitValue = Bol::iMaxValue();
+        case DM_BOL:
+          iInitValue = Bol::iMaxValue();
           sOperation.vSprintCat("_PSH_BOL(%lld)"_Stz, iInitValue);
           break;
-        case DM_DTE: iInitValue = Dte::iMaxValue();
+        case DM_DTE:
+          iInitValue = Dte::iMaxValue();
           sOperation.vSprintCat("_PSH_DTE(%lld)"_Stz, iInitValue);
           break;
-        case DM_FLT: iInitValue = Flt::iMaxValue();
+        case DM_FLT:
+          iInitValue = Flt::iMaxValue();
           sOperation.vSprintCat("_PSH_FLT(%lld)"_Stz, iInitValue);
           break;
-        case DM_INT: iInitValue = Int::iMaxValue();
+        case DM_INT:
+          iInitValue = Int::iMaxValue();
           sOperation.vSprintCat("_PSH_INT(%lld)"_Stz, iInitValue);
           break;
-        case DM_IVL: iInitValue = Ivl::iMaxValue();
+        case DM_IVL:
+          iInitValue = Ivl::iMaxValue();
           sOperation.vSprintCat("_PSH_IVL(%lld)"_Stz, iInitValue);
           break;
-        case DM_IVY: iInitValue = Ivl::iMaxValue();
+        case DM_IVY:
+          iInitValue = Ivl::iMaxValue();
           sOperation.vSprintCat("_PSH_IVY(%lld)"_Stz, iInitValue);
           break;
-        case DM_TME: iInitValue = Tme::iMaxValue();
+        case DM_TME:
+          iInitValue = Tme::iMaxValue();
           sOperation.vSprintCat("_PSH_TME(%lld)"_Stz, iInitValue);
           break;
-        case DM_TSP: iInitValue = Tsp::iMaxValue();
+        case DM_TSP:
+          iInitValue = Tsp::iMaxValue();
           sOperation.vSprintCat("_PSH_TSP(%lld)"_Stz, iInitValue);
           break;
-        case DM_VCH: Vch::vMaxValue(sInitValue.azChar());
+        case DM_VCH:
+          Vch::vMaxValue(sInitValue.azChar());
           sOperation.vSprintCat("_PSH_VCH(\"%s\")"_Stz, sInitValue.azChar());
           break;
         case DM_UNK:
@@ -2521,7 +2531,7 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
         case DM_DTE: iInitValue = Dte::iMinValue();
           sOperation.vSprintCat("_PSH_DTE(%lld)"_Stz, iInitValue);
           break;
-        case DM_FLT: iInitValue = Flt::iMinValue();
+          case DM_FLT: iInitValue = Flt::iMinValue();
           sOperation.vSprintCat("_PSH_FLT(%lld)"_Stz, iInitValue);
           break;
         case DM_INT: iInitValue = Int::iMinValue();
