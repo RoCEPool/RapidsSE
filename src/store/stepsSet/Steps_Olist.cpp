@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Olist(void)
 {
-  vAddStep("olist::findJob"_Stz,   &Step::vOlistFindJob);
+//  vAddStep("olist::findJob"_Stz,   &Step::vOlistFindJob);
 }
 
 /*----------------------------------------------------------------------------*/

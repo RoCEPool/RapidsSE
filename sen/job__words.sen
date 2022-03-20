@@ -230,7 +230,7 @@
   [ddlLock].testDrop
   
   // check this task has no job reference
-  ListedJob[].assertNone
+  ListedJob[].assertNoRef
 
   JS_DELETABLE [job].state!
 

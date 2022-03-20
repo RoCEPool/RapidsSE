@@ -33,7 +33,7 @@
       [job].error!
       
       [ddlLock].testDrop
-      ListedJob[].assertNone
+      ListedJob[].assertNoRef
 
       [job].addRetired
       
@@ -168,7 +168,7 @@
   if
       
     [ddlLock].testDrop
-    ListedJob[].assertNone
+    ListedJob[].assertNoRef
 
     [job].addRetired
     
@@ -212,7 +212,7 @@
   
   [job].assertCorrectness
 
-  ListedJob[].assertNone
+  ListedJob[].assertNoRef
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -361,7 +361,7 @@
   "pipeline::end" [job].entryPoint!
 
   [ddlLock].testDrop
-  ListedJob[].assertNone
+  ListedJob[].assertNoRef
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -

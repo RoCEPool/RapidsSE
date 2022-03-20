@@ -71,7 +71,7 @@
   // get the context of this __cancelled job
 
   // find the originating job
-  iJobId olist::findJob discard
+  iJobId ListedJob[].findOriginator discard
 
   // get the participant node from where this job_begun started
   pJob_Cancelled job.participantNode@ to iParticipantNode

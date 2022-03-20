@@ -71,7 +71,7 @@
 
   // find the job to be executed in the participating jobs
   pJob_Execute job.id@ locals| iJobId |
-  iJobId plist::findJob discard
+  iJobId ListedJob[].findParticipant discard
 
   // stall till job's previous phase (task) has completed
   

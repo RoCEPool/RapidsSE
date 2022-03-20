@@ -58,7 +58,7 @@
   [ddlLock].testDrop
 
   // check this task has no job reference
-  ListedJob[].assertNone
+  ListedJob[].assertNoRef
 
   // check this task has no ddl lock
   [ddlLock].none

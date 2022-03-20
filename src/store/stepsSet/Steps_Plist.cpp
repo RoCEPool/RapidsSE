@@ -17,31 +17,31 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Plist(void)
 {
-  vAddStep("plist::findJob"_Stz,   &Step::vPlistFindJob);
+  //vAddStep("plist::findJob"_Stz,   &Step::vPlistFindJob);
 }
 
 /*----------------------------------------------------------------------------*/
-/* olist::findJob -- find job in originator list                              */
+/* ListedJob[].findOriginator -- find job in originator list                              */
 /*----------------------------------------------------------------------------*/
-void Step::vPlistFindJob(void)
-{
-  ENTRY();
-  
-  JobId tJobId;
-  tJobId = m_pDataStack->iPopAsInt(__func__);
-
-  Job* pJobFound = AM::pJob_FindParticipating(tJobId);
-  RASSERT(pJobFound);
-  
-  
-  //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
-  
-  
-  m_pDataStack->vPushPtr(pJobFound);
-  
-  EXIT();
-}
+//void Step::vPlistFindJob(void)
+//{
+//  ENTRY();
+//
+//  JobId tJobId;
+//  tJobId = m_pDataStack->iPopAsInt(__func__);
+//
+//  Job* pJobFound = AM::pJob_FindParticipating(tJobId);
+//  RASSERT(pJobFound);
+//
+//
+//  //! borrow the job ref [ this needs to be done under lock ]
+//  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
+//
+//
+//  m_pDataStack->vPushPtr(pJobFound);
+//
+//  EXIT();
+//}
 
 
 /*============================================================================*/
