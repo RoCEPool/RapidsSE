@@ -64,7 +64,7 @@
   // where: on the participating node
   //
   //[grid].thisNodeName@ "(%v) RECEIVED END" .printf
-  Job[] locals| pJob_End |
+  [job] locals| pJob_End |
   0 locals| pTask_End |
 
   // find the job to be executed in the participating jobs

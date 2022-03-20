@@ -63,7 +63,7 @@
   //
   // where: on the participating node
   //
-  Job[] locals| pJob_Cancel |
+  [job] locals| pJob_Cancel |
   0 locals| pTask_Cancel |
 
   // find the job to be executed in the participating jobs
@@ -82,7 +82,7 @@
   pTask_Cancel task.cycleLock
     
 
-  "pipeline::cancel" ListedJob[] job.entry!
+  "P_Job:cancelPipeline" ListedJob[] job.entry!
   ListedJob[] job.scheduleNextPhase
   ListedJob[].returnReference
   

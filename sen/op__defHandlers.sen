@@ -140,7 +140,7 @@
   
   PipeIn[].pipeOut
   
-  Job[] assert
+  [job] assert
   [task] assert
 
   [op].ackPipelineJob

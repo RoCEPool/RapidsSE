@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 /* launch a distributed pipeline on originating node                          */
 /*----------------------------------------------------------------------------*/
-: pipeline::origin ( -- <R> )
+: O_Job:runPipeline ( -- <R> )
 
-  //"pipeline::origin" .
+  //"O_Job:runPipeline" .
     
   [job].assertCorrectness
 
@@ -58,7 +58,7 @@
 
   "<show_command>" sysargs::tagSet@ tagSet.hasName
   if
-    //<cmd> "pipeline::origin: %v\n" .printf
+    //<cmd> "O_Job:runPipeline: %v\n" .printf
     <cmd> .
     //jobs::seeRlist
 
@@ -146,12 +146,12 @@
     
     // set the no of acks expected by originator job
     //   to be the number of defined nodes in the grid
-    [grid].knownNodes Job[] job.acksRemaining!
+    [grid].knownNodes [job] job.acksRemaining!
 
     // set acks for originator task
     1 [task].acksRemaining!
 
-    "pipeline::participant" [job].entryPoint!
+    "P_Job:beginPipeline" [job].entryPoint!
     job::distributeParticipants
     
     [task].wait
@@ -204,9 +204,9 @@
 /*----------------------------------------------------------------------------*/
 /* begin pipeline job on participant node                                     */
 /*----------------------------------------------------------------------------*/
-: pipeline::participant ( -- )
+: P_Job:beginPipeline ( -- )
 
-  // "pipeline::participant" .
+  // "P_Job:beginPipeline" .
 
   [job].progressReset
   
@@ -219,7 +219,7 @@
   // this job is beginning
   
   JP_BEGINNING [job].phase!
-  //"pipeline::participant post [job]..phase!" [job].progress
+  //"P_Job:beginPipeline post [job]..phase!" [job].progress
 
   <path> str.toStrVec Path[].set
 
@@ -232,11 +232,11 @@
 
   Dynamo[].new
 
-  //"pipeline::participant pre dynamo" [job].progress
+  //"P_Job:beginPipeline pre dynamo" [job].progress
   <cmd> Dynamo[].compile
     EC_NONE == assert
     to PipelineSpec[]
-  //"pipeline::participant post Dynamo[].compile" [job].progress
+  //"P_Job:beginPipeline post Dynamo[].compile" [job].progress
 
   Dynamo[].delete
   
@@ -245,10 +245,10 @@
   // create pipeline from spec and spawn tasks for ops
   
   PipelineSpec[] [pipeline].create
-  //"pipeline::participant post [pipeline].create" [job].progress
+  //"P_Job:beginPipeline post [pipeline].create" [job].progress
   
   [pipeline].spawnOpTasks
-  //"pipeline::participant post [pipeline].spawnOpTasks" [job].progress
+  //"P_Job:beginPipeline post [pipeline].spawnOpTasks" [job].progress
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -257,7 +257,7 @@
   JP_BEGUN [job].phase!
 
   // what to execute next
-  "pipeline::execute" [job].entryPoint!
+  "P_Job:executePipeline" [job].entryPoint!
 
   // add job to participant list
   [job].tscParticipant
@@ -268,8 +268,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply begun to originator
 
-  Job[] begun::replyToOrigin
-  //"pipeline::participant post begun::replyToOrigin" [job].progress
+  [job] begun::replyToOrigin
+  //"P_Job:beginPipeline post begun::replyToOrigin" [job].progress
 
   [ddlLock].testDrop
 
@@ -287,9 +287,9 @@
 /*----------------------------------------------------------------------------*/
 /* execute pipeline job on participant node                                   */
 /*----------------------------------------------------------------------------*/
-: pipeline::execute ( -- )
+: P_Job:executePipeline ( -- )
 
-  // "pipeline::execute" .
+  // "P_Job:executePipeline" .
   
   0 locals| nAcks |
   
@@ -358,7 +358,7 @@
   JP_EXECUTED [job].phase!
   
   // what to execute next
-  "pipeline::end" [job].entryPoint!
+  "P_Job:endPipeline" [job].entryPoint!
 
   [ddlLock].testDrop
   ListedJob[].assertNoRef
@@ -367,7 +367,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply executed to originator
   
-  Job[] executed::replyToOrigin
+  [job] executed::replyToOrigin
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -383,9 +383,9 @@
 /*----------------------------------------------------------------------------*/
 /* end pipeline job on participant node                                       */
 /*----------------------------------------------------------------------------*/
-: pipeline::end ( -- )
+: P_Job:endPipeline ( -- )
 
-  // "pipeline::end" .
+  // "P_Job:endPipeline" .
 
   [job].assertCorrectness
   
@@ -413,7 +413,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply ended to originator
   
-  Job[] ended::replyToOrigin
+  [job] ended::replyToOrigin
 
   JS_DELETABLE [job].state!
   [job].addRetired
@@ -422,7 +422,7 @@
   // task retires (with job in retired list)
 
   [task].grabLock
-    Job[] [exitDemon]:queueJob
+    [job] [exitDemon]:queueJob
     TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD
@@ -431,9 +431,9 @@
 /*----------------------------------------------------------------------------*/
 /* cancel pipeline job on participant node                                    */
 /*----------------------------------------------------------------------------*/
-: pipeline::cancel ( -- )
+: P_Job:cancelPipeline ( -- )
 
-  // "pipeline::cancel" .
+  // "P_Job:cancelPipeline" .
   
   [job].assertCorrectness
   
@@ -446,13 +446,13 @@
 
   [job].removeParticipant
     
-  Job[] cancelled::replyToOrigin
+  [job] cancelled::replyToOrigin
 
   JS_DELETABLE [job].state!
 
   [job].addRetired
   [task].grabLock
-    Job[] [exitDemon]:queueJob
+    [job] [exitDemon]:queueJob
     TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD
@@ -470,7 +470,7 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
     <ddlLock>  = DL_GRAB_READ
     <preCheck> = bClusterStarted
       
-    <entryPoint>  = "pipeline::origin"
+    <entryPoint>  = "O_Job:runPipeline"
   }
 ;
 

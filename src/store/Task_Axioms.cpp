@@ -442,7 +442,7 @@ void Task::vAddAxioms(void)
                                                 \
       \"bootSystem::bootSystem\" .verbose       \
                                                 \
-      Job[] assert                              \
+      [job] assert                              \
                                                 \
       [job].addLocal                            \
                                                 \

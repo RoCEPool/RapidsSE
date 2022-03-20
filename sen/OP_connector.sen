@@ -101,7 +101,7 @@
   "Connector Demon Started" .boot
 
   [args].verbose if
-    [grid].thisNode@ Job[] "Connector %v on node %v running" .printf
+    [grid].thisNode@ [job] "Connector %v on node %v running" .printf
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

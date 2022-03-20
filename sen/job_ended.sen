@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : ended::ended
 
-  Job[] locals| pJob_Ended |
+  [job] locals| pJob_Ended |
   pJob_Ended job.id@ locals| iJobId |
 
   0 locals| bAmDecider |

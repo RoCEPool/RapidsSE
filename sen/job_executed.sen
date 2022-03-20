@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 : executed::executed
 
-  Job[] locals| pJob_Executed |
+  [job] locals| pJob_Executed |
   pJob_Executed job.id@ locals| iJobId |
 
   0 0 0 locals| iParticipantNode error bAmDecider |

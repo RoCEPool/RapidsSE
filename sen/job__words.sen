@@ -236,7 +236,7 @@
 
   [job].addRetired
   [task].grabLock
-    Job[] [exitDemon]:queueJob
+    [job] [exitDemon]:queueJob
     TR_RETIRE_THIS_TASK [task].transition!
 
   

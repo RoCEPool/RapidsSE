@@ -17,19 +17,19 @@
   
   pJobParticipant job.id@ locals| iJobId |
 
-  0 locals| pJob_Begun |
+  0 locals| [job] |
 
   // new a temporary Job_Executed
-  pJobParticipant job_Begun::new to pJob_Begun
+  pJobParticipant job_Begun::new to [job]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send the begun job
-  iJobId job::originator@ pJob_Begun job.reply
+  iJobId job::originator@ [job] job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob_Begun job.delete
+  [job] job.delete
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,9 +55,7 @@
   //         3) if all acks received distribute Job_Execute
   //
 
-  Job[] locals| pJob_Begun |
-
-  pJob_Begun job.id@ locals| iJobId |
+  [job] job.id@ locals| iJobId |
 
   0 0 0 0 locals| bAmDecider error iParticipantNode |
 
@@ -68,7 +66,7 @@
   iJobId ListedJob[].findOriginator discard
 
   // get the participant node from where this job_begun started
-  pJob_Begun job.participantNode@ to iParticipantNode
+  [job] job.participantNode@ to iParticipantNode
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __begun job on this originating node

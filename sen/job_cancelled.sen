@@ -13,7 +13,7 @@
   [ddlLock].testDrop
   
   [task].grabLock
-    Job[] [exitDemon]:queueJob
+    [job] [exitDemon]:queueJob
     TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD
@@ -62,7 +62,7 @@
   <path> str.toStrVec Path[].set
   
   
-  Job[] locals| pJob_Cancelled |
+  [job] locals| pJob_Cancelled |
   pJob_Cancelled job.id@ locals| iJobId |
 
   0 0 0 0 locals| bAmDecider error iParticipantNode |
