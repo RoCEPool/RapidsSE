@@ -179,7 +179,7 @@ rows:
 
 //------------------------------------------------------------------------------
 //TODO: error: label 'L_AddRowToTub' used but not defined
-/*
+
 select flt_col8 + 1.44 from datums order by flt_col8;
 rows:
      (null)
@@ -195,7 +195,7 @@ rows:
      (11.66)
      (11.66)
      (11.66)
-
+/*
 select cast (flt_col8 as varchar)  , cast (flt_col9 as varchar) from datums order by flt_col8;
 rows:
  (null,'31.456')
