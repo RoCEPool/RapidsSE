@@ -242,7 +242,7 @@
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create pipeline and spawn tasks for ops from spec
+  // create pipeline from spec and spawn tasks for ops
   
   PipelineSpec[] Pipeline[].create
   //"pipeline::participant post Pipeline[].create" job[].progress
@@ -259,7 +259,7 @@
   // what to execute next
   "pipeline::execute" Job[].entry!
 
-  // add job to participant job list
+  // add job to participant list
   job[].tscParticipant
   Job[].addParticipant
   Job[].assertCorrectness
@@ -275,7 +275,7 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // task hibernates
+  // task hibernates (with job in participant list)
   
   Task[].grabLock
         
@@ -366,12 +366,13 @@
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply to originator
+  
   Job[] executed::replyToOrigin
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete current task (but not this job)
-  
+  // task hibernates (with job in participant list)
+
   Task[].grabLock
       
     TR_HIBERNATE_THIS_TASK Task[].transition!
@@ -414,12 +415,11 @@
   
   Job[] ended::replyToOrigin
 
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete current task (but not this job)
-
   JS_DELETABLE Job[].state!
   Job[].addRetired
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // task retires (with job in retired list)
 
   Task[].grabLock
     Job[] job.queueExitDemon
