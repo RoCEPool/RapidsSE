@@ -131,7 +131,6 @@ namespace STORE
     static void vAddSteps_Now(void);
 
     static void vAddSteps_Object(void);
-    static void vAddSteps_Olist(void);
     static void vAddSteps_Op(void);
     static void vAddSteps_Operand(void);
     static void vAddSteps_OperandOoO(void);
@@ -145,7 +144,6 @@ namespace STORE
     static void vAddSteps_PipelineSpec(void);
     static void vAddSteps_PathIdentifier(void);
     static void vAddSteps_PlanOperand(void);
-    static void vAddSteps_Plist(void);
     static void vAddSteps_Pot(void);
     static void vAddSteps_PotRlu(void);
     static void vAddSteps_Procedure(void);

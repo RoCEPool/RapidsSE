@@ -147,7 +147,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Now();
 
   Step::vAddSteps_Object();
-  Step::vAddSteps_Olist();
   Step::vAddSteps_Op();
   Step::vAddSteps_Operand();
   Step::vAddSteps_OperandOoO();
@@ -162,7 +161,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PipelineSpec();
   Step::vAddSteps_PathIdentifier();
   Step::vAddSteps_PlanOperand();
-  Step::vAddSteps_Plist();
   Step::vAddSteps_Pot();
   Step::vAddSteps_PotRlu();
   Step::vAddSteps_Procedure();
