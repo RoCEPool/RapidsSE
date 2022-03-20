@@ -299,7 +299,7 @@
 /*----------------------------------------------------------------------------*/
 : __seeSession \prompt
 
-  session::see
+  [session].see
 ;
 
 
@@ -342,7 +342,7 @@
 
   jobs::seeSqueue
 
-  session::see
+  [session].see
 ;
 
 

@@ -24,9 +24,9 @@
     | stageA
 
   end ;
-  " session::cascade!
+  " [session].cascade!
   
-  true session::hasCascade!
+  true [session].hasCascade!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -89,9 +89,9 @@
 
   //sPipeline .
 
-  sPipeline session::cascade!
+  sPipeline [session].cascade!
 
-  true session::hasCascade!
+  true [session].hasCascade!
   
   true
 ;

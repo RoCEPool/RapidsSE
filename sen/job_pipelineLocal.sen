@@ -59,7 +59,7 @@
     JS_SIGNALLED Job[].state!
       
     [task].grabLock
-    Session[].signal
+    [session].signal
     [task].dropLock
     
     pipelineLocal::termination
@@ -134,7 +134,7 @@
   Job[].addRetired
   
   JS_SIGNALLED Job[].state!
-    Session[].signal
+    [session].signal
 
   [task].grabLock
     TR_RETIRE_THIS_TASK [task].transition!

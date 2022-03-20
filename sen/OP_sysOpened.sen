@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : sysOpened_sysOpened \handler
 
-  false Session::systemCloser!
+  false [session].systemCloser!
 
   "system opened" .
   

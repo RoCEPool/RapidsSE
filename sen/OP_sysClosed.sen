@@ -20,7 +20,7 @@
   system::activeJobs "$$$ ActiveJobs %v" .printf
   
 
-  true Session::systemCloser!
+  true [session].systemCloser!
   
   "system closed" .
 

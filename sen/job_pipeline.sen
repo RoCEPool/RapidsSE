@@ -38,7 +38,7 @@
       Job[].addRetired
       
       JS_SIGNALLED Job[].state!
-        Session[].signal
+        [session].signal
 
       [task].grabLock
         TR_RETIRE_THIS_TASK [task].transition!
@@ -164,7 +164,7 @@
 
   Job[].removeOriginator
   
-  session::hasCascade@ not
+  [session].hasCascade@ not
   if
       
     [ddlLock].testDrop
@@ -173,7 +173,7 @@
     Job[].addRetired
     
     JS_SIGNALLED Job[].state!
-      Session[].signal
+      [session].signal
       
     [task].grabLock
       TR_RETIRE_THIS_TASK [task].transition!
@@ -184,7 +184,7 @@
       
     [ddlLock].testDrop
     JS_SIGNALLED Job[].state!
-    Session[].signal
+    [session].signal
  
     [task].grabLock
       TR_DELETE_THIS_TASK [task].transition!

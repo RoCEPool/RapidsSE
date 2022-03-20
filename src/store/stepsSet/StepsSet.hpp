@@ -1753,7 +1753,6 @@ public:
   void vSessionSystemCloserStore(void);
   void vSessionTagSetFetch(void);
   void vSessionTablePtnFetch(void);
-  void vSessionThis(void);
   void vSessionToDoFetch(void);
   void vSessionToDoStore(void);
   void vSessionTxFetch(void);
