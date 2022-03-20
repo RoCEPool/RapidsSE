@@ -36,7 +36,37 @@ success
 // C_D8_MIN = 2.220446e-16
 // C_FLT_MIN is negative of C_FLT_MAX as known as lowest value
 select 0.0e0 < 2.2250738585072014e-308 from datums;
+rows:
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+
 select 0.0e0 < -1.797693134862315708145274237317043567981e+308 from datums;
+rows:
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+
 //------------------------------------------------------------------------------
 select flt_col8 from datums order by flt_col8;
 rows:
