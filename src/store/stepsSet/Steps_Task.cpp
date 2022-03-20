@@ -49,8 +49,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("Task[].acksRemaining!"_Stz, &Step::vTaskAcksStore);
   vAddStep("Task[].dropLock"_Stz,       &Step::vTaskDropLock);
   vAddStep("Task[].grabLock"_Stz,       &Step::vTaskGrabLock);
-  vAddStep("Task[].job@"_Stz,           &Step::vTaskJobFetch);
-  vAddStep("Task[].job!"_Stz,           &Step::vTaskJobStore);
   vAddStep("Task[].transition!"_Stz,    &Step::vTaskTransitionStore);
   vAddStep("Task[].wait"_Stz,           &Step::vTaskWait);
   vAddStep("Task[].yield"_Stz,          &Step::vTaskYield);
@@ -435,36 +433,6 @@ void Step::vTaskDropLock(void)
     
   vDropTaskLock((Stz*)__func__);
   
-  EXIT();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* task[].job@ -- push job of this task                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskJobFetch(void)
-{
-  ENTRY();
-  
-  if (m_pJob.bIsNull())
-    AM::SE::vWhereAmI();
-  
-  m_pDataStack->vPushPtr(* m_pJob);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task[]job! -- store job into this task                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskJobStore(void)
-{
-  ENTRY();
-    
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pJob = pJob;
-
   EXIT();
 }
 

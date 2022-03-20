@@ -2132,8 +2132,6 @@ public:
   void vTaskGrabLock(void);
   void vTaskIsAckSet(void);
   void vTaskIsWaiting(void);
-  void vTaskJobFetch(void);
-  void vTaskJobStore(void);
   void vTaskNameFetch(void);
   void vTaskOperandYieldFetch(void);
   void vTaskOperandYieldStore(void);
