@@ -1603,7 +1603,7 @@ public:
   void vRecvdObjectSet(void);
 
   // reg task
-  void vRegTaskGet(void);
+  void vTaskGet(void);
 
   // reg timer
   void vRegTimerGet(void);
