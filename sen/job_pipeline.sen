@@ -32,7 +32,7 @@
       
       Job[].error!
       
-      DdlLock[].testDrop
+      [ddlLock].testDrop
       JobRef[].assertNone
 
       Job[].addRetired
@@ -79,7 +79,7 @@
   else
     // - didnt compile
     ErrorCode[] Job[].error!
-    DdlLock[].testDrop
+    [ddlLock].testDrop
   then
   
   Dynamo[].delete
@@ -92,7 +92,7 @@
     Job[].preExecuteTest to ErrorCode[]
     ErrorCode[] if
       ErrorCode[] Job[].error!
-      DdlLock[].testDrop
+      [ddlLock].testDrop
     then
   then
   
@@ -167,7 +167,7 @@
   session::hasCascade@ not
   if
       
-    DdlLock[].testDrop
+    [ddlLock].testDrop
     JobRef[].assertNone
 
     Job[].addRetired
@@ -182,7 +182,7 @@
 
   else
       
-    DdlLock[].testDrop
+    [ddlLock].testDrop
     JS_SIGNALLED Job[].state!
     Session[].signal
  
@@ -271,7 +271,7 @@
   Job[] begun::replyToOrigin
   //"pipeline::participant post begun::replyToOrigin" job[].progress
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -360,7 +360,7 @@
   // what to execute next
   "pipeline::end" Job[].entry!
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
   JobRef[].assertNone
   
   
@@ -395,7 +395,7 @@
 
   JP_ENDING Job[].phase!
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
  
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -55,13 +55,13 @@
 /*----------------------------------------------------------------------------*/
 : _lu_finalise_
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
 
   // check this task has no job reference
   JobRef[].assertNone
 
   // check this task has no ddl lock
-  DdlLock[].none
+  [ddlLock].none
 ;
 
 /*----------------------------------------------------------------------------*/

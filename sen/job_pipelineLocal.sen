@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::termination
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
 
   JobRef[].assertNone
 
@@ -48,7 +48,7 @@
     //"got error" .
     ErrorCode[] Job[].error!
     
-    DdlLock[].testDrop
+    [ddlLock].testDrop
 
     PipelineSpec[].delete
     Dynamo[].delete
@@ -128,7 +128,7 @@
   //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .
   
   
-  DdlLock[].testDrop
+  [ddlLock].testDrop
   JobRef[].assertNone
 
   Job[].addRetired

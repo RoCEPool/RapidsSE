@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : op__createCmdErrInfoSet
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
 
   // delete if any infoset in the register
   InfoSet[].isNotNull if
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 : op__cmdErr params| errorCode errorMsg |
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
 
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
@@ -73,7 +73,7 @@
 /*----------------------------------------------------------------------------*/
 : op__execErr params| errorCode |
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
 
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
@@ -105,7 +105,7 @@
 /*----------------------------------------------------------------------------*/
 : op__execErrMsg params| errorCode errorMsg |
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
 
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute

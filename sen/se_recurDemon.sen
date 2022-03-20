@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : demon::install
 
-  //ddlLock[].dropRead  : check with RAY
+  //[ddlLock].dropRead  : check with RAY
 
   "__" <pipelineNm> str.cat locals| sDemonNm |
 

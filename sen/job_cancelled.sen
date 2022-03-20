@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 : cancelled::retire
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
   
   [task].grabLock
     Job[] job.queueExitDemon

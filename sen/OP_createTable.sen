@@ -58,7 +58,7 @@
   //sTableNm .
 
   // grab the ddl lock
-  DdlLock[].grabRead
+  [ddlLock].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check ok to create table

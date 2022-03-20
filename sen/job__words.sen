@@ -131,7 +131,7 @@
   == if
     discard
     // "job::acquireDdlLock - grabbing ddl write lock" .
-    DdlLock[].grabWrite
+    [ddlLock].grabWrite
     exit
   then
 
@@ -141,7 +141,7 @@
   == if
     discard
     // "job::acquireDdlLock - grabbing ddl read lock" .
-    DdlLock[].grabRead
+    [ddlLock].grabRead
     exit
   then
 
@@ -227,7 +227,7 @@
 /*----------------------------------------------------------------------------*/
 : _job_2pc_delete_
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
   
   // check this task has no job reference
   JobRef[].assertNone
