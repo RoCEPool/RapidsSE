@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 : STANDARD_PIPEOUT
 
-  PipeIn[]\clear op.pipeout
+  PipeIn[]\clear Op[].pipeout
   
   // calling op_loop continues
   true
@@ -143,7 +143,7 @@
   Job[] assert
   Task[] assert
 
-  Op.ackPipelineJob
+  Op[].ackPipelineJob
   
   false // calling op_loop exits
 ;

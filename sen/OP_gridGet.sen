@@ -21,7 +21,7 @@
 
   grid::getGrid locals| pgridObj |
   // pipeout the gridGet instance
-  pgridObj op.pipeout
+  pgridObj Op[].pipeout
 
   true
   //stk

@@ -15,7 +15,7 @@
   
   MetaGet[].tableName@ op__table assert
 
-  Table[] MetaGet[].getParts op.pipeout
+  Table[] MetaGet[].getParts Op[].pipeout
 
   MetaGet[].delete
 

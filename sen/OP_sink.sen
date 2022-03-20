@@ -109,7 +109,7 @@
   PipeIn[].pipeToOutput
   Marker[].newExitedMarker
   Marker[].pipeOut
-  Op.ackPipelineJob
+  Op[].ackPipelineJob
 
   false
 ;

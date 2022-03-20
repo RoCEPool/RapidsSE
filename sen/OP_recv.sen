@@ -106,7 +106,7 @@
   find: recv_StartMarker ZK_M_START op[].handler!
 
   // get the pipeline job of the operator
-  Op.pipelineJob@ locals| pPipelineJob |
+  Op[].pipelineJob@ locals| pPipelineJob |
 
   // peek to see if any operand
   begin

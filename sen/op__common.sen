@@ -321,8 +321,8 @@
     <note> LogicUnit[].diaryJobNote
   then
 
-  op.opName@ LogicUnit[].diaryTitle
-  op.opName@ Op.partition@ >str str.cat LogicUnit[].diaryName
+  Op[].opName@ LogicUnit[].diaryTitle
+  Op[].opName@ Op[].partition@ >str str.cat LogicUnit[].diaryName
 
   <diaryDir> LogicUnit[].diaryDir
 ;
@@ -331,8 +331,6 @@
 /* set operator topology, next stage and op                                   */
 /*----------------------------------------------------------------------------*/
 : op__topology
-
-  op[].init
 
   "<diary>" Job[].tagSet@ tagSet.hasName if
     rluDiary_init
@@ -349,7 +347,7 @@
 : op__pipelineJobWait
 
   // get the pipeline job of the operator
-  Op.pipelineJob@ locals| pPipelineJob |
+  Op[].pipelineJob@ locals| pPipelineJob |
   
   pPipelineJob not if
     exit

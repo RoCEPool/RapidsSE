@@ -58,7 +58,7 @@
 
   EC_NONE locals| eError |
 
-  PipeIn[]\clear op.pipeout
+  PipeIn[]\clear Op[].pipeout
 
   <tableNm> <indexNm> op__table_index not if
     true
@@ -84,7 +84,7 @@
 
   EC_NONE locals| eError |
 
-  PipeIn[]\clear op.pipeout
+  PipeIn[]\clear Op[].pipeout
 
   <tableNm> <indexNm> op__table_index not if
     true

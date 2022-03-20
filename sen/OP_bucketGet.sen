@@ -21,7 +21,7 @@
   <TableNm> bucketGet::getBucketOfTable locals| pBucket |
 
   // pipeout the pBucket instance
-  pBucket op.pipeout
+  pBucket Op[].pipeout
 
   true
   //stk

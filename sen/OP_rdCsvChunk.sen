@@ -146,8 +146,8 @@
 //    <note> LogicUnit[].diaryJobNote
 //  then
 //
-//  op.opName@ LogicUnit[].diaryTitle
-//  op.opName@ LogicUnit[].diaryName
+//  Op[].opName@ LogicUnit[].diaryTitle
+//  Op[].opName@ LogicUnit[].diaryName
 
   op__topology
 

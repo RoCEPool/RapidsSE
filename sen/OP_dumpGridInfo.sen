@@ -14,7 +14,7 @@
   //pDumpBuffer .
 
   // convert the string to operand to pipe out
-  pDumpBuffer str.toPromptOut op.pipeout
+  pDumpBuffer str.toPromptOut Op[].pipeout
 
   true
 ;

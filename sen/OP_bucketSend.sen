@@ -15,7 +15,7 @@
 
   // then call C++ getBucketCrw to build the rows and push the rows to the stack via parcel
 
-  BucketGet[].getBucketCrw op.pipeout
+  BucketGet[].getBucketCrw Op[].pipeout
 
   BucketGet[].delete
   nullptr to BucketGet[]

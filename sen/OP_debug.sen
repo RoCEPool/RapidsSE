@@ -11,7 +11,7 @@
 
   pipeIn[]\clear to RowBuffer[]
 
-  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows Op.partition@ Op.stageName@
+  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows Op[].partition@ Op[].stageName@
     "%v.%v RowBuffer: %v rows (decile %v ptnid %v)" .printf
   
   1 0 Pipeline::addAccum
@@ -31,7 +31,7 @@
 
   Pipeline::grabDebugLock
   
-  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows Op.partition@ Op.stageName@
+  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows Op[].partition@ Op[].stageName@
     "%v.%v RowBuffer: %v rows (decile %v ptnid %v)" .printf
   
   1 0 Pipeline::addAccum
@@ -53,7 +53,7 @@
   
   PipeIn[]\clear to StreamDefLft[]
   
-  Op.stageName@ "%v: " .printf
+  Op[].stageName@ "%v: " .printf
   StreamDefLft[].print
 
   StreamDefLft[].pipeOut

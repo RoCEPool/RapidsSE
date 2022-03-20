@@ -97,7 +97,7 @@
 
   //"Operand:- ZK_M_EXITED" .verbose
   PipeIn[].delete
-  Op.ackPipelineJob
+  Op[].ackPipelineJob
 
   false
 ;

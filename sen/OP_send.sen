@@ -68,7 +68,7 @@
 
   PipeIn[].sendTo discard
 
-  Op.ackPipelineJob
+  Op[].ackPipelineJob
   
   false // calling op_loop exits
 ;

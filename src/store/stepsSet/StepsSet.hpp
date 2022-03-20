@@ -1265,31 +1265,27 @@ public:
   void vOlistFindJob(void);
 
   // op
+  void vOpAckPipelineJob(void);
+  void vOpDownstreamOpStore(void);
   void vOpEnqueOperand(void);
+  void vOpFindOp(void);
   void vOpGet(void);
   void vOpHandlerEntry(void);
   void vOpHandlerExit(void);
   void vOpHandlerFetch(void);
   void vOpHandlerStore(void);
   void vOpHandlerAllStore(void);
-  void vOpInit(void);
   void vOpIsOperandValid(void);
   void vOpIncHandlerCount(void);
   void vOpIncOperandCount(void);
-  void vOpPtnIdFetch(void);
-
-// operator
-  void vOpAckPipelineJob(void);
-  void vOpDownstreamOpStore(void);
-  void vOpFindOp(void);
-
   void vOpOpNameFetch(void);
+  void vOpOutboundOperandFetch(void);
+  void vOpOutboundOperandStore(void);
   void vOpPartitionFetch(void);
   void vOpPiplineJobFetch(void);
   void vOpPipeBackIn(void);
   void vOpPipeOut(void);
-  void vOpOutboundOperandFetch(void);
-  void vOpOutboundOperandStore(void);
+  void vOpPtnIdFetch(void);
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);
   void vOpStageNmFetch(void);

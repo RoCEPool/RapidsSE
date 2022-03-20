@@ -16,10 +16,10 @@
 
   // pass the table name to op__table to get the table[] register
   // then call C++ getGridParts to build the parcel and push the pParcel to the stack
-  // op.pipeout pipe the pParcel out
+  // Op[].pipeout pipe the pParcel out
 
 
-  grid[] grid::getParts op.pipeout
+  grid[] grid::getParts Op[].pipeout
 
   // send EOSMARKER
   nullptr to grid[]

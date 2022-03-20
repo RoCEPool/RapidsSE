@@ -26,77 +26,79 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Op(void)
 {
-  vAddStep("op.pipeBackin"_Stz,       &Step::vOpPipeBackIn);
-  vAddStep("op.pipeout"_Stz,         &Step::vOpPipeOut);
-
-  vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
+  vAddStep("Op.enqueOperand"_Stz,       &Step::vOpEnqueOperand);
+  vAddStep("Op::findOp"_Stz,            &Step::vOpFindOp);
   
-  vAddStep("Op.downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
-  
-  vAddStep("Op.findOp"_Stz,           &Step::vOpFindOp);
-  
-  vAddStep("Op.opName@"_Stz,          &Step::vOpOpNameFetch);
-  vAddStep("Op.outboundOperand@"_Stz, &Step::vOpOutboundOperandFetch);
-  vAddStep("Op.outboundOperand!"_Stz, &Step::vOpOutboundOperandStore);
-  
-  vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
-  vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
-  
-  vAddStep("Op.queueLength@"_Stz,     &Step::vOpQueueLength);
-  
-  vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
-  
-  
-  vAddStep("Op.enqueOperand"_Stz,      &Step::vOpEnqueOperand);
-  vAddStep("Op[]"_Stz,                 &Step::vOpGet);
-  vAddStep("Op[].handlerEntry"_Stz,    &Step::vOpHandlerEntry);
-  vAddStep("Op[].handlerExit"_Stz,     &Step::vOpHandlerExit);
-  vAddStep("Op[].handler@"_Stz,        &Step::vOpHandlerFetch);
-  vAddStep("Op[].handler!"_Stz,        &Step::vOpHandlerStore);
-  vAddStep("Op[].handlerAll!"_Stz,     &Step::vOpHandlerAllStore);
-  vAddStep("Op[].init"_Stz,            &Step::vOpInit);
-  vAddStep("Op[].isOperandValid"_Stz,  &Step::vOpIsOperandValid);
-  vAddStep("Op[].incHandlerCount"_Stz, &Step::vOpIncHandlerCount);
-  vAddStep("Op[].incOperandCount"_Stz, &Step::vOpIncOperandCount);
-  vAddStep("Op[].ptnId@"_Stz,          &Step::vOpPtnIdFetch);
-  vAddStep("Op[].stageNm@"_Stz,        &Step::vOpStageNmFetch);
-  vAddStep("Op[].tagSet@"_Stz,         &Step::vOpTagSetFetch);
-
+  vAddStep("Op[]"_Stz,                  &Step::vOpGet);
+  vAddStep("Op[].ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
+  vAddStep("Op[].downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
+  vAddStep("Op[].handlerEntry"_Stz,     &Step::vOpHandlerEntry);
+  vAddStep("Op[].handlerExit"_Stz,      &Step::vOpHandlerExit);
+  vAddStep("Op[].handler@"_Stz,         &Step::vOpHandlerFetch);
+  vAddStep("Op[].handler!"_Stz,         &Step::vOpHandlerStore);
+  vAddStep("Op[].handlerAll!"_Stz,      &Step::vOpHandlerAllStore);
+  vAddStep("Op[].isOperandValid"_Stz,   &Step::vOpIsOperandValid);
+  vAddStep("Op[].incHandlerCount"_Stz,  &Step::vOpIncHandlerCount);
+  vAddStep("Op[].incOperandCount"_Stz,  &Step::vOpIncOperandCount);
+  vAddStep("Op[].opName@"_Stz,          &Step::vOpOpNameFetch);
+  vAddStep("Op[].outboundOperand@"_Stz, &Step::vOpOutboundOperandFetch);
+  vAddStep("Op[].outboundOperand!"_Stz, &Step::vOpOutboundOperandStore);
+  vAddStep("Op[].partition@"_Stz,       &Step::vOpPartitionFetch);
+  vAddStep("Op[].pipeBackin"_Stz,       &Step::vOpPipeBackIn);
+  vAddStep("Op[].pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
+  vAddStep("Op[].pipeout"_Stz,          &Step::vOpPipeOut);
+  vAddStep("Op[].ptnId@"_Stz,           &Step::vOpPtnIdFetch);
+  vAddStep("Op[].queueLength@"_Stz,     &Step::vOpQueueLength);
+  vAddStep("Op[].stageName@"_Stz,       &Step::vOpStageNameFetch);
+  vAddStep("Op[].stageNm@"_Stz,         &Step::vOpStageNmFetch);
+  vAddStep("Op[].tagSet@"_Stz,          &Step::vOpTagSetFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op.ackPipelineJob -- ack the pipeline job                                  */
+/* Op[].ackPipelineJob -- ack the pipeline job                                */
 /*----------------------------------------------------------------------------*/
 void Step::vOpAckPipelineJob(void)
 {
   ENTRY();
   
-  // revised job/op model
-    Op* pOp = *m_pOp;
-  
-  
-  pOp->vAckPipelineJob();
+  m_pOp->vAckPipelineJob();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op.downstreamOp! -- store downstream op                                    */
+/* Op[].downstreamOp! -- store downstream op                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vOpDownstreamOpStore(void)
 {
   ENTRY();
     
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
   Op* pDownstreamOp = _pOp(m_pDataStack->pPopPtr(__func__));
   
-  pOp->vDownstreamOp(pDownstreamOp);
+  m_pOp->vDownstreamOp(pDownstreamOp);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op.findOp -- find downstream op by name                                    */
+/* Op.enqueOperand -- enqueue operand                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vOpEnqueOperand(void)
+{
+  ENTRY();
+  
+  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
+
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  pOp->vOpTrace(nullptr,(Stz*)__func__,false,
+                 "// queue StartMarker into pipeline"_Stz);
+
+  pOp->vAppendLeft(pOperand,this);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op::findOp -- find downstream op by name                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vOpFindOp(void)
 {
@@ -118,191 +120,6 @@ void Step::vOpFindOp(void)
 //  }
 //
 //  m_pDataStack->vPushPtr(pDownstreamOp);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.opName@ -- fetch operator name                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOpNameFetch(void)
-{
-  ENTRY();
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
-  
-  s256 sOpName = pOp->szOpNm();
-  
-  m_pDataStack->vPushStr(sOpName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.partition@ -- fetch partition from op                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vOpPartitionFetch(void)
-{
-  ENTRY();
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-    m_pDataStack->vPushInt(pOp->tPtnId().iAsI8());
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.pipelineJob@ -- fetch pipeline job from op                              */
-/*----------------------------------------------------------------------------*/
-void Step::vOpPiplineJobFetch(void)
-{
-  ENTRY();
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
-  
-  Pipeline* pPipeline = pOp->pPipeline_op();
-  
-  if (! pPipeline) {
-    m_pDataStack->vPushPtr(nullptr);
-  }
-  else {
-    Job* pPipelineJob = pPipeline->pPipelineJob();
-    m_pDataStack->vPushPtr(pPipelineJob);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* op.pipeBackin -- append operand back onto same operator in pipeline       */
-/*----------------------------------------------------------------------------*/
-void Step::vOpPipeBackIn(void)
-{
-  ENTRY();
-
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-  pOp->vPipeToThis(pOperand,this);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* op.pipeout -- append operand onto next operator in pipeline               */
-/*----------------------------------------------------------------------------*/
-void Step::vOpPipeOut(void)
-{
-  ENTRY();
-  
-  // revised job/op model
-  Op* pCurrOp = *m_pOp;
-
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-//  if (pOperand->bIsBuffer()) {
-//    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
-//    pLogicUnit->m_xpStats->m_nBuffOut++;
-//  }
-//  pOp->vPipeToNextOp(pOperand,this);
-
-  AM::OP::vPipeToNextOp(pCurrOp,pOperand,this);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.outboundOperand@ -- fetch outbound operand from op                      */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOutboundOperandFetch(void)
-{
-  ENTRY();
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
-  
-  m_pDataStack->vPushPtr(pOp->pOutboundOperand());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.outboundOperand! -- store outbound operand into op                      */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOutboundOperandStore(void)
-{
-  ENTRY();
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
-  
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-  pOp->vOutboundOperand(pOperand);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.queueLength@ -- get queue length                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vOpQueueLength(void)
-{
-  ENTRY();
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
-  
-  i8 nLength = pOp->nQueuedOperands();
-
-  m_pDataStack->vPushInt(nLength);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.stageName@ -- fetch operator stage name                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vOpStageNameFetch(void)
-{
-  ENTRY();
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
-  
-  s256 sStageName = pOp->szStageName();
-  
-  m_pDataStack->vPushStr(sStageName);
-  
-  EXIT();
-}
-
-
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/* Op.enqueOperand -- enqueue operand                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vOpEnqueOperand(void)
-{
-  ENTRY();
-  
-  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
-
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-  pOp->vOpTrace(nullptr,(Stz*)__func__,false,
-                 "// queue StartMarker into pipeline"_Stz);
-
-  pOp->vAppendLeft(pOperand,this);
 
   EXIT();
 }
@@ -400,21 +217,6 @@ void Step::vOpHandlerAllStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].init -- init op                                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vOpInit(void)
-{
-  ENTRY();
-
-//  // revised job/op model
-//  Op* pOp = *m_pOp;
-//
-//  m_pLogicUnit->m_xpOp = pOp;
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Op[].isOperandValid -- check if operand is valid                           */
 /*----------------------------------------------------------------------------*/
 void Step::vOpIsOperandValid(void)
@@ -466,6 +268,112 @@ void Step::vOpIncOperandCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Op[].opName@ -- fetch operator name                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vOpOpNameFetch(void)
+{
+  ENTRY();
+    
+  s256 sOpName = m_pOp->szOpNm();
+  
+  m_pDataStack->vPushStr(sOpName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].outboundOperand@ -- fetch outbound operand from op                    */
+/*----------------------------------------------------------------------------*/
+void Step::vOpOutboundOperandFetch(void)
+{
+  ENTRY();
+    
+  m_pDataStack->vPushPtr(m_pOp->pOutboundOperand());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].outboundOperand! -- store outbound operand into op                    */
+/*----------------------------------------------------------------------------*/
+void Step::vOpOutboundOperandStore(void)
+{
+  ENTRY();
+    
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  m_pOp->vOutboundOperand(pOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].partition@ -- fetch partition from op                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPartitionFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pOp->tPtnId().iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].pipelineJob@ -- fetch pipeline job from op                            */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPiplineJobFetch(void)
+{
+  ENTRY();
+    
+  Pipeline* pPipeline = m_pOp->pPipeline_op();
+  
+  if (! pPipeline) {
+    m_pDataStack->vPushPtr(nullptr);
+  }
+  else {
+    Job* pPipelineJob = pPipeline->pPipelineJob();
+    m_pDataStack->vPushPtr(pPipelineJob);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].pipeBackin -- append operand back onto same operator in pipeline      */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPipeBackIn(void)
+{
+  ENTRY();
+
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  m_pOp->vPipeToThis(pOperand,this);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].pipeout -- append operand onto next operator in pipeline              */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPipeOut(void)
+{
+  ENTRY();
+  
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+//  if (pOperand->bIsBuffer()) {
+//    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+//    pLogicUnit->m_xpStats->m_nBuffOut++;
+//  }
+//  pOp->vPipeToNextOp(pOperand,this);
+
+  AM::OP::vPipeToNextOp(m_pOp,pOperand,this);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Op[].ptnId@ -- get the partition id of this op                             */
 /*----------------------------------------------------------------------------*/
 void Step::vOpPtnIdFetch(void)
@@ -476,6 +384,34 @@ void Step::vOpPtnIdFetch(void)
 
   m_pDataStack->vPushInt(tPtn.uPtnNo());
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].queueLength@ -- get queue length                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vOpQueueLength(void)
+{
+  ENTRY();
+    
+  i8 nLength = m_pOp->nQueuedOperands();
+
+  m_pDataStack->vPushInt(nLength);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].stageName@ -- fetch operator stage name                               */
+/*----------------------------------------------------------------------------*/
+void Step::vOpStageNameFetch(void)
+{
+  ENTRY();
+  
+  s256 sStageName = m_pOp->szStageName();
+  
+  m_pDataStack->vPushStr(sStageName);
+  
   EXIT();
 }
 
@@ -509,8 +445,6 @@ void Step::vOpTagSetFetch(void)
   
   EXIT();
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */
