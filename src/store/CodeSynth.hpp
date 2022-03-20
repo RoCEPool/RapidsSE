@@ -124,7 +124,7 @@ namespace STORE {
 
     void vSynthSort(eEK eExprKind, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, bool bHashRows);
 
-    void vSynthStruct(u8 uSelectColumns);
+    void vSynthStruct(u8 uSelectColumns, IndexDef* pIndexDef = nullptr);
 
     void vSynthStructArray(u8 uSelectColumns);
 
@@ -161,7 +161,7 @@ namespace STORE {
     void vGenerateStencilCastTo(void);
     void vGenerateErrorCheck(Stz* sIndent);
 
-    void vGenerateStruct(u8 uSelectColumns);
+    void vGenerateStruct(u8 uSelectColumns, IndexDef* pIndexDef = nullptr);
 
     void vGetValue(eDM eDatum, char *sValue, i8& iValue, d8& dValue);
 

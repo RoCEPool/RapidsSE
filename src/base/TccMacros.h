@@ -48,12 +48,17 @@
 #define _ALLOC_VCH(szDstArea)                   \
 {                                               \
   szArg1 = (char*)*(--paW);                     \
-  nSrcSize = strlen(szArg1) + 1;                \
-  strncpy(szDstArea, szArg1, nSrcSize);         \
-  *paW++ = (i8)szDstArea;                       \
-  szDstArea += nSrcSize + 1;                    \
+  if ((i8)szArg1 == C_DATUM_NULL) {             \
+    printf("ALLOC NULL\n");                     \
+    *paW++ = C_DATUM_NULL;                      \
+  }                                             \
+  else {                                        \
+    nSrcSize = strlen(szArg1) + 1;              \
+    strncpy(szDstArea, szArg1, nSrcSize);       \
+    *paW++ = (i8)szDstArea;                     \
+    szDstArea += nSrcSize + 1;                  \
+  }                                             \
 }
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // POPS
@@ -65,7 +70,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // ASSIGNS
 
-#define _ASSIGN(iArgTo)                                                     \
+#define _ASSIGN(iArgTo) \
   iArgTo = *(--paW);
 
 #define _ASSIGN_IFTRUE(iArgTo)                                              \

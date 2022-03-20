@@ -230,6 +230,9 @@ void Stencil::vCombine(void)
 
       if (pShape->pCodeSynthB())
         m_pOpSource->vAppendFragment(pShape->pCodeSynthB(), &iLineNumber);
+
+      if (pShape->pCodeSynthC())
+        m_pOpSource->vAppendFragment(pShape->pCodeSynthC(), &iLineNumber);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -252,6 +255,9 @@ void Stencil::vCombine(void)
       if (m_pShapeROW->pCodeSynthB())
         m_pOpSource->vAppendFragment(m_pShapeROW->pCodeSynthB(), &iLineNumber);
 
+      if (m_pShapeROW->pCodeSynthC())
+        m_pOpSource->vAppendFragment(m_pShapeROW->pCodeSynthC(), &iLineNumber);
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // append shapes
       for (i8 i_Shape = 0; i_Shape < nItems(); i_Shape++) {
@@ -268,6 +274,9 @@ void Stencil::vCombine(void)
 
         if (pShape->pCodeSynthB())
           m_pOpSource->vAppendFragment(pShape->pCodeSynthB(), &iLineNumber);
+
+        if (pShape->pCodeSynthC())
+          m_pOpSource->vAppendFragment(pShape->pCodeSynthC(), &iLineNumber);
       }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -343,6 +352,9 @@ void Stencil::vCombine(void)
 
   if (m_pShapeEOS->pCodeSynthB())
     m_pOpSource->vAppendFragment(m_pShapeEOS->pCodeSynthB(), &iLineNumber);
+
+  if (m_pShapeEOS->pCodeSynthC())
+    m_pOpSource->vAppendFragment(m_pShapeEOS->pCodeSynthC(), &iLineNumber);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary
@@ -455,6 +467,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   s4K sLabel;
   s4K sReturnLabel;
   s4K sLabelLoop;
+  s4K sLabelNext;
   s4K sFunSignature;
   s256 sHashExpr;
 
@@ -468,6 +481,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   Shape* pShape;
   Op* pCombinedOp = nullptr;
   Op* pHavingFilterOp = nullptr;
+  Op* pPostProjectOp = nullptr;
   IntStack *pPreExpStack = nullptr;
 
   eSR ePrevStencil = SR_NONE;
@@ -688,17 +702,37 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupSort(pCombined, pStream, pOp);
+      // is next op project Op ?
+      i8 iNextOp = pOp->i_Op() + 1;
+      Op *pOpNext = pStream->pGet(iNextOp);
+
+      if (pOpNext->szOpNm()->bSame("project"_Stz)) {
+        pPostProjectOp = pOpNext;
+      }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil);
-      vAppend(pShape);
+      vSetupSort(pCombined, pStream, pOp, pPostProjectOp);
+
+      if (pPostProjectOp) {
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
+        vAppend(pShape);
+
+      }
+      else {
+        vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil, sLabelNext);
+        vAppend(pShape);
+      }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupEosPayload(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosSort(pCombined, pStream, pOp);
+      vSketchEosSort(pCombined, pStream, pOp, pPostProjectOp);
       bGeneratePotTub = false;
       bGenerateFun3 = false;
 
@@ -710,43 +744,49 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the projectOP
     if (pOp->szOpNm()->bSame("project"_Stz)) {
 
-      // get the aggregate type stack
-      pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
+      Op *pPrevOp = pStream->pGet(i_Op - 1);
 
-      // get the project kind
-      eExprKind = pLogicUnit->m_eExprKind;
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // project after sort will moe to the EOS marker
+      if ( ! pPrevOp->szOpNm()->bSame("sort"_Stz) ) {
 
-      if (eExprKind == EK_PROJECT) {
+        // get the aggregate type stack
+        pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        vSetupProjectExp(pCombined, pStream, pOp);
+        // get the project kind
+        eExprKind = pLogicUnit->m_eExprKind;
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        pShape = pSketchPrjExp(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
-        vAppend(pShape);
+        if (eExprKind == EK_PROJECT) {
 
-        ePrevStencil = SR_PT;
-      }
-      else {
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          vSetupProjectExp(pCombined, pStream, pOp);
 
-        RASSERT(eExprKind == EK_AGGREG);
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          pShape = pSketchPrjExp(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
+          vAppend(pShape);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        vSetupProjectAgg(pCombined, pStream, pOp);
+          ePrevStencil = SR_PT;
+        } else {
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        pShape = pSketchPrjAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
-        vAppend(pShape);
+          RASSERT(eExprKind == EK_AGGREG);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        vSetupEosPayload(pCombined, pStream, pOp);
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          vSetupProjectAgg(pCombined, pStream, pOp);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        vSketchEosProjectAgg(pCombined, pStream, pOp, pHavingFilterOp, sHashExpr);
-        bGeneratePotTub = false;
-        bGenerateFun3 = false;
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          pShape = pSketchPrjAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
+          vAppend(pShape);
 
-        ePrevStencil = SR_AT;
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          vSetupEosPayload(pCombined, pStream, pOp);
+
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          vSketchEosProjectAgg(pCombined, pStream, pOp, pHavingFilterOp, sHashExpr);
+          bGeneratePotTub = false;
+          bGenerateFun3 = false;
+
+          ePrevStencil = SR_AT;
+        }
       }
 
     }
@@ -990,7 +1030,17 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     // generate the code for the sortOP
     if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
-      vSetupSort(pCombined, pStream, pOp);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // is next op project Op ?
+      i8 iNextOp = pOp->i_Op() + 1;
+      Op *pOpNext = pStream->pGet(iNextOp);
+      Op* pPostProjectOp = nullptr;
+
+      if (pOpNext->szOpNm()->bSame("project"_Stz)) {
+        pPostProjectOp = pOpNext;
+      }
+
+      vSetupSort(pCombined, pStream, pOp, pPostProjectOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupEosPayload(pCombined, pStream, pOp);
@@ -1405,7 +1455,7 @@ void Stencil::vSetupEosAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
 /*----------------------------------------------------------------------------*/
 /* set up for sort                                                            */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pProjectOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1414,10 +1464,20 @@ void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   // get the indexDef
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   pCombined->aCombinedT()->m_aIndexDefPL = new IndexDef(pIndexDef);
   pCombined->aCombinedT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
   EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, 1, pIndexDef->eKeyKind());
+
+  // create RowSingleP
+  if (pProjectOp) {
+    pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
+    pCombined->aCombinedT()->m_aRowCellArrayP =
+        (byte *) RowSingle::aGetCellArray((RowSingle *) pCombined->aCombinedT()->m_aRowSingleP,
+                                          &pCombined->aCombinedT()->m_racStrAreaP);
+    pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
+  }
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -1632,7 +1692,7 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for sort OP                                       */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1640,6 +1700,8 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   s256 szStageNm;
   s256 sLabelNext;
   s256 sLabel;
+  i8   i_Op;
+  eSR ePrevStencil = SR_NONE;
 
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
@@ -1657,7 +1719,7 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDef
   pCodeSynth = new CodeSynth(pStreamDefOut,SR_PL);
-  pCodeSynth->vSynthStruct(0);
+  pCodeSynth->vSynthStruct(0, pIndexDef);
   m_pShapeEOS->vStructSynthA(pCodeSynth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1669,16 +1731,55 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCodeSynth->vSynthEos(pIndexDef, m_pPostStack, PL_SRT, sLabelNext);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
+  Stz* sProjectExpr = ""_Stz;
+
+  ePrevStencil = SR_PL;
+
+  if (pPostProjectOp) {
+
+    pLogicUnit = pPostProjectOp->pOpLogicUnit();
+    pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+    // get filter expr from OP
+    TagSet *pOpTags = pPostProjectOp->pOpTags();
+    sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
+    i_Op = pPostProjectOp->i_Op();
+
+    // get the aggregate type stack
+    IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the streamDef
+    pCodeSynth = new CodeSynth(pStreamDefOut, SR_PT);
+    pCodeSynth->vSynthStruct(0);
+    m_pShapeEOS->vStructSynthB(pCodeSynth);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // payloadRow to Tub/Pot
+    pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, pIndexDef, pPreExpStack, ePrevStencil, SR_PT);
+
+    sLabel.vSprint("L_%s_%d"_Stz, pPostProjectOp->szOpNm(), i_Op);
+    vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
+
+    pCodeSynth->bSynthPrjExp(sProjectExpr, sLabel, sLabelNext, "L_AdvanceNextRow"_Stz, pCombined->aCombinedT()->m_iHashRows) ;
+    m_pShapeEOS->vCodeSynthB(pCodeSynth);
+
+    ePrevStencil = SR_PT;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // payloadRow to Tub/Pot
-  pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, SR_PL, SR_NONE);
+  pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil, SR_NONE);
 
   //  if (pCombined->aCombinedT()->m_iHashRows)
 //    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
 //  else
   pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, "L_AddRowToTub"_Stz, "L_AdvanceNextRow"_Stz);
 
-  m_pShapeEOS->vCodeSynthB(pCodeSynth);
+  if (pPostProjectOp)
+    m_pShapeEOS->vCodeSynthC(pCodeSynth);
+  else
+    m_pShapeEOS->vCodeSynthB(pCodeSynth);
 
   // delete the postStack. No longer needed
   delete m_pPostStack;
@@ -2336,7 +2437,7 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* sketch sort                                                                */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil) {
+Shape* Stencil::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* szLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -2376,11 +2477,10 @@ Shape* Stencil::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR e
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexDef, pPreExpStack, ePrevStencil, SR_AT);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
   pCodeSynth->vSynthSort( pLogicUnit->m_eExprKind,
                             sProjectExpr,
                             sLabel,
-                            sLabelNext,
+                            szLabelLoop,
                             pCombined->aCombinedT()->m_iHashRows);
   pShape->vCodeSynthA(pCodeSynth);
 

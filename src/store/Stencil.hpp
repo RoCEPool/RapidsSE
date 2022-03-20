@@ -93,14 +93,14 @@ static const i8 C_MAX_SHAPES = 32;
     void vSetupProjectExp(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pProjectOp);
     void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
     void vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                               Op* pHavingFilterOp, Stz* sHashExpr);
     void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Op* pHavingFilterOp);
-    void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp);
     void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
     Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil);
@@ -112,7 +112,7 @@ static const i8 C_MAX_SHAPES = 32;
     Shape* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchLabel(Combined* pCombined, Stream* pStream, Op* pOp);
     Shape* pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop);
-    Shape* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil);
+    Shape* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* szLabelLoop);
     Shape* pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                          eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchOrderBy(Stream* pStream, Op* pOp, eSR ePrevStencil);
