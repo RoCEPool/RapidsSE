@@ -49,7 +49,6 @@
 {                                               \
   szArg1 = (char*)*(--paW);                     \
   if ((i8)szArg1 == C_DATUM_NULL) {             \
-    printf("ALLOC NULL\n");                     \
     *paW++ = C_DATUM_NULL;                      \
   }                                             \
   else {                                        \

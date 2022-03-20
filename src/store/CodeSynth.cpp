@@ -3772,7 +3772,7 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
     case DM_VCH:
       sOperation.vSprintCat("(\"%s\")"_Stz, pTkn->szChars());
       pExprStack->vPushStz(sOperation);
-      if (ePreExp == PE_EXP)
+      if (ePreExp == PE_EXP && eExprKind != EK_FILTER)
         pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
       break;
     default:
@@ -3951,7 +3951,8 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE eP
 //  }
 
 
-  if (pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP)
+  if (pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP &&
+      eExprKind != EK_FILTER)
     pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
 
   // push the type

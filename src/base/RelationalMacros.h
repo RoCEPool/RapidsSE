@@ -1118,7 +1118,7 @@
       if (strcmp((char*)iArg1, (char*)iArg2) == 0)                         \
         *paW++ = 1;                                                        \
       else                                                                 \
-        *paW++ = 8;                                                        \
+        *paW++ = 0;                                                        \
     }                                                                      \
   }
 
