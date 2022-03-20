@@ -76,8 +76,8 @@
 
   op__topology
 
-  find: puGen_DataPulse   ZK_M_DATAPULSE op[].handler!
-  find: puGen_StartMarker ZK_M_START     op[].handler!
+  find: puGen_DataPulse   ZK_M_DATAPULSE [op].handler!
+  find: puGen_StartMarker ZK_M_START     [op].handler!
 
   op__loop
 

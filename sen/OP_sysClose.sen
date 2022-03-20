@@ -25,7 +25,7 @@
 
   op__topology
 
-  find: sysClose_sysClose  ZK_M_DATAPULSE  op[].handler!
+  find: sysClose_sysClose  ZK_M_DATAPULSE  [op].handler!
 
   op__loop
 

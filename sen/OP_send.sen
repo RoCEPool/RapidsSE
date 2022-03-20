@@ -68,7 +68,7 @@
 
   PipeIn[].sendTo discard
 
-  Op[].ackPipelineJob
+  [op].ackPipelineJob
   
   false // calling op_loop exits
 ;
@@ -84,11 +84,11 @@
 
   op__topology
 
-  find: PipeIn[].sendTo op[].handlerAll!
+  find: PipeIn[].sendTo [op].handlerAll!
 
-  find: send_CANCELLING  ZK_M_CANCELLING  op[].handler!
-  find: send_CLEANING    ZK_M_CLEANING    op[].handler!
-  find: send_EXITING     ZK_M_EXITING     op[].handler!
+  find: send_CANCELLING  ZK_M_CANCELLING  [op].handler!
+  find: send_CLEANING    ZK_M_CLEANING    [op].handler!
+  find: send_EXITING     ZK_M_EXITING     [op].handler!
 
   op__loop
 

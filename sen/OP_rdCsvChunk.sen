@@ -146,14 +146,14 @@
 //    <note> LogicUnit[].diaryJobNote
 //  then
 //
-//  Op[].opName@ LogicUnit[].diaryTitle
-//  Op[].opName@ LogicUnit[].diaryName
+//  [op].opName@ LogicUnit[].diaryTitle
+//  [op].opName@ LogicUnit[].diaryName
 
   op__topology
 
-  find: rdCsvChunk_Cleaning      ZK_M_CLEANING     op[].handler!
-  find: rdCsvChunk_SeekOffsets   ZK_I_SEEKOFFSETS  op[].handler!
-  find: rdCsvChunk_StartMarker   ZK_M_START        op[].handler!
+  find: rdCsvChunk_Cleaning      ZK_M_CLEANING     [op].handler!
+  find: rdCsvChunk_SeekOffsets   ZK_I_SEEKOFFSETS  [op].handler!
+  find: rdCsvChunk_StartMarker   ZK_M_START        [op].handler!
 
   op__loop
 

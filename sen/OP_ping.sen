@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : ping_action
 
-  "ping" str.toPromptOut Op[].pipeout
+  "ping" str.toPromptOut [op].pipeout
   //10000 str.random dup .
-  //  str.toPromptOut Op[].pipeout
+  //  str.toPromptOut [op].pipeout
 
   "ping sleeps" .
   1 thread::sleepSsec

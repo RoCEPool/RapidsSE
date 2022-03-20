@@ -130,7 +130,7 @@
 
   op__topology
 
-  find: connector_StartMarker ZK_M_START op[].handler!
+  find: connector_StartMarker ZK_M_START [op].handler!
 
   op__loop
 

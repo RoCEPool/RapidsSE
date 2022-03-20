@@ -44,7 +44,7 @@
   op__topology
 
   // Setup ZK_D_PARCEL handler here
-  find: gridRecv_Parcel ZK_D_PARCEL op[].handler!
+  find: gridRecv_Parcel ZK_D_PARCEL [op].handler!
 
   op__loop
 

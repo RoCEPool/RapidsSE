@@ -97,7 +97,7 @@
 
   //"Operand:- ZK_M_EXITED" .verbose
   PipeIn[].delete
-  Op[].ackPipelineJob
+  [op].ackPipelineJob
 
   false
 ;
@@ -189,22 +189,22 @@
 
   op__topology
 
-  find: start_CancelMarker      ZK_M_CANCEL      op[].handler!
-  find: start_CancelledMarker   ZK_M_CANCELLED   op[].handler!
-  find: start_Cleaned           ZK_M_CLEANED     op[].handler!
-  find: start_EndingMarker      ZK_M_ENDING      op[].handler!
-  find: start_EndedMarker       ZK_M_ENDED       op[].handler!
-  find: start_ErroredMarker     ZK_M_ERRORED     op[].handler!
-  find: start_ExitedMarker      ZK_M_EXITED      op[].handler!
-  find: start_LeavingMarker     ZK_M_LEAVING     op[].handler!
-  find: start_LeftMarker        ZK_M_LEFT        op[].handler!
-  find: start_StartedMarker     ZK_M_STARTED     op[].handler!
+  find: start_CancelMarker      ZK_M_CANCEL      [op].handler!
+  find: start_CancelledMarker   ZK_M_CANCELLED   [op].handler!
+  find: start_Cleaned           ZK_M_CLEANED     [op].handler!
+  find: start_EndingMarker      ZK_M_ENDING      [op].handler!
+  find: start_EndedMarker       ZK_M_ENDED       [op].handler!
+  find: start_ErroredMarker     ZK_M_ERRORED     [op].handler!
+  find: start_ExitedMarker      ZK_M_EXITED      [op].handler!
+  find: start_LeavingMarker     ZK_M_LEAVING     [op].handler!
+  find: start_LeftMarker        ZK_M_LEFT        [op].handler!
+  find: start_StartedMarker     ZK_M_STARTED     [op].handler!
 
-  find: INVALID_OPERAND_handler ZK_D_CRWBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_D_CSVBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_D_ENTBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_D_ROWBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_D_STREAMDEF       op[].handler!
+  find: INVALID_OPERAND_handler ZK_D_CRWBUFFER       [op].handler!
+  find: INVALID_OPERAND_handler ZK_D_CSVBUFFER       [op].handler!
+  find: INVALID_OPERAND_handler ZK_D_ENTBUFFER       [op].handler!
+  find: INVALID_OPERAND_handler ZK_D_ROWBUFFER       [op].handler!
+  find: INVALID_OPERAND_handler ZK_D_STREAMDEF       [op].handler!
 
   op__loop
 

@@ -47,8 +47,8 @@
 
   op__topology
 
-  find: CompactIndexPtn_DataMarker ZK_M_DATAPULSE op[].handler!
-  find: CompactIndexPtn_StartMarker ZK_M_START op[].handler!
+  find: CompactIndexPtn_DataMarker ZK_M_DATAPULSE [op].handler!
+  find: CompactIndexPtn_StartMarker ZK_M_START [op].handler!
 
   op__loop
 

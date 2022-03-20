@@ -30,7 +30,7 @@
 
   op__topology
 
-  find: sigsegv_sigsegv  ZK_D_CRWBUFFER  op[].handler!
+  find: sigsegv_sigsegv  ZK_D_CRWBUFFER  [op].handler!
 
   op__loop
 

@@ -194,7 +194,7 @@
 
   op__topology
 
-  find: answer_StartMarker ZK_M_START op[].handler!
+  find: answer_StartMarker ZK_M_START [op].handler!
 
   op__loop
 

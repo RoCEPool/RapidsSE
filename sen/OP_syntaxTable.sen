@@ -45,7 +45,7 @@
 
   op__topology
 
-  find: syntaxTable_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: syntaxTable_DataMarker ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

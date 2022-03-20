@@ -100,9 +100,9 @@
 
   op__topology
 
-  find: chunk_Cleaning    ZK_M_CLEANING  op[].handler!
-  find: chunk_DataMarker  ZK_M_DATAPULSE op[].handler!
-  find: chunk_StartMarker ZK_M_START     op[].handler!
+  find: chunk_Cleaning    ZK_M_CLEANING  [op].handler!
+  find: chunk_DataMarker  ZK_M_DATAPULSE [op].handler!
+  find: chunk_StartMarker ZK_M_START     [op].handler!
 
   op__loop
 

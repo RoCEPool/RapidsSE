@@ -131,11 +131,11 @@
 
   op__topology
 
-  find: idxSort_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: idxSort_EosMarker     ZK_M_EOS           op[].handler!
-  find: idxSort_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-  find: idxSort_StartMarker   ZK_M_START         op[].handler!
-  find: idxSort_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  find: idxSort_Cleaning      ZK_M_CLEANING      [op].handler!
+  find: idxSort_EosMarker     ZK_M_EOS           [op].handler!
+  find: idxSort_RowBuffer     ZK_D_ROWBUFFER     [op].handler!
+  find: idxSort_StartMarker   ZK_M_START         [op].handler!
+  find: idxSort_StreamDef     ZK_D_STREAMDEF     [op].handler!
 
   op__loop
 

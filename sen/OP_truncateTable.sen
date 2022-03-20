@@ -50,8 +50,8 @@
 
   op__topology
 
-  find: truncateTable_StartMarker ZK_M_START     op[].handler!
-  find: truncateTable_DataPulse   ZK_M_DATAPULSE op[].handler!
+  find: truncateTable_StartMarker ZK_M_START     [op].handler!
+  find: truncateTable_DataPulse   ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

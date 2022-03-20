@@ -60,8 +60,8 @@
 
   op__topology
 
-  find: orderBy_Cleaning      ZK_M_CLEANING op[].handler!
-  find: orderBy_StartMarker   ZK_M_START    op[].handler!
+  find: orderBy_Cleaning      ZK_M_CLEANING [op].handler!
+  find: orderBy_StartMarker   ZK_M_START    [op].handler!
 
   op__loop
 

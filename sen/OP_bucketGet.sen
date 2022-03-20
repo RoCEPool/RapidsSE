@@ -21,7 +21,7 @@
   <TableNm> bucketGet::getBucketOfTable locals| pBucket |
 
   // pipeout the pBucket instance
-  pBucket Op[].pipeout
+  pBucket [op].pipeout
 
   true
   //stk
@@ -37,7 +37,7 @@
   "bucketGet_req" .
   op__topology
 
-  find: bucketGet_getBucket   ZK_M_DATAPULSE   op[].handler!
+  find: bucketGet_getBucket   ZK_M_DATAPULSE   [op].handler!
 
   op__loop
 

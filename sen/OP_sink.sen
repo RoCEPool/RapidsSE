@@ -109,7 +109,7 @@
   PipeIn[].pipeToOutput
   Marker[].newExitedMarker
   Marker[].pipeOut
-  Op[].ackPipelineJob
+  [op].ackPipelineJob
 
   false
 ;
@@ -200,18 +200,18 @@
 
   op__topology
 
-  find: sink_Xyz op[].handlerAll!
+  find: sink_Xyz [op].handlerAll!
 
-  find: sink_Cancelling      ZK_M_CANCELLING op[].handler!
-  find: sink_Cleaning        ZK_M_CLEANING   op[].handler!
-  find: sink_EndMarker       ZK_M_END        op[].handler!
-  find: sink_EndingMarker    ZK_M_ENDING     op[].handler!
-  find: sink_ErrorMarker     ZK_M_ERROR      op[].handler!
-  find: sink_ErroringMarker  ZK_M_ERRORING   op[].handler!
-  find: sink_Exiting         ZK_M_EXITING    op[].handler!
-  find: sink_LeaveMarker     ZK_M_LEAVE      op[].handler!
-  find: sink_LeavingMarker   ZK_M_LEAVING    op[].handler!
-  find: sink_StartMarker     ZK_M_START      op[].handler!
+  find: sink_Cancelling      ZK_M_CANCELLING [op].handler!
+  find: sink_Cleaning        ZK_M_CLEANING   [op].handler!
+  find: sink_EndMarker       ZK_M_END        [op].handler!
+  find: sink_EndingMarker    ZK_M_ENDING     [op].handler!
+  find: sink_ErrorMarker     ZK_M_ERROR      [op].handler!
+  find: sink_ErroringMarker  ZK_M_ERRORING   [op].handler!
+  find: sink_Exiting         ZK_M_EXITING    [op].handler!
+  find: sink_LeaveMarker     ZK_M_LEAVE      [op].handler!
+  find: sink_LeavingMarker   ZK_M_LEAVING    [op].handler!
+  find: sink_StartMarker     ZK_M_START      [op].handler!
 
   op__loop
 

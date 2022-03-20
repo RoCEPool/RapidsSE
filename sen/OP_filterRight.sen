@@ -268,16 +268,16 @@
 
   op__topology
 
-  find: filterRight_Cleaning         ZK_M_CLEANING    op[].handler!
-  find: filterRight_CrwBuffer        ZK_D_CRWBUFFER   op[].handler!
-  find: filterRight_EndCrwRht        ZK_M_ENDCRWRHT   op[].handler!
-  find: filterRight_EndRowRht        ZK_M_ENDROWRHT   op[].handler!
-  find: filterRight_EosMarker        ZK_M_EOS         op[].handler!
-  find: filterRight_RowBuffer        ZK_D_ROWBUFFER   op[].handler!
-  find: filterRight_StartMarker      ZK_M_START       op[].handler!
-  find: filterRight_StartCrwRht      ZK_M_STARTCRWRHT op[].handler!
-  find: filterRight_StartRowRht      ZK_M_STARTROWRHT op[].handler!
-  find: filterRight_StreamDefRht     ZK_D_STREAMDEFRHT op[].handler!
+  find: filterRight_Cleaning         ZK_M_CLEANING    [op].handler!
+  find: filterRight_CrwBuffer        ZK_D_CRWBUFFER   [op].handler!
+  find: filterRight_EndCrwRht        ZK_M_ENDCRWRHT   [op].handler!
+  find: filterRight_EndRowRht        ZK_M_ENDROWRHT   [op].handler!
+  find: filterRight_EosMarker        ZK_M_EOS         [op].handler!
+  find: filterRight_RowBuffer        ZK_D_ROWBUFFER   [op].handler!
+  find: filterRight_StartMarker      ZK_M_START       [op].handler!
+  find: filterRight_StartCrwRht      ZK_M_STARTCRWRHT [op].handler!
+  find: filterRight_StartRowRht      ZK_M_STARTROWRHT [op].handler!
+  find: filterRight_StreamDefRht     ZK_D_STREAMDEFRHT [op].handler!
 
   op__loop
 

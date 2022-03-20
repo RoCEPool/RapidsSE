@@ -37,7 +37,7 @@
   //"bktGet0_req" .
   op__topology
 
-  find: bktGet0_DataPulse   ZK_M_DATAPULSE   op[].handler!
+  find: bktGet0_DataPulse   ZK_M_DATAPULSE   [op].handler!
 
   op__loop
 

@@ -25,7 +25,7 @@
 
   op__topology
 
-  find: adjustPtns_DataPulse ZK_M_DATAPULSE op[].handler!
+  find: adjustPtns_DataPulse ZK_M_DATAPULSE [op].handler!
 
   op__loop
   

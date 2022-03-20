@@ -87,12 +87,12 @@
 
   op__topology
 
-  find: rlu_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: rlu_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-  find: rlu_EosMarker     ZK_M_EOS           op[].handler!
-  find: rlu_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-  find: rlu_StartMarker   ZK_M_START         op[].handler!
-  find: rlu_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  find: rlu_Cleaning      ZK_M_CLEANING      [op].handler!
+  find: rlu_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
+  find: rlu_EosMarker     ZK_M_EOS           [op].handler!
+  find: rlu_RowBuffer     ZK_D_ROWBUFFER     [op].handler!
+  find: rlu_StartMarker   ZK_M_START         [op].handler!
+  find: rlu_StreamDef     ZK_D_STREAMDEF     [op].handler!
 
   op__loop
 

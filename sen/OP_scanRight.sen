@@ -278,15 +278,15 @@
 
   op__topology
 
-  find: scanRight_CancellingMarker ZK_M_CANCELLING op[].handler!
-  find: scanRight_Cleaning         ZK_M_CLEANING   op[].handler!
-  find: scanRight_DataPulse        ZK_M_DATAPULSE  op[].handler!
-  find: scanRight_EosMarker        ZK_M_EOS        op[].handler!
-  find: scanRight_LeftCrwRowBuffer ZK_D_CRWBUFFER  op[].handler!
-  find: scanRight_LeftCrwRowBuffer ZK_D_ROWBUFFER  op[].handler!
-  find: scanRight_NextBuffer       ZK_M_NEXTBUFFER op[].handler!
-  find: scanRight_StartMarker      ZK_M_START      op[].handler!
-  find: scanRight_StreamDef        ZK_D_STREAMDEF  op[].handler!
+  find: scanRight_CancellingMarker ZK_M_CANCELLING [op].handler!
+  find: scanRight_Cleaning         ZK_M_CLEANING   [op].handler!
+  find: scanRight_DataPulse        ZK_M_DATAPULSE  [op].handler!
+  find: scanRight_EosMarker        ZK_M_EOS        [op].handler!
+  find: scanRight_LeftCrwRowBuffer ZK_D_CRWBUFFER  [op].handler!
+  find: scanRight_LeftCrwRowBuffer ZK_D_ROWBUFFER  [op].handler!
+  find: scanRight_NextBuffer       ZK_M_NEXTBUFFER [op].handler!
+  find: scanRight_StartMarker      ZK_M_START      [op].handler!
+  find: scanRight_StreamDef        ZK_D_STREAMDEF  [op].handler!
 
   op__loop
 

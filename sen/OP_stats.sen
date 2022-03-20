@@ -77,8 +77,8 @@
 
   op__topology
 
-  find: stats_StartMarker ZK_M_START op[].handler!
-  find: stats_Exiting     ZK_M_EXITING  op[].handler!
+  find: stats_StartMarker ZK_M_START [op].handler!
+  find: stats_Exiting     ZK_M_EXITING  [op].handler!
 
   op__loop
 

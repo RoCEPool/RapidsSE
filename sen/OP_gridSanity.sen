@@ -73,8 +73,8 @@
 
   op__topology
 
-  find: gridSanity_StartMarker ZK_M_START op[].handler!
-  find: gridSanity_NodeInfo    ZK_I_NODEINFO    op[].handler!
+  find: gridSanity_StartMarker ZK_M_START [op].handler!
+  find: gridSanity_NodeInfo    ZK_I_NODEINFO    [op].handler!
 
   op__loop
 

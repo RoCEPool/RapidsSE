@@ -15,7 +15,7 @@
   
   MetaGet[].tableName@ op__table assert
 
-  Table[] MetaGet[].getParts Op[].pipeout
+  Table[] MetaGet[].getParts [op].pipeout
 
   MetaGet[].delete
 
@@ -31,7 +31,7 @@
 
   op__topology
 
-  find: metaSend_MetaGet ZK_D_METAGET op[].handler!
+  find: metaSend_MetaGet ZK_D_METAGET [op].handler!
 
   op__loop
 

@@ -27,7 +27,7 @@
 
   op__topology
 
-  find: spawnNode_DataPulse ZK_M_DATAPULSE op[].handler!
+  find: spawnNode_DataPulse ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

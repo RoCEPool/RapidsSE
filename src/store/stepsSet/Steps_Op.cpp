@@ -29,33 +29,33 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.enqueOperand"_Stz,       &Step::vOpEnqueOperand);
   vAddStep("Op::findOp"_Stz,            &Step::vOpFindOp);
   
-  vAddStep("Op[]"_Stz,                  &Step::vOpGet);
-  vAddStep("Op[].ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
-  vAddStep("Op[].downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
-  vAddStep("Op[].handlerEntry"_Stz,     &Step::vOpHandlerEntry);
-  vAddStep("Op[].handlerExit"_Stz,      &Step::vOpHandlerExit);
-  vAddStep("Op[].handler@"_Stz,         &Step::vOpHandlerFetch);
-  vAddStep("Op[].handler!"_Stz,         &Step::vOpHandlerStore);
-  vAddStep("Op[].handlerAll!"_Stz,      &Step::vOpHandlerAllStore);
-  vAddStep("Op[].isOperandValid"_Stz,   &Step::vOpIsOperandValid);
-  vAddStep("Op[].incHandlerCount"_Stz,  &Step::vOpIncHandlerCount);
-  vAddStep("Op[].incOperandCount"_Stz,  &Step::vOpIncOperandCount);
-  vAddStep("Op[].opName@"_Stz,          &Step::vOpOpNameFetch);
-  vAddStep("Op[].outboundOperand@"_Stz, &Step::vOpOutboundOperandFetch);
-  vAddStep("Op[].outboundOperand!"_Stz, &Step::vOpOutboundOperandStore);
-  vAddStep("Op[].partition@"_Stz,       &Step::vOpPartitionFetch);
-  vAddStep("Op[].pipeBackin"_Stz,       &Step::vOpPipeBackIn);
-  vAddStep("Op[].pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
-  vAddStep("Op[].pipeout"_Stz,          &Step::vOpPipeOut);
-  vAddStep("Op[].ptnId@"_Stz,           &Step::vOpPtnIdFetch);
-  vAddStep("Op[].queueLength@"_Stz,     &Step::vOpQueueLength);
-  vAddStep("Op[].stageName@"_Stz,       &Step::vOpStageNameFetch);
-  vAddStep("Op[].stageNm@"_Stz,         &Step::vOpStageNmFetch);
-  vAddStep("Op[].tagSet@"_Stz,          &Step::vOpTagSetFetch);
+  vAddStep("[op]"_Stz,                  &Step::vOpGet);
+  vAddStep("[op].ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
+  vAddStep("[op].downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
+  vAddStep("[op].handlerEntry"_Stz,     &Step::vOpHandlerEntry);
+  vAddStep("[op].handlerExit"_Stz,      &Step::vOpHandlerExit);
+  vAddStep("[op].handler@"_Stz,         &Step::vOpHandlerFetch);
+  vAddStep("[op].handler!"_Stz,         &Step::vOpHandlerStore);
+  vAddStep("[op].handlerAll!"_Stz,      &Step::vOpHandlerAllStore);
+  vAddStep("[op].isOperandValid"_Stz,   &Step::vOpIsOperandValid);
+  vAddStep("[op].incHandlerCount"_Stz,  &Step::vOpIncHandlerCount);
+  vAddStep("[op].incOperandCount"_Stz,  &Step::vOpIncOperandCount);
+  vAddStep("[op].job@"_Stz,             &Step::vOpJobFetch);
+  vAddStep("[op].opName@"_Stz,          &Step::vOpOpNameFetch);
+  vAddStep("[op].outboundOperand@"_Stz, &Step::vOpOutboundOperandFetch);
+  vAddStep("[op].outboundOperand!"_Stz, &Step::vOpOutboundOperandStore);
+  vAddStep("[op].partition@"_Stz,       &Step::vOpPartitionFetch);
+  vAddStep("[op].pipeBackin"_Stz,       &Step::vOpPipeBackIn);
+  vAddStep("[op].pipeout"_Stz,          &Step::vOpPipeOut);
+  vAddStep("[op].ptnId@"_Stz,           &Step::vOpPtnIdFetch);
+  vAddStep("[op].queueLength@"_Stz,     &Step::vOpQueueLength);
+  vAddStep("[op].stageName@"_Stz,       &Step::vOpStageNameFetch);
+  vAddStep("[op].stageNm@"_Stz,         &Step::vOpStageNmFetch);
+  vAddStep("[op].tagSet@"_Stz,          &Step::vOpTagSetFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].ackPipelineJob -- ack the pipeline job                                */
+/* [op].ackPipelineJob -- ack the pipeline job                                */
 /*----------------------------------------------------------------------------*/
 void Step::vOpAckPipelineJob(void)
 {
@@ -65,7 +65,7 @@ void Step::vOpAckPipelineJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].downstreamOp! -- store downstream op                                  */
+/* [op].downstreamOp! -- store downstream op                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vOpDownstreamOpStore(void)
 {
@@ -125,7 +125,7 @@ void Step::vOpFindOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].get -- get op                                                         */
+/* [op].get -- get op                                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vOpGet(void)
 {
@@ -137,21 +137,18 @@ void Step::vOpGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].handlerEntry -- handler entry                                         */
+/* [op].handlerEntry -- handler entry                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vOpHandlerEntry(void)
 {
   ENTRY();
   
   if (AM::TRACE::bVBlong()) {
-
-  // revised job/op model
-    Op* pOp = *m_pOp;
     
     if (m_pLogicUnit->m_xpPipein.bIsNotNull()) {
       Operand* pOperand = *m_pLogicUnit->m_xpPipein;
     
-      pOp->vOpTrace(pOperand,(Stz*)__func__,true);
+      m_pOp->vOpTrace(pOperand,(Stz*)__func__,true);
     }
     
   }
@@ -160,7 +157,7 @@ void Step::vOpHandlerEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].handlerExit -- handler exit                                           */
+/* [op].handlerExit -- handler exit                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vOpHandlerExit(void)
 {
@@ -170,7 +167,7 @@ void Step::vOpHandlerExit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].handler@ -- get this op's handler for given operand                   */
+/* [op].handler@ -- get this op's handler for given operand                   */
 /*----------------------------------------------------------------------------*/
 void Step::vOpHandlerFetch(void)
 {
@@ -186,7 +183,7 @@ void Step::vOpHandlerFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].handler! -- set this op's handler for given operand                   */
+/* [op].handler! -- set this op's handler for given operand                   */
 /*----------------------------------------------------------------------------*/
 void Step::vOpHandlerStore(void)
 {
@@ -202,7 +199,7 @@ void Step::vOpHandlerStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].handlerAll! -- set this op's handler for given operand                */
+/* [op].handlerAll! -- set this op's handler for given operand                */
 /*----------------------------------------------------------------------------*/
 void Step::vOpHandlerAllStore(void)
 {
@@ -217,7 +214,7 @@ void Step::vOpHandlerAllStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].isOperandValid -- check if operand is valid                           */
+/* [op].isOperandValid -- check if operand is valid                           */
 /*----------------------------------------------------------------------------*/
 void Step::vOpIsOperandValid(void)
 {
@@ -240,7 +237,7 @@ void Step::vOpIsOperandValid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].incHandlerCount -- inc handler count                                  */
+/* [op].incHandlerCount -- inc handler count                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vOpIncHandlerCount(void)
 {
@@ -254,7 +251,7 @@ void Step::vOpIncHandlerCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].incOperandCount -- inc operand count                                  */
+/* [op].incOperandCount -- inc operand count                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vOpIncOperandCount(void)
 {
@@ -268,61 +265,9 @@ void Step::vOpIncOperandCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].opName@ -- fetch operator name                                        */
+/* [op].job@ -- fetch pipeline job from op                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vOpOpNameFetch(void)
-{
-  ENTRY();
-    
-  s256 sOpName = m_pOp->szOpNm();
-  
-  m_pDataStack->vPushStr(sOpName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op[].outboundOperand@ -- fetch outbound operand from op                    */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOutboundOperandFetch(void)
-{
-  ENTRY();
-    
-  m_pDataStack->vPushPtr(m_pOp->pOutboundOperand());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op[].outboundOperand! -- store outbound operand into op                    */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOutboundOperandStore(void)
-{
-  ENTRY();
-    
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-  m_pOp->vOutboundOperand(pOperand);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op[].partition@ -- fetch partition from op                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vOpPartitionFetch(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(m_pOp->tPtnId().iAsI8());
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op[].pipelineJob@ -- fetch pipeline job from op                            */
-/*----------------------------------------------------------------------------*/
-void Step::vOpPiplineJobFetch(void)
+void Step::vOpJobFetch(void)
 {
   ENTRY();
     
@@ -340,7 +285,59 @@ void Step::vOpPiplineJobFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].pipeBackin -- append operand back onto same operator in pipeline      */
+/* [op].opName@ -- fetch operator name                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vOpOpNameFetch(void)
+{
+  ENTRY();
+    
+  s256 sOpName = m_pOp->szOpNm();
+  
+  m_pDataStack->vPushStr(sOpName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].outboundOperand@ -- fetch outbound operand from op                    */
+/*----------------------------------------------------------------------------*/
+void Step::vOpOutboundOperandFetch(void)
+{
+  ENTRY();
+    
+  m_pDataStack->vPushPtr(m_pOp->pOutboundOperand());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].outboundOperand! -- store outbound operand into op                    */
+/*----------------------------------------------------------------------------*/
+void Step::vOpOutboundOperandStore(void)
+{
+  ENTRY();
+    
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  m_pOp->vOutboundOperand(pOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].partition@ -- fetch partition from op                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPartitionFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pOp->tPtnId().iAsI8());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].pipeBackin -- append operand back onto same operator in pipeline      */
 /*----------------------------------------------------------------------------*/
 void Step::vOpPipeBackIn(void)
 {
@@ -354,7 +351,7 @@ void Step::vOpPipeBackIn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].pipeout -- append operand onto next operator in pipeline              */
+/* [op].pipeout -- append operand onto next operator in pipeline              */
 /*----------------------------------------------------------------------------*/
 void Step::vOpPipeOut(void)
 {
@@ -374,7 +371,7 @@ void Step::vOpPipeOut(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].ptnId@ -- get the partition id of this op                             */
+/* [op].ptnId@ -- get the partition id of this op                             */
 /*----------------------------------------------------------------------------*/
 void Step::vOpPtnIdFetch(void)
 {
@@ -388,7 +385,7 @@ void Step::vOpPtnIdFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].queueLength@ -- get queue length                                      */
+/* [op].queueLength@ -- get queue length                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vOpQueueLength(void)
 {
@@ -402,7 +399,7 @@ void Step::vOpQueueLength(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].stageName@ -- fetch operator stage name                               */
+/* [op].stageName@ -- fetch operator stage name                               */
 /*----------------------------------------------------------------------------*/
 void Step::vOpStageNameFetch(void)
 {
@@ -416,32 +413,28 @@ void Step::vOpStageNameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].stageNm@ --fetch stageNm of op                                        */
+/* [op].stageNm@ --fetch stageNm of op                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vOpStageNmFetch(void)
 {
   ENTRY();
 
-  Op* pOp = *m_pOp;
-
   s256 sStageNm;
 
-  sStageNm = pOp->pStream()->pStage()->szStageNm();
+  sStageNm = m_pOp->pStream()->pStage()->szStageNm();
   m_pDataStack->vPushStr(sStageNm);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op[].tagSet@ -- push ptr to op TagSet                                       */
+/* [op].tagSet@ -- push ptr to op TagSet                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vOpTagSetFetch(void)
 {
   ENTRY();
   
-  Op* pOp = *m_pOp;
-
-  m_pDataStack->vPushPtr(pOp->pOpTags());
+  m_pDataStack->vPushPtr(m_pOp->pOpTags());
   
   EXIT();
 }

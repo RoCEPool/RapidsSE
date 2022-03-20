@@ -29,7 +29,7 @@
   //"bktMapGet_req" .
   op__topology
 
-  find: bktMapGet_getTable   ZK_M_DATAPULSE   op[].handler!
+  find: bktMapGet_getTable   ZK_M_DATAPULSE   [op].handler!
 
   op__loop
 

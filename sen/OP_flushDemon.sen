@@ -43,7 +43,7 @@
 
   op__topology
 
-  find: flushDemon_DataPulse ZK_M_DATAPULSE op[].handler!
+  find: flushDemon_DataPulse ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

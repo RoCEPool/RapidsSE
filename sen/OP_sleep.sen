@@ -27,7 +27,7 @@
 
   op__topology
 
-  find: sleep_sleep  ZK_M_DATAPULSE  op[].handler!
+  find: sleep_sleep  ZK_M_DATAPULSE  [op].handler!
 
   op__loop
 

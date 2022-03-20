@@ -103,10 +103,10 @@
 
   op__topology
 
-  find: recv_StartMarker ZK_M_START op[].handler!
+  find: recv_StartMarker ZK_M_START [op].handler!
 
   // get the pipeline job of the operator
-  Op[].pipelineJob@ locals| pPipelineJob |
+  [op].job@ locals| pPipelineJob |
 
   // peek to see if any operand
   begin
@@ -123,7 +123,7 @@
   PipeIn[].next
 
   // execute the operator's handler for the operand
-  PipeIn[].kind op[].handler@ execute
+  PipeIn[].kind [op].handler@ execute
 
   _lu_finalise_
   

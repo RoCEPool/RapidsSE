@@ -230,15 +230,15 @@
   op__topology
 
   Counter0[] 2 == if
-    find: aggreg_ComCleaning   ZK_M_CLEANING      op[].handler!
-    find: aggreg_ComStreamDef  ZK_D_STREAMDEF     op[].handler!
+    find: aggreg_ComCleaning   ZK_M_CLEANING      [op].handler!
+    find: aggreg_ComStreamDef  ZK_D_STREAMDEF     [op].handler!
   else
-    find: aggreg_Cleaning      ZK_M_CLEANING      op[].handler!
-    find: aggreg_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-    find: aggreg_EosMarker     ZK_M_EOS           op[].handler!
-    find: aggreg_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-    find: aggreg_StartMarker   ZK_M_START         op[].handler!
-    find: aggreg_StreamDef     ZK_D_STREAMDEF     op[].handler!
+    find: aggreg_Cleaning      ZK_M_CLEANING      [op].handler!
+    find: aggreg_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
+    find: aggreg_EosMarker     ZK_M_EOS           [op].handler!
+    find: aggreg_RowBuffer     ZK_D_ROWBUFFER     [op].handler!
+    find: aggreg_StartMarker   ZK_M_START         [op].handler!
+    find: aggreg_StreamDef     ZK_D_STREAMDEF     [op].handler!
   then
 
   op__loop

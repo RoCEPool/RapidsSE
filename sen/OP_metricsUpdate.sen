@@ -87,10 +87,10 @@
 
   op__topology
 
-  find: metricsUpdate_Start     ZK_M_START         op[].handler!
-  find: metricsUpdate_DataPulse ZK_M_DATAPULSE     op[].handler!
-  find: metricsUpdate_Job       ZK_D_JOBMETRICS    op[].handler!
-  find: metricsUpdate_Paging    ZK_D_PAGINGMETRICS op[].handler!
+  find: metricsUpdate_Start     ZK_M_START         [op].handler!
+  find: metricsUpdate_DataPulse ZK_M_DATAPULSE     [op].handler!
+  find: metricsUpdate_Job       ZK_D_JOBMETRICS    [op].handler!
+  find: metricsUpdate_Paging    ZK_D_PAGINGMETRICS [op].handler!
 
   op__loop
 

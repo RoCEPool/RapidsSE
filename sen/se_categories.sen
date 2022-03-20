@@ -59,12 +59,12 @@
 
 : _handler_entry
 
-  Op[].handlerEntry
+  [op].handlerEntry
 ;
 
 : _handler_exit
 
-  Op[].handlerExit
+  [op].handlerExit
 ;
 
 : \handler \\category

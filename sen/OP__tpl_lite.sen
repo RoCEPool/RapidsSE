@@ -36,7 +36,7 @@
 
   op__topology
 
-  find: /liteOp/_DataMarker  ZK_M_DATAPULSE op[].handler!
+  find: /liteOp/_DataMarker  ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

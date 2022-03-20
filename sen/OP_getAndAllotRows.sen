@@ -47,8 +47,8 @@
 
   op__topology
 
-  find: getAndAllotRows_RowBuffer  ZK_D_ROWBUFFER op[].handler!
-  find: getAndAllotRows_Eos        ZK_M_EOS op[].handler!
+  find: getAndAllotRows_RowBuffer  ZK_D_ROWBUFFER [op].handler!
+  find: getAndAllotRows_Eos        ZK_M_EOS [op].handler!
  
   op__loop
 

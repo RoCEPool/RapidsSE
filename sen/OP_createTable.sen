@@ -89,7 +89,7 @@
 
   op__topology
 
-  find: createTable_StreamDef ZK_D_STREAMDEF op[].handler!
+  find: createTable_StreamDef ZK_D_STREAMDEF [op].handler!
 
   op__loop
 

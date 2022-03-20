@@ -274,10 +274,10 @@
 
   op__topology
 
-  find: delete_Cleaning      ZK_M_CLEANING      op[].handler!
-  //find: delete_CrwBuffer   ZK_D_CRWBUFFER     op[].handler!
-  find: delete_DataMarker    ZK_M_DATAPULSE     op[].handler!
-  find: delete_StartMarker   ZK_M_START         op[].handler!
+  find: delete_Cleaning      ZK_M_CLEANING      [op].handler!
+  //find: delete_CrwBuffer   ZK_D_CRWBUFFER     [op].handler!
+  find: delete_DataMarker    ZK_M_DATAPULSE     [op].handler!
+  find: delete_StartMarker   ZK_M_START         [op].handler!
 
   op__loop
 

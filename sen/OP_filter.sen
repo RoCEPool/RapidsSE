@@ -241,15 +241,15 @@
   op__topology
 
   Counter0[] 2 == if
-    find: filter_ComCleaning   ZK_M_CLEANING      op[].handler!
-    find: filter_ComStreamDef  ZK_D_STREAMDEF     op[].handler!
+    find: filter_ComCleaning   ZK_M_CLEANING      [op].handler!
+    find: filter_ComStreamDef  ZK_D_STREAMDEF     [op].handler!
   else
-    find: filter_Cleaning      ZK_M_CLEANING      op[].handler!
-    find: filter_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-    find: filter_EosMarker     ZK_M_EOS           op[].handler!
-    find: filter_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-    find: filter_StartMarker   ZK_M_START         op[].handler!
-    find: filter_StreamDef     ZK_D_STREAMDEF     op[].handler!
+    find: filter_Cleaning      ZK_M_CLEANING      [op].handler!
+    find: filter_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
+    find: filter_EosMarker     ZK_M_EOS           [op].handler!
+    find: filter_RowBuffer     ZK_D_ROWBUFFER     [op].handler!
+    find: filter_StartMarker   ZK_M_START         [op].handler!
+    find: filter_StreamDef     ZK_D_STREAMDEF     [op].handler!
   then
 
   op__loop

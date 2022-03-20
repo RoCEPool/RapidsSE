@@ -46,8 +46,8 @@
 
   op__topology
 
-  find: copyIntoSame_RowBuffer  ZK_D_ROWBUFFER op[].handler!
-  find: copyIntoSame_Eos        ZK_M_EOS op[].handler!
+  find: copyIntoSame_RowBuffer  ZK_D_ROWBUFFER [op].handler!
+  find: copyIntoSame_Eos        ZK_M_EOS [op].handler!
  
   op__loop
 

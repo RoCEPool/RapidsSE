@@ -22,7 +22,7 @@
 
   op__topology
 
-  find: exeSubPipe_StartMarker  ZK_M_START  op[].handler!
+  find: exeSubPipe_StartMarker  ZK_M_START  [op].handler!
 
   op__loop
 

@@ -38,7 +38,7 @@
 
   op__topology
 
-  find: dropSchema_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: dropSchema_DataMarker ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

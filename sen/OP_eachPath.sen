@@ -48,7 +48,7 @@
 
   op__topology
 
-  find: eachPath_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: eachPath_DataMarker ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

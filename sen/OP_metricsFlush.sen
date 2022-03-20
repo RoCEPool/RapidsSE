@@ -45,9 +45,9 @@
 
   op__topology
 
-  find: metricsFlush_Start     ZK_M_START         op[].handler!
-  find: metricsFlush_DataPulse ZK_M_DATAPULSE     op[].handler!
-  find: metricsFlush_Flush     ZK_M_FLUSH         op[].handler!
+  find: metricsFlush_Start     ZK_M_START         [op].handler!
+  find: metricsFlush_DataPulse ZK_M_DATAPULSE     [op].handler!
+  find: metricsFlush_Flush     ZK_M_FLUSH         [op].handler!
 
   op__loop
 

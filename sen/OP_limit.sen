@@ -204,15 +204,15 @@
 
   Counter0[] 2 == if
     // handle combined operator
-    find: limit_ComCleaning    ZK_M_CLEANING      op[].handler!
-    find: limit_ComStreamDef   ZK_D_STREAMDEF     op[].handler!
+    find: limit_ComCleaning    ZK_M_CLEANING      [op].handler!
+    find: limit_ComStreamDef   ZK_D_STREAMDEF     [op].handler!
   else
-    find: limit_Cleaning      ZK_M_CLEANING       op[].handler!
-    find: limit_CrwBuffer     ZK_D_CRWBUFFER      op[].handler!
-    find: limit_EosMarker     ZK_M_EOS            op[].handler!
-    find: limit_RowBuffer     ZK_D_ROWBUFFER      op[].handler!
-    find: limit_StartMarker   ZK_M_START          op[].handler!
-    find: limit_StreamDef     ZK_D_STREAMDEF      op[].handler!
+    find: limit_Cleaning      ZK_M_CLEANING       [op].handler!
+    find: limit_CrwBuffer     ZK_D_CRWBUFFER      [op].handler!
+    find: limit_EosMarker     ZK_M_EOS            [op].handler!
+    find: limit_RowBuffer     ZK_D_ROWBUFFER      [op].handler!
+    find: limit_StartMarker   ZK_M_START          [op].handler!
+    find: limit_StreamDef     ZK_D_STREAMDEF      [op].handler!
   then
 
   op__loop

@@ -57,8 +57,8 @@
 
   op__topology
 
-  find: VerifyIndexPtn_DataMarker ZK_M_DATAPULSE op[].handler!
-  find: VerifyIndexPtn_StartMarker ZK_M_START op[].handler!
+  find: VerifyIndexPtn_DataMarker ZK_M_DATAPULSE [op].handler!
+  find: VerifyIndexPtn_StartMarker ZK_M_START [op].handler!
 
   op__loop
 

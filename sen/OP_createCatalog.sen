@@ -56,7 +56,7 @@
 
   op__topology
 
-  find: createCatalog_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: createCatalog_DataMarker ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

@@ -76,8 +76,8 @@
   // initialize counter0
   0 to Counter0[]
 
-  find: populateIndex_EosMarker ZK_M_EOS op[].handler!
-  find: populateIndex_IndexDef ZK_D_INDEXDEF op[].handler!
+  find: populateIndex_EosMarker ZK_M_EOS [op].handler!
+  find: populateIndex_IndexDef ZK_D_INDEXDEF [op].handler!
 
   op__loop
 

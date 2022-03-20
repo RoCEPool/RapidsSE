@@ -42,7 +42,7 @@
 
   op__topology
 
-  find: BufferGen_DataPulse ZK_M_DATAPULSE op[].handler!
+  find: BufferGen_DataPulse ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

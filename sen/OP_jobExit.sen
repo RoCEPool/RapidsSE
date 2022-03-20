@@ -80,8 +80,8 @@
 
   op__topology
 
-  find: jobExit_Flush  ZK_M_FLUSH op[].handler!
-  find: jobExit_Job    ZK_D_JOB   op[].handler!
+  find: jobExit_Flush  ZK_M_FLUSH [op].handler!
+  find: jobExit_Job    ZK_D_JOB   [op].handler!
 
   jobExit_initialise
   

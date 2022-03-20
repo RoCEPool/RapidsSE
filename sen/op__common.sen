@@ -321,8 +321,8 @@
     <note> LogicUnit[].diaryJobNote
   then
 
-  Op[].opName@ LogicUnit[].diaryTitle
-  Op[].opName@ Op[].partition@ >str str.cat LogicUnit[].diaryName
+  [op].opName@ LogicUnit[].diaryTitle
+  [op].opName@ [op].partition@ >str str.cat LogicUnit[].diaryName
 
   <diaryDir> LogicUnit[].diaryDir
 ;
@@ -347,7 +347,7 @@
 : op__pipelineJobWait
 
   // get the pipeline job of the operator
-  Op[].pipelineJob@ locals| pPipelineJob |
+  [op].job@ locals| pPipelineJob |
   
   pPipelineJob not if
     exit
@@ -470,14 +470,14 @@
 
       // debug::flag@ if "(Revised) Calling handler for OoO operand" . then
 
-      PipeIn[].kind op[].isOperandValid not if
+      PipeIn[].kind [op].isOperandValid not if
         find: INVALID_OPERAND_handler op__callHandler to iContinue
         continue_if
       then
 
-      PipeIn[].kind op[].incOperandCount
-      PipeIn[].kind op[].incHandlerCount
-      PipeIn[].kind op[].handler@ LogicUnit[].handler!
+      PipeIn[].kind [op].incOperandCount
+      PipeIn[].kind [op].incHandlerCount
+      PipeIn[].kind [op].handler@ LogicUnit[].handler!
       op__callHandler to iContinue
       continue_if
       
@@ -525,14 +525,14 @@
 
     //debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
 
-    PipeIn[].kind op[].isOperandValid not if
+    PipeIn[].kind [op].isOperandValid not if
       find: INVALID_OPERAND_handler op__callHandler to iContinue
       continue_if
     then
     
-    PipeIn[].kind op[].incOperandCount
-    PipeIn[].kind op[].incHandlerCount
-    PipeIn[].kind op[].handler@ LogicUnit[].handler!
+    PipeIn[].kind [op].incOperandCount
+    PipeIn[].kind [op].incHandlerCount
+    PipeIn[].kind [op].handler@ LogicUnit[].handler!
     op__callHandler to iContinue
 
   repeat
@@ -596,10 +596,10 @@
   pStencil TinyC[].compile if
     1 TinyC[].symbols
     TinyC[].relocate assert
-    "iFun0_" Op[].stageNm@ str.cat TinyC[].find to Fun0[]
-    "iFun1_" Op[].stageNm@ str.cat TinyC[].find to Fun1[]
-    "iFun2_" Op[].stageNm@ str.cat TinyC[].find to Fun2[]
-    "iFun3_" Op[].stageNm@ str.cat TinyC[].find to Fun3[]
+    "iFun0_" [op].stageNm@ str.cat TinyC[].find to Fun0[]
+    "iFun1_" [op].stageNm@ str.cat TinyC[].find to Fun1[]
+    "iFun2_" [op].stageNm@ str.cat TinyC[].find to Fun2[]
+    "iFun3_" [op].stageNm@ str.cat TinyC[].find to Fun3[]
     true
   else
     false

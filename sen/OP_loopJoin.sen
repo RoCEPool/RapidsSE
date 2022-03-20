@@ -383,22 +383,22 @@
 
   op__topology
 
-  find: loopJoin_Cleaning         ZK_M_CLEANING      op[].handler!
-  find: loopJoin_CrwBuffer        ZK_D_CRWBUFFER     op[].handler!
-  find: loopJoin_EndCrwRht        ZK_M_ENDCRWRHT     op[].handler!
-  find: loopJoin_EndRowRht        ZK_M_ENDROWRHT     op[].handler!
-  find: loopJoin_EosMarker        ZK_M_EOS           op[].handler!
-  find: loopJoin_RowBuffer        ZK_D_ROWBUFFER     op[].handler!
-  find: loopJoin_StartMarker      ZK_M_START         op[].handler!
-  find: loopJoin_StartCrwRht      ZK_M_STARTCRWRHT   op[].handler!
-  find: loopJoin_StartRowRht      ZK_M_STARTROWRHT   op[].handler!
-  find: loopJoin_StreamDef        ZK_D_STREAMDEF     op[].handler!
-  find: loopJoin_StreamDefRht     ZK_D_STREAMDEFRHT  op[].handler!
+  find: loopJoin_Cleaning         ZK_M_CLEANING      [op].handler!
+  find: loopJoin_CrwBuffer        ZK_D_CRWBUFFER     [op].handler!
+  find: loopJoin_EndCrwRht        ZK_M_ENDCRWRHT     [op].handler!
+  find: loopJoin_EndRowRht        ZK_M_ENDROWRHT     [op].handler!
+  find: loopJoin_EosMarker        ZK_M_EOS           [op].handler!
+  find: loopJoin_RowBuffer        ZK_D_ROWBUFFER     [op].handler!
+  find: loopJoin_StartMarker      ZK_M_START         [op].handler!
+  find: loopJoin_StartCrwRht      ZK_M_STARTCRWRHT   [op].handler!
+  find: loopJoin_StartRowRht      ZK_M_STARTROWRHT   [op].handler!
+  find: loopJoin_StreamDef        ZK_D_STREAMDEF     [op].handler!
+  find: loopJoin_StreamDefRht     ZK_D_STREAMDEFRHT  [op].handler!
 
-  find: loopJoin_DataPulse         ZK_M_DATAPULSE      op[].handler!
-  find: loopJoin_End               ZK_M_END            op[].handler!
-  find: loopJoin_Ending            ZK_M_ENDING         op[].handler!
-  find: loopJoin_Exiting           ZK_M_EXITING        op[].handler!
+  find: loopJoin_DataPulse         ZK_M_DATAPULSE      [op].handler!
+  find: loopJoin_End               ZK_M_END            [op].handler!
+  find: loopJoin_Ending            ZK_M_ENDING         [op].handler!
+  find: loopJoin_Exiting           ZK_M_EXITING        [op].handler!
 
   op__loop
 

@@ -29,7 +29,7 @@
 
       LogicUnit[].jobMetrics@
         nullptr LogicUnit[].jobMetrics!
-        Op[].pipeout
+        [op].pipeout
 
     else
       LogicUnit[].jobMetrics@
@@ -123,9 +123,9 @@
 
   op__topology
 
-  find: metricsCollect_Start       ZK_M_START     op[].handler!
-  find: metricsCollect_DataPulse   ZK_M_DATAPULSE op[].handler!
-  find: metricsCollect_End         ZK_M_END       op[].handler!
+  find: metricsCollect_Start       ZK_M_START     [op].handler!
+  find: metricsCollect_DataPulse   ZK_M_DATAPULSE [op].handler!
+  find: metricsCollect_End         ZK_M_END       [op].handler!
 
   op__loop
 

@@ -37,7 +37,7 @@
 
   Marker[].newEndMarker
   Marker[].pipeOut
-  //Op[].ackPipelineJob
+  //[op].ackPipelineJob
 
   true
 ;
@@ -74,7 +74,7 @@
 
   op__topology
 
-  find: pulse_Trigger   ZK_M_TRIGGER   op[].handler!
+  find: pulse_Trigger   ZK_M_TRIGGER   [op].handler!
 
   op__loop
 

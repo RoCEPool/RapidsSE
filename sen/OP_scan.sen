@@ -141,7 +141,7 @@
   0 locals| rateSecs |
 
   // "<rateSecs>" [job].tagSet@ tagSet.hasName if
-  "<rateSecs>" op[].tagSet@ tagSet.hasName if
+  "<rateSecs>" [op].tagSet@ tagSet.hasName if
     <rateSecs> >int to rateSecs
   then
 
@@ -192,11 +192,11 @@
 
   op__topology
 
-  find: scan_CancellingMarker  ZK_M_CANCELLING op[].handler!
-  find: scan_Cleaning          ZK_M_CLEANING   op[].handler!
-  find: scan_DataPulse         ZK_M_DATAPULSE  op[].handler!
-  find: scan_NextBuffer        ZK_M_NEXTBUFFER op[].handler!
-  find: scan_StartMarker       ZK_M_START      op[].handler!
+  find: scan_CancellingMarker  ZK_M_CANCELLING [op].handler!
+  find: scan_Cleaning          ZK_M_CLEANING   [op].handler!
+  find: scan_DataPulse         ZK_M_DATAPULSE  [op].handler!
+  find: scan_NextBuffer        ZK_M_NEXTBUFFER [op].handler!
+  find: scan_StartMarker       ZK_M_START      [op].handler!
 
   op__loop
 

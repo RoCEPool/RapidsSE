@@ -62,7 +62,7 @@
 
   op__topology
 
-  find: recurring_StartMarker ZK_M_START op[].handler!
+  find: recurring_StartMarker ZK_M_START [op].handler!
 
   op__loop
 

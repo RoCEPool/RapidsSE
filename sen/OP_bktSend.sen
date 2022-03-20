@@ -15,7 +15,7 @@
 
   // then call C++ getBucketCrw to build the rows and push the rows to the stack via parcel
 
-  BucketGet[].getBucketCrw Op[].pipeout
+  BucketGet[].getBucketCrw [op].pipeout
 
   BucketGet[].delete
   nullptr to BucketGet[]
@@ -36,7 +36,7 @@
   op__topology
 
   // Setup ZK_D_BUCKETGET handler
-  find: bktSend_bktGet ZK_D_BUCKETGET op[].handler!
+  find: bktSend_bktGet ZK_D_BUCKETGET [op].handler!
   op__loop
 
   _lu_finalise_

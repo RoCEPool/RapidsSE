@@ -95,11 +95,11 @@
 
   op__topology
 
-  find: inflate_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: inflate_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-  find: inflate_EosMarker     ZK_M_EOS           op[].handler!
-  find: inflate_StartMarker   ZK_M_START         op[].handler!
-  find: inflate_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  find: inflate_Cleaning      ZK_M_CLEANING      [op].handler!
+  find: inflate_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
+  find: inflate_EosMarker     ZK_M_EOS           [op].handler!
+  find: inflate_StartMarker   ZK_M_START         [op].handler!
+  find: inflate_StreamDef     ZK_D_STREAMDEF     [op].handler!
 
   op__loop
 

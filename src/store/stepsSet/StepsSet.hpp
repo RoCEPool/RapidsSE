@@ -1282,7 +1282,7 @@ public:
   void vOpOutboundOperandFetch(void);
   void vOpOutboundOperandStore(void);
   void vOpPartitionFetch(void);
-  void vOpPiplineJobFetch(void);
+  void vOpJobFetch(void);
   void vOpPipeBackIn(void);
   void vOpPipeOut(void);
   void vOpPtnIdFetch(void);

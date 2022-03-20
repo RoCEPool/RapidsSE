@@ -50,10 +50,10 @@
 
   op__topology
 
-  find: sqlInit_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: sqlInit_DataMarker    ZK_M_DATAPULSE     op[].handler!
-  find: sqlInit_EosMarker     ZK_M_EOS           op[].handler!
-  find: sqlInit_StartMarker   ZK_M_START         op[].handler!
+  find: sqlInit_Cleaning      ZK_M_CLEANING      [op].handler!
+  find: sqlInit_DataMarker    ZK_M_DATAPULSE     [op].handler!
+  find: sqlInit_EosMarker     ZK_M_EOS           [op].handler!
+  find: sqlInit_StartMarker   ZK_M_START         [op].handler!
 
   op__loop
 

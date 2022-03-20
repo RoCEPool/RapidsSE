@@ -139,14 +139,14 @@
 
   op__topology
 
-  find: transliterate_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: transliterate_DataMarker    ZK_M_DATAPULSE     op[].handler!
-  find: transliterate_EosMarker     ZK_M_EOS           op[].handler!
-  find: transliterate_PlanOperand   ZK_D_PLANOPERAND   op[].handler!
-  find: transliterate_StartMarker   ZK_M_START         op[].handler!
+  find: transliterate_Cleaning      ZK_M_CLEANING      [op].handler!
+  find: transliterate_DataMarker    ZK_M_DATAPULSE     [op].handler!
+  find: transliterate_EosMarker     ZK_M_EOS           [op].handler!
+  find: transliterate_PlanOperand   ZK_D_PLANOPERAND   [op].handler!
+  find: transliterate_StartMarker   ZK_M_START         [op].handler!
 
-  find: transliterate_StreamSet    ZK_D_STREAMSET      op[].handler!
-  find: transliterate_LeaveMarker  ZK_M_LEAVE          op[].handler!
+  find: transliterate_StreamSet    ZK_D_STREAMSET      [op].handler!
+  find: transliterate_LeaveMarker  ZK_M_LEAVE          [op].handler!
 
   op__loop
 

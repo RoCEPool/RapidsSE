@@ -271,16 +271,16 @@
 
   op__topology
 
-  find: hashRight_Cleaning        ZK_M_CLEANING   op[].handler!
-  find: hashRight_CrwBuffer       ZK_D_CRWBUFFER  op[].handler!
-  find: hashRight_EndCrwRht       ZK_M_ENDCRWRHT op[].handler!
-  find: hashRight_EndRowRht       ZK_M_ENDROWRHT op[].handler!
-  find: hashRight_EosMarker       ZK_M_EOS        op[].handler!
-  find: hashRight_RowBuffer       ZK_D_ROWBUFFER  op[].handler!
-  find: hashRight_StartMarker     ZK_M_START      op[].handler!
-  find: hashRight_StartCrwRht     ZK_M_STARTCRWRHT op[].handler!
-  find: hashRight_StartRowRht     ZK_M_STARTROWRHT op[].handler!
-  find: hashRight_StreamDefRht    ZK_D_STREAMDEFRHT op[].handler!
+  find: hashRight_Cleaning        ZK_M_CLEANING   [op].handler!
+  find: hashRight_CrwBuffer       ZK_D_CRWBUFFER  [op].handler!
+  find: hashRight_EndCrwRht       ZK_M_ENDCRWRHT [op].handler!
+  find: hashRight_EndRowRht       ZK_M_ENDROWRHT [op].handler!
+  find: hashRight_EosMarker       ZK_M_EOS        [op].handler!
+  find: hashRight_RowBuffer       ZK_D_ROWBUFFER  [op].handler!
+  find: hashRight_StartMarker     ZK_M_START      [op].handler!
+  find: hashRight_StartCrwRht     ZK_M_STARTCRWRHT [op].handler!
+  find: hashRight_StartRowRht     ZK_M_STARTROWRHT [op].handler!
+  find: hashRight_StreamDefRht    ZK_D_STREAMDEFRHT [op].handler!
 
   op__loop
 

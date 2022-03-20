@@ -115,7 +115,7 @@
   Pipein[]\clear to StreamDefLft[]
 
   // PROJECTION
-  "<project>" op[].tagSet@ tagSet.hasName if
+  "<project>" [op].tagSet@ tagSet.hasName if
 
      // evaluate the project expression
      ExprEval[].new
@@ -125,7 +125,7 @@
    else
 
      // AGGREGATE
-     "<aggreg>" op[].tagSet@ tagSet.hasName if
+     "<aggreg>" [op].tagSet@ tagSet.hasName if
 
         // evaluate the aggregate expression
         ExprEval[].new
@@ -200,12 +200,12 @@
 
   op__topology
 
-  find: rluTest_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: rluTest_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-  find: rluTest_EosMarker     ZK_M_EOS           op[].handler!
-  find: rluTest_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-  find: rluTest_StartMarker   ZK_M_START         op[].handler!
-  find: rluTest_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  find: rluTest_Cleaning      ZK_M_CLEANING      [op].handler!
+  find: rluTest_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
+  find: rluTest_EosMarker     ZK_M_EOS           [op].handler!
+  find: rluTest_RowBuffer     ZK_D_ROWBUFFER     [op].handler!
+  find: rluTest_StartMarker   ZK_M_START         [op].handler!
+  find: rluTest_StreamDef     ZK_D_STREAMDEF     [op].handler!
 
   op__loop
 

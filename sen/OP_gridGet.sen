@@ -21,7 +21,7 @@
 
   [grid].getGrid locals| pgridObj |
   // pipeout the gridGet instance
-  pgridObj Op[].pipeout
+  pgridObj [op].pipeout
 
   true
   //stk
@@ -38,7 +38,7 @@
   op__topology
 
 
-  find: gridGet_getObject   ZK_M_DATAPULSE   op[].handler!
+  find: gridGet_getObject   ZK_M_DATAPULSE   [op].handler!
 
   op__loop
 
