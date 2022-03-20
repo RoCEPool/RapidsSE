@@ -37,6 +37,7 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("[pipeline].addAccum"_Stz,      &Step::vPipelineAddAccum);
   vAddStep("[pipeline].cancelled@"_Stz,    &Step::vPipelineCancelledFetch);
   vAddStep("[pipeline].cancelled!"_Stz,    &Step::vPipelineCancelledStore);
+  vAddStep("[pipeline].create"_Stz,        &Step::vPipelineCreate);
   vAddStep("[pipeline].dropDebugLock"_Stz, &Step::vPipelineDropDebugLock);
   vAddStep("[pipeline].earlyExit@"_Stz,    &Step::vPipelineEarlyExitFetch);
   vAddStep("[pipeline].earlyExit!"_Stz,    &Step::vPipelineEarlyExitStore);
@@ -44,15 +45,12 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("[pipeline].errored!"_Stz,      &Step::vPipelineErroredStore);
   vAddStep("[pipeline].getAccum"_Stz,      &Step::vPipelineGetAccum);
   vAddStep("[pipeline].grabDebugLock"_Stz, &Step::vPipelineGrabDebugLock);
+  vAddStep("[pipeline].op0@"_Stz,          &Step::vPipelineOp0Fetch);
+  vAddStep("[pipeline].opsOnNode@"_Stz,    &Step::vPipelineOpsOnNodeFetch);
   vAddStep("[pipeline].pulsed@"_Stz,       &Step::vPipelinePulsedFetch);
   vAddStep("[pipeline].pulsed!"_Stz,       &Step::vPipelinePulsedStore);
-  
-    
-  vAddStep("[pipeline].create"_Stz,       &Step::vPipelineCreate);
-  vAddStep("[pipeline].op0@"_Stz,         &Step::vPipelineOp0Fetch);
-  vAddStep("[pipeline].opsOnNode@"_Stz,   &Step::vPipelineOpsOnNodeFetch);
-  vAddStep("[pipeline].spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
-  vAddStep("[pipeline].startPipeline"_Stz,&Step::vPipelineStartPipeline);
+  vAddStep("[pipeline].spawnOpTasks"_Stz,  &Step::vPipelineSpawnOpTasks);
+  vAddStep("[pipeline].startPipeline"_Stz, &Step::vPipelineStartPipeline);
 }
 
 /*----------------------------------------------------------------------------*/
