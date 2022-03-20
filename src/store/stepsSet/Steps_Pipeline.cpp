@@ -56,7 +56,7 @@ void Step::vAddSteps_Pipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::addAccum -- add to an accumulator                                */
+/* Pipeline::addAccum -- add to an accumulator in this pipeline               */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineAddAccum(void)
 {
@@ -74,7 +74,7 @@ void Step::vPipelineAddAccum(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::cancelled@ -- has the pipeline been cancelled?                   */
+/* Pipeline::cancelled@ -- has this pipeline been cancelled?                  */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineCancelledFetch(void)
 {
@@ -89,7 +89,7 @@ void Step::vPipelineCancelledFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::cancelled! -- set pipeline as being cancelled                    */
+/* Pipeline::cancelled! -- fetch this pipeline's cancelled indicator          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineCancelledStore(void)
 {
@@ -104,7 +104,7 @@ void Step::vPipelineCancelledStore(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline[].create -- create the pipeline, stages, streams and ops           */
+/* Pipeline[].create -- create the pipeline, stages, streams and ops          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineCreate(void)
 {
@@ -137,7 +137,7 @@ void Step::vPipelineCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::dropDebugLock -- drop the pipeline debug lock                    */
+/* Pipeline::dropDebugLock -- drop this pipeline's debug lock                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineDropDebugLock(void)
 {
@@ -151,7 +151,7 @@ void Step::vPipelineDropDebugLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::earlyExit@ -- has the pipeline been early exited                 */
+/* Pipeline::earlyExit@ -- fetch this pipelines earlyExit indicator          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineEarlyExitFetch(void)
 {
@@ -166,7 +166,7 @@ void Step::vPipelineEarlyExitFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::earlyExit! -- set earlyExit                                      */
+/* Pipeline::earlyExit! -- store this pipeline's earlyExit indicator          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineEarlyExitStore(void)
 {
@@ -180,7 +180,7 @@ void Step::vPipelineEarlyExitStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::errored@ -- has the pipeline been errored                        */
+/* Pipeline::errored@ -- fetch this pipeline errored indicator                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineErroredFetch(void)
 {
@@ -195,7 +195,7 @@ void Step::vPipelineErroredFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::errored! -- set pipeline as being errored                        */
+/* Pipeline::errored! -- store this pipeline errored indicator                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineErroredStore(void)
 {
@@ -209,7 +209,7 @@ void Step::vPipelineErroredStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::getAccum -- get an accumulator                                   */
+/* Pipeline::getAccum -- get an accumulator from this pipeline                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineGetAccum(void)
 {
@@ -227,7 +227,7 @@ void Step::vPipelineGetAccum(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::grabDebugLock -- grab the pipeline debug lock                    */
+/* Pipeline::grabDebugLock -- grab this pipeline's debug lock                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineGrabDebugLock(void)
 {
@@ -241,7 +241,7 @@ void Step::vPipelineGrabDebugLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::pulsed@ -- has the pipeline been pulsed                          */
+/* Pipeline::pulsed@ -- fetch this pipeline's pulsed indicator                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelinePulsedFetch(void)
 {
@@ -256,7 +256,7 @@ void Step::vPipelinePulsedFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::pulsed! -- set pipeline as being pulsed                          */
+/* Pipeline::pulsed! -- store this pipeline's pulsed indicator                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelinePulsedStore(void)
 {
