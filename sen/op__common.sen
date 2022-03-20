@@ -392,9 +392,9 @@
     // possibilty of execute not have arrived yet
     pPipelineJob job.task@ locals| pPipelineTask |
     begin
-      pPipelineTask task.isWaiting
+      pPipelineTask task.isWaiting?
     not while
-      //pPipelineTask task.isWaiting "task waiting %v" .printf
+      //pPipelineTask task.isWaiting? "task waiting %v" .printf
       
       thread.dedicated@ if
         10 thread::sleepMsec

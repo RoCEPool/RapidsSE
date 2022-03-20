@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : recv_init ( -- )
 
-  //CN_JOB Task[] task.thread thread.dedicated!
+  //CN_JOB Task[] task.thread@ thread.dedicated!
 
   NS_ACTIVE grid::thisNode@ grid::findNodeByNo node.state!
 
