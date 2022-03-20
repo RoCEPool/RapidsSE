@@ -87,8 +87,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].addRetired"_Stz,       &Step::vJobAddRetired);
   vAddStep("[job].assertCorrectness"_Stz,&Step::vJobAssertCorrectness);
 
-  vAddStep("[job].entry@"_Stz,           &Step::vJobEntryFetch);
-  vAddStep("[job].entry!"_Stz,           &Step::vJobEntryStore);
+  vAddStep("[job].entryPoint@"_Stz,      &Step::vJobEntryPointFetch);
+  vAddStep("[job].entryPoint!"_Stz,      &Step::vJobEntryPointStore);
 
   vAddStep("[job].error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("[job].error!"_Stz,           &Step::vJobErrorStore);
@@ -527,9 +527,9 @@ void Step::vJobDec2pcAcksRmg(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].entry@ -- fetch the job sen entry code                               */
+/* [job].entryPoint@ -- fetch the job sen entry code                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJobEntryFetch(void)
+void Step::vJobEntryPointFetch(void)
 {
   ENTRY();
   
@@ -568,9 +568,9 @@ void Step::vJobEntryFetch_other(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].entry! -- store the job entry code                                   */
+/* [job].entryPoint! -- store the job entry code                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJobEntryStore(void)
+void Step::vJobEntryPointStore(void)
 {
   ENTRY();
   

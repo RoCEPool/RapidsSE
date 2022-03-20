@@ -1150,7 +1150,7 @@ void Api::vResetTaskForJob(Job* pJob)
 {
   _static_
     
-  Stz* szEntry = "job::job"_Stz;
+  Stz* szEntry = "job::entryPoint"_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

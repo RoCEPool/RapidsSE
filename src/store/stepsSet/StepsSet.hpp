@@ -800,9 +800,9 @@ public:
   void vJobDec2pcAcksRmg(void);
   void vJobDelete2pc(void);
 
-  void vJobEntryFetch(void);
+  void vJobEntryPointFetch(void);
   void vJobEntryFetch_other(void);
-  void vJobEntryStore(void);
+  void vJobEntryPointStore(void);
   void vJobEntryStore_other(void);
 
   void vJobErrorFetch(void);

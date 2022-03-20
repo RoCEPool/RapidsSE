@@ -151,7 +151,7 @@
     // set acks for originator task
     1 [task].acksRemaining!
 
-    "pipeline::participant" [job].entry!
+    "pipeline::participant" [job].entryPoint!
     job::distributeParticipants
     
     [task].wait
@@ -257,7 +257,7 @@
   JP_BEGUN [job].phase!
 
   // what to execute next
-  "pipeline::execute" [job].entry!
+  "pipeline::execute" [job].entryPoint!
 
   // add job to participant list
   [job].tscParticipant
@@ -358,7 +358,7 @@
   JP_EXECUTED [job].phase!
   
   // what to execute next
-  "pipeline::end" [job].entry!
+  "pipeline::end" [job].entryPoint!
 
   [ddlLock].testDrop
   JobRef[].assertNone

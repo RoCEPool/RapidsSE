@@ -970,7 +970,7 @@ void Job::vSpawnTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Stz* szEntry = "job::job"_Stz;
+  Stz* szEntry = "job::entryPoint"_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
