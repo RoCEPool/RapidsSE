@@ -13,7 +13,7 @@
   [ddlLock].testDrop
   
   [task].grabLock
-    Job[] job.queueExitDemon
+    Job[] [exitDemon]:queueJob
     TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD

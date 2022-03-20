@@ -422,7 +422,7 @@
   // task retires (with job in retired list)
 
   [task].grabLock
-    Job[] job.queueExitDemon
+    Job[] [exitDemon]:queueJob
     TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD
@@ -452,7 +452,7 @@
 
   [job].addRetired
   [task].grabLock
-    Job[] job.queueExitDemon
+    Job[] [exitDemon]:queueJob
     TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD

@@ -204,7 +204,7 @@
 /*----------------------------------------------------------------------------*/
 /* queue given job onto exit demon                                            */
 /*----------------------------------------------------------------------------*/
-: job.queueExitDemon params| pJob |
+: [exitDemon]:queueJob params| pJob |
 
   "__exitDemon" find dup if
   
@@ -236,7 +236,7 @@
 
   [job].addRetired
   [task].grabLock
-    Job[] job.queueExitDemon
+    Job[] [exitDemon]:queueJob
     TR_RETIRE_THIS_TASK [task].transition!
 
   
