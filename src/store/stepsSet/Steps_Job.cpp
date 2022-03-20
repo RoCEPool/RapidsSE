@@ -851,7 +851,7 @@ void Step::vJobPhaseFetch_other(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.pipeToOp0 -- append operand onto op0 of given pipeline                 */
+/* job.pipeToOp0 -- append operand onto op0 of given job                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJobPipeToOp0(void)
 {

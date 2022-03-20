@@ -247,21 +247,9 @@ Dic* AM::DIC::pRoot(void)
 /*----------------------------------------------------------------------------*/
 /* pipe given row buffer to named demon                                       */
 /*----------------------------------------------------------------------------*/
-void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
+void AM::DEMON::vPipeToOp0(Stz* szDemonNm, Operand* pOperand)
 {
   _static_
-
-  // for reference: sen code from : OP_toStatDemon_Profile \handler
-  
-//  PipeIn[]
-//  "__statDemon" find dup if
-//    word.object@
-//    job.pipeToOp0
-//    nullptr to PipeIn[]
-//  else
-//    discard discard
-//    PipeIn[].delete
-//  then
 
   Dic* pRootDic = AM::DIC::pRoot();
 
@@ -272,14 +260,12 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
     vNapMsec(3000,CN_PIPELINE);
   }
   
-  Job* pPipelineJob = _pJob(pDemonWord->pObject());
+  Job* pJob = _pJob(pDemonWord->pObject());
   
-  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
+  Pipeline* pPipeline = pJob->pPipeline_job();
   
   Op* pOp0 = pPipeline->pOp0();
 
-  //Task* pThisTask = AM::pThisTLSTask();
-  
   pOp0->vAppendLeft(pOperand,nullptr);
 }
 

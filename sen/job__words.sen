@@ -208,9 +208,9 @@
 
   "__exitDemon" find dup if
   
-    word.object@ locals| pExitDemon |
+    word.object@ locals| pExitDemonJob |
 
-    pJob pExitDemon job.pipeToOp0
+    pJob pExitDemonJob job.pipeToOp0
 
   else
 

@@ -209,12 +209,6 @@ Word* Dic::pFindWord(Stz* szWordNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   bool bTrace = false;
-//  if (szWordNm->bSame("job.pipeToOp0"_Stz)) {
-//    vListWords();
-//    vTrace("\n\n"_Stz);
-//    vTrace("Find Word : %s\n"_Stz,szWordNm);
-//    bTrace = true;
-//  }
   
   if (szWordNm->nLength() > 31)
     return nullptr;

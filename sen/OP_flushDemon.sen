@@ -11,16 +11,16 @@
 
   "flushDemon_DataPulse A" .
 
-  0 locals| pDemon |
+  0 locals| pDemonJob |
 
   PipeIn[].pipeOut
   
   <demonNm> find dup if
   
-    word.object@ to pDemon
+    word.object@ to pDemonJob
 
     "flushDemon_DataPulse B" .
-    Marker[].newFlushMarker Marker[]\clear pDemon job.pipeToOp0
+    Marker[].newFlushMarker Marker[]\clear pDemonJob job.pipeToOp0
     "flushDemon_DataPulse C" .
 
   else

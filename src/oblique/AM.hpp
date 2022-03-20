@@ -250,7 +250,7 @@ namespace OBLIQUE
     class DEMON
     {
     public:
-      static void vPipeTo(Stz* szDemonNm, Operand* pOperand);
+      static void vPipeToOp0(Stz* szDemonNm, Operand* pOperand);
     };
   
     class EE
