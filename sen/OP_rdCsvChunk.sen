@@ -123,7 +123,7 @@
 
   <fileNm> locals| sFileNm_raw |
   
-  Job[].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |
+  [job].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |
 
   PipeIn[].pipeOut
 
@@ -142,7 +142,7 @@
 
   _lu_initialise_
 
-//  "<note>"  Job[].tagSet@ tagSet.hasName if
+//  "<note>"  [job].tagSet@ tagSet.hasName if
 //    <note> LogicUnit[].diaryJobNote
 //  then
 //

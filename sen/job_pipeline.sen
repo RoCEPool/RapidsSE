@@ -17,27 +17,27 @@
 
   //"pipeline::origin" .
     
-  Job[].assertCorrectness
+  [job].assertCorrectness
 
-  job[].tscBeginning
+  [job].tscBeginning
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-check
   
-  "<preCheck>" Job[].tagSet@ tagSet.hasName if
+  "<preCheck>" [job].tagSet@ tagSet.hasName if
     // tag exists..
     
     <preCheck> find execute not if
       // - preCheck word does not exist
       
-      Job[].error!
+      [job].error!
       
       [ddlLock].testDrop
       JobRef[].assertNone
 
-      Job[].addRetired
+      [job].addRetired
       
-      JS_SIGNALLED Job[].state!
+      JS_SIGNALLED [job].state!
         [session].signal
 
       [task].grabLock
@@ -54,7 +54,7 @@
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // add this job to originator job list
-  Job[].addOriginator
+  [job].addOriginator
 
   "<show_command>" sysargs::tagSet@ tagSet.hasName
   if
@@ -78,7 +78,7 @@
     to PipelineSpec[]
   else
     // - didnt compile
-    ErrorCode[] Job[].error!
+    ErrorCode[] [job].error!
     [ddlLock].testDrop
   then
   
@@ -88,10 +88,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test if distributed job may execute
   
-  Job[].error@ not if
-    Job[].preExecuteTest to ErrorCode[]
+  [job].error@ not if
+    [job].preExecuteTest to ErrorCode[]
     ErrorCode[] if
-      ErrorCode[] Job[].error!
+      ErrorCode[] [job].error!
       [ddlLock].testDrop
     then
   then
@@ -100,8 +100,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test if optimising
   
-  Job[].error@ not if
-    Job[].tagSet@ to TagSet[]
+  [job].error@ not if
+    [job].tagSet@ to TagSet[]
     
     
     "<optimise>" TagSet[] tagSet.hasName
@@ -139,7 +139,7 @@
   //           distribute participants of this job and execute them           //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
-  Job[].error@ not if
+  [job].error@ not if
     // + compiled without error..
     
     [task].grabLock
@@ -151,7 +151,7 @@
     // set acks for originator task
     1 [task].acksRemaining!
 
-    "pipeline::participant" Job[].entry!
+    "pipeline::participant" [job].entry!
     job::distributeParticipants
     
     [task].wait
@@ -162,7 +162,7 @@
   //                      we're back as the originator                        //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
-  Job[].removeOriginator
+  [job].removeOriginator
   
   [session].hasCascade@ not
   if
@@ -170,9 +170,9 @@
     [ddlLock].testDrop
     JobRef[].assertNone
 
-    Job[].addRetired
+    [job].addRetired
     
-    JS_SIGNALLED Job[].state!
+    JS_SIGNALLED [job].state!
       [session].signal
       
     [task].grabLock
@@ -183,7 +183,7 @@
   else
       
     [ddlLock].testDrop
-    JS_SIGNALLED Job[].state!
+    JS_SIGNALLED [job].state!
     [session].signal
  
     [task].grabLock
@@ -208,9 +208,9 @@
 
   // "pipeline::participant" .
 
-  job[].progressReset
+  [job].progressReset
   
-  Job[].assertCorrectness
+  [job].assertCorrectness
 
   JobRef[].assertNone
   
@@ -218,13 +218,13 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job is beginning
   
-  JP_BEGINNING Job[].phase!
-  //"pipeline::participant post Job[]..phase!" job[].progress
+  JP_BEGINNING [job].phase!
+  //"pipeline::participant post [job]..phase!" [job].progress
 
   <path> str.toStrVec Path[].set
 
   // set participant node of job
-  [grid].thisNode@ Job[].participantNode!
+  [grid].thisNode@ [job].participantNode!
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -232,11 +232,11 @@
 
   Dynamo[].new
 
-  //"pipeline::participant pre dynamo" job[].progress
+  //"pipeline::participant pre dynamo" [job].progress
   <cmd> Dynamo[].compile
     EC_NONE == assert
     to PipelineSpec[]
-  //"pipeline::participant post Dynamo[].compile" job[].progress
+  //"pipeline::participant post Dynamo[].compile" [job].progress
 
   Dynamo[].delete
   
@@ -245,31 +245,31 @@
   // create pipeline from spec and spawn tasks for ops
   
   PipelineSpec[] [pipeline].create
-  //"pipeline::participant post [pipeline].create" job[].progress
+  //"pipeline::participant post [pipeline].create" [job].progress
   
   [pipeline].spawnOpTasks
-  //"pipeline::participant post [pipeline].spawnOpTasks" job[].progress
+  //"pipeline::participant post [pipeline].spawnOpTasks" [job].progress
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has begun on this node
   
-  JP_BEGUN Job[].phase!
+  JP_BEGUN [job].phase!
 
   // what to execute next
-  "pipeline::execute" Job[].entry!
+  "pipeline::execute" [job].entry!
 
   // add job to participant list
-  job[].tscParticipant
-  Job[].addParticipant
-  Job[].assertCorrectness
+  [job].tscParticipant
+  [job].addParticipant
+  [job].assertCorrectness
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // reply to originator
+  // reply begun to originator
 
   Job[] begun::replyToOrigin
-  //"pipeline::participant post begun::replyToOrigin" job[].progress
+  //"pipeline::participant post begun::replyToOrigin" [job].progress
 
   [ddlLock].testDrop
 
@@ -293,13 +293,13 @@
   
   0 locals| nAcks |
   
-  Job[].assertCorrectness
+  [job].assertCorrectness
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job is executing
   
-  JP_EXECUTING Job[].phase!
+  JP_EXECUTING [job].phase!
 
   // set task's dictionary stack from path in job
   <path> str.toStrVec Path[].set
@@ -308,15 +308,15 @@
   // acquire ddl lock
   job::acquireDdlLock
   
-  Job[].assertCorrectness
+  [job].assertCorrectness
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run optional <pre_execute> word
 
-  "<pre_execute>" Job[].tagSet@ tagSet.hasName if
+  "<pre_execute>" [job].tagSet@ tagSet.hasName if
     "<pre_execute>"
-    Job[].tagSet@ tagSet.getStr locals| sPreExe |
+    [job].tagSet@ tagSet.getStr locals| sPreExe |
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
@@ -355,17 +355,17 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has executed
   
-  JP_EXECUTED Job[].phase!
+  JP_EXECUTED [job].phase!
   
   // what to execute next
-  "pipeline::end" Job[].entry!
+  "pipeline::end" [job].entry!
 
   [ddlLock].testDrop
   JobRef[].assertNone
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // reply to originator
+  // reply executed to originator
   
   Job[] executed::replyToOrigin
   
@@ -387,13 +387,13 @@
 
   // "pipeline::end" .
 
-  Job[].assertCorrectness
+  [job].assertCorrectness
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job is ending
 
-  JP_ENDING Job[].phase!
+  JP_ENDING [job].phase!
 
   [ddlLock].testDrop
  
@@ -401,22 +401,22 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has ended
   
-  JP_ENDED Job[].phase!
+  JP_ENDED [job].phase!
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove job from plist
   
-  Job[].removeParticipant
+  [job].removeParticipant
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // reply to originator
+  // reply ended to originator
   
   Job[] ended::replyToOrigin
 
-  JS_DELETABLE Job[].state!
-  Job[].addRetired
+  JS_DELETABLE [job].state!
+  [job].addRetired
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task retires (with job in retired list)
@@ -435,22 +435,22 @@
 
   // "pipeline::cancel" .
   
-  Job[].assertCorrectness
+  [job].assertCorrectness
   
     // [ senCompiler::current@ word.name@ encode::push ] .
 
-  JP_CANCELING Job[].phase!
+  JP_CANCELING [job].phase!
 
-  JP_CANCELED Job[].phase!
+  JP_CANCELED [job].phase!
 
 
-  Job[].removeParticipant
+  [job].removeParticipant
     
   Job[] cancelled::replyToOrigin
 
-  JS_DELETABLE Job[].state!
+  JS_DELETABLE [job].state!
 
-  Job[].addRetired
+  [job].addRetired
   [task].grabLock
     Job[] job.queueExitDemon
     TR_RETIRE_THIS_TASK [task].transition!
@@ -470,9 +470,7 @@ cmdSyntax: pipeline :: pipeline <pipelineNm> etc ;
     <ddlLock>  = DL_GRAB_READ
     <preCheck> = bClusterStarted
       
-    <entryPoint>    = "pipeline::origin"
-
-
+    <entryPoint>  = "pipeline::origin"
   }
 ;
 

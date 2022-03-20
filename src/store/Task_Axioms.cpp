@@ -444,7 +444,7 @@ void Task::vAddAxioms(void)
                                                 \
       Job[] assert                              \
                                                 \
-      Job[].addLocal                            \
+      [job].addLocal                            \
                                                 \
       args.munged if                            \
         \"compiling munged dictionary...\" .    \
@@ -452,11 +452,11 @@ void Task::vAddAxioms(void)
                                                 \
       \"se_include.sen\" include                \
                                                 \
-      Job[].removeLocal                         \
-      Job[].addRetired                          \
+      [job].removeLocal                         \
+      [job].addRetired                          \
                                                 \
       [task].grabLock                           \
-        true Job[].reapable!                    \
+        true [job].reapable!                    \
         TR_RETIRE_THIS_TASK [task].transition!  \
                                                 \
     ;"_Stz;

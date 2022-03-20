@@ -46,7 +46,7 @@
         "File: %v; %v Progress: 100" str.format
       "%\n" str.cat .
     else
-      iPercent Job[].progressSeconds <string> StringA[]
+      iPercent [job].progressSeconds <string> StringA[]
         "File: %v; %v seconds %v Progress: %v" str.format
       "%" str.cat .
     then

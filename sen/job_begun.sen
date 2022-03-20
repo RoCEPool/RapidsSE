@@ -90,7 +90,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all job_begun's have been received, so this job is the decider
 
-  job[].tscBegun
+  [job].tscBegun
 
   // distribute Job_Execute to all participants
   JobRef[] execute::distribute

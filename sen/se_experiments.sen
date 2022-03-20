@@ -84,7 +84,7 @@
 /*----------------------------------------------------------------------------*/
 : exp5 \prompt
 
-  "<promptTag>" Job[].tagSet@ tagSet.hasName if
+  "<promptTag>" [job].tagSet@ tagSet.hasName if
     <promptTag> "<promptTag> = %v" .printf
   else
     "NO SUCH <promptTag>" .
@@ -96,7 +96,7 @@
 /*----------------------------------------------------------------------------*/
 : exp6 \prompt
 
-  Job[].tagSet@ tagSet.asStr .
+  [job].tagSet@ tagSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/

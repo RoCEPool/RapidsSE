@@ -13,7 +13,7 @@
 
   JobRef[].assertNone
 
-  Job[].addRetired
+  [job].addRetired
   [task].grabLock
     TR_RETIRE_THIS_TASK [task].transition!
 
@@ -27,7 +27,7 @@
 
   0 locals| nAcks |
   
-  Job[].assertCorrectness
+  [job].assertCorrectness
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
@@ -46,7 +46,7 @@
     Dynamo[].delete
   else
     //"got error" .
-    ErrorCode[] Job[].error!
+    ErrorCode[] [job].error!
     
     [ddlLock].testDrop
 
@@ -56,7 +56,7 @@
     // cross check
     PipelineSpec[] not assert
 
-    JS_SIGNALLED Job[].state!
+    JS_SIGNALLED [job].state!
       
     [task].grabLock
     [session].signal
@@ -78,9 +78,9 @@
   // run <pre_execute>
 
   "<pre_execute>"
-  Job[].tagSet@ tagSet.hasName if
+  [job].tagSet@ tagSet.hasName if
     "<pre_execute>"
-    Job[].tagSet@ tagSet.getStr locals| sPreExe |
+    [job].tagSet@ tagSet.getStr locals| sPreExe |
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
@@ -95,7 +95,7 @@
 
   // add job to the local job list
   Job[] job.jobList@ JL_DEMON == not if
-    Job[].addLocal
+    [job].addLocal
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -122,7 +122,7 @@
 
   // remove job from the local job list
   Job[] job.jobList@ JL_DEMON == not if
-    Job[].removeLocal
+    [job].removeLocal
   then
 
   //<pipelineNm> [grid].thisNodeName@ "(%v) ALL DONE!!!" .
@@ -131,9 +131,9 @@
   [ddlLock].testDrop
   JobRef[].assertNone
 
-  Job[].addRetired
+  [job].addRetired
   
-  JS_SIGNALLED Job[].state!
+  JS_SIGNALLED [job].state!
     [session].signal
 
   [task].grabLock

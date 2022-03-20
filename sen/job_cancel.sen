@@ -22,7 +22,7 @@
   // create a temporary Job_Cancel
   pJobOriginator job_cancel::new to pJob_Cancel
 
-  job[].tscCanceling
+  [job].tscCanceling
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

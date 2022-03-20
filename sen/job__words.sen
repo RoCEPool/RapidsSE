@@ -153,7 +153,7 @@
 /*----------------------------------------------------------------------------*/
 : job::seeTags
 
-  Job[].tagSet@ tagSet.asStr .
+  [job].tagSet@ tagSet.asStr .
 ;
 
 
@@ -232,9 +232,9 @@
   // check this task has no job reference
   JobRef[].assertNone
 
-  JS_DELETABLE Job[].state!
+  JS_DELETABLE [job].state!
 
-  Job[].addRetired
+  [job].addRetired
   [task].grabLock
     Job[] job.queueExitDemon
     TR_RETIRE_THIS_TASK [task].transition!

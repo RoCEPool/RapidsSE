@@ -206,7 +206,7 @@
 
   0 locals| rateSecs |
 
-  "<rateSecs>" Job[].tagSet@ tagSet.hasName if
+  "<rateSecs>" [job].tagSet@ tagSet.hasName if
     <rateSecs> >int to rateSecs
   then
 
@@ -270,7 +270,7 @@
 
   _lu_initialise_
 
-  "<catalogNm>"  Job[].tagSet@ tagSet.hasName if
+  "<catalogNm>"  [job].tagSet@ tagSet.hasName if
     <schemaNm> <catalogNm>
     "/tenants/boray/catalogs/%v/schemas/%v/tables" str.format
     str.toStrVec Path[].set

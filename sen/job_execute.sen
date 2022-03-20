@@ -19,7 +19,7 @@
   // where: on the originator node
   //
 
-  job[].tscExecuting
+  [job].tscExecuting
 
   0 locals| pJob_Execute |
 

@@ -65,7 +65,7 @@
 
   0 0 0 locals| sTableNm sSmt errorCode |
 
-  //Job[].tagSet@ tagSet.asStr .
+  //[job].tagSet@ tagSet.asStr .
   Pipein[].pipeout
 
   <etc> <indexNm> "create unique index %v %v ;" str.format to sSmt
@@ -75,7 +75,7 @@
   // parse the smt and get the table name
   sSmt Job[] indexDef::parseTableName to sTableNm
   sTableNm "" str.equal if
-    Job[].error@ to errorCode
+    [job].error@ to errorCode
     errorCode op__execErr
     true
     exit
@@ -92,7 +92,7 @@
   sSmt Table[] Job[] indexDef::parse to IndexDef[]
 
   IndexDef[].isNull if
-    Job[].error@ to errorCode
+    [job].error@ to errorCode
     errorCode op__execErr
     true
     exit

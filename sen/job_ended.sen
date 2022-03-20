@@ -81,11 +81,11 @@
   1 > while
   repeat
 
-  job[].tscEnded
+  [job].tscEnded
 
 
   // remove the originating job from the originator jobs
-  //Job[].removeOriginator
+  //[job].removeOriginator
 
   // notify the originating task
   JobRef[].task@ task.ack

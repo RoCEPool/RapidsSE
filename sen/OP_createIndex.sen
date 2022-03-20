@@ -44,7 +44,7 @@
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex not if
     
-      EC_INVALID_COLUMNS_UNIQUE_INDEX Job[].error!
+      EC_INVALID_COLUMNS_UNIQUE_INDEX [job].error!
       [ddlLock].testDrop
       
       EC_INVALID_COLUMNS_UNIQUE_INDEX op__execErr
@@ -60,7 +60,7 @@
   // populate the index
 /*
   pIndex index.populate not if ( errorCode )
-    Job[].error!
+    [job].error!
     [ddlLock].testDrop
 
     Path[].popIndexesFolder

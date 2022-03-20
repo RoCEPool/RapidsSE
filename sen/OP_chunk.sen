@@ -64,7 +64,7 @@
 
   <fileNm> locals| sFileNm_raw |
   
-  Job[].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |
+  [job].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |
 
   PipeIn[].pipeOut
 
