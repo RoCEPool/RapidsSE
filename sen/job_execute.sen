@@ -75,7 +75,7 @@
 
   // stall till job's previous phase (task) has completed
   
-  JobRef[].task@ to pTask_Execute
+  ListedJob[].task@ to pTask_Execute
   begin
       pTask_Execute task.state@ TS_HIBERNATING !=
   while
@@ -88,8 +88,8 @@
   // "execute::execute" .
 
   // execute the job on this participating node
-  JobRef[] job.scheduleNextPhase // job in participant list ; perform next phase
-  JobRef[].returnReference
+  ListedJob[] job.scheduleNextPhase // job in participant list ; perform next phase
+  ListedJob[].returnReference
   
   [job]:retire
 ;

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_JobRef.cpp -- job reference                                          */
+/* Steps_ListedJob.cpp -- list job reference                                  */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -15,69 +15,69 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_JobRef(void)
+void Step::vAddSteps_ListedJob(void)
 {
-  vAddStep("JobRef[]"_Stz,                 &Step::vJobRefPointer);
+  vAddStep("ListedJob[]"_Stz,                 &Step::vListedJobPointer);
 
-  vAddStep("JobRef[].assertNone"_Stz,      &Step::vJobRefAssertNone);
-  vAddStep("JobRef[].findOriginator"_Stz,  &Step::vJobFindOriginator);
-  vAddStep("JobRef[].findParticipant"_Stz, &Step::vJobFindParticipant);
-  vAddStep("JobRef[].hasTask"_Stz,         &Step::vJobRefHasTask);
-  vAddStep("JobRef[].references"_Stz,      &Step::vJobRefReferences);
-  vAddStep("JobRef[].returnReference"_Stz, &Step::vJobRefReturn);
-  vAddStep("JobRef[].task@"_Stz,           &Step::vJobRefTaskFetch);
+  vAddStep("ListedJob[].assertNone"_Stz,      &Step::vListedJobAssertNone);
+  vAddStep("ListedJob[].findOriginator"_Stz,  &Step::vListedJobFindOriginator);
+  vAddStep("ListedJob[].findParticipant"_Stz, &Step::vListedJobFindParticipant);
+  vAddStep("ListedJob[].hasTask"_Stz,         &Step::vListedJobHasTask);
+  vAddStep("ListedJob[].references"_Stz,      &Step::vListedJobReferences);
+  vAddStep("ListedJob[].returnReference"_Stz, &Step::vListedJobReturn);
+  vAddStep("ListedJob[].task@"_Stz,           &Step::vListedJobTaskFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[].findOriginator -- find job from originator job set                */
+/* ListedJob[].findOriginator -- find job from originator job set                */
 /*----------------------------------------------------------------------------*/
-void Step::vJobFindOriginator(void)
+void Step::vListedJobFindOriginator(void)
 {
   ENTRY();
-  
+
   JobId tJobId;
   tJobId = m_pDataStack->iPopAsInt(__func__);
-  
+
   Job* pJobFound = AM::pJob_FindOriginating(tJobId);
   RASSERT(pJobFound);
-  
-  
+
+
   //! borrow the job ref [ this needs to be done under lock ]
   pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
-  
-  
+
+
   m_pDataStack->vPushPtr(pJobFound);
-  
+
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[].findParticipant -- find job from participant job set              */
+/* ListedJob[].findParticipant -- find job from participant job set              */
 /*----------------------------------------------------------------------------*/
-void Step::vJobFindParticipant(void)
+void Step::vListedJobFindParticipant(void)
 {
   ENTRY();
-  
+
   JobId tJobId;
   tJobId = m_pDataStack->iPopAsInt(__func__);
 
   Job* pJobFound = AM::pJob_FindParticipating(tJobId);
   RASSERT(pJobFound);
-  
-  
+
+
   //! borrow the job ref [ this needs to be done under lock ]
   pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
-  
-  
+
+
   m_pDataStack->vPushPtr(pJobFound);
-  
+
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[].hasTask -- does the jobRef have a task ?                          */
+/* ListedJob[].hasTask -- does the jobRef have a task ?                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJobRefHasTask(void)
+void Step::vListedJobHasTask(void)
 {
   ENTRY();
   
@@ -89,9 +89,9 @@ void Step::vJobRefHasTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[] -- return pointer to the referenced job                           */
+/* ListedJob[] -- return pointer to the referenced job                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobRefPointer(void)
+void Step::vListedJobPointer(void)
 {
   ENTRY();
   
@@ -103,22 +103,22 @@ void Step::vJobRefPointer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[].assertNone -- check there is no job reference                     */
+/* ListedJob[].assertNone -- check there is no job reference                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJobRefAssertNone(void)
+void Step::vListedJobAssertNone(void)
 {
   ENTRY();
   
   if (m_pLogicUnit->m_xpJobRef.pReferencedObject())
-    THROW("JobRef[].assertNone : register still has reference to a job"_Stz);
+    THROW("ListedJob[].assertNone : register still has reference to a job"_Stz);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[].references -- return the job references                           */
+/* ListedJob[].references -- return the job references                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobRefReferences(void)
+void Step::vListedJobReferences(void)
 {
   ENTRY();
   
@@ -128,9 +128,9 @@ void Step::vJobRefReferences(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[].returnReference -- return the job reference                       */
+/* ListedJob[].returnReference -- return the job reference                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJobRefReturn(void)
+void Step::vListedJobReturn(void)
 {
   ENTRY();
   
@@ -141,9 +141,9 @@ void Step::vJobRefReturn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef[].task@ -- get the task of the referenced job                       */
+/* ListedJob[].task@ -- get the task of the referenced job                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJobRefTaskFetch(void)
+void Step::vListedJobTaskFetch(void)
 {
   ENTRY();
   

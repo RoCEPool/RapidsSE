@@ -120,7 +120,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobAnalyzeIndex();
   Step::vAddSteps_JobGeneric();
   Step::vAddSteps_JobMetrics();
-  Step::vAddSteps_JobRef();
+  Step::vAddSteps_ListedJob();
   Step::vAddSteps_JobReport();
   Step::vAddSteps_Jobs();
 

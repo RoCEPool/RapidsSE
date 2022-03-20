@@ -72,7 +72,7 @@
 
   // stall till job's previous phase (task) has completed
   
-  JobRef[].task@ to pTask_Cancel
+  ListedJob[].task@ to pTask_Cancel
   begin
         pTask_Cancel task.state@ TS_HIBERNATING !=
   while
@@ -82,9 +82,9 @@
   pTask_Cancel task.cycleLock
     
 
-  "pipeline::cancel" JobRef[] job.entry!
-  JobRef[] job.scheduleNextPhase
-  JobRef[].returnReference
+  "pipeline::cancel" ListedJob[] job.entry!
+  ListedJob[] job.scheduleNextPhase
+  ListedJob[].returnReference
   
   [job]:retire
 ;

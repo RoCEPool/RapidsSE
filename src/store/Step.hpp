@@ -103,7 +103,7 @@ namespace STORE
     static void vAddSteps_JobGeneric(void);
     static void vAddSteps_JobMetrics(void);
     static void vAddSteps_JobPipeline(void);
-    static void vAddSteps_JobRef(void);
+    static void vAddSteps_ListedJob(void);
     static void vAddSteps_JobReport(void);
     static void vAddSteps_Jobs(void);
 

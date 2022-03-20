@@ -73,7 +73,7 @@
 
   // stall till job's previous phase (task) has completed
   
-  JobRef[].task@ to pTask_End
+  ListedJob[].task@ to pTask_End
   begin
         pTask_End task.state@ TS_HIBERNATING !=
   while
@@ -83,8 +83,8 @@
   pTask_End task.cycleLock
     
 
-  JobRef[] job.scheduleNextPhase
-  JobRef[].returnReference
+  ListedJob[] job.scheduleNextPhase
+  ListedJob[].returnReference
   
   [job]:retire
 ;

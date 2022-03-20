@@ -11,7 +11,7 @@
 
   [ddlLock].testDrop
 
-  JobRef[].assertNone
+  ListedJob[].assertNone
 
   [job].addRetired
   [task].grabLock
@@ -129,7 +129,7 @@
   
   
   [ddlLock].testDrop
-  JobRef[].assertNone
+  ListedJob[].assertNone
 
   [job].addRetired
   

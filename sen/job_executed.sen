@@ -59,17 +59,17 @@
   // process __executed job on this originating node
 
   // increment the number of __executed jobs received in api state
-  JobRef[] ssn::incExecuted
-  JobRef[] ssn::traceSession
+  ListedJob[] ssn::incExecuted
+  ListedJob[] ssn::traceSession
 
   // decrement the acks remaining
-  JobRef[] job.dec2pcAcksRmg to bAmDecider
+  ListedJob[] job.dec2pcAcksRmg to bAmDecider
 
   //[grid].thisNodeName@ "(%v) EXECUTED GOT ACK" .printf
 
   // if there are acks remaining just exit
   bAmDecider not if
-    JobRef[].returnReference
+    ListedJob[].returnReference
     [job]:retire
     exit                                                         // *EARLY EXIT*
   then
@@ -81,8 +81,8 @@
   [job].tscExecuted
 
   // send a job_end to all participants
-  JobRef[] end::distribute
-  JobRef[].returnReference
+  ListedJob[] end::distribute
+  ListedJob[].returnReference
 
   [job]:retire
 ;

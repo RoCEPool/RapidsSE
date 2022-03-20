@@ -58,16 +58,16 @@
   // process __ended job on this originating node
 
   // increment the number of __ended jobs received in api state
-  JobRef[] ssn::incEnded
-  JobRef[] ssn::traceSession
+  ListedJob[] ssn::incEnded
+  ListedJob[] ssn::traceSession
 
   // decrement the acks remaining
-  JobRef[] job.dec2pcAcksRmg to bAmDecider
+  ListedJob[] job.dec2pcAcksRmg to bAmDecider
 
   //[grid].thisNodeName@ "(%v) ENDED GOT ACK" .printf
   // if there are acks remaining just exit
   bAmDecider not if
-    JobRef[].returnReference
+    ListedJob[].returnReference
     [job]:retire
     exit                                                         // *EARLY EXIT*
   then
@@ -77,7 +77,7 @@
   // all __ended jobs have been received, so this job is the decider
 
   begin
-    JobRef[].references
+    ListedJob[].references
   1 > while
   repeat
 
@@ -88,8 +88,8 @@
   //[job].removeOriginator
 
   // notify the originating task
-  JobRef[].task@ task.ack
-  JobRef[].returnReference
+  ListedJob[].task@ task.ack
+  ListedJob[].returnReference
   
   [job]:retire
 ;

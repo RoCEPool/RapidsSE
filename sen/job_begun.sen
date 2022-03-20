@@ -74,15 +74,15 @@
   // process __begun job on this originating node
 
   // increment the number of __begun jobs received in api state
-  JobRef[] ssn::incBegun
-  JobRef[] ssn::traceSession
+  ListedJob[] ssn::incBegun
+  ListedJob[] ssn::traceSession
 
   // decrement the acks remaining in the originating job
-  JobRef[] job.dec2pcAcksRmg to bAmDecider
+  ListedJob[] job.dec2pcAcksRmg to bAmDecider
 
   // if there are acks remaining just exit
   bAmDecider not if
-    JobRef[].returnReference
+    ListedJob[].returnReference
     [job]:retire
     exit                                                         // *EARLY EXIT*
   then
@@ -93,8 +93,8 @@
   [job].tscBegun
 
   // distribute Job_Execute to all participants
-  JobRef[] execute::distribute
-  JobRef[].returnReference
+  ListedJob[] execute::distribute
+  ListedJob[].returnReference
   [job]:retire
 ;
 

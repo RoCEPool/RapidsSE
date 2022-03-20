@@ -808,8 +808,8 @@ public:
   void vJobErrorFetch(void);
   void vJobErrorStore(void);
 
-  void vJobFindOriginator(void);
-  void vJobFindParticipant(void);
+  void vListedJobFindOriginator(void);
+  void vListedJobFindParticipant(void);
 
   void vJobIdFetch(void);
   void vJobIdFetch_other(void);
@@ -882,12 +882,12 @@ public:
   void vJobMetricsUpdate(void);
 
   // job ref
-  void vJobRefHasTask(void);
-  void vJobRefPointer(void);
-  void vJobRefAssertNone(void);
-  void vJobRefReturn(void);
-  void vJobRefReferences(void);
-  void vJobRefTaskFetch(void);
+  void vListedJobHasTask(void);
+  void vListedJobPointer(void);
+  void vListedJobAssertNone(void);
+  void vListedJobReturn(void);
+  void vListedJobReferences(void);
+  void vListedJobTaskFetch(void);
 
   // job generic
   void vJob_BegunNew(void);

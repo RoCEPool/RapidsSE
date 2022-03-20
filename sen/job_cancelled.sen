@@ -81,17 +81,17 @@
   // process __begun job on this originating node
 
   // increment the number of __cancelled jobs received in api state
-  JobRef[] ssn::incCancelled
-  JobRef[] ssn::traceSession
+  ListedJob[] ssn::incCancelled
+  ListedJob[] ssn::traceSession
 
 
 
   // decrement the acks remaining in the originating job
-  JobRef[] job.dec2pcAcksRmg to bAmDecider
+  ListedJob[] job.dec2pcAcksRmg to bAmDecider
 
   // if there are acks remaining just exit
   bAmDecider not if
-    JobRef[].returnReference
+    ListedJob[].returnReference
     cancelled::retire
     [job]:retire
     exit                                                         // *EARLY EXIT*
@@ -102,7 +102,7 @@
   // all job_cancelled's have been received, so this job is the decider
 
   begin
-    JobRef[].references
+    ListedJob[].references
   1 > while
   repeat
 
@@ -113,8 +113,8 @@
   //[job].removeOriginator
 
   // notify the originating task
-  JobRef[].task@ task.ack
-  JobRef[].returnReference
+  ListedJob[].task@ task.ack
+  ListedJob[].returnReference
 
   // delete this completed __cancelled job
   cancelled::retire
