@@ -21,10 +21,10 @@
     begin
        Counter1[]  Counter0[] >
     while
-      Task[].yield 
+      [task].yield 
       assert::stack_0
       "sleeping for 1 min" .
-      60 task::sleepSsec
+      60 [task].sleepSsec
       Counter0[] 1 + to Counter0[]
     repeat
     0 to  Counter0[]

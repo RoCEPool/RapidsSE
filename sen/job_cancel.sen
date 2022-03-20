@@ -77,7 +77,7 @@
         pTask_Cancel task.state@ TS_HIBERNATING !=
   while
     "job to be cancelled still has non-hibernating task" .
-    Task[].yield
+    [task].yield
   repeat
   pTask_Cancel task.cycleLock
     

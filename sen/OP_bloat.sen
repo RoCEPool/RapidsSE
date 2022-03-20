@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : bloat_cleaning \handler
 
-  task::seeFrameStack
+  [task].seeFrameStack
 
   //inject::bloatCleanup
 
@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : bloat_bloat \handler
 
-  task::seeFrameStack
+  [task].seeFrameStack
   
   inject::bloat
 

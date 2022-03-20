@@ -14,8 +14,8 @@
   JobRef[].assertNone
 
   Job[].addRetired
-  Task[].grabLock
-    TR_RETIRE_THIS_TASK Task[].transition!
+  [task].grabLock
+    TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD
 ;
@@ -58,9 +58,9 @@
 
     JS_SIGNALLED Job[].state!
       
-    Task[].grabLock
+    [task].grabLock
     Session[].signal
-    Task[].dropLock
+    [task].dropLock
     
     pipelineLocal::termination
     
@@ -101,21 +101,21 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
 
-  Task[].grabLock
+  [task].grabLock
 
     Pipeline[].opsOnNode@ to nAcks
 
     nAcks if
-      nAcks Task[].acksRemaining!
+      nAcks [task].acksRemaining!
     
       Pipeline[].startPipeline if
     
         Marker[].newStartMarker
         Marker[]\clear Pipeline[].op0@ op.enqueOperand
       then
-      Task[].wait
+      [task].wait
     else
-      Task[].dropLock
+      [task].dropLock
     then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -136,8 +136,8 @@
   JS_SIGNALLED Job[].state!
     Session[].signal
 
-  Task[].grabLock
-    TR_RETIRE_THIS_TASK Task[].transition!
+  [task].grabLock
+    TR_RETIRE_THIS_TASK [task].transition!
 ;
 
 /*----------------------------------------------------------------------------*/

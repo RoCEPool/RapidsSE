@@ -191,7 +191,7 @@
 
   //"std_recoveryWord" .
   
-  //task::exception .
+  //[task].exception .
 
   "op__failureRecovery" FIND execute
   
@@ -235,9 +235,9 @@
   JS_DELETABLE Job[].state!
 
   Job[].addRetired
-  Task[].grabLock
+  [task].grabLock
     Job[] job.queueExitDemon
-    TR_RETIRE_THIS_TASK Task[].transition!
+    TR_RETIRE_THIS_TASK [task].transition!
 
   
   HAZARD

@@ -124,7 +124,7 @@ traceon
 
   10 0 do
     I .
-    Task[].yield 
+    [task].yield 
   loop
 ;
 
@@ -148,7 +148,7 @@ traceon
     I to sleepTime
     time.current "start time %v" str.format .
     sleepTime "task sleeping for %v secs" str.format .
-    1000000 sleepTime * task::sleepUsec
+    1000000 sleepTime * [task].sleepUsec
     time.current "end time %v\n" str.format .
   loop
 ;

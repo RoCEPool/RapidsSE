@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : sigsegv_sigsegv \handler
 
-  //task::seeFrameStack
+  //[task].seeFrameStack
   
   //inject::sigsegv
   inject::sigsegv_dbg

@@ -80,7 +80,7 @@
 
   _lu_initialise_
 
-  999999999999 task::operandYield!
+  999999999999 [task].operandYield!
 
   op__topology
 

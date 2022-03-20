@@ -96,7 +96,7 @@
 
   rateSecs if
     rateSecs "Bucket Pausing for %v secs" str.format .
-    rateSecs task::sleepSsec
+    rateSecs [task].sleepSsec
     "Bucket awake" .
   then
 

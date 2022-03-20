@@ -71,7 +71,7 @@
   begin
     TablePtn[].attemptGrabRead
   not while
-    Task[].yield 
+    [task].yield 
   repeat
 ;
 
@@ -83,7 +83,7 @@
   begin
     TablePtn[].attemptGrabWrite
   not while
-    Task[].yield 
+    [task].yield 
   repeat
 ;
 
@@ -95,7 +95,7 @@
   begin
     TablePtn[].attemptGrabWrite
   not while
-    1 task::sleepMsec
+    1 [task].sleepMsec
   repeat
 ;
 

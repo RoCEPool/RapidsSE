@@ -364,7 +364,7 @@
     thread.dedicated@ if
       10 thread::sleepMsec
     else
-      Task[].yield
+      [task].yield
     then
     
   repeat
@@ -383,7 +383,7 @@
       thread.dedicated@ if
         10 thread::sleepMsec
       else
-        Task[].yield
+        [task].yield
       then
     
     repeat
@@ -399,7 +399,7 @@
       thread.dedicated@ if
         10 thread::sleepMsec
       else
-        Task[].yield
+        [task].yield
       then
     
     repeat
@@ -454,7 +454,7 @@
 
   op__pipelineJobWait
   
-  //Task[].grabLock //OoO
+  //[task].grabLock //OoO
 
   begin  iContinue while
     
@@ -503,9 +503,9 @@
     // possible yield
 
     iOperandYield 1 + to iOperandYield
-    iOperandYield task::operandYield@ >= if
-      Task[].yield_opLoop
-      //Task[].grabLock //OoO
+    iOperandYield [task].operandYield@ >= if
+      [task].yield_opLoop
+      //[task].grabLock //OoO
       0 to iOperandYield
     then
 
@@ -547,16 +547,16 @@
 
   AM::SHOW::bException if
     "op__failureRecovery" .
-    task::seeFrameStack
-    task::seeLockSets
-    //task::seeLogicUnit
+    [task].seeFrameStack
+    [task].seeLockSets
+    //[task].seeLogicUnit
     //grid::seeNodes
   then
   
-  task::releaseLockSets
+  [task].releaseLockSets
 
   //"<recover>" Job[].tagSet@ tagSet.hasName if
-    task::exception EC_INTERNAL_ERROR op__execErrMsg
+    [task].exception EC_INTERNAL_ERROR op__execErrMsg
 
     PipeIn[].isNull not if
       PipeIn[].delete
@@ -576,7 +576,7 @@
 /*----------------------------------------------------------------------------*/
 : op__retires
 
-  Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
+  [task].grabLock TR_RETIRE_THIS_TASK [task].transition!
 ;
 
 /*----------------------------------------------------------------------------*/

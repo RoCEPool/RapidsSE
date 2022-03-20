@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : throw_throw \handler
 
-  //task::seeFrameStack
+  //[task].seeFrameStack
   
   inject::throw
 

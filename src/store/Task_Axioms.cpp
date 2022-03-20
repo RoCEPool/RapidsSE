@@ -455,9 +455,9 @@ void Task::vAddAxioms(void)
       Job[].removeLocal                         \
       Job[].addRetired                          \
                                                 \
-      Task[].grabLock                           \
+      [task].grabLock                           \
         true Job[].reapable!                    \
-        TR_RETIRE_THIS_TASK Task[].transition!  \
+        TR_RETIRE_THIS_TASK [task].transition!  \
                                                 \
     ;"_Stz;
   

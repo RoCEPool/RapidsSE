@@ -40,8 +40,8 @@
       JS_SIGNALLED Job[].state!
         Session[].signal
 
-      Task[].grabLock
-        TR_RETIRE_THIS_TASK Task[].transition!
+      [task].grabLock
+        TR_RETIRE_THIS_TASK [task].transition!
       
       HAZARD
 
@@ -142,19 +142,19 @@
   Job[].error@ not if
     // + compiled without error..
     
-    Task[].grabLock
+    [task].grabLock
     
     // set the no of acks expected by originator job
     //   to be the number of defined nodes in the grid
     grid::knownNodes Job[] job.acksRemaining!
 
     // set acks for originator task
-    1 Task[].acksRemaining!
+    1 [task].acksRemaining!
 
     "pipeline::participant" Job[].entry!
     job::distributeParticipants
     
-    Task[].wait
+    [task].wait
   then
 
 
@@ -175,8 +175,8 @@
     JS_SIGNALLED Job[].state!
       Session[].signal
       
-    Task[].grabLock
-      TR_RETIRE_THIS_TASK Task[].transition!
+    [task].grabLock
+      TR_RETIRE_THIS_TASK [task].transition!
       
     HAZARD
 
@@ -186,8 +186,8 @@
     JS_SIGNALLED Job[].state!
     Session[].signal
  
-    Task[].grabLock
-      TR_DELETE_THIS_TASK Task[].transition!
+    [task].grabLock
+      TR_DELETE_THIS_TASK [task].transition!
   
     HAZARD
     
@@ -277,9 +277,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task hibernates (with job in participant list)
   
-  Task[].grabLock
+  [task].grabLock
         
-    TR_HIBERNATE_THIS_TASK Task[].transition!
+    TR_HIBERNATE_THIS_TASK [task].transition!
 
   HAZARD
 ;
@@ -303,7 +303,7 @@
 
   // set task's dictionary stack from path in job
   <path> str.toStrVec Path[].set
-  //task::dump
+  //[task].dump
 
   // acquire ddl lock
   job::acquireDdlLock
@@ -333,21 +333,21 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ???? enqueue start-marker to start op to execute the pipeline job
   
-  Task[].grabLock
+  [task].grabLock
 
     Pipeline[].opsOnNode@ to nAcks
 
     nAcks if
-      nAcks Task[].acksRemaining!
+      nAcks [task].acksRemaining!
     
       Pipeline[].startPipeline if
     
         Marker[].newStartMarker
         Marker[]\clear Pipeline[].op0@ op.enqueOperand
       then
-      Task[].wait
+      [task].wait
     else
-      Task[].dropLock
+      [task].dropLock
     then
     
 
@@ -373,9 +373,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task hibernates (with job in participant list)
 
-  Task[].grabLock
+  [task].grabLock
       
-    TR_HIBERNATE_THIS_TASK Task[].transition!
+    TR_HIBERNATE_THIS_TASK [task].transition!
 
   HAZARD
 ;
@@ -421,9 +421,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task retires (with job in retired list)
 
-  Task[].grabLock
+  [task].grabLock
     Job[] job.queueExitDemon
-    TR_RETIRE_THIS_TASK Task[].transition!
+    TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD
 ;
@@ -451,9 +451,9 @@
   JS_DELETABLE Job[].state!
 
   Job[].addRetired
-  Task[].grabLock
+  [task].grabLock
     Job[] job.queueExitDemon
-    TR_RETIRE_THIS_TASK Task[].transition!
+    TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD
 ;

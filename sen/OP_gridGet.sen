@@ -25,7 +25,7 @@
 
   true
   //stk
-  //task::breakpoint set breakpoint back into C++ code, where the task loop is
+  //[task].breakpoint set breakpoint back into C++ code, where the task loop is
 ;
 
 /*----------------------------------------------------------------------------*/

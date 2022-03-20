@@ -78,7 +78,7 @@
         pTask_End task.state@ TS_HIBERNATING !=
   while
     "job to be ended still has non-hibernating task" .
-    Task[].yield
+    [task].yield
   repeat
   pTask_End task.cycleLock
     

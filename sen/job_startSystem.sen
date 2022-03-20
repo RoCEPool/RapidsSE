@@ -180,9 +180,9 @@
   "end startSystem::startSystem" .verbose
 
   Job[].addRetired
-  Task[].grabLock
+  [task].grabLock
     Job[] job.queueExitDemon
-    TR_RETIRE_THIS_TASK Task[].transition!
+    TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD
 ;

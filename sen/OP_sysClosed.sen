@@ -14,7 +14,7 @@
      system::activeJobs ">>> ActiveJobs %v" .printf
      system::activeJobs 2 >
   while
-    1 task::sleepSsec
+    1 [task].sleepSsec
   repeat
 
   system::activeJobs "$$$ ActiveJobs %v" .printf

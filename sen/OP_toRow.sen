@@ -92,8 +92,8 @@
   ToRow[].delete
 
   // get the profile from the task
-  //Task[] task.profile@ to Operand[]
-  //nullptr Task[] task.profile!
+  //[task] task.profile@ to Operand[]
+  //nullptr [task] task.profile!
   //Operand[].pipeOut
 
   // pipeout the (EosMarker)
