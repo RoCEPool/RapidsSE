@@ -13,7 +13,11 @@
 #include "Grid.hpp"
 #include "Api.hpp"
 #include "Session.hpp"
+#include "Stream.hpp"
 #include "Op.hpp"
+#include "Stage.hpp"
+#include "Pipeline.hpp"
+#include "Pipework.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -57,6 +61,9 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.participantNode@"_Stz, &Step::vJobParticipantFetch_other);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
+  
+  vAddStep("job.pipeToOp0"_Stz,        &Step::vJobPipeToOp0);
+
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
   vAddStep("job.reapable@"_Stz,        &Step::vJobReapableFetch_other);
@@ -840,6 +847,34 @@ void Step::vJobPhaseFetch_other(void)
 
   m_pDataStack->vPushInt(pJob->eJobPhase());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.pipeToOp0 -- append operand onto op0 of given pipeline                 */
+/*----------------------------------------------------------------------------*/
+void Step::vJobPipeToOp0(void)
+{
+  ENTRY();
+
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // !!!!!!!!!!!!!!
+  // move to AM
+
+  Pipeline* pPipeline = pJob->pPipeline_job();
+  Pipework* pPipework = pPipeline->pPipework();
+
+  Stage*    pStage0   = pPipework->pGet(0);
+  Stream*   pStand0   = pStage0->pGet(0);
+  Op*       pOp0      = pStand0->pGet(0);
+
+  pOp0->vAppendLeft(pOperand,this);
+
   EXIT();
 }
 

@@ -20,7 +20,7 @@
     word.object@ to pDemon
 
     "flushDemon_DataPulse B" .
-    Marker[].newFlushMarker Marker[]\clear pDemon pipeline.pipeOut
+    Marker[].newFlushMarker Marker[]\clear pDemon job.pipeToOp0
     "flushDemon_DataPulse C" .
 
   else

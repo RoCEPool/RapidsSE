@@ -256,7 +256,7 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
 //  PipeIn[]
 //  "__statDemon" find dup if
 //    word.object@
-//    pipeline.pipeout
+//    job.pipeToOp0
 //    nullptr to PipeIn[]
 //  else
 //    discard discard

@@ -210,7 +210,7 @@
   
     word.object@ locals| pExitDemon |
 
-    pJob pExitDemon pipeline.pipeOut
+    pJob pExitDemon job.pipeToOp0
 
   else
 

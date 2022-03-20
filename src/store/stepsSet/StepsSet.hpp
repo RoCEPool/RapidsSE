@@ -1358,7 +1358,7 @@ public:
   void vPersistenceReload(void);
 
   // pipeline
-  void vPipelinePipeout(void);
+  void vJobPipeToOp0(void);
 
   // job Pipeline
   void vPipelineCreate(void);

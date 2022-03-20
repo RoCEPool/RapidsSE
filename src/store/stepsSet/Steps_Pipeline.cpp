@@ -47,7 +47,6 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline::pulsed@"_Stz,       &Step::vPipelinePulsedFetch);
   vAddStep("Pipeline::pulsed!"_Stz,       &Step::vPipelinePulsedStore);
   
-  vAddStep("pipeline.pipeout"_Stz,        &Step::vPipelinePipeout);
     
   vAddStep("Pipeline[].create"_Stz,       &Step::vPipelineCreate);
   vAddStep("Pipeline[].op0@"_Stz,         &Step::vPipelineOp0Fetch);
@@ -349,34 +348,6 @@ void Step::vPipelineStartPipeline(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/* pipeline.pipeout -- append operand onto next operator in pipeline          */
-/*----------------------------------------------------------------------------*/
-void Step::vPipelinePipeout(void)
-{
-  ENTRY();
-
-  Job* pPipelineJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // !!!!!!!!!!!!!!
-  // move to AM
-
-  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-  Pipework* pFormWork = pPipeline->pPipework();
-
-  Stage*    pStage0   = pFormWork->pGet(0);
-  Stream*   pStand0   = pStage0->pGet(0);
-  Op*       pOp0      = pStand0->pGet(0);
-
-  pOp0->vAppendLeft(pOperand,this);
-
-  EXIT();
-}
 
 /*============================================================================*/
 /* end                                                                        */

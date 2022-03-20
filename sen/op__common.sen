@@ -646,13 +646,13 @@
   begin
     Tub[].completed dup to DataBuffer[]
   while
-    DataBuffer[] pPipelineJob pipeline.pipeOut
+    DataBuffer[] pPipelineJob job.pipeToOp0
   repeat
 
   begin
     Tub[].dangling dup to DataBuffer[]
   while
-    DataBuffer[] pPipelineJob pipeline.pipeOut
+    DataBuffer[] pPipelineJob job.pipeToOp0
   repeat
 ;
 
