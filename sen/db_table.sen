@@ -132,7 +132,7 @@
 /*----------------------------------------------------------------------------*/
 : table::makeTablesFolder params| sSchFolderNm |
 
-  args.tracepoint if
+  [args].tracepoint if
     "MAKING TABLES FOLDER FOR SCHEMA " sSchFolderNm str.cat
       " on NODE " str.cat [grid].thisNode@ >str str.cat .
   then
@@ -146,7 +146,7 @@
 /*----------------------------------------------------------------------------*/
 : table::makeNamedTableFolder params| sTblFolderNm |
 
-  args.tracepoint if
+  [args].tracepoint if
     "MAKING TABLE " sTblFolderNm str.cat
      " on NODE " str.cat [grid].thisNode@ >str str.cat .
   then

@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 : :makeSchemaFolder params| sSchemaNm |
 
-  args.tracepoint if
+  [args].tracepoint if
     sSchemaNm "MAKING SCHEMA " swap str.cat " on NODE " str.cat [grid].thisNode@ >str str.cat .
   then
 
@@ -98,7 +98,7 @@
 /*----------------------------------------------------------------------------*/
 : :makeSchemasFolder ( "<catalogNm>" -- )
 
-  args.tracepoint if
+  [args].tracepoint if
     dup "MAKING SCHEMAS FOR CATALOG " swap str.cat " on NODE " str.cat [grid].thisNode@ >str str.cat .
   then
 
@@ -124,7 +124,7 @@
 
   params| sSchemaNm |
 
-  args.tracepoint if
+  [args].tracepoint if
   dup "REMOVING SCHEMA " swap str.cat " on NODE " str.cat [grid].thisNode@ >str str.cat .
   then
 

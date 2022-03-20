@@ -13,7 +13,7 @@
 
   NS_ACTIVE [grid].thisNode@ [grid].findNodeByNo node.state!
 
-  args.verbose if
+  [args].verbose if
     [grid].thisNode@ "receiver running on node %v" .printf
   then
   

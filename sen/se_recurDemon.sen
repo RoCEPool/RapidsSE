@@ -13,7 +13,7 @@
 
   "__" <pipelineNm> str.cat locals| sDemonNm |
 
-  args.verbose if
+  [args].verbose if
     sDemonNm "installing demon pipeline job: %v" .printf
   then
 

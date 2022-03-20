@@ -87,7 +87,7 @@
 /*----------------------------------------------------------------------------*/
 : :makeCatalogsFolder ( <catalogNm> -- )
 
-  args.tracepoint if
+  [args].tracepoint if
   dup "MAKING CATALOGS FOR TENANT " swap str.cat " on NODE " str.cat [grid].thisNode@ >str str.cat .
   then
 
@@ -102,7 +102,7 @@
 /*----------------------------------------------------------------------------*/
 : :makeCatalogFolder params| sCatalogNm |
 
-  args.tracepoint if
+  [args].tracepoint if
    sCatalogNm "MAKING CATALOG " swap str.cat " on NODE " str.cat [grid].thisNode@ >str str.cat .
   then
 
@@ -132,7 +132,7 @@
 
   params| sCatalogNm |
 
-  args.tracepoint if
+  [args].tracepoint if
     dup "REMOVING CATALOG " swap str.cat " on NODE " str.cat [grid].thisNode@ >str str.cat .
   then
 

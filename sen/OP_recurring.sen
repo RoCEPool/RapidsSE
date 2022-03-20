@@ -41,7 +41,7 @@
 
     //<nSeconds> >int  thread::sleepSsec
 
-    //args.demonSleep thread::sleepSsec
+    //[args].demonSleep thread::sleepSsec
     30 thread::sleepSsec
 
     //recurring_activity

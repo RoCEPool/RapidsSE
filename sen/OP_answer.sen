@@ -133,7 +133,7 @@
   // get the listening port of this node
   [grid].thisNode@ [grid].findNodeByNo node.port to iPort
 
-  //args.verbose if
+  //[args].verbose if
   //  iPort "Waiting for connections on port %v" .printf
   //then
 

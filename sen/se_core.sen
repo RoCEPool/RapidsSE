@@ -474,7 +474,7 @@ true find: CASE word.immediate!
 
   input::push
 
-  args.senDir sSubDir str.cat dup
+  [args].senDir sSubDir str.cat dup
 
   "Would include .sen files from sub-dir %v" .printf
 
@@ -490,7 +490,7 @@ true find: CASE word.immediate!
       4 pSubDir dir.entryName str.right ".sen" str.same if
         pSubDir dir.entryName "Would parse %v" .printf
 
-        args.senDir sSubDir str.cat
+        [args].senDir sSubDir str.cat
           "/" str.cat
           pSubDir dir.entryName str.cat
           to sFilePath

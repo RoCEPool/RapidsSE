@@ -6300,7 +6300,7 @@ bool PROMPT::bPrompt_version(SePrompt* pPrompt)
 
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
   /*
-  args.metadata if
+  [args].metadata if
     "(version VARCHAR)" metadata!
     "')" version "row: ('" "%v%v%v\n" str.format
     1 task::this task.session@ session.rowsProcessed

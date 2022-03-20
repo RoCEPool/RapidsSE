@@ -379,7 +379,7 @@ void Task::vAddAxioms(void)
   "axiom: include-file"
   "  input::push"
     
-  "  args.senDir str.prepend"
+  "  [args].senDir str.prepend"
   "  input::open"
   "  input::senTokens"
   "  input::useBegin"
@@ -418,7 +418,7 @@ void Task::vAddAxioms(void)
   sDefinition =
   "axiom: include"
   //"  traceon"
-  "  args.munged if"
+  "  [args].munged if"
   "    dup word::find if"
   "      word::find execute >int mungedText include-munged"
   "      exit_rt"
@@ -446,7 +446,7 @@ void Task::vAddAxioms(void)
                                                 \
       [job].addLocal                            \
                                                 \
-      args.munged if                            \
+      [args].munged if                            \
         \"compiling munged dictionary...\" .    \
       then                                      \
                                                 \

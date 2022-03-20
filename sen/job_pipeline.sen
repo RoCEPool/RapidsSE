@@ -324,7 +324,7 @@
     then
       execute
   else
-    args.verbose if
+    [args].verbose if
       <pipelineNm> "No pre execute word for pipeline: %v" .printf
     then
   then

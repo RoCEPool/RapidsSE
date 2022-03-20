@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : makePartitions params| tableNm |
 
-  args.tracepoint if
+  [args].tracepoint if
     tableNm "MAKING PARTITIONS FOR TABLE " swap str.cat " on NODE " str.cat [grid].thisNode@ >str str.cat .
   then
 

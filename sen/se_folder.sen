@@ -78,7 +78,7 @@ dicLock.grabwrite
 
 dicLock.dropwrite
 
-  args.verbose if
+  [args].verbose if
     pwFolder word.name@
     Path[].toStr
       "Created folder %v/%v" .printf

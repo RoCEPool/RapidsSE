@@ -170,7 +170,7 @@
     StreamDefOut[].pipeOut
   then
 
-  //args.developer if
+  //[args].developer if
   //  1 debug::flag!
   //then
 
