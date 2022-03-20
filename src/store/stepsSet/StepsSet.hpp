@@ -808,9 +808,6 @@ public:
   void vJobErrorFetch(void);
   void vJobErrorStore(void);
 
-  void vListedJobFindOriginator(void);
-  void vListedJobFindParticipant(void);
-
   void vJobIdFetch(void);
   void vJobIdFetch_other(void);
 
@@ -823,6 +820,7 @@ public:
   void vJobNoWaitFetch(void);
 
   void vJobOriginatorFetch(void);
+  void vJobOriginNodeNoFetch(void);
 
 
   void vJobParticipantFetch(void);
@@ -1026,6 +1024,11 @@ public:
   void vListGet(void);
   void vListNew(void);
   void vListPrint(void);
+
+  // listed job
+  void vListedJobFindOriginator(void);
+  void vListedJobFindParticipant(void);
+
 
   // loader
   void vLoaderCreate(void);

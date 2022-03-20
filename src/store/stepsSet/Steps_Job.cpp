@@ -58,7 +58,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
   
   vAddStep("job::originator@"_Stz,     &Step::vJobOriginatorFetch);
-  
+
   vAddStep("job.participantNode@"_Stz, &Step::vJobParticipantFetch_other);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
   
@@ -95,14 +95,13 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("[job].id@"_Stz,              &Step::vJobIdFetch);
     
+  vAddStep("[job].originNodeNo@"_Stz,    &Step::vJobOriginNodeNoFetch);
+  
   vAddStep("[job].participantNode@"_Stz, &Step::vJobParticipantFetch);
   vAddStep("[job].participantNode!"_Stz, &Step::vJobParticipantStore);
-
   vAddStep("[job].preExecuteTest"_Stz,   &Step::vJobPreExecuteTest);
-
   vAddStep("[job].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("[job].phase!"_Stz,           &Step::vJobPhaseStore);
-  
   vAddStep("[job].progress"_Stz,         &Step::vJobProgress);
   vAddStep("[job].progressReset"_Stz,    &Step::vJobProgressReset);
   vAddStep("[job].progressSeconds"_Stz,  &Step::vJobProgressSeconds);
@@ -652,9 +651,7 @@ void Step::vJobIdFetch(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob;
-
-  m_pDataStack->vPushInt(pJob->tJobId().iAsI8());
+  m_pDataStack->vPushInt(m_pJob->tJobId().iAsI8());
   
   EXIT();
 }
@@ -760,6 +757,22 @@ void Step::vJobOriginatorFetch(void)
   i8 iNode = (i8)tJobId.uNodeNo();
   
   m_pDataStack->vPushInt(iNode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].originNodeNo@ -- fetch the originator node no from this job          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobOriginNodeNoFetch(void)
+{
+  ENTRY();
+  
+  JobId tJobId = m_pJob->tJobId();
+  
+  i8 iNodeNo = (i8)tJobId.uNodeNo();
+  
+  m_pDataStack->vPushInt(iNodeNo);
   
   EXIT();
 }
