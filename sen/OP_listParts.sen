@@ -22,13 +22,13 @@
   streamSetTable[] streamSet[].new
 
   // get a row per partition on this node
-  grid::ptnsPerNode 0 do
+  [grid].ptnsPerNode 0 do
 
-    I grid::tablePtnToPtnNo
+    I [grid].tablePtnToPtnNo
       streamSetTable[] streamSet[].addListPartitions  not if
         StreamSet[].pipeOut
         streamSetTable[] streamSet[].new
-        I grid::tablePtnToPtnNo
+        I [grid].tablePtnToPtnNo
         streamSetTable[] StreamSet[].addListPartitions assert
       then
 

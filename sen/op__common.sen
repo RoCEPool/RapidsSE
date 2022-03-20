@@ -550,7 +550,7 @@
     [task].seeFrameStack
     [task].seeLockSets
     //[task].seeLogicUnit
-    //grid::seeNodes
+    //[grid].seeNodes
   then
   
   [task].releaseLockSets

@@ -13,7 +13,7 @@
   Pipein[]\clear to Parcel[]  // pop the pParcel and put in the Parcel register
 
   // returns table ptr
-  Parcel[]\clear grid::putParts locals| pGrid |
+  Parcel[]\clear [grid].putParts locals| pGrid |
 
   // get table name to create folder
   //pTable table.getName locals| sTableNm |

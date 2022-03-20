@@ -19,7 +19,7 @@
 
   0 locals| pJob_Ended |
 
-  //grid::thisNodeName@ "(%v) ENDED::send" .printf
+  //[grid].thisNodeName@ "(%v) ENDED::send" .printf
 
   // new a temporary Job_Ended
   pJobParticipant job_Ended::new to pJob_Ended
@@ -64,14 +64,14 @@
   // decrement the acks remaining
   JobRef[] job.dec2pcAcksRmg to bAmDecider
 
-  //grid::thisNodeName@ "(%v) ENDED GOT ACK" .printf
+  //[grid].thisNodeName@ "(%v) ENDED GOT ACK" .printf
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].returnReference
     _job_2pc_delete_
     exit                                                         // *EARLY EXIT*
   then
-  //grid::thisNodeName@ "(%v) ENDED AM DECIDER" .printf
+  //[grid].thisNodeName@ "(%v) ENDED AM DECIDER" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all __ended jobs have been received, so this job is the decider

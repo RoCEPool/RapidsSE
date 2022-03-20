@@ -19,7 +19,7 @@
   // gridGet::getMetaData locals| pgridGet |
 
 
-  grid::getGrid locals| pgridObj |
+  [grid].getGrid locals| pgridObj |
   // pipeout the gridGet instance
   pgridObj Op[].pipeout
 

@@ -172,7 +172,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   //system::started@ not if
-    grid::setStartNode
+    [grid].setStartNode
     true system::started!
     ": _Start completed" .boot
   //then

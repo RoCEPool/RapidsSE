@@ -84,7 +84,7 @@
   // check if sink has already been errored
   [pipeline].errored@ not if
 
-    //grid::thisNodeName@ "(%v) sinkOP got error marker" .printf
+    //[grid].thisNodeName@ "(%v) sinkOP got error marker" .printf
 
     // mark pipeline as having an errored
     true [pipeline].errored!
@@ -94,7 +94,7 @@
     Marker[].pipeOut
 
   //else
-  //  grid::thisNodeName@ "(%v) sinkOP ignoring error marker" .printf
+  //  [grid].thisNodeName@ "(%v) sinkOP ignoring error marker" .printf
   then
 
   true

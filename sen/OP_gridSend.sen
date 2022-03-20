@@ -19,7 +19,7 @@
   // Op[].pipeout pipe the pParcel out
 
 
-  grid[] grid::getParts Op[].pipeout
+  grid[] [grid].getParts Op[].pipeout
 
   // send EOSMARKER
   nullptr to grid[]

@@ -124,7 +124,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn all other nodes for a grid on this machine                           */
 /*----------------------------------------------------------------------------*/
-: grid::spawnOtherNodes ( -- )
+: [grid].spawnOtherNodes ( -- )
 
   // test for single node grid
   sysargs::definedNodes 1 == if exit then
@@ -165,7 +165,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn named node being added to a grid on this machine                     */
 /*----------------------------------------------------------------------------*/
-: grid::spawnAddingNode ( sNodeNm -- )
+: [grid].spawnAddingNode ( sNodeNm -- )
 
   params| sNodeNm   |
 
@@ -181,20 +181,20 @@
 /*----------------------------------------------------------------------------*/
 /* set start node                                                             */
 /*----------------------------------------------------------------------------*/
-: grid::setStartNode ( -- )
+: [grid].setStartNode ( -- )
 
   // set this node as the grid start node
-  // grid::thisNode@ grid::StartNode!
+  // [grid].thisNode@ [grid].StartNode!
 ;
 
 /*----------------------------------------------------------------------------*/
 /* forget named node (run by all participants)                                */
 /*----------------------------------------------------------------------------*/
-: grid::forgetNode ( "<NodeNm>" )
+: [grid].forgetNode ( "<NodeNm>" )
 
   params| sNodeNm |
 
-  sNodeNm grid::findNodeByName node.forget
+  sNodeNm [grid].findNodeByName node.forget
 ;
 
 

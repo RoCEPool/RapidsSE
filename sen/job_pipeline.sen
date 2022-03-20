@@ -146,7 +146,7 @@
     
     // set the no of acks expected by originator job
     //   to be the number of defined nodes in the grid
-    grid::knownNodes Job[] job.acksRemaining!
+    [grid].knownNodes Job[] job.acksRemaining!
 
     // set acks for originator task
     1 [task].acksRemaining!
@@ -224,7 +224,7 @@
   <path> str.toStrVec Path[].set
 
   // set participant node of job
-  grid::thisNode@ Job[].participantNode!
+  [grid].thisNode@ Job[].participantNode!
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -

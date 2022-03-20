@@ -125,7 +125,7 @@
     Job[].removeLocal
   then
 
-  //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .
+  //<pipelineNm> [grid].thisNodeName@ "(%v) ALL DONE!!!" .
   
   
   [ddlLock].testDrop

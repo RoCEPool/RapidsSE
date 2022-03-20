@@ -28,7 +28,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the no of acks expected in originator job
-  grid::knownNodes pJobOriginator job.acksRemaining!
+  [grid].knownNodes pJobOriginator job.acksRemaining!
 
   // send Job_End to all nodes
 
@@ -63,7 +63,7 @@
   //
   // where: on the participating node
   //
-  //grid::thisNodeName@ "(%v) RECEIVED END" .printf
+  //[grid].thisNodeName@ "(%v) RECEIVED END" .printf
   Job[] locals| pJob_End |
   0 locals| pTask_End |
 
