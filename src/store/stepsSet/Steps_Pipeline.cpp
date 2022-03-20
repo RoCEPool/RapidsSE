@@ -34,29 +34,29 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pipeline(void)
 {
-  vAddStep("Pipeline::addAccum"_Stz,      &Step::vPipelineAddAccum);
-  vAddStep("Pipeline::cancelled@"_Stz,    &Step::vPipelineCancelledFetch);
-  vAddStep("Pipeline::cancelled!"_Stz,    &Step::vPipelineCancelledStore);
-  vAddStep("Pipeline::dropDebugLock"_Stz, &Step::vPipelineDropDebugLock);
-  vAddStep("Pipeline::earlyExit@"_Stz,    &Step::vPipelineEarlyExitFetch);
-  vAddStep("Pipeline::earlyExit!"_Stz,    &Step::vPipelineEarlyExitStore);
-  vAddStep("Pipeline::errored@"_Stz,      &Step::vPipelineErroredFetch);
-  vAddStep("Pipeline::errored!"_Stz,      &Step::vPipelineErroredStore);
-  vAddStep("Pipeline::getAccum"_Stz,      &Step::vPipelineGetAccum);
-  vAddStep("Pipeline::grabDebugLock"_Stz, &Step::vPipelineGrabDebugLock);
-  vAddStep("Pipeline::pulsed@"_Stz,       &Step::vPipelinePulsedFetch);
-  vAddStep("Pipeline::pulsed!"_Stz,       &Step::vPipelinePulsedStore);
+  vAddStep("[pipeline].addAccum"_Stz,      &Step::vPipelineAddAccum);
+  vAddStep("[pipeline].cancelled@"_Stz,    &Step::vPipelineCancelledFetch);
+  vAddStep("[pipeline].cancelled!"_Stz,    &Step::vPipelineCancelledStore);
+  vAddStep("[pipeline].dropDebugLock"_Stz, &Step::vPipelineDropDebugLock);
+  vAddStep("[pipeline].earlyExit@"_Stz,    &Step::vPipelineEarlyExitFetch);
+  vAddStep("[pipeline].earlyExit!"_Stz,    &Step::vPipelineEarlyExitStore);
+  vAddStep("[pipeline].errored@"_Stz,      &Step::vPipelineErroredFetch);
+  vAddStep("[pipeline].errored!"_Stz,      &Step::vPipelineErroredStore);
+  vAddStep("[pipeline].getAccum"_Stz,      &Step::vPipelineGetAccum);
+  vAddStep("[pipeline].grabDebugLock"_Stz, &Step::vPipelineGrabDebugLock);
+  vAddStep("[pipeline].pulsed@"_Stz,       &Step::vPipelinePulsedFetch);
+  vAddStep("[pipeline].pulsed!"_Stz,       &Step::vPipelinePulsedStore);
   
     
-  vAddStep("Pipeline[].create"_Stz,       &Step::vPipelineCreate);
-  vAddStep("Pipeline[].op0@"_Stz,         &Step::vPipelineOp0Fetch);
-  vAddStep("Pipeline[].opsOnNode@"_Stz,   &Step::vPipelineOpsOnNodeFetch);
-  vAddStep("Pipeline[].spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
-  vAddStep("Pipeline[].startPipeline"_Stz,&Step::vPipelineStartPipeline);
+  vAddStep("[pipeline].create"_Stz,       &Step::vPipelineCreate);
+  vAddStep("[pipeline].op0@"_Stz,         &Step::vPipelineOp0Fetch);
+  vAddStep("[pipeline].opsOnNode@"_Stz,   &Step::vPipelineOpsOnNodeFetch);
+  vAddStep("[pipeline].spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
+  vAddStep("[pipeline].startPipeline"_Stz,&Step::vPipelineStartPipeline);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::addAccum -- add to an accumulator in this pipeline               */
+/* [pipeline].addAccum -- add to an accumulator in this pipeline               */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineAddAccum(void)
 {
@@ -74,7 +74,7 @@ void Step::vPipelineAddAccum(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::cancelled@ -- has this pipeline been cancelled?                  */
+/* [pipeline].cancelled@ -- has this pipeline been cancelled?                  */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineCancelledFetch(void)
 {
@@ -89,7 +89,7 @@ void Step::vPipelineCancelledFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::cancelled! -- fetch this pipeline's cancelled indicator          */
+/* [pipeline].cancelled! -- fetch this pipeline's cancelled indicator          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineCancelledStore(void)
 {
@@ -104,7 +104,7 @@ void Step::vPipelineCancelledStore(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline[].create -- create the pipeline, stages, streams and ops          */
+/* [pipeline].create -- create the pipeline, stages, streams and ops          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineCreate(void)
 {
@@ -137,7 +137,7 @@ void Step::vPipelineCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::dropDebugLock -- drop this pipeline's debug lock                 */
+/* [pipeline].dropDebugLock -- drop this pipeline's debug lock                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineDropDebugLock(void)
 {
@@ -151,7 +151,7 @@ void Step::vPipelineDropDebugLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::earlyExit@ -- fetch this pipelines earlyExit indicator          */
+/* [pipeline].earlyExit@ -- fetch this pipelines earlyExit indicator          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineEarlyExitFetch(void)
 {
@@ -166,7 +166,7 @@ void Step::vPipelineEarlyExitFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::earlyExit! -- store this pipeline's earlyExit indicator          */
+/* [pipeline].earlyExit! -- store this pipeline's earlyExit indicator          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineEarlyExitStore(void)
 {
@@ -180,7 +180,7 @@ void Step::vPipelineEarlyExitStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::errored@ -- fetch this pipeline errored indicator                */
+/* [pipeline].errored@ -- fetch this pipeline errored indicator                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineErroredFetch(void)
 {
@@ -195,7 +195,7 @@ void Step::vPipelineErroredFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::errored! -- store this pipeline errored indicator                */
+/* [pipeline].errored! -- store this pipeline errored indicator                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineErroredStore(void)
 {
@@ -209,7 +209,7 @@ void Step::vPipelineErroredStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::getAccum -- get an accumulator from this pipeline                */
+/* [pipeline].getAccum -- get an accumulator from this pipeline                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineGetAccum(void)
 {
@@ -227,7 +227,7 @@ void Step::vPipelineGetAccum(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::grabDebugLock -- grab this pipeline's debug lock                 */
+/* [pipeline].grabDebugLock -- grab this pipeline's debug lock                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineGrabDebugLock(void)
 {
@@ -241,7 +241,7 @@ void Step::vPipelineGrabDebugLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::pulsed@ -- fetch this pipeline's pulsed indicator                */
+/* [pipeline].pulsed@ -- fetch this pipeline's pulsed indicator                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelinePulsedFetch(void)
 {
@@ -256,7 +256,7 @@ void Step::vPipelinePulsedFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::pulsed! -- store this pipeline's pulsed indicator                */
+/* [pipeline].pulsed! -- store this pipeline's pulsed indicator                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelinePulsedStore(void)
 {
@@ -270,7 +270,7 @@ void Step::vPipelinePulsedStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline[].op0@ -- fetch op0 of this pipeline                              */
+/* [pipeline].op0@ -- fetch op0 of this pipeline                              */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineOp0Fetch(void)
 {
@@ -286,7 +286,7 @@ void Step::vPipelineOp0Fetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline[].opsOnNode@ -- get no of ops executing on this node              */
+/* [pipeline].opsOnNode@ -- get no of ops executing on this node              */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineOpsOnNodeFetch(void)
 {
@@ -304,7 +304,7 @@ void Step::vPipelineOpsOnNodeFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline[].spawnOpTasks -- spawn tasks for all ops of pipeline for this node*/
+/* [pipeline].spawnOpTasks -- spawn tasks for all ops of pipeline for this node*/
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineSpawnOpTasks(void)
 {
@@ -323,7 +323,7 @@ void Step::vPipelineSpawnOpTasks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline[].startPipeline -- test for issueing a start marker               */
+/* [pipeline].startPipeline -- test for issueing a start marker               */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineStartPipeline(void)
 {

@@ -244,11 +244,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create pipeline from spec and spawn tasks for ops
   
-  PipelineSpec[] Pipeline[].create
-  //"pipeline::participant post Pipeline[].create" job[].progress
+  PipelineSpec[] [pipeline].create
+  //"pipeline::participant post [pipeline].create" job[].progress
   
-  Pipeline[].spawnOpTasks
-  //"pipeline::participant post Pipeline[].spawnOpTasks" job[].progress
+  [pipeline].spawnOpTasks
+  //"pipeline::participant post [pipeline].spawnOpTasks" job[].progress
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -335,15 +335,15 @@
   
   [task].grabLock
 
-    Pipeline[].opsOnNode@ to nAcks
+    [pipeline].opsOnNode@ to nAcks
 
     nAcks if
       nAcks [task].acksRemaining!
     
-      Pipeline[].startPipeline if
+      [pipeline].startPipeline if
     
         Marker[].newStartMarker
-        Marker[]\clear Pipeline[].op0@ op.enqueOperand
+        Marker[]\clear [pipeline].op0@ op.enqueOperand
       then
       [task].wait
     else

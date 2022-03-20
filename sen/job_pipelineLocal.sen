@@ -71,9 +71,9 @@
   
   PipelineSpec[] assert
 
-  PipelineSpec[] Pipeline[].create
+  PipelineSpec[] [pipeline].create
   
-  Pipeline[].spawnOpTasks
+  [pipeline].spawnOpTasks
 
   // run <pre_execute>
 
@@ -103,15 +103,15 @@
 
   [task].grabLock
 
-    Pipeline[].opsOnNode@ to nAcks
+    [pipeline].opsOnNode@ to nAcks
 
     nAcks if
       nAcks [task].acksRemaining!
     
-      Pipeline[].startPipeline if
+      [pipeline].startPipeline if
     
         Marker[].newStartMarker
-        Marker[]\clear Pipeline[].op0@ op.enqueOperand
+        Marker[]\clear [pipeline].op0@ op.enqueOperand
       then
       [task].wait
     else
