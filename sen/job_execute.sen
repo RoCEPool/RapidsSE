@@ -53,7 +53,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // delete the temporary job_execute
-  pJob_Execute job.delete2pc
+  pJob_Execute job.delete
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -798,7 +798,7 @@ public:
   void vJobClass(void);
 
   void vJobDec2pcAcksRmg(void);
-  void vJobDelete2pc(void);
+  void vJobDelete(void);
 
   void vJobEntryPointFetch(void);
   void vJobEntryFetch_other(void);

@@ -52,7 +52,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // delete the temporary job_cancel
-  pJob_Cancel job.delete2pc
+  pJob_Cancel job.delete
 ;
 
 /*----------------------------------------------------------------------------*/

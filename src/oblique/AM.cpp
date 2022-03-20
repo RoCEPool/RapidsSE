@@ -363,7 +363,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
             //|| bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
             //|| bDELETE_RULE(CN_API,     "vCallBootSystem"_Stz)
                bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
-            || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
+            || bDELETE_RULE(CN_STEP,    "vJobDelete"_Stz   )
            )
         )
       vDebugPoint();
@@ -374,7 +374,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
             //|| bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
             //|| bDELETE_RULE(CN_API,     "vCallBootSystem"_Stz)
                bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
-            || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
+            || bDELETE_RULE(CN_STEP,    "vJobDelete"_Stz   )
 
 //              || bDELETE_RULE(CN_AM,      "vJobDelete"_Stz      )
 //              || bDELETE_RULE(CN_AM,      "~Task"_Stz           )
