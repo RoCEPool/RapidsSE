@@ -26,9 +26,9 @@
 /*----------------------------------------------------------------------------*/
 /* send Job_Cancelled back to originating node                                */
 /*----------------------------------------------------------------------------*/
-: cancelled::replyToOrigin params| pJobParticipant |
+: cancelled:reply params| pJobParticipant |
 
-  // "cancelled::replyToOrigin" .
+  // "cancelled:reply" .
   
   // new a temporary Job_Cancelled
   pJobParticipant job_Cancelled::new locals| pJob_Cancelled |
@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* run recieved Job_Cancelled on originating node   recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: cancelled::cancelled
+: cancelled:cancelled
 
   <path> str.toStrVec Path[].set
   
@@ -124,7 +124,7 @@ cmdSyntax: cancelled :: cancelled ;
 : cancelled_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "cancelled::cancelled"
+    <entryPoint>    = "cancelled:cancelled"
     <path>     = "/"
   }
 ;

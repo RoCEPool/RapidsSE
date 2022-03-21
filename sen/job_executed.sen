@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* send Job_Executed back to originating node                                 */
 /*----------------------------------------------------------------------------*/
-: executed::replyToOrigin params| pJobParticipant |
+: executed:reply params| pJobParticipant |
 
-  // "executed::replyToOrigin" .
+  // "executed:reply" .
     
   // new a temporary Job_Executed
   pJobParticipant job_Executed::new locals| pJob_Executed |
@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job_Executed on originating node    recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: executed::executed
+: executed:executed
 
   [job] locals| pJob_Executed |
   pJob_Executed job.id@ locals| iJobId |
@@ -77,7 +77,7 @@
   [job].tscExecuted
 
   // send a job_end to all participants
-  ListedJob[] end::distribute
+  ListedJob[] end:distribute
   ListedJob[].returnReference
 
   [job]:retire
@@ -92,7 +92,7 @@ cmdSyntax: executed :: executed ;
 : executed_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "executed::executed"
+    <entryPoint>    = "executed:executed"
     <path>     = "/"
   }
 ;

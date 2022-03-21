@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job_Execute to all participants                                 */
 /*----------------------------------------------------------------------------*/
-: execute::distribute params| pJobOriginator |
+: execute:distribute params| pJobOriginator |
 
-  // "execute::distribute" .
+  // "execute:distribute" .
 
   //
   // where: on the originator node
@@ -59,9 +59,9 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job_Execute on participating node   recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: execute::execute
+: execute:execute
 
-  // "execute::execute" .
+  // "execute:execute" .
 
   //
   // where: on the participating node
@@ -85,7 +85,7 @@
   pTask_Execute task.cycleLock
     
   
-  // "execute::execute" .
+  // "execute:execute" .
 
   // execute the job on this participating node
   ListedJob[] job.scheduleNextPhase // job in participant list ; perform next phase
@@ -103,7 +103,7 @@ cmdSyntax: execute :: execute ;
 : execute_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "execute::execute"
+    <entryPoint>    = "execute:execute"
     <path>     = "/"
   }
 ;

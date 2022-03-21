@@ -59,7 +59,7 @@ void Step::vJob_BegunNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobBegun->pJobTags()->vInsert(C_TAG_FLOW,1);
 
-  pJobBegun->vEntryPoint("begun::begun"_Stz);
+  pJobBegun->vEntryPoint("begun:begun"_Stz);
   
   m_pDataStack->vPushPtr(pJobBegun);
   
@@ -99,7 +99,7 @@ void Step::vJob_CancelNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobCancel->pJobTags()->vInsert(C_TAG_FLOW,1);
     
-  pJobCancel->vEntryPoint("cancel::cancel"_Stz);
+  pJobCancel->vEntryPoint("cancel:cancel"_Stz);
   
   m_pDataStack->vPushPtr(pJobCancel);
   
@@ -141,7 +141,7 @@ void Step::vJob_CancelledNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobCancelled->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  pJobCancelled->vEntryPoint("cancelled::cancelled"_Stz);
+  pJobCancelled->vEntryPoint("cancelled:cancelled"_Stz);
   
   m_pDataStack->vPushPtr(pJobCancelled);
   
@@ -182,7 +182,7 @@ void Step::vJob_EndNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobEnd->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  pJobEnd->vEntryPoint("end::end"_Stz);
+  pJobEnd->vEntryPoint("end:end"_Stz);
   
   m_pDataStack->vPushPtr(pJobEnd);
   
@@ -224,7 +224,7 @@ void Step::vJob_EndedNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobEnded->pJobTags()->vInsert(C_TAG_FLOW,1);
     
-  pJobEnded->vEntryPoint("ended::ended"_Stz);
+  pJobEnded->vEntryPoint("ended:ended"_Stz);
   
   m_pDataStack->vPushPtr(pJobEnded);
   
@@ -266,7 +266,7 @@ void Step::vJob_ExecuteNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobExecute->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  pJobExecute->vEntryPoint("execute::execute"_Stz);
+  pJobExecute->vEntryPoint("execute:execute"_Stz);
   
   m_pDataStack->vPushPtr(pJobExecute);
   
@@ -307,7 +307,7 @@ void Step::vJob_ExecutedNew(void)
   if (pDistJob->bHasTag(C_TAG_FLOW))
     pJobExecuted->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  pJobExecuted->vEntryPoint("executed::executed"_Stz);
+  pJobExecuted->vEntryPoint("executed:executed"_Stz);
   
   m_pDataStack->vPushPtr(pJobExecuted);
   

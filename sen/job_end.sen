@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job_End to all participants                                     */
 /*----------------------------------------------------------------------------*/
-: end::distribute params| pJobOriginator |
+: end:distribute params| pJobOriginator |
 
   //
   // where:  On the originator node.
@@ -58,7 +58,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job_End on participating node       recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: end::end
+: end:end
 
   //
   // where: on the participating node
@@ -98,7 +98,7 @@ cmdSyntax: end :: end ;
 : end_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "end::end"
+    <entryPoint>    = "end:end"
     <path>     = "/"
 }
 ;

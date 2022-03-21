@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* send Job_Begun back to originating node                                    */
 /*----------------------------------------------------------------------------*/
-: begun::replyToOrigin params| pJobParticipant |
+: begun:reply params| pJobParticipant |
 
-  // "begun::replyToOrigin" .
+  // "begun:reply" .
   
   // new a temporary Job_Begun
   pJobParticipant job_Begun::new locals| pJob_Begun |
@@ -35,10 +35,10 @@
 /*----------------------------------------------------------------------------*/
 /* run this received Job_Begun on originating node  recv: job.spawn           */
 /*----------------------------------------------------------------------------*/
-: begun::begun
+: begun:begun
 
 
-  // "begun::begun" .
+  // "begun:begun" .
 
   //
   // where:  On the originator node.
@@ -87,7 +87,7 @@
   [job].tscBegun
 
   // distribute Job_Execute to all participants
-  ListedJob[] execute::distribute
+  ListedJob[] execute:distribute
   ListedJob[].returnReference
   [job]:retire
 ;
@@ -101,7 +101,7 @@ cmdSyntax: begun :: begun ;
 : begun_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "begun::begun"
+    <entryPoint>    = "begun:begun"
     <path>     = "/"
   }
 ;

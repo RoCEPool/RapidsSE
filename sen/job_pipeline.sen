@@ -264,8 +264,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply begun to originator
 
-  [job] begun::replyToOrigin
-  //"pipeline:begin post begun::replyToOrigin" [job].progress
+  [job] begun:reply
+  //"pipeline:begin post begun:reply" [job].progress
 
   [ddlLock].testDrop
 
@@ -363,7 +363,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply executed to originator
   
-  [job] executed::replyToOrigin
+  [job] executed:reply
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -409,7 +409,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply ended to originator
   
-  [job] ended::replyToOrigin
+  [job] ended:reply
 
   JS_DELETABLE [job].state!
   [job].addRetired
@@ -442,7 +442,7 @@
 
   [job].removeParticipant
     
-  [job] cancelled::replyToOrigin
+  [job] cancelled:reply
 
   JS_DELETABLE [job].state!
 
