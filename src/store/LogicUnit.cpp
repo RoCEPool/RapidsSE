@@ -170,6 +170,7 @@ LogicUnit::LogicUnit(void)
 ,      m_xpStreamSet(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMSET)
 , m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                 LR_STREAMSETTABLE)
 ,        m_xpSubCall(this,RF_REPAIR_DELETE,SubCall::vRepair,        LR_SUBCALL)
+,    m_xpSubPipeline(this,RF_NONE,         nullptr,                 LR_SUBPIPELINE)
 ,      m_xpSubReturn(this,RF_REPAIR_DELETE,SubReturn::vRepair,      LR_SUBRETURN)
 ,         m_xpSubset(this,RF_REPAIR_DELETE,Operand::vRepairList,    LR_SUBSET)
 

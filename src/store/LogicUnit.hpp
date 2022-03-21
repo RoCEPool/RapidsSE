@@ -251,6 +251,7 @@ namespace STORE
     REG<Operand,        CN_NONE          > m_xpStreamSet;
     REG<Table,          CN_TABLE         > m_xpStreamSetTable;
     REG<SubCall,        CN_NONE          > m_xpSubCall;
+    REG<Pipeline,       CN_PIPELINE      > m_xpSubPipeline;
     REG<SubReturn,      CN_NONE          > m_xpSubReturn;
     REG<Operand,        CN_NONE          > m_xpSubset;
 
