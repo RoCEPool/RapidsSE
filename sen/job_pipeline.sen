@@ -167,7 +167,6 @@
   //                pipeline has begun / distribute execute                   //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
-[with].subPipeline? if
   [job].error@ not if
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -183,7 +182,6 @@
 
     pJob_Execute job.delete
   then
-then
   
   
   //5678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -192,7 +190,6 @@ then
   //             pipeline has executed / distribute end                       //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
-[with].subPipeline? if
   [job].error@ not if
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -208,7 +205,6 @@ then
 
     pJob_End job.delete
   then
-then
 
 
   //5678901234567890123456789012345678901234567890123456789012345678901234567890
