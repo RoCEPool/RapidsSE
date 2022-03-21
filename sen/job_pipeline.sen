@@ -16,6 +16,7 @@
   //"pipeline:origin" .
     
   [job].assertCorrectness
+  [job].assertNeutral
 
   [job].tscBeginning
   
@@ -53,6 +54,7 @@
 
   // add this job to originator job list
   [job].addOriginator
+  [job].assertOriginator
 
   "<show_command>" sysargs::tagSet@ tagSet.hasName
   if
@@ -159,7 +161,7 @@
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   [job].removeOriginator
-  
+
   [session].hasCascade@ not
   if
       
@@ -258,6 +260,7 @@
   // add job to participant list
   [job].tscParticipant
   [job].addParticipant
+  [job].assertParticipant
   [job].assertCorrectness
   
 
@@ -290,6 +293,7 @@
   0 locals| nAcks |
   
   [job].assertCorrectness
+  [job].assertParticipant
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -384,7 +388,8 @@
   // "pipeline:end" .
 
   [job].assertCorrectness
-  
+  [job].assertParticipant
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job is ending
@@ -404,7 +409,7 @@
   // remove job from plist
   
   [job].removeParticipant
-  
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply ended to originator
@@ -432,7 +437,8 @@
   // "pipeline:cancel" .
   
   [job].assertCorrectness
-  
+  [job].assertParticipant
+
     // [ senCompiler::current@ word.name@ encode::push ] .
 
   JP_CANCELING [job].phase!
@@ -441,7 +447,7 @@
 
 
   [job].removeParticipant
-    
+
   [job] cancelled:reply
 
   JS_DELETABLE [job].state!
