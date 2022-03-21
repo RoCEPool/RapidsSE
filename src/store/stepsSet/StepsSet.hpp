@@ -812,6 +812,8 @@ public:
   void vJobErrorFetch(void);
   void vJobErrorStore(void);
 
+  void vJobGet(void);
+
   void vJobIdFetch(void);
   void vJobIdFetch_other(void);
 
@@ -881,14 +883,6 @@ public:
   void vJobMetricsJobSet(void);
   void vJobMetricsNew(void);
   void vJobMetricsUpdate(void);
-
-  // job ref
-  void vListedJobHasTask(void);
-  void vListedJobPointer(void);
-  void vListedJobAssertNoRef(void);
-  void vListedJobReturn(void);
-  void vListedJobReferences(void);
-  void vListedJobTaskFetch(void);
 
   // job generic
   void vJob_BegunNew(void);
@@ -1031,7 +1025,12 @@ public:
   // listed job
   void vListedJobFindOriginator(void);
   void vListedJobFindParticipant(void);
-
+  void vListedJobHasTask(void);
+  void vListedJobPointer(void);
+  void vListedJobAssertNoRef(void);
+  void vListedJobReturn(void);
+  void vListedJobReferences(void);
+  void vListedJobTaskFetch(void);
 
   // loader
   void vLoaderCreate(void);
@@ -1112,7 +1111,6 @@ public:
   void vLogicUnitIntStackStore(void);
   void vLogicUnitJobMetricsFetch(void);
   void vLogicUnitJobMetricsStore(void);
-
   void vLogicUnitSrcIndexFetch(void);
   void vLogicUnitSrcTableFetch(void);
   void vLogicUnitTransform(void);
@@ -1189,17 +1187,13 @@ public:
   void vMetaGetDelete(void);
   void vMetaGetGet(void);
   void vMetaGetGetAndClear(void);
+  void vMetaGetGetParts(void);
   void vMetaGetIsNotNull(void);
   void vMetaGetIsNull(void);
   void vMetaGetSet(void);
   void vMetaGetNew(void);
   void vMetaGetTableNameFetch(void);
-
-  // metaRecv
   void vMetaGetPutParts(void);
-
-  // metaSend
-  void vMetaGetGetParts(void);
 
   // metaTable
   void vMetaTableListTables(void);
@@ -1208,18 +1202,18 @@ public:
   void vMonitorUpdateNodeStatus(void);
 
   // named buffer
-  void vNamedBufferNameFetch(void);
-  void vNamedBufferNameStore(void);
-
   void vNamedBufferDelete(void);
   void vNamedBufferGet(void);
   void vNamedBufferGetAndClear(void);
   void vNamedBufferIsNotNull(void);
   void vNamedBufferIsNull(void);
   void vNamedBufferMorphClass(void);
+  void vNamedBufferNameFetch(void);
+  void vNamedBufferNameStore(void);
   void vNamedBufferPipeIn(void);
   void vNamedBufferSet(void);
 
+  // network
   void vNetworkReset(void);
   void vNetworkShow(void);
 
@@ -1266,9 +1260,6 @@ public:
   void vObjectPostRecvWordFetch(void);
   void vObjectPreSendWordFetch(void);
   void vObjectStore(void);
-
-  // olist (originator list)
-  void vOlistFindJob(void);
 
   // op
   void vOpAckPipelineJob(void);
@@ -1405,9 +1396,6 @@ public:
   void vPlanNameFetch(void);
   void vPlanNameStore(void);
   void vPlanShow(void);
-
-  // plist (participant list)
-  void vPlistFindJob(void);
 
   // pot
   void vPotCompleted(void);
@@ -1546,8 +1534,6 @@ public:
   // reg folder
   void vRegFolderFindSymbol(void);
 
-  // reg job
-  void vJobGet(void);
 
   // reg now
   void vRegNowGet(void);
@@ -1598,16 +1584,11 @@ public:
   void vPipeinSet(void);
   void vPipeinWriteProfile(void);
 
-  // register
+  // received object
   void vRecvdObjectGet(void);
   void vRecvdObjectIsNotNull(void);
   void vRecvdObjectIsNull(void);
   void vRecvdObjectSet(void);
-
-
-  // reg timer
-  void vTimerGet(void);
-  void vTimerSet(void);
 
   // row buffer
   void vRowBufferCopy(void);
@@ -2253,7 +2234,11 @@ public:
   void vTickingGetTick(void);
   void vTickingTicksPerSec(void);
 
+  // time
+  void vTimeCurrent(void);
+
   // timer
+  void vTimerGet(void);
   void vTimerDelete(void);
   void vTimerInit(void);
   void vTimerMicrosecs(void);
@@ -2263,6 +2248,7 @@ public:
   void vTimerReportStr(void);
   void vTimerReset(void);
   void vTimerSecs(void);
+  void vTimerSet(void);
   void vTimerStart(void);
   void vTimerTicks(void);
   void vTimerUpdate(void);
@@ -2274,9 +2260,6 @@ public:
   void vTinyCNew(void);
   void vTinyCRelocate(void);
   void vTinyCSymbols(void);
-
-  // time
-  void vTimeCurrent(void);
 
   // to
   void vToBcd(void);
