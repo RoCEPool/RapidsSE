@@ -985,6 +985,21 @@ void Job::vSpawnTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get subPipeline                                                            */
+/*----------------------------------------------------------------------------*/
+Pipeline* Job::pSubPipeline_job(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Task* pTask = this->pTask();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
+
+  Pipeline* pSubPipeline = (* pLogicUnit->m_xpSubPipeline);
+    
+  return pSubPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
 Task* Job::pTask(void)

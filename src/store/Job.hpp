@@ -193,6 +193,7 @@ namespace STORE
     void vSingularOp(Op* pSingularOp);
     void vSetFromCascade(Stz* szCascade);
     void vSpawnTask(void);
+    Pipeline* pSubPipeline_job(void);
 
     Task* pTask(void);
     void vTask(Task* pTask);
