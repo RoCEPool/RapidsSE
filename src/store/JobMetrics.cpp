@@ -338,8 +338,8 @@ bool JobMetrics::bUpdate(bool bAppendList)
   }
   
   
-  Pipeline* pPipeline = pJob->pPipeline_job();
-  if (! pPipeline) {
+  Pipeline* pSubPipeline = pJob->pSubPipeline_job();
+  if (! pSubPipeline) {
     pJob->vDropLock();
     vTrace("JobMetrics pipeline not found jobId=%lld\n"_Stz,m_tJobId.iAsI8());
     return false;
@@ -360,7 +360,7 @@ bool JobMetrics::bUpdate(bool bAppendList)
 //  vTrace("  Pipeline %s\n"_Stz
 //         ,pPipelineMetrics->szPipelineNm());
 
-  Pipework* pPipework = pPipeline->pPipework();
+  Pipework* pPipework = pSubPipeline->pPipework();
   while (CN_STAGEMETRICS == eNextClassNo(d_MetricsCursor)) {
     StageMetrics* pStageMetrics = pGetStageMetrics(d_MetricsCursor);
 //    vTrace("    Stage %lld %s\n"_Stz
@@ -446,11 +446,11 @@ void JobMetrics::vCollect(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Pipeline* pPipeline = pJob->pPipeline_job();
+  Pipeline* pSubPipeline = pJob->pSubPipeline_job();
   
-  new(& m_oMetricsWsp) PipelineMetrics(pPipeline->szPipelineNm());
+  new(& m_oMetricsWsp) PipelineMetrics(pSubPipeline->szPipelineNm());
   
-  Pipework* pPipework = pPipeline->pPipework();
+  Pipework* pPipework = pSubPipeline->pPipework();
   
   i8 nStages = pPipework->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {

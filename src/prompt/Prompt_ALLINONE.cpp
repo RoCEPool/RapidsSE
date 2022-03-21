@@ -747,10 +747,10 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
     vTrace("Cancelling job %lld\n"_Stz, tJobId.iAsI8());
   
   // get the pipeline from the job
-  Pipeline* pPipeline = pJob->pPipeline_job();
+  Pipeline* pSubPipeline = pJob->pSubPipeline_job();
 
   // cancel the pipeline
-  if ( ! pPipeline->bCancel(nullptr) ) {
+  if ( ! pSubPipeline->bCancel(nullptr) ) {
     vTrace("Cancel rejected. Job %lld almost done.\n"_Stz, tJobId.iAsI8());
     return false;
   }

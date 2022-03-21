@@ -87,8 +87,8 @@ void Step::vParcelDemonOut(void)
   // !!!!!!!!!!!!!!
   // move to AM
   
-  Pipeline* pPipeline = pJob->pPipeline_job();
-  Pipework* pPipework = pPipeline->pPipework();
+  Pipeline* pSubPipeline = pJob->pSubPipeline_job();
+  Pipework* pPipework = pSubPipeline->pPipework();
   Stage*    pStage0   = pPipework->pGet(0);
   Stream*   pStream0  = pStage0->pGet(0);
   Op*       pOp0      = pStream0->pGet(0);
@@ -196,8 +196,8 @@ void Step::vParcelPipeOut(void)
     // !!!!!!!!!!!!!!
     // move to AM
     
-    Pipeline* pPipeline = pJob->pPipeline_job();
-    Pipework* pPipework = pPipeline->pPipework();
+    Pipeline* pSubPipeline = pJob->pSubPipeline_job();
+    Pipework* pPipework = pSubPipeline->pPipework();
     Stage*    pStage0   = pPipework->pGet(0);
     Stream*   pStand0   = pStage0->pGet(0);
     Op*       pOp0      = pStand0->pGet(0);
@@ -216,10 +216,10 @@ void Step::vParcelPipeOut(void)
   JobId tPipelineJob;
   tPipelineJob = pParcel->iPipelineJobId();
   Job* pJob = AM::pJob_FindParticipating(tPipelineJob);
-  Pipeline* pPipeline = pJob->pPipeline_job();
+  Pipeline* pSubPipeline = pJob->pSubPipeline_job();
   
   // get the next stage the send is supposed to send to
-  Pipework* pFormWork = pPipeline->pPipework();
+  Pipework* pFormWork = pSubPipeline->pPipework();
   Stage* pDstStage = pFormWork->pGet(pParcel->iDstStage());
   i8 nStreamPtns = pDstStage->nItems();
 
