@@ -8,8 +8,6 @@ assert::stack_0
 
   "job__words.sen"          include
 
-  "job_abstract.sen"        include
-
   "job_ended.sen"           include
   "job_end.sen"             include
   "job_cancelled.sen"       include
