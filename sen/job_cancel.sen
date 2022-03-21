@@ -82,7 +82,7 @@
   pTask_Cancel task.cycleLock
     
 
-  "Participant:cancel" ListedJob[] job.entry!
+  "pipeline:cancel" ListedJob[] job.entry!
   ListedJob[] job.scheduleNextPhase
   ListedJob[].returnReference
   

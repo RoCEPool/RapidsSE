@@ -147,7 +147,7 @@
     // set acks for originator task
     1 [task].acksRemaining!
 
-    "Participant:begin" [job].entryPoint!
+    "pipeline:begin" [job].entryPoint!
     job::distributeParticipants
     
     [task].wait
@@ -200,9 +200,9 @@
 /*----------------------------------------------------------------------------*/
 /* begin pipeline job on participant node                                     */
 /*----------------------------------------------------------------------------*/
-: Participant:begin ( -- )
+: pipeline:begin ( -- )
 
-  // "Participant:begin" .
+  // "pipeline:begin" .
 
   [job].progressReset
   
@@ -215,7 +215,7 @@
   // this job is beginning
   
   JP_BEGINNING [job].phase!
-  //"Participant:begin post [job]..phase!" [job].progress
+  //"pipeline:begin post [job]..phase!" [job].progress
 
   <path> str.toStrVec Path[].set
 
@@ -228,11 +228,11 @@
 
   Dynamo[].new
 
-  //"Participant:begin pre dynamo" [job].progress
+  //"pipeline:begin pre dynamo" [job].progress
   <cmd> Dynamo[].compile
     EC_NONE == assert
     to PipelineSpec[]
-  //"Participant:begin post Dynamo[].compile" [job].progress
+  //"pipeline:begin post Dynamo[].compile" [job].progress
 
   Dynamo[].delete
   
@@ -241,10 +241,10 @@
   // create pipeline from spec and spawn tasks for ops
   
   PipelineSpec[] [pipeline].create
-  //"Participant:begin post [pipeline].create" [job].progress
+  //"pipeline:begin post [pipeline].create" [job].progress
   
   [pipeline].spawnOpTasks
-  //"Participant:begin post [pipeline].spawnOpTasks" [job].progress
+  //"pipeline:begin post [pipeline].spawnOpTasks" [job].progress
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -253,7 +253,7 @@
   JP_BEGUN [job].phase!
 
   // what to execute next
-  "Participant:execute" [job].entryPoint!
+  "pipeline:execute" [job].entryPoint!
 
   // add job to participant list
   [job].tscParticipant
@@ -265,7 +265,7 @@
   // reply begun to originator
 
   [job] begun::replyToOrigin
-  //"Participant:begin post begun::replyToOrigin" [job].progress
+  //"pipeline:begin post begun::replyToOrigin" [job].progress
 
   [ddlLock].testDrop
 
@@ -283,9 +283,9 @@
 /*----------------------------------------------------------------------------*/
 /* execute pipeline job on participant node                                   */
 /*----------------------------------------------------------------------------*/
-: Participant:execute ( -- )
+: pipeline:execute ( -- )
 
-  // "Participant:execute" .
+  // "pipeline:execute" .
   
   0 locals| nAcks |
   
@@ -354,7 +354,7 @@
   JP_EXECUTED [job].phase!
   
   // what to execute next
-  "Participant:end" [job].entryPoint!
+  "pipeline:end" [job].entryPoint!
 
   [ddlLock].testDrop
   ListedJob[].assertNoRef
@@ -379,9 +379,9 @@
 /*----------------------------------------------------------------------------*/
 /* end pipeline job on participant node                                       */
 /*----------------------------------------------------------------------------*/
-: Participant:end ( -- )
+: pipeline:end ( -- )
 
-  // "Participant:end" .
+  // "pipeline:end" .
 
   [job].assertCorrectness
   
@@ -427,9 +427,9 @@
 /*----------------------------------------------------------------------------*/
 /* cancel pipeline job on participant node                                    */
 /*----------------------------------------------------------------------------*/
-: Participant:cancel ( -- )
+: pipeline:cancel ( -- )
 
-  // "Participant:cancel" .
+  // "pipeline:cancel" .
   
   [job].assertCorrectness
   
