@@ -242,10 +242,14 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create pipeline from spec and spawn tasks for ops
   
-  PipelineSpec[] [pipeline].create
+  [with].subPipeline? if
+    PipelineSpec[] subPipeline[].create
+    SubPipeline[].spawnOpTasks
+  else
+    PipelineSpec[] [pipeline].create
+    [pipeline].spawnOpTasks
+  then
   
-  [pipeline].spawnOpTasks
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has begun on this node
   
@@ -330,22 +334,46 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ???? enqueue start-marker to start op to execute the pipeline job
   
-  [task].grabLock
+  [with].subPipeline? if
 
-    [pipeline].opsOnNode@ to nAcks
+    [task].grabLock
 
-    nAcks if
-      nAcks [task].acksRemaining!
-    
-      [pipeline].startPipeline? if
-    
-        Marker[].newStartMarker
-        Marker[]\clear [pipeline].op0@ op.enqueOperand
+      SubPipeline[].opsOnNode@ to nAcks
+
+      nAcks if
+        nAcks [task].acksRemaining!
+      
+        SubPipeline[].startPipeline? if
+      
+          Marker[].newStartMarker
+          Marker[]\clear SubPipeline[].op0@ op.enqueOperand
+        then
+        [task].wait
+      else
+        [task].dropLock
       then
-      [task].wait
-    else
-      [task].dropLock
-    then
+
+  else
+
+    [task].grabLock
+
+      [pipeline].opsOnNode@ to nAcks
+
+      nAcks if
+        nAcks [task].acksRemaining!
+      
+        [pipeline].startPipeline? if
+      
+          Marker[].newStartMarker
+          Marker[]\clear [pipeline].op0@ op.enqueOperand
+        then
+        [task].wait
+      else
+        [task].dropLock
+      then
+
+  then
+  
     
 
   
