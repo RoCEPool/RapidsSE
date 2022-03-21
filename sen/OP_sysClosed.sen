@@ -11,13 +11,13 @@
 
   
   begin
-     system::activeJobs ">>> ActiveJobs %v" .printf
-     system::activeJobs 2 >
+     [system].activeJobs ">>> ActiveJobs %v" .printf
+     [system].activeJobs 2 >
   while
     1 [task].sleepSsec
   repeat
 
-  system::activeJobs "$$$ ActiveJobs %v" .printf
+  [system].activeJobs "$$$ ActiveJobs %v" .printf
   
 
   true [session].systemCloser!

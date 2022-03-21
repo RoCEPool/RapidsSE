@@ -102,8 +102,8 @@
 
   //ptnmap::adjust
 
-  //3 infoSetRow[].getIntColumn system::started@ not and if
-  //  true system::started!
+  //3 infoSetRow[].getIntColumn [system].started@ not and if
+  //  true [system].started!
   //then
 
   // delete the infoset

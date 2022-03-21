@@ -35,7 +35,7 @@
   "<show_command>" sysargs::tagSet@ tagSet.hasName
   if
     <cmd> "pipelineLocal::origin: %v\n" .printf
-    //system::bpa
+    //[system].bpa
   then
 
   Dynamo[].new

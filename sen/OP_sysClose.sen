@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : sysClose_sysClose \handler
 
-  false system::open!
+  false [system].open!
 
   PipeIn[].pipeOut
   

@@ -14,17 +14,17 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_System(void)
 {
-  vAddStep("system::activeJobs"_Stz, &Step::vSystemActiveJobs);
-  vAddStep("system::bpa"_Stz,        &Step::vSystemBpa);
-  vAddStep("system::open@"_Stz,      &Step::vSystemOpenFetch);
-  vAddStep("system::open!"_Stz,      &Step::vSystemOpenStore);
-  vAddStep("system::see"_Stz,        &Step::vSystemSee);
-  vAddStep("system::started@"_Stz,   &Step::vSystemStartedFetch);
-  vAddStep("system::started!"_Stz,   &Step::vSystemStartedStore);
+  vAddStep("[system].activeJobs"_Stz, &Step::vSystemActiveJobs);
+  vAddStep("[system].bpa"_Stz,        &Step::vSystemBpa);
+  vAddStep("[system].open@"_Stz,      &Step::vSystemOpenFetch);
+  vAddStep("[system].open!"_Stz,      &Step::vSystemOpenStore);
+  vAddStep("[system].see"_Stz,        &Step::vSystemSee);
+  vAddStep("[system].started@"_Stz,   &Step::vSystemStartedFetch);
+  vAddStep("[system].started!"_Stz,   &Step::vSystemStartedStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* system::activeJobs -- get number of active jobs                            */
+/* [system].activeJobs -- get number of active jobs                           */
 /*----------------------------------------------------------------------------*/
 void Step::vSystemActiveJobs(void)
 {
@@ -38,7 +38,7 @@ void Step::vSystemActiveJobs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* system::bpa -- buffer pool analysis                                        */
+/* [system].bpa -- buffer pool analysis                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vSystemBpa(void)
 {
@@ -50,7 +50,7 @@ void Step::vSystemBpa(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* system::open@ -- fetch system open indicator                               */
+/* [system].open@ -- fetch system open indicator                              */
 /*----------------------------------------------------------------------------*/
 void Step::vSystemOpenFetch(void)
 {
@@ -58,13 +58,13 @@ void Step::vSystemOpenFetch(void)
   
   b8 bSystemOpen = AM::SYSTEM::bSystemOpen();
   
-  m_pDataStack->vPushInt(AM::SYSTEM::bSystemOpen());
+  m_pDataStack->vPushInt(bSystemOpen);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* system::open! -- store system open indicator                               */
+/* [system].open! -- store system open indicator                              */
 /*----------------------------------------------------------------------------*/
 void Step::vSystemOpenStore(void)
 {
@@ -78,7 +78,7 @@ void Step::vSystemOpenStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* system::see -- see system                                                  */
+/* [system].see -- see system                                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vSystemSee(void)
 {
@@ -105,7 +105,7 @@ void Step::vSystemSee(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* system::started@ -- get grid started                                       */
+/* [system].started@ -- get grid started                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vSystemStartedFetch(void)
 {
@@ -117,7 +117,7 @@ void Step::vSystemStartedFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* system::started! -- set grid started                                       */
+/* [system].started! -- set grid started                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vSystemStartedStore(void)
 {

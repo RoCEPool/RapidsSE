@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* se_include.sen -- main include sequence (called by bootSystem::bootSystem) */
+/* se_include.sen -- main include sequence (called by boot[system].bootSystem) */
 /*============================================================================*/
 
 "se_include.sen" .verbose

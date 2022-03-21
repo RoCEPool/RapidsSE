@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : sysOpen_sysOpen \handler
 
-  true system::open!
+  true [system].open!
   
   PipeIn[].pipeOut
   

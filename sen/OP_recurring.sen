@@ -19,7 +19,7 @@
     
     jobs::seeSqueue
     
-    system::bpa
+    [system].bpa
   
   else
   

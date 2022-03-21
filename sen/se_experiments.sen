@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : mleak \prompt
 
-  system::bpa
+  [system].bpa
 
   "\"Hello\" ." >interpret
   
-  system::bpa
+  [system].bpa
 ;
 
 

@@ -60,7 +60,7 @@
     <cmd> .
     //jobs::seeRlist
 
-    //system::bpa
+    //[system].bpa
   then
 
 
