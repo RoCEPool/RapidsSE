@@ -15,34 +15,23 @@
 
   // "execute:execute" .
 
-  //
-  // where: on the participating node
-  //
-  [job] locals| pJob_Execute |
-  0 locals| pTask_Execute |
+  // find the participating job
+  [job] job.id@ ListedJob[].findOriginator discard
 
-  // find the job to be executed in the participating jobs
-  pJob_Execute job.id@ locals| iJobId |
-  iJobId ListedJob[].findParticipant discard
-
-  // stall till job's previous phase (task) has completed
+  // stall till participating job's previous phase (task) has completed
   
-  ListedJob[].task@ to pTask_Execute
   begin
-      pTask_Execute task.state@ TS_HIBERNATING !=
+    ListedJob[].task@ task.state@ TS_HIBERNATING !=
   while
     "job to be executed still has non-hibernating task" .
     [task].yield
   repeat
-  pTask_Execute task.cycleLock
-    
-  
-  // "execute:execute" .
-
+  ListedJob[] task.cycleLock
+      
   // execute the job on this participating node
-  ListedJob[] job.scheduleNextPhase // job in participant list ; perform next phase
-  ListedJob[].returnReference
+  ListedJob[] job.scheduleNextPhase
   
+  ListedJob[].returnReference
   [job]:retire
 ;
 
