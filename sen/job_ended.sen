@@ -21,7 +21,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send the ended job
-  pJobParticipant job.id@ job::originator@ pJob_Ended job.reply
+  pJobParticipant [job].originNodeNo@ pJob_Ended job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

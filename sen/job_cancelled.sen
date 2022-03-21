@@ -36,7 +36,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send the cancelled job
-  pJobParticipant job.id@ job::originator@ pJob_Cancelled job.reply
+  pJobParticipant [job].originNodeNo@ pJob_Cancelled job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

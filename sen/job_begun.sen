@@ -21,7 +21,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send the begun job
-  pJobParticipant job.id@ job::originator@ pJob_Begun job.reply
+  pJobParticipant [job].originNodeNo@ pJob_Begun job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
