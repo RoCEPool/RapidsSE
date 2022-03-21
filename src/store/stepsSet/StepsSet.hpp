@@ -2387,6 +2387,9 @@ public:
   // user
   void vUserName(void);
 
+  // zero
+  void vWithSubPipeline(void);
+
   // word
   void vWord(void);
   void vWordAllot(void);
