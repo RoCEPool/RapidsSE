@@ -34,23 +34,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SubPipeline(void)
 {
-  vAddStep("SubPipeline[].addAccum"_Stz,      &Step::vSubPipelineAddAccum);
-  vAddStep("SubPipeline[].cancelled@"_Stz,    &Step::vSubPipelineCancelledFetch);
-  vAddStep("SubPipeline[].cancelled!"_Stz,    &Step::vSubPipelineCancelledStore);
-  vAddStep("SubPipeline[].create"_Stz,        &Step::vSubPipelineCreate);
-  vAddStep("SubPipeline[].dropDebugLock"_Stz, &Step::vSubPipelineDropDebugLock);
-  vAddStep("SubPipeline[].earlyExit@"_Stz,    &Step::vSubPipelineEarlyExitFetch);
-  vAddStep("SubPipeline[].earlyExit!"_Stz,    &Step::vSubPipelineEarlyExitStore);
-  vAddStep("SubPipeline[].errored@"_Stz,      &Step::vSubPipelineErroredFetch);
-  vAddStep("SubPipeline[].errored!"_Stz,      &Step::vSubPipelineErroredStore);
-  vAddStep("SubPipeline[].getAccum"_Stz,      &Step::vSubPipelineGetAccum);
-  vAddStep("SubPipeline[].grabDebugLock"_Stz, &Step::vSubPipelineGrabDebugLock);
-  vAddStep("SubPipeline[].op0@"_Stz,          &Step::vSubPipelineOp0Fetch);
-  vAddStep("SubPipeline[].opsOnNode@"_Stz,    &Step::vSubPipelineOpsOnNodeFetch);
-  vAddStep("SubPipeline[].pulsed@"_Stz,       &Step::vSubPipelinePulsedFetch);
-  vAddStep("SubPipeline[].pulsed!"_Stz,       &Step::vSubPipelinePulsedStore);
-  vAddStep("SubPipeline[].spawnOpTasks"_Stz,  &Step::vSubPipelineSpawnOpTasks);
-  vAddStep("SubPipeline[].startPipeline"_Stz, &Step::vSubPipelineStartPipeline);
+  vAddStep("SubPipeline[].addAccum"_Stz,       &Step::vSubPipelineAddAccum);
+  vAddStep("SubPipeline[].cancelled@"_Stz,     &Step::vSubPipelineCancelledFetch);
+  vAddStep("SubPipeline[].cancelled!"_Stz,     &Step::vSubPipelineCancelledStore);
+  vAddStep("SubPipeline[].create"_Stz,         &Step::vSubPipelineCreate);
+  vAddStep("SubPipeline[].dropDebugLock"_Stz,  &Step::vSubPipelineDropDebugLock);
+  vAddStep("SubPipeline[].earlyExit@"_Stz,     &Step::vSubPipelineEarlyExitFetch);
+  vAddStep("SubPipeline[].earlyExit!"_Stz,     &Step::vSubPipelineEarlyExitStore);
+  vAddStep("SubPipeline[].errored@"_Stz,       &Step::vSubPipelineErroredFetch);
+  vAddStep("SubPipeline[].errored!"_Stz,       &Step::vSubPipelineErroredStore);
+  vAddStep("SubPipeline[].getAccum"_Stz,       &Step::vSubPipelineGetAccum);
+  vAddStep("SubPipeline[].grabDebugLock"_Stz,  &Step::vSubPipelineGrabDebugLock);
+  vAddStep("SubPipeline[].op0@"_Stz,           &Step::vSubPipelineOp0Fetch);
+  vAddStep("SubPipeline[].opsOnNode@"_Stz,     &Step::vSubPipelineOpsOnNodeFetch);
+  vAddStep("SubPipeline[].pulsed@"_Stz,        &Step::vSubPipelinePulsedFetch);
+  vAddStep("SubPipeline[].pulsed!"_Stz,        &Step::vSubPipelinePulsedStore);
+  vAddStep("SubPipeline[].spawnOpTasks"_Stz,   &Step::vSubPipelineSpawnOpTasks);
+  vAddStep("SubPipeline[].startPipeline?"_Stz, &Step::vSubPipelineStartPipeline);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,7 +291,7 @@ void Step::vSubPipelineSpawnOpTasks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* SubPipeline[].startPipeline -- test for issueing a start marker            */
+/* SubPipeline[].startPipeline? -- test for issueing a start marker           */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineStartPipeline(void)
 {

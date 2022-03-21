@@ -243,11 +243,8 @@
   // create pipeline from spec and spawn tasks for ops
   
   PipelineSpec[] [pipeline].create
-  //"pipeline:begin post [pipeline].create" [job].progress
   
   [pipeline].spawnOpTasks
-  //"pipeline:begin post [pipeline].spawnOpTasks" [job].progress
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has begun on this node
@@ -340,7 +337,7 @@
     nAcks if
       nAcks [task].acksRemaining!
     
-      [pipeline].startPipeline if
+      [pipeline].startPipeline? if
     
         Marker[].newStartMarker
         Marker[]\clear [pipeline].op0@ op.enqueOperand
