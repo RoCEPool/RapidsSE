@@ -47,25 +47,23 @@
   ListedJob[] ssn::incBegun
   ListedJob[] ssn::traceSession
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // decrement the acks remaining in the originating job
   ListedJob[] job.dec2pcAcksRmg locals| bAmDecider |
 
   // if there are acks remaining just exit
-  bAmDecider not if
+  bAmDecider if
+
+    [job].tscBegun
+
+    // notify the originating task
+    ListedJob[].task@ task.ack
     ListedJob[].returnReference
-    [job]:retire
-    exit                                                         // *EARLY EXIT*
+
   then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all job_begun's have been received, so this job is the decider
-
-  [job].tscBegun
-
-  // notify the originating task
-  ListedJob[].task@ task.ack
   ListedJob[].returnReference
-
   [job]:retire
 ;
 
