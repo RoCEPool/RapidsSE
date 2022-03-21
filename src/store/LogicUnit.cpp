@@ -451,18 +451,23 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   // PROBLEM
   if (! m_xpPipeline.bIsNull()) {
     
-    Pipeline* pPipeline = *m_xpPipeline;
+    Pipeline* pPipeline = (* m_xpPipeline);
     RASSERT(pPipeline);
     RASSERT(CN_PIPELINE == pPipeline->eGetClassNo());
     
-    //delete *m_xpPipeline;
-    
-    //vTrace("~LogicUnit:: guarded delete of m_xpPipeline\n"_Stz);
     m_xpPipeline.vGuardedDeleteComponent(CN_PIPELINE,
                                          CN_LOGICUNIT,this,(Stz*)__func__);
-    //vTrace("~LogicUnit:: return from guarded delete of m_xpPipeline\n"_Stz);
   }
-  
+  if (! m_xpSubPipeline.bIsNull()) {
+    
+    Pipeline* pSubPipeline = (* m_xpSubPipeline);
+    RASSERT(pSubPipeline);
+    RASSERT(CN_PIPELINE == pSubPipeline->eGetClassNo());
+    
+    m_xpSubPipeline.vGuardedDeleteComponent(CN_PIPELINE,
+                                         CN_LOGICUNIT,this,(Stz*)__func__);
+  }
+
   if (m_pRluDiary) {
     vDiaryReport();
     delete m_pRluDiary;

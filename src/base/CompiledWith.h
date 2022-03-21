@@ -99,7 +99,7 @@
 
 #define WITH_OPT_HASHCAST EndDefine       //
 
-//#define WITH_SUBPIPELINE EndDefine       //
+#define WITH_SUBPIPELINE EndDefine       //
 
 /*============================================================================*/
 /* end                                                                        */
