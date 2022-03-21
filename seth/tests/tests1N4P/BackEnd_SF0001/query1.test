@@ -42,14 +42,14 @@ begin
     | stageMarker1962
   stage stageMarker1962 on all partitions :
     scan rapidsse public lineitem
-    | filter 1 " type BOOLEAN  $11 DATE '1998-09-01'  <=  "
-    | aggreg 0 " type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10 , type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  , type DECIMAL )  $6 1  $7 -  *  sum  , type DECIMAL )  $6 1  $7 -  *  1  $8 +  *  sum  , type INTEGER )  $5 count  , type INTEGER )  $6 count  , type DECIMAL )  $7 sum  , type INTEGER )  $7 count  , type INTEGER )  countAll  groupBy  type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10 "
+    | filter 2 " type BOOLEAN  $11 DATE '1998-09-01'  <=  "
+    | aggreg 2 " type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10 , type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  , type DECIMAL )  $6 1  $7 -  *  sum  , type DECIMAL )  $6 1  $7 -  *  1  $8 +  *  sum  , type INTEGER )  $5 count  , type INTEGER )  $6 count  , type DECIMAL )  $7 sum  , type INTEGER )  $7 count  , type INTEGER )  countAll  groupBy  type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10 "
     | stageMarker1965
   stage stageMarker1965 on all nodes :
-    aggreg 0 " type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 , type DECIMAL )  $3 sum  , type DECIMAL )  $4 sum  , type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  , type INTEGER )  $7 sum  , type INTEGER )  $8 sum  , type DECIMAL )  $9 sum  , type INTEGER )  $10 sum  , type INTEGER )  $11 sum  groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 "
+    aggreg 2 " type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 , type DECIMAL )  $3 sum  , type DECIMAL )  $4 sum  , type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  , type INTEGER )  $7 sum  , type INTEGER )  $8 sum  , type DECIMAL )  $9 sum  , type INTEGER )  $10 sum  , type INTEGER )  $11 sum  groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 "
     | stageMarker1968
   stage stageMarker1968 on origin :
-    aggreg 0 " type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 , type DECIMAL as sum_qty )  $3 sum  , type DECIMAL as sum_base_price )  $4 sum  , type DECIMAL as sum_disc_price )  $5 sum  , type DECIMAL as sum_charge )  $6 sum  , type INTEGER as count_order )  $11 sum  , type INTEGER )  $7 sum  , type INTEGER )  $8 sum  , type INTEGER )  $10 sum  , type DECIMAL )  $9 sum  groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 "
+    aggreg 2 " type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 , type DECIMAL as sum_qty )  $3 sum  , type DECIMAL as sum_base_price )  $4 sum  , type DECIMAL as sum_disc_price )  $5 sum  , type DECIMAL as sum_charge )  $6 sum  , type INTEGER as count_order )  $11 sum  , type INTEGER )  $7 sum  , type INTEGER )  $8 sum  , type INTEGER )  $10 sum  , type DECIMAL )  $9 sum  groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 "
     | aggreg 0 " type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 , type DECIMAL as sum_qty $3 , type DECIMAL as sum_base_price $4 , type DECIMAL as sum_disc_price $5 , type DECIMAL as sum_charge $6 , type DECIMAL as avg_qty $3 $8 /  , type DECIMAL as avg_price $4 $9 /  , type DECIMAL as avg_disc $11 $10 /  , type INTEGER as count_order $7 groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 "
     | stageLast
   stage stageLast on origin :

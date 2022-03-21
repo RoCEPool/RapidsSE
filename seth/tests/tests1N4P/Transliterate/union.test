@@ -5,7 +5,7 @@
 //------------------------------------------------------------------------------
 // neither table exists
 SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
-failure contains: "no such table"
+failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -33,7 +33,7 @@ success
 //------------------------------------------------------------------------------
 // one table does not exist
 SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
-failure contains: "no such table"
+failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 create table orders (

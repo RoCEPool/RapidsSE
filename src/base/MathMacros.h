@@ -501,8 +501,27 @@
     }                                                                      \
   }
 
+//TODO: OVERFLOW/UNDERFLOW
 #define _MOD_INTINT(eErrorCode)                                            \
-  NEVER_REACH;
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      if (iArg2 == 0) {                                                    \
+         *paW++ = C_DATUM_NULL;                                            \
+         eErrorCode = EC_DIVIDE_BY_ZERO;                                   \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = iArg1 % iArg2;                                            \
+      }                                                                    \
+    }                                                                      \
+  }
+
 
 #define _MUL_INTINT(eErrorCode)                                            \
   {                                                                        \

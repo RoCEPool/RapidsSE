@@ -21,7 +21,7 @@ create table datums (
   vch_col15  VARCHAR(32)
 );
 
-load datums "../DATA/Transliterate/groupBy.csv" ;
+load datums "../DATA/DataTypes/dataTypes.csv" ;
 
 create table LineItem
 (
@@ -35,9 +35,9 @@ create table LineItem
  L_TAX           DECIMAL(15,2) NOT NULL,
  L_RETURNFLAG    CHAR(1)       NOT NULL,
  L_LINESTATUS    CHAR(1)       NOT NULL,
- L_SHIPDATE      DATE NOT      NULL,
- L_COMMITDATE    DATE NOT      NULL,
- L_RECEIPTDATE   DATE NOT      NULL,
+ L_SHIPDATE      TIMESTAMP NOT      NULL,
+ L_COMMITDATE    TIMESTAMP NOT      NULL,
+ L_RECEIPTDATE   TIMESTAMP NOT      NULL,
  L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
  L_SHIPMODE      CHAR(10)      NOT NULL,
  L_COMMENT       VARCHAR(44)   NOT NULL
@@ -57,19 +57,404 @@ create index IxR_NAME on REGION (R_NAME);
 
 ///time load region "<tpch_dir>/region.<suffix>";
 /time load nation "<tpch_dir>/nation.<suffix>";
-///time load lineitem "<tpch_dir>/lineitem.<suffix>";
-///time load orders "<tpch_dir>/orders.<suffix>";
-///time load part "<tpch_dir>/part.<suffix>";
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+/time load orders "<tpch_dir>/orders.<suffix>";
+/time load part "<tpch_dir>/part.<suffix>";
 ///time load orders "../DATA/TPCH/orders10.csv";
 //load lineitem "../TPCH/SF_0001/lineitem.csv";
+//load lineitem "../DATA/TPCH/lineitem10.csv";
 
-explain stage transliterate select n_regionkey from nation order by N_REGIONKEY;
+//explain stage transliterate select sum(flt_col8) from datums;
+
+//SELECT 'rowCount' AS label, count(*) AS value FROM NATION;
+//SELECT 'rowCount' AS label, count(*)  AS value FROM NATION;
+create index lineitem_part ON lineitem(L_PARTKEY);
+
+//select int_col0, int_col1 from datums order by int_col1;
+explain stage transliterate SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name;
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0121
+  stage stageMarker0121 on all partitions :
+    scan rapidsse public nation
+    | aggreg 2 " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $3 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0861
+  stage stageMarker0861 on all partitions :
+    scan rapidsse public datums
+    | sort 2 " type INTEGER as int_col1 $1 ASC  "
+    | project 2 " type INTEGER as int_col0 $1 , type INTEGER as int_col1 $2 , type BOOLEAN as bol_col2 $3 , type BOOLEAN as bol_col3 $4 , type DATE as dte_col4 $5 , type DATE as dte_col5 $6 , type DECIMAL as dec_col6 $7 , type DECIMAL as dec_col7 $8 , type FLOAT as flt_col8 $9 , type FLOAT as flt_col9 $10 , type TIME as tme_col10 $11 , type TIME as tme_col11 $12 , type TIMESTAMP as tsp_col12 $13 , type TIMESTAMP as tsp_col13 $14 , type VARCHAR as vch_col14 $15 , type VARCHAR as vch_col15 $16 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0254
+  stage stageMarker0254 on all partitions :
+    scan rapidsse public datums
+    | sort 2 " sort type INTEGER as int_col1 $2 ASC  "
+    | project 2 " type INTEGER as int_col0 $1 "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+//select vch_col15 from datums;
+
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0212
+  stage stageMarker0212 on all partitions :
+    scan rapidsse public datums
+    | aggreg 2 " groupBy  type INTEGER as int_col1 $2 aggregates  type INTEGER $K1 , type INTEGER )  $1 sum  "
+    | filter 2 " type BOOLEAN  $2 7  >  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0137
+  stage stageMarker0137 on all partitions :
+    scan rapidsse public nation
+    | filter 2 " type BOOLEAN  }  $2 ''  like2  "
+    | project 2 " type VARCHAR as n_name $2 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0130
+  stage stageMarker0130 on all partitions :
+    scan rapidsse public nation
+    | project 2 " type VARCHAR 'alka'  , type INTEGER )  countAll  "
+    | combined 0
+    | stageMarker0133
+  stage stageMarker0133 on all nodes :
+    project 2 " type VARCHAR $1 , type INTEGER )  $2 sum  "
+    | combined 0
+    | stageMarker0136
+  stage stageMarker0136 on origin :
+    project 2 " type VARCHAR $1 , type INTEGER )  $2 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0226
+  stage stageMarker0226 on all partitions :
+    scan rapidsse public datums
+    | project 2 " type FLOAT )  $9 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0265
+  stage stageMarker0265 on all partitions :
+    scan rapidsse public datums
+    | project 2 " type FLOAT $9 1.440000e+00  +  , type FLOAT as flt_col8 $9 "
+    | sort 2 " type FLOAT as flt_col8 $2 ASC  "
+    | combined 0
+    | stageMarker0268
+  stage stageMarker0268 on all nodes :
+    sort 2 " type FLOAT as flt_col8 $2 ASC  "
+    | combined 0
+    | stageMarker0271
+  stage stageMarker0271 on origin :
+    sort 2 " type FLOAT as flt_col8 $2 ASC  "
+    | project 2 " type FLOAT $1 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+explain stage transliterate select sum(int_col0) from datums;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0226
+  stage stageMarker0226 on all partitions :
+    scan rapidsse public datums
+    | project 2 " type INTEGER )  $1 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+pipeline unamed
+begin
+ stage stageStart on origin :
+   start
+   | pulse once
+   | stageMarker0143
+ stage stageMarker0143 on all partitions :
+   scan rapidsse public lineitem
+   | project 2 " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
+   | sort 2 " type INTEGER as l_partkey $1 ASC  "
+   | combined 0
+   | next
+ stage stageLast on origin :
+   output
+   | sink
+   | first
+end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0212
+  stage stageMarker0212 on all partitions :
+    scan rapidsse public datums
+    | aggreg 2 " groupBy  type INTEGER as int_col1 $2 aggregates  type INTEGER $K1 , type INTEGER )  $1 sum  "
+    | filter 2 " type BOOLEAN  $2 7  >  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+//select int_col0 from datums where dte_col4 = NULL OR dte_col5 = DATE '2041-11-01';
+
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0181
+  stage stageMarker0181 on all partitions :
+    scan rapidsse public datums
+    | aggreg 2 " groupBy  type INTEGER as int_col1 $2
+                 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+    | combined 0
+     | next
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end ;
+
+
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan lineitem
+     | aggreg 2 " groupby type INTEGER L_PARTKEY
+                  aggregates
+                  type INTEGER as COL0 L_PARTKEY ,
+                  type INTEGER as COL1 L_PARTKEY 11 + "
+     | combined 0
+     | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+
+
+pipeline unnamed
+begin
+ stage stageStart on origin :
+   start
+   | pulse once
+   | next
+ stage stageA on all partitions :
+   scan lineitem
+   | aggreg 2 " groupby type INTEGER L_PARTKEY
+                aggregates type INTEGER as COL0 L_PARTKEY ,
+                type INTEGER as COL3 ) L_ORDERKEY sum"
+   | combined 0
+   | next
+ stage stageA on all nodes :
+       aggreg 2 " groupby type INTEGER COL0
+                  aggregates
+                  type INTEGER as COL3 ) COL3 sum "
+       | combined 0
+       | next
+ stage stageLast on origin :
+   output
+   | sink
+   | first
+ end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0181
+  stage stageMarker0181 on all partitions :
+    scan rapidsse public datums
+    | aggreg 2 " groupBy  type INTEGER as int_col1 $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+    | combined 0
+    | next
+    stage stageLast on origin :
+         output
+         | sink
+         | first
+       end ;
+
+//select 10 + sum(int_col0) from datums;
+
+//select n_regionkey, n_nationkey from nation order by N_REGIONKEY;
 
 //verbose enable;
 
 //select sum(int_col0), int_col1 from datums group by int_col1;
 
 //explain stage transliterate  select sum(int_col0), int_col1 from datums group by int_col1;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0143
+  stage stageMarker0143 on all partitions :
+    scan rapidsse public nation
+    | project 2 " type INTEGER as n_regionkey $1 , type VARCHAR as n_name $2 "
+    | sort 2 " type INTEGER as n_regionkey $1 ASC  "
+    | combined 0
+    | next
+   stage stageLast on origin :
+       output
+       | sink
+       | first
+     end ;
+explain stage transliterate  select sum(int_col0), int_col1 from datums group by int_col1;
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | top 2 "TOP type DECIMAL total" 2
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    scan nation
+    | project 2 " type VARCHAR as n_name $2 , type INTEGER as n_regionkey $3 "
+    | top 2 "TOP type DECIMAL n_regionkey" 2
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+
 
 pipeline unamed
 begin
@@ -89,7 +474,7 @@ begin
     | stageStart
 end ;
 
-/*
+
 pipeline Q
 begin
   stage stageStart on origin :
@@ -103,42 +488,12 @@ begin
     | combined 0
     | next
 
-  stage stageB on all nodes :
-    ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $1 , type decimal as total )  $2 sum  "
-    //| top 2 "TOP type DECIMAL total" 2
-    | combined 0
-    | next
-
-  stage stageC on origin :
-    ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $1 , type decimal as total )  $2 sum  "
-    | top 2 "TOP type DECIMAL total" 2
-    | combined 0
-    | next
-
   stage stageLast on origin :
     output
     | sink
     | first
   end ;
 
-
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | next
-  stage stageMarker0123 on all partitions :
-    scan rapidsse public nation
-    | project 2 " type INTEGER as n_regionkey $3 "
-    | sort 2 " sort type INTEGER as n_regionkey $1 ASC  "
-    | combined 0
-    | next
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
 */
 
 //explain stage transliterate select int_col0 from datums where int_col0 in (3,5,6,8);
@@ -212,6 +567,6 @@ begin
 
 end ;
 
-
+*/
 //SELECT 'abcdef' LIKE 'a_c%f' FROM nation LIMIT 1;
 
