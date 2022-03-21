@@ -76,9 +76,19 @@
 
   [job].tscExecuted
 
+[with].subPipeline? if
+
+  // notify the originating task
+  ListedJob[].task@ task.ack
+  ListedJob[].returnReference
+
+else
+
   // send a job_end to all participants
   ListedJob[] end:distribute
   ListedJob[].returnReference
+
+then
 
   [job]:retire
 ;
