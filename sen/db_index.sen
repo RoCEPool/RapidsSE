@@ -125,7 +125,7 @@
 
   [args].tracepoint if
     "MAKING INDEXES FOR TABLE " sTableNm str.cat
-      " on NODE " str.cat [grid].thisNode@ >str str.cat .
+      " on NODE " str.cat [grid].thisNodeNo@ >str str.cat .
   then
 
   sTableNm find execute locals| pTableFolder |

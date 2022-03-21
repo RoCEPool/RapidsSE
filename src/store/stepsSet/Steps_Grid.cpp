@@ -44,7 +44,7 @@ void Step::vAddSteps_Grid(void)
   vAddStep("[grid].seeNodes"_Stz,          &Step::vGridSeeNodes);
   vAddStep("[grid].show"_Stz,              &Step::vGridShow);
   vAddStep("[grid].tablePtnToPtnNo"_Stz,   &Step::vGridTablePtnToPtnNo);
-  vAddStep("[grid].thisNode@"_Stz,         &Step::vGridThisNodeFetch);
+  vAddStep("[grid].thisNodeNo@"_Stz,         &Step::vGridThisNodeFetch);
   vAddStep("[grid].thisNodeName@"_Stz,     &Step::vGridThisNodeNameFetch);
   vAddStep("[grid].toNode"_Stz,            &Step::vGridToNode);
 
@@ -57,7 +57,7 @@ void Step::vAddSteps_Grid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].vGridDumpInfo -- display nodes in the grid                           */
+/* [grid].vGridDumpInfo -- display nodes in the grid                          */
 /*----------------------------------------------------------------------------*/
 void Step::vGridDumpInfo(void)
 {
@@ -75,7 +75,7 @@ void Step::vGridDumpInfo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].findNodeByName -- find node based on name                            */
+/* [grid].findNodeByName -- find node based on name                           */
 /*----------------------------------------------------------------------------*/
 void Step::vGridFindNodeByName(void)
 {
@@ -93,7 +93,7 @@ void Step::vGridFindNodeByName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].findNodeByNo -- find node based on no                                */
+/* [grid].findNodeByNo -- find node based on no                               */
 /*----------------------------------------------------------------------------*/
 void Step::vGridFindNodeByNo(void)
 {
@@ -109,7 +109,7 @@ void Step::vGridFindNodeByNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].getGrid -- get grid object                                           */
+/* [grid].getGrid -- get grid object                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vGridGetGrid(void)
 {
@@ -126,7 +126,7 @@ void Step::vGridGetGrid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].getParts -- get grid parts                                           */
+/* [grid].getParts -- get grid parts                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vGridGetGridParts(void)
 {
@@ -151,7 +151,7 @@ void Step::vGridGetGridParts(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].knownNodes -- get number of connected nodes in the grid              */
+/* [grid].knownNodes -- get number of connected nodes in the grid             */
 /*----------------------------------------------------------------------------*/
 void Step::vGridKnownNodes(void)
 {
@@ -165,7 +165,7 @@ void Step::vGridKnownNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].ptnsPerNode -- get number of partitions per node                     */
+/* [grid].ptnsPerNode -- get number of partitions per node                    */
 /*----------------------------------------------------------------------------*/
 void Step::vGridPtnsPerNode(void)
 {
@@ -177,7 +177,7 @@ void Step::vGridPtnsPerNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].putParts -- put grid parts                                           */
+/* [grid].putParts -- put grid parts                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vGridPutGridParts(void)
 {
@@ -228,7 +228,7 @@ void Step::vGridPutGridParts(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].seeNodes -- see nodes of the grid                                    */
+/* [grid].seeNodes -- see nodes of the grid                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vGridSeeNodes(void)
 {
@@ -240,7 +240,7 @@ void Step::vGridSeeNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].show -- show the status of the grid                                  */
+/* [grid].show -- show the status of the grid                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vGridShow(void)
 {
@@ -304,7 +304,7 @@ void Step::vGridShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].TablePtnToPtnNo -- get tPtnId { m_iNodeNo=thisNode, m_i_Ptn=i_Ptn }  */
+/* [grid].TablePtnToPtnNo -- get tPtnId { m_iNodeNo=thisNode, m_i_Ptn=i_Ptn } */
 /*----------------------------------------------------------------------------*/
 void Step::vGridTablePtnToPtnNo(void)
 {
@@ -320,7 +320,7 @@ void Step::vGridTablePtnToPtnNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].thisNode@ -- get this node from the grid                             */
+/* [grid].thisNodeNo@ -- get this nodeNo from the grid                        */
 /*----------------------------------------------------------------------------*/
 void Step::vGridThisNodeFetch(void)
 {
@@ -334,7 +334,7 @@ void Step::vGridThisNodeFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].thisNodeName@ -- get this node name from the grid                    */
+/* [grid].thisNodeName@ -- get this node name from the grid                   */
 /*----------------------------------------------------------------------------*/
 void Step::vGridThisNodeNameFetch(void)
 {
@@ -349,7 +349,7 @@ void Step::vGridThisNodeNameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].toNode -- convert partition id to node no                            */
+/* [grid].toNode -- convert partition id to node no                           */
 /*----------------------------------------------------------------------------*/
 void Step::vGridToNode(void)
 {

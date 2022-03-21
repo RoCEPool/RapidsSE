@@ -131,7 +131,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the listening port of this node
-  [grid].thisNode@ [grid].findNodeByNo node.port to iPort
+  [grid].thisNodeNo@ [grid].findNodeByNo node.port to iPort
 
   //[args].verbose if
   //  iPort "Waiting for connections on port %v" .printf
@@ -172,7 +172,7 @@
     // if first socket on non-start node then start the connector task
 
     //nConns 1 == if
-    //  [grid].thisNode@ [grid].StartNode@ != if
+    //  [grid].thisNodeNo@ [grid].StartNode@ != if
     //    connector::spawn to pConnectorTask
     //  then
     //then

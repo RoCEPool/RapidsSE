@@ -10,7 +10,7 @@
 : makePartitions params| tableNm |
 
   [args].tracepoint if
-    tableNm "MAKING PARTITIONS FOR TABLE " swap str.cat " on NODE " str.cat [grid].thisNode@ >str str.cat .
+    tableNm "MAKING PARTITIONS FOR TABLE " swap str.cat " on NODE " str.cat [grid].thisNodeNo@ >str str.cat .
   then
 
   tableNm find execute ( dic )

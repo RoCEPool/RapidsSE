@@ -93,8 +93,8 @@ void Step::vAddSteps_Job(void)
     
   vAddStep("[job].originNodeNo@"_Stz,    &Step::vJobOriginNodeNoFetch);
   
-  vAddStep("[job].participantNode@"_Stz, &Step::vJobParticipantFetch);
-  vAddStep("[job].participantNode!"_Stz, &Step::vJobParticipantStore);
+  vAddStep("[job].participantNodeNo@"_Stz, &Step::vJobParticipantFetch);
+  vAddStep("[job].participantNodeNo!"_Stz, &Step::vJobParticipantStore);
   vAddStep("[job].preExecuteTest"_Stz,   &Step::vJobPreExecuteTest);
   vAddStep("[job].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("[job].phase!"_Stz,           &Step::vJobPhaseStore);

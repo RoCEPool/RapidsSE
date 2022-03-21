@@ -222,7 +222,7 @@
   <path> str.toStrVec Path[].set
 
   // set participant node of job
-  [grid].thisNode@ [job].participantNode!
+  [grid].thisNodeNo@ [job].participantNodeNo!
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -

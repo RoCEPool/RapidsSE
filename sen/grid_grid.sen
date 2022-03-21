@@ -184,7 +184,7 @@
 : [grid].setStartNode ( -- )
 
   // set this node as the grid start node
-  // [grid].thisNode@ [grid].StartNode!
+  // [grid].thisNodeNo@ [grid].StartNode!
 ;
 
 /*----------------------------------------------------------------------------*/
