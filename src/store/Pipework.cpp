@@ -1,0 +1,257 @@
+/*============================================================================*/
+/* Pipework.cpp -- Pipework                                                   */
+/*============================================================================*/
+
+#include "BASE.h"
+
+#include "eYX.h"
+
+#include "Grid.hpp"
+#include "Op.hpp"
+#include "OpSpec.hpp"
+#include "Stream.hpp"
+#include "Stage.hpp"
+#include "Pipework.hpp"
+#include "PipeworkSpec.hpp"
+#include "StageSpec.hpp"
+#include "Pipeline.hpp"
+
+#include "SP_Pipework.hpp"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction(STORE,Pipework,CN_PIPEWORK)
+__aNewFunction(Pipework,CN_PIPEWORK)
+__vDeleteFunction(Pipework,CN_PIPEWORK)
+__aFooterFunction(Pipework)
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Pipework::Pipework(Pipeline* pPipeline, PipeworkSpec* pPipeworkSpec)
+: LifeGuard_t<Pipework>(this,CN_PIPEWORK)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  m_pPipeline     = pPipeline;
+  m_pPipeworkSpec = pPipeworkSpec;
+
+  _checkInitialised_(CN_PIPEWORK);
+  
+  vCreatePipework();
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Pipework::~Pipework(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  i8 nStages = this->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    Stage* pStage = pGet(i_Stage);
+    
+    pStage->vGuardedDelete(CN_STAGE,&pStage,
+                           CN_PIPEWORK,this,(Stz*)__func__);
+  }
+
+  vClear();
+
+//  m_pPipeworkSpec->vGuardedDelete(CN_PIPEWORKSPEC,&m_pPipeworkSpec,
+//                                  CN_PIPEWORK,this,(Stz*)__func__);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* cancel the pipeline                                                        */
+/*----------------------------------------------------------------------------*/
+bool Pipework::bCancel(Task* pTriggeringTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  // get the first stage of the pipeline
+  Stage* pStage = pGet(0);
+  
+  // send cancelMarker to the start Op of the first stage of the pipeline
+  pStage->vCancelPipeline(pTriggeringTask);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get formwork spec                                                          */
+/*----------------------------------------------------------------------------*/
+PipeworkSpec* Pipework::pPipeworkSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  return m_pPipeworkSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get op 0                                                                   */
+/*----------------------------------------------------------------------------*/
+Op* Pipework::pOp0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  Stage*  pStage0 = pGet(0);
+  Op*     pOp0    = pStage0->pOp0();
+
+  return pOp0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of ops to be excuted on given node                              */
+/*----------------------------------------------------------------------------*/
+i8 Pipework::nOpsOnNode(i8 iNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  i8 nOps = 0;
+  
+  i8 i_Origin = m_pPipeline->i_Origin();
+  
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
+    Stage* pStage = pGet(i_Stage);
+    nOps += pStage->nOpsOnNode(iNode,i_Origin);
+  }
+  
+  return nOps;
+}
+/*----------------------------------------------------------------------------*/
+/* get pipeline                                                               */
+/*----------------------------------------------------------------------------*/
+Pipeline* Pipework::pPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  return m_pPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set up the pipeline job                                                    */
+/*----------------------------------------------------------------------------*/
+void Pipework::vSetupJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  Stage* pStage = pGet(0);
+  
+  i8 nDivs = pStage->nItems();
+  for (i8 i_Stream = 0; i_Stream < nDivs; i_Stream++) {
+    Stream* pStream = pStage->pGet(i_Stream);
+
+    i8 nOps = pStream->nItems();
+    for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+      Op* pOp = pStream->pGet(i_Op);
+      
+      if (pOp->szOpNm()->bSame("limitOp"_Stz)) {
+        m_pPipeline->vPulsedLimit(true);
+        break;
+      }
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  for (i8 i_Stream = 0; i_Stream < nDivs; i_Stream++) {
+    Stream* pStream = pStage->pGet(i_Stream);
+
+    i8 nOps = pStream->nItems();
+    for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+      Op* pOp = pStream->pGet(i_Op);
+
+      if (pOp->szOpNm()->bSame("scan"_Stz)) {
+        m_pPipeline->vOpToPulse(pOp);
+        pOp->vPulsedLimit(true);
+        break;
+      }
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn operaator jobs for the pipeline                                      */
+/*----------------------------------------------------------------------------*/
+void Pipework::vSpawnOpTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
+    
+    Stage* pStage = pGet(i_Stage);
+    
+    for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
+      Stream* pStream = pStage->pGet(i_Stream);
+
+      pStream->vSpawnOpTasks();
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage 0                                                                */
+/*----------------------------------------------------------------------------*/
+Stage* Pipework::pStage0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  Stage*  pStage0 = pGet(0);
+
+  return pStage0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream 0                                                               */
+/*----------------------------------------------------------------------------*/
+Stream* Pipework::pStream0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  Stage*  pStage0  = this->pStage0();
+  Stream* pStream0 = pStage0->pStream0();
+
+  return pStream0;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create the formwork for pipeline                                           */
+/*----------------------------------------------------------------------------*/
+void Pipework::vCreatePipework(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+
+  i8 nStages = m_pPipeworkSpec->nItems();
+  for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
+    
+    // get the stageSpec
+    StageSpec* pStageSpec = m_pPipeworkSpec->pStageSpec(i_StageSpec);
+    
+    // add a stage from the stageSpec to the stageVec
+    Stage* pStage = new Stage(pStageSpec, this);
+    vAppend(pStage);
+    pStage->vCreateStreams();
+  }
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

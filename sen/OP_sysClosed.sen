@@ -11,16 +11,16 @@
 
   
   begin
-     system::activeJobs ">>> ActiveJobs %v" .printf
-     system::activeJobs 2 >
+     [system].activeJobs ">>> ActiveJobs %v" .printf
+     [system].activeJobs 2 >
   while
-    1 task::sleepSsec
+    1 [task].sleepSsec
   repeat
 
-  system::activeJobs "$$$ ActiveJobs %v" .printf
+  [system].activeJobs "$$$ ActiveJobs %v" .printf
   
 
-  true Session::systemCloser!
+  true [session].systemCloser!
   
   "system closed" .
 
@@ -38,7 +38,7 @@
 
   op__topology
 
-  find: sysClosed_sysClosed  ZK_M_DATAPULSE  op[].handler!
+  find: sysClosed_sysClosed  ZK_M_DATAPULSE  [op].handler!
 
   op__loop
 

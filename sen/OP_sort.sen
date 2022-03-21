@@ -94,8 +94,8 @@
     exit
   then
 
-  find: sort_Cleaning      ZK_M_CLEANING    op[].handler!
-  find: sort_StreamDef     ZK_D_STREAMDEF   op[].handler!
+  find: sort_Cleaning      ZK_M_CLEANING    [op].handler!
+  find: sort_StreamDef     ZK_D_STREAMDEF   [op].handler!
 
   op__loop
 

@@ -44,6 +44,12 @@ class InstallationError(NonTracebackError):
         super().__init__(*args, **kwargs)
 
 
+class ClusterError(NonTracebackError):
+    """Errors that come up from starting/stopping the RapidsSE cluster"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
 class Ec2Error(NonTracebackError):
     """Errors that come up from provisioning EC2 instances"""
     def __init__(self, *args, **kwargs):
@@ -57,3 +63,9 @@ class Ec2InstanceTimeoutError(Ec2Error):
         if instance_ids is None:
             instance_ids = []
         self.instance_ids = instance_ids
+
+
+class NotImplementedYet(SeptestError):
+    """Errors that come up from unhandled situations"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

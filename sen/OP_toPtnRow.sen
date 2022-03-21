@@ -94,10 +94,10 @@
 
   op__topology
 
-  find: toPtnRow_EosMarker   ZK_M_EOS   op[].handler!
-  find: toPtnRow_DataMarker  ZK_M_DATAPULSE   op[].handler!
-  find: toPtnRow_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
-  find: toPtnRow_StartMarker ZK_M_START op[].handler!
+  find: toPtnRow_EosMarker   ZK_M_EOS   [op].handler!
+  find: toPtnRow_DataMarker  ZK_M_DATAPULSE   [op].handler!
+  find: toPtnRow_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+  find: toPtnRow_StartMarker ZK_M_START [op].handler!
 
   op__loop
 

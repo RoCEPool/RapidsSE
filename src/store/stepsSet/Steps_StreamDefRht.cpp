@@ -49,9 +49,9 @@ void Step::vStreamDefRhtDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpStreamDefRht);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpStreamDefRht);
   
-  m_p_TaskLogicUnit->m_xpStreamDefRht = nullptr;
+  m_pLogicUnit->m_xpStreamDefRht = nullptr;
   
   EXIT();
 }
@@ -63,9 +63,9 @@ void Step::vStreamDefRhtDuplicate(void)
 {
   ENTRY();
 
-  ASSERT (* m_p_TaskLogicUnit->m_xpStreamDefRht);
+  ASSERT (* m_pLogicUnit->m_xpStreamDefRht);
 
-  StreamDefRht* pStreamDefRht = new StreamDefRht(* m_p_TaskLogicUnit->m_xpStreamDefRht);
+  StreamDefRht* pStreamDefRht = new StreamDefRht(* m_pLogicUnit->m_xpStreamDefRht);
 
   m_pDataStack->vPushPtr(pStreamDefRht);
 
@@ -79,7 +79,7 @@ void Step::vStreamDefRhtGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpStreamDefRht);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpStreamDefRht);
   
   EXIT();
 }
@@ -91,9 +91,9 @@ void Step::vStreamDefRhtGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpStreamDefRht);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpStreamDefRht);
 
-  m_p_TaskLogicUnit->m_xpStreamDefRht = nullptr;
+  m_pLogicUnit->m_xpStreamDefRht = nullptr;
 
   EXIT();
 }
@@ -105,7 +105,7 @@ void Step::vStreamDefRhtIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpStreamDefRht.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpStreamDefRht.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -117,11 +117,11 @@ void Step::vStreamDefRhtNew(void)
 {
   ENTRY();
 
-  ASSERT (m_p_TaskLogicUnit->m_xpStreamDefRht.bIsNull());
+  ASSERT (m_pLogicUnit->m_xpStreamDefRht.bIsNull());
 
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  m_p_TaskLogicUnit->m_xpStreamDefRht = new StreamDefRht(pStreamDef);
+  m_pLogicUnit->m_xpStreamDefRht = new StreamDefRht(pStreamDef);
 
   EXIT();
 }
@@ -133,11 +133,11 @@ void Step::vStreamDefRhtNewFromTable(void)
 {
   ENTRY();
 
-  ASSERT (m_p_TaskLogicUnit->m_xpStreamDefRht.bIsNull());
+  ASSERT (m_pLogicUnit->m_xpStreamDefRht.bIsNull());
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  m_p_TaskLogicUnit->m_xpStreamDefRht = new StreamDefRht(pTable->pStreamDef());
+  m_pLogicUnit->m_xpStreamDefRht = new StreamDefRht(pTable->pStreamDef());
 
   EXIT();
 }
@@ -149,7 +149,7 @@ void Step::vStreamDefRhtPrint(void)
 {
   ENTRY();
     
-  StreamDefRht* pStreamDefRht = _pStreamDefRht(*m_p_TaskLogicUnit->m_xpStreamDefRht);
+  StreamDefRht* pStreamDefRht = _pStreamDefRht(*m_pLogicUnit->m_xpStreamDefRht);
 
   pStreamDefRht->vPrint();
 
@@ -163,12 +163,12 @@ void Step::vStreamDefRhtSelectColumns(void)
 {
   ENTRY();
 
-  StreamDef* pStreamDefIn = _pStreamDef(*m_p_TaskLogicUnit->m_xpStreamDefRht);
+  StreamDef* pStreamDefIn = _pStreamDef(*m_pLogicUnit->m_xpStreamDefRht);
 
   s4K sExpr;
   m_pDataStack->vPopStr(sExpr, __func__);
 
-  eEC eError = ExprEval2::eGenerateSelectColumns(pStreamDefIn, sExpr, &m_p_TaskLogicUnit->m_uSelectColumns);
+  eEC eError = ExprEval2::eGenerateSelectColumns(pStreamDefIn, sExpr, &m_pLogicUnit->m_uSelectColumns);
 
   m_pDataStack->vPushInt(eError);
 
@@ -182,7 +182,7 @@ void Step::vStreamDefRhtSet(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpStreamDefRht = _pStreamDefRht(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpStreamDefRht = _pStreamDefRht(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

@@ -17,12 +17,10 @@ __bIsCard(STORE,Card_CandIndex,CK_CANDINDEX)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CandIndex::Card_CandIndex(Index* pIndex)
-: Card(CK_CANDINDEX)
+Card_CandIndex::Card_CandIndex(void)
+: Card_MAIN(CK_CANDINDEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-   vIndex(pIndex);
   
   _checkInitialised_(CN_CARD);
   

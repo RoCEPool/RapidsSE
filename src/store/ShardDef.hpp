@@ -8,7 +8,7 @@
 namespace STORE
 {
   class ShardDef : public Definition,
-                   public WspConvergent_t<C_64KB,void,void>
+                   public WspConvergent_t<C_32KB,void,void>
   {
   public:
     s256 m_sShardDefNm;   // shardDef name

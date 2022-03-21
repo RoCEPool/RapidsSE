@@ -54,8 +54,8 @@
 
   op__topology
 
-  find: rowCount_DataMarker ZK_M_DATAPULSE op[].handler!
-  find: rowCount_StartMarker ZK_M_START op[].handler!
+  find: rowCount_DataMarker ZK_M_DATAPULSE [op].handler!
+  find: rowCount_StartMarker ZK_M_START [op].handler!
 
   op__loop
 

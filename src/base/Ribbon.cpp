@@ -18,10 +18,13 @@ __aFooterFunction(Ribbon)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Ribbon::Ribbon(i8 iArea, i8 nMaxAcross)
+Ribbon::Ribbon(Object* pCtl, Object* pSurface, i8 iArea, i8 nMaxAcross)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
   
+  m_pCtl = pCtl;
+  m_pSurface = pSurface;
+
   m_iArea = iArea;
   
   m_pTabSet = new IntSet(C_RIBBON_COLUMNS);
@@ -100,6 +103,16 @@ i8 Ribbon::iChar(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   return m_i_Char;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ctl                                                                    */
+/*----------------------------------------------------------------------------*/
+Object* Ribbon::pCtl(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  return m_pCtl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -374,6 +387,16 @@ void Ribbon::vSput(i8 i_Fmt, ...)
   }
     
   va_end(xArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get surface                                                                */
+/*----------------------------------------------------------------------------*/
+Object* Ribbon::pSurface(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+  
+  return m_pSurface;
 }
 
 /*----------------------------------------------------------------------------*/

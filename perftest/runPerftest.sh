@@ -3,7 +3,7 @@
 # variables, some of which are used below.
 
 #BASE="$(basename $0)"
-#DIR="$(dirname $0)"
+DIR="$(dirname $0)"
 
 # Which python to use?
 PYTHON="python3"
@@ -19,6 +19,10 @@ GIT_BRANCH="${bamboo_planRepository_branch}"
 
 # Plan variables (defined in Bamboo)
 JOB_FILE="${bamboo_jobFile}"
+ARCHIVE_METRICS="${bamboo_archiveMetrics}"
+
+# Where results and archived files are written out
+RESULT_DIR="${DIR}/results"
 
 
 if [ -z "${JOB_FILE}" ]; then
@@ -38,7 +42,7 @@ fi
 
 
 # Build the mandatory command line parameters to the python septest script
-PARAMS="--job ${JOB_FILE} --planKey ${PLAN_KEY} --buildNum ${BUILD_NUM}"
+PARAMS="--job ${JOB_FILE} --planKey ${PLAN_KEY} --buildNum ${BUILD_NUM} --resultDir ${RESULT_DIR}"
 
 # Add in any optional command line parameters:
   # Git hash
@@ -49,6 +53,10 @@ fi
   # Was this invoked by a user (manual build) or a periodic system build?
 if [ -n "${INVOKING_USER}" ]; then
   PARAMS="${PARAMS} --user ${INVOKING_USER}"
+fi
+
+if [ -n "${ARCHIVE_METRICS}" ] && [ "${ARCHIVE_METRICS}" -ne 0 ] && [ "${ARCHIVE_METRICS,,}" != "false" ]; then
+  PARAMS="${PARAMS} --archiveMetrics"
 fi
 
 
@@ -88,9 +96,21 @@ if ! which pipenv &>/dev/null; then
   exit 1
 fi
 
+if [ "${PWD}" != "${DIR}" ]; then
+  cd "${DIR}"
+fi
+
+if ! [ -f "Pipfile" ]; then
+  >&2 echo "No Pipfile found in directory ${PWD}."
+  exit 1
+fi
+
 # Install dependencies
 echo
 pipenv sync --bare || exit 1
+
+# Make the directory for results if it doesn't exist
+mkdir -p "${RESULT_DIR}"
 
 echo
 echo "Invoking septest with PARAMS = ${PARAMS}"

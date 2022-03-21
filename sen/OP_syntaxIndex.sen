@@ -65,11 +65,11 @@
 
   0 0 0 locals| sTableNm sSmt errorCode |
 
-  //Job[].tagSet@ tagSet.asStr .
+  //[job].tagSet@ tagSet.asStr .
   Pipein[].pipeout
 
   // is it a unique index ?
-  "<unique>" Job[].tagSet@ tagSet.hasName if
+  "<unique>" [job].tagSet@ tagSet.hasName if
     <etc> <indexNm> "create unique index %v %v ;" str.format to sSmt
   else
     <etc> <indexNm> "create index %v %v ;" str.format to sSmt
@@ -78,10 +78,10 @@
   // sSmt .
 
   // parse the smt and get the table name
-  sSmt Job[] indexDef::parseTableName to sTableNm
-  Job[].error@ to errorCode
+  sSmt [job] indexDef::parseTableName to sTableNm
+  [job].error@ to errorCode
   sTableNm "" str.equal if
-    Job[].error@ to errorCode
+    [job].error@ to errorCode
     errorCode op__execErr
     true
     exit
@@ -95,10 +95,10 @@
     exit
   then
 
-  sSmt Table[] Job[] indexDef::parse to IndexDef[]
+  sSmt Table[] [job] indexDef::parse to IndexDef[]
 
   IndexDef[].isNull if
-    Job[].error@ to errorCode
+    [job].error@ to errorCode
     errorCode op__execErr
     true
     exit
@@ -125,7 +125,7 @@
 
   op__topology
 
-  find: syntaxIndex_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: syntaxIndex_DataMarker ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

@@ -273,10 +273,10 @@
 
   op__topology
 
-  find: fetch_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: fetch_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-  find: fetch_DataMarker    ZK_M_DATAPULSE     op[].handler!
-  find: fetch_StartMarker   ZK_M_START         op[].handler!
+  find: fetch_Cleaning      ZK_M_CLEANING      [op].handler!
+  find: fetch_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
+  find: fetch_DataMarker    ZK_M_DATAPULSE     [op].handler!
+  find: fetch_StartMarker   ZK_M_START         [op].handler!
 
   op__loop
 

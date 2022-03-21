@@ -16,10 +16,10 @@
 
   // pass the table name to op__table to get the table[] register
   // then call C++ getGridParts to build the parcel and push the pParcel to the stack
-  // op.pipeout pipe the pParcel out
+  // [op].pipeout pipe the pParcel out
 
 
-  grid[] grid::getParts op.pipeout
+  grid[] [grid].getParts [op].pipeout
 
   // send EOSMARKER
   nullptr to grid[]
@@ -27,7 +27,7 @@
 
   true
 
-  //task::breakpoint //set breakpoint back into C++ code, where the task loop is
+  //[task].breakpoint //set breakpoint back into C++ code, where the task loop is
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@
   op__topology
 
   // Setup ZK_D_GRIDGET handler
-  find: gridSend_gridObject ZK_D_GRID op[].handler!
+  find: gridSend_gridObject ZK_D_GRID [op].handler!
   op__loop
 
   _lu_finalise_

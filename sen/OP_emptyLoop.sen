@@ -45,8 +45,8 @@
 
   op__topology
 
-  find: emptyLoop_RowBuffer  ZK_D_ROWBUFFER op[].handler!
-  find: emptyLoop_Eos        ZK_M_EOS op[].handler!
+  find: emptyLoop_RowBuffer  ZK_D_ROWBUFFER [op].handler!
+  find: emptyLoop_Eos        ZK_M_EOS [op].handler!
 
   op__loop
 

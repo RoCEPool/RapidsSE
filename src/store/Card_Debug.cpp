@@ -17,13 +17,11 @@ __bIsCard(STORE,Card_Debug,CK_DEBUG)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Debug::Card_Debug(Stz* szOption)
-: Card_UNIT(CK_DEBUG)
+Card_Debug::Card_Debug(void)
+: Card_MAIN(CK_DEBUG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vOption(szOption);
-      
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

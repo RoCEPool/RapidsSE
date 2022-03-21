@@ -198,7 +198,7 @@ void Api::vExecuteJob(Session* pSession)
 
     Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
     
-    pJob->vEntry(szEntry);
+    pJob->vEntryPoint(szEntry);
 
     //AM::pHeaps()->vSetTraceFree(false);
   }
@@ -454,7 +454,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   
   Stz* szEntry = pPrepareJobTags->szValue(C_TAG_ENTRYPOINT);
   
-  pPrepareJob->vEntry(szEntry);
+  pPrepareJob->vEntryPoint(szEntry);
   
   return EC_NONE;
 }
@@ -466,20 +466,20 @@ void Api::vSubmitJob(Session* pSession)
 {
   _static_
   
-  Job* pSubmitJob = pSession->m_pSsnJob;
+  Job* pJob = pSession->m_pSsnJob;
 
-  Api::vMutexLock(pSession,pSubmitJob);
+  Api::vMutexLock(pSession,pJob);
 
-  RASSERT(JS_LOCKED == pSubmitJob->eJobState());
+  RASSERT(JS_LOCKED == pJob->eJobState());
 
   
-  RASSERT(! pSubmitJob->pJobTask());
+  RASSERT(! pJob->pTask());
   
-  vCreateTaskForJob(pSubmitJob);
+  pJob->vSpawnTask();
   
-  pSubmitJob->vTimerStart();
+  pJob->vTimerStart();
   
-  Scheduler::vTaskApi_AddPrompt(pSubmitJob->pJobTask());
+  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -609,9 +609,9 @@ bool Api::bReapJob(void)
 
   // delete the reapavle job
   
-  RASSERT(pReapableJob->pJobTask());
-  pReapableJob->pJobTask()->vGrabTaskLock((Stz*)__func__);
-  pReapableJob->pJobTask()->vDropTaskLock((Stz*)__func__);
+  RASSERT(pReapableJob->pTask());
+  pReapableJob->pTask()->vGrabTaskLock((Stz*)__func__);
+  pReapableJob->pTask()->vDropTaskLock((Stz*)__func__);
 
 
   pReapableJob->vGuardedDelete(CN_JOB,&pReapableJob,
@@ -821,7 +821,7 @@ void Api::vCallBootSystem(void)
   Stz* szJobNm = pJob->szJobNm();
   Task* pBootTask = new Task(szJobNm,pJob);
 
-  pJob->vJobTask(pBootTask);
+  pJob->vTask(pBootTask);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
      
@@ -882,7 +882,7 @@ void Api::vCallStartSystem(void)
   Task* pStartTask = new Task(szJobNm,pJob);
   pStartTask->vIsStart(true);
 
-  pJob->vJobTask(pStartTask);
+  pJob->vTask(pStartTask);
   
   vSetTaskInxPtr(pStartTask,"startSystem::startSystem"_Stz);
 
@@ -935,8 +935,8 @@ void Api::vDeleteImmediate(Task** ppTask)
   *ppTask = nullptr;
 
   pTask->vState(TS_COMPLETED);
-  Job* pJob = pTask->pJob_task();
-  pTask->vJob_task(nullptr);
+  Job* pJob = pTask->pJob();
+  pTask->vJob(nullptr);
   
   //delete pJob;
   if (pJob)
@@ -955,8 +955,8 @@ void Api::vSpawnTask_job(Job* pJob)
   _static_
   
   
-  vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddOp(pJob->pJobTask());
+  pJob->vSpawnTask();
+  Scheduler::vTaskApi_AddOp(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -980,8 +980,8 @@ void Api::vSpawnTaskDedicated_job(Job* pJob)
   
   //RASSERT(! pJob->pTask());
   
-  vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddDedicated(pJob->pJobTask());
+  pJob->vSpawnTask();
+  Scheduler::vTaskApi_AddDedicated(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1005,10 +1005,10 @@ void Api::vSpawnTask_demonJob(Job* pJob)
 {
   _static_
   
-  RASSERT(! pJob->pJobTask());
+  RASSERT(! pJob->pTask());
 
-  vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddService(pJob->pJobTask());
+  pJob->vSpawnTask();
+  Scheduler::vTaskApi_AddService(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1018,9 +1018,8 @@ void Api::vSpawnTask_receivedJob(Job* pJob)
 {
   _static_
   
-  
-  vCreateTaskForJob(pJob);
-  Scheduler::vTaskApi_AddReceived(pJob->pJobTask());
+  pJob->vSpawnTask();
+  Scheduler::vTaskApi_AddReceived(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1041,7 +1040,7 @@ bool Api::bSpawnTask_session(Job* pJob)
   RASSERT(JS_LOCKED == pJob->eJobState());
 
   
-  RASSERT(! pJob->pJobTask());
+  RASSERT(! pJob->pTask());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
@@ -1053,10 +1052,10 @@ bool Api::bSpawnTask_session(Job* pJob)
     return false;
   }
   
-  vCreateTaskForJob(pJob);
-  
+  pJob->vSpawnTask();
+
   pJob->vTimerStart();
-  Scheduler::vTaskApi_AddPrompt(pJob->pJobTask());
+  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 
   if (! pJob->bHasTag(C_TAG_NOWAIT)) {
     //pSession->m_oMutex.vObserve(true);
@@ -1076,11 +1075,9 @@ void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
   _static_
   
+  vResetTaskForJob(pParticipantJob);
   
-  // THIS NOW DOESNT READ CORRECTLY
-  vCreateTaskForJob(pParticipantJob);
-  
-  Task* pTaskParticipant = pParticipantJob->pJobTask();
+  Task* pTaskParticipant = pParticipantJob->pTask();
   Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);
 }
 
@@ -1145,31 +1142,25 @@ void Api::vSpinTillAllJobsCompleted(void)
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
 /*----------------------------------------------------------------------------*/
-/* create task for given job                                                  */
+/* reset task for given job                                                   */
 /*----------------------------------------------------------------------------*/
-void Api::vCreateTaskForJob(Job* pJob)
+void Api::vResetTaskForJob(Job* pJob)
 {
   _static_
     
-  Stz* szEntry = "job::job"_Stz;
+  Stz* szEntry = "job::entryPoint"_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Task* pTask = new Task(pJob->szJobNm(),pJob);
-
-  pJob->vJobTask(pTask);
+  Task* pTask = pJob->pTask();
     
   vSetTaskInxPtr(pTask,szEntry);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob->vTimerStart();
-  
-  if (! pJob->pJobLogicUnit()) {
-    pJob->vNewJobLogicUnit();
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/

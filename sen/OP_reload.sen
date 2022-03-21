@@ -48,10 +48,10 @@
 
   op__topology
 
-  find: reload_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: reload_EosMarker   ZK_M_EOS         op[].handler!
-  find: reload_DataPulse   ZK_M_DATAPULSE   op[].handler!
-  find: reload_StartMarker ZK_M_START       op[].handler!
+  find: reload_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
+  find: reload_EosMarker   ZK_M_EOS         [op].handler!
+  find: reload_DataPulse   ZK_M_DATAPULSE   [op].handler!
+  find: reload_StartMarker ZK_M_START       [op].handler!
 
   op__loop
 

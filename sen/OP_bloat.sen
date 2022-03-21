@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : bloat_cleaning \handler
 
-  task::seeFrameStack
+  [task].seeFrameStack
 
   //inject::bloatCleanup
 
@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : bloat_bloat \handler
 
-  task::seeFrameStack
+  [task].seeFrameStack
   
   inject::bloat
 
@@ -40,8 +40,8 @@
 
   op__topology
 
-  find: bloat_bloat    ZK_D_CRWBUFFER   op[].handler!
-  find: bloat_cleaning  ZK_M_CLEANING   op[].handler!
+  find: bloat_bloat    ZK_D_CRWBUFFER   [op].handler!
+  find: bloat_cleaning  ZK_M_CLEANING   [op].handler!
 
   op__loop
 

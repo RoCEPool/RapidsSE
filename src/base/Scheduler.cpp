@@ -100,6 +100,11 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
                pThread == pSelfTask->pvThread_DONT_DEREF()));
       break;
       
+    case TR_HIBERNATE_THIS_TASK: // task is hibernating itself
+      vTaskSelf_HibernateThisTask(pSelfTask,pThread);
+      RASSERT(!pThread->pTask());
+      break;
+            
     case TR_SLEEP_SOME_TIME: // task sleeps till wakup time arrives
       vTaskSelf_SleepSomeTime(pSelfTask,pThread);
       RASSERT(! pThread->pTask() ||
@@ -183,7 +188,8 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
     AM::SE::vWhereAmI();
   
   RASSERT(pSelfTask->bIsLocked());
-  RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eTransition());
+  RASSERT(TR_DELETE_THIS_TASK == pSelfTask->eTransition() ||
+          TR_HIBERNATE_THIS_TASK == pSelfTask->eTransition());
   RASSERT(TS_DESISTED == pSelfTask->eState());
   RASSERT(QK_NONE == pSelfTask->eQueue());
   UNUSED(pThread);
@@ -205,6 +211,48 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
                             CN_SCHEDULER,nullptr,(Stz*)__func__);
 
   /** do not touch task **/
+}
+
+/*----------------------------------------------------------------------------*/
+/* task transitions to TS_HIBERNATING state (is in plist with job)            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskSelf_HibernateThisTask(Task* pSelfTask, Thread* pThread)
+{
+  _static_
+  
+  //
+  // example: op task has ack'd the pipeline job and now just self-delete
+  //
+  // who delete's the job in these cases?
+  //
+  
+  if (!pSelfTask->bIsLocked())
+    AM::SE::vWhereAmI();
+  
+  RASSERT(pSelfTask->bIsLocked());
+  RASSERT(TR_HIBERNATE_THIS_TASK == pSelfTask->eTransition());
+  RASSERT(TS_DESISTED == pSelfTask->eState());
+  RASSERT(QK_NONE == pSelfTask->eQueue());
+  UNUSED(pThread);
+
+  // add assert on entry point
+
+  pSelfTask->vTranstionClear();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete case: task is to be deleted
+
+  pSelfTask->vState(TS_HIBERNATING);
+  
+  pSelfTask->vDropTaskLock((Stz*)__func__);
+  
+  //delete pSelfTask;
+  
+//  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
+//                            CN_SCHEDULER,nullptr,(Stz*)__func__);
+
+  /** do not touch task **/
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -391,13 +439,51 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT(! pTaskWaiting->iAcksRmg_assert_only_());
+//  RASSERT(! pTaskWaiting->iAcksRmg_assert_only_());
+//
+//  // cycle the task lock to ensure task has fully entered wait state
+//  pTaskWaiting->vGrabTaskLock((Stz*)__func__);
+//  pTaskWaiting->vDropTaskLock((Stz*)__func__);
+//
+//  // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
+//  RASSERT(TS_WAITING == pTaskWaiting->eState());
+//  RASSERT(QK_WAITING_SET == pTaskWaiting->eQueue());
+//  RASSERT(TR_NONE == pTaskWaiting->eTransition());
+//
+//  Schedule* pSchedule = AM::pSchedule();
+//
+//  pSchedule->vRemoveWaitingSet(pTaskWaiting);
+//
+//  RASSERT(TS_DESISTED == pTaskWaiting->eState());
+//  RASSERT(QK_NONE == pTaskWaiting->eQueue());
+//  RASSERT(TR_NONE == pTaskWaiting->eTransition());
+//
+//  vScheduleTask(pTaskWaiting);
   
-  // cycle the task lock to ensure task has fully entered wait state
+  vTaskCross_ResumeWaiting(pTaskWaiting,pTaskAcking);
+  // **do not touch task**
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* resume a waiting task (must have no acks remaining)                        */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskCross_ResumeWaiting(Task* pTaskWaiting,
+                                         Task* pTaskResuming)
+{
+  _static_
+    
+  RASSERT(pTaskWaiting->eGetClassNo() == CN_TASK);
+  RASSERT(TS_EXECUTING == pTaskResuming->eState());
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // cycle the task lock to ensure task waiting has fully entered wait state
   pTaskWaiting->vGrabTaskLock((Stz*)__func__);
   pTaskWaiting->vDropTaskLock((Stz*)__func__);
     
-  // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
+  // having cycled the lock, the task should be TS_WAITING and QK_WAITING_SET
   RASSERT(TS_WAITING == pTaskWaiting->eState());
   RASSERT(QK_WAITING_SET == pTaskWaiting->eQueue());
   RASSERT(TR_NONE == pTaskWaiting->eTransition());
@@ -412,8 +498,6 @@ bool Scheduler::bTaskCross_AckWaiting(Task* pTaskWaiting,
   
   vScheduleTask(pTaskWaiting);
   // **do not touch task**
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -429,7 +513,8 @@ void Scheduler::vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
   //
   // called from Api::bSpawnJob()
   //
-  RASSERT(TS_NONE == pTaskParticipant->eState());
+  RASSERT(TS_NONE == pTaskParticipant->eState() ||
+          TS_HIBERNATING == pTaskParticipant->eState());
   RASSERT(QK_NONE == pTaskParticipant->eQueue());
   RASSERT(TR_NONE == pTaskParticipant->eTransition());
   

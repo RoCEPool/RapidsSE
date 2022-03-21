@@ -7,7 +7,7 @@
 
 #include "LifeGuard_t.hpp"
 
-namespace STORE { class Stream; class StageSpec; }
+namespace STORE { class Pipework; class Stream; class StageSpec; }
 
 namespace STORE
 {
@@ -20,7 +20,7 @@ namespace STORE
     i8   m_i_Stage;     // [stage] in pipeline
 
     StageSpec*  m_pStageSpec; // specification of this stage
-    Pipeline*   m_pPipeline;  // which pipeline
+    Pipework*   m_pPipework;  // which pipeline
   
     // -- -- -- -- -- --
 
@@ -31,24 +31,22 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Stage(StageSpec* pStageSpec, Pipeline* pPipeline);
+    Stage(StageSpec* pStageSpec, Pipework* pPipework);
    ~Stage(void) noexcept(false);
       
     void vCancelPipeline(Task* pTriggeringTask);
     Stream* pGetStream_byNodeNo(i8 i_Node);
     Stream* pGetStream_byPtnNo(i8 i_Ptn);
     Stream* pGetStream_byStreamNo(i8 i_Stream);
+    Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode, i8 iOrigin);
-    Pipeline* pPipeline(void);
+    Pipework* pPipework(void);
     Op*  pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp);
     i8   i_Stage(void);
     Stz* szStageNm(void);
+    Stream* pStream0(void);
     StageSpec* pStageSpec(void);
     bool bStartPipeline(void);
-    void vWalk(void* aArg);
-    void vWalkLambda(
-           i8 iDepth,
-           std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
 
   void    vCreateStreams(void);
 

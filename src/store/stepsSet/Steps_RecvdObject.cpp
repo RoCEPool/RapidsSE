@@ -30,7 +30,7 @@ void Step::vRecvdObjectGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpRecvdObject);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpRecvdObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ void Step::vRecvdObjectIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpRecvdObject.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpRecvdObject.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -52,7 +52,7 @@ void Step::vRecvdObjectIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpRecvdObject.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpRecvdObject.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -64,7 +64,7 @@ void Step::vRecvdObjectSet(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_xpRecvdObject = m_pDataStack->pPopPtr(__func__);
+  m_pLogicUnit->m_xpRecvdObject = m_pDataStack->pPopPtr(__func__);
 }
 
 /*============================================================================*/

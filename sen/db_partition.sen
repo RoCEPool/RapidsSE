@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : makePartitions params| tableNm |
 
-  args.tracepoint if
-    tableNm "MAKING PARTITIONS FOR TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  [args].tracepoint if
+    tableNm "MAKING PARTITIONS FOR TABLE " swap str.cat " on NODE " str.cat [grid].thisNode@ >str str.cat .
   then
 
   tableNm find execute ( dic )
@@ -71,7 +71,7 @@
   begin
     TablePtn[].attemptGrabRead
   not while
-    Task[].yield 
+    [task].yield 
   repeat
 ;
 
@@ -83,7 +83,7 @@
   begin
     TablePtn[].attemptGrabWrite
   not while
-    Task[].yield 
+    [task].yield 
   repeat
 ;
 
@@ -95,7 +95,7 @@
   begin
     TablePtn[].attemptGrabWrite
   not while
-    1 task::sleepMsec
+    1 [task].sleepMsec
   repeat
 ;
 

@@ -5,31 +5,36 @@
 
 #include "Definition.hpp"
 
+#include "eSD.h"
+
+
 namespace STORE
 {
   class StreamDefBase : public Definition,
                         public WspConvergent_t<C_64KB,void,void>
   {
   private:
-    s256 m_sStreamDefNm; // streamDef name
+    s256 m_sStreamDefNm;  // streamDef name
     
-    bool m_bReplicated;  // replicated stream/table?
+    bool m_bReplicated;   // replicated stream/table?
   
     Location m_oLocation; // logical location of stream def
 
-    i8     m_nColumns;                    // total columns
+    i8     m_nColumns;    // total columns
     Column m_xaColumn[C_MAX_DEFCOLUMNS];  // array of columns
 
-    RowPix m_oRowPix;                     // row pix
-    i8     m_jRowSize;                    // size of fixed size row
-    i8     m_jTableSize;                  // estimate of table size
+    RowPix m_oRowPix;     // row pix
+    i8     m_jRowSize;    // size of fixed size row
+    i8     m_jTableSize;  // estimate of table size
 
-    i8     m_nOrders;
+    i8     m_nOrders;     // number of orderBy columns
+    b8     m_bUnique;     // is the stream unnique
     i8     m_iaOrder[C_MAX_STREAM_ORDER]; // array of stream order columns
+    eSD    m_eaDirection[C_MAX_STREAM_ORDER]; // array of sort direction
 
   public:
     StreamDefBase(eCN eClassNo);
-    StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDefBase);
+    StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDef_arg);
 
    ~StreamDefBase(void) noexcept(false);
 
@@ -41,21 +46,26 @@ namespace STORE
 
     void    vAddColumn(Stz* sColumnNm, eCT eColumnType,
                        i8 iColumnLength, i8 iColumnScale);
-    void    vAddOrder(i8 i_Column);
+    void    vAddOrder(i8 i_Column, eSD eDirection=SD_ASC);
     void    vAppendStreamDef(StreamDefBase* pStreamDef);
     void    vAppendStreamDef(StreamDefBase* pStreamDef, Stz* sColPrefix);
     void    vApplyOrder(StreamDefBase* pStreamDef_apply);
     void    vAsString(String* pString);
   
+    i8      iColumnOrder(i8 i_Col);
     i8      nColumns(void);
-  
-    bool    bIsDuplicateName(Column* pColumn);
-  
+ 
+    eSD     eDirection(i8 i_Order);
+    void    vDirection(i8 i_Order, eSD eDirection);
+
     Column* pFindColumn(Stz* sColumnNm);
   
     Column* pGetColumn(i8 i_Col);
     Column* pGetOrder(i8 i_Order);
   
+    bool    bIsDuplicateName(Column* pColumn);
+    bool    bIsOrder(i8 i_Col);
+
     void    vListContents(i8 i_Depth);
     Location* pLocation(void);
   
@@ -77,6 +87,9 @@ namespace STORE
     void    vToColPix(RowPix* pRowPix, bool bPtnHash);
     void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
     void    vToMetadata(Stz* sMetaData);
+
+    bool    bUnique(void);
+    void    vUnique(bool bUnique);
 
   private:
     

@@ -9,17 +9,17 @@
 /*----------------------------------------------------------------------------*/
 : recv_init ( -- )
 
-  //CN_JOB Task[] task.thread thread.dedicated!
+  //CN_JOB [task] task.thread@ thread.dedicated!
 
-  NS_ACTIVE grid::thisNode@ grid::findNodeByNo node.state!
+  NS_ACTIVE [grid].thisNode@ [grid].findNodeByNo node.state!
 
-  args.verbose if
-    grid::thisNode@ "receiver running on node %v" .printf
+  [args].verbose if
+    [grid].thisNode@ "receiver running on node %v" .printf
   then
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "<ansNode>" Job[].tagSet@ tagSet.hasName assert
+  "<ansNode>" [job].tagSet@ tagSet.hasName assert
 
   <ansNode> >int >ptr node.recvSocket@ to Socket[]
 ;
@@ -103,10 +103,10 @@
 
   op__topology
 
-  find: recv_StartMarker ZK_M_START op[].handler!
+  find: recv_StartMarker ZK_M_START [op].handler!
 
   // get the pipeline job of the operator
-  Op.pipelineJob@ locals| pPipelineJob |
+  [op].job@ locals| pPipelineJob |
 
   // peek to see if any operand
   begin
@@ -123,7 +123,7 @@
   PipeIn[].next
 
   // execute the operator's handler for the operand
-  PipeIn[].kind op[].handler@ execute
+  PipeIn[].kind [op].handler@ execute
 
   _lu_finalise_
   

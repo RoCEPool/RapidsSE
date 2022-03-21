@@ -55,13 +55,13 @@
 /*----------------------------------------------------------------------------*/
 : _lu_finalise_
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
 
   // check this task has no job reference
-  JobRef[].none
+  ListedJob[].assertNoRef
 
   // check this task has no ddl lock
-  DdlLock[].none
+  [ddlLock].none
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -317,12 +317,12 @@
 /*----------------------------------------------------------------------------*/
 : rluDiary_init
 
-  "<note>"  Job[].tagSet@ tagSet.hasName if
+  "<note>"  [job].tagSet@ tagSet.hasName if
     <note> LogicUnit[].diaryJobNote
   then
 
-  op.opName@ LogicUnit[].diaryTitle
-  op.opName@ Op.partition@ >str str.cat LogicUnit[].diaryName
+  [op].opName@ LogicUnit[].diaryTitle
+  [op].opName@ [op].partition@ >str str.cat LogicUnit[].diaryName
 
   <diaryDir> LogicUnit[].diaryDir
 ;
@@ -332,9 +332,7 @@
 /*----------------------------------------------------------------------------*/
 : op__topology
 
-  op[].init
-
-  "<diary>" Job[].tagSet@ tagSet.hasName if
+  "<diary>" [job].tagSet@ tagSet.hasName if
     rluDiary_init
   then
 ;
@@ -349,7 +347,7 @@
 : op__pipelineJobWait
 
   // get the pipeline job of the operator
-  Op.pipelineJob@ locals| pPipelineJob |
+  [op].job@ locals| pPipelineJob |
   
   pPipelineJob not if
     exit
@@ -366,7 +364,7 @@
     thread.dedicated@ if
       10 thread::sleepMsec
     else
-      Task[].yield
+      [task].yield
     then
     
   repeat
@@ -385,7 +383,7 @@
       thread.dedicated@ if
         10 thread::sleepMsec
       else
-        Task[].yield
+        [task].yield
       then
     
     repeat
@@ -394,14 +392,14 @@
     // possibilty of execute not have arrived yet
     pPipelineJob job.task@ locals| pPipelineTask |
     begin
-      pPipelineTask task.isWaiting
+      pPipelineTask task.isWaiting?
     not while
-      //pPipelineTask task.isWaiting "task waiting %v" .printf
+      //pPipelineTask task.isWaiting? "task waiting %v" .printf
       
       thread.dedicated@ if
         10 thread::sleepMsec
       else
-        Task[].yield
+        [task].yield
       then
     
     repeat
@@ -456,7 +454,7 @@
 
   op__pipelineJobWait
   
-  //Task[].grabLock //OoO
+  //[task].grabLock //OoO
 
   begin  iContinue while
     
@@ -472,14 +470,14 @@
 
       // debug::flag@ if "(Revised) Calling handler for OoO operand" . then
 
-      PipeIn[].kind op[].isOperandValid not if
+      PipeIn[].kind [op].isOperandValid not if
         find: INVALID_OPERAND_handler op__callHandler to iContinue
         continue_if
       then
 
-      PipeIn[].kind op[].incOperandCount
-      PipeIn[].kind op[].incHandlerCount
-      PipeIn[].kind op[].handler@ LogicUnit[].handler!
+      PipeIn[].kind [op].incOperandCount
+      PipeIn[].kind [op].incHandlerCount
+      PipeIn[].kind [op].handler@ LogicUnit[].handler!
       op__callHandler to iContinue
       continue_if
       
@@ -505,9 +503,9 @@
     // possible yield
 
     iOperandYield 1 + to iOperandYield
-    iOperandYield task::operandYield@ >= if
-      Task[].yield_opLoop
-      //Task[].grabLock //OoO
+    iOperandYield [task].operandYield@ >= if
+      [task].yield_opLoop
+      //[task].grabLock //OoO
       0 to iOperandYield
     then
 
@@ -527,14 +525,14 @@
 
     //debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
 
-    PipeIn[].kind op[].isOperandValid not if
+    PipeIn[].kind [op].isOperandValid not if
       find: INVALID_OPERAND_handler op__callHandler to iContinue
       continue_if
     then
     
-    PipeIn[].kind op[].incOperandCount
-    PipeIn[].kind op[].incHandlerCount
-    PipeIn[].kind op[].handler@ LogicUnit[].handler!
+    PipeIn[].kind [op].incOperandCount
+    PipeIn[].kind [op].incHandlerCount
+    PipeIn[].kind [op].handler@ LogicUnit[].handler!
     op__callHandler to iContinue
 
   repeat
@@ -549,16 +547,16 @@
 
   AM::SHOW::bException if
     "op__failureRecovery" .
-    task::seeFrameStack
-    task::seeLockSets
-    //task::seeLogicUnitRegisters
-    //grid::seeNodes
+    [task].seeFrameStack
+    [task].seeLockSets
+    //[task].seeLogicUnit
+    //[grid].seeNodes
   then
   
-  task::releaseLockSets
+  [task].releaseLockSets
 
-  //"<recover>" Job[].tagSet@ tagSet.hasName if
-    task::exception EC_INTERNAL_ERROR op__execErrMsg
+  //"<recover>" [job].tagSet@ tagSet.hasName if
+    [task].exception EC_INTERNAL_ERROR op__execErrMsg
 
     PipeIn[].isNull not if
       PipeIn[].delete
@@ -578,7 +576,7 @@
 /*----------------------------------------------------------------------------*/
 : op__retires
 
-  Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!
+  [task].grabLock TR_RETIRE_THIS_TASK [task].transition!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -598,10 +596,10 @@
   pStencil TinyC[].compile if
     1 TinyC[].symbols
     TinyC[].relocate assert
-    "iFun0_" Op[].stageNm@ str.cat TinyC[].find to Fun0[]
-    "iFun1_" Op[].stageNm@ str.cat TinyC[].find to Fun1[]
-    "iFun2_" Op[].stageNm@ str.cat TinyC[].find to Fun2[]
-    "iFun3_" Op[].stageNm@ str.cat TinyC[].find to Fun3[]
+    "iFun0_" [op].stageNm@ str.cat TinyC[].find to Fun0[]
+    "iFun1_" [op].stageNm@ str.cat TinyC[].find to Fun1[]
+    "iFun2_" [op].stageNm@ str.cat TinyC[].find to Fun2[]
+    "iFun3_" [op].stageNm@ str.cat TinyC[].find to Fun3[]
     true
   else
     false
@@ -648,13 +646,13 @@
   begin
     Tub[].completed dup to DataBuffer[]
   while
-    DataBuffer[] pPipelineJob pipeline.pipeOut
+    DataBuffer[] pPipelineJob job.pipeToOp0
   repeat
 
   begin
     Tub[].dangling dup to DataBuffer[]
   while
-    DataBuffer[] pPipelineJob pipeline.pipeOut
+    DataBuffer[] pPipelineJob job.pipeToOp0
   repeat
 ;
 

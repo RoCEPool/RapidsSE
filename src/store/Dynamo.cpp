@@ -23,13 +23,14 @@ __aFooterFunction(Dynamo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dynamo::Dynamo(Stz* szPipelineStmt, TagSet* p_JobTags)
+Dynamo::Dynamo(TagSet* p_JobTags)
 : Object(CN_DYNAMO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
-  m_szPipelineStmt = szPipelineStmt;
   m_p_JobTags      = p_JobTags;
+  
+  m_szPipelineStmt = nullptr;
   m_p_PipelineSpec = nullptr;
   m_bWasOptimised  = false;
   //m_sOptPipelineStmt
@@ -51,16 +52,50 @@ Dynamo::~Dynamo(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* repair a dynamo                                                            */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vRepair(Object* pObject)
+{
+  _static_
+
+  Dynamo* pDynamo = _pDynamo(pObject);
+
+  delete pDynamo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert pipeline statement to pipeline spec                                */
+/*----------------------------------------------------------------------------*/
+PipelineSpec* Dynamo::pToPipelineSpec(Stz* szPipelineStmt, TagSet* p_JobTags)
+{
+  _static_
+  
+  Dynamo* pDynamo = new Dynamo(p_JobTags);
+  
+  PipelineSpec* pPipelineSpec = pDynamo->pCompile(szPipelineStmt);
+
+  delete pDynamo;
+  
+  return pPipelineSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* recursively compile the tokenised pipeline statement                       */
 /*----------------------------------------------------------------------------*/
-PipelineSpec* Dynamo::pCompile(void)
+PipelineSpec* Dynamo::pCompile(Stz* szPipelineStmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
         
+  m_szPipelineStmt = szPipelineStmt;
+  
   Scanner* pScanner = new Scanner(m_szPipelineStmt);
   
   if (! (pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
@@ -75,7 +110,7 @@ PipelineSpec* Dynamo::pCompile(void)
   
   if (m_p_PipelineSpec->bCompile()) {
     
-    vOptimise();
+    //vOptimise();
  
     delete pScanner;
     
@@ -99,19 +134,7 @@ void Dynamo::vOptimise(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   Job* pJob = MY::pJob();
-  
-  Stz* szPipelineNm = m_p_PipelineSpec->szPipelineNm();
-  
-  i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
-
-//  if (   ! iOptimiserLvl
-//      || ! pJob->bIsOriginator()
-//      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
-//      || ! m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
-//      ||   m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
-//      )
-//    return;
-    
+      
   if (! bWillOptimise())
     return;
   
@@ -120,7 +143,10 @@ void Dynamo::vOptimise(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec,iOptimiserLvl);
+  Optimiser* pOptimiser = new Optimiser(m_p_JobTags);
+  
+  pOptimiser->vDissect(m_p_PipelineSpec);
+                                        
   pOptimiser->vOptimise();
 
   Stz* szWeavedStmt = pOptimiser->szWeave();

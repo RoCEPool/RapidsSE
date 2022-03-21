@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_ProjElist,CK_PROJELIST)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_ProjElist::Card_ProjElist(void)
-: Card(CK_PROJELIST)
+: Card_ELIST(CK_PROJELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

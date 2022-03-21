@@ -30,7 +30,7 @@
   op__topology
 
   // Setup ZK_D_PARCEL handler here
-  find: bktMapRecv_Parcel ZK_D_PARCEL op[].handler!
+  find: bktMapRecv_Parcel ZK_D_PARCEL [op].handler!
 
   op__loop
 

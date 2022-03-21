@@ -15,7 +15,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Aggreg(eAL eAggLvl);
+    Card_Aggreg(void);
    ~Card_Aggreg(void) noexcept(false);
   };
 

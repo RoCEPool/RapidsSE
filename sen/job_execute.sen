@@ -11,15 +11,15 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job_Execute to all participants                                 */
 /*----------------------------------------------------------------------------*/
-: execute::distribute params| pJobOriginator |
+: execute:distribute params| pJobOriginator |
 
-  // "execute::distribute" .
+  // "execute:distribute" .
 
   //
   // where: on the originator node
   //
 
-  job[].tscExecuting
+  [job].tscExecuting
 
   0 locals| pJob_Execute |
 
@@ -29,7 +29,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the no of acks expected in originator job
-  grid::knownNodes pJobOriginator job.acksRemaining!
+  [grid].knownNodes pJobOriginator job.acksRemaining!
 
   // send job_execute to all nodes
 
@@ -53,41 +53,45 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // delete the temporary job_execute
-  pJob_Execute job.delete2pc
+  pJob_Execute job.delete
 ;
 
 /*----------------------------------------------------------------------------*/
 /* run received Job_Execute on participating node   recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: execute::execute
+: execute:execute
 
-  // "execute::execute" .
+  // "execute:execute" .
 
   //
   // where: on the participating node
   //
-  Job[] locals| pJob_Execute |
+  [job] locals| pJob_Execute |
+  0 locals| pTask_Execute |
 
   // find the job to be executed in the participating jobs
   pJob_Execute job.id@ locals| iJobId |
-  iJobId plist::findJob discard
+  iJobId ListedJob[].findParticipant discard
 
   // stall till job's previous phase (task) has completed
-  begin
-    JobRef[].hasTask
-  while
-    "job still has task" .
-    Task[].yield
-  repeat
   
-  // "execute::execute" .
-
+  ListedJob[].task@ to pTask_Execute
+  begin
+      pTask_Execute task.state@ TS_HIBERNATING !=
+  while
+    "job to be executed still has non-hibernating task" .
+    [task].yield
+  repeat
+  pTask_Execute task.cycleLock
+    
+  
+  // "execute:execute" .
 
   // execute the job on this participating node
-  JobRef[] job.scheduleNextPhase // job in participant list ; perform next phase
-  JobRef[].returnReference
+  ListedJob[] job.scheduleNextPhase // job in participant list ; perform next phase
+  ListedJob[].returnReference
   
-  _job_2pc_delete_
+  [job]:retire
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +103,7 @@ cmdSyntax: execute :: execute ;
 : execute_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "execute::execute"
+    <entryPoint>    = "execute:execute"
     <path>     = "/"
   }
 ;

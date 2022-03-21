@@ -22,40 +22,51 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Task(void)
 {
-  vAddStep("task::breakPoint"_Stz,     &Step::vTaskBreakPoint);
-  vAddStep("task::dump"_Stz,           &Step::vTaskDump);
-  vAddStep("task::exception"_Stz,      &Step::vTaskException);
-  vAddStep("task::operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
-  vAddStep("task::operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
-  vAddStep("task::releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
-  vAddStep("task::seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
-  vAddStep("task::seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
-  vAddStep("task::seeLogicUnitRegisters"_Stz,  &Step::vTaskSeeLogicUnitRegisters);
-  vAddStep("task::sleepMsec"_Stz,      &Step::vTaskSleepMsec);
-  vAddStep("task::sleepSsec"_Stz,      &Step::vTaskSleepSsec);
-  vAddStep("task::sleepUsec"_Stz,      &Step::vTaskSleepUsec);
-
   vAddStep("task.ack"_Stz,             &Step::vTaskAck);
-  vAddStep("task.isAckSet"_Stz,        &Step::vTaskIsAckSet);
-  vAddStep("task.isWaiting"_Stz,       &Step::vTaskIsWaiting);
+  vAddStep("task.cycleLock"_Stz,       &Step::vTaskCycleLock);
+  vAddStep("task.isAckSet?"_Stz,       &Step::vTaskIsAckSet);
+  vAddStep("task.isWaiting?"_Stz,      &Step::vTaskIsWaiting);
   vAddStep("task.name@"_Stz,           &Step::vTaskNameFetch);
   vAddStep("task.profile@"_Stz,        &Step::vTaskProfileFetch);
   vAddStep("task.profile!"_Stz,        &Step::vTaskProfileStore);
   vAddStep("task.state@"_Stz,          &Step::vTaskStateFetch);
-  vAddStep("task.thread"_Stz,          &Step::vTaskThread);
+  vAddStep("task.thread@"_Stz,         &Step::vTaskThread);
+  
+  // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+  vAddStep("[task]"_Stz,                &Step::vTaskGet);
+  vAddStep("[task].acksRemaining!"_Stz, &Step::vTaskAcksStore);
+  vAddStep("[task].breakPoint"_Stz,     &Step::vTaskBreakPoint);
+  vAddStep("[task].dropLock"_Stz,       &Step::vTaskDropLock);
+  vAddStep("[task].dump"_Stz,           &Step::vTaskDump);
+  vAddStep("[task].exception"_Stz,      &Step::vTaskException);
+  vAddStep("[task].grabLock"_Stz,       &Step::vTaskGrabLock);
+  vAddStep("[task].operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
+  vAddStep("[task].operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
+  vAddStep("[task].releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
+  vAddStep("[task].seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
+  vAddStep("[task].seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
+  vAddStep("[task].seeLogicUnit"_Stz,   &Step::vTaskSeeLogicUnit);
+  vAddStep("[task].sleepMsec"_Stz,      &Step::vTaskSleepMsec);
+  vAddStep("[task].sleepSsec"_Stz,      &Step::vTaskSleepSsec);
+  vAddStep("[task].sleepUsec"_Stz,      &Step::vTaskSleepUsec);
+  vAddStep("[task].transition!"_Stz,    &Step::vTaskTransitionStore);
+  vAddStep("[task].wait"_Stz,           &Step::vTaskWait);
+  vAddStep("[task].yield"_Stz,          &Step::vTaskYield);
+  vAddStep("[task].yield_opLoop"_Stz,   &Step::vTaskYield_opLoop);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.ack -- acknowledge that task of this tasks completion                 */
+/* task.ack -- acknowledge waiting task of this tasks completion              */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskAck(void)
 {
   ENTRY();
   
-  Task* pTaskWaiting = _pTask(m_pDataStack->pPopPtr(__func__));
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
   i8 nAcksWereRemaining;
-  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pTaskWaiting,this,
+  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pThatTask,this,
                                                      nAcksWereRemaining);
   UNUSED(bWasQueued);
   
@@ -68,7 +79,158 @@ void Step::vTaskAck(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.breakPoint -- break point so we can examine task & thread state       */
+/* task.cycleLock -- grab and drop lock of given task                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskCycleLock(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  // cycle the task lock to ensure task has fully entered next state
+  pThatTask->vGrabTaskLock((Stz*)__func__);
+  pThatTask->vDropTaskLock((Stz*)__func__);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.isAckSet? -- is ack set for given task?                               */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskIsAckSet(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  i8 iIsAckSet = pThatTask->m_oAcksRmg.bIsSet();
+    
+  m_pDataStack->vPushInt(iIsAckSet);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.isWaiting? -- is given task waiting?                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskIsWaiting(void)
+{
+  ENTRY();
+
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  // should never s=check for DEDICATED tasks
+  RASSERT(pThatTask->eEntryPoint() != EP_DEDICATED);
+  
+  m_pDataStack->vPushInt(pThatTask->eState() == TS_WAITING ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.name@ -- fetch name of given task                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskNameFetch(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  s256 sName((Stz*)pThatTask->szTaskNm());
+  
+  m_pDataStack->vPushStr(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.profile@ -- fetch this task profile                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskProfileFetch(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  m_pDataStack->vPushPtr(pThatTask->pProfile());
+  pThatTask->vProfile(nullptr);
+   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.profile! -- store this task profile                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskProfileStore(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Profile* pProfile = _pProfile(m_pDataStack->pPopPtr(__func__));
+  
+  pThatTask->vProfile(pProfile);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.state@ -- fetch state of task                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskStateFetch(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  eTS eState = pThatTask->m_eState;
+  
+  m_pDataStack->vPushInt((i8)eState);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.thread@ -- push given tasks thread                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskThread(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+
+  Thread* pThread = pThatTask->m_pThread;
+  m_pDataStack->vPushPtr(pThread);
+  ASSERT(pThread);
+  
+  EXIT();
+}
+
+
+// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
+/*----------------------------------------------------------------------------*/
+/* [task].acksRemaining! -- store value into given tasks m_oAcksRmg_task      */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskAcksStore(void)
+{
+  ENTRY();
+    
+  i8 nAcksRequired = m_pDataStack->iPopAsInt(__func__);
+  
+  ASSERT(0 == m_oAcksRmg.iPrintOnlyValue());
+
+  RASSERT(bIsLocked());
+  
+  vAcksRmg(nAcksRequired);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].breakPoint -- break point so we can examine task & thread state     */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskBreakPoint(void)
 {
@@ -78,7 +240,19 @@ void Step::vTaskBreakPoint(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.dump -- dump of task on data stack                                    */
+/* [task].dropLock -- drop this task's lock                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskDropLock(void)
+{
+  ENTRY();
+    
+  vDropTaskLock((Stz*)__func__);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].dump -- dump of task on data stack                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDump(void)
 {
@@ -90,7 +264,19 @@ void Step::vTaskDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::exception -- get current exception as a string                       */
+/* [task].get -- get task                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskGet(void)
+{
+  ENTRY();
+    
+  m_pDataStack->vPushPtr(this);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].exception -- get exception of this task as a string                 */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskException(void)
 {
@@ -117,56 +303,19 @@ void Step::vTaskException(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.isAckSet -- is task ack set?                                          */
+/* [task].grabLock -- grab this task's lock                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskIsAckSet(void)
+void Step::vTaskGrabLock(void)
 {
   ENTRY();
-  
-  Task* pTaskBeingAcked = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iIsAckSet = pTaskBeingAcked->m_oAcksRmg_task.bIsSet();
     
-  m_pDataStack->vPushInt(iIsAckSet);
+  vGrabTaskLock((Stz*)__func__);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.isWaiting -- is task waiting?                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskIsWaiting(void)
-{
-  ENTRY();
-
-  Task* pTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  // should never s=check for DEDICATED tasks
-  RASSERT(pTask->eEntryPoint() != EP_DEDICATED);
-  
-  m_pDataStack->vPushInt(pTask->eState() == TS_WAITING ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.name@ -- fetch task name                                              */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskNameFetch(void)
-{
-  ENTRY();
-  
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  s256 sName((Stz*)pThatTask->szTaskNm());
-  
-  m_pDataStack->vPushStr(sName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task::operandYield@ -- operand yield fetch                                  */
+/* [task].operandYield@ -- fetch operand yield of this task                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskOperandYieldFetch(void)
 {
@@ -178,7 +327,7 @@ void Step::vTaskOperandYieldFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::operandYield! -- operand yield store                                 */
+/* [task].operandYield! -- store operand yield of this task                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskOperandYieldStore(void)
 {
@@ -190,37 +339,7 @@ void Step::vTaskOperandYieldStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.profile@ -- fetch task profile                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskProfileFetch(void)
-{
-  ENTRY();
-  
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushPtr(pThatTask->pProfile());
-  pThatTask->vProfile(nullptr);
-   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.profile! -- store task profile                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskProfileStore(void)
-{
-  ENTRY();
-  
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  Profile* pProfile = _pProfile(m_pDataStack->pPopPtr(__func__));
-  
-  pThatTask->vProfile(pProfile);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task::releaseLockSets -- release all locks in read and write lock sets     */
+/* [task].releaseLockSets -- release all locks in read and write lock sets    */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskReleaseLockSets(void)
 {
@@ -232,7 +351,7 @@ void Step::vTaskReleaseLockSets(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::seeFrameStack -- see event handler frames (aka return stack)         */
+/* [task].seeFrameStack -- see event handler frames (aka return stack)        */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSeeFrameStack(void)
 {
@@ -244,7 +363,7 @@ void Step::vTaskSeeFrameStack(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::seeLockSets -- see read and write lock sets                          */
+/* [task].seeLockSets -- see read and write lock sets                         */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSeeLockSets(void)
 {
@@ -256,9 +375,9 @@ void Step::vTaskSeeLockSets(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::seeLogicUnitRegisters -- see logic Unit registers                    */
+/* [task].seeLogicUnit -- see logic Unit registers                            */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSeeLogicUnitRegisters(void)
+void Step::vTaskSeeLogicUnit(void)
 {
   ENTRY();
 
@@ -268,7 +387,7 @@ void Step::vTaskSeeLogicUnitRegisters(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::sleepMsec -- this task sleeps for given milliseconds                 */
+/* [task].sleepMsec -- this task sleeps for given milliseconds                */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepMsec(void)
 {
@@ -286,7 +405,7 @@ void Step::vTaskSleepMsec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::sleepSsec -- this task sleeps for given seconds                      */
+/* [task].sleepSsec -- this task sleeps for given seconds                     */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepSsec(void)
 {
@@ -303,7 +422,7 @@ void Step::vTaskSleepSsec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::sleepUsec -- this task sleeps for given microseconds                 */
+/* [task].sleepUsec -- this task sleeps for given microseconds                */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepUsec(void)
 {
@@ -319,34 +438,56 @@ void Step::vTaskSleepUsec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.state@ -- fetch state of task                                         */
+/* [task].transition! -- store transition into this task                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskStateFetch(void)
+void Step::vTaskTransitionStore(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  eTS eState = pThatTask->m_eState;
-  
-  m_pDataStack->vPushInt((i8)eState);
+  eTR eTransition = (eTR)m_pDataStack->iPopInt(__func__);
+
+  RASSERT(bIsLocked());
+  m_eTransition = eTransition;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.thread -- push given tasks thread                                     */
+/* [task].wait -- this task waits for signal                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskThread(void)
+void Step::vTaskWait(void)
 {
   ENTRY();
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  vScheduleWait();
 
-  Thread* pThread = pThatTask->m_pThread;
-  m_pDataStack->vPushPtr(pThread);
-  ASSERT(pThread);
-  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].yield  -- this task yields                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskYield(void)
+{
+  ENTRY();
+    
+  vGrabTaskLock((Stz*)__func__);
+  vScheduleYield();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].yield  -- this task yields                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskYield_opLoop(void)
+{
+  ENTRY();
+    
+  vGrabTaskLock((Stz*)__func__);
+  RASSERT(bIsLocked());
+  vScheduleYield();
+
   EXIT();
 }
 

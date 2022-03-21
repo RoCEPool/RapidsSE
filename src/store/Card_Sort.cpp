@@ -17,13 +17,10 @@ __bIsCard(STORE,Card_Sort,CK_SORT)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Sort::Card_Sort(Column* pColumn, Table* pTable)
-: Card(CK_SORT)
+Card_Sort::Card_Sort(void)
+: Card_MAIN(CK_SORT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vColumn(pColumn);
-  vTable(pTable);
 
   _checkInitialised_(CN_CARD);
   

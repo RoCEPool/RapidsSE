@@ -19,13 +19,13 @@
   // gridGet::getMetaData locals| pgridGet |
 
 
-  grid::getGrid locals| pgridObj |
+  [grid].getGrid locals| pgridObj |
   // pipeout the gridGet instance
-  pgridObj op.pipeout
+  pgridObj [op].pipeout
 
   true
   //stk
-  //task::breakpoint set breakpoint back into C++ code, where the task loop is
+  //[task].breakpoint set breakpoint back into C++ code, where the task loop is
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -38,7 +38,7 @@
   op__topology
 
 
-  find: gridGet_getObject   ZK_M_DATAPULSE   op[].handler!
+  find: gridGet_getObject   ZK_M_DATAPULSE   [op].handler!
 
   op__loop
 

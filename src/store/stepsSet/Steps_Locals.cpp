@@ -256,6 +256,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("ErrorCode[]"_Stz)) {
+    pCurrentWord->vEncodeCall("ErrorCode[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("ExprEval[]"_Stz)) {
     pCurrentWord->vEncodeCall("ExprEval[].set"_Stz);
     EXIT();
@@ -386,6 +391,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("PipelineSpec[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PipelineSpec[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("PlanOperand[]"_Stz)) {
     pCurrentWord->vEncodeCall("PlanOperand[].set"_Stz);
     EXIT();
@@ -431,8 +441,18 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Stage[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Stage[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Stats[]"_Stz)) {
     pCurrentWord->vEncodeCall("Stats[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Stream[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Stream[].set"_Stz);
     EXIT();
     return;
   }
@@ -481,6 +501,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("TagSet[]"_Stz)) {
+    pCurrentWord->vEncodeCall("TagSet[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Timer[]"_Stz)) {
     pCurrentWord->vEncodeCall("Timer[].set"_Stz);
     EXIT();
@@ -521,9 +546,9 @@ void Step::vLocalsTo(void)
     pCurrentWord->vEncodePush(xMetaNm);
     pCurrentWord->vEncodeCall("swap"_Stz);
 
-    //pCurrentWord->vEncodeCall("Job[]"_Stz);
+    //pCurrentWord->vEncodeCall("[job]"_Stz);
     //pCurrentWord->vEncodeCall("job.session@"_Stz);
-    pCurrentWord->vEncodeCall("session::tagSet@"_Stz);
+    pCurrentWord->vEncodeCall("[session].tagSet@"_Stz);
     
     pCurrentWord->vEncodeCall("tagSet.upsertStr"_Stz);
     

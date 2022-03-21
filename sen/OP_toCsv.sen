@@ -79,10 +79,10 @@
 
   op__topology
 
-  find: toCsv_CrwBuffer  ZK_D_CRWBUFFER op[].handler!
-  find: toCsv_EosMarker  ZK_M_EOS       op[].handler!
-  find: toCsv_RowBuffer  ZK_D_ROWBUFFER op[].handler!
-  find: toCsv_StreamDef  ZK_D_STREAMDEF op[].handler!
+  find: toCsv_CrwBuffer  ZK_D_CRWBUFFER [op].handler!
+  find: toCsv_EosMarker  ZK_M_EOS       [op].handler!
+  find: toCsv_RowBuffer  ZK_D_ROWBUFFER [op].handler!
+  find: toCsv_StreamDef  ZK_D_STREAMDEF [op].handler!
 
   op__loop
 

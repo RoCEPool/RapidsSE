@@ -5,17 +5,17 @@
 
 #include "BASE.h"
 
-#include "Card_UNIT.hpp"
+#include "Card_MAIN.hpp"
 
 namespace STORE
 {
-  class Card_Stage : public Card_UNIT
+  class Card_Stage : public Card_MAIN
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Stage(Stz* szStageNm, eYG eStageTopology);
+    Card_Stage(void);
    ~Card_Stage(void) noexcept(false);
   };
 

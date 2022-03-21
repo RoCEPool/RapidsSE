@@ -60,6 +60,8 @@ C_SUBNET_ID_PREFERENCE = [
     C_SUBNET_MAP[C_AVAIL_1E]
 ]
 
+C_ROOT_EBS_DEVICE = "/dev/xvda"
+C_VOLUME_SIZE_GB = 20
 C_SECURITY_GROUP_ID = "sg-0af380e49a6c6b7eb"    # Private security group (all in/outbound traffic allowed)
 C_KEYPAIR_ID = "key-0b5ebe74924256d94"
 C_KEYPAIR_NAME = "aws_rapidsse"
@@ -97,7 +99,8 @@ def describe_instances():
     pprint.pprint(response)
 
 
-def start_instances(cfg: HardwareConfig, timeout_sec: float) -> ([string], [string]):
+def start_instances(cfg: HardwareConfig, timeout_sec: float,
+                    job_result_id: int, job_id: int) -> ([string], [string]):
     """
     Starts up AWS EC2 instances according to the hardware configuration
     and waits until they have booted and are ready to be used.
@@ -124,6 +127,15 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float) -> ([string], [stri
         "InstanceInitiatedShutdownBehavior": "terminate",
         "ImageId": cfg.get_image_id(),
         "KeyName": C_KEYPAIR_NAME,
+        "BlockDeviceMappings": [
+            {
+                "DeviceName": C_ROOT_EBS_DEVICE,
+                "Ebs": {
+                    "DeleteOnTermination": True,
+                    "VolumeSize": C_VOLUME_SIZE_GB
+                }
+            }
+        ],
         "Monitoring": {
             "Enabled": False
         },
@@ -136,10 +148,19 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float) -> ([string], [stri
         },
         "TagSpecifications": [{
             "ResourceType": "instance",
-            "Tags": [{
-                "Key": "PerfTest",
-                "Value": ""
-            }]
+            "Tags": [
+                {
+                    "Key": "PerfTest",
+                    "Value": ""
+                },
+                {
+                    "Key": "jobResultId",
+                    "Value": str(job_result_id)
+                },
+                {
+                    "Key": "jobId",
+                    "Value": str(job_id)
+                }]
         }]}
 
     if LOG.isEnabledFor(logging.DEBUG):
@@ -153,7 +174,7 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float) -> ([string], [stri
 
     except botocore.exceptions.ClientError as e:
         if e.response["Error"]["Code"] != "DryRunOperation":
-            raise e
+            raise
 
     # Try each subnet in order of preference
     last_error = None
@@ -186,6 +207,22 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float) -> ([string], [stri
 
     if last_error is not None:
         raise last_error
+
+    # Set a Name tag for each instance
+    for n, instance_id in enumerate(instance_ids, start=1):
+        kwargs = {
+            "DryRun": False,
+            "Resources": [instance_id],
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": f"PerfTest{n:02}"
+                }
+            ]
+        }
+        LOG.debug("About to create a Name tag for instance %s", instance_id)
+        response = client.create_tags(**kwargs)
+        LOG.debug(f"Response of create_tags command:\n{pprint.pformat(response)}")
 
     LOG.info("Started %d machines with the following instance-ids: %s", len(instance_ids), str(instance_ids))
     LOG.info("Private IP addresses assigned: %s", str(ip_addresses))
@@ -222,7 +259,7 @@ def terminate_instances(instance_ids: [string]):
         client.terminate_instances(DryRun=True, **kwargs)
     except botocore.exceptions.ClientError as e:
         if e.response["Error"]["Code"] != "DryRunOperation":
-            raise e
+            raise
 
     LOG.info(f"About to terminate {len(instance_ids)} instance(s): {str(instance_ids)}")
     response = client.terminate_instances(DryRun=False, **kwargs)

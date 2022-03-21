@@ -46,6 +46,8 @@ enum eCN : u2 // Class Number
 
   /* */ CN__C__,
   /* */ CN_CARD,
+  /* */ CN_CARDCTL,
+  /* */ CN_CARDREGS,
   /* */ CN_CATALOG,
   /* */ CN_CELLSINGLE,
   /* */ CN_CHARSER,
@@ -77,6 +79,7 @@ enum eCN : u2 // Class Number
   /* */ CN_DICSTACK,
   /* */ CN_DIR,
   /* */ CN_DISSECT,
+  /* */ CN_DRAFTER,
   /* */ CN_DTEVAL,
   /* */ CN_DYNAMO,
 
@@ -214,6 +217,8 @@ enum eCN : u2 // Class Number
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINEMETRICS,
   /* */ CN_PIPELINESPEC,
+  /* */ CN_PIPEWORK,
+  /* */ CN_PIPEWORKSPEC,
   /* */ CN_PLANDEFINITIONPARSER,
   /* */ CN_PLANNERLOCK,
   /* */ CN_PLANNODE,
@@ -267,8 +272,7 @@ enum eCN : u2 // Class Number
   /* */ CN_RUCPU,
   /* */ CN_RUDIR,
   /* */ CN_RUFILE,
-  /* */ CN_RULE,
-  /* */ CN_RULES,
+  /* */ CN_RULECTL,
   /* */ CN_RUMEMORY,
   /* */ CN_RUMUTEX,
   /* */ CN_RUPASS,
@@ -281,6 +285,8 @@ enum eCN : u2 // Class Number
   /* */ CN_SCHEDULER,
   /* */ CN_SCHEMA,
   /* */ CN_SEAPI,
+  /* */ CN_SECTION,
+  /* */ CN_SECTIONSPEC,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
   /* */ CN_SENCOMPILER,
@@ -337,7 +343,9 @@ enum eCN : u2 // Class Number
   /* */ CN_STRING_T,
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
+  /* */ CN_SUBCALL,
   /* */ CN_SUBPIPELINES,
+  /* */ CN_SUBRETURN,
   /* */ CN_SYSCALL,
   /* */ CN_SYSMETRICS,
   /* */ CN_SYSREPORT,
@@ -451,6 +459,8 @@ static Stz* aCN[]
 
   /* */ "_C__"_Stz,                 // CN__C__
   /* */ "CARD"_Stz,                 // CN_CARD
+  /* */ "CARDCTL"_Stz,              // CN_CARDCTL
+  /* */ "CARDREGS"_Stz,             // CN_CARDREGS
   /* */ "CATALOG"_Stz,              // CN_CATALOG
   /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
   /* */ "CHARSER"_Stz,              // CN_CHARSER
@@ -482,6 +492,7 @@ static Stz* aCN[]
   /* */ "DICSTACK"_Stz,             // CN_DICSTACK
   /* */ "DIR"_Stz,                  // CN_DIR
   /* */ "DISSECT"_Stz,              // CN_DISSECT
+  /* */ "DRAFTER"_Stz,              // CN_DRAFTER
   /* */ "DTEVAL"_Stz,               // CN_DTEVAL
   /* */ "DYNAMO"_Stz,               // CN_DYNAMO
 
@@ -619,6 +630,8 @@ static Stz* aCN[]
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
   /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC
+  /* */ "PIPEWORK"_Stz,             // CN_PIPEWORK
+  /* */ "PIPEWORKSPEC"_Stz,         // CN_PIPEWORKSPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
   /* */ "PLANNERLOCK"_Stz,          // CN_PLANNERLOCK
   /* */ "PLANNODE"_Stz,             // CN_PLANNODE
@@ -672,8 +685,7 @@ static Stz* aCN[]
   /* */ "RUCPU"_Stz,                // CN_RUCPU
   /* */ "RUDIR"_Stz,                // CN_RUDIR
   /* */ "RUFILE"_Stz,               // CN_RUFILE
-  /* */ "RULE"_Stz,                 // CN_RULE
-  /* */ "RULES"_Stz,                // CN_RULES
+  /* */ "RULECTL"_Stz,              // CN_RULECTL
   /* */ "RUMEMORY"_Stz,             // CN_RUMEMORY
   /* */ "RUMUTEX"_Stz,              // CN_RUMUTEX
   /* */ "RUPASS"_Stz,               // CN_RUPASS
@@ -686,13 +698,15 @@ static Stz* aCN[]
   /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
   /* */ "SEAPI"_Stz,                // CN_SEAPI
+  /* */ "SECTION"_Stz,              // CN_SECTION
+  /* */ "SECTIONSPEC"_Stz,          // CN_SECTIONSPEC
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
   /* */ "SENDS"_Stz,                // CN_SENDS
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
-  /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONS
+  /* */ "SESSIONS"_Stz,             // CN_SESSIONS
   /* */ "SHAPE"_Stz,                // CN_SHAPE
   /* */ "SHARDDEF"_Stz,             // CN_SHARDDEF
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
@@ -742,7 +756,9 @@ static Stz* aCN[]
   /* */ "STRING_T"_Stz,             // CN_STRING_T
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
+  /* */ "SUBCALL"_Stz,              // CN_SUBCALL
   /* */ "SUBPIPELINES"_Stz,         // CN_SUBPIPELINES
+  /* */ "SUBRETURN"_Stz,            // CN_SUBRETURN
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS
   /* */ "SYSREPORT"_Stz,            // CN_SYSREPORT

@@ -5,12 +5,12 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_SUB.hpp"
 #include "eTE.h"
 
 namespace STORE
 {
-  class Card_Term : public Card
+  class Card_Term : public Card_SUB
   {
   public:
     void* operator new(size_t);
@@ -18,6 +18,7 @@ namespace STORE
   
     Card_Term(Stz* szTerm);
     Card_Term(Token* pTkn);
+    Card_Term(Column* pColumn);
    ~Card_Term(void) noexcept(false);
   };
 

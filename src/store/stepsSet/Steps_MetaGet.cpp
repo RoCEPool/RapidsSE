@@ -45,9 +45,9 @@ void Step::vMetaGetDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpMetaGet);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpMetaGet);
 
-  m_p_TaskLogicUnit->m_xpMetaGet = nullptr;
+  m_pLogicUnit->m_xpMetaGet = nullptr;
 
   EXIT();
 }
@@ -59,7 +59,7 @@ void Step::vMetaGetGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpMetaGet);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpMetaGet);
 
   EXIT();
 }
@@ -71,9 +71,9 @@ void Step::vMetaGetGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpMetaGet);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpMetaGet);
 
-  m_p_TaskLogicUnit->m_xpMetaGet = nullptr;
+  m_pLogicUnit->m_xpMetaGet = nullptr;
 
   EXIT();
 }
@@ -85,7 +85,7 @@ void Step::vMetaGetIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpMetaGet.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpMetaGet.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -97,7 +97,7 @@ void Step::vMetaGetIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpMetaGet.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpMetaGet.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -190,9 +190,9 @@ void Step::vMetaGetSet(void)
 
   MetaGet* pMeta = _pMetaGet(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pMeta || m_p_TaskLogicUnit->m_xpMetaGet.bIsNull());
+  ASSERT(! pMeta || m_pLogicUnit->m_xpMetaGet.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpMetaGet = pMeta;
+  m_pLogicUnit->m_xpMetaGet = pMeta;
 
   EXIT();
 }
@@ -205,7 +205,7 @@ void Step::vMetaGetTableNameFetch(void)
   ENTRY();
   //vTrace("C++ gets called: vMetaGetGetTableName\n"_Stz);
 
-  MetaGet* pMetaGet = *m_p_TaskLogicUnit->m_xpMetaGet;
+  MetaGet* pMetaGet = *m_pLogicUnit->m_xpMetaGet;
 
   s32 sTableNm = pMetaGet->sTableName();
 

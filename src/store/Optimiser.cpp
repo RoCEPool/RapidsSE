@@ -5,6 +5,8 @@
 #include "Optimiser.hpp"
 #include "Cue.hpp"
 
+#include "Dynamo.hpp"
+
 #include "SP_PipelineSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -19,19 +21,22 @@ __aFooterFunction(Optimiser)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Optimiser::Optimiser(PipelineSpec* pUnOptPipelineSpec,
-                     i8 iOptimiserLvl)
+Optimiser::Optimiser(TagSet* p_JobTags)
 : Object(CN_OPTIMISER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
-  m_iOptimiserLvl = iOptimiserLvl;
-  m_pUnOptPipelineSpec = pUnOptPipelineSpec;
+  m_p_JobTags = p_JobTags;
+  m_pUnOptPipelineSpec = nullptr;
   
-  m_pBench   = new Bench;
-  m_pDissect = new Dissect;
-  m_pRules   = new Rules;
-  m_pWeave   = new Weave;
+  m_pCardCtl = new CardCtl;
+  
+  m_pBench   = new Bench(this);
+  m_pDissect = new Dissect(this);
+  m_pDrafter = new Drafter(this);
+  m_pWeave   = new Weave(this);
+
+  m_pPaste   = new Card_SubSet;
 
   _checkInitialised_(CN_OPTIMISER);
   
@@ -45,10 +50,14 @@ Optimiser::~Optimiser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
+  delete m_pCardCtl;
+  
   delete m_pBench;
   delete m_pDissect;
-  delete m_pRules;
+  delete m_pDrafter;
   delete m_pWeave;
+  
+  delete m_pPaste;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +65,7 @@ Optimiser::~Optimiser(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* repair the ruler                                                           */
+/* repair the optimiser                                                       */
 /*----------------------------------------------------------------------------*/
 void Optimiser::vRepair(Object* pObject)
 {
@@ -73,32 +82,133 @@ void Optimiser::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* run                                                                        */
+/* get cardCtl                                                                */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vOptimise(void)
+CardCtl* Optimiser::pCardCtl(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_pCardCtl;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect                                                                    */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vDissect(PipelineSpec* pUnOptPipelineSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+   
+  m_pUnOptPipelineSpec = pUnOptPipelineSpec;
   
-  if (! m_iOptimiserLvl)
-    return;
- 
-    
   SP_PipelineSpec spPipelineSpec(m_pUnOptPipelineSpec);
   vTrace("Optimiser: %s\n"_Stz,spPipelineSpec.sz());
-    
-  if (1 == m_iOptimiserLvl)
-    return;
+      
+  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipelineSpec);
   
-  m_pDissect->vDissectSpec(m_pBench,m_pUnOptPipelineSpec);
-  
+  m_pBench->vPush(pBoard);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Board* pBoard = m_pBench->pGet(0);
+  vOptimise();
 
-  pBoard->vOptimise_Board();
-  
-  
   return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get drafter                                                                */
+/*----------------------------------------------------------------------------*/
+Drafter* Optimiser::pDrafter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_pDrafter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get top board                                                              */
+/*----------------------------------------------------------------------------*/
+Board* Optimiser::pHeadBoard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  Board* pBoard = m_pBench->pHead();
+
+  return pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get cardCtl                                                                */
+/*----------------------------------------------------------------------------*/
+TagSet* Optimiser::pJobTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_p_JobTags;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get paste buffer                                                          */
+/*----------------------------------------------------------------------------*/
+Card_SubSet* Optimiser::pPaste(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_pPaste;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set m_pUnOptPipelineSpec                                                   */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vPipelineSpec(PipelineSpec* pUnOptPipelineSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+    
+  if (m_pUnOptPipelineSpec) {
+    //delete m_pUnOptPipelineSpec;                                        LEAK!
+    m_pUnOptPipelineSpec = nullptr;
+  }
+  
+  m_pUnOptPipelineSpec = pUnOptPipelineSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop & delete top board                                                     */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vPopBoard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  Board* pBoard = m_pBench->pPop();
+
+  if (pBoard)
+    delete pBoard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop & delete top board                                                     */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vPushBoard(Board* pBoard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  m_pBench->vPush(pBoard);
+}
+
+/*----------------------------------------------------------------------------*/
+/* run dynamo                                                                 */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vToPipelineSpec(PipelineSpec* pPipelineSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+ 
+  vPipelineSpec(pPipelineSpec);
+  
+  delete m_pBench->pPop();
+  
+  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipelineSpec);
+
+  m_pBench->vAppend(pBoard);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,12 +218,44 @@ Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Board* pBoard = m_pBench->pGet(0);
-  m_pWeave->vWeaveOptimisedStmt(pBoard);
+  Board* pBoard = this->pHeadBoard();
+  m_pWeave->vWeaveOptStmt(pBoard);
 
-  Stz* szPipeline = m_pWeave->szWeavedStmt();
+  Stz* szPipeline = m_pWeave->szOptStmt();
 
   return szPipeline;
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vOptimise(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  Board* pBoard = m_pBench->pHead();
+  CardRegs* pCardRegs = pBoard->pCardRegs();
+
+  pBoard->vPrintBoard("vDissectSpec >> "_Stz);
+  
+  pBoard->vResolve_Symbols();
+  pBoard->vPrintBoard("vResolve_Symbols >> "_Stz);
+
+  // rules
+  
+  if (pBoard->bMay_Scan_Filter_to_IndexScan()) {
+    
+    bool bRun = pBoard->bRule_Scan_Filter_to_IndexScan();
+    UNUSED(bRun);
+    
+    pCardRegs->vResetCardRegs();
+  }
+  
+  Cue::vGetReturn("$$$$$$ >>"_Stz);
 }
 
 /*============================================================================*/

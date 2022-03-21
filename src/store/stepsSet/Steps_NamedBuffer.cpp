@@ -36,10 +36,10 @@ void Step::vNamedBufferDelete(void)
 {
   ENTRY();
 
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(*m_p_TaskLogicUnit->m_xpNamedBuffer);
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(*m_pLogicUnit->m_xpNamedBuffer);
   delete pNamedBuffer;
 
-  m_p_TaskLogicUnit->m_xpNamedBuffer = nullptr;
+  m_pLogicUnit->m_xpNamedBuffer = nullptr;
 
   EXIT();
 }
@@ -51,7 +51,7 @@ void Step::vNamedBufferGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpNamedBuffer);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpNamedBuffer);
 
   EXIT();
 }
@@ -63,9 +63,9 @@ void Step::vNamedBufferGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpNamedBuffer);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpNamedBuffer);
 
-  m_p_TaskLogicUnit->m_xpNamedBuffer = nullptr;
+  m_pLogicUnit->m_xpNamedBuffer = nullptr;
 
   EXIT();
 }
@@ -77,7 +77,7 @@ void Step::vNamedBufferIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpNamedBuffer.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpNamedBuffer.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -89,7 +89,7 @@ void Step::vNamedBufferIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpNamedBuffer.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpNamedBuffer.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -103,7 +103,7 @@ void Step::vNamedBufferMorphClass(void)
 
   i8 iClassNo = m_pDataStack->iPopInt(__func__);
 
-  NamedBuffer* pNamedBuffer = *m_p_TaskLogicUnit->m_xpNamedBuffer;
+  NamedBuffer* pNamedBuffer = *m_pLogicUnit->m_xpNamedBuffer;
 
   pNamedBuffer->vSetClassNo((eCN)iClassNo);
 
@@ -117,7 +117,7 @@ void Step::vNamedBufferNameFetch(void)
 {
   ENTRY();
 
-  NamedBuffer* pNamedBuffer = *m_p_TaskLogicUnit->m_xpNamedBuffer;
+  NamedBuffer* pNamedBuffer = *m_pLogicUnit->m_xpNamedBuffer;
 
   Stz* szBufferNm = pNamedBuffer->szBufferNm();
 
@@ -133,7 +133,7 @@ void Step::vNamedBufferNameStore(void)
 {
   ENTRY();
 
-  NamedBuffer* pNamedBuffer = *m_p_TaskLogicUnit->m_xpNamedBuffer;
+  NamedBuffer* pNamedBuffer = *m_pLogicUnit->m_xpNamedBuffer;
 
   s32 sBufferNm;
   m_pDataStack->vPopStr(sBufferNm,__func__);
@@ -150,11 +150,11 @@ void Step::vNamedBufferPipeIn(void)
 {
   ENTRY();
 
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(*m_p_TaskLogicUnit->m_xpPipein);
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(*m_pLogicUnit->m_xpPipein);
 
-  m_p_TaskLogicUnit->m_xpPipein = nullptr;
+  m_pLogicUnit->m_xpPipein = nullptr;
 
-  m_p_TaskLogicUnit->m_xpNamedBuffer = pNamedBuffer;
+  m_pLogicUnit->m_xpNamedBuffer = pNamedBuffer;
 
   EXIT();
 }
@@ -168,9 +168,9 @@ void Step::vNamedBufferSet(void)
 
   NamedBuffer* pNamedBuffer = _pNamedBuffer(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pNamedBuffer || m_p_TaskLogicUnit->m_xpNamedBuffer.bIsNull());
+  ASSERT(! pNamedBuffer || m_pLogicUnit->m_xpNamedBuffer.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpNamedBuffer = _pNamedBuffer(pNamedBuffer);
+  m_pLogicUnit->m_xpNamedBuffer = _pNamedBuffer(pNamedBuffer);
 
   EXIT();
 }

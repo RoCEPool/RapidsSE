@@ -58,7 +58,7 @@
 
   EC_NONE locals| eError |
 
-  PipeIn[]\clear op.pipeout
+  PipeIn[]\clear [op].pipeout
 
   <tableNm> <indexNm> op__table_index not if
     true
@@ -84,7 +84,7 @@
 
   EC_NONE locals| eError |
 
-  PipeIn[]\clear op.pipeout
+  PipeIn[]\clear [op].pipeout
 
   <tableNm> <indexNm> op__table_index not if
     true
@@ -215,12 +215,12 @@
 
   Counter0[] 2 == if
     // handle combined operator
-    find: indexScan_ComCleaning    ZK_M_CLEANING  op[].handler!
-    find: indexScan_ComStartMarker ZK_M_START     op[].handler!
+    find: indexScan_ComCleaning    ZK_M_CLEANING  [op].handler!
+    find: indexScan_ComStartMarker ZK_M_START     [op].handler!
   else
-    find: indexScan_Cleaning       ZK_M_CLEANING  op[].handler!
-    find: indexScan_DataPulse      ZK_M_DATAPULSE op[].handler!
-    find: indexScan_StartMarker    ZK_M_START     op[].handler!
+    find: indexScan_Cleaning       ZK_M_CLEANING  [op].handler!
+    find: indexScan_DataPulse      ZK_M_DATAPULSE [op].handler!
+    find: indexScan_StartMarker    ZK_M_START     [op].handler!
   then
 
   op__loop

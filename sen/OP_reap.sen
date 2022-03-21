@@ -21,7 +21,7 @@
     
   begin
 
-    // args.demonSleep thread::sleepSsec
+    // [args].demonSleep thread::sleepSsec
     1 thread::sleepSsec
 
     reap_activity
@@ -38,7 +38,7 @@
 
   op__topology
 
-  find: reap_StartMarker ZK_M_START op[].handler!
+  find: reap_StartMarker ZK_M_START [op].handler!
 
   op__loop
 

@@ -8,7 +8,7 @@
 /*----------------------------------------------------------------------------*/
 
 : bClusterStarted
-  system::started@ if
+  [system].started@ if
     true
   else
     EC_CLUSTER_NOT_CONNECTED false

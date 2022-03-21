@@ -247,21 +247,9 @@ Dic* AM::DIC::pRoot(void)
 /*----------------------------------------------------------------------------*/
 /* pipe given row buffer to named demon                                       */
 /*----------------------------------------------------------------------------*/
-void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
+void AM::DEMON::vPipeToOp0(Stz* szDemonNm, Operand* pOperand)
 {
   _static_
-
-  // for reference: sen code from : OP_toStatDemon_Profile \handler
-  
-//  PipeIn[]
-//  "__statDemon" find dup if
-//    word.object@
-//    pipeline.pipeout
-//    nullptr to PipeIn[]
-//  else
-//    discard discard
-//    PipeIn[].delete
-//  then
 
   Dic* pRootDic = AM::DIC::pRoot();
 
@@ -272,14 +260,12 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
     vNapMsec(3000,CN_PIPELINE);
   }
   
-  Job* pPipelineJob = _pJob(pDemonWord->pObject());
+  Job* pJob = _pJob(pDemonWord->pObject());
   
-  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
+  Pipeline* pPipeline = pJob->pPipeline_job();
   
   Op* pOp0 = pPipeline->pOp0();
 
-  //Task* pThisTask = AM::pThisTLSTask();
-  
   pOp0->vAppendLeft(pOperand,nullptr);
 }
 
@@ -304,6 +290,8 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
 {
   _static_
   
+  //bTrace = true;
+  
   RASSERT(szDelFunNm);
 
   if (eExpecting != eInstance) {
@@ -314,6 +302,30 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   
   if (false)
     {;}
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  // formwork
+
+  else if (CN_PIPEWORK == eInstance) {
+    if (bTrace)
+      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+
+    RASSERT(   bDELETE_RULE(CN_PIPELINE,  "~Pipeline"_Stz)
+            );
+  }
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  // formwork spec
+
+  else if (CN_PIPEWORKSPEC == eInstance) {
+    if (bTrace)
+      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+
+    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC,  "~PipelineSpec"_Stz)
+            );
+  }
 
   // -- -- -- -- -- -- -- -- -- -- -- --
   // freeChunk
@@ -351,7 +363,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
             //|| bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
             //|| bDELETE_RULE(CN_API,     "vCallBootSystem"_Stz)
                bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
-            || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
+            || bDELETE_RULE(CN_STEP,    "vJobDelete"_Stz   )
            )
         )
       vDebugPoint();
@@ -362,7 +374,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
             //|| bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
             //|| bDELETE_RULE(CN_API,     "vCallBootSystem"_Stz)
                bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
-            || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
+            || bDELETE_RULE(CN_STEP,    "vJobDelete"_Stz   )
 
 //              || bDELETE_RULE(CN_AM,      "vJobDelete"_Stz      )
 //              || bDELETE_RULE(CN_AM,      "~Task"_Stz           )
@@ -383,6 +395,8 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
             || bDELETE_RULE(CN_JOB, "~Job"_Stz            )
             || bDELETE_RULE(CN_JOB, "vResetForCascade"_Stz)
             || bDELETE_RULE(CN_OP,  "~Op"_Stz             )
+            
+            || bDELETE_RULE(CN_TASK,"~Task"_Stz           )
             );
   }
 
@@ -404,10 +418,10 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
-
-    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC, "vFirstSend"_Stz     )
-            || bDELETE_RULE(CN_PIPELINESPEC, "vOtherSend"_Stz)
-            || bDELETE_RULE(CN_STAGESPEC,    "~StageSpec"_Stz          )
+    
+    RASSERT(   bDELETE_RULE(CN_PIPEWORKSPEC, "vFirstSend"_Stz)
+            || bDELETE_RULE(CN_PIPEWORKSPEC, "vOtherSend"_Stz)
+            || bDELETE_RULE(CN_STAGESPEC,    "~StageSpec"_Stz)
             );
   }
   
@@ -431,7 +445,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
     RASSERT(   bDELETE_RULE(CN_DYNAMO,   "pCompile"_Stz           )
-            || bDELETE_RULE(CN_DYNAMO,   "vDynamoCompileStmt"_Stz )
+            || bDELETE_RULE(CN_DYNAMO,   "vDynamoCompile"_Stz )
             || bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz          )
             || bDELETE_RULE(CN_STEP,     "vPipelineSpecDelete"_Stz)
             );
@@ -442,10 +456,12 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   
   else if (CN_STAGE == eInstance) {
     if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+      vTrace("del %12s:%-3lld %p from %s() by %12s:%-3lld %p\n"_Stz,
+             aCN[eInstance],eInstance,pInstance,szDelFunNm,
+             aCN[eDeleter],eDeleter,pDeleter);
 
-    RASSERT( bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz ) );
+    RASSERT( bDELETE_RULE(CN_PIPEWORK, "~Pipework"_Stz )
+            );
   }
 
   // -- -- -- -- -- -- -- -- -- -- -- --
@@ -456,10 +472,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
-    RASSERT( bDELETE_RULE(CN_PIPELINESPEC, "~PipelineSpec"_Stz) );
+    RASSERT( bDELETE_RULE(CN_PIPEWORKSPEC, "~PipeworkSpec"_Stz) );
   }
   
-
   // -- -- -- -- -- -- -- -- -- -- -- --
   // stream
   
@@ -489,6 +504,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     RASSERT(   bDELETE_RULE(CN_JOB,       "~Job"_Stz)
             || bDELETE_RULE(CN_OP,        "~Op"_Stz)
             || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz)
+            || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_HibernateThisTask"_Stz)
             );
   }
 
@@ -2356,7 +2372,7 @@ void AM::TASK::vRetire(Task* pTask)
     pJob->vDecActiveOps();
   }
   else
-  if (Job* pJob = pTask->pJob_task()) {
+  if (Job* pJob = pTask->pJob()) {
     // retiring job
     //pJob->vReapable(true);
 //    if (pJob->bIsPipelineLocal()) {
@@ -2961,9 +2977,6 @@ void AM::vIndexEntries(i8 nIndexEntries) {
 void AM::vNextTempName(s32& sName) {
   gpAttachMap->m_oTempName.vNextName(sName);
 }
-void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
-  pTask->vAcksRmg(nAcks);
-}
 void AM::vSteps(Steps* pSteps) {
   gpAttachMap->m_pSteps = pSteps;
 }
@@ -3018,7 +3031,7 @@ void AM::vDumpApi(void) {
   pSessions()->vDump();
 }
 Task* AM::pExecutingTask(Job* pJob) {
-  Task* pTask = pJob->pJobTask();
+  Task* pTask = pJob->pTask();
   return pTask;
 }
 
@@ -3039,7 +3052,7 @@ Job* AM::pPipelineJob(void)
 {
   Op* pOp = pThisTLSTask()->pOp();
   
-  Job* pPipelineJob = pOp->pPipeline_op()->pPipelineJob();
+  Job* pPipelineJob = pOp->pPipeline()->pPipelineJob();
   
   return pPipelineJob;
 }
@@ -3131,18 +3144,23 @@ void AM::vTaskDump(void) {
 
 void AM::vTaskDump(Task* pTask)
 {
-  Job* pJob = pTask->pJob_task();
+  Job* pJob = pTask->pJob();
     
   if (! pJob)
     return;
   
   AM::vJobContentDump(pJob);
   
-  if (pJob->pJobLogicUnit()) {
-    if (pJob->pJobLogicUnit()->m_xpOp.bIsNotNull())
-      pJob->pJobLogicUnit()->m_xpOp->vDump();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
+  if (pLogicUnit) {
+    //pLogicUnit->vContentDump();
+  }
   
-    //pJob->pJobLogicUnit()->vContentDump();
+  Op* pOp = pTask->pOp();
+
+  if (pOp) {
+      pOp->vDump();
+    //pLogicUnit->vContentDump();
   }
 
 }
@@ -3158,15 +3176,10 @@ LogicUnit* AM::pTaskOpLogicUnit(Task* pTask) {
   return pOp->pOpLogicUnit();
 }
 
-LogicUnit* AM::pTaskLogicUnit(Task* pTask) {
-  Job* pJob = pTask->pJob_task();
-  return pJob->pJobLogicUnit();
-}
-
 
 void AM::vTaskFullTrace(Task* pTask)
 {
-  Job* pJob = pTask->pJob_task();
+  Job* pJob = pTask->pJob();
 
   // dump api state
   //AM::vDumpApi();
@@ -3175,8 +3188,6 @@ void AM::vTaskFullTrace(Task* pTask)
   
   if (pJob)
     AM::vJobContentDump(pJob);
-  
-  //pJob->pJobLogicUnit()->vContentDump();
   
   AM::pGrid()->vDsv();
 }
@@ -3212,8 +3223,7 @@ t8 AM::tThisTLSPespective(void)
 //}
 LogicUnit* AM::pThisTLSLogicUnit(void) {
   Task* pTask = Task::pThisTLSTask();
-  Job* pJob = pTask->pJob_task();
-  LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   return pLogicUnit;
 }
@@ -3230,8 +3240,7 @@ Tx* AM::pThisTLSTx(void) {
   if (! pTask)
     return nullptr;
   
-  Job* pJob = pTask->pJob_task();
-  LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   Tx* pTx = *pLogicUnit->m_xpTx;
   return pTx;
@@ -3970,11 +3979,11 @@ bool AM::bTaskIsLocked(Task* pTask) {
 }
 
 Job* AM::pTaskJob(void) {
-  return pThisTLSTask()->pJob_task();
+  return pThisTLSTask()->pJob();
 }
 Job* AM::pTaskJob(Task* pTask) {
   if (pTask)
-    return pTask->pJob_task();
+    return pTask->pJob();
   else
     return nullptr;
 }

@@ -61,7 +61,7 @@ void Step::vStringAGet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushStr(m_p_TaskLogicUnit->m_sStringA);
+  m_pDataStack->vPushStr(m_pLogicUnit->m_sStringA);
 
   EXIT();
 }
@@ -73,7 +73,7 @@ void Step::vStringASet(void)
 {
   ENTRY();
     
-  m_pDataStack->vPopStr(m_p_TaskLogicUnit->m_sStringA, __func__);
+  m_pDataStack->vPopStr(m_pLogicUnit->m_sStringA, __func__);
 
   EXIT();
 }
@@ -85,7 +85,7 @@ void Step::vString0Get(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushStr(m_p_TaskLogicUnit->m_sString0);
+  m_pDataStack->vPushStr(m_pLogicUnit->m_sString0);
 
   EXIT();
 }
@@ -97,7 +97,7 @@ void Step::vString0Set(void)
 {
   ENTRY();
     
-  m_pDataStack->vPopStr(m_p_TaskLogicUnit->m_sString0, __func__);
+  m_pDataStack->vPopStr(m_pLogicUnit->m_sString0, __func__);
 
   EXIT();
 }
@@ -109,7 +109,7 @@ void Step::vString1Get(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushStr(m_p_TaskLogicUnit->m_sString1);
+  m_pDataStack->vPushStr(m_pLogicUnit->m_sString1);
 
   EXIT();
 }
@@ -121,7 +121,7 @@ void Step::vString1Set(void)
 {
   ENTRY();
     
-  m_pDataStack->vPopStr(m_p_TaskLogicUnit->m_sString1, __func__);
+  m_pDataStack->vPopStr(m_pLogicUnit->m_sString1, __func__);
 
   EXIT();
 }
@@ -133,7 +133,7 @@ void Step::vString2Get(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushStr(m_p_TaskLogicUnit->m_sString2);
+  m_pDataStack->vPushStr(m_pLogicUnit->m_sString2);
 
   EXIT();
 }
@@ -145,7 +145,7 @@ void Step::vString2Set(void)
 {
   ENTRY();
     
-  m_pDataStack->vPopStr(m_p_TaskLogicUnit->m_sString2, __func__);
+  m_pDataStack->vPopStr(m_pLogicUnit->m_sString2, __func__);
 
   EXIT();
 }
@@ -157,7 +157,7 @@ void Step::vString3Get(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushStr(m_p_TaskLogicUnit->m_sString3);
+  m_pDataStack->vPushStr(m_pLogicUnit->m_sString3);
 
   EXIT();
 }
@@ -169,7 +169,7 @@ void Step::vString3Set(void)
 {
   ENTRY();
     
-  m_pDataStack->vPopStr(m_p_TaskLogicUnit->m_sString3, __func__);
+  m_pDataStack->vPopStr(m_pLogicUnit->m_sString3, __func__);
 
   EXIT();
 }
@@ -181,7 +181,7 @@ void Step::vString4Get(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushStr(m_p_TaskLogicUnit->m_sString4);
+  m_pDataStack->vPushStr(m_pLogicUnit->m_sString4);
 
   EXIT();
 }
@@ -193,7 +193,7 @@ void Step::vString4Set(void)
 {
   ENTRY();
     
-  m_pDataStack->vPopStr(m_p_TaskLogicUnit->m_sString4, __func__);
+  m_pDataStack->vPopStr(m_pLogicUnit->m_sString4, __func__);
 
   EXIT();
 }
@@ -205,7 +205,7 @@ void Step::vString5Get(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushStr(m_p_TaskLogicUnit->m_sString5);
+  m_pDataStack->vPushStr(m_pLogicUnit->m_sString5);
 
   EXIT();
 }
@@ -217,7 +217,7 @@ void Step::vString5Set(void)
 {
   ENTRY();
     
-  m_pDataStack->vPopStr(m_p_TaskLogicUnit->m_sString5, __func__);
+  m_pDataStack->vPopStr(m_pLogicUnit->m_sString5, __func__);
 
   EXIT();
 }
@@ -229,7 +229,7 @@ void Step::vString6Get(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushStr(m_p_TaskLogicUnit->m_sString6);
+  m_pDataStack->vPushStr(m_pLogicUnit->m_sString6);
 
   EXIT();
 }
@@ -241,7 +241,7 @@ void Step::vString6Set(void)
 {
   ENTRY();
     
-  m_pDataStack->vPopStr(m_p_TaskLogicUnit->m_sString6, __func__);
+  m_pDataStack->vPopStr(m_pLogicUnit->m_sString6, __func__);
 
   EXIT();
 }
@@ -253,7 +253,7 @@ void Step::vString7Get(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushStr(m_p_TaskLogicUnit->m_sString7);
+  m_pDataStack->vPushStr(m_pLogicUnit->m_sString7);
 
   EXIT();
 }
@@ -265,7 +265,7 @@ void Step::vString7Set(void)
 {
   ENTRY();
     
-  m_pDataStack->vPopStr(m_p_TaskLogicUnit->m_sString7, __func__);
+  m_pDataStack->vPopStr(m_pLogicUnit->m_sString7, __func__);
 
   EXIT();
 }

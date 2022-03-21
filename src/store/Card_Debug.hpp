@@ -5,17 +5,17 @@
 
 #include "BASE.h"
 
-#include "Card_UNIT.hpp"
+#include "Card_MAIN.hpp"
 
 namespace STORE
 {
-  class Card_Debug : public Card_UNIT
+  class Card_Debug : public Card_MAIN
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Debug(Stz* szOption);
+    Card_Debug(void);
    ~Card_Debug(void) noexcept(false);
   };
 

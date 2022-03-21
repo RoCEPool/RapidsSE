@@ -17,12 +17,27 @@ __bIsCard(STORE,Card_As,CK_AS)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_As::Card_As(Stz* szAsNm)
-: Card_PART(CK_AS)
+Card_As::Card_As(Stz* szAs)
+: Card_SUB(CK_AS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAs(szAsNm);
+  vAs(szAs);
+    
+  _checkInitialised_(CN_CARD);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_As::Card_As(Column* pColumn)
+: Card_SUB(CK_AS)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAs(pColumn->szColNm());
     
   _checkInitialised_(CN_CARD);
   

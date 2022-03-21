@@ -91,10 +91,10 @@
 
   op__topology
 
-  find: waitPipeline_DataPulse      ZK_M_DATAPULSE      op[].handler!
-  find: waitPipeline_End            ZK_M_END            op[].handler!
-  find: waitPipeline_ReturnPipeline ZK_I_RETURNPIPELINE op[].handler!
-  find: waitPipeline_Start          ZK_M_START          op[].handler!
+  find: waitPipeline_DataPulse      ZK_M_DATAPULSE      [op].handler!
+  find: waitPipeline_End            ZK_M_END            [op].handler!
+  find: waitPipeline_ReturnPipeline ZK_I_RETURNPIPELINE [op].handler!
+  find: waitPipeline_Start          ZK_M_START          [op].handler!
 
   op__loop
 

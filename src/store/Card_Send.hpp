@@ -5,17 +5,17 @@
 
 #include "BASE.h"
 
-#include "Card_UNIT.hpp"
+#include "Card_MAIN.hpp"
 
 namespace STORE
 {
-  class Card_Send : public Card_UNIT
+  class Card_Send : public Card_MAIN
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Send(eXK eSendKind);
+    Card_Send(void);
    ~Card_Send(void) noexcept(false);
   };
 

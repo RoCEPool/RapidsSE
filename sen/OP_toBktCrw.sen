@@ -105,11 +105,11 @@
 
   op__topology
 
-  find: toBktCrw_EosMarker   ZK_M_EOS         op[].handler!
-  find: toBktCrw_DataMarker  ZK_M_DATAPULSE   op[].handler!
-  find: toBktCrw_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
-  find: toBktCrw_StartMarker ZK_M_START       op[].handler!
-  find: toBktCrw_StreamDef   ZK_D_STREAMDEF   op[].handler!
+  find: toBktCrw_EosMarker   ZK_M_EOS         [op].handler!
+  find: toBktCrw_DataMarker  ZK_M_DATAPULSE   [op].handler!
+  find: toBktCrw_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+  find: toBktCrw_StartMarker ZK_M_START       [op].handler!
+  find: toBktCrw_StreamDef   ZK_D_STREAMDEF   [op].handler!
 
   op__loop
 

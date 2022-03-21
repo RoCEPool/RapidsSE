@@ -8,6 +8,7 @@
 #include "eAL.h"
 #include "eBK.h"
 #include "eCK.h"
+#include "eGC.h"
 #include "eRO.h"
 #include "eTE.h"
 #include "eYG.h"
@@ -20,7 +21,8 @@
 
 
 namespace STORE { class Board;
-                  class Card; class Card_Properties; class Card_Term; }
+                  class Card; class Card_Properties;
+                  class Card_SubSet; class Card_Term; }
 
 namespace STORE
 {
@@ -30,8 +32,10 @@ namespace STORE
     CardSet(void);
    ~CardSet(void) noexcept(false);
 
-    void vRemoveCards(eCK eCard);
+    Card* pGetSubCard(i8 i_SubCard);
+    Card* pGetSubCard(i8 i_SubCard, eCK& reCard);
 
+    void vRemoveSubCards(eCK eCard);
   };
 
 
@@ -41,6 +45,7 @@ namespace STORE
   {
   protected:
     eCK  m_eCard;
+    eGC  m_eCatg;
     i8   m_iCardNo;
   
     char m_cMark1;
@@ -61,6 +66,13 @@ namespace STORE
     Card(eCK eCard);
    ~Card(void) noexcept(false);
 
+    static bool bIsMain(eCK eCard);
+    static bool bIsOther(eCK eCard);
+    static bool bIsSub(eCK eCard);
+    static eCK  eParentECard(eCK eChildCard);
+    static eCK  eToECard(Stz* szCardNm);
+    static eGC  eToECatg(eCK eCard);
+    static eGC  eToECatg(Stz* szCardNm);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
@@ -70,16 +82,22 @@ namespace STORE
     void vAddProperty(Stz* szName, Stz* szValue);
 
     eCK  eCard(void);
+    eGC  eCatg(void);
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
     void vCutProperty(Stz* szName);
-  
+    void vCutSubCard(Card* pSubCard);
+
     void vDump(i8 iDepth=0);
-  
+    Card* pDupCardAndSubCards(void);
+    Card_SubSet* pDupSubCards(void);
+
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                       eCK eCard=CK_NONE);
-  
+    bool bEquivalent(Card* pCard_arg);
+
+    Card* pFindParent(Card* pSubCard_arg);
     Card* pFindSubCard(eCK eCard);
 
     i8      iGetProperty(i8 i_Property);
@@ -98,6 +116,10 @@ namespace STORE
     bool bHasUBound(void);
     void vHasUBound(bool bHasUBound);
 
+    bool bIsMain(void);
+    bool bIsOther(void);
+    bool bIsSub(void);
+
     char cMark1(void);
     void vMark1(char cMark1);
     char cMark2(void);
@@ -105,11 +127,15 @@ namespace STORE
 
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
+    TagSet* pProperties(void);
+    void vPropertiesEnsure(void);
     Stz* szPropertyNm(i8 i_Property);
 
     void vRemoveSubCard(Card* pCardRemove);
-    void vRenumberSubCards(void);
-
+    void vRenumberCards(void);
+ 
+    i8   nSubCards(void);
+  
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
                        Card* pAt=nullptr, bool bAfter=true);
@@ -118,14 +144,15 @@ namespace STORE
     void vTransferTill(Card* pCards, Card* pTill,
                        Card* pAt=nullptr, bool bAfter=true);
   
-    void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    eAL  eAggLvl(void);
-    void vAggLvl(eAL eAggLvl);
+    eAL  eAggLevel(void);
+    void vAggLevel(eAL eAggLevel);
+    bool bAggOp(void);
+    void vAggOp(void);
     Stz* szAs(void);
-    void vAs(Stz* szAsNm);
+    void vAs(Stz* szAs);
   
     eBK  eBound(void);
   
@@ -136,6 +163,12 @@ namespace STORE
     Column* pColumn2(void);
     void vColumn2(Column* pColumn2);
 
+    Stz* szDirn(void);
+    void vDirn(Stz* szAsNm);
+
+    i8   iGenerate(void);
+    void vGenerate(i8 iGenerate);
+  
     bool bHasAggOp(void);
     Card_Term* pHeadTerm(void);
 
@@ -145,19 +178,29 @@ namespace STORE
     bool bIsCard(eCK eCard);
     bool bIsOrdinalColumnAtom(void);
     bool bIsOrdinalIndexAtom(void);
-    bool bIsOrdinalColumnTerm(void);
+    bool bIsOrdinalStreamTerm(void);
     bool bIsOrdinalIndexTerm(void);
+    bool bIs_MAIN(void);
     bool bIsPred(void);
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
+    bool bIs_SUB(void);
 
     Stz* szLevel(void);
-    void vLevel(Stz* szLeve);
+    void vLevel(Stz* szLevel);
 
+    Stz* szMode(void);
+    void vMode(Stz* szMode);
+  
+    Stz* szName(void);
+    void vName(Stz* szMode);
+
+    i8   iOption(void);
+    void vOption(i8 iOption);
     Stz* szOption(void);
     void vOption(Stz* szOption);
-    i8   iOrdinalColumnValue(void);
-    i8   iOrdinalIndexValue(void);
+    i8   iOrdinalStreamColNo(void);
+    i8   iOrdinalIndexColNo(void);
 
     Card_Term* pPopTerm(void);
   
@@ -172,10 +215,12 @@ namespace STORE
   
     eXK  eSendKind(void);
     void vSendKind(eXK eSendKind);
+    i8   iSends(void);
+    void vSends(i8 iSends);
     Stz* szStageNm(void);
     void vStageNm(Stz* szStageNm);
-    eYG  eStageTopology(void);
-    void vStageTopology(eYG  eStageTopology);
+    eYG  eStageTopo(void);
+    void vStageTopo(eYG  eStageTopology);
     StreamDef* pStreamDef(void);
     void vStreamDef(StreamDef* pStreamDef);
 
@@ -189,25 +234,19 @@ namespace STORE
     void vTerm(Stz* szTerm);
     eTE  eTermEval(void);
     Stz* szType(void);
+    char cTypeShort(void);
     void vType(Stz* szType);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    void vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard);
-    void vPrintDetails(Ribbon* pRibbon, i8 iDepth);
+    void vPrintCard(Ribbon* pRibbon, i8 iDepth, i8 iSee);
+    void vPrintDetails(Ribbon* pRibbon, i8 iDepth, bool& bPrune);
     void vPrintHeader(Ribbon* pRibbon);
     void vPrintName(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName=true);
 
-    void vCandIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
-    void vIndexScanPrint(Ribbon* pRibbon, i8 iDepth);
-    void vOnPrint(Ribbon* pRibbon, i8 iDepth);
-    void vProjectionPrint(Ribbon* pRibbon, i8 iDepth);
-    void vScanPrint(Ribbon* pRibbon, i8 iDepth);
-    void vSortPrint(Ribbon* pRibbon, i8 iDepth);
-    void vStagePrint(Ribbon* pRibbon, i8 iDepth);
-    void vStreamDefPrint(Ribbon* pRibbon, i8 iDepth);
+    void vStreamElistPrint(Ribbon* pRibbon, i8 iDepth, bool& bPrune);
     void vTablePrint(Ribbon* pRibbon, i8 iDepth);
     void vTermPrint(Ribbon* pRibbon, i8 iDepth);
 

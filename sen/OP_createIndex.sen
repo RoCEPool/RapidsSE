@@ -44,8 +44,8 @@
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex not if
     
-      EC_INVALID_COLUMNS_UNIQUE_INDEX Job[].error!
-      DdlLock[].testDrop
+      EC_INVALID_COLUMNS_UNIQUE_INDEX [job].error!
+      [ddlLock].testDrop
       
       EC_INVALID_COLUMNS_UNIQUE_INDEX op__execErr
       
@@ -60,8 +60,8 @@
   // populate the index
 /*
   pIndex index.populate not if ( errorCode )
-    Job[].error!
-    DdlLock[].testDrop
+    [job].error!
+    [ddlLock].testDrop
 
     Path[].popIndexesFolder
     Path[].popNamedTableFolder
@@ -90,7 +90,7 @@
   Pipein[]\clear to IndexDef[]
 
   // grab the ddl lock
-  DdlLock[].grabRead
+  [ddlLock].grabRead
 
   // check ok to create index
 /*
@@ -134,7 +134,7 @@
 
   op__topology
 
-  find: createIndex_IndexDef ZK_D_INDEXDEF op[].handler!
+  find: createIndex_IndexDef ZK_D_INDEXDEF [op].handler!
 
   op__loop
 

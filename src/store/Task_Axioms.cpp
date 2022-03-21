@@ -379,7 +379,7 @@ void Task::vAddAxioms(void)
   "axiom: include-file"
   "  input::push"
     
-  "  args.senDir str.prepend"
+  "  [args].senDir str.prepend"
   "  input::open"
   "  input::senTokens"
   "  input::useBegin"
@@ -418,7 +418,7 @@ void Task::vAddAxioms(void)
   sDefinition =
   "axiom: include"
   //"  traceon"
-  "  args.munged if"
+  "  [args].munged if"
   "    dup word::find if"
   "      word::find execute >int mungedText include-munged"
   "      exit_rt"
@@ -442,22 +442,22 @@ void Task::vAddAxioms(void)
                                                 \
       \"bootSystem::bootSystem\" .verbose       \
                                                 \
-      Job[] assert                              \
+      [job] assert                              \
                                                 \
-      Job[].addLocal                            \
+      [job].addLocal                            \
                                                 \
-      args.munged if                            \
+      [args].munged if                            \
         \"compiling munged dictionary...\" .    \
       then                                      \
                                                 \
       \"se_include.sen\" include                \
                                                 \
-      Job[].removeLocal                         \
-      Job[].addRetired                          \
+      [job].removeLocal                         \
+      [job].addRetired                          \
                                                 \
-      Task[].grabLock                           \
-        true Job[].reapable!                    \
-        TR_RETIRE_THIS_TASK Task[].transition!  \
+      [task].grabLock                           \
+        true [job].reapable!                    \
+        TR_RETIRE_THIS_TASK [task].transition!  \
                                                 \
     ;"_Stz;
   

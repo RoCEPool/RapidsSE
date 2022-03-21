@@ -11,25 +11,21 @@
 /*----------------------------------------------------------------------------*/
 /* send Job_Executed back to originating node                                 */
 /*----------------------------------------------------------------------------*/
-: executed::replyToOrigin ( pJobParticipant -- )
+: executed:reply params| pJobParticipant |
 
-  params| pJobParticipant |
-
-  pJobParticipant job.id@ locals| iJobId |
-
-  0 0 0 locals| pJob pJob_Executed error |
-
+  // "executed:reply" .
+    
   // new a temporary Job_Executed
-  pJobParticipant job_Executed::new to pJob_Executed
+  pJobParticipant job_Executed::new locals| pJob_Executed |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send the executed job
-  iJobId job::originator@ pJob_Executed job.reply
+  pJobParticipant [job].originNodeNo@ pJob_Executed job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob_Executed job.delete2pc
+  pJob_Executed job.delete
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,9 +35,9 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job_Executed on originating node    recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: executed::executed
+: executed:executed
 
-  Job[] locals| pJob_Executed |
+  [job] locals| pJob_Executed |
   pJob_Executed job.id@ locals| iJobId |
 
   0 0 0 locals| iParticipantNode error bAmDecider |
@@ -50,7 +46,7 @@
   // get the context of this __executed job
 
   // find the originating job
-  iJobId olist::findJob discard
+  iJobId ListedJob[].findOriginator discard
 
   // get the participant node from where this job_begun started
   pJob_Executed job.participantNode@ to iParticipantNode
@@ -59,32 +55,32 @@
   // process __executed job on this originating node
 
   // increment the number of __executed jobs received in api state
-  JobRef[] ssn::incExecuted
-  JobRef[] ssn::traceSession
+  ListedJob[] ssn::incExecuted
+  ListedJob[] ssn::traceSession
 
   // decrement the acks remaining
-  JobRef[] job.dec2pcAcksRmg to bAmDecider
+  ListedJob[] job.dec2pcAcksRmg to bAmDecider
 
-  //grid::thisNodeName@ "(%v) EXECUTED GOT ACK" .printf
+  //[grid].thisNodeName@ "(%v) EXECUTED GOT ACK" .printf
 
   // if there are acks remaining just exit
   bAmDecider not if
-    JobRef[].returnReference
-    _job_2pc_delete_
+    ListedJob[].returnReference
+    [job]:retire
     exit                                                         // *EARLY EXIT*
   then
-  //grid::thisNodeName@ "(%v) EXECUTED AM DECIDER" .printf
+  //[grid].thisNodeName@ "(%v) EXECUTED AM DECIDER" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all __executed jobs have been received, so this job is the decider
 
-  job[].tscExecuted
+  [job].tscExecuted
 
   // send a job_end to all participants
-  JobRef[] end::distribute
-  JobRef[].returnReference
+  ListedJob[] end:distribute
+  ListedJob[].returnReference
 
-  _job_2pc_delete_
+  [job]:retire
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +92,7 @@ cmdSyntax: executed :: executed ;
 : executed_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "executed::executed"
+    <entryPoint>    = "executed:executed"
     <path>     = "/"
   }
 ;

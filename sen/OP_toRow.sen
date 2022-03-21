@@ -92,8 +92,8 @@
   ToRow[].delete
 
   // get the profile from the task
-  //Task[] task.profile@ to Operand[]
-  //nullptr Task[] task.profile!
+  //[task] task.profile@ to Operand[]
+  //nullptr [task] task.profile!
   //Operand[].pipeOut
 
   // pipeout the (EosMarker)
@@ -114,9 +114,9 @@
 
   op__topology
 
-  find: toRow_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: toRow_EosMarker   ZK_M_EOS         op[].handler!
-  find: toRow_StartMarker ZK_M_START       op[].handler!
+  find: toRow_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
+  find: toRow_EosMarker   ZK_M_EOS         [op].handler!
+  find: toRow_StartMarker ZK_M_START       [op].handler!
 
   op__loop
 

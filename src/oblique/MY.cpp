@@ -23,6 +23,18 @@ i8 MY::nNanoseconds(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current no node                                                        */
+/*----------------------------------------------------------------------------*/
+i8 MY::iNodeNo(void)
+{
+  _static_
+  
+  i8 iThisNodeNo = AM::pGrid()->iThisNodeNo();
+
+  return iThisNodeNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current partition number                                               */
 /*----------------------------------------------------------------------------*/
 i8 MY::iPtn(void)
@@ -317,7 +329,7 @@ Job* MY::pJob(void)
   if (! pTask)
     return nullptr;
   
-  Job* pJob = pTask->pJob_task();
+  Job* pJob = pTask->pJob();
   if (pJob)
     return pJob;
 
@@ -342,15 +354,9 @@ LogicUnit* MY::pLogicUnit(void)
   
   Task* pTask = MY::pTask();
 
-  Job* pJob = pTask->pJob_task();
-  if (pJob)
-    return pJob->pJobLogicUnit();
-
-  Op* pOp = pTask->pOp();
-  if (pOp)
-    return pOp->pOpLogicUnit();
-
-  return nullptr;
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
+  
+  return pLogicUnit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,7 +439,7 @@ Pipeline* MY::pPipeline(void)
   if (! pOp)
     return nullptr;
   
-  return pOp->pPipeline_op();
+  return pOp->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,32 +19,28 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Session(void)
 {
-  vAddStep("session::this"_Stz,          &Step::vSessionThis);
-  
-  vAddStep("session::cascade@"_Stz,      &Step::vSessionCascadeFetch);
-  vAddStep("session::cascade!"_Stz,      &Step::vSessionCascadeStore);
-  vAddStep("session::dicStack@"_Stz,     &Step::vSessionDicStackFetch);
-  vAddStep("session::dump"_Stz,          &Step::vSessionDump);
-  vAddStep("session::hasCascade@"_Stz,   &Step::vSessionHasCascadeFetch);
-  vAddStep("session::hasCascade!"_Stz,   &Step::vSessionHasCascadeStore);
-  vAddStep("session::lastJobId"_Stz,     &Step::vSessionLastJobId);
-  vAddStep("session::pid"_Stz,           &Step::vSessionPid);
-  vAddStep("session::see"_Stz,           &Step::vSessionSee);
-  vAddStep("session::systemCloser@"_Stz, &Step::vSessionSystemCloserFetch);
-  vAddStep("session::systemCloser!"_Stz, &Step::vSessionSystemCloserStore);
-  vAddStep("session::tablePtn@"_Stz,     &Step::vSessionTablePtnFetch);
-  vAddStep("session::tagSet@"_Stz,       &Step::vSessionTagSetFetch);
-  vAddStep("session::todo@"_Stz,         &Step::vSessionToDoFetch);
-  vAddStep("session::todo!"_Stz,         &Step::vSessionToDoStore);
-  vAddStep("session::tx@"_Stz,           &Step::vSessionTxFetch);
-  vAddStep("session::tx!"_Stz,           &Step::vSessionTxStore);
-  
-  vAddStep("session[].signal"_Stz,       &Step::vSessionSignal);
-
+  vAddStep("[session].cascade@"_Stz,      &Step::vSessionCascadeFetch);
+  vAddStep("[session].cascade!"_Stz,      &Step::vSessionCascadeStore);
+  vAddStep("[session].dicStack@"_Stz,     &Step::vSessionDicStackFetch);
+  vAddStep("[session].dump"_Stz,          &Step::vSessionDump);
+  vAddStep("[session].hasCascade@"_Stz,   &Step::vSessionHasCascadeFetch);
+  vAddStep("[session].hasCascade!"_Stz,   &Step::vSessionHasCascadeStore);
+  vAddStep("[session].lastJobId"_Stz,     &Step::vSessionLastJobId);
+  vAddStep("[session].pid"_Stz,           &Step::vSessionPid);
+  vAddStep("[session].see"_Stz,           &Step::vSessionSee);
+  vAddStep("[session].signal"_Stz,        &Step::vSessionSignal);
+  vAddStep("[session].systemCloser@"_Stz, &Step::vSessionSystemCloserFetch);
+  vAddStep("[session].systemCloser!"_Stz, &Step::vSessionSystemCloserStore);
+  vAddStep("[session].tablePtn@"_Stz,     &Step::vSessionTablePtnFetch);
+  vAddStep("[session].tagSet@"_Stz,       &Step::vSessionTagSetFetch);
+  vAddStep("[session].todo@"_Stz,         &Step::vSessionToDoFetch);
+  vAddStep("[session].todo!"_Stz,         &Step::vSessionToDoStore);
+  vAddStep("[session].tx@"_Stz,           &Step::vSessionTxFetch);
+  vAddStep("[session].tx!"_Stz,           &Step::vSessionTxStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* session::cascade@ -- fetch sCascade from session                           */
+/* [session].cascade@ -- fetch sCascade from session                           */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionCascadeFetch(void)
 {
@@ -58,7 +54,7 @@ void Step::vSessionCascadeFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ssession::cascade! -- store sCascade into session                          */
+/* s[session].cascade! -- store sCascade into session                          */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionCascadeStore(void)
 {
@@ -103,7 +99,7 @@ void Step::vSessionDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session::hasCascade@ -- fetch bHasCascade from session                     */
+/* [session].hasCascade@ -- fetch bHasCascade from session                     */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionHasCascadeFetch(void)
 {
@@ -117,7 +113,7 @@ void Step::vSessionHasCascadeFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ssession::hasCascade! -- store bHasCascade into session                    */
+/* s[session].hasCascade! -- store bHasCascade into session                    */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionHasCascadeStore(void)
 {
@@ -161,7 +157,7 @@ void Step::vSessionLastJobId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session::see -- see session                                                */
+/* [session].see -- see session                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionSee(void)
 {
@@ -175,7 +171,49 @@ void Step::vSessionSee(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session::systemCloser@ -- fetch m_bSystemCloser from session               */
+/* [session].signal -- signal the waiting session                             */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionSignal(void)
+{
+  ENTRY();
+  
+  // there will be a thread waiting on completion of the job
+  // this could be a prompt thread or a java thread via the connector
+  
+  Job* pJob = MY::pJob();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//  vGrabTaskLock((Stz*)__func__);
+  
+  //pJob->vJobState(JS_SIGNALLED);
+
+  i8 i_Session = pJob->m_i_Session;
+  
+  Session* pSession = AM::pSessions()->pGetSession(i_Session);
+  Sessions::vMarkSignalled(pSession);
+
+    
+  pSession->m_oMutex.vLock(this);
+  //vTrace("SIGNAL session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
+  pSession->m_oMutex.vSignal(this);
+  pSession->m_oMutex.vUnlock(this);
+
+//  vDropTaskLock((Stz*)__func__);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //vScheduleCompletion();
+  
+
+  
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* [session].systemCloser@ -- fetch m_bSystemCloser from session               */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionSystemCloserFetch(void)
 {
@@ -189,7 +227,7 @@ void Step::vSessionSystemCloserFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ssession::systemCloser! -- store m_bSystemCloser into session              */
+/* s[session].systemCloser! -- store m_bSystemCloser into session              */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionSystemCloserStore(void)
 {
@@ -229,20 +267,6 @@ void Step::vSessionTagSetFetch(void)
   
   m_pDataStack->vPushPtr(pSsnTagSet);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* session::this -- get current session                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionThis(void)
-{
-  ENTRY();
- 
-  Session* pSession = MY::pSession();
-
-  m_pDataStack->vPushPtr(pSession);
-
   EXIT();
 }
 
@@ -308,48 +332,6 @@ void Step::vSessionTxStore(void)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* session[].signal -- signal the waiting session                             */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionSignal(void)
-{
-  ENTRY();
-  
-  // there will be a thread waiting on completion of the job
-  // this could be a prompt thread or a java thread via the connector
-  
-  Job* pJob = MY::pJob();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  vGrabTaskLock((Stz*)__func__);
-  
-  //pJob->vJobState(JS_SIGNALLED);
-
-  i8 i_Session = pJob->m_i_Session;
-  
-  Session* pSession = AM::pSessions()->pGetSession(i_Session);
-  Sessions::vMarkSignalled(pSession);
-
-    
-  pSession->m_oMutex.vLock(this);
-  //vTrace("SIGNAL session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
-  pSession->m_oMutex.vSignal(this);
-  pSession->m_oMutex.vUnlock(this);
-
-//  vDropTaskLock((Stz*)__func__);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //vScheduleCompletion();
-  
-
-  
-  EXIT();
-}
-
 
 
 /*============================================================================*/

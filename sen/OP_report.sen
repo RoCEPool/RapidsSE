@@ -113,12 +113,12 @@
 
   op__topology
 
-  find: report_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
-  find: report_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: report_EntBuffer   ZK_D_ENTBUFFER   op[].handler!
-  find: report_EosMarker   ZK_M_EOS   op[].handler!
-  find: report_SrtBuffer   ZK_D_SRTBUFFER   op[].handler!
-  find: report_StartMarker ZK_M_START op[].handler!
+  find: report_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!
+  find: report_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
+  find: report_EntBuffer   ZK_D_ENTBUFFER   [op].handler!
+  find: report_EosMarker   ZK_M_EOS   [op].handler!
+  find: report_SrtBuffer   ZK_D_SRTBUFFER   [op].handler!
+  find: report_StartMarker ZK_M_START [op].handler!
 
   op__loop
 

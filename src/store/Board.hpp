@@ -6,31 +6,20 @@
 #include "BASE.h"
 
 #include "Dissect.hpp"
-
+#include "CardRegs.hpp"
+#include "RuleCtl.hpp"
 
 namespace STORE
 {
-  class Board : public Object
-              , public CardSet // public ListExo2_t<Card>
+  class Board : public Card_OTHER
   {
   protected:
     s32 m_sQueryNm;
+    Optimiser* m_pOptimiser;
 
-    // registers
-    Card_CandIndex*  m_pCandidateIndex;
-    Card_CmpPred*    m_pComparePred_ebound;
-    Card_CmpPred*    m_pComparePred_lbound;
-    Card_CmpPred*    m_pComparePred_ubound;
-    Card_Filter*     m_pFilter;
-    Card_IndexScan*  m_pIndexScan;
-    Card_Project*    m_pProject;
-    Card_Scan*       m_pScan;
-    Card_Stage*      m_pStage;
+    CardRegs*  m_pCardRegs;
+    RuleCtl*   m_pRuleCtl;
 
-    Index* m_pIndex;
-    Table* m_pTable;
-
-  
   private:
     // must be last
     Footer m_xFooter;
@@ -39,76 +28,100 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(Stz* szCardNm);
+    Board(Stz* szQueryNm, Optimiser* pOptimiser);
    ~Board(void) noexcept(false);
-     
+
+    CardRegs* pCardRegs(void);
+    void vClear(void);
+
+    void vDeleteAllCards(void);
+  
+    Card* pFindMain(Stz* szCardNm);
+ 
+    Card* pGetMainCard(i8 i_MainCard);
+    Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
+  
+    i8   nMainCards(void);
+  
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
+  
     void vPrintBoard(Stz* szCue);
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
+      
+    Card* pSearch(Stz* szCardNm);
+    void vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard);
+
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+    void vRankCandIndex(Card_CandIndex* pCard_CandIndex);
   
-    void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
+    void vResolveAll(Card*        pAnyCard);
+    void vResolveTerm(Card_Term*  pCard_Term);
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  
+    bool bAdd_CandIndexes            (void);
+
+    void vAdd_IndexScan              (void);
+
+    void vCull_Filter                (void);
+  
+    void vCut_CandidateIndexes       (void);
+  
+    void vCut_PredCmps               (void);
+  
+    void vCut_Scan                   (void);
+  
+    bool bFind_Scan_AggGby           (bool bMark);
+  
+    bool bFind_Scan_Filter           (bool bMark);
+  
+    void vMark_PredCmps              (void);
+  
+    void vOrder_ProjectiveStreamDefs (void);
+  
+    bool bPick_CandidateIndex        (void);
+
+    void vRank_CandidateIndexes      (void);
+  
+    void vReduce_Filter              (void);
+  
+  
+    void vResolve_Symbols            (void);
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+    /* rule 00 */ bool bMay_AggGby_Sort_to_AggGby      (void);
+  
+    /* rule 00 */ bool bMay_ordStream_AggGby_to_OrdAgg (void);
+
+    /* rule 00 */ bool bMay_OrdAgg_Sort_to_OrdAgg      (void);
+  
+    /* rule 00 */ bool bMay_Scan_AggGby_to_IndexScan   (void);
+
+    /* rule 00 */ bool bMay_Scan_Filter_to_IndexScan   (void); // implemented
+  
+    /* rule 00 */ bool bMay_Scan_Sort_to_IndexScan     (void);
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    void vCandidateIndex(Card_CandIndex* pCandidateIndex);
-    void vComparePred_ebound(Card_CmpPred* pComparePred);
-    void vComparePred_lbound(Card_CmpPred* pComparePred);
-    void vComparePred_ubound(Card_CmpPred* pComparePred);
-    void vFilter(Card_Filter* pFilter);
-    void vIndexScan(Card_IndexScan* pIndexScan);
-    void vProject(Card_Project* pProject);
-    void vScan(Card_Scan* pScan);
-    void vStage(Card_Stage* pStage);
+    /* rule 00 */ bool bRule_AggGby_Sort_to_AggGby     (void);
+  
+    /* rule 00 */ bool bRule_ordStream_AggGby_to_OrdAgg(void);
+  
+    /* rule 00 */ bool bRule_OrdAgg_Sort_to_OrdAgg     (void);
+  
+    /* rule 00 */ bool bRule_Scan_AggGby_to_IndexScan  (void);
+  
+    /* rule 00 */ bool bRule_Scan_Filter_to_IndexScan  (void); // implemented
 
-    void vIndex(Index* pIndex);
-    void vTable(Table* pTable);
-
-    void vResetRegisters(void);
+    /* rule 00 */ bool bRule_Scan_Sort_to_IndexScan    (void);
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    void vRankCandidateIndex(Card_CandIndex* pCard_CandIndex);
-
-   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  
-    bool bAdd_CandidateIndexes         (void);
-
-    void vAdd_IndexScan                (void);
-
-    void vCull_Filter                  (void);
-  
-    void vCut_CandidateIndexes         (void);
-  
-    void vCut_ComparePreds             (void);
-  
-    void vCut_Scan                     (void);
-  
-    bool bFind_Scan_Filter             (void);
-  
-    void vMark_ComparePreds            (void);
-  
-    void vOrder_ProjectiveStreamDefs   (void);
-  
-    bool bPick_CandidateIndex          (void);
-
-    void vRank_CandidateIndexes        (void);
-  
-    void vReduce_Filter                (void);
-  
-    void vRenumber_Cards               (void);
-  
-    void vReplace_Ordinals             (void);
-  
-    void vResolve_GenerativeStreamDefs (void);
-  
-    void vResolve_ProjectiveStreamDefs (void);
-  
-   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  
-    void vOptimise_Board(void);
-
+ 
   private:
       Footer* aFooter(void);
   };

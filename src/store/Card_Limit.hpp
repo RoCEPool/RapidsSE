@@ -5,17 +5,17 @@
 
 #include "BASE.h"
 
-#include "Card_UNIT.hpp"
+#include "Card_MAIN.hpp"
 
 namespace STORE
 {
-  class Card_Limit : public Card_UNIT
+  class Card_Limit : public Card_MAIN
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Limit(i8 iRows);
+    Card_Limit(void);
    ~Card_Limit(void) noexcept(false);
   };
 

@@ -99,7 +99,7 @@ void Step::vTableGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpTable);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTable);
   
   EXIT();
 }
@@ -111,7 +111,7 @@ void Step::vTableSet(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -138,7 +138,7 @@ void Step::vTableAppendBuffer(void)
 {
   ENTRY();
     
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
   ASSERT(! pDataBuffer->pNextItem());
@@ -156,15 +156,15 @@ void Step::vTableAsAltStreamDef(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
     
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  StreamDef* pStreamDefOld = _pStreamDef(m_p_TaskLogicUnit->m_pDevAltRow->m_pStreamDef);
+  StreamDef* pStreamDefOld = _pStreamDef(m_pLogicUnit->m_pDevAltRow->m_pStreamDef);
   if (pStreamDefOld)
     delete pStreamDefOld;
 
-  m_p_TaskLogicUnit->m_pDevAltRow->m_pStreamDef = new StreamDef(pStreamDef);
+  m_pLogicUnit->m_pDevAltRow->m_pStreamDef = new StreamDef(pStreamDef);
 
   EXIT();
 }
@@ -176,15 +176,15 @@ void Step::vTableAsSrcStreamDef(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
     
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  StreamDef* pStreamDefOld = _pStreamDef(m_p_TaskLogicUnit->m_pDevLftRow->m_pStreamDef);
+  StreamDef* pStreamDefOld = _pStreamDef(m_pLogicUnit->m_pDevLftRow->m_pStreamDef);
   if (pStreamDefOld)
     delete pStreamDefOld;
 
-  m_p_TaskLogicUnit->m_pDevLftRow->m_pStreamDef = new StreamDef(pStreamDef);
+  m_pLogicUnit->m_pDevLftRow->m_pStreamDef = new StreamDef(pStreamDef);
   
   EXIT();
 }
@@ -211,7 +211,7 @@ void Step::vTableColumnFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   
@@ -229,7 +229,7 @@ void Step::vTableColumnCountFetch(void)
 {
   ENTRY();
   
-  StreamDef* pStreamDef = m_p_TaskLogicUnit->m_xpTable->pStreamDef();
+  StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
   i8 nColumns = pStreamDef->nColumns();
   
   m_pDataStack->vPushInt(nColumns);
@@ -262,7 +262,7 @@ void Step::vTableDump(void)
   
   vTrace("TableDump\n"_Stz);
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
@@ -281,7 +281,7 @@ void Step::vTableDumpBkt(void)
   ENTRY();
 
   s4K sDumpBuffer = "\n\n\n==== DumpBucket Table: ====================================\n"_Stz;
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   i8 nPtns = AM::PTNMAP::nPtnsPerNode();
 
@@ -304,7 +304,7 @@ void Step::vTableDumpBktMap(void)
   ENTRY();
 
   s4K sDumpBuffer = "\n\n\n==== DumpBucketMap Table: ====================================\n"_Stz;
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   i8 nPtns = AM::PTNMAP::nPtnsPerNode();
 
@@ -325,7 +325,7 @@ void Step::vTableDumpMeta(void)
 
   s4K sDumpBuffer = "\n\n\n==== DumpMeta Table: ====================================\n"_Stz;
 
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
 
   sDumpBuffer.vCatSprint("Table:%s\n"_Stz, pTable->szTableNm()->azChar());
@@ -403,7 +403,7 @@ void Step::vTableStreamDefFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   StreamDef* pStreamDef = pTable->pStreamDef();
   
@@ -419,7 +419,7 @@ void Step::vTableTablePtnFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
 
   PtnId tPtnId;
@@ -457,7 +457,7 @@ void Step::vTableTablePtnGet(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   PtnId tPtnId;
   tPtnId = m_pDataStack->iPopInt(__func__);
@@ -477,7 +477,7 @@ void Step::vTableTablePtnZero(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   PtnId tPtnId;
 
@@ -510,7 +510,7 @@ void Step::vTableFindColumn(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   s32 sColumnName;
   m_pDataStack->vPopStr(sColumnName,__func__);
@@ -577,7 +577,7 @@ void Step::vTableIsInternallyDefined(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   m_pDataStack->vPushInt(pTable->bIsInternallyDefined());
   
@@ -591,7 +591,7 @@ void Step::vTableIsReplicated(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   bool bReplicated = pTable->bIsReplicated();
   
@@ -607,7 +607,7 @@ void Step::vTableIsUserCreated(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   bool bIsUserCreated = pTable->bIsUserCreated();
 
@@ -625,16 +625,16 @@ void Step::vTableListPartition(void)
   
   s256 sOutput;
   
-  Table* pStreamSetTable = _pTable(*m_p_TaskLogicUnit->m_xpStreamSetTable);
+  Table* pStreamSetTable = _pTable(*m_pLogicUnit->m_xpStreamSetTable);
 
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
 
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
   PtnId tPtnId;
   tPtnId = m_pDataStack->iPopAsInt(__func__);
 
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   for (;;) {
     i8 i_Node     = AM::pPtnMap()->iWhichNodeNo(tPtnId);
@@ -690,7 +690,7 @@ void Step::vTableNameFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   Stz* szTableNm = pTable->szTableNm();
   
@@ -765,7 +765,7 @@ void Step::vTableShardDefFetch(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   ASSERT(CN_TABLE == pTable->eGetClassNo());
   
   ShardDef* pShardDef = pTable->pShardDef();
@@ -782,7 +782,7 @@ void Step::vTableSize(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   i8 nBuffers = pTable->nBuffers();
   i8 iSize = nBuffers * C_SIZE_POOL_BUFFER;
@@ -813,7 +813,7 @@ void Step::vTableVerify(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   bool bVerified = pTable->bVerifyTable();
   
@@ -829,7 +829,7 @@ void Step::vTableVisualize(void)
 {
   ENTRY();
   
-  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);

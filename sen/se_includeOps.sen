@@ -93,6 +93,7 @@ assert::stack_0
   "OP_emptyLoop.sen"            include
   "OP_etcTest.sen"              include
   "OP_exemplar.sen"             include
+  "OP_exeSubPipe.sen"           include
   "OP_explainPlan.sen"          include
   "OP_exprPushdown.sen"         include
   "OP_exprValidate.sen"         include

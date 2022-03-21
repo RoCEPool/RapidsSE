@@ -18,11 +18,26 @@ __bIsCard(STORE,Card_Type,CK_TYPE)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Type::Card_Type(Stz* szType)
-: Card_PART(CK_TYPE)
+: Card_SUB(CK_TYPE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vType(szType);
+  
+  _checkInitialised_(CN_CARD);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Type::Card_Type(Column* pColumn)
+: Card_SUB(CK_TYPE)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vType(aCT[pColumn->eColumnType()]);
   
   _checkInitialised_(CN_CARD);
   

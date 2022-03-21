@@ -14,8 +14,9 @@ namespace STORE
     friend class STORE::PipelineSpec;
 
   private:
-    Stz*          m_szPipelineStmt;
     TagSet*       m_p_JobTags;       // tag set from job
+    
+    Stz*          m_szPipelineStmt;
     PipelineSpec* m_p_PipelineSpec;  // the pipeline spec
     
     bool          m_bWasOptimised;   // stmt was optimised
@@ -27,10 +28,14 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dynamo(Stz* szPipelineStmt, TagSet* p_JobTags);
+    Dynamo(TagSet* p_JobTags);
    ~Dynamo(void) noexcept(false);
 
-    PipelineSpec* pCompile(void);
+    static void vRepair(Object* pObject);
+    static PipelineSpec* pToPipelineSpec(Stz* szPipelineStmt, TagSet* p_JobTags);
+
+    
+    PipelineSpec* pCompile(Stz* szPipelineStmt);
 
     void vOptimise(void);
 

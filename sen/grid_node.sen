@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : name::isNotKnownNode ( "<NodeNm>" -- t|f )
 
-  grid::findNodeByName not if true exit then
+  [grid].findNodeByName not if true exit then
 
   EC_NODE_EXISTS false
 ;
@@ -33,7 +33,7 @@
 
   0 locals| iThisNode  |
 
-  grid::thisNode@ to iThisNode
+  [grid].thisNode@ to iThisNode
 
   iThisNode iOriginNode == if
     true

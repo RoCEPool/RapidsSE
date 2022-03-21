@@ -78,8 +78,8 @@
   op__topology
 
   Counter0[] 2 == if
-    find: ordAgg_ComCleaning   ZK_M_CLEANING      op[].handler!
-    find: ordAgg_ComStreamDef  ZK_D_STREAMDEF     op[].handler!
+    find: ordAgg_ComCleaning   ZK_M_CLEANING      [op].handler!
+    find: ordAgg_ComStreamDef  ZK_D_STREAMDEF     [op].handler!
   else
     0 assert
   then

@@ -22,7 +22,7 @@
   BktMap[].getTableName op__table assert
 
   //"before getparts" .
-  table[] bktMapSend::getParts op.pipeout
+  table[] bktMapSend::getParts [op].pipeout
 
   BktMap[].delete
 
@@ -30,7 +30,7 @@
 
   true
 
-  //task::breakpoint //set breakpoint back into C++ code, where the task loop is
+  //[task].breakpoint //set breakpoint back into C++ code, where the task loop is
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -44,7 +44,7 @@
   op__topology
 
   // Setup ZK_D_BKTMAPGET handler
-  find: bktMapSend_bktmapGet ZK_D_BKTMAPGET op[].handler!
+  find: bktMapSend_bktmapGet ZK_D_BKTMAPGET [op].handler!
 
   op__loop
 

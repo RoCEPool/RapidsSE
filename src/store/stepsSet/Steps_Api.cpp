@@ -161,8 +161,8 @@ void Step::vApiExecuteCommand(void)
 
   TagSet* pJobTagSet = pJob->pJobTags();
   
-  if (m_pJob_task) {
-    Stz* szTagPath = m_pJob_task->pJobTags()->szValue(C_TAG_PATH);
+  if (m_pJob) {
+    Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
     pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
   }
   

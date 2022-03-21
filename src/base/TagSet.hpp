@@ -35,6 +35,8 @@ namespace BASE
     TagSet(void);
    ~TagSet() noexcept(false);
   
+    static void vRepair(Object* pObject);
+
     void vAppend(Stz* szName);
     void vAppend(Stz* szName, i8 iValue);
     void vAppend(Stz* szName, Object* pObject);
@@ -72,7 +74,9 @@ namespace BASE
   
     void vSprint(Stz* sArgs,
                  bool bParenth=true, bool bNames=false, bool bDecode=false);
+    bool bSame(TagSet* pTagSet_arg);
   
+    Tag* pTag(i8 i_Tag);
     eTN  eToken(i8 i_Tag);
     void vToString(Stz* szStz);
 

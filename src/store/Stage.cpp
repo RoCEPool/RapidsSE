@@ -15,6 +15,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
+#include "Pipework.hpp"
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
@@ -28,26 +29,25 @@ extern AttachMap gxAttachMap;
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction(STORE, Stage, CN_STAGE)
-
 __aNewFunction(Stage, CN_STAGE)
-
 __vDeleteFunction(Stage, CN_STAGE)
-
 __aFooterFunction(Stage)
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stage::Stage(StageSpec *pStageSpec, Pipeline *pPipeline)
-    : LifeGuard_t<Stage>(this, CN_STAGE) {
+Stage::Stage(StageSpec *pStageSpec, Pipework* pPipework)
+    : LifeGuard_t<Stage>(this, CN_STAGE)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  m_sPipelineNm = pPipeline->szPipelineNm();
+  m_sPipelineNm = pPipework->pPipeline()->szPipelineNm();
   m_sStageNm = pStageSpec->szStageNm();
   m_i_Stage = pStageSpec->i_StageSpec();
 
   m_pStageSpec = pStageSpec;
-  m_pPipeline = pPipeline;
+  m_pPipework  = pPipework;
 
   _checkInitialised_(CN_STAGE);
 
@@ -197,10 +197,23 @@ i8 Stage::nOpsOnNode(i8 iNode, i8 iOrigin) {
 /*----------------------------------------------------------------------------*/
 /* get piepline                                                               */
 /*----------------------------------------------------------------------------*/
-Pipeline *Stage::pPipeline(void) {
+Pipework *Stage::pPipework(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  return m_pPipeline;
+  return m_pPipework;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get op 0                                                                   */
+/*----------------------------------------------------------------------------*/
+Op* Stage::pOp0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  Stream* pStream0 = this->pStream0();
+  Op* pOp0 = pStream0->pOp0();
+
+  return pOp0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,6 +278,18 @@ StageSpec *Stage::pStageSpec(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* get stream 0                                                               */
+/*----------------------------------------------------------------------------*/
+Stream* Stage::pStream0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  Stream* pStream0 = this->pGet(0);
+
+  return pStream0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if to send startMarker to start op of the stage                       */
 /*----------------------------------------------------------------------------*/
 bool Stage::bStartPipeline(void) {
@@ -291,47 +316,6 @@ bool Stage::bStartPipeline(void) {
   }
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Stage::vWalk(void *aArg) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
-
-  eCN eClassNo = eGetClassNo();
-
-  vTrace("Walk %8s:%ll03d %p\n"_Stz, aCN[eClassNo], (i8) eClassNo, this
-  );
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-
-  i8 nStreams = this->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
-    Stream *pStream = pGet(i_Stream);
-
-    pStream->vWalk(aArg);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Stage::vWalkLambda(
-    i8 iDepth,
-    std::function<void(Object *pObject, i8 iDepth)> f_vClosure) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
-
-  f_vClosure(this, iDepth);
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-
-  i8 nStreams = this->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
-    Stream *pStream = pGet(i_Stream);
-
-    pStream->vWalkLambda(iDepth + 1, f_vClosure);
-  }
 }
 
 
@@ -373,7 +357,7 @@ void Stage::vCreateStreams(void) {
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
       tPtnId = C_UNKNOWN;
-      i_Node = m_pPipeline->i_Origin();
+      i_Node = m_pPipework->pPipeline()->i_Origin();
 
       pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
       vAppend(pStream);
@@ -421,7 +405,7 @@ void Stage::vCreateStreams(void) {
         tPtnId = iPtnNo;
         i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
 
-        if (i_Node == m_pPipeline->i_Origin()) {
+        if (i_Node == m_pPipework->pPipeline()->i_Origin()) {
           i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
           pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
           vAppend(pStream);

@@ -19,7 +19,7 @@
     
     jobs::seeSqueue
     
-    system::bpa
+    [system].bpa
   
   else
   
@@ -41,7 +41,7 @@
 
     //<nSeconds> >int  thread::sleepSsec
 
-    //args.demonSleep thread::sleepSsec
+    //[args].demonSleep thread::sleepSsec
     30 thread::sleepSsec
 
     //recurring_activity
@@ -56,13 +56,13 @@
  
   _lu_initialise_
 
-  "<testTag>" Job[].tagSet@ tagSet.hasName if
+  "<testTag>" [job].tagSet@ tagSet.hasName if
     <testTag> .
   then
 
   op__topology
 
-  find: recurring_StartMarker ZK_M_START op[].handler!
+  find: recurring_StartMarker ZK_M_START [op].handler!
 
   op__loop
 

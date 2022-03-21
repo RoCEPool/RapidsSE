@@ -35,11 +35,15 @@
 #include "BucketInfo.hpp"
 #include "StreamDefRht.hpp"
 #include "Stencil.hpp"
+#include "Stencil.hpp"
+#include "SubCall.hpp"
+#include "SubReturn.hpp"
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
 #include "PipelineSpec.hpp"
 #include "NamedBuffer.hpp"
+#include "Optimiser.hpp"
 
 #include "IndexTree.hpp"
 #include "JobMetrics.hpp"
@@ -47,6 +51,7 @@
 #include "eLH.h"
 #include "eXK.h"
 #include "eEK.h"
+#include "ePE.h"
 
 #include "REG_t.hpp"
 
@@ -166,11 +171,12 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
+    REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
     REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
   
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
     REG<BucketGet,      CN_BUCKETGET     > m_xpBucketGet;
-    REG<BucketGet,      CN_BUCKETINFO     > m_xpBucketInfo;
+    REG<BucketGet,      CN_BUCKETINFO    > m_xpBucketInfo;
     REG<BktMapGet,      CN_BKTMAPGET     > m_xpBktMapGet;
 
     REG<Combined,       CN_COMBINED      > m_xpCombined;
@@ -181,6 +187,7 @@ namespace STORE
     REG<DataBuffer,     CN_NONE          > m_xpDataBuffer;
     REG<Dir,            CN_DIR           > m_xpDir0;
     REG<Dir,            CN_DIR           > m_xpDir1;
+    REG<Dynamo,         CN_DYNAMO        > m_xpDynamo;
 
     REG<Operand,        CN_NONE          > m_xpErrorMarker;
     REG<ExprEval,       CN_EXPREVAL      > m_xpExprEval;
@@ -217,7 +224,8 @@ namespace STORE
 
     REG<Op,             CN_OP            > m_xpOp;
     REG<Operand,        CN_NONE          > m_xpOperandOoO;
-  
+    REG<Optimiser,      CN_OPTIMISER     > m_xpOptimiser;
+
     REG<PathIdentifier, CN_PATHIDENTIFIER> m_xpPathIdentifier;
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
     REG<Operand,        CN_NONE          > m_xpPipein;
@@ -235,17 +243,22 @@ namespace STORE
     REG<Sends,          CN_SENDS         > m_xpSends;
     REG<ShardDef,       CN_SHARDDEF      > m_xpShardDef;
     REG<Socket,         CN_SOCKET        > m_xpSocket;
+    REG<Stage,          CN_STAGE         > m_xpStage;
     REG<Stats,          CN_STATS         > m_xpStats;
     REG<Stencil,        CN_STENCIL       > m_xpStencil;
+    REG<Stream,         CN_STREAM        > m_xpStream;
     REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefLft;
     REG<StreamDef,      CN_NONE          > m_xpStreamDefOut;
     REG<StreamDefRht,   CN_STREAMDEFRHT  > m_xpStreamDefRht;
     REG<Operand,        CN_NONE          > m_xpStreamSet;
     REG<Table,          CN_TABLE         > m_xpStreamSetTable;
+    REG<SubCall,        CN_NONE          > m_xpSubCall;
+    REG<SubReturn,      CN_NONE          > m_xpSubReturn;
     REG<Operand,        CN_NONE          > m_xpSubset;
 
     REG<Table,          CN_TABLE         > m_xpTable;
     REG<TablePtn,       CN_TABLEPTN      > m_xpTablePtn;
+    REG<TagSet,         CN_TAGSET        > m_xpTagSet;
     REG<Timer,          CN_TIMER         > m_xpTimer;
     REG<TinyC,          CN_TINYC         > m_xpTinyC;
     REG<ToBktCrw,       CN_TOBKTCRW      > m_xpToBktCrw;
@@ -296,7 +309,7 @@ namespace STORE
     Atomic m_ixRowsProcessed; // rows processed
     Atomic m_ixRowsInvalid;   // invalid rows detected
     Atomic m_ixRowsSkipped;   // rows skipped
-    eEC    m_eErrorCode;      // error code
+    eEC    m_eErrorCode_reg;      // error code
     
     eZK m_ePipeInOperand;
 

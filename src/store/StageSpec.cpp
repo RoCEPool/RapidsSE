@@ -5,8 +5,10 @@
 #include "BASE.h"
 
 #include "OpSpec.hpp"
-#include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
+#include "PipeworkSpec.hpp"
+#include "PipelineSpec.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -16,18 +18,19 @@ __aNewFunction(StageSpec,CN_STAGESPEC)
 __vDeleteFunction(StageSpec,CN_STAGESPEC)
 __aFooterFunction(StageSpec)
 
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StageSpec::StageSpec(Stz* szStageNm,
-                     PipelineSpec* pPipelineSpec)
+                     PipeworkSpec* pPipeworkSpec)
 : ListNL_t<OpSpec>(CN_STAGESPEC)
 , LifeGuard_t<StageSpec>(this,CN_STAGESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_sStageNm        = szStageNm;
-  m_pPipelineSpec   = pPipelineSpec;
+  m_pPipeworkSpec   = pPipeworkSpec;
 
   m_eStageTopology  = YG_NONE;
   m_eStreamTopology = YS_NONE;
@@ -373,12 +376,12 @@ void StageSpec::vParcelForward(eYF eParcelForward)
 /*----------------------------------------------------------------------------*/
 /* get i_Stage                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec* StageSpec::pPipelineSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  return m_pPipelineSpec;
-}
+//PipelineSpec* StageSpec::pPipelineSpec(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+//
+//  return m_pPipeworkSpec->pPipelineSpec();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get specific node                                                          */
@@ -437,7 +440,7 @@ i8 StageSpec::i_StageSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  i8 i_StageSpec = m_pPipelineSpec->iFind(this);
+  i8 i_StageSpec = m_pPipeworkSpec->iFind(this);
   
   return i_StageSpec;
 }
@@ -535,7 +538,6 @@ void StageSpec::vToPipeStr(Stz* szPipeStr)
   }
 
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -35,7 +35,7 @@ void Step::vStatsBuffInInc(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_xpStats->m_nBuffIn++;
+  m_pLogicUnit->m_xpStats->m_nBuffIn++;
 
   EXIT();
 }
@@ -47,7 +47,7 @@ void Step::vStatsDelete(void)
 {
   ENTRY();
   
-  Stats* pStats = _pStats(*m_p_TaskLogicUnit->m_xpStats);
+  Stats* pStats = _pStats(*m_pLogicUnit->m_xpStats);
   ASSERT(CN_STATS == pStats->eGetClassNo());
   
   Object* pStatsObject = reinterpret_cast<Object*>(pStats);
@@ -66,7 +66,7 @@ void Step::vStatsMicrosecs(void)
 {
   ENTRY();
   
-  Stats* pStats = _pStats(*m_p_TaskLogicUnit->m_xpStats);
+  Stats* pStats = _pStats(*m_pLogicUnit->m_xpStats);
   ASSERT(CN_STATS == pStats->eGetClassNo());
   
   i8 iMicroseconds = pStats->iMicroseconds();
@@ -83,7 +83,7 @@ void Step::vStatsMillisecs(void)
 {
   ENTRY();
   
-  Stats* pStats = _pStats(*m_p_TaskLogicUnit->m_xpStats);
+  Stats* pStats = _pStats(*m_pLogicUnit->m_xpStats);
   ASSERT(CN_STATS == pStats->eGetClassNo());
   
   i8 iMilliseconds = pStats->iMilliseconds();
@@ -100,7 +100,7 @@ void Step::vStatsNanosecs(void)
 {
   ENTRY();
   
-  Stats* pStats = _pStats(*m_p_TaskLogicUnit->m_xpStats);
+  Stats* pStats = _pStats(*m_pLogicUnit->m_xpStats);
   ASSERT(CN_STATS == pStats->eGetClassNo());
   
   i8 iNanoseconds = pStats->iNanoseconds();
@@ -117,7 +117,7 @@ void Step::vStatsNew(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_xpStats = new Stats;
+  m_pLogicUnit->m_xpStats = new Stats;
   
   EXIT();
 }
@@ -129,7 +129,7 @@ void Step::vStatsOperandsInc(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_xpStats->m_nOperands++;
+  m_pLogicUnit->m_xpStats->m_nOperands++;
 
   EXIT();
 }
@@ -158,7 +158,7 @@ void Step::vStatsStartTimer(void)
 {
   ENTRY();
   
-  Stats* pStats = _pStats(*m_p_TaskLogicUnit->m_xpStats);
+  Stats* pStats = _pStats(*m_pLogicUnit->m_xpStats);
   ASSERT(CN_STATS == pStats->eGetClassNo());
   
   pStats->vStartTimer();
@@ -173,7 +173,7 @@ void Step::vStatsUpdateTimer(void)
 {
   ENTRY();
   
-  Stats* pStats = _pStats(*m_p_TaskLogicUnit->m_xpStats);
+  Stats* pStats = _pStats(*m_pLogicUnit->m_xpStats);
   ASSERT(CN_STATS == pStats->eGetClassNo());
   
   pStats->vUpdateTimer();

@@ -14,6 +14,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
+#include "Pipework.hpp"
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
 #include "Job.hpp"
@@ -33,35 +34,33 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pipeline(void)
 {
-  vAddStep("Pipeline::addAccum"_Stz,      &Step::vPipelineAddAccum);
-  vAddStep("Pipeline::cancelled@"_Stz,    &Step::vPipelineCancelledFetch);
-  vAddStep("Pipeline::cancelled!"_Stz,    &Step::vPipelineCancelledStore);
-  vAddStep("Pipeline::dropDebugLock"_Stz, &Step::vPipelineDropDebugLock);
-  vAddStep("Pipeline::earlyExit@"_Stz,    &Step::vPipelineEarlyExitFetch);
-  vAddStep("Pipeline::earlyExit!"_Stz,    &Step::vPipelineEarlyExitStore);
-  vAddStep("Pipeline::enqueueStart"_Stz,  &Step::vPipelineEnqueueStart);
-  vAddStep("Pipeline::errored@"_Stz,      &Step::vPipelineErroredFetch);
-  vAddStep("Pipeline::errored!"_Stz,      &Step::vPipelineErroredStore);
-  vAddStep("Pipeline::getAccum"_Stz,      &Step::vPipelineGetAccum);
-  vAddStep("Pipeline::grabDebugLock"_Stz, &Step::vPipelineGrabDebugLock);
-  vAddStep("Pipeline::pulsed@"_Stz,       &Step::vPipelinePulsedFetch);
-  vAddStep("Pipeline::pulsed!"_Stz,       &Step::vPipelinePulsedStore);
-  
-  vAddStep("pipeline.pipeout"_Stz,        &Step::vPipelinePipeout);
-    
-  vAddStep("Pipeline[].create"_Stz,       &Step::vPipelineCreate);
-  vAddStep("Pipeline[].spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
+  vAddStep("[pipeline].addAccum"_Stz,      &Step::vPipelineAddAccum);
+  vAddStep("[pipeline].cancelled@"_Stz,    &Step::vPipelineCancelledFetch);
+  vAddStep("[pipeline].cancelled!"_Stz,    &Step::vPipelineCancelledStore);
+  vAddStep("[pipeline].create"_Stz,        &Step::vPipelineCreate);
+  vAddStep("[pipeline].dropDebugLock"_Stz, &Step::vPipelineDropDebugLock);
+  vAddStep("[pipeline].earlyExit@"_Stz,    &Step::vPipelineEarlyExitFetch);
+  vAddStep("[pipeline].earlyExit!"_Stz,    &Step::vPipelineEarlyExitStore);
+  vAddStep("[pipeline].errored@"_Stz,      &Step::vPipelineErroredFetch);
+  vAddStep("[pipeline].errored!"_Stz,      &Step::vPipelineErroredStore);
+  vAddStep("[pipeline].getAccum"_Stz,      &Step::vPipelineGetAccum);
+  vAddStep("[pipeline].grabDebugLock"_Stz, &Step::vPipelineGrabDebugLock);
+  vAddStep("[pipeline].op0@"_Stz,          &Step::vPipelineOp0Fetch);
+  vAddStep("[pipeline].opsOnNode@"_Stz,    &Step::vPipelineOpsOnNodeFetch);
+  vAddStep("[pipeline].pulsed@"_Stz,       &Step::vPipelinePulsedFetch);
+  vAddStep("[pipeline].pulsed!"_Stz,       &Step::vPipelinePulsedStore);
+  vAddStep("[pipeline].spawnOpTasks"_Stz,  &Step::vPipelineSpawnOpTasks);
+  vAddStep("[pipeline].startPipeline"_Stz, &Step::vPipelineStartPipeline);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::addAccum -- add to an accumulator                                */
+/* [pipeline].addAccum -- add to an accumulator in this pipeline               */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineAddAccum(void)
 {
   ENTRY();
   
-  Op* pOp = *m_pOp;
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   i8 i_Accum = m_pDataStack->iPopInt(__func__);
   
@@ -73,16 +72,13 @@ void Step::vPipelineAddAccum(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::cancelled@ -- has the pipeline been cancelled?                   */
+/* [pipeline].cancelled@ -- has this pipeline been cancelled?                  */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineCancelledFetch(void)
 {
   ENTRY();
   
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   // return if pipeline has been cancelled
   m_pDataStack->vPushInt(pPipeline->bCancelled());
@@ -91,16 +87,13 @@ void Step::vPipelineCancelledFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::cancelled! -- set pipeline as being cancelled                    */
+/* [pipeline].cancelled! -- fetch this pipeline's cancelled indicator          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineCancelledStore(void)
 {
   ENTRY();
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
 
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   pPipeline->vCancelled(m_pDataStack->iPopInt(__func__));
   
@@ -109,27 +102,27 @@ void Step::vPipelineCancelledStore(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline[].create -- create the pipeline, stages, streams and ops           */
+/* [pipeline].create -- create the pipeline, stages, streams and ops          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineCreate(void)
 {
   ENTRY();
     
   i8 iThisNode = AM::pGrid()->iThisNodeNo();
-  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
 
-  PipelineSpec* pPipelineSpec = *pLogicUnit->m_xpPipelineSpec;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a pipeline
+  // get pipeline spec
   
-  pLogicUnit->m_xpPipeline =
-    new Pipeline(m_pJob_task,pPipelineSpec,m_pJob_task->iOriginatorNode());
+  PipelineSpec* pPipelineSpec = _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
   
-  Pipeline* pPipeline = *pLogicUnit->m_xpPipeline;
+  // create pipeline
+  
+  Pipeline* pPipeline =
+    new Pipeline(m_pJob,pPipelineSpec,m_pJob->iOriginatorNode());
+  
+  m_pLogicUnit->m_xpPipeline = pPipeline;
     
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump the pipeline
+  // dump pipeline
+  
   if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
     if (iThisNode == 0) {
       SP_Pipeline spPipeline(pPipeline,true);
@@ -142,14 +135,13 @@ void Step::vPipelineCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::dropDebugLock -- drop the pipeline debug lock                    */
+/* [pipeline].dropDebugLock -- drop this pipeline's debug lock                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineDropDebugLock(void)
 {
   ENTRY();
   
-  Op* pOp = *m_pOp;
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   pPipeline->vDropDebugLock();
   
@@ -157,73 +149,13 @@ void Step::vPipelineDropDebugLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::enqueueStart -- put StartMarker into left queue of start op      */
-/*----------------------------------------------------------------------------*/
-void Step::vPipelineEnqueueStart(void)
-{
-  ENTRY();
-  
-  
-  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-    
-  Pipeline* pPipeline = * pLogicUnit->m_xpPipeline;
-    
-  i8 iThisNode = AM::pGrid()->iThisNodeNo();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get no of operators to be executed on this node
-  i8 nOps = pPipeline->nOpsOnNode(iThisNode);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set acks remaining equal to no of operators to be executed on this node
-  if (nOps) {
-    if (AM::bDbgTag(C_TAG_DBG_ACKS))
-      vTrace("Setting acks remaining to %lld\n"_Stz, nOps);
-    AM::vSetAcksRmg(m_pJob_task->pJobTask(),nOps);
-  
-    // get the first stage of the pipeline
-    Stage* pStage = pPipeline->pGet(0);
-    
-    // send startMarker to the start Op of the first stage of the pipeline
-    if (pStage->bStartPipeline()) {
-      //pStage->vStartPipeline(this);
-      
-      Stream*  pStream = pStage->pGet(0);
-
-      Op* pOp = pStream->pGet(0);
-
-      RASSERT(pOp->szOpNm()->bSame("start"_Stz));
-
-      Operand* pOperand = new Marker(OM_STARTMARKER);
-      
-      pOp->vOpTrace(nullptr,(Stz*)__func__,false,"// queue StartMarker into pipeline"_Stz);
-
-      pOp->vAppendLeft(pOperand,this);
-
-    }
-    
-    // pipeline job to wait for acks
-    m_pDataStack->vPushInt(true);
-  }
-  else {
-    // pipeline job has no operators to wait for
-    m_pDataStack->vPushInt(false);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Pipeline::earlyExit@ -- has the pipeline been early exited                 */
+/* [pipeline].earlyExit@ -- fetch this pipelines earlyExit indicator          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineEarlyExitFetch(void)
 {
   ENTRY();
 
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
 
   // return if pipeline has been errored
   m_pDataStack->vPushInt(pPipeline->bEarlyExit());
@@ -232,16 +164,13 @@ void Step::vPipelineEarlyExitFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::earlyExit! -- set earlyExit                                      */
+/* [pipeline].earlyExit! -- store this pipeline's earlyExit indicator          */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineEarlyExitStore(void)
 {
   ENTRY();
 
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
 
   pPipeline->vEarlyExit(m_pDataStack->iPopIntBol(__func__));
 
@@ -249,16 +178,13 @@ void Step::vPipelineEarlyExitStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::errored@ -- has the pipeline been errored                        */
+/* [pipeline].errored@ -- fetch this pipeline errored indicator                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineErroredFetch(void)
 {
   ENTRY();
   
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   // return if pipeline has been errored
   m_pDataStack->vPushInt(pPipeline->bErrored());
@@ -267,15 +193,13 @@ void Step::vPipelineErroredFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::errored! -- set pipeline as being errored                        */
+/* [pipeline].errored! -- store this pipeline errored indicator                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineErroredStore(void)
 {
   ENTRY();
   
-  // revised job/op model
-    Op* pOp = *m_pOp;
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   pPipeline->vErrored(m_pDataStack->iPopBol(__func__));
   
@@ -283,14 +207,13 @@ void Step::vPipelineErroredStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::getAccum -- get an accumulator                                   */
+/* [pipeline].getAccum -- get an accumulator from this pipeline                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineGetAccum(void)
 {
   ENTRY();
   
-  Op* pOp = *m_pOp;
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   i8 i_Accum = m_pDataStack->iPopInt(__func__);
   
@@ -302,14 +225,13 @@ void Step::vPipelineGetAccum(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::grabDebugLock -- grab the pipeline debug lock                    */
+/* [pipeline].grabDebugLock -- grab this pipeline's debug lock                 */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineGrabDebugLock(void)
 {
   ENTRY();
   
-  Op* pOp = *m_pOp;
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   pPipeline->vGrabDebugLock();
   
@@ -317,16 +239,13 @@ void Step::vPipelineGrabDebugLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::pulsed@ -- has the pipeline been pulsed                          */
+/* [pipeline].pulsed@ -- fetch this pipeline's pulsed indicator                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelinePulsedFetch(void)
 {
   ENTRY();
   
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   // return if pipeline has been pulsed
   m_pDataStack->vPushInt(pPipeline->bPulsed());
@@ -335,16 +254,13 @@ void Step::vPipelinePulsedFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline::pulsed! -- set pipeline as being pulsed                          */
+/* [pipeline].pulsed! -- store this pipeline's pulsed indicator                */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelinePulsedStore(void)
 {
   ENTRY();
   
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   pPipeline->vPulsed(m_pDataStack->iPopBol(__func__));
   
@@ -352,54 +268,84 @@ void Step::vPipelinePulsedStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline[].spawnOpTasks -- spawn tasks for all ops of pipeline for this node*/
+/* [pipeline].op0@ -- fetch op0 of this pipeline                              */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineOp0Fetch(void)
+{
+  ENTRY();
+  
+  Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
+  
+  Op* pOp0 = pPipeline->pOp0();
+    
+  m_pDataStack->vPushPtr(pOp0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [pipeline].opsOnNode@ -- get no of ops executing on this node              */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineOpsOnNodeFetch(void)
+{
+  ENTRY();
+    
+  Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
+
+  i8 iThisNode = AM::pGrid()->iThisNodeNo();
+
+  i8 nOps = pPipeline->nOpsOnNode(iThisNode);
+
+  m_pDataStack->vPushInt(nOps);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [pipeline].spawnOpTasks -- spawn tasks for all ops of pipeline for this node*/
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineSpawnOpTasks(void)
 {
   ENTRY();
 
-  i8 iThisNode = AM::pGrid()->iThisNodeNo();
+  if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
+    i8 iThisNodeNo = MY::iNodeNo();
+    vTraceM("Spawning operator jobs for this node %lld\n"_Stz,iThisNodeNo);
+  }
   
-  if (AM::TRACE::bVerbose(C_VB_PIPELINE))
-    vTraceM("Spawning operator jobs for node %lld\n"_Stz,iThisNode);
+  Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
   
-  Pipeline* pPipeline = * m_p_TaskLogicUnit->m_xpPipeline;
-  
-  pPipeline->vSpawnOpTasks(m_pJob_task->m_i_Session, iThisNode);
+  pPipeline->vSpawnOpTasks();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
+/* [pipeline].startPipeline -- test for issueing a start marker               */
 /*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* pipeline.pipeout -- append operand onto next operator in pipeline          */
-/*----------------------------------------------------------------------------*/
-void Step::vPipelinePipeout(void)
+void Step::vPipelineStartPipeline(void)
 {
   ENTRY();
+  
+  Pipeline* pPipeline = (* m_pLogicUnit->m_xpPipeline);
+  Pipework* pFormWork = pPipeline->pPipework();
 
-  Job* pPipelineJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // !!!!!!!!!!!!!!
-  // move to AM
+  Stage*    pStage0   = pFormWork->pGet(0);
 
-  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-  
-  Stage*    pStage0   = pPipeline->pGet(0);
-  Stream*   pStand0   = pStage0->pGet(0);
-  Op*       pOp0      = pStand0->pGet(0);
-
-  pOp0->vAppendLeft(pOperand,this);
+  if (pStage0->bStartPipeline()) {
+    
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+  }
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 /*============================================================================*/
 /* end                                                                        */

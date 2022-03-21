@@ -35,9 +35,9 @@ void Step::vPotCompleted(void)
 {
   ENTRY();
   
-  Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
+  Pot* pPot = _pPot(*m_pLogicUnit->m_xpPot);
     
-  m_p_TaskLogicUnit->m_nPotSize = pPot->nBuffers();
+  m_pLogicUnit->m_nPotSize = pPot->nBuffers();
   
   DataBuffer* pCompletedBuffer = pPot->pCompleted(0);
 
@@ -55,9 +55,9 @@ void Step::vPotCompletedPtn(void)
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
 
-  Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
+  Pot* pPot = _pPot(*m_pLogicUnit->m_xpPot);
     
-  m_p_TaskLogicUnit->m_nPotSize = pPot->nBuffers();
+  m_pLogicUnit->m_nPotSize = pPot->nBuffers();
   
   DataBuffer* pCompletedBuffer = pPot->pCompleted(i_Ptn);
 
@@ -73,9 +73,9 @@ void Step::vPotDangling(void)
 {
   ENTRY();
 
-  Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
+  Pot* pPot = _pPot(*m_pLogicUnit->m_xpPot);
     
-  m_p_TaskLogicUnit->m_nPotSize = pPot->nBuffers();
+  m_pLogicUnit->m_nPotSize = pPot->nBuffers();
   
   DataBuffer* pDanglingBuffer = pPot->pDangling(0);
 
@@ -93,9 +93,9 @@ void Step::vPotDanglingPtn(void)
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
 
-  Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
+  Pot* pPot = _pPot(*m_pLogicUnit->m_xpPot);
     
-  m_p_TaskLogicUnit->m_nPotSize = pPot->nBuffers();
+  m_pLogicUnit->m_nPotSize = pPot->nBuffers();
 
   DataBuffer* pDanglingBuffer = pPot->pDangling(i_Ptn);
 
@@ -111,14 +111,14 @@ void Step::vPotDelete(void)
 {
   ENTRY();
 
-//  Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
-//  m_p_TaskLogicUnit->m_xpPot = nullptr;
+//  Pot* pPot = _pPot(*m_pLogicUnit->m_xpPot);
+//  m_pLogicUnit->m_xpPot = nullptr;
 //
 //  delete pPot;
 
-  m_p_TaskLogicUnit->m_xpPot.vDeleteComponent();
+  m_pLogicUnit->m_xpPot.vDeleteComponent();
   
-  m_p_TaskLogicUnit->m_nPotSize = 0;
+  m_pLogicUnit->m_nPotSize = 0;
 
 
   EXIT();
@@ -131,7 +131,7 @@ void Step::vPotIsNull(void)
 {
   ENTRY();
 
-  Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
+  Pot* pPot = _pPot(*m_pLogicUnit->m_xpPot);
 
   m_pDataStack->vPushInt(pPot == nullptr ? 1 : 0);
 
@@ -147,8 +147,8 @@ void Step::vPotNew(void)
     
   Pot* pPot = new Pot;
       
-  m_p_TaskLogicUnit->m_xpPot = pPot;
-  m_p_TaskLogicUnit->m_nPotSize = 0;
+  m_pLogicUnit->m_xpPot = pPot;
+  m_pLogicUnit->m_nPotSize = 0;
 
   EXIT();
 }
@@ -160,7 +160,7 @@ void Step::vPotPushBuffer(void)
 {
   ENTRY();
 
-  Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
+  Pot* pPot = _pPot(*m_pLogicUnit->m_xpPot);
     
   DataBuffer* pBuffer = pPot->pDangling(0);
 
@@ -179,10 +179,10 @@ void Step::vPotRowPixStore(void)
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   i8 iAddPtnHsh = m_pDataStack->iPopInt(__func__);
 
-  pStreamDef->vToRowPix(&m_p_TaskLogicUnit->m_oRowPix,(bool)iAddPtnHsh);
+  pStreamDef->vToRowPix(&m_pLogicUnit->m_oRowPix,(bool)iAddPtnHsh);
 
-  Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
-  pPot->vRowPix(&m_p_TaskLogicUnit->m_oRowPix);
+  Pot* pPot = _pPot(*m_pLogicUnit->m_xpPot);
+  pPot->vRowPix(&m_pLogicUnit->m_oRowPix);
 
   EXIT();
 }

@@ -17,6 +17,7 @@
 #include "Stage.hpp"
 #include "StageSpec.hpp"
 #include "Stream.hpp"
+#include "Pipework.hpp"
 #include "PtnMap.hpp"
 #include "Node.hpp"
 #include "Pipeline.hpp"
@@ -87,10 +88,10 @@ void Step::vParcelDemonOut(void)
   // move to AM
   
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-  
-  Stage*    pStage0   = pPipeline->pGet(0);
-  Stream*   pStand0   = pStage0->pGet(0);
-  Op*       pOp0      = pStand0->pGet(0);
+  Pipework* pPipework = pPipeline->pPipework();
+  Stage*    pStage0   = pPipework->pGet(0);
+  Stream*   pStream0  = pStage0->pGet(0);
+  Op*       pOp0      = pStream0->pGet(0);
 
   pOp0->vAppendLeft(pOperand,this);
   // !!!!!!!!!!!!!!
@@ -196,8 +197,8 @@ void Step::vParcelPipeOut(void)
     // move to AM
     
     Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-    
-    Stage*    pStage0   = pPipeline->pGet(0);
+    Pipework* pPipework = pPipeline->pPipework();
+    Stage*    pStage0   = pPipework->pGet(0);
     Stream*   pStand0   = pStage0->pGet(0);
     Op*       pOp0      = pStand0->pGet(0);
 
@@ -218,7 +219,8 @@ void Step::vParcelPipeOut(void)
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
   
   // get the next stage the send is supposed to send to
-  Stage* pDstStage = pPipeline->pGet(pParcel->iDstStage());
+  Pipework* pFormWork = pPipeline->pPipework();
+  Stage* pDstStage = pFormWork->pGet(pParcel->iDstStage());
   i8 nStreamPtns = pDstStage->nItems();
 
   // get the op to forward to depending on the cross topology
@@ -474,9 +476,9 @@ void Step::vParcelDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpParcel);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpParcel);
 
-  m_p_TaskLogicUnit->m_xpParcel = nullptr;
+  m_pLogicUnit->m_xpParcel = nullptr;
 
   EXIT();
 }
@@ -488,7 +490,7 @@ void Step::vParcelGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpParcel);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpParcel);
 
   EXIT();
 }
@@ -500,9 +502,9 @@ void Step::vParcelGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpParcel);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpParcel);
 
-  m_p_TaskLogicUnit->m_xpParcel = nullptr;
+  m_pLogicUnit->m_xpParcel = nullptr;
 
   EXIT();
 }
@@ -514,7 +516,7 @@ void Step::vParcelIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpParcel.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpParcel.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -526,7 +528,7 @@ void Step::vParcelIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpParcel.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpParcel.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -540,9 +542,9 @@ void Step::vParcelSet(void)
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pParcel || m_p_TaskLogicUnit->m_xpParcel.bIsNull());
+  ASSERT(! pParcel || m_pLogicUnit->m_xpParcel.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpParcel = _pParcel(pParcel);
+  m_pLogicUnit->m_xpParcel = _pParcel(pParcel);
 
   EXIT();
 }

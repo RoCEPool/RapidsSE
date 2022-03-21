@@ -30,7 +30,7 @@ StreamDefBase::StreamDefBase(eCN eClassNo)
   m_sStreamDefNm = ""_Stz;
 
   m_nColumns = 0;
-  //m_xaColumn[C_MAX_DEFCOLUMNS];
+  //MemLib::vZero(m_xaColumn,sizeof(m_xaColumn),eClassNo);
 
   //m_oRowPix;
 
@@ -38,8 +38,10 @@ StreamDefBase::StreamDefBase(eCN eClassNo)
   m_jTableSize = 0;
 
   m_nOrders = 0;
+  m_bUnique = false;
   MemLib::vZero(m_iaOrder,sizeof(m_iaOrder),eClassNo);
-  
+  MemLib::vZero(m_eaDirection,sizeof(m_eaDirection),eClassNo);
+
   //_checkInitialised_(eClassNo);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -48,26 +50,32 @@ StreamDefBase::StreamDefBase(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StreamDefBase::StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDefBase)
+StreamDefBase::StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDef_arg)
 : Definition(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
-  m_bReplicated = false;
-  m_sStreamDefNm = pStreamDefBase->m_sStreamDefNm;
-  m_nColumns = pStreamDefBase->m_nColumns;
+  m_bReplicated  = false;
+  m_sStreamDefNm = pStreamDef_arg->m_sStreamDefNm;
+  m_nColumns     = pStreamDef_arg->m_nColumns;
 
-  for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++) {
-    m_xaColumn[i_DefCol].vCopy(&pStreamDefBase->m_xaColumn[i_DefCol]);
-  }
+  //MemLib::vZero(m_xaColumn,sizeof(m_xaColumn),eClassNo);
+  for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++)
+    m_xaColumn[i_DefCol].vCopy(&pStreamDef_arg->m_xaColumn[i_DefCol]);
 
   //m_oRowPix;
 
-  m_jRowSize = pStreamDefBase->m_jRowSize;
+  m_jRowSize = pStreamDef_arg->m_jRowSize;
 
-  m_nOrders = 0;
+  m_nOrders  = pStreamDef_arg->m_nOrders;
+  m_bUnique  = pStreamDef_arg->m_bUnique;
   MemLib::vZero(m_iaOrder,sizeof(m_iaOrder),eClassNo);
-
+  MemLib::vZero(m_eaDirection,sizeof(m_eaDirection),eClassNo);
+  for (i8 i_Order = 0; i_Order < m_nOrders; i_Order++) {
+    m_iaOrder[i_Order] = pStreamDef_arg->m_iaOrder[i_Order];
+    m_eaDirection[i_Order] = pStreamDef_arg->m_eaDirection[i_Order];
+  }
+  
   //_checkInitialised_(CN_STREAMDEF);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -153,11 +161,14 @@ void StreamDefBase::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength
 /*----------------------------------------------------------------------------*/
 /* add a column to the stream order                                           */
 /*----------------------------------------------------------------------------*/
-void StreamDefBase::vAddOrder(i8 i_Column)
+void StreamDefBase::vAddOrder(i8 i_Column, eSD eDirection)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_iaOrder[m_nOrders++] = i_Column;
+  m_iaOrder[m_nOrders]     = i_Column;
+  m_eaDirection[m_nOrders] = eDirection;
+  
+  m_nOrders++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,6 +260,20 @@ void StreamDefBase::vAsString(String* pString)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 StreamDefBase::iColumnOrder(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  for (i8 i_Ord = 0; i_Ord < m_nOrders; i_Ord++)
+    if (i_Col == m_iaOrder[i_Ord])
+      return i_Ord;
+  
+  return -1;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get no of columns in subset of streamDef                                   */
 /*----------------------------------------------------------------------------*/
 i8 StreamDefBase::nColumns(void)
@@ -259,27 +284,23 @@ i8 StreamDefBase::nColumns(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check if column name is a duplicate in the streamDef                       */
+/* get direction order                                                        */
 /*----------------------------------------------------------------------------*/
-bool StreamDefBase::bIsDuplicateName(Column* pColumn)
+eSD StreamDefBase::eDirection(i8 i_Order)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  bool bFound = false;
+  return m_eaDirection[i_Order];
+}
 
-  for (i8 i_Column = 0; i_Column < m_nColumns; i_Column++) {
+/*----------------------------------------------------------------------------*/
+/* set direction order                                                        */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vDirection(i8 i_Order, eSD eDirection)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
 
-    Column* pCol = & m_xaColumn[i_Column];
-
-    if (pCol->szColNm()->bSame(pColumn->szColNm())) {
-
-      if (bFound)
-        return true;
-
-      bFound = true;
-    }
-  }
-  return false;
+  m_eaDirection[i_Order] = eDirection;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -320,6 +341,44 @@ Column* StreamDefBase::pGetOrder(i8 i_Order)
   i8 i_Column = m_iaOrder[i_Order];
   
   return &m_xaColumn[i_Column];
+}
+
+/*----------------------------------------------------------------------------*/
+/* check if column name is a duplicate in the streamDef                       */
+/*----------------------------------------------------------------------------*/
+bool StreamDefBase::bIsDuplicateName(Column* pColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  bool bFound = false;
+
+  for (i8 i_Column = 0; i_Column < m_nColumns; i_Column++) {
+
+    Column* pCol = & m_xaColumn[i_Column];
+
+    if (pCol->szColNm()->bSame(pColumn->szColNm())) {
+
+      if (bFound)
+        return true;
+
+      bFound = true;
+    }
+  }
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is column an ordered column?                                               */
+/*----------------------------------------------------------------------------*/
+bool StreamDefBase::bIsOrder(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  for (i8 i_Ord = 0; i_Ord < m_nOrders; i_Ord++)
+    if (i_Col == m_iaOrder[i_Ord])
+      return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -616,6 +675,26 @@ void StreamDefBase::vToMetadata(Stz* sMetadata)
   }
 
   sMetadata->vConcat(")"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the ordered stream unique?                                              */
+/*----------------------------------------------------------------------------*/
+bool StreamDefBase::bUnique(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bUnique;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is the ordered stream unique?                                          */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vUnique(bool bUnique)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bUnique = bUnique;
 }
 
 

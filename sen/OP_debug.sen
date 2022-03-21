@@ -11,11 +11,11 @@
 
   pipeIn[]\clear to RowBuffer[]
 
-  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows Op.partition@ Op.stageName@
+  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows [op].partition@ [op].stageName@
     "%v.%v RowBuffer: %v rows (decile %v ptnid %v)" .printf
   
-  1 0 Pipeline::addAccum
-  RowBuffer[].rows 1 Pipeline::addAccum
+  1 0 [pipeline].addAccum
+  RowBuffer[].rows 1 [pipeline].addAccum
  
   RowBuffer[].pipeout
   
@@ -29,17 +29,17 @@
 
   pipeIn[]\clear to RowBuffer[]
 
-  Pipeline::grabDebugLock
+  [pipeline].grabDebugLock
   
-  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows Op.partition@ Op.stageName@
+  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows [op].partition@ [op].stageName@
     "%v.%v RowBuffer: %v rows (decile %v ptnid %v)" .printf
   
-  1 0 Pipeline::addAccum
-  RowBuffer[].rows 1 Pipeline::addAccum
+  1 0 [pipeline].addAccum
+  RowBuffer[].rows 1 [pipeline].addAccum
  
   RowBuffer[].print
    
-  Pipeline::dropDebugLock
+  [pipeline].dropDebugLock
   
   RowBuffer[].pipeout
   
@@ -53,7 +53,7 @@
   
   PipeIn[]\clear to StreamDefLft[]
   
-  Op.stageName@ "%v: " .printf
+  [op].stageName@ "%v: " .printf
   StreamDefLft[].print
 
   StreamDefLft[].pipeOut
@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 : debug_EOS \handler
 
-  1 Pipeline::getAccum 0 Pipeline::getAccum "Total: %v buffers %v rows" .printf
+  1 [pipeline].getAccum 0 [pipeline].getAccum "Total: %v buffers %v rows" .printf
 
   ZK_M_EOS_handler
 ;
@@ -85,19 +85,19 @@
   op__topology
 
   <option> "streamdef" str.same if
-    find: debug_StreamDef ZK_D_STREAMDEF op[].handler!
+    find: debug_StreamDef ZK_D_STREAMDEF [op].handler!
   then
   
   <option> "rowbuffer" str.same if
-    find: debug_RowBuffer ZK_D_ROWBUFFER op[].handler!
+    find: debug_RowBuffer ZK_D_ROWBUFFER [op].handler!
   then
   
   <option> "seeRowbuffer" str.same if
-    find: debug_SeeRowBuffer ZK_D_ROWBUFFER op[].handler!
+    find: debug_SeeRowBuffer ZK_D_ROWBUFFER [op].handler!
   then
   
   <option> "accum0" str.same if
-    find: debug_EOS ZK_M_EOS op[].handler!
+    find: debug_EOS ZK_M_EOS [op].handler!
   then
 
   op__loop

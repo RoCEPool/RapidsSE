@@ -8,6 +8,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
+#include "LogicUnit.hpp"
 #include "SP_TagSet.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -29,6 +30,12 @@ void Step::vAddSteps_TagSet(void)
   vAddStep("tagSet.replaceInt"_Stz, &Step::vTagSetReplaceInt);
   vAddStep("tagSet.replaceStr"_Stz, &Step::vTagSetReplaceStr);
   vAddStep("tagSet.upsertStr"_Stz,  &Step::vTagSetUpsertStr);
+  
+  vAddStep("tagSet[]"_Stz,          &Step::vTagSetGet);
+  vAddStep("tagSet[].get"_Stz,      &Step::vTagSetGet);
+  vAddStep("tagSet[].set"_Stz,      &Step::vTagSetSet);
+
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,6 +127,20 @@ void Step::vTagSetCopy(void)
   
   pTagSet_dst->vCopy(pTagSet_src);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TagSet[].get -- get tagset                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vTagSetGet(void)
+{
+  ENTRY();
+  
+  TagSet* pTagSet = (* m_pLogicUnit->m_xpTagSet);
+
+  m_pDataStack->vPushPtr(pTagSet);
+
   EXIT();
 }
 
@@ -267,6 +288,20 @@ void Step::vTagSetReplaceStr(void)
   pTagSet->vReplace(sName,sValue);
   //pTagSet->vPrint();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TagSet[].set -- set tagset                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vTagSetSet(void)
+{
+  ENTRY();
+  
+  TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
+  
+  m_pLogicUnit->m_xpTagSet = pTagSet;
+
   EXIT();
 }
 

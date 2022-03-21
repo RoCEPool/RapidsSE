@@ -11,6 +11,7 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
+#include "Pipework.hpp"
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
@@ -26,16 +27,20 @@ __aNewFunction(Pipeline,CN_PIPELINE)
 __vDeleteFunction(Pipeline,CN_PIPELINE)
 __aFooterFunction(Pipeline)
 
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
-: LifeGuard_t<Pipeline>(this,CN_PIPELINE)
+: Object(CN_PIPELINE)
+, LifeGuard_t<Pipeline>(this,CN_PIPELINE)
 , m_okDebugLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   m_sPipelineNm   = pPipelineSpec->szPipelineNm();
+  
+  m_pFormWork     = nullptr;
   
   m_pPipelineJob  = pPipelineJob;
   m_pPipelineSpec = pPipelineSpec;
@@ -55,7 +60,8 @@ Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
 
   _checkInitialised_(CN_PIPELINE);
   
-  vCreateStages();
+  m_pFormWork = new Pipework(this,pPipelineSpec->pPipeworkSpec());
+  //vCreatePipework();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 }
@@ -67,16 +73,9 @@ Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  i8 nStages = this->nItems();
-  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pGet(i_Stage);
-    
-    pStage->vGuardedDelete(CN_STAGE,&pStage,
-                           CN_PIPELINE,this,(Stz*)__func__);
-  }
-
-  vClear();
-
+  m_pFormWork->vGuardedDelete(CN_PIPEWORK,&m_pFormWork,
+                              CN_PIPELINE,this,(Stz*)__func__);
+  
   m_pPipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&m_pPipelineSpec,
                                   CN_PIPELINE,this,(Stz*)__func__);
 }
@@ -112,13 +111,9 @@ bool Pipeline::bCancel(Task* pTriggeringTask)
   if (m_bPulsed)
     return false;
   
-  // get the first stage of the pipeline
-  Stage* pStage = pGet(0);
+  bool bCancelled = m_pFormWork->bCancel(pTriggeringTask);
   
-  // send cancelMarker to the start Op of the first stage of the pipeline
-  pStage->vCancelPipeline(pTriggeringTask);
-  
-  return true;
+  return bCancelled;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,26 +147,6 @@ void Pipeline::vDropDebugLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   m_okDebugLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* create the stages of this pipeline                                         */
-/*----------------------------------------------------------------------------*/
-void Pipeline::vCreateStages(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-
-  i8 nStages = m_pPipelineSpec->nItems();
-  for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
-    
-    // get the stageSpec
-    StageSpec* pStageSpec = m_pPipelineSpec->pStageSpec(i_StageSpec);
-    
-    // add a stage from the stageSpec to the stageVec
-    Stage* pStage = new Stage(pStageSpec, this);
-    vAppend(pStage);
-    pStage->vCreateStreams();
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,6 +187,16 @@ bool Pipeline::bErrored(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   return m_bErrored;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get formwork                                                               */
+/*----------------------------------------------------------------------------*/
+Pipework* Pipeline::pPipework(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  return m_pFormWork;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -271,9 +256,7 @@ Op* Pipeline::pOp0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Stage*  pStage0   = pGet(0);
-  Stream* pStand0   = pStage0->pGet(0);
-  Op*     pOp0      = pStand0->pGet(0);
+  Op* pOp0 = m_pFormWork->pOp0();
 
   return pOp0;
 }
@@ -285,13 +268,8 @@ i8 Pipeline::nOpsOnNode(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  i8 nOps = 0;
-  
-  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
-    Stage* pStage = pGet(i_Stage);
-    nOps += pStage->nOpsOnNode(iNode,m_i_Origin);
-  }
-  
+  i8 nOps = m_pFormWork->nOpsOnNode(iNode);
+    
   return nOps;
 }
 
@@ -303,6 +281,16 @@ Op* Pipeline::pOpToPulse(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   return m_pOpToPulse;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pOpToPulse                                                             */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vOpToPulse(Op* pOpToPulse)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  m_pOpToPulse = pOpToPulse;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -326,13 +314,23 @@ PipelineSpec* Pipeline::pPipelineSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pulsed                                                                 */
+/* get bPulsedLimit?                                                          */
 /*----------------------------------------------------------------------------*/
 bool Pipeline::bPulsedLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_bPulsed;
+  return m_bPulsedLimit;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bPulsedLimit?                                                          */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vPulsedLimit(bool bPulsedLimit)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  m_bPulsedLimit = bPulsedLimit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -362,110 +360,58 @@ void Pipeline::vSetupJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Stage* pStage = pGet(0);
-  
-  i8 nDivs = pStage->nItems();
-  for (i8 i_Stream = 0; i_Stream < nDivs; i_Stream++) {
-    Stream* pStream = pStage->pGet(i_Stream);
-
-    i8 nOps = pStream->nItems();
-    for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-      Op* pOp = pStream->pGet(i_Op);
-      
-      if (pOp->szOpNm()->bSame("limitOp"_Stz)) {
-        m_bPulsedLimit = true;
-        break;
-      }
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  for (i8 i_Stream = 0; i_Stream < nDivs; i_Stream++) {
-    Stream* pStream = pStage->pGet(i_Stream);
-
-    i8 nOps = pStream->nItems();
-    for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-      Op* pOp = pStream->pGet(i_Op);
-
-      if (pOp->szOpNm()->bSame("scan"_Stz)) {
-        m_pOpToPulse = pOp;
-        pOp->vPulsedLimit(true);
-        break;
-      }
-    }
-  }
-  
+  m_pFormWork->vSetupJob();
 }
 
 /*----------------------------------------------------------------------------*/
 /* spawn operaator jobs for the pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void Pipeline::vSpawnOpTasks(i8 iSessionId, i8 iNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-  
-  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
-    
-    Stage* pStage = pGet(i_Stage);
-    
-    for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
-      Stream* pStream = pStage->pGet(i_Stream);
-
-      pStream->vSpawnOpTasks(iSessionId, iNode);
-    }
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Pipeline::vWalk(void* aArg)
+void Pipeline::vSpawnOpTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  eCN eClassNo = eGetClassNo();
-  
-  vTrace("Walk %8s:%ll03d %p\n"_Stz
-         
-         ,aCN[eClassNo]
-         ,(i8)eClassNo
-         ,this
-         );
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  i8 nStages = this->nItems();
-  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pGet(i_Stage);
-    
-    pStage->vWalk(aArg);
-  }
+  m_pFormWork->vSpawnOpTasks();
 }
 
 /*----------------------------------------------------------------------------*/
-/* walk                                                                       */
+/* get stage 0                                                                */
 /*----------------------------------------------------------------------------*/
-void Pipeline::vWalkLambda(
-                 i8 iDepth,
-                 std::function<void(Object* pObject, i8 iDepth)> f_vClosure)
+Stage* Pipeline::pStage0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  Stage* pStage0 = m_pFormWork->pStage0();
+
+  return pStage0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream 0                                                               */
+/*----------------------------------------------------------------------------*/
+Stream* Pipeline::pStream0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  Stream* pStream0 = m_pFormWork->pStream0();
+
+  return pStream0;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create the formwork for this pipeline                                      */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vCreatePipework(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  f_vClosure(this,iDepth);
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  i8 nStages = this->nItems();
-  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pGet(i_Stage);
-    
-    pStage->vWalkLambda(iDepth+1,f_vClosure);
-  }
+  m_pFormWork->vCreatePipework();
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */

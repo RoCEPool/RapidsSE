@@ -83,10 +83,10 @@
 
   op__topology
 
-  find: rowToList_Cleaning    ZK_M_CLEANING    op[].handler!
-  find: rowToList_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
-  find: rowToList_StartMarker ZK_M_START       op[].handler!
-  find: rowToList_StreamDef   ZK_D_STREAMDEF   op[].handler!
+  find: rowToList_Cleaning    ZK_M_CLEANING    [op].handler!
+  find: rowToList_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+  find: rowToList_StartMarker ZK_M_START       [op].handler!
+  find: rowToList_StreamDef   ZK_D_STREAMDEF   [op].handler!
 
   op__loop
 

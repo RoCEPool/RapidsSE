@@ -226,6 +226,27 @@ public:
   void vCommandPreJob(void);
   void vCommandSpawnJob(void);
 
+  // counter
+  void vCounterAGet(void);
+  void vCounter0Get(void);
+  void vCounter1Get(void);
+  void vCounter2Get(void);
+  void vCounter3Get(void);
+  void vCounter4Get(void);
+  void vCounter5Get(void);
+  void vCounter6Get(void);
+  void vCounter7Get(void);
+
+  void vCounterASet(void);
+  void vCounter0Set(void);
+  void vCounter1Set(void);
+  void vCounter2Set(void);
+  void vCounter3Set(void);
+  void vCounter4Set(void);
+  void vCounter5Set(void);
+  void vCounter6Set(void);
+  void vCounter7Set(void);
+
   // crwBuffer
   void vCrwBufferDeleteOld(void);
   void vCrwBufferDuplicate(void);
@@ -392,7 +413,10 @@ public:
   void vDstackSwap(void);
   void vDstackTuck(void);
 
-  void vDynamoCompileStmt(void);
+  void vDynamoCompile(void);
+  void vDynamoDelete(void);
+  void vDynamoGet(void);
+  void vDynamoNew(void);
 
   // encode
   void vEncodeCurrentCall(void);
@@ -431,6 +455,10 @@ public:
 
   // env
   void vEnvGet(void);
+
+  // error code
+  void vErrorCodeGet(void);
+  void vErrorCodeSet(void);
 
   // extractRow
   void vExtractRowCreate(void);
@@ -770,18 +798,15 @@ public:
   void vJobClass(void);
 
   void vJobDec2pcAcksRmg(void);
-  void vJobDelete2pc(void);
+  void vJobDelete(void);
 
-  void vJobEntryFetch(void);
+  void vJobEntryPointFetch(void);
   void vJobEntryFetch_other(void);
-  void vJobEntryStore(void);
+  void vJobEntryPointStore(void);
   void vJobEntryStore_other(void);
 
   void vJobErrorFetch(void);
   void vJobErrorStore(void);
-
-  void vJobFindOriginator(void);
-  void vJobFindParticipant(void);
 
   void vJobIdFetch(void);
   void vJobIdFetch_other(void);
@@ -794,12 +819,12 @@ public:
   void vJobNameFetch(void);
   void vJobNoWaitFetch(void);
 
-  void vJobOriginatorFetch(void);
-
+  void vJobOriginNodeNoFetch(void);
 
   void vJobParticipantFetch(void);
   void vJobParticipantFetch_other(void);
   void vJobParticipantStore(void);
+  void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);
   void vJobPhaseFetch_other(void);
   void vJobPhaseStore(void);
@@ -834,8 +859,6 @@ public:
   void vJobTagSetFetch(void);
   void vJobTaskFetch(void);
   void vJobTaskFetch_other(void);
-  void vJobTaskStore(void);
-  void vJobTaskStore_other(void);
 
   void vJobTscBeginning(void);
   void vJobTscBegun(void);
@@ -847,8 +870,6 @@ public:
   void vJobTscCanceled(void);
   void vJobTscParticipant(void);
 
-  void vJobWalk(void);
-
   // job metrics
   void vJobMetricsCollect(void);
   void vJobMetricsDelete(void);
@@ -857,12 +878,12 @@ public:
   void vJobMetricsUpdate(void);
 
   // job ref
-  void vJobRefHasTask(void);
-  void vJobRefPointer(void);
-  void vJobRefNone(void);
-  void vJobRefReturn(void);
-  void vJobRefReferences(void);
-  void vJobRefTaskFetch(void);
+  void vListedJobHasTask(void);
+  void vListedJobPointer(void);
+  void vListedJobAssertNoRef(void);
+  void vListedJobReturn(void);
+  void vListedJobReferences(void);
+  void vListedJobTaskFetch(void);
 
   // job generic
   void vJob_BegunNew(void);
@@ -1001,6 +1022,11 @@ public:
   void vListGet(void);
   void vListNew(void);
   void vListPrint(void);
+
+  // listed job
+  void vListedJobFindOriginator(void);
+  void vListedJobFindParticipant(void);
+
 
   // loader
   void vLoaderCreate(void);
@@ -1239,22 +1265,40 @@ public:
   // olist (originator list)
   void vOlistFindJob(void);
 
-  // operator
+  // op
   void vOpAckPipelineJob(void);
   void vOpDownstreamOpStore(void);
+  void vOpEnqueOperand(void);
   void vOpFindOp(void);
-
+  void vOpGet(void);
+  void vOpHandlerEntry(void);
+  void vOpHandlerExit(void);
+  void vOpHandlerFetch(void);
+  void vOpHandlerStore(void);
+  void vOpHandlerAllStore(void);
+  void vOpIsOperandValid(void);
+  void vOpIncHandlerCount(void);
+  void vOpIncOperandCount(void);
   void vOpOpNameFetch(void);
-  void vOpPartitionFetch(void);
-  void vOpPiplineJobFetch(void);
-  void vOpPipeBackIn(void);
-  void vOpPipeOut(void);
   void vOpOutboundOperandFetch(void);
   void vOpOutboundOperandStore(void);
+  void vOpPartitionFetch(void);
+  void vOpJobFetch(void);
+  void vOpPipeBackIn(void);
+  void vOpPipeOut(void);
+  void vOpPtnIdFetch(void);
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);
   void vOpStageNmFetch(void);
   void vOpTagSetFetch(void);
+
+  // optimiser
+  void vOptimiserDelete(void);
+  void vOptimiserDissect(void);
+  void vOptimiserGet(void);
+  void vOptimiserOptimise(void);
+  void vOptimiserNew(void);
+  void vOptimiserWeave(void);
 
   // operand
   void vOperandToParcel(void);
@@ -1315,11 +1359,14 @@ public:
   void vPersistenceReload(void);
 
   // pipeline
-  void vPipelinePipeout(void);
+  void vJobPipeToOp0(void);
 
   // job Pipeline
   void vPipelineCreate(void);
+  void vPipelineOp0Fetch(void);
+  void vPipelineOpsOnNodeFetch(void);
   void vPipelineSpawnOpTasks(void);
+  void vPipelineStartPipeline(void);
 
   void vPipelineAddAccum(void);
   void vPipelineCancelledFetch(void);
@@ -1328,7 +1375,6 @@ public:
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
   void vPipelineErroredStore(void);
-  void vPipelineEnqueueStart(void);
   void vPipelineErroredFetch(void);
   void vPipelineGetAccum(void);
   void vPipelineGrabDebugLock(void);
@@ -1339,6 +1385,8 @@ public:
 
   void vPipelineSpecDelete(void);
   void vPipelineSpecGet(void);
+  void vPipelineSpecOptimisable(void);
+  void vPipelineSpecSet(void);
 
 
   // plan
@@ -1494,48 +1542,15 @@ public:
   void vRegSendsIsNull(void);
   void vRegSendsNew(void);
 
-  // reg counter
-  void vCounterAGet(void);
-  void vCounter0Get(void);
-  void vCounter1Get(void);
-  void vCounter2Get(void);
-  void vCounter3Get(void);
-  void vCounter4Get(void);
-  void vCounter5Get(void);
-  void vCounter6Get(void);
-  void vCounter7Get(void);
-
-  void vCounterASet(void);
-  void vCounter0Set(void);
-  void vCounter1Set(void);
-  void vCounter2Set(void);
-  void vCounter3Set(void);
-  void vCounter4Set(void);
-  void vCounter5Set(void);
-  void vCounter6Set(void);
-  void vCounter7Set(void);
-
   // reg folder
   void vRegFolderFindSymbol(void);
 
   // reg job
-  void vRegJobGet(void);
+  void vJobGet(void);
 
   // reg now
   void vRegNowGet(void);
 
-  // reg op
-  void vOpGet(void);
-  void vOpHandlerEntry(void);
-  void vOpHandlerExit(void);
-  void vOpHandlerFetch(void);
-  void vOpHandlerStore(void);
-  void vOpHandlerAllStore(void);
-  void vOpInit(void);
-  void vOpIsOperandValid(void);
-  void vOpIncHandlerCount(void);
-  void vOpIncOperandCount(void);
-  void vOpPtnIdFetch(void);
 
   // reg Path
   void vRegPathGet(void);
@@ -1589,7 +1604,7 @@ public:
   void vRecvdObjectSet(void);
 
   // reg task
-  void vRegTaskGet(void);
+  void vTaskGet(void);
 
   // reg timer
   void vRegTimerGet(void);
@@ -1739,7 +1754,6 @@ public:
   void vSessionSystemCloserStore(void);
   void vSessionTagSetFetch(void);
   void vSessionTablePtnFetch(void);
-  void vSessionThis(void);
   void vSessionToDoFetch(void);
   void vSessionToDoStore(void);
   void vSessionTxFetch(void);
@@ -1810,6 +1824,10 @@ public:
   // steps
   void vExpressionsLockSample(void);
 
+  // stage
+  void vStageGet(void);
+  void vStageSet(void);
+
   // stats
   void vStatsBuffInInc(void);
   void vStatsDelete(void);
@@ -1834,6 +1852,10 @@ public:
   void vStepsReset(void);
   void vStepsStart(void);
   void vStepsWrite(void);
+
+  // stream
+  void vStreamGet(void);
+  void vStreamSet(void);
 
   // string
   void vStrAlgebra(void);
@@ -1957,7 +1979,7 @@ public:
   void vStreamSetIsNull(void);
   void vStreamSetName(void);
   void vStreamSetNew(void);
-void vStreamSetNextRow(void);
+  void vStreamSetNextRow(void);
   void vStreamSetReadChunk(void);
   void vStreamSetSet(void);
 
@@ -1967,8 +1989,13 @@ void vStreamSetNextRow(void);
   void vStreamSetTableGet(void);
   void vStreamSetTableSet(void);
 
-  // sub loader
-  void vSubLoaderDelete(void);
+  // sub call
+  void vSubCallGet(void);
+  void vSubCallSet(void);
+
+  // sub return
+  void vSubReturnGet(void);
+  void vSubReturnSet(void);
 
   // subset
   void vSubsetGet(void);
@@ -2080,6 +2107,7 @@ void vStreamSetNextRow(void);
   void vTagSetAppendStr(void);
   void vTagSetAsStr(void);
   void vTagSetCopy(void);
+  void vTagSetGet(void);
   void vTagSetGetInt(void);
   void vTagSetGetStr(void);
   void vTagSetHasName(void);
@@ -2087,14 +2115,15 @@ void vStreamSetNextRow(void);
   void vTagSetInsertStr(void);
   void vTagSetReplaceInt(void);
   void vTagSetReplaceStr(void);
+  void vTagSetSet(void);
   void vTagSetUpsertStr(void);
   void vTagSetNew(void);
-
 
   // task
   void vTaskAck(void);
   void vTaskAcksStore(void);
   void vTaskBreakPoint(void);
+  void vTaskCycleLock(void);
   void vTaskDestructorTraceFetch(void);
   void vTaskDestructorTraceStore(void);
   void vTaskDropLock(void);
@@ -2103,8 +2132,6 @@ void vStreamSetNextRow(void);
   void vTaskGrabLock(void);
   void vTaskIsAckSet(void);
   void vTaskIsWaiting(void);
-  void vTaskJobFetch(void);
-  void vTaskJobStore(void);
   void vTaskNameFetch(void);
   void vTaskOperandYieldFetch(void);
   void vTaskOperandYieldStore(void);
@@ -2113,7 +2140,7 @@ void vStreamSetNextRow(void);
   void vTaskReleaseLockSets(void);
   void vTaskSeeFrameStack(void);
   void vTaskSeeLockSets(void);
-  void vTaskSeeLogicUnitRegisters(void);
+  void vTaskSeeLogicUnit(void);
   void vTaskSleepMsec(void);
   void vTaskSleepNsec(void);
   void vTaskSleepSsec(void);

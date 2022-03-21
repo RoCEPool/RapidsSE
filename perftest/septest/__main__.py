@@ -15,6 +15,7 @@ C_PROG_RUN = "pipenv run python -m septest"
 C_REL_REPO_ROOT = "../"
 C_REPO_ROOT = (pathlib.Path.cwd() / C_REL_REPO_ROOT).resolve()
 C_CWD_SUFFIX = "perftest"
+C_DEFAULT_RESULT_DIR = "./results"
 
 # Create a main logger
 LOG = logging.getLogger(__name__)
@@ -35,19 +36,34 @@ def main() -> int:
 
     # Extract the command line arguments
     arg_parser = argparse.ArgumentParser(C_PROG_RUN, description="Run the SE Performance Test")
-    arg_parser.add_argument("--job",         type=non_empty_string, required=True)
-    arg_parser.add_argument("--planKey",     type=non_empty_string, required=True)
-    arg_parser.add_argument("--buildNum",    type=int, required=True)
-    arg_parser.add_argument("--hash",        type=str, required=False, default="")
-    arg_parser.add_argument("--branch",      type=str, required=False, default="")
-    arg_parser.add_argument("--user",        type=str, required=False, default="SYSTEM")
-    arg_parser.add_argument("--tags",  "-t", nargs='*', action=KeyValue)
+    arg_parser.add_argument("--job",         type=non_empty_string, required=True,
+                            help="Path to the job file to be executed.")
+    arg_parser.add_argument("--planKey",     type=non_empty_string, required=True,
+                            help="The name of the Bamboo that this run belongs to (e.g. SE-PERF).")
+    arg_parser.add_argument("--buildNum",    type=int, required=True,
+                            help="The Bamboo build number within the Bamboo plan that this run corresponds to.")
+    arg_parser.add_argument("--hash",        type=str, required=False, default="",
+                            help="The git hash of being tested.")
+    arg_parser.add_argument("--branch",      type=str, required=False, default="",
+                            help="The git branch being tested.")
+    arg_parser.add_argument("--user",        type=str, required=False, default="SYSTEM",
+                            help="The name of the user who manually invoked this run.")
+    arg_parser.add_argument("--tags",  "-t", nargs='*', action=KeyValue,
+                            help="A set of key/value pairs that are associated and saved with this run.")
+    arg_parser.add_argument("--archiveMetrics", action='store_true', required=False, default=False,
+                            help="If present, the raw metric files will always be collected and archived in Bamboo.")
+    arg_parser.add_argument("--resultDir",   type=str, required=False, default=C_DEFAULT_RESULT_DIR,
+                            help="The directory to write results and files to be archived")
 
     args = arg_parser.parse_args()
     LOG.debug("Got the following arguments:  %s", args)
 
     if not os.path.exists(args.job):
         LOG.error("Job file does not exist: %s", args.job)
+        return 1
+
+    if not os.path.exists(args.resultDir):
+        LOG.error("resultDir path does not exist: %s", args.resultDir)
         return 1
 
     job_path = args.job
@@ -57,6 +73,8 @@ def main() -> int:
     git_hash = args.hash
     git_branch = args.branch
     invoking_user = args.user
+    archive_metrics = args.archiveMetrics
+    result_path = args.resultDir
 
     if len(git_hash) == 0:
         git_hash = get_git_hash_from_system()
@@ -70,6 +88,8 @@ def main() -> int:
                           git_hash,
                           git_branch,
                           invoking_user,
+                          archive_metrics,
+                          result_path,
                           tags)
     jobrunner.run_job()
     return 0

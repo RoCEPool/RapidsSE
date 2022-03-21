@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : morphToFailed
 
-  find:  failed_failed  op[].handlerAll!
+  find:  failed_failed  [op].handlerAll!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +31,7 @@
 
   op__topology
 
-  find:  failed_failed  op[].handlerAll!
+  find:  failed_failed  [op].handlerAll!
 
   op__loop
 

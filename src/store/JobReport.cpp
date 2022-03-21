@@ -15,6 +15,7 @@
 #include "IndexStream.hpp"
 #include "Table.hpp"
 #include "Pipeline.hpp"
+#include "Pipework.hpp"
 #include "Stage.hpp"
 #include "LogicUnit.hpp"
 #include "Stream.hpp"
@@ -523,13 +524,16 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
   Node*   pThisNode = MY::pNode();
 
   // get the pipeline
-  Pipeline* pPipeline = *pJob->m_pJobLogicUnit->m_xpPipeline;
+  Task* pTask = pJob->pTask();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
+  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // each stage in the pipeline
-  for (i8 i_Stage = 0; i_Stage < pPipeline->nItems(); i_Stage++) {
-    Stage* pStage = pPipeline->pGet(i_Stage);
+  Pipework* pPipework = pPipeline->pPipework();
+  for (i8 i_Stage = 0; i_Stage < pPipework->nItems(); i_Stage++) {
+    Stage* pStage = pPipework->pGet(i_Stage);
 
     // each stream in the stage
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
@@ -558,7 +562,7 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
                        ,pThisNode->iNodeNo()
                        ,pThisNode->szNodeNm()
                        
-                       ,pOp->pPipeline_op()->szPipelineNm()
+                       ,pOp->pPipeline()->szPipelineNm()
                        ,pOp->szStageName()
                        ,pOp->pStage()->i_Stage()
                        ,pOp->tPtnId().iAsI8()
@@ -634,14 +638,17 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
   
   Node*   pThisNode = MY::pNode();
 
+  Task* pTask = pJob->pTask();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   // get the pipeline
-  Pipeline* pPipeline = *pJobReport->m_pJob->m_pJobLogicUnit->m_xpPipeline;
+  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
 
   // each stage in the pipeline
-  for (i8 i_Stage = 0; i_Stage < pPipeline->nItems(); i_Stage++) {
+  Pipework* pPipework = pPipeline->pPipework();
+  for (i8 i_Stage = 0; i_Stage < pPipework->nItems(); i_Stage++) {
 
-    Stage* pStage = pPipeline->pGet(i_Stage);
+    Stage* pStage = pPipework->pGet(i_Stage);
 
     // each stream in the stage
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
@@ -695,7 +702,7 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
                      ,pThisNode->iNodeNo()
                      ,pThisNode->szNodeNm()
                      
-                     ,pOp->pPipeline_op()->szPipelineNm()
+                     ,pOp->pPipeline()->szPipelineNm()
                      ,pOp->szStageName()
                      ,pOp->pStage()->i_Stage()
                      ,pOp->tPtnId().iAsI8()

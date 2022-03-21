@@ -5,12 +5,12 @@
 
 #include "BASE.h"
 
-#include "Card_UNIT.hpp"
+#include "Card_MAIN.hpp"
 #include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_Filter : public Card_UNIT
+  class Card_Filter : public Card_MAIN
   {
   public:
     void* operator new(size_t);
@@ -22,10 +22,10 @@ namespace STORE
     void vToExpr(Stz* szExpr);
   
     bool bCull(void);
-    Card_CmpPred* pFindBound(Index* pIndex, eBK eBound);
+    Card_PredCmp* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
     void vReduceFilter(void);
-    bool bRemoveBound(Card_CmpPred* pCard_CmpPred);
+    bool bRemoveBound(Card_PredCmp* pCard_PredCmp);
   };
 
   Card_Filter* _pCard_Filter(void* aAddr);

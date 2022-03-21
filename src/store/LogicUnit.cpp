@@ -54,6 +54,7 @@
 #include "PathIdentifier.hpp"
 #include "PtnStream.hpp"
 #include "PlanOperand.hpp"
+#include "Dynamo.hpp"
 
 #include "SP_Dte.hpp"
 #include "SP_Ent.hpp"
@@ -88,12 +89,13 @@ LogicUnit::LogicUnit(void)
 , m_nRegs(0)
 , LifeGuard_t<LogicUnit>(this,CN_LOGICUNIT)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       LR_AGGTIMER)
+,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_AGGTYPESTACK)
 ,   m_xpPreExpStack(this,RF_REPAIR_DELETE,IntStack::vRepair,        LR_PREEXPSTACK)
 
 ,      m_xpBktMapGet(this,RF_REPAIR_DELETE,BktMapGet::vRepair,      LR_BKTMAP)
-,      m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,            LR_BUCKET)
+,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)
 ,      m_xpBucketGet(this,RF_REPAIR_DELETE,BucketGet::vRepair,      LR_BUCKETGET)
-,      m_xpBucketInfo(this,RF_REPAIR_DELETE,BucketInfo::vRepair,    LR_BUCKETINFO)
+,     m_xpBucketInfo(this,RF_REPAIR_DELETE,BucketInfo::vRepair,     LR_BUCKETINFO)
 
 ,       m_xpCombined(this,RF_REPAIR_DELETE,Combined::vRepair,       LR_COMBINED)
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList,  LR_CRWBUFFER)
@@ -103,6 +105,7 @@ LogicUnit::LogicUnit(void)
 ,     m_xpDataBuffer(this,RF_REPAIR_DELETE,DataBuffer::vRepair,     LR_DATABUFFER)
 ,           m_xpDir0(this,RF_REPAIR_DELETE,Dir::vRepair,            LR_DIR0)
 ,           m_xpDir1(this,RF_REPAIR_DELETE,Dir::vRepair,            LR_DIR1)
+,         m_xpDynamo(this,RF_REPAIR_DELETE,Dynamo::vRepair,         LR_DYNAMO)
 
 ,    m_xpErrorMarker(this,RF_REPAIR_DELETE,Operand::vRepair,        LR_ERRORMARKER)
 ,       m_xpExprEval(this,RF_REPAIR_DELETE,ExprEval::vRepair,       LR_EXPEVAL)
@@ -130,7 +133,7 @@ LogicUnit::LogicUnit(void)
 
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                 LR_MARKER)
 ,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  LR_MEMORYHOG)
-,           m_xpMetaGet(this,RF_REPAIR_DELETE,MetaGet::vRepair,        LR_META)
+,        m_xpMetaGet(this,RF_REPAIR_DELETE,MetaGet::vRepair,        LR_META)
 
 ,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,NamedBuffer::vRepairList,LR_NAMEDBUFFER)
 ,           m_xpNode(this,RF_REPAIR_NEVER,  nullptr,                LR_NODE)
@@ -139,6 +142,8 @@ LogicUnit::LogicUnit(void)
 
 ,             m_xpOp(this,RF_NONE,         nullptr,                 LR_OP)
 ,     m_xpOperandOoO(this,RF_REPAIR_NONE,  nullptr,                 LR_OPERANDOOO)
+,      m_xpOptimiser(this,RF_REPAIR_DELETE,  nullptr,               LR_OPTIMISER)
+
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, LR_PATHIDENTIFIER)
 ,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_PARCEL)
 ,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                 LR_PIPEIN)
@@ -156,17 +161,22 @@ LogicUnit::LogicUnit(void)
 ,          m_xpSends(this,RF_REPAIR_NONE,  nullptr,                 LR_SENDS)
 ,       m_xpShardDef(this,RF_REPAIR_DELETE,ShardDef::vRepair,       LR_SHARDDEF)
 ,         m_xpSocket(this,RF_REPAIR_NEVER, nullptr,                 LR_SOCKET)
+,          m_xpStage(this,RF_SET_NULL,     nullptr,                 LR_STAGE)
 ,          m_xpStats(this,RF_REPAIR_DELETE,nullptr,                 LR_STATS)
 ,        m_xpStencil(this,RF_REPAIR_DELETE,Stencil::vRepair,        LR_STENCIL)
+,         m_xpStream(this,RF_SET_NULL,     nullptr,                 LR_STAGE)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMDEFLFT)
 ,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMDEFOUT)
 ,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,StreamDefRht::vRepair,   LR_STREAMDEFRHT)
 ,      m_xpStreamSet(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMSET)
 , m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                 LR_STREAMSETTABLE)
+,        m_xpSubCall(this,RF_REPAIR_DELETE,SubCall::vRepair,        LR_SUBCALL)
+,      m_xpSubReturn(this,RF_REPAIR_DELETE,SubReturn::vRepair,      LR_SUBRETURN)
 ,         m_xpSubset(this,RF_REPAIR_DELETE,Operand::vRepairList,    LR_SUBSET)
 
 ,          m_xpTable(this,RF_SET_NULL,     nullptr,                 LR_TABLE)
 ,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                 LR_TABLEPTN)
+,         m_xpTagSet(this,RF_REPAIR_DELETE,TagSet::vRepair,         LR_TAGSET)
 ,          m_xpTimer(this,RF_REPAIR_DELETE,Timer::vRepair,          LR_TIMER)
 ,          m_xpTinyC(this,RF_REPAIR_DELETE,TinyC::vRepair,          LR_TINYC)
 ,       m_xpToBktCrw(this,RF_REPAIR_DELETE,ToBktCrw::vRepairHashSet,LR_TOBKTCRW)
@@ -329,7 +339,7 @@ LogicUnit::LogicUnit(void)
   // m_ixRowsProcessed;
   // m_ixRowsInvalid;
   // m_ixRowsSkipped;
-  m_eErrorCode = EC_NONE;
+  m_eErrorCode_reg = EC_NONE;
   
   m_eSendKind = XK_NONE;
   
@@ -431,11 +441,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpToPtnRow.bIsNull());
   RASSERT(m_xpToRow.bIsNull());
   RASSERT(m_xpTx.bIsNull());
-
-  // These registers cannot be NULL if m_pJob is NULL
-  RASSERT( m_pJob || !m_xpHandler.bIsNull() );
-  RASSERT( m_pJob || !m_xpOp.bIsNull() );
-
+  
   if (! m_xpNow.bIsNull())
     delete *m_xpNow;
 

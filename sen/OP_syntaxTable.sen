@@ -11,14 +11,14 @@
 
   0 locals| errorCode |
 
-  //Job[].tagSet@ tagSet.asStr .
+  //[job].tagSet@ tagSet.asStr .
   Pipein[].pipeout
 
   <etc> <tableNm> "create table %v %v ;" str.format // dup .
-  Job[] streamDef::parse to StreamDefLft[]
+  [job] streamDef::parse to StreamDefLft[]
 
   StreamDefLft[].isNull if
-    Job[].error@ to errorCode
+    [job].error@ to errorCode
     errorCode op__execErr
     true
     exit
@@ -45,7 +45,7 @@
 
   op__topology
 
-  find: syntaxTable_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: syntaxTable_DataMarker ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

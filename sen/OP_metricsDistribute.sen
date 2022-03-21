@@ -55,8 +55,8 @@
 
   op__topology
 
-  find: metricsDistribute_Start    ZK_M_START       op[].handler!
-  find: metricsDistribute_Metrics  ZK_D_JOBMETRICS  op[].handler!
+  find: metricsDistribute_Start    ZK_M_START       [op].handler!
+  find: metricsDistribute_Metrics  ZK_D_JOBMETRICS  [op].handler!
 
   op__loop
 

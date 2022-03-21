@@ -263,17 +263,17 @@
 
   op__topology
 
-  find: combined_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: combined_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-  find: combined_DataPulse     ZK_M_DATAPULSE     op[].handler!
-  find: combined_EosMarker     ZK_M_EOS           op[].handler!
-  find: combined_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-  find: combined_StartMarker   ZK_M_START         op[].handler!
+  find: combined_Cleaning      ZK_M_CLEANING      [op].handler!
+  find: combined_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
+  find: combined_DataPulse     ZK_M_DATAPULSE     [op].handler!
+  find: combined_EosMarker     ZK_M_EOS           [op].handler!
+  find: combined_RowBuffer     ZK_D_ROWBUFFER     [op].handler!
+  find: combined_StartMarker   ZK_M_START         [op].handler!
 
   Counter0[] 0 == if
-    find: combined_StreamDefGen  ZK_D_STREAMDEF     op[].handler!
+    find: combined_StreamDefGen  ZK_D_STREAMDEF     [op].handler!
   else
-    find: combined_StreamDef     ZK_D_STREAMDEF     op[].handler!
+    find: combined_StreamDef     ZK_D_STREAMDEF     [op].handler!
   then
 
   op__loop

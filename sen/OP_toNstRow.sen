@@ -58,10 +58,10 @@
 
   op__topology
 
-  find: toNstRow_EosMarker   ZK_M_EOS   op[].handler!
-  find: toNstRow_DataMarker  ZK_M_DATAPULSE   op[].handler!
-  find: toNstRow_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
-  find: toNstRow_StartMarker ZK_M_START op[].handler!
+  find: toNstRow_EosMarker   ZK_M_EOS   [op].handler!
+  find: toNstRow_DataMarker  ZK_M_DATAPULSE   [op].handler!
+  find: toNstRow_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+  find: toNstRow_StartMarker ZK_M_START [op].handler!
 
   op__loop
 

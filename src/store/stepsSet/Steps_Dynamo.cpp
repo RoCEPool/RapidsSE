@@ -33,84 +33,78 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dynamo(void)
 {
-  vAddStep("Dynamo::compileStmt"_Stz,  &Step::vDynamoCompileStmt);
+  vAddStep("Dynamo[]"_Stz,          &Step::vDynamoGet);
+  vAddStep("Dynamo[].compile"_Stz,  &Step::vDynamoCompile);
+  vAddStep("Dynamo[].delete"_Stz,   &Step::vDynamoDelete);
+  vAddStep("Dynamo[].get"_Stz,      &Step::vDynamoGet);
+  vAddStep("Dynamo[].new"_Stz,      &Step::vDynamoNew);
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* Dynamo::compileStmt -- compile pipeline statement into a pipelines spec    */
+/* Dynamo[].compile -- compile pipeline statement into a pipeline spec        */
 /*----------------------------------------------------------------------------*/
-void Step::vDynamoCompileStmt(void)
+void Step::vDynamoCompile(void)
 {
   ENTRY();
     
   s4K sPipelineStmt;
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
-  
-  //LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // use dynamo to compile the pipeline statement
-  
-  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob_task->pJobTags());
+      
+  Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
+  PipelineSpec* pPipelineSpec = pDynamo->pCompile(sPipelineStmt);
     
-  PipelineSpec* pPipelineSpec = pDynamo->pCompile();
-  
-  bool bWasOptimised = pDynamo->bWasOptimised();
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test compilation result
-  
   if (pPipelineSpec) {
-    
-    eEC eError = AM::JOB::ePreExecuteTest(m_pJob_task);
-    
-    if (EC_NONE == eError) {
-      
-      // a) clean compile, passes pre-execution requirments
-      
-      if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
-        SP_PipelineSpec spPipelineSpec(pPipelineSpec);
-        vTraceM("%s\n"_Stz,spPipelineSpec.sz());
-      }
-      
-      if (bWasOptimised) {
-        vTrace("vDynamoCompileStmt: was optimised\n"_Stz);
-        RASSERT(m_pJob_task->bIsOriginator());
-
-        //m_pJob_task->pJobTags()->vDumpSet(true);
-        //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
-        //m_pJob_task->vCmd(pDynamo->szOptPipelineStmt());
-        //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
-        //m_pJob_task->pJobTags()->vDumpSet(true);
-      }
-      
-      m_p_TaskLogicUnit->m_xpPipelineSpec = pPipelineSpec;
-      m_pDataStack->vPushInt(EC_NONE);
-
+    if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
+      SP_PipelineSpec spPipelineSpec(pPipelineSpec);
+      vTraceM("%s\n"_Stz,spPipelineSpec.sz());
     }
-    else {
-      
-      // b) clean compile, but does not pass pre-execution requirments
-
-      //delete pPipelineSpec;
-      pPipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&pPipelineSpec,
-                                    CN_DYNAMO,this,(Stz*)__func__);
-      m_pDataStack->vPushInt(eError);
-      
-    }
-
+    
+    m_pDataStack->vPushPtr(pPipelineSpec);
+    m_pDataStack->vPushInt(EC_NONE);
   }
   else {
-    
-    // c) failed to compile
-    
     m_pDataStack->vPushInt(EC_INVALID_COMMAND);
-
   }
   
-  delete pDynamo;
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Dynamo[].delete -- delete dynamo                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoDelete(void)
+{
+  ENTRY();
+
+  m_pLogicUnit->m_xpDynamo.vDeleteComponent();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Dynamo[].get -- get dynamo                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoGet(void)
+{
+  ENTRY();
+
+  if (m_pLogicUnit->m_xpDynamo.bIsNotNull())
+    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpDynamo);
+  else
+    m_pDataStack->vPushPtr(nullptr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Dynamo[].new -- new dynamo                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoNew(void)
+{
+  ENTRY();
+  
+  m_pLogicUnit->m_xpDynamo = new Dynamo(m_pJob->pJobTags());
 
   EXIT();
 }

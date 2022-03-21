@@ -36,7 +36,7 @@ void Step::vInjectBloat(void)
   //AM::SE::vWhereAmI();
 
   RowBuffer* pRowBuffer = new RowBuffer();
-  m_p_TaskLogicUnit->m_xpMemoryHog = pRowBuffer;
+  m_pLogicUnit->m_xpMemoryHog = pRowBuffer;
   i8 i = 0;
 
   while (true) {
@@ -57,7 +57,7 @@ void Step::vInjectBloatCleanup(void)
 {
   ENTRY();
 
-  RowBuffer* pRowBuffer = _pRowBuffer(*m_p_TaskLogicUnit->m_xpMemoryHog);
+  RowBuffer* pRowBuffer = _pRowBuffer(*m_pLogicUnit->m_xpMemoryHog);
   RowBuffer* pNextRowBuffer;
 
   while (pRowBuffer) {
@@ -66,7 +66,7 @@ void Step::vInjectBloatCleanup(void)
     pRowBuffer = pNextRowBuffer;
   }
 
-  m_p_TaskLogicUnit->m_xpMemoryHog = nullptr;
+  m_pLogicUnit->m_xpMemoryHog = nullptr;
 
   EXIT();
 }

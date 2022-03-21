@@ -56,11 +56,11 @@
 
   op__topology
 
-  find: compilerOpEg_Cleaning      ZK_M_CLEANING     op[].handler!
-  find: compilerOpEg_DataMarker    ZK_M_DATAPULSE    op[].handler!
-  find: compilerOpEg_EosMarker     ZK_M_EOS          op[].handler!
-  find: compilerOpEg_PlanNode      ZK_D_PLANOPERAND  op[].handler!
-  find: compilerOpEg_StartMarker   ZK_M_START        op[].handler!
+  find: compilerOpEg_Cleaning      ZK_M_CLEANING     [op].handler!
+  find: compilerOpEg_DataMarker    ZK_M_DATAPULSE    [op].handler!
+  find: compilerOpEg_EosMarker     ZK_M_EOS          [op].handler!
+  find: compilerOpEg_PlanNode      ZK_D_PLANOPERAND  [op].handler!
+  find: compilerOpEg_StartMarker   ZK_M_START        [op].handler!
 
   op__loop
 

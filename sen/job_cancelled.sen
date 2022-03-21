@@ -10,17 +10,11 @@
 /*----------------------------------------------------------------------------*/
 : cancelled::retire
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
   
-  // unlink task and job
-  Task[].job@ if
-    //nullptr Task[].job@ job.task!
-    //nullptr Task[].job!
-  then
-
-  Task[].grabLock
-    Job[] job.queueExitDemon
-    TR_RETIRE_THIS_TASK Task[].transition!
+  [task].grabLock
+    [job] [exitDemon]:queueJob
+    TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD
 ;
@@ -30,30 +24,23 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* send Job_Cancelled back to originating node                               */
+/* send Job_Cancelled back to originating node                                */
 /*----------------------------------------------------------------------------*/
-: cancelled::replyToOrigin ( pJobParticipant -- )
+: cancelled:reply params| pJobParticipant |
 
-  params| pJobParticipant |
-
-  pJobParticipant job.id@ locals| iJobId |
-
-  0 0 0 locals| pJob pJob_Cancelled error |
-
+  // "cancelled:reply" .
+  
   // new a temporary Job_Cancelled
-  pJobParticipant job_Cancelled::new to pJob_Cancelled
+  pJobParticipant job_Cancelled::new locals| pJob_Cancelled |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send the cancelled job
-  iJobId job::originator@ locals| iOriginator |
-  //iOriginator pJob_Cancelled jobCancelled.cancelOriginator!
-
-  iOriginator pJob_Cancelled job.reply
+  pJobParticipant [job].originNodeNo@ pJob_Cancelled job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob_Cancelled job.delete2pc
+  pJob_Cancelled job.delete
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -63,12 +50,12 @@
 /*----------------------------------------------------------------------------*/
 /* run recieved Job_Cancelled on originating node   recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: cancelled::cancelled
+: cancelled:cancelled
 
   <path> str.toStrVec Path[].set
   
   
-  Job[] locals| pJob_Cancelled |
+  [job] locals| pJob_Cancelled |
   pJob_Cancelled job.id@ locals| iJobId |
 
   0 0 0 0 locals| bAmDecider error iParticipantNode |
@@ -77,7 +64,7 @@
   // get the context of this __cancelled job
 
   // find the originating job
-  iJobId olist::findJob discard
+  iJobId ListedJob[].findOriginator discard
 
   // get the participant node from where this job_begun started
   pJob_Cancelled job.participantNode@ to iParticipantNode
@@ -87,19 +74,19 @@
   // process __begun job on this originating node
 
   // increment the number of __cancelled jobs received in api state
-  JobRef[] ssn::incCancelled
-  JobRef[] ssn::traceSession
+  ListedJob[] ssn::incCancelled
+  ListedJob[] ssn::traceSession
 
 
 
   // decrement the acks remaining in the originating job
-  JobRef[] job.dec2pcAcksRmg to bAmDecider
+  ListedJob[] job.dec2pcAcksRmg to bAmDecider
 
   // if there are acks remaining just exit
   bAmDecider not if
-    JobRef[].returnReference
+    ListedJob[].returnReference
     cancelled::retire
-    _job_2pc_delete_
+    [job]:retire
     exit                                                         // *EARLY EXIT*
   then
 
@@ -108,24 +95,24 @@
   // all job_cancelled's have been received, so this job is the decider
 
   begin
-    JobRef[].references
+    ListedJob[].references
   1 > while
   repeat
 
-  job[].tscCanceled
+  [job].tscCanceled
 
 
   // remove the originating job from the originator jobs
-  //Job[].removeOriginator
+  //[job].removeOriginator
 
   // notify the originating task
-  JobRef[].task@ task.ack
-  JobRef[].returnReference
+  ListedJob[].task@ task.ack
+  ListedJob[].returnReference
 
   // delete this completed __cancelled job
   cancelled::retire
   
-  _job_2pc_delete_
+  [job]:retire
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -137,7 +124,7 @@ cmdSyntax: cancelled :: cancelled ;
 : cancelled_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "cancelled::cancelled"
+    <entryPoint>    = "cancelled:cancelled"
     <path>     = "/"
   }
 ;

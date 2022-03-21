@@ -36,7 +36,7 @@ void Step::vExprEvalGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpExprEval);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpExprEval);
 
   EXIT();
 }
@@ -48,8 +48,8 @@ void Step::vExprEvalDelete(void)
 {
   ENTRY();
 
-  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpExprEval;
-  m_p_TaskLogicUnit->m_xpExprEval = nullptr;
+  ExprEval* pExprEval = *m_pLogicUnit->m_xpExprEval;
+  m_pLogicUnit->m_xpExprEval = nullptr;
   delete pExprEval;
   
   EXIT();
@@ -62,7 +62,7 @@ void Step::vExprEvalEvaluate(void)
 {
   ENTRY();
 
-  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpExprEval;
+  ExprEval* pExprEval = *m_pLogicUnit->m_xpExprEval;
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
@@ -85,7 +85,7 @@ void Step::vExprEvalEvaluateIndexJoin(void)
   ENTRY();
 
 
-  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpExprEval;
+  ExprEval* pExprEval = *m_pLogicUnit->m_xpExprEval;
 
   IndexTree* pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
@@ -110,7 +110,7 @@ void Step::vExprEvalEvaluateIndexScan(void)
 {
   ENTRY();
 
-  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpExprEval;
+  ExprEval* pExprEval = *m_pLogicUnit->m_xpExprEval;
 
   IndexTree* pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
 
@@ -132,7 +132,7 @@ void Step::vExprEvalEvaluateLoopJoin(void)
   ENTRY();
 
 
-  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpExprEval;
+  ExprEval* pExprEval = *m_pLogicUnit->m_xpExprEval;
 
   StreamDef*    pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   StreamDefRht* pStreamDefRht = _pStreamDefRht(m_pDataStack->pPopPtr(__func__));
@@ -156,7 +156,7 @@ void Step::vExprEvalNew(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_xpExprEval = new ExprEval;
+  m_pLogicUnit->m_xpExprEval = new ExprEval;
 
   EXIT();
 }
@@ -168,7 +168,7 @@ void Step::vExprEvalSet(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_xpExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpExprEval = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }

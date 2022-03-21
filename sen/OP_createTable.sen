@@ -48,7 +48,7 @@
   nullptr to Pipein[]
 
   // get the table name
-  "<tableNm>" Job[].tagSet@ tagSet.hasName if
+  "<tableNm>" [job].tagSet@ tagSet.hasName if
     <tableNm> to sTableNm
   else
     StreamDefLft[].name to sTableNm
@@ -58,7 +58,7 @@
   //sTableNm .
 
   // grab the ddl lock
-  DdlLock[].grabRead
+  [ddlLock].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check ok to create table
@@ -89,7 +89,7 @@
 
   op__topology
 
-  find: createTable_StreamDef ZK_D_STREAMDEF op[].handler!
+  find: createTable_StreamDef ZK_D_STREAMDEF [op].handler!
 
   op__loop
 

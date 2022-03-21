@@ -6,8 +6,9 @@
 #include "BASE.h"
 
 #include "Bench.hpp"
+#include "CardCtl.hpp"
 #include "Dissect.hpp"
-#include "Rules.hpp"
+#include "Drafter.hpp"
 #include "Weave.hpp"
 
 namespace STORE
@@ -15,13 +16,18 @@ namespace STORE
   class Optimiser : public Object
   {
   private:
-    i8 m_iOptimiserLvl;
+    TagSet* m_p_JobTags;
+  
     PipelineSpec* m_pUnOptPipelineSpec;
+  
+    CardCtl* m_pCardCtl;
   
     Bench*   m_pBench;
     Dissect* m_pDissect;
-    Rules*   m_pRules;
+    Drafter* m_pDrafter;
     Weave*   m_pWeave;
+  
+    Card_SubSet* m_pPaste;
 
     // must be last
     Footer m_xFooter;
@@ -30,17 +36,35 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Optimiser(PipelineSpec* pUnOptPipelineSpec, i8 iOptimiserLvl);
+    Optimiser(TagSet* p_JobTags);
+  
    ~Optimiser(void) noexcept(false);
 
     static void vRepair(Object* pObject);
 
-    void vOptimise(void);
+    CardCtl* pCardCtl(void);
+  
+    void vDissect(PipelineSpec* pUnOptPipelineSpec);
+  
+    Drafter* pDrafter(void);
 
+    Board* pHeadBoard(void);
+
+    TagSet* pJobTags(void);
+  
+    void vOptimise(void);
+  
+    Card_SubSet* pPaste(void);
+    void vPipelineSpec(PipelineSpec* pUnOptPlineSpec);
+    void vPopBoard(void);
+    void vPushBoard(Board* pBoard);
+ 
+    void vToPipelineSpec(PipelineSpec* pPipelineSpec);
+  
     Stz* szWeave(void);
 
-
   private:
+
 
     Footer* aFooter(void);
   };

@@ -17,11 +17,13 @@ __aFooterFunction(Bench)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Bench::Bench(void)
+Bench::Bench(Optimiser* pOptimiser)
 : Object(CN_BENCH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
+  m_pOptimiser = pOptimiser;
+  
   _checkInitialised_(CN_BENCH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
@@ -53,7 +55,7 @@ void Bench::vPrintBench(void)
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
     Board* pBoard = this->pGet(i_Board);
     
-    Ribbon* pRibbon = new Ribbon(0);
+    Ribbon* pRibbon = new Ribbon(nullptr,pBoard,0);
   
     pBoard->vPinCards(pRibbon,i_Board);
     pRibbon->vPrintRibbon();
@@ -86,51 +88,13 @@ void Bench::vRenumberCards(void)
       Card* pWorkUnit = pBoard_I->pNext();
       
       pWorkUnit->vCardNo(-1);
-      pWorkUnit->vRenumberSubCards();
+      pWorkUnit->vRenumberCards();
     }
     delete pBoard_I;
 
   }
   delete pBench_I;
 }
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/* call closure for each card                                                 */
-/*----------------------------------------------------------------------------*/
-void Bench::vWalkUnits(std::function<void(Card* pCard)> f_vClosure)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  ListExoIter2_t<Board>* pBench_I = pNewIter();
-
-  while (pBench_I->bHasNext()) {
-    Board* pBoard = pBench_I->pNext();
-    
-    pBoard->vWalk(f_vClosure);
-  }
-  delete pBench_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/* call closure for each board                                                */
-/*----------------------------------------------------------------------------*/
-void Bench::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  ListExoIter2_t<Board>* pBench_I = pNewIter();
-
-  while (pBench_I->bHasNext()) {
-    Board* pBoard = pBench_I->pNext();
-    
-    pBoard->vWalkAllCards(f_vClosure);
-  }
-  delete pBench_I;
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

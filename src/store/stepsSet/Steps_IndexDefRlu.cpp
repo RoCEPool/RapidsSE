@@ -49,7 +49,7 @@ void Step::vIndexDefRluAddColumn(void)
   
   eCT eColType = (eCT)m_pDataStack->iPopInt(__func__);
   
-  IndexDef* pIndexDef = _pIndexDef(m_p_TaskLogicUnit->m_xRluCommon.m_pIndexDef);
+  IndexDef* pIndexDef = _pIndexDef(m_pLogicUnit->m_xRluCommon.m_pIndexDef);
   
   pIndexDef->vAddColumn(sColumnNm,eColType);
   
@@ -63,9 +63,9 @@ void Step::vIndexDefRluDelete(void)
 {
   ENTRY();
 
-  IndexDef* pIndexDef = _pIndexDef(m_p_TaskLogicUnit->m_xRluCommon.m_pIndexDef);
+  IndexDef* pIndexDef = _pIndexDef(m_pLogicUnit->m_xRluCommon.m_pIndexDef);
   
-  m_p_TaskLogicUnit->m_xpIndexDef = nullptr;
+  m_pLogicUnit->m_xpIndexDef = nullptr;
   
   delete pIndexDef;
   
@@ -79,7 +79,7 @@ void Step::vIndexDefRluGet(void)
 {
   ENTRY();
 
-  IndexDef* pIndexDef = _pIndexDef(m_p_TaskLogicUnit->m_xRluCommon.m_pIndexDef);
+  IndexDef* pIndexDef = _pIndexDef(m_pLogicUnit->m_xRluCommon.m_pIndexDef);
   m_pDataStack->vPushPtr(pIndexDef);
   
   EXIT();
@@ -92,7 +92,7 @@ void Step::vIndexDefRluIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xRluCommon.m_pIndexDef ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xRluCommon.m_pIndexDef ? 0 : 1);
   
   EXIT();
 }
@@ -107,7 +107,7 @@ void Step::vIndexDefRluNameStore(void)
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
 
-  IndexDef* pIndexDef = _pIndexDef(m_p_TaskLogicUnit->m_xRluCommon.m_pIndexDef);
+  IndexDef* pIndexDef = _pIndexDef(m_pLogicUnit->m_xRluCommon.m_pIndexDef);
   pIndexDef->vIndexNm(sName);
   
   EXIT();
@@ -120,7 +120,7 @@ void Step::vIndexDefRluNew(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_xRluCommon.m_pIndexDef = new IndexDef;
+  m_pLogicUnit->m_xRluCommon.m_pIndexDef = new IndexDef;
   
   EXIT();
 }
@@ -132,7 +132,7 @@ void Step::vIndexDefRluSet(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_xRluCommon.m_pIndexDef = m_pDataStack->pPopPtr(__func__);
+  m_pLogicUnit->m_xRluCommon.m_pIndexDef = m_pDataStack->pPopPtr(__func__);
   
   EXIT();
 }

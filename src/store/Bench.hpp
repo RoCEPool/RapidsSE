@@ -13,7 +13,8 @@ namespace STORE
               , public ListExo2_t<Board>
   {
   private:
-    
+    Optimiser* m_pOptimiser;
+
     // must be last
     Footer m_xFooter;
 
@@ -21,14 +22,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Bench(void);
+    Bench(Optimiser* pOptimiser);
    ~Bench(void) noexcept(false);
   
     void vPrintBench(void);
     void vRenumberCards(void);
-
-    void vWalkUnits(std::function<void(Card* pCard)> f_vClosure);
-    void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
   private:
     Footer* aFooter(void);

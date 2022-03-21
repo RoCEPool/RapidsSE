@@ -66,7 +66,7 @@
 : job.send params| pJob |
 
 
-  //pJob job.name@ grid::thisNodeName@ "(%v) job.send %v" .printf
+  //pJob job.name@ [grid].thisNodeName@ "(%v) job.send %v" .printf
 
   SendNode[] node.sendSocket@ to Socket[]
 
@@ -87,7 +87,7 @@
   params| pJob |
   params| i_Node |
 
-  i_Node grid::findNodeByNo to SendNode[]
+  i_Node [grid].findNodeByNo to SendNode[]
 
   pJob job.send
   
@@ -102,7 +102,7 @@
   params| pJob |
   params| i_Node |
 
-  i_Node grid::findNodeByNo to SendNode[]
+  i_Node [grid].findNodeByNo to SendNode[]
 
   pJob job.send
   
@@ -131,7 +131,7 @@
   == if
     discard
     // "job::acquireDdlLock - grabbing ddl write lock" .
-    DdlLock[].grabWrite
+    [ddlLock].grabWrite
     exit
   then
 
@@ -141,7 +141,7 @@
   == if
     discard
     // "job::acquireDdlLock - grabbing ddl read lock" .
-    DdlLock[].grabRead
+    [ddlLock].grabRead
     exit
   then
 
@@ -153,7 +153,7 @@
 /*----------------------------------------------------------------------------*/
 : job::seeTags
 
-  Job[].tagSet@ tagSet.asStr .
+  [job].tagSet@ tagSet.asStr .
 ;
 
 
@@ -191,7 +191,7 @@
 
   //"std_recoveryWord" .
   
-  //task::exception .
+  //[task].exception .
 
   "op__failureRecovery" FIND execute
   
@@ -204,13 +204,13 @@
 /*----------------------------------------------------------------------------*/
 /* queue given job onto exit demon                                            */
 /*----------------------------------------------------------------------------*/
-: job.queueExitDemon params| pJob |
+: [exitDemon]:queueJob params| pJob |
 
   "__exitDemon" find dup if
   
-    word.object@ locals| pExitDemon |
+    word.object@ locals| pExitDemonJob |
 
-    pJob pExitDemon pipeline.pipeOut
+    pJob pExitDemonJob job.pipeToOp0
 
   else
 
@@ -223,21 +223,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* 2pc job exits and is deleted immediately                                   */
+/* retire this job and its task                                               */
 /*----------------------------------------------------------------------------*/
-: _job_2pc_delete_
+: [job]:retire
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
   
   // check this task has no job reference
-  JobRef[].none
+  ListedJob[].assertNoRef
 
-  JS_DELETABLE Job[].state!
+  JS_DELETABLE [job].state!
 
-  Job[].addRetired
-  Task[].grabLock
-    Job[] job.queueExitDemon
-    TR_RETIRE_THIS_TASK Task[].transition!
+  [job].addRetired
+  [task].grabLock
+    [job] [exitDemon]:queueJob
+    TR_RETIRE_THIS_TASK [task].transition!
 
   
   HAZARD

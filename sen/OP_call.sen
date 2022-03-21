@@ -35,8 +35,8 @@
 
   op__topology
 
-  find: call_CallPipeline ZK_I_CALLPIPELINE op[].handler!
-  find: call_StartMarker  ZK_M_START  op[].handler!
+  find: call_CallPipeline ZK_I_CALLPIPELINE [op].handler!
+  find: call_StartMarker  ZK_M_START  [op].handler!
 
   op__loop
 

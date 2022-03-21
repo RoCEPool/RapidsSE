@@ -36,7 +36,7 @@ void Step::vFilterGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpFilter);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpFilter);
 
   EXIT();
 }
@@ -48,8 +48,8 @@ void Step::vFilterDelete(void)
 {
   ENTRY();
 
-  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpFilter;
-  m_p_TaskLogicUnit->m_xpFilter = nullptr;
+  ExprEval* pExprEval = *m_pLogicUnit->m_xpFilter;
+  m_pLogicUnit->m_xpFilter = nullptr;
   delete pExprEval;
   
   EXIT();
@@ -62,7 +62,7 @@ void Step::vFilterEvaluate(void)
 {
   ENTRY();
 
-  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpFilter;
+  ExprEval* pExprEval = *m_pLogicUnit->m_xpFilter;
 
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
@@ -85,7 +85,7 @@ void Step::vFilterEvaluateIndexJoin(void)
   ENTRY();
 
 
-  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpFilter;
+  ExprEval* pExprEval = *m_pLogicUnit->m_xpFilter;
 
   IndexTree* pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
   StreamDef* pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
@@ -110,7 +110,7 @@ void Step::vFilterEvaluateIndexScan(void)
 {
   ENTRY();
 
-  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpFilter;
+  ExprEval* pExprEval = *m_pLogicUnit->m_xpFilter;
 
   IndexTree* pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
 
@@ -132,7 +132,7 @@ void Step::vFilterEvaluateLoopJoin(void)
   ENTRY();
 
 
-  ExprEval* pExprEval = *m_p_TaskLogicUnit->m_xpFilter;
+  ExprEval* pExprEval = *m_pLogicUnit->m_xpFilter;
 
   StreamDef*    pStreamDefOut = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   StreamDefRht* pStreamDefRht = _pStreamDefRht(m_pDataStack->pPopPtr(__func__));
@@ -156,7 +156,7 @@ void Step::vFilterNew(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_xpFilter = new ExprEval;
+  m_pLogicUnit->m_xpFilter = new ExprEval;
 
   EXIT();
 }
@@ -168,7 +168,7 @@ void Step::vFilterSet(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_xpFilter = _pExprEval(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpFilter = _pExprEval(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }

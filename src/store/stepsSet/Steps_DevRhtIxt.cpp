@@ -41,7 +41,7 @@ void Step::vDevRhtIxtCrwBufferStore(void)
 
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
 
-  ( m_p_TaskLogicUnit )->m_pDevRhtIxt->m_pCrwBuffer = pCrwBuffer;
+  ( m_pLogicUnit )->m_pDevRhtIxt->m_pCrwBuffer = pCrwBuffer;
 
   EXIT();
 }
@@ -55,7 +55,7 @@ void Step::vDevRhtIxtIndexTreeStore(void)
   
   IndexTree* pIndexTree = _pIndexTree(m_pDataStack->pPopPtr(__func__));
 
-  ( m_p_TaskLogicUnit )->m_pDevRhtIxt->m_pIdxTree = pIndexTree;
+  ( m_pLogicUnit )->m_pDevRhtIxt->m_pIdxTree = pIndexTree;
   
   EXIT();
 }

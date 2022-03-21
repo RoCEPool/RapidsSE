@@ -1,5 +1,7 @@
 """"Runs a job"""
 import datetime
+import os
+import shutil
 import string
 import logging
 import threading
@@ -21,6 +23,11 @@ LOG = logging.getLogger(__name__)
 # and be ready to use?
 C_EC2_BOOT_TIMEOUT_SEC = 300
 
+# The format specification for the artifact directory for each test result
+C_TEST_ARTIFACT_FMT = "tid{:02d}-{}"
+
+C_JUNIT_FILENAME = "results.xml"
+
 
 class JobRunner:
     """Coordinates and runs a job, specified by a job config file"""
@@ -32,6 +39,8 @@ class JobRunner:
                  git_hash: string,
                  git_branch: string,
                  invoking_user: string,
+                 archive_metrics: bool,
+                 result_path: string,
                  tags: dict):
 
         # Parse the job file and the hardware and cluster configs that it references
@@ -54,6 +63,12 @@ class JobRunner:
         # username. e.g. "craig.mcintyre"
         self.invoking_user: string = invoking_user
 
+        # Do we want to collect and save the metrics in bamboo afterwards?
+        self.archive_metrics = archive_metrics
+
+        # Where to save the overall results and archived files?
+        self.result_path = result_path
+
         # A dictionary of key/value pairs that are stored with the job results
         self.tags: {} = tags
 
@@ -62,9 +77,10 @@ class JobRunner:
         self.test_end_ts = None     # timestamp of when the tests completed being executed
         self.job_end_ts = None      # timestamp of when the job completed
 
-        self.job_result_id = -1
+        self.job_result_id = -1     # ID of this result instance running a given job
+        self.job_id = -1            # ID of the job definition
         self.test_tuples: [(string, int)] = None  # tuple of resolved test path and associated test_id
-        self.test_results = []
+        self.test_results: [TestResult] = []
 
         self.instance_ids = []  # EC2 instance IDs
         self.ip_addresses = []  # EC2 instance private IP addresses
@@ -100,6 +116,10 @@ class JobRunner:
             self.test_end_ts = datetime.datetime.now()
             job_timed_out = test_thread.is_alive()
 
+            if job_timed_out:
+                LOG.error(f"Job timeout of {self.all_configs.get_job().get_max_duration()} "
+                          f"minutes has been exceeded. Commencing shutdown hooks.")
+
             # (3) Gather results, logs and artifacts
             self.__gather_results()
 
@@ -108,12 +128,12 @@ class JobRunner:
             last_error = e
             # Extract out the Instance IDs so they can be terminated in the finally() section
             self.instance_ids = e.instance_ids
-            raise e
+            raise
 
         except Exception as e:
             LOG.error(e)
             last_error = e
-            raise e
+            raise
 
         finally:
             # (4) Cleanup
@@ -135,8 +155,8 @@ class JobRunner:
 
     def __setup_job(self):
         """Do all the pre-requisites before we can start to run the tests"""
-        # job_result_id = septest.db.jobstart.record_job_start(self.all_configs,
-        (job_result_id, test_tuples) = \
+
+        (job_result_id, job_id, test_tuples) = \
             septest.db.jobstart.record_job_start(self.all_configs,
                                                  self.bamboo_plan_key,
                                                  self.bamboo_build_num,
@@ -146,14 +166,23 @@ class JobRunner:
                                                  self.tags)
 
         self.job_result_id = job_result_id
+        self.job_id = job_id
         self.test_tuples = test_tuples
+
+        # Clear out any contents of the result and artifacts directory
+        self.__delete_results_dir_contents()
 
         # Compile RapidsSE and build the installer
         installer_path = clusterops.build_installer()
 
         # Start up the necessary AWS hosts
         (self.instance_ids, self.ip_addresses) = ec2.start_instances(self.all_configs.get_hardware(),
-                                                                     C_EC2_BOOT_TIMEOUT_SEC)
+                                                                     C_EC2_BOOT_TIMEOUT_SEC,
+                                                                     self.job_result_id,
+                                                                     self.job_id)
+
+        assert len(self.instance_ids) > 0
+        assert len(self.ip_addresses) > 0
 
         # Copy and modify the cluster config file for the AWS hosts that were started.
         orig_cluster_cfg = pathlib.Path(self.all_configs.get_job().get_resolved_cluster_config_path())
@@ -163,7 +192,18 @@ class JobRunner:
         # Install the cluster using the cluster config
         clusterops.install_rapidsse(installer_path, pathlib.Path(self.custom_cluster_config.name))
 
-        # TODO: start the cluster (remotely)
+        # Start the cluster on the remote nodes
+        clusterops.start_rapidsse(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Run a dummy command on the prompt to help validate the cluster
+        clusterops.run_dummy_statement(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Copy the JDBC driver to the installation dir of the first host
+        clusterops.copy_jdbc_driver(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Write/Copy a jmeter property file to the installation dir of the first host to
+        # set the classpath to find the above JDBC driver.
+        clusterops.write_jmeter_property_file(self.ip_addresses[0], self.all_configs.cluster_config)
 
     def __run_tests(self):
         """Run each of the tests specified in this job file
@@ -173,22 +213,49 @@ class JobRunner:
 
         continue_on_test_failure = self.all_configs.get_job().get_continue_on_test_failure()
         skip_remaining_tests = False
+        test_seq = 0
+        got_failures = False
 
         for (test_path, test_id) in self.test_tuples:
+            test_seq += 1
 
             if skip_remaining_tests:
                 self.__skip_test(test_path, test_id)
+                LOG.debug(f"Test {TestRunner.get_test_name_from_path(test_path)} is being skipped.")
                 continue
 
-            test_runner = TestRunner(test_path, test_id, self.job_result_id)
+            # Make the directory where this test will store artifacts
+            artifact_dir = self.__make_test_artifact_dir(test_id, test_path)
+
+            test_runner = TestRunner(test_path, test_id, self.job_result_id, test_seq,
+                                     self.all_configs.get_cluster(), self.ip_addresses[0],
+                                     artifact_dir)
             test_runner.run_test()
             test_result = test_runner.result
             self.test_results.append(test_result)
 
-            if not continue_on_test_failure and test_result.test_passed is False:
-                skip_remaining_tests = True
+            if test_result.test_passed is False:
+                LOG.debug(f"Test {test_result.test_name} failed")
+                got_failures = True
 
-        LOG.info("Completed execution of all tests.")
+                if continue_on_test_failure is False:
+                    skip_remaining_tests = True
+
+                # If RapidsSE is no longer running then we need to skip all remaining tests
+                # and log this.
+                (se_running, error_msg) = clusterops.is_rapidsse_running(self.ip_addresses[0],
+                                                                         self.all_configs.cluster_config)
+                if se_running is False:
+                    # We can't run any more tests
+                    skip_remaining_tests = True
+                    LOG.error(error_msg)
+            else:
+                LOG.debug(f"Test {test_result.test_name} passed")
+
+        if got_failures:
+            LOG.info("Completed execution of tests, with failures.")
+        else:
+            LOG.info("Completed execution of all tests successfully.")
 
     def __skip_test(self, test_path: string, test_id: int):
         # Create a test_result for this skipped test and add it to the result list
@@ -199,9 +266,55 @@ class JobRunner:
         test_result.test_skipped = True
         self.test_results.append(test_result)
 
+    def __delete_results_dir_contents(self):
+        """
+        Remove the contents of the results directory.
+        """
+        # Simplest way is to delete the entire directory and then recreate it.
+        LOG.debug(f"Clearing the contents of results & artifacts directory: {self.result_path}")
+
+        shutil.rmtree(self.result_path, ignore_errors=True)
+        os.makedirs(self.result_path, exist_ok=True)
+
+    def __make_test_artifact_dir(self, test_id: int, test_path: string) -> string:
+        """
+        Make a directory for storing test artifacts and logs.
+        """
+        artifact_name = C_TEST_ARTIFACT_FMT.format(test_id, TestRunner.get_test_name_from_path(test_path))
+        artifact_dir = pathlib.Path(self.result_path) / artifact_name
+
+        LOG.debug(f"Making artifact dir: {str(artifact_dir)}")
+        os.makedirs(str(artifact_dir), exist_ok=True)
+        return str(artifact_dir)
+
+    def __delete_test_artifact_dir(self, test_id: int, test_path: string):
+        """
+        Delete the directory (and all content) that stores test artifacts and logs.
+        """
+        artifact_name = C_TEST_ARTIFACT_FMT.format(test_id, TestRunner.get_test_name_from_path(test_path))
+        artifact_dir = pathlib.Path(self.result_path) / artifact_name
+
+        LOG.debug(f"Deleting artifact dir: {str(artifact_dir)}")
+        shutil.rmtree(str(artifact_dir), ignore_errors=True)
+
     def __gather_results(self):
         """Collect all results, logs and artifacts from the machines used to run the tests"""
-        pass
+        # We gather test artifacts by default. Need to delete test artifacts if
+        # self.archive_metrics is false and a given test is successful.
+        # If a test fails, or if self.archive_metrics is true then we keep those artifacts.
+
+        collect_logs = False
+
+        for test_result in self.test_results:
+            if test_result.test_passed is False:
+                collect_logs = True
+
+            elif self.archive_metrics is False:     # test must have passed
+                self.__delete_test_artifact_dir(test_result.test_id, test_result.test_path)
+
+        # Need to gather SE logs if any test fails.
+        if collect_logs:
+            clusterops.get_rapidsse_logs(self.ip_addresses[0], self.all_configs.cluster_config, self.result_path)
 
     def __cleanup_job(self):
         """Common cleanup operations after a job has completed, successfully or not"""
@@ -220,4 +333,10 @@ class JobRunner:
         """Record the results of the test into the database and prepare the result files for Bamboo"""
         septest.db.jobend.record_job_results(self.job_result_id, job_timed_out, self.test_results)
 
-        # TODO: prepare result files for Bamboo
+        # Write JUnit result files for Bamboo
+        result_path = pathlib.Path(self.result_path) / C_JUNIT_FILENAME
+        septest.results.summarise_to_junit(self.test_results, result_path)
+
+        # Write out a textual summary too
+        summary_text = septest.results.summarise_to_string(self.test_results)
+        LOG.info(f"\n{summary_text}\n")

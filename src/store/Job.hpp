@@ -70,7 +70,7 @@ namespace STORE
   
     // -- timer
     Timer   m_oTimer;        // timer (on origin only)
-    Decider m_oAcksRmg_job;  // acks remaining for coordinating 2pc job
+    Decider m_oAcksRmg;      // acks remaining for coordinating 2pc job
     
     eEC     m_eError_job;    // error when starting job
                              // DOUBLE CHECK THIS BELONGS HERE
@@ -83,15 +83,12 @@ namespace STORE
     Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
   public:
 
-
-    // -- logic unit
-    LogicUnit* m_pJobLogicUnit;  // set of registers for task steps    POST_RECV
-
+  
   private:
     // -- tasking
     Task* m_pTask;  // task executing this job                         POST_RECV
   
-    s4K m_sEntry;   // sen entry code
+    s4K m_sEntryPoint;   // sen entry code
   
     i8  m_iTscParticipant;
 
@@ -144,8 +141,8 @@ namespace STORE
     void vDotPrint(Stz* szText);
     void vDropLock(void);
 
-    Stz* szEntry(void);
-    void vEntry(Stz* szEntry);
+    Stz* szEntryPoint(void);
+    void vEntryPoint(Stz* szEntry);
   
     void vGrabLock(void);
   
@@ -174,13 +171,7 @@ namespace STORE
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
-    LogicUnit* pJobLogicUnit(void);
-    Task* pJobTask(void);
-    void vJobTask(Task* pTask);
 
-
-    void vNewJobLogicUnit(void);
-    void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
   
     i8   iOriginatorNode(void);
@@ -190,6 +181,7 @@ namespace STORE
     Pipeline* pPipeline_job(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
+    void vPostRecv(void);
     Timer*  pProgressTimer(void);
   
     bool bReapable(void);
@@ -200,8 +192,11 @@ namespace STORE
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
     void vSetFromCascade(Stz* szCascade);
-    void vSignalJobMutex(void);
-  
+    void vSpawnTask(void);
+
+    Task* pTask(void);
+    void vTask(Task* pTask);
+
     i8   iTimerMsec(void);
     i8   iTimerStart(void);
     void vTimerStart(void);
@@ -237,10 +232,6 @@ namespace STORE
     void vVerifyJobComposition(void);
   
     void vWaitJobMutex(void);
-    void vWalk(void* aArg);
-    void vWalkLambda(
-           i8 iDepth,
-           std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
   

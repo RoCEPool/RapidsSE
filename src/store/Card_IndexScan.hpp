@@ -5,17 +5,17 @@
 
 #include "BASE.h"
 
-#include "Card_UNIT.hpp"
+#include "Card_MAIN.hpp"
 
 namespace STORE
 {
-  class Card_IndexScan : public Card_UNIT
+  class Card_IndexScan : public Card_MAIN
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_IndexScan(Index* pIndex);
+    Card_IndexScan(void);
    ~Card_IndexScan(void) noexcept(false);
   };
 

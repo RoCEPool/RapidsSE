@@ -19,7 +19,7 @@ __bIsCard(STORE,Card_Table,CK_TABLE)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Table::Card_Table(Table* pTable)
-: Card(CK_TABLE)
+: Card_OBJECT(CK_TABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

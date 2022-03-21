@@ -12,8 +12,8 @@
   //"Operand:- ZK_M_CLEANING" .verbose
 
   // get the profile from the task
-  //Task[] task.profile@ to Operand[]
-  //nullptr Task[] task.profile!
+  //[task] task.profile@ to Operand[]
+  //nullptr [task] task.profile!
   //Operand[].pipeOut
 
   Path[].popNamedTableFolder
@@ -137,8 +137,8 @@
 
     // change handler for replicated cases
     Table[].isReplicated if
-      find: insert_Replicated  ZK_D_CRWBUFFER  op[].handler!
-      find: insert_Replicated  ZK_D_ROWBUFFER  op[].handler!
+      find: insert_Replicated  ZK_D_CRWBUFFER  [op].handler!
+      find: insert_Replicated  ZK_D_ROWBUFFER  [op].handler!
     else
       Table[].tablePtn@ to TablePtn[]
     then
@@ -175,12 +175,12 @@
 
   op__topology
 
-  find: insert_Cleaning      ZK_M_CLEANING     op[].handler!
-  find: insert_DataBuffer    ZK_D_CRWBUFFER    op[].handler!
-  find: insert_EosMarker     ZK_M_EOS          op[].handler!
-  find: insert_DataBuffer    ZK_D_ROWBUFFER    op[].handler!
-  //find: insert_StreamDef   ZK_D_STREAMDEF    op[].handler!
-  find: insert_StartMarker   ZK_M_START        op[].handler!
+  find: insert_Cleaning      ZK_M_CLEANING     [op].handler!
+  find: insert_DataBuffer    ZK_D_CRWBUFFER    [op].handler!
+  find: insert_EosMarker     ZK_M_EOS          [op].handler!
+  find: insert_DataBuffer    ZK_D_ROWBUFFER    [op].handler!
+  //find: insert_StreamDef   ZK_D_STREAMDEF    [op].handler!
+  find: insert_StartMarker   ZK_M_START        [op].handler!
 
   op__loop
 

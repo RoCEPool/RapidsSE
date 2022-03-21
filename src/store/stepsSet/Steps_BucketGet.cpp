@@ -88,7 +88,7 @@ void Step::vBucketGet(void)
   ENTRY();
 
   //vTrace("C++ gets called: BucketGet[] vBucketGet\n"_Stz);
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpBucketGet);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpBucketGet);
 
   EXIT();
 }
@@ -100,9 +100,9 @@ void Step::vBucketGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpBucketGet);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpBucketGet);
 
-  m_p_TaskLogicUnit->m_xpBucket = nullptr;
+  m_pLogicUnit->m_xpBucket = nullptr;
 
   EXIT();
 }
@@ -117,9 +117,9 @@ void Step::vBucketSet(void)
   //vTrace("C++ gets called: vBucketSet\n"_Stz);
   BucketGet* pBucketGet = _pBucketGet(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pBucketGet || m_p_TaskLogicUnit->m_xpBucketGet.bIsNull());
+  ASSERT(! pBucketGet || m_pLogicUnit->m_xpBucketGet.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpBucketGet = pBucketGet;
+  m_pLogicUnit->m_xpBucketGet = pBucketGet;
 
   EXIT();
 }
@@ -131,9 +131,9 @@ void Step::vBucketDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpBucketGet);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpBucketGet);
 
-  m_p_TaskLogicUnit->m_xpBucketGet = nullptr;
+  m_pLogicUnit->m_xpBucketGet = nullptr;
 
   EXIT();
 }
@@ -145,7 +145,7 @@ void Step::vBucketIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpBucketGet.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpBucketGet.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -157,7 +157,7 @@ void Step::vBucketIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpBucketGet.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpBucketGet.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -171,7 +171,7 @@ void Step::vBucketGetCrw(void)
 
   //vTrace("C++ gets called: vBucketGetCrw\n"_Stz);
 
-  BucketGet *pBucketGet = _pBucketGet(*m_p_TaskLogicUnit->m_xpBucketGet);
+  BucketGet *pBucketGet = _pBucketGet(*m_pLogicUnit->m_xpBucketGet);
 
   //if (pBucketGet) {
   //  vTrace("BucketGet[].getBucketCrw %s bkt:%lld \n"_Stz, pBucketGet->sTableName().azChar(), pBucketGet->iBucketNo());

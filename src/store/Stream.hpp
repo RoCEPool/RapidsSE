@@ -44,19 +44,16 @@ namespace STORE
     i8   i_Node(void);
     i8   i_Stream(void);
 
+    Op*  pOp0(void);
     Pipeline* pPipeline(void);
 
     PtnId  tPtnId(void);
 
     Stage* pStage(void);
     StageSpec* pStageSpec(void);
-    void vSpawnOpTasks(i8 iSessionId, i8 iNode);
+    void vSpawnOpTasks(void);
     Stz* szStreamNm(void);
     Stz* szStageNm(void);
-    void vWalk(void* aArg);
-    void vWalkLambda(
-           i8 iDepth,
-           std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
 
     void vCreateOps();
   private:

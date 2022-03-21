@@ -13,11 +13,31 @@ create unique index part_partkey on part(p_partkey);
 load part "<tpch_dir>/part.<suffix>" ;
 
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 optimiserLvl 2;
 
-tag <optimise> = 1 ;
+//tag <optimise> = 1 ;
 
+/*
+select   sum(P_PARTKEY)
+       , P_BRAND
+  from part
+ where p_partkey > 19900 and p_partkey < 19920
+ group by p_brand
+ order by p_brand
+;
+*/
+
+
+select sum(P_PARTKEY) , P_BRAND
+  from part
+ group by p_brand
+;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /*
 select P_PARTKEY , P_NAME , P_BRAND
@@ -28,27 +48,24 @@ select P_PARTKEY , P_NAME , P_BRAND
 */
 
 
+/*
 select P_PARTKEY , P_NAME , P_BRAND
   from part
   where
-        p_partkey > 19980
+    //    p_partkey > 19980
     //    p_partkey < 10
     //    p_partkey = 19980
 
-    //    p_partkey > 19900 and p_partkey < 19920
+        p_partkey > 19900 and p_partkey < 19920
     and p_brand = 'Brand#15'
     
   //order by p_partkey
   
   //limit 5
 ;
-
-
-select sum(P_PARTKEY) , P_BRAND
-  from part
- group by p_brand
-;
 */
+
+
 
 
 optimiserLvl 0;

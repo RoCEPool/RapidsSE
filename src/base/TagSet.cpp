@@ -66,6 +66,22 @@ TagSet::~TagSet(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* repair a tagset                                                            */
+/*----------------------------------------------------------------------------*/
+void TagSet::vRepair(Object* pObject)
+{
+  _static_
+
+  TagSet* pTagSet = _pTagSet(pObject);
+
+  delete pTagSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -281,7 +297,7 @@ void TagSet::vDelete(Stz* szName)
     if (TN_STRING == xTagSet.eToken(i_Tag))
       vInsert(xTagSet.szName(i_Tag),xTagSet.szValue(i_Tag));
     else
-    if (TN_STRING == xTagSet.eToken(i_Tag))
+    if (TN_OBJECT == xTagSet.eToken(i_Tag))
       vInsert(xTagSet.szName(i_Tag),xTagSet.pValue(i_Tag));
     else
       vInsert(xTagSet.szName(i_Tag),xTagSet.iValue(i_Tag));
@@ -853,6 +869,16 @@ void TagSet::vSprint(Stz* sArgs, bool bParenth, bool bNames, bool bDecode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get tage                                                                   */
+/*----------------------------------------------------------------------------*/
+Tag* TagSet::pTag(i8 i_Tag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+    
+  return & m_xaTag[i_Tag];
+}
+
+/*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
 /*----------------------------------------------------------------------------*/
 eTN TagSet::eToken(i8 i_Tag)
@@ -862,6 +888,50 @@ eTN TagSet::eToken(i8 i_Tag)
   eTN eToken = m_xaTag[i_Tag].m_eToken;
   
   return eToken;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool TagSet::bSame(TagSet* pTagSet_arg)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  
+  i8 nTags = this->nItems();
+  i8 nTags_arg = pTagSet_arg->nItems();
+
+  if (nTags != nTags_arg)
+    return false;
+  
+  for (i8 i_Tag = 0; i_Tag < nTags; i_Tag++) {
+    
+    Stz* szName = this->szName(i_Tag);
+    i8 i_Tag_arg = pTagSet_arg->i_Find(szName);
+    if (C_UNKNOWN == i_Tag_arg)
+      return false;
+    
+    eTN eToken = this->eToken(i_Tag);
+    eTN eToken_arg = pTagSet_arg->eToken(i_Tag_arg);
+    if (eToken != eToken_arg)
+      return false;
+    
+    if (TN_STRING == eToken) {
+      if (! this->szValue(i_Tag)->bSame(pTagSet_arg->szValue(i_Tag_arg)))
+        return false;
+    }
+    else
+    if (TN_OBJECT == eToken) {
+      if (this->pValue(i_Tag) != pTagSet_arg->pValue(i_Tag_arg))
+        return false;
+    }
+    else {
+      RASSERT(TN_INTEGER == eToken);
+      if (this->iValue(i_Tag) != pTagSet_arg->iValue(i_Tag_arg))
+        return false;
+    }
+  }
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

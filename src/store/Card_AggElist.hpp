@@ -5,11 +5,11 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_ELIST.hpp"
 
 namespace STORE
 {
-  class Card_AggElist : public Card
+  class Card_AggElist : public Card_ELIST
   {  
   public:
     void* operator new(size_t);

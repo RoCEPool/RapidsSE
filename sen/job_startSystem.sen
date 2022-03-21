@@ -171,18 +171,18 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //system::started@ not if
-    grid::setStartNode
-    true system::started!
+  //[system].started@ not if
+    [grid].setStartNode
+    true [system].started!
     ": _Start completed" .boot
   //then
 
   "end startSystem::startSystem" .verbose
 
-  Job[].addRetired
-  Task[].grabLock
-    Job[] job.queueExitDemon
-    TR_RETIRE_THIS_TASK Task[].transition!
+  [job].addRetired
+  [task].grabLock
+    [job] [exitDemon]:queueJob
+    TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD
 ;

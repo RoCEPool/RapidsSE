@@ -40,8 +40,8 @@ void Step::vTagGet(void)
     i_Tag = pTags->i_Find(sTagNm.szStz());
   }
 
-  if (C_UNKNOWN == i_Tag && m_pJob_task) {
-    pTags = m_pJob_task->pJobTags();
+  if (C_UNKNOWN == i_Tag && m_pJob) {
+    pTags = m_pJob->pJobTags();
     i_Tag = pTags->i_Find(sTagNm.szStz());
   }
   

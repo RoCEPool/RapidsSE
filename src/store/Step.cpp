@@ -88,6 +88,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Encode();
   Step::vAddSteps_EntBuffer();
   Step::vAddSteps_Env();
+  Step::vAddSteps_ErrorCode();
   Step::vAddSteps_ErrorMarker();
   Step::vAddSteps_Executable();
   Step::vAddSteps_Expressions();
@@ -119,7 +120,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobAnalyzeIndex();
   Step::vAddSteps_JobGeneric();
   Step::vAddSteps_JobMetrics();
-  Step::vAddSteps_JobRef();
+  Step::vAddSteps_ListedJob();
   Step::vAddSteps_JobReport();
   Step::vAddSteps_Jobs();
 
@@ -146,11 +147,11 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Now();
 
   Step::vAddSteps_Object();
-  Step::vAddSteps_Olist();
   Step::vAddSteps_Op();
   Step::vAddSteps_Operand();
   Step::vAddSteps_OperandOoO();
   Step::vAddSteps_OpSys();
+  Step::vAddSteps_Optimiser();
 
   Step::vAddSteps_PagingMetrics();
   Step::vAddSteps_Parcel();
@@ -160,7 +161,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PipelineSpec();
   Step::vAddSteps_PathIdentifier();
   Step::vAddSteps_PlanOperand();
-  Step::vAddSteps_Plist();
   Step::vAddSteps_Pot();
   Step::vAddSteps_PotRlu();
   Step::vAddSteps_Procedure();
@@ -178,7 +178,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegFolder();
   Step::vAddSteps_RegNow();
   Step::vAddSteps_RegPath();
-  Step::vAddSteps_RegTask();
   Step::vAddSteps_RegTimer();
   Step::vAddSteps_RegSends();
   Step::vAddSteps_RowOnce();
@@ -196,16 +195,20 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Socket();
   Step::vAddSteps_SqlCompiler();
   Step::vAddSteps_SsnState();
+  Step::vAddSteps_Stage();
   Step::vAddSteps_Stats();
   Step::vAddSteps_Stencil();
   Step::vAddSteps_Steps();
   Step::vAddSteps_Str();
+  Step::vAddSteps_Stream();
   Step::vAddSteps_StringA();
   Step::vAddSteps_StreamDefLft();
   Step::vAddSteps_StreamDefOut();
   Step::vAddSteps_StreamDefRht();
   Step::vAddSteps_StreamSet();
   Step::vAddSteps_StreamSetTable();
+  Step::vAddSteps_SubCall();
+  Step::vAddSteps_SubReturn();
   Step::vAddSteps_Subset();
   Step::vAddSteps_Supervisor();
   Step::vAddSteps_SysMetrics();

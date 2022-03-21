@@ -82,19 +82,19 @@
   PipeIn[].delete
 
   // check if sink has already been errored
-  Pipeline::errored@ not if
+  [pipeline].errored@ not if
 
-    //grid::thisNodeName@ "(%v) sinkOP got error marker" .printf
+    //[grid].thisNodeName@ "(%v) sinkOP got error marker" .printf
 
     // mark pipeline as having an errored
-    true Pipeline::errored!
+    true [pipeline].errored!
 
     // now pipeout an exit marker
     Marker[].newErroringMarker
     Marker[].pipeOut
 
   //else
-  //  grid::thisNodeName@ "(%v) sinkOP ignoring error marker" .printf
+  //  [grid].thisNodeName@ "(%v) sinkOP ignoring error marker" .printf
   then
 
   true
@@ -109,7 +109,7 @@
   PipeIn[].pipeToOutput
   Marker[].newExitedMarker
   Marker[].pipeOut
-  Op.ackPipelineJob
+  [op].ackPipelineJob
 
   false
 ;
@@ -123,7 +123,7 @@
   PipeIn[].delete
 
    // mark pipeline as being earlyExit
-   true Pipeline::earlyExit!
+   true [pipeline].earlyExit!
 
    // now pipeout a leaving marker
    Marker[].newLeavingMarker
@@ -156,19 +156,19 @@
   Pipein[].delete
 
   // check if sink has already been errored
-  Pipeline::errored@ if
+  [pipeline].errored@ if
     true
     exit
   then
 
   // check if sink has already been exitEarly
-  Pipeline::earlyExit@ if
+  [pipeline].earlyExit@ if
     true
     exit
   then
 
   // check if sink has already been cancelled
-  Pipeline::cancelled@ if
+  [pipeline].cancelled@ if
     true
     exit
   then
@@ -200,18 +200,18 @@
 
   op__topology
 
-  find: sink_Xyz op[].handlerAll!
+  find: sink_Xyz [op].handlerAll!
 
-  find: sink_Cancelling      ZK_M_CANCELLING op[].handler!
-  find: sink_Cleaning        ZK_M_CLEANING   op[].handler!
-  find: sink_EndMarker       ZK_M_END        op[].handler!
-  find: sink_EndingMarker    ZK_M_ENDING     op[].handler!
-  find: sink_ErrorMarker     ZK_M_ERROR      op[].handler!
-  find: sink_ErroringMarker  ZK_M_ERRORING   op[].handler!
-  find: sink_Exiting         ZK_M_EXITING    op[].handler!
-  find: sink_LeaveMarker     ZK_M_LEAVE      op[].handler!
-  find: sink_LeavingMarker   ZK_M_LEAVING    op[].handler!
-  find: sink_StartMarker     ZK_M_START      op[].handler!
+  find: sink_Cancelling      ZK_M_CANCELLING [op].handler!
+  find: sink_Cleaning        ZK_M_CLEANING   [op].handler!
+  find: sink_EndMarker       ZK_M_END        [op].handler!
+  find: sink_EndingMarker    ZK_M_ENDING     [op].handler!
+  find: sink_ErrorMarker     ZK_M_ERROR      [op].handler!
+  find: sink_ErroringMarker  ZK_M_ERRORING   [op].handler!
+  find: sink_Exiting         ZK_M_EXITING    [op].handler!
+  find: sink_LeaveMarker     ZK_M_LEAVE      [op].handler!
+  find: sink_LeavingMarker   ZK_M_LEAVING    [op].handler!
+  find: sink_StartMarker     ZK_M_START      [op].handler!
 
   op__loop
 

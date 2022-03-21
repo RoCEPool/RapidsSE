@@ -5,17 +5,18 @@
 
 #include "BASE.h"
 
-#include "Card_PART.hpp"
+#include "Card_SUB.hpp"
 
 namespace STORE
 {
-  class Card_As : public Card_PART
+  class Card_As : public Card_SUB
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_As(Stz* szAsNm);
+    Card_As(Stz* szAs);
+    Card_As(Column* pColumn);
    ~Card_As(void) noexcept(false);
   };
 

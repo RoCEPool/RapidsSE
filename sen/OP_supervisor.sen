@@ -49,7 +49,7 @@
 
   op__topology
 
-  find: supervisor_StartMarker ZK_M_START op[].handler!
+  find: supervisor_StartMarker ZK_M_START [op].handler!
 
   op__loop
 

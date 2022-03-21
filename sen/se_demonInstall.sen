@@ -9,18 +9,18 @@
 /*----------------------------------------------------------------------------*/
 : demon::install
 
-  //ddlLock[].dropRead  : check with RAY
+  //[ddlLock].dropRead  : check with RAY
 
   "__" <pipelineNm> str.cat locals| sDemonNm |
 
-  args.verbose if
+  [args].verbose if
     sDemonNm "installing demon pipeline job: %v" .printf
   then
 
   sDemonNm >createInRoot locals| pDemonWd |
 
-  Job[] pDemonWd word.object!
-  Job[].addDemon
+  [job] pDemonWd word.object!
+  [job].addDemon
 ;
 
 /*============================================================================*/

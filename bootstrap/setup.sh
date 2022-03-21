@@ -103,6 +103,8 @@ fi
 
 # Print out current settings from the arguments
 debugPrint ""
+debugPrint "SHELL = ${SHELL}"
+debugPrint "BASH_VERSION = ${BASH_VERSION}"
 debugPrint "pwd = $(pwd)"
 debugPrint "USER_PWD = ${USER_PWD}"
 debugPrint "CLUSTER_INSTALL = ${CLUSTER_INSTALL}"
@@ -111,6 +113,7 @@ debugPrint "ADV_WIZARD = ${ADV_WIZARD}"
 debugPrint "DEBUG = ${DEBUG}"
 debugPrint "INSTALL_FILE = ${INSTALL_FILE}"
 debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
+debugPrint "CONFIG_FILE contents: \n$(<"${CONFIG_FILE}")"
 debugPrint 
 
 

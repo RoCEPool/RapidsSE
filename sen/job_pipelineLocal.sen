@@ -9,13 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::termination
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
 
-  JobRef[].none
+  ListedJob[].assertNoRef
 
-  Job[].addRetired
-  Task[].grabLock
-    TR_RETIRE_THIS_TASK Task[].transition!
+  [job].addRetired
+  [task].grabLock
+    TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD
 ;
@@ -25,7 +25,9 @@
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::local
 
-  Job[].assertCorrectness
+  0 locals| nAcks |
+  
+  [job].assertCorrectness
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
@@ -33,29 +35,32 @@
   "<show_command>" sysargs::tagSet@ tagSet.hasName
   if
     <cmd> "pipelineLocal::origin: %v\n" .printf
-    //system::bpa
+    //[system].bpa
   then
 
-  <cmd> Dynamo::compileStmt dup
-  EC_NONE == if
+  Dynamo[].new
+  <cmd> Dynamo[].compile to ErrorCode[]
+  ErrorCode[] EC_NONE == if
     // clean compile
-    
+    to PipelineSpec[]
+    Dynamo[].delete
   else
     //"got error" .
-    Job[].error!
+    ErrorCode[] [job].error!
     
-    DdlLock[].testDrop
+    [ddlLock].testDrop
 
     PipelineSpec[].delete
-        
+    Dynamo[].delete
+
     // cross check
     PipelineSpec[] not assert
 
-    JS_SIGNALLED Job[].state!
+    JS_SIGNALLED [job].state!
       
-    Task[].grabLock
-    Session[].signal
-    Task[].dropLock
+    [task].grabLock
+    [session].signal
+    [task].dropLock
     
     pipelineLocal::termination
     
@@ -66,15 +71,16 @@
   
   PipelineSpec[] assert
 
-  Pipeline[].create
-  Pipeline[].spawnOpTasks
+  PipelineSpec[] [pipeline].create
+  
+  [pipeline].spawnOpTasks
 
   // run <pre_execute>
 
   "<pre_execute>"
-  Job[].tagSet@ tagSet.hasName if
+  [job].tagSet@ tagSet.hasName if
     "<pre_execute>"
-    Job[].tagSet@ tagSet.getStr locals| sPreExe |
+    [job].tagSet@ tagSet.getStr locals| sPreExe |
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
@@ -82,53 +88,56 @@
     then
       execute
   else
-    args.verbose if
+    [args].verbose if
       <pipelineNm> "No pre execute word for pipeline: %v" .printf
     then
   then
 
   // add job to the local job list
-  Job[] job.jobList@ JL_DEMON == not if
-    Job[].addLocal
+  [job] job.jobList@ JL_DEMON == not if
+    [job].addLocal
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab the task lock
-  Task[].grabLock
+  // enqueue start-marker to start op to execute the pipeline job
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // execute the pipeline job (send startmarker to start)
-  //<pipelineNm> "%v execute" .printf
-  Pipeline::enqueueStart if
+  [task].grabLock
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // wait for operators to finish
-    //<pipelineNm> grid::thisNodeName@ "(%v) %v waiting on Task[].wait" .printf
-    Task[].wait
-    //<pipelineNm> grid::thisNodeName@ "(%v) %v running" .printf
-  else
-    //<pipelineNm> grid::thisNodeName@ "(%v) nothing to do" .printf
-    Task[].dropLock
-  then
+    [pipeline].opsOnNode@ to nAcks
+
+    nAcks if
+      nAcks [task].acksRemaining!
+    
+      [pipeline].startPipeline if
+    
+        Marker[].newStartMarker
+        Marker[]\clear [pipeline].op0@ op.enqueOperand
+      then
+      [task].wait
+    else
+      [task].dropLock
+    then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // remove job from the local job list
-  Job[] job.jobList@ JL_DEMON == not if
-    Job[].removeLocal
+  [job] job.jobList@ JL_DEMON == not if
+    [job].removeLocal
   then
 
-  //<pipelineNm> grid::thisNodeName@ "(%v) ALL DONE!!!" .
+  //<pipelineNm> [grid].thisNodeName@ "(%v) ALL DONE!!!" .
   
   
-  DdlLock[].testDrop
-  JobRef[].none
+  [ddlLock].testDrop
+  ListedJob[].assertNoRef
 
-  Job[].addRetired
+  [job].addRetired
   
-  JS_SIGNALLED Job[].state!
-    Session[].signal
+  JS_SIGNALLED [job].state!
+    [session].signal
 
-  Task[].grabLock
-    TR_RETIRE_THIS_TASK Task[].transition!
+  [task].grabLock
+    TR_RETIRE_THIS_TASK [task].transition!
 ;
 
 /*----------------------------------------------------------------------------*/

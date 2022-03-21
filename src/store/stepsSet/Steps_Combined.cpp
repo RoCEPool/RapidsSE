@@ -31,7 +31,7 @@ void Step::vCombinedDelete(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpCombined.vDeleteComponent();
+  m_pLogicUnit->m_xpCombined.vDeleteComponent();
   
   EXIT();
 }
@@ -43,7 +43,7 @@ void Step::vCombinedGet(void)
 {
   ENTRY();
   
-  Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
+  Combined* pCombined = * m_pLogicUnit->m_xpCombined;
   
   m_pDataStack->vPushPtr(pCombined);
 
@@ -57,7 +57,7 @@ void Step::vCombinedExecute(void)
 {
   ENTRY();
   
-  Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
+  Combined* pCombined = * m_pLogicUnit->m_xpCombined;
   Combined_T* aCombinedT = pCombined->aCombinedT();
 
   i8 iTrace = m_pDataStack->iPopInt(__func__);
@@ -116,7 +116,7 @@ void Step::vCombinedExecute(void)
   //pTub->vInCrwBuffer(nullptr);
 
   // EOS marker handler done ?
-  if ( afFun ==  m_p_TaskLogicUnit->m_afFun3 ) {
+  if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
     IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreePL);
     delete pIndexTree;
     aCombinedT->m_aIndexTreePL = nullptr;
@@ -142,7 +142,7 @@ void Step::vCombinedExecute(void)
 void Step::vCombinedHashRowsFetch(void) {
   ENTRY();
 
-  Combined *pCombined = *m_p_TaskLogicUnit->m_xpCombined;
+  Combined *pCombined = *m_pLogicUnit->m_xpCombined;
   Combined_T *aCombinedT = pCombined->aCombinedT();
 
   m_pDataStack->vPushInt(aCombinedT->m_iHashRows);
@@ -155,7 +155,7 @@ void Step::vCombinedIndexT(void)
 {
   ENTRY();
 
-  Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
+  Combined* pCombined = * m_pLogicUnit->m_xpCombined;
   Index* pIndex = _pIndex(pCombined->aCombinedT()->m_aIndexT);
 
   m_pDataStack->vPushPtr(pIndex);
@@ -170,7 +170,7 @@ void Step::vCombinedNew(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpCombined = new Combined(m_p_TaskLogicUnit);
+  m_pLogicUnit->m_xpCombined = new Combined(m_pLogicUnit);
   
   EXIT();
 }

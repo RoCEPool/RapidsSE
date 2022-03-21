@@ -130,7 +130,7 @@
 
   op__topology
 
-  find: dynamic_StartMarker  ZK_M_START  op[].handler!
+  find: dynamic_StartMarker  ZK_M_START  [op].handler!
   
   op__loop
 

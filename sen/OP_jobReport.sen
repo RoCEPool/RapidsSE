@@ -9,12 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : jobReport_action
 
-  session::lastJobId "Last Job Id %v" .printf
+  [session].lastJobId "Last Job Id %v" .printf
 
   <jobno> >int locals| iJob |
   
   iJob not if
-    session::lastJobId to iJob
+    [session].lastJobId to iJob
   then
 
   0 locals| eError |

@@ -23,6 +23,7 @@
 #include "Pipeline.hpp"
 #include "Output.hpp"
 #include "Session.hpp"
+#include "Api.hpp"
 
 #include "TagConstants.h"
 
@@ -81,10 +82,6 @@ Job::Job(Stz* szJobNm,
   m_eJobState = JS_ACTIVE;
   m_eError_job    = EC_NONE;
   
-  // -- d -------------------
-  // revised job/op model
-  m_pJobLogicUnit = nullptr;
-
   
   // m_oJobTags
   // m_xResult
@@ -93,7 +90,7 @@ Job::Job(Stz* szJobNm,
   m_pSingularOp  = nullptr;
 
   // -- g -------------------
-  m_oAcksRmg_job.vCheckInit();
+  m_oAcksRmg.vCheckInit();
   m_pTask     = nullptr;
 
   m_iTscParticipant = 0;
@@ -112,8 +109,6 @@ Job::Job(Stz* szJobNm,
   m_pJobMetricsChain  = nullptr;
 
   _checkInitialised_(CN_JOB);
-
-  vNewJobLogicUnit();
   
   m_oJobTags.vInsert(C_TAG_DISTID,m_tJobId.iAsI8());
   
@@ -158,16 +153,7 @@ Job::~Job(void) noexcept(false)
     }
 
   }
-  
-  if (m_pJobLogicUnit) {
-    //AM::LOGICUNIT::vDelete(&m_pJobLogicUnit);
-    m_pJobLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pJobLogicUnit,
-                                    CN_JOB,this,(Stz*)__func__);
-  }
-  else if (C_UNKNOWN != m_i_Origin) {
-    vDebugPoint();
-  }
-  
+    
   if (m_pTask) {
     m_pTask->vGrabTaskLock((Stz*)__func__);
     m_pTask->vState(TS_DELETING);
@@ -194,26 +180,8 @@ void Job::vPostRecv(void* aReceivedJob)
 
   pReceivedJob->vInductIntoNode(pReceivedJob);
   
-  pReceivedJob->vWasReceived(true);
+  pReceivedJob->vPostRecv();
   
-  pReceivedJob->vJobList(JL_NONE);
-    
-  pReceivedJob->vJobTask(nullptr);
-
-  // revised job/op model
-  pReceivedJob->vNullJobLogicUnit();
-
-  pReceivedJob->m_pSingularOp = nullptr;
-  pReceivedJob->m_pJobMetricsChain = nullptr;
-
-  pReceivedJob->m_okLock.vResetLock();
-  pReceivedJob->m_okLock.vResetStats();
-
-  
-  if (pReceivedJob->bHasTag(C_SEE_JOB))
-    pReceivedJob->vPrintJobContents();
-  
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -251,7 +219,7 @@ i8 Job::iAcksOriginal(void)
   
   //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
-  i8 iAcksOriginal = m_oAcksRmg_job.nOriginalAcks();
+  i8 iAcksOriginal = m_oAcksRmg.nOriginalAcks();
   
   return iAcksOriginal;
 }
@@ -277,7 +245,7 @@ i8 Job::iAcksRmg_printOnlyValue(void)
   
   //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
-  i8 iAcksRmg = m_oAcksRmg_job.iPrintOnlyValue();
+  i8 iAcksRmg = m_oAcksRmg.iPrintOnlyValue();
   
   return iAcksRmg;
 }
@@ -294,7 +262,7 @@ void Job::vAcksRmg(i8 nAcks)
   if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Job: Setting acks remaining %lld\n"_Stz,nAcks);
 
-  m_oAcksRmg_job.vSetRemaining(nAcks);
+  m_oAcksRmg.vSetRemaining(nAcks);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -304,7 +272,7 @@ bool Job::bAcksRmgDec(i8& nAcksWereRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bAmDecider = m_oAcksRmg_job.bDecAndDecide(nAcksWereRemaining);
+  bool bAmDecider = m_oAcksRmg.bDecAndDecide(nAcksWereRemaining);
   
   return bAmDecider;
 }
@@ -381,21 +349,21 @@ void Job::vDotPrint(Stz* szText)
 /*----------------------------------------------------------------------------*/
 /* get the sen entry code                                                     */
 /*----------------------------------------------------------------------------*/
-Stz* Job::szEntry(void)
+Stz* Job::szEntryPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_sEntry;
+  return m_sEntryPoint;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the sen entry code                                                     */
 /*----------------------------------------------------------------------------*/
-void Job::vEntry(Stz* szEntry)
+void Job::vEntryPoint(Stz* szEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_sEntry = szEntry;
+  m_sEntryPoint = szEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -665,61 +633,6 @@ TagSet* Job::pJobTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the logic unit                                                         */
-/*----------------------------------------------------------------------------*/
-LogicUnit* Job::pJobLogicUnit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  // revised job/op model
-  return m_pJobLogicUnit;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get task                                                                   */
-/*----------------------------------------------------------------------------*/
-Task* Job::pJobTask(void)
-{
-  return m_pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set task                                                                   */
-/*----------------------------------------------------------------------------*/
-void Job::vJobTask(Task* pTask)
-{
-  ASSERT(! pTask || ! m_pTask);
-  
-  if (! pTask)
-    vDebugPoint();
-  
-  m_pTask = pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new the logic unit for this job                                            */
-/*----------------------------------------------------------------------------*/
-void Job::vNewJobLogicUnit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  ASSERT(! m_pJobLogicUnit);
-
-  m_pJobLogicUnit = new LogicUnit;
-  m_pJobLogicUnit->vJob(this);
-}
-
-/*----------------------------------------------------------------------------*/
-/* null the logic unit for this job                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vNullJobLogicUnit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_pJobLogicUnit = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get name of node this came from                                            */
 /*----------------------------------------------------------------------------*/
 Stz* Job::szNodeNm(void)
@@ -772,7 +685,10 @@ Pipeline* Job::pPipeline_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Pipeline* pPipeline = * m_pJobLogicUnit->m_xpPipeline;
+  Task* pTask = this->pTask();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
+
+  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
   return pPipeline;
 }
@@ -792,6 +708,9 @@ void Job::vPrintJobContents(void)
   SP_Pointer spvOriginatingTask;
   SP_Pointer spvTask;
   SP_Pointer spvJobLogicUnit;
+
+  Task* pTask = this->pTask();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   vTrace("See Job %p::\n"_Stz,this);
 
@@ -823,7 +742,7 @@ void Job::vPrintJobContents(void)
  
          "             pTask "  "%s"    " \n"  // 21
         
-         "     pJobLogicUnit "  "%s"    " \n"  // 22
+         "        pLogicUnit "  "%s"    " \n"  // 22
 
          ""_Stz
          
@@ -840,11 +759,11 @@ void Job::vPrintJobContents(void)
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
          ,spTimer.sz(& m_oTimer)     // 13
-         ,m_oAcksRmg_job.iPrintOnlyValue() // 14
+         ,m_oAcksRmg.iPrintOnlyValue() // 14
          ,aEC[m_eError_job]          // 15
          ,spvSingularOp.sz(m_pSingularOp)  // 17
          ,spvTask.sz(m_pTask)        // 21
-         ,spvJobLogicUnit.sz(m_pJobLogicUnit) // 22
+         ,spvJobLogicUnit.sz(pLogicUnit) // 22
          
          );
   
@@ -854,6 +773,28 @@ void Job::vPrintJobContents(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vPostRecv(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
+  
+  m_bWasReceived = true;
+  
+  m_eJobList = JL_NONE;
+    
+  m_pTask = nullptr;
+
+  m_pSingularOp = nullptr;
+  m_pJobMetricsChain = nullptr;
+
+  m_okLock.vResetLock();
+  m_okLock.vResetStats();
+
+  if (bHasTag(C_SEE_JOB))
+    vPrintJobContents();
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -880,7 +821,7 @@ void Job::vPrintJobLine(void)
            ,this->iParticipantNode()
            );
 
-  LogicUnit* pLogicUnit = this->pJobLogicUnit();
+  LogicUnit* pLogicUnit = m_pTask->pLogicUnit();
   
   if (pLogicUnit) {
     if (pLogicUnit->m_xpPipelineSpec.bIsNotNull())
@@ -898,8 +839,8 @@ void Job::vPrintJobLine(void)
          );
 
   vTrace("logicUnit %p task %p"_Stz
-         ,this->m_pJobLogicUnit
-         ,this->pJobTask()
+         ,pLogicUnit
+         ,m_pTask
          );
 
   vTrace("\n"_Stz);
@@ -957,14 +898,7 @@ void Job::vResetForCascade(Session* pSession)
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobState = JS_ACTIVE;
-
-  // -- d -------------------
-  if (m_pJobLogicUnit) {
-    //delete m_pJobLogicUnit;
-    //m_pJobLogicUnit = nullptr;
-    m_pJobLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pJobLogicUnit,
-                                    CN_JOB,this,"vResetForCascade"_Stz);
-  }
+  
   // m_oJobTags
   // m_xResult ???
   
@@ -975,7 +909,7 @@ void Job::vResetForCascade(Session* pSession)
   }
 
   // -- g -------------------
-  m_oAcksRmg_job.vReset();
+  m_oAcksRmg.vReset();
 
   m_pTask = nullptr;
 
@@ -1029,12 +963,49 @@ void Job::vSingularOp(Op* pSingularOp)
   m_pSingularOp = pSingularOp;
 }
 
+/*----------------------------------------------------------------------------*/
+/* create and spawn task for job                                              */
+/*----------------------------------------------------------------------------*/
+void Job::vSpawnTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Stz* szEntry = "job::entryPoint"_Stz;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pTask = new Task(szJobNm(),this);
+    
+  //vSetTaskInxPtr(pTask,szEntry);
+  m_pTask->vSetInxPtr(szEntry);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vTimerStart();
+}
 
 /*----------------------------------------------------------------------------*/
+/* get task                                                                   */
 /*----------------------------------------------------------------------------*/
+Task* Job::pTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pTask;
+}
 
-
+/*----------------------------------------------------------------------------*/
+/* set task                                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vTask(Task* pTask)
+{
+  ASSERT(! pTask || ! m_pTask);
+  
+  if (! pTask)
+    vDebugPoint();
+  
+  m_pTask = pTask;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get elapsed time in milliseconds                                           */
@@ -1278,46 +1249,6 @@ void Job::vVerifyJobComposition(void)
   RASSERT(EC_NONE == eValidHeader());
   RASSERT(CN_JOB == eGetClassNo());
   aFooter()->vAssertFooter();
-  
-  RASSERT(m_pJobLogicUnit);
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vWalk(void* aArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
-  
-  eCN eClassNo = eGetClassNo();
-  
-  vTrace("Walk %8s:%ll03d %p\n"_Stz
-         
-         ,aCN[eClassNo]
-         ,(i8)eClassNo
-         ,this
-         );
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  Pipeline* pPipeline = this->pPipeline_job();
-  pPipeline->vWalk(aArg);
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vWalkLambda(i8 iDepth,
-                      std::function<void(Object* pObject, i8 iDepth)> f_vClosure)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
-    
-  f_vClosure(this,iDepth);
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  Pipeline* pPipeline = this->pPipeline_job();
-  pPipeline->vWalkLambda(iDepth + 1,f_vClosure);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -5,21 +5,23 @@
 
 #include "LifeGuard_t.hpp"
 
-
-namespace STORE { class Stage; class PipelineSpec; }
+namespace STORE { class Pipework; class Stage; class PipelineSpec; }
 
 namespace STORE
 {
-  class Pipeline : public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>,
-                   public LifeGuard_t<Pipeline>
+  class Pipeline : public Object
+                   //public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>,
+                 , public LifeGuard_t<Pipeline>
 
   {
   private:
 
     // -- id, name and kind
     Gid_t<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
-    s32              m_sPipelineNm;  // name of this pipeline
-    // n/a                           // kind
+    s32  m_sPipelineNm;  // name of this pipeline
+
+    // -- substructure
+    Pipework* m_pFormWork; // formwork of this pipeline
 
     // -- belongs to
     Job* m_pPipelineJob;  // which job
@@ -28,6 +30,8 @@ namespace STORE
     PipelineSpec* m_pPipelineSpec; // specification of this pipeline
   
     i8   m_i_Origin;    // originating node
+  
+
   
     // -- -- -- -- -- --
 
@@ -63,27 +67,28 @@ namespace STORE
     void vEarlyExit(bool bEarlyExit);
     bool bErrored(void);
     void vErrored(bool bErrored);
+    Pipework* pPipework(void);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
     i8   i_Origin(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
     Op*  pOpToPulse(void);
+    void vOpToPulse(Op* pOpToPulse);
     Job* pPipelineJob(void);
     Stz* szPipelineNm(void);
     PipelineSpec* pPipelineSpec(void);
     bool bPulsed(void);
     void vPulsed(bool bPulsed);
     bool bPulsedLimit(void);
+    void vPulsedLimit(bool bPulsedLimit);
     void vSetupJob(void);
-    void vSpawnOpTasks(i8 iSessionId, i8 iNode);
-    void vWalk(void* aArg);
-    void vWalkLambda(
-            i8 iDepth,
-            std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
+    void vSpawnOpTasks(void);
+    Stage* pStage0(void);
+    Stream* pStream0(void);
 
   private:
-    void vCreateStages();
+    void vCreatePipework();
 
     Footer* aFooter(void);
   };

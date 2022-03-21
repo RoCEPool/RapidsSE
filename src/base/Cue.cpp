@@ -13,7 +13,14 @@ void Cue::vGetInput(Stz* szPrompt, String* pString)
 {
   printf("%s",(char*)szPrompt);
   
-  fgets(pString->azStr(),(i4)pString->nLength(),stdin);
+  //fgets(pString->azStr(),(i4)pString->nLength(),stdin);
+  
+  char *azLine = nullptr;
+  size_t iLineCapacity = 0;
+
+  getline(&azLine,&iLineCapacity,stdin);
+  
+  pString->vCopy((Stz*)azLine);
 }
 
 /*----------------------------------------------------------------------------*/

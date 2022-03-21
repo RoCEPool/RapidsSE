@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job_End to all participants                                     */
 /*----------------------------------------------------------------------------*/
-: end::distribute params| pJobOriginator |
+: end:distribute params| pJobOriginator |
 
   //
   // where:  On the originator node.
@@ -22,13 +22,13 @@
   // new a temporary Job_End
   pJobOriginator job_End::new to pJob_End
 
-  job[].tscEnding
+  [job].tscEnding
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the no of acks expected in originator job
-  grid::knownNodes pJobOriginator job.acksRemaining!
+  [grid].knownNodes pJobOriginator job.acksRemaining!
 
   // send Job_End to all nodes
 
@@ -52,35 +52,41 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // delete the temporary Job_End
-  pJob_End job.delete2pc
+  pJob_End job.delete
 ;
 
 /*----------------------------------------------------------------------------*/
 /* run received Job_End on participating node       recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: end::end
+: end:end
 
   //
   // where: on the participating node
   //
-  //grid::thisNodeName@ "(%v) RECEIVED END" .printf
-  Job[] locals| pJob_End |
+  //[grid].thisNodeName@ "(%v) RECEIVED END" .printf
+  [job] locals| pJob_End |
+  0 locals| pTask_End |
 
   // find the job to be executed in the participating jobs
   pJob_End job.id@ locals| iJobId |
-  iJobId plist::findJob discard
+  iJobId ListedJob[].findParticipant discard
 
   // stall till job's previous phase (task) has completed
-  begin
-    JobRef[].hasTask
-  while
-    Task[].yield 
-  repeat
-
-  JobRef[] job.scheduleNextPhase
-  JobRef[].returnReference
   
-  _job_2pc_delete_
+  ListedJob[].task@ to pTask_End
+  begin
+        pTask_End task.state@ TS_HIBERNATING !=
+  while
+    "job to be ended still has non-hibernating task" .
+    [task].yield
+  repeat
+  pTask_End task.cycleLock
+    
+
+  ListedJob[] job.scheduleNextPhase
+  ListedJob[].returnReference
+  
+  [job]:retire
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +98,7 @@ cmdSyntax: end :: end ;
 : end_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "end::end"
+    <entryPoint>    = "end:end"
     <path>     = "/"
 }
 ;

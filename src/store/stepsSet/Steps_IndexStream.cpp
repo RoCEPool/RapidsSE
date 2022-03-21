@@ -63,7 +63,7 @@ void Step::vIndexStreamClose(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
   
   pIndexStream->vClose();
   
@@ -77,11 +77,11 @@ void Step::vIndexStreamDelete(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
   
   delete pIndexStream;
 
-  m_p_TaskLogicUnit->m_xpIndexStream = nullptr;
+  m_pLogicUnit->m_xpIndexStream = nullptr;
 
   EXIT();
 }
@@ -93,7 +93,7 @@ void Step::vIndexStreamDeleteNext(void)
 {
   ENTRY();
   
-  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
   
   bool bMoreToDelete = pIndexStream->bDelete();
   
@@ -108,7 +108,7 @@ void Step::vIndexStreamGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpIndexStream);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpIndexStream);
   
   EXIT();
 }
@@ -120,7 +120,7 @@ void Step::vIndexStreamIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpIndexStream.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpIndexStream.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -149,7 +149,7 @@ void Step::vIndexStreamOpen(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
   
   bool bOpened = pIndexStream->bOpen();
   ASSERT(bOpened);
@@ -165,7 +165,7 @@ void Step::vIndexStreamRead(void)
 {
   ENTRY();
     
-  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the rowOnce skipList
@@ -185,7 +185,7 @@ void Step::vIndexStreamSet(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpIndexStream = _pIndexStream(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpIndexStream = _pIndexStream(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -197,7 +197,7 @@ void Step::vIndexStreamSeek(void)
 {
   ENTRY();
   
-  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the pathIdentifier 
@@ -250,7 +250,7 @@ void Step::vIndexStreamScanBegin(void)
 {
   ENTRY();
 
-  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
 
   pIndexStream->vScanBegin();
 
@@ -281,7 +281,7 @@ void Step::vIndexStreamScanNext(void)
 {
   ENTRY();
 
-  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
 
   RowBuffer* pRowBuffer = pIndexStream->pScanNext();
 
@@ -301,7 +301,7 @@ void Step::vIndexStreamScanPopulate(void)
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
   pRowBuffer->vStreamDef(pStreamDef);
-  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
 
   pIndexStream->vScanPopulate(pRowBuffer);
 
@@ -320,7 +320,7 @@ void Step::vIndexStreamScanPopulateTop(void)
   i8 iTop = m_pDataStack->iPopInt(__func__);
 
   pRowBuffer->vStreamDef(pStreamDef);
-  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+  IndexStream* pIndexStream = _pIndexStream(*m_pLogicUnit->m_xpIndexStream);
 
   pIndexStream->vScanPopulateTop(pRowBuffer, iTop);
 

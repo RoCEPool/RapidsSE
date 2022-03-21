@@ -5,13 +5,13 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_SUB.hpp"
 
 namespace STORE
 {
-  class Card_CmpPred;
+  class Card_PredCmp;
 
-  class Card_BOUND : public Card
+  class Card_BOUND : public Card_SUB
   {  
   public:
     Card_BOUND(eCK eCard);

@@ -45,9 +45,6 @@ namespace STORE
     SMA<OpSpec,CN_OPSPEC>    m_pOpSpec;   // specification of this operator
     SMA<Pipeline,CN_PIPELINE>  m_p_Pipeline_op; // which pipeline
 
-    // -- owns
-    SMA<LogicUnit,CN_LOGICUNIT> m_pOpLogicUnit;  // logic unit of op
-
     // -- executed by
     SMA<Task,CN_TASK>      m_pTask;    // which task is currenty executing this op
 
@@ -109,38 +106,50 @@ namespace STORE
     void vAppendOoO(Operand* pOperand, Task* pTriggeringTask);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
+  
     eYX  eCrossTopology(void);
     eZK  eCurHandler(void);
     Word* pCurWord(void);
+  
     void vDotPrint(Stz* szText);
     Op*  pDownstreamOp(void);
     void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
     void vDump(void);
+  
     Word* pEntryWord(void);
     Word* pEventHandler(void);
+    Word* pEventHandler(i8 i_OperandKind);
+    void vEventHandler(i8 i_OperandKind, Word* pHandler);
+    void vExpr(Stz* sExpr);
+    Stz* szExpr(void);
+
     void vGrabTaskLock(void);
+  
     i8   iHandlerCount(i8 i_Handler);
+  
     void vIncHandlerCount(eZK eEvent);
     void vIncOperandCount(eZK eEvent);
     void vIncWorkDone(void);
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
     bool bIsOperandValid(i8 i_OperandKind);
+  
     i8   iLocalRobinNext(void);
+  
     Job* pJob(void);
+  
     i8   iMetricsQueued(void);
     void vMetricsQueued(i8 iMetricsQueued);
+  
     i8   iNextOp(void);
     Op*  pNextOp(void);
     i8   iNextStage(void);
     Stage* pNextStage(void);
     i8   iNode(void);
+  
     i8   iOperandCount(i8 i_OperandKind);
-    Word* pEventHandler(i8 i_OperandKind);
-    void vEventHandler(i8 i_OperandKind, Word* pHandler);
-    void vExpr(Stz* sExpr);
-    Stz* szExpr(void);
+  
     i8   i_Op(void);
     OperandWatch* pOperandWatch(void);
     LogicUnit* pOpLogicUnit(void);
@@ -163,7 +172,7 @@ namespace STORE
     bool bPause(void);
     bool bPeekLeft(void);
     bool bPeekOoO(void);
-    Pipeline* pPipeline_op(void);
+    Pipeline* pPipeline(void);
     Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToThis(Operand* pOperand, Task* pTriggeringTask);
@@ -171,34 +180,34 @@ namespace STORE
     Operand* pPopOoO(void);
     Operand* pPopOoOLeft(void);
     Operand* pPopRight(void);
-
     PtnId  tPtnId(void);
-
     Operand* pPopLeft(void);
     i8   nPotSize(void);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
+  
     i8   nQueuedOperands(void);
+  
     i8   iRobinNext(void);
+  
     eXK  eSendCast(void);
     void vSendCast(eXK eSendCast);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
-    void vSpawnOpTask(i8 iSessionId);
+    void vSpawnTask(void);
     void vSetTags(void);
     Stage* pStage(void);
     Stz* szStageName(void);
     Stream* pStream(void);
     eYS  eStreamTopology_op(void);
+  
     Task* pTask(void);
     void vTask(Task* pTask);
     i8   nTmpIndexSize(void);
     void vToCmdStr(Stz* szCmdStr);
+  
     void vVerifyOpComposition(void);
-    void vWalk(void* aArg);
-    void vWalkLambda(
-           i8 iDepth,
-           std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
+  
     void vWorkQuanta(i8 iWorkQuanta);
     
   private:

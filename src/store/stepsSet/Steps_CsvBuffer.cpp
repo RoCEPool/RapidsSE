@@ -85,7 +85,7 @@ void Step::vCsvBufferCsvAppend(void)
   s256 sCsvRow;
   m_pDataStack->vPopStr(sCsvRow,__func__);
 
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpCsvBuffer);
   i8 nBytes = sCsvRow.nSize();
   if (pCsvBuffer->nFreeBytes() < nBytes + 1)
       ASSERT(0);
@@ -103,7 +103,7 @@ void Step::vCsvBufferCsvData(void)
 {
   ENTRY();
 
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpCsvBuffer);
   char* data = (char*)pCsvBuffer->ayDataArea();
   m_pDataStack->vPushStz((Stz*)data);
 
@@ -118,9 +118,9 @@ void Step::vCsvBufferCsvToRow(void)
   ENTRY();
 
   CsvBuffer* pCsvBuffer =
-      _pCsvBuffer(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+      _pCsvBuffer(*m_pLogicUnit->m_xpCsvBuffer);
 
-  ToRow* pToRow = *m_p_TaskLogicUnit->m_xpToRow;
+  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
 
   bool b = pToRow->bConvertCsv(pCsvBuffer);
   UNUSED(b);
@@ -149,9 +149,9 @@ void Step::vCsvBufferDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpCsvBuffer);
 
-  m_p_TaskLogicUnit->m_xpCsvBuffer = nullptr;
+  m_pLogicUnit->m_xpCsvBuffer = nullptr;
 
   EXIT();
 }
@@ -163,7 +163,7 @@ void Step::vCsvBufferGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpCsvBuffer);
 
   EXIT();
 }
@@ -175,9 +175,9 @@ void Step::vCsvBufferGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpCsvBuffer);
 
-  m_p_TaskLogicUnit->m_xpCsvBuffer = nullptr;
+  m_pLogicUnit->m_xpCsvBuffer = nullptr;
 
   EXIT();
 }
@@ -189,7 +189,7 @@ void Step::vCsvBufferIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpCsvBuffer.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpCsvBuffer.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -201,7 +201,7 @@ void Step::vCsvBufferIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpCsvBuffer.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpCsvBuffer.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -213,7 +213,7 @@ void Step::vCsvBufferIsReport(void)
 {
   ENTRY();
 
-  Operand* pOperand = *m_p_TaskLogicUnit->m_xpCsvBuffer;
+  Operand* pOperand = *m_pLogicUnit->m_xpCsvBuffer;
   m_pDataStack->vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
 
   EXIT();
@@ -226,9 +226,9 @@ void Step::vCsvBufferNew(void)
 {
   ENTRY();
 
-  ASSERT (m_p_TaskLogicUnit->m_xpCsvBuffer.bIsNull());
+  ASSERT (m_pLogicUnit->m_xpCsvBuffer.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpCsvBuffer = new CsvBuffer;
+  m_pLogicUnit->m_xpCsvBuffer = new CsvBuffer;
 
   EXIT();
 }
@@ -240,7 +240,7 @@ void Step::vCsvBufferReport(void)
 {
   ENTRY();
 
-  Operand* pOperand = *m_p_TaskLogicUnit->m_xpCsvBuffer;
+  Operand* pOperand = *m_pLogicUnit->m_xpCsvBuffer;
   pOperand->vTailProcessing(PT_REPORT);
 
   EXIT();
@@ -255,9 +255,9 @@ void Step::vCsvBufferSet(void)
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpCsvBuffer.bIsNull());
+  ASSERT(! pOperand || m_pLogicUnit->m_xpCsvBuffer.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpCsvBuffer = _pCsvBuffer(pOperand);
+  m_pLogicUnit->m_xpCsvBuffer = _pCsvBuffer(pOperand);
 
   EXIT();
 }
@@ -269,15 +269,15 @@ void Step::vCsvBufferWriteToFile0(void)
 {
   ENTRY();
 
-  ASSERT(*m_p_TaskLogicUnit->m_xpCsvBuffer);
-  ASSERT(*m_p_TaskLogicUnit->m_xpFile0);
-  ASSERT(m_p_TaskLogicUnit->m_xpFile0->bIsOpen());
+  ASSERT(*m_pLogicUnit->m_xpCsvBuffer);
+  ASSERT(*m_pLogicUnit->m_xpFile0);
+  ASSERT(m_pLogicUnit->m_xpFile0->bIsOpen());
 
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_p_TaskLogicUnit->m_xpCsvBuffer);
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pLogicUnit->m_xpCsvBuffer);
   char* aData = (char*)pCsvBuffer->ayDataArea();
 
-  m_p_TaskLogicUnit->m_xpFile0->vPrint("%s"_Stz,aData);
-  //m_p_TaskLogicUnit->m_xpFile0->vFlush();
+  m_pLogicUnit->m_xpFile0->vPrint("%s"_Stz,aData);
+  //m_pLogicUnit->m_xpFile0->vFlush();
 
 
 }

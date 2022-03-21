@@ -39,7 +39,7 @@
     discern::rdCsvChunk not if
     
       //"Have discerned too many queued" .
-      25 task::sleepMsec
+      25 [task].sleepMsec
  
     else
 
@@ -79,10 +79,10 @@
     infoSetRow[].isNull
   not while
 
-   args.operands attachmap::operands@ args.operands > and if
+   [args].operands attachmap::operands@ [args].operands > and if
     
       attachmap::operands@ "Queued Arguments : %v" .printf
-      25 task::sleepMsec
+      25 [task].sleepMsec
  
    else
 
@@ -123,7 +123,7 @@
 
   <fileNm> locals| sFileNm_raw |
   
-  Job[].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |
+  [job].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |
 
   PipeIn[].pipeOut
 
@@ -142,18 +142,18 @@
 
   _lu_initialise_
 
-//  "<note>"  Job[].tagSet@ tagSet.hasName if
+//  "<note>"  [job].tagSet@ tagSet.hasName if
 //    <note> LogicUnit[].diaryJobNote
 //  then
 //
-//  op.opName@ LogicUnit[].diaryTitle
-//  op.opName@ LogicUnit[].diaryName
+//  [op].opName@ LogicUnit[].diaryTitle
+//  [op].opName@ LogicUnit[].diaryName
 
   op__topology
 
-  find: rdCsvChunk_Cleaning      ZK_M_CLEANING     op[].handler!
-  find: rdCsvChunk_SeekOffsets   ZK_I_SEEKOFFSETS  op[].handler!
-  find: rdCsvChunk_StartMarker   ZK_M_START        op[].handler!
+  find: rdCsvChunk_Cleaning      ZK_M_CLEANING     [op].handler!
+  find: rdCsvChunk_SeekOffsets   ZK_I_SEEKOFFSETS  [op].handler!
+  find: rdCsvChunk_StartMarker   ZK_M_START        [op].handler!
 
   op__loop
 

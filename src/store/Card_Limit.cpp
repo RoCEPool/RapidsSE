@@ -17,12 +17,10 @@ __bIsCard(STORE,Card_Limit,CK_LIMIT)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Limit::Card_Limit(i8 iRows)
-: Card_UNIT(CK_LIMIT)
+Card_Limit::Card_Limit(void)
+: Card_MAIN(CK_LIMIT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vRows(iRows);
   
   _checkInitialised_(CN_CARD);
   

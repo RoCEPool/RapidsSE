@@ -16,11 +16,11 @@
   "default_abnormalHandlers" FIND execute
 
   // check if start has already been pulsed
-  Pipeline::pulsed@ if
+  [pipeline].pulsed@ if
     PipeIn[].delete
   else
     // mark pipeline as being cancelled
-    true Pipeline::cancelled!
+    true [pipeline].cancelled!
 
     Marker[].newCancelling
     Marker[].pipeOut
@@ -97,7 +97,7 @@
 
   //"Operand:- ZK_M_EXITED" .verbose
   PipeIn[].delete
-  Op.ackPipelineJob
+  [op].ackPipelineJob
 
   false
 ;
@@ -125,16 +125,16 @@
   //"Operand:- ZK_M_LEAVING" .verbose
 
   // pipeline should not be cancelled
-  Pipeline::cancelled@ not assert
+  [pipeline].cancelled@ not assert
 
   // pipeline should not be errored
-  Pipeline::errored@ not assert
+  [pipeline].errored@ not assert
 
   // pipeline should have exited early
-  Pipeline::earlyExit@ assert
+  [pipeline].earlyExit@ assert
 
   // mark pipeline as being pulsed
-  true Pipeline::pulsed!
+  true [pipeline].pulsed!
 
   // now pipeout the leaving marker
   Pipein[].pipeOut
@@ -150,16 +150,16 @@
   //"Operand:- ZK_M_ENDING" .verbose
 
   // pipeline should not be cancelled
-  Pipeline::cancelled@ not assert
+  [pipeline].cancelled@ not assert
 
   // pipeline should not be errored
-  Pipeline::errored@ not assert
+  [pipeline].errored@ not assert
 
   // pipeline should not have exited early
-  Pipeline::earlyExit@ not assert
+  [pipeline].earlyExit@ not assert
 
   // mark pipeline as being pulsed
-  true Pipeline::pulsed!
+  true [pipeline].pulsed!
 
   // now pipeout the ending marker
   Pipein[].pipeOut
@@ -189,22 +189,22 @@
 
   op__topology
 
-  find: start_CancelMarker      ZK_M_CANCEL      op[].handler!
-  find: start_CancelledMarker   ZK_M_CANCELLED   op[].handler!
-  find: start_Cleaned           ZK_M_CLEANED     op[].handler!
-  find: start_EndingMarker      ZK_M_ENDING      op[].handler!
-  find: start_EndedMarker       ZK_M_ENDED       op[].handler!
-  find: start_ErroredMarker     ZK_M_ERRORED     op[].handler!
-  find: start_ExitedMarker      ZK_M_EXITED      op[].handler!
-  find: start_LeavingMarker     ZK_M_LEAVING     op[].handler!
-  find: start_LeftMarker        ZK_M_LEFT        op[].handler!
-  find: start_StartedMarker     ZK_M_STARTED     op[].handler!
+  find: start_CancelMarker      ZK_M_CANCEL      [op].handler!
+  find: start_CancelledMarker   ZK_M_CANCELLED   [op].handler!
+  find: start_Cleaned           ZK_M_CLEANED     [op].handler!
+  find: start_EndingMarker      ZK_M_ENDING      [op].handler!
+  find: start_EndedMarker       ZK_M_ENDED       [op].handler!
+  find: start_ErroredMarker     ZK_M_ERRORED     [op].handler!
+  find: start_ExitedMarker      ZK_M_EXITED      [op].handler!
+  find: start_LeavingMarker     ZK_M_LEAVING     [op].handler!
+  find: start_LeftMarker        ZK_M_LEFT        [op].handler!
+  find: start_StartedMarker     ZK_M_STARTED     [op].handler!
 
-  find: INVALID_OPERAND_handler ZK_D_CRWBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_D_CSVBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_D_ENTBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_D_ROWBUFFER       op[].handler!
-  find: INVALID_OPERAND_handler ZK_D_STREAMDEF       op[].handler!
+  find: INVALID_OPERAND_handler ZK_D_CRWBUFFER       [op].handler!
+  find: INVALID_OPERAND_handler ZK_D_CSVBUFFER       [op].handler!
+  find: INVALID_OPERAND_handler ZK_D_ENTBUFFER       [op].handler!
+  find: INVALID_OPERAND_handler ZK_D_ROWBUFFER       [op].handler!
+  find: INVALID_OPERAND_handler ZK_D_STREAMDEF       [op].handler!
 
   op__loop
 

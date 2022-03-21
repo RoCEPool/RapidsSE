@@ -26,7 +26,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": bloat_cleaning \\handler\n"
     "\n"
-    "  task::seeFrameStack\n"
+    "  [task].seeFrameStack\n"
     "\n"
     "  //inject::bloatCleanup\n"
     "\n"
@@ -39,7 +39,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": bloat_bloat \\handler\n"
     "\n"
-    "  task::seeFrameStack\n"
+    "  [task].seeFrameStack\n"
     "  \n"
     "  inject::bloat\n"
     "\n"
@@ -57,8 +57,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: bloat_bloat    ZK_D_CRWBUFFER   op[].handler!\n"
-    "  find: bloat_cleaning  ZK_M_CLEANING   op[].handler!\n"
+    "  find: bloat_bloat    ZK_D_CRWBUFFER   [op].handler!\n"
+    "  find: bloat_cleaning  ZK_M_CLEANING   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -211,8 +211,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: stats_StartMarker ZK_M_START op[].handler!\n"
-    "  find: stats_Exiting     ZK_M_EXITING  op[].handler!\n"
+    "  find: stats_StartMarker ZK_M_START [op].handler!\n"
+    "  find: stats_Exiting     ZK_M_EXITING  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -272,7 +272,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": morphToFailed\n"
     "\n"
-    "  find:  failed_failed  op[].handlerAll!\n"
+    "  find:  failed_failed  [op].handlerAll!\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -284,7 +284,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find:  failed_failed  op[].handlerAll!\n"
+    "  find:  failed_failed  [op].handlerAll!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -403,7 +403,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "dicLock.dropwrite\n"
     "\n"
-    "  args.verbose if\n"
+    "  [args].verbose if\n"
     "    pwFolder word.name@\n"
     "    Path[].toStr\n"
     "      \"Created folder %v/%v\" .printf\n"
@@ -797,7 +797,7 @@ void Task::vAddMunged(Task* )
     "    \n"
     "  begin\n"
     "\n"
-    "    // args.demonSleep thread::sleepSsec\n"
+    "    // [args].demonSleep thread::sleepSsec\n"
     "    1 thread::sleepSsec\n"
     "\n"
     "    reap_activity\n"
@@ -814,7 +814,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: reap_StartMarker ZK_M_START op[].handler!\n"
+    "  find: reap_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -1033,10 +1033,10 @@ void Task::vAddMunged(Task* )
     "    begin\n"
     "       Counter1[]  Counter0[] >\n"
     "    while\n"
-    "      Task[].yield \n"
+    "      [task].yield \n"
     "      assert::stack_0\n"
     "      \"sleeping for 1 min\" .\n"
-    "      60 task::sleepSsec\n"
+    "      60 [task].sleepSsec\n"
     "      Counter0[] 1 + to Counter0[]\n"
     "    repeat\n"
     "    0 to  Counter0[]\n"
@@ -1049,7 +1049,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  Marker[].newEndMarker\n"
     "  Marker[].pipeOut\n"
-    "  //Op.ackPipelineJob\n"
+    "  //[op].ackPipelineJob\n"
     "\n"
     "  true\n"
     " ;\n"
@@ -1064,11 +1064,11 @@ void Task::vAddMunged(Task* )
     "  0 locals| hours   |\n"
     "  0 locals| minutes |\n"
     "\n"
-    "  \"<minutes>\" Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<minutes>\" [job].tagSet@ tagSet.hasName if\n"
     "    <minutes> >int to minutes\n"
     "  then\n"
     "\n"
-    "  \"<hours>\" Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<hours>\" [job].tagSet@ tagSet.hasName if\n"
     "    <hours> >int to hours\n"
     "  then\n"
     "\n"
@@ -1086,7 +1086,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: pulse_Trigger   ZK_M_TRIGGER   op[].handler!\n"
+    "  find: pulse_Trigger   ZK_M_TRIGGER   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -1159,7 +1159,7 @@ void Task::vAddMunged(Task* )
     "    nPaths\n"
     "     I\n"
     "     \"<path\" I >str str.cat \">\" str.cat\n"
-    "       Job[].tagSet@ tagSet.getStr\n"
+    "       [job].tagSet@ tagSet.getStr\n"
     "     3\n"
     "     InfoSet[].addRowVargs\n"
     "        \n"
@@ -1176,7 +1176,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: eachPath_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: eachPath_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -1251,8 +1251,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: print_promptOut    ZK_I_PROMPTOUT     op[].handler!\n"
-    "  find: print_startMarker  ZK_M_START   op[].handler!\n"
+    "  find: print_promptOut    ZK_I_PROMPTOUT     [op].handler!\n"
+    "  find: print_startMarker  ZK_M_START   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -1328,7 +1328,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "    op__topology\n"
     "\n"
-    "    find: /localLiteOp/_DataMarker  ZK_M_DATAPULSE op[].handler!\n"
+    "    find: /localLiteOp/_DataMarker  ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "    op__loop\n"
     "\n"
@@ -1874,8 +1874,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: parser_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: parser_DataPulse     ZK_M_DATAPULSE     op[].handler!\n"
+    "  find: parser_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: parser_DataPulse     ZK_M_DATAPULSE     [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -1926,25 +1926,21 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* send Job_Begun back to originating node                                    */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": begun::replyToOrigin params| pJobParticipant |\n"
+    ": begun:reply params| pJobParticipant |\n"
     "\n"
-    "  // \"begun::replyToOrigin\" .\n"
+    "  // \"begun:reply\" .\n"
     "  \n"
-    "  pJobParticipant job.id@ locals| iJobId |\n"
-    "\n"
-    "  0 locals| pJob_Begun |\n"
-    "\n"
-    "  // new a temporary Job_Executed\n"
-    "  pJobParticipant job_Begun::new to pJob_Begun\n"
+    "  // new a temporary Job_Begun\n"
+    "  pJobParticipant job_Begun::new locals| pJob_Begun |\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // send the begun job\n"
-    "  iJobId job::originator@ pJob_Begun job.reply\n"
+    "  pJobParticipant [job].originNodeNo@ pJob_Begun job.reply\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  pJob_Begun job.delete2pc\n"
+    "  pJob_Begun job.delete\n"
     " ;\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
@@ -1954,10 +1950,10 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* run this received Job_Begun on originating node  recv: job.spawn           */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": begun::begun\n"
+    ": begun:begun\n"
     "\n"
     "\n"
-    "  // \"begun::begun\" .\n"
+    "  // \"begun:begun\" .\n"
     "\n"
     "  //\n"
     "  // where:  On the originator node.\n"
@@ -1970,9 +1966,7 @@ void Task::vAddMunged(Task* )
     "  //         3) if all acks received distribute Job_Execute\n"
     "  //\n"
     "\n"
-    "  Job[] locals| pJob_Begun |\n"
-    "\n"
-    "  pJob_Begun job.id@ locals| iJobId |\n"
+    "  [job] job.id@ locals| iJobId |\n"
     "\n"
     "  0 0 0 0 locals| bAmDecider error iParticipantNode |\n"
     "\n"
@@ -1980,37 +1974,37 @@ void Task::vAddMunged(Task* )
     "  // get the context of this __begun job\n"
     "\n"
     "  // find the originating job\n"
-    "  iJobId olist::findJob discard\n"
+    "  iJobId ListedJob[].findOriginator discard\n"
     "\n"
     "  // get the participant node from where this job_begun started\n"
-    "  pJob_Begun job.participantNode@ to iParticipantNode\n"
+    "  [job] job.participantNode@ to iParticipantNode\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // process __begun job on this originating node\n"
     "\n"
     "  // increment the number of __begun jobs received in api state\n"
-    "  JobRef[] ssn::incBegun\n"
-    "  JobRef[] ssn::traceSession\n"
+    "  ListedJob[] ssn::incBegun\n"
+    "  ListedJob[] ssn::traceSession\n"
     "\n"
     "  // decrement the acks remaining in the originating job\n"
-    "  JobRef[] job.dec2pcAcksRmg to bAmDecider\n"
+    "  ListedJob[] job.dec2pcAcksRmg to bAmDecider\n"
     "\n"
     "  // if there are acks remaining just exit\n"
     "  bAmDecider not if\n"
-    "    JobRef[].returnReference\n"
-    "    _job_2pc_delete_\n"
+    "    ListedJob[].returnReference\n"
+    "    [job]:retire\n"
     "    exit                                                         // *EARLY EXIT*\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // all job_begun's have been received, so this job is the decider\n"
     "\n"
-    "  job[].tscBegun\n"
+    "  [job].tscBegun\n"
     "\n"
     "  // distribute Job_Execute to all participants\n"
-    "  JobRef[] execute::distribute\n"
-    "  JobRef[].returnReference\n"
-    "  _job_2pc_delete_\n"
+    "  ListedJob[] execute:distribute\n"
+    "  ListedJob[].returnReference\n"
+    "  [job]:retire\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -2022,7 +2016,7 @@ void Task::vAddMunged(Task* )
     ": begun_cmdTags _cmdTags tagCopy: genericJob_tags\n"
     "  tags{\n"
     "    <cmdDesc>  = \"--desc for job--\"\n"
-    "    <entryPoint>    = \"begun::begun\"\n"
+    "    <entryPoint>    = \"begun:begun\"\n"
     "    <path>     = \"/\"\n"
     "  }\n"
     " ;\n"
@@ -2089,7 +2083,7 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // Setup ZK_D_PARCEL handler here\n"
-    "  find: metaRecv_Parcel ZK_D_PARCEL op[].handler!\n"
+    "  find: metaRecv_Parcel ZK_D_PARCEL [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -2400,11 +2394,11 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: toPtnCrw_EosMarker   ZK_M_EOS         op[].handler!\n"
-    "  find: toPtnCrw_DataMarker  ZK_M_DATAPULSE   op[].handler!\n"
-    "  find: toPtnCrw_RowBuffer   ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: toPtnCrw_StartMarker ZK_M_START       op[].handler!\n"
-    "  find: toPtnCrw_StreamDef   ZK_D_STREAMDEF   op[].handler!\n"
+    "  find: toPtnCrw_EosMarker   ZK_M_EOS         [op].handler!\n"
+    "  find: toPtnCrw_DataMarker  ZK_M_DATAPULSE   [op].handler!\n"
+    "  find: toPtnCrw_RowBuffer   ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: toPtnCrw_StartMarker ZK_M_START       [op].handler!\n"
+    "  find: toPtnCrw_StreamDef   ZK_D_STREAMDEF   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -2451,7 +2445,7 @@ void Task::vAddMunged(Task* )
     ": sleep\n"
     "\n"
     "  \"sleeping\" .\n"
-    "  20 task::sleepSsec\n"
+    "  20 [task].sleepSsec\n"
     "  \"awake\" .\n"
     " ;\n"
     "\n"
@@ -2595,9 +2589,9 @@ void Task::vAddMunged(Task* )
     " * called from : table::makeTableAssembly\n"
     " */\n"
     "\n"
-    "  args.tracepoint if\n"
+    "  [args].tracepoint if\n"
     "    \"MAKING INDEXES FOR TABLE \" sTableNm str.cat\n"
-    "      \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
+    "      \" on NODE \" str.cat [grid].thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  sTableNm find execute locals| pTableFolder |\n"
@@ -2846,8 +2840,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: OP_statWrite_LockStats ZK_I_LOCKSTATS op[].handler!\n"
-    "  find: OP_statWrite_Profile   ZK_D_PROFILE   op[].handler!\n"
+    "  find: OP_statWrite_LockStats ZK_I_LOCKSTATS [op].handler!\n"
+    "  find: OP_statWrite_Profile   ZK_D_PROFILE   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -2898,7 +2892,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* distribute Job_End to all participants                                     */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": end::distribute params| pJobOriginator |\n"
+    ": end:distribute params| pJobOriginator |\n"
     "\n"
     "  //\n"
     "  // where:  On the originator node.\n"
@@ -2909,13 +2903,13 @@ void Task::vAddMunged(Task* )
     "  // new a temporary Job_End\n"
     "  pJobOriginator job_End::new to pJob_End\n"
     "\n"
-    "  job[].tscEnding\n"
+    "  [job].tscEnding\n"
     "\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // set the no of acks expected in originator job\n"
-    "  grid::knownNodes pJobOriginator job.acksRemaining!\n"
+    "  [grid].knownNodes pJobOriginator job.acksRemaining!\n"
     "\n"
     "  // send Job_End to all nodes\n"
     "\n"
@@ -2939,35 +2933,41 @@ void Task::vAddMunged(Task* )
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // delete the temporary Job_End\n"
-    "  pJob_End job.delete2pc\n"
+    "  pJob_End job.delete\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* run received Job_End on participating node       recv: job.spawn */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": end::end\n"
+    ": end:end\n"
     "\n"
     "  //\n"
     "  // where: on the participating node\n"
     "  //\n"
-    "  //grid::thisNodeName@ \"(%v) RECEIVED END\" .printf\n"
-    "  Job[] locals| pJob_End |\n"
+    "  //[grid].thisNodeName@ \"(%v) RECEIVED END\" .printf\n"
+    "  [job] locals| pJob_End |\n"
+    "  0 locals| pTask_End |\n"
     "\n"
     "  // find the job to be executed in the participating jobs\n"
     "  pJob_End job.id@ locals| iJobId |\n"
-    "  iJobId plist::findJob discard\n"
+    "  iJobId ListedJob[].findParticipant discard\n"
     "\n"
     "  // stall till job's previous phase (task) has completed\n"
-    "  begin\n"
-    "    JobRef[].hasTask\n"
-    "  while\n"
-    "    Task[].yield \n"
-    "  repeat\n"
-    "\n"
-    "  JobRef[] job.scheduleNextPhase\n"
-    "  JobRef[].returnReference\n"
     "  \n"
-    "  _job_2pc_delete_\n"
+    "  ListedJob[].task@ to pTask_End\n"
+    "  begin\n"
+    "        pTask_End task.state@ TS_HIBERNATING !=\n"
+    "  while\n"
+    "    \"job to be ended still has non-hibernating task\" .\n"
+    "    [task].yield\n"
+    "  repeat\n"
+    "  pTask_End task.cycleLock\n"
+    "    \n"
+    "\n"
+    "  ListedJob[] job.scheduleNextPhase\n"
+    "  ListedJob[].returnReference\n"
+    "  \n"
+    "  [job]:retire\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -2979,7 +2979,7 @@ void Task::vAddMunged(Task* )
     ": end_cmdTags _cmdTags tagCopy: genericJob_tags\n"
     "  tags{\n"
     "    <cmdDesc>  = \"--desc for job--\"\n"
-    "    <entryPoint>    = \"end::end\"\n"
+    "    <entryPoint>    = \"end:end\"\n"
     "    <path>     = \"/\"\n"
     "}\n"
     " ;\n"
@@ -3056,7 +3056,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: toDfload_PathInfo ZK_I_PATHINFO op[].handler!\n"
+    "  find: toDfload_PathInfo ZK_I_PATHINFO [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -3106,17 +3106,11 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": cancelled::retire\n"
     "\n"
-    "  DdlLock[].testDrop\n"
+    "  [ddlLock].testDrop\n"
     "  \n"
-    "  // unlink task and job\n"
-    "  Task[].job@ if\n"
-    "    //nullptr Task[].job@ job.task!\n"
-    "    //nullptr Task[].job!\n"
-    "  then\n"
-    "\n"
-    "  Task[].grabLock\n"
-    "    Job[] job.queueExitDemon\n"
-    "    TR_RETIRE_THIS_TASK Task[].transition!\n"
+    "  [task].grabLock\n"
+    "    [job] [exitDemon]:queueJob\n"
+    "    TR_RETIRE_THIS_TASK [task].transition!\n"
     "\n"
     "  HAZARD\n"
     " ;\n"
@@ -3126,30 +3120,23 @@ void Task::vAddMunged(Task* )
     "////////////////////////////////////////////////////////////////////////////////\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* send Job_Cancelled back to originating node                               */\n"
+    "/* send Job_Cancelled back to originating node                                */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": cancelled::replyToOrigin ( pJobParticipant -- )\n"
+    ": cancelled:reply params| pJobParticipant |\n"
     "\n"
-    "  params| pJobParticipant |\n"
-    "\n"
-    "  pJobParticipant job.id@ locals| iJobId |\n"
-    "\n"
-    "  0 0 0 locals| pJob pJob_Cancelled error |\n"
-    "\n"
+    "  // \"cancelled:reply\" .\n"
+    "  \n"
     "  // new a temporary Job_Cancelled\n"
-    "  pJobParticipant job_Cancelled::new to pJob_Cancelled\n"
+    "  pJobParticipant job_Cancelled::new locals| pJob_Cancelled |\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // send the cancelled job\n"
-    "  iJobId job::originator@ locals| iOriginator |\n"
-    "  //iOriginator pJob_Cancelled jobCancelled.cancelOriginator!\n"
-    "\n"
-    "  iOriginator pJob_Cancelled job.reply\n"
+    "  pJobParticipant [job].originNodeNo@ pJob_Cancelled job.reply\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  pJob_Cancelled job.delete2pc\n"
+    "  pJob_Cancelled job.delete\n"
     " ;\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
@@ -3159,12 +3146,12 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* run recieved Job_Cancelled on originating node   recv: job.spawn */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": cancelled::cancelled\n"
+    ": cancelled:cancelled\n"
     "\n"
     "  <path> str.toStrVec Path[].set\n"
     "  \n"
     "  \n"
-    "  Job[] locals| pJob_Cancelled |\n"
+    "  [job] locals| pJob_Cancelled |\n"
     "  pJob_Cancelled job.id@ locals| iJobId |\n"
     "\n"
     "  0 0 0 0 locals| bAmDecider error iParticipantNode |\n"
@@ -3173,7 +3160,7 @@ void Task::vAddMunged(Task* )
     "  // get the context of this __cancelled job\n"
     "\n"
     "  // find the originating job\n"
-    "  iJobId olist::findJob discard\n"
+    "  iJobId ListedJob[].findOriginator discard\n"
     "\n"
     "  // get the participant node from where this job_begun started\n"
     "  pJob_Cancelled job.participantNode@ to iParticipantNode\n"
@@ -3183,19 +3170,19 @@ void Task::vAddMunged(Task* )
     "  // process __begun job on this originating node\n"
     "\n"
     "  // increment the number of __cancelled jobs received in api state\n"
-    "  JobRef[] ssn::incCancelled\n"
-    "  JobRef[] ssn::traceSession\n"
+    "  ListedJob[] ssn::incCancelled\n"
+    "  ListedJob[] ssn::traceSession\n"
     "\n"
     "\n"
     "\n"
     "  // decrement the acks remaining in the originating job\n"
-    "  JobRef[] job.dec2pcAcksRmg to bAmDecider\n"
+    "  ListedJob[] job.dec2pcAcksRmg to bAmDecider\n"
     "\n"
     "  // if there are acks remaining just exit\n"
     "  bAmDecider not if\n"
-    "    JobRef[].returnReference\n"
+    "    ListedJob[].returnReference\n"
     "    cancelled::retire\n"
-    "    _job_2pc_delete_\n"
+    "    [job]:retire\n"
     "    exit                                                         // *EARLY EXIT*\n"
     "  then\n"
     "\n"
@@ -3204,24 +3191,24 @@ void Task::vAddMunged(Task* )
     "  // all job_cancelled's have been received, so this job is the decider\n"
     "\n"
     "  begin\n"
-    "    JobRef[].references\n"
+    "    ListedJob[].references\n"
     "  1 > while\n"
     "  repeat\n"
     "\n"
-    "  job[].tscCanceled\n"
+    "  [job].tscCanceled\n"
     "\n"
     "\n"
     "  // remove the originating job from the originator jobs\n"
-    "  //Job[].removeOriginator\n"
+    "  //[job].removeOriginator\n"
     "\n"
     "  // notify the originating task\n"
-    "  JobRef[].task@ task.ack\n"
-    "  JobRef[].returnReference\n"
+    "  ListedJob[].task@ task.ack\n"
+    "  ListedJob[].returnReference\n"
     "\n"
     "  // delete this completed __cancelled job\n"
     "  cancelled::retire\n"
     "  \n"
-    "  _job_2pc_delete_\n"
+    "  [job]:retire\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -3233,7 +3220,7 @@ void Task::vAddMunged(Task* )
     ": cancelled_cmdTags _cmdTags tagCopy: genericJob_tags\n"
     "  tags{\n"
     "    <cmdDesc>  = \"--desc for job--\"\n"
-    "    <entryPoint>    = \"cancelled::cancelled\"\n"
+    "    <entryPoint>    = \"cancelled:cancelled\"\n"
     "    <path>     = \"/\"\n"
     "  }\n"
     " ;\n"
@@ -3271,10 +3258,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  // pass the table name to op__table to get the table[] register\n"
     "  // then call C++ getGridParts to build the parcel and push the pParcel to the stack\n"
-    "  // op.pipeout pipe the pParcel out\n"
+    "  // [op].pipeout pipe the pParcel out\n"
     "\n"
     "\n"
-    "  grid[] grid::getParts op.pipeout\n"
+    "  grid[] [grid].getParts [op].pipeout\n"
     "\n"
     "  // send EOSMARKER\n"
     "  nullptr to grid[]\n"
@@ -3282,7 +3269,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  true\n"
     "\n"
-    "  //task::breakpoint //set breakpoint back into C++ code, where the task loop is\n"
+    "  //[task].breakpoint //set breakpoint back into C++ code, where the task loop is\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -3296,7 +3283,7 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // Setup ZK_D_GRIDGET handler\n"
-    "  find: gridSend_gridObject ZK_D_GRID op[].handler!\n"
+    "  find: gridSend_gridObject ZK_D_GRID [op].handler!\n"
     "  op__loop\n"
     "\n"
     "  _lu_finalise_\n"
@@ -3496,7 +3483,7 @@ void Task::vAddMunged(Task* )
     "  Pipein[]\\clear to StreamDefLft[]\n"
     "\n"
     "  // PROJECTION\n"
-    "  \"<project>\" op[].tagSet@ tagSet.hasName if\n"
+    "  \"<project>\" [op].tagSet@ tagSet.hasName if\n"
     "\n"
     "     // evaluate the project expression\n"
     "     ExprEval[].new\n"
@@ -3506,7 +3493,7 @@ void Task::vAddMunged(Task* )
     "   else\n"
     "\n"
     "     // AGGREGATE\n"
-    "     \"<aggreg>\" op[].tagSet@ tagSet.hasName if\n"
+    "     \"<aggreg>\" [op].tagSet@ tagSet.hasName if\n"
     "\n"
     "        // evaluate the aggregate expression\n"
     "        ExprEval[].new\n"
@@ -3581,12 +3568,12 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: rluTest_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: rluTest_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!\n"
-    "  find: rluTest_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "  find: rluTest_RowBuffer     ZK_D_ROWBUFFER     op[].handler!\n"
-    "  find: rluTest_StartMarker   ZK_M_START         op[].handler!\n"
-    "  find: rluTest_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "  find: rluTest_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: rluTest_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!\n"
+    "  find: rluTest_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "  find: rluTest_RowBuffer     ZK_D_ROWBUFFER     [op].handler!\n"
+    "  find: rluTest_StartMarker   ZK_M_START         [op].handler!\n"
+    "  find: rluTest_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -3689,11 +3676,11 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: toBkt_EosMarker   ZK_M_EOS         op[].handler!\n"
-    "  find: toBkt_DataMarker  ZK_M_DATAPULSE   op[].handler!\n"
-    "  find: toBkt_RowBuffer   ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: toBkt_StartMarker ZK_M_START       op[].handler!\n"
-    "  find: toBkt_StreamDef   ZK_D_STREAMDEF   op[].handler!\n"
+    "  find: toBkt_EosMarker   ZK_M_EOS         [op].handler!\n"
+    "  find: toBkt_DataMarker  ZK_M_DATAPULSE   [op].handler!\n"
+    "  find: toBkt_RowBuffer   ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: toBkt_StartMarker ZK_M_START       [op].handler!\n"
+    "  find: toBkt_StreamDef   ZK_D_STREAMDEF   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -3825,8 +3812,8 @@ void Task::vAddMunged(Task* )
     "  ToRow[].delete\n"
     "\n"
     "  // get the profile from the task\n"
-    "  //Task[] task.profile@ to Operand[]\n"
-    "  //nullptr Task[] task.profile!\n"
+    "  //[task] task.profile@ to Operand[]\n"
+    "  //nullptr [task] task.profile!\n"
     "  //Operand[].pipeOut\n"
     "\n"
     "  // pipeout the (EosMarker)\n"
@@ -3847,9 +3834,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: toRow_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!\n"
-    "  find: toRow_EosMarker   ZK_M_EOS         op[].handler!\n"
-    "  find: toRow_StartMarker ZK_M_START       op[].handler!\n"
+    "  find: toRow_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!\n"
+    "  find: toRow_EosMarker   ZK_M_EOS         [op].handler!\n"
+    "  find: toRow_StartMarker ZK_M_START       [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -3969,9 +3956,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: totalCount_EosMarker   ZK_M_EOS   op[].handler!\n"
-    "  find: totalCount_DataMarker ZK_M_DATAPULSE op[].handler!\n"
-    "  find: totalCount_countInfo   ZK_I_COUNTINFO   op[].handler!\n"
+    "  find: totalCount_EosMarker   ZK_M_EOS   [op].handler!\n"
+    "  find: totalCount_DataMarker ZK_M_DATAPULSE [op].handler!\n"
+    "  find: totalCount_countInfo   ZK_I_COUNTINFO   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -4075,7 +4062,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: createSchema_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: createSchema_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -4217,7 +4204,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: callProc_StreamSet  ZK_D_STREAMSET op[].handler!\n"
+    "  find: callProc_StreamSet  ZK_D_STREAMSET [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -4493,7 +4480,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: dropTenant_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: dropTenant_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -4578,9 +4565,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: metricsFlush_Start     ZK_M_START         op[].handler!\n"
-    "  find: metricsFlush_DataPulse ZK_M_DATAPULSE     op[].handler!\n"
-    "  find: metricsFlush_Flush     ZK_M_FLUSH         op[].handler!\n"
+    "  find: metricsFlush_Start     ZK_M_START         [op].handler!\n"
+    "  find: metricsFlush_DataPulse ZK_M_DATAPULSE     [op].handler!\n"
+    "  find: metricsFlush_Flush     ZK_M_FLUSH         [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -4718,9 +4705,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: keyExists_ComCleaning    ZK_M_CLEANING   op[].handler!\n"
-    "  find: keyExists_ComStart       ZK_M_START      op[].handler!\n"
-    "  find: keyExists_ComStreamDef   ZK_D_STREAMDEF  op[].handler!\n"
+    "  find: keyExists_ComCleaning    ZK_M_CLEANING   [op].handler!\n"
+    "  find: keyExists_ComStart       ZK_M_START      [op].handler!\n"
+    "  find: keyExists_ComStreamDef   ZK_D_STREAMDEF  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -4827,7 +4814,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: waker_StartMarker ZK_M_START op[].handler!\n"
+    "  find: waker_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -4989,12 +4976,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker      ZK_M_LEAVE          op[].handler!\n"
-    "  find: compiler_StreamSet        ZK_D_STREAMSET      op[].handler!\n"
+    "  find: compiler_LeaveMarker      ZK_M_LEAVE          [op].handler!\n"
+    "  find: compiler_StreamSet        ZK_D_STREAMSET      [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: stageMarkers_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: stageMarkers_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: stageMarkers_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: stageMarkers_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -5044,11 +5031,11 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": dumpGridInfo_action\n"
     "\n"
-    "  grid::dumpInfo locals| pDumpBuffer |\n"
+    "  [grid].dumpInfo locals| pDumpBuffer |\n"
     "  //pDumpBuffer .\n"
     "\n"
     "  // convert the string to operand to pipe out\n"
-    "  pDumpBuffer str.toPromptOut op.pipeout\n"
+    "  pDumpBuffer str.toPromptOut [op].pipeout\n"
     "\n"
     "  true\n"
     " ;\n"
@@ -5236,7 +5223,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  <fileNm> locals| sFileNm_raw |\n"
     "  \n"
-    "  Job[].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |\n"
+    "  [job].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |\n"
     "\n"
     "  PipeIn[].pipeOut\n"
     "\n"
@@ -5272,9 +5259,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: chunk_Cleaning    ZK_M_CLEANING  op[].handler!\n"
-    "  find: chunk_DataMarker  ZK_M_DATAPULSE op[].handler!\n"
-    "  find: chunk_StartMarker ZK_M_START     op[].handler!\n"
+    "  find: chunk_Cleaning    ZK_M_CLEANING  [op].handler!\n"
+    "  find: chunk_DataMarker  ZK_M_DATAPULSE [op].handler!\n"
+    "  find: chunk_StartMarker ZK_M_START     [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -5548,7 +5535,7 @@ void Task::vAddMunged(Task* )
     "  DataBuffer[]\n"
     "    nullptr to DataBuffer[]\n"
     "\n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5560,7 +5547,7 @@ void Task::vAddMunged(Task* )
     "  BktMap[]\n"
     "    nullptr to BktMap[]\n"
     "\n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5572,7 +5559,7 @@ void Task::vAddMunged(Task* )
     "  BucketGet[]\n"
     "    nullptr to BucketGet[]\n"
     "\n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5584,7 +5571,7 @@ void Task::vAddMunged(Task* )
     "  CrwBuffer[]\n"
     "    nullptr to CrwBuffer[]\n"
     "\n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5596,7 +5583,7 @@ void Task::vAddMunged(Task* )
     "  CsvBuffer[]\n"
     "    nullptr to CsvBuffer[]\n"
     "\n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5608,7 +5595,7 @@ void Task::vAddMunged(Task* )
     "  IndexDef[]\n"
     "    nullptr to IndexDef[]\n"
     "    \n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5620,7 +5607,7 @@ void Task::vAddMunged(Task* )
     "  InfoSet[]\n"
     "    nullptr to InfoSet[]\n"
     "    \n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5631,7 +5618,7 @@ void Task::vAddMunged(Task* )
     "  Marker[]\n"
     "    nullptr to Marker[]\n"
     "\n"
-    "  op.pipeBackin\n"
+    "  [op].pipeBackin\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5643,7 +5630,7 @@ void Task::vAddMunged(Task* )
     "  Marker[]\n"
     "    nullptr to Marker[]\n"
     "\n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5655,7 +5642,7 @@ void Task::vAddMunged(Task* )
     "  MetaGet[]\n"
     "    nullptr to MetaGet[]\n"
     "\n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5667,7 +5654,7 @@ void Task::vAddMunged(Task* )
     "  OperandOoO[]\n"
     "    nullptr to OperandOoO[]\n"
     "    \n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5679,7 +5666,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\n"
     "    nullptr to PipeIn[]\n"
     "    \n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5691,7 +5678,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\n"
     "    nullptr to PipeIn[]\n"
     "\n"
-    "  op.pipeBackin\n"
+    "  [op].pipeBackin\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5703,7 +5690,7 @@ void Task::vAddMunged(Task* )
     "  PlanOperand[]\n"
     "    nullptr to PlanOperand[]\n"
     "\n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5715,7 +5702,7 @@ void Task::vAddMunged(Task* )
     "  RowBuffer[]\n"
     "    nullptr to RowBuffer[]\n"
     "\n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5727,7 +5714,7 @@ void Task::vAddMunged(Task* )
     "  StreamDefLft[]\n"
     "    nullptr to StreamDefLft[]\n"
     "    \n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5739,7 +5726,7 @@ void Task::vAddMunged(Task* )
     "  StreamDefRht[]\n"
     "    nullptr to StreamDefRht[]\n"
     "\n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5751,7 +5738,7 @@ void Task::vAddMunged(Task* )
     "  StreamDefOut[]\n"
     "    nullptr to StreamDefOut[]\n"
     "    \n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5763,7 +5750,7 @@ void Task::vAddMunged(Task* )
     "  StreamSet[]\n"
     "    nullptr to StreamSet[]\n"
     "    \n"
-    "  op.pipeout\n"
+    "  [op].pipeout\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5894,8 +5881,8 @@ void Task::vAddMunged(Task* )
     "    exit\n"
     "  then\n"
     "\n"
-    "  find: sort_Cleaning      ZK_M_CLEANING    op[].handler!\n"
-    "  find: sort_StreamDef     ZK_D_STREAMDEF   op[].handler!\n"
+    "  find: sort_Cleaning      ZK_M_CLEANING    [op].handler!\n"
+    "  find: sort_StreamDef     ZK_D_STREAMDEF   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -6208,10 +6195,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: fetch_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: fetch_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!\n"
-    "  find: fetch_DataMarker    ZK_M_DATAPULSE     op[].handler!\n"
-    "  find: fetch_StartMarker   ZK_M_START         op[].handler!\n"
+    "  find: fetch_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: fetch_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!\n"
+    "  find: fetch_DataMarker    ZK_M_DATAPULSE     [op].handler!\n"
+    "  find: fetch_StartMarker   ZK_M_START         [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -6509,10 +6496,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: wrFile_Cleaning    ZK_M_CLEANING    op[].handler!\n"
-    "  find: wrFile_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!\n"
-    "  find: wrFile_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!\n"
-    "  find: wrFile_StartMarker ZK_M_START       op[].handler!\n"
+    "  find: wrFile_Cleaning    ZK_M_CLEANING    [op].handler!\n"
+    "  find: wrFile_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!\n"
+    "  find: wrFile_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!\n"
+    "  find: wrFile_StartMarker ZK_M_START       [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -6648,11 +6635,11 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": mleak \\prompt\n"
     "\n"
-    "  system::bpa\n"
+    "  [system].bpa\n"
     "\n"
     "  \"\\\"Hello\\\" .\" >interpret\n"
     "  \n"
-    "  system::bpa\n"
+    "  [system].bpa\n"
     " ;\n"
     "\n"
     "\n"
@@ -6723,7 +6710,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": exp5 \\prompt\n"
     "\n"
-    "  \"<promptTag>\" Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<promptTag>\" [job].tagSet@ tagSet.hasName if\n"
     "    <promptTag> \"<promptTag> = %v\" .printf\n"
     "  else\n"
     "    \"NO SUCH <promptTag>\" .\n"
@@ -6735,7 +6722,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": exp6 \\prompt\n"
     "\n"
-    "  Job[].tagSet@ tagSet.asStr .\n"
+    "  [job].tagSet@ tagSet.asStr .\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -6786,9 +6773,9 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": ping_action\n"
     "\n"
-    "  \"ping\" str.toPromptOut op.pipeout\n"
+    "  \"ping\" str.toPromptOut [op].pipeout\n"
     "  //10000 str.random dup .\n"
-    "  //  str.toPromptOut op.pipeout\n"
+    "  //  str.toPromptOut [op].pipeout\n"
     "\n"
     "  \"ping sleeps\" .\n"
     "  1 thread::sleepSsec\n"
@@ -6978,12 +6965,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker  ZK_M_LEAVE       op[].handler!\n"
-    "  find: compiler_StreamSet    ZK_D_STREAMSET   op[].handler!\n"
+    "  find: compiler_LeaveMarker  ZK_M_LEAVE       [op].handler!\n"
+    "  find: compiler_StreamSet    ZK_D_STREAMSET   [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: nameValidate_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: nameValidate_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: nameValidate_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: nameValidate_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -7178,7 +7165,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: spawnNode_DataPulse ZK_M_DATAPULSE op[].handler!\n"
+    "  find: spawnNode_DataPulse ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -7253,8 +7240,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: call_CallPipeline ZK_I_CALLPIPELINE op[].handler!\n"
-    "  find: call_StartMarker  ZK_M_START  op[].handler!\n"
+    "  find: call_CallPipeline ZK_I_CALLPIPELINE [op].handler!\n"
+    "  find: call_StartMarker  ZK_M_START  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -7408,7 +7395,7 @@ void Task::vAddMunged(Task* )
     "  //\"bktMapGet_req\" .\n"
     "  op__topology\n"
     "\n"
-    "  find: bktMapGet_getTable   ZK_M_DATAPULSE   op[].handler!\n"
+    "  find: bktMapGet_getTable   ZK_M_DATAPULSE   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -7575,8 +7562,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: getAndAllotRows_RowBuffer  ZK_D_ROWBUFFER op[].handler!\n"
-    "  find: getAndAllotRows_Eos        ZK_M_EOS op[].handler!\n"
+    "  find: getAndAllotRows_RowBuffer  ZK_D_ROWBUFFER [op].handler!\n"
+    "  find: getAndAllotRows_Eos        ZK_M_EOS [op].handler!\n"
     " \n"
     "  op__loop\n"
     "\n"
@@ -7674,8 +7661,8 @@ void Task::vAddMunged(Task* )
     "  //\"Operand:- ZK_M_CLEANING\" .verbose\n"
     "\n"
     "  // get the profile from the task\n"
-    "  //Task[] task.profile@ to Operand[]\n"
-    "  //nullptr Task[] task.profile!\n"
+    "  //[task] task.profile@ to Operand[]\n"
+    "  //nullptr [task] task.profile!\n"
     "  //Operand[].pipeOut\n"
     "\n"
     "  Path[].popNamedTableFolder\n"
@@ -7799,8 +7786,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "    // change handler for replicated cases\n"
     "    Table[].isReplicated if\n"
-    "      find: insert_Replicated  ZK_D_CRWBUFFER  op[].handler!\n"
-    "      find: insert_Replicated  ZK_D_ROWBUFFER  op[].handler!\n"
+    "      find: insert_Replicated  ZK_D_CRWBUFFER  [op].handler!\n"
+    "      find: insert_Replicated  ZK_D_ROWBUFFER  [op].handler!\n"
     "    else\n"
     "      Table[].tablePtn@ to TablePtn[]\n"
     "    then\n"
@@ -7837,12 +7824,12 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: insert_Cleaning      ZK_M_CLEANING     op[].handler!\n"
-    "  find: insert_DataBuffer    ZK_D_CRWBUFFER    op[].handler!\n"
-    "  find: insert_EosMarker     ZK_M_EOS          op[].handler!\n"
-    "  find: insert_DataBuffer    ZK_D_ROWBUFFER    op[].handler!\n"
-    "  //find: insert_StreamDef   ZK_D_STREAMDEF    op[].handler!\n"
-    "  find: insert_StartMarker   ZK_M_START        op[].handler!\n"
+    "  find: insert_Cleaning      ZK_M_CLEANING     [op].handler!\n"
+    "  find: insert_DataBuffer    ZK_D_CRWBUFFER    [op].handler!\n"
+    "  find: insert_EosMarker     ZK_M_EOS          [op].handler!\n"
+    "  find: insert_DataBuffer    ZK_D_ROWBUFFER    [op].handler!\n"
+    "  //find: insert_StreamDef   ZK_D_STREAMDEF    [op].handler!\n"
+    "  find: insert_StartMarker   ZK_M_START        [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -7922,12 +7909,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker   ZK_M_LEAVE       op[].handler!\n"
-    "  find: compiler_StreamSet     ZK_D_STREAMSET   op[].handler!\n"
+    "  find: compiler_LeaveMarker   ZK_M_LEAVE       [op].handler!\n"
+    "  find: compiler_StreamSet     ZK_D_STREAMSET   [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: aggregateSplit_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: aggregateSplit_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: aggregateSplit_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: aggregateSplit_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -8028,7 +8015,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  true\n"
     "  //stk\n"
-    "  //task::breakpoint set breakpoint back into C++ code, where the task loop is\n"
+    "  //[task].breakpoint set breakpoint back into C++ code, where the task loop is\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -8040,7 +8027,7 @@ void Task::vAddMunged(Task* )
     "  //\"bktGet0_req\" .\n"
     "  op__topology\n"
     "\n"
-    "  find: bktGet0_DataPulse   ZK_M_DATAPULSE   op[].handler!\n"
+    "  find: bktGet0_DataPulse   ZK_M_DATAPULSE   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -8089,12 +8076,12 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": jobReport_action\n"
     "\n"
-    "  session::lastJobId \"Last Job Id %v\" .printf\n"
+    "  [session].lastJobId \"Last Job Id %v\" .printf\n"
     "\n"
     "  <jobno> >int locals| iJob |\n"
     "  \n"
     "  iJob not if\n"
-    "    session::lastJobId to iJob\n"
+    "    [session].lastJobId to iJob\n"
     "  then\n"
     "\n"
     "  0 locals| eError |\n"
@@ -8366,7 +8353,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 0 0 locals| sTableNm sSmt errorCode |\n"
     "\n"
-    "  //Job[].tagSet@ tagSet.asStr .\n"
+    "  //[job].tagSet@ tagSet.asStr .\n"
     "  Pipein[].pipeout\n"
     "\n"
     "  <etc> <indexNm> \"create unique index %v %v ;\" str.format to sSmt\n"
@@ -8374,9 +8361,9 @@ void Task::vAddMunged(Task* )
     "  sSmt .\n"
     "\n"
     "  // parse the smt and get the table name\n"
-    "  sSmt Job[] indexDef::parseTableName to sTableNm\n"
+    "  sSmt [job] indexDef::parseTableName to sTableNm\n"
     "  sTableNm \"\" str.equal if\n"
-    "    Job[].error@ to errorCode\n"
+    "    [job].error@ to errorCode\n"
     "    errorCode op__execErr\n"
     "    true\n"
     "    exit\n"
@@ -8390,10 +8377,10 @@ void Task::vAddMunged(Task* )
     "    exit\n"
     "  then\n"
     "\n"
-    "  sSmt Table[] Job[] indexDef::parse to IndexDef[]\n"
+    "  sSmt Table[] [job] indexDef::parse to IndexDef[]\n"
     "\n"
     "  IndexDef[].isNull if\n"
-    "    Job[].error@ to errorCode\n"
+    "    [job].error@ to errorCode\n"
     "    errorCode op__execErr\n"
     "    true\n"
     "    exit\n"
@@ -8420,7 +8407,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: syntaxUniqueIndex_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: syntaxUniqueIndex_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -8568,8 +8555,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: gridSanity_StartMarker ZK_M_START op[].handler!\n"
-    "  find: gridSanity_NodeInfo    ZK_I_NODEINFO    op[].handler!\n"
+    "  find: gridSanity_StartMarker ZK_M_START [op].handler!\n"
+    "  find: gridSanity_NodeInfo    ZK_I_NODEINFO    [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -8662,7 +8649,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  Marker[].newDataPulse Marker[]\n"
     "    \"__anyDemon\" find word.object@\n"
-    "    pipeline.pipeout\n"
+    "    job.pipeToOp0\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -8674,7 +8661,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: OP_toDemon_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: OP_toDemon_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -8820,11 +8807,11 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: toBktCrw_EosMarker   ZK_M_EOS         op[].handler!\n"
-    "  find: toBktCrw_DataMarker  ZK_M_DATAPULSE   op[].handler!\n"
-    "  find: toBktCrw_RowBuffer   ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: toBktCrw_StartMarker ZK_M_START       op[].handler!\n"
-    "  find: toBktCrw_StreamDef   ZK_D_STREAMDEF   op[].handler!\n"
+    "  find: toBktCrw_EosMarker   ZK_M_EOS         [op].handler!\n"
+    "  find: toBktCrw_DataMarker  ZK_M_DATAPULSE   [op].handler!\n"
+    "  find: toBktCrw_RowBuffer   ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: toBktCrw_StartMarker ZK_M_START       [op].handler!\n"
+    "  find: toBktCrw_StreamDef   ZK_D_STREAMDEF   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -8941,12 +8928,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker      ZK_M_LEAVE         op[].handler!\n"
-    "  find: compiler_StreamSet        ZK_D_STREAMSET     op[].handler!\n"
+    "  find: compiler_LeaveMarker      ZK_M_LEAVE         [op].handler!\n"
+    "  find: compiler_StreamSet        ZK_D_STREAMSET     [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: explainPlan_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: explainPlan_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: explainPlan_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: explainPlan_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -9274,16 +9261,16 @@ void Task::vAddMunged(Task* )
     "\n"
     "  \n"
     "  begin\n"
-    "     system::activeJobs \">>> ActiveJobs %v\" .printf\n"
-    "     system::activeJobs 2 >\n"
+    "     [system].activeJobs \">>> ActiveJobs %v\" .printf\n"
+    "     [system].activeJobs 2 >\n"
     "  while\n"
-    "    1 task::sleepSsec\n"
+    "    1 [task].sleepSsec\n"
     "  repeat\n"
     "\n"
-    "  system::activeJobs \"$$$ ActiveJobs %v\" .printf\n"
+    "  [system].activeJobs \"$$$ ActiveJobs %v\" .printf\n"
     "  \n"
     "\n"
-    "  true Session::systemCloser!\n"
+    "  true [session].systemCloser!\n"
     "  \n"
     "  \"system closed\" .\n"
     "\n"
@@ -9301,7 +9288,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: sysClosed_sysClosed  ZK_M_DATAPULSE  op[].handler!\n"
+    "  find: sysClosed_sysClosed  ZK_M_DATAPULSE  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -9425,8 +9412,8 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  Counter0[] 2 == if\n"
-    "    find: smlAgg_ComCleaning   ZK_M_CLEANING      op[].handler!\n"
-    "    find: smlAgg_ComStreamDef  ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: smlAgg_ComCleaning   ZK_M_CLEANING      [op].handler!\n"
+    "    find: smlAgg_ComStreamDef  ZK_D_STREAMDEF     [op].handler!\n"
     "  else\n"
     "    0 assert\n"
     "  then\n"
@@ -9815,15 +9802,15 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* distribute Job_Execute to all participants                                 */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": execute::distribute params| pJobOriginator |\n"
+    ": execute:distribute params| pJobOriginator |\n"
     "\n"
-    "  // \"execute::distribute\" .\n"
+    "  // \"execute:distribute\" .\n"
     "\n"
     "  //\n"
     "  // where: on the originator node\n"
     "  //\n"
     "\n"
-    "  job[].tscExecuting\n"
+    "  [job].tscExecuting\n"
     "\n"
     "  0 locals| pJob_Execute |\n"
     "\n"
@@ -9833,7 +9820,7 @@ void Task::vAddMunged(Task* )
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // set the no of acks expected in originator job\n"
-    "  grid::knownNodes pJobOriginator job.acksRemaining!\n"
+    "  [grid].knownNodes pJobOriginator job.acksRemaining!\n"
     "\n"
     "  // send job_execute to all nodes\n"
     "\n"
@@ -9857,41 +9844,45 @@ void Task::vAddMunged(Task* )
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // delete the temporary job_execute\n"
-    "  pJob_Execute job.delete2pc\n"
+    "  pJob_Execute job.delete\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* run received Job_Execute on participating node   recv: job.spawn */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": execute::execute\n"
+    ": execute:execute\n"
     "\n"
-    "  // \"execute::execute\" .\n"
+    "  // \"execute:execute\" .\n"
     "\n"
     "  //\n"
     "  // where: on the participating node\n"
     "  //\n"
-    "  Job[] locals| pJob_Execute |\n"
+    "  [job] locals| pJob_Execute |\n"
+    "  0 locals| pTask_Execute |\n"
     "\n"
     "  // find the job to be executed in the participating jobs\n"
     "  pJob_Execute job.id@ locals| iJobId |\n"
-    "  iJobId plist::findJob discard\n"
+    "  iJobId ListedJob[].findParticipant discard\n"
     "\n"
     "  // stall till job's previous phase (task) has completed\n"
-    "  begin\n"
-    "    JobRef[].hasTask\n"
-    "  while\n"
-    "    \"job still has task\" .\n"
-    "    Task[].yield\n"
-    "  repeat\n"
     "  \n"
-    "  // \"execute::execute\" .\n"
-    "\n"
+    "  ListedJob[].task@ to pTask_Execute\n"
+    "  begin\n"
+    "      pTask_Execute task.state@ TS_HIBERNATING !=\n"
+    "  while\n"
+    "    \"job to be executed still has non-hibernating task\" .\n"
+    "    [task].yield\n"
+    "  repeat\n"
+    "  pTask_Execute task.cycleLock\n"
+    "    \n"
+    "  \n"
+    "  // \"execute:execute\" .\n"
     "\n"
     "  // execute the job on this participating node\n"
-    "  JobRef[] job.scheduleNextPhase // job in participant list ; perform next phase\n"
-    "  JobRef[].returnReference\n"
+    "  ListedJob[] job.scheduleNextPhase // job in participant list ; perform next phase\n"
+    "  ListedJob[].returnReference\n"
     "  \n"
-    "  _job_2pc_delete_\n"
+    "  [job]:retire\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -9903,7 +9894,7 @@ void Task::vAddMunged(Task* )
     ": execute_cmdTags _cmdTags tagCopy: genericJob_tags\n"
     "  tags{\n"
     "    <cmdDesc>  = \"--desc for job--\"\n"
-    "    <entryPoint>    = \"execute::execute\"\n"
+    "    <entryPoint>    = \"execute:execute\"\n"
     "    <path>     = \"/\"\n"
     "  }\n"
     " ;\n"
@@ -9975,7 +9966,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: supervisor_StartMarker ZK_M_START op[].handler!\n"
+    "  find: supervisor_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -10370,13 +10361,13 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": pipelineLocal::termination\n"
     "\n"
-    "  DdlLock[].testDrop\n"
+    "  [ddlLock].testDrop\n"
     "\n"
-    "  JobRef[].none\n"
+    "  ListedJob[].assertNoRef\n"
     "\n"
-    "  Job[].addRetired\n"
-    "  Task[].grabLock\n"
-    "    TR_RETIRE_THIS_TASK Task[].transition!\n"
+    "  [job].addRetired\n"
+    "  [task].grabLock\n"
+    "    TR_RETIRE_THIS_TASK [task].transition!\n"
     "\n"
     "  HAZARD\n"
     " ;\n"
@@ -10386,7 +10377,9 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": pipelineLocal::local\n"
     "\n"
-    "  Job[].assertCorrectness\n"
+    "  0 locals| nAcks |\n"
+    "  \n"
+    "  [job].assertCorrectness\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // compile the pipeline command\n"
@@ -10394,29 +10387,32 @@ void Task::vAddMunged(Task* )
     "  \"<show_command>\" sysargs::tagSet@ tagSet.hasName\n"
     "  if\n"
     "    <cmd> \"pipelineLocal::origin: %v\\n\" .printf\n"
-    "    //system::bpa\n"
+    "    //[system].bpa\n"
     "  then\n"
     "\n"
-    "  <cmd> Dynamo::compileStmt dup\n"
-    "  EC_NONE == if\n"
+    "  Dynamo[].new\n"
+    "  <cmd> Dynamo[].compile to ErrorCode[]\n"
+    "  ErrorCode[] EC_NONE == if\n"
     "    // clean compile\n"
-    "    \n"
+    "    to PipelineSpec[]\n"
+    "    Dynamo[].delete\n"
     "  else\n"
     "    //\"got error\" .\n"
-    "    Job[].error!\n"
+    "    ErrorCode[] [job].error!\n"
     "    \n"
-    "    DdlLock[].testDrop\n"
+    "    [ddlLock].testDrop\n"
     "\n"
     "    PipelineSpec[].delete\n"
-    "        \n"
+    "    Dynamo[].delete\n"
+    "\n"
     "    // cross check\n"
     "    PipelineSpec[] not assert\n"
     "\n"
-    "    JS_SIGNALLED Job[].state!\n"
+    "    JS_SIGNALLED [job].state!\n"
     "      \n"
-    "    Task[].grabLock\n"
-    "    Session[].signal\n"
-    "    Task[].dropLock\n"
+    "    [task].grabLock\n"
+    "    [session].signal\n"
+    "    [task].dropLock\n"
     "    \n"
     "    pipelineLocal::termination\n"
     "    \n"
@@ -10427,15 +10423,16 @@ void Task::vAddMunged(Task* )
     "  \n"
     "  PipelineSpec[] assert\n"
     "\n"
-    "  Pipeline[].create\n"
-    "  Pipeline[].spawnOpTasks\n"
+    "  PipelineSpec[] [pipeline].create\n"
+    "  \n"
+    "  [pipeline].spawnOpTasks\n"
     "\n"
     "  // run <pre_execute>\n"
     "\n"
     "  \"<pre_execute>\"\n"
-    "  Job[].tagSet@ tagSet.hasName if\n"
+    "  [job].tagSet@ tagSet.hasName if\n"
     "    \"<pre_execute>\"\n"
-    "    Job[].tagSet@ tagSet.getStr locals| sPreExe |\n"
+    "    [job].tagSet@ tagSet.getStr locals| sPreExe |\n"
     "    sPreExe find\n"
     "    dup not if\n"
     "      sPreExe \"Unable to find pre execute word: %v\" .printf\n"
@@ -10443,53 +10440,56 @@ void Task::vAddMunged(Task* )
     "    then\n"
     "      execute\n"
     "  else\n"
-    "    args.verbose if\n"
+    "    [args].verbose if\n"
     "      <pipelineNm> \"No pre execute word for pipeline: %v\" .printf\n"
     "    then\n"
     "  then\n"
     "\n"
     "  // add job to the local job list\n"
-    "  Job[] job.jobList@ JL_DEMON == not if\n"
-    "    Job[].addLocal\n"
+    "  [job] job.jobList@ JL_DEMON == not if\n"
+    "    [job].addLocal\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // grab the task lock\n"
-    "  Task[].grabLock\n"
+    "  // enqueue start-marker to start op to execute the pipeline job\n"
     "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // execute the pipeline job (send startmarker to start)\n"
-    "  //<pipelineNm> \"%v execute\" .printf\n"
-    "  Pipeline::enqueueStart if\n"
+    "  [task].grabLock\n"
     "\n"
-    "    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "    // wait for operators to finish\n"
-    "    //<pipelineNm> grid::thisNodeName@ \"(%v) %v waiting on Task[].wait\" .printf\n"
-    "    Task[].wait\n"
-    "    //<pipelineNm> grid::thisNodeName@ \"(%v) %v running\" .printf\n"
-    "  else\n"
-    "    //<pipelineNm> grid::thisNodeName@ \"(%v) nothing to do\" .printf\n"
-    "    Task[].dropLock\n"
-    "  then\n"
+    "    [pipeline].opsOnNode@ to nAcks\n"
+    "\n"
+    "    nAcks if\n"
+    "      nAcks [task].acksRemaining!\n"
+    "    \n"
+    "      [pipeline].startPipeline if\n"
+    "    \n"
+    "        Marker[].newStartMarker\n"
+    "        Marker[]\\clear [pipeline].op0@ op.enqueOperand\n"
+    "      then\n"
+    "      [task].wait\n"
+    "    else\n"
+    "      [task].dropLock\n"
+    "    then\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // remove job from the local job list\n"
-    "  Job[] job.jobList@ JL_DEMON == not if\n"
-    "    Job[].removeLocal\n"
+    "  [job] job.jobList@ JL_DEMON == not if\n"
+    "    [job].removeLocal\n"
     "  then\n"
     "\n"
-    "  //<pipelineNm> grid::thisNodeName@ \"(%v) ALL DONE!!!\" .\n"
+    "  //<pipelineNm> [grid].thisNodeName@ \"(%v) ALL DONE!!!\" .\n"
     "  \n"
     "  \n"
-    "  DdlLock[].testDrop\n"
-    "  JobRef[].none\n"
+    "  [ddlLock].testDrop\n"
+    "  ListedJob[].assertNoRef\n"
     "\n"
-    "  Job[].addRetired\n"
+    "  [job].addRetired\n"
     "  \n"
-    "  JS_SIGNALLED Job[].state!\n"
-    "    Session[].signal\n"
+    "  JS_SIGNALLED [job].state!\n"
+    "    [session].signal\n"
     "\n"
-    "  Task[].grabLock\n"
-    "    TR_RETIRE_THIS_TASK Task[].transition!\n"
+    "  [task].grabLock\n"
+    "    TR_RETIRE_THIS_TASK [task].transition!\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -10557,7 +10557,7 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // Setup ZK_D_PARCEL handler here\n"
-    "  find: bktRecv_Parcel ZK_D_PARCEL op[].handler!\n"
+    "  find: bktRecv_Parcel ZK_D_PARCEL [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -10712,11 +10712,11 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 0 0 locals| sTableNm sSmt errorCode |\n"
     "\n"
-    "  //Job[].tagSet@ tagSet.asStr .\n"
+    "  //[job].tagSet@ tagSet.asStr .\n"
     "  Pipein[].pipeout\n"
     "\n"
     "  // is it a unique index ?\n"
-    "  \"<unique>\" Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<unique>\" [job].tagSet@ tagSet.hasName if\n"
     "    <etc> <indexNm> \"create unique index %v %v ;\" str.format to sSmt\n"
     "  else\n"
     "    <etc> <indexNm> \"create index %v %v ;\" str.format to sSmt\n"
@@ -10725,10 +10725,10 @@ void Task::vAddMunged(Task* )
     "  // sSmt .\n"
     "\n"
     "  // parse the smt and get the table name\n"
-    "  sSmt Job[] indexDef::parseTableName to sTableNm\n"
-    "  Job[].error@ to errorCode\n"
+    "  sSmt [job] indexDef::parseTableName to sTableNm\n"
+    "  [job].error@ to errorCode\n"
     "  sTableNm \"\" str.equal if\n"
-    "    Job[].error@ to errorCode\n"
+    "    [job].error@ to errorCode\n"
     "    errorCode op__execErr\n"
     "    true\n"
     "    exit\n"
@@ -10742,10 +10742,10 @@ void Task::vAddMunged(Task* )
     "    exit\n"
     "  then\n"
     "\n"
-    "  sSmt Table[] Job[] indexDef::parse to IndexDef[]\n"
+    "  sSmt Table[] [job] indexDef::parse to IndexDef[]\n"
     "\n"
     "  IndexDef[].isNull if\n"
-    "    Job[].error@ to errorCode\n"
+    "    [job].error@ to errorCode\n"
     "    errorCode op__execErr\n"
     "    true\n"
     "    exit\n"
@@ -10772,7 +10772,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: syntaxIndex_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: syntaxIndex_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -10951,7 +10951,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: BufferGen_DataPulse ZK_M_DATAPULSE op[].handler!\n"
+    "  find: BufferGen_DataPulse ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -11125,8 +11125,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: rowCount_DataMarker ZK_M_DATAPULSE op[].handler!\n"
-    "  find: rowCount_StartMarker ZK_M_START op[].handler!\n"
+    "  find: rowCount_DataMarker ZK_M_DATAPULSE [op].handler!\n"
+    "  find: rowCount_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -11280,12 +11280,12 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": jobOperators_action\n"
     "\n"
-    "  session::lastJobId \"Last Job Id %v\" .printf\n"
+    "  [session].lastJobId \"Last Job Id %v\" .printf\n"
     "\n"
     "  <jobno> >int locals| iJob |\n"
     "  \n"
     "  iJob not if\n"
-    "    session::lastJobId to iJob\n"
+    "    [session].lastJobId to iJob\n"
     "  then\n"
     "\n"
     "  0 locals| eError |\n"
@@ -11571,10 +11571,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: insDel_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!\n"
-    "  find: insDel_RowBuffer   ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: insDel_StartMarker ZK_M_START op[].handler!\n"
-    "  find: insDel_StreamDef   ZK_D_STREAMDEF   op[].handler!\n"
+    "  find: insDel_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!\n"
+    "  find: insDel_RowBuffer   ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: insDel_StartMarker ZK_M_START [op].handler!\n"
+    "  find: insDel_StreamDef   ZK_D_STREAMDEF   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -11789,11 +11789,11 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: compilerOpEg_Cleaning      ZK_M_CLEANING     op[].handler!\n"
-    "  find: compilerOpEg_DataMarker    ZK_M_DATAPULSE    op[].handler!\n"
-    "  find: compilerOpEg_EosMarker     ZK_M_EOS          op[].handler!\n"
-    "  find: compilerOpEg_PlanNode      ZK_D_PLANOPERAND  op[].handler!\n"
-    "  find: compilerOpEg_StartMarker   ZK_M_START        op[].handler!\n"
+    "  find: compilerOpEg_Cleaning      ZK_M_CLEANING     [op].handler!\n"
+    "  find: compilerOpEg_DataMarker    ZK_M_DATAPULSE    [op].handler!\n"
+    "  find: compilerOpEg_EosMarker     ZK_M_EOS          [op].handler!\n"
+    "  find: compilerOpEg_PlanNode      ZK_D_PLANOPERAND  [op].handler!\n"
+    "  find: compilerOpEg_StartMarker   ZK_M_START        [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -12188,13 +12188,13 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 locals| rateSecs |\n"
     "\n"
-    "  \"<rateSecs>\" Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<rateSecs>\" [job].tagSet@ tagSet.hasName if\n"
     "    <rateSecs> >int to rateSecs\n"
     "  then\n"
     "\n"
     "  rateSecs if\n"
     "    rateSecs \"Scan Pausing for %v secs\" str.format .\n"
-    "    rateSecs task::sleepSsec\n"
+    "    rateSecs [task].sleepSsec\n"
     "    \"Scan awake\" .\n"
     "  then\n"
     "\n"
@@ -12214,7 +12214,7 @@ void Task::vAddMunged(Task* )
     "    Table[].tablePtn@ to TablePtn[]\n"
     "  then\n"
     "\n"
-    "  //args.developer if\n"
+    "  //[args].developer if\n"
     "  //  1 debug::flag!\n"
     "  //then\n"
     "\n"
@@ -12252,7 +12252,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  _lu_initialise_\n"
     "\n"
-    "  \"<catalogNm>\"  Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<catalogNm>\"  [job].tagSet@ tagSet.hasName if\n"
     "    <schemaNm> <catalogNm>\n"
     "    \"/tenants/boray/catalogs/%v/schemas/%v/tables\" str.format\n"
     "    str.toStrVec Path[].set\n"
@@ -12260,15 +12260,15 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: scanRight_CancellingMarker ZK_M_CANCELLING op[].handler!\n"
-    "  find: scanRight_Cleaning         ZK_M_CLEANING   op[].handler!\n"
-    "  find: scanRight_DataPulse        ZK_M_DATAPULSE  op[].handler!\n"
-    "  find: scanRight_EosMarker        ZK_M_EOS        op[].handler!\n"
-    "  find: scanRight_LeftCrwRowBuffer ZK_D_CRWBUFFER  op[].handler!\n"
-    "  find: scanRight_LeftCrwRowBuffer ZK_D_ROWBUFFER  op[].handler!\n"
-    "  find: scanRight_NextBuffer       ZK_M_NEXTBUFFER op[].handler!\n"
-    "  find: scanRight_StartMarker      ZK_M_START      op[].handler!\n"
-    "  find: scanRight_StreamDef        ZK_D_STREAMDEF  op[].handler!\n"
+    "  find: scanRight_CancellingMarker ZK_M_CANCELLING [op].handler!\n"
+    "  find: scanRight_Cleaning         ZK_M_CLEANING   [op].handler!\n"
+    "  find: scanRight_DataPulse        ZK_M_DATAPULSE  [op].handler!\n"
+    "  find: scanRight_EosMarker        ZK_M_EOS        [op].handler!\n"
+    "  find: scanRight_LeftCrwRowBuffer ZK_D_CRWBUFFER  [op].handler!\n"
+    "  find: scanRight_LeftCrwRowBuffer ZK_D_ROWBUFFER  [op].handler!\n"
+    "  find: scanRight_NextBuffer       ZK_M_NEXTBUFFER [op].handler!\n"
+    "  find: scanRight_StartMarker      ZK_M_START      [op].handler!\n"
+    "  find: scanRight_StreamDef        ZK_D_STREAMDEF  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -12315,45 +12315,42 @@ void Task::vAddMunged(Task* )
     "\n"
     "\" job_pipeline.sen\" .verbose\n"
     "\n"
-    "\n"
-    "/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/\n"
-    "/*                               ON ORIGIN                                    */\n"
-    "/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/\n"
+    "////////////////////////////////////////////////////////////////////////////////\n"
+    "//                            ON ORIGINATING NODE                             //\n"
+    "////////////////////////////////////////////////////////////////////////////////\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* launch of a distributed pipeline on originating node                       */\n"
+    "/* run a distributed pipeline from this originating node                      */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": pipeline::origin ( -- <R> )\n"
+    ": pipeline:origin ( -- <R> )\n"
     "\n"
-    "  // \"pipeline::origin\" .\n"
-    "  \n"
-    "  Task[].job@ Job[] equal assert\n"
-    "  \n"
-    "  Job[].assertCorrectness\n"
+    "  //\"pipeline:origin\" .\n"
+    "    \n"
+    "  [job].assertCorrectness\n"
     "\n"
-    "  job[].tscBeginning\n"
+    "  [job].tscBeginning\n"
     "  \n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // pre-check\n"
     "  \n"
-    "  \"<preCheck>\" Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<preCheck>\" [job].tagSet@ tagSet.hasName if\n"
     "    // tag exists..\n"
     "    \n"
     "    <preCheck> find execute not if\n"
     "      // - preCheck word does not exist\n"
     "      \n"
-    "      Job[].error!\n"
+    "      [job].error!\n"
     "      \n"
-    "      DdlLock[].testDrop\n"
-    "      JobRef[].none\n"
+    "      [ddlLock].testDrop\n"
+    "      ListedJob[].assertNoRef\n"
     "\n"
-    "      Job[].addRetired\n"
+    "      [job].addRetired\n"
     "      \n"
-    "      JS_SIGNALLED Job[].state!\n"
-    "        Session[].signal\n"
+    "      JS_SIGNALLED [job].state!\n"
+    "        [session].signal\n"
     "\n"
-    "      Task[].grabLock\n"
-    "        TR_RETIRE_THIS_TASK Task[].transition!\n"
+    "      [task].grabLock\n"
+    "        TR_RETIRE_THIS_TASK [task].transition!\n"
     "      \n"
     "      HAZARD\n"
     "\n"
@@ -12361,202 +12358,272 @@ void Task::vAddMunged(Task* )
     "  then\n"
     "\n"
     "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // become an originator\n"
-    "  \n"
-    "//       1         2         3\n"
-    "//34567890123456789012345678901234567890\n"
-    "  Job[].addOriginator             // add this job to originator job list\n"
+    "  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//\n"
+    "  //                           become an originator                           //\n"
+    "  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//\n"
     "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // compile pipeline statement on origin to check its syntax\n"
-    "    \n"
+    "  // add this job to originator job list\n"
+    "  [job].addOriginator\n"
+    "\n"
     "  \"<show_command>\" sysargs::tagSet@ tagSet.hasName\n"
     "  if\n"
-    "    //<cmd> \"pipeline::origin: %v\\n\" .printf\n"
+    "    //<cmd> \"pipeline:origin: %v\\n\" .printf\n"
     "    <cmd> .\n"
     "    //jobs::seeRlist\n"
     "\n"
-    "    //system::bpa\n"
+    "    //[system].bpa\n"
     "  then\n"
     "\n"
-    "  <cmd> Dynamo::compileStmt dup\n"
-    "  EC_NONE == if\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // compile pipeline statement on origin to check its syntax\n"
+    "    \n"
+    "  Dynamo[].new\n"
+    "\n"
+    "  <cmd> Dynamo[].compile to ErrorCode[]\n"
+    "  \n"
+    "  ErrorCode[] EC_NONE == if\n"
     "    // + clean compile\n"
-    "    discard\n"
-    "    PipelineSpec[].delete\n"
+    "    to PipelineSpec[]\n"
     "  else\n"
     "    // - didnt compile\n"
-    "    Job[].error!\n"
-    "    DdlLock[].testDrop\n"
+    "    ErrorCode[] [job].error!\n"
+    "    [ddlLock].testDrop\n"
+    "  then\n"
+    "  \n"
+    "  Dynamo[].delete\n"
+    "\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // test if distributed job may execute\n"
+    "  \n"
+    "  [job].error@ not if\n"
+    "    [job].preExecuteTest to ErrorCode[]\n"
+    "    ErrorCode[] if\n"
+    "      ErrorCode[] [job].error!\n"
+    "      [ddlLock].testDrop\n"
+    "    then\n"
+    "  then\n"
+    "  \n"
+    "  \n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // test if optimising\n"
+    "  \n"
+    "  [job].error@ not if\n"
+    "        \n"
+    "    \"<optimise>\" [job].tagSet@ tagSet.hasName\n"
+    "    PipelineSpec[].optimisable\n"
+    "    and\n"
+    "    if\n"
+    "      \"Would Optimise\" .\n"
+    "      <cmd> .\n"
+    "    then\n"
+    "\n"
+    "    \n"
+    "    Optimiser[].new\n"
+    "    \n"
+    "//    PipelineSpec[] Optimiser[].dissect\n"
+    "//    Optimiser[].optimise\n"
+    "//    Optimiser[].weave discard\n"
+    "\n"
+    "    Optimiser[].delete\n"
     "  then\n"
     "\n"
-    "  // cross check\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // tidy up\n"
+    "  \n"
+    "  PipelineSpec[] if\n"
+    "    PipelineSpec[].delete\n"
+    "  then\n"
+    "  \n"
+    "  Dynamo[]       not assert\n"
+    "  Optimiser[]    not assert\n"
     "  PipelineSpec[] not assert\n"
     "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // distribute the participants of this job and execute them\n"
-    "  \n"
-    "  Job[].error@ not if\n"
+    "\n"
+    "  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//\n"
+    "  //           distribute participants of this job and execute them           //\n"
+    "  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//\n"
+    "\n"
+    "  [job].error@ not if\n"
     "    // + compiled without error..\n"
     "    \n"
-    "    Task[].grabLock\n"
+    "    [task].grabLock\n"
     "    \n"
     "    // set the no of acks expected by originator job\n"
     "    //   to be the number of defined nodes in the grid\n"
-    "    grid::knownNodes Job[] job.acksRemaining!\n"
+    "    [grid].knownNodes [job] job.acksRemaining!\n"
     "\n"
     "    // set acks for originator task\n"
-    "    1 Task[].acksRemaining!\n"
+    "    1 [task].acksRemaining!\n"
     "\n"
-    "\n"
-    "    \"pipeline::participant\" Job[].entry!\n"
+    "    \"pipeline:begin\" [job].entryPoint!\n"
     "    job::distributeParticipants\n"
     "    \n"
-    "    Task[].wait\n"
+    "    [task].wait\n"
     "  then\n"
     "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // we're back as the originator\n"
+    "\n"
+    "  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//\n"
+    "  //                      we're back as the originator                        //\n"
+    "  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//\n"
+    "\n"
+    "  [job].removeOriginator\n"
     "  \n"
-    "  Job[].removeOriginator\n"
-    "  \n"
-    "  session::hasCascade@ not\n"
+    "  [session].hasCascade@ not\n"
     "  if\n"
     "      \n"
-    "    DdlLock[].testDrop\n"
-    "    JobRef[].none\n"
+    "    [ddlLock].testDrop\n"
+    "    ListedJob[].assertNoRef\n"
     "\n"
-    "    Job[].addRetired\n"
+    "    [job].addRetired\n"
     "    \n"
-    "    JS_SIGNALLED Job[].state!\n"
-    "      Session[].signal\n"
+    "    JS_SIGNALLED [job].state!\n"
+    "      [session].signal\n"
     "      \n"
-    "    Task[].grabLock\n"
-    "      TR_RETIRE_THIS_TASK Task[].transition!\n"
+    "    [task].grabLock\n"
+    "      TR_RETIRE_THIS_TASK [task].transition!\n"
+    "      \n"
+    "    HAZARD\n"
     "\n"
     "  else\n"
     "      \n"
-    "    DdlLock[].testDrop\n"
-    "    JS_SIGNALLED Job[].state!\n"
-    "    Session[].signal\n"
+    "    [ddlLock].testDrop\n"
+    "    JS_SIGNALLED [job].state!\n"
+    "    [session].signal\n"
     " \n"
-    "    Task[].grabLock TR_DELETE_THIS_TASK Task[].transition!\n"
+    "    [task].grabLock\n"
+    "      TR_DELETE_THIS_TASK [task].transition!\n"
     "  \n"
+    "    HAZARD\n"
+    "    \n"
     "  then\n"
     "\n"
-    "  \n"
     "  HAZARD\n"
     " ;\n"
     "\n"
     "\n"
-    "/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/\n"
+    "////////////////////////////////////////////////////////////////////////////////\n"
     "/*                          ON ALL PARTICIPANTS                               */\n"
-    "/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/\n"
+    "////////////////////////////////////////////////////////////////////////////////\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* begin pipeline job on participant node                                     */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": pipeline::participant ( -- )\n"
+    ": pipeline:begin ( -- )\n"
     "\n"
-    "  // \"pipeline::participant\" .\n"
+    "  // \"pipeline:begin\" .\n"
     "\n"
-    "  job[].progressReset\n"
+    "  [job].progressReset\n"
     "  \n"
-    "  JobRef[].none\n"
-    "  \n"
-    "  Task[].job@ Job[] equal assert\n"
+    "  [job].assertCorrectness\n"
     "\n"
-    "  JP_BEGINNING Job[].phase!\n"
-    "  //\"pipeline::participant post Job[]..phase!\" job[].progress\n"
-    "\n"
+    "  ListedJob[].assertNoRef\n"
     "  \n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // this job is beginning\n"
+    "  \n"
+    "  JP_BEGINNING [job].phase!\n"
+    "  //\"pipeline:begin post [job]..phase!\" [job].progress\n"
     "\n"
     "  <path> str.toStrVec Path[].set\n"
     "\n"
     "  // set participant node of job\n"
-    "  grid::thisNode@ Job[].participantNode!\n"
+    "  [grid].thisNode@ [job].participantNode!\n"
     "\n"
     "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // compile the pipeline statement on participants (should not expect an error)\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // compile pipeline statement into spec (should not expect an error)\n"
     "\n"
-    "  //\"pipeline::participant pre dynamo\" job[].progress\n"
-    "  <cmd> Dynamo::compileStmt EC_NONE == assert\n"
-    "  //\"pipeline::participant post Dynamo::compileStmt\" job[].progress\n"
+    "  Dynamo[].new\n"
     "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // begin the pipeline job (spawning jobs for ops etc)\n"
+    "  //\"pipeline:begin pre dynamo\" [job].progress\n"
+    "  <cmd> Dynamo[].compile\n"
+    "    EC_NONE == assert\n"
+    "    to PipelineSpec[]\n"
+    "  //\"pipeline:begin post Dynamo[].compile\" [job].progress\n"
+    "\n"
+    "  Dynamo[].delete\n"
     "  \n"
-    "  Pipeline[].create\n"
-    "  //\"pipeline::participant post Pipeline[].create\" job[].progress\n"
     "  \n"
-    "  Pipeline[].spawnOpTasks\n"
-    "  //\"pipeline::participant post Pipeline[].spawnOpTasks\" job[].progress\n"
-    "\n"
-    "  JP_BEGUN Job[].phase!\n"
-    "     \n"
-    "  \"pipeline::execute\" Job[].entry!\n"
-    "\n"
-    "\n"
-    "\n"
-    "  // add job to participant job list\n"
-    "  job[].tscParticipant\n"
-    "\n"
-    "  Job[].addParticipant\n"
-    "  Job[].assertCorrectness\n"
-    "  Job[].phase@ JP_BEGINNING assert\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // create pipeline from spec and spawn tasks for ops\n"
+    "  \n"
+    "  PipelineSpec[] [pipeline].create\n"
+    "  //\"pipeline:begin post [pipeline].create\" [job].progress\n"
+    "  \n"
+    "  [pipeline].spawnOpTasks\n"
+    "  //\"pipeline:begin post [pipeline].spawnOpTasks\" [job].progress\n"
     "\n"
     "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // this job has begun on this node\n"
+    "  \n"
+    "  JP_BEGUN [job].phase!\n"
+    "\n"
+    "  // what to execute next\n"
+    "  \"pipeline:execute\" [job].entryPoint!\n"
+    "\n"
+    "  // add job to participant list\n"
+    "  [job].tscParticipant\n"
+    "  [job].addParticipant\n"
+    "  [job].assertCorrectness\n"
+    "  \n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // reply begun to originator\n"
+    "\n"
+    "  [job] begun:reply\n"
+    "  //\"pipeline:begin post begun:reply\" [job].progress\n"
+    "\n"
+    "  [ddlLock].testDrop\n"
     "\n"
     "\n"
-    "\n"
-    "  Job[] begun::replyToOrigin\n"
-    "  //\"pipeline::participant post begun::replyToOrigin\" job[].progress\n"
-    "\n"
-    "  DdlLock[].testDrop\n"
-    "\n"
-    "  Task[].grabLock\n"
-    "    \n"
-    "    // about to delete task (but not this job) so unlink task and job\n"
-    "    nullptr Job[].task!\n"
-    "    nullptr Task[].job!\n"
-    "    \n"
-    "    TR_DELETE_THIS_TASK Task[].transition!\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // task hibernates (with job in participant list)\n"
+    "  \n"
+    "  [task].grabLock\n"
+    "        \n"
+    "    TR_HIBERNATE_THIS_TASK [task].transition!\n"
     "\n"
     "  HAZARD\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* execute pipeline job                                                       */\n"
+    "/* execute pipeline job on participant node                                   */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": pipeline::execute ( -- )\n"
+    ": pipeline:execute ( -- )\n"
     "\n"
-    "  // \"pipeline::execute\" .\n"
+    "  // \"pipeline:execute\" .\n"
     "  \n"
-    "  Task[].job@ Job[] equal assert\n"
+    "  0 locals| nAcks |\n"
+    "  \n"
+    "  [job].assertCorrectness\n"
     "\n"
-    "  JP_EXECUTING Job[].phase!\n"
     "\n"
-    "  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // this job is executing\n"
+    "  \n"
+    "  JP_EXECUTING [job].phase!\n"
+    "\n"
     "  // set task's dictionary stack from path in job\n"
-    "\n"
     "  <path> str.toStrVec Path[].set\n"
-    "  //task::dump\n"
+    "  //[task].dump\n"
     "\n"
+    "  // acquire ddl lock\n"
     "  job::acquireDdlLock\n"
-    "\n"
-    "  // : pipeline::execute ( -- )\n"
     "  \n"
-    "  Job[].assertCorrectness\n"
+    "  [job].assertCorrectness\n"
     "\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // run optional <pre_execute> word\n"
     "\n"
-    "  \"<pre_execute>\" Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<pre_execute>\" [job].tagSet@ tagSet.hasName if\n"
     "    \"<pre_execute>\"\n"
-    "    Job[].tagSet@ tagSet.getStr locals| sPreExe |\n"
+    "    [job].tagSet@ tagSet.getStr locals| sPreExe |\n"
     "    sPreExe find\n"
     "    dup not if\n"
     "      sPreExe \"Unable to find pre execute word: %v\" .printf\n"
@@ -12564,111 +12631,136 @@ void Task::vAddMunged(Task* )
     "    then\n"
     "      execute\n"
     "  else\n"
-    "    args.verbose if\n"
+    "    [args].verbose if\n"
     "      <pipelineNm> \"No pre execute word for pipeline: %v\" .printf\n"
     "    then\n"
     "  then\n"
     "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // grab the task lock\n"
-    "  \n"
-    "  Task[].grabLock\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // enqueue start-marker to start op to execute the pipeline job\n"
+    "  // ???? enqueue start-marker to start op to execute the pipeline job\n"
     "  \n"
-    "  //<pipelineNm> \"%v execute\" .printf\n"
-    "  Pipeline::enqueueStart not if\n"
-    "    //<pipelineNm> grid::thisNodeName@ \"(%v) nothing to do\" .printf\n"
-    "    Task[].dropLock\n"
-    "  else\n"
+    "  [task].grabLock\n"
     "\n"
-    "    // wait for all operators to ack this job\n"
-    "    Task[].wait\n"
+    "    [pipeline].opsOnNode@ to nAcks\n"
     "\n"
-    "  then\n"
-    "  \n"
-    "  JP_EXECUTED Job[].phase!\n"
-    "  \n"
-    "  \"pipeline::end\" Job[].entry!\n"
+    "    nAcks if\n"
+    "      nAcks [task].acksRemaining!\n"
+    "    \n"
+    "      [pipeline].startPipeline if\n"
+    "    \n"
+    "        Marker[].newStartMarker\n"
+    "        Marker[]\\clear [pipeline].op0@ op.enqueOperand\n"
+    "      then\n"
+    "      [task].wait\n"
+    "    else\n"
+    "      [task].dropLock\n"
+    "    then\n"
+    "    \n"
     "\n"
-    "  DdlLock[].testDrop\n"
-    "  JobRef[].none\n"
     "  \n"
-    "  Job[] executed::replyToOrigin\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // this job has executed\n"
     "  \n"
-    "  Task[].grabLock\n"
+    "  JP_EXECUTED [job].phase!\n"
     "  \n"
-    "    // about to delete task (but not this job) so unlink task and job\n"
-    "    nullptr Job[].task!\n"
-    "    nullptr Task[].job!\n"
+    "  // what to execute next\n"
+    "  \"pipeline:end\" [job].entryPoint!\n"
+    "\n"
+    "  [ddlLock].testDrop\n"
+    "  ListedJob[].assertNoRef\n"
     "  \n"
-    "    TR_DELETE_THIS_TASK Task[].transition!\n"
+    "  \n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // reply executed to originator\n"
+    "  \n"
+    "  [job] executed:reply\n"
+    "  \n"
+    "  \n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // task hibernates (with job in participant list)\n"
+    "\n"
+    "  [task].grabLock\n"
+    "      \n"
+    "    TR_HIBERNATE_THIS_TASK [task].transition!\n"
     "\n"
     "  HAZARD\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* end pipeline job                                                           */\n"
+    "/* end pipeline job on participant node                                       */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": pipeline::end ( -- )\n"
+    ": pipeline:end ( -- )\n"
     "\n"
-    "  // \"pipeline::end\" .\n"
+    "  // \"pipeline:end\" .\n"
     "\n"
-    "  Task[].job@ Job[] equal assert\n"
-    "\n"
-    "  Job[].assertCorrectness\n"
+    "  [job].assertCorrectness\n"
     "  \n"
     "  \n"
-    "  JP_ENDING Job[].phase!\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // this job is ending\n"
     "\n"
-    "  JP_ENDED Job[].phase!\n"
+    "  JP_ENDING [job].phase!\n"
     "\n"
-    "  Job[].removeParticipant\n"
+    "  [ddlLock].testDrop\n"
+    " \n"
+    " \n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // this job has ended\n"
+    "  \n"
+    "  JP_ENDED [job].phase!\n"
     "  \n"
     "\n"
-    "  DdlLock[].testDrop\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // remove job from plist\n"
     "  \n"
-    "  Job[] ended::replyToOrigin\n"
+    "  [job].removeParticipant\n"
+    "  \n"
+    "  \n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // reply ended to originator\n"
+    "  \n"
+    "  [job] ended:reply\n"
     "\n"
-    "  JS_DELETABLE Job[].state!\n"
-    "  Job[].addRetired\n"
-    "  \n"
-    "  Task[].grabLock\n"
-    "    Job[] job.queueExitDemon\n"
-    "    TR_RETIRE_THIS_TASK Task[].transition!\n"
+    "  JS_DELETABLE [job].state!\n"
+    "  [job].addRetired\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // task retires (with job in retired list)\n"
+    "\n"
+    "  [task].grabLock\n"
+    "    [job] [exitDemon]:queueJob\n"
+    "    TR_RETIRE_THIS_TASK [task].transition!\n"
     "\n"
     "  HAZARD\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* end pipeline job                                                           */\n"
+    "/* cancel pipeline job on participant node                                    */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": pipeline::cancel ( -- )\n"
+    ": pipeline:cancel ( -- )\n"
     "\n"
-    "  // \"pipeline::cancel\" .\n"
+    "  // \"pipeline:cancel\" .\n"
     "  \n"
-    "  Task[].job@ Job[] equal assert\n"
-    "\n"
-    "  Job[].assertCorrectness\n"
+    "  [job].assertCorrectness\n"
     "  \n"
     "    // [ senCompiler::current@ word.name@ encode::push ] .\n"
     "\n"
-    "  JP_CANCELING Job[].phase!\n"
+    "  JP_CANCELING [job].phase!\n"
     "\n"
-    "  JP_CANCELED Job[].phase!\n"
+    "  JP_CANCELED [job].phase!\n"
     "\n"
     "\n"
-    "  Job[].removeParticipant\n"
+    "  [job].removeParticipant\n"
     "    \n"
-    "  Job[] cancelled::replyToOrigin\n"
+    "  [job] cancelled:reply\n"
     "\n"
-    "  JS_DELETABLE Job[].state!\n"
+    "  JS_DELETABLE [job].state!\n"
     "\n"
-    "  Job[].addRetired\n"
-    "  Task[].grabLock\n"
-    "    Job[] job.queueExitDemon\n"
-    "    TR_RETIRE_THIS_TASK Task[].transition!\n"
+    "  [job].addRetired\n"
+    "  [task].grabLock\n"
+    "    [job] [exitDemon]:queueJob\n"
+    "    TR_RETIRE_THIS_TASK [task].transition!\n"
     "\n"
     "  HAZARD\n"
     " ;\n"
@@ -12685,9 +12777,7 @@ void Task::vAddMunged(Task* )
     "    <ddlLock>  = DL_GRAB_READ\n"
     "    <preCheck> = bClusterStarted\n"
     "      \n"
-    "    <entryPoint>    = \"pipeline::origin\"\n"
-    "\n"
-    "\n"
+    "    <entryPoint>  = \"pipeline:origin\"\n"
     "  }\n"
     " ;\n"
     "\n"
@@ -12802,10 +12892,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: toPtnRow_EosMarker   ZK_M_EOS   op[].handler!\n"
-    "  find: toPtnRow_DataMarker  ZK_M_DATAPULSE   op[].handler!\n"
-    "  find: toPtnRow_RowBuffer   ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: toPtnRow_StartMarker ZK_M_START op[].handler!\n"
+    "  find: toPtnRow_EosMarker   ZK_M_EOS   [op].handler!\n"
+    "  find: toPtnRow_DataMarker  ZK_M_DATAPULSE   [op].handler!\n"
+    "  find: toPtnRow_RowBuffer   ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: toPtnRow_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -12896,8 +12986,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: dropTable_StartMarker   ZK_M_START   op[].handler!\n"
-    "  find: dropTable_DestroyMarker ZK_M_DESTROY op[].handler!\n"
+    "  find: dropTable_StartMarker   ZK_M_START   [op].handler!\n"
+    "  find: dropTable_DestroyMarker ZK_M_DESTROY [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -12994,7 +13084,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: createTenant_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: createTenant_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -13268,12 +13358,12 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: rlu_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: rlu_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!\n"
-    "  find: rlu_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "  find: rlu_RowBuffer     ZK_D_ROWBUFFER     op[].handler!\n"
-    "  find: rlu_StartMarker   ZK_M_START         op[].handler!\n"
-    "  find: rlu_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "  find: rlu_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: rlu_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!\n"
+    "  find: rlu_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "  find: rlu_RowBuffer     ZK_D_ROWBUFFER     [op].handler!\n"
+    "  find: rlu_StartMarker   ZK_M_START         [op].handler!\n"
+    "  find: rlu_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -13359,8 +13449,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: copyRows_RowBuffer  ZK_D_ROWBUFFER op[].handler!\n"
-    "  find: copyRows_Eos        ZK_M_EOS op[].handler!\n"
+    "  find: copyRows_RowBuffer  ZK_D_ROWBUFFER [op].handler!\n"
+    "  find: copyRows_Eos        ZK_M_EOS [op].handler!\n"
     " \n"
     "  op__loop\n"
     "\n"
@@ -13466,7 +13556,7 @@ void Task::vAddMunged(Task* )
     ": job.send params| pJob |\n"
     "\n"
     "\n"
-    "  //pJob job.name@ grid::thisNodeName@ \"(%v) job.send %v\" .printf\n"
+    "  //pJob job.name@ [grid].thisNodeName@ \"(%v) job.send %v\" .printf\n"
     "\n"
     "  SendNode[] node.sendSocket@ to Socket[]\n"
     "\n"
@@ -13487,7 +13577,7 @@ void Task::vAddMunged(Task* )
     "  params| pJob |\n"
     "  params| i_Node |\n"
     "\n"
-    "  i_Node grid::findNodeByNo to SendNode[]\n"
+    "  i_Node [grid].findNodeByNo to SendNode[]\n"
     "\n"
     "  pJob job.send\n"
     "  \n"
@@ -13502,7 +13592,7 @@ void Task::vAddMunged(Task* )
     "  params| pJob |\n"
     "  params| i_Node |\n"
     "\n"
-    "  i_Node grid::findNodeByNo to SendNode[]\n"
+    "  i_Node [grid].findNodeByNo to SendNode[]\n"
     "\n"
     "  pJob job.send\n"
     "  \n"
@@ -13531,7 +13621,7 @@ void Task::vAddMunged(Task* )
     "  == if\n"
     "    discard\n"
     "    // \"job::acquireDdlLock - grabbing ddl write lock\" .\n"
-    "    DdlLock[].grabWrite\n"
+    "    [ddlLock].grabWrite\n"
     "    exit\n"
     "  then\n"
     "\n"
@@ -13541,7 +13631,7 @@ void Task::vAddMunged(Task* )
     "  == if\n"
     "    discard\n"
     "    // \"job::acquireDdlLock - grabbing ddl read lock\" .\n"
-    "    DdlLock[].grabRead\n"
+    "    [ddlLock].grabRead\n"
     "    exit\n"
     "  then\n"
     "\n"
@@ -13553,7 +13643,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": job::seeTags\n"
     "\n"
-    "  Job[].tagSet@ tagSet.asStr .\n"
+    "  [job].tagSet@ tagSet.asStr .\n"
     " ;\n"
     "\n"
     "\n"
@@ -13591,7 +13681,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  //\"std_recoveryWord\" .\n"
     "  \n"
-    "  //task::exception .\n"
+    "  //[task].exception .\n"
     "\n"
     "  \"op__failureRecovery\" FIND execute\n"
     "  \n"
@@ -13604,13 +13694,13 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* queue given job onto exit demon                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": job.queueExitDemon params| pJob |\n"
+    ": [exitDemon]:queueJob params| pJob |\n"
     "\n"
     "  \"__exitDemon\" find dup if\n"
     "  \n"
-    "    word.object@ locals| pExitDemon |\n"
+    "    word.object@ locals| pExitDemonJob |\n"
     "\n"
-    "    pJob pExitDemon pipeline.pipeOut\n"
+    "    pJob pExitDemonJob job.pipeToOp0\n"
     "\n"
     "  else\n"
     "\n"
@@ -13623,21 +13713,21 @@ void Task::vAddMunged(Task* )
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* 2pc job exits and is deleted immediately                                   */\n"
+    "/* retire this job and its task                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": _job_2pc_delete_\n"
+    ": [job]:retire\n"
     "\n"
-    "  DdlLock[].testDrop\n"
+    "  [ddlLock].testDrop\n"
     "  \n"
     "  // check this task has no job reference\n"
-    "  JobRef[].none\n"
+    "  ListedJob[].assertNoRef\n"
     "\n"
-    "  JS_DELETABLE Job[].state!\n"
+    "  JS_DELETABLE [job].state!\n"
     "\n"
-    "  Job[].addRetired\n"
-    "  Task[].grabLock\n"
-    "    Job[] job.queueExitDemon\n"
-    "    TR_RETIRE_THIS_TASK Task[].transition!\n"
+    "  [job].addRetired\n"
+    "  [task].grabLock\n"
+    "    [job] [exitDemon]:queueJob\n"
+    "    TR_RETIRE_THIS_TASK [task].transition!\n"
     "\n"
     "  \n"
     "  HAZARD\n"
@@ -13770,7 +13860,7 @@ void Task::vAddMunged(Task* )
     "  \"dupCrw_req\" .\n"
     "  op__topology\n"
     "\n"
-    "  find: dupCrw_CrwBuffer  ZK_D_CRWBUFFER op[].handler!\n"
+    "  find: dupCrw_CrwBuffer  ZK_D_CRWBUFFER [op].handler!\n"
     " \n"
     "  op__loop\n"
     "\n"
@@ -13839,7 +13929,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: addNode_DataPulse ZK_M_DATAPULSE op[].handler!\n"
+    "  find: addNode_DataPulse ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -13917,7 +14007,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: dropSchema_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: dropSchema_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -14128,18 +14218,18 @@ void Task::vAddMunged(Task* )
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  //system::started@ not if\n"
-    "    grid::setStartNode\n"
-    "    true system::started!\n"
+    "  //[system].started@ not if\n"
+    "    [grid].setStartNode\n"
+    "    true [system].started!\n"
     "    \": _Start completed\" .boot\n"
     "  //then\n"
     "\n"
     "  \"end startSystem::startSystem\" .verbose\n"
     "\n"
-    "  Job[].addRetired\n"
-    "  Task[].grabLock\n"
-    "    Job[] job.queueExitDemon\n"
-    "    TR_RETIRE_THIS_TASK Task[].transition!\n"
+    "  [job].addRetired\n"
+    "  [task].grabLock\n"
+    "    [job] [exitDemon]:queueJob\n"
+    "    TR_RETIRE_THIS_TASK [task].transition!\n"
     "\n"
     "  HAZARD\n"
     " ;\n"
@@ -14477,13 +14567,13 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: EOAsm_Cleaning      ZK_M_CLEANING op[].handler!\n"
-    "  find: EOAsm_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!\n"
-    "  find: EOAsm_EosMarker     ZK_M_EOS     op[].handler!\n"
-    "  find: EOAsm_DataMarker    ZK_M_DATAPULSE     op[].handler!\n"
-    "  find: EOAsm_RowBuffer     ZK_D_ROWBUFFER     op[].handler!\n"
-    "  find: EOAsm_StartMarker   ZK_M_START   op[].handler!\n"
-    "  find: EOAsm_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "  find: EOAsm_Cleaning      ZK_M_CLEANING [op].handler!\n"
+    "  find: EOAsm_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!\n"
+    "  find: EOAsm_EosMarker     ZK_M_EOS     [op].handler!\n"
+    "  find: EOAsm_DataMarker    ZK_M_DATAPULSE     [op].handler!\n"
+    "  find: EOAsm_RowBuffer     ZK_D_ROWBUFFER     [op].handler!\n"
+    "  find: EOAsm_StartMarker   ZK_M_START   [op].handler!\n"
+    "  find: EOAsm_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -14534,16 +14624,16 @@ void Task::vAddMunged(Task* )
     "\n"
     "  \"flushDemon_DataPulse A\" .\n"
     "\n"
-    "  0 locals| pDemon |\n"
+    "  0 locals| pDemonJob |\n"
     "\n"
     "  PipeIn[].pipeOut\n"
     "  \n"
     "  <demonNm> find dup if\n"
     "  \n"
-    "    word.object@ to pDemon\n"
+    "    word.object@ to pDemonJob\n"
     "\n"
     "    \"flushDemon_DataPulse B\" .\n"
-    "    Marker[].newFlushMarker Marker[]\\clear pDemon pipeline.pipeOut\n"
+    "    Marker[].newFlushMarker Marker[]\\clear pDemonJob job.pipeToOp0\n"
     "    \"flushDemon_DataPulse C\" .\n"
     "\n"
     "  else\n"
@@ -14566,7 +14656,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: flushDemon_DataPulse ZK_M_DATAPULSE op[].handler!\n"
+    "  find: flushDemon_DataPulse ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -14615,7 +14705,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": sysOpened_sysOpened \\handler\n"
     "\n"
-    "  false Session::systemCloser!\n"
+    "  false [session].systemCloser!\n"
     "\n"
     "  \"system opened\" .\n"
     "  \n"
@@ -14633,7 +14723,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: sysOpened_sysOpened  ZK_M_DATAPULSE  op[].handler!\n"
+    "  find: sysOpened_sysOpened  ZK_M_DATAPULSE  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -14812,18 +14902,18 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": demon::install\n"
     "\n"
-    "  //ddlLock[].dropRead  : check with RAY\n"
+    "  //[ddlLock].dropRead  : check with RAY\n"
     "\n"
     "  \"__\" <pipelineNm> str.cat locals| sDemonNm |\n"
     "\n"
-    "  args.verbose if\n"
+    "  [args].verbose if\n"
     "    sDemonNm \"installing demon pipeline job: %v\" .printf\n"
     "  then\n"
     "\n"
     "  sDemonNm >createInRoot locals| pDemonWd |\n"
     "\n"
-    "  Job[] pDemonWd word.object!\n"
-    "  Job[].addDemon\n"
+    "  [job] pDemonWd word.object!\n"
+    "  [job].addDemon\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -15107,10 +15197,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: toBktRow_EosMarker   ZK_M_EOS         op[].handler!\n"
-    "  find: toBktRow_DataMarker  ZK_M_DATAPULSE   op[].handler!\n"
-    "  find: toBktRow_RowBuffer   ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: toBktRow_StartMarker ZK_M_START       op[].handler!\n"
+    "  find: toBktRow_EosMarker   ZK_M_EOS         [op].handler!\n"
+    "  find: toBktRow_DataMarker  ZK_M_DATAPULSE   [op].handler!\n"
+    "  find: toBktRow_RowBuffer   ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: toBktRow_StartMarker ZK_M_START       [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -15425,16 +15515,16 @@ void Task::vAddMunged(Task* )
     "\n"
     "  Counter0[] 2 == if\n"
     "    // handle combined operator\n"
-    "    find: indexJoin_ComCleaning     ZK_M_CLEANING      op[].handler!\n"
-    "    find: indexJoin_ComStartMarker  ZK_M_START         op[].handler!\n"
-    "    find: indexJoin_ComStreamDef    ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: indexJoin_ComCleaning     ZK_M_CLEANING      [op].handler!\n"
+    "    find: indexJoin_ComStartMarker  ZK_M_START         [op].handler!\n"
+    "    find: indexJoin_ComStreamDef    ZK_D_STREAMDEF     [op].handler!\n"
     "  else\n"
-    "    find: indexJoin_Cleaning      ZK_M_CLEANING op[].handler!\n"
-    "    find: indexJoin_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!\n"
-    "    find: indexJoin_EosMarker     ZK_M_EOS     op[].handler!\n"
-    "    find: indexJoin_RowBuffer     ZK_D_ROWBUFFER     op[].handler!\n"
-    "    find: indexJoin_StartMarker   ZK_M_START   op[].handler!\n"
-    "    find: indexJoin_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: indexJoin_Cleaning      ZK_M_CLEANING [op].handler!\n"
+    "    find: indexJoin_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!\n"
+    "    find: indexJoin_EosMarker     ZK_M_EOS     [op].handler!\n"
+    "    find: indexJoin_RowBuffer     ZK_D_ROWBUFFER     [op].handler!\n"
+    "    find: indexJoin_StartMarker   ZK_M_START   [op].handler!\n"
+    "    find: indexJoin_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "  then\n"
     "\n"
     "  op__loop\n"
@@ -15486,27 +15576,21 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* send Job_Ended back to originating node                                    */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ended::replyToOrigin ( pJobParticipant -- )\n"
+    ": ended:reply params| pJobParticipant |\n"
     "\n"
-    "  params| pJobParticipant |\n"
-    "\n"
-    "  pJobParticipant job.id@ locals| iJobId |\n"
-    "\n"
-    "  0 locals| pJob_Ended |\n"
-    "\n"
-    "  //grid::thisNodeName@ \"(%v) ENDED::send\" .printf\n"
-    "\n"
+    "  // \"ended:reply\" .\n"
+    "  \n"
     "  // new a temporary Job_Ended\n"
-    "  pJobParticipant job_Ended::new to pJob_Ended\n"
+    "  pJobParticipant job_Ended::new locals| pJob_Ended |\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // send the ended job\n"
-    "  iJobId job::originator@ pJob_Ended job.reply\n"
+    "  pJobParticipant [job].originNodeNo@ pJob_Ended job.reply\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  pJob_Ended job.delete2pc\n"
+    "  pJob_Ended job.delete\n"
     " ;\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
@@ -15516,9 +15600,9 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* run received Job_Ended on originating node       recv: job.spawn */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": ended::ended\n"
+    ": ended:ended\n"
     "\n"
-    "  Job[] locals| pJob_Ended |\n"
+    "  [job] locals| pJob_Ended |\n"
     "  pJob_Ended job.id@ locals| iJobId |\n"
     "\n"
     "  0 locals| bAmDecider |\n"
@@ -15527,46 +15611,46 @@ void Task::vAddMunged(Task* )
     "  // get the context of this __ended job\n"
     "\n"
     "  // find the originating job\n"
-    "  iJobId olist::findJob discard\n"
+    "  iJobId ListedJob[].findOriginator discard\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // process __ended job on this originating node\n"
     "\n"
     "  // increment the number of __ended jobs received in api state\n"
-    "  JobRef[] ssn::incEnded\n"
-    "  JobRef[] ssn::traceSession\n"
+    "  ListedJob[] ssn::incEnded\n"
+    "  ListedJob[] ssn::traceSession\n"
     "\n"
     "  // decrement the acks remaining\n"
-    "  JobRef[] job.dec2pcAcksRmg to bAmDecider\n"
+    "  ListedJob[] job.dec2pcAcksRmg to bAmDecider\n"
     "\n"
-    "  //grid::thisNodeName@ \"(%v) ENDED GOT ACK\" .printf\n"
+    "  //[grid].thisNodeName@ \"(%v) ENDED GOT ACK\" .printf\n"
     "  // if there are acks remaining just exit\n"
     "  bAmDecider not if\n"
-    "    JobRef[].returnReference\n"
-    "    _job_2pc_delete_\n"
+    "    ListedJob[].returnReference\n"
+    "    [job]:retire\n"
     "    exit                                                         // *EARLY EXIT*\n"
     "  then\n"
-    "  //grid::thisNodeName@ \"(%v) ENDED AM DECIDER\" .printf\n"
+    "  //[grid].thisNodeName@ \"(%v) ENDED AM DECIDER\" .printf\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // all __ended jobs have been received, so this job is the decider\n"
     "\n"
     "  begin\n"
-    "    JobRef[].references\n"
+    "    ListedJob[].references\n"
     "  1 > while\n"
     "  repeat\n"
     "\n"
-    "  job[].tscEnded\n"
+    "  [job].tscEnded\n"
     "\n"
     "\n"
     "  // remove the originating job from the originator jobs\n"
-    "  //Job[].removeOriginator\n"
+    "  //[job].removeOriginator\n"
     "\n"
     "  // notify the originating task\n"
-    "  JobRef[].task@ task.ack\n"
-    "  JobRef[].returnReference\n"
+    "  ListedJob[].task@ task.ack\n"
+    "  ListedJob[].returnReference\n"
     "  \n"
-    "  _job_2pc_delete_\n"
+    "  [job]:retire\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -15578,7 +15662,7 @@ void Task::vAddMunged(Task* )
     ": ended_cmdTags _cmdTags tagCopy: genericJob_tags\n"
     "  tags{\n"
     "    <cmdDesc>  = \"--desc for job--\"\n"
-    "    <entryPoint>    = \"ended::ended\"\n"
+    "    <entryPoint>    = \"ended:ended\"\n"
     "    <path>     = \"/\"\n"
     "  }\n"
     " ;\n"
@@ -15901,8 +15985,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: truncateTable_StartMarker ZK_M_START     op[].handler!\n"
-    "  find: truncateTable_DataPulse   ZK_M_DATAPULSE op[].handler!\n"
+    "  find: truncateTable_StartMarker ZK_M_START     [op].handler!\n"
+    "  find: truncateTable_DataPulse   ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -16340,7 +16424,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  PipeIn[].sendTo discard\n"
     "\n"
-    "  Op.ackPipelineJob\n"
+    "  [op].ackPipelineJob\n"
     "  \n"
     "  false // calling op_loop exits\n"
     " ;\n"
@@ -16352,15 +16436,15 @@ void Task::vAddMunged(Task* )
     "\n"
     "  _lu_initialise_\n"
     "\n"
-    "  999999999999 task::operandYield!\n"
+    "  999999999999 [task].operandYield!\n"
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: PipeIn[].sendTo op[].handlerAll!\n"
+    "  find: PipeIn[].sendTo [op].handlerAll!\n"
     "\n"
-    "  find: send_CANCELLING  ZK_M_CANCELLING  op[].handler!\n"
-    "  find: send_CLEANING    ZK_M_CLEANING    op[].handler!\n"
-    "  find: send_EXITING     ZK_M_EXITING     op[].handler!\n"
+    "  find: send_CANCELLING  ZK_M_CANCELLING  [op].handler!\n"
+    "  find: send_CLEANING    ZK_M_CLEANING    [op].handler!\n"
+    "  find: send_EXITING     ZK_M_EXITING     [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -16599,12 +16683,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker       ZK_M_LEAVE         op[].handler!\n"
-    "  find: compiler_StreamSet         ZK_D_STREAMSET     op[].handler!\n"
+    "  find: compiler_LeaveMarker       ZK_M_LEAVE         [op].handler!\n"
+    "  find: compiler_StreamSet         ZK_D_STREAMSET     [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: corrBySquash_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: corrBySquash_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: corrBySquash_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: corrBySquash_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -16764,7 +16848,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": op__createCmdErrInfoSet\n"
     "\n"
-    "  DdlLock[].testDrop\n"
+    "  [ddlLock].testDrop\n"
     "\n"
     "  // delete if any infoset in the register\n"
     "  InfoSet[].isNotNull if\n"
@@ -16797,7 +16881,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": op__cmdErr params| errorCode errorMsg |\n"
     "\n"
-    "  DdlLock[].testDrop\n"
+    "  [ddlLock].testDrop\n"
     "\n"
     "  // toggle to default abnormal handlers\n"
     "  \"default_abnormalHandlers\" FIND execute\n"
@@ -16828,7 +16912,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": op__execErr params| errorCode |\n"
     "\n"
-    "  DdlLock[].testDrop\n"
+    "  [ddlLock].testDrop\n"
     "\n"
     "  // toggle to default abnormal handlers\n"
     "  \"default_abnormalHandlers\" FIND execute\n"
@@ -16860,7 +16944,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": op__execErrMsg params| errorCode errorMsg |\n"
     "\n"
-    "  DdlLock[].testDrop\n"
+    "  [ddlLock].testDrop\n"
     "\n"
     "  // toggle to default abnormal handlers\n"
     "  \"default_abnormalHandlers\" FIND execute\n"
@@ -16925,7 +17009,7 @@ void Task::vAddMunged(Task* )
     "  BktMap[].getTableName op__table assert\n"
     "\n"
     "  //\"before getparts\" .\n"
-    "  table[] bktMapSend::getParts op.pipeout\n"
+    "  table[] bktMapSend::getParts [op].pipeout\n"
     "\n"
     "  BktMap[].delete\n"
     "\n"
@@ -16933,7 +17017,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  true\n"
     "\n"
-    "  //task::breakpoint //set breakpoint back into C++ code, where the task loop is\n"
+    "  //[task].breakpoint //set breakpoint back into C++ code, where the task loop is\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -16947,7 +17031,7 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // Setup ZK_D_BKTMAPGET handler\n"
-    "  find: bktMapSend_bktmapGet ZK_D_BKTMAPGET op[].handler!\n"
+    "  find: bktMapSend_bktmapGet ZK_D_BKTMAPGET [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -17187,19 +17271,19 @@ void Task::vAddMunged(Task* )
     "  PipeIn[].delete\n"
     "\n"
     "  // check if sink has already been errored\n"
-    "  Pipeline::errored@ not if\n"
+    "  [pipeline].errored@ not if\n"
     "\n"
-    "    //grid::thisNodeName@ \"(%v) sinkOP got error marker\" .printf\n"
+    "    //[grid].thisNodeName@ \"(%v) sinkOP got error marker\" .printf\n"
     "\n"
     "    // mark pipeline as having an errored\n"
-    "    true Pipeline::errored!\n"
+    "    true [pipeline].errored!\n"
     "\n"
     "    // now pipeout an exit marker\n"
     "    Marker[].newErroringMarker\n"
     "    Marker[].pipeOut\n"
     "\n"
     "  //else\n"
-    "  //  grid::thisNodeName@ \"(%v) sinkOP ignoring error marker\" .printf\n"
+    "  //  [grid].thisNodeName@ \"(%v) sinkOP ignoring error marker\" .printf\n"
     "  then\n"
     "\n"
     "  true\n"
@@ -17214,7 +17298,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[].pipeToOutput\n"
     "  Marker[].newExitedMarker\n"
     "  Marker[].pipeOut\n"
-    "  Op.ackPipelineJob\n"
+    "  [op].ackPipelineJob\n"
     "\n"
     "  false\n"
     " ;\n"
@@ -17228,7 +17312,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[].delete\n"
     "\n"
     "   // mark pipeline as being earlyExit\n"
-    "   true Pipeline::earlyExit!\n"
+    "   true [pipeline].earlyExit!\n"
     "\n"
     "   // now pipeout a leaving marker\n"
     "   Marker[].newLeavingMarker\n"
@@ -17261,19 +17345,19 @@ void Task::vAddMunged(Task* )
     "  Pipein[].delete\n"
     "\n"
     "  // check if sink has already been errored\n"
-    "  Pipeline::errored@ if\n"
+    "  [pipeline].errored@ if\n"
     "    true\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  // check if sink has already been exitEarly\n"
-    "  Pipeline::earlyExit@ if\n"
+    "  [pipeline].earlyExit@ if\n"
     "    true\n"
     "    exit\n"
     "  then\n"
     "\n"
     "  // check if sink has already been cancelled\n"
-    "  Pipeline::cancelled@ if\n"
+    "  [pipeline].cancelled@ if\n"
     "    true\n"
     "    exit\n"
     "  then\n"
@@ -17305,18 +17389,18 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: sink_Xyz op[].handlerAll!\n"
+    "  find: sink_Xyz [op].handlerAll!\n"
     "\n"
-    "  find: sink_Cancelling      ZK_M_CANCELLING op[].handler!\n"
-    "  find: sink_Cleaning        ZK_M_CLEANING   op[].handler!\n"
-    "  find: sink_EndMarker       ZK_M_END        op[].handler!\n"
-    "  find: sink_EndingMarker    ZK_M_ENDING     op[].handler!\n"
-    "  find: sink_ErrorMarker     ZK_M_ERROR      op[].handler!\n"
-    "  find: sink_ErroringMarker  ZK_M_ERRORING   op[].handler!\n"
-    "  find: sink_Exiting         ZK_M_EXITING    op[].handler!\n"
-    "  find: sink_LeaveMarker     ZK_M_LEAVE      op[].handler!\n"
-    "  find: sink_LeavingMarker   ZK_M_LEAVING    op[].handler!\n"
-    "  find: sink_StartMarker     ZK_M_START      op[].handler!\n"
+    "  find: sink_Cancelling      ZK_M_CANCELLING [op].handler!\n"
+    "  find: sink_Cleaning        ZK_M_CLEANING   [op].handler!\n"
+    "  find: sink_EndMarker       ZK_M_END        [op].handler!\n"
+    "  find: sink_EndingMarker    ZK_M_ENDING     [op].handler!\n"
+    "  find: sink_ErrorMarker     ZK_M_ERROR      [op].handler!\n"
+    "  find: sink_ErroringMarker  ZK_M_ERRORING   [op].handler!\n"
+    "  find: sink_Exiting         ZK_M_EXITING    [op].handler!\n"
+    "  find: sink_LeaveMarker     ZK_M_LEAVE      [op].handler!\n"
+    "  find: sink_LeavingMarker   ZK_M_LEAVING    [op].handler!\n"
+    "  find: sink_StartMarker     ZK_M_START      [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -17521,7 +17605,7 @@ void Task::vAddMunged(Task* )
     "  <TableNm> op__table if\n"
     "      Table[].dumpbkt locals| pDumpBuffer |\n"
     "      // convert the string to operand to pipe out\n"
-    "        pDumpBuffer str.toPromptOut op.pipeout\n"
+    "        pDumpBuffer str.toPromptOut [op].pipeout\n"
     "      true\n"
     "    else\n"
     "      false\n"
@@ -17655,12 +17739,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker  ZK_M_LEAVE       op[].handler!\n"
-    "  find: compiler_StreamSet    ZK_D_STREAMSET   op[].handler!\n"
+    "  find: compiler_LeaveMarker  ZK_M_LEAVE       [op].handler!\n"
+    "  find: compiler_StreamSet    ZK_D_STREAMSET   [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: partitionExplain_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: partitionExplain_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: partitionExplain_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: partitionExplain_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -17759,12 +17843,12 @@ void Task::vAddMunged(Task* )
     "\n"
     ": _handler_entry\n"
     "\n"
-    "  Op[].handlerEntry\n"
+    "  [op].handlerEntry\n"
     " ;\n"
     "\n"
     ": _handler_exit\n"
     "\n"
-    "  Op[].handlerExit\n"
+    "  [op].handlerExit\n"
     " ;\n"
     "\n"
     ": \\handler \\\\category\n"
@@ -17982,14 +18066,14 @@ void Task::vAddMunged(Task* )
     " \n"
     "  0 locals| rateSecs |\n"
     "\n"
-    "  // \"<rateSecs>\" Job[].tagSet@ tagSet.hasName if\n"
-    "  \"<rateSecs>\" op[].tagSet@ tagSet.hasName if\n"
+    "  // \"<rateSecs>\" [job].tagSet@ tagSet.hasName if\n"
+    "  \"<rateSecs>\" [op].tagSet@ tagSet.hasName if\n"
     "    <rateSecs> >int to rateSecs\n"
     "  then\n"
     "\n"
     "  rateSecs if\n"
     "    rateSecs \"Scan Pausing for %v secs\" str.format .\n"
-    "    rateSecs task::sleepSsec\n"
+    "    rateSecs [task].sleepSsec\n"
     "    \"Scan awake\" .\n"
     "  then\n"
     "\n"
@@ -18012,7 +18096,7 @@ void Task::vAddMunged(Task* )
     "    StreamDefOut[].pipeOut\n"
     "  then\n"
     "\n"
-    "  //args.developer if\n"
+    "  //[args].developer if\n"
     "  //  1 debug::flag!\n"
     "  //then\n"
     "\n"
@@ -18026,7 +18110,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  _lu_initialise_\n"
     "\n"
-    "  \"<catalogNm>\"  Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<catalogNm>\"  [job].tagSet@ tagSet.hasName if\n"
     "    <schemaNm> <catalogNm>\n"
     "    \"/tenants/boray/catalogs/%v/schemas/%v/tables\" str.format\n"
     "    str.toStrVec Path[].set\n"
@@ -18034,11 +18118,11 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: scan_CancellingMarker  ZK_M_CANCELLING op[].handler!\n"
-    "  find: scan_Cleaning          ZK_M_CLEANING   op[].handler!\n"
-    "  find: scan_DataPulse         ZK_M_DATAPULSE  op[].handler!\n"
-    "  find: scan_NextBuffer        ZK_M_NEXTBUFFER op[].handler!\n"
-    "  find: scan_StartMarker       ZK_M_START      op[].handler!\n"
+    "  find: scan_CancellingMarker  ZK_M_CANCELLING [op].handler!\n"
+    "  find: scan_Cleaning          ZK_M_CLEANING   [op].handler!\n"
+    "  find: scan_DataPulse         ZK_M_DATAPULSE  [op].handler!\n"
+    "  find: scan_NextBuffer        ZK_M_NEXTBUFFER [op].handler!\n"
+    "  find: scan_StartMarker       ZK_M_START      [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -18133,14 +18217,14 @@ void Task::vAddMunged(Task* )
     "\n"
     "  // then call C++ getBucketCrw to build the rows and push the rows to the stack via parcel\n"
     "\n"
-    "  BucketGet[].getBucketCrw op.pipeout\n"
+    "  BucketGet[].getBucketCrw [op].pipeout\n"
     "\n"
     "  BucketGet[].delete\n"
     "  nullptr to BucketGet[]\n"
     "\n"
     "  true\n"
     "\n"
-    "  //task::breakpoint //set breakpoint back into C++ code, where the task loop is\n"
+    "  //[task].breakpoint //set breakpoint back into C++ code, where the task loop is\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -18154,7 +18238,7 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // Setup ZK_D_BUCKETGET handler\n"
-    "  find: bktSend0_bktGet ZK_D_BUCKETGET op[].handler!\n"
+    "  find: bktSend0_bktGet ZK_D_BUCKETGET [op].handler!\n"
     "  op__loop\n"
     "\n"
     "  _lu_finalise_\n"
@@ -18202,7 +18286,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": name::isNotKnownNode ( \"<NodeNm>\" -- t|f )\n"
     "\n"
-    "  grid::findNodeByName not if true exit then\n"
+    "  [grid].findNodeByName not if true exit then\n"
     "\n"
     "  EC_NODE_EXISTS false\n"
     " ;\n"
@@ -18226,7 +18310,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 locals| iThisNode  |\n"
     "\n"
-    "  grid::thisNode@ to iThisNode\n"
+    "  [grid].thisNode@ to iThisNode\n"
     "\n"
     "  iThisNode iOriginNode == if\n"
     "    true\n"
@@ -18307,7 +18391,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* distribute Job_Cancel to all participants                                  */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": cancel::distribute params| pJobOriginator |\n"
+    ": cancel:distribute params| pJobOriginator |\n"
     "\n"
     "  //\n"
     "  // where:  On the originator node.\n"
@@ -18318,13 +18402,13 @@ void Task::vAddMunged(Task* )
     "  // create a temporary Job_Cancel\n"
     "  pJobOriginator job_cancel::new to pJob_Cancel\n"
     "\n"
-    "  job[].tscCanceling\n"
+    "  [job].tscCanceling\n"
     "\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // set the no of acks expected in originator job\n"
-    "  grid::knownNodes pJobOriginator job.acksRemaining!\n"
+    "  [grid].knownNodes pJobOriginator job.acksRemaining!\n"
     "\n"
     "  // send job_cancel to all nodes\n"
     "\n"
@@ -18348,35 +18432,41 @@ void Task::vAddMunged(Task* )
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // delete the temporary job_cancel\n"
-    "  pJob_Cancel job.delete2pc\n"
+    "  pJob_Cancel job.delete\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* run received Job_Cancel on participating node    recv: job.spawn */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": cancel::cancel\n"
+    ": cancel:cancel\n"
     "\n"
     "  //\n"
     "  // where: on the participating node\n"
     "  //\n"
-    "  Job[] locals| pJob_Cancel |\n"
+    "  [job] locals| pJob_Cancel |\n"
+    "  0 locals| pTask_Cancel |\n"
     "\n"
     "  // find the job to be executed in the participating jobs\n"
     "  pJob_Cancel job.id@ locals| iJobId |\n"
-    "  iJobId plist::findJob discard\n"
+    "  iJobId ListedJob[].findParticipant discard\n"
     "\n"
     "  // stall till job's previous phase (task) has completed\n"
-    "  begin\n"
-    "    JobRef[].hasTask\n"
-    "  while\n"
-    "    Task[].yield \n"
-    "  repeat\n"
-    "\n"
-    "  \"pipeline::cancel\" JobRef[] job.entry!\n"
-    "  JobRef[] job.scheduleNextPhase\n"
-    "  JobRef[].returnReference\n"
     "  \n"
-    "  _job_2pc_delete_\n"
+    "  ListedJob[].task@ to pTask_Cancel\n"
+    "  begin\n"
+    "        pTask_Cancel task.state@ TS_HIBERNATING !=\n"
+    "  while\n"
+    "    \"job to be cancelled still has non-hibernating task\" .\n"
+    "    [task].yield\n"
+    "  repeat\n"
+    "  pTask_Cancel task.cycleLock\n"
+    "    \n"
+    "\n"
+    "  \"pipeline:cancel\" ListedJob[] job.entry!\n"
+    "  ListedJob[] job.scheduleNextPhase\n"
+    "  ListedJob[].returnReference\n"
+    "  \n"
+    "  [job]:retire\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -18388,7 +18478,7 @@ void Task::vAddMunged(Task* )
     ": cancel_cmdTags _cmdTags tagCopy: genericJob_tags\n"
     "  tags{\n"
     "    <cmdDesc>  = \"--desc for job--\"\n"
-    "    <entryPoint>    = \"cancel::cancel\"\n"
+    "    <entryPoint>    = \"cancel:cancel\"\n"
     "    <path>     = \"/\"\n"
     "  }\n"
     " ;\n"
@@ -18431,7 +18521,7 @@ void Task::vAddMunged(Task* )
     "    \n"
     "    jobs::seeSqueue\n"
     "    \n"
-    "    system::bpa\n"
+    "    [system].bpa\n"
     "  \n"
     "  else\n"
     "  \n"
@@ -18453,7 +18543,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "    //<nSeconds> >int  thread::sleepSsec\n"
     "\n"
-    "    //args.demonSleep thread::sleepSsec\n"
+    "    //[args].demonSleep thread::sleepSsec\n"
     "    30 thread::sleepSsec\n"
     "\n"
     "    //recurring_activity\n"
@@ -18468,13 +18558,13 @@ void Task::vAddMunged(Task* )
     " \n"
     "  _lu_initialise_\n"
     "\n"
-    "  \"<testTag>\" Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<testTag>\" [job].tagSet@ tagSet.hasName if\n"
     "    <testTag> .\n"
     "  then\n"
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: recurring_StartMarker ZK_M_START op[].handler!\n"
+    "  find: recurring_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -18836,16 +18926,16 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: filterRight_Cleaning         ZK_M_CLEANING    op[].handler!\n"
-    "  find: filterRight_CrwBuffer        ZK_D_CRWBUFFER   op[].handler!\n"
-    "  find: filterRight_EndCrwRht        ZK_M_ENDCRWRHT   op[].handler!\n"
-    "  find: filterRight_EndRowRht        ZK_M_ENDROWRHT   op[].handler!\n"
-    "  find: filterRight_EosMarker        ZK_M_EOS         op[].handler!\n"
-    "  find: filterRight_RowBuffer        ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: filterRight_StartMarker      ZK_M_START       op[].handler!\n"
-    "  find: filterRight_StartCrwRht      ZK_M_STARTCRWRHT op[].handler!\n"
-    "  find: filterRight_StartRowRht      ZK_M_STARTROWRHT op[].handler!\n"
-    "  find: filterRight_StreamDefRht     ZK_D_STREAMDEFRHT op[].handler!\n"
+    "  find: filterRight_Cleaning         ZK_M_CLEANING    [op].handler!\n"
+    "  find: filterRight_CrwBuffer        ZK_D_CRWBUFFER   [op].handler!\n"
+    "  find: filterRight_EndCrwRht        ZK_M_ENDCRWRHT   [op].handler!\n"
+    "  find: filterRight_EndRowRht        ZK_M_ENDROWRHT   [op].handler!\n"
+    "  find: filterRight_EosMarker        ZK_M_EOS         [op].handler!\n"
+    "  find: filterRight_RowBuffer        ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: filterRight_StartMarker      ZK_M_START       [op].handler!\n"
+    "  find: filterRight_StartCrwRht      ZK_M_STARTCRWRHT [op].handler!\n"
+    "  find: filterRight_StartRowRht      ZK_M_STARTROWRHT [op].handler!\n"
+    "  find: filterRight_StreamDefRht     ZK_D_STREAMDEFRHT [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -18896,25 +18986,21 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* send Job_Executed back to originating node                                 */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": executed::replyToOrigin ( pJobParticipant -- )\n"
+    ": executed:reply params| pJobParticipant |\n"
     "\n"
-    "  params| pJobParticipant |\n"
-    "\n"
-    "  pJobParticipant job.id@ locals| iJobId |\n"
-    "\n"
-    "  0 0 0 locals| pJob pJob_Executed error |\n"
-    "\n"
+    "  // \"executed:reply\" .\n"
+    "    \n"
     "  // new a temporary Job_Executed\n"
-    "  pJobParticipant job_Executed::new to pJob_Executed\n"
+    "  pJobParticipant job_Executed::new locals| pJob_Executed |\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // send the executed job\n"
-    "  iJobId job::originator@ pJob_Executed job.reply\n"
+    "  pJobParticipant [job].originNodeNo@ pJob_Executed job.reply\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  pJob_Executed job.delete2pc\n"
+    "  pJob_Executed job.delete\n"
     " ;\n"
     "\n"
     "////////////////////////////////////////////////////////////////////////////////\n"
@@ -18924,9 +19010,9 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* run received Job_Executed on originating node    recv: job.spawn */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": executed::executed\n"
+    ": executed:executed\n"
     "\n"
-    "  Job[] locals| pJob_Executed |\n"
+    "  [job] locals| pJob_Executed |\n"
     "  pJob_Executed job.id@ locals| iJobId |\n"
     "\n"
     "  0 0 0 locals| iParticipantNode error bAmDecider |\n"
@@ -18935,7 +19021,7 @@ void Task::vAddMunged(Task* )
     "  // get the context of this __executed job\n"
     "\n"
     "  // find the originating job\n"
-    "  iJobId olist::findJob discard\n"
+    "  iJobId ListedJob[].findOriginator discard\n"
     "\n"
     "  // get the participant node from where this job_begun started\n"
     "  pJob_Executed job.participantNode@ to iParticipantNode\n"
@@ -18944,32 +19030,32 @@ void Task::vAddMunged(Task* )
     "  // process __executed job on this originating node\n"
     "\n"
     "  // increment the number of __executed jobs received in api state\n"
-    "  JobRef[] ssn::incExecuted\n"
-    "  JobRef[] ssn::traceSession\n"
+    "  ListedJob[] ssn::incExecuted\n"
+    "  ListedJob[] ssn::traceSession\n"
     "\n"
     "  // decrement the acks remaining\n"
-    "  JobRef[] job.dec2pcAcksRmg to bAmDecider\n"
+    "  ListedJob[] job.dec2pcAcksRmg to bAmDecider\n"
     "\n"
-    "  //grid::thisNodeName@ \"(%v) EXECUTED GOT ACK\" .printf\n"
+    "  //[grid].thisNodeName@ \"(%v) EXECUTED GOT ACK\" .printf\n"
     "\n"
     "  // if there are acks remaining just exit\n"
     "  bAmDecider not if\n"
-    "    JobRef[].returnReference\n"
-    "    _job_2pc_delete_\n"
+    "    ListedJob[].returnReference\n"
+    "    [job]:retire\n"
     "    exit                                                         // *EARLY EXIT*\n"
     "  then\n"
-    "  //grid::thisNodeName@ \"(%v) EXECUTED AM DECIDER\" .printf\n"
+    "  //[grid].thisNodeName@ \"(%v) EXECUTED AM DECIDER\" .printf\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // all __executed jobs have been received, so this job is the decider\n"
     "\n"
-    "  job[].tscExecuted\n"
+    "  [job].tscExecuted\n"
     "\n"
     "  // send a job_end to all participants\n"
-    "  JobRef[] end::distribute\n"
-    "  JobRef[].returnReference\n"
+    "  ListedJob[] end:distribute\n"
+    "  ListedJob[].returnReference\n"
     "\n"
-    "  _job_2pc_delete_\n"
+    "  [job]:retire\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -18981,7 +19067,7 @@ void Task::vAddMunged(Task* )
     ": executed_cmdTags _cmdTags tagCopy: genericJob_tags\n"
     "  tags{\n"
     "    <cmdDesc>  = \"--desc for job--\"\n"
-    "    <entryPoint>    = \"executed::executed\"\n"
+    "    <entryPoint>    = \"executed:executed\"\n"
     "    <path>     = \"/\"\n"
     "  }\n"
     " ;\n"
@@ -19246,8 +19332,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: VerifyIndexPtn_DataMarker ZK_M_DATAPULSE op[].handler!\n"
-    "  find: VerifyIndexPtn_StartMarker ZK_M_START op[].handler!\n"
+    "  find: VerifyIndexPtn_DataMarker ZK_M_DATAPULSE [op].handler!\n"
+    "  find: VerifyIndexPtn_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -19315,7 +19401,7 @@ void Task::vAddMunged(Task* )
     "  streamSetTable[] StreamSet[].new\n"
     "\n"
     "  // add a row for each table ptn\n"
-    "  grid::ptnsPerNode 0\n"
+    "  [grid].ptnsPerNode 0\n"
     "  do\n"
     "    // analyze table\n"
     "    I Table[] streamSetTable[] StreamSet[].addAnalyzeTable  not if\n"
@@ -19379,11 +19465,11 @@ void Task::vAddMunged(Task* )
     "  \"default_abnormalHandlers\" FIND execute\n"
     "\n"
     "  // check if start has already been pulsed\n"
-    "  Pipeline::pulsed@ if\n"
+    "  [pipeline].pulsed@ if\n"
     "    PipeIn[].delete\n"
     "  else\n"
     "    // mark pipeline as being cancelled\n"
-    "    true Pipeline::cancelled!\n"
+    "    true [pipeline].cancelled!\n"
     "\n"
     "    Marker[].newCancelling\n"
     "    Marker[].pipeOut\n"
@@ -19460,7 +19546,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  //\"Operand:- ZK_M_EXITED\" .verbose\n"
     "  PipeIn[].delete\n"
-    "  Op.ackPipelineJob\n"
+    "  [op].ackPipelineJob\n"
     "\n"
     "  false\n"
     " ;\n"
@@ -19488,16 +19574,16 @@ void Task::vAddMunged(Task* )
     "  //\"Operand:- ZK_M_LEAVING\" .verbose\n"
     "\n"
     "  // pipeline should not be cancelled\n"
-    "  Pipeline::cancelled@ not assert\n"
+    "  [pipeline].cancelled@ not assert\n"
     "\n"
     "  // pipeline should not be errored\n"
-    "  Pipeline::errored@ not assert\n"
+    "  [pipeline].errored@ not assert\n"
     "\n"
     "  // pipeline should have exited early\n"
-    "  Pipeline::earlyExit@ assert\n"
+    "  [pipeline].earlyExit@ assert\n"
     "\n"
     "  // mark pipeline as being pulsed\n"
-    "  true Pipeline::pulsed!\n"
+    "  true [pipeline].pulsed!\n"
     "\n"
     "  // now pipeout the leaving marker\n"
     "  Pipein[].pipeOut\n"
@@ -19513,16 +19599,16 @@ void Task::vAddMunged(Task* )
     "  //\"Operand:- ZK_M_ENDING\" .verbose\n"
     "\n"
     "  // pipeline should not be cancelled\n"
-    "  Pipeline::cancelled@ not assert\n"
+    "  [pipeline].cancelled@ not assert\n"
     "\n"
     "  // pipeline should not be errored\n"
-    "  Pipeline::errored@ not assert\n"
+    "  [pipeline].errored@ not assert\n"
     "\n"
     "  // pipeline should not have exited early\n"
-    "  Pipeline::earlyExit@ not assert\n"
+    "  [pipeline].earlyExit@ not assert\n"
     "\n"
     "  // mark pipeline as being pulsed\n"
-    "  true Pipeline::pulsed!\n"
+    "  true [pipeline].pulsed!\n"
     "\n"
     "  // now pipeout the ending marker\n"
     "  Pipein[].pipeOut\n"
@@ -19552,22 +19638,22 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: start_CancelMarker      ZK_M_CANCEL      op[].handler!\n"
-    "  find: start_CancelledMarker   ZK_M_CANCELLED   op[].handler!\n"
-    "  find: start_Cleaned           ZK_M_CLEANED     op[].handler!\n"
-    "  find: start_EndingMarker      ZK_M_ENDING      op[].handler!\n"
-    "  find: start_EndedMarker       ZK_M_ENDED       op[].handler!\n"
-    "  find: start_ErroredMarker     ZK_M_ERRORED     op[].handler!\n"
-    "  find: start_ExitedMarker      ZK_M_EXITED      op[].handler!\n"
-    "  find: start_LeavingMarker     ZK_M_LEAVING     op[].handler!\n"
-    "  find: start_LeftMarker        ZK_M_LEFT        op[].handler!\n"
-    "  find: start_StartedMarker     ZK_M_STARTED     op[].handler!\n"
+    "  find: start_CancelMarker      ZK_M_CANCEL      [op].handler!\n"
+    "  find: start_CancelledMarker   ZK_M_CANCELLED   [op].handler!\n"
+    "  find: start_Cleaned           ZK_M_CLEANED     [op].handler!\n"
+    "  find: start_EndingMarker      ZK_M_ENDING      [op].handler!\n"
+    "  find: start_EndedMarker       ZK_M_ENDED       [op].handler!\n"
+    "  find: start_ErroredMarker     ZK_M_ERRORED     [op].handler!\n"
+    "  find: start_ExitedMarker      ZK_M_EXITED      [op].handler!\n"
+    "  find: start_LeavingMarker     ZK_M_LEAVING     [op].handler!\n"
+    "  find: start_LeftMarker        ZK_M_LEFT        [op].handler!\n"
+    "  find: start_StartedMarker     ZK_M_STARTED     [op].handler!\n"
     "\n"
-    "  find: INVALID_OPERAND_handler ZK_D_CRWBUFFER       op[].handler!\n"
-    "  find: INVALID_OPERAND_handler ZK_D_CSVBUFFER       op[].handler!\n"
-    "  find: INVALID_OPERAND_handler ZK_D_ENTBUFFER       op[].handler!\n"
-    "  find: INVALID_OPERAND_handler ZK_D_ROWBUFFER       op[].handler!\n"
-    "  find: INVALID_OPERAND_handler ZK_D_STREAMDEF       op[].handler!\n"
+    "  find: INVALID_OPERAND_handler ZK_D_CRWBUFFER       [op].handler!\n"
+    "  find: INVALID_OPERAND_handler ZK_D_CSVBUFFER       [op].handler!\n"
+    "  find: INVALID_OPERAND_handler ZK_D_ENTBUFFER       [op].handler!\n"
+    "  find: INVALID_OPERAND_handler ZK_D_ROWBUFFER       [op].handler!\n"
+    "  find: INVALID_OPERAND_handler ZK_D_STREAMDEF       [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -19700,8 +19786,8 @@ void Task::vAddMunged(Task* )
     "  pIndex index.isUnique@ if\n"
     "    pIndex index.isValidUniqueIndex not if\n"
     "    \n"
-    "      EC_INVALID_COLUMNS_UNIQUE_INDEX Job[].error!\n"
-    "      DdlLock[].testDrop\n"
+    "      EC_INVALID_COLUMNS_UNIQUE_INDEX [job].error!\n"
+    "      [ddlLock].testDrop\n"
     "      \n"
     "      EC_INVALID_COLUMNS_UNIQUE_INDEX op__execErr\n"
     "      \n"
@@ -19716,8 +19802,8 @@ void Task::vAddMunged(Task* )
     "  // populate the index\n"
     "/*\n"
     "  pIndex index.populate not if ( errorCode )\n"
-    "    Job[].error!\n"
-    "    DdlLock[].testDrop\n"
+    "    [job].error!\n"
+    "    [ddlLock].testDrop\n"
     "\n"
     "    Path[].popIndexesFolder\n"
     "    Path[].popNamedTableFolder\n"
@@ -19746,7 +19832,7 @@ void Task::vAddMunged(Task* )
     "  Pipein[]\\clear to IndexDef[]\n"
     "\n"
     "  // grab the ddl lock\n"
-    "  DdlLock[].grabRead\n"
+    "  [ddlLock].grabRead\n"
     "\n"
     "  // check ok to create index\n"
     "/*\n"
@@ -19790,7 +19876,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: createIndex_IndexDef ZK_D_INDEXDEF op[].handler!\n"
+    "  find: createIndex_IndexDef ZK_D_INDEXDEF [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -19948,10 +20034,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: toCsv_CrwBuffer  ZK_D_CRWBUFFER op[].handler!\n"
-    "  find: toCsv_EosMarker  ZK_M_EOS       op[].handler!\n"
-    "  find: toCsv_RowBuffer  ZK_D_ROWBUFFER op[].handler!\n"
-    "  find: toCsv_StreamDef  ZK_D_STREAMDEF op[].handler!\n"
+    "  find: toCsv_CrwBuffer  ZK_D_CRWBUFFER [op].handler!\n"
+    "  find: toCsv_EosMarker  ZK_M_EOS       [op].handler!\n"
+    "  find: toCsv_RowBuffer  ZK_D_ROWBUFFER [op].handler!\n"
+    "  find: toCsv_StreamDef  ZK_D_STREAMDEF [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -20012,11 +20098,11 @@ void Task::vAddMunged(Task* )
     "  <TableNm> bucketGet::getBucketOfTable locals| pBucket |\n"
     "\n"
     "  // pipeout the pBucket instance\n"
-    "  pBucket op.pipeout\n"
+    "  pBucket [op].pipeout\n"
     "\n"
     "  true\n"
     "  //stk\n"
-    "  //task::breakpoint set breakpoint back into C++ code, where the task loop is\n"
+    "  //[task].breakpoint set breakpoint back into C++ code, where the task loop is\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -20028,7 +20114,7 @@ void Task::vAddMunged(Task* )
     "  \"bucketGet_req\" .\n"
     "  op__topology\n"
     "\n"
-    "  find: bucketGet_getBucket   ZK_M_DATAPULSE   op[].handler!\n"
+    "  find: bucketGet_getBucket   ZK_M_DATAPULSE   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -20298,15 +20384,15 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  Counter0[] 2 == if\n"
-    "    find: aggreg_ComCleaning   ZK_M_CLEANING      op[].handler!\n"
-    "    find: aggreg_ComStreamDef  ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: aggreg_ComCleaning   ZK_M_CLEANING      [op].handler!\n"
+    "    find: aggreg_ComStreamDef  ZK_D_STREAMDEF     [op].handler!\n"
     "  else\n"
-    "    find: aggreg_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "    find: aggreg_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!\n"
-    "    find: aggreg_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "    find: aggreg_RowBuffer     ZK_D_ROWBUFFER     op[].handler!\n"
-    "    find: aggreg_StartMarker   ZK_M_START         op[].handler!\n"
-    "    find: aggreg_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: aggreg_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "    find: aggreg_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!\n"
+    "    find: aggreg_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "    find: aggreg_RowBuffer     ZK_D_ROWBUFFER     [op].handler!\n"
+    "    find: aggreg_StartMarker   ZK_M_START         [op].handler!\n"
+    "    find: aggreg_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "  then\n"
     "\n"
     "  op__loop\n"
@@ -20509,7 +20595,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  EC_NONE locals| eError |\n"
     "\n"
-    "  PipeIn[]\\clear op.pipeout\n"
+    "  PipeIn[]\\clear [op].pipeout\n"
     "\n"
     "  <tableNm> <indexNm> op__table_index not if\n"
     "    true\n"
@@ -20535,7 +20621,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  EC_NONE locals| eError |\n"
     "\n"
-    "  PipeIn[]\\clear op.pipeout\n"
+    "  PipeIn[]\\clear [op].pipeout\n"
     "\n"
     "  <tableNm> <indexNm> op__table_index not if\n"
     "    true\n"
@@ -20666,12 +20752,12 @@ void Task::vAddMunged(Task* )
     "\n"
     "  Counter0[] 2 == if\n"
     "    // handle combined operator\n"
-    "    find: indexScan_ComCleaning    ZK_M_CLEANING  op[].handler!\n"
-    "    find: indexScan_ComStartMarker ZK_M_START     op[].handler!\n"
+    "    find: indexScan_ComCleaning    ZK_M_CLEANING  [op].handler!\n"
+    "    find: indexScan_ComStartMarker ZK_M_START     [op].handler!\n"
     "  else\n"
-    "    find: indexScan_Cleaning       ZK_M_CLEANING  op[].handler!\n"
-    "    find: indexScan_DataPulse      ZK_M_DATAPULSE op[].handler!\n"
-    "    find: indexScan_StartMarker    ZK_M_START     op[].handler!\n"
+    "    find: indexScan_Cleaning       ZK_M_CLEANING  [op].handler!\n"
+    "    find: indexScan_DataPulse      ZK_M_DATAPULSE [op].handler!\n"
+    "    find: indexScan_StartMarker    ZK_M_START     [op].handler!\n"
     "  then\n"
     "\n"
     "  op__loop\n"
@@ -20809,7 +20895,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: metaGet_DataPulse   ZK_M_DATAPULSE   op[].handler!\n"
+    "  find: metaGet_DataPulse   ZK_M_DATAPULSE   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -21123,10 +21209,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: delete_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  //find: delete_CrwBuffer   ZK_D_CRWBUFFER     op[].handler!\n"
-    "  find: delete_DataMarker    ZK_M_DATAPULSE     op[].handler!\n"
-    "  find: delete_StartMarker   ZK_M_START         op[].handler!\n"
+    "  find: delete_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  //find: delete_CrwBuffer   ZK_D_CRWBUFFER     [op].handler!\n"
+    "  find: delete_DataMarker    ZK_M_DATAPULSE     [op].handler!\n"
+    "  find: delete_StartMarker   ZK_M_START         [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -21549,22 +21635,22 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: loopJoin_Cleaning         ZK_M_CLEANING      op[].handler!\n"
-    "  find: loopJoin_CrwBuffer        ZK_D_CRWBUFFER     op[].handler!\n"
-    "  find: loopJoin_EndCrwRht        ZK_M_ENDCRWRHT     op[].handler!\n"
-    "  find: loopJoin_EndRowRht        ZK_M_ENDROWRHT     op[].handler!\n"
-    "  find: loopJoin_EosMarker        ZK_M_EOS           op[].handler!\n"
-    "  find: loopJoin_RowBuffer        ZK_D_ROWBUFFER     op[].handler!\n"
-    "  find: loopJoin_StartMarker      ZK_M_START         op[].handler!\n"
-    "  find: loopJoin_StartCrwRht      ZK_M_STARTCRWRHT   op[].handler!\n"
-    "  find: loopJoin_StartRowRht      ZK_M_STARTROWRHT   op[].handler!\n"
-    "  find: loopJoin_StreamDef        ZK_D_STREAMDEF     op[].handler!\n"
-    "  find: loopJoin_StreamDefRht     ZK_D_STREAMDEFRHT  op[].handler!\n"
+    "  find: loopJoin_Cleaning         ZK_M_CLEANING      [op].handler!\n"
+    "  find: loopJoin_CrwBuffer        ZK_D_CRWBUFFER     [op].handler!\n"
+    "  find: loopJoin_EndCrwRht        ZK_M_ENDCRWRHT     [op].handler!\n"
+    "  find: loopJoin_EndRowRht        ZK_M_ENDROWRHT     [op].handler!\n"
+    "  find: loopJoin_EosMarker        ZK_M_EOS           [op].handler!\n"
+    "  find: loopJoin_RowBuffer        ZK_D_ROWBUFFER     [op].handler!\n"
+    "  find: loopJoin_StartMarker      ZK_M_START         [op].handler!\n"
+    "  find: loopJoin_StartCrwRht      ZK_M_STARTCRWRHT   [op].handler!\n"
+    "  find: loopJoin_StartRowRht      ZK_M_STARTROWRHT   [op].handler!\n"
+    "  find: loopJoin_StreamDef        ZK_D_STREAMDEF     [op].handler!\n"
+    "  find: loopJoin_StreamDefRht     ZK_D_STREAMDEFRHT  [op].handler!\n"
     "\n"
-    "  find: loopJoin_DataPulse         ZK_M_DATAPULSE      op[].handler!\n"
-    "  find: loopJoin_End               ZK_M_END            op[].handler!\n"
-    "  find: loopJoin_Ending            ZK_M_ENDING         op[].handler!\n"
-    "  find: loopJoin_Exiting           ZK_M_EXITING        op[].handler!\n"
+    "  find: loopJoin_DataPulse         ZK_M_DATAPULSE      [op].handler!\n"
+    "  find: loopJoin_End               ZK_M_END            [op].handler!\n"
+    "  find: loopJoin_Ending            ZK_M_ENDING         [op].handler!\n"
+    "  find: loopJoin_Exiting           ZK_M_EXITING        [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -21943,15 +22029,15 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  Counter0[] 2 == if\n"
-    "    find: hash_ComCleaning   ZK_D_STREAMDEF     op[].handler!\n"
-    "    find: hash_ComStreamDef  ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: hash_ComCleaning   ZK_D_STREAMDEF     [op].handler!\n"
+    "    find: hash_ComStreamDef  ZK_D_STREAMDEF     [op].handler!\n"
     "  else\n"
-    "    find: hash_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "    find: hash_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!\n"
-    "    find: hash_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "    find: hash_RowBuffer     ZK_D_ROWBUFFER     op[].handler!\n"
-    "    find: hash_StartMarker   ZK_M_START         op[].handler!\n"
-    "    find: hash_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: hash_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "    find: hash_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!\n"
+    "    find: hash_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "    find: hash_RowBuffer     ZK_D_ROWBUFFER     [op].handler!\n"
+    "    find: hash_StartMarker   ZK_M_START         [op].handler!\n"
+    "    find: hash_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "  then\n"
     "\n"
     "  op__loop\n"
@@ -22069,12 +22155,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker  ZK_M_LEAVE       op[].handler!\n"
-    "  find: compiler_StreamSet    ZK_D_STREAMSET   op[].handler!\n"
+    "  find: compiler_LeaveMarker  ZK_M_LEAVE       [op].handler!\n"
+    "  find: compiler_StreamSet    ZK_D_STREAMSET   [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: exprValidate_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: exprValidate_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: exprValidate_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: exprValidate_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -22129,7 +22215,7 @@ void Task::vAddMunged(Task* )
     "  \n"
     "  MetaGet[].tableName@ op__table assert\n"
     "\n"
-    "  Table[] MetaGet[].getParts op.pipeout\n"
+    "  Table[] MetaGet[].getParts [op].pipeout\n"
     "\n"
     "  MetaGet[].delete\n"
     "\n"
@@ -22145,7 +22231,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: metaSend_MetaGet ZK_D_METAGET op[].handler!\n"
+    "  find: metaSend_MetaGet ZK_D_METAGET [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -22196,14 +22282,14 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 locals| errorCode |\n"
     "\n"
-    "  //Job[].tagSet@ tagSet.asStr .\n"
+    "  //[job].tagSet@ tagSet.asStr .\n"
     "  Pipein[].pipeout\n"
     "\n"
     "  <etc> <tableNm> \"create table %v %v ;\" str.format // dup .\n"
-    "  Job[] streamDef::parse to StreamDefLft[]\n"
+    "  [job] streamDef::parse to StreamDefLft[]\n"
     "\n"
     "  StreamDefLft[].isNull if\n"
-    "    Job[].error@ to errorCode\n"
+    "    [job].error@ to errorCode\n"
     "    errorCode op__execErr\n"
     "    true\n"
     "    exit\n"
@@ -22230,7 +22316,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: syntaxTable_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: syntaxTable_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -22311,12 +22397,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker  ZK_M_LEAVE       op[].handler!\n"
-    "  find: compiler_StreamSet    ZK_D_STREAMSET   op[].handler!\n"
+    "  find: compiler_LeaveMarker  ZK_M_LEAVE       [op].handler!\n"
+    "  find: compiler_StreamSet    ZK_D_STREAMSET   [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: joinOptimisation_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: joinOptimisation_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: joinOptimisation_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: joinOptimisation_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -22582,10 +22668,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  sNodeList str.cat\n"
     "\n"
-    "  \" --size \"              str.cat args.regionSize        >str   str.cat\n"
-    "  \" --regionPrefix \"      str.cat args.regionPrefix             str.cat\n"
-    "  \" --partitionsPerNode \" str.cat args.partitionsPerNode >str   str.cat\n"
-    "  \" --maxReadyLP \"        str.cat args.maxReadyLP        >str   str.cat\n"
+    "  \" --size \"              str.cat [args].regionSize        >str   str.cat\n"
+    "  \" --regionPrefix \"      str.cat [args].regionPrefix             str.cat\n"
+    "  \" --partitionsPerNode \" str.cat [args].partitionsPerNode >str   str.cat\n"
+    "  \" --maxReadyLP \"        str.cat [args].maxReadyLP        >str   str.cat\n"
     "\n"
     "  user::name \"alka\" str.same if\n"
     "     \" --commands /Users/alka/rapidsse/commands\" str.cat\n"
@@ -22605,13 +22691,13 @@ void Task::vAddMunged(Task* )
     "\n"
     "\n"
     "\n"
-    "  args.tracepoint  if \" --tracepoint\"   str.cat then\n"
-    "  args.verbose     if \" --verbose\"      str.cat then\n"
-    "  args.dontFree    if \" --dontFree\"     str.cat then\n"
-    "  args.freeCB      if \" --freeSpecific\" str.cat then\n"
-    "  args.metadata    if \" --metadata\"     str.cat then\n"
-    "  args.munged      if \" --munged\"       str.cat then\n"
-    "  args.heartbeat   if \" --heartbeat BROADCAST 8888\" str.cat then\n"
+    "  [args].tracepoint  if \" --tracepoint\"   str.cat then\n"
+    "  [args].verbose     if \" --verbose\"      str.cat then\n"
+    "  [args].dontFree    if \" --dontFree\"     str.cat then\n"
+    "  [args].freeCB      if \" --freeSpecific\" str.cat then\n"
+    "  [args].metadata    if \" --metadata\"     str.cat then\n"
+    "  [args].munged      if \" --munged\"       str.cat then\n"
+    "  [args].heartbeat   if \" --heartbeat BROADCAST 8888\" str.cat then\n"
     "\n"
     "  \" &\" str.cat locals| sShellCmd |\n"
     " \n"
@@ -22677,7 +22763,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* spawn all other nodes for a grid on this machine                           */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": grid::spawnOtherNodes ( -- )\n"
+    ": [grid].spawnOtherNodes ( -- )\n"
     "\n"
     "  // test for single node grid\n"
     "  sysargs::definedNodes 1 == if exit then\n"
@@ -22718,7 +22804,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* spawn named node being added to a grid on this machine                     */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": grid::spawnAddingNode ( sNodeNm -- )\n"
+    ": [grid].spawnAddingNode ( sNodeNm -- )\n"
     "\n"
     "  params| sNodeNm   |\n"
     "\n"
@@ -22734,20 +22820,20 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* set start node                                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": grid::setStartNode ( -- )\n"
+    ": [grid].setStartNode ( -- )\n"
     "\n"
     "  // set this node as the grid start node\n"
-    "  // grid::thisNode@ grid::StartNode!\n"
+    "  // [grid].thisNode@ [grid].StartNode!\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* forget named node (run by all participants)                                */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": grid::forgetNode ( \"<NodeNm>\" )\n"
+    ": [grid].forgetNode ( \"<NodeNm>\" )\n"
     "\n"
     "  params| sNodeNm |\n"
     "\n"
-    "  sNodeNm grid::findNodeByName node.forget\n"
+    "  sNodeNm [grid].findNodeByName node.forget\n"
     " ;\n"
     "\n"
     "\n"
@@ -22813,7 +22899,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": STANDARD_PIPEOUT\n"
     "\n"
-    "  PipeIn[]\\clear op.pipeout\n"
+    "  PipeIn[]\\clear [op].pipeout\n"
     "  \n"
     "  // calling op_loop continues\n"
     "  true\n"
@@ -22933,10 +23019,10 @@ void Task::vAddMunged(Task* )
     "  \n"
     "  PipeIn[].pipeOut\n"
     "  \n"
-    "  Job[] assert\n"
-    "  Task[] assert\n"
+    "  [job] assert\n"
+    "  [task] assert\n"
     "\n"
-    "  Op.ackPipelineJob\n"
+    "  [op].ackPipelineJob\n"
     "  \n"
     "  false // calling op_loop exits\n"
     " ;\n"
@@ -23080,53 +23166,53 @@ void Task::vAddMunged(Task* )
     "  find: STANDARD_PIPEOUT        locals| defaultHandler |\n"
     "\n"
     "  // ABNORMAL handlers (pipein delete) for DATA Operators\n"
-    "  abnormalHandler ZK_D_BKTMAPGET        op[].handler!\n"
-    "  abnormalHandler ZK_D_BUCKETGET        op[].handler!\n"
-    "  abnormalHandler ZK_D_BUCKETMAP_dyn    op[].handler!\n"
-    "  abnormalHandler ZK_D_CRWBUFFER        op[].handler!\n"
-    "  abnormalHandler ZK_D_CSVBUFFER        op[].handler!\n"
-    "  abnormalHandler ZK_D_EACHROWBUFFER    op[].handler!\n"
-    "  abnormalHandler ZK_M_ENDCRWRHT        op[].handler!\n"
-    "  abnormalHandler ZK_M_ENDROWRHT        op[].handler!\n"
-    "  abnormalHandler ZK_D_ENTBUFFER        op[].handler!\n"
-    "  abnormalHandler ZK_D_GRID             op[].handler!\n"
-    "  abnormalHandler ZK_D_INDEX            op[].handler!\n"
-    "  abnormalHandler ZK_D_INDEXDEF         op[].handler!\n"
-    "  abnormalHandler ZK_D_JOB              op[].handler!\n"
-    "  abnormalHandler ZK_D_METAGET          op[].handler!\n"
-    "  abnormalHandler ZK_D_NAMEDBUFFER      op[].handler!\n"
-    "  abnormalHandler ZK_D_OP               op[].handler!\n"
-    "  abnormalHandler ZK_D_OTHEROPERAND     op[].handler!\n"
-    "  abnormalHandler ZK_D_PARCEL           op[].handler!\n"
-    "  abnormalHandler ZK_D_PLANOPERAND      op[].handler!\n"
-    "  abnormalHandler ZK_D_PROFILE          op[].handler!\n"
-    "  abnormalHandler ZK_D_ROWBUFFER        op[].handler!\n"
-    "  abnormalHandler ZK_D_SRTBUFFER        op[].handler!\n"
-    "  abnormalHandler ZK_M_STARTCRWRHT      op[].handler!\n"
-    "  abnormalHandler ZK_M_STARTROWRHT      op[].handler!\n"
-    "  abnormalHandler ZK_D_STREAMDEF        op[].handler!\n"
-    "  abnormalHandler ZK_D_STREAMDEFRHT     op[].handler!\n"
-    "  abnormalHandler ZK_M_STREAMDEFRHT     op[].handler!\n"
-    "  abnormalHandler ZK_D_STREAMSET        op[].handler!\n"
-    "  abnormalHandler ZK_D_TABLE            op[].handler!\n"
+    "  abnormalHandler ZK_D_BKTMAPGET        [op].handler!\n"
+    "  abnormalHandler ZK_D_BUCKETGET        [op].handler!\n"
+    "  abnormalHandler ZK_D_BUCKETMAP_dyn    [op].handler!\n"
+    "  abnormalHandler ZK_D_CRWBUFFER        [op].handler!\n"
+    "  abnormalHandler ZK_D_CSVBUFFER        [op].handler!\n"
+    "  abnormalHandler ZK_D_EACHROWBUFFER    [op].handler!\n"
+    "  abnormalHandler ZK_M_ENDCRWRHT        [op].handler!\n"
+    "  abnormalHandler ZK_M_ENDROWRHT        [op].handler!\n"
+    "  abnormalHandler ZK_D_ENTBUFFER        [op].handler!\n"
+    "  abnormalHandler ZK_D_GRID             [op].handler!\n"
+    "  abnormalHandler ZK_D_INDEX            [op].handler!\n"
+    "  abnormalHandler ZK_D_INDEXDEF         [op].handler!\n"
+    "  abnormalHandler ZK_D_JOB              [op].handler!\n"
+    "  abnormalHandler ZK_D_METAGET          [op].handler!\n"
+    "  abnormalHandler ZK_D_NAMEDBUFFER      [op].handler!\n"
+    "  abnormalHandler ZK_D_OP               [op].handler!\n"
+    "  abnormalHandler ZK_D_OTHEROPERAND     [op].handler!\n"
+    "  abnormalHandler ZK_D_PARCEL           [op].handler!\n"
+    "  abnormalHandler ZK_D_PLANOPERAND      [op].handler!\n"
+    "  abnormalHandler ZK_D_PROFILE          [op].handler!\n"
+    "  abnormalHandler ZK_D_ROWBUFFER        [op].handler!\n"
+    "  abnormalHandler ZK_D_SRTBUFFER        [op].handler!\n"
+    "  abnormalHandler ZK_M_STARTCRWRHT      [op].handler!\n"
+    "  abnormalHandler ZK_M_STARTROWRHT      [op].handler!\n"
+    "  abnormalHandler ZK_D_STREAMDEF        [op].handler!\n"
+    "  abnormalHandler ZK_D_STREAMDEFRHT     [op].handler!\n"
+    "  abnormalHandler ZK_M_STREAMDEFRHT     [op].handler!\n"
+    "  abnormalHandler ZK_D_STREAMSET        [op].handler!\n"
+    "  abnormalHandler ZK_D_TABLE            [op].handler!\n"
     "  \n"
     "  // DEFAULT handlers (pipein pipeout) for MARKERS\n"
-    "  defaultHandler ZK_M_DATAPULSE         op[].handler!\n"
-    "  defaultHandler ZK_M_DESTROY           op[].handler!\n"
-    "  defaultHandler ZK_M_EACHSCANEOS       op[].handler!\n"
-    "  //defaultHandler ZK_M_ENDCRWRHT         op[].handler!\n"
-    "  //defaultHandler ZK_M_ENDROWRHT         op[].handler!\n"
-    "  defaultHandler ZK_M_EOS               op[].handler!\n"
-    "  defaultHandler ZK_M_FLUSH             op[].handler!\n"
-    "  defaultHandler ZK_M_LEFTOUTER_CRWLFT  op[].handler!\n"
-    "  defaultHandler ZK_M_LEFTOUTER_ROWLFT  op[].handler!\n"
-    "  defaultHandler ZK_M_NEXTBUFFER        op[].handler!\n"
-    "  defaultHandler ZK_M_STARTCRWRHT       op[].handler!\n"
-    "  defaultHandler ZK_M_START             op[].handler!\n"
-    "  //defaultHandler ZK_M_STARTCRWRHT       op[].handler!\n"
-    "  //defaultHandler ZK_M_STARTROWRHT       op[].handler!\n"
-    "  //defaultHandler ZK_M_STREAMDEFRHT      op[].handler!\n"
-    "  defaultHandler ZK_M_TRIGGER           op[].handler!\n"
+    "  defaultHandler ZK_M_DATAPULSE         [op].handler!\n"
+    "  defaultHandler ZK_M_DESTROY           [op].handler!\n"
+    "  defaultHandler ZK_M_EACHSCANEOS       [op].handler!\n"
+    "  //defaultHandler ZK_M_ENDCRWRHT         [op].handler!\n"
+    "  //defaultHandler ZK_M_ENDROWRHT         [op].handler!\n"
+    "  defaultHandler ZK_M_EOS               [op].handler!\n"
+    "  defaultHandler ZK_M_FLUSH             [op].handler!\n"
+    "  defaultHandler ZK_M_LEFTOUTER_CRWLFT  [op].handler!\n"
+    "  defaultHandler ZK_M_LEFTOUTER_ROWLFT  [op].handler!\n"
+    "  defaultHandler ZK_M_NEXTBUFFER        [op].handler!\n"
+    "  defaultHandler ZK_M_STARTCRWRHT       [op].handler!\n"
+    "  defaultHandler ZK_M_START             [op].handler!\n"
+    "  //defaultHandler ZK_M_STARTCRWRHT       [op].handler!\n"
+    "  //defaultHandler ZK_M_STARTROWRHT       [op].handler!\n"
+    "  //defaultHandler ZK_M_STREAMDEFRHT      [op].handler!\n"
+    "  defaultHandler ZK_M_TRIGGER           [op].handler!\n"
     "\n"
     "  //ZK_M_CANCEL\n"
     "  //ZK_M_CANCELLING\n"
@@ -23428,12 +23514,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker       ZK_M_LEAVE        op[].handler!\n"
-    "  find: compiler_StreamSet         ZK_D_STREAMSET    op[].handler!\n"
+    "  find: compiler_LeaveMarker       ZK_M_LEAVE        [op].handler!\n"
+    "  find: compiler_StreamSet         ZK_D_STREAMSET    [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: postProject_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: postProject_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: postProject_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: postProject_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -23722,7 +23808,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": __seeFrameStack \\prompt\n"
     "\n"
-    "  task::seeFrameStack\n"
+    "  [task].seeFrameStack\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -23736,7 +23822,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": __seeNodes \\prompt\n"
     "\n"
-    "  grid::seeNodes\n"
+    "  [grid].seeNodes\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -23772,7 +23858,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": __seeSession \\prompt\n"
     "\n"
-    "  session::see\n"
+    "  [session].see\n"
     " ;\n"
     "\n"
     "\n"
@@ -23780,7 +23866,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": __seeSystem \\prompt\n"
     "\n"
-    "  system::see\n"
+    "  [system].see\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -23801,9 +23887,9 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": __see \\prompt\n"
     "\n"
-    "  system::see\n"
+    "  [system].see\n"
     "  \n"
-    "  grid::seeNodes\n"
+    "  [grid].seeNodes\n"
     "\n"
     "  ptnmap::see\n"
     "\n"
@@ -23815,7 +23901,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  jobs::seeSqueue\n"
     "\n"
-    "  session::see\n"
+    "  [session].see\n"
     " ;\n"
     "\n"
     "\n"
@@ -23901,7 +23987,7 @@ void Task::vAddMunged(Task* )
     "    CsvBuffer[].pipeOut\n"
     "\n"
     "    \"SLEEPING for 1 sec\" .\n"
-    "    1 task::sleepSsec\n"
+    "    1 [task].sleepSsec\n"
     "\n"
     "    true\n"
     "  else\n"
@@ -23926,7 +24012,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "    <nTimes> >int 0 do\n"
     "\n"
-    "      Task[].yield \n"
+    "      [task].yield \n"
     "\n"
     "      begin\n"
     "        // check for low memory\n"
@@ -23945,7 +24031,7 @@ void Task::vAddMunged(Task* )
     "      0 file0[] file.seek\n"
     "\n"
     "      \"SLEEPING for 1 secs\" .\n"
-    "      1 task::sleepSsec\n"
+    "      1 [task].sleepSsec\n"
     "    loop\n"
     "\n"
     "    file0[].get file.close\n"
@@ -23972,7 +24058,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: rdCsvCyclic_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: rdCsvCyclic_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -24025,7 +24111,7 @@ void Task::vAddMunged(Task* )
     "  Pipein[]\\clear to Parcel[]  // pop the pParcel and put in the Parcel register\n"
     "\n"
     "  // returns table ptr\n"
-    "  Parcel[]\\clear grid::putParts locals| pGrid |\n"
+    "  Parcel[]\\clear [grid].putParts locals| pGrid |\n"
     "\n"
     "  // get table name to create folder\n"
     "  //pTable table.getName locals| sTableNm |\n"
@@ -24056,7 +24142,7 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // Setup ZK_D_PARCEL handler here\n"
-    "  find: gridRecv_Parcel ZK_D_PARCEL op[].handler!\n"
+    "  find: gridRecv_Parcel ZK_D_PARCEL [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -24382,15 +24468,15 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  Counter0[] 2 == if\n"
-    "    find: filter_ComCleaning   ZK_M_CLEANING      op[].handler!\n"
-    "    find: filter_ComStreamDef  ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: filter_ComCleaning   ZK_M_CLEANING      [op].handler!\n"
+    "    find: filter_ComStreamDef  ZK_D_STREAMDEF     [op].handler!\n"
     "  else\n"
-    "    find: filter_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "    find: filter_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!\n"
-    "    find: filter_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "    find: filter_RowBuffer     ZK_D_ROWBUFFER     op[].handler!\n"
-    "    find: filter_StartMarker   ZK_M_START         op[].handler!\n"
-    "    find: filter_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: filter_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "    find: filter_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!\n"
+    "    find: filter_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "    find: filter_RowBuffer     ZK_D_ROWBUFFER     [op].handler!\n"
+    "    find: filter_StartMarker   ZK_M_START         [op].handler!\n"
+    "    find: filter_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "  then\n"
     "\n"
     "  op__loop\n"
@@ -24455,7 +24541,7 @@ void Task::vAddMunged(Task* )
     "  // set topology, next stage and op\n"
     "  op__topology\n"
     "\n"
-    "  //find: OP_exemplar_EosMarker ZK_M_EOS op[].handler!\n"
+    "  //find: OP_exemplar_EosMarker ZK_M_EOS [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -24635,10 +24721,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: inflateDynamic_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!\n"
-    "  find: inflateDynamic_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "  find: inflateDynamic_StartMarker   ZK_M_START         op[].handler!\n"
-    "  find: inflateDynamic_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "  find: inflateDynamic_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!\n"
+    "  find: inflateDynamic_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "  find: inflateDynamic_StartMarker   ZK_M_START         [op].handler!\n"
+    "  find: inflateDynamic_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -24761,10 +24847,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: rowToList_Cleaning    ZK_M_CLEANING    op[].handler!\n"
-    "  find: rowToList_RowBuffer   ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: rowToList_StartMarker ZK_M_START       op[].handler!\n"
-    "  find: rowToList_StreamDef   ZK_D_STREAMDEF   op[].handler!\n"
+    "  find: rowToList_Cleaning    ZK_M_CLEANING    [op].handler!\n"
+    "  find: rowToList_RowBuffer   ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: rowToList_StartMarker ZK_M_START       [op].handler!\n"
+    "  find: rowToList_StreamDef   ZK_D_STREAMDEF   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -24813,7 +24899,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": sysOpen_sysOpen \\handler\n"
     "\n"
-    "  true system::open!\n"
+    "  true [system].open!\n"
     "  \n"
     "  PipeIn[].pipeOut\n"
     "  \n"
@@ -24829,7 +24915,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: sysOpen_sysOpen  ZK_M_DATAPULSE  op[].handler!\n"
+    "  find: sysOpen_sysOpen  ZK_M_DATAPULSE  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -24949,8 +25035,8 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": :makeSchemaFolder params| sSchemaNm |\n"
     "\n"
-    "  args.tracepoint if\n"
-    "    sSchemaNm \"MAKING SCHEMA \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
+    "  [args].tracepoint if\n"
+    "    sSchemaNm \"MAKING SCHEMA \" swap str.cat \" on NODE \" str.cat [grid].thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     " // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
@@ -24968,8 +25054,8 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": :makeSchemasFolder ( \"<catalogNm>\" -- )\n"
     "\n"
-    "  args.tracepoint if\n"
-    "    dup \"MAKING SCHEMAS FOR CATALOG \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
+    "  [args].tracepoint if\n"
+    "    dup \"MAKING SCHEMAS FOR CATALOG \" swap str.cat \" on NODE \" str.cat [grid].thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  find execute ( dic )\n"
@@ -24994,8 +25080,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  params| sSchemaNm |\n"
     "\n"
-    "  args.tracepoint if\n"
-    "  dup \"REMOVING SCHEMA \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
+    "  [args].tracepoint if\n"
+    "  dup \"REMOVING SCHEMA \" swap str.cat \" on NODE \" str.cat [grid].thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
@@ -25038,7 +25124,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  1 Counter0[] + to Counter0[]\n"
     "\n"
-    "  Counter0[] grid::knownNodes == if\n"
+    "  Counter0[] [grid].knownNodes == if\n"
     "    // get the index def\n"
     "    Pipein[] to IndexDef[]\n"
     "    nullptr to Pipein[]\n"
@@ -25101,8 +25187,8 @@ void Task::vAddMunged(Task* )
     "  // initialize counter0\n"
     "  0 to Counter0[]\n"
     "\n"
-    "  find: populateIndex_EosMarker ZK_M_EOS op[].handler!\n"
-    "  find: populateIndex_IndexDef ZK_D_INDEXDEF op[].handler!\n"
+    "  find: populateIndex_EosMarker ZK_M_EOS [op].handler!\n"
+    "  find: populateIndex_IndexDef ZK_D_INDEXDEF [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -25350,23 +25436,23 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: output_CommandErrors ZK_I_COMMANDERRORS op[].handler!\n"
-    "  find: output_CrwBuffer     ZK_D_CRWBUFFER   op[].handler!\n"
-    "  find: output_CsvBuffer     ZK_D_CSVBUFFER   op[].handler!\n"
-    "  find: output_DataMarker    ZK_M_DATAPULSE   op[].handler!\n"
-    "  find: output_EachRowBuffer ZK_EACHROWMARKER op[].handler!\n"
-    "  find: output_EntBuffer     ZK_D_ENTBUFFER   op[].handler!\n"
-    "  find: output_EosMarker     ZK_M_EOS         op[].handler!\n"
-    "  find: output_ErrorMarker   ZK_M_ERROR       op[].handler!\n"
-    "  find: output_ExecErrors    ZK_I_EXECERRORS  op[].handler!\n"
-    "  find: output_LeaveMarker   ZK_M_LEAVE       op[].handler!\n"
-    "  find: output_LoadResult    ZK_I_LOADRESULT  op[].handler!\n"
-    "  find: output_PromptOut     ZK_I_PROMPTOUT   op[].handler!\n"
-    "  find: output_RowBuffer     ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: output_SrtBuffer     ZK_D_SRTBUFFER   op[].handler!\n"
-    "  find: output_StartMarker   ZK_M_START       op[].handler!\n"
-    "  find: output_StreamDef     ZK_D_STREAMDEF   op[].handler!\n"
-    "  find: output_StreamDef     ZK_D_STREAMSET   op[].handler!\n"
+    "  find: output_CommandErrors ZK_I_COMMANDERRORS [op].handler!\n"
+    "  find: output_CrwBuffer     ZK_D_CRWBUFFER   [op].handler!\n"
+    "  find: output_CsvBuffer     ZK_D_CSVBUFFER   [op].handler!\n"
+    "  find: output_DataMarker    ZK_M_DATAPULSE   [op].handler!\n"
+    "  find: output_EachRowBuffer ZK_EACHROWMARKER [op].handler!\n"
+    "  find: output_EntBuffer     ZK_D_ENTBUFFER   [op].handler!\n"
+    "  find: output_EosMarker     ZK_M_EOS         [op].handler!\n"
+    "  find: output_ErrorMarker   ZK_M_ERROR       [op].handler!\n"
+    "  find: output_ExecErrors    ZK_I_EXECERRORS  [op].handler!\n"
+    "  find: output_LeaveMarker   ZK_M_LEAVE       [op].handler!\n"
+    "  find: output_LoadResult    ZK_I_LOADRESULT  [op].handler!\n"
+    "  find: output_PromptOut     ZK_I_PROMPTOUT   [op].handler!\n"
+    "  find: output_RowBuffer     ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: output_SrtBuffer     ZK_D_SRTBUFFER   [op].handler!\n"
+    "  find: output_StartMarker   ZK_M_START       [op].handler!\n"
+    "  find: output_StreamDef     ZK_D_STREAMDEF   [op].handler!\n"
+    "  find: output_StreamDef     ZK_D_STREAMSET   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -25441,7 +25527,7 @@ void Task::vAddMunged(Task* )
     ": connector_attemptConnect ( -- )\n"
     "\n"
     "  AM::SHOW::bConnection if\n"
-    "    Node[] node.no grid::thisNode@ \"Node %v connecting to node %v\" .printf\n"
+    "    Node[] node.no [grid].thisNode@ \"Node %v connecting to node %v\" .printf\n"
     "  then\n"
     "\n"
     "\n"
@@ -25455,7 +25541,7 @@ void Task::vAddMunged(Task* )
     "    Socket[].connect\n"
     "\n"
     "  Socket[].isNull if\n"
-    "    Node[] node.no grid::thisNode@ \"Node %v unable to connect to node %v\" .printf\n"
+    "    Node[] node.no [grid].thisNode@ \"Node %v unable to connect to node %v\" .printf\n"
     "    exit\n"
     "  then\n"
     "\n"
@@ -25466,7 +25552,7 @@ void Task::vAddMunged(Task* )
     " \n"
     "  // print connection message\n"
     "  AM::SHOW::bConnection if\n"
-    "     Node[] node.no grid::thisNode@ \"Node %v connected to node %v\" .printf\n"
+    "     Node[] node.no [grid].thisNode@ \"Node %v connected to node %v\" .printf\n"
     "  then\n"
     "\n"
     "  // send this node's info to the node we just connected to\n"
@@ -25506,8 +25592,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  \"Connector Demon Started\" .boot\n"
     "\n"
-    "  args.verbose if\n"
-    "    grid::thisNode@ Job[] \"Connector %v on node %v running\" .printf\n"
+    "  [args].verbose if\n"
+    "    [grid].thisNode@ [job] \"Connector %v on node %v running\" .printf\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
@@ -25520,7 +25606,7 @@ void Task::vAddMunged(Task* )
     "  again\n"
     "\n"
     "  // print started message\n"
-    "  //grid::thisNodeName@ \"Node %v : SE cluster started\" .printf\n"
+    "  //[grid].thisNodeName@ \"Node %v : SE cluster started\" .printf\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
@@ -25536,7 +25622,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: connector_StartMarker ZK_M_START op[].handler!\n"
+    "  find: connector_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -25707,11 +25793,11 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: idxSort_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: idxSort_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "  find: idxSort_RowBuffer     ZK_D_ROWBUFFER     op[].handler!\n"
-    "  find: idxSort_StartMarker   ZK_M_START         op[].handler!\n"
-    "  find: idxSort_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "  find: idxSort_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: idxSort_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "  find: idxSort_RowBuffer     ZK_D_ROWBUFFER     [op].handler!\n"
+    "  find: idxSort_StartMarker   ZK_M_START         [op].handler!\n"
+    "  find: idxSort_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -25849,7 +25935,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: etcTest_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: etcTest_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -25940,8 +26026,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: dropIndex_StartMarker   ZK_M_START op[].handler!\n"
-    "  find: dropIndex_DestroyMarker ZK_M_DESTROY op[].handler!\n"
+    "  find: dropIndex_StartMarker   ZK_M_START [op].handler!\n"
+    "  find: dropIndex_DestroyMarker ZK_M_DESTROY [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -26021,12 +26107,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker       ZK_M_LEAVE          op[].handler!\n"
-    "  find: compiler_StreamSet         ZK_D_STREAMSET      op[].handler!\n"
+    "  find: compiler_LeaveMarker       ZK_M_LEAVE          [op].handler!\n"
+    "  find: compiler_StreamSet         ZK_D_STREAMSET      [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: setOpValidate_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: setOpValidate_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: setOpValidate_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: setOpValidate_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -26197,10 +26283,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: waitPipeline_DataPulse      ZK_M_DATAPULSE      op[].handler!\n"
-    "  find: waitPipeline_End            ZK_M_END            op[].handler!\n"
-    "  find: waitPipeline_ReturnPipeline ZK_I_RETURNPIPELINE op[].handler!\n"
-    "  find: waitPipeline_Start          ZK_M_START          op[].handler!\n"
+    "  find: waitPipeline_DataPulse      ZK_M_DATAPULSE      [op].handler!\n"
+    "  find: waitPipeline_End            ZK_M_END            [op].handler!\n"
+    "  find: waitPipeline_ReturnPipeline ZK_I_RETURNPIPELINE [op].handler!\n"
+    "  find: waitPipeline_Start          ZK_M_START          [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -26451,20 +26537,20 @@ void Task::vAddMunged(Task* )
     "  // set topology, next stage and op\n"
     "  op__topology\n"
     "\n"
-    "  find: consumeOp_Cancelling     ZK_M_CANCELLING op[].handler!\n"
-    "  find: consumeOp_Cleaning       ZK_M_CLEANING   op[].handler!\n"
-    "  find: consumeOp_DestroyMarker  ZK_M_DESTROY    op[].handler!\n"
-    "  find: consumeOp_DataPulse      ZK_M_DATAPULSE  op[].handler!\n"
-    "  find: consumeOp_EndMarker      ZK_M_END        op[].handler!\n"
-    "  find: consumeOp_EndingMarker   ZK_M_ENDING     op[].handler!\n"
-    "  find: consumeOp_EosMarker      ZK_M_EOS        op[].handler!\n"
-    "  find: consumeOp_ErrorMarker    ZK_M_ERROR      op[].handler!\n"
-    "  find: consumeOp_ErroringMarker ZK_M_ERRORING   op[].handler!\n"
-    "  find: consumeOp_Exiting        ZK_M_EXITING    op[].handler!\n"
-    "  find: consumeOp_LeavingMarker  ZK_M_LEAVING    op[].handler!\n"
-    "  find: consumeOp_StartMarker    ZK_M_START      op[].handler!\n"
-    "  find: consumeOp_StreamDef      ZK_D_STREAMDEF  op[].handler!\n"
-    "  find: consumeOp_StreamDefRht   ZK_D_STREAMDEFRHT  op[].handler!\n"
+    "  find: consumeOp_Cancelling     ZK_M_CANCELLING [op].handler!\n"
+    "  find: consumeOp_Cleaning       ZK_M_CLEANING   [op].handler!\n"
+    "  find: consumeOp_DestroyMarker  ZK_M_DESTROY    [op].handler!\n"
+    "  find: consumeOp_DataPulse      ZK_M_DATAPULSE  [op].handler!\n"
+    "  find: consumeOp_EndMarker      ZK_M_END        [op].handler!\n"
+    "  find: consumeOp_EndingMarker   ZK_M_ENDING     [op].handler!\n"
+    "  find: consumeOp_EosMarker      ZK_M_EOS        [op].handler!\n"
+    "  find: consumeOp_ErrorMarker    ZK_M_ERROR      [op].handler!\n"
+    "  find: consumeOp_ErroringMarker ZK_M_ERRORING   [op].handler!\n"
+    "  find: consumeOp_Exiting        ZK_M_EXITING    [op].handler!\n"
+    "  find: consumeOp_LeavingMarker  ZK_M_LEAVING    [op].handler!\n"
+    "  find: consumeOp_StartMarker    ZK_M_START      [op].handler!\n"
+    "  find: consumeOp_StreamDef      ZK_D_STREAMDEF  [op].handler!\n"
+    "  find: consumeOp_StreamDefRht   ZK_D_STREAMDEFRHT  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -26515,18 +26601,18 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": demon::install\n"
     "\n"
-    "  //ddlLock[].dropRead  : check with RAY\n"
+    "  //[ddlLock].dropRead  : check with RAY\n"
     "\n"
     "  \"__\" <pipelineNm> str.cat locals| sDemonNm |\n"
     "\n"
-    "  args.verbose if\n"
+    "  [args].verbose if\n"
     "    sDemonNm \"installing demon pipeline job: %v\" .printf\n"
     "  then\n"
     "\n"
     "  sDemonNm >createInRoot locals| pDemonWd |\n"
     "\n"
-    "  Job[] pDemonWd word.object!\n"
-    "  Job[].addDemon\n"
+    "  [job] pDemonWd word.object!\n"
+    "  [job].addDemon\n"
     " ;\n"
     "\n"
     "/*============================================================================*/\n"
@@ -26573,7 +26659,7 @@ void Task::vAddMunged(Task* )
     "  // set topology, next stage and op\n"
     "  op__topology\n"
     "\n"
-    "  find: OP_EatAll_Xyz op[].handlerAll!\n"
+    "  find: OP_EatAll_Xyz [op].handlerAll!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -26757,9 +26843,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: metaScan_Cleaning      ZK_M_CLEANING   op[].handler!\n"
-    "  find: metaScan_DataMarker    ZK_M_DATAPULSE  op[].handler!\n"
-    "  find: metaScan_StartMarker   ZK_M_START      op[].handler!\n"
+    "  find: metaScan_Cleaning      ZK_M_CLEANING   [op].handler!\n"
+    "  find: metaScan_DataMarker    ZK_M_DATAPULSE  [op].handler!\n"
+    "  find: metaScan_StartMarker   ZK_M_START      [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -27072,16 +27158,16 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: hashRight_Cleaning        ZK_M_CLEANING   op[].handler!\n"
-    "  find: hashRight_CrwBuffer       ZK_D_CRWBUFFER  op[].handler!\n"
-    "  find: hashRight_EndCrwRht       ZK_M_ENDCRWRHT op[].handler!\n"
-    "  find: hashRight_EndRowRht       ZK_M_ENDROWRHT op[].handler!\n"
-    "  find: hashRight_EosMarker       ZK_M_EOS        op[].handler!\n"
-    "  find: hashRight_RowBuffer       ZK_D_ROWBUFFER  op[].handler!\n"
-    "  find: hashRight_StartMarker     ZK_M_START      op[].handler!\n"
-    "  find: hashRight_StartCrwRht     ZK_M_STARTCRWRHT op[].handler!\n"
-    "  find: hashRight_StartRowRht     ZK_M_STARTROWRHT op[].handler!\n"
-    "  find: hashRight_StreamDefRht    ZK_D_STREAMDEFRHT op[].handler!\n"
+    "  find: hashRight_Cleaning        ZK_M_CLEANING   [op].handler!\n"
+    "  find: hashRight_CrwBuffer       ZK_D_CRWBUFFER  [op].handler!\n"
+    "  find: hashRight_EndCrwRht       ZK_M_ENDCRWRHT [op].handler!\n"
+    "  find: hashRight_EndRowRht       ZK_M_ENDROWRHT [op].handler!\n"
+    "  find: hashRight_EosMarker       ZK_M_EOS        [op].handler!\n"
+    "  find: hashRight_RowBuffer       ZK_D_ROWBUFFER  [op].handler!\n"
+    "  find: hashRight_StartMarker     ZK_M_START      [op].handler!\n"
+    "  find: hashRight_StartCrwRht     ZK_M_STARTCRWRHT [op].handler!\n"
+    "  find: hashRight_StartRowRht     ZK_M_STARTROWRHT [op].handler!\n"
+    "  find: hashRight_StreamDefRht    ZK_D_STREAMDEFRHT [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -27222,37 +27308,37 @@ void Task::vAddMunged(Task* )
     "  // set topology, next stage and op\n"
     "  op__topology\n"
     "\n"
-    "//  pEatSomeHandler ZK_M_CANCELLING     op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_CANCELLED  op[].handler!\n"
-    "    pEatSomeHandler ZK_D_CRWBUFFER        op[].handler!\n"
-    "    pEatSomeHandler ZK_D_CSVBUFFER        op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_LEAVE      op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_LEAVING    op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_LEFT       op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_END        op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_ENDED      op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_ENDING     op[].handler!\n"
-    "//  pEatSomeHandler ZK_D_ENTBUFFER        op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_EOS        op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_ERROR      op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_ERRORED    op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_ERRORING   op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_EXITING    op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_EXITED     op[].handler!\n"
-    "//  pEatSomeHandler ZK_I_LOCKSTATS        op[].handler!\n"
-    "//  pEatSomeHandler ZK_D_NAMEDBUFFER      op[].handler!\n"
-    "//  pEatSomeHandler ZK_I_NODEINFO         op[].handler!\n"
-    "//  pEatSomeHandler ZK_D_PROFILE          op[].handler!\n"
-    "//  pEatSomeHandler ZK_I_PROGRESSUNITS    op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_DATAPULSE        op[].handler!\n"
-    "    pEatSomeHandler ZK_D_ROWBUFFER        op[].handler!\n"
-    "//  pEatSomeHandler ZK_I_SEEKOFFSETS      op[].handler!\n"
-    "//  pEatSomeHandler ZK_D_SRTBUFFER        op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_START      op[].handler!\n"
-    "//  pEatSomeHandler ZK_M_STARTED    op[].handler!\n"
-    "//  pEatSomeHandler ZK_D_STREAMDEF        op[].handler!\n"
-    "//  pEatSomeHandler ZK_D_STREAMSET        op[].handler!\n"
-    "//  pEatSomeHandler ZK_I_TOTALUNITS       op[].handler!\n"
+    "//  pEatSomeHandler ZK_M_CANCELLING     [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_CANCELLED  [op].handler!\n"
+    "    pEatSomeHandler ZK_D_CRWBUFFER        [op].handler!\n"
+    "    pEatSomeHandler ZK_D_CSVBUFFER        [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_LEAVE      [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_LEAVING    [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_LEFT       [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_END        [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_ENDED      [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_ENDING     [op].handler!\n"
+    "//  pEatSomeHandler ZK_D_ENTBUFFER        [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_EOS        [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_ERROR      [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_ERRORED    [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_ERRORING   [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_EXITING    [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_EXITED     [op].handler!\n"
+    "//  pEatSomeHandler ZK_I_LOCKSTATS        [op].handler!\n"
+    "//  pEatSomeHandler ZK_D_NAMEDBUFFER      [op].handler!\n"
+    "//  pEatSomeHandler ZK_I_NODEINFO         [op].handler!\n"
+    "//  pEatSomeHandler ZK_D_PROFILE          [op].handler!\n"
+    "//  pEatSomeHandler ZK_I_PROGRESSUNITS    [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_DATAPULSE        [op].handler!\n"
+    "    pEatSomeHandler ZK_D_ROWBUFFER        [op].handler!\n"
+    "//  pEatSomeHandler ZK_I_SEEKOFFSETS      [op].handler!\n"
+    "//  pEatSomeHandler ZK_D_SRTBUFFER        [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_START      [op].handler!\n"
+    "//  pEatSomeHandler ZK_M_STARTED    [op].handler!\n"
+    "//  pEatSomeHandler ZK_D_STREAMDEF        [op].handler!\n"
+    "//  pEatSomeHandler ZK_D_STREAMSET        [op].handler!\n"
+    "//  pEatSomeHandler ZK_I_TOTALUNITS       [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -27348,7 +27434,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: createCatalog_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: createCatalog_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -27506,7 +27592,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": sysClose_sysClose \\handler\n"
     "\n"
-    "  false system::open!\n"
+    "  false [system].open!\n"
     "\n"
     "  PipeIn[].pipeOut\n"
     "  \n"
@@ -27522,7 +27608,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: sysClose_sysClose  ZK_M_DATAPULSE  op[].handler!\n"
+    "  find: sysClose_sysClose  ZK_M_DATAPULSE  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -27666,7 +27752,7 @@ void Task::vAddMunged(Task* )
     "  InfoSet[]\n"
     "    \"__statDemon\" find dup if\n"
     "      word.object@\n"
-    "      pipeline.pipeout\n"
+    "      job.pipeToOp0\n"
     "      nullptr to InfoSet[]\n"
     "    else\n"
     "      discard discard\n"
@@ -27686,7 +27772,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\n"
     "  \"__statDemon\" find dup if\n"
     "    word.object@\n"
-    "    pipeline.pipeout\n"
+    "    job.pipeToOp0\n"
     "    nullptr to PipeIn[]\n"
     "  else\n"
     "    discard discard\n"
@@ -27705,8 +27791,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: OP_toStatDemon_LockStats ZK_I_LOCKSTATS op[].handler!\n"
-    "  find: OP_toStatDemon_Profile   ZK_D_PROFILE   op[].handler!\n"
+    "  find: OP_toStatDemon_LockStats ZK_I_LOCKSTATS [op].handler!\n"
+    "  find: OP_toStatDemon_Profile   ZK_D_PROFILE   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -27795,8 +27881,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: TruncateIndex_DataPulse ZK_M_DATAPULSE op[].handler!\n"
-    "  find: TruncateIndex_StartMarker ZK_M_START op[].handler!\n"
+    "  find: TruncateIndex_DataPulse ZK_M_DATAPULSE [op].handler!\n"
+    "  find: TruncateIndex_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -27853,10 +27939,10 @@ void Task::vAddMunged(Task* )
     "  //StreamDefOut[].delete\n"
     "\n"
     "  // set EATOPERAND handler for buffers and EOS markers coming in\n"
-    "  find: EATOPERAND_handler ZK_D_CRWBUFFER op[].handler!\n"
-    "  find: EATOPERAND_handler ZK_D_EACHROWBUFFER op[].handler!\n"
-    "  find: EATOPERAND_handler ZK_D_ROWBUFFER op[].handler!\n"
-    "  find: EATOPERAND_handler ZK_M_EOS op[].handler!\n"
+    "  find: EATOPERAND_handler ZK_D_CRWBUFFER [op].handler!\n"
+    "  find: EATOPERAND_handler ZK_D_EACHROWBUFFER [op].handler!\n"
+    "  find: EATOPERAND_handler ZK_D_ROWBUFFER [op].handler!\n"
+    "  find: EATOPERAND_handler ZK_M_EOS [op].handler!\n"
     "\n"
     "  // generate the error infoset\n"
     "  eError op__execErr\n"
@@ -28009,9 +28095,71 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [257] OP_dump.sen
+  // munge of [257] OP_exeSubPipe.sen
 
   gszaMungedText[257] =
+    "\" munged OP_exeSubPipe.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_exeSubPipe.sen -- Operator Execute Sub-Pipeline                         */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP_exeSubPipe.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for ZK_M_START ...                                                 */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": exeSubPipe_StartMarker \\handler\n"
+    "\n"
+    "  PipeIn[].pipeOut\n"
+    "  true \n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* execute for execute sub-pipeline req                                       */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    " : exeSubPipe_op \\operator\n"
+    "\n"
+    "  _lu_initialise_\n"
+    "\n"
+    "  op__topology\n"
+    "\n"
+    "  find: exeSubPipe_StartMarker  ZK_M_START  [op].handler!\n"
+    "\n"
+    "  op__loop\n"
+    "\n"
+    "  _lu_finalise_\n"
+    "  \n"
+    "  op__retires\n"
+    "  \n"
+    "  HAZARD\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "cmdSyntax: exeSubPipeline :: exeSubPipeline <subPipeNm> ;\n"
+    "\n"
+    ": exeSubPipeline_cmdTags _cmdTags tagCopy: op_tags\n"
+    "  tags{\n"
+    "    <cmdDesc> = \"--desc for op--\"\n"
+    "    <opEntry> = \"exeSubPipe_op\"\n"
+    "  }\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 257 CONSTANT OP_exeSubPipe.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [258] OP_dump.sen
+
+  gszaMungedText[258] =
     "\" munged OP_dump.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dump.sen -- Operator dump                                               */\n"
@@ -28084,10 +28232,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: dump_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!\n"
-    "  find: dump_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!\n"
-    "  find: dump_RowBuffer   ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: dump_SeekOffsets ZK_I_SEEKOFFSETS op[].handler!\n"
+    "  find: dump_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!\n"
+    "  find: dump_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!\n"
+    "  find: dump_RowBuffer   ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: dump_SeekOffsets ZK_I_SEEKOFFSETS [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -28117,13 +28265,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 257 CONSTANT OP_dump.sen "_Stz;
+  szSubScriptDef = " 258 CONSTANT OP_dump.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [258] OP_inflate.sen
+  // munge of [259] OP_inflate.sen
 
-  gszaMungedText[258] =
+  gszaMungedText[259] =
     "\" munged OP_inflate.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_inflate.sen -- Operator Inflate                                         */\n"
@@ -28222,11 +28370,11 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: inflate_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: inflate_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!\n"
-    "  find: inflate_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "  find: inflate_StartMarker   ZK_M_START         op[].handler!\n"
-    "  find: inflate_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "  find: inflate_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: inflate_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!\n"
+    "  find: inflate_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "  find: inflate_StartMarker   ZK_M_START         [op].handler!\n"
+    "  find: inflate_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -28256,13 +28404,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 258 CONSTANT OP_inflate.sen "_Stz;
+  szSubScriptDef = " 259 CONSTANT OP_inflate.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [259] OP_status.sen
+  // munge of [260] OP_status.sen
 
-  gszaMungedText[259] =
+  gszaMungedText[260] =
     "\" munged OP_status.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_status.sen -- Operator status                                           */\n"
@@ -28318,13 +28466,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 259 CONSTANT OP_status.sen "_Stz;
+  szSubScriptDef = " 260 CONSTANT OP_status.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [260] OP_compactIndexPtn.sen
+  // munge of [261] OP_compactIndexPtn.sen
 
-  gszaMungedText[260] =
+  gszaMungedText[261] =
     "\" munged OP_compactIndexPtn.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_compactIndexPtn.sen -- Operator compact partition of index              */\n"
@@ -28375,8 +28523,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: CompactIndexPtn_DataMarker ZK_M_DATAPULSE op[].handler!\n"
-    "  find: CompactIndexPtn_StartMarker ZK_M_START op[].handler!\n"
+    "  find: CompactIndexPtn_DataMarker ZK_M_DATAPULSE [op].handler!\n"
+    "  find: CompactIndexPtn_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -28407,13 +28555,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 260 CONSTANT OP_compactIndexPtn.sen "_Stz;
+  szSubScriptDef = " 261 CONSTANT OP_compactIndexPtn.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [261] OP_puGen.sen
+  // munge of [262] OP_puGen.sen
 
-  gszaMungedText[261] =
+  gszaMungedText[262] =
     "\" munged OP_puGen.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_puGen.sen -- genrate row buffers for a pu table                         */\n"
@@ -28493,8 +28641,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: puGen_DataPulse   ZK_M_DATAPULSE op[].handler!\n"
-    "  find: puGen_StartMarker ZK_M_START     op[].handler!\n"
+    "  find: puGen_DataPulse   ZK_M_DATAPULSE [op].handler!\n"
+    "  find: puGen_StartMarker ZK_M_START     [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -28524,13 +28672,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 261 CONSTANT OP_puGen.sen "_Stz;
+  szSubScriptDef = " 262 CONSTANT OP_puGen.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [262] OP_pwf.sen
+  // munge of [263] OP_pwf.sen
 
-  gszaMungedText[262] =
+  gszaMungedText[263] =
     "\" munged OP_pwf.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_pwf.sen -- Operator present working flolder                             */\n"
@@ -28602,13 +28750,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 262 CONSTANT OP_pwf.sen "_Stz;
+  szSubScriptDef = " 263 CONSTANT OP_pwf.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [263] dp_answerDemon.sen
+  // munge of [264] dp_answerDemon.sen
 
-  gszaMungedText[263] =
+  gszaMungedText[264] =
     "\" munged dp_answerDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* dp_answerDemon.sen -- Answer Demon                                         */\n"
@@ -28644,13 +28792,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 263 CONSTANT dp_answerDemon.sen "_Stz;
+  szSubScriptDef = " 264 CONSTANT dp_answerDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [264] OP_metaTables.sen
+  // munge of [265] OP_metaTables.sen
 
-  gszaMungedText[264] =
+  gszaMungedText[265] =
     "\" munged OP_metaTables.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_metaTables.sen -- Operator meta scan                                      */\n"
@@ -28738,8 +28886,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: metaTables_DataMarker    ZK_M_DATAPULSE  op[].handler!\n"
-    "  find: metaTables_StartMarker   ZK_M_START      op[].handler!\n"
+    "  find: metaTables_DataMarker    ZK_M_DATAPULSE  [op].handler!\n"
+    "  find: metaTables_StartMarker   ZK_M_START      [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -28770,13 +28918,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 264 CONSTANT OP_metaTables.sen "_Stz;
+  szSubScriptDef = " 265 CONSTANT OP_metaTables.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [265] it_eventLog.sen
+  // munge of [266] it_eventLog.sen
 
-  gszaMungedText[265] =
+  gszaMungedText[266] =
     "\" munged it_eventLog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_eventLog.sen -- Define se__eventLog table                               */\n"
@@ -28816,13 +28964,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 265 CONSTANT it_eventLog.sen "_Stz;
+  szSubScriptDef = " 266 CONSTANT it_eventLog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [266] OP_sqlInit.sen
+  // munge of [267] OP_sqlInit.sen
 
-  gszaMungedText[266] =
+  gszaMungedText[267] =
     "\" munged OP_sqlInit.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sqlInit.sen -- Initialise Sql Compiler  (SQL Compiler)                  */\n"
@@ -28876,10 +29024,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: sqlInit_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: sqlInit_DataMarker    ZK_M_DATAPULSE     op[].handler!\n"
-    "  find: sqlInit_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "  find: sqlInit_StartMarker   ZK_M_START         op[].handler!\n"
+    "  find: sqlInit_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: sqlInit_DataMarker    ZK_M_DATAPULSE     [op].handler!\n"
+    "  find: sqlInit_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "  find: sqlInit_StartMarker   ZK_M_START         [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -28909,13 +29057,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 266 CONSTANT OP_sqlInit.sen "_Stz;
+  szSubScriptDef = " 267 CONSTANT OP_sqlInit.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [267] it_deref.sen
+  // munge of [268] it_deref.sen
 
-  gszaMungedText[267] =
+  gszaMungedText[268] =
     "\" munged it_deref.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_deref.sen -- Define se__deref table                                     */\n"
@@ -28954,13 +29102,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 267 CONSTANT it_deref.sen "_Stz;
+  szSubScriptDef = " 268 CONSTANT it_deref.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [268] OP_dumpBktMap.sen
+  // munge of [269] OP_dumpBktMap.sen
 
-  gszaMungedText[268] =
+  gszaMungedText[269] =
     "\" munged OP_dumpBktMap.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dumpBktMap.sen -- dump file                                            */\n"
@@ -28979,7 +29127,7 @@ void Task::vAddMunged(Task* )
     "  <TableNm> op__table if\n"
     "      Table[].dumpbktmap locals| pDumpBuffer |\n"
     "      // convert the string to operand to pipe out\n"
-    "        pDumpBuffer str.toPromptOut op.pipeout\n"
+    "        pDumpBuffer str.toPromptOut [op].pipeout\n"
     "      true\n"
     "    else\n"
     "      false\n"
@@ -29010,13 +29158,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 268 CONSTANT OP_dumpBktMap.sen "_Stz;
+  szSubScriptDef = " 269 CONSTANT OP_dumpBktMap.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [269] OP_createTable.sen
+  // munge of [270] OP_createTable.sen
 
-  gszaMungedText[269] =
+  gszaMungedText[270] =
     "\" munged OP_createTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_createTable.sen -- Operator create table                                */\n"
@@ -29068,7 +29216,7 @@ void Task::vAddMunged(Task* )
     "  nullptr to Pipein[]\n"
     "\n"
     "  // get the table name\n"
-    "  \"<tableNm>\" Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<tableNm>\" [job].tagSet@ tagSet.hasName if\n"
     "    <tableNm> to sTableNm\n"
     "  else\n"
     "    StreamDefLft[].name to sTableNm\n"
@@ -29078,7 +29226,7 @@ void Task::vAddMunged(Task* )
     "  //sTableNm .\n"
     "\n"
     "  // grab the ddl lock\n"
-    "  DdlLock[].grabRead\n"
+    "  [ddlLock].grabRead\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // check ok to create table\n"
@@ -29109,7 +29257,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: createTable_StreamDef ZK_D_STREAMDEF op[].handler!\n"
+    "  find: createTable_StreamDef ZK_D_STREAMDEF [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -29140,13 +29288,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 269 CONSTANT OP_createTable.sen "_Stz;
+  szSubScriptDef = " 270 CONSTANT OP_createTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [270] OP_bktMap.sen
+  // munge of [271] OP_bktMap.sen
 
-  gszaMungedText[270] =
+  gszaMungedText[271] =
     "\" munged OP_bktMap.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bktMap.sen -- show ptn map                                              */\n"
@@ -29187,13 +29335,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 270 CONSTANT OP_bktMap.sen "_Stz;
+  szSubScriptDef = " 271 CONSTANT OP_bktMap.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [271] op__common.sen
+  // munge of [272] op__common.sen
 
-  gszaMungedText[271] =
+  gszaMungedText[272] =
     "\" munged op__common.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* op__common.sen -- operator common words                                    */\n"
@@ -29252,13 +29400,13 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": _lu_finalise_\n"
     "\n"
-    "  DdlLock[].testDrop\n"
+    "  [ddlLock].testDrop\n"
     "\n"
     "  // check this task has no job reference\n"
-    "  JobRef[].none\n"
+    "  ListedJob[].assertNoRef\n"
     "\n"
     "  // check this task has no ddl lock\n"
-    "  DdlLock[].none\n"
+    "  [ddlLock].none\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -29514,12 +29662,12 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": rluDiary_init\n"
     "\n"
-    "  \"<note>\"  Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<note>\"  [job].tagSet@ tagSet.hasName if\n"
     "    <note> LogicUnit[].diaryJobNote\n"
     "  then\n"
     "\n"
-    "  op.opName@ LogicUnit[].diaryTitle\n"
-    "  op.opName@ Op.partition@ >str str.cat LogicUnit[].diaryName\n"
+    "  [op].opName@ LogicUnit[].diaryTitle\n"
+    "  [op].opName@ [op].partition@ >str str.cat LogicUnit[].diaryName\n"
     "\n"
     "  <diaryDir> LogicUnit[].diaryDir\n"
     " ;\n"
@@ -29529,9 +29677,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": op__topology\n"
     "\n"
-    "  op[].init\n"
-    "\n"
-    "  \"<diary>\" Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<diary>\" [job].tagSet@ tagSet.hasName if\n"
     "    rluDiary_init\n"
     "  then\n"
     " ;\n"
@@ -29546,7 +29692,7 @@ void Task::vAddMunged(Task* )
     ": op__pipelineJobWait\n"
     "\n"
     "  // get the pipeline job of the operator\n"
-    "  Op.pipelineJob@ locals| pPipelineJob |\n"
+    "  [op].job@ locals| pPipelineJob |\n"
     "  \n"
     "  pPipelineJob not if\n"
     "    exit\n"
@@ -29563,7 +29709,7 @@ void Task::vAddMunged(Task* )
     "    thread.dedicated@ if\n"
     "      10 thread::sleepMsec\n"
     "    else\n"
-    "      Task[].yield\n"
+    "      [task].yield\n"
     "    then\n"
     "    \n"
     "  repeat\n"
@@ -29582,7 +29728,7 @@ void Task::vAddMunged(Task* )
     "      thread.dedicated@ if\n"
     "        10 thread::sleepMsec\n"
     "      else\n"
-    "        Task[].yield\n"
+    "        [task].yield\n"
     "      then\n"
     "    \n"
     "    repeat\n"
@@ -29591,14 +29737,14 @@ void Task::vAddMunged(Task* )
     "    // possibilty of execute not have arrived yet\n"
     "    pPipelineJob job.task@ locals| pPipelineTask |\n"
     "    begin\n"
-    "      pPipelineTask task.isWaiting\n"
+    "      pPipelineTask task.isWaiting?\n"
     "    not while\n"
-    "      //pPipelineTask task.isWaiting \"task waiting %v\" .printf\n"
+    "      //pPipelineTask task.isWaiting? \"task waiting %v\" .printf\n"
     "      \n"
     "      thread.dedicated@ if\n"
     "        10 thread::sleepMsec\n"
     "      else\n"
-    "        Task[].yield\n"
+    "        [task].yield\n"
     "      then\n"
     "    \n"
     "    repeat\n"
@@ -29653,7 +29799,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__pipelineJobWait\n"
     "  \n"
-    "  //Task[].grabLock //OoO\n"
+    "  //[task].grabLock //OoO\n"
     "\n"
     "  begin  iContinue while\n"
     "    \n"
@@ -29669,14 +29815,14 @@ void Task::vAddMunged(Task* )
     "\n"
     "      // debug::flag@ if \"(Revised) Calling handler for OoO operand\" . then\n"
     "\n"
-    "      PipeIn[].kind op[].isOperandValid not if\n"
+    "      PipeIn[].kind [op].isOperandValid not if\n"
     "        find: INVALID_OPERAND_handler op__callHandler to iContinue\n"
     "        continue_if\n"
     "      then\n"
     "\n"
-    "      PipeIn[].kind op[].incOperandCount\n"
-    "      PipeIn[].kind op[].incHandlerCount\n"
-    "      PipeIn[].kind op[].handler@ LogicUnit[].handler!\n"
+    "      PipeIn[].kind [op].incOperandCount\n"
+    "      PipeIn[].kind [op].incHandlerCount\n"
+    "      PipeIn[].kind [op].handler@ LogicUnit[].handler!\n"
     "      op__callHandler to iContinue\n"
     "      continue_if\n"
     "      \n"
@@ -29702,9 +29848,9 @@ void Task::vAddMunged(Task* )
     "    // possible yield\n"
     "\n"
     "    iOperandYield 1 + to iOperandYield\n"
-    "    iOperandYield task::operandYield@ >= if\n"
-    "      Task[].yield_opLoop\n"
-    "      //Task[].grabLock //OoO\n"
+    "    iOperandYield [task].operandYield@ >= if\n"
+    "      [task].yield_opLoop\n"
+    "      //[task].grabLock //OoO\n"
     "      0 to iOperandYield\n"
     "    then\n"
     "\n"
@@ -29724,14 +29870,14 @@ void Task::vAddMunged(Task* )
     "\n"
     "    //debug::flag@ if \"(Revised) Calling handler for NEXT operand\" . then\n"
     "\n"
-    "    PipeIn[].kind op[].isOperandValid not if\n"
+    "    PipeIn[].kind [op].isOperandValid not if\n"
     "      find: INVALID_OPERAND_handler op__callHandler to iContinue\n"
     "      continue_if\n"
     "    then\n"
     "    \n"
-    "    PipeIn[].kind op[].incOperandCount\n"
-    "    PipeIn[].kind op[].incHandlerCount\n"
-    "    PipeIn[].kind op[].handler@ LogicUnit[].handler!\n"
+    "    PipeIn[].kind [op].incOperandCount\n"
+    "    PipeIn[].kind [op].incHandlerCount\n"
+    "    PipeIn[].kind [op].handler@ LogicUnit[].handler!\n"
     "    op__callHandler to iContinue\n"
     "\n"
     "  repeat\n"
@@ -29746,16 +29892,16 @@ void Task::vAddMunged(Task* )
     "\n"
     "  AM::SHOW::bException if\n"
     "    \"op__failureRecovery\" .\n"
-    "    task::seeFrameStack\n"
-    "    task::seeLockSets\n"
-    "    //task::seeLogicUnitRegisters\n"
-    "    //grid::seeNodes\n"
+    "    [task].seeFrameStack\n"
+    "    [task].seeLockSets\n"
+    "    //[task].seeLogicUnit\n"
+    "    //[grid].seeNodes\n"
     "  then\n"
     "  \n"
-    "  task::releaseLockSets\n"
+    "  [task].releaseLockSets\n"
     "\n"
-    "  //\"<recover>\" Job[].tagSet@ tagSet.hasName if\n"
-    "    task::exception EC_INTERNAL_ERROR op__execErrMsg\n"
+    "  //\"<recover>\" [job].tagSet@ tagSet.hasName if\n"
+    "    [task].exception EC_INTERNAL_ERROR op__execErrMsg\n"
     "\n"
     "    PipeIn[].isNull not if\n"
     "      PipeIn[].delete\n"
@@ -29775,7 +29921,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": op__retires\n"
     "\n"
-    "  Task[].grabLock TR_RETIRE_THIS_TASK Task[].transition!\n"
+    "  [task].grabLock TR_RETIRE_THIS_TASK [task].transition!\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -29795,10 +29941,10 @@ void Task::vAddMunged(Task* )
     "  pStencil TinyC[].compile if\n"
     "    1 TinyC[].symbols\n"
     "    TinyC[].relocate assert\n"
-    "    \"iFun0_\" Op[].stageNm@ str.cat TinyC[].find to Fun0[]\n"
-    "    \"iFun1_\" Op[].stageNm@ str.cat TinyC[].find to Fun1[]\n"
-    "    \"iFun2_\" Op[].stageNm@ str.cat TinyC[].find to Fun2[]\n"
-    "    \"iFun3_\" Op[].stageNm@ str.cat TinyC[].find to Fun3[]\n"
+    "    \"iFun0_\" [op].stageNm@ str.cat TinyC[].find to Fun0[]\n"
+    "    \"iFun1_\" [op].stageNm@ str.cat TinyC[].find to Fun1[]\n"
+    "    \"iFun2_\" [op].stageNm@ str.cat TinyC[].find to Fun2[]\n"
+    "    \"iFun3_\" [op].stageNm@ str.cat TinyC[].find to Fun3[]\n"
     "    true\n"
     "  else\n"
     "    false\n"
@@ -29845,13 +29991,13 @@ void Task::vAddMunged(Task* )
     "  begin\n"
     "    Tub[].completed dup to DataBuffer[]\n"
     "  while\n"
-    "    DataBuffer[] pPipelineJob pipeline.pipeOut\n"
+    "    DataBuffer[] pPipelineJob job.pipeToOp0\n"
     "  repeat\n"
     "\n"
     "  begin\n"
     "    Tub[].dangling dup to DataBuffer[]\n"
     "  while\n"
-    "    DataBuffer[] pPipelineJob pipeline.pipeOut\n"
+    "    DataBuffer[] pPipelineJob job.pipeToOp0\n"
     "  repeat\n"
     " ;\n"
     "\n"
@@ -29884,13 +30030,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 271 CONSTANT op__common.sen "_Stz;
+  szSubScriptDef = " 272 CONSTANT op__common.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [272] OP_analyzeIndex.sen
+  // munge of [273] OP_analyzeIndex.sen
 
-  gszaMungedText[272] =
+  gszaMungedText[273] =
     "\" munged OP_analyzeIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_analyzeIndex.sen -- Operator analyze index                              */\n"
@@ -29921,7 +30067,7 @@ void Task::vAddMunged(Task* )
     "  streamSetTable[] StreamSet[].new\n"
     "\n"
     "  // add a row for each table ptn\n"
-    "  grid::ptnsPerNode 0\n"
+    "  [grid].ptnsPerNode 0\n"
     "  do\n"
     "    // insert index verify\n"
     "    I Index[] streamSetTable[] StreamSet[].addAnalyzeIndex  not if\n"
@@ -29969,13 +30115,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 272 CONSTANT OP_analyzeIndex.sen "_Stz;
+  szSubScriptDef = " 273 CONSTANT OP_analyzeIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [273] se_tags.sen
+  // munge of [274] se_tags.sen
 
-  gszaMungedText[273] =
+  gszaMungedText[274] =
     "\" munged se_tags.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_tags.sen -- tags                                                        */\n"
@@ -30163,13 +30309,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 273 CONSTANT se_tags.sen "_Stz;
+  szSubScriptDef = " 274 CONSTANT se_tags.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [274] se_llc.sen
+  // munge of [275] se_llc.sen
 
-  gszaMungedText[274] =
+  gszaMungedText[275] =
     "\" munged se_llc.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_llc.sen -- last level cache                                             */\n"
@@ -30186,13 +30332,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 274 CONSTANT se_llc.sen "_Stz;
+  szSubScriptDef = " 275 CONSTANT se_llc.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [275] OP_projectRight.sen
+  // munge of [276] OP_projectRight.sen
 
-  gszaMungedText[275] =
+  gszaMungedText[276] =
     "\" munged OP_projectRight.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_projectRight.sen -- Operator projectRight columns                       */\n"
@@ -30463,16 +30609,16 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: projectRight_Cleaning         ZK_M_CLEANING    op[].handler!\n"
-    "  find: projectRight_CrwBuffer        ZK_D_CRWBUFFER   op[].handler!\n"
-    "  find: projectRight_EndCrwRht        ZK_M_ENDCRWRHT   op[].handler!\n"
-    "  find: projectRight_EndRowRht        ZK_M_ENDROWRHT   op[].handler!\n"
-    "  find: projectRight_EosMarker        ZK_M_EOS         op[].handler!\n"
-    "  find: projectRight_RowBuffer        ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: projectRight_StartMarker      ZK_M_START       op[].handler!\n"
-    "  find: projectRight_StartCrwRht      ZK_M_STARTCRWRHT op[].handler!\n"
-    "  find: projectRight_StartRowRht      ZK_M_STARTROWRHT op[].handler!\n"
-    "  find: projectRight_StreamDefRht     ZK_D_STREAMDEFRHT op[].handler!\n"
+    "  find: projectRight_Cleaning         ZK_M_CLEANING    [op].handler!\n"
+    "  find: projectRight_CrwBuffer        ZK_D_CRWBUFFER   [op].handler!\n"
+    "  find: projectRight_EndCrwRht        ZK_M_ENDCRWRHT   [op].handler!\n"
+    "  find: projectRight_EndRowRht        ZK_M_ENDROWRHT   [op].handler!\n"
+    "  find: projectRight_EosMarker        ZK_M_EOS         [op].handler!\n"
+    "  find: projectRight_RowBuffer        ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: projectRight_StartMarker      ZK_M_START       [op].handler!\n"
+    "  find: projectRight_StartCrwRht      ZK_M_STARTCRWRHT [op].handler!\n"
+    "  find: projectRight_StartRowRht      ZK_M_STARTROWRHT [op].handler!\n"
+    "  find: projectRight_StreamDefRht     ZK_D_STREAMDEFRHT [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -30502,13 +30648,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 275 CONSTANT OP_projectRight.sen "_Stz;
+  szSubScriptDef = " 276 CONSTANT OP_projectRight.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [276] OP_sleep.sen
+  // munge of [277] OP_sleep.sen
 
-  gszaMungedText[276] =
+  gszaMungedText[277] =
     "\" munged OP_sleep.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sleep.sen -- sleep for given time                                       */\n"
@@ -30522,7 +30668,7 @@ void Task::vAddMunged(Task* )
     ": sleep_sleep \\handler\n"
     "\n"
     "  \"sleeping\" .\n"
-    "  <nSeconds> >int task::sleepSsec\n"
+    "  <nSeconds> >int [task].sleepSsec\n"
     "  \"awake\" .\n"
     "\n"
     "  PipeIn[].pipeOut\n"
@@ -30539,7 +30685,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: sleep_sleep  ZK_M_DATAPULSE  op[].handler!\n"
+    "  find: sleep_sleep  ZK_M_DATAPULSE  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -30570,13 +30716,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 276 CONSTANT OP_sleep.sen "_Stz;
+  szSubScriptDef = " 277 CONSTANT OP_sleep.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [277] OP_wrCsvFile.sen
+  // munge of [278] OP_wrCsvFile.sen
 
-  gszaMungedText[277] =
+  gszaMungedText[278] =
     "\" munged OP_wrCsvFile.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_wrCsvFile.sen -- write csv file                                         */\n"
@@ -30655,11 +30801,11 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: wrCsvFile_Cleaning    ZK_M_CLEANING    op[].handler!\n"
-    "  find: wrCsvFile_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!\n"
-    "  find: wrCsvFile_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!\n"
-    "  find: wrCsvFile_RowBuffer   ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: wrCsvFile_StartMarker ZK_M_START       op[].handler!\n"
+    "  find: wrCsvFile_Cleaning    ZK_M_CLEANING    [op].handler!\n"
+    "  find: wrCsvFile_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!\n"
+    "  find: wrCsvFile_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!\n"
+    "  find: wrCsvFile_RowBuffer   ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: wrCsvFile_StartMarker ZK_M_START       [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -30689,13 +30835,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 277 CONSTANT OP_wrCsvFile.sen "_Stz;
+  szSubScriptDef = " 278 CONSTANT OP_wrCsvFile.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [278] OP_bucketSend1.sen
+  // munge of [279] OP_bucketSend1.sen
 
-  gszaMungedText[278] =
+  gszaMungedText[279] =
     "\" munged OP_bucketSend1.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bucketSend1.sen -- Operator scan                                         */\n"
@@ -30788,14 +30934,14 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 locals| rateSecs |\n"
     "\n"
-    "  // \"<rateSecs>\" Job[].tagSet@ tagSet.hasName if\n"
-    "  \"<rateSecs>\" op[].tagSet@ tagSet.hasName if\n"
+    "  // \"<rateSecs>\" [job].tagSet@ tagSet.hasName if\n"
+    "  \"<rateSecs>\" [op].tagSet@ tagSet.hasName if\n"
     "    <rateSecs> >int to rateSecs\n"
     "  then\n"
     "\n"
     "  rateSecs if\n"
     "    rateSecs \"Bucket Pausing for %v secs\" str.format .\n"
-    "    rateSecs task::sleepSsec\n"
+    "    rateSecs [task].sleepSsec\n"
     "    \"Bucket awake\" .\n"
     "  then\n"
     "\n"
@@ -30887,7 +31033,7 @@ void Task::vAddMunged(Task* )
     "  \"bucketSend_req\" .\n"
     "  _lu_initialise_\n"
     "\n"
-    "  \"<catalogNm>\"  Job[].tagSet@ tagSet.hasName if\n"
+    "  \"<catalogNm>\"  [job].tagSet@ tagSet.hasName if\n"
     "    <schemaNm> <catalogNm>\n"
     "    \"/tenants/boray/catalogs/%v/schemas/%v/tables\" str.format\n"
     "    str.toStrVec Path[].set\n"
@@ -30895,11 +31041,11 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: bucketSend_CancellingMarker  ZK_M_CANCELLING op[].handler!\n"
-    "  find: bucketSend_Cleaning          ZK_M_CLEANING   op[].handler!\n"
-    "  find: bucketSend_DataMarker        ZK_M_DATAPULSE  op[].handler!\n"
-    "  find: bucketSend_NextBufferMarker  ZK_M_NEXTBUFFER op[].handler!\n"
-    "  find: bucketSend_StartMarker       ZK_M_START      op[].handler!\n"
+    "  find: bucketSend_CancellingMarker  ZK_M_CANCELLING [op].handler!\n"
+    "  find: bucketSend_Cleaning          ZK_M_CLEANING   [op].handler!\n"
+    "  find: bucketSend_DataMarker        ZK_M_DATAPULSE  [op].handler!\n"
+    "  find: bucketSend_NextBufferMarker  ZK_M_NEXTBUFFER [op].handler!\n"
+    "  find: bucketSend_StartMarker       ZK_M_START      [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -30929,13 +31075,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 278 CONSTANT OP_bucketSend1.sen "_Stz;
+  szSubScriptDef = " 279 CONSTANT OP_bucketSend1.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [279] OP_progress.sen
+  // munge of [280] OP_progress.sen
 
-  gszaMungedText[279] =
+  gszaMungedText[280] =
     "\" munged OP_progress.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_progress.sen -- Operator progress                                       */\n"
@@ -30985,7 +31131,7 @@ void Task::vAddMunged(Task* )
     "        \"File: %v; %v Progress: 100\" str.format\n"
     "      \"%\\n\" str.cat .\n"
     "    else\n"
-    "      iPercent Job[].progressSeconds <string> StringA[]\n"
+    "      iPercent [job].progressSeconds <string> StringA[]\n"
     "        \"File: %v; %v seconds %v Progress: %v\" str.format\n"
     "      \"%\" str.cat .\n"
     "    then\n"
@@ -31038,9 +31184,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: Progress_EosMarker     ZK_M_EOS     op[].handler!\n"
-    "  find: Progress_ProgressUnits ZK_I_PROGRESSUNITS op[].handler!\n"
-    "  find: Progress_TotalUnits    ZK_I_TOTALUNITS    op[].handler!\n"
+    "  find: Progress_EosMarker     ZK_M_EOS     [op].handler!\n"
+    "  find: Progress_ProgressUnits ZK_I_PROGRESSUNITS [op].handler!\n"
+    "  find: Progress_TotalUnits    ZK_I_TOTALUNITS    [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -31070,13 +31216,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 279 CONSTANT OP_progress.sen "_Stz;
+  szSubScriptDef = " 280 CONSTANT OP_progress.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [280] se_includeJobs.sen
+  // munge of [281] se_includeJobs.sen
 
-  gszaMungedText[280] =
+  gszaMungedText[281] =
     "\" munged se_includeJobs.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_includeJobs.sen -- include jobs sequence                                */\n"
@@ -31108,13 +31254,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 280 CONSTANT se_includeJobs.sen "_Stz;
+  szSubScriptDef = " 281 CONSTANT se_includeJobs.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [281] OP_gridGet.sen
+  // munge of [282] OP_gridGet.sen
 
-  gszaMungedText[281] =
+  gszaMungedText[282] =
     "\" munged OP_gridGet.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_gridGet.sen -- Operator meta get                                        */\n"
@@ -31137,13 +31283,13 @@ void Task::vAddMunged(Task* )
     "  // gridGet::getMetaData locals| pgridGet |\n"
     "\n"
     "\n"
-    "  grid::getGrid locals| pgridObj |\n"
+    "  [grid].getGrid locals| pgridObj |\n"
     "  // pipeout the gridGet instance\n"
-    "  pgridObj op.pipeout\n"
+    "  pgridObj [op].pipeout\n"
     "\n"
     "  true\n"
     "  //stk\n"
-    "  //task::breakpoint set breakpoint back into C++ code, where the task loop is\n"
+    "  //[task].breakpoint set breakpoint back into C++ code, where the task loop is\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -31156,7 +31302,7 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "\n"
-    "  find: gridGet_getObject   ZK_M_DATAPULSE   op[].handler!\n"
+    "  find: gridGet_getObject   ZK_M_DATAPULSE   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -31186,13 +31332,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 281 CONSTANT OP_gridGet.sen "_Stz;
+  szSubScriptDef = " 282 CONSTANT OP_gridGet.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [282] test_str.sen
+  // munge of [283] test_str.sen
 
-  gszaMungedText[282] =
+  gszaMungedText[283] =
     "\" munged test_str.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_str.sen -- string unit testing                                        */\n"
@@ -31214,13 +31360,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 282 CONSTANT test_str.sen "_Stz;
+  szSubScriptDef = " 283 CONSTANT test_str.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [283] pp_file.sen
+  // munge of [284] pp_file.sen
 
-  gszaMungedText[283] =
+  gszaMungedText[284] =
     "\" munged pp_file.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_file.sen -- define file related procedures                              */\n"
@@ -31337,13 +31483,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 283 CONSTANT pp_file.sen "_Stz;
+  szSubScriptDef = " 284 CONSTANT pp_file.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [284] it_verifyIndex.sen
+  // munge of [285] it_verifyIndex.sen
 
-  gszaMungedText[284] =
+  gszaMungedText[285] =
     "\" munged it_verifyIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_verifyIndex.sen -- Define __verifyIndex table                           */\n"
@@ -31375,13 +31521,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 284 CONSTANT it_verifyIndex.sen "_Stz;
+  szSubScriptDef = " 285 CONSTANT it_verifyIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [285] OP_locks.sen
+  // munge of [286] OP_locks.sen
 
-  gszaMungedText[285] =
+  gszaMungedText[286] =
     "\" munged OP_locks.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* op_locks.sen -- show locks                                                 */\n"
@@ -31420,13 +31566,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 285 CONSTANT OP_locks.sen "_Stz;
+  szSubScriptDef = " 286 CONSTANT OP_locks.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [286] OP_transliterate.sen
+  // munge of [287] OP_transliterate.sen
 
-  gszaMungedText[286] =
+  gszaMungedText[287] =
     "\" munged OP_transliterate.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_transliterate.sen -- Transliterate Op (SQL Compiler)                    */\n"
@@ -31454,9 +31600,9 @@ void Task::vAddMunged(Task* )
     "    | stageA\n"
     "\n"
     "  end ;\n"
-    "  \" session::cascade!\n"
+    "  \" [session].cascade!\n"
     "  \n"
-    "  true session::hasCascade!\n"
+    "  true [session].hasCascade!\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -31519,9 +31665,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  //sPipeline .\n"
     "\n"
-    "  sPipeline session::cascade!\n"
+    "  sPipeline [session].cascade!\n"
     "\n"
-    "  true session::hasCascade!\n"
+    "  true [session].hasCascade!\n"
     "  \n"
     "  true\n"
     " ;\n"
@@ -31569,14 +31715,14 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: transliterate_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: transliterate_DataMarker    ZK_M_DATAPULSE     op[].handler!\n"
-    "  find: transliterate_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "  find: transliterate_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
-    "  find: transliterate_StartMarker   ZK_M_START         op[].handler!\n"
+    "  find: transliterate_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: transliterate_DataMarker    ZK_M_DATAPULSE     [op].handler!\n"
+    "  find: transliterate_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "  find: transliterate_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
+    "  find: transliterate_StartMarker   ZK_M_START         [op].handler!\n"
     "\n"
-    "  find: transliterate_StreamSet    ZK_D_STREAMSET      op[].handler!\n"
-    "  find: transliterate_LeaveMarker  ZK_M_LEAVE          op[].handler!\n"
+    "  find: transliterate_StreamSet    ZK_D_STREAMSET      [op].handler!\n"
+    "  find: transliterate_LeaveMarker  ZK_M_LEAVE          [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -31606,13 +31752,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 286 CONSTANT OP_transliterate.sen "_Stz;
+  szSubScriptDef = " 287 CONSTANT OP_transliterate.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [287] db_catalog.sen
+  // munge of [288] db_catalog.sen
 
-  gszaMungedText[287] =
+  gszaMungedText[288] =
     "\" munged db_catalog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* db_catalog.sen -- catalog related words                                    */\n"
@@ -31703,8 +31849,8 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": :makeCatalogsFolder ( <catalogNm> -- )\n"
     "\n"
-    "  args.tracepoint if\n"
-    "  dup \"MAKING CATALOGS FOR TENANT \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
+    "  [args].tracepoint if\n"
+    "  dup \"MAKING CATALOGS FOR TENANT \" swap str.cat \" on NODE \" str.cat [grid].thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  find execute ( dic )\n"
@@ -31718,8 +31864,8 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": :makeCatalogFolder params| sCatalogNm |\n"
     "\n"
-    "  args.tracepoint if\n"
-    "   sCatalogNm \"MAKING CATALOG \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
+    "  [args].tracepoint if\n"
+    "   sCatalogNm \"MAKING CATALOG \" swap str.cat \" on NODE \" str.cat [grid].thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
@@ -31748,8 +31894,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  params| sCatalogNm |\n"
     "\n"
-    "  args.tracepoint if\n"
-    "    dup \"REMOVING CATALOG \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
+    "  [args].tracepoint if\n"
+    "    dup \"REMOVING CATALOG \" swap str.cat \" on NODE \" str.cat [grid].thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
@@ -31770,13 +31916,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 287 CONSTANT db_catalog.sen "_Stz;
+  szSubScriptDef = " 288 CONSTANT db_catalog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [288] OP_network.sen
+  // munge of [289] OP_network.sen
 
-  gszaMungedText[288] =
+  gszaMungedText[289] =
     "\" munged OP_network.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* op_network.sen -- show network                                             */\n"
@@ -31815,13 +31961,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 288 CONSTANT OP_network.sen "_Stz;
+  szSubScriptDef = " 289 CONSTANT OP_network.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [289] OP_listTableDefs.sen
+  // munge of [290] OP_listTableDefs.sen
 
-  gszaMungedText[289] =
+  gszaMungedText[290] =
     "\" munged OP_listTableDefs.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listTableDefs.sen -- Operator list table definitions                    */\n"
@@ -31912,13 +32058,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 289 CONSTANT OP_listTableDefs.sen "_Stz;
+  szSubScriptDef = " 290 CONSTANT OP_listTableDefs.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [290] OP_dumpMetaInfo.sen
+  // munge of [291] OP_dumpMetaInfo.sen
 
-  gszaMungedText[290] =
+  gszaMungedText[291] =
     "\" munged OP_dumpMetaInfo.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dumpMetaInfo.sen -- dump meta info                                      */\n"
@@ -31937,7 +32083,7 @@ void Task::vAddMunged(Task* )
     "  <TableNm> op__table if\n"
     "      Table[].dumpmeta locals| pDumpBuffer |\n"
     "      // convert the string to operand to pipe out\n"
-    "        pDumpBuffer str.toPromptOut op.pipeout\n"
+    "        pDumpBuffer str.toPromptOut [op].pipeout\n"
     "      true\n"
     "    else\n"
     "      false\n"
@@ -31968,13 +32114,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 290 CONSTANT OP_dumpMetaInfo.sen "_Stz;
+  szSubScriptDef = " 291 CONSTANT OP_dumpMetaInfo.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [291] OP_metricsUpdate.sen
+  // munge of [292] OP_metricsUpdate.sen
 
-  gszaMungedText[291] =
+  gszaMungedText[292] =
     "\" munged OP_metricsUpdate.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_metricsUpdate.sen -- metrics                                            */\n"
@@ -32065,10 +32211,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: metricsUpdate_Start     ZK_M_START         op[].handler!\n"
-    "  find: metricsUpdate_DataPulse ZK_M_DATAPULSE     op[].handler!\n"
-    "  find: metricsUpdate_Job       ZK_D_JOBMETRICS    op[].handler!\n"
-    "  find: metricsUpdate_Paging    ZK_D_PAGINGMETRICS op[].handler!\n"
+    "  find: metricsUpdate_Start     ZK_M_START         [op].handler!\n"
+    "  find: metricsUpdate_DataPulse ZK_M_DATAPULSE     [op].handler!\n"
+    "  find: metricsUpdate_Job       ZK_D_JOBMETRICS    [op].handler!\n"
+    "  find: metricsUpdate_Paging    ZK_D_PAGINGMETRICS [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -32098,13 +32244,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 291 CONSTANT OP_metricsUpdate.sen "_Stz;
+  szSubScriptDef = " 292 CONSTANT OP_metricsUpdate.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [292] OP_getRows.sen
+  // munge of [293] OP_getRows.sen
 
-  gszaMungedText[292] =
+  gszaMungedText[293] =
     "\" munged OP_getRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_getRows.sen -- get rows from rowbuffer and pipeout                      */\n"
@@ -32155,8 +32301,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: getRows_RowBuffer  ZK_D_ROWBUFFER op[].handler!\n"
-    "  find: getRows_Eos        ZK_M_EOS op[].handler!\n"
+    "  find: getRows_RowBuffer  ZK_D_ROWBUFFER [op].handler!\n"
+    "  find: getRows_Eos        ZK_M_EOS [op].handler!\n"
     " \n"
     "  op__loop\n"
     "\n"
@@ -32186,13 +32332,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 292 CONSTANT OP_getRows.sen "_Stz;
+  szSubScriptDef = " 293 CONSTANT OP_getRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [293] test_arithmetic.sen
+  // munge of [294] test_arithmetic.sen
 
-  gszaMungedText[293] =
+  gszaMungedText[294] =
     "\" munged test_arithmetic.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_arithemetic.sen -- arithmetic unit testing                            */\n"
@@ -32219,13 +32365,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 293 CONSTANT test_arithmetic.sen "_Stz;
+  szSubScriptDef = " 294 CONSTANT test_arithmetic.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [294] OP_visualizeTable.sen
+  // munge of [295] OP_visualizeTable.sen
 
-  gszaMungedText[294] =
+  gszaMungedText[295] =
     "\" munged OP_visualizeTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_visualizeTable.sen -- Operator visualize table                          */\n"
@@ -32267,13 +32413,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 294 CONSTANT OP_visualizeTable.sen "_Stz;
+  szSubScriptDef = " 295 CONSTANT OP_visualizeTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [295] OP_listIndexes.sen
+  // munge of [296] OP_listIndexes.sen
 
-  gszaMungedText[295] =
+  gszaMungedText[296] =
     "\" munged OP_listIndexes.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listIndexes.sen -- Operator list indexes                                */\n"
@@ -32377,13 +32523,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 295 CONSTANT OP_listIndexes.sen "_Stz;
+  szSubScriptDef = " 296 CONSTANT OP_listIndexes.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [296] OP_top.sen
+  // munge of [297] OP_top.sen
 
-  gszaMungedText[296] =
+  gszaMungedText[297] =
     "\" munged OP_top.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_top.sen -- Operator top                                                 */\n"
@@ -32586,14 +32732,14 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  Counter0[] 2 == if\n"
-    "    find: top_ComCleaning   ZK_M_CLEANING     op[].handler!\n"
-    "    find: top_ComStreamDef  ZK_D_STREAMDEF    op[].handler!\n"
+    "    find: top_ComCleaning   ZK_M_CLEANING     [op].handler!\n"
+    "    find: top_ComStreamDef  ZK_D_STREAMDEF    [op].handler!\n"
     "  else\n"
-    "    find: top_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "    find: top_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "    find: top_RowBuffer     ZK_D_ROWBUFFER     op[].handler!\n"
-    "    find: top_StartMarker   ZK_M_START         op[].handler!\n"
-    "    find: top_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: top_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "    find: top_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "    find: top_RowBuffer     ZK_D_ROWBUFFER     [op].handler!\n"
+    "    find: top_StartMarker   ZK_M_START         [op].handler!\n"
+    "    find: top_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "  then\n"
     "\n"
     "  op__loop\n"
@@ -32624,13 +32770,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 296 CONSTANT OP_top.sen "_Stz;
+  szSubScriptDef = " 297 CONSTANT OP_top.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [297] reg__common.sen
+  // munge of [298] reg__common.sen
 
-  gszaMungedText[297] =
+  gszaMungedText[298] =
     "\" munged reg__common.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* reg__common.sen -- register common words                                   */\n"
@@ -32807,13 +32953,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 297 CONSTANT reg__common.sen "_Stz;
+  szSubScriptDef = " 298 CONSTANT reg__common.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [298] db_table.sen
+  // munge of [299] db_table.sen
 
-  gszaMungedText[298] =
+  gszaMungedText[299] =
     "\" munged db_table.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* db_table.sen -- table related words                                        */\n"
@@ -32949,9 +33095,9 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": table::makeTablesFolder params| sSchFolderNm |\n"
     "\n"
-    "  args.tracepoint if\n"
+    "  [args].tracepoint if\n"
     "    \"MAKING TABLES FOLDER FOR SCHEMA \" sSchFolderNm str.cat\n"
-    "      \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
+    "      \" on NODE \" str.cat [grid].thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  sSchFolderNm find execute locals| pwSchemaFolder |\n"
@@ -32963,9 +33109,9 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": table::makeNamedTableFolder params| sTblFolderNm |\n"
     "\n"
-    "  args.tracepoint if\n"
+    "  [args].tracepoint if\n"
     "    \"MAKING TABLE \" sTblFolderNm str.cat\n"
-    "     \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
+    "     \" on NODE \" str.cat [grid].thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  // make: ../schemas/public/tables/t \\folder\n"
@@ -33114,13 +33260,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 298 CONSTANT db_table.sen "_Stz;
+  szSubScriptDef = " 299 CONSTANT db_table.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [299] it_operandLog.sen
+  // munge of [300] it_operandLog.sen
 
-  gszaMungedText[299] =
+  gszaMungedText[300] =
     "\" munged it_operandLog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_operandLog.sen -- Define se__operandLog table                           */\n"
@@ -33160,13 +33306,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 299 CONSTANT it_operandLog.sen "_Stz;
+  szSubScriptDef = " 300 CONSTANT it_operandLog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [300] OP_docol.sen
+  // munge of [301] OP_docol.sen
 
-  gszaMungedText[300] =
+  gszaMungedText[301] =
     "\" munged OP_docol.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_docol.sen -- Operator docol                                             */\n"
@@ -33210,13 +33356,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 300 CONSTANT OP_docol.sen "_Stz;
+  szSubScriptDef = " 301 CONSTANT OP_docol.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [301] se_cluster.sen
+  // munge of [302] se_cluster.sen
 
-  gszaMungedText[301] =
+  gszaMungedText[302] =
     "\" munged se_cluster.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_cluster.sen -- se cluster                                               */\n"
@@ -33228,7 +33374,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "\n"
     ": bClusterStarted\n"
-    "  system::started@ if\n"
+    "  [system].started@ if\n"
     "    true\n"
     "  else\n"
     "    EC_CLUSTER_NOT_CONNECTED false\n"
@@ -33242,13 +33388,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 301 CONSTANT se_cluster.sen "_Stz;
+  szSubScriptDef = " 302 CONSTANT se_cluster.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [302] OP_projValidation.sen
+  // munge of [303] OP_projValidation.sen
 
-  gszaMungedText[302] =
+  gszaMungedText[303] =
     "\" munged OP_projValidation.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_projValidation.sen -- Validate projections are valid (SQL Compiler)     */\n"
@@ -33292,12 +33438,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker          ZK_M_LEAVE        op[].handler!\n"
-    "  find: compiler_StreamSet            ZK_D_STREAMSET    op[].handler!\n"
+    "  find: compiler_LeaveMarker          ZK_M_LEAVE        [op].handler!\n"
+    "  find: compiler_StreamSet            ZK_D_STREAMSET    [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: projValidation_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: projValidation_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: projValidation_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: projValidation_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -33327,13 +33473,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 302 CONSTANT OP_projValidation.sen "_Stz;
+  szSubScriptDef = " 303 CONSTANT OP_projValidation.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [303] OP_bktSend.sen
+  // munge of [304] OP_bktSend.sen
 
-  gszaMungedText[303] =
+  gszaMungedText[304] =
     "\" munged OP_bktSend.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bktSend.sen -- Operator bucket send                                     */\n"
@@ -33352,14 +33498,14 @@ void Task::vAddMunged(Task* )
     "\n"
     "  // then call C++ getBucketCrw to build the rows and push the rows to the stack via parcel\n"
     "\n"
-    "  BucketGet[].getBucketCrw op.pipeout\n"
+    "  BucketGet[].getBucketCrw [op].pipeout\n"
     "\n"
     "  BucketGet[].delete\n"
     "  nullptr to BucketGet[]\n"
     "\n"
     "  true\n"
     "\n"
-    "  //task::breakpoint //set breakpoint back into C++ code, where the task loop is\n"
+    "  //[task].breakpoint //set breakpoint back into C++ code, where the task loop is\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -33373,7 +33519,7 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // Setup ZK_D_BUCKETGET handler\n"
-    "  find: bktSend_bktGet ZK_D_BUCKETGET op[].handler!\n"
+    "  find: bktSend_bktGet ZK_D_BUCKETGET [op].handler!\n"
     "  op__loop\n"
     "\n"
     "  _lu_finalise_\n"
@@ -33402,13 +33548,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 303 CONSTANT OP_bktSend.sen "_Stz;
+  szSubScriptDef = " 304 CONSTANT OP_bktSend.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [304] OP_partitionPlan.sen
+  // munge of [305] OP_partitionPlan.sen
 
-  gszaMungedText[304] =
+  gszaMungedText[305] =
     "\" munged OP_partitionPlan.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_partitionPlan.sen -- Partition the Plan Op (SQL Compiler)               */\n"
@@ -33452,12 +33598,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker        ZK_M_LEAVE         op[].handler!\n"
-    "  find: compiler_StreamSet          ZK_D_STREAMSET     op[].handler!\n"
+    "  find: compiler_LeaveMarker        ZK_M_LEAVE         [op].handler!\n"
+    "  find: compiler_StreamSet          ZK_D_STREAMSET     [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: partitionPlan_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: partitionPlan_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: partitionPlan_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: partitionPlan_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -33487,13 +33633,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 304 CONSTANT OP_partitionPlan.sen "_Stz;
+  szSubScriptDef = " 305 CONSTANT OP_partitionPlan.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [305] OP_reload.sen
+  // munge of [306] OP_reload.sen
 
-  gszaMungedText[305] =
+  gszaMungedText[306] =
     "\" munged OP_reload.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_reload.sen -- reload                                                    */\n"
@@ -33545,10 +33691,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: reload_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!\n"
-    "  find: reload_EosMarker   ZK_M_EOS         op[].handler!\n"
-    "  find: reload_DataPulse   ZK_M_DATAPULSE   op[].handler!\n"
-    "  find: reload_StartMarker ZK_M_START       op[].handler!\n"
+    "  find: reload_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!\n"
+    "  find: reload_EosMarker   ZK_M_EOS         [op].handler!\n"
+    "  find: reload_DataPulse   ZK_M_DATAPULSE   [op].handler!\n"
+    "  find: reload_StartMarker ZK_M_START       [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -33578,13 +33724,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 305 CONSTANT OP_reload.sen "_Stz;
+  szSubScriptDef = " 306 CONSTANT OP_reload.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [306] dp_collectDemon.sen
+  // munge of [307] dp_collectDemon.sen
 
-  gszaMungedText[306] =
+  gszaMungedText[307] =
     "\" munged dp_collectDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* dp_collectDemon.sen -- Collect Demon                                       */\n"
@@ -33621,13 +33767,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 306 CONSTANT dp_collectDemon.sen "_Stz;
+  szSubScriptDef = " 307 CONSTANT dp_collectDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [307] it_explain.sen
+  // munge of [308] it_explain.sen
 
-  gszaMungedText[307] =
+  gszaMungedText[308] =
     "\" munged it_explain.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_explain.sen -- Define __explain table                                   */\n"
@@ -33658,13 +33804,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 307 CONSTANT it_explain.sen "_Stz;
+  szSubScriptDef = " 308 CONSTANT it_explain.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [308] OP_upsert.sen
+  // munge of [309] OP_upsert.sen
 
-  gszaMungedText[308] =
+  gszaMungedText[309] =
     "\" munged OP_upsert.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_upsert.sen -- Operator upsert                                           */\n"
@@ -33728,9 +33874,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: upsertOp_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!\n"
-    "  find: upsertOp_StartMarker ZK_M_START op[].handler!\n"
-    "  find: upsertOp_StreamDef   ZK_D_STREAMDEF   op[].handler!\n"
+    "  find: upsertOp_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!\n"
+    "  find: upsertOp_StartMarker ZK_M_START [op].handler!\n"
+    "  find: upsertOp_StreamDef   ZK_D_STREAMDEF   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -33760,13 +33906,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 308 CONSTANT OP_upsert.sen "_Stz;
+  szSubScriptDef = " 309 CONSTANT OP_upsert.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [309] it_jobNetDissect.sen
+  // munge of [310] it_jobNetDissect.sen
 
-  gszaMungedText[309] =
+  gszaMungedText[310] =
     "\" munged it_jobNetDissect.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_jobNetDissect.sen -- Define se__jobNetDissect table                     */\n"
@@ -33809,13 +33955,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 309 CONSTANT it_jobNetDissect.sen "_Stz;
+  szSubScriptDef = " 310 CONSTANT it_jobNetDissect.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [310] OP_listParts.sen
+  // munge of [311] OP_listParts.sen
 
-  gszaMungedText[310] =
+  gszaMungedText[311] =
     "\" munged OP_listParts.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listPartitions.sen -- Operator list partitions                          */\n"
@@ -33841,13 +33987,13 @@ void Task::vAddMunged(Task* )
     "  streamSetTable[] streamSet[].new\n"
     "\n"
     "  // get a row per partition on this node\n"
-    "  grid::ptnsPerNode 0 do\n"
+    "  [grid].ptnsPerNode 0 do\n"
     "\n"
-    "    I grid::tablePtnToPtnNo\n"
+    "    I [grid].tablePtnToPtnNo\n"
     "      streamSetTable[] streamSet[].addListPartitions  not if\n"
     "        StreamSet[].pipeOut\n"
     "        streamSetTable[] streamSet[].new\n"
-    "        I grid::tablePtnToPtnNo\n"
+    "        I [grid].tablePtnToPtnNo\n"
     "        streamSetTable[] StreamSet[].addListPartitions assert\n"
     "      then\n"
     "\n"
@@ -33880,13 +34026,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 310 CONSTANT OP_listParts.sen "_Stz;
+  szSubScriptDef = " 311 CONSTANT OP_listParts.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [311] OP_passThru.sen
+  // munge of [312] OP_passThru.sen
 
-  gszaMungedText[311] =
+  gszaMungedText[312] =
     "\" munged OP_passThru.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_passThru.sen -- Operator passThru                                       */\n"
@@ -33970,10 +34116,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: passThru_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!\n"
-    "  find: passThru_EosMarker   ZK_M_EOS   op[].handler!\n"
-    "  find: passThru_DataMarker  ZK_M_DATAPULSE op[].handler!\n"
-    "  find: passThru_StartMarker ZK_M_START op[].handler!\n"
+    "  find: passThru_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!\n"
+    "  find: passThru_EosMarker   ZK_M_EOS   [op].handler!\n"
+    "  find: passThru_DataMarker  ZK_M_DATAPULSE [op].handler!\n"
+    "  find: passThru_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -34003,13 +34149,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 311 CONSTANT OP_passThru.sen "_Stz;
+  szSubScriptDef = " 312 CONSTANT OP_passThru.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [312] pp_api.sen
+  // munge of [313] pp_api.sen
 
-  gszaMungedText[312] =
+  gszaMungedText[313] =
     "\" munged pp_api.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_api.sen -- define api procedures                                        */\n"
@@ -34096,13 +34242,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 312 CONSTANT pp_api.sen "_Stz;
+  szSubScriptDef = " 313 CONSTANT pp_api.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [313] OP_combined.sen
+  // munge of [314] OP_combined.sen
 
-  gszaMungedText[313] =
+  gszaMungedText[314] =
     "\" munged OP_combined.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_combined.sen -- Operator combined                                       */\n"
@@ -34369,17 +34515,17 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: combined_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: combined_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!\n"
-    "  find: combined_DataPulse     ZK_M_DATAPULSE     op[].handler!\n"
-    "  find: combined_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "  find: combined_RowBuffer     ZK_D_ROWBUFFER     op[].handler!\n"
-    "  find: combined_StartMarker   ZK_M_START         op[].handler!\n"
+    "  find: combined_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: combined_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!\n"
+    "  find: combined_DataPulse     ZK_M_DATAPULSE     [op].handler!\n"
+    "  find: combined_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "  find: combined_RowBuffer     ZK_D_ROWBUFFER     [op].handler!\n"
+    "  find: combined_StartMarker   ZK_M_START         [op].handler!\n"
     "\n"
     "  Counter0[] 0 == if\n"
-    "    find: combined_StreamDefGen  ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: combined_StreamDefGen  ZK_D_STREAMDEF     [op].handler!\n"
     "  else\n"
-    "    find: combined_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: combined_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "  then\n"
     "\n"
     "  op__loop\n"
@@ -34411,13 +34557,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 313 CONSTANT OP_combined.sen "_Stz;
+  szSubScriptDef = " 314 CONSTANT OP_combined.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [314] Parcel.sen
+  // munge of [315] Parcel.sen
 
-  gszaMungedText[314] =
+  gszaMungedText[315] =
     "\" munged Parcel.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* Parcel.sen -- Parcel words                                                 */\n"
@@ -34442,13 +34588,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 314 CONSTANT Parcel.sen "_Stz;
+  szSubScriptDef = " 315 CONSTANT Parcel.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [315] dp_wakerDemon.sen
+  // munge of [316] dp_wakerDemon.sen
 
-  gszaMungedText[315] =
+  gszaMungedText[316] =
     "\" munged dp_wakerDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* dp_wakerDemon.sen -- Waker Demon                                           */\n"
@@ -34484,13 +34630,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 315 CONSTANT dp_wakerDemon.sen "_Stz;
+  szSubScriptDef = " 316 CONSTANT dp_wakerDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [316] OP_listSchemas.sen
+  // munge of [317] OP_listSchemas.sen
 
-  gszaMungedText[316] =
+  gszaMungedText[317] =
     "\" munged OP_listSchemas.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listSchemas.sen -- Operator list schemas                                      */\n"
@@ -34570,13 +34716,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 316 CONSTANT OP_listSchemas.sen "_Stz;
+  szSubScriptDef = " 317 CONSTANT OP_listSchemas.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [317] OP_bktGet.sen
+  // munge of [318] OP_bktGet.sen
 
-  gszaMungedText[317] =
+  gszaMungedText[318] =
     "\" munged OP_bktGet.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bktGet.sen -- Operator Bucket get                                       */\n"
@@ -34606,7 +34752,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  true\n"
     "  //stk\n"
-    "  //task::breakpoint set breakpoint back into C++ code, where the task loop is\n"
+    "  //[task].breakpoint set breakpoint back into C++ code, where the task loop is\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -34618,7 +34764,7 @@ void Task::vAddMunged(Task* )
     "  //\"bktGet_req\" .\n"
     "  op__topology\n"
     "\n"
-    "  find: bktGet_DataPulse   ZK_M_DATAPULSE   op[].handler!\n"
+    "  find: bktGet_DataPulse   ZK_M_DATAPULSE   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -34649,13 +34795,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 317 CONSTANT OP_bktGet.sen "_Stz;
+  szSubScriptDef = " 318 CONSTANT OP_bktGet.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [318] OP_toNstRow.sen
+  // munge of [319] OP_toNstRow.sen
 
-  gszaMungedText[318] =
+  gszaMungedText[319] =
     "\" munged OP_toNstRow.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toNstRow.sen -- Convert row to normalised string row slab buffers       */\n"
@@ -34717,10 +34863,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: toNstRow_EosMarker   ZK_M_EOS   op[].handler!\n"
-    "  find: toNstRow_DataMarker  ZK_M_DATAPULSE   op[].handler!\n"
-    "  find: toNstRow_RowBuffer   ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: toNstRow_StartMarker ZK_M_START op[].handler!\n"
+    "  find: toNstRow_EosMarker   ZK_M_EOS   [op].handler!\n"
+    "  find: toNstRow_DataMarker  ZK_M_DATAPULSE   [op].handler!\n"
+    "  find: toNstRow_RowBuffer   ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: toNstRow_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -34750,13 +34896,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 318 CONSTANT OP_toNstRow.sen "_Stz;
+  szSubScriptDef = " 319 CONSTANT OP_toNstRow.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [319] it_sizeTable.sen
+  // munge of [320] it_sizeTable.sen
 
-  gszaMungedText[319] =
+  gszaMungedText[320] =
     "\" munged it_sizeTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_sizeTable.sen -- Define __sizeTable table                               */\n"
@@ -34786,13 +34932,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 319 CONSTANT it_sizeTable.sen "_Stz;
+  szSubScriptDef = " 320 CONSTANT it_sizeTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [320] it_countInfo.sen
+  // munge of [321] it_countInfo.sen
 
-  gszaMungedText[320] =
+  gszaMungedText[321] =
     "\" munged it_countInfo.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_countInfo.sen -- Define __countInfo table                               */\n"
@@ -34819,13 +34965,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 320 CONSTANT it_countInfo.sen "_Stz;
+  szSubScriptDef = " 321 CONSTANT it_countInfo.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [321] OP_nodeInfo.sen
+  // munge of [322] OP_nodeInfo.sen
 
-  gszaMungedText[321] =
+  gszaMungedText[322] =
     "\" munged OP_nodeInfo.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_nodeInfo.sen -- Operator node info                                      */\n"
@@ -34874,13 +35020,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 321 CONSTANT OP_nodeInfo.sen "_Stz;
+  szSubScriptDef = " 322 CONSTANT OP_nodeInfo.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [322] cmd_compiler.sen
+  // munge of [323] cmd_compiler.sen
 
-  gszaMungedText[322] =
+  gszaMungedText[323] =
     "\" munged cmd_compiler.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* cmd_Compiler.sen -- Command Compiler                                       */\n"
@@ -35425,13 +35571,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 322 CONSTANT cmd_compiler.sen "_Stz;
+  szSubScriptDef = " 323 CONSTANT cmd_compiler.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [323] OP_dynamic.sen
+  // munge of [324] OP_dynamic.sen
 
-  gszaMungedText[323] =
+  gszaMungedText[324] =
     "\" munged OP_dynamic.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dynamic.sen -- Operator Dynamic                                         */\n"
@@ -35565,7 +35711,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: dynamic_StartMarker  ZK_M_START  op[].handler!\n"
+    "  find: dynamic_StartMarker  ZK_M_START  [op].handler!\n"
     "  \n"
     "  op__loop\n"
     "\n"
@@ -35596,13 +35742,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 323 CONSTANT OP_dynamic.sen "_Stz;
+  szSubScriptDef = " 324 CONSTANT OP_dynamic.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [324] db_partition.sen
+  // munge of [325] db_partition.sen
 
-  gszaMungedText[324] =
+  gszaMungedText[325] =
     "\" munged db_partition.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* db_partition.sen -- partition related words                                */\n"
@@ -35615,8 +35761,8 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": makePartitions params| tableNm |\n"
     "\n"
-    "  args.tracepoint if\n"
-    "    tableNm \"MAKING PARTITIONS FOR TABLE \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
+    "  [args].tracepoint if\n"
+    "    tableNm \"MAKING PARTITIONS FOR TABLE \" swap str.cat \" on NODE \" str.cat [grid].thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  tableNm find execute ( dic )\n"
@@ -35677,7 +35823,7 @@ void Task::vAddMunged(Task* )
     "  begin\n"
     "    TablePtn[].attemptGrabRead\n"
     "  not while\n"
-    "    Task[].yield \n"
+    "    [task].yield \n"
     "  repeat\n"
     " ;\n"
     "\n"
@@ -35689,7 +35835,7 @@ void Task::vAddMunged(Task* )
     "  begin\n"
     "    TablePtn[].attemptGrabWrite\n"
     "  not while\n"
-    "    Task[].yield \n"
+    "    [task].yield \n"
     "  repeat\n"
     " ;\n"
     "\n"
@@ -35701,7 +35847,7 @@ void Task::vAddMunged(Task* )
     "  begin\n"
     "    TablePtn[].attemptGrabWrite\n"
     "  not while\n"
-    "    1 task::sleepMsec\n"
+    "    1 [task].sleepMsec\n"
     "  repeat\n"
     " ;\n"
     "\n"
@@ -35712,13 +35858,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 324 CONSTANT db_partition.sen "_Stz;
+  szSubScriptDef = " 325 CONSTANT db_partition.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [325] OP_defineTable.sen
+  // munge of [326] OP_defineTable.sen
 
-  gszaMungedText[325] =
+  gszaMungedText[326] =
     "\" munged OP_defineTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_defineTable.sen -- Operator define table                                */\n"
@@ -35768,7 +35914,7 @@ void Task::vAddMunged(Task* )
     "  nullptr to Pipein[]\n"
     "\n"
     "  // grab the ddl lock\n"
-    "  DdlLock[].grabRead\n"
+    "  [ddlLock].grabRead\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "  // check ok to create table\n"
@@ -35799,7 +35945,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: defineTable_StreamDef ZK_D_STREAMDEF op[].handler!\n"
+    "  find: defineTable_StreamDef ZK_D_STREAMDEF [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -35829,13 +35975,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 325 CONSTANT OP_defineTable.sen "_Stz;
+  szSubScriptDef = " 326 CONSTANT OP_defineTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [326] it_listContents.sen
+  // munge of [327] it_listContents.sen
 
-  gszaMungedText[326] =
+  gszaMungedText[327] =
     "\" munged it_listContents.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_listContents.sen -- Define __listContents table                         */\n"
@@ -35864,13 +36010,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 326 CONSTANT it_listContents.sen "_Stz;
+  szSubScriptDef = " 327 CONSTANT it_listContents.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [327] OP_copyIntoSame.sen
+  // munge of [328] OP_copyIntoSame.sen
 
-  gszaMungedText[327] =
+  gszaMungedText[328] =
     "\" munged OP_copyIntoSame.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_copyIntoSame.sen -- copy rows from rowBuffer into same rowand pipeout   */\n"
@@ -35920,8 +36066,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: copyIntoSame_RowBuffer  ZK_D_ROWBUFFER op[].handler!\n"
-    "  find: copyIntoSame_Eos        ZK_M_EOS op[].handler!\n"
+    "  find: copyIntoSame_RowBuffer  ZK_D_ROWBUFFER [op].handler!\n"
+    "  find: copyIntoSame_Eos        ZK_M_EOS [op].handler!\n"
     " \n"
     "  op__loop\n"
     "\n"
@@ -35951,13 +36097,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 327 CONSTANT OP_copyIntoSame.sen "_Stz;
+  szSubScriptDef = " 328 CONSTANT OP_copyIntoSame.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [328] pp_planner.sen
+  // munge of [329] pp_planner.sen
 
-  gszaMungedText[328] =
+  gszaMungedText[329] =
     "\" munged pp_planner.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_planner.sen -- define planner procedures                                */\n"
@@ -36006,13 +36152,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 328 CONSTANT pp_planner.sen "_Stz;
+  szSubScriptDef = " 329 CONSTANT pp_planner.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [329] OP_listTables.sen
+  // munge of [330] OP_listTables.sen
 
-  gszaMungedText[329] =
+  gszaMungedText[330] =
     "\" munged OP_listTables.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listTables.sen -- Operator list tables                                  */\n"
@@ -36102,13 +36248,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 329 CONSTANT OP_listTables.sen "_Stz;
+  szSubScriptDef = " 330 CONSTANT OP_listTables.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [330] cmd_cmdTags.sen
+  // munge of [331] cmd_cmdTags.sen
 
-  gszaMungedText[330] =
+  gszaMungedText[331] =
     "\" munged cmd_cmdTags.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* cmd_cmdTags.sen -- the _cmdTags words                                      */\n"
@@ -36209,13 +36355,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 330 CONSTANT cmd_cmdTags.sen "_Stz;
+  szSubScriptDef = " 331 CONSTANT cmd_cmdTags.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [331] test_literal.sen
+  // munge of [332] test_literal.sen
 
-  gszaMungedText[331] =
+  gszaMungedText[332] =
     "\" munged test_literal.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_literal.sen -- test sen literals                                      */\n"
@@ -36245,13 +36391,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 331 CONSTANT test_literal.sen "_Stz;
+  szSubScriptDef = " 332 CONSTANT test_literal.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [332] se_includeOps.sen
+  // munge of [333] se_includeOps.sen
 
-  gszaMungedText[332] =
+  gszaMungedText[333] =
     "\" munged se_includeOps.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_includeOps.sen -- include OP_ sequence                                  */\n"
@@ -36348,6 +36494,7 @@ void Task::vAddMunged(Task* )
     "  \"OP_emptyLoop.sen\"            include\n"
     "  \"OP_etcTest.sen\"              include\n"
     "  \"OP_exemplar.sen\"             include\n"
+    "  \"OP_exeSubPipe.sen\"           include\n"
     "  \"OP_explainPlan.sen\"          include\n"
     "  \"OP_exprPushdown.sen\"         include\n"
     "  \"OP_exprValidate.sen\"         include\n"
@@ -36573,13 +36720,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 332 CONSTANT se_includeOps.sen "_Stz;
+  szSubScriptDef = " 333 CONSTANT se_includeOps.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [333] OP_via.sen
+  // munge of [334] OP_via.sen
 
-  gszaMungedText[333] =
+  gszaMungedText[334] =
     "\" munged OP_via.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_via.sen -- Operator Via                                                 */\n"
@@ -36627,13 +36774,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 333 CONSTANT OP_via.sen "_Stz;
+  szSubScriptDef = " 334 CONSTANT OP_via.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [334] it_nodeInfo.sen
+  // munge of [335] it_nodeInfo.sen
 
-  gszaMungedText[334] =
+  gszaMungedText[335] =
     "\" munged it_nodeInfo.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_nodeInfo.sen -- Define __nodeInfo table                                 */\n"
@@ -36666,13 +36813,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 334 CONSTANT it_nodeInfo.sen "_Stz;
+  szSubScriptDef = " 335 CONSTANT it_nodeInfo.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [335] pp_dynCompiler.sen
+  // munge of [336] pp_dynCompiler.sen
 
-  gszaMungedText[335] =
+  gszaMungedText[336] =
     "\" munged pp_dynCompiler.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_dynCompiler.sen -- define dyn compiler procedures                       */\n"
@@ -36723,13 +36870,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 335 CONSTANT pp_dynCompiler.sen "_Stz;
+  szSubScriptDef = " 336 CONSTANT pp_dynCompiler.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [336] OP_throw.sen
+  // munge of [337] OP_throw.sen
 
-  gszaMungedText[336] =
+  gszaMungedText[337] =
     "\" munged OP_throw.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_throw.sen -- throw a C++ excpetion                                      */\n"
@@ -36742,7 +36889,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": throw_throw \\handler\n"
     "\n"
-    "  //task::seeFrameStack\n"
+    "  //[task].seeFrameStack\n"
     "  \n"
     "  inject::throw\n"
     "\n"
@@ -36762,7 +36909,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: throw_throw  ZK_D_CRWBUFFER  op[].handler!\n"
+    "  find: throw_throw  ZK_D_CRWBUFFER  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -36793,13 +36940,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 336 CONSTANT OP_throw.sen "_Stz;
+  szSubScriptDef = " 337 CONSTANT OP_throw.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [337] db_tenant.sen
+  // munge of [338] db_tenant.sen
 
-  gszaMungedText[337] =
+  gszaMungedText[338] =
     "\" munged db_tenant.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* db_tenant.sen -- tenant related words                                      */\n"
@@ -36872,8 +37019,8 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": :makeTenantFolder params| sTenantNm |\n"
     "\n"
-    "  args.tracepoint if\n"
-    "    sTenantNm \"MAKING TENANT \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
+    "  [args].tracepoint if\n"
+    "    sTenantNm \"MAKING TENANT \" swap str.cat \" on NODE \" str.cat [grid].thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
@@ -36902,8 +37049,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  params| sTenantNm |\n"
     "\n"
-    "  args.tracepoint if\n"
-    "  dup \"REMOVING TENANT \" swap str.cat \" on NODE \" str.cat grid::thisNode@ >str str.cat .\n"
+    "  [args].tracepoint if\n"
+    "  dup \"REMOVING TENANT \" swap str.cat \" on NODE \" str.cat [grid].thisNode@ >str str.cat .\n"
     "  then\n"
     "\n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
@@ -36924,13 +37071,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 337 CONSTANT db_tenant.sen "_Stz;
+  szSubScriptDef = " 338 CONSTANT db_tenant.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [338] OP_unload.sen
+  // munge of [339] OP_unload.sen
 
-  gszaMungedText[338] =
+  gszaMungedText[339] =
     "\" munged OP_unload.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_unload.sen -- unload                                                    */\n"
@@ -36982,10 +37129,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: unload_CsvBuffer   ZK_D_CSVBUFFER op[].handler!\n"
-    "  find: unload_EosMarker   ZK_M_EOS       op[].handler!\n"
-    "  find: unload_DataPulse   ZK_M_DATAPULSE op[].handler!\n"
-    "  find: unload_StartMarker ZK_M_START     op[].handler!\n"
+    "  find: unload_CsvBuffer   ZK_D_CSVBUFFER [op].handler!\n"
+    "  find: unload_EosMarker   ZK_M_EOS       [op].handler!\n"
+    "  find: unload_DataPulse   ZK_M_DATAPULSE [op].handler!\n"
+    "  find: unload_StartMarker ZK_M_START     [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -37015,13 +37162,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 338 CONSTANT OP_unload.sen "_Stz;
+  szSubScriptDef = " 339 CONSTANT OP_unload.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [339] OP_report.sen
+  // munge of [340] OP_report.sen
 
-  gszaMungedText[339] =
+  gszaMungedText[340] =
     "\" munged OP_report.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_report.sen -- Operator report                                           */\n"
@@ -37138,12 +37285,12 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: report_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!\n"
-    "  find: report_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!\n"
-    "  find: report_EntBuffer   ZK_D_ENTBUFFER   op[].handler!\n"
-    "  find: report_EosMarker   ZK_M_EOS   op[].handler!\n"
-    "  find: report_SrtBuffer   ZK_D_SRTBUFFER   op[].handler!\n"
-    "  find: report_StartMarker ZK_M_START op[].handler!\n"
+    "  find: report_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!\n"
+    "  find: report_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!\n"
+    "  find: report_EntBuffer   ZK_D_ENTBUFFER   [op].handler!\n"
+    "  find: report_EosMarker   ZK_M_EOS   [op].handler!\n"
+    "  find: report_SrtBuffer   ZK_D_SRTBUFFER   [op].handler!\n"
+    "  find: report_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -37173,13 +37320,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 339 CONSTANT OP_report.sen "_Stz;
+  szSubScriptDef = " 340 CONSTANT OP_report.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [340] test_logic.sen
+  // munge of [341] test_logic.sen
 
-  gszaMungedText[340] =
+  gszaMungedText[341] =
     "\" munged test_logic.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_logic.sen -- logic unit testing                                       */\n"
@@ -37236,13 +37383,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 340 CONSTANT test_logic.sen "_Stz;
+  szSubScriptDef = " 341 CONSTANT test_logic.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [341] test_misc.sen
+  // munge of [342] test_misc.sen
 
-  gszaMungedText[341] =
+  gszaMungedText[342] =
     "\" munged test_misc.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_misc.sen -- miscellaneous testing                                     */\n"
@@ -37370,7 +37517,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  10 0 do\n"
     "    I .\n"
-    "    Task[].yield \n"
+    "    [task].yield \n"
     "  loop\n"
     " ;\n"
     "\n"
@@ -37394,7 +37541,7 @@ void Task::vAddMunged(Task* )
     "    I to sleepTime\n"
     "    time.current \"start time %v\" str.format .\n"
     "    sleepTime \"task sleeping for %v secs\" str.format .\n"
-    "    1000000 sleepTime * task::sleepUsec\n"
+    "    1000000 sleepTime * [task].sleepUsec\n"
     "    time.current \"end time %v\\n\" str.format .\n"
     "  loop\n"
     " ;\n"
@@ -37417,13 +37564,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 341 CONSTANT test_misc.sen "_Stz;
+  szSubScriptDef = " 342 CONSTANT test_misc.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [342] OP_metricsDistribute.sen
+  // munge of [343] OP_metricsDistribute.sen
 
-  gszaMungedText[342] =
+  gszaMungedText[343] =
     "\" munged OP_metricsDistribute.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_metricsDistribute.sen -- distribute metrics                             */\n"
@@ -37482,8 +37629,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: metricsDistribute_Start    ZK_M_START       op[].handler!\n"
-    "  find: metricsDistribute_Metrics  ZK_D_JOBMETRICS  op[].handler!\n"
+    "  find: metricsDistribute_Start    ZK_M_START       [op].handler!\n"
+    "  find: metricsDistribute_Metrics  ZK_D_JOBMETRICS  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -37513,13 +37660,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 342 CONSTANT OP_metricsDistribute.sen "_Stz;
+  szSubScriptDef = " 343 CONSTANT OP_metricsDistribute.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [343] OP_exprPushdown.sen
+  // munge of [344] OP_exprPushdown.sen
 
-  gszaMungedText[343] =
+  gszaMungedText[344] =
     "\" munged OP_exprPushdown.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_exprPushdown.sen -- Push expr generation down in the plan (SQL Compiler)*/\n"
@@ -37563,12 +37710,12 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // common compiler handlers\n"
-    "  find: compiler_LeaveMarker  ZK_M_LEAVE       op[].handler!\n"
-    "  find: compiler_StreamSet    ZK_D_STREAMSET   op[].handler!\n"
+    "  find: compiler_LeaveMarker  ZK_M_LEAVE       [op].handler!\n"
+    "  find: compiler_StreamSet    ZK_D_STREAMSET   [op].handler!\n"
     "\n"
     "  // specific handlers\n"
-    "  find: exprPushdown_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "  find: exprPushdown_PlanOperand   ZK_D_PLANOPERAND   op[].handler!\n"
+    "  find: exprPushdown_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "  find: exprPushdown_PlanOperand   ZK_D_PLANOPERAND   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -37598,13 +37745,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 343 CONSTANT OP_exprPushdown.sen "_Stz;
+  szSubScriptDef = " 344 CONSTANT OP_exprPushdown.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [344] OP_crwToRow.sen
+  // munge of [345] OP_crwToRow.sen
 
-  gszaMungedText[344] =
+  gszaMungedText[345] =
     "\" munged OP_crwToRow.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_crwToRow.sen -- Convert crw buffers to row buffers                      */\n"
@@ -37694,9 +37841,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: crwToRow_StreamDef ZK_D_STREAMDEF  op[].handler!\n"
-    "  find: crwToRow_CrwBuffer ZK_D_CRWBUFFER  op[].handler!\n"
-    "  find: crwToRow_EosMarker ZK_M_EOS  op[].handler!\n"
+    "  find: crwToRow_StreamDef ZK_D_STREAMDEF  [op].handler!\n"
+    "  find: crwToRow_CrwBuffer ZK_D_CRWBUFFER  [op].handler!\n"
+    "  find: crwToRow_EosMarker ZK_M_EOS  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -37726,13 +37873,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 344 CONSTANT OP_crwToRow.sen "_Stz;
+  szSubScriptDef = " 345 CONSTANT OP_crwToRow.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [345] it_space.sen
+  // munge of [346] it_space.sen
 
-  gszaMungedText[345] =
+  gszaMungedText[346] =
     "\" munged it_space.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_space.sen -- Define __space table                                       */\n"
@@ -37764,13 +37911,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 345 CONSTANT it_space.sen "_Stz;
+  szSubScriptDef = " 346 CONSTANT it_space.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [346] OP_namedInsert.sen
+  // munge of [347] OP_namedInsert.sen
 
-  gszaMungedText[346] =
+  gszaMungedText[347] =
     "\" munged OP_namedInsert.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_namedInsert.sen -- Operator namedInsert                                 */\n"
@@ -37840,7 +37987,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: namedInsert_NamedBuffer ZK_D_NAMEDBUFFER op[].handler!\n"
+    "  find: namedInsert_NamedBuffer ZK_D_NAMEDBUFFER [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -37870,13 +38017,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 346 CONSTANT OP_namedInsert.sen "_Stz;
+  szSubScriptDef = " 347 CONSTANT OP_namedInsert.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [347] dp_reaperDemon.sen
+  // munge of [348] dp_reaperDemon.sen
 
-  gszaMungedText[347] =
+  gszaMungedText[348] =
     "\" munged dp_reaperDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* dp_reaperDemon.sen -- Reaper Demon                                         */\n"
@@ -37911,13 +38058,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 347 CONSTANT dp_reaperDemon.sen "_Stz;
+  szSubScriptDef = " 348 CONSTANT dp_reaperDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [348] pp_nextHB.sen
+  // munge of [349] pp_nextHB.sen
 
-  gszaMungedText[348] =
+  gszaMungedText[349] =
     "\" munged pp_nextHB.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_nextHB.sen -- get heartbeat from next node procedure                    */\n"
@@ -37962,13 +38109,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 348 CONSTANT pp_nextHB.sen "_Stz;
+  szSubScriptDef = " 349 CONSTANT pp_nextHB.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [349] OP_refTmrReset.sen
+  // munge of [350] OP_refTmrReset.sen
 
-  gszaMungedText[349] =
+  gszaMungedText[350] =
     "\" munged OP_refTmrReset.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_refTmrReset.sen -- Reference Timer Reset                                */\n"
@@ -38007,13 +38154,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 349 CONSTANT OP_refTmrReset.sen "_Stz;
+  szSubScriptDef = " 350 CONSTANT OP_refTmrReset.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [350] job_abstract.sen
+  // munge of [351] job_abstract.sen
 
-  gszaMungedText[350] =
+  gszaMungedText[351] =
     "\" munged job_abstract.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_abstract.sen -- Abstract/Common Job                                    */\n"
@@ -38036,7 +38183,7 @@ void Task::vAddMunged(Task* )
     "    node_I[].node to pNode\n"
     "\n"
     "    pNode node.sendSocket@ if\n"
-    "      pNode node.no Job[] job.forward\n"
+    "      pNode node.no [job] job.forward\n"
     "    else\n"
     "      \"++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE\" .\n"
     "    then\n"
@@ -38051,11 +38198,11 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     "/* entry point                                                                */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": job::job\n"
+    ": job::entryPoint\n"
     "\n"
-    "  //\" +++++++++++++++++++++++++++++++++++++++++++++++++++++++ job::job\" .\n"
+    "  //\" +++++++++++++++++++++++++++++++++++++++++++++++++++++++ job::entryPoint\" .\n"
     "  \n"
-    "  Job[].entry@ >interpret\n"
+    "  [job].entryPoint@ >interpret\n"
     "  \n"
     "  HAZARD\n"
     " ;\n"
@@ -38067,13 +38214,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 350 CONSTANT job_abstract.sen "_Stz;
+  szSubScriptDef = " 351 CONSTANT job_abstract.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [351] test_flow.sen
+  // munge of [352] test_flow.sen
 
-  gszaMungedText[351] =
+  gszaMungedText[352] =
     "\" munged test_flow.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_flow.sen -- flow control unit testing                                 */\n"
@@ -38114,13 +38261,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 351 CONSTANT test_flow.sen "_Stz;
+  szSubScriptDef = " 352 CONSTANT test_flow.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [352] OP_rdCsvChunk.sen
+  // munge of [353] OP_rdCsvChunk.sen
 
-  gszaMungedText[352] =
+  gszaMungedText[353] =
     "\" munged OP_rdCsvChunk.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_rdCsvChunk.sen -- Op Read Csv Chunk                                     */\n"
@@ -38163,7 +38310,7 @@ void Task::vAddMunged(Task* )
     "    discern::rdCsvChunk not if\n"
     "    \n"
     "      //\"Have discerned too many queued\" .\n"
-    "      25 task::sleepMsec\n"
+    "      25 [task].sleepMsec\n"
     " \n"
     "    else\n"
     "\n"
@@ -38203,10 +38350,10 @@ void Task::vAddMunged(Task* )
     "    infoSetRow[].isNull\n"
     "  not while\n"
     "\n"
-    "   args.operands attachmap::operands@ args.operands > and if\n"
+    "   [args].operands attachmap::operands@ [args].operands > and if\n"
     "    \n"
     "      attachmap::operands@ \"Queued Arguments : %v\" .printf\n"
-    "      25 task::sleepMsec\n"
+    "      25 [task].sleepMsec\n"
     " \n"
     "   else\n"
     "\n"
@@ -38247,7 +38394,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  <fileNm> locals| sFileNm_raw |\n"
     "  \n"
-    "  Job[].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |\n"
+    "  [job].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |\n"
     "\n"
     "  PipeIn[].pipeOut\n"
     "\n"
@@ -38266,18 +38413,18 @@ void Task::vAddMunged(Task* )
     "\n"
     "  _lu_initialise_\n"
     "\n"
-    "//  \"<note>\"  Job[].tagSet@ tagSet.hasName if\n"
+    "//  \"<note>\"  [job].tagSet@ tagSet.hasName if\n"
     "//    <note> LogicUnit[].diaryJobNote\n"
     "//  then\n"
     "//\n"
-    "//  op.opName@ LogicUnit[].diaryTitle\n"
-    "//  op.opName@ LogicUnit[].diaryName\n"
+    "//  [op].opName@ LogicUnit[].diaryTitle\n"
+    "//  [op].opName@ LogicUnit[].diaryName\n"
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: rdCsvChunk_Cleaning      ZK_M_CLEANING     op[].handler!\n"
-    "  find: rdCsvChunk_SeekOffsets   ZK_I_SEEKOFFSETS  op[].handler!\n"
-    "  find: rdCsvChunk_StartMarker   ZK_M_START        op[].handler!\n"
+    "  find: rdCsvChunk_Cleaning      ZK_M_CLEANING     [op].handler!\n"
+    "  find: rdCsvChunk_SeekOffsets   ZK_I_SEEKOFFSETS  [op].handler!\n"
+    "  find: rdCsvChunk_StartMarker   ZK_M_START        [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -38308,13 +38455,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 352 CONSTANT OP_rdCsvChunk.sen "_Stz;
+  szSubScriptDef = " 353 CONSTANT OP_rdCsvChunk.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [353] pp_load2.sen
+  // munge of [354] pp_load2.sen
 
-  gszaMungedText[353] =
+  gszaMungedText[354] =
     "\" munged pp_load2.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_load.sen -- load pipeline procedures                                    */\n"
@@ -38488,13 +38635,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 353 CONSTANT pp_load2.sen "_Stz;
+  szSubScriptDef = " 354 CONSTANT pp_load2.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [354] dp_superDemon.sen
+  // munge of [355] dp_superDemon.sen
 
-  gszaMungedText[354] =
+  gszaMungedText[355] =
     "\" munged dp_superDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* dp_superDemon.sen -- Supervisor Demon                                      */\n"
@@ -38530,13 +38677,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 354 CONSTANT dp_superDemon.sen "_Stz;
+  szSubScriptDef = " 355 CONSTANT dp_superDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [355] OP_monitor.sen
+  // munge of [356] OP_monitor.sen
 
-  gszaMungedText[355] =
+  gszaMungedText[356] =
     "\" munged OP_monitor.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_monitor.sen -- Monitor Operator                                         */\n"
@@ -38584,7 +38731,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: monitor_StartMarker ZK_M_START op[].handler!\n"
+    "  find: monitor_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -38614,13 +38761,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 355 CONSTANT OP_monitor.sen "_Stz;
+  szSubScriptDef = " 356 CONSTANT OP_monitor.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [356] pp_TPCH.sen
+  // munge of [357] pp_TPCH.sen
 
-  gszaMungedText[356] =
+  gszaMungedText[357] =
     "\" munged pp_TPCH.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_TPCH.sen -- define TPCH related procedures                              */\n"
@@ -38765,13 +38912,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 356 CONSTANT pp_TPCH.sen "_Stz;
+  szSubScriptDef = " 357 CONSTANT pp_TPCH.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [357] OP_project.sen
+  // munge of [358] OP_project.sen
 
-  gszaMungedText[357] =
+  gszaMungedText[358] =
     "\" munged OP_project.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_project.sen -- Operator project columns                                 */\n"
@@ -39002,15 +39149,15 @@ void Task::vAddMunged(Task* )
     "\n"
     "  Counter0[] 2 == if\n"
     "    // handle combined operator\n"
-    "    find: project_ComCleaning  ZK_M_CLEANING      op[].handler!\n"
-    "    find: project_ComStreamDef ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: project_ComCleaning  ZK_M_CLEANING      [op].handler!\n"
+    "    find: project_ComStreamDef ZK_D_STREAMDEF     [op].handler!\n"
     "  else\n"
-    "    find: project_Cleaning      ZK_M_CLEANING      op[].handler!\n"
-    "    find: project_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!\n"
-    "    find: project_EosMarker     ZK_M_EOS           op[].handler!\n"
-    "    find: project_RowBuffer     ZK_D_ROWBUFFER     op[].handler!\n"
-    "    find: project_StartMarker   ZK_M_START         op[].handler!\n"
-    "    find: project_StreamDef     ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: project_Cleaning      ZK_M_CLEANING      [op].handler!\n"
+    "    find: project_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!\n"
+    "    find: project_EosMarker     ZK_M_EOS           [op].handler!\n"
+    "    find: project_RowBuffer     ZK_D_ROWBUFFER     [op].handler!\n"
+    "    find: project_StartMarker   ZK_M_START         [op].handler!\n"
+    "    find: project_StreamDef     ZK_D_STREAMDEF     [op].handler!\n"
     "  then\n"
     "\n"
     "  op__loop\n"
@@ -39041,13 +39188,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 357 CONSTANT OP_project.sen "_Stz;
+  szSubScriptDef = " 358 CONSTANT OP_project.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [358] OP_EOAsm2.sen
+  // munge of [359] OP_EOAsm2.sen
 
-  gszaMungedText[358] =
+  gszaMungedText[359] =
     "\" munged OP_EOAsm2.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_EOAsm2.sen -- sql                                                        */\n"
@@ -39288,12 +39435,12 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: EOAsm2_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!\n"
-    "  find: EOAsm2_EosMarker   ZK_M_EOS   op[].handler!\n"
-    "  find: EOAsm2_DataPulse   ZK_M_DATAPULSE   op[].handler!\n"
-    "  find: EOAsm2_RowBuffer   ZK_D_ROWBUFFER   op[].handler!\n"
-    "  find: EOAsm2_StartMarker ZK_M_START op[].handler!\n"
-    "  find: EOAsm2_StreamDef   ZK_D_STREAMDEF   op[].handler!\n"
+    "  find: EOAsm2_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!\n"
+    "  find: EOAsm2_EosMarker   ZK_M_EOS   [op].handler!\n"
+    "  find: EOAsm2_DataPulse   ZK_M_DATAPULSE   [op].handler!\n"
+    "  find: EOAsm2_RowBuffer   ZK_D_ROWBUFFER   [op].handler!\n"
+    "  find: EOAsm2_StartMarker ZK_M_START [op].handler!\n"
+    "  find: EOAsm2_StreamDef   ZK_D_STREAMDEF   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -39323,13 +39470,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 358 CONSTANT OP_EOAsm2.sen "_Stz;
+  szSubScriptDef = " 359 CONSTANT OP_EOAsm2.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [359] OP_ordAgg.sen
+  // munge of [360] OP_ordAgg.sen
 
-  gszaMungedText[359] =
+  gszaMungedText[360] =
     "\" munged OP_ordAgg.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_ordAgg.sen -- Operator ordAgg (aggregate keys coming in order)          */\n"
@@ -39411,8 +39558,8 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  Counter0[] 2 == if\n"
-    "    find: ordAgg_ComCleaning   ZK_M_CLEANING      op[].handler!\n"
-    "    find: ordAgg_ComStreamDef  ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: ordAgg_ComCleaning   ZK_M_CLEANING      [op].handler!\n"
+    "    find: ordAgg_ComStreamDef  ZK_D_STREAMDEF     [op].handler!\n"
     "  else\n"
     "    0 assert\n"
     "  then\n"
@@ -39445,13 +39592,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 359 CONSTANT OP_ordAgg.sen "_Stz;
+  szSubScriptDef = " 360 CONSTANT OP_ordAgg.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [360] OP_emptyLoop.sen
+  // munge of [361] OP_emptyLoop.sen
 
-  gszaMungedText[360] =
+  gszaMungedText[361] =
     "\" munged OP_emptyLoop.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_emptyLoop.sen -- empty loop                                             */\n"
@@ -39500,8 +39647,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: emptyLoop_RowBuffer  ZK_D_ROWBUFFER op[].handler!\n"
-    "  find: emptyLoop_Eos        ZK_M_EOS op[].handler!\n"
+    "  find: emptyLoop_RowBuffer  ZK_D_ROWBUFFER [op].handler!\n"
+    "  find: emptyLoop_Eos        ZK_M_EOS [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -39531,13 +39678,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 360 CONSTANT OP_emptyLoop.sen "_Stz;
+  szSubScriptDef = " 361 CONSTANT OP_emptyLoop.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [361] it_listFolder.sen
+  // munge of [362] it_listFolder.sen
 
-  gszaMungedText[361] =
+  gszaMungedText[362] =
     "\" munged it_listFolder.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_listFolder.sen -- Define __listFolder table                             */\n"
@@ -39567,13 +39714,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 361 CONSTANT it_listFolder.sen "_Stz;
+  szSubScriptDef = " 362 CONSTANT it_listFolder.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [362] OP_sizeTable.sen
+  // munge of [363] OP_sizeTable.sen
 
-  gszaMungedText[362] =
+  gszaMungedText[363] =
     "\" munged OP_sizeTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sizeTable.sen -- Operator size table                                    */\n"
@@ -39635,13 +39782,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 362 CONSTANT OP_sizeTable.sen "_Stz;
+  szSubScriptDef = " 363 CONSTANT OP_sizeTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [363] se_includePps.sen
+  // munge of [364] se_includePps.sen
 
-  gszaMungedText[363] =
+  gszaMungedText[364] =
     "\" munged se_includePps.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_includePps.sen -- include pp_ sequence                                  */\n"
@@ -39696,13 +39843,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 363 CONSTANT se_includePps.sen "_Stz;
+  szSubScriptDef = " 364 CONSTANT se_includePps.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [364] OP_recv.sen
+  // munge of [365] OP_recv.sen
 
-  gszaMungedText[364] =
+  gszaMungedText[365] =
     "\" munged OP_recv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_recv.sen -- Operator recv                                               */\n"
@@ -39715,17 +39862,17 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": recv_init ( -- )\n"
     "\n"
-    "  //CN_JOB Task[] task.thread thread.dedicated!\n"
+    "  //CN_JOB [task] task.thread@ thread.dedicated!\n"
     "\n"
-    "  NS_ACTIVE grid::thisNode@ grid::findNodeByNo node.state!\n"
+    "  NS_ACTIVE [grid].thisNode@ [grid].findNodeByNo node.state!\n"
     "\n"
-    "  args.verbose if\n"
-    "    grid::thisNode@ \"receiver running on node %v\" .printf\n"
+    "  [args].verbose if\n"
+    "    [grid].thisNode@ \"receiver running on node %v\" .printf\n"
     "  then\n"
     "  \n"
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
-    "  \"<ansNode>\" Job[].tagSet@ tagSet.hasName assert\n"
+    "  \"<ansNode>\" [job].tagSet@ tagSet.hasName assert\n"
     "\n"
     "  <ansNode> >int >ptr node.recvSocket@ to Socket[]\n"
     " ;\n"
@@ -39809,10 +39956,10 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: recv_StartMarker ZK_M_START op[].handler!\n"
+    "  find: recv_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  // get the pipeline job of the operator\n"
-    "  Op.pipelineJob@ locals| pPipelineJob |\n"
+    "  [op].job@ locals| pPipelineJob |\n"
     "\n"
     "  // peek to see if any operand\n"
     "  begin\n"
@@ -39829,7 +39976,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[].next\n"
     "\n"
     "  // execute the operator's handler for the operand\n"
-    "  PipeIn[].kind op[].handler@ execute\n"
+    "  PipeIn[].kind [op].handler@ execute\n"
     "\n"
     "  _lu_finalise_\n"
     "  \n"
@@ -39857,13 +40004,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 364 CONSTANT OP_recv.sen "_Stz;
+  szSubScriptDef = " 365 CONSTANT OP_recv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [365] OP_dropCatalog.sen
+  // munge of [366] OP_dropCatalog.sen
 
-  gszaMungedText[365] =
+  gszaMungedText[366] =
     "\" munged OP_dropCatalog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropCatalog.sen -- Operator drop catalog                                */\n"
@@ -39905,7 +40052,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: dropCatalog_DataMarker ZK_M_DATAPULSE op[].handler!\n"
+    "  find: dropCatalog_DataMarker ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -39935,13 +40082,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 365 CONSTANT OP_dropCatalog.sen "_Stz;
+  szSubScriptDef = " 366 CONSTANT OP_dropCatalog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [366] OP_toCsv_OLD.sen
+  // munge of [367] OP_toCsv_OLD.sen
 
-  gszaMungedText[366] =
+  gszaMungedText[367] =
     "\" munged OP_toCsv_OLD.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toCsv.sen -- Operator toCsv                                             */\n"
@@ -40058,9 +40205,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: toCsv_CrwBuffer  ZK_D_CRWBUFFER op[].handler!\n"
-    "  find: toCsv_RowBuffer  ZK_D_ROWBUFFER op[].handler!\n"
-    "  find: toCsv_StreamDef  ZK_D_STREAMDEF op[].handler!\n"
+    "  find: toCsv_CrwBuffer  ZK_D_CRWBUFFER [op].handler!\n"
+    "  find: toCsv_RowBuffer  ZK_D_ROWBUFFER [op].handler!\n"
+    "  find: toCsv_StreamDef  ZK_D_STREAMDEF [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -40090,13 +40237,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 366 CONSTANT OP_toCsv_OLD.sen "_Stz;
+  szSubScriptDef = " 367 CONSTANT OP_toCsv_OLD.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [367] it_lockStats.sen
+  // munge of [368] it_lockStats.sen
 
-  gszaMungedText[367] =
+  gszaMungedText[368] =
     "\" munged it_lockStats.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_lockStats.sen -- Define __lockStats table                               */\n"
@@ -40137,13 +40284,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 367 CONSTANT it_lockStats.sen "_Stz;
+  szSubScriptDef = " 368 CONSTANT it_lockStats.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [368] OP_jobExit.sen
+  // munge of [369] OP_jobExit.sen
 
-  gszaMungedText[368] =
+  gszaMungedText[369] =
     "\" munged OP_jobExit.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_jobExit.sen -- Operator job report                                */\n"
@@ -40227,8 +40374,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: jobExit_Flush  ZK_M_FLUSH op[].handler!\n"
-    "  find: jobExit_Job    ZK_D_JOB   op[].handler!\n"
+    "  find: jobExit_Flush  ZK_M_FLUSH [op].handler!\n"
+    "  find: jobExit_Job    ZK_D_JOB   [op].handler!\n"
     "\n"
     "  jobExit_initialise\n"
     "  \n"
@@ -40262,13 +40409,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 368 CONSTANT OP_jobExit.sen "_Stz;
+  szSubScriptDef = " 369 CONSTANT OP_jobExit.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [369] pp_query.sen
+  // munge of [370] pp_query.sen
 
-  gszaMungedText[369] =
+  gszaMungedText[370] =
     "\" munged pp_query.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_query.sen -- define query related procedures                            */\n"
@@ -40412,13 +40559,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 369 CONSTANT pp_query.sen "_Stz;
+  szSubScriptDef = " 370 CONSTANT pp_query.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [370] OP_limit.sen
+  // munge of [371] OP_limit.sen
 
-  gszaMungedText[370] =
+  gszaMungedText[371] =
     "\" munged OP_limit.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_limit.sen -- Operator limit rows                                        */\n"
@@ -40626,15 +40773,15 @@ void Task::vAddMunged(Task* )
     "\n"
     "  Counter0[] 2 == if\n"
     "    // handle combined operator\n"
-    "    find: limit_ComCleaning    ZK_M_CLEANING      op[].handler!\n"
-    "    find: limit_ComStreamDef   ZK_D_STREAMDEF     op[].handler!\n"
+    "    find: limit_ComCleaning    ZK_M_CLEANING      [op].handler!\n"
+    "    find: limit_ComStreamDef   ZK_D_STREAMDEF     [op].handler!\n"
     "  else\n"
-    "    find: limit_Cleaning      ZK_M_CLEANING       op[].handler!\n"
-    "    find: limit_CrwBuffer     ZK_D_CRWBUFFER      op[].handler!\n"
-    "    find: limit_EosMarker     ZK_M_EOS            op[].handler!\n"
-    "    find: limit_RowBuffer     ZK_D_ROWBUFFER      op[].handler!\n"
-    "    find: limit_StartMarker   ZK_M_START          op[].handler!\n"
-    "    find: limit_StreamDef     ZK_D_STREAMDEF      op[].handler!\n"
+    "    find: limit_Cleaning      ZK_M_CLEANING       [op].handler!\n"
+    "    find: limit_CrwBuffer     ZK_D_CRWBUFFER      [op].handler!\n"
+    "    find: limit_EosMarker     ZK_M_EOS            [op].handler!\n"
+    "    find: limit_RowBuffer     ZK_D_ROWBUFFER      [op].handler!\n"
+    "    find: limit_StartMarker   ZK_M_START          [op].handler!\n"
+    "    find: limit_StreamDef     ZK_D_STREAMDEF      [op].handler!\n"
     "  then\n"
     "\n"
     "  op__loop\n"
@@ -40665,13 +40812,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 370 CONSTANT OP_limit.sen "_Stz;
+  szSubScriptDef = " 371 CONSTANT OP_limit.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [371] OP_answer.sen
+  // munge of [372] OP_answer.sen
 
-  gszaMungedText[371] =
+  gszaMungedText[372] =
     "\" munged OP_answer.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_answer.sen -- Operator answer                                           */\n"
@@ -40744,7 +40891,7 @@ void Task::vAddMunged(Task* )
     "  0 infoSetRow[].getVchColumn to sNodeName\n"
     "\n"
     "  // find the node\n"
-    "  sNodeName grid::findNodeByName to pAnsweredNode\n"
+    "  sNodeName [grid].findNodeByName to pAnsweredNode\n"
     "\n"
     "  // set the receive socket in the answered node\n"
     "\n"
@@ -40755,7 +40902,7 @@ void Task::vAddMunged(Task* )
     "      pAnsweredNode not\n"
     "    while\n"
     "      50 thread::sleepMsec\n"
-    "      sNodeName grid::findNodeByName to pAnsweredNode\n"
+    "      sNodeName [grid].findNodeByName to pAnsweredNode\n"
     "  repeat\n"
     "  \n"
     "  pAnsweredNode not if\n"
@@ -40777,8 +40924,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  //ptnmap::adjust\n"
     "\n"
-    "  //3 infoSetRow[].getIntColumn system::started@ not and if\n"
-    "  //  true system::started!\n"
+    "  //3 infoSetRow[].getIntColumn [system].started@ not and if\n"
+    "  //  true [system].started!\n"
     "  //then\n"
     "\n"
     "  // delete the infoset\n"
@@ -40806,9 +40953,9 @@ void Task::vAddMunged(Task* )
     "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
     "\n"
     "  // get the listening port of this node\n"
-    "  grid::thisNode@ grid::findNodeByNo node.port to iPort\n"
+    "  [grid].thisNode@ [grid].findNodeByNo node.port to iPort\n"
     "\n"
-    "  //args.verbose if\n"
+    "  //[args].verbose if\n"
     "  //  iPort \"Waiting for connections on port %v\" .printf\n"
     "  //then\n"
     "\n"
@@ -40847,7 +40994,7 @@ void Task::vAddMunged(Task* )
     "    // if first socket on non-start node then start the connector task\n"
     "\n"
     "    //nConns 1 == if\n"
-    "    //  grid::thisNode@ grid::StartNode@ != if\n"
+    "    //  [grid].thisNode@ [grid].StartNode@ != if\n"
     "    //    connector::spawn to pConnectorTask\n"
     "    //  then\n"
     "    //then\n"
@@ -40869,7 +41016,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: answer_StartMarker ZK_M_START op[].handler!\n"
+    "  find: answer_StartMarker ZK_M_START [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -40899,13 +41046,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 371 CONSTANT OP_answer.sen "_Stz;
+  szSubScriptDef = " 372 CONSTANT OP_answer.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [372] it_promptOut.sen
+  // munge of [373] it_promptOut.sen
 
-  gszaMungedText[372] =
+  gszaMungedText[373] =
     "\" munged it_promptOut.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_promptOut.sen -- Define __promptOut table                               */\n"
@@ -40933,13 +41080,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 372 CONSTANT it_promptOut.sen "_Stz;
+  szSubScriptDef = " 373 CONSTANT it_promptOut.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [373] OP_metricsCollect.sen
+  // munge of [374] OP_metricsCollect.sen
 
-  gszaMungedText[373] =
+  gszaMungedText[374] =
     "\" munged OP_metricsCollect.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_metricsCollect.sen -- collect metrics                                   */\n"
@@ -40972,7 +41119,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "      LogicUnit[].jobMetrics@\n"
     "        nullptr LogicUnit[].jobMetrics!\n"
-    "        op.pipeout\n"
+    "        [op].pipeout\n"
     "\n"
     "    else\n"
     "      LogicUnit[].jobMetrics@\n"
@@ -41066,9 +41213,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: metricsCollect_Start       ZK_M_START     op[].handler!\n"
-    "  find: metricsCollect_DataPulse   ZK_M_DATAPULSE op[].handler!\n"
-    "  find: metricsCollect_End         ZK_M_END       op[].handler!\n"
+    "  find: metricsCollect_Start       ZK_M_START     [op].handler!\n"
+    "  find: metricsCollect_DataPulse   ZK_M_DATAPULSE [op].handler!\n"
+    "  find: metricsCollect_End         ZK_M_END       [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -41100,13 +41247,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 373 CONSTANT OP_metricsCollect.sen "_Stz;
+  szSubScriptDef = " 374 CONSTANT OP_metricsCollect.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [374] dp_metricsDemon.sen
+  // munge of [375] dp_metricsDemon.sen
 
-  gszaMungedText[374] =
+  gszaMungedText[375] =
     "\" munged dp_metricsDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* dp_metricsDemon.sen -- Metrics Demon Procedure                             */\n"
@@ -41143,13 +41290,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 374 CONSTANT dp_metricsDemon.sen "_Stz;
+  szSubScriptDef = " 375 CONSTANT dp_metricsDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [375] OP__tpl_lite.sen
+  // munge of [376] OP__tpl_lite.sen
 
-  gszaMungedText[375] =
+  gszaMungedText[376] =
     "\" munged OP__tpl_lite.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP__tpl_lite.sen -- templates for lite op                                    */\n"
@@ -41189,7 +41336,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: /liteOp/_DataMarker  ZK_M_DATAPULSE op[].handler!\n"
+    "  find: /liteOp/_DataMarker  ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -41281,13 +41428,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 375 CONSTANT OP__tpl_lite.sen "_Stz;
+  szSubScriptDef = " 376 CONSTANT OP__tpl_lite.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [376] pp_elasticity.sen
+  // munge of [377] pp_elasticity.sen
 
-  gszaMungedText[376] =
+  gszaMungedText[377] =
     "\" munged pp_elasticity.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_elasticity.sen -- define elasticity procedures                          */\n"
@@ -41749,13 +41896,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 376 CONSTANT pp_elasticity.sen "_Stz;
+  szSubScriptDef = " 377 CONSTANT pp_elasticity.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [377] OP_sigsegv.sen
+  // munge of [378] OP_sigsegv.sen
 
-  gszaMungedText[377] =
+  gszaMungedText[378] =
     "\" munged OP_sigsegv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sigsegv.sen -- inject a sigsegv process kill signal                     */\n"
@@ -41768,7 +41915,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": sigsegv_sigsegv \\handler\n"
     "\n"
-    "  //task::seeFrameStack\n"
+    "  //[task].seeFrameStack\n"
     "  \n"
     "  //inject::sigsegv\n"
     "  inject::sigsegv_dbg\n"
@@ -41789,7 +41936,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: sigsegv_sigsegv  ZK_D_CRWBUFFER  op[].handler!\n"
+    "  find: sigsegv_sigsegv  ZK_D_CRWBUFFER  [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -41820,13 +41967,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 377 CONSTANT OP_sigsegv.sen "_Stz;
+  szSubScriptDef = " 378 CONSTANT OP_sigsegv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [378] OP_adjustPartitions.sen
+  // munge of [379] OP_adjustPartitions.sen
 
-  gszaMungedText[378] =
+  gszaMungedText[379] =
     "\" munged OP_adjustPartitions.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_adjustPartitions.sen -- Operator Adjust Partitions                      */\n"
@@ -41855,7 +42002,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: adjustPtns_DataPulse ZK_M_DATAPULSE op[].handler!\n"
+    "  find: adjustPtns_DataPulse ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "  \n"
@@ -41885,13 +42032,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 378 CONSTANT OP_adjustPartitions.sen "_Stz;
+  szSubScriptDef = " 379 CONSTANT OP_adjustPartitions.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [379] it_memoryLog.sen
+  // munge of [380] it_memoryLog.sen
 
-  gszaMungedText[379] =
+  gszaMungedText[380] =
     "\" munged it_memoryLog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_memoryLog.sen -- Define se__memoryLog table                             */\n"
@@ -41931,13 +42078,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 379 CONSTANT it_memoryLog.sen "_Stz;
+  szSubScriptDef = " 380 CONSTANT it_memoryLog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [380] pp_load1.sen
+  // munge of [381] pp_load1.sen
 
-  gszaMungedText[380] =
+  gszaMungedText[381] =
     "\" munged pp_load1.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_load1.sen -- define load related procedures                             */\n"
@@ -42129,13 +42276,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 380 CONSTANT pp_load1.sen "_Stz;
+  szSubScriptDef = " 381 CONSTANT pp_load1.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [381] se_word.sen
+  // munge of [382] se_word.sen
 
-  gszaMungedText[381] =
+  gszaMungedText[382] =
     "\" munged se_word.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_word.sen -- additional word related words                               */\n"
@@ -42311,13 +42458,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 381 CONSTANT se_word.sen "_Stz;
+  szSubScriptDef = " 382 CONSTANT se_word.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [382] OP_grid.sen
+  // munge of [383] OP_grid.sen
 
-  gszaMungedText[382] =
+  gszaMungedText[383] =
     "\" munged OP_grid.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_grid.sen -- show grid                                                   */\n"
@@ -42330,7 +42477,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": grid_action\n"
     "  \n"
-    "  grid::show\n"
+    "  [grid].show\n"
     "  \n"
     "  true\n"
     " ;\n"
@@ -42356,13 +42503,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 382 CONSTANT OP_grid.sen "_Stz;
+  szSubScriptDef = " 383 CONSTANT OP_grid.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [383] se_core.sen
+  // munge of [384] se_core.sen
 
-  gszaMungedText[383] =
+  gszaMungedText[384] =
     "\" munged se_core.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_core.sen -- core words                                                  */\n"
@@ -42840,7 +42987,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  input::push\n"
     "\n"
-    "  args.senDir sSubDir str.cat dup\n"
+    "  [args].senDir sSubDir str.cat dup\n"
     "\n"
     "  \"Would include .sen files from sub-dir %v\" .printf\n"
     "\n"
@@ -42856,7 +43003,7 @@ void Task::vAddMunged(Task* )
     "      4 pSubDir dir.entryName str.right \".sen\" str.same if\n"
     "        pSubDir dir.entryName \"Would parse %v\" .printf\n"
     "\n"
-    "        args.senDir sSubDir str.cat\n"
+    "        [args].senDir sSubDir str.cat\n"
     "          \"/\" str.cat\n"
     "          pSubDir dir.entryName str.cat\n"
     "          to sFilePath\n"
@@ -42890,7 +43037,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  depth 0 == if exit_rt then\n"
     "\n"
-    "  Task[] task.name@ \"TypedStack of task %v has grown\" .printf\n"
+    "  [task] task.name@ \"TypedStack of task %v has grown\" .printf\n"
     "\n"
     "  debug::breakpoint\n"
     " ;\n"
@@ -42902,13 +43049,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 383 CONSTANT se_core.sen "_Stz;
+  szSubScriptDef = " 384 CONSTANT se_core.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [384] OP_bktMapRecv.sen
+  // munge of [385] OP_bktMapRecv.sen
 
-  gszaMungedText[384] =
+  gszaMungedText[385] =
     "\" munged OP_bktMapRecv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bktMapRecv.sen -- Operator meta recv                                      */\n"
@@ -42942,7 +43089,7 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  // Setup ZK_D_PARCEL handler here\n"
-    "  find: bktMapRecv_Parcel ZK_D_PARCEL op[].handler!\n"
+    "  find: bktMapRecv_Parcel ZK_D_PARCEL [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -42972,13 +43119,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 384 CONSTANT OP_bktMapRecv.sen "_Stz;
+  szSubScriptDef = " 385 CONSTANT OP_bktMapRecv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [385] OP_debug.sen
+  // munge of [386] OP_debug.sen
 
-  gszaMungedText[385] =
+  gszaMungedText[386] =
     "\" munged OP_debug.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_debug.sen -- Operator debug                                             */\n"
@@ -42993,11 +43140,11 @@ void Task::vAddMunged(Task* )
     "\n"
     "  pipeIn[]\\clear to RowBuffer[]\n"
     "\n"
-    "  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows Op.partition@ Op.stageName@\n"
+    "  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows [op].partition@ [op].stageName@\n"
     "    \"%v.%v RowBuffer: %v rows (decile %v ptnid %v)\" .printf\n"
     "  \n"
-    "  1 0 Pipeline::addAccum\n"
-    "  RowBuffer[].rows 1 Pipeline::addAccum\n"
+    "  1 0 [pipeline].addAccum\n"
+    "  RowBuffer[].rows 1 [pipeline].addAccum\n"
     " \n"
     "  RowBuffer[].pipeout\n"
     "  \n"
@@ -43011,17 +43158,17 @@ void Task::vAddMunged(Task* )
     "\n"
     "  pipeIn[]\\clear to RowBuffer[]\n"
     "\n"
-    "  Pipeline::grabDebugLock\n"
+    "  [pipeline].grabDebugLock\n"
     "  \n"
-    "  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows Op.partition@ Op.stageName@\n"
+    "  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows [op].partition@ [op].stageName@\n"
     "    \"%v.%v RowBuffer: %v rows (decile %v ptnid %v)\" .printf\n"
     "  \n"
-    "  1 0 Pipeline::addAccum\n"
-    "  RowBuffer[].rows 1 Pipeline::addAccum\n"
+    "  1 0 [pipeline].addAccum\n"
+    "  RowBuffer[].rows 1 [pipeline].addAccum\n"
     " \n"
     "  RowBuffer[].print\n"
     "   \n"
-    "  Pipeline::dropDebugLock\n"
+    "  [pipeline].dropDebugLock\n"
     "  \n"
     "  RowBuffer[].pipeout\n"
     "  \n"
@@ -43035,7 +43182,7 @@ void Task::vAddMunged(Task* )
     "  \n"
     "  PipeIn[]\\clear to StreamDefLft[]\n"
     "  \n"
-    "  Op.stageName@ \"%v: \" .printf\n"
+    "  [op].stageName@ \"%v: \" .printf\n"
     "  StreamDefLft[].print\n"
     "\n"
     "  StreamDefLft[].pipeOut\n"
@@ -43049,7 +43196,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": debug_EOS \\handler\n"
     "\n"
-    "  1 Pipeline::getAccum 0 Pipeline::getAccum \"Total: %v buffers %v rows\" .printf\n"
+    "  1 [pipeline].getAccum 0 [pipeline].getAccum \"Total: %v buffers %v rows\" .printf\n"
     "\n"
     "  ZK_M_EOS_handler\n"
     " ;\n"
@@ -43067,19 +43214,19 @@ void Task::vAddMunged(Task* )
     "  op__topology\n"
     "\n"
     "  <option> \"streamdef\" str.same if\n"
-    "    find: debug_StreamDef ZK_D_STREAMDEF op[].handler!\n"
+    "    find: debug_StreamDef ZK_D_STREAMDEF [op].handler!\n"
     "  then\n"
     "  \n"
     "  <option> \"rowbuffer\" str.same if\n"
-    "    find: debug_RowBuffer ZK_D_ROWBUFFER op[].handler!\n"
+    "    find: debug_RowBuffer ZK_D_ROWBUFFER [op].handler!\n"
     "  then\n"
     "  \n"
     "  <option> \"seeRowbuffer\" str.same if\n"
-    "    find: debug_SeeRowBuffer ZK_D_ROWBUFFER op[].handler!\n"
+    "    find: debug_SeeRowBuffer ZK_D_ROWBUFFER [op].handler!\n"
     "  then\n"
     "  \n"
     "  <option> \"accum0\" str.same if\n"
-    "    find: debug_EOS ZK_M_EOS op[].handler!\n"
+    "    find: debug_EOS ZK_M_EOS [op].handler!\n"
     "  then\n"
     "\n"
     "  op__loop\n"
@@ -43110,13 +43257,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 385 CONSTANT OP_debug.sen "_Stz;
+  szSubScriptDef = " 386 CONSTANT OP_debug.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [386] it_analyzeIndex.sen
+  // munge of [387] it_analyzeIndex.sen
 
-  gszaMungedText[386] =
+  gszaMungedText[387] =
     "\" munged it_analyzeIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_analyzeIndex.sen -- Define __analyzeIndex table                         */\n"
@@ -43148,13 +43295,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 386 CONSTANT it_analyzeIndex.sen "_Stz;
+  szSubScriptDef = " 387 CONSTANT it_analyzeIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [387] OP_sysReport.sen
+  // munge of [388] OP_sysReport.sen
 
-  gszaMungedText[387] =
+  gszaMungedText[388] =
     "\" munged OP_sysReport.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sysReport.sen -- Operator sys report                                    */\n"
@@ -43223,16 +43370,16 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 387 CONSTANT OP_sysReport.sen "_Stz;
+  szSubScriptDef = " 388 CONSTANT OP_sysReport.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [388] se_include.sen
+  // munge of [389] se_include.sen
 
-  gszaMungedText[388] =
+  gszaMungedText[389] =
     "\" munged se_include.sen \" .verbose \n"
     "/*============================================================================*/\n"
-    "/* se_include.sen -- main include sequence (called by bootSystem::bootSystem) */\n"
+    "/* se_include.sen -- main include sequence (called by boot[system].bootSystem) */\n"
     "/*============================================================================*/\n"
     "\n"
     "\"se_include.sen\" .verbose\n"
@@ -43497,13 +43644,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 388 CONSTANT se_include.sen "_Stz;
+  szSubScriptDef = " 389 CONSTANT se_include.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [389] pp_close_system.sen
+  // munge of [390] pp_close_system.sen
 
-  gszaMungedText[389] =
+  gszaMungedText[390] =
     "\" munged pp_close_system.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_close_system.sen -- close system procedure                              */\n"
@@ -43550,13 +43697,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 389 CONSTANT pp_close_system.sen "_Stz;
+  szSubScriptDef = " 390 CONSTANT pp_close_system.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [390] OP_nodeHeartbeat.sen
+  // munge of [391] OP_nodeHeartbeat.sen
 
-  gszaMungedText[390] =
+  gszaMungedText[391] =
     "\" munged OP_nodeHeartbeat.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_nodeHeartbeat.sen -- Operator node heartbeat                            */\n"
@@ -43604,7 +43751,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: nodeHeartbeat_DataPulse  ZK_M_DATAPULSE op[].handler!\n"
+    "  find: nodeHeartbeat_DataPulse  ZK_M_DATAPULSE [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -43636,13 +43783,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 390 CONSTANT OP_nodeHeartbeat.sen "_Stz;
+  szSubScriptDef = " 391 CONSTANT OP_nodeHeartbeat.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [391] OP_inflateRows.sen
+  // munge of [392] OP_inflateRows.sen
 
-  gszaMungedText[391] =
+  gszaMungedText[392] =
     "\" munged OP_inflateRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_inflateRows.sen -- inflate rows from rowBuffer into same                */\n"
@@ -43703,9 +43850,9 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: inflateRows_CrwBuffer  ZK_D_CRWBUFFER op[].handler!\n"
-    "  find: inflateRows_StreamDef  ZK_D_STREAMDEF op[].handler!\n"
-    "  find: inflateRows_Eos        ZK_M_EOS       op[].handler!\n"
+    "  find: inflateRows_CrwBuffer  ZK_D_CRWBUFFER [op].handler!\n"
+    "  find: inflateRows_StreamDef  ZK_D_STREAMDEF [op].handler!\n"
+    "  find: inflateRows_Eos        ZK_M_EOS       [op].handler!\n"
     " \n"
     "  op__loop\n"
     "\n"
@@ -43735,7 +43882,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 391 CONSTANT OP_inflateRows.sen "_Stz;
+  szSubScriptDef = " 392 CONSTANT OP_inflateRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 
