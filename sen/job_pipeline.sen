@@ -168,18 +168,21 @@
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
 [with].subPipeline? if
+  [job].error@ not if
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute execute
+    // - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // distribute execute
 
-  [job] job_Execute::new to pJob_Execute
+    // "SUBPIPLINE: distribute execute" .
 
-  [task].grabLock
-    pJob_Execute job:distribute
-  [task].wait
+    [job] job_Execute::new to pJob_Execute
 
-  pJob_Execute job.delete
+    [task].grabLock
+      pJob_Execute job:distribute
+    [task].wait
 
+    pJob_Execute job.delete
+  then
 then
   
   
@@ -190,18 +193,21 @@ then
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
 [with].subPipeline? if
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute end
+  [job].error@ not if
 
-  [job] job_End::new to pJob_End
+    // - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // distribute end
 
-  [task].grabLock
-    pJob_End job:distribute
-  [task].wait
+    // "SUBPIPLINE: distribute end" .
+    
+    [job] job_End::new to pJob_End
 
-  pJob_Execute job.delete
-  
+    [task].grabLock
+      pJob_End job:distribute
+    [task].wait
+
+    pJob_End job.delete
+  then
 then
 
 
