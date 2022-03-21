@@ -5,56 +5,8 @@
 " job_execute.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
-//                            on originating node                             //
+/*                          ON PARTICIPATING NODE                             */
 ////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* distribute Job_Execute to all participants                                 */
-/*----------------------------------------------------------------------------*/
-: execute:distribute params| pJobOriginator |
-
-  // "execute:distribute" .
-
-  //
-  // where: on the originator node
-  //
-
-  [job].tscExecuting
-
-  0 locals| pJob_Execute |
-
-  // create a temporary job_execute
-  pJobOriginator job_Execute::new to pJob_Execute
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // set the no of acks expected in originator job
-  [grid].knownNodes pJobOriginator job.acksRemaining!
-
-  // send job_execute to all nodes
-
-  0 locals| pNode |
-
-  C_ALL node_I[].new
-
-  begin
-    node_I[].node to pNode
-
-    pNode node.isConnected if
-      pNode node.no pJob_Execute job.forward
-    then
-
-    node_I[].next
-    node_i[].more while
-  repeat
-
-  node_I[].delete
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // delete the temporary job_execute
-  pJob_Execute job.delete
-;
 
 /*----------------------------------------------------------------------------*/
 /* run received Job_Execute on participating node   recv: job.spawn */
