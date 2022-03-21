@@ -15,4 +15,4 @@ indexJoinHash.test
 minMax.test
 project.test
 //selectTypes.test
-//transliterate.test
+top.test

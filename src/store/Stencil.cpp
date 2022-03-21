@@ -1517,17 +1517,29 @@ void Stencil::vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
+  bool bPayload = 1;
+
+  // do we have a payload ?
+  //if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
+ //   bPayload = 0;
+
   // get the LogicUnit
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // get the IndexDef from the TopOp
   IndexDef* pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
   pCombined->aCombinedT()->m_aIndexDefPL = new IndexDef(pIndexDef);
 
+  // do we have a payload ?
+  if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
+    bPayload = 0;
+
   // create the indexTree
   eKE eKind;
   pCombined->aCombinedT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, 1, pIndexDef->eKeyKind());
+  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
