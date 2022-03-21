@@ -37,32 +37,8 @@
 /*----------------------------------------------------------------------------*/
 : begun:begun
 
-
-  // "begun:begun" .
-
-  //
-  // where:  On the originator node.
-  // event:  A Job_Begun has been received from a participating node
-  //         indicating the job has been received and put into the
-  //         participating jobs list.
-  // data:   The job will exist in the originating jobs list.
-  // action: 1) find the job in the originating list;
-  //         2) decrement its ack's remaining
-  //         3) if all acks received distribute Job_Execute
-  //
-
-  [job] job.id@ locals| iJobId |
-
-  0 0 0 0 locals| bAmDecider error iParticipantNode |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the context of this __begun job
-
   // find the originating job
-  iJobId ListedJob[].findOriginator discard
-
-  // get the participant node from where this job_begun started
-  [job] job.participantNode@ to iParticipantNode
+  [job] job.id@ ListedJob[].findOriginator discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __begun job on this originating node
@@ -72,7 +48,7 @@
   ListedJob[] ssn::traceSession
 
   // decrement the acks remaining in the originating job
-  ListedJob[] job.dec2pcAcksRmg to bAmDecider
+  ListedJob[] job.dec2pcAcksRmg locals| bAmDecider |
 
   // if there are acks remaining just exit
   bAmDecider not if
