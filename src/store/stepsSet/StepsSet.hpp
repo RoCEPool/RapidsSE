@@ -1023,11 +1023,11 @@ public:
   void vListPrint(void);
 
   // listed job
+  void vListedJobAssertNoRef(void);
   void vListedJobFindOriginator(void);
   void vListedJobFindParticipant(void);
   void vListedJobHasTask(void);
   void vListedJobPointer(void);
-  void vListedJobAssertNoRef(void);
   void vListedJobReturn(void);
   void vListedJobReferences(void);
   void vListedJobTaskFetch(void);

@@ -327,7 +327,7 @@
 /*----------------------------------------------------------------------------*/
 /* distribute current originating job to all nodes as participating job       */
 /*----------------------------------------------------------------------------*/
-: [job]:distributeParticipants ( -- )
+: [job]:distributeBegin ( -- )
 
   // send the job to each connected node in the grid
 
@@ -364,6 +364,42 @@
   HAZARD
 ;
 
+
+
+/*----------------------------------------------------------------------------*/
+/* distribute given job to all nodes                                          */
+/*----------------------------------------------------------------------------*/
+: job:distribute params| pJob |
+
+  0 locals| pNode |
+  
+  // set the no of acks expected by this job
+  //   to be the number of defined nodes in the grid
+  [grid].knownNodes [job] job.acksRemaining!
+
+  // set acks for this task
+  1 [task].acksRemaining!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  C_ALL node_I[].new
+
+  begin
+    node_I[].node to pNode
+
+    pNode node.sendSocket@ if
+      pNode node.no pJob job.forward
+    else
+      "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
+    then
+
+    node_I[].next
+    node_i[].more
+  while
+  repeat
+
+  node_I[].delete
+;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -15,6 +15,8 @@
 
   //"pipeline:origin" .
     
+  0 0 locals| pJob_Execute pJob_End |
+  
   [job].assertCorrectness
   [job].assertNeutral
 
@@ -47,8 +49,10 @@
     then
   then
 
+  //5678901234567890123456789012345678901234567890123456789012345678901234567890
+  //     1         2         3         4         5         6         7         8
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //                           become an originator                           //
+  //                  passed pre-check / become an originator                 //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // add this job to originator job list
@@ -64,6 +68,12 @@
     //[system].bpa
   then
 
+
+  //5678901234567890123456789012345678901234567890123456789012345678901234567890
+  //     1         2         3         4         5         6         7         8
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
+  //                     is originator / compile statement                    //
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile pipeline statement on origin to check its syntax
@@ -132,31 +142,29 @@
   PipelineSpec[] not assert
 
 
+  //5678901234567890123456789012345678901234567890123456789012345678901234567890
+  //     1         2         3         4         5         6         7         8
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
+  //             pipeline is beginning / distribute begin                     //
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute begin
 
   [job].error@ not if
     // + compiled without error..
     
-    [task].grabLock
-    
-    // set the no of acks expected by originator job
-    //   to be the number of defined nodes in the grid
-    [grid].knownNodes [job] job.acksRemaining!
-
-    // set acks for originator task
-    1 [task].acksRemaining!
-
     "pipeline:begin" [job].entryPoint!
-    [job]:distributeParticipants
     
+    [task].grabLock
+      [job] job:distribute
     [task].wait
   then
  
   //5678901234567890123456789012345678901234567890123456789012345678901234567890
   //     1         2         3         4         5         6         7         8
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //                           pipeline has begun                             //
+  //                pipeline has begun / distribute execute                   //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
 [with].subPipeline? if
@@ -164,11 +172,21 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute execute
 
+  [job] job_Execute::new to pJob_Execute
+
+  [task].grabLock
+    pJob_Execute job:distribute
+  [task].wait
+
+  pJob_Execute job.delete
+
 then
   
   
+  //5678901234567890123456789012345678901234567890123456789012345678901234567890
+  //     1         2         3         4         5         6         7         8
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //                          pipeline has executed                           //
+  //             pipeline has executed / distribute end                       //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
 [with].subPipeline? if
@@ -176,11 +194,21 @@ then
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute end
 
+  [job] job_End::new to pJob_End
+
+  [task].grabLock
+    pJob_End job:distribute
+  [task].wait
+
+  pJob_Execute job.delete
+  
 then
 
 
+  //5678901234567890123456789012345678901234567890123456789012345678901234567890
+  //     1         2         3         4         5         6         7         8
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //                            pipeline has ended                            //
+  //                pipeline has ended / originator exits                     //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   [job].removeOriginator

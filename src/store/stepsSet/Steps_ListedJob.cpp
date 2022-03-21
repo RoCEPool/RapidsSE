@@ -29,6 +29,19 @@ void Step::vAddSteps_ListedJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ListedJob[].assertNoRef -- check there is no job reference                 */
+/*----------------------------------------------------------------------------*/
+void Step::vListedJobAssertNoRef(void)
+{
+  ENTRY();
+  
+  if (m_pLogicUnit->m_xpJobRef.pReferencedObject())
+    THROW("ListedJob[].assertNoRef : register still has reference to a job"_Stz);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* ListedJob[].findOriginator -- find job from originator job set             */
 /*----------------------------------------------------------------------------*/
 void Step::vListedJobFindOriginator(void)
@@ -99,19 +112,6 @@ void Step::vListedJobPointer(void)
 
   m_pDataStack->vPushPtr(pJob);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ListedJob[].assertNoRef -- check there is no job reference                 */
-/*----------------------------------------------------------------------------*/
-void Step::vListedJobAssertNoRef(void)
-{
-  ENTRY();
-  
-  if (m_pLogicUnit->m_xpJobRef.pReferencedObject())
-    THROW("ListedJob[].assertNoRef : register still has reference to a job"_Stz);
-  
   EXIT();
 }
 
