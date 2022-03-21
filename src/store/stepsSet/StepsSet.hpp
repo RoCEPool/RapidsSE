@@ -693,7 +693,7 @@ public:
   void vIndexTreeRluNew(void);
   void vIndexTreeRluSet(void);
 
-  // reg info set
+  // infoSet
   void vInfoSetAddCommandError(void);
   void vInfoSetAddExecError(void);
   void vInfoSetAddLockStats(void);
@@ -718,10 +718,14 @@ public:
   void vInfoSetOpInfosetFetch(void);
   void vInfoSetOpInfosetStore(void);
   void vInfoSetRdCsvChunk(void);
+  void vInfoSetRowGet(void);
+  void vInfoSetRowGetIntColumn(void);
+  void vInfoSetRowGetVchColumn(void);
+  void vInfoSetRowIntColumnFetch(void);
+  void vInfoSetRowIsNull(void);
+  void vInfoSetRowSet(void);
   void vInfoSetSet(void);
   void vInfoSetWriteCsv(void);
-
-  // reg infoSet table
   void vInfoSetTableColumnFetch(void);
   void vInfoSetTableDump(void);
   void vInfoSetTableGet(void);
@@ -1600,8 +1604,6 @@ public:
   void vRecvdObjectIsNull(void);
   void vRecvdObjectSet(void);
 
-  // reg task
-  void vTaskGet(void);
 
   // reg timer
   void vRegTimerGet(void);
@@ -1638,14 +1640,6 @@ public:
   void vRowCursorRow(void);
   void vRowCursorTableFetch(void);
   void vRowCursorTableStore(void);
-
-  // infoSetRow
-  void vInfoSetRowGet(void);
-  void vInfoSetRowGetIntColumn(void);
-  void vInfoSetRowGetVchColumn(void);
-  void vInfoSetRowIntColumnFetch(void);
-  void vInfoSetRowIsNull(void);
-  void vInfoSetRowSet(void);
 
   // rowOnce
   void vRowOnceDelete(void);
@@ -1836,9 +1830,6 @@ public:
   void vSubPipelinePulsedStore(void);
   void vSubPipelineSpawnOpTasks(void);
   void vSubPipelineStartPipeline(void);
-
-  // steps
-  void vExpressionsLockSample(void);
 
   // stage
   void vStageGet(void);
@@ -2145,6 +2136,7 @@ public:
   void vTaskDropLock(void);
   void vTaskDump(void);
   void vTaskException(void);
+  void vTaskGet(void);
   void vTaskGrabLock(void);
   void vTaskIsAckSet(void);
   void vTaskIsWaiting(void);

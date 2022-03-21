@@ -91,7 +91,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_ErrorCode();
   Step::vAddSteps_ErrorMarker();
   Step::vAddSteps_Executable();
-  Step::vAddSteps_Expressions();
   Step::vAddSteps_ExprEval();
 
   Step::vAddSteps_File();
