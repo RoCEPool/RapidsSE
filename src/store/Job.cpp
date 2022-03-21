@@ -972,7 +972,7 @@ void Job::vSpawnTask(void)
 /*----------------------------------------------------------------------------*/
 /* get subPipeline                                                            */
 /*----------------------------------------------------------------------------*/
-Pipeline* Job::pSubPipeline_job(void)
+Pipeline* Job::pSubPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

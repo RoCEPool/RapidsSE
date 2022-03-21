@@ -338,7 +338,7 @@ bool JobMetrics::bUpdate(bool bAppendList)
   }
   
   
-  Pipeline* pSubPipeline = pJob->pSubPipeline_job();
+  Pipeline* pSubPipeline = pJob->pSubPipeline();
   if (! pSubPipeline) {
     pJob->vDropLock();
     vTrace("JobMetrics pipeline not found jobId=%lld\n"_Stz,m_tJobId.iAsI8());
@@ -446,7 +446,7 @@ void JobMetrics::vCollect(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Pipeline* pSubPipeline = pJob->pSubPipeline_job();
+  Pipeline* pSubPipeline = pJob->pSubPipeline();
   
   new(& m_oMetricsWsp) PipelineMetrics(pSubPipeline->szPipelineNm());
   

@@ -262,7 +262,7 @@ void AM::DEMON::vPipeToOp0(Stz* szDemonNm, Operand* pOperand)
   
   Job* pJob = _pJob(pDemonWord->pObject());
   
-  Pipeline* pSubPipeline = pJob->pSubPipeline_job();
+  Pipeline* pSubPipeline = pJob->pSubPipeline();
   
   Op* pOp0 = pSubPipeline->pOp0();
 
