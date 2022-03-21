@@ -1874,10 +1874,13 @@ void CodeSynth::vPayloadCreate(void) {
   // create the payload
   i8 nPayloadBytes = (m_pStreamDefOut->nColumns() - m_pIndexDef->nColumns()) * 8;
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // create the payload");
-  sCopy.vSprint("\n    vEnt_payloadCreate(aCombinedT->m_aEntIntPL, %lld);"_Stz, nPayloadBytes);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  if (nPayloadBytes) {
+    StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    // create the payload");
+    sCopy.vSprint("\n    vEnt_payloadCreate(aCombinedT->m_aEntIntPL, %lld);"_Stz, nPayloadBytes);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

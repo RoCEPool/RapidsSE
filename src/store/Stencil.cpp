@@ -1460,15 +1460,20 @@ void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPro
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   eKE eKind;
+  bool bPayload = 1;
 
   // get the indexDef
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
+  // do we have a payload ?
+  if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
+    bPayload = 0;
+
   pCombined->aCombinedT()->m_aIndexDefPL = new IndexDef(pIndexDef);
   pCombined->aCombinedT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, 1, pIndexDef->eKeyKind());
+  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
 
   // create RowSingleP
   if (pProjectOp) {
