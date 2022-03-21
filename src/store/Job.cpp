@@ -685,12 +685,16 @@ Pipeline* Job::pPipeline_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+#ifdef WITH_SUBPIPELINE
+  return pSubPipeline_job();
+#else
   Task* pTask = this->pTask();
   LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
   return pPipeline;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
