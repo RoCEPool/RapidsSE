@@ -57,13 +57,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.name@"_Stz,            &Step::vJobNameFetch);
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
   
-  vAddStep("job::originator@"_Stz,     &Step::vJobOriginatorFetch);
-
   vAddStep("job.participantNode@"_Stz, &Step::vJobParticipantFetch_other);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
-  
   vAddStep("job.pipeToOp0"_Stz,        &Step::vJobPipeToOp0);
-
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
   vAddStep("job.reapable@"_Stz,        &Step::vJobReapableFetch_other);
@@ -118,7 +114,6 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("[job].tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("[job].task@"_Stz,            &Step::vJobTaskFetch);
-  
   vAddStep("[job].tscBeginning"_Stz,     &Step::vJobTscBeginning);
   vAddStep("[job].tscBegun"_Stz,         &Step::vJobTscBegun);
   vAddStep("[job].tscExecuting"_Stz,     &Step::vJobTscExecuting);
@@ -740,23 +735,6 @@ void Step::vJobNoWaitFetch(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pJob->bHasTag(C_TAG_NOWAIT));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job::originator@ -- fetch the originator node from the job                 */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOriginatorFetch(void)
-{
-  ENTRY();
-  
-  JobId tJobId;
-  tJobId = m_pDataStack->iPopAsInt(__func__);
-  
-  i8 iNode = (i8)tJobId.uNodeNo();
-  
-  m_pDataStack->vPushInt(iNode);
   
   EXIT();
 }
