@@ -193,6 +193,7 @@ namespace STORE
     static void vAddSteps_StreamSet(void);
     static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_SubCall(void);
+    static void vAddSteps_SubPipeline(void);
     static void vAddSteps_SubReturn(void);
     static void vAddSteps_Subset(void);
     static void vAddSteps_Supervisor(void);

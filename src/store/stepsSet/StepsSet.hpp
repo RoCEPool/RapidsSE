@@ -824,6 +824,7 @@ public:
   void vJobParticipantFetch(void);
   void vJobParticipantFetch_other(void);
   void vJobParticipantStore(void);
+  void vJobPipeToOp0(void);
   void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);
   void vJobPhaseFetch_other(void);
@@ -1359,18 +1360,10 @@ public:
   void vPersistenceReload(void);
 
   // pipeline
-  void vJobPipeToOp0(void);
-
-  // job Pipeline
-  void vPipelineCreate(void);
-  void vPipelineOp0Fetch(void);
-  void vPipelineOpsOnNodeFetch(void);
-  void vPipelineSpawnOpTasks(void);
-  void vPipelineStartPipeline(void);
-
   void vPipelineAddAccum(void);
   void vPipelineCancelledFetch(void);
   void vPipelineCancelledStore(void);
+  void vPipelineCreate(void);
   void vPipelineDropDebugLock(void);
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
@@ -1378,8 +1371,12 @@ public:
   void vPipelineErroredFetch(void);
   void vPipelineGetAccum(void);
   void vPipelineGrabDebugLock(void);
+  void vPipelineOp0Fetch(void);
+  void vPipelineOpsOnNodeFetch(void);
   void vPipelinePulsedFetch(void);
   void vPipelinePulsedStore(void);
+  void vPipelineSpawnOpTasks(void);
+  void vPipelineStartPipeline(void);
 
   // pipelinespec
 
@@ -1820,6 +1817,25 @@ public:
   void vSsnIncExecuted(void);
   void vSsnSenLoc(void);
   void vSsnTraceSession(void);
+
+  // subPipeline
+  void vSubPipelineAddAccum(void);
+  void vSubPipelineCancelledFetch(void);
+  void vSubPipelineCancelledStore(void);
+  void vSubPipelineCreate(void);
+  void vSubPipelineDropDebugLock(void);
+  void vSubPipelineEarlyExitFetch(void);
+  void vSubPipelineEarlyExitStore(void);
+  void vSubPipelineErroredStore(void);
+  void vSubPipelineErroredFetch(void);
+  void vSubPipelineGetAccum(void);
+  void vSubPipelineGrabDebugLock(void);
+  void vSubPipelineOp0Fetch(void);
+  void vSubPipelineOpsOnNodeFetch(void);
+  void vSubPipelinePulsedFetch(void);
+  void vSubPipelinePulsedStore(void);
+  void vSubPipelineSpawnOpTasks(void);
+  void vSubPipelineStartPipeline(void);
 
   // steps
   void vExpressionsLockSample(void);
