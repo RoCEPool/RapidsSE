@@ -33,35 +33,22 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job_Executed on originating node    recv: job.spawn */
+/* run received Job_Executed on originating node              recv: job.spawn */
 /*----------------------------------------------------------------------------*/
 : executed:executed
 
-  [job] locals| pJob_Executed |
-  pJob_Executed job.id@ locals| iJobId |
-
-  0 0 0 locals| iParticipantNode error bAmDecider |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the context of this __executed job
-
   // find the originating job
-  iJobId ListedJob[].findOriginator discard
-
-  // get the participant node from where this job_begun started
-  pJob_Executed job.participantNode@ to iParticipantNode
+  [job] job.id@ ListedJob[].findOriginator discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process __executed job on this originating node
+  // process __begun job on this originating node
 
   // increment the number of __executed jobs received in api state
   ListedJob[] ssn::incExecuted
   ListedJob[] ssn::traceSession
 
-  // decrement the acks remaining
-  ListedJob[] job.dec2pcAcksRmg to bAmDecider
-
-  //[grid].thisNodeName@ "(%v) EXECUTED GOT ACK" .printf
+  // decrement the acks remaining in the originating job
+  ListedJob[] job.dec2pcAcksRmg locals| bAmDecider |
 
   // if there are acks remaining just exit
   bAmDecider not if
@@ -69,12 +56,11 @@
     [job]:retire
     exit                                                         // *EARLY EXIT*
   then
-  //[grid].thisNodeName@ "(%v) EXECUTED AM DECIDER" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all __executed jobs have been received, so this job is the decider
+  // all job_begun's have been received, so this job is the decider
 
-  [job].tscExecuted
+  [job].tscBegun
 
   // notify the originating task
   ListedJob[].task@ task.ack

@@ -37,54 +37,35 @@
 /*----------------------------------------------------------------------------*/
 : ended:ended
 
-  [job] locals| pJob_Ended |
-  pJob_Ended job.id@ locals| iJobId |
-
-  0 locals| bAmDecider |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the context of this __ended job
-
   // find the originating job
-  iJobId ListedJob[].findOriginator discard
+  [job] job.id@ ListedJob[].findOriginator discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process __ended job on this originating node
+  // process __begun job on this originating node
 
   // increment the number of __ended jobs received in api state
   ListedJob[] ssn::incEnded
   ListedJob[] ssn::traceSession
 
-  // decrement the acks remaining
-  ListedJob[] job.dec2pcAcksRmg to bAmDecider
+  // decrement the acks remaining in the originating job
+  ListedJob[] job.dec2pcAcksRmg locals| bAmDecider |
 
-  //[grid].thisNodeName@ "(%v) ENDED GOT ACK" .printf
   // if there are acks remaining just exit
   bAmDecider not if
     ListedJob[].returnReference
     [job]:retire
     exit                                                         // *EARLY EXIT*
   then
-  //[grid].thisNodeName@ "(%v) ENDED AM DECIDER" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all __ended jobs have been received, so this job is the decider
+  // all job_begun's have been received, so this job is the decider
 
-  begin
-    ListedJob[].references
-  1 > while
-  repeat
-
-  [job].tscEnded
-
-
-  // remove the originating job from the originator jobs
-  //[job].removeOriginator
+  [job].tscBegun
 
   // notify the originating task
   ListedJob[].task@ task.ack
   ListedJob[].returnReference
-  
+
   [job]:retire
 ;
 
