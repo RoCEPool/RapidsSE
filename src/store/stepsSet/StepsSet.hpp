@@ -1606,8 +1606,8 @@ public:
 
 
   // reg timer
-  void vRegTimerGet(void);
-  void vRegTimerSet(void);
+  void vTimerGet(void);
+  void vTimerSet(void);
 
   // row buffer
   void vRowBufferCopy(void);
