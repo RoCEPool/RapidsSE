@@ -31,14 +31,6 @@ void* HashMap::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* HashMap::operator new(size_t, HashMap* pHashMap)
-{
-  return pHashMap;
-}
-
-/*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void HashMap::operator delete(void* pHashMapAddress)
@@ -51,25 +43,15 @@ void HashMap::operator delete(void* pHashMapAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashMap::HashMap(bool bTrace, i8 nEntriesPerBuffer, i8 nArcsPerBuffer)
+HashMap::HashMap(bool bTrace, u8 uNoOfSlots)
 : Object(CN_HASHMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
   
   m_bTrace            = bTrace;
-  m_nEntriesPerBuffer = nEntriesPerBuffer ? nEntriesPerBuffer : C_HASH_ENTRIES;
-  m_nArcsPerBuffer    = nArcsPerBuffer    ? nArcsPerBuffer    : C_HASH_ARCS;
-
-  m_pRootBuffer     = new HashBuffer(this,nullptr,-1,false);
-  m_pRootDuplicates = nullptr;
-
-  m_nBuffers    = 0;
-  m_iMaxDepth   = 0;
-  m_nDupBuffers = 0;
-  
-  m_nEntries    = 0;
-  m_nArcEntries = 0;
-  m_nDupEntries = 0;
+  m_uNoOfSlots = C_HASHMAP_SIZE;
+  for(u8 i = 0; i<m_uNoOfSlots; i++)
+    m_paMap[i] = 0;
   
   _checkInitialised_(CN_HASHMAP);
   
@@ -92,105 +74,36 @@ HashMap::~HashMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* print analysis of this hash map                                            */
+/* does given key exist in the hashmap                                  */
 /*----------------------------------------------------------------------------*/
-void HashMap::vAnalysis(bool bBufferAnalysis)
+bool HashMap::bExists(u8 uKey)
 {
-  if (bBufferAnalysis)
-    m_pRootBuffer->vAnalysis();
-  
-  i8 iFullTree = IntLib::iPow(m_nArcsPerBuffer,m_iMaxDepth);
-  
-  vTrace("HM: (with %lld entries/buffer and %lld arcs/buffer)\n"
-         "    Arguments %lld MaxDepth %lld "
-         "manifested %lld%% of %lld buffers %lld entries\n"
-         "    Arguments %lld ArcEntries %lld µ%lld%% full\n"
-         "    DupBuffers %lld DupEntries %lld\n"_Stz,
-         
-         m_nEntriesPerBuffer,
-         m_nArcsPerBuffer,
+  u8 uIndex = uHashFunction(uKey);
 
-         m_nBuffers,
-         m_iMaxDepth,
-         IntLib::iPercent(m_nBuffers,iFullTree),
-         iFullTree,
-         m_nEntriesPerBuffer * iFullTree,
-         
-         m_nEntries,
-         m_nArcEntries,
-         IntLib::iPercent(m_nEntries,m_nEntriesPerBuffer * m_nBuffers),
-         
-         m_nDupBuffers,
-         m_nDupEntries);
+  return m_paMap[uIndex] != 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a key,value duplicate onto this hash map                            */
+/* hash key                                                                   */
 /*----------------------------------------------------------------------------*/
-void HashMap::vAppendDuplicate(HashInsert* pHi, HashEntry* aOriginalEntry)
+u8 HashMap::uHashFunction(u8 uKey)
 {
-  if (! m_pRootDuplicates)
-    m_pRootDuplicates = new HashBuffer(this,nullptr,C_UNKNOWN,true);
-  
-  if (! m_pRootDuplicates->bAppendDuplicate(pHi,aOriginalEntry)) {
-    m_pRootDuplicates = new HashBuffer(this,m_pRootDuplicates,C_UNKNOWN,true);
-    bool b = m_pRootDuplicates->bAppendDuplicate(pHi,aOriginalEntry);
-    RASSERT(b);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* iterate each key,value in the hashmap                                      */
-/*----------------------------------------------------------------------------*/
-i8 HashMap::iEach(byte* aKey, i8 nBytes, i8& iCursor)
-{
-  UNUSED(aKey);
-  UNUSED(nBytes);
-  UNUSED(iCursor);
-
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does given key exist in the hashmap                                        */
-/*----------------------------------------------------------------------------*/
-bool HashMap::bExists(byte* aKey, i8 nBytes)
-{
-  UNUSED(aKey);
-  UNUSED(nBytes);
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does given key,value exist in the hashmap                                  */
-/*----------------------------------------------------------------------------*/
-bool HashMap::bExists(byte* aKey, i8 nBytes, i8 iValue)
-{
-  UNUSED(aKey);
-  UNUSED(nBytes);
-  UNUSED(iValue);
-
-  return false;
+  return uKey % m_uNoOfSlots;
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert a key,value into this hashmap                                       */
 /*----------------------------------------------------------------------------*/
-void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
+void HashMap::vInsert(u8 uKey, i8 iValue)
 {
-  if (bDebug)
-    vDebugPoint();
-  if (341225 == iValue)
-    vDebugPoint();
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  HashInsert xHi(m_nEntriesPerBuffer);
-  
-  xHi.vSet(yaKey,nBytes,iValue);
-  
-  m_pRootBuffer->vInsertEntry(&xHi);
+
+  u8 uIndex = uHashFunction(uKey);
+  HashMapSlot* a1 = new HashMapSlot(uKey, iValue);
+
+  a1->m_pNext = m_paMap[uIndex];
+  m_paMap[uIndex] = a1;
+
 }
 
 /*----------------------------------------------------------------------------*/

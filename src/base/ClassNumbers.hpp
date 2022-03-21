@@ -113,9 +113,9 @@ enum eCN : u2 // Class Number
   /* */ CN_GRID,
 
   /* */ CN__H__,
-  /* */ CN_HASHBUFFER,
   /* */ CN_HASHMAP,
   /* */ CN_HASHSET,
+  /* */ CN_HASHMAPSLOT,
   /* */ CN_HEAPBUFFER,
   /* */ CN_HEAPMEM,
 
@@ -526,9 +526,9 @@ static Stz* aCN[]
   /* */ "GRID"_Stz,                 // CN_GRID
 
   /* */ "_H__"_Stz,                 // CN__H__
-  /* */ "HASHBUFFER"_Stz,           // CN_HASHBUFFER
   /* */ "HASHSET"_Stz,              // CN_HASHSET
   /* */ "HASHMAP"_Stz,              // CN_HASHMAP
+  /* */ "HASHMAPSLOT"_Stz,          // CN_HASHMAPSLOT
   /* */ "HEAPBUFFER"_Stz,           // CN_HEAPBUFFER
   /* */ "HEAPMEM"_Stz,              // CN_HEAPMEM
 
