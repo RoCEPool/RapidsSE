@@ -1546,7 +1546,7 @@ public:
   void vRegFolderFindSymbol(void);
 
   // reg job
-  void vRegJobGet(void);
+  void vJobGet(void);
 
   // reg now
   void vRegNowGet(void);

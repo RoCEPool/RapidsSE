@@ -74,7 +74,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch_other);
   
   
-  vAddStep("[job]"_Stz,                  &Step::vRegJobGet);
+  vAddStep("[job]"_Stz,                  &Step::vJobGet);
 
   vAddStep("[job].addDemon"_Stz,         &Step::vJobAddDemon);
   vAddStep("[job].addLocal"_Stz,         &Step::vJobAddLocal);
@@ -661,6 +661,36 @@ void Step::vJobIdFetch_other(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pJob->tJobId().iAsI8());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].get -- get task                                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobGet(void)
+{
+  ENTRY();
+  
+  // revised job/op model
+
+  Job* pJob = nullptr;
+  
+  if (m_pJob.bIsNotNull()) {
+    //RASSERT(! *m_pOp);
+    pJob = *m_pJob;
+  }
+  else
+  if (m_pOp.bIsNotNull()) {
+    RASSERT(m_pJob.bIsNull());
+    pJob = m_pOp->pPipelineJob();
+  }
+  else {
+    NEVER_REACH;
+  }
+  
+  m_pDataStack->vPushPtr(pJob);
+
   
   EXIT();
 }
@@ -1363,36 +1393,6 @@ void Step::vJobTscParticipant(void)
   Job* pJob = m_pJob;
 
   pJob->vTscParticipant(Hardware::iReadTsc());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [job].get -- get task                                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vRegJobGet(void)
-{
-  ENTRY();
-  
-  // revised job/op model
-
-  Job* pJob = nullptr;
-  
-  if (m_pJob.bIsNotNull()) {
-    //RASSERT(! *m_pOp);
-    pJob = *m_pJob;
-  }
-  else
-  if (m_pOp.bIsNotNull()) {
-    RASSERT(m_pJob.bIsNull());
-    pJob = m_pOp->pPipelineJob();
-  }
-  else {
-    NEVER_REACH;
-  }
-  
-  m_pDataStack->vPushPtr(pJob);
-
   
   EXIT();
 }

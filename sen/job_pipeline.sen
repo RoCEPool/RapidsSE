@@ -99,10 +99,8 @@
   // test if optimising
   
   [job].error@ not if
-    [job].tagSet@ to TagSet[]
-    
-    
-    "<optimise>" TagSet[] tagSet.hasName
+        
+    "<optimise>" [job].tagSet@ tagSet.hasName
     PipelineSpec[].optimisable
     and
     if
