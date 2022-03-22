@@ -36,7 +36,6 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("job.class"_Stz,            &Step::vJobClass);
   
-  vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   
   vAddStep("job.entry@"_Stz,           &Step::vJobEntryFetch_other);
@@ -494,23 +493,6 @@ void Step::vJobDelete(void)
   EXIT();
 }
   
-
-/*----------------------------------------------------------------------------*/
-/* job.dec2pcAcksRmg -- decrement acks remaining for this job                 */
-/*----------------------------------------------------------------------------*/
-void Step::vJobDec2pcAcksRmg(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 nAcksWereRemaining;
-  bool bAmDecider = pJob->bAcksRmgDec(nAcksWereRemaining);
-  
-  m_pDataStack->vPushInt(bAmDecider);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* [job].entryPoint@ -- fetch the job sen entry code                               */

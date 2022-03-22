@@ -801,7 +801,6 @@ public:
 
   void vJobClass(void);
 
-  void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);
 
   void vJobEntryPointFetch(void);
