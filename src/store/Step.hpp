@@ -140,7 +140,7 @@ namespace STORE
     static void vAddSteps_Parcel(void);
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
-    static void vAddSteps_PipelineInOp(void);
+    static void vAddSteps_PipelineOfOp(void);
     static void vAddSteps_PipelineSpec(void);
     static void vAddSteps_PathIdentifier(void);
     static void vAddSteps_PlanOperand(void);

@@ -14,8 +14,8 @@
   RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows [op].partition@ [op].stageName@
     "%v.%v RowBuffer: %v rows (decile %v ptnid %v)" .printf
   
-  1 0 [pipelineInOp].addAccum
-  RowBuffer[].rows 1 [pipelineInOp].addAccum
+  1 0 [pipelineOfOp].addAccum
+  RowBuffer[].rows 1 [pipelineOfOp].addAccum
  
   RowBuffer[].pipeout
   
@@ -29,17 +29,17 @@
 
   pipeIn[]\clear to RowBuffer[]
 
-  [pipelineInOp].grabDebugLock
+  [pipelineOfOp].grabDebugLock
   
   RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows [op].partition@ [op].stageName@
     "%v.%v RowBuffer: %v rows (decile %v ptnid %v)" .printf
   
-  1 0 [pipelineInOp].addAccum
-  RowBuffer[].rows 1 [pipelineInOp].addAccum
+  1 0 [pipelineOfOp].addAccum
+  RowBuffer[].rows 1 [pipelineOfOp].addAccum
  
   RowBuffer[].print
    
-  [pipelineInOp].dropDebugLock
+  [pipelineOfOp].dropDebugLock
   
   RowBuffer[].pipeout
   
@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 : debug_EOS \handler
 
-  1 [pipelineInOp].getAccum 0 [pipelineInOp].getAccum "Total: %v buffers %v rows" .printf
+  1 [pipelineOfOp].getAccum 0 [pipelineOfOp].getAccum "Total: %v buffers %v rows" .printf
 
   ZK_M_EOS_handler
 ;
