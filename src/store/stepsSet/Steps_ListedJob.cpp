@@ -50,7 +50,7 @@ void Step::vListedJobDec2pcDecider(void)
   ENTRY();
   
   i8 nAcksWereRemaining;
-  bool bAmDecider = m_pLogicUnit->m_xpListedJob->bAcksRmgDec(nAcksWereRemaining);
+  bool bAmDecider = m_pLogicUnit->m_xpListedJob->b2pcDeciderDec(nAcksWereRemaining);
   
   m_pDataStack->vPushInt(bAmDecider);
 

@@ -133,7 +133,7 @@ void Step::vJob2pcDeciderStore(void)
     
   i8 nAcksRemaining = m_pDataStack->iPopInt(__func__);
   
-  m_pJob->vAcksRmg(nAcksRemaining);
+  m_pJob->v2pcDeciderRmg(nAcksRemaining);
   
   EXIT();
 }

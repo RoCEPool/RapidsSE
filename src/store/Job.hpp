@@ -70,7 +70,7 @@ namespace STORE
   
     // -- timer
     Timer   m_oTimer;        // timer (on origin only)
-    Decider m_oAcksRmg;      // acks remaining for coordinating 2pc job
+    Decider m_o2pcDecider;   // acks remaining for coordinating 2pc job
     
     eEC     m_eError_job;    // error when starting job
                              // DOUBLE CHECK THIS BELONGS HERE
@@ -126,10 +126,11 @@ namespace STORE
     static void vPostRecv(void* aJob);
     static void vPrintJobNode(SkipNode* pNode, int i_Level);
 
-    i8   iAcksOriginal(void);
-    i8   iAcksRmg_printOnlyValue(void);
-    void vAcksRmg(i8 nAcks);
-    bool bAcksRmgDec(i8& nAcksWereRemaining);
+    i8   i2pcDeciderOriginal(void);
+    i8   i2pcDeciderRmg_printOnlyValue(void);
+    void v2pcDeciderRmg(i8 nAcks);
+    bool b2pcDeciderDec(i8& nAcksWereRemaining);
+  
     i8   nActiveOps(void);
   
     bool bByPromptTag(void);
