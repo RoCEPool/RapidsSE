@@ -13,32 +13,25 @@
 /*----------------------------------------------------------------------------*/
 : cancel:cancel
 
-  //
-  // where: on the participating node
-  //
-  [job] locals| pJob_Cancel |
-  0 locals| pTask_Cancel |
+  // "cancel:cancel" .
 
-  // find the job to be executed in the participating jobs
-  pJob_Cancel job.id@ locals| iJobId |
-  iJobId ListedJob[].findParticipant discard
+  // find job to be canceled in participating job list
+  [job] job.id@ ListedJob[].findParticipant discard
 
   // stall till job's previous phase (task) has completed
-  
-  ListedJob[].task@ to pTask_Cancel
   begin
-        pTask_Cancel task.state@ TS_HIBERNATING !=
+    ListedJob[].task@ task.state@ TS_HIBERNATING !=
   while
     "job to be cancelled still has non-hibernating task" .
     [task].yield
   repeat
-  pTask_Cancel task.cycleLock
+  ListedJob[].task@ task.cycleLock
     
-
+  // execute the job on this participating node
   "pipeline:cancel" ListedJob[] job.entry!
   ListedJob[] job.scheduleNextPhase
-  ListedJob[].returnReference
   
+  ListedJob[].returnReference
   [job]:retire
 ;
 
