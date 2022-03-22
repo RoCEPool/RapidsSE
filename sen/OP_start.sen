@@ -16,11 +16,11 @@
   "default_abnormalHandlers" FIND execute
 
   // check if start has already been pulsed
-  [pipeline].pulsed@ if
+  [pipelineInOp].pulsed@ if
     PipeIn[].delete
   else
     // mark pipeline as being cancelled
-    true [pipeline].cancelled!
+    true [pipelineInOp].cancelled!
 
     Marker[].newCancelling
     Marker[].pipeOut
@@ -125,16 +125,16 @@
   //"Operand:- ZK_M_LEAVING" .verbose
 
   // pipeline should not be cancelled
-  [pipeline].cancelled@ not assert
+  [pipelineInOp].cancelled@ not assert
 
   // pipeline should not be errored
-  [pipeline].errored@ not assert
+  [pipelineInOp].errored@ not assert
 
   // pipeline should have exited early
-  [pipeline].earlyExit@ assert
+  [pipelineInOp].earlyExit@ assert
 
   // mark pipeline as being pulsed
-  true [pipeline].pulsed!
+  true [pipelineInOp].pulsed!
 
   // now pipeout the leaving marker
   Pipein[].pipeOut
@@ -150,16 +150,16 @@
   //"Operand:- ZK_M_ENDING" .verbose
 
   // pipeline should not be cancelled
-  [pipeline].cancelled@ not assert
+  [pipelineInOp].cancelled@ not assert
 
   // pipeline should not be errored
-  [pipeline].errored@ not assert
+  [pipelineInOp].errored@ not assert
 
   // pipeline should not have exited early
-  [pipeline].earlyExit@ not assert
+  [pipelineInOp].earlyExit@ not assert
 
   // mark pipeline as being pulsed
-  true [pipeline].pulsed!
+  true [pipelineInOp].pulsed!
 
   // now pipeout the ending marker
   Pipein[].pipeOut
