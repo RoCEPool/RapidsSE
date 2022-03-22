@@ -786,7 +786,7 @@ public:
   void vIntStackPush(void);
 
   // job
-  void vJobAcksRemaining(void);
+  void vJob2pcDeciderStore(void);
   void vJobAddDemon(void);
   void vJobAddLocal(void);
   void vJobAddOriginator(void);

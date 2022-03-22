@@ -32,8 +32,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
-  vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
-
   vAddStep("job.class"_Stz,            &Step::vJobClass);
   
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
@@ -70,6 +68,7 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("[job]"_Stz,                  &Step::vJobGet);
 
+  vAddStep("[job].2pcDecider!"_Stz,      &Step::vJob2pcDeciderStore);
   vAddStep("[job].addDemon"_Stz,         &Step::vJobAddDemon);
   vAddStep("[job].addLocal"_Stz,         &Step::vJobAddLocal);
   vAddStep("[job].addOriginator"_Stz,    &Step::vJobAddOriginator);
@@ -126,17 +125,15 @@ void Step::vAddSteps_Job(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* job.acksRemaining! -- set acks remaining for this job                      */
+/* job.2pcDecider! -- set acks remaining for this job                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJobAcksRemaining(void)
+void Step::vJob2pcDeciderStore(void)
 {
   ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+    
   i8 nAcksRemaining = m_pDataStack->iPopInt(__func__);
   
-  pJob->vAcksRmg(nAcksRemaining);
+  m_pJob->vAcksRmg(nAcksRemaining);
   
   EXIT();
 }
