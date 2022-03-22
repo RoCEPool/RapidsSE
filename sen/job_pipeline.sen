@@ -299,8 +299,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create pipeline from spec and spawn tasks for ops
   
-  PipelineSpec[] subPipeline[].create
-  SubPipeline[].spawnOpTasks
+  PipelineSpec[] Pipeline[].create
+  Pipeline[].spawnOpTasks
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has begun on this node
@@ -388,15 +388,15 @@
   
   [task].grabLock
 
-    SubPipeline[].opsOnNode@ to nAcks
+    Pipeline[].opsOnNode@ to nAcks
 
     nAcks if
       nAcks [task].acksRemaining!
     
-      SubPipeline[].startPipeline? if
+      Pipeline[].startPipeline? if
     
         Marker[].newStartMarker
-        Marker[]\clear SubPipeline[].op0@ op.enqueOperand
+        Marker[]\clear Pipeline[].op0@ op.enqueOperand
       then
       [task].wait
     else
