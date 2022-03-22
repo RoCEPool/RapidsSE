@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* job_pipeline.sen -- Distributed Pipeline Job                               */
+/* cmd_pipeline.sen -- Distributed Pipeline Command                           */
 /*============================================================================*/
 
-" job_pipeline.sen" .verbose
+" cmd_pipeline.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
 //                            ON ORIGINATING NODE                             //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run a distributed pipeline from this originator                            */
+/* coordinate a distributed pipeline command from this job on originator      */
 /*----------------------------------------------------------------------------*/
 : pipeline:origin ( -- <R> )
 
@@ -17,16 +17,33 @@
     
   0 0 locals| pJob_Execute pJob_End |
   
+  
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // ordinary job            / run pre-checks                                 //
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
+  
+  // there should be this immutable job and it shouldnt be in any job list (yet)
+  [job] assert
   [job].assertCorrectness
   [job].assertNeutral
 
-  [job].tscBeginning
+  // mutable pipelineSpec, pipeline and subpipeline in logicUnit should be null
+  PipelineSpec[] not assert
+  Pipeline[]     not assert
+  SubPipeline[]  not assert
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // immutable op, subPLineOfOp and pipelineOfOp should be null
+  [op]           not assert
+  [subPLineOfOp] not assert
+  [pipelineOfOp] not assert
+
+  // and so we start...
+  [job].tscBeginning
+
   // pre-check
   
   "<preCheck>" [job].tagSet@ tagSet.hasName if
-    // tag exists...
+    // + tag exists
     
     <preCheck> find execute not if
       // - preCheck word failed
@@ -49,10 +66,9 @@
     then
   then
 
-  //5678901234567890123456789012345678901234567890123456789012345678901234567890
-  //     1         2         3         4         5         6         7         8
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //                  passed pre-check / become an originator                 //
+
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // passed pre-checks       / become an originator (coordinator) on this node//
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // add this job to originator job list
@@ -67,10 +83,8 @@
   then
 
 
-  //5678901234567890123456789012345678901234567890123456789012345678901234567890
-  //     1         2         3         4         5         6         7         8
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //                     is originator / compile statement                    //
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // is originator           / compile pipeline statement                     //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -140,10 +154,8 @@
   PipelineSpec[] not assert
 
 
-  //5678901234567890123456789012345678901234567890123456789012345678901234567890
-  //     1         2         3         4         5         6         7         8
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //             pipeline is beginning / distribute begin                     //
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // pipeline is beginning   / distribute this job as the distributed pipeline//
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // distribute begin
@@ -160,17 +172,15 @@
     [job].tscBegun
   then
  
-  //5678901234567890123456789012345678901234567890123456789012345678901234567890
-  //     1         2         3         4         5         6         7         8
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //                pipeline has begun / distribute execute                   //
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // pipeline has begun      / broadcast a job to schedule pipeline to execute//
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
   
   // distribute execute
   
   [job].error@ not if
 
-    // "SUBPIPLINE: distribute execute" .
+    // "ORIGIN: distribute execute" .
 
     [job].tscExecuting
 
@@ -186,17 +196,15 @@
   then
   
   
-  //5678901234567890123456789012345678901234567890123456789012345678901234567890
-  //     1         2         3         4         5         6         7         8
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //             pipeline has executed / distribute end                       //
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // pipeline has executed   / broadcast a job to schedule pipeline to end    //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // distribute end
 
   [job].error@ not if
 
-    // "SUBPIPLINE: distribute end" .
+    // "ORIGIN: distribute end" .
     
     [job].tscEnding
     
@@ -212,14 +220,17 @@
   then
 
 
-  //5678901234567890123456789012345678901234567890123456789012345678901234567890
-  //     1         2         3         4         5         6         7         8
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //                pipeline has ended / originator exits                     //
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // pipeline has ended      / become ordinary job                            //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   [job].removeOriginator
 
+
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // ordinary job            / this job exits                                 //
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
+  
   [session].hasCascade@ not if
       
     [ddlLock].testDrop
@@ -257,7 +268,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* begin pipeline job on participant node                                     */
+/* begin the op sequence for pipeline command on participant node             */
 /*----------------------------------------------------------------------------*/
 : pipeline:begin ( -- )
 
@@ -337,7 +348,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute pipeline job on participant node                                   */
+/* execute the op sequence for pipeline command on participant node           */
 /*----------------------------------------------------------------------------*/
 : pipeline:execute ( -- )
 
@@ -436,7 +447,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end pipeline job on participant node                                       */
+/* end the op sequence for pipeline command on participant node               */
 /*----------------------------------------------------------------------------*/
 : pipeline:end ( -- )
 
@@ -485,7 +496,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* cancel pipeline job on participant node                                    */
+/* cancel op sequence for pipeline command on participant node                */
 /*----------------------------------------------------------------------------*/
 : pipeline:cancel ( -- )
 

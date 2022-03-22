@@ -34,6 +34,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SubPipelineOfOp(void)
 {
+  vAddStep("[subPLineOfOp]"_Stz,                &Step::vSubPipelineOfOpGet);
+  
   vAddStep("[subPLineOfOp].addAccum"_Stz,       &Step::vSubPipelineOfOpAddAccum);
   vAddStep("[subPLineOfOp].cancelled@"_Stz,     &Step::vSubPipelineOfOpCancelledFetch);
   vAddStep("[subPLineOfOp].cancelled!"_Stz,     &Step::vSubPipelineOfOpCancelledStore);
@@ -201,6 +203,24 @@ void Step::vSubPipelineOfOpErroredStore(void)
   Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
   
   pSubPipelineOfOp->vErrored(m_pDataStack->iPopBol(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [subPLineOfOp].get -- get this pipeline                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vSubPipelineOfOpGet(void)
+{
+  ENTRY();
+  
+  if (m_pOp) {
+    Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+    m_pDataStack->vPushPtr(pSubPipelineOfOp);
+  }
+  else {
+    m_pDataStack->vPushPtr(nullptr);
+  }
   
   EXIT();
 }

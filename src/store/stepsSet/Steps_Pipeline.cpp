@@ -34,6 +34,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pipeline(void)
 {
+  vAddStep("Pipeline[]"_Stz,                &Step::vPipelineGet);
+  
   vAddStep("Pipeline[].addAccum"_Stz,       &Step::vPipelineAddAccum);
   vAddStep("Pipeline[].cancelled@"_Stz,     &Step::vPipelineCancelledFetch);
   vAddStep("Pipeline[].cancelled!"_Stz,     &Step::vPipelineCancelledStore);
@@ -186,6 +188,21 @@ void Step::vPipelineErroredStore(void)
   ENTRY();
   
   m_pLogicUnit->m_xpPipeline->vErrored(m_pDataStack->iPopBol(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pipeline[] -- get pipeline                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineGet(void)
+{
+  ENTRY();
+   
+  if (m_pLogicUnit->m_xpPipeline.bIsNull())
+    m_pDataStack->vPushPtr(nullptr);
+  else
+    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpPipeline);
   
   EXIT();
 }

@@ -16,8 +16,8 @@ assert::stack_0
   "job_execute.sen"         include
   "job_begun.sen"           include
 
-  "job_pipeline.sen"        include
-  "job_pipelineLocal.sen"   include
+  "cmd_pipeline.sen"        include
+  "cmd_pipelineLocal.sen"   include
 
 /*============================================================================*/
 /* end                                                                        */

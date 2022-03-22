@@ -1364,6 +1364,7 @@ public:
   void vPipelineEarlyExitStore(void);
   void vPipelineErroredStore(void);
   void vPipelineErroredFetch(void);
+  void vPipelineGet(void);
   void vPipelineGetAccum(void);
   void vPipelineGrabDebugLock(void);
   void vPipelineOp0Fetch(void);
@@ -1383,6 +1384,7 @@ public:
   void vPipelineOfOpEarlyExitStore(void);
   void vPipelineOfOpErroredStore(void);
   void vPipelineOfOpErroredFetch(void);
+  void vPipelineOfOpGet(void);
   void vPipelineOfOpGetAccum(void);
   void vPipelineOfOpGrabDebugLock(void);
   void vPipelineOfOpOp0Fetch(void);
@@ -1822,6 +1824,7 @@ public:
   void vSubPipelineEarlyExitStore(void);
   void vSubPipelineErroredStore(void);
   void vSubPipelineErroredFetch(void);
+  void vSubPipelineGet(void);
   void vSubPipelineGetAccum(void);
   void vSubPipelineGrabDebugLock(void);
   void vSubPipelineOp0Fetch(void);
@@ -1841,6 +1844,7 @@ public:
   void vSubPipelineOfOpEarlyExitStore(void);
   void vSubPipelineOfOpErroredStore(void);
   void vSubPipelineOfOpErroredFetch(void);
+  void vSubPipelineOfOpGet(void);
   void vSubPipelineOfOpGetAccum(void);
   void vSubPipelineOfOpGrabDebugLock(void);
   void vSubPipelineOfOpOp0Fetch(void);

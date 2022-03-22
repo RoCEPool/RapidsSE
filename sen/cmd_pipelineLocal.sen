@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_PipelineLocal.sen -- Local Pipeline Job                                */
+/* cmd_pipelineLocal.sen -- Local Pipeline Job                                */
 /*============================================================================*/
 
-" job_pipelineLocal.sen" .verbose
+" cmd_pipelineLocal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* terminate this pipeline                                                    */
