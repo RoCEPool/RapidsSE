@@ -347,6 +347,7 @@ struct Combined_T
   // project (gby)
   i8      m_nAggRows;
   i8      m_iProcessRow;
+  i8      m_iBufferDone;
 
   // payload (gby/srt/top)
   i8*     m_aiPayload;
