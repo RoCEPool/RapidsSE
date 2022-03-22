@@ -36,7 +36,7 @@ void Step::vListedJobAssertNoRef(void)
 {
   ENTRY();
   
-  if (m_pLogicUnit->m_xpJobRef.pReferencedObject())
+  if (m_pLogicUnit->m_xpListedJob.pReferencedObject())
     THROW("ListedJob[].assertNoRef : register still has reference to a job"_Stz);
   
   EXIT();
@@ -50,7 +50,7 @@ void Step::vListedJobDec2pcDecider(void)
   ENTRY();
   
   i8 nAcksWereRemaining;
-  bool bAmDecider = m_pLogicUnit->m_xpJobRef->bAcksRmgDec(nAcksWereRemaining);
+  bool bAmDecider = m_pLogicUnit->m_xpListedJob->bAcksRmgDec(nAcksWereRemaining);
   
   m_pDataStack->vPushInt(bAmDecider);
 
@@ -72,7 +72,7 @@ void Step::vListedJobFindOriginator(void)
 
 
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpListedJob);
 
 
   m_pDataStack->vPushPtr(pJobFound);
@@ -95,7 +95,7 @@ void Step::vListedJobFindParticipant(void)
 
 
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpListedJob);
 
 
   m_pDataStack->vPushPtr(pJobFound);
@@ -110,7 +110,7 @@ void Step::vListedJobHasTask(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
+  Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
   
   m_pDataStack->vPushInt(pJob->pTask() ? true : false);
   
@@ -124,7 +124,7 @@ void Step::vListedJobPointer(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
+  Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
 
   m_pDataStack->vPushPtr(pJob);
 
@@ -138,7 +138,7 @@ void Step::vListedJobReferences(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpJobRef.nReferences());
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpListedJob.nReferences());
   
   EXIT();
 }
@@ -150,8 +150,8 @@ void Step::vListedJobReturn(void)
 {
   ENTRY();
   
-  if (m_pLogicUnit->m_xpJobRef.bHasReference())
-    m_pLogicUnit->m_xpJobRef.vReturnRef();
+  if (m_pLogicUnit->m_xpListedJob.bHasReference())
+    m_pLogicUnit->m_xpListedJob.vReturnRef();
 
   EXIT();
 }
@@ -163,7 +163,7 @@ void Step::vListedJobTaskFetch(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
+  Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
 
   m_pDataStack->vPushPtr(pJob->pTask());
 
