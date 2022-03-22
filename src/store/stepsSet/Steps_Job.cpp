@@ -75,11 +75,11 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].addParticipant"_Stz,   &Step::vJobAddParticipant);
   vAddStep("[job].addRetired"_Stz,       &Step::vJobAddRetired);
   vAddStep("[job].assertBegin"_Stz,      &Step::vJobAssertBegin);
-  vAddStep("[job].assertCorrectness"_Stz,&Step::vJobAssertCorrectness);
   vAddStep("[job].assertOrdinary"_Stz,   &Step::vJobAssertOrdinary);
   vAddStep("[job].assertOriginator"_Stz, &Step::vJobAssertOriginator);
   vAddStep("[job].assertParticipant"_Stz,&Step::vJobAssertParticipant);
   vAddStep("[job].assertReceived"_Stz,   &Step::vJobAssertReceived);
+  vAddStep("[job].assertStructure"_Stz,  &Step::vJobAssertStructure);
 
   vAddStep("[job].entryPoint@"_Stz,      &Step::vJobEntryPointFetch);
   vAddStep("[job].entryPoint!"_Stz,      &Step::vJobEntryPointStore);
@@ -320,23 +320,6 @@ void Step::vJobAssertBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].assertCorrectness -- assert correctness                              */
-/*----------------------------------------------------------------------------*/
-void Step::vJobAssertCorrectness(void)
-{
-  ENTRY();
-  
-  //Job* pJob = m_pJob;
-  
-  //vTrace("[job].assertCorrectness\n"_Stz);
-  
-  RASSERT(m_pJob.bIsNotNull());
-  RASSERT(m_pJob->pTask() == this);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* [job].assertOrdinary -- assert job is not in originator nor participant set   */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAssertOrdinary(void)
@@ -436,6 +419,23 @@ void Step::vJobAssertReceived(void)
            "[job].assertReceived: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].assertStructure -- assert structural correctness                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAssertStructure(void)
+{
+  ENTRY();
+  
+  //Job* pJob = m_pJob;
+  
+  //vTrace("[job].assertStructure\n"_Stz);
+  
+  RASSERT(m_pJob.bIsNotNull());
+  RASSERT(m_pJob->pTask() == this);
   
   EXIT();
 }

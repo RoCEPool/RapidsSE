@@ -27,7 +27,7 @@
 
   0 locals| nAcks |
   
-  [job].assertCorrectness
+  [job].assertStructure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command

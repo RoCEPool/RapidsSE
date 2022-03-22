@@ -793,7 +793,7 @@ public:
   void vJobAddParticipant(void);
   void vJobAddRetired(void);
   void vJobAssertBegin(void);
-  void vJobAssertCorrectness(void);
+  void vJobAssertStructure(void);
   void vJobAssertOrdinary(void);
   void vJobAssertOriginator(void);
   void vJobAssertParticipant(void);

@@ -24,7 +24,7 @@
   
   // there should be this immutable job and it shouldnt be in any job list (yet)
   [job] assert
-  [job].assertCorrectness
+  [job].assertStructure
   [job].assertOrdinary
 
   // mutable pipelineSpec, pipeline and subpipeline in logicUnit should be null
@@ -224,6 +224,7 @@
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   [job].removeOriginator
+  [job].assertOrdinary
 
 
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
@@ -275,7 +276,7 @@
 
   [job].progressReset
   
-  [job].assertCorrectness
+  [job].assertStructure
 
   ListedJob[].assertNoRef
   
@@ -324,7 +325,7 @@
   [job].tscParticipant
   [job].addParticipant
   [job].assertParticipant
-  [job].assertCorrectness
+  [job].assertStructure
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -355,7 +356,7 @@
   
   0 locals| nAcks |
   
-  [job].assertCorrectness
+  [job].assertStructure
   [job].assertParticipant
 
 
@@ -371,7 +372,7 @@
   // acquire ddl lock
   job::acquireDdlLock
   
-  [job].assertCorrectness
+  [job].assertStructure
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -452,7 +453,7 @@
 
   // "pipeline:end" .
 
-  [job].assertCorrectness
+  [job].assertStructure
   [job].assertParticipant
 
   
@@ -501,7 +502,7 @@
 
   // "pipeline:cancel" .
   
-  [job].assertCorrectness
+  [job].assertStructure
   [job].assertParticipant
 
     // [ senCompiler::current@ word.name@ encode::push ] .
