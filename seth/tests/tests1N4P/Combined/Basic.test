@@ -245,7 +245,50 @@ ordered rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic ordered aggregate
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/*
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1
+                 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | filter 2 " type BOOLEAN  $2 100.0  >  "
+    | top 2 "TOP type DECIMAL total" 10
+    | combined 0
+    | next
+
+ stage stageA on all nodes :
+    top 2 "TOP type DECIMAL total" 10
+    | combined 0
+    | next
+
+ stage stageA on origin :
+     top 2 "TOP type DECIMAL total" 10
+     | combined 0
+     | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+  rows:
+   (1211,173.00)
+   (850,173.00)
+   (1148,174.00)
+   (751,175.00)
+   (390,176.00)
+   (974,176.00)
+   (497,177.00)
+   (1130,182.00)
+   (1048,182.00)
+   (1064,183.00)
+
 pipeline Q
 begin
   stage stageStart on origin :
@@ -255,17 +298,15 @@ begin
   stage stageA on all partitions :
     indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $1 , type decimal as total )  $5 sum  "
-    | top 2 "TOP type DECIMAL total" 2
+    | top 2 "TOP type DECIMAL total" 8
     | combined 0
     | next
   stage stageB on all nodes :
-    ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $1 , type decimal as total )  $2 sum  "
-    | top 2 "TOP type DECIMAL total" 2
+    top 2 "TOP type DECIMAL total" 8
     | combined 0
     | next
   stage stageC on origin :
-    ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $1 , type decimal as total )  $2 sum  "
-    | top 2 "TOP type DECIMAL total" 2
+    top 2 "TOP type DECIMAL total" 8
     | combined 0
     | next
   stage stageLast on origin :
@@ -275,9 +316,16 @@ begin
   end ;
 
 rows:
-  (1064,183.00)
-  (1048,182.00)
-*/
+ (1148,174.00)
+ (751,175.00)
+ (390,176.00)
+ (974,176.00)
+ (497,177.00)
+ (1048,182.00)
+ (1130,182.00)
+ (1064,183.00)
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
