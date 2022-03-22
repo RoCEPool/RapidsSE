@@ -194,6 +194,8 @@ void Fragments::vAppendConcludingFunc3(char *azStr)
 
   char* azFrag = (char*)
       "\n"
+      "\n   L_Return:"
+      "\n     goto L_ReturnFinal;"
       "\n   L_ReturnFinal:"
       "\n     return 1;"
       "\n  }"

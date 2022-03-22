@@ -101,7 +101,7 @@ namespace STORE {
     void vSynthIndexJoin(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
                          Stz *sJoinExpr, Stz *sLabel, Stz *sLabelNext, u8 uSelectColumns);
 
-    void vSynthIndexScan(Stz *sIndexScanExpr, Stz *sLabel, Stz *sLabelNext, u8 uSelectColumns);
+    void vSynthIndexScan(Stz *sIndexScanExpr, Stz *sLabel, Stz *sLabelNext, Stz* sReturnLabel, u8 uSelectColumns);
 
     void vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz *sReturnLabel, u8 *puSelectColumns);
 

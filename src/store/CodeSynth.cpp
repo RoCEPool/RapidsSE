@@ -490,7 +490,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, bool bOrdAgg, Stz* sLabel, Stz* s
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate processRow check
   if ( ! sLabelPrev->bSame(""_Stz) )
-    vGenerateProcessRow("sLabelPrev"_Stz);
+    vGenerateProcessRow(sLabelPrev);
   else
     vGenerateProcessRow("L_AdvanceNextRow"_Stz);
 
@@ -710,7 +710,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 /* synthesize the index scan                                                  */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
-                                Stz* sLabelNext,u8 uSelectColumns) {
+                                Stz* sLabelNext, Stz* sReturnLabel, u8 uSelectColumns) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s4K sCopy;
@@ -776,8 +776,11 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n L_IndexScanDeref:");
     StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_aEntIntT ) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iBufferDone = 1;");
     StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
+    sCopy.vSprint("\n      goto %s;"_Stz, sReturnLabel);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    //StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
@@ -810,8 +813,11 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // reached upper bound ?");
     StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_aEntIntT == aCombinedT->m_aEntUpperT) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iBufferDone = 1;");
     StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
+    sCopy.vSprint("\n      goto %s;"_Stz, sReturnLabel);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    //StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 
     StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -860,8 +866,6 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
   StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_aEntIntT = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferT, aCombinedT->m_aEntIntT);");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n     goto L_IndexScanDeref;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
 
   // cleanup
   m_pExprStack->vReset();
@@ -1186,11 +1190,23 @@ void CodeSynth::vSynthOrdAgg(eEK eExprKind, Stz *sProjectExpr, Stz *sLabel, Stz 
   // generate the expression code
   vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGORD, bHashRows, m_pStreamDefLft);
 
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iBufferDone ) {");
+//  sCopy.vSprint("\n     goto %s;"_Stz, sLabelNext);
+//  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate processRow check
   vGenerateProcessRow(sLabelLoop);
 
   //RASSERT(eExprKind == EK_AGGORD);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iBufferDone ) {");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AddRowToTub;");
+  sCopy.vSprint("\n     goto %s;"_Stz, sLabelNext);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate ordered gby
@@ -1357,6 +1373,13 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   // generate stencil
   vGenerateStencilCast();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate processRow check
+  if ( ! sLabelLoop->bSame(""_Stz) )
+    vGenerateProcessRow(sLabelLoop);
+  else
+    vGenerateProcessRow("L_AdvanceNextRow"_Stz);
+
   // generate the code for the projected expressions
   vGenerateExpr((char *) sKeyExpr, nullptr, EK_TOP, false, m_pStreamDefLft);
 
@@ -1375,8 +1398,14 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   // populate the payload values
   //vPayloadPopulate(PL_TOP);
 
-  sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iBufferDone)");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    else");
+  sCopy.vSprint("\n   goto %s;"_Stz, sLabelLoop);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+  //sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
+  //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   // cleanup
   m_pExprStack->vReset();
@@ -1915,6 +1944,9 @@ void CodeSynth::vPayloadInsert(ePL ePayload, i8 iTopCount) {
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (aEntInserted) {");
 
+  // TODO: check this out
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iRowsProcessed++;");
+
   // calculate the payload address
   if (m_pIndexDef->eKeyKind()) {
     StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
@@ -2326,12 +2358,14 @@ void CodeSynth::vPayloadTraversal(IndexDef* pIndexDef, TypedStack* pPostStack, e
   sCopy.vSprint("\n      goto %s;"_Stz, sLabelNext);
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n   L_AdvanceNextRow:");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // move to next entry ");
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aEntIntPL = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferPL, aCombinedT->m_aEntIntPL);");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   }");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_ReturnFinal;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_ReturnFinal;");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4470,7 +4504,13 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
     StrLib::vAppendString(&m_azCodeCrs, "\n");
   }
   else {
-    vGenerateProcessRow("L_AdvanceNextRow"_Stz);
+    vGenerateProcessRow(sLabelNext);
+//    StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow) {");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iBufferDone)");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n        goto L_Return;");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n      else");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n         goto L_AdvanceNextRow;");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n     }");
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4565,7 +4605,16 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate goto
-  vGenerateGoto(sLabelNext);
+  if (bEosHandler)
+    vGenerateGoto(sLabelNext);
+  else {
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iBufferDone)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    else");
+    sCopy.vSprint("\n   goto %s;"_Stz, sLabelNext);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4601,10 +4650,22 @@ void CodeSynth::vGenerateProcessRow(Stz* sLabel)
 
   s4K sCopy;
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow)");
-  sCopy.vSprint("\n      goto %s;"_Stz, sLabel);
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow)");
+//  sCopy.vSprint("\n      goto %s;"_Stz, sLabel);
+//  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iBufferDone)");
+  StrLib::vAppendString(&m_azCodeCrs, "\n        goto L_Return;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      else {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n         aCombinedT->m_iProcessRow = 1;");
+  sCopy.vSprint("\n         goto %s;"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n       }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n     }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
+
 }
 
 /*----------------------------------------------------------------------------*/

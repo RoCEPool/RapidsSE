@@ -105,7 +105,7 @@ void Step::vFun0Setup(void)
 
 #ifdef WITH_COMBINEDOP_SE
 
-  Stream* pStream = m_pLogicUnit->m_pOp->pStream();
+  Stream* pStream = m_pOp->pStream();
   i8 iStage = pStream->pStage()->i_Stage();
 
   #ifdef WITH_FLAT_STAGE1
@@ -202,7 +202,7 @@ void Step::vFun1Setup(void)
   ENTRY();
 
 #ifdef WITH_COMBINEDOP_SE
-  Stream* pStream = m_pLogicUnit->m_pOp->pStream();
+  Stream* pStream = m_pOp->pStream();
   i8 iStage = pStream->pStage()->i_Stage();
 
     #ifdef WITH_FLAT_STAGE1
@@ -300,7 +300,7 @@ void Step::vFun2Setup(void)
   ENTRY();
 
 #ifdef WITH_COMBINEDOP_SE
-  Stream* pStream = m_pLogicUnit->m_pOp->pStream();
+  Stream* pStream = m_pOp->pStream();
   i8 iStage = pStream->pStage()->i_Stage();
 
     #ifdef WITH_FLAT_STAGE1
@@ -399,7 +399,7 @@ void Step::vFun3Setup(void)
   ENTRY();
 
 #ifdef WITH_COMBINEDOP_SE
-  Stream* pStream = m_pLogicUnit->m_pOp->pStream();
+  Stream* pStream = m_pOp->pStream();
   i8 iStage = pStream->pStage()->i_Stage();
     #ifdef WITH_FLAT_STAGE1
       if (iStage == 1)

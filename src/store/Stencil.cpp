@@ -505,6 +505,13 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // any ordAgg's ?
+  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
+    if (pStream->pGet(i_Op)->szOpNm()->bSame("ordAgg"_Stz))
+      bHasOrdAgg = true;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each operator in the stream
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
 
@@ -539,7 +546,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       //vAppendFuncHeader2();
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      m_pShapeIDX = pSketchIndexScan(pCombined, pStream, pOp);
+      m_pShapeIDX = pSketchIndexScan(pCombined, pStream, pOp, bHasOrdAgg);
       //vAppend(m_pShapeIDX);
 
       m_bIndexScan = true;
@@ -799,7 +806,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       eExprKind = pLogicUnit->m_eExprKind;
       //RASSERT(eExprKind == EK_ORDAGG);
 
-      bHasOrdAgg = true;
+      RASSERT(bHasOrdAgg);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupOrdAgg(pCombined, pStream, pOp);
@@ -1128,10 +1135,6 @@ u8 Stencil::uGetSelectColumns(Stream* pStream) {
         pOp->szOpNm()->bSame("project"_Stz) ||
         pOp->szOpNm()->bSame("ordagg"_Stz)) {
       LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
-//      for (i8 i=0; i<64; i++) {
-//        if (BitLib::bIsOn(pLogicUnit->m_uSelectColumns, i))
-//          vTrace("OP: %s ; Column %lld\n"_Stz, pOp->szOpNm(), i);
-//      }
       uSelectColumns |= pLogicUnit->m_uSelectColumns;
       bProject = true;
       break;
@@ -1693,7 +1696,7 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
 //  if (pCombined->aCombinedT()->m_iHashRows)
 //    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
 //  else
-    pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, "L_AddRowToTub"_Stz, "L_AdvanceNextRow"_Stz);
+    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTub"_Stz, "L_AdvanceNextRow"_Stz);
 
   m_pShapeEOS->vCodeSynthB(pCodeSynth);
 
@@ -1853,7 +1856,7 @@ void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 //  if (pCombined->aCombinedT()->m_iHashRows)
 //    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
 //  else
-  pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, "L_AddRowToTub"_Stz, "L_AdvanceNextRow"_Stz);
+  pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTub"_Stz, "L_AdvanceNextRow"_Stz);
 
   m_pShapeEOS->vCodeSynthB(pCodeSynth);
 
@@ -1923,7 +1926,7 @@ Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, 
 /*----------------------------------------------------------------------------*/
 /* get the next label for Op                                                  */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
+Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, bool bHasOrdAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1965,7 +1968,14 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexScan->pIndexDef(), nullptr, SR_IT, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTub"_Stz);
-  pCodeSynth->vSynthIndexScan(sIndexScanExpr, sLabel, sLabelNext, uSelectColumns);
+
+  Op *pNextOp = pStream->pGet(pOp->i_Op()+1);
+  if ( pNextOp->szOpNm()->bSame("ordAgg"_Stz) )
+    sReturnLabel = sLabelNext;
+  else
+    sReturnLabel = "L_Return"_Stz;
+
+  pCodeSynth->vSynthIndexScan(sIndexScanExpr, sLabel, sLabelNext, sReturnLabel, uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;
@@ -2091,14 +2101,7 @@ Shape* Stencil::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil) {
 
   Op *pPrevOp = pStream->pGet(i_Op - 1);
   sLabelPrev = ""_Stz;
-  if (pPrevOp->szOpNm()->bSame("ordAgg"_Stz)) {
-    RASSERT(bLastFilter);
-    sLabelPrev.vSprint("L_%s_%d"_Stz, pPrevOp->szOpNm(), i_Op - 1);
-    pCodeSynth->vSynthFilter(sFilterExpr, true, sLabel, sLabelPrev);
-  }
-  else {
-    pCodeSynth->vSynthFilter(sFilterExpr, false, sLabel, sLabelPrev);
-  }
+  pCodeSynth->vSynthFilter(sFilterExpr, false, sLabel, sLabelPrev);
 
   pShape->vCodeSynthB(pCodeSynth);
 
