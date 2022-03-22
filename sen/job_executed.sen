@@ -37,23 +37,20 @@
 /*----------------------------------------------------------------------------*/
 : executed:executed
 
+  // "executed:executed" .
+
   // find the originating job
   [job] job.id@ ListedJob[].findOriginator discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process __begun job on this originating node
-
-  // increment the number of __executed jobs received in api state
+  // increment the number of executed jobs received in api state
   ListedJob[] ssn::incExecuted
   ListedJob[] ssn::traceSession
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining in the originating job
-  ListedJob[] job.dec2pcAcksRmg locals| bAmDecider |
-
-  // if there are acks remaining just exit
-  bAmDecider if
+  ListedJob[] job.dec2pcAcksRmg if
 
     [job].tscBegun
 
