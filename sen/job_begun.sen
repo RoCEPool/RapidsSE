@@ -46,10 +46,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining in the originating job
-  ListedJob[] job.dec2pcAcksRmg locals| bAmDecider |
-
-  // if there are acks remaining just exit
-  bAmDecider if
+  ListedJob[].dec2pcDecider if
 
     // notify the originating task
     ListedJob[].task@ task.ack

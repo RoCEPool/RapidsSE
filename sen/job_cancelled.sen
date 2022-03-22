@@ -61,7 +61,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining in the originating job
-  ListedJob[] job.dec2pcAcksRmg if
+  ListedJob[].dec2pcDecider if
 
     // notify the originating task
     ListedJob[].task@ task.ack
