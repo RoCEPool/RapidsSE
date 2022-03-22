@@ -208,6 +208,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_SubCall();
   Step::vAddSteps_SubPipeline();
+  Step::vAddSteps_SubPipelineInOp();
   Step::vAddSteps_SubReturn();
   Step::vAddSteps_Subset();
   Step::vAddSteps_Supervisor();

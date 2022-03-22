@@ -1831,6 +1831,25 @@ public:
   void vSubPipelineSpawnOpTasks(void);
   void vSubPipelineStartPipeline(void);
 
+  // subPipelineInOp
+  void vSubPipelineInOpAddAccum(void);
+  void vSubPipelineInOpCancelledFetch(void);
+  void vSubPipelineInOpCancelledStore(void);
+  void vSubPipelineInOpCreate(void);
+  void vSubPipelineInOpDropDebugLock(void);
+  void vSubPipelineInOpEarlyExitFetch(void);
+  void vSubPipelineInOpEarlyExitStore(void);
+  void vSubPipelineInOpErroredStore(void);
+  void vSubPipelineInOpErroredFetch(void);
+  void vSubPipelineInOpGetAccum(void);
+  void vSubPipelineInOpGrabDebugLock(void);
+  void vSubPipelineInOpOp0Fetch(void);
+  void vSubPipelineInOpOpsOnNodeFetch(void);
+  void vSubPipelineInOpPulsedFetch(void);
+  void vSubPipelineInOpPulsedStore(void);
+  void vSubPipelineInOpSpawnOpTasks(void);
+  void vSubPipelineInOpStartPipeline(void);
+
   // stage
   void vStageGet(void);
   void vStageSet(void);
