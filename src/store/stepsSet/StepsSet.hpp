@@ -1831,24 +1831,24 @@ public:
   void vSubPipelineSpawnOpTasks(void);
   void vSubPipelineStartPipeline(void);
 
-  // subPipelineInOp
-  void vSubPipelineInOpAddAccum(void);
-  void vSubPipelineInOpCancelledFetch(void);
-  void vSubPipelineInOpCancelledStore(void);
-  void vSubPipelineInOpCreate(void);
-  void vSubPipelineInOpDropDebugLock(void);
-  void vSubPipelineInOpEarlyExitFetch(void);
-  void vSubPipelineInOpEarlyExitStore(void);
-  void vSubPipelineInOpErroredStore(void);
-  void vSubPipelineInOpErroredFetch(void);
-  void vSubPipelineInOpGetAccum(void);
-  void vSubPipelineInOpGrabDebugLock(void);
-  void vSubPipelineInOpOp0Fetch(void);
-  void vSubPipelineInOpOpsOnNodeFetch(void);
-  void vSubPipelineInOpPulsedFetch(void);
-  void vSubPipelineInOpPulsedStore(void);
-  void vSubPipelineInOpSpawnOpTasks(void);
-  void vSubPipelineInOpStartPipeline(void);
+  // SubPipelineOfOp
+  void vSubPipelineOfOpAddAccum(void);
+  void vSubPipelineOfOpCancelledFetch(void);
+  void vSubPipelineOfOpCancelledStore(void);
+  void vSubPipelineOfOpCreate(void);
+  void vSubPipelineOfOpDropDebugLock(void);
+  void vSubPipelineOfOpEarlyExitFetch(void);
+  void vSubPipelineOfOpEarlyExitStore(void);
+  void vSubPipelineOfOpErroredStore(void);
+  void vSubPipelineOfOpErroredFetch(void);
+  void vSubPipelineOfOpGetAccum(void);
+  void vSubPipelineOfOpGrabDebugLock(void);
+  void vSubPipelineOfOpOp0Fetch(void);
+  void vSubPipelineOfOpOpsOnNodeFetch(void);
+  void vSubPipelineOfOpPulsedFetch(void);
+  void vSubPipelineOfOpPulsedStore(void);
+  void vSubPipelineOfOpSpawnOpTasks(void);
+  void vSubPipelineOfOpStartPipeline(void);
 
   // stage
   void vStageGet(void);
