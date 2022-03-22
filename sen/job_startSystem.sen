@@ -171,6 +171,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  "demons spawned" .verbose
+
   //[system].started@ not if
     [grid].setStartNode
     true [system].started!

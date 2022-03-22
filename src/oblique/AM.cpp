@@ -262,9 +262,9 @@ void AM::DEMON::vPipeToOp0(Stz* szDemonNm, Operand* pOperand)
   
   Job* pJob = _pJob(pDemonWord->pObject());
   
-  Pipeline* pSubPipeline = pJob->pSubPipeline();
+  Pipeline* pPipeline = pJob->pPipelineX();
   
-  Op* pOp0 = pSubPipeline->pOp0();
+  Op* pOp0 = pPipeline->pOp0();
 
   pOp0->vAppendLeft(pOperand,nullptr);
 }

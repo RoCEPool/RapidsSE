@@ -858,8 +858,8 @@ void Step::vJobPipeToOp0(void)
   // !!!!!!!!!!!!!!
   // move to AM
 
-  Pipeline* pSubPipeline = pJob->pSubPipeline();
-  Pipework* pPipework = pSubPipeline->pPipework();
+  Pipeline* pPipeline = pJob->pPipelineX();
+  Pipework* pPipework = pPipeline->pPipework();
 
   Stage*    pStage0   = pPipework->pGet(0);
   Stream*   pStand0   = pStage0->pGet(0);

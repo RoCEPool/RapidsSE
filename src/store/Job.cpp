@@ -679,6 +679,21 @@ void Job::vParticipantNode(i8 i_Node)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pipeline                                                               */
+/*----------------------------------------------------------------------------*/
+Pipeline* Job::pPipelineX(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Task* pTask = this->pTask();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
+
+  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
+    
+  return pPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
 /* see job dump                                                               */
 /*----------------------------------------------------------------------------*/
 void Job::vPrintJobContents(void)
@@ -967,21 +982,6 @@ void Job::vSpawnTask(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTimerStart();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get subPipeline                                                            */
-/*----------------------------------------------------------------------------*/
-Pipeline* Job::pSubPipeline(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Task* pTask = this->pTask();
-  LogicUnit* pLogicUnit = pTask->pLogicUnit();
-
-  Pipeline* pSubPipeline = (* pLogicUnit->m_xpSubPipeline);
-    
-  return pSubPipeline;
 }
 
 /*----------------------------------------------------------------------------*/

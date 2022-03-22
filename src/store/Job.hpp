@@ -179,6 +179,7 @@ namespace STORE
   
     i8   iParticipantNode(void);
     void vParticipantNode(i8 i_Node);
+    Pipeline* pPipelineX(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
     void vPostRecv(void);
@@ -193,7 +194,6 @@ namespace STORE
     void vSingularOp(Op* pSingularOp);
     void vSetFromCascade(Stz* szCascade);
     void vSpawnTask(void);
-    Pipeline* pSubPipeline(void);
 
     Task* pTask(void);
     void vTask(Task* pTask);
