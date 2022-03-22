@@ -25,7 +25,7 @@
   // there should be this immutable job and it shouldnt be in any job list (yet)
   [job] assert
   [job].assertCorrectness
-  [job].assertNeutral
+  [job].assertOrdinary
 
   // mutable pipelineSpec, pipeline and subpipeline in logicUnit should be null
   PipelineSpec[] not assert
@@ -41,7 +41,6 @@
   [job].tscBeginning
 
   // pre-check
-  
   "<preCheck>" [job].tagSet@ tagSet.hasName if
     // + tag exists
     

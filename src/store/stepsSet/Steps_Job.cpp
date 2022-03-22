@@ -76,7 +76,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].addRetired"_Stz,       &Step::vJobAddRetired);
   vAddStep("[job].assertBegin"_Stz,      &Step::vJobAssertBegin);
   vAddStep("[job].assertCorrectness"_Stz,&Step::vJobAssertCorrectness);
-  vAddStep("[job].assertNeutral"_Stz,    &Step::vJobAssertNeutral);
+  vAddStep("[job].assertOrdinary"_Stz,   &Step::vJobAssertOrdinary);
   vAddStep("[job].assertOriginator"_Stz, &Step::vJobAssertOriginator);
   vAddStep("[job].assertParticipant"_Stz,&Step::vJobAssertParticipant);
   vAddStep("[job].assertReceived"_Stz,   &Step::vJobAssertReceived);
@@ -337,29 +337,29 @@ void Step::vJobAssertCorrectness(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].assertNeutral -- assert job is not in originator nor participant set   */
+/* [job].assertOrdinary -- assert job is not in originator nor participant set   */
 /*----------------------------------------------------------------------------*/
-void Step::vJobAssertNeutral(void)
+void Step::vJobAssertOrdinary(void)
 {
   ENTRY();
     
   if (JL_NONE != m_pJob->eJobList())
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "[job].assertNeutral: "
+           "[job].assertOrdinary: "
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
   
   Job* pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tJobId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "[job].assertNeutral: "
+           "[job].assertOrdinary: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
 
   pJobFound = AM::pParticipatingJobs()->pFindJob(m_pJob->tJobId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "[job].assertNeutral: "
+           "[job].assertOrdinary: "
            "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
 

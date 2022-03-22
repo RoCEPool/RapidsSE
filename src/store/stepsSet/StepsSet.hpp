@@ -794,7 +794,7 @@ public:
   void vJobAddRetired(void);
   void vJobAssertBegin(void);
   void vJobAssertCorrectness(void);
-  void vJobAssertNeutral(void);
+  void vJobAssertOrdinary(void);
   void vJobAssertOriginator(void);
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
