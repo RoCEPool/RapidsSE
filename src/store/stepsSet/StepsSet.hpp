@@ -1024,6 +1024,7 @@ public:
 
   // listed job
   void vListedJobAssertNoRef(void);
+  void vListedJobDec2pcDecider(void);
   void vListedJobFindOriginator(void);
   void vListedJobFindParticipant(void);
   void vListedJobHasTask(void);
