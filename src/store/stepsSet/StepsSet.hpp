@@ -1373,6 +1373,25 @@ public:
   void vPipelineSpawnOpTasks(void);
   void vPipelineStartPipeline(void);
 
+  // pipelineInOp
+  void vPipelineInOpAddAccum(void);
+  void vPipelineInOpCancelledFetch(void);
+  void vPipelineInOpCancelledStore(void);
+  void vPipelineInOpCreate(void);
+  void vPipelineInOpDropDebugLock(void);
+  void vPipelineInOpEarlyExitFetch(void);
+  void vPipelineInOpEarlyExitStore(void);
+  void vPipelineInOpErroredStore(void);
+  void vPipelineInOpErroredFetch(void);
+  void vPipelineInOpGetAccum(void);
+  void vPipelineInOpGrabDebugLock(void);
+  void vPipelineInOpOp0Fetch(void);
+  void vPipelineInOpOpsOnNodeFetch(void);
+  void vPipelineInOpPulsedFetch(void);
+  void vPipelineInOpPulsedStore(void);
+  void vPipelineInOpSpawnOpTasks(void);
+  void vPipelineInOpStartPipeline(void);
+
   // pipelinespec
 
   void vPipelineSpecDelete(void);

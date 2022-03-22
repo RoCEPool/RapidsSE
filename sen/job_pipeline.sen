@@ -26,10 +26,10 @@
   // pre-check
   
   "<preCheck>" [job].tagSet@ tagSet.hasName if
-    // tag exists..
+    // tag exists...
     
     <preCheck> find execute not if
-      // - preCheck word does not exist
+      // - preCheck word failed
       
       [job].error!
       
@@ -59,12 +59,10 @@
   [job].addOriginator
   [job].assertOriginator
 
-  "<show_command>" sysargs::tagSet@ tagSet.hasName
-  if
-    //<cmd> "pipeline:origin: %v\n" .printf
+  "<show_command>" sysargs::tagSet@ tagSet.hasName if
     <cmd> .
+    //<cmd> "pipeline:origin: %v\n" .printf
     //jobs::seeRlist
-
     //[system].bpa
   then
 
@@ -222,8 +220,7 @@
 
   [job].removeOriginator
 
-  [session].hasCascade@ not
-  if
+  [session].hasCascade@ not if
       
     [ddlLock].testDrop
     ListedJob[].assertNoRef
