@@ -52,8 +52,6 @@
   // decrement the acks remaining in the originating job
   ListedJob[] job.dec2pcAcksRmg if
 
-    [job].tscBegun
-
     // notify the originating task
     ListedJob[].task@ task.ack
     ListedJob[].returnReference

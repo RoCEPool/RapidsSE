@@ -1270,9 +1270,7 @@ void Step::vJobTscBeginning(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob;
-
-  pJob->vTscBeginning(Hardware::iReadTsc());
+  m_pJob->vTscBeginning(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1284,9 +1282,7 @@ void Step::vJobTscBegun(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscBegun(Hardware::iReadTsc());
+  m_pJob->vTscBegun(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1298,9 +1294,7 @@ void Step::vJobTscExecuting(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscExecuting(Hardware::iReadTsc());
+  m_pJob->vTscExecuting(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1312,9 +1306,7 @@ void Step::vJobTscExecuted(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscExecuted(Hardware::iReadTsc());
+  m_pJob->vTscExecuted(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1326,9 +1318,7 @@ void Step::vJobTscEnding(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscEnding(Hardware::iReadTsc());
+  m_pJob->vTscEnding(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1340,9 +1330,7 @@ void Step::vJobTscEnded(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscEnded(Hardware::iReadTsc());
+  m_pJob->vTscEnded(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1354,9 +1342,7 @@ void Step::vJobTscCanceling(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscCanceling(Hardware::iReadTsc());
+  m_pJob->vTscCanceling(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1368,9 +1354,7 @@ void Step::vJobTscCanceled(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscCanceled(Hardware::iReadTsc());
+  m_pJob->vTscCanceled(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1382,9 +1366,7 @@ void Step::vJobTscParticipant(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob;
-
-  pJob->vTscParticipant(Hardware::iReadTsc());
+  m_pJob->vTscParticipant(Hardware::iReadTsc());
   
   EXIT();
 }

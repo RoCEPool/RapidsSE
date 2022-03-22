@@ -148,7 +148,6 @@
   //             pipeline is beginning / distribute begin                     //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute begin
 
   [job].error@ not if
@@ -159,6 +158,8 @@
     [task].grabLock
       [job] job:distribute
     [task].wait
+
+    [job].tscBegun
   then
  
   //5678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -166,19 +167,22 @@
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
   //                pipeline has begun / distribute execute                   //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-
+  
+  // distribute execute
+  
   [job].error@ not if
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // distribute execute
-
     // "SUBPIPLINE: distribute execute" .
+
+    [job].tscExecuting
 
     [job] job_Execute::new to pJob_Execute
 
     [task].grabLock
       pJob_Execute job:distribute
     [task].wait
+
+    [job].tscExecuted
 
     pJob_Execute job.delete
   then
@@ -190,18 +194,21 @@
   //             pipeline has executed / distribute end                       //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
+  // distribute end
+
   [job].error@ not if
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // distribute end
-
     // "SUBPIPLINE: distribute end" .
+    
+    [job].tscEnding
     
     [job] job_End::new to pJob_End
 
     [task].grabLock
       pJob_End job:distribute
     [task].wait
+
+    [job].tscEnded
 
     pJob_End job.delete
   then

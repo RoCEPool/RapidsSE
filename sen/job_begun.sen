@@ -55,8 +55,6 @@
   // if there are acks remaining just exit
   bAmDecider if
 
-    [job].tscBegun
-
     // notify the originating task
     ListedJob[].task@ task.ack
     ListedJob[].returnReference
