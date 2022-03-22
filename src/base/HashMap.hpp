@@ -24,7 +24,7 @@ namespace BASE
 
     bool bExists(u8 uKey);
     u8 uHashFunction(u8 uKey);
-    void vInsert(u8 uKey, i8 iValue);
+    void vInsertAtFront(u8 uKey, i8 iValue);
 
   private:
 

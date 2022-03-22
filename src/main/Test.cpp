@@ -104,7 +104,18 @@ void vTest1(void)
 /*----------------------------------------------------------------------------*/
 void vTest2(void)
 {
+  HashMap* pTestMap = new HashMap();
 
+  pTestMap->vInsertAtFront(10,20);
+  pTestMap->vInsertAtFront(11,30);
+  pTestMap->vInsertAtFront(5,10);
+
+  ASSERT(1 == pTestMap->bExists(10));
+  ASSERT(1 == pTestMap->bExists(11));
+  ASSERT(1 == pTestMap->bExists(5));
+  ASSERT(0 == pTestMap->bExists(9));
+
+  delete pTestMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,24 +176,26 @@ void vTest3(void)
 /*----------------------------------------------------------------------------*/
 void vTest4(void)
 {
+  /*
   vTrace("vTest4\n"_Stz);
 
   HashMap* pHashMap = new HashMap(false,13999,8);
-  
+
   //s32 sKey("ALPHA"_Stz);
   s32 sKey;
-  
+
   i8 iKey = 0;
   for (i8 nRepeats = 0; nRepeats < 10; nRepeats++) {
     for (i8 nTimes = 0; nTimes < 1000000; nTimes++) {
       sKey.vSprint("%02lld"_Stz,iKey);
-      
+
       pHashMap->vInsert((byte*)sKey.azChar(),sKey.nLength(),iKey,false);
       iKey++;
     }
     pHashMap->vAnalysis(false);
   }
-  
+  */
+
 //  HashCursor xCursor(pHashMap);
 //
 //  while (xCursor.bIterate()) {
@@ -214,7 +227,7 @@ void vTest4(void)
   
   //pHashMap->vAnalysis(false);
   
-  delete pHashMap;
+//  delete pHashMap;
 }
 
 /*----------------------------------------------------------------------------*/

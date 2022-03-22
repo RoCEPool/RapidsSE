@@ -50,8 +50,8 @@ HashMap::HashMap(bool bTrace, u8 uNoOfSlots)
   
   m_bTrace            = bTrace;
   m_uNoOfSlots = C_HASHMAP_SIZE;
-  for(u8 i = 0; i<m_uNoOfSlots; i++)
-    m_paMap[i] = 0;
+  for(u8 i = 0; i < m_uNoOfSlots; i++)
+    m_paMap[i] = nullptr;
   
   _checkInitialised_(CN_HASHMAP);
   
@@ -64,8 +64,21 @@ HashMap::HashMap(bool bTrace, u8 uNoOfSlots)
 HashMap::~HashMap(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
-  
-  delete m_pRootBuffer;
+  for(u8 i = 0; i < m_uNoOfSlots; i++)
+  {
+    if(m_paMap[i] != nullptr)
+    {
+      HashMapSlot* uIter1 = m_paMap[i];
+      HashMapSlot* uIter2;
+      while(uIter1 != nullptr)
+      {
+        uIter2 = uIter1->m_pNext;
+        delete uIter1;
+        uIter1 = uIter2;
+      }
+    }
+  }
+
 }
 
 
@@ -79,8 +92,15 @@ HashMap::~HashMap(void) noexcept(false)
 bool HashMap::bExists(u8 uKey)
 {
   u8 uIndex = uHashFunction(uKey);
+  HashMapSlot* uIter = m_paMap[uIndex];
+  while(uIter != nullptr)
+  {
+    if(uIter->m_uKey == uKey)
+      return true;
+    uIter = uIter->m_pNext;
+  }
 
-  return m_paMap[uIndex] != 0;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,16 +114,13 @@ u8 HashMap::uHashFunction(u8 uKey)
 /*----------------------------------------------------------------------------*/
 /* insert a key,value into this hashmap                                       */
 /*----------------------------------------------------------------------------*/
-void HashMap::vInsert(u8 uKey, i8 iValue)
+void HashMap::vInsertAtFront(u8 uKey, i8 iValue)
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   u8 uIndex = uHashFunction(uKey);
-  HashMapSlot* a1 = new HashMapSlot(uKey, iValue);
+  HashMapSlot* tmpSlot = new HashMapSlot(uKey, iValue);
 
-  a1->m_pNext = m_paMap[uIndex];
-  m_paMap[uIndex] = a1;
-
+  tmpSlot->m_pNext = m_paMap[uIndex];
+  m_paMap[uIndex] = tmpSlot;
 }
 
 /*----------------------------------------------------------------------------*/

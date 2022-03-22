@@ -114,8 +114,8 @@ enum eCN : u2 // Class Number
 
   /* */ CN__H__,
   /* */ CN_HASHMAP,
-  /* */ CN_HASHSET,
   /* */ CN_HASHMAPSLOT,
+  /* */ CN_HASHSET,
   /* */ CN_HEAPBUFFER,
   /* */ CN_HEAPMEM,
 
