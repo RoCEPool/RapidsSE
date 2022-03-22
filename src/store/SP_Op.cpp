@@ -115,7 +115,7 @@ Stz* SP_Op::szLeading(Op* pOp)
   OpSpec* pOpSpec = pOp->pOpSpec();
   StageSpec* pStageSpec = pOpSpec->pStageSpec();
   Stream* pStream = pOp->pStream();
-  Pipeline* pPipeline = pOp->pPipeline();
+  Pipeline* pPipeline = pOp->pPipelineOfOp();
 
   Word* pEventHandler = pOp->pEventHandler();
   

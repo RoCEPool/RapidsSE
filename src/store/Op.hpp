@@ -176,7 +176,7 @@ namespace STORE
     bool bPause(void);
     bool bPeekLeft(void);
     bool bPeekOoO(void);
-    Pipeline* pPipeline(void);
+    Pipeline* pPipelineOfOp(void);
     Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToThis(Operand* pOperand, Task* pTriggeringTask);

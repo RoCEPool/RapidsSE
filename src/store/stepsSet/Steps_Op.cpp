@@ -271,7 +271,7 @@ void Step::vOpJobFetch(void)
 {
   ENTRY();
     
-  Pipeline* pPipeline = m_pOp->pPipeline();
+  Pipeline* pPipeline = m_pOp->pPipelineOfOp();
   
   if (! pPipeline) {
     m_pDataStack->vPushPtr(nullptr);
