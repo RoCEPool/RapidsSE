@@ -54,49 +54,54 @@ void Step::vAddSteps_SubPipelineOfOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].addAccum -- add to an accumulator in this pipeline       */
+/* [subPLineOfOp].addAccum -- add to an accumulator in this pipeline          */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpAddAccum(void)
 {
   ENTRY();
-    
+  
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  
   i8 i_Accum = m_pDataStack->iPopInt(__func__);
   
   i8 iValue  = m_pDataStack->iPopInt(__func__);
   
-  m_pLogicUnit->m_xpSubPipeline->vAddAccum(i_Accum,iValue);
+  pSubPipelineOfOp->vAddAccum(i_Accum,iValue);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].cancelled@ -- has this pipeline been cancelled?          */
+/* [subPLineOfOp].cancelled@ -- has this pipeline been cancelled?             */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpCancelledFetch(void)
 {
   ENTRY();
   
-  // return if pipeline has been cancelled
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSubPipeline->bCancelled());
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  
+  m_pDataStack->vPushInt(pSubPipelineOfOp->bCancelled());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].cancelled! -- fetch this pipeline's cancelled indicator  */
+/* [subPLineOfOp].cancelled! -- fetch this pipeline's cancelled indicator     */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpCancelledStore(void)
 {
   ENTRY();
+
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
   
-  m_pLogicUnit->m_xpSubPipeline->vCancelled(m_pDataStack->iPopInt(__func__));
+  pSubPipelineOfOp->vCancelled(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].create -- create the pipeline, stages, streams and ops   */
+/* [subPLineOfOp].create -- create the pipeline, stages, streams and ops      */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpCreate(void)
 {
@@ -108,18 +113,18 @@ void Step::vSubPipelineOfOpCreate(void)
   
   PipelineSpec* pPipelineSpec = _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
   
-  // create subpipeline
+  // create pipeline
   
-  Pipeline* pSubPipeline =
+  Pipeline* pSubPipelineOfOp =
     new Pipeline(m_pJob,pPipelineSpec,m_pJob->iOriginatorNode());
   
-  m_pLogicUnit->m_xpSubPipeline = pSubPipeline;
+  m_pLogicUnit->m_xpPipeline = pSubPipelineOfOp;
     
   // dump pipeline
   
   if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
     if (iThisNode == 0) {
-      SP_Pipeline spPipeline(pSubPipeline,true);
+      SP_Pipeline spPipeline(pSubPipelineOfOp,true);
       vTraceM("%s\n"_Stz,spPipeline.sz());
       vDebugPoint();
     }
@@ -129,77 +134,89 @@ void Step::vSubPipelineOfOpCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].dropDebugLock -- drop this pipeline's debug lock         */
+/* [subPLineOfOp].dropDebugLock -- drop this pipeline's debug lock            */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpDropDebugLock(void)
 {
   ENTRY();
-    
-  m_pLogicUnit->m_xpSubPipeline->vDropDebugLock();
+  
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  
+  pSubPipelineOfOp->vDropDebugLock();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].earlyExit@ -- fetch this pipelines earlyExit indicator   */
+/* [subPLineOfOp].earlyExit@ -- fetch this pipelines earlyExit indicator      */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpEarlyExitFetch(void)
 {
   ENTRY();
 
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+
   // return if pipeline has been errored
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSubPipeline->bEarlyExit());
+  m_pDataStack->vPushInt(pSubPipelineOfOp->bEarlyExit());
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].earlyExit! -- store this pipeline's earlyExit indicator  */
+/* [subPLineOfOp].earlyExit! -- store this pipeline's earlyExit indicator     */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpEarlyExitStore(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_xpSubPipeline->vEarlyExit(m_pDataStack->iPopIntBol(__func__));
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+
+  pSubPipelineOfOp->vEarlyExit(m_pDataStack->iPopIntBol(__func__));
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].errored@ -- fetch this pipeline errored indicator        */
+/* [subPLineOfOp].errored@ -- fetch this pipeline errored indicator           */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpErroredFetch(void)
 {
   ENTRY();
-    
+  
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  
   // return if pipeline has been errored
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSubPipeline->bErrored());
+  m_pDataStack->vPushInt(pSubPipelineOfOp->bErrored());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].errored! -- store this pipeline errored indicator        */
+/* [subPLineOfOp].errored! -- store this pipeline errored indicator           */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpErroredStore(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpSubPipeline->vErrored(m_pDataStack->iPopBol(__func__));
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  
+  pSubPipelineOfOp->vErrored(m_pDataStack->iPopBol(__func__));
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].getAccum -- get an accumulator from this pipeline        */
+/* [subPLineOfOp].getAccum -- get an accumulator from this pipeline           */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpGetAccum(void)
 {
   ENTRY();
-   
+  
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  
   i8 i_Accum = m_pDataStack->iPopInt(__func__);
   
-  i8 iValue = m_pLogicUnit->m_xpSubPipeline->iGetAccum(i_Accum);
+  i8 iValue = pSubPipelineOfOp->iGetAccum(i_Accum);
   
   m_pDataStack->vPushInt(iValue);
   
@@ -207,50 +224,58 @@ void Step::vSubPipelineOfOpGetAccum(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].grabDebugLock -- grab this pipeline's debug lock         */
+/* [subPLineOfOp].grabDebugLock -- grab this pipeline's debug lock            */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpGrabDebugLock(void)
 {
   ENTRY();
-    
-  m_pLogicUnit->m_xpSubPipeline->vGrabDebugLock();
+  
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  
+  pSubPipelineOfOp->vGrabDebugLock();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].pulsed@ -- fetch this pipeline's pulsed indicator        */
+/* [subPLineOfOp].pulsed@ -- fetch this pipeline's pulsed indicator           */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpPulsedFetch(void)
 {
   ENTRY();
-    
+  
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  
   // return if pipeline has been pulsed
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSubPipeline->bPulsed());
+  m_pDataStack->vPushInt(pSubPipelineOfOp->bPulsed());
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].pulsed! -- store this pipeline's pulsed indicator        */
+/* [subPLineOfOp].pulsed! -- store this pipeline's pulsed indicator           */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpPulsedStore(void)
 {
   ENTRY();
-    
-  m_pLogicUnit->m_xpSubPipeline->vPulsed(m_pDataStack->iPopBol(__func__));
+  
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  
+  pSubPipelineOfOp->vPulsed(m_pDataStack->iPopBol(__func__));
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].op0@ -- fetch op0 of this pipeline                       */
+/* [subPLineOfOp].op0@ -- fetch op0 of this pipeline                          */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpOp0Fetch(void)
 {
   ENTRY();
-    
-  Op* pOp0 = m_pLogicUnit->m_xpSubPipeline->pOp0();
+  
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+
+  Op* pOp0 = pSubPipelineOfOp->pOp0();
     
   m_pDataStack->vPushPtr(pOp0);
 
@@ -258,15 +283,17 @@ void Step::vSubPipelineOfOpOp0Fetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].opsOnNode@ -- get no of ops executing on this node       */
+/* [subPLineOfOp].opsOnNode@ -- get no of ops executing on this node          */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpOpsOnNodeFetch(void)
 {
   ENTRY();
     
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+
   i8 iThisNode = AM::pGrid()->iThisNodeNo();
 
-  i8 nOps = m_pLogicUnit->m_xpSubPipeline->nOpsOnNode(iThisNode);
+  i8 nOps = pSubPipelineOfOp->nOpsOnNode(iThisNode);
 
   m_pDataStack->vPushInt(nOps);
 
@@ -284,20 +311,23 @@ void Step::vSubPipelineOfOpSpawnOpTasks(void)
     i8 iThisNodeNo = MY::iNodeNo();
     vTraceM("Spawning operator jobs for this node %lld\n"_Stz,iThisNodeNo);
   }
-    
-  m_pLogicUnit->m_xpSubPipeline->vSpawnOpTasks();
+  
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  
+  pSubPipelineOfOp->vSpawnOpTasks();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].startPipeline? -- test for issueing a start marker       */
+/* [subPLineOfOp].startPipeline? -- test for issueing a start marker          */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpStartPipeline(void)
 {
   ENTRY();
   
-  Pipework* pFormWork = m_pLogicUnit->m_xpSubPipeline->pPipework();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipework* pFormWork = pSubPipelineOfOp->pPipework();
 
   Stage*    pStage0   = pFormWork->pGet(0);
 
@@ -311,6 +341,7 @@ void Step::vSubPipelineOfOpStartPipeline(void)
 
   EXIT();
 }
+
 
 /*============================================================================*/
 /* end                                                                        */
