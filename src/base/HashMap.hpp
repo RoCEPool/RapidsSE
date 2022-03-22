@@ -2,7 +2,7 @@
 /* HashMap.hpp -- HashMap                                                     */
 /*============================================================================*/
 #pragma once
-#define C_HASHMAP_SIZE 128
+#define C_HASHMAP_SIZE 10000
 namespace BASE
 {
   class HashMap : public Object
@@ -22,9 +22,11 @@ namespace BASE
     HashMap(bool bTrace=false, u8 uNoOfSlots=C_HASHMAP_SIZE);
     ~HashMap(void) noexcept(false);
 
+    void vDeleteKey(u8 uKey);
     bool bExists(u8 uKey);
     u8 uHashFunction(u8 uKey);
     void vInsertAtFront(u8 uKey, i8 iValue);
+    i8 iValueAt(u8 uKey);
 
   private:
 

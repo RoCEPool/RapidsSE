@@ -87,7 +87,38 @@ HashMap::~HashMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* does given key exist in the hashmap                                  */
+/* delete a given key                                                         */
+/*----------------------------------------------------------------------------*/
+void HashMap::vDeleteKey(u8 uKey)
+{
+  u8 uIndex = uHashFunction(uKey);
+  HashMapSlot* uIter1 = m_paMap[uIndex];
+  if(uIter1 != nullptr)
+  {
+    if(uIter1->m_uKey == uKey)
+    {
+      m_paMap[uIndex] = uIter1->m_pNext;
+      delete uIter1;
+    }
+    else
+    {
+      HashMapSlot* uPrevIter;
+      do {
+        uPrevIter = uIter1;
+        uIter1 = uIter1->m_pNext;
+      } while(uIter1 != nullptr && uIter1->m_uKey != uKey);
+
+      if(uIter1 != nullptr)
+      {
+        uPrevIter->m_pNext = uIter1->m_pNext;
+        delete uIter1;
+      }
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* does given key exist in the hashmap                                        */
 /*----------------------------------------------------------------------------*/
 bool HashMap::bExists(u8 uKey)
 {
@@ -112,15 +143,44 @@ u8 HashMap::uHashFunction(u8 uKey)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a key,value into this hashmap                                       */
+/* Insert a key,value at the front of the chain if it does not exist. Else update*/
 /*----------------------------------------------------------------------------*/
 void HashMap::vInsertAtFront(u8 uKey, i8 iValue)
 {
   u8 uIndex = uHashFunction(uKey);
+
+  HashMapSlot* uIter = m_paMap[uIndex];
+  while(uIter != nullptr)
+  {
+    if(uIter->m_uKey == uKey)
+    {
+      uIter->m_iValue = iValue;
+      return;
+    }
+    uIter = uIter->m_pNext;
+  }
+
   HashMapSlot* tmpSlot = new HashMapSlot(uKey, iValue);
 
   tmpSlot->m_pNext = m_paMap[uIndex];
   m_paMap[uIndex] = tmpSlot;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get value stored at key if it exists                                       */
+/*----------------------------------------------------------------------------*/
+i8 HashMap::iValueAt(u8 uKey)
+{
+  u8 uIndex = uHashFunction(uKey);
+  HashMapSlot* uIter = m_paMap[uIndex];
+  while(uIter != nullptr)
+  {
+    if(uIter->m_uKey == uKey)
+      return uIter->m_iValue;
+    uIter = uIter->m_pNext;
+  }
+
+  return C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/

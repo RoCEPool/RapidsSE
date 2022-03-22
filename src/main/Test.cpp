@@ -104,16 +104,82 @@ void vTest1(void)
 /*----------------------------------------------------------------------------*/
 void vTest2(void)
 {
+  //Map size 128
+//  HashMap* pTestMap = new HashMap();
+
+//  //Insert single entry per chain
+//  pTestMap->vInsertAtFront(10,20);
+//  pTestMap->vInsertAtFront(11,30);
+//  pTestMap->vInsertAtFront(5,10);
+//
+//  //Check if exists
+//  ASSERT(1 == pTestMap->bExists(10));
+//  ASSERT(1 == pTestMap->bExists(11));
+//  ASSERT(1 == pTestMap->bExists(5));
+//
+//  //Check a non-existent entry
+//  ASSERT(0 == pTestMap->bExists(9));
+//
+//  //Get existing entry
+//
+//  //Insert multiple entries in same chain
+//  pTestMap->vInsertAtFront(138, 15);
+//  pTestMap->vInsertAtFront(266, 20);
+//  ASSERT(1 == pTestMap->bExists(10));
+//  ASSERT(1 == pTestMap->bExists(138));
+//  ASSERT(1 == pTestMap->bExists(266));
+//
+//  //Update existing entry
+//
+//  //Delete non existent entry
+//  pTestMap->vDeleteKey(4);
+//  ASSERT(0 == pTestMap->bExists(5));
+//
+//  //Delete entry (1 chain depth)
+//  pTestMap->vDeleteKey(5);
+//  ASSERT(0 == pTestMap->bExists(5));
+//
+//  //Insert entry in recently emptied chain
+//  pTestMap->vInsertAtFront(50,10);
+//  ASSERT(1 == pTestMap->bExists(50));
+//  pTestMap->vDeleteKey(50);
+//  ASSERT(0 == pTestMap->bExists(50));
+//
+//  pTestMap->vInsertAtFront(50,6);
+//  ASSERT(1 == pTestMap->bExists(50));
+//
+//  //Delete entry (multiple chain depth)
+//  ASSERT(1 == pTestMap->bExists(138));
+//  pTestMap->vDeleteKey(138);
+//  ASSERT(0 == pTestMap->bExists(138));
+//
+//  ASSERT(1 == pTestMap->bExists(266));
+//  pTestMap->vDeleteKey(266);
+//  ASSERT(0 == pTestMap->bExists(266));
+
+//Size 10,000
   HashMap* pTestMap = new HashMap();
+  //Insert single entry per chain
+  pTestMap->vInsertAtFront(1010,20);
+  pTestMap->vInsertAtFront(100011,30);
+  pTestMap->vInsertAtFront(1,10);
 
-  pTestMap->vInsertAtFront(10,20);
-  pTestMap->vInsertAtFront(11,30);
-  pTestMap->vInsertAtFront(5,10);
+  //Check if exists
+  ASSERT(1 == pTestMap->bExists(1010));
+  ASSERT(1 == pTestMap->bExists(100011));
+  ASSERT(1 == pTestMap->bExists(1));
 
-  ASSERT(1 == pTestMap->bExists(10));
-  ASSERT(1 == pTestMap->bExists(11));
-  ASSERT(1 == pTestMap->bExists(5));
-  ASSERT(0 == pTestMap->bExists(9));
+  //Check a non-existent entry
+  ASSERT(0 == pTestMap->bExists(1009));
+
+  //Check value at key
+  ASSERT(20 == pTestMap->iValueAt(1010));
+  ASSERT(30 == pTestMap->iValueAt(100011));
+  ASSERT(10 == pTestMap->iValueAt(1));
+
+  //Update existing key's value
+  pTestMap->vInsertAtFront(100011,40);
+  ASSERT(40 == pTestMap->iValueAt(100011));
 
   delete pTestMap;
 }
