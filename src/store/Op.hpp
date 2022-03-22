@@ -31,6 +31,9 @@ namespace STORE
     s32        m_sOpNm;     // name of this operator
     s256       m_sPath;     // operator path
 
+  
+
+  
     s4K        m_sExpr;     // expression for this filter
   
     TagSet*    m_pOpTags;   // tags for the op
@@ -42,8 +45,9 @@ namespace STORE
     i8          m_i_Op;     // is [m_i_Op] in m_pStream
 
     // -- refers to
-    SMA<OpSpec,CN_OPSPEC>    m_pOpSpec;   // specification of this operator
+    SMA<OpSpec,CN_OPSPEC>      m_pOpSpec;   // specification of this operator
     SMA<Pipeline,CN_PIPELINE>  m_p_Pipeline_op; // which pipeline
+    SMA<Pipeline,CN_PIPELINE>  m_p_SubPipeline_op;
 
     // -- executed by
     SMA<Task,CN_TASK>      m_pTask;    // which task is currenty executing this op

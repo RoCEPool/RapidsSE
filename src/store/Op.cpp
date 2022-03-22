@@ -69,7 +69,8 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pOpSpec   = pOpSpec;
   m_pStream   = pStream;
   m_p_Pipeline_op = pStream->pPipeline();
-
+  m_p_SubPipeline_op = m_p_Pipeline_op;
+  
   // -- -- -- -- -- --
 
   // m_oOpTags
