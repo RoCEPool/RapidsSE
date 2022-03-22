@@ -18,12 +18,8 @@
   // new a temporary Job_Begun
   pJobParticipant job_Begun::new locals| pJob_Begun |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // send the begun job
   pJobParticipant [job].originNodeNo@ pJob_Begun job.reply
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob_Begun job.delete
 ;
@@ -73,9 +69,9 @@ cmdSyntax: begun :: begun ;
 
 : begun_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
-    <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "begun:begun"
-    <path>     = "/"
+    <cmdDesc>     = "--desc for job--"
+    <entryPoint>  = "begun:begun"
+    <path>        = "/"
   }
 ;
 

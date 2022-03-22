@@ -18,12 +18,8 @@
   // new a temporary Job_Executed
   pJobParticipant job_Executed::new locals| pJob_Executed |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // send the executed job
   pJobParticipant [job].originNodeNo@ pJob_Executed job.reply
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob_Executed job.delete
 ;
@@ -70,12 +66,11 @@ cmdSyntax: executed :: executed ;
 
 : executed_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
-    <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "executed:executed"
-    <path>     = "/"
+    <cmdDesc>     = "--desc for job--"
+    <entryPoint>  = "executed:executed"
+    <path>        = "/"
   }
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */

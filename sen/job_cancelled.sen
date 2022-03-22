@@ -33,12 +33,8 @@
   // new a temporary Job_Cancelled
   pJobParticipant job_Cancelled::new locals| pJob_Cancelled |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // send the cancelled job
   pJobParticipant [job].originNodeNo@ pJob_Cancelled job.reply
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob_Cancelled job.delete
 ;

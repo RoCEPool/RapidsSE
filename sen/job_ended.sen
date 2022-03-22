@@ -18,12 +18,8 @@
   // new a temporary Job_Ended
   pJobParticipant job_Ended::new locals| pJob_Ended |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // send the ended job
   pJobParticipant [job].originNodeNo@ pJob_Ended job.reply
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob_Ended job.delete
 ;
