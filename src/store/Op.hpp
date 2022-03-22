@@ -46,8 +46,8 @@ namespace STORE
 
     // -- refers to
     SMA<OpSpec,CN_OPSPEC>      m_pOpSpec;   // specification of this operator
-    SMA<Pipeline,CN_PIPELINE>  m_p_Pipeline_op; // which pipeline
-    SMA<Pipeline,CN_PIPELINE>  m_p_SubPipeline_op;
+    SMA<Pipeline,CN_PIPELINE>  m_p_PipelineOfOp;    // which pipeline
+    SMA<Pipeline,CN_PIPELINE>  m_p_SubPipelineOfOp; // which sub-pipeline
 
     // -- executed by
     SMA<Task,CN_TASK>      m_pTask;    // which task is currenty executing this op
@@ -141,7 +141,7 @@ namespace STORE
   
     i8   iLocalRobinNext(void);
   
-    Job* pJob(void);
+    Job* pJobOfOp(void);
   
     i8   iMetricsQueued(void);
     void vMetricsQueued(i8 iMetricsQueued);
@@ -177,7 +177,6 @@ namespace STORE
     bool bPeekLeft(void);
     bool bPeekOoO(void);
     Pipeline* pPipelineOfOp(void);
-    Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToThis(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
@@ -204,7 +203,8 @@ namespace STORE
     Stz* szStageName(void);
     Stream* pStream(void);
     eYS  eStreamTopology_op(void);
-  
+    Pipeline* pSubPipelineOfOp(void);
+
     Task* pTask(void);
     void vTask(Task* pTask);
     i8   nTmpIndexSize(void);
