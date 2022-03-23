@@ -101,6 +101,8 @@
 
 //#define WITH_SUBPIPELINE EndDefine       //
 
+#define WITH_HASHMAP EndDefine             // code for hashmap compiled in
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
