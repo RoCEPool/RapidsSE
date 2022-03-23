@@ -7,6 +7,8 @@ namespace BASE
 {
   class HashMap : public Object
   {
+  friend HashMapSlot;
+
   private:
     bool m_bTrace;
     u8 m_uNoOfSlots;// Total number of slots
@@ -24,11 +26,11 @@ namespace BASE
     ~HashMap(void) noexcept(false);
 
     void vAnalysis(void);
-    void vDeleteKey(u8 uKey);
-    bool bExists(u8 uKey);
-    u8 uHashFunction(u8 uKey);
-    void vInsertAtFront(u8 uKey, i8 iValue);
-    i8 iValueAt(u8 uKey);
+    void vDeleteKey(Object* pKey);
+    bool bExists(Object* pKey);
+    u8 uHashFunction(Object* pKey);
+    void vInsertAtFront(Object* pKey, Object* pValue);
+    Object* pValueAt(Object* pKey);
 
   private:
 

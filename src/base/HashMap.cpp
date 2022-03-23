@@ -103,29 +103,29 @@ void HashMap::vAnalysis(void)
 /*----------------------------------------------------------------------------*/
 /* delete a given key                                                         */
 /*----------------------------------------------------------------------------*/
-void HashMap::vDeleteKey(u8 uKey)
+void HashMap::vDeleteKey(Object* pKey)
 {
-  u8 uIndex = uHashFunction(uKey);
-  HashMapSlot* uIter1 = m_paMap[uIndex];
-  if(uIter1 != nullptr)
+  u8 uIndex = uHashFunction(pKey);
+  HashMapSlot* pIter1 = m_paMap[uIndex];
+  if(pIter1 != nullptr)
   {
-    if(uIter1->m_uKey == uKey)
+    if(pIter1->m_pKeyObject == pKey)
     {
-      m_paMap[uIndex] = uIter1->m_pNext;
-      delete uIter1;
+      m_paMap[uIndex] = pIter1->m_pNext;
+      delete pIter1;
     }
     else
     {
-      HashMapSlot* uPrevIter;
+      HashMapSlot* pPrevIter;
       do {
-        uPrevIter = uIter1;
-        uIter1 = uIter1->m_pNext;
-      } while(uIter1 != nullptr && uIter1->m_uKey != uKey);
+        pPrevIter = pIter1;
+        pIter1 = pIter1->m_pNext;
+      } while(pIter1 != nullptr && pIter1->m_pKeyObject != pKey);
 
-      if(uIter1 != nullptr)
+      if(pIter1 != nullptr)
       {
-        uPrevIter->m_pNext = uIter1->m_pNext;
-        delete uIter1;
+        pPrevIter->m_pNext = pIter1->m_pNext;
+        delete pIter1;
         ASSERT(1 <= m_uNoOfEntries); //Assert before decrement since unsigned underflow could occur
         m_uNoOfEntries--;
       }
@@ -136,15 +136,15 @@ void HashMap::vDeleteKey(u8 uKey)
 /*----------------------------------------------------------------------------*/
 /* does given key exist in the hashmap                                        */
 /*----------------------------------------------------------------------------*/
-bool HashMap::bExists(u8 uKey)
+bool HashMap::bExists(Object* pKey)
 {
-  u8 uIndex = uHashFunction(uKey);
-  HashMapSlot* uIter = m_paMap[uIndex];
-  while(uIter != nullptr)
+  u8 uIndex = uHashFunction(pKey);
+  HashMapSlot* pIter = m_paMap[uIndex];
+  while(pIter != nullptr)
   {
-    if(uIter->m_uKey == uKey)
+    if(pIter->m_pKeyObject == pKey)
       return true;
-    uIter = uIter->m_pNext;
+    pIter = pIter->m_pNext;
   }
 
   return false;
@@ -153,51 +153,51 @@ bool HashMap::bExists(u8 uKey)
 /*----------------------------------------------------------------------------*/
 /* hash key                                                                   */
 /*----------------------------------------------------------------------------*/
-u8 HashMap::uHashFunction(u8 uKey)
+u8 HashMap::uHashFunction(Object* pKey)
 {
-  return uKey % m_uNoOfSlots;
+  return ((u8)pKey % m_uNoOfSlots);//Check if this is safe
 }
 
 /*----------------------------------------------------------------------------*/
 /* Insert a key,value at the front of the chain if it does not exist. Else update*/
 /*----------------------------------------------------------------------------*/
-void HashMap::vInsertAtFront(u8 uKey, i8 iValue)
+void HashMap::vInsertAtFront(Object* pKey, Object* pValue)
 {
-  u8 uIndex = uHashFunction(uKey);
+  u8 uIndex = uHashFunction(pKey);
 
-  HashMapSlot* uIter = m_paMap[uIndex];
-  while(uIter != nullptr)
+  HashMapSlot* pIter = m_paMap[uIndex];
+  while(pIter != nullptr)
   {
-    if(uIter->m_uKey == uKey)
+    if(pIter->m_pKeyObject == pKey)
     {
-      uIter->m_iValue = iValue;
+      pIter->m_pValObject = pValue;
       return;
     }
-    uIter = uIter->m_pNext;
+    pIter = pIter->m_pNext;
   }
 
-  HashMapSlot* tmpSlot = new HashMapSlot(uKey, iValue);
+  HashMapSlot* pTmpSlot = new HashMapSlot(pKey, pValue);
 
-  tmpSlot->m_pNext = m_paMap[uIndex];
-  m_paMap[uIndex] = tmpSlot;
+  pTmpSlot->m_pNext = m_paMap[uIndex];
+  m_paMap[uIndex] = pTmpSlot;
   m_uNoOfEntries++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get value stored at key if it exists                                       */
 /*----------------------------------------------------------------------------*/
-i8 HashMap::iValueAt(u8 uKey)
+Object* HashMap::pValueAt(Object* pKey)
 {
-  u8 uIndex = uHashFunction(uKey);
-  HashMapSlot* uIter = m_paMap[uIndex];
-  while(uIter != nullptr)
+  u8 uIndex = uHashFunction(pKey);
+  HashMapSlot* pIter = m_paMap[uIndex];
+  while(pIter != nullptr)
   {
-    if(uIter->m_uKey == uKey)
-      return uIter->m_iValue;
-    uIter = uIter->m_pNext;
+    if(pIter->m_pKeyObject == pKey)
+      return pIter->m_pValObject;
+    pIter = pIter->m_pNext;
   }
 
-  return C_DATUM_NULL;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

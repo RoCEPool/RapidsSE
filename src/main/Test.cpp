@@ -157,29 +157,47 @@ void vTest2(void)
 //  pTestMap->vDeleteKey(266);
 //  ASSERT(0 == pTestMap->bExists(266));
 
-//Size 10,000
+// //Size 10,000
+//  HashMap* pTestMap = new HashMap();
+//  //Insert single entry per chain
+//  pTestMap->vInsertAtFront(1010,20);
+//  pTestMap->vInsertAtFront(100011,30);
+//  pTestMap->vInsertAtFront(1,10);
+//
+//  //Check if exists
+//  ASSERT(1 == pTestMap->bExists(1010));
+//  ASSERT(1 == pTestMap->bExists(100011));
+//  ASSERT(1 == pTestMap->bExists(1));
+//
+//  //Check a non-existent entry
+//  ASSERT(0 == pTestMap->bExists(1009));
+//
+//  //Check value at key
+//  ASSERT(20 == pTestMap->iValueAt(1010));
+//  ASSERT(30 == pTestMap->iValueAt(100011));
+//  ASSERT(10 == pTestMap->iValueAt(1));
+//
+//  //Update existing key's value
+//  pTestMap->vInsertAtFront(100011,40);
+//  ASSERT(40 == pTestMap->iValueAt(100011));
+//
+//  //Delete unknown key when NoOfEntries > 0
+//
+//  //Delete unknown key when NoOfEntries == 0
+
+  //Key and Value are Object*
   HashMap* pTestMap = new HashMap();
-  //Insert single entry per chain
-  pTestMap->vInsertAtFront(1010,20);
-  pTestMap->vInsertAtFront(100011,30);
-  pTestMap->vInsertAtFront(1,10);
 
-  //Check if exists
-  ASSERT(1 == pTestMap->bExists(1010));
-  ASSERT(1 == pTestMap->bExists(100011));
-  ASSERT(1 == pTestMap->bExists(1));
+  int a = 10;
+  pTestMap->vInsertAtFront((Object*)&a, (Object*)&a);
 
-  //Check a non-existent entry
-  ASSERT(0 == pTestMap->bExists(1009));
+  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
 
-  //Check value at key
-  ASSERT(20 == pTestMap->iValueAt(1010));
-  ASSERT(30 == pTestMap->iValueAt(100011));
-  ASSERT(10 == pTestMap->iValueAt(1));
 
-  //Update existing key's value
-  pTestMap->vInsertAtFront(100011,40);
-  ASSERT(40 == pTestMap->iValueAt(100011));
+
+
+
+
 
   pTestMap->vAnalysis();
 

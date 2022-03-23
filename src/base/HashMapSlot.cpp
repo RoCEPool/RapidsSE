@@ -43,13 +43,13 @@ void HashMapSlot::operator delete(void* pHashMapSlotAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashMapSlot::HashMapSlot(u8 uKey, i8 iValue)
+HashMapSlot::HashMapSlot(Object* pKey, Object* pValue)
     : Object(CN_HASHMAPSLOT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPSLOT,_FOOTER_);
 
-  m_uKey = uKey;
-  m_iValue = iValue;
+  m_pKeyObject = pKey;
+  m_pValObject = pValue;
   m_pNext = nullptr;// Check if I should use C_DATUM_NULL
 
   _checkInitialised_(CN_HASHMAPSLOT);
