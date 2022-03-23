@@ -194,6 +194,8 @@ end ;
 
 rows: 1497
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER WITH LEFT FILTER
 // select * from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -256,6 +258,7 @@ begin
 end ;
 
 rows: 1497
+*/
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER
@@ -317,6 +320,8 @@ end ;
 
 rows: 1220
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER WITH RIGHT FILTER
 // select * from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -376,6 +381,7 @@ begin
 end ;
 
 rows: 1220
+*/
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER
@@ -437,6 +443,8 @@ end ;
 
 rows: 1218
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER WITH LEFT and RIGHT FILTER
 // select * from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -495,6 +503,7 @@ begin
 end ;
 
 rows: 1218
+*/
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT
@@ -570,6 +579,8 @@ end ;
 
 rows : 1497
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER WITH LEFT FILTER & PROJECT
 // select c_custkey, c_nationkey from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -633,6 +644,7 @@ begin
 end ;
 
 rows : 1497
+*/
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT & POST PROJECT
@@ -702,6 +714,8 @@ contains rows :
   (148,148,11)
   (149,149,19)
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER WITH LEFT FILTER & PROJECT & POST PROJECT
 // select c_custkey, c_nationkey from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -767,6 +781,7 @@ end ;
 contains rows :
   (148,148,11)
   (149,149,19)
+*/
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER & PROJECT
@@ -809,6 +824,8 @@ contains rows:
  (149,299,149)
  (149,149,149)
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER WITH RIGHT FILTER & PROJECT
 // select c_custkey, o_orderkey, o_custkey from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -839,7 +856,7 @@ begin
 end ;
 
 rows: 1497
-
+*/
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER & PROJECT
 // select c_custkey, o_orderkey, o_custkey from customer inner join orders on customer.c_custkey = orders.o_custkey
@@ -872,6 +889,8 @@ end ;
 
 rows: 1218
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER AND LEFT and RIGHT FILTER & PROJECT
 // select c_custkey, o_orderkey, o_custkey from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -903,6 +922,7 @@ begin
 end ;
 
 rows: 1218
+*/
 
 pipeline indexJoinTest
 begin
