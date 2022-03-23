@@ -21,6 +21,7 @@ begin
   stage stageA on origin :
       start
     | pulse once
+    | echo "subPipeTest"
     | debug all
     | sink
     | stageA

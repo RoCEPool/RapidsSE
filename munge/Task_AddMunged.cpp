@@ -36415,6 +36415,7 @@ void Task::vAddMunged(Task* )
     "  \"OP_eatAll.sen\"               include\n"
     "  \"OP_eatSome.sen\"              include\n"
     "  \"OP_eachPath.sen\"             include\n"
+    "  \"OP_echo.sen\"                 include\n"
     "  \"OP_emptyLoop.sen\"            include\n"
     "  \"OP_etcTest.sen\"              include\n"
     "  \"OP_exemplar.sen\"             include\n"
@@ -43639,9 +43640,72 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [391] OP_nodeHeartbeat.sen
+  // munge of [391] OP_echo.sen
 
   gszaMungedText[391] =
+    "\" munged OP_echo.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_echo.sen -- Operator echo                                               */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP_echo.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for ZK_M_START ...                                                 */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": echo_startMarker \\handler\n"
+    "\n"
+    "  <string> .\n"
+    "  \n"
+    "  ZK_M_START_handler\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* echo request                                                               */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": echo_op \\operator\n"
+    "\n"
+    "  _lu_initialise_\n"
+    "\n"
+    "  op__topology\n"
+    "\n"
+    "  find: echo_startMarker  ZK_M_START   [op].handler!\n"
+    "\n"
+    "  op__loop\n"
+    "\n"
+    "  _lu_finalise_\n"
+    "  \n"
+    "  op__retires\n"
+    "  \n"
+    "  HAZARD\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "cmdSyntax: echo :: echo <string> ;\n"
+    "\n"
+    ": echo_cmdTags _cmdTags tagCopy: op_tags\n"
+    "  tags{\n"
+    "    <cmdDesc> = \"--desc for op--\"\n"
+    "    <opEntry> = \"echo_op\"\n"
+    "  }\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 391 CONSTANT OP_echo.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [392] OP_nodeHeartbeat.sen
+
+  gszaMungedText[392] =
     "\" munged OP_nodeHeartbeat.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_nodeHeartbeat.sen -- Operator node heartbeat                            */\n"
@@ -43721,13 +43785,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 391 CONSTANT OP_nodeHeartbeat.sen "_Stz;
+  szSubScriptDef = " 392 CONSTANT OP_nodeHeartbeat.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [392] OP_inflateRows.sen
+  // munge of [393] OP_inflateRows.sen
 
-  gszaMungedText[392] =
+  gszaMungedText[393] =
     "\" munged OP_inflateRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_inflateRows.sen -- inflate rows from rowBuffer into same                */\n"
@@ -43820,7 +43884,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 392 CONSTANT OP_inflateRows.sen "_Stz;
+  szSubScriptDef = " 393 CONSTANT OP_inflateRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 
