@@ -391,28 +391,14 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ???? enqueue start-marker to start op to execute the pipeline job
+  // enqueue start-marker to start op to execute the pipeline job
 
-  Pipeline[] to SubPipeline[]                                         // EXPERIMENT 
-  
-  [task].grabLock
-
-    SubPipeline[].opsOnNode@ to nAcks
-
-    nAcks if
-      nAcks [task].acksRemaining!
-    
-        SubPipeline[].enqueueStart? if
-    
-        Marker[].newStartMarker
-        Marker[]\clear SubPipeline[].op0@ op.enqueOperand
-      then
-      [task].wait
-    else
-      [task].dropLock
-    then
+  Pipeline[] to SubPipeline[]
+   
+  SubPipeline:call
 
   nullptr to SubPipeline[]
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has executed

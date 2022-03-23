@@ -9,8 +9,32 @@
 /*----------------------------------------------------------------------------*/
 : exeSubPipe_StartMarker \handler
 
-  PipeIn[].pipeOut
-  true 
+  0 locals| nAcks |
+
+  // <name> [subPlineOfOp].find to SubPipeline[]
+  
+  SubPipeline[].opsOnNode@ to nAcks
+
+  [task].grabLock
+
+    SubPipeline[].opsOnNode@ to nAcks
+
+    nAcks if
+      nAcks [task].acksRemaining!
+
+      SubPipeline[].enqueueStart? if
+
+        Marker[].newStartMarker
+        Marker[]\clear SubPipeline[].op0@ op.enqueOperand
+      then
+      [task].wait
+    else
+      [task].dropLock
+    then
+
+  nullptr to SubPipeline[]
+
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/

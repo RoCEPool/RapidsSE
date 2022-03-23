@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* pipeline__words.sen -- Pipeline related words                              */
+/*============================================================================*/
+
+" pipeline__words.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* call the sub-pipeline pointed to by the SubPipeline[] register             */
+/*----------------------------------------------------------------------------*/
+: SubPipeline:call
+
+  SubPipeline[] assert
+  
+  SubPipeline[].opsOnNode@ locals| nAcks |
+
+  [task].grabLock
+
+    SubPipeline[].opsOnNode@ to nAcks
+
+    nAcks if
+      nAcks [task].acksRemaining!
+
+      SubPipeline[].enqueueStart? if
+
+        Marker[].newStartMarker
+        Marker[]\clear SubPipeline[].op0@ op.enqueOperand
+      then
+      [task].wait
+    else
+      [task].dropLock
+    then
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
