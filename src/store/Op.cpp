@@ -69,7 +69,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pOpSpec   = pOpSpec;
   m_pStream   = pStream;
   m_p_PipelineOfOp = pStream->pPipeline();
-  m_p_SubPipelineOfOp = m_p_PipelineOfOp;
+  m_p_SubPipeOfOp = m_p_PipelineOfOp;
   
   // -- -- -- -- -- --
 
@@ -1823,11 +1823,11 @@ eYS Op::eStreamTopology_op(void)
 /*----------------------------------------------------------------------------*/
 /* get sub-pipeline of op                                                     */
 /*----------------------------------------------------------------------------*/
-Pipeline* Op::pSubPipelineOfOp(void)
+Pipeline* Op::pSubPipeOfOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_p_SubPipelineOfOp;
+  return m_p_SubPipeOfOp;
 }
 
 /*----------------------------------------------------------------------------*/

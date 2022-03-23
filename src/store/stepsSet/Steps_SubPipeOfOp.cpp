@@ -62,7 +62,7 @@ void Step::vSubPipeOfOpAddAccum(void)
 {
   ENTRY();
   
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   
   i8 i_Accum = m_pDataStack->iPopInt(__func__);
   
@@ -80,7 +80,7 @@ void Step::vSubPipeOfOpCancelledFetch(void)
 {
   ENTRY();
   
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   
   m_pDataStack->vPushInt(pSubPipelineOfOp->bCancelled());
   
@@ -94,7 +94,7 @@ void Step::vSubPipeOfOpCancelledStore(void)
 {
   ENTRY();
 
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   
   pSubPipelineOfOp->vCancelled(m_pDataStack->iPopInt(__func__));
   
@@ -142,7 +142,7 @@ void Step::vSubPipeOfOpDropDebugLock(void)
 {
   ENTRY();
   
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   
   pSubPipelineOfOp->vDropDebugLock();
   
@@ -156,7 +156,7 @@ void Step::vSubPipeOfOpEarlyExitFetch(void)
 {
   ENTRY();
 
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
 
   // return if pipeline has been errored
   m_pDataStack->vPushInt(pSubPipelineOfOp->bEarlyExit());
@@ -171,7 +171,7 @@ void Step::vSubPipeOfOpEarlyExitStore(void)
 {
   ENTRY();
 
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
 
   pSubPipelineOfOp->vEarlyExit(m_pDataStack->iPopIntBol(__func__));
 
@@ -185,7 +185,7 @@ void Step::vSubPipeOfOpErroredFetch(void)
 {
   ENTRY();
   
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   
   // return if pipeline has been errored
   m_pDataStack->vPushInt(pSubPipelineOfOp->bErrored());
@@ -200,7 +200,7 @@ void Step::vSubPipeOfOpErroredStore(void)
 {
   ENTRY();
   
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   
   pSubPipelineOfOp->vErrored(m_pDataStack->iPopBol(__func__));
   
@@ -215,7 +215,7 @@ void Step::vSubPipeOfOpGet(void)
   ENTRY();
   
   if (m_pOp) {
-    Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+    Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
     m_pDataStack->vPushPtr(pSubPipelineOfOp);
   }
   else {
@@ -232,7 +232,7 @@ void Step::vSubPipeOfOpGetAccum(void)
 {
   ENTRY();
   
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   
   i8 i_Accum = m_pDataStack->iPopInt(__func__);
   
@@ -250,7 +250,7 @@ void Step::vSubPipeOfOpGrabDebugLock(void)
 {
   ENTRY();
   
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   
   pSubPipelineOfOp->vGrabDebugLock();
   
@@ -264,7 +264,7 @@ void Step::vSubPipeOfOpPulsedFetch(void)
 {
   ENTRY();
   
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   
   // return if pipeline has been pulsed
   m_pDataStack->vPushInt(pSubPipelineOfOp->bPulsed());
@@ -279,7 +279,7 @@ void Step::vSubPipeOfOpPulsedStore(void)
 {
   ENTRY();
   
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   
   pSubPipelineOfOp->vPulsed(m_pDataStack->iPopBol(__func__));
   
@@ -293,7 +293,7 @@ void Step::vSubPipeOfOpOp0Fetch(void)
 {
   ENTRY();
   
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
 
   Op* pOp0 = pSubPipelineOfOp->pOp0();
     
@@ -309,7 +309,7 @@ void Step::vSubPipeOfOpOpsOnNodeFetch(void)
 {
   ENTRY();
     
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
 
   i8 iThisNode = AM::pGrid()->iThisNodeNo();
 
@@ -332,7 +332,7 @@ void Step::vSubPipeOfOpSpawnOpTasks(void)
     vTraceM("Spawning operator jobs for this node %lld\n"_Stz,iThisNodeNo);
   }
   
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   
   pSubPipelineOfOp->vSpawnOpTasks();
   
@@ -346,7 +346,7 @@ void Step::vSubPipeOfOpStartPipeline(void)
 {
   ENTRY();
   
-  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipelineOfOp();
+  Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   Pipework* pFormWork = pSubPipelineOfOp->pPipework();
 
   Stage*    pStage0   = pFormWork->pGet(0);

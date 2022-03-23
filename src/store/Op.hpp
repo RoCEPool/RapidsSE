@@ -45,9 +45,9 @@ namespace STORE
     i8          m_i_Op;     // is [m_i_Op] in m_pStream
 
     // -- refers to
-    SMA<OpSpec,CN_OPSPEC>      m_pOpSpec;   // specification of this operator
-    SMA<Pipeline,CN_PIPELINE>  m_p_PipelineOfOp;    // which pipeline
-    SMA<Pipeline,CN_PIPELINE>  m_p_SubPipelineOfOp; // which sub-pipeline
+    SMA<OpSpec,CN_OPSPEC>      m_pOpSpec;  // specification of this operator
+    SMA<Pipeline,CN_PIPELINE>  m_p_PipelineOfOp;  // which pipeline
+    SMA<Pipeline,CN_PIPELINE>  m_p_SubPipeOfOp;   // which sub-pipeline
 
     // -- executed by
     SMA<Task,CN_TASK>      m_pTask;    // which task is currenty executing this op
@@ -203,7 +203,7 @@ namespace STORE
     Stz* szStageName(void);
     Stream* pStream(void);
     eYS  eStreamTopology_op(void);
-    Pipeline* pSubPipelineOfOp(void);
+    Pipeline* pSubPipeOfOp(void);
 
     Task* pTask(void);
     void vTask(Task* pTask);
