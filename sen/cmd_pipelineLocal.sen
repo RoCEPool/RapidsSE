@@ -109,7 +109,7 @@
     nAcks if
       nAcks [task].acksRemaining!
     
-      Pipeline[].startPipeline? if
+      Pipeline[].enqueueStart? if
     
         Marker[].newStartMarker
         Marker[]\clear Pipeline[].op0@ op.enqueOperand

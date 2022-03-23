@@ -154,10 +154,8 @@
 
 
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
-  // pipeline is beginning   / distribute this job as the distributed pipeline//
+  // pipeline is beginning   / broadcast this job as the distributed pipeline //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-
-  // distribute begin
 
   [job].error@ not if
     // + compiled without error..
@@ -165,7 +163,7 @@
     "pipeline:begin" [job].entryPoint!
     
     [task].grabLock
-      [job] job:distribute
+      [job] job:broadcast
     [task].wait
 
     [job].tscBegun
@@ -174,19 +172,17 @@
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
   // pipeline has begun      / broadcast a job to schedule pipeline to execute//
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  
-  // distribute execute
-  
+   
   [job].error@ not if
 
-    // "ORIGIN: distribute execute" .
+    // "ORIGIN: broadcast execute" .
 
     [job].tscExecuting
 
     [job] job_Execute::new to pJob_Execute
 
     [task].grabLock
-      pJob_Execute job:distribute
+      pJob_Execute job:broadcast
     [task].wait
 
     [job].tscExecuted
@@ -203,14 +199,14 @@
 
   [job].error@ not if
 
-    // "ORIGIN: distribute end" .
+    // "ORIGIN: broadcast end" .
     
     [job].tscEnding
     
     [job] job_End::new to pJob_End
 
     [task].grabLock
-      pJob_End job:distribute
+      pJob_End job:broadcast
     [task].wait
 
     [job].tscEnded
@@ -396,7 +392,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ???? enqueue start-marker to start op to execute the pipeline job
-  
+
   [task].grabLock
 
     Pipeline[].opsOnNode@ to nAcks
@@ -404,7 +400,7 @@
     nAcks if
       nAcks [task].acksRemaining!
     
-      Pipeline[].startPipeline? if
+      Pipeline[].enqueueStart? if
     
         Marker[].newStartMarker
         Marker[]\clear Pipeline[].op0@ op.enqueOperand

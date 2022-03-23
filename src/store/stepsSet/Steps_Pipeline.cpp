@@ -35,7 +35,8 @@
 void Step::vAddSteps_Pipeline(void)
 {
   vAddStep("Pipeline[]"_Stz,                &Step::vPipelineGet);
-  
+  vAddStep("Pipeline[].set"_Stz,            &Step::vPipelineSet);
+
   vAddStep("Pipeline[].addAccum"_Stz,       &Step::vPipelineAddAccum);
   vAddStep("Pipeline[].cancelled@"_Stz,     &Step::vPipelineCancelledFetch);
   vAddStep("Pipeline[].cancelled!"_Stz,     &Step::vPipelineCancelledStore);
@@ -43,6 +44,7 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline[].dropDebugLock"_Stz,  &Step::vPipelineDropDebugLock);
   vAddStep("Pipeline[].earlyExit@"_Stz,     &Step::vPipelineEarlyExitFetch);
   vAddStep("Pipeline[].earlyExit!"_Stz,     &Step::vPipelineEarlyExitStore);
+  vAddStep("Pipeline[].enqueueStart?"_Stz,  &Step::vPipelineEnqueueStart);
   vAddStep("Pipeline[].errored@"_Stz,       &Step::vPipelineErroredFetch);
   vAddStep("Pipeline[].errored!"_Stz,       &Step::vPipelineErroredStore);
   vAddStep("Pipeline[].getAccum"_Stz,       &Step::vPipelineGetAccum);
@@ -52,7 +54,6 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline[].pulsed@"_Stz,        &Step::vPipelinePulsedFetch);
   vAddStep("Pipeline[].pulsed!"_Stz,        &Step::vPipelinePulsedStore);
   vAddStep("Pipeline[].spawnOpTasks"_Stz,   &Step::vPipelineSpawnOpTasks);
-  vAddStep("Pipeline[].startPipeline?"_Stz, &Step::vPipelineStartPipeline);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,6 +164,28 @@ void Step::vPipelineEarlyExitStore(void)
   ENTRY();
 
   m_pLogicUnit->m_xpPipeline->vEarlyExit(m_pDataStack->iPopIntBol(__func__));
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pipeline[].enqueueStart? -- test for issuing a start marker                */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineEnqueueStart(void)
+{
+  ENTRY();
+  
+  Pipework* pFormWork = m_pLogicUnit->m_xpPipeline->pPipework();
+
+  Stage*    pStage0   = pFormWork->pGet(0);
+
+  if (pStage0->bStartPipeline()) {
+    
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+  }
 
   EXIT();
 }
@@ -291,6 +314,19 @@ void Step::vPipelineOpsOnNodeFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Pipeline[].set -- set pipeline                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineSet(void)
+{
+  ENTRY();
+  
+  m_pLogicUnit->m_xpPipeline =
+    _pPipeline(m_pDataStack->pPopPtr(__func__));
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Pipeline[].spawnOpTasks -- spawn tasks for all ops of pipeline for this node*/
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineSpawnOpTasks(void)
@@ -303,28 +339,6 @@ void Step::vPipelineSpawnOpTasks(void)
   }
     
   m_pLogicUnit->m_xpPipeline->vSpawnOpTasks();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Pipeline[].startPipeline? -- test for issueing a start marker              */
-/*----------------------------------------------------------------------------*/
-void Step::vPipelineStartPipeline(void)
-{
-  ENTRY();
-  
-  Pipework* pFormWork = m_pLogicUnit->m_xpPipeline->pPipework();
-
-  Stage*    pStage0   = pFormWork->pGet(0);
-
-  if (pStage0->bStartPipeline()) {
-    
-    m_pDataStack->vPushInt(true);
-  }
-  else {
-    m_pDataStack->vPushInt(false);
-  }
 
   EXIT();
 }

@@ -52,7 +52,7 @@ void Step::vAddSteps_SubPipelineOfOp(void)
   vAddStep("[subPLineOfOp].pulsed@"_Stz,        &Step::vSubPipelineOfOpPulsedFetch);
   vAddStep("[subPLineOfOp].pulsed!"_Stz,        &Step::vSubPipelineOfOpPulsedStore);
   vAddStep("[subPLineOfOp].spawnOpTasks"_Stz,   &Step::vSubPipelineOfOpSpawnOpTasks);
-  vAddStep("[subPLineOfOp].startPipeline?"_Stz, &Step::vSubPipelineOfOpStartPipeline);
+  vAddStep("[subPLineOfOp].enqueueStart?"_Stz, &Step::vSubPipelineOfOpStartPipeline);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -340,7 +340,7 @@ void Step::vSubPipelineOfOpSpawnOpTasks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [subPLineOfOp].startPipeline? -- test for issueing a start marker          */
+/* [subPLineOfOp].enqueueStart? -- test for issuing a start marker            */
 /*----------------------------------------------------------------------------*/
 void Step::vSubPipelineOfOpStartPipeline(void)
 {

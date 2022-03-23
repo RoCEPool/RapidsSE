@@ -1362,6 +1362,7 @@ public:
   void vPipelineDropDebugLock(void);
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
+  void vPipelineEnqueueStart(void);
   void vPipelineErroredStore(void);
   void vPipelineErroredFetch(void);
   void vPipelineGet(void);
@@ -1371,8 +1372,8 @@ public:
   void vPipelineOpsOnNodeFetch(void);
   void vPipelinePulsedFetch(void);
   void vPipelinePulsedStore(void);
+  void vPipelineSet(void);
   void vPipelineSpawnOpTasks(void);
-  void vPipelineStartPipeline(void);
 
   // pipelineInOp
   void vPipelineOfOpAddAccum(void);
@@ -1822,6 +1823,7 @@ public:
   void vSubPipelineDropDebugLock(void);
   void vSubPipelineEarlyExitFetch(void);
   void vSubPipelineEarlyExitStore(void);
+  void vSubPipelineEnqueueStart(void);
   void vSubPipelineErroredStore(void);
   void vSubPipelineErroredFetch(void);
   void vSubPipelineGet(void);
@@ -1831,8 +1833,8 @@ public:
   void vSubPipelineOpsOnNodeFetch(void);
   void vSubPipelinePulsedFetch(void);
   void vSubPipelinePulsedStore(void);
+  void vSubPipelineSet(void);
   void vSubPipelineSpawnOpTasks(void);
-  void vSubPipelineStartPipeline(void);
 
   // SubPipelineOfOp
   void vSubPipelineOfOpAddAccum(void);

@@ -369,7 +369,7 @@
 /*----------------------------------------------------------------------------*/
 /* distribute given job to all nodes                                          */
 /*----------------------------------------------------------------------------*/
-: job:distribute params| pJob |
+: job:broadcast params| pJob |
 
   0 locals| pNode |
   
