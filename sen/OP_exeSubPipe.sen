@@ -11,34 +11,17 @@
 
   0 locals| nAcks |
 
-  // <name> [subPlineOfOp].find to SubPipeline[]
+  // <subPipeNm> [subPlineOfOp].find to SubPipeline[]
   
-  SubPipeline[].opsOnNode@ to nAcks
-
-  [task].grabLock
-
-    SubPipeline[].opsOnNode@ to nAcks
-
-    nAcks if
-      nAcks [task].acksRemaining!
-
-      SubPipeline[].enqueueStart? if
-
-        Marker[].newStartMarker
-        Marker[]\clear SubPipeline[].op0@ op.enqueOperand
-      then
-      [task].wait
-    else
-      [task].dropLock
-    then
-
+  SubPipeline:call
+  
   nullptr to SubPipeline[]
 
   ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for execute sub-pipeline req                                       */
+/* execute sub-pipeline req                                                   */
 /*----------------------------------------------------------------------------*/
  : exeSubPipe_op \operator
 
@@ -60,9 +43,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: exeSubPipeline :: exeSubPipeline <subPipeNm> ;
+cmdSyntax: exeSubPipe :: exeSubPipe <subPipeNm> ;
 
-: exeSubPipeline_cmdTags _cmdTags tagCopy: op_tags
+: exeSubPipe_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
     <opEntry> = "exeSubPipe_op"
