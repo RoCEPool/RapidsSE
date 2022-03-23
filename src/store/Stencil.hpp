@@ -99,9 +99,9 @@ static const i8 C_MAX_SHAPES = 32;
     void vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                               Op* pHavingFilterOp, Stz* sHashExpr);
-    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Op* pHavingFilterOp);
-    void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp);
-    void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Op* pHavingFilterOp, Stz* sHashExpr);
+    void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp, Stz* sHashExpr);
+    void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp, Stz* sHashExpr);
 
     Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, bool bHasOrdAgg);

@@ -631,7 +631,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupEosPayload(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosProjectGby(pCombined, pStream, pOp, pHavingFilterOp);
+      vSketchEosProjectGby(pCombined, pStream, pOp, pHavingFilterOp, sHashExpr);
       bGeneratePotTub = false;
       bGenerateFun3 = false;
 
@@ -739,7 +739,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupEosPayload(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosSort(pCombined, pStream, pOp, pPostProjectOp);
+      vSketchEosSort(pCombined, pStream, pOp, pPostProjectOp, sHashExpr);
       bGeneratePotTub = false;
       bGenerateFun3 = false;
 
@@ -835,7 +835,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupEosPayload(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosTop(pCombined, pStream, pOp);
+      vSketchEosTop(pCombined, pStream, pOp, sHashExpr);
       bGeneratePotTub = false;
       bGenerateFun3 = false;
     }
@@ -1639,7 +1639,7 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for Project agg OP                                */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Op* pHavingFilterOp) {
+void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Op* pHavingFilterOp, Stz* sHashExpr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1693,9 +1693,9 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
   }
 
 
-//  if (pCombined->aCombinedT()->m_iHashRows)
-//    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
-//  else
+  if (pCombined->aCombinedT()->m_iHashRows)
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
+  else
     pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTub"_Stz, "L_AdvanceNextRow"_Stz);
 
   m_pShapeEOS->vCodeSynthB(pCodeSynth);
@@ -1712,7 +1712,7 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for sort OP                                       */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp) {
+void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp, Stz* sHashExpr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1791,10 +1791,10 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* 
   // payloadRow to Tub/Pot
   pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil, SR_NONE);
 
-  //  if (pCombined->aCombinedT()->m_iHashRows)
-//    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
-//  else
-  pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, "L_AddRowToTub"_Stz, "L_AdvanceNextRow"_Stz);
+  if (pCombined->aCombinedT()->m_iHashRows)
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
+  else
+    pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, "L_AddRowToTub"_Stz, "L_AdvanceNextRow"_Stz);
 
   if (pPostProjectOp)
     m_pShapeEOS->vCodeSynthC(pCodeSynth);
@@ -1813,7 +1813,7 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* 
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for top OP                                        */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp, Stz* sHashExpr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1853,10 +1853,10 @@ void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
   // payloadRow to Tub/Pot
   pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, SR_PL, SR_NONE);
 
-//  if (pCombined->aCombinedT()->m_iHashRows)
-//    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
-//  else
-  pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTub"_Stz, "L_AdvanceNextRow"_Stz);
+  if (pCombined->aCombinedT()->m_iHashRows)
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, "L_AddRowToTub"_Stz, "L_ReturnFinal"_Stz);
+  else
+    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTub"_Stz, "L_AdvanceNextRow"_Stz);
 
   m_pShapeEOS->vCodeSynthB(pCodeSynth);
 
