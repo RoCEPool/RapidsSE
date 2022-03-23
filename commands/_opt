@@ -21,7 +21,7 @@ begin
   stage stageA on origin :
       start
     | pulse once
-    | debug none
+    | debug all
     | sink
     | stageA
 end ;

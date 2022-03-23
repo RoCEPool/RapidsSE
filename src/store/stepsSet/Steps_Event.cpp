@@ -14,8 +14,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Event(void)
 {
-  vAddStep("event::handlerName"_Stz,  &Step::vEventHandlerName);
-  vAddStep("event::name"_Stz,         &Step::vEventName);
+  vAddStep("event::handlerName@"_Stz,  &Step::vEventHandlerName);
+  vAddStep("event::name@"_Stz,         &Step::vEventName);
 }
 
 /*----------------------------------------------------------------------------*/

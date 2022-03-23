@@ -78,9 +78,10 @@
 
   PipeIn[] locals| pOperand |
   
-  pOperand object.class@ class::name "DEBUG: %v" .printf
+  //pOperand object.class@ class::name "DEBUG: %v" .printf
   
-  //PipeIn[].kind [op].handler@ execute
+  PipeIn[].kind event::name@ "EVENT: %v" .printf
+  PipeIn[].kind event::handlerName@ find execute
 ;
 
 /*----------------------------------------------------------------------------*/
