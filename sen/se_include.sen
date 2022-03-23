@@ -151,6 +151,20 @@ cmd::fillOut_allCmds
 
 assert::stack_0
 
+procedure:
+procedureLocal subPipeTest
+begin
+  stage stageA on origin :
+      start
+    | pulse once
+    | echo "subPipeTest_procedure"
+    | debug all
+    | sink
+    | stageA
+end ;
+
+
+
 //............................................................................//
 //                            ...continues below...                           //
 //............................................................................//

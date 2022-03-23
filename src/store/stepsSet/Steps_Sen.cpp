@@ -33,7 +33,7 @@ void Step::vAddSteps_Sen(void)
   vAddStep("mungedText"_Stz,       &Step::vSenMungedText);
   vAddStep("nop"_Stz,              &Step::vSenNop);
   vAddStep("postpone"_Stz,         &Step::vSenPostpone,         true);
-  vAddStep("procedure:"_Stz,       &Step::vSenFind,             true);
+  vAddStep("procedure:"_Stz,       &Step::vSenProcedure,        true);
   vAddStep("reenter"_Stz,          &Step::vSenReenter);
   vAddStep("see"_Stz,              &Step::vSenSee,              true);
   vAddStep(";"_Stz,                &Step::vSenSemicolon,        true);
