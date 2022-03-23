@@ -50,6 +50,7 @@ HashMap::HashMap(bool bTrace, u8 uNoOfSlots)
   
   m_bTrace            = bTrace;
   m_uNoOfSlots = C_HASHMAP_SIZE;
+  m_uNoOfEntries = 0;
   for(u8 i = 0; i < m_uNoOfSlots; i++)
     m_paMap[i] = nullptr;
   
@@ -87,6 +88,19 @@ HashMap::~HashMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* print analysis of this hash map                                            */
+/*----------------------------------------------------------------------------*/
+void HashMap::vAnalysis(void)
+{
+  vTrace("HM: (with %llu buckets/slots and %llu total entries)\n"
+         "    Load Factor: %f\n"_Stz,
+
+         m_uNoOfSlots,
+         m_uNoOfEntries,
+         (d8)m_uNoOfEntries/m_uNoOfSlots);
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete a given key                                                         */
 /*----------------------------------------------------------------------------*/
 void HashMap::vDeleteKey(u8 uKey)
@@ -112,6 +126,8 @@ void HashMap::vDeleteKey(u8 uKey)
       {
         uPrevIter->m_pNext = uIter1->m_pNext;
         delete uIter1;
+        ASSERT(1 <= m_uNoOfEntries); //Assert before decrement since unsigned underflow could occur
+        m_uNoOfEntries--;
       }
     }
   }
@@ -164,6 +180,7 @@ void HashMap::vInsertAtFront(u8 uKey, i8 iValue)
 
   tmpSlot->m_pNext = m_paMap[uIndex];
   m_paMap[uIndex] = tmpSlot;
+  m_uNoOfEntries++;
 }
 
 /*----------------------------------------------------------------------------*/

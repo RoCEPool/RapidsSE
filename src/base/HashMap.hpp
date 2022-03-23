@@ -10,6 +10,7 @@ namespace BASE
   private:
     bool m_bTrace;
     u8 m_uNoOfSlots;// Total number of slots
+    u8 m_uNoOfEntries;
     HashMapSlot* m_paMap[C_HASHMAP_SIZE];
 
     // must be last
@@ -22,6 +23,7 @@ namespace BASE
     HashMap(bool bTrace=false, u8 uNoOfSlots=C_HASHMAP_SIZE);
     ~HashMap(void) noexcept(false);
 
+    void vAnalysis(void);
     void vDeleteKey(u8 uKey);
     bool bExists(u8 uKey);
     u8 uHashFunction(u8 uKey);

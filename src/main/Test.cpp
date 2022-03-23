@@ -181,6 +181,8 @@ void vTest2(void)
   pTestMap->vInsertAtFront(100011,40);
   ASSERT(40 == pTestMap->iValueAt(100011));
 
+  pTestMap->vAnalysis();
+
   delete pTestMap;
 }
 
