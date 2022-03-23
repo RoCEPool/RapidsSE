@@ -325,6 +325,126 @@ rows:
  (1130,182.00)
  (1064,183.00)
 
+pipeline Q3
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gj_ORDERS on all partitions :
+    scan Orders
+    | next
+
+  stage Gj_LINEITEM on all partitions :
+    indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+
+    | aggreg 2 expr groupby type INTEGER O_ORDERKEY
+       aggregates type DECIMAL as Revenue ) J1_L_DISCOUNT sum , type INTEGER as _orderkey $K1
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+    | sink
+    | first
+
+end ;
+
+rows: 1451
+
+pipeline Q3
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gj_ORDERS on all partitions :
+    scan Orders
+    | next
+
+  stage Gj_LINEITEM on all partitions :
+    indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+
+    | aggreg 2 expr groupby type INTEGER O_ORDERKEY
+       aggregates type DECIMAL as Revenue ) J1_L_DISCOUNT sum , type INTEGER as _orderkey $K1
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+    | sink
+    | first
+
+end ;
+
+contains rows:
+ (1.03,1494)
+ (2.09,1495)
+ (1.02,1496)
+ (1.06,1497)
+ (1.07,1498)
+ (2.15,1499)
+
+// TODO: top payload with BCD
+/*
+pipeline Q3
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gj_ORDERS on all partitions :
+    scan Orders
+    | next
+
+  stage Gj_LINEITEM on all partitions :
+    indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+
+    | aggreg 2 expr groupby type INTEGER O_ORDERKEY
+       aggregates type INTEGER as _orderkey $K1 , type DECIMAL as Revenue ) J1_L_DISCOUNT sum
+    | top 2 "TOP type DECIMAL Revenue" 10
+    | combined 0
+    | next
+
+stage Gj_LINEITEM on all nodes :
+    top 2 "TOP type DECIMAL Revenue" 10
+    | combined 0
+    | next
+
+stage Gj_LINEITEM on origin :
+    top 2 "TOP type DECIMAL Revenue" 10
+    | combined 0
+    | next
+
+  stage last on origin :
+    output
+    | sink
+    | first
+
+end ;
+
+rows:
+  ( 445,4.29)
+  ( 496,4.30)
+  ( 940,4.30)
+  ( 905,4.31)
+  ( 780,4.31)
+  ( 907,4.31)
+  ( 508,4.32)
+  (1380,4.32)
+  ( 393,4.33)
+  (  21,4.34)
+
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
