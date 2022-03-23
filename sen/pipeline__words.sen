@@ -11,9 +11,12 @@
 
   SubPipeline[] assert
   
+  [task].isLocked? not assert
+  
   SubPipeline[].opsOnNode@ locals| nAcks |
 
   [task].grabLock
+    [task].isLocked? assert
 
     SubPipeline[].opsOnNode@ to nAcks
 
@@ -29,6 +32,8 @@
     else
       [task].dropLock
     then
+    
+  [task].isLocked? not assert
 ;
 
 /*============================================================================*/
