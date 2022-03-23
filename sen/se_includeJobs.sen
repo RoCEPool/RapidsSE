@@ -19,6 +19,7 @@ assert::stack_0
 
   "cmd_pipeline.sen"        include
   "cmd_pipelineLocal.sen"   include
+  "cmd_pipeSee.sen"         include
 
 /*============================================================================*/
 /* end                                                                        */
