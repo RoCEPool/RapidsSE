@@ -186,22 +186,24 @@ void vTest2(void)
 //  //Delete unknown key when NoOfEntries == 0
 
   //Key and Value are Object*
-  HashMap* pTestMap = new HashMap();
+//  HashMap* pTestMap = new HashMap();
+//
+//  int a = 10;
+//  pTestMap->vInsertAtFront((Object*)&a, (Object*)&a);
+//
+//  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
+//
+//
+//
+//
+//
+//
+//
+//  pTestMap->vAnalysis();
+//
+//  delete pTestMap;
 
-  int a = 10;
-  pTestMap->vInsertAtFront((Object*)&a, (Object*)&a);
-
-  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
-
-
-
-
-
-
-
-  pTestMap->vAnalysis();
-
-  delete pTestMap;
+  AM::pHashMap()->vAnalysis();
 }
 
 /*----------------------------------------------------------------------------*/

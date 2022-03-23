@@ -51,6 +51,10 @@ RowBuffer::RowBuffer(void)
   m_oDecider.vSetRemaining(1);
   
   AM::METRICS::vDerefMetrics((i8)this,CN_CRWBUFFER,DR_NEW);
+
+#ifdef WITH_HASHMAP
+  AM::pHashMap()->vInsertAtFront((Object*)this, (Object*)this);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,6 +75,10 @@ RowBuffer::RowBuffer(eCN eClassNo)
   
   if (CN_CRWBUFFER == eClassNo)
     AM::METRICS::vDerefMetrics((i8)this,CN_CRWBUFFER,DR_NEW);
+
+#ifdef WITH_HASHMAP
+  AM::pHashMap()->vInsertAtFront((Object*)this, (Object*)this);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,6 +101,10 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
   
   if (CN_ROWBUFFER == eClassNo)
     AM::METRICS::vDerefMetrics((i8)this,CN_ROWBUFFER,DR_NEW);
+
+#ifdef WITH_HASHMAP
+  AM::pHashMap()->vInsertAtFront((Object*)this, (Object*)this);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,6 +123,9 @@ RowBuffer::~RowBuffer(void) noexcept(false)
   if (CN_ROWBUFFER == eGetClassNo())
     AM::METRICS::vDerefMetrics((i8)this,CN_ROWBUFFER,DR_NEW);
 
+#ifdef WITH_HASHMAP
+  AM::pHashMap()->vDeleteKey((Object*)this);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
