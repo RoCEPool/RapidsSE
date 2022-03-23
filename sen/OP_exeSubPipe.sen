@@ -13,7 +13,7 @@
 
   // <subPipeNm> [subPlineOfOp].find to SubPipeline[]
   
-  SubPipeline:call
+  subPipe:exe
   
   nullptr to SubPipeline[]
 
