@@ -460,6 +460,10 @@ public:
   void vErrorCodeGet(void);
   void vErrorCodeSet(void);
 
+  // event
+  void vEventHandlerName(void);
+  void vEventName(void);
+
   // extractRow
   void vExtractRowCreate(void);
   void vExtractRowDelete(void);

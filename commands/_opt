@@ -16,9 +16,24 @@ load part "<tpch_dir>/part.<suffix>" ;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
+pipeline subPipeTest
+begin
+  stage stageA on origin :
+      start
+    | pulse once
+    | debug none
+    | sink
+    | stageA
+end ;
+
+
 optimiserLvl 2;
 
 //tag <optimise> = 1 ;
+
+
+
+
 
 /*
 select   sum(P_PARTKEY)

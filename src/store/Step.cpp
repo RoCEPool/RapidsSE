@@ -90,6 +90,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Env();
   Step::vAddSteps_ErrorCode();
   Step::vAddSteps_ErrorMarker();
+  Step::vAddSteps_Event();
   Step::vAddSteps_Executable();
   Step::vAddSteps_ExprEval();
 
