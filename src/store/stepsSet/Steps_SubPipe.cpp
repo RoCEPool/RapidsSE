@@ -151,8 +151,10 @@ void Step::vSubPipeDump(void)
 {
   ENTRY();
       
-  m_pLogicUnit->m_xpSubPipe->vDump();
+  SP_Pipeline spSubPipe;
   
+  vTrace("%s\n"_Stz,spSubPipe.sz(* m_pLogicUnit->m_xpSubPipe,true));
+
   EXIT();
 }
 

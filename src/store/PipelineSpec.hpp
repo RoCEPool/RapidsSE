@@ -42,16 +42,15 @@ namespace STORE
    ~PipelineSpec(void) noexcept(false);
   
     bool bCompile(void);
-    PipeworkSpec* pPipeworkSpec(void);
+    void vDump(void);
     TagSet* pJobTags(void);
     Stz* szPipelineNm(void);
+    PipeworkSpec* pPipeworkSpec(void);
     i8 nStages(void);
     StageSpec* pStageSpec(i8 i_Stage);
     SubPipelines* pSubPipelines(void);
 
   private:
-
-
     Footer* aFooter(void);
   };
 

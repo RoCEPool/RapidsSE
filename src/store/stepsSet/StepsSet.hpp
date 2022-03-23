@@ -1403,6 +1403,7 @@ public:
   // pipelinespec
 
   void vPipelineSpecDelete(void);
+  void vPipelineSpecDump(void);
   void vPipelineSpecGet(void);
   void vPipelineSpecOptimisable(void);
   void vPipelineSpecSet(void);

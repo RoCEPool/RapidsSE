@@ -307,6 +307,9 @@
   // create pipeline from spec and spawn tasks for ops
   
   PipelineSpec[] Pipeline[].create
+  
+  // Pipeline[].dump
+  
   Pipeline[].spawnOpTasks
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -395,6 +398,8 @@
 
   Pipeline[] to SubPipe[]
    
+  // SubPipe[].dump
+     
   subPipe:exe
 
   nullptr to SubPipe[]

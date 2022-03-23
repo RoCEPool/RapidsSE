@@ -151,8 +151,10 @@ void Step::vPipelineDump(void)
 {
   ENTRY();
       
-  m_pLogicUnit->m_xpPipeline->vDump(true);
-
+  SP_Pipeline spPipeline;
+  
+  vTrace("%s\n"_Stz,spPipeline.sz(* m_pLogicUnit->m_xpPipeline,true));
+         
   EXIT();
 }
 

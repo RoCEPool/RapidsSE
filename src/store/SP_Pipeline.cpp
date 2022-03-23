@@ -95,11 +95,11 @@ Stz* SP_Pipeline::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Pipeline::sz(Pipeline* pPipeline)
+Stz* SP_Pipeline::sz(Pipeline* pPipeline, bool bDescend)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  vPipeline(pPipeline);
+  vPipeline(pPipeline,bDescend);
   
   return (Stz*) &m_caResult[0];
 }
