@@ -150,6 +150,15 @@ void Pipeline::vDropDebugLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump this pipeline (and optionally all subpipes recursively)               */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vDump(bool bRecursive)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* set early exit                                                             */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vEarlyExit(bool bEarlyExit)

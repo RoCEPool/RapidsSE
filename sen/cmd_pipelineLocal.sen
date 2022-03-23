@@ -150,11 +150,8 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
 
 : pipelineLocal_cmdTags _cmdTags tagCopy: localJob_tags
   tags{
-    <cmdDesc>  = "--desc for job--"
-
-    <jobKind>  = JK_LOCAL
+    <cmdDesc>    = "--desc for job--"
     //<ddlLock>  = DL_GRAB_READ
-        
     <entryPoint> = "pipelineLocal::local"
 
   }

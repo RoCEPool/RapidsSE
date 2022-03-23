@@ -42,6 +42,7 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline[].cancelled!"_Stz,     &Step::vPipelineCancelledStore);
   vAddStep("Pipeline[].create"_Stz,         &Step::vPipelineCreate);
   vAddStep("Pipeline[].dropDebugLock"_Stz,  &Step::vPipelineDropDebugLock);
+  vAddStep("Pipeline[].dump"_Stz,           &Step::vPipelineDump);
   vAddStep("Pipeline[].earlyExit@"_Stz,     &Step::vPipelineEarlyExitFetch);
   vAddStep("Pipeline[].earlyExit!"_Stz,     &Step::vPipelineEarlyExitStore);
   vAddStep("Pipeline[].enqueueStart?"_Stz,  &Step::vPipelineEnqueueStart);
@@ -140,6 +141,18 @@ void Step::vPipelineDropDebugLock(void)
     
   m_pLogicUnit->m_xpPipeline->vDropDebugLock();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pipeline[].dump -- dump this pipelines and its subpipelines                */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineDump(void)
+{
+  ENTRY();
+      
+  m_pLogicUnit->m_xpPipeline->vDump(true);
+
   EXIT();
 }
 

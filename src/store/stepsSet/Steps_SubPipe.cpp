@@ -42,6 +42,7 @@ void Step::vAddSteps_SubPipe(void)
   vAddStep("SubPipe[].cancelled!"_Stz,     &Step::vSubPipeCancelledStore);
   vAddStep("SubPipe[].create"_Stz,         &Step::vSubPipeCreate);
   vAddStep("SubPipe[].dropDebugLock"_Stz,  &Step::vSubPipeDropDebugLock);
+  vAddStep("SubPipe[].dump"_Stz,           &Step::vSubPipeDump);
   vAddStep("SubPipe[].earlyExit@"_Stz,     &Step::vSubPipeEarlyExitFetch);
   vAddStep("SubPipe[].earlyExit!"_Stz,     &Step::vSubPipeEarlyExitStore);
   vAddStep("SubPipe[].enqueueStart?"_Stz,  &Step::vSubPipeEnqueueStart);
@@ -139,6 +140,18 @@ void Step::vSubPipeDropDebugLock(void)
   ENTRY();
     
   m_pLogicUnit->m_xpSubPipe->vDropDebugLock();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* SubPipe[].dump -- dump this subpipeline only                               */
+/*----------------------------------------------------------------------------*/
+void Step::vSubPipeDump(void)
+{
+  ENTRY();
+      
+  m_pLogicUnit->m_xpSubPipe->vDump();
   
   EXIT();
 }

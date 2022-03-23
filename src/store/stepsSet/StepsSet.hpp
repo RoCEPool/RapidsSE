@@ -1364,6 +1364,7 @@ public:
   void vPipelineCancelledStore(void);
   void vPipelineCreate(void);
   void vPipelineDropDebugLock(void);
+  void vPipelineDump(void);
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
   void vPipelineEnqueueStart(void);
@@ -1826,6 +1827,7 @@ public:
   void vSubPipeCancelledStore(void);
   void vSubPipeCreate(void);
   void vSubPipeDropDebugLock(void);
+  void vSubPipeDump(void);
   void vSubPipeEarlyExitFetch(void);
   void vSubPipeEarlyExitStore(void);
   void vSubPipeEnqueueStart(void);

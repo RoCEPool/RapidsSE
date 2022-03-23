@@ -63,6 +63,7 @@ namespace STORE
     void vCancelled(bool bCancelled);
     bool bCancelled(void);
     void vDropDebugLock(void);
+    void vDump(bool bRecursive=true);
     bool bEarlyExit(void);
     void vEarlyExit(bool bEarlyExit);
     bool bErrored(void);
