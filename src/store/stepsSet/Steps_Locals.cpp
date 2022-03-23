@@ -491,8 +491,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("SubPipeline[]"_Stz)) {
-    pCurrentWord->vEncodeCall("SubPipeline[].set"_Stz);
+  else if (szTerm->bSame("SubPipe[]"_Stz)) {
+    pCurrentWord->vEncodeCall("SubPipe[].set"_Stz);
     EXIT();
     return;
   }

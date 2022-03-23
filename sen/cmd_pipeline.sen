@@ -30,11 +30,11 @@
   // mutable pipelineSpec, pipeline and subpipeline in logicUnit should be null
   PipelineSpec[] not assert
   Pipeline[]     not assert
-  SubPipeline[]  not assert
+  SubPipe[]  not assert
   
   // immutable op, subPLineOfOp and pipelineOfOp should be null
   [op]           not assert
-  [subPLineOfOp] not assert
+  [subPipeOfOp] not assert
   [pipelineOfOp] not assert
 
   // and so we start...
@@ -393,11 +393,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
 
-  Pipeline[] to SubPipeline[]
+  Pipeline[] to SubPipe[]
    
   subPipe:exe
 
-  nullptr to SubPipeline[]
+  nullptr to SubPipe[]
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -

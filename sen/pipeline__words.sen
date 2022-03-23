@@ -5,28 +5,28 @@
 " pipeline__words.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute the sub-pipeline pointed to by the SubPipeline[] register          */
+/* execute the sub-pipeline pointed to by the SubPipe[] register          */
 /*----------------------------------------------------------------------------*/
 : subPipe:exe
 
-  SubPipeline[] assert
+  SubPipe[] assert
   
   [task].isLocked? not assert
   
-  SubPipeline[].opsOnNode@ locals| nAcks |
+  SubPipe[].opsOnNode@ locals| nAcks |
 
   [task].grabLock
     [task].isLocked? assert
 
-    SubPipeline[].opsOnNode@ to nAcks
+    SubPipe[].opsOnNode@ to nAcks
 
     nAcks if
       nAcks [task].acksRemaining!
 
-      SubPipeline[].enqueueStart? if
+      SubPipe[].enqueueStart? if
 
         Marker[].newStartMarker
-        Marker[]\clear SubPipeline[].op0@ op.enqueOperand
+        Marker[]\clear SubPipe[].op0@ op.enqueOperand
       then
       [task].wait
     else
