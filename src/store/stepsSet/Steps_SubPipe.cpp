@@ -67,7 +67,7 @@ void Step::vSubPipeAddAccum(void)
   
   i8 iValue  = m_pDataStack->iPopInt(__func__);
   
-  m_pLogicUnit->m_xpSubPipeline->vAddAccum(i_Accum,iValue);
+  m_pLogicUnit->m_xpSubPipe->vAddAccum(i_Accum,iValue);
   
   EXIT();
 }
@@ -80,7 +80,7 @@ void Step::vSubPipeCancelledFetch(void)
   ENTRY();
   
   // return if pipeline has been cancelled
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSubPipeline->bCancelled());
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSubPipe->bCancelled());
   
   EXIT();
 }
@@ -92,7 +92,7 @@ void Step::vSubPipeCancelledStore(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpSubPipeline->vCancelled(m_pDataStack->iPopInt(__func__));
+  m_pLogicUnit->m_xpSubPipe->vCancelled(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
@@ -116,7 +116,7 @@ void Step::vSubPipeCreate(void)
   Pipeline* pSubPipeline =
     new Pipeline(m_pJob,pPipelineSpec,m_pJob->iOriginatorNode());
   
-  m_pLogicUnit->m_xpSubPipeline = pSubPipeline;
+  m_pLogicUnit->m_xpSubPipe = pSubPipeline;
     
   // dump pipeline
   
@@ -138,7 +138,7 @@ void Step::vSubPipeDropDebugLock(void)
 {
   ENTRY();
     
-  m_pLogicUnit->m_xpSubPipeline->vDropDebugLock();
+  m_pLogicUnit->m_xpSubPipe->vDropDebugLock();
   
   EXIT();
 }
@@ -151,7 +151,7 @@ void Step::vSubPipeEarlyExitFetch(void)
   ENTRY();
 
   // return if pipeline has been errored
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSubPipeline->bEarlyExit());
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSubPipe->bEarlyExit());
 
   EXIT();
 }
@@ -163,7 +163,7 @@ void Step::vSubPipeEarlyExitStore(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_xpSubPipeline->vEarlyExit(m_pDataStack->iPopIntBol(__func__));
+  m_pLogicUnit->m_xpSubPipe->vEarlyExit(m_pDataStack->iPopIntBol(__func__));
 
   EXIT();
 }
@@ -175,7 +175,7 @@ void Step::vSubPipeEnqueueStart(void)
 {
   ENTRY();
   
-  Pipework* pFormWork = m_pLogicUnit->m_xpSubPipeline->pPipework();
+  Pipework* pFormWork = m_pLogicUnit->m_xpSubPipe->pPipework();
 
   Stage*    pStage0   = pFormWork->pGet(0);
 
@@ -198,7 +198,7 @@ void Step::vSubPipeErroredFetch(void)
   ENTRY();
     
   // return if pipeline has been errored
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSubPipeline->bErrored());
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSubPipe->bErrored());
   
   EXIT();
 }
@@ -210,7 +210,7 @@ void Step::vSubPipeErroredStore(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpSubPipeline->vErrored(m_pDataStack->iPopBol(__func__));
+  m_pLogicUnit->m_xpSubPipe->vErrored(m_pDataStack->iPopBol(__func__));
   
   EXIT();
 }
@@ -222,10 +222,10 @@ void Step::vSubPipeGet(void)
 {
   ENTRY();
    
-  if (m_pLogicUnit->m_xpSubPipeline.bIsNull())
+  if (m_pLogicUnit->m_xpSubPipe.bIsNull())
     m_pDataStack->vPushPtr(nullptr);
   else
-    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpSubPipeline);
+    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpSubPipe);
 
   EXIT();
 }
@@ -239,7 +239,7 @@ void Step::vSubPipeGetAccum(void)
    
   i8 i_Accum = m_pDataStack->iPopInt(__func__);
   
-  i8 iValue = m_pLogicUnit->m_xpSubPipeline->iGetAccum(i_Accum);
+  i8 iValue = m_pLogicUnit->m_xpSubPipe->iGetAccum(i_Accum);
   
   m_pDataStack->vPushInt(iValue);
   
@@ -253,7 +253,7 @@ void Step::vSubPipeGrabDebugLock(void)
 {
   ENTRY();
     
-  m_pLogicUnit->m_xpSubPipeline->vGrabDebugLock();
+  m_pLogicUnit->m_xpSubPipe->vGrabDebugLock();
   
   EXIT();
 }
@@ -266,7 +266,7 @@ void Step::vSubPipePulsedFetch(void)
   ENTRY();
     
   // return if pipeline has been pulsed
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSubPipeline->bPulsed());
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpSubPipe->bPulsed());
 
   EXIT();
 }
@@ -278,7 +278,7 @@ void Step::vSubPipePulsedStore(void)
 {
   ENTRY();
     
-  m_pLogicUnit->m_xpSubPipeline->vPulsed(m_pDataStack->iPopBol(__func__));
+  m_pLogicUnit->m_xpSubPipe->vPulsed(m_pDataStack->iPopBol(__func__));
   
   EXIT();
 }
@@ -290,7 +290,7 @@ void Step::vSubPipeOp0Fetch(void)
 {
   ENTRY();
     
-  Op* pOp0 = m_pLogicUnit->m_xpSubPipeline->pOp0();
+  Op* pOp0 = m_pLogicUnit->m_xpSubPipe->pOp0();
     
   m_pDataStack->vPushPtr(pOp0);
 
@@ -306,7 +306,7 @@ void Step::vSubPipeOpsOnNodeFetch(void)
     
   i8 iThisNode = AM::pGrid()->iThisNodeNo();
 
-  i8 nOps = m_pLogicUnit->m_xpSubPipeline->nOpsOnNode(iThisNode);
+  i8 nOps = m_pLogicUnit->m_xpSubPipe->nOpsOnNode(iThisNode);
 
   m_pDataStack->vPushInt(nOps);
 
@@ -320,7 +320,7 @@ void Step::vSubPipeSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpSubPipeline =
+  m_pLogicUnit->m_xpSubPipe =
     _pPipeline(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
@@ -338,7 +338,7 @@ void Step::vSubPipeSpawnOpTasks(void)
     vTraceM("Spawning operator jobs for this node %lld\n"_Stz,iThisNodeNo);
   }
     
-  m_pLogicUnit->m_xpSubPipeline->vSpawnOpTasks();
+  m_pLogicUnit->m_xpSubPipe->vSpawnOpTasks();
   
   EXIT();
 }

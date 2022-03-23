@@ -170,7 +170,7 @@ LogicUnit::LogicUnit(void)
 ,      m_xpStreamSet(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMSET)
 , m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                 LR_STREAMSETTABLE)
 ,        m_xpSubCall(this,RF_REPAIR_DELETE,SubCall::vRepair,        LR_SUBCALL)
-,    m_xpSubPipeline(this,RF_NONE,         nullptr,                 LR_SUBPIPELINE)
+,    m_xpSubPipe(this,RF_NONE,         nullptr,                 LR_SUBPIPELINE)
 ,      m_xpSubReturn(this,RF_REPAIR_DELETE,SubReturn::vRepair,      LR_SUBRETURN)
 ,         m_xpSubset(this,RF_REPAIR_DELETE,Operand::vRepairList,    LR_SUBSET)
 
@@ -458,13 +458,13 @@ LogicUnit::~LogicUnit(void) noexcept(false)
     m_xpPipeline.vGuardedDeleteComponent(CN_PIPELINE,
                                          CN_LOGICUNIT,this,(Stz*)__func__);
   }
-  if (! m_xpSubPipeline.bIsNull()) {
+  if (! m_xpSubPipe.bIsNull()) {
     
-    Pipeline* pSubPipeline = (* m_xpSubPipeline);
+    Pipeline* pSubPipeline = (* m_xpSubPipe);
     RASSERT(pSubPipeline);
     RASSERT(CN_PIPELINE == pSubPipeline->eGetClassNo());
     
-    m_xpSubPipeline.vGuardedDeleteComponent(CN_PIPELINE,
+    m_xpSubPipe.vGuardedDeleteComponent(CN_PIPELINE,
                                          CN_LOGICUNIT,this,(Stz*)__func__);
   }
 
