@@ -256,6 +256,27 @@ begin
     indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg 2 " ORDGROUPBY type integer $1
                  aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | filter 2 " type BOOLEAN  $2 50.0  >  "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+rows: 1448
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1
+                 aggregates type integer $1 , type decimal as total )  $5 sum  "
     | filter 2 " type BOOLEAN  $2 100.0  >  "
     | top 2 "TOP type DECIMAL total" 10
     | combined 0
@@ -278,16 +299,45 @@ begin
   end ;
 
   rows:
-   (1211,173.00)
    (850,173.00)
+   (1211,173.00)
    (1148,174.00)
    (751,175.00)
-   (390,176.00)
    (974,176.00)
+   (390,176.00)
    (497,177.00)
-   (1130,182.00)
    (1048,182.00)
+   (1130,182.00)
    (1064,183.00)
+
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1
+                 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | filter 2 " type BOOLEAN  $2 90.0  >  "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+contains rows:
+ (1491,116.00)
+ (1492,107.00)
+ (1493,126.00)
+ (1496,123.00)
+ (1497,97.00)
+ (1499,94.00)
+
 
 pipeline Q
 begin
