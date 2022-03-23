@@ -198,6 +198,52 @@
     }                                                                      \
   }
 
+#define _SUM_BCDBCD(eErrorCode)                                            \
+  {                                                                        \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    if (eErrorCode != EC_NONE ||                                           \
+        bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else if (bcdArg1.m_iAsI8 == C_DATUM_NULL) {                            \
+      *paW++ = bcdArg2.m_iAsI8;                                            \
+    }                                                                      \
+    else if (bcdArg2.m_iAsI8 == C_DATUM_NULL) {                            \
+      *paW++ = bcdArg1.m_iAsI8;                                            \
+    }                                                                      \
+    else {                                                                 \
+        if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                          \
+          *paW++ = bcdArg2.m_iAsI8;                                        \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+          _RESCALE_BCD(eErrorCode)                                         \
+          bcdArg1.m_iAsI8 = *(--paW);                                      \
+          bcdArg2.m_iAsI8 = *(--paW);                                      \
+        }                                                                  \
+        else if(bcdArg1.m_iScale > bcdArg2.m_iScale) {                     \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+          *paW++ = bcdArg2.m_iAsI8;                                        \
+          _RESCALE_BCD(eErrorCode)                                         \
+          bcdArg2.m_iAsI8 = *(--paW);                                      \
+          bcdArg1.m_iAsI8 = *(--paW);                                      \
+        }                                                                  \
+        if(eErrorCode != EC_NONE) {                                        \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        eErrorCode = _OF_BCDADD;                                           \
+        if(eErrorCode != EC_NONE) {                                        \
+          *paW++ = C_DATUM_NULL;                                           \
+        }                                                                  \
+        else {                                                             \
+          bcdArg1.m_iMantissa = bcdArg1.m_iMantissa + bcdArg2.m_iMantissa; \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+        }                                                                  \
+      }                                                                    \
+    }                                                                      \
+  }
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FLOAT
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -96,7 +96,7 @@ static eFM eMacro_Add[DM_ENUMS][DM_ENUMS] = {
 static eFM eMacro_Sum[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL       DTE            FLT            INT            IVL        IVY      TME            TSP            VCH      UNK
 /*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  1 BCD  */ { FM_NONE, FM_ADD_BCDBCD, FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
+/*  1 BCD  */ { FM_NONE, FM_SUM_BCDBCD, FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
 /*  2 BOL  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
 /*  3 DTE  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,   FM_NONE, FM_NONE/*?*/,  FM_NONE,       FM_NONE, FM_NONE  },
 /*  4 FLT  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_SUM_FLTFLT, FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
