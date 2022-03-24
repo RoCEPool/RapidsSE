@@ -15,8 +15,8 @@ namespace STORE
   {
   private:
 
-    Pipeline* m_pPipeline;     // which pipeline
-    PipeSpec* m_pPipeSpec; // specification of this formwork
+    Pipeline* m_pPipeline; // which pipeline
+    PipeSpec* m_pPipeSpec; // specification of this pipework
   
     // must be last
     Footer m_xFooter;

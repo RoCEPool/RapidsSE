@@ -71,10 +71,10 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
   
   if (bDescend) {
     
-    PipeWork* pFormWork = pPipeline->pPipeWork();
+    PipeWork* pPipeWork = pPipeline->pPipeWork();
     
-    for (i8 i_Stage = 0; i_Stage < pFormWork->nItems(); i_Stage++ ) {
-      Stage* pStage = pFormWork->pGet(i_Stage);
+    for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++ ) {
+      Stage* pStage = pPipeWork->pGet(i_Stage);
       SP_Stage spStage(pStage,true);
       vCatf("%s"_Stz,spStage.sz());
     }

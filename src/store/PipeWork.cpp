@@ -16,7 +16,7 @@
 #include "StageSpec.hpp"
 #include "Pipeline.hpp"
 
-#include "SP_Pipework.hpp"
+#include "SP_PipeWork.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
