@@ -1402,11 +1402,11 @@ public:
 
   // pipelinespec
 
-  void vPipelineSpecDelete(void);
-  void vPipelineSpecDump(void);
-  void vPipelineSpecGet(void);
-  void vPipelineSpecOptimisable(void);
-  void vPipelineSpecSet(void);
+  void vPipeSpecDelete(void);
+  void vPipeSpecDump(void);
+  void vPipeSpecGet(void);
+  void vPipeSpecOptimisable(void);
+  void vPipeSpecSet(void);
 
 
   // plan

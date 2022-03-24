@@ -120,7 +120,7 @@ PipeSpec* Dynamo::pCompile(Stz* szPipelineStmt)
   m_p_PipeSpec->vGuardedDelete(CN_PIPESPEC,&m_p_PipeSpec,
                                         CN_DYNAMO,this,(Stz*)__func__);
   
-  ASSERT(! m_p_PipelineSpec);
+  ASSERT(! m_p_PipeSpec);
   
   delete pScanner;
   return nullptr;

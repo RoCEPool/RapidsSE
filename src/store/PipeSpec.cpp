@@ -715,7 +715,7 @@ bool PipeSpec::bPass2_piping(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  // foreach stageSpec of pipelineSpec
+  // foreach stageSpec of pipeSpec
   i8 nStageSpecs = this->nItems();
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
     StageSpec *pStageSpec = this->pGet(i_Stage);

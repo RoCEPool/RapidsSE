@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_PipelineSpec.cpp -- PipeSpec step group                          */
+/* Steps_PipeSpec.cpp -- PipeSpec step group                                  */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -31,20 +31,20 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_PipelineSpec(void)
+void Step::vAddSteps_PipeSpec(void)
 {
-  vAddStep("PipeSpec[]"_Stz,              &Step::vPipelineSpecGet);
-  vAddStep("PipeSpec[].delete"_Stz,       &Step::vPipelineSpecDelete);
-  vAddStep("PipeSpec[].dump"_Stz,         &Step::vPipelineSpecDump);
-  vAddStep("PipeSpec[].get"_Stz,          &Step::vPipelineSpecGet);
-  vAddStep("PipeSpec[].optimisable"_Stz,  &Step::vPipelineSpecOptimisable);
-  vAddStep("PipeSpec[].set"_Stz,          &Step::vPipelineSpecSet);
+  vAddStep("PipeSpec[]"_Stz,              &Step::vPipeSpecGet);
+  vAddStep("PipeSpec[].delete"_Stz,       &Step::vPipeSpecDelete);
+  vAddStep("PipeSpec[].dump"_Stz,         &Step::vPipeSpecDump);
+  vAddStep("PipeSpec[].get"_Stz,          &Step::vPipeSpecGet);
+  vAddStep("PipeSpec[].optimisable"_Stz,  &Step::vPipeSpecOptimisable);
+  vAddStep("PipeSpec[].set"_Stz,          &Step::vPipeSpecSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* PipeSpec[].delete -- delete the pipeline spec                          */
+/* PipeSpec[].delete -- delete the pipeline spec                              */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineSpecDelete(void)
+void Step::vPipeSpecDelete(void)
 {
   ENTRY();
    
@@ -58,9 +58,9 @@ void Step::vPipelineSpecDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PipeSpec[].dump -- dump the pipeline spec                              */
+/* PipeSpec[].dump -- dump the pipeline spec                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineSpecDump(void)
+void Step::vPipeSpecDump(void)
 {
   ENTRY();
   
@@ -69,9 +69,9 @@ void Step::vPipelineSpecDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PipeSpec[].get -- get pipeline spec                                    */
+/* PipeSpec[].get -- get pipeline spec                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineSpecGet(void)
+void Step::vPipeSpecGet(void)
 {
   ENTRY();
 
@@ -84,9 +84,9 @@ void Step::vPipelineSpecGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PipeSpec[].optimisable -- is p.spec optimisable / to be optimised?     */
+/* PipeSpec[].optimisable -- is p.spec optimisable / to be optimised?         */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineSpecOptimisable(void)
+void Step::vPipeSpecOptimisable(void)
 {
   ENTRY();
   
@@ -119,9 +119,9 @@ void Step::vPipelineSpecOptimisable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PipeSpec[].set -- set pipelineSpec                                     */
+/* PipeSpec[].set -- set pipelineSpec                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineSpecSet(void)
+void Step::vPipeSpecSet(void)
 {
   ENTRY();
   
