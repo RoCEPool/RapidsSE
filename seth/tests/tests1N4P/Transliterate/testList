@@ -15,5 +15,6 @@ indexJoinHash.test
 minMax.test
 project.test
 //selectTypes.test
+sum.test
 //top.test
 union.test

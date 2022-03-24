@@ -202,9 +202,7 @@
   {                                                                        \
     bcdArg2.m_iAsI8 = *(--paW);                                            \
     bcdArg1.m_iAsI8 = *(--paW);                                            \
-    if (eErrorCode != EC_NONE ||                                           \
-        bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+    if (eErrorCode != EC_NONE) {                                           \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else if (bcdArg1.m_iAsI8 == C_DATUM_NULL) {                            \
