@@ -22,7 +22,7 @@ create table datums (
 );
 
 load datums "../DATA/DataTypes/dataTypes.csv" ;
-
+/*
 create table LineItem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
@@ -64,109 +64,192 @@ create index IxR_NAME on REGION (R_NAME);
 //load lineitem "../TPCH/SF_0001/lineitem.csv";
 //load lineitem "../DATA/TPCH/lineitem10.csv";
 
-//explain stage transliterate select sum(flt_col8) from datums;
 
-//SELECT 'rowCount' AS label, count(*) AS value FROM NATION;
-//SELECT 'rowCount' AS label, count(*)  AS value FROM NATION;
 create index lineitem_part ON lineitem(L_PARTKEY);
 
-//select int_col0, int_col1 from datums order by int_col1;
-explain stage transliterate SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name;
+//verbose enable;
 
-pipeline unamed
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan orders
+    | hash 2 "type INTEGER $1"
+    | combined 0
+    | next hashcast
+
+  stage stageC on all partitions :
+    indexJoin 2 lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    | combined 0
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+
+pipeline Q
 begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker0121
-  stage stageMarker0121 on all partitions :
-    scan rapidsse public nation
-    | aggreg 2 " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $3 sum  "
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1
+                 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | filter 2 " type BOOLEAN  $2 100.0  >  "
+    | top 2 "TOP type DECIMAL total" 10
     | combined 0
-    | stageLast
+    | next
+
+ stage stageA on all nodes :
+    top 2 "TOP type DECIMAL total" 10
+    | combined 0
+    | next
+
+ stage stageA on origin :
+     top 2 "TOP type DECIMAL total" 10
+     | combined 0
+     | next
+
   stage stageLast on origin :
     output
     | sink
-    | stageStart
-end ;
+    | first
+  end ;
 
-/*
-
-pipeline unamed
+pipeline Q3
 begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0861
-  stage stageMarker0861 on all partitions :
-    scan rapidsse public datums
-    | sort 2 " type INTEGER as int_col1 $1 ASC  "
-    | project 2 " type INTEGER as int_col0 $1 , type INTEGER as int_col1 $2 , type BOOLEAN as bol_col2 $3 , type BOOLEAN as bol_col3 $4 , type DATE as dte_col4 $5 , type DATE as dte_col5 $6 , type DECIMAL as dec_col6 $7 , type DECIMAL as dec_col7 $8 , type FLOAT as flt_col8 $9 , type FLOAT as flt_col9 $10 , type TIME as tme_col10 $11 , type TIME as tme_col11 $12 , type TIMESTAMP as tsp_col12 $13 , type TIMESTAMP as tsp_col13 $14 , type VARCHAR as vch_col14 $15 , type VARCHAR as vch_col15 $16 "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
+
+ stage first on origin :
+   start
+   | pulse once
+   | next
+
+ stage Gj_ORDERS on all partitions :
+   scan Orders
+   | next
+
+ stage Gj_LINEITEM on all partitions :
+   indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+   //| filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+   | ordagg 2 expr ordgroupby type INTEGER O_ORDERKEY
+      aggregates type DECIMAL as Revenue ) J1_L_DISCOUNT sum , type INTEGER as _orderkey $K1
+   | combined 0
+   | next
+
+ stage last on origin :
     output
-    | sink
-    | stageStart
+   | sink
+   | first
+
 end ;
-pipeline unamed
+
+
+pipeline Q
 begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker0254
-  stage stageMarker0254 on all partitions :
-    scan rapidsse public datums
-    | sort 2 " sort type INTEGER as int_col1 $2 ASC  "
-    | project 2 " type INTEGER as int_col0 $1 "
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1
+                 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | filter 2 " type BOOLEAN  $2 90.0  >  "
     | combined 0
     | next
   stage stageLast on origin :
     output
     | sink
-    | stageStart
+    | first
+  end ;
+
+
+
+select l_orderkey, sum(l_quantity) as revenue from lineitem group by l_orderkey having sum(l_quantity) > 100.0;
+
+pipeline Q3
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gj_ORDERS on all partitions :
+    scan Orders
+    | next
+
+  stage Gj_LINEITEM on all partitions :
+    indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+
+    | ordAgg 2 expr ordgroupby type INTEGER O_ORDERKEY aggregates type INTEGER as _orderkey $1 ,
+        type INTEGER as Revenue ) J1_L_DISCOUNT sum ,
+        type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
+        type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
+
+    | combined 0
+    //| top 1 "Revenue" 10
+    | next
+
+  stage last on origin :
+    //top 1 "Revenue" 10
+     output
+    | sink
+    | first
+
 end ;
 
 
-//select vch_col15 from datums;
 
 
 
-pipeline unamed
+//select sum(l_quantity) , l_orderkey from lineitem group by l_orderkey;
+pipeline Q
 begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker0212
-  stage stageMarker0212 on all partitions :
-    scan rapidsse public datums
-    | aggreg 2 " groupBy  type INTEGER as int_col1 $2 aggregates  type INTEGER $K1 , type INTEGER )  $1 sum  "
-    | filter 2 " type BOOLEAN  $2 7  >  "
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1
+                 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | filter 2 " type BOOLEAN  $2 100.0  >  "
+    | top 2 "TOP type DECIMAL total" 10
     | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
+    | next
 
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0137
-  stage stageMarker0137 on all partitions :
-    scan rapidsse public nation
-    | filter 2 " type BOOLEAN  }  $2 ''  like2  "
-    | project 2 " type VARCHAR as n_name $2 "
+ stage stageA on all nodes :
+    top 2 "TOP type DECIMAL total" 10
     | combined 0
-    | stageLast
+    | next
+
+ stage stageA on origin :
+     top 2 "TOP type DECIMAL total" 10
+     | combined 0
+     | next
+
   stage stageLast on origin :
     output
     | sink
-    | stageStart
-end ;
+    | first
+  end ;
+
+select l_orderkey, sum(l_quantity) from lineitem where l_orderkey = 1064 group by l_orderkey ;
+
+
+
 
 
 pipeline unamed
@@ -393,7 +476,8 @@ begin
 
 //select sum(int_col0), int_col1 from datums group by int_col1;
 
-//explain stage transliterate  select sum(int_col0), int_col1 from datums group by int_col1;
+
+
 
 
 pipeline unamed

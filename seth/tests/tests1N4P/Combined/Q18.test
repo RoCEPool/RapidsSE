@@ -76,7 +76,7 @@ begin
     | Q18_0_a
   stage Q18_0_a on all partitions :
     indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | ordAgg 2 " type integer $1 , type decimal )  $5 sum  groupBy  type integer $1 "
+    | ordAgg 2 " ordGroupBy  type integer $1 aggregates type integer $1 , type decimal )  $5 sum  "
     | filter 2 " type BOOLEAN  $2 17000  >  "
     | combined 0
     | stageQ18_1_b broadcast
