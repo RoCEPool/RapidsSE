@@ -15,12 +15,14 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan lineitem
-    | project  1 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  1 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -63,12 +65,14 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan lineitem
-    | project  1 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  1 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -101,12 +105,14 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan lineitem
-    | project  1 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  1 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -130,12 +136,14 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan lineitem
-    | project  1 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  1 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -172,12 +180,14 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan lineitem
-    | project  1 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  1 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -209,12 +219,14 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan lineitem
-    | project  1 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  1 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageD on origin :

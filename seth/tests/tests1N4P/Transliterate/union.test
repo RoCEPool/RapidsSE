@@ -170,26 +170,21 @@ rows:
   ['bRaVo']
 */
 
+
+drop table lineitem;
+success
+
+drop table orders;
+success
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE unionTbl1;
+  DROP TABLE lineitem;
   mute
 
-  DROP TABLE unionTbl2;
-  mute
-
-  DROP TABLE unionTbl3;
-  mute
-
-  DROP TABLE unionTbl4;
-  mute
-
-  DROP TABLE unionTbl5;
-  mute
-
-  DROP TABLE unionTbl6;
+  DROP TABLE orders;
   mute
 }
