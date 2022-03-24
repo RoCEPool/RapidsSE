@@ -5,7 +5,7 @@ boolean.test
 count.test
 date.test
 //decimal.test
-//time.test
+time.test
 filterInteger.test
 //filterDecimal.test
 indexJoin.test
