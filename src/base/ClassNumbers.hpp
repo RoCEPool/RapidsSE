@@ -184,7 +184,6 @@ enum eCN : u2 // Class Number
 
   /* */ CN__N__,
   /* */ CN_NAMEDBUFFER,
-  /* */ CN_NESTEDPIPELINESPEC,
   /* */ CN_NEXTGID,
   /* */ CN_NMLSTR,
   /* */ CN_NODE,
@@ -596,7 +595,6 @@ static Stz* aCN[]
 
   /* */ "_N__"_Stz,                 // CN__N__
   /* */ "NAMEDBUFFER"_Stz,          // CN_NAMEDBUFFER
-  /* */ "NESTEDPIPELINESPEC"_Stz,   // CN_NESTEDPIPELINESPEC
   /* */ "NEXTGID"_Stz,              // CN_NEXTGID
   /* */ "NMLSTR"_Stz,               // CN_NMLSTR
   /* */ "NODE"_Stz,                 // CN_NODE

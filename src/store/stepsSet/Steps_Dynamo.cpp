@@ -55,7 +55,7 @@ void Step::vDynamoCompile(void)
   PipeSpec* pPipeSpec = pDynamo->pCompile(sPipelineStmt);
     
   if (pPipeSpec) {
-    if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
+    if (AM::TRACE::bVerbose(C_VB_PIPESPEC)) {
       SP_PipeSpec spPipeSpec(pPipeSpec);
       vTraceM("%s\n"_Stz,spPipeSpec.sz());
     }

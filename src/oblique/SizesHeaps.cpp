@@ -433,8 +433,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Mutex),              HT_T_TINY    ,0 FILL }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__N__
-  { sizeof(NamedBuffer),        HT_T_LARGE   ,0 FILL }, // CN_NESTEDPIPELINESPEC
-  { 0,                          HT_INVALID   ,0 FILL }, // CN_NEXTGID
+  { sizeof(NamedBuffer),        HT_T_LARGE   ,0 FILL }, // CN_NAMEDBUFFER
   { sizeof(NextGid),            HT_INVALID   ,0 FILL }, // CN_NEXTGID
   { sizeof(NmlStr),             HT_T_MEDIUM  ,0 FILL }, // CN_NMLSTR
   { sizeof(Node),               HT_T_TINY    ,0 FILL }, // CN_NODE

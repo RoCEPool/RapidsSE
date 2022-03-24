@@ -119,7 +119,7 @@ void Step::vPipeSpecOptimisable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PipeSpec[].set -- set pipelineSpec                                         */
+/* PipeSpec[].set -- set pipeSpec                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vPipeSpecSet(void)
 {

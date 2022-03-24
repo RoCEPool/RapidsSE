@@ -1400,7 +1400,7 @@ public:
   void vPipelineOfOpSpawnOpTasks(void);
   void vPipelineOfOpStartPipeline(void);
 
-  // pipelinespec
+  // pipeSpec
 
   void vPipeSpecDelete(void);
   void vPipeSpecDump(void);

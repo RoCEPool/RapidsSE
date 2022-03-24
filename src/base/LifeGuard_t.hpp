@@ -162,7 +162,7 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pipelineSpec
+  // pipeSpec
     
   else if (CN_PIPESPEC == m_eInstance) {
     if (m_bTrace && bTrace)

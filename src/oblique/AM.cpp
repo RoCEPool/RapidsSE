@@ -438,7 +438,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   }
   
   // -- -- -- -- -- -- -- -- -- -- -- --
-  // pipelineSpec
+  // pipeSpec
     
   else if (CN_PIPESPEC == eInstance) {
     if (bTrace)
