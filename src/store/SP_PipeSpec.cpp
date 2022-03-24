@@ -11,6 +11,7 @@
 #include "SP_PipeSpec.hpp"
 #include "SP_StageSpec.hpp"
 #include "SP_OpSpec.hpp"
+#include "SubPipeSpecs.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -54,26 +55,34 @@ void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
+  vInit();
+  
+  vPipeSpec(pPipeSpec,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint pipeline                                                            */
+/*----------------------------------------------------------------------------*/
+void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec, i8 iDepth)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+   
   SP_StageSpec spStageSpec;
   SP_OpSpec spOpSpec;
 
-  i8 iDepth = 0;
-
-  vInit();
+  vCatf(iDepth,"PipeSpec %s %p\n"_Stz
+        ,pPipeSpec->szPipelineNm()
+        ,pPipeSpec
+        );
   
-  if (iDepth)
-    vCatf(iDepth,
-          "PipeSpec %s %p\n"_Stz
-          ,pPipeSpec->szPipelineNm()
-          ,pPipeSpec
-          );
-  else
-    vCatf("PipeSpec %s %p\n"_Stz
-          ,pPipeSpec->szPipelineNm()
-          ,pPipeSpec
-          );
-//  vCats(iDepth,
-//        "begin\n"_Stz);
+  SubPipeSpecs* pSubPipeSpecs = pPipeSpec->pSubPipeSpecs();
+  if (pSubPipeSpecs) {
+    i8 nSubSpecs = pSubPipeSpecs->nItems();
+    for (i8 i_SubSpec = 0; i_SubSpec < nSubSpecs; i_SubSpec++) {
+      PipeSpec* pSubPipeSpec = pSubPipeSpecs->pGet(i_SubSpec);
+      vPipeSpec(pSubPipeSpec,iDepth+1);
+    }
+  }
   
   for (i8 i_Stage = 0; i_Stage < pPipeSpec->nStages(); i_Stage++) {
     StageSpec* pStageSpec = pPipeSpec->pStageSpec(i_Stage);
@@ -82,10 +91,6 @@ void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec)
     
     for (i8 i_Op = 0; i_Op < pStageSpec->nItems(); i_Op++) {
       OpSpec* pOpSpec = pStageSpec->pOpSpec(i_Op);
-//      if (! i_Op)
-//        vCatf(iDepth,
-//              "        %s"_Stz,spOpSpec.sz(pOpSpec));
-//      else
         vCatf(iDepth,
               "    %s"_Stz,spOpSpec.sz(pOpSpec));
     }

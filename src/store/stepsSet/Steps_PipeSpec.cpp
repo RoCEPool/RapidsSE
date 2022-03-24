@@ -64,7 +64,10 @@ void Step::vPipeSpecDump(void)
 {
   ENTRY();
   
-
+  SP_PipeSpec spPipeSpec;
+  
+  vTrace("%s\n"_Stz,spPipeSpec.sz(* m_pLogicUnit->m_xpPipeSpec));
+  
   EXIT();
 }
 

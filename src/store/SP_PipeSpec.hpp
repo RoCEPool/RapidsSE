@@ -18,7 +18,8 @@ namespace STORE
    ~SP_PipeSpec(void) noexcept(false);
 
     void vPipeSpec(PipeSpec* pPipeSpec);
-  
+    void vPipeSpec(PipeSpec* pPipeSpec, i8 iDepth);
+
     Stz* sz(void);
     Stz* sz(PipeSpec* pPipeSpec);
   
