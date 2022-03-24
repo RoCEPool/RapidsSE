@@ -19,6 +19,7 @@ LOG = logging.getLogger(__name__)
 
 C_JMETER_BINARY = "/opt/jmeter/bin/jmeter"
 C_JMETER_EXTS = ["jmx", "jmeter"]
+C_SUPPORT_FILES = "supportFiles"
 C_TEST_DIR_FMT = "j{:04d}_t{:02d}_{:02d}_{:s}"
 C_SCP_TIMEOUT_SEC = 60
 
@@ -71,7 +72,7 @@ class TestRunner:
         self.ip_addr = ip_addr
         self.artifact_dir = artifact_dir
         self.remote_test_dir = pathlib.Path(cluster_config.get_dir()).joinpath(
-            "perftests",
+            clusterops.C_PERF_TESTS_DIR,
             C_TEST_DIR_FMT.format(job_result_id, test_id, test_seq, self.test_name)
         )
         self.remote_test_file = None
@@ -85,7 +86,12 @@ class TestRunner:
         LOG.info(f"Running test:  {self.test_name} (ID: {self.test_id})")
 
         self.result.set_test_started()
+
+        # First, create a directory on the remote node where we will copy the test
+        # file to. Any metrics that are produced will be output in this folder.
+        self.__create_remote_dir()
         self.__copy_test_file_to_remote_node()
+        self.__create_support_files_symlink()
 
         # Run the test
         splits = str(self.local_test_file).lower().rsplit(".", 1)
@@ -94,7 +100,7 @@ class TestRunner:
         else:
             raise errors.NotImplementedYet("Only JMeter test files (*.[jmx | jtl | jmeter]) are currently supported")
 
-        self.__cleanup_test_file()
+        self.__cleanup_test()
         self.__collect_metrics()
 
         LOG.info(f"Finished test: {self.test_name} (ID: {self.test_id}). "
@@ -109,11 +115,6 @@ class TestRunner:
         """
         Copy the local test file to the remote node where it will be executed.
         """
-
-        # First, create a directory on the remote node where we will copy the test
-        # file to. Any metrics that are produced will be output in this folder.
-        self.__create_remote_dir()
-
         test_filename = os.path.basename(self.local_test_file)
         self.remote_test_file = self.remote_test_dir / test_filename
 
@@ -139,6 +140,35 @@ class TestRunner:
             raise errors.ClusterError(msg) from e
 
         LOG.info(f"Successfully copied the test file from {src} to {dest}")
+
+    def __create_support_files_symlink(self):
+        """
+        Creates a symbolic link in the remote test dir for the supportFiles folder.
+        """
+        from_dir = f"{self.remote_test_dir}/{C_SUPPORT_FILES}"
+        target_dir = f"{self.cluster_config.get_dir()}/{clusterops.C_SUPPORT_FILES_DIR}"
+        command = f"ln -s {target_dir} {from_dir}"
+
+        LOG.debug(f"About to create a symbolic link for the test supportFiles directory on host "
+                  f"{self.ip_addr}: {command}")
+
+        try:
+            ssh.run_ssh(self.ip_addr, command, 10)
+
+        except subprocess.CalledProcessError as e:
+            msg = f"Error while creating the symbolic link on host {self.ip_addr}: {command}" \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Creation of supportFiles symbolic link timed out after {e.timeout} seconds: " \
+                  f"{command}" \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        LOG.debug(f"Successfully created the symbolic link: {from_dir} --> {target_dir}")
 
     def __create_remote_dir(self):
         """
@@ -472,6 +502,10 @@ class TestRunner:
 
         return True
 
+    def __cleanup_test(self):
+        self.__cleanup_test_file()
+        self.__cleanup_support_files_link()
+
     def __cleanup_test_file(self):
         """
         We only delete the test file and not the metrics, because we may end up
@@ -500,3 +534,33 @@ class TestRunner:
             raise errors.ClusterError(msg) from e
 
         LOG.debug(f"Successfully deleted the remote test file at {self.remote_test_file}")
+
+    def __cleanup_support_files_link(self):
+        """
+        We only delete the test file and not the metrics, because we may end up
+        collecting and archiving the metrics. We don't need to archive the test
+        file as well.
+        """
+
+        link = f"{self.remote_test_dir}/{C_SUPPORT_FILES}"
+        rm_command = f"rm -f {link}"
+
+        LOG.debug(f"About to remove the supportFiles symbolic link at {link}")
+
+        try:
+            ssh.run_ssh(self.ip_addr, rm_command, 10)
+
+        except subprocess.CalledProcessError as e:
+            msg = f"Error while removing remote supportFiles symbolic link at {link}" \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Deletion of removing remote supportFiles symbolic link at {link} " \
+                  f"timed out after {e.timeout} seconds: " \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.ClusterError(msg) from e
+
+        LOG.debug(f"Successfully deleted the remote supportFiles symbolic link at {link}")
