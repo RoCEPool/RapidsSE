@@ -36,6 +36,10 @@
     
     to PipeSpec[]
     PipeSpec[].dump
+    
+    PipeSpec[] Pipeline[].create
+    Pipeline[].dump
+    
     PipeSpec[].delete
   else
     ErrorCode[] "Dynamo error %v" .printf

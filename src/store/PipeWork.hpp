@@ -15,8 +15,8 @@ namespace STORE
   {
   private:
 
-    Pipeline*     m_pPipeline;     // which pipeline
-    PipeSpec* m_pPipeWorkSpec; // specification of this formwork
+    Pipeline* m_pPipeline;     // which pipeline
+    PipeSpec* m_pPipeSpec; // specification of this formwork
   
     // must be last
     Footer m_xFooter;
@@ -25,12 +25,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    PipeWork(Pipeline* pPipeline, PipeSpec* pPipeWorkSpec);
+    PipeWork(Pipeline* pPipeline, PipeSpec* pPipeSpec);
    ~PipeWork(void) noexcept(false);
   
     bool bCancel(Task* pTriggeringTask);
 
-    PipeSpec* pPipeWorkSpec(void);
+    PipeSpec* pPipeSpec(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);

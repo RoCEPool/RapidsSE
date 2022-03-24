@@ -114,16 +114,16 @@ void Step::vPipelineCreate(void)
   
   // create subpipeline
   
-  Pipeline* pSubPipeline =
+  Pipeline* pPipeline =
     new Pipeline(m_pJob,pPipeSpec,m_pJob->iOriginatorNode());
   
-  m_pLogicUnit->m_xpPipeline = pSubPipeline;
+  m_pLogicUnit->m_xpPipeline = pPipeline;
     
   // dump pipeline
   
   if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
     if (iThisNode == 0) {
-      SP_Pipeline spPipeline(pSubPipeline,true);
+      SP_Pipeline spPipeline(pPipeline,true);
       vTraceM("%s\n"_Stz,spPipeline.sz());
       vDebugPoint();
     }
