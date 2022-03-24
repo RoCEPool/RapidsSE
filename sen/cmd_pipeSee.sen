@@ -11,7 +11,7 @@
 
   "PIPESEE: " .
 
-  [job].tagSet@ tagSet.asStr .
+  <cmd> .
 
   [cmd]:retire
 ;

@@ -31962,7 +31962,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  \"PIPESEE: \" .\n"
     "\n"
-    "  [job].tagSet@ tagSet.asStr .\n"
+    "  <cmd> .\n"
     "\n"
     "  [cmd]:retire\n"
     " ;\n"
