@@ -71,7 +71,7 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
   
   if (bDescend) {
     
-    PipeWork* pFormWork = pPipeline->pPipework();
+    PipeWork* pFormWork = pPipeline->pPipeWork();
     
     for (i8 i_Stage = 0; i_Stage < pFormWork->nItems(); i_Stage++ ) {
       Stage* pStage = pFormWork->pGet(i_Stage);

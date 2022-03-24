@@ -23,14 +23,14 @@ __aFooterFunction(StageSpec)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StageSpec::StageSpec(Stz* szStageNm,
-                     PipeSpec* pPipeworkSpec)
+                     PipeSpec* pPipeWorkSpec)
 : ListNL_t<OpSpec>(CN_STAGESPEC)
 , LifeGuard_t<StageSpec>(this,CN_STAGESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_sStageNm        = szStageNm;
-  m_pPipeworkSpec   = pPipeworkSpec;
+  m_pPipeWorkSpec   = pPipeWorkSpec;
 
   m_eStageTopology  = YG_NONE;
   m_eStreamTopology = YS_NONE;
@@ -380,7 +380,7 @@ void StageSpec::vParcelForward(eYF eParcelForward)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
 //
-//  return m_pPipeworkSpec->pPipelineSpec();
+//  return m_pPipeWorkSpec->pPipelineSpec();
 //}
 
 /*----------------------------------------------------------------------------*/
@@ -440,7 +440,7 @@ i8 StageSpec::i_StageSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  i8 i_StageSpec = m_pPipeworkSpec->iFind(this);
+  i8 i_StageSpec = m_pPipeWorkSpec->iFind(this);
   
   return i_StageSpec;
 }

@@ -31,13 +31,13 @@ __aFooterFunction(PipeWork)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipeWork::PipeWork(Pipeline* pPipeline, PipeSpec* pPipeworkSpec)
+PipeWork::PipeWork(Pipeline* pPipeline, PipeSpec* pPipeWorkSpec)
 : LifeGuard_t<PipeWork>(this,CN_PIPEWORK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   m_pPipeline     = pPipeline;
-  m_pPipeworkSpec = pPipeworkSpec;
+  m_pPipeWorkSpec = pPipeWorkSpec;
 
   _checkInitialised_(CN_PIPEWORK);
   
@@ -63,7 +63,7 @@ PipeWork::~PipeWork(void) noexcept(false)
 
   vClear();
 
-//  m_pPipeworkSpec->vGuardedDelete(CN_PIPESPEC,&m_pPipeworkSpec,
+//  m_pPipeWorkSpec->vGuardedDelete(CN_PIPESPEC,&m_pPipeWorkSpec,
 //                                  CN_PIPEWORK,this,(Stz*)__func__);
 }
 
@@ -91,11 +91,11 @@ bool PipeWork::bCancel(Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* get formwork spec                                                          */
 /*----------------------------------------------------------------------------*/
-PipeSpec* PipeWork::pPipeworkSpec(void)
+PipeSpec* PipeWork::pPipeWorkSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
-  return m_pPipeworkSpec;
+  return m_pPipeWorkSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -239,11 +239,11 @@ void PipeWork::vCreatePipework(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
 
-  i8 nStages = m_pPipeworkSpec->nItems();
+  i8 nStages = m_pPipeWorkSpec->nItems();
   for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
     
     // get the stageSpec
-    StageSpec* pStageSpec = m_pPipeworkSpec->pStageSpec(i_StageSpec);
+    StageSpec* pStageSpec = m_pPipeWorkSpec->pStageSpec(i_StageSpec);
     
     // add a stage from the stageSpec to the stageVec
     Stage* pStage = new Stage(pStageSpec, this);

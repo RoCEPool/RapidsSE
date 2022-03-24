@@ -190,7 +190,7 @@ void Step::vSubPipeEnqueueStart(void)
 {
   ENTRY();
   
-  PipeWork* pFormWork = m_pLogicUnit->m_xpSubPipe->pPipework();
+  PipeWork* pFormWork = m_pLogicUnit->m_xpSubPipe->pPipeWork();
 
   Stage*    pStage0   = pFormWork->pGet(0);
 

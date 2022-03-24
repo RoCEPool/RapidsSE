@@ -22,7 +22,7 @@ namespace STORE
 
   private:
   
-    PipeSpec* m_pPipeworkSpec;
+    PipeSpec* m_pPipeWorkSpec;
 
     SubPipelines* m_pSubPipelines;
   
@@ -45,7 +45,7 @@ namespace STORE
     void vDump(void);
     TagSet* pJobTags(void);
     Stz* szPipelineNm(void);
-    PipeSpec* pPipeworkSpec(void);
+    PipeSpec* pPipeWorkSpec(void);
     i8 nStages(void);
     StageSpec* pStageSpec(i8 i_Stage);
     SubPipelines* pSubPipelines(void);

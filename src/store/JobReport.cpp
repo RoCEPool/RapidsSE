@@ -531,9 +531,9 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // each stage in the pipeline
-  PipeWork* pPipework = pPipeline->pPipework();
-  for (i8 i_Stage = 0; i_Stage < pPipework->nItems(); i_Stage++) {
-    Stage* pStage = pPipework->pGet(i_Stage);
+  PipeWork* pPipeWork = pPipeline->pPipeWork();
+  for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++) {
+    Stage* pStage = pPipeWork->pGet(i_Stage);
 
     // each stream in the stage
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
@@ -645,10 +645,10 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
 
   // each stage in the pipeline
-  PipeWork* pPipework = pPipeline->pPipework();
-  for (i8 i_Stage = 0; i_Stage < pPipework->nItems(); i_Stage++) {
+  PipeWork* pPipeWork = pPipeline->pPipeWork();
+  for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++) {
 
-    Stage* pStage = pPipework->pGet(i_Stage);
+    Stage* pStage = pPipeWork->pGet(i_Stage);
 
     // each stream in the stage
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {

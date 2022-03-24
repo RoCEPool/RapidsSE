@@ -347,7 +347,7 @@ void Step::vSubPipeOfOpStartPipeline(void)
   ENTRY();
   
   Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
-  PipeWork* pFormWork = pSubPipelineOfOp->pPipework();
+  PipeWork* pFormWork = pSubPipelineOfOp->pPipeWork();
 
   Stage*    pStage0   = pFormWork->pGet(0);
 

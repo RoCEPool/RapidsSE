@@ -20,7 +20,7 @@ namespace STORE
     i8   m_i_Stage;     // [stage] in pipeline
 
     StageSpec*  m_pStageSpec; // specification of this stage
-    PipeWork*   m_pPipework;  // which pipeline
+    PipeWork*   m_pPipeWork;  // which pipeline
   
     // -- -- -- -- -- --
 
@@ -31,7 +31,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Stage(StageSpec* pStageSpec, PipeWork* pPipework);
+    Stage(StageSpec* pStageSpec, PipeWork* pPipeWork);
    ~Stage(void) noexcept(false);
       
     void vCancelPipeline(Task* pTriggeringTask);
@@ -40,7 +40,7 @@ namespace STORE
     Stream* pGetStream_byStreamNo(i8 i_Stream);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode, i8 iOrigin);
-    PipeWork* pPipework(void);
+    PipeWork* pPipeWork(void);
     Op*  pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp);
     i8   i_Stage(void);
     Stz* szStageNm(void);

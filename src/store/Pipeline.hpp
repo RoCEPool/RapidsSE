@@ -68,7 +68,7 @@ namespace STORE
     void vEarlyExit(bool bEarlyExit);
     bool bErrored(void);
     void vErrored(bool bErrored);
-    PipeWork* pPipework(void);
+    PipeWork* pPipeWork(void);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
     i8   i_Origin(void);

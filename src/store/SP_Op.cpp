@@ -160,7 +160,7 @@ Stz* SP_Op::szPath(Op* pOp)
   
   Stream*   pStream   = pOp->pStream();
   Stage*    pStage    = pStream->pStage();
-  Pipeline* pPipeline = pStage->pPipework()->pPipeline();
+  Pipeline* pPipeline = pStage->pPipeWork()->pPipeline();
   
   Job*      pJob      = pPipeline->pPipelineJob();
 

@@ -60,7 +60,7 @@ Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
 
   _checkInitialised_(CN_PIPELINE);
   
-  m_pPipeWork = new PipeWork(this,pPipelineSpec->pPipeworkSpec());
+  m_pPipeWork = new PipeWork(this,pPipelineSpec->pPipeWorkSpec());
   //vCreatePipework();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
@@ -201,7 +201,7 @@ bool Pipeline::bErrored(void)
 /*----------------------------------------------------------------------------*/
 /* get formwork                                                               */
 /*----------------------------------------------------------------------------*/
-PipeWork* Pipeline::pPipework(void)
+PipeWork* Pipeline::pPipeWork(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
