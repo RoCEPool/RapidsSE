@@ -340,6 +340,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STZVAL,
   /* */ CN_SUBCALL,
   /* */ CN_SUBPIPESPECS,
+  /* */ CN_SUBPIPEWORKS,
   /* */ CN_SUBRETURN,
   /* */ CN_SYSCALL,
   /* */ CN_SYSMETRICS,
@@ -748,6 +749,7 @@ static Stz* aCN[]
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SUBCALL"_Stz,              // CN_SUBCALL
   /* */ "SUBPIPESPECS"_Stz,         // CN_SUBPIPESPECS
+  /* */ "SUBPIPEWORKS"_Stz,         // CN_SUBPIPEWORKS
   /* */ "SUBRETURN"_Stz,            // CN_SUBRETURN
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS
