@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_RegTimer.cpp - timer[] step group                                    */
+/* Steps_With.cpp - with step group                                           */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -8,41 +8,28 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "Node_I.hpp"
-#include "Job.hpp"
-#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_RegTimer(void)
+void Step::vAddSteps_With(void)
 {
-  vAddStep("timer[]"_Stz,      &Step::vRegTimerGet);
-  vAddStep("timer[].get"_Stz,  &Step::vRegTimerGet);
-  vAddStep("timer[].set"_Stz,  &Step::vRegTimerSet);
+  vAddStep("[with].subPipeline?"_Stz,  &Step::vWithSubPipeline);
 }
 
 /*----------------------------------------------------------------------------*/
-/* timer[].get -- get timer                                                   */
+/* [with].subPipeline? -- test if compiled with SUBPIPELINE                   */
 /*----------------------------------------------------------------------------*/
-void Step::vRegTimerGet(void)
+void Step::vWithSubPipeline(void)
 {
   ENTRY();
-    
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTimer);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* timer[].set -- set timer                                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vRegTimerSet(void)
-{
-  ENTRY();
-    
-  m_pLogicUnit->m_xpTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
-
+#ifdef WITH_SUBPIPELINE
+    m_pDataStack->vPushInt(true);
+#else
+    m_pDataStack->vPushInt(false);
+#endif
+  
   EXIT();
 }
 

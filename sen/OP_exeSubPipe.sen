@@ -9,12 +9,19 @@
 /*----------------------------------------------------------------------------*/
 : exeSubPipe_StartMarker \handler
 
-  PipeIn[].pipeOut
-  true 
+  0 locals| nAcks |
+
+  // <subPipeNm> [subPipeOfOp].find to SubPipe[]
+  
+  subPipe:exe
+  
+  nullptr to SubPipe[]
+
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for execute sub-pipeline req                                       */
+/* execute sub-pipeline req                                                   */
 /*----------------------------------------------------------------------------*/
  : exeSubPipe_op \operator
 
@@ -36,9 +43,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: exeSubPipeline :: exeSubPipeline <subPipeNm> ;
+cmdSyntax: exeSubPipe :: exeSubPipe <subPipeNm> ;
 
-: exeSubPipeline_cmdTags _cmdTags tagCopy: op_tags
+: exeSubPipe_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
     <opEntry> = "exeSubPipe_op"

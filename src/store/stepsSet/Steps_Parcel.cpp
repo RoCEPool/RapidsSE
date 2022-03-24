@@ -17,7 +17,7 @@
 #include "Stage.hpp"
 #include "StageSpec.hpp"
 #include "Stream.hpp"
-#include "Pipework.hpp"
+#include "PipeWork.hpp"
 #include "PtnMap.hpp"
 #include "Node.hpp"
 #include "Pipeline.hpp"
@@ -81,15 +81,15 @@ void Step::vParcelDemonOut(void)
   //vTrace("vParcelPipeOut to demon %s\n"_Stz,szDemonNm);
   
   Word* pWord = AM::WORD::pFind(szDemonNm);
-  Job* pPipelineJob = _pJob(pWord->pObject());
+  Job* pJob = _pJob(pWord->pObject());
   
   
   // !!!!!!!!!!!!!!
   // move to AM
   
-  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-  Pipework* pPipework = pPipeline->pPipework();
-  Stage*    pStage0   = pPipework->pGet(0);
+  Pipeline* pPipeline = pJob->pPipelineX();
+  PipeWork* pPipeWork = pPipeline->pPipeWork();
+  Stage*    pStage0   = pPipeWork->pGet(0);
   Stream*   pStream0  = pStage0->pGet(0);
   Op*       pOp0      = pStream0->pGet(0);
 
@@ -160,7 +160,7 @@ void Step::vParcelLabel(void)
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-  pParcel->vLabel(pOp->pPipelineJob()->tJobId().iAsI8(),
+  pParcel->vLabel(pOp->pJobOfOp()->tJobId().iAsI8(),
                   pOpSpec->eParcelForward());
 
   EXIT();
@@ -190,15 +190,15 @@ void Step::vParcelPipeOut(void)
     vTrace("vParcelPipeOut to demon %s\n"_Stz,szDemonNm);
     
     Word* pWord = AM::WORD::pFind(szDemonNm);
-    Job* pPipelineJob = _pJob(pWord->pObject());
+    Job* pJob = _pJob(pWord->pObject());
     
     
     // !!!!!!!!!!!!!!
     // move to AM
     
-    Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-    Pipework* pPipework = pPipeline->pPipework();
-    Stage*    pStage0   = pPipework->pGet(0);
+    Pipeline* pPipeline = pJob->pPipelineX();
+    PipeWork* pPipeWork = pPipeline->pPipeWork();
+    Stage*    pStage0   = pPipeWork->pGet(0);
     Stream*   pStand0   = pStage0->pGet(0);
     Op*       pOp0      = pStand0->pGet(0);
 
@@ -215,11 +215,11 @@ void Step::vParcelPipeOut(void)
   // find the pipeline
   JobId tPipelineJob;
   tPipelineJob = pParcel->iPipelineJobId();
-  Job* pPipelineJob = AM::pJob_FindParticipating(tPipelineJob);
-  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
+  Job* pJob = AM::pJob_FindParticipating(tPipelineJob);
+  Pipeline* pPipeline = pJob->pPipelineX();
   
   // get the next stage the send is supposed to send to
-  Pipework* pFormWork = pPipeline->pPipework();
+  PipeWork* pFormWork = pPipeline->pPipeWork();
   Stage* pDstStage = pFormWork->pGet(pParcel->iDstStage());
   i8 nStreamPtns = pDstStage->nItems();
 
@@ -395,54 +395,6 @@ void Step::vParcelPipeOut(void)
     
   EXIT();
 }
-/*----------------------------------------------------------------------------*/
-//void Step::vParcelPipeOut(void)
-//{
-//  ENTRY();
-//
-//  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
-//
-//  // find the pipeline participant job
-//  JobId tPipelineJob;
-//  tPipelineJob = pParcel->iPipelineJobId();
-//  Job* pPipelineJob = AM::pJob_FindParticipating(tPipelineJob);
-//
-//  // get the next stage the send is supposed to send to
-//  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-//
-//  Stage* pStage = pPipeline->pGet(pParcel->iDstStage());
-//
-//  // Where do we see the BktNo, so that we can map it to the partition?
-//
-//  // get the op to forward to depending on the cross topology
-//  Op* pDstOp = pStage->pPipeDstOp(pParcel->eIntraTopology(),
-//                                  pParcel->tDstPtn(),
-//                                  0);
-//
-//  //! ALKA come back to this. May need a m_bAppendLeft in pParcel
-//
-//
-//  // CAUTION NOTE: Cannot access LU of OP after piping out operand
-//  // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
-//  LogicUnit* pLogicUnit = pDstOp->pOpLogicUnit();
-//  if (pLogicUnit && pLogicUnit->m_xpStats.bIsNotNull()) {
-//    pLogicUnit->m_xpStats->m_nParcelRecvs++;
-//    pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
-//  }
-//
-//  if (pParcel->bOriginalParcel()) {
-//    pDstOp->vAppendLeft(pParcel,this);
-//  }
-//  else {
-//    Operand* pOperand = pParcel->pGetOperand();
-//    if (pOperand) {
-//      pDstOp->vAppendLeft(pOperand, this);
-//      delete pParcel;
-//    }
-//  }
-//
-//  EXIT();
-//}
 
 /*----------------------------------------------------------------------------*/
 /* parcel.sendOut -- send parcel out to next operator in pipeline             */

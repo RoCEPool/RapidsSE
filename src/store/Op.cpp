@@ -15,7 +15,7 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "Pipework.hpp"
+#include "PipeWork.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
 #include "StageSpec.hpp"
@@ -68,8 +68,9 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 
   m_pOpSpec   = pOpSpec;
   m_pStream   = pStream;
-  m_p_Pipeline_op = pStream->pPipeline();
-
+  m_p_PipelineOfOp = pStream->pPipeline();
+  m_p_SubPipeOfOp = m_p_PipelineOfOp;
+  
   // -- -- -- -- -- --
 
   // m_oOpTags
@@ -202,7 +203,7 @@ void Op::vAckPipelineJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Task* pPipelineTask = AM::pExecutingTask(m_p_Pipeline_op->pPipelineJob());
+  Task* pPipelineTask = AM::pExecutingTask(m_p_PipelineOfOp->pPipelineJob());
 
     if (m_bTraceOp) {
 
@@ -210,7 +211,7 @@ void Op::vAckPipelineJob(void)
         SP_Op spOp;
 
         vTraceM("%s "
-                "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pPipelineJob()
+                "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pJobOfOp()
         );
       } else {
         vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
@@ -899,13 +900,13 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
 /*----------------------------------------------------------------------------*/
 /* get job of this op                                                         */
 /*----------------------------------------------------------------------------*/
-Job* Op::pJob(void)
+Job* Op::pJobOfOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   Stream*   pStream   = this->pStream();
   Stage*    pStage    = pStream->pStage();
-  Pipeline* pPipeline = pStage->pPipework()->pPipeline();
+  Pipeline* pPipeline = pStage->pPipeWork()->pPipeline();
   Job*      pJob      = pPipeline->pPipelineJob();
 
   return pJob;
@@ -997,8 +998,8 @@ Stage* Op::pNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Pipework* pPipework = m_p_Pipeline_op->pPipework();
-  Stage* pNextStage = pPipework->pGet(iNextStage());
+  PipeWork* pPipeWork = m_p_PipelineOfOp->pPipeWork();
+  Stage* pNextStage = pPipeWork->pGet(iNextStage());
   
   return pNextStage;
 }
@@ -1170,7 +1171,7 @@ void Op::vOpTrace(Operand* pOperand
          m_pStream->pStage()->szStageNm(),
          iNode(),
          tPtnId().iAsI8(),
-         pPipelineJob(),
+         pJobOfOp(),
 
          szFunNm,
          pOperand ? AM::pOperandName(pOperand) : "null"_Stz,
@@ -1264,7 +1265,7 @@ Stage* Op::pOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Pipework* pFormWork = m_p_Pipeline_op->pPipework();
+  PipeWork* pFormWork = m_p_PipelineOfOp->pPipeWork();
   
   Stage* pOtherStage = pFormWork->pGet(iOtherStage());
   
@@ -1354,28 +1355,13 @@ bool Op::bPeekOoO(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pipeline from op                                                       */
+/* get pipeline of op                                                         */
 /*----------------------------------------------------------------------------*/
-Pipeline* Op::pPipeline(void)
+Pipeline* Op::pPipelineOfOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_p_Pipeline_op;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get pipeline job from op                                                   */
-/*----------------------------------------------------------------------------*/
-Job* Op::pPipelineJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  SMA<Job,CN_JOB> pPipelineJob;
-  
-  pPipelineJob = m_p_Pipeline_op->pPipelineJob();
-
-  
-  return * pPipelineJob;
+  return m_p_PipelineOfOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1391,7 +1377,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
     
   // get the next stage the send is supposed to send to
-  Pipework* pFormWork = m_p_Pipeline_op->pPipework();
+  PipeWork* pFormWork = m_p_PipelineOfOp->pPipeWork();
   Stage* pDstStage = pFormWork->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
@@ -1756,7 +1742,7 @@ void Op::vSetTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
+  TagSet* pPipeLineJobTags = AM::pJobTags(pJobOfOp());
   m_pOpTags = _pTagSet(pPipeLineJobTags->pMemoryCopy());
   m_pOpTags->vReplace(C_TAG_JOBNM, m_sOpNm);
 }
@@ -1775,7 +1761,7 @@ void Op::vSpawnTask(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Job* pJob = this->pJob();
+  Job* pJob = this->pJobOfOp();
   pJob->vIncActiveOps();
   
   if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD)) {
@@ -1836,6 +1822,16 @@ eYS Op::eStreamTopology_op(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_pOpSpec->eStreamTopology_op();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sub-pipeline of op                                                     */
+/*----------------------------------------------------------------------------*/
+Pipeline* Op::pSubPipeOfOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_p_SubPipeOfOp;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -18,12 +18,8 @@
   // new a temporary Job_Executed
   pJobParticipant job_Executed::new locals| pJob_Executed |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // send the executed job
   pJobParticipant [job].originNodeNo@ pJob_Executed job.reply
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob_Executed job.delete
 ;
@@ -33,53 +29,32 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job_Executed on originating node    recv: job.spawn */
+/* run received Job_Executed on originating node              recv: job.spawn */
 /*----------------------------------------------------------------------------*/
 : executed:executed
 
-  [job] locals| pJob_Executed |
-  pJob_Executed job.id@ locals| iJobId |
-
-  0 0 0 locals| iParticipantNode error bAmDecider |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the context of this __executed job
+  // "executed:executed" .
 
   // find the originating job
-  iJobId ListedJob[].findOriginator discard
-
-  // get the participant node from where this job_begun started
-  pJob_Executed job.participantNode@ to iParticipantNode
+  [job] job.id@ ListedJob[].findOriginator discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process __executed job on this originating node
-
-  // increment the number of __executed jobs received in api state
+  // increment the number of executed jobs received in api state
   ListedJob[] ssn::incExecuted
   ListedJob[] ssn::traceSession
 
-  // decrement the acks remaining
-  ListedJob[] job.dec2pcAcksRmg to bAmDecider
-
-  //[grid].thisNodeName@ "(%v) EXECUTED GOT ACK" .printf
-
-  // if there are acks remaining just exit
-  bAmDecider not if
-    ListedJob[].returnReference
-    [job]:retire
-    exit                                                         // *EARLY EXIT*
-  then
-  //[grid].thisNodeName@ "(%v) EXECUTED AM DECIDER" .printf
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all __executed jobs have been received, so this job is the decider
 
-  [job].tscExecuted
+  // decrement the acks remaining in the originating job
+  ListedJob[].dec2pcDecider if
 
-  // send a job_end to all participants
-  ListedJob[] end:distribute
+    // notify the originating task
+    ListedJob[].task@ task.ack
+    ListedJob[].returnReference
+
+  then
+
   ListedJob[].returnReference
-
   [job]:retire
 ;
 
@@ -91,12 +66,11 @@ cmdSyntax: executed :: executed ;
 
 : executed_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
-    <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "executed:executed"
-    <path>     = "/"
+    <cmdDesc>     = "--desc for job--"
+    <entryPoint>  = "executed:executed"
+    <path>        = "/"
   }
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */

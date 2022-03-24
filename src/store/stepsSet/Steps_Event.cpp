@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Metrics.cpp - Metrics step group                                     */
+/* Steps_Event.cpp - event group                                              */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -8,30 +8,47 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "Node_I.hpp"
-#include "Job.hpp"
-#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Expressions(void)
+void Step::vAddSteps_Event(void)
 {
-  vAddStep("STORE::lockSample"_Stz,   &Step::vExpressionsLockSample);
+  vAddStep("event::handlerName@"_Stz,  &Step::vEventHandlerName);
+  vAddStep("event::name@"_Stz,         &Step::vEventName);
 }
 
 /*----------------------------------------------------------------------------*/
-/* STORE::lockSample -- sample the lock stats                                 */
+/* event::handlerName -- deccode eZK into handler name                        */
 /*----------------------------------------------------------------------------*/
-void Step::vExpressionsLockSample(void)
+void Step::vEventHandlerName(void)
 {
   ENTRY();
-
-  //StreamDef* pStreamDef = *m_pLogicUnit->m_xpStreamDefLft;
-    
-  //InfoSet* pInfoSet = LockMetrics::pSample(pStreamDef);
   
-  //m_pDataStack->vPushPtr(pInfoSet);
+  i8 iZK = m_pDataStack->iPopInt(__func__);
+  Stz* szEventNm = aZK[iZK];
+
+  s32 sHandlerNm;
+  
+  sHandlerNm.vSprint("%s_handler"_Stz,szEventNm);
+  
+  m_pDataStack->vPushStr(sHandlerNm);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* event::name -- deccode eZK into aZK                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vEventName(void)
+{
+  ENTRY();
+  
+  i8 iZK = m_pDataStack->iPopInt(__func__);
+
+  Stz* szEventNm = aZK[iZK];
+  
+  m_pDataStack->vPushStz(szEventNm);
   
   EXIT();
 }

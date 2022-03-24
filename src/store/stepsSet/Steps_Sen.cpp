@@ -8,6 +8,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
+#include "Procedure.hpp"
 
 extern Stz* gszaMungedText[];
 
@@ -32,6 +33,7 @@ void Step::vAddSteps_Sen(void)
   vAddStep("mungedText"_Stz,       &Step::vSenMungedText);
   vAddStep("nop"_Stz,              &Step::vSenNop);
   vAddStep("postpone"_Stz,         &Step::vSenPostpone,         true);
+  vAddStep("procedure:"_Stz,       &Step::vSenProcedure,        true);
   vAddStep("reenter"_Stz,          &Step::vSenReenter);
   vAddStep("see"_Stz,              &Step::vSenSee,              true);
   vAddStep(";"_Stz,                &Step::vSenSemicolon,        true);
@@ -700,6 +702,32 @@ void Step::vSenPostpone(void)
     pCurrentWord->vEncodeCall("encode::call"_Stz);
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* procedure: -- add procedure                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vSenProcedure(void)
+{
+  ENTRY();
+  
+  s4K sProcedure;
+  
+  // to be coded ...
+  for (i8 i_Tkn = 0; /*none*/; i_Tkn++) {
+    m_pInput->vReadToken();
+    if (m_pInput->szChars()->bEqual(";"_Stz))
+      break;
+    if (i_Tkn)
+      sProcedure.vConcat(" "_Stz);
+    sProcedure.vConcat(m_pInput->szChars());
+  }
+
+  TokenVec* pTknVec = TokenVec::pTokeniseSen(sProcedure);
+  
+  Procedure::vAddProcedure(pTknVec);
+
   EXIT();
 }
 

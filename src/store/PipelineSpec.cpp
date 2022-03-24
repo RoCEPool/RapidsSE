@@ -6,7 +6,7 @@
 
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
-#include "PipeworkSpec.hpp"
+#include "PipeSpec.hpp"
 #include "PipelineSpec.hpp"
 #include "SubPipelines.hpp"
 #include "Dynamo.hpp"
@@ -40,7 +40,7 @@ PipelineSpec::PipelineSpec(Scanner *p_Scanner, TagSet *p_JobTags)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  m_pPipeworkSpec = new PipeworkSpec(p_Scanner,p_JobTags,this);
+  m_pPipeWorkSpec = new PipeSpec(p_Scanner,p_JobTags,this);
   m_pSubPipelines = nullptr;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,7 +69,7 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
   }
   
   
-  m_pPipeworkSpec->vGuardedDelete(CN_PIPEWORKSPEC,&m_pPipeworkSpec,
+  m_pPipeWorkSpec->vGuardedDelete(CN_PIPESPEC,&m_pPipeWorkSpec,
                                   CN_PIPELINESPEC,this,(Stz*)__func__);;
 }
 
@@ -86,23 +86,28 @@ bool PipelineSpec::bCompile(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  bool bCompiled = m_pPipeworkSpec->bCompile();
+  bool bCompiled = m_pPipeWorkSpec->bCompile();
   
   return bCompiled;
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
 /*----------------------------------------------------------------------------*/
+void PipelineSpec::vDump(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
+}
 
 /*----------------------------------------------------------------------------*/
 /* get formwoark spec                                                         */
 /*----------------------------------------------------------------------------*/
-PipeworkSpec* PipelineSpec::pPipeworkSpec(void)
+PipeSpec* PipelineSpec::pPipeWorkSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  return m_pPipeworkSpec;
+  return m_pPipeWorkSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,7 +127,7 @@ Stz* PipelineSpec::szPipelineNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  return m_pPipeworkSpec->szPipelineNm();
+  return m_pPipeWorkSpec->szPipelineNm();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +137,7 @@ i8 PipelineSpec::nStages(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  i8 nStages = m_pPipeworkSpec->nItems();
+  i8 nStages = m_pPipeWorkSpec->nItems();
   
   return nStages;
 }
@@ -144,7 +149,7 @@ StageSpec* PipelineSpec::pStageSpec(i8 i_Stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  StageSpec *pStageSpec = m_pPipeworkSpec->pGet(i_Stage);
+  StageSpec *pStageSpec = m_pPipeWorkSpec->pGet(i_Stage);
 
   return pStageSpec;
 }

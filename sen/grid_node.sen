@@ -33,7 +33,7 @@
 
   0 locals| iThisNode  |
 
-  [grid].thisNode@ to iThisNode
+  [grid].thisNodeNo@ to iThisNode
 
   iThisNode iOriginNode == if
     true

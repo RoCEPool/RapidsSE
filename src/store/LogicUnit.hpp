@@ -163,7 +163,7 @@ namespace STORE
     i8    m_i_NextRnd;  // which next repeatable random nummber?
     i8    m_iDebugFlag; // general purpose debug flag
 
-    REF<Job> m_xpJobRef;   // job reference
+    REF<Job> m_xpListedJob;   // listed job reference
     
     REG<Object,CN_NONE>*        m_paReg[C_MAX_REGS];
     i8 m_nRegs;
@@ -253,6 +253,7 @@ namespace STORE
     REG<Operand,        CN_NONE          > m_xpStreamSet;
     REG<Table,          CN_TABLE         > m_xpStreamSetTable;
     REG<SubCall,        CN_NONE          > m_xpSubCall;
+    REG<Pipeline,       CN_PIPELINE      > m_xpSubPipe;
     REG<SubReturn,      CN_NONE          > m_xpSubReturn;
     REG<Operand,        CN_NONE          > m_xpSubset;
 

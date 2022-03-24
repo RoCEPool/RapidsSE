@@ -35,6 +35,7 @@ void Step::vAddSteps_PipelineSpec(void)
 {
   vAddStep("PipelineSpec[]"_Stz,              &Step::vPipelineSpecGet);
   vAddStep("PipelineSpec[].delete"_Stz,       &Step::vPipelineSpecDelete);
+  vAddStep("PipelineSpec[].dump"_Stz,         &Step::vPipelineSpecDump);
   vAddStep("PipelineSpec[].get"_Stz,          &Step::vPipelineSpecGet);
   vAddStep("PipelineSpec[].optimisable"_Stz,  &Step::vPipelineSpecOptimisable);
   vAddStep("PipelineSpec[].set"_Stz,          &Step::vPipelineSpecSet);
@@ -52,6 +53,18 @@ void Step::vPipelineSpecDelete(void)
       ->m_xpPipelineSpec.vGuardedDeleteComponent(CN_PIPELINESPEC,
                                                  CN_STEP,this,(Stz*)__func__);
   }
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PipelineSpec[].dump -- dump the pipeline spec                              */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineSpecDump(void)
+{
+  ENTRY();
+  
+  m_pLogicUnit->m_xpPipelineSpec->vDump();
     
   EXIT();
 }

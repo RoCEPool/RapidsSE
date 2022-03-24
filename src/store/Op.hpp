@@ -31,6 +31,9 @@ namespace STORE
     s32        m_sOpNm;     // name of this operator
     s256       m_sPath;     // operator path
 
+  
+
+  
     s4K        m_sExpr;     // expression for this filter
   
     TagSet*    m_pOpTags;   // tags for the op
@@ -42,8 +45,9 @@ namespace STORE
     i8          m_i_Op;     // is [m_i_Op] in m_pStream
 
     // -- refers to
-    SMA<OpSpec,CN_OPSPEC>    m_pOpSpec;   // specification of this operator
-    SMA<Pipeline,CN_PIPELINE>  m_p_Pipeline_op; // which pipeline
+    SMA<OpSpec,CN_OPSPEC>      m_pOpSpec;  // specification of this operator
+    SMA<Pipeline,CN_PIPELINE>  m_p_PipelineOfOp;  // which pipeline
+    SMA<Pipeline,CN_PIPELINE>  m_p_SubPipeOfOp;   // which sub-pipeline
 
     // -- executed by
     SMA<Task,CN_TASK>      m_pTask;    // which task is currenty executing this op
@@ -137,7 +141,7 @@ namespace STORE
   
     i8   iLocalRobinNext(void);
   
-    Job* pJob(void);
+    Job* pJobOfOp(void);
   
     i8   iMetricsQueued(void);
     void vMetricsQueued(i8 iMetricsQueued);
@@ -172,8 +176,7 @@ namespace STORE
     bool bPause(void);
     bool bPeekLeft(void);
     bool bPeekOoO(void);
-    Pipeline* pPipeline(void);
-    Job* pPipelineJob(void);
+    Pipeline* pPipelineOfOp(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToThis(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
@@ -200,7 +203,8 @@ namespace STORE
     Stz* szStageName(void);
     Stream* pStream(void);
     eYS  eStreamTopology_op(void);
-  
+    Pipeline* pSubPipeOfOp(void);
+
     Task* pTask(void);
     void vTask(Task* pTask);
     i8   nTmpIndexSize(void);

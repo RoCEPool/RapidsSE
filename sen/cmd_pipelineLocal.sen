@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_PipelineLocal.sen -- Local Pipeline Job                                */
+/* cmd_pipelineLocal.sen -- Local Pipeline Job                                */
 /*============================================================================*/
 
-" job_pipelineLocal.sen" .verbose
+" cmd_pipelineLocal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* terminate this pipeline                                                    */
@@ -27,7 +27,7 @@
 
   0 locals| nAcks |
   
-  [job].assertCorrectness
+  [job].assertStructure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
@@ -71,10 +71,10 @@
   
   PipelineSpec[] assert
 
-  PipelineSpec[] [pipeline].create
+  PipelineSpec[] Pipeline[].create
+  Pipeline[].spawnOpTasks
   
-  [pipeline].spawnOpTasks
-
+  
   // run <pre_execute>
 
   "<pre_execute>"
@@ -98,25 +98,27 @@
     [job].addLocal
   then
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
 
   [task].grabLock
 
-    [pipeline].opsOnNode@ to nAcks
+    Pipeline[].opsOnNode@ to nAcks
 
     nAcks if
       nAcks [task].acksRemaining!
     
-      [pipeline].startPipeline if
+      Pipeline[].enqueueStart? if
     
         Marker[].newStartMarker
-        Marker[]\clear [pipeline].op0@ op.enqueOperand
+        Marker[]\clear Pipeline[].op0@ op.enqueOperand
       then
       [task].wait
     else
       [task].dropLock
     then
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -148,11 +150,8 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
 
 : pipelineLocal_cmdTags _cmdTags tagCopy: localJob_tags
   tags{
-    <cmdDesc>  = "--desc for job--"
-
-    <jobKind>  = JK_LOCAL
+    <cmdDesc>    = "--desc for job--"
     //<ddlLock>  = DL_GRAB_READ
-        
     <entryPoint> = "pipelineLocal::local"
 
   }

@@ -8,6 +8,8 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
+#include "LogicUnit.hpp"
+
 #include "SP_Timer.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -30,6 +32,12 @@ void Step::vAddSteps_Timer(void)
   vAddStep("timer.update"_Stz,    &Step::vTimerUpdate);
   
   vAddStep("time.current"_Stz,    &Step::vTimeCurrent);
+  
+  
+  vAddStep("timer[]"_Stz,      &Step::vTimerGet);
+  vAddStep("timer[].get"_Stz,  &Step::vTimerGet);
+  vAddStep("timer[].set"_Stz,  &Step::vTimerSet);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,6 +252,29 @@ void Step::vTimeCurrent(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* timer[].get -- get timer                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTimerGet(void)
+{
+  ENTRY();
+    
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpTimer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer[].set -- set timer                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTimerSet(void)
+{
+  ENTRY();
+    
+  m_pLogicUnit->m_xpTimer = _pTimer(m_pDataStack->pPopPtr(__func__));
+
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */

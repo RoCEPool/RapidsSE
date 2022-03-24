@@ -20,12 +20,41 @@ void Step::vAddSteps_ListedJob(void)
   vAddStep("ListedJob[]"_Stz,                 &Step::vListedJobPointer);
 
   vAddStep("ListedJob[].assertNoRef"_Stz,     &Step::vListedJobAssertNoRef);
+  vAddStep("ListedJob[].dec2pcDecider"_Stz,   &Step::vListedJobDec2pcDecider);
   vAddStep("ListedJob[].findOriginator"_Stz,  &Step::vListedJobFindOriginator);
   vAddStep("ListedJob[].findParticipant"_Stz, &Step::vListedJobFindParticipant);
   vAddStep("ListedJob[].hasTask"_Stz,         &Step::vListedJobHasTask);
   vAddStep("ListedJob[].references"_Stz,      &Step::vListedJobReferences);
   vAddStep("ListedJob[].returnReference"_Stz, &Step::vListedJobReturn);
   vAddStep("ListedJob[].task@"_Stz,           &Step::vListedJobTaskFetch);
+}
+
+/*----------------------------------------------------------------------------*/
+/* ListedJob[].assertNoRef -- check there is no job reference                 */
+/*----------------------------------------------------------------------------*/
+void Step::vListedJobAssertNoRef(void)
+{
+  ENTRY();
+  
+  if (m_pLogicUnit->m_xpListedJob.pReferencedObject())
+    THROW("ListedJob[].assertNoRef : register still has reference to a job"_Stz);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ListedJob[].dec2pcDecider -- decrement acks remaining for listed job       */
+/*----------------------------------------------------------------------------*/
+void Step::vListedJobDec2pcDecider(void)
+{
+  ENTRY();
+  
+  i8 nAcksWereRemaining;
+  bool bAmDecider = m_pLogicUnit->m_xpListedJob->b2pcDeciderDec(nAcksWereRemaining);
+  
+  m_pDataStack->vPushInt(bAmDecider);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +72,7 @@ void Step::vListedJobFindOriginator(void)
 
 
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpListedJob);
 
 
   m_pDataStack->vPushPtr(pJobFound);
@@ -66,7 +95,7 @@ void Step::vListedJobFindParticipant(void)
 
 
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&m_pLogicUnit->m_xpListedJob);
 
 
   m_pDataStack->vPushPtr(pJobFound);
@@ -81,7 +110,7 @@ void Step::vListedJobHasTask(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
+  Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
   
   m_pDataStack->vPushInt(pJob->pTask() ? true : false);
   
@@ -95,23 +124,10 @@ void Step::vListedJobPointer(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
+  Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
 
   m_pDataStack->vPushPtr(pJob);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ListedJob[].assertNoRef -- check there is no job reference                 */
-/*----------------------------------------------------------------------------*/
-void Step::vListedJobAssertNoRef(void)
-{
-  ENTRY();
-  
-  if (m_pLogicUnit->m_xpJobRef.pReferencedObject())
-    THROW("ListedJob[].assertNoRef : register still has reference to a job"_Stz);
-  
   EXIT();
 }
 
@@ -122,7 +138,7 @@ void Step::vListedJobReferences(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpJobRef.nReferences());
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpListedJob.nReferences());
   
   EXIT();
 }
@@ -134,8 +150,8 @@ void Step::vListedJobReturn(void)
 {
   ENTRY();
   
-  if (m_pLogicUnit->m_xpJobRef.bHasReference())
-    m_pLogicUnit->m_xpJobRef.vReturnRef();
+  if (m_pLogicUnit->m_xpListedJob.bHasReference())
+    m_pLogicUnit->m_xpListedJob.vReturnRef();
 
   EXIT();
 }
@@ -147,7 +163,7 @@ void Step::vListedJobTaskFetch(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
+  Job* pJob = m_pLogicUnit->m_xpListedJob.pReferencedObject();
 
   m_pDataStack->vPushPtr(pJob->pTask());
 

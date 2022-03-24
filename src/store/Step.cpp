@@ -90,8 +90,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Env();
   Step::vAddSteps_ErrorCode();
   Step::vAddSteps_ErrorMarker();
+  Step::vAddSteps_Event();
   Step::vAddSteps_Executable();
-  Step::vAddSteps_Expressions();
   Step::vAddSteps_ExprEval();
 
   Step::vAddSteps_File();
@@ -158,6 +158,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipein();
   Step::vAddSteps_Pipeline();
+  Step::vAddSteps_PipelineOfOp();
   Step::vAddSteps_PipelineSpec();
   Step::vAddSteps_PathIdentifier();
   Step::vAddSteps_PlanOperand();
@@ -178,7 +179,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegFolder();
   Step::vAddSteps_RegNow();
   Step::vAddSteps_RegPath();
-  Step::vAddSteps_RegTimer();
   Step::vAddSteps_RegSends();
   Step::vAddSteps_RowOnce();
   Step::vAddSteps_RowBuffer();
@@ -208,6 +208,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StreamSet();
   Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_SubCall();
+  Step::vAddSteps_SubPipe();
+  Step::vAddSteps_SubPipeOfOp();
   Step::vAddSteps_SubReturn();
   Step::vAddSteps_Subset();
   Step::vAddSteps_Supervisor();
@@ -243,6 +245,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_User();
     
+  Step::vAddSteps_With();
   Step::vAddSteps_Word();
   
   Step::vAddSteps_Zero();

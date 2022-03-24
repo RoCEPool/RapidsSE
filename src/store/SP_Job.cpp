@@ -57,19 +57,13 @@ Stz* SP_Job::sz(Job* pJob)
 
         );
   
-  if (pJob->iAcksOriginal()) {
+  if (pJob->i2pcDeciderOriginal()) {
     vCatf(" AcksRmg %lld (out of %lld)"_Stz
-           ,pJob->iAcksRmg_printOnlyValue()
-           ,pJob->iAcksOriginal()
+           ,pJob->i2pcDeciderRmg_printOnlyValue()
+           ,pJob->i2pcDeciderOriginal()
            );
   }
-  
-  //if (pJob->pPipeline_job()) {
-  //  vCatf(" %s"_Stz
-  //        ,pJob->pPipeline_job()->szPipelineNm()
-  //        );
-  //}
-  
+    
   vCats("}"_Stz);
 
   return (Stz*) &m_caResult[0];

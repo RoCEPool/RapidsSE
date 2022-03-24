@@ -1,32 +1,51 @@
 /*============================================================================*/
-/* job_pipeline.sen -- Distributed Pipeline Job                               */
+/* cmd_pipeline.sen -- Distributed Pipeline Command                           */
 /*============================================================================*/
 
-" job_pipeline.sen" .verbose
+" cmd_pipeline.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
 //                            ON ORIGINATING NODE                             //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run a distributed pipeline from this originating node                      */
+/* coordinate a distributed pipeline command from this job on originator      */
 /*----------------------------------------------------------------------------*/
 : pipeline:origin ( -- <R> )
 
   //"pipeline:origin" .
     
-  [job].assertCorrectness
+  0 0 locals| pJob_Execute pJob_End |
+  
+  
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // ordinary job            / run pre-checks                                 //
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
+  
+  // there should be this immutable job and it shouldnt be in any job list (yet)
+  [job] assert
+  [job].assertStructure
+  [job].assertOrdinary
 
+  // mutable pipelineSpec, pipeline and subpipeline in logicUnit should be null
+  PipelineSpec[] not assert
+  Pipeline[]     not assert
+  SubPipe[]  not assert
+  
+  // immutable op, subPLineOfOp and pipelineOfOp should be null
+  [op]           not assert
+  [subPipeOfOp] not assert
+  [pipelineOfOp] not assert
+
+  // and so we start...
   [job].tscBeginning
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // pre-check
-  
   "<preCheck>" [job].tagSet@ tagSet.hasName if
-    // tag exists..
+    // + tag exists
     
     <preCheck> find execute not if
-      // - preCheck word does not exist
+      // - preCheck word failed
       
       [job].error!
       
@@ -47,22 +66,25 @@
   then
 
 
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //                           become an originator                           //
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // passed pre-checks       / become an originator (coordinator) on this node//
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // add this job to originator job list
   [job].addOriginator
+  [job].assertOriginator
 
-  "<show_command>" sysargs::tagSet@ tagSet.hasName
-  if
-    //<cmd> "pipeline:origin: %v\n" .printf
+  "<show_command>" sysargs::tagSet@ tagSet.hasName if
     <cmd> .
+    //<cmd> "pipeline:origin: %v\n" .printf
     //jobs::seeRlist
-
     //[system].bpa
   then
 
+
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // is originator           / compile pipeline statement                     //
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile pipeline statement on origin to check its syntax
@@ -131,37 +153,81 @@
   PipelineSpec[] not assert
 
 
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //           distribute participants of this job and execute them           //
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // pipeline is beginning   / broadcast this job as the distributed pipeline //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   [job].error@ not if
     // + compiled without error..
     
-    [task].grabLock
-    
-    // set the no of acks expected by originator job
-    //   to be the number of defined nodes in the grid
-    [grid].knownNodes [job] job.acksRemaining!
-
-    // set acks for originator task
-    1 [task].acksRemaining!
-
     "pipeline:begin" [job].entryPoint!
-    job::distributeParticipants
     
+    [task].grabLock
+      [job] job:broadcast
     [task].wait
+
+    [job].tscBegun
+  then
+ 
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // pipeline has begun      / broadcast a job to schedule pipeline to execute//
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
+   
+  [job].error@ not if
+
+    // "ORIGIN: broadcast execute" .
+
+    [job].tscExecuting
+
+    [job] job_Execute::new to pJob_Execute
+
+    [task].grabLock
+      pJob_Execute job:broadcast
+    [task].wait
+
+    [job].tscExecuted
+
+    pJob_Execute job.delete
+  then
+  
+  
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // pipeline has executed   / broadcast a job to schedule pipeline to end    //
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
+
+  // distribute end
+
+  [job].error@ not if
+
+    // "ORIGIN: broadcast end" .
+    
+    [job].tscEnding
+    
+    [job] job_End::new to pJob_End
+
+    [task].grabLock
+      pJob_End job:broadcast
+    [task].wait
+
+    [job].tscEnded
+
+    pJob_End job.delete
   then
 
 
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
-  //                      we're back as the originator                        //
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // pipeline has ended      / become ordinary job                            //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   [job].removeOriginator
+  [job].assertOrdinary
+
+
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
+  // ordinary job            / this job exits                                 //
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
   
-  [session].hasCascade@ not
-  if
+  [session].hasCascade@ not if
       
     [ddlLock].testDrop
     ListedJob[].assertNoRef
@@ -198,7 +264,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* begin pipeline job on participant node                                     */
+/* begin the op sequence for pipeline command on participant node             */
 /*----------------------------------------------------------------------------*/
 : pipeline:begin ( -- )
 
@@ -206,7 +272,7 @@
 
   [job].progressReset
   
-  [job].assertCorrectness
+  [job].assertStructure
 
   ListedJob[].assertNoRef
   
@@ -220,7 +286,7 @@
   <path> str.toStrVec Path[].set
 
   // set participant node of job
-  [grid].thisNode@ [job].participantNode!
+  [grid].thisNodeNo@ [job].participantNodeNo!
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -240,13 +306,12 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create pipeline from spec and spawn tasks for ops
   
-  PipelineSpec[] [pipeline].create
-  //"pipeline:begin post [pipeline].create" [job].progress
+  PipelineSpec[] Pipeline[].create
   
-  [pipeline].spawnOpTasks
-  //"pipeline:begin post [pipeline].spawnOpTasks" [job].progress
-
-
+  // Pipeline[].dump
+  
+  Pipeline[].spawnOpTasks
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has begun on this node
   
@@ -258,7 +323,8 @@
   // add job to participant list
   [job].tscParticipant
   [job].addParticipant
-  [job].assertCorrectness
+  [job].assertParticipant
+  [job].assertStructure
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -281,7 +347,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute pipeline job on participant node                                   */
+/* execute the op sequence for pipeline command on participant node           */
 /*----------------------------------------------------------------------------*/
 : pipeline:execute ( -- )
 
@@ -289,7 +355,8 @@
   
   0 locals| nAcks |
   
-  [job].assertCorrectness
+  [job].assertStructure
+  [job].assertParticipant
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -304,7 +371,7 @@
   // acquire ddl lock
   job::acquireDdlLock
   
-  [job].assertCorrectness
+  [job].assertStructure
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -327,26 +394,16 @@
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ???? enqueue start-marker to start op to execute the pipeline job
+  // enqueue start-marker to start op to execute the pipeline job
+
+  Pipeline[] to SubPipe[]
+   
+  // SubPipe[].dump
+     
+  subPipe:exe
+
+  nullptr to SubPipe[]
   
-  [task].grabLock
-
-    [pipeline].opsOnNode@ to nAcks
-
-    nAcks if
-      nAcks [task].acksRemaining!
-    
-      [pipeline].startPipeline if
-    
-        Marker[].newStartMarker
-        Marker[]\clear [pipeline].op0@ op.enqueOperand
-      then
-      [task].wait
-    else
-      [task].dropLock
-    then
-    
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has executed
@@ -377,14 +434,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end pipeline job on participant node                                       */
+/* end the op sequence for pipeline command on participant node               */
 /*----------------------------------------------------------------------------*/
 : pipeline:end ( -- )
 
   // "pipeline:end" .
 
-  [job].assertCorrectness
-  
+  [job].assertStructure
+  [job].assertParticipant
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job is ending
@@ -404,7 +462,7 @@
   // remove job from plist
   
   [job].removeParticipant
-  
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply ended to originator
@@ -425,14 +483,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* cancel pipeline job on participant node                                    */
+/* cancel op sequence for pipeline command on participant node                */
 /*----------------------------------------------------------------------------*/
 : pipeline:cancel ( -- )
 
   // "pipeline:cancel" .
   
-  [job].assertCorrectness
-  
+  [job].assertStructure
+  [job].assertParticipant
+
     // [ senCompiler::current@ word.name@ encode::push ] .
 
   JP_CANCELING [job].phase!
@@ -441,7 +500,7 @@
 
 
   [job].removeParticipant
-    
+
   [job] cancelled:reply
 
   JS_DELETABLE [job].state!

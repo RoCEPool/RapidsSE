@@ -86,7 +86,7 @@ void Step::vOptimiserNew(void)
   else
   if (m_pOp.bIsNotNull()) {
     RASSERT(m_pJob.bIsNull());
-    pJob = m_pOp->pPipelineJob();
+    pJob = m_pOp->pJobOfOp();
   }
   else {
     NEVER_REACH;

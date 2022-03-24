@@ -72,6 +72,7 @@ namespace STORE
     static void vAddSteps_Env(void);
     static void vAddSteps_ErrorCode(void);
     static void vAddSteps_ErrorMarker(void);
+    static void vAddSteps_Event(void);
     static void vAddSteps_Executable(void);
     static void vAddSteps_ExprEval(void);
 
@@ -122,8 +123,7 @@ namespace STORE
     static void vAddSteps_MetaTable(void);
     static void vAddSteps_Memory(void);
     static void vAddSteps_Monitor(void);
-    static void vAddSteps_Expressions(void);
-
+ 
     static void vAddSteps_NamedBuffer(void);
     static void vAddSteps_Network(void);
     static void vAddSteps_Node(void);
@@ -141,6 +141,7 @@ namespace STORE
     static void vAddSteps_Parcel(void);
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
+    static void vAddSteps_PipelineOfOp(void);
     static void vAddSteps_PipelineSpec(void);
     static void vAddSteps_PathIdentifier(void);
     static void vAddSteps_PlanOperand(void);
@@ -164,7 +165,6 @@ namespace STORE
     static void vAddSteps_RegNow(void);
     static void vAddSteps_RegPath(void);
     static void vAddSteps_Pipein(void);
-    static void vAddSteps_RegTimer(void);
     static void vAddSteps_RegSends(void);
     static void vAddSteps_RowOnce(void);
     static void vAddSteps_RowBuffer(void);
@@ -193,6 +193,8 @@ namespace STORE
     static void vAddSteps_StreamSet(void);
     static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_SubCall(void);
+    static void vAddSteps_SubPipe(void);
+    static void vAddSteps_SubPipeOfOp(void);
     static void vAddSteps_SubReturn(void);
     static void vAddSteps_Subset(void);
     static void vAddSteps_Supervisor(void);
@@ -227,9 +229,9 @@ namespace STORE
   
     static void vAddSteps_User(void);
  
+    static void vAddSteps_With(void);
     static void vAddSteps_Word(void);
 
-    
     static void vAddSteps_Zero(void);
   
     /*------------------------------------------------------------------------*/
