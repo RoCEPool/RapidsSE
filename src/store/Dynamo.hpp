@@ -14,12 +14,12 @@ namespace STORE
     friend class STORE::PipeSpec;
 
   private:
-    TagSet*       m_p_JobTags;       // tag set from job
+    TagSet*    m_p_JobTags;       // tag set from job
     
-    Stz*          m_szPipelineStmt;
-    PipeSpec*    m_p_PipelineSpec;  // the pipeline spec
+    Stz*       m_szPipelineStmt;
+    PipeSpec*  m_p_PipeSpec;      // the pipeline spec
     
-    bool          m_bWasOptimised;   // stmt was optimised
+    bool       m_bWasOptimised;   // stmt was optimised
   
     // must be last
     Footer m_xFooter;
