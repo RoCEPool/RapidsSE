@@ -283,8 +283,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SCHEDULER,
   /* */ CN_SCHEMA,
   /* */ CN_SEAPI,
-  /* */ CN_SECTION,
-  /* */ CN_SECTIONSPEC,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
   /* */ CN_SENCOMPILER,
@@ -342,7 +340,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SUBCALL,
-  /* */ CN_SUBPIPELINES,
+  /* */ CN_SUBPIPESPECS,
   /* */ CN_SUBRETURN,
   /* */ CN_SYSCALL,
   /* */ CN_SYSMETRICS,
@@ -694,8 +692,6 @@ static Stz* aCN[]
   /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
   /* */ "SEAPI"_Stz,                // CN_SEAPI
-  /* */ "SECTION"_Stz,              // CN_SECTION
-  /* */ "SECTIONSPEC"_Stz,          // CN_SECTIONSPEC
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
@@ -753,7 +749,7 @@ static Stz* aCN[]
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SUBCALL"_Stz,              // CN_SUBCALL
-  /* */ "SUBPIPELINES"_Stz,         // CN_SUBPIPELINES
+  /* */ "SUBPIPESPECS"_Stz,         // CN_SUBPIPESPECS
   /* */ "SUBRETURN"_Stz,            // CN_SUBRETURN
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS

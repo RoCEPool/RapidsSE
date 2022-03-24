@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Dissect.hpp"
-#include "SubPipelines.hpp"
+#include "SubPipeSpecs.hpp"
 #include "Optimiser.hpp"
 
 
@@ -60,7 +60,7 @@ Board* Dissect::pDissectSpec(PipeSpec* pPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
         
-  SubPipelines* pSubPipelines = pPipeSpec->pSubPipelines();
+  SubPipeSpecs* pSubPipelines = pPipeSpec->pSubPipeSpecs();
   if (pSubPipelines) {
     i8 nSubPipelines = pSubPipelines->nItems();
     for (i8 i_SubPipeline = 0; i_SubPipeline < nSubPipelines; i_SubPipeline++) {

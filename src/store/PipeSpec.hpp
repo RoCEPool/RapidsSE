@@ -8,7 +8,7 @@
 
 
 namespace STORE { class Dynamo;
-                  class StageSpec; class OpSpec; class SubPipelines; }
+                  class StageSpec; class OpSpec; class SubPipeSpecs; }
 
 namespace STORE
 {
@@ -23,7 +23,7 @@ namespace STORE
   
     s32  m_sPipelineNm;    // pipeline name
     
-    SubPipelines* m_pSubPipelines;
+    SubPipeSpecs* m_pSubPipeSpecs;
   
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
@@ -48,7 +48,7 @@ namespace STORE
     Stz* szPipelineNm(void);
     i8 nStages(void);
     StageSpec* pStageSpec(i8 i_Stage);
-    SubPipelines* pSubPipelines(void);
+    SubPipeSpecs* pSubPipeSpecs(void);
 
     Footer* aFooter(void);
   

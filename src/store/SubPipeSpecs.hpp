@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SubPipelines.hpp -- List of Sub-Pipeline Specifications                    */
+/* SubPipeSpecs.hpp -- List of Sub-Pipeline Specifications                    */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class SubPipelines : public ListNL_t<PipeSpec>
+  class SubPipeSpecs : public ListNL_t<PipeSpec>
   {
   private:
    
@@ -18,8 +18,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    SubPipelines(void);
-   ~SubPipelines(void) noexcept(false);
+    SubPipeSpecs(void);
+   ~SubPipeSpecs(void) noexcept(false);
   
   private:
   
@@ -27,7 +27,7 @@ namespace STORE
 
   };
 
-SubPipelines* _pSubPipelines(void* aAddr);
+SubPipeSpecs* _pSubPipeSpecs(void* aAddr);
 }
 
 /*============================================================================*/
