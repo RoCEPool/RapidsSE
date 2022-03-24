@@ -6,6 +6,6 @@
 ../../tests/tests1N4P/Filter/testList
 ../../tests/tests1N4P/Limit/testList
 ../../tests/tests1N4P/Projections/testList
-../../tests/tests1N1P/Transliterate/testList
+//../../tests/tests1N1P/Transliterate/testList
 ../../tests/tests1N4P/BackEnd/testList
 ../../tests/tests1N4P/BackEnd_SF0001/testList
