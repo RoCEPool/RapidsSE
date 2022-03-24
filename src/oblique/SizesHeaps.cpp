@@ -143,7 +143,6 @@
 #include "PlannerLock.hpp"
 
 #include "Dynamo.hpp"
-#include "Optimus.hpp"
 
 #include "Procedure.hpp"
 
@@ -451,7 +450,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OpMetrics),          HT_T_TINY    ,0 FILL }, // CN_OPMETRICS
   { sizeof(OpSpec),             HT_T_MEDIUM  ,0 FILL }, // CN_OPSPEC
   { sizeof(Optimiser),          HT_T_TINY    ,0 FILL }, // CN_OPTIMISER
-  { sizeof(Optimus),            HT_T_TINY    ,0 FILL }, // CN_OPTIMUS
   { sizeof(OtherOperand),       HT_T_TINY    ,0 FILL }, // CN_OTHEROPERAND
 
   { 'P' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__P__
