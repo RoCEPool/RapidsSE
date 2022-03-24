@@ -22,22 +22,28 @@ enum eFM : u2 // function macros
   // arithmetic operators
 
   // add
+  /*  */ FM_ADD_ANYUNK,           // any + unk
   /*  */ FM_ADD_BCDBCD,           // bcd + bcd
   /*  */ FM_ADD_FLTFLT,           // flt + flt
   /*  */ FM_ADD_INTINT,           // int + int
+  /*  */ FM_ADD_UNKANY,           // unk + any
 
   // divide
+  /*  */ FM_DIV_ANYUNK,           // any / unk
   /*  */ FM_DIV_BCDBCD,           // bcd / bcd
   /*  */ FM_DIV_FLTFLT,           // flt / flt
   /*  */ FM_DIV_INTINT,           // int / int
+  /*  */ FM_DIV_UNKANY,           // unk / any
 
   // modulo
   /*  */ FM_MOD_INTINT,          // int % int
 
   // multiply
+  /*  */ FM_MUL_ANYUNK,           // any + unk
   /*  */ FM_MUL_BCDBCD,           // bcd * bcd
   /*  */ FM_MUL_FLTFLT,           // flt * flt
   /*  */ FM_MUL_INTINT,           // int * int
+  /*  */ FM_MUL_UNKANY,           // unk + any
 
   // negate
   /*  */ FM_NEG_BCD,             // -bcd
@@ -45,9 +51,11 @@ enum eFM : u2 // function macros
   /*  */ FM_NEG_INT,             // -int
 
   // subtract
+  /*  */ FM_SUB_ANYUNK,           // any + unk
   /*  */ FM_SUB_BCDBCD,           // bcd - bcd
   /*  */ FM_SUB_FLTFLT,           // flt - flt
   /*  */ FM_SUB_INTINT,           // int - int
+  /*  */ FM_SUB_UNKANY,           // unk + any
 
   // sum
   /*  */ FM_SUM_BCDBCD,           // sum(bcd,bcd)
@@ -316,22 +324,28 @@ static Stz* aFM[]
   // arithmetic operators
 
   // add
+  /*  */ "_ADD_ANYUNK"_Stz,
   /*  */ "_ADD_BCDBCD"_Stz,
   /*  */ "_ADD_FLTFLT"_Stz,
   /*  */ "_ADD_INTINT"_Stz,
+  /*  */ "_ADD_UNKANY"_Stz,
 
   // divide
+  /*  */ "_DIV_ANYUNK"_Stz,
   /*  */ "_DIV_BCDBCD"_Stz,
   /*  */ "_DIV_FLTFLT"_Stz,
   /*  */ "_DIV_INTINT"_Stz,
+  /*  */ "_DIV_UNKANY"_Stz,
 
   // modulo
   /*  */ "_MOD_INTINT"_Stz,
 
   // multiply
+  /*  */ "_MUL_ANYUNK"_Stz,
   /*  */ "_MUL_BCDBCD"_Stz,
   /*  */ "_MUL_FLTFLT"_Stz,
   /*  */ "_MUL_INTINT"_Stz,
+  /*  */ "_MUL_UNKANY"_Stz,
 
   // negate
   /*  */ "_NEG_BCD"_Stz,
@@ -339,9 +353,11 @@ static Stz* aFM[]
   /*  */ "_NEG_INT"_Stz,
 
   // subtract
+  /*  */ "_SUB_ANYUNK"_Stz,
   /*  */ "_SUB_BCDBCD"_Stz,
   /*  */ "_SUB_FLTFLT"_Stz,
   /*  */ "_SUB_INTINT"_Stz,
+  /*  */ "_SUB_UNKANY"_Stz,
 
   // sum
   /*  */ "_SUM_BCDBCD"_Stz,

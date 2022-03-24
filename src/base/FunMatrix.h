@@ -75,38 +75,19 @@ static eFM eMacro_ExtractSecond[DM_ENUMS] =
 // ADD
 
 static eFM eMacro_Add[DM_ENUMS][DM_ENUMS] = {
-           //   NONE     BCD            BOL       DTE            FLT            INT            IVL        IVY      TME            TSP            VCH      UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  1 BCD  */ { FM_NONE, FM_ADD_BCDBCD, FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  2 BOL  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  3 DTE  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,   FM_NONE, FM_NONE/*?*/,  FM_NONE,       FM_NONE, FM_NONE  },
-/*  4 FLT  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_ADD_FLTFLT, FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  5 INT  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE/*?*/,  FM_NONE,       FM_ADD_INTINT, FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  6 IVL  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  7 IVY  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  8 TME  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE/*?*/,  FM_NONE,       FM_NONE/*?*/,  FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  9 TSP  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/* 10 VCH  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/* 11 UNK  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  }
-};
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// SUM
-
-static eFM eMacro_Sum[DM_ENUMS][DM_ENUMS] = {
-           //   NONE     BCD            BOL       DTE            FLT            INT            IVL        IVY      TME            TSP            VCH      UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  1 BCD  */ { FM_NONE, FM_SUM_BCDBCD, FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  2 BOL  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  3 DTE  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,   FM_NONE, FM_NONE/*?*/,  FM_NONE,       FM_NONE, FM_NONE  },
-/*  4 FLT  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_SUM_FLTFLT, FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  5 INT  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE/*?*/,  FM_NONE,       FM_SUM_INTINT, FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  6 IVL  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  7 IVY  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  8 TME  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE/*?*/,  FM_NONE,       FM_NONE/*?*/,  FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/*  9 TSP  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/* 10 VCH  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/* 11 UNK  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  }
+           //   NONE     BCD            BOL            DTE            FLT            INT            IVL            IVY            TME            TSP            VCH            UNK
+/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE  },
+/*  1 BCD  */ { FM_NONE, FM_ADD_BCDBCD, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_ADD_ANYUNK  },
+/*  2 BOL  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_ADD_ANYUNK  },
+/*  3 DTE  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE,       FM_ADD_ANYUNK  },
+/*  4 FLT  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_ADD_FLTFLT, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_ADD_ANYUNK  },
+/*  5 INT  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_ADD_INTINT, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_ADD_ANYUNK  },
+/*  6 IVL  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_ADD_ANYUNK  },
+/*  7 IVY  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_ADD_ANYUNK  },
+/*  8 TME  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_ADD_ANYUNK  },
+/*  9 TSP  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_ADD_ANYUNK  },
+/* 10 VCH  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_ADD_ANYUNK  },
+/* 11 UNK  */ { FM_NONE, FM_ADD_UNKANY, FM_ADD_UNKANY, FM_ADD_UNKANY, FM_ADD_UNKANY, FM_ADD_UNKANY, FM_ADD_UNKANY, FM_ADD_UNKANY, FM_ADD_UNKANY, FM_ADD_UNKANY, FM_ADD_UNKANY, FM_ADD_UNKANY  }
 };
 
 static eDM eMacro_AddResult[DM_ENUMS][DM_ENUMS] = {
@@ -129,19 +110,19 @@ static eDM eMacro_AddResult[DM_ENUMS][DM_ENUMS] = {
 // DIVIDE
 
 static eFM eMacro_Div[DM_ENUMS][DM_ENUMS] = {
-           //   NONE     BCD            BOL       DTE            FLT            INT            IVL            IVY            TME            TSP        VCH      UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE  },
-/*  1 BCD  */ { FM_NONE, FM_DIV_BCDBCD, FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE  },
-/*  2 BOL  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE  },
-/*  3 DTE  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,   FM_NONE, FM_NONE  },
-/*  4 FLT  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_DIV_FLTFLT, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE  },
-/*  5 INT  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE/*?*/,  FM_NONE,       FM_DIV_INTINT, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE  },
-/*  6 IVL  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE  },
-/*  7 IVY  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE  },
-/*  8 TME  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE/*?*/,  FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE  },
-/*  9 TSP  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE  },
-/* 10 VCH  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE  },
-/* 11 UNK  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE  }
+           //   NONE     BCD            BOL            DTE            FLT            INT            IVL            IVY            TME            TSP            VCH            UNK
+/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_DIV_UNKANY  },
+/*  1 BCD  */ { FM_NONE, FM_DIV_BCDBCD, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_DIV_UNKANY  },
+/*  2 BOL  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_DIV_UNKANY  },
+/*  3 DTE  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE,       FM_DIV_UNKANY  },
+/*  4 FLT  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_DIV_FLTFLT, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_DIV_UNKANY  },
+/*  5 INT  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_DIV_INTINT, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_DIV_UNKANY  },
+/*  6 IVL  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_DIV_UNKANY  },
+/*  7 IVY  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_DIV_UNKANY  },
+/*  8 TME  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_DIV_UNKANY  },
+/*  9 TSP  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_DIV_UNKANY  },
+/* 10 VCH  */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_DIV_UNKANY  },
+/* 11 UNK  */ { FM_NONE, FM_DIV_UNKANY, FM_DIV_UNKANY, FM_DIV_UNKANY, FM_DIV_UNKANY, FM_DIV_UNKANY, FM_DIV_UNKANY, FM_DIV_UNKANY, FM_DIV_UNKANY, FM_DIV_UNKANY, FM_DIV_UNKANY, FM_DIV_UNKANY  }
 };
 
 static eDM eMacro_DivResult[DM_ENUMS][DM_ENUMS] = {
@@ -193,7 +174,7 @@ static eFM eMacro_Mod[DM_ENUMS][DM_ENUMS] = {
 /*  8 TME  */ { FM_NONE, FM_NONE, FM_NONE, FM_NONE,  FM_NONE, FM_NONE/*?*/, FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE, FM_NONE  },
 /*  9 TSP  */ { FM_NONE, FM_NONE, FM_NONE, FM_NONE,  FM_NONE, FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE, FM_NONE  },
 /* 10 VCH  */ { FM_NONE, FM_NONE, FM_NONE, FM_NONE,  FM_NONE, FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE, FM_NONE  },
-/* 11 UNK  */ { FM_NONE, FM_NONE, FM_NONE, FM_NONE,  FM_NONE, FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE, FM_NONE  }
+/* 11 UNK  */ { FM_NONE, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY  }
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -212,7 +193,7 @@ static eFM eMacro_Mul[DM_ENUMS][DM_ENUMS] = {
 /*  8 TME  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE/*?*/,    FM_NONE,       FM_NONE/*?*/,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
 /*  9 TSP  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,         FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
 /* 10 VCH  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,         FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
-/* 11 UNK  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,         FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  }
+/* 11 UNK  */ { FM_NONE, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY, FM_MUL_UNKANY  }
 };
 
 static eDM eMacro_MulResult[DM_ENUMS][DM_ENUMS] = {
@@ -329,6 +310,24 @@ static eDM eMacro_SubResult[DM_ENUMS][DM_ENUMS] = {
 /* 10 UNK  */ { DM_NONE, DM_NONE, DM_UNK,   DM_NONE,      DM_UNK,     DM_UNK,       DM_UNK,     DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    }
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// SUM
+
+static eFM eMacro_Sum[DM_ENUMS][DM_ENUMS] = {
+    //   NONE     BCD            BOL       DTE            FLT            INT            IVL        IVY      TME            TSP            VCH      UNK
+/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
+/*  1 BCD  */ { FM_NONE, FM_SUM_BCDBCD, FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
+/*  2 BOL  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
+/*  3 DTE  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE/*?*/,  FM_NONE,   FM_NONE, FM_NONE/*?*/,  FM_NONE,       FM_NONE, FM_NONE  },
+/*  4 FLT  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_SUM_FLTFLT, FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
+/*  5 INT  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE/*?*/,  FM_NONE,       FM_SUM_INTINT, FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
+/*  6 IVL  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
+/*  7 IVY  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
+/*  8 TME  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE/*?*/,  FM_NONE,       FM_NONE/*?*/,  FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
+/*  9 TSP  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
+/* 10 VCH  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
+/* 11 UNK  */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  }
+};
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

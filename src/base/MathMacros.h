@@ -610,6 +610,69 @@
   }
 
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// UNKNOWN and ANY
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _ADD_ANYUNK(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _DIV_ANYUNK(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _MUL_ANYUNK(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _SUB_ANYUNK(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  ANY and UNKNOWN
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _ADD_UNKANY(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _DIV_UNKANY(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _MUL_UNKANY(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _SUB_UNKANY(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
 
 /*============================================================================*/
 /* end                                                                        */
