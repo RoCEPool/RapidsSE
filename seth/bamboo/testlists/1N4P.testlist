@@ -11,7 +11,7 @@
 ../../tests/tests1N4P/Projections/testList
 ../../tests/tests1N4P/Regression/testList
 ../../tests/tests1N4P/Combined/testList
-//../../tests/tests1N4P/Transliterate/testList
+../../tests/tests1N4P/Transliterate/testList
 ../../tests/tests1N4P/BackEnd/testList
 ../../tests/tests1N4P/BackEnd_SF0001/testList
 ../../tests/tests1N4P/Compiler/testList
