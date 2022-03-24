@@ -2369,7 +2369,9 @@ public:
   void vTokenVecDelete(void);
   void vTokenVecDump(void);
   void vTokenVecNew(void);
+  void vTokenVecRemoveToken(void);
   void vTokenVecTokenise(void);
+  void vTokenVecToString(void);
 
   // trace
   void vTraceOff(void);

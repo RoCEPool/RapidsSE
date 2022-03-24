@@ -9,10 +9,25 @@
 /*----------------------------------------------------------------------------*/
 : pipeSee:entry
 
+  <cmd> locals| sCmd |
+      
   "PIPESEE: " .
-
   <cmd> .
+  
+  
+  tokenVec::new locals| pTknVec |
 
+  <cmd> pTknVec tokenVec.tokenise
+  pTknVec tokenVec.dump
+  
+  0 pTknVec tokenVec.removeToken
+  
+  pTknVec tokenVec.toString .
+  
+  pTknVec tokenVec::delete
+  
+  
+  "retiring" .
   [cmd]:retire
 ;
 

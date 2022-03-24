@@ -2,7 +2,7 @@
 /* _nsp - nested subpipe testing                                              */
 /*============================================================================*/
 
-pipeSee:
+pipeSee
 pipeline nestedPipeTest
 begin
 

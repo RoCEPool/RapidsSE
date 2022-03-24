@@ -407,7 +407,7 @@
 /*----------------------------------------------------------------------------*/
 : [cmd]:retire
 
-  [job].tagSet@ tagSet.asStr .
+  // [job].tagSet@ tagSet.asStr .
   
   [job].addRetired
   
