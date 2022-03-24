@@ -324,6 +324,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
     RASSERT(   bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz)
+            || bDELETE_RULE(CN_DYNAMO, "pCompile"_Stz)
             || bDELETE_RULE(CN_STEP, "vPipeSpecDelete"_Stz)
             );
   }
