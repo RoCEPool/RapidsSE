@@ -66,7 +66,7 @@ namespace STORE
   
     eYF  eParcelForward(void);
     void vParcelForward(eYF eParcelForward);
-    PipelineSpec* pPipelineSpec(void);
+    PipeSpec* pPipeSpec(void);
   
     void vSpecificNode(i8 i_SpecificNode);
     i8   iSpecificNode(void);

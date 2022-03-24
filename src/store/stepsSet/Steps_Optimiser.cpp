@@ -47,8 +47,8 @@ void Step::vOptimiserDissect(void)
 {
   ENTRY();
     
-  PipelineSpec* pUnOptPlineSpec =
-    _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
+  PipeSpec* pUnOptPlineSpec =
+    _pPipeSpec(m_pDataStack->pPopPtr(__func__));
 
   m_pLogicUnit->m_xpOptimiser->vDissect(pUnOptPlineSpec);
 

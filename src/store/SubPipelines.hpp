@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 
 namespace STORE
 {
-  class SubPipelines : public ListNL_t<PipelineSpec>
+  class SubPipelines : public ListNL_t<PipeSpec>
   {
   private:
    

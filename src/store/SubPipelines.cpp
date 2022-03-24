@@ -21,7 +21,7 @@ __aFooterFunction(SubPipelines)
 /*----------------------------------------------------------------------------*/
 SubPipelines::SubPipelines(void)
     
-: ListNL_t<PipelineSpec>(CN_SUBPIPELINES)
+: ListNL_t<PipeSpec>(CN_SUBPIPELINES)
 
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPELINES, _FOOTER_);

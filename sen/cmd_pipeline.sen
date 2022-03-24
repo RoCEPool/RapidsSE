@@ -28,7 +28,7 @@
   [job].assertOrdinary
 
   // mutable pipelineSpec, pipeline and subpipeline in logicUnit should be null
-  PipelineSpec[] not assert
+  PipeSpec[] not assert
   Pipeline[]     not assert
   SubPipe[]  not assert
   
@@ -95,7 +95,7 @@
   
   ErrorCode[] EC_NONE == if
     // + clean compile
-    to PipelineSpec[]
+    to PipeSpec[]
   else
     // - didnt compile
     ErrorCode[] [job].error!
@@ -123,7 +123,7 @@
   [job].error@ not if
         
     "<optimise>" [job].tagSet@ tagSet.hasName
-    PipelineSpec[].optimisable
+    PipeSpec[].optimisable
     and
     if
       "Would Optimise" .
@@ -133,7 +133,7 @@
     
     Optimiser[].new
     
-//    PipelineSpec[] Optimiser[].dissect
+//    PipeSpec[] Optimiser[].dissect
 //    Optimiser[].optimise
 //    Optimiser[].weave discard
 
@@ -144,13 +144,13 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up
   
-  PipelineSpec[] if
-    PipelineSpec[].delete
+  PipeSpec[] if
+    PipeSpec[].delete
   then
   
   Dynamo[]       not assert
   Optimiser[]    not assert
-  PipelineSpec[] not assert
+  PipeSpec[] not assert
 
 
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
@@ -297,7 +297,7 @@
   //"pipeline:begin pre dynamo" [job].progress
   <cmd> Dynamo[].compile
     EC_NONE == assert
-    to PipelineSpec[]
+    to PipeSpec[]
   //"pipeline:begin post Dynamo[].compile" [job].progress
 
   Dynamo[].delete
@@ -306,7 +306,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create pipeline from spec and spawn tasks for ops
   
-  PipelineSpec[] Pipeline[].create
+  PipeSpec[] Pipeline[].create
   
   // Pipeline[].dump
   

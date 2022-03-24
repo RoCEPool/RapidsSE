@@ -18,7 +18,7 @@
 #include "Section.hpp"
 #include "Section.hpp"
 #include "Pipeline.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "SectionSpec.hpp"
 #include "StageSpec.hpp"
 #include "SP_Stage.hpp"

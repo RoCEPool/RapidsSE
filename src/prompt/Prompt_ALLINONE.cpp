@@ -18,7 +18,7 @@
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "StreamDef.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Stream.hpp"
 #include "JobFilePath.hpp"
 #include "Job.hpp"

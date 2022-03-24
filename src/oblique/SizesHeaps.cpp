@@ -138,7 +138,7 @@
 #include "OpSpec.hpp"
 
 #include "PathIdentifier.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Pipeline.hpp"
 #include "PlannerLock.hpp"
 
@@ -235,7 +235,6 @@
 #include "Drafter.hpp"
 #include "SectionSpec.hpp"
 #include "Section.hpp"
-#include "PipeSpec.hpp"
 #include "PipeWork.hpp"
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
@@ -467,7 +466,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Peruse),             HT_T_MEDIUM  ,0 FILL }, // CN_PERUSE
   { sizeof(Pipeline),           HT_T_TINY    ,0 FILL }, // CN_PIPELINE
   { sizeof(PipelineMetrics),    HT_T_TINY    ,0 FILL }, // CN_PIPELINEMETRICS
-  { sizeof(PipelineSpec),       HT_T_TINY    ,0 FILL }, // CN_PIPELINESPEC
   { sizeof(PipeWork),           HT_T_SMALL   ,0 FILL }, // CN_PIPEWORK
   { sizeof(PipeSpec),           HT_T_TINY    ,0 FILL }, // CN_PIPESPEC
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM, -8 FILL }, // CN_PLANDEFINITIONPARSER

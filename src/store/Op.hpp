@@ -15,7 +15,7 @@
 
 namespace BASE { class OperandQueue; }
 
-namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
+namespace STORE { class PipeSpec; class StageSpec; class OpSpec; }
 
 namespace STORE
 {

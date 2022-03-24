@@ -42,7 +42,7 @@
   <cmd> Dynamo[].compile to ErrorCode[]
   ErrorCode[] EC_NONE == if
     // clean compile
-    to PipelineSpec[]
+    to PipeSpec[]
     Dynamo[].delete
   else
     //"got error" .
@@ -50,11 +50,11 @@
     
     [ddlLock].testDrop
 
-    PipelineSpec[].delete
+    PipeSpec[].delete
     Dynamo[].delete
 
     // cross check
-    PipelineSpec[] not assert
+    PipeSpec[] not assert
 
     JS_SIGNALLED [job].state!
       
@@ -69,9 +69,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
   
-  PipelineSpec[] assert
+  PipeSpec[] assert
 
-  PipelineSpec[] Pipeline[].create
+  PipeSpec[] Pipeline[].create
   Pipeline[].spawnOpTasks
   
   

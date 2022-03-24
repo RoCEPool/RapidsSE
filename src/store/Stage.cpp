@@ -17,7 +17,7 @@
 #include "Stage.hpp"
 #include "PipeWork.hpp"
 #include "Pipeline.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "StageSpec.hpp"
 #include "SP_Stage.hpp"
 #include "TagConstants.h" //?

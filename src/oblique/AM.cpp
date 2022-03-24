@@ -84,7 +84,7 @@
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Jobs.hpp"
@@ -323,7 +323,8 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
-    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC,  "~PipelineSpec"_Stz)
+    RASSERT(   bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz)
+            || bDELETE_RULE(CN_STEP, "vPipelineSpecDelete"_Stz)
             );
   }
 
@@ -439,7 +440,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // -- -- -- -- -- -- -- -- -- -- -- --
   // pipelineSpec
     
-  else if (CN_PIPELINESPEC == eInstance) {
+  else if (CN_PIPESPEC == eInstance) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);

@@ -7,7 +7,7 @@
 
 #include "Dynamo.hpp"
 
-#include "SP_PipelineSpec.hpp"
+#include "SP_PipeSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -94,14 +94,14 @@ CardCtl* Optimiser::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* dissect                                                                    */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vDissect(PipelineSpec* pUnOptPipelineSpec)
+void Optimiser::vDissect(PipeSpec* pUnOptPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
    
   m_pUnOptPipelineSpec = pUnOptPipelineSpec;
   
-  SP_PipelineSpec spPipelineSpec(m_pUnOptPipelineSpec);
-  vTrace("Optimiser: %s\n"_Stz,spPipelineSpec.sz());
+  SP_PipeSpec spPipeSpec(m_pUnOptPipelineSpec);
+  vTrace("Optimiser: %s\n"_Stz,spPipeSpec.sz());
       
   Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipelineSpec);
   
@@ -159,7 +159,7 @@ Card_SubSet* Optimiser::pPaste(void)
 /*----------------------------------------------------------------------------*/
 /* set m_pUnOptPipelineSpec                                                   */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vPipelineSpec(PipelineSpec* pUnOptPipelineSpec)
+void Optimiser::vPipeSpec(PipeSpec* pUnOptPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
@@ -197,11 +197,11 @@ void Optimiser::vPushBoard(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* run dynamo                                                                 */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vToPipelineSpec(PipelineSpec* pPipelineSpec)
+void Optimiser::vToPipeSpec(PipeSpec* pPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
  
-  vPipelineSpec(pPipelineSpec);
+  vPipeSpec(pPipeSpec);
   
   delete m_pBench->pPop();
   

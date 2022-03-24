@@ -7,7 +7,7 @@
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "PipeSpec.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -376,11 +376,11 @@ void StageSpec::vParcelForward(eYF eParcelForward)
 /*----------------------------------------------------------------------------*/
 /* get i_Stage                                                                */
 /*----------------------------------------------------------------------------*/
-//PipelineSpec* StageSpec::pPipelineSpec(void)
+//PipeSpec* StageSpec::pPipeSpec(void)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
 //
-//  return m_pPipeWorkSpec->pPipelineSpec();
+//  return m_pPipeWorkSpec->pPipeSpec();
 //}
 
 /*----------------------------------------------------------------------------*/

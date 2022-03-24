@@ -57,7 +57,7 @@ void SP_Pipework::vPipeline(Pipeline* pPipeline, bool bDescend)
     
   vCatf("Pipeline %s %p "
         "on Grid %s N%lldP%lld "
-        "using PipelineSpec %p"_Stz
+        "using PipeSpec %p"_Stz
         
         ,pPipeline->szPipelineNm()
         ,pPipeline
@@ -66,7 +66,7 @@ void SP_Pipework::vPipeline(Pipeline* pPipeline, bool bDescend)
         ,pGrid->nKnownNodes()
         ,AM::PTNMAP::nPtnsPerNode()
         
-        ,pPipeline->pPipelineSpec()
+        ,pPipeline->pPipeSpec()
         );
   
   if (bDescend) {

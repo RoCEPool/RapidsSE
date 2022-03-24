@@ -15,7 +15,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -23,7 +23,7 @@
 #include "Marker.hpp"
 
 #include "SP_Pipeline.hpp"
-#include "SP_PipelineSpec.hpp"
+#include "SP_PipeSpec.hpp"
 
 #include "Dynamo.hpp"
 #include "TagConstants.h"
@@ -52,15 +52,15 @@ void Step::vDynamoCompile(void)
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
       
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
-  PipelineSpec* pPipelineSpec = pDynamo->pCompile(sPipelineStmt);
+  PipeSpec* pPipeSpec = pDynamo->pCompile(sPipelineStmt);
     
-  if (pPipelineSpec) {
+  if (pPipeSpec) {
     if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
-      SP_PipelineSpec spPipelineSpec(pPipelineSpec);
-      vTraceM("%s\n"_Stz,spPipelineSpec.sz());
+      SP_PipeSpec spPipeSpec(pPipeSpec);
+      vTraceM("%s\n"_Stz,spPipeSpec.sz());
     }
     
-    m_pDataStack->vPushPtr(pPipelineSpec);
+    m_pDataStack->vPushPtr(pPipeSpec);
     m_pDataStack->vPushInt(EC_NONE);
   }
   else {

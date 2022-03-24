@@ -216,7 +216,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PERUSE,
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINEMETRICS,
-  /* */ CN_PIPELINESPEC,
   /* */ CN_PIPEWORK,
   /* */ CN_PIPESPEC,
   /* */ CN_PLANDEFINITIONPARSER,
@@ -629,7 +628,6 @@ static Stz* aCN[]
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
-  /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC
   /* */ "PIPEWORK"_Stz,             // CN_PIPEWORK
   /* */ "PIPESPEC"_Stz,             // CN_PIPESPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER

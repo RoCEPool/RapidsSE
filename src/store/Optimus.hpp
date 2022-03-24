@@ -11,7 +11,7 @@ namespace STORE
 {
   class Optimus : public Object
   {  
-    friend class STORE::PipelineSpec;
+    friend class STORE::PipeSpec;
 
   private:
     Job*          m_p_PipelineJob;       // job this dynamo is associated with

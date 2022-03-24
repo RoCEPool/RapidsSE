@@ -164,7 +164,7 @@ void LifeGuard_t<CLASS>::vAssertNew(bool bTrace)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipelineSpec
     
-  else if (CN_PIPELINESPEC == m_eInstance) {
+  else if (CN_PIPESPEC == m_eInstance) {
     if (m_bTrace && bTrace)
       vTrace("LifeGuard_t new %12s:%-3lld %p\n"_Stz
              ,aCN[m_eInstance],m_eInstance,m_pInstance);

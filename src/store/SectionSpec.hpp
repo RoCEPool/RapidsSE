@@ -22,7 +22,7 @@ namespace STORE
   private:
     s32  m_sSectionNm; // section name
 
-    PipelineSpec* m_pPipelineSpec; // which pipeline spec
+    PipeSpec* m_pPipeSpec; // which pipeline spec
     
     // must be last
     Footer m_xFooter;
@@ -31,7 +31,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    SectionSpec(Stz* szSectionNm, PipelineSpec* pPipelineSpec);
+    SectionSpec(Stz* szSectionNm, PipeSpec* pPipeSpec);
    ~SectionSpec(void) noexcept(false);
      
     Stz* szSectionNm(void);

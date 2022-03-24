@@ -824,9 +824,9 @@ void Job::vPrintJobLine(void)
   LogicUnit* pLogicUnit = m_pTask->pLogicUnit();
   
   if (pLogicUnit) {
-    if (pLogicUnit->m_xpPipelineSpec.bIsNotNull())
+    if (pLogicUnit->m_xpPipeSpec.bIsNotNull())
       vTrace("%s "_Stz
-             ,pLogicUnit->m_xpPipelineSpec->szPipelineNm()
+             ,pLogicUnit->m_xpPipeSpec->szPipelineNm()
              );
     vTrace("%s "_Stz
            ,aLH[pLogicUnit->m_eDdlLocked]

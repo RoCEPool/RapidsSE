@@ -41,7 +41,7 @@
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "NamedBuffer.hpp"
 #include "Optimiser.hpp"
 
@@ -228,7 +228,7 @@ namespace STORE
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
-    REG<PipelineSpec,   CN_PIPELINESPEC  > m_xpPipelineSpec;
+    REG<PipeSpec,       CN_PIPESPEC      > m_xpPipeSpec;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
     REG<Pot,            CN_POT           > m_xpPot;
     REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;

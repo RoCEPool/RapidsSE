@@ -396,8 +396,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("PipelineSpec[]"_Stz)) {
-    pCurrentWord->vEncodeCall("PipelineSpec[].set"_Stz);
+  else if (szTerm->bSame("PipeSpec[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PipeSpec[].set"_Stz);
     EXIT();
     return;
   }

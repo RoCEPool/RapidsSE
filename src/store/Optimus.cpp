@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Optimus.hpp"
 #include "Job.hpp"
 

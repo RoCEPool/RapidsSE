@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "SectionSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -19,14 +19,14 @@ __aFooterFunction(SectionSpec)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SectionSpec::SectionSpec(Stz* szSectionNm,
-                         PipelineSpec* pPipelineSpec)
+                         PipeSpec* pPipeSpec)
 : ListNL_t<StageSpec>(CN_SECTIONSPEC)
 , LifeGuard_t<SectionSpec>(this,CN_SECTIONSPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SECTIONSPEC,_FOOTER_);
   
   m_sSectionNm      = szSectionNm;
-  m_pPipelineSpec   = pPipelineSpec;
+  m_pPipeSpec   = pPipeSpec;
 
   _checkInitialised_(CN_SECTIONSPEC);
   
@@ -75,7 +75,7 @@ i8 SectionSpec::i_SectionSpec(void)
   
   NEVER_REACH;
   
-  i8 i_SectionSpec = C_UNKNOWN; // m_pPipelineSpec->iFind(this);
+  i8 i_SectionSpec = C_UNKNOWN; // m_pPipeSpec->iFind(this);
   
   return i_SectionSpec;
 }

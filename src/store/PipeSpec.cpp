@@ -14,7 +14,7 @@
 #include "Grid.hpp"
 #include "TagConstants.h"
 
-#include "SP_PipeworkSpec.hpp"
+#include "SP_PipeSpec.hpp"
 #include "SP_Token.hpp"
 
 
@@ -31,8 +31,7 @@ __aFooterFunction(PipeSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipeSpec::PipeSpec(Scanner *p_Scanner, TagSet *p_JobTags,
-                           PipelineSpec* pPipelineSpec)
+PipeSpec::PipeSpec(Scanner *p_Scanner, TagSet *p_JobTags)
     
 : ListNL_t<StageSpec>(CN_PIPESPEC)
 , LifeGuard_t<PipeSpec>(this, CN_PIPESPEC)
@@ -41,7 +40,6 @@ PipeSpec::PipeSpec(Scanner *p_Scanner, TagSet *p_JobTags,
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
   m_sPipelineNm   = "(unknown)"_Stz;
-  m_pPipelineSpec = pPipelineSpec;
   m_pSubPipelines = nullptr;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,8 +67,8 @@ PipeSpec::~PipeSpec(void) noexcept(false)
   
   if (m_pSubPipelines) {
     
-    while (PipelineSpec *pSubPipelineSpec = m_pSubPipelines->pPop())
-      delete pSubPipelineSpec;
+    while (PipeSpec *pSubPipeline = m_pSubPipelines->pPop())
+      delete pSubPipeline;
 
     delete m_pSubPipelines;
   }
@@ -159,6 +157,18 @@ Stz* PipeSpec::szPipelineNm(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
   return m_sPipelineNm.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* number of stages                                                           */
+/*----------------------------------------------------------------------------*/
+i8 PipeSpec::nStages(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+
+  i8 nStages = nItems();
+  
+  return nStages;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,17 +308,17 @@ bool PipeSpec::bCollectSubPipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  PipelineSpec* pSubPipelineSpec = new PipelineSpec(m_p_Scanner,m_p_JobTags);
+  PipeSpec* pSubPipeSpec = new PipeSpec(m_p_Scanner,m_p_JobTags);
 
-  if (! pSubPipelineSpec->bCompile()) {
-    delete pSubPipelineSpec;
+  if (! pSubPipeSpec->bCompile()) {
+    delete pSubPipeSpec;
     return false;
   }
   
   if (! m_pSubPipelines)
     m_pSubPipelines = new SubPipelines;
 
-  m_pSubPipelines->vAppend(pSubPipelineSpec);
+  m_pSubPipelines->vAppend(pSubPipeSpec);
 
   return true;
 }
@@ -1119,7 +1129,7 @@ bool PipeSpec::bPass3_include(Stz *szIncludePipNm)
 
   Dynamo *pDynamo = new Dynamo(pWrdTagSet);
 
-  PipelineSpec *pIncludePipelineSpec = pDynamo->pCompile(sPipelineSmt.szStz());
+  PipeSpec *pIncludePipeSpec = pDynamo->pCompile(sPipelineSmt.szStz());
 
   delete pDynamo;
 
