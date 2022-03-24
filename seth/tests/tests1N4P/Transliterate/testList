@@ -12,7 +12,7 @@ indexJoin.test
 indexJoinHash.test
 //loopJoinBroadcast1.test
 //loopJoinBroadcast2.test
-//minMax.test
+minMax.test
 project.test
 //selectTypes.test
 //top.test
