@@ -15,7 +15,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "Pipework.hpp"
+#include "PipeWork.hpp"
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
@@ -37,7 +37,7 @@ __aFooterFunction(Stage)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stage::Stage(StageSpec *pStageSpec, Pipework* pPipework)
+Stage::Stage(StageSpec *pStageSpec, PipeWork* pPipework)
     : LifeGuard_t<Stage>(this, CN_STAGE)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
@@ -197,7 +197,7 @@ i8 Stage::nOpsOnNode(i8 iNode, i8 iOrigin) {
 /*----------------------------------------------------------------------------*/
 /* get piepline                                                               */
 /*----------------------------------------------------------------------------*/
-Pipework *Stage::pPipework(void) {
+PipeWork *Stage::pPipework(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
   return m_pPipework;

@@ -8,7 +8,7 @@
 
 
 namespace STORE { class Dynamo;
-                  class PipeworkSpec; class StageSpec; class OpSpec;
+                  class PipeSpec; class StageSpec; class OpSpec;
                   class SubPipelines; }
 
 namespace STORE
@@ -22,7 +22,7 @@ namespace STORE
 
   private:
   
-    PipeworkSpec* m_pPipeworkSpec;
+    PipeSpec* m_pPipeworkSpec;
 
     SubPipelines* m_pSubPipelines;
   
@@ -45,7 +45,7 @@ namespace STORE
     void vDump(void);
     TagSet* pJobTags(void);
     Stz* szPipelineNm(void);
-    PipeworkSpec* pPipeworkSpec(void);
+    PipeSpec* pPipeworkSpec(void);
     i8 nStages(void);
     StageSpec* pStageSpec(i8 i_Stage);
     SubPipelines* pSubPipelines(void);

@@ -235,8 +235,8 @@
 #include "Drafter.hpp"
 #include "SectionSpec.hpp"
 #include "Section.hpp"
-#include "PipeworkSpec.hpp"
-#include "Pipework.hpp"
+#include "PipeSpec.hpp"
+#include "PipeWork.hpp"
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
 
@@ -468,8 +468,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Pipeline),           HT_T_TINY    ,0 FILL }, // CN_PIPELINE
   { sizeof(PipelineMetrics),    HT_T_TINY    ,0 FILL }, // CN_PIPELINEMETRICS
   { sizeof(PipelineSpec),       HT_T_TINY    ,0 FILL }, // CN_PIPELINESPEC
-  { sizeof(Pipework),           HT_T_SMALL   ,0 FILL }, // CN_PIPEWORK
-  { sizeof(PipeworkSpec),       HT_T_TINY    ,0 FILL }, // CN_PIPEWORKSPEC
+  { sizeof(PipeWork),           HT_T_SMALL   ,0 FILL }, // CN_PIPEWORK
+  { sizeof(PipeSpec),           HT_T_TINY    ,0 FILL }, // CN_PIPESPEC
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM, -8 FILL }, // CN_PLANDEFINITIONPARSER
   { sizeof(PlannerLock),        HT_T_TINY    ,0 FILL }, // CN_PLANNERLOCK
   { sizeof(PlanNode),           HT_T_TINY    , -8 FILL }, // CN_PLANNODE

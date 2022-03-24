@@ -17,7 +17,7 @@
 #include "Op.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
-#include "Pipework.hpp"
+#include "PipeWork.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -859,7 +859,7 @@ void Step::vJobPipeToOp0(void)
   // move to AM
 
   Pipeline* pPipeline = pJob->pPipelineX();
-  Pipework* pPipework = pPipeline->pPipework();
+  PipeWork* pPipework = pPipeline->pPipework();
 
   Stage*    pStage0   = pPipework->pGet(0);
   Stream*   pStand0   = pStage0->pGet(0);

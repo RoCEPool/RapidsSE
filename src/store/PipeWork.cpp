@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Pipework.cpp -- Pipework                                                   */
+/* PipeWork.cpp -- PipeWork                                                   */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -11,8 +11,8 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "Pipework.hpp"
-#include "PipeworkSpec.hpp"
+#include "PipeWork.hpp"
+#include "PipeSpec.hpp"
 #include "StageSpec.hpp"
 #include "Pipeline.hpp"
 
@@ -22,17 +22,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Pipework,CN_PIPEWORK)
-__aNewFunction(Pipework,CN_PIPEWORK)
-__vDeleteFunction(Pipework,CN_PIPEWORK)
-__aFooterFunction(Pipework)
+__pCastFunction(STORE,PipeWork,CN_PIPEWORK)
+__aNewFunction(PipeWork,CN_PIPEWORK)
+__vDeleteFunction(PipeWork,CN_PIPEWORK)
+__aFooterFunction(PipeWork)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pipework::Pipework(Pipeline* pPipeline, PipeworkSpec* pPipeworkSpec)
-: LifeGuard_t<Pipework>(this,CN_PIPEWORK)
+PipeWork::PipeWork(Pipeline* pPipeline, PipeSpec* pPipeworkSpec)
+: LifeGuard_t<PipeWork>(this,CN_PIPEWORK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
@@ -49,7 +49,7 @@ Pipework::Pipework(Pipeline* pPipeline, PipeworkSpec* pPipeworkSpec)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Pipework::~Pipework(void) noexcept(false)
+PipeWork::~PipeWork(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
@@ -63,7 +63,7 @@ Pipework::~Pipework(void) noexcept(false)
 
   vClear();
 
-//  m_pPipeworkSpec->vGuardedDelete(CN_PIPEWORKSPEC,&m_pPipeworkSpec,
+//  m_pPipeworkSpec->vGuardedDelete(CN_PIPESPEC,&m_pPipeworkSpec,
 //                                  CN_PIPEWORK,this,(Stz*)__func__);
 }
 
@@ -75,7 +75,7 @@ Pipework::~Pipework(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* cancel the pipeline                                                        */
 /*----------------------------------------------------------------------------*/
-bool Pipework::bCancel(Task* pTriggeringTask)
+bool PipeWork::bCancel(Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
@@ -91,7 +91,7 @@ bool Pipework::bCancel(Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* get formwork spec                                                          */
 /*----------------------------------------------------------------------------*/
-PipeworkSpec* Pipework::pPipeworkSpec(void)
+PipeSpec* PipeWork::pPipeworkSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
@@ -101,7 +101,7 @@ PipeworkSpec* Pipework::pPipeworkSpec(void)
 /*----------------------------------------------------------------------------*/
 /* get op 0                                                                   */
 /*----------------------------------------------------------------------------*/
-Op* Pipework::pOp0(void)
+Op* PipeWork::pOp0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
@@ -114,7 +114,7 @@ Op* Pipework::pOp0(void)
 /*----------------------------------------------------------------------------*/
 /* get number of ops to be excuted on given node                              */
 /*----------------------------------------------------------------------------*/
-i8 Pipework::nOpsOnNode(i8 iNode)
+i8 PipeWork::nOpsOnNode(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
@@ -132,7 +132,7 @@ i8 Pipework::nOpsOnNode(i8 iNode)
 /*----------------------------------------------------------------------------*/
 /* get pipeline                                                               */
 /*----------------------------------------------------------------------------*/
-Pipeline* Pipework::pPipeline(void)
+Pipeline* PipeWork::pPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
@@ -142,7 +142,7 @@ Pipeline* Pipework::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* set up the pipeline job                                                    */
 /*----------------------------------------------------------------------------*/
-void Pipework::vSetupJob(void)
+void PipeWork::vSetupJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
@@ -185,7 +185,7 @@ void Pipework::vSetupJob(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operaator jobs for the pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void Pipework::vSpawnOpTasks(void)
+void PipeWork::vSpawnOpTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
@@ -205,7 +205,7 @@ void Pipework::vSpawnOpTasks(void)
 /*----------------------------------------------------------------------------*/
 /* get stage 0                                                                */
 /*----------------------------------------------------------------------------*/
-Stage* Pipework::pStage0(void)
+Stage* PipeWork::pStage0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
@@ -217,7 +217,7 @@ Stage* Pipework::pStage0(void)
 /*----------------------------------------------------------------------------*/
 /* get stream 0                                                               */
 /*----------------------------------------------------------------------------*/
-Stream* Pipework::pStream0(void)
+Stream* PipeWork::pStream0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
@@ -235,7 +235,7 @@ Stream* Pipework::pStream0(void)
 /*----------------------------------------------------------------------------*/
 /* create the formwork for pipeline                                           */
 /*----------------------------------------------------------------------------*/
-void Pipework::vCreatePipework(void)
+void PipeWork::vCreatePipework(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
 

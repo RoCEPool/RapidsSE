@@ -218,7 +218,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PIPELINEMETRICS,
   /* */ CN_PIPELINESPEC,
   /* */ CN_PIPEWORK,
-  /* */ CN_PIPEWORKSPEC,
+  /* */ CN_PIPESPEC,
   /* */ CN_PLANDEFINITIONPARSER,
   /* */ CN_PLANNERLOCK,
   /* */ CN_PLANNODE,
@@ -631,7 +631,7 @@ static Stz* aCN[]
   /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
   /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC
   /* */ "PIPEWORK"_Stz,             // CN_PIPEWORK
-  /* */ "PIPEWORKSPEC"_Stz,         // CN_PIPEWORKSPEC
+  /* */ "PIPESPEC"_Stz,             // CN_PIPESPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
   /* */ "PLANNERLOCK"_Stz,          // CN_PLANNERLOCK
   /* */ "PLANNODE"_Stz,             // CN_PLANNODE

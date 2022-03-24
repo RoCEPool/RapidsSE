@@ -5,7 +5,7 @@
 #include "BASE.h"
 
 #include "Pipeline.hpp"
-#include "Pipework.hpp"
+#include "PipeWork.hpp"
 #include "Grid.hpp"
 
 #include "SP_Pipeline.hpp"
@@ -71,7 +71,7 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
   
   if (bDescend) {
     
-    Pipework* pFormWork = pPipeline->pPipework();
+    PipeWork* pFormWork = pPipeline->pPipework();
     
     for (i8 i_Stage = 0; i_Stage < pFormWork->nItems(); i_Stage++ ) {
       Stage* pStage = pFormWork->pGet(i_Stage);

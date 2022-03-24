@@ -6,7 +6,7 @@
 
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
-#include "PipeworkSpec.hpp"
+#include "PipeSpec.hpp"
 #include "PipelineSpec.hpp"
 #include "SubPipelines.hpp"
 #include "Dynamo.hpp"
@@ -40,7 +40,7 @@ PipelineSpec::PipelineSpec(Scanner *p_Scanner, TagSet *p_JobTags)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  m_pPipeworkSpec = new PipeworkSpec(p_Scanner,p_JobTags,this);
+  m_pPipeworkSpec = new PipeSpec(p_Scanner,p_JobTags,this);
   m_pSubPipelines = nullptr;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,7 +69,7 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
   }
   
   
-  m_pPipeworkSpec->vGuardedDelete(CN_PIPEWORKSPEC,&m_pPipeworkSpec,
+  m_pPipeworkSpec->vGuardedDelete(CN_PIPESPEC,&m_pPipeworkSpec,
                                   CN_PIPELINESPEC,this,(Stz*)__func__);;
 }
 
@@ -103,7 +103,7 @@ void PipelineSpec::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get formwoark spec                                                         */
 /*----------------------------------------------------------------------------*/
-PipeworkSpec* PipelineSpec::pPipeworkSpec(void)
+PipeSpec* PipelineSpec::pPipeworkSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   

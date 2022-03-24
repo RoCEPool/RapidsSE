@@ -6,7 +6,7 @@
 
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
-#include "PipeworkSpec.hpp"
+#include "PipeSpec.hpp"
 #include "PipelineSpec.hpp"
 
 
@@ -23,7 +23,7 @@ __aFooterFunction(StageSpec)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StageSpec::StageSpec(Stz* szStageNm,
-                     PipeworkSpec* pPipeworkSpec)
+                     PipeSpec* pPipeworkSpec)
 : ListNL_t<OpSpec>(CN_STAGESPEC)
 , LifeGuard_t<StageSpec>(this,CN_STAGESPEC)
 {

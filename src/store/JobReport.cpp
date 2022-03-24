@@ -15,7 +15,7 @@
 #include "IndexStream.hpp"
 #include "Table.hpp"
 #include "Pipeline.hpp"
-#include "Pipework.hpp"
+#include "PipeWork.hpp"
 #include "Stage.hpp"
 #include "LogicUnit.hpp"
 #include "Stream.hpp"
@@ -531,7 +531,7 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // each stage in the pipeline
-  Pipework* pPipework = pPipeline->pPipework();
+  PipeWork* pPipework = pPipeline->pPipework();
   for (i8 i_Stage = 0; i_Stage < pPipework->nItems(); i_Stage++) {
     Stage* pStage = pPipework->pGet(i_Stage);
 
@@ -645,7 +645,7 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
 
   // each stage in the pipeline
-  Pipework* pPipework = pPipeline->pPipework();
+  PipeWork* pPipework = pPipeline->pPipework();
   for (i8 i_Stage = 0; i_Stage < pPipework->nItems(); i_Stage++) {
 
     Stage* pStage = pPipework->pGet(i_Stage);

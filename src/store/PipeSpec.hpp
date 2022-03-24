@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PipeworkSpec.hpp -- formwork Specification                                 */
+/* PipeSpec.hpp -- Pipe Specification                                         */
 /*============================================================================*/
 #pragma once
 
@@ -12,10 +12,10 @@ namespace STORE { class Dynamo;
 
 namespace STORE
 {
-  class PipeworkSpec
+  class PipeSpec
           : public ListNL_t<StageSpec>
-          , public LifeGuard_t<PipeworkSpec>
-          , public ListItem_t<PipeworkSpec>
+          , public LifeGuard_t<PipeSpec>
+          , public ListItem_t<PipeSpec>
   {
     friend class STORE::Dynamo;
 
@@ -39,9 +39,9 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    PipeworkSpec(Scanner* p_Scanner, TagSet* p_JobTags,
+    PipeSpec(Scanner* p_Scanner, TagSet* p_JobTags,
                  PipelineSpec* pPipelineSpec);
-   ~PipeworkSpec(void) noexcept(false);
+   ~PipeSpec(void) noexcept(false);
   
     bool bCompile(void);
   
@@ -139,7 +139,7 @@ namespace STORE
 
   };
 
-  PipeworkSpec* _pPipeworkSpec(void* aAddr);
+  PipeSpec* _pPipeSpec(void* aAddr);
 }
 
 /*============================================================================*/

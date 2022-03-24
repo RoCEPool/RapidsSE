@@ -14,7 +14,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "Pipework.hpp"
+#include "PipeWork.hpp"
 #include "Pipeline.hpp"
 #include "PipelineSpec.hpp"
 #include "Job.hpp"
@@ -347,7 +347,7 @@ void Step::vPipelineOfOpStartPipeline(void)
   ENTRY();
   
   Pipeline* pPipelineOfOp = m_pOp->pPipelineOfOp();
-  Pipework* pFormWork = pPipelineOfOp->pPipework();
+  PipeWork* pFormWork = pPipelineOfOp->pPipework();
 
   Stage*    pStage0   = pFormWork->pGet(0);
 
