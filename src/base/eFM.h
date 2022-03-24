@@ -203,6 +203,7 @@ enum eFM : u2 // function macros
   // relational operators
 
   // equal
+  /*  */ FM_EQ_ANYUNK,        // any == unk
   /*  */ FM_EQ_BCDBCD,        // bcd == bcd
   /*  */ FM_EQ_BOLBOL,        // bol == bol
   /*  */ FM_EQ_DTEDTE,        // dte == bcd
@@ -212,9 +213,11 @@ enum eFM : u2 // function macros
   /*  */ FM_EQ_IVYIVY,        // ivy == ivy
   /*  */ FM_EQ_TMETME,        // tme == tme
   /*  */ FM_EQ_TSPTSP,        // tsp == tsp
+  /*  */ FM_EQ_UNKANY,        // unk == any
   /*  */ FM_EQ_VCHVCH,        // vch == vch
 
   // greater than equal
+  /*  */ FM_GE_ANYUNK,        // any >= unk
   /*  */ FM_GE_BCDBCD,        // bcd >= bcd
   /*  */ FM_GE_BOLBOL,        // bol >= bol
   /*  */ FM_GE_DTEDTE,        // dte >= bcd
@@ -224,9 +227,11 @@ enum eFM : u2 // function macros
   /*  */ FM_GE_IVYIVY,        // ivy == ivy
   /*  */ FM_GE_TMETME,        // tme >= tme
   /*  */ FM_GE_TSPTSP,        // tsp >= tsp
+  /*  */ FM_GE_UNKANY,        // unk/any == any/unk
   /*  */ FM_GE_VCHVCH,        // vch >= vch
 
   // greater than
+  /*  */ FM_GT_ANYUNK,        // any > unk
   /*  */ FM_GT_BCDBCD,        // bcd > bcd
   /*  */ FM_GT_BOLBOL,        // bol > bol
   /*  */ FM_GT_DTEDTE,        // dte > bcd
@@ -236,9 +241,11 @@ enum eFM : u2 // function macros
   /*  */ FM_GT_IVYIVY,        // ivy == ivy
   /*  */ FM_GT_TMETME,        // tme > tme
   /*  */ FM_GT_TSPTSP,        // tsp > tsp
+  /*  */ FM_GT_UNKANY,        // unk/any == any/unk
   /*  */ FM_GT_VCHVCH,        // vch > vch
 
   // less than equal
+  /*  */ FM_LE_ANYUNK,        // any <= unk
   /*  */ FM_LE_BCDBCD,        // bcd <= bcd
   /*  */ FM_LE_BOLBOL,        // bol <= bol
   /*  */ FM_LE_DTEDTE,        // dte <= bcd
@@ -248,9 +255,11 @@ enum eFM : u2 // function macros
   /*  */ FM_LE_IVYIVY,        // ivy == ivy
   /*  */ FM_LE_TMETME,        // tme <= tme
   /*  */ FM_LE_TSPTSP,        // tsp <= tsp
+  /*  */ FM_LE_UNKANY,        // unk/any == any/unk
   /*  */ FM_LE_VCHVCH,        // vch <= vch
 
   // less than equal
+  /*  */ FM_LT_ANYUNK,        // any < unk
   /*  */ FM_LT_BCDBCD,        // bcd < bcd
   /*  */ FM_LT_BOLBOL,        // bol < bol
   /*  */ FM_LT_DTEDTE,        // dte < bcd
@@ -260,10 +269,12 @@ enum eFM : u2 // function macros
   /*  */ FM_LT_IVYIVY,        // ivy == ivy
   /*  */ FM_LT_TMETME,        // tme < tme
   /*  */ FM_LT_TSPTSP,        // tsp < tsp
+  /*  */ FM_LT_UNKANY,        // unk/any == any/unk
   /*  */ FM_LT_VCHVCH,        // vch < vch
 
 
   // not equal
+  /*  */ FM_NE_ANYUNK,        // any != unk
   /*  */ FM_NE_BCDBCD,        // bcd != bcd
   /*  */ FM_NE_BOLBOL,        // bol != bol
   /*  */ FM_NE_DTEDTE,        // dte != bcd
@@ -273,6 +284,7 @@ enum eFM : u2 // function macros
   /*  */ FM_NE_IVYIVY,        // ivy == ivy
   /*  */ FM_NE_TMETME,        // tme != tme
   /*  */ FM_NE_TSPTSP,        // tsp != tsp
+  /*  */ FM_NE_UNKANY,        // unk/any == any/unk
   /*  */ FM_NE_VCHVCH,        // vch != vch
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -483,6 +495,7 @@ static Stz* aFM[]
   // relational operators
 
   // equal
+  /*  */ "_EQ_ANYUNK"_Stz,
   /*  */ "_EQ_BCDBCD"_Stz,
   /*  */ "_EQ_BOLBOL"_Stz,
   /*  */ "_EQ_DTEDTE"_Stz,
@@ -492,9 +505,11 @@ static Stz* aFM[]
   /*  */ "_EQ_IVYIVY"_Stz,
   /*  */ "_EQ_TMETME"_Stz,
   /*  */ "_EQ_TSPTSP"_Stz,
+  /*  */ "_EQ_UNKANY"_Stz,
   /*  */ "_EQ_VCHVCH"_Stz,
 
   // greater than equal
+  /*  */ "_GE_ANYUNK"_Stz,
   /*  */ "_GE_BCDBCD"_Stz,
   /*  */ "_GE_BOLBOL"_Stz,
   /*  */ "_GE_DTEDTE"_Stz,
@@ -504,9 +519,11 @@ static Stz* aFM[]
   /*  */ "_GE_IVYIVY"_Stz,
   /*  */ "_GE_TMETME"_Stz,
   /*  */ "_GE_TSPTSP"_Stz,
+  /*  */ "_GE_UNKANY"_Stz,
   /*  */ "_GE_VCHVCH"_Stz,
 
   // greater than
+  /*  */ "_GT_ANYUNK"_Stz,
   /*  */ "_GT_BCDBCD"_Stz,
   /*  */ "_GT_BOLBOL"_Stz,
   /*  */ "_GT_DTEDTE"_Stz,
@@ -516,9 +533,11 @@ static Stz* aFM[]
   /*  */ "_GT_IVYIVY"_Stz,
   /*  */ "_GT_TMETME"_Stz,
   /*  */ "_GT_TSPTSP"_Stz,
+  /*  */ "_GT_UNKANY"_Stz,
   /*  */ "_GT_VCHVCH"_Stz,
 
   // less than
+  /*  */ "_LE_ANYUNK"_Stz,
   /*  */ "_LE_BCDBCD"_Stz,
   /*  */ "_LE_BOLBOL"_Stz,
   /*  */ "_LE_DTEDTE"_Stz,
@@ -528,9 +547,11 @@ static Stz* aFM[]
   /*  */ "_LE_IVYIVY"_Stz,
   /*  */ "_LE_TMETME"_Stz,
   /*  */ "_LE_TSPTSP"_Stz,
+  /*  */ "_LE_UNKANY"_Stz,
   /*  */ "_LE_VCHVCH"_Stz,
 
   // less than equal
+  /*  */ "_LT_ANYUNK"_Stz,
   /*  */ "_LT_BCDBCD"_Stz,
   /*  */ "_LT_BOLBOL"_Stz,
   /*  */ "_LT_DTEDTE"_Stz,
@@ -540,9 +561,11 @@ static Stz* aFM[]
   /*  */ "_LT_IVYIVY"_Stz,
   /*  */ "_LT_TMETME"_Stz,
   /*  */ "_LT_TSPTSP"_Stz,
+  /*  */ "_LT_UNKANY"_Stz,
   /*  */ "_LT_VCHVCH"_Stz,
 
   // not equal
+  /*  */ "_NE_ANYUNK"_Stz,
   /*  */ "_NE_BCDBCD"_Stz,
   /*  */ "_NE_BOLBOL"_Stz,
   /*  */ "_NE_DTEDTE"_Stz,
@@ -552,6 +575,7 @@ static Stz* aFM[]
   /*  */ "_NE_IVYIVY"_Stz,
   /*  */ "_NE_TMETME"_Stz,
   /*  */ "_NE_TSPTSP"_Stz,
+  /*  */ "_NE_UNKANY"_Stz,
   /*  */ "_NE_VCHVCH"_Stz,
 
   // string operators

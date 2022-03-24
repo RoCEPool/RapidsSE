@@ -27,7 +27,8 @@
     }                                                                      \
     *paW++ = bcdArg1.m_iAsI8;                                              \
   }
-
+  
+                                                                           \
 #define _EQ_BCDBCD(eErrorCode)                                             \
   {                                                                        \
     bcdArg1.m_iAsI8 = *(--paW);                                            \
@@ -1101,6 +1102,94 @@
     }                                                                      \
   }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// UNKNOWN
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _EQ_ANYUNK(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _GT_ANYUNK(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+  
+#define _GE_ANYUNK(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+  
+#define _LT_ANYUNK(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+  
+#define _LE_ANYUNK(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+  
+#define _NE_ANYUNK(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _EQ_UNKANY(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _GT_UNKANY(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _GE_UNKANY(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _LT_UNKANY(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _LE_UNKANY(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _NE_UNKANY(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+  
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // VARCHAR
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
