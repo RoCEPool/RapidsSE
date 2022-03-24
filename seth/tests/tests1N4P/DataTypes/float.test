@@ -178,8 +178,6 @@ rows:
 (103.222)
 
 //------------------------------------------------------------------------------
-//TODO: error: label 'L_AddRowToTub' used but not defined
-
 select flt_col8 + 1.44 from datums order by flt_col8;
 rows:
      (null)
