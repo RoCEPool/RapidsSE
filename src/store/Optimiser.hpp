@@ -18,7 +18,7 @@ namespace STORE
   private:
     TagSet* m_p_JobTags;
   
-    PipeSpec* m_pUnOptPipelineSpec;
+    PipeSpec* m_pUnOptPipeSpec;
   
     CardCtl* m_pCardCtl;
   
@@ -44,7 +44,7 @@ namespace STORE
 
     CardCtl* pCardCtl(void);
   
-    void vDissect(PipeSpec* pUnOptPipelineSpec);
+    void vDissect(PipeSpec* pm_pUnOptPipeSpec);
   
     Drafter* pDrafter(void);
 

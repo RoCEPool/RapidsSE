@@ -27,7 +27,7 @@ Optimiser::Optimiser(TagSet* p_JobTags)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
   m_p_JobTags = p_JobTags;
-  m_pUnOptPipelineSpec = nullptr;
+  m_pUnOptPipeSpec = nullptr;
   
   m_pCardCtl = new CardCtl;
   
@@ -94,16 +94,16 @@ CardCtl* Optimiser::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* dissect                                                                    */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vDissect(PipeSpec* pUnOptPipelineSpec)
+void Optimiser::vDissect(PipeSpec* pm_pUnOptPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
    
-  m_pUnOptPipelineSpec = pUnOptPipelineSpec;
+  m_pUnOptPipeSpec = pm_pUnOptPipeSpec;
   
-  SP_PipeSpec spPipeSpec(m_pUnOptPipelineSpec);
+  SP_PipeSpec spPipeSpec(m_pUnOptPipeSpec);
   vTrace("Optimiser: %s\n"_Stz,spPipeSpec.sz());
       
-  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipelineSpec);
+  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipeSpec);
   
   m_pBench->vPush(pBoard);
 
@@ -157,18 +157,18 @@ Card_SubSet* Optimiser::pPaste(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set m_pUnOptPipelineSpec                                                   */
+/* set m_pUnOptPipeSpec                                                   */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vPipeSpec(PipeSpec* pUnOptPipelineSpec)
+void Optimiser::vPipeSpec(PipeSpec* pm_pUnOptPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
-  if (m_pUnOptPipelineSpec) {
-    //delete m_pUnOptPipelineSpec;                                        LEAK!
-    m_pUnOptPipelineSpec = nullptr;
+  if (m_pUnOptPipeSpec) {
+    //delete m_pUnOptPipeSpec;                                        LEAK!
+    m_pUnOptPipeSpec = nullptr;
   }
   
-  m_pUnOptPipelineSpec = pUnOptPipelineSpec;
+  m_pUnOptPipeSpec = pm_pUnOptPipeSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -205,7 +205,7 @@ void Optimiser::vToPipeSpec(PipeSpec* pPipeSpec)
   
   delete m_pBench->pPop();
   
-  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipelineSpec);
+  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipeSpec);
 
   m_pBench->vAppend(pBoard);
 
