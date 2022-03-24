@@ -43,17 +43,28 @@ void HashMap::operator delete(void* pHashMapAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashMap::HashMap(bool bTrace, u8 uNoOfSlots)
+HashMap::HashMap(u8 uNoOfSlots)
 : Object(CN_HASHMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
-  
-  m_bTrace            = bTrace;
-  m_uNoOfSlots = C_HASHMAP_SIZE;
-  m_uNoOfEntries = 0;
+  m_uNoOfSlots          = C_HASHMAP_SIZE;
+  m_uNoOfEntries        = 0;
+
   for(u8 i = 0; i < m_uNoOfSlots; i++)
     m_paMap[i] = nullptr;
-  
+
+#ifdef WITH_HASHMAP_DEBUG
+  m_nHistory            = 0;
+  for(u8 i = 0; i< C_HISTORY_DUR; i++)
+  {
+    xHistory[i].m_uHistoryIndex = 0;
+    xHistory[i].m_uCurrTotalEntries = 0;
+    xHistory[i].m_pKey = nullptr;
+    xHistory[i].m_bDeleted = false;
+    xHistory[i].m_bInserted = false;
+  }
+#endif
+
   _checkInitialised_(CN_HASHMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
@@ -93,12 +104,44 @@ HashMap::~HashMap(void) noexcept(false)
 void HashMap::vAnalysis(void)
 {
   vTrace("HM: (with %llu buckets/slots and %llu total entries)\n"
-         "    Load Factor: %f\n"_Stz,
+         "    Current Load Factor: %f\n"_Stz,
 
          m_uNoOfSlots,
          m_uNoOfEntries,
          (d8)m_uNoOfEntries/m_uNoOfSlots);
+
+#ifdef WITH_HASHMAP_DEBUG
+
+  vTrace("HM History:\n"_Stz);
+
+  for(u8 i =0; (i < C_HISTORY_DUR) && (i < m_nHistory); i++)
+  {
+    vTrace("    #%llu, CurrCap: %llu, Load: %f, Key: %p, Deleted: %d, Inserted: %d\n"_Stz,
+
+           xHistory[i].m_uHistoryIndex,
+           xHistory[i].m_uCurrTotalEntries,
+           (d8)xHistory[i].m_uCurrTotalEntries/m_uNoOfSlots,
+           xHistory[i].m_pKey,
+           xHistory[i].m_bDeleted,
+           xHistory[i].m_bInserted);
+  }
+#endif
 }
+
+#ifdef WITH_HASHMAP_DEBUG
+/*----------------------------------------------------------------------------*/
+/* Save current state to history                                              */
+/*----------------------------------------------------------------------------*/
+void HashMap::vAppendHistory(Object* pKey, bool bDeleted, bool bInserted)
+{
+  xHistory[m_nHistory % C_HISTORY_DUR].m_uHistoryIndex     = m_nHistory;
+  xHistory[m_nHistory % C_HISTORY_DUR].m_uCurrTotalEntries = m_uNoOfEntries;
+  xHistory[m_nHistory % C_HISTORY_DUR].m_pKey              = pKey;
+  xHistory[m_nHistory % C_HISTORY_DUR].m_bDeleted          = bDeleted;
+  xHistory[m_nHistory % C_HISTORY_DUR].m_bInserted         = bInserted;
+  m_nHistory++;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* delete a given key                                                         */
@@ -107,15 +150,24 @@ void HashMap::vDeleteKey(Object* pKey)
 {
   u8 uIndex = uHashFunction(pKey);
   HashMapSlot* pIter1 = m_paMap[uIndex];
+
   if(pIter1 != nullptr)
   {
     if(pIter1->m_pKeyObject == pKey)
     {
+      //If the first entry is the key
       m_paMap[uIndex] = pIter1->m_pNext;
       delete pIter1;
+      ASSERT(1 <= m_uNoOfEntries); //Assert before decrement since unsigned underflow could occur
+      m_uNoOfEntries--;
+
+#ifdef WITH_HASHMAP_DEBUG
+      vAppendHistory(pKey, true, false);
+#endif
     }
     else
     {
+      //Search the rest of the chain for the key
       HashMapSlot* pPrevIter;
       do {
         pPrevIter = pIter1;
@@ -126,8 +178,12 @@ void HashMap::vDeleteKey(Object* pKey)
       {
         pPrevIter->m_pNext = pIter1->m_pNext;
         delete pIter1;
-        ASSERT(1 <= m_uNoOfEntries); //Assert before decrement since unsigned underflow could occur
+        ASSERT(1 <= m_uNoOfEntries);
         m_uNoOfEntries--;
+
+#ifdef WITH_HASHMAP_DEBUG
+        vAppendHistory(pKey, true, false);
+#endif
       }
     }
   }
@@ -166,11 +222,17 @@ void HashMap::vInsertAtFront(Object* pKey, Object* pValue)
   u8 uIndex = uHashFunction(pKey);
 
   HashMapSlot* pIter = m_paMap[uIndex];
+
+  //If key already exists update the value instead of adding a duplicate key entry
   while(pIter != nullptr)
   {
     if(pIter->m_pKeyObject == pKey)
     {
       pIter->m_pValObject = pValue;
+#ifdef WITH_HASHMAP_DEBUG
+      vTrace("Key %p already exists, updating value\n"_Stz, pKey);
+      vAppendHistory(pKey, false, true);
+#endif
       return;
     }
     pIter = pIter->m_pNext;
@@ -181,6 +243,10 @@ void HashMap::vInsertAtFront(Object* pKey, Object* pValue)
   pTmpSlot->m_pNext = m_paMap[uIndex];
   m_paMap[uIndex] = pTmpSlot;
   m_uNoOfEntries++;
+
+#ifdef WITH_HASHMAP_DEBUG
+  vAppendHistory(pKey, false, true);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
