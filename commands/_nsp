@@ -1,0 +1,44 @@
+/*============================================================================*/
+/* _nsp - nested subpipe testing                                              */
+/*============================================================================*/
+
+
+pipeline pipeTest
+begin
+  stage stageA on origin :
+      start
+    | pulse once
+    | echo "pipeTest"
+    | debug all
+    | sink
+    | stageA
+end ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+pipeline pipeTest
+begin
+
+  pipeline sp01
+  begin
+    stage stageA on origin :
+      start
+    | pulse once
+    | echo "sp01"
+    | debug all
+    | sink
+    | stageA
+  end
+
+  stage stageA on origin :
+      start
+    | pulse once
+    | echo "pipeTest"
+    | debug all
+    | sink
+    | stageA
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

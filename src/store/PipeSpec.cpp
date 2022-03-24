@@ -67,8 +67,9 @@ PipeSpec::~PipeSpec(void) noexcept(false)
   
   if (m_pSubPipeSpecs) {
     
-    while (PipeSpec *pSubPipeline = m_pSubPipeSpecs->pPop())
-      delete pSubPipeline;
+    while (PipeSpec *pSubPipeSpec = m_pSubPipeSpecs->pPop())
+      pSubPipeSpec->vGuardedDelete(CN_PIPESPEC, &pSubPipeSpec,
+                                   CN_PIPESPEC, this, (Stz *) __func__);
 
     delete m_pSubPipeSpecs;
   }

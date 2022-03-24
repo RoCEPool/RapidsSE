@@ -324,6 +324,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
     RASSERT(   bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz)
+            || bDELETE_RULE(CN_PIPESPEC, "~PipeSpec"_Stz)
             || bDELETE_RULE(CN_DYNAMO, "pCompile"_Stz)
             || bDELETE_RULE(CN_STEP, "vPipeSpecDelete"_Stz)
             );
@@ -486,6 +487,17 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
     
     RASSERT( bDELETE_RULE(CN_STAGE, "~Stage"_Stz ) );
+  }
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  // subPipeSpecs
+  
+  else if (CN_SUBPIPESPECS == eInstance) {
+    if (bTrace)
+      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+    
+    RASSERT( bDELETE_RULE(CN_PIPESPEC, "~PipeSpec"_Stz ) );
   }
 
   // -- -- -- -- -- -- -- -- -- -- -- --
