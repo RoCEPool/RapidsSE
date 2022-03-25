@@ -149,43 +149,35 @@ void HashMap::vAppendHistory(Object* pKey, bool bDeleted, bool bInserted)
 void HashMap::vDeleteKey(Object* pKey)
 {
   u8 uIndex = uHashFunction(pKey);
-  HashMapSlot* pIter1 = m_paMap[uIndex];
+  HashMapSlot* pIter = m_paMap[uIndex];
+  HashMapSlot* pPrevIter = nullptr;
 
-  if(pIter1 != nullptr)
+  while(pIter != nullptr)
   {
-    if(pIter1->m_pKeyObject == pKey)
+
+    if(pIter->m_pKeyObject == pKey)
     {
-      //If the first entry is the key
-      m_paMap[uIndex] = pIter1->m_pNext;
-      delete pIter1;
-      ASSERT(1 <= m_uNoOfEntries); //Assert before decrement since unsigned underflow could occur
+
+      if(pPrevIter != nullptr)
+        pPrevIter->m_pNext = pIter->m_pNext;
+      else
+        m_paMap[uIndex] = pIter->m_pNext;
+
+      delete pIter;
+
+      //Assert before decrement since unsigned underflow could occur
+      ASSERT(1 <= m_uNoOfEntries);
       m_uNoOfEntries--;
 
 #ifdef WITH_HASHMAP_DEBUG
       vAppendHistory(pKey, true, false);
 #endif
-    }
-    else
-    {
-      //Search the rest of the chain for the key
-      HashMapSlot* pPrevIter;
-      do {
-        pPrevIter = pIter1;
-        pIter1 = pIter1->m_pNext;
-      } while(pIter1 != nullptr && pIter1->m_pKeyObject != pKey);
 
-      if(pIter1 != nullptr)
-      {
-        pPrevIter->m_pNext = pIter1->m_pNext;
-        delete pIter1;
-        ASSERT(1 <= m_uNoOfEntries);
-        m_uNoOfEntries--;
-
-#ifdef WITH_HASHMAP_DEBUG
-        vAppendHistory(pKey, true, false);
-#endif
-      }
+      return;
     }
+
+    pPrevIter = pIter;
+    pIter = pIter->m_pNext;
   }
 }
 
