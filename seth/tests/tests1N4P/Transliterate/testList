@@ -4,7 +4,7 @@ arithmetic_int.test
 boolean.test
 count.test
 date.test
-//decimal.test
+decimal.test
 time.test
 filterInteger.test
 //filterDecimal.test

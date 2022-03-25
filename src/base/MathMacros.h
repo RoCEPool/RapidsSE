@@ -22,6 +22,7 @@
   EC_NONE                                                                  \
 )
 
+// TODO: OVERFLOW CHECK NOT WORKING WITH arg1 = 0 and arg2 is C_MIN
 #define _OF_BCDSUB                                                         \
 (                                                                          \
   (bcdArg1.m_iMantissa < 0 &&                                              \
@@ -154,6 +155,30 @@
           bcdArg1.m_iScale = tmpScale;                                     \
         }                                                                  \
         *paW++ = bcdArg1.m_iAsI8;                                          \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _NEG_BCD(eErrorCode)                                               \
+  {                                                                        \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    if (eErrorCode != EC_NONE ||                                           \
+       bcdArg1.m_iAsI8 == C_DATUM_NULL) {                                  \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      bcdArg1.m_iMantissa = 0;                                             \
+      bcdArg1.m_iScale = bcdArg2.m_iScale;                                 \
+      bcdArg1.m_iMantissa = bcdArg1.m_iMantissa - bcdArg2.m_iMantissa;     \
+      eErrorCode = _OF_BCDSUB;                                             \
+      if(eErrorCode != EC_NONE)                                            \
+      {                                                                    \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else                                                                 \
+      {                                                                    \
+        bcdArg2.m_iMantissa = - bcdArg2.m_iMantissa;                       \
+        *paW++ = bcdArg2.m_iAsI8;                                          \
       }                                                                    \
     }                                                                      \
   }
@@ -360,6 +385,8 @@
   }                                                                      \
 }
 
+#define _NEG_FLT(eErrorCode)                                             \
+  NEVER_REACH
 
 #define _SUB_FLTFLT(eErrorCode)                                          \
 {                                                                        \
@@ -586,6 +613,29 @@
       }                                                                    \
     }                                                                      \
   }
+
+#define _NEG_INT(eErrorCode)                                               \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      iArg1 = 0;                                                           \
+      eErrorCode = _OF_I8SUB;                                              \
+      if(eErrorCode != EC_NONE)                                            \
+      {                                                                    \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else                                                                 \
+      {                                                                    \
+        *paW++ = -iArg2;                                                   \
+      }                                                                    \
+    }                                                                      \
+  }
+
 
 #define _SUB_INTINT(eErrorCode)                                            \
   {                                                                        \

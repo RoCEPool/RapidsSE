@@ -3152,6 +3152,18 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // negate operator
+    if (pTkn->bSame("negate"_Stz)) {
+
+      RASSERT( ! pTkn->bIsString() );
+      RASSERT( ! bLowerBound );
+      RASSERT( ! bUpperBound );
+
+      vPushArithmetic(pExprStack, pExprType, pTkn);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // arithmetic operator
     if (pTkn->bIsArithmetic()) {
 
@@ -3605,38 +3617,40 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
   TypedCell* pTypedCell;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get column types
+  // get first operand type
   eDM eColType1 = (eDM) pExprType->iPop();
-  eDM eColType2 = (eDM) pExprType->iPop();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the logical operator
-  if (pTkn->bSame("+"_Stz)) {
-    sOperation = aFM[eMacro_Add[eColType1][eColType2]];
-    eResult = eMacro_AddResult[eColType1][eColType2];
+  // generate the code for the negate operator
+  if (pTkn->bSame("negate"_Stz)) {
+    sOperation = aFM[eMacro_Neg[eColType1]];
+    eResult = eMacro_NegResult[eColType1];
   }
-  else
-  if (pTkn->bSame("/"_Stz)) {
-    sOperation = aFM[eMacro_Div[eColType1][eColType2]];
-    eResult = eMacro_DivResult[eColType1][eColType2];
+  else {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get second operand type
+    eDM eColType2 = (eDM) pExprType->iPop();
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the arithmetic operator
+    if (pTkn->bSame("+"_Stz)) {
+      sOperation = aFM[eMacro_Add[eColType1][eColType2]];
+      eResult = eMacro_AddResult[eColType1][eColType2];
+    } else if (pTkn->bSame("/"_Stz)) {
+      sOperation = aFM[eMacro_Div[eColType1][eColType2]];
+      eResult = eMacro_DivResult[eColType1][eColType2];
+    } else if (pTkn->bSame("%"_Stz)) {
+      sOperation = aFM[eMacro_Mod[eColType1][eColType2]];
+      eResult = eMacro_ModResult[eColType1][eColType2];
+    } else if (pTkn->bSame("*"_Stz)) {
+      sOperation = aFM[eMacro_Mul[eColType1][eColType2]];
+      eResult = eMacro_MulResult[eColType1][eColType2];
+    } else if (pTkn->bSame("-"_Stz)) {
+      sOperation = aFM[eMacro_Sub[eColType1][eColType2]];
+      eResult = eMacro_SubResult[eColType1][eColType2];
+    } else
+      RASSERT(0);
   }
-  else
-  if (pTkn->bSame("%"_Stz)) {
-    sOperation = aFM[eMacro_Mod[eColType1][eColType2]];
-    eResult = eMacro_ModResult[eColType1][eColType2];
-  }
-  else
-  if (pTkn->bSame("*"_Stz)) {
-    sOperation = aFM[eMacro_Mul[eColType1][eColType2]];
-    eResult = eMacro_MulResult[eColType1][eColType2];
-  }
-  else
-  if (pTkn->bSame("-"_Stz)) {
-    sOperation = aFM[eMacro_Sub[eColType1][eColType2]];
-    eResult = eMacro_SubResult[eColType1][eColType2];
-  }
-  else
-    RASSERT(0);
 
 //  if (m_pNullStack->nValues()) {
 //    sOperation.vConcat("_NC"_Stz);
