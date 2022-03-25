@@ -27,6 +27,9 @@ success
 CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
 success
 
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+success
+
 //------------------------------------------------------------------------------------
 pipeline Q
 begin
@@ -59,7 +62,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // drop the table
-drop table datums;
+drop table lineitem;
 success;
 
 memoryleaks;
@@ -67,7 +70,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table datums;
+  drop table lineitem;
   mute
 
   bye;
