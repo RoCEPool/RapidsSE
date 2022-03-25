@@ -7,7 +7,7 @@ date.test
 decimal.test
 time.test
 filterInteger.test
-//filterDecimal.test
+filterDecimal.test
 indexJoin.test
 indexJoinHash.test
 //loopJoinBroadcast1.test
