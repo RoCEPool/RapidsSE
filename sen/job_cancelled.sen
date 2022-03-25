@@ -33,12 +33,8 @@
   // new a temporary Job_Cancelled
   pJobParticipant job_Cancelled::new locals| pJob_Cancelled |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // send the cancelled job
   pJobParticipant [job].originNodeNo@ pJob_Cancelled job.reply
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob_Cancelled job.delete
 ;
@@ -52,66 +48,28 @@
 /*----------------------------------------------------------------------------*/
 : cancelled:cancelled
 
-  <path> str.toStrVec Path[].set
-  
-  
-  [job] locals| pJob_Cancelled |
-  pJob_Cancelled job.id@ locals| iJobId |
-
-  0 0 0 0 locals| bAmDecider error iParticipantNode |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the context of this __cancelled job
+  // "cancelled:cancelled" .
 
   // find the originating job
-  iJobId ListedJob[].findOriginator discard
-
-  // get the participant node from where this job_begun started
-  pJob_Cancelled job.participantNode@ to iParticipantNode
-
+  [job] job.id@ ListedJob[].findOriginator discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process __begun job on this originating node
-
-  // increment the number of __cancelled jobs received in api state
+  // increment the number of cancelled jobs received in api state
   ListedJob[] ssn::incCancelled
   ListedJob[] ssn::traceSession
 
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining in the originating job
-  ListedJob[] job.dec2pcAcksRmg to bAmDecider
+  ListedJob[].dec2pcDecider if
 
-  // if there are acks remaining just exit
-  bAmDecider not if
+    // notify the originating task
+    ListedJob[].task@ task.ack
     ListedJob[].returnReference
-    cancelled::retire
-    [job]:retire
-    exit                                                         // *EARLY EXIT*
+
   then
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all job_cancelled's have been received, so this job is the decider
-
-  begin
-    ListedJob[].references
-  1 > while
-  repeat
-
-  [job].tscCanceled
-
-
-  // remove the originating job from the originator jobs
-  //[job].removeOriginator
-
-  // notify the originating task
-  ListedJob[].task@ task.ack
   ListedJob[].returnReference
-
-  // delete this completed __cancelled job
-  cancelled::retire
-  
   [job]:retire
 ;
 

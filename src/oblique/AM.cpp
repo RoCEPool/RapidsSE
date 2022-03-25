@@ -84,7 +84,7 @@
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Jobs.hpp"
@@ -262,7 +262,7 @@ void AM::DEMON::vPipeToOp0(Stz* szDemonNm, Operand* pOperand)
   
   Job* pJob = _pJob(pDemonWord->pObject());
   
-  Pipeline* pPipeline = pJob->pPipeline_job();
+  Pipeline* pPipeline = pJob->pPipelineX();
   
   Op* pOp0 = pPipeline->pOp0();
 
@@ -318,12 +318,15 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   // -- -- -- -- -- -- -- -- -- -- -- --
   // formwork spec
 
-  else if (CN_PIPEWORKSPEC == eInstance) {
+  else if (CN_PIPESPEC == eInstance) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
-    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC,  "~PipelineSpec"_Stz)
+    RASSERT(   bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz)
+            || bDELETE_RULE(CN_PIPESPEC, "~PipeSpec"_Stz)
+            || bDELETE_RULE(CN_DYNAMO, "pCompile"_Stz)
+            || bDELETE_RULE(CN_STEP, "vPipeSpecDelete"_Stz)
             );
   }
 
@@ -419,8 +422,8 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
     
-    RASSERT(   bDELETE_RULE(CN_PIPEWORKSPEC, "vFirstSend"_Stz)
-            || bDELETE_RULE(CN_PIPEWORKSPEC, "vOtherSend"_Stz)
+    RASSERT(   bDELETE_RULE(CN_PIPESPEC, "vFirstSend"_Stz)
+            || bDELETE_RULE(CN_PIPESPEC, "vOtherSend"_Stz)
             || bDELETE_RULE(CN_STAGESPEC,    "~StageSpec"_Stz)
             );
   }
@@ -437,9 +440,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   }
   
   // -- -- -- -- -- -- -- -- -- -- -- --
-  // pipelineSpec
+  // pipeSpec
     
-  else if (CN_PIPELINESPEC == eInstance) {
+  else if (CN_PIPESPEC == eInstance) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
@@ -447,7 +450,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     RASSERT(   bDELETE_RULE(CN_DYNAMO,   "pCompile"_Stz           )
             || bDELETE_RULE(CN_DYNAMO,   "vDynamoCompile"_Stz )
             || bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz          )
-            || bDELETE_RULE(CN_STEP,     "vPipelineSpecDelete"_Stz)
+            || bDELETE_RULE(CN_STEP,     "vPipeSpecDelete"_Stz)
             );
   }
 
@@ -460,7 +463,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,
              aCN[eDeleter],eDeleter,pDeleter);
 
-    RASSERT( bDELETE_RULE(CN_PIPEWORK, "~Pipework"_Stz )
+    RASSERT( bDELETE_RULE(CN_PIPEWORK, "~PipeWork"_Stz )
             );
   }
 
@@ -472,7 +475,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
-    RASSERT( bDELETE_RULE(CN_PIPEWORKSPEC, "~PipeworkSpec"_Stz) );
+    RASSERT( bDELETE_RULE(CN_PIPESPEC, "~PipeSpec"_Stz) );
   }
   
   // -- -- -- -- -- -- -- -- -- -- -- --
@@ -484,6 +487,17 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
     
     RASSERT( bDELETE_RULE(CN_STAGE, "~Stage"_Stz ) );
+  }
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  // subPipeSpecs
+  
+  else if (CN_SUBPIPESPECS == eInstance) {
+    if (bTrace)
+      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+    
+    RASSERT( bDELETE_RULE(CN_PIPESPEC, "~PipeSpec"_Stz ) );
   }
 
   // -- -- -- -- -- -- -- -- -- -- -- --
@@ -2368,7 +2382,7 @@ void AM::TASK::vRetire(Task* pTask)
   
   if (Op* pOp = pTask->pOp()) {
     // retiring op of job
-    Job* pJob = pOp->pJob();
+    Job* pJob = pOp->pJobOfOp();
     pJob->vDecActiveOps();
   }
   else
@@ -3055,7 +3069,7 @@ Job* AM::pPipelineJob(void)
 {
   Op* pOp = pThisTLSTask()->pOp();
   
-  Job* pPipelineJob = pOp->pPipeline()->pPipelineJob();
+  Job* pPipelineJob = pOp->pPipelineOfOp()->pPipelineJob();
   
   return pPipelineJob;
 }

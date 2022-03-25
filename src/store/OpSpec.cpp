@@ -7,7 +7,7 @@
 #include "eYX.h"
 
 #include "OpSpec.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "StageSpec.hpp"
 
 

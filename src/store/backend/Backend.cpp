@@ -8,7 +8,7 @@
 
 #include "Grid.hpp"
 #include "OpSpec.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Pipeline.hpp"
 #include "Backend.hpp"
 #include "Job.hpp"

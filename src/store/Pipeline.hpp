@@ -5,7 +5,7 @@
 
 #include "LifeGuard_t.hpp"
 
-namespace STORE { class Pipework; class Stage; class PipelineSpec; }
+namespace STORE { class PipeWork; class Stage; class PipeSpec; }
 
 namespace STORE
 {
@@ -21,13 +21,13 @@ namespace STORE
     s32  m_sPipelineNm;  // name of this pipeline
 
     // -- substructure
-    Pipework* m_pFormWork; // formwork of this pipeline
+    PipeWork* m_pPipeWork; // formwork of this pipeline
 
     // -- belongs to
     Job* m_pPipelineJob;  // which job
   
     // -- refers to
-    PipelineSpec* m_pPipelineSpec; // specification of this pipeline
+    PipeSpec* m_pPipeSpec; // specification of this pipeline
   
     i8   m_i_Origin;    // originating node
   
@@ -55,7 +55,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin);
+    Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 i_Origin);
    ~Pipeline(void) noexcept(false);
   
     void vAddAccum(i8 i_Accum, i8 iValue);
@@ -63,11 +63,12 @@ namespace STORE
     void vCancelled(bool bCancelled);
     bool bCancelled(void);
     void vDropDebugLock(void);
+    void vDump(bool bRecursive=true);
     bool bEarlyExit(void);
     void vEarlyExit(bool bEarlyExit);
     bool bErrored(void);
     void vErrored(bool bErrored);
-    Pipework* pPipework(void);
+    PipeWork* pPipeWork(void);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
     i8   i_Origin(void);
@@ -77,7 +78,7 @@ namespace STORE
     void vOpToPulse(Op* pOpToPulse);
     Job* pPipelineJob(void);
     Stz* szPipelineNm(void);
-    PipelineSpec* pPipelineSpec(void);
+    PipeSpec* pPipeSpec(void);
     bool bPulsed(void);
     void vPulsed(bool bPulsed);
     bool bPulsedLimit(void);

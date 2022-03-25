@@ -17,7 +17,7 @@
 #include "Op.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
-#include "Pipework.hpp"
+#include "PipeWork.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -32,11 +32,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
-  vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
-
   vAddStep("job.class"_Stz,            &Step::vJobClass);
   
-  vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   
   vAddStep("job.entry@"_Stz,           &Step::vJobEntryFetch_other);
@@ -71,17 +68,18 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("[job]"_Stz,                  &Step::vJobGet);
 
+  vAddStep("[job].2pcDecider!"_Stz,      &Step::vJob2pcDeciderStore);
   vAddStep("[job].addDemon"_Stz,         &Step::vJobAddDemon);
   vAddStep("[job].addLocal"_Stz,         &Step::vJobAddLocal);
   vAddStep("[job].addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("[job].addParticipant"_Stz,   &Step::vJobAddParticipant);
   vAddStep("[job].addRetired"_Stz,       &Step::vJobAddRetired);
   vAddStep("[job].assertBegin"_Stz,      &Step::vJobAssertBegin);
-  vAddStep("[job].assertCorrectness"_Stz,&Step::vJobAssertCorrectness);
-  vAddStep("[job].assertNeutral"_Stz,    &Step::vJobAssertNeutral);
+  vAddStep("[job].assertOrdinary"_Stz,   &Step::vJobAssertOrdinary);
   vAddStep("[job].assertOriginator"_Stz, &Step::vJobAssertOriginator);
   vAddStep("[job].assertParticipant"_Stz,&Step::vJobAssertParticipant);
   vAddStep("[job].assertReceived"_Stz,   &Step::vJobAssertReceived);
+  vAddStep("[job].assertStructure"_Stz,  &Step::vJobAssertStructure);
 
   vAddStep("[job].entryPoint@"_Stz,      &Step::vJobEntryPointFetch);
   vAddStep("[job].entryPoint!"_Stz,      &Step::vJobEntryPointStore);
@@ -127,17 +125,15 @@ void Step::vAddSteps_Job(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* job.acksRemaining! -- set acks remaining for this job                      */
+/* job.2pcDecider! -- set acks remaining for this job                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJobAcksRemaining(void)
+void Step::vJob2pcDeciderStore(void)
 {
   ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
+    
   i8 nAcksRemaining = m_pDataStack->iPopInt(__func__);
   
-  pJob->vAcksRmg(nAcksRemaining);
+  m_pJob->v2pcDeciderRmg(nAcksRemaining);
   
   EXIT();
 }
@@ -324,46 +320,29 @@ void Step::vJobAssertBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].assertCorrectness -- assert correctness                              */
+/* [job].assertOrdinary -- assert job is not in originator nor participant set   */
 /*----------------------------------------------------------------------------*/
-void Step::vJobAssertCorrectness(void)
-{
-  ENTRY();
-  
-  //Job* pJob = m_pJob;
-  
-  //vTrace("[job].assertCorrectness\n"_Stz);
-  
-  RASSERT(m_pJob.bIsNotNull());
-  RASSERT(m_pJob->pTask() == this);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [job].assertNeutral -- assert job is not in originator nor participant set   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobAssertNeutral(void)
+void Step::vJobAssertOrdinary(void)
 {
   ENTRY();
     
   if (JL_NONE != m_pJob->eJobList())
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "[job].assertNeutral: "
+           "[job].assertOrdinary: "
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
   
   Job* pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tJobId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "[job].assertNeutral: "
+           "[job].assertOrdinary: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
 
   pJobFound = AM::pParticipatingJobs()->pFindJob(m_pJob->tJobId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "[job].assertNeutral: "
+           "[job].assertOrdinary: "
            "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeNo());
 
@@ -445,6 +424,23 @@ void Step::vJobAssertReceived(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].assertStructure -- assert structural correctness                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAssertStructure(void)
+{
+  ENTRY();
+  
+  //Job* pJob = m_pJob;
+  
+  //vTrace("[job].assertStructure\n"_Stz);
+  
+  RASSERT(m_pJob.bIsNotNull());
+  RASSERT(m_pJob->pTask() == this);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.class -- get the class of the job                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJobClass(void)
@@ -496,23 +492,6 @@ void Step::vJobDelete(void)
   
 
 /*----------------------------------------------------------------------------*/
-/* job.dec2pcAcksRmg -- decrement acks remaining for this job                 */
-/*----------------------------------------------------------------------------*/
-void Step::vJobDec2pcAcksRmg(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 nAcksWereRemaining;
-  bool bAmDecider = pJob->bAcksRmgDec(nAcksWereRemaining);
-  
-  m_pDataStack->vPushInt(bAmDecider);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* [job].entryPoint@ -- fetch the job sen entry code                               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobEntryPointFetch(void)
@@ -528,7 +507,7 @@ void Step::vJobEntryPointFetch(void)
   else
   if (m_pOp.bIsNotNull()) {
     RASSERT(m_pJob.bIsNull());
-    pJob = m_pOp->pPipelineJob();
+    pJob = m_pOp->pJobOfOp();
   }
   else {
     NEVER_REACH;
@@ -603,7 +582,7 @@ void Step::vJobErrorFetch(void)
   else
   if (m_pOp.bIsNotNull()) {
     RASSERT(m_pJob.bIsNull());
-    pJob = m_pOp->pPipelineJob();
+    pJob = m_pOp->pJobOfOp();
   }
   else {
     NEVER_REACH;
@@ -675,7 +654,7 @@ void Step::vJobGet(void)
   else
   if (m_pOp.bIsNotNull()) {
     RASSERT(m_pJob.bIsNull());
-    pJob = m_pOp->pPipelineJob();
+    pJob = m_pOp->pJobOfOp();
   }
   else {
     NEVER_REACH;
@@ -879,10 +858,10 @@ void Step::vJobPipeToOp0(void)
   // !!!!!!!!!!!!!!
   // move to AM
 
-  Pipeline* pPipeline = pJob->pPipeline_job();
-  Pipework* pPipework = pPipeline->pPipework();
+  Pipeline* pPipeline = pJob->pPipelineX();
+  PipeWork* pPipeWork = pPipeline->pPipeWork();
 
-  Stage*    pStage0   = pPipework->pGet(0);
+  Stage*    pStage0   = pPipeWork->pGet(0);
   Stream*   pStand0   = pStage0->pGet(0);
   Op*       pOp0      = pStand0->pGet(0);
 
@@ -1224,7 +1203,7 @@ void Step::vJobTagSetFetch(void)
   else
   if (m_pOp.bIsNotNull()) {
     RASSERT(m_pJob.bIsNull());
-    pJob = m_pOp->pPipelineJob();
+    pJob = m_pOp->pJobOfOp();
   }
   else {
     NEVER_REACH;
@@ -1270,9 +1249,7 @@ void Step::vJobTscBeginning(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob;
-
-  pJob->vTscBeginning(Hardware::iReadTsc());
+  m_pJob->vTscBeginning(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1284,9 +1261,7 @@ void Step::vJobTscBegun(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscBegun(Hardware::iReadTsc());
+  m_pJob->vTscBegun(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1298,9 +1273,7 @@ void Step::vJobTscExecuting(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscExecuting(Hardware::iReadTsc());
+  m_pJob->vTscExecuting(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1312,9 +1285,7 @@ void Step::vJobTscExecuted(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscExecuted(Hardware::iReadTsc());
+  m_pJob->vTscExecuted(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1326,9 +1297,7 @@ void Step::vJobTscEnding(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscEnding(Hardware::iReadTsc());
+  m_pJob->vTscEnding(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1340,9 +1309,7 @@ void Step::vJobTscEnded(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscEnded(Hardware::iReadTsc());
+  m_pJob->vTscEnded(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1354,9 +1321,7 @@ void Step::vJobTscCanceling(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscCanceling(Hardware::iReadTsc());
+  m_pJob->vTscCanceling(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1368,9 +1333,7 @@ void Step::vJobTscCanceled(void)
 {
   ENTRY();
   
-  Job* pJob = m_pLogicUnit->m_xpJobRef.pReferencedObject();
-
-  pJob->vTscCanceled(Hardware::iReadTsc());
+  m_pJob->vTscCanceled(Hardware::iReadTsc());
   
   EXIT();
 }
@@ -1382,9 +1345,7 @@ void Step::vJobTscParticipant(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob;
-
-  pJob->vTscParticipant(Hardware::iReadTsc());
+  m_pJob->vTscParticipant(Hardware::iReadTsc());
   
   EXIT();
 }

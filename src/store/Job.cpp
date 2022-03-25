@@ -90,7 +90,7 @@ Job::Job(Stz* szJobNm,
   m_pSingularOp  = nullptr;
 
   // -- g -------------------
-  m_oAcksRmg.vCheckInit();
+  m_o2pcDecider.vCheckInit();
   m_pTask     = nullptr;
 
   m_iTscParticipant = 0;
@@ -213,13 +213,13 @@ void Job::vPrintJobNode(SkipNode* pNode, int i_Level)
 /*----------------------------------------------------------------------------*/
 /* get the number of acks originally required by the job                      */
 /*----------------------------------------------------------------------------*/
-i8 Job::iAcksOriginal(void)
+i8 Job::i2pcDeciderOriginal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
   //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
-  i8 iAcksOriginal = m_oAcksRmg.nOriginalAcks();
+  i8 iAcksOriginal = m_o2pcDecider.nOriginalAcks();
   
   return iAcksOriginal;
 }
@@ -239,13 +239,13 @@ i8 Job::nActiveOps(void)
 /*----------------------------------------------------------------------------*/
 /* get the number of acks required by the job                                 */
 /*----------------------------------------------------------------------------*/
-i8 Job::iAcksRmg_printOnlyValue(void)
+i8 Job::i2pcDeciderRmg_printOnlyValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
   //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
-  i8 iAcksRmg = m_oAcksRmg.iPrintOnlyValue();
+  i8 iAcksRmg = m_o2pcDecider.iPrintOnlyValue();
   
   return iAcksRmg;
 }
@@ -253,7 +253,7 @@ i8 Job::iAcksRmg_printOnlyValue(void)
 /*----------------------------------------------------------------------------*/
 /* set the number of acks required by the job                                 */
 /*----------------------------------------------------------------------------*/
-void Job::vAcksRmg(i8 nAcks)
+void Job::v2pcDeciderRmg(i8 nAcks)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -262,17 +262,17 @@ void Job::vAcksRmg(i8 nAcks)
   if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Job: Setting acks remaining %lld\n"_Stz,nAcks);
 
-  m_oAcksRmg.vSetRemaining(nAcks);
+  m_o2pcDecider.vSetRemaining(nAcks);
 }
 
 /*----------------------------------------------------------------------------*/
 /* decrement+decide acks remaining for this job                               */
 /*----------------------------------------------------------------------------*/
-bool Job::bAcksRmgDec(i8& nAcksWereRemaining)
+bool Job::b2pcDeciderDec(i8& nAcksWereRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bAmDecider = m_oAcksRmg.bDecAndDecide(nAcksWereRemaining);
+  bool bAmDecider = m_o2pcDecider.bDecAndDecide(nAcksWereRemaining);
   
   return bAmDecider;
 }
@@ -681,20 +681,16 @@ void Job::vParticipantNode(i8 i_Node)
 /*----------------------------------------------------------------------------*/
 /* get pipeline                                                               */
 /*----------------------------------------------------------------------------*/
-Pipeline* Job::pPipeline_job(void)
+Pipeline* Job::pPipelineX(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-#ifdef WITH_SUBPIPELINE
-  return pSubPipeline_job();
-#else
   Task* pTask = this->pTask();
   LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
   return pPipeline;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -763,7 +759,7 @@ void Job::vPrintJobContents(void)
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
          ,spTimer.sz(& m_oTimer)     // 13
-         ,m_oAcksRmg.iPrintOnlyValue() // 14
+         ,m_o2pcDecider.iPrintOnlyValue() // 14
          ,aEC[m_eError_job]          // 15
          ,spvSingularOp.sz(m_pSingularOp)  // 17
          ,spvTask.sz(m_pTask)        // 21
@@ -828,9 +824,9 @@ void Job::vPrintJobLine(void)
   LogicUnit* pLogicUnit = m_pTask->pLogicUnit();
   
   if (pLogicUnit) {
-    if (pLogicUnit->m_xpPipelineSpec.bIsNotNull())
+    if (pLogicUnit->m_xpPipeSpec.bIsNotNull())
       vTrace("%s "_Stz
-             ,pLogicUnit->m_xpPipelineSpec->szPipelineNm()
+             ,pLogicUnit->m_xpPipeSpec->szPipelineNm()
              );
     vTrace("%s "_Stz
            ,aLH[pLogicUnit->m_eDdlLocked]
@@ -838,8 +834,8 @@ void Job::vPrintJobLine(void)
   }
   
   vTrace("AcksRmg %lld (out of %lld)"_Stz
-         ,this->iAcksRmg_printOnlyValue()
-         ,this->iAcksOriginal()
+         ,this->i2pcDeciderRmg_printOnlyValue()
+         ,this->i2pcDeciderOriginal()
          );
 
   vTrace("logicUnit %p task %p"_Stz
@@ -913,7 +909,7 @@ void Job::vResetForCascade(Session* pSession)
   }
 
   // -- g -------------------
-  m_oAcksRmg.vReset();
+  m_o2pcDecider.vReset();
 
   m_pTask = nullptr;
 
@@ -986,21 +982,6 @@ void Job::vSpawnTask(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTimerStart();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get subPipeline                                                            */
-/*----------------------------------------------------------------------------*/
-Pipeline* Job::pSubPipeline_job(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Task* pTask = this->pTask();
-  LogicUnit* pLogicUnit = pTask->pLogicUnit();
-
-  Pipeline* pSubPipeline = (* pLogicUnit->m_xpSubPipeline);
-    
-  return pSubPipeline;
 }
 
 /*----------------------------------------------------------------------------*/

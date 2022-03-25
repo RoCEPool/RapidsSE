@@ -28,6 +28,10 @@ C_TEST_ARTIFACT_FMT = "tid{:02d}-{}"
 
 C_JUNIT_FILENAME = "results.xml"
 
+# The supportFiles directory, containing supporting scripts for tests
+C_SUPPORT_FILES_SRC = pathlib.Path("configs/tests/supportFiles").resolve()
+assert C_SUPPORT_FILES_SRC.exists(), f"Cannot find the supportFiles folder: {str(C_SUPPORT_FILES_SRC)}"
+
 
 class JobRunner:
     """Coordinates and runs a job, specified by a job config file"""
@@ -204,6 +208,14 @@ class JobRunner:
         # Write/Copy a jmeter property file to the installation dir of the first host to
         # set the classpath to find the above JDBC driver.
         clusterops.write_jmeter_property_file(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Make the common perftests directory, to hold all tests, support files and their metrics
+        clusterops.make_perftests_dir(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Copy the supportFiles directory to the first host
+        clusterops.copy_support_files(self.ip_addresses[0],
+                                      self.all_configs.cluster_config,
+                                      str(C_SUPPORT_FILES_SRC))
 
     def __run_tests(self):
         """Run each of the tests specified in this job file

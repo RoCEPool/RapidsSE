@@ -391,8 +391,13 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("PipelineSpec[]"_Stz)) {
-    pCurrentWord->vEncodeCall("PipelineSpec[].set"_Stz);
+  else if (szTerm->bSame("Pipeline[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Pipeline[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("PipeSpec[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PipeSpec[].set"_Stz);
     EXIT();
     return;
   }
@@ -483,6 +488,11 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("StringA[]"_Stz)) {
     pCurrentWord->vEncodeCall("StringA[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("SubPipe[]"_Stz)) {
+    pCurrentWord->vEncodeCall("SubPipe[].set"_Stz);
     EXIT();
     return;
   }

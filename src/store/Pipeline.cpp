@@ -11,9 +11,9 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "Pipework.hpp"
+#include "PipeWork.hpp"
 #include "Pipeline.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "StageSpec.hpp"
 
 #include "SP_Pipeline.hpp"
@@ -31,19 +31,19 @@ __aFooterFunction(Pipeline)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
+Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 i_Origin)
 : Object(CN_PIPELINE)
 , LifeGuard_t<Pipeline>(this,CN_PIPELINE)
 , m_okDebugLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_sPipelineNm   = pPipelineSpec->szPipelineNm();
+  m_sPipelineNm   = pPipeSpec->szPipelineNm();
   
-  m_pFormWork     = nullptr;
+  m_pPipeWork     = nullptr;
   
   m_pPipelineJob  = pPipelineJob;
-  m_pPipelineSpec = pPipelineSpec;
+  m_pPipeSpec     = pPipeSpec;
   m_i_Origin      = i_Origin;
 
   m_bEarlyExit    = false;
@@ -60,7 +60,7 @@ Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
 
   _checkInitialised_(CN_PIPELINE);
   
-  m_pFormWork = new Pipework(this,pPipelineSpec->pPipeworkSpec());
+  m_pPipeWork = new PipeWork(this,pPipeSpec);
   //vCreatePipework();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
@@ -73,10 +73,10 @@ Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_pFormWork->vGuardedDelete(CN_PIPEWORK,&m_pFormWork,
+  m_pPipeWork->vGuardedDelete(CN_PIPEWORK,&m_pPipeWork,
                               CN_PIPELINE,this,(Stz*)__func__);
   
-  m_pPipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&m_pPipelineSpec,
+  m_pPipeSpec->vGuardedDelete(CN_PIPESPEC,&m_pPipeSpec,
                                   CN_PIPELINE,this,(Stz*)__func__);
 }
 
@@ -111,7 +111,7 @@ bool Pipeline::bCancel(Task* pTriggeringTask)
   if (m_bPulsed)
     return false;
   
-  bool bCancelled = m_pFormWork->bCancel(pTriggeringTask);
+  bool bCancelled = m_pPipeWork->bCancel(pTriggeringTask);
   
   return bCancelled;
 }
@@ -147,6 +147,15 @@ void Pipeline::vDropDebugLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   m_okDebugLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump this pipeline (and optionally all subpipes recursively)               */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vDump(bool bRecursive)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,11 +201,11 @@ bool Pipeline::bErrored(void)
 /*----------------------------------------------------------------------------*/
 /* get formwork                                                               */
 /*----------------------------------------------------------------------------*/
-Pipework* Pipeline::pPipework(void)
+PipeWork* Pipeline::pPipeWork(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_pFormWork;
+  return m_pPipeWork;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -256,7 +265,7 @@ Op* Pipeline::pOp0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Op* pOp0 = m_pFormWork->pOp0();
+  Op* pOp0 = m_pPipeWork->pOp0();
 
   return pOp0;
 }
@@ -268,7 +277,7 @@ i8 Pipeline::nOpsOnNode(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  i8 nOps = m_pFormWork->nOpsOnNode(iNode);
+  i8 nOps = m_pPipeWork->nOpsOnNode(iNode);
     
   return nOps;
 }
@@ -306,11 +315,11 @@ Stz* Pipeline::szPipelineNm(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeline spec                                                          */
 /*----------------------------------------------------------------------------*/
-PipelineSpec* Pipeline::pPipelineSpec(void)
+PipeSpec* Pipeline::pPipeSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_pPipelineSpec;
+  return m_pPipeSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -360,7 +369,7 @@ void Pipeline::vSetupJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_pFormWork->vSetupJob();
+  m_pPipeWork->vSetupJob();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -370,7 +379,7 @@ void Pipeline::vSpawnOpTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pFormWork->vSpawnOpTasks();
+  m_pPipeWork->vSpawnOpTasks();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -380,7 +389,7 @@ Stage* Pipeline::pStage0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Stage* pStage0 = m_pFormWork->pStage0();
+  Stage* pStage0 = m_pPipeWork->pStage0();
 
   return pStage0;
 }
@@ -392,7 +401,7 @@ Stream* Pipeline::pStream0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Stream* pStream0 = m_pFormWork->pStream0();
+  Stream* pStream0 = m_pPipeWork->pStream0();
 
   return pStream0;
 }
@@ -410,7 +419,7 @@ void Pipeline::vCreatePipework(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pFormWork->vCreatePipework();
+  m_pPipeWork->vCreatePipework();
 }
 
 /*============================================================================*/

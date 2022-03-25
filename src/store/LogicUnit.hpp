@@ -41,7 +41,7 @@
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "NamedBuffer.hpp"
 #include "Optimiser.hpp"
 
@@ -162,7 +162,7 @@ namespace STORE
     i8    m_i_NextRnd;  // which next repeatable random nummber?
     i8    m_iDebugFlag; // general purpose debug flag
 
-    REF<Job> m_xpJobRef;   // job reference
+    REF<Job> m_xpListedJob;   // listed job reference
     
     REG<Object,CN_NONE>*        m_paReg[C_MAX_REGS];
     i8 m_nRegs;
@@ -228,7 +228,7 @@ namespace STORE
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
-    REG<PipelineSpec,   CN_PIPELINESPEC  > m_xpPipelineSpec;
+    REG<PipeSpec,       CN_PIPESPEC      > m_xpPipeSpec;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
     REG<Pot,            CN_POT           > m_xpPot;
     REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;
@@ -251,7 +251,7 @@ namespace STORE
     REG<Operand,        CN_NONE          > m_xpStreamSet;
     REG<Table,          CN_TABLE         > m_xpStreamSetTable;
     REG<SubCall,        CN_NONE          > m_xpSubCall;
-    REG<Pipeline,       CN_PIPELINE      > m_xpSubPipeline;
+    REG<Pipeline,       CN_PIPELINE      > m_xpSubPipe;
     REG<SubReturn,      CN_NONE          > m_xpSubReturn;
     REG<Operand,        CN_NONE          > m_xpSubset;
 

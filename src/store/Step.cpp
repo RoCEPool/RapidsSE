@@ -90,6 +90,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Env();
   Step::vAddSteps_ErrorCode();
   Step::vAddSteps_ErrorMarker();
+  Step::vAddSteps_Event();
   Step::vAddSteps_Executable();
   Step::vAddSteps_ExprEval();
 
@@ -157,7 +158,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipein();
   Step::vAddSteps_Pipeline();
-  Step::vAddSteps_PipelineSpec();
+  Step::vAddSteps_PipelineOfOp();
+  Step::vAddSteps_PipeSpec();
   Step::vAddSteps_PathIdentifier();
   Step::vAddSteps_PlanOperand();
   Step::vAddSteps_Pot();
@@ -206,7 +208,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StreamSet();
   Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_SubCall();
-  Step::vAddSteps_SubPipeline();
+  Step::vAddSteps_SubPipe();
+  Step::vAddSteps_SubPipeOfOp();
   Step::vAddSteps_SubReturn();
   Step::vAddSteps_Subset();
   Step::vAddSteps_Supervisor();

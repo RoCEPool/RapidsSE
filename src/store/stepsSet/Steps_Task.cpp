@@ -41,6 +41,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("[task].dump"_Stz,           &Step::vTaskDump);
   vAddStep("[task].exception"_Stz,      &Step::vTaskException);
   vAddStep("[task].grabLock"_Stz,       &Step::vTaskGrabLock);
+  vAddStep("[task].islocked?"_Stz,      &Step::vTaskIsLocked);
   vAddStep("[task].operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
   vAddStep("[task].operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
   vAddStep("[task].releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
@@ -311,6 +312,20 @@ void Step::vTaskGrabLock(void)
     
   vGrabTaskLock((Stz*)__func__);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task[].isLocked? -- is task locked?                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskIsLocked(void)
+{
+  ENTRY();
+
+  bool bLocked = m_okLock.bIsLocked();
+  
+  m_pDataStack->vPushInt(bLocked);
+  
   EXIT();
 }
 

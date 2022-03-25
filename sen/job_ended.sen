@@ -18,12 +18,8 @@
   // new a temporary Job_Ended
   pJobParticipant job_Ended::new locals| pJob_Ended |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // send the ended job
   pJobParticipant [job].originNodeNo@ pJob_Ended job.reply
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob_Ended job.delete
 ;
@@ -37,54 +33,28 @@
 /*----------------------------------------------------------------------------*/
 : ended:ended
 
-  [job] locals| pJob_Ended |
-  pJob_Ended job.id@ locals| iJobId |
-
-  0 locals| bAmDecider |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the context of this __ended job
+  // "ended:ended" .
 
   // find the originating job
-  iJobId ListedJob[].findOriginator discard
+  [job] job.id@ ListedJob[].findOriginator discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process __ended job on this originating node
-
-  // increment the number of __ended jobs received in api state
+  // increment the number of ended jobs received in api state
   ListedJob[] ssn::incEnded
   ListedJob[] ssn::traceSession
 
-  // decrement the acks remaining
-  ListedJob[] job.dec2pcAcksRmg to bAmDecider
-
-  //[grid].thisNodeName@ "(%v) ENDED GOT ACK" .printf
-  // if there are acks remaining just exit
-  bAmDecider not if
-    ListedJob[].returnReference
-    [job]:retire
-    exit                                                         // *EARLY EXIT*
-  then
-  //[grid].thisNodeName@ "(%v) ENDED AM DECIDER" .printf
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all __ended jobs have been received, so this job is the decider
 
-  begin
-    ListedJob[].references
-  1 > while
-  repeat
+  // decrement the acks remaining in the originating job
+  ListedJob[].dec2pcDecider if
 
-  [job].tscEnded
+    // notify the originating task
+    ListedJob[].task@ task.ack
+    ListedJob[].returnReference
 
+  then
 
-  // remove the originating job from the originator jobs
-  //[job].removeOriginator
-
-  // notify the originating task
-  ListedJob[].task@ task.ack
   ListedJob[].returnReference
-  
   [job]:retire
 ;
 

@@ -1,21 +1,23 @@
 /*============================================================================*/
-/* SP_Pipework.cpp - Pipeline sprint helper                                   */
+/* SP_PipeSpec.cpp - PipeSpec sprint helper                                   */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "Pipeline.hpp"
-#include "Pipework.hpp"
-#include "Grid.hpp"
+#include "PipeSpec.hpp"
+#include "StageSpec.hpp"
+#include "OpSpec.hpp"
 
-#include "SP_Pipework.hpp"
-#include "SP_Stage.hpp"
+#include "SP_PipeSpec.hpp"
+#include "SP_StageSpec.hpp"
+#include "SP_OpSpec.hpp"
+#include "SubPipeSpecs.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Pipework::SP_Pipework(void)
+SP_PipeSpec::SP_PipeSpec(void)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
@@ -25,11 +27,11 @@ SP_Pipework::SP_Pipework(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Pipework::SP_Pipework(Pipeline* pPipeline, bool bDescend)
+SP_PipeSpec::SP_PipeSpec(PipeSpec* pPipeSpec)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  vPipeline(pPipeline,bDescend);
+  vPipeSpec(pPipeSpec);
   
   _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
@@ -37,7 +39,7 @@ SP_Pipework::SP_Pipework(Pipeline* pPipeline, bool bDescend)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SP_Pipework::~SP_Pipework(void) noexcept(false)
+SP_PipeSpec::~SP_PipeSpec(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
@@ -49,41 +51,56 @@ SP_Pipework::~SP_Pipework(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_Pipework::vPipeline(Pipeline* pPipeline, bool bDescend)
+void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  Grid* pGrid = AM::pGrid();
-    
-  vCatf("Pipeline %s %p "
-        "on Grid %s N%lldP%lld "
-        "using PipelineSpec %p"_Stz
-        
-        ,pPipeline->szPipelineNm()
-        ,pPipeline
-        
-        ,pGrid->szGridNm()
-        ,pGrid->nKnownNodes()
-        ,AM::PTNMAP::nPtnsPerNode()
-        
-        ,pPipeline->pPipelineSpec()
+  vInit();
+  
+  vPipeSpec(pPipeSpec,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint pipeline                                                            */
+/*----------------------------------------------------------------------------*/
+void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec, i8 iDepth)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+   
+  SP_StageSpec spStageSpec;
+  SP_OpSpec spOpSpec;
+
+  vCatf(iDepth,"PipeSpec %s %p\n"_Stz
+        ,pPipeSpec->szPipelineNm()
+        ,pPipeSpec
         );
   
-  if (bDescend) {
-    Pipework* pFormWork = pPipeline->pPipework();
-    for (i8 i_Stage = 0; i_Stage < pFormWork->nItems(); i_Stage++ ) {
-      Stage* pStage = pFormWork->pGet(i_Stage);
-      SP_Stage spStage(pStage,true);
-      vCatf("%s"_Stz,spStage.sz());
+  SubPipeSpecs* pSubPipeSpecs = pPipeSpec->pSubPipeSpecs();
+  if (pSubPipeSpecs) {
+    i8 nSubSpecs = pSubPipeSpecs->nItems();
+    for (i8 i_SubSpec = 0; i_SubSpec < nSubSpecs; i_SubSpec++) {
+      PipeSpec* pSubPipeSpec = pSubPipeSpecs->pGet(i_SubSpec);
+      vPipeSpec(pSubPipeSpec,iDepth+1);
     }
   }
   
+  for (i8 i_Stage = 0; i_Stage < pPipeSpec->nStages(); i_Stage++) {
+    StageSpec* pStageSpec = pPipeSpec->pStageSpec(i_Stage);
+    vCatf(iDepth,
+          "  %s"_Stz,spStageSpec.sz(pStageSpec));
+    
+    for (i8 i_Op = 0; i_Op < pStageSpec->nItems(); i_Op++) {
+      OpSpec* pOpSpec = pStageSpec->pOpSpec(i_Op);
+        vCatf(iDepth,
+              "    %s"_Stz,spOpSpec.sz(pOpSpec));
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Pipework::sz(void)
+Stz* SP_PipeSpec::sz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -93,11 +110,11 @@ Stz* SP_Pipework::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Pipework::sz(Pipeline* pPipeline)
+Stz* SP_PipeSpec::sz(PipeSpec* pPipeSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  vPipeline(pPipeline);
+  vPipeSpec(pPipeSpec);
   
   return (Stz*) &m_caResult[0];
 }
@@ -110,7 +127,7 @@ Stz* SP_Pipework::sz(Pipeline* pPipeline)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SP_Pipework::aFooter(void)
+Footer* SP_PipeSpec::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM);
   

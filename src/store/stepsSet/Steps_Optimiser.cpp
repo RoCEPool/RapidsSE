@@ -47,8 +47,8 @@ void Step::vOptimiserDissect(void)
 {
   ENTRY();
     
-  PipelineSpec* pUnOptPlineSpec =
-    _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
+  PipeSpec* pUnOptPlineSpec =
+    _pPipeSpec(m_pDataStack->pPopPtr(__func__));
 
   m_pLogicUnit->m_xpOptimiser->vDissect(pUnOptPlineSpec);
 
@@ -86,7 +86,7 @@ void Step::vOptimiserNew(void)
   else
   if (m_pOp.bIsNotNull()) {
     RASSERT(m_pJob.bIsNull());
-    pJob = m_pOp->pPipelineJob();
+    pJob = m_pOp->pJobOfOp();
   }
   else {
     NEVER_REACH;

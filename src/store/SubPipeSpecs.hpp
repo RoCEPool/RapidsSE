@@ -1,29 +1,33 @@
 /*============================================================================*/
-/* SP_Pipework.hpp - Pipework sprint helper                                   */
+/* SubPipeSpecs.hpp -- List of Sub-Pipeline Specifications                    */
 /*============================================================================*/
 #pragma once
 
+#include "PipeSpec.hpp"
+
 namespace STORE
 {
-  class SP_Pipework : public SPmedium
+  class SubPipeSpecs : public ListNL_t<PipeSpec>
   {
-  public:
-  
+  private:
+   
     // must be last
     Footer m_xFooter;
-    
-  public:
-    SP_Pipework(void);
-    SP_Pipework(Pipeline* pPipeline, bool bDescend=false);
-   ~SP_Pipework(void) noexcept(false);
 
-    void vPipeline(Pipeline* pPipeline, bool bDescend=false);
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
   
-    Stz* sz(void);
-    Stz* sz(Pipeline* pPipeline);
+    SubPipeSpecs(void);
+   ~SubPipeSpecs(void) noexcept(false);
+  
+  private:
   
     Footer* aFooter(void);
+
   };
+
+SubPipeSpecs* _pSubPipeSpecs(void* aAddr);
 }
 
 /*============================================================================*/

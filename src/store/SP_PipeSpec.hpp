@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_PipelineSpec.hpp - PipelineSpec sprint helper                           */
+/* SP_PipeSpec.hpp - PipeSpec sprint helper                           */
 /*============================================================================*/
 #pragma once
 
 namespace STORE
 {
-  class SP_PipelineSpec : public SPmedium
+  class SP_PipeSpec : public SPmedium
   {
   public:
   
@@ -13,14 +13,15 @@ namespace STORE
     Footer m_xFooter;
     
   public:
-    SP_PipelineSpec(void);
-    SP_PipelineSpec(PipelineSpec* pPipelineSpec);
-   ~SP_PipelineSpec(void) noexcept(false);
+    SP_PipeSpec(void);
+    SP_PipeSpec(PipeSpec* pPipeSpec);
+   ~SP_PipeSpec(void) noexcept(false);
 
-    void vPipelineSpec(PipelineSpec* pPipelineSpec);
-  
+    void vPipeSpec(PipeSpec* pPipeSpec);
+    void vPipeSpec(PipeSpec* pPipeSpec, i8 iDepth);
+
     Stz* sz(void);
-    Stz* sz(PipelineSpec* pPipelineSpec);
+    Stz* sz(PipeSpec* pPipeSpec);
   
     Footer* aFooter(void);
   };

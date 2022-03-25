@@ -65,7 +65,7 @@ void Step::vOperandToParcel(void)
 
   pParcel->vAddItem(pOperand);
   
-  pParcel->vLabel(pOp->pPipelineJob()->tJobId().iAsI8(),
+  pParcel->vLabel(pOp->pJobOfOp()->tJobId().iAsI8(),
                   pOpSpec->eParcelForward());
   
   m_pDataStack->vPushPtr(pParcel);

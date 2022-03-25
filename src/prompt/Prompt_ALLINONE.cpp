@@ -18,7 +18,7 @@
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "StreamDef.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Stream.hpp"
 #include "JobFilePath.hpp"
 #include "Job.hpp"
@@ -747,7 +747,7 @@ bool PROMPT::bPrompt_cancel(SePrompt* pPrompt)
     vTrace("Cancelling job %lld\n"_Stz, tJobId.iAsI8());
   
   // get the pipeline from the job
-  Pipeline* pPipeline = pJob->pPipeline_job();
+  Pipeline* pPipeline = pJob->pPipelineX();
 
   // cancel the pipeline
   if ( ! pPipeline->bCancel(nullptr) ) {

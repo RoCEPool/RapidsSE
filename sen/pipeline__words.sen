@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* pipeline__words.sen -- Pipeline related words                              */
+/*============================================================================*/
+
+" pipeline__words.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute the sub-pipeline pointed to by the SubPipe[] register          */
+/*----------------------------------------------------------------------------*/
+: subPipe:exe
+
+  SubPipe[] assert
+  
+  [task].isLocked? not assert
+  
+  SubPipe[].opsOnNode@ locals| nAcks |
+
+  [task].grabLock
+    [task].isLocked? assert
+
+    SubPipe[].opsOnNode@ to nAcks
+
+    nAcks if
+      nAcks [task].acksRemaining!
+
+      SubPipe[].enqueueStart? if
+
+        Marker[].newStartMarker
+        Marker[]\clear SubPipe[].op0@ op.enqueOperand
+      then
+      [task].wait
+    else
+      [task].dropLock
+    then
+    
+  [task].isLocked? not assert
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

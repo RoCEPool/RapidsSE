@@ -20,7 +20,7 @@ namespace STORE
     void vPipeline(Pipeline* pPipeline, bool bDescend=false);
   
     Stz* sz(void);
-    Stz* sz(Pipeline* pPipeline);
+    Stz* sz(Pipeline* pPipeline, bool bDescend=false);
   
     Footer* aFooter(void);
   };

@@ -323,6 +323,101 @@
   }
 ;
 
+
+/*----------------------------------------------------------------------------*/
+/* distribute current originating job to all nodes as participating job       */
+/*----------------------------------------------------------------------------*/
+: [job]:distributeBegin ( -- )
+
+  // send the job to each connected node in the grid
+
+  0 locals| pNode |
+
+  C_ALL node_I[].new
+
+  begin
+    node_I[].node to pNode
+
+    pNode node.sendSocket@ if
+      pNode node.no [job] job.forward
+    else
+      "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
+    then
+
+    node_I[].next
+    node_i[].more
+  while
+  repeat
+
+  node_I[].delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* entry point                                                                */
+/*----------------------------------------------------------------------------*/
+: job::entryPoint
+
+  //" +++++++++++++++++++++++++++++++++++++++++++++++++++++++ job::entryPoint" .
+  
+  [job].entryPoint@ >interpret
+  
+  HAZARD
+;
+
+
+
+/*----------------------------------------------------------------------------*/
+/* distribute given job to all nodes                                          */
+/*----------------------------------------------------------------------------*/
+: job:broadcast params| pJob |
+
+  0 locals| pNode |
+  
+  // set the no of 2pc acks expected by this job
+  //   to be the number of defined nodes in the grid
+  [grid].knownNodes [job].2pcDecider!
+
+  // set acks for this task
+  1 [task].acksRemaining!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  C_ALL node_I[].new
+
+  begin
+    node_I[].node to pNode
+
+    pNode node.sendSocket@ if
+      pNode node.no pJob job.forward
+    else
+      "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
+    then
+
+    node_I[].next
+    node_i[].more
+  while
+  repeat
+
+  node_I[].delete
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* retired this [job] + [task]                                                */
+/*----------------------------------------------------------------------------*/
+: [cmd]:retire
+
+  // [job].tagSet@ tagSet.asStr .
+  
+  [job].addRetired
+  
+  JS_SIGNALLED [job].state!
+    [session].signal
+
+  [task].grabLock
+    TR_RETIRE_THIS_TASK [task].transition!
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

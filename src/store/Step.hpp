@@ -72,6 +72,7 @@ namespace STORE
     static void vAddSteps_Env(void);
     static void vAddSteps_ErrorCode(void);
     static void vAddSteps_ErrorMarker(void);
+    static void vAddSteps_Event(void);
     static void vAddSteps_Executable(void);
     static void vAddSteps_ExprEval(void);
 
@@ -140,7 +141,8 @@ namespace STORE
     static void vAddSteps_Parcel(void);
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
-    static void vAddSteps_PipelineSpec(void);
+    static void vAddSteps_PipelineOfOp(void);
+    static void vAddSteps_PipeSpec(void);
     static void vAddSteps_PathIdentifier(void);
     static void vAddSteps_PlanOperand(void);
     static void vAddSteps_Pot(void);
@@ -191,7 +193,8 @@ namespace STORE
     static void vAddSteps_StreamSet(void);
     static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_SubCall(void);
-    static void vAddSteps_SubPipeline(void);
+    static void vAddSteps_SubPipe(void);
+    static void vAddSteps_SubPipeOfOp(void);
     static void vAddSteps_SubReturn(void);
     static void vAddSteps_Subset(void);
     static void vAddSteps_Supervisor(void);

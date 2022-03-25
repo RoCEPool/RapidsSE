@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_PipelineSpec.cpp -- PipelineSpec step group                          */
+/* Steps_PipeSpec.cpp -- PipeSpec step group                                  */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -15,7 +15,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -23,7 +23,7 @@
 #include "Marker.hpp"
 
 #include "SP_Pipeline.hpp"
-#include "SP_PipelineSpec.hpp"
+#include "SP_PipeSpec.hpp"
 
 #include "Dynamo.hpp"
 #include "TagConstants.h"
@@ -31,25 +31,26 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_PipelineSpec(void)
+void Step::vAddSteps_PipeSpec(void)
 {
-  vAddStep("PipelineSpec[]"_Stz,              &Step::vPipelineSpecGet);
-  vAddStep("PipelineSpec[].delete"_Stz,       &Step::vPipelineSpecDelete);
-  vAddStep("PipelineSpec[].get"_Stz,          &Step::vPipelineSpecGet);
-  vAddStep("PipelineSpec[].optimisable"_Stz,  &Step::vPipelineSpecOptimisable);
-  vAddStep("PipelineSpec[].set"_Stz,          &Step::vPipelineSpecSet);
+  vAddStep("PipeSpec[]"_Stz,              &Step::vPipeSpecGet);
+  vAddStep("PipeSpec[].delete"_Stz,       &Step::vPipeSpecDelete);
+  vAddStep("PipeSpec[].dump"_Stz,         &Step::vPipeSpecDump);
+  vAddStep("PipeSpec[].get"_Stz,          &Step::vPipeSpecGet);
+  vAddStep("PipeSpec[].optimisable"_Stz,  &Step::vPipeSpecOptimisable);
+  vAddStep("PipeSpec[].set"_Stz,          &Step::vPipeSpecSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* PipelineSpec[].delete -- delete the pipeline spec                          */
+/* PipeSpec[].delete -- delete the pipeline spec                              */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineSpecDelete(void)
+void Step::vPipeSpecDelete(void)
 {
   ENTRY();
    
-  if (m_pLogicUnit->m_xpPipelineSpec.bIsNotNull()) {
+  if (m_pLogicUnit->m_xpPipeSpec.bIsNotNull()) {
     m_pLogicUnit
-      ->m_xpPipelineSpec.vGuardedDeleteComponent(CN_PIPELINESPEC,
+      ->m_xpPipeSpec.vGuardedDeleteComponent(CN_PIPESPEC,
                                                  CN_STEP,this,(Stz*)__func__);
   }
     
@@ -57,14 +58,28 @@ void Step::vPipelineSpecDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PipelineSpec[].get -- get pipeline spec                                    */
+/* PipeSpec[].dump -- dump the pipeline spec                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineSpecGet(void)
+void Step::vPipeSpecDump(void)
+{
+  ENTRY();
+  
+  SP_PipeSpec spPipeSpec;
+  
+  vTrace("%s\n"_Stz,spPipeSpec.sz(* m_pLogicUnit->m_xpPipeSpec));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PipeSpec[].get -- get pipeline spec                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vPipeSpecGet(void)
 {
   ENTRY();
 
-  if (m_pLogicUnit->m_xpPipelineSpec.bIsNotNull())
-    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpPipelineSpec);
+  if (m_pLogicUnit->m_xpPipeSpec.bIsNotNull())
+    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpPipeSpec);
   else
     m_pDataStack->vPushPtr(nullptr);
 
@@ -72,29 +87,29 @@ void Step::vPipelineSpecGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PipelineSpec[].optimisable -- is p.spec optimisable / to be optimised?     */
+/* PipeSpec[].optimisable -- is p.spec optimisable / to be optimised?         */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineSpecOptimisable(void)
+void Step::vPipeSpecOptimisable(void)
 {
   ENTRY();
   
   bool bOptimisable = false;
   
-  PipelineSpec* pPipelineSpec = (* m_pLogicUnit->m_xpPipelineSpec);
+  PipeSpec* pPipeSpec = (* m_pLogicUnit->m_xpPipeSpec);
   
   
   
   Job* pJob = MY::pJob();
   
-  Stz* szPipelineNm = pPipelineSpec->szPipelineNm();
+  Stz* szPipelineNm = pPipeSpec->szPipelineNm();
   
   i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
 
   if (   ! iOptimiserLvl
       || ! pJob->bIsOriginator()
       ||   szPipelineNm->bSame("sqlCompiler"_Stz)
-      || ! pPipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
-      ||   pPipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
+      || ! pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
+      ||   pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
       )
     bOptimisable = false;
   else
@@ -107,14 +122,14 @@ void Step::vPipelineSpecOptimisable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* PipelineSpec[].set -- set pipelineSpec                                     */
+/* PipeSpec[].set -- set pipeSpec                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vPipelineSpecSet(void)
+void Step::vPipeSpecSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpPipelineSpec =
-    _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpPipeSpec =
+    _pPipeSpec(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

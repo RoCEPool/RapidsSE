@@ -1,0 +1,5 @@
+The supportFiles directory is supposed to contain small files (usually scripts) that
+are needed to help setup or run tests. They are not to contain large data files.
+
+This supportFiles directory will be copied over to the first node in the cluster
+where the jmeter tests are run from.

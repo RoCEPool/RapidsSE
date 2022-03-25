@@ -1,36 +1,29 @@
 /*============================================================================*/
-/* Optimus.hpp -- Optimus (pipeline plan optimizer)                           */
+/* SP_PipeWork.hpp - PipeWork sprint helper                                   */
 /*============================================================================*/
 #pragma once
 
-#include "RootNode.hpp"
-#include "GraphNav.hpp"
-#include "QueryNode.hpp"
-
 namespace STORE
 {
-  class Optimus : public Object
-  {  
-    friend class STORE::PipelineSpec;
-
-  private:
-    Job*          m_p_PipelineJob;       // job this dynamo is associated with
+  class SP_PipeWork : public SPmedium
+  {
+  public:
   
     // must be last
     Footer m_xFooter;
-
+    
   public:
-    void* operator new(size_t);
-    void  operator delete(void*);
-  
-    Optimus(Job* p_PipelineJob);
-   ~Optimus(void) noexcept(false);
+    SP_PipeWork(void);
+    SP_PipeWork(PipeWork* pPipeWork, bool bDescend=false);
+   ~SP_PipeWork(void) noexcept(false);
 
-  private:
+    void vPipeWork(PipeWork* pPipeWork, bool bDescend=false);
+  
+    Stz* sz(void);
+    Stz* sz(PipeWork* pPipeWork);
+  
     Footer* aFooter(void);
   };
-
-  Optimus* _pOptimus(void* aAddr);
 }
 
 /*============================================================================*/

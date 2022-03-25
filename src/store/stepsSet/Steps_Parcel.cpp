@@ -17,7 +17,7 @@
 #include "Stage.hpp"
 #include "StageSpec.hpp"
 #include "Stream.hpp"
-#include "Pipework.hpp"
+#include "PipeWork.hpp"
 #include "PtnMap.hpp"
 #include "Node.hpp"
 #include "Pipeline.hpp"
@@ -87,9 +87,9 @@ void Step::vParcelDemonOut(void)
   // !!!!!!!!!!!!!!
   // move to AM
   
-  Pipeline* pPipeline = pJob->pPipeline_job();
-  Pipework* pPipework = pPipeline->pPipework();
-  Stage*    pStage0   = pPipework->pGet(0);
+  Pipeline* pPipeline = pJob->pPipelineX();
+  PipeWork* pPipeWork = pPipeline->pPipeWork();
+  Stage*    pStage0   = pPipeWork->pGet(0);
   Stream*   pStream0  = pStage0->pGet(0);
   Op*       pOp0      = pStream0->pGet(0);
 
@@ -160,7 +160,7 @@ void Step::vParcelLabel(void)
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-  pParcel->vLabel(pOp->pPipelineJob()->tJobId().iAsI8(),
+  pParcel->vLabel(pOp->pJobOfOp()->tJobId().iAsI8(),
                   pOpSpec->eParcelForward());
 
   EXIT();
@@ -196,9 +196,9 @@ void Step::vParcelPipeOut(void)
     // !!!!!!!!!!!!!!
     // move to AM
     
-    Pipeline* pPipeline = pJob->pPipeline_job();
-    Pipework* pPipework = pPipeline->pPipework();
-    Stage*    pStage0   = pPipework->pGet(0);
+    Pipeline* pPipeline = pJob->pPipelineX();
+    PipeWork* pPipeWork = pPipeline->pPipeWork();
+    Stage*    pStage0   = pPipeWork->pGet(0);
     Stream*   pStand0   = pStage0->pGet(0);
     Op*       pOp0      = pStand0->pGet(0);
 
@@ -216,10 +216,10 @@ void Step::vParcelPipeOut(void)
   JobId tPipelineJob;
   tPipelineJob = pParcel->iPipelineJobId();
   Job* pJob = AM::pJob_FindParticipating(tPipelineJob);
-  Pipeline* pPipeline = pJob->pPipeline_job();
+  Pipeline* pPipeline = pJob->pPipelineX();
   
   // get the next stage the send is supposed to send to
-  Pipework* pFormWork = pPipeline->pPipework();
+  PipeWork* pFormWork = pPipeline->pPipeWork();
   Stage* pDstStage = pFormWork->pGet(pParcel->iDstStage());
   i8 nStreamPtns = pDstStage->nItems();
 

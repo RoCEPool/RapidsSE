@@ -335,7 +335,7 @@ Job* MY::pJob(void)
 
   Op* pOp = pTask->pOp();
   if (pOp) {
-    pJob = pOp->pPipelineJob();
+    pJob = pOp->pJobOfOp();
     return pJob;
   }
   
@@ -439,7 +439,7 @@ Pipeline* MY::pPipeline(void)
   if (! pOp)
     return nullptr;
   
-  return pOp->pPipeline();
+  return pOp->pPipelineOfOp();
 }
 
 /*----------------------------------------------------------------------------*/

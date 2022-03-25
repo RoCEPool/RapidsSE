@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_PipelineLocal.sen -- Local Pipeline Job                                */
+/* cmd_pipelineLocal.sen -- Local Pipeline Job                                */
 /*============================================================================*/
 
-" job_pipelineLocal.sen" .verbose
+" cmd_pipelineLocal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* terminate this pipeline                                                    */
@@ -27,7 +27,7 @@
 
   0 locals| nAcks |
   
-  [job].assertCorrectness
+  [job].assertStructure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
@@ -42,7 +42,7 @@
   <cmd> Dynamo[].compile to ErrorCode[]
   ErrorCode[] EC_NONE == if
     // clean compile
-    to PipelineSpec[]
+    to PipeSpec[]
     Dynamo[].delete
   else
     //"got error" .
@@ -50,11 +50,11 @@
     
     [ddlLock].testDrop
 
-    PipelineSpec[].delete
+    PipeSpec[].delete
     Dynamo[].delete
 
     // cross check
-    PipelineSpec[] not assert
+    PipeSpec[] not assert
 
     JS_SIGNALLED [job].state!
       
@@ -69,15 +69,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
   
-  PipelineSpec[] assert
+  PipeSpec[] assert
 
-  [with].subPipeline? if
-    PipelineSpec[] subPipeline[].create
-    SubPipeline[].spawnOpTasks
-  else
-    PipelineSpec[] [pipeline].create
-    [pipeline].spawnOpTasks
-  then
+  PipeSpec[] Pipeline[].create
+  Pipeline[].spawnOpTasks
   
   
   // run <pre_execute>
@@ -103,48 +98,27 @@
     [job].addLocal
   then
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
 
-  [with].subPipeline? if
+  [task].grabLock
 
-    [task].grabLock
+    Pipeline[].opsOnNode@ to nAcks
 
-      SubPipeline[].opsOnNode@ to nAcks
-
-      nAcks if
-        nAcks [task].acksRemaining!
-      
-        SubPipeline[].startPipeline? if
-      
-          Marker[].newStartMarker
-          Marker[]\clear SubPipeline[].op0@ op.enqueOperand
-        then
-        [task].wait
-      else
-        [task].dropLock
+    nAcks if
+      nAcks [task].acksRemaining!
+    
+      Pipeline[].enqueueStart? if
+    
+        Marker[].newStartMarker
+        Marker[]\clear Pipeline[].op0@ op.enqueOperand
       then
+      [task].wait
+    else
+      [task].dropLock
+    then
 
-  else
-
-    [task].grabLock
-
-      [pipeline].opsOnNode@ to nAcks
-
-      nAcks if
-        nAcks [task].acksRemaining!
-      
-        [pipeline].startPipeline? if
-      
-          Marker[].newStartMarker
-          Marker[]\clear [pipeline].op0@ op.enqueOperand
-        then
-        [task].wait
-      else
-        [task].dropLock
-      then
-
-  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -176,11 +150,8 @@ cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
 
 : pipelineLocal_cmdTags _cmdTags tagCopy: localJob_tags
   tags{
-    <cmdDesc>  = "--desc for job--"
-
-    <jobKind>  = JK_LOCAL
+    <cmdDesc>    = "--desc for job--"
     //<ddlLock>  = DL_GRAB_READ
-        
     <entryPoint> = "pipelineLocal::local"
 
   }

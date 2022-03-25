@@ -5,7 +5,7 @@
 #include "BASE.h"
 
 #include "Pipeline.hpp"
-#include "Pipework.hpp"
+#include "PipeWork.hpp"
 #include "Grid.hpp"
 
 #include "SP_Pipeline.hpp"
@@ -57,7 +57,7 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
     
   vCatf("Pipeline %s %p "
         "on Grid %s N%lldP%lld "
-        "using PipelineSpec %p"_Stz
+        "using PipeSpec %p"_Stz
         
         ,pPipeline->szPipelineNm()
         ,pPipeline
@@ -66,15 +66,15 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
         ,pGrid->nKnownNodes()
         ,AM::PTNMAP::nPtnsPerNode()
         
-        ,pPipeline->pPipelineSpec()
+        ,pPipeline->pPipeSpec()
         );
   
   if (bDescend) {
     
-    Pipework* pFormWork = pPipeline->pPipework();
+    PipeWork* pPipeWork = pPipeline->pPipeWork();
     
-    for (i8 i_Stage = 0; i_Stage < pFormWork->nItems(); i_Stage++ ) {
-      Stage* pStage = pFormWork->pGet(i_Stage);
+    for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++ ) {
+      Stage* pStage = pPipeWork->pGet(i_Stage);
       SP_Stage spStage(pStage,true);
       vCatf("%s"_Stz,spStage.sz());
     }
@@ -95,11 +95,11 @@ Stz* SP_Pipeline::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Pipeline::sz(Pipeline* pPipeline)
+Stz* SP_Pipeline::sz(Pipeline* pPipeline, bool bDescend)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  vPipeline(pPipeline);
+  vPipeline(pPipeline,bDescend);
   
   return (Stz*) &m_caResult[0];
 }

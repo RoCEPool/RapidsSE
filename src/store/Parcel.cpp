@@ -536,7 +536,7 @@ void Parcel::vNDE_OriginNode(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Pipeline *pPipeline = pSendOp->pPipeline();
+  Pipeline *pPipeline = pSendOp->pPipelineOfOp();
   i8 iOriginNde = pPipeline->i_Origin();
 
   PtnId tPtn_na = C_UNKNOWN;

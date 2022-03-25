@@ -15,10 +15,41 @@ load part "<tpch_dir>/part.<suffix>" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/*
+pipeline subPipeTest
+begin
+  stage stageA on origin :
+      start
+    | pulse once
+    | echo "subPipeTest"
+    | debug all
+    | sink
+    | stageA
+end ;
+*/
+
+subPipeTest;
+
+procedure subPipeTest2
+begin
+  stage stageA on origin :
+      start
+    | pulse once
+    | echo "subPipeTest2"
+    | debug all
+    | sink
+    | stageA
+end ;
+subPipeTest2;
+
 
 optimiserLvl 2;
 
 //tag <optimise> = 1 ;
+
+
+
+
 
 /*
 select   sum(P_PARTKEY)

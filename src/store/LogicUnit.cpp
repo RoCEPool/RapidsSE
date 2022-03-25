@@ -147,7 +147,7 @@ LogicUnit::LogicUnit(void)
 ,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_PARCEL)
 ,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                 LR_PIPEIN)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                 LR_PIPELINE)
-,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 LR_PIPELINESPEC)
+,       m_xpPipeSpec(this,RF_NONE,         nullptr,                 LR_PIPESPEC)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    LR_PLANOPERAND)
 ,            m_xpPot(this,RF_REPAIR_DELETE,Pot::vRepair,            LR_POT)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      LR_PTNSTREAM)
@@ -170,7 +170,7 @@ LogicUnit::LogicUnit(void)
 ,      m_xpStreamSet(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMSET)
 , m_xpStreamSetTable(this,RF_SET_NULL,     nullptr,                 LR_STREAMSETTABLE)
 ,        m_xpSubCall(this,RF_REPAIR_DELETE,SubCall::vRepair,        LR_SUBCALL)
-,    m_xpSubPipeline(this,RF_NONE,         nullptr,                 LR_SUBPIPELINE)
+,        m_xpSubPipe(this,RF_NONE,         nullptr,                 LR_SUBPIPE)
 ,      m_xpSubReturn(this,RF_REPAIR_DELETE,SubReturn::vRepair,      LR_SUBRETURN)
 ,         m_xpSubset(this,RF_REPAIR_DELETE,Operand::vRepairList,    LR_SUBSET)
 
@@ -451,18 +451,23 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   // PROBLEM
   if (! m_xpPipeline.bIsNull()) {
     
-    Pipeline* pPipeline = *m_xpPipeline;
+    Pipeline* pPipeline = (* m_xpPipeline);
     RASSERT(pPipeline);
     RASSERT(CN_PIPELINE == pPipeline->eGetClassNo());
     
-    //delete *m_xpPipeline;
-    
-    //vTrace("~LogicUnit:: guarded delete of m_xpPipeline\n"_Stz);
     m_xpPipeline.vGuardedDeleteComponent(CN_PIPELINE,
                                          CN_LOGICUNIT,this,(Stz*)__func__);
-    //vTrace("~LogicUnit:: return from guarded delete of m_xpPipeline\n"_Stz);
   }
-  
+  if (! m_xpSubPipe.bIsNull()) {
+    
+    Pipeline* pSubPipeline = (* m_xpSubPipe);
+    RASSERT(pSubPipeline);
+    RASSERT(CN_PIPELINE == pSubPipeline->eGetClassNo());
+    
+    m_xpSubPipe.vGuardedDeleteComponent(CN_PIPELINE,
+                                         CN_LOGICUNIT,this,(Stz*)__func__);
+  }
+
   if (m_pRluDiary) {
     vDiaryReport();
     delete m_pRluDiary;
