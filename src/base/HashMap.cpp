@@ -152,20 +152,18 @@ void HashMap::vDeleteKey(Object* pKey)
   HashMapSlot* pIter = m_paMap[uIndex];
   HashMapSlot* pPrevIter = nullptr;
 
-  while(pIter != nullptr)
-  {
+  while ( pIter != nullptr ) {
 
-    if(pIter->m_pKeyObject == pKey)
-    {
+    if ( pIter->m_pKeyObject == pKey ) {
 
-      if(pPrevIter != nullptr)
+      if ( pPrevIter != nullptr )
         pPrevIter->m_pNext = pIter->m_pNext;
       else
         m_paMap[uIndex] = pIter->m_pNext;
-
       delete pIter;
 
-      //Assert before decrement since unsigned underflow could occur
+      // Assert before decrement
+      // since unsigned underflow could occur
       ASSERT(1 <= m_uNoOfEntries);
       m_uNoOfEntries--;
 
@@ -182,16 +180,18 @@ void HashMap::vDeleteKey(Object* pKey)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does given key exist in the hashmap                                        */
+/* Does the given key exist in the hashmap                                    */
 /*----------------------------------------------------------------------------*/
 bool HashMap::bExists(Object* pKey)
 {
   u8 uIndex = uHashFunction(pKey);
   HashMapSlot* pIter = m_paMap[uIndex];
-  while(pIter != nullptr)
-  {
-    if(pIter->m_pKeyObject == pKey)
+
+  while ( pIter != nullptr ) {
+
+    if ( pIter->m_pKeyObject == pKey )
       return true;
+
     pIter = pIter->m_pNext;
   }
 
@@ -203,35 +203,35 @@ bool HashMap::bExists(Object* pKey)
 /*----------------------------------------------------------------------------*/
 u8 HashMap::uHashFunction(Object* pKey)
 {
-  return ((u8)pKey % m_uNoOfSlots);//Check if this is safe
+  return ( (u8) pKey % m_uNoOfSlots );
 }
 
 /*----------------------------------------------------------------------------*/
-/* Insert a key,value at the front of the chain if it does not exist. Else update*/
+/* Insert a key,value at the front of the chain.                              */
+/* Update value if key already exists                                         */
 /*----------------------------------------------------------------------------*/
 void HashMap::vInsertAtFront(Object* pKey, Object* pValue)
 {
   u8 uIndex = uHashFunction(pKey);
-
   HashMapSlot* pIter = m_paMap[uIndex];
 
-  //If key already exists update the value instead of adding a duplicate key entry
-  while(pIter != nullptr)
-  {
-    if(pIter->m_pKeyObject == pKey)
-    {
+  while ( pIter != nullptr ) {
+
+    if ( pIter->m_pKeyObject == pKey ) {
       pIter->m_pValObject = pValue;
+
 #ifdef WITH_HASHMAP_DEBUG
       vTrace("Key %p already exists, updating value\n"_Stz, pKey);
       vAppendHistory(pKey, false, true);
 #endif
+
       return;
     }
+
     pIter = pIter->m_pNext;
   }
 
   HashMapSlot* pTmpSlot = new HashMapSlot(pKey, pValue);
-
   pTmpSlot->m_pNext = m_paMap[uIndex];
   m_paMap[uIndex] = pTmpSlot;
   m_uNoOfEntries++;
@@ -248,10 +248,12 @@ Object* HashMap::pValueAt(Object* pKey)
 {
   u8 uIndex = uHashFunction(pKey);
   HashMapSlot* pIter = m_paMap[uIndex];
-  while(pIter != nullptr)
-  {
-    if(pIter->m_pKeyObject == pKey)
+
+  while ( pIter != nullptr ) {
+
+    if ( pIter->m_pKeyObject == pKey )
       return pIter->m_pValObject;
+
     pIter = pIter->m_pNext;
   }
 

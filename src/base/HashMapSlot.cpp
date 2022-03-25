@@ -50,7 +50,7 @@ HashMapSlot::HashMapSlot(Object* pKey, Object* pValue)
 
   m_pKeyObject = pKey;
   m_pValObject = pValue;
-  m_pNext = nullptr;// Check if I should use C_DATUM_NULL
+  m_pNext = nullptr;
 
   _checkInitialised_(CN_HASHMAPSLOT);
 

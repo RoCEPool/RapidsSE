@@ -14,11 +14,7 @@ namespace BASE
     Object* m_pKeyObject;
     Object* m_pValObject;
 
-    //u8 m_uKey;
-    //i8 m_iValue;
-
     HashMapSlot* m_pNext;
-    //HashMapSlot* m_pPrev;
 
     // must be last
     Footer m_xFooter;
@@ -29,7 +25,9 @@ namespace BASE
 
     HashMapSlot(Object* pKey, Object* pValue);
     ~HashMapSlot(void) noexcept(false);
+
   private:
+
     Footer* aFooter(void);
   };
 

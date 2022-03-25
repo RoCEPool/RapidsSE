@@ -15,20 +15,23 @@ namespace BASE
   friend HashMapSlot;
 
   private:
-    u8 m_uNoOfSlots;// Total number of slots
+    u8 m_uNoOfSlots;
     u8 m_uNoOfEntries;
+
     HashMapSlot* m_paMap[C_HASHMAP_SIZE];
 
 #ifdef WITH_HASHMAP_DEBUG
     u8 m_nHistory;
+
     struct {
-      u8 m_uHistoryIndex;
-      u8 m_uCurrTotalEntries;
+      u8      m_uHistoryIndex;
+      u8      m_uCurrTotalEntries;
       Object* m_pKey;
-      bool m_bDeleted;
-      bool m_bInserted;
+      bool    m_bDeleted;
+      bool    m_bInserted;
     } xHistory[C_HISTORY_DUR];
 #endif
+
     // must be last
     Footer m_xFooter;
     
@@ -39,15 +42,18 @@ namespace BASE
     HashMap(u8 uNoOfSlots=C_HASHMAP_SIZE);
     ~HashMap(void) noexcept(false);
 
-    void vAnalysis(void);
-#ifdef WITH_HASHMAP_DEBUG
-    void vAppendHistory(Object* pKey, bool bDeleted, bool bInserted);
-#endif
-    void vDeleteKey(Object* pKey);
-    bool bExists(Object* pKey);
-    u8 uHashFunction(Object* pKey);
-    void vInsertAtFront(Object* pKey, Object* pValue);
+    void    vAnalysis(void);
+    void    vDeleteKey(Object* pKey);
+    bool    bExists(Object* pKey);
+    u8      uHashFunction(Object* pKey);
+    void    vInsertAtFront(Object* pKey, Object* pValue);
     Object* pValueAt(Object* pKey);
+
+#ifdef WITH_HASHMAP_DEBUG
+    void    vAppendHistory(Object* pKey,
+                           bool bDeleted,
+                           bool bInserted);
+#endif
 
   private:
 
