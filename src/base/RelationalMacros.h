@@ -959,32 +959,11 @@
         xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
       *paW++ = 0;                                                          \
     }                                                                      \
-    else if(xDte2.m_iAsI8 == xDte1.m_iAsI8) {                              \
+    else if(xDte2.m_iAsI8 >= xDte1.m_iAsI8) {                              \
       *paW++ = 1;                                                          \
     }                                                                      \
     else {                                                                 \
-      if(xDte2.m_uYearDelta > xDte1.m_uYearDelta) {                        \
-        *paW++ = 1;                                                        \
-      }                                                                    \
-      else if(xDte2.m_uYearDelta == xDte1.m_uYearDelta) {                  \
-        if(xDte2.m_uMonth > xDte1.m_uMonth) {                              \
-          *paW++ = 1;                                                      \
-        }                                                                  \
-        else if(xDte2.m_uMonth == xDte1.m_uMonth) {                        \
-          if(xDte2.m_uDay >= xDte1.m_uDay) {                               \
-            *paW++ = 1;                                                    \
-          }                                                                \
-          else {                                                           \
-            *paW++ = 0;                                                    \
-          }                                                                \
-        }                                                                  \
-        else {                                                             \
-          *paW++ = 0;                                                      \
-        }                                                                  \
-      }                                                                    \
-      else {                                                               \
-        *paW++ = 0;                                                        \
-      }                                                                    \
+      *paW++ = 0;                                                        \
     }                                                                      \
   }
 
@@ -1073,34 +1052,13 @@
         xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
       *paW++ = 0;                                                          \
     }                                                                      \
-    else if(xDte2.m_iAsI8 == xDte1.m_iAsI8) {                              \
-      *paW++ = 0;                                                          \
+    else if(xDte2.m_iAsI8 < xDte1.m_iAsI8) {                              \
+      *paW++ = 1;                                                          \
     }                                                                      \
     else {                                                                 \
-      if(xDte2.m_uYearDelta < xDte1.m_uYearDelta) {                        \
-        *paW++ = 1;                                                        \
-      }                                                                    \
-      else if(xDte2.m_uYearDelta == xDte1.m_uYearDelta) {                  \
-        if(xDte2.m_uMonth < xDte1.m_uMonth) {                              \
-          *paW++ = 1;                                                      \
-        }                                                                  \
-        else if(xDte2.m_uMonth == xDte1.m_uMonth) {                        \
-          if(xDte2.m_uDay < xDte1.m_uDay) {                                \
-            *paW++ = 1;                                                    \
-          }                                                                \
-          else {                                                           \
-            *paW++ = 0;                                                    \
-          }                                                                \
-        }                                                                  \
-        else {                                                             \
-          *paW++ = 0;                                                      \
-        }                                                                  \
-      }                                                                    \
-      else {                                                               \
         *paW++ = 0;                                                        \
       }                                                                    \
     }                                                                      \
-  }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UNKNOWN

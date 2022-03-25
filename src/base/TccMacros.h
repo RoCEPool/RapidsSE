@@ -91,6 +91,30 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BETWEEN
+#define _BET_BCDBCD(eErrorCode)                                             \
+  {                                                                        \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    bcdArg3.m_iAsI8 = *(--paW);                                            \
+    if (eErrorCode != EC_NONE ||                                           \
+        bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        bcdArg2.m_iAsI8 ==  C_DATUM_NULL ||                                \
+        bcdArg3.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *(paW++) = 0;                                                        \
+    }                                                                      \
+    else {                                                                 \
+       if (bcdArg1.m_iMantissa > bcdArg2.m_iMantissa) {                                                  \
+        *(paW++) = 0;                                                       \
+      }                                                                     \
+      else {                                                                \
+        if (bcdArg1.m_iMantissa < bcdArg3.m_iMantissa)                                                  \
+          *(paW++) = 0;                                                     \
+        else                                                                \
+          *(paW++) = 1;                                                     \
+      }                                                                    \
+   }                                                                       \
+}
+
 
 #define _BET_INTINT(eErrorCode)                                             \
   {                                                                         \
@@ -105,7 +129,6 @@
     }                                                                       \
     else {                                                                  \
       if (iArg1 > iArg2) {                                                  \
-        iArg2 = *(--paW);                                                   \
         *(paW++) = 0;                                                       \
       }                                                                     \
       else {                                                                \

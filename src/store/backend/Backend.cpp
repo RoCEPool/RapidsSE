@@ -999,7 +999,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
       sPipeline->vCatSprint(" between "_Stz);
 
-      return GraphNav::WALK_ABORT;
+      return GraphNav::WALK_SKIP_CHILDREN;
     }
 
     if (LikeExpr::bIsOfType(pOrdinalExpr)) {
@@ -1028,6 +1028,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       GraphNav::bGlobalWalk(pLeftExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
       sPipeline->vCatSprint(" in "_Stz);
 
+      // TODO: CHECK THIS OUT
       return GraphNav::WALK_ABORT;
     }
 
@@ -1299,6 +1300,9 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     else if (InExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" in "_Stz);
+    }
+    else if (BetweenExpr::bIsOfType(pOrdinalExpr)) {
+      // nothing to do
     }
 
     else {

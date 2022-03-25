@@ -14,6 +14,7 @@ indexJoinHash.test
 //loopJoinBroadcast2.test
 minMax.test
 project.test
+query6.test
 selectTypes.test
 sum.test
 //top.test
