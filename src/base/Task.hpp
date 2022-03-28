@@ -73,10 +73,11 @@ namespace BASE
 
     Word*        m_pRecoveryWord; // sen word called to recover from failure
 
-  public:
-
     DicStack     m_oDicStack;     // dictionary stack
     DicStack     m_oSaveDicStack; // save dictionary stack
+
+  public:
+
 
     CodeCell*    m_aInxPtr;       // instruction/cell pointer
 
