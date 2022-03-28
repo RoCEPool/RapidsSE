@@ -42,10 +42,10 @@ begin
   stage Gs_LINEITEM on all partitions :
     indexscan 2 lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
                                        UBOUND $I1 TIMESTAMP '1995-01-01 00:00:00' <"
-    //| filter  2 "type BOOLEAN L_DISCOUNT 101.0 1.0 - >=
-    //                          L_DISCOUNT 101.0 1.0 + <=
-    //                          L_QUANTITY 2400.0 < and and"
-    //| project  2 " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT * sum "
+    | filter  2 "type BOOLEAN L_DISCOUNT 1.01 0.01 - >=
+                              L_DISCOUNT 1.01 0.01 + <=
+                              L_QUANTITY 24.0 < and and"
+    | project  2 " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT * sum "
     | combined 0
     | next
 
@@ -73,7 +73,7 @@ begin
 end ;
 
 rows:
-  (187739276.85)
+  (1877392.75)
 
 //------------------------------------------------------------------------------
 // drop the tables

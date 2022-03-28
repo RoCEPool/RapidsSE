@@ -2787,8 +2787,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
         eExprKind = EK_AGGORD;
       }
 
-      pExprStack = m_pInitStack;
-
       i_Col = 0;
       i_ExprStack++;
 
@@ -3347,14 +3345,15 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
 
   if (bEosHandler) {
     StrLib::vAppendString(&m_azCodeCrs, "\n");
-    StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iRowsProcessed)");
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate process row
-  vGenerateProcessRow(sLabelNext);
+  else {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate process row
+    vGenerateProcessRow(sLabelNext);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -4487,10 +4486,11 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate process row
-  vGenerateProcessRow(sLabelNext);
+  else {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate process row
+    vGenerateProcessRow(sLabelNext);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
