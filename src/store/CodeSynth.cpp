@@ -71,7 +71,7 @@ CodeSynth::CodeSynth(void)
 
   m_pExprStack  = new TypedStack(KK_DATA_STACK);
   m_pNullStack  = new TypedStack(KK_DATA_STACK);
-  m_pGrpByStack = new TypedStack(KK_DATA_STACK);
+  m_pGbyStack = new TypedStack(KK_DATA_STACK);
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
   m_pInitStack  = new TypedStack(KK_DATA_STACK);
@@ -115,7 +115,7 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefRht, eSR eStencilTo)
 
   m_pExprStack  = new TypedStack(KK_DATA_STACK);
   m_pNullStack  = new TypedStack(KK_DATA_STACK);
-  m_pGrpByStack = new TypedStack(KK_DATA_STACK);
+  m_pGbyStack = new TypedStack(KK_DATA_STACK);
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
   m_pInitStack  = new TypedStack(KK_DATA_STACK);
@@ -160,7 +160,7 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, IndexDe
 
   m_pExprStack  = new TypedStack(KK_DATA_STACK);
   m_pNullStack  = new TypedStack(KK_DATA_STACK);
-  m_pGrpByStack = new TypedStack(KK_DATA_STACK);
+  m_pGbyStack = new TypedStack(KK_DATA_STACK);
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
   m_pInitStack  = new TypedStack(KK_DATA_STACK);
@@ -193,7 +193,7 @@ CodeSynth::~CodeSynth(void) noexcept(false)
 
   delete m_pExprStack;
   delete m_pNullStack;
-  delete m_pGrpByStack;
+  delete m_pGbyStack;
   delete m_pLowerStack;
   delete m_pUpperStack;
 
@@ -431,12 +431,8 @@ TypedStack* CodeSynth::pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelL
   vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGGBY, bHashRows, m_pStreamDefLft);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the payload
-  vPayloadCreate();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate payload key
-  vPayloadKey(m_pGrpByStack);
+  vPayloadKey(m_pGbyStack);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the project group by code
@@ -502,7 +498,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, bool bOrdAgg, Stz* sLabel, Stz* s
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
   if (bOrdAgg)
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AddRowToTubPot;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    } else { ");
+  StrLib::vAppendString(& m_azCodeCrs, "\n    } else { ");
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 
@@ -1390,12 +1386,12 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   // generate the code for the projected expressions
   vGenerateExpr((char *) sKeyExpr, nullptr, EK_TOP, false, m_pStreamDefLft);
 
+  // populate the TOP payload key
+  vPayloadKey(m_pExprStack);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the payload
   vPayloadCreate();
-
-  // populate the TOP payload key
-  vPayloadKey(m_pExprStack);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert entry in payload
@@ -1827,7 +1823,7 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
   // generate the init code for each aggregate column expression
   //vGenerateAggInitCode(pPreExpStack);
 
-  vGenerateExprCode(m_pGrpByStack, "  "_Stz);
+  vGenerateExprCode(m_pGbyStack, "  "_Stz);
 
   vGenerateExprCode(m_pInitStack, "  "_Stz);
 
@@ -1920,9 +1916,9 @@ void CodeSynth::vPayloadCreate(void) {
   i8 nPayloadBytes = (m_pStreamDefOut->nColumns() - m_pIndexDef->nColumns()) * 8;
 
   if (nPayloadBytes) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
-    StrLib::vAppendString(&m_azCodeCrs, "\n    // create the payload");
-    sCopy.vSprint("\n    vEnt_payloadCreate(aCombinedT->m_aEntIntPL, %lld);"_Stz, nPayloadBytes);
+    StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - ");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      // create the payload");
+    sCopy.vSprint("\n      vEnt_payloadCreate(aCombinedT->m_aEntIntPL, %lld);"_Stz, nPayloadBytes);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   }
 
@@ -1937,8 +1933,8 @@ void CodeSynth::vPayloadInsert(ePL ePayload, i8 iTopCount) {
 
   s4K sCopy;
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - -");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // insert key in the payload");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - -");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      // insert key in the payload");
 
   switch(ePayload) {
 
@@ -2235,10 +2231,13 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
                         sColNm.azChar());
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
           StrLib::vAppendString(&m_azCodeCrs, "\n");
-          StrLib::vAppendString(&m_azCodeCrs,
-                                "\n      iOffset = - nDifference(aCombinedT->m_racPayloadArea,amCellAddress);");
+          //StrLib::vAppendString(&m_azCodeCrs,
+          //                      "\n      iOffset = - nDifference(aCombinedT->m_racPayloadArea,amCellAddress);");
 
-          sCopy.vSprint("\n        p%s->%s = iOffset;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+          //sCopy.vSprint("\n        p%s->%s = iOffset;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+          //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+          sCopy.vSprint("\n        p%s->%s = szDstStz;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
           StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -2457,6 +2456,10 @@ void CodeSynth::vGeneratePrjGby(void) {
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( !aEntFound ) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the payload
+  vPayloadCreate();
+
   vPayloadInsert(PL_GBY, C_UNKNOWN);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -2480,12 +2483,12 @@ void CodeSynth::vGenerateSort(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the payload
-  vPayloadCreate();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the SORT payload key
   vPayloadKey(m_pExprStack);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the payload
+  vPayloadCreate();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert entry in payload
@@ -2688,16 +2691,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   ePE ePreExp = m_pPreExpStack ? (ePE)m_pPreExpStack->iPeek(i_ExprStack) : PE_NONE;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set working ExprStack to be the post aggregate expression stack
-  if (ePreExp == PE_ALL ||
-      ePreExp == PE_CNT ||
-      ePreExp == PE_MIN ||
-      ePreExp == PE_MAX ||
-      ePreExp == PE_SUM ) {
-    pExprStack = pPostStack;
-  }
-  else
-    pExprStack = m_pExprStack;
+  // set working ExprStack
+  pExprStack = pWorkingStack(EK_NONE, ePreExp, pPostStack);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate tokens of the expression
@@ -2722,6 +2717,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to normal expstack
       if (ePreExp != PE_GBY)
         pExprStack = m_pExprStack;
 
@@ -2739,20 +2736,25 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       // move to the next predicate expression
       ePreExp = (ePE) m_pPreExpStack->iPeek(i_ExprStack);
 
-      if (!bGroupBy) {
-        if (eExprKind == EK_AGGGBY ||
-            eExprKind == EK_AGGREG) {
-          if (ePreExp == PE_ALL ||
-              ePreExp == PE_CNT ||
-              ePreExp == PE_MIN ||
-              ePreExp == PE_MAX ||
-              ePreExp == PE_SUM) {
-            pExprStack = pPostStack;
-          } else
-            pExprStack = m_pInitStack;
-        } else
-          pExprStack = m_pExprStack;
-      }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack
+      pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
+
+//      if (!bGroupBy) {
+//        if (eExprKind == EK_AGGGBY ||
+//            eExprKind == EK_AGGREG) {
+//          if (ePreExp == PE_ALL ||
+//              ePreExp == PE_CNT ||
+//              ePreExp == PE_MIN ||
+//              ePreExp == PE_MAX ||
+//              ePreExp == PE_SUM) {
+//            pExprStack = pPostStack;
+//          } else
+//            pExprStack = m_pInitStack;
+//        } else
+//          pExprStack = m_pExprStack;
+//      }
+      //RASSERT(pExprStack == pExprStack2);
 
       continue;
     }
@@ -2763,7 +2765,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the groupby  stack
-      pExprStack = m_pGrpByStack;
+      pExprStack = m_pGbyStack;
       eExprKind = EK_GROUPBY;
 
       continue;
@@ -2775,7 +2777,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the groupby  stack
-      pExprStack = m_pGrpByStack;
+      pExprStack = m_pGbyStack;
       eExprKind = EK_ORDGROUPBY;
 
       continue;
@@ -2803,17 +2805,22 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to the next predicate expression
+
       ePreExp = (ePE)m_pPreExpStack->iPeek(i_ExprStack);
 
-      if (ePreExp == PE_ALL ||
-          ePreExp == PE_CNT ||
-          ePreExp == PE_MIN ||
-          ePreExp == PE_MAX ||
-          ePreExp == PE_SUM ) {
-        pExprStack = pPostStack;
-      }
-      else
-        pExprStack = m_pExprStack;
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack
+      pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
+
+//      if (ePreExp == PE_ALL ||
+//          ePreExp == PE_CNT ||
+//          ePreExp == PE_MIN ||
+//          ePreExp == PE_MAX ||
+//          ePreExp == PE_SUM ) {
+//        pExprStack = pPostStack;
+//      }
+//      else
+//        pExprStack = m_pExprStack;
 
       continue;
     }
@@ -3094,10 +3101,12 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       // aggregate follows, generate init expressions in the m_aInitStack
       vPushAggCol(pExprStack, pPostStack, ePreExp, eExprKind, eExprType, bHashRows, i_Col, i_DupCtr);
 
+      //pExprStack = pPostStack;
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working ExprStack to be the post aggregate expression stack
+      // set working ExprStack
       RASSERT(pPostStack);
-      pExprStack = pPostStack;
+      pExprStack = pWorkingStack(EK_NONE, ePreExp, pPostStack);
+      RASSERT(pExprStack == pPostStack);
 
       continue;
     }
@@ -3315,13 +3324,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   }
   vTrace("--------------------------------------\n"_Stz);
 
-  // dump the m_pGrpByStack stack
+  // dump the m_pGbyStack stack
   vTrace("--------------------------------------\n"_Stz);
   vTrace("GROUPBYSTACK:\n"_Stz);
-  nExpr = m_pGrpByStack ? m_pGrpByStack->nValues() - 1 : -1;
+  nExpr = m_pGbyStack ? m_pGbyStack->nValues() - 1 : -1;
 
   while ( nExpr >= 0) {
-    pTypedCell = m_pGrpByStack->aPeekItem(nExpr--);
+    pTypedCell = m_pGbyStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
 
@@ -4098,9 +4107,9 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       else
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
 
-      if (ePreExp == PE_EXP)
-        m_pInitStack->vPushStz(sPush);
-      else
+      //if (ePreExp == PE_EXP)
+      //  m_pInitStack->vPushStz(sPush);
+      //else
         pExprStack->vPushStz(sPush);
 
       if (pPostStack->nValues() > 1) {
@@ -4150,9 +4159,9 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       else
         sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
 
-      if (ePreExp == PE_EXP)
-        m_pInitStack->vPushStz(sPush);
-      else
+      //if (ePreExp == PE_EXP)
+      //  m_pInitStack->vPushStz(sPush);
+      //else
         pExprStack->vPushStz(sPush);
 
       if (pPostStack->nValues() > 1) {
@@ -4522,8 +4531,9 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
     StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iRowsProcessed)");
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_ReturnFinal;");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
+
   }
-  else {
+//  else {
     vGenerateProcessRow(sLabelNext);
 //    StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow) {");
 //    StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iBufferDone)");
@@ -4531,7 +4541,7 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
 //    StrLib::vAppendString(&m_azCodeCrs, "\n      else");
 //    StrLib::vAppendString(&m_azCodeCrs, "\n         goto L_AdvanceNextRow;");
 //    StrLib::vAppendString(&m_azCodeCrs, "\n     }");
-  }
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -4896,6 +4906,72 @@ void CodeSynth::vGetInfix(s4K &szInfix, TypedStack* pExprStack, i8 iProject)
   }
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* get working stack                                                          */
+/*----------------------------------------------------------------------------*/
+TypedStack* CodeSynth::pWorkingStack(eEK eExprKind, ePE ePreExp, TypedStack* pPostStack)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  switch(eExprKind) {
+    case EK_AGGGBY:
+    case EK_AGGREG:
+      if (ePreExp == PE_GKY ||
+          ePreExp == PE_EXP)
+        return m_pExprStack;
+
+      if (ePreExp == PE_ALL ||
+          ePreExp == PE_CNT ||
+          ePreExp == PE_MIN ||
+          ePreExp == PE_MAX ||
+          ePreExp == PE_SUM) {
+        return pPostStack;
+      }
+      else
+        return m_pInitStack;
+
+    case EK_AGGORD:
+      if (ePreExp == PE_ALL ||
+          ePreExp == PE_CNT ||
+          ePreExp == PE_MIN ||
+          ePreExp == PE_MAX ||
+          ePreExp == PE_SUM) {
+        return pPostStack;
+      }
+      else
+        return m_pExprStack;
+
+    case EK_GROUPBY:
+    case EK_ORDGROUPBY:
+      return m_pGbyStack;
+
+    case EK_FILTER:
+    case EK_HASH:
+    case EK_INDEXJOIN:
+    case EK_INDEXSCAN:
+    case EK_PROJECT:
+    case EK_SORT:
+    case EK_TOP:
+      return m_pExprStack;
+
+    case EK_NONE:
+      if (ePreExp == PE_ALL ||
+          ePreExp == PE_CNT ||
+          ePreExp == PE_MIN ||
+          ePreExp == PE_MAX ||
+          ePreExp == PE_SUM) {
+        return pPostStack;
+      }
+      else
+        return m_pExprStack;
+
+    default:
+      NEVER_REACH;
+  }
+
+  return nullptr;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

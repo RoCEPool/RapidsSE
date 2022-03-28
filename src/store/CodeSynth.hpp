@@ -27,7 +27,7 @@ namespace STORE {
     TokenVec*   m_pTokenVec;
     TypedStack* m_pExprStack;
     TypedStack* m_pNullStack;
-    TypedStack* m_pGrpByStack;
+    TypedStack* m_pGbyStack;
     TypedStack* m_pLowerStack;
     TypedStack* m_pUpperStack;
     TypedStack* m_pInitStack;
@@ -199,6 +199,7 @@ namespace STORE {
     Stz *szInfix(TypedStack *pExprStack, i8 iProject);
 
     void vGetInfix(s4K &sInfix, TypedStack *pExprStack, i8 iProject);
+    TypedStack* pWorkingStack(eEK eExprKind, ePE ePreExp, TypedStack* pPostStack);
 
     Footer *aFooter(void);
   };

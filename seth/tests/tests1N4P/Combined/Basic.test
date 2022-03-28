@@ -255,7 +255,7 @@ begin
   stage stageA on all partitions :
     indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg 2 " ORDGROUPBY type integer $1
-                 aggregates type integer $1 , type decimal as total )  $5 sum  "
+                 aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | filter 2 " type BOOLEAN  $2 50.0  >  "
     | combined 0
     | next
@@ -276,7 +276,7 @@ begin
   stage stageA on all partitions :
     indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg 2 " ORDGROUPBY type integer $1
-                 aggregates type integer $1 , type decimal as total )  $5 sum  "
+                 aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | filter 2 " type BOOLEAN  $2 100.0  >  "
     | top 2 "TOP type DECIMAL total" 10
     | combined 0
@@ -320,7 +320,7 @@ begin
   stage stageA on all partitions :
     indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg 2 " ORDGROUPBY type integer $1
-                 aggregates type integer $1 , type decimal as total )  $5 sum  "
+                 aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | filter 2 " type BOOLEAN  $2 90.0  >  "
     | combined 0
     | next
@@ -347,7 +347,7 @@ begin
     | next
   stage stageA on all partitions :
     indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | top 2 "TOP type DECIMAL total" 8
     | combined 0
     | next
