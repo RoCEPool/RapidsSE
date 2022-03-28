@@ -1142,6 +1142,7 @@ public:
   void vMarkerNewExitingMarker(void);
   void vMarkerNewExitedMarker(void);
   void vMarkerNewFlushMarker(void);
+  void vMarkerNewInvokeMarker(void);
   void vMarkerNewLeaveMarker(void);
   void vMarkerNewLeavingMarker(void);
   void vMarkerNewLeftMarker(void);
