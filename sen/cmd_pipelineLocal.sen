@@ -102,6 +102,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
 
+/*
   [task].grabLock
 
     Pipeline[].opsOnNode@ to nAcks
@@ -118,7 +119,15 @@
     else
       [task].dropLock
     then
+*/
 
+  Pipeline[] to SubPipe[]
+   
+  // SubPipe[].dump
+     
+  subPipe:invoke
+
+  nullptr to SubPipe[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
 

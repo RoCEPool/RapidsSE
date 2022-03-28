@@ -203,50 +203,49 @@ void Op::vAckInvokingTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Task* pInvokingTask = m_p_PipelineOfOp->pPipelineJob()->pTask();
+  //Task* pInvokingTask = m_p_PipelineOfOp->pPipelineJob()->pTask();
+  //RASSERT(m_pTask->pInvoker() == pInvokingTask);
 
-    if (m_bTraceOp) {
+  SP_Op spOp;
+  i8 nAcksWereRemaining;
+  Task* pInvokingTask = m_pTask->pInvoker();
 
-      if (AM::TRACE::bVBlong()) {
-        SP_Op spOp;
+  if (m_bTraceOp) {
 
-        vTraceM("%s "
-                "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pJobOfOp()
-        );
-      } else {
-        vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task\n"_Stz,
-               szOpNm(),
-               m_pStream->pStage()->szStageNm(),
-               iNode(),
-               tPtnId().iAsI8());
-      }
-    }
-
-    i8 nAcksWereRemaining;
-
-    SP_Op spOp;
-
-    if (m_bTraceOp && AM::TRACE::bVBlong())
-      spOp.szLeading(this);
-
-    AM::vAckWaitingTask(pInvokingTask, m_pTask, nAcksWereRemaining);
-
-    if (m_bTraceOp && AM::TRACE::bVBlong()) {
+    if (AM::TRACE::bVBlong()) {
       SP_Op spOp;
 
       vTraceM("%s "
-              "%-18s nAcksWereRemaining=%lld\n"_Stz
-              , spOp.szAck(this), __func__, nAcksWereRemaining
+              "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pJobOfOp()
       );
-    }
-
-    if (m_bTraceAck)
-      vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task (acksRemaining : %lld)\n"_Stz,
+    } else {
+      vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task\n"_Stz,
              szOpNm(),
              m_pStream->pStage()->szStageNm(),
              iNode(),
-             tPtnId().iAsI8(),
-             nAcksWereRemaining);
+             tPtnId().iAsI8());
+    }
+  }
+
+  if (m_bTraceOp && AM::TRACE::bVBlong())
+    spOp.szLeading(this);
+
+  AM::vAckWaitingTask(pInvokingTask, m_pTask, nAcksWereRemaining);
+
+  if (m_bTraceOp && AM::TRACE::bVBlong()) {
+    vTraceM("%s "
+            "%-18s nAcksWereRemaining=%lld\n"_Stz
+            , spOp.szAck(this), __func__, nAcksWereRemaining
+    );
+  }
+
+  if (m_bTraceAck)
+    vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task (acksRemaining : %lld)\n"_Stz,
+           szOpNm(),
+           m_pStream->pStage()->szStageNm(),
+           iNode(),
+           tPtnId().iAsI8(),
+           nAcksWereRemaining);
 
 }
 
@@ -1729,6 +1728,17 @@ void Op::vSendNode(i8 iSendNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iSendNode = iSendNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set tags for this op                                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vSetInvoker(Task* pInvoker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  if (m_pTask)
+    m_pTask->vInvoker(pInvoker);
 }
 
 /*----------------------------------------------------------------------------*/

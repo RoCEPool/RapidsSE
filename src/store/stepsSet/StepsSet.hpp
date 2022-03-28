@@ -1842,6 +1842,7 @@ public:
   void vSubPipePulsedFetch(void);
   void vSubPipePulsedStore(void);
   void vSubPipeSet(void);
+  void vSubPipeSetInvoker(void);
   void vSubPipeSpawnOpTasks(void);
 
   // SubPipelineOfOp

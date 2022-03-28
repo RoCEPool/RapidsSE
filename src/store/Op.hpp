@@ -198,6 +198,7 @@ namespace STORE
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
     void vSpawnTask(void);
+    void vSetInvoker(Task* pInvoker);
     void vSetTags(void);
     Stage* pStage(void);
     Stz* szStageName(void);

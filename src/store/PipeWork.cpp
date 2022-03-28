@@ -142,6 +142,26 @@ Pipeline* PipeWork::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* spawn operaator jobs for the pipeline                                      */
+/*----------------------------------------------------------------------------*/
+void PipeWork::vSetInvoker(Task* pInvoker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
+    
+    Stage* pStage = pGet(i_Stage);
+    
+    for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
+      Stream* pStream = pStage->pGet(i_Stream);
+
+      pStream->vSetInvoker(pInvoker);
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* set up the pipeline job                                                    */
 /*----------------------------------------------------------------------------*/
 void PipeWork::vSetupJob(void)

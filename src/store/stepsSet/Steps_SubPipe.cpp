@@ -54,6 +54,7 @@ void Step::vAddSteps_SubPipe(void)
   vAddStep("SubPipe[].opsOnNode@"_Stz,     &Step::vSubPipeOpsOnNodeFetch);
   vAddStep("SubPipe[].pulsed@"_Stz,        &Step::vSubPipePulsedFetch);
   vAddStep("SubPipe[].pulsed!"_Stz,        &Step::vSubPipePulsedStore);
+  vAddStep("SubPipe[].setInvoker"_Stz,     &Step::vSubPipeSetInvoker);
   vAddStep("SubPipe[].spawnOpTasks"_Stz,   &Step::vSubPipeSpawnOpTasks);
 }
 
@@ -338,6 +339,20 @@ void Step::vSubPipeSet(void)
   m_pLogicUnit->m_xpSubPipe =
     _pPipeline(m_pDataStack->pPopPtr(__func__));
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* SubPipe[].setInvoker -- set invoker for all tasks in sub-pipeline          */
+/*----------------------------------------------------------------------------*/
+void Step::vSubPipeSetInvoker(void)
+{
+  ENTRY();
+
+  Task* pInvoker = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  m_pLogicUnit->m_xpSubPipe->vSetInvoker(pInvoker);
+  
   EXIT();
 }
 

@@ -49,6 +49,7 @@ namespace STORE
 
     PtnId  tPtnId(void);
 
+    void vSetInvoker(Task* pInvoker);
     Stage* pStage(void);
     StageSpec* pStageSpec(void);
     void vSpawnOpTasks(void);

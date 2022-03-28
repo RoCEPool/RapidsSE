@@ -83,6 +83,7 @@ namespace STORE
     void vPulsed(bool bPulsed);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
+    void vSetInvoker(Task* pInvoker);
     void vSetupJob(void);
     void vSpawnOpTasks(void);
     Stage* pStage0(void);

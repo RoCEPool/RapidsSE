@@ -21,6 +21,8 @@
     SubPipe[].opsOnNode@ to nAcks
 
     nAcks if
+      [task] SubPipe[].setInvoker
+    
       nAcks [task].acksRemaining!
 
       SubPipe[].enqueueStart? if

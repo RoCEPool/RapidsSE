@@ -363,6 +363,17 @@ bool Pipeline::bPulsed(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* spawn operaator jobs for the pipeline                                      */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vSetInvoker(Task* pInvoker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  m_pPipeWork->vSetInvoker(pInvoker);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* set up the pipeline job                                                    */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vSetupJob(void)

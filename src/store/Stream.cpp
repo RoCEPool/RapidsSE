@@ -187,6 +187,24 @@ Stage* Stream::pStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* spawn tasks for all operators for partitions of given node                 */
+/*----------------------------------------------------------------------------*/
+void Stream::vSetInvoker(Task* pInvoker)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  // for each operator in the stage ptn
+  for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
+    
+    Op* pOp = pGet(i_Op);
+    
+    if (pOp)
+      pOp->vSetInvoker(pInvoker);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec for this stream                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* Stream::pStageSpec(void)
