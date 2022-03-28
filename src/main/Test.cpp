@@ -186,93 +186,93 @@ void vTest2(void)
 //  //Delete unknown key when NoOfEntries == 0
 
   //Key and Value are Object*
-  HashMap* pTestMap = new HashMap();
-
-  int a = 10, b = 5, c = 3;
-
-  /*----------------------------------------------------------------------------*/
-  //Insert and delete object
-  //a->null
-  //Delete a
-  /*----------------------------------------------------------------------------*/
-
-  pTestMap->vInsertAtFront((Object*)&a, (Object*)&a);
-
-  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
-
-  pTestMap->vDeleteKey((Object*)&a);
-
-  ASSERT(0 == pTestMap->bExists((Object*)&a));
-
-  /*----------------------------------------------------------------------------*/
-  //Delete non-existent key
-  //
-  //
-  /*----------------------------------------------------------------------------*/
-
-  pTestMap->vDeleteKey((Object*)&b);
-
-  ASSERT(0 == pTestMap->bExists((Object*)&b));
-
-  /*----------------------------------------------------------------------------*/
-  //Insert multiple values and delete first in chain
-  //c->b->a->null
-  //Delete c
-  /*----------------------------------------------------------------------------*/
-
-  pTestMap->vInsertAtFront((Object*)&a, (Object*)&a);
-  pTestMap->vInsertAtFront((Object*)&b, (Object*)&b);
-  pTestMap->vInsertAtFront((Object*)&c, (Object*)&c);
-
-  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
-  ASSERT((Object*)&b == pTestMap->pValueAt((Object*)&b));
-  ASSERT((Object*)&c == pTestMap->pValueAt((Object*)&c));
-
-  pTestMap->vDeleteKey((Object*)&c);
-
-  ASSERT(1 == pTestMap->bExists((Object*)&a));
-  ASSERT(1 == pTestMap->bExists((Object*)&b));
-  ASSERT(0 == pTestMap->bExists((Object*)&c));
-
-  /*----------------------------------------------------------------------------*/
-  //Insert multiple values and delete middle of chain
-  //c->b->a->null
-  //Delete b
-  /*----------------------------------------------------------------------------*/
-
-  pTestMap->vInsertAtFront((Object*)&c, (Object*)&c);
-
-  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
-  ASSERT((Object*)&b == pTestMap->pValueAt((Object*)&b));
-  ASSERT((Object*)&c == pTestMap->pValueAt((Object*)&c));
-
-  pTestMap->vDeleteKey((Object*)&b);
-
-  ASSERT(1 == pTestMap->bExists((Object*)&a));
-  ASSERT(0 == pTestMap->bExists((Object*)&b));
-  ASSERT(1 == pTestMap->bExists((Object*)&c));
-
-  /*----------------------------------------------------------------------------*/
-  //Insert multiple values and delete end of chain
-  //b->c->a->null
-  //Delete a
-  /*----------------------------------------------------------------------------*/
-
-  pTestMap->vInsertAtFront((Object*)&b, (Object*)&b);
-
-  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
-  ASSERT((Object*)&b == pTestMap->pValueAt((Object*)&b));
-  ASSERT((Object*)&c == pTestMap->pValueAt((Object*)&c));
-
-  pTestMap->vDeleteKey((Object*)&a);
-
-  ASSERT(0 == pTestMap->bExists((Object*)&a));
-  ASSERT(1 == pTestMap->bExists((Object*)&b));
-  ASSERT(1 == pTestMap->bExists((Object*)&c));
-
-  pTestMap->vAnalysis();
-
-  delete pTestMap;
+//  HashMap* pTestMap = new HashMap();
+//
+//  int a = 10, b = 5, c = 3;
+//
+//  /*----------------------------------------------------------------------------*/
+//  //Insert and delete object
+//  //a->null
+//  //Delete a
+//  /*----------------------------------------------------------------------------*/
+//
+//  pTestMap->vInsertAtFront((Object*)&a, (Object*)&a);
+//
+//  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
+//
+//  pTestMap->vDeleteKey((Object*)&a);
+//
+//  ASSERT(0 == pTestMap->bExists((Object*)&a));
+//
+//  /*----------------------------------------------------------------------------*/
+//  //Delete non-existent key
+//  //
+//  //
+//  /*----------------------------------------------------------------------------*/
+//
+//  pTestMap->vDeleteKey((Object*)&b);
+//
+//  ASSERT(0 == pTestMap->bExists((Object*)&b));
+//
+//  /*----------------------------------------------------------------------------*/
+//  //Insert multiple values and delete first in chain
+//  //c->b->a->null
+//  //Delete c
+//  /*----------------------------------------------------------------------------*/
+//
+//  pTestMap->vInsertAtFront((Object*)&a, (Object*)&a);
+//  pTestMap->vInsertAtFront((Object*)&b, (Object*)&b);
+//  pTestMap->vInsertAtFront((Object*)&c, (Object*)&c);
+//
+//  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
+//  ASSERT((Object*)&b == pTestMap->pValueAt((Object*)&b));
+//  ASSERT((Object*)&c == pTestMap->pValueAt((Object*)&c));
+//
+//  pTestMap->vDeleteKey((Object*)&c);
+//
+//  ASSERT(1 == pTestMap->bExists((Object*)&a));
+//  ASSERT(1 == pTestMap->bExists((Object*)&b));
+//  ASSERT(0 == pTestMap->bExists((Object*)&c));
+//
+//  /*----------------------------------------------------------------------------*/
+//  //Insert multiple values and delete middle of chain
+//  //c->b->a->null
+//  //Delete b
+//  /*----------------------------------------------------------------------------*/
+//
+//  pTestMap->vInsertAtFront((Object*)&c, (Object*)&c);
+//
+//  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
+//  ASSERT((Object*)&b == pTestMap->pValueAt((Object*)&b));
+//  ASSERT((Object*)&c == pTestMap->pValueAt((Object*)&c));
+//
+//  pTestMap->vDeleteKey((Object*)&b);
+//
+//  ASSERT(1 == pTestMap->bExists((Object*)&a));
+//  ASSERT(0 == pTestMap->bExists((Object*)&b));
+//  ASSERT(1 == pTestMap->bExists((Object*)&c));
+//
+//  /*----------------------------------------------------------------------------*/
+//  //Insert multiple values and delete end of chain
+//  //b->c->a->null
+//  //Delete a
+//  /*----------------------------------------------------------------------------*/
+//
+//  pTestMap->vInsertAtFront((Object*)&b, (Object*)&b);
+//
+//  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
+//  ASSERT((Object*)&b == pTestMap->pValueAt((Object*)&b));
+//  ASSERT((Object*)&c == pTestMap->pValueAt((Object*)&c));
+//
+//  pTestMap->vDeleteKey((Object*)&a);
+//
+//  ASSERT(0 == pTestMap->bExists((Object*)&a));
+//  ASSERT(1 == pTestMap->bExists((Object*)&b));
+//  ASSERT(1 == pTestMap->bExists((Object*)&c));
+//
+//  pTestMap->vAnalysis();
+//
+//  delete pTestMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -385,7 +385,7 @@ void vTest4(void)
   //pHashMap->vAnalysis(false);
   
 //  delete pHashMap;
-  AM::pHashMap()->vAnalysis();
+//  AM::pHashMap()->vAnalysis();
 }
 
 /*----------------------------------------------------------------------------*/
