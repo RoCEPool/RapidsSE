@@ -208,7 +208,7 @@ void Op::vAckInvokingTask(void)
 
   SP_Op spOp;
   i8 nAcksWereRemaining;
-  Task* pInvokingTask = m_pTask->pInvoker();
+  Task* pInvokingTask = m_pTask->pInvokingTask();
 
   if (m_bTraceOp) {
 
@@ -1738,7 +1738,7 @@ void Op::vSetInvoker(Task* pInvoker)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   if (m_pTask)
-    m_pTask->vInvoker(pInvoker);
+    m_pTask->vInvokingTask(pInvoker);
 }
 
 /*----------------------------------------------------------------------------*/

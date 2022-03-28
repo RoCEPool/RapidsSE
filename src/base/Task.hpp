@@ -42,7 +42,7 @@ namespace BASE
     SMA<Job,CN_JOB> m_pJob; // which job this task is executing
     SMA<Op,CN_OP>   m_pOp;  // ... or which op this task is executing
 
-    SMA<Task, CN_TASK>  m_pInvoker;  // task that invoked this task
+    SMA<Task, CN_TASK>  m_pInvokingTask;  // task that invoked this task
 
     SMA<Thread, CN_THREAD>  m_pThread;  // current thread executing this task
 
@@ -139,8 +139,8 @@ namespace BASE
     Word* pEventHandler(void);
     void vGrabTaskLock(Stz* szFunc);
   
-    Task* pInvoker(void);
-    void vInvoker(Task* pInvoker);
+    Task* pInvokingTask(void);
+    void vInvokingTask(Task* pInvokingTask);
     bool bIsImmediate(void);
     void vIsImmediate(bool bIsImmediate);
     bool bIsLocked(void);
