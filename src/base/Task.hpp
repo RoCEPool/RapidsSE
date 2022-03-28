@@ -76,9 +76,6 @@ namespace BASE
     DicStack     m_oDicStack;     // dictionary stack
     DicStack     m_oSaveDicStack; // save dictionary stack
 
-  public:
-
-
     CodeCell*    m_aInxPtr;       // instruction/cell pointer
 
     TypedStack*  m_pAuxStack;     // auxiliary stack
@@ -89,7 +86,6 @@ namespace BASE
 
     SenCompiler* m_pSenCompiler;  // sen word compiler
     Input*       m_pInput;        // input stream
-  
 
     // always last
     Footer m_xFooter;
