@@ -41,7 +41,9 @@ namespace BASE
 
     SMA<Job,CN_JOB> m_pJob; // which job this task is executing
     SMA<Op,CN_OP>   m_pOp;  // ... or which op this task is executing
-  
+
+    SMA<Task, CN_TASK>  m_pInvoker;  // task that invoked this task
+
     SMA<Thread, CN_THREAD>  m_pThread;  // current thread executing this task
 
     Lock         m_okLock;        // lock for this task
@@ -67,8 +69,11 @@ namespace BASE
   
     LogicUnit*   m_pLogicUnit;    // logic unit
 
-  public:
+    Exception    m_xException;
+
     Word*        m_pRecoveryWord; // sen word called to recover from failure
+
+  public:
 
     DicStack     m_oDicStack;     // dictionary stack
     DicStack     m_oSaveDicStack; // save dictionary stack
@@ -84,7 +89,6 @@ namespace BASE
     SenCompiler* m_pSenCompiler;  // sen word compiler
     Input*       m_pInput;        // input stream
   
-    Exception    m_xException;
 
     // always last
     Footer m_xFooter;
@@ -117,53 +121,67 @@ namespace BASE
     bool bAcksRmgDec(i8& nAcksWereRemaining);
     void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);
+  
     void vCheckBreakPt(void);
     bool bCorrectLayout(void);
-    SenCompiler* pSenCompiler(void);
     void vContentDump(void);
     Word* pCurWord(void);
+  
     void vDeleteInput(void);
     DicStack* pDicStack(void);
     void vDotPrint(Stz* szFormat, ...);
     void vDropAllLocks(void);
     void vDropTaskLock(Stz* szFunc);
     void vDump(void);
+  
     void vEntryPoint(eEP eEntryPoint);
     eEP  eEntryPoint(void);
     Word* pEventHandler(void);
     void vGrabTaskLock(Stz* szFunc);
+  
+    Task* pInvoker(void);
+    void vInvoker(Task* pInvoker);
     bool bIsImmediate(void);
     void vIsImmediate(bool bIsImmediate);
     bool bIsLocked(void);
     bool bIsStart(void);
     void vIsStart(bool bIsStart);
     bool bIsTaskLocked(void);
+  
     Job* pJob(void);
     void vJob(Job* pJob);
+  
     void vLocalsPop(void);
     void vLocalsPush(void);
     LogicUnit* pLogicUnit(void);
     void vNewInput(void);
+  
     Op*  pOp(void);
     void vOp(Op* pOp);
+  
     Profile* pProfile(void);
     void vProfile(Profile* pProfile);
+  
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
+  
     LockSet* pReadLocks(void);
-    void vSetSenRecoverContext(void);
     void vReleaseLockSets(void);
     void vResetSenContext(void);
     void vRetire(void);
+
     DicStack* pSaveDicStack(void);
     void vSeeFrameStack(void);
     void vSeeLockSets(void);
     void vSeeLogicUnitRegisters(void);
+    SenCompiler* pSenCompiler(void);
+    void vSetSenRecoverContext(void);
     void vSetInxPtr(Stz* szEntry);
     void vSetInxPtr(Word* pEntryWordCheck);
     void vSleepUsec(i8 iMicroSeconds);
     eTS  eState(void);
     void vState(eTS eState);
+  
     i8   iTaskId(void);
   
     Stz* szTaskNm(void);

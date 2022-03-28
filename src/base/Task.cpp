@@ -114,6 +114,7 @@ void Task::vTask(void)
   
   m_pProfile     = nullptr;
 
+  m_pInvoker     = nullptr;
   m_pThread      = nullptr;
   
   m_bIsStart     = false;
@@ -915,6 +916,27 @@ Input* Task::pInput(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   return m_pInput;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the invoker of this task                                               */
+/*----------------------------------------------------------------------------*/
+Task* Task::pInvoker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pInvoker;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the invoker of this task                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vInvoker(Task* pInvoker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  RASSERT(pInvoker);
+  m_pInvoker = pInvoker;
 }
 
 /*----------------------------------------------------------------------------*/
