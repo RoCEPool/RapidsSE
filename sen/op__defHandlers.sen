@@ -103,6 +103,30 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* handler for eating operand                        (deletes pipein operand) */
+/*----------------------------------------------------------------------------*/
+: EATOPERAND_handler \handler
+
+  // delete operand
+  PipeIn[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for unexpected operand operand    (deletes pipein operand) */
+/*----------------------------------------------------------------------------*/
+: INVALID_OPERAND_handler \handler
+
+  PipeIn[].delete
+
+  // operand incorrectly received
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
+
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
 /* default handler for ZK_M_CLEANING operand                      (pipes out) */
 /*----------------------------------------------------------------------------*/
 : ZK_M_CLEANING_handler \handler
@@ -112,49 +136,6 @@
   LogicUnit[].cleanup
 
   PipeIn[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* default handler for ZK_M_ERROR operand                         (pipes out) */
-/*----------------------------------------------------------------------------*/
-: ZK_M_ERROR_handler \handler
-
-  //"ZK_M_ERROR_handler" .verbose
-
-  // toggle to default abnormal handlers
-  "default_abnormalHandlers" FIND execute
-
-  PipeIn[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* default handler for ZK_M_EXITING operand                       (pipes out) */
-/*----------------------------------------------------------------------------*/
-: ZK_M_EXITING_handler \handler
-
-  //"ZK_M_EXITING_handler" .verbose
-  
-  PipeIn[].pipeOut
-  
-  [job] assert
-  [task] assert
-
-  [op].ackInvokingTask
-  
-  false // calling op_loop exits
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for eating operand                        (deletes pipein operand) */
-/*----------------------------------------------------------------------------*/
-: EATOPERAND_handler \handler
-
-  // delete operand
-  PipeIn[].delete
 
   true
 ;
@@ -205,27 +186,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* default handler for ZK_M_ERROR operand                         (pipes out) */
+/*----------------------------------------------------------------------------*/
+: ZK_M_ERROR_handler \handler
+
+  //"ZK_M_ERROR_handler" .verbose
+
+  // toggle to default abnormal handlers
+  "default_abnormalHandlers" FIND execute
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* default handler for ZK_M_ERRORED operand          (deletes pipein operand) */
 /*----------------------------------------------------------------------------*/
 : ZK_M_ERRORED_handler \handler
 
   //"ZK_M_ERRORED_handler" .verbose
   
-  PipeIn[].delete
-
-  // an error if any other operator receives this operand
-  EC_PIPELINE_PROTOCOL_ERROR op__execErr
-
-  true // calling op_loop continues
-;
-
-/*----------------------------------------------------------------------------*/
-/* default handler for ZK_M_LEFT operand      (deletes pipein operand)        */
-/*----------------------------------------------------------------------------*/
-: ZK_M_LEFT_handler \handler
-
-  //"ZK_M_LEFT_handler" .verbose
-
   PipeIn[].delete
 
   // an error if any other operator receives this operand
@@ -250,6 +231,53 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* default handler for ZK_M_EXITING operand                       (pipes out) */
+/*----------------------------------------------------------------------------*/
+: ZK_M_EXITING_handler \handler
+
+  //"ZK_M_EXITING_handler" .verbose
+  
+  PipeIn[].pipeOut
+  
+  [job] assert
+  [task] assert
+
+  [op].ackInvokingTask
+  
+  false // calling op_loop exits
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_M_INVOKE operand                                    */
+/*----------------------------------------------------------------------------*/
+: ZK_M_INVOKE_handler \handler
+
+  //"ZK_M_INVOKE_handler" .verbose
+
+  PipeIn[].delete
+  
+  Marker[].newStartMarker
+  Marker[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* default handler for ZK_M_LEFT operand      (deletes pipein operand)        */
+/*----------------------------------------------------------------------------*/
+: ZK_M_LEFT_handler \handler
+
+  //"ZK_M_LEFT_handler" .verbose
+
+  PipeIn[].delete
+
+  // an error if any other operator receives this operand
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
+
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
 /* default handler for ZK_M_STARTED operand      (deletes pipein operand)     */
 /*----------------------------------------------------------------------------*/
 : ZK_M_STARTED_handler \handler
@@ -260,19 +288,6 @@
   PipeIn[].delete
 
   // an error if any other operator receives this operand
-  EC_PIPELINE_PROTOCOL_ERROR op__execErr
-
-  true // calling op_loop continues
-;
-
-/*----------------------------------------------------------------------------*/
-/* default handler for unexpected operand operand    (deletes pipein operand) */
-/*----------------------------------------------------------------------------*/
-: INVALID_OPERAND_handler \handler
-
-  PipeIn[].delete
-
-  // operand incorrectly received
   EC_PIPELINE_PROTOCOL_ERROR op__execErr
 
   true // calling op_loop continues
