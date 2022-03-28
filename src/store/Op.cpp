@@ -1013,7 +1013,7 @@ i8 Op::iNode(void)
   i8 i_Node;
   
   if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
-    i_Node = m_pStream->i_Node();
+    i_Node = m_pStream->iNodeNo();
   else
     i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId());
 

@@ -175,7 +175,7 @@ namespace STORE
 
     Stz* szNodeNm(void);
   
-    i8   iOriginatorNode(void);
+    i8   iOriginatorNodeNo(void);
   
     i8   iParticipantNodeNo(void);
     void vParticipantNodeNo(i8 i_Node);

@@ -122,11 +122,11 @@ i8 PipeWork::nOpsOnNode(i8 iNode)
   
   i8 nOps = 0;
   
-  i8 i_Origin = m_pPipeline->i_Origin();
+  i8 iOriginNodeNo = m_pPipeline->iOriginNodeNo();
   
   for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
     Stage* pStage = pGet(i_Stage);
-    nOps += pStage->nOpsOnNode(iNode,i_Origin);
+    nOps += pStage->nOpsOnNode(iNode,iOriginNodeNo);
   }
   
   return nOps;

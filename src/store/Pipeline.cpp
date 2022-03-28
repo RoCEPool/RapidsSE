@@ -31,7 +31,7 @@ __aFooterFunction(Pipeline)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 i_Origin)
+Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 iOriginNodeNo)
 : Object(CN_PIPELINE)
 , LifeGuard_t<Pipeline>(this,CN_PIPELINE)
 , m_okDebugLock(this)
@@ -44,7 +44,7 @@ Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 i_Origin)
   
   m_pPipelineJob  = pPipelineJob;
   m_pPipeSpec     = pPipeSpec;
-  m_i_Origin      = i_Origin;
+  m_iOriginNodeNo = iOriginNodeNo;
 
   m_bEarlyExit    = false;
   m_bErrored      = false;
@@ -241,11 +241,11 @@ void Pipeline::vGrabDebugLock(void)
 /*----------------------------------------------------------------------------*/
 /* get the originating node                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Pipeline::i_Origin(void)
+i8 Pipeline::iOriginNodeNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_i_Origin;
+  return m_iOriginNodeNo;
 }
 
 /*----------------------------------------------------------------------------*/

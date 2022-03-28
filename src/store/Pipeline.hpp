@@ -29,7 +29,7 @@ namespace STORE
     // -- refers to
     PipeSpec* m_pPipeSpec; // specification of this pipeline
   
-    i8   m_i_Origin;    // originating node
+    i8   m_iOriginNodeNo;    // originating node
   
 
   
@@ -55,7 +55,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 i_Origin);
+    Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 iOriginNodeNo);
    ~Pipeline(void) noexcept(false);
   
     void vAddAccum(i8 i_Accum, i8 iValue);
@@ -71,7 +71,7 @@ namespace STORE
     PipeWork* pPipeWork(void);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
-    i8   i_Origin(void);
+    i8   iOriginNodeNo(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
     Op*  pOpToPulse(void);

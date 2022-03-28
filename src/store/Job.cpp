@@ -639,7 +639,7 @@ Stz* Job::szNodeNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 i_Node = iOriginatorNode();
+  i8 i_Node = iOriginatorNodeNo();
   
   Stz* szNodeNm = AM::pGrid()->pFindNode(i_Node)->szNodeNm();
   
@@ -649,13 +649,13 @@ Stz* Job::szNodeNm(void)
 /*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
-i8 Job::iOriginatorNode(void)
+i8 Job::iOriginatorNodeNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  i8 i_OriginatorNode = m_tJobId.uNodeNo();
+  i8 iOriginatorNodeNo = m_tJobId.uNodeNo();
   
-  return i_OriginatorNode;
+  return iOriginatorNodeNo;
 }
 
 /*----------------------------------------------------------------------------*/

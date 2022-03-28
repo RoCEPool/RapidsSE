@@ -61,14 +61,14 @@ void SP_Stream::vStream(Stream* pStream, bool bDescend)
     vCatf("[%02lld] Node-Stream %s (N%lld) "_Stz
           ,pStream->i_Stream()
           ,pStream->szStreamNm()
-          ,pStream->i_Node()
+          ,pStream->iNodeNo()
           );
   }
   else {
     vCatf("[%02lld] Partition-Stream %s (N%lld,S%02lld) "_Stz
           ,pStream->i_Stream()
           ,pStream->szStreamNm()
-          ,pStream->i_Node()
+          ,pStream->iNodeNo()
           ,pStream->i_Stream()
           );
   }

@@ -25,7 +25,7 @@ namespace STORE
     PtnId m_tPtnId;           // this stream processes m_tPtnId in grid
                               //   will be C_UNKNOWN for stage with node topology
 
-    i8   m_i_Node;            // this stream processes m_i_Node in grid
+    i8   m_iNodeNo;            // this stream processes m_i_Node in grid
                               //   is PtnMap::i_PtnNoToNode(m_tPtnId);
 
     // -- -- -- -- -- --
@@ -37,11 +37,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
    Stream(StageSpec* pStageSpec, Stage* pStage,
-           i8 i_Stream, PtnId tPtnId, i8 i_Node);
+           i8 i_Stream, PtnId tPtnId, i8 iNodeNo);
 
    ~Stream(void) noexcept(false);
     
-    i8   i_Node(void);
+    i8   iNodeNo(void);
     i8   i_Stream(void);
 
     Op*  pOp0(void);
