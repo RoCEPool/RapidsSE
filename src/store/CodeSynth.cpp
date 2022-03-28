@@ -602,11 +602,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate code for the expression
-  vGenerateExprCode(m_pExprStack, ""_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate code for join key expression
+  // generate code for the key expression
   vGenerateExprCode(m_pExprStack, ""_Stz);
 
   // position at entry greater than equal to the join key (lbound)
@@ -1214,6 +1210,8 @@ void CodeSynth::vSynthOrdAgg(eEK eExprKind, Stz *sProjectExpr, Stz *sLabel, Stz 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate ordered gby
   vOrdAggGby(sLabelNext, sLabelLoop);
+
+  delete pPostStack;
 
   // cleanup
   m_pExprStack->vReset();
@@ -3077,7 +3075,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       // aggregate follows, generate init expressions in the m_aInitStack
       vPushAggCol(pExprStack, pPostStack, ePreExp, eExprKind, eExprType, bHashRows, i_Col, i_DupCtr);
 
-      //pExprStack = pPostStack;
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
       RASSERT(pPostStack);

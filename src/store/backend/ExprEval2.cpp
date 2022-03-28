@@ -760,7 +760,8 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
   }
 
   // add the last column to the streamDefOut
-  if (ePreExp != PE_SRT && ePreExp != PE_TOP)
+  if (pColumnExpr->eColumnType() != CT_NONE &&
+      ePreExp != PE_SRT && ePreExp != PE_TOP)
     vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
   L_RETURN:
