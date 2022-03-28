@@ -365,7 +365,7 @@
   JP_EXECUTING [job].phase!
 
   // set task's dictionary stack from path in job
-  <path> str.toStrVec Path[].set
+  //<path> str.toStrVec Path[].set
   //[task].dump
 
   // acquire ddl lock
@@ -377,6 +377,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run optional <pre_execute> word
 
+  [job]:pre_execute
+/*
   "<pre_execute>" [job].tagSet@ tagSet.hasName if
     "<pre_execute>"
     [job].tagSet@ tagSet.getStr locals| sPreExe |
@@ -391,7 +393,7 @@
       <pipelineNm> "No pre execute word for pipeline: %v" .printf
     then
   then
-
+*/
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job

@@ -243,6 +243,26 @@
   HAZARD
 ;
 
+/*----------------------------------------------------------------------------*/
+/* run optional <pre_execute> word                                            */
+/*----------------------------------------------------------------------------*/
+: [job]:pre_execute
+
+  "<pre_execute>" [job].tagSet@ tagSet.hasName if
+    "<pre_execute>"
+    [job].tagSet@ tagSet.getStr locals| sPreExe |
+    sPreExe find
+    dup not if
+      sPreExe "Unable to find pre execute word: %v" .printf
+      process::quit
+    then
+      execute
+  else
+    [args].verbose if
+      <pipelineNm> "No pre execute word for pipeline: %v" .printf
+    then
+  then
+;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
