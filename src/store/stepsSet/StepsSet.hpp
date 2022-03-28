@@ -830,9 +830,8 @@ public:
 
   void vJobOriginNodeNoFetch(void);
 
-  void vJobParticipantFetch(void);
-  void vJobParticipantFetch_other(void);
-  void vJobParticipantStore(void);
+  void vJobParticipantNodeNoFetch(void);
+  void vJobParticipantNodeNoStore(void);
   void vJobPipeToOp0(void);
   void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);

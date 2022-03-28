@@ -74,7 +74,7 @@ Job::Job(Stz* szJobNm,
 
   // -- b -------------------
   m_bWasReceived     = false;
-  m_i_Participant = C_UNKNOWN;
+  m_iParticipantNodeNo = C_UNKNOWN;
   
   // -- c -------------------
   m_eJobList  = JL_NONE;
@@ -661,21 +661,21 @@ i8 Job::iOriginatorNode(void)
 /*----------------------------------------------------------------------------*/
 /* get the participant node                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Job::iParticipantNode(void)
+i8 Job::iParticipantNodeNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_i_Participant;
+  return m_iParticipantNodeNo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the job id                                                             */
 /*----------------------------------------------------------------------------*/
-void Job::vParticipantNode(i8 i_Node)
+void Job::vParticipantNodeNo(i8 iNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_i_Participant = i_Node;
+    
+  m_iParticipantNodeNo = iNodeNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -754,7 +754,7 @@ void Job::vPrintJobContents(void)
          ,m_i_Session                // 5
          ,m_iCmdNo                   // 6
          ,m_bWasReceived ? "true" : "false" // 7
-         ,m_i_Participant            // 8
+         ,m_iParticipantNodeNo            // 8
          ,aJS[m_eJobState]           // 10
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
@@ -816,9 +816,9 @@ void Job::vPrintJobLine(void)
          ,this->m_iCmdNo
          );
 
-  if (C_UNKNOWN != this->iParticipantNode())
+  if (C_UNKNOWN != this->iParticipantNodeNo())
     vTrace("partNode %lld "_Stz
-           ,this->iParticipantNode()
+           ,this->iParticipantNodeNo()
            );
 
   LogicUnit* pLogicUnit = m_pTask->pLogicUnit();
@@ -891,7 +891,7 @@ void Job::vResetForCascade(Session* pSession)
 
   // -- b -------------------
   m_bWasReceived     = false;
-  m_i_Participant = C_UNKNOWN;
+  m_iParticipantNodeNo = C_UNKNOWN;
 
   // -- c -------------------
   m_eJobKind  = JK_NONE;
