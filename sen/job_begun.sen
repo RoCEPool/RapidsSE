@@ -45,19 +45,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  [with].2pcSimple? if
-    ListedJob[].task@ task.ack
-  else
-
-    // decrement the acks remaining in the originating job
-    ListedJob[].dec2pcDecider if
-
-      // notify the originating task
-      ListedJob[].task@ task.ack
-      ListedJob[].returnReference
-
-    then
-  then
+  ListedJob[].task@ task.ack
   
   ListedJob[].returnReference
   [job]:retire

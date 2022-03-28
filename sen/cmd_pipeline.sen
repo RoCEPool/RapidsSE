@@ -163,6 +163,7 @@
     "pipeline:begin" [job].entryPoint!
     
     [task].grabLock
+      [grid].knownNodes [task].acksRemaining!
       [job] job:broadcast
     [task].wait
 
@@ -182,6 +183,7 @@
     [job] job_Execute::new to pJob_Execute
 
     [task].grabLock
+      [grid].knownNodes [task].acksRemaining!
       pJob_Execute job:broadcast
     [task].wait
 
@@ -206,6 +208,7 @@
     [job] job_End::new to pJob_End
 
     [task].grabLock
+      [grid].knownNodes [task].acksRemaining!
       pJob_End job:broadcast
     [task].wait
 
