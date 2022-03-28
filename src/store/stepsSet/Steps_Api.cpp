@@ -296,9 +296,7 @@ void Step::vApiSpawnDemon(void)
   
   s48K sPipeline;
   m_pDataStack->vPopStr(sPipeline,__func__);
- 
-  bool bDedicated = m_pDataStack->iPopBol(__func__);
-  
+   
   s48K sTagStr;
   m_pDataStack->vPopStr(sTagStr,__func__);
 
