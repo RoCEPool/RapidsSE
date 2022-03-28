@@ -3325,14 +3325,6 @@ Session* AM::pSessionGet(i8 i_Origin,  i8 i_Session)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vSpawnTaskDedicated_job(Job* pJob)
-{
-  Api::vSpawnTaskDedicated_job(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
 void AM::vSpawnTaskDedicated_op(Op* pOp)
 {
   Api::vSpawnTaskDedicated_op(pOp);

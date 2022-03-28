@@ -350,10 +350,7 @@ void Step::vApiSpawnDemon(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (bDedicated)
-    Api::vSpawnTaskDedicated_job(pSsnJob);
-  else
-    Api::vSpawnTask_demonJob(pSsnJob);
+  Api::vSpawnTask_demonJob(pSsnJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

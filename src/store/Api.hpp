@@ -58,7 +58,6 @@ namespace STORE
 
   static void vSpawnTask_job(Job* pJob);
   static void vSpawnTask_op(Op* pop);
-  static void vSpawnTaskDedicated_job(Job* pJob);
   static void vSpawnTaskDedicated_op(Op* pOp);
 
   static void vSpawnTask_demonJob(Job* pJob);

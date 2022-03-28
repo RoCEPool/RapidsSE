@@ -767,7 +767,6 @@ namespace OBLIQUE
     static bool bSpawnTask_session(Job* pJob);
     
     static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
-    static void vSpawnTaskDedicated_job(Job* pJob);
     static void vSpawnTaskDedicated_op(Op* pOp);
     static void vSpawnTask_job(Job* pJob);
     static void vSpawnTask_op(Op* pOp);

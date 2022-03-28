@@ -974,19 +974,6 @@ void Api::vSpawnTask_op(Op* pOp)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-void Api::vSpawnTaskDedicated_job(Job* pJob)
-{
-  _static_
-  
-  //RASSERT(! pJob->pTask());
-  
-  pJob->vSpawnTask();
-  Scheduler::vTaskApi_AddDedicated(pJob->pTask());
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
 void Api::vSpawnTaskDedicated_op(Op* pOp)
 {
   _static_
