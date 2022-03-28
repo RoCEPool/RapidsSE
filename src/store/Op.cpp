@@ -819,6 +819,14 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
+    case ZK_M_INVOKE:
+      // should not have received a ZK_M_INVOKE already
+      if (m_naOperandCount[ZK_M_INVOKE]) {
+        vTrace("%s: multiple ZK_M_INVOKES's arrived\n"_Stz, szOpNm());
+        return false;
+      }
+      break;
+      
     case ZK_M_STARTCRWRHT:
       // should not have received a ZK_M_STARTROWRHT already
       if (m_naOperandCount[ZK_M_STARTROWRHT]) {
@@ -858,9 +866,19 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
 
     case ZK_M_STARTED:
       // should have received a ZK_M_START
-      if ( ! m_naOperandCount[ZK_M_START]) {
-        vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz, szOpNm(), aZK[i_OperandKind]);
-        return false;
+      if (m_sOpNm.bSame("start"_Stz) ) {
+        if (! m_naOperandCount[ZK_M_INVOKE]) {
+          vTrace("%s: %s arrived without a prior ZK_M_INVOKE\n"_Stz,
+                 szOpNm(), aZK[i_OperandKind]);
+          return false;
+        }
+      }
+      else {
+        if (! m_naOperandCount[ZK_M_START]) {
+          vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
+                 szOpNm(), aZK[i_OperandKind]);
+          return false;
+        }
       }
       
       // should not have received a ZK_M_STARTED already

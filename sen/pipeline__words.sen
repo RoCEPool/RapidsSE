@@ -27,7 +27,7 @@
 
       SubPipe[].enqueueStart? if
 
-        Marker[].newStartMarker
+        Marker[].newInvokeMarker
         Marker[]\clear SubPipe[].op0@ op.enqueOperand
       then
       [task].wait

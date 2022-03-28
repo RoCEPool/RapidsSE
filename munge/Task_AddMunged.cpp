@@ -37285,7 +37285,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "      SubPipe[].enqueueStart? if\n"
     "\n"
-    "        Marker[].newStartMarker\n"
+    "        Marker[].newInvokeMarker\n"
     "        Marker[]\\clear SubPipe[].op0@ op.enqueOperand\n"
     "      then\n"
     "      [task].wait\n"
