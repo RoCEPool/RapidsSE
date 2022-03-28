@@ -790,7 +790,6 @@ public:
   void vIntStackPush(void);
 
   // job
-  void vJob2pcDeciderStore(void);
   void vJobAddDemon(void);
   void vJobAddLocal(void);
   void vJobAddOriginator(void);
@@ -1026,7 +1025,6 @@ public:
 
   // listed job
   void vListedJobAssertNoRef(void);
-  void vListedJobDec2pcDecider(void);
   void vListedJobFindOriginator(void);
   void vListedJobFindParticipant(void);
   void vListedJobHasTask(void);

@@ -67,7 +67,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("[job]"_Stz,                  &Step::vJobGet);
 
-  vAddStep("[job].2pcDecider!"_Stz,      &Step::vJob2pcDeciderStore);
   vAddStep("[job].addDemon"_Stz,         &Step::vJobAddDemon);
   vAddStep("[job].addLocal"_Stz,         &Step::vJobAddLocal);
   vAddStep("[job].addOriginator"_Stz,    &Step::vJobAddOriginator);
@@ -122,20 +121,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].tscParticipant"_Stz,   &Step::vJobTscParticipant);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* job.2pcDecider! -- set acks remaining for this job                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJob2pcDeciderStore(void)
-{
-  ENTRY();
-    
-  i8 nAcksRemaining = m_pDataStack->iPopInt(__func__);
-  
-  m_pJob->v2pcDeciderRmg(nAcksRemaining);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* [job].addDemon -- add job to demon job set                                 */

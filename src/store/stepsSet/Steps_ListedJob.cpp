@@ -20,7 +20,6 @@ void Step::vAddSteps_ListedJob(void)
   vAddStep("ListedJob[]"_Stz,                 &Step::vListedJobPointer);
 
   vAddStep("ListedJob[].assertNoRef"_Stz,     &Step::vListedJobAssertNoRef);
-  vAddStep("ListedJob[].dec2pcDecider"_Stz,   &Step::vListedJobDec2pcDecider);
   vAddStep("ListedJob[].findOriginator"_Stz,  &Step::vListedJobFindOriginator);
   vAddStep("ListedJob[].findParticipant"_Stz, &Step::vListedJobFindParticipant);
   vAddStep("ListedJob[].hasTask"_Stz,         &Step::vListedJobHasTask);
@@ -39,21 +38,6 @@ void Step::vListedJobAssertNoRef(void)
   if (m_pLogicUnit->m_xpListedJob.pReferencedObject())
     THROW("ListedJob[].assertNoRef : register still has reference to a job"_Stz);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ListedJob[].dec2pcDecider -- decrement acks remaining for listed job       */
-/*----------------------------------------------------------------------------*/
-void Step::vListedJobDec2pcDecider(void)
-{
-  ENTRY();
-  
-  i8 nAcksWereRemaining;
-  bool bAmDecider = m_pLogicUnit->m_xpListedJob->b2pcDeciderDec(nAcksWereRemaining);
-  
-  m_pDataStack->vPushInt(bAmDecider);
-
   EXIT();
 }
 
