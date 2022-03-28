@@ -36,8 +36,10 @@ PipeWork::PipeWork(Pipeline* pPipeline, PipeSpec* pPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
-  m_pPipeline     = pPipeline;
+  m_pPipeline = pPipeline;
   m_pPipeSpec = pPipeSpec;
+
+  m_pSubPipeWorks = nullptr;
 
   _checkInitialised_(CN_PIPEWORK);
   

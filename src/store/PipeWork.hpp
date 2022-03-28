@@ -5,7 +5,7 @@
 
 #include "LifeGuard_t.hpp"
 
-namespace STORE { class Stage; class PipeSpec; }
+namespace STORE { class Stage; class PipeSpec; class SubPipeWorks; }
 
 namespace STORE
 {
@@ -17,6 +17,8 @@ namespace STORE
 
     Pipeline* m_pPipeline; // which pipeline
     PipeSpec* m_pPipeSpec; // specification of this pipework
+  
+    SubPipeWorks* m_pSubPipeWorks;
   
     // must be last
     Footer m_xFooter;

@@ -197,13 +197,13 @@ Op::~Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set ack job on end marker                                                  */
+/* ack the invoking task                                                      */
 /*----------------------------------------------------------------------------*/
-void Op::vAckPipelineJob(void)
+void Op::vAckInvokingTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Task* pPipelineTask = AM::pExecutingTask(m_p_PipelineOfOp->pPipelineJob());
+  Task* pInvokingTask = m_p_PipelineOfOp->pPipelineJob()->pTask();
 
     if (m_bTraceOp) {
 
@@ -214,7 +214,7 @@ void Op::vAckPipelineJob(void)
                 "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pJobOfOp()
         );
       } else {
-        vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
+        vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task\n"_Stz,
                szOpNm(),
                m_pStream->pStage()->szStageNm(),
                iNode(),
@@ -229,7 +229,7 @@ void Op::vAckPipelineJob(void)
     if (m_bTraceOp && AM::TRACE::bVBlong())
       spOp.szLeading(this);
 
-    AM::vAckWaitingTask(pPipelineTask, m_pTask, nAcksWereRemaining);
+    AM::vAckWaitingTask(pInvokingTask, m_pTask, nAcksWereRemaining);
 
     if (m_bTraceOp && AM::TRACE::bVBlong()) {
       SP_Op spOp;
@@ -241,7 +241,7 @@ void Op::vAckPipelineJob(void)
     }
 
     if (m_bTraceAck)
-      vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job (acksRemaining : %lld)\n"_Stz,
+      vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task (acksRemaining : %lld)\n"_Stz,
              szOpNm(),
              m_pStream->pStage()->szStageNm(),
              iNode(),
