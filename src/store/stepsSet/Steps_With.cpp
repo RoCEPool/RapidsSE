@@ -14,24 +14,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_With(void)
 {
-  vAddStep("[with].2pcSimple?"_Stz,    &Step::vWith2pcSimple);
   vAddStep("[with].subPipeline?"_Stz,  &Step::vWithSubPipeline);
-}
-
-/*----------------------------------------------------------------------------*/
-/* [with].2pcSimple? -- test if compiled with 2PC+SIMPLE                      */
-/*----------------------------------------------------------------------------*/
-void Step::vWith2pcSimple(void)
-{
-  ENTRY();
-
-#ifdef WITH_2PC_SIMPLE
-    m_pDataStack->vPushInt(true);
-#else
-    m_pDataStack->vPushInt(false);
-#endif
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

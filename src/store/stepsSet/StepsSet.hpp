@@ -2424,7 +2424,6 @@ public:
   void vUserName(void);
 
   // zero
-  void vWith2pcSimple(void);
   void vWithSubPipeline(void);
 
   // word
