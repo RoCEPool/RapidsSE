@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_exeSubPipe.sen -- Operator Execute Sub-Pipeline                         */
+/* OP_invoke.sen -- Invoke Sub-Pipeline operator                              */
 /*============================================================================*/
 
-" OP_exeSubPipe.sen" .verbose
+" OP_invoke.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: exeSubPipe_StartMarker \handler
+: invoke_StartMarker \handler
 
   0 locals| nAcks |
 
@@ -21,15 +21,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute sub-pipeline req                                                   */
+/* invoke a sub-pipeline                                                      */
 /*----------------------------------------------------------------------------*/
- : exeSubPipe_op \operator
+ : invoke_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: exeSubPipe_StartMarker  ZK_M_START  [op].handler!
+  find: invoke_StartMarker  ZK_M_START  [op].handler!
 
   op__loop
 
@@ -43,12 +43,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: exeSubPipe :: exeSubPipe <subPipeNm> ;
+cmdSyntax: invoke :: invoke <subPipeNm> ;
 
-: exeSubPipe_cmdTags _cmdTags tagCopy: op_tags
+: invoke_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "exeSubPipe_op"
+    <opEntry> = "invoke_op"
   }
 ;
 
