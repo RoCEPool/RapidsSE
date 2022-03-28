@@ -54,6 +54,9 @@ namespace BASE {
   class File;
   class Format;
 
+#ifdef WITH_HASHMAP
+  class HashMap;
+#endif
   class Header;
   class Heap;
   class Heaps;
@@ -608,6 +611,9 @@ namespace OBLIQUE
     static std::list<Node*>::const_iterator itEndNodes(void);
 
     static JobList* pDemonJobs(void);
+#ifdef WITH_HASHMAP
+    static HashMap* pHashMap(void);
+#endif
     static Heaps* pHeaps(void);
     static i8   nIndexEntries(void);
     static JobList* pLocalJobs(void);

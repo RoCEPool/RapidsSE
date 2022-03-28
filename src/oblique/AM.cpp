@@ -2742,6 +2742,9 @@ i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
 Grid* AM::pGrid(void)         { return gpAttachMap ? gpAttachMap->m_pGrid : nullptr;                  }
+#ifdef WITH_HASHMAP
+HashMap* AM::pHashMap(void)   { return gpAttachMap->m_pHashMap;           }
+#endif
 Heaps* AM::pHeaps(void)   { return & gpAttachMap->m_xHeaps;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {

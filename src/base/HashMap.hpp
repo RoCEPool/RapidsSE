@@ -2,48 +2,58 @@
 /* HashMap.hpp -- HashMap                                                     */
 /*============================================================================*/
 #pragma once
+#define C_HASHMAP_SIZE 1000
+
+#ifdef WITH_HASHMAP_DEBUG
+#define C_HISTORY_DUR 100
+#endif
 
 namespace BASE
 {
   class HashMap : public Object
   {
-  friend HashBuffer;
-  friend HashCursor;
+  friend HashMapSlot;
 
   private:
-  
-    bool m_bTrace;
-    i8   m_nEntriesPerBuffer;
-    i8   m_nArcsPerBuffer;
+    u8 m_uNoOfSlots;
+    u8 m_uNoOfEntries;
 
-    HashBuffer* m_pRootBuffer;
-    HashBuffer* m_pRootDuplicates;
+    HashMapSlot* m_paMap[C_HASHMAP_SIZE];
 
-    i8 m_nBuffers;
-    i8 m_iMaxDepth;
-    i8 m_nDupBuffers;
-  
-    i8 m_nEntries;
-    i8 m_nArcEntries;
-    i8 m_nDupEntries;
+#ifdef WITH_HASHMAP_DEBUG
+    u8 m_nHistory;
+
+    struct {
+      u8      m_uHistoryIndex;
+      u8      m_uCurrTotalEntries;
+      Object* m_pKey;
+      bool    m_bDeleted;
+      bool    m_bInserted;
+    } xHistory[C_HISTORY_DUR];
+#endif
 
     // must be last
     Footer m_xFooter;
     
    public:
     void* operator new(size_t);
-    void* operator new(size_t, HashMap* pHashMap);
     void  operator delete(void* pHashMapAddress);
  
-    HashMap(bool bTrace=false, i8 nEntriesPerBuffer=0, i8 nArcsPerBuffer=0);
+    HashMap(u8 uNoOfSlots=C_HASHMAP_SIZE);
     ~HashMap(void) noexcept(false);
-  
-    void vAnalysis(bool bBufferAnalysis);
-    void vAppendDuplicate(HashInsert* pHi, HashEntry* aHashEntry);
-    i8   iEach(byte* yaKey,   i8 nBytes, i8& iCursor);
-    bool bExists(byte* yaKey, i8 nBytes);
-    bool bExists(byte* yaKey, i8 nBytes, i8 iValue);
-    void vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug);
+
+    void    vAnalysis(void);
+    void    vDeleteKey(Object* pKey);
+    bool    bExists(Object* pKey);
+    u8      uHashFunction(Object* pKey);
+    void    vInsertAtFront(Object* pKey, Object* pValue);
+    Object* pValueAt(Object* pKey);
+
+#ifdef WITH_HASHMAP_DEBUG
+    void    vAppendHistory(Object* pKey,
+                           bool bDeleted,
+                           bool bInserted);
+#endif
 
   private:
 
