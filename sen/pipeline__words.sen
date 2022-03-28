@@ -5,9 +5,9 @@
 " pipeline__words.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute the sub-pipeline pointed to by the SubPipe[] register          */
+/* invoke the sub-pipeline pointed to by the SubPipe[] register               */
 /*----------------------------------------------------------------------------*/
-: subPipe:exe
+: subPipe:invoke
 
   SubPipe[] assert
   

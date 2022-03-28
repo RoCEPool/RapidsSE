@@ -13,7 +13,7 @@
 
   // <subPipeNm> [subPipeOfOp].find to SubPipe[]
   
-  subPipe:exe
+  subPipe:invoke
   
   nullptr to SubPipe[]
 
