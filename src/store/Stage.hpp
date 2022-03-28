@@ -46,7 +46,7 @@ namespace STORE
     Stz* szStageNm(void);
     Stream* pStream0(void);
     StageSpec* pStageSpec(void);
-    bool bStartPipeline(void);
+    bool bEnqueueInvoke(void);
 
   void    vCreateStreams(void);
 

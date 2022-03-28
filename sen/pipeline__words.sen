@@ -25,7 +25,7 @@
     
       nAcks [task].acksRemaining!
 
-      SubPipe[].enqueueStart? if
+      SubPipe[].enqueueInvoke? if
 
         Marker[].newInvokeMarker
         Marker[]\clear SubPipe[].op0@ op.enqueOperand

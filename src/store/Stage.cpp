@@ -292,7 +292,7 @@ Stream* Stage::pStream0(void)
 /*----------------------------------------------------------------------------*/
 /* test if to send startMarker to start op of the stage                       */
 /*----------------------------------------------------------------------------*/
-bool Stage::bStartPipeline(void) {
+bool Stage::bEnqueueInvoke(void) {
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   // would the start marker always be on ORIGIN???

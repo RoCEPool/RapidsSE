@@ -45,7 +45,7 @@ void Step::vAddSteps_SubPipe(void)
   vAddStep("SubPipe[].dump"_Stz,           &Step::vSubPipeDump);
   vAddStep("SubPipe[].earlyExit@"_Stz,     &Step::vSubPipeEarlyExitFetch);
   vAddStep("SubPipe[].earlyExit!"_Stz,     &Step::vSubPipeEarlyExitStore);
-  vAddStep("SubPipe[].enqueueStart?"_Stz,  &Step::vSubPipeEnqueueStart);
+  vAddStep("SubPipe[].enqueueInvoke?"_Stz,  &Step::vSubPipeEnqueueInvoke);
   vAddStep("SubPipe[].errored@"_Stz,       &Step::vSubPipeErroredFetch);
   vAddStep("SubPipe[].errored!"_Stz,       &Step::vSubPipeErroredStore);
   vAddStep("SubPipe[].getAccum"_Stz,       &Step::vSubPipeGetAccum);
@@ -185,9 +185,9 @@ void Step::vSubPipeEarlyExitStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* SubPipe[].enqueueStart? -- test for issuing a start marker                 */
+/* SubPipe[].enqueueInvoke? -- test for enquing an invoke marker              */
 /*----------------------------------------------------------------------------*/
-void Step::vSubPipeEnqueueStart(void)
+void Step::vSubPipeEnqueueInvoke(void)
 {
   ENTRY();
   
@@ -195,8 +195,7 @@ void Step::vSubPipeEnqueueStart(void)
 
   Stage*    pStage0   = pFormWork->pGet(0);
 
-  if (pStage0->bStartPipeline()) {
-    
+  if (pStage0->bEnqueueInvoke()) {
     m_pDataStack->vPushInt(true);
   }
   else {

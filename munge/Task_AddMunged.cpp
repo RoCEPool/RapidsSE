@@ -37283,7 +37283,7 @@ void Task::vAddMunged(Task* )
     "    \n"
     "      nAcks [task].acksRemaining!\n"
     "\n"
-    "      SubPipe[].enqueueStart? if\n"
+    "      SubPipe[].enqueueInvoke? if\n"
     "\n"
     "        Marker[].newInvokeMarker\n"
     "        Marker[]\\clear SubPipe[].op0@ op.enqueOperand\n"

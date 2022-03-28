@@ -1829,7 +1829,7 @@ public:
   void vSubPipeDump(void);
   void vSubPipeEarlyExitFetch(void);
   void vSubPipeEarlyExitStore(void);
-  void vSubPipeEnqueueStart(void);
+  void vSubPipeEnqueueInvoke(void);
   void vSubPipeErroredStore(void);
   void vSubPipeErroredFetch(void);
   void vSubPipeGet(void);

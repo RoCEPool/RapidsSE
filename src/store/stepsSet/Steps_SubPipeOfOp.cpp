@@ -351,7 +351,7 @@ void Step::vSubPipeOfOpStartPipeline(void)
 
   Stage*    pStage0   = pFormWork->pGet(0);
 
-  if (pStage0->bStartPipeline()) {
+  if (pStage0->bEnqueueInvoke()) {
     
     m_pDataStack->vPushInt(true);
   }
