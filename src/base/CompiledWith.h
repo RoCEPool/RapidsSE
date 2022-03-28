@@ -100,6 +100,7 @@
 #define WITH_OPT_HASHCAST EndDefine       //
 
 #define WITH_SUBPIPELINE EndDefine       //
+#define WITH_2PC_SIMPLE EndDefine       //
 
 //#define WITH_HASHMAP EndDefine             // code for hashmap compiled in
 //#define WITH_HASHMAP_DEBUG EndDefine       // enable debug for hashmap
