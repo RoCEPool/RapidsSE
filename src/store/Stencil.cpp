@@ -1167,14 +1167,21 @@ void Stencil::vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   // create the groupby index
   eKE eKind;
+  bool bPayload = true;
 
   // get the indexDef
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   pCombined->aCombinedT()->m_aIndexDefPL = new IndexDef(pIndexDef);
   pCombined->aCombinedT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, 1, pIndexDef->eKeyKind());
+
+  // do we have a payload ?
+  if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
+    bPayload = false;
+
+  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -1372,6 +1379,8 @@ void Stencil::vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
+  bool bPayload = true;
+
   // get the streamDefOut
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
@@ -1385,11 +1394,15 @@ void Stencil::vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
   // get the indexDef
   IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
 
+  // do we have a payload ?
+  if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
+    bPayload = false;
+
   // create the groupby index
   eKE eKind;
   pCombined->aCombinedT()->m_aIndexDefPL = new IndexDef(pIndexDef);
   pCombined->aCombinedT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
+  EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -1463,7 +1476,7 @@ void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPro
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   eKE eKind;
-  bool bPayload = 1;
+  bool bPayload = true;
 
   // get the indexDef
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
@@ -1472,7 +1485,7 @@ void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPro
 
   // do we have a payload ?
   if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
-    bPayload = 0;
+    bPayload = false;
 
   pCombined->aCombinedT()->m_aIndexDefPL = new IndexDef(pIndexDef);
   pCombined->aCombinedT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
@@ -1520,11 +1533,7 @@ void Stencil::vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
-  bool bPayload = 1;
-
-  // do we have a payload ?
-  //if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
- //   bPayload = 0;
+  bool bPayload = true;
 
   // get the LogicUnit
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
@@ -1537,7 +1546,7 @@ void Stencil::vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   // do we have a payload ?
   if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
-    bPayload = 0;
+    bPayload = false;
 
   // create the indexTree
   eKE eKind;

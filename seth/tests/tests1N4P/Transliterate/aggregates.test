@@ -107,8 +107,6 @@ rows:
   ('SAUDI ARABIA',4)
 
 -- basic select of two columnRefs with both in GROUP BY. No aggregation
-// TODO: multiple columns
-/*
 SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
 rows:
  ('MOZAMBIQUE',16)
@@ -138,7 +136,6 @@ rows:
  ('SAUDI ARABIA',20)
  ('MOROCCO',15)
 
-*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Projected superset of group by
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

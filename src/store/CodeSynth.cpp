@@ -1954,22 +1954,21 @@ void CodeSynth::vPayloadInsert(ePL ePayload, i8 iTopCount) {
   }
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aEntInserted) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      if (aEntInserted) {");
 
   // TODO: check this out
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iRowsProcessed++;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iRowsProcessed++;");
 
   // calculate the payload address
   if (m_pIndexDef->eKeyKind()) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        + sizeof(struct Ent_int)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        + 8);");
-  }
-  else {
-    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        + sizeof(struct Ent_int)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        + ((struct Ent_int*)aEntInserted)->m_iIntElm0");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        + 8);");
+    StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
+    StrLib::vAppendString(&m_azCodeCrs, "\n          + sizeof(struct Ent_int)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n          + 8);");
+  } else {
+    StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
+    StrLib::vAppendString(&m_azCodeCrs, "\n          + sizeof(struct Ent_int)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n          + ((struct Ent_int*)aEntInserted)->m_iIntElm0");
+    StrLib::vAppendString(&m_azCodeCrs, "\n          + 8);");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
   }
 
@@ -2100,8 +2099,13 @@ void CodeSynth::vPayloadAgg(void) {
   s4K  sInfix;
   s4K  sCopy;
 
-  // create the payload
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // nothing to generate if no payload expressions
+//  if (!m_pExprStack->nValues())
+//    return;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the payload
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // aggregate the payload");
@@ -2120,7 +2124,7 @@ void CodeSynth::vPayloadAgg(void) {
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the postt aggregatation
+  // generate the code for the post aggregation
   vGenerateExprCode(m_pExprStack, ""_Stz);
 }
 
@@ -2237,7 +2241,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
           //sCopy.vSprint("\n        p%s->%s = iOffset;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
           //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-          sCopy.vSprint("\n        p%s->%s = szDstStz;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+          sCopy.vSprint("\n        p%s->%s = (i8)szDstStz;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
           StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -2720,6 +2724,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to normal expstack
       if (ePreExp != PE_GBY)
+        //pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
         pExprStack = m_pExprStack;
 
       // push assign column
@@ -2739,22 +2744,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
       pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
-
-//      if (!bGroupBy) {
-//        if (eExprKind == EK_AGGGBY ||
-//            eExprKind == EK_AGGREG) {
-//          if (ePreExp == PE_ALL ||
-//              ePreExp == PE_CNT ||
-//              ePreExp == PE_MIN ||
-//              ePreExp == PE_MAX ||
-//              ePreExp == PE_SUM) {
-//            pExprStack = pPostStack;
-//          } else
-//            pExprStack = m_pInitStack;
-//        } else
-//          pExprStack = m_pExprStack;
-//      }
-      //RASSERT(pExprStack == pExprStack2);
 
       continue;
     }
@@ -2805,22 +2794,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to the next predicate expression
-
       ePreExp = (ePE)m_pPreExpStack->iPeek(i_ExprStack);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
       pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
-
-//      if (ePreExp == PE_ALL ||
-//          ePreExp == PE_CNT ||
-//          ePreExp == PE_MIN ||
-//          ePreExp == PE_MAX ||
-//          ePreExp == PE_SUM ) {
-//        pExprStack = pPostStack;
-//      }
-//      else
-//        pExprStack = m_pExprStack;
 
       continue;
     }
@@ -3078,7 +3056,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     if (pTkn->bSame("cast"_Stz)) {
-      vPushCast(pExprStack, pExprType, pTkn, eCastType);
+      vPushCast(pExprStack, pExprType, eCastType);
       continue;
     }
 
@@ -3121,11 +3099,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       continue;
     }
 
-//    if (pTkn->bSame("negate"_Stz) ) {
-//      pExprStack->vPushPtr(pTkn);
-//      continue;
-//    }
-//
     if (pTkn->bIsDecimal()) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // push token on the exprStack and type on the ExprType
@@ -3242,13 +3215,10 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // save the column name
     if (pTkn->bIsString()) {
-//      sStructColumn = pTkn->szChars();
-//      bStringOperand = true;
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // push token on the exprStack and type on the ExprType
-//      pExprType->vPush(DM_VCH);
 
-      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_VCH);
+       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+       // push literal
+       vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_VCH);
     }
     else {
       vPushColumn(pExprStack, pExprType, pStreamDef, ePreExp, eExprKind, pTkn);
@@ -3375,12 +3345,16 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
   // generate the init variables
   vGenerateInitVars();
 
-  if ( ! bEosHandler) {
+  if (bEosHandler) {
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow)");
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate process row
+  vGenerateProcessRow(sLabelNext);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -3679,8 +3653,7 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push cast expression                                                       */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType,
-                                Token* pTkn, eDM eCastType) {
+void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCastType) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -3724,17 +3697,6 @@ void CodeSynth::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, Stream
 
   s256 sOperation;
   s256 sColumn;
-  TypedStack* pStack;
-
-//  if (eExprKind == EK_AGGREG ||
-//      eExprKind == EK_AGGGBY) {
-//    if (ePreExp == PE_EXP)
-//      pStack = m_pInitStack;
-//    else
-//      pStack = pExprStack;
-//  }
-//  else
-    pStack = pExprStack;
 
   Column *pColumn = pStreamDef->pFindColumn(pTkn->szChars());
 
@@ -3745,7 +3707,7 @@ void CodeSynth::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, Stream
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push token on the exprStack and type on the typeStack
   pTypeStack->vPush(Column::eDatum(pColumn->eColumnType()));
-  pStack->vPushStz(sOperation);
+  pExprStack->vPushStz(sOperation);
 
   // if column nullable generate null check expressions
   if (pColumn->bIsNullable()) {
@@ -4094,8 +4056,6 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
   s256 sPush;
   Column* pColumn;
 
-  //RASSERT(pExprStack != pPostStack);
-
   switch(eExprKind) {
 
     case EK_AGGREG:
@@ -4107,10 +4067,7 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       else
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
 
-      //if (ePreExp == PE_EXP)
-      //  m_pInitStack->vPushStz(sPush);
-      //else
-        pExprStack->vPushStz(sPush);
+      pExprStack->vPushStz(sPush);
 
       if (pPostStack->nValues() > 1) {
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
@@ -4159,10 +4116,7 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       else
         sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
 
-      //if (ePreExp == PE_EXP)
-      //  m_pInitStack->vPushStz(sPush);
-      //else
-        pExprStack->vPushStz(sPush);
+      pExprStack->vPushStz(sPush);
 
       if (pPostStack->nValues() > 1) {
         sPush.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])\n"_Stz, i_Col);
@@ -4533,15 +4487,10 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   }
-//  else {
-    vGenerateProcessRow(sLabelNext);
-//    StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow) {");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iBufferDone)");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n        goto L_Return;");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n      else");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n         goto L_AdvanceNextRow;");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n     }");
-//  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate process row
+  vGenerateProcessRow(sLabelNext);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -4574,17 +4523,9 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
     sCopy.vSprint("\n    // column %lld"_Stz, i_Col);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-    // In case of only filter there is no AggTypeStack
-    //ePE ePreExp = m_pPreExpStack ? (ePE)m_pPreExpStack->iPeek(i_Col) : PE_NONE;
-
-    // POST PROJECTION
-    //if (ePreExp != PE_NONE) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the post aggregation
-      vGenerateExprCode(pPostStack, ""_Stz);
-
-    //}
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the post aggregation
+    vGenerateExprCode(pPostStack, ""_Stz);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // VARCHAR column
@@ -4920,6 +4861,9 @@ TypedStack* CodeSynth::pWorkingStack(eEK eExprKind, ePE ePreExp, TypedStack* pPo
       if (ePreExp == PE_GKY ||
           ePreExp == PE_EXP)
         return m_pExprStack;
+
+      //if (ePreExp == PE_GKY)
+      //  return m_pExprStack;
 
       if (ePreExp == PE_ALL ||
           ePreExp == PE_CNT ||
