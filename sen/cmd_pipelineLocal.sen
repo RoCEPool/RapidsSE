@@ -145,7 +145,7 @@
   [job].addRetired
   
   JS_SIGNALLED [job].state!
-    [session].signal
+  [session].signal
 
   [task].grabLock
     TR_RETIRE_THIS_TASK [task].transition!
