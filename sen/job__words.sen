@@ -393,13 +393,18 @@
 
   0 locals| pNode |
   
-  // set the no of 2pc acks expected by this job
-  //   to be the number of defined nodes in the grid
-  [grid].knownNodes [job].2pcDecider!
+  [with].2pcSimple? if
+    [grid].knownNodes [task].acksRemaining!
+  else
+    // set the no of 2pc acks expected by this job
+    //   to be the number of defined nodes in the grid
+    [grid].knownNodes [job].2pcDecider!
 
-  // set acks for this task
-  1 [task].acksRemaining!
+    // set acks for this task
+    1 [task].acksRemaining!
 
+  then
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   C_ALL node_I[].new
