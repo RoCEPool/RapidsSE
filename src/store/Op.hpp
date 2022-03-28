@@ -104,7 +104,7 @@ namespace STORE
    ~Op(void) noexcept(false);
   
     // - - - - - - - - - - - - - - - -
-    void vAckPipelineJob(void);
+    void vAckInvokingTask(void);
     void vAddWorkDone(i8 iWorkDone);
     void vAppendLeft(Operand* pOperand, Task* pTriggeringTask);
     void vAppendOoO(Operand* pOperand, Task* pTriggeringTask);

@@ -670,7 +670,6 @@ namespace OBLIQUE
     static void vTenants(Word* pTenants);
 
     //
-    static Task* pExecutingTask(Job* pJob);
     static void vPrintArguments(void);
     static void vPrintAttachMap(void);
     static void vPrintStartupInfo(void);

@@ -3044,10 +3044,6 @@ bool AM::bJobWasReceived(Job* pJob)
 void AM::vDumpApi(void) {
   pSessions()->vDump();
 }
-Task* AM::pExecutingTask(Job* pJob) {
-  Task* pTask = pJob->pTask();
-  return pTask;
-}
 
 i8 AM::nLvlLevels(void) {
   return gpAttachMap->m_xSysArgs.m_nLvlLevels;
