@@ -121,7 +121,7 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: job::acquireDdlLock
+: [ddlLock]:acquireLock
 
   "<ddlLock>" <jobNm> _cmdTags::findTagSet tagSet.getInt
 
@@ -130,7 +130,7 @@
   dup DL_GRAB_WRITE
   == if
     discard
-    // "job::acquireDdlLock - grabbing ddl write lock" .
+    // "[ddlLock]:acquireLock - grabbing ddl write lock" .
     [ddlLock].grabWrite
     exit
   then
@@ -140,7 +140,7 @@
   dup DL_GRAB_READ
   == if
     discard
-    // "job::acquireDdlLock - grabbing ddl read lock" .
+    // "[ddlLock]:acquireLock - grabbing ddl read lock" .
     [ddlLock].grabRead
     exit
   then

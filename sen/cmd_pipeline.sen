@@ -369,7 +369,7 @@
   //[task].dump
 
   // acquire ddl lock
-  job::acquireDdlLock
+  [ddlLock]:acquireLock
   
   [job].assertStructure
 
