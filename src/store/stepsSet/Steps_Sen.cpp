@@ -33,7 +33,7 @@ void Step::vAddSteps_Sen(void)
   vAddStep("mungedText"_Stz,       &Step::vSenMungedText);
   vAddStep("nop"_Stz,              &Step::vSenNop);
   vAddStep("postpone"_Stz,         &Step::vSenPostpone,         true);
-  vAddStep("procedure:"_Stz,       &Step::vSenProcedure,        true);
+  vAddStep("procText:"_Stz,        &Step::vSenProcText,         true);
   vAddStep("reenter"_Stz,          &Step::vSenReenter);
   vAddStep("see"_Stz,              &Step::vSenSee,              true);
   vAddStep(";"_Stz,                &Step::vSenSemicolon,        true);
@@ -707,9 +707,9 @@ void Step::vSenPostpone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* procedure: -- add procedure                                      IMMEDIATE */
+/* procedure: -- store procedure text into root dic                 IMMEDIATE */
 /*----------------------------------------------------------------------------*/
-void Step::vSenProcedure(void)
+void Step::vSenProcText(void)
 {
   ENTRY();
   
@@ -728,13 +728,23 @@ void Step::vSenProcedure(void)
     if (i_Tkn)
       sProcedure.vConcat(" "_Stz);
     
-    sProcedure.vConcat(m_pInput->szChars());
+    if (TN_STRING == m_pInput->eToken()) {
+      sProcedure.vConcat("\""_Stz);
+      sProcedure.vConcat(m_pInput->szChars());
+      sProcedure.vConcat("\""_Stz);
+    }
+    else {
+      sProcedure.vConcat(m_pInput->szChars());
+    }
+//    vTrace("procedure: %s\n"_Stz,
+//           sProcedure.szStz());
   }
 
 //  vTrace("procedure: %s %s\n"_Stz,
 //         sWordNm.szStz(),
 //         sProcedure.szStz());
-  
+//  vTrace("---\n"_Stz);
+
 
   Dic* pDic = AM::DIC::pRoot();
 
@@ -751,7 +761,9 @@ void Step::vSenProcedure(void)
 
   pNewWord->vEncodePush(xVar);
 
+  pNewWord->vEncodeCall("dup"_Stz);
   pNewWord->vEncodeCall("."_Stz);
+  
   pNewWord->vEncodeCall("exit_rt"_Stz);
   
   EXIT();

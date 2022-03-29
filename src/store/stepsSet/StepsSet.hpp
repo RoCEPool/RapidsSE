@@ -1701,7 +1701,7 @@ public:
   void vSenInnerInterpreter(void);
   void vSenMungedText(void);
   void vSenPostpone(void);
-  void vSenProcedure(void);
+  void vSenProcText(void);
   void vSenSee(void);
   void vSenSemicolon(void);
   void vSenSeriesName(void);

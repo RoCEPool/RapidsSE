@@ -151,8 +151,8 @@ cmd::fillOut_allCmds
 
 assert::stack_0
 
-procedure:
-procedureLocal subPipeTest
+procText:
+procedureLocal subPipeTest3
 begin
   stage stageA on origin :
       start
