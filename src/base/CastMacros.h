@@ -125,28 +125,29 @@ fltArg1.m_iAsI8 = *(--paW);                                                     
     *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
-  if(fltArg1.m_iAsI8 > (i8)C_BCD_MAX) {                                              \
-    iErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-    *paW++ = C_DATUM_NULL;                                             \
-  }                                                                    \
-  else if(fltArg1.m_iAsI8 < (i8) C_BCD_MIN) {                                    \
-    iErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
-    *paW++ = C_DATUM_NULL;                                             \
-  }                                                                    \
-  else {                     \
-    i8 cnt=0; \
-    d8 dt = fltArg1.m_dFlt - (i8)(fltArg1.m_dFlt);                               \
-    if (fltArg1.m_dFlt < 0 ) dt = dt * -1;                          \
-    while (dt >= 0.0000001 ){   \
-      dt = dt * 10;                   \
-      cnt++;                          \
-      dt = dt - (i8)(dt);             \
+    if(fltArg1.m_iAsI8 > (i8)C_BCD_MAX) {                                              \
+      iErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
+      *paW++ = C_DATUM_NULL;                                             \
+    }                                                                    \
+    else if(fltArg1.m_iAsI8 < (i8) C_BCD_MIN) {                                    \
+      iErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
+      *paW++ = C_DATUM_NULL;                                             \
+    }                                                                    \
+    else {                     \
+      i8 cnt=0; \
+      d8 dt = fltArg1.m_dFlt - (i8)(fltArg1.m_dFlt);                               \
+      if (fltArg1.m_dFlt < 0 ) dt = dt * -1;                          \
+      while (dt >= 0.0000001 ){   \
+        dt = dt * 10;                   \
+        cnt++;                          \
+        dt = dt - (i8)(dt);             \
+      }                          \
+      if (cnt > 19) cnt = 19;                          \
+      bcdArg1.m_iMantissa   = iArg1;                   \
+      bcdArg1.m_iScale = cnt;                          \
+      *paW++ = bcdArg1.m_iAsI8;                                        \
     }                          \
-    if (cnt > 19) cnt = 19;                          \
-    bcdArg1.m_iMantissa   = iArg1;                   \
-    bcdArg1.m_iScale = cnt;                          \
-    *paW++ = bcdArg1.m_iAsI8;                                        \
-  }                          \
+  }\
 }
 
 // how many decimal places , 10?
