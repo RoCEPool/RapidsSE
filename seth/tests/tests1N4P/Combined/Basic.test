@@ -441,7 +441,6 @@ contains rows:
  (1.07,1498)
  (2.15,1499)
 
-// TODO: top payload with BCD
 pipeline Q3
 begin
 
