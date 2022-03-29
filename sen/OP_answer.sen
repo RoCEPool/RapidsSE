@@ -7,11 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* receiver demon                                                             */
 /*----------------------------------------------------------------------------*/
-: recvDemonPipeline params| iConnNo |
-
-  "pipelineLocal recvDemon" iConnNo >str str.cat
+/*
+: recvDemonPipeline
   
-  "
+  "pipelineLocal recvDemon
       tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
@@ -20,8 +19,18 @@
 
     end ;
   "
-  
-  str.cat
+;
+*/
+
+procText:
+  pipelineLocal recvDemonPipeline
+    tag "<pre_execute>" = "demon::install" endTag
+  begin
+
+    stage stageA on origin :
+      start | recv | eatAll | stageA
+
+  end
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -36,12 +45,10 @@
   pAnsweredNode "<ansNode> = %v " str.format
   iConnNo "<connectionNo> = %v" str.format str.cat
 
-  // receiver demon pipeline
-  iConnNo recvDemonPipeline
-
-  api::spawnDemon not if
-    "Error Code %v" .printf
-  then
+    // receiver demon pipeline
+    recvDemonPipeline api::spawnDemon not if
+      "Error Code %v" .printf
+    then
 ;
 
 /*----------------------------------------------------------------------------*/
