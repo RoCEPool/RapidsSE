@@ -4,34 +4,7 @@
 
 " OP_answer.sen" .verbose
 
-/*----------------------------------------------------------------------------*/
-/* receiver demon                                                             */
-/*----------------------------------------------------------------------------*/
-/*
-: recvDemonPipeline
-  
-  "pipelineLocal recvDemon
-      tag \"<pre_execute>\" = \"demon::install\" endTag
-    begin
 
-      stage stageA on origin :
-        start | recv | eatAll | stageA
-
-    end ;
-  "
-;
-*/
-
-procText:
-  pipelineLocal recvDemonPipeline
-    tag "<pre_execute>" = "demon::install" endTag
-  begin
-
-    stage stageA on origin :
-      start | recv | eatAll | stageA
-
-  end
-;
 
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver job (as a dedicated job)                                */

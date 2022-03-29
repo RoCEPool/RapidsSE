@@ -164,7 +164,7 @@
   then
 
   // spawn connector demon
-  "" connDemonPipeline api::spawnDemon not if
+  "" connectorDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
 

@@ -53,6 +53,9 @@ assert::stack_0
 "se_boot 4" .verbose
 
   "se_pipeline.sen"         include
+  "dp_answerDemon.sen"      include
+  "dp_connectorDemon.sen"   include
+  "dp_receiverDemon.sen"    include
 
   "se_includeOps.sen"       include
 
@@ -65,9 +68,7 @@ assert::stack_0
 "se_boot 1" .verbose
 
   "se_demonInstall.sen"     include
-  "dp_answerDemon.sen"      include
   "dp_collectDemon.sen"     include
-  "dp_connDemon.sen"        include
   "dp_eventDemon.sen"       include
   "dp_exitDemon.sen"        include
   "dp_metricsDemon.sen"     include
@@ -77,6 +78,7 @@ assert::stack_0
   "dp_statDemon.sen"        include
   "dp_superDemon.sen"       include
   "dp_wakerDemon.sen"       include
+  
   "se_experiments.sen"      include
   "se_llc.sen"              include
   "se_memoryStats.sen"      include
