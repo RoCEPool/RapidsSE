@@ -1584,11 +1584,27 @@ Operand* Op::pPopOoOLeft(void)
   else
   if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_ROWBUF)) {
     RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-    vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows)\n"_Stz
-           ,pStage()->szStageNm()
-           ,szOpNm()
-           ,pRowBuffer->nRows()
-           );
+    BuffId_T BufferId;
+    BufferId.m_pAddress = (Object*) pRowBuffer;
+    if(BufferId.m_bAddrFlag == 0)
+    {
+      vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows)\n"_Stz
+          ,pStage()->szStageNm()
+          ,szOpNm()
+          ,pRowBuffer->nRows()
+      );
+    }
+    else
+    {
+      //Page in here
+      vTrace("Paging in...\n"
+             "Id: %p, AddrFlag: %llu, Page File #: %llu, Buffer offset #: %llu\n"_Stz,
+
+             BufferId.m_pAddress,
+             BufferId.m_bAddrFlag,
+             BufferId.m_uPageFile,
+             BufferId.m_uBuffOffset);
+    }
   }
 
   return pOperand;
