@@ -215,9 +215,6 @@ rows:
 select (flt_col8/0e0) from datums;
 failure contains: 'divide by zero'
 
-//TODO: aggreagets with float
-
-
 // aggregates : sum
 
 select sum(flt_col8) from datums;
