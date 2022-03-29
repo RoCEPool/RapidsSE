@@ -34,8 +34,6 @@ __aFooterFunction(PipeSpec)
 PipeSpec::PipeSpec(Scanner *p_Scanner, TagSet *p_JobTags)
     
 : ListNL_t<StageSpec>(CN_PIPESPEC)
-, LifeGuard_t<PipeSpec>(this, CN_PIPESPEC)
-
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -60,16 +58,14 @@ PipeSpec::~PipeSpec(void) noexcept(false)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
   while (StageSpec *pStageSpec = pPop())
-    pStageSpec->vGuardedDelete(CN_STAGESPEC, &pStageSpec,
-                               CN_PIPESPEC, this, (Stz *) __func__);
+    delete pStageSpec;
 
   vClear();
   
   if (m_pSubPipeSpecs) {
     
     while (PipeSpec *pSubPipeSpec = m_pSubPipeSpecs->pPop())
-      pSubPipeSpec->vGuardedDelete(CN_PIPESPEC, &pSubPipeSpec,
-                                   CN_PIPESPEC, this, (Stz *) __func__);
+      delete pSubPipeSpec;
 
     delete m_pSubPipeSpecs;
   }
@@ -849,9 +845,7 @@ void PipeSpec::vFirstSend(StageSpec *pSrcStageSpec,
     // remove the last (stage) OpSpec from the OpSpecVec
     RASSERT(i_Op == pSrcStageSpec->nItems() - 1);
     pSrcStageSpec->vRemove(pSrcOpSpec_nameOfStage);
-    //delete pOpSpec_isStage;
-    pSrcOpSpec_nameOfStage->vGuardedDelete(CN_OPSPEC, &pSrcOpSpec_nameOfStage,
-                                    CN_PIPESPEC, this, (Stz *) __func__);
+    delete pSrcOpSpec_nameOfStage;
     return;
   }
 
@@ -921,8 +915,7 @@ void PipeSpec::vOtherSend(StageSpec *pSrcStageSpec,
   
   // we already have a send, so just remove the stage
   pSrcStageSpec->vRemove(pSrcOpSpec);
-  pSrcOpSpec->vGuardedDelete(CN_OPSPEC, &pSrcOpSpec,
-                          CN_PIPESPEC, this, (Stz *) __func__);
+  delete pSrcOpSpec;
 
   Stz *szStgNm = szStageNm(i_OtherStage);
 

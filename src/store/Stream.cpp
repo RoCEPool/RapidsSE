@@ -35,7 +35,6 @@ __aFooterFunction(Stream)
 /*----------------------------------------------------------------------------*/
 Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
                PtnId tPtnId, i8 iNodeNo)
-: LifeGuard_t<Stream>(this,CN_STREAM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
@@ -70,8 +69,7 @@ Stream::~Stream(void) noexcept(false)
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
     Op* pOp = pGet(i_Op);
     
-    pOp->vGuardedDelete(CN_OP,&pOp,
-                        CN_STREAM,this,(Stz*)__func__);
+    delete pOp;
   }
 
   vClear();

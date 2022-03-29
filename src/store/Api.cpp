@@ -614,11 +614,7 @@ bool Api::bReapJob(void)
   pReapableJob->pTask()->vDropTaskLock((Stz*)__func__);
 
 
-  pReapableJob->vGuardedDelete(CN_JOB,&pReapableJob,
-                               CN_API,nullptr,(Stz*)__func__);
-  
-//  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
-//                            CN_SCHEDULER,nullptr,(Stz*)__func__);
+  delete pReapableJob;
 
   return TRUE(reaped_a_job);
 }
@@ -940,11 +936,7 @@ void Api::vDeleteImmediate(Task** ppTask)
   
   //delete pJob;
   if (pJob)
-    pJob->vGuardedDelete(CN_JOB,&pJob,
-                         CN_API,nullptr,(Stz*)__func__);
-  
-  
-  //delete pTask;
+    delete pJob;
 }
 
 /*----------------------------------------------------------------------------*/

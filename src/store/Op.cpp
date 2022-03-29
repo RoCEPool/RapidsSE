@@ -52,7 +52,6 @@ __aFooterFunction(Op);
 /*----------------------------------------------------------------------------*/
 Op::Op(OpSpec* pOpSpec, Stream* pStream)
 : Operand(CN_OP)
-, LifeGuard_t<Op>(this,CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -181,8 +180,7 @@ Op::~Op(void) noexcept(false)
     
     m_pTask = nullptr;
     
-    pTask->vGuardedDelete(CN_TASK,&pTask,
-                          CN_OP,this,(Stz*)__func__);
+    delete pTask;
 
   }
 

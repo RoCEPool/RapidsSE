@@ -32,7 +32,6 @@ __aFooterFunction(PipeWork)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PipeWork::PipeWork(Pipeline* pPipeline, PipeSpec* pPipeSpec)
-: LifeGuard_t<PipeWork>(this,CN_PIPEWORK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
@@ -59,14 +58,10 @@ PipeWork::~PipeWork(void) noexcept(false)
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stage* pStage = pGet(i_Stage);
     
-    pStage->vGuardedDelete(CN_STAGE,&pStage,
-                           CN_PIPEWORK,this,(Stz*)__func__);
+    delete pStage;
   }
 
   vClear();
-
-//  m_pPipeSpec->vGuardedDelete(CN_PIPESPEC,&m_pPipeSpec,
-//                                  CN_PIPEWORK,this,(Stz*)__func__);
 }
 
 /*----------------------------------------------------------------------------*/

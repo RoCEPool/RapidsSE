@@ -5,14 +5,11 @@
 
 #include "eYS.h"
 
-#include "LifeGuard_t.hpp"
-
 namespace STORE { class PipeWork; class Stream; class StageSpec; }
 
 namespace STORE
 {
-  class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>,
-                public LifeGuard_t<Stage>
+  class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>
   {
   private:
     s32  m_sPipelineNm; // pipeline name

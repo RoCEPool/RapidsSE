@@ -195,8 +195,8 @@ namespace STORE
                                  eCN eDeleterClassNo, Object* pDeleter, Stz* szFunc)
     {
       RASSERT(CLASSNO == eClassNo);
-      m_pComponent->vGuardedDelete(CLASSNO,&m_pComponent,
-                                   eDeleterClassNo,pDeleter,szFunc);
+      delete m_pComponent;
+      m_pComponent = nullptr;
     }
 
     /*------------------------------------------------------------------------*/

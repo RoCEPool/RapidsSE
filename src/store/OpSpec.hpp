@@ -7,15 +7,11 @@
 #include "eYS.h"
 #include "eYF.h"
 
-#include "LifeGuard_t.hpp"
-
 namespace STORE { class PipeSpec; class StageSpec; }
 
 namespace STORE
 {
   class OpSpec : public Object
-               , public LifeGuard_t<OpSpec>
-
                , public ListItem_t<OpSpec>
   {
   private:

@@ -862,9 +862,7 @@ void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
   LogicUnit* pLogicUnit = * ppLogicUnit;
   * ppLogicUnit = nullptr;
   
-  pLogicUnit->vGuardedDelete(CN_LOGICUNIT,&pLogicUnit,
-                             CN_AM,nullptr,(Stz*)__func__);
-
+  delete pLogicUnit;
 }
 
 
@@ -3969,8 +3967,7 @@ void AM::vJobDelete(Job** ppJob, Object* pDeleter, Stz* szFunc) {
   
   Job* pJob = * ppJob;
   
-  pJob->vGuardedDelete(CN_JOB,&pJob,
-                       CN_AM,pDeleter,szFunc);
+  delete pJob;
   
   * ppJob = nullptr;
 }

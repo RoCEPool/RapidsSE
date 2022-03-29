@@ -146,8 +146,7 @@ namespace STORE
 
   //----------------------------------------------------------------------------
 
-  class LogicUnit : public Object,
-                    public LifeGuard_t<LogicUnit>
+  class LogicUnit : public Object
   {
   private:
   
