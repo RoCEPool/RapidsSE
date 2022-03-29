@@ -713,6 +713,7 @@ void Step::vSenProcedure(void)
 {
   ENTRY();
   
+  s256 sWordNm;
   s4K sProcedure;
   
   // to be coded ...
@@ -720,16 +721,39 @@ void Step::vSenProcedure(void)
     m_pInput->vReadToken();
     if (m_pInput->szChars()->bEqual(";"_Stz))
       break;
+    
+    if (1 == i_Tkn)
+      sWordNm = m_pInput->szChars();
+    
     if (i_Tkn)
       sProcedure.vConcat(" "_Stz);
+    
     sProcedure.vConcat(m_pInput->szChars());
   }
 
-  vTrace("procedure: %s\n"_Stz,sProcedure.szStz());
-  TokenVec* pTknVec = TokenVec::pTokeniseSen(sProcedure);
+//  vTrace("procedure: %s %s\n"_Stz,
+//         sWordNm.szStz(),
+//         sProcedure.szStz());
   
-  Procedure::vAddProcedure(pTknVec);
 
+  Dic* pDic = AM::DIC::pRoot();
+
+  Word* pFoundWord = pDic->pFindWord(sWordNm);
+  if (pFoundWord) {
+    vTrace("\nvColon : word already defined [++] : %s\n\n"_Stz,sWordNm.szStz());
+  }
+  
+  Word* pNewWord = new(pDic) Word(sWordNm);
+
+  CellSingle xVar;
+  
+  xVar = sProcedure;
+
+  pNewWord->vEncodePush(xVar);
+
+  pNewWord->vEncodeCall("."_Stz);
+  pNewWord->vEncodeCall("exit_rt"_Stz);
+  
   EXIT();
 }
 
