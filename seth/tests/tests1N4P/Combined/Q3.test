@@ -97,7 +97,7 @@ begin
     indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
     | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
     | ordAgg 2 expr type INTEGER as _orderkey _orderkey ,
-        type INTEGER as Revenue ) J1_L_EXTENDEDPRICE 1 J1_L_DISCOUNT - * sum ,
+        type INTEGER as Revenue ) J1_L_EXTENDEDPRICE 1.0 J1_L_DISCOUNT - * sum ,
         type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
         type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
         groupby type INTEGER _orderkey
