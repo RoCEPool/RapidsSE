@@ -53,9 +53,9 @@ assert::stack_0
 "se_boot 4" .verbose
 
   "se_pipeline.sen"         include
-  "dp_answerDemon.sen"      include
-  "dp_connectorDemon.sen"   include
-  "dp_receiverDemon.sen"    include
+  "dp_answerSE.sen"         include
+  "dp_connectorSE.sen"      include
+  "dp_receiverSE.sen"       include
 
   "se_includeOps.sen"       include
 
