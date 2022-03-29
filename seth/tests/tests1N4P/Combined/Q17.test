@@ -80,7 +80,7 @@ begin
     | next
 
   stage stageQ17_1_d on origin :
-    project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 casttype DECIMAL cast / * "
+    project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV $2 type DECIMAL $3  casttype DECIMAL cast / "
     | combined 0
     | next broadcast
 
