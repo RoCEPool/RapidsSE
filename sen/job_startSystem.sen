@@ -141,6 +141,11 @@
     "Error Code %v" .printf
   then
 
+  //spawn recurring print demon
+  "" printDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
   // spawn stat demon
   "" statDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf

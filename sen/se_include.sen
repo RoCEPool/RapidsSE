@@ -72,6 +72,7 @@ assert::stack_0
   "dp_exitDemon.sen"        include
   "dp_metricsDemon.sen"     include
   "dp_monDemon.sen"         include
+  "dp_printDemon.sen"       include
   "dp_reaperDemon.sen"      include
   "dp_recurDemon.sen"       include
   "dp_statDemon.sen"        include

@@ -1,0 +1,70 @@
+/*============================================================================*/
+/* OP_recurring.sen -- Operator recurring                                     */
+/*============================================================================*/
+
+" OP_testPrint.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: recurring_StartMarker_print \handler
+
+  "Recurring Print Demon Started" .boot
+
+  // recurring_activity
+
+  begin
+
+    //<nSeconds> >int  thread::sleepSsec
+
+    //args.demonSleep thread::sleepSsec
+    " Test print demon sleeping... " .
+
+    5 thread::sleepSsec
+
+
+
+    //recurring_activity
+
+  again
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for recurring req                          (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : testPrint_op \operator
+
+  _lu_initialise_
+
+  "<testTag>" [job].tagSet@ tagSet.hasName if
+    <testTag> .
+  then
+
+  op__topology
+
+  find: recurring_StartMarker_print ZK_M_START [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: testPrint :: testPrint ;
+
+: testPrint_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "testPrint_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
