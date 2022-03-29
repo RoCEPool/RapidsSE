@@ -15,7 +15,7 @@ procText:
 
     stage stageA on origin :
         start
-      | connector
+      | connectorSE
       | eatAll
       | stageA
 

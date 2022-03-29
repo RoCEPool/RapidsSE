@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* send node info to node we just connected to                                */
 /*----------------------------------------------------------------------------*/
-: connector_sendNodeInfo ( -- )
+: connectorSE_sendNodeInfo ( -- )
 
   // find the __nodeinfo table
   C_TDEF_NODEINFO op__tableDef_infoSet assert
@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* attempt connect to given node                                              */
 /*----------------------------------------------------------------------------*/
-: connector_attemptConnect ( -- )
+: connectorSE_attemptConnect ( -- )
 
   AM::SHOW::bConnection if
     Node[] node.no [grid].thisNodeNo@ "Node %v connecting to node %v" .printf
@@ -64,7 +64,7 @@
   then
 
   // send this node's info to the node we just connected to
-  connector_sendNodeInfo
+  connectorSE_sendNodeInfo
   
   nullptr to Socket[]
 ;
@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 /* one iteration of connector behavior                                        */
 /*----------------------------------------------------------------------------*/
-: connector_take ( -- )
+: connectorSE_take ( -- )
 
   C_ALL node_I[].new
 
@@ -81,7 +81,7 @@
     node_I[].node to Node[]
 
     Node[] node.sendSocket@ not if
-      connector_attemptConnect
+      connectorSE_attemptConnect
     then
     
     nullptr to Node[]
@@ -96,7 +96,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: connector_StartMarker \handler
+: connectorSE_StartMarker \handler
 
   "Connector Demon Started" .boot
 
@@ -107,7 +107,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   begin
-    connector_take
+    connectorSE_take
     trap::stackDepthZero
 
     3 thread::sleepSsec
@@ -124,13 +124,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for connector req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : connector_op \operator
+ : connectorSE_op \operator
  
   _lu_initialise_
 
   op__topology
 
-  find: connector_StartMarker ZK_M_START [op].handler!
+  find: connectorSE_StartMarker ZK_M_START [op].handler!
 
   op__loop
 
@@ -144,9 +144,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: connector :: connector ;
+cmdSyntax: connectorSE :: connectorSE ;
 
-: connector_cmdTags _cmdTags tagCopy: op_tags
+: connectorSE_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <dedicatedThd> = 1
     <opEntry> = "connector_op"
