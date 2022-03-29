@@ -19,7 +19,7 @@
   iConnNo "<connectionNo> = %v" str.format str.cat
 
     // receiver demon pipeline
-    recvDemonPipeline api::spawnDemon not if
+      receiverSE_procText api::spawnDemon not if
       "Error Code %v" .printf
     then
 ;

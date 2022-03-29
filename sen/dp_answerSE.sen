@@ -9,7 +9,7 @@
 /* pipeline/procedure text for answer demon                                   */
 /*----------------------------------------------------------------------------*/
 procText:
-  pipelineLocal answerDemonPipeline
+  pipelineLocal answerSE_procText
     tag "<pre_execute>" = "demon::install" endTag
   begin
 
@@ -21,7 +21,6 @@ procText:
 
   end
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */
