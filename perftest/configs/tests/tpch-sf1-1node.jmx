@@ -245,30 +245,33 @@
           <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="OS Process Sampler" enabled="true">
             <boolProp name="SystemSampler.checkReturnCode">false</boolProp>
             <stringProp name="SystemSampler.expectedReturnCode">0</stringProp>
-            <stringProp name="SystemSampler.command"></stringProp>
+            <stringProp name="SystemSampler.command">prepareTpchData.sh</stringProp>
             <elementProp name="SystemSampler.arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-              <collectionProp name="Arguments.arguments"/>
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="Argument">
+                  <stringProp name="Argument.name"></stringProp>
+                  <stringProp name="Argument.value">--sf</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Argument">
+                  <stringProp name="Argument.name"></stringProp>
+                  <stringProp name="Argument.value">1</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
             </elementProp>
             <elementProp name="SystemSampler.environment" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
-            <stringProp name="SystemSampler.directory"></stringProp>
+            <stringProp name="SystemSampler.directory">supportFiles</stringProp>
+            <stringProp name="TestPlan.comments">Downloads the TPC-H data from S3 and arranges it on each SSD drive of each node in the cluster, in preparation for a distributed load (dload).
+
+For machines with mounted SSD drives, data is written to /mnt/disk&lt;1..n&gt;/data/tpch/sf&lt;?&gt;.
+For machines with no SSD drives, data is written to &lt;installDir&gt;/data/tpch/sf&lt;?&gt;.
+
+The data for each table is in its own directory as a single file &lt;table&gt;.tbl.
+e.g. /mnt/disk1/data/tpch/sf1/lineitem/lineitem.tbl</stringProp>
           </SystemSampler>
-          <hashTree/>
-          <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler" enabled="true">
-            <stringProp name="BeanShellSampler.query"></stringProp>
-            <stringProp name="BeanShellSampler.filename"></stringProp>
-            <stringProp name="BeanShellSampler.parameters"></stringProp>
-            <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
-          </BeanShellSampler>
-          <hashTree/>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="JSR223 Sampler" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script"></stringProp>
-            <stringProp name="scriptLanguage">java</stringProp>
-          </JSR223Sampler>
           <hashTree/>
         </hashTree>
         <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createQ15View" enabled="false">
