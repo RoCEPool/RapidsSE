@@ -432,37 +432,17 @@
   [job].assertStructure
   [job].assertParticipant
 
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // this job is ending
-
-  JP_ENDING [job].phase!
-
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + + 8
+  JP_ENDING [job].phase!               // this job is ending
   [ddlLock].testDrop
  
- 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // this job has ended
-  
-  JP_ENDED [job].phase!
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove job from plist
-  
+  JP_ENDED [job].phase!                // this job has ended
   [job].removeParticipant
 
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // reply ended to originator
-  
-  [job] ended:reply
+  [job] ended:reply                    // reply ended to originator
 
-  JS_DELETABLE [job].state!
+  JS_DELETABLE [job].state!            // job retires
   [job].addRetired
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // task retires (with job in retired list)
 
   [task].grabLock
     [job] [exitDemon]:queueJob
@@ -481,20 +461,19 @@
   [job].assertStructure
   [job].assertParticipant
 
-    // [ senCompiler::current@ word.name@ encode::push ] .
+  // [ senCompiler::current@ word.name@ encode::push ] .
 
   JP_CANCELING [job].phase!
 
   JP_CANCELED [job].phase!
-
 
   [job].removeParticipant
 
   [job] cancelled:reply
 
   JS_DELETABLE [job].state!
-
   [job].addRetired
+  
   [task].grabLock
     [job] [exitDemon]:queueJob
     TR_RETIRE_THIS_TASK [task].transition!

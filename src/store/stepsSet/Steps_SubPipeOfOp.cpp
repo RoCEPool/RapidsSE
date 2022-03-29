@@ -46,6 +46,7 @@ void Step::vAddSteps_SubPipeOfOp(void)
   vAddStep("[subPipeOfOp].enqueueStart?"_Stz,  &Step::vSubPipeOfOpStartPipeline);
   vAddStep("[subPipeOfOp].errored@"_Stz,       &Step::vSubPipeOfOpErroredFetch);
   vAddStep("[subPipeOfOp].errored!"_Stz,       &Step::vSubPipeOfOpErroredStore);
+  vAddStep("[subPipeOfOp].findSubPipe"_Stz,    &Step::vSubPipeOfOpFindSubPipe);
   vAddStep("[subPipeOfOp].getAccum"_Stz,       &Step::vSubPipeOfOpGetAccum);
   vAddStep("[subPipeOfOp].grabDebugLock"_Stz,  &Step::vSubPipeOfOpGrabDebugLock);
   vAddStep("[subPipeOfOp].op0@"_Stz,           &Step::vSubPipeOfOpOp0Fetch);
@@ -204,6 +205,16 @@ void Step::vSubPipeOfOpErroredStore(void)
   
   pSubPipelineOfOp->vErrored(m_pDataStack->iPopBol(__func__));
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [subPipeOfOp].findSubPipe -- find sub-pipeline                             */
+/*----------------------------------------------------------------------------*/
+void Step::vSubPipeOfOpFindSubPipe(void)
+{
+  ENTRY();
+    
   EXIT();
 }
 
