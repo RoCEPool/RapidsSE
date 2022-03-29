@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* OP_connector.sen -- Operator connector                                     */
+/* OP_connectorSE.sen -- Operator connector for SE Adaptor                    */
 /*============================================================================*/
 
-" OP_connector.sen" .verbose
+" OP_connectorSE.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* send node info to node we just connected to                                */

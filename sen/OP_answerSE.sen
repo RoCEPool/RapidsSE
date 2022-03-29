@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* OP_answer.sen -- Operator answer                                           */
+/* OP_answerSE.sen -- Operator answer for SE Adaptor                          */
 /*============================================================================*/
 
-" OP_answer.sen" .verbose
+" OP_answerSE.sen" .verbose
 
 
 

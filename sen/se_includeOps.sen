@@ -23,7 +23,7 @@ assert::stack_0
   "OP_aggregateSplit.sen"       include
   "OP_analyzeIndex.sen"         include
   "OP_analyzeTable.sen"         include
-  "OP_answer.sen"               include
+  "OP_answerSE.sen"             include
 
 "b" .verbose
 
@@ -52,7 +52,7 @@ assert::stack_0
   "OP_compactIdx.sen"           include
   "OP_compactIndexPtn.sen"      include
   "OP_compilerOpEg.sen"         include
-  "OP_connector.sen"            include
+  "OP_connectorSE.sen"          include
   "OP_consume.sen"              include
   "OP_copyRows.sen"             include
   "OP_corrBySquash.sen"         include
@@ -216,7 +216,7 @@ assert::stack_0
   "OP_reap.sen"                 include
   "OP_reapCtl.sen"              include
   "OP_recurring.sen"            include
-  "OP_recv.sen"                 include
+  "OP_recvSE.sen"               include
   "OP_refTmrReset.sen"          include
   "OP_reload.sen"               include
   "OP_removeNode.sen"           include
