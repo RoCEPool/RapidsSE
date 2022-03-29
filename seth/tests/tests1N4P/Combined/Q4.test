@@ -84,7 +84,7 @@ begin
 
   stage G_CNT_O on origin :
     aggreg 2 expr groupby type VARCHAR O_ORDERPRIORITY
-                  agregates type VARCHAR as O_ORDERPRIORITY $K1 ,
+                  aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
                   type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
 
     | combined 0

@@ -6,12 +6,12 @@ FilterJoin.test
 IndexJoin.test
 IndexScan.test
 IndexScanProject.test
-//Q1.test
+Q1.test
 //Q3.test
-//Q4.test
+Q4.test
 Q6.test
 //Q9.test
 //Q17.test
-Q18.test
+//Q18.test
 rowBuffer.test
 scan.test
