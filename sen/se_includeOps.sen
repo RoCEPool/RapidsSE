@@ -230,7 +230,7 @@ assert::stack_0
 
   "OP_scan.sen"                 include
   "OP_scanRight.sen"            include
-  "OP_send.sen"                 include
+  "OP_sendSE.sen"               include
   "OP_setOpValidate.sen"        include
   "OP_showCluster.sen"          include
   "OP_sigsegv.sen"              include
