@@ -780,7 +780,7 @@ void PipeSpec::vNameIsStage(StageSpec *pSrcStageSpec,
 
   // is there a send already? This would be the case if one stage is
   // piped into multiple stage e.g a unionAll
-  OpSpec *pOpSpecSend = pSrcStageSpec->pFindOpSpec("send"_Stz);
+  OpSpec *pOpSpecSend = pSrcStageSpec->pFindOpSpec("sendSE"_Stz);
 
   if (! pOpSpecSend)
 
@@ -891,7 +891,7 @@ void PipeSpec::vMorphToSend(OpSpec *pOpSpec,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  pOpSpec->vOpNm("send"_Stz);
+  pOpSpec->vOpNm("sendSE"_Stz);
 
   Stz *szStgNm = szStageNm(i_NextStage);
   pOpSpec->vStreamTopology_op(eStreamTopology);
