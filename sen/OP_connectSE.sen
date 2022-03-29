@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_connectorSE.sen -- Operator connector for SE Adaptor                    */
+/* OP_connectSE.sen -- Operator connect for SE Adaptor                        */
 /*============================================================================*/
 
-" OP_connectorSE.sen" .verbose
+" OP_connectSE.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* send node info to node we just connected to                                */
 /*----------------------------------------------------------------------------*/
-: connectorSE_sendNodeInfo ( -- )
+: connectSE_sendNodeInfo ( -- )
 
   // find the __nodeinfo table
   C_TDEF_NODEINFO op__tableDef_infoSet assert
@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* attempt connect to given node                                              */
 /*----------------------------------------------------------------------------*/
-: connectorSE_attemptConnect ( -- )
+: connectSE_attemptConnect ( -- )
 
   AM::SHOW::bConnection if
     Node[] node.no [grid].thisNodeNo@ "Node %v connecting to node %v" .printf
@@ -64,7 +64,7 @@
   then
 
   // send this node's info to the node we just connected to
-  connectorSE_sendNodeInfo
+  connectSE_sendNodeInfo
   
   nullptr to Socket[]
 ;
@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 /* one iteration of connector behavior                                        */
 /*----------------------------------------------------------------------------*/
-: connectorSE_take ( -- )
+: connectSE_take ( -- )
 
   C_ALL node_I[].new
 
@@ -81,7 +81,7 @@
     node_I[].node to Node[]
 
     Node[] node.sendSocket@ not if
-      connectorSE_attemptConnect
+      connectSE_attemptConnect
     then
     
     nullptr to Node[]
@@ -96,7 +96,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: connectorSE_StartMarker \handler
+: connectSE_StartMarker \handler
 
   "Connector Demon Started" .boot
 
@@ -107,7 +107,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   begin
-    connectorSE_take
+    connectSE_take
     trap::stackDepthZero
 
     3 thread::sleepSsec
@@ -124,13 +124,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for connector req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : connectorSE_op \operator
+ : connectSE_op \operator
  
   _lu_initialise_
 
   op__topology
 
-  find: connectorSE_StartMarker ZK_M_START [op].handler!
+  find: connectSE_StartMarker ZK_M_START [op].handler!
 
   op__loop
 
@@ -144,12 +144,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: connectorSE :: connectorSE ;
+cmdSyntax: connectSE :: connectSE ;
 
-: connectorSE_cmdTags _cmdTags tagCopy: op_tags
+: connectSE_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <dedicatedThd> = 1
-    <opEntry> = "connector_op"
+    <opEntry> = "connectSE_op"
   }
 ;
 

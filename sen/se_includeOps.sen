@@ -52,7 +52,7 @@ assert::stack_0
   "OP_compactIdx.sen"           include
   "OP_compactIndexPtn.sen"      include
   "OP_compilerOpEg.sen"         include
-  "OP_connectorSE.sen"          include
+  "OP_connectSE.sen"            include
   "OP_consume.sen"              include
   "OP_copyRows.sen"             include
   "OP_corrBySquash.sen"         include

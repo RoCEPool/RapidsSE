@@ -140,7 +140,7 @@ cmdSyntax: recvSE :: recvSE ;
 : recvSE_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <dedicatedThd> = 1
-    <opEntry> = "recv_op"
+    <opEntry> = "recvSE_op"
   }
 ;
 
