@@ -442,7 +442,6 @@ contains rows:
  (2.15,1499)
 
 // TODO: top payload with BCD
-/*
 pipeline Q3
 begin
 
@@ -461,7 +460,6 @@ begin
 
     | aggreg 2 expr groupby type INTEGER O_ORDERKEY
        aggregates type INTEGER as _orderkey $K1 , type DECIMAL as Revenue ) J1_L_DISCOUNT sum
-    | top 2 "TOP type DECIMAL Revenue" 10
     | combined 0
     | next
 
@@ -493,8 +491,6 @@ rows:
   (1380,4.32)
   ( 393,4.33)
   (  21,4.34)
-
-*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
