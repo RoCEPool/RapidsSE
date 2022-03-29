@@ -123,6 +123,12 @@ success
 load Supplier "../TPCH/SF_0001/supplier.csv";
 success
 
+load Region "../TPCH/SF_0001/region.csv";
+success
+
+load Nation "../TPCH/SF_0001/nation.csv";
+success
+
 pipeline Q7
 begin
 
@@ -213,6 +219,24 @@ rows:
 drop table lineitem;
 success
 
+drop table customer;
+success
+
+//drop table nation;
+//success
+
+drop table orders;
+success
+
+drop table part;
+success
+
+drop table supplier;
+success
+
+//drop table region;
+//success
+
 MemoryLeaks;
 rows: 0
 
@@ -220,6 +244,24 @@ CLEANUP {
 
   drop table lineitem;
   mute
+
+  drop table customer;
+  mute
+
+  //drop table nation;
+  //mute
+
+  drop table orders;
+  mute
+
+  drop table part;
+  mute
+
+  drop table supplier;
+  mute
+
+  //drop table region;
+  //mute
 
   bye;
   mute

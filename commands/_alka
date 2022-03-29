@@ -21,8 +21,11 @@ create table datums (
   vch_col15  VARCHAR(32)
 );
 
-load datums "../DATA/DataTypes/dataTypes.csv" ;
-/*
+load datums "../DATA/Transliterate/datums.csv" ;
+
+
+
+
 create table LineItem
 (
  L_ORDERKEY      INTEGER       NOT NULL,
@@ -36,8 +39,8 @@ create table LineItem
  L_RETURNFLAG    CHAR(1)       NOT NULL,
  L_LINESTATUS    CHAR(1)       NOT NULL,
  L_SHIPDATE      TIMESTAMP NOT      NULL,
- L_COMMITDATE    TIMESTAMP NOT      NULL,
- L_RECEIPTDATE   TIMESTAMP NOT      NULL,
+ L_COMMITDATE    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
  L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
  L_SHIPMODE      CHAR(10)      NOT NULL,
  L_COMMENT       VARCHAR(44)   NOT NULL
@@ -47,27 +50,176 @@ create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
 
 _nation
 _region
-_orders;
-_part;
-CREATE INDEX orders_idx1 ON orders(O_CUSTKEY);
-CREATE INDEX orders_idx2 ON orders(O_ORDERKEY);
 
+create table orders (
+	 O_ORDERKEY        INTEGER NOT NULL,
+	 O_CUSTKEY         INTEGER NOT NULL,
+	 O_ORDERSTATUS     CHAR(1) NOT NULL,
+	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+	 O_ORDERDATE       TIMESTAMP NOT NULL,
+	 O_ORDERPRIORITY   CHAR(15) NOT NULL,
+	 O_CLERK           CHAR(15) NOT NULL,
+	 O_SHIPPRIORITY    INTEGER NOT NULL,
+	 O_COMMENT         VARCHAR(79) NOT NULL
+);
+
+_part;
+_customer
+CREATE INDEX orders_idx1 ON orders(O_CUSTKEY);
+CREATE INDEX IxO_ORDERKEY ON orders(O_ORDERKEY);
+create index IxC_CUSTKEY ON customer(C_CUSTKEY);
 create index IxR_REGIONKEY on REGION (R_REGIONKEY);
 create index IxR_NAME on REGION (R_NAME);
-
+create index IxL_PARTKEY ON lineitem(L_PARTKEY);
 ///time load region "<tpch_dir>/region.<suffix>";
 /time load nation "<tpch_dir>/nation.<suffix>";
-/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+///time load lineitem "<tpch_dir>/lineitem.<suffix>";
 /time load orders "<tpch_dir>/orders.<suffix>";
 /time load part "<tpch_dir>/part.<suffix>";
 ///time load orders "../DATA/TPCH/orders10.csv";
-//load lineitem "../TPCH/SF_0001/lineitem.csv";
+load lineitem "../TPCH/SF_0001/lineitem.csv";
 //load lineitem "../DATA/TPCH/lineitem10.csv";
 
+load customer "../TPCH/SF_0001/customer.csv";
 
-create index lineitem_part ON lineitem(L_PARTKEY);
+//create index lineitem_part ON lineitem(L_PARTKEY);
 
-//verbose enable;
+explain stage aggregateSplit select
+  l_returnflag,
+  l_linestatus,
+  sum(l_quantity) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice*(1.0-l_discount)) as sum_disc_price,
+  sum(l_extendedprice*(1.0-l_discount)*(1.0+l_tax)) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from
+  lineitem
+where
+  l_shipdate <= DATE '1998-09-01'
+group by
+  l_returnflag,
+  l_linestatus;
+
+explain stage aggregateSplit select l_extendedprice/l_orderkey from lineitem;
+
+explain stage transliterate select cast(l_quantity as integer) from lineitem;
+
+select p_Partkey , sum(L_QUANTITY) , count(L_QUANTITY) from part join lineitem on l_partkey = p_Partkey where P_BRAND = 'Brand#23' and P_CONTAINER = 'MED BAG'
+group by p_partkey;
+/*
+pipeline Q6
+begin
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_LINEITEM on all partitions :
+    indexscan 2 lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
+                                       UBOUND $I1 TIMESTAMP '1995-01-01 00:00:00' <"
+    | filter  2 "type BOOLEAN L_DISCOUNT 1.01 0.01 - >=
+                              L_DISCOUNT 1.01 0.01 + <=
+                              L_QUANTITY 2400.0 < and and"
+    | project  2 " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT * sum "
+    | combined 0
+    | next
+  stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0725
+  stage stageMarker0725 on all partitions :
+    scan rapidsse public nation
+    | aggreg 2 " groupBy  type INTEGER as n_nationkey $1 aggregates  type INTEGER 2  $1 1  +  *  , type INTEGER )  $3 sum  , type INTEGER $K1 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+
+explain stage transliterate select 10 + sum(L_EXTENDEDPRICE * L_DISCOUNT) from lineitem where
+  L_SHIPDATE >= DATE '1994-01-01'
+  and L_SHIPDATE < DATE '1995-01-01' and L_DISCOUNT between 0.06 - 0.01 and 0.06 + 0.01
+  and L_QUANTITY < 26.0;
+
+select l_discount from lineitem where l_discount >= 0.04 and l_discount  > 0.06;
+
+
+/time pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1165
+  stage stageMarker1165 on all partitions :
+    scan rapidsse public LineItem
+    | filter 2 " type BOOLEAN  $11 DATE '1994-01-01'  >=  $11 DATE '1995-01-01'  <  and  }  0.06  0.01  -  0.06  0.01  +  $7 between  and  $5 26.0  <  and  "
+    | project 2 " type DECIMAL )  $6 $7 *  sum  "
+    | combined 0
+    | stageMarker1168
+  stage stageMarker1168 on all nodes :
+    project 2 " type DECIMAL )  $1 sum  "
+    | combined 0
+    | stageMarker1171
+  stage stageMarker1171 on origin :
+    project 2 " type DECIMAL )  $1 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+/time pipeline unamed
+      begin
+        stage stageStart on origin :
+          start
+          | pulse once
+          | stageMarker1286
+        stage stageMarker1286 on all partitions :
+          indexscan 2 lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >=
+                                                 UBOUND $I1 DATE '1995-01-01' <"
+          | filter 2 " type BOOLEAN  }  0.06 0.01 - 0.06 0.01 + $7 between  $5 26.0  <  and"
+          | project 2 " type DECIMAL )  $6 $7 *  sum  "
+          | combined 0
+          | stageMarker1289
+        stage stageMarker1289 on all nodes :
+          project 2 " type DECIMAL )  $1 sum  "
+          | combined 0
+          | stageMarker1292
+        stage stageMarker1292 on origin :
+          project 2 " type DECIMAL )  $1 sum  "
+          | combined 0
+          | stageLast
+        stage stageLast on origin :
+          output
+          | sink
+          | stageStart
+      end ;
+
+
+select sum(L_EXTENDEDPRICE * L_DISCOUNT) from lineitem where
+  L_SHIPDATE >= DATE '1994-01-01'
+  and L_SHIPDATE < DATE '1995-01-01' and L_DISCOUNT between 0.06 - 0.01 and 0.06 + 0.01
+  and L_QUANTITY < 26.0;
 
 pipeline indexJoinTest
 begin
@@ -650,6 +802,79 @@ begin
     output | sink | stageA
 
 end ;
+
+
+
+
+
+/time pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1165
+  stage stageMarker1165 on all partitions :
+    scan rapidsse public LineItem
+    | filter 2 " type BOOLEAN  $11 DATE '1994-01-01'  >=  $11 DATE '1995-01-01'  <  and  }  0.06  0.01  -  0.06  0.01  +  $7 between  and  $5 26.0  <  and  "
+    | project 2 " type DECIMAL )  $6 $7 *  sum  "
+    | combined 0
+    | stageMarker1168
+  stage stageMarker1168 on all nodes :
+    project 2 " type DECIMAL )  $1 sum  "
+    | combined 0
+    | stageMarker1171
+  stage stageMarker1171 on origin :
+    project 2 " type DECIMAL )  $1 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+metadata: (COL1 DECIMAL)
+
+row: (1449459938.64)
+
+success: 1 rows fetched
+time 2194ms
+
+
+/time pipeline unamed
+      begin
+        stage stageStart on origin :
+          start
+          | pulse once
+          | stageMarker1286
+        stage stageMarker1286 on all partitions :
+          indexscan 2 lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >=
+                                                 UBOUND $I1 DATE '1995-01-01' <"
+          | filter 2 " type BOOLEAN  }  0.06 0.01 - 0.06 0.01 + $7 between  $5 26.0  <  and"
+          | project 2 " type DECIMAL )  $6 $7 *  sum  "
+          | combined 0
+          | stageMarker1289
+        stage stageMarker1289 on all nodes :
+          project 2 " type DECIMAL )  $1 sum  "
+          | combined 0
+          | stageMarker1292
+        stage stageMarker1292 on origin :
+          project 2 " type DECIMAL )  $1 sum  "
+          | combined 0
+          | stageLast
+        stage stageLast on origin :
+          output
+          | sink
+          | stageStart
+      end ;
+
+
+metadata: (COL1 DECIMAL)
+
+row: (1449459938.64)
+
+success: 1 rows fetched
+time 756ms
 
 */
 //SELECT 'abcdef' LIKE 'a_c%f' FROM nation LIMIT 1;
