@@ -1,32 +1,13 @@
 /*============================================================================*/
-/* dp_connectDemon.sen -- Connector Demon                                        */
+/* dp_connectorDemon.sen -- Connector Demon                                   */
 /*============================================================================*/
 
-" dp_connDemon.sen" .verbose
+" dp_connectorDemon.sen" .verbose
 
 
 /*----------------------------------------------------------------------------*/
-/* connector demon                                                            */
+/* pipeline/procedure text for connector demon                                */
 /*----------------------------------------------------------------------------*/
-/*
-: connDemonPipeline
-
-  "
-    pipelineLocal connDemon
-      tag \"<pre_execute>\" = \"demon::install\" endTag
-    begin
-
-      stage stageA on origin :
-          start
-        | connector
-        | eatAll
-        | stageA
-
-    end ;
-  "
-;
-*/
-
 procText:
   pipelineLocal connectorDemonPipeline
     tag "<pre_execute>" = "demon::install" endTag

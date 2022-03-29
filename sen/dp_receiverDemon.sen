@@ -6,34 +6,21 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* pipeline for receiver demon                                                */
+/* pipeline/procedure text for receiver demon                                 */
 /*----------------------------------------------------------------------------*/
-
 procText:
   pipelineLocal recvDemonPipeline
     tag "<pre_execute>" = "demon::install" endTag
   begin
 
     stage stageA on origin :
-      start | recv | eatAll | stageA
+        start
+      | recv
+      | eatAll
+      | stageA
 
   end
 ;
-
-/*
-: recvDemonPipeline
-  
-  "pipelineLocal recvDemon
-      tag \"<pre_execute>\" = \"demon::install\" endTag
-    begin
-
-      stage stageA on origin :
-        start | recv | eatAll | stageA
-
-    end ;
-  "
-;
-*/
 
 /*============================================================================*/
 /* end                                                                        */
