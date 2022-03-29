@@ -39,6 +39,16 @@
   EC_NONE                                                                  \
 )
 
+#define _OF_BCDDIV                                                         \
+(                                                                          \
+  (bcdArg2.m_iMantissa == 0) ?                                             \
+  EC_DIVIDE_BY_ZERO :                                                      \
+  (bcdArg1.m_iMantissa == C_BCD_MIN &&                                     \
+  bcdArg2.m_iMantissa == -1) ?                                             \
+  EC_ARITHMETIC_OVERFLOW :                                                 \
+  EC_NONE                                                                  \
+)
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Overflow detection i8
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -121,7 +131,39 @@
   }
 
 #define _DIV_BCDBCD(eErrorCode)                                            \
-  NEVER_REACH;
+  {                                                                        \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    if (eErrorCode != EC_NONE ||                                           \
+        bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      eErrorCode = _OF_BCDDIV;                                             \
+      if(eErrorCode != EC_NONE) {                                          \
+          *paW++ = C_DATUM_NULL;                                           \
+      }                                                                    \
+      else {                                                               \
+        i8 max_col_decimal = TMP_TBLCOL_SCALE;                             \
+        i8 tmpScaleDiff = bcdArg1.m_iScale - bcdArg2.m_iScale;             \
+        fltArg1.m_dFlt = bcdArg1.m_iMantissa / bcdArg2.m_iMantissa;        \
+        if(tmpScaleDiff < 0) {                                             \
+          tmpScaleDiff*=-1;                                                \
+          fltArg1.m_dFlt *= iaPow10[tmpScaleDiff];                         \
+        }                                                                  \
+        else {                                                             \
+          fltArg1.m_dFlt *= (1/iaPow10[tmpScaleDiff]);                     \
+        }                                                                  \
+        *paW++ = fltArg1.m_iAsI8;                                          \
+        _FLT_TOBCD(eErrorCode)                                             \
+        if(eErrorCode != EC_NONE) {                                        \
+          --paW;                                                           \
+          *paW++ = C_DATUM_NULL;                                           \
+        }                                                                  \
+      }                                                                    \
+    }                                                                      \
+  }
 
 #define _MUL_BCDBCD(eErrorCode)                                            \
   {                                                                        \
