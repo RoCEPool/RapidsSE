@@ -558,7 +558,7 @@ QueryNode* ProjectOp::pCreatePartitioned(QueryNode* pSinglePartitionNode)
 /* Returns a new ProjectOp node with projected columns super-aggregating      */
 /* aggregated expressions from each partition or node                         */
 /*----------------------------------------------------------------------------*/
-QueryNode* ProjectOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode)
+QueryNode* ProjectOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode, PlanNode* pRootNode)
 {
   QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, nullptr);
 
@@ -575,7 +575,7 @@ QueryNode* ProjectOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode)
 
     // Any aggregated expressions need to be super-aggregated
     if (ProjectedColumn::bContainsAnAggregate(pProjColumn)) {
-      ProjectedColumn::vSuperAggregate(pProjColumn);
+      ProjectedColumn::vSuperAggregate(pProjColumn, pRootNode);
     }
   }
 
@@ -587,7 +587,7 @@ QueryNode* ProjectOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode)
 /* Returns a new ProjectOp node with projected columns doubly super-aggregating*/
 /* aggregated expressions from each partition or node                         */
 /*----------------------------------------------------------------------------*/
-QueryNode* ProjectOp::pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode)
+QueryNode* ProjectOp::pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode, PlanNode* pRootNode)
 {
   QueryNode* pNewOp = pSinglePartitionNode->pDeepCopy(true, nullptr);
 
@@ -604,7 +604,7 @@ QueryNode* ProjectOp::pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNod
 
     // Any aggregated expressions need to be super-aggregated
     if (ProjectedColumn::bContainsAnAggregate(pProjColumn)) {
-      ProjectedColumn::vDoubleSuperAggregate(pProjColumn);
+      ProjectedColumn::vDoubleSuperAggregate(pProjColumn, pRootNode);
     }
   }
 

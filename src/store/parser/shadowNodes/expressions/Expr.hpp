@@ -118,7 +118,7 @@ namespace Parser
 
     // Changes the existing expression in place to support
     // super-aggregation of partitioned aggregate expressions.
-    static void vSuperAggregate(QueryNode* pExpr);
+    static void vSuperAggregate(QueryNode* pExpr, PlanNode* pRootNode);
 
     // Modifies subexpressions by promoting/casting data types so that they
     // are type compatible with this expression. Modifies the expression

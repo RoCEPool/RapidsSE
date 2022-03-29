@@ -56,11 +56,11 @@ namespace Parser
     static QueryNodeList* pPartitionAggregates(QueryNode* pNode);
 
     // Changes the aggregate expression in pNode to super-aggregate results from each partition/node
-    static void vSuperAggregate(QueryNode* pNode);
+    static void vSuperAggregate(QueryNode* pNode, PlanNode* pRootNode);
 
     // Changes the aggregate expression in pNode to super-aggregate results from each partition/node.
     // This version super-aggregates twice to factor in node-level aggregation.
-    static void vDoubleSuperAggregate(QueryNode* pNode);
+    static void vDoubleSuperAggregate(QueryNode* pNode, PlanNode* pRootNode);
   };
 
 }

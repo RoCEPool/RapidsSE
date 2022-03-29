@@ -275,7 +275,7 @@ QueryNodeList* OrderOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
 /* Returns a new OrderOp node with ordering terms super-aggregating           */
 /* aggregated expressions from each partition or node                         */
 /*----------------------------------------------------------------------------*/
-QueryNode* OrderOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode)
+QueryNode* OrderOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode, PlanNode* pRootNode)
 {
   ASSERT(OrderOp::bIsOfType(pSinglePartitionNode));
   ASSERT(!PlanObject::bNodeHasLocation(pSinglePartitionNode));
@@ -296,7 +296,7 @@ QueryNode* OrderOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode)
 
     // Get the ordering expression and super-aggregate any aggregates in it
     QueryNode* pOrderExpr = OrderItem::pExprNode(pOrderItem);
-    Expr::vSuperAggregate(pOrderExpr);
+    Expr::vSuperAggregate(pOrderExpr, pRootNode);
   }
 
   delete pIter;
@@ -308,7 +308,7 @@ QueryNode* OrderOp::pCreateSuperAggregate(QueryNode* pSinglePartitionNode)
 /* aggregated expressions from each partition or node. This version used to   */
 /* factor in node-level aggregation.                                          */
 /*----------------------------------------------------------------------------*/
-QueryNode* OrderOp::pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode)
+QueryNode* OrderOp::pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode, PlanNode* pRootNode)
 {
   ASSERT(OrderOp::bIsOfType(pSinglePartitionNode));
   ASSERT(!PlanObject::bNodeHasLocation(pSinglePartitionNode));
@@ -329,8 +329,8 @@ QueryNode* OrderOp::pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode)
 
     // Get the ordering expression and super-aggregate any aggregates in it
     QueryNode* pOrderExpr = OrderItem::pExprNode(pOrderItem);
-    Expr::vSuperAggregate(pOrderExpr);
-    Expr::vSuperAggregate(pOrderExpr);
+    Expr::vSuperAggregate(pOrderExpr, pRootNode);
+    Expr::vSuperAggregate(pOrderExpr, pRootNode);
   }
 
   delete pIter;
