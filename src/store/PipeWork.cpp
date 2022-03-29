@@ -16,7 +16,7 @@
 #include "StageSpec.hpp"
 #include "Pipeline.hpp"
 
-#include "SP_Pipework.hpp"
+#include "SP_PipeWork.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -31,13 +31,15 @@ __aFooterFunction(PipeWork)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipeWork::PipeWork(Pipeline* pPipeline, PipeSpec* pPipeWorkSpec)
+PipeWork::PipeWork(Pipeline* pPipeline, PipeSpec* pPipeSpec)
 : LifeGuard_t<PipeWork>(this,CN_PIPEWORK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
-  m_pPipeline     = pPipeline;
-  m_pPipeWorkSpec = pPipeWorkSpec;
+  m_pPipeline = pPipeline;
+  m_pPipeSpec = pPipeSpec;
+
+  m_pSubPipeWorks = nullptr;
 
   _checkInitialised_(CN_PIPEWORK);
   
@@ -63,7 +65,7 @@ PipeWork::~PipeWork(void) noexcept(false)
 
   vClear();
 
-//  m_pPipeWorkSpec->vGuardedDelete(CN_PIPESPEC,&m_pPipeWorkSpec,
+//  m_pPipeSpec->vGuardedDelete(CN_PIPESPEC,&m_pPipeSpec,
 //                                  CN_PIPEWORK,this,(Stz*)__func__);
 }
 
@@ -91,11 +93,11 @@ bool PipeWork::bCancel(Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* get formwork spec                                                          */
 /*----------------------------------------------------------------------------*/
-PipeSpec* PipeWork::pPipeWorkSpec(void)
+PipeSpec* PipeWork::pPipeSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
-  return m_pPipeWorkSpec;
+  return m_pPipeSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,11 +122,11 @@ i8 PipeWork::nOpsOnNode(i8 iNode)
   
   i8 nOps = 0;
   
-  i8 i_Origin = m_pPipeline->i_Origin();
+  i8 iOriginNodeNo = m_pPipeline->iOriginNodeNo();
   
   for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
     Stage* pStage = pGet(i_Stage);
-    nOps += pStage->nOpsOnNode(iNode,i_Origin);
+    nOps += pStage->nOpsOnNode(iNode,iOriginNodeNo);
   }
   
   return nOps;
@@ -137,6 +139,26 @@ Pipeline* PipeWork::pPipeline(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   return m_pPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn operaator jobs for the pipeline                                      */
+/*----------------------------------------------------------------------------*/
+void PipeWork::vSetInvoker(Task* pInvoker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
+    
+    Stage* pStage = pGet(i_Stage);
+    
+    for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
+      Stream* pStream = pStage->pGet(i_Stream);
+
+      pStream->vSetInvoker(pInvoker);
+    }
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -239,11 +261,11 @@ void PipeWork::vCreatePipework(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
 
-  i8 nStages = m_pPipeWorkSpec->nItems();
+  i8 nStages = m_pPipeSpec->nItems();
   for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
     
     // get the stageSpec
-    StageSpec* pStageSpec = m_pPipeWorkSpec->pStageSpec(i_StageSpec);
+    StageSpec* pStageSpec = m_pPipeSpec->pStageSpec(i_StageSpec);
     
     // add a stage from the stageSpec to the stageVec
     Stage* pStage = new Stage(pStageSpec, this);

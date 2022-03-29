@@ -1,43 +1,43 @@
 /*============================================================================*/
-/* SubPipelines.cpp -- List of Sub-Pipeline Specifications                    */
+/* SubPipeWorks.cpp -- List of Sub-Pipeline Specifications                    */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "SubPipelines.hpp"
+#include "SubPipeWorks.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, SubPipelines, CN_SUBPIPELINES)
-__aNewFunction(SubPipelines, CN_SUBPIPELINES)
-__vDeleteFunction(SubPipelines, CN_SUBPIPELINES)
-__aFooterFunction(SubPipelines)
+__pCastFunction(STORE, SubPipeWorks, CN_SUBPIPEWORKS)
+__aNewFunction(SubPipeWorks, CN_SUBPIPEWORKS)
+__vDeleteFunction(SubPipeWorks, CN_SUBPIPEWORKS)
+__aFooterFunction(SubPipeWorks)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SubPipelines::SubPipelines(void)
+SubPipeWorks::SubPipeWorks(void)
     
-: ListNL_t<PipelineSpec>(CN_SUBPIPELINES)
+: ListNL_t<PipeWork>(CN_SUBPIPEWORKS)
 
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPELINES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPEWORKS, _FOOTER_);
 
 
-  _checkInitialised_(CN_SUBPIPELINES);
+  _checkInitialised_(CN_SUBPIPEWORKS);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPELINES, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPEWORKS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SubPipelines::~SubPipelines(void) noexcept(false)
+SubPipeWorks::~SubPipeWorks(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPELINES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPEWORKS, _FOOTER_);
 
 }
 

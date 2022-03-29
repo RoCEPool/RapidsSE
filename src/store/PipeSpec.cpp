@@ -7,14 +7,14 @@
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "PipeSpec.hpp"
-#include "SubPipelines.hpp"
+#include "SubPipeSpecs.hpp"
 #include "Dynamo.hpp"
 #include "Procedure.hpp"
 #include "Job.hpp"
 #include "Grid.hpp"
 #include "TagConstants.h"
 
-#include "SP_PipeworkSpec.hpp"
+#include "SP_PipeSpec.hpp"
 #include "SP_Token.hpp"
 
 
@@ -31,8 +31,7 @@ __aFooterFunction(PipeSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipeSpec::PipeSpec(Scanner *p_Scanner, TagSet *p_JobTags,
-                           PipelineSpec* pPipelineSpec)
+PipeSpec::PipeSpec(Scanner *p_Scanner, TagSet *p_JobTags)
     
 : ListNL_t<StageSpec>(CN_PIPESPEC)
 , LifeGuard_t<PipeSpec>(this, CN_PIPESPEC)
@@ -41,8 +40,7 @@ PipeSpec::PipeSpec(Scanner *p_Scanner, TagSet *p_JobTags,
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
   m_sPipelineNm   = "(unknown)"_Stz;
-  m_pPipelineSpec = pPipelineSpec;
-  m_pSubPipelines = nullptr;
+  m_pSubPipeSpecs = nullptr;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
@@ -67,12 +65,13 @@ PipeSpec::~PipeSpec(void) noexcept(false)
 
   vClear();
   
-  if (m_pSubPipelines) {
+  if (m_pSubPipeSpecs) {
     
-    while (PipelineSpec *pSubPipelineSpec = m_pSubPipelines->pPop())
-      delete pSubPipelineSpec;
+    while (PipeSpec *pSubPipeSpec = m_pSubPipeSpecs->pPop())
+      pSubPipeSpec->vGuardedDelete(CN_PIPESPEC, &pSubPipeSpec,
+                                   CN_PIPESPEC, this, (Stz *) __func__);
 
-    delete m_pSubPipelines;
+    delete m_pSubPipeSpecs;
   }
 }
 
@@ -162,6 +161,18 @@ Stz* PipeSpec::szPipelineNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* number of stages                                                           */
+/*----------------------------------------------------------------------------*/
+i8 PipeSpec::nStages(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+
+  i8 nStages = nItems();
+  
+  return nStages;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* PipeSpec::pStageSpec(i8 i_Stage)
@@ -176,11 +187,11 @@ StageSpec* PipeSpec::pStageSpec(i8 i_Stage)
 /*----------------------------------------------------------------------------*/
 /* get sub-pipelines                                                          */
 /*----------------------------------------------------------------------------*/
-SubPipelines* PipeSpec::pSubPipelines(void)
+SubPipeSpecs* PipeSpec::pSubPipeSpecs(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  return m_pSubPipelines;
+  return m_pSubPipeSpecs;
 }
 
 
@@ -298,17 +309,17 @@ bool PipeSpec::bCollectSubPipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  PipelineSpec* pSubPipelineSpec = new PipelineSpec(m_p_Scanner,m_p_JobTags);
+  PipeSpec* pSubPipeSpec = new PipeSpec(m_p_Scanner,m_p_JobTags);
 
-  if (! pSubPipelineSpec->bCompile()) {
-    delete pSubPipelineSpec;
+  if (! pSubPipeSpec->bCompile()) {
+    delete pSubPipeSpec;
     return false;
   }
   
-  if (! m_pSubPipelines)
-    m_pSubPipelines = new SubPipelines;
+  if (! m_pSubPipeSpecs)
+    m_pSubPipeSpecs = new SubPipeSpecs;
 
-  m_pSubPipelines->vAppend(pSubPipelineSpec);
+  m_pSubPipeSpecs->vAppend(pSubPipeSpec);
 
   return true;
 }
@@ -705,7 +716,7 @@ bool PipeSpec::bPass2_piping(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  // foreach stageSpec of pipelineSpec
+  // foreach stageSpec of pipeSpec
   i8 nStageSpecs = this->nItems();
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
     StageSpec *pStageSpec = this->pGet(i_Stage);
@@ -1119,7 +1130,7 @@ bool PipeSpec::bPass3_include(Stz *szIncludePipNm)
 
   Dynamo *pDynamo = new Dynamo(pWrdTagSet);
 
-  PipelineSpec *pIncludePipelineSpec = pDynamo->pCompile(sPipelineSmt.szStz());
+  PipeSpec *pIncludePipeSpec = pDynamo->pCompile(sPipelineSmt.szStz());
 
   delete pDynamo;
 

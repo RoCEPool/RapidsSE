@@ -15,7 +15,7 @@
 
 namespace BASE { class OperandQueue; }
 
-namespace STORE { class PipelineSpec; class StageSpec; class OpSpec; }
+namespace STORE { class PipeSpec; class StageSpec; class OpSpec; }
 
 namespace STORE
 {
@@ -104,7 +104,7 @@ namespace STORE
    ~Op(void) noexcept(false);
   
     // - - - - - - - - - - - - - - - -
-    void vAckPipelineJob(void);
+    void vAckInvokingTask(void);
     void vAddWorkDone(i8 iWorkDone);
     void vAppendLeft(Operand* pOperand, Task* pTriggeringTask);
     void vAppendOoO(Operand* pOperand, Task* pTriggeringTask);
@@ -198,6 +198,7 @@ namespace STORE
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
     void vSpawnTask(void);
+    void vSetInvoker(Task* pInvoker);
     void vSetTags(void);
     Stage* pStage(void);
     Stz* szStageName(void);

@@ -27,6 +27,9 @@ C_JDBC_DRIVER: pathlib.Path = None
 C_JDBC_URL_FMT = 'jdbc:rapidsse:{0}/bin/rapidsse?extraargs="--name {1} ' \
                  '--sen {0}/sen --commands {0}/commands --appendTrace"'
 
+C_PERF_TESTS_DIR = "perftests"
+C_SUPPORT_FILES_DIR = f"{C_PERF_TESTS_DIR}/supportFiles"
+
 
 def build_installer() -> pathlib.Path:
     """
@@ -240,6 +243,62 @@ def copy_jdbc_driver(host: string, cluster_cfg: ClusterConfig):
         raise errors.ClusterError(msg) from e
 
     LOG.info("Copied the JDBC driver successfully")
+
+
+def copy_support_files(host: string, cluster_cfg: ClusterConfig, src_folder: string):
+    """
+    Copy the supportFiles directory to the <install_dir>/perftests/supportFiles directory of the given host.
+    """
+    assert os.path.exists(src_folder), f"src_folder does not exist: {src_folder}"
+
+    dest = f"{host}:{cluster_cfg.get_dir()}/{C_SUPPORT_FILES_DIR}"
+
+    LOG.info(f"About to copy the test supportFiles folder to the first node of the cluster at: {dest}")
+
+    try:
+        ssh.run_scp(src_folder, dest, 10, recursive=True)
+
+    except subprocess.CalledProcessError as e:
+        msg = f"Error while copying the test supportFiles folder to the first node." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg) from e
+
+    except subprocess.TimeoutExpired as e:
+        msg = f"Copying of the test supportFiles folder to the first node timed out after {e.timeout} seconds." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg) from e
+
+    LOG.info("Copied the test supportFiles folder successfully")
+
+
+def make_perftests_dir(host: string, cluster_cfg: ClusterConfig):
+    """
+    Makes the common perftests directory, to hold all tests, support files and their metrics
+    """
+
+    dest = f"{cluster_cfg.get_dir()}/{C_PERF_TESTS_DIR}"
+    ssh_command = f"mkdir -p {dest}"
+
+    LOG.info(f"About to create the perftests folder on the first node of the cluster at: {host}:{dest}")
+
+    try:
+        ssh.run_ssh(host, ssh_command, 10)
+
+    except subprocess.CalledProcessError as e:
+        msg = f"Error while creating the perftests folder on the first node." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg) from e
+
+    except subprocess.TimeoutExpired as e:
+        msg = f"Creating of the perftests folder on the first node timed out after {e.timeout} seconds." \
+              f"\nStdout Output:\n{e.stdout}" \
+              f"\nStderr Output:\n{e.stderr}"
+        raise errors.ClusterError(msg) from e
+
+    LOG.info("Created the perftests folder successfully")
 
 
 def find_local_jdbc_driver() -> pathlib.Path:

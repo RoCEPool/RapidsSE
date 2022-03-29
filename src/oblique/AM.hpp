@@ -54,6 +54,9 @@ namespace BASE {
   class File;
   class Format;
 
+#ifdef WITH_HASHMAP
+  class HashMap;
+#endif
   class Header;
   class Heap;
   class Heaps;
@@ -608,6 +611,9 @@ namespace OBLIQUE
     static std::list<Node*>::const_iterator itEndNodes(void);
 
     static JobList* pDemonJobs(void);
+#ifdef WITH_HASHMAP
+    static HashMap* pHashMap(void);
+#endif
     static Heaps* pHeaps(void);
     static i8   nIndexEntries(void);
     static JobList* pLocalJobs(void);
@@ -670,7 +676,6 @@ namespace OBLIQUE
     static void vTenants(Word* pTenants);
 
     //
-    static Task* pExecutingTask(Job* pJob);
     static void vPrintArguments(void);
     static void vPrintAttachMap(void);
     static void vPrintStartupInfo(void);
@@ -762,7 +767,6 @@ namespace OBLIQUE
     static bool bSpawnTask_session(Job* pJob);
     
     static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
-    static void vSpawnTaskDedicated_job(Job* pJob);
     static void vSpawnTaskDedicated_op(Op* pOp);
     static void vSpawnTask_job(Job* pJob);
     static void vSpawnTask_op(Op* pOp);

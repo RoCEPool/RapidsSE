@@ -49,7 +49,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.name@"_Stz,            &Step::vJobNameFetch);
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
   
-  vAddStep("job.participantNode@"_Stz, &Step::vJobParticipantFetch_other);
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
   vAddStep("job.pipeToOp0"_Stz,        &Step::vJobPipeToOp0);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
@@ -68,7 +67,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("[job]"_Stz,                  &Step::vJobGet);
 
-  vAddStep("[job].2pcDecider!"_Stz,      &Step::vJob2pcDeciderStore);
   vAddStep("[job].addDemon"_Stz,         &Step::vJobAddDemon);
   vAddStep("[job].addLocal"_Stz,         &Step::vJobAddLocal);
   vAddStep("[job].addOriginator"_Stz,    &Step::vJobAddOriginator);
@@ -91,8 +89,8 @@ void Step::vAddSteps_Job(void)
     
   vAddStep("[job].originNodeNo@"_Stz,    &Step::vJobOriginNodeNoFetch);
   
-  vAddStep("[job].participantNodeNo@"_Stz, &Step::vJobParticipantFetch);
-  vAddStep("[job].participantNodeNo!"_Stz, &Step::vJobParticipantStore);
+  vAddStep("[job].participantNodeNo@"_Stz, &Step::vJobParticipantNodeNoFetch);
+  vAddStep("[job].participantNodeNo!"_Stz, &Step::vJobParticipantNodeNoStore);
   vAddStep("[job].preExecuteTest"_Stz,   &Step::vJobPreExecuteTest);
   vAddStep("[job].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("[job].phase!"_Stz,           &Step::vJobPhaseStore);
@@ -123,20 +121,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].tscParticipant"_Stz,   &Step::vJobTscParticipant);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* job.2pcDecider! -- set acks remaining for this job                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJob2pcDeciderStore(void)
-{
-  ENTRY();
-    
-  i8 nAcksRemaining = m_pDataStack->iPopInt(__func__);
-  
-  m_pJob->v2pcDeciderRmg(nAcksRemaining);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* [job].addDemon -- add job to demon job set                                 */
@@ -757,45 +741,31 @@ void Step::vJobOriginNodeNoFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.participantNode@ -- fetch the participant node from the job                */
+/* job.partptNodeNo@ -- fetch the participant node from the job                */
 /*----------------------------------------------------------------------------*/
-void Step::vJobParticipantFetch(void)
+void Step::vJobParticipantNodeNoFetch(void)
 {
   ENTRY();
   
   Job* pJob = * m_pJob;
 
-  m_pDataStack->vPushInt(pJob->iParticipantNode());
+  m_pDataStack->vPushInt(pJob->iParticipantNodeNo());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.participantNode@ -- fetch the participant node from the job                */
+/* [job].participantNodeNo! -- store the participant node in the job          */
 /*----------------------------------------------------------------------------*/
-void Step::vJobParticipantFetch_other(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob->iParticipantNode());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.partcipant! -- store the participant node in the job                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobParticipantStore(void)
+void Step::vJobParticipantNodeNoStore(void)
 {
   ENTRY();
   
   Job* pJob = * m_pJob;
 
-  i8 iParticipantNode = m_pDataStack->iPopAsInt(__func__);
+  i8 iParticipantNodeNo = m_pDataStack->iPopAsInt(__func__);
   
-  pJob->vParticipantNode(iParticipantNode);
+  pJob->vParticipantNodeNo(iParticipantNodeNo);
   
   EXIT();
 }

@@ -45,15 +45,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // decrement the acks remaining in the originating job
-  ListedJob[].dec2pcDecider if
-
-    // notify the originating task
-    ListedJob[].task@ task.ack
-    ListedJob[].returnReference
-
-  then
-
+  ListedJob[].task@ task.ack
+  
   ListedJob[].returnReference
   [job]:retire
 ;

@@ -1,0 +1,418 @@
+/*----------------------------------------------------------------------------*/
+/* decimal.test -- DECIMAL DATUM tests                                        */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+success
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/DataTypes/dataTypes.csv" ;
+success
+
+/*
+//------------------------------------------------------------------------------
+select 0.0e0 < 2.2250738585072014e-308 from datums;
+rows:
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+
+select 0.0e0 < -1.797693134862315708145274237317043567981e+308 from datums;
+rows:
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+
+//------------------------------------------------------------------------------
+select flt_col8 from datums order by flt_col8;
+rows:
+   (null)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (10.22)
+   (10.22)
+   (10.22)
+   (10.22)
+
+//------------------------------------------------------------------------------
+select flt_col8 from datums where flt_col8 > 0.22;
+rows:
+  (10.22)
+  (10.22)
+  (10.22)
+  (10.22)
+
+//------------------------------------------------------------------------------
+select flt_col8 from datums where flt_col8 = 10.22;
+rows:
+  (10.22)
+  (10.22)
+  (10.22)
+  (10.22)
+
+//------------------------------------------------------------------------------
+select flt_col8 from datums where flt_col8 >= 10.22 order by flt_col8;
+rows:
+  (10.22)
+  (10.22)
+  (10.22)
+  (10.22)
+
+//------------------------------------------------------------------------------
+select flt_col8 from datums where flt_col8 < 10.22;
+rows:
+ (0.22)
+ (0.22)
+ (0.22)
+ (0.22)
+ (0.22)
+ (0.22)
+ (0.22)
+ (0.22)
+
+ //------------------------------------------------------------------------------
+ select flt_col8 from datums where flt_col8 <= 10.22 order by flt_col8;
+ rows:
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (10.22)
+   (10.22)
+   (10.22)
+   (10.22)
+
+//------------------------------------------------------------------------------
+select flt_col9 from datums order by flt_col9;
+rows:
+   (31.456)
+   (31.456)
+   (31.456)
+   (31.456)
+   (76.456)
+   (108.456)
+   (108.456)
+   (108.456)
+   (108.456)
+   (108.456)
+   (108.456)
+   (108.456)
+   (108.456)
+
+//------------------------------------------------------------------------------
+select flt_col8 * 10.10 from datums;
+rows:
+(2.222)
+(2.222)
+(103.222)
+(2.222)
+(103.222)
+(null)
+(2.222)
+(2.222)
+(2.222)
+(103.222)
+(2.222)
+(2.222)
+(103.222)
+
+//------------------------------------------------------------------------------
+//TODO: error: label 'L_AddRowToTub' used but not defined
+
+select flt_col8 + 1.44 from datums order by flt_col8;
+rows:
+     (null)
+     (1.66)
+     (1.66)
+     (1.66)
+     (1.66)
+     (1.66)
+     (1.66)
+     (1.66)
+     (1.66)
+     (11.66)
+     (11.66)
+     (11.66)
+     (11.66)
+/*
+select cast (flt_col8 as varchar)  , cast (flt_col9 as varchar) from datums order by flt_col8;
+rows:
+ (null,'31.456')
+ ('0.22','31.456')
+ ('0.22',31.456)
+ ('0.22','31.456')
+ ('0.22','76.456')
+ ('0.22','108.456')
+ ('0.22','108.456')
+ ('0.22','108.456')
+ ('0.22','108.456')
+ ('10.22','108.456')
+ ('10.22','108.456')
+ ('10.22','108.456')
+ ('10.22','108.456')
+*/
+
+// exception : /0
+select (flt_col8/0e0) from datums;
+failure contains: 'divide by zero'
+
+
+// aggregates : sum
+
+select sum(flt_col8) from datums;
+rows: (42.64)
+
+select 10.44 + sum(flt_col8) from datums;
+rows: (53.08)
+
+select sum(flt_col8) + 10.44 from datums;
+rows: (53.08)
+
+select sum(10.1 + flt_col8) from datums;
+rows: (163.84)
+
+select sum(flt_col8 + 10.1) from datums;
+rows: (163.84)
+
+select sum(flt_col8 + flt_col8) from datums;
+rows: (85.28)
+
+select sum(flt_col8) + sum(flt_col8) from datums;
+rows: (85.28)
+
+// aggregates : min
+
+select min(flt_col8) from datums;
+rows: (0.22)
+
+select 10.3 + min(flt_col8) from datums;
+rows: (10.52)
+
+select min(flt_col8) + 10.3 from datums;
+rows: (10.52)
+
+select min(10 + flt_col8) from datums;
+rows: (10.22)
+
+select min(flt_col8 + 10) from datums;
+rows: (10.22)
+
+select min(flt_col8 + flt_col8) from datums;
+rows: (0.44)
+
+select min(flt_col8) + min(flt_col8) from datums;
+rows: (0.44)
+
+// aggregates : min (with nulls and min/max ints)
+/*
+select min(int_col1) from datums;
+rows: (-9223372036854775806)
+
+select 10 + min(int_col1) from datums;
+rows: (-9223372036854775796)
+
+select min(int_col1) + 10 from datums;
+rows: (-9223372036854775796)
+
+select min(10 + int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+
+select min(int_col1 + 10) from datums;
+failure contains: 'Arithmetic overflow'
+
+select min(int_col1 + int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+
+select min(int_col1) + min(int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+*/
+// aggregates : max
+
+select max(flt_col8) from datums;
+rows: (10.22)
+
+select 10 + max(flt_col8) from datums;
+rows: (20.22)
+
+select max(flt_col8) + 10 from datums;
+rows: (20.22)
+
+select max(10 + flt_col8) from datums;
+rows: (20.22)
+
+select max(flt_col8 + 10) from datums;
+rows: (20.22)
+
+select max(flt_col8 + flt_col8) from datums;
+rows: (20.44)
+
+select max(flt_col8) + max(flt_col8) from datums;
+rows: (20.44)
+
+// aggregates : max (with nulls and min/max ints)
+/*
+select max(int_col1) from datums;
+rows: (9223372036854775806)
+
+select 10 + max(int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+
+select max(int_col1) + 10 from datums;
+failure contains: 'Arithmetic overflow'
+
+select max(10 + int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+
+select max(int_col1 + 10) from datums;
+failure contains: 'Arithmetic overflow'
+
+select max(int_col1 + int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+
+select max(int_col1) + max(int_col1) from datums;
+failure contains: 'Arithmetic overflow'
+*/
+
+// drop the table
+drop table datums;
+success
+
+/*
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/DataTypes/dataTypesOver.csv" ;
+success
+
+//------------------------------------------------------------------------------
+select flt_col8 from datums order by flt_col8;
+rows:
+   (null)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (10.22)
+   (10.22)
+   (10.22)
+   (10.22)
+
+//------------------------------------------------------------------------------
+select cast(int_col0 as float) from datums order by int_col0;
+rows:
+  (null)
+  (0)
+  (-9223372036854775806)
+  (1000)
+  (2000)
+  (4000)
+  (5000)
+  (6000)
+  (7000)
+  (8000)
+  (9000)
+  (10000)
+  (9223372036854775806)
+
+//------------------------------------------------------------------------------
+select flt_col8 + 2 from datums;
+failure contains: "OVERFLOW"
+
+// drop the table
+drop table datums;
+success
+*/
+
+// get memory leaks
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  // drop the table
+  drop table datums;
+  mute
+
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/

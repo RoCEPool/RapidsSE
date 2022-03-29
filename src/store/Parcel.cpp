@@ -537,10 +537,10 @@ void Parcel::vNDE_OriginNode(Op *pSendOp)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Pipeline *pPipeline = pSendOp->pPipelineOfOp();
-  i8 iOriginNde = pPipeline->i_Origin();
+  i8 iOriginNodeNo = pPipeline->iOriginNodeNo();
 
   PtnId tPtn_na = C_UNKNOWN;
-  vDispatchParcel(pSendOp, __LINE__, iOriginNde, pNextStage, tPtn_na);
+  vDispatchParcel(pSendOp, __LINE__, iOriginNodeNo, pNextStage, tPtn_na);
 }
 
 /*----------------------------------------------------------------------------*/

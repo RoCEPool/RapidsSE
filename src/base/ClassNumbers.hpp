@@ -113,8 +113,8 @@ enum eCN : u2 // Class Number
   /* */ CN_GRID,
 
   /* */ CN__H__,
-  /* */ CN_HASHBUFFER,
   /* */ CN_HASHMAP,
+  /* */ CN_HASHMAPSLOT,
   /* */ CN_HASHSET,
   /* */ CN_HEAPBUFFER,
   /* */ CN_HEAPMEM,
@@ -184,7 +184,6 @@ enum eCN : u2 // Class Number
 
   /* */ CN__N__,
   /* */ CN_NAMEDBUFFER,
-  /* */ CN_NESTEDPIPELINESPEC,
   /* */ CN_NEXTGID,
   /* */ CN_NMLSTR,
   /* */ CN_NODE,
@@ -204,7 +203,6 @@ enum eCN : u2 // Class Number
   /* */ CN_OPMETRICS,
   /* */ CN_OPSPEC,
   /* */ CN_OPTIMISER,
-  /* */ CN_OPTIMUS,
   /* */ CN_OTHEROPERAND,
 
   /* */ CN__P__,
@@ -216,7 +214,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PERUSE,
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINEMETRICS,
-  /* */ CN_PIPELINESPEC,
   /* */ CN_PIPEWORK,
   /* */ CN_PIPESPEC,
   /* */ CN_PLANDEFINITIONPARSER,
@@ -285,8 +282,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SCHEDULER,
   /* */ CN_SCHEMA,
   /* */ CN_SEAPI,
-  /* */ CN_SECTION,
-  /* */ CN_SECTIONSPEC,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
   /* */ CN_SENCOMPILER,
@@ -344,7 +339,8 @@ enum eCN : u2 // Class Number
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SUBCALL,
-  /* */ CN_SUBPIPELINES,
+  /* */ CN_SUBPIPESPECS,
+  /* */ CN_SUBPIPEWORKS,
   /* */ CN_SUBRETURN,
   /* */ CN_SYSCALL,
   /* */ CN_SYSMETRICS,
@@ -526,9 +522,9 @@ static Stz* aCN[]
   /* */ "GRID"_Stz,                 // CN_GRID
 
   /* */ "_H__"_Stz,                 // CN__H__
-  /* */ "HASHBUFFER"_Stz,           // CN_HASHBUFFER
   /* */ "HASHSET"_Stz,              // CN_HASHSET
   /* */ "HASHMAP"_Stz,              // CN_HASHMAP
+  /* */ "HASHMAPSLOT"_Stz,          // CN_HASHMAPSLOT
   /* */ "HEAPBUFFER"_Stz,           // CN_HEAPBUFFER
   /* */ "HEAPMEM"_Stz,              // CN_HEAPMEM
 
@@ -597,7 +593,6 @@ static Stz* aCN[]
 
   /* */ "_N__"_Stz,                 // CN__N__
   /* */ "NAMEDBUFFER"_Stz,          // CN_NAMEDBUFFER
-  /* */ "NESTEDPIPELINESPEC"_Stz,   // CN_NESTEDPIPELINESPEC
   /* */ "NEXTGID"_Stz,              // CN_NEXTGID
   /* */ "NMLSTR"_Stz,               // CN_NMLSTR
   /* */ "NODE"_Stz,                 // CN_NODE
@@ -617,7 +612,6 @@ static Stz* aCN[]
   /* */ "OPMETRICS"_Stz,            // CN_OPMETRICS
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
   /* */ "OPTIMISER"_Stz,            // CN_OPTIMISER
-  /* */ "OPTIMUS"_Stz,              // CN_OPTIMUS
   /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
 
   /* */ "_P__"_Stz,                 // CN__P__
@@ -629,7 +623,6 @@ static Stz* aCN[]
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
-  /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC
   /* */ "PIPEWORK"_Stz,             // CN_PIPEWORK
   /* */ "PIPESPEC"_Stz,             // CN_PIPESPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
@@ -698,8 +691,6 @@ static Stz* aCN[]
   /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
   /* */ "SEAPI"_Stz,                // CN_SEAPI
-  /* */ "SECTION"_Stz,              // CN_SECTION
-  /* */ "SECTIONSPEC"_Stz,          // CN_SECTIONSPEC
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
@@ -757,7 +748,8 @@ static Stz* aCN[]
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SUBCALL"_Stz,              // CN_SUBCALL
-  /* */ "SUBPIPELINES"_Stz,         // CN_SUBPIPELINES
+  /* */ "SUBPIPESPECS"_Stz,         // CN_SUBPIPESPECS
+  /* */ "SUBPIPEWORKS"_Stz,         // CN_SUBPIPEWORKS
   /* */ "SUBRETURN"_Stz,            // CN_SUBRETURN
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS

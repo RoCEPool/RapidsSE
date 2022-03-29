@@ -34,7 +34,7 @@ __aFooterFunction(Stream)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
-               PtnId tPtnId, i8 i_Node)
+               PtnId tPtnId, i8 iNodeNo)
 : LifeGuard_t<Stream>(this,CN_STREAM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
@@ -47,7 +47,7 @@ Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
   m_pPipeline  = pStage->pPipeWork()->pPipeline();
 
   m_tPtnId     = tPtnId;
-  m_i_Node     = i_Node;
+  m_iNodeNo    = iNodeNo;
   m_i_Stream   = i_Stream;
   
   vSynthesiseName();
@@ -138,11 +138,11 @@ void Stream::vCreateOps(void)
 /*----------------------------------------------------------------------------*/
 /* get partition this stream needs to run on                                  */
 /*----------------------------------------------------------------------------*/
-i8 Stream::i_Node(void)
+i8 Stream::iNodeNo(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_i_Node;
+  return m_iNodeNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,6 +187,24 @@ Stage* Stream::pStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* spawn tasks for all operators for partitions of given node                 */
+/*----------------------------------------------------------------------------*/
+void Stream::vSetInvoker(Task* pInvoker)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  // for each operator in the stage ptn
+  for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
+    
+    Op* pOp = pGet(i_Op);
+    
+    if (pOp)
+      pOp->vSetInvoker(pInvoker);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec for this stream                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* Stream::pStageSpec(void)
@@ -210,12 +228,12 @@ void Stream::vSpawnOpTasks(void)
   if (m_pStageSpec->bNodeTopo()) {
     
     if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
-      if (iThisNodeNo != pPipeline()->i_Origin()) {
-        i_OnNode = m_i_Node;
+      if (iThisNodeNo != pPipeline()->iOriginNodeNo()) {
+        i_OnNode = m_iNodeNo;
       }
     }
     else {
-      i_OnNode = m_i_Node;
+      i_OnNode = m_iNodeNo;
     }
     
   }
@@ -274,12 +292,12 @@ void Stream::vSynthesiseName(void)
  
   if (m_pStageSpec->bNodeTopo()) {
     m_sStreamNm.vSprint("_stream_N%lld_of_%s"_Stz,
-                          m_i_Node,
+                          m_iNodeNo,
                           m_pStageSpec->szStageNm());
   }
   else {
     m_sStreamNm.vSprint("_streamv_N%lldS%lld_of_%s"_Stz,
-                          m_i_Node,
+                          m_iNodeNo,
                           m_i_Stream,
                           m_pStageSpec->szStageNm());
   }

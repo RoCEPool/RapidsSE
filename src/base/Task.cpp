@@ -114,6 +114,7 @@ void Task::vTask(void)
   
   m_pProfile     = nullptr;
 
+  m_pInvokingTask     = nullptr;
   m_pThread      = nullptr;
   
   m_bIsStart     = false;
@@ -915,6 +916,27 @@ Input* Task::pInput(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   return m_pInput;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the invoking task (super-op/pipe) of this task (sub-op/pipe)           */
+/*----------------------------------------------------------------------------*/
+Task* Task::pInvokingTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pInvokingTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the invoking task (super-op/pipe) of this task (sub-op/pipe)           */
+/*----------------------------------------------------------------------------*/
+void Task::vInvokingTask(Task* pInvokingTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  RASSERT(pInvokingTask);
+  m_pInvokingTask = pInvokingTask;
 }
 
 /*----------------------------------------------------------------------------*/

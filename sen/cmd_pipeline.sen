@@ -27,14 +27,14 @@
   [job].assertStructure
   [job].assertOrdinary
 
-  // mutable pipelineSpec, pipeline and subpipeline in logicUnit should be null
-  PipelineSpec[] not assert
-  Pipeline[]     not assert
+  // mutable pipeSpec, pipeline and subpipeline in logicUnit should be null
+  PipeSpec[] not assert
+  Pipeline[] not assert
   SubPipe[]  not assert
   
   // immutable op, subPLineOfOp and pipelineOfOp should be null
   [op]           not assert
-  [subPipeOfOp] not assert
+  [subPipeOfOp]  not assert
   [pipelineOfOp] not assert
 
   // and so we start...
@@ -55,7 +55,7 @@
       [job].addRetired
       
       JS_SIGNALLED [job].state!
-        [session].signal
+      [session].signal
 
       [task].grabLock
         TR_RETIRE_THIS_TASK [task].transition!
@@ -95,7 +95,7 @@
   
   ErrorCode[] EC_NONE == if
     // + clean compile
-    to PipelineSpec[]
+    to PipeSpec[]
   else
     // - didnt compile
     ErrorCode[] [job].error!
@@ -123,7 +123,7 @@
   [job].error@ not if
         
     "<optimise>" [job].tagSet@ tagSet.hasName
-    PipelineSpec[].optimisable
+    PipeSpec[].optimisable
     and
     if
       "Would Optimise" .
@@ -133,7 +133,7 @@
     
     Optimiser[].new
     
-//    PipelineSpec[] Optimiser[].dissect
+//    PipeSpec[] Optimiser[].dissect
 //    Optimiser[].optimise
 //    Optimiser[].weave discard
 
@@ -144,13 +144,13 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tidy up
   
-  PipelineSpec[] if
-    PipelineSpec[].delete
+  PipeSpec[] if
+    PipeSpec[].delete
   then
   
   Dynamo[]       not assert
   Optimiser[]    not assert
-  PipelineSpec[] not assert
+  PipeSpec[] not assert
 
 
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
@@ -163,6 +163,7 @@
     "pipeline:begin" [job].entryPoint!
     
     [task].grabLock
+      [grid].knownNodes [task].acksRemaining!
       [job] job:broadcast
     [task].wait
 
@@ -182,6 +183,7 @@
     [job] job_Execute::new to pJob_Execute
 
     [task].grabLock
+      [grid].knownNodes [task].acksRemaining!
       pJob_Execute job:broadcast
     [task].wait
 
@@ -206,6 +208,7 @@
     [job] job_End::new to pJob_End
 
     [task].grabLock
+      [grid].knownNodes [task].acksRemaining!
       pJob_End job:broadcast
     [task].wait
 
@@ -235,7 +238,7 @@
     [job].addRetired
     
     JS_SIGNALLED [job].state!
-      [session].signal
+    [session].signal
       
     [task].grabLock
       TR_RETIRE_THIS_TASK [task].transition!
@@ -297,7 +300,7 @@
   //"pipeline:begin pre dynamo" [job].progress
   <cmd> Dynamo[].compile
     EC_NONE == assert
-    to PipelineSpec[]
+    to PipeSpec[]
   //"pipeline:begin post Dynamo[].compile" [job].progress
 
   Dynamo[].delete
@@ -306,7 +309,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create pipeline from spec and spawn tasks for ops
   
-  PipelineSpec[] Pipeline[].create
+  PipeSpec[] Pipeline[].create
   
   // Pipeline[].dump
   
@@ -365,11 +368,11 @@
   JP_EXECUTING [job].phase!
 
   // set task's dictionary stack from path in job
-  <path> str.toStrVec Path[].set
+  //<path> str.toStrVec Path[].set
   //[task].dump
 
   // acquire ddl lock
-  job::acquireDdlLock
+  [ddlLock]:acquireLock
   
   [job].assertStructure
 
@@ -377,21 +380,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run optional <pre_execute> word
 
-  "<pre_execute>" [job].tagSet@ tagSet.hasName if
-    "<pre_execute>"
-    [job].tagSet@ tagSet.getStr locals| sPreExe |
-    sPreExe find
-    dup not if
-      sPreExe "Unable to find pre execute word: %v" .printf
-      process::quit
-    then
-      execute
-  else
-    [args].verbose if
-      <pipelineNm> "No pre execute word for pipeline: %v" .printf
-    then
-  then
-
+  [job]:pre_execute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
@@ -400,7 +389,7 @@
    
   // SubPipe[].dump
      
-  subPipe:exe
+  subPipe:invoke
 
   nullptr to SubPipe[]
   

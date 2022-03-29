@@ -138,12 +138,11 @@
 #include "OpSpec.hpp"
 
 #include "PathIdentifier.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Pipeline.hpp"
 #include "PlannerLock.hpp"
 
 #include "Dynamo.hpp"
-#include "Optimus.hpp"
 
 #include "Procedure.hpp"
 
@@ -180,7 +179,7 @@
 #include "Stream.hpp"
 #include "StreamDefRht.hpp"
 #include "StzList.hpp"
-#include "SubPipelines.hpp"
+#include "SubPipeSpecs.hpp"
 
 #include "SP_Gid.hpp"
 #include "SP_Elapsed.hpp"
@@ -233,12 +232,10 @@
 #include "CardRegs.hpp"
 #include "RuleCtl.hpp"
 #include "Drafter.hpp"
-#include "SectionSpec.hpp"
-#include "Section.hpp"
-#include "PipeSpec.hpp"
 #include "PipeWork.hpp"
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
+#include "SubPipeWorks.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -363,10 +360,10 @@ SizeHeap gxaSizeHeap[]
   { 'G' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__G__
   { sizeof(Grid),               HT_T_TINY    ,0 FILL }, // CN_GRID
 
-  { 'H' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__H__
-  { sizeof(HashBuffer),         HT_T_LARGE   ,0 FILL }, // CN_HASHBUFFER
-  { sizeof(HashSet),            HT_T_LARGE   ,0 FILL }, // CN_HASHSET
-  { sizeof(HashMap),            HT_T_TINY    ,0 FILL }, // CN_HASHMAP
+  { 'H' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN_HASHSET
+  { sizeof(HashMap),            HT_T_LARGE  ,0 FILL }, // CN_HASHMAP
+  { sizeof(HashMapSlot),        HT_T_TINY    ,0 FILL }, // CN__H__
+  { sizeof(HashSet),            HT_T_LARGE   ,0 FILL }, // CN_HASHMAPSLOT
   { sizeof(HeapBuffer),         HT_INVALID   ,0 FILL }, // CN_HEAPBUFFER
   { sizeof(Heaps),              HT_INVALID   ,0 FILL }, // CN_HEAPMEM
 
@@ -434,8 +431,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Mutex),              HT_T_TINY    ,0 FILL }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__N__
-  { sizeof(NamedBuffer),        HT_T_LARGE   ,0 FILL }, // CN_NESTEDPIPELINESPEC
-  { 0,                          HT_INVALID   ,0 FILL }, // CN_NEXTGID
+  { sizeof(NamedBuffer),        HT_T_LARGE   ,0 FILL }, // CN_NAMEDBUFFER
   { sizeof(NextGid),            HT_INVALID   ,0 FILL }, // CN_NEXTGID
   { sizeof(NmlStr),             HT_T_MEDIUM  ,0 FILL }, // CN_NMLSTR
   { sizeof(Node),               HT_T_TINY    ,0 FILL }, // CN_NODE
@@ -455,7 +451,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OpMetrics),          HT_T_TINY    ,0 FILL }, // CN_OPMETRICS
   { sizeof(OpSpec),             HT_T_MEDIUM  ,0 FILL }, // CN_OPSPEC
   { sizeof(Optimiser),          HT_T_TINY    ,0 FILL }, // CN_OPTIMISER
-  { sizeof(Optimus),            HT_T_TINY    ,0 FILL }, // CN_OPTIMUS
   { sizeof(OtherOperand),       HT_T_TINY    ,0 FILL }, // CN_OTHEROPERAND
 
   { 'P' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__P__
@@ -467,7 +462,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Peruse),             HT_T_MEDIUM  ,0 FILL }, // CN_PERUSE
   { sizeof(Pipeline),           HT_T_TINY    ,0 FILL }, // CN_PIPELINE
   { sizeof(PipelineMetrics),    HT_T_TINY    ,0 FILL }, // CN_PIPELINEMETRICS
-  { sizeof(PipelineSpec),       HT_T_TINY    ,0 FILL }, // CN_PIPELINESPEC
   { sizeof(PipeWork),           HT_T_SMALL   ,0 FILL }, // CN_PIPEWORK
   { sizeof(PipeSpec),           HT_T_TINY    ,0 FILL }, // CN_PIPESPEC
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM, -8 FILL }, // CN_PLANDEFINITIONPARSER
@@ -536,8 +530,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Scheduler),          HT_INVALID   ,0 FILL }, // CN_SCHEDULER
   { sizeof(Schema),             HT_T_TINY    ,0 FILL }, // CN_SCHEMA
   { sizeof(SeApi),              HT_T_LARGE   ,0 FILL }, // CN_SEAPI
-  { sizeof(Section),            HT_T_SMALL   ,0 FILL }, // CN_SECTION
-  { sizeof(SectionSpec),        HT_T_TINY    ,0 FILL }, // CN_SECTIONSPEC
   { sizeof(SeDeputy),           HT_T_TINY    ,0 FILL }, // CN_SEDEPUTY
   { sizeof(SeeMe),              HT_INVALID   ,0 FILL }, // CN_SEEME
   { sizeof(SenCompiler),        HT_T_TINY    ,0 FILL }, // CN_SENCOMPILER
@@ -595,7 +587,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StzList),            HT_T_TINY    ,0 FILL }, // CN_STZLIST
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_STZVAL
   { sizeof(SubCall),            HT_T_TINY    ,0 FILL }, // CN_SUBCALL
-  { sizeof(SubPipelines),       HT_T_TINY    ,0 FILL }, // CN_SUBPIPELINES
+  { sizeof(SubPipeSpecs),       HT_T_TINY    ,0 FILL }, // CN_SUBPIPESPECS
+  { sizeof(SubPipeWorks),       HT_T_TINY    ,0 FILL }, // CN_SUBPIPEWORKS
   { sizeof(SubReturn),          HT_T_TINY    ,0 FILL }, // CN_SUBRETURN
   { sizeof(SysCall),            HT_INVALID   ,0 FILL }, // CN_SYSCALL
   { sizeof(SysMetrics),         HT_T_TINY    ,0 FILL }, // CN_SYSMETRICS

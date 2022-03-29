@@ -159,7 +159,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Pipein();
   Step::vAddSteps_Pipeline();
   Step::vAddSteps_PipelineOfOp();
-  Step::vAddSteps_PipelineSpec();
+  Step::vAddSteps_PipeSpec();
   Step::vAddSteps_PathIdentifier();
   Step::vAddSteps_PlanOperand();
   Step::vAddSteps_Pot();

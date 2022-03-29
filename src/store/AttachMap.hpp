@@ -54,6 +54,9 @@ namespace STORE
     EventHandlers m_oEventHandlers;
     Format        m_oFormat;
     Grid*         m_pGrid;
+#ifdef WITH_HASHMAP
+    HashMap*      m_pHashMap;
+#endif
     Heaps         m_xHeaps;
     InternalTables* m_pInternalTables;
     Jobs*         m_pJobs;

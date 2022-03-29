@@ -18,7 +18,7 @@ namespace STORE
   private:
     TagSet* m_p_JobTags;
   
-    PipelineSpec* m_pUnOptPipelineSpec;
+    PipeSpec* m_pUnOptPipeSpec;
   
     CardCtl* m_pCardCtl;
   
@@ -44,7 +44,7 @@ namespace STORE
 
     CardCtl* pCardCtl(void);
   
-    void vDissect(PipelineSpec* pUnOptPipelineSpec);
+    void vDissect(PipeSpec* pm_pUnOptPipeSpec);
   
     Drafter* pDrafter(void);
 
@@ -55,11 +55,11 @@ namespace STORE
     void vOptimise(void);
   
     Card_SubSet* pPaste(void);
-    void vPipelineSpec(PipelineSpec* pUnOptPlineSpec);
+    void vPipeSpec(PipeSpec* pUnOptPlineSpec);
     void vPopBoard(void);
     void vPushBoard(Board* pBoard);
  
-    void vToPipelineSpec(PipelineSpec* pPipelineSpec);
+    void vToPipeSpec(PipeSpec* pPipeSpec);
   
     Stz* szWeave(void);
 

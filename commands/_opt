@@ -15,8 +15,8 @@ load part "<tpch_dir>/part.<suffix>" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/*
-pipeline subPipeTest
+
+procedure subPipeTest
 begin
   stage stageA on origin :
       start
@@ -26,7 +26,7 @@ begin
     | sink
     | stageA
 end ;
-*/
+
 
 subPipeTest;
 

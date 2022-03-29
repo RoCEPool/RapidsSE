@@ -1,36 +1,37 @@
 /*============================================================================*/
-/* Optimus.hpp -- Optimus (pipeline plan optimizer)                           */
+/* HashMapSlot.hpp -- HashMapSlot                                             */
 /*============================================================================*/
 #pragma once
 
-#include "RootNode.hpp"
-#include "GraphNav.hpp"
-#include "QueryNode.hpp"
-
-namespace STORE
+namespace BASE
 {
-  class Optimus : public Object
-  {  
-    friend class STORE::PipelineSpec;
+  class HashMap;
+  class HashMapSlot : public Object
+  {
+  friend HashMap;
 
   private:
-    Job*          m_p_PipelineJob;       // job this dynamo is associated with
-  
+    Object* m_pKeyObject;
+    Object* m_pValObject;
+
+    HashMapSlot* m_pNext;
+
     // must be last
     Footer m_xFooter;
 
   public:
     void* operator new(size_t);
-    void  operator delete(void*);
-  
-    Optimus(Job* p_PipelineJob);
-   ~Optimus(void) noexcept(false);
+    void  operator delete(void* pHashMapSlotAddress);
+
+    HashMapSlot(Object* pKey, Object* pValue);
+    ~HashMapSlot(void) noexcept(false);
 
   private:
+
     Footer* aFooter(void);
   };
 
-  Optimus* _pOptimus(void* aAddr);
+  HashMapSlot* _pHashMapSlot(void* aAddr);
 }
 
 /*============================================================================*/

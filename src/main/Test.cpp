@@ -104,7 +104,175 @@ void vTest1(void)
 /*----------------------------------------------------------------------------*/
 void vTest2(void)
 {
+  //Map size 128
+//  HashMap* pTestMap = new HashMap();
 
+//  //Insert single entry per chain
+//  pTestMap->vInsertAtFront(10,20);
+//  pTestMap->vInsertAtFront(11,30);
+//  pTestMap->vInsertAtFront(5,10);
+//
+//  //Check if exists
+//  ASSERT(1 == pTestMap->bExists(10));
+//  ASSERT(1 == pTestMap->bExists(11));
+//  ASSERT(1 == pTestMap->bExists(5));
+//
+//  //Check a non-existent entry
+//  ASSERT(0 == pTestMap->bExists(9));
+//
+//  //Get existing entry
+//
+//  //Insert multiple entries in same chain
+//  pTestMap->vInsertAtFront(138, 15);
+//  pTestMap->vInsertAtFront(266, 20);
+//  ASSERT(1 == pTestMap->bExists(10));
+//  ASSERT(1 == pTestMap->bExists(138));
+//  ASSERT(1 == pTestMap->bExists(266));
+//
+//  //Update existing entry
+//
+//  //Delete non existent entry
+//  pTestMap->vDeleteKey(4);
+//  ASSERT(0 == pTestMap->bExists(5));
+//
+//  //Delete entry (1 chain depth)
+//  pTestMap->vDeleteKey(5);
+//  ASSERT(0 == pTestMap->bExists(5));
+//
+//  //Insert entry in recently emptied chain
+//  pTestMap->vInsertAtFront(50,10);
+//  ASSERT(1 == pTestMap->bExists(50));
+//  pTestMap->vDeleteKey(50);
+//  ASSERT(0 == pTestMap->bExists(50));
+//
+//  pTestMap->vInsertAtFront(50,6);
+//  ASSERT(1 == pTestMap->bExists(50));
+//
+//  //Delete entry (multiple chain depth)
+//  ASSERT(1 == pTestMap->bExists(138));
+//  pTestMap->vDeleteKey(138);
+//  ASSERT(0 == pTestMap->bExists(138));
+//
+//  ASSERT(1 == pTestMap->bExists(266));
+//  pTestMap->vDeleteKey(266);
+//  ASSERT(0 == pTestMap->bExists(266));
+
+// //Size 10,000
+//  HashMap* pTestMap = new HashMap();
+//  //Insert single entry per chain
+//  pTestMap->vInsertAtFront(1010,20);
+//  pTestMap->vInsertAtFront(100011,30);
+//  pTestMap->vInsertAtFront(1,10);
+//
+//  //Check if exists
+//  ASSERT(1 == pTestMap->bExists(1010));
+//  ASSERT(1 == pTestMap->bExists(100011));
+//  ASSERT(1 == pTestMap->bExists(1));
+//
+//  //Check a non-existent entry
+//  ASSERT(0 == pTestMap->bExists(1009));
+//
+//  //Check value at key
+//  ASSERT(20 == pTestMap->iValueAt(1010));
+//  ASSERT(30 == pTestMap->iValueAt(100011));
+//  ASSERT(10 == pTestMap->iValueAt(1));
+//
+//  //Update existing key's value
+//  pTestMap->vInsertAtFront(100011,40);
+//  ASSERT(40 == pTestMap->iValueAt(100011));
+//
+//  //Delete unknown key when NoOfEntries > 0
+//
+//  //Delete unknown key when NoOfEntries == 0
+
+  //Key and Value are Object*
+//  HashMap* pTestMap = new HashMap();
+//
+//  int a = 10, b = 5, c = 3;
+//
+//  /*----------------------------------------------------------------------------*/
+//  //Insert and delete object
+//  //a->null
+//  //Delete a
+//  /*----------------------------------------------------------------------------*/
+//
+//  pTestMap->vInsertAtFront((Object*)&a, (Object*)&a);
+//
+//  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
+//
+//  pTestMap->vDeleteKey((Object*)&a);
+//
+//  ASSERT(0 == pTestMap->bExists((Object*)&a));
+//
+//  /*----------------------------------------------------------------------------*/
+//  //Delete non-existent key
+//  //
+//  //
+//  /*----------------------------------------------------------------------------*/
+//
+//  pTestMap->vDeleteKey((Object*)&b);
+//
+//  ASSERT(0 == pTestMap->bExists((Object*)&b));
+//
+//  /*----------------------------------------------------------------------------*/
+//  //Insert multiple values and delete first in chain
+//  //c->b->a->null
+//  //Delete c
+//  /*----------------------------------------------------------------------------*/
+//
+//  pTestMap->vInsertAtFront((Object*)&a, (Object*)&a);
+//  pTestMap->vInsertAtFront((Object*)&b, (Object*)&b);
+//  pTestMap->vInsertAtFront((Object*)&c, (Object*)&c);
+//
+//  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
+//  ASSERT((Object*)&b == pTestMap->pValueAt((Object*)&b));
+//  ASSERT((Object*)&c == pTestMap->pValueAt((Object*)&c));
+//
+//  pTestMap->vDeleteKey((Object*)&c);
+//
+//  ASSERT(1 == pTestMap->bExists((Object*)&a));
+//  ASSERT(1 == pTestMap->bExists((Object*)&b));
+//  ASSERT(0 == pTestMap->bExists((Object*)&c));
+//
+//  /*----------------------------------------------------------------------------*/
+//  //Insert multiple values and delete middle of chain
+//  //c->b->a->null
+//  //Delete b
+//  /*----------------------------------------------------------------------------*/
+//
+//  pTestMap->vInsertAtFront((Object*)&c, (Object*)&c);
+//
+//  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
+//  ASSERT((Object*)&b == pTestMap->pValueAt((Object*)&b));
+//  ASSERT((Object*)&c == pTestMap->pValueAt((Object*)&c));
+//
+//  pTestMap->vDeleteKey((Object*)&b);
+//
+//  ASSERT(1 == pTestMap->bExists((Object*)&a));
+//  ASSERT(0 == pTestMap->bExists((Object*)&b));
+//  ASSERT(1 == pTestMap->bExists((Object*)&c));
+//
+//  /*----------------------------------------------------------------------------*/
+//  //Insert multiple values and delete end of chain
+//  //b->c->a->null
+//  //Delete a
+//  /*----------------------------------------------------------------------------*/
+//
+//  pTestMap->vInsertAtFront((Object*)&b, (Object*)&b);
+//
+//  ASSERT((Object*)&a == pTestMap->pValueAt((Object*)&a));
+//  ASSERT((Object*)&b == pTestMap->pValueAt((Object*)&b));
+//  ASSERT((Object*)&c == pTestMap->pValueAt((Object*)&c));
+//
+//  pTestMap->vDeleteKey((Object*)&a);
+//
+//  ASSERT(0 == pTestMap->bExists((Object*)&a));
+//  ASSERT(1 == pTestMap->bExists((Object*)&b));
+//  ASSERT(1 == pTestMap->bExists((Object*)&c));
+//
+//  pTestMap->vAnalysis();
+//
+//  delete pTestMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,24 +333,26 @@ void vTest3(void)
 /*----------------------------------------------------------------------------*/
 void vTest4(void)
 {
+  /*
   vTrace("vTest4\n"_Stz);
 
   HashMap* pHashMap = new HashMap(false,13999,8);
-  
+
   //s32 sKey("ALPHA"_Stz);
   s32 sKey;
-  
+
   i8 iKey = 0;
   for (i8 nRepeats = 0; nRepeats < 10; nRepeats++) {
     for (i8 nTimes = 0; nTimes < 1000000; nTimes++) {
       sKey.vSprint("%02lld"_Stz,iKey);
-      
+
       pHashMap->vInsert((byte*)sKey.azChar(),sKey.nLength(),iKey,false);
       iKey++;
     }
     pHashMap->vAnalysis(false);
   }
-  
+  */
+
 //  HashCursor xCursor(pHashMap);
 //
 //  while (xCursor.bIterate()) {
@@ -214,7 +384,8 @@ void vTest4(void)
   
   //pHashMap->vAnalysis(false);
   
-  delete pHashMap;
+//  delete pHashMap;
+//  AM::pHashMap()->vAnalysis();
 }
 
 /*----------------------------------------------------------------------------*/

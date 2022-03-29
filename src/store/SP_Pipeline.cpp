@@ -57,7 +57,7 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
     
   vCatf("Pipeline %s %p "
         "on Grid %s N%lldP%lld "
-        "using PipelineSpec %p"_Stz
+        "using PipeSpec %p"_Stz
         
         ,pPipeline->szPipelineNm()
         ,pPipeline
@@ -66,15 +66,15 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
         ,pGrid->nKnownNodes()
         ,AM::PTNMAP::nPtnsPerNode()
         
-        ,pPipeline->pPipelineSpec()
+        ,pPipeline->pPipeSpec()
         );
   
   if (bDescend) {
     
-    PipeWork* pFormWork = pPipeline->pPipeWork();
+    PipeWork* pPipeWork = pPipeline->pPipeWork();
     
-    for (i8 i_Stage = 0; i_Stage < pFormWork->nItems(); i_Stage++ ) {
-      Stage* pStage = pFormWork->pGet(i_Stage);
+    for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++ ) {
+      Stage* pStage = pPipeWork->pGet(i_Stage);
       SP_Stage spStage(pStage,true);
       vCatf("%s"_Stz,spStage.sz());
     }

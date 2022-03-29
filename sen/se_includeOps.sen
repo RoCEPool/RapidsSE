@@ -6,14 +6,14 @@
 
 assert::stack_0
 
-  "op__errors.sen"          include
-  "op__defHandlers.sen"     include
-  "op__EOCommon.sen"        include
-  "op__CompilerCommon.sen"  include
-  "op__stats.sen"           include
-  "op__common.sen"          include
-  "reg__common.sen"         include
-  "OP_failed.sen"           include
+  "op__errors.sen"              include
+  "op__defHandlers.sen"         include
+  "op__EOCommon.sen"            include
+  "op__CompilerCommon.sen"      include
+  "op__stats.sen"               include
+  "op__common.sen"              include
+  "reg__common.sen"             include
+  "OP_failed.sen"               include
   
 "a" .verbose
 
@@ -34,17 +34,16 @@ assert::stack_0
   "OP_bloat.sen"                include
   "OP_bufferGen.sen"            include
   "OP_bktGet.sen"               include
-  "OP_bktGet0.sen"               include
+  "OP_bktGet0.sen"              include
   "OP_bktRecv.sen"              include
   //"OP_bktSend.sen"            include
 
   "OP_bucketGet.sen"            include
-  "OP_bktSend.sen"           include
+  "OP_bktSend.sen"              include
   "OP_bucketSend1.sen"          include
 
 "c" .verbose
 
-  "OP_call.sen"                 include
   "OP_callProc.sen"             include
   "OP_catFile.sen"              include
   "OP_changeFolder.sen"         include
@@ -94,7 +93,6 @@ assert::stack_0
   "OP_emptyLoop.sen"            include
   "OP_etcTest.sen"              include
   "OP_exemplar.sen"             include
-  "OP_exeSubPipe.sen"           include
   "OP_explainPlan.sen"          include
   "OP_exprPushdown.sen"         include
   "OP_exprValidate.sen"         include
@@ -116,8 +114,8 @@ assert::stack_0
  
 "h" .verbose
 
-  "OP_hash.sen"                include
-  "OP_hashRight.sen"           include
+  "OP_hash.sen"                 include
+  "OP_hashRight.sen"            include
 
 "i" .verbose
 
@@ -129,6 +127,7 @@ assert::stack_0
   "OP_inflateDynamic.sen"       include
   "OP_inflateRows.sen"          include
   "OP_insert.sen"               include
+  "OP_invoke.sen"               include
 
 "j" .verbose
   "OP_jobExit.sen"              include
@@ -300,7 +299,6 @@ assert::stack_0
   "OP_wrFile.sen"               include
 
 "x" .verbose
-
 
 "y" .verbose
 

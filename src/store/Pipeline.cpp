@@ -13,7 +13,7 @@
 #include "Stage.hpp"
 #include "PipeWork.hpp"
 #include "Pipeline.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "StageSpec.hpp"
 
 #include "SP_Pipeline.hpp"
@@ -31,20 +31,20 @@ __aFooterFunction(Pipeline)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
+Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 iOriginNodeNo)
 : Object(CN_PIPELINE)
 , LifeGuard_t<Pipeline>(this,CN_PIPELINE)
 , m_okDebugLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_sPipelineNm   = pPipelineSpec->szPipelineNm();
+  m_sPipelineNm   = pPipeSpec->szPipelineNm();
   
   m_pPipeWork     = nullptr;
   
   m_pPipelineJob  = pPipelineJob;
-  m_pPipelineSpec = pPipelineSpec;
-  m_i_Origin      = i_Origin;
+  m_pPipeSpec     = pPipeSpec;
+  m_iOriginNodeNo = iOriginNodeNo;
 
   m_bEarlyExit    = false;
   m_bErrored      = false;
@@ -60,7 +60,7 @@ Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
 
   _checkInitialised_(CN_PIPELINE);
   
-  m_pPipeWork = new PipeWork(this,pPipelineSpec->pPipeWorkSpec());
+  m_pPipeWork = new PipeWork(this,pPipeSpec);
   //vCreatePipework();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
@@ -76,7 +76,7 @@ Pipeline::~Pipeline(void) noexcept(false)
   m_pPipeWork->vGuardedDelete(CN_PIPEWORK,&m_pPipeWork,
                               CN_PIPELINE,this,(Stz*)__func__);
   
-  m_pPipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&m_pPipelineSpec,
+  m_pPipeSpec->vGuardedDelete(CN_PIPESPEC,&m_pPipeSpec,
                                   CN_PIPELINE,this,(Stz*)__func__);
 }
 
@@ -241,11 +241,11 @@ void Pipeline::vGrabDebugLock(void)
 /*----------------------------------------------------------------------------*/
 /* get the originating node                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Pipeline::i_Origin(void)
+i8 Pipeline::iOriginNodeNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_i_Origin;
+  return m_iOriginNodeNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -315,11 +315,11 @@ Stz* Pipeline::szPipelineNm(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeline spec                                                          */
 /*----------------------------------------------------------------------------*/
-PipelineSpec* Pipeline::pPipelineSpec(void)
+PipeSpec* Pipeline::pPipeSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_pPipelineSpec;
+  return m_pPipeSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -360,6 +360,17 @@ bool Pipeline::bPulsed(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   return m_bPulsed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn operaator jobs for the pipeline                                      */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vSetInvoker(Task* pInvoker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  m_pPipeWork->vSetInvoker(pInvoker);
+
 }
 
 /*----------------------------------------------------------------------------*/

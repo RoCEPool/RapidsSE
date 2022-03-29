@@ -5,7 +5,7 @@
 
 #include "LifeGuard_t.hpp"
 
-namespace STORE { class PipeWork; class Stage; class PipelineSpec; }
+namespace STORE { class PipeWork; class Stage; class PipeSpec; }
 
 namespace STORE
 {
@@ -27,9 +27,9 @@ namespace STORE
     Job* m_pPipelineJob;  // which job
   
     // -- refers to
-    PipelineSpec* m_pPipelineSpec; // specification of this pipeline
+    PipeSpec* m_pPipeSpec; // specification of this pipeline
   
-    i8   m_i_Origin;    // originating node
+    i8   m_iOriginNodeNo;    // originating node
   
 
   
@@ -55,7 +55,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin);
+    Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 iOriginNodeNo);
    ~Pipeline(void) noexcept(false);
   
     void vAddAccum(i8 i_Accum, i8 iValue);
@@ -71,18 +71,19 @@ namespace STORE
     PipeWork* pPipeWork(void);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
-    i8   i_Origin(void);
+    i8   iOriginNodeNo(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
     Op*  pOpToPulse(void);
     void vOpToPulse(Op* pOpToPulse);
     Job* pPipelineJob(void);
     Stz* szPipelineNm(void);
-    PipelineSpec* pPipelineSpec(void);
+    PipeSpec* pPipeSpec(void);
     bool bPulsed(void);
     void vPulsed(bool bPulsed);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
+    void vSetInvoker(Task* pInvoker);
     void vSetupJob(void);
     void vSpawnOpTasks(void);
     Stage* pStage0(void);

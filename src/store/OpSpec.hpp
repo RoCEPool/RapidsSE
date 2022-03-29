@@ -9,7 +9,7 @@
 
 #include "LifeGuard_t.hpp"
 
-namespace STORE { class PipelineSpec; class StageSpec; }
+namespace STORE { class PipeSpec; class StageSpec; }
 
 namespace STORE
 {

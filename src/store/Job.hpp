@@ -58,7 +58,7 @@ namespace STORE
   
     // -- postage
     bool m_bWasReceived;   // was job received over a socket?          POST_RECV
-    i8   m_i_Participant;  // participant node no (FromNodeNo?)
+    i8   m_iParticipantNodeNo;  // participant node no (FromNodeNo?)
   
     // -- state
     eJS m_eJobState;  // current state: JS_ACTIVE, _LOCKED, ...
@@ -70,7 +70,6 @@ namespace STORE
   
     // -- timer
     Timer   m_oTimer;        // timer (on origin only)
-    Decider m_o2pcDecider;   // acks remaining for coordinating 2pc job
     
     eEC     m_eError_job;    // error when starting job
                              // DOUBLE CHECK THIS BELONGS HERE
@@ -125,11 +124,6 @@ namespace STORE
   
     static void vPostRecv(void* aJob);
     static void vPrintJobNode(SkipNode* pNode, int i_Level);
-
-    i8   i2pcDeciderOriginal(void);
-    i8   i2pcDeciderRmg_printOnlyValue(void);
-    void v2pcDeciderRmg(i8 nAcks);
-    bool b2pcDeciderDec(i8& nAcksWereRemaining);
   
     i8   nActiveOps(void);
   
@@ -175,10 +169,10 @@ namespace STORE
 
     Stz* szNodeNm(void);
   
-    i8   iOriginatorNode(void);
+    i8   iOriginatorNodeNo(void);
   
-    i8   iParticipantNode(void);
-    void vParticipantNode(i8 i_Node);
+    i8   iParticipantNodeNo(void);
+    void vParticipantNodeNo(i8 i_Node);
     Pipeline* pPipelineX(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);

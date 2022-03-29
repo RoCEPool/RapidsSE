@@ -254,11 +254,8 @@ extern d8 C_D8_MID;
 
 #include "FreeItem.hpp"
 
-#include "HashInsert.hpp"
-#include "HashEntry.hpp"
-#include "HashBuffer.hpp"
+#include "HashMapSlot.hpp"
 #include "HashMap.hpp"
-#include "HashCursor.hpp"
 
 #include "LatticeNL_t.hpp"
 #include "Link_t.hpp"

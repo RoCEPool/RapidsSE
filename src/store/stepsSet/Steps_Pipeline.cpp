@@ -16,7 +16,7 @@
 #include "Stage.hpp"
 #include "PipeWork.hpp"
 #include "Pipeline.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -24,7 +24,7 @@
 #include "Marker.hpp"
 
 #include "SP_Pipeline.hpp"
-#include "SP_PipelineSpec.hpp"
+#include "SP_PipeSpec.hpp"
 
 #include "Dynamo.hpp"
 #include "TagConstants.h"
@@ -110,20 +110,20 @@ void Step::vPipelineCreate(void)
 
   // get pipeline spec
   
-  PipelineSpec* pPipelineSpec = _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
+  PipeSpec* pPipeSpec = _pPipeSpec(m_pDataStack->pPopPtr(__func__));
   
   // create subpipeline
   
-  Pipeline* pSubPipeline =
-    new Pipeline(m_pJob,pPipelineSpec,m_pJob->iOriginatorNode());
+  Pipeline* pPipeline =
+    new Pipeline(m_pJob,pPipeSpec,m_pJob->iOriginatorNodeNo());
   
-  m_pLogicUnit->m_xpPipeline = pSubPipeline;
+  m_pLogicUnit->m_xpPipeline = pPipeline;
     
   // dump pipeline
   
   if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
     if (iThisNode == 0) {
-      SP_Pipeline spPipeline(pSubPipeline,true);
+      SP_Pipeline spPipeline(pPipeline,true);
       vTraceM("%s\n"_Stz,spPipeline.sz());
       vDebugPoint();
     }
@@ -194,7 +194,7 @@ void Step::vPipelineEnqueueStart(void)
 
   Stage*    pStage0   = pFormWork->pGet(0);
 
-  if (pStage0->bStartPipeline()) {
+  if (pStage0->bEnqueueInvoke()) {
     
     m_pDataStack->vPushInt(true);
   }

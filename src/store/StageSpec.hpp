@@ -24,7 +24,7 @@ namespace STORE
   private:
     s32  m_sStageNm;    // stage name
 
-    PipeSpec* m_pPipeWorkSpec; // which formwork spec
+    PipeSpec* m_pPipeSpec; // which formwork spec
 
     eYG  m_eStageTopology;  // stage topoplogy
     eYS  m_eStreamTopology; // stream topoplogy
@@ -43,7 +43,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StageSpec(Stz* szStageNm, PipeSpec* pPipeWorkSpec);
+    StageSpec(Stz* szStageNm, PipeSpec* pPipeSpec);
    ~StageSpec(void) noexcept(false);
    
     static eYX eCrossTopoCalc(StageSpec* pFromStageSpec,
@@ -66,7 +66,7 @@ namespace STORE
   
     eYF  eParcelForward(void);
     void vParcelForward(eYF eParcelForward);
-    PipelineSpec* pPipelineSpec(void);
+    PipeSpec* pPipeSpec(void);
   
     void vSpecificNode(i8 i_SpecificNode);
     i8   iSpecificNode(void);

@@ -1,42 +1,35 @@
 /*============================================================================*/
-/* OP_call.sen -- Operator Call Pipeline                                      */
+/* OP_invoke.sen -- Invoke Sub-Pipeline operator                              */
 /*============================================================================*/
 
-" OP_call.sen" .verbose
-
-// ... to be coded
+" OP_invoke.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: call_StartMarker \handler
+: invoke_StartMarker \handler
 
-  PipeIn[].pipeOut
-  true 
+  0 locals| nAcks |
+
+  // <subPipeNm> [subPipeOfOp].find to SubPipe[]
+  
+  subPipe:invoke
+  
+  nullptr to SubPipe[]
+
+  ZK_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_CALLPIPELINE ...                                            */
+/* invoke a sub-pipeline                                                      */
 /*----------------------------------------------------------------------------*/
-: call_CallPipeline \handler
-
-  "call_CallPipeline" .
-
-  PipeIn[].pipeOut
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute for call pipeline req                      (on node where spawned) */
-/*----------------------------------------------------------------------------*/
- : call_op \operator
+ : invoke_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: call_CallPipeline ZK_I_CALLPIPELINE [op].handler!
-  find: call_StartMarker  ZK_M_START  [op].handler!
+  find: invoke_StartMarker  ZK_M_START  [op].handler!
 
   op__loop
 
@@ -50,12 +43,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: call :: call <nested> ;
+cmdSyntax: invoke :: invoke <subPipeNm> ;
 
-: call_cmdTags _cmdTags tagCopy: op_tags
+: invoke_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "call_op"
+    <opEntry> = "invoke_op"
   }
 ;
 

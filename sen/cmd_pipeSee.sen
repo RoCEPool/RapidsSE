@@ -8,11 +8,46 @@
 /* execute on local node                                                      */
 /*----------------------------------------------------------------------------*/
 : pipeSee:entry
-
+      
   "PIPESEE: " .
+  // <cmd> .
+  
+  
+  tokenVec::new locals| pTknVec |
 
-  [job].tagSet@ tagSet.asStr .
+  <cmd> pTknVec tokenVec.tokenise
+  //pTknVec tokenVec.dump
+  
+  0 pTknVec tokenVec.removeToken
+  
+  pTknVec tokenVec.toString locals| sPipelineStmt |
+  
+  pTknVec tokenVec::delete
+  
+  //sPipelineStmt .
+  
+  
+  Dynamo[].new
 
+  sPipelineStmt Dynamo[].compile to ErrorCode[]
+  
+  ErrorCode[] EC_NONE == if
+    // + clean compile
+    
+    to PipeSpec[]
+    PipeSpec[].dump
+    
+    PipeSpec[] Pipeline[].create
+    Pipeline[].dump
+    
+    PipeSpec[].delete
+  else
+    ErrorCode[] "Dynamo error %v" .printf
+  then
+  
+  Dynamo[].delete
+
+  "retiring" .
   [cmd]:retire
 ;
 

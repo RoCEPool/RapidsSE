@@ -8,7 +8,7 @@
 
 
 namespace STORE { class Dynamo;
-                  class StageSpec; class OpSpec; class SubPipelines; }
+                  class StageSpec; class OpSpec; class SubPipeSpecs; }
 
 namespace STORE
 {
@@ -23,9 +23,7 @@ namespace STORE
   
     s32  m_sPipelineNm;    // pipeline name
     
-    PipelineSpec* m_pPipelineSpec; // which pipeline spec
-
-    SubPipelines* m_pSubPipelines;
+    SubPipeSpecs* m_pSubPipeSpecs;
   
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
@@ -39,8 +37,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    PipeSpec(Scanner* p_Scanner, TagSet* p_JobTags,
-                 PipelineSpec* pPipelineSpec);
+    PipeSpec(Scanner* p_Scanner, TagSet* p_JobTags);
    ~PipeSpec(void) noexcept(false);
   
     bool bCompile(void);
@@ -49,8 +46,9 @@ namespace STORE
     StageSpec* pFindStageSpec(Stz* szFindNm);
     TagSet* pJobTags(void);
     Stz* szPipelineNm(void);
+    i8 nStages(void);
     StageSpec* pStageSpec(i8 i_Stage);
-    SubPipelines* pSubPipelines(void);
+    SubPipeSpecs* pSubPipeSpecs(void);
 
     Footer* aFooter(void);
   

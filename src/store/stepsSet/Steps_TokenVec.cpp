@@ -14,11 +14,13 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_TokenVec(void)
 {
-  vAddStep("tokenVec::delete"_Stz,  &Step::vTokenVecDelete);
-  vAddStep("tokenVec::new"_Stz,     &Step::vTokenVecNew);
+  vAddStep("tokenVec::delete"_Stz,     &Step::vTokenVecDelete);
+  vAddStep("tokenVec::new"_Stz,        &Step::vTokenVecNew);
   
-  vAddStep("tokenVec.dump"_Stz,     &Step::vTokenVecDump);
-  vAddStep("tokenVec.tokenise"_Stz, &Step::vTokenVecTokenise);
+  vAddStep("tokenVec.dump"_Stz,        &Step::vTokenVecDump);
+  vAddStep("tokenVec.removeToken"_Stz, &Step::vTokenVecRemoveToken);
+  vAddStep("tokenVec.tokenise"_Stz,    &Step::vTokenVecTokenise);
+  vAddStep("tokenVec.toString"_Stz,    &Step::vTokenVecToString);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,6 +66,22 @@ void Step::vTokenVecNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* tokenVec::removeToken -- remove token                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTokenVecRemoveToken(void)
+{
+  ENTRY();
+
+  TokenVec* pTknVec = _pTokenVec(m_pDataStack->pPopPtr(__func__));
+
+  i8 i_Tkn = m_pDataStack->iPopInt(__func__);
+
+  pTknVec->vRemoveToken(i_Tkn);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* tokenVec::tokenise -- tokenise given string                                */
 /*----------------------------------------------------------------------------*/
 void Step::vTokenVecTokenise(void)
@@ -76,6 +94,24 @@ void Step::vTokenVecTokenise(void)
   m_pDataStack->vPopStr(sString,__func__);
   
   pTknVec->vTokeniseSen(sString);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tokenVec.toString -- convert tokenVec to string                            */
+/*----------------------------------------------------------------------------*/
+void Step::vTokenVecToString(void)
+{
+  ENTRY();
+
+  TokenVec* pTknVec = _pTokenVec(m_pDataStack->pPopPtr(__func__));
+  
+  s48K sString;
+  pTknVec->vToTknString(sString);
+  
+  m_pDataStack->vPushStr(sString);
+  
 
   EXIT();
 }

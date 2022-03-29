@@ -1,49 +1,45 @@
 /*============================================================================*/
-/* Optimus.cpp -- Optimus (pipeline plan optimizer)                           */
+/* SubPipeSpecs.cpp -- List of Sub-Pipeline Specifications                    */
 /*============================================================================*/
 
 #include "BASE.h"
+#include "SubPipeSpecs.hpp"
 
-#include "PipelineSpec.hpp"
-#include "Optimus.hpp"
-#include "Job.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Optimus,CN_OPTIMUS)
-__aNewFunction(Optimus,CN_OPTIMUS)
-__vDeleteFunction(Optimus,CN_OPTIMUS)
-__aFooterFunction(Optimus)
+__pCastFunction(STORE, SubPipeSpecs, CN_SUBPIPESPECS)
+__aNewFunction(SubPipeSpecs, CN_SUBPIPESPECS)
+__vDeleteFunction(SubPipeSpecs, CN_SUBPIPESPECS)
+__aFooterFunction(SubPipeSpecs)
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Optimus::Optimus(Job* p_PipelineJob)
-: Object(CN_OPTIMUS)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMUS,_FOOTER_);
+SubPipeSpecs::SubPipeSpecs(void)
     
-  m_p_PipelineJob = p_PipelineJob;
+: ListNL_t<PipeSpec>(CN_SUBPIPESPECS)
 
-  _checkInitialised_(CN_OPTIMUS);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMUS,_FOOTER_);
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPESPECS, _FOOTER_);
+
+
+  _checkInitialised_(CN_SUBPIPESPECS);
+
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPESPECS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Optimus::~Optimus(void) noexcept(false)
+SubPipeSpecs::~SubPipeSpecs(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMUS,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPESPECS, _FOOTER_);
 
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*============================================================================*/
 /* end                                                                        */

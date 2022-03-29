@@ -36,9 +36,6 @@
   pAnsweredNode "<ansNode> = %v " str.format
   iConnNo "<connectionNo> = %v" str.format str.cat
 
-  // dedicated demon ?
-  false
-
   // receiver demon pipeline
   iConnNo recvDemonPipeline
 

@@ -16,7 +16,7 @@
 #include "Stage.hpp"
 #include "PipeWork.hpp"
 #include "Pipeline.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -24,7 +24,7 @@
 #include "Marker.hpp"
 
 #include "SP_Pipeline.hpp"
-#include "SP_PipelineSpec.hpp"
+#include "SP_PipeSpec.hpp"
 
 #include "Dynamo.hpp"
 #include "TagConstants.h"
@@ -45,7 +45,7 @@ void Step::vAddSteps_SubPipe(void)
   vAddStep("SubPipe[].dump"_Stz,           &Step::vSubPipeDump);
   vAddStep("SubPipe[].earlyExit@"_Stz,     &Step::vSubPipeEarlyExitFetch);
   vAddStep("SubPipe[].earlyExit!"_Stz,     &Step::vSubPipeEarlyExitStore);
-  vAddStep("SubPipe[].enqueueStart?"_Stz,  &Step::vSubPipeEnqueueStart);
+  vAddStep("SubPipe[].enqueueInvoke?"_Stz,  &Step::vSubPipeEnqueueInvoke);
   vAddStep("SubPipe[].errored@"_Stz,       &Step::vSubPipeErroredFetch);
   vAddStep("SubPipe[].errored!"_Stz,       &Step::vSubPipeErroredStore);
   vAddStep("SubPipe[].getAccum"_Stz,       &Step::vSubPipeGetAccum);
@@ -54,6 +54,7 @@ void Step::vAddSteps_SubPipe(void)
   vAddStep("SubPipe[].opsOnNode@"_Stz,     &Step::vSubPipeOpsOnNodeFetch);
   vAddStep("SubPipe[].pulsed@"_Stz,        &Step::vSubPipePulsedFetch);
   vAddStep("SubPipe[].pulsed!"_Stz,        &Step::vSubPipePulsedStore);
+  vAddStep("SubPipe[].setInvoker"_Stz,     &Step::vSubPipeSetInvoker);
   vAddStep("SubPipe[].spawnOpTasks"_Stz,   &Step::vSubPipeSpawnOpTasks);
 }
 
@@ -110,12 +111,12 @@ void Step::vSubPipeCreate(void)
 
   // get pipeline spec
   
-  PipelineSpec* pPipelineSpec = _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
+  PipeSpec* pPipeSpec = _pPipeSpec(m_pDataStack->pPopPtr(__func__));
   
   // create subpipeline
   
   Pipeline* pSubPipeline =
-    new Pipeline(m_pJob,pPipelineSpec,m_pJob->iOriginatorNode());
+    new Pipeline(m_pJob,pPipeSpec,m_pJob->iOriginatorNodeNo());
   
   m_pLogicUnit->m_xpSubPipe = pSubPipeline;
     
@@ -184,9 +185,9 @@ void Step::vSubPipeEarlyExitStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* SubPipe[].enqueueStart? -- test for issuing a start marker                 */
+/* SubPipe[].enqueueInvoke? -- test for enquing an invoke marker              */
 /*----------------------------------------------------------------------------*/
-void Step::vSubPipeEnqueueStart(void)
+void Step::vSubPipeEnqueueInvoke(void)
 {
   ENTRY();
   
@@ -194,8 +195,7 @@ void Step::vSubPipeEnqueueStart(void)
 
   Stage*    pStage0   = pFormWork->pGet(0);
 
-  if (pStage0->bStartPipeline()) {
-    
+  if (pStage0->bEnqueueInvoke()) {
     m_pDataStack->vPushInt(true);
   }
   else {
@@ -338,6 +338,20 @@ void Step::vSubPipeSet(void)
   m_pLogicUnit->m_xpSubPipe =
     _pPipeline(m_pDataStack->pPopPtr(__func__));
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* SubPipe[].setInvoker -- set invoker for all tasks in sub-pipeline          */
+/*----------------------------------------------------------------------------*/
+void Step::vSubPipeSetInvoker(void)
+{
+  ENTRY();
+
+  Task* pInvoker = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  m_pLogicUnit->m_xpSubPipe->vSetInvoker(pInvoker);
+  
   EXIT();
 }
 

@@ -42,7 +42,7 @@ void Step::vJob_BegunNew(void)
                            );
   
   pJobBegun->m_tJobId = pDistJob->tJobId();
-  pJobBegun->vParticipantNode(AM::pGrid()->iThisNodeNo());
+  pJobBegun->vParticipantNodeNo(AM::pGrid()->iThisNodeNo());
   pJobBegun->vJobKind(JK_GENERIC);
   
   TagSet* pJobBegunTags = pJobBegun->pJobTags();
@@ -82,7 +82,7 @@ void Step::vJob_CancelNew(void)
                             );
   
   pJobCancel->m_tJobId = pDistJob->tJobId();
-  pJobCancel->vParticipantNode(AM::pGrid()->iThisNodeNo());
+  pJobCancel->vParticipantNodeNo(AM::pGrid()->iThisNodeNo());
   pJobCancel->vJobKind(JK_GENERIC);
 
   TagSet* pJobCancelTags = pJobCancel->pJobTags();
@@ -122,7 +122,7 @@ void Step::vJob_CancelledNew(void)
                                );
   
   pJobCancelled->m_tJobId = pDistJob->tJobId();
-  pJobCancelled->vParticipantNode(AM::pGrid()->iThisNodeNo());
+  pJobCancelled->vParticipantNodeNo(AM::pGrid()->iThisNodeNo());
   pJobCancelled->vJobKind(JK_GENERIC);
   
   TagSet* pJobCancelledTags = pJobCancelled->pJobTags();
@@ -164,7 +164,7 @@ void Step::vJob_EndNew(void)
                          );
   
   pJobEnd->m_tJobId = pDistJob->tJobId();
-  pJobEnd->vParticipantNode(AM::pGrid()->iThisNodeNo());
+  pJobEnd->vParticipantNodeNo(AM::pGrid()->iThisNodeNo());
   pJobEnd->vJobKind(JK_GENERIC);
     
   TagSet* pJobEndTags = pJobEnd->pJobTags();
@@ -205,7 +205,7 @@ void Step::vJob_EndedNew(void)
                            );
   
   pJobEnded->m_tJobId = pDistJob->tJobId();
-  pJobEnded->vParticipantNode(AM::pGrid()->iThisNodeNo());
+  pJobEnded->vParticipantNodeNo(AM::pGrid()->iThisNodeNo());
   pJobEnded->vJobKind(JK_GENERIC);
   
   
@@ -247,7 +247,7 @@ void Step::vJob_ExecuteNew(void)
                              );
   
   pJobExecute->m_tJobId = pDistJob->tJobId();
-  pJobExecute->vParticipantNode(AM::pGrid()->iThisNodeNo());
+  pJobExecute->vParticipantNodeNo(AM::pGrid()->iThisNodeNo());
   pJobExecute->vJobKind(JK_GENERIC);
   
   
@@ -289,7 +289,7 @@ void Step::vJob_ExecutedNew(void)
                               );
   
   pJobExecuted->m_tJobId = pDistJob->tJobId();
-  pJobExecuted->vParticipantNode(AM::pGrid()->iThisNodeNo());
+  pJobExecuted->vParticipantNodeNo(AM::pGrid()->iThisNodeNo());
   pJobExecuted->vJobKind(JK_GENERIC);
   
   TagSet* pJobExecutedTags = pJobExecuted->pJobTags();

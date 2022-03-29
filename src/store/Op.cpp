@@ -197,56 +197,55 @@ Op::~Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set ack job on end marker                                                  */
+/* ack the invoking task                                                      */
 /*----------------------------------------------------------------------------*/
-void Op::vAckPipelineJob(void)
+void Op::vAckInvokingTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Task* pPipelineTask = AM::pExecutingTask(m_p_PipelineOfOp->pPipelineJob());
+  //Task* pInvokingTask = m_p_PipelineOfOp->pPipelineJob()->pTask();
+  //RASSERT(m_pTask->pInvoker() == pInvokingTask);
 
-    if (m_bTraceOp) {
+  SP_Op spOp;
+  i8 nAcksWereRemaining;
+  Task* pInvokingTask = m_pTask->pInvokingTask();
 
-      if (AM::TRACE::bVBlong()) {
-        SP_Op spOp;
+  if (m_bTraceOp) {
 
-        vTraceM("%s "
-                "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pJobOfOp()
-        );
-      } else {
-        vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job\n"_Stz,
-               szOpNm(),
-               m_pStream->pStage()->szStageNm(),
-               iNode(),
-               tPtnId().iAsI8());
-      }
-    }
-
-    i8 nAcksWereRemaining;
-
-    SP_Op spOp;
-
-    if (m_bTraceOp && AM::TRACE::bVBlong())
-      spOp.szLeading(this);
-
-    AM::vAckWaitingTask(pPipelineTask, m_pTask, nAcksWereRemaining);
-
-    if (m_bTraceOp && AM::TRACE::bVBlong()) {
+    if (AM::TRACE::bVBlong()) {
       SP_Op spOp;
 
       vTraceM("%s "
-              "%-18s nAcksWereRemaining=%lld\n"_Stz
-              , spOp.szAck(this), __func__, nAcksWereRemaining
+              "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pJobOfOp()
       );
-    }
-
-    if (m_bTraceAck)
-      vTrace("Op %s (%s (N%lld) (P%02lld)): acking pipeline job (acksRemaining : %lld)\n"_Stz,
+    } else {
+      vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task\n"_Stz,
              szOpNm(),
              m_pStream->pStage()->szStageNm(),
              iNode(),
-             tPtnId().iAsI8(),
-             nAcksWereRemaining);
+             tPtnId().iAsI8());
+    }
+  }
+
+  if (m_bTraceOp && AM::TRACE::bVBlong())
+    spOp.szLeading(this);
+
+  AM::vAckWaitingTask(pInvokingTask, m_pTask, nAcksWereRemaining);
+
+  if (m_bTraceOp && AM::TRACE::bVBlong()) {
+    vTraceM("%s "
+            "%-18s nAcksWereRemaining=%lld\n"_Stz
+            , spOp.szAck(this), __func__, nAcksWereRemaining
+    );
+  }
+
+  if (m_bTraceAck)
+    vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task (acksRemaining : %lld)\n"_Stz,
+           szOpNm(),
+           m_pStream->pStage()->szStageNm(),
+           iNode(),
+           tPtnId().iAsI8(),
+           nAcksWereRemaining);
 
 }
 
@@ -820,6 +819,14 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
       }
       break;
 
+    case ZK_M_INVOKE:
+      // should not have received a ZK_M_INVOKE already
+      if (m_naOperandCount[ZK_M_INVOKE]) {
+        vTrace("%s: multiple ZK_M_INVOKES's arrived\n"_Stz, szOpNm());
+        return false;
+      }
+      break;
+      
     case ZK_M_STARTCRWRHT:
       // should not have received a ZK_M_STARTROWRHT already
       if (m_naOperandCount[ZK_M_STARTROWRHT]) {
@@ -859,9 +866,19 @@ bool Op::bIsOperandValid(i8 i_OperandKind)
 
     case ZK_M_STARTED:
       // should have received a ZK_M_START
-      if ( ! m_naOperandCount[ZK_M_START]) {
-        vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz, szOpNm(), aZK[i_OperandKind]);
-        return false;
+      if (m_sOpNm.bSame("start"_Stz) ) {
+        if (! m_naOperandCount[ZK_M_INVOKE]) {
+          vTrace("%s: %s arrived without a prior ZK_M_INVOKE\n"_Stz,
+                 szOpNm(), aZK[i_OperandKind]);
+          return false;
+        }
+      }
+      else {
+        if (! m_naOperandCount[ZK_M_START]) {
+          vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
+                 szOpNm(), aZK[i_OperandKind]);
+          return false;
+        }
       }
       
       // should not have received a ZK_M_STARTED already
@@ -1014,7 +1031,7 @@ i8 Op::iNode(void)
   i8 i_Node;
   
   if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
-    i_Node = m_pStream->i_Node();
+    i_Node = m_pStream->iNodeNo();
   else
     i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId());
 
@@ -1733,6 +1750,17 @@ void Op::vSendNode(i8 iSendNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iSendNode = iSendNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set tags for this op                                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vSetInvoker(Task* pInvoker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  if (m_pTask)
+    m_pTask->vInvokingTask(pInvoker);
 }
 
 /*----------------------------------------------------------------------------*/

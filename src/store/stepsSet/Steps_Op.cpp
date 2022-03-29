@@ -30,7 +30,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op::findOp"_Stz,            &Step::vOpFindOp);
   
   vAddStep("[op]"_Stz,                  &Step::vOpGet);
-  vAddStep("[op].ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
+  vAddStep("[op].ackInvokingTask"_Stz,  &Step::vOpAckInvokingTask);
   vAddStep("[op].downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
   vAddStep("[op].handlerEntry"_Stz,     &Step::vOpHandlerEntry);
   vAddStep("[op].handlerExit"_Stz,      &Step::vOpHandlerExit);
@@ -55,13 +55,13 @@ void Step::vAddSteps_Op(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [op].ackPipelineJob -- ack the pipeline job                                */
+/* [op].ackInvokingTask -- ack the invoking task                              */
 /*----------------------------------------------------------------------------*/
-void Step::vOpAckPipelineJob(void)
+void Step::vOpAckInvokingTask(void)
 {
   ENTRY();
   
-  m_pOp->vAckPipelineJob();
+  m_pOp->vAckInvokingTask();
 }
 
 /*----------------------------------------------------------------------------*/

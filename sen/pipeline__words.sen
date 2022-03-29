@@ -5,9 +5,9 @@
 " pipeline__words.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute the sub-pipeline pointed to by the SubPipe[] register          */
+/* invoke the sub-pipeline pointed to by the SubPipe[] register               */
 /*----------------------------------------------------------------------------*/
-: subPipe:exe
+: subPipe:invoke
 
   SubPipe[] assert
   
@@ -21,11 +21,13 @@
     SubPipe[].opsOnNode@ to nAcks
 
     nAcks if
+      [task] SubPipe[].setInvoker
+    
       nAcks [task].acksRemaining!
 
-      SubPipe[].enqueueStart? if
+      SubPipe[].enqueueInvoke? if
 
-        Marker[].newStartMarker
+        Marker[].newInvokeMarker
         Marker[]\clear SubPipe[].op0@ op.enqueOperand
       then
       [task].wait

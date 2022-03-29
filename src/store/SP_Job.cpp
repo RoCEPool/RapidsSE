@@ -57,10 +57,10 @@ Stz* SP_Job::sz(Job* pJob)
 
         );
   
-  if (pJob->i2pcDeciderOriginal()) {
+  if (pJob->pTask()->iAcksRmg_assert_only_()) {
     vCatf(" AcksRmg %lld (out of %lld)"_Stz
-           ,pJob->i2pcDeciderRmg_printOnlyValue()
-           ,pJob->i2pcDeciderOriginal()
+           ,pJob->pTask()->iAcksRmg_assert_only_()
+           ,pJob->pTask()->iAcksOriginal()
            );
   }
     

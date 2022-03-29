@@ -790,7 +790,6 @@ public:
   void vIntStackPush(void);
 
   // job
-  void vJob2pcDeciderStore(void);
   void vJobAddDemon(void);
   void vJobAddLocal(void);
   void vJobAddOriginator(void);
@@ -830,9 +829,8 @@ public:
 
   void vJobOriginNodeNoFetch(void);
 
-  void vJobParticipantFetch(void);
-  void vJobParticipantFetch_other(void);
-  void vJobParticipantStore(void);
+  void vJobParticipantNodeNoFetch(void);
+  void vJobParticipantNodeNoStore(void);
   void vJobPipeToOp0(void);
   void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);
@@ -1027,7 +1025,6 @@ public:
 
   // listed job
   void vListedJobAssertNoRef(void);
-  void vListedJobDec2pcDecider(void);
   void vListedJobFindOriginator(void);
   void vListedJobFindParticipant(void);
   void vListedJobHasTask(void);
@@ -1145,6 +1142,7 @@ public:
   void vMarkerNewExitingMarker(void);
   void vMarkerNewExitedMarker(void);
   void vMarkerNewFlushMarker(void);
+  void vMarkerNewInvokeMarker(void);
   void vMarkerNewLeaveMarker(void);
   void vMarkerNewLeavingMarker(void);
   void vMarkerNewLeftMarker(void);
@@ -1266,7 +1264,7 @@ public:
   void vObjectStore(void);
 
   // op
-  void vOpAckPipelineJob(void);
+  void vOpAckInvokingTask(void);
   void vOpDownstreamOpStore(void);
   void vOpEnqueOperand(void);
   void vOpFindOp(void);
@@ -1400,13 +1398,13 @@ public:
   void vPipelineOfOpSpawnOpTasks(void);
   void vPipelineOfOpStartPipeline(void);
 
-  // pipelinespec
+  // pipeSpec
 
-  void vPipelineSpecDelete(void);
-  void vPipelineSpecDump(void);
-  void vPipelineSpecGet(void);
-  void vPipelineSpecOptimisable(void);
-  void vPipelineSpecSet(void);
+  void vPipeSpecDelete(void);
+  void vPipeSpecDump(void);
+  void vPipeSpecGet(void);
+  void vPipeSpecOptimisable(void);
+  void vPipeSpecSet(void);
 
 
   // plan
@@ -1703,7 +1701,7 @@ public:
   void vSenInnerInterpreter(void);
   void vSenMungedText(void);
   void vSenPostpone(void);
-  void vSenProcedure(void);
+  void vSenProcText(void);
   void vSenSee(void);
   void vSenSemicolon(void);
   void vSenSeriesName(void);
@@ -1831,7 +1829,7 @@ public:
   void vSubPipeDump(void);
   void vSubPipeEarlyExitFetch(void);
   void vSubPipeEarlyExitStore(void);
-  void vSubPipeEnqueueStart(void);
+  void vSubPipeEnqueueInvoke(void);
   void vSubPipeErroredStore(void);
   void vSubPipeErroredFetch(void);
   void vSubPipeGet(void);
@@ -1842,6 +1840,7 @@ public:
   void vSubPipePulsedFetch(void);
   void vSubPipePulsedStore(void);
   void vSubPipeSet(void);
+  void vSubPipeSetInvoker(void);
   void vSubPipeSpawnOpTasks(void);
 
   // SubPipelineOfOp
@@ -2369,7 +2368,9 @@ public:
   void vTokenVecDelete(void);
   void vTokenVecDump(void);
   void vTokenVecNew(void);
+  void vTokenVecRemoveToken(void);
   void vTokenVecTokenise(void);
+  void vTokenVecToString(void);
 
   // trace
   void vTraceOff(void);

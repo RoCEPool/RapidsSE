@@ -84,7 +84,7 @@
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"
-#include "PipelineSpec.hpp"
+#include "PipeSpec.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Jobs.hpp"
@@ -323,7 +323,10 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
-    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC,  "~PipelineSpec"_Stz)
+    RASSERT(   bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz)
+            || bDELETE_RULE(CN_PIPESPEC, "~PipeSpec"_Stz)
+            || bDELETE_RULE(CN_DYNAMO, "pCompile"_Stz)
+            || bDELETE_RULE(CN_STEP, "vPipeSpecDelete"_Stz)
             );
   }
 
@@ -437,9 +440,9 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
   }
   
   // -- -- -- -- -- -- -- -- -- -- -- --
-  // pipelineSpec
+  // pipeSpec
     
-  else if (CN_PIPELINESPEC == eInstance) {
+  else if (CN_PIPESPEC == eInstance) {
     if (bTrace)
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
@@ -447,7 +450,7 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
     RASSERT(   bDELETE_RULE(CN_DYNAMO,   "pCompile"_Stz           )
             || bDELETE_RULE(CN_DYNAMO,   "vDynamoCompile"_Stz )
             || bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz          )
-            || bDELETE_RULE(CN_STEP,     "vPipelineSpecDelete"_Stz)
+            || bDELETE_RULE(CN_STEP,     "vPipeSpecDelete"_Stz)
             );
   }
 
@@ -484,6 +487,17 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
     
     RASSERT( bDELETE_RULE(CN_STAGE, "~Stage"_Stz ) );
+  }
+
+  // -- -- -- -- -- -- -- -- -- -- -- --
+  // subPipeSpecs
+  
+  else if (CN_SUBPIPESPECS == eInstance) {
+    if (bTrace)
+      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
+             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
+    
+    RASSERT( bDELETE_RULE(CN_PIPESPEC, "~PipeSpec"_Stz ) );
   }
 
   // -- -- -- -- -- -- -- -- -- -- -- --
@@ -2728,6 +2742,9 @@ i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
 Grid* AM::pGrid(void)         { return gpAttachMap ? gpAttachMap->m_pGrid : nullptr;                  }
+#ifdef WITH_HASHMAP
+HashMap* AM::pHashMap(void)   { return gpAttachMap->m_pHashMap;           }
+#endif
 Heaps* AM::pHeaps(void)   { return & gpAttachMap->m_xHeaps;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
@@ -3030,10 +3047,6 @@ bool AM::bJobWasReceived(Job* pJob)
 void AM::vDumpApi(void) {
   pSessions()->vDump();
 }
-Task* AM::pExecutingTask(Job* pJob) {
-  Task* pTask = pJob->pTask();
-  return pTask;
-}
 
 i8 AM::nLvlLevels(void) {
   return gpAttachMap->m_xSysArgs.m_nLvlLevels;
@@ -3307,14 +3320,6 @@ Session* AM::pSessionGet(i8 i_Origin,  i8 i_Session)
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
 
   return pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
-void AM::vSpawnTaskDedicated_job(Job* pJob)
-{
-  Api::vSpawnTaskDedicated_job(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3721,6 +3726,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_EXITING:            eOperand = ZK_M_EXITING;      break;
         case OM_EXITED:             eOperand = ZK_M_EXITED;       break;
         case OM_FLUSH:              eOperand = ZK_M_FLUSH;        break;
+        case OM_INVOKEMARKER:       eOperand = ZK_M_INVOKE;       break;
         case OM_LEAVEMARKER:        eOperand = ZK_M_LEAVE;        break;
         case OM_LEAVINGMARKER:      eOperand = ZK_M_LEAVING;      break;
         case OM_LEFTMARKER:         eOperand = ZK_M_LEFT;         break;
