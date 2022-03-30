@@ -234,8 +234,8 @@
 #include "PipeWork.hpp"
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
-#include "StageSet.hpp"
-#include "StageSpecSet.hpp"
+#include "Staging.hpp"
+#include "StagingSpec.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -568,9 +568,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TypedStack), /*yes*/ HT_T_MEDIUM  ,0 FILL }, // CN_STACK
   { sizeof(Stage),              HT_T_SMALL   ,0 FILL }, // CN_STAGE
   { sizeof(StageMetrics),       HT_T_TINY    ,0 FILL }, // CN_STAGEMETRICS
-  { sizeof(StageSet),           HT_T_TINY    ,0 FILL }, // CN_STAGESET
   { sizeof(StageSpec),          HT_T_TINY    ,0 FILL }, // CN_STAGESPEC
-  { sizeof(StageSpecSet),       HT_T_TINY    ,0 FILL }, // CN_STAGESPECSET
+  { sizeof(Staging),            HT_T_TINY    ,0 FILL }, // CN_STAGING
+  { sizeof(StagingSpec),        HT_T_TINY    ,0 FILL }, // CN_STAGINGSPEC
   { sizeof(Starter),            HT_T_TINY    ,0 FILL }, // CN_STARTER
   { sizeof(Statement),          HT_T_MEDIUM  ,0 FILL }, // CN_STATEMENT
   { sizeof(Statistics),         HT_INVALID   ,0 FILL }, // CN_STATISTICS

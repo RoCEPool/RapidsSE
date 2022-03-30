@@ -14,7 +14,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "StageSet.hpp"
+#include "Staging.hpp"
 #include "PipeWork.hpp"
 #include "Pipeline.hpp"
 #include "PipeSpec.hpp"

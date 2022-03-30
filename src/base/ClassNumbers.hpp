@@ -320,9 +320,9 @@ enum eCN : u2 // Class Number
   /* */ CN_STACK,
   /* */ CN_STAGE,
   /* */ CN_STAGEMETRICS,
-  /* */ CN_STAGESET,
   /* */ CN_STAGESPEC,
-  /* */ CN_STAGESPECSET,
+  /* */ CN_STAGING,
+  /* */ CN_STAGINGSPEC,
   /* */ CN_STARTER,
   /* */ CN_STATEMENT,
   /* */ CN_STATISTICS,
@@ -729,9 +729,9 @@ static Stz* aCN[]
   /* */ "STACK"_Stz,                // CN_STACK
   /* */ "STAGE"_Stz,                // CN_STAGE
   /* */ "STAGEMETRICS"_Stz,         // CN_STAGEMETRICS
-  /* */ "STAGESET"_Stz,             // CN_STAGESET
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
-  /* */ "STAGESPECSET"_Stz,         // CN_STAGESPECSET
+  /* */ "STAGING"_Stz,              // CN_STAGING
+  /* */ "STAGINGSPEC"_Stz,          // CN_STAGINGSPEC
   /* */ "STARTER"_Stz,              // CN_STARTER
   /* */ "STATEMENT"_Stz,            // CN_STATEMENT
   /* */ "STATISTICS"_Stz,           // CN_STATISTICS

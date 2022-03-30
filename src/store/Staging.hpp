@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class StageSet : public ListNL_t<Stage>
+  class Staging : public ListNL_t<Stage>
   {
   private:
    
@@ -18,8 +18,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StageSet(void);
-   ~StageSet(void) noexcept(false);
+    Staging(void);
+   ~Staging(void) noexcept(false);
   
   private:
   
@@ -27,7 +27,7 @@ namespace STORE
 
   };
 
-StageSet* _pStageSet(void* aAddr);
+Staging* _pStaging(void* aAddr);
 }
 
 /*============================================================================*/

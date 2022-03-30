@@ -7,7 +7,7 @@
 #include "Pipeline.hpp"
 #include "PipeWork.hpp"
 #include "Stage.hpp"
-#include "StageSet.hpp"
+#include "Staging.hpp"
 #include "Stream.hpp"
 #include "Op.hpp"
 

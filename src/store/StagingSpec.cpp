@@ -3,41 +3,41 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "StageSpecSet.hpp"
+#include "StagingSpec.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, StageSpecSet, CN_STAGESPECSET)
-__aNewFunction(StageSpecSet, CN_STAGESPECSET)
-__vDeleteFunction(StageSpecSet, CN_STAGESPECSET)
-__aFooterFunction(StageSpecSet)
+__pCastFunction(STORE, StagingSpec, CN_STAGINGSPEC)
+__aNewFunction(StagingSpec, CN_STAGINGSPEC)
+__vDeleteFunction(StagingSpec, CN_STAGINGSPEC)
+__aFooterFunction(StagingSpec)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageSpecSet::StageSpecSet(void)
+StagingSpec::StagingSpec(void)
     
-: ListNL_t<StageSpec>(CN_STAGESPECSET)
+: ListNL_t<StageSpec>(CN_STAGINGSPEC)
 
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGESPECSET, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGINGSPEC, _FOOTER_);
 
 
-  _checkInitialised_(CN_STAGESPECSET);
+  _checkInitialised_(CN_STAGINGSPEC);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGESPECSET, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGINGSPEC, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-StageSpecSet::~StageSpecSet(void) noexcept(false)
+StagingSpec::~StagingSpec(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGESPECSET, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGINGSPEC, _FOOTER_);
 
   while (StageSpec* pStageSpec = pPop())
     delete pStageSpec;

@@ -3,38 +3,38 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "StageSet.hpp"
+#include "Staging.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, StageSet, CN_STAGESET)
-__aNewFunction(StageSet, CN_STAGESET)
-__vDeleteFunction(StageSet, CN_STAGESET)
-__aFooterFunction(StageSet)
+__pCastFunction(STORE, Staging, CN_STAGING)
+__aNewFunction(Staging, CN_STAGING)
+__vDeleteFunction(Staging, CN_STAGING)
+__aFooterFunction(Staging)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageSet::StageSet(void)
-: ListNL_t<Stage>(CN_STAGESET)
+Staging::Staging(void)
+: ListNL_t<Stage>(CN_STAGING)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGESET, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGING, _FOOTER_);
 
-  _checkInitialised_(CN_STAGESET);
+  _checkInitialised_(CN_STAGING);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGESET, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGING, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-StageSet::~StageSet(void) noexcept(false)
+Staging::~Staging(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGESET, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGING, _FOOTER_);
 
   while (Stage* pStage = pPop())
     delete pStage;

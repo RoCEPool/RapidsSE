@@ -16,7 +16,7 @@
 #include "OpSpec.hpp"
 #include "Stage.hpp"
 #include "StageSpec.hpp"
-#include "StageSet.hpp"
+#include "Staging.hpp"
 #include "Stream.hpp"
 #include "PipeWork.hpp"
 #include "PtnMap.hpp"

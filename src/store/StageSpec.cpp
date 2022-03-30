@@ -6,7 +6,7 @@
 
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
-#include "StageSpecSet.hpp"
+#include "StagingSpec.hpp"
 #include "PipeSpec.hpp"
 #include "PipeSpec.hpp"
 

@@ -11,7 +11,7 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "StageSet.hpp"
+#include "Staging.hpp"
 #include "PipeWork.hpp"
 #include "PipeSpec.hpp"
 #include "StageSpec.hpp"
@@ -40,7 +40,7 @@ PipeWork::PipeWork(Pipeline* pPipeline, PipeSpec* pPipeSpec)
   m_pPipeline = pPipeline;
   m_pPipeSpec = pPipeSpec;
 
-  m_pStageSet = new StageSet;
+  m_pStaging = new Staging;
 
   _checkInitialised_(CN_PIPEWORK);
   
@@ -59,7 +59,7 @@ PipeWork::~PipeWork(void) noexcept(false)
   while (PipeWork *pSupPipeWork = pPop())
     delete pSupPipeWork;
   
-  delete m_pStageSet;
+  delete m_pStaging;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@ bool PipeWork::bCancel(Task* pTriggeringTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
   // get the first stage of the pipeline
-  Stage* pStage = m_pStageSet->pGet(0);
+  Stage* pStage = m_pStaging->pGet(0);
   
   // send cancelMarker to the start Op of the first stage of the pipeline
   pStage->vCancelPipeline(pTriggeringTask);
@@ -100,7 +100,7 @@ Op* PipeWork::pOp0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
-  Stage*  pStage0 = m_pStageSet->pGet(0);
+  Stage*  pStage0 = m_pStaging->pGet(0);
   Op*     pOp0    = pStage0->pOp0();
 
   return pOp0;
@@ -119,7 +119,7 @@ i8 PipeWork::nOpsOnNode(i8 iNode)
   
   i8 nStages = this->nStages();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = m_pStageSet->pGet(i_Stage);
+    Stage* pStage = m_pStaging->pGet(i_Stage);
     nOps += pStage->nOpsOnNode(iNode,iOriginNodeNo);
   }
   
@@ -145,7 +145,7 @@ void PipeWork::vSetInvoker(Task* pInvoker)
   
   for (i8 i_Stage = 0; i_Stage < nStages(); i_Stage++) {
     
-    Stage* pStage = m_pStageSet->pGet(i_Stage);
+    Stage* pStage = m_pStaging->pGet(i_Stage);
     
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
       Stream* pStream = pStage->pGet(i_Stream);
@@ -163,7 +163,7 @@ void PipeWork::vSetupJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
-  Stage* pStage = m_pStageSet->pGet(0);
+  Stage* pStage = m_pStaging->pGet(0);
   
   i8 nDivs = pStage->nItems();
   for (i8 i_Stream = 0; i_Stream < nDivs; i_Stream++) {
@@ -208,7 +208,7 @@ void PipeWork::vSpawnOpTasks(void)
   
   for (i8 i_Stage = 0; i_Stage < nStages(); i_Stage++) {
     
-    Stage* pStage = m_pStageSet->pGet(i_Stage);
+    Stage* pStage = m_pStaging->pGet(i_Stage);
     
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
       Stream* pStream = pStage->pGet(i_Stream);
@@ -226,7 +226,7 @@ Stage* PipeWork::pStage0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
-  Stage*  pStage0 = m_pStageSet->pGet(0);
+  Stage*  pStage0 = m_pStaging->pGet(0);
 
   return pStage0;
 }
@@ -238,7 +238,7 @@ i8 PipeWork::nStages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
-  i8 nStages = m_pStageSet->nItems();
+  i8 nStages = m_pStaging->nItems();
   
   return nStages;
 }
@@ -246,11 +246,11 @@ i8 PipeWork::nStages(void)
 /*----------------------------------------------------------------------------*/
 /* get stage set                                                              */
 /*----------------------------------------------------------------------------*/
-StageSet* PipeWork::pStageSet(void)
+Staging* PipeWork::pStageSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
-  return m_pStageSet;
+  return m_pStaging;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +287,7 @@ void PipeWork::vCreatePipework(void)
     
     // add a stage from the stageSpec to the stageVec
     Stage* pStage = new Stage(pStageSpec, this);
-    m_pStageSet->vAppend(pStage);
+    m_pStaging->vAppend(pStage);
     pStage->vCreateStreams();
   }
 }
