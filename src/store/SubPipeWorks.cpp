@@ -39,6 +39,8 @@ SubPipeWorks::~SubPipeWorks(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPEWORKS, _FOOTER_);
 
+  while (PipeWork* pSubPipeWork = pPop())
+    delete pSubPipeWork;
 }
 
 /*============================================================================*/

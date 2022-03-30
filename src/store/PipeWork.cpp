@@ -15,6 +15,7 @@
 #include "PipeSpec.hpp"
 #include "StageSpec.hpp"
 #include "Pipeline.hpp"
+#include "SubPipeWorks.hpp"
 
 #include "SP_PipeWork.hpp"
 
@@ -54,6 +55,8 @@ PipeWork::~PipeWork(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
+  delete m_pSubPipeWorks;
+
   i8 nStages = this->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stage* pStage = pGet(i_Stage);

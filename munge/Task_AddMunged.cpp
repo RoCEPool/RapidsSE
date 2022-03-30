@@ -32218,7 +32218,7 @@ void Task::vAddMunged(Task* )
     "    PipeSpec[] Pipeline[].create\n"
     "    Pipeline[].dump\n"
     "    \n"
-    "    PipeSpec[].delete\n"
+    "    //PipeSpec[].delete\n"
     "  else\n"
     "    ErrorCode[] \"Dynamo error %v\" .printf\n"
     "  then\n"
