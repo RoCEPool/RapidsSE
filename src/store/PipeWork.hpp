@@ -8,6 +8,8 @@ namespace STORE { class Stage; class PipeSpec; class SubPipeWorks; }
 namespace STORE
 {
   class PipeWork : public VectorNL_t<CN_PIPEWORK,Stage,C_MAX_STAGES>
+                 , public ListItem_t<PipeWork>
+
 
   {
   private:
@@ -38,6 +40,7 @@ namespace STORE
     void vSpawnOpTasks(void);
     Stage* pStage0(void);
     Stream* pStream0(void);
+    SubPipeWorks* pSubPipeWorks(void);
 
     void vCreatePipework();
 

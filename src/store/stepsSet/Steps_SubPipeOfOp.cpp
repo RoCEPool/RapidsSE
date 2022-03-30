@@ -16,6 +16,7 @@
 #include "Stage.hpp"
 #include "PipeWork.hpp"
 #include "Pipeline.hpp"
+#include "SubPipeWorks.hpp"
 #include "PipeSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
@@ -215,6 +216,24 @@ void Step::vSubPipeOfOpFindSubPipe(void)
 {
   ENTRY();
     
+  Pipeline* pOpPipeLine = m_pOp->pSubPipeOfOp();
+  PipeWork* pOpPipeWork = pOpPipeLine->pPipeWork();
+  PipeSpec* pOpPipeSpec = pOpPipeWork->pPipeSpec();
+  
+  Stz* szOpPipeNm = pOpPipeSpec->szPipelineNm();
+  vTrace("findSubPipe: %s\n"_Stz,szOpPipeNm);
+
+  SubPipeWorks* pSubPipeWorks = pOpPipeWork->pSubPipeWorks();
+
+  i8 nSubPipeWorks = pSubPipeWorks->nItems();
+  for (i8 i_SubPipeWork = 0; i_SubPipeWork < nSubPipeWorks; i_SubPipeWork++) {
+    PipeWork* pSubPipeWork = pSubPipeWorks->pGet(i_SubPipeWork);
+    PipeSpec* pSubPipeSpec = pSubPipeWork->pPipeSpec();
+
+    Stz* szSubPipeNm = pSubPipeSpec->szPipelineNm();
+    vTrace("findSubPipe: [%lld] %s\n"_Stz,i_SubPipeWork,szSubPipeNm);
+  }
+  
   EXIT();
 }
 
