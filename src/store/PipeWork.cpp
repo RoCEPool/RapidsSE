@@ -32,13 +32,16 @@ __aFooterFunction(PipeWork)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipeWork::PipeWork(Pipeline* pPipeline, PipeSpec* pPipeSpec)
+PipeWork::PipeWork(PipeWork* pParentPipeWork,
+                   PipeSpec* pPipeSpec,
+                   Pipeline* pPipeline)
 : ListNL_t<PipeWork>(CN_PIPEWORK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
   
-  m_pPipeline = pPipeline;
+  m_pParentPipeWork = pParentPipeWork;
   m_pPipeSpec = pPipeSpec;
+  m_pPipeline = pPipeline;
 
   m_pStaging = new Staging(this,m_pPipeSpec);
 

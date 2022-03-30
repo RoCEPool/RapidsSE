@@ -59,7 +59,7 @@ Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 iOriginNodeNo)
 
   _checkInitialised_(CN_PIPELINE);
   
-  m_pPipeWork = new PipeWork(this,pPipeSpec);
+  m_pPipeWork = new PipeWork(nullptr,pPipeSpec,this);
   //vCreatePipework();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);

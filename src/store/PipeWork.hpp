@@ -14,9 +14,9 @@ namespace STORE
 
   {
   private:
-
-    Pipeline* m_pPipeline; // which pipeline
+    PipeWork* m_pParentPipeWork;
     PipeSpec* m_pPipeSpec; // specification of this pipework
+    Pipeline* m_pPipeline; // which pipeline
   
     Staging* m_pStaging;
 
@@ -27,7 +27,9 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    PipeWork(Pipeline* pPipeline, PipeSpec* pPipeSpec);
+    PipeWork(PipeWork* pParentPipeWork,
+             PipeSpec* pPipeSpec,
+             Pipeline* pPipeline);
    ~PipeWork(void) noexcept(false);
   
     bool bCancel(Task* pTriggeringTask);
