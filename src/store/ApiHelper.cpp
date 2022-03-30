@@ -16,11 +16,7 @@
 /*----------------------------------------------------------------------------*/
 ApiHelper::ApiHelper(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
-
   m_pSession  = nullptr;
-
-  _postcondition_(_ADDRESS_, _MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -28,8 +24,6 @@ ApiHelper::ApiHelper(void)
 /*----------------------------------------------------------------------------*/
 ApiHelper::~ApiHelper(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,8 +35,6 @@ ApiHelper::~ApiHelper(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vAllocateSession(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
-
   m_pSession = Api::pAllocSession(SK_EXTERNAL);
 }
 
@@ -51,8 +43,6 @@ void ApiHelper::vAllocateSession(void)
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vDeleteJob(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
-
   Api::vDeleteJob(m_pSession);
 }
 
@@ -61,8 +51,6 @@ void ApiHelper::vDeleteJob(void)
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vExecuteJob(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
-
   Api::vExecuteJob(m_pSession);
 }
 
@@ -71,8 +59,6 @@ void ApiHelper::vExecuteJob(void)
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vFreeSession(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
-
   Api::vFreeSession(m_pSession);
   m_pSession = nullptr;
 }
@@ -84,8 +70,6 @@ void ApiHelper::vPipeoutResults(Op* pCurrOp,
                                 Operand* pOperand,
                                 Task* pTriggeringTask)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
-
   // to be coded
   NOT_IMPLEMENTED_YET;
 }
@@ -95,8 +79,6 @@ void ApiHelper::vPipeoutResults(Op* pCurrOp,
 /*----------------------------------------------------------------------------*/
 eEC ApiHelper::ePrepareJob(Stz* szCmd)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
-  
   TokenVec* pCmdTknVec = new TokenVec;
   
   pCmdTknVec->vTokeniseCpp(szCmd);
@@ -113,8 +95,6 @@ eEC ApiHelper::ePrepareJob(Stz* szCmd)
 /*----------------------------------------------------------------------------*/
 eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
-
   eEC eError = Api::ePrepareJob(m_pSession,pCmdTknVec);
   
   return eError;
@@ -125,8 +105,6 @@ eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec)
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vPrintResults(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
-  
   // start the buffer queue processing while the pipeline ops are running
   if (m_pSession->m_pSsnJob->bIsPipeline())
     m_pSession->m_pOutput->vProcessBufferQueue();
@@ -146,11 +124,19 @@ void ApiHelper::vPrintResults(void)
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vResetResults(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
-  
   m_pSession->m_pOutput->m_pOutputQueue->vReset();
   
   m_pSession->m_pOutput->vEndProcOneCmd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get response time (in milliseconds)                                        */
+/*----------------------------------------------------------------------------*/
+i8 ApiHelper::iResponseTimeMsec(void)
+{
+  i8 iTimeMsec = m_pSession->m_pSsnJob->iTimerMsec();
+  
+  return iTimeMsec;
 }
 
 /*============================================================================*/
