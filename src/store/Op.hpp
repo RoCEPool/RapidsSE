@@ -45,7 +45,6 @@ namespace STORE
 
     // -- refers to
     SMA<OpSpec,CN_OPSPEC>      m_pOpSpec;  // specification of this operator
-    SMA<Pipeline,CN_PIPELINE>  m_p_PipelineOfOp;  // which pipeline
     SMA<Pipeline,CN_PIPELINE>  m_p_SubPipeOfOp;   // which sub-pipeline
     SMA<PipeWork,CN_PIPEWORK>  m_p_PipeWorkOfOp;  // which pipework
   

@@ -68,8 +68,7 @@ Op::Op(Stream* pStream, OpSpec* pOpSpec)
 
   m_pOpSpec   = pOpSpec;
   m_pStream   = pStream;
-  m_p_PipelineOfOp = pStream->pPipeline();
-  m_p_SubPipeOfOp  = m_p_PipelineOfOp;
+  m_p_SubPipeOfOp  = pStream->pPipeline();
   m_p_PipeWorkOfOp = nullptr;
 
   // -- -- -- -- -- --
@@ -1015,7 +1014,7 @@ Stage* Op::pNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  PipeWork* pPipeWork = m_p_PipelineOfOp->pPipeWork();
+  PipeWork* pPipeWork = pPipelineOfOp()->pPipeWork();
   Stage* pNextStage = pPipeWork->pStageSet()->pGet(iNextStage());
   
   return pNextStage;
@@ -1282,7 +1281,7 @@ Stage* Op::pOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  PipeWork* pFormWork = m_p_PipelineOfOp->pPipeWork();
+  PipeWork* pFormWork = pPipelineOfOp()->pPipeWork();
   
   Stage* pOtherStage = pFormWork->pStageSet()->pGet(iOtherStage());
   
@@ -1378,7 +1377,7 @@ Pipeline* Op::pPipelineOfOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_p_PipelineOfOp;
+  return m_pStream->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1394,7 +1393,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
     
   // get the next stage the send is supposed to send to
-  PipeWork* pFormWork = m_p_PipelineOfOp->pPipeWork();
+  PipeWork* pFormWork = pPipelineOfOp()->pPipeWork();
   Stage* pDstStage = pFormWork->pStageSet()->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
