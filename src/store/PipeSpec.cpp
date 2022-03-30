@@ -7,7 +7,7 @@
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "PipeSpec.hpp"
-#include "SubPipeSpecs.hpp"
+#include "StageSpecSet.hpp"
 #include "Dynamo.hpp"
 #include "Procedure.hpp"
 #include "Job.hpp"
@@ -32,14 +32,13 @@ __aFooterFunction(PipeSpec)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PipeSpec::PipeSpec(Scanner *p_Scanner, TagSet *p_JobTags)
-    
-: ListNL_t<StageSpec>(CN_PIPESPEC)
+: ListNL_t<PipeSpec>(CN_PIPESPEC)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
   m_sPipelineNm   = "(unknown)"_Stz;
-  m_pSubPipeSpecs = nullptr;
-  
+  m_pStageSpecSet = new StageSpecSet;
+
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
   m_p_Scanner = p_Scanner;
@@ -57,18 +56,10 @@ PipeSpec::~PipeSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  while (StageSpec *pStageSpec = pPop())
-    delete pStageSpec;
-
-  vClear();
+  while (PipeSpec *pSupPipeSpec = pPop())
+    delete pSupPipeSpec;
   
-  if (m_pSubPipeSpecs) {
-    
-    while (PipeSpec *pSubPipeSpec = m_pSubPipeSpecs->pPop())
-      delete pSubPipeSpec;
-
-    delete m_pSubPipeSpecs;
-  }
+  delete m_pStageSpecSet;
 }
 
 
@@ -113,7 +104,7 @@ void PipeSpec::vAddStageSpec(StageSpec *pStageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  vAppend(pStageSpec);
+  m_pStageSpecSet->vAppend(pStageSpec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,9 +124,9 @@ StageSpec* PipeSpec::pFindStageSpec(Stz *szFindNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  i8 nStageSpecs = this->nItems();
+  i8 nStageSpecs = m_pStageSpecSet->nItems();
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
-    StageSpec *pStageSpec = pGet(i_Stage);
+    StageSpec *pStageSpec = m_pStageSpecSet->pGet(i_Stage);
 
     if (pStageSpec->szStageNm()->bSame(szFindNm)) {
       RASSERT(pStageSpec->i_StageSpec() == i_Stage);
@@ -157,15 +148,15 @@ Stz* PipeSpec::szPipelineNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* number of stages                                                           */
+/* number of stage specs                                                      */
 /*----------------------------------------------------------------------------*/
-i8 PipeSpec::nStages(void)
+i8 PipeSpec::nStageSpecs(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  i8 nStages = nItems();
+  i8 nStageSpecs = m_pStageSpecSet->nItems();
   
-  return nStages;
+  return nStageSpecs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -175,7 +166,7 @@ StageSpec* PipeSpec::pStageSpec(i8 i_Stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  StageSpec *pStageSpec = pGet(i_Stage);
+  StageSpec *pStageSpec = m_pStageSpecSet->pGet(i_Stage);
 
   return pStageSpec;
 }
@@ -183,11 +174,11 @@ StageSpec* PipeSpec::pStageSpec(i8 i_Stage)
 /*----------------------------------------------------------------------------*/
 /* get sub-pipelines                                                          */
 /*----------------------------------------------------------------------------*/
-SubPipeSpecs* PipeSpec::pSubPipeSpecs(void)
+StageSpecSet* PipeSpec::pStageSpecSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  return m_pSubPipeSpecs;
+  return m_pStageSpecSet;
 }
 
 
@@ -312,10 +303,7 @@ bool PipeSpec::bCollectSubPipeline(void)
     return false;
   }
   
-  if (! m_pSubPipeSpecs)
-    m_pSubPipeSpecs = new SubPipeSpecs;
-
-  m_pSubPipeSpecs->vAppend(pSubPipeSpec);
+  vAppend(pSubPipeSpec);
 
   return true;
 }
@@ -713,9 +701,9 @@ bool PipeSpec::bPass2_piping(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
   // foreach stageSpec of pipeSpec
-  i8 nStageSpecs = this->nItems();
+  i8 nStageSpecs = this->nStageSpecs();
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
-    StageSpec *pStageSpec = this->pGet(i_Stage);
+    StageSpec *pStageSpec = m_pStageSpecSet->pGet(i_Stage);
     RASSERT(pStageSpec->i_StageSpec() == i_Stage);
 
     // foreach opSpec of stageSpec
@@ -730,17 +718,17 @@ bool PipeSpec::bPass2_piping(void)
       // can we find a stage matching the name in the OpSepc?
 
       if (szName->bSame("next"_Stz)) {
-        pDstStageSpec = this->pGet(i_Stage + 1);
+        pDstStageSpec = m_pStageSpecSet->pGet(i_Stage + 1);
         if (! pDstStageSpec)
           return false;
       }
       else if (szName->bSame("first"_Stz)) {
-        pDstStageSpec = this->pGet(0);
+        pDstStageSpec = m_pStageSpecSet->pGet(0);
         if (! pDstStageSpec)
           return false;
       }
       else if (szName->bSame("last"_Stz)) {
-        pDstStageSpec = this->pGet(nOpSpecs - 1);
+        pDstStageSpec = m_pStageSpecSet->pGet(nOpSpecs - 1);
         if (! pDstStageSpec)
           return false;
       }
@@ -1047,7 +1035,7 @@ Stz *PipeSpec::szStageNm(i8 i_Stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  StageSpec *pStageSpec = pGet(i_Stage);
+  StageSpec *pStageSpec = m_pStageSpecSet->pGet(i_Stage);
   Stz *szNm = pStageSpec->szStageNm();
 
   return szNm;

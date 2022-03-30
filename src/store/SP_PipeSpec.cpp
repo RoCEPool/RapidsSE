@@ -11,7 +11,6 @@
 #include "SP_PipeSpec.hpp"
 #include "SP_StageSpec.hpp"
 #include "SP_OpSpec.hpp"
-#include "SubPipeSpecs.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -75,16 +74,13 @@ void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec, i8 iDepth)
         ,pPipeSpec
         );
   
-  SubPipeSpecs* pSubPipeSpecs = pPipeSpec->pSubPipeSpecs();
-  if (pSubPipeSpecs) {
-    i8 nSubSpecs = pSubPipeSpecs->nItems();
-    for (i8 i_SubSpec = 0; i_SubSpec < nSubSpecs; i_SubSpec++) {
-      PipeSpec* pSubPipeSpec = pSubPipeSpecs->pGet(i_SubSpec);
-      vPipeSpec(pSubPipeSpec,iDepth+1);
-    }
+  i8 nSubSpecs = pPipeSpec->nItems();
+  for (i8 i_SubSpec = 0; i_SubSpec < nSubSpecs; i_SubSpec++) {
+    PipeSpec* pSubPipeSpec = pPipeSpec->pGet(i_SubSpec);
+    vPipeSpec(pSubPipeSpec,iDepth+1);
   }
   
-  for (i8 i_Stage = 0; i_Stage < pPipeSpec->nStages(); i_Stage++) {
+  for (i8 i_Stage = 0; i_Stage < pPipeSpec->nStageSpecs(); i_Stage++) {
     StageSpec* pStageSpec = pPipeSpec->pStageSpec(i_Stage);
     vCatf(iDepth,
           "  %s"_Stz,spStageSpec.sz(pStageSpec));

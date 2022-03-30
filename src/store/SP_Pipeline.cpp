@@ -10,6 +10,7 @@
 
 #include "SP_Pipeline.hpp"
 #include "SP_Stage.hpp"
+#include "SP_PipeWork.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -71,13 +72,17 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
   
   if (bDescend) {
     
+    SP_PipeWork spPipeWork;
+
     PipeWork* pPipeWork = pPipeline->pPipeWork();
     
-    for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++ ) {
-      Stage* pStage = pPipeWork->pGet(i_Stage);
-      SP_Stage spStage(pStage,true);
-      vCatf("%s"_Stz,spStage.sz());
-    }
+    vCatf("%s"_Stz,spPipeWork.sz(pPipeWork));
+
+//    for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++ ) {
+//      Stage* pStage = pPipeWork->pGet(i_Stage);
+//      SP_Stage spStage(pStage,true);
+//      vCatf("%s"_Stz,spStage.sz());
+//    }
   }
   
 }

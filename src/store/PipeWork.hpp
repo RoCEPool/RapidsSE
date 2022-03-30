@@ -3,11 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE { class Stage; class PipeSpec; class SubPipeWorks; }
+namespace STORE { class Stage;    class StageSet;
+                  class PipeSpec; class SubPipeWorks; }
 
 namespace STORE
 {
-  class PipeWork : public VectorNL_t<CN_PIPEWORK,Stage,C_MAX_STAGES>
+  class PipeWork : public ListNL_t<PipeWork>
+                 , public ListItem_t<PipeWork>
+
 
   {
   private:
@@ -15,8 +18,8 @@ namespace STORE
     Pipeline* m_pPipeline; // which pipeline
     PipeSpec* m_pPipeSpec; // specification of this pipework
   
-    SubPipeWorks* m_pSubPipeWorks;
-  
+    StageSet* m_pStageSet;
+
     // must be last
     Footer m_xFooter;
     
@@ -37,6 +40,8 @@ namespace STORE
     void vSetupJob(void);
     void vSpawnOpTasks(void);
     Stage* pStage0(void);
+    i8   nStages(void);
+    StageSet* pStageSet(void);
     Stream* pStream0(void);
 
     void vCreatePipework();

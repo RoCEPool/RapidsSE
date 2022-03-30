@@ -1,44 +1,46 @@
 /*============================================================================*/
-/* SubPipeSpecs.cpp -- List of Sub-Pipeline Specifications                    */
+/* StageSpecSet.cpp -- List of Stage Specifications                             */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "SubPipeSpecs.hpp"
+#include "StageSpecSet.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, SubPipeSpecs, CN_SUBPIPESPECS)
-__aNewFunction(SubPipeSpecs, CN_SUBPIPESPECS)
-__vDeleteFunction(SubPipeSpecs, CN_SUBPIPESPECS)
-__aFooterFunction(SubPipeSpecs)
+__pCastFunction(STORE, StageSpecSet, CN_STAGESPECSET)
+__aNewFunction(StageSpecSet, CN_STAGESPECSET)
+__vDeleteFunction(StageSpecSet, CN_STAGESPECSET)
+__aFooterFunction(StageSpecSet)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SubPipeSpecs::SubPipeSpecs(void)
+StageSpecSet::StageSpecSet(void)
     
-: ListNL_t<PipeSpec>(CN_SUBPIPESPECS)
+: ListNL_t<StageSpec>(CN_STAGESPECSET)
 
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPESPECS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGESPECSET, _FOOTER_);
 
 
-  _checkInitialised_(CN_SUBPIPESPECS);
+  _checkInitialised_(CN_STAGESPECSET);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPESPECS, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGESPECSET, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SubPipeSpecs::~SubPipeSpecs(void) noexcept(false)
+StageSpecSet::~StageSpecSet(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPESPECS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGESPECSET, _FOOTER_);
 
+  while (StageSpec* pStageSpec = pPop())
+    delete pStageSpec;
 }
 
 /*============================================================================*/

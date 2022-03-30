@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* SubPipeSpecs.hpp -- List of Sub-Pipeline Specifications                    */
+/* StageSet.hpp -- List of Stages                                             */
 /*============================================================================*/
 #pragma once
 
-#include "PipeSpec.hpp"
+#include "Stage.hpp"
 
 namespace STORE
 {
-  class SubPipeSpecs : public ListNL_t<PipeSpec>
+  class StageSet : public ListNL_t<Stage>
   {
   private:
    
@@ -18,8 +18,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    SubPipeSpecs(void);
-   ~SubPipeSpecs(void) noexcept(false);
+    StageSet(void);
+   ~StageSet(void) noexcept(false);
   
   private:
   
@@ -27,7 +27,7 @@ namespace STORE
 
   };
 
-SubPipeSpecs* _pSubPipeSpecs(void* aAddr);
+StageSet* _pStageSet(void* aAddr);
 }
 
 /*============================================================================*/

@@ -1853,6 +1853,7 @@ public:
   void vSubPipeOfOpEarlyExitStore(void);
   void vSubPipeOfOpErroredStore(void);
   void vSubPipeOfOpErroredFetch(void);
+  void vSubPipeOfOpFindSubPipe(void);
   void vSubPipeOfOpGet(void);
   void vSubPipeOfOpGetAccum(void);
   void vSubPipeOfOpGrabDebugLock(void);

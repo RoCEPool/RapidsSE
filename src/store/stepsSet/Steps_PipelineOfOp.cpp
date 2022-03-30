@@ -349,7 +349,7 @@ void Step::vPipelineOfOpStartPipeline(void)
   Pipeline* pPipelineOfOp = m_pOp->pPipelineOfOp();
   PipeWork* pFormWork = pPipelineOfOp->pPipeWork();
 
-  Stage*    pStage0   = pFormWork->pGet(0);
+  Stage*    pStage0   = pFormWork->pStage0();
 
   if (pStage0->bEnqueueInvoke()) {
     

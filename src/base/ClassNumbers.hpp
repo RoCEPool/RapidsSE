@@ -320,7 +320,9 @@ enum eCN : u2 // Class Number
   /* */ CN_STACK,
   /* */ CN_STAGE,
   /* */ CN_STAGEMETRICS,
+  /* */ CN_STAGESET,
   /* */ CN_STAGESPEC,
+  /* */ CN_STAGESPECSET,
   /* */ CN_STARTER,
   /* */ CN_STATEMENT,
   /* */ CN_STATISTICS,
@@ -339,8 +341,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SUBCALL,
-  /* */ CN_SUBPIPESPECS,
-  /* */ CN_SUBPIPEWORKS,
   /* */ CN_SUBRETURN,
   /* */ CN_SYSCALL,
   /* */ CN_SYSMETRICS,
@@ -729,7 +729,9 @@ static Stz* aCN[]
   /* */ "STACK"_Stz,                // CN_STACK
   /* */ "STAGE"_Stz,                // CN_STAGE
   /* */ "STAGEMETRICS"_Stz,         // CN_STAGEMETRICS
+  /* */ "STAGESET"_Stz,             // CN_STAGESET
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
+  /* */ "STAGESPECSET"_Stz,         // CN_STAGESPECSET
   /* */ "STARTER"_Stz,              // CN_STARTER
   /* */ "STATEMENT"_Stz,            // CN_STATEMENT
   /* */ "STATISTICS"_Stz,           // CN_STATISTICS
@@ -748,8 +750,6 @@ static Stz* aCN[]
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SUBCALL"_Stz,              // CN_SUBCALL
-  /* */ "SUBPIPESPECS"_Stz,         // CN_SUBPIPESPECS
-  /* */ "SUBPIPEWORKS"_Stz,         // CN_SUBPIPEWORKS
   /* */ "SUBRETURN"_Stz,            // CN_SUBRETURN
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS

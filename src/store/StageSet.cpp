@@ -1,44 +1,43 @@
 /*============================================================================*/
-/* SubPipeWorks.cpp -- List of Sub-Pipeline Specifications                    */
+/* StageSet.cpp -- List of StageSet                                               */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "SubPipeWorks.hpp"
+#include "StageSet.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, SubPipeWorks, CN_SUBPIPEWORKS)
-__aNewFunction(SubPipeWorks, CN_SUBPIPEWORKS)
-__vDeleteFunction(SubPipeWorks, CN_SUBPIPEWORKS)
-__aFooterFunction(SubPipeWorks)
+__pCastFunction(STORE, StageSet, CN_STAGESET)
+__aNewFunction(StageSet, CN_STAGESET)
+__vDeleteFunction(StageSet, CN_STAGESET)
+__aFooterFunction(StageSet)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SubPipeWorks::SubPipeWorks(void)
-    
-: ListNL_t<PipeWork>(CN_SUBPIPEWORKS)
-
+StageSet::StageSet(void)
+: ListNL_t<Stage>(CN_STAGESET)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPEWORKS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGESET, _FOOTER_);
 
+  _checkInitialised_(CN_STAGESET);
 
-  _checkInitialised_(CN_SUBPIPEWORKS);
-
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPEWORKS, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGESET, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SubPipeWorks::~SubPipeWorks(void) noexcept(false)
+StageSet::~StageSet(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPEWORKS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGESET, _FOOTER_);
 
+  while (Stage* pStage = pPop())
+    delete pStage;
 }
 
 /*============================================================================*/
