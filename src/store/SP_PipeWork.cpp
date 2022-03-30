@@ -8,7 +8,6 @@
 #include "PipeSpec.hpp"
 #include "PipeWork.hpp"
 #include "Grid.hpp"
-#include "SubPipeWorks.hpp"
 #include "StageSet.hpp"
 
 #include "SP_PipeWork.hpp"

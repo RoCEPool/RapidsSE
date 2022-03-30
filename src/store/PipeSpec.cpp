@@ -7,7 +7,6 @@
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "PipeSpec.hpp"
-#include "SubPipeSpecs.hpp"
 #include "StageSpecSet.hpp"
 #include "Dynamo.hpp"
 #include "Procedure.hpp"

@@ -11,7 +11,6 @@
 #include "SP_PipeSpec.hpp"
 #include "SP_StageSpec.hpp"
 #include "SP_OpSpec.hpp"
-#include "SubPipeSpecs.hpp"
 
 
 /*----------------------------------------------------------------------------*/
