@@ -9,6 +9,7 @@
 #include "PipeWork.hpp"
 #include "Grid.hpp"
 #include "SubPipeWorks.hpp"
+#include "StageSet.hpp"
 
 #include "SP_PipeWork.hpp"
 #include "SP_Stage.hpp"
@@ -72,17 +73,14 @@ void SP_PipeWork::vPipeWork(PipeWork* pPipeWork, i8 iDepth)
         ,pPipeWork
         );
 
-  SubPipeWorks* pSubPipeWorks = pPipeWork->pSubPipeWorks();
-  if (pSubPipeWorks) {
-    i8 nSubWorks = pSubPipeWorks->nItems();
-    for (i8 i_SubWork = 0; i_SubWork < nSubWorks; i_SubWork++) {
-      PipeWork* pSubPipeWork = pSubPipeWorks->pGet(i_SubWork);
-      vPipeWork(pSubPipeWork,iDepth+1);
-    }
+  i8 nSubWorks = pPipeWork->nItems();
+  for (i8 i_SubWork = 0; i_SubWork < nSubWorks; i_SubWork++) {
+    PipeWork* pSubPipeWork = pPipeWork->pGet(i_SubWork);
+    vPipeWork(pSubPipeWork,iDepth+1);
   }
 
   for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++ ) {
-    Stage* pStage = pPipeWork->pGet(i_Stage);
+    Stage* pStage = pPipeWork->pStageSet()->pGet(i_Stage);
     SP_Stage spStage(pStage,true);
     vCatf("%s"_Stz,spStage.sz());
   }

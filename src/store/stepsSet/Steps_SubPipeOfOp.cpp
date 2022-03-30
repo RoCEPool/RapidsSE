@@ -223,11 +223,9 @@ void Step::vSubPipeOfOpFindSubPipe(void)
   Stz* szOpPipeNm = pOpPipeSpec->szPipelineNm();
   vTrace("findSubPipe: %s\n"_Stz,szOpPipeNm);
 
-  SubPipeWorks* pSubPipeWorks = pOpPipeWork->pSubPipeWorks();
-
-  i8 nSubPipeWorks = pSubPipeWorks->nItems();
+  i8 nSubPipeWorks = pOpPipeWork->nItems();
   for (i8 i_SubPipeWork = 0; i_SubPipeWork < nSubPipeWorks; i_SubPipeWork++) {
-    PipeWork* pSubPipeWork = pSubPipeWorks->pGet(i_SubPipeWork);
+    PipeWork* pSubPipeWork = pOpPipeWork->pGet(i_SubPipeWork);
     PipeSpec* pSubPipeSpec = pSubPipeWork->pPipeSpec();
 
     Stz* szSubPipeNm = pSubPipeSpec->szPipelineNm();
@@ -379,7 +377,7 @@ void Step::vSubPipeOfOpStartPipeline(void)
   Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   PipeWork* pFormWork = pSubPipelineOfOp->pPipeWork();
 
-  Stage*    pStage0   = pFormWork->pGet(0);
+  Stage*    pStage0   = pFormWork->pStage0();
 
   if (pStage0->bEnqueueInvoke()) {
     

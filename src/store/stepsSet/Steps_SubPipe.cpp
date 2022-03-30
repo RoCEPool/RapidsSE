@@ -193,7 +193,7 @@ void Step::vSubPipeEnqueueInvoke(void)
   
   PipeWork* pFormWork = m_pLogicUnit->m_xpSubPipe->pPipeWork();
 
-  Stage*    pStage0   = pFormWork->pGet(0);
+  Stage*    pStage0   = pFormWork->pStage0();
 
   if (pStage0->bEnqueueInvoke()) {
     m_pDataStack->vPushInt(true);

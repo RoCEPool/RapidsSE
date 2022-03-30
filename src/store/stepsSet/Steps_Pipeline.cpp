@@ -14,6 +14,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
+#include "StageSet.hpp"
 #include "PipeWork.hpp"
 #include "Pipeline.hpp"
 #include "PipeSpec.hpp"
@@ -192,7 +193,7 @@ void Step::vPipelineEnqueueStart(void)
   
   PipeWork* pFormWork = m_pLogicUnit->m_xpPipeline->pPipeWork();
 
-  Stage*    pStage0   = pFormWork->pGet(0);
+  Stage*    pStage0   = pFormWork->pStageSet()->pGet(0);
 
   if (pStage0->bEnqueueInvoke()) {
     

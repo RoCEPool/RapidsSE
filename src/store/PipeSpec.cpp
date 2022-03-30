@@ -36,7 +36,6 @@ __aFooterFunction(PipeSpec)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PipeSpec::PipeSpec(Scanner *p_Scanner, TagSet *p_JobTags)
-    
 : ListNL_t<PipeSpec>(CN_PIPESPEC)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);

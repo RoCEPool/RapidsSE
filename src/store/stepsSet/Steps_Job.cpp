@@ -830,7 +830,7 @@ void Step::vJobPipeToOp0(void)
   Pipeline* pPipeline = pJob->pPipelineX();
   PipeWork* pPipeWork = pPipeline->pPipeWork();
 
-  Stage*    pStage0   = pPipeWork->pGet(0);
+  Stage*    pStage0   = pPipeWork->pStage0();
   Stream*   pStand0   = pStage0->pGet(0);
   Op*       pOp0      = pStand0->pGet(0);
 

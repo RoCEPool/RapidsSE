@@ -16,6 +16,7 @@
 #include "OpSpec.hpp"
 #include "Stage.hpp"
 #include "StageSpec.hpp"
+#include "StageSet.hpp"
 #include "Stream.hpp"
 #include "PipeWork.hpp"
 #include "PtnMap.hpp"
@@ -89,7 +90,7 @@ void Step::vParcelDemonOut(void)
   
   Pipeline* pPipeline = pJob->pPipelineX();
   PipeWork* pPipeWork = pPipeline->pPipeWork();
-  Stage*    pStage0   = pPipeWork->pGet(0);
+  Stage*    pStage0   = pPipeWork->pStage0();
   Stream*   pStream0  = pStage0->pGet(0);
   Op*       pOp0      = pStream0->pGet(0);
 
@@ -198,7 +199,7 @@ void Step::vParcelPipeOut(void)
     
     Pipeline* pPipeline = pJob->pPipelineX();
     PipeWork* pPipeWork = pPipeline->pPipeWork();
-    Stage*    pStage0   = pPipeWork->pGet(0);
+    Stage*    pStage0   = pPipeWork->pStage0();
     Stream*   pStand0   = pStage0->pGet(0);
     Op*       pOp0      = pStand0->pGet(0);
 
@@ -220,7 +221,7 @@ void Step::vParcelPipeOut(void)
   
   // get the next stage the send is supposed to send to
   PipeWork* pFormWork = pPipeline->pPipeWork();
-  Stage* pDstStage = pFormWork->pGet(pParcel->iDstStage());
+  Stage* pDstStage = pFormWork->pStageSet()->pGet(pParcel->iDstStage());
   i8 nStreamPtns = pDstStage->nItems();
 
   // get the op to forward to depending on the cross topology
