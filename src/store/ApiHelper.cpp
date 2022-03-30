@@ -55,6 +55,17 @@ void ApiHelper::vExecuteJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* fork demon                                                                 */
+/*----------------------------------------------------------------------------*/
+void* ApiHelper::pForkDemon(Stz* szPipeline)
+{
+  // to be coded
+  NOT_IMPLEMENTED_YET;
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* free session                                                               */
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vFreeSession(void)
@@ -64,7 +75,16 @@ void ApiHelper::vFreeSession(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pipeout the resuts                                                         */
+/* kill demon                                                                 */
+/*----------------------------------------------------------------------------*/
+void ApiHelper::vKillDemon(void*)
+{
+  // to be coded
+  NOT_IMPLEMENTED_YET;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pipeout the results                                                        */
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vPipeoutResults(Op* pCurrOp,
                                 Operand* pOperand,
