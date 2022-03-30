@@ -280,11 +280,12 @@ SubPipeWorks* PipeWork::pSubPipeWorks(void)
 /*----------------------------------------------------------------------------*/
 /* create the formwork for pipeline                                           */
 /*----------------------------------------------------------------------------*/
+
 void PipeWork::vCreatePipework(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
 
-  i8 nStages = m_pPipeSpec->nItems();
+  i8 nStages = m_pPipeSpec->nStageSpecs();
   for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
     
     // get the stageSpec

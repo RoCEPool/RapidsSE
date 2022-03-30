@@ -7,7 +7,8 @@
 
 
 namespace STORE { class Dynamo;
-                  class StageSpec; class OpSpec; class SubPipeSpecs; }
+                  class StageSpec; class StageSpecSet;
+                  class OpSpec; class SubPipeSpecs; }
 
 
 
@@ -16,7 +17,7 @@ namespace STORE { class Dynamo;
 namespace STORE
 {
   class PipeSpec
-          : public ListNL_t<StageSpec>
+          : public ListNL_t<PipeSpec>
           , public ListItem_t<PipeSpec>
   {
     friend class STORE::Dynamo;
@@ -25,8 +26,8 @@ namespace STORE
   
     s32  m_sPipelineNm;    // pipeline name
     
-    SubPipeSpecs* m_pSubPipeSpecs;
-  
+    StageSpecSet* m_pStageSpecSet;
+ 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
     Scanner* m_p_Scanner; // statement token scanner
@@ -48,9 +49,9 @@ namespace STORE
     StageSpec* pFindStageSpec(Stz* szFindNm);
     TagSet* pJobTags(void);
     Stz* szPipelineNm(void);
-    i8 nStages(void);
+    i8 nStageSpecs(void);
     StageSpec* pStageSpec(i8 i_Stage);
-    SubPipeSpecs* pSubPipeSpecs(void);
+    StageSpecSet* pStageSpecSet(void);
 
     Footer* aFooter(void);
   
