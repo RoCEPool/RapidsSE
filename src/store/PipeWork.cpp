@@ -40,6 +40,7 @@ PipeWork::PipeWork(Pipeline* pPipeline, PipeSpec* pPipeSpec)
   m_pPipeSpec = pPipeSpec;
 
   m_pSubPipeWorks = nullptr;
+  m_pStageSet = nullptr;
 
   _checkInitialised_(CN_PIPEWORK);
   
@@ -232,6 +233,16 @@ Stage* PipeWork::pStage0(void)
   Stage*  pStage0 = pGet(0);
 
   return pStage0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage set                                                              */
+/*----------------------------------------------------------------------------*/
+StageSet* PipeWork::pStageSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  
+  return m_pStageSet;
 }
 
 /*----------------------------------------------------------------------------*/

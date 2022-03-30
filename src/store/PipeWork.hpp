@@ -3,7 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE { class Stage; class PipeSpec; class SubPipeWorks; }
+namespace STORE { class Stage;    class StageSet;
+                  class PipeSpec; class SubPipeWorks; }
 
 namespace STORE
 {
@@ -18,7 +19,8 @@ namespace STORE
     PipeSpec* m_pPipeSpec; // specification of this pipework
   
     SubPipeWorks* m_pSubPipeWorks;
-  
+    StageSet* m_pStageSet;
+
     // must be last
     Footer m_xFooter;
     
@@ -39,6 +41,7 @@ namespace STORE
     void vSetupJob(void);
     void vSpawnOpTasks(void);
     Stage* pStage0(void);
+    StageSet* pStageSet(void);
     Stream* pStream0(void);
     SubPipeWorks* pSubPipeWorks(void);
 
