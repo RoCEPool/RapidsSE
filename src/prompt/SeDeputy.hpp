@@ -4,11 +4,13 @@
 #pragma once
 
 #include "BASE.h"
+#include "ApiHelper.hpp"
 
 
 namespace PROMPT
 {
   class SeDeputy : public Object
+                 , public ApiHelper
   {
   private:
     i8        m_i_Deputy;
@@ -16,7 +18,6 @@ namespace PROMPT
     
     Thread*   m_pThread;
 
-    Session*  m_pSession;  // rapidsse session
     
     bool      m_bAvailable;
     bool      m_bContinue;

@@ -53,7 +53,6 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   
   m_pThread   = AM::THREAD::pNewThread();
 
-  m_pSession  = nullptr;
 
   m_bAvailable  = false;
   m_bContinue   = true;
