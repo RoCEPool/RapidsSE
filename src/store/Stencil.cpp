@@ -2497,13 +2497,13 @@ Shape* Stencil::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR e
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDef
-  pCodeSynth = new CodeSynth(pStreamDefOut, SR_AT);
-  pCodeSynth->vSynthStruct(0);
-  pShape->vStructSynthA(pCodeSynth);
+//  pCodeSynth = new CodeSynth(pStreamDefOut, ePrevStencil);
+//  pCodeSynth->vSynthStruct(0);
+//  pShape->vStructSynthA(pCodeSynth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row projection
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexDef, pPreExpStack, ePrevStencil, SR_AT);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexDef, pPreExpStack, ePrevStencil, ePrevStencil);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   pCodeSynth->vSynthSort( pLogicUnit->m_eExprKind,
@@ -2717,24 +2717,6 @@ void Stencil::vAppendHeaderEntries(i8 iStage) {
   // append banner head
   m_pOpHeader->vAppendFragment((Stz*)m_pBannerHead->azCode());
 
-  sFunSignature.vSprint("\n  int (*stage%lld[4])(struct Combined_T* aCombinedT) = {"_Stz, iStage);
-  m_pOpHeader->vAppendFragment(sFunSignature);
-
-  sFunSignature.vSprint("\n    iFun0_%s,"_Stz, m_szStageNm.azChar());
-  m_pOpHeader->vAppendFragment(sFunSignature);
-
-  sFunSignature.vSprint("\n    iFun1_%s,"_Stz, m_szStageNm.azChar());
-  m_pOpHeader->vAppendFragment(sFunSignature);
-
-  sFunSignature.vSprint("\n    iFun2_%s,"_Stz, m_szStageNm.azChar());
-  m_pOpHeader->vAppendFragment(sFunSignature);
-
-  sFunSignature.vSprint("\n    iFun3_%s,"_Stz, m_szStageNm.azChar());
-  m_pOpHeader->vAppendFragment(sFunSignature);
-
-  sFunSignature.vSprint("\n  };"_Stz);
-  m_pOpHeader->vAppendFragment(sFunSignature);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0
   sFunSignature.vSprint("\n\n  int iFun0_%s(struct Combined_T* aCombinedT);"_Stz, m_szStageNm.azChar());
@@ -2765,6 +2747,24 @@ void Stencil::vAppendHeaderEntries(i8 iStage) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append function signatures
+  m_pOpHeader->vAppendFragment(sFunSignature);
+
+  sFunSignature.vSprint("\n\n  int (*stage%lld[4])(struct Combined_T* aCombinedT) = {"_Stz, iStage);
+  m_pOpHeader->vAppendFragment(sFunSignature);
+
+  sFunSignature.vSprint("\n    iFun0_%s,"_Stz, m_szStageNm.azChar());
+  m_pOpHeader->vAppendFragment(sFunSignature);
+
+  sFunSignature.vSprint("\n    iFun1_%s,"_Stz, m_szStageNm.azChar());
+  m_pOpHeader->vAppendFragment(sFunSignature);
+
+  sFunSignature.vSprint("\n    iFun2_%s,"_Stz, m_szStageNm.azChar());
+  m_pOpHeader->vAppendFragment(sFunSignature);
+
+  sFunSignature.vSprint("\n    iFun3_%s,"_Stz, m_szStageNm.azChar());
+  m_pOpHeader->vAppendFragment(sFunSignature);
+
+  sFunSignature.vSprint("\n  };"_Stz);
   m_pOpHeader->vAppendFragment(sFunSignature);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

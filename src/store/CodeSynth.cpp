@@ -977,10 +977,10 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel) {
       sCopy.vSprint("\n    piColumn[%lld] = ADDR_ADD(i8, amCellAddress, iOffset);"_Stz, i_Col, i_Col);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
+
       StrLib::vAppendString(&m_azCodeCrs, "\n");
     }
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2035,7 +2035,9 @@ void CodeSynth::vPayloadPopulate(ePL ePayload) {
 
       sCopy.vSprint("\n        szDstStz = (char*)&aCombinedT->m_aiPayload[%lld];"_Stz, iPayLoad );
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "printf(\"DOING COPY\\n\");");
       StrLib::vAppendString(&m_azCodeCrs,"\n        strncpy(szDstStz, szSrcStz, nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "printf(\"DONE COPY\\n\");");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
       StrLib::vAppendString(&m_azCodeCrs, "\n      }");
 
@@ -2689,7 +2691,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the predicate expression
-  //RASSERT(m_pPreExpStack);
   ePE ePreExp = m_pPreExpStack ? (ePE)m_pPreExpStack->iPeek(i_ExprStack) : PE_NONE;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2722,12 +2723,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to normal expstack
       if (ePreExp != PE_GBY)
-        //pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
         pExprStack = m_pExprStack;
 
-      // push assign column
-      vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col,
-                     i_DupCtr);
+        // push assign column
+        vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col,
+                       i_DupCtr);
 
       if (ePreExp != PE_GKY || (ePreExp == PE_GKY && eExprKind == EK_AGGORD))
         i_Col++;
@@ -2749,11 +2749,12 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     if (pTkn->bSame("groupby"_Stz)) {
 
       bGroupBy = true;
+      eExprKind = EK_GROUPBY;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working ExprStack to be the groupby  stack
-      pExprStack = m_pGbyStack;
-      eExprKind = EK_GROUPBY;
+      // set working ExprStack
+      pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
+      RASSERT(pExprStack == m_pGbyStack);
 
       continue;
     }
@@ -2761,11 +2762,12 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     if (pTkn->bSame("ordGroupby"_Stz)) {
 
       bGroupBy = true;
+      eExprKind = EK_ORDGROUPBY;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working ExprStack to be the groupby  stack
-      pExprStack = m_pGbyStack;
-      eExprKind = EK_ORDGROUPBY;
+      // set working ExprStack
+      pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
+      RASSERT(pExprStack == m_pGbyStack);
 
       continue;
     }
@@ -2801,10 +2803,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     if (pTkn->bSame("sort"_Stz)) {
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working ExprStack to be the expression  stack
-      pExprStack = m_pExprStack;
       eExprKind = EK_SORT;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working stack
+      pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
 
       continue;
     }
@@ -2813,10 +2816,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // get the top expression
     if (pTkn->bSame("top"_Stz)) {
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working ExprStack to be the expression  stack
-      pExprStack = m_pExprStack;
       eExprKind = EK_TOP;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working stack
+      pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
 
       continue;
     }
@@ -3969,7 +3973,7 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE eP
 
 
   if (pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP &&
-      eExprKind != EK_FILTER)
+      eExprKind != EK_FILTER && eExprKind != EK_SORT)
     pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
 
   // push the type
@@ -4627,8 +4631,8 @@ void CodeSynth::vGenerateProcessRow(Stz* sLabel)
   StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iBufferDone)");
   StrLib::vAppendString(&m_azCodeCrs, "\n        goto L_Return;");
   StrLib::vAppendString(&m_azCodeCrs, "\n      else {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n         aCombinedT->m_iProcessRow = 1;");
-  sCopy.vSprint("\n         goto %s;"_Stz, sLabel);
+  StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iProcessRow = 1;");
+  sCopy.vSprint("\n        goto %s;"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n      }");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
