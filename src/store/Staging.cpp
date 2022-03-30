@@ -19,13 +19,14 @@ __aFooterFunction(Staging)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Staging::Staging(PipeWork* pPipeWork)
+Staging::Staging(PipeWork* pPipeWork, PipeSpec* pPipeSpec)
 : ListNL_t<Stage>(CN_STAGING)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGING, _FOOTER_);
 
   m_pPipeWork = pPipeWork;
-  
+  m_pPipeSpec = pPipeSpec;
+
   _checkInitialised_(CN_STAGING);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGING, _FOOTER_);

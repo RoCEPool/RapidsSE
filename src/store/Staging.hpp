@@ -5,6 +5,7 @@
 
 #include "Stage.hpp"
 
+namespace STORE { class PipeSpec; }
 namespace STORE
 {
   class Staging : public ListNL_t<Stage>
@@ -12,7 +13,8 @@ namespace STORE
   private:
    
     PipeWork* m_pPipeWork;
-  
+    PipeSpec* m_pPipeSpec; // specification of this pipework
+
     // must be last
     Footer m_xFooter;
 
@@ -20,7 +22,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Staging(PipeWork* pPipeWork);
+    Staging(PipeWork* pPipeWork, PipeSpec* pPipeSpec);
    ~Staging(void) noexcept(false);
   
     PipeWork* pPipeWork(void);

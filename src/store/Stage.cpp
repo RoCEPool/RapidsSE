@@ -41,12 +41,12 @@ Stage::Stage(PipeWork* pPipeWork, StageSpec *pStageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  m_sPipelineNm = pPipeWork->pPipeline()->szPipelineNm();
-  m_sStageNm = pStageSpec->szStageNm();
-  m_i_Stage = pStageSpec->i_StageSpec();
-
-  m_pStageSpec = pStageSpec;
   m_pPipeWork  = pPipeWork;
+  m_pStageSpec = pStageSpec;
+
+  m_sStageNm = pStageSpec->szStageNm();
+  m_i_Stage  = pStageSpec->i_StageSpec();
+
 
   _checkInitialised_(CN_STAGE);
 

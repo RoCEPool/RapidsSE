@@ -40,7 +40,7 @@ PipeWork::PipeWork(Pipeline* pPipeline, PipeSpec* pPipeSpec)
   m_pPipeline = pPipeline;
   m_pPipeSpec = pPipeSpec;
 
-  m_pStaging = new Staging(this);
+  m_pStaging = new Staging(this,m_pPipeSpec);
 
   _checkInitialised_(CN_PIPEWORK);
   

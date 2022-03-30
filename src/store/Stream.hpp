@@ -12,12 +12,11 @@ namespace STORE
   {
   private:
     Stage*     m_pStage;      // which stage of pipeline
-    s32  m_sPipelineNm; // pipeline name
-    s32  m_sStageNm;    // stage name within pipeline
+    StageSpec* m_pStageSpec;  // stage specification for this stream
+
     s32  m_sStreamNm;   // name of this stream
     i8   m_i_Stream;    // [stream] in stage
 
-    StageSpec* m_pStageSpec;  // stage specification for this stream
     Pipeline*  m_pPipeline;   // which pipeline
     PtnId m_tPtnId;           // this stream processes m_tPtnId in grid
                               //   will be C_UNKNOWN for stage with node topology
@@ -51,8 +50,7 @@ namespace STORE
     StageSpec* pStageSpec(void);
     void vSpawnOpTasks(void);
     Stz* szStreamNm(void);
-    Stz* szStageNm(void);
-
+ 
     void vCreateOps();
   private:
     void vSynthesiseName(void);

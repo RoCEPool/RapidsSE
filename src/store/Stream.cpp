@@ -38,9 +38,6 @@ Stream::Stream(Stage* pStage, StageSpec* pStageSpec,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
-  m_sPipelineNm = pStage->pPipeWork()->pPipeline()->szPipelineNm();
-  m_sStageNm    = pStage->szStageNm();
-
   m_pStageSpec = pStageSpec;
   m_pStage     = pStage;
   m_pPipeline  = pStage->pPipeWork()->pPipeline();
@@ -259,16 +256,6 @@ i8 Stream::i_Stream(void)
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   return m_i_Stream;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stage name for this stream                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Stream::szStageNm(void)
-{
-  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-
-  return m_sStageNm;
 }
 
 /*----------------------------------------------------------------------------*/
