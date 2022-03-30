@@ -31,181 +31,192 @@ success
 load datums "../DATA/DataTypes/dataTypes.csv" ;
 success
 
+//------------------------------------------------------------------------------
+select 0.0 < dec_col7 from datums;
+rows:
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+
+
+//------------------------------------------------------------------------------
+select 0.0 > dec_col7 from datums;
+rows:
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+
+//------------------------------------------------------------------------------
+select 0.0 < dec_col6 from datums;
+rows:
+  (true)
+  (true)
+  (true)
+  (true)
+  (null)
+  (null)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+
+//------------------------------------------------------------------------------
+select 0.0 > dec_col6 from datums;
+rows:
+  (false)
+  (false)
+  (false)
+  (false)
+  (null)
+  (null)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums order by dec_col6;
+rows:
+  (null)
+  (null)
+  (23.04)
+  (41.04)
+  (41.04)
+  (41.04)
+  (41.04)
+  (47.04)
+  (477.04)
+  (477.04)
+  (477.04)
+  (477.04)
+  (4001.04)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums where dec_col6 > 47.04;
+rows:
+  (477.04)
+  (477.04)
+  (477.04)
+  (477.04)
+  (4001.04)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums where dec_col6 = 47.04;
+rows:
+  (47.04)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums where dec_col6 = 41.04;
+rows:
+  (41.04)
+  (41.04)
+  (41.04)
+  (41.04)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums where dec_col6 >= 41.04 order by dec_col6;
+rows:
+  (41.04)
+  (41.04)
+  (41.04)
+  (41.04)
+  (47.04)
+  (477.04)
+  (477.04)
+  (477.04)
+  (477.04)
+  (4001.04)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums where dec_col6 <= 41.04 order by dec_col6;
+rows:
+  (23.04)
+  (41.04)
+  (41.04)
+  (41.04)
+  (41.04)
+
+//------------------------------------------------------------------------------
+select dec_col6 * 10.10 from datums;
+rows:
+  (414.50)
+  (414.50)
+  (4818.10)
+  (4818.10)
+  (4818.10)
+  (475.10)
+  (232.70)
+  (40410.50)
+  (4818.10)
+  (414.50)
+  (null)
+  (null)
+  (414.50)
+
+//------------------------------------------------------------------------------
+select dec_col6 + 1.44 from datums order by dec_col6;
+rows:
+  (null)
+  (null)
+  (24.48)
+  (42.48)
+  (42.48)
+  (42.48)
+  (42.48)
+  (48.48)
+  (478.48)
+  (478.48)
+  (478.48)
+  (478.48)
+  (4002.48)
 /*
-//------------------------------------------------------------------------------
-select 0.0e0 < 2.2250738585072014e-308 from datums;
+select cast (dec_col6 as varchar)  , cast (dec_col7 as varchar) from datums order by dec_col6;
 rows:
-  (true)
-  (true)
-  (true)
-  (true)
-  (true)
-  (true)
-  (true)
-  (true)
-  (true)
-  (true)
-  (true)
-  (true)
-  (true)
-
-select 0.0e0 < -1.797693134862315708145274237317043567981e+308 from datums;
-rows:
-  (false)
-  (false)
-  (false)
-  (false)
-  (false)
-  (false)
-  (false)
-  (false)
-  (false)
-  (false)
-  (false)
-  (false)
-  (false)
-
-//------------------------------------------------------------------------------
-select flt_col8 from datums order by flt_col8;
-rows:
-   (null)
-   (0.22)
-   (0.22)
-   (0.22)
-   (0.22)
-   (0.22)
-   (0.22)
-   (0.22)
-   (0.22)
-   (10.22)
-   (10.22)
-   (10.22)
-   (10.22)
-
-//------------------------------------------------------------------------------
-select flt_col8 from datums where flt_col8 > 0.22;
-rows:
-  (10.22)
-  (10.22)
-  (10.22)
-  (10.22)
-
-//------------------------------------------------------------------------------
-select flt_col8 from datums where flt_col8 = 10.22;
-rows:
-  (10.22)
-  (10.22)
-  (10.22)
-  (10.22)
-
-//------------------------------------------------------------------------------
-select flt_col8 from datums where flt_col8 >= 10.22 order by flt_col8;
-rows:
-  (10.22)
-  (10.22)
-  (10.22)
-  (10.22)
-
-//------------------------------------------------------------------------------
-select flt_col8 from datums where flt_col8 < 10.22;
-rows:
- (0.22)
- (0.22)
- (0.22)
- (0.22)
- (0.22)
- (0.22)
- (0.22)
- (0.22)
-
- //------------------------------------------------------------------------------
- select flt_col8 from datums where flt_col8 <= 10.22 order by flt_col8;
- rows:
-   (0.22)
-   (0.22)
-   (0.22)
-   (0.22)
-   (0.22)
-   (0.22)
-   (0.22)
-   (0.22)
-   (10.22)
-   (10.22)
-   (10.22)
-   (10.22)
-
-//------------------------------------------------------------------------------
-select flt_col9 from datums order by flt_col9;
-rows:
-   (31.456)
-   (31.456)
-   (31.456)
-   (31.456)
-   (76.456)
-   (108.456)
-   (108.456)
-   (108.456)
-   (108.456)
-   (108.456)
-   (108.456)
-   (108.456)
-   (108.456)
-
-//------------------------------------------------------------------------------
-select flt_col8 * 10.10 from datums;
-rows:
-(2.222)
-(2.222)
-(103.222)
-(2.222)
-(103.222)
-(null)
-(2.222)
-(2.222)
-(2.222)
-(103.222)
-(2.222)
-(2.222)
-(103.222)
-
-//------------------------------------------------------------------------------
-select flt_col8 + 1.44 from datums order by flt_col8;
-rows:
-     (null)
-     (1.66)
-     (1.66)
-     (1.66)
-     (1.66)
-     (1.66)
-     (1.66)
-     (1.66)
-     (1.66)
-     (11.66)
-     (11.66)
-     (11.66)
-     (11.66)
-
-select cast (flt_col8 as varchar)  , cast (flt_col9 as varchar) from datums order by flt_col8;
-rows:
- (null,'31.456')
- ('0.22','31.456')
- ('0.22',31.456)
- ('0.22','31.456')
- ('0.22','76.456')
- ('0.22','108.456')
- ('0.22','108.456')
- ('0.22','108.456')
- ('0.22','108.456')
- ('10.22','108.456')
- ('10.22','108.456')
- ('10.22','108.456')
- ('10.22','108.456')
-
+  (null,'10.04')
+  (null,'10.04')
+  ('23.04','10.04')
+  ('41.04','1041.04')
+  ('41.04','1041.04')
+  ('41.04','1041.04')
+  ('41.04','1041.04')
+  ('47.04','10.04')
+  ('477.04','10.04')
+  ('477.04','10.04')
+  ('477.04','10.04')
+  ('477.04','10.04')
+  ('4001.04','1041.04')
+*/
 // exception : /0
 select (flt_col8/0e0) from datums;
 failure contains: 'divide by zero'
 
-
+/*
 // aggregates : sum
 
 select sum(flt_col8) from datums;
@@ -253,7 +264,7 @@ select min(flt_col8) + min(flt_col8) from datums;
 rows: (0.44)
 
 // aggregates : min (with nulls and min/max ints)
-/*
+
 select min(int_col1) from datums;
 rows: (-9223372036854775806)
 
@@ -274,7 +285,7 @@ failure contains: 'Arithmetic overflow'
 
 select min(int_col1) + min(int_col1) from datums;
 failure contains: 'Arithmetic overflow'
-*/
+
 // aggregates : max
 
 select max(flt_col8) from datums;
@@ -299,10 +310,10 @@ select max(flt_col8) + max(flt_col8) from datums;
 rows: (20.44)
 
 // aggregates : max (with nulls and min/max ints)
-/*
+
 select max(int_col1) from datums;
 rows: (9223372036854775806)
-
+/*
 select 10 + max(int_col1) from datums;
 failure contains: 'Arithmetic overflow'
 
@@ -321,7 +332,6 @@ failure contains: 'Arithmetic overflow'
 select max(int_col1) + max(int_col1) from datums;
 failure contains: 'Arithmetic overflow'
 */
-
 // drop the table
 drop table datums;
 success
@@ -391,10 +401,10 @@ rows:
 select flt_col8 + 2 from datums;
 failure contains: "OVERFLOW"
 
+*/
 // drop the table
 drop table datums;
 success
-*/
 
 // get memory leaks
 memoryLeaks;

@@ -36,7 +36,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
         bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     } else {                                                               \
       if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
@@ -66,7 +66,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
         bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     } else {                                                               \
       if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
@@ -96,7 +96,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
         bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     } else {                                                               \
       if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
@@ -126,7 +126,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
         bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     } else {                                                               \
       if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
@@ -156,7 +156,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
         bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     } else {                                                               \
       if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
@@ -186,7 +186,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
         bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     } else {                                                               \
       if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                            \
         *paW++ = bcdArg2.m_iAsI8;                                          \
@@ -221,7 +221,7 @@
   if (eErrorCode != EC_NONE ||                                             \
     fltArg1.m_iAsI8 == C_DATUM_NULL ||                                     \
     fltArg2.m_iAsI8 == C_DATUM_NULL) {                                     \
-    *paW++ = 0;                                                            \
+    *paW++ = C_DATUM_NULL;                                                 \
   }                                                                        \
   else {                                                                   \
   *paW++ = fltArg2.m_dFlt == fltArg1.m_dFlt ? 1 : 0;                       \
@@ -235,7 +235,7 @@
   if (eErrorCode != EC_NONE ||                                           \
     fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
     fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
-    *paW++ = 0;                                                          \
+    *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
   *paW++ = fltArg2.m_dFlt >= fltArg1.m_dFlt ? 1 : 0;                     \
@@ -250,7 +250,7 @@
   if (eErrorCode != EC_NONE ||                                           \
     fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
     fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
-    *paW++ = 0;                                                          \
+    *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
     *paW++ = fltArg2.m_dFlt > fltArg1.m_dFlt ? 1 : 0;                    \
@@ -265,7 +265,7 @@
   if (eErrorCode != EC_NONE ||                                           \
     fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
     fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
-    *paW++ = 0;                                                          \
+    *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
     *paW++ = fltArg2.m_dFlt <= fltArg1.m_dFlt ? 1 : 0;                   \
@@ -281,7 +281,7 @@
   if (eErrorCode != EC_NONE ||                                           \
     fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
     fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
-    *paW++ = 0;                                                          \
+    *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
     *paW++ = fltArg2.m_dFlt < fltArg1.m_dFlt ? 1 : 0;                    \
@@ -295,7 +295,7 @@
   if (eErrorCode != EC_NONE ||                                           \
     fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
     fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
-    *paW++ = 0;                                                          \
+    *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
     *paW++ = fltArg2.m_dFlt != fltArg1.m_dFlt ? 1: 0;                    \
@@ -313,7 +313,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       *paW++ = iArg2 == iArg1;                                             \
@@ -327,7 +327,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       *paW++ = iArg2 >= iArg1;                                             \
@@ -341,7 +341,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       *paW++ = iArg2 > iArg1 ? 1 : 0;                                      \
@@ -355,7 +355,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       *paW++ = iArg2 <= iArg1;                                             \
@@ -369,7 +369,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       *paW++ = iArg2 < iArg1 ? 1 : 0;                                      \
@@ -383,7 +383,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       *paW++ = iArg2 != iArg1;                                             \
@@ -401,7 +401,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       *paW++ = xTme2.m_iAsI8 == xTme1.m_iAsI8;                             \
@@ -415,7 +415,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       *paW++ = xTme2.m_iAsI8 != xTme1.m_iAsI8;                             \
@@ -429,42 +429,10 @@
     if (eErrorCode != EC_NONE ||                                           \
         xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
-    }                                                                      \
-    else if(xTme2.m_iAsI8 == xTme1.m_iAsI8) {                              \
-      *paW++ = 1;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      if(xTme2.m_uHour > xTme1.m_uHour) {                                  \
-        *paW++ = 1;                                                        \
-      }                                                                    \
-      else if(xTme2.m_uHour == xTme1.m_uHour) {                            \
-        if(xTme2.m_uMinute > xTme1.m_uMinute) {                            \
-          *paW++ = 1;                                                      \
-        }                                                                  \
-        else if(xTme2.m_uMinute == xTme1.m_uMinute) {                      \
-          if(xTme2.m_uSecond > xTme1.m_uSecond) {                          \
-            *paW++ = 1;                                                    \
-          }                                                                \
-          else if(xTme2.m_uSecond == xTme1.m_uSecond) {                    \
-            if(xTme2.m_uMicro >= xTme1.m_uMicro) {                         \
-              *paW++ = 1;                                                  \
-            }                                                              \
-            else {                                                         \
-              *paW++ = 0;                                                  \
-            }                                                              \
-          }                                                                \
-          else {                                                           \
-            *paW++ = 0;                                                    \
-          }                                                                \
-        }                                                                  \
-        else {                                                             \
-          *paW++ = 0;                                                      \
-        }                                                                  \
-      }                                                                    \
-      else {                                                               \
-        *paW++ = 0;                                                        \
-      }                                                                    \
+      *paW++ = xTme2.m_iAsI8 >= xTme1.m_iAsI8;                             \
     }                                                                      \
   }
 
@@ -475,7 +443,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else if(xTme2.m_iAsI8 == xTme1.m_iAsI8) {                              \
       *paW++ = 0;                                                          \
@@ -521,7 +489,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else if(xTme2.m_iAsI8 == xTme1.m_iAsI8) {                              \
       *paW++ = 1;                                                          \
@@ -567,7 +535,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else if(xTme2.m_iAsI8 == xTme1.m_iAsI8) {                              \
       *paW++ = 0;                                                          \
@@ -617,7 +585,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTsp2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       *paW++ = xTsp2.m_iAsI8 == xTsp1.m_iAsI8;                             \
@@ -631,7 +599,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTsp2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       *paW++ = xTsp2.m_iAsI8 != xTsp1.m_iAsI8;                             \
@@ -645,7 +613,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTsp2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else if(xTsp2.m_iAsI8 == xTsp1.m_iAsI8) {                              \
       *paW++ = 1;                                                          \
@@ -715,7 +683,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTsp2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else if(xTsp2.m_iAsI8 == xTsp1.m_iAsI8) {                              \
       *paW++ = 0;                                                          \
@@ -785,7 +753,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTsp2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else if(xTsp2.m_iAsI8 == xTsp1.m_iAsI8) {                              \
       *paW++ = 1;                                                          \
@@ -855,7 +823,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xTsp2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else if(xTsp2.m_iAsI8 == xTsp1.m_iAsI8) {                              \
       *paW++ = 0;                                                          \
@@ -929,7 +897,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       *paW++ = xDte2.m_iAsI8 == xDte1.m_iAsI8;                             \
@@ -943,7 +911,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
       *paW++ = xDte2.m_iAsI8 != xDte1.m_iAsI8;                             \
@@ -957,13 +925,13 @@
     if (eErrorCode != EC_NONE ||                                           \
         xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else if(xDte2.m_iAsI8 >= xDte1.m_iAsI8) {                              \
       *paW++ = 1;                                                          \
     }                                                                      \
     else {                                                                 \
-      *paW++ = 0;                                                        \
+      *paW++ = 0;                                                          \
     }                                                                      \
   }
 
@@ -974,7 +942,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else if(xDte2.m_iAsI8 == xDte1.m_iAsI8) {                              \
       *paW++ = 0;                                                          \
@@ -1012,7 +980,7 @@
     if (eErrorCode != EC_NONE ||                                           \
         xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ =C_DATUM_NULL;                                                \
     }                                                                      \
     else if(xDte2.m_iAsI8 == xDte1.m_iAsI8) {                              \
       *paW++ = 1;                                                          \
@@ -1026,7 +994,7 @@
           *paW++ = 1;                                                      \
         }                                                                  \
         else if(xDte2.m_uMonth == xDte1.m_uMonth) {                        \
-          if(xDte2.m_uDay <= xDte1.m_uDay) {                                \
+          if(xDte2.m_uDay <= xDte1.m_uDay) {                               \
             *paW++ = 1;                                                    \
           }                                                                \
           else {                                                           \
@@ -1050,9 +1018,9 @@
     if (eErrorCode != EC_NONE ||                                           \
         xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
         xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
-      *paW++ = 0;                                                          \
+      *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
-    else if(xDte2.m_iAsI8 < xDte1.m_iAsI8) {                              \
+    else if(xDte2.m_iAsI8 < xDte1.m_iAsI8) {                               \
       *paW++ = 1;                                                          \
     }                                                                      \
     else {                                                                 \
