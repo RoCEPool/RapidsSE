@@ -10,6 +10,8 @@ namespace STORE { class PipeWork; class Stream; class StageSpec; }
 namespace STORE
 {
   class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>
+              , public ListItem_t<Stage>
+
   {
   private:
     s32  m_sPipelineNm; // pipeline name
