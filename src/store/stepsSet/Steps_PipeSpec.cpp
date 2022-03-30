@@ -101,13 +101,13 @@ void Step::vPipeSpecOptimisable(void)
   
   Job* pJob = MY::pJob();
   
-  Stz* szPipelineNm = pPipeSpec->szPipelineNm();
+  Stz* szPipeSpecNm = pPipeSpec->szPipeSpecNm();
   
   i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
 
   if (   ! iOptimiserLvl
       || ! pJob->bIsOriginator()
-      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
+      ||   szPipeSpecNm->bSame("sqlCompiler"_Stz)
       || ! pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
       ||   pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
       )

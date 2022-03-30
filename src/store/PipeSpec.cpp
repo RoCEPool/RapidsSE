@@ -36,7 +36,7 @@ PipeSpec::PipeSpec(Scanner *p_Scanner, TagSet *p_JobTags)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  m_sPipelineNm   = "(unknown)"_Stz;
+  m_sPipeSpecNm   = "(unknown)"_Stz;
   m_pStagingSpec = new StagingSpec;
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -138,13 +138,13 @@ StageSpec* PipeSpec::pFindStageSpec(Stz *szFindNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pipeline name                                                          */
+/* get pipespec name                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* PipeSpec::szPipelineNm(void)
+Stz* PipeSpec::szPipeSpecNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  return m_sPipelineNm.szStz();
+  return m_sPipeSpecNm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,7 +223,7 @@ bool PipeSpec::bCollectPipeline(void)
 
   vTokenAccept();
   
-  m_sPipelineNm = pTkn()->szChars();
+  m_sPipeSpecNm = pTkn()->szChars();
 
   vTokenAccept();
 
@@ -1058,7 +1058,7 @@ bool PipeSpec::bPass3_includes(void)
 
   if (m_p_JobTags->bHasName("<include_0>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_0>"_Stz);
-    if (! m_sPipelineNm.bSame(szIncludePipNm)) {
+    if (! m_sPipeSpecNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 0: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
@@ -1066,7 +1066,7 @@ bool PipeSpec::bPass3_includes(void)
 
   if (m_p_JobTags->bHasName("<include_1>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_1>"_Stz);
-    if (! m_sPipelineNm.bSame(szIncludePipNm)) {
+    if (! m_sPipeSpecNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 1: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
@@ -1074,7 +1074,7 @@ bool PipeSpec::bPass3_includes(void)
 
   if (m_p_JobTags->bHasName("<include_2>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_2>"_Stz);
-    if (! m_sPipelineNm.bSame(szIncludePipNm)) {
+    if (! m_sPipeSpecNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 2: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }

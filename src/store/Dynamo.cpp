@@ -191,7 +191,7 @@ bool Dynamo::bWillOptimise(void)
   
   Job* pJob = MY::pJob();
   
-  Stz* szPipelineNm = m_p_PipeSpec->szPipelineNm();
+  Stz* szPipelineNm = m_p_PipeSpec->szPipeSpecNm();
   
   i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
 

@@ -219,7 +219,7 @@ void Step::vSubPipeOfOpFindSubPipe(void)
   PipeWork* pOpPipeWork = pOpPipeLine->pPipeWork();
   PipeSpec* pOpPipeSpec = pOpPipeWork->pPipeSpec();
   
-  Stz* szOpPipeNm = pOpPipeSpec->szPipelineNm();
+  Stz* szOpPipeNm = pOpPipeSpec->szPipeSpecNm();
   vTrace("findSubPipe: %s\n"_Stz,szOpPipeNm);
 
   i8 nSubPipeWorks = pOpPipeWork->nItems();
@@ -227,7 +227,7 @@ void Step::vSubPipeOfOpFindSubPipe(void)
     PipeWork* pSubPipeWork = pOpPipeWork->pGet(i_SubPipeWork);
     PipeSpec* pSubPipeSpec = pSubPipeWork->pPipeSpec();
 
-    Stz* szSubPipeNm = pSubPipeSpec->szPipelineNm();
+    Stz* szSubPipeNm = pSubPipeSpec->szPipeSpecNm();
     vTrace("findSubPipe: [%lld] %s\n"_Stz,i_SubPipeWork,szSubPipeNm);
   }
   

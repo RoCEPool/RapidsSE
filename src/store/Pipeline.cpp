@@ -37,7 +37,7 @@ Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 iOriginNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_sPipelineNm   = pPipeSpec->szPipelineNm();
+  m_sPipelineNm   = pPipeSpec->szPipeSpecNm();
   
   m_pPipeWork     = nullptr;
   

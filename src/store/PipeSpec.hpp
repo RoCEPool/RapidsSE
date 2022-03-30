@@ -12,15 +12,14 @@ namespace STORE { class Dynamo;
 
 namespace STORE
 {
-  class PipeSpec
-          : public ListNL_t<PipeSpec>
-          , public ListItem_t<PipeSpec>
+  class PipeSpec : public ListNL_t<PipeSpec>
+                 , public ListItem_t<PipeSpec>
   {
     friend class STORE::Dynamo;
 
   private:
   
-    s32  m_sPipelineNm;    // pipeline name
+    s32  m_sPipeSpecNm;    // pipespec name
     
     StagingSpec* m_pStagingSpec;
  
@@ -44,7 +43,7 @@ namespace STORE
     void vAddStageSpec(StageSpec* pStageSpec);
     StageSpec* pFindStageSpec(Stz* szFindNm);
     TagSet* pJobTags(void);
-    Stz* szPipelineNm(void);
+    Stz* szPipeSpecNm(void);
     i8 nStageSpecs(void);
     StageSpec* pStageSpec(i8 i_Stage);
     StagingSpec* pStageSpecSet(void);

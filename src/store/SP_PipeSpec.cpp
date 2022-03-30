@@ -70,7 +70,7 @@ void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec, i8 iDepth)
   SP_OpSpec spOpSpec;
 
   vCatf(iDepth,"PipeSpec %s %p\n"_Stz
-        ,pPipeSpec->szPipelineNm()
+        ,pPipeSpec->szPipeSpecNm()
         ,pPipeSpec
         );
   
