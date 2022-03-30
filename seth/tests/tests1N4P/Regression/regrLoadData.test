@@ -1,0 +1,146 @@
+/*----------------------------------------------------------------------------*/
+/* regrLoadData -- Load data                                                  */
+/*----------------------------------------------------------------------------*/
+
+// load data into the tables
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+success
+
+Load TABLE2 "../DATA/Load/tbl2data.csv" ;
+success
+
+Load TABLE3 "../DATA/Load/tbl3data.csv" ;
+success
+
+Load TABLE4 "../DATA/Load/tbl4data.csv" ;
+success
+
+Load TABLE5 "../DATA/Load/tbl5data.csv" ;
+success
+
+Load TABLE6 "../DATA/Load/tbl6data.csv" ;
+success
+
+Load TABLE7 "../DATA/Load/tbl7data.csv" ;
+success
+
+Load TABLE8 "../DATA/Load/tbl8data.csv" ;
+success
+
+Load TABLE9 "../DATA/Load/tbl9data.csv" ;
+success
+
+Load ORDERS "../DATA/Load/orders.csv" ;
+success
+
+Load LINEITEM "../DATA/Load/lineitem.csv" ;
+success
+
+Load CUSTOMERH "../DATA/Load/customer.csv" ;
+success
+
+Load PARTSUPP "../DATA/Load/partsupp.csv"
+  <record_ends> = "\r\n";
+success
+
+Load PART "../DATA/Load/part.csv" ;
+success
+
+Load SHIPPING "../DATA/Load/shipping.csv" ;
+success
+
+Load SHIPADDRESS "../DATA/Load/shipaddr.csv" ;
+success
+
+Load SUPPLIER "../DATA/Load/supplier.csv" ;
+success
+
+Load MANUFACTURER "../DATA/Load/manufacturer.csv";
+success
+
+Load NATION "../DATA/Load/nation.csv"
+  <record_ends> = "\r\n";;
+success
+
+Load REGION "../DATA/Load/region.csv" ;
+success
+
+Load RETURNS "../DATA/Load/returns.csv";
+success
+
+CLEANUP {
+  
+  drop table table1;
+  mute
+
+  drop table table2;
+  mute
+  
+  drop table table3;
+  mute
+  
+  drop table table4;
+  mute
+  
+  drop table table5;
+  mute
+  
+  drop table table6;
+  mute
+  
+  drop table table7;
+  mute
+  
+  drop table table8;
+  mute
+  
+  drop table table9;
+  mute
+  
+  drop table orders;
+  mute
+  
+  drop table lineitem;
+  mute
+  
+  drop table customerh;
+  mute
+  
+  drop table partsupp;
+  mute
+  
+  drop table part;
+  mute
+  
+  drop table shipping;
+  mute
+  
+  drop table shipaddress;
+  mute
+  
+  drop table supplier;
+  mute
+  
+  drop table manufacturer;
+  mute
+  
+  drop table nation;
+  mute
+  
+  drop table region;
+  mute
+  
+  drop table returns;
+  mute
+
+  drop table limitRow;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
