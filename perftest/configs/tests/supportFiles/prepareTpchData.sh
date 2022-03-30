@@ -494,7 +494,7 @@ function downloadData() {
     # Do the download in the background
     {
       cd "${dir}"
-      aws s3 cp "${S3_BUCKET}/tpch/sf${SF}" . --recursive --exclude "*" "${includes[@]}"
+      aws s3 cp "${S3_BUCKET}/tpch/sf${SF}" . --no-progress --recursive --exclude "*" "${includes[@]}"
     } &
 
     i=$((i + 2))
@@ -508,7 +508,7 @@ function downloadData() {
     includes=("--include" "nation/nation.tbl.gz" "--include" "region/region.tbl.gz")
 
     cd "${dir}"
-    aws s3 cp "${S3_BUCKET}/tpch/sf${SF}" . --recursive --exclude "*" "${includes[@]}"
+    aws s3 cp "${S3_BUCKET}/tpch/sf${SF}" . --no-progress --recursive --exclude "*" "${includes[@]}"
   } &
 
   wait
