@@ -39,6 +39,9 @@ namespace PROMPT
     void vExecuteJob(void);
     void vDeleteJob(void);
 
+    eEC  ePrepareJob(TokenVec* pCmdTknVec);
+    void vPrintResults(void);
+
     // -- -- -- -- -- --
   
     bool bAvailable(void);

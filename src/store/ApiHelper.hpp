@@ -21,7 +21,12 @@ namespace STORE
     void vExecuteJob(void);
 
     void vFreeSession(void);
-
+  
+    void vPipeoutResults(Op* pCurrOp, Operand* pOperand, Task* pTriggeringTask);
+    eEC  ePrepareJob(Stz* szCmd);
+    eEC  ePrepareJob(TokenVec* m_pLitTknVec);
+    void vPrintResults(void);
+    void vResetResults(void);
   };
 }
 
