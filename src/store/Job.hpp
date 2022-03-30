@@ -9,7 +9,6 @@
 #include "eJP.h"
 #include "eRS.h"
 
-#include "LifeGuard_t.hpp"
 #include "JobMetrics.hpp"
 
 
@@ -23,8 +22,7 @@
 namespace STORE
 {
   class Job : public Operand,
-              public CRM<Job>,
-              public LifeGuard_t<Job>
+              public CRM<Job>
   {
   private:
     Lock m_okLock;

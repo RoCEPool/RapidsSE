@@ -1,28 +1,10 @@
 /*============================================================================*/
-/* OP_answer.sen -- Operator answer                                           */
+/* OP_answerSE.sen -- Operator answer for SE Adaptor                          */
 /*============================================================================*/
 
-" OP_answer.sen" .verbose
+" OP_answerSE.sen" .verbose
 
-/*----------------------------------------------------------------------------*/
-/* receiver demon                                                             */
-/*----------------------------------------------------------------------------*/
-: recvDemonPipeline params| iConnNo |
 
-  "pipelineLocal recvDemon" iConnNo >str str.cat
-  
-  "
-      tag \"<pre_execute>\" = \"demon::install\" endTag
-    begin
-
-      stage stageA on origin :
-        start | recv | eatAll | stageA
-
-    end ;
-  "
-  
-  str.cat
-;
 
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver job (as a dedicated job)                                */
@@ -36,12 +18,10 @@
   pAnsweredNode "<ansNode> = %v " str.format
   iConnNo "<connectionNo> = %v" str.format str.cat
 
-  // receiver demon pipeline
-  iConnNo recvDemonPipeline
-
-  api::spawnDemon not if
-    "Error Code %v" .printf
-  then
+    // receiver demon pipeline
+      receiverSE_procText api::spawnDemon not if
+      "Error Code %v" .printf
+    then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -111,9 +91,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: answer_StartMarker \handler
+: answerSE_StartMarker \handler
 
   0 locals| iPort |
   0 locals| pListeningSocket |
@@ -185,13 +165,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for answer req                             (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : answer_op \operator
+ : answerSE_op \operator
  
   _lu_initialise_
 
   op__topology
 
-  find: answer_StartMarker ZK_M_START [op].handler!
+  find: answerSE_StartMarker ZK_M_START [op].handler!
 
   op__loop
 
@@ -205,12 +185,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: answer :: answer ;
+cmdSyntax: answerSE :: answerSE ;
 
-: answer_cmdTags _cmdTags tagCopy: op_tags
+: answerSE_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <dedicatedThd> = 1
-    <opEntry> = "answer_op"
+    <opEntry> = "answerSE_op"
   }
 ;
 

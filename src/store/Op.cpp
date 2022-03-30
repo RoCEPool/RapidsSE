@@ -52,7 +52,6 @@ __aFooterFunction(Op);
 /*----------------------------------------------------------------------------*/
 Op::Op(OpSpec* pOpSpec, Stream* pStream)
 : Operand(CN_OP)
-, LifeGuard_t<Op>(this,CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -181,8 +180,7 @@ Op::~Op(void) noexcept(false)
     
     m_pTask = nullptr;
     
-    pTask->vGuardedDelete(CN_TASK,&pTask,
-                          CN_OP,this,(Stz*)__func__);
+    delete pTask;
 
   }
 
@@ -1390,7 +1388,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
   vOpTrace(pOperand,(Stz*)__func__);
     
-  //RASSERT(! szOpNm()->bSame("send"_Stz));
+  //RASSERT(! szOpNm()->bSame("sendSE"_Stz));
   
     
   // get the next stage the send is supposed to send to

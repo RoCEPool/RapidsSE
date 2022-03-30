@@ -1,15 +1,26 @@
 /*============================================================================*/
-/* LifeGuard_t.cpp -- lifecycle rules and helper for EE componentry           */
+/* dp_receiverSE.sen -- Receiver Demon for SE Adaptor                         */
 /*============================================================================*/
 
-#include "BASE.h"
+" dp_receiverSE.sen" .verbose
 
-#include "LifeGuard_t.hpp"
 
 /*----------------------------------------------------------------------------*/
-/*-- LifeCycle ---------------------------------------------------------------*/
+/* pipeline/procedure text for receiver demon                                 */
 /*----------------------------------------------------------------------------*/
+procText:
+  pipelineLocal receiverSE_procText
+    tag "<pre_execute>" = "demon::install" endTag
+  begin
 
+    stage stageA on origin :
+        start
+      | recvSE
+      | eatAll
+      | stageA
+
+  end
+;
 
 /*============================================================================*/
 /* end                                                                        */

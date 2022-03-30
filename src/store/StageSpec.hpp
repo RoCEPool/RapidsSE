@@ -9,7 +9,6 @@
 #include "eYF.h"
 
 #include "OpSpec.hpp"
-#include "LifeGuard_t.hpp"
 
 namespace STORE { class PipeSpec; }
 
@@ -17,9 +16,7 @@ namespace STORE
 {
   class StageSpec
           : public ListNL_t<OpSpec>
-          , public LifeGuard_t<StageSpec>
           , public ListItem_t<StageSpec>
-
   {
   private:
     s32  m_sStageNm;    // stage name

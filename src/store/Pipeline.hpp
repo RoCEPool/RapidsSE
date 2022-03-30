@@ -3,16 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "LifeGuard_t.hpp"
-
 namespace STORE { class PipeWork; class Stage; class PipeSpec; }
 
 namespace STORE
 {
   class Pipeline : public Object
-                   //public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>,
-                 , public LifeGuard_t<Pipeline>
-
   {
   private:
 

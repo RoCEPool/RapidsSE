@@ -857,7 +857,7 @@ QueryNodeList* Expr::pAggregateExprs(QueryNode* pExpr, b1 bDescendAggregates)
 /* Changes the existing expression in place to support super-aggregation of   */
 /* partitioned aggregate expressions.                                         */
 /*----------------------------------------------------------------------------*/
-void Expr::vSuperAggregate(QueryNode* pExpr)
+void Expr::vSuperAggregate(QueryNode* pExpr, PlanNode* pRootNode)
 {
   // e.g. an expression of SUM(col1), when all of the partitioned results are
   // being merged, will be super-aggregated with the expression SUM(SUM(col1)).
@@ -891,6 +891,36 @@ void Expr::vSuperAggregate(QueryNode* pExpr)
 
       // Build the SUM(COUNT(x)) chain
       QueryNode* pDenominator = SumExpr::pCreate(false, CountExpr::pCreate(false, false, pChildExpr->pDeepCopy(true)));
+
+      // Handle type differences here.
+      // Both the numerator and denominator may need to be explicitly cast in order to
+      // maintain the resultant type according to the AVG expression.
+      // The denominator is always an integer here, but we need its type to match that
+      // of the numerator (type coercion gives this consistency).
+      // The numerator may need to be cast if it is an integer as AVG(x) returns a
+      // DECIMAL if x is an INTEGER.
+      //
+      // First get the resulting type of the original AVG operation.
+      eCT eAvgType = Expr::eType(pExpr, pRootNode);
+
+      // Now check if it is the same type as the numerator and denominator
+      if (Expr::eType(pNumerator, pRootNode) != eAvgType) {
+        // Numerator needs to be cast
+        QueryNode* pCastExpr = CastExpr::pCoerceTo(eAvgType, pNumerator, pRootNode);
+
+        // Numerator was copied above, so clean up
+        delete pNumerator;
+        pNumerator = pCastExpr;
+      }
+
+      if (Expr::eType(pDenominator, pRootNode) != eAvgType) {
+        // Denominator needs to be cast
+        QueryNode* pCastExpr = CastExpr::pCoerceTo(eAvgType, pDenominator, pRootNode);
+
+        // Denominator was copied above, so clean up
+        delete pDenominator;
+        pDenominator = pCastExpr;
+      }
 
       // Build the division expression
       QueryNode* pDivExpr = DivisionExpr::pCreate(pNumerator, pDenominator);

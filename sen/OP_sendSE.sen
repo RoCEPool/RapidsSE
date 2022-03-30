@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* OP_send.sen -- Operator send                                               */
+/* OP_sendSE.sen -- Operator send for SE Adaptor                              */
 /*============================================================================*/
 
-" OP_send.sen" .verbose
+" OP_sendSE.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* send the operand in the PipeIn[] register                                  */
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_CANCELLING operand                                        */
 /*----------------------------------------------------------------------------*/
-: send_CANCELLING \handler
+: sendSE_CANCELLING \handler
 
   PipeIn[].sendTo discard
 
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_CLEANING operand                                          */
 /*----------------------------------------------------------------------------*/
-: send_CLEANING \handler
+: sendSE_CLEANING \handler
 
   LogicUnit[].cleanup
   PipeIn[].sendTo
@@ -64,7 +64,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_EXITING operand                                           */
 /*----------------------------------------------------------------------------*/
-: send_EXITING \handler
+: sendSE_EXITING \handler
 
   PipeIn[].sendTo discard
 
@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for send request                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : send_op \operator
+ : sendSE_op \operator
 
   _lu_initialise_
 
@@ -86,9 +86,9 @@
 
   find: PipeIn[].sendTo [op].handlerAll!
 
-  find: send_CANCELLING  ZK_M_CANCELLING  [op].handler!
-  find: send_CLEANING    ZK_M_CLEANING    [op].handler!
-  find: send_EXITING     ZK_M_EXITING     [op].handler!
+  find: sendSE_CANCELLING  ZK_M_CANCELLING  [op].handler!
+  find: sendSE_CLEANING    ZK_M_CLEANING    [op].handler!
+  find: sendSE_EXITING     ZK_M_EXITING     [op].handler!
 
   op__loop
 
@@ -102,12 +102,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: send :: send <sendCast> ;
+cmdSyntax: sendSE :: sendSE <sendCast> ;
 
-: send_cmdTags _cmdTags tagCopy: op_tags
+: sendSE_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "send_op"
+    <opEntry> = "sendSE_op"
   }
 ;
 

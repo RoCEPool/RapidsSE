@@ -1,47 +1,26 @@
 /*============================================================================*/
-/* dp_answerDemon.sen -- Answer Demon                                         */
+/* dp_answerSE.sen -- Answer Demon for SE Adaptor                             */
 /*============================================================================*/
 
-" dp_answerDemon.sen" .verbose
+" dp_answerSE.sen" .verbose
 
 
 /*----------------------------------------------------------------------------*/
-/* answer demon                                                               */
+/* pipeline/procedure text for answer demon                                   */
 /*----------------------------------------------------------------------------*/
-/*
-: answerDemonPipeline
-
-  "
-    pipelineLocal answerDemon
-      tag \"<pre_execute>\" = \"demon::install\" endTag
-    begin
-
-      stage stageA on origin :
-          start
-        | answer
-        | eatAll
-        | stageA
-
-    end ;
-  "
-;
-*/
-
-
 procText:
-  pipelineLocal answerDemonPipeline
+  pipelineLocal answerSE_procText
     tag "<pre_execute>" = "demon::install" endTag
   begin
 
     stage stageA on origin :
         start
-      | answer
+      | answerSE
       | eatAll
       | stageA
 
   end
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -12,6 +12,9 @@
 # Assuming there is at least 1 SSD then data will be written out to:
 #   /mnt/disk<1..N>/data/tpch/sf<N>/<tableName>/<tableName>.tbl
 #
+# (The non-partitioned nation and region tables will be written out to the
+#  first disk of each node).
+#
 # If there are no SSDs then data will be written out to:
 #   <installDir>/data/tpch/sf<N>/<tableName>/<tableName>.tbl
 #
@@ -33,6 +36,7 @@ set -euo pipefail
 readonly DIR=$(dirname "$0")
 readonly SCRIPT_NAME=$(basename "$0")
 readonly S3_BUCKET="s3://rapidsse-perf-test-data"
+readonly TABLES=("customer" "lineitem" "orders" "supplier" "part" "partsupp" "nation" "region")
 
 ###############################################################################
 ### Significant Global Variables                                            ###
@@ -48,6 +52,9 @@ COMMON_FN=""
 
 # The path of the cluster.config file
 CONFIG_FILE=""
+
+# The file that contains the name of the current node.
+NAME_FILE=""
 
 # How many chunks the original data is split into
 NUMCHUNKS=0
@@ -68,6 +75,7 @@ CHUNKS_PER_NODEPATH=()
 COPY_DATA_MODE=0
 START_IDX=0
 TARGETS=()
+INSTALL_DIR=""
 
 ###############################################################################
 ### Functions                                                               ###
@@ -86,11 +94,23 @@ function printUsageAndExit() {
   echo "  --sf <scaleFactor>  The scale factor of the TPC-H data to be copied."
   echo ""
   echo "  --copyData                <internal use> Runs the script in copyData mode to download and layout the data."
+  echo "  --installDir              <internal use> The RapidsSE installation directory on the current node."
   echo "  --start                   <internal use> The 1-based start index of the data chunks to copy on this node."
   echo "  --target <path> <count>   <internal use> How many chunks to put on a given target path."
   echo ""
   echo "  --help              Displays this message."
   exit 1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Print an error message to stderr.
+## This is also provided in common.fn, but it is required before common.fn is loaded.
+## Params:
+##   $1 : Error message
+##   $2..$n : (optional) other arguments to print.
+
+function printError() {
+  >&2 echo -e "ERROR: $*"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -101,6 +121,7 @@ function processArgs() {
   # Did we get these arguments?
   local argSf=0
   local argCopyData=0
+  local argInstallDir=0
   local argStart=0
   local argTarget=0
 
@@ -120,6 +141,13 @@ function processArgs() {
         argCopyData=1
         COPY_DATA_MODE=1
         shift # past argument
+        ;;
+
+      --installDir)
+        argInstallDir=1
+        INSTALL_DIR="$2"
+        shift # past argument
+        shift # past value
         ;;
 
       --start)
@@ -167,6 +195,17 @@ function processArgs() {
   if [[ "${argCopyData}" -eq 1 ]]; then
     # Check that other arguments are also supplied
 
+    # --installDir must be specified and must exist
+    if [[ "${argInstallDir}" -eq 0 ]]; then
+      printError "RapidsSE installation dir argument (--installDir) must be specified when the --copyData argument is specified."
+      printUsageAndExit
+    fi
+
+    if [[ -z "${INSTALL_DIR}" ]] || ! [[ -d "${INSTALL_DIR}" ]]; then
+      printError "Value for --installDir argument does not exist: ${INSTALL_DIR}"
+      printUsageAndExit
+    fi
+
     # --start must exist and must be a positive integer
     if [[ "${argStart}" -eq 0 ]]; then
       printError "Start index argument (--start) must be specified when the --copyData argument is specified."
@@ -200,14 +239,43 @@ function processArgs() {
       i=$((i + 2))
     done
 
+  else
+    # Not running in copyData mode. Check that certain arguments have not been specified.
+
+    if [[ "${argInstallDir}" -eq 1 ]]; then
+      printError "The --installDir argument can only be specified in conjunction with the --copyData argument."
+      printUsageAndExit
+    fi
+
+    if [[ "${argStart}" -eq 1 ]]; then
+      printError "The --start argument can only be specified in conjunction with the --copyData argument."
+      printUsageAndExit
+    fi
+
+    if [[ "${argTarget}" -eq 1 ]]; then
+      printError "The --target argument can only be specified in conjunction with the --copyData argument."
+      printUsageAndExit
+    fi
   fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Search for and source the common.fn file in the installation directory
+## Search for common.fn file in the installation directory and sets the following
+## variables appropriately: COMMON_FN, PROJ_ROOT, CONFIG_FILE, NAME_FILE.
 ## Params: None
 
-function findAndLoadCommon() {
+function findCommonFn() {
+
+  # Do we have a known installation dir we can use?
+  if [[ -n "${INSTALL_DIR}" ]]; then
+    COMMON_FN="${INSTALL_DIR}/common.fn"
+    PROJ_ROOT="${INSTALL_DIR}"
+    CONFIG_FILE="${PROJ_ROOT}/cluster.config"
+    NAME_FILE="${PROJ_ROOT}/node.name"
+    return
+  fi
+
+  # Fall back to searching upwards from the current path.
   local searchDir
   searchDir="$(realpath "${DIR}")"
 
@@ -217,9 +285,7 @@ function findAndLoadCommon() {
       COMMON_FN="${searchDir}/common.fn"
       PROJ_ROOT="${searchDir}"
       CONFIG_FILE="${PROJ_ROOT}/cluster.config"
-
-      # shellcheck disable=SC1090
-      source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
+      NAME_FILE="${PROJ_ROOT}/node.name"
       return
     fi
 
@@ -250,6 +316,7 @@ function getBaseOutputPaths() {
   local mountPoint
   local arbitraryMaximum
 
+  # We wouldn't expect more disks that this.
   arbitraryMaximum=20
 
   while [ $i -lt ${arbitraryMaximum} ];
@@ -313,7 +380,10 @@ function copyScriptToNodes() {
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
     debugPrint "Copying script to host ${host}"
-    scp "${DIR}/${SCRIPT_NAME}" "${host}:/tmp/${SCRIPT_NAME}"
+    scp "-o" "BatchMode=yes" "-o" "StrictHostKeyChecking=no" "${DIR}/${SCRIPT_NAME}" "${host}:/tmp/${SCRIPT_NAME}"
+
+    # ensure the script is runnable
+    ssh "-o" "BatchMode=yes" "-o" "StrictHostKeyChecking=no" "${host}" chmod +x "/tmp/${SCRIPT_NAME}"
   done
 }
 
@@ -331,6 +401,7 @@ function invokeScriptOnNodes() {
   local nodeName
   local host
   local nodeArgs
+  local installDir
 
   local pathExt
   pathExt="/data/tpch/sf${SF}"
@@ -338,9 +409,10 @@ function invokeScriptOnNodes() {
   for nodeName in "${NODE_LIST[@]}";
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
     # Build the target directories and chunk counts for this node
-    nodeArgs=("--start" "${chunkCount}")
+    nodeArgs=("--installDir" "${installDir}" "--start" "${chunkCount}")
 
     for dir in "${BASE_OUTPUT_PATHS[@]}"
     do
@@ -422,11 +494,22 @@ function downloadData() {
     # Do the download in the background
     {
       cd "${dir}"
-      aws s3 cp "${S3_BUCKET}/tpch/sf${SF}" . --recursive --dryrun --exclude "*" "${includes[@]}"
+      aws s3 cp "${S3_BUCKET}/tpch/sf${SF}" . --recursive --exclude "*" "${includes[@]}"
     } &
 
     i=$((i + 2))
   done
+
+  # Also download the nation and region tables onto the first target on each node
+  # (it's not necessary on each node but these tables are small).
+  {
+    dir="${TARGETS[0]}"
+    local includes=()
+    includes=("--include" "nation/nation.tbl.gz" "--include" "region/region.tbl.gz")
+
+    cd "${dir}"
+    aws s3 cp "${S3_BUCKET}/tpch/sf${SF}" . --recursive --exclude "*" "${includes[@]}"
+  } &
 
   wait
 }
@@ -437,11 +520,52 @@ function downloadData() {
 
 function processData() {
 
-  # TODO:   3. unzip the data
-  # TODO:   4. merge files together
-  # TODO:   5. rename files, cleanup etc
+  # For each target path on this node:
+    # Go into each directory (customer, lineitem, etc)
+    # unzip the data
+    # merge files together
+    # rename files, cleanup etc
 
-  true
+  local i=0
+  local dir
+
+  while [ "${i}" -lt "${#TARGETS[@]}" ]
+  do
+    dir="${TARGETS[$i]}"
+
+    {
+      cd "${dir}"
+
+      # For each table
+      for tableName in "${TABLES[@]}"
+      do
+
+        if ! [ -d "${tableName}" ]; then
+          # nation and region table data doesn't exist on each drive
+          continue
+        fi
+
+        cd "${tableName}"
+
+        if [ "${tableName}" == "nation" ] || [ "${tableName}" == "region" ]; then
+          # Decompress file. Compressed file will be automatically removed.
+          gunzip "${tableName}"*.tbl.gz
+
+        else
+          # Tables: lineitem, orders, supplier, customer, part, parsupp
+          # Decompress file, append to a single file and then remove the compressed file.
+          find . -name "${tableName}.tbl.*.gz" -print0 | xargs -0 gunzip -c >> "${tableName}.tbl"
+          rm -f "${tableName}"*.gz
+        fi
+
+        cd ..
+      done
+    } &
+
+    i=$((i + 2))
+  done
+
+  wait
 }
 
 
@@ -449,10 +573,20 @@ function processData() {
 ### Main Script                                                             ###
 ###############################################################################
 
+# Debugging
+# set -x
+# export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+
 # Process the arguments given to the script.
 processArgs "$@"
 
-findAndLoadCommon
+# We only need to find common.fn. We must source it from outside a function
+# because otherwise any declared variables in common.fn will only be local
+# to that function and not global, unless explicitly declared that way.
+findCommonFn
+
+# shellcheck disable=SC1090
+source "${COMMON_FN}" || { >&2 echo "Could not load ${COMMON_FN}"; exit 1; }
 
 if [ "${COPY_DATA_MODE}" -eq 1 ]; then
   copyData
@@ -460,7 +594,6 @@ if [ "${COPY_DATA_MODE}" -eq 1 ]; then
 fi
 
 # Pre-copy-data mode. Determine what needs to be copied where.
-
 loadClusterConfig   # common.fn
 loadNodeName        # common.fn
 

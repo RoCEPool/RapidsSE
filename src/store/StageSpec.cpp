@@ -25,7 +25,6 @@ __aFooterFunction(StageSpec)
 StageSpec::StageSpec(Stz* szStageNm,
                      PipeSpec* pPipeSpec)
 : ListNL_t<OpSpec>(CN_STAGESPEC)
-, LifeGuard_t<StageSpec>(this,CN_STAGESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
@@ -53,8 +52,7 @@ StageSpec::~StageSpec(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
     
   while (OpSpec* pOpSpec = pPop())
-    pOpSpec->vGuardedDelete(CN_OPSPEC,&pOpSpec,
-                            CN_STAGESPEC,this,(Stz*)__func__);
+    delete pOpSpec;
 
   vClear();
 }

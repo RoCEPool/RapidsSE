@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_recv.sen -- Operator recv                                               */
+/* OP_recvSE.sen -- Operator recv for SE Adaptor                              */
 /*============================================================================*/
 
-" OP_recv.sen" .verbose
+" OP_recvSE.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* recv init                                                                  */
 /*----------------------------------------------------------------------------*/
-: recv_init ( -- )
+: recvSE_init ( -- )
 
   //CN_JOB [task] task.thread@ thread.dedicated!
 
@@ -27,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 /* recv next object(s)                                                        */
 /*----------------------------------------------------------------------------*/
-: recv_recvNext
+: recvSE_recvNext
   
   nullptr to recvdObject[]
 
@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 /* recv loop: receive a job (possibly with operand), dispatch it              */
 /*----------------------------------------------------------------------------*/
-: recv_dispatch ( -- )
+: recvSE_dispatch ( -- )
 
   // null object (low memory)
   recvdObject[].isNull if
@@ -58,19 +58,19 @@
 /*----------------------------------------------------------------------------*/
 /* receiver loop: receive a job (possibly with operand), dispatch it          */
 /*----------------------------------------------------------------------------*/
-: recv_loop ( -- )
+: recvSE_loop ( -- )
 
   begin
 
     trap::stackDepthZero
 
     // receive next object(s)
-    recv_recvNext
+    recvSE_recvNext
     not if
       exit
     then
         
-    recv_dispatch
+    recvSE_dispatch
 
   again
 ;
@@ -81,15 +81,15 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: recv_StartMarker \handler
+: recvSE_StartMarker \handler
 
   "Receiver Demon Started" .boot
 
   // initialise
-  recv_init
+  recvSE_init
 
   // loop, receiving and executing jobs
-  recv_loop
+  recvSE_loop
 
   HAZARD
 ;
@@ -97,13 +97,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for receiver req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : recv_op \operator
+ : recvSE_op \operator
  
   _lu_initialise_
 
   op__topology
 
-  find: recv_StartMarker ZK_M_START [op].handler!
+  find: recvSE_StartMarker ZK_M_START [op].handler!
 
   // get the pipeline job of the operator
   [op].job@ locals| pPipelineJob |
@@ -135,12 +135,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: recv :: recv ;
+cmdSyntax: recvSE :: recvSE ;
 
-: recv_cmdTags _cmdTags tagCopy: op_tags
+: recvSE_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <dedicatedThd> = 1
-    <opEntry> = "recv_op"
+    <opEntry> = "recvSE_op"
   }
 ;
 

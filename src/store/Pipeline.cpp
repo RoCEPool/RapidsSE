@@ -33,7 +33,6 @@ __aFooterFunction(Pipeline)
 /*----------------------------------------------------------------------------*/
 Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 iOriginNodeNo)
 : Object(CN_PIPELINE)
-, LifeGuard_t<Pipeline>(this,CN_PIPELINE)
 , m_okDebugLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
@@ -73,11 +72,9 @@ Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_pPipeWork->vGuardedDelete(CN_PIPEWORK,&m_pPipeWork,
-                              CN_PIPELINE,this,(Stz*)__func__);
+  delete m_pPipeWork;
   
-  m_pPipeSpec->vGuardedDelete(CN_PIPESPEC,&m_pPipeSpec,
-                                  CN_PIPELINE,this,(Stz*)__func__);
+  delete m_pPipeSpec;
 }
 
 /*----------------------------------------------------------------------------*/

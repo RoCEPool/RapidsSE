@@ -25,7 +25,6 @@ __aFooterFunction(OpSpec)
 /*----------------------------------------------------------------------------*/
 OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
 : Object(CN_OPSPEC)
-, LifeGuard_t<OpSpec>(this,CN_OPSPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
