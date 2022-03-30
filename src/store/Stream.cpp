@@ -40,7 +40,6 @@ Stream::Stream(Stage* pStage, StageSpec* pStageSpec,
   
   m_pStageSpec = pStageSpec;
   m_pStage     = pStage;
-  m_pPipeline  = pStage->pPipeWork()->pPipeline();
 
   m_tPtnId     = tPtnId;
   m_iNodeNo    = iNodeNo;
@@ -159,7 +158,7 @@ Pipeline* Stream::pPipeline(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_pPipeline;
+  return m_pStage->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/

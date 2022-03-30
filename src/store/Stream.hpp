@@ -17,7 +17,6 @@ namespace STORE
     s32  m_sStreamNm;   // name of this stream
     i8   m_i_Stream;    // [stream] in stage
 
-    Pipeline*  m_pPipeline;   // which pipeline
     PtnId m_tPtnId;           // this stream processes m_tPtnId in grid
                               //   will be C_UNKNOWN for stage with node topology
 

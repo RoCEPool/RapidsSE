@@ -25,6 +25,7 @@ namespace STORE
     Staging(PipeWork* pPipeWork, PipeSpec* pPipeSpec);
    ~Staging(void) noexcept(false);
   
+    Pipeline* pPipeline(void);
     PipeWork* pPipeWork(void);
 
   private:
