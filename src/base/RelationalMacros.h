@@ -1137,6 +1137,91 @@
     }                                                                      \
   }
 
+#define _GE_VCHVCH(eErrorCode)                                             \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if (strcmp((char*)iArg1, (char*)iArg2) >= 0)                         \
+        *paW++ = 1;                                                        \
+      else                                                                 \
+        *paW++ = 0;                                                        \
+    }                                                                      \
+  }
+
+#define _GT_VCHVCH(eErrorCode)                                             \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if (strcmp((char*)iArg1, (char*)iArg2) > 0)                         \
+        *paW++ = 1;                                                        \
+      else                                                                 \
+        *paW++ = 0;                                                        \
+    }                                                                      \
+  }
+
+#define _LE_VCHVCH(eErrorCode)                                             \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if (strcmp((char*)iArg1, (char*)iArg2) <= 0)                         \
+        *paW++ = 1;                                                        \
+      else                                                                 \
+        *paW++ = 0;                                                        \
+    }                                                                      \
+  }
+
+#define _LT_VCHVCH(eErrorCode)                                             \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if (strcmp((char*)iArg1, (char*)iArg2) < 0)                         \
+        *paW++ = 1;                                                        \
+      else                                                                 \
+        *paW++ = 0;                                                        \
+    }                                                                      \
+  }
+
+#define _NE_VCHVCH(eErrorCode)                                             \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL ||                                           \
+        iArg2 == C_DATUM_NULL) {                                           \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if (strcmp((char*)iArg1, (char*)iArg2) != 0)                         \
+        *paW++ = 1;                                                        \
+      else                                                                 \
+        *paW++ = 0;                                                        \
+    }                                                                      \
+  }
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
