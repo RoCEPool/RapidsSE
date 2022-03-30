@@ -57,8 +57,6 @@ Dissect::~Dissect(void) noexcept(false)
 /* dissect pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
 
-#ifdef WITH_STAGESET
-
 Board* Dissect::pDissectSpec(PipeSpec* pPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
@@ -82,36 +80,6 @@ Board* Dissect::pDissectSpec(PipeSpec* pPipeSpec)
   
   return m_pBoard;
 }
-
-#else
-
-Board* Dissect::pDissectSpec(PipeSpec* pPipeSpec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-        
-  SubPipeSpecs* pSubPipelines = pPipeSpec->pSubPipeSpecs();
-  if (pSubPipelines) {
-    i8 nSubPipelines = pSubPipelines->nItems();
-    for (i8 i_SubPipeline = 0; i_SubPipeline < nSubPipelines; i_SubPipeline++) {
-      m_pPipeSpec = pSubPipelines->pGet(i_SubPipeline);
-      
-      vPipeline();
-    }
-  }
-  
-  m_pPipeSpec = pPipeSpec;
-  vPipeline();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  m_pStageSpec = nullptr;
-  m_pOpSpec    = nullptr;
-  m_bSawAggOp  = false;
-  
-  return m_pBoard;
-}
-
-#endif
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
