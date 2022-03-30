@@ -19,11 +19,13 @@ __aFooterFunction(Staging)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Staging::Staging(void)
+Staging::Staging(PipeWork* pPipeWork)
 : ListNL_t<Stage>(CN_STAGING)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGING, _FOOTER_);
 
+  m_pPipeWork = pPipeWork;
+  
   _checkInitialised_(CN_STAGING);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGING, _FOOTER_);
@@ -39,6 +41,22 @@ Staging::~Staging(void) noexcept(false)
   while (Stage* pStage = pPop())
     delete pStage;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get pipework                                                               */
+/*----------------------------------------------------------------------------*/
+PipeWork* Staging::pPipeWork(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGING,_FOOTER_);
+  
+  return m_pPipeWork;
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

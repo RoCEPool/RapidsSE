@@ -11,6 +11,8 @@ namespace STORE
   {
   private:
    
+    PipeWork* m_pPipeWork;
+  
     // must be last
     Footer m_xFooter;
 
@@ -18,9 +20,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Staging(void);
+    Staging(PipeWork* pPipeWork);
    ~Staging(void) noexcept(false);
   
+    PipeWork* pPipeWork(void);
+
   private:
   
     Footer* aFooter(void);

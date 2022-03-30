@@ -11,13 +11,13 @@ namespace STORE
   class Stream : public VectorNL_t<CN_STREAM,Op,C_MAX_OPS>
   {
   private:
+    Stage*     m_pStage;      // which stage of pipeline
     s32  m_sPipelineNm; // pipeline name
     s32  m_sStageNm;    // stage name within pipeline
     s32  m_sStreamNm;   // name of this stream
     i8   m_i_Stream;    // [stream] in stage
 
     StageSpec* m_pStageSpec;  // stage specification for this stream
-    Stage*     m_pStage;      // which stage of pipeline
     Pipeline*  m_pPipeline;   // which pipeline
     PtnId m_tPtnId;           // this stream processes m_tPtnId in grid
                               //   will be C_UNKNOWN for stage with node topology
@@ -33,8 +33,8 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-   Stream(StageSpec* pStageSpec, Stage* pStage,
-           i8 i_Stream, PtnId tPtnId, i8 iNodeNo);
+   Stream(Stage* pStage, StageSpec* pStageSpec,
+          i8 i_Stream, PtnId tPtnId, i8 iNodeNo);
 
    ~Stream(void) noexcept(false);
     

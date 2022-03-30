@@ -33,8 +33,8 @@ __aFooterFunction(Stream)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
-               PtnId tPtnId, i8 iNodeNo)
+Stream::Stream(Stage* pStage, StageSpec* pStageSpec,
+               i8 i_Stream, PtnId tPtnId, i8 iNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
@@ -90,7 +90,7 @@ void Stream::vCreateOps(void)
     
     OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
   
-    Op* pOp_New = new Op(pOpSpec,this);
+    Op* pOp_New = new Op(this,pOpSpec);
     vAppend(pOp_New);
 
     if (m_i_Stream > 0) {

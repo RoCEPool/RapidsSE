@@ -40,7 +40,7 @@ PipeWork::PipeWork(Pipeline* pPipeline, PipeSpec* pPipeSpec)
   m_pPipeline = pPipeline;
   m_pPipeSpec = pPipeSpec;
 
-  m_pStaging = new Staging;
+  m_pStaging = new Staging(this);
 
   _checkInitialised_(CN_PIPEWORK);
   
@@ -286,7 +286,7 @@ void PipeWork::vCreatePipework(void)
     StageSpec* pStageSpec = m_pPipeSpec->pStageSpec(i_StageSpec);
     
     // add a stage from the stageSpec to the stageVec
-    Stage* pStage = new Stage(pStageSpec, this);
+    Stage* pStage = new Stage(this,pStageSpec);
     m_pStaging->vAppend(pStage);
     pStage->vCreateStreams();
   }

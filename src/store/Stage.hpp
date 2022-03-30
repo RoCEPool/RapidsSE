@@ -18,8 +18,8 @@ namespace STORE
     s32  m_sStageNm;    // name of this stage
     i8   m_i_Stage;     // [stage] in pipeline
 
+    PipeWork*   m_pPipeWork;  // which pipework
     StageSpec*  m_pStageSpec; // specification of this stage
-    PipeWork*   m_pPipeWork;  // which pipeline
   
     // -- -- -- -- -- --
 
@@ -30,7 +30,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Stage(StageSpec* pStageSpec, PipeWork* pPipeWork);
+    Stage(PipeWork* pPipeWork, StageSpec* pStageSpec);
    ~Stage(void) noexcept(false);
       
     void vCancelPipeline(Task* pTriggeringTask);
