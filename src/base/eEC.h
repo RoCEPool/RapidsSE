@@ -28,6 +28,8 @@ enum eEC : u2 // error codes
   EC_AMBIGUOUS_TABLE,               // SQL Compiler Subsystem
   EC_AMBIGUOUS_USING_COLUMN,        // SQL Compiler Subsystem
   EC_AMBIGUOUS_WITH_QUERY,          // SQL Compiler Subsystem
+  EC_ARITHMETIC_OVERFLOW,           // Arithmetic operation Overflow
+  EC_ARITHMETIC_UNDERFLOW,          // Arithmetic operation Underflow
   EC_ASSERT,
 
   /* _B_ */
@@ -208,6 +210,7 @@ enum eEC : u2 // error codes
   EC_RESPONSE_PENDING,
 
   /* _S_ */
+  EC_SCALE_OUT_OF_BOUNDS,
   EC_SCHEMA_EXISTS,
   EC_SE_NOT_RUNNING,
   EC_SE_UNKNOWN_ERROR,
@@ -276,6 +279,8 @@ static Stz* aEC[] =
   /* EC_AMBIGUOUS_TABLE               */ (Stz*)"EC_AMBIGUOUS_TABLE",          // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_USING_COLUMN        */ (Stz*)"EC_AMBIGUOUS_USING_COLUMN",   // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_WITH_QUERY          */ (Stz*)"EC_AMBIGUOUS_WITH_QUERY",     // SQL Compiler Subsystem
+  /* EC_ARITHMETIC_OVERFLOW,          */ (Stz*)"EC_ARITHMETIC_OVERFLOW",      // Arithmetic operation Overflow
+  /* EC_ARITHMETIC_UNDERFLOW,         */ (Stz*)"EC_ARITHMETIC_UNDERFLOW",     // Arithmetic operation Underflow
   /* EC_ASSERT                        */ (Stz*)"assert",
 
   /* _B_ */
@@ -455,6 +460,7 @@ static Stz* aEC[] =
   /* EC_RESPONSE_PENDING              */ (Stz*)"response pending",
 
   /* _S_ */
+  /* EC_SCALE_OUT_OF_BOUNDS           */ (Stz*)"scale out of bounds",
   /* EC_SCHEMA_EXISTS                 */ (Stz*)"schema exists",
   /* EC_SE_NOT_RUNNING                */ (Stz*)"SE is not running",
   /* EC_SE_UNKNOWN_ERROR              */ (Stz*)"SE unknown error",
@@ -517,6 +523,8 @@ static Stz* aEC2[] = // error code
   /* EC_AMBIGUOUS_TABLE               */ (Stz*)"EC_AMBIGUOUS_TABLE",                // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_USING_COLUMN        */ (Stz*)"EC_AMBIGUOUS_USING_COLUMN",         // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_WITH_QUERY          */ (Stz*)"EC_AMBIGUOUS_WITH_QUERY",           // SQL Compiler Subsystem
+  /* EC_ARITHMETIC_OVERFLOW,          */ (Stz*)"EC_ARITHMETIC_OVERFLOW",            // Arithmetic operation Overflow
+  /* EC_ARITHMETIC_UNDERFLOW,         */ (Stz*)"EC_ARITHMETIC_UNDERFLOW",           // Arithmetic operation Underflow
   /* EC_ASSERT                        */ (Stz*)"EC_ASSERT",
 
   /* _B_ */
@@ -697,6 +705,7 @@ static Stz* aEC2[] = // error code
   /* EC_RESPONSE_PENDING              */ (Stz*)"EC_RESPONSE_PENDING",
 
   /* _S_ */
+  /* EC_SCALE_OUT_OF_BOUNDS           */ (Stz*)"EC_SCALE_OUT_OF_BOUNDS",
   /* EC_SCHEMA_EXISTS                 */ (Stz*)"EC_SCHEMA_EXISTS",
   /* EC_SE_NOT_RUNNING                */ (Stz*)"EC_SE_NOT_RUNNING",
   /* EC_SE_UNKNOWN_ERROR              */ (Stz*)"EC_SE_UNKNOWN_ERROR",
@@ -769,6 +778,8 @@ static Stz* aErrorMsg[] =
   /* EC_AMBIGUOUS_TABLE               */ (Stz*)"Ambiguous table name",      // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_USING_COLUMN        */ (Stz*)"Ambiguous column name in USING clause",     // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_WITH_QUERY          */ (Stz*)"Ambiguous alias name in WITH clause",       // SQL Compiler Subsystem
+  /* EC_ARITHMETIC_OVERFLOW           */ (Stz*)"Arithmetic overflow",     // Arithmetic overflow
+  /* EC_ARITHMETIC_UNDERFLOW          */ (Stz*)"Arithmetic underflow",    // Arithmetic overflow
   /* EC_ASSERT                        */ (Stz*)"assert",
 
   /* _B_ */
@@ -948,6 +959,7 @@ static Stz* aErrorMsg[] =
   /* EC_RESPONSE_PENDING              */ (Stz*)"response pending",
 
   /* _S_ */
+  /* EC_SCALE_OUT_OF_BOUNDS           */ (Stz*)"scale out of bounds",
   /* EC_SCHEMA_EXISTS                 */ (Stz*)"schema exists",
   /* EC_SE_NOT_RUNNING                */ (Stz*)"SE is not running",
   /* EC_SE_UNKNOWN_ERROR              */ (Stz*)"SE unknown error",

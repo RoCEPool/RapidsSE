@@ -3,15 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "LifeGuard_t.hpp"
-
 
 namespace STORE { class Op; class StageSpec; }
 
 namespace STORE
 {
-  class Stream : public VectorNL_t<CN_STREAM,Op,C_MAX_OPS>,
-                 public LifeGuard_t<Stream>
+  class Stream : public VectorNL_t<CN_STREAM,Op,C_MAX_OPS>
   {
   private:
     s32  m_sPipelineNm; // pipeline name

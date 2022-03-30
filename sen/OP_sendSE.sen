@@ -1,0 +1,116 @@
+/*============================================================================*/
+/* OP_sendSE.sen -- Operator send for SE Adaptor                              */
+/*============================================================================*/
+
+" OP_sendSE.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* send the operand in the PipeIn[] register                                  */
+/*----------------------------------------------------------------------------*/
+: PipeIn[].sendTo \handler
+
+  0 locals| pParcel |
+
+  PipeIn[]\clear locals| pOperand |
+  
+  // we do not expect to see a job
+  pOperand object.class@ CN_JOB != ASSERT
+
+  //pOperand object.preSendWord@ if
+  //  pOperand object.preSendWord@ execute
+  //then
+
+  pOperand object.class@ CN_PARCEL == if
+    pOperand to pParcel
+    pParcel parcel.label
+  else
+    pOperand operand.toParcel to pParcel
+  then
+  
+  pParcel parcel.sendOut
+
+  pParcel parcel::delete
+
+  // calling op_loop continues
+
+  true
+  //stk
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_CANCELLING operand                                        */
+/*----------------------------------------------------------------------------*/
+: sendSE_CANCELLING \handler
+
+  PipeIn[].sendTo discard
+
+  PipeIn[].drain
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_CLEANING operand                                          */
+/*----------------------------------------------------------------------------*/
+: sendSE_CLEANING \handler
+
+  LogicUnit[].cleanup
+  PipeIn[].sendTo
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_EXITING operand                                           */
+/*----------------------------------------------------------------------------*/
+: sendSE_EXITING \handler
+
+  PipeIn[].sendTo discard
+
+  [op].ackInvokingTask
+  
+  false // calling op_loop exits
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for send request                           (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : sendSE_op \operator
+
+  _lu_initialise_
+
+  999999999999 [task].operandYield!
+
+  op__topology
+
+  find: PipeIn[].sendTo [op].handlerAll!
+
+  find: sendSE_CANCELLING  ZK_M_CANCELLING  [op].handler!
+  find: sendSE_CLEANING    ZK_M_CLEANING    [op].handler!
+  find: sendSE_EXITING     ZK_M_EXITING     [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: sendSE :: sendSE <sendCast> ;
+
+: sendSE_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "sendSE_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

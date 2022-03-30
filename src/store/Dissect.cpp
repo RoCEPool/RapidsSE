@@ -174,7 +174,7 @@ void Dissect::vOp(i8 i_OpSpec)
   else if (szOpNm->bSame("pulse"_Stz))     pCard = pCard_Pulse    (pArgTags);
   else if (szOpNm->bSame("project"_Stz))   pCard = pCard_Project  (pArgTags);
   else if (szOpNm->bSame("scan"_Stz))      pCard = pCard_Scan     (pArgTags);
-  else if (szOpNm->bSame("send"_Stz))      pCard = pCard_Send     (pArgTags);
+  else if (szOpNm->bSame("sendSE"_Stz))    pCard = pCard_Send     (pArgTags);
   else if (szOpNm->bSame("sink"_Stz))      pCard = pCard_Sink     (pArgTags);
   else if (szOpNm->bSame("sort"_Stz))      pCard = pCard_Sort     (pArgTags);
   else if (szOpNm->bSame("start"_Stz))     pCard = pCard_Start    (pArgTags);

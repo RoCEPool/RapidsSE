@@ -8,6 +8,7 @@
 
 namespace STORE
 {
+
   class Combined : public Object
   {
   private:

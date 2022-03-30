@@ -7,7 +7,8 @@
 #include "IntStack.hpp"
 #include "eEO.h"
 #include "eAG.h"
-#include "ePJ.h"
+#include "ePE.h"
+#include "eEK.h"
 
 namespace STORE
 {
@@ -57,7 +58,7 @@ namespace STORE
 
     i8       m_iProjections;
 
-    ePJ      m_eProjectKind[C_MAX_COLUMNS];
+    ePE      m_eProjectKind[C_MAX_COLUMNS];
 
     // must be last
     Footer m_xFooter;
@@ -69,14 +70,8 @@ namespace STORE
     ExprEval(void);
    ~ExprEval(void) noexcept(false);
 
-    static void vAppendColumnToIndexDef(IndexDef* pIndexDef, Column* pColumn);
     static void vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pColumn);
     static void vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix);
-    static eEC eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8* puSelectColumns);
-    static eEC eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, IndexDef* pIndexDef,
-                                  IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr, u8* puSelectColumns);
-    static eEC eJoinStreamDef(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
-                              StreamDef* pStreamDefOut);
     static void vRepair(Object* pObject);
 
     eEC eEvaluate(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, Stz* sExprEvalColumns);

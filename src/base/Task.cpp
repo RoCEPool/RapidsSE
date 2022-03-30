@@ -74,7 +74,6 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(Stz* szTaskNm, Job* pJob)
 : Object(CN_TASK)
-, LifeGuard_t<Task>(this,CN_TASK) 
 , m_okLock(this,false)
 , m_oReadLocks(this)
 , m_oWriteLocks(this)
@@ -92,7 +91,6 @@ Task::Task(Stz* szTaskNm, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Task::Task(Stz* szTaskNm, Op* pOp)
 : Object(CN_TASK)
-, LifeGuard_t<Task>(this,CN_TASK)
 , m_okLock(this,false)
 , m_oReadLocks(this)
 , m_oWriteLocks(this)
@@ -192,8 +190,7 @@ Task::~Task(void) noexcept(false)
   delete m_pProfile;
   m_pProfile = nullptr;
   
-  m_pLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pLogicUnit,
-                                    CN_TASK,this,(Stz*)__func__);
+  delete m_pLogicUnit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,9 +234,7 @@ void Task::vTaskLoop(void)
     
     // call the non-virtual member/step function against this task
     try {
-      
-      this->vAssertSelf(this);
-      
+            
       (this->*fpStepFn) ();
 
       //this->vAssertSelf(this);

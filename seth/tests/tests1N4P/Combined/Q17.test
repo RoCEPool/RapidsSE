@@ -64,23 +64,23 @@ begin
 
   stage stageQ17_1_a on all partitions :
     indexJoin 2 lineitem IxL_PARTKEY "bound $I1 $L1 =="
-    | aggreg 2 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
+    | aggreg 2 " groupBy  type integer $1 aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count   "
     | combined 0
     | next
 
   stage stageQ17_1_b on all nodes :
-    aggreg 2 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
+    aggreg 2 " groupBy  type integer $1 aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum   "
     | combined 0
     | next
 
   stage stageQ17_1_c on origin :
-    aggreg 2 " type integer as P_PARTKEY $1 , type DECIMAL ) $2 sum , type INTEGER ) $3 sum  groupBy  type integer $1 "
+    aggreg 2 " groupBy  type integer $1  aggregates type integer as P_PARTKEY $K1 , type DECIMAL ) $2 sum , type INTEGER ) $3 sum  "
     //| project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / * "
     | combined 0
     | next
 
   stage stageQ17_1_d on origin :
-    project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / * "
+    project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV $2 type DECIMAL $3  casttype DECIMAL cast / "
     | combined 0
     | next broadcast
 

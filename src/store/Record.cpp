@@ -154,6 +154,8 @@ void Record::vAddRow(Row* aRow)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 
+  Bcd xBcd;
+
   //vReset();
   m_caRecord[0] = '\0';
   m_azCursor = & m_caRecord[0];
@@ -163,7 +165,8 @@ void Record::vAddRow(Row* aRow)
        i_Col++) {
 
     eDM eDatum = (eDM)m_pRowPix->m_xaColPix[i_Col].m_uDatum; //pCol->eDatum();
-    i8  iScale = m_pRowPix->m_xaColPix[i_Col].m_uScale; //pCol->iColumnScale();
+    //i8  iScale = m_pRowPix->m_xaColPix[i_Col].m_uScale; //pCol->iColumnScale();
+
 
     if (i_Col)
       StrLib::vAppendString(&m_azCursor,",");
@@ -171,16 +174,28 @@ void Record::vAddRow(Row* aRow)
     if (DM_VCH == eDatum) {
       
       if (aRow->bIsColNull(i_Col)) {
-        vAppendCsvVal(eDatum,iScale,C_DATUM_NULL);
+        vAppendCsvVal(eDatum,0,C_DATUM_NULL);
         continue;
       }
       
       Stz* acSrcString = aRow->szColVal_ofs(i_Col);
-      vAppendCsvVal(eDatum,iScale,(i8)acSrcString);
+      vAppendCsvVal(eDatum,0,(i8)acSrcString);
       continue;
     }
-    
-    vAppendCsvVal(eDatum,iScale,aRow->iColVal_int(i_Col));
+
+    if (eDatum == DM_BCD) {
+
+      if (aRow->bIsColNull(i_Col)) {
+        vAppendCsvVal(eDatum,0,C_DATUM_NULL);
+        continue;
+      }
+
+      xBcd = aRow->iColVal_int(i_Col);
+      vAppendCsvVal(eDatum,xBcd.T.m_iScale,xBcd.T.m_iMantissa);
+      continue;
+    }
+
+    vAppendCsvVal(eDatum,0,aRow->iColVal_int(i_Col));
   }
 }
 

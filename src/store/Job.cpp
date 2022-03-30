@@ -51,7 +51,6 @@ Job::Job(Stz* szJobNm,
         )
 : Operand(CN_JOB)
 , CRM<Job>(this)
-, LifeGuard_t<Job>(this,CN_JOB)
 , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
@@ -157,8 +156,7 @@ Job::~Job(void) noexcept(false)
     m_pTask->vGrabTaskLock((Stz*)__func__);
     m_pTask->vState(TS_DELETING);
     m_pTask->vDropTaskLock((Stz*)__func__);
-    m_pTask->vGuardedDelete(CN_TASK,&m_pTask,
-                            CN_JOB,this,(Stz*)__func__);
+    delete m_pTask;
 
   }
 }
@@ -176,8 +174,6 @@ void Job::vPostRecv(void* aReceivedJob)
   _static_
   
   Job* pReceivedJob = _pJob(aReceivedJob);
-
-  pReceivedJob->vInductIntoNode(pReceivedJob);
   
   pReceivedJob->vPostRecv();
   

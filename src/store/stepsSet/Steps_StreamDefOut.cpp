@@ -9,6 +9,7 @@
 #include "Steps.hpp"
 
 #include "eYX.h"
+#include "ExprEval2.hpp"
 
 #include "Op.hpp"
 #include "Job.hpp"
@@ -126,18 +127,19 @@ void Step::vStreamDefOutGenerate(void)
   s4K sExpr;
   m_pDataStack->vPopStr(sExpr, __func__);
 
-  m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
-  //m_pLogicUnit->m_xpIndexDef     = new IndexDef;
-  m_pLogicUnit->m_xpAggTypeStack = new IntStack;
+  if (m_pLogicUnit->m_xpStreamDefOut.bIsNull())
+    m_pLogicUnit->m_xpStreamDefOut = new StreamDef;
+
+  m_pLogicUnit->m_xpPreExpStack = new IntStack;
 
   StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
-  IntStack*  pAggTypeStack = * m_pLogicUnit->m_xpAggTypeStack;
+  IntStack*  pPreExpStack = * m_pLogicUnit->m_xpPreExpStack;
 
-  ePJ eProjectKind;
+  eEK eExprKind;
 
-  eEC eError = ExprEval::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
-                                            pAggTypeStack, eProjectKind, sExpr, &m_pLogicUnit->m_uSelectColumns);
-  m_pLogicUnit->m_eProjectKind = eProjectKind;
+  eEC eError = ExprEval2::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
+                                            pPreExpStack, eExprKind, sExpr, &m_pLogicUnit->m_uSelectColumns);
+  m_pLogicUnit->m_eExprKind = eExprKind;
 
   //pStreamDefOut->vPrint();
 
@@ -172,7 +174,7 @@ void Step::vStreamDefOutJoin(void)
 
   StreamDef* pStreamDefOut = * m_pLogicUnit->m_xpStreamDefOut;
 
-  eEC eError = ExprEval::eJoinStreamDef(pStreamDefLft, pStreamDefRht, pStreamDefOut);
+  eEC eError = ExprEval2::eJoinStreamDef(pStreamDefLft, pStreamDefRht, pStreamDefOut);
 
   m_pDataStack->vPushInt(eError);
 

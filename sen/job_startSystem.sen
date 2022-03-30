@@ -158,13 +158,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // spawn answer demon
-  "" answerDemonPipeline api::spawnDemon not if
+  // spawn answer demon for SE Adaptor
+  "" answerSE_procText api::spawnDemon not if
     "Error Code %v" .printf
   then
 
-  // spawn connector demon
-  "" connDemonPipeline api::spawnDemon not if
+  // spawn connector demon for SE Adaptor
+  "" connectorSE_procText api::spawnDemon not if
     "Error Code %v" .printf
   then
 

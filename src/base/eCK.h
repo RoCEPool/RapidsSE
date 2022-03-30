@@ -226,7 +226,7 @@ static Stz* aCK_short[]
 
   /* */ "sbyElist"_Stz,        // CK_SBYELIST
   /* */ "scan"_Stz,            // CK_SCAN
-  /* */ "send"_Stz,            // CK_SEND
+  /* */ "sendSE"_Stz,          // CK_SEND
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "sends"_Stz,           // CK_SENDS
   /* */ "sort"_Stz,            // CK_SORT

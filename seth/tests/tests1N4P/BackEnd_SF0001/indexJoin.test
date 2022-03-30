@@ -29,7 +29,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "BOUND $I1 $L1 =="
+    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -58,7 +59,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 customer customer_idx1 "BOUND $I1 $L2 =="
+    indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 =="
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -70,10 +72,11 @@ end ;
 
 rows: 1500
 
+//TODO: LEFTOUTER
 //------------------------------------------------------------------------------
 // LEFT OUTER INDEX JOIN
 // select * from customer left outer join orders on customer.c_custkey = orders.o_custkey;
-
+/*
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -86,7 +89,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -114,7 +118,8 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
+    indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -125,6 +130,7 @@ begin
 end ;
 
 rows: 1500
+*/
 
 //------------------------------------------------------------------------------
 // LEFT FILTER
@@ -140,11 +146,14 @@ begin
 
   stage stageB on all partitions :
     scan customer
-    | filter 1 "type boolean $4 4 >= "
+    | filter 2 "type boolean $4 4 >= "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "BOUND $I1 $L1 ==" | stageD
+    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 ==" 
+    | combined 0
+    | stageD
 
   stage stageD on origin :
     output
@@ -168,11 +177,14 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | filter 1 "type boolean $1 4 >= "
+    | filter 2 "type boolean $1 4 >= "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 customer customer_idx1 "BOUND $I1 $L2 ==" | stageD
+    indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 ==" 
+    | combined 0
+    | stageD
 
   stage stageD on origin :
     output
@@ -182,6 +194,8 @@ end ;
 
 rows: 1497
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER WITH LEFT FILTER
 // select * from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -196,11 +210,14 @@ begin
 
   stage stageB on all partitions :
     scan customer
-    | filter 1 "type boolean $4 4 >= "
+    | filter 2 "type boolean $4 4 >= "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 ==" | stageD
+    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 ==" 
+    | combined 0
+    | stageD
 
   stage stageD on origin :
     output
@@ -225,11 +242,14 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | filter 1 "type boolean $1 4 >= "
+    | filter 2 "type boolean $1 4 >= "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 ==" | stageD
+    indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 ==" 
+    | combined 0
+    | stageD
 
   stage stageD on origin :
     output
@@ -238,6 +258,7 @@ begin
 end ;
 
 rows: 1497
+*/
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER
@@ -256,8 +277,9 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "BOUND $I1 $L1 =="
-    | filter 0 "type boolean $9 4 >= "
+    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    | filter 2 "type boolean $9 4 >= "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -285,8 +307,9 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 customer customer_idx1 "BOUND $I1 $L2 =="
-    | filter 0 "type boolean $13 4 >= "
+    indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 =="
+    | filter 2 "type boolean $13 4 >= "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -297,6 +320,8 @@ end ;
 
 rows: 1220
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER WITH RIGHT FILTER
 // select * from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -314,8 +339,9 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
-    | filter 0 "type boolean $9 4 >= "
+    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | filter 2 "type boolean $9 4 >= "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -343,8 +369,9 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
-    | filter 0 "type boolean $13 4 >= "
+    indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
+    | filter 2 "type boolean $13 4 >= "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -354,6 +381,7 @@ begin
 end ;
 
 rows: 1220
+*/
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER
@@ -367,12 +395,14 @@ begin
 
   stage stageB on all partitions :
     scan customer
-    | filter 1 "type boolean $4 4 >= "
+    | filter 2 "type boolean $4 4 >= "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "BOUND $I1 $L1 =="
-    | filter 0 "type boolean $9 4 >= "
+    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    | filter 2 "type boolean $9 4 >= "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -395,12 +425,14 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | filter 1 "type boolean $1 4 >= "
+    | filter 2 "type boolean $1 4 >= "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 customer customer_idx1 "BOUND $I1 $L2 =="
-    | filter 0 "type boolean $13 4 >= "
+    indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 =="
+    | filter 2 "type boolean $13 4 >= "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -411,6 +443,8 @@ end ;
 
 rows: 1218
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER WITH LEFT and RIGHT FILTER
 // select * from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -423,12 +457,14 @@ begin
 
   stage stageB on all partitions :
     scan customer
-    | filter 1 "type boolean $4 4 >= "
+    | filter 2 "type boolean $4 4 >= "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
-    | filter 0 "type boolean $9 4 >= "
+    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | filter 2 "type boolean $9 4 >= "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -451,12 +487,13 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | filter 1 "type boolean $1 4 >= "
+    | filter 2 "type boolean $1 4 >= "
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
-    | filter 0 "type boolean $13 4 >= "
+    indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
+    | filter 2 "type boolean $13 4 >= "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -466,6 +503,7 @@ begin
 end ;
 
 rows: 1218
+*/
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT
@@ -481,12 +519,14 @@ begin
 
   stage stageB on all partitions :
     scan customer
-    | filter 1 "type boolean $4 4 >= "
-    | project 0 "type integer $1 , type integer $4 "
+    | filter 2 "type boolean $4 4 >= "
+    | project 2 "type integer $1 , type integer $4 "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "BOUND $I1 $L1 =="
+    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -521,12 +561,14 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | filter 1 "type boolean $1 4 >= "
-    | project 0 "type integer $1 , type integer $2 "
+    | filter 2 "type boolean $1 4 >= "
+    | project 2 "type integer $1 , type integer $2 "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 customer customer_idx1 "BOUND $I1 $L2 =="
+    indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 =="
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -537,6 +579,8 @@ end ;
 
 rows : 1497
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER WITH LEFT FILTER & PROJECT
 // select c_custkey, c_nationkey from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -551,12 +595,14 @@ begin
 
   stage stageB on all partitions :
     scan customer
-    | filter 1 "type boolean $4 4 >= "
-    | project 0 "type integer $1 , type integer $4 "
+    | filter 2 "type boolean $4 4 >= "
+    | project 2 "type integer $1 , type integer $4 "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -581,12 +627,14 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | filter 1 "type boolean $1 4 >= "
-    | project 0 "type integer $1 , type integer $2 "
+    | filter 2 "type boolean $1 4 >= "
+    | project 2 "type integer $1 , type integer $2 "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
+    indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -596,6 +644,7 @@ begin
 end ;
 
 rows : 1497
+*/
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT & POST PROJECT
@@ -610,13 +659,15 @@ begin
 
   stage stageB on all partitions :
     scan customer
-    | filter 1 "type boolean $4 4 >= "
-    | project 0 "type integer $1 , type integer $4 "
+    | filter 2 "type boolean $4 4 >= "
+    | project 2 "type integer $1 , type integer $4 "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "BOUND $I1 $L1 =="
-    | project 0 "type integer $1 , type integer $2 , type integer $4"
+    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    | project 2 "type integer $1 , type integer $2 , type integer $4"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -642,13 +693,15 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | filter 1 "type boolean $1 4 >= "
-    | project 0 "type integer $1 , type integer $2 "
+    | filter 2 "type boolean $1 4 >= "
+    | project 2 "type integer $1 , type integer $2 "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 customer customer_idx1 "BOUND $I1 $L2 =="
-    | project 0 "type integer $2 , type integer $3 , type integer $6"
+    indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 =="
+    | project 2 "type integer $2 , type integer $3 , type integer $6"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -661,6 +714,8 @@ contains rows :
   (148,148,11)
   (149,149,19)
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER WITH LEFT FILTER & PROJECT & POST PROJECT
 // select c_custkey, c_nationkey from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -674,13 +729,15 @@ begin
 
   stage stageB on all partitions :
     scan customer
-    | filter 1 "type boolean $4 4 >= "
-    | project 0 "type integer $1 , type integer $4 "
+    | filter 2 "type boolean $4 4 >= "
+    | project 2 "type integer $1 , type integer $4 "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
-    | project 0 "type integer $1 , type integer $4 "
+    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | project 2 "type integer $1 , type integer $4 "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -704,13 +761,15 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | filter 1 "type boolean $1 4 >= "
-    | project 0 "type integer $1 , type integer $2 "
+    | filter 2 "type boolean $1 4 >= "
+    | project 2 "type integer $1 , type integer $2 "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
-    | project 0 "type integer $2 , type integer $3 , type integer $6"
+    indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
+    | project 2 "type integer $2 , type integer $3 , type integer $6"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -722,6 +781,7 @@ end ;
 contains rows :
   (148,148,11)
   (149,149,19)
+*/
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER & PROJECT
@@ -740,9 +800,10 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "BOUND $I1 $L1 =="
-    | filter 0 "type boolean $9 4 >= "
-    | project 1 "type integer $1 , type integer $9 , type integer $10 "
+    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    | filter 2 "type boolean $9 4 >= "
+    | project 2 "type integer $1 , type integer $9 , type integer $10 "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -763,6 +824,8 @@ contains rows:
  (149,299,149)
  (149,149,149)
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER WITH RIGHT FILTER & PROJECT
 // select c_custkey, o_orderkey, o_custkey from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -780,9 +843,10 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
-    | filter 0 "type boolean $9 4 >= "
-    | project 1 "type integer $1 , type integer $9 , type integer $10 "
+    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | filter 2 "type boolean $9 4 >= "
+    | project 2 "type integer $1 , type integer $9 , type integer $10 "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -792,7 +856,7 @@ begin
 end ;
 
 rows: 1497
-
+*/
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER & PROJECT
 // select c_custkey, o_orderkey, o_custkey from customer inner join orders on customer.c_custkey = orders.o_custkey
@@ -805,14 +869,16 @@ begin
 
   stage stageB on all partitions :
     scan customer
-    | filter 1 "type boolean $4 4 >= "
-    | project 0 "type integer $1 , type integer $4 "
+    | filter 2 "type boolean $4 4 >= "
+    | project 2 "type integer $1 , type integer $4 "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "BOUND $I1 $L1 =="
-    | filter 0 "type boolean $3 4 >= "
-    | project 1 "type integer $1 , type integer $3 , type integer $4 "
+    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    | filter 2 "type boolean $3 4 >= "
+    | project 2 "type integer $1 , type integer $3 , type integer $4 "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -823,6 +889,8 @@ end ;
 
 rows: 1218
 
+// TODO: UNCOMMENT WHEN LEFTOUTER JOINS ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER AND LEFT and RIGHT FILTER & PROJECT
 // select c_custkey, o_orderkey, o_custkey from customer left outer join orders on customer.c_custkey = orders.o_custkey
@@ -835,14 +903,16 @@ begin
 
   stage stageB on all partitions :
     scan customer
-    | filter 1 "type boolean $4 4 >= "
-    | project 0 "type integer $1 , type integer $4 "
+    | filter 2 "type boolean $4 4 >= "
+    | project 2 "type integer $1 , type integer $4 "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
-    | filter 0 "type boolean $3 4 >= "
-    | project 1 "type integer $1 , type integer $3 , type integer $4 "
+    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    | filter 2 "type boolean $3 4 >= "
+    | project 2 "type integer $1 , type integer $3 , type integer $4 "
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -852,6 +922,7 @@ begin
 end ;
 
 rows: 1218
+*/
 
 pipeline indexJoinTest
 begin
@@ -860,14 +931,16 @@ begin
 
   stage stageB on all partitions :
     scan customer
-    | filter 1 "type boolean $4 4 >= "
-    | project 0 "type integer $1 , type integer $4 "
+    | filter 2 "type boolean $4 4 >= "
+    | project 2 "type integer $1 , type integer $4 "
+    | combined 0
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 1 orders orders_idx1 "BOUND $I1 $L1 =="
-    | filter 0 "type boolean $3 4 >= "
-    | project 1 "type integer $1 , type integer $3 , type integer $4 "
+    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    | filter 2 "type boolean $3 4 >= "
+    | project 2 "type integer $1 , type integer $3 , type integer $4 "
+    | combined 0
     | stageD
 
   stage stageD on origin :

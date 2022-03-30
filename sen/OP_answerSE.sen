@@ -1,0 +1,199 @@
+/*============================================================================*/
+/* OP_answerSE.sen -- Operator answer for SE Adaptor                          */
+/*============================================================================*/
+
+" OP_answerSE.sen" .verbose
+
+
+
+/*----------------------------------------------------------------------------*/
+/* spawn the receiver job (as a dedicated job)                                */
+/*----------------------------------------------------------------------------*/
+: spawn_Receiver ( pAnsweredNode iConnNo -- )
+
+  params| iConnNo |
+  params| pAnsweredNode |
+
+  // form the tag set string
+  pAnsweredNode "<ansNode> = %v " str.format
+  iConnNo "<connectionNo> = %v" str.format str.cat
+
+    // receiver demon pipeline
+      receiverSE_procText api::spawnDemon not if
+      "Error Code %v" .printf
+    then
+;
+
+/*----------------------------------------------------------------------------*/
+/* receive node info from node we just answered                               */
+/*----------------------------------------------------------------------------*/
+: recvNodeInfo ( pSocket -- pAnsweredNode )
+
+  to Socket[]
+
+  0 locals| pAnsweredNode |
+  0 locals| sNodeName |
+
+  // receive the node info set
+  Socket[].recvObject
+  
+  Socket[].object@\clear to InfoSet[]
+
+  // get the first row from the infoset
+  InfoSet[].firstRow to infoSetRow[]
+
+  // get the 0th column from the row
+  0 infoSetRow[].getVchColumn to sNodeName
+
+  // find the node
+  sNodeName [grid].findNodeByName to pAnsweredNode
+
+  // set the receive socket in the answered node
+
+  ////////// Watch out, if node is not in the grid yet |||||
+
+  //" OP answer for " .put
+  begin
+      pAnsweredNode not
+    while
+      50 thread::sleepMsec
+      sNodeName [grid].findNodeByName to pAnsweredNode
+  repeat
+  
+  pAnsweredNode not if
+    ">>>>>pAnsweredNode is null<<<<<" .
+  then
+  
+  //pSocket pAnsweredNode node.recvSocket!
+  
+  AM::SHOW::bConnection if
+    sNodeName "Answered %v" .printf
+  then
+  
+  Socket[] pAnsweredNode node.recvSocket!
+
+  nullptr to Socket[]
+
+  // node is active
+  NS_ACTIVE pAnsweredNode node.state!
+
+  //ptnmap::adjust
+
+  //3 infoSetRow[].getIntColumn [system].started@ not and if
+  //  true [system].started!
+  //then
+
+  // delete the infoset
+  InfoSet[].delete
+
+  // return the answered node
+  pAnsweredNode
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: answerSE_StartMarker \handler
+
+  0 locals| iPort |
+  0 locals| pListeningSocket |
+  0 locals| pAcceptedSocket |
+  0 locals| pAnsweredNode |
+  0 locals| pConnectorTask |
+
+  0 locals| nConns |
+
+  "Answer Demon Started" .boot
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // get the listening port of this node
+  [grid].thisNodeNo@ [grid].findNodeByNo node.port to iPort
+
+  //[args].verbose if
+  //  iPort "Waiting for connections on port %v" .printf
+  //then
+
+  // now create a listening socket
+  iPort listen::open to pListeningSocket
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  begin
+
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // wait for next socket
+
+    trap::stackDepthZero
+
+    pListeningSocket listen.accept to pAcceptedSocket
+
+    AM::SHOW::bConnection if
+      iPort "Answered connection on port %v" .printf
+    then
+
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // receive node info
+
+    pAcceptedSocket recvNodeInfo to pAnsweredNode
+
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // spawn receiver task for the socket
+
+    // increment connection counter
+    nConns 1 + to nConns
+
+    pAnsweredNode nConns spawn_Receiver
+
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // if first socket on non-start node then start the connector task
+
+    //nConns 1 == if
+    //  [grid].thisNodeNo@ [grid].StartNode@ != if
+    //    connector::spawn to pConnectorTask
+    //  then
+    //then
+
+  again
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // should never exit
+  hazard
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for answer req                             (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : answerSE_op \operator
+ 
+  _lu_initialise_
+
+  op__topology
+
+  find: answerSE_StartMarker ZK_M_START [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: answerSE :: answerSE ;
+
+: answerSE_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "answerSE_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

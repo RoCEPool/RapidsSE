@@ -1,0 +1,78 @@
+--------------------------------------------------------------------------------
+-- aggregGby_I tests
+--------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+select L_ORDERKEY, sum(L_DISCOUNT) from lineitem group by L_ORDERKEY;
+failure contains: "No such table"
+
+//------------------------------------------------------------------------------
+// create table lineitem
+create table LineItem
+(
+ L_ORDERKEY      INTEGER       NOT NULL,
+ L_PARTKEY       INTEGER       NOT NULL,
+ L_SUPPKEY       INTEGER       NOT NULL,
+ L_LINENUMBER    INTEGER       NOT NULL,
+ L_QUANTITY      DECIMAL(15,2) NOT NULL,
+ L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+ L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+ L_TAX           DECIMAL(15,2) NOT NULL,
+ L_RETURNFLAG    CHAR(1)       NOT NULL,
+ L_LINESTATUS    CHAR(1)       NOT NULL,
+ L_SHIPDATE      DATE NOT      NULL,
+ L_COMMITDATE    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
+ L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
+ L_SHIPMODE      CHAR(10)      NOT NULL,
+ L_COMMENT       VARCHAR(44)   NOT NULL
+ );
+success
+
+//------------------------------------------------------------------------------
+select L_ORDERKEY, sum(L_DISCOUNT) from lineitem group by L_ORDERKEY;
+rows: 0
+
+// load data
+load lineitem "../DATA/TPCH/lineitem10.csv";
+success
+
+//------------------------------------------------------------------------------
+select L_ORDERKEY, sum(L_DISCOUNT) from lineitem group by L_ORDERKEY;
+rows:
+  (1,0.49)
+  (2,0.00)
+  (3,0.22)
+
+//------------------------------------------------------------------------------
+select L_ORDERKEY, sum(L_LINENUMBER) from lineitem group by L_ORDERKEY;
+rows:
+ (1,21)
+ (2,1)
+ (3,6)
+
+//------------------------------------------------------------------------------
+select L_LINENUMBER, sum(L_DISCOUNT) , sum(L_LINENUMBER) from lineitem group by L_LINENUMBER;
+rows:
+ (1,0.10,3)
+ (2,0.19,4)
+ (3,0.16,6)
+ (4,0.09,4)
+ (5,0.10,5)
+ (6,0.07,6)
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table lineitem;
+success;
+
+CLEANUP {
+  
+  drop table lineitem;
+  mute
+  
+  bye;
+  mute
+}
+
+

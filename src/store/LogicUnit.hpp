@@ -50,7 +50,8 @@
 
 #include "eLH.h"
 #include "eXK.h"
-#include "ePJ.h"
+#include "eEK.h"
+#include "ePE.h"
 
 #include "REG_t.hpp"
 
@@ -146,8 +147,7 @@ namespace STORE
 
   //----------------------------------------------------------------------------
 
-  class LogicUnit : public Object,
-                    public LifeGuard_t<LogicUnit>
+  class LogicUnit : public Object
   {
   private:
   
@@ -170,7 +170,8 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
-    REG<IntStack,       CN_INTSTACK      > m_xpAggTypeStack;
+    REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
+    REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
   
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
     REG<BucketGet,      CN_BUCKETGET     > m_xpBucketGet;
@@ -274,7 +275,7 @@ namespace STORE
     bool m_bCompilerToExit;
     bool m_bIsLftCrwBuffer; // left buffer is a CRW buffer (joins)
 
-    ePJ  m_eProjectKind;
+    eEK  m_eExprKind;
 
     i8   m_iCounterA;   // counter
     i8   m_iCounter0;   // counter
@@ -330,6 +331,7 @@ namespace STORE
     RowPix     m_oRowPix;    // condensed stream def
     EntWrk     m_oEntWrk;
     EntWrk     m_oEntWrkPL;
+    EntWrk     m_oEntWrkSRT;
     EntWrk     m_oEntWrkJ;
     EntWrk     m_oEntWrkT;
 

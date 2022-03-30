@@ -2,66 +2,148 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-create table nation (
-	 N_NATIONKEY       INTEGER      NOT NULL,
-	 N_NAME            CHAR(25)     NOT NULL,
-	 N_REGIONKEY       INTEGER      NOT NULL,
-	 N_COMMENT         VARCHAR(152)
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
 );
 
-create table region (
-	 R_REGIONKEY       INTEGER      NOT NULL,
-	 R_NAME            CHAR(25)     NOT NULL,
-	 R_COMMENT         VARCHAR(152)
+load datums "../DATA/Transliterate/datums.csv" ;
+
+
+
+
+create table LineItem
+(
+ L_ORDERKEY      INTEGER       NOT NULL,
+ L_PARTKEY       INTEGER       NOT NULL,
+ L_SUPPKEY       INTEGER       NOT NULL,
+ L_LINENUMBER    INTEGER       NOT NULL,
+ L_QUANTITY      DECIMAL(15,2) NOT NULL,
+ L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
+ L_DISCOUNT      DECIMAL(15,2) NOT NULL,
+ L_TAX           DECIMAL(15,2) NOT NULL,
+ L_RETURNFLAG    CHAR(1)       NOT NULL,
+ L_LINESTATUS    CHAR(1)       NOT NULL,
+ L_SHIPDATE      TIMESTAMP NOT      NULL,
+ L_COMMITDATE    DATE NOT      NULL,
+ L_RECEIPTDATE   DATE NOT      NULL,
+ L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
+ L_SHIPMODE      CHAR(10)      NOT NULL,
+ L_COMMENT       VARCHAR(44)   NOT NULL
+ );
+CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
+create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
+
+_nation
+_region
+
+create table orders (
+	 O_ORDERKEY        INTEGER NOT NULL,
+	 O_CUSTKEY         INTEGER NOT NULL,
+	 O_ORDERSTATUS     CHAR(1) NOT NULL,
+	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+	 O_ORDERDATE       TIMESTAMP NOT NULL,
+	 O_ORDERPRIORITY   CHAR(15) NOT NULL,
+	 O_CLERK           CHAR(15) NOT NULL,
+	 O_SHIPPRIORITY    INTEGER NOT NULL,
+	 O_COMMENT         VARCHAR(79) NOT NULL
 );
 
-
+_part;
+_customer
+CREATE INDEX orders_idx1 ON orders(O_CUSTKEY);
+CREATE INDEX IxO_ORDERKEY ON orders(O_ORDERKEY);
+create index IxC_CUSTKEY ON customer(C_CUSTKEY);
 create index IxR_REGIONKEY on REGION (R_REGIONKEY);
-
+create index IxR_NAME on REGION (R_NAME);
+create index IxL_PARTKEY ON lineitem(L_PARTKEY);
+///time load region "<tpch_dir>/region.<suffix>";
 /time load nation "<tpch_dir>/nation.<suffix>";
-/time load region "<tpch_dir>/region.<suffix>";
+///time load lineitem "<tpch_dir>/lineitem.<suffix>";
+/time load orders "<tpch_dir>/orders.<suffix>";
+/time load part "<tpch_dir>/part.<suffix>";
+///time load orders "../DATA/TPCH/orders10.csv";
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+//load lineitem "../DATA/TPCH/lineitem10.csv";
 
+load customer "../TPCH/SF_0001/customer.csv";
 
-pipeline dropAllTables
+//create index lineitem_part ON lineitem(L_PARTKEY);
+
+explain stage aggregateSplit select
+  l_returnflag,
+  l_linestatus,
+  sum(l_quantity) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice*(1.0-l_discount)) as sum_disc_price,
+  sum(l_extendedprice*(1.0-l_discount)*(1.0+l_tax)) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from
+  lineitem
+where
+  l_shipdate <= DATE '1998-09-01'
+group by
+  l_returnflag,
+  l_linestatus;
+
+explain stage aggregateSplit select l_extendedprice/l_orderkey from lineitem;
+
+explain stage transliterate select cast(l_quantity as integer) from lineitem;
+
+select p_Partkey , sum(L_QUANTITY) , count(L_QUANTITY) from part join lineitem on l_partkey = p_Partkey where P_BRAND = 'Brand#23' and P_CONTAINER = 'MED BAG'
+group by p_partkey;
+/*
+pipeline Q6
 begin
+
   stage stageStart on origin :
     start
     | pulse once
     | next
-  stage stageA on all partitions :
-    callProc "drop table nation"
+
+  stage Gs_LINEITEM on all partitions :
+    indexscan 2 lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
+                                       UBOUND $I1 TIMESTAMP '1995-01-01 00:00:00' <"
+    | filter  2 "type BOOLEAN L_DISCOUNT 1.01 0.01 - >=
+                              L_DISCOUNT 1.01 0.01 + <=
+                              L_QUANTITY 2400.0 < and and"
+    | project  2 " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT * sum "
+    | combined 0
     | next
   stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
+     output
+     | sink
+     | stageStart
+ end ;
 
-/*
-
-trackMemory;
-explain stage aggregateSplit, transliterate
- SELECT * FROM nation ?*+ joinAlgorithm = index , joinIndex = IxR_REGIONKEY , joinRouting = hashcast  , hashkey = n_regionkey *?
-   JOIN region ON n_regionkey = r_regionkey;
-memoryLeaks;
-
-SELECT * FROM nation JOIN region ON n_regionkey = r_regionkey;
 
 pipeline unamed
 begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker0242
-  stage stageMarker0242 on all partitions :
+    | stageMarker0725
+  stage stageMarker0725 on all partitions :
     scan rapidsse public nation
-    | hash 1 " type INTEGER n_regionkey"
-    | stageMarker0245 hashcast
-  stage stageMarker0245 on all partitions :
-    indexJoin 1 region IxR_REGIONKEY " BOUND $L3 $I1 ==  "
-    | stageMarker0248
-  stage stageMarker0248 on all partitions :
-    project 0 " type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 , type INTEGER as R_REGIONKEY $5 , type VARCHAR as R_NAME $6 , type VARCHAR as R_COMMENT $7 "
+    | aggreg 2 " groupBy  type INTEGER as n_nationkey $1 aggregates  type INTEGER 2  $1 1  +  *  , type INTEGER )  $3 sum  , type INTEGER $K1 "
+    | combined 0
     | stageLast
   stage stageLast on origin :
     output
@@ -70,60 +152,730 @@ begin
 end ;
 
 
-pipeline unnamed
+
+explain stage transliterate select 10 + sum(L_EXTENDEDPRICE * L_DISCOUNT) from lineitem where
+  L_SHIPDATE >= DATE '1994-01-01'
+  and L_SHIPDATE < DATE '1995-01-01' and L_DISCOUNT between 0.06 - 0.01 and 0.06 + 0.01
+  and L_QUANTITY < 26.0;
+
+select l_discount from lineitem where l_discount >= 0.04 and l_discount  > 0.06;
+
+
+/time pipeline unamed
 begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker1035
-  stage stageMarker1035 on all partitions :
-    scan rapidsse public nation
-    | stageMarker1038 ?*broadcast*?
-  stage stageMarker1038 on all partitions :
-    ?*scanRight rapidsse public region*?
-    indexJoin 0 region IxR_REGIONKEY "BOUND $L3 $I1 =="
-    | stageMarker1041
-  stage stageMarker1041 on all partitions :
-    project 0 " type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 , type INTEGER as R_REGIONKEY $5 , type VARCHAR as R_NAME $6 , type VARCHAR as R_COMMENT $7 "
+    | stageMarker1165
+  stage stageMarker1165 on all partitions :
+    scan rapidsse public LineItem
+    | filter 2 " type BOOLEAN  $11 DATE '1994-01-01'  >=  $11 DATE '1995-01-01'  <  and  }  0.06  0.01  -  0.06  0.01  +  $7 between  and  $5 26.0  <  and  "
+    | project 2 " type DECIMAL )  $6 $7 *  sum  "
+    | combined 0
+    | stageMarker1168
+  stage stageMarker1168 on all nodes :
+    project 2 " type DECIMAL )  $1 sum  "
+    | combined 0
+    | stageMarker1171
+  stage stageMarker1171 on origin :
+    project 2 " type DECIMAL )  $1 sum  "
+    | combined 0
     | stageLast
   stage stageLast on origin :
     output
     | sink
     | stageStart
 end ;
-*/
 
-/*
-  pipeline unnamed
-  begin
-    stage stageStart on origin :
-      start
-      | pulse once
-      | stageMarker0436
-    stage stageMarker0436 on all partitions :
-      scan rapidsse public nation
-      | stageMarker0439
-    stage stageMarker0439 on all partitions :
-      indexJoin 1 region IxR_REGIONKEY " BOUND $L3 $I1 ==  "
-      | stageMarker0442
-    stage stageMarker0442 on all partitions :
-      project 0 " type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 , type INTEGER as R_REGIONKEY $5 , type VARCHAR as R_NAME $6 , type VARCHAR as R_COMMENT $7 "
-      | stageLast
+
+/time pipeline unamed
+      begin
+        stage stageStart on origin :
+          start
+          | pulse once
+          | stageMarker1286
+        stage stageMarker1286 on all partitions :
+          indexscan 2 lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >=
+                                                 UBOUND $I1 DATE '1995-01-01' <"
+          | filter 2 " type BOOLEAN  }  0.06 0.01 - 0.06 0.01 + $7 between  $5 26.0  <  and"
+          | project 2 " type DECIMAL )  $6 $7 *  sum  "
+          | combined 0
+          | stageMarker1289
+        stage stageMarker1289 on all nodes :
+          project 2 " type DECIMAL )  $1 sum  "
+          | combined 0
+          | stageMarker1292
+        stage stageMarker1292 on origin :
+          project 2 " type DECIMAL )  $1 sum  "
+          | combined 0
+          | stageLast
+        stage stageLast on origin :
+          output
+          | sink
+          | stageStart
+      end ;
+
+
+select sum(L_EXTENDEDPRICE * L_DISCOUNT) from lineitem where
+  L_SHIPDATE >= DATE '1994-01-01'
+  and L_SHIPDATE < DATE '1995-01-01' and L_DISCOUNT between 0.06 - 0.01 and 0.06 + 0.01
+  and L_QUANTITY < 26.0;
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan orders
+    | hash 2 "type INTEGER $1"
+    | combined 0
+    | next hashcast
+
+  stage stageC on all partitions :
+    indexJoin 2 lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    | combined 0
+    | stageD
+
+  stage stageD on origin :
+    output
+    | sink
+    | stageA
+
+end ;
+
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1
+                 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | filter 2 " type BOOLEAN  $2 100.0  >  "
+    | top 2 "TOP type DECIMAL total" 10
+    | combined 0
+    | next
+
+ stage stageA on all nodes :
+    top 2 "TOP type DECIMAL total" 10
+    | combined 0
+    | next
+
+ stage stageA on origin :
+     top 2 "TOP type DECIMAL total" 10
+     | combined 0
+     | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+pipeline Q3
+begin
+
+ stage first on origin :
+   start
+   | pulse once
+   | next
+
+ stage Gj_ORDERS on all partitions :
+   scan Orders
+   | next
+
+ stage Gj_LINEITEM on all partitions :
+   indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+   //| filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+   | ordagg 2 expr ordgroupby type INTEGER O_ORDERKEY
+      aggregates type DECIMAL as Revenue ) J1_L_DISCOUNT sum , type INTEGER as _orderkey $K1
+   | combined 0
+   | next
+
+ stage last on origin :
+    output
+   | sink
+   | first
+
+end ;
+
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1
+                 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | filter 2 " type BOOLEAN  $2 90.0  >  "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+
+
+select l_orderkey, sum(l_quantity) as revenue from lineitem group by l_orderkey having sum(l_quantity) > 100.0;
+
+pipeline Q3
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gj_ORDERS on all partitions :
+    scan Orders
+    | next
+
+  stage Gj_LINEITEM on all partitions :
+    indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+
+    | ordAgg 2 expr ordgroupby type INTEGER O_ORDERKEY aggregates type INTEGER as _orderkey $1 ,
+        type INTEGER as Revenue ) J1_L_DISCOUNT sum ,
+        type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
+        type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
+
+    | combined 0
+    //| top 1 "Revenue" 10
+    | next
+
+  stage last on origin :
+    //top 1 "Revenue" 10
+     output
+    | sink
+    | first
+
+end ;
+
+
+
+
+
+//select sum(l_quantity) , l_orderkey from lineitem group by l_orderkey;
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1
+                 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | filter 2 " type BOOLEAN  $2 100.0  >  "
+    | top 2 "TOP type DECIMAL total" 10
+    | combined 0
+    | next
+
+ stage stageA on all nodes :
+    top 2 "TOP type DECIMAL total" 10
+    | combined 0
+    | next
+
+ stage stageA on origin :
+     top 2 "TOP type DECIMAL total" 10
+     | combined 0
+     | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+select l_orderkey, sum(l_quantity) from lineitem where l_orderkey = 1064 group by l_orderkey ;
+
+
+
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0130
+  stage stageMarker0130 on all partitions :
+    scan rapidsse public nation
+    | project 2 " type VARCHAR 'alka'  , type INTEGER )  countAll  "
+    | combined 0
+    | stageMarker0133
+  stage stageMarker0133 on all nodes :
+    project 2 " type VARCHAR $1 , type INTEGER )  $2 sum  "
+    | combined 0
+    | stageMarker0136
+  stage stageMarker0136 on origin :
+    project 2 " type VARCHAR $1 , type INTEGER )  $2 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0226
+  stage stageMarker0226 on all partitions :
+    scan rapidsse public datums
+    | project 2 " type FLOAT )  $9 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0265
+  stage stageMarker0265 on all partitions :
+    scan rapidsse public datums
+    | project 2 " type FLOAT $9 1.440000e+00  +  , type FLOAT as flt_col8 $9 "
+    | sort 2 " type FLOAT as flt_col8 $2 ASC  "
+    | combined 0
+    | stageMarker0268
+  stage stageMarker0268 on all nodes :
+    sort 2 " type FLOAT as flt_col8 $2 ASC  "
+    | combined 0
+    | stageMarker0271
+  stage stageMarker0271 on origin :
+    sort 2 " type FLOAT as flt_col8 $2 ASC  "
+    | project 2 " type FLOAT $1 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+explain stage transliterate select sum(int_col0) from datums;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0226
+  stage stageMarker0226 on all partitions :
+    scan rapidsse public datums
+    | project 2 " type INTEGER )  $1 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+pipeline unamed
+begin
+ stage stageStart on origin :
+   start
+   | pulse once
+   | stageMarker0143
+ stage stageMarker0143 on all partitions :
+   scan rapidsse public lineitem
+   | project 2 " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
+   | sort 2 " type INTEGER as l_partkey $1 ASC  "
+   | combined 0
+   | next
+ stage stageLast on origin :
+   output
+   | sink
+   | first
+end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0212
+  stage stageMarker0212 on all partitions :
+    scan rapidsse public datums
+    | aggreg 2 " groupBy  type INTEGER as int_col1 $2 aggregates  type INTEGER $K1 , type INTEGER )  $1 sum  "
+    | filter 2 " type BOOLEAN  $2 7  >  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+//select int_col0 from datums where dte_col4 = NULL OR dte_col5 = DATE '2041-11-01';
+
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0181
+  stage stageMarker0181 on all partitions :
+    scan rapidsse public datums
+    | aggreg 2 " groupBy  type INTEGER as int_col1 $2
+                 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+    | combined 0
+     | next
     stage stageLast on origin :
       output
       | sink
       | stageStart
   end ;
 
-  explain with_names stage aggregateSplit , transliterate ?*+ joinAlgorithm = index  *?
-    SELECT * FROM nation JOIN region ON n_regionkey = r_regionkey;
 
-    explain with_names stage aggregateSplit , transliterate
-      SELECT * FROM nation JOIN region ON n_regionkey = r_regionkey;
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan lineitem
+     | aggreg 2 " groupby type INTEGER L_PARTKEY
+                  aggregates
+                  type INTEGER as COL0 L_PARTKEY ,
+                  type INTEGER as COL1 L_PARTKEY 11 + "
+     | combined 0
+     | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+
+
+pipeline unnamed
+begin
+ stage stageStart on origin :
+   start
+   | pulse once
+   | next
+ stage stageA on all partitions :
+   scan lineitem
+   | aggreg 2 " groupby type INTEGER L_PARTKEY
+                aggregates type INTEGER as COL0 L_PARTKEY ,
+                type INTEGER as COL3 ) L_ORDERKEY sum"
+   | combined 0
+   | next
+ stage stageA on all nodes :
+       aggreg 2 " groupby type INTEGER COL0
+                  aggregates
+                  type INTEGER as COL3 ) COL3 sum "
+       | combined 0
+       | next
+ stage stageLast on origin :
+   output
+   | sink
+   | first
+ end ;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0181
+  stage stageMarker0181 on all partitions :
+    scan rapidsse public datums
+    | aggreg 2 " groupBy  type INTEGER as int_col1 $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+    | combined 0
+    | next
+    stage stageLast on origin :
+         output
+         | sink
+         | first
+       end ;
+
+//select 10 + sum(int_col0) from datums;
+
+//select n_regionkey, n_nationkey from nation order by N_REGIONKEY;
+
+//verbose enable;
+
+//select sum(int_col0), int_col1 from datums group by int_col1;
 
 
 
-explain stage aggregateSplit, transliterate SELECT * FROM nation JOIN region ON n_regionkey = r_regionkey;
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0143
+  stage stageMarker0143 on all partitions :
+    scan rapidsse public nation
+    | project 2 " type INTEGER as n_regionkey $1 , type VARCHAR as n_name $2 "
+    | sort 2 " type INTEGER as n_regionkey $1 ASC  "
+    | combined 0
+    | next
+   stage stageLast on origin :
+       output
+       | sink
+       | first
+     end ;
+explain stage transliterate  select sum(int_col0), int_col1 from datums group by int_col1;
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | top 2 "TOP type DECIMAL total" 2
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    scan nation
+    | project 2 " type VARCHAR as n_name $2 , type INTEGER as n_regionkey $3 "
+    | top 2 "TOP type DECIMAL n_regionkey" 2
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0123
+  stage stageMarker0123 on all partitions :
+    scan rapidsse public nation
+    | project 2 " type INTEGER as n_nationkey $1 , type INTEGER as n_regionKey $3 "
+    | sort 2 " type INTEGER as n_nationkey $1 ASC "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $1 , type decimal as total )  $5 sum  "
+    | top 2 "TOP type DECIMAL total" 2
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
 
 */
+
+//explain stage transliterate select int_col0 from datums where int_col0 in (3,5,6,8);
+//explain stage transliterate select int_col0 from datums order by int_col1, int_col0 DESC;
+//select sum(int_col0) from datums;
+//explain stage transliterate select sum(int_col0) from datums;
+//select 10+sum(int_col0) from datums;
+//select sum(int_col0)+10 from datums;
+//select int_col0 from datums where int_col0 between 3 and 10;
+//explain stage transliterate select int_col0 from datums where int_col0 between 3 and 10;;
+
+//SELECT n_name FROM nation where n_name LIKE '%ITED%' ;
+
+/*
+pipeline indexScanTest
+begin
+ stage stageA on origin :
+   start
+   | pulse once
+   | stageB
+
+ stage stageB on all partitions :
+   indexScan 2 orders orders_idx2 "BOUND $I1 5 =="
+   | combined 0
+   | stageC
+
+ stage stageC on origin :
+   output
+   | sink
+   | stageA
+
+end ;
+
+
+
+pipeline Q4
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | next
+  stage Gs_ORDERS on all partitions :
+    scan orders
+    | project 2 expr type INTEGER as _orderkey O_ORDERKEY ,
+                     type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
+    | keyExists 2 lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+                                         "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+    | combined 0
+    | next
+ stage stageD on origin :
+    output | sink | stageA
+
+end ;
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | project 2 "type INTEGER a as a"
+    | top 2 "a" 3
+    | combined 0
+    | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end ;
+
+
+
+
+
+/time pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1165
+  stage stageMarker1165 on all partitions :
+    scan rapidsse public LineItem
+    | filter 2 " type BOOLEAN  $11 DATE '1994-01-01'  >=  $11 DATE '1995-01-01'  <  and  }  0.06  0.01  -  0.06  0.01  +  $7 between  and  $5 26.0  <  and  "
+    | project 2 " type DECIMAL )  $6 $7 *  sum  "
+    | combined 0
+    | stageMarker1168
+  stage stageMarker1168 on all nodes :
+    project 2 " type DECIMAL )  $1 sum  "
+    | combined 0
+    | stageMarker1171
+  stage stageMarker1171 on origin :
+    project 2 " type DECIMAL )  $1 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+metadata: (COL1 DECIMAL)
+
+row: (1449459938.64)
+
+success: 1 rows fetched
+time 2194ms
+
+
+/time pipeline unamed
+      begin
+        stage stageStart on origin :
+          start
+          | pulse once
+          | stageMarker1286
+        stage stageMarker1286 on all partitions :
+          indexscan 2 lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >=
+                                                 UBOUND $I1 DATE '1995-01-01' <"
+          | filter 2 " type BOOLEAN  }  0.06 0.01 - 0.06 0.01 + $7 between  $5 26.0  <  and"
+          | project 2 " type DECIMAL )  $6 $7 *  sum  "
+          | combined 0
+          | stageMarker1289
+        stage stageMarker1289 on all nodes :
+          project 2 " type DECIMAL )  $1 sum  "
+          | combined 0
+          | stageMarker1292
+        stage stageMarker1292 on origin :
+          project 2 " type DECIMAL )  $1 sum  "
+          | combined 0
+          | stageLast
+        stage stageLast on origin :
+          output
+          | sink
+          | stageStart
+      end ;
+
+
+metadata: (COL1 DECIMAL)
+
+row: (1449459938.64)
+
+success: 1 rows fetched
+time 756ms
+
+*/
+//SELECT 'abcdef' LIKE 'a_c%f' FROM nation LIMIT 1;
 

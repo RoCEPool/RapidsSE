@@ -334,7 +334,7 @@ void Parcel::vDistribute(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  RASSERT(pSendOp->szOpNm()->bSame("send"_Stz));
+  RASSERT(pSendOp->szOpNm()->bSame("sendSE"_Stz));
 
   vAppraise_Forward_cast(pSendOp);
 

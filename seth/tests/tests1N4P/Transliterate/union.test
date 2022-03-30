@@ -5,7 +5,7 @@
 //------------------------------------------------------------------------------
 // neither table exists
 SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
-failure contains: "no such table"
+failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -33,7 +33,7 @@ success
 //------------------------------------------------------------------------------
 // one table does not exist
 SELECT l_orderkey FROM lineitem UNION ALL SELECT o_orderkey FROM orders;
-failure contains: "no such table"
+failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 create table orders (
@@ -170,26 +170,21 @@ rows:
   ['bRaVo']
 */
 
+
+drop table lineitem;
+success
+
+drop table orders;
+success
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cleanup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
-  DROP TABLE unionTbl1;
+  DROP TABLE lineitem;
   mute
 
-  DROP TABLE unionTbl2;
-  mute
-
-  DROP TABLE unionTbl3;
-  mute
-
-  DROP TABLE unionTbl4;
-  mute
-
-  DROP TABLE unionTbl5;
-  mute
-
-  DROP TABLE unionTbl6;
+  DROP TABLE orders;
   mute
 }

@@ -1,0 +1,88 @@
+/*----------------------------------------------------------------------------*/
+/* varchar.test -- VARCHAR DATUM tests                                        */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+success
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32) NOT NULL
+);
+success
+
+load datums "../DATA/DataTypes/dataTypes.csv" ;
+success
+
+//------------------------------------------------------------------------------
+select vch_col15 from datums;
+rows:
+ ('world')
+ ('exists')
+ ('world')
+ ('y')
+ ('yello')
+ ('green123')
+ ('orange')
+ ('yellow')
+ ('nice')
+ ('yellow')
+ ('yellow')
+ ('yellow')
+ ('orange')
+
+//------------------------------------------------------------------------------
+select 'literal' from datums;
+rows:
+ ('literal')
+ ('literal')
+ ('literal')
+ ('literal')
+ ('literal')
+ ('literal')
+ ('literal')
+ ('literal')
+ ('literal')
+ ('literal')
+ ('literal')
+ ('literal')
+ ('literal')
+
+// drop the table
+drop table datums;
+success
+
+// get memory leaks
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+  
+  // drop the table
+  drop table datums;
+  mute
+  
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/

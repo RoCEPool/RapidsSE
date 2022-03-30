@@ -52,7 +52,6 @@ __aFooterFunction(Op);
 /*----------------------------------------------------------------------------*/
 Op::Op(OpSpec* pOpSpec, Stream* pStream)
 : Operand(CN_OP)
-, LifeGuard_t<Op>(this,CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -181,8 +180,7 @@ Op::~Op(void) noexcept(false)
     
     m_pTask = nullptr;
     
-    pTask->vGuardedDelete(CN_TASK,&pTask,
-                          CN_OP,this,(Stz*)__func__);
+    delete pTask;
 
   }
 
@@ -1390,7 +1388,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
   vOpTrace(pOperand,(Stz*)__func__);
     
-  //RASSERT(! szOpNm()->bSame("send"_Stz));
+  //RASSERT(! szOpNm()->bSame("sendSE"_Stz));
   
     
   // get the next stage the send is supposed to send to
@@ -1441,6 +1439,7 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
   else
   if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CSVBUF)) {
     CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+    UNUSED(pCsvBuffer);
     vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz
            ,pStage()->szStageNm()
            ,szOpNm()
@@ -1584,6 +1583,7 @@ Operand* Op::pPopOoOLeft(void)
   eCN eClassNo = pOperand->eGetClassNo();
   if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_CRWBUF)) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+    UNUSED(pCrwBuffer);
     vTrace("[%6s %10s]-Pipein  : CrwBuffer (%lld rows)\n"_Stz
            ,pStage()->szStageNm()
            ,szOpNm()
@@ -1593,6 +1593,7 @@ Operand* Op::pPopOoOLeft(void)
   else
   if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_CSVBUF)) {
     CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+    UNUSED(pCsvBuffer);
     vTrace("[%6s %10s]-Pipein  : CsvBuffer\n"_Stz
            ,pStage()->szStageNm()
            ,szOpNm()
@@ -1601,6 +1602,7 @@ Operand* Op::pPopOoOLeft(void)
   else
   if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_ROWBUF)) {
     RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+    UNUSED(pRowBuffer);
     vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows)\n"_Stz
            ,pStage()->szStageNm()
            ,szOpNm()
@@ -1893,7 +1895,7 @@ i8 Op::nTmpIndexSize(void)
   if (! aCombinedT)
     return -7;
 
-  IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreeGby);
+  IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreePL);
   if (! pIndexTree)
     return -6;
   

@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "LifeGuard_t.hpp"
 #include "eYS.h"
 
 
@@ -14,7 +13,6 @@ namespace STORE
 {
   class PipeSpec
           : public ListNL_t<StageSpec>
-          , public LifeGuard_t<PipeSpec>
           , public ListItem_t<PipeSpec>
   {
     friend class STORE::Dynamo;

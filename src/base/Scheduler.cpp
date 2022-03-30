@@ -204,11 +204,8 @@ void Scheduler::vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread)
   pSelfTask->vState(TS_DELETING);
   
   pSelfTask->vDropTaskLock((Stz*)__func__);
-  
-  //delete pSelfTask;
-  
-  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
-                            CN_SCHEDULER,nullptr,(Stz*)__func__);
+    
+  delete pSelfTask;
 
   /** do not touch task **/
 }

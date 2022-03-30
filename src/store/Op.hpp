@@ -11,16 +11,13 @@
 #include "OperandWatch.hpp"
 
 
-#include "LifeGuard_t.hpp"
-
 namespace BASE { class OperandQueue; }
 
 namespace STORE { class PipeSpec; class StageSpec; class OpSpec; }
 
 namespace STORE
 {
-  class Op : public Operand,
-             public LifeGuard_t<Op>
+  class Op : public Operand
   {
   private:
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --

@@ -306,6 +306,20 @@ bool Token::bIsDecimal(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this token float no?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsFloat(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  //if (TN_NAME == m_eToken && StrLib::bIsDecimalNo((char*)m_szChars))
+  if (TN_FLOAT == m_eToken)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this token an integer?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsInteger(void)

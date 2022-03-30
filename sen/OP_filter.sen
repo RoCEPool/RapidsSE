@@ -70,16 +70,23 @@
   Pipein[]\clear to StreamDefLft[]
 
   // generate selectColumns bitmap from expr and streamDefIn
-  <expr> StreamDefLft[].selectColumns to eError
+  //<expr> StreamDefLft[].selectColumns to eError
+
+  // streamDefLft[] is streamDefOut[]
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  <expr> nullptr StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if
+    StreamDefOut[].delete
     eError op__execErr
     true
     exit
   then
 
-  // evaluate the expression
+  // HACK
+  StreamDefOut[].delete
   StreamDefLft[].duplicate to StreamDefOut[]
 
   StreamDefLft[].duplicate to Pipein[]

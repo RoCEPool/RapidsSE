@@ -38,7 +38,6 @@ __aFooterFunction(Stage)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stage::Stage(StageSpec *pStageSpec, PipeWork* pPipeWork)
-    : LifeGuard_t<Stage>(this, CN_STAGE)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
@@ -66,8 +65,7 @@ Stage::~Stage(void) noexcept(false) {
   for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
     Stream *pStream = pGet(i_Stream);
 
-    pStream->vGuardedDelete(CN_STREAM, &pStream,
-                            CN_STAGE, this, (Stz *) __func__);
+    delete pStream;
   }
 
   vClear();
