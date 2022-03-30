@@ -2035,9 +2035,7 @@ void CodeSynth::vPayloadPopulate(ePL ePayload) {
 
       sCopy.vSprint("\n        szDstStz = (char*)&aCombinedT->m_aiPayload[%lld];"_Stz, iPayLoad );
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "printf(\"DOING COPY\\n\");");
       StrLib::vAppendString(&m_azCodeCrs,"\n        strncpy(szDstStz, szSrcStz, nSrcSize);");
-      StrLib::vAppendString(&m_azCodeCrs, "printf(\"DONE COPY\\n\");");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
       StrLib::vAppendString(&m_azCodeCrs, "\n      }");
 
