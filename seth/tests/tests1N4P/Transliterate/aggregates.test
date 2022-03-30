@@ -107,7 +107,6 @@ rows:
   ('SAUDI ARABIA',4)
 
 -- basic select of two columnRefs with both in GROUP BY. No aggregation
-
 SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
 rows:
  ('MOZAMBIQUE',16)
@@ -136,7 +135,6 @@ rows:
  ('ROMANIA',19)
  ('SAUDI ARABIA',20)
  ('MOROCCO',15)
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Projected superset of group by
@@ -172,8 +170,7 @@ rows:
   (48,3)
   (18,2)
 
-/*
-ALKA: UNCOMMENT
+
 -- projected ColumnRef is equal to GROUP BY expr
 SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY 2*(n_nationkey + 1);
 rows:
@@ -228,12 +225,12 @@ rows:
   (19,1)
   (24,2)
   (9,4)
-*/
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  HAVING clause
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -- Basic HAVING clause
-/*
+
 SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
 rows:
   ('VIETNAM',21)
@@ -260,6 +257,7 @@ rows:
   ('MOZAMBIQUE',16)
   ('KENYA',14)
   ('ETHIOPIA',5)
+
 
 -- HAVING clause with aggregate not in select list
 SELECT n_name FROM nation GROUP BY n_name HAVING sum(n_nationkey) > 0;
@@ -289,7 +287,6 @@ rows:
   ('KENYA')
   ('ETHIOPIA')
 
-*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Literals in the select list
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

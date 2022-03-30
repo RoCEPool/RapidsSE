@@ -7,7 +7,7 @@ success;
 
 //------------------------------------------------------------------------------
 // neither table exists
-pipeline unionAll_I
+pipeline unionAll
    begin
 
   stage stageA on origin :
@@ -15,12 +15,14 @@ pipeline unionAll_I
 
   stage stageB on all partitions :
     scan lineitem
-    | project  0 "as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  0 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -29,9 +31,6 @@ pipeline unionAll_I
 end ;
 
 failure contains: "Table does not exist"
-
-MemoryLeaks;
-rows: 0
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -58,7 +57,7 @@ success
 
 //------------------------------------------------------------------------------
 // one table does not exist
-pipeline unionAll_I
+pipeline unionAll
    begin
 
   stage stageA on origin :
@@ -66,12 +65,14 @@ pipeline unionAll_I
 
   stage stageB on all partitions :
     scan lineitem
-    | project  0 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  0 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -96,7 +97,7 @@ success
 
 //------------------------------------------------------------------------------
 // no data in either table
-pipeline unionAll_I
+pipeline unionAll
    begin
 
   stage stageA on origin :
@@ -104,12 +105,14 @@ pipeline unionAll_I
 
   stage stageB on all partitions :
     scan lineitem
-    | project  0 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  0 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -118,13 +121,14 @@ pipeline unionAll_I
 end ;
 rows: 0
 
+//------------------------------------------------------------------------------
 // load data
 load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
 // data in one table
-pipeline unionAll_I
+pipeline unionAll
    begin
 
   stage stageA on origin :
@@ -132,12 +136,14 @@ pipeline unionAll_I
 
   stage stageB on all partitions :
     scan lineitem
-    | project  0 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  0 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -166,7 +172,7 @@ failure contains: '4 invalid'
 
 //------------------------------------------------------------------------------
 // data in one table
-pipeline unionAll_I
+pipeline unionAll
    begin
 
   stage stageA on origin :
@@ -174,12 +180,14 @@ pipeline unionAll_I
 
   stage stageB on all partitions :
     scan lineitem
-    | project  0 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  0 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -203,7 +211,7 @@ success
 
 //------------------------------------------------------------------------------
 // data in both tables
-pipeline unionAll_I
+pipeline unionAll
    begin
 
   stage stageA on origin :
@@ -211,12 +219,14 @@ pipeline unionAll_I
 
   stage stageB on all partitions :
     scan lineitem
-    | project  0 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  0 "type integer as orderkey $1"
+    | project  2 "type integer as orderkey $1"
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -253,6 +263,9 @@ success;
 // drop the table
 drop table orders;
 success;
+
+MemoryLeaks;
+rows: 0
 
 CLEANUP {
   

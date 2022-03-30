@@ -83,6 +83,8 @@ static const i8 C_MAX_SHAPES = 32;
     u8   uGetSelectColumns(Stream* pStream);
 
     void vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupEosAgg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupEosPayload(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp);
@@ -91,15 +93,18 @@ static const i8 C_MAX_SHAPES = 32;
     void vSetupProjectExp(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pProjectOp);
     void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
+    void vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                              Stz* sHashExpr, Stz* sReturnLabel);
-    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
+                              Op* pHavingFilterOp, Stz* sHashExpr);
+    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Op* pHavingFilterOp, Stz* sHashExpr);
+    void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp, Stz* sHashExpr);
+    void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp, Stz* sHashExpr);
 
     Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil);
-    Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
+    Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, bool bHasOrdAgg);
     Shape* pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel);
 
     Shape* pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp);
@@ -107,18 +112,19 @@ static const i8 C_MAX_SHAPES = 32;
     Shape* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchLabel(Combined* pCombined, Stream* pStream, Op* pOp);
     Shape* pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop);
+    Shape* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* szLabelLoop);
     Shape* pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                          eSR ePrevStencil, Stz* sLabelLoop);
+    Shape* pSketchOrderBy(Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pOp,
                                       eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
                              eSR ePrevStencil, Stz* sLabelLoop);
-    Shape* pSketchSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel, Stz* sLabelLoop);
-    Shape* pSketchPot(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, eSR ePrevStencil,
-                      IntStack* pAggTypeStack, Stz* sHashExpr, Stz* szLabel, Stz* sLabelLoop, Stz* sReturnLabel);
-    Shape* pSketchTub(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, eSR ePrevStencil,
-                      IntStack* pAggTypeStack, Stz* szLabel, Stz* sLabelLoop, Stz* sReturnLabel);
+    Shape* pSketchPot(Combined* pCombined, Op* pLastOp, eSR ePrevStencil,
+                      IntStack* pPreExpStack, Stz* sHashExpr, Stz* szLabel, Stz* sLabelLoop);
+    Shape* pSketchTub(Combined* pCombined, Op* pLastOp, eSR ePrevStencil,
+                      IntStack* pPreExpStack, Stz* szLabel, Stz* sLabelLoop);
     Shape* pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop, bool bHasOrdAgg);
 
 

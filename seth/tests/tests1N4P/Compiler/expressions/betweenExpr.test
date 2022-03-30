@@ -22,6 +22,8 @@ CREATE TABLE region (
 );
 success
 
+load nation "../DATA/TPCH/nation.tbl";
+success
 
 trackmemory;
 success
@@ -70,19 +72,16 @@ rows: (*,'explainPlan','
 
 
 -- Test runtime of a simple positive BETWEEN expr (1)
-// TODO: Enable once supported
-//SELECT n_nationkey BETWEEN 1 AND 2 FROM nation WHERE n_nationkey = 1;
-//rows: (true)
+SELECT n_nationkey BETWEEN 1 AND 2 FROM nation WHERE n_nationkey = 1;
+rows: (true)
 
 -- Test runtime of a simple positive BETWEEN expr (2)
-// TODO: Enable once supported
-//SELECT n_nationkey BETWEEN 1 AND 2 FROM nation WHERE n_nationkey = 2;
-//rows: (true)
+SELECT n_nationkey BETWEEN 1 AND 2 FROM nation WHERE n_nationkey = 2;
+rows: (true)
 
 -- Test runtime of a simple negative BETWEEN expr
-// TODO: Enable once supported
-//SELECT n_nationkey BETWEEN 1 AND 2 FROM nation WHERE n_nationkey = 3;
-//rows: (false)
+SELECT n_nationkey BETWEEN 1 AND 2 FROM nation WHERE n_nationkey = 3;
+rows: (false)
 
 
 -- Test explain of a simple BETWEEN expr with negative ranges
@@ -103,29 +102,24 @@ rows: (*,'explainPlan','
 
 
 -- Test runtime of a simple BETWEEN expr with negative ranges (1)
-// TODO: Enable once supported
-//SELECT -1 BETWEEN -2 AND -1 FROM nation LIMIT 1;
-//rows: (true)
+SELECT -1 BETWEEN -2 AND -1 FROM nation LIMIT 1;
+rows: (true)
 
 -- Test runtime of a simple BETWEEN expr with negative ranges (2)
-// TODO: Enable once supported
-//SELECT -2 BETWEEN -2 AND -1 FROM nation LIMIT 1;
-//rows: (true)
+SELECT -2 BETWEEN -2 AND -1 FROM nation LIMIT 1;
+rows: (true)
 
 -- Test runtime of a simple BETWEEN expr with negative ranges (3)
-// TODO: Enable once supported
-//SELECT 0 BETWEEN -2 AND -1 FROM nation LIMIT 1;
-//rows: (false)
+SELECT 0 BETWEEN -2 AND -1 FROM nation LIMIT 1;
+rows: (false)
 
 -- Test runtime of a simple BETWEEN expr with negative ranges (4)
-// TODO: Enable once supported
-//SELECT -3 BETWEEN -2 AND -1 FROM nation LIMIT 1;
-//rows: (true)
+SELECT -3 BETWEEN -2 AND -1 FROM nation LIMIT 1;
+rows: (false)
 
 -- Test runtime of a simple BETWEEN expr with negative ranges (2 - range reversed)
-// TODO: Enable once supported
-//SELECT -1 BETWEEN -1 AND -2 FROM nation LIMIT 1;
-//rows: (false)
+SELECT -1 BETWEEN -1 AND -2 FROM nation LIMIT 1;
+rows: (false)
 
 
 -- Test explain of a BETWEEN expr with invalid types (1)
@@ -613,14 +607,12 @@ rows: (*,'explainPlan','
 
 
 -- Test runtime of a NOT BETWEEN (1)
-// TODO: Enable once supported
-//SELECT 1 NOT BETWEEN 0 AND 9 FROM nation LIMIT 1 ;
-//rows: (false)
+SELECT 1 NOT BETWEEN 0 AND 9 FROM nation LIMIT 1 ;
+rows: (false)
 
 -- Test runtime of a NOT BETWEEN (1)
-// TODO: Enable once supported
-//SELECT -1 NOT BETWEEN 0 AND 9 FROM nation LIMIT 1 ;
-//rows: (true)
+SELECT -1 NOT BETWEEN 0 AND 9 FROM nation LIMIT 1 ;
+rows: (true)
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

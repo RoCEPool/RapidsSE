@@ -8,6 +8,7 @@ enum eLR // Logic Unit Registers
   /*  0 */ LR_NONE=0,
 
   /*  1 */ LR_AGGTIMER,
+  /*    */ LR_AGGTYPESTACK,
   /*  2 */ LR_BUCKET,
   /*  3 */ LR_COMBINED,
   /*  4 */ LR_CRWBUFFER,
@@ -49,6 +50,7 @@ enum eLR // Logic Unit Registers
   /* 40 */ LR_PIPESPEC,
   /* 41 */ LR_POT,
   /* 42 */ LR_PLANOPERAND,
+  /*    */ LR_PREEXPSTACK,
   /* 43 */ LR_PTNSTREAM,
   /* 44 */ LR_RECVDOBJECT,
   /* 45 */ LR_ROWBUFFER,
@@ -96,6 +98,7 @@ static Stz* aLR[]
   /*  0 */ "LR_NONE"_Stz,
   
   /*  1 */ "LR_AGGTIMER"_Stz,
+  /*    */ "LR_AGGTYPESTACK"_Stz,
   /*  2 */ "LR_BUCKET"_Stz,
   /*  3 */ "LR_COMBINED"_Stz,
   /*  4 */ "LR_CRWBUFFER"_Stz,
@@ -137,6 +140,7 @@ static Stz* aLR[]
   /* 40 */ "LR_PIPESPEC"_Stz,
   /* 41 */ "LR_PLANOPERAND"_Stz,
   /* 42 */ "LR_POT"_Stz,
+  /*    */ "LR_PREEXPSTACK"_Stz,
   /* 43 */ "LR_PTNSTREAM"_Stz,
   /* 44 */ "LR_RECVDOBJECT"_Stz,
   /* 45 */ "LR_ROWBUFFER"_Stz,

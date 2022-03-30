@@ -1,16 +1,8 @@
 /*============================================================================*/
-/* OP_orderBy.sen -- Operator orderBy columns                                 */
+/* OP_sort.sen -- Operator sort columns                                       */
 /*============================================================================*/
 
-" OP_orderBy.sen" .verbose
-
-/*----------------------------------------------------------------------------*/
-/* support for seapi immediate                                                */
-/*----------------------------------------------------------------------------*/
-: orderBy_seapi
-
-  "orderBy_seapi" .
-;
+" OP_sort.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -19,14 +11,22 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: orderBy_Cleaning \handler
+: sort_Cleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  // cleanup the pot
-  PotRlu[].cleanup
+  // will be null if table not found
+  StreamDefLft[].isNull not if
+    StreamDefLft[].delete
+  then
 
-  //Counter0[] cleanUpAsm
+  StreamDefOut[].isNull not if
+    StreamDefOut[].delete
+  then
+
+  IndexDef[].isNull not if
+    IndexDef[].delete
+  then
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
@@ -34,24 +34,52 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: orderBy_StartMarker \handler
+: sort_StreamDef \handler
 
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  EC_NONE locals| eError |
 
-  EC_ORDERBY_NOT_SUPPORTED op__execErr
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
-  ZK_M_START_handler
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  // new an indexDef
+  indexDef[].new
+
+  // generate selectColumns bitmap from expr and streamDefIn
+  <expr> indexDef[] StreamDefLft[] StreamDefOut[].generate to eError
+
+  // check for error
+  eError EC_NONE == not if
+    StreamDefOut[].delete
+    eError op__execErr
+    true
+    exit
+  then
+
+  // delete the streamDefOut[]. Not needed for sort
+  StreamDefOut[].delete
+
+  // duplicate the streamDefLeft as streamDefOut
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  StreamDefLft[].duplicate to Pipein[]
+
+  // pipe out the streamDef
+  Pipein[].pipeout
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* orderBy request                                                       SPAWN */
+/* sort request                                                         SPAWN */
 /*----------------------------------------------------------------------------*/
-: orderBy_op \operator
+: sort_op \operator
 
   _lu_initialise_
 
@@ -60,8 +88,14 @@
 
   op__topology
 
-  find: orderBy_Cleaning      ZK_M_CLEANING [op].handler!
-  find: orderBy_StartMarker   ZK_M_START    [op].handler!
+  Counter0[] 2 == not if
+    "Warning: sort works only with combinedOP" .
+    true
+    exit
+  then
+
+  find: sort_Cleaning      ZK_M_CLEANING    [op].handler!
+  find: sort_StreamDef     ZK_D_STREAMDEF   [op].handler!
 
   op__loop
 
@@ -75,12 +109,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: orderBy :: orderBy <compiled> <expr> ;
+cmdSyntax: sort :: sort <compiled> <expr> ;
 
-: orderBy_cmdTags _cmdTags tagCopy: op_tags
+: sort_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "orderBy_op"
+    <opEntry> = "sort_op"
   }
 ;
 

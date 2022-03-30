@@ -973,8 +973,8 @@ eEC StreamDefBase::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   if (! pTkn->bSame(")"_Stz))
     return EC_INVALID_COMMAND;
 
-  if (iScale != 2)
-    return EC_DECIMAL_NOT_SUPPORTED;
+  //if (iScale != 2)
+  //  return EC_DECIMAL_NOT_SUPPORTED;
 
   if (! Column::bValidBcd(iPrecision, iScale))
     return EC_INVALID_COMMAND;

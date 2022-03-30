@@ -10,6 +10,8 @@
 
 #include "eYX.h"
 
+#include "ExprEval2.hpp"
+
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
@@ -168,9 +170,8 @@ void Step::vStreamDefLftSelectColumns(void)
   s4K sExpr;
   m_pDataStack->vPopStr(sExpr, __func__);
 
-  eEC eError = ExprEval::eGenerateSelectColumns(pStreamDefIn, sExpr, &m_pLogicUnit->m_uSelectColumns);
-
-    m_pDataStack->vPushInt(eError);
+  eEC eError = ExprEval2::eGenerateSelectColumns(pStreamDefIn, sExpr, &m_pLogicUnit->m_uSelectColumns);
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }

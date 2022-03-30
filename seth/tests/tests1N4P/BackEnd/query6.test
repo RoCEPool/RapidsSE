@@ -13,14 +13,15 @@ begin
 
   stage stageB on all partitions :
     scan lineitem
-    | filter  1 "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
-    | filter  1 "type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and"
-    | project  1 " type decimal as revenue_p ) $6 $7 * sum "
+    | filter 2 "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
+    | filter 2 "type boolean $7 0.06 0.01 - >= <> $7 0.06 0.01 +  <= <>"
+    | aggreg 2 " type decimal as revenue_p ) $6 $7 * sum "
+    | combined 0
     | stageC
 
-   stage stageC on origin :
-     aggreg  1 " type decimal as revenue $1 "
-     | output | sink | stageA
+  stage stageC on origin :
+    aggreg 0 " type decimal as revenue $1 "
+    | output | sink | stageA
 end;
 failure contains: "Table does not exist"
 
@@ -48,150 +49,48 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type decimal $7";
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 2 "type boolean $11 DATE '1994-01-01' >=   $11 DATE '1995-01-01' < and "
+    | filter 2 "type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <= and"
+    | project 2 "type decimal as partitionRevenue ) $6 $7 * sum "
+    | combined 0
+    | stageC
+
+  stage stageC on origin :
+    project 2 " type decimal as revenue ) $1 sum "
+    | combined 0
+    | output | sink | stageA
+end;
 rows: 0
 
-// load data
+//------------------------------------------------------------------------------
 load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-projectColumns lineitem "type integer $2";
-rows:
-  (1551894)
-  (673091)
-  (636998)
-  (21315)
-  (240267)
-  (156345)
-  (1061698)
-  (190355)
-  (42970)
-  (1284483)
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | pulse once | stageB
 
-//------------------------------------------------------------------------------
-projectColumns lineitem "type decimal $7";
-rows:
-  (0.04)
-  (0.09)
-  (0.10)
-  (0.09)
-  (0.10)
-  (0.07)
-  (0.00)
-  (0.10)
-  (0.06)
-  (0.06)
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 2 "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
+    | combined 0
+    | stageC
 
-//------------------------------------------------------------------------------
-projectColumns lineitem "type varchar $9";
+  stage stageC on origin :
+    output | sink | stageA
+end;
 rows:
-  ('N')
-  ('N')
-  ('N')
-  ('N')
-  ('N')
-  ('N')
-  ('N')
-  ('R')
-  ('R')
-  ('A')
-
-//------------------------------------------------------------------------------
-projectColumns lineitem "type date $11";
-rows:
- (DATE '1993-11-09')
- (DATE '1994-02-02')
- (DATE '1994-01-16')
- (DATE '1996-03-13')
- (DATE '1996-04-12')
- (DATE '1996-01-29')
- (DATE '1996-04-21')
- (DATE '1996-03-30')
- (DATE '1996-01-30')
- (DATE '1997-01-28')
-
-//------------------------------------------------------------------------------
-projectColumns lineitem "type varchar $16";
-rows:
-  ('egular courts above the')
-  ('ly final dependencies: slyly bold ')
-  ('riously. regular: express dep')
-  ('lites. fluffily even de')
-  (' pending foxes. slyly re')
-  ('arefully slyly ex')
-  ('ven requests. deposits breach a')
-  (' unusual accounts. eve')
-  ('ongside of the furiously brave acco')
-  ('nal foxes wake. ')
-
-//------------------------------------------------------------------------------
-//ALKA: UNCOMMENT
-/*
-filterRows lineitem "$7 0.04 >=  $7 0.06 <=  $5 24.0 < and and";
-rows:
-  (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
-  (1,1551894,76910,1,17.00,33078.94,0.04,*,*,*,*,*,*,*,*,*)
-*/
-
-//------------------------------------------------------------------------------
-projectColumns lineitem type integer as a 2 , type date as b $11 ;
-rows:
-  (2, DATE '1993-11-09')
-  (2, DATE '1994-02-02')
-  (2, DATE '1994-01-16')
-  (2, DATE '1996-03-13')
-  (2, DATE '1996-04-12')
-  (2, DATE '1996-01-29')
-  (2, DATE '1996-04-21')
-  (2, DATE '1996-03-30')
-  (2, DATE '1996-01-30')
-  (2, DATE '1997-01-28')
-
-//------------------------------------------------------------------------------
-projectColumns lineitem type date $11, type decimal $6 2.0 *, type decimal $6;
-rows:
- (DATE '1993-11-09',141644.30,70822.15)
- (DATE '1994-02-02',172167.30,86083.65)
- (DATE '1994-01-16',79240.68,39620.34)
- (DATE '1996-03-13',66157.88,33078.94)
- (DATE '1996-04-12',76612.32,38306.16)
- (DATE '1996-01-29',30959.36,15479.68)
- (DATE '1996-04-21',69233.36,34616.68)
- (DATE '1996-03-30',57948.00,28974.00)
- (DATE '1996-01-30',89685.76,44842.88)
- (DATE '1997-01-28',126132.64,63066.32)
-
-//------------------------------------------------------------------------------
-//ALKA: UNCOMMENT
-/*
-projectColumns lineitem type decimal $6, type decimal $7, type decimal $6 $7 *;
-rows:
- (33078.94,0.04,1323.15)
- (38306.16,0.09,3447.55)
- (15479.68,0.10,1547.96)
- (34616.68,0.09,3115.50)
- (28974.00,0.10,2897.40)
- (44842.88,0.07,3139.00)
- (63066.32,0.00,0.00)
- (70822.15,0.10,7082.21)
- (86083.65,0.06,5165.01)
- (39620.34,0.06,2377.22)
-*/
-
- //------------------------------------------------------------------------------
- projectColumns lineitem type integer $1, type varchar $16, type date $11, type decimal $7, type integer $1;
- rows:
-  (3,' unusual accounts. eve',DATE '1993-11-09',0.10,3)
-  (3,'ongside of the furiously brave acco',DATE '1994-02-02',0.06,3)
-  (3,'nal foxes wake. ',DATE '1994-01-16',0.06,3)
-  (1,'egular courts above the',DATE '1996-03-13',0.04,1)
-  (1,'ly final dependencies: slyly bold ',DATE '1996-04-12',0.09,1)
-  (1,'riously. regular: express dep',DATE '1996-01-29',0.10,1)
-  (1,'lites. fluffily even de',DATE '1996-04-21',0.09,1)
-  (1,' pending foxes. slyly re',DATE '1996-03-30',0.10,1)
-  (1,'arefully slyly ex',DATE '1996-01-30',0.07,1)
-  (2,'ven requests. deposits breach a',DATE '1997-01-28',0.00,2)
+  (3,42970,17971,1,45.00,86083.65,0.06,0.00,'R','F',DATE '1994-02-02',DATE '1994-01-04',DATE '1994-02-23','NONE','AIR','ongside of the furiously brave acco')
+  (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',DATE '1993-11-22',DATE '1994-01-23','DELIVER IN PERSON','SHIP','nal foxes wake. ')
 
 //------------------------------------------------------------------------------
 pipeline Query6
@@ -201,13 +100,94 @@ begin
 
   stage stageB on all partitions :
     scan lineitem
-    | filter  1 "type boolean $11 DATE '1994-01-01' >=   $11 DATE '1995-01-01' < and "
-    | filter  1 "type boolean $7 0.06 0.01 - >=  $7 0.06 0.01 +  <=  $5 26.0 < and and "
-    | project  1 " type decimal as revenue_p ) $6 $7 * sum "
+    | filter 2 "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
+    | filter 2 "type boolean $7 0.06 0.01 - >= $7 0.06 0.01 +  <= and"
+    | combined 0
     | stageC
 
   stage stageC on origin :
-    project  1 " type decimal as revenue ) $1 sum "
+    output | sink | stageA
+end;
+rows:
+  (3,42970,17971,1,45.00,86083.65,0.06,0.00,'R','F',DATE '1994-02-02',DATE '1994-01-04',DATE '1994-02-23','NONE','AIR','ongside of the furiously brave acco')
+  (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',DATE '1993-11-22',DATE '1994-01-23','DELIVER IN PERSON','SHIP','nal foxes wake. ')
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 2 "type boolean $11 DATE '1994-01-01' >= $11 DATE '1995-01-01' < and "
+    | filter 2 "type boolean $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and"
+    | combined 0
+    | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end;
+rows:
+  (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',DATE '1993-11-22',DATE '1994-01-23','DELIVER IN PERSON','SHIP','nal foxes wake. ')
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 2 "type boolean $11 DATE '1994-01-01' >=   $11 DATE '1995-01-01' < and "
+    | filter 2 "type boolean $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and"
+    | combined 0
+    | stageC
+
+  stage stageC on origin :
+    project 2 " type decimal $6 , type decimal $7"
+    | combined 0
+    | output | sink | stageA
+end;
+rows:
+ (39620.34,0.06)
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+     | filter 2 "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
+     | filter 2 "type boolean $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and"
+     | combined 0
+     | stageC
+  stage stageC on origin :
+    project 2 " type decimal $6 , type decimal $7 , type decimal $6 $7 * "
+    | combined 0
+    | output | sink | stageA
+end;
+rows:
+  (39620.34,0.06,2377.22)
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 2 "type boolean $11 DATE '1994-01-01' >= $11 DATE '1995-01-01' < and "
+    | filter 2 "type boolean $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and"
+    | combined 0
+    | stageC
+
+  stage stageC on origin :
+    project 2 " type decimal as revenue ) $6 $7 * sum "
+    | combined 0
     | output | sink | stageA
 end;
 rows:
@@ -221,16 +201,82 @@ begin
 
   stage stageB on all partitions :
     scan lineitem
-    | filter  1 "type boolean $11 DATE '1994-01-01' >=   $11 DATE '1995-01-01' <   $7 0.06 0.01 - >=  $7 0.06 0.01 +  <=  $5 26.0 < and and and and"
-    | project  1 " type decimal as revenue_p ) $6 $7 * sum "
+    | filter 2 "type boolean $11 DATE '1994-01-01' >= $11 DATE '1995-01-01' < and "
+    | filter 2 "type boolean $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and"
+    | project 2 " type decimal as partitionRevenue ) $6 $7 * sum"
+    | combined 0
     | stageC
 
   stage stageC on origin :
-    project  1 " type decimal as revenue ) $1 sum "
+    project 2 " type decimal as revenue ) $1 sum "
+    | combined 0
     | output | sink | stageA
 end;
 rows:
   (2377.22)
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 2 "type boolean $11 DATE '1994-01-01' >= $11 DATE '1995-01-01' < $7 0.06 0.01 - >= $7 0.06 0.01  +  <= $5 26.0 < and and and and"
+    | project 2 " type decimal as partitionRevenue ) $6 $7 * sum"
+    | combined 0
+    | stageC
+
+  stage stageC on origin :
+    project 2 " type decimal as revenue ) $1 sum "
+    | combined 0
+    | output | sink | stageA
+end;
+rows:
+  (2377.22)
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 2 "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
+    | combined 0
+    | stageC
+
+  stage stageC on origin :
+    project 2 " type decimal $6 , type decimal $7 , type decimal $6 $7 * "
+    | combined 0
+    | output | sink | stageA
+end;
+rows:
+  (86083.65,0.06,5165.02)
+  (39620.34,0.06,2377.22)
+
+//------------------------------------------------------------------------------
+pipeline Query6
+begin
+ stage stageA on origin :
+   start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 2 "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
+    | project 2 " type decimal as revenuePart ) $6 $7 * sum "
+    | combined 0
+    | stageC
+
+  stage stageC on origin :
+    project 2 " type decimal as revenue ) $1 sum "
+    | combined 0
+    | output | sink | stageA
+end;
+rows:
+  (7542.24)
 
 //------------------------------------------------------------------------------
 // drop the table

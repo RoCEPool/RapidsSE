@@ -209,10 +209,13 @@ select tme_col10,tme_col11 from datums where tme_col10 = TIME '10:23:31' AND tme
 rows:
 (TIME '10:23:31',TIME '10:22:35')
 
+// TODO: FIX THIS
 //------------------------------------------------------------------------------
+/*
 select tme_col10,tme_col11 from datums where tme_col10 = NULL OR tme_col11 = TIME '10:22:35';
 rows:
 (TIME '10:23:31',TIME '10:22:35')
+*/
 
 //------------------------------------------------------------------------------
 select tme_col10,tme_col11 from datums where tme_col10 = tme_col11;

@@ -4,7 +4,7 @@
 
 //------------------------------------------------------------------------------
 select L_ORDERKEY from lineitem where l_discount >= 0.04;
-failure contains: "Table does not exist"
+failure contains: "No such table"
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -75,8 +75,18 @@ rows:
   (3,1284483,34508,3,22.00,39620.34,0.06,*,*,*,*,*,*,*,*,*)
 
 //------------------------------------------------------------------------------
-select * from lineitem where  l_discount <>=> 0.04 and l_discount  > 0.06;
+select * from lineitem where l_discount <= 0.04 and l_discount  > 0.06;
 rows: 0
+
+//------------------------------------------------------------------------------
+select l_discount from lineitem where l_discount >= 0.04 and l_discount  > 0.06;
+rows:
+ (0.09)
+ (0.10)
+ (0.09)
+ (0.10)
+ (0.07)
+ (0.10)
 
 //------------------------------------------------------------------------------
 select * from lineitem where  l_discount >= 0.05 - 0.01 and l_discount <= 0.05 + 0.01;

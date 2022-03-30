@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* ePJ.h -- project kind                                                      */
+/* ePL.h -- Payload Kind                                                      */
 /*============================================================================*/
 #pragma once
 
-enum ePJ // expression type
+enum ePL // payload kind
 {
-  /* 0 */ PJ_NONE=0,
-  /* 1 */ PJ_AGG,
-  /* 2 */ PJ_EXP,
-  /* 3 */ PJ_GBY,
-  /* 4 */ PJ_ENUMS
+  /* 0 */ PL_NONE=0,
+  /* 1 */ PL_GBY,
+  /* 2 */ PL_SRT,
+  /* 3 */ PL_TOP,
+  /* 4 */ PL_ENUMS
 };
 
-static Stz* aPJ[]
+static Stz* aPL[]
 {
   /* 0 */ "NONE"_Stz,
-  /* 1 */ "AGG"_Stz,
-  /* 2 */ "EXP"_Stz,
-  /* 3 */ "GBY"_Stz,
-  /* 4 */ "ENUMS"_Stz,
+  /* 1 */ "GBY"_Stz,
+  /* 2 */ "SRT"_Stz,
+  /* 3 */ "TOP"_Stz,
+  /* 4 */ "enums"_Stz,
 };
 
 /*============================================================================*/

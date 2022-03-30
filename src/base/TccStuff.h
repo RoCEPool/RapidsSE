@@ -63,6 +63,7 @@ union Edt_T
 union Flt_T {
   d8 m_dFlt;
   i8 m_iAsI8;
+  //d8 dGetFloat() const {return *(d8*)&m_iAsI8;};  tinyC compilation error;
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -284,6 +285,9 @@ struct Combined_T
   i8        m_iHeadSize;
   enum eSI  m_eStrInflateRule;
 
+  // expression stack
+  i8      m_aW[256];
+
   // rowBuffer T
   void*   m_aRowBuffer;
 
@@ -338,33 +342,30 @@ struct Combined_T
   void*   m_aRowSingleAgg;
   void*   m_aRowCellArrayAgg;
   char*   m_racStrAreaAgg;
+  char*   m_racStrAreaSavAgg;
 
-  // project (gby/payload)
+  // project (gby)
   i8      m_nAggRows;
   i8      m_iProcessRow;
+  i8      m_iBufferDone;
+
+  // payload (gby/srt/top)
   i8*     m_aiPayload;
   void*   m_aPayloadRow;
+  void*   m_aPayloadCellArray;
   char*   m_racPayloadArea;
-  void*   m_aIndexTreeGby;
-  void*   m_aIndexDefGby;
+  char*   m_racPayloadAreaSav;
+  void*   m_aIndexTreePL;
+  void*   m_aIndexDefPL;
   void*   m_aEntBufferPL;
   void*   m_aEntWrkPL;
   void*   m_aEntKeyPL;
+  void*   m_aEntBottomPL;
   struct Ent_int* m_aEntIntPL;
 
   // top
   i8      m_iTopInit;
-  i8*     m_aiTopPayload;
-  char*   m_racTopPayloadArea;
-  void*   m_aTopPayloadRow;
-  void*   m_aIndexTreeTOP;
-  void*   m_aIndexDefTOP;
-  void*   m_aEntBufferTOP;
-  void*   m_aEntBottomTOP;
-  void*   m_aEntWrkTOP;
-  void*   m_aEntKeyTOP;
   i8      m_iInsertCntTOP;
-  struct Ent_int* m_aEntIntTOP;
 
   // limit
   i8     m_iLimitRows;
@@ -409,6 +410,8 @@ void  vPot_RowStrSize(void* pPot, i8 iMixin, i8 nRowStrSize);
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
 
+i8    StrLib_iLike2(char* azStr, char* azRegExp);
+i8    StrLib_iLike3(char* azStr, char* azRegExp, char cEsc);
 i8    StrLib_iWordFlipBack(char* aDst, char* aSrc);
 
 /*============================================================================*/

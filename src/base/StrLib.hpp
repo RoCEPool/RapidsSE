@@ -161,6 +161,9 @@ namespace BASE
     static i8    nLength(const char* s, const char cTerm, i8 iMax);
     static i8    nLengthNonBlank(const char* s, const char cTerm, i8 iMax);
 
+    static i8    iLike2(char* azStr, char* azRegExp);
+    static i8    iLike3(char* azStr, char* azRegExp, char cEscape);
+
     static bool  bMatch(char* azStr, char* azRegExp);
     static bool  bMatchHere(char* azStr, char* azRegExp);
     static bool  bMatchStar(char* azStr, char* azRegExp, char cChr);
@@ -246,6 +249,8 @@ namespace BASE
 
   };
 
+  i8 StrLib_iLike2(char* azStr, char* azRegExp);
+  i8 StrLib_iLike3(char* azStr, char* azRegExp, char cEsc);
   i8 StrLib_iWordFlipBack(char* aDst, char* aSrc);
 
 }

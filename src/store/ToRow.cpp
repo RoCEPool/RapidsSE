@@ -677,6 +677,8 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   SP_String spCur;
   SP_String spNxt;
 
+  Bcd xBcdValue;
+
   ColPix xColPix;
   eDM ePixDatum;
   i8 nPixLength;
@@ -1489,8 +1491,10 @@ L_Decimal:
 //
 //  if (xColPix.m_bPtnKey)
 //    PtnMap::vRunningHash(&iPtnKeyHash,iColVal_decimal);
-  
-  vDEPOSIT_VALUE(iColVal_decimal);
+
+  xBcdValue.vSet(iColVal_decimal,xColPix.m_uScale);
+  //vDEPOSIT_VALUE(iColVal_decimal);
+  vDEPOSIT_VALUE(xBcdValue);
 
   goto L_FieldEnd;
 

@@ -7,6 +7,18 @@
 
 typedef i8 tXN; // opaque type for transaction number
 
+static const i8 C_BCD_MIN = -140737488355328;
+static const i8 C_BCD_MAX = 140737488355327;
+
+// MaxFloat64
+static const d8 C_FLT_MAX = 1.797693134862315708145274237317043567981e+308;
+// min Float 64 based on DBL_MIN = 2.2250738585072014e-308
+// We use the lowest for float/double is negative -C_FLT_MAX
+static const d8 C_FLT_MIN = -1.797693134862315708145274237317043567981e+308;
+
+static const i8 C_INT_MIN = (-9223372036854775807LL - 1);
+static const i8 C_INT_MAX = 9223372036854775807LL;
+
 
 //static const i8 C_ERA_0 =  0; // 1900
 //static const i8 C_ERA_1 = 92; // 1992
@@ -37,13 +49,15 @@ public:
 //    struct Bcd_T m_xBcd;
 //  };
 
-  static i8 iMinValue(void)            { return C_I8_MIN; }
-  static i8 iMaxValue(void)            { return C_I8_MAX; }
+  static i8 iMinValue(void)            { return C_BCD_MIN; }
+  static i8 iMaxValue(void)            { return C_BCD_MAX; }
 
   operator i8(void)                    { return T.m_iAsI8; }  // auto conversion
-  
+
   void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
-  void vSet(i8 iMantissa, i8 iScale)   { T.m_iMantissa = iMantissa; T.m_iScale = iScale; T.m_iSpare = 0; }  // set value
+  void vSet(i8 iMantissa, i8 iScale)   { T.m_iSpare = 0;
+                                         T.m_iMantissa = iMantissa; // set value
+                                         T.m_iScale = iScale; }
   void vSetMax(void)                { T.m_iBcd = C_I8_MAX; }  // set max value
   void vSetMid(void)                { T.m_iBcd = C_I8_MID; }  // set mid value
   void vSetMin(void)                { T.m_iBcd = C_I8_MIN; }  // set min value
@@ -200,7 +214,7 @@ public:
 
   void vSetMax(void)                { T.m_dFlt = C_D8_MAX; }  // set max value
   void vSetMid(void)                { T.m_dFlt = C_D8_MID; }  // set mid value
-  void vSetMin(void)                { T.m_dFlt = C_D8_MIN; }  // set min value
+  void vSetMin(void)                { T.m_dFlt = -C_D8_MIN; }  // set min value
   void vSetNull(void)          { T.m_iAsI8 = C_DATUM_NULL; }  // set to be null
   void vSetUsual(void)                 { T.m_dFlt = 3.141; }  // set usual value
 
@@ -458,9 +472,9 @@ public:
 
   Vch_T T;
 
-//  static i8 iMinValue(void)            { return C_I8_MAX; }
-//  static i8 iMaxValue(void)            { return C_I8_MIN; }
-//
+  static void vMinValue(char* sMinValue)            { strcpy(sMinValue,"");     }
+  static void vMaxValue(char* sMaxValue)            { strcpy(sMaxValue,"\255"); }
+
 //  operator i8(void)                    { return m_iAsI8; }  // auto conversion
 //
 //  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
