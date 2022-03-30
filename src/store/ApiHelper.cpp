@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "ApiHelper.hpp"
+#include "Api.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -26,6 +27,53 @@ ApiHelper::~ApiHelper(void) noexcept(false)
   _precondition_(_ADDRESS_, _MAGIC_);
 
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allocate session                                                           */
+/*----------------------------------------------------------------------------*/
+void ApiHelper::vAllocateSession(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGING,_FOOTER_);
+  
+  m_pSession = Api::pAllocSession(SK_EXTERNAL);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete job                                                                 */
+/*----------------------------------------------------------------------------*/
+void ApiHelper::vDeleteJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGING,_FOOTER_);
+  
+  Api::vDeleteJob(m_pSession);
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute job                                                                */
+/*----------------------------------------------------------------------------*/
+void ApiHelper::vExecuteJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGING,_FOOTER_);
+  
+  Api::vExecuteJob(m_pSession);
+}
+
+/*----------------------------------------------------------------------------*/
+/* free session                                                               */
+/*----------------------------------------------------------------------------*/
+void ApiHelper::vFreeSession(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGING,_FOOTER_);
+  
+  Api::vFreeSession(m_pSession);
+  m_pSession = nullptr;
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

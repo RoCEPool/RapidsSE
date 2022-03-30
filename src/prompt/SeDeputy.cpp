@@ -60,8 +60,9 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 
   _checkInitialised_(CN_SEDEPUTY);
   
-  m_pSession = Api::pAllocSession(SK_EXTERNAL);
-
+  //m_pSession = Api::pAllocSession(SK_EXTERNAL);
+  ApiHelper::vAllocateSession();
+  
   eEC eError = m_pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
   RASSERT(EC_NONE == eError);
   
@@ -78,9 +79,10 @@ SeDeputy::~SeDeputy(void) noexcept(false)
   while (m_pSession->m_pInput)
     m_pSession->m_pInput = m_pSession->m_pInput->pDeleteInput();
 
-  Api::vFreeSession(m_pSession);
-  m_pSession = nullptr;
-  
+  //Api::vFreeSession(m_pSession);
+  //m_pSession = nullptr;
+  ApiHelper::vFreeSession();
+
   AM::THREAD::vDeleteThread(m_pThread);
 }
 
@@ -162,8 +164,9 @@ void SeDeputy::vExecuteJob(void)
   
   //m_pSession->m_pOutput->vBeginProcOneCmd();
   
-  Api::vExecuteJob(m_pSession);
-  
+  //Api::vExecuteJob(m_pSession);
+  ApiHelper::vExecuteJob();
+
   // start the buffer queue processing while the pipeline ops are running
   if (m_pSession->m_pSsnJob->bIsPipeline())
     m_pSession->m_pOutput->vProcessBufferQueue();
@@ -190,7 +193,8 @@ void SeDeputy::vDeleteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  Api::vDeleteJob(m_pSession);
+  //Api::vDeleteJob(m_pSession);
+  ApiHelper::vDeleteJob();
 }
 
 /*----------------------------------------------------------------------------*/

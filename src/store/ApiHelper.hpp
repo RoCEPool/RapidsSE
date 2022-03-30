@@ -14,6 +14,14 @@ namespace STORE
     ApiHelper(void);
    ~ApiHelper(void) noexcept(false);
 
+    void vAllocateSession(void);
+
+    void vDeleteJob(void);
+  
+    void vExecuteJob(void);
+
+    void vFreeSession(void);
+
   };
 }
 
