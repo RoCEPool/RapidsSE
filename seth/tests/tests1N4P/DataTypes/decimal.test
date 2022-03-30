@@ -332,9 +332,6 @@ failure contains: 'Arithmetic overflow'
 select max(int_col1) + max(int_col1) from datums;
 failure contains: 'Arithmetic overflow'
 */
-// drop the table
-drop table datums;
-success
 
 /*
 
