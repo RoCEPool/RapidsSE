@@ -24,6 +24,8 @@ namespace STORE
     AdaptorWL(void);
    ~AdaptorWL(void) noexcept(false);
   
+    static void vRepair(Object* pObject);
+
   private:
   
     Footer* aFooter(void);
