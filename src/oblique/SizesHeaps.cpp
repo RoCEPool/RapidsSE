@@ -236,6 +236,7 @@
 #include "SubReturn.hpp"
 #include "Deck.hpp"
 #include "DeckSpec.hpp"
+#include "AdaptorWL.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -265,6 +266,7 @@ SizeHeap gxaSizeHeap[]
   { 'A' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__A__
   { sizeof(AccessPath),         HT_T_MEDIUM  ,0 FILL }, // CN_ACCESSPATH
   { sizeof(Action),             HT_T_TINY    ,0 FILL }, // CN_ACTION
+  { sizeof(AdaptorWL),          HT_T_TINY    ,0 FILL }, // CN_ADAPTORWL
   { sizeof(AggTimer),           HT_T_TINY    ,0 FILL }, // CN_AGGTIMER
   { 0,                          HT_INVALID   ,0 FILL }, // CN_AM
   { sizeof(Api),                HT_INVALID   ,0 FILL }, // CN_API
