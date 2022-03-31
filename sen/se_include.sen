@@ -231,12 +231,6 @@ end ;
 "Creating default folders" .verbose
 makeDefaultFolders
 
-"Extracting EO_ fragments" .verbose
-LogicCompiler[].extract
-
-"Extracting AM_ ASM Macros" .verbose
-LogicCompiler[].extractAsm
-
 assert::stack_0
 
 "se_boot.sen completed" .boot

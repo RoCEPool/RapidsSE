@@ -426,9 +426,6 @@ namespace STORE
 
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);
-    void vCollectOpcode(void);
-  
-    bool bGenerateAsm(Stz* sText);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -456,7 +453,6 @@ namespace STORE
 
     // last
     void vDumpCode(void);
-    i8   iCompute(i8 nOuterArgs, i8 iArg0);
 
   private:
     Footer* aFooter(void);
