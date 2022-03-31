@@ -100,7 +100,6 @@ assert::stack_0
 
   "OP_fetch.sen"                include
   "OP_filter.sen"               include
-  "OP_filterRight.sen"          include
   "OP_flushDemon.sen"           include
 
 "g" .verbose
