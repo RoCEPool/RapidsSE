@@ -21,10 +21,7 @@ create table datums (
   vch_col15  VARCHAR(32)
 );
 
-load datums "../DATA/Transliterate/datums.csv" ;
-
-
-
+load datums "../DATA/Datums/datums.csv" ;
 
 create table LineItem
 (
@@ -84,6 +81,44 @@ load customer "../TPCH/SF_0001/customer.csv";
 
 //create index lineitem_part ON lineitem(L_PARTKEY);
 
+create table TABLE9 (
+  pcol9   INTEGER NOT NULL,
+  scol9   INTEGER NOT NULL,
+  tcol9   INTEGER NOT NULL,
+  colb9   VARCHAR(20),
+  cold9   FLOAT,
+  cole9   DECIMAL,
+  colf9   INTEGER,
+  colg9   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+Load TABLE9 "../DATA/Load/tbl9data.csv" ;
+
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+
+explain stage transliterate
+select count(*), sum(cola1), cast(avg(cold1) as decimal(10,7)) from table1 where colb1 < 'green';
+
+
+
+/*
+
+
+
 explain stage aggregateSplit select
   l_returnflag,
   l_linestatus,
@@ -103,13 +138,15 @@ group by
   l_returnflag,
   l_linestatus;
 
-explain stage aggregateSplit select l_extendedprice/l_orderkey from lineitem;
 
-explain stage transliterate select cast(l_quantity as integer) from lineitem;
+explain stage transliterate select cast (dec_col6 as varchar) from datums;
+
+select min(tme_col10) from datums;
+
 
 select p_Partkey , sum(L_QUANTITY) , count(L_QUANTITY) from part join lineitem on l_partkey = p_Partkey where P_BRAND = 'Brand#23' and P_CONTAINER = 'MED BAG'
 group by p_partkey;
-/*
+
 pipeline Q6
 begin
 
