@@ -20,7 +20,8 @@ begin
     | stageC
 
   stage stageC on origin :
-    aggreg 0 " type decimal as revenue $1 "
+    aggreg 2 " type decimal as revenue $1 "
+    | combined 0
     | output | sink | stageA
 end;
 failure contains: "Table does not exist"

@@ -106,13 +106,15 @@ ordered rows:
 
 // Source file: ../queries/isnull/risnull11.sql
 // Result file: ../queries/isnull/results/isnull11.res
+// TODO: ENABLE WHEN JOINS
+/*
 select pcol9, colb9, pcol1, colb1 from table9 join table1 using (ucol) where colb9 is not null and pcol1 between 70 and 80 order by pcol1,pcol9;
 ordered rows:
   (385, 'green', 70, 'PURPLE')
   (275, 'YELLOW', 73, 'tan')
   (212, 'green', 75, 'teal')
   (265, 'WHITE', 76, 'ORANGE')
-
+*/
 
 // Source file: ../queries/isnull/risnull8.sql
 // Result file: ../queries/isnull/results/isnull8.res
@@ -169,8 +171,11 @@ ordered rows:
   (NULL, 'yellow', 115)
 
 */
+
 // Source file: ../queries/isnull/risnull13.sql
 // Result file: ../queries/isnull/results/isnull13.res
+// TODO: ENABLE whEN JOIN
+/*
 select pcol8, colb8, pcol9, colb9 from table8 join table9 on colb8 = colb9 where pcol9 between 219 and 221 order by pcol9, pcol8;
 ordered rows:
   (11, 'grey', 219, 'grey')
@@ -196,7 +201,7 @@ ordered rows:
   (464, 'violet', 221, 'violet')
   (467, 'violet', 221, 'violet')
   (493, 'violet', 221, 'violet')
-
+*/
 
 // Source file: ../queries/isnull/risnull6.sql
 // Result file: ../queries/isnull/results/isnull6.res
