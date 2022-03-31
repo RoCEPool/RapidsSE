@@ -1091,16 +1091,6 @@ public:
   void vLogicUnitDiaryName(void);
   void vLogicUnitDiaryNote(void);
   void vLogicUnitDiaryTitle(void);
-  void vLogicUnitGenAggregate(void);
-  void vLogicUnitGenAsm(void);
-  void vLogicUnitGenFilter(void);
-  void vLogicUnitGenFilterProject(void);
-  void vLogicUnitGenHash(void);
-  void vLogicUnitGenIndexJoin(void);
-  void vLogicUnitGenIndexScan(void);
-  void vLogicUnitGenLimit(void);
-  void vLogicUnitGenLoopJoin(void);
-  void vLogicUnitGenProjection(void);
   void vLogicUnitHandlerFetch(void);
   void vLogicUnitHandlerStore(void);
   void vLogicUnitInit(void);
