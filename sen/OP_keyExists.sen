@@ -98,6 +98,8 @@
 
   op__topology
 
+  Counter0[] 2 == assert
+
   find: keyExists_ComCleaning    ZK_M_CLEANING   [op].handler!
   find: keyExists_ComStart       ZK_M_START      [op].handler!
   find: keyExists_ComStreamDef   ZK_D_STREAMDEF  [op].handler!
