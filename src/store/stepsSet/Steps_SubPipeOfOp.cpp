@@ -14,7 +14,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
 #include "PipeSpec.hpp"
 #include "Job.hpp"
@@ -216,7 +216,7 @@ void Step::vSubPipeOfOpFindSubPipe(void)
   ENTRY();
     
   Pipeline* pOpPipeLine = m_pOp->pSubPipeOfOp();
-  PipeWork* pOpPipeWork = pOpPipeLine->pPipeWork();
+  Vertex* pOpPipeWork = pOpPipeLine->pPipeWork();
   PipeSpec* pOpPipeSpec = pOpPipeWork->pPipeSpec();
   
   Stz* szOpPipeNm = pOpPipeSpec->szPipeSpecNm();
@@ -224,7 +224,7 @@ void Step::vSubPipeOfOpFindSubPipe(void)
 
   i8 nSubPipeWorks = pOpPipeWork->nItems();
   for (i8 i_SubPipeWork = 0; i_SubPipeWork < nSubPipeWorks; i_SubPipeWork++) {
-    PipeWork* pSubPipeWork = pOpPipeWork->pGet(i_SubPipeWork);
+    Vertex* pSubPipeWork = pOpPipeWork->pGet(i_SubPipeWork);
     PipeSpec* pSubPipeSpec = pSubPipeWork->pPipeSpec();
 
     Stz* szSubPipeNm = pSubPipeSpec->szPipeSpecNm();
@@ -374,7 +374,7 @@ void Step::vSubPipeOfOpStartPipeline(void)
   ENTRY();
   
   Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
-  PipeWork* pFormWork = pSubPipelineOfOp->pPipeWork();
+  Vertex* pFormWork = pSubPipelineOfOp->pPipeWork();
 
   Stage*    pStage0   = pFormWork->pStage0();
 

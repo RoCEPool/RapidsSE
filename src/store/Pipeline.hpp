@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE { class PipeWork; class Stage; class PipeSpec; }
+namespace STORE { class Vertex; class Stage; class PipeSpec; }
 
 namespace STORE
 {
@@ -16,7 +16,7 @@ namespace STORE
     s32  m_sPipelineNm;  // name of this pipeline
 
     // -- substructure
-    PipeWork* m_pPipeWork; // formwork of this pipeline
+    Vertex* m_pPipeWork; // formwork of this pipeline
 
     // -- belongs to
     Job* m_pPipelineJob;  // which job
@@ -63,7 +63,7 @@ namespace STORE
     void vEarlyExit(bool bEarlyExit);
     bool bErrored(void);
     void vErrored(bool bErrored);
-    PipeWork* pPipeWork(void);
+    Vertex* pPipeWork(void);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
     i8   iOriginNodeNo(void);

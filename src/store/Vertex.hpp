@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PipeWork.hpp -- PipeWork                                                   */
+/* Vertex.hpp -- Vertex of Pipeline                                           */
 /*============================================================================*/
 #pragma once
 
@@ -8,18 +8,17 @@ namespace STORE { class Stage;    class Staging;
 
 namespace STORE
 {
-  class PipeWork : public ListNL_t<PipeWork>
-                 , public ListItem_t<PipeWork>
-
-
+  class Vertex : public ListNL_t<Vertex>
+               , public ListItem_t<Vertex>
   {
   private:
-    PipeWork* m_pParentPipeWork;
-    PipeSpec* m_pPipeSpec; // specification of this pipework
-    Pipeline* m_pPipeline; // which pipeline
+    Pipeline* m_pPipeline;       // outermost pipeline
+    Vertex*   m_pParentPipeWork; // parent pipework
   
-    Staging* m_pStaging;
-
+    PipeSpec* m_pPipeSpec;       // specification of this pipework
+  
+    Staging*  m_pStaging;
+  
     // must be last
     Footer m_xFooter;
     
@@ -27,10 +26,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    PipeWork(PipeWork* pParentPipeWork,
-             PipeSpec* pPipeSpec,
-             Pipeline* pPipeline);
-   ~PipeWork(void) noexcept(false);
+    Vertex(Pipeline* pPipeline,
+           Vertex* pParentPipeWork,
+           PipeSpec* pPipeSpec);
+   ~Vertex(void) noexcept(false);
   
     bool bCancel(Task* pTriggeringTask);
 
@@ -52,7 +51,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  PipeWork* _pPipeWork(void* aAddr);
+  Vertex* _pVertex(void* aAddr);
 }
 
 /*============================================================================*/

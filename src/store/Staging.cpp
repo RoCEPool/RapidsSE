@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 #include "Staging.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -20,7 +20,7 @@ __aFooterFunction(Staging)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Staging::Staging(PipeWork* pPipeWork, PipeSpec* pPipeSpec)
+Staging::Staging(Vertex* pPipeWork, PipeSpec* pPipeSpec)
 : ListNL_t<Stage>(CN_STAGING)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGING, _FOOTER_);
@@ -61,7 +61,7 @@ Pipeline* Staging::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get pipework                                                               */
 /*----------------------------------------------------------------------------*/
-PipeWork* Staging::pPipeWork(void)
+Vertex* Staging::pPipeWork(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGING,_FOOTER_);
   

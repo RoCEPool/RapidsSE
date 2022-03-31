@@ -5,7 +5,7 @@
 #include "BASE.h"
 
 #include "Pipeline.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Grid.hpp"
 
 #include "SP_Pipeline.hpp"
@@ -74,7 +74,7 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
     
     SP_PipeWork spPipeWork;
 
-    PipeWork* pPipeWork = pPipeline->pPipeWork();
+    Vertex* pPipeWork = pPipeline->pPipeWork();
     
     vCatf("%s"_Stz,spPipeWork.sz(pPipeWork));
 

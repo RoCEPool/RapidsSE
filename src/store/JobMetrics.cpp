@@ -9,7 +9,7 @@
 #include "JobList.hpp"
 
 #include "Pipeline.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Stage.hpp"
 #include "Staging.hpp"
 #include "Stream.hpp"
@@ -361,7 +361,7 @@ bool JobMetrics::bUpdate(bool bAppendList)
 //  vTrace("  Pipeline %s\n"_Stz
 //         ,pPipelineMetrics->szPipelineNm());
 
-  PipeWork* pPipeWork = pPipeline->pPipeWork();
+  Vertex* pPipeWork = pPipeline->pPipeWork();
   while (CN_STAGEMETRICS == eNextClassNo(d_MetricsCursor)) {
     StageMetrics* pStageMetrics = pGetStageMetrics(d_MetricsCursor);
 //    vTrace("    Stage %lld %s\n"_Stz
@@ -451,7 +451,7 @@ void JobMetrics::vCollect(Job* pJob)
   
   new(& m_oMetricsWsp) PipelineMetrics(pPipeline->szPipelineNm());
   
-  PipeWork* pPipeWork = pPipeline->pPipeWork();
+  Vertex* pPipeWork = pPipeline->pPipeWork();
   
   i8 nStages = pPipeWork->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {

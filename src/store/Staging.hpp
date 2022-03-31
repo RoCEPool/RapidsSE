@@ -12,7 +12,7 @@ namespace STORE
   {
   private:
    
-    PipeWork* m_pPipeWork;
+    Vertex* m_pPipeWork;
     PipeSpec* m_pPipeSpec; // specification of this pipework
 
     // must be last
@@ -22,11 +22,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Staging(PipeWork* pPipeWork, PipeSpec* pPipeSpec);
+    Staging(Vertex* pPipeWork, PipeSpec* pPipeSpec);
    ~Staging(void) noexcept(false);
   
     Pipeline* pPipeline(void);
-    PipeWork* pPipeWork(void);
+    Vertex* pPipeWork(void);
 
   private:
   

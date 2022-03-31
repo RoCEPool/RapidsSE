@@ -6,7 +6,7 @@
 
 #include "Pipeline.hpp"
 #include "PipeSpec.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Grid.hpp"
 #include "Staging.hpp"
 
@@ -27,7 +27,7 @@ SP_PipeWork::SP_PipeWork(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_PipeWork::SP_PipeWork(PipeWork* pPipeWork)
+SP_PipeWork::SP_PipeWork(Vertex* pPipeWork)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
@@ -51,7 +51,7 @@ SP_PipeWork::~SP_PipeWork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_PipeWork::vPipeWork(PipeWork* pPipeWork)
+void SP_PipeWork::vPipeWork(Vertex* pPipeWork)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -63,7 +63,7 @@ void SP_PipeWork::vPipeWork(PipeWork* pPipeWork)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_PipeWork::vPipeWork(PipeWork* pPipeWork, i8 iDepth)
+void SP_PipeWork::vPipeWork(Vertex* pPipeWork, i8 iDepth)
 {
   _precondition_(_MAGIC_,_FOOTER_);
     
@@ -74,7 +74,7 @@ void SP_PipeWork::vPipeWork(PipeWork* pPipeWork, i8 iDepth)
 
   i8 nSubWorks = pPipeWork->nItems();
   for (i8 i_SubWork = 0; i_SubWork < nSubWorks; i_SubWork++) {
-    PipeWork* pSubPipeWork = pPipeWork->pGet(i_SubWork);
+    Vertex* pSubPipeWork = pPipeWork->pGet(i_SubWork);
     vPipeWork(pSubPipeWork,iDepth+1);
   }
 
@@ -98,7 +98,7 @@ Stz* SP_PipeWork::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_PipeWork::sz(PipeWork* pPipeWork)
+Stz* SP_PipeWork::sz(Vertex* pPipeWork)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 

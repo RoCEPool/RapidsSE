@@ -14,7 +14,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
 #include "PipeSpec.hpp"
 #include "Job.hpp"
@@ -191,7 +191,7 @@ void Step::vSubPipeEnqueueInvoke(void)
 {
   ENTRY();
   
-  PipeWork* pFormWork = m_pLogicUnit->m_xpSubPipe->pPipeWork();
+  Vertex* pFormWork = m_pLogicUnit->m_xpSubPipe->pPipeWork();
 
   Stage*    pStage0   = pFormWork->pStage0();
 

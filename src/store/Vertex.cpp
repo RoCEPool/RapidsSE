@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PipeWork.cpp -- PipeWork                                                   */
+/* Vertex.cpp -- Vertex of Pipeline                                           */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -12,7 +12,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Staging.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "PipeSpec.hpp"
 #include "StageSpec.hpp"
 #include "Pipeline.hpp"
@@ -23,43 +23,43 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,PipeWork,CN_PIPEWORK)
-__aNewFunction(PipeWork,CN_PIPEWORK)
-__vDeleteFunction(PipeWork,CN_PIPEWORK)
-__aFooterFunction(PipeWork)
+__pCastFunction(STORE,Vertex,CN_VERTEX)
+__aNewFunction(Vertex,CN_VERTEX)
+__vDeleteFunction(Vertex,CN_VERTEX)
+__aFooterFunction(Vertex)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipeWork::PipeWork(PipeWork* pParentPipeWork,
-                   PipeSpec* pPipeSpec,
-                   Pipeline* pPipeline)
-: ListNL_t<PipeWork>(CN_PIPEWORK)
+Vertex::Vertex(Pipeline* pPipeline,
+               Vertex*   pParentPipeWork,
+               PipeSpec* pPipeSpec)
+: ListNL_t<Vertex>(CN_VERTEX)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
+  m_pPipeline = pPipeline;
   m_pParentPipeWork = pParentPipeWork;
   m_pPipeSpec = pPipeSpec;
-  m_pPipeline = pPipeline;
 
   m_pStaging = new Staging(this,m_pPipeSpec);
 
-  _checkInitialised_(CN_PIPEWORK);
+  _checkInitialised_(CN_VERTEX);
   
   vCreatePipework();
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PipeWork::~PipeWork(void) noexcept(false)
+Vertex::~Vertex(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  while (PipeWork *pSupPipeWork = pPop())
+  while (Vertex *pSupPipeWork = pPop())
     delete pSupPipeWork;
   
   delete m_pStaging;
@@ -73,9 +73,9 @@ PipeWork::~PipeWork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* cancel the pipeline                                                        */
 /*----------------------------------------------------------------------------*/
-bool PipeWork::bCancel(Task* pTriggeringTask)
+bool Vertex::bCancel(Task* pTriggeringTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   // get the first stage of the pipeline
   Stage* pStage = m_pStaging->pGet(0);
@@ -89,9 +89,9 @@ bool PipeWork::bCancel(Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* get formwork spec                                                          */
 /*----------------------------------------------------------------------------*/
-PipeSpec* PipeWork::pPipeSpec(void)
+PipeSpec* Vertex::pPipeSpec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   return m_pPipeSpec;
 }
@@ -99,9 +99,9 @@ PipeSpec* PipeWork::pPipeSpec(void)
 /*----------------------------------------------------------------------------*/
 /* get op 0                                                                   */
 /*----------------------------------------------------------------------------*/
-Op* PipeWork::pOp0(void)
+Op* Vertex::pOp0(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   Stage*  pStage0 = m_pStaging->pGet(0);
   Op*     pOp0    = pStage0->pOp0();
@@ -112,9 +112,9 @@ Op* PipeWork::pOp0(void)
 /*----------------------------------------------------------------------------*/
 /* get number of ops to be excuted on given node                              */
 /*----------------------------------------------------------------------------*/
-i8 PipeWork::nOpsOnNode(i8 iNode)
+i8 Vertex::nOpsOnNode(i8 iNode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   i8 nOps = 0;
   
@@ -132,9 +132,9 @@ i8 PipeWork::nOpsOnNode(i8 iNode)
 /*----------------------------------------------------------------------------*/
 /* get pipeline                                                               */
 /*----------------------------------------------------------------------------*/
-Pipeline* PipeWork::pPipeline(void)
+Pipeline* Vertex::pPipeline(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   return m_pPipeline;
 }
@@ -142,9 +142,9 @@ Pipeline* PipeWork::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operaator jobs for the pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void PipeWork::vSetInvoker(Task* pInvoker)
+void Vertex::vSetInvoker(Task* pInvoker)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   for (i8 i_Stage = 0; i_Stage < nStages(); i_Stage++) {
     
@@ -162,9 +162,9 @@ void PipeWork::vSetInvoker(Task* pInvoker)
 /*----------------------------------------------------------------------------*/
 /* set up the pipeline job                                                    */
 /*----------------------------------------------------------------------------*/
-void PipeWork::vSetupJob(void)
+void Vertex::vSetupJob(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   Stage* pStage = m_pStaging->pGet(0);
   
@@ -205,9 +205,9 @@ void PipeWork::vSetupJob(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operaator jobs for the pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void PipeWork::vSpawnOpTasks(void)
+void Vertex::vSpawnOpTasks(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   for (i8 i_Stage = 0; i_Stage < nStages(); i_Stage++) {
     
@@ -225,9 +225,9 @@ void PipeWork::vSpawnOpTasks(void)
 /*----------------------------------------------------------------------------*/
 /* get stage 0                                                                */
 /*----------------------------------------------------------------------------*/
-Stage* PipeWork::pStage0(void)
+Stage* Vertex::pStage0(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   Stage*  pStage0 = m_pStaging->pGet(0);
 
@@ -237,9 +237,9 @@ Stage* PipeWork::pStage0(void)
 /*----------------------------------------------------------------------------*/
 /* get number of stages                                                       */
 /*----------------------------------------------------------------------------*/
-i8 PipeWork::nStages(void)
+i8 Vertex::nStages(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   i8 nStages = m_pStaging->nItems();
   
@@ -249,9 +249,9 @@ i8 PipeWork::nStages(void)
 /*----------------------------------------------------------------------------*/
 /* get stage set                                                              */
 /*----------------------------------------------------------------------------*/
-Staging* PipeWork::pStageSet(void)
+Staging* Vertex::pStageSet(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   return m_pStaging;
 }
@@ -259,9 +259,9 @@ Staging* PipeWork::pStageSet(void)
 /*----------------------------------------------------------------------------*/
 /* get stream 0                                                               */
 /*----------------------------------------------------------------------------*/
-Stream* PipeWork::pStream0(void)
+Stream* Vertex::pStream0(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   Stage*  pStage0  = this->pStage0();
   Stream* pStream0 = pStage0->pStream0();
@@ -278,9 +278,9 @@ Stream* PipeWork::pStream0(void)
 /* create the formwork for pipeline                                           */
 /*----------------------------------------------------------------------------*/
 
-void PipeWork::vCreatePipework(void)
+void Vertex::vCreatePipework(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPEWORK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
 
   i8 nStages = m_pPipeSpec->nStageSpecs();
   for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {

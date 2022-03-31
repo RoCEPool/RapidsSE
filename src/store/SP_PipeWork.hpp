@@ -14,14 +14,14 @@ namespace STORE
     
   public:
     SP_PipeWork(void);
-    SP_PipeWork(PipeWork* pPipeWork);
+    SP_PipeWork(Vertex* pPipeWork);
    ~SP_PipeWork(void) noexcept(false);
 
-    void vPipeWork(PipeWork* pPipeWork);
-    void vPipeWork(PipeWork* pPipeWork, i8 iDepth);
+    void vPipeWork(Vertex* pPipeWork);
+    void vPipeWork(Vertex* pPipeWork, i8 iDepth);
   
     Stz* sz(void);
-    Stz* sz(PipeWork* pPipeWork);
+    Stz* sz(Vertex* pPipeWork);
   
     Footer* aFooter(void);
   };

@@ -15,7 +15,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
 #include "PipeSpec.hpp"
 #include "StageSpec.hpp"
@@ -37,7 +37,7 @@ __aFooterFunction(Stage)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stage::Stage(PipeWork* pPipeWork, StageSpec *pStageSpec)
+Stage::Stage(Vertex* pPipeWork, StageSpec *pStageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
@@ -205,7 +205,7 @@ Pipeline* Stage::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get piepline                                                               */
 /*----------------------------------------------------------------------------*/
-PipeWork *Stage::pPipeWork(void) {
+Vertex *Stage::pPipeWork(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
   return m_pPipeWork;

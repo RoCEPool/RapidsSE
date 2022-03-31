@@ -15,7 +15,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Staging.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
 #include "PipeSpec.hpp"
 #include "Job.hpp"
@@ -191,7 +191,7 @@ void Step::vPipelineEnqueueStart(void)
 {
   ENTRY();
   
-  PipeWork* pFormWork = m_pLogicUnit->m_xpPipeline->pPipeWork();
+  Vertex* pFormWork = m_pLogicUnit->m_xpPipeline->pPipeWork();
 
   Stage*    pStage0   = pFormWork->pStageSet()->pGet(0);
 

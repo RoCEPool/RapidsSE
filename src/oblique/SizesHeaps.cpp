@@ -231,7 +231,7 @@
 #include "CardRegs.hpp"
 #include "RuleCtl.hpp"
 #include "Drafter.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
 #include "Staging.hpp"
@@ -462,7 +462,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Peruse),             HT_T_MEDIUM  ,0 FILL }, // CN_PERUSE
   { sizeof(Pipeline),           HT_T_TINY    ,0 FILL }, // CN_PIPELINE
   { sizeof(PipelineMetrics),    HT_T_TINY    ,0 FILL }, // CN_PIPELINEMETRICS
-  { sizeof(PipeWork),           HT_T_SMALL   ,0 FILL }, // CN_PIPEWORK
   { sizeof(PipeSpec),           HT_T_TINY    ,0 FILL }, // CN_PIPESPEC
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM, -8 FILL }, // CN_PLANDEFINITIONPARSER
   { sizeof(PlannerLock),        HT_T_TINY    ,0 FILL }, // CN_PLANNERLOCK
@@ -647,6 +646,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'V' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__V__
   { sizeof(Verbose),            HT_T_TINY    ,0 FILL }, // CN_VERBOSE
+  { sizeof(Vertex),             HT_T_SMALL   ,0 FILL }, // CN_VERTEX
 
   { 'W' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__W__
   { sizeof(Wakeup),             HT_INVALID   ,0 FILL }, // CN_WAKEUP
