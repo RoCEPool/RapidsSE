@@ -106,8 +106,6 @@ VertexSpec* Dynamo::pToPipeSpec(Stz* szPipelineStmt, TagSet* p_JobTags)
 /* recursively compile the tokenised pipeline statement                       */
 /*----------------------------------------------------------------------------*/
 
-#ifdef WITH_DYNAMO_COMPILER
-
 VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
@@ -139,43 +137,6 @@ VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
     
   return nullptr;
 }
-
-#else
-
-VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-        
-  m_szPipelineStmt = szPipelineStmt;
-  
-  Scanner* pScanner = new Scanner(m_szPipelineStmt);
-  
-  if (! (pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
-         pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))) {
-    delete pScanner;
-    return nullptr;
-  }
-  
-
-  m_p_VertexSpecRoot = new VertexSpec(nullptr,pScanner,m_p_JobTags);
-
-  
-  if (m_p_VertexSpecRoot->bCompile()) {
-    
-    //vOptimise();
- 
-    delete pScanner;
-    
-    return m_p_VertexSpecRoot;
-  }
-  
-  delete m_p_VertexSpecRoot;
-    
-  delete pScanner;
-  return nullptr;
-}
-
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* optimise the pipeline statement                                            */
@@ -257,9 +218,6 @@ bool Dynamo::bWillOptimise(void)
   else
     return true;
 }
-
-
-#ifdef WITH_DYNAMO_COMPILER
 
 /*----------------------------------------------------------------------------*/
 /* pipeline compile                                                           */
@@ -1296,8 +1254,6 @@ void Dynamo::vTokenAccept(void)
 
   m_pScanner->vTokenAccept();
 }
-
-#endif
 
 /*============================================================================*/
 /* end                                                                        */

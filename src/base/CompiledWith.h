@@ -103,8 +103,6 @@
 
 #define WITH_STAGESET EndDefine       //
 
-#define WITH_DYNAMO_COMPILER EndDefine       //
-
 //#define WITH_HASHMAP EndDefine             // code for hashmap compiled in
 //#define WITH_HASHMAP_DEBUG EndDefine       // enable debug for hashmap
 /*============================================================================*/
