@@ -91,7 +91,7 @@ void Dissect::vPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Stz* szPipelineNm = m_pPipeSpec->szPipeSpecNm();
+  Stz* szPipelineNm = m_pPipeSpec->szVertexNm();
   //TagSet* pJobTags = m_pPipeSpec->pJobTags();
   //pJobTags->vDumpSet(true);
 

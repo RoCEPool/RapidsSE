@@ -39,7 +39,7 @@ Pipeline::Pipeline(Job*        pPipelineJob,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_sPipelineNm   = pVertexSpecRoot->szPipeSpecNm();
+  m_sPipelineNm   = pVertexSpecRoot->szVertexNm();
   
   m_pVertexRoot     = nullptr;
   

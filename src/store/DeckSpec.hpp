@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class StagingSpec : public ListNL_t<StageSpec>
+  class DeckSpec : public ListNL_t<StageSpec>
   {
   private:
    
@@ -18,8 +18,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StagingSpec(void);
-   ~StagingSpec(void) noexcept(false);
+    DeckSpec(void);
+   ~DeckSpec(void) noexcept(false);
   
   private:
   
@@ -27,7 +27,7 @@ namespace STORE
 
   };
 
-StagingSpec* _pStagingSpec(void* aAddr);
+  DeckSpec* _pDeckSpec(void* aAddr);
 }
 
 /*============================================================================*/

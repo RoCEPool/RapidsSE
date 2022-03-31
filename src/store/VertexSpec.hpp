@@ -7,7 +7,7 @@
 
 
 namespace STORE { class Dynamo;
-                  class StageSpec; class StagingSpec;
+                  class StageSpec; class DeckSpec;
                   class OpSpec; class SubPipeSpecs; }
 
 namespace STORE
@@ -19,9 +19,9 @@ namespace STORE
 
   private:
   
-    s32  m_sPipeSpecNm;    // pipespec name
+    s32  m_sVertexNm;    // pipespec name
     
-    StagingSpec* m_pStagingSpec;
+    DeckSpec* m_pDeckSpec;
  
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
@@ -41,12 +41,12 @@ namespace STORE
     bool bCompile(void);
   
     void vAddStageSpec(StageSpec* pStageSpec);
+    DeckSpec* pDeckSpec(void);
     StageSpec* pFindStageSpec(Stz* szFindNm);
     TagSet* pJobTags(void);
-    Stz* szPipeSpecNm(void);
+    Stz* szVertexNm(void);
     i8 nStageSpecs(void);
     StageSpec* pStageSpec(i8 i_Stage);
-    StagingSpec* pStageSpecSet(void);
 
     Footer* aFooter(void);
   

@@ -235,7 +235,7 @@
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
 #include "Deck.hpp"
-#include "StagingSpec.hpp"
+#include "DeckSpec.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -319,7 +319,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(DecaCnt),            HT_T_TINY    ,0 FILL }, // CN_DECACNT
   { sizeof(Decider),            HT_T_TINY    ,0 FILL }, // CN_DECIDER
   { sizeof(Deck),               HT_T_TINY    ,0 FILL }, // CN_DECK
-  { sizeof(StagingSpec),        HT_T_TINY    ,0 FILL }, // CN_DECKSPEC
+  { sizeof(DeckSpec),        HT_T_TINY    ,0 FILL }, // CN_DECKSPEC
   { sizeof(DefinitionNode),     HT_T_TINY    ,-8 FILL }, // CN_DEFINITIONNODE
   { sizeof(DerefMetrics),       HT_T_TINY    ,0 FILL }, // CN_DEREF
   { sizeof(DevIXT),             HT_T_TINY    ,0 FILL }, // CN_DEVIXT

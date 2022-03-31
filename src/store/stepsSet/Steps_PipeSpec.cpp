@@ -101,7 +101,7 @@ void Step::vPipeSpecOptimisable(void)
   
   Job* pJob = MY::pJob();
   
-  Stz* szPipeSpecNm = pPipeSpec->szPipeSpecNm();
+  Stz* szPipeSpecNm = pPipeSpec->szVertexNm();
   
   i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
 

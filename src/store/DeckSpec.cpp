@@ -3,23 +3,23 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "StagingSpec.hpp"
+#include "DeckSpec.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, StagingSpec, CN_DECKSPEC)
-__aNewFunction(StagingSpec, CN_DECKSPEC)
-__vDeleteFunction(StagingSpec, CN_DECKSPEC)
-__aFooterFunction(StagingSpec)
+__pCastFunction(STORE, DeckSpec, CN_DECKSPEC)
+__aNewFunction(DeckSpec, CN_DECKSPEC)
+__vDeleteFunction(DeckSpec, CN_DECKSPEC)
+__aFooterFunction(DeckSpec)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StagingSpec::StagingSpec(void)
+DeckSpec::DeckSpec(void)
     
 : ListNL_t<StageSpec>(CN_DECKSPEC)
 
@@ -35,7 +35,7 @@ StagingSpec::StagingSpec(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-StagingSpec::~StagingSpec(void) noexcept(false)
+DeckSpec::~DeckSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
 

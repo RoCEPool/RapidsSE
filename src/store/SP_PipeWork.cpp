@@ -68,7 +68,7 @@ void SP_PipeWork::vPipeWork(Vertex* pPipeWork, i8 iDepth)
   _precondition_(_MAGIC_,_FOOTER_);
     
   vCatf(iDepth,"PipeWork %s %p\n"_Stz
-        ,pPipeWork->pPipeSpec()->szPipeSpecNm()
+        ,pPipeWork->pPipeSpec()->szVertexNm()
         ,pPipeWork
         );
 

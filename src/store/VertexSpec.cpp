@@ -7,7 +7,7 @@
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "VertexSpec.hpp"
-#include "StagingSpec.hpp"
+#include "DeckSpec.hpp"
 #include "Dynamo.hpp"
 #include "Procedure.hpp"
 #include "Job.hpp"
@@ -36,8 +36,8 @@ VertexSpec::VertexSpec(Scanner *p_Scanner, TagSet *p_JobTags)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  m_sPipeSpecNm   = "(unknown)"_Stz;
-  m_pStagingSpec = new StagingSpec;
+  m_sVertexNm   = "(unknown)"_Stz;
+  m_pDeckSpec = new DeckSpec;
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
@@ -59,7 +59,7 @@ VertexSpec::~VertexSpec(void) noexcept(false)
   while (VertexSpec *pSupPipeSpec = pPop())
     delete pSupPipeSpec;
   
-  delete m_pStagingSpec;
+  delete m_pDeckSpec;
 }
 
 
@@ -104,7 +104,17 @@ void VertexSpec::vAddStageSpec(StageSpec *pStageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  m_pStagingSpec->vAppend(pStageSpec);
+  m_pDeckSpec->vAppend(pStageSpec);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sub-pipelines                                                          */
+/*----------------------------------------------------------------------------*/
+DeckSpec* VertexSpec::pDeckSpec(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+
+  return m_pDeckSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,9 +134,9 @@ StageSpec* VertexSpec::pFindStageSpec(Stz *szFindNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  i8 nStageSpecs = m_pStagingSpec->nItems();
+  i8 nStageSpecs = m_pDeckSpec->nItems();
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
-    StageSpec *pStageSpec = m_pStagingSpec->pGet(i_Stage);
+    StageSpec *pStageSpec = m_pDeckSpec->pGet(i_Stage);
 
     if (pStageSpec->szStageNm()->bSame(szFindNm)) {
       RASSERT(pStageSpec->i_StageSpec() == i_Stage);
@@ -140,11 +150,11 @@ StageSpec* VertexSpec::pFindStageSpec(Stz *szFindNm)
 /*----------------------------------------------------------------------------*/
 /* get pipespec name                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* VertexSpec::szPipeSpecNm(void)
+Stz* VertexSpec::szVertexNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  return m_sPipeSpecNm.szStz();
+  return m_sVertexNm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,7 +164,7 @@ i8 VertexSpec::nStageSpecs(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  i8 nStageSpecs = m_pStagingSpec->nItems();
+  i8 nStageSpecs = m_pDeckSpec->nItems();
   
   return nStageSpecs;
 }
@@ -166,19 +176,9 @@ StageSpec* VertexSpec::pStageSpec(i8 i_Stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  StageSpec *pStageSpec = m_pStagingSpec->pGet(i_Stage);
+  StageSpec *pStageSpec = m_pDeckSpec->pGet(i_Stage);
 
   return pStageSpec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get sub-pipelines                                                          */
-/*----------------------------------------------------------------------------*/
-StagingSpec* VertexSpec::pStageSpecSet(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
-
-  return m_pStagingSpec;
 }
 
 
@@ -223,7 +223,7 @@ bool VertexSpec::bCollectPipeline(void)
 
   vTokenAccept();
   
-  m_sPipeSpecNm = pTkn()->szChars();
+  m_sVertexNm = pTkn()->szChars();
 
   vTokenAccept();
 
@@ -703,7 +703,7 @@ bool VertexSpec::bPass2_piping(void)
   // foreach stageSpec of pipeSpec
   i8 nStageSpecs = this->nStageSpecs();
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
-    StageSpec *pStageSpec = m_pStagingSpec->pGet(i_Stage);
+    StageSpec *pStageSpec = m_pDeckSpec->pGet(i_Stage);
     RASSERT(pStageSpec->i_StageSpec() == i_Stage);
 
     // foreach opSpec of stageSpec
@@ -718,17 +718,17 @@ bool VertexSpec::bPass2_piping(void)
       // can we find a stage matching the name in the OpSepc?
 
       if (szName->bSame("next"_Stz)) {
-        pDstStageSpec = m_pStagingSpec->pGet(i_Stage + 1);
+        pDstStageSpec = m_pDeckSpec->pGet(i_Stage + 1);
         if (! pDstStageSpec)
           return false;
       }
       else if (szName->bSame("first"_Stz)) {
-        pDstStageSpec = m_pStagingSpec->pGet(0);
+        pDstStageSpec = m_pDeckSpec->pGet(0);
         if (! pDstStageSpec)
           return false;
       }
       else if (szName->bSame("last"_Stz)) {
-        pDstStageSpec = m_pStagingSpec->pGet(nOpSpecs - 1);
+        pDstStageSpec = m_pDeckSpec->pGet(nOpSpecs - 1);
         if (! pDstStageSpec)
           return false;
       }
@@ -1035,7 +1035,7 @@ Stz *VertexSpec::szStageNm(i8 i_Stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  StageSpec *pStageSpec = m_pStagingSpec->pGet(i_Stage);
+  StageSpec *pStageSpec = m_pDeckSpec->pGet(i_Stage);
   Stz *szNm = pStageSpec->szStageNm();
 
   return szNm;
@@ -1058,7 +1058,7 @@ bool VertexSpec::bPass3_includes(void)
 
   if (m_p_JobTags->bHasName("<include_0>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_0>"_Stz);
-    if (! m_sPipeSpecNm.bSame(szIncludePipNm)) {
+    if (! m_sVertexNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 0: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
@@ -1066,7 +1066,7 @@ bool VertexSpec::bPass3_includes(void)
 
   if (m_p_JobTags->bHasName("<include_1>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_1>"_Stz);
-    if (! m_sPipeSpecNm.bSame(szIncludePipNm)) {
+    if (! m_sVertexNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 1: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
@@ -1074,7 +1074,7 @@ bool VertexSpec::bPass3_includes(void)
 
   if (m_p_JobTags->bHasName("<include_2>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_2>"_Stz);
-    if (! m_sPipeSpecNm.bSame(szIncludePipNm)) {
+    if (! m_sVertexNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 2: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }

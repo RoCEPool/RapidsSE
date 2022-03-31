@@ -6,7 +6,7 @@
 
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
-#include "StagingSpec.hpp"
+#include "DeckSpec.hpp"
 #include "VertexSpec.hpp"
 
 
@@ -438,7 +438,7 @@ i8 StageSpec::i_StageSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  i8 i_StageSpec = m_pPipeSpec->pStageSpecSet()->iFind(this);
+  i8 i_StageSpec = m_pPipeSpec->pDeckSpec()->iFind(this);
   
   return i_StageSpec;
 }
