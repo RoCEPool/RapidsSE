@@ -39,8 +39,6 @@ Dynamo::Dynamo(TagSet* p_JobTags)
   
   m_szPipelineStmt = nullptr;
   m_p_VertexSpecRoot = nullptr;
-  m_bWasOptimised  = false;
-  //m_sOptPipelineStmt
   
   m_pScanner = nullptr;
   m_pCurrVertexSpec = nullptr;
@@ -56,11 +54,9 @@ Dynamo::Dynamo(TagSet* p_JobTags)
 Dynamo::~Dynamo(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-    
-  //delete m_pScanner;
-  
-  while (VertexSpec *pSupPipeSpec = pPop())
-    delete pSupPipeSpec;
+      
+  while (VertexSpec *pVertexSpec = pPop())
+    delete pVertexSpec;
   
   delete m_pScanner;
 }
@@ -85,7 +81,7 @@ void Dynamo::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* convert pipeline statement to pipeline spec                                */
 /*----------------------------------------------------------------------------*/
-VertexSpec* Dynamo::pToPipeSpec(Stz* szPipelineStmt, TagSet* p_JobTags)
+VertexSpec* Dynamo::pToVertexSpec(Stz* szPipelineStmt, TagSet* p_JobTags)
 {
   _static_
   
@@ -136,87 +132,6 @@ VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
   m_p_VertexSpecRoot = nullptr;
     
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* optimise the pipeline statement                                            */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vOptimise(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  Job* pJob = MY::pJob();
-      
-  if (! bWillOptimise())
-    return;
-  
-  vTrace("vOptimise: \n%s\n"_Stz,m_szPipelineStmt);
-  Cue::vGetReturn("optimise >> "_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Optimiser* pOptimiser = new Optimiser(m_p_JobTags);
-  
-  pOptimiser->vDissect(m_p_VertexSpecRoot);
-                                        
-  pOptimiser->vOptimise();
-
-  Stz* szWeavedStmt = pOptimiser->szWeave();
-  vTrace("\nWeave:\n%s\n"_Stz, szWeavedStmt);
-  
-  Cue::vGetReturn("weave >> "_Stz);
-
-  pJob->vCmd(szWeavedStmt);
-  
-  m_bWasOptimised = true;
-   
-  m_p_JobTags->vDumpSet(true);
-
-  delete pOptimiser;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the pipeline spec                                                      */
-/*----------------------------------------------------------------------------*/
-VertexSpec* Dynamo::pPipeSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  return m_p_VertexSpecRoot;
-}
-
-/*----------------------------------------------------------------------------*/
-/* was the statement optimised                                                */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bWasOptimised(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  return m_bWasOptimised;
-}
-
-/*----------------------------------------------------------------------------*/
-/* will the pipeline statement get optimised ?                                */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bWillOptimise(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  Job* pJob = MY::pJob();
-  
-  Stz* szPipelineNm = m_p_VertexSpecRoot->szVertexNm();
-  
-  i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
-
-  if (   ! iOptimiserLvl
-      || ! pJob->bIsOriginator()
-      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
-      || ! m_p_JobTags->bHasName(C_TAG_OPTIMISE)
-      ||   m_p_JobTags->bHasName(C_TAG_OPTIMISED)
-      )
-    return false;
-  else
-    return true;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,17 +14,16 @@ namespace STORE
     friend class STORE::VertexSpec;
 
   private:
-    TagSet*    m_p_JobTags;       // tag set from job
+    TagSet*      m_p_JobTags;        // tag set from job
+    Stz*         m_szPipelineStmt;   // statement being compiled
     
-    Stz*       m_szPipelineStmt;
-    VertexSpec*  m_p_VertexSpecRoot;      // the pipeline spec
+    VertexSpec*  m_p_VertexSpecRoot; // the resulting spec
     
-    bool       m_bWasOptimised;   // stmt was optimised
-  
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
-    Scanner* m_pScanner; // statement token scanner
+    Scanner*     m_pScanner;         // statement token scanner
  
-    VertexSpec*  m_pCurrVertexSpec;      // the pipeline spec
+    VertexSpec*  m_pCurrVertexSpec;  // current/working spec
     
     // must be last
     Footer m_xFooter;
@@ -37,21 +36,12 @@ namespace STORE
    ~Dynamo(void) noexcept(false);
 
     static void vRepair(Object* pObject);
-    static VertexSpec* pToPipeSpec(Stz* szPipelineStmt, TagSet* p_JobTags);
+    static VertexSpec* pToVertexSpec(Stz* szPipelineStmt, TagSet* p_JobTags);
 
-    
     VertexSpec* pCompile(Stz* szPipelineStmt);
-
-    void vOptimise(void);
-
-    VertexSpec* pPipeSpec(void);
-
-    bool bWasOptimised(void);
-    bool bWillOptimise(void);
 
   private:
     Footer* aFooter(void);
-    
     
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
