@@ -377,7 +377,6 @@ namespace STORE
    ~LogicUnit(void) noexcept(false);
   
     void vContentDump(void);
-    i8   iTransform(i8 nArgs, i8 iArg0);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -396,7 +395,6 @@ namespace STORE
     void vDiaryDir(Stz* szDir);
     void vDiaryTitle(Stz* szTitle);
     void vDumpRegisters(void);
-    i8   iDynFun(i8 nOuterArgs, i8 iOuterArg0);
     void vEndOptimise(void);
     void vEnter(void);
     void vExit(void);

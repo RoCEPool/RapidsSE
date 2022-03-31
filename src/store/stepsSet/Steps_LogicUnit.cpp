@@ -43,8 +43,6 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].diaryName"_Stz,     &Step::vLogicUnitDiaryName);
   vAddStep("LogicUnit[].diaryNote"_Stz,     &Step::vLogicUnitDiaryNote);
   vAddStep("LogicUnit[].diaryTitle"_Stz,    &Step::vLogicUnitDiaryTitle);
-  vAddStep("LogicUnit[].dynFun"_Stz,        &Step::vLogicUnitDynFun);
-  vAddStep("LogicUnit[].dynFunArgs"_Stz,    &Step::vLogicUnitDynFunArgs);
   
   vAddStep("LogicUnit[].genAggregate"_Stz,  &Step::vLogicUnitGenAggregate);
   vAddStep("LogicUnit[].genAsm"_Stz,        &Step::vLogicUnitGenAsm);
@@ -71,9 +69,6 @@ void Step::vAddSteps_LogicUnit(void)
 
   vAddStep("LogicUnit[].srcIndex@"_Stz,     &Step::vLogicUnitSrcIndexFetch);
   vAddStep("LogicUnit[].srcTable@"_Stz,     &Step::vLogicUnitSrcTableFetch);
-  
-  vAddStep("LogicUnit[].transform"_Stz,     &Step::vLogicUnitTransform);
-  vAddStep("LogicUnit[].transformArgs"_Stz, &Step::vLogicUnitTransformArgs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -329,39 +324,6 @@ void Step::vLogicUnitDiaryTitle(void)
   }
   
   m_pLogicUnit->vDiaryTitle(sTitle);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].dynFun -- call dynamic function created by LogicCompiler       */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitDynFun(void)
-{
-  ENTRY();
-  
-  i8 iRes = m_pLogicUnit->iDynFun(0,C_UNKNOWN);
-  UNUSED(iRes);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].dynFun -- call dynamic function created by LogicCompiler       */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitDynFunArgs(void)
-{
-  ENTRY();
-  
-  i8 nArgs = m_pDataStack->iPopInt(__func__);
-
-  if (nArgs) {
-    RASSERT(1 == nArgs);
-  }
-  i8 iArg0 = m_pDataStack->iPopInt(__func__);
-
-  i8 iRes = m_pLogicUnit->iDynFun(nArgs,iArg0);
-  UNUSED(iRes);
 
   EXIT();
 }
@@ -711,39 +673,6 @@ void Step::vLogicUnitSrcTableFetch(void)
   
   m_pDataStack->vPushStr(pDevRow->m_sTableNm);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].transform -- transform                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitTransform(void)
-{
-  ENTRY();
-  
-  i8 bResult = m_pLogicUnit->iTransform(0,C_UNKNOWN);
-  UNUSED(bResult);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].transformArgs -- transform (with arguments)                    */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitTransformArgs(void)
-{
-  ENTRY();
-  
-  i8 nArgs = m_pDataStack->iPopInt(__func__);
-
-  if (nArgs) {
-    RASSERT(1 == nArgs);
-  }
-  i8 iArg0 = m_pDataStack->iPopInt(__func__);
-
-  i8 bResult = m_pLogicUnit->iTransform(nArgs,iArg0);
-  UNUSED(bResult);
-
   EXIT();
 }
 

@@ -529,18 +529,6 @@ void LogicUnit::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* transform compute                                                          */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iTransform(i8 nArgs, i8 iArg0)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  i8 iResult = iCompute(nArgs,iArg0);
-
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -779,18 +767,6 @@ void LogicUnit::vDiaryTitle(Stz *szTitle)
 
   
   m_pRluDiary->vTitle(szTitle);
-}
-
-/*----------------------------------------------------------------------------*/
-/* call dynamic function compiled by LogicCompiler                            */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iDynFun(i8 nOuterArgs, i8 iOuterArg0)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  i8 iRes = m_afDynFun(this,nOuterArgs,iOuterArg0);
-
-  return iRes;
 }
 
 /*----------------------------------------------------------------------------*/

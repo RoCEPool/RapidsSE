@@ -1091,8 +1091,6 @@ public:
   void vLogicUnitDiaryName(void);
   void vLogicUnitDiaryNote(void);
   void vLogicUnitDiaryTitle(void);
-  void vLogicUnitDynFun(void);
-  void vLogicUnitDynFunArgs(void);
   void vLogicUnitGenAggregate(void);
   void vLogicUnitGenAsm(void);
   void vLogicUnitGenFilter(void);
@@ -1114,8 +1112,6 @@ public:
   void vLogicUnitJobMetricsStore(void);
   void vLogicUnitSrcIndexFetch(void);
   void vLogicUnitSrcTableFetch(void);
-  void vLogicUnitTransform(void);
-  void vLogicUnitTransformArgs(void);
 
   // ErrorMarker[]
   void vMarkerDelete(void);
