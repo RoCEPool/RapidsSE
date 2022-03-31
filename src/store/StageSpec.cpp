@@ -22,15 +22,17 @@ __aFooterFunction(StageSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageSpec::StageSpec(Stz* szStageNm,
-                     VertexSpec* pPipeSpec)
+StageSpec::StageSpec(VertexSpec* pVertextSpec,
+                     DeckSpec*   pDeckSpec,
+                     Stz*        szStageNm)
 : ListNL_t<OpSpec>(CN_STAGESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_sStageNm        = szStageNm;
-  m_pPipeSpec   = pPipeSpec;
-
+  m_pVertexSpec = pVertextSpec;
+  m_pDeckSpec   = pDeckSpec;
+  m_sStageNm    = szStageNm;
+ 
   m_eStageTopology  = YG_NONE;
   m_eStreamTopology = YS_NONE;
   m_eParcelForward  = YF_NONE;
@@ -438,7 +440,7 @@ i8 StageSpec::i_StageSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  i8 i_StageSpec = m_pPipeSpec->pDeckSpec()->iFind(this);
+  i8 i_StageSpec = m_pDeckSpec->iFind(this);
   
   return i_StageSpec;
 }

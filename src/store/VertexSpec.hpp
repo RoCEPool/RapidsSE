@@ -19,7 +19,7 @@ namespace STORE
 
   private:
   
-    s32  m_sVertexNm;    // pipespec name
+    s32 m_sVertexNm;  // aka sub-pipe name
     
     DeckSpec* m_pDeckSpec;
  

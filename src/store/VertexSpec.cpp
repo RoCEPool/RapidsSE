@@ -36,7 +36,7 @@ VertexSpec::VertexSpec(Scanner *p_Scanner, TagSet *p_JobTags)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  m_sVertexNm   = "(unknown)"_Stz;
+  m_sVertexNm = "(unknown)"_Stz;
   m_pDeckSpec = new DeckSpec;
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,7 +148,7 @@ StageSpec* VertexSpec::pFindStageSpec(Stz *szFindNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pipespec name                                                          */
+/* get vertex name                                                            */
 /*----------------------------------------------------------------------------*/
 Stz* VertexSpec::szVertexNm(void)
 {
@@ -296,14 +296,14 @@ bool VertexSpec::bCollectSubPipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  VertexSpec* pSubPipeSpec = new VertexSpec(m_p_Scanner,m_p_JobTags);
+  VertexSpec* pChildVertexSpec = new VertexSpec(m_p_Scanner,m_p_JobTags);
 
-  if (! pSubPipeSpec->bCompile()) {
-    delete pSubPipeSpec;
+  if (! pChildVertexSpec->bCompile()) {
+    delete pChildVertexSpec;
     return false;
   }
   
-  vAppend(pSubPipeSpec);
+  vAppend(pChildVertexSpec);
 
   return true;
 }
@@ -322,7 +322,7 @@ bool VertexSpec::bCollectStage(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Stz *szStageNm = pTkn()->szChars();
-  StageSpec *p_StageSpec = new StageSpec(szStageNm, this);
+  StageSpec *p_StageSpec = new StageSpec(this,m_pDeckSpec,szStageNm);
   vTokenAccept();
 
   this->vAddStageSpec(p_StageSpec);
