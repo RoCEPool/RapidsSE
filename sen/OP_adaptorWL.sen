@@ -16,6 +16,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_M_WIRELINE ...                                                       */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_WireLine \handler
+
+  //"adaptorWL_StartMarker- ZK_M_WIRELINE" .verbose
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* entry point                                                                */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_op \operator
@@ -26,6 +36,7 @@
 
 
   find: adaptorWL_StartMarker ZK_M_START     [op].handler!
+//find: adaptorWL_WireLine    ZK_M_WIRELINE  [op].handler!
 
   op__loop
 
