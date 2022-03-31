@@ -82,7 +82,6 @@ assert::stack_0
   "OP_dumpMetaInfo.sen"         include
   "OP_dumpTable.sen"            include
   "OP_dupCrw.sen"               include
-  "OP_dynamic.sen"              include
 
 "e" .verbose
 
