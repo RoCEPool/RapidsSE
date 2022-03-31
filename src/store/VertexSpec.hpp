@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PipeSpec.hpp -- Pipe Specification                                         */
+/* VertexSpec.hpp -- Vertex Specification                                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,8 +7,7 @@
 
 
 namespace STORE { class Dynamo;
-                  class StageSpec; class DeckSpec;
-                  class OpSpec; class SubPipeSpecs; }
+                  class DeckSpec; class StageSpec; class OpSpec; }
 
 namespace STORE
 {
@@ -23,12 +22,7 @@ namespace STORE
     s32 m_sVertexNm;  // aka sub-pipe name
     
     DeckSpec* m_pDeckSpec;
- 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-    Scanner* m_p_Scanner; // statement token scanner
-    TagSet*  m_p_JobTags; // job tag set
- 
     // must be last
     Footer m_xFooter;
 
@@ -36,16 +30,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    VertexSpec(VertexSpec* pParentVertexSpec,
-               Scanner*    p_Scanner,
-               TagSet*     p_JobTags);
+    VertexSpec(VertexSpec* pParentVertexSpec);
    ~VertexSpec(void) noexcept(false);
-  
   
     void vAddStageSpec(StageSpec* pStageSpec);
     DeckSpec* pDeckSpec(void);
     StageSpec* pFindStageSpec(Stz* szFindNm);
-    TagSet* pJobTags(void);
     Stz* szVertexNm(void);
     i8 nStageSpecs(void);
     StageSpec* pStageSpec(i8 i_Stage);

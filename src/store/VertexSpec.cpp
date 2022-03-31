@@ -31,9 +31,7 @@ __aFooterFunction(VertexSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-VertexSpec::VertexSpec(VertexSpec* pParentVertexSpec,
-                       Scanner*    p_Scanner,
-                       TagSet*     p_JobTags)
+VertexSpec::VertexSpec(VertexSpec* pParentVertexSpec)
 : ListNL_t<VertexSpec>(CN_VERTEXSPEC)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
@@ -42,11 +40,6 @@ VertexSpec::VertexSpec(VertexSpec* pParentVertexSpec,
   m_sVertexNm = "(unknown)"_Stz;
   
   m_pDeckSpec = new DeckSpec(this);
-
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
-  m_p_Scanner = p_Scanner;
-  m_p_JobTags = p_JobTags;
 
   _checkInitialised_(CN_VERTEXSPEC);
 
@@ -60,8 +53,8 @@ VertexSpec::~VertexSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
-  while (VertexSpec *pSupPipeSpec = pPop())
-    delete pSupPipeSpec;
+  while (VertexSpec *pChildVertexSpec = pPop())
+    delete pChildVertexSpec;
   
   delete m_pDeckSpec;
 }
@@ -93,16 +86,6 @@ DeckSpec* VertexSpec::pDeckSpec(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   return m_pDeckSpec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the job tag set                                                        */
-/*----------------------------------------------------------------------------*/
-TagSet* VertexSpec::pJobTags(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEXSPEC,_FOOTER_);
-  
-  return m_p_JobTags;
 }
 
 /*----------------------------------------------------------------------------*/

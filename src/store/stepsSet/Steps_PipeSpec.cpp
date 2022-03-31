@@ -108,8 +108,8 @@ void Step::vPipeSpecOptimisable(void)
   if (   ! iOptimiserLvl
       || ! pJob->bIsOriginator()
       ||   szPipeSpecNm->bSame("sqlCompiler"_Stz)
-      || ! pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
-      ||   pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
+     // || ! pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
+     // ||   pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
       )
     bOptimisable = false;
   else

@@ -121,7 +121,7 @@ VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
   }
   
 
-  m_p_VertexSpecRoot = new VertexSpec(nullptr,m_pScanner,m_p_JobTags);
+  m_p_VertexSpecRoot = new VertexSpec(nullptr);
 
   m_pCurrVertexSpec = m_p_VertexSpecRoot;
   
@@ -211,8 +211,8 @@ bool Dynamo::bWillOptimise(void)
   if (   ! iOptimiserLvl
       || ! pJob->bIsOriginator()
       ||   szPipelineNm->bSame("sqlCompiler"_Stz)
-      || ! m_p_VertexSpecRoot->pJobTags()->bHasName(C_TAG_OPTIMISE)
-      ||   m_p_VertexSpecRoot->pJobTags()->bHasName(C_TAG_OPTIMISED)
+      || ! m_p_JobTags->bHasName(C_TAG_OPTIMISE)
+      ||   m_p_JobTags->bHasName(C_TAG_OPTIMISED)
       )
     return false;
   else
@@ -358,7 +358,7 @@ bool Dynamo::bCollectSubPipeline(void)
   VertexSpec* pParentVertexSpec = m_pCurrVertexSpec;
   vPush(pParentVertexSpec);
   
-  m_pCurrVertexSpec = new VertexSpec(pParentVertexSpec,m_pScanner,m_p_JobTags);
+  m_pCurrVertexSpec = new VertexSpec(pParentVertexSpec);
 
   if (! bCompile()) {
     delete m_pCurrVertexSpec;
