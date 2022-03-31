@@ -23,14 +23,14 @@ __aFooterFunction(OpSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
+OpSpec::OpSpec(StageSpec* pStageSpec, Stz* szOpNm)
 : Object(CN_OPSPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_sOpNm         = szOpNm;
+  m_pStageSpec = pStageSpec;
+  m_sOpNm      = szOpNm;
     
-  m_pStageSpec    = pStageSpec;
 
   //m_oArgTags
   //m_oTopologyTags

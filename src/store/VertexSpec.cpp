@@ -410,7 +410,7 @@ bool VertexSpec::bCollectOp(StageSpec *p_StageSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  OpSpec *pOpSpec = new OpSpec(pTkn()->szChars(), p_StageSpec);
+  OpSpec *pOpSpec = new OpSpec(p_StageSpec, pTkn()->szChars());
   vTokenAccept();
 
   p_StageSpec->vAddOpSpec(pOpSpec);
@@ -1019,7 +1019,7 @@ void VertexSpec::vAddConsumeOp(StageSpec *pStageSpec, eYX eCrossTopology)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  OpSpec *pConsumeOpSpec = new OpSpec("consumeOp"_Stz, pStageSpec);
+  OpSpec *pConsumeOpSpec = new OpSpec(pStageSpec,"consumeOp"_Stz);
 
   pStageSpec->vAdd(pConsumeOpSpec);
 
