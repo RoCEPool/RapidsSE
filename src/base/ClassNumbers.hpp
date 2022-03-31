@@ -216,7 +216,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PERUSE,
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINEMETRICS,
-  /* */ CN_PIPESPEC,
   /* */ CN_PLANDEFINITIONPARSER,
   /* */ CN_PLANNERLOCK,
   /* */ CN_PLANNODE,
@@ -399,6 +398,7 @@ enum eCN : u2 // Class Number
   /* */ CN__V__,
   /* */ CN_VERBOSE,
   /* */ CN_VERTEX,
+  /* */ CN_VERTEXSPEC,
 
   /* */ CN__W__,
   /* */ CN_WAKEUP,
@@ -625,7 +625,6 @@ static Stz* aCN[]
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
-  /* */ "PIPESPEC"_Stz,             // CN_PIPESPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
   /* */ "PLANNERLOCK"_Stz,          // CN_PLANNERLOCK
   /* */ "PLANNODE"_Stz,             // CN_PLANNODE
@@ -808,6 +807,7 @@ static Stz* aCN[]
   /* */ "_V__"_Stz,                 // CN__V__
   /* */ "VERBOSE"_Stz,              // CN_VERBOSE
   /* */ "VERTEX"_Stz,               // CN_VERTEX
+  /* */ "VERTEXSPEC"_Stz,           // CN_VERTEXSPEC
 
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WAKEUP"_Stz,               // CN_WAKEUP

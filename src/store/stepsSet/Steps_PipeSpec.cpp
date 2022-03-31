@@ -50,7 +50,7 @@ void Step::vPipeSpecDelete(void)
    
   if (m_pLogicUnit->m_xpPipeSpec.bIsNotNull()) {
     m_pLogicUnit
-      ->m_xpPipeSpec.vGuardedDeleteComponent(CN_PIPESPEC,
+      ->m_xpPipeSpec.vGuardedDeleteComponent(CN_VERTEXSPEC,
                                                  CN_STEP,this,(Stz*)__func__);
   }
     

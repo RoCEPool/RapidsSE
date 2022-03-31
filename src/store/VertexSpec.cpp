@@ -22,9 +22,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, VertexSpec, CN_PIPESPEC)
-__aNewFunction(VertexSpec, CN_PIPESPEC)
-__vDeleteFunction(VertexSpec, CN_PIPESPEC)
+__pCastFunction(STORE, VertexSpec, CN_VERTEXSPEC)
+__aNewFunction(VertexSpec, CN_VERTEXSPEC)
+__vDeleteFunction(VertexSpec, CN_VERTEXSPEC)
 __aFooterFunction(VertexSpec)
 
 
@@ -34,9 +34,9 @@ __aFooterFunction(VertexSpec)
 VertexSpec::VertexSpec(VertexSpec* pParentVertexSpec,
                        Scanner*    p_Scanner,
                        TagSet*     p_JobTags)
-: ListNL_t<VertexSpec>(CN_PIPESPEC)
+: ListNL_t<VertexSpec>(CN_VERTEXSPEC)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   m_pParentVertexSpec = pParentVertexSpec;
   m_sVertexNm = "(unknown)"_Stz;
@@ -48,9 +48,9 @@ VertexSpec::VertexSpec(VertexSpec* pParentVertexSpec,
   m_p_Scanner = p_Scanner;
   m_p_JobTags = p_JobTags;
 
-  _checkInitialised_(CN_PIPESPEC);
+  _checkInitialised_(CN_VERTEXSPEC);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +58,7 @@ VertexSpec::VertexSpec(VertexSpec* pParentVertexSpec,
 /*----------------------------------------------------------------------------*/
 VertexSpec::~VertexSpec(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   while (VertexSpec *pSupPipeSpec = pPop())
     delete pSupPipeSpec;
@@ -77,7 +77,7 @@ VertexSpec::~VertexSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bCompile(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   if (! bPass1_collect()) {
     m_p_Scanner = nullptr;
@@ -106,7 +106,7 @@ bool VertexSpec::bCompile(void)
 /*----------------------------------------------------------------------------*/
 void VertexSpec::vAddStageSpec(StageSpec *pStageSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   m_pDeckSpec->vAppend(pStageSpec);
 }
@@ -116,7 +116,7 @@ void VertexSpec::vAddStageSpec(StageSpec *pStageSpec)
 /*----------------------------------------------------------------------------*/
 DeckSpec* VertexSpec::pDeckSpec(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   return m_pDeckSpec;
 }
@@ -126,7 +126,7 @@ DeckSpec* VertexSpec::pDeckSpec(void)
 /*----------------------------------------------------------------------------*/
 TagSet* VertexSpec::pJobTags(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPESPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEXSPEC,_FOOTER_);
   
   return m_p_JobTags;
 }
@@ -136,7 +136,7 @@ TagSet* VertexSpec::pJobTags(void)
 /*----------------------------------------------------------------------------*/
 StageSpec* VertexSpec::pFindStageSpec(Stz *szFindNm)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   i8 nStageSpecs = m_pDeckSpec->nItems();
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
@@ -156,7 +156,7 @@ StageSpec* VertexSpec::pFindStageSpec(Stz *szFindNm)
 /*----------------------------------------------------------------------------*/
 Stz* VertexSpec::szVertexNm(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   return m_sVertexNm.szStz();
 }
@@ -166,7 +166,7 @@ Stz* VertexSpec::szVertexNm(void)
 /*----------------------------------------------------------------------------*/
 i8 VertexSpec::nStageSpecs(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   i8 nStageSpecs = m_pDeckSpec->nItems();
   
@@ -178,7 +178,7 @@ i8 VertexSpec::nStageSpecs(void)
 /*----------------------------------------------------------------------------*/
 StageSpec* VertexSpec::pStageSpec(i8 i_Stage)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   StageSpec *pStageSpec = m_pDeckSpec->pGet(i_Stage);
 
@@ -197,7 +197,7 @@ StageSpec* VertexSpec::pStageSpec(i8 i_Stage)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bPass1_collect(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   if (! bCollectPipeline())
     return false;
@@ -221,7 +221,7 @@ bool VertexSpec::bPass1_collect(void)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bCollectPipeline(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   if (! (pTkn()->bSame("PIPELINE"_Stz) ||
          pTkn()->bSame("PIPELINELOCAL"_Stz)))
@@ -241,7 +241,7 @@ bool VertexSpec::bCollectPipeline(void)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bCollectTag(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   if (! pTkn()->bSame("TAG"_Stz))
     return false;
@@ -274,7 +274,7 @@ bool VertexSpec::bCollectTag(void)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bCollectBeginEnd(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   if (! pTkn()->bSame("BEGIN"_Stz))
     return false;
@@ -300,7 +300,7 @@ bool VertexSpec::bCollectBeginEnd(void)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bCollectSubPipeline(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   VertexSpec* pChildVertexSpec = new VertexSpec(this,m_p_Scanner,m_p_JobTags);
 
@@ -319,7 +319,7 @@ bool VertexSpec::bCollectSubPipeline(void)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bCollectStage(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   if (! pTkn()->bSame("STAGE"_Stz))
     return false;
@@ -350,7 +350,7 @@ bool VertexSpec::bCollectStage(void)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bCollectTopology(StageSpec *p_StageSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   if (! pTkn()->bSame("ON"_Stz))
     return false;
@@ -392,7 +392,7 @@ bool VertexSpec::bCollectTopology(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bCollectOpSequence(StageSpec *p_StageSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   while (bTokenMaybeOp(pTkn())) {
 
@@ -412,7 +412,7 @@ bool VertexSpec::bCollectOpSequence(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bCollectOp(StageSpec *p_StageSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -454,7 +454,7 @@ bool VertexSpec::bCollectOp(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bCollectOpArgs(StageSpec *p_StageSpec, OpSpec *pOpSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   UNUSED(p_StageSpec);
 
@@ -491,7 +491,7 @@ bool VertexSpec::bCollectOpArgsExpr(StageSpec *p_StageSpec,
                                       OpSpec *pOpSpec,
                                       String* pArgVal)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   UNUSED(p_StageSpec);
 
@@ -530,7 +530,7 @@ bool VertexSpec::bCollectOpArgsExpr(StageSpec *p_StageSpec,
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bRecogniseOnAll(StageSpec *p_StageSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   // -- -- -- -- -- -- -- -- -- -- --
   // on all nodes :
@@ -557,7 +557,7 @@ bool VertexSpec::bRecogniseOnAll(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   // -- -- -- -- -- -- -- -- -- -- --
   // on all nodes :
@@ -578,7 +578,7 @@ bool VertexSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   // -- -- -- -- -- -- -- -- -- -- --
   // on all partitions :
@@ -616,7 +616,7 @@ bool VertexSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
   
   if (! pTkn()->bSame("NODE"_Stz))
     return false;
@@ -639,7 +639,7 @@ bool VertexSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
@@ -667,7 +667,7 @@ bool VertexSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bTokenMaybeOp(Token *pTkn)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   if (pTkn->bSame("|"_Stz)
       || pTkn->bSame("END"_Stz)
@@ -683,7 +683,7 @@ bool VertexSpec::bTokenMaybeOp(Token *pTkn)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bTokenMaybeOpArg(Token *pTkn)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   if (pTkn->bSame("|"_Stz)
       || pTkn->bSame("END"_Stz)
@@ -704,7 +704,7 @@ bool VertexSpec::bTokenMaybeOpArg(Token *pTkn)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bPass2_piping(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   // foreach stageSpec of pipeSpec
   i8 nStageSpecs = this->nStageSpecs();
@@ -766,7 +766,7 @@ void VertexSpec::vNameIsStage(StageSpec *pSrcStageSpec,
                                 OpSpec    *pSrcOpSpec_nameOfStage,
                                 StageSpec *pDstStageSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   // is there a send already? This would be the case if one stage is
   // piped into multiple stage e.g a unionAll
@@ -790,7 +790,7 @@ void VertexSpec::vNameIsStage(StageSpec *pSrcStageSpec,
 void VertexSpec::vNameIsOp(StageSpec *pStageSpec,
                              OpSpec *pOpSpec_nameOfOp)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   i8 i_Op = pOpSpec_nameOfOp->iOpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
@@ -810,7 +810,7 @@ void VertexSpec::vFirstSend(StageSpec *pSrcStageSpec,
                               OpSpec    *pSrcOpSpec_nameOfStage,
                               StageSpec *pDstStageSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
   
   i8 i_Op = pSrcOpSpec_nameOfStage->iOpSpec();
 
@@ -877,7 +877,7 @@ void VertexSpec::vMorphToSend(OpSpec *pOpSpec,
                                 eYS eStreamTopology,
                                 i8 i_NextStage)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   pOpSpec->vOpNm("sendSE"_Stz);
 
@@ -894,7 +894,7 @@ void VertexSpec::vOtherSend(StageSpec *pSrcStageSpec,
                               StageSpec *pOtherStageSpec,
                               OpSpec    *pOtherOpSpec)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   i8 i_OtherStage = pOtherStageSpec->i_StageSpec();
 
@@ -925,7 +925,7 @@ void VertexSpec::vOtherSend(StageSpec *pSrcStageSpec,
 /*----------------------------------------------------------------------------*/
 void VertexSpec::vArgAdd_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   i8 iSends = C_UNKNOWN;
 
@@ -974,7 +974,7 @@ void VertexSpec::vArgAdd_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
 /*----------------------------------------------------------------------------*/
 void VertexSpec::vArgUpdate_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   i8 iIncSends = C_UNKNOWN;
 
@@ -1023,7 +1023,7 @@ void VertexSpec::vArgUpdate_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
 /*----------------------------------------------------------------------------*/
 void VertexSpec::vAddConsumeOp(StageSpec *pStageSpec, eYX eCrossTopology)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   OpSpec *pConsumeOpSpec = new OpSpec(pStageSpec,"consumeOp"_Stz);
 
@@ -1039,7 +1039,7 @@ void VertexSpec::vAddConsumeOp(StageSpec *pStageSpec, eYX eCrossTopology)
 /*----------------------------------------------------------------------------*/
 Stz *VertexSpec::szStageNm(i8 i_Stage)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   StageSpec *pStageSpec = m_pDeckSpec->pGet(i_Stage);
   Stz *szNm = pStageSpec->szStageNm();
@@ -1056,7 +1056,7 @@ Stz *VertexSpec::szStageNm(i8 i_Stage)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bPass3_includes(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   Stz *szIncludePipNm;
 
@@ -1095,7 +1095,7 @@ bool VertexSpec::bPass3_includes(void)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bPass3_include(Stz *szIncludePipNm)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   sSTMT sPipelineSmt;
 
@@ -1144,7 +1144,7 @@ bool VertexSpec::bPass3_include(Stz *szIncludePipNm)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bPass3_includeFirst(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   return true;
 }
@@ -1154,7 +1154,7 @@ bool VertexSpec::bPass3_includeFirst(void)
 /*----------------------------------------------------------------------------*/
 bool VertexSpec::bPass3_includeLast(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   return true;
 }
@@ -1170,7 +1170,7 @@ bool VertexSpec::bPass3_includeLast(void)
 /*----------------------------------------------------------------------------*/
 Token *VertexSpec::pTkn(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   return m_p_Scanner->pTkn();
 }
@@ -1180,7 +1180,7 @@ Token *VertexSpec::pTkn(void)
 /*----------------------------------------------------------------------------*/
 TokenVec *VertexSpec::pTknVec(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   return m_p_Scanner->pTknVec();
 }
@@ -1190,7 +1190,7 @@ TokenVec *VertexSpec::pTknVec(void)
 /*----------------------------------------------------------------------------*/
 void VertexSpec::vTokenAccept(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
 
   m_p_Scanner->vTokenAccept();
 }
