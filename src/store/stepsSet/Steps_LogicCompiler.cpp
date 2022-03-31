@@ -17,25 +17,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LogicCompiler(void)
 {
-  vAddStep("LogicCompiler[].compile"_Stz,   &Step::vLogicCompilerCompile);
   vAddStep("LogicCompiler[].delete"_Stz,    &Step::vLogicCompilerDelete);
   vAddStep("LogicCompiler[].isNull"_Stz,    &Step::vLogicCompilerIsNull);
   vAddStep("LogicCompiler[].new"_Stz,       &Step::vLogicCompilerNew);
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicCompiler[].compile -- compile                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicCompilerCompile(void)
-{
-  ENTRY();
-      
-  i8 iResult =
-    m_pLogicUnit->m_xpLogicCompiler->iCompile();
-  
-  UNUSED(iResult);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

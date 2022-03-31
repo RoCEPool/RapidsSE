@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "eAM.h"
 #include "eEO.h"
 
 #include "TinyC.hpp"
@@ -40,47 +39,17 @@ namespace STORE
     LogicCompiler(LogicUnit* pLogicUnit);
    ~LogicCompiler(void) noexcept(false);
 
-    static bool bExtractAll(LocalFile* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker);
-    static void vExtractFragment(LocalFile* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker);
-
-    static eAM  eFindAM(Stz* szEOname);
-    static eEO  eFindEO(Stz* szEOname);
-    static Stz* szGetMacro(eAM eMacro, TagSet* pTagSet, s4K& sMacro);
-
     static void vRepair(Object* pObject);
 
-    i8 iCall(void);
-    i8 iCompile(void);
     Stz* szSource(void);
 
   private:
   
     void vAcquire(void);
-    void vCall(void* aDynArg);
-    bool bCompile(void);
     void vRelease(void);
     void vRelocate(void);
     void vSymbols(void);
 
-    void vAddFragment(i8 i_CodeFrom, i8 i_CodeTill);
-    bool bEachSbr(i8& ri_Label, i8& ri_CodeFrom, i8& ri_CodeTill);
-
-    void vRtnSource(void);
-    void vSbrDeclaration(void);
-    void vSbrSource(void);
-
-    void v_DynPreliminary(void);
-    void v_DynConcluding(void);
-
-    void v_RtnPreliminary(void);
-    void v_RtnConcluding(void);
-
-    void v_SbrDeclaration(Stz* szSbrNm);
-    void v_SbrPreliminary(Stz* szSbrNm);
-    void v_SbrConcluding(void);
-  
-    void v_CallSbr(i8 i_Label);
-  
     Footer* aFooter(void);
   };
   

@@ -492,7 +492,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(QueueBuffer),        HT_INVALID   ,0 FILL }, // CN_QUEUEBUFFER
 
   { 'R' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__R__
-  { sizeof(Range),              HT_T_LARGE   ,0 FILL }, // CN_RANGE
   { sizeof(Reader),             HT_T_TINY    ,0 FILL }, // CN_READER
   { sizeof(ReapLock),           HT_T_TINY    ,0 FILL }, // CN_REAPLOCK
   { sizeof(Record),             HT_T_MEDIUM  ,0 FILL }, // CN_RECORD

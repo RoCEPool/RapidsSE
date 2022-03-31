@@ -244,7 +244,6 @@ enum eCN : u2 // Class Number
   /* */ CN_QUEUEBUFFER,
 
   /* */ CN__R__,
-  /* */ CN_RANGE,
   /* */ CN_READER,
   /* */ CN_REAPLOCK,
   /* */ CN_RECORD,
@@ -653,7 +652,6 @@ static Stz* aCN[]
   /* */ "QUEUEBUFFER"_Stz,          // CN_QUEUEBUFFER
 
   /* */ "_R__"_Stz,                 // CN__R__
-  /* */ "RANGE"_Stz,                // CN_RANGE
   /* */ "READER"_Stz,               // CN_READER
   /* */ "REAPLOCK"_Stz,             // CN_REAPLOCK
   /* */ "RECORD"_Stz,               // CN_RECORD

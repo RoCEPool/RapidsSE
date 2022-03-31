@@ -1068,7 +1068,6 @@ public:
   void vLogicOr(void);
 
   // logic compiler
-  void vLogicCompilerCompile(void);
   void vLogicCompilerDelete(void);
   void vLogicCompilerExtract(void);
   void vLogicCompilerExtractAsm(void);
