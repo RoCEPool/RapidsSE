@@ -26,9 +26,6 @@ extern EnvFlags gxEnvFlags;;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LogicUnit(void)
 {
-  vAddStep("LogicUnit[].altIndex@"_Stz,     &Step::vLogicUnitAltIndexFetch);
-  vAddStep("LogicUnit[].altTable@"_Stz,     &Step::vLogicUnitAltTableFetch);
-
   vAddStep("LogicUnit[].callAgain@"_Stz,    &Step::vLogicUnitCallAgainFetch);
   vAddStep("LogicUnit[].callAgain!"_Stz,    &Step::vLogicUnitCallAgainStore);
   vAddStep("LogicUnit[].calledAgain@"_Stz,  &Step::vLogicUnitCalledAgainFetch);
@@ -58,34 +55,6 @@ void Step::vAddSteps_LogicUnit(void)
 
   vAddStep("LogicUnit[].srcIndex@"_Stz,     &Step::vLogicUnitSrcIndexFetch);
   vAddStep("LogicUnit[].srcTable@"_Stz,     &Step::vLogicUnitSrcTableFetch);
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].altIndex@ --                                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitAltIndexFetch(void)
-{
-  ENTRY();
-  
-  DevIXT* pDevIxt = _pDevIXT(m_pLogicUnit->m_xRluCommon.m_pDevAltIxt);
-  
-  m_pDataStack->vPushStr(pDevIxt->m_sIndexNm);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].altTable@ --                                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitAltTableFetch(void)
-{
-  ENTRY();
-  
-  DevROW* pDevRow = _pDevROW(m_pLogicUnit->m_xRluCommon.m_pDevAltRow);
-  
-  m_pDataStack->vPushStr(pDevRow->m_sTableNm);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
