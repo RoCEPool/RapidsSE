@@ -26,7 +26,6 @@
 #include "DevROW.hpp"
 #include "LogicTimer.hpp"
 #include "LogicCompiler.hpp"
-#include "ExprEval.hpp"
 #include "ShardDef.hpp"
 #include "MetaGet.hpp"
 #include "BktMapGet.hpp"
@@ -188,11 +187,9 @@ namespace STORE
     REG<Dynamo,         CN_DYNAMO        > m_xpDynamo;
 
     REG<Operand,        CN_NONE          > m_xpErrorMarker;
-    REG<ExprEval,       CN_EXPREVAL      > m_xpExprEval;
 
     REG<File,           CN_FILE          > m_xpFile0;
     REG<File,           CN_FILE          > m_xpFile1;
-    REG<ExprEval,       CN_EXPREVAL      > m_xpFilter;
   
     REG<Grid,           CN_GRID          > m_xpGrid;
   

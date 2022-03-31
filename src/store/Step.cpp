@@ -92,10 +92,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_ErrorMarker();
   Step::vAddSteps_Event();
   Step::vAddSteps_Executable();
-  Step::vAddSteps_ExprEval();
 
   Step::vAddSteps_File();
-  Step::vAddSteps_Filter();
   Step::vAddSteps_Flush();
   Step::vAddSteps_Fun();
 

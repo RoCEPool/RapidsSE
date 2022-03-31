@@ -479,16 +479,6 @@ public:
   void vExprVecGet(void);
   void vExprVecNew(void);
 
-  // project
-  void vExprEvalGet(void);
-  void vExprEvalDelete(void);
-  void vExprEvalNew(void);
-  void vExprEvalEvaluate(void);
-  void vExprEvalEvaluateIndexScan(void);
-  void vExprEvalEvaluateIndexJoin(void);
-  void vExprEvalEvaluateLoopJoin(void);
-  void vExprEvalSet(void);
-
   // fact
   void vFactAtrOf(void);
   void vFactAttributeAppend(void);
@@ -529,16 +519,6 @@ public:
   void vFileSizeNm(void);
   void vFileTell(void);
   void vFileWriteLine(void);
-
-  // filter
-  void vFilterGet(void);
-  void vFilterDelete(void);
-  void vFilterNew(void);
-  void vFilterEvaluate(void);
-  void vFilterEvaluateIndexScan(void);
-  void vFilterEvaluateIndexJoin(void);
-  void vFilterEvaluateLoopJoin(void);
-  void vFilterSet(void);
 
   // flush
   void vFlushDerefMetrics(void);

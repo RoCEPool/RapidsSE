@@ -127,7 +127,6 @@
 
 #include "Metadata.hpp"
 #include "MetaGet.hpp"
-#include "backend/ExprEval.hpp"
 #include "BucketGet.hpp"
 #include "BucketInfo.hpp"
 
@@ -342,7 +341,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ClassFlags),         HT_T_TINY    ,0 FILL }, // CN_ENUMFLAGS
   { sizeof(EventHandlers),      HT_T_TINY    ,0 FILL }, // CN_EVENTHANDLERS
   { sizeof(Exemplar),           HT_T_TINY    ,0 FILL }, // CN_EXEMPLAR
-  { sizeof(ExprEval),           HT_T_MEDIUM  ,0 FILL }, // CN_EXPREVAL
 
   { 'F' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__F__
   { sizeof(Fifo),               HT_T_TINY    ,0 FILL }, // CN_FIFO

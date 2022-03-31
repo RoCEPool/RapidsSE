@@ -74,11 +74,9 @@ namespace STORE
     static void vAddSteps_ErrorMarker(void);
     static void vAddSteps_Event(void);
     static void vAddSteps_Executable(void);
-    static void vAddSteps_ExprEval(void);
 
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
-    static void vAddSteps_Filter(void);
     static void vAddSteps_Fun(void);
     static void vAddSteps_Flush(void);
 

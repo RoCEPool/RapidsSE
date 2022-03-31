@@ -107,11 +107,9 @@ LogicUnit::LogicUnit(void)
 ,         m_xpDynamo(this,RF_REPAIR_DELETE,Dynamo::vRepair,         LR_DYNAMO)
 
 ,    m_xpErrorMarker(this,RF_REPAIR_DELETE,Operand::vRepair,        LR_ERRORMARKER)
-,       m_xpExprEval(this,RF_REPAIR_DELETE,ExprEval::vRepair,       LR_EXPEVAL)
 
 ,          m_xpFile0(this,RF_REPAIR_DELETE,File::vRepair,           LR_FILE0)
 ,          m_xpFile1(this,RF_REPAIR_DELETE,File::vRepair,           LR_FILE1)
-,       m_xpFilter(this,RF_REPAIR_DELETE,  ExprEval::vRepair,       LR_FILTER)
 
 ,           m_xpGrid(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_GRID)
 
@@ -381,11 +379,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpDir1.bIsNull());
 
   RASSERT(m_xpErrorMarker.bIsNull());
-  RASSERT(m_xpExprEval.bIsNull());
 
   RASSERT(m_xpFile0.bIsNull());
   RASSERT(m_xpFile1.bIsNull());
-  RASSERT(m_xpFilter.bIsNull());
   RASSERT(m_xpGrid.bIsNull());
 
   RASSERT(m_xpIndex.bIsNull());
