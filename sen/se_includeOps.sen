@@ -194,7 +194,6 @@ assert::stack_0
   "OP_print.sen"                include
   "OP_progress.sen"             include
   "OP_project.sen"              include
-  "OP_projectRight.sen"         include
   "OP_projValidation.sen"       include
   "OP_ptnMap.sen"               include
   "OP_puGen.sen"                include
@@ -224,7 +223,6 @@ assert::stack_0
 "s" .verbose
 
   "OP_scan.sen"                 include
-  "OP_scanRight.sen"            include
   "OP_sendSE.sen"               include
   "OP_setOpValidate.sen"        include
   "OP_showCluster.sen"          include

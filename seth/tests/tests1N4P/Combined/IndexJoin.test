@@ -269,10 +269,12 @@ begin
     | combined 0
     | next
   stage stageC on all nodes :
-    project 1 " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    project 2 " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    | combined 0
     | next
   stage stageD on origin :
-    project 1 " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    project 2 " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    | combined 0
     | next
   stage stageLast on origin :
     output
