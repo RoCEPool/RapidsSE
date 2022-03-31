@@ -9,7 +9,7 @@
 
 namespace STORE
 {
-  class Dynamo : public Object
+  class Dynamo : public ListNL_t<VertexSpec>
   {  
     friend class STORE::VertexSpec;
 
@@ -21,6 +21,12 @@ namespace STORE
     
     bool       m_bWasOptimised;   // stmt was optimised
   
+    
+    s32 m_sVertexNm;  // aka sub-pipe name
+    Scanner* m_p_Scanner; // statement token scanner
+ 
+    VertexSpec*  m_pCurrVertexSpec;      // the pipeline spec
+    
     // must be last
     Footer m_xFooter;
 
