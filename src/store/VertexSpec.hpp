@@ -54,7 +54,8 @@ namespace STORE
     Footer* aFooter(void);
   
   
-  
+#ifndef WITH_DYNAMO_COMPILER
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //                            PIPELINE COMPILER
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -140,6 +141,8 @@ namespace STORE
 
   VertexSpec* _pVertexSpec(void* aAddr);
 }
+
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

@@ -220,7 +220,7 @@ bool Dynamo::bWillOptimise(void)
 }
 
 
-#if 0
+#ifdef WITH_DYNAMO_COMPILER
 
 /*----------------------------------------------------------------------------*/
 /*                           Pass 1 : Collect                                 */
