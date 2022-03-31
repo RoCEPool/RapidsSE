@@ -74,7 +74,7 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
     
     SP_PipeWork spPipeWork;
 
-    Vertex* pPipeWork = pPipeline->pPipeWork();
+    Vertex* pPipeWork = pPipeline->pVertexRoot();
     
     vCatf("%s"_Stz,spPipeWork.sz(pPipeWork));
 

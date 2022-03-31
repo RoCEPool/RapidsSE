@@ -39,7 +39,7 @@ Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 iOriginNodeNo)
   
   m_sPipelineNm   = pPipeSpec->szPipeSpecNm();
   
-  m_pPipeWork     = nullptr;
+  m_pVertexRoot     = nullptr;
   
   m_pPipelineJob  = pPipelineJob;
   m_pPipeSpec     = pPipeSpec;
@@ -59,7 +59,7 @@ Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 iOriginNodeNo)
 
   _checkInitialised_(CN_PIPELINE);
   
-  m_pPipeWork = new Vertex(this,nullptr,pPipeSpec);
+  m_pVertexRoot = new Vertex(this,nullptr,pPipeSpec);
   //vCreatePipework();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
@@ -72,7 +72,7 @@ Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  delete m_pPipeWork;
+  delete m_pVertexRoot;
   
   delete m_pPipeSpec;
 }
@@ -108,7 +108,7 @@ bool Pipeline::bCancel(Task* pTriggeringTask)
   if (m_bPulsed)
     return false;
   
-  bool bCancelled = m_pPipeWork->bCancel(pTriggeringTask);
+  bool bCancelled = m_pVertexRoot->bCancel(pTriggeringTask);
   
   return bCancelled;
 }
@@ -196,16 +196,6 @@ bool Pipeline::bErrored(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pipework                                                               */
-/*----------------------------------------------------------------------------*/
-Vertex* Pipeline::pPipeWork(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-  
-  return m_pPipeWork;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get accumumlator                                                           */
 /*----------------------------------------------------------------------------*/
 i8 Pipeline::iGetAccum(i8 i_Accum)
@@ -262,7 +252,7 @@ Op* Pipeline::pOp0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Op* pOp0 = m_pPipeWork->pOp0();
+  Op* pOp0 = m_pVertexRoot->pOp0();
 
   return pOp0;
 }
@@ -274,7 +264,7 @@ i8 Pipeline::nOpsOnNode(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  i8 nOps = m_pPipeWork->nOpsOnNode(iNode);
+  i8 nOps = m_pVertexRoot->nOpsOnNode(iNode);
     
   return nOps;
 }
@@ -366,7 +356,7 @@ void Pipeline::vSetInvoker(Task* pInvoker)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pPipeWork->vSetInvoker(pInvoker);
+  m_pVertexRoot->vSetInvoker(pInvoker);
 
 }
 
@@ -377,7 +367,7 @@ void Pipeline::vSetupJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_pPipeWork->vSetupJob();
+  m_pVertexRoot->vSetupJob();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -387,7 +377,7 @@ void Pipeline::vSpawnOpTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pPipeWork->vSpawnOpTasks();
+  m_pVertexRoot->vSpawnOpTasks();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -397,7 +387,7 @@ Stage* Pipeline::pStage0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Stage* pStage0 = m_pPipeWork->pStage0();
+  Stage* pStage0 = m_pVertexRoot->pStage0();
 
   return pStage0;
 }
@@ -409,9 +399,19 @@ Stream* Pipeline::pStream0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Stream* pStream0 = m_pPipeWork->pStream0();
+  Stream* pStream0 = m_pVertexRoot->pStream0();
 
   return pStream0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get root of vertex tree                                                    */
+/*----------------------------------------------------------------------------*/
+Vertex* Pipeline::pVertexRoot(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  return m_pVertexRoot;
 }
 
 
@@ -427,7 +427,7 @@ void Pipeline::vCreatePipework(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pPipeWork->vCreatePipework();
+  m_pVertexRoot->vCreatePipework();
 }
 
 /*============================================================================*/

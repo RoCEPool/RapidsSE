@@ -191,7 +191,7 @@ void Step::vSubPipeEnqueueInvoke(void)
 {
   ENTRY();
   
-  Vertex* pFormWork = m_pLogicUnit->m_xpSubPipe->pPipeWork();
+  Vertex* pFormWork = m_pLogicUnit->m_xpSubPipe->pVertexRoot();
 
   Stage*    pStage0   = pFormWork->pStage0();
 

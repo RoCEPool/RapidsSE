@@ -12,8 +12,8 @@ namespace STORE
                , public ListItem_t<Vertex>
   {
   private:
-    Pipeline* m_pPipeline;       // outermost pipeline
-    Vertex*   m_pParentPipeWork; // parent pipework
+    Pipeline* m_pPipeline;       // which pipeline bubble this vertex is within
+    Vertex*   m_pParentVertex;   // parent of this vertex
   
     PipeSpec* m_pPipeSpec;       // specification of this pipework
   
@@ -27,7 +27,7 @@ namespace STORE
     void  operator delete(void*);
     
     Vertex(Pipeline* pPipeline,
-           Vertex* pParentPipeWork,
+           Vertex*   pParentVertex,
            PipeSpec* pPipeSpec);
    ~Vertex(void) noexcept(false);
   
@@ -42,7 +42,7 @@ namespace STORE
     void vSpawnOpTasks(void);
     Stage* pStage0(void);
     i8   nStages(void);
-    Staging* pStageSet(void);
+    Staging* pStaging(void);
     Stream* pStream0(void);
 
     void vCreatePipework();

@@ -216,7 +216,7 @@ void Step::vSubPipeOfOpFindSubPipe(void)
   ENTRY();
     
   Pipeline* pOpPipeLine = m_pOp->pSubPipeOfOp();
-  Vertex* pOpPipeWork = pOpPipeLine->pPipeWork();
+  Vertex* pOpPipeWork = pOpPipeLine->pVertexRoot();
   PipeSpec* pOpPipeSpec = pOpPipeWork->pPipeSpec();
   
   Stz* szOpPipeNm = pOpPipeSpec->szPipeSpecNm();
@@ -374,7 +374,7 @@ void Step::vSubPipeOfOpStartPipeline(void)
   ENTRY();
   
   Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
-  Vertex* pFormWork = pSubPipelineOfOp->pPipeWork();
+  Vertex* pFormWork = pSubPipelineOfOp->pVertexRoot();
 
   Stage*    pStage0   = pFormWork->pStage0();
 

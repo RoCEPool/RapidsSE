@@ -79,7 +79,7 @@ void SP_PipeWork::vPipeWork(Vertex* pPipeWork, i8 iDepth)
   }
 
   for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++ ) {
-    Stage* pStage = pPipeWork->pStageSet()->pGet(i_Stage);
+    Stage* pStage = pPipeWork->pStaging()->pGet(i_Stage);
     SP_Stage spStage(pStage,true);
     vCatf("%s"_Stz,spStage.sz());
   }

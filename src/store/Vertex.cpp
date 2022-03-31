@@ -33,15 +33,15 @@ __aFooterFunction(Vertex)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Vertex::Vertex(Pipeline* pPipeline,
-               Vertex*   pParentPipeWork,
+               Vertex*   pParentVertex,
                PipeSpec* pPipeSpec)
 : ListNL_t<Vertex>(CN_VERTEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  m_pPipeline = pPipeline;
-  m_pParentPipeWork = pParentPipeWork;
-  m_pPipeSpec = pPipeSpec;
+  m_pPipeline     = pPipeline;
+  m_pParentVertex = pParentVertex;
+  m_pPipeSpec     = pPipeSpec;
 
   m_pStaging = new Staging(this,m_pPipeSpec);
 
@@ -59,8 +59,8 @@ Vertex::~Vertex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  while (Vertex *pSupPipeWork = pPop())
-    delete pSupPipeWork;
+  while (Vertex *pSupVertex = pPop())
+    delete pSupVertex;
   
   delete m_pStaging;
 }
@@ -249,7 +249,7 @@ i8 Vertex::nStages(void)
 /*----------------------------------------------------------------------------*/
 /* get stage set                                                              */
 /*----------------------------------------------------------------------------*/
-Staging* Vertex::pStageSet(void)
+Staging* Vertex::pStaging(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   

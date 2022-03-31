@@ -347,7 +347,7 @@ void Step::vPipelineOfOpStartPipeline(void)
   ENTRY();
   
   Pipeline* pPipelineOfOp = m_pOp->pPipelineOfOp();
-  Vertex* pFormWork = pPipelineOfOp->pPipeWork();
+  Vertex* pFormWork = pPipelineOfOp->pVertexRoot();
 
   Stage*    pStage0   = pFormWork->pStage0();
 
