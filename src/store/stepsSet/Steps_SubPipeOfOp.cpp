@@ -14,9 +14,9 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -46,6 +46,7 @@ void Step::vAddSteps_SubPipeOfOp(void)
   vAddStep("[subPipeOfOp].enqueueStart?"_Stz,  &Step::vSubPipeOfOpStartPipeline);
   vAddStep("[subPipeOfOp].errored@"_Stz,       &Step::vSubPipeOfOpErroredFetch);
   vAddStep("[subPipeOfOp].errored!"_Stz,       &Step::vSubPipeOfOpErroredStore);
+  vAddStep("[subPipeOfOp].findSubPipe"_Stz,    &Step::vSubPipeOfOpFindSubPipe);
   vAddStep("[subPipeOfOp].getAccum"_Stz,       &Step::vSubPipeOfOpGetAccum);
   vAddStep("[subPipeOfOp].grabDebugLock"_Stz,  &Step::vSubPipeOfOpGrabDebugLock);
   vAddStep("[subPipeOfOp].op0@"_Stz,           &Step::vSubPipeOfOpOp0Fetch);
@@ -113,7 +114,7 @@ void Step::vSubPipeOfOpCreate(void)
 
   // get pipeline spec
   
-  PipeSpec* pPipeSpec = _pPipeSpec(m_pDataStack->pPopPtr(__func__));
+  VertexSpec* pPipeSpec = _pVertexSpec(m_pDataStack->pPopPtr(__func__));
   
   // create pipeline
   
@@ -203,6 +204,32 @@ void Step::vSubPipeOfOpErroredStore(void)
   Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
   
   pSubPipelineOfOp->vErrored(m_pDataStack->iPopBol(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [subPipeOfOp].findSubPipe -- find sub-pipeline                             */
+/*----------------------------------------------------------------------------*/
+void Step::vSubPipeOfOpFindSubPipe(void)
+{
+  ENTRY();
+    
+  Pipeline* pOpPipeLine = m_pOp->pSubPipeOfOp();
+  Vertex* pOpPipeWork = pOpPipeLine->pVertexRoot();
+  VertexSpec* pOpPipeSpec = pOpPipeWork->pPipeSpec();
+  
+  Stz* szOpPipeNm = pOpPipeSpec->szVertexNm();
+  vTrace("findSubPipe: %s\n"_Stz,szOpPipeNm);
+
+  i8 nSubPipeWorks = pOpPipeWork->nItems();
+  for (i8 i_SubPipeWork = 0; i_SubPipeWork < nSubPipeWorks; i_SubPipeWork++) {
+    Vertex* pSubPipeWork = pOpPipeWork->pGet(i_SubPipeWork);
+    VertexSpec* pSubPipeSpec = pSubPipeWork->pPipeSpec();
+
+    Stz* szSubPipeNm = pSubPipeSpec->szVertexNm();
+    vTrace("findSubPipe: [%lld] %s\n"_Stz,i_SubPipeWork,szSubPipeNm);
+  }
   
   EXIT();
 }
@@ -347,9 +374,9 @@ void Step::vSubPipeOfOpStartPipeline(void)
   ENTRY();
   
   Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
-  PipeWork* pFormWork = pSubPipelineOfOp->pPipeWork();
+  Vertex* pFormWork = pSubPipelineOfOp->pVertexRoot();
 
-  Stage*    pStage0   = pFormWork->pGet(0);
+  Stage*    pStage0   = pFormWork->pStage0();
 
   if (pStage0->bEnqueueInvoke()) {
     

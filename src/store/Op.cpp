@@ -15,7 +15,8 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "PipeWork.hpp"
+#include "Deck.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
 #include "StageSpec.hpp"
@@ -50,7 +51,7 @@ __aFooterFunction(Op);
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(OpSpec* pOpSpec, Stream* pStream)
+Op::Op(Stream* pStream, OpSpec* pOpSpec)
 : Operand(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
@@ -67,9 +68,9 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 
   m_pOpSpec   = pOpSpec;
   m_pStream   = pStream;
-  m_p_PipelineOfOp = pStream->pPipeline();
-  m_p_SubPipeOfOp = m_p_PipelineOfOp;
-  
+  m_p_SubPipeOfOp  = pStream->pPipeline();
+  m_p_PipeWorkOfOp = nullptr;
+
   // -- -- -- -- -- --
 
   // m_oOpTags
@@ -1013,8 +1014,8 @@ Stage* Op::pNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  PipeWork* pPipeWork = m_p_PipelineOfOp->pPipeWork();
-  Stage* pNextStage = pPipeWork->pGet(iNextStage());
+  Vertex* pPipeWork = pPipelineOfOp()->pVertexRoot();
+  Stage* pNextStage = pPipeWork->pStaging()->pGet(iNextStage());
   
   return pNextStage;
 }
@@ -1280,9 +1281,9 @@ Stage* Op::pOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  PipeWork* pFormWork = m_p_PipelineOfOp->pPipeWork();
+  Vertex* pFormWork = pPipelineOfOp()->pVertexRoot();
   
-  Stage* pOtherStage = pFormWork->pGet(iOtherStage());
+  Stage* pOtherStage = pFormWork->pStaging()->pGet(iOtherStage());
   
   return pOtherStage;
 }
@@ -1376,7 +1377,7 @@ Pipeline* Op::pPipelineOfOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_p_PipelineOfOp;
+  return m_pStream->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1392,8 +1393,8 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
     
   // get the next stage the send is supposed to send to
-  PipeWork* pFormWork = m_p_PipelineOfOp->pPipeWork();
-  Stage* pDstStage = pFormWork->pGet(iNextStage());
+  Vertex* pFormWork = pPipelineOfOp()->pVertexRoot();
+  Stage* pDstStage = pFormWork->pStaging()->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
   

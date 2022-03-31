@@ -81,7 +81,7 @@
 #include "Card_UBound.hpp"
 #include "Card_Unique.hpp"
 
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 
@@ -98,7 +98,7 @@ namespace STORE
     Bench*     m_pBench;
     Board*     m_pBoard;
 
-    PipeSpec*  m_pPipeSpec;
+    VertexSpec*  m_pPipeSpec;
     StageSpec* m_pStageSpec;
     OpSpec*    m_pOpSpec;
 
@@ -115,7 +115,7 @@ namespace STORE
     Dissect(Optimiser* pOptimiser);
    ~Dissect(void) noexcept(false);
   
-    Board* pDissectSpec(PipeSpec* pPipeSpec);
+    Board* pDissectSpec(VertexSpec* pPipeSpec);
   
   private:
     void vPipeline(void);

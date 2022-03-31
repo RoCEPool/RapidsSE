@@ -70,6 +70,8 @@ enum eCN : u2 // Class Number
   /* */ CN_DDLLOCK,
   /* */ CN_DECACNT,
   /* */ CN_DECIDER,
+  /* */ CN_DECK,
+  /* */ CN_DECKSPEC,
   /* */ CN_DEFINITIONNODE,
   /* */ CN_DEREFMETRICS,
   /* */ CN_DEVIXT,
@@ -214,8 +216,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PERUSE,
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINEMETRICS,
-  /* */ CN_PIPEWORK,
-  /* */ CN_PIPESPEC,
   /* */ CN_PLANDEFINITIONPARSER,
   /* */ CN_PLANNERLOCK,
   /* */ CN_PLANNODE,
@@ -339,8 +339,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SUBCALL,
-  /* */ CN_SUBPIPESPECS,
-  /* */ CN_SUBPIPEWORKS,
   /* */ CN_SUBRETURN,
   /* */ CN_SYSCALL,
   /* */ CN_SYSMETRICS,
@@ -399,6 +397,8 @@ enum eCN : u2 // Class Number
 
   /* */ CN__V__,
   /* */ CN_VERBOSE,
+  /* */ CN_VERTEX,
+  /* */ CN_VERTEXSPEC,
 
   /* */ CN__W__,
   /* */ CN_WAKEUP,
@@ -479,6 +479,8 @@ static Stz* aCN[]
   /* */ "DDLLOCK"_Stz,              // CN_DDLLOCK
   /* */ "DECACNT"_Stz,              // CN_DECACNT
   /* */ "DECIDER"_Stz,              // CN_DECIDER
+  /* */ "DECK"_Stz,                 // CN_DECK
+  /* */ "DECKSPEC"_Stz,             // CN_DECKSPEC
   /* */ "DEFINITIONNODE"_Stz,       // CN_DEFINITIONNODE
   /* */ "DEREFMETRICS"_Stz,         // CN_DEREFMETRICS
   /* */ "DEVIXT"_Stz,               // CN_DEVIXT
@@ -623,8 +625,6 @@ static Stz* aCN[]
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
-  /* */ "PIPEWORK"_Stz,             // CN_PIPEWORK
-  /* */ "PIPESPEC"_Stz,             // CN_PIPESPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
   /* */ "PLANNERLOCK"_Stz,          // CN_PLANNERLOCK
   /* */ "PLANNODE"_Stz,             // CN_PLANNODE
@@ -748,8 +748,6 @@ static Stz* aCN[]
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SUBCALL"_Stz,              // CN_SUBCALL
-  /* */ "SUBPIPESPECS"_Stz,         // CN_SUBPIPESPECS
-  /* */ "SUBPIPEWORKS"_Stz,         // CN_SUBPIPEWORKS
   /* */ "SUBRETURN"_Stz,            // CN_SUBRETURN
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS
@@ -808,6 +806,8 @@ static Stz* aCN[]
 
   /* */ "_V__"_Stz,                 // CN__V__
   /* */ "VERBOSE"_Stz,              // CN_VERBOSE
+  /* */ "VERTEX"_Stz,               // CN_VERTEX
+  /* */ "VERTEXSPEC"_Stz,           // CN_VERTEXSPEC
 
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WAKEUP"_Stz,               // CN_WAKEUP

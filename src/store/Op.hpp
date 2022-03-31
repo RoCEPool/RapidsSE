@@ -13,7 +13,9 @@
 
 namespace BASE { class OperandQueue; }
 
-namespace STORE { class PipeSpec; class StageSpec; class OpSpec; }
+namespace STORE { class OpSpec;
+                  class VertexSpec; class Vertex;
+                  class StageSpec; }
 
 namespace STORE
 {
@@ -43,9 +45,9 @@ namespace STORE
 
     // -- refers to
     SMA<OpSpec,CN_OPSPEC>      m_pOpSpec;  // specification of this operator
-    SMA<Pipeline,CN_PIPELINE>  m_p_PipelineOfOp;  // which pipeline
     SMA<Pipeline,CN_PIPELINE>  m_p_SubPipeOfOp;   // which sub-pipeline
-
+    SMA<Vertex,CN_VERTEX>  m_p_PipeWorkOfOp;  // which pipework
+  
     // -- executed by
     SMA<Task,CN_TASK>      m_pTask;    // which task is currenty executing this op
 
@@ -97,7 +99,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op(OpSpec* pOpSpec, Stream* pStream);
+    Op(Stream* pStream, OpSpec* pOpSpec);
    ~Op(void) noexcept(false);
   
     // - - - - - - - - - - - - - - - -

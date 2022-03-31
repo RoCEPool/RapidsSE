@@ -94,7 +94,7 @@ CardCtl* Optimiser::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* dissect                                                                    */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vDissect(PipeSpec* pm_pUnOptPipeSpec)
+void Optimiser::vDissect(VertexSpec* pm_pUnOptPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
    
@@ -159,7 +159,7 @@ Card_SubSet* Optimiser::pPaste(void)
 /*----------------------------------------------------------------------------*/
 /* set m_pUnOptPipeSpec                                                   */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vPipeSpec(PipeSpec* pm_pUnOptPipeSpec)
+void Optimiser::vPipeSpec(VertexSpec* pm_pUnOptPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
@@ -197,7 +197,7 @@ void Optimiser::vPushBoard(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* run dynamo                                                                 */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vToPipeSpec(PipeSpec* pPipeSpec)
+void Optimiser::vToPipeSpec(VertexSpec* pPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
  

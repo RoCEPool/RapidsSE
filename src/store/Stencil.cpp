@@ -487,7 +487,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   eSR ePrevStencil = SR_NONE;
   eEK eExprKind = EK_NONE;
 
-  m_szStageNm = pStream->szStageNm();
+  m_szStageNm = pStream->pStage()->szStageNm();
 
   i8 iStage = pStream->pStage()->i_Stage();
   i8 iOpsCombined = 0;

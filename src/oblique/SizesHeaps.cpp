@@ -138,7 +138,7 @@
 #include "OpSpec.hpp"
 
 #include "PathIdentifier.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Pipeline.hpp"
 #include "PlannerLock.hpp"
 
@@ -179,7 +179,6 @@
 #include "Stream.hpp"
 #include "StreamDefRht.hpp"
 #include "StzList.hpp"
-#include "SubPipeSpecs.hpp"
 
 #include "SP_Gid.hpp"
 #include "SP_Elapsed.hpp"
@@ -232,10 +231,11 @@
 #include "CardRegs.hpp"
 #include "RuleCtl.hpp"
 #include "Drafter.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
-#include "SubPipeWorks.hpp"
+#include "Deck.hpp"
+#include "DeckSpec.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -318,6 +318,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(DdlLock),            HT_T_TINY    ,0 FILL }, // CN_DDLLOCK
   { sizeof(DecaCnt),            HT_T_TINY    ,0 FILL }, // CN_DECACNT
   { sizeof(Decider),            HT_T_TINY    ,0 FILL }, // CN_DECIDER
+  { sizeof(Deck),               HT_T_TINY    ,0 FILL }, // CN_DECK
+  { sizeof(DeckSpec),           HT_T_TINY    ,0 FILL }, // CN_DECKSPEC
   { sizeof(DefinitionNode),     HT_T_TINY    ,-8 FILL }, // CN_DEFINITIONNODE
   { sizeof(DerefMetrics),       HT_T_TINY    ,0 FILL }, // CN_DEREF
   { sizeof(DevIXT),             HT_T_TINY    ,0 FILL }, // CN_DEVIXT
@@ -361,7 +363,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Grid),               HT_T_TINY    ,0 FILL }, // CN_GRID
 
   { 'H' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN_HASHSET
-  { sizeof(HashMap),            HT_T_LARGE  ,0 FILL }, // CN_HASHMAP
+  { sizeof(HashMap),            HT_T_LARGE   ,0 FILL }, // CN_HASHMAP
   { sizeof(HashMapSlot),        HT_T_TINY    ,0 FILL }, // CN__H__
   { sizeof(HashSet),            HT_T_LARGE   ,0 FILL }, // CN_HASHMAPSLOT
   { sizeof(HeapBuffer),         HT_INVALID   ,0 FILL }, // CN_HEAPBUFFER
@@ -462,11 +464,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Peruse),             HT_T_MEDIUM  ,0 FILL }, // CN_PERUSE
   { sizeof(Pipeline),           HT_T_TINY    ,0 FILL }, // CN_PIPELINE
   { sizeof(PipelineMetrics),    HT_T_TINY    ,0 FILL }, // CN_PIPELINEMETRICS
-  { sizeof(PipeWork),           HT_T_SMALL   ,0 FILL }, // CN_PIPEWORK
-  { sizeof(PipeSpec),           HT_T_TINY    ,0 FILL }, // CN_PIPESPEC
-  { sizeof(PlanDefinitionParser), HT_T_MEDIUM, -8 FILL }, // CN_PLANDEFINITIONPARSER
+  { sizeof(PlanDefinitionParser), HT_T_MEDIUM,-8 FILL }, // CN_PLANDEFINITIONPARSER
   { sizeof(PlannerLock),        HT_T_TINY    ,0 FILL }, // CN_PLANNERLOCK
-  { sizeof(PlanNode),           HT_T_TINY    , -8 FILL }, // CN_PLANNODE
+  { sizeof(PlanNode),           HT_T_TINY    ,-8 FILL }, // CN_PLANNODE
   { sizeof(PlanNodeBuilder),    HT_T_TINY    ,0 FILL }, // CN_PLANNODEBUILDER
   { sizeof(PlanNodeBuilderList),HT_T_TINY    ,0 FILL }, // CN_PLANNODEBUILDERLIST
   { sizeof(PlanNodeBuilderStack), HT_T_MEDIUM,0 FILL }, // CN_PLANNODEBUILDERSTACK
@@ -475,7 +475,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Pot),                HT_T_LARGE   ,0 FILL }, // CN_POT
   { sizeof(Predicate),          HT_T_TINY    ,0 FILL }, // CN_PREDICATE
   { sizeof(PredicateVec),       HT_T_MEDIUM  ,0 FILL }, // CN_PREDICATEVEC
-  { sizeof(PrimitiveNode),      HT_T_TINY    , -8 FILL }, // CN_PRIMITIVENODE
+  { sizeof(PrimitiveNode),      HT_T_TINY    ,-8 FILL }, // CN_PRIMITIVENODE
   { sizeof(Procedure),          HT_T_MEDIUM  ,0 FILL }, // CN_PROCEDURE
   { sizeof(Profile),            HT_T_MEDIUM  ,0 FILL }, // CN_PROFILE
   { sizeof(PsxThd),             HT_T_TINY    ,0 FILL }, // CN_PSXTHD
@@ -587,8 +587,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StzList),            HT_T_TINY    ,0 FILL }, // CN_STZLIST
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_STZVAL
   { sizeof(SubCall),            HT_T_TINY    ,0 FILL }, // CN_SUBCALL
-  { sizeof(SubPipeSpecs),       HT_T_TINY    ,0 FILL }, // CN_SUBPIPESPECS
-  { sizeof(SubPipeWorks),       HT_T_TINY    ,0 FILL }, // CN_SUBPIPEWORKS
   { sizeof(SubReturn),          HT_T_TINY    ,0 FILL }, // CN_SUBRETURN
   { sizeof(SysCall),            HT_INVALID   ,0 FILL }, // CN_SYSCALL
   { sizeof(SysMetrics),         HT_T_TINY    ,0 FILL }, // CN_SYSMETRICS
@@ -647,6 +645,8 @@ SizeHeap gxaSizeHeap[]
 
   { 'V' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__V__
   { sizeof(Verbose),            HT_T_TINY    ,0 FILL }, // CN_VERBOSE
+  { sizeof(Vertex),             HT_T_SMALL   ,0 FILL }, // CN_VERTEX
+  { sizeof(VertexSpec),         HT_T_TINY    ,0 FILL }, // CN_VERTEXSPEC
 
   { 'W' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__W__
   { sizeof(Wakeup),             HT_INVALID   ,0 FILL }, // CN_WAKEUP

@@ -494,7 +494,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, bool bOrdAgg, Stz* sLabel, Stz* s
   // generate code for the expression
   vGenerateExprCode(m_pExprStack, ""_Stz);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (bFilterResult) { ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (bFilterResult && bFilterResult != C_DATUM_NULL) { ");
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
   if (bOrdAgg)
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AddRowToTubPot;");
@@ -2035,9 +2035,7 @@ void CodeSynth::vPayloadPopulate(ePL ePayload) {
 
       sCopy.vSprint("\n        szDstStz = (char*)&aCombinedT->m_aiPayload[%lld];"_Stz, iPayLoad );
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "printf(\"DOING COPY\\n\");");
       StrLib::vAppendString(&m_azCodeCrs,"\n        strncpy(szDstStz, szSrcStz, nSrcSize);");
-      StrLib::vAppendString(&m_azCodeCrs, "printf(\"DONE COPY\\n\");");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
       StrLib::vAppendString(&m_azCodeCrs, "\n      }");
 
@@ -2702,6 +2700,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nItems(); i_Tkn++) {
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
+    /*
 #ifdef WITH_DEBUG_VERSION
     vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
@@ -2716,7 +2715,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
     vTrace("--------------------------------------\n"_Stz);
 #endif
-
+*/
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
 
@@ -3229,7 +3228,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     pExprStack = m_pExprStack;
 
   vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, ePreExp, pTkn, i_Col, i_DupCtr);
-
+/*
 #ifdef WITH_DEBUG_VERSION
 
   // dump the TypeStack
@@ -3313,7 +3312,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
 #endif
-
+*/
   delete pExprType;
 }
 
@@ -4696,7 +4695,7 @@ void CodeSynth::vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz* sFilterExpr
   // generate code for the expression
   vGenerateExprCode(m_pExprStack, ""_Stz);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (bFilterResult) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (bFilterResult && bFilterResult != C_DATUM_NULL) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 

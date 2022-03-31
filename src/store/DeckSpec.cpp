@@ -1,44 +1,47 @@
 /*============================================================================*/
-/* SubPipeSpecs.cpp -- List of Sub-Pipeline Specifications                    */
+/* StageSpecSet.cpp -- List of Stage Specifications                             */
 /*============================================================================*/
 
 #include "BASE.h"
-#include "SubPipeSpecs.hpp"
+#include "DeckSpec.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, SubPipeSpecs, CN_SUBPIPESPECS)
-__aNewFunction(SubPipeSpecs, CN_SUBPIPESPECS)
-__vDeleteFunction(SubPipeSpecs, CN_SUBPIPESPECS)
-__aFooterFunction(SubPipeSpecs)
+__pCastFunction(STORE, DeckSpec, CN_DECKSPEC)
+__aNewFunction(DeckSpec, CN_DECKSPEC)
+__vDeleteFunction(DeckSpec, CN_DECKSPEC)
+__aFooterFunction(DeckSpec)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SubPipeSpecs::SubPipeSpecs(void)
+DeckSpec::DeckSpec(VertexSpec* pVertexSpec)
     
-: ListNL_t<PipeSpec>(CN_SUBPIPESPECS)
+: ListNL_t<StageSpec>(CN_DECKSPEC)
 
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPESPECS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
+  
+  m_pVertexSpec = pVertexSpec;
 
+  _checkInitialised_(CN_DECKSPEC);
 
-  _checkInitialised_(CN_SUBPIPESPECS);
-
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPESPECS, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SubPipeSpecs::~SubPipeSpecs(void) noexcept(false)
+DeckSpec::~DeckSpec(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SUBPIPESPECS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
 
+  while (StageSpec* pStageSpec = pPop())
+    delete pStageSpec;
 }
 
 /*============================================================================*/

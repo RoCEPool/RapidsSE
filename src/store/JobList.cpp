@@ -7,7 +7,7 @@
 #include "Job.hpp"
 #include "JobList.hpp"
 
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "LogicUnit.hpp"
 #include "SP_Gid.hpp"
 #include "eLH.h"

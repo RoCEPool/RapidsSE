@@ -9,7 +9,7 @@
 #include "InfoSet.hpp"
 
 #include "OpSpec.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 
 
 /*----------------------------------------------------------------------------*/

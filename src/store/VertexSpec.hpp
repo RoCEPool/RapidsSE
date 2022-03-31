@@ -7,22 +7,23 @@
 
 
 namespace STORE { class Dynamo;
-                  class StageSpec; class OpSpec; class SubPipeSpecs; }
+                  class StageSpec; class DeckSpec;
+                  class OpSpec; class SubPipeSpecs; }
 
 namespace STORE
 {
-  class PipeSpec
-          : public ListNL_t<StageSpec>
-          , public ListItem_t<PipeSpec>
+  class VertexSpec : public ListNL_t<VertexSpec>
+                   , public ListItem_t<VertexSpec>
   {
     friend class STORE::Dynamo;
 
   private:
   
-    s32  m_sPipelineNm;    // pipeline name
+    VertexSpec*  m_pParentVertexSpec; // parent of this vertex
+    s32 m_sVertexNm;  // aka sub-pipe name
     
-    SubPipeSpecs* m_pSubPipeSpecs;
-  
+    DeckSpec* m_pDeckSpec;
+ 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
     Scanner* m_p_Scanner; // statement token scanner
@@ -35,26 +36,30 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    PipeSpec(Scanner* p_Scanner, TagSet* p_JobTags);
-   ~PipeSpec(void) noexcept(false);
+    VertexSpec(VertexSpec* pParentVertexSpec,
+               Scanner*    p_Scanner,
+               TagSet*     p_JobTags);
+   ~VertexSpec(void) noexcept(false);
   
-    bool bCompile(void);
   
     void vAddStageSpec(StageSpec* pStageSpec);
+    DeckSpec* pDeckSpec(void);
     StageSpec* pFindStageSpec(Stz* szFindNm);
     TagSet* pJobTags(void);
-    Stz* szPipelineNm(void);
-    i8 nStages(void);
+    Stz* szVertexNm(void);
+    i8 nStageSpecs(void);
     StageSpec* pStageSpec(i8 i_Stage);
-    SubPipeSpecs* pSubPipeSpecs(void);
 
     Footer* aFooter(void);
   
   
-  
+#ifndef WITH_DYNAMO_COMPILER
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //                            PIPELINE COMPILER
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    bool bCompile(void);
 
   private:
   
@@ -132,11 +137,13 @@ namespace STORE
     TokenVec*  pTknVec(void);
 
     void vTokenAccept(void);
+#endif
 
   };
 
-  PipeSpec* _pPipeSpec(void* aAddr);
+  VertexSpec* _pVertexSpec(void* aAddr);
 }
+
 
 /*============================================================================*/
 /* end                                                                        */

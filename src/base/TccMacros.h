@@ -75,7 +75,7 @@
 #define _ASSIGN_IFTRUE(iArgTo)                                              \
  {                                                                          \
   iArg1 = *(--paW);                                                         \
-  if (iArg1)                                                                \
+  if (iArg1 && iArg1 != C_DATUM_NULL)                                       \
     iArgTo = *(--paW);                                                      \
   else                                                                      \
     --paW;                                                                  \
@@ -166,15 +166,6 @@
       *(paW++) = bFilterResult;                                             \
     }                                                                       \
   }
-
-#define _ASSIGN_IFTRUE(iArgTo)                                              \
- {                                                                          \
-  iArg1 = *(--paW);                                                         \
-  if (iArg1)                                                                \
-    iArgTo = *(--paW);                                                      \
-  else                                                                      \
-    --paW;                                                                  \
- }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // DUPS

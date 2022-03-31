@@ -255,20 +255,7 @@ namespace OBLIQUE
     public:
       static void vPipeToOp0(Stz* szDemonNm, Operand* pOperand);
     };
-  
-    class EE
-    {
-    public:
-      static void vAssertEEDelete(eCN eInstance,
-                                  Object* pInstance,
-                                  
-                                  eCN eExpecting,
-                                  eCN eDeleter,
-                                  Object* pDeleter,
-                                  Stz* szDelFunNm,
-                                  bool bTrace);
-    };
-  
+    
     class ENGINE
     {
     public:

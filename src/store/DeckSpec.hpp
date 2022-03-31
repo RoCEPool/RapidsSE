@@ -1,16 +1,18 @@
 /*============================================================================*/
-/* SubPipeWorks.hpp -- List of Sub-Pipeline Specifications                    */
+/* StageSpecSet.hpp -- List of Stage Specifications                           */
 /*============================================================================*/
 #pragma once
 
-#include "PipeWork.hpp"
+#include "StageSpec.hpp"
 
 namespace STORE
 {
-  class SubPipeWorks : public ListNL_t<PipeWork>
+  class DeckSpec : public ListNL_t<StageSpec>
   {
   private:
    
+    VertexSpec*  m_pVertexSpec; // vertexSpec this deckSpec belongs to
+
     // must be last
     Footer m_xFooter;
 
@@ -18,8 +20,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    SubPipeWorks(void);
-   ~SubPipeWorks(void) noexcept(false);
+    DeckSpec(VertexSpec* pVertexSpec);
+   ~DeckSpec(void) noexcept(false);
   
   private:
   
@@ -27,7 +29,7 @@ namespace STORE
 
   };
 
-SubPipeWorks* _pSubPipeWorks(void* aAddr);
+  DeckSpec* _pDeckSpec(void* aAddr);
 }
 
 /*============================================================================*/
