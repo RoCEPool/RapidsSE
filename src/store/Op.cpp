@@ -15,7 +15,7 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "Staging.hpp"
+#include "Deck.hpp"
 #include "Vertex.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"

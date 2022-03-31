@@ -17,7 +17,7 @@
 #include "Pipeline.hpp"
 #include "Vertex.hpp"
 #include "Stage.hpp"
-#include "Staging.hpp"
+#include "Deck.hpp"
 #include "LogicUnit.hpp"
 #include "Stream.hpp"
 #include "Op.hpp"

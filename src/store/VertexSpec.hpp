@@ -12,8 +12,8 @@ namespace STORE { class Dynamo;
 
 namespace STORE
 {
-  class PipeSpec : public ListNL_t<PipeSpec>
-                 , public ListItem_t<PipeSpec>
+  class VertexSpec : public ListNL_t<VertexSpec>
+                   , public ListItem_t<VertexSpec>
   {
     friend class STORE::Dynamo;
 
@@ -35,8 +35,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    PipeSpec(Scanner* p_Scanner, TagSet* p_JobTags);
-   ~PipeSpec(void) noexcept(false);
+    VertexSpec(Scanner* p_Scanner, TagSet* p_JobTags);
+   ~VertexSpec(void) noexcept(false);
   
     bool bCompile(void);
   
@@ -135,7 +135,7 @@ namespace STORE
 
   };
 
-  PipeSpec* _pPipeSpec(void* aAddr);
+  VertexSpec* _pVertexSpec(void* aAddr);
 }
 
 /*============================================================================*/

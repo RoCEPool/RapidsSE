@@ -16,7 +16,7 @@
 #include "OpSpec.hpp"
 #include "Stage.hpp"
 #include "StageSpec.hpp"
-#include "Staging.hpp"
+#include "Deck.hpp"
 #include "Stream.hpp"
 #include "Vertex.hpp"
 #include "PtnMap.hpp"

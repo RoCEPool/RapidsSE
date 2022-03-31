@@ -11,13 +11,13 @@ namespace STORE
 {
   class Dynamo : public Object
   {  
-    friend class STORE::PipeSpec;
+    friend class STORE::VertexSpec;
 
   private:
     TagSet*    m_p_JobTags;       // tag set from job
     
     Stz*       m_szPipelineStmt;
-    PipeSpec*  m_p_PipeSpec;      // the pipeline spec
+    VertexSpec*  m_p_PipeSpec;      // the pipeline spec
     
     bool       m_bWasOptimised;   // stmt was optimised
   
@@ -32,14 +32,14 @@ namespace STORE
    ~Dynamo(void) noexcept(false);
 
     static void vRepair(Object* pObject);
-    static PipeSpec* pToPipeSpec(Stz* szPipelineStmt, TagSet* p_JobTags);
+    static VertexSpec* pToPipeSpec(Stz* szPipelineStmt, TagSet* p_JobTags);
 
     
-    PipeSpec* pCompile(Stz* szPipelineStmt);
+    VertexSpec* pCompile(Stz* szPipelineStmt);
 
     void vOptimise(void);
 
-    PipeSpec* pPipeSpec(void);
+    VertexSpec* pPipeSpec(void);
 
     bool bWasOptimised(void);
     bool bWillOptimise(void);

@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Dynamo.hpp"
 #include "Job.hpp"
 #include "Optimiser.hpp"
@@ -70,13 +70,13 @@ void Dynamo::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* convert pipeline statement to pipeline spec                                */
 /*----------------------------------------------------------------------------*/
-PipeSpec* Dynamo::pToPipeSpec(Stz* szPipelineStmt, TagSet* p_JobTags)
+VertexSpec* Dynamo::pToPipeSpec(Stz* szPipelineStmt, TagSet* p_JobTags)
 {
   _static_
   
   Dynamo* pDynamo = new Dynamo(p_JobTags);
   
-  PipeSpec* pPipeSpec = pDynamo->pCompile(szPipelineStmt);
+  VertexSpec* pPipeSpec = pDynamo->pCompile(szPipelineStmt);
 
   delete pDynamo;
   
@@ -90,7 +90,7 @@ PipeSpec* Dynamo::pToPipeSpec(Stz* szPipelineStmt, TagSet* p_JobTags)
 /*----------------------------------------------------------------------------*/
 /* recursively compile the tokenised pipeline statement                       */
 /*----------------------------------------------------------------------------*/
-PipeSpec* Dynamo::pCompile(Stz* szPipelineStmt)
+VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
         
@@ -105,7 +105,7 @@ PipeSpec* Dynamo::pCompile(Stz* szPipelineStmt)
   }
   
 
-  m_p_PipeSpec = new PipeSpec(pScanner,m_p_JobTags);
+  m_p_PipeSpec = new VertexSpec(pScanner,m_p_JobTags);
 
   
   if (m_p_PipeSpec->bCompile()) {
@@ -165,7 +165,7 @@ void Dynamo::vOptimise(void)
 /*----------------------------------------------------------------------------*/
 /* get the pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
-PipeSpec* Dynamo::pPipeSpec(void)
+VertexSpec* Dynamo::pPipeSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   

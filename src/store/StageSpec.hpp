@@ -10,7 +10,7 @@
 
 #include "OpSpec.hpp"
 
-namespace STORE { class PipeSpec; }
+namespace STORE { class VertexSpec; }
 
 namespace STORE
 {
@@ -21,7 +21,7 @@ namespace STORE
   private:
     s32  m_sStageNm;    // stage name
 
-    PipeSpec* m_pPipeSpec; // which formwork spec
+    VertexSpec* m_pPipeSpec; // which formwork spec
 
     eYG  m_eStageTopology;  // stage topoplogy
     eYS  m_eStreamTopology; // stream topoplogy
@@ -40,7 +40,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StageSpec(Stz* szStageNm, PipeSpec* pPipeSpec);
+    StageSpec(Stz* szStageNm, VertexSpec* pPipeSpec);
    ~StageSpec(void) noexcept(false);
    
     static eYX eCrossTopoCalc(StageSpec* pFromStageSpec,
@@ -63,7 +63,7 @@ namespace STORE
   
     eYF  eParcelForward(void);
     void vParcelForward(eYF eParcelForward);
-    PipeSpec* pPipeSpec(void);
+    VertexSpec* pPipeSpec(void);
   
     void vSpecificNode(i8 i_SpecificNode);
     i8   iSpecificNode(void);

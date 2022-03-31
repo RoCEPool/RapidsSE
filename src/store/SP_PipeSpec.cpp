@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 
@@ -26,7 +26,7 @@ SP_PipeSpec::SP_PipeSpec(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_PipeSpec::SP_PipeSpec(PipeSpec* pPipeSpec)
+SP_PipeSpec::SP_PipeSpec(VertexSpec* pPipeSpec)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
@@ -50,7 +50,7 @@ SP_PipeSpec::~SP_PipeSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec)
+void SP_PipeSpec::vPipeSpec(VertexSpec* pPipeSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -62,7 +62,7 @@ void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec, i8 iDepth)
+void SP_PipeSpec::vPipeSpec(VertexSpec* pPipeSpec, i8 iDepth)
 {
   _precondition_(_MAGIC_,_FOOTER_);
    
@@ -76,7 +76,7 @@ void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec, i8 iDepth)
   
   i8 nSubSpecs = pPipeSpec->nItems();
   for (i8 i_SubSpec = 0; i_SubSpec < nSubSpecs; i_SubSpec++) {
-    PipeSpec* pSubPipeSpec = pPipeSpec->pGet(i_SubSpec);
+    VertexSpec* pSubPipeSpec = pPipeSpec->pGet(i_SubSpec);
     vPipeSpec(pSubPipeSpec,iDepth+1);
   }
   
@@ -106,7 +106,7 @@ Stz* SP_PipeSpec::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_PipeSpec::sz(PipeSpec* pPipeSpec)
+Stz* SP_PipeSpec::sz(VertexSpec* pPipeSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 

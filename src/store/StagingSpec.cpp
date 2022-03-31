@@ -10,9 +10,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, StagingSpec, CN_STAGINGSPEC)
-__aNewFunction(StagingSpec, CN_STAGINGSPEC)
-__vDeleteFunction(StagingSpec, CN_STAGINGSPEC)
+__pCastFunction(STORE, StagingSpec, CN_DECKSPEC)
+__aNewFunction(StagingSpec, CN_DECKSPEC)
+__vDeleteFunction(StagingSpec, CN_DECKSPEC)
 __aFooterFunction(StagingSpec)
 
 
@@ -21,15 +21,15 @@ __aFooterFunction(StagingSpec)
 /*----------------------------------------------------------------------------*/
 StagingSpec::StagingSpec(void)
     
-: ListNL_t<StageSpec>(CN_STAGINGSPEC)
+: ListNL_t<StageSpec>(CN_DECKSPEC)
 
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGINGSPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
 
 
-  _checkInitialised_(CN_STAGINGSPEC);
+  _checkInitialised_(CN_DECKSPEC);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGINGSPEC, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@ StagingSpec::StagingSpec(void)
 /*----------------------------------------------------------------------------*/
 StagingSpec::~StagingSpec(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGINGSPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
 
   while (StageSpec* pStageSpec = pPop())
     delete pStageSpec;

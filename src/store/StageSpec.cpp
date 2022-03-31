@@ -7,8 +7,7 @@
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "StagingSpec.hpp"
-#include "PipeSpec.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -24,7 +23,7 @@ __aFooterFunction(StageSpec)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StageSpec::StageSpec(Stz* szStageNm,
-                     PipeSpec* pPipeSpec)
+                     VertexSpec* pPipeSpec)
 : ListNL_t<OpSpec>(CN_STAGESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);

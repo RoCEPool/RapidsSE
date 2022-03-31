@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE { class Vertex; class Stage; class PipeSpec; }
+namespace STORE { class Vertex; class Stage; class VertexSpec; }
 
 namespace STORE
 {
@@ -11,6 +11,9 @@ namespace STORE
   {
   private:
 
+    // -- belongs to
+    Job* m_pPipelineJob;  // which job
+  
     // -- id, name and kind
     Gid_t<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
     s32  m_sPipelineNm;  // name of this pipeline
@@ -18,11 +21,9 @@ namespace STORE
     // -- substructure
     Vertex* m_pVertexRoot; // root of vertex tree
 
-    // -- belongs to
-    Job* m_pPipelineJob;  // which job
   
     // -- refers to
-    PipeSpec* m_pPipeSpec; // specification of this pipeline
+    VertexSpec* m_pVertexSpecRoot; // root specification of this pipeline
   
     i8   m_iOriginNodeNo;    // originating node
   
@@ -50,7 +51,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 iOriginNodeNo);
+    Pipeline(Job* pPipelineJob, VertexSpec* pVertexSpecRoot, i8 iOriginNodeNo);
    ~Pipeline(void) noexcept(false);
   
     void vAddAccum(i8 i_Accum, i8 iValue);
@@ -72,7 +73,7 @@ namespace STORE
     void vOpToPulse(Op* pOpToPulse);
     Job* pPipelineJob(void);
     Stz* szPipelineNm(void);
-    PipeSpec* pPipeSpec(void);
+    VertexSpec* pPipeSpec(void);
     bool bPulsed(void);
     void vPulsed(bool bPulsed);
     bool bPulsedLimit(void);

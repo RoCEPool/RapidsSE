@@ -7,7 +7,7 @@
 #include "eYS.h"
 #include "eYF.h"
 
-namespace STORE { class PipeSpec; class StageSpec; }
+namespace STORE { class VertexSpec; class StageSpec; }
 
 namespace STORE
 {

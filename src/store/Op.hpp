@@ -14,7 +14,7 @@
 namespace BASE { class OperandQueue; }
 
 namespace STORE { class OpSpec;
-                  class PipeSpec; class Vertex;
+                  class VertexSpec; class Vertex;
                   class StageSpec; }
 
 namespace STORE

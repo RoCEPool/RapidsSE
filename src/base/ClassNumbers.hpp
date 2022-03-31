@@ -70,6 +70,8 @@ enum eCN : u2 // Class Number
   /* */ CN_DDLLOCK,
   /* */ CN_DECACNT,
   /* */ CN_DECIDER,
+  /* */ CN_DECK,
+  /* */ CN_DECKSPEC,
   /* */ CN_DEFINITIONNODE,
   /* */ CN_DEREFMETRICS,
   /* */ CN_DEVIXT,
@@ -320,8 +322,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STAGE,
   /* */ CN_STAGEMETRICS,
   /* */ CN_STAGESPEC,
-  /* */ CN_STAGING,
-  /* */ CN_STAGINGSPEC,
   /* */ CN_STARTER,
   /* */ CN_STATEMENT,
   /* */ CN_STATISTICS,
@@ -479,6 +479,8 @@ static Stz* aCN[]
   /* */ "DDLLOCK"_Stz,              // CN_DDLLOCK
   /* */ "DECACNT"_Stz,              // CN_DECACNT
   /* */ "DECIDER"_Stz,              // CN_DECIDER
+  /* */ "DECK"_Stz,                 // CN_DECK
+  /* */ "DECKSPEC"_Stz,             // CN_DECKSPEC
   /* */ "DEFINITIONNODE"_Stz,       // CN_DEFINITIONNODE
   /* */ "DEREFMETRICS"_Stz,         // CN_DEREFMETRICS
   /* */ "DEVIXT"_Stz,               // CN_DEVIXT
@@ -729,8 +731,6 @@ static Stz* aCN[]
   /* */ "STAGE"_Stz,                // CN_STAGE
   /* */ "STAGEMETRICS"_Stz,         // CN_STAGEMETRICS
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
-  /* */ "STAGING"_Stz,              // CN_STAGING
-  /* */ "STAGINGSPEC"_Stz,          // CN_STAGINGSPEC
   /* */ "STARTER"_Stz,              // CN_STARTER
   /* */ "STATEMENT"_Stz,            // CN_STATEMENT
   /* */ "STATISTICS"_Stz,           // CN_STATISTICS

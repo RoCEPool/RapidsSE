@@ -17,7 +17,7 @@
 #include "Stage.hpp"
 #include "Vertex.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "StageSpec.hpp"
 #include "SP_Stage.hpp"
 #include "TagConstants.h" //?

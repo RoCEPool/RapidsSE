@@ -6,7 +6,7 @@
 
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "StagingSpec.hpp"
 #include "Dynamo.hpp"
 #include "Procedure.hpp"
@@ -22,17 +22,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, PipeSpec, CN_PIPESPEC)
-__aNewFunction(PipeSpec, CN_PIPESPEC)
-__vDeleteFunction(PipeSpec, CN_PIPESPEC)
-__aFooterFunction(PipeSpec)
+__pCastFunction(STORE, VertexSpec, CN_PIPESPEC)
+__aNewFunction(VertexSpec, CN_PIPESPEC)
+__vDeleteFunction(VertexSpec, CN_PIPESPEC)
+__aFooterFunction(VertexSpec)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipeSpec::PipeSpec(Scanner *p_Scanner, TagSet *p_JobTags)
-: ListNL_t<PipeSpec>(CN_PIPESPEC)
+VertexSpec::VertexSpec(Scanner *p_Scanner, TagSet *p_JobTags)
+: ListNL_t<VertexSpec>(CN_PIPESPEC)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -52,11 +52,11 @@ PipeSpec::PipeSpec(Scanner *p_Scanner, TagSet *p_JobTags)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PipeSpec::~PipeSpec(void) noexcept(false)
+VertexSpec::~VertexSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  while (PipeSpec *pSupPipeSpec = pPop())
+  while (VertexSpec *pSupPipeSpec = pPop())
     delete pSupPipeSpec;
   
   delete m_pStagingSpec;
@@ -71,7 +71,7 @@ PipeSpec::~PipeSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* pipeline compile                                                           */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bCompile(void)
+bool VertexSpec::bCompile(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -100,7 +100,7 @@ bool PipeSpec::bCompile(void)
 /*----------------------------------------------------------------------------*/
 /* add stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-void PipeSpec::vAddStageSpec(StageSpec *pStageSpec)
+void VertexSpec::vAddStageSpec(StageSpec *pStageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -110,7 +110,7 @@ void PipeSpec::vAddStageSpec(StageSpec *pStageSpec)
 /*----------------------------------------------------------------------------*/
 /* get the job tag set                                                        */
 /*----------------------------------------------------------------------------*/
-TagSet* PipeSpec::pJobTags(void)
+TagSet* VertexSpec::pJobTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPESPEC,_FOOTER_);
   
@@ -120,7 +120,7 @@ TagSet* PipeSpec::pJobTags(void)
 /*----------------------------------------------------------------------------*/
 /* find stage matching given name                                             */
 /*----------------------------------------------------------------------------*/
-StageSpec* PipeSpec::pFindStageSpec(Stz *szFindNm)
+StageSpec* VertexSpec::pFindStageSpec(Stz *szFindNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -140,7 +140,7 @@ StageSpec* PipeSpec::pFindStageSpec(Stz *szFindNm)
 /*----------------------------------------------------------------------------*/
 /* get pipespec name                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* PipeSpec::szPipeSpecNm(void)
+Stz* VertexSpec::szPipeSpecNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -150,7 +150,7 @@ Stz* PipeSpec::szPipeSpecNm(void)
 /*----------------------------------------------------------------------------*/
 /* number of stage specs                                                      */
 /*----------------------------------------------------------------------------*/
-i8 PipeSpec::nStageSpecs(void)
+i8 VertexSpec::nStageSpecs(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -162,7 +162,7 @@ i8 PipeSpec::nStageSpecs(void)
 /*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-StageSpec* PipeSpec::pStageSpec(i8 i_Stage)
+StageSpec* VertexSpec::pStageSpec(i8 i_Stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -174,7 +174,7 @@ StageSpec* PipeSpec::pStageSpec(i8 i_Stage)
 /*----------------------------------------------------------------------------*/
 /* get sub-pipelines                                                          */
 /*----------------------------------------------------------------------------*/
-StagingSpec* PipeSpec::pStageSpecSet(void)
+StagingSpec* VertexSpec::pStageSpecSet(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -189,7 +189,7 @@ StagingSpec* PipeSpec::pStageSpecSet(void)
 /*----------------------------------------------------------------------------*/
 /* pass 1: collect the pipeline statement                                     */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bPass1_collect(void)
+bool VertexSpec::bPass1_collect(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -213,7 +213,7 @@ bool PipeSpec::bPass1_collect(void)
 /*----------------------------------------------------------------------------*/
 /* collect pipeline <name>                                                    */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bCollectPipeline(void)
+bool VertexSpec::bCollectPipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -233,7 +233,7 @@ bool PipeSpec::bCollectPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* collect one tag                                                            */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bCollectTag(void)
+bool VertexSpec::bCollectTag(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -266,7 +266,7 @@ bool PipeSpec::bCollectTag(void)
 /*----------------------------------------------------------------------------*/
 /* collect a BEGIN { STAGE ... } END sequence                                 */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bCollectBeginEnd(void)
+bool VertexSpec::bCollectBeginEnd(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -292,11 +292,11 @@ bool PipeSpec::bCollectBeginEnd(void)
 /*----------------------------------------------------------------------------*/
 /* collect sub pipeline                                                       */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bCollectSubPipeline(void)
+bool VertexSpec::bCollectSubPipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  PipeSpec* pSubPipeSpec = new PipeSpec(m_p_Scanner,m_p_JobTags);
+  VertexSpec* pSubPipeSpec = new VertexSpec(m_p_Scanner,m_p_JobTags);
 
   if (! pSubPipeSpec->bCompile()) {
     delete pSubPipeSpec;
@@ -311,7 +311,7 @@ bool PipeSpec::bCollectSubPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* collect stage                                                              */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bCollectStage(void)
+bool VertexSpec::bCollectStage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -342,7 +342,7 @@ bool PipeSpec::bCollectStage(void)
 /*----------------------------------------------------------------------------*/
 /* collect topology                                                           */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bCollectTopology(StageSpec *p_StageSpec)
+bool VertexSpec::bCollectTopology(StageSpec *p_StageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -384,7 +384,7 @@ bool PipeSpec::bCollectTopology(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 /* collect operator-pipe sequence                                             */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bCollectOpSequence(StageSpec *p_StageSpec)
+bool VertexSpec::bCollectOpSequence(StageSpec *p_StageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -404,7 +404,7 @@ bool PipeSpec::bCollectOpSequence(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 /* collect one operator (and optionally its arguments)                        */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bCollectOp(StageSpec *p_StageSpec)
+bool VertexSpec::bCollectOp(StageSpec *p_StageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -446,7 +446,7 @@ bool PipeSpec::bCollectOp(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 /* collect operator arguments                                                 */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bCollectOpArgs(StageSpec *p_StageSpec, OpSpec *pOpSpec)
+bool VertexSpec::bCollectOpArgs(StageSpec *p_StageSpec, OpSpec *pOpSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -481,7 +481,7 @@ bool PipeSpec::bCollectOpArgs(StageSpec *p_StageSpec, OpSpec *pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* collect operator argument expr tail as string                              */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bCollectOpArgsExpr(StageSpec *p_StageSpec,
+bool VertexSpec::bCollectOpArgsExpr(StageSpec *p_StageSpec,
                                       OpSpec *pOpSpec,
                                       String* pArgVal)
 {
@@ -522,7 +522,7 @@ bool PipeSpec::bCollectOpArgsExpr(StageSpec *p_StageSpec,
 /*----------------------------------------------------------------------------*/
 /* recognise stage topology: ON ALL ^_ [ NODES | PARTITIONS ]                 */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bRecogniseOnAll(StageSpec *p_StageSpec)
+bool VertexSpec::bRecogniseOnAll(StageSpec *p_StageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -549,7 +549,7 @@ bool PipeSpec::bRecogniseOnAll(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 /* recognise stage topology: ON ALL NODE ^_                                   */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec)
+bool VertexSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -570,7 +570,7 @@ bool PipeSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 /* recognise stage topology: ON ALL PARTITIONS ^_                             */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec)
+bool VertexSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -608,7 +608,7 @@ bool PipeSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 /* recognise stage topology: ON NEXT NODE ^_                                  */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec)
+bool VertexSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
   
@@ -631,7 +631,7 @@ bool PipeSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 /* recognise stage topology: ON ORIGIN ^_                                     */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec)
+bool VertexSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -659,7 +659,7 @@ bool PipeSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec)
 /*----------------------------------------------------------------------------*/
 /* is token a potential operator?                                             */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bTokenMaybeOp(Token *pTkn)
+bool VertexSpec::bTokenMaybeOp(Token *pTkn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -675,7 +675,7 @@ bool PipeSpec::bTokenMaybeOp(Token *pTkn)
 /*----------------------------------------------------------------------------*/
 /* is token a potential operator argument?                                    */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bTokenMaybeOpArg(Token *pTkn)
+bool VertexSpec::bTokenMaybeOpArg(Token *pTkn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -696,7 +696,7 @@ bool PipeSpec::bTokenMaybeOpArg(Token *pTkn)
 /*----------------------------------------------------------------------------*/
 /* pass 2 staging                                                             */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bPass2_piping(void)
+bool VertexSpec::bPass2_piping(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -756,7 +756,7 @@ bool PipeSpec::bPass2_piping(void)
 /*----------------------------------------------------------------------------*/
 /* name is a known stage                                                      */
 /*----------------------------------------------------------------------------*/
-void PipeSpec::vNameIsStage(StageSpec *pSrcStageSpec,
+void VertexSpec::vNameIsStage(StageSpec *pSrcStageSpec,
                                 OpSpec    *pSrcOpSpec_nameOfStage,
                                 StageSpec *pDstStageSpec)
 {
@@ -781,7 +781,7 @@ void PipeSpec::vNameIsStage(StageSpec *pSrcStageSpec,
 /*----------------------------------------------------------------------------*/
 /* name is assumed to be an operator                                          */
 /*----------------------------------------------------------------------------*/
-void PipeSpec::vNameIsOp(StageSpec *pStageSpec,
+void VertexSpec::vNameIsOp(StageSpec *pStageSpec,
                              OpSpec *pOpSpec_nameOfOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
@@ -800,7 +800,7 @@ void PipeSpec::vNameIsOp(StageSpec *pStageSpec,
 /*----------------------------------------------------------------------------*/
 /* first send to stage                                                        */
 /*----------------------------------------------------------------------------*/
-void PipeSpec::vFirstSend(StageSpec *pSrcStageSpec,
+void VertexSpec::vFirstSend(StageSpec *pSrcStageSpec,
                               OpSpec    *pSrcOpSpec_nameOfStage,
                               StageSpec *pDstStageSpec)
 {
@@ -866,7 +866,7 @@ void PipeSpec::vFirstSend(StageSpec *pSrcStageSpec,
 /*----------------------------------------------------------------------------*/
 /* morph the stageNm of the opSpec to send <sendKind>                         */
 /*----------------------------------------------------------------------------*/
-void PipeSpec::vMorphToSend(OpSpec *pOpSpec,
+void VertexSpec::vMorphToSend(OpSpec *pOpSpec,
                                 eYX eCrossTopology,
                                 eYS eStreamTopology,
                                 i8 i_NextStage)
@@ -883,7 +883,7 @@ void PipeSpec::vMorphToSend(OpSpec *pOpSpec,
 /*----------------------------------------------------------------------------*/
 /* second or subsequent send to stage                                         */
 /*----------------------------------------------------------------------------*/
-void PipeSpec::vOtherSend(StageSpec *pSrcStageSpec,
+void VertexSpec::vOtherSend(StageSpec *pSrcStageSpec,
                               OpSpec    *pSrcOpSpec,
                               StageSpec *pOtherStageSpec,
                               OpSpec    *pOtherOpSpec)
@@ -917,7 +917,7 @@ void PipeSpec::vOtherSend(StageSpec *pSrcStageSpec,
 /*----------------------------------------------------------------------------*/
 /* add <sends> arg to consume op                                              */
 /*----------------------------------------------------------------------------*/
-void PipeSpec::vArgAdd_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
+void VertexSpec::vArgAdd_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -966,7 +966,7 @@ void PipeSpec::vArgAdd_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
 /*----------------------------------------------------------------------------*/
 /* update the <sends> arg of consume op                                       */
 /*----------------------------------------------------------------------------*/
-void PipeSpec::vArgUpdate_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
+void VertexSpec::vArgUpdate_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -1015,7 +1015,7 @@ void PipeSpec::vArgUpdate_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
 /*----------------------------------------------------------------------------*/
 /* add a consumeOp at the beginning of given stage spec                       */
 /*----------------------------------------------------------------------------*/
-void PipeSpec::vAddConsumeOp(StageSpec *pStageSpec, eYX eCrossTopology)
+void VertexSpec::vAddConsumeOp(StageSpec *pStageSpec, eYX eCrossTopology)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -1031,7 +1031,7 @@ void PipeSpec::vAddConsumeOp(StageSpec *pStageSpec, eYX eCrossTopology)
 /*----------------------------------------------------------------------------*/
 /* get name of given stage                                                    */
 /*----------------------------------------------------------------------------*/
-Stz *PipeSpec::szStageNm(i8 i_Stage)
+Stz *VertexSpec::szStageNm(i8 i_Stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -1048,7 +1048,7 @@ Stz *PipeSpec::szStageNm(i8 i_Stage)
 /*----------------------------------------------------------------------------*/
 /* pass 3: include other pipelines                                            */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bPass3_includes(void)
+bool VertexSpec::bPass3_includes(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -1087,7 +1087,7 @@ bool PipeSpec::bPass3_includes(void)
 /*----------------------------------------------------------------------------*/
 /* include stage(s) from other pipeline                                       */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bPass3_include(Stz *szIncludePipNm)
+bool VertexSpec::bPass3_include(Stz *szIncludePipNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -1111,7 +1111,7 @@ bool PipeSpec::bPass3_include(Stz *szIncludePipNm)
 
   Dynamo *pDynamo = new Dynamo(pWrdTagSet);
 
-  PipeSpec *pIncludePipeSpec = pDynamo->pCompile(sPipelineSmt.szStz());
+  VertexSpec *pIncludePipeSpec = pDynamo->pCompile(sPipelineSmt.szStz());
 
   delete pDynamo;
 
@@ -1136,7 +1136,7 @@ bool PipeSpec::bPass3_include(Stz *szIncludePipNm)
 /*----------------------------------------------------------------------------*/
 /* include a stage from another pipeline as a first stage                     */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bPass3_includeFirst(void)
+bool VertexSpec::bPass3_includeFirst(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -1146,7 +1146,7 @@ bool PipeSpec::bPass3_includeFirst(void)
 /*----------------------------------------------------------------------------*/
 /* include a stage from another pipeline as a last stage                      */
 /*----------------------------------------------------------------------------*/
-bool PipeSpec::bPass3_includeLast(void)
+bool VertexSpec::bPass3_includeLast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -1162,7 +1162,7 @@ bool PipeSpec::bPass3_includeLast(void)
 /*----------------------------------------------------------------------------*/
 /* accept token and advance to next token                                     */
 /*----------------------------------------------------------------------------*/
-Token *PipeSpec::pTkn(void)
+Token *VertexSpec::pTkn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -1172,7 +1172,7 @@ Token *PipeSpec::pTkn(void)
 /*----------------------------------------------------------------------------*/
 /* accept token and advance to next token                                     */
 /*----------------------------------------------------------------------------*/
-TokenVec *PipeSpec::pTknVec(void)
+TokenVec *VertexSpec::pTknVec(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
@@ -1182,7 +1182,7 @@ TokenVec *PipeSpec::pTknVec(void)
 /*----------------------------------------------------------------------------*/
 /* accept token and advance to next token                                     */
 /*----------------------------------------------------------------------------*/
-void PipeSpec::vTokenAccept(void)
+void VertexSpec::vTokenAccept(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 

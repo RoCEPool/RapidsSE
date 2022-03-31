@@ -15,7 +15,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -52,7 +52,7 @@ void Step::vDynamoCompile(void)
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
       
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
-  PipeSpec* pPipeSpec = pDynamo->pCompile(sPipelineStmt);
+  VertexSpec* pPipeSpec = pDynamo->pCompile(sPipelineStmt);
     
   if (pPipeSpec) {
     if (AM::TRACE::bVerbose(C_VB_PIPESPEC)) {

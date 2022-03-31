@@ -16,7 +16,7 @@
 #include "Stage.hpp"
 #include "Vertex.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -111,7 +111,7 @@ void Step::vSubPipeCreate(void)
 
   // get pipeline spec
   
-  PipeSpec* pPipeSpec = _pPipeSpec(m_pDataStack->pPopPtr(__func__));
+  VertexSpec* pPipeSpec = _pVertexSpec(m_pDataStack->pPopPtr(__func__));
   
   // create subpipeline
   

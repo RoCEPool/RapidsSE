@@ -56,7 +56,7 @@ Dissect::~Dissect(void) noexcept(false)
 /* dissect pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
 
-Board* Dissect::pDissectSpec(PipeSpec* pPipeSpec)
+Board* Dissect::pDissectSpec(VertexSpec* pPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
         

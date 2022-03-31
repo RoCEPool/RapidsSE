@@ -11,9 +11,9 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "Staging.hpp"
+#include "Deck.hpp"
 #include "Vertex.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "StageSpec.hpp"
 #include "Pipeline.hpp"
 
@@ -34,16 +34,16 @@ __aFooterFunction(Vertex)
 /*----------------------------------------------------------------------------*/
 Vertex::Vertex(Pipeline* pPipeline,
                Vertex*   pParentVertex,
-               PipeSpec* pPipeSpec)
+               VertexSpec* pPipeSpec)
 : ListNL_t<Vertex>(CN_VERTEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   m_pPipeline     = pPipeline;
   m_pParentVertex = pParentVertex;
-  m_pPipeSpec     = pPipeSpec;
+  m_pVertexSpec     = pPipeSpec;
 
-  m_pStaging = new Staging(this,m_pPipeSpec);
+  m_pStaging = new Deck(this,m_pVertexSpec);
 
   _checkInitialised_(CN_VERTEX);
   
@@ -89,11 +89,11 @@ bool Vertex::bCancel(Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* get formwork spec                                                          */
 /*----------------------------------------------------------------------------*/
-PipeSpec* Vertex::pPipeSpec(void)
+VertexSpec* Vertex::pPipeSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  return m_pPipeSpec;
+  return m_pVertexSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,7 +249,7 @@ i8 Vertex::nStages(void)
 /*----------------------------------------------------------------------------*/
 /* get stage set                                                              */
 /*----------------------------------------------------------------------------*/
-Staging* Vertex::pStaging(void)
+Deck* Vertex::pStaging(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
@@ -282,11 +282,11 @@ void Vertex::vCreatePipework(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
 
-  i8 nStages = m_pPipeSpec->nStageSpecs();
+  i8 nStages = m_pVertexSpec->nStageSpecs();
   for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
     
     // get the stageSpec
-    StageSpec* pStageSpec = m_pPipeSpec->pStageSpec(i_StageSpec);
+    StageSpec* pStageSpec = m_pVertexSpec->pStageSpec(i_StageSpec);
     
     // add a stage from the stageSpec to the stageVec
     Stage* pStage = new Stage(this,pStageSpec);

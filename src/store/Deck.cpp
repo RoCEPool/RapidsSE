@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "Staging.hpp"
+#include "Deck.hpp"
 #include "Vertex.hpp"
 
 
@@ -11,34 +11,34 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, Staging, CN_STAGING)
-__aNewFunction(Staging, CN_STAGING)
-__vDeleteFunction(Staging, CN_STAGING)
-__aFooterFunction(Staging)
+__pCastFunction(STORE, Deck, CN_DECK)
+__aNewFunction(Deck, CN_DECK)
+__vDeleteFunction(Deck, CN_DECK)
+__aFooterFunction(Deck)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Staging::Staging(Vertex* pPipeWork, PipeSpec* pPipeSpec)
-: ListNL_t<Stage>(CN_STAGING)
+Deck::Deck(Vertex* pPipeWork, VertexSpec* pPipeSpec)
+: ListNL_t<Stage>(CN_DECK)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 
   m_pPipeWork = pPipeWork;
   m_pPipeSpec = pPipeSpec;
 
-  _checkInitialised_(CN_STAGING);
+  _checkInitialised_(CN_DECK);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGING, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Staging::~Staging(void) noexcept(false)
+Deck::~Deck(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGING, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 
   while (Stage* pStage = pPop())
     delete pStage;
@@ -51,9 +51,9 @@ Staging::~Staging(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get outer pipeline                                                         */
 /*----------------------------------------------------------------------------*/
-Pipeline* Staging::pPipeline(void)
+Pipeline* Deck::pPipeline(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
   
   return m_pPipeWork->pPipeline();
 }
@@ -61,9 +61,9 @@ Pipeline* Staging::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get pipework                                                               */
 /*----------------------------------------------------------------------------*/
-Vertex* Staging::pPipeWork(void)
+Vertex* Deck::pPipeWork(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
   
   return m_pPipeWork;
 }

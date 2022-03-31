@@ -5,10 +5,10 @@
 #include "BASE.h"
 
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Vertex.hpp"
 #include "Grid.hpp"
-#include "Staging.hpp"
+#include "Deck.hpp"
 
 #include "SP_PipeWork.hpp"
 #include "SP_Stage.hpp"

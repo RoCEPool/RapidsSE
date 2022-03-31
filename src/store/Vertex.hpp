@@ -3,8 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE { class Stage;    class Staging;
-                  class PipeSpec; class SubPipeWorks; }
+namespace STORE { class Stage;    class Deck;
+                  class VertexSpec; class SubPipeWorks; }
 
 namespace STORE
 {
@@ -12,12 +12,12 @@ namespace STORE
                , public ListItem_t<Vertex>
   {
   private:
-    Pipeline* m_pPipeline;       // which pipeline bubble this vertex is within
-    Vertex*   m_pParentVertex;   // parent of this vertex
+    Pipeline*   m_pPipeline;     // which pipeline bubble this vertex is within
+    Vertex*     m_pParentVertex; // parent of this vertex
   
-    PipeSpec* m_pPipeSpec;       // specification of this pipework
+    VertexSpec* m_pVertexSpec;   // specification of this vertex
   
-    Staging*  m_pStaging;
+    Deck*    m_pStaging;
   
     // must be last
     Footer m_xFooter;
@@ -28,12 +28,12 @@ namespace STORE
     
     Vertex(Pipeline* pPipeline,
            Vertex*   pParentVertex,
-           PipeSpec* pPipeSpec);
+           VertexSpec* pPipeSpec);
    ~Vertex(void) noexcept(false);
   
     bool bCancel(Task* pTriggeringTask);
 
-    PipeSpec* pPipeSpec(void);
+    VertexSpec* pPipeSpec(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
@@ -42,7 +42,7 @@ namespace STORE
     void vSpawnOpTasks(void);
     Stage* pStage0(void);
     i8   nStages(void);
-    Staging* pStaging(void);
+    Deck* pStaging(void);
     Stream* pStream0(void);
 
     void vCreatePipework();

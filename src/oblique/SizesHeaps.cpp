@@ -138,7 +138,7 @@
 #include "OpSpec.hpp"
 
 #include "PathIdentifier.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Pipeline.hpp"
 #include "PlannerLock.hpp"
 
@@ -234,7 +234,7 @@
 #include "Vertex.hpp"
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
-#include "Staging.hpp"
+#include "Deck.hpp"
 #include "StagingSpec.hpp"
 
 #include "graph/PlanConstants.hpp"
@@ -318,6 +318,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(DdlLock),            HT_T_TINY    ,0 FILL }, // CN_DDLLOCK
   { sizeof(DecaCnt),            HT_T_TINY    ,0 FILL }, // CN_DECACNT
   { sizeof(Decider),            HT_T_TINY    ,0 FILL }, // CN_DECIDER
+  { sizeof(Deck),               HT_T_TINY    ,0 FILL }, // CN_DECK
+  { sizeof(StagingSpec),        HT_T_TINY    ,0 FILL }, // CN_DECKSPEC
   { sizeof(DefinitionNode),     HT_T_TINY    ,-8 FILL }, // CN_DEFINITIONNODE
   { sizeof(DerefMetrics),       HT_T_TINY    ,0 FILL }, // CN_DEREF
   { sizeof(DevIXT),             HT_T_TINY    ,0 FILL }, // CN_DEVIXT
@@ -462,7 +464,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Peruse),             HT_T_MEDIUM  ,0 FILL }, // CN_PERUSE
   { sizeof(Pipeline),           HT_T_TINY    ,0 FILL }, // CN_PIPELINE
   { sizeof(PipelineMetrics),    HT_T_TINY    ,0 FILL }, // CN_PIPELINEMETRICS
-  { sizeof(PipeSpec),           HT_T_TINY    ,0 FILL }, // CN_PIPESPEC
+  { sizeof(VertexSpec),           HT_T_TINY    ,0 FILL }, // CN_PIPESPEC
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM, -8 FILL }, // CN_PLANDEFINITIONPARSER
   { sizeof(PlannerLock),        HT_T_TINY    ,0 FILL }, // CN_PLANNERLOCK
   { sizeof(PlanNode),           HT_T_TINY    , -8 FILL }, // CN_PLANNODE
@@ -568,8 +570,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Stage),              HT_T_SMALL   ,0 FILL }, // CN_STAGE
   { sizeof(StageMetrics),       HT_T_TINY    ,0 FILL }, // CN_STAGEMETRICS
   { sizeof(StageSpec),          HT_T_TINY    ,0 FILL }, // CN_STAGESPEC
-  { sizeof(Staging),            HT_T_TINY    ,0 FILL }, // CN_STAGING
-  { sizeof(StagingSpec),        HT_T_TINY    ,0 FILL }, // CN_STAGINGSPEC
   { sizeof(Starter),            HT_T_TINY    ,0 FILL }, // CN_STARTER
   { sizeof(Statement),          HT_T_MEDIUM  ,0 FILL }, // CN_STATEMENT
   { sizeof(Statistics),         HT_INVALID   ,0 FILL }, // CN_STATISTICS

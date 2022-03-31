@@ -13,7 +13,7 @@
 #include "Stage.hpp"
 #include "Vertex.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "StageSpec.hpp"
 
 #include "SP_Pipeline.hpp"
@@ -31,18 +31,20 @@ __aFooterFunction(Pipeline)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 iOriginNodeNo)
+Pipeline::Pipeline(Job*        pPipelineJob,
+                   VertexSpec* pVertexSpecRoot,
+                   i8          iOriginNodeNo)
 : Object(CN_PIPELINE)
 , m_okDebugLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_sPipelineNm   = pPipeSpec->szPipeSpecNm();
+  m_sPipelineNm   = pVertexSpecRoot->szPipeSpecNm();
   
   m_pVertexRoot     = nullptr;
   
   m_pPipelineJob  = pPipelineJob;
-  m_pPipeSpec     = pPipeSpec;
+  m_pVertexSpecRoot     = pVertexSpecRoot;
   m_iOriginNodeNo = iOriginNodeNo;
 
   m_bEarlyExit    = false;
@@ -59,7 +61,7 @@ Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 iOriginNodeNo)
 
   _checkInitialised_(CN_PIPELINE);
   
-  m_pVertexRoot = new Vertex(this,nullptr,pPipeSpec);
+  m_pVertexRoot = new Vertex(this,nullptr,m_pVertexSpecRoot);
   //vCreatePipework();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
@@ -74,7 +76,7 @@ Pipeline::~Pipeline(void) noexcept(false)
   
   delete m_pVertexRoot;
   
-  delete m_pPipeSpec;
+  delete m_pVertexSpecRoot;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -302,11 +304,11 @@ Stz* Pipeline::szPipelineNm(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeline spec                                                          */
 /*----------------------------------------------------------------------------*/
-PipeSpec* Pipeline::pPipeSpec(void)
+VertexSpec* Pipeline::pPipeSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_pPipeSpec;
+  return m_pVertexSpecRoot;
 }
 
 /*----------------------------------------------------------------------------*/

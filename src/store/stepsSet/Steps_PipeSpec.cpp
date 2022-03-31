@@ -15,7 +15,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -95,7 +95,7 @@ void Step::vPipeSpecOptimisable(void)
   
   bool bOptimisable = false;
   
-  PipeSpec* pPipeSpec = (* m_pLogicUnit->m_xpPipeSpec);
+  VertexSpec* pPipeSpec = (* m_pLogicUnit->m_xpPipeSpec);
   
   
   
@@ -129,7 +129,7 @@ void Step::vPipeSpecSet(void)
   ENTRY();
   
   m_pLogicUnit->m_xpPipeSpec =
-    _pPipeSpec(m_pDataStack->pPopPtr(__func__));
+    _pVertexSpec(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

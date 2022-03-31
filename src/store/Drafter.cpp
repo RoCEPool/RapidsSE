@@ -376,7 +376,7 @@ bool Drafter::bLoad(TokenVec* pTknVec, eOA& reOptAct)
   pFile->vClose();
   delete pFile;
   
-  PipeSpec* pPipeSpec =
+  VertexSpec* pPipeSpec =
     Dynamo::pToPipeSpec(sPipelineStmt,
                             m_pOptimiser->pJobTags());
 
