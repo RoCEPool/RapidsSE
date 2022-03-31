@@ -2047,8 +2047,6 @@ void CodeSynth::vPayloadPopulate(ePL ePayload) {
 
     iPayLoad++;
   }
-
-  //StrLib::vAppendString(&m_azCodeCrs, "\n      }");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3678,25 +3676,26 @@ void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType, eDM eCast
   eDM eColType1 = (eDM) pExprType->iPop();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the cast operator
+  // generate the code for the cast operator if different types
 
-  sOperation = aFM[eMacro_Cast[eColType1][eCastType]];
-  eResult = eMacro_CastResult[eColType1][eCastType];
+  if (eColType1 != eCastType) {
+    sOperation = aFM[eMacro_Cast[eColType1][eCastType]];
+    eResult = eMacro_CastResult[eColType1][eCastType];
 
-  if (eResult == DM_VCH) {
-    sOperation.vConcat("(aCombinedT->m_iErrorCode, szStrArea)"_Stz);
+    if (eResult == DM_VCH) {
+      sOperation.vConcat("(aCombinedT->m_iErrorCode, szStrArea)"_Stz);
+    } else {
+      sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // push new expr string on the ExprStack
+    pExprStack->vPushStr(sOperation);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // push result type string on the ExprType stack
+    pExprType->vPush((i8) eResult);
   }
-  else {
-    sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push new expr string on the ExprStack
-  pExprStack->vPushStr(sOperation);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push result type string on the ExprType stack
-  pExprType->vPush((i8)eResult);
 }
 /*----------------------------------------------------------------------------*/
 /* push column                                                                */

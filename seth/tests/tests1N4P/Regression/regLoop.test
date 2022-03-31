@@ -59,7 +59,7 @@ INCLUDE 'regrLoadData.test';
 //INCLUDE 'having.test';
 //INCLUDE 'intersect.test';
 //INCLUDE 'intervals.test';
-//INCLUDE 'isnull.test';
+INCLUDE 'isnull.test';
 //INCLUDE 'joinTests.test';
 //INCLUDE 'like.test';
 //INCLUDE 'subqueries-select.test';

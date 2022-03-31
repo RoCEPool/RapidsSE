@@ -394,8 +394,9 @@
   iArg1 = *(--paW);                                                          \
   if (eErrorCode != EC_NONE)                                                 \
     (*paW++) = C_DATUM_NULL;                                                 \
-  else                                                                       \
-    (*paW++) = (iArg1 == C_DATUM_NULL ? 1 : 0);
+  else    {                                                                  \
+   (*paW++) = (iArg1 == C_DATUM_NULL ? 1 : 0);                               \
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // STRING FUNCTIONS
