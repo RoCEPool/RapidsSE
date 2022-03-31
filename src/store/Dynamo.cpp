@@ -31,7 +31,7 @@ Dynamo::Dynamo(TagSet* p_JobTags)
   m_p_JobTags      = p_JobTags;
   
   m_szPipelineStmt = nullptr;
-  m_p_PipeSpec = nullptr;
+  m_p_VertexSpecRoot = nullptr;
   m_bWasOptimised  = false;
   //m_sOptPipelineStmt
   
@@ -105,19 +105,19 @@ VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
   }
   
 
-  m_p_PipeSpec = new VertexSpec(pScanner,m_p_JobTags);
+  m_p_VertexSpecRoot = new VertexSpec(nullptr,pScanner,m_p_JobTags);
 
   
-  if (m_p_PipeSpec->bCompile()) {
+  if (m_p_VertexSpecRoot->bCompile()) {
     
     //vOptimise();
  
     delete pScanner;
     
-    return m_p_PipeSpec;
+    return m_p_VertexSpecRoot;
   }
   
-  delete m_p_PipeSpec;
+  delete m_p_VertexSpecRoot;
   
   ASSERT(! m_p_PipeSpec);
   
@@ -144,7 +144,7 @@ void Dynamo::vOptimise(void)
 
   Optimiser* pOptimiser = new Optimiser(m_p_JobTags);
   
-  pOptimiser->vDissect(m_p_PipeSpec);
+  pOptimiser->vDissect(m_p_VertexSpecRoot);
                                         
   pOptimiser->vOptimise();
 
@@ -169,7 +169,7 @@ VertexSpec* Dynamo::pPipeSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  return m_p_PipeSpec;
+  return m_p_VertexSpecRoot;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,15 +191,15 @@ bool Dynamo::bWillOptimise(void)
   
   Job* pJob = MY::pJob();
   
-  Stz* szPipelineNm = m_p_PipeSpec->szVertexNm();
+  Stz* szPipelineNm = m_p_VertexSpecRoot->szVertexNm();
   
   i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
 
   if (   ! iOptimiserLvl
       || ! pJob->bIsOriginator()
       ||   szPipelineNm->bSame("sqlCompiler"_Stz)
-      || ! m_p_PipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
-      ||   m_p_PipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
+      || ! m_p_VertexSpecRoot->pJobTags()->bHasName(C_TAG_OPTIMISE)
+      ||   m_p_VertexSpecRoot->pJobTags()->bHasName(C_TAG_OPTIMISED)
       )
     return false;
   else

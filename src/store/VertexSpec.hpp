@@ -19,6 +19,7 @@ namespace STORE
 
   private:
   
+    VertexSpec*  m_pParentVertexSpec; // parent of this vertex
     s32 m_sVertexNm;  // aka sub-pipe name
     
     DeckSpec* m_pDeckSpec;
@@ -35,7 +36,9 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    VertexSpec(Scanner* p_Scanner, TagSet* p_JobTags);
+    VertexSpec(VertexSpec* pParentVertexSpec,
+               Scanner*    p_Scanner,
+               TagSet*     p_JobTags);
    ~VertexSpec(void) noexcept(false);
   
     bool bCompile(void);

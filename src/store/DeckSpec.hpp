@@ -11,6 +11,8 @@ namespace STORE
   {
   private:
    
+    VertexSpec*  m_pVertexSpec; // vertexSpec this deckSpec belongs to
+
     // must be last
     Footer m_xFooter;
 
@@ -18,7 +20,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    DeckSpec(void);
+    DeckSpec(VertexSpec* pVertexSpec);
    ~DeckSpec(void) noexcept(false);
   
   private:

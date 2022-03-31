@@ -19,13 +19,14 @@ __aFooterFunction(DeckSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DeckSpec::DeckSpec(void)
+DeckSpec::DeckSpec(VertexSpec* pVertexSpec)
     
 : ListNL_t<StageSpec>(CN_DECKSPEC)
 
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
-
+  
+  m_pVertexSpec = pVertexSpec;
 
   _checkInitialised_(CN_DECKSPEC);
 

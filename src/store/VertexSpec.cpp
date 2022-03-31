@@ -31,13 +31,17 @@ __aFooterFunction(VertexSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-VertexSpec::VertexSpec(Scanner *p_Scanner, TagSet *p_JobTags)
+VertexSpec::VertexSpec(VertexSpec* pParentVertexSpec,
+                       Scanner*    p_Scanner,
+                       TagSet*     p_JobTags)
 : ListNL_t<VertexSpec>(CN_PIPESPEC)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
+  m_pParentVertexSpec = pParentVertexSpec;
   m_sVertexNm = "(unknown)"_Stz;
-  m_pDeckSpec = new DeckSpec;
+  
+  m_pDeckSpec = new DeckSpec(this);
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
@@ -296,7 +300,7 @@ bool VertexSpec::bCollectSubPipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPESPEC, _FOOTER_);
 
-  VertexSpec* pChildVertexSpec = new VertexSpec(m_p_Scanner,m_p_JobTags);
+  VertexSpec* pChildVertexSpec = new VertexSpec(this,m_p_Scanner,m_p_JobTags);
 
   if (! pChildVertexSpec->bCompile()) {
     delete pChildVertexSpec;

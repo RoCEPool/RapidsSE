@@ -17,7 +17,7 @@ namespace STORE
     TagSet*    m_p_JobTags;       // tag set from job
     
     Stz*       m_szPipelineStmt;
-    VertexSpec*  m_p_PipeSpec;      // the pipeline spec
+    VertexSpec*  m_p_VertexSpecRoot;      // the pipeline spec
     
     bool       m_bWasOptimised;   // stmt was optimised
   
