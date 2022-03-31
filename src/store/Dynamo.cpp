@@ -42,7 +42,7 @@ Dynamo::Dynamo(TagSet* p_JobTags)
   m_bWasOptimised  = false;
   //m_sOptPipelineStmt
   
-  m_p_Scanner = nullptr;
+  m_pScanner = nullptr;
   m_pCurrVertexSpec = nullptr;
   
   _checkInitialised_(CN_DYNAMO);
@@ -61,6 +61,8 @@ Dynamo::~Dynamo(void) noexcept(false)
   
   while (VertexSpec *pSupPipeSpec = pPop())
     delete pSupPipeSpec;
+  
+  delete m_pScanner;
 }
 
 
@@ -112,32 +114,29 @@ VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
         
   m_szPipelineStmt = szPipelineStmt;
   
-  Scanner* pScanner = new Scanner(m_szPipelineStmt);
+  m_pScanner = new Scanner(m_szPipelineStmt);
   
-  if (! (pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
-         pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))) {
-    delete pScanner;
+  if (! (m_pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
+         m_pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))) {
+
     return nullptr;
   }
   
 
-  m_p_VertexSpecRoot = new VertexSpec(nullptr,pScanner,m_p_JobTags);
+  m_p_VertexSpecRoot = new VertexSpec(nullptr,m_pScanner,m_p_JobTags);
 
+  m_pCurrVertexSpec = m_p_VertexSpecRoot;
   
   if (bCompile()) {
     
     //vOptimise();
- 
-    delete pScanner;
-    
+     
     return m_p_VertexSpecRoot;
   }
   
   delete m_p_VertexSpecRoot;
-  
-  ASSERT(! m_p_PipeSpec);
-  
-  delete pScanner;
+  m_p_VertexSpecRoot = nullptr;
+    
   return nullptr;
 }
 
@@ -270,21 +269,17 @@ bool Dynamo::bCompile(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
   if (! bPass1_collect()) {
-    m_p_Scanner = nullptr;
     return false;
   }
 
   if (! bPass2_piping()) {
-    m_p_Scanner = nullptr;
     return false;
   }
 
   if (! bPass3_includes()) {
-    m_p_Scanner = nullptr;
     return false;
   }
 
-  m_p_Scanner = nullptr;
   return true;
 }
 
@@ -329,7 +324,7 @@ bool Dynamo::bCollectPipeline(void)
 
   vTokenAccept();
   
-  m_sVertexNm = pTkn()->szChars();
+  m_pCurrVertexSpec->m_sVertexNm = pTkn()->szChars();
 
   vTokenAccept();
 
@@ -405,7 +400,7 @@ bool Dynamo::bCollectSubPipeline(void)
   VertexSpec* pParentVertexSpec = m_pCurrVertexSpec;
   vPush(pParentVertexSpec);
   
-  m_pCurrVertexSpec = new VertexSpec(pParentVertexSpec,m_p_Scanner,m_p_JobTags);
+  m_pCurrVertexSpec = new VertexSpec(pParentVertexSpec,m_pScanner,m_p_JobTags);
 
   if (! bCompile()) {
     delete m_pCurrVertexSpec;
@@ -1171,7 +1166,7 @@ bool Dynamo::bPass3_includes(void)
 
   if (m_p_JobTags->bHasName("<include_0>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_0>"_Stz);
-    if (! m_sVertexNm.bSame(szIncludePipNm)) {
+    if (! m_pCurrVertexSpec->m_sVertexNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 0: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
@@ -1179,7 +1174,7 @@ bool Dynamo::bPass3_includes(void)
 
   if (m_p_JobTags->bHasName("<include_1>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_1>"_Stz);
-    if (! m_sVertexNm.bSame(szIncludePipNm)) {
+    if (! m_pCurrVertexSpec->m_sVertexNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 1: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
@@ -1187,7 +1182,7 @@ bool Dynamo::bPass3_includes(void)
 
   if (m_p_JobTags->bHasName("<include_2>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_2>"_Stz);
-    if (! m_sVertexNm.bSame(szIncludePipNm)) {
+    if (! m_pCurrVertexSpec->m_sVertexNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 2: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
@@ -1279,7 +1274,7 @@ Token *Dynamo::pTkn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
-  return m_p_Scanner->pTkn();
+  return m_pScanner->pTkn();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1289,7 +1284,7 @@ TokenVec *Dynamo::pTknVec(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
-  return m_p_Scanner->pTknVec();
+  return m_pScanner->pTknVec();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1299,7 +1294,7 @@ void Dynamo::vTokenAccept(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
-  m_p_Scanner->vTokenAccept();
+  m_pScanner->vTokenAccept();
 }
 
 #endif

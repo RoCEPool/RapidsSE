@@ -22,8 +22,7 @@ namespace STORE
     bool       m_bWasOptimised;   // stmt was optimised
   
     
-    s32 m_sVertexNm;  // aka sub-pipe name
-    Scanner* m_p_Scanner; // statement token scanner
+    Scanner* m_pScanner; // statement token scanner
  
     VertexSpec*  m_pCurrVertexSpec;      // the pipeline spec
     
