@@ -11,6 +11,10 @@
 #include "TagConstants.h"
 #include "Cue.hpp"
 
+#include "Grid.hpp"
+#include "Procedure.hpp"
+#include "DeckSpec.hpp"
+
 #include "SP_PipeSpec.hpp"
 #include "SP_Token.hpp"
 
@@ -332,14 +336,19 @@ bool Dynamo::bCollectSubPipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
-  VertexSpec* pChildVertexSpec = new VertexSpec(this,m_p_Scanner,m_p_JobTags);
+  VertexSpec* pParentVertexSpec = m_pCurrVertexSpec;
+  vPush(pParentVertexSpec);
+  
+  m_pCurrVertexSpec = new VertexSpec(pParentVertexSpec,m_p_Scanner,m_p_JobTags);
 
-  if (! pChildVertexSpec->bCompile()) {
-    delete pChildVertexSpec;
+  if (! m_pCurrVertexSpec->bCompile()) {
+    delete m_pCurrVertexSpec;
+    
     return false;
   }
   
-  vAppend(pChildVertexSpec);
+  pParentVertexSpec->vAppend(m_pCurrVertexSpec);
+  m_pCurrVertexSpec = pPop();
 
   return true;
 }
@@ -358,10 +367,12 @@ bool Dynamo::bCollectStage(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Stz *szStageNm = pTkn()->szChars();
-  StageSpec *p_StageSpec = new StageSpec(this,m_pDeckSpec,szStageNm);
+  StageSpec *p_StageSpec = new StageSpec(m_pCurrVertexSpec,
+                                         m_pCurrVertexSpec->pDeckSpec(),
+                                         szStageNm);
   vTokenAccept();
 
-  this->vAddStageSpec(p_StageSpec);
+  m_pCurrVertexSpec->vAddStageSpec(p_StageSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -737,9 +748,9 @@ bool Dynamo::bPass2_piping(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
   // foreach stageSpec of pipeSpec
-  i8 nStageSpecs = this->nStageSpecs();
+  i8 nStageSpecs = m_pCurrVertexSpec->nStageSpecs();
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
-    StageSpec *pStageSpec = m_pDeckSpec->pGet(i_Stage);
+    StageSpec *pStageSpec = m_pCurrVertexSpec->pDeckSpec()->pGet(i_Stage);
     RASSERT(pStageSpec->i_StageSpec() == i_Stage);
 
     // foreach opSpec of stageSpec
@@ -754,22 +765,22 @@ bool Dynamo::bPass2_piping(void)
       // can we find a stage matching the name in the OpSepc?
 
       if (szName->bSame("next"_Stz)) {
-        pDstStageSpec = m_pDeckSpec->pGet(i_Stage + 1);
+        pDstStageSpec = m_pCurrVertexSpec->pDeckSpec()->pGet(i_Stage + 1);
         if (! pDstStageSpec)
           return false;
       }
       else if (szName->bSame("first"_Stz)) {
-        pDstStageSpec = m_pDeckSpec->pGet(0);
+        pDstStageSpec = m_pCurrVertexSpec->pDeckSpec()->pGet(0);
         if (! pDstStageSpec)
           return false;
       }
       else if (szName->bSame("last"_Stz)) {
-        pDstStageSpec = m_pDeckSpec->pGet(nOpSpecs - 1);
+        pDstStageSpec = m_pCurrVertexSpec->pDeckSpec()->pGet(nOpSpecs - 1);
         if (! pDstStageSpec)
           return false;
       }
       else {
-        pDstStageSpec = this->pFindStageSpec(szName);
+        pDstStageSpec = m_pCurrVertexSpec->pFindStageSpec(szName);
       }
 
       // what did we find?
@@ -1071,7 +1082,7 @@ Stz *Dynamo::szStageNm(i8 i_Stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
-  StageSpec *pStageSpec = m_pDeckSpec->pGet(i_Stage);
+  StageSpec *pStageSpec = m_pCurrVertexSpec->pDeckSpec()->pGet(i_Stage);
   Stz *szNm = pStageSpec->szStageNm();
 
   return szNm;
