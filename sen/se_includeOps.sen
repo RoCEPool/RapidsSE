@@ -113,7 +113,6 @@ assert::stack_0
 "h" .verbose
 
   "OP_hash.sen"                 include
-  "OP_hashRight.sen"            include
 
 "i" .verbose
 
