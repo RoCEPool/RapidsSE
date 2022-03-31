@@ -116,22 +116,20 @@ VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
     return nullptr;
   }
   
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   m_p_VertexSpecRoot = new VertexSpec(nullptr);
 
   m_pCurrVertexSpec = m_p_VertexSpecRoot;
   
-  if (bCompile()) {
-    
-    //vOptimise();
-     
-    return m_p_VertexSpecRoot;
+  if (! bCompile()) {
+    delete m_p_VertexSpecRoot;
+    m_p_VertexSpecRoot = nullptr;
+      
+    return nullptr;
   }
-  
-  delete m_p_VertexSpecRoot;
-  m_p_VertexSpecRoot = nullptr;
-    
-  return nullptr;
+
+  return m_p_VertexSpecRoot;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -277,7 +275,7 @@ bool Dynamo::bCollectSubPipeline(void)
 
   if (! bCompile()) {
     delete m_pCurrVertexSpec;
-    
+    m_pCurrVertexSpec = nullptr;
     return false;
   }
   
