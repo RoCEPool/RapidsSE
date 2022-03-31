@@ -53,6 +53,7 @@ namespace STORE
     Column* pFindColumn(i8 i_ColSet);
     Column* pGetColumn(i8 i_Column);
     i8     iGetColumn(i8 iColSet);
+    i8     iGetStreamDefCol(i8 iColumn);
     Stz*   szIndexNm(void);
     void   vIndexNm(Stz* szIndexNm);
     eIT    eIndexType(void);

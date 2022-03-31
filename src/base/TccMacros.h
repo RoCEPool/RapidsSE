@@ -381,15 +381,21 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // do we need separate macros for all datatypes??? Not sure
 
-#define _ISNOTNULL() \
-  {                  \
+#define _ISNOTNULL(eErrorCode)                                               \
+  {                                                                          \
   iArg1 = *(--paW);                                                          \
-  (*paW++) = (iArg1 != C_DATUM_NULL ? 1 : 0);                                \
+   if (eErrorCode != EC_NONE)                                                \
+    (*paW++) = C_DATUM_NULL;                                                 \
+  else                                                                       \
+    (*paW++) = (iArg1 != C_DATUM_NULL ? 1 : 0);                              \
 }
 
-#define _ISNULL()                                                            \
+#define _ISNULL(eErrorCode)                                                  \
   iArg1 = *(--paW);                                                          \
-  (*paW++) = (iArg1 == C_DATUM_NULL ? 1 : 0);
+  if (eErrorCode != EC_NONE)                                                 \
+    (*paW++) = C_DATUM_NULL;                                                 \
+  else                                                                       \
+    (*paW++) = (iArg1 == C_DATUM_NULL ? 1 : 0);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // STRING FUNCTIONS

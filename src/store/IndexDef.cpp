@@ -204,6 +204,16 @@ i8* IndexDef::aiaColSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the colset array                                                       */
+/*----------------------------------------------------------------------------*/
+i8 IndexDef::iGetStreamDefCol(i8 iColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  return m_iaColSet[iColumn];
+}
+
+/*----------------------------------------------------------------------------*/
 /* determine key kind                                                         */
 /*----------------------------------------------------------------------------*/
 void IndexDef::vDetermineKeyKind(void)
