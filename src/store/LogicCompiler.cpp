@@ -265,44 +265,6 @@ LogicCompiler::~LogicCompiler(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* extract the EO_ code fragments from LogicUnit interpreter                  */
-/*----------------------------------------------------------------------------*/
-void LogicCompiler::vExtract(void)
-{
-  _static_
-    
-  if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER))
-    vTrace("LogicCompiler::vExtract -- Extract EO_ Fragments\n"_Stz);
-  
-  LocalFile oFile;
-  
-  bool b = oFile.bOpenRead("../src/store/LogicUnit.cpp"_Stz);
-  RASSERT(b);
-  
-  char* azCrs = gcaEoFragments;
-  
-  s4K sTok;
-  while (oFile.bNextLiteTok(sTok)) {
-    
-    if (sTok.bSame("//+ExtractBegin"_Stz)) {
-      if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER))
-        vTrace("Found +ExtractBegin\n"_Stz);
-      while (bExtractAll(&oFile,&azCrs, "case"_Stz, "break;//+endCase"_Stz))
-        {;}
-    }
-  }
-  
-  
-  if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER)) {
-    vTrace("Fragments:: %s\n"_Stz,gcaEoFragments);
-    for (i8 i_EO = 1; i_EO < EO_ENUMS; i_EO++) {
-      vTrace("Fragment:: %s\n%s\n"_Stz,aEO[i_EO],gszaEoFragments[i_EO]);
-    }
-  }
-  
-  oFile.vClose();
-}
 
 /*----------------------------------------------------------------------------*/
 /* extract all EO_ fragments                                                  */
@@ -324,43 +286,6 @@ bool LogicCompiler::bExtractAll(LocalFile* pFile, char** aazCrs, Stz* startMarke
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* extract the AM_ macro fragments from AsmMacro.txt                          */
-/*----------------------------------------------------------------------------*/
-void LogicCompiler::vExtractAsm(void)
-{
-  _static_
-
-  if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER))
-    vTrace("LogicCompiler::vExtractAsm -- Extract AM_ Macro Fragments\n"_Stz);
-
-  LocalFile oFile;
-  char *azCrs = gcaAmMacros;
-
-  //bool b = pFile->bOpenRead("../asm/AsmMacros.txt"_Stz);
-  for (i8 iMacroFile = 0; iMacroFile < C_MACRO_FILES; iMacroFile++) {
-
-    if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER))
-      vTrace("File: %s\n"_Stz,gszaAmMacroFiles[iMacroFile]);
-    bool b = oFile.bOpenRead((Stz*)gszaAmMacroFiles[iMacroFile]);
-    RASSERT(b);
-
-    s4K sTok;
-    while (oFile.bNextLiteTok(sTok)) {
-
-      //vTrace("Found macro\n"_Stz);
-      while (bExtractAll(&oFile, &azCrs, "macro"_Stz, "endMacro"_Stz)) { ; }
-    }
-    oFile.vClose();
-  }
-
-   if (AM::TRACE::bVerbose(C_VB_LOGICCOMPILER)) {
-     for (i8 i_AM = 1; i_AM < AM_ENUMS; i_AM++) {
-       vTrace("Macro[%lld]:: %s\n%s\n"_Stz, i_AM, aAM[i_AM], gszaAmMacros[i_AM]);
-    }
-  }
-
-}
 
 /*----------------------------------------------------------------------------*/
 /* extract an EO_ fragment                                                    */

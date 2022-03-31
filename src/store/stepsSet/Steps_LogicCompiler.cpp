@@ -19,8 +19,6 @@ void Step::vAddSteps_LogicCompiler(void)
 {
   vAddStep("LogicCompiler[].compile"_Stz,   &Step::vLogicCompilerCompile);
   vAddStep("LogicCompiler[].delete"_Stz,    &Step::vLogicCompilerDelete);
-  vAddStep("LogicCompiler[].extract"_Stz,   &Step::vLogicCompilerExtract);
-  vAddStep("LogicCompiler[].extractAsm"_Stz, &Step::vLogicCompilerExtractAsm);
   vAddStep("LogicCompiler[].isNull"_Stz,    &Step::vLogicCompilerIsNull);
   vAddStep("LogicCompiler[].new"_Stz,       &Step::vLogicCompilerNew);
 }
@@ -53,34 +51,6 @@ void Step::vLogicCompilerDelete(void)
   
   delete pLogicCompiler;
       
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicCompiler[].extract -- extract the EO_ fragments                       */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicCompilerExtract(void)
-{
-  ENTRY();
-    
-//#ifdef WITH_APPLE
-  LogicCompiler::vExtract();
-//#endif
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicCompiler[].extractAsm -- extract the AM_ fragments                    */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicCompilerExtractAsm(void)
-{
-  ENTRY();
-
-//#ifdef WITH_APPLE
-  LogicCompiler::vExtractAsm();
-//#endif
-
   EXIT();
 }
 

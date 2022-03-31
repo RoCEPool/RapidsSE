@@ -39,9 +39,7 @@ namespace STORE
 
     LogicCompiler(LogicUnit* pLogicUnit);
    ~LogicCompiler(void) noexcept(false);
-  
-    static void vExtract(void);
-    static void vExtractAsm(void);
+
     static bool bExtractAll(LocalFile* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker);
     static void vExtractFragment(LocalFile* pFile, char** aazCrs, Stz* startMarker, Stz* endMarker);
 
