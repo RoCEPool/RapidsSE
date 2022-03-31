@@ -431,17 +431,6 @@ namespace STORE
   
     bool bGenerateAsm(Stz* sText);
 
-    eEC eGenerateAggregate(ExprEval* pExprEval);
-    eEC eGenerateFilter(ExprEval* pExprEval);
-    eEC eGenerateFilterProject(ExprEval* pFilter, ExprEval* pProject);
-    eEC eGenerateGroupBy(ExprEval* pExprEval);
-    eEC eGenerateHash(ExprEval* pExprEval);
-    eEC eGenerateIndexJoin(ExprEval* pExprEval);
-    eEC eGenerateIndexScan(ExprEval* pExprEval);
-    eEC eGenerateLimit(i8 iLimit);
-    eEC eGenerateLoopJoin(ExprEval* pExprEval);
-    eEC eGenerateProjection(ExprEval* pExprEva);
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     #include "RLU_interface.h"
