@@ -41,7 +41,6 @@ namespace STORE
                TagSet*     p_JobTags);
    ~VertexSpec(void) noexcept(false);
   
-    bool bCompile(void);
   
     void vAddStageSpec(StageSpec* pStageSpec);
     DeckSpec* pDeckSpec(void);
@@ -59,6 +58,8 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //                            PIPELINE COMPILER
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    bool bCompile(void);
 
   private:
   

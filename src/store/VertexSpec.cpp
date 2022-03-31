@@ -73,32 +73,6 @@ VertexSpec::~VertexSpec(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/* pipeline compile                                                           */
-/*----------------------------------------------------------------------------*/
-bool VertexSpec::bCompile(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
-
-  if (! bPass1_collect()) {
-    m_p_Scanner = nullptr;
-    return false;
-  }
-
-  if (! bPass2_piping()) {
-    m_p_Scanner = nullptr;
-    return false;
-  }
-
-  if (! bPass3_includes()) {
-    m_p_Scanner = nullptr;
-    return false;
-  }
-
-  m_p_Scanner = nullptr;
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -187,6 +161,32 @@ StageSpec* VertexSpec::pStageSpec(i8 i_Stage)
 
 
 #ifndef WITH_DYNAMO_COMPILER
+
+/*----------------------------------------------------------------------------*/
+/* pipeline compile                                                           */
+/*----------------------------------------------------------------------------*/
+bool VertexSpec::bCompile(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_VERTEXSPEC, _FOOTER_);
+
+  if (! bPass1_collect()) {
+    m_p_Scanner = nullptr;
+    return false;
+  }
+
+  if (! bPass2_piping()) {
+    m_p_Scanner = nullptr;
+    return false;
+  }
+
+  if (! bPass3_includes()) {
+    m_p_Scanner = nullptr;
+    return false;
+  }
+
+  m_p_Scanner = nullptr;
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                           Pass 1 : Collect                                 */
