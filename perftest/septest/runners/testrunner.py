@@ -77,6 +77,7 @@ class TestRunner:
         )
         self.remote_test_file = None
         self.result = TestResult(test_path, self.test_name, test_id, job_result_id, self.remote_test_dir)
+        self.abnormal_exit = False
 
         assert self.local_test_file.exists()
         assert (self.test_name is not None) and (len(self.test_name) > 0)
@@ -100,8 +101,11 @@ class TestRunner:
         else:
             raise errors.NotImplementedYet("Only JMeter test files (*.[jmx | jtl | jmeter]) are currently supported")
 
-        self.__cleanup_test()
-        self.__collect_metrics()
+        if not self.abnormal_exit:
+            # An abnormal exit could occur if the test hung and the machines got shut down, for instance.
+            # In that case we don't want to run the operations below.
+            self.__cleanup_test()
+            self.__collect_metrics()
 
         LOG.info(f"Finished test: {self.test_name} (ID: {self.test_id}). "
                  f"Result = {'SUCCESS' if self.result.test_passed else 'FAILURE'}")
@@ -225,7 +229,7 @@ class TestRunner:
 
         try:
             ssh.run_ssh(self.ip_addr, jmeter_command)
-            LOG.info(f"Successfully ran the JMeter file at {self.ip_addr}:{self.remote_test_file}")
+            LOG.info(f"Finished running the JMeter file at {self.ip_addr}:{self.remote_test_file}")
 
             # Record the test completion result
             self.result.set_test_ended(test_passed=True, test_skipped=False)
@@ -235,6 +239,7 @@ class TestRunner:
                   f"\n\nStdout Output:\n{e.stdout}" \
                   f"\n\nStderr Output:\n{e.stderr}\n"
             self.result.set_test_ended(test_passed=False, test_skipped=False, stdout=e.stdout, stderr=e.stderr)
+            self.abnormal_exit = True
             LOG.error(msg)
 
     def __remote_log_file_path(self):

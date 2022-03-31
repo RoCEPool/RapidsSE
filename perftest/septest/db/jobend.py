@@ -15,7 +15,7 @@ LOG = logging.getLogger(__name__)
 
 
 def record_job_results(job_result_id: int,
-                       job_timed_out: bool,
+                       abnormal_exit: bool,
                        test_results: [TestResult]) -> None:
     """
     Record records in the database about ending the job and all of the tests.
@@ -30,7 +30,7 @@ def record_job_results(job_result_id: int,
                          **connect_params) as conn:
         cur = conn.cursor()
 
-        __update_job_result_row(cur, job_result_id, job_timed_out, test_results)
+        __update_job_result_row(cur, job_result_id, abnormal_exit, test_results)
 
         for test_result in test_results:
             test_result_id = __create_test_result_row(cur, test_result)
@@ -44,7 +44,7 @@ def record_job_results(job_result_id: int,
 
 def __update_job_result_row(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCursor[typing.Any]],
                             job_result_id: int,
-                            job_timed_out: bool,
+                            abnormal_exit: bool,
                             test_results: [TestResult]) -> None:
     """
     Updates a record in the jobResults table regarding end times, tests completed, etc.
@@ -54,13 +54,13 @@ def __update_job_result_row(cur: typing.Union[psycopg.Cursor[typing.Any], psycop
 
     sql = "UPDATE jobResults SET " \
           "endTime = NOW(), " \
-          "timedOut = (%s), " \
+          "abnormalExit = (%s), " \
           "testsExecuted = (%s), " \
           "testsPassed = (%s), " \
           "testsFailed = (%s), " \
           "testsSkipped = (%s) " \
           "WHERE jobResultId = (%s)"
-    data = (job_timed_out,   # timedOut
+    data = (abnormal_exit,   # abnormalExit
             tests_executed,  # testsExecuted
             tests_passed,    # testsPassed
             tests_failed,    # testsFailed

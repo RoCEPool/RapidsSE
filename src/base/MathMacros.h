@@ -412,7 +412,6 @@
     if (fltArg1.m_dFlt >= C_FLT_MAX ||                                   \
         fltArg2.m_dFlt >= C_FLT_MAX) {                                   \
         eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
-      printf("OVERFLOW\n"); \
       *paW++ = C_DATUM_NULL;                                             \
     }                                                                    \
     else if (fltArg1.m_dFlt <  (d8)C_FLT_MIN ||                          \
@@ -460,7 +459,8 @@
           *paW++ = C_DATUM_NULL;                                         \
       }                                                                  \
       else {                                                             \
-        *paW++ = fltArg1.m_iAsI8 / fltArg2.m_iAsI8;                      \
+        fltArg1.m_dFlt /= fltArg2.m_dFlt;                                \
+        *paW++ = fltArg1.m_iAsI8;                                        \
       }                                                                  \
     }                                                                    \
   }                                                                      \
@@ -495,7 +495,7 @@
         *paW++ = C_DATUM_NULL;                                           \
       }                                       \
       else {                                                             \
-        fltArg1.m_dFlt -= fltArg2.m_dFlt;                                                                   \
+        fltArg1.m_dFlt -= fltArg2.m_dFlt;                                \
         *paW++ = fltArg1.m_iAsI8;                      \
       }                                                                  \
     }                                                                    \
