@@ -26,6 +26,10 @@ namespace STORE
   
     static void vRepair(Object* pObject);
 
+    void vAction0(void);
+    void vAction1(void);
+    void vAction2(void);
+
   private:
   
     Footer* aFooter(void);

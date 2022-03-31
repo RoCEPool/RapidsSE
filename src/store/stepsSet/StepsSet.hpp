@@ -25,6 +25,13 @@ public:
   void vAccumSumFetch(void);
   void vAccumSumStore(void);
 
+  // adaptorWL
+  void vAdaptorWLAction0(void);
+  void vAdaptorWLAction1(void);
+  void vAdaptorWLAction2(void);
+  void vAdaptorWLDelete(void);
+  void vAdaptorWLNew(void);
+
   // address
   void vAddressEqual(void);
   void vAddressFetch(void);

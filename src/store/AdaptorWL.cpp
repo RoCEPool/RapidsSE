@@ -11,9 +11,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, AdaptorWL, CN_DECKSPEC)
-__aNewFunction(AdaptorWL, CN_DECKSPEC)
-__vDeleteFunction(AdaptorWL, CN_DECKSPEC)
+__pCastFunction(STORE, AdaptorWL, CN_ADAPTORWL)
+__aNewFunction(AdaptorWL, CN_ADAPTORWL)
+__vDeleteFunction(AdaptorWL, CN_ADAPTORWL)
 __aFooterFunction(AdaptorWL)
 
 
@@ -21,13 +21,13 @@ __aFooterFunction(AdaptorWL)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AdaptorWL::AdaptorWL(void)
-: Object(CN_DECKSPEC)
+: Object(CN_ADAPTORWL)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_ADAPTORWL, _FOOTER_);
   
-  _checkInitialised_(CN_DECKSPEC);
+  _checkInitialised_(CN_ADAPTORWL);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_ADAPTORWL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ AdaptorWL::AdaptorWL(void)
 /*----------------------------------------------------------------------------*/
 AdaptorWL::~AdaptorWL(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_ADAPTORWL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,6 +53,33 @@ void AdaptorWL::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* action 0                                                                   */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vAction0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* action 1                                                                   */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vAction1(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* action 2                                                                   */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vAction2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
+  
+}
 
 
 /*============================================================================*/
