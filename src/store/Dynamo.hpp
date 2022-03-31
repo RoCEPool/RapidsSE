@@ -59,6 +59,8 @@ namespace STORE
     //                            PIPELINE COMPILER
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    bool bCompile(void);
+
   private:
   
     //

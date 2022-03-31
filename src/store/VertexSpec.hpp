@@ -137,13 +137,13 @@ namespace STORE
     TokenVec*  pTknVec(void);
 
     void vTokenAccept(void);
+#endif
 
   };
 
   VertexSpec* _pVertexSpec(void* aAddr);
 }
 
-#endif
 
 /*============================================================================*/
 /* end                                                                        */

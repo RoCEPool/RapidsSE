@@ -124,7 +124,7 @@ VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
   m_p_VertexSpecRoot = new VertexSpec(nullptr,pScanner,m_p_JobTags);
 
   
-  if (m_p_VertexSpecRoot->bCompile()) {
+  if (bCompile()) {
     
     //vOptimise();
  
@@ -171,9 +171,7 @@ VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
   }
   
   delete m_p_VertexSpecRoot;
-  
-  ASSERT(! m_p_PipeSpec);
-  
+    
   delete pScanner;
   return nullptr;
 }
@@ -263,6 +261,32 @@ bool Dynamo::bWillOptimise(void)
 
 
 #ifdef WITH_DYNAMO_COMPILER
+
+/*----------------------------------------------------------------------------*/
+/* pipeline compile                                                           */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCompile(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  if (! bPass1_collect()) {
+    m_p_Scanner = nullptr;
+    return false;
+  }
+
+  if (! bPass2_piping()) {
+    m_p_Scanner = nullptr;
+    return false;
+  }
+
+  if (! bPass3_includes()) {
+    m_p_Scanner = nullptr;
+    return false;
+  }
+
+  m_p_Scanner = nullptr;
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                           Pass 1 : Collect                                 */
@@ -383,7 +407,7 @@ bool Dynamo::bCollectSubPipeline(void)
   
   m_pCurrVertexSpec = new VertexSpec(pParentVertexSpec,m_p_Scanner,m_p_JobTags);
 
-  if (! m_pCurrVertexSpec->bCompile()) {
+  if (! bCompile()) {
     delete m_pCurrVertexSpec;
     
     return false;
