@@ -20,14 +20,13 @@ __aFooterFunction(Deck)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Deck::Deck(Vertex* pVertex, DeckSpec* pDeckSpec, VertexSpec* pVertexSpec)
+Deck::Deck(Vertex* pVertex, DeckSpec* pDeckSpec)
 : ListNL_t<Stage>(CN_DECK)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 
   m_pVertex     = pVertex;
   m_pDeckSpec   = pDeckSpec;
-  m_pVertexSpec = pVertexSpec;
 
   _checkInitialised_(CN_DECK);
 

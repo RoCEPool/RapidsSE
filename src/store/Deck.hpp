@@ -13,7 +13,6 @@ namespace STORE
   private:
     Vertex*     m_pVertex;
     DeckSpec*   m_pDeckSpec;
-    VertexSpec* m_pVertexSpec; // specification of this vertex
 
     // must be last
     Footer m_xFooter;
@@ -22,7 +21,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Deck(Vertex* pVertex, DeckSpec* pDeckSpec, VertexSpec* pVertexSpec);
+    Deck(Vertex* pVertex, DeckSpec* pDeckSpec);
    ~Deck(void) noexcept(false);
   
     Pipeline* pPipeline(void);
