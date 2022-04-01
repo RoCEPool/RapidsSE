@@ -331,7 +331,7 @@ bool Stage::bEnqueueInvoke(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create the stream instances for this stage based on stage topology         */
+/* create the streams for this stage                                          */
 /*----------------------------------------------------------------------------*/
 void Stage::vCreateStreams(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
@@ -350,25 +350,27 @@ void Stage::vCreateStreams(void) {
 
     case YG_ALL_NODES: // create a stream for all nodes
       RASSERT(m_pStageSpec->bNodeTopo());
+      
       i_Stream = 0;
       tPtnId = C_UNKNOWN;
-      for (iOriginNodeNo = 0; iOriginNodeNo < AM::pGrid()->nKnownNodes(); iOriginNodeNo++) {
+      for (iOriginNodeNo = 0;
+           iOriginNodeNo < AM::pGrid()->nKnownNodes();
+           iOriginNodeNo++) {
         iNodeNo = AM::GRID::iGetNthNodeNo(iOriginNodeNo);
         pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iNodeNo); //i_Node);
         vAppend(pStream);
-        //pStream->vCreateOps();
       }
       break;
 
     case YG_ORIGIN: // create a stream for origin node only
       RASSERT(m_pStageSpec->bNodeTopo());
+      
       i_Stream = 0;
       tPtnId = C_UNKNOWN;
       iOriginNodeNo = pPipeline()->iOriginNodeNo();
 
       pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
       vAppend(pStream);
-      //pStream->vCreateOps();
       break;
 
     case YG_NEXT_NODE: // create a stream for a next node only
@@ -377,15 +379,12 @@ void Stage::vCreateStreams(void) {
       i_Stream = 0;
       tPtnId = C_UNKNOWN;
       
-      for (i8 i_Node = 0; i_Node < AM::pGrid()->nKnownNodes(); i_Node++) {
+      for (i8 i_Node = 0;
+           i_Node < AM::pGrid()->nKnownNodes();
+           i_Node++) {
         iNodeNo = AM::GRID::iGetNthNodeNo(i_Node);
-        //if (i_NodeNo == pThisNode->iNodeNo()) {
         pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iNodeNo);
         vAppend(pStream);
-        //pStream->vCreateOps();
-          //break;
-        //}
-        //break;
       }
       break;
 
@@ -394,21 +393,24 @@ void Stage::vCreateStreams(void) {
     case YG_ALL_PARTITIONS: // create a stream for all partitions in grid
       RASSERT(!m_pStageSpec->bNodeTopo());
 
-      for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
+      for (i8 iPtnNo = 0;
+           iPtnNo < AM::PTNMAP::nPtnsInGrid();
+           iPtnNo++) {
         tPtnId = iPtnNo;
         iOriginNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnId);
 
         i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
         pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
         vAppend(pStream);
-        //pStream->vCreateOps();
       }
       break;
 
     case YG_ALL_PARTITIONS_ON_ORIGIN: // create a stream for all ptns on origin
       RASSERT(!m_pStageSpec->bNodeTopo());
 
-      for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
+      for (i8 iPtnNo = 0;
+           iPtnNo < AM::PTNMAP::nPtnsInGrid();
+           iPtnNo++) {
         tPtnId = iPtnNo;
         iOriginNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnId);
 
@@ -416,7 +418,6 @@ void Stage::vCreateStreams(void) {
           i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
           pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
           vAppend(pStream);
-          //pStream->vCreateOps();
         }
       }
       break;

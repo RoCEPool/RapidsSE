@@ -25,6 +25,8 @@ namespace STORE
     SMA<Stream,CN_STREAM> m_pStream;  // which stream (of stage of pipeline of job)
     SMA<OpSpec,CN_OPSPEC> m_pOpSpec;  // specification of this operator
 
+    SMA<Task,CN_TASK>     m_pTask;    // which task is currenty executing this op
+
     // -- id, name and kind
     Gid_t<CN_OP> m_xOpId;     // op id in grid
     s256         m_sPath;     // operator path
@@ -37,8 +39,6 @@ namespace STORE
     SMA<Pipeline,CN_PIPELINE>  m_p_SubPipeOfOp;   // which sub-pipeline
     SMA<Vertex,CN_VERTEX>  m_p_PipeWorkOfOp;  // which pipework
   
-    // -- executed by
-    SMA<Task,CN_TASK>      m_pTask;    // which task is currenty executing this op
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // event handling

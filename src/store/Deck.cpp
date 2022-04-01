@@ -86,9 +86,8 @@ Vertex* Deck::pVertex(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create the formwork for pipeline                                           */
+/* create the stages for this deck                                            */
 /*----------------------------------------------------------------------------*/
-
 void Deck::vCreateStages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);

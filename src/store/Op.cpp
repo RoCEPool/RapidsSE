@@ -57,14 +57,19 @@ Op::Op(Stream* pStream, OpSpec* pOpSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   RASSERT(pOpSpec);
+
+  m_pStream = pStream;
+  m_pOpSpec = pOpSpec;
+
+  m_pTask   = nullptr;
+
+  // -- -- -- -- -- --
   
   //m_sPath
   
   m_bTraceOp    = false;
   m_bTraceAck   = false;
 
-  m_pOpSpec   = pOpSpec;
-  m_pStream   = pStream;
   m_p_SubPipeOfOp  = pStream->pPipeline();
   m_p_PipeWorkOfOp = nullptr;
 
@@ -72,7 +77,6 @@ Op::Op(Stream* pStream, OpSpec* pOpSpec)
 
   // m_oOpTags
   m_pOpTags = nullptr;
-  m_pTask = nullptr;
     
   // -- -- -- -- -- --
 

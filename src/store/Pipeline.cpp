@@ -425,15 +425,13 @@ Vertex* Pipeline::pVertexRoot(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create the formwork for this pipeline                                      */
+/* create the vertexes for this pipeline                                      */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vCreateVertexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
   m_pVertexRoot = new Vertex(this,nullptr,m_pVertexSpecRoot);
-
-  //m_pVertexRoot->vCreateDeck();
 }
 
 /*============================================================================*/
