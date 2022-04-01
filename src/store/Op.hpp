@@ -27,18 +27,11 @@ namespace STORE
 
     // -- id, name and kind
     Gid_t<CN_OP> m_xOpId;     // op id in grid
-    s32        m_sOpNm;     // name of this operator
-    s256       m_sPath;     // operator path
+    s256         m_sPath;     // operator path
 
-  
-    s4K        m_sExpr;     // expression for this filter
-  
     TagSet*    m_pOpTags;   // tags for the op
     bool       m_bTraceOp;  // tracing this operator
     bool       m_bTraceAck; // tracing ack of this operator
-
-    // -- belongs to
-    i8          m_i_Op;     // is [m_i_Op] in m_pStream
 
     // -- refers to
     SMA<Pipeline,CN_PIPELINE>  m_p_SubPipeOfOp;   // which sub-pipeline
@@ -80,14 +73,7 @@ namespace STORE
     eXK  m_eSendCast;   // send kind
     i8   m_iRobin;      // send Round Robin partition/node/thread
     i8   m_iLocalRobin; // send Round Robin local ptn/node/thread
-  
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // delete these???
-
-    SMA<Operand,CN_NONE> m_pOutboundOperand;  // operand to be piped out
-
-    SMA<Op,CN_OP>      m_pDownstreamOp;     // downstream op  DELETE
-    
+      
     // must be last
     Footer m_xFooter;
     
@@ -112,8 +98,6 @@ namespace STORE
     Word* pCurWord(void);
   
     void vDotPrint(Stz* szText);
-    Op*  pDownstreamOp(void);
-    void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
     void vDump(void);
   
@@ -121,8 +105,6 @@ namespace STORE
     Word* pEventHandler(void);
     Word* pEventHandler(i8 i_OperandKind);
     void vEventHandler(i8 i_OperandKind, Word* pHandler);
-    void vExpr(Stz* sExpr);
-    Stz* szExpr(void);
 
     void vGrabTaskLock(void);
   
@@ -165,8 +147,6 @@ namespace STORE
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Stage* pOtherStage(void);
-    Operand* pOutboundOperand(void);
-    void vOutboundOperand(Operand* pOutboundOperand);
 
     Stz* szPath(void);
     bool bPause(void);

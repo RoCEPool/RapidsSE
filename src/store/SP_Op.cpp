@@ -127,7 +127,7 @@ Stz* SP_Op::szLeading(Op* pOp)
         
         ,pStageSpec ? pStageSpec->i_StageSpec() : -1
         ,pStream    ? pStream->i_Stream()       : -1
-        ,pOpSpec    ? pOpSpec->iOpSpec()        : -1
+        ,pOpSpec    ? pOpSpec->i_OpSpec()        : -1
 
         ,pOp->szOpNm()
         ,pStageSpec ? pStageSpec->szStageNm()   : C_NO_NAME

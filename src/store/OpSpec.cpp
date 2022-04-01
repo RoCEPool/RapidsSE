@@ -204,7 +204,7 @@ void OpSpec::vOpNm(Stz* szOpNm)
 /*----------------------------------------------------------------------------*/
 /* get i_OpSpec                                                               */
 /*----------------------------------------------------------------------------*/
-i8 OpSpec::iOpSpec(void)
+i8 OpSpec::i_OpSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   

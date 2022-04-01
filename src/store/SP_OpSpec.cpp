@@ -58,13 +58,13 @@ void SP_OpSpec::vOpSpec(OpSpec* pOpSpec)
   if (pArgTags->nItems()) {
     pArgTags->vSprint(sArgs);
     vCatf("[%02lld] OpSpec %-16s args=%s"_Stz,
-          pOpSpec->iOpSpec(),
+          pOpSpec->i_OpSpec(),
           pOpSpec->szOpNm(),
           sArgs.azChar());
   }
   else {
     vCatf("[%02lld] OpSpec %-16s"_Stz,
-          pOpSpec->iOpSpec(),
+          pOpSpec->i_OpSpec(),
           pOpSpec->szOpNm());
   }
     

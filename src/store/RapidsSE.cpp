@@ -198,7 +198,7 @@ eEC RapidsSE::ePushOperand(void* aSession, void** aaOperand)
   Operand* pOperand = _pOperand(*aaOperand);
   *aaOperand = nullptr;
 
-  Api::vPushOperand(pSession,pOperand);
+  //Api::vPushOperand(pSession,pOperand);
   return EC_NONE;
 }
 

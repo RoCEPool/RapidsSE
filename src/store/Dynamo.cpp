@@ -689,7 +689,7 @@ bool Dynamo::bPass2_piping(void)
     i8 nOpSpecs = pStageSpec->nItems();
     for (i8 i_Op = 0; i_Op < nOpSpecs; i_Op++) {
       OpSpec *pOpSpec = pStageSpec->pGet(i_Op);
-      RASSERT(pOpSpec->iOpSpec() == i_Op);
+      RASSERT(pOpSpec->i_OpSpec() == i_Op);
 
       Stz *szName = pOpSpec->szOpNm();
       StageSpec *pDstStageSpec = nullptr;
@@ -765,7 +765,7 @@ void Dynamo::vNameIsOp(StageSpec *pStageSpec,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
-  i8 i_Op = pOpSpec_nameOfOp->iOpSpec();
+  i8 i_Op = pOpSpec_nameOfOp->i_OpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
 
   eYS eStreamTopology
@@ -785,7 +785,7 @@ void Dynamo::vFirstSend(StageSpec *pSrcStageSpec,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
   
-  i8 i_Op = pSrcOpSpec_nameOfStage->iOpSpec();
+  i8 i_Op = pSrcOpSpec_nameOfStage->i_OpSpec();
 
   i8 i_NextStage = pDstStageSpec->i_StageSpec();
 
