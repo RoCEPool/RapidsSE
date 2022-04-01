@@ -32,16 +32,16 @@ __aFooterFunction(Vertex)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Vertex::Vertex(Pipeline* pPipeline,
-               Vertex*   pParentVertex,
-               VertexSpec* pPipeSpec)
+Vertex::Vertex(Pipeline*   pPipeline,
+               Vertex*     pParentVertex,
+               VertexSpec* pVertexSpec)
 : ListNL_t<Vertex>(CN_VERTEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   m_pPipeline     = pPipeline;
   m_pParentVertex = pParentVertex;
-  m_pVertexSpec     = pPipeSpec;
+  m_pVertexSpec   = pVertexSpec;
 
   m_pDeck = new Deck(this,m_pVertexSpec);
 
@@ -59,8 +59,8 @@ Vertex::~Vertex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  while (Vertex *pSupVertex = pPop())
-    delete pSupVertex;
+  while (Vertex *pChildVertex = pPop())
+    delete pChildVertex;
   
   delete m_pDeck;
 }

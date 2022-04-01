@@ -11,9 +11,8 @@ namespace STORE
   class Deck : public ListNL_t<Stage>
   {
   private:
-   
-    Vertex* m_pPipeWork;
-    VertexSpec* m_pPipeSpec; // specification of this pipework
+    Vertex*     m_pVertex;
+    VertexSpec* m_pVertexSpec; // specification of this vertex
 
     // must be last
     Footer m_xFooter;
@@ -22,11 +21,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Deck(Vertex* pPipeWork, VertexSpec* pPipeSpec);
+    Deck(Vertex* pVertex, VertexSpec* pPipeSpec);
    ~Deck(void) noexcept(false);
   
     Pipeline* pPipeline(void);
-    Vertex* pPipeWork(void);
+    Vertex* pVertex(void);
 
   private:
   

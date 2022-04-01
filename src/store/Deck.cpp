@@ -20,13 +20,13 @@ __aFooterFunction(Deck)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Deck::Deck(Vertex* pPipeWork, VertexSpec* pPipeSpec)
+Deck::Deck(Vertex* pVertex, VertexSpec* pVertexSpec)
 : ListNL_t<Stage>(CN_DECK)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 
-  m_pPipeWork = pPipeWork;
-  m_pPipeSpec = pPipeSpec;
+  m_pVertex     = pVertex;
+  m_pVertexSpec = pVertexSpec;
 
   _checkInitialised_(CN_DECK);
 
@@ -55,17 +55,17 @@ Pipeline* Deck::pPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
   
-  return m_pPipeWork->pPipeline();
+  return m_pVertex->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get pipework                                                               */
 /*----------------------------------------------------------------------------*/
-Vertex* Deck::pPipeWork(void)
+Vertex* Deck::pVertex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
   
-  return m_pPipeWork;
+  return m_pVertex;
 }
 
 /*============================================================================*/
