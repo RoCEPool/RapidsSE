@@ -43,7 +43,7 @@ namespace STORE
     Deck* pStaging(void);
     Stream* pStream0(void);
 
-    void vCreatePipework();
+    void vCreateDeck();
 
   private:
     Footer* aFooter(void);

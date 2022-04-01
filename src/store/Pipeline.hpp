@@ -12,8 +12,10 @@ namespace STORE
   private:
 
     // -- belongs to
-    Job* m_pPipelineJob;  // which job
-  
+    Job*        m_pPipelineJob;    // which job
+    VertexSpec* m_pVertexSpecRoot; // root specification of this pipeline
+    i8          m_iOriginNodeNo;   // originating node
+
     // -- id, name and kind
     Gid_t<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
     s32  m_sPipelineNm;  // name of this pipeline
@@ -23,9 +25,7 @@ namespace STORE
 
   
     // -- refers to
-    VertexSpec* m_pVertexSpecRoot; // root specification of this pipeline
   
-    i8   m_iOriginNodeNo;    // originating node
   
 
   
@@ -86,7 +86,7 @@ namespace STORE
     Vertex* pVertexRoot(void);
 
   private:
-    void vCreatePipework();
+    void vCreateVertexes();
 
     Footer* aFooter(void);
   };

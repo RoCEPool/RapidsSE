@@ -3,7 +3,9 @@
 /*============================================================================*/
 
 #include "BASE.h"
+
 #include "Deck.hpp"
+#include "DeckSpec.hpp"
 #include "Vertex.hpp"
 
 
@@ -29,6 +31,8 @@ Deck::Deck(Vertex* pVertex, DeckSpec* pDeckSpec)
 
   _checkInitialised_(CN_DECK);
 
+  vCreateStages();
+  
   _postcondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 }
 
@@ -76,6 +80,33 @@ Vertex* Deck::pVertex(void)
   
   return m_pVertex;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create the formwork for pipeline                                           */
+/*----------------------------------------------------------------------------*/
+
+void Deck::vCreateStages(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
+
+  i8 nStages = m_pDeckSpec->nItems();
+  for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
+
+    // get the stageSpec
+    StageSpec* pStageSpec = m_pDeckSpec->pGet(i_StageSpec);
+
+    // add a stage from the stageSpec to the stageVec
+    Stage* pStage = new Stage(this,pStageSpec);
+    vAppend(pStage);
+    pStage->vCreateStreams();
+  }
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

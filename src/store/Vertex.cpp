@@ -42,11 +42,11 @@ Vertex::Vertex(Pipeline*   pPipeline,
   m_pParentVertex = pParentVertex;
   m_pVertexSpec   = pVertexSpec;
 
-  m_pDeck = new Deck(this,pVertexSpec->pDeckSpec());
+  m_pDeck         = nullptr;
 
   _checkInitialised_(CN_VERTEX);
   
-  vCreatePipework();
+  vCreateDeck();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
 }
@@ -286,21 +286,23 @@ Stream* Vertex::pStream0(void)
 /* create the formwork for pipeline                                           */
 /*----------------------------------------------------------------------------*/
 
-void Vertex::vCreatePipework(void)
+void Vertex::vCreateDeck(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
 
-  i8 nStages = m_pVertexSpec->nStageSpecs();
-  for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
-    
-    // get the stageSpec
-    StageSpec* pStageSpec = m_pVertexSpec->pStageSpec(i_StageSpec);
-    
-    // add a stage from the stageSpec to the stageVec
-    Stage* pStage = new Stage(m_pDeck,pStageSpec);
-    m_pDeck->vAppend(pStage);
-    pStage->vCreateStreams();
-  }
+  m_pDeck = new Deck(this,m_pVertexSpec->pDeckSpec());
+
+//  i8 nStages = m_pVertexSpec->nStageSpecs();
+//  for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
+//
+//    // get the stageSpec
+//    StageSpec* pStageSpec = m_pVertexSpec->pStageSpec(i_StageSpec);
+//
+//    // add a stage from the stageSpec to the stageVec
+//    Stage* pStage = new Stage(m_pDeck,pStageSpec);
+//    m_pDeck->vAppend(pStage);
+//    pStage->vCreateStreams();
+//  }
 }
 
 /*============================================================================*/

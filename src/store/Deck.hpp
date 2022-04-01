@@ -30,7 +30,8 @@ namespace STORE
     Vertex* pVertex(void);
 
   private:
-  
+    void vCreateStages(void);
+
     Footer* aFooter(void);
 
   };
