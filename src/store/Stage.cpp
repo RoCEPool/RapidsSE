@@ -15,9 +15,9 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "StageSpec.hpp"
 #include "SP_Stage.hpp"
 #include "TagConstants.h" //?
@@ -37,16 +37,16 @@ __aFooterFunction(Stage)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stage::Stage(StageSpec *pStageSpec, PipeWork* pPipeWork)
+Stage::Stage(Vertex* pPipeWork, StageSpec *pStageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  m_sPipelineNm = pPipeWork->pPipeline()->szPipelineNm();
-  m_sStageNm = pStageSpec->szStageNm();
-  m_i_Stage = pStageSpec->i_StageSpec();
-
-  m_pStageSpec = pStageSpec;
   m_pPipeWork  = pPipeWork;
+  m_pStageSpec = pStageSpec;
+
+  m_sStageNm = pStageSpec->szStageNm();
+  m_i_Stage  = pStageSpec->i_StageSpec();
+
 
   _checkInitialised_(CN_STAGE);
 
@@ -193,9 +193,19 @@ i8 Stage::nOpsOnNode(i8 iNode, i8 iOrigin) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* get outer pipeline                                                         */
+/*----------------------------------------------------------------------------*/
+Pipeline* Stage::pPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  return m_pPipeWork->pPipeline();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get piepline                                                               */
 /*----------------------------------------------------------------------------*/
-PipeWork *Stage::pPipeWork(void) {
+Vertex *Stage::pPipeWork(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
   return m_pPipeWork;
@@ -345,7 +355,7 @@ void Stage::vCreateStreams(void) {
       tPtnId = C_UNKNOWN;
       for (iOriginNodeNo = 0; iOriginNodeNo < AM::pGrid()->nKnownNodes(); iOriginNodeNo++) {
         iNodeNo = AM::GRID::iGetNthNodeNo(iOriginNodeNo);
-        pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, iNodeNo); //i_Node);
+        pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iNodeNo); //i_Node);
         vAppend(pStream);
         pStream->vCreateOps();
       }
@@ -357,7 +367,7 @@ void Stage::vCreateStreams(void) {
       tPtnId = C_UNKNOWN;
       iOriginNodeNo = m_pPipeWork->pPipeline()->iOriginNodeNo();
 
-      pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, iOriginNodeNo);
+      pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
       vAppend(pStream);
       pStream->vCreateOps();
       break;
@@ -371,7 +381,7 @@ void Stage::vCreateStreams(void) {
       for (i8 i_Node = 0; i_Node < AM::pGrid()->nKnownNodes(); i_Node++) {
         iNodeNo = AM::GRID::iGetNthNodeNo(i_Node);
         //if (i_NodeNo == pThisNode->iNodeNo()) {
-        pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, iNodeNo);
+        pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iNodeNo);
         vAppend(pStream);
         pStream->vCreateOps();
           //break;
@@ -390,7 +400,7 @@ void Stage::vCreateStreams(void) {
         iOriginNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnId);
 
         i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
-        pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, iOriginNodeNo);
+        pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
         vAppend(pStream);
         pStream->vCreateOps();
       }
@@ -405,7 +415,7 @@ void Stage::vCreateStreams(void) {
 
         if (iOriginNodeNo == m_pPipeWork->pPipeline()->iOriginNodeNo()) {
           i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
-          pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, iOriginNodeNo);
+          pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
           vAppend(pStream);
           pStream->vCreateOps();
         }

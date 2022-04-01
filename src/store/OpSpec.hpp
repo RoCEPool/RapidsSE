@@ -7,7 +7,7 @@
 #include "eYS.h"
 #include "eYF.h"
 
-namespace STORE { class PipeSpec; class StageSpec; }
+namespace STORE { class VertexSpec; class StageSpec; }
 
 namespace STORE
 {
@@ -15,9 +15,9 @@ namespace STORE
                , public ListItem_t<OpSpec>
   {
   private:
+    StageSpec* m_pStageSpec;  // which stage spec
     s32  m_sOpNm;  // op name
   
-    StageSpec* m_pStageSpec;  // which stage spec
   
     TagSet m_oArgTags;
 
@@ -47,7 +47,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    OpSpec(Stz* szOpNm, StageSpec* pStageSpec);
+    OpSpec(StageSpec* pStageSpec, Stz* szOpNm);
    ~OpSpec(void) noexcept(false);
   
     void vArgTagAdd(Stz* sName, i8 iValue, eTN eToken);

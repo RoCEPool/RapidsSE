@@ -17,6 +17,7 @@ enum eCN : u2 // Class Number
   /* */ CN__A__,
   /* */ CN_ACCESSPATH,
   /* */ CN_ACTION,
+  /* */ CN_ADAPTORWL,
   /* */ CN_AGGTIMER,
   /* */ CN_AM,
   /* */ CN_API,
@@ -70,6 +71,8 @@ enum eCN : u2 // Class Number
   /* */ CN_DDLLOCK,
   /* */ CN_DECACNT,
   /* */ CN_DECIDER,
+  /* */ CN_DECK,
+  /* */ CN_DECKSPEC,
   /* */ CN_DEFINITIONNODE,
   /* */ CN_DEREFMETRICS,
   /* */ CN_DEVIXT,
@@ -213,8 +216,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PERUSE,
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINEMETRICS,
-  /* */ CN_PIPEWORK,
-  /* */ CN_PIPESPEC,
   /* */ CN_PLANDEFINITIONPARSER,
   /* */ CN_PLANNERLOCK,
   /* */ CN_PLANNODE,
@@ -318,9 +319,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STACK,
   /* */ CN_STAGE,
   /* */ CN_STAGEMETRICS,
-  /* */ CN_STAGESET,
   /* */ CN_STAGESPEC,
-  /* */ CN_STAGESPECSET,
   /* */ CN_STARTER,
   /* */ CN_STATEMENT,
   /* */ CN_STATISTICS,
@@ -397,6 +396,8 @@ enum eCN : u2 // Class Number
 
   /* */ CN__V__,
   /* */ CN_VERBOSE,
+  /* */ CN_VERTEX,
+  /* */ CN_VERTEXSPEC,
 
   /* */ CN__W__,
   /* */ CN_WAKEUP,
@@ -424,6 +425,7 @@ static Stz* aCN[]
   /* */ "_A__"_Stz,                 // CN__A__
   /* */ "ACCESSPATH"_Stz,           // CN_ACCESSPATH
   /* */ "ACTION"_Stz,               // CN_ACTION
+  /* */ "ADAPTORWL"_Stz,            // CN_ADAPTORWL
   /* */ "AGGTIMER"_Stz,             // CN_AGGTIMER
   /* */ "AM"_Stz,                   // CN_AM
   /* */ "API"_Stz,                  // CN_API
@@ -477,6 +479,8 @@ static Stz* aCN[]
   /* */ "DDLLOCK"_Stz,              // CN_DDLLOCK
   /* */ "DECACNT"_Stz,              // CN_DECACNT
   /* */ "DECIDER"_Stz,              // CN_DECIDER
+  /* */ "DECK"_Stz,                 // CN_DECK
+  /* */ "DECKSPEC"_Stz,             // CN_DECKSPEC
   /* */ "DEFINITIONNODE"_Stz,       // CN_DEFINITIONNODE
   /* */ "DEREFMETRICS"_Stz,         // CN_DEREFMETRICS
   /* */ "DEVIXT"_Stz,               // CN_DEVIXT
@@ -620,8 +624,6 @@ static Stz* aCN[]
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
-  /* */ "PIPEWORK"_Stz,             // CN_PIPEWORK
-  /* */ "PIPESPEC"_Stz,             // CN_PIPESPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
   /* */ "PLANNERLOCK"_Stz,          // CN_PLANNERLOCK
   /* */ "PLANNODE"_Stz,             // CN_PLANNODE
@@ -725,9 +727,7 @@ static Stz* aCN[]
   /* */ "STACK"_Stz,                // CN_STACK
   /* */ "STAGE"_Stz,                // CN_STAGE
   /* */ "STAGEMETRICS"_Stz,         // CN_STAGEMETRICS
-  /* */ "STAGESET"_Stz,             // CN_STAGESET
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
-  /* */ "STAGESPECSET"_Stz,         // CN_STAGESPECSET
   /* */ "STARTER"_Stz,              // CN_STARTER
   /* */ "STATEMENT"_Stz,            // CN_STATEMENT
   /* */ "STATISTICS"_Stz,           // CN_STATISTICS
@@ -804,6 +804,8 @@ static Stz* aCN[]
 
   /* */ "_V__"_Stz,                 // CN__V__
   /* */ "VERBOSE"_Stz,              // CN_VERBOSE
+  /* */ "VERTEX"_Stz,               // CN_VERTEX
+  /* */ "VERTEXSPEC"_Stz,           // CN_VERTEXSPEC
 
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WAKEUP"_Stz,               // CN_WAKEUP

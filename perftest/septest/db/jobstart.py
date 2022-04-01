@@ -396,7 +396,7 @@ def __create_jobresult_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyc
 
     sql = "INSERT INTO jobResults " \
           "(jobId, bambooPlan, bambooBuild, gitHash, gitBranch, invokingUser, " \
-          "timedOut, startTime, testsExecuted, testsPassed, testsFailed)" \
+          "abnormalExit, startTime, testsExecuted, testsPassed, testsFailed)" \
           "VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s, %s, %s) " \
           "RETURNING jobResultId"
     data = (job_id,  # jobId
@@ -405,7 +405,7 @@ def __create_jobresult_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyc
             git_hash,           # gitHash
             git_branch,         # gitBranch
             "SYSTEM" if invoking_user is None else invoking_user,  # invokingUser
-            False,              # timedOut
+            False,              # abnormalExit
             0,                  # testsExecuted
             0,                  # testsPassed
             0)                                                              # testsFailed

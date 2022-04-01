@@ -14,9 +14,9 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -111,7 +111,7 @@ void Step::vSubPipeCreate(void)
 
   // get pipeline spec
   
-  PipeSpec* pPipeSpec = _pPipeSpec(m_pDataStack->pPopPtr(__func__));
+  VertexSpec* pPipeSpec = _pVertexSpec(m_pDataStack->pPopPtr(__func__));
   
   // create subpipeline
   
@@ -191,7 +191,7 @@ void Step::vSubPipeEnqueueInvoke(void)
 {
   ENTRY();
   
-  PipeWork* pFormWork = m_pLogicUnit->m_xpSubPipe->pPipeWork();
+  Vertex* pFormWork = m_pLogicUnit->m_xpSubPipe->pVertexRoot();
 
   Stage*    pStage0   = pFormWork->pStage0();
 

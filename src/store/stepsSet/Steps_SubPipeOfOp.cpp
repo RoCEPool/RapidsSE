@@ -14,9 +14,9 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -114,7 +114,7 @@ void Step::vSubPipeOfOpCreate(void)
 
   // get pipeline spec
   
-  PipeSpec* pPipeSpec = _pPipeSpec(m_pDataStack->pPopPtr(__func__));
+  VertexSpec* pPipeSpec = _pVertexSpec(m_pDataStack->pPopPtr(__func__));
   
   // create pipeline
   
@@ -216,18 +216,18 @@ void Step::vSubPipeOfOpFindSubPipe(void)
   ENTRY();
     
   Pipeline* pOpPipeLine = m_pOp->pSubPipeOfOp();
-  PipeWork* pOpPipeWork = pOpPipeLine->pPipeWork();
-  PipeSpec* pOpPipeSpec = pOpPipeWork->pPipeSpec();
+  Vertex* pOpPipeWork = pOpPipeLine->pVertexRoot();
+  VertexSpec* pOpPipeSpec = pOpPipeWork->pPipeSpec();
   
-  Stz* szOpPipeNm = pOpPipeSpec->szPipelineNm();
+  Stz* szOpPipeNm = pOpPipeSpec->szVertexNm();
   vTrace("findSubPipe: %s\n"_Stz,szOpPipeNm);
 
   i8 nSubPipeWorks = pOpPipeWork->nItems();
   for (i8 i_SubPipeWork = 0; i_SubPipeWork < nSubPipeWorks; i_SubPipeWork++) {
-    PipeWork* pSubPipeWork = pOpPipeWork->pGet(i_SubPipeWork);
-    PipeSpec* pSubPipeSpec = pSubPipeWork->pPipeSpec();
+    Vertex* pSubPipeWork = pOpPipeWork->pGet(i_SubPipeWork);
+    VertexSpec* pSubPipeSpec = pSubPipeWork->pPipeSpec();
 
-    Stz* szSubPipeNm = pSubPipeSpec->szPipelineNm();
+    Stz* szSubPipeNm = pSubPipeSpec->szVertexNm();
     vTrace("findSubPipe: [%lld] %s\n"_Stz,i_SubPipeWork,szSubPipeNm);
   }
   
@@ -374,7 +374,7 @@ void Step::vSubPipeOfOpStartPipeline(void)
   ENTRY();
   
   Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
-  PipeWork* pFormWork = pSubPipelineOfOp->pPipeWork();
+  Vertex* pFormWork = pSubPipelineOfOp->pVertexRoot();
 
   Stage*    pStage0   = pFormWork->pStage0();
 

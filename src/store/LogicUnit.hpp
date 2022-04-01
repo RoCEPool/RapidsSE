@@ -39,9 +39,10 @@
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "NamedBuffer.hpp"
 #include "Optimiser.hpp"
+#include "AdaptorWL.hpp"
 
 #include "IndexTree.hpp"
 #include "JobMetrics.hpp"
@@ -165,8 +166,9 @@ namespace STORE
     REG<Object,CN_NONE>*        m_paReg[C_MAX_REGS];
     i8 m_nRegs;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    REG<AdaptorWL,      CN_ADAPTORWL     > m_xpAdaptorWL;
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
     REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
     REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
@@ -225,7 +227,7 @@ namespace STORE
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
-    REG<PipeSpec,       CN_PIPESPEC      > m_xpPipeSpec;
+    REG<VertexSpec,     CN_VERTEXSPEC    > m_xpPipeSpec;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
     REG<Pot,            CN_POT           > m_xpPot;
     REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;
@@ -266,7 +268,7 @@ namespace STORE
     REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     bool m_bCompilerToExit;
     bool m_bIsLftCrwBuffer; // left buffer is a CRW buffer (joins)

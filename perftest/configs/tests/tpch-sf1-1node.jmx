@@ -527,9 +527,116 @@ group by
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createPartsuppIdx1" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">create index partsupp_idx1 ON partsupp(PS_PARTKEY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">TODO: Check if this index is actually required</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createPartsuppIdx2" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">create index partsupp_idx2 ON partsupp(PS_SUPPKEY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">TODO: Check if this index is actually required</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createPartIdx1" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">create index part_idx1 ON part(P_PARTKEY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+              <stringProp name="TestPlan.comments">TODO: Check if this index is actually required</stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createCustomerIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">create index customer_idx1 ON customer(C_CUSTKEY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createCustomerIdx2" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">create index customer_idx2 ON customer(C_NATIONKEY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createSupplierIdx1" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">create index supplier_idx1 ON supplier(S_SUPPKEY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createSupplierIdx2" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">create index supplier_idx2 ON supplier(S_NATIONKEY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createNationIdx1" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">create index nation_idx1 ON nation(N_NATIONKEY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createRegionIdx1" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">create index region_idx1 ON region(R_REGIONKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -751,11 +858,50 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactPartsuppIdx1" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index partsupp partsupp_idx1 ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactPartsuppIdx2" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index partsupp partsupp_idx2 ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadPart" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload part paths
   &quot;/opt/rapidsse/data/tpch/sf1/part/part.tbl&quot;
 ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactPartIdx1" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index part part_idx1 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -794,11 +940,50 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactCustomerIdx2" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index customer customer_idx2 ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadSupplier" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">dload supplier paths
   &quot;/opt/rapidsse/data/tpch/sf1/supplier/supplier.tbl&quot;
 ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactSupplierIdx1" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index supplier supplier_idx1 ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactSupplierIdx2" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index supplier supplier_idx2 ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -825,6 +1010,19 @@ dload lineitem paths
               <stringProp name="TestPlan.comments">Note: This is not a distributed load because the table is so small.</stringProp>
             </JDBCSampler>
             <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactNationIdx1" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index nation nation_idx1 ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadRegion" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">load region paths
@@ -839,6 +1037,19 @@ dload lineitem paths
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
               <stringProp name="TestPlan.comments">Note: This is not a distributed load because the table is so small.</stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactRegionIdx1" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index region region_idx1 ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
             <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">

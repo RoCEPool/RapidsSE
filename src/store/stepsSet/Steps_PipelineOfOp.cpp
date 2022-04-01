@@ -14,9 +14,9 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -113,7 +113,7 @@ void Step::vPipelineOfOpCreate(void)
 
   // get pipeline spec
   
-  PipeSpec* pPipeSpec = _pPipeSpec(m_pDataStack->pPopPtr(__func__));
+  VertexSpec* pPipeSpec = _pVertexSpec(m_pDataStack->pPopPtr(__func__));
   
   // create pipeline
   
@@ -347,7 +347,7 @@ void Step::vPipelineOfOpStartPipeline(void)
   ENTRY();
   
   Pipeline* pPipelineOfOp = m_pOp->pPipelineOfOp();
-  PipeWork* pFormWork = pPipelineOfOp->pPipeWork();
+  Vertex* pFormWork = pPipelineOfOp->pVertexRoot();
 
   Stage*    pStage0   = pFormWork->pStage0();
 

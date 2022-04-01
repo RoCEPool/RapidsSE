@@ -23,6 +23,7 @@ namespace STORE
     static void vAddStep(Stz* aName, fpSTEPFN fpStepFn, bool bImmediate=false);
 
     static void vAddSteps_AccessPath(void);
+    static void vAddSteps_AdaptorWL(void);
     static void vAddSteps_Address(void);
     static void vAddSteps_AggTimer(void);
     static void vAddSteps_AM(void);

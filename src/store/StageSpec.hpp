@@ -10,19 +10,19 @@
 
 #include "OpSpec.hpp"
 
-namespace STORE { class PipeSpec; }
+namespace STORE {  class DeckSpec; class VertexSpec; }
 
 namespace STORE
 {
-  class StageSpec
-          : public ListNL_t<OpSpec>
-          , public ListItem_t<StageSpec>
+  class StageSpec : public ListNL_t<OpSpec>
+                  , public ListItem_t<StageSpec>
   {
   private:
+    VertexSpec* m_pVertexSpec; // which vertex spec
+    DeckSpec*   m_pDeckSpec;   // which deck spec
+  
     s32  m_sStageNm;    // stage name
-
-    PipeSpec* m_pPipeSpec; // which formwork spec
-
+  
     eYG  m_eStageTopology;  // stage topoplogy
     eYS  m_eStreamTopology; // stream topoplogy
     eYF  m_eParcelForward;  // how parcel is forwarded
@@ -31,8 +31,6 @@ namespace STORE
     i8   m_i_SpecificNode;  // run on specific node
     PtnId m_tSpecificPtnNo; // run for specific ptn
 
-  
-    
     // must be last
     Footer m_xFooter;
 
@@ -40,7 +38,9 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StageSpec(Stz* szStageNm, PipeSpec* pPipeSpec);
+    StageSpec(VertexSpec* pVertextSpec,
+              DeckSpec*   pDeckSpec,
+              Stz*        szStageNm);
    ~StageSpec(void) noexcept(false);
    
     static eYX eCrossTopoCalc(StageSpec* pFromStageSpec,
@@ -63,7 +63,7 @@ namespace STORE
   
     eYF  eParcelForward(void);
     void vParcelForward(eYF eParcelForward);
-    PipeSpec* pPipeSpec(void);
+    VertexSpec* pPipeSpec(void);
   
     void vSpecificNode(i8 i_SpecificNode);
     i8   iSpecificNode(void);

@@ -1,0 +1,78 @@
+/*============================================================================*/
+/* OP_adaptorWL.sen -- Operator wire line adaptor                             */
+/*============================================================================*/
+
+" OP_adaptorWL.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                          */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_StartMarker \handler
+
+  //"adaptorWL_StartMarker- ZK_M_START" .verbose
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_CLIENTEVENT ...                                                       */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_clientEvent \handler
+
+  //"adaptorWL_StartMarker- ZK_M_WIRELINE" .verbose
+
+  AdaptorWL[].processEventA
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_APIEVENT ...                                                       */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_apiEvent \handler
+
+  //"adaptorWL_StartMarker- ZK_M_WIRELINE" .verbose
+
+  //AdaptorWL[].processEventB
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* entry point                                                                */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_op \operator
+ 
+  _lu_initialise_
+
+  op__topology
+
+
+  find: adaptorWL_StartMarker ZK_M_START     [op].handler!
+//find: adaptorWL_WireLine    ZK_M_WIRELINE  [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: adaptorWL :: adaptorWL ;
+
+: adaptorWL_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "adaptorWL_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -337,6 +337,9 @@ function getBaseOutputPaths() {
   if [ "${#BASE_OUTPUT_PATHS[@]}" -eq 0 ]; then
     BASE_OUTPUT_PATHS+=("${PROJ_ROOT}")
   fi
+
+  echo "Found ${#BASE_OUTPUT_PATHS[@]} common filesystem locations for saving data:"
+  printf "  %s\n" "${BASE_OUTPUT_PATHS[@]}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -344,7 +347,7 @@ function getBaseOutputPaths() {
 ## Updates the CHUNKS_PER_NODEPATH variable.
 ## Params: None
 
-function calculate_chunks_per_path() {
+function calculateChunksPerPath() {
   local numPaths
   local factor
   local remainder
@@ -367,6 +370,42 @@ function calculate_chunks_per_path() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Print how many data chunks each node/path will get
+## Params: None
+function printChunksPerPath() {
+  local chunkIdx=-1
+  local nodeName
+  local host
+  local dir
+  local chunksForCurrentPath
+
+  local pathExt
+  pathExt="/data/tpch/sf${SF}"
+
+  readonly fmtStr="  %-40s    %-7s\n"
+
+  echo "The following paths will each get these number of data chunks:"
+  # shellcheck disable=SC2059
+  printf "${fmtStr}" "Path" "#Chunks"
+  echo "  ----------------------------------------    -------"
+
+
+  for nodeName in "${NODE_LIST[@]}";
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+
+    for dir in "${BASE_OUTPUT_PATHS[@]}"
+    do
+      chunkIdx=$((chunkIdx + 1))
+      chunksForCurrentPath="${CHUNKS_PER_NODEPATH[${chunkIdx}]}"
+
+      # shellcheck disable=SC2059
+      printf "${fmtStr}" "${dir}${pathExt}" "${chunksForCurrentPath}"
+    done
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Copies the file to each node in the cluster
 ## Params:
 
@@ -379,7 +418,7 @@ function copyScriptToNodes() {
   do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
-    debugPrint "Copying script to host ${host}"
+    echo "Copying script to host: ${host}"
     scp "-o" "BatchMode=yes" "-o" "StrictHostKeyChecking=no" "${DIR}/${SCRIPT_NAME}" "${host}:/tmp/${SCRIPT_NAME}"
 
     # ensure the script is runnable
@@ -427,7 +466,7 @@ function invokeScriptOnNodes() {
     done
 
     # Invoke the script in the background
-    debugPrint "Running script on "
+    echo "Invoking script on host: ${host}"
     ssh "-o" "BatchMode=yes" "-o" "StrictHostKeyChecking=no" "${host}" "/tmp/${SCRIPT_NAME}" "${commonArgs[@]}" "${nodeArgs[@]}" &
 
   done
@@ -459,6 +498,8 @@ function makeTargets() {
   local i=0
   local dir
 
+  echo "Making target directories on host: $(hostname)"
+
   while [ "${i}" -lt "${#TARGETS[@]}" ]
   do
     dir="${TARGETS[$i]}"
@@ -479,6 +520,8 @@ function downloadData() {
   local index
 
   index="${START_IDX}"
+
+  echo "About to download data for SF${SF} from S3 on host: $(hostname)"
 
   while [ "${i}" -lt "${#TARGETS[@]}" ]
   do
@@ -512,6 +555,7 @@ function downloadData() {
   } &
 
   wait
+  echo "Finished downloading data for SF${SF} from S3 on host: $(hostname)"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -528,6 +572,8 @@ function processData() {
 
   local i=0
   local dir
+
+  echo "About to decompress and merge data chunks on host: $(hostname)"
 
   while [ "${i}" -lt "${#TARGETS[@]}" ]
   do
@@ -566,6 +612,7 @@ function processData() {
   done
 
   wait
+  echo "Finished decompressing and merging data chunks on host: $(hostname)"
 }
 
 
@@ -594,11 +641,16 @@ if [ "${COPY_DATA_MODE}" -eq 1 ]; then
 fi
 
 # Pre-copy-data mode. Determine what needs to be copied where.
+echo "Loading cluster config at ${CONFIG_FILE}"
 loadClusterConfig   # common.fn
+
+echo "Loading name file at ${NAME_FILE}"
 loadNodeName        # common.fn
 
 # Determine how many chunks there are in the data
+echo "Determining the chunkiness of the data at SF${SF}..."
 NUMCHUNKS="$(getDataChunks)"
+echo "There are ${NUMCHUNKS} chunks for the SF${SF} data."
 
 # Determine how many nodes in the cluster
 NUMNODES="${#NODE_LIST[@]}"
@@ -608,7 +660,8 @@ getBaseOutputPaths
 
 # Determine how many files need to be downloaded to each drive on each node.
 # This will set the CHUNKS_PER_NODEPATH variable
-calculate_chunks_per_path
+calculateChunksPerPath
+printChunksPerPath
 
 # Copy this file to each node
 copyScriptToNodes

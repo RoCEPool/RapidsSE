@@ -15,7 +15,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -50,7 +50,7 @@ void Step::vPipeSpecDelete(void)
    
   if (m_pLogicUnit->m_xpPipeSpec.bIsNotNull()) {
     m_pLogicUnit
-      ->m_xpPipeSpec.vGuardedDeleteComponent(CN_PIPESPEC,
+      ->m_xpPipeSpec.vGuardedDeleteComponent(CN_VERTEXSPEC,
                                                  CN_STEP,this,(Stz*)__func__);
   }
     
@@ -95,21 +95,21 @@ void Step::vPipeSpecOptimisable(void)
   
   bool bOptimisable = false;
   
-  PipeSpec* pPipeSpec = (* m_pLogicUnit->m_xpPipeSpec);
+  VertexSpec* pPipeSpec = (* m_pLogicUnit->m_xpPipeSpec);
   
   
   
   Job* pJob = MY::pJob();
   
-  Stz* szPipelineNm = pPipeSpec->szPipelineNm();
+  Stz* szPipeSpecNm = pPipeSpec->szVertexNm();
   
   i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
 
   if (   ! iOptimiserLvl
       || ! pJob->bIsOriginator()
-      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
-      || ! pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
-      ||   pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
+      ||   szPipeSpecNm->bSame("sqlCompiler"_Stz)
+     // || ! pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
+     // ||   pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
       )
     bOptimisable = false;
   else
@@ -129,7 +129,7 @@ void Step::vPipeSpecSet(void)
   ENTRY();
   
   m_pLogicUnit->m_xpPipeSpec =
-    _pPipeSpec(m_pDataStack->pPopPtr(__func__));
+    _pVertexSpec(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

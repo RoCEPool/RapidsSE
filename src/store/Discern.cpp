@@ -5,9 +5,9 @@
 #include "Discern.hpp"
 
 #include "Pipeline.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Stage.hpp"
-#include "StageSet.hpp"
+#include "Deck.hpp"
 #include "Stream.hpp"
 #include "Op.hpp"
 
@@ -24,12 +24,12 @@ i8 Discern::nRdCsvChunk(Pipeline* pPipeline)
   
   i8 nSumQueued = 0;
   
-  PipeWork* pPipeWork = pPipeline->pPipeWork();
+  Vertex* pPipeWork = pPipeline->pVertexRoot();
 
   
-  i8 nStages = pPipeWork->pStageSet()->nItems();
+  i8 nStages = pPipeWork->pStaging()->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pPipeWork->pStageSet()->pGet(i_Stage);
+    Stage* pStage = pPipeWork->pStaging()->pGet(i_Stage);
     
     i8 nStreams = pStage->nItems();
     for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {

@@ -87,9 +87,11 @@ __aFooterFunction(LogicUnit)
 LogicUnit::LogicUnit(void)
 : Object(CN_LOGICUNIT)
 , m_nRegs(0)
+
+,      m_xpAdaptorWL(this,RF_REPAIR_DELETE,AdaptorWL::vRepair,      LR_ADAPTORWL)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       LR_AGGTIMER)
 ,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_AGGTYPESTACK)
-,   m_xpPreExpStack(this,RF_REPAIR_DELETE,IntStack::vRepair,        LR_PREEXPSTACK)
+,    m_xpPreExpStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_PREEXPSTACK)
 
 ,      m_xpBktMapGet(this,RF_REPAIR_DELETE,BktMapGet::vRepair,      LR_BKTMAP)
 ,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)

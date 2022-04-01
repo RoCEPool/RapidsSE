@@ -7,10 +7,12 @@
 
 namespace STORE
 {
-  class StageSpecSet : public ListNL_t<StageSpec>
+  class DeckSpec : public ListNL_t<StageSpec>
   {
   private:
    
+    VertexSpec*  m_pVertexSpec; // vertexSpec this deckSpec belongs to
+
     // must be last
     Footer m_xFooter;
 
@@ -18,8 +20,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StageSpecSet(void);
-   ~StageSpecSet(void) noexcept(false);
+    DeckSpec(VertexSpec* pVertexSpec);
+   ~DeckSpec(void) noexcept(false);
   
   private:
   
@@ -27,7 +29,7 @@ namespace STORE
 
   };
 
-StageSpecSet* _pStageSpecSet(void* aAddr);
+  DeckSpec* _pDeckSpec(void* aAddr);
 }
 
 /*============================================================================*/

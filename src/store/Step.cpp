@@ -42,8 +42,9 @@ void Step::vAddSteps(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Step::vAddSteps_AccessPath();
-  Step::vAddSteps_AggTimer();
+  Step::vAddSteps_AdaptorWL();
   Step::vAddSteps_Address();
+  Step::vAddSteps_AggTimer();
   Step::vAddSteps_AM();
   Step::vAddSteps_Api();
   Step::vAddSteps_SysArgs();

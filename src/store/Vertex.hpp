@@ -1,25 +1,24 @@
 /*============================================================================*/
-/* PipeWork.hpp -- PipeWork                                                   */
+/* Vertex.hpp -- Vertex of Pipeline                                           */
 /*============================================================================*/
 #pragma once
 
-namespace STORE { class Stage;    class StageSet;
-                  class PipeSpec; class SubPipeWorks; }
+namespace STORE { class Stage;    class Deck;
+                  class VertexSpec; class SubPipeWorks; }
 
 namespace STORE
 {
-  class PipeWork : public ListNL_t<PipeWork>
-                 , public ListItem_t<PipeWork>
-
-
+  class Vertex : public ListNL_t<Vertex>
+               , public ListItem_t<Vertex>
   {
   private:
-
-    Pipeline* m_pPipeline; // which pipeline
-    PipeSpec* m_pPipeSpec; // specification of this pipework
+    Pipeline*   m_pPipeline;     // which pipeline bubble this vertex is within
+    Vertex*     m_pParentVertex; // parent of this vertex
   
-    StageSet* m_pStageSet;
-
+    VertexSpec* m_pVertexSpec;   // specification of this vertex
+  
+    Deck*    m_pStaging;
+  
     // must be last
     Footer m_xFooter;
     
@@ -27,12 +26,14 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    PipeWork(Pipeline* pPipeline, PipeSpec* pPipeSpec);
-   ~PipeWork(void) noexcept(false);
+    Vertex(Pipeline* pPipeline,
+           Vertex*   pParentVertex,
+           VertexSpec* pPipeSpec);
+   ~Vertex(void) noexcept(false);
   
     bool bCancel(Task* pTriggeringTask);
 
-    PipeSpec* pPipeSpec(void);
+    VertexSpec* pPipeSpec(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
@@ -41,7 +42,7 @@ namespace STORE
     void vSpawnOpTasks(void);
     Stage* pStage0(void);
     i8   nStages(void);
-    StageSet* pStageSet(void);
+    Deck* pStaging(void);
     Stream* pStream0(void);
 
     void vCreatePipework();
@@ -50,7 +51,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  PipeWork* _pPipeWork(void* aAddr);
+  Vertex* _pVertex(void* aAddr);
 }
 
 /*============================================================================*/
