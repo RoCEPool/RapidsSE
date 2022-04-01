@@ -228,6 +228,8 @@ namespace STORE
   
     static void vAddSteps_User(void);
  
+    static void vAddSteps_Vertex(void);
+  
     static void vAddSteps_With(void);
     static void vAddSteps_Word(void);
 

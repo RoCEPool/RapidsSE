@@ -244,6 +244,8 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_User();
     
+  Step::vAddSteps_Vertex();
+
   Step::vAddSteps_With();
   Step::vAddSteps_Word();
   
