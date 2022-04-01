@@ -7,6 +7,8 @@
 // We will update this to use the HashMap, and page in from disk
 void* BufferId::vAddressFromId(BufferId oBufferId)
 {
+  _static_
+
   ASSERT(oBufferId.m_bIdFlag == 1);
 
   oBufferId.m_bIdFlag = 0;
