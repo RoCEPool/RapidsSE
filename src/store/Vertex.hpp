@@ -17,7 +17,7 @@ namespace STORE
   
     VertexSpec* m_pVertexSpec;   // specification of this vertex
   
-    Deck*    m_pStaging;
+    Deck*       m_pDeck;
   
     // must be last
     Footer m_xFooter;

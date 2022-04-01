@@ -37,11 +37,12 @@ __aFooterFunction(Stage)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stage::Stage(Vertex* pPipeWork, StageSpec *pStageSpec)
+Stage::Stage(Vertex* pPipeWork, Deck* pDeck, StageSpec *pStageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  m_pPipeWork  = pPipeWork;
+  m_pVertex    = pPipeWork;
+  m_pDeck      = pDeck;
   m_pStageSpec = pStageSpec;
 
   m_sStageNm = pStageSpec->szStageNm();
@@ -199,16 +200,16 @@ Pipeline* Stage::pPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
-  return m_pPipeWork->pPipeline();
+  return m_pVertex->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get piepline                                                               */
 /*----------------------------------------------------------------------------*/
-Vertex *Stage::pPipeWork(void) {
+Vertex *Stage::pVertex(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  return m_pPipeWork;
+  return m_pVertex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,7 +366,7 @@ void Stage::vCreateStreams(void) {
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
       tPtnId = C_UNKNOWN;
-      iOriginNodeNo = m_pPipeWork->pPipeline()->iOriginNodeNo();
+      iOriginNodeNo = m_pVertex->pPipeline()->iOriginNodeNo();
 
       pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
       vAppend(pStream);
@@ -413,7 +414,7 @@ void Stage::vCreateStreams(void) {
         tPtnId = iPtnNo;
         iOriginNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnId);
 
-        if (iOriginNodeNo == m_pPipeWork->pPipeline()->iOriginNodeNo()) {
+        if (iOriginNodeNo == m_pVertex->pPipeline()->iOriginNodeNo()) {
           i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
           pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
           vAppend(pStream);

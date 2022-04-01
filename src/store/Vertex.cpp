@@ -43,7 +43,7 @@ Vertex::Vertex(Pipeline* pPipeline,
   m_pParentVertex = pParentVertex;
   m_pVertexSpec     = pPipeSpec;
 
-  m_pStaging = new Deck(this,m_pVertexSpec);
+  m_pDeck = new Deck(this,m_pVertexSpec);
 
   _checkInitialised_(CN_VERTEX);
   
@@ -62,7 +62,7 @@ Vertex::~Vertex(void) noexcept(false)
   while (Vertex *pSupVertex = pPop())
     delete pSupVertex;
   
-  delete m_pStaging;
+  delete m_pDeck;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@ bool Vertex::bCancel(Task* pTriggeringTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
   // get the first stage of the pipeline
-  Stage* pStage = m_pStaging->pGet(0);
+  Stage* pStage = m_pDeck->pGet(0);
   
   // send cancelMarker to the start Op of the first stage of the pipeline
   pStage->vCancelPipeline(pTriggeringTask);
@@ -103,7 +103,7 @@ Op* Vertex::pOp0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  Stage*  pStage0 = m_pStaging->pGet(0);
+  Stage*  pStage0 = m_pDeck->pGet(0);
   Op*     pOp0    = pStage0->pOp0();
 
   return pOp0;
@@ -122,7 +122,7 @@ i8 Vertex::nOpsOnNode(i8 iNode)
   
   i8 nStages = this->nStages();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = m_pStaging->pGet(i_Stage);
+    Stage* pStage = m_pDeck->pGet(i_Stage);
     nOps += pStage->nOpsOnNode(iNode,iOriginNodeNo);
   }
   
@@ -148,7 +148,7 @@ void Vertex::vSetInvoker(Task* pInvoker)
   
   for (i8 i_Stage = 0; i_Stage < nStages(); i_Stage++) {
     
-    Stage* pStage = m_pStaging->pGet(i_Stage);
+    Stage* pStage = m_pDeck->pGet(i_Stage);
     
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
       Stream* pStream = pStage->pGet(i_Stream);
@@ -166,7 +166,7 @@ void Vertex::vSetupJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  Stage* pStage = m_pStaging->pGet(0);
+  Stage* pStage = m_pDeck->pGet(0);
   
   i8 nDivs = pStage->nItems();
   for (i8 i_Stream = 0; i_Stream < nDivs; i_Stream++) {
@@ -211,7 +211,7 @@ void Vertex::vSpawnOpTasks(void)
   
   for (i8 i_Stage = 0; i_Stage < nStages(); i_Stage++) {
     
-    Stage* pStage = m_pStaging->pGet(i_Stage);
+    Stage* pStage = m_pDeck->pGet(i_Stage);
     
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
       Stream* pStream = pStage->pGet(i_Stream);
@@ -229,7 +229,7 @@ Stage* Vertex::pStage0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  Stage*  pStage0 = m_pStaging->pGet(0);
+  Stage*  pStage0 = m_pDeck->pGet(0);
 
   return pStage0;
 }
@@ -241,7 +241,7 @@ i8 Vertex::nStages(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  i8 nStages = m_pStaging->nItems();
+  i8 nStages = m_pDeck->nItems();
   
   return nStages;
 }
@@ -253,7 +253,7 @@ Deck* Vertex::pStaging(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  return m_pStaging;
+  return m_pDeck;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,8 +289,8 @@ void Vertex::vCreatePipework(void)
     StageSpec* pStageSpec = m_pVertexSpec->pStageSpec(i_StageSpec);
     
     // add a stage from the stageSpec to the stageVec
-    Stage* pStage = new Stage(this,pStageSpec);
-    m_pStaging->vAppend(pStage);
+    Stage* pStage = new Stage(this,m_pDeck,pStageSpec);
+    m_pDeck->vAppend(pStage);
     pStage->vCreateStreams();
   }
 }

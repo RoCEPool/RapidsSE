@@ -922,7 +922,7 @@ Job* Op::pJobOfOp(void)
   
   Stream*   pStream   = this->pStream();
   Stage*    pStage    = pStream->pStage();
-  Pipeline* pPipeline = pStage->pPipeWork()->pPipeline();
+  Pipeline* pPipeline = pStage->pVertex()->pPipeline();
   Job*      pJob      = pPipeline->pPipelineJob();
 
   return pJob;
