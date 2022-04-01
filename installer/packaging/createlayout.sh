@@ -63,9 +63,6 @@ cp "${ROOT_DIR}/src/store/vFLAT_Parameters.h"      "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/vFLAT_PreliminaryCrw.h"  "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/vFLAT_SkipColumn.h"      "${LAYOUT_DIR}/src/store"
 
-# eo_Text
-cp -r "${ROOT_DIR}/eo_text"                      "${LAYOUT_DIR}/eo_text"
-
 # Bootstrap
 cp "${ROOT_DIR}/bootstrap/setup.sh"              "${LAYOUT_DIR}"
 cp "${ROOT_DIR}/bootstrap/setup.fn"              "${LAYOUT_DIR}"
