@@ -36,10 +36,6 @@ namespace STORE
     bool       m_bTraceOp;  // tracing this operator
     bool       m_bTraceAck; // tracing ack of this operator
 
-    // -- refers to
-    SMA<Vertex,CN_VERTEX>      m_p_VertexOfOp;  // which pipework
-    SMA<Deck,CN_DECK>          m_p_DeckOfOp;  // which pipework
-
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // event handling

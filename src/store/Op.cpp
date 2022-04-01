@@ -70,9 +70,6 @@ Op::Op(Stream* pStream, OpSpec* pOpSpec)
   m_bTraceOp    = false;
   m_bTraceAck   = false;
 
-  m_p_VertexOfOp   = pStream->pStage()->pVertex();
-  m_p_DeckOfOp     = pStream->pStage()->pDeck();
-
   // -- -- -- -- -- --
 
   // m_oOpTags
