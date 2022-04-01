@@ -27,9 +27,9 @@ i8 Discern::nRdCsvChunk(Pipeline* pPipeline)
   Vertex* pPipeWork = pPipeline->pVertexRoot();
 
   
-  i8 nStages = pPipeWork->pStaging()->nItems();
+  i8 nStages = pPipeWork->pDeck()->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pPipeWork->pStaging()->pGet(i_Stage);
+    Stage* pStage = pPipeWork->pDeck()->pGet(i_Stage);
     
     i8 nStreams = pStage->nItems();
     for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {

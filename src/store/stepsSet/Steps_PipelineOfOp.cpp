@@ -347,9 +347,9 @@ void Step::vPipelineOfOpStartPipeline(void)
   ENTRY();
   
   Pipeline* pPipelineOfOp = m_pOp->pPipelineOfOp();
-  Vertex* pFormWork = pPipelineOfOp->pVertexRoot();
+  Vertex* pVortext = pPipelineOfOp->pVertexRoot();
 
-  Stage*    pStage0   = pFormWork->pStage0();
+  Stage*    pStage0   = pVortext->pStage0();
 
   if (pStage0->bEnqueueInvoke()) {
     

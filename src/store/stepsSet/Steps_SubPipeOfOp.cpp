@@ -374,9 +374,9 @@ void Step::vSubPipeOfOpStartPipeline(void)
   ENTRY();
   
   Pipeline* pSubPipelineOfOp = m_pOp->pSubPipeOfOp();
-  Vertex* pFormWork = pSubPipelineOfOp->pVertexRoot();
+  Vertex* pVortex = pSubPipelineOfOp->pVertexRoot();
 
-  Stage*    pStage0   = pFormWork->pStage0();
+  Stage*    pStage0   = pVortex->pStage0();
 
   if (pStage0->bEnqueueInvoke()) {
     

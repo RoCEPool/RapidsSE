@@ -191,9 +191,9 @@ void Step::vPipelineEnqueueStart(void)
 {
   ENTRY();
   
-  Vertex* pFormWork = m_pLogicUnit->m_xpPipeline->pVertexRoot();
+  Vertex* pVortex = m_pLogicUnit->m_xpPipeline->pVertexRoot();
 
-  Stage*    pStage0   = pFormWork->pStaging()->pGet(0);
+  Stage*    pStage0   = pVortex->pDeck()->pGet(0);
 
   if (pStage0->bEnqueueInvoke()) {
     

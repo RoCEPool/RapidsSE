@@ -99,7 +99,7 @@ bool Vertex::bCancel(Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get formwork spec                                                          */
+/* get vertex spec                                                            */
 /*----------------------------------------------------------------------------*/
 VertexSpec* Vertex::pVertexSpec(void)
 {
@@ -261,7 +261,7 @@ i8 Vertex::nStages(void)
 /*----------------------------------------------------------------------------*/
 /* get stage set                                                              */
 /*----------------------------------------------------------------------------*/
-Deck* Vertex::pStaging(void)
+Deck* Vertex::pDeck(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   

@@ -40,7 +40,7 @@ namespace STORE
     void vSpawnOpTasks(void);
     Stage* pStage0(void);
     i8   nStages(void);
-    Deck* pStaging(void);
+    Deck* pDeck(void);
     Stream* pStream0(void);
 
     void vCreateDeck();
