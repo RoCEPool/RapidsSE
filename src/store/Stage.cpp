@@ -57,7 +57,8 @@ Stage::Stage(Deck* pDeck, StageSpec *pStageSpec)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Stage::~Stage(void) noexcept(false) {
+Stage::~Stage(void) noexcept(false)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
 //  i8 nStreams = this->nItems();
@@ -81,7 +82,8 @@ Stage::~Stage(void) noexcept(false) {
 /*----------------------------------------------------------------------------*/
 /* send cancel marker to start ops of the stage                               */
 /*----------------------------------------------------------------------------*/
-void Stage::vCancelPipeline(Task *pTriggeringTask) {
+void Stage::vCancelPipeline(Task *pTriggeringTask)
+{
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   // would the start marker always be on ORIGIN???
@@ -101,11 +103,21 @@ void Stage::vCancelPipeline(Task *pTriggeringTask) {
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* get deck                                                                   */
+/*----------------------------------------------------------------------------*/
+Deck *Stage::pDeck(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
+
+  return m_pDeck;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get stream for given node                                                  */
 /*----------------------------------------------------------------------------*/
-Stream *Stage::pGetStream_byNodeNo(i8 i_Node) {
+Stream *Stage::pGetStream_byNodeNo(i8 i_Node)
+{
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   Stream *pStream = nullptr;
@@ -126,7 +138,8 @@ Stream *Stage::pGetStream_byNodeNo(i8 i_Node) {
 /*----------------------------------------------------------------------------*/
 /* get stream for given partition                                             */
 /*----------------------------------------------------------------------------*/
-Stream *Stage::pGetStream_byPtnNo(i8 i_Ptn) {
+Stream *Stage::pGetStream_byPtnNo(i8 i_Ptn)
+{
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   Stream *pStream = nullptr;
@@ -147,7 +160,8 @@ Stream *Stage::pGetStream_byPtnNo(i8 i_Ptn) {
 /*----------------------------------------------------------------------------*/
 /* get stream by streamNo                                                     */
 /*----------------------------------------------------------------------------*/
-Stream *Stage::pGetStream_byStreamNo(i8 i_Stream) {
+Stream *Stage::pGetStream_byStreamNo(i8 i_Stream)
+{
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   Stream *pStream = pGet(i_Stream);
@@ -158,7 +172,8 @@ Stream *Stage::pGetStream_byStreamNo(i8 i_Stream) {
 /*----------------------------------------------------------------------------*/
 /* get ops to be executed on given node                                       */
 /*----------------------------------------------------------------------------*/
-i8 Stage::nOpsOnNode(i8 iNode, i8 iOrigin) {
+i8 Stage::nOpsOnNode(i8 iNode, i8 iOrigin)
+{
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   i8 nOps = 0;
@@ -206,9 +221,10 @@ Pipeline* Stage::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get piepline                                                               */
+/* get vertex                                                                 */
 /*----------------------------------------------------------------------------*/
-Vertex *Stage::pVertex(void) {
+Vertex *Stage::pVertex(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
   return m_pDeck->pVertex();
@@ -230,7 +246,8 @@ Op* Stage::pOp0(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp) {
+Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp)
+{
   i8 i_ThisNode = AM::iThisNodeNo();
 
   Op *pOp = nullptr;
@@ -264,7 +281,8 @@ Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp) {
 /*----------------------------------------------------------------------------*/
 /* get stage number                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Stage::i_Stage(void) {
+i8 Stage::i_Stage(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
   return m_i_Stage;
@@ -273,7 +291,8 @@ i8 Stage::i_Stage(void) {
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz *Stage::szStageNm(void) {
+Stz *Stage::szStageNm(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
   return m_pStageSpec->szStageNm();
@@ -282,7 +301,8 @@ Stz *Stage::szStageNm(void) {
 /*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-StageSpec *Stage::pStageSpec(void) {
+StageSpec *Stage::pStageSpec(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
   return m_pStageSpec;
@@ -303,7 +323,8 @@ Stream* Stage::pStream0(void)
 /*----------------------------------------------------------------------------*/
 /* test if to send startMarker to start op of the stage                       */
 /*----------------------------------------------------------------------------*/
-bool Stage::bEnqueueInvoke(void) {
+bool Stage::bEnqueueInvoke(void)
+{
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   // would the start marker always be on ORIGIN???
@@ -337,7 +358,8 @@ bool Stage::bEnqueueInvoke(void) {
 /*----------------------------------------------------------------------------*/
 /* create the streams for this stage                                          */
 /*----------------------------------------------------------------------------*/
-void Stage::vCreateStreams(void) {
+void Stage::vCreateStreams(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
   PtnId tPtnId;
 

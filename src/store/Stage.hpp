@@ -33,6 +33,8 @@ namespace STORE
    ~Stage(void) noexcept(false);
       
     void vCancelPipeline(Task* pTriggeringTask);
+    Deck* pDeck(void);
+    bool bEnqueueInvoke(void);
     Stream* pGetStream_byNodeNo(i8 i_Node);
     Stream* pGetStream_byPtnNo(i8 i_Ptn);
     Stream* pGetStream_byStreamNo(i8 i_Stream);
@@ -45,11 +47,10 @@ namespace STORE
     Stz* szStageNm(void);
     Stream* pStream0(void);
     StageSpec* pStageSpec(void);
-    bool bEnqueueInvoke(void);
 
-  void    vCreateStreams(void);
 
   private:
+    void    vCreateStreams(void);
 
     Footer* aFooter(void);
   };

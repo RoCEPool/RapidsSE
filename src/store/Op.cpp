@@ -70,8 +70,8 @@ Op::Op(Stream* pStream, OpSpec* pOpSpec)
   m_bTraceOp    = false;
   m_bTraceAck   = false;
 
-  m_p_SubPipeOfOp  = pStream->pPipeline();
-  m_p_PipeWorkOfOp = nullptr;
+  m_p_VertexOfOp   = pStream->pStage()->pVertex();
+  m_p_DeckOfOp     = pStream->pStage()->pDeck();
 
   // -- -- -- -- -- --
 
@@ -1772,16 +1772,6 @@ eYS Op::eStreamTopology_op(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_pOpSpec->eStreamTopology_op();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get sub-pipeline of op                                                     */
-/*----------------------------------------------------------------------------*/
-Pipeline* Op::pSubPipeOfOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_p_SubPipeOfOp;
 }
 
 /*----------------------------------------------------------------------------*/

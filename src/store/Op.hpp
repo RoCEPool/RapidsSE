@@ -12,7 +12,8 @@
 
 namespace BASE { class OperandQueue; }
 
-namespace STORE { class OpSpec;
+namespace STORE { class Deck;
+                  class OpSpec;
                   class VertexSpec; class Vertex;
                   class StageSpec; }
 
@@ -36,9 +37,9 @@ namespace STORE
     bool       m_bTraceAck; // tracing ack of this operator
 
     // -- refers to
-    SMA<Pipeline,CN_PIPELINE>  m_p_SubPipeOfOp;   // which sub-pipeline
-    SMA<Vertex,CN_VERTEX>  m_p_PipeWorkOfOp;  // which pipework
-  
+    SMA<Vertex,CN_VERTEX>      m_p_VertexOfOp;  // which pipework
+    SMA<Deck,CN_DECK>          m_p_DeckOfOp;  // which pipework
+
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // event handling
@@ -180,7 +181,6 @@ namespace STORE
     Stz* szStageName(void);
     Stream* pStream(void);
     eYS  eStreamTopology_op(void);
-    Pipeline* pSubPipeOfOp(void);
 
     Task* pTask(void);
     void vTask(Task* pTask);
