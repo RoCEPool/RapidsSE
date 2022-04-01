@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Op.hpp -- Operator of Stream of Stage of Pipeline                          */
+/* Op.hpp -- Operator (of Stream of Stage of Deck of Vertex of Pipeline)      */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,6 @@
 #include "eZK.h"
 
 #include "OperandWatch.hpp"
-
 
 namespace BASE { class OperandQueue; }
 
@@ -22,15 +21,14 @@ namespace STORE
   class Op : public Operand
   {
   private:
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // operator
+  
+    SMA<Stream,CN_STREAM> m_pStream;  // which stream (of stage of pipeline of job)
+    SMA<OpSpec,CN_OPSPEC> m_pOpSpec;  // specification of this operator
 
     // -- id, name and kind
     Gid_t<CN_OP> m_xOpId;     // op id in grid
     s32        m_sOpNm;     // name of this operator
     s256       m_sPath;     // operator path
-
-  
 
   
     s4K        m_sExpr;     // expression for this filter
@@ -40,11 +38,9 @@ namespace STORE
     bool       m_bTraceAck; // tracing ack of this operator
 
     // -- belongs to
-    SMA<Stream,CN_STREAM> m_pStream;  // which stream (of stage of pipeline of job)
     i8          m_i_Op;     // is [m_i_Op] in m_pStream
 
     // -- refers to
-    SMA<OpSpec,CN_OPSPEC>      m_pOpSpec;  // specification of this operator
     SMA<Pipeline,CN_PIPELINE>  m_p_SubPipeOfOp;   // which sub-pipeline
     SMA<Vertex,CN_VERTEX>  m_p_PipeWorkOfOp;  // which pipework
   
@@ -99,7 +95,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op(Stream* pStream, OpSpec* pOpSpec);
+    Op(Stream* pStream,
+       OpSpec* pOpSpec);
    ~Op(void) noexcept(false);
   
     // - - - - - - - - - - - - - - - -

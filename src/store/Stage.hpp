@@ -1,26 +1,22 @@
 /*============================================================================*/
-/* Stage.hpp -- Stage of Pipeline (being a vector of Stbream)                  */
+/* Stage.hpp -- Stage (of Deck of Vertex of Pipeline)                         */
 /*============================================================================*/
 #pragma once
 
 #include "eYS.h"
 
 namespace STORE { class Deck; class Vertex;
-
                   class Stream; class StageSpec; }
 
 namespace STORE
 {
   class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>
               , public ListItem_t<Stage>
-
   {
   private:
-    Vertex*    m_pVertex;  // which pipework
     Deck*      m_pDeck;
     StageSpec* m_pStageSpec; // specification of this stage
   
-    s32  m_sStageNm;    // name of this stage
     i8   m_i_Stage;     // [stage] in pipeline
 
   
@@ -33,7 +29,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Stage(Vertex* pVertex, Deck* pDeck, StageSpec* pStageSpec);
+    Stage(Deck*      pDeck,
+          StageSpec* pStageSpec);
    ~Stage(void) noexcept(false);
       
     void vCancelPipeline(Task* pTriggeringTask);

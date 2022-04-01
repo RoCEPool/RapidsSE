@@ -1,11 +1,12 @@
 /*============================================================================*/
-/* Deck.hpp -- Deck (of stages)                                               */
+/* Deck.hpp -- Deck (of Vertex of Pipeline)                                   */
 /*============================================================================*/
 #pragma once
 
 #include "Stage.hpp"
 
 namespace STORE { class DeckSpec; class VertexSpec; }
+
 namespace STORE
 {
   class Deck : public ListNL_t<Stage>
@@ -21,7 +22,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Deck(Vertex* pVertex, DeckSpec* pDeckSpec);
+    Deck(Vertex*   pVertex,
+         DeckSpec* pDeckSpec);
    ~Deck(void) noexcept(false);
   
     Pipeline* pPipeline(void);

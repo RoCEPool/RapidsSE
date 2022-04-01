@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Vertex.hpp -- Vertex of Pipeline                                           */
+/* Vertex.hpp -- Vertex (of Pipeline)                                         */
 /*============================================================================*/
 #pragma once
 
@@ -14,7 +14,6 @@ namespace STORE
   private:
     Pipeline*   m_pPipeline;     // which pipeline bubble this vertex is within
     Vertex*     m_pParentVertex; // parent of this vertex
-  
     VertexSpec* m_pVertexSpec;   // specification of this vertex
   
     Deck*       m_pDeck;
@@ -26,9 +25,9 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Vertex(Pipeline* pPipeline,
-           Vertex*   pParentVertex,
-           VertexSpec* pPipeSpec);
+    Vertex(Pipeline*   pPipeline,
+           Vertex*     pParentVertex,
+           VertexSpec* pVertexSpec);
    ~Vertex(void) noexcept(false);
   
     bool bCancel(Task* pTriggeringTask);

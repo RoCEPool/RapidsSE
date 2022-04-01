@@ -289,7 +289,7 @@ void Vertex::vCreatePipework(void)
     StageSpec* pStageSpec = m_pVertexSpec->pStageSpec(i_StageSpec);
     
     // add a stage from the stageSpec to the stageVec
-    Stage* pStage = new Stage(this,m_pDeck,pStageSpec);
+    Stage* pStage = new Stage(m_pDeck,pStageSpec);
     m_pDeck->vAppend(pStage);
     pStage->vCreateStreams();
   }
