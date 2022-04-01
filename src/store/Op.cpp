@@ -273,9 +273,6 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
   }
   
   AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_ENQUEUE);
-//  RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-//  vTrace(">>>>push>>OperandAddr>>>> %p\n"_Stz, pOperand);
-//  vTrace(">>>>push>>RowBufferAddr>> %p\n"_Stz, pRowBuffer);
 
   if(CN_ROWBUFFER == pOperand->eGetClassNo())
   {
@@ -283,7 +280,6 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
     RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
     vTrace(">>>>push>>OperandAddr>>>> %p\n"_Stz, pOperand);
 
-//    vTrace(">>>>push>>BufferId size>> %d\n"_Stz, sizeof(BufferId));
     BufferId oBufferId = pRowBuffer->oGetBufferId();
     pOperand = (Operand*) oBufferId.m_vAsAddress;
     vTrace("Push Id: %lld, Addr: %p, AddrFlag: %llu, Spare: %llu, Page File #: %llu, Buffer offset #: %llu\n"_Stz,
@@ -294,7 +290,6 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
            oBufferId.m_uSpare,
            oBufferId.m_uPageFile,
            oBufferId.m_uBuffOffset);
-    vTrace(">>>>push>>RowBufferAddr>> %p\n"_Stz, pRowBuffer);
   }
   vGrabTaskLock();
   RASSERT(bIsLocked());
@@ -1624,26 +1619,6 @@ Operand* Op::pPopOoOLeft(void)
   else
   if (CN_ROWBUFFER == eClassNo) {
     RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-    vTrace(">>>>pop>>>RowBufferAddr>> %p\n"_Stz, pRowBuffer);
-//    if(oBufferId.m_bIdFlag == 0)
-//    {
-//      vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows)\n"_Stz
-//          ,pStage()->szStageNm()
-//          ,szOpNm()
-//          ,pRowBuffer->nRows()
-//      );
-//    }
-//    else
-//    {
-//      //Page in here
-//      vTrace("Id: %lld, Addr: %p, AddrFlag: %llu, Page File #: %llu, Buffer offset #: %llu\n"_Stz,
-//
-//             oBufferId.m_iAsI8,
-//             oBufferId.m_vAsAddress,
-//             oBufferId.m_bIdFlag,
-//             oBufferId.m_uPageFile,
-//             oBufferId.m_uBuffOffset);
-//    }
   }
 
   return pOperand;
