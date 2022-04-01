@@ -63,9 +63,6 @@ cp "${ROOT_DIR}/src/store/vFLAT_Parameters.h"      "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/vFLAT_PreliminaryCrw.h"  "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/vFLAT_SkipColumn.h"      "${LAYOUT_DIR}/src/store"
 
-# Asm
-cp -r "${ROOT_DIR}/asm"                          "${LAYOUT_DIR}/asm"
-
 # eo_Text
 cp -r "${ROOT_DIR}/eo_text"                      "${LAYOUT_DIR}/eo_text"
 
