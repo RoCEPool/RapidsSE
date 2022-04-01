@@ -186,7 +186,9 @@ LogicUnit::LogicUnit(void)
 ,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepairHashSet,LR_TOPTNROW)
 ,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepairList,      LR_TOROW)
 ,            m_xpTub(this,RF_REPAIR_DELETE,Tub::vRepair,            LR_TUB)
-,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,          LR_TX)
+,             m_xpTx(this,RF_REPAIR_DELETE,Tx::vRepair,             LR_TX)
+
+,         m_xpVertex(this,RF_REPAIR_DELETE,Vertex::vRepair,         LR_VERTEX)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);

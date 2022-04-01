@@ -46,6 +46,7 @@
 
 #include "IndexTree.hpp"
 #include "JobMetrics.hpp"
+#include "Vertex.hpp"
 
 #include "eLH.h"
 #include "eXK.h"
@@ -267,6 +268,9 @@ namespace STORE
     REG<ToRow,          CN_TOROW         > m_xpToRow;
     REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;
+  
+    REG<Vertex,         CN_VERTEX        > m_xpVertex;
+
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

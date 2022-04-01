@@ -29,6 +29,8 @@ namespace STORE
            VertexSpec* pVertexSpec);
    ~Vertex(void) noexcept(false);
   
+    static void vRepair(Object* pObject);
+
     bool bCancel(Task* pTriggeringTask);
 
     VertexSpec* pVertexSpec(void);
