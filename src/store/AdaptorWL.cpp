@@ -57,7 +57,7 @@ void AdaptorWL::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* action 0                                                                   */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::vAction0(void)
+void AdaptorWL::vProcessEventA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ADAPTORWL,_FOOTER_);
   

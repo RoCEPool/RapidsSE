@@ -26,7 +26,7 @@ namespace STORE
   
     static void vRepair(Object* pObject);
 
-    void vAction0(void);
+    void vProcessEventA(void);
     void vAction1(void);
     void vAction2(void);
 

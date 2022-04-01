@@ -16,11 +16,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_WIRELINE ...                                                       */
+/* on ZK_M_CLIENTEVENT ...                                                       */
 /*----------------------------------------------------------------------------*/
-: adaptorWL_WireLine \handler
+: adaptorWL_clientEvent \handler
 
   //"adaptorWL_StartMarker- ZK_M_WIRELINE" .verbose
+
+  AdaptorWL[].processEventA
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_APIEVENT ...                                                       */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_apiEvent \handler
+
+  //"adaptorWL_StartMarker- ZK_M_WIRELINE" .verbose
+
+  //AdaptorWL[].processEventB
 
   true
 ;

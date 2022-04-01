@@ -26,7 +26,7 @@ public:
   void vAccumSumStore(void);
 
   // adaptorWL
-  void vAdaptorWLAction0(void);
+  void vAdaptorProcessEventA(void);
   void vAdaptorWLAction1(void);
   void vAdaptorWLAction2(void);
   void vAdaptorWLDelete(void);
