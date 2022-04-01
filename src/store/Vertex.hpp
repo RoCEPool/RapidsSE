@@ -31,7 +31,7 @@ namespace STORE
   
     bool bCancel(Task* pTriggeringTask);
 
-    VertexSpec* pPipeSpec(void);
+    VertexSpec* pVertexSpec(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);

@@ -101,7 +101,7 @@ bool Vertex::bCancel(Task* pTriggeringTask)
 /*----------------------------------------------------------------------------*/
 /* get formwork spec                                                          */
 /*----------------------------------------------------------------------------*/
-VertexSpec* Vertex::pPipeSpec(void)
+VertexSpec* Vertex::pVertexSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   

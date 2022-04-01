@@ -54,8 +54,8 @@ namespace STORE
     void vSpawnOpTasks(void);
     Stz* szStreamNm(void);
  
-    void vCreateOps();
   private:
+    void vCreateOps();
     void vSynthesiseName(void);
     Footer* aFooter(void);
   };
