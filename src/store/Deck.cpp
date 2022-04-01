@@ -21,7 +21,6 @@ __aFooterFunction(Deck)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Deck::Deck(Vertex* pVertex, DeckSpec* pDeckSpec)
-: ListNL_t<Stage>(CN_DECK)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 
@@ -40,8 +39,18 @@ Deck::~Deck(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 
-  while (Stage* pStage = pPop())
+  //while (Stage* pStage = pPop())
+  //  delete pStage;
+
+  i8 nStages = this->nItems();
+  for (i8 i_Stage = 0; i_Stage  < nStages; i_Stage++) {
+    Stage *pStage = pGet(i_Stage);
+
     delete pStage;
+  }
+
+  vClear();
+
 }
 
 /*----------------------------------------------------------------------------*/

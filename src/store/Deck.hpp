@@ -9,7 +9,7 @@ namespace STORE { class DeckSpec; class VertexSpec; }
 
 namespace STORE
 {
-  class Deck : public ListNL_t<Stage>
+  class Deck : public VectorNL_t<CN_DECK,Stage,C_MAX_STAGES>
   {
   private:
     Vertex*     m_pVertex;

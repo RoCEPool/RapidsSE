@@ -319,7 +319,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(DdlLock),            HT_T_TINY    ,0 FILL }, // CN_DDLLOCK
   { sizeof(DecaCnt),            HT_T_TINY    ,0 FILL }, // CN_DECACNT
   { sizeof(Decider),            HT_T_TINY    ,0 FILL }, // CN_DECIDER
-  { sizeof(Deck),               HT_T_TINY    ,0 FILL }, // CN_DECK
+  { sizeof(Deck),               HT_T_SMALL   ,0 FILL }, // CN_DECK
   { sizeof(DeckSpec),           HT_T_TINY    ,0 FILL }, // CN_DECKSPEC
   { sizeof(DefinitionNode),     HT_T_TINY    ,-8 FILL }, // CN_DEFINITIONNODE
   { sizeof(DerefMetrics),       HT_T_TINY    ,0 FILL }, // CN_DEREF

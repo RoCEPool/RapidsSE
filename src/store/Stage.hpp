@@ -11,7 +11,6 @@ namespace STORE { class Deck; class Vertex;
 namespace STORE
 {
   class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>
-              , public ListItem_t<Stage>
   {
   private:
     Deck*      m_pDeck;

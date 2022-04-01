@@ -6,6 +6,7 @@
 static const i8 C_MAX_BUCKETS_IN_GRID = 64;    // with 2N4P2B
 static const i8 C_MAX_BKTS_PER_PTN  = 2;      // with 2N4P2B
 static const i8 C_MAX_COLUMNS       = 150;    // max columns per table
+static const i8 C_MAX_DECKS         = 256;
 static const i8 C_MAX_DEFCOLUMNS    = 150;    // max columns in a stream definition
 static const i8 C_MAX_ENTRY_SIZE    = C_1KB;  // max index entry size
 static const i8 C_MAX_EXPR          = 256;    // max expressions in expr vec
