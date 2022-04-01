@@ -102,7 +102,6 @@ void Deck::vCreateStages(void)
     // add a stage from the stageSpec to the stageVec
     Stage* pStage = new Stage(this,pStageSpec);
     vAppend(pStage);
-    pStage->vCreateStreams();
   }
 }
 

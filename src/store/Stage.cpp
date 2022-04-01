@@ -45,12 +45,11 @@ Stage::Stage(Deck* pDeck, StageSpec *pStageSpec)
   m_pDeck      = pDeck;
   m_pStageSpec = pStageSpec;
 
-  m_i_Stage  = pStageSpec->i_StageSpec();
-
+  m_i_Stage    = pStageSpec->i_StageSpec();
 
   _checkInitialised_(CN_STAGE);
 
-  //vCreateStreams();
+  vCreateStreams();
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 }
@@ -357,7 +356,7 @@ void Stage::vCreateStreams(void) {
         iNodeNo = AM::GRID::iGetNthNodeNo(iOriginNodeNo);
         pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iNodeNo); //i_Node);
         vAppend(pStream);
-        pStream->vCreateOps();
+        //pStream->vCreateOps();
       }
       break;
 
@@ -369,7 +368,7 @@ void Stage::vCreateStreams(void) {
 
       pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
       vAppend(pStream);
-      pStream->vCreateOps();
+      //pStream->vCreateOps();
       break;
 
     case YG_NEXT_NODE: // create a stream for a next node only
@@ -383,7 +382,7 @@ void Stage::vCreateStreams(void) {
         //if (i_NodeNo == pThisNode->iNodeNo()) {
         pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iNodeNo);
         vAppend(pStream);
-        pStream->vCreateOps();
+        //pStream->vCreateOps();
           //break;
         //}
         //break;
@@ -402,7 +401,7 @@ void Stage::vCreateStreams(void) {
         i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
         pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
         vAppend(pStream);
-        pStream->vCreateOps();
+        //pStream->vCreateOps();
       }
       break;
 
@@ -417,7 +416,7 @@ void Stage::vCreateStreams(void) {
           i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
           pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
           vAppend(pStream);
-          pStream->vCreateOps();
+          //pStream->vCreateOps();
         }
       }
       break;

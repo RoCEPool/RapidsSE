@@ -49,7 +49,7 @@ Stream::Stream(Stage* pStage, StageSpec* pStageSpec,
 
   _checkInitialised_(CN_STREAM);
   
-  //vCreateOps();
+  vCreateOps();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
 }
