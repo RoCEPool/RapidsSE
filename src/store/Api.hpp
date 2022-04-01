@@ -36,7 +36,7 @@ namespace STORE
   static void vSubmitJob(Session* pSession);
   static void vWaitJob(Session* pSession);
 
-  static void vPushOperand(Session* pSession, Operand* pOperand);
+  //static void vPushOperand(Session* pSession, Operand* pOperand);
  
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);

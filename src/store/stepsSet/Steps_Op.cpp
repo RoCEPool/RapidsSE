@@ -31,7 +31,6 @@ void Step::vAddSteps_Op(void)
   
   vAddStep("[op]"_Stz,                  &Step::vOpGet);
   vAddStep("[op].ackInvokingTask"_Stz,  &Step::vOpAckInvokingTask);
-  vAddStep("[op].downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
   vAddStep("[op].handlerEntry"_Stz,     &Step::vOpHandlerEntry);
   vAddStep("[op].handlerExit"_Stz,      &Step::vOpHandlerExit);
   vAddStep("[op].handler@"_Stz,         &Step::vOpHandlerFetch);
@@ -42,8 +41,6 @@ void Step::vAddSteps_Op(void)
   vAddStep("[op].incOperandCount"_Stz,  &Step::vOpIncOperandCount);
   vAddStep("[op].job@"_Stz,             &Step::vOpJobFetch);
   vAddStep("[op].opName@"_Stz,          &Step::vOpOpNameFetch);
-  vAddStep("[op].outboundOperand@"_Stz, &Step::vOpOutboundOperandFetch);
-  vAddStep("[op].outboundOperand!"_Stz, &Step::vOpOutboundOperandStore);
   vAddStep("[op].partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("[op].pipeBackin"_Stz,       &Step::vOpPipeBackIn);
   vAddStep("[op].pipeout"_Stz,          &Step::vOpPipeOut);
@@ -62,20 +59,6 @@ void Step::vOpAckInvokingTask(void)
   ENTRY();
   
   m_pOp->vAckInvokingTask();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [op].downstreamOp! -- store downstream op                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vOpDownstreamOpStore(void)
-{
-  ENTRY();
-    
-  Op* pDownstreamOp = _pOp(m_pDataStack->pPopPtr(__func__));
-  
-  m_pOp->vDownstreamOp(pDownstreamOp);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -294,32 +277,6 @@ void Step::vOpOpNameFetch(void)
   s256 sOpName = m_pOp->szOpNm();
   
   m_pDataStack->vPushStr(sOpName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [op].outboundOperand@ -- fetch outbound operand from op                    */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOutboundOperandFetch(void)
-{
-  ENTRY();
-    
-  m_pDataStack->vPushPtr(m_pOp->pOutboundOperand());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [op].outboundOperand! -- store outbound operand into op                    */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOutboundOperandStore(void)
-{
-  ENTRY();
-    
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-  m_pOp->vOutboundOperand(pOperand);
   
   EXIT();
 }

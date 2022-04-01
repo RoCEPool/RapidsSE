@@ -4,6 +4,8 @@
 
 #include "BASE.h"
 
+#include "TagConstants.h"
+
 extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;
 
@@ -733,10 +735,12 @@ void PoolHelper::vValidateEnums(void)
     
     eCN eClass = (eCN)i_Class;
     
-    //vTrace("%s\n"_Stz,aCN[eClass]);
     
     eHT eHeap = gxaSizeHeap[eClass].m_eWhichHeap;
     i8  iSize = gxaSizeHeap[eClass].m_nClassSize;
+    
+    if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+      vTrace("class %18s heap %18s size %lldB\n"_Stz,aCN[eClass],aHT[eHeap],iSize);
     
     switch(eHeap) {
       case HT_INVALID:
@@ -745,70 +749,100 @@ void PoolHelper::vValidateEnums(void)
       // transient -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
         
       case HT_T_TINY:
-        if (iSize >= C_SIZE_TINY_OBJECT)
+        if (iSize >= C_SIZE_TINY_OBJECT) {
+          vTrace("Heaps::vValidateEnums: transient tiny class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
           vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: transient tiny class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
+        }
         break;
         
       case HT_T_SMALL:
-        if (iSize >= C_SIZE_SMALL_OBJECT)
+        if (iSize >= C_SIZE_SMALL_OBJECT) {
+          vTrace("Heaps::vValidateEnums: transient small class %lld %s is too big\n"_Stz,
+                  eClass,aCN[eClass]);
           vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: transient small class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
+        }
         break;
         
       case HT_T_MEDIUM:
-        if (iSize >= C_SIZE_MEDIUM_OBJECT)
+        if (iSize >= C_SIZE_MEDIUM_OBJECT) {
+          vTrace("Heaps::vValidateEnums: transient medium class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
           vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: transient medium class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
+        }
         break;
         
       case HT_T_LARGE:
-        if (iSize >= C_SIZE_LARGE_OBJECT)
+        if (iSize >= C_SIZE_LARGE_OBJECT) {
+          vTrace("Heaps::vValidateEnums: transient large class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
           vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: transient large class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
+        }
         break;
          
       case HT_T_DATA:
-        if (iSize >= C_SIZE_DATA_OBJECT)
+        if (iSize >= C_SIZE_DATA_OBJECT) {
+          vTrace("Heaps::vValidateEnums: transient data class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
           vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: transient data class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
+        }
         break;
                // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
       case HT_P_TINY:
-        if (iSize >= C_SIZE_SMALL_OBJECT)
+        if (iSize >= C_SIZE_SMALL_OBJECT) {
+          vTrace("Heaps::vValidateEnums: persistent tiny class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
           vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: persistent tiny class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
+        }
         break;
         
       case HT_P_SMALL:
-        if (iSize >= C_SIZE_SMALL_OBJECT)
+        if (iSize >= C_SIZE_SMALL_OBJECT) {
+          vTrace("Heaps::vValidateEnums: persistent small class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
           vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: persistent small class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
+        }
         break;
         
       case HT_P_MEDIUM:
-        if (iSize >= C_SIZE_MEDIUM_OBJECT)
+        if (iSize >= C_SIZE_MEDIUM_OBJECT) {
+          vTrace("Heaps::vValidateEnums: persistent medium class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
           vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: persistent medium class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
+        }
         break;
         
       case HT_P_LARGE:
-        if (iSize >= C_SIZE_LARGE_OBJECT)
+        if (iSize >= C_SIZE_LARGE_OBJECT) {
+          vTrace("Heaps::vValidateEnums: persistent large class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
           vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                  "Heaps::vValidateEnums: persistent large class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
+        }
         break;
                 
       default:
+        vTrace("Heaps::vValidateEnums: Invalid which heap: eHeap %lld\n"_Stz,
+               eHeap);
+
         vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
                "Heaps::vValidateEnums: Invalid which heap: eHeap %lld\n"_Stz,
                eHeap);

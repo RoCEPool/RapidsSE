@@ -1235,7 +1235,6 @@ public:
 
   // op
   void vOpAckInvokingTask(void);
-  void vOpDownstreamOpStore(void);
   void vOpEnqueOperand(void);
   void vOpFindOp(void);
   void vOpGet(void);
@@ -1248,8 +1247,6 @@ public:
   void vOpIncHandlerCount(void);
   void vOpIncOperandCount(void);
   void vOpOpNameFetch(void);
-  void vOpOutboundOperandFetch(void);
-  void vOpOutboundOperandStore(void);
   void vOpPartitionFetch(void);
   void vOpJobFetch(void);
   void vOpPipeBackIn(void);

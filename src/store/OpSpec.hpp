@@ -63,7 +63,7 @@ namespace STORE
     void vNextStageOp(Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     Stz* szOpNm(void);
     void vOpNm(Stz* szOpNm);
-    i8   iOpSpec(void);
+    i8   i_OpSpec(void);
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Stz* szOtherStageNm(void);

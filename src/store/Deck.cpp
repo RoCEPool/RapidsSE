@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StageSet.cpp -- List of StageSet                                               */
+/* Deck.cpp -- Deck (of stages)                                               */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -20,13 +20,12 @@ __aFooterFunction(Deck)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Deck::Deck(Vertex* pPipeWork, VertexSpec* pPipeSpec)
-: ListNL_t<Stage>(CN_DECK)
+Deck::Deck(Vertex* pVertex, DeckSpec* pDeckSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 
-  m_pPipeWork = pPipeWork;
-  m_pPipeSpec = pPipeSpec;
+  m_pVertex     = pVertex;
+  m_pDeckSpec   = pDeckSpec;
 
   _checkInitialised_(CN_DECK);
 
@@ -40,8 +39,18 @@ Deck::~Deck(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 
-  while (Stage* pStage = pPop())
+  //while (Stage* pStage = pPop())
+  //  delete pStage;
+
+  i8 nStages = this->nItems();
+  for (i8 i_Stage = 0; i_Stage  < nStages; i_Stage++) {
+    Stage *pStage = pGet(i_Stage);
+
     delete pStage;
+  }
+
+  vClear();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,17 +64,17 @@ Pipeline* Deck::pPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
   
-  return m_pPipeWork->pPipeline();
+  return m_pVertex->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get pipework                                                               */
 /*----------------------------------------------------------------------------*/
-Vertex* Deck::pPipeWork(void)
+Vertex* Deck::pVertex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
   
-  return m_pPipeWork;
+  return m_pVertex;
 }
 
 /*============================================================================*/

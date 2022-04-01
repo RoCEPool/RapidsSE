@@ -21,6 +21,7 @@
 #include "StageSpec.hpp"
 #include "SP_Stage.hpp"
 #include "TagConstants.h" //?
+#include "Deck.hpp"
 
 extern AttachMap gxAttachMap;
 
@@ -37,14 +38,13 @@ __aFooterFunction(Stage)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stage::Stage(Vertex* pPipeWork, StageSpec *pStageSpec)
+Stage::Stage(Deck* pDeck, StageSpec *pStageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  m_pPipeWork  = pPipeWork;
+  m_pDeck      = pDeck;
   m_pStageSpec = pStageSpec;
 
-  m_sStageNm = pStageSpec->szStageNm();
   m_i_Stage  = pStageSpec->i_StageSpec();
 
 
@@ -199,16 +199,16 @@ Pipeline* Stage::pPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
-  return m_pPipeWork->pPipeline();
+  return m_pDeck->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get piepline                                                               */
 /*----------------------------------------------------------------------------*/
-Vertex *Stage::pPipeWork(void) {
+Vertex *Stage::pVertex(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  return m_pPipeWork;
+  return m_pDeck->pVertex();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,7 +273,7 @@ i8 Stage::i_Stage(void) {
 Stz *Stage::szStageNm(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  return m_sStageNm;
+  return m_pStageSpec->szStageNm();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,7 +365,7 @@ void Stage::vCreateStreams(void) {
       RASSERT(m_pStageSpec->bNodeTopo());
       i_Stream = 0;
       tPtnId = C_UNKNOWN;
-      iOriginNodeNo = m_pPipeWork->pPipeline()->iOriginNodeNo();
+      iOriginNodeNo = pPipeline()->iOriginNodeNo();
 
       pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
       vAppend(pStream);
@@ -413,7 +413,7 @@ void Stage::vCreateStreams(void) {
         tPtnId = iPtnNo;
         iOriginNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnId);
 
-        if (iOriginNodeNo == m_pPipeWork->pPipeline()->iOriginNodeNo()) {
+        if (iOriginNodeNo == pPipeline()->iOriginNodeNo()) {
           i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
           pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
           vAppend(pStream);
