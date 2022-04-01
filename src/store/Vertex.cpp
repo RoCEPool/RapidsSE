@@ -35,7 +35,6 @@ __aFooterFunction(Vertex)
 Vertex::Vertex(Pipeline*   pPipeline,
                Vertex*     pParentVertex,
                VertexSpec* pVertexSpec)
-: ListNL_t<Vertex>(CN_VERTEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
@@ -59,9 +58,18 @@ Vertex::~Vertex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  while (Vertex *pChildVertex = pPop())
-    delete pChildVertex;
+//  while (Vertex *pChildVertex = pPop())
+//    delete pChildVertex;
   
+  i8 nChildVertex = this->nItems();
+  for (i8 i_ChildVertex = 0; i_ChildVertex < nChildVertex; i_ChildVertex++) {
+    Vertex *pChildVertex = pGet(i_ChildVertex);
+
+    delete pChildVertex;
+  }
+
+  vClear();
+
   delete m_pDeck;
 }
 

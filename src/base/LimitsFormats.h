@@ -39,6 +39,7 @@ static const i8 C_MAX_STREAMDEFS    = 16;     // max stream definitions
 static const i8 C_MAX_STREAM_ORDER  = 8;
 static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
+static const i8 C_MAX_VERTEXES      = 256;
 
 // max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS_IN_GRID INSTEAD
 static const i8 C_MAX_LGLPTNS    = C_MAX_PTNSPERNODE * C_MAX_NODES;

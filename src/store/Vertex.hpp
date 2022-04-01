@@ -8,8 +8,7 @@ namespace STORE { class Stage;    class Deck;
 
 namespace STORE
 {
-  class Vertex : public ListNL_t<Vertex>
-               , public ListItem_t<Vertex>
+  class Vertex : public VectorNL_t<CN_VERTEX,Vertex,C_MAX_VERTEXES>
   {
   private:
     Pipeline*   m_pPipeline;     // which pipeline bubble this vertex is within
