@@ -26,6 +26,8 @@ namespace STORE
          DeckSpec* pDeckSpec);
    ~Deck(void) noexcept(false);
   
+    static void vRepair(Object *pObject);
+
     Pipeline* pPipeline(void);
     Vertex* pVertex(void);
 

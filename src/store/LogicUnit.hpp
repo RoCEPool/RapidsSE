@@ -47,6 +47,7 @@
 #include "IndexTree.hpp"
 #include "JobMetrics.hpp"
 #include "Vertex.hpp"
+#include "Deck.hpp"
 
 #include "eLH.h"
 #include "eXK.h"
@@ -185,6 +186,7 @@ namespace STORE
     REG<CsvBuffer,      CN_CSVBUFFER     > m_xpCsvBuffer;
 
     REG<DataBuffer,     CN_NONE          > m_xpDataBuffer;
+    REG<Deck,           CN_DECK          > m_xpDeck;
     REG<Dir,            CN_DIR           > m_xpDir0;
     REG<Dir,            CN_DIR           > m_xpDir1;
     REG<Dynamo,         CN_DYNAMO        > m_xpDynamo;

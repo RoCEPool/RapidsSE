@@ -22,6 +22,7 @@ enum eLR // Logic Unit Registers
   /*  */ LR_CSVBUFFER,
   
   /*  */ LR_DATABUFFER,
+  /*  */ LR_DECK,
   /*  */ LR_DIR0,
   /*  */ LR_DIR1,
   /*  */ LR_DYNAMO,
@@ -134,7 +135,7 @@ static Stz* aLR[]
   /*  */ "LR_CSVBUFFER"_Stz,
   
   /*  */ "LR_DATABUFFER"_Stz,
-  
+  /*  */ "LR_DECK"_Stz,
   /*  */ "LR_DIR0"_Stz,
   /*  */ "LR_DIR1"_Stz,
   /*  */ "LR_DYNAMO"_Stz,
