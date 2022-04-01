@@ -783,6 +783,12 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         return EC_INVALID_PIPELINE;
       }
 
+      if (bPayloadOp) {
+        vTrace("Error: Cannot have project after a payload operator (aggregate/sort/top) (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
       bProjectOp = true;
 
       Op *pPrevOp = pStream->pGet(i_Op - 1);

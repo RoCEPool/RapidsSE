@@ -9,7 +9,7 @@
 
 static eFM eMacro_Cast[DM_ENUMS][DM_ENUMS] = {
            //   NONE            BCD                BOL                DTE            FLT           INT             IVL                  IVY                  TME           TSP           VCH           UNK
-/*  0 NONE */ { FM_NONE,       FM_NONE,            FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,             FM_NONE,             FM_NONE,             FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE      },
+/*  0 NONE */ { FM_OPR_INVINV,       FM_OPR_INVINV,            FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,             FM_OPR_INVINV,             FM_OPR_INVINV,             FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV      },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_OPR_INVINV,      FM_OPR_INVINV, FM_OPR_INVINV,FM_BCD_TOFLT, FM_BCD_TOINT,        FM_OPR_INVINV,/*?1*/ FM_OPR_INVINV,/*?1*/ FM_OPR_INVINV,FM_OPR_INVINV,FM_BCD_TOVCH, FM_BCD_TOUNK },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,      FM_OPR_INVINV, FM_OPR_INVINV,FM_OPR_INVINV,FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,FM_OPR_INVINV,FM_BOL_TOVCH, FM_BOL_TOUNK },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,      FM_OPR_INVINV, FM_OPR_INVINV,FM_OPR_INVINV,FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,FM_DTE_TOTSP, FM_DTE_TOVCH, FM_DTE_TOUNK },
@@ -45,27 +45,27 @@ static eDM eMacro_CastResult[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_ExtractDay[DM_ENUMS] =
     // NONE    BCD         BOL         DTE         FLT         INT         IVL         IVY         TME         TSP         VCH         UNK
-    { FM_NONE, FM_OPR_INV, FM_OPR_INV, FM_DAY_DTE, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_DAY_TSP, FM_OPR_INV, FM_OPR_INV    };
+    { FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_DAY_DTE, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_DAY_TSP, FM_OPR_INV, FM_OPR_INV    };
 
 static eFM eMacro_ExtractMonth[DM_ENUMS] =
     // NONE    BCD         BOL         DTE           FLT         INT         IVL         IVY         TME         TSP           VCH         UNK
-    { FM_NONE, FM_OPR_INV, FM_OPR_INV, FM_MONTH_DTE, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_MONTH_TSP, FM_OPR_INV, FM_OPR_INV    };
+    { FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_MONTH_DTE, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_MONTH_TSP, FM_OPR_INV, FM_OPR_INV    };
 
 static eFM eMacro_ExtractYear[DM_ENUMS] =
     // NONE    BCD         BOL         DTE          FLT         INT         IVL         IVY,        TME         TSP          VCH         UNK
-    { FM_NONE, FM_OPR_INV, FM_OPR_INV, FM_YEAR_DTE, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_YEAR_TSP, FM_OPR_INV, FM_OPR_INV    };
+    { FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_YEAR_DTE, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_YEAR_TSP, FM_OPR_INV, FM_OPR_INV    };
 
 static eFM eMacro_ExtractHour[DM_ENUMS] =
     // NONE    BCD         BOL         DTE         FLT         INT         IVL         IVY         TME          TSP          VCH         UNK
-    { FM_NONE, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_HOUR_TME, FM_HOUR_TSP, FM_OPR_INV, FM_OPR_INV    };
+    { FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_HOUR_TME, FM_HOUR_TSP, FM_OPR_INV, FM_OPR_INV    };
 
 static eFM eMacro_ExtractMinute[DM_ENUMS] =
     // NONE    BCD         BOL         DTE         FLT         INT         IVL         IVY         TME            TSP            VCH         UNK
-    { FM_NONE, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_MINUTE_TME, FM_MINUTE_TSP, FM_OPR_INV, FM_OPR_INV    };
+    { FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_MINUTE_TME, FM_MINUTE_TSP, FM_OPR_INV, FM_OPR_INV    };
 
 static eFM eMacro_ExtractSecond[DM_ENUMS] =
     // NONE    BCD         BOL         DTE         FLT         INT         IVL         IVY         TME            TSP            VCH         UNK
-    { FM_NONE, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_SECOND_TME, FM_SECOND_TSP, FM_OPR_INV, FM_OPR_INV    };
+    { FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_OPR_INV, FM_SECOND_TME, FM_SECOND_TSP, FM_OPR_INV, FM_OPR_INV    };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // MATHEMATICAL OPERATORS
@@ -76,7 +76,7 @@ static eFM eMacro_ExtractSecond[DM_ENUMS] =
 
 static eFM eMacro_Add[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD      BOL            DTE            FLT            INT            IVL            IVY            TME            TSP            VCH            UNK
-/*  0 NONE */ { FM_NONE, FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE  },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV  },
 /*  1 BCD  */ { FM_OPR_INVINV,    FM_ADD_BCDBCD, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_ADD_ANYUNK  },
 /*  2 BOL  */ { FM_OPR_INVINV,    FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_ADD_ANYUNK  },
 /*  3 DTE  */ { FM_OPR_INVINV,    FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV/*?*/,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV/*?*/,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_ADD_ANYUNK  },
@@ -111,7 +111,7 @@ static eDM eMacro_AddResult[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_Div[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL            DTE            FLT            INT            IVL            IVY            TME            TSP            VCH            UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE  },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV  },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_DIV_BCDBCD, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_DIV_UNKANY  },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_DIV_UNKANY  },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV/*?*/,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV/*?*/,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_DIV_UNKANY  },
@@ -163,7 +163,7 @@ static eDM eMacro_ModResult[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_Mod[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD      BOL      DTE       FLT      INT           IVL           IVY           TME           TSP           VCH      UNK
-/*  0 NONE */ { FM_NONE, FM_NONE, FM_NONE, FM_NONE,  FM_NONE, FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE, FM_NONE  },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV,  FM_OPR_INVINV, FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV, FM_OPR_INVINV  },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV,  FM_OPR_INVINV, FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV, FM_OPR_INVINV  },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV,  FM_OPR_INVINV, FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV, FM_OPR_INVINV  },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV,  FM_OPR_INVINV, FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV, FM_OPR_INVINV  },
@@ -182,7 +182,7 @@ static eFM eMacro_Mod[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_Mul[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL            DTE                FLT            INT                IVL            IVY            TME                TSP            VCH            UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,           FM_NONE,       FM_NONE,           FM_NONE,       FM_NONE,       FM_NONE,           FM_NONE,       FM_NONE,       FM_NONE        },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,           FM_OPR_INVINV,       FM_OPR_INVINV,           FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,           FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV        },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_MUL_BCDBCD, FM_OPR_INVINV, FM_OPR_INVINV,     FM_OPR_INVINV, FM_OPR_INVINV,     FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV,     FM_OPR_INVINV, FM_OPR_INVINV, FM_MUL_ANYUNK  },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV,     FM_OPR_INVINV, FM_OPR_INVINV,     FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV,     FM_OPR_INVINV, FM_OPR_INVINV, FM_MUL_ANYUNK  },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV,     FM_OPR_INVINV, FM_OPR_INVINV/*?*/,FM_OPR_INVINV, FM_OPR_INVINV, FM_OPR_INVINV/*?*/,FM_OPR_INVINV, FM_OPR_INVINV, FM_MUL_ANYUNK  },
@@ -221,14 +221,14 @@ static eDM eMacro_NegResult[DM_ENUMS] =
 
 static eFM eMacro_Neg[DM_ENUMS] =
     // NONE    BCD         BOL       DTE       FLT          INT          IVL         IVY,        TME      TSP       VCH      UNK
-    { FM_OPR_INVINV, FM_NEG_BCD, FM_OPR_INV,  FM_OPR_INV,  FM_NEG_FLT,  FM_NEG_INT,  FM_OPR_INV,    FM_OPR_INV, FM_OPR_INV, FM_OPR_INV,  FM_OPR_INV, FM_OPR_INV    };
+    { FM_OPR_INV, FM_NEG_BCD, FM_OPR_INV,  FM_OPR_INV,  FM_NEG_FLT,  FM_NEG_INT,  FM_OPR_INV,    FM_OPR_INV, FM_OPR_INV, FM_OPR_INV,  FM_OPR_INV, FM_OPR_INV    };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BETWEEN
 
 static eFM eMacro_Bet[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL       DTE           FLT            INT            IVL         IVY           TME         TSP            VCH      UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,    FM_NONE,    FM_NONE,      FM_NONE,    FM_NONE, FM_NONE        },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,  FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,    FM_OPR_INVINV,    FM_OPR_INVINV,      FM_OPR_INVINV,    FM_OPR_INVINV, FM_OPR_INVINV        },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_BET_BCDBCD, FM_OPR_INVINV,  FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,    FM_OPR_INVINV,    FM_OPR_INVINV,      FM_OPR_INVINV,    FM_OPR_INVINV, FM_BET_XYZUNK  },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,  FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,    FM_OPR_INVINV,    FM_OPR_INVINV,      FM_OPR_INVINV,    FM_OPR_INVINV, FM_OPR_INVINV        },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,  FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV/*?*/,  FM_OPR_INVINV,    FM_OPR_INVINV,    FM_OPR_INVINV/*?*/, FM_OPR_INVINV,    FM_OPR_INVINV, FM_BET_XYZUNK  },
@@ -247,21 +247,21 @@ static eFM eMacro_Bet[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_Dup[DM_ENUMS] =
     // NONE     BCD          BOL           DTE           FLT           INT           IVL          IVY,         TME          TSP           VCH          UNK
-    { FM_NONE,  FM_DUP_BCD,  FM_DUP_BOL,   FM_DUP_DTE,   FM_DUP_FLT,   FM_DUP_INT,   FM_DUP_IVL,  FM_DUP_IVY,  FM_DUP_TME,  FM_DUP_TSP,   FM_DUP_VCH,  FM_DUP_UNK    };
+    { FM_OPR_INV,  FM_DUP_BCD,  FM_DUP_BOL,   FM_DUP_DTE,   FM_DUP_FLT,   FM_DUP_INT,   FM_DUP_IVL,  FM_DUP_IVY,  FM_DUP_TME,  FM_DUP_TSP,   FM_DUP_VCH,  FM_DUP_UNK    };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PSH
 
 static eFM eMacro_Push[DM_ENUMS] =
     // NONE     BCD          BOL           DTE           FLT           INT           IVL          IVY,         TME          TSP           VCH          UNK
-    { FM_NONE,  FM_PSH_BCD,  FM_PSH_BOL,   FM_PSH_DTE,   FM_PSH_FLT,   FM_PSH_INT,   FM_PSH_IVL,  FM_PSH_IVY,  FM_PSH_TME,  FM_PSH_TSP,   FM_PSH_VCH,  FM_PSH_UNK    };
+    { FM_OPR_INV,  FM_PSH_BCD,  FM_PSH_BOL,   FM_PSH_DTE,   FM_PSH_FLT,   FM_PSH_INT,   FM_PSH_IVL,  FM_PSH_IVY,  FM_PSH_TME,  FM_PSH_TSP,   FM_PSH_VCH,  FM_PSH_UNK    };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INX ( in expression)
 
 static eFM eMacro_Inx[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL            DTE            FLT            INT            IVL            IVY            TME            TSP            VCH            UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE        },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV        },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_INX_BCDBCD, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_INX_XYZUNK  },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_INX_BOLBOL, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV        },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_INX_DTEDTE, FM_OPR_INVINV,       FM_OPR_INVINV/*?*/,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV/*?*/,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_INX_XYZUNK  },
@@ -279,7 +279,7 @@ static eFM eMacro_Inx[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_Sub[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL       DTE            FLT            INT            IVL        IVY      TME            TSP            VCH      UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_OPR_INVINV,       FM_OPR_INVINV, FM_OPR_INVINV  },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,   FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV, FM_OPR_INVINV  },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_SUB_BCDBCD, FM_OPR_INVINV,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,   FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV, FM_OPR_INVINV  },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,   FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV, FM_OPR_INVINV  },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV/*?*/,  FM_OPR_INVINV,   FM_OPR_INVINV, FM_OPR_INVINV/*?*/,  FM_OPR_INVINV,       FM_OPR_INVINV, FM_OPR_INVINV  },
@@ -315,7 +315,7 @@ static eDM eMacro_SubResult[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_Sum[DM_ENUMS][DM_ENUMS] = {
     //   NONE     BCD            BOL       DTE            FLT            INT            IVL        IVY      TME            TSP            VCH      UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,  FM_NONE,       FM_NONE,       FM_NONE,       FM_NONE,   FM_NONE, FM_NONE,       FM_NONE,       FM_NONE, FM_NONE  },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,   FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV, FM_OPR_INVINV  },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_SUM_BCDBCD, FM_OPR_INVINV,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,   FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV, FM_OPR_INVINV  },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,   FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV, FM_OPR_INVINV  },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,  FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV/*?*/,  FM_OPR_INVINV,   FM_OPR_INVINV, FM_OPR_INVINV/*?*/,  FM_OPR_INVINV,       FM_OPR_INVINV, FM_OPR_INVINV  },
@@ -336,7 +336,7 @@ static eFM eMacro_Sum[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_Eq[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY          TME           TSP           VCH           UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,     FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE   },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,     FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV   },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_EQ_BCDBCD,  FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,     FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_EQ_ANYUNK    },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_EQ_BOLBOL, FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,     FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_EQ_ANYUNK    },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_EQ_DTEDTE, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,     FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_EQ_ANYUNK    },
@@ -352,7 +352,7 @@ static eFM eMacro_Eq[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_Ge[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY               TME           TSP           VCH           UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,          FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,          FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_GE_BCDBCD,  FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,          FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_GE_BOLBOL, FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,          FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_GE_DTEDTE, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,          FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
@@ -368,7 +368,7 @@ static eFM eMacro_Ge[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_Gt[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY           TME           TSP           VCH           UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_GT_BCDBCD,  FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_GT_BOLBOL, FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_GT_DTEDTE, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
@@ -384,7 +384,7 @@ static eFM eMacro_Gt[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_Le[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY           TME           TSP           VCH           UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE   },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV   },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_LE_BCDBCD,  FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV   },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_LE_BOLBOL, FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV   },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_LE_DTEDTE, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV   },
@@ -400,7 +400,7 @@ static eFM eMacro_Le[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_Lt[DM_ENUMS][DM_ENUMS] = {
           //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY           TME           TSP            VCH           UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_LT_BCDBCD,  FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_LT_BOLBOL, FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_LT_DTEDTE, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
@@ -416,7 +416,7 @@ static eFM eMacro_Lt[DM_ENUMS][DM_ENUMS] = {
 
 static eFM eMacro_Ne[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY           TME           TSP           VCH           UNK
-/*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE   },
+/*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV   },
 /*  1 BCD  */ { FM_OPR_INVINV, FM_NE_BCDBCD,  FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV   },
 /*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_NE_BOLBOL, FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV   },
 /*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_NE_DTEDTE, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV   },
