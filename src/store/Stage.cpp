@@ -60,14 +60,18 @@ Stage::Stage(Deck* pDeck, StageSpec *pStageSpec)
 Stage::~Stage(void) noexcept(false) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  i8 nStreams = this->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
-    Stream *pStream = pGet(i_Stream);
-
+//  i8 nStreams = this->nItems();
+//  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
+//    Stream *pStream = pGet(i_Stream);
+//
+//    delete pStream;
+//  }
+//
+//  vClear();
+  
+  while (Stream* pStream = pPop())
     delete pStream;
-  }
-
-  vClear();
+  vCheckEmpty();
 }
 
 /*----------------------------------------------------------------------------*/

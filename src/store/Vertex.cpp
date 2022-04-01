@@ -61,14 +61,18 @@ Vertex::~Vertex(void) noexcept(false)
 //  while (Vertex *pChildVertex = pPop())
 //    delete pChildVertex;
   
-  i8 nChildVertex = this->nItems();
-  for (i8 i_ChildVertex = 0; i_ChildVertex < nChildVertex; i_ChildVertex++) {
-    Vertex *pChildVertex = pGet(i_ChildVertex);
+//  i8 nChildVertex = this->nItems();
+//  for (i8 i_ChildVertex = 0; i_ChildVertex < nChildVertex; i_ChildVertex++) {
+//    Vertex *pChildVertex = pGet(i_ChildVertex);
+//
+//    delete pChildVertex;
+//  }
+//
+//  vClear();
 
+  while (Vertex *pChildVertex = pPop())
     delete pChildVertex;
-  }
-
-  vClear();
+  vCheckEmpty();
 
   delete m_pDeck;
 }

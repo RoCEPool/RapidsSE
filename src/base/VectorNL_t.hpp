@@ -28,6 +28,7 @@ namespace BASE
     void  vAdd(ITEM* pItem);
     void  vAppend(ITEM* pItem);
     void  vClear(void);
+    void  vCheckEmpty(void);
     bool  bContains(ITEM* pItem);
     void  vCut(i8 i_Item);
     void  vDecItems(void);
@@ -213,6 +214,17 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vClear(void)
     m_paItem[i_Item] = nullptr;
   
   m_nItems = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check vector is empty                                                      */
+/*----------------------------------------------------------------------------*/
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vCheckEmpty(void)
+{
+  _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
+    
+  RASSERT(0 == m_nItems);
 }
 
 /*----------------------------------------------------------------------------*/
