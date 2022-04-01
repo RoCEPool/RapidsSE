@@ -145,6 +145,7 @@ enum eEC : u2 // error codes
   EC_INVALID_SYNTAX,
   EC_INVALID_TIME_FORMAT,           // SQL Compiler Subsystem
   EC_INVALID_TIMESTAMP_FORMAT,      // SQL Compiler Subsystem
+  EC_INVALID_TYPES,
   EC_INVALID_VALUE,
 
   /* _J_ */
@@ -397,6 +398,7 @@ static Stz* aEC[] =
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"EC_INVALID_TIME_FORMAT",        // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"EC_INVALID_TIMESTAMP_FORMAT",   // SQL Compiler Subsystem
+  /* EC_INVALID_TYPES                 */ (Stz*)"EC_INVALID_TYPES",
   /* EC_INVALID_VALUE                 */ (Stz*)"invalid value",
 
   /* _J_ */
@@ -643,6 +645,7 @@ static Stz* aEC2[] = // error code
   /* EC_INVALID_SYNTAX                */ (Stz*)"EC_INVALID_SYNTAX",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"EC_INVALID_TIME_FORMAT",            // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"EC_INVALID_TIMESTAMP_FORMAT",       // SQL Compiler Subsystem
+  /* EC_INVALID_TYPES                 */ (Stz*)"EC_INVALID_TYPES",
   /* EC_INVALID_VALUE                 */ (Stz*)"EC_INVALID_VALUE",
 
   /* _J_ */
@@ -899,6 +902,7 @@ static Stz* aErrorMsg[] =
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"Invalid time string format. Must be of the form: 'hh:mm:ss'",    // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"Invalid timestamp string format. Must be of the form: 'YYYY-MM-DD hh:mm:ss[.ffffff]'",    // SQL Compiler Subsystem
+  /* EC_INVALID_TYPES                 */ (Stz*)"Invalid types in arithmetic/logical/relational operation",
   /* EC_INVALID_VALUE                 */ (Stz*)"invalid value",
 
   /* _J_ */

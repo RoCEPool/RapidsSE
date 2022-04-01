@@ -45,6 +45,10 @@ enum eFM : u2 // function macros
   /*  */ FM_MUL_INTINT,           // int * int
   /*  */ FM_MUL_UNKANY,           // unk + any
 
+  // operation invalid
+  /*  */ FM_OPR_INVINV,           // invalid operation of types
+  /*  */ FM_OPR_INV,              // invalid operation on type
+
   // negate
   /*  */ FM_NEG_BCD,             // -bcd
   /*  */ FM_NEG_FLT,             // -flt
@@ -346,6 +350,10 @@ static Stz* aFM[]
   /*  */ "_MUL_FLTFLT"_Stz,
   /*  */ "_MUL_INTINT"_Stz,
   /*  */ "_MUL_UNKANY"_Stz,
+
+  // operation invalid
+  /*  */ "_OPR_INVINV"_Stz,
+  /*  */ "_OPR_INV"_Stz,
 
   // negate
   /*  */ "_NEG_BCD"_Stz,
