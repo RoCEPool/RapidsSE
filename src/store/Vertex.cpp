@@ -43,7 +43,7 @@ Vertex::Vertex(Pipeline*   pPipeline,
   m_pParentVertex = pParentVertex;
   m_pVertexSpec   = pVertexSpec;
 
-  m_pDeck = new Deck(this,m_pVertexSpec);
+  m_pDeck = new Deck(this,pVertexSpec->pDeckSpec(),m_pVertexSpec);
 
   _checkInitialised_(CN_VERTEX);
   
