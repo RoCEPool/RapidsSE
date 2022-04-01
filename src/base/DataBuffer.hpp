@@ -8,8 +8,10 @@ namespace BASE
   class DataBuffer : public LinkedBuffer
   {
   protected:
-    Lock   m_okLock;        // lock
-    i8     m_iBufferNo;     // this DataBuffer's buffer number
+    Lock         m_okLock;        // lock
+    i8           m_iBufferNo;     // this DataBuffer's buffer number
+    BufferId     m_oBufferId;     // Set wherever bufferno is set, with bit flag set
+
     PtnId  m_tPtnId;
     i8     m_iBucketNo;     // this DataBuffer's bucket number
 
@@ -22,7 +24,7 @@ namespace BASE
 
     tXN m_tTxnNo; // transaction number
 
-    PadWord m__PadToCacheLine[18];
+    PadWord m__PadToCacheLine[17];
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent);
@@ -76,6 +78,8 @@ namespace BASE
     void vIsPermanent(bool bIsPermanent);
 
     i8   iBufferNo(void);
+
+    BufferId oGetBufferId(void);
   };
   
   DataBuffer* _pDataBuffer(void* aAddr);

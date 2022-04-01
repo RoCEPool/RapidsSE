@@ -39,6 +39,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 
   m_iBufferNo  = iBufferNo();
+  m_oBufferId.m_vAsAddress  = BufferId::vBufferIdFromNo(m_iBufferNo);
   m_iBucketNo  = C_UNKNOWN;
   m_tPtnId     = C_UNKNOWN;
   
@@ -330,6 +331,16 @@ void DataBuffer::vIsPermanent(bool bIsPermanent)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_bIsPermanent = bIsPermanent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the buffer id of the pool buffer that the object is within             */
+/*----------------------------------------------------------------------------*/
+BufferId DataBuffer::oGetBufferId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_oBufferId;
 }
 
 /*============================================================================*/
