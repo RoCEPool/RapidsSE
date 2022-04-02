@@ -1857,29 +1857,6 @@ public:
   void vSsnSenLoc(void);
   void vSsnTraceSession(void);
 
-  // subPipeline
-  void vSubPipeAddAccum(void);
-  void vSubPipeCancelledFetch(void);
-  void vSubPipeCancelledStore(void);
-  void vSubPipeCreate(void);
-  void vSubPipeDropDebugLock(void);
-  void vSubPipeDump(void);
-  void vSubPipeEarlyExitFetch(void);
-  void vSubPipeEarlyExitStore(void);
-  void vSubPipeEnqueueInvoke(void);
-  void vSubPipeErroredStore(void);
-  void vSubPipeErroredFetch(void);
-  void vSubPipeGet(void);
-  void vSubPipeGetAccum(void);
-  void vSubPipeGrabDebugLock(void);
-  void vSubPipeOp0Fetch(void);
-  void vSubPipeOpsOnNodeFetch(void);
-  void vSubPipePulsedFetch(void);
-  void vSubPipePulsedStore(void);
-  void vSubPipeSet(void);
-  void vSubPipeSetInvoker(void);
-  void vSubPipeSpawnOpTasks(void);
-
   // SubPipelineOfOp
   void vSubPipeOfOpAddAccum(void);
   void vSubPipeOfOpCancelledFetch(void);
