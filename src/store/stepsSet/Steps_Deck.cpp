@@ -36,28 +36,134 @@ void Step::vAddSteps_Deck(void)
 {
   vAddStep("Deck[]"_Stz,                &Step::vDeckGet);
   vAddStep("Deck[].set"_Stz,            &Step::vDeckSet);
-
-  vAddStep("Deck[].addAccum"_Stz,       &Step::vDeckAddAccum);
-  vAddStep("Deck[].cancelled@"_Stz,     &Step::vDeckCancelledFetch);
-  vAddStep("Deck[].cancelled!"_Stz,     &Step::vDeckCancelledStore);
-  vAddStep("Deck[].create"_Stz,         &Step::vDeckCreate);
-  vAddStep("Deck[].dropDebugLock"_Stz,  &Step::vDeckDropDebugLock);
-  vAddStep("Deck[].dump"_Stz,           &Step::vDeckDump);
-  vAddStep("Deck[].earlyExit@"_Stz,     &Step::vDeckEarlyExitFetch);
-  vAddStep("Deck[].earlyExit!"_Stz,     &Step::vDeckEarlyExitStore);
+  
   vAddStep("Deck[].enqueueInvoke?"_Stz, &Step::vDeckEnqueueInvoke);
-  vAddStep("Deck[].errored@"_Stz,       &Step::vDeckErroredFetch);
-  vAddStep("Deck[].errored!"_Stz,       &Step::vDeckErroredStore);
-  vAddStep("Deck[].getAccum"_Stz,       &Step::vDeckGetAccum);
-  vAddStep("Deck[].grabDebugLock"_Stz,  &Step::vDeckGrabDebugLock);
   vAddStep("Deck[].op0@"_Stz,           &Step::vDeckOp0Fetch);
   vAddStep("Deck[].opsOnNode@"_Stz,     &Step::vDeckOpsOnNodeFetch);
-  vAddStep("Deck[].pulsed@"_Stz,        &Step::vDeckPulsedFetch);
-  vAddStep("Deck[].pulsed!"_Stz,        &Step::vDeckPulsedStore);
   vAddStep("Deck[].setInvoker"_Stz,     &Step::vDeckSetInvoker);
-  vAddStep("Deck[].spawnOpTasks"_Stz,   &Step::vDeckSpawnOpTasks);
+  
+
+//  vAddStep("Deck[].addAccum"_Stz,       &Step::vDeckAddAccum);
+//  vAddStep("Deck[].cancelled@"_Stz,     &Step::vDeckCancelledFetch);
+//  vAddStep("Deck[].cancelled!"_Stz,     &Step::vDeckCancelledStore);
+//  vAddStep("Deck[].create"_Stz,         &Step::vDeckCreate);
+//  vAddStep("Deck[].dropDebugLock"_Stz,  &Step::vDeckDropDebugLock);
+//  vAddStep("Deck[].dump"_Stz,           &Step::vDeckDump);
+//  vAddStep("Deck[].earlyExit@"_Stz,     &Step::vDeckEarlyExitFetch);
+//  vAddStep("Deck[].earlyExit!"_Stz,     &Step::vDeckEarlyExitStore);
+//  vAddStep("Deck[].errored@"_Stz,       &Step::vDeckErroredFetch);
+//  vAddStep("Deck[].errored!"_Stz,       &Step::vDeckErroredStore);
+//  vAddStep("Deck[].getAccum"_Stz,       &Step::vDeckGetAccum);
+//  vAddStep("Deck[].grabDebugLock"_Stz,  &Step::vDeckGrabDebugLock);
+//  vAddStep("Deck[].pulsed@"_Stz,        &Step::vDeckPulsedFetch);
+//  vAddStep("Deck[].pulsed!"_Stz,        &Step::vDeckPulsedStore);
+//  vAddStep("Deck[].spawnOpTasks"_Stz,   &Step::vDeckSpawnOpTasks);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Deck[].get -- get subpipeline                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vDeckGet(void)
+{
+  ENTRY();
+   
+  if (m_pLogicUnit->m_xpVertex.bIsNull())
+    m_pDataStack->vPushPtr(nullptr);
+  else
+    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpVertex);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Deck[].set -- set subpipeline                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vDeckSet(void)
+{
+  ENTRY();
+  
+  m_pLogicUnit->m_xpVertex =
+    _pVertex(m_pDataStack->pPopPtr(__func__));
+
+  EXIT();
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* Deck[].enqueueInvoke? -- test for enquing an invoke marker               */
+/*----------------------------------------------------------------------------*/
+void Step::vDeckEnqueueInvoke(void)
+{
+  ENTRY();
+  
+  Vertex* pVortex = * m_pLogicUnit->m_xpVertex;
+
+  Stage*    pStage0   = pVortex->pStage0();
+
+  if (pStage0->bEnqueueInvoke()) {
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(false);
+  }
+
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Deck[].op0@ -- fetch op0 of this pipeline                                */
+/*----------------------------------------------------------------------------*/
+void Step::vDeckOp0Fetch(void)
+{
+  ENTRY();
+    
+  Op* pOp0 = m_pLogicUnit->m_xpVertex->pOp0();
+    
+  m_pDataStack->vPushPtr(pOp0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Deck[].opsOnNode@ -- get no of ops executing on this node                */
+/*----------------------------------------------------------------------------*/
+void Step::vDeckOpsOnNodeFetch(void)
+{
+  ENTRY();
+    
+  i8 iThisNode = AM::pGrid()->iThisNodeNo();
+
+  i8 nOps = m_pLogicUnit->m_xpVertex->nOpsOnNode(iThisNode);
+
+  m_pDataStack->vPushInt(nOps);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Deck[].setInvoker -- set invoker for all tasks in sub-pipeline           */
+/*----------------------------------------------------------------------------*/
+void Step::vDeckSetInvoker(void)
+{
+  ENTRY();
+
+  Task* pInvoker = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  m_pLogicUnit->m_xpVertex->vSetInvoker(pInvoker);
+  
+  EXIT();
+}
+
+
+
+
+
+
+
+
+#if 0
 /*----------------------------------------------------------------------------*/
 /* Deck[].addAccum -- add to an accumulator in this pipeline                */
 /*----------------------------------------------------------------------------*/
@@ -185,27 +291,6 @@ void Step::vDeckEarlyExitStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Deck[].enqueueInvoke? -- test for enquing an invoke marker               */
-/*----------------------------------------------------------------------------*/
-void Step::vDeckEnqueueInvoke(void)
-{
-  ENTRY();
-  
-  Vertex* pVortex = * m_pLogicUnit->m_xpVertex;
-
-  Stage*    pStage0   = pVortex->pStage0();
-
-  if (pStage0->bEnqueueInvoke()) {
-    m_pDataStack->vPushInt(true);
-  }
-  else {
-    m_pDataStack->vPushInt(false);
-  }
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* Deck[].errored@ -- fetch this pipeline errored indicator                 */
 /*----------------------------------------------------------------------------*/
 void Step::vDeckErroredFetch(void)
@@ -227,21 +312,6 @@ void Step::vDeckErroredStore(void)
   
   //m_pLogicUnit->m_xpVertex->vErrored(m_pDataStack->iPopBol(__func__));
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Deck[].get -- get subpipeline                                            */
-/*----------------------------------------------------------------------------*/
-void Step::vDeckGet(void)
-{
-  ENTRY();
-   
-  if (m_pLogicUnit->m_xpVertex.bIsNull())
-    m_pDataStack->vPushPtr(nullptr);
-  else
-    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpVertex);
-
   EXIT();
 }
 
@@ -298,62 +368,6 @@ void Step::vDeckPulsedStore(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* Deck[].op0@ -- fetch op0 of this pipeline                                */
-/*----------------------------------------------------------------------------*/
-void Step::vDeckOp0Fetch(void)
-{
-  ENTRY();
-    
-  Op* pOp0 = m_pLogicUnit->m_xpVertex->pOp0();
-    
-  m_pDataStack->vPushPtr(pOp0);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Deck[].opsOnNode@ -- get no of ops executing on this node                */
-/*----------------------------------------------------------------------------*/
-void Step::vDeckOpsOnNodeFetch(void)
-{
-  ENTRY();
-    
-  i8 iThisNode = AM::pGrid()->iThisNodeNo();
-
-  i8 nOps = m_pLogicUnit->m_xpVertex->nOpsOnNode(iThisNode);
-
-  m_pDataStack->vPushInt(nOps);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Deck[].set -- set subpipeline                                            */
-/*----------------------------------------------------------------------------*/
-void Step::vDeckSet(void)
-{
-  ENTRY();
-  
-  m_pLogicUnit->m_xpVertex =
-    _pVertex(m_pDataStack->pPopPtr(__func__));
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Deck[].setInvoker -- set invoker for all tasks in sub-pipeline           */
-/*----------------------------------------------------------------------------*/
-void Step::vDeckSetInvoker(void)
-{
-  ENTRY();
-
-  Task* pInvoker = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  m_pLogicUnit->m_xpVertex->vSetInvoker(pInvoker);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* Deck[].spawnOpTasks -- spawn tasks for all ops of pipeline for this node */
@@ -371,6 +385,8 @@ void Step::vDeckSpawnOpTasks(void)
   
   EXIT();
 }
+
+#endif
 
 /*============================================================================*/
 /* end                                                                        */
