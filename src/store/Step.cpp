@@ -75,6 +75,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_DdlLock();
   Step::vAddSteps_Debug();
   Step::vAddSteps_Deck();
+  Step::vAddSteps_DeckOfOp();
   Step::vAddSteps_DevLftIxt();
   Step::vAddSteps_DevLftRow();
   Step::vAddSteps_DevRhtIxt();

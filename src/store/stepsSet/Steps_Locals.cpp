@@ -256,6 +256,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Deck[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Deck[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("ErrorCode[]"_Stz)) {
     pCurrentWord->vEncodeCall("ErrorCode[].set"_Stz);
     EXIT();

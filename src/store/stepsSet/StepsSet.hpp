@@ -353,6 +353,29 @@ public:
   void vDeckSetInvoker(void);
   void vDeckSpawnOpTasks(void);
 
+  // deck (of op)
+  void vDeckOfOpAddAccum(void);
+  void vDeckOfOpCancelledFetch(void);
+  void vDeckOfOpCancelledStore(void);
+  void vDeckOfOpCreate(void);
+  void vDeckOfOpDropDebugLock(void);
+  void vDeckOfOpDump(void);
+  void vDeckOfOpEarlyExitFetch(void);
+  void vDeckOfOpEarlyExitStore(void);
+  void vDeckOfOpEnqueueInvoke(void);
+  void vDeckOfOpErroredStore(void);
+  void vDeckOfOpErroredFetch(void);
+  void vDeckOfOpGet(void);
+  void vDeckOfOpGetAccum(void);
+  void vDeckOfOpGrabDebugLock(void);
+  void vDeckOfOpOp0Fetch(void);
+  void vDeckOfOpOpsOnNodeFetch(void);
+  void vDeckOfOpPulsedFetch(void);
+  void vDeckOfOpPulsedStore(void);
+  void vDeckOfOpSet(void);
+  void vDeckOfOpSetInvoker(void);
+  void vDeckOfOpSpawnOpTasks(void);
+
   // devLftRow
   void vDevLftRowStreamDefStore(void);
   void vDevLftRowDeleteEachRowBuffer(void);
