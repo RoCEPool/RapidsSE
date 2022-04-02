@@ -269,6 +269,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(AggTimer),           HT_T_TINY    ,0 FILL }, // CN_AGGTIMER
   { 0,                          HT_INVALID   ,0 FILL }, // CN_AM
   { sizeof(Api),                HT_INVALID   ,0 FILL }, // CN_API
+  { sizeof(AnswerWL),          HT_T_TINY    ,0 FILL }, // CN_ANSWERWL
   { sizeof(Arg),                HT_T_TINY    ,0 FILL }, // CN_ARG
   { sizeof(Arrange),            HT_T_TINY    ,0 FILL }, // CN_ARRANGE
   { sizeof(Atomic),             HT_INVALID   ,0 FILL }, // CN_ATOMIC
@@ -495,6 +496,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Reader),             HT_T_TINY    ,0 FILL }, // CN_READER
   { sizeof(ReapLock),           HT_T_TINY    ,0 FILL }, // CN_REAPLOCK
   { sizeof(Record),             HT_T_MEDIUM  ,0 FILL }, // CN_RECORD
+  { sizeof(RecvWL),          HT_T_TINY    ,0 FILL }, // CN_RECVWL
   { sizeof(RelOp),              HT_T_TINY    ,0 FILL }, // CN_RELOP
   { sizeof(Resources),          HT_T_TINY    ,0 FILL }, // CN_RESOURCES
   { sizeof(Ribbon),             HT_T_SMALL   ,0 FILL }, // CN_RIBBON
@@ -533,6 +535,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SeeMe),              HT_INVALID   ,0 FILL }, // CN_SEEME
   { sizeof(SenCompiler),        HT_T_TINY    ,0 FILL }, // CN_SENCOMPILER
   { sizeof(Sends),              HT_T_TINY    ,0 FILL }, // CN_SENDS
+  { sizeof(SendWL),          HT_T_TINY    ,0 FILL }, // CN_SENDWL
   { sizeof(SePrompt),           HT_T_LARGE   ,0 FILL }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_LARGE   ,0 FILL }, // CN_SESSION
   { sizeof(Sessions),           HT_T_TINY    ,0 FILL }, // CN_SESSIONS

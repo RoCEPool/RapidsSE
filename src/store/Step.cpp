@@ -46,6 +46,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Address();
   Step::vAddSteps_AggTimer();
   Step::vAddSteps_AM();
+  Step::vAddSteps_AnswerWL();
   Step::vAddSteps_Api();
   Step::vAddSteps_SysArgs();
   Step::vAddSteps_Arrange();
@@ -174,6 +175,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Push();
 
   Step::vAddSteps_RecvdObject();
+  Step::vAddSteps_RecvWL();
   Step::vAddSteps_RefTimer();
   Step::vAddSteps_RegAggTimer();
   Step::vAddSteps_RegCounter();
@@ -190,6 +192,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Sen();
   Step::vAddSteps_SenCompiler();
   Step::vAddSteps_SendNode();
+  Step::vAddSteps_SendWL();
   Step::vAddSteps_Session();
   Step::vAddSteps_ShardDef();
   Step::vAddSteps_Shell();
