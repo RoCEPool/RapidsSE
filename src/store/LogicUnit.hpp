@@ -43,6 +43,9 @@
 #include "NamedBuffer.hpp"
 #include "Optimiser.hpp"
 #include "AdaptorWL.hpp"
+#include "AnswerWL.hpp"
+#include "RecvWL.hpp"
+#include "SendWL.hpp"
 
 #include "IndexTree.hpp"
 #include "JobMetrics.hpp"
@@ -170,6 +173,7 @@ namespace STORE
 
     REG<AdaptorWL,      CN_ADAPTORWL     > m_xpAdaptorWL;
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
+    REG<AnswerWL,       CN_ANSWERWL      > m_xpAnswerWL;
     REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
     REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
   
@@ -233,11 +237,13 @@ namespace STORE
     REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;
 
     REG<Object,         CN_NONE          > m_xpRecvdObject;
+    REG<RecvWL,         CN_RECVWL        > m_xpRecvWL;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBuffer;
     REG<RowOnce,        CN_ROWONCE       > m_xpRowOnce;
 
     REG<Node,           CN_NODE          > m_xpSendNode;
     REG<Sends,          CN_SENDS         > m_xpSends;
+    REG<SendWL,         CN_SENDWL        > m_xpSendWL;
     REG<ShardDef,       CN_SHARDDEF      > m_xpShardDef;
     REG<Socket,         CN_SOCKET        > m_xpSocket;
     REG<Stage,          CN_STAGE         > m_xpStage;

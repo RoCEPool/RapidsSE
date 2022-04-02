@@ -10,6 +10,7 @@ enum eLR // Logic Unit Registers
   /*  */ LR_ADAPTORWL,
   /*  */ LR_AGGTIMER,
   /*  */ LR_AGGTYPESTACK,
+  /*  */ LR_ANSWERWL,
   
   /*  */ LR_BKTMAP,
   /*  */ LR_BUCKET,
@@ -74,11 +75,13 @@ enum eLR // Logic Unit Registers
   /*  */ LR_PTNSTREAM,
   
   /*  */ LR_RECVDOBJECT,
+  /*  */ LR_RECVWL,
   /*  */ LR_ROWBUFFER,
   /*  */ LR_ROWONCE,
   
   /*  */ LR_SENDNODE,
   /*  */ LR_SENDS,
+  /*  */ LR_SENDWL,
   /*  */ LR_SHARDDEF,
   /*  */ LR_SOCKET,
   
@@ -120,7 +123,8 @@ static Stz* aLR[]
   /*  */ "LR_ADAPTORWL"_Stz,
   /*  */ "LR_AGGTIMER"_Stz,
   /*  */ "LR_AGGTYPESTACK"_Stz,
-  
+  /*  */ "LR_ANSWERWL"_Stz,
+
   /*  */ "LR_BKTMAP"_Stz,
   /*  */ "LR_BUCKET"_Stz,
   /*  */ "LR_BUCKETGET"_Stz,
@@ -185,11 +189,13 @@ static Stz* aLR[]
   /*  */ "LR_PTNSTREAM"_Stz,
   
   /*  */ "LR_RECVDOBJECT"_Stz,
+  /*  */ "LR_RECVWL"_Stz,
   /*  */ "LR_ROWBUFFER"_Stz,
   /*  */ "LR_ROWONCE"_Stz,
   
   /*  */ "LR_SENDNODE"_Stz,
   /*  */ "LR_SENDS"_Stz,
+  /*  */ "LR_SENDWL"_Stz,
   /*  */ "LR_SHARDDEF"_Stz,
   /*  */ "LR_SOCKET"_Stz,
   /*  */ "LR_STAGE"_Stz,

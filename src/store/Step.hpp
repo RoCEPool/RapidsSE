@@ -27,6 +27,7 @@ namespace STORE
     static void vAddSteps_Address(void);
     static void vAddSteps_AggTimer(void);
     static void vAddSteps_AM(void);
+    static void vAddSteps_AnswerWL(void);
     static void vAddSteps_Api(void);
     static void vAddSteps_SysArgs(void);
     static void vAddSteps_Arrange(void);
@@ -157,6 +158,7 @@ namespace STORE
     static void vAddSteps_Schedule(void);
 
     static void vAddSteps_RecvdObject(void);
+    static void vAddSteps_RecvWL(void);
     static void vAddSteps_RefTimer(void);
     static void vAddSteps_RegAggTimer(void);
     static void vAddSteps_RegCounter(void);
@@ -173,6 +175,7 @@ namespace STORE
     static void vAddSteps_Sen(void);
     static void vAddSteps_SenCompiler(void);
     static void vAddSteps_SendNode(void);
+    static void vAddSteps_SendWL(void);
     static void vAddSteps_Session(void);
     static void vAddSteps_ShardDef(void);
     static void vAddSteps_Shell(void);

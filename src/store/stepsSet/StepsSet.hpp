@@ -27,10 +27,33 @@ public:
 
   // adaptorWL
   void vAdaptorProcessEventA(void);
+  void vAdaptorProcessEventB(void);
   void vAdaptorWLAction1(void);
   void vAdaptorWLAction2(void);
   void vAdaptorWLDelete(void);
   void vAdaptorWLNew(void);
+
+  // AnswerWL
+  void vAnswerProcessEventA(void);
+  void vAnswerProcessEventB(void);
+  void vAnswerWLAction1(void);
+  void vAnswerWLAction2(void);
+  void vAnswerWLDelete(void);
+  void vAnswerWLNew(void);
+
+  // recvWL
+  void vRecvWLGet(void);
+  void vRecvWLIsNotNull(void);
+  void vRecvWLIsNull(void);
+  void vRecvWLSet(void);
+
+  // SendWL
+  void vSendProcessEventA(void);
+  void vSendProcessEventB(void);
+  void vSendWLAction1(void);
+  void vSendWLAction2(void);
+  void vSendWLDelete(void);
+  void vSendWLNew(void);
 
   // address
   void vAddressEqual(void);
