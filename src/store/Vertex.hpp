@@ -33,21 +33,25 @@ namespace STORE
 
     bool bCancel(Task* pTriggeringTask);
 
-    VertexSpec* pVertexSpec(void);
+    Deck* pDeck(void);
+ 
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
+  
     Pipeline* pPipeline(void);
+  
     void vSetInvoker(Task* pInvoker);
     void vSetupJob(void);
     void vSpawnOpTasks(void);
     Stage* pStage0(void);
     i8   nStages(void);
-    Deck* pDeck(void);
     Stream* pStream0(void);
 
-    void vCreateDeck();
+    VertexSpec* pVertexSpec(void);
 
   private:
+    void vCreateDeck();
+  
     Footer* aFooter(void);
   };
   

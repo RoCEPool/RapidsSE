@@ -50,10 +50,10 @@ void Step::vDeckGet(void)
 {
   ENTRY();
    
-  if (m_pLogicUnit->m_xpVertex.bIsNull())
+  if (m_pLogicUnit->m_xpDeck.bIsNull())
     m_pDataStack->vPushPtr(nullptr);
   else
-    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpVertex);
+    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpDeck);
 
   EXIT();
 }
@@ -65,8 +65,7 @@ void Step::vDeckSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpVertex =
-    _pVertex(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpDeck = _pDeck(m_pDataStack->pPopPtr(__func__));
 
   EXIT();
 }
@@ -80,9 +79,9 @@ void Step::vDeckEnqueueInvoke(void)
 {
   ENTRY();
   
-  Vertex* pVortex = * m_pLogicUnit->m_xpVertex;
+  Deck* pDeck= * m_pLogicUnit->m_xpDeck;
 
-  Stage*    pStage0   = pVortex->pStage0();
+  Stage*  pStage0   = pDeck->pStage0();
 
   if (pStage0->bEnqueueInvoke()) {
     m_pDataStack->vPushInt(true);
@@ -102,7 +101,7 @@ void Step::vDeckOp0Fetch(void)
 {
   ENTRY();
     
-  Op* pOp0 = m_pLogicUnit->m_xpVertex->pOp0();
+  Op* pOp0 = m_pLogicUnit->m_xpDeck->pOp0();
     
   m_pDataStack->vPushPtr(pOp0);
 
@@ -118,7 +117,7 @@ void Step::vDeckOpsOnNodeFetch(void)
     
   i8 iThisNode = AM::pGrid()->iThisNodeNo();
 
-  i8 nOps = m_pLogicUnit->m_xpVertex->nOpsOnNode(iThisNode);
+  i8 nOps = m_pLogicUnit->m_xpDeck->nOpsOnNode(iThisNode);
 
   m_pDataStack->vPushInt(nOps);
 
@@ -134,7 +133,7 @@ void Step::vDeckSetInvoker(void)
 
   Task* pInvoker = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  m_pLogicUnit->m_xpVertex->vSetInvoker(pInvoker);
+  m_pLogicUnit->m_xpDeck->vSetInvoker(pInvoker);
   
   EXIT();
 }

@@ -116,13 +116,13 @@ bool Vertex::bCancel(Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get vertex spec                                                            */
+/* get deck                                                                   */
 /*----------------------------------------------------------------------------*/
-VertexSpec* Vertex::pVertexSpec(void)
+Deck* Vertex::pDeck(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  return m_pVertexSpec;
+  return m_pDeck;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -276,13 +276,13 @@ i8 Vertex::nStages(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stage set                                                              */
+/* get vertex spec                                                            */
 /*----------------------------------------------------------------------------*/
-Deck* Vertex::pDeck(void)
+VertexSpec* Vertex::pVertexSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  return m_pDeck;
+  return m_pVertexSpec;
 }
 
 /*----------------------------------------------------------------------------*/

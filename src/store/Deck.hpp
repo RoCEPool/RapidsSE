@@ -28,7 +28,14 @@ namespace STORE
   
     static void vRepair(Object *pObject);
 
+    Op*  pOp0(void);
+    i8   nOpsOnNode(i8 iNode);
+
     Pipeline* pPipeline(void);
+  
+    void vSetInvoker(Task* pInvoker);
+    Stage* pStage0(void);
+  
     Vertex* pVertex(void);
 
   private:

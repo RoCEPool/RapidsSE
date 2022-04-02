@@ -7,6 +7,8 @@
 #include "Deck.hpp"
 #include "DeckSpec.hpp"
 #include "Vertex.hpp"
+#include "Pipeline.hpp"
+#include "Stream.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -80,6 +82,39 @@ void Deck::vRepair(Object *pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get op 0                                                                   */
+/*----------------------------------------------------------------------------*/
+Op* Deck::pOp0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
+  
+  Stage*  pStage0 = pGet(0);
+  Op*     pOp0    = pStage0->pOp0();
+
+  return pOp0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of ops to be excuted on given node                              */
+/*----------------------------------------------------------------------------*/
+i8 Deck::nOpsOnNode(i8 iNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
+  
+  i8 nOps = 0;
+  
+  i8 iOriginNodeNo = pPipeline()->iOriginNodeNo();
+  
+  i8 nStages = nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    Stage* pStage = pGet(i_Stage);
+    nOps += pStage->nOpsOnNode(iNode,iOriginNodeNo);
+  }
+  
+  return nOps;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get outer pipeline                                                         */
 /*----------------------------------------------------------------------------*/
 Pipeline* Deck::pPipeline(void)
@@ -90,7 +125,41 @@ Pipeline* Deck::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pipework                                                               */
+/* spawn operaator jobs for the pipeline                                      */
+/*----------------------------------------------------------------------------*/
+void Deck::vSetInvoker(Task* pInvoker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
+  
+  i8 nStages = nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    
+    Stage* pStage = pGet(i_Stage);
+    
+    for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
+      Stream* pStream = pStage->pGet(i_Stream);
+
+      pStream->vSetInvoker(pInvoker);
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage 0                                                                */
+/*----------------------------------------------------------------------------*/
+Stage* Deck::pStage0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
+  
+  Stage*  pStage0 = pGet(0);
+
+  return pStage0;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get vertex                                                                 */
 /*----------------------------------------------------------------------------*/
 Vertex* Deck::pVertex(void)
 {

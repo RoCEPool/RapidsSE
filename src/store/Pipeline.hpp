@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE { class Vertex; class Stage; class VertexSpec; }
+namespace STORE { class Deck; class Stage; class Vertex; class VertexSpec; }
 
 namespace STORE
 {
@@ -58,6 +58,7 @@ namespace STORE
     bool bCancel(Task* pTriggeringTask);
     void vCancelled(bool bCancelled);
     bool bCancelled(void);
+    Deck* pDeck0(void);
     void vDropDebugLock(void);
     void vDump(bool bRecursive=true);
     bool bEarlyExit(void);

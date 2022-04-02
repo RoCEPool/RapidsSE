@@ -1388,6 +1388,7 @@ public:
   void vPipelineOpsOnNodeFetch(void);
   void vPipelinePulsedFetch(void);
   void vPipelinePulsedStore(void);
+  void vPipelineRootDeckFetch(void);
   void vPipelineSet(void);
   void vPipelineSpawnOpTasks(void);
 

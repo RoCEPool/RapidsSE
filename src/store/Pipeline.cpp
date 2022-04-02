@@ -141,6 +141,18 @@ bool Pipeline::bCancelled(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get deck 0                                                                 */
+/*----------------------------------------------------------------------------*/
+Deck* Pipeline::pDeck0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  Deck* pDeck0 = m_pVertexRoot->pDeck();
+
+  return pDeck0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop the debug lock                                                        */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vDropDebugLock(void)

@@ -55,6 +55,7 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline[].opsOnNode@"_Stz,     &Step::vPipelineOpsOnNodeFetch);
   vAddStep("Pipeline[].pulsed@"_Stz,        &Step::vPipelinePulsedFetch);
   vAddStep("Pipeline[].pulsed!"_Stz,        &Step::vPipelinePulsedStore);
+  vAddStep("Pipeline[].rootDeck0@"_Stz,     &Step::vPipelineRootDeckFetch);
   vAddStep("Pipeline[].spawnOpTasks"_Stz,   &Step::vPipelineSpawnOpTasks);
 }
 
@@ -325,6 +326,20 @@ void Step::vPipelineOpsOnNodeFetch(void)
   i8 nOps = m_pLogicUnit->m_xpPipeline->nOpsOnNode(iThisNode);
 
   m_pDataStack->vPushInt(nOps);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pipeline[].rootDeck0@ -- fetch root deck of pipeline                       */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineRootDeckFetch(void)
+{
+  ENTRY();
+    
+  Deck* pDeck = m_pLogicUnit->m_xpPipeline->pVertexRoot()->pDeck();
+    
+  m_pDataStack->vPushPtr(pDeck);
 
   EXIT();
 }
