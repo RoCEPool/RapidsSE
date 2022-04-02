@@ -1419,7 +1419,6 @@ public:
   void vPipelineOfOpAddAccum(void);
   void vPipelineOfOpCancelledFetch(void);
   void vPipelineOfOpCancelledStore(void);
-  void vPipelineOfOpCreate(void);
   void vPipelineOfOpDropDebugLock(void);
   void vPipelineOfOpEarlyExitFetch(void);
   void vPipelineOfOpEarlyExitStore(void);
@@ -1428,12 +1427,8 @@ public:
   void vPipelineOfOpGet(void);
   void vPipelineOfOpGetAccum(void);
   void vPipelineOfOpGrabDebugLock(void);
-  void vPipelineOfOpOp0Fetch(void);
-  void vPipelineOfOpOpsOnNodeFetch(void);
   void vPipelineOfOpPulsedFetch(void);
   void vPipelineOfOpPulsedStore(void);
-  void vPipelineOfOpSpawnOpTasks(void);
-  void vPipelineOfOpStartPipeline(void);
 
   // pipeSpec
 
@@ -1856,27 +1851,6 @@ public:
   void vSsnIncExecuted(void);
   void vSsnSenLoc(void);
   void vSsnTraceSession(void);
-
-  // SubPipelineOfOp
-  void vSubPipeOfOpAddAccum(void);
-  void vSubPipeOfOpCancelledFetch(void);
-  void vSubPipeOfOpCancelledStore(void);
-  void vSubPipeOfOpCreate(void);
-  void vSubPipeOfOpDropDebugLock(void);
-  void vSubPipeOfOpEarlyExitFetch(void);
-  void vSubPipeOfOpEarlyExitStore(void);
-  void vSubPipeOfOpErroredStore(void);
-  void vSubPipeOfOpErroredFetch(void);
-  void vSubPipeOfOpFindSubPipe(void);
-  void vSubPipeOfOpGet(void);
-  void vSubPipeOfOpGetAccum(void);
-  void vSubPipeOfOpGrabDebugLock(void);
-  void vSubPipeOfOpOp0Fetch(void);
-  void vSubPipeOfOpOpsOnNodeFetch(void);
-  void vSubPipeOfOpPulsedFetch(void);
-  void vSubPipeOfOpPulsedStore(void);
-  void vSubPipeOfOpSpawnOpTasks(void);
-  void vSubPipeOfOpStartPipeline(void);
 
   // stage
   void vStageGet(void);
