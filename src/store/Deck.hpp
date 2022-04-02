@@ -1,19 +1,19 @@
 /*============================================================================*/
-/* StageSet.hpp -- List of Stages                                             */
+/* Deck.hpp -- Deck (of Vertex of Pipeline)                                   */
 /*============================================================================*/
 #pragma once
 
 #include "Stage.hpp"
 
-namespace STORE { class VertexSpec; }
+namespace STORE { class DeckSpec; class VertexSpec; }
+
 namespace STORE
 {
-  class Deck : public ListNL_t<Stage>
+  class Deck : public VectorNL_t<CN_DECK,Stage,C_MAX_STAGES>
   {
   private:
-   
-    Vertex* m_pPipeWork;
-    VertexSpec* m_pPipeSpec; // specification of this pipework
+    Vertex*     m_pVertex;
+    DeckSpec*   m_pDeckSpec;
 
     // must be last
     Footer m_xFooter;
@@ -22,14 +22,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Deck(Vertex* pPipeWork, VertexSpec* pPipeSpec);
+    Deck(Vertex*   pVertex,
+         DeckSpec* pDeckSpec);
    ~Deck(void) noexcept(false);
   
+    static void vRepair(Object *pObject);
+
     Pipeline* pPipeline(void);
-    Vertex* pPipeWork(void);
+    Vertex* pVertex(void);
 
   private:
-  
+    void vCreateStages(void);
+
     Footer* aFooter(void);
 
   };

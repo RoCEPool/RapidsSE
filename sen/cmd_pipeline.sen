@@ -34,8 +34,7 @@
   
   // immutable op, subPLineOfOp and pipelineOfOp should be null
   [op]           not assert
-  [subPipeOfOp]  not assert
-  [pipelineOfOp] not assert
+  [pipeline] not assert
 
   // and so we start...
   [job].tscBeginning

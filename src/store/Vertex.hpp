@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Vertex.hpp -- Vertex of Pipeline                                           */
+/* Vertex.hpp -- Vertex (of Pipeline)                                         */
 /*============================================================================*/
 #pragma once
 
@@ -8,16 +8,14 @@ namespace STORE { class Stage;    class Deck;
 
 namespace STORE
 {
-  class Vertex : public ListNL_t<Vertex>
-               , public ListItem_t<Vertex>
+  class Vertex : public VectorNL_t<CN_VERTEX,Vertex,C_MAX_VERTEXES>
   {
   private:
     Pipeline*   m_pPipeline;     // which pipeline bubble this vertex is within
     Vertex*     m_pParentVertex; // parent of this vertex
-  
     VertexSpec* m_pVertexSpec;   // specification of this vertex
   
-    Deck*    m_pStaging;
+    Deck*       m_pDeck;
   
     // must be last
     Footer m_xFooter;
@@ -26,14 +24,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Vertex(Pipeline* pPipeline,
-           Vertex*   pParentVertex,
-           VertexSpec* pPipeSpec);
+    Vertex(Pipeline*   pPipeline,
+           Vertex*     pParentVertex,
+           VertexSpec* pVertexSpec);
    ~Vertex(void) noexcept(false);
   
+    static void vRepair(Object* pObject);
+
     bool bCancel(Task* pTriggeringTask);
 
-    VertexSpec* pPipeSpec(void);
+    VertexSpec* pVertexSpec(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
@@ -42,10 +42,10 @@ namespace STORE
     void vSpawnOpTasks(void);
     Stage* pStage0(void);
     i8   nStages(void);
-    Deck* pStaging(void);
+    Deck* pDeck(void);
     Stream* pStream0(void);
 
-    void vCreatePipework();
+    void vCreateDeck();
 
   private:
     Footer* aFooter(void);

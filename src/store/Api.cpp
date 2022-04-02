@@ -503,17 +503,17 @@ void Api::vWaitJob(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* wait for job completion                                                    */
 /*----------------------------------------------------------------------------*/
-void Api::vPushOperand(Session* pSession, Operand* pOperand)
-{
-  Job* pJob = pSession->m_pSsnJob;
-
-  Op* pInputOp = pJob->pSingularOp();
-
-  pInputOp->vOutboundOperand(pOperand);
-  pOperand = nullptr;
-  while (pInputOp->pOutboundOperand())
-    AM::vNapUsec(100,CN_SEPROMPT);
-}
+//void Api::vPushOperand(Session* pSession, Operand* pOperand)
+//{
+//  Job* pJob = pSession->m_pSsnJob;
+//
+//  Op* pInputOp = pJob->pSingularOp();
+//
+//  pInputOp->vOutboundOperand(pOperand);
+//  pOperand = nullptr;
+//  while (pInputOp->pOutboundOperand())
+//    AM::vNapUsec(100,CN_SEPROMPT);
+//}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

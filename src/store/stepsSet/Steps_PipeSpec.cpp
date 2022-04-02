@@ -48,9 +48,9 @@ void Step::vPipeSpecDelete(void)
 {
   ENTRY();
    
-  if (m_pLogicUnit->m_xpPipeSpec.bIsNotNull()) {
+  if (m_pLogicUnit->m_xpVertexSpec.bIsNotNull()) {
     m_pLogicUnit
-      ->m_xpPipeSpec.vGuardedDeleteComponent(CN_VERTEXSPEC,
+      ->m_xpVertexSpec.vGuardedDeleteComponent(CN_VERTEXSPEC,
                                                  CN_STEP,this,(Stz*)__func__);
   }
     
@@ -66,7 +66,7 @@ void Step::vPipeSpecDump(void)
   
   SP_PipeSpec spPipeSpec;
   
-  vTrace("%s\n"_Stz,spPipeSpec.sz(* m_pLogicUnit->m_xpPipeSpec));
+  vTrace("%s\n"_Stz,spPipeSpec.sz(* m_pLogicUnit->m_xpVertexSpec));
   
   EXIT();
 }
@@ -78,8 +78,8 @@ void Step::vPipeSpecGet(void)
 {
   ENTRY();
 
-  if (m_pLogicUnit->m_xpPipeSpec.bIsNotNull())
-    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpPipeSpec);
+  if (m_pLogicUnit->m_xpVertexSpec.bIsNotNull())
+    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpVertexSpec);
   else
     m_pDataStack->vPushPtr(nullptr);
 
@@ -95,7 +95,7 @@ void Step::vPipeSpecOptimisable(void)
   
   bool bOptimisable = false;
   
-  VertexSpec* pPipeSpec = (* m_pLogicUnit->m_xpPipeSpec);
+  VertexSpec* pPipeSpec = (* m_pLogicUnit->m_xpVertexSpec);
   
   
   
@@ -128,7 +128,7 @@ void Step::vPipeSpecSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpPipeSpec =
+  m_pLogicUnit->m_xpVertexSpec =
     _pVertexSpec(m_pDataStack->pPopPtr(__func__));
   
   EXIT();

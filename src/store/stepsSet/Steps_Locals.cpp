@@ -256,6 +256,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Deck[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Deck[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("ErrorCode[]"_Stz)) {
     pCurrentWord->vEncodeCall("ErrorCode[].set"_Stz);
     EXIT();
@@ -263,6 +268,11 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("ExprEval[]"_Stz)) {
     pCurrentWord->vEncodeCall("ExprEval[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("ErrorMarker[]"_Stz)) {
+    pCurrentWord->vEncodeCall("ErrorMarker[].set"_Stz);
     EXIT();
     return;
   }
@@ -333,11 +343,6 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("InfoSetTable[]"_Stz)) {
     pCurrentWord->vEncodeCall("InfoSetTable[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("ErrorMarker[]"_Stz)) {
-    pCurrentWord->vEncodeCall("ErrorMarker[].set"_Stz);
     EXIT();
     return;
   }
@@ -436,6 +441,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Sends[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Sends[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("ShardDef[]"_Stz)) {
     pCurrentWord->vEncodeCall("ShardDef[].set"_Stz);
     EXIT();
@@ -521,11 +531,13 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Sends[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Sends[].set"_Stz);
+  
+  else if (szTerm->bSame("Vertex[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Vertex[].set"_Stz);
     EXIT();
     return;
   }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get name of local from token stream

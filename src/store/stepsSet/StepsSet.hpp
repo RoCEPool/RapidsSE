@@ -353,6 +353,52 @@ public:
   void vDebugFlagStore(void);
   void vDebugBreakpoint(void);
 
+  // deck
+  void vDeckAddAccum(void);
+  void vDeckCancelledFetch(void);
+  void vDeckCancelledStore(void);
+  void vDeckCreate(void);
+  void vDeckDropDebugLock(void);
+  void vDeckDump(void);
+  void vDeckEarlyExitFetch(void);
+  void vDeckEarlyExitStore(void);
+  void vDeckEnqueueInvoke(void);
+  void vDeckErroredStore(void);
+  void vDeckErroredFetch(void);
+  void vDeckGet(void);
+  void vDeckGetAccum(void);
+  void vDeckGrabDebugLock(void);
+  void vDeckOp0Fetch(void);
+  void vDeckOpsOnNodeFetch(void);
+  void vDeckPulsedFetch(void);
+  void vDeckPulsedStore(void);
+  void vDeckSet(void);
+  void vDeckSetInvoker(void);
+  void vDeckSpawnOpTasks(void);
+
+  // deck (of op)
+  void vDeckOfOpAddAccum(void);
+  void vDeckOfOpCancelledFetch(void);
+  void vDeckOfOpCancelledStore(void);
+  void vDeckOfOpCreate(void);
+  void vDeckOfOpDropDebugLock(void);
+  void vDeckOfOpDump(void);
+  void vDeckOfOpEarlyExitFetch(void);
+  void vDeckOfOpEarlyExitStore(void);
+  void vDeckOfOpEnqueueInvoke(void);
+  void vDeckOfOpErroredStore(void);
+  void vDeckOfOpErroredFetch(void);
+  void vDeckOfOpGet(void);
+  void vDeckOfOpGetAccum(void);
+  void vDeckOfOpGrabDebugLock(void);
+  void vDeckOfOpOp0Fetch(void);
+  void vDeckOfOpOpsOnNodeFetch(void);
+  void vDeckOfOpPulsedFetch(void);
+  void vDeckOfOpPulsedStore(void);
+  void vDeckOfOpSet(void);
+  void vDeckOfOpSetInvoker(void);
+  void vDeckOfOpSpawnOpTasks(void);
+
   // devLftRow
   void vDevLftRowStreamDefStore(void);
   void vDevLftRowDeleteEachRowBuffer(void);
@@ -1258,7 +1304,6 @@ public:
 
   // op
   void vOpAckInvokingTask(void);
-  void vOpDownstreamOpStore(void);
   void vOpEnqueOperand(void);
   void vOpFindOp(void);
   void vOpGet(void);
@@ -1271,8 +1316,6 @@ public:
   void vOpIncHandlerCount(void);
   void vOpIncOperandCount(void);
   void vOpOpNameFetch(void);
-  void vOpOutboundOperandFetch(void);
-  void vOpOutboundOperandStore(void);
   void vOpPartitionFetch(void);
   void vOpJobFetch(void);
   void vOpPipeBackIn(void);
@@ -2417,6 +2460,29 @@ public:
 
   // user
   void vUserName(void);
+
+  // vertex
+  void vVertexAddAccum(void);
+  void vVertexCancelledFetch(void);
+  void vVertexCancelledStore(void);
+  void vVertexCreate(void);
+  void vVertexDropDebugLock(void);
+  void vVertexDump(void);
+  void vVertexEarlyExitFetch(void);
+  void vVertexEarlyExitStore(void);
+  void vVertexEnqueueInvoke(void);
+  void vVertexErroredStore(void);
+  void vVertexErroredFetch(void);
+  void vVertexGet(void);
+  void vVertexGetAccum(void);
+  void vVertexGrabDebugLock(void);
+  void vVertexOp0Fetch(void);
+  void vVertexOpsOnNodeFetch(void);
+  void vVertexPulsedFetch(void);
+  void vVertexPulsedStore(void);
+  void vVertexSet(void);
+  void vVertexSetInvoker(void);
+  void vVertexSpawnOpTasks(void);
 
   // zero
   void vWithSubPipeline(void);

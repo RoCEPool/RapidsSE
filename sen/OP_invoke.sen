@@ -11,8 +11,6 @@
 
   0 locals| nAcks |
 
-  // <subPipeNm> [subPipeOfOp].findSubPipe to SubPipe[]
-  
   subPipe:invoke
   
   nullptr to SubPipe[]

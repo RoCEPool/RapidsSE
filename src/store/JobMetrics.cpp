@@ -369,7 +369,7 @@ bool JobMetrics::bUpdate(bool bAppendList)
 //           ,pStageMetrics->szStageNm());
     
     i8 i_Stage = pStageMetrics->i_Stage();
-    Stage* pStage = pPipeWork->pStaging()->pGet(i_Stage);
+    Stage* pStage = pPipeWork->pDeck()->pGet(i_Stage);
 
     while (CN_STREAMMETRICS == eNextClassNo(d_MetricsCursor)) {
       StreamMetrics* pStreamMetrics = pGetStreamMetrics(d_MetricsCursor);
@@ -455,7 +455,7 @@ void JobMetrics::vCollect(Job* pJob)
   
   i8 nStages = pPipeWork->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stage* pStage = pPipeWork->pStaging()->pGet(i_Stage);
+    Stage* pStage = pPipeWork->pDeck()->pGet(i_Stage);
     
     new(& m_oMetricsWsp) StageMetrics(pStage->i_Stage()
                                       ,pStage->szStageNm());

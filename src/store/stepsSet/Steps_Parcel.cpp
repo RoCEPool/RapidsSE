@@ -220,8 +220,8 @@ void Step::vParcelPipeOut(void)
   Pipeline* pPipeline = pJob->pPipelineX();
   
   // get the next stage the send is supposed to send to
-  Vertex* pFormWork = pPipeline->pVertexRoot();
-  Stage* pDstStage = pFormWork->pStaging()->pGet(pParcel->iDstStage());
+  Vertex* pVertex = pPipeline->pVertexRoot();
+  Stage* pDstStage = pVertex->pDeck()->pGet(pParcel->iDstStage());
   i8 nStreamPtns = pDstStage->nItems();
 
   // get the op to forward to depending on the cross topology

@@ -45,7 +45,7 @@ void Step::vAddSteps_SubPipe(void)
   vAddStep("SubPipe[].dump"_Stz,           &Step::vSubPipeDump);
   vAddStep("SubPipe[].earlyExit@"_Stz,     &Step::vSubPipeEarlyExitFetch);
   vAddStep("SubPipe[].earlyExit!"_Stz,     &Step::vSubPipeEarlyExitStore);
-  vAddStep("SubPipe[].enqueueInvoke?"_Stz,  &Step::vSubPipeEnqueueInvoke);
+  vAddStep("SubPipe[].enqueueInvoke?"_Stz, &Step::vSubPipeEnqueueInvoke);
   vAddStep("SubPipe[].errored@"_Stz,       &Step::vSubPipeErroredFetch);
   vAddStep("SubPipe[].errored!"_Stz,       &Step::vSubPipeErroredStore);
   vAddStep("SubPipe[].getAccum"_Stz,       &Step::vSubPipeGetAccum);
@@ -191,9 +191,9 @@ void Step::vSubPipeEnqueueInvoke(void)
 {
   ENTRY();
   
-  Vertex* pFormWork = m_pLogicUnit->m_xpSubPipe->pVertexRoot();
+  Vertex* pVortex = m_pLogicUnit->m_xpSubPipe->pVertexRoot();
 
-  Stage*    pStage0   = pFormWork->pStage0();
+  Stage*    pStage0   = pVortex->pStage0();
 
   if (pStage0->bEnqueueInvoke()) {
     m_pDataStack->vPushInt(true);

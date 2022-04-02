@@ -57,6 +57,8 @@ namespace STORE
     static void vAddSteps_DataBuffer(void);
     static void vAddSteps_DdlLock(void);
     static void vAddSteps_Debug(void);
+    static void vAddSteps_Deck(void);
+    static void vAddSteps_DeckOfOp(void);
     static void vAddSteps_DevLftIxt(void);
     static void vAddSteps_DevLftRow(void);
     static void vAddSteps_DevRhtIxt(void);
@@ -196,7 +198,6 @@ namespace STORE
     static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_SubCall(void);
     static void vAddSteps_SubPipe(void);
-    static void vAddSteps_SubPipeOfOp(void);
     static void vAddSteps_SubReturn(void);
     static void vAddSteps_Subset(void);
     static void vAddSteps_Supervisor(void);
@@ -231,6 +232,8 @@ namespace STORE
   
     static void vAddSteps_User(void);
  
+    static void vAddSteps_Vertex(void);
+  
     static void vAddSteps_With(void);
     static void vAddSteps_Word(void);
 

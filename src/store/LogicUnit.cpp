@@ -105,6 +105,7 @@ LogicUnit::LogicUnit(void)
 ,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,CsvBuffer::vRepairList,  LR_CSVBUFFER)
 
 ,     m_xpDataBuffer(this,RF_REPAIR_DELETE,DataBuffer::vRepair,     LR_DATABUFFER)
+,           m_xpDeck(this,RF_REPAIR_DELETE,Deck::vRepair,           LR_DATABUFFER)
 ,           m_xpDir0(this,RF_REPAIR_DELETE,Dir::vRepair,            LR_DIR0)
 ,           m_xpDir1(this,RF_REPAIR_DELETE,Dir::vRepair,            LR_DIR1)
 ,         m_xpDynamo(this,RF_REPAIR_DELETE,Dynamo::vRepair,         LR_DYNAMO)
@@ -136,19 +137,18 @@ LogicUnit::LogicUnit(void)
 ,        m_xpMetaGet(this,RF_REPAIR_DELETE,MetaGet::vRepair,        LR_META)
 
 ,    m_xpNamedBuffer(this,RF_REPAIR_DELETE,NamedBuffer::vRepairList,LR_NAMEDBUFFER)
-,           m_xpNode(this,RF_REPAIR_NEVER,  nullptr,                LR_NODE)
+,           m_xpNode(this,RF_REPAIR_NEVER, nullptr,                 LR_NODE)
 ,         m_xpNode_I(this,RF_SET_NULL,     nullptr,                 LR_NODE_I)
 ,            m_xpNow(this,RF_REPAIR_DELETE,Now::vRepair,            LR_NOW)
 
 ,             m_xpOp(this,RF_NONE,         nullptr,                 LR_OP)
 ,     m_xpOperandOoO(this,RF_REPAIR_NONE,  nullptr,                 LR_OPERANDOOO)
-,      m_xpOptimiser(this,RF_REPAIR_DELETE,  nullptr,               LR_OPTIMISER)
+,      m_xpOptimiser(this,RF_REPAIR_DELETE,nullptr,                 LR_OPTIMISER)
 
 , m_xpPathIdentifier(this,RF_REPAIR_DELETE,PathIdentifier::vRepair, LR_PATHIDENTIFIER)
 ,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_PARCEL)
 ,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                 LR_PIPEIN)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                 LR_PIPELINE)
-,       m_xpPipeSpec(this,RF_NONE,         nullptr,                 LR_PIPESPEC)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    LR_PLANOPERAND)
 ,            m_xpPot(this,RF_REPAIR_DELETE,Pot::vRepair,            LR_POT)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      LR_PTNSTREAM)
@@ -189,7 +189,10 @@ LogicUnit::LogicUnit(void)
 ,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepairHashSet,LR_TOPTNROW)
 ,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepairList,      LR_TOROW)
 ,            m_xpTub(this,RF_REPAIR_DELETE,Tub::vRepair,            LR_TUB)
-,             m_xpTx(this,RF_REPAIR_DELETE,ToRow::vRepair,          LR_TX)
+,             m_xpTx(this,RF_REPAIR_DELETE,Tx::vRepair,             LR_TX)
+
+,         m_xpVertex(this,RF_REPAIR_DELETE,Vertex::vRepair,         LR_VERTEX)
+,     m_xpVertexSpec(this,RF_REPAIR_DELETE,VertexSpec::vRepair,     LR_VERTEXSPEC)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);

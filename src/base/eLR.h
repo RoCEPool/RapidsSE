@@ -23,6 +23,7 @@ enum eLR // Logic Unit Registers
   /*  */ LR_CSVBUFFER,
   
   /*  */ LR_DATABUFFER,
+  /*  */ LR_DECK,
   /*  */ LR_DIR0,
   /*  */ LR_DIR1,
   /*  */ LR_DYNAMO,
@@ -68,7 +69,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_PATHIDENTIFIER,
   /*  */ LR_PIPEIN,
   /*  */ LR_PIPELINE,
-  /*  */ LR_PIPESPEC,
   /*  */ LR_POT,
   /*  */ LR_PLANOPERAND,
   /*  */ LR_PREEXPSTACK,
@@ -112,7 +112,10 @@ enum eLR // Logic Unit Registers
   /*  */ LR_TOROW,
   /*  */ LR_TUB,
   /*  */ LR_TX,
-  
+
+  /*  */ LR_VERTEX,
+  /*  */ LR_VERTEXSPEC,
+
   /*  */ LR_ENUMS
 };
 
@@ -136,7 +139,7 @@ static Stz* aLR[]
   /*  */ "LR_CSVBUFFER"_Stz,
   
   /*  */ "LR_DATABUFFER"_Stz,
-  
+  /*  */ "LR_DECK"_Stz,
   /*  */ "LR_DIR0"_Stz,
   /*  */ "LR_DIR1"_Stz,
   /*  */ "LR_DYNAMO"_Stz,
@@ -182,7 +185,6 @@ static Stz* aLR[]
   /*  */ "LR_PATHIDENTIFIER"_Stz,
   /*  */ "LR_PIPEIN"_Stz,
   /*  */ "LR_PIPELINE"_Stz,
-  /*  */ "LR_PIPESPEC"_Stz,
   /*  */ "LR_PLANOPERAND"_Stz,
   /*  */ "LR_POT"_Stz,
   /*  */ "LR_PREEXPSTACK"_Stz,
@@ -226,6 +228,9 @@ static Stz* aLR[]
   /*  */ "LR_TUB"_Stz,
   /*  */ "LR_TX"_Stz,
   
+  /*  */ "LR_VERTEX"_Stz,
+  /*  */ "LR_VERTEXSPEC"_Stz,
+
   /*  */ "LR_ENUMS"_Stz
 };
 

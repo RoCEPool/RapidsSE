@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Op.hpp -- Operator of Stream of Stage of Pipeline                          */
+/* Op.hpp -- Operator (of Stream of Stage of Deck of Vertex of Pipeline)      */
 /*============================================================================*/
 #pragma once
 
@@ -10,10 +10,10 @@
 
 #include "OperandWatch.hpp"
 
-
 namespace BASE { class OperandQueue; }
 
-namespace STORE { class OpSpec;
+namespace STORE { class Deck;
+                  class OpSpec;
                   class VertexSpec; class Vertex;
                   class StageSpec; }
 
@@ -22,42 +22,21 @@ namespace STORE
   class Op : public Operand
   {
   private:
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // operator
+  
+    SMA<Stream,CN_STREAM> m_p_Stream;  // which stream (of stage of pipeline of job)
+    SMA<OpSpec,CN_OPSPEC> m_p_OpSpec;  // specification of this operator
+
+    SMA<Task,CN_TASK>     m_pTask;     // task of op
 
     // -- id, name and kind
     Gid_t<CN_OP> m_xOpId;     // op id in grid
-    s32        m_sOpNm;     // name of this operator
-    s256       m_sPath;     // operator path
+    s256         m_sPath;     // operator path
 
-  
-
-  
-    s4K        m_sExpr;     // expression for this filter
-  
     TagSet*    m_pOpTags;   // tags for the op
     bool       m_bTraceOp;  // tracing this operator
     bool       m_bTraceAck; // tracing ack of this operator
 
-    // -- belongs to
-    SMA<Stream,CN_STREAM> m_pStream;  // which stream (of stage of pipeline of job)
-    i8          m_i_Op;     // is [m_i_Op] in m_pStream
 
-    // -- refers to
-    SMA<OpSpec,CN_OPSPEC>      m_pOpSpec;  // specification of this operator
-    SMA<Pipeline,CN_PIPELINE>  m_p_SubPipeOfOp;   // which sub-pipeline
-    SMA<Vertex,CN_VERTEX>  m_p_PipeWorkOfOp;  // which pipework
-  
-    // -- executed by
-    SMA<Task,CN_TASK>      m_pTask;    // which task is currenty executing this op
-
-    // can these go???
-    bool m_bPulsedLimit;  // is this a pulsed operand?
-    i8   m_iWorkQuanta;   // quanta of work between pulses
-    i8   m_iWorkDone;     // work done
-  
-    i8   m_iMetricsQueued;
-  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // event handling
 
@@ -84,14 +63,14 @@ namespace STORE
     eXK  m_eSendCast;   // send kind
     i8   m_iRobin;      // send Round Robin partition/node/thread
     i8   m_iLocalRobin; // send Round Robin local ptn/node/thread
-  
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // delete these???
+      
+    // can these go???
+    bool m_bPulsedLimit;  // is this a pulsed operand?
+    i8   m_iWorkQuanta;   // quanta of work between pulses
+    i8   m_iWorkDone;     // work done
 
-    SMA<Operand,CN_NONE> m_pOutboundOperand;  // operand to be piped out
+    i8   m_iMetricsQueued;
 
-    SMA<Op,CN_OP>      m_pDownstreamOp;     // downstream op  DELETE
-    
     // must be last
     Footer m_xFooter;
     
@@ -99,7 +78,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op(Stream* pStream, OpSpec* pOpSpec);
+    Op(Stream* pStream,
+       OpSpec* pOpSpec);
    ~Op(void) noexcept(false);
   
     // - - - - - - - - - - - - - - - -
@@ -115,8 +95,6 @@ namespace STORE
     Word* pCurWord(void);
   
     void vDotPrint(Stz* szText);
-    Op*  pDownstreamOp(void);
-    void vDownstreamOp(Op* pDownstreamOp);
     void vDropTaskLock(void);
     void vDump(void);
   
@@ -124,8 +102,6 @@ namespace STORE
     Word* pEventHandler(void);
     Word* pEventHandler(i8 i_OperandKind);
     void vEventHandler(i8 i_OperandKind, Word* pHandler);
-    void vExpr(Stz* sExpr);
-    Stz* szExpr(void);
 
     void vGrabTaskLock(void);
   
@@ -168,8 +144,6 @@ namespace STORE
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Stage* pOtherStage(void);
-    Operand* pOutboundOperand(void);
-    void vOutboundOperand(Operand* pOutboundOperand);
 
     Stz* szPath(void);
     bool bPause(void);
@@ -203,7 +177,6 @@ namespace STORE
     Stz* szStageName(void);
     Stream* pStream(void);
     eYS  eStreamTopology_op(void);
-    Pipeline* pSubPipeOfOp(void);
 
     Task* pTask(void);
     void vTask(Task* pTask);

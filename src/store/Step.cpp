@@ -75,6 +75,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_DataBuffer();
   Step::vAddSteps_DdlLock();
   Step::vAddSteps_Debug();
+  Step::vAddSteps_Deck();
+  Step::vAddSteps_DeckOfOp();
   Step::vAddSteps_DevLftIxt();
   Step::vAddSteps_DevLftRow();
   Step::vAddSteps_DevRhtIxt();
@@ -211,7 +213,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_SubCall();
   Step::vAddSteps_SubPipe();
-  Step::vAddSteps_SubPipeOfOp();
   Step::vAddSteps_SubReturn();
   Step::vAddSteps_Subset();
   Step::vAddSteps_Supervisor();
@@ -247,6 +248,8 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_User();
     
+  Step::vAddSteps_Vertex();
+
   Step::vAddSteps_With();
   Step::vAddSteps_Word();
   

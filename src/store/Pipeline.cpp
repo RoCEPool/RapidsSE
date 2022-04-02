@@ -39,13 +39,15 @@ Pipeline::Pipeline(Job*        pPipelineJob,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_sPipelineNm   = pVertexSpecRoot->szVertexNm();
-  
+  m_pPipelineJob    = pPipelineJob;
+  m_pVertexSpecRoot = pVertexSpecRoot;
+  m_iOriginNodeNo   = iOriginNodeNo;
+
   m_pVertexRoot     = nullptr;
   
-  m_pPipelineJob  = pPipelineJob;
-  m_pVertexSpecRoot     = pVertexSpecRoot;
-  m_iOriginNodeNo = iOriginNodeNo;
+  // -- -- -- -- -- --
+
+  m_sPipelineNm     = pVertexSpecRoot->szVertexNm();
 
   m_bEarlyExit    = false;
   m_bErrored      = false;
@@ -61,8 +63,8 @@ Pipeline::Pipeline(Job*        pPipelineJob,
 
   _checkInitialised_(CN_PIPELINE);
   
-  m_pVertexRoot = new Vertex(this,nullptr,m_pVertexSpecRoot);
-  //vCreatePipework();
+  //m_pVertexRoot = new Vertex(this,nullptr,m_pVertexSpecRoot);
+  vCreateVertexes();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 }
@@ -423,13 +425,13 @@ Vertex* Pipeline::pVertexRoot(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create the formwork for this pipeline                                      */
+/* create the vertexes for this pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void Pipeline::vCreatePipework(void)
+void Pipeline::vCreateVertexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pVertexRoot->vCreatePipework();
+  m_pVertexRoot = new Vertex(this,nullptr,m_pVertexSpecRoot);
 }
 
 /*============================================================================*/

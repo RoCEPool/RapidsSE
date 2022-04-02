@@ -1,9 +1,11 @@
 /*============================================================================*/
-/* StageSet.cpp -- List of StageSet                                               */
+/* Deck.cpp -- Deck (of stages)                                               */
 /*============================================================================*/
 
 #include "BASE.h"
+
 #include "Deck.hpp"
+#include "DeckSpec.hpp"
 #include "Vertex.hpp"
 
 
@@ -20,16 +22,17 @@ __aFooterFunction(Deck)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Deck::Deck(Vertex* pPipeWork, VertexSpec* pPipeSpec)
-: ListNL_t<Stage>(CN_DECK)
+Deck::Deck(Vertex* pVertex, DeckSpec* pDeckSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 
-  m_pPipeWork = pPipeWork;
-  m_pPipeSpec = pPipeSpec;
+  m_pVertex     = pVertex;
+  m_pDeckSpec   = pDeckSpec;
 
   _checkInitialised_(CN_DECK);
 
+  vCreateStages();
+  
   _postcondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 }
 
@@ -40,9 +43,37 @@ Deck::~Deck(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DECK, _FOOTER_);
 
+//  i8 nStages = this->nItems();
+//  for (i8 i_Stage = 0; i_Stage  < nStages; i_Stage++) {
+//    Stage *pStage = pGet(i_Stage);
+//
+//    delete pStage;
+//  }
+//
+//  vClear();
+  
   while (Stage* pStage = pPop())
     delete pStage;
+  vCheckEmpty();
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* repair the deck                                                            */
+/*----------------------------------------------------------------------------*/
+void Deck::vRepair(Object *pObject)
+{
+  _static_
+
+  Deck *pDeck = _pDeck(pObject);
+
+  delete pDeck;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -55,18 +86,43 @@ Pipeline* Deck::pPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
   
-  return m_pPipeWork->pPipeline();
+  return m_pVertex->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get pipework                                                               */
 /*----------------------------------------------------------------------------*/
-Vertex* Deck::pPipeWork(void)
+Vertex* Deck::pVertex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
   
-  return m_pPipeWork;
+  return m_pVertex;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create the stages for this deck                                            */
+/*----------------------------------------------------------------------------*/
+void Deck::vCreateStages(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
+
+  i8 nStages = m_pDeckSpec->nItems();
+  for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
+
+    // get the stageSpec
+    StageSpec* pStageSpec = m_pDeckSpec->pGet(i_StageSpec);
+
+    // add a stage from the stageSpec to the stageVec
+    Stage* pStage = new Stage(this,pStageSpec);
+    vAppend(pStage);
+  }
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */
