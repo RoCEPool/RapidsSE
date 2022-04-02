@@ -975,7 +975,7 @@ Stage* Op::pNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Vertex* pPipeWork = pPipelineOfOp()->pVertexRoot();
+  Vertex* pPipeWork = pPipeline()->pVertexRoot();
   Stage* pNextStage = pPipeWork->pDeck()->pGet(iNextStage());
   
   return pNextStage;
@@ -1222,7 +1222,7 @@ Stage* Op::pOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Vertex* pVertex = pPipelineOfOp()->pVertexRoot();
+  Vertex* pVertex = pPipeline()->pVertexRoot();
   
   Stage* pOtherStage = pVertex->pDeck()->pGet(iOtherStage());
   
@@ -1294,7 +1294,7 @@ bool Op::bPeekOoO(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeline of op                                                         */
 /*----------------------------------------------------------------------------*/
-Pipeline* Op::pPipelineOfOp(void)
+Pipeline* Op::pPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
@@ -1314,7 +1314,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
     
   // get the next stage the send is supposed to send to
-  Vertex* pVertex = pPipelineOfOp()->pVertexRoot();
+  Vertex* pVertex = pPipeline()->pVertexRoot();
   Stage* pDstStage = pVertex->pDeck()->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
