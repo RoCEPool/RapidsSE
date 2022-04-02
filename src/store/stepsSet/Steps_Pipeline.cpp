@@ -55,7 +55,7 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline[].opsOnNode@"_Stz,     &Step::vPipelineOpsOnNodeFetch);
   vAddStep("Pipeline[].pulsed@"_Stz,        &Step::vPipelinePulsedFetch);
   vAddStep("Pipeline[].pulsed!"_Stz,        &Step::vPipelinePulsedStore);
-  vAddStep("Pipeline[].rootDeck0@"_Stz,     &Step::vPipelineRootDeckFetch);
+  vAddStep("Pipeline[].rootDeck@"_Stz,      &Step::vPipelineRootDeckFetch);
   vAddStep("Pipeline[].spawnOpTasks"_Stz,   &Step::vPipelineSpawnOpTasks);
 }
 

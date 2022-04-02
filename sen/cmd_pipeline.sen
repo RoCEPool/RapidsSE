@@ -384,14 +384,14 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
 
-  Pipeline[] to SubPipe[]
-   
-  // SubPipe[].dump
-     
-  subPipe:invoke
+  //Pipeline[] to SubPipe[]
+  //subPipe:invoke
+  //nullptr to SubPipe[]
 
-  nullptr to SubPipe[]
-  
+  Pipeline[].rootDeck@ to Deck[]
+  deck:invoke
+  nullptr to Deck[]
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has executed
