@@ -1393,29 +1393,14 @@ public:
   void vPersistenceReload(void);
 
   // pipeline
-  void vPipelineAddAccum(void);
-  void vPipelineCancelledFetch(void);
-  void vPipelineCancelledStore(void);
   void vPipelineCreate(void);
-  void vPipelineDropDebugLock(void);
   void vPipelineDump(void);
-  void vPipelineEarlyExitFetch(void);
-  void vPipelineEarlyExitStore(void);
-  void vPipelineEnqueueStart(void);
-  void vPipelineErroredStore(void);
-  void vPipelineErroredFetch(void);
   void vPipelineGet(void);
-  void vPipelineGetAccum(void);
-  void vPipelineGrabDebugLock(void);
-  void vPipelineOp0Fetch(void);
-  void vPipelineOpsOnNodeFetch(void);
-  void vPipelinePulsedFetch(void);
-  void vPipelinePulsedStore(void);
-  void vPipelineRootDeckFetch(void);
   void vPipelineSet(void);
+  void vPipelineRootDeckFetch(void);
   void vPipelineSpawnOpTasks(void);
 
-  // pipelineInOp
+  // pipelineOfOp
   void vPipelineOfOpAddAccum(void);
   void vPipelineOfOpCancelledFetch(void);
   void vPipelineOfOpCancelledStore(void);
