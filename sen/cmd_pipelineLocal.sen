@@ -121,10 +121,6 @@
     then
 */
 
-  //Pipeline[] to SubPipe[]
-  //subPipe:invoke
-  //nullptr to SubPipe[]
-
   Pipeline[].rootDeck@ to Deck[]
   deck:invoke
   nullptr to Deck[]

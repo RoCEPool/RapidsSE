@@ -30,7 +30,6 @@
   // mutable pipeSpec, pipeline and subpipeline in logicUnit should be null
   PipeSpec[] not assert
   Pipeline[] not assert
-  SubPipe[]  not assert
   
   // immutable op, subPLineOfOp and pipelineOfOp should be null
   [op]           not assert
@@ -383,10 +382,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
-
-  //Pipeline[] to SubPipe[]
-  //subPipe:invoke
-  //nullptr to SubPipe[]
 
   Pipeline[].rootDeck@ to Deck[]
   deck:invoke
