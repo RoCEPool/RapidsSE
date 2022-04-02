@@ -330,6 +330,29 @@ public:
   void vDebugFlagStore(void);
   void vDebugBreakpoint(void);
 
+  // deck
+  void vDeckAddAccum(void);
+  void vDeckCancelledFetch(void);
+  void vDeckCancelledStore(void);
+  void vDeckCreate(void);
+  void vDeckDropDebugLock(void);
+  void vDeckDump(void);
+  void vDeckEarlyExitFetch(void);
+  void vDeckEarlyExitStore(void);
+  void vDeckEnqueueInvoke(void);
+  void vDeckErroredStore(void);
+  void vDeckErroredFetch(void);
+  void vDeckGet(void);
+  void vDeckGetAccum(void);
+  void vDeckGrabDebugLock(void);
+  void vDeckOp0Fetch(void);
+  void vDeckOpsOnNodeFetch(void);
+  void vDeckPulsedFetch(void);
+  void vDeckPulsedStore(void);
+  void vDeckSet(void);
+  void vDeckSetInvoker(void);
+  void vDeckSpawnOpTasks(void);
+
   // devLftRow
   void vDevLftRowStreamDefStore(void);
   void vDevLftRowDeleteEachRowBuffer(void);

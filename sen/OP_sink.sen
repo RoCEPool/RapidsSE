@@ -82,12 +82,12 @@
   PipeIn[].delete
 
   // check if sink has already been errored
-  [pipelineOfOp].errored@ not if
+  [pipeline].errored@ not if
 
     //[grid].thisNodeName@ "(%v) sinkOP got error marker" .printf
 
     // mark pipeline as having an errored
-    true [pipelineOfOp].errored!
+    true [pipeline].errored!
 
     // now pipeout an exit marker
     Marker[].newErroringMarker
@@ -123,7 +123,7 @@
   PipeIn[].delete
 
    // mark pipeline as being earlyExit
-   true [pipelineOfOp].earlyExit!
+   true [pipeline].earlyExit!
 
    // now pipeout a leaving marker
    Marker[].newLeavingMarker
@@ -156,19 +156,19 @@
   Pipein[].delete
 
   // check if sink has already been errored
-  [pipelineOfOp].errored@ if
+  [pipeline].errored@ if
     true
     exit
   then
 
   // check if sink has already been exitEarly
-  [pipelineOfOp].earlyExit@ if
+  [pipeline].earlyExit@ if
     true
     exit
   then
 
   // check if sink has already been cancelled
-  [pipelineOfOp].cancelled@ if
+  [pipeline].cancelled@ if
     true
     exit
   then

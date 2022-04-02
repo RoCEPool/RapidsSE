@@ -51,15 +51,16 @@ __aFooterFunction(Op);
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(Stream* pStream, OpSpec* pOpSpec)
+Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
 : Operand(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  RASSERT(pOpSpec);
+  RASSERT(p_Stream);
+  RASSERT(p_OpSpec);
 
-  m_pStream = pStream;
-  m_pOpSpec = pOpSpec;
+  m_p_Stream = p_Stream;
+  m_p_OpSpec = p_OpSpec;
 
   m_pTask   = nullptr;
 
@@ -103,7 +104,7 @@ Op::Op(Stream* pStream, OpSpec* pOpSpec)
   
   SMA<Job,CN_JOB> pPipelineJob;
   
-  pPipelineJob = pStream->pPipeline()->pPipelineJob();
+  pPipelineJob = p_Stream->pPipeline()->pPipelineJob();
   
   TagSet* pJobTags = AM::pJobTags(pPipelineJob);
   
@@ -215,7 +216,7 @@ void Op::vAckInvokingTask(void)
     } else {
       vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task\n"_Stz,
              szOpNm(),
-             m_pStream->pStage()->szStageNm(),
+             m_p_Stream->pStage()->szStageNm(),
              iNode(),
              tPtnId().iAsI8());
     }
@@ -236,7 +237,7 @@ void Op::vAckInvokingTask(void)
   if (m_bTraceAck)
     vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task (acksRemaining : %lld)\n"_Stz,
            szOpNm(),
-           m_pStream->pStage()->szStageNm(),
+           m_p_Stream->pStage()->szStageNm(),
            iNode(),
            tPtnId().iAsI8(),
            nAcksWereRemaining);
@@ -331,7 +332,7 @@ eYX Op::eCrossTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->eCrossTopology();
+  return m_p_OpSpec->eCrossTopology();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -940,7 +941,7 @@ i8 Op::iNextOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->iNextOp();
+  return m_p_OpSpec->iNextOp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -952,7 +953,7 @@ Op* Op::pNextOp(void)
     
   i8 i_NextOp = iNextOp();
 
-  Op* p_NextOp = m_pStream->pGet(i_NextOp);
+  Op* p_NextOp = m_p_Stream->pGet(i_NextOp);
   
   return p_NextOp;
 }
@@ -964,7 +965,7 @@ i8 Op::iNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->iNextStage();
+  return m_p_OpSpec->iNextStage();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -989,8 +990,8 @@ i8 Op::iNode(void)
   
   i8 i_Node;
   
-  if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
-    i_Node = m_pStream->iNodeNo();
+  if (m_p_Stream->pStage()->pStageSpec()->bNodeTopo())
+    i_Node = m_p_Stream->iNodeNo();
   else
     i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId());
 
@@ -1004,7 +1005,7 @@ i8 Op::i_Op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->i_OpSpec();;
+  return m_p_OpSpec->i_OpSpec();;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1068,7 +1069,7 @@ Stz* Op::szOpNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->szOpNm();;
+  return m_p_OpSpec->szOpNm();;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1078,7 +1079,7 @@ OpSpec* Op::pOpSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec;
+  return m_p_OpSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1124,7 +1125,7 @@ void Op::vOpTrace(Operand* pOperand
          "%18s %-15s %p %s\n"_Stz,
 
          szOpNm(),
-         m_pStream->pStage()->szStageNm(),
+         m_p_Stream->pStage()->szStageNm(),
          iNode(),
          tPtnId().iAsI8(),
          pJobOfOp(),
@@ -1197,7 +1198,7 @@ i8 Op::iOtherOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  i8 i_OtherOp = m_pOpSpec->iOtherOp();
+  i8 i_OtherOp = m_p_OpSpec->iOtherOp();
   
   return i_OtherOp;
 }
@@ -1209,7 +1210,7 @@ i8 Op::iOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  i8 i_OtherStage = m_pOpSpec->iOtherStage();
+  i8 i_OtherStage = m_p_OpSpec->iOtherStage();
   
   return i_OtherStage;
 }
@@ -1297,7 +1298,7 @@ Pipeline* Op::pPipelineOfOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pStream->pPipeline();
+  return m_p_Stream->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1576,10 +1577,10 @@ PtnId Op::tPtnId(void)
 
   PtnId tPtnId;
 
-  if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
+  if (m_p_Stream->pStage()->pStageSpec()->bNodeTopo())
     tPtnId = C_UNKNOWN;
   else
-    tPtnId = m_pStream->tPtnId();
+    tPtnId = m_p_Stream->tPtnId();
 
   return tPtnId;
 }
@@ -1636,7 +1637,7 @@ eXK Op::eSendCast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  eXK eSendCast = m_pOpSpec->eSendCast();
+  eXK eSendCast = m_p_OpSpec->eSendCast();
   return eSendCast;
 }
 
@@ -1647,7 +1648,7 @@ void Op::vSendCast(eXK eSendCast)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  RASSERT(eSendCast == m_pOpSpec->eSendCast());
+  RASSERT(eSendCast == m_p_OpSpec->eSendCast());
   m_eSendCast = eSendCast;
 }
 
@@ -1738,7 +1739,7 @@ Stz* Op::szStageName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pStream->pStage()->szStageNm();
+  return m_p_Stream->pStage()->szStageNm();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1748,7 +1749,7 @@ Stage* Op::pStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pStream->pStage();
+  return m_p_Stream->pStage();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1758,7 +1759,7 @@ Stream* Op::pStream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pStream;
+  return m_p_Stream;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1768,7 +1769,7 @@ eYS Op::eStreamTopology_op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->eStreamTopology_op();
+  return m_p_OpSpec->eStreamTopology_op();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1822,7 +1823,7 @@ void Op::vToCmdStr(Stz* szCmdStr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
   szCmdStr->vCopy(szOpNm());
-  m_pOpSpec->pArgTags()->vConcat(szCmdStr);
+  m_p_OpSpec->pArgTags()->vConcat(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
 }
 

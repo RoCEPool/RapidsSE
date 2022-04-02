@@ -23,10 +23,10 @@ namespace STORE
   {
   private:
   
-    SMA<Stream,CN_STREAM> m_pStream;  // which stream (of stage of pipeline of job)
-    SMA<OpSpec,CN_OPSPEC> m_pOpSpec;  // specification of this operator
+    SMA<Stream,CN_STREAM> m_p_Stream;  // which stream (of stage of pipeline of job)
+    SMA<OpSpec,CN_OPSPEC> m_p_OpSpec;  // specification of this operator
 
-    SMA<Task,CN_TASK>     m_pTask;    // which task is currenty executing this op
+    SMA<Task,CN_TASK>     m_pTask;     // task of op
 
     // -- id, name and kind
     Gid_t<CN_OP> m_xOpId;     // op id in grid

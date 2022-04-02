@@ -230,7 +230,6 @@ namespace STORE
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
-    REG<VertexSpec,     CN_VERTEXSPEC    > m_xpPipeSpec;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
     REG<Pot,            CN_POT           > m_xpPot;
     REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;
@@ -272,6 +271,7 @@ namespace STORE
     REG<Tx,             CN_TX            > m_xpTx;
   
     REG<Vertex,         CN_VERTEX        > m_xpVertex;
+    REG<VertexSpec,     CN_VERTEXSPEC    > m_xpVertexSpec;
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

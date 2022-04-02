@@ -56,6 +56,7 @@ namespace STORE
     static void vAddSteps_DataBuffer(void);
     static void vAddSteps_DdlLock(void);
     static void vAddSteps_Debug(void);
+    static void vAddSteps_Deck(void);
     static void vAddSteps_DevLftIxt(void);
     static void vAddSteps_DevLftRow(void);
     static void vAddSteps_DevRhtIxt(void);

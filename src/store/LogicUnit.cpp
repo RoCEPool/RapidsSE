@@ -148,7 +148,6 @@ LogicUnit::LogicUnit(void)
 ,         m_xpParcel(this,RF_REPAIR_DELETE,Parcel::vRepair,         LR_PARCEL)
 ,         m_xpPipein(this,RF_REPAIR_NONE,  nullptr,                 LR_PIPEIN)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                 LR_PIPELINE)
-,       m_xpPipeSpec(this,RF_NONE,         nullptr,                 LR_PIPESPEC)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    LR_PLANOPERAND)
 ,            m_xpPot(this,RF_REPAIR_DELETE,Pot::vRepair,            LR_POT)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      LR_PTNSTREAM)
@@ -190,6 +189,7 @@ LogicUnit::LogicUnit(void)
 ,             m_xpTx(this,RF_REPAIR_DELETE,Tx::vRepair,             LR_TX)
 
 ,         m_xpVertex(this,RF_REPAIR_DELETE,Vertex::vRepair,         LR_VERTEX)
+,     m_xpVertexSpec(this,RF_REPAIR_DELETE,VertexSpec::vRepair,     LR_VERTEXSPEC)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
