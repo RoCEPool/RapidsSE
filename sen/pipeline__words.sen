@@ -38,6 +38,40 @@
   [task].isLocked? not assert
 ;
 
+/*----------------------------------------------------------------------------*/
+/* invoke the stages pointed to by the Deck[] register                        */
+/*----------------------------------------------------------------------------*/
+: deck:invoke
+
+  Deck[] assert
+  
+  [task].isLocked? not assert
+  
+  Deck[].opsOnNode@ locals| nAcks |
+
+  [task].grabLock
+    [task].isLocked? assert
+
+    Deck[].opsOnNode@ to nAcks
+
+    nAcks if
+      [task] Deck[].setInvoker
+    
+      nAcks [task].acksRemaining!
+
+      Deck[].enqueueInvoke? if
+
+        Marker[].newInvokeMarker
+        Marker[]\clear Deck[].op0@ op.enqueOperand
+      then
+      [task].wait
+    else
+      [task].dropLock
+    then
+    
+  [task].isLocked? not assert
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
