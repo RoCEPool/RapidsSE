@@ -200,6 +200,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_SqlCompiler();
   Step::vAddSteps_SsnState();
   Step::vAddSteps_Stage();
+  Step::vAddSteps_StageOfOp();
   Step::vAddSteps_Stats();
   Step::vAddSteps_Stencil();
   Step::vAddSteps_Steps();
@@ -209,6 +210,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StreamDefLft();
   Step::vAddSteps_StreamDefOut();
   Step::vAddSteps_StreamDefRht();
+  Step::vAddSteps_StreamOfOp();
   Step::vAddSteps_StreamSet();
   Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_SubCall();
@@ -248,6 +250,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_User();
     
   Step::vAddSteps_Vertex();
+  Step::vAddSteps_VertexOfOp();
 
   Step::vAddSteps_With();
   Step::vAddSteps_Word();

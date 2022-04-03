@@ -1822,6 +1822,10 @@ public:
   void vStageGet(void);
   void vStageSet(void);
 
+  // stage (of op)
+  void vStageOfOpDump(void);
+  void vStageOfOpGet(void);
+
   // stats
   void vStatsBuffInInc(void);
   void vStatsDelete(void);
@@ -1850,6 +1854,10 @@ public:
   // stream
   void vStreamGet(void);
   void vStreamSet(void);
+
+  // stream (of op)
+  void vStreamOfOpDump(void);
+  void vStreamOfOpGet(void);
 
   // string
   void vStrAlgebra(void);
@@ -2401,6 +2409,11 @@ public:
   void vVertexSet(void);
   void vVertexSetInvoker(void);
   void vVertexSpawnOpTasks(void);
+
+  // vertex (of op)
+  void vVertexOfOpDump(void);
+  void vVertexOfOpGet(void);
+
 
   // zero
   void vWithSubPipeline(void);

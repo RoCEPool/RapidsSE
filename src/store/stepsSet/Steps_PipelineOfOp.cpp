@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Pipeline.cpp -- Pipeline step group                                  */
+/* Steps_PipelineOfOp.cpp -- Pipeline (of op) step group                      */
 /*============================================================================*/
 
 #include "BASE.h"
