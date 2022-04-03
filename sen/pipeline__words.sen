@@ -18,8 +18,6 @@
   [task].grabLock
     [task].isLocked? assert
 
-    Deck[].opsExeOnNode@ to nAcks
-
     nAcks if
       [task] Deck[].setInvoker
     

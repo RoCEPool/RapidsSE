@@ -360,6 +360,19 @@ Word* Op::pCurWord(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get deck  of this operator                                                 */
+/*----------------------------------------------------------------------------*/
+Deck* Op::pDeck(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Deck* pDeck = m_p_Stream->pDeck();
+  
+  return pDeck;
+}
+
+  
+/*----------------------------------------------------------------------------*/
 /* sen . print                                                                */
 /*----------------------------------------------------------------------------*/
 void Op::vDotPrint(Stz* szText)
@@ -975,8 +988,10 @@ Stage* Op::pNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Vertex* pPipeWork = pPipeline()->pVertexRoot();
-  Stage* pNextStage = pPipeWork->pDeck()->pGet(iNextStage());
+  Deck* pDeck    = this->pDeck();
+  i8 i_NextStage = this->iNextStage();
+  
+  Stage* pNextStage = pDeck->pGet(i_NextStage);
   
   return pNextStage;
 }

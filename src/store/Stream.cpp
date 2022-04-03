@@ -33,13 +33,13 @@ __aFooterFunction(Stream)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stream::Stream(Stage* pStage, StageSpec* pStageSpec,
+Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
                i8 i_Stream, PtnId tPtnId, i8 iNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
-  m_pStageSpec = pStageSpec;
-  m_pStage     = pStage;
+  m_p_StageSpec = p_StageSpec;
+  m_p_Stage     = p_Stage;
 
   m_tPtnId     = tPtnId;
   m_iNodeNo    = iNodeNo;
@@ -86,16 +86,16 @@ void Stream::vCreateOps(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
+  for (i8 i_OpSpec = 0; i_OpSpec < m_p_StageSpec->nItems(); i_OpSpec++ ) {
     
-    OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
+    OpSpec* pOpSpec = m_p_StageSpec->pGet(i_OpSpec);
   
     Op* pOp_New = new Op(this,pOpSpec);
     vAppend(pOp_New);
 
     if (m_i_Stream > 0) {
       
-      Stream* pStream_0 = m_pStage->pGet(0);
+      Stream* pStream_0 = m_p_Stage->pGet(0);
       Op*     pOp_0_0   = pStream_0->pGet(i_OpSpec);
       
       TagSet* pTagSet_Op_0_0 = pOp_0_0->pOpTags();
@@ -134,6 +134,18 @@ void Stream::vCreateOps(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get deck of this stream                                                    */
+/*----------------------------------------------------------------------------*/
+Deck* Stream::pDeck(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
+  
+  Deck* pDeck = m_p_Stage->pDeck();
+  
+  return pDeck;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get partition this stream needs to run on                                  */
 /*----------------------------------------------------------------------------*/
 i8 Stream::iNodeNo(void)
@@ -162,7 +174,7 @@ Pipeline* Stream::pPipeline(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_pStage->pPipeline();
+  return m_p_Stage->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +193,7 @@ Stage* Stream::pStage(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_pStage;
+  return m_p_Stage;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -209,7 +221,7 @@ StageSpec* Stream::pStageSpec(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_pStageSpec;
+  return m_p_StageSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,9 +235,9 @@ void Stream::vSpawnOpTasks(void)
   
   i8 i_OnNode = -1;
   
-  if (m_pStageSpec->bNodeTopo()) {
+  if (m_p_StageSpec->bNodeTopo()) {
     
-    if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
+    if (YG_NEXT_NODE == m_p_StageSpec->eStageTopology()) {
       if (iThisNodeNo != pPipeline()->iOriginNodeNo()) {
         i_OnNode = m_iNodeNo;
       }
@@ -278,16 +290,16 @@ void Stream::vSynthesiseName(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
  
-  if (m_pStageSpec->bNodeTopo()) {
+  if (m_p_StageSpec->bNodeTopo()) {
     m_sStreamNm.vSprint("_stream_N%lld_of_%s"_Stz,
                           m_iNodeNo,
-                          m_pStageSpec->szStageNm());
+                          m_p_StageSpec->szStageNm());
   }
   else {
     m_sStreamNm.vSprint("_streamv_N%lldS%lld_of_%s"_Stz,
                           m_iNodeNo,
                           m_i_Stream,
-                          m_pStageSpec->szStageNm());
+                          m_p_StageSpec->szStageNm());
   }
 }
 

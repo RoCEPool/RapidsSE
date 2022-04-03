@@ -4,15 +4,15 @@
 #pragma once
 
 
-namespace STORE { class Op; class StageSpec; }
+namespace STORE { class Deck; class Op; class StageSpec; }
 
 namespace STORE
 {
   class Stream : public VectorNL_t<CN_STREAM,Op,C_MAX_OPS>
   {
   private:
-    Stage*     m_pStage;      // which stage of pipeline
-    StageSpec* m_pStageSpec;  // stage specification for this stream
+    Stage*     m_p_Stage;      // which stage of pipeline
+    StageSpec* m_p_StageSpec;  // stage specification for this stream
 
     i8    m_i_Stream;         // [stream] in stage
  
@@ -33,13 +33,15 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Stream(Stage*     pStage,
-           StageSpec* pStageSpec,
+    Stream(Stage*     p_Stage,
+           StageSpec* p_StageSpec,
            i8         i_Stream,
            PtnId      tPtnId,
            i8         iNodeNo);
    ~Stream(void) noexcept(false);
     
+    Deck* pDeck(void);
+  
     i8   iNodeNo(void);
     i8   i_Stream(void);
 

@@ -94,6 +94,7 @@ namespace STORE
     eZK  eCurHandler(void);
     Word* pCurWord(void);
   
+    Deck* pDeck(void);
     void vDotPrint(Stz* szText);
     void vDropTaskLock(void);
     void vDump(void);

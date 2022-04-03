@@ -34818,8 +34818,6 @@ void Task::vAddMunged(Task* )
     "  [task].grabLock\n"
     "    [task].isLocked? assert\n"
     "\n"
-    "    Deck[].opsExeOnNode@ to nAcks\n"
-    "\n"
     "    nAcks if\n"
     "      [task] Deck[].setInvoker\n"
     "    \n"
