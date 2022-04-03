@@ -1308,6 +1308,24 @@ bool Op::bPeekOoO(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get this op's destination op                                               */
+/*----------------------------------------------------------------------------*/
+Op* Op::pPipeDstOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+   // get the next stage the send is supposed to send to
+  Stage* pDstStage = pNextStage();
+
+  // get the op to forward to depending on the cross topology
+  PtnId tThisPtnId = tPtnId();
+  i8 iNxtOp        = iNextOp();
+  Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
+  
+  return pDstOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pipeline of op                                                         */
 /*----------------------------------------------------------------------------*/
 Pipeline* Op::pPipeline(void)
@@ -1326,27 +1344,35 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
   vOpTrace(pOperand,(Stz*)__func__);
     
-  //RASSERT(! szOpNm()->bSame("sendSE"_Stz));
+//  //RASSERT(! szOpNm()->bSame("sendSE"_Stz));
+//
+//
+//  // get the next stage the send is supposed to send to
+//  Vertex* pVertex = pPipeline()->pVertexRoot();
+//  Stage* pDstStage = pVertex->pDeck()->pGet(iNextStage());
+//
+//  // get the op to forward to depending on the cross topology
+//
+//  PtnId tThisPtnId = tPtnId();
+//  i8 iNxtOp        = iNextOp();
+//
+//
+//  if (pOperand->bIsBuffer()) {
+//    LogicUnit* pLogicUnit = this->pOpLogicUnit();
+//    pLogicUnit->m_xpStats->m_nBuffOut++;
+//  }
+//
+//  Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
   
-    
-  // get the next stage the send is supposed to send to
-  Vertex* pVertex = pPipeline()->pVertexRoot();
-  Stage* pDstStage = pVertex->pDeck()->pGet(iNextStage());
-
-  // get the op to forward to depending on the cross topology
+  vOpTrace(pOperand,(Stz*)__func__);
   
-  PtnId tThisPtnId = tPtnId();
-  i8 iNxtOp        = iNextOp();
-
- 
   if (pOperand->bIsBuffer()) {
     LogicUnit* pLogicUnit = this->pOpLogicUnit();
     pLogicUnit->m_xpStats->m_nBuffOut++;
   }
 
-  Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
-  
-  
+  Op* pDstOp = pPipeDstOp();
+
 
   pDstOp->vPipeToThis(pOperand,pTriggeringTask);
 }
