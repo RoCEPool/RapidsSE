@@ -2388,32 +2388,13 @@ public:
   void vUserName(void);
 
   // vertex
-  void vVertexAddAccum(void);
-  void vVertexCancelledFetch(void);
-  void vVertexCancelledStore(void);
-  void vVertexCreate(void);
-  void vVertexDropDebugLock(void);
   void vVertexDump(void);
-  void vVertexEarlyExitFetch(void);
-  void vVertexEarlyExitStore(void);
-  void vVertexEnqueueInvoke(void);
-  void vVertexErroredStore(void);
-  void vVertexErroredFetch(void);
   void vVertexGet(void);
-  void vVertexGetAccum(void);
-  void vVertexGrabDebugLock(void);
-  void vVertexOp0Fetch(void);
-  void vVertexOpsOnNodeFetch(void);
-  void vVertexPulsedFetch(void);
-  void vVertexPulsedStore(void);
   void vVertexSet(void);
-  void vVertexSetInvoker(void);
-  void vVertexSpawnOpTasks(void);
 
   // vertex (of op)
   void vVertexOfOpDump(void);
   void vVertexOfOpGet(void);
-
 
   // zero
   void vWithSubPipeline(void);
