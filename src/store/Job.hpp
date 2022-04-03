@@ -171,7 +171,7 @@ namespace STORE
   
     i8   iParticipantNodeNo(void);
     void vParticipantNodeNo(i8 i_Node);
-    Pipeline* pPipelineX(void);
+    Pipeline* pPipeline(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
     void vPostRecv(void);

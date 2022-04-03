@@ -107,7 +107,7 @@ void Step::vPipelineGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline[].rootDeck0@ -- fetch root deck of pipeline                       */
+/* Pipeline[].rootDeck@ -- fetch root deck of pipeline                        */
 /*----------------------------------------------------------------------------*/
 void Step::vPipelineRootDeckFetch(void)
 {

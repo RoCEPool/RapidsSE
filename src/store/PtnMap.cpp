@@ -82,22 +82,6 @@ PtnId PtnMap::tHashToLglPtnId(i8 iHash)
   return tLglPtnId;
 }
 
-
-
-
-/*----------------------------------------------------------------------------*/
-/* convert iBkt to PtnId                                                        */
-/*----------------------------------------------------------------------------*/
-PtnId PtnMap::tToPtn(i8 iBktNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-  PtnId tPtnId;
-
-  //tPtnId = iBktNo < C_MAX_LGLPTNS ? m_xaBkt[(i8) iBktNo].m_i_NodePtn : 0;
-  return tPtnId;
-
-}
-
 /*----------------------------------------------------------------------------*/
 /* get number of nodes known by partition map                                 */
 /*----------------------------------------------------------------------------*/
@@ -206,7 +190,7 @@ void PtnMap::vSee(void)
            ,i_LglPtn
            ,iNodeNo
            ,AM::GRID::pGetNode(iNodeNo)->szNodeNm()
-           ,m_xaLglToNodePtn[i_LglPtn].m_i_NodePtn
+           ,m_xaLglToNodePtn[i_LglPtn].m_iPtnNo
            );
   }
 
@@ -214,27 +198,15 @@ void PtnMap::vSee(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get which node a logical partition is mapped to                            */
+/* get which partition no (within node) a logical partition is mapped to      */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::iWhichNodeNo(PtnId tPtnId)
+i8 PtnMap::i_WhichPtnNo(PtnId tPtnId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 iNodeNo = m_xaLglToNodePtn[tPtnId.iAsI8()].m_iNodeNo;
+  i8 i_PtnNo = m_xaLglToNodePtn[tPtnId.iAsI8()].m_iPtnNo;
 
-  return iNodeNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get which node partition a logical partition is mapped to                  */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::i_WhichPtn(PtnId tPtnId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-
-  i8 i_LglPtn = m_xaLglToNodePtn[tPtnId.iAsI8()].m_i_NodePtn;
-
-  return i_LglPtn;
+  return i_PtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,7 +222,7 @@ PtnId PtnMap::tToPtnNoOfNode(i8 i_LglPtn, i8 iNodeNo)
   for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
     if (m_xaLglToNodePtn[i_NodePtn].m_iNodeNo != iNodeNo)
       continue;
-    if (m_xaLglToNodePtn[i_NodePtn].m_i_NodePtn != i_LglPtn)
+    if (m_xaLglToNodePtn[i_NodePtn].m_iPtnNo != i_LglPtn)
       continue;
     tPtnId = i_NodePtn;
     break;
@@ -295,7 +267,7 @@ void PtnMap::vRepartition(void)
     i4 i_Node = (i4)i_LglPtn % m_nKnownNodes;
 
     m_xaLglToNodePtn[i_LglPtn].m_iNodeNo   = AM::GRID::iGetNthNodeNo(i_Node);
-    m_xaLglToNodePtn[i_LglPtn].m_i_NodePtn = (i4)i_LglPtn / m_nKnownNodes;
+    m_xaLglToNodePtn[i_LglPtn].m_iPtnNo = (i4)i_LglPtn / m_nKnownNodes;
   }
 
   m_iMapChange++;
@@ -310,7 +282,7 @@ void PtnMap::vResetNodePtnArray(void)
   
   for (i8 i_LglPtn = 0; i_LglPtn < C_MAX_LGLPTNS; i_LglPtn++) {
     m_xaLglToNodePtn[i_LglPtn].m_iNodeNo   = C_UNKNOWN;
-    m_xaLglToNodePtn[i_LglPtn].m_i_NodePtn = C_UNKNOWN;
+    m_xaLglToNodePtn[i_LglPtn].m_iPtnNo = C_UNKNOWN;
   }
 }
 

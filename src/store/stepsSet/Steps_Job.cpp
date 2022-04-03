@@ -824,15 +824,8 @@ void Step::vJobPipeToOp0(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // !!!!!!!!!!!!!!
-  // move to AM
-
-  Pipeline* pPipeline = pJob->pPipelineX();
-  Vertex* pPipeWork = pPipeline->pVertexRoot();
-
-  Stage*    pStage0   = pPipeWork->pStage0();
-  Stream*   pStand0   = pStage0->pGet(0);
-  Op*       pOp0      = pStand0->pGet(0);
+  Pipeline* pPipeline = pJob->pPipeline();
+  Op*       pOp0      = pPipeline->pOp0();
 
   pOp0->vAppendLeft(pOperand,this);
 

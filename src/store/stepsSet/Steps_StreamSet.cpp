@@ -355,7 +355,7 @@ void Step::vStreamSetAddListPartitions(void)
   
   Grid* pGrid = AM::pGrid();
 
-  i8 i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
+  i8 i_Node = AM::pPtnMap()->iMappedNodeNo(tPtnId);
   Node* pNode = pGrid->pFindNode(i_Node);
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,

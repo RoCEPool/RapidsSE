@@ -621,7 +621,7 @@ void Job::vParticipantNodeNo(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 /* get pipeline                                                               */
 /*----------------------------------------------------------------------------*/
-Pipeline* Job::pPipelineX(void)
+Pipeline* Job::pPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

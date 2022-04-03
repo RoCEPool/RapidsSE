@@ -1008,7 +1008,7 @@ i8 Op::iNode(void)
   if (m_p_Stream->pStage()->pStageSpec()->bNodeTopo())
     i_Node = m_p_Stream->iNodeNo();
   else
-    i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId());
+    i_Node = AM::pPtnMap()->iMappedNodeNo(tPtnId());
 
   return i_Node;
 }
@@ -1341,29 +1341,7 @@ Pipeline* Op::pPipeline(void)
 void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  vOpTrace(pOperand,(Stz*)__func__);
     
-//  //RASSERT(! szOpNm()->bSame("sendSE"_Stz));
-//
-//
-//  // get the next stage the send is supposed to send to
-//  Vertex* pVertex = pPipeline()->pVertexRoot();
-//  Stage* pDstStage = pVertex->pDeck()->pGet(iNextStage());
-//
-//  // get the op to forward to depending on the cross topology
-//
-//  PtnId tThisPtnId = tPtnId();
-//  i8 iNxtOp        = iNextOp();
-//
-//
-//  if (pOperand->bIsBuffer()) {
-//    LogicUnit* pLogicUnit = this->pOpLogicUnit();
-//    pLogicUnit->m_xpStats->m_nBuffOut++;
-//  }
-//
-//  Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
-  
   vOpTrace(pOperand,(Stz*)__func__);
   
   if (pOperand->bIsBuffer()) {
@@ -1372,7 +1350,6 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   }
 
   Op* pDstOp = pPipeDstOp();
-
 
   pDstOp->vPipeToThis(pOperand,pTriggeringTask);
 }
@@ -1384,11 +1361,8 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  
-
   vOpTrace(pOperand,(Stz*)__func__);
 
-  
   eCN eClassNo = pOperand->eGetClassNo();
   if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);

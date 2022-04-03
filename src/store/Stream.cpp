@@ -248,7 +248,7 @@ void Stream::vSpawnOpTasks(void)
     
   }
   else {
-    i_OnNode = AM::pPtnMap()->iWhichNodeNo(m_tPtnId);
+    i_OnNode = AM::pPtnMap()->iMappedNodeNo(m_tPtnId);
   }
   
   if (i_OnNode == iThisNodeNo) {

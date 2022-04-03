@@ -7,8 +7,8 @@ namespace STORE
 {
   struct NodePtn
   {
-    i4  m_iNodeNo;    // node number
-    i4  m_i_NodePtn;  // node partition (aka partition of node)
+    i4  m_iNodeNo;  // node number
+    i4  m_iPtnNo;   // partition no (within node)
   };
 
 
@@ -39,13 +39,12 @@ namespace STORE
   
     void vAdjustMap(i8 nKnownNodes);
 
-    void vSee(void);
-
     PtnId tHashToLglPtnId(i8 iHash);
-    i8 iToBkt(PtnId tPtnId);
-    PtnId tToPtn(i8 iBktNo);
+  
     i8 nKnownNodes(void);
+  
     i8 iMappedNodeNo(PtnId tPtnId);
+  
     i8 nPtnsInGrid(void);
     i8 nPtnsPerNode(void);
 
@@ -53,8 +52,9 @@ namespace STORE
     PtnId tRobinToLclPtnStream(i8 iRobin);
     PtnId tRobinToNdePtnNo(i8 iRobin);
 
-    i8 iWhichNodeNo(PtnId tPtnId);
-    i8 i_WhichPtn(PtnId tPtnId);
+    void vSee(void);
+  
+    i8 i_WhichPtnNo(PtnId tPtnId);
     PtnId tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);
     PtnId tToPtnNoOfThisNode(i8 i_Ptn);
 
