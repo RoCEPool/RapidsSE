@@ -1237,9 +1237,10 @@ Stage* Op::pOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Vertex* pVertex = pPipeline()->pVertexRoot();
-  
-  Stage* pOtherStage = pVertex->pDeck()->pGet(iOtherStage());
+  Deck* pDeck     = this->pDeck();
+  i8 i_OtherStage = this->iOtherStage();
+    
+  Stage* pOtherStage = pDeck->pGet(i_OtherStage);
   
   return pOtherStage;
 }
