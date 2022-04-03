@@ -39,7 +39,7 @@ void Step::vAddSteps_Deck(void)
   
   vAddStep("Deck[].enqueueInvoke?"_Stz, &Step::vDeckEnqueueInvoke);
   vAddStep("Deck[].op0@"_Stz,           &Step::vDeckOp0Fetch);
-  vAddStep("Deck[].opsOnNode@"_Stz,     &Step::vDeckOpsOnNodeFetch);
+  vAddStep("Deck[].opsExeOnNode@"_Stz,     &Step::vDeckOpsExeOnNodeFetch);
   vAddStep("Deck[].setInvoker"_Stz,     &Step::vDeckSetInvoker);
 }
 
@@ -109,15 +109,15 @@ void Step::vDeckOp0Fetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Deck[].opsOnNode@ -- get no of ops executing on this node                  */
+/* Deck[].opsExeOnNode@ -- get no of ops that will execute on this node       */
 /*----------------------------------------------------------------------------*/
-void Step::vDeckOpsOnNodeFetch(void)
+void Step::vDeckOpsExeOnNodeFetch(void)
 {
   ENTRY();
     
   i8 iThisNodeNo = AM::pGrid()->iThisNodeNo();
 
-  i8 nOps = m_pLogicUnit->m_xpDeck->nOpsOnNode(iThisNodeNo);
+  i8 nOps = m_pLogicUnit->m_xpDeck->nOpsExeOnNode(iThisNodeNo);
 
   m_pDataStack->vPushInt(nOps);
 

@@ -39,7 +39,7 @@ namespace STORE
     Stream* pGetStream_byPtnNo(i8 i_Ptn);
     Stream* pGetStream_byStreamNo(i8 i_Stream);
     Op*  pOp0(void);
-    i8   nOpsOnNode(i8 iNode, i8 iOrigin);
+    i8   nOpsExeOnNode(i8 iNode, i8 iOrigin);
     Pipeline* pPipeline(void);
     Vertex* pVertex(void);
     Op*  pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp);

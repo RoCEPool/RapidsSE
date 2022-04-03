@@ -369,7 +369,7 @@ public:
   void vDeckGetAccum(void);
   void vDeckGrabDebugLock(void);
   void vDeckOp0Fetch(void);
-  void vDeckOpsOnNodeFetch(void);
+  void vDeckOpsExeOnNodeFetch(void);
   void vDeckPulsedFetch(void);
   void vDeckPulsedStore(void);
   void vDeckSet(void);

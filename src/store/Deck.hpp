@@ -29,7 +29,7 @@ namespace STORE
     static void vRepair(Object *pObject);
 
     Op*  pOp0(void);
-    i8   nOpsOnNode(i8 iNode);
+    i8   nOpsExeOnNode(i8 iNode);
 
     Pipeline* pPipeline(void);
   

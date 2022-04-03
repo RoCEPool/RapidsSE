@@ -172,7 +172,7 @@ Stream *Stage::pGetStream_byStreamNo(i8 i_Stream)
 /*----------------------------------------------------------------------------*/
 /* get nOps that will executed by this stage on this given node               */
 /*----------------------------------------------------------------------------*/
-i8 Stage::nOpsOnNode(i8 iThisNodeNo, i8 iOriginNodeNo)
+i8 Stage::nOpsExeOnNode(i8 iThisNodeNo, i8 iOriginNodeNo)
 {
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 

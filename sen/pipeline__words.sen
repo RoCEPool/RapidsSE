@@ -13,12 +13,12 @@
   
   [task].isLocked? not assert
   
-  Deck[].opsOnNode@ locals| nAcks |
+  Deck[].opsExeOnNode@ locals| nAcks |
 
   [task].grabLock
     [task].isLocked? assert
 
-    Deck[].opsOnNode@ to nAcks
+    Deck[].opsExeOnNode@ to nAcks
 
     nAcks if
       [task] Deck[].setInvoker
