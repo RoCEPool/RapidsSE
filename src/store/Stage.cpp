@@ -170,33 +170,39 @@ Stream *Stage::pGetStream_byStreamNo(i8 i_Stream)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get nOps that will executed on this given node                             */
+/* get nOps that will executed by this stage on this given node               */
 /*----------------------------------------------------------------------------*/
 i8 Stage::nOpsOnNode(i8 iThisNodeNo, i8 iOriginNodeNo)
 {
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
-  i8 nOpsExeThisNode = 0;
+  i8 nOpsExe = 0;
 
-  for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
-    Stream *pStream = pGet(i_Stream);
+  if (m_pStageSpec->bNodeTopo()) {
+    // stage has node topology
+    for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
+      Stream *pStream = pGet(i_Stream);
 
-    if (m_pStageSpec->bNodeTopo()) {
-      
       if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
         if (MY::pNode()->iNodeNo() != iOriginNodeNo && pStream->iNodeNo() == iThisNodeNo) {
-          nOpsExeThisNode += pStream->nItems();
+          nOpsExe += pStream->nItems();
         }
       }
       else
       if (pStream->iNodeNo() == iThisNodeNo) {
-        nOpsExeThisNode += pStream->nItems();
+        nOpsExe += pStream->nItems();
       }
     }
-    else {
-      i8 iNode_exe = AM::pPtnMap()->iWhichNodeNo(pStream->tPtnId());
-      if (iNode_exe == iThisNodeNo) {
-        nOpsExeThisNode += pStream->nItems();
+    
+  }
+  else {
+    // stage has partitions topology
+    for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
+      Stream *pStream = pGet(i_Stream);
+      
+      i8 iWhichNodeNo = AM::pPtnMap()->iWhichNodeNo(pStream->tPtnId());
+      if (iWhichNodeNo == iThisNodeNo) {
+        nOpsExe += pStream->nItems();
       }
     }
   }
@@ -204,9 +210,9 @@ i8 Stage::nOpsOnNode(i8 iThisNodeNo, i8 iOriginNodeNo)
   if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Stage: %s nOps=%lld\n"_Stz
            ,m_pStageSpec->szStageNm()
-           ,nOpsExeThisNode);
+           ,nOpsExe);
 
-  return nOpsExeThisNode;
+  return nOpsExe;
 }
 
 /*----------------------------------------------------------------------------*/
