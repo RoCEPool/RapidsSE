@@ -97,7 +97,7 @@ Op* Deck::pOp0(void)
 /*----------------------------------------------------------------------------*/
 /* get number of ops to be excuted on given node                              */
 /*----------------------------------------------------------------------------*/
-i8 Deck::nOpsOnNode(i8 iNode)
+i8 Deck::nOpsOnNode(i8 iThisNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
   
@@ -108,7 +108,7 @@ i8 Deck::nOpsOnNode(i8 iNode)
   i8 nStages = nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stage* pStage = pGet(i_Stage);
-    nOps += pStage->nOpsOnNode(iNode,iOriginNodeNo);
+    nOps += pStage->nOpsOnNode(iThisNodeNo,iOriginNodeNo);
   }
   
   return nOps;

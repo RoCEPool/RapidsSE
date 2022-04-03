@@ -170,34 +170,33 @@ Stream *Stage::pGetStream_byStreamNo(i8 i_Stream)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ops to be executed on given node                                       */
+/* get nOps that will executed on this given node                             */
 /*----------------------------------------------------------------------------*/
-i8 Stage::nOpsOnNode(i8 iNode, i8 iOrigin)
+i8 Stage::nOpsOnNode(i8 iThisNodeNo, i8 iOriginNodeNo)
 {
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
-  i8 nOps = 0;
+  i8 nOpsExeThisNode = 0;
 
-  for (i8 i_Node = 0; i_Node < nItems(); i_Node++) {
-    Stream *pStream = pGet(i_Node);
+  for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
+    Stream *pStream = pGet(i_Stream);
 
     if (m_pStageSpec->bNodeTopo()) {
       
       if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
-        if (MY::pNode()->iNodeNo() != iOrigin && pStream->iNodeNo() == iNode) {
-          nOps += pStream->nItems();
+        if (MY::pNode()->iNodeNo() != iOriginNodeNo && pStream->iNodeNo() == iThisNodeNo) {
+          nOpsExeThisNode += pStream->nItems();
         }
       }
       else
-      if (pStream->iNodeNo() == iNode) {
-        // skip if Op not for this node
-        nOps += pStream->nItems();
+      if (pStream->iNodeNo() == iThisNodeNo) {
+        nOpsExeThisNode += pStream->nItems();
       }
     }
     else {
       i8 iNode_exe = AM::pPtnMap()->iWhichNodeNo(pStream->tPtnId());
-      if (iNode_exe == iNode) {
-        nOps += pStream->nItems();
+      if (iNode_exe == iThisNodeNo) {
+        nOpsExeThisNode += pStream->nItems();
       }
     }
   }
@@ -205,9 +204,9 @@ i8 Stage::nOpsOnNode(i8 iNode, i8 iOrigin)
   if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Stage: %s nOps=%lld\n"_Stz
            ,m_pStageSpec->szStageNm()
-           ,nOps);
+           ,nOpsExeThisNode);
 
-  return nOps;
+  return nOpsExeThisNode;
 }
 
 /*----------------------------------------------------------------------------*/
