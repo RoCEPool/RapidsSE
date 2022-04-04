@@ -702,7 +702,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 /* synthesize the index scan                                                  */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
-                                Stz* sLabelNext, Stz* sReturnLabel, u8 uSelectColumns) {
+                                Stz* sLabelNext, u8 uSelectColumns) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s4K sCopy;
@@ -769,9 +769,9 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
     StrLib::vAppendString(&m_azCodeCrs, "\n L_IndexScanDeref:");
     StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_aEntIntT ) {");
     //StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iBufferDone = 1;");
-    sCopy.vSprint("\n      goto %s;"_Stz, sReturnLabel);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    //StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
+    //sCopy.vSprint("\n      goto %s;"_Stz, sReturnLabel);
+    //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
@@ -804,10 +804,10 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // reached upper bound ?");
     StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_aEntIntT == aCombinedT->m_aEntUpperT) {");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iBufferDone = 1;");
-    sCopy.vSprint("\n      goto %s;"_Stz, sReturnLabel);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    //StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
+    //StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iBufferDone = 1;");
+    //sCopy.vSprint("\n      goto %s;"_Stz, sReturnLabel);
+    //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 
     StrLib::vAppendString(&m_azCodeCrs, "\n");

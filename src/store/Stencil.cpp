@@ -2016,13 +2016,13 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
 
-  Op *pNextOp = pStream->pGet(pOp->i_Op()+1);
-  if ( pNextOp->szOpNm()->bSame("ordAgg"_Stz) )
-    sReturnLabel = sLabelNext;
-  else
-    sReturnLabel = "L_Return"_Stz;
+//  Op *pNextOp = pStream->pGet(pOp->i_Op()+1);
+//  if ( pNextOp->szOpNm()->bSame("ordAgg"_Stz) )
+//    sReturnLabel = sLabelNext;
+//  else
+//    sReturnLabel = "L_Return"_Stz;
 
-  pCodeSynth->vSynthIndexScan(sIndexScanExpr, sLabel, sLabelNext, sReturnLabel, uSelectColumns);
+  pCodeSynth->vSynthIndexScan(sIndexScanExpr, sLabel, sLabelNext, uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;
