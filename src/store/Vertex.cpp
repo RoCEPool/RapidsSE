@@ -147,12 +147,12 @@ i8 Vertex::nOpsOnNode(i8 iNode)
   
   i8 nOps = 0;
   
-  i8 iOriginNodeNo = m_pPipeline->iOriginNodeNo();
+  i8 iOriginNodeId = m_pPipeline->iOriginNodeId();
   
   i8 nStages = this->nStages();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stage* pStage = m_pDeck->pGet(i_Stage);
-    nOps += pStage->nOpsExeOnNode(iNode,iOriginNodeNo);
+    nOps += pStage->nOpsExeOnNode(iNode,iOriginNodeId);
   }
   
   return nOps;

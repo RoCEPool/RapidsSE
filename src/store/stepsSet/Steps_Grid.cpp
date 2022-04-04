@@ -267,7 +267,7 @@ void Step::vGridShow(void)
 //    pRcvSkt =  pNode->pRecvSocket();
 //
 //    vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
-//           ,pNode->iNodeNo()
+//           ,pNode->iNodeId()
 //           ,pNode->szNodeNm()
 //           ,pNode->szIPAddr()
 //           ,pNode->iPortNo()
@@ -304,7 +304,7 @@ void Step::vGridShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].TablePtnToPtnNo -- get tPtnId { m_iNodeNo=thisNode, m_i_Ptn=i_Ptn } */
+/* [grid].TablePtnToPtnNo -- get tPtnId { m_iNodeId=thisNode, m_i_Ptn=i_Ptn } */
 /*----------------------------------------------------------------------------*/
 void Step::vGridTablePtnToPtnNo(void)
 {
@@ -320,15 +320,15 @@ void Step::vGridTablePtnToPtnNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].thisNodeId@ -- get this nodeNo from the grid                        */
+/* [grid].thisNodeId@ -- get this NodeId from the grid                        */
 /*----------------------------------------------------------------------------*/
 void Step::vGridThisNodeIdFetch(void)
 {
   ENTRY();
     
-  i8 iNodeNo = AM::pGrid()->iThisNodeId();
+  i8 iNodeId = AM::pGrid()->iThisNodeId();
   
-  m_pDataStack->vPushInt(iNodeNo);
+  m_pDataStack->vPushInt(iNodeId);
   
   EXIT();
 }

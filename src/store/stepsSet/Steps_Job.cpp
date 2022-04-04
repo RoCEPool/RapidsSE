@@ -87,10 +87,10 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("[job].id@"_Stz,              &Step::vJobIdFetch);
     
-  vAddStep("[job].originNodeNo@"_Stz,    &Step::vJobOriginNodeNoFetch);
+  vAddStep("[job].originNodeId@"_Stz,    &Step::vJobOriginNodeIdFetch);
   
-  vAddStep("[job].participantNodeNo@"_Stz, &Step::vJobParticipantNodeNoFetch);
-  vAddStep("[job].participantNodeNo!"_Stz, &Step::vJobParticipantNodeNoStore);
+  vAddStep("[job].participantNodeId@"_Stz, &Step::vJobParticipantNodeIdFetch);
+  vAddStep("[job].participantNodeId!"_Stz, &Step::vJobParticipantNodeIdStore);
   vAddStep("[job].preExecuteTest"_Stz,   &Step::vJobPreExecuteTest);
   vAddStep("[job].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("[job].phase!"_Stz,           &Step::vJobPhaseStore);
@@ -240,7 +240,7 @@ void Step::vJobAssertBegin(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
 
-  if ((i8)pJob->tJobId().uNodeNo() == AM::pGrid()->iThisNodeId()) {
+  if ((i8)pJob->tJobId().uNodeId() == AM::pGrid()->iThisNodeId()) {
 
     if (! pJob->bWasReceived())
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
@@ -724,47 +724,47 @@ void Step::vJobNoWaitFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].originNodeNo@ -- fetch the originator node no from this job          */
+/* [job].originNodeId@ -- fetch the originator node no from this job          */
 /*----------------------------------------------------------------------------*/
-void Step::vJobOriginNodeNoFetch(void)
+void Step::vJobOriginNodeIdFetch(void)
 {
   ENTRY();
   
   JobId tJobId = m_pJob->tJobId();
   
-  i8 iNodeNo = (i8)tJobId.uNodeNo();
+  i8 iNodeId = (i8)tJobId.uNodeId();
   
-  m_pDataStack->vPushInt(iNodeNo);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.partptNodeNo@ -- fetch the participant node from the job                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobParticipantNodeNoFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = * m_pJob;
-
-  m_pDataStack->vPushInt(pJob->iParticipantNodeNo());
+  m_pDataStack->vPushInt(iNodeId);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].participantNodeNo! -- store the participant node in the job          */
+/* job.partptNodeId@ -- fetch the participant node from the job                */
 /*----------------------------------------------------------------------------*/
-void Step::vJobParticipantNodeNoStore(void)
+void Step::vJobParticipantNodeIdFetch(void)
 {
   ENTRY();
   
   Job* pJob = * m_pJob;
 
-  i8 iParticipantNodeNo = m_pDataStack->iPopAsInt(__func__);
+  m_pDataStack->vPushInt(pJob->iParticipantNodeId());
   
-  pJob->vParticipantNodeNo(iParticipantNodeNo);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].participantNodeId! -- store the participant node in the job          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobParticipantNodeIdStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob;
+
+  i8 iParticipantNodeId = m_pDataStack->iPopAsInt(__func__);
+  
+  pJob->vParticipantNodeId(iParticipantNodeId);
   
   EXIT();
 }

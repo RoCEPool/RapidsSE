@@ -160,7 +160,7 @@ void JobList::vInsertJob(Job *pJob) {
 
   //  vTrace("vInsertJob %s : %lld.%lld %p\n"_Stz
   //         ,aJL[m_eJobList]
-  //         ,(i8)pJob->tJobId().uNodeNo()
+  //         ,(i8)pJob->tJobId().uNodeId()
   //         ,(i8)pJob->tJobId().uJobNo()
   //         ,pJob
   //         );
@@ -279,7 +279,7 @@ void JobList::vRemoveJob(Job *pJob) {
 
   //  vTrace("vRemoveJob %s : %lld.%lld %p\n"_Stz
   //         ,aJL[m_eJobList]
-  //         ,(i8)pJob->tJobId().uNodeNo()
+  //         ,(i8)pJob->tJobId().uNodeId()
   //         ,(i8)pJob->tJobId().uJobNo()
   //         ,pJob
   //         );
@@ -327,7 +327,7 @@ void JobList::vRemoveJob(Job *pJob) {
 
   if (!bWasRemoved) {
     vTrace("------------------------------------\n"_Stz);
-    vTrace("%s Failed to Remove JobId %lld.%lld\n"_Stz, aJL[m_eJobList], (i8) pJob->tJobId().uNodeNo(),
+    vTrace("%s Failed to Remove JobId %lld.%lld\n"_Stz, aJL[m_eJobList], (i8) pJob->tJobId().uNodeId(),
            (i8) pJob->tJobId().uJobNo());
     vTrace("------------------------------------\n"_Stz);
     vListJobs();

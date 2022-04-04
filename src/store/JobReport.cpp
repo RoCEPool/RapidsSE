@@ -771,7 +771,7 @@ Job* JobReport::pFindOriginalJobId(JobId tJobId)
 //             : "participant"_Stz
 //           );
     
-    if (tJobNo_test == tJobId && C_UNKNOWN == pJobScan->iParticipantNodeNo()) {
+    if (tJobNo_test == tJobId && C_UNKNOWN == pJobScan->iParticipantNodeId()) {
       pJob = pJobScan;
     }
   }
@@ -802,7 +802,7 @@ Job* JobReport::pFindOriginalJobNo(i8 iJobNo)
   //vTrace("bFindParts: %lld\n"_Stz,m_iJobNo);
   
   
-  // form jobId from nodeNo.m_jobNo
+  // form jobId from NodeId.m_jobNo
   
   Job* pJob = nullptr;
   JobList* pRetiredJobs = AM::pRetiredJobs();
@@ -823,7 +823,7 @@ Job* JobReport::pFindOriginalJobNo(i8 iJobNo)
 //             : "participant"_Stz
 //           );
     
-    if (iJobNo_test == iJobNo && C_UNKNOWN == pJobScan->iParticipantNodeNo()) {
+    if (iJobNo_test == iJobNo && C_UNKNOWN == pJobScan->iParticipantNodeId()) {
       pJob = pJobScan;
     }
   }
@@ -870,7 +870,7 @@ Job* JobReport::pFindParticipantJobId(JobId tJobId)
 //           ,tJobId.iAsI8()
 //           );
 
-    if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iParticipantNodeNo()) {
+    if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iParticipantNodeId()) {
       if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
         pJob = pJobScan;
     }
@@ -918,7 +918,7 @@ Job* JobReport::pFindParticipantJobNo(i8 iJobNo)
 //           ,iJobNo
 //           );
 
-    if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iParticipantNodeNo()) {
+    if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iParticipantNodeId()) {
       if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
         pJob = pJobScan;
     }

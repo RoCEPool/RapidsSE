@@ -238,13 +238,13 @@ PtnId Table::tTablePtnToPtnId(i8 i_TablePtn)
 {
   _static_
 
-  i8 iPtnId = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeNo();
+  i8 iPtnId = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeId();
 
   PtnId tPtnId;
 
   tPtnId = iPtnId;
 
-  //vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnId:%lld\n"_Stz, AM::iThisNodeNo(), i_TablePtn, AM::nConnectedNodes(), tPtnId);
+  //vTrace(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ThisNode:%lld  i_TablePtn:%lld  AM::nConnectedNodes:%lld  tPtnId:%lld\n"_Stz, AM::iThisNodeId(), i_TablePtn, AM::nConnectedNodes(), tPtnId);
 
   return tPtnId;
 }

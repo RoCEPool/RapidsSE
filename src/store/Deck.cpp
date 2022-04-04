@@ -97,18 +97,18 @@ Op* Deck::pOp0(void)
 /*----------------------------------------------------------------------------*/
 /* get number of ops to be excuted on given node                              */
 /*----------------------------------------------------------------------------*/
-i8 Deck::nOpsExeOnNode(i8 iThisNodeNo)
+i8 Deck::nOpsExeOnNode(i8 iThisNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
   
   i8 nOps = 0;
   
-  i8 iOriginNodeNo = pPipeline()->iOriginNodeNo();
+  i8 iOriginNodeId = pPipeline()->iOriginNodeId();
   
   i8 nStages = nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stage* pStage = pGet(i_Stage);
-    nOps += pStage->nOpsExeOnNode(iThisNodeNo,iOriginNodeNo);
+    nOps += pStage->nOpsExeOnNode(iThisNodeId,iOriginNodeId);
   }
   
   return nOps;

@@ -43,7 +43,7 @@ namespace STORE
     void vAdjustPtnMap(void);
     void vDsv(void);
     s16KB szDumpInfo(void);
-    Node* pFindNodeById(i8 iNodeNo);
+    Node* pFindNodeById(i8 iNodeId);
     Node* pFindNodeNm(Stz* pNodeNm);
     Node* pGetNthNode(i8 i_Node);
     Stz* szGridNm(void);

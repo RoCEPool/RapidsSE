@@ -219,7 +219,7 @@ Node* Grid::pFindNodeById(i8 iFindNodeId)
     
     i8 iNodeId = pNode->iNodeId();
     
-    //vTrace("pFindNode %lld (looking for %lld)\n"_Stz,iNodeNo,iFindNodeNo);
+    //vTrace("pFindNode %lld (looking for %lld)\n"_Stz,iNodeId,iFindNodeId);
     if (pNode && iNodeId == iFindNodeId)
       return pNode;
   }

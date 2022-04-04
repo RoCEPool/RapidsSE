@@ -46,19 +46,19 @@ u8 Id_2part::uNodeMask(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get uNodeNo                                                                */
+/* get uNodeId                                                                */
 /*----------------------------------------------------------------------------*/
-u8 Id_2part::uNodeNo(void)
+u8 Id_2part::uNodeId(void)
 {
-  return m_uNodeNo;
+  return m_uNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set uNodeNo                                                                */
+/* set uNodeId                                                                */
 /*----------------------------------------------------------------------------*/
-void Id_2part::vNodeNo(u8 uNodeNo)
+void Id_2part::vNodeId(u8 uNodeId)
 {
-  m_uNodeNo = uNodeNo;
+  m_uNodeId = uNodeId;
 
 }
 

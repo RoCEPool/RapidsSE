@@ -864,10 +864,10 @@ public:
   void vJobNameFetch(void);
   void vJobNoWaitFetch(void);
 
-  void vJobOriginNodeNoFetch(void);
+  void vJobOriginNodeIdFetch(void);
 
-  void vJobParticipantNodeNoFetch(void);
-  void vJobParticipantNodeNoStore(void);
+  void vJobParticipantNodeIdFetch(void);
+  void vJobParticipantNodeIdStore(void);
   void vJobPipeToOp0(void);
   void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);

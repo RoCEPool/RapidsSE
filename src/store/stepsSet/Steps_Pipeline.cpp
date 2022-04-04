@@ -60,7 +60,7 @@ void Step::vPipelineCreate(void)
   // create subpipeline
   
   Pipeline* pPipeline =
-    new Pipeline(m_pJob,pPipeSpec,m_pJob->iOriginatorNodeNo());
+    new Pipeline(m_pJob,pPipeSpec,m_pJob->iOriginatorNodeId());
   
   m_pLogicUnit->m_xpPipeline = pPipeline;
     
@@ -141,8 +141,8 @@ void Step::vPipelineSpawnOpTasks(void)
   ENTRY();
 
   if (AM::TRACE::bVerbose(C_VB_PIPELINE)) {
-    i8 iThisNodeNo = MY::iNodeNo();
-    vTraceM("Spawning operator jobs for this node %lld\n"_Stz,iThisNodeNo);
+    i8 iThisNodeId = MY::iNodeId();
+    vTraceM("Spawning operator jobs for this node %lld\n"_Stz,iThisNodeId);
   }
     
   m_pLogicUnit->m_xpPipeline->vSpawnOpTasks();

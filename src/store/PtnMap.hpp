@@ -55,7 +55,7 @@ namespace STORE
 
     void vSee(void);
   
-    PtnId tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);
+    PtnId tToPtnNoOfNode(i8 i_Ptn, i8 iNodeId);
     PtnId tToPtnNoOfThisNode(i8 i_Ptn);
 
   private:

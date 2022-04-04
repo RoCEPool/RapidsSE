@@ -19,7 +19,7 @@
   pJobParticipant job_Begun::new locals| pJob_Begun |
 
   // send the begun job
-  pJobParticipant [job].originNodeNo@ pJob_Begun job.reply
+  pJobParticipant [job].originNodeId@ pJob_Begun job.reply
 
   pJob_Begun job.delete
 ;

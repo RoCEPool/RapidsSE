@@ -115,9 +115,9 @@ void Step::vDeckOpsExeOnNodeFetch(void)
 {
   ENTRY();
     
-  i8 iThisNodeNo = AM::pGrid()->iThisNodeId();
+  i8 iThisNodeId = AM::pGrid()->iThisNodeId();
 
-  i8 nOps = m_pLogicUnit->m_xpDeck->nOpsExeOnNode(iThisNodeNo);
+  i8 nOps = m_pLogicUnit->m_xpDeck->nOpsExeOnNode(iThisNodeId);
 
   m_pDataStack->vPushInt(nOps);
 

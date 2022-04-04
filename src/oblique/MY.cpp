@@ -25,13 +25,13 @@ i8 MY::nNanoseconds(void)
 /*----------------------------------------------------------------------------*/
 /* get current no node                                                        */
 /*----------------------------------------------------------------------------*/
-i8 MY::iNodeNo(void)
+i8 MY::iNodeId(void)
 {
   _static_
   
-  i8 iThisNodeNo = AM::pGrid()->iThisNodeId();
+  i8 iThisNodeId = AM::pGrid()->iThisNodeId();
 
-  return iThisNodeNo;
+  return iThisNodeId;
 }
 
 /*----------------------------------------------------------------------------*/

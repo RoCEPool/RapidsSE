@@ -292,11 +292,11 @@ void AM::ENGINE::vSignalHandler(i8 iSignal)
 /*----------------------------------------------------------------------------*/
 /* get node for given node number                                             */
 /*----------------------------------------------------------------------------*/
-Node* AM::GRID::pGetNode(i8 iNodeNo)
+Node* AM::GRID::pGetNode(i8 iNodeId)
 {  
   _static_
   
-  Node* pNode = gpAttachMap->m_pGrid->pFindNodeById(iNodeNo);
+  Node* pNode = gpAttachMap->m_pGrid->pFindNodeById(iNodeId);
     
   return pNode;
 }
@@ -363,13 +363,13 @@ void AM::GRID::vNodeDetected(i8 iNodeId, Stz* szNodeNm,
 /*----------------------------------------------------------------------------*/
 /* get this node number                                                       */
 /*----------------------------------------------------------------------------*/
-i8 AM::GRID::iThisNodeNo(void)
+i8 AM::GRID::iThisNodeId(void)
 {
   _static_
   
-  i8 iNodeNo = gpAttachMap->m_pGrid->iThisNodeId();
+  i8 iNodeId = gpAttachMap->m_pGrid->iThisNodeId();
     
-  return iNodeNo;
+  return iNodeId;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -792,9 +792,9 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
   if (gpAttachMap && gpAttachMap->m_pNumbering) {
     iNo = gpAttachMap->m_pNumbering->iNextNo(eClassNo);
     if (CN_JOB == eClassNo) {
-      i8 iNodeNo = AM::GRID::iThisNodeNo();
+      i8 iNodeId = AM::GRID::iThisNodeId();
       
-      iNo = iNodeNo << 48 | iNo;
+      iNo = iNodeId << 48 | iNo;
     }
   }
   else {
@@ -2497,7 +2497,7 @@ Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
-i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNodeId();     }
+i8   AM::iThisNodeId(void)    { return gpAttachMap->m_pGrid->iThisNodeId();     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; }
 bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
@@ -3024,7 +3024,7 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 Session* AM::pSessionGet(i8 i_Origin,  i8 i_Session)
 {
-  if (i_Origin != AM::iThisNodeNo())
+  if (i_Origin != AM::iThisNodeId())
     return nullptr;
   
   if (C_UNKNOWN == i_Session)

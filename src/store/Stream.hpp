@@ -19,7 +19,7 @@ namespace STORE
     PtnId m_tPtnId;           // this stream processes m_tPtnId in grid
                               //   will be C_UNKNOWN for stage with node topology
 
-    i8    m_iNodeId;          // this stream processes NodeNo in grid
+    i8    m_iNodeId;          // this stream processes NodeId in grid
                               //   is PtnMap::i_PtnNoToNode(m_tPtnId);
 
     // -- -- -- -- -- --

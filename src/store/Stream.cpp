@@ -231,14 +231,14 @@ void Stream::vSpawnOpTasks(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
 
-  i8 iThisNodeNo = MY::iNodeNo();
+  i8 iThisNodeId = MY::iNodeId();
   
   i8 i_OnNode = -1;
   
   if (m_p_StageSpec->bNodeTopo()) {
     
     if (YG_NEXT_NODE == m_p_StageSpec->eStageTopology()) {
-      if (iThisNodeNo != pPipeline()->iOriginNodeNo()) {
+      if (iThisNodeId != pPipeline()->iOriginNodeId()) {
         i_OnNode = m_iNodeId;
       }
     }
@@ -251,7 +251,7 @@ void Stream::vSpawnOpTasks(void)
     i_OnNode = AM::pPtnMap()->iMappedNodeId(m_tPtnId);
   }
   
-  if (i_OnNode == iThisNodeNo) {
+  if (i_OnNode == iThisNodeId) {
     // for each operator in the stage ptn
     for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
       

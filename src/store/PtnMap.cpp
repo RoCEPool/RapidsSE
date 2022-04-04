@@ -156,7 +156,7 @@ PtnId PtnMap::tRobinToLclPtnStream(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
+  i8 iThisNodeId = AM::GRID::iThisNodeId();
 
   i8 i_LglPtn = iRobin % m_nPtnsPerNode;
 
@@ -195,13 +195,13 @@ void PtnMap::vSee(void)
   vTrace("  lgl ptns in grid   %2lld\n"_Stz,m_nPtnsInGrid);
 
   for (i8 i_LglPtn = 0; i_LglPtn < m_nPtnsInGrid; i_LglPtn++) {
-    i8 iNodeNo = m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iNodeId;
+    i8 iNodeId = m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iNodeId;
 
-    vTrace("  m_xaLglToNodePtn[i_LglPtn %lld] { m_iNodeNo=%lld %s, m_i_NodePtn=%lld }\n"_Stz
+    vTrace("  m_xaLglToNodePtn[i_LglPtn %lld] { m_iNodeId=%lld %s, m_i_NodePtn=%lld }\n"_Stz
 
            ,i_LglPtn
-           ,iNodeNo
-           ,AM::GRID::pGetNode(iNodeNo)->szNodeNm()
+           ,iNodeId
+           ,AM::GRID::pGetNode(iNodeId)->szNodeNm()
            ,m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iPtnNo
            );
   }
@@ -212,7 +212,7 @@ void PtnMap::vSee(void)
 /*----------------------------------------------------------------------------*/
 /* convert given i_ptn to partition number of given node                      */
 /*----------------------------------------------------------------------------*/
-PtnId PtnMap::tToPtnNoOfNode(i8 i_LglPtn, i8 iNodeNo)
+PtnId PtnMap::tToPtnNoOfNode(i8 i_LglPtn, i8 iNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
@@ -220,7 +220,7 @@ PtnId PtnMap::tToPtnNoOfNode(i8 i_LglPtn, i8 iNodeNo)
   tPtnId = C_UNKNOWN;
 
   for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
-    if (m_xaPtnId_to_NodeIdPtnNo[i_NodePtn].m_iNodeId != iNodeNo)
+    if (m_xaPtnId_to_NodeIdPtnNo[i_NodePtn].m_iNodeId != iNodeId)
       continue;
     if (m_xaPtnId_to_NodeIdPtnNo[i_NodePtn].m_iPtnNo != i_LglPtn)
       continue;
@@ -242,9 +242,9 @@ PtnId PtnMap::tToPtnNoOfThisNode(i8 i_LglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
+  i8 iThisNodeId = AM::GRID::iThisNodeId();
 
-  PtnId tPtnId = tToPtnNoOfNode(i_LglPtn,iThisNodeNo);
+  PtnId tPtnId = tToPtnNoOfNode(i_LglPtn,iThisNodeId);
 
   return tPtnId;
 }

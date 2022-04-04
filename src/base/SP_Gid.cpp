@@ -51,7 +51,7 @@ Stz* SP_Gid::sz(i8 iGid)
   StrLib::vSprint(m_caResult,
                   "%lld.%03lld"_Stz,
                   
-                  wGid.m_uNodeNo,
+                  wGid.m_uNodeId,
                   wGid.m_uObjectNo);
 
   return (Stz*) &m_caResult[0];
@@ -79,7 +79,7 @@ Stz* SP_Gid::sz(eIK eKind, i8 iGid)
                   "%s%lld.%03lld"_Stz,
                   
                   aIK_3c[eKind],
-                  wGid.m_uNodeNo,
+                  wGid.m_uNodeId,
                   wGid.m_uObjectNo);
   
   return (Stz*) &m_caResult[0];
@@ -107,7 +107,7 @@ Stz* SP_Gid::sz(eLG eKind, i8 iGid)
                   "%s%lld.%03lld"_Stz,
                   
                   aLG[eKind],
-                  wGid.m_uNodeNo,
+                  wGid.m_uNodeId,
                   wGid.m_uObjectNo);
   
   return (Stz*) &m_caResult[0];

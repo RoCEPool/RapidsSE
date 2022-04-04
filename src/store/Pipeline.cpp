@@ -33,7 +33,7 @@ __aFooterFunction(Pipeline)
 /*----------------------------------------------------------------------------*/
 Pipeline::Pipeline(Job*        pPipelineJob,
                    VertexSpec* pVertexSpecRoot,
-                   i8          iOriginNodeNo)
+                   i8          iOriginNodeId)
 : Object(CN_PIPELINE)
 , m_okDebugLock(this)
 {
@@ -41,7 +41,7 @@ Pipeline::Pipeline(Job*        pPipelineJob,
   
   m_pPipelineJob    = pPipelineJob;
   m_pVertexSpecRoot = pVertexSpecRoot;
-  m_iOriginNodeNo   = iOriginNodeNo;
+  m_iOriginNodeId   = iOriginNodeId;
 
   m_pVertexRoot     = nullptr;
   
@@ -244,11 +244,11 @@ void Pipeline::vGrabDebugLock(void)
 /*----------------------------------------------------------------------------*/
 /* get the originating node                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Pipeline::iOriginNodeNo(void)
+i8 Pipeline::iOriginNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_iOriginNodeNo;
+  return m_iOriginNodeId;
 }
 
 /*----------------------------------------------------------------------------*/

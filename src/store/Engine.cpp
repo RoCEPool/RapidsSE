@@ -1539,7 +1539,7 @@ void Engine::vStartSystem(void)
 
 
   AM::pGrid()->vThisNode(pThisNode); // newcode
-  //vTrace("This node:%lld\n"_Stz, AM::pGrid()->pThisNode()->iNodeNo());
+  //vTrace("This node:%lld\n"_Stz, AM::pGrid()->pThisNode()->iNodeId());
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
@@ -1660,10 +1660,10 @@ void Engine::vStartSystem(void)
 
 /**
  * @brief Initial creation of a Grid of Nodes
- * @details It uses a hash IP/Port of a node for the NodeNo
+ * @details It uses a hash IP/Port of a node for the NodeId
  *
  * <p>
- * @note We can use Hardware::iReadTscp() for unique NodeNo,
+ * @note We can use Hardware::iReadTscp() for unique NodeId,
  *       But it seems the value is very large and somewhere int system
  *       doesn't like it.
  *
@@ -1674,20 +1674,20 @@ void Engine::vCreateGridOfNodes(void)
 {
 
   s32 szNodeName;
-  i8 iNodeNo =0 ;
+  i8 iNodeId =0 ;
 
   for (i8 i_Node = 0;
        i_Node < gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes;
        i_Node++) {
 
     if (gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes > 1) {
-      iNodeNo = i_Node;
+      iNodeId = i_Node;
       szNodeName = gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName;
     } else {
       CheckSum ChecksumValue((unsigned char *) gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.azChar(),
                            gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.nLength());
 
-      iNodeNo = (ChecksumValue.iGetBernstein() + gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
+      iNodeId = (ChecksumValue.iGetBernstein() + gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
 
       //szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.azChar(),
       //                   gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
@@ -1695,7 +1695,7 @@ void Engine::vCreateGridOfNodes(void)
    }
 
 
-    Node* pNode = new Node(iNodeNo, //i_Node +  abs((i2)Hardware::iReadTscp()),
+    Node* pNode = new Node(iNodeId, //i_Node +  abs((i2)Hardware::iReadTscp()),
                            szNodeName, //gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName,
                            AM::SYSARGS::nPtnsPerNode(),
                            gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress,

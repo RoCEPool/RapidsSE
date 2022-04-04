@@ -11,7 +11,7 @@
   STD_PATH_TAG
   "
   define table __lockStats (
-    nodeNo         INTEGER        NOT NULL ,
+    NodeId         INTEGER        NOT NULL ,
     takeNo         INTEGER        NOT NULL ,
 
     lockNo         INTEGER        NOT NULL ,

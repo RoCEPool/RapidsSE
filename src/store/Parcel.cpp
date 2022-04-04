@@ -537,10 +537,10 @@ void Parcel::vNDE_OriginNode(Op *pSendOp)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Pipeline *pPipeline = pSendOp->pPipeline();
-  i8 iOriginNodeNo = pPipeline->iOriginNodeNo();
+  i8 iOriginNodeId = pPipeline->iOriginNodeId();
 
   PtnId tPtn_na = C_UNKNOWN;
-  vDispatchParcel(pSendOp, __LINE__, iOriginNodeNo, pNextStage, tPtn_na);
+  vDispatchParcel(pSendOp, __LINE__, iOriginNodeId, pNextStage, tPtn_na);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -666,7 +666,7 @@ void Parcel::vPTN_fancast(Op *pSendOp)
 //    Stream* pDstStream = pDstStage->pGet(i_Stream);
 //
 //    PtnId tDstPtn = pDstStream->tPtnId();
-//    i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+//    i8 iDstNde = AM::pPtnMap()->iMappedNodeId(tDstPtn);
 //
 //    RASSERT(iDstNde == iCurNode);
 //
@@ -863,8 +863,8 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
   // forward to this node, dst stage is a YS_NODE_STREAM
   
   if (YS_NODE_STREAM == pDstStage->pStageSpec()->eStreamTopology()) {
-    i8 i_ThisNode = AM::iThisNodeNo();
-    Stream* pDstStream = pDstStage->pGetStream_byNodeNo(i_ThisNode);
+    i8 i_ThisNode = AM::iThisNodeId();
+    Stream* pDstStream = pDstStage->pGetStream_byNodeId(i_ThisNode);
 
 //    eCN eClass = pOperand->eGetClassNo();
 //    i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
@@ -964,8 +964,8 @@ void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (YS_NODE_STREAM == pDstStage->pStageSpec()->eStreamTopology()) {
-    i8 i_ThisNode = AM::iThisNodeNo();
-    Stream* pDstStream = pDstStage->pGetStream_byNodeNo(i_ThisNode);
+    i8 i_ThisNode = AM::iThisNodeId();
+    Stream* pDstStream = pDstStage->pGetStream_byNodeId(i_ThisNode);
 
 //    eCN eClass = pOperand->eGetClassNo();
 //    i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
@@ -1037,13 +1037,13 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
   
   // get preliminary information
   Node *pDstNode = AM::pGrid()->pFindNodeById(m_iDstNode);
-  //vTrace("vSendParcelViaSocket prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeNo(), pDstNode->iPortNo());
+  //vTrace("vSendParcelViaSocket prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeId(), pDstNode->iPortNo());
   Socket *pSocket = pDstNode->pSendSocket();
   i8 nObjects = this->nItems();
 
   pSocket->vGrabWrite();
 
-  //vTrace("vSendParcelViaSocket got a lock, prepared to send %lld Object(s)to Node:%lld Port:%lld \n"_Stz,nObjects, pDstNode->iNodeNo(), pDstNode->iPortNo());
+  //vTrace("vSendParcelViaSocket got a lock, prepared to send %lld Object(s)to Node:%lld Port:%lld \n"_Stz,nObjects, pDstNode->iNodeId(), pDstNode->iPortNo());
 
   // send the parcel instance
   pParcel = this;
