@@ -104,7 +104,7 @@ static const i8 C_MAX_SHAPES = 32;
     void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp, Stz* sHashExpr);
 
     Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil);
-    Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, bool bHasOrdAgg);
+    Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
     Shape* pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel);
 
     Shape* pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp);
@@ -125,7 +125,7 @@ static const i8 C_MAX_SHAPES = 32;
                       IntStack* pPreExpStack, Stz* sHashExpr, Stz* szLabel, Stz* sLabelLoop);
     Shape* pSketchTub(Combined* pCombined, Op* pLastOp, eSR ePrevStencil,
                       IntStack* pPreExpStack, Stz* szLabel, Stz* sLabelLoop);
-    Shape* pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop, bool bHasOrdAgg);
+    Shape* pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop);
 
 
     Footer* aFooter(void);
