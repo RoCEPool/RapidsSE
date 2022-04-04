@@ -37,8 +37,11 @@ def build_installer() -> pathlib.Path:
     Assumes we are running from the <proj_root>/perftest directory
     """
     LOG.info("About to invoke the RapidsSE installer packager script to build and package RapidsSE.")
-    # TODO: Remove the NO_MOD_CHECK and NO_BUILD below
-    command = "NO_MOD_CHECK=1 NO_BUILD=1 ../installer/packaging/package.sh"
+
+    # Note: For debugging only
+    # command = "NO_MOD_CHECK=1 NO_BUILD=1 ../installer/packaging/package.sh"
+
+    command = "../installer/packaging/package.sh"
 
     try:
         subprocess.run(command,
