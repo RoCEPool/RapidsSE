@@ -473,7 +473,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   bool bInflateGenerated = false;
 
-  bool bHasOrdAgg = false;
+  bool bProjectOp = false;
+  bool bPayloadOp = false;
 
   bool bGeneratePotTub = true;
   bool bGenerateFun3 = true;
@@ -502,13 +503,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   // driving op indexScan ?
   if (pStream->pGet(1)->szOpNm()->bSame("indexScan"_Stz)) {
     m_bIndexScan = true;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // any ordAgg's ?
-  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
-    if (pStream->pGet(i_Op)->szOpNm()->bSame("ordAgg"_Stz))
-      bHasOrdAgg = true;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -546,7 +540,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       //vAppendFuncHeader2();
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      m_pShapeIDX = pSketchIndexScan(pCombined, pStream, pOp, bHasOrdAgg);
+      m_pShapeIDX = pSketchIndexScan(pCombined, pStream, pOp);
       //vAppend(m_pShapeIDX);
 
       m_bIndexScan = true;
@@ -605,6 +599,17 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOp
     if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // check stage-operator rules
+      if (bPayloadOp) {
+        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+
+        return EC_INVALID_PIPELINE;
+      }
+
+      bPayloadOp = true;
 
       // get the project kind
       eExprKind = pLogicUnit->m_eExprKind;
@@ -709,6 +714,17 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // check stage-operator rules
+      if (bPayloadOp) {
+        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+
+        return EC_INVALID_PIPELINE;
+      }
+
+      bPayloadOp = true;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // is next op project Op ?
       i8 iNextOp = pOp->i_Op() + 1;
       Op *pOpNext = pStream->pGet(iNextOp);
@@ -750,6 +766,16 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the projectOP
     if (pOp->szOpNm()->bSame("project"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // check stage-operator rules
+      if (bProjectOp) {
+        vTrace("Error: Cannot have multiple project operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      bProjectOp = true;
 
       Op *pPrevOp = pStream->pGet(i_Op - 1);
 
@@ -800,35 +826,46 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the ordAgg OP
-    if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
-
-      // get the project kind
-      eExprKind = pLogicUnit->m_eExprKind;
-      //RASSERT(eExprKind == EK_ORDAGG);
-
-      RASSERT(bHasOrdAgg);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupOrdAgg(pCombined, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchOrdAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
-      vAppend(pShape);
-
-      sLabelLoop.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
-      sReturnLabel = "L_ReturnFinal"_Stz;
-      ePrevStencil = SR_AT;
-    }
+//    if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
+//
+//      // get the project kind
+//      eExprKind = pLogicUnit->m_eExprKind;
+//      //RASSERT(eExprKind == EK_ORDAGG);
+//
+//      RASSERT(bHasOrdAgg);
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      vSetupOrdAgg(pCombined, pStream, pOp);
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      pShape = pSketchOrdAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
+//      vAppend(pShape);
+//
+//      sLabelLoop.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
+//      sReturnLabel = "L_ReturnFinal"_Stz;
+//      ePrevStencil = SR_AT;
+//    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the topOP
     if (pOp->szOpNm()->bSame("top"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // check stage-operator rules
+//      if (bPayloadOp) {
+//        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+//               m_szStageNm.azChar());
+//
+//        return EC_INVALID_PIPELINE;
+//      }
+
+      bPayloadOp = true;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupTop(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchTop(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, bHasOrdAgg);
+      pShape = pSketchTop(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
       vAppend(pShape);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1113,6 +1150,7 @@ u8 Stencil::uGetSelectColumns(Stream* pStream) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   bool bProject = false;
+
   u8 uSelectColumns = 0;
 
   // for each operator in the stream
@@ -1935,7 +1973,7 @@ Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, 
 /*----------------------------------------------------------------------------*/
 /* get the next label for Op                                                  */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, bool bHasOrdAgg)
+Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -2519,7 +2557,7 @@ Shape* Stencil::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR e
 /*----------------------------------------------------------------------------*/
 /* sketch top                                                                 */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop, bool bHasOrdAgg) {
+Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -2553,8 +2591,7 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, pIndexDef, nullptr, ePrevStencil, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
-  if (!bHasOrdAgg)
-    sLabelLoop = "L_AdvanceNextRow"_Stz;
+  sLabelLoop = "L_AdvanceNextRow"_Stz;
 
   pCodeSynth->vSynthTop(pIndexDef, sKeyExpr, iTopCount, sLabel, sLabelLoop);
   pShape->vCodeSynthB(pCodeSynth);

@@ -50,7 +50,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_JOBMETRICS,
   
   /*  */ LR_LIST,
-  /*  */ LR_LOGICCOMPILER,
   
   /*  */ LR_MARKER,
   /*  */ LR_MEMORYHOG,
@@ -166,7 +165,6 @@ static Stz* aLR[]
   /*  */ "LR_JOBMETRICS"_Stz,
   
   /*  */ "LR_LIST"_Stz,
-  /*  */ "LR_LOGICCOMPILER"_Stz,
   
   /*  */ "LR_MARKER"_Stz,
   /*  */ "LR_MEMORYHOG"_Stz,

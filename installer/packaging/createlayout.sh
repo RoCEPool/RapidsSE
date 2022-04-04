@@ -47,7 +47,6 @@ cp "${ROOT_DIR}/src/base/eEO.h"             "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/eEA.h"             "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/eDM.h"             "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/LogicalMacros.h"   "${LAYOUT_DIR}/src/base"
-cp "${ROOT_DIR}/src/base/MathLib.h"         "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/MathMacros.h"      "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/RelationalMacros.h" "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/TccMacros.h"       "${LAYOUT_DIR}/src/base"
@@ -62,9 +61,6 @@ cp "${ROOT_DIR}/src/store/vFLAT_InflateColumn.h"   "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/vFLAT_Parameters.h"      "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/vFLAT_PreliminaryCrw.h"  "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/vFLAT_SkipColumn.h"      "${LAYOUT_DIR}/src/store"
-
-# eo_Text
-cp -r "${ROOT_DIR}/eo_text"                      "${LAYOUT_DIR}/eo_text"
 
 # Bootstrap
 cp "${ROOT_DIR}/bootstrap/setup.sh"              "${LAYOUT_DIR}"

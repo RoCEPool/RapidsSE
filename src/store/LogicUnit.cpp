@@ -42,10 +42,6 @@
 #include "LogicUnit.hpp"
 #include "Pipeline.hpp"
 
-#include "LIB_interface.h"
-#include "DEV_interface.h"
-#include "MathLib.h"
-
 #include "Arg.hpp"
 #include "RelOp.hpp"
 #include "Predicate.hpp"
@@ -130,7 +126,6 @@ LogicUnit::LogicUnit(void)
 ,     m_xpJobMetrics(this,RF_REPAIR_DELETE,JobMetrics::vRepair,     LR_JOBMETRICS)
 
 ,           m_xpList(this,RF_REPAIR_DELETE,RowSingle::vRepairList,  LR_LIST)
-,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,  LR_LOGICCOMPILER)
 
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                 LR_MARKER)
 ,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  LR_MEMORYHOG)
@@ -285,30 +280,7 @@ LogicUnit::LogicUnit(void)
 
   m_uSelectColumns = 0;
 
-  m_i_Code = 0;
-
-
-  m_pDevDstRow = new DevROW;
-  m_pDevLftRow = new DevROW;
-  m_pDevRhtRow = new DevROW;
-  m_pDevAltRow = new DevROW;
-
-  m_pDevLftIxt = new DevIXT;
-  m_pDevRhtIxt = new DevIXT;
-  m_pDevAltIxt = new DevIXT;
-  m_pDevTmpIxt = new DevIXT;
-
   m_pLogicTimer = nullptr;
-
-  m_xRluCommon.m_pDevDstRow = m_pDevDstRow;
-  
-  m_xRluCommon.m_pDevLftRow = m_pDevLftRow;
-  m_xRluCommon.m_pDevRhtRow = m_pDevRhtRow;
-  m_xRluCommon.m_pDevLftIxt = m_pDevLftIxt;
-  m_xRluCommon.m_pDevRhtIxt = m_pDevRhtIxt;
-  m_xRluCommon.m_pDevAltRow = m_pDevAltRow;
-  m_xRluCommon.m_pDevAltIxt = m_pDevAltIxt;
-  m_xRluCommon.m_pDevTmpIxt = m_pDevTmpIxt;
   
   m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
   m_xRluCommon.m_pEntWrk = (void*)&m_oEntWrk;
@@ -323,24 +295,6 @@ LogicUnit::LogicUnit(void)
   m_xRluCommon.m_pPot = nullptr;
   m_xRluCommon.m_pIndexDef = nullptr;
   m_xRluCommon.m_pIndexTree = nullptr;
-
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_eaCode,sizeof(m_eaCode),CN_LOGICUNIT);
-#endif
-  
-  m_nLabels = 0;
-  for (i8 i_Label = 0; i_Label < C_LOGIC_LABEL; i_Label++) {
-
-    // forced execution of constructor of s32 needed because s32 is a member of a struct
-    // for tinyc and struct doesn't invoke the constructor!!!
-    s32* s = new (&m_xaJumpLabel[i_Label].m_sLabelNm) s32;
-    IGNORE_RETURN(s);
-
-    m_xaJumpLabel[i_Label].m_bDefined = false;
-    m_xaJumpLabel[i_Label].m_bSubroutine = false;
-    m_xaJumpLabel[i_Label].m_bDestination = false;
-    m_xaJumpLabel[i_Label].m_i_Chain = C_UNKNOWN;
-  }
 
   // m_ixRowsProcessed;
   // m_ixRowsInvalid;
@@ -400,7 +354,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpInfoSetTable.bIsNull());
 
   RASSERT(m_xpList.bIsNull());
-  RASSERT(m_xpLogicCompiler.bIsNull());
 
   //RASSERT(m_xpMarker.bIsNull());
   RASSERT(m_xpMemoryHog.bIsNull());
@@ -478,21 +431,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   }
   
   delete m_pTknVec;
-  
-  delete m_pDevDstRow;
-  delete m_pDevLftRow;
-  delete m_pDevRhtRow;
-  delete m_pDevAltRow;
 
-  // delete any temporary index tree's
-  if (m_pDevTmpIxt->m_pIdxTree)
-    delete m_pDevTmpIxt->m_pIdxTree;
-
-  delete m_pDevTmpIxt;
-  delete m_pDevAltIxt;
-  delete m_pDevLftIxt;
-  delete m_pDevRhtIxt;
-  
   delete m_pLogicTimer;
 
 //  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++)
@@ -543,19 +482,6 @@ void LogicUnit::vAddReg(REG<Object,CN_NONE>* pReg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT);
 
   m_paReg[m_nRegs++] = pReg;
-}
-
-/*----------------------------------------------------------------------------*/
-/* conditional code                                                           */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vCC(i8 i_Cond)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-
-  if (m_baCondInd[i_Cond])
-    m_iNextCond = 1;
-  else
-    m_iNextCond = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -640,51 +566,6 @@ void LogicUnit::vCleanup(void)
     if (p_Reg->m_eLogicUnitReg != LR_STATS)
       p_Reg->vRepair();
   }
-}
-/*----------------------------------------------------------------------------*/
-/* get eCode at given i_Code                                                  */
-/*----------------------------------------------------------------------------*/
-eEO LogicUnit::eCode(i8 i_Code)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  eEO eCode = *(eEO*)&m_eaCode[i_Code];
-
-  return eCode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return number of eo codes                                                  */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::nCodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  return m_i_Code;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get iArg at given i_Code                                                   */
-/*----------------------------------------------------------------------------*/
-char* LogicUnit::aCodeArg(i8 i_Code)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-
-  char* aArg = &m_eaCode[i_Code];
-
-  return aArg;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get iArg at given i_Code                                                   */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iCodeArg(i8 i_Code)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  i8 iArg = * (i8*)&m_eaCode[i_Code];
-
-  return iArg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -790,16 +671,6 @@ void LogicUnit::vDumpRegisters(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* optimise with super fragent                                                */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vEndOptimise(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-
-  m_bSuperFrag = false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* diarise dynamic routine entry                                              */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vEnter(void)
@@ -868,34 +739,6 @@ void LogicUnit::vFailure(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find label which is at given i_Code                                        */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iFindLabel(i8 i_Code)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
-    if (i_Code == m_xaJumpLabel[i_Label].m_i_Code)
-      return i_Label;
-
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find label by name and return i_Label                                      */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iFindLabel(Stz* szLabelNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
-    if (m_xaJumpLabel[i_Label].m_sLabelNm.bSame(szLabelNm))
-      return i_Label;
-
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vInit(void)
@@ -925,64 +768,6 @@ void LogicUnit::vJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get code point of label                                                    */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iLabelCode(i8 i_Label)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  i8 i_Code = m_xaJumpLabel[i_Label].m_i_Code;
-  
-  return i_Code;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given label a destination?                                              */
-/*----------------------------------------------------------------------------*/
-bool LogicUnit::bLabelIsDst(i8 i_Label)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  bool bIsDst = m_xaJumpLabel[i_Label].m_bDestination;
-  
-  return bIsDst;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given label a subroutine?                                               */
-/*----------------------------------------------------------------------------*/
-bool LogicUnit::bLabelIsSbr(i8 i_Label)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  bool bIsSbr = m_xaJumpLabel[i_Label].m_bSubroutine;
-  
-  return bIsSbr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return number of labels                                                    */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::nLabels(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  return m_nLabels;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return number of labels                                                    */
-/*----------------------------------------------------------------------------*/
-Stz* LogicUnit::szLabelNm(i8 i_Label)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  Stz* szLblNm = m_xaJumpLabel[i_Label].m_sLabelNm;
-  
-  return szLblNm;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get op                                                                     */
 /*----------------------------------------------------------------------------*/
 Op* LogicUnit::pOp(void)
@@ -1004,46 +789,6 @@ void LogicUnit::vOp(Op* pOp)
   RASSERT(! m_pJob);
   
   m_pOp = pOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* optimise with super fragent                                                */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vOptimise(eEO eOpt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-
-  if (EO_NONE == eOpt) {
-    m_bSuperFrag = false;
-    return;
-  }
-  
-  vAddCode(eOpt);
-  
-  m_bSuperFrag = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return query fragment number                                               */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iQueryFragment(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  return m_xRluCommon.m_iSql;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set conditional compilation state                                          */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vSetCC(i8 i_Cond, bool bState)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  if (bState)
-    m_baCondInd[i_Cond] = 1;
-  else
-    m_baCondInd[i_Cond] = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1083,352 +828,6 @@ EntWrk* LogicUnit::pEntWrk(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add code                                                                   */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vAddCode(eEO eCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  ASSERT(0 == EoArgs[eCode].m_nArgBytes);
-  
-  if (m_bSuperFrag)
-    return;
-  
-  if (0 == m_iNextCond) {
-    m_iNextCond = C_UNKNOWN;
-    return;
-  }
-
-  *(eEO*)&m_eaCode[m_i_Code] = eCode;
-  m_i_Code += 2;
-
-  m_iNextCond = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add code with argument                                                     */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vAddCodeArg(eEO eCode, i8 iArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  ASSERT(8 == EoArgs[eCode].m_nArgBytes);
-  
-  if (m_bSuperFrag)
-    return;
-  
-  if (0 == m_iNextCond) {
-    m_iNextCond = C_UNKNOWN;
-    return;
-  }
-  
-  //m_eaCode[m_i_Code++] = eCode;
-  *(eEO*)&m_eaCode[m_i_Code] = eCode;
-  m_i_Code += 2;
-
-  i8* piArg = (i8*) & m_eaCode[m_i_Code];
-  * piArg = iArg;
-
-  m_i_Code += sizeof(i8);
-  
-  m_iNextCond = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add code with argument                                                     */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vAddCodeArg(eEO eCode,Token* pTkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  if (m_bSuperFrag)
-    return;
-  
-  if (0 == m_iNextCond) {
-    m_iNextCond = C_UNKNOWN;
-    return;
-  }
-  
-  i8 iArg = pTkn->iToI8();
-  
-  vAddCodeArg(eCode,iArg);
-
-  m_iNextCond = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add code with date argument                                                */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vAddCodeDte(eEO eCode, Stz* szLiteral)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  ASSERT(EA_DATE == EoArgs[eCode].m_eArgument);
-  
-  if (m_bSuperFrag)
-    return;
-  
-  if (0 == m_iNextCond) {
-    m_iNextCond = C_UNKNOWN;
-    return;
-  }
-  
-  char* acCrs = szLiteral->azChar();
-  
-  SN_Dte snDate;
-  i8 iDate = snDate.i(&acCrs,AM::pFmt());
-  
-  vAddCodeArg(eCode,iDate);
-
-  m_iNextCond = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add code with named label                                                  */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vAddCodeLabel(eEO eCode, Stz* szLabelNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  if (m_bSuperFrag)
-    return;
-  
-  if (0 == m_iNextCond) {
-    m_iNextCond = C_UNKNOWN;
-    return;
-  }
-  
-  i8 i_Label = iFindLabel(szLabelNm);
-  
-  if (C_UNKNOWN == i_Label) {
-    i_Label = iAddLabel(szLabelNm,false);
-    m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 2;
-    vAddCodeArg(eCode,C_UNKNOWN);
-  }
-  else
-  if (m_xaJumpLabel[i_Label].m_bDefined) {
-    vAddCodeArg(eCode,m_xaJumpLabel[i_Label].m_i_Code);
-  }
-  else {
-    i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Chain;
-    m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code + 2;
-    vAddCodeArg(eCode,i_Chain);
-  }
-  
-  if (EO_CALL == eCode)
-    m_xaJumpLabel[i_Label].m_bSubroutine = true;
-  else if (eCode >= EO_JMP && eCode <= EO_JMP_GREATER)
-    m_xaJumpLabel[i_Label].m_bDestination = true;
-
-  //vPrintLabels();
-  
-  m_iNextCond = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add code with label name in given token                                    */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vAddCodeLabel(eEO eCode, Token* pTkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-
-  if (m_bSuperFrag)
-    return;
-  
-  if (0 == m_iNextCond) {
-    m_iNextCond = C_UNKNOWN;
-    return;
-  }
-  
-  vAddCodeLabel(eCode,pTkn->szChars());
-  
-  m_iNextCond = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add code with string literal                                               */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vAddCodeString(eEO eCode, Stz* szString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  ASSERT(-1 == EoArgs[eCode].m_nArgBytes);
-  
-  if (m_bSuperFrag)
-    return;
-  
-  if (0 == m_iNextCond) {
-    m_iNextCond = C_UNKNOWN;
-    return;
-  }
-  
-  //m_eaCode[m_i_Code++] = eCode;
-  *(eEO*)&m_eaCode[m_i_Code] = eCode;
-  m_i_Code += 2;
-
-  for (char* acChr = szString->azChar(); *acChr; acChr++)
-    m_eaCode[m_i_Code++] = (eEO)*acChr;
-  m_eaCode[m_i_Code++] = (eEO)0;
-  
-  m_iNextCond = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add code with time argument                                                */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vAddCodeTme(eEO eCode, Stz* szLiteral)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-
-  ASSERT(EA_TIME == EoArgs[eCode].m_eArgument);
-
-  if (m_bSuperFrag)
-    return;
-
-  if (0 == m_iNextCond) {
-    m_iNextCond = C_UNKNOWN;
-    return;
-  }
-
-  char* acCrs = szLiteral->azChar();
-
-  SN_Tme snTme;
-  i8 iTme = snTme.i(&acCrs,AM::pFmt());
-
-  vAddCodeArg(eCode,iTme);
-
-  m_iNextCond = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add code with timestamp argument                                           */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vAddCodeTsp(eEO eCode, Stz* szLiteral)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-
-  ASSERT(EA_TIMESTAMP == EoArgs[eCode].m_eArgument);
-
-  if (m_bSuperFrag)
-    return;
-
-  if (0 == m_iNextCond) {
-    m_iNextCond = C_UNKNOWN;
-    return;
-  }
-
-  char* acCrs = szLiteral->azChar();
-
-  SN_Tsp snTsp;
-  i8 iTsp = snTsp.i(&acCrs,AM::pFmt());
-
-  vAddCodeArg(eCode,iTsp);
-
-  m_iNextCond = C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add label                                                                  */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iAddLabel(Stz* szLabelNm, bool bKnown)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-
-  RASSERT(m_nLabels < C_LOGIC_LABEL - 1);
-
-  i8 i_Label = m_nLabels;
-
-  m_xaJumpLabel[i_Label].m_sLabelNm = szLabelNm;
-  m_xaJumpLabel[i_Label].m_bDefined = bKnown;
-  m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code;
-  m_nLabels++;
-  
-  return i_Label;
-}
-
-/*----------------------------------------------------------------------------*/
-/* correct label chain                                                        */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vCorrectLabel(i8 i_Label)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  ASSERT(! m_xaJumpLabel[i_Label].m_bDefined);
-  
-  i8 i_Chain = m_xaJumpLabel[i_Label].m_i_Chain;
-  while (C_UNKNOWN != i_Chain) {
-    
-    i8* piArg = (i8*) & m_eaCode[i_Chain];
- 
-    i_Chain = * piArg;
-
-    * piArg = m_i_Code;
-  }
-
-  m_xaJumpLabel[i_Label].m_bDefined = true;
-  m_xaJumpLabel[i_Label].m_i_Code   = m_i_Code;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode label into subscript                                                */
-/*----------------------------------------------------------------------------*/
-i8 LogicUnit::iDecodeLabel(Stz* szLabelNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  i8 i_Label = iFindLabel(szLabelNm);
-
-  if (C_UNKNOWN == i_Label)
-    i_Label = iAddLabel(szLabelNm,false);
-  
-  i8 i_Code = m_xaJumpLabel[i_Label].m_i_Chain;
- 
-  m_xaJumpLabel[i_Label].m_i_Chain = m_i_Code;
-  
-  //vPrintLabels();
-  
-  return i_Code;
-}
-
-/*----------------------------------------------------------------------------*/
-/* define label                                                               */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vDefineLabel(Stz* szLabelNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  if (m_bSuperFrag)
-    return;
-  
-  // has this label been used yet?
-  i8 i_Label = iFindLabel(szLabelNm);
-  
-  if (C_UNKNOWN == i_Label)
-    i_Label = iAddLabel(szLabelNm,true);
-  else
-    vCorrectLabel(i_Label);
-  
-  //vPrintLabels();
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete label                                                               */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vDeleteLabel(Stz* szLabelNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  // has this label been used yet?
-  i8 i_Label = iFindLabel(szLabelNm);
-  
-  if (C_UNKNOWN == i_Label)
-    return;
-  
-  // for the moment lets just scrub it out.  needs to be fixed
-  m_xaJumpLabel[i_Label].m_sLabelNm = " *deleted* "_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
 /* diary report                                                               */
 /*----------------------------------------------------------------------------*/
 void LogicUnit::vDiaryReport(void)
@@ -1455,275 +854,8 @@ void LogicUnit::vDiaryReport(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find code                                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* LogicUnit::szFindCode(i8 i_Code)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
-    if (i_Code == m_xaJumpLabel[i_Label].m_i_Code)
-      return m_xaJumpLabel[i_Label].m_sLabelNm;
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print labels                                                               */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vPrintLabels(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  
-//#ifdef WITH_TRACE_LOGICUNIT
-  for (i8 i_Label = 0; i_Label < m_nLabels; i_Label++)
-    vTrace("  [%02lld] %s %lld: %4lld%s%s\n"_Stz,
-           i_Label,
-           m_xaJumpLabel[i_Label].m_sLabelNm.szStz(),
-           (i8)m_xaJumpLabel[i_Label].m_bDefined,
-           m_xaJumpLabel[i_Label].m_i_Chain,
-           m_xaJumpLabel[i_Label].m_bSubroutine ? " subroutine" : "",
-           m_xaJumpLabel[i_Label].m_bDestination ? " destination" : ""
-           );
-//#endif
-  
-}
-
-
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* dump code                                                                  */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vDumpCode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-
-//#ifdef WITH_TRACE_LOGICUNIT
-
-  return;
-  
-  SP_Dte spDate;
-
-  vTrace("EO code for %lld:\n"_Stz,m_xRluCommon.m_iSql);
-  
-  for (i8 i_Code = 0; i_Code < m_i_Code; ) {
-        
-    eEO eCode = *(eEO*)&m_eaCode[i_Code];
-        
-    Stz* szLabel = szFindCode(i_Code);
-    vTrace("%12s "_Stz,szLabel ? szLabel : ""_Stz);
-      
-    if (eCode <= EO_NONE || eCode >= EO_ENUMS) {
-      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "Invalid eo code sequence detected"_Stz);
-    }
-    
-    if (-1 == EoArgs[eCode].m_nArgBytes) {
-      char* azArg = (char*) & m_eaCode[i_Code+2];
-      vTrace("%04lld: %20s (%s)\n"_Stz,i_Code,aEO[eCode],azArg);
-      i_Code += 2 + StrLib::nSize(azArg);
-    }
-    else
-    if (
-        EA_DATE == EoArgs[eCode].m_eArgument) {
-      i8* piArg = (i8*) & m_eaCode[i_Code+2];
-      i8 iArg = * piArg;
-      vTrace("%04lld: %20s (%s)\n"_Stz,i_Code,aEO[eCode],spDate.sz(iArg));
-      i_Code += 2 + sizeof(i8);
-    }
-    else
-    if (EA_LABEL == EoArgs[eCode].m_eArgument) {
-      i8* piArg = (i8*) & m_eaCode[i_Code+2];
-      i8 iArg = * piArg;
-      Stz* szLabel = szFindCode(iArg);
-      vTrace("%04lld: %20s => %s @%lld\n"_Stz,
-             i_Code,
-             aEO[eCode],
-             szLabel ? szLabel : "<unknown>"_Stz,
-             iArg
-             );
-      i_Code += 2 + sizeof(i8);
-    }
-    else
-    if (EA_SUBSCR == EoArgs[eCode].m_eArgument) {
-      i8* piArg = (i8*) & m_eaCode[i_Code+2];
-      i8 iArg = * piArg;
-      vTrace("%04lld: %20s [%lld]\n"_Stz,i_Code,aEO[eCode],iArg);
-      i_Code += 2 + sizeof(i8);
-    }
-    else
-    if (EoArgs[eCode].m_nArgBytes) {
-      i8* piArg = (i8*) & m_eaCode[i_Code+2];
-      i8 iArg = * piArg;
-      vTrace("%04lld: %20s (%lld)\n"_Stz,i_Code,aEO[eCode],iArg);
-      i_Code += 2 + sizeof(i8);
-    }
-    else {
-      vTrace("%04lld: %20s\n"_Stz,i_Code,aEO[eCode]);
-      i_Code += 2;
-    }
-    
-    if (EO_RETURN == eCode)
-      vTrace("\n"_Stz);
-  }
-  
-  vDebugPoint();
-  
-  vPrintLabels();
-//#endif
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* initialise and return address of rlu common                                */
-/*----------------------------------------------------------------------------*/
-struct RluCommon* LogicUnit::aRlu_INIT(void* aLU)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-
-  UNUSED(aLU);
-  
-  return & m_xRluCommon;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the rlu Dstk                                                          */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vRlu_ASSERTSTACK(void* aLU, i8* aiDstk) {
-  vDebugPoint();
-
-  //vTrace("vRlu_ASSERTSTACK\n"_Stz);
-  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
-
-  i8 nStkUse = nDifference(aiDstk,pLogicUnit->m_xRluCommon.m_iaDataStack);
-
-  if (nStkUse != 0)
-    vRlu_DUMP(aLU,aiDstk );
-
-  RASSERT(nStkUse == 0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the rlu Dstk                                                          */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
-{
-  vDebugPoint();
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  i8* aiDstkBase = pLogicUnit->m_xRluCommon.m_iaDataStack;
-  i8  nUsageBytes = nDifference(pLogicUnit->m_xRluCommon.m_iaDataStack,
-                                aiDstk)
-                     + 8;
-  
-  vTrace("\nRlu_Dump: base %llx ; aiDstk %llx ; %lld bytes usage\n"_Stz,
-      
-         aiDstkBase,
-         aiDstk,
-         nUsageBytes
-         );
-  
-  MemLib::vHexDump(aiDstkBase,nUsageBytes);
-  
-  vTrace("\n"_Stz);
-}
-
-/*============================================================================*/
-/* - - - - - - - - - - - - - RELATIONAL LOGIC UNIT - - - - - - - - - - - - - -*/
-/*============================================================================*/
-
-#if 1
-
-  #define dLU3(eCode,iA,iB,iC) \
-    if (aRluCommon->m_bTrace) \
-      vTrace("%lld : %12s %lld %lld %lld\n"_Stz,\
-             nDifference(m_eaCode,aeCode-1),\
-             aEO[eCode],iA,iB,iC);
-
-  #define dLU2(eCode,iA,iB) \
-    if (aRluCommon->m_bTrace) \
-      vTrace("%lld : %12s %lld %lld\n"_Stz,\
-             nDifference(m_eaCode,aeCode-1),\
-             aEO[eCode],iA,iB);
-
-  #define dLU1(eCode,iA) \
-    if (aRluCommon->m_bTrace) \
-      vTrace("%lld : %12s %lld\n"_Stz,\
-             nDifference(m_eaCode,aeCode-1),\
-             aEO[eCode],iA);
-
-  #define dLU0(eCode) \
-    if (aRluCommon->m_bTrace) \
-      vTrace("%lld : %12s\n"_Stz,\
-             nDifference(m_eaCode,aeCode-1),\
-             aEO[eCode]);
-
-  #define ArgGet(iArg) \
-    ASSERT(8 == EoArgs[eCode].m_nArgBytes); \
-    iArg = * (i8*)aeCode; \
-    aeCode += 8;
-
-  #define GetStr(iArg) \
-    ASSERT(-1 == EoArgs[eCode].m_nArgBytes); \
-    iArg = (i8)aeCode; \
-    while (*(char*)aeCode) aeCode++; \
-    aeCode++;
-
-  #define ArgNil() \
-    ASSERT(0 == EoArgs[eCode].m_nArgBytes);
-
-#else
-
-  #define dLU3(eCode,iA,iB,iC)
-  #define dLU2(eCode,iA,iB)
-  #define dLU1(eCode,iA)
-  #define dLU0(eCode)
-
-  #define ArgGet(iArg) \
-    iArg = * (i8*)aeCode; \
-    aeCode += 8;
-
-  #define GetStr(iArg) \
-    iArg = (i8)aeCode; \
-    while (*(char*)aeCode) aeCode++; \
-    aeCode++;
-
-  #define ArgNil()
-
-#endif
-
-
-#define EO_ENTER(eCode)
-#define EO_EXIT(eCode)
-
-i8 giaVectorSet[] =
-{
-/* 00 */ L_QUANTITY,
-/* 01 */ L_EXTENDEDPRICE,
-/* 02 */ L_DISCOUNT,
-/* 03 */ L_TAX,
-/* 04 */ L_RETURNFLAG,
-/* 05 */ L_LINESTATUS,
-/* 06 */ L_SHIPDATE,
-/* 07 */ C_UNKNOWN,
-  
-/* 08 */ Q1_LOCAL_RETURNFLAG,
-/* 09 */ Q1_LOCAL_LINESTATUS,
-/* 10 */ C_UNKNOWN,
-  
-/* 11 */ Q101_RETURNFLAG,
-/* 12 */ Q101_LINESTATUS,
-/* 13 */ C_UNKNOWN,
-};
 
 /*============================================================================*/
 /* end                                                                        */

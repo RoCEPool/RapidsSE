@@ -25,7 +25,6 @@
 #include "DevIXT.hpp"
 #include "DevROW.hpp"
 #include "LogicTimer.hpp"
-#include "LogicCompiler.hpp"
 #include "ShardDef.hpp"
 #include "MetaGet.hpp"
 #include "BktMapGet.hpp"
@@ -215,7 +214,6 @@ namespace STORE
     REG<JobMetrics,     CN_JOBMETRICS    > m_xpJobMetrics;
   
     REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
-    REG<LogicCompiler,  CN_LOGICCOMPILER > m_xpLogicCompiler;
 
     REG<Operand,        CN_NONE          > m_xpMarker;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpMemoryHog;
@@ -344,26 +342,10 @@ namespace STORE
     EntWrk     m_oEntWrkSRT;
     EntWrk     m_oEntWrkJ;
     EntWrk     m_oEntWrkT;
-
-    DevROW*    m_pDevDstRow;
-    DevROW*    m_pDevLftRow;
-    DevROW*    m_pDevRhtRow;
-    DevROW*    m_pDevAltRow;
-
-    DevIXT*    m_pDevAltIxt;
-    DevIXT*    m_pDevLftIxt;
-    DevIXT*    m_pDevRhtIxt;
-    DevIXT*    m_pDevTmpIxt;
   
     LogicTimer* m_pLogicTimer;
 
     u8      m_uSelectColumns;
-
-    i8      m_i_Code;
-    char    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }
-
-    i8        m_nLabels;
-    JumpLabel m_xaJumpLabel[C_LOGIC_LABEL];
 
     bool m_baCondInd[C_LOGIC_COND];
 
@@ -391,12 +373,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vAddReg(REG<Object,CN_NONE>* pReg);
-    void vCC(i8 i_Cond);
     void vCleanup(void);
-    eEO  eCode(i8 i_Code);
-    i8   nCodes(void);
-    char* aCodeArg(i8 i_Code);
-    i8   iCodeArg(i8 i_Code);
     RluDiary* pDiary(void);
     void vDiaryJobNote(Stz* szJobNote);
     void vDiaryName(Stz* szName);
@@ -405,25 +382,14 @@ namespace STORE
     void vDiaryDir(Stz* szDir);
     void vDiaryTitle(Stz* szTitle);
     void vDumpRegisters(void);
-    void vEndOptimise(void);
     void vEnter(void);
     void vExit(void);
     void vFailure(void);
-    i8   iFindLabel(i8 i_Code);
-    i8   iFindLabel(Stz* szLabelNm);
     void vInit(void);
     Job* pJob(void);
     void vJob(Job* pJob);
-    i8   iLabelCode(i8 i_Label);
-    bool bLabelIsDst(i8 i_Label);
-    bool bLabelIsSbr(i8 i_Label);
-    i8   nLabels(void);
-    Stz* szLabelNm(i8 i_Label);
     Op*  pOp(void);
     void vOp(Op* pOp);
-    void vOptimise(eEO eOpt);
-    i8   iQueryFragment(void);
-    void vSetCC(i8 i_Cond, bool bState);
     void vSetPipein(Operand* pOperand);
 
 
@@ -439,31 +405,9 @@ namespace STORE
     void vBeginToken(i8 i_Tkn);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-    #include "RLU_interface.h"
 
   private:
-    void vAddCode(eEO eCode);
-    void vAddCodeArg(eEO eCode, i8 iArg);
-    void vAddCodeArg(eEO eCode, Token* pTkn);
-    void vAddCodeDte(eEO eCode, Stz* szLiteral);
-    void vAddCodeLabel(eEO eCode, Stz* szLabelNm);
-    void vAddCodeLabel(eEO eCode, Token* pTkn);
-    void vAddCodeString(eEO eCode, Stz* szString);
-    void vAddCodeTme(eEO eCode, Stz* szLiteral);
-    void vAddCodeTsp(eEO eCode, Stz* szLiteral);
-    i8   iAddLabel(Stz* szLabelNm, bool bDefined);
-    void vCorrectLabel(i8 i_Label);
-    i8   iDecodeLabel(Stz* szLabelNm);
-    void vDefineLabel(Stz* szLabelNm);
-    void vDeleteLabel(Stz* szLabelNm);
     void vDiaryReport(void);
-    void vPrintLabels(void);
-    Stz* szFindCode(i8 i_Code);
-
-
-    // last
-    void vDumpCode(void);
 
   private:
     Footer* aFooter(void);

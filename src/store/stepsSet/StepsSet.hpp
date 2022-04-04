@@ -679,15 +679,6 @@ public:
   void vIndexDefTableNameFetch(void);
   void vIndexDefTableNameStore(void);
 
-  // index definition in Rlu
-  void vIndexDefRluAddColumn(void);
-  void vIndexDefRluDelete(void);
-  void vIndexDefRluGet(void);
-  void vIndexDefRluIsNull(void);
-  void vIndexDefRluNameStore(void);
-  void vIndexDefRluNew(void);
-  void vIndexDefRluSet(void);
-
   // index reg
   void vIndexGet(void);
   void vIndexSet(void);
@@ -722,17 +713,6 @@ public:
   void vIndexTreeIsNull(void);
   void vIndexTreeNew(void);
   void vIndexTreeSet(void);
-
-  // index tree in Rlu
-  void vIndexTreeRluAsAlt(void);
-  void vIndexTreeRluAsSrc(void);
-  void vIndexTreeRluAsTmp(void);
-  void vIndexTreeRluDelete(void);
-  void vIndexTreeRluGet(void);
-  void vIndexTreeRluInsEntBuffer(void);
-  void vIndexTreeRluIsNull(void);
-  void vIndexTreeRluNew(void);
-  void vIndexTreeRluSet(void);
 
   // infoSet
   void vInfoSetAddCommandError(void);
@@ -1104,13 +1084,6 @@ public:
   void vLogicNot(void);
   void vLogicOr(void);
 
-  // logic compiler
-  void vLogicCompilerDelete(void);
-  void vLogicCompilerExtract(void);
-  void vLogicCompilerExtractAsm(void);
-  void vLogicCompilerIsNull(void);
-  void vLogicCompilerNew(void);
-
   // logic unit
   void vLogicUnitCallAgainFetch(void);
   void vLogicUnitCallAgainStore(void);
@@ -1134,8 +1107,6 @@ public:
   void vLogicUnitIntStackStore(void);
   void vLogicUnitJobMetricsFetch(void);
   void vLogicUnitJobMetricsStore(void);
-  void vLogicUnitSrcIndexFetch(void);
-  void vLogicUnitSrcTableFetch(void);
 
   // ErrorMarker[]
   void vMarkerDelete(void);
@@ -1907,7 +1878,6 @@ public:
 
   // stream def Left
   void vStreamDefLftAsStr(void);
-  void vStreamDefLftAsSrcStreamDef(void);
   void vStreamDefLftColumnFetch(void);
   void vStreamDefLftColumnCountFetch(void);
   void vStreamDefLftDelete(void);
@@ -2049,8 +2019,6 @@ public:
   // table
   void vTableAddIndex(void);
   void vTableAppendBuffer(void);
-  void vTableAsAltStreamDef(void);
-  void vTableAsSrcStreamDef(void);
   void vTableColumnCountFetch(void);
   void vTableColumnFetch(void);
   void vTableCreatePtnDef(void);

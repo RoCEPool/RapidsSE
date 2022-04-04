@@ -18,7 +18,7 @@
 //../../tests/tests1N4P/Demo/testList
 ../../tests/tests1N4P/Datums/testList
 ../../tests/tests1N4P/Ddl/testList
-../../tests/tests1N4P/Examples/testList
+//../../tests/tests1N4P/Examples/testList
 ../../tests/tests1N4P/Insert/testList
 ../../tests/tests1N4P/Load/testList
 ../../tests/tests1N4P/LocalFunctions/testList

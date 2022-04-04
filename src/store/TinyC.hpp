@@ -12,6 +12,12 @@ namespace STORE
 {
   //----------------------------------------------------------------------------
 
+  struct DynamicSymbol
+  {
+    Stz* m_szSymbolNm;
+    const void *m_afSymbol;
+  };
+
   class TinyC : public Object
   {
   private:

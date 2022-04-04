@@ -659,6 +659,24 @@
     }                                                                       \
   }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  INVALID TYPES
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _OPR_INVINV(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    eErrorCode = EC_INVALID_TYPES;                                         \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _OPR_INV(eErrorCode)                                               \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    eErrorCode = EC_INVALID_TYPES;                                         \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

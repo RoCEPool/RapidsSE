@@ -48,8 +48,6 @@ void Step::vAddSteps_Table(void)
   
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
   vAddStep("Table[].appendBuffer"_Stz,     &Step::vTableAppendBuffer);
-  vAddStep("Table[].asAltStreamDef"_Stz,   &Step::vTableAsAltStreamDef);
-  vAddStep("Table[].asSrcStreamDef"_Stz,   &Step::vTableAsSrcStreamDef);
   vAddStep("Table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
   vAddStep("Table[].column@"_Stz,          &Step::vTableColumnFetch);
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
@@ -145,46 +143,6 @@ void Step::vTableAppendBuffer(void)
   ASSERT(! pDataBuffer->pPrevItem());
 
   pTable->vAppendBuffer_replicated(pDataBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Table[].asAltStreamDef -- use this tables stream def as alt stream def     */
-/*----------------------------------------------------------------------------*/
-void Step::vTableAsAltStreamDef(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
-    
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  StreamDef* pStreamDefOld = _pStreamDef(m_pLogicUnit->m_pDevAltRow->m_pStreamDef);
-  if (pStreamDefOld)
-    delete pStreamDefOld;
-
-  m_pLogicUnit->m_pDevAltRow->m_pStreamDef = new StreamDef(pStreamDef);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Table[].asSrcStreamDef -- use this tables stream def as src stream def     */
-/*----------------------------------------------------------------------------*/
-void Step::vTableAsSrcStreamDef(void)
-{
-  ENTRY();
-  
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
-    
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  StreamDef* pStreamDefOld = _pStreamDef(m_pLogicUnit->m_pDevLftRow->m_pStreamDef);
-  if (pStreamDefOld)
-    delete pStreamDefOld;
-
-  m_pLogicUnit->m_pDevLftRow->m_pStreamDef = new StreamDef(pStreamDef);
   
   EXIT();
 }
