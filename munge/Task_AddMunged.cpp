@@ -3496,7 +3496,7 @@ void Task::vAddMunged(Task* )
     "  //Operand[]\n"
     "  //profile.start\n"
     "\n"
-    "  ToRow[].csvToRow\n"
+    "  CsvBuffer[] ToRow[].csvToRow\n"
     "\n"
     "  //profile.end\n"
     "\n"

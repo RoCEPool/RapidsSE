@@ -45,7 +45,6 @@ void Step::vToRowCompleted(void)
 {
   ENTRY();
   
-  //ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
   ToRow* pToRow = * m_pLogicUnit->m_xpToRow;
 
   RowBuffer* pRowBuffer = pToRow->pFullRowBuffer();
@@ -56,18 +55,18 @@ void Step::vToRowCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToRow[].csvToRow -- convert csv buffer to row buffer                   */
+/* ToRow[].csvToRow -- convert given csv buffer to row buffer                 */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowCsvToRow(void)
 {
   ENTRY();
 
-  CsvBuffer* pCsvBuffer =
-      _pCsvBuffer(*m_pLogicUnit->m_xpCsvBuffer);
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
 
   ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
 
   bool b = pToRow->bConvertCsv(pCsvBuffer);
+
   UNUSED(b);
 
   EXIT();
