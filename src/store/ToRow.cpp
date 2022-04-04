@@ -32,7 +32,7 @@ __aFooterFunction(ToRow)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToRow::ToRow(StreamDef* pStreamDef, BucketMap_dyn* pBucketMap,
+ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
              Format* pFmt, bool bPtnHash)
              : Object(CN_TOROW)
 {

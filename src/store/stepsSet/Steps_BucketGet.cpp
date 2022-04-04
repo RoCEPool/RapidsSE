@@ -12,7 +12,7 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
-#include "BucketMap_dyn.hpp"
+#include "BucketMap.hpp"
 #include "Bucket.hpp"
 #include "TablePtn.hpp"
 #include "PtnStream.hpp"
@@ -378,7 +378,7 @@ void Step::vBucketGetGetBucket(void)
     //m_pDataStack->vPushPtr(pTablePtn);
 
     // Update bucket map here
-    BucketMap_dyn* pBucketMap = pTable->pBucketMap();
+    BucketMap* pBucketMap = pTable->pBucketMap();
     pBucketMap->vUpdateMap();
 
     BucketGet *pBucketGet = new BucketGet(pTablePtn, pBucket);

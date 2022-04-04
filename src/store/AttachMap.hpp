@@ -43,7 +43,7 @@ namespace STORE
   
     bool          m_bBootError;
 
-    BucketMap_dyn* m_pBucketMap;
+    BucketMap* m_pBucketMap;
 
     BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;

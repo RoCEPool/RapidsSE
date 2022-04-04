@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* BucketMap_dyn.hpp -- Dynamic Bucket (to logical partition) Map             */
+/* BucketMap.hpp -- Bucket (to logical partition) Map                         */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class BucketMap_dyn : public Operand
+  class BucketMap : public Operand
 
   {
   private:
@@ -31,8 +31,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    BucketMap_dyn(eTT eKind);
-   ~BucketMap_dyn(void) noexcept(false);
+    BucketMap(eTT eKind);
+   ~BucketMap(void) noexcept(false);
   
     static void vPostRecv(void* aBucketMap_dyn);
     
@@ -58,7 +58,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  BucketMap_dyn* _pBucketMap_dyn(void* aAddr);
+  BucketMap* _pBucketMap(void* aAddr);
 }
 
 

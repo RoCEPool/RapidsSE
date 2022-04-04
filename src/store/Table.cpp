@@ -5,7 +5,7 @@
 #include <array>
 #include "BASE.h"
 
-#include "BucketMap_dyn.hpp"
+#include "BucketMap.hpp"
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 
@@ -60,7 +60,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_pStreamDef   = nullptr;
   m_pShardDef    = new ShardDef;
 
-  m_pBucketMap   = new BucketMap_dyn(m_eKind);
+  m_pBucketMap   = new BucketMap(m_eKind);
 
   m_pIdxVec      = new IdxVec;
   m_pTablePtnVec = new TablePtnVec;
@@ -326,7 +326,7 @@ void Table::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
 /*----------------------------------------------------------------------------*/
 /* get the bucket map for this table                                          */
 /*----------------------------------------------------------------------------*/
-BucketMap_dyn* Table::pBucketMap(void)
+BucketMap* Table::pBucketMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
@@ -336,7 +336,7 @@ BucketMap_dyn* Table::pBucketMap(void)
 /*----------------------------------------------------------------------------*/
 /* set the bucket map for this table                                          */
 /*----------------------------------------------------------------------------*/
-void Table::vBucketMap(BucketMap_dyn* pBucketMap)
+void Table::vBucketMap(BucketMap* pBucketMap)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
@@ -1036,8 +1036,8 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
         m_pShardDef = (ShardDef*) pObject;
         //m_pShardDef = (ShardDef*) ::operator new(gxaSizeHeap[eClass].m_nClassSize, (ShardDef*)pObject);
         break;
-      case CN_BUCKETMAP_dyn:
-        m_pBucketMap = (BucketMap_dyn *) pObject;
+      case CN_BUCKETMAP:
+        m_pBucketMap = (BucketMap *) pObject;
         //m_pBucketMap = (BucketMap*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
         break;
       case CN_IDXVEC: {
@@ -1103,9 +1103,9 @@ bool Table::bUpdateBktMap(Parcel* pParcel)
       case CN_TABLE:
         // do nothing for now
         break;
-      case CN_BUCKETMAP_dyn:
+      case CN_BUCKETMAP:
         delete m_pBucketMap; // delete old bucket map
-        m_pBucketMap = (BucketMap_dyn *) pObject;
+        m_pBucketMap = (BucketMap *) pObject;
         break;
       default:
       {

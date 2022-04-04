@@ -123,7 +123,7 @@
 #include "HeadsUp.hpp"
 
 #include "PtnId.hpp"
-#include "BucketMap_dyn.hpp"
+#include "BucketMap.hpp"
 #include "Stage.hpp"
 #include "SysMetrics.hpp"
 
@@ -184,7 +184,7 @@ PtnId AM::BKTMAP::tBktIdToLglPtnId(i8 iBktId)
 /*----------------------------------------------------------------------------*/
 /* get bucket map                                                             */
 /*----------------------------------------------------------------------------*/
-BucketMap_dyn* AM::BKTMAP::pBucketMap(void)
+BucketMap* AM::BKTMAP::pBucketMap(void)
 {
   _static_
   
@@ -2665,7 +2665,7 @@ void AM::vDeleteOperand(Operand* pOperand)
      break;
     }
 
-    case CN_BUCKETMAP_dyn: {
+    case CN_BUCKETMAP: {
       break;
     }
 
@@ -3377,7 +3377,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
   
   switch (eClass_opd) {
 
-    case CN_BUCKETMAP_dyn: eOperand = ZK_D_BUCKETMAP_dyn; break;
+    case CN_BUCKETMAP: eOperand = ZK_D_BUCKETMAP_dyn; break;
     case CN_CRWBUFFER: eOperand = ZK_D_CRWBUFFER; break;
     case CN_CSVBUFFER: eOperand = ZK_D_CSVBUFFER; break;
     case CN_EACHROWBUFFER: eOperand = ZK_D_EACHROWBUFFER; break;

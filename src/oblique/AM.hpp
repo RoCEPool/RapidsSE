@@ -140,7 +140,7 @@ namespace STORE {
 
   class Bucket;
   //class BucketMap;
-  class BucketMap_dyn;
+  class BucketMap;
 
   class Crv;
   class Crw;
@@ -238,7 +238,7 @@ namespace OBLIQUE
     public:
       static PtnId tBktIdToLglPtnId(i8 iBktId);
 
-      static BucketMap_dyn* pBucketMap(void);
+      static BucketMap* pBucketMap(void);
       static i8    iHashToBktId(i8 iHash);
     };
 
@@ -732,7 +732,7 @@ namespace OBLIQUE
     static void vPoolAnalyze(void);
     static void vPrintGlobals(void);
     static PtnMap* pPtnMap(void);
-    static BucketMap_dyn* pBucketMap(void);
+    static BucketMap* pBucketMap(void);
 
     static i8 iQueryNoInc(void);
 

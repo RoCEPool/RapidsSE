@@ -7,7 +7,7 @@
 #include <signal.h>
 
 #include "CmdLineArgs.hpp"
-#include "BucketMap_dyn.hpp"
+#include "BucketMap.hpp"
 #include "PtnMap.hpp"
 
 #include "RowOnce.hpp"
@@ -1099,7 +1099,7 @@ void Engine::vOpenTrace(bool bPrompt)
 /*----------------------------------------------------------------------------*/
 void Engine::vPostRecvFns(void)
 {
-  gxaSizeHeap[CN_BUCKETMAP_dyn].m_fpPostRecvFn = (fpPOSTFN*)BucketMap_dyn::vPostRecv;
+  gxaSizeHeap[CN_BUCKETMAP].m_fpPostRecvFn = (fpPOSTFN*)BucketMap::vPostRecv;
   gxaSizeHeap[CN_CRWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CrwBuffer::vPostRecv;
   gxaSizeHeap[CN_CSVBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CsvBuffer::vPostRecv;
   //gxaSizeHeap[CN_EACHROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)EachRowBuffer::vPostRecv;
@@ -1561,7 +1561,7 @@ void Engine::vStartSystem(void)
       new PtnMap(gpAttachMap->m_pGrid->nKnownNodes(),
                  gpAttachMap->m_xSysArgs.m_nPtnsPerNode);
 
-  gpAttachMap->m_pBucketMap = new BucketMap_dyn(TT_NORMAL);
+  gpAttachMap->m_pBucketMap = new BucketMap(TT_NORMAL);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

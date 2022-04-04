@@ -75,7 +75,7 @@ void Step::vToRowCreate(void)
 
   StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
 
-  BucketMap_dyn* pBucketMap = m_pLogicUnit->m_xpTable->pBucketMap();
+  BucketMap* pBucketMap = m_pLogicUnit->m_xpTable->pBucketMap();
 
 
   bool bPtnHash = true;
