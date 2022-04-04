@@ -72,30 +72,17 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // WIP
 
-
-
 //#define WITH_DEDICATED_SLEEP EndDefine     // only dedicated threads can sleep
 
-//#define WITH_SSN_SKIPLIST EndDefine       // using SsnId
+//#define WITH_SSN_SKIPLIST EndDefine        // using SsnId
 
-//#define WITH_NO_SPEC_NUMBERING EndDefine       // use lists for spec's
-#define WITH_SPEC_NUMBERING EndDefine       // use lists for spec's
+//#define WITH_COMBINEDOP_SE EndDefine       // compile combinedOP generated code with SE
 
-//#define WITH_PROCEDURE_2 EndDefine       // use lists for spec's
-
-
-//#define WITH_COMBINEDOP_SE EndDefine          // compile combinedOP generated code with SE
-
-#define WITH_REPLICATED_PTN EndDefine       // 
-
-#define WITH_OPT_HASHCAST EndDefine       //
-
-#define WITH_SUBPIPELINE EndDefine       //
-
-#define WITH_STAGESET EndDefine       //
+#define WITH_REPLICATED_PTN EndDefine        //
 
 //#define WITH_HASHMAP EndDefine             // code for hashmap compiled in
 //#define WITH_HASHMAP_DEBUG EndDefine       // enable debug for hashmap
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
