@@ -42,8 +42,6 @@
 #include "LogicUnit.hpp"
 #include "Pipeline.hpp"
 
-#include "MathLib.h"
-
 #include "Arg.hpp"
 #include "RelOp.hpp"
 #include "Predicate.hpp"

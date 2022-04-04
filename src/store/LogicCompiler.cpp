@@ -36,9 +36,7 @@ char gszaAmMacroFiles[C_MACRO_FILES][128] = {
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
-#include "LIB_interface.h"
 #include "RLU_interface.h"
-#include "MathLib.h"
 
 
 /*----------------------------------------------------------------------------*/

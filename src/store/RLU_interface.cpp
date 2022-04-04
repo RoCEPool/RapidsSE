@@ -18,7 +18,6 @@
 #include "LogicUnit.hpp"
 
 #include "RLU_interface.h"
-#include "LIB_interface.h"
 
 /*----------------------------------------------------------------------------*/
 /* compare m_pEnt.key to m_oEntWrk.key                                        */
