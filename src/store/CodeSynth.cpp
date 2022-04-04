@@ -768,7 +768,7 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n L_IndexScanDeref:");
     StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_aEntIntT ) {");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iBufferDone = 1;");
+    //StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iBufferDone = 1;");
     sCopy.vSprint("\n      goto %s;"_Stz, sReturnLabel);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     //StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
