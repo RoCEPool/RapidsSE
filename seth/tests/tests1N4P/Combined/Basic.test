@@ -245,7 +245,7 @@ ordered rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic ordered aggregate
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+/*
 pipeline Q
 begin
   stage stageStart on origin :
@@ -374,7 +374,7 @@ rows:
  (1048,182.00)
  (1130,182.00)
  (1064,183.00)
-
+*/
 pipeline Q3
 begin
 
