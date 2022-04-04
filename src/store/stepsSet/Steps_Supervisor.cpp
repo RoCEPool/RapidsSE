@@ -126,7 +126,7 @@ void Step::vSupervisorCollectInfo(void)
 
     // Adding Address and Port
     //
-    xHeartbeat.m_iNodeNo = AM::pGrid()->iThisNodeNo();
+    xHeartbeat.m_iNodeNo = AM::pGrid()->iThisNodeId();
     strncpy(xHeartbeat.m_acAddr, pNode->szIPAddr()->azChar(), sizeof(xHeartbeat.m_acAddr) - 1);
     xHeartbeat.m_acAddr[sizeof(xHeartbeat.m_acAddr) - 1] = 0;
     xHeartbeat.m_iPort = pNode->iPortNo();

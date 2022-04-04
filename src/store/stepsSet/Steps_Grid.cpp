@@ -136,7 +136,7 @@ void Step::vGridGetGridParts(void)
 
   vTrace("C++ gets called: vGridGetGridParts for pGrid:%s %lld\n"_Stz,
          pGrid->szGridNm()->azChar(),
-         pGrid->iThisNodeNo());
+         pGrid->iThisNodeId());
 
   pGrid->iPrepareParcel();
   Parcel* pParcel = pGrid->pParcel();
@@ -326,7 +326,7 @@ void Step::vGridThisNodeFetch(void)
 {
   ENTRY();
     
-  i8 iNodeNo = AM::pGrid()->iThisNodeNo();
+  i8 iNodeNo = AM::pGrid()->iThisNodeId();
   
   m_pDataStack->vPushInt(iNodeNo);
   
@@ -361,7 +361,7 @@ void Step::vGridToNode(void)
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
   //m_pDataStack->vPush((i8)0);
 
-  i8 i_Node = AM::pPtnMap()->iMappedNodeNo(tPtnId);
+  i8 i_Node = AM::pPtnMap()->iMappedNodeId(tPtnId);
   m_pDataStack->vPushInt(i_Node);
   
   EXIT();

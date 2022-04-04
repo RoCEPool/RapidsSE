@@ -165,7 +165,7 @@ void Grid::vDsv(void)
          m_sGridNm.szStz());
   
   vTrace("  this node %lld %s\n"_Stz,
-         iThisNodeNo(),
+         iThisNodeId(),
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
   
   vTrace("nodes %lld \n"_Stz,
@@ -198,7 +198,7 @@ s16KB Grid::szDumpInfo(void)
          m_sGridNm.szStz());
 
   sDumpBuffer.vCatSprint("  this node %lld %s\n"_Stz,
-                         iThisNodeNo(),
+                         iThisNodeId(),
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
 
   sDumpBuffer.vCatSprint("nodes %lld \n"_Stz,
@@ -221,17 +221,17 @@ s16KB Grid::szDumpInfo(void)
 /*----------------------------------------------------------------------------*/
 /* get node by node ID                                                        */
 /*----------------------------------------------------------------------------*/
-Node* Grid::pFindNode(i8 iFindNodeNo)
+Node* Grid::pFindNode(i8 iFindNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     
-    i8 iNodeNo = pNode->iNodeId();
+    i8 iNodeId = pNode->iNodeId();
     
     //vTrace("pFindNode %lld (looking for %lld)\n"_Stz,iNodeNo,iFindNodeNo);
-    if (pNode && iNodeNo == iFindNodeNo)
+    if (pNode && iNodeId == iFindNodeId)
       return pNode;
   }
 
@@ -572,9 +572,9 @@ void Grid::vShowNetwork(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get this node number                                                       */
+/* get this node id                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Grid::iThisNodeNo(void)
+i8 Grid::iThisNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   

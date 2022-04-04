@@ -51,7 +51,7 @@ void Step::vPipelineCreate(void)
 {
   ENTRY();
     
-  i8 iThisNode = AM::pGrid()->iThisNodeNo();
+  i8 iThisNode = AM::pGrid()->iThisNodeId();
 
   // get pipeline spec
   

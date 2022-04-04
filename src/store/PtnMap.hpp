@@ -7,7 +7,7 @@ namespace STORE
 {
   struct NodePtn
   {
-    i4  m_iNodeNo;  // node number
+    i4  m_iNodeId;  // node id (in grid)
     i4  m_iPtnNo;   // partition no (within node)
   };
 
@@ -23,8 +23,8 @@ namespace STORE
     i8 m_nKnownNodes;
     i8 m_nPtnsInGrid;
 
-    // which {nodeNo,i_ptn} a logical partition mPtnNo is in
-    NodePtn m_xaLglToNodePtn[C_MAX_LGLPTNS];
+    // which physical {nodeId,i_ptn} a logical partition PtnId is in
+    NodePtn m_xaPtnId_to_NodeIdPtnNo[C_MAX_LGLPTNS];
 
   
     // must be last
@@ -43,8 +43,8 @@ namespace STORE
   
     i8 nKnownNodes(void);
   
-    i8 iMappedNodeNo(PtnId tPtnId);
-    i8 iMappedPtnNo(PtnId tPtnId);
+    i8 iMappedNodeId(PtnId tPtnId);
+    i8 i_MappedPtnNo(PtnId tPtnId);
 
     i8 nPtnsInGrid(void);
     i8 nPtnsPerNode(void);

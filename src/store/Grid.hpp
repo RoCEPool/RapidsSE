@@ -54,7 +54,7 @@ namespace STORE
     void vSeeNodes(void);
     void vShowGrid(void);
     void vShowNetwork(void);
-    i8   iThisNodeNo(void);
+    i8   iThisNodeId(void);
     Node* pThisNode(void);
     void vThisNode(Node* pNode);
 

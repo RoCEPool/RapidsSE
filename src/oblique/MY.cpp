@@ -29,7 +29,7 @@ i8 MY::iNodeNo(void)
 {
   _static_
   
-  i8 iThisNodeNo = AM::pGrid()->iThisNodeNo();
+  i8 iThisNodeNo = AM::pGrid()->iThisNodeId();
 
   return iThisNodeNo;
 }

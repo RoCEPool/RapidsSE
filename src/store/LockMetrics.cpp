@@ -77,7 +77,7 @@ Row* LockMetrics::pSample(StreamDef* pStreamDef, InfoSet* pInfoSet)
    pRow = pInfoSet->pAllotRow(pStreamDef,
         C_VARGS_BEGIN,
         
-        pGrid->iThisNodeNo(),                    // node no
+        pGrid->iThisNodeId(),                    // node no
         0,                                       // take no
         
         i_Lock,                                  // lock no

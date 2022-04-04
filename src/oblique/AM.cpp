@@ -379,7 +379,7 @@ i8 AM::GRID::iThisNodeNo(void)
 {
   _static_
   
-  i8 iNodeNo = gpAttachMap->m_pGrid->iThisNodeNo();
+  i8 iNodeNo = gpAttachMap->m_pGrid->iThisNodeId();
     
   return iNodeNo;
 }
@@ -2509,7 +2509,7 @@ Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
-i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNodeNo();     }
+i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNodeId();     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; }
 bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
