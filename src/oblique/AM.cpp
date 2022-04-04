@@ -198,7 +198,7 @@ i8 AM::BKTMAP::iHashToBktId(i8 iHash)
 {
   _static_
   
-  i8 iBktId = iHash % C_MAX_BUCKETS_IN_GRID;
+  i8 iBktId = iHash % C_MAX_BUCKETS;
 
   return iBktId;
 }
@@ -2444,7 +2444,7 @@ Sessions* AM::pSessions(void) { return gpAttachMap->m_pSessions;  }
 
 
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
-i8   AM::nBuckets(void)       { return C_MAX_BUCKETS_IN_GRID;                         }
+i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 

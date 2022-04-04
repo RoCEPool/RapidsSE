@@ -73,7 +73,7 @@ void BucketMap::vAdjustMap(i8 nCurrentPartitions)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     
     PtnId tPtnId = i_Bkt % nCurrentPartitions;
     
@@ -88,7 +88,7 @@ void BucketMap::vAdjustSecondMap(i8 nCurrentPartitions)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
 
     PtnId tPtnId = i_Bkt % nCurrentPartitions;
 
@@ -119,7 +119,7 @@ i8 BucketMap::iPtnIdToBkt(PtnId tPtnId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     if (m_paPtnId[i_Bkt].iAsI8() == tPtnId.iAsI8())
       return i_Bkt;
   }
@@ -135,7 +135,7 @@ void BucketMap::vRandomMap(i8 i)
   i8 nPartitions = AM::PTNMAP::nPtnsInGrid();
   PtnId tPtnId;
   i8 iPtn=0;
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     m_taPtnId_0[i_Bkt] = tPtnId;
     iPtn = tPtnId.iAsI8();
     tPtnId = (++iPtn) % nPartitions;
@@ -158,7 +158,7 @@ Stz* BucketMap::szDumpMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   s4K sDumpBuffer = ""_Stz;
 
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     sDumpBuffer.vCatSprint("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
   }
   sDumpBuffer.vConcat("======================\n"_Stz);
@@ -177,7 +177,7 @@ void BucketMap::vSee(void)
   PtnId tPtnId;
   
   vTrace("  m_iActive  %2lld\n"_Stz,m_iActive);
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     
     if (0 == m_iActive)
       tPtnId = m_taPtnId_0[i_Bkt];
@@ -245,7 +245,7 @@ i8 BucketMap::iWhichBucketNext(PtnId tPtnId, i8 iBktNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   i8 iBkt=-1;
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     vTrace("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_paPtnId[i_Bkt].iAsI8());
     //if (m_paPtnId[i_Bkt].iAsI8() == tPtnId.iAsI8()) {
       if (i_Bkt > iBktNo) {
