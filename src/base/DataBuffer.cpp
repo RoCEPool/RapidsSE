@@ -52,8 +52,6 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 
   m_tTxnNo = C_UNKNOWN;
 
-  vTrace("Buffer: %p; BufferNo: %lld\n"_Stz, this, m_iBufferNo);
-
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 

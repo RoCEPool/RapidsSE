@@ -278,18 +278,8 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
   {
     // Replace RowBuffer address with BufferId and append to queue
     RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-    vTrace(">>>>push>>OperandAddr>>>> %p\n"_Stz, pOperand);
-
     BufferId oBufferId = pRowBuffer->oGetBufferId();
     pOperand = (Operand*) oBufferId.m_vAsAddress;
-    vTrace("Push Id: %lld, Addr: %p, AddrFlag: %llu, Spare: %llu, Page File #: %llu, Buffer offset #: %llu\n"_Stz,
-
-           oBufferId.m_iAsI8,
-           oBufferId.m_vAsAddress,
-           oBufferId.m_bIdFlag,
-           oBufferId.m_uSpare,
-           oBufferId.m_uPageFile,
-           oBufferId.m_uBuffOffset);
   }
   vGrabTaskLock();
   RASSERT(bIsLocked());
@@ -1581,15 +1571,6 @@ Operand* Op::pPopOoOLeft(void)
   //Did we get a buffer id or address
   if(oBufferId.m_bIdFlag == 1) {
     pOperand = (Operand*) BufferId::vAddressFromId(oBufferId);
-    vTrace(">>>>pop>>>OperandAddr>>>> %p\n"_Stz, pOperand);
-    vTrace("Pop Id: %lld, Addr: %p, AddrFlag: %llu, Spare: %llu, Page File #: %llu, Buffer offset #: %llu\n"_Stz,
-
-           oBufferId.m_iAsI8,
-           oBufferId.m_vAsAddress,
-           oBufferId.m_bIdFlag,
-           oBufferId.m_uSpare,
-           oBufferId.m_uPageFile,
-           oBufferId.m_uBuffOffset);
   }
 
   AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
@@ -1617,8 +1598,13 @@ Operand* Op::pPopOoOLeft(void)
            );
   }
   else
-  if (CN_ROWBUFFER == eClassNo) {
+  if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEIN_ROWBUF)) {
     RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+    vTrace("[%6s %10s]-Pipein  : RowBuffer (%lld rows)\n"_Stz
+          ,pStage()->szStageNm()
+          ,szOpNm()
+          ,pRowBuffer->nRows()
+          );
   }
 
   return pOperand;

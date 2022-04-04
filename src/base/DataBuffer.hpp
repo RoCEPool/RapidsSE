@@ -7,6 +7,7 @@ namespace BASE
 {
   class DataBuffer : public LinkedBuffer
   {
+    //TODO: Change to protected
   public:
     Lock         m_okLock;        // lock
     i8           m_iBufferNo;     // this DataBuffer's buffer number
