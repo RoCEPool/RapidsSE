@@ -43,7 +43,6 @@
 #include "Pipeline.hpp"
 
 #include "LIB_interface.h"
-#include "DEV_interface.h"
 #include "MathLib.h"
 
 #include "Arg.hpp"
