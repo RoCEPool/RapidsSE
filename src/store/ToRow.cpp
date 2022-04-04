@@ -32,9 +32,8 @@ __aFooterFunction(ToRow)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
-             Format* pFmt, bool bPtnHash)
-             : Object(CN_TOROW)
+ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap, Format* pFmt)
+: Object(CN_TOROW)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
 
@@ -42,7 +41,6 @@ ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
 
   m_pStreamDef  = pStreamDef;
   m_pBucketMap  = pBucketMap;
-  m_bPtnHash    = bPtnHash;
   m_nPtnsInGrid = AM::PTNMAP::nPtnsInGrid();
 
   m_nErrors = 0;
@@ -225,7 +223,7 @@ void ToRow::vNewRowBuffer(void)
   m_pRowBuffer = pRowBuffer;
   
   // initialise the row slab inside the new row buffer
-  m_pRowBuffer->vInitPix(m_pStreamDef,m_bPtnHash);
+  m_pRowBuffer->vInitPix(m_pStreamDef,true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -802,8 +800,6 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 
   i8 i_Fld = 0;
   i8 iPtnKeyHash = 0;
-
-  PtnId tPtnId;
 
   eEC eError = EC_NONE;
   i8 i_ErrorCodeLine = -1;
@@ -2589,21 +2585,15 @@ L_RecordEndLineEnd:
   vSKIP_RECORD_LINE_END();
   
   // set partition hash
-  if (m_bPtnHash) {
-        
-    // now use the running hash to calc the partition
-    tPtnId = AM::PTNMAP::tHashToLglPtnId(iPtnKeyHash);
+          
+  m_pRowBuffer->vDepositColVal(iPtnKeyHash);
     
-    m_pRowBuffer->vDepositColVal(iPtnKeyHash);
-    
-    iPtnKeyHash = 0;
-  }
+  iPtnKeyHash = 0;
 
   if (iTraceBits & C_BIT_EndRecord) {
     HV_Record hvRecord(m_pStreamDef->pRowPix());
-    vTrace("[%lld : %lld] %s\n"_Stz,
+    vTrace("[%lld] %s\n"_Stz,
            m_i_Rec,
-           m_bPtnHash ? tPtnId.iAsI8() : C_UNKNOWN,
            hvRecord->sz(m_pRowBuffer->pRowCurrent()));
   }
 

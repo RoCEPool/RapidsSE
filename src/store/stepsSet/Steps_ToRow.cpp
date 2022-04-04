@@ -96,8 +96,7 @@ void Step::vToRowCreate(void)
   BucketMap* pBucketMap = m_pLogicUnit->m_xpTable->pBucketMap();
 
 
-  bool bPtnHash = true;
-  ToRow* pToRow = new ToRow(pStreamDef,pBucketMap,pFmt,bPtnHash);
+  ToRow* pToRow = new ToRow(pStreamDef,pBucketMap,pFmt);
       
   m_pLogicUnit->m_xpToRow = pToRow;
   
