@@ -48,7 +48,6 @@ namespace STORE
     void vAcquire(void);
     void vRelease(void);
     void vRelocate(void);
-    void vSymbols(void);
 
     Footer* aFooter(void);
   };
