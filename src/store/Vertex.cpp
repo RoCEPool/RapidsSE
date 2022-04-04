@@ -42,11 +42,11 @@ Vertex::Vertex(Pipeline*   pPipeline,
   m_pParentVertex = pParentVertex;
   m_pVertexSpec   = pVertexSpec;
 
-  m_pDeck = new Deck(this,pVertexSpec->pDeckSpec());
+  m_pDeck         = nullptr;
 
   _checkInitialised_(CN_VERTEX);
   
-  vCreatePipework();
+  vCreateDeck();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
 }
@@ -61,17 +61,38 @@ Vertex::~Vertex(void) noexcept(false)
 //  while (Vertex *pChildVertex = pPop())
 //    delete pChildVertex;
   
-  i8 nChildVertex = this->nItems();
-  for (i8 i_ChildVertex = 0; i_ChildVertex < nChildVertex; i_ChildVertex++) {
-    Vertex *pChildVertex = pGet(i_ChildVertex);
+//  i8 nChildVertex = this->nItems();
+//  for (i8 i_ChildVertex = 0; i_ChildVertex < nChildVertex; i_ChildVertex++) {
+//    Vertex *pChildVertex = pGet(i_ChildVertex);
+//
+//    delete pChildVertex;
+//  }
+//
+//  vClear();
 
+  while (Vertex *pChildVertex = pPop())
     delete pChildVertex;
-  }
-
-  vClear();
+  vCheckEmpty();
 
   delete m_pDeck;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* repair the vertex                                                          */
+/*----------------------------------------------------------------------------*/
+void Vertex::vRepair(Object *pObject)
+{
+  _static_
+
+  Vertex *pVertex = _pVertex(pObject);
+
+  delete pVertex;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -95,13 +116,13 @@ bool Vertex::bCancel(Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get formwork spec                                                          */
+/* get deck                                                                   */
 /*----------------------------------------------------------------------------*/
-VertexSpec* Vertex::pPipeSpec(void)
+Deck* Vertex::pDeck(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  return m_pVertexSpec;
+  return m_pDeck;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,12 +147,12 @@ i8 Vertex::nOpsOnNode(i8 iNode)
   
   i8 nOps = 0;
   
-  i8 iOriginNodeNo = m_pPipeline->iOriginNodeNo();
+  i8 iOriginNodeId = m_pPipeline->iOriginNodeId();
   
   i8 nStages = this->nStages();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stage* pStage = m_pDeck->pGet(i_Stage);
-    nOps += pStage->nOpsOnNode(iNode,iOriginNodeNo);
+    nOps += pStage->nOpsExeOnNode(iNode,iOriginNodeId);
   }
   
   return nOps;
@@ -255,13 +276,13 @@ i8 Vertex::nStages(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stage set                                                              */
+/* get vertex spec                                                            */
 /*----------------------------------------------------------------------------*/
-Deck* Vertex::pStaging(void)
+VertexSpec* Vertex::pVertexSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
   
-  return m_pDeck;
+  return m_pVertexSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -283,24 +304,14 @@ Stream* Vertex::pStream0(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create the formwork for pipeline                                           */
+/* create the deck for this vertex                                            */
 /*----------------------------------------------------------------------------*/
 
-void Vertex::vCreatePipework(void)
+void Vertex::vCreateDeck(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
 
-  i8 nStages = m_pVertexSpec->nStageSpecs();
-  for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
-    
-    // get the stageSpec
-    StageSpec* pStageSpec = m_pVertexSpec->pStageSpec(i_StageSpec);
-    
-    // add a stage from the stageSpec to the stageVec
-    Stage* pStage = new Stage(m_pDeck,pStageSpec);
-    m_pDeck->vAppend(pStage);
-    pStage->vCreateStreams();
-  }
+  m_pDeck = new Deck(this,m_pVertexSpec->pDeckSpec());
 }
 
 /*============================================================================*/

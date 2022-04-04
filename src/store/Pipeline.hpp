@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace STORE { class Vertex; class Stage; class VertexSpec; }
+namespace STORE { class Deck; class Stage; class Vertex; class VertexSpec; }
 
 namespace STORE
 {
@@ -12,8 +12,10 @@ namespace STORE
   private:
 
     // -- belongs to
-    Job* m_pPipelineJob;  // which job
-  
+    Job*        m_pPipelineJob;    // which job
+    VertexSpec* m_pVertexSpecRoot; // root specification of this pipeline
+    i8          m_iOriginNodeId;   // originating node
+
     // -- id, name and kind
     Gid_t<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
     s32  m_sPipelineNm;  // name of this pipeline
@@ -23,9 +25,7 @@ namespace STORE
 
   
     // -- refers to
-    VertexSpec* m_pVertexSpecRoot; // root specification of this pipeline
   
-    i8   m_iOriginNodeNo;    // originating node
   
 
   
@@ -51,13 +51,14 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Pipeline(Job* pPipelineJob, VertexSpec* pVertexSpecRoot, i8 iOriginNodeNo);
+    Pipeline(Job* pPipelineJob, VertexSpec* pVertexSpecRoot, i8 iOriginNodeId);
    ~Pipeline(void) noexcept(false);
   
     void vAddAccum(i8 i_Accum, i8 iValue);
     bool bCancel(Task* pTriggeringTask);
     void vCancelled(bool bCancelled);
     bool bCancelled(void);
+    Deck* pDeck0(void);
     void vDropDebugLock(void);
     void vDump(bool bRecursive=true);
     bool bEarlyExit(void);
@@ -66,7 +67,7 @@ namespace STORE
     void vErrored(bool bErrored);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
-    i8   iOriginNodeNo(void);
+    i8   iOriginNodeId(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
     Op*  pOpToPulse(void);
@@ -86,7 +87,7 @@ namespace STORE
     Vertex* pVertexRoot(void);
 
   private:
-    void vCreatePipework();
+    void vCreateVertexes();
 
     Footer* aFooter(void);
   };

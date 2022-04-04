@@ -265,14 +265,14 @@ namespace OBLIQUE
     class GRID
     {
     public:
-      static Node* pGetNode(i8 iNodeNo);
+      static Node* pGetNode(i8 iNodeId);
       static Node* pGetThisNode(void);
-      static i8   iGetNthNodeNo(i8 i_Node);
+      static i8   iGetNthNodeId(i8 i_Node);
       static i8   nKnownNodes(void);
-      static void vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
+      static void vNodeDetected(i8 iNodeId, Stz* szNodeNm,
                                 Stz* szIPAddr, i8 iPortNo,
                                 Stz* pszRegionNm);
-      static i8   iThisNodeNo(void);
+      static i8   iThisNodeId(void);
     };
   
     class HANDLERS
@@ -634,7 +634,7 @@ namespace OBLIQUE
     static i8   nTakenBytes(void);
     static MasterLock* pTccLock(void);
     static Word* pTenants(void);
-    static i8   iThisNodeNo(void);
+    static i8   iThisNodeId(void);
     static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);
     static bool bPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);
     static Heartbeat xGetHeartbeat(i8 iNode);
@@ -749,7 +749,7 @@ namespace OBLIQUE
     static void vFreeInc(RU_Memory* pRU_Memory, eCN eAllocClass);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static Session* pSessionGet(i8 i_Origin,  i8 i_Session);
+    static Session* pSessionGet(i8 iOriginId,  i8 i_Session);
     
     static bool bSpawnTask_session(Job* pJob);
     

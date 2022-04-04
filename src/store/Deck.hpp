@@ -26,11 +26,21 @@ namespace STORE
          DeckSpec* pDeckSpec);
    ~Deck(void) noexcept(false);
   
+    static void vRepair(Object *pObject);
+
+    Op*  pOp0(void);
+    i8   nOpsExeOnNode(i8 iNode);
+
     Pipeline* pPipeline(void);
+  
+    void vSetInvoker(Task* pInvoker);
+    Stage* pStage0(void);
+  
     Vertex* pVertex(void);
 
   private:
-  
+    void vCreateStages(void);
+
     Footer* aFooter(void);
 
   };

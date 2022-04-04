@@ -11,10 +11,10 @@
 
   //CN_JOB [task] task.thread@ thread.dedicated!
 
-  NS_ACTIVE [grid].thisNodeNo@ [grid].findNodeByNo node.state!
+  NS_ACTIVE [grid].thisNodeId@ [grid].findNodeByNo node.state!
 
   [args].verbose if
-    [grid].thisNodeNo@ "receiver running on node %v" .printf
+    [grid].thisNodeId@ "receiver running on node %v" .printf
   then
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

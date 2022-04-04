@@ -42,9 +42,14 @@
 #include "NamedBuffer.hpp"
 #include "Optimiser.hpp"
 #include "AdaptorWL.hpp"
+#include "AnswerWL.hpp"
+#include "RecvWL.hpp"
+#include "SendWL.hpp"
 
 #include "IndexTree.hpp"
 #include "JobMetrics.hpp"
+#include "Vertex.hpp"
+#include "Deck.hpp"
 
 #include "eLH.h"
 #include "eXK.h"
@@ -169,6 +174,7 @@ namespace STORE
 
     REG<AdaptorWL,      CN_ADAPTORWL     > m_xpAdaptorWL;
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
+    REG<AnswerWL,       CN_ANSWERWL      > m_xpAnswerWL;
     REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
     REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
   
@@ -183,6 +189,7 @@ namespace STORE
     REG<CsvBuffer,      CN_CSVBUFFER     > m_xpCsvBuffer;
 
     REG<DataBuffer,     CN_NONE          > m_xpDataBuffer;
+    REG<Deck,           CN_DECK          > m_xpDeck;
     REG<Dir,            CN_DIR           > m_xpDir0;
     REG<Dir,            CN_DIR           > m_xpDir1;
     REG<Dynamo,         CN_DYNAMO        > m_xpDynamo;
@@ -225,17 +232,18 @@ namespace STORE
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
-    REG<VertexSpec,     CN_VERTEXSPEC    > m_xpPipeSpec;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
     REG<Pot,            CN_POT           > m_xpPot;
     REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;
 
     REG<Object,         CN_NONE          > m_xpRecvdObject;
+    REG<RecvWL,         CN_RECVWL        > m_xpRecvWL;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBuffer;
     REG<RowOnce,        CN_ROWONCE       > m_xpRowOnce;
 
     REG<Node,           CN_NODE          > m_xpSendNode;
     REG<Sends,          CN_SENDS         > m_xpSends;
+    REG<SendWL,         CN_SENDWL        > m_xpSendWL;
     REG<ShardDef,       CN_SHARDDEF      > m_xpShardDef;
     REG<Socket,         CN_SOCKET        > m_xpSocket;
     REG<Stage,          CN_STAGE         > m_xpStage;
@@ -265,6 +273,10 @@ namespace STORE
     REG<ToRow,          CN_TOROW         > m_xpToRow;
     REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;
+  
+    REG<Vertex,         CN_VERTEX        > m_xpVertex;
+    REG<VertexSpec,     CN_VERTEXSPEC    > m_xpVertexSpec;
+
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

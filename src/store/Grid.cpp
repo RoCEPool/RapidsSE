@@ -92,24 +92,13 @@ void Grid::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/**
- * @brief Add new node into the cluster/grid
- * @details When a new node comes up, add it to the cluster.
- * <p>
- * @param[in] pszName  name of this node
- * @param[in] pszAddr  Address this node runs at
- * @param[in] iPort   port number this node listens to
- *
- *
- * @return none
- *
- */
-void Grid::vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
+/*----------------------------------------------------------------------------*/
+void Grid::vAddDetectedNode(i8 iNodeId, Stz* szNodeNm,
                             Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  Node *pNode = new Node(iNodeNo,
+  Node *pNode = new Node(iNodeId,
                          szNodeNm,
                          AM::SYSARGS::nPtnsPerNode(),
                          szIPAddr,
@@ -165,7 +154,7 @@ void Grid::vDsv(void)
          m_sGridNm.szStz());
   
   vTrace("  this node %lld %s\n"_Stz,
-         iThisNodeNo(),
+         iThisNodeId(),
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
   
   vTrace("nodes %lld \n"_Stz,
@@ -198,7 +187,7 @@ s16KB Grid::szDumpInfo(void)
          m_sGridNm.szStz());
 
   sDumpBuffer.vCatSprint("  this node %lld %s\n"_Stz,
-                         iThisNodeNo(),
+                         iThisNodeId(),
          m_pThisNode ? m_pThisNode->szNodeNm() : "no m_pNode"_Stz);
 
   sDumpBuffer.vCatSprint("nodes %lld \n"_Stz,
@@ -221,17 +210,17 @@ s16KB Grid::szDumpInfo(void)
 /*----------------------------------------------------------------------------*/
 /* get node by node ID                                                        */
 /*----------------------------------------------------------------------------*/
-Node* Grid::pFindNode(i8 iFindNodeNo)
+Node* Grid::pFindNodeById(i8 iFindNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     
-    i8 iNodeNo = pNode->iNodeNo();
+    i8 iNodeId = pNode->iNodeId();
     
-    //vTrace("pFindNode %lld (looking for %lld)\n"_Stz,iNodeNo,iFindNodeNo);
-    if (pNode && iNodeNo == iFindNodeNo)
+    //vTrace("pFindNode %lld (looking for %lld)\n"_Stz,iNodeId,iFindNodeId);
+    if (pNode && iNodeId == iFindNodeId)
       return pNode;
   }
 
@@ -241,13 +230,13 @@ Node* Grid::pFindNode(i8 iFindNodeNo)
 /*----------------------------------------------------------------------------*/
 /* find node by name                                                          */
 /*----------------------------------------------------------------------------*/
-Node* Grid::pFindNode(Stz* sName)
+Node* Grid::pFindNodeNm(Stz* sNodeNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
-    if (pNode && pNode->szNodeNm()->bSame(sName))
+    if (pNode && pNode->szNodeNm()->bSame(sNodeNm))
       return pNode;
   }
   
@@ -405,7 +394,7 @@ void Grid::vShowGrid(void)
     pRcvSkt =  pNode->pRecvSocket();
 
     vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
-           ,pNode->iNodeNo()
+           ,pNode->iNodeId()
            ,pNode->szNodeNm()
            ,pNode->szIPAddr()
            ,pNode->iPortNo()
@@ -491,7 +480,7 @@ void Grid::vShowNetwork(void)
     pRcvSkt =  pNode->pRecvSocket();
 
     vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
-           ,pNode->iNodeNo()
+           ,pNode->iNodeId()
            ,pNode->szNodeNm()
            ,pNode->szIPAddr()
            ,pNode->iPortNo()
@@ -572,13 +561,13 @@ void Grid::vShowNetwork(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get this node number                                                       */
+/* get this node id                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Grid::iThisNodeNo(void)
+i8 Grid::iThisNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  return m_pThisNode->iNodeNo();
+  return m_pThisNode->iNodeId();
 }
 
 /*----------------------------------------------------------------------------*/

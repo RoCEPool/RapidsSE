@@ -20,6 +20,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ADAPTORWL,
   /* */ CN_AGGTIMER,
   /* */ CN_AM,
+  /* */ CN_ANSWERWL,
   /* */ CN_API,
   /* */ CN_ARG,
   /* */ CN_ARRANGE,
@@ -246,6 +247,7 @@ enum eCN : u2 // Class Number
   /* */ CN_READER,
   /* */ CN_REAPLOCK,
   /* */ CN_RECORD,
+  /* */ CN_RECVWL,
   /* */ CN_RELOP,
   /* */ CN_RESOURCES,
   /* */ CN_RIBBON,
@@ -284,6 +286,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEEME,
   /* */ CN_SENCOMPILER,
   /* */ CN_SENDS,
+  /* */ CN_SENDWL,
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
   /* */ CN_SESSIONS,
@@ -427,6 +430,7 @@ static Stz* aCN[]
   /* */ "ADAPTORWL"_Stz,            // CN_ADAPTORWL
   /* */ "AGGTIMER"_Stz,             // CN_AGGTIMER
   /* */ "AM"_Stz,                   // CN_AM
+  /* */ "ANSWERWL"_Stz,             // CN_ANSWERWL
   /* */ "API"_Stz,                  // CN_API
   /* */ "ARG"_Stz,                  // CN_ARG
   /* */ "ARRANGE"_Stz,              // CN_ARRANGE
@@ -653,6 +657,7 @@ static Stz* aCN[]
   /* */ "READER"_Stz,               // CN_READER
   /* */ "REAPLOCK"_Stz,             // CN_REAPLOCK
   /* */ "RECORD"_Stz,               // CN_RECORD
+  /* */ "RECVWL"_Stz,               // CN_RECVWL
   /* */ "RELOP"_Stz,                // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
   /* */ "RIBBON"_Stz,               // CN_RIBBON
@@ -691,6 +696,7 @@ static Stz* aCN[]
   /* */ "SEEME"_Stz,                // CN_SEEME
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
   /* */ "SENDS"_Stz,                // CN_SENDS
+  /* */ "SENDWL"_Stz,               // CN_SENDWL
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
   /* */ "SESSIONS"_Stz,             // CN_SESSIONS

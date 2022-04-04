@@ -88,12 +88,9 @@ void Step::vParcelDemonOut(void)
   // !!!!!!!!!!!!!!
   // move to AM
   
-  Pipeline* pPipeline = pJob->pPipelineX();
-  Vertex* pPipeWork = pPipeline->pVertexRoot();
-  Stage*    pStage0   = pPipeWork->pStage0();
-  Stream*   pStream0  = pStage0->pGet(0);
-  Op*       pOp0      = pStream0->pGet(0);
-
+  Pipeline* pPipeline = pJob->pPipeline();
+  Op*       pOp0      = pPipeline->pOp0();
+  
   pOp0->vAppendLeft(pOperand,this);
   // !!!!!!!!!!!!!!
 
@@ -197,11 +194,8 @@ void Step::vParcelPipeOut(void)
     // !!!!!!!!!!!!!!
     // move to AM
     
-    Pipeline* pPipeline = pJob->pPipelineX();
-    Vertex* pPipeWork = pPipeline->pVertexRoot();
-    Stage*    pStage0   = pPipeWork->pStage0();
-    Stream*   pStand0   = pStage0->pGet(0);
-    Op*       pOp0      = pStand0->pGet(0);
+    Pipeline* pPipeline = pJob->pPipeline();
+    Op*       pOp0      = pPipeline->pOp0();
 
     pOp0->vAppendLeft(pOperand,this);
     // !!!!!!!!!!!!!!
@@ -217,11 +211,11 @@ void Step::vParcelPipeOut(void)
   JobId tPipelineJob;
   tPipelineJob = pParcel->iPipelineJobId();
   Job* pJob = AM::pJob_FindParticipating(tPipelineJob);
-  Pipeline* pPipeline = pJob->pPipelineX();
+  Pipeline* pPipeline = pJob->pPipeline();
   
   // get the next stage the send is supposed to send to
-  Vertex* pFormWork = pPipeline->pVertexRoot();
-  Stage* pDstStage = pFormWork->pStaging()->pGet(pParcel->iDstStage());
+  Vertex* pVertex = pPipeline->pVertexRoot();
+  Stage* pDstStage = pVertex->pDeck()->pGet(pParcel->iDstStage());
   i8 nStreamPtns = pDstStage->nItems();
 
   // get the op to forward to depending on the cross topology
@@ -258,7 +252,7 @@ void Step::vParcelPipeOut(void)
   eRV eRecvInstructions = pParcel->eRecvInstructions();
   //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
 
-  i8 iCurNode = MY::pNode()->iNodeNo();
+  i8 iCurNodeId = MY::pNode()->iNodeId();
   i8 nCopies = AM::PTNMAP::nPtnsPerNode();
 
   eCN eClass = pOperand->eGetClassNo();
@@ -293,8 +287,8 @@ void Step::vParcelPipeOut(void)
 
         if (YG_ALL_PARTITIONS == eStageTopology) {
           PtnId tDstPtn = pDstStream->tPtnId();
-          i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
-          if (iDstNde != iCurNode)
+          i8 iDstNde = AM::pPtnMap()->iMappedNodeId(tDstPtn);
+          if (iDstNde != iCurNodeId)
             continue;
         }
         else {

@@ -30,12 +30,10 @@
   // mutable pipeSpec, pipeline and subpipeline in logicUnit should be null
   PipeSpec[] not assert
   Pipeline[] not assert
-  SubPipe[]  not assert
   
   // immutable op, subPLineOfOp and pipelineOfOp should be null
   [op]           not assert
-  [subPipeOfOp]  not assert
-  [pipelineOfOp] not assert
+  [pipeline] not assert
 
   // and so we start...
   [job].tscBeginning
@@ -289,7 +287,7 @@
   <path> str.toStrVec Path[].set
 
   // set participant node of job
-  [grid].thisNodeNo@ [job].participantNodeNo!
+  [grid].thisNodeId@ [job].participantNodeId!
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -385,14 +383,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
 
-  Pipeline[] to SubPipe[]
-   
-  // SubPipe[].dump
-     
-  subPipe:invoke
+  Pipeline[].rootDeck@ to Deck[]
+  deck:invoke
+  nullptr to Deck[]
 
-  nullptr to SubPipe[]
-  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has executed

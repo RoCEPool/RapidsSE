@@ -33,19 +33,21 @@ __aFooterFunction(Pipeline)
 /*----------------------------------------------------------------------------*/
 Pipeline::Pipeline(Job*        pPipelineJob,
                    VertexSpec* pVertexSpecRoot,
-                   i8          iOriginNodeNo)
+                   i8          iOriginNodeId)
 : Object(CN_PIPELINE)
 , m_okDebugLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_sPipelineNm   = pVertexSpecRoot->szVertexNm();
-  
+  m_pPipelineJob    = pPipelineJob;
+  m_pVertexSpecRoot = pVertexSpecRoot;
+  m_iOriginNodeId   = iOriginNodeId;
+
   m_pVertexRoot     = nullptr;
   
-  m_pPipelineJob  = pPipelineJob;
-  m_pVertexSpecRoot     = pVertexSpecRoot;
-  m_iOriginNodeNo = iOriginNodeNo;
+  // -- -- -- -- -- --
+
+  m_sPipelineNm     = pVertexSpecRoot->szVertexNm();
 
   m_bEarlyExit    = false;
   m_bErrored      = false;
@@ -61,8 +63,8 @@ Pipeline::Pipeline(Job*        pPipelineJob,
 
   _checkInitialised_(CN_PIPELINE);
   
-  m_pVertexRoot = new Vertex(this,nullptr,m_pVertexSpecRoot);
-  //vCreatePipework();
+  //m_pVertexRoot = new Vertex(this,nullptr,m_pVertexSpecRoot);
+  vCreateVertexes();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 }
@@ -136,6 +138,18 @@ bool Pipeline::bCancelled(void)
     vDebugPoint();
   
   return m_bCancelled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get deck 0                                                                 */
+/*----------------------------------------------------------------------------*/
+Deck* Pipeline::pDeck0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  Deck* pDeck0 = m_pVertexRoot->pDeck();
+
+  return pDeck0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -230,11 +244,11 @@ void Pipeline::vGrabDebugLock(void)
 /*----------------------------------------------------------------------------*/
 /* get the originating node                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Pipeline::iOriginNodeNo(void)
+i8 Pipeline::iOriginNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_iOriginNodeNo;
+  return m_iOriginNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -423,13 +437,13 @@ Vertex* Pipeline::pVertexRoot(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create the formwork for this pipeline                                      */
+/* create the vertexes for this pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void Pipeline::vCreatePipework(void)
+void Pipeline::vCreateVertexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pVertexRoot->vCreatePipework();
+  m_pVertexRoot = new Vertex(this,nullptr,m_pVertexSpecRoot);
 }
 
 /*============================================================================*/

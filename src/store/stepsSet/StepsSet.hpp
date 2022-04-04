@@ -27,10 +27,33 @@ public:
 
   // adaptorWL
   void vAdaptorProcessEventA(void);
+  void vAdaptorProcessEventB(void);
   void vAdaptorWLAction1(void);
   void vAdaptorWLAction2(void);
   void vAdaptorWLDelete(void);
   void vAdaptorWLNew(void);
+
+  // AnswerWL
+  void vAnswerProcessEventA(void);
+  void vAnswerProcessEventB(void);
+  void vAnswerWLAction1(void);
+  void vAnswerWLAction2(void);
+  void vAnswerWLDelete(void);
+  void vAnswerWLNew(void);
+
+  // recvWL
+  void vRecvWLGet(void);
+  void vRecvWLIsNotNull(void);
+  void vRecvWLIsNull(void);
+  void vRecvWLSet(void);
+
+  // SendWL
+  void vSendProcessEventA(void);
+  void vSendProcessEventB(void);
+  void vSendWLAction1(void);
+  void vSendWLAction2(void);
+  void vSendWLDelete(void);
+  void vSendWLNew(void);
 
   // address
   void vAddressEqual(void);
@@ -330,6 +353,33 @@ public:
   void vDebugFlagStore(void);
   void vDebugBreakpoint(void);
 
+  // deck
+  void vDeckAddAccum(void);
+  void vDeckCancelledFetch(void);
+  void vDeckCancelledStore(void);
+  void vDeckCreate(void);
+  void vDeckDropDebugLock(void);
+  void vDeckDump(void);
+  void vDeckEarlyExitFetch(void);
+  void vDeckEarlyExitStore(void);
+  void vDeckEnqueueInvoke(void);
+  void vDeckErroredStore(void);
+  void vDeckErroredFetch(void);
+  void vDeckGet(void);
+  void vDeckGetAccum(void);
+  void vDeckGrabDebugLock(void);
+  void vDeckOp0Fetch(void);
+  void vDeckOpsExeOnNodeFetch(void);
+  void vDeckPulsedFetch(void);
+  void vDeckPulsedStore(void);
+  void vDeckSet(void);
+  void vDeckSetInvoker(void);
+  void vDeckSpawnOpTasks(void);
+
+  // deck (of op)
+  void vDeckOfOpDump(void);
+  void vDeckOfOpGet(void);
+
   // devLftRow
   void vDevLftRowStreamDefStore(void);
   void vDevLftRowDeleteEachRowBuffer(void);
@@ -560,7 +610,7 @@ public:
   void vGridShow(void);
   void vGridPtnsPerNode(void);
   void vGridTablePtnToPtnNo(void);
-  void vGridThisNodeFetch(void);
+  void vGridThisNodeIdFetch(void);
   void vGridThisNodeNameFetch(void);
   void vGridToNode(void);
 
@@ -794,10 +844,10 @@ public:
   void vJobNameFetch(void);
   void vJobNoWaitFetch(void);
 
-  void vJobOriginNodeNoFetch(void);
+  void vJobOriginNodeIdFetch(void);
 
-  void vJobParticipantNodeNoFetch(void);
-  void vJobParticipantNodeNoStore(void);
+  void vJobParticipantNodeIdFetch(void);
+  void vJobParticipantNodeIdStore(void);
   void vJobPipeToOp0(void);
   void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);
@@ -1167,7 +1217,7 @@ public:
   void vNodeIsThisNode(void);
   void vNodeName(void);
   void vNodeNew(void);
-  void vNodeNo(void);
+  void vNodeId(void);
   void vNodePartitions(void);
   void vNodePort(void);
   void vNodeRecvSocketStore(void);
@@ -1295,32 +1345,17 @@ public:
   void vPersistenceReload(void);
 
   // pipeline
-  void vPipelineAddAccum(void);
-  void vPipelineCancelledFetch(void);
-  void vPipelineCancelledStore(void);
   void vPipelineCreate(void);
-  void vPipelineDropDebugLock(void);
   void vPipelineDump(void);
-  void vPipelineEarlyExitFetch(void);
-  void vPipelineEarlyExitStore(void);
-  void vPipelineEnqueueStart(void);
-  void vPipelineErroredStore(void);
-  void vPipelineErroredFetch(void);
   void vPipelineGet(void);
-  void vPipelineGetAccum(void);
-  void vPipelineGrabDebugLock(void);
-  void vPipelineOp0Fetch(void);
-  void vPipelineOpsOnNodeFetch(void);
-  void vPipelinePulsedFetch(void);
-  void vPipelinePulsedStore(void);
   void vPipelineSet(void);
+  void vPipelineRootDeckFetch(void);
   void vPipelineSpawnOpTasks(void);
 
-  // pipelineInOp
+  // pipelineOfOp
   void vPipelineOfOpAddAccum(void);
   void vPipelineOfOpCancelledFetch(void);
   void vPipelineOfOpCancelledStore(void);
-  void vPipelineOfOpCreate(void);
   void vPipelineOfOpDropDebugLock(void);
   void vPipelineOfOpEarlyExitFetch(void);
   void vPipelineOfOpEarlyExitStore(void);
@@ -1329,12 +1364,8 @@ public:
   void vPipelineOfOpGet(void);
   void vPipelineOfOpGetAccum(void);
   void vPipelineOfOpGrabDebugLock(void);
-  void vPipelineOfOpOp0Fetch(void);
-  void vPipelineOfOpOpsOnNodeFetch(void);
   void vPipelineOfOpPulsedFetch(void);
   void vPipelineOfOpPulsedStore(void);
-  void vPipelineOfOpSpawnOpTasks(void);
-  void vPipelineOfOpStartPipeline(void);
 
   // pipeSpec
 
@@ -1758,53 +1789,13 @@ public:
   void vSsnSenLoc(void);
   void vSsnTraceSession(void);
 
-  // subPipeline
-  void vSubPipeAddAccum(void);
-  void vSubPipeCancelledFetch(void);
-  void vSubPipeCancelledStore(void);
-  void vSubPipeCreate(void);
-  void vSubPipeDropDebugLock(void);
-  void vSubPipeDump(void);
-  void vSubPipeEarlyExitFetch(void);
-  void vSubPipeEarlyExitStore(void);
-  void vSubPipeEnqueueInvoke(void);
-  void vSubPipeErroredStore(void);
-  void vSubPipeErroredFetch(void);
-  void vSubPipeGet(void);
-  void vSubPipeGetAccum(void);
-  void vSubPipeGrabDebugLock(void);
-  void vSubPipeOp0Fetch(void);
-  void vSubPipeOpsOnNodeFetch(void);
-  void vSubPipePulsedFetch(void);
-  void vSubPipePulsedStore(void);
-  void vSubPipeSet(void);
-  void vSubPipeSetInvoker(void);
-  void vSubPipeSpawnOpTasks(void);
-
-  // SubPipelineOfOp
-  void vSubPipeOfOpAddAccum(void);
-  void vSubPipeOfOpCancelledFetch(void);
-  void vSubPipeOfOpCancelledStore(void);
-  void vSubPipeOfOpCreate(void);
-  void vSubPipeOfOpDropDebugLock(void);
-  void vSubPipeOfOpEarlyExitFetch(void);
-  void vSubPipeOfOpEarlyExitStore(void);
-  void vSubPipeOfOpErroredStore(void);
-  void vSubPipeOfOpErroredFetch(void);
-  void vSubPipeOfOpFindSubPipe(void);
-  void vSubPipeOfOpGet(void);
-  void vSubPipeOfOpGetAccum(void);
-  void vSubPipeOfOpGrabDebugLock(void);
-  void vSubPipeOfOpOp0Fetch(void);
-  void vSubPipeOfOpOpsOnNodeFetch(void);
-  void vSubPipeOfOpPulsedFetch(void);
-  void vSubPipeOfOpPulsedStore(void);
-  void vSubPipeOfOpSpawnOpTasks(void);
-  void vSubPipeOfOpStartPipeline(void);
-
   // stage
   void vStageGet(void);
   void vStageSet(void);
+
+  // stage (of op)
+  void vStageOfOpDump(void);
+  void vStageOfOpGet(void);
 
   // stats
   void vStatsBuffInInc(void);
@@ -1834,6 +1825,10 @@ public:
   // stream
   void vStreamGet(void);
   void vStreamSet(void);
+
+  // stream (of op)
+  void vStreamOfOpDump(void);
+  void vStreamOfOpGet(void);
 
   // string
   void vStrAlgebra(void);
@@ -2359,6 +2354,15 @@ public:
 
   // user
   void vUserName(void);
+
+  // vertex
+  void vVertexDump(void);
+  void vVertexGet(void);
+  void vVertexSet(void);
+
+  // vertex (of op)
+  void vVertexOfOpDump(void);
+  void vVertexOfOpGet(void);
 
   // zero
   void vWithSubPipeline(void);

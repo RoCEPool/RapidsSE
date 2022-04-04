@@ -21,13 +21,13 @@ __aFooterFunction(Node)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node::Node(i8 iNodeNo, Stz* szNodeNm, i8 nPtnsInNode,
+Node::Node(i8 iNodeId, Stz* szNodeNm, i8 nPtnsInNode,
            Stz* szIpAddr, i8 iPortNo, Stz* szRegionNm)
 : Object(CN_NODE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
     
-  m_iNodeNo     = iNodeNo;
+  m_iNodeId     = iNodeId;
   m_sNodeNm     = szNodeNm;
   m_nPtnsInNode = nPtnsInNode;
   m_sIPAddr     = szIpAddr;
@@ -67,12 +67,8 @@ Node::~Node(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* init                                                                       */
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void Node::vInit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-}
 
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
@@ -95,76 +91,6 @@ void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get degree of parallelism                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Node::nPtnsInNode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  return m_nPtnsInNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get node IP                                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Node::szIPAddr(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  return m_sIPAddr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get node name                                                              */
-/*----------------------------------------------------------------------------*/
-Stz* Node::szNodeNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  return m_sNodeNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get node number                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Node::iNodeNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  return m_iNodeNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set node number                                                            */
-/*----------------------------------------------------------------------------*/
-void Node::vNodeNo(i8 iNodeNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  m_iNodeNo = iNodeNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get region name                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* Node::szRegionNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  return m_sRegionNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get node port                                                              */
-/*----------------------------------------------------------------------------*/
-i8 Node::iPortNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  return m_iPortNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* print distributed state vector                                             */
 /*----------------------------------------------------------------------------*/
 void Node::vDsv(void)
@@ -172,7 +98,7 @@ void Node::vDsv(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
 
   vTrace("  [%lld] Node %s : ptnsInNode %d IPAddr %s portNo %lld %s\n"_Stz,
-         m_iNodeNo,
+         m_iNodeId,
          m_sNodeNm.szStz(),
          m_nPtnsInNode,
          m_sIPAddr.szStz(),
@@ -181,21 +107,15 @@ void Node::vDsv(void)
 }
 
 
-/**
- * @brief returns a string buffer contains Node Info
- * @details returns a string buffer contains Node Info:
- * Node ID, Node Name, Node Address and Node Port Number
- * <p>
- * @param[in] s4K szBuffer
- * @return s4K
- *
- */
+/*----------------------------------------------------------------------------*/
+/* get dump info                                                              */
+/*----------------------------------------------------------------------------*/
 s16KB Node::szDumpInfo(s16KB szBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
 
   szBuffer.vCatSprint("    [%lld] Node %s : ptnsInNode %d IPAddr %s portNo %lld %s\n"_Stz,
-         m_iNodeNo,
+         m_iNodeId,
          m_sNodeNm.szStz(),
                       m_nPtnsInNode,
          m_sIPAddr.szStz(),
@@ -204,86 +124,6 @@ s16KB Node::szDumpInfo(s16KB szBuffer)
 
   return szBuffer;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get node state                                                             */
-/*----------------------------------------------------------------------------*/
-eNS Node::eState(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  return m_eState;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set node state                                                             */
-/*----------------------------------------------------------------------------*/
-void Node::vState(eNS eState)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  m_eState = eState;
-  
-  if (AM::TRACE::bVerbose(C_VB_NODE)) {
-    SP_Node spNode;
-    vTrace("Node State: %s\n"_Stz,spNode.sz(this));
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* get recv socket from node                                                  */
-/*----------------------------------------------------------------------------*/
-Socket* Node::pRecvSocket(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  return m_pRecvSocket;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set recv socket for node                                                   */
-/*----------------------------------------------------------------------------*/
-void Node::vRecvSocket(Socket* pSocket)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  m_pRecvSocket = pSocket;
-  
-  if (AM::TRACE::bVerbose(C_VB_NODE)) {
-    SP_Node spNode;
-    vTrace("Node RecvSocket: %s\n"_Stz,spNode.sz(this));
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* get send socket from node                                                  */
-/*----------------------------------------------------------------------------*/
-Socket* Node::pSendSocket(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  //if (!m_pSendSocket) vThreadCallStackDump();
-  return m_pSendSocket;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set send socket for node                                                   */
-/*----------------------------------------------------------------------------*/
-void Node::vSendSocket(Socket* pSocket)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  m_pSendSocket = pSocket;
-  
-  if (AM::TRACE::bVerbose(C_VB_NODE)) {
-    SP_Node spNode;
-    vTrace("Node: SendSocket Node: %s\n"_Stz,spNode.sz(this));
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get known free percent                                                     */
@@ -326,6 +166,154 @@ void Node::vFreeSpace(i8 qFreeSpace)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get heartbeat                                                              */
+/*----------------------------------------------------------------------------*/
+Heartbeat Node::xGetHeartbeat(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  Heartbeat tempHeartbeat = m_atmHeartbeat.load(std::memory_order_relaxed);
+  return tempHeartbeat;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node status                                                            */
+/*----------------------------------------------------------------------------*/
+i1 Node::iGetNodeStatus(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  return m_iNodeStatus;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get saved pid from heartbeat                                               */
+/*----------------------------------------------------------------------------*/
+i8   Node::iGetPid(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  Heartbeat tempHeartbeat = m_atmHeartbeat.load(std::memory_order_relaxed);
+  return (tempHeartbeat.m_iPid);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get previous saved user usec                                               */
+/*----------------------------------------------------------------------------*/
+i8 Node::iGetPrevUserUsec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  return m_iPrevUserUsec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node IP                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Node::szIPAddr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  return m_sIPAddr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node id                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Node::iNodeId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  return m_iNodeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set node id                                                               */
+/*----------------------------------------------------------------------------*/
+void Node::vNodeId(i8 iNodeId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  m_iNodeId = iNodeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node name                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Node::szNodeNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  return m_sNodeNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node port                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Node::iPortNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  return m_iPortNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get degree of parallelism                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Node::nPtnsInNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  return m_nPtnsInNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set heartbeat                                                              */
+/*----------------------------------------------------------------------------*/
+void Node::vPutHeartbeat(const Heartbeat& xHeartbeat)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+
+  Heartbeat tempHeartbeat = m_atmHeartbeat.load(std::memory_order_relaxed);
+  MemLib::vCopy((byte*)&tempHeartbeat,(byte*)&xHeartbeat,sizeof(tempHeartbeat),CN_NODE);
+  m_atmHeartbeat.store(tempHeartbeat, std::memory_order_release);
+  //MemLib::vCopy((byte*)&m_xHeartbeat,(byte*)&xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
+  //m_xHeartbeat.m_iSincePosixEpoch = xHeartbeat.m_iSincePosixEpoch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get recv socket from node                                                  */
+/*----------------------------------------------------------------------------*/
+Socket* Node::pRecvSocket(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  return m_pRecvSocket;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set recv socket for node                                                   */
+/*----------------------------------------------------------------------------*/
+void Node::vRecvSocket(Socket* pSocket)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  m_pRecvSocket = pSocket;
+  
+  if (AM::TRACE::bVerbose(C_VB_NODE)) {
+    SP_Node spNode;
+    vTrace("Node RecvSocket: %s\n"_Stz,spNode.sz(this));
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get region name                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Node::szRegionNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  return m_sRegionNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get known region size                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Node::qRegionSize(void)
@@ -346,30 +334,29 @@ void Node::vRegionSize(i8 qRegionSize)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set heartbeat                                                              */
+/* get send socket from node                                                  */
 /*----------------------------------------------------------------------------*/
-void Node::vPutHeartbeat(const Heartbeat& xHeartbeat)
+Socket* Node::pSendSocket(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-
-  Heartbeat tempHeartbeat = m_atmHeartbeat.load(std::memory_order_relaxed);
-  MemLib::vCopy((byte*)&tempHeartbeat,(byte*)&xHeartbeat,sizeof(tempHeartbeat),CN_NODE);
-  m_atmHeartbeat.store(tempHeartbeat, std::memory_order_release);
-  //MemLib::vCopy((byte*)&m_xHeartbeat,(byte*)&xHeartbeat,sizeof(m_xHeartbeat),CN_NODE);
-  //m_xHeartbeat.m_iSincePosixEpoch = xHeartbeat.m_iSincePosixEpoch;
+  //if (!m_pSendSocket) vThreadCallStackDump();
+  return m_pSendSocket;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* get heartbeat                                                              */
+/* set send socket for node                                                   */
 /*----------------------------------------------------------------------------*/
-Heartbeat Node::xGetHeartbeat(void)
+void Node::vSendSocket(Socket* pSocket)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  Heartbeat tempHeartbeat = m_atmHeartbeat.load(std::memory_order_relaxed);
-  return tempHeartbeat;
+  
+  m_pSendSocket = pSocket;
+  
+  if (AM::TRACE::bVerbose(C_VB_NODE)) {
+    SP_Node spNode;
+    vTrace("Node: SendSocket Node: %s\n"_Stz,spNode.sz(this));
+  }
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* set node status                                                            */
@@ -378,25 +365,6 @@ void Node::vSetNodeStatus(i1 iStatus)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   m_iNodeStatus = iStatus;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get node status                                                            */
-/*----------------------------------------------------------------------------*/
-i1 Node::iGetNodeStatus(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  return m_iNodeStatus;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get previous saved user usec                                               */
-/*----------------------------------------------------------------------------*/
-i8   Node::iGetPrevUserUsec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  return m_iPrevUserUsec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -419,26 +387,34 @@ void   Node::vSetStartCmd(Stz* pCmd)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get saved start node cmd                                                   */
+/* get node state                                                             */
 /*----------------------------------------------------------------------------*/
-Stz*   Node::pszGetStartCmd(void)
+eNS Node::eState(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  //if (m_sStartCmd.nLength() > 1)
-  //  return (Stz*)m_sStartCmd;
-
-  return nullptr;
+  
+  return m_eState;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get saved pid from heartbeat                                               */
+/* set node state                                                             */
 /*----------------------------------------------------------------------------*/
-i8   Node::iGetPid(void)
+void Node::vState(eNS eState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  Heartbeat tempHeartbeat = m_atmHeartbeat.load(std::memory_order_relaxed);
-  return (tempHeartbeat.m_iPid);
+  
+  m_eState = eState;
+  
+  if (AM::TRACE::bVerbose(C_VB_NODE)) {
+    SP_Node spNode;
+    vTrace("Node State: %s\n"_Stz,spNode.sz(this));
+  }
+
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* compare two nodes by their nodeNm                                          */

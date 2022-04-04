@@ -54,6 +54,8 @@ def main() -> int:
                             help="If present, the raw metric files will always be collected and archived in Bamboo.")
     arg_parser.add_argument("--resultDir",   type=str, required=False, default=C_DEFAULT_RESULT_DIR,
                             help="The directory to write results and files to be archived")
+    arg_parser.add_argument("--nobuild",     action='store_true', required=False, default=False,
+                            help="If present, do not compile RapidsSE and build the installer.")
 
     args = arg_parser.parse_args()
     LOG.debug("Got the following arguments:  %s", args)
@@ -75,6 +77,7 @@ def main() -> int:
     invoking_user = args.user
     archive_metrics = args.archiveMetrics
     result_path = args.resultDir
+    no_build = args.no_build
 
     if len(git_hash) == 0:
         git_hash = get_git_hash_from_system()
@@ -90,7 +93,8 @@ def main() -> int:
                           invoking_user,
                           archive_metrics,
                           result_path,
-                          tags)
+                          tags,
+                          not no_build)
     jobrunner.run_job()
     return 0
 

@@ -42,7 +42,7 @@ Stz* SP_Node::sz(Node* pNode)
   StrLib::vSprint(m_caResult
                   ,"[%lld] %8s %s %lld %8s recv=%p send=%p [%s]"_Stz
                   
-                  ,pNode->iNodeNo()
+                  ,pNode->iNodeId()
                   ,pNode->szNodeNm()
                   ,pNode->szIPAddr()
                   ,pNode->iPortNo()

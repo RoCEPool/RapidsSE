@@ -45,9 +45,9 @@ __aFooterFunction(Job)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(Stz* szJobNm,
-         i8 i_Origin,     // originated on which node
-         i8 i_Session,    // which session in session array
-         i8 iCmdNo        // the sequence no of the request from that session)
+         i8 iOriginNodeId, // originated on which node
+         i8 i_Session,     // which session in session array
+         i8 iCmdNo         // the sequence no of the request from that session)
         )
 : Operand(CN_JOB)
 , CRM<Job>(this)
@@ -59,21 +59,19 @@ Job::Job(Stz* szJobNm,
   m_sJobNm   = szJobNm;
   m_eJobKind = JK_NONE;
 
-  
   m_bReapable = false;
   
   // -- a -------------------
   
-  m_i_Origin     = i_Origin;
-  m_i_Session    = i_Session;
-  m_iCmdNo = iCmdNo;
+  m_iOriginNodeId = iOriginNodeId;
+  m_i_Session     = i_Session;
+  m_iCmdNo        = iCmdNo;
 
-  // m_sJobNm;
   m_oTimer.vStart();
 
   // -- b -------------------
   m_bWasReceived     = false;
-  m_iParticipantNodeNo = C_UNKNOWN;
+  m_iParticipantNodeId = C_UNKNOWN;
   
   // -- c -------------------
   m_eJobList  = JL_NONE;
@@ -195,7 +193,7 @@ void Job::vPrintJobNode(SkipNode* pNode, int i_Level)
   vTrace("@%lld %p : %lld.%lld -> %p\n"_Stz
          ,i_Level
          ,pNode
-         ,(i8)tJobId.uNodeNo()
+         ,(i8)tJobId.uNodeId()
          ,(i8)tJobId.uJobNo()
          ,pNode->m_pRight[i_Level]
          );
@@ -579,9 +577,9 @@ Stz* Job::szNodeNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 i_Node = iOriginatorNodeNo();
+  i8 i_Node = iOriginatorNodeId();
   
-  Stz* szNodeNm = AM::pGrid()->pFindNode(i_Node)->szNodeNm();
+  Stz* szNodeNm = AM::pGrid()->pFindNodeById(i_Node)->szNodeNm();
   
   return szNodeNm;
 }
@@ -589,39 +587,39 @@ Stz* Job::szNodeNm(void)
 /*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
-i8 Job::iOriginatorNodeNo(void)
+i8 Job::iOriginatorNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  i8 iOriginatorNodeNo = m_tJobId.uNodeNo();
+  i8 iOriginatorNodeId = m_tJobId.uNodeId();
   
-  return iOriginatorNodeNo;
+  return iOriginatorNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the participant node                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Job::iParticipantNodeNo(void)
+i8 Job::iParticipantNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iParticipantNodeNo;
+  return m_iParticipantNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the job id                                                             */
 /*----------------------------------------------------------------------------*/
-void Job::vParticipantNodeNo(i8 iNodeNo)
+void Job::vParticipantNodeId(i8 iNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_iParticipantNodeNo = iNodeNo;
+  m_iParticipantNodeId = iNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get pipeline                                                               */
 /*----------------------------------------------------------------------------*/
-Pipeline* Job::pPipelineX(void)
+Pipeline* Job::pPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -662,7 +660,7 @@ void Job::vPrintJobContents(void)
 
          "              sCmd "  "%s"    " \n"  // 3
          
-         "          i_Origin "  "%lld"  " \n"  // 4
+         "     iOriginNodeId "  "%lld"  " \n"  // 4
          "         i_Session "  "%lld"  " \n"  // 5
          "            iCmdNo "  "%lld"  " \n"  // 6
 
@@ -689,11 +687,11 @@ void Job::vPrintJobContents(void)
          ,m_sJobNm.szStz()           // 1
          ,aJK[m_eJobKind]            // 2
          ,szCmd()                    // 3
-         ,m_i_Origin                 // 4
+         ,m_iOriginNodeId            // 4
          ,m_i_Session                // 5
          ,m_iCmdNo                   // 6
          ,m_bWasReceived ? "true" : "false" // 7
-         ,m_iParticipantNodeNo            // 8
+         ,m_iParticipantNodeId            // 8
          ,aJS[m_eJobState]           // 10
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
@@ -748,23 +746,23 @@ void Job::vPrintJobLine(void)
          ,this->szJobNm()
          );
 
-  vTrace("origin %lld session %lld command %lld "_Stz
-         ,this->m_i_Origin
+  vTrace("originNodeId %lld session %lld command %lld "_Stz
+         ,this->m_iOriginNodeId
          ,this->m_i_Session
          ,this->m_iCmdNo
          );
 
-  if (C_UNKNOWN != this->iParticipantNodeNo())
+  if (C_UNKNOWN != this->iParticipantNodeId())
     vTrace("partNode %lld "_Stz
-           ,this->iParticipantNodeNo()
+           ,this->iParticipantNodeId()
            );
 
   LogicUnit* pLogicUnit = m_pTask->pLogicUnit();
   
   if (pLogicUnit) {
-    if (pLogicUnit->m_xpPipeSpec.bIsNotNull())
+    if (pLogicUnit->m_xpVertexSpec.bIsNotNull())
       vTrace("%s "_Stz
-             ,pLogicUnit->m_xpPipeSpec->szVertexNm()
+             ,pLogicUnit->m_xpVertexSpec->szVertexNm()
              );
     vTrace("%s "_Stz
            ,aLH[pLogicUnit->m_eDdlLocked]
@@ -829,7 +827,7 @@ void Job::vResetForCascade(Session* pSession)
 
   // -- b -------------------
   m_bWasReceived     = false;
-  m_iParticipantNodeNo = C_UNKNOWN;
+  m_iParticipantNodeId = C_UNKNOWN;
 
   // -- c -------------------
   m_eJobKind  = JK_NONE;
@@ -860,7 +858,7 @@ Session* Job::pSession(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Session* pSession = AM::pSessionGet(m_i_Origin,m_i_Session);
+  Session* pSession = AM::pSessionGet(m_iOriginNodeId,m_i_Session);
 
   return pSession;
 }

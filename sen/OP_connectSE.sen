@@ -35,7 +35,7 @@
 : connectSE_attemptConnect ( -- )
 
   AM::SHOW::bConnection if
-    Node[] node.no [grid].thisNodeNo@ "Node %v connecting to node %v" .printf
+    Node[] node.id [grid].thisNodeId@ "Node %v connecting to node %v" .printf
   then
 
 
@@ -49,7 +49,7 @@
     Socket[].connect
 
   Socket[].isNull if
-    Node[] node.no [grid].thisNodeNo@ "Node %v unable to connect to node %v" .printf
+    Node[] node.id [grid].thisNodeId@ "Node %v unable to connect to node %v" .printf
     exit
   then
 
@@ -60,7 +60,7 @@
  
   // print connection message
   AM::SHOW::bConnection if
-     Node[] node.no [grid].thisNodeNo@ "Node %v connected to node %v" .printf
+     Node[] node.id [grid].thisNodeId@ "Node %v connected to node %v" .printf
   then
 
   // send this node's info to the node we just connected to
@@ -101,7 +101,7 @@
   "Connector Demon Started" .boot
 
   [args].verbose if
-    [grid].thisNodeNo@ [job] "Connector %v on node %v running" .printf
+    [grid].thisNodeId@ [job] "Connector %v on node %v running" .printf
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

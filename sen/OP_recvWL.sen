@@ -1,0 +1,149 @@
+/*============================================================================*/
+/* OP_recvWL.sen -- Operator recv for WL Adaptor                              */
+/*============================================================================*/
+
+" OP_recvWL.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* recv init                                                                  */
+/*----------------------------------------------------------------------------*/
+: recvWL_init ( -- )
+
+  //CN_JOB [task] task.thread@ thread.dedicated!
+
+  NS_ACTIVE [grid].thisNodeNo@ [grid].findNodeByNo node.state!
+
+  [args].verbose if
+    [grid].thisNodeNo@ "receiver running on node %v" .printf
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "<ansNode>" [job].tagSet@ tagSet.hasName assert
+
+  <ansNode> >int >ptr node.recvSocket@ to Socket[]
+;
+
+/*----------------------------------------------------------------------------*/
+/* recv next object(s)                                                        */
+/*----------------------------------------------------------------------------*/
+: recvWL_recvNext
+
+  nullptr to recvWL[]
+
+  Socket[].recvObject
+
+  Socket[].success@ not if
+    exit
+  then
+
+  Socket[].object@\clear to recvWL[]
+
+  Socket[].success@
+;
+
+/*----------------------------------------------------------------------------*/
+/* recv loop: receive a job (possibly with operand), dispatch it              */
+/*----------------------------------------------------------------------------*/
+: recvWL_dispatch ( -- )
+
+  // null object (low memory)
+  recvWL[].isNull if
+    exit
+  then
+
+  recvWL[] recvWL[] object.postRecvWord@ execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* receiver loop: receive a job (possibly with operand), dispatch it          */
+/*----------------------------------------------------------------------------*/
+: recvWL_loop ( -- )
+
+  begin
+
+    trap::stackDepthZero
+
+    // receive next object(s)
+    recvWL_recvNext
+    not if
+      exit
+    then
+
+    recvWL_dispatch
+
+  again
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: recvWL_StartMarker \handler
+
+  "Receiver Demon Started" .boot
+
+  // initialise
+  recvWL_init
+
+  // loop, receiving and executing jobs
+  recvWL_loop
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for receiver req                           (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : recvWL_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: recvWL_StartMarker ZK_M_START [op].handler!
+
+  // get the pipeline job of the operator
+  [op].job@ locals| pPipelineJob |
+
+  // peek to see if any operand
+  begin
+    Pipein[].peek
+  not while
+    "receiver waiting for STARTMARKER..." .verbose
+    2 thread::sleepMsec
+  repeat
+
+  assert::stack_0
+
+  // pop operand from queue into PipeIn[]
+  PipeIn[].peek assert
+  PipeIn[].next
+
+  // execute the operator's handler for the operand
+  PipeIn[].kind [op].handler@ execute
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: recvWL :: recvWL ;
+
+: recvWL_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "recvWL_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

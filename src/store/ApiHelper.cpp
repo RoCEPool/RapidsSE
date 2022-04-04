@@ -133,7 +133,7 @@ void ApiHelper::vPrintResults(void)
   RASSERT(! m_pSession->m_pOutput->m_bCmdErr );
 
   if (m_pSession->m_pSsnJob->bJobHasError()) {
-    vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
+    vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeId(),
            aEC[m_pSession->m_pSsnJob->eJobError()]);
   }
 

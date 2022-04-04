@@ -32,7 +32,9 @@ namespace STORE
   
     VertexSpec(VertexSpec* pParentVertexSpec);
    ~VertexSpec(void) noexcept(false);
-  
+ 
+    static void vRepair(Object *pObject);
+
     void vAddStageSpec(StageSpec* pStageSpec);
     DeckSpec* pDeckSpec(void);
     StageSpec* pFindStageSpec(Stz* szFindNm);

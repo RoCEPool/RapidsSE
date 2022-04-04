@@ -143,7 +143,7 @@ Tx* TxSet::pFindTx_NL(i8 iTxId)
   
   Tx* pTxFind = new Tx;
   
-  //i8 iNodeNo = iTxId >> 48;
+  //i8 iNodeId = iTxId >> 48;
   
   Tx* pTxFound = nullptr;
   

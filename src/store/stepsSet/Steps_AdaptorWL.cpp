@@ -17,6 +17,7 @@
 void Step::vAddSteps_AdaptorWL(void)
 {
   vAddStep("AdaptorWL[].processEventA"_Stz,  &Step::vAdaptorProcessEventA);
+  vAddStep("AdaptorWL[].processEventB"_Stz,  &Step::vAdaptorProcessEventB);
   vAddStep("AdaptorWL[].action1"_Stz,  &Step::vAdaptorWLAction1);
   vAddStep("AdaptorWL[].action2"_Stz,  &Step::vAdaptorWLAction2);
   
@@ -25,7 +26,7 @@ void Step::vAddSteps_AdaptorWL(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* adaptorWL[].action0 -- do wireline adaptor action 0                        */
+/* adaptorWL[].processEventA -- do wireline adaptor action A                  */
 /*----------------------------------------------------------------------------*/
 void Step::vAdaptorProcessEventA(void)
 {
@@ -33,6 +34,18 @@ void Step::vAdaptorProcessEventA(void)
 
   m_pLogicUnit->m_xpAdaptorWL->vProcessEventA();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].processEventB -- do wireline adaptor action B                  */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorProcessEventB(void)
+{
+  ENTRY();
+
+  //m_pLogicUnit->m_xpAdaptorWL->vProcessEventB();
+
   EXIT();
 }
 

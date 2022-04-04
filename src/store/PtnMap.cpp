@@ -82,22 +82,6 @@ PtnId PtnMap::tHashToLglPtnId(i8 iHash)
   return tLglPtnId;
 }
 
-
-
-
-/*----------------------------------------------------------------------------*/
-/* convert iBkt to PtnId                                                        */
-/*----------------------------------------------------------------------------*/
-PtnId PtnMap::tToPtn(i8 iBktNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-  PtnId tPtnId;
-
-  //tPtnId = iBktNo < C_MAX_LGLPTNS ? m_xaBkt[(i8) iBktNo].m_i_NodePtn : 0;
-  return tPtnId;
-
-}
-
 /*----------------------------------------------------------------------------*/
 /* get number of nodes known by partition map                                 */
 /*----------------------------------------------------------------------------*/
@@ -109,15 +93,27 @@ i8 PtnMap::nKnownNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get which node a logical partition is mapped to                            */
+/* get which node id (of grid) a logical partition is mapped to               */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::iMappedNodeNo(PtnId tPtnId)
+i8 PtnMap::iMappedNodeId(PtnId tPtnId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 iNodeNo = m_xaLglToNodePtn[tPtnId.iAsI8()].m_iNodeNo;
+  i8 iNodeId = m_xaPtnId_to_NodeIdPtnNo[tPtnId.iAsI8()].m_iNodeId;
 
-  return iNodeNo;
+  return iNodeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get which partition no (within node) a logical partition is mapped to      */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::i_MappedPtnNo(PtnId tPtnId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 i_PtnNo = m_xaPtnId_to_NodeIdPtnNo[tPtnId.iAsI8()].m_iPtnNo;
+
+  return i_PtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,7 +156,7 @@ PtnId PtnMap::tRobinToLclPtnStream(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
+  i8 iThisNodeId = AM::GRID::iThisNodeId();
 
   i8 i_LglPtn = iRobin % m_nPtnsPerNode;
 
@@ -199,14 +195,14 @@ void PtnMap::vSee(void)
   vTrace("  lgl ptns in grid   %2lld\n"_Stz,m_nPtnsInGrid);
 
   for (i8 i_LglPtn = 0; i_LglPtn < m_nPtnsInGrid; i_LglPtn++) {
-    i8 iNodeNo = m_xaLglToNodePtn[i_LglPtn].m_iNodeNo;
+    i8 iNodeId = m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iNodeId;
 
-    vTrace("  m_xaLglToNodePtn[i_LglPtn %lld] { m_iNodeNo=%lld %s, m_i_NodePtn=%lld }\n"_Stz
+    vTrace("  m_xaLglToNodePtn[i_LglPtn %lld] { m_iNodeId=%lld %s, m_i_NodePtn=%lld }\n"_Stz
 
            ,i_LglPtn
-           ,iNodeNo
-           ,AM::GRID::pGetNode(iNodeNo)->szNodeNm()
-           ,m_xaLglToNodePtn[i_LglPtn].m_i_NodePtn
+           ,iNodeId
+           ,AM::GRID::pGetNode(iNodeId)->szNodeNm()
+           ,m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iPtnNo
            );
   }
 
@@ -214,33 +210,9 @@ void PtnMap::vSee(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get which node a logical partition is mapped to                            */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::iWhichNodeNo(PtnId tPtnId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-
-  i8 iNodeNo = m_xaLglToNodePtn[tPtnId.iAsI8()].m_iNodeNo;
-
-  return iNodeNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get which node partition a logical partition is mapped to                  */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::i_WhichPtn(PtnId tPtnId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-
-  i8 i_LglPtn = m_xaLglToNodePtn[tPtnId.iAsI8()].m_i_NodePtn;
-
-  return i_LglPtn;
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert given i_ptn to partition number of given node                      */
 /*----------------------------------------------------------------------------*/
-PtnId PtnMap::tToPtnNoOfNode(i8 i_LglPtn, i8 iNodeNo)
+PtnId PtnMap::tToPtnNoOfNode(i8 i_LglPtn, i8 iNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
@@ -248,9 +220,9 @@ PtnId PtnMap::tToPtnNoOfNode(i8 i_LglPtn, i8 iNodeNo)
   tPtnId = C_UNKNOWN;
 
   for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
-    if (m_xaLglToNodePtn[i_NodePtn].m_iNodeNo != iNodeNo)
+    if (m_xaPtnId_to_NodeIdPtnNo[i_NodePtn].m_iNodeId != iNodeId)
       continue;
-    if (m_xaLglToNodePtn[i_NodePtn].m_i_NodePtn != i_LglPtn)
+    if (m_xaPtnId_to_NodeIdPtnNo[i_NodePtn].m_iPtnNo != i_LglPtn)
       continue;
     tPtnId = i_NodePtn;
     break;
@@ -270,9 +242,9 @@ PtnId PtnMap::tToPtnNoOfThisNode(i8 i_LglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
+  i8 iThisNodeId = AM::GRID::iThisNodeId();
 
-  PtnId tPtnId = tToPtnNoOfNode(i_LglPtn,iThisNodeNo);
+  PtnId tPtnId = tToPtnNoOfNode(i_LglPtn,iThisNodeId);
 
   return tPtnId;
 }
@@ -294,8 +266,8 @@ void PtnMap::vRepartition(void)
   for (i8 i_LglPtn = 0; i_LglPtn < m_nPtnsInGrid; i_LglPtn++) {
     i4 i_Node = (i4)i_LglPtn % m_nKnownNodes;
 
-    m_xaLglToNodePtn[i_LglPtn].m_iNodeNo   = AM::GRID::iGetNthNodeNo(i_Node);
-    m_xaLglToNodePtn[i_LglPtn].m_i_NodePtn = (i4)i_LglPtn / m_nKnownNodes;
+    m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iNodeId   = AM::GRID::iGetNthNodeId(i_Node);
+    m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iPtnNo = (i4)i_LglPtn / m_nKnownNodes;
   }
 
   m_iMapChange++;
@@ -309,8 +281,8 @@ void PtnMap::vResetNodePtnArray(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
   for (i8 i_LglPtn = 0; i_LglPtn < C_MAX_LGLPTNS; i_LglPtn++) {
-    m_xaLglToNodePtn[i_LglPtn].m_iNodeNo   = C_UNKNOWN;
-    m_xaLglToNodePtn[i_LglPtn].m_i_NodePtn = C_UNKNOWN;
+    m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iNodeId   = C_UNKNOWN;
+    m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iPtnNo = C_UNKNOWN;
   }
 }
 

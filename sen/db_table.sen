@@ -134,7 +134,7 @@
 
   [args].tracepoint if
     "MAKING TABLES FOLDER FOR SCHEMA " sSchFolderNm str.cat
-      " on NODE " str.cat [grid].thisNodeNo@ >str str.cat .
+      " on NODE " str.cat [grid].thisNodeId@ >str str.cat .
   then
 
   sSchFolderNm find execute locals| pwSchemaFolder |
@@ -148,7 +148,7 @@
 
   [args].tracepoint if
     "MAKING TABLE " sTblFolderNm str.cat
-     " on NODE " str.cat [grid].thisNodeNo@ >str str.cat .
+     " on NODE " str.cat [grid].thisNodeId@ >str str.cat .
   then
 
   // make: ../schemas/public/tables/t \folder

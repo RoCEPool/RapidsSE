@@ -70,7 +70,7 @@
 : :makeTenantFolder params| sTenantNm |
 
   [args].tracepoint if
-    sTenantNm "MAKING TENANT " swap str.cat " on NODE " str.cat [grid].thisNodeNo@ >str str.cat .
+    sTenantNm "MAKING TENANT " swap str.cat " on NODE " str.cat [grid].thisNodeId@ >str str.cat .
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -100,7 +100,7 @@
   params| sTenantNm |
 
   [args].tracepoint if
-  dup "REMOVING TENANT " swap str.cat " on NODE " str.cat [grid].thisNodeNo@ >str str.cat .
+  dup "REMOVING TENANT " swap str.cat " on NODE " str.cat [grid].thisNodeId@ >str str.cat .
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

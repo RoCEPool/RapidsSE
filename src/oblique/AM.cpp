@@ -262,7 +262,7 @@ void AM::DEMON::vPipeToOp0(Stz* szDemonNm, Operand* pOperand)
   
   Job* pJob = _pJob(pDemonWord->pObject());
   
-  Pipeline* pPipeline = pJob->pPipelineX();
+  Pipeline* pPipeline = pJob->pPipeline();
   
   Op* pOp0 = pPipeline->pOp0();
 
@@ -292,11 +292,11 @@ void AM::ENGINE::vSignalHandler(i8 iSignal)
 /*----------------------------------------------------------------------------*/
 /* get node for given node number                                             */
 /*----------------------------------------------------------------------------*/
-Node* AM::GRID::pGetNode(i8 iNodeNo)
+Node* AM::GRID::pGetNode(i8 iNodeId)
 {  
   _static_
   
-  Node* pNode = gpAttachMap->m_pGrid->pFindNode(iNodeNo);
+  Node* pNode = gpAttachMap->m_pGrid->pFindNodeById(iNodeId);
     
   return pNode;
 }
@@ -316,18 +316,18 @@ Node* AM::GRID::pGetThisNode(void)
 /*----------------------------------------------------------------------------*/
 /* get the node number of nth node                                            */
 /*----------------------------------------------------------------------------*/
-i8 AM::GRID::iGetNthNodeNo(i8 i_Node)
+i8 AM::GRID::iGetNthNodeId(i8 i_Node)
 {
   _static_
   
-  i8 iNodeNo = 0;
+  i8 iNodeId = 0;
   
   Node* pNode = gpAttachMap->m_pGrid->pGetNthNode(i_Node);
   
   if (pNode)
-    iNodeNo = pNode->iNodeNo();
+    iNodeId = pNode->iNodeId();
   
-  return iNodeNo;
+  return iNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,31 +341,19 @@ i8 AM::GRID::nKnownNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/**
- * @brief Add new node into the cluster
- * @details When a new node comes up, add it to the cluster.
- * <p>
- * @param[in] iNodeNo  ID of this node
- * @param[in] pszName  name of this node
- * @param[in] pszAddr  Address this node runs at
- * @param[in] iPort   port number this node listens to
- *
- *
- * @return none
- *
- */
-void AM::GRID::vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
+/*----------------------------------------------------------------------------*/
+void AM::GRID::vNodeDetected(i8 iNodeId, Stz* szNodeNm,
                        Stz* szIPAddr, i8 iPortNo,
                        Stz* szRegionNm)
 {
   _static_
   
   if (AM::SYSTEM::bStarted()) {
-    Node *pDetectedNode = AM::pGrid()->pFindNode(szNodeNm);
+    Node *pDetectedNode = AM::pGrid()->pFindNodeNm(szNodeNm);
     
     // check to make sure we haven't added the detected node yet
     if (! pDetectedNode) {
-      AM::pGrid()->vAddDetectedNode(iNodeNo, szNodeNm,
+      AM::pGrid()->vAddDetectedNode(iNodeId, szNodeNm,
                                     szIPAddr, iPortNo,
                                     szRegionNm);
     }
@@ -375,13 +363,13 @@ void AM::GRID::vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
 /*----------------------------------------------------------------------------*/
 /* get this node number                                                       */
 /*----------------------------------------------------------------------------*/
-i8 AM::GRID::iThisNodeNo(void)
+i8 AM::GRID::iThisNodeId(void)
 {
   _static_
   
-  i8 iNodeNo = gpAttachMap->m_pGrid->iThisNodeNo();
+  i8 iNodeId = gpAttachMap->m_pGrid->iThisNodeId();
     
-  return iNodeNo;
+  return iNodeId;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -804,9 +792,9 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
   if (gpAttachMap && gpAttachMap->m_pNumbering) {
     iNo = gpAttachMap->m_pNumbering->iNextNo(eClassNo);
     if (CN_JOB == eClassNo) {
-      i8 iNodeNo = AM::GRID::iThisNodeNo();
+      i8 iNodeId = AM::GRID::iThisNodeId();
       
-      iNo = iNodeNo << 48 | iNo;
+      iNo = iNodeId << 48 | iNo;
     }
   }
   else {
@@ -2509,7 +2497,7 @@ Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
-i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNodeNo();     }
+i8   AM::iThisNodeId(void)    { return gpAttachMap->m_pGrid->iThisNodeId();     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; }
 bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
@@ -2790,7 +2778,7 @@ Job* AM::pPipelineJob(void)
 {
   Op* pOp = pThisTLSTask()->pOp();
   
-  Job* pPipelineJob = pOp->pPipelineOfOp()->pPipelineJob();
+  Job* pPipelineJob = pOp->pPipeline()->pPipelineJob();
   
   return pPipelineJob;
 }
@@ -3034,9 +3022,9 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 /* get pSession given i_Session                                               */
 /*----------------------------------------------------------------------------*/
-Session* AM::pSessionGet(i8 i_Origin,  i8 i_Session)
+Session* AM::pSessionGet(i8 iOriginNodeId,  i8 i_Session)
 {
-  if (i_Origin != AM::iThisNodeNo())
+  if (iOriginNodeId != AM::iThisNodeId())
     return nullptr;
   
   if (C_UNKNOWN == i_Session)
@@ -4481,7 +4469,7 @@ void AM::vJob_RemoveRetired(Job* pJob)
 void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 {
   if (AM::SYSTEM::bStarted()) {
-    Node *pThisNode = AM::pGrid()->pFindNode(iNode);
+    Node *pThisNode = AM::pGrid()->pFindNodeById(iNode);
 
     if (pThisNode) {
       pThisNode->vPutHeartbeat(xHeartbeat);
@@ -4495,7 +4483,7 @@ void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 {
   if (AM::SYSTEM::bStarted()) {
-    Node *pThisNode = AM::pGrid()->pFindNode(pszName);
+    Node *pThisNode = AM::pGrid()->pFindNodeNm(pszName);
 
     if (pThisNode) {
       pThisNode->vPutHeartbeat(xHeartbeat);
@@ -4510,7 +4498,7 @@ bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(i8 iNode)
 {
-  Node *pThisNode = AM::SYSTEM::bStarted() ? AM::pGrid()->pFindNode(iNode) : nullptr;
+  Node *pThisNode = AM::SYSTEM::bStarted() ? AM::pGrid()->pFindNodeById(iNode) : nullptr;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
@@ -4525,7 +4513,7 @@ Heartbeat AM::xGetHeartbeat(i8 iNode)
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(Stz* pszName)
 {
-  Node *pThisNode = AM::SYSTEM::bStarted() ? AM::pGrid()->pFindNode(pszName) : nullptr;;
+  Node *pThisNode = AM::SYSTEM::bStarted() ? AM::pGrid()->pFindNodeNm(pszName) : nullptr;;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
@@ -4550,7 +4538,7 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
 void AM::vRemoveNode(Stz* pszName)
 {
   if (AM::SYSTEM::bStarted()) {
-    Node *pThisNode = AM::pGrid()->pFindNode(pszName);
+    Node *pThisNode = AM::pGrid()->pFindNodeNm(pszName);
     // Check to make sure we have this node in the cluster/grid.
     if (pThisNode) {
 

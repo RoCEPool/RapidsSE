@@ -51,28 +51,30 @@ __aFooterFunction(Op);
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(Stream* pStream, OpSpec* pOpSpec)
+Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
 : Operand(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  RASSERT(pOpSpec);
+  RASSERT(p_Stream);
+  RASSERT(p_OpSpec);
+
+  m_p_Stream = p_Stream;
+  m_p_OpSpec = p_OpSpec;
+
+  m_pTask   = nullptr;
+
+  // -- -- -- -- -- --
   
   //m_sPath
   
   m_bTraceOp    = false;
   m_bTraceAck   = false;
 
-  m_pOpSpec   = pOpSpec;
-  m_pStream   = pStream;
-  m_p_SubPipeOfOp  = pStream->pPipeline();
-  m_p_PipeWorkOfOp = nullptr;
-
   // -- -- -- -- -- --
 
   // m_oOpTags
   m_pOpTags = nullptr;
-  m_pTask = nullptr;
     
   // -- -- -- -- -- --
 
@@ -102,7 +104,7 @@ Op::Op(Stream* pStream, OpSpec* pOpSpec)
   
   SMA<Job,CN_JOB> pPipelineJob;
   
-  pPipelineJob = pStream->pPipeline()->pPipelineJob();
+  pPipelineJob = p_Stream->pPipeline()->pPipelineJob();
   
   TagSet* pJobTags = AM::pJobTags(pPipelineJob);
   
@@ -214,8 +216,8 @@ void Op::vAckInvokingTask(void)
     } else {
       vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task\n"_Stz,
              szOpNm(),
-             m_pStream->pStage()->szStageNm(),
-             iNode(),
+             m_p_Stream->pStage()->szStageNm(),
+             iNodeId(),
              tPtnId().iAsI8());
     }
   }
@@ -235,8 +237,8 @@ void Op::vAckInvokingTask(void)
   if (m_bTraceAck)
     vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task (acksRemaining : %lld)\n"_Stz,
            szOpNm(),
-           m_pStream->pStage()->szStageNm(),
-           iNode(),
+           m_p_Stream->pStage()->szStageNm(),
+           iNodeId(),
            tPtnId().iAsI8(),
            nAcksWereRemaining);
 
@@ -330,7 +332,7 @@ eYX Op::eCrossTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->eCrossTopology();
+  return m_p_OpSpec->eCrossTopology();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -357,6 +359,19 @@ Word* Op::pCurWord(void)
   return pCurWord;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get deck  of this operator                                                 */
+/*----------------------------------------------------------------------------*/
+Deck* Op::pDeck(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Deck* pDeck = m_p_Stream->pDeck();
+  
+  return pDeck;
+}
+
+  
 /*----------------------------------------------------------------------------*/
 /* sen . print                                                                */
 /*----------------------------------------------------------------------------*/
@@ -398,7 +413,7 @@ void Op::vDump(void)
   vTrace("--\n"_Stz);
   vTrace("%p:\n"_Stz,this);
   vTrace("OpNm=%s\n"_Stz,szOpNm());
-  vTrace("m_i_Node=%lld\n"_Stz,iNode());
+  vTrace("m_i_Node=%lld\n"_Stz,iNodeId());
   vTrace("m_tPtnId=%lld\n"_Stz,tPtnId().iAsI8());
 }
 
@@ -939,7 +954,7 @@ i8 Op::iNextOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->iNextOp();
+  return m_p_OpSpec->iNextOp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -951,7 +966,7 @@ Op* Op::pNextOp(void)
     
   i8 i_NextOp = iNextOp();
 
-  Op* p_NextOp = m_pStream->pGet(i_NextOp);
+  Op* p_NextOp = m_p_Stream->pGet(i_NextOp);
   
   return p_NextOp;
 }
@@ -963,7 +978,7 @@ i8 Op::iNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->iNextStage();
+  return m_p_OpSpec->iNextStage();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -973,8 +988,10 @@ Stage* Op::pNextStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Vertex* pPipeWork = pPipelineOfOp()->pVertexRoot();
-  Stage* pNextStage = pPipeWork->pStaging()->pGet(iNextStage());
+  Deck* pDeck    = this->pDeck();
+  i8 i_NextStage = this->iNextStage();
+  
+  Stage* pNextStage = pDeck->pGet(i_NextStage);
   
   return pNextStage;
 }
@@ -982,18 +999,18 @@ Stage* Op::pNextStage(void)
 /*----------------------------------------------------------------------------*/
 /* get node                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Op::iNode(void)
+i8 Op::iNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  i8 i_Node;
+  i8 iNodeId;
   
-  if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
-    i_Node = m_pStream->iNodeNo();
+  if (m_p_Stream->pStage()->pStageSpec()->bNodeTopo())
+    iNodeId = m_p_Stream->iNodeId();
   else
-    i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId());
+    iNodeId = AM::pPtnMap()->iMappedNodeId(tPtnId());
 
-  return i_Node;
+  return iNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1003,7 +1020,7 @@ i8 Op::i_Op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->i_OpSpec();;
+  return m_p_OpSpec->i_OpSpec();;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1067,7 +1084,7 @@ Stz* Op::szOpNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->szOpNm();;
+  return m_p_OpSpec->szOpNm();;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1077,7 +1094,7 @@ OpSpec* Op::pOpSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec;
+  return m_p_OpSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1123,8 +1140,8 @@ void Op::vOpTrace(Operand* pOperand
          "%18s %-15s %p %s\n"_Stz,
 
          szOpNm(),
-         m_pStream->pStage()->szStageNm(),
-         iNode(),
+         m_p_Stream->pStage()->szStageNm(),
+         iNodeId(),
          tPtnId().iAsI8(),
          pJobOfOp(),
 
@@ -1196,7 +1213,7 @@ i8 Op::iOtherOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  i8 i_OtherOp = m_pOpSpec->iOtherOp();
+  i8 i_OtherOp = m_p_OpSpec->iOtherOp();
   
   return i_OtherOp;
 }
@@ -1208,7 +1225,7 @@ i8 Op::iOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  i8 i_OtherStage = m_pOpSpec->iOtherStage();
+  i8 i_OtherStage = m_p_OpSpec->iOtherStage();
   
   return i_OtherStage;
 }
@@ -1220,9 +1237,10 @@ Stage* Op::pOtherStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Vertex* pFormWork = pPipelineOfOp()->pVertexRoot();
-  
-  Stage* pOtherStage = pFormWork->pStaging()->pGet(iOtherStage());
+  Deck* pDeck     = this->pDeck();
+  i8 i_OtherStage = this->iOtherStage();
+    
+  Stage* pOtherStage = pDeck->pGet(i_OtherStage);
   
   return pOtherStage;
 }
@@ -1290,13 +1308,31 @@ bool Op::bPeekOoO(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pipeline of op                                                         */
+/* get this op's destination op                                               */
 /*----------------------------------------------------------------------------*/
-Pipeline* Op::pPipelineOfOp(void)
+Op* Op::pPipeDstOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pStream->pPipeline();
+   // get the next stage the send is supposed to send to
+  Stage* pDstStage = pNextStage();
+
+  // get the op to forward to depending on the cross topology
+  PtnId tThisPtnId = tPtnId();
+  i8 iNxtOp        = iNextOp();
+  Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
+  
+  return pDstOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pipeline of op                                                         */
+/*----------------------------------------------------------------------------*/
+Pipeline* Op::pPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_p_Stream->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1305,30 +1341,15 @@ Pipeline* Op::pPipelineOfOp(void)
 void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+    
   vOpTrace(pOperand,(Stz*)__func__);
-    
-  //RASSERT(! szOpNm()->bSame("sendSE"_Stz));
   
-    
-  // get the next stage the send is supposed to send to
-  Vertex* pFormWork = pPipelineOfOp()->pVertexRoot();
-  Stage* pDstStage = pFormWork->pStaging()->pGet(iNextStage());
-
-  // get the op to forward to depending on the cross topology
-  
-  PtnId tThisPtnId = tPtnId();
-  i8 iNxtOp        = iNextOp();
-
- 
   if (pOperand->bIsBuffer()) {
     LogicUnit* pLogicUnit = this->pOpLogicUnit();
     pLogicUnit->m_xpStats->m_nBuffOut++;
   }
 
-  Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
-  
-  
+  Op* pDstOp = pPipeDstOp();
 
   pDstOp->vPipeToThis(pOperand,pTriggeringTask);
 }
@@ -1340,11 +1361,8 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  
-
   vOpTrace(pOperand,(Stz*)__func__);
 
-  
   eCN eClassNo = pOperand->eGetClassNo();
   if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
@@ -1575,10 +1593,10 @@ PtnId Op::tPtnId(void)
 
   PtnId tPtnId;
 
-  if (m_pStream->pStage()->pStageSpec()->bNodeTopo())
+  if (m_p_Stream->pStage()->pStageSpec()->bNodeTopo())
     tPtnId = C_UNKNOWN;
   else
-    tPtnId = m_pStream->tPtnId();
+    tPtnId = m_p_Stream->tPtnId();
 
   return tPtnId;
 }
@@ -1635,7 +1653,7 @@ eXK Op::eSendCast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  eXK eSendCast = m_pOpSpec->eSendCast();
+  eXK eSendCast = m_p_OpSpec->eSendCast();
   return eSendCast;
 }
 
@@ -1646,7 +1664,7 @@ void Op::vSendCast(eXK eSendCast)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  RASSERT(eSendCast == m_pOpSpec->eSendCast());
+  RASSERT(eSendCast == m_p_OpSpec->eSendCast());
   m_eSendCast = eSendCast;
 }
 
@@ -1737,7 +1755,7 @@ Stz* Op::szStageName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pStream->pStage()->szStageNm();
+  return m_p_Stream->pStage()->szStageNm();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1747,7 +1765,7 @@ Stage* Op::pStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pStream->pStage();
+  return m_p_Stream->pStage();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1757,7 +1775,7 @@ Stream* Op::pStream(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pStream;
+  return m_p_Stream;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1767,17 +1785,7 @@ eYS Op::eStreamTopology_op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->eStreamTopology_op();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get sub-pipeline of op                                                     */
-/*----------------------------------------------------------------------------*/
-Pipeline* Op::pSubPipeOfOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_p_SubPipeOfOp;
+  return m_p_OpSpec->eStreamTopology_op();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1831,7 +1839,7 @@ void Op::vToCmdStr(Stz* szCmdStr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
   szCmdStr->vCopy(szOpNm());
-  m_pOpSpec->pArgTags()->vConcat(szCmdStr);
+  m_p_OpSpec->pArgTags()->vConcat(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
 }
 

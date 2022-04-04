@@ -33,11 +33,13 @@ namespace STORE
    ~Stage(void) noexcept(false);
       
     void vCancelPipeline(Task* pTriggeringTask);
-    Stream* pGetStream_byNodeNo(i8 i_Node);
+    Deck* pDeck(void);
+    bool bEnqueueInvoke(void);
+    Stream* pGetStream_byNodeId(i8 i_Node);
     Stream* pGetStream_byPtnNo(i8 i_Ptn);
     Stream* pGetStream_byStreamNo(i8 i_Stream);
     Op*  pOp0(void);
-    i8   nOpsOnNode(i8 iNode, i8 iOrigin);
+    i8   nOpsExeOnNode(i8 iNodeId, i8 iOriginId);
     Pipeline* pPipeline(void);
     Vertex* pVertex(void);
     Op*  pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp);
@@ -45,11 +47,10 @@ namespace STORE
     Stz* szStageNm(void);
     Stream* pStream0(void);
     StageSpec* pStageSpec(void);
-    bool bEnqueueInvoke(void);
 
-  void    vCreateStreams(void);
 
   private:
+    void    vCreateStreams(void);
 
     Footer* aFooter(void);
   };

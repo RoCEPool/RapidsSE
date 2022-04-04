@@ -63,7 +63,7 @@ namespace STORE
   
     eYF  eParcelForward(void);
     void vParcelForward(eYF eParcelForward);
-    VertexSpec* pPipeSpec(void);
+    VertexSpec* pVertexSpec(void);
   
     void vSpecificNode(i8 i_SpecificNode);
     i8   iSpecificNode(void);

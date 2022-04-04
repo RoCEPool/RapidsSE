@@ -34,7 +34,7 @@
 
   //"adaptorWL_StartMarker- ZK_M_WIRELINE" .verbose
 
-  //AdaptorWL[].processEventB
+  AdaptorWL[].processEventB
 
   true
 ;

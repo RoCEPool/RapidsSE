@@ -11,11 +11,9 @@
 
   0 locals| nAcks |
 
-  // <subPipeNm> [subPipeOfOp].findSubPipe to SubPipe[]
+  deck:invoke
   
-  subPipe:invoke
-  
-  nullptr to SubPipe[]
+  nullptr to Deck[]
 
   ZK_M_START_handler
 ;

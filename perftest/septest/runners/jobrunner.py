@@ -49,7 +49,8 @@ class JobRunner:
                  invoking_user: string,
                  archive_metrics: bool,
                  result_path: string,
-                 tags: dict):
+                 tags: dict,
+                 build_se: bool = True):
 
         # Parse the job file and the hardware and cluster configs that it references
         self.all_configs = AllConfigs(job_path)
@@ -79,6 +80,9 @@ class JobRunner:
 
         # A dictionary of key/value pairs that are stored with the job results
         self.tags: {} = tags
+
+        # Do we want to build SE and the installer?
+        self.build_se = build_se
 
         self.job_start_ts = datetime.datetime.now()  # timestamp of when the job began
         self.test_start_ts = None   # timestamp of when the tests were first executed
@@ -209,7 +213,10 @@ class JobRunner:
         self.__delete_results_dir_contents()
 
         # Compile RapidsSE and build the installer
-        installer_path = clusterops.build_installer()
+        if self.build_se:
+            installer_path = clusterops.build_installer()
+        else:
+            installer_path = clusterops.find_installer()
 
         # Start up the necessary AWS hosts
         (self.instance_ids, self.ip_addresses) = ec2.start_instances(self.all_configs.get_hardware(),

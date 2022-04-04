@@ -611,7 +611,7 @@ Object* Socket::pRecvObject(void)
 
 //  SP_Header spHeader;
 //  vTrace("%lld: vSocketRecvObject: Header %s\n"_Stz,
-//         AM::iThisNodeNo(),
+//         AM::iThisNodeId(),
 //         spHeader.sz(aHeader));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

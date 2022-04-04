@@ -22,7 +22,7 @@ namespace STORE
     PtnId m_tDstPtn;         // destination partition (in grid)
 
     // info of op_send
-    i8    m_iSrcNode;        // source node
+    i8    m_iSrcNodeId;        // source node
     i8    m_iCodeLine;       // line in Parcel.cpp
     eYF   m_eParcelForward;  // how parcel is forwarded
     eXK   m_eSendCast;       // broadcast, hashcast, localRobin, robin, unicast

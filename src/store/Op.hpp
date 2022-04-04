@@ -12,7 +12,8 @@
 
 namespace BASE { class OperandQueue; }
 
-namespace STORE { class OpSpec;
+namespace STORE { class Deck;
+                  class OpSpec;
                   class VertexSpec; class Vertex;
                   class StageSpec; }
 
@@ -22,8 +23,10 @@ namespace STORE
   {
   private:
   
-    SMA<Stream,CN_STREAM> m_pStream;  // which stream (of stage of pipeline of job)
-    SMA<OpSpec,CN_OPSPEC> m_pOpSpec;  // specification of this operator
+    SMA<Stream,CN_STREAM> m_p_Stream;  // which stream (of stage of pipeline of job)
+    SMA<OpSpec,CN_OPSPEC> m_p_OpSpec;  // specification of this operator
+
+    SMA<Task,CN_TASK>     m_pTask;     // task of op
 
     // -- id, name and kind
     Gid_t<CN_OP> m_xOpId;     // op id in grid
@@ -33,12 +36,6 @@ namespace STORE
     bool       m_bTraceOp;  // tracing this operator
     bool       m_bTraceAck; // tracing ack of this operator
 
-    // -- refers to
-    SMA<Pipeline,CN_PIPELINE>  m_p_SubPipeOfOp;   // which sub-pipeline
-    SMA<Vertex,CN_VERTEX>  m_p_PipeWorkOfOp;  // which pipework
-  
-    // -- executed by
-    SMA<Task,CN_TASK>      m_pTask;    // which task is currenty executing this op
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // event handling
@@ -97,6 +94,7 @@ namespace STORE
     eZK  eCurHandler(void);
     Word* pCurWord(void);
   
+    Deck* pDeck(void);
     void vDotPrint(Stz* szText);
     void vDropTaskLock(void);
     void vDump(void);
@@ -128,7 +126,7 @@ namespace STORE
     Op*  pNextOp(void);
     i8   iNextStage(void);
     Stage* pNextStage(void);
-    i8   iNode(void);
+    i8   iNodeId(void);
   
     i8   iOperandCount(i8 i_OperandKind);
   
@@ -152,7 +150,8 @@ namespace STORE
     bool bPause(void);
     bool bPeekLeft(void);
     bool bPeekOoO(void);
-    Pipeline* pPipelineOfOp(void);
+    Op*  pPipeDstOp(void);
+    Pipeline* pPipeline(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToThis(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
@@ -180,7 +179,6 @@ namespace STORE
     Stz* szStageName(void);
     Stream* pStream(void);
     eYS  eStreamTopology_op(void);
-    Pipeline* pSubPipeOfOp(void);
 
     Task* pTask(void);
     void vTask(Task* pTask);

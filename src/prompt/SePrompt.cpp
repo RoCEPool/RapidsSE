@@ -1169,7 +1169,7 @@ void SePrompt::vResetExtractedTagSet(void)
   
   m_pCmdTagSet->vReset();
   m_pCmdTagSet->vInsert(C_TAG_BYPROMPT,1);
-  m_pCmdTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
+  m_pCmdTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
   m_pCmdTagSet->vInsert(C_TAG_SESSION,m_pCurrentDeputy->pSession()->m_i_Session);
 }
 

@@ -102,32 +102,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
 
-/*
-  [task].grabLock
-
-    Pipeline[].opsOnNode@ to nAcks
-
-    nAcks if
-      nAcks [task].acksRemaining!
-    
-      Pipeline[].enqueueStart? if
-    
-        Marker[].newStartMarker
-        Marker[]\clear Pipeline[].op0@ op.enqueOperand
-      then
-      [task].wait
-    else
-      [task].dropLock
-    then
-*/
-
-  Pipeline[] to SubPipe[]
-   
-  // SubPipe[].dump
-     
-  subPipe:invoke
-
-  nullptr to SubPipe[]
+  Pipeline[].rootDeck@ to Deck[]
+  deck:invoke
+  nullptr to Deck[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
 
