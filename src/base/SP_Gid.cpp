@@ -52,7 +52,7 @@ Stz* SP_Gid::sz(i8 iGid)
                   "%lld.%03lld"_Stz,
                   
                   wGid.m_uNodeId,
-                  wGid.m_uObjectNo);
+                  wGid.m_uPartNo);
 
   return (Stz*) &m_caResult[0];
 }
@@ -80,7 +80,7 @@ Stz* SP_Gid::sz(eIK eKind, i8 iGid)
                   
                   aIK_3c[eKind],
                   wGid.m_uNodeId,
-                  wGid.m_uObjectNo);
+                  wGid.m_uPartNo);
   
   return (Stz*) &m_caResult[0];
 }
@@ -108,7 +108,7 @@ Stz* SP_Gid::sz(eLG eKind, i8 iGid)
                   
                   aLG[eKind],
                   wGid.m_uNodeId,
-                  wGid.m_uObjectNo);
+                  wGid.m_uPartNo);
   
   return (Stz*) &m_caResult[0];
 }

@@ -9,11 +9,11 @@ class Id_2part
   
   union {
     struct {
-      u8 m_uObjectNo  : 48 ; // 0..256T
-      u8 m_uNodeId    : 16 ; // 0..65,535
-      //               ---
-      //                64
-      //               ===
+      u8 m_uPartNo  : 48 ; // 0..256T
+      u8 m_uNodeId  : 16 ; // 0..65,535
+      //             ---
+      //              64
+      //             ===
     };
     i8 m_iAsI8;
   };
@@ -30,10 +30,10 @@ class Id_2part
   u8   uNodeId(void);
   void vNodeId(u8 uNodeId);
 
-  i8   nObjectBits(void);
-  u8   uObjectMask(void);
-  u8   uObjectNo(void);
-  void vObjectNo(u8 uObjectNo);
+  i8   nPartBits(void);
+  u8   uPartMask(void);
+  u8   uPartNo(void);
+  void vPartNo(u8 uObjectNo);
 };
 
 /*============================================================================*/
