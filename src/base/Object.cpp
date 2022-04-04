@@ -115,14 +115,16 @@ Object* Object::pMemoryCopy(void)
   Object* pCopy = (Operand*)Heaps::pAllocate(eClass);
   MemLib::vCopy(pCopy,this,nSize,eClass);
 
-  //TODO: Remove this section once memcopy is fixed
+  //TODO: If Object derives from DataBuffer, we should not overwrite DataBuffer's members
+#ifdef WITH_BUFFER_ID
   if (eClass == CN_ROWBUFFER) {
     RowBuffer* pRowBuffer = _pRowBuffer(pCopy);
     pRowBuffer->m_iBufferNo = pRowBuffer->iBufferNo();
     pRowBuffer->m_oBufferId.m_vAsAddress =
         BufferId::vBufferIdFromNo(pRowBuffer->m_iBufferNo);
   }
-  //-----
+#endif
+
   return pCopy;
 }
 
