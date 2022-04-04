@@ -374,11 +374,7 @@ void Bucket::vVisualizeTable(void)
       m_pCrwTablePtn->vVisualizeTable();
       break;
     case CN_ROWTABLEPTN:
-#ifdef WITH_MULTI_BUCKET
       m_pRowTablePtn->vVisualizeTable();
-#else
-      m_pRowTablePtn->vTruncate(); //TRUNCATE not VISUALIZE?  RAY?
-#endif
 
       break;
     default: NEVER_REACH;
@@ -387,7 +383,7 @@ void Bucket::vVisualizeTable(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* dump the table data of this partition                                 */
+/* dump the table data of this partition                                      */
 /*----------------------------------------------------------------------------*/
 Stz* Bucket::szDumpContents(i8 i_Bucket)
 {
