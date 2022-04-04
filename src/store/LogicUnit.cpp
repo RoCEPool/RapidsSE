@@ -1572,61 +1572,6 @@ void LogicUnit::vDumpCode(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* initialise and return address of rlu common                                */
-/*----------------------------------------------------------------------------*/
-struct RluCommon* LogicUnit::aRlu_INIT(void* aLU)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-
-  UNUSED(aLU);
-  
-  return & m_xRluCommon;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the rlu Dstk                                                          */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vRlu_ASSERTSTACK(void* aLU, i8* aiDstk) {
-  vDebugPoint();
-
-  //vTrace("vRlu_ASSERTSTACK\n"_Stz);
-  LogicUnit *pLogicUnit = _pLogicUnit(aLU);
-
-  i8 nStkUse = nDifference(aiDstk,pLogicUnit->m_xRluCommon.m_iaDataStack);
-
-  if (nStkUse != 0)
-    vRlu_DUMP(aLU,aiDstk );
-
-  RASSERT(nStkUse == 0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the rlu Dstk                                                          */
-/*----------------------------------------------------------------------------*/
-void LogicUnit::vRlu_DUMP(void* aLU, i8* aiDstk)
-{
-  vDebugPoint();
-  
-  LogicUnit* pLogicUnit = _pLogicUnit(aLU);
-
-  i8* aiDstkBase = pLogicUnit->m_xRluCommon.m_iaDataStack;
-  i8  nUsageBytes = nDifference(pLogicUnit->m_xRluCommon.m_iaDataStack,
-                                aiDstk)
-                     + 8;
-  
-  vTrace("\nRlu_Dump: base %llx ; aiDstk %llx ; %lld bytes usage\n"_Stz,
-      
-         aiDstkBase,
-         aiDstk,
-         nUsageBytes
-         );
-  
-  MemLib::vHexDump(aiDstkBase,nUsageBytes);
-  
-  vTrace("\n"_Stz);
-}
-
 /*============================================================================*/
 /* - - - - - - - - - - - - - RELATIONAL LOGIC UNIT - - - - - - - - - - - - - -*/
 /*============================================================================*/
