@@ -749,7 +749,7 @@ namespace OBLIQUE
     static void vFreeInc(RU_Memory* pRU_Memory, eCN eAllocClass);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static Session* pSessionGet(i8 i_Origin,  i8 i_Session);
+    static Session* pSessionGet(i8 iOriginId,  i8 i_Session);
     
     static bool bSpawnTask_session(Job* pJob);
     

@@ -3022,9 +3022,9 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 /* get pSession given i_Session                                               */
 /*----------------------------------------------------------------------------*/
-Session* AM::pSessionGet(i8 i_Origin,  i8 i_Session)
+Session* AM::pSessionGet(i8 iOriginNodeId,  i8 i_Session)
 {
-  if (i_Origin != AM::iThisNodeId())
+  if (iOriginNodeId != AM::iThisNodeId())
     return nullptr;
   
   if (C_UNKNOWN == i_Session)

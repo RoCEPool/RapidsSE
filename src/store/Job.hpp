@@ -47,7 +47,7 @@ namespace STORE
 
   public:
     // -- home is
-    i8 m_i_Origin;   // which node
+    i8 m_iOriginNodeId;   // which node
     i8 m_i_Session;  // which session in node's session array
     i8 m_iCmdNo;     // sequence no of the command from that session
   
@@ -56,7 +56,7 @@ namespace STORE
   
     // -- postage
     bool m_bWasReceived;   // was job received over a socket?          POST_RECV
-    i8   m_iParticipantNodeId;  // participant node no (FromNodeId?)
+    i8   m_iParticipantNodeId;  // participant node 
   
     // -- state
     eJS m_eJobState;  // current state: JS_ACTIVE, _LOCKED, ...
@@ -113,9 +113,9 @@ namespace STORE
     void  operator delete(void*);
     
     Job(Stz* szJobNm,
-        i8 i_Origin,   // originated on which node
-        i8 i_Session,  // which session in session array
-        i8 iCmdNo      // the sequence no of the request from that session
+        i8 iOriginNodeId,  // originated on which node
+        i8 i_Session,      // which session in session array
+        i8 iCmdNo          // the sequence no of the request from that session
        );
 
    ~Job(void) noexcept(false);

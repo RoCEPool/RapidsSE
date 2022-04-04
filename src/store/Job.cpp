@@ -45,9 +45,9 @@ __aFooterFunction(Job)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(Stz* szJobNm,
-         i8 i_Origin,     // originated on which node
-         i8 i_Session,    // which session in session array
-         i8 iCmdNo        // the sequence no of the request from that session)
+         i8 iOriginNodeId, // originated on which node
+         i8 i_Session,     // which session in session array
+         i8 iCmdNo         // the sequence no of the request from that session)
         )
 : Operand(CN_JOB)
 , CRM<Job>(this)
@@ -59,16 +59,14 @@ Job::Job(Stz* szJobNm,
   m_sJobNm   = szJobNm;
   m_eJobKind = JK_NONE;
 
-  
   m_bReapable = false;
   
   // -- a -------------------
   
-  m_i_Origin     = i_Origin;
-  m_i_Session    = i_Session;
-  m_iCmdNo = iCmdNo;
+  m_iOriginNodeId = iOriginNodeId;
+  m_i_Session     = i_Session;
+  m_iCmdNo        = iCmdNo;
 
-  // m_sJobNm;
   m_oTimer.vStart();
 
   // -- b -------------------
@@ -662,7 +660,7 @@ void Job::vPrintJobContents(void)
 
          "              sCmd "  "%s"    " \n"  // 3
          
-         "          i_Origin "  "%lld"  " \n"  // 4
+         "     iOriginNodeId "  "%lld"  " \n"  // 4
          "         i_Session "  "%lld"  " \n"  // 5
          "            iCmdNo "  "%lld"  " \n"  // 6
 
@@ -689,7 +687,7 @@ void Job::vPrintJobContents(void)
          ,m_sJobNm.szStz()           // 1
          ,aJK[m_eJobKind]            // 2
          ,szCmd()                    // 3
-         ,m_i_Origin                 // 4
+         ,m_iOriginNodeId            // 4
          ,m_i_Session                // 5
          ,m_iCmdNo                   // 6
          ,m_bWasReceived ? "true" : "false" // 7
@@ -748,8 +746,8 @@ void Job::vPrintJobLine(void)
          ,this->szJobNm()
          );
 
-  vTrace("origin %lld session %lld command %lld "_Stz
-         ,this->m_i_Origin
+  vTrace("originNodeId %lld session %lld command %lld "_Stz
+         ,this->m_iOriginNodeId
          ,this->m_i_Session
          ,this->m_iCmdNo
          );
@@ -860,7 +858,7 @@ Session* Job::pSession(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Session* pSession = AM::pSessionGet(m_i_Origin,m_i_Session);
+  Session* pSession = AM::pSessionGet(m_iOriginNodeId,m_i_Session);
 
   return pSession;
 }
