@@ -34,7 +34,7 @@ __aFooterFunction(Stream)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
-               i8 i_Stream, PtnId tPtnId, i8 iNodeNo)
+               i8 i_Stream, PtnId tPtnId, i8 iNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
@@ -42,7 +42,7 @@ Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
   m_p_Stage     = p_Stage;
 
   m_tPtnId     = tPtnId;
-  m_iNodeNo    = iNodeNo;
+  m_iNodeId    = iNodeId;
   m_i_Stream   = i_Stream;
   
   vSynthesiseName();
@@ -148,11 +148,11 @@ Deck* Stream::pDeck(void)
 /*----------------------------------------------------------------------------*/
 /* get partition this stream needs to run on                                  */
 /*----------------------------------------------------------------------------*/
-i8 Stream::iNodeNo(void)
+i8 Stream::iNodeId(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_iNodeNo;
+  return m_iNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -239,11 +239,11 @@ void Stream::vSpawnOpTasks(void)
     
     if (YG_NEXT_NODE == m_p_StageSpec->eStageTopology()) {
       if (iThisNodeNo != pPipeline()->iOriginNodeNo()) {
-        i_OnNode = m_iNodeNo;
+        i_OnNode = m_iNodeId;
       }
     }
     else {
-      i_OnNode = m_iNodeNo;
+      i_OnNode = m_iNodeId;
     }
     
   }
@@ -292,12 +292,12 @@ void Stream::vSynthesiseName(void)
  
   if (m_p_StageSpec->bNodeTopo()) {
     m_sStreamNm.vSprint("_stream_N%lld_of_%s"_Stz,
-                          m_iNodeNo,
+                          m_iNodeId,
                           m_p_StageSpec->szStageNm());
   }
   else {
     m_sStreamNm.vSprint("_streamv_N%lldS%lld_of_%s"_Stz,
-                          m_iNodeNo,
+                          m_iNodeId,
                           m_i_Stream,
                           m_p_StageSpec->szStageNm());
   }

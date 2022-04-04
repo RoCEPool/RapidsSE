@@ -126,7 +126,7 @@ namespace STORE
     Op*  pNextOp(void);
     i8   iNextStage(void);
     Stage* pNextStage(void);
-    i8   iNode(void);
+    i8   iNodeId(void);
   
     i8   iOperandCount(i8 i_OperandKind);
   

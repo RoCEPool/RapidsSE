@@ -93,7 +93,7 @@ void Stage::vCancelPipeline(Task *pTriggeringTask)
   StageSpec *pStageSpec = pStream->pStageSpec();
 
   if (pStageSpec->bNodeTopo() &&
-      pStream->iNodeNo() == AM::pGrid()->iThisNodeId()) {
+      pStream->iNodeId() == AM::pGrid()->iThisNodeId()) {
 
     // get first operator of this first stage
     Op *pOp = pStream->pGet(0);
@@ -128,7 +128,7 @@ Stream *Stage::pGetStream_byNodeNo(i8 i_Node)
     pStageSpec = pStream->pStageSpec();
 
     if (pStageSpec->bNodeTopo() &&
-        pStream->iNodeNo() == i_Node)
+        pStream->iNodeId() == i_Node)
       return pStream;
   }
 
@@ -185,12 +185,12 @@ i8 Stage::nOpsExeOnNode(i8 iThisNodeId, i8 iOriginNodeId)
 
       if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
         if (MY::pNode()->iNodeId() != iOriginNodeId &&
-            pStream->iNodeNo() == iThisNodeId) {
+            pStream->iNodeId() == iThisNodeId) {
           nOpsExe += pStream->nItems();
         }
       }
       else
-      if (pStream->iNodeNo() == iThisNodeId) {
+      if (pStream->iNodeId() == iThisNodeId) {
         nOpsExe += pStream->nItems();
       }
     }
@@ -340,7 +340,7 @@ bool Stage::bEnqueueInvoke(void)
   StageSpec *pStageSpec = pStream->pStageSpec();
 
   if (pStageSpec->bNodeTopo() &&
-      pStream->iNodeNo() == AM::pGrid()->iThisNodeId()) {
+      pStream->iNodeId() == AM::pGrid()->iThisNodeId()) {
 
     // get first operator of this first stage
     Op *pOp = pStream->pGet(0);

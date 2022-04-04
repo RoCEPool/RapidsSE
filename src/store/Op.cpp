@@ -217,7 +217,7 @@ void Op::vAckInvokingTask(void)
       vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task\n"_Stz,
              szOpNm(),
              m_p_Stream->pStage()->szStageNm(),
-             iNode(),
+             iNodeId(),
              tPtnId().iAsI8());
     }
   }
@@ -238,7 +238,7 @@ void Op::vAckInvokingTask(void)
     vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task (acksRemaining : %lld)\n"_Stz,
            szOpNm(),
            m_p_Stream->pStage()->szStageNm(),
-           iNode(),
+           iNodeId(),
            tPtnId().iAsI8(),
            nAcksWereRemaining);
 
@@ -413,7 +413,7 @@ void Op::vDump(void)
   vTrace("--\n"_Stz);
   vTrace("%p:\n"_Stz,this);
   vTrace("OpNm=%s\n"_Stz,szOpNm());
-  vTrace("m_i_Node=%lld\n"_Stz,iNode());
+  vTrace("m_i_Node=%lld\n"_Stz,iNodeId());
   vTrace("m_tPtnId=%lld\n"_Stz,tPtnId().iAsI8());
 }
 
@@ -999,18 +999,18 @@ Stage* Op::pNextStage(void)
 /*----------------------------------------------------------------------------*/
 /* get node                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Op::iNode(void)
+i8 Op::iNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  i8 i_Node;
+  i8 iNodeId;
   
   if (m_p_Stream->pStage()->pStageSpec()->bNodeTopo())
-    i_Node = m_p_Stream->iNodeNo();
+    iNodeId = m_p_Stream->iNodeId();
   else
-    i_Node = AM::pPtnMap()->iMappedNodeId(tPtnId());
+    iNodeId = AM::pPtnMap()->iMappedNodeId(tPtnId());
 
-  return i_Node;
+  return iNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1141,7 +1141,7 @@ void Op::vOpTrace(Operand* pOperand
 
          szOpNm(),
          m_p_Stream->pStage()->szStageNm(),
-         iNode(),
+         iNodeId(),
          tPtnId().iAsI8(),
          pJobOfOp(),
 
