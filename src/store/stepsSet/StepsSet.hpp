@@ -314,8 +314,6 @@ public:
 
   void vCsvBufferCsvAppend(void);
   void vCsvBufferCsvData(void);
-  void vCsvBufferCsvToRow(void);
-
   void vCsvBufferDelete(void);
   void vCsvBufferGet(void);
   void vCsvBufferGetAndClear(void);
@@ -2290,6 +2288,7 @@ public:
   // toRow
   void vToRowCompleted(void);
   void vToRowCreate(void);
+  void vToRowCsvToRow(void);
   void vToRowDangling(void);
   void vToRowDelete(void);
   void vToRowFetch(void);
