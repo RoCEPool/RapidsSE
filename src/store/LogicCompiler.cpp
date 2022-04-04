@@ -16,22 +16,6 @@
 
 extern EoArg EoArgs[];
 
-const i8 C_MACRO_FILES = 12;
-char gszaAmMacroFiles[C_MACRO_FILES][128] = {
-    "../asm/AM_CrwBuffer.macro",
-    "../asm/AM_DataPulse.macro",
-    "../asm/AM_DefaultHandlers.macro",
-    "../asm/AM_LeftOuterMarker.macro",
-    "../asm/AM_EosMarker.macro",
-    "../asm/AM_Index.macro",
-    "../asm/AM_JoinRows.macro",
-    "../asm/AM_LoopJoin.macro",
-    "../asm/AM_PayLoad.macro",
-    "../asm/AM_QueryMisc.macro",
-    "../asm/AM_RowBuffer.macro",
-    "../asm/AM_StreamDef.macro"
-};
-
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 

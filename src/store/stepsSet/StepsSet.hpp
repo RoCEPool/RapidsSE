@@ -1054,13 +1054,6 @@ public:
   void vLogicNot(void);
   void vLogicOr(void);
 
-  // logic compiler
-  void vLogicCompilerDelete(void);
-  void vLogicCompilerExtract(void);
-  void vLogicCompilerExtractAsm(void);
-  void vLogicCompilerIsNull(void);
-  void vLogicCompilerNew(void);
-
   // logic unit
   void vLogicUnitCallAgainFetch(void);
   void vLogicUnitCallAgainStore(void);
