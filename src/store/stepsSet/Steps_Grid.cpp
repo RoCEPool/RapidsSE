@@ -44,7 +44,7 @@ void Step::vAddSteps_Grid(void)
   vAddStep("[grid].seeNodes"_Stz,          &Step::vGridSeeNodes);
   vAddStep("[grid].show"_Stz,              &Step::vGridShow);
   vAddStep("[grid].tablePtnToPtnNo"_Stz,   &Step::vGridTablePtnToPtnNo);
-  vAddStep("[grid].thisNodeNo@"_Stz,         &Step::vGridThisNodeFetch);
+  vAddStep("[grid].thisNodeId@"_Stz,       &Step::vGridThisNodeIdFetch);
   vAddStep("[grid].thisNodeName@"_Stz,     &Step::vGridThisNodeNameFetch);
   vAddStep("[grid].toNode"_Stz,            &Step::vGridToNode);
 
@@ -320,9 +320,9 @@ void Step::vGridTablePtnToPtnNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].thisNodeNo@ -- get this nodeNo from the grid                        */
+/* [grid].thisNodeId@ -- get this nodeNo from the grid                        */
 /*----------------------------------------------------------------------------*/
-void Step::vGridThisNodeFetch(void)
+void Step::vGridThisNodeIdFetch(void)
 {
   ENTRY();
     

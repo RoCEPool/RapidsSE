@@ -610,7 +610,7 @@ public:
   void vGridShow(void);
   void vGridPtnsPerNode(void);
   void vGridTablePtnToPtnNo(void);
-  void vGridThisNodeFetch(void);
+  void vGridThisNodeIdFetch(void);
   void vGridThisNodeNameFetch(void);
   void vGridToNode(void);
 
