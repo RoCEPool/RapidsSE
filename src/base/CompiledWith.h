@@ -72,8 +72,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // WIP
 
-//#define WITH_BUCKET_HASHING EndDefine      // code for bucket hashing compiled in
-
 #define WITH_MULTI_BUCKET EndDefine
 
 #define WITH_BKTMAP_2N4P EndDefine         // code for buckets up to 2N4P
