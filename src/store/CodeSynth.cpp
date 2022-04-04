@@ -1200,12 +1200,12 @@ void CodeSynth::vSynthOrdAgg(eEK eExprKind, Stz *sProjectExpr, Stz *sLabel, Stz 
 
   //RASSERT(eExprKind == EK_AGGORD);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iBufferDone ) {");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AddRowToTub;");
-  sCopy.vSprint("\n     goto %s;"_Stz, sLabelNext);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iBufferDone ) {");
+//  //StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AddRowToTub;");
+//  sCopy.vSprint("\n     goto %s;"_Stz, sLabelNext);
+//  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate ordered gby
@@ -1399,9 +1399,9 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   // populate the payload values
   //vPayloadPopulate(PL_TOP);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iBufferDone)");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    else");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iBufferDone)");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    else");
   sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
@@ -1830,12 +1830,12 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
 
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    // process the last row");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iBufferDone) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
-  sCopy.vSprint("\n      goto %s;"_Stz, sLabelNext);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iBufferDone) {");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
+//  sCopy.vSprint("\n      goto %s;"_Stz, sLabelNext);
+//  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // is it a new key ?
 
