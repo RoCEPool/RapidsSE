@@ -93,7 +93,7 @@ i8 PtnMap::nKnownNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get which node a logical partition is mapped to                            */
+/* get which node no (of grid) a logical partition is mapped to               */
 /*----------------------------------------------------------------------------*/
 i8 PtnMap::iMappedNodeNo(PtnId tPtnId)
 {
@@ -102,6 +102,18 @@ i8 PtnMap::iMappedNodeNo(PtnId tPtnId)
   i8 iNodeNo = m_xaLglToNodePtn[tPtnId.iAsI8()].m_iNodeNo;
 
   return iNodeNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get which partition no (within node) a logical partition is mapped to      */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::iMappedPtnNo(PtnId tPtnId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 i_PtnNo = m_xaLglToNodePtn[tPtnId.iAsI8()].m_iPtnNo;
+
+  return i_PtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,18 +207,6 @@ void PtnMap::vSee(void)
   }
 
   vTrace(";;\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get which partition no (within node) a logical partition is mapped to      */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::i_WhichPtnNo(PtnId tPtnId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-
-  i8 i_PtnNo = m_xaLglToNodePtn[tPtnId.iAsI8()].m_iPtnNo;
-
-  return i_PtnNo;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -44,7 +44,8 @@ namespace STORE
     i8 nKnownNodes(void);
   
     i8 iMappedNodeNo(PtnId tPtnId);
-  
+    i8 iMappedPtnNo(PtnId tPtnId);
+
     i8 nPtnsInGrid(void);
     i8 nPtnsPerNode(void);
 
@@ -54,7 +55,6 @@ namespace STORE
 
     void vSee(void);
   
-    i8 i_WhichPtnNo(PtnId tPtnId);
     PtnId tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);
     PtnId tToPtnNoOfThisNode(i8 i_Ptn);
 

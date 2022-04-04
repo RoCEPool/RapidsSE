@@ -430,7 +430,7 @@ void Stage::vCreateStreams(void)
         tPtnId = iPtnNo;
         iOriginNodeNo = AM::pPtnMap()->iMappedNodeNo(tPtnId);
 
-        i_Stream = AM::pPtnMap()->i_WhichPtnNo(tPtnId);
+        i_Stream = AM::pPtnMap()->iMappedPtnNo(tPtnId);
         pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
         vAppend(pStream);
       }
@@ -446,7 +446,7 @@ void Stage::vCreateStreams(void)
         iOriginNodeNo = AM::pPtnMap()->iMappedNodeNo(tPtnId);
 
         if (iOriginNodeNo == pPipeline()->iOriginNodeNo()) {
-          i_Stream = AM::pPtnMap()->i_WhichPtnNo(tPtnId);
+          i_Stream = AM::pPtnMap()->iMappedPtnNo(tPtnId);
           pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeNo);
           vAppend(pStream);
         }
