@@ -42,7 +42,6 @@
 #include "LogicUnit.hpp"
 #include "Pipeline.hpp"
 
-#include "LIB_interface.h"
 #include "MathLib.h"
 
 #include "Arg.hpp"
