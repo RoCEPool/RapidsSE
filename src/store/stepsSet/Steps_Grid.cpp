@@ -84,7 +84,7 @@ void Step::vGridFindNodeByName(void)
   s256 sNodeNm;
   m_pDataStack->vPopStr(sNodeNm,__func__);
   
-  Node* pNode = AM::pGrid()->pFindNode(sNodeNm);
+  Node* pNode = AM::pGrid()->pFindNodeNm(sNodeNm);
   
   m_pDataStack->vPushPtr(pNode);
 
@@ -101,7 +101,7 @@ void Step::vGridFindNodeByNo(void)
   
   i8 iNode = m_pDataStack->iPopInt(__func__);
   
-  Node* pNode = AM::pGrid()->pFindNode(iNode);
+  Node* pNode = AM::pGrid()->pFindNodeById(iNode);
   
   m_pDataStack->vPushPtr(pNode);
   
@@ -211,7 +211,7 @@ void Step::vGridPutGridParts(void)
     for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
       Node* pNode = (*oNode_I);
 
-      if (pGridRemote->pFindNode(pNode->iNodeId()) == nullptr) {
+      if (pGridRemote->pFindNodeById(pNode->iNodeId()) == nullptr) {
         bMatched = false;
         break;
       }

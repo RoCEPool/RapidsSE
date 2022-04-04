@@ -581,7 +581,7 @@ Stz* Job::szNodeNm(void)
   
   i8 i_Node = iOriginatorNodeNo();
   
-  Stz* szNodeNm = AM::pGrid()->pFindNode(i_Node)->szNodeNm();
+  Stz* szNodeNm = AM::pGrid()->pFindNodeById(i_Node)->szNodeNm();
   
   return szNodeNm;
 }

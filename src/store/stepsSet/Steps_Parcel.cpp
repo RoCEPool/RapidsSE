@@ -252,7 +252,7 @@ void Step::vParcelPipeOut(void)
   eRV eRecvInstructions = pParcel->eRecvInstructions();
   //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
 
-  i8 iCurNode = MY::pNode()->iNodeId();
+  i8 iCurNodeId = MY::pNode()->iNodeId();
   i8 nCopies = AM::PTNMAP::nPtnsPerNode();
 
   eCN eClass = pOperand->eGetClassNo();
@@ -288,7 +288,7 @@ void Step::vParcelPipeOut(void)
         if (YG_ALL_PARTITIONS == eStageTopology) {
           PtnId tDstPtn = pDstStream->tPtnId();
           i8 iDstNde = AM::pPtnMap()->iMappedNodeId(tDstPtn);
-          if (iDstNde != iCurNode)
+          if (iDstNde != iCurNodeId)
             continue;
         }
         else {

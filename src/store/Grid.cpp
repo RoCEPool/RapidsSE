@@ -92,24 +92,13 @@ void Grid::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/**
- * @brief Add new node into the cluster/grid
- * @details When a new node comes up, add it to the cluster.
- * <p>
- * @param[in] pszName  name of this node
- * @param[in] pszAddr  Address this node runs at
- * @param[in] iPort   port number this node listens to
- *
- *
- * @return none
- *
- */
-void Grid::vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
+/*----------------------------------------------------------------------------*/
+void Grid::vAddDetectedNode(i8 iNodeId, Stz* szNodeNm,
                             Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  Node *pNode = new Node(iNodeNo,
+  Node *pNode = new Node(iNodeId,
                          szNodeNm,
                          AM::SYSARGS::nPtnsPerNode(),
                          szIPAddr,
@@ -221,7 +210,7 @@ s16KB Grid::szDumpInfo(void)
 /*----------------------------------------------------------------------------*/
 /* get node by node ID                                                        */
 /*----------------------------------------------------------------------------*/
-Node* Grid::pFindNode(i8 iFindNodeId)
+Node* Grid::pFindNodeById(i8 iFindNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
@@ -241,13 +230,13 @@ Node* Grid::pFindNode(i8 iFindNodeId)
 /*----------------------------------------------------------------------------*/
 /* find node by name                                                          */
 /*----------------------------------------------------------------------------*/
-Node* Grid::pFindNode(Stz* sName)
+Node* Grid::pFindNodeNm(Stz* sNodeNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
-    if (pNode && pNode->szNodeNm()->bSame(sName))
+    if (pNode && pNode->szNodeNm()->bSame(sNodeNm))
       return pNode;
   }
   

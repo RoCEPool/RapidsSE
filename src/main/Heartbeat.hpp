@@ -34,7 +34,7 @@ public:
   u2   m_u2DataLen;          // length of data  includes size of itself
   i8   m_iClusterID;         // cluster ID (only accept node that has same cluster ID)
   char m_acNodeName[64];     // cluster-wide unique name (IP+port)
-  i8   m_iNodeNo;            // this node number
+  i8   m_iNodeId;            // this node id
   char m_acAddr[32];         // IP address of where it is running
   i4   m_iPort;              // Port number for SE
 

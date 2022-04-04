@@ -267,9 +267,9 @@ namespace OBLIQUE
     public:
       static Node* pGetNode(i8 iNodeNo);
       static Node* pGetThisNode(void);
-      static i8   iGetNthNodeNo(i8 i_Node);
+      static i8   iGetNthNodeId(i8 i_Node);
       static i8   nKnownNodes(void);
-      static void vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
+      static void vNodeDetected(i8 iNodeId, Stz* szNodeNm,
                                 Stz* szIPAddr, i8 iPortNo,
                                 Stz* pszRegionNm);
       static i8   iThisNodeNo(void);

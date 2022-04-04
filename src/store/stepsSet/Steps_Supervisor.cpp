@@ -107,7 +107,7 @@ void Step::vSupervisorCollectInfo(void)
       + sizeof(xHeartbeat.m_acRegionName)
       + sizeof(xHeartbeat.m_acBuildGitHash)
       + sizeof(xHeartbeat.m_iPid)
-      + sizeof(xHeartbeat.m_iNodeNo)
+      + sizeof(xHeartbeat.m_iNodeId)
       + sizeof(xHeartbeat.m_acAddr)
       + sizeof(xHeartbeat.m_iPort)
       + sizeof(xHeartbeat.xStoreHeartbeat)
@@ -126,7 +126,7 @@ void Step::vSupervisorCollectInfo(void)
 
     // Adding Address and Port
     //
-    xHeartbeat.m_iNodeNo = AM::pGrid()->iThisNodeId();
+    xHeartbeat.m_iNodeId = AM::pGrid()->iThisNodeId();
     strncpy(xHeartbeat.m_acAddr, pNode->szIPAddr()->azChar(), sizeof(xHeartbeat.m_acAddr) - 1);
     xHeartbeat.m_acAddr[sizeof(xHeartbeat.m_acAddr) - 1] = 0;
     xHeartbeat.m_iPort = pNode->iPortNo();

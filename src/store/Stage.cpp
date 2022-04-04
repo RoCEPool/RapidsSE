@@ -172,7 +172,7 @@ Stream *Stage::pGetStream_byStreamNo(i8 i_Stream)
 /*----------------------------------------------------------------------------*/
 /* get nOps that will executed by this stage on this given node               */
 /*----------------------------------------------------------------------------*/
-i8 Stage::nOpsExeOnNode(i8 iThisNodeNo, i8 iOriginNodeNo)
+i8 Stage::nOpsExeOnNode(i8 iThisNodeId, i8 iOriginNodeId)
 {
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
@@ -184,12 +184,13 @@ i8 Stage::nOpsExeOnNode(i8 iThisNodeNo, i8 iOriginNodeNo)
       Stream *pStream = pGet(i_Stream);
 
       if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
-        if (MY::pNode()->iNodeId() != iOriginNodeNo && pStream->iNodeNo() == iThisNodeNo) {
+        if (MY::pNode()->iNodeId() != iOriginNodeId &&
+            pStream->iNodeNo() == iThisNodeId) {
           nOpsExe += pStream->nItems();
         }
       }
       else
-      if (pStream->iNodeNo() == iThisNodeNo) {
+      if (pStream->iNodeNo() == iThisNodeId) {
         nOpsExe += pStream->nItems();
       }
     }
@@ -201,7 +202,7 @@ i8 Stage::nOpsExeOnNode(i8 iThisNodeNo, i8 iOriginNodeNo)
       Stream *pStream = pGet(i_Stream);
       
       i8 iWhichNodeNo = AM::pPtnMap()->iMappedNodeId(pStream->tPtnId());
-      if (iWhichNodeNo == iThisNodeNo) {
+      if (iWhichNodeNo == iThisNodeId) {
         nOpsExe += pStream->nItems();
       }
     }
@@ -387,7 +388,7 @@ void Stage::vCreateStreams(void)
       for (iOriginNodeNo = 0;
            iOriginNodeNo < AM::pGrid()->nKnownNodes();
            iOriginNodeNo++) {
-        iNodeNo = AM::GRID::iGetNthNodeNo(iOriginNodeNo);
+        iNodeNo = AM::GRID::iGetNthNodeId(iOriginNodeNo);
         pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iNodeNo); //i_Node);
         vAppend(pStream);
       }
@@ -413,7 +414,7 @@ void Stage::vCreateStreams(void)
       for (i8 i_Node = 0;
            i_Node < AM::pGrid()->nKnownNodes();
            i_Node++) {
-        iNodeNo = AM::GRID::iGetNthNodeNo(i_Node);
+        iNodeNo = AM::GRID::iGetNthNodeId(i_Node);
         pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iNodeNo);
         vAppend(pStream);
       }

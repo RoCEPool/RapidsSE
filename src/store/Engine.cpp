@@ -1530,7 +1530,7 @@ void Engine::vStartSystem(void)
 
 
   
-  Node* pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
+  Node* pThisNode = AM::pGrid()->pFindNodeNm(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
 
   if (! pThisNode)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,

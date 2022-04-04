@@ -1246,7 +1246,7 @@ public:
   void vNodeIsThisNode(void);
   void vNodeName(void);
   void vNodeNew(void);
-  void vNodeNo(void);
+  void vNodeId(void);
   void vNodePartitions(void);
   void vNodePort(void);
   void vNodeRecvSocketStore(void);

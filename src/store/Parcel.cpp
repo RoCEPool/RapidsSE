@@ -592,21 +592,21 @@ void Parcel::vNDE_SameNode(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 iMappedNde;
+  i8 iMappedNdeId;
 
   Operand *pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
     RASSERT(0);
     Node* pOtherNode = AM::pGrid()->pOtherNode();
-    iMappedNde = pOtherNode->iNodeId();
+    iMappedNdeId = pOtherNode->iNodeId();
   }
   else {
     PtnId tSendToPtn = pSendOp->tPtnId();
-    iMappedNde = AM::pPtnMap()->iMappedNodeId(tSendToPtn);
+    iMappedNdeId = AM::pPtnMap()->iMappedNodeId(tSendToPtn);
   }
 
   PtnId tPtn_na = C_UNKNOWN;
-  vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tPtn_na);
+  vDispatchParcel(pSendOp, __LINE__, iMappedNdeId, pNextStage, tPtn_na);
 }
 
 
@@ -634,9 +634,9 @@ void Parcel::vPTN_broadcast(Op *pSendOp)
   
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    i8 iNde = oNode_I->iNodeId();
+    i8 iNodeId = oNode_I->iNodeId();
      
-    vDispatchParcel(pSendOp, __LINE__, iNde, pDstStage, tPtn_na);
+    vDispatchParcel(pSendOp, __LINE__, iNodeId, pDstStage, tPtn_na);
   }
 }
 
@@ -655,12 +655,12 @@ void Parcel::vPTN_fancast(Op *pSendOp)
   m_eSendWhy = SY_FANCAST;
   m_eRecvInstructions = RV_NONE;
 
-  i8 iCurNode = MY::pNode()->iNodeId();
+  i8 iCurNodeId = MY::pNode()->iNodeId();
 
   Stage *pDstStage = pSendOp->pNextStage();
    
   PtnId tPtn_na = C_UNKNOWN;
-  vDispatchParcel(pSendOp, __LINE__, iCurNode, pDstStage, tPtn_na);
+  vDispatchParcel(pSendOp, __LINE__, iCurNodeId, pDstStage, tPtn_na);
 //  i8 nStreamPtns = pDstStage->nItems();
 //  for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
 //    Stream* pDstStream = pDstStage->pGet(i_Stream);
@@ -729,7 +729,7 @@ void Parcel::vPTN_robinLocal(Op *pSendOp)
   m_eSendWhy = SY_ROBINLOCAL;
   m_eRecvInstructions = RV_ONE_PTN;
 
-  i8 iCurNode = MY::pNode()->iNodeId();
+  i8 iCurNodeId = MY::pNode()->iNodeId();
 
   
   Stage *pDstStage = pSendOp->pNextStage();
@@ -738,7 +738,7 @@ void Parcel::vPTN_robinLocal(Op *pSendOp)
   
   PtnId tDstPtn   = AM::PTNMAP::tRobinToLclPtnStream(i_LocalRobin);
   i8    iDstNde   = AM::pPtnMap()->iMappedNodeId(tDstPtn);
-  RASSERT(iDstNde == iCurNode);
+  RASSERT(iDstNde == iCurNodeId);
 
   vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
 }
@@ -892,7 +892,7 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
 
   if (XK_BROADCAST == m_eSendCast) {
     
-    i8 iCurNode = MY::pNode()->iNodeId();
+    i8 iCurNodeId = MY::pNode()->iNodeId();
 
     i8 nStreamPtns = pDstStage->nItems();
     for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
@@ -901,7 +901,7 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
       PtnId tDstPtn = pDstStream->tPtnId();
       i8 iDstNde = AM::pPtnMap()->iMappedNodeId(tDstPtn);
 
-      if (iDstNde != iCurNode)
+      if (iDstNde != iCurNodeId)
         continue;
       
 //      eCN eClass = pOperand->eGetClassNo();
@@ -988,7 +988,7 @@ void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 iCurNode = MY::pNode()->iNodeId();
+  i8 iCurNodeId = MY::pNode()->iNodeId();
 
   i8 nStreamPtns = pDstStage->nItems();
   for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
@@ -997,7 +997,7 @@ void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
     PtnId tDstPtn = pDstStream->tPtnId();
     i8 iDstNde = AM::pPtnMap()->iMappedNodeId(tDstPtn);
 
-    if (iDstNde != iCurNode)
+    if (iDstNde != iCurNodeId)
       continue;
     
 //    eCN eClass = pOperand->eGetClassNo();
@@ -1036,7 +1036,7 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
   }
   
   // get preliminary information
-  Node *pDstNode = AM::pGrid()->pFindNode(m_iDstNode);
+  Node *pDstNode = AM::pGrid()->pFindNodeById(m_iDstNode);
   //vTrace("vSendParcelViaSocket prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeNo(), pDstNode->iPortNo());
   Socket *pSocket = pDstNode->pSendSocket();
   i8 nObjects = this->nItems();
