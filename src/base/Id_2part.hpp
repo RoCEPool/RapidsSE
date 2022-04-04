@@ -5,8 +5,8 @@
 
 class Id_2part
 {
-  //public:
   protected:
+
   union {
     struct {
       u8 m_uPartNo  : 48 ; // 0..256T
