@@ -15,7 +15,6 @@
 #include "TinyC.hpp"
 
 extern EoArg EoArgs[];
-extern i8 giaVectorSet[];
 
 const i8 C_MACRO_FILES = 12;
 char gszaAmMacroFiles[C_MACRO_FILES][128] = {
