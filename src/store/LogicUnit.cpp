@@ -274,27 +274,7 @@ LogicUnit::LogicUnit(void)
 
   m_uSelectColumns = 0;
 
-  m_pDevDstRow = new DevROW;
-  m_pDevLftRow = new DevROW;
-  m_pDevRhtRow = new DevROW;
-  m_pDevAltRow = new DevROW;
-
-  m_pDevLftIxt = new DevIXT;
-  m_pDevRhtIxt = new DevIXT;
-  m_pDevAltIxt = new DevIXT;
-  m_pDevTmpIxt = new DevIXT;
-
   m_pLogicTimer = nullptr;
-
-  m_xRluCommon.m_pDevDstRow = m_pDevDstRow;
-  
-  m_xRluCommon.m_pDevLftRow = m_pDevLftRow;
-  m_xRluCommon.m_pDevRhtRow = m_pDevRhtRow;
-  m_xRluCommon.m_pDevLftIxt = m_pDevLftIxt;
-  m_xRluCommon.m_pDevRhtIxt = m_pDevRhtIxt;
-  m_xRluCommon.m_pDevAltRow = m_pDevAltRow;
-  m_xRluCommon.m_pDevAltIxt = m_pDevAltIxt;
-  m_xRluCommon.m_pDevTmpIxt = m_pDevTmpIxt;
   
   m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
   m_xRluCommon.m_pEntWrk = (void*)&m_oEntWrk;
@@ -445,21 +425,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   }
   
   delete m_pTknVec;
-  
-  delete m_pDevDstRow;
-  delete m_pDevLftRow;
-  delete m_pDevRhtRow;
-  delete m_pDevAltRow;
 
-  // delete any temporary index tree's
-  if (m_pDevTmpIxt->m_pIdxTree)
-    delete m_pDevTmpIxt->m_pIdxTree;
-
-  delete m_pDevTmpIxt;
-  delete m_pDevAltIxt;
-  delete m_pDevLftIxt;
-  delete m_pDevRhtIxt;
-  
   delete m_pLogicTimer;
 
 //  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++)

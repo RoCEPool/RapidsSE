@@ -52,9 +52,6 @@ void Step::vAddSteps_LogicUnit(void)
 
   vAddStep("LogicUnit[].jobMetrics@"_Stz,   &Step::vLogicUnitJobMetricsFetch);
   vAddStep("LogicUnit[].jobMetrics!"_Stz,   &Step::vLogicUnitJobMetricsStore);
-
-  vAddStep("LogicUnit[].srcIndex@"_Stz,     &Step::vLogicUnitSrcIndexFetch);
-  vAddStep("LogicUnit[].srcTable@"_Stz,     &Step::vLogicUnitSrcTableFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,37 +400,6 @@ void Step::vLogicUnitJobMetricsStore(void)
   JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
 
   m_pLogicUnit->m_xpJobMetrics = pJobMetrics;
-  EXIT();
-}
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].srcIndex@ --                                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitSrcIndexFetch(void)
-{
-  ENTRY();
-  
-  DevIXT* pDevIxt = _pDevIXT(m_pLogicUnit->m_xRluCommon.m_pDevLftIxt);
-  
-  m_pDataStack->vPushStr(pDevIxt->m_sIndexNm);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* LogicUnit[].srcTable@ --                                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vLogicUnitSrcTableFetch(void)
-{
-  ENTRY();
-  
-  DevROW* pDevRow = _pDevROW(m_pLogicUnit->m_xRluCommon.m_pDevLftRow);
-  
-  m_pDataStack->vPushStr(pDevRow->m_sTableNm);
-  
   EXIT();
 }
 

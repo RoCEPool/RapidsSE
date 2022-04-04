@@ -330,16 +330,6 @@ namespace STORE
     EntWrk     m_oEntWrkSRT;
     EntWrk     m_oEntWrkJ;
     EntWrk     m_oEntWrkT;
-
-    DevROW*    m_pDevDstRow;
-    DevROW*    m_pDevLftRow;
-    DevROW*    m_pDevRhtRow;
-    DevROW*    m_pDevAltRow;
-
-    DevIXT*    m_pDevAltIxt;
-    DevIXT*    m_pDevLftIxt;
-    DevIXT*    m_pDevRhtIxt;
-    DevIXT*    m_pDevTmpIxt;
   
     LogicTimer* m_pLogicTimer;
 

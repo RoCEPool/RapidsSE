@@ -35,16 +35,6 @@ struct RluCommon                      // **IF YOU CHANGE THIS DO A CLEAN BUILD**
   void* m_pIndexDef;
   void* m_pIndexTree;
 
-  void* m_pDevDstRow;
-  void* m_pDevLftRow;
-  void* m_pDevRhtRow;
-  void* m_pDevAltRow;
-
-  void* m_pDevLftIxt;
-  void* m_pDevRhtIxt;
-  void* m_pDevAltIxt;
-  void* m_pDevTmpIxt;
-
   //struct Ent_int* m_aEntArray;
 
   //struct Ent_int* m_aAltEntArray;
