@@ -56,6 +56,14 @@ def build_installer() -> pathlib.Path:
               f"\nStderr Output:\n{e.stderr}"
         raise errors.CompilationError(msg) from e
 
+    return find_installer()
+
+
+def find_installer() -> pathlib.Path:
+    """
+    Attempts to find the RapidsSE installer and returns the path to it.
+    Throws an assertion error if the installer cannot be found.
+    """
     # Find the installer file that was built
     install_file_path = pathlib.Path("../installer/output").resolve()
     install_file_glob = "rapidsse-*.run"
