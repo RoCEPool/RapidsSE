@@ -124,7 +124,6 @@ LogicUnit::LogicUnit(void)
 ,     m_xpJobMetrics(this,RF_REPAIR_DELETE,JobMetrics::vRepair,     LR_JOBMETRICS)
 
 ,           m_xpList(this,RF_REPAIR_DELETE,RowSingle::vRepairList,  LR_LIST)
-,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,  LR_LOGICCOMPILER)
 
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                 LR_MARKER)
 ,      m_xpMemoryHog(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  LR_MEMORYHOG)
@@ -390,7 +389,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpInfoSetTable.bIsNull());
 
   RASSERT(m_xpList.bIsNull());
-  RASSERT(m_xpLogicCompiler.bIsNull());
 
   //RASSERT(m_xpMarker.bIsNull());
   RASSERT(m_xpMemoryHog.bIsNull());

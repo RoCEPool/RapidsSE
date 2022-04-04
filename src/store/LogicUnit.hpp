@@ -25,7 +25,6 @@
 #include "DevIXT.hpp"
 #include "DevROW.hpp"
 #include "LogicTimer.hpp"
-#include "LogicCompiler.hpp"
 #include "ShardDef.hpp"
 #include "MetaGet.hpp"
 #include "BktMapGet.hpp"
@@ -208,7 +207,6 @@ namespace STORE
     REG<JobMetrics,     CN_JOBMETRICS    > m_xpJobMetrics;
   
     REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
-    REG<LogicCompiler,  CN_LOGICCOMPILER > m_xpLogicCompiler;
 
     REG<Operand,        CN_NONE          > m_xpMarker;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpMemoryHog;

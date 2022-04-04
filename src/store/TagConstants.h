@@ -113,7 +113,6 @@ static Stz* C_TAG_UBOUND_LITERAL = "<uboundLiteral>"_Stz;
 
 static Stz* C_VB_API             = "<vb_api>"_Stz;
 static Stz* C_VB_BOOT            = "<vb_boot>"_Stz;
-static Stz* C_VB_LOGICCOMPILER   = "<vb_logicCompiler>"_Stz;
 static Stz* C_VB_OP              = "<vb_op>"_Stz;
 static Stz* C_VB_ACK             = "<vb_ack>"_Stz;
 static Stz* C_VB_NODE            = "<vb_node>"_Stz;
