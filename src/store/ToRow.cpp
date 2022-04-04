@@ -3022,17 +3022,8 @@ L_RecordEndLineEnd:
         
     // now use the running hash to calc the partition
     tPtnId = AM::PTNMAP::tHashToLglPtnId(iPtnKeyHash);
-
-    // partition mapping experiment by Ray 12 Nov 2020
-    //iBucketId = PtnMap::iHashToBucketId(iHash);
-    //tPtnId_byBkt = m_pBucketMap->tWhichLglPtnNo(iBucketId);
-    //tPtnId = tPtnId_byBkt;
     
-#ifdef WITH_KEEP_ROW_HASH
     m_pRowBuffer->vDepositColVal(iPtnKeyHash);
-#else
-    m_pRowBuffer->vDepositColVal(tPtnId);
-#endif
     
     iPtnKeyHash = 0;
   }

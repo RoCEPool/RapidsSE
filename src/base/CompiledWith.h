@@ -72,9 +72,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // WIP
 
-#define WITH_KEEP_ROW_HASH EndDefine       // keep row hash in row of rowBuffer
-                                           //   instead of partition no
-
 //#define WITH_BUCKET_HASHING EndDefine      // code for bucket hashing compiled in
 
 #define WITH_MULTI_BUCKET EndDefine
