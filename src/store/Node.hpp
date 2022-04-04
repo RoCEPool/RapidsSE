@@ -66,9 +66,9 @@ namespace STORE
  
     Stz* szIPAddr(void);
   
+    i8   iNodeId(void);
+    void vNodeId(i8 iNodeId);
     Stz* szNodeNm(void);
-    i8   iNodeNo(void);
-    void vNodeNo(i8 iNodeNo);
   
     i8   iPortNo(void);
     i8   nPtnsInNode(void);

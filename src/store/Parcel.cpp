@@ -485,7 +485,7 @@ void Parcel::vNDE_AllNodes(Op *pSendOp)
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
 
-    i8 iNde = oNode_I->iNodeNo();
+    i8 iNde = oNode_I->iNodeId();
 
     vDispatchParcel(pSendOp, __LINE__, iNde, pNextStage, tPtn_na);
   }
@@ -514,7 +514,7 @@ void Parcel::vNDE_NextNode(Op *pSendOp)
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
 
     if (pThisNode != * oNode_I) {
-      i8 iNde = oNode_I->iNodeNo();
+      i8 iNde = oNode_I->iNodeId();
       vDispatchParcel(pSendOp, __LINE__, iNde, pNextStage, tPtn_na);
       break;
     }
@@ -565,7 +565,7 @@ void Parcel::vNDE_OtherNode_TBD(Op *pSendOp)
   Operand *pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
     Node* pOtherNode = AM::pGrid()->pOtherNode();
-    iMappedNde = pOtherNode->iNodeNo();
+    iMappedNde = pOtherNode->iNodeId();
   }
   else {
     RASSERT(0);
@@ -598,7 +598,7 @@ void Parcel::vNDE_SameNode(Op *pSendOp)
   if (CN_METAGET == pOperand->eGetClassNo()) {
     RASSERT(0);
     Node* pOtherNode = AM::pGrid()->pOtherNode();
-    iMappedNde = pOtherNode->iNodeNo();
+    iMappedNde = pOtherNode->iNodeId();
   }
   else {
     PtnId tSendToPtn = pSendOp->tPtnId();
@@ -634,7 +634,7 @@ void Parcel::vPTN_broadcast(Op *pSendOp)
   
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    i8 iNde = oNode_I->iNodeNo();
+    i8 iNde = oNode_I->iNodeId();
      
     vDispatchParcel(pSendOp, __LINE__, iNde, pDstStage, tPtn_na);
   }
@@ -655,7 +655,7 @@ void Parcel::vPTN_fancast(Op *pSendOp)
   m_eSendWhy = SY_FANCAST;
   m_eRecvInstructions = RV_NONE;
 
-  i8 iCurNode = MY::pNode()->iNodeNo();
+  i8 iCurNode = MY::pNode()->iNodeId();
 
   Stage *pDstStage = pSendOp->pNextStage();
    
@@ -729,7 +729,7 @@ void Parcel::vPTN_robinLocal(Op *pSendOp)
   m_eSendWhy = SY_ROBINLOCAL;
   m_eRecvInstructions = RV_ONE_PTN;
 
-  i8 iCurNode = MY::pNode()->iNodeNo();
+  i8 iCurNode = MY::pNode()->iNodeId();
 
   
   Stage *pDstStage = pSendOp->pNextStage();
@@ -791,7 +791,7 @@ void Parcel::vDispatchParcel(Op* pSendOp,
   m_iDstStage = iDstStage;
   m_tDstPtn   = tDstPtn;
 
-  m_iSrcNode  = MY::pNode()->iNodeNo();
+  m_iSrcNode  = MY::pNode()->iNodeId();
   m_iCodeLine = iCodeLine;
 
   pSendOp->vSendNode(m_iDstNode);
@@ -808,7 +808,7 @@ void Parcel::vDispatchParcel(Op* pSendOp,
 
   // this function is called for each node
   
-  i8 iCurNode = MY::pNode()->iNodeNo();
+  i8 iCurNode = MY::pNode()->iNodeId();
   Operand* pOperand = pGetOperand();
 
   if (m_iDstNode == iCurNode) {
@@ -892,7 +892,7 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
 
   if (XK_BROADCAST == m_eSendCast) {
     
-    i8 iCurNode = MY::pNode()->iNodeNo();
+    i8 iCurNode = MY::pNode()->iNodeId();
 
     i8 nStreamPtns = pDstStage->nItems();
     for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
@@ -988,7 +988,7 @@ void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 iCurNode = MY::pNode()->iNodeNo();
+  i8 iCurNode = MY::pNode()->iNodeId();
 
   i8 nStreamPtns = pDstStage->nItems();
   for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {

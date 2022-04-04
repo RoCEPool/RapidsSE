@@ -325,7 +325,7 @@ i8 AM::GRID::iGetNthNodeNo(i8 i_Node)
   Node* pNode = gpAttachMap->m_pGrid->pGetNthNode(i_Node);
   
   if (pNode)
-    iNodeNo = pNode->iNodeNo();
+    iNodeNo = pNode->iNodeId();
   
   return iNodeNo;
 }

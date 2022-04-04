@@ -152,7 +152,7 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
                        
                        ,iJob
 
-                       ,pThisNode->iNodeNo()
+                       ,pThisNode->iNodeId()
                        ,pThisNode->szNodeNm()
 
                        ,pPipelineMetrics->szPipelineNm()
@@ -258,10 +258,10 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                    
                    ,iJob
 
-                   ,pThisNode->iNodeNo()
+                   ,pThisNode->iNodeId()
                    ,pThisNode->szNodeNm()
 
-                   ,pNode->iNodeNo()
+                   ,pNode->iNodeId()
                    ,pNode->szNodeNm()
                    
                    ,"sndSkt"_Stz
@@ -295,10 +295,10 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                    
                    ,iJob
 
-                   ,pThisNode->iNodeNo()
+                   ,pThisNode->iNodeId()
                    ,pThisNode->szNodeNm()
 
-                   ,pNode->iNodeNo()
+                   ,pNode->iNodeId()
                    ,pNode->szNodeNm()
                    
                    ,"sndSkt"_Stz
@@ -335,10 +335,10 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                    
                    ,iJob
 
-                   ,pThisNode->iNodeNo()
+                   ,pThisNode->iNodeId()
                    ,pThisNode->szNodeNm()
 
-                   ,pNode->iNodeNo()
+                   ,pNode->iNodeId()
                    ,pNode->szNodeNm()
                    
                    ,"rcvSkt"_Stz
@@ -372,10 +372,10 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                    
                    ,iJob
 
-                   ,pThisNode->iNodeNo()
+                   ,pThisNode->iNodeId()
                    ,pThisNode->szNodeNm()
 
-                   ,pNode->iNodeNo()
+                   ,pNode->iNodeId()
                    ,pNode->szNodeNm()
                    
                    ,"rcvSkt"_Stz
@@ -456,10 +456,10 @@ eEC JobReport::eNetworkReport(i8 iJob, Tub* pTub)
                  
                  ,iJob
 
-                 ,pThisNode->iNodeNo()
+                 ,pThisNode->iNodeId()
                  ,pThisNode->szNodeNm()
 
-                 ,pNode->iNodeNo()
+                 ,pNode->iNodeId()
                  ,pNode->szNodeNm()
                  ,pNode->szIPAddr()
                  ,pNode->iPortNo()
@@ -560,7 +560,7 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
                        
                        ,iJob
                        
-                       ,pThisNode->iNodeNo()
+                       ,pThisNode->iNodeId()
                        ,pThisNode->szNodeNm()
                        
                        ,pOp->pPipeline()->szPipelineNm()
@@ -700,7 +700,7 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
                                             
                      ,iJob
                       
-                     ,pThisNode->iNodeNo()
+                     ,pThisNode->iNodeId()
                      ,pThisNode->szNodeNm()
                      
                      ,pOp->pPipeline()->szPipelineNm()

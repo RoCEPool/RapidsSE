@@ -211,7 +211,7 @@ void Step::vGridPutGridParts(void)
     for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
       Node* pNode = (*oNode_I);
 
-      if (pGridRemote->pFindNode(pNode->iNodeNo()) == nullptr) {
+      if (pGridRemote->pFindNode(pNode->iNodeId()) == nullptr) {
         bMatched = false;
         break;
       }

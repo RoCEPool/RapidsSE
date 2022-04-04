@@ -197,7 +197,7 @@ i8   Node::iGetPid(void)
 /*----------------------------------------------------------------------------*/
 /* get previous saved user usec                                               */
 /*----------------------------------------------------------------------------*/
-i8   Node::iGetPrevUserUsec(void)
+i8 Node::iGetPrevUserUsec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   return m_iPrevUserUsec;
@@ -214,19 +214,9 @@ Stz* Node::szIPAddr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get node name                                                              */
+/* get node id                                                                */
 /*----------------------------------------------------------------------------*/
-Stz* Node::szNodeNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  
-  return m_sNodeNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get node number                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Node::iNodeNo(void)
+i8 Node::iNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
@@ -234,13 +224,23 @@ i8 Node::iNodeNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set node number                                                            */
+/* set node id                                                               */
 /*----------------------------------------------------------------------------*/
-void Node::vNodeNo(i8 iNodeNo)
+void Node::vNodeId(i8 iNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  m_iNodeId = iNodeNo;
+  m_iNodeId = iNodeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node name                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Node::szNodeNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  return m_sNodeNm;
 }
 
 /*----------------------------------------------------------------------------*/

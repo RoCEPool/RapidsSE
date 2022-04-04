@@ -176,7 +176,7 @@ void Step::vNodeNo(void)
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_NODE == pNode->eGetClassNo());
   
-  m_pDataStack->vPushInt(pNode->iNodeNo());
+  m_pDataStack->vPushInt(pNode->iNodeId());
   
   EXIT();
 }

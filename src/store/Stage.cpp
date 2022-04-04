@@ -184,7 +184,7 @@ i8 Stage::nOpsExeOnNode(i8 iThisNodeNo, i8 iOriginNodeNo)
       Stream *pStream = pGet(i_Stream);
 
       if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
-        if (MY::pNode()->iNodeNo() != iOriginNodeNo && pStream->iNodeNo() == iThisNodeNo) {
+        if (MY::pNode()->iNodeId() != iOriginNodeNo && pStream->iNodeNo() == iThisNodeNo) {
           nOpsExe += pStream->nItems();
         }
       }

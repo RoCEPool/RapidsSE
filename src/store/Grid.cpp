@@ -228,7 +228,7 @@ Node* Grid::pFindNode(i8 iFindNodeNo)
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     
-    i8 iNodeNo = pNode->iNodeNo();
+    i8 iNodeNo = pNode->iNodeId();
     
     //vTrace("pFindNode %lld (looking for %lld)\n"_Stz,iNodeNo,iFindNodeNo);
     if (pNode && iNodeNo == iFindNodeNo)
@@ -405,7 +405,7 @@ void Grid::vShowGrid(void)
     pRcvSkt =  pNode->pRecvSocket();
 
     vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
-           ,pNode->iNodeNo()
+           ,pNode->iNodeId()
            ,pNode->szNodeNm()
            ,pNode->szIPAddr()
            ,pNode->iPortNo()
@@ -491,7 +491,7 @@ void Grid::vShowNetwork(void)
     pRcvSkt =  pNode->pRecvSocket();
 
     vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
-           ,pNode->iNodeNo()
+           ,pNode->iNodeId()
            ,pNode->szNodeNm()
            ,pNode->szIPAddr()
            ,pNode->iPortNo()
@@ -578,7 +578,7 @@ i8 Grid::iThisNodeNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  return m_pThisNode->iNodeNo();
+  return m_pThisNode->iNodeId();
 }
 
 /*----------------------------------------------------------------------------*/
