@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* pp_load1.sen -- define load related procedures                             */
+/* pp_load.sen -- define load related procedures                              */
 /*============================================================================*/
 
-" pp_load1.sen" .verbose
+" pp_load.sen" .verbose
 
 
 /*----------------------------------------------------------------------------*/
@@ -51,93 +51,6 @@
   "
   api::addProcedure
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dfload
-  
-  STD_PATH_TAG
-  "
-  procedure dfload
-    parameters $table $file
-  begin
-
-  stage stageA on origin :
-
-    start              |
- 
-    pulse once    |
-
-    stageB
-
-  stage stageB on all nodes :
-
-    chunk $file        | // read chunks of file, produce (seekOffset) =>
-    // dump seekOffsets 1 |
-
-    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
-    // dump csvBuffer 0   |
-
-    stageC localRobin
-
-  stage stageC on all partitions :
-
-    toRow $table       | // (csvBuffer)  => (rowBuffer)
-    // dump rowBuffer 1   |
-
-    toPtnRow           | // (rowBuffer)  => (rowBuffer 'ptn)
-    // dump rowBuffer 1   |
-
-    toNstRow           | // (rowBuffer)  => (rowBuffer 'nst)
-    //dump rowBuffer 1   |
-
-    toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)
-    //dump rowBuffer 1   |
-
-    stageD hashcast
-
-  stage stageD on all partitions :
-
-    //eatSome |
-
-    insert $table | // (crwBuffer) inserted into table
-
-    stageE
-
-  stage stageE on origin :
-
-    progress 'Load'    |
-
-    toStatDemon        |
-
-    sink               |
-
-    stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dload
-  
-  STD_PATH_TAG
-  "
-  procedure dload
-    parameters $table
-  begin
-
-    stage stageA on origin :
-        start
-      | pulse once
-      | eachPath 
-      |   toDfload $table
-      | callPipeline
-      | waitPipeline
-      | sink
-      | stageA
-
-  end ;
-  "
-  api::addProcedure
 ;
 
 
