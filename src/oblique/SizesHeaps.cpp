@@ -195,7 +195,7 @@
 
 #include "TccLock.hpp"
 #include "ToBktCrw.hpp"
-#include "ToBktRow.hpp"
+#include "ToLglPtnRow.hpp"
 #include "TraceLock.hpp"
 #include "TraceMultiLock.hpp"
 #include "Tub.hpp"
@@ -625,7 +625,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 FILL }, // CN_TINYVIRTUAL
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_TMEVAL
   { sizeof(ToBktCrw),           HT_T_LARGE   ,0 FILL }, // CN_TOBKTCRW
-  { sizeof(ToBktRow),           HT_T_LARGE   ,0 FILL }, // CN_TOBKTROW
+  { sizeof(ToLglPtnRow),           HT_T_LARGE   ,0 FILL }, // CN_TOBKTROW
   { sizeof(Token),              HT_T_TINY    ,0 FILL }, // CN_TOKEN
   { sizeof(TokenVec),           HT_T_LARGE   ,0 FILL }, // CN_TOKENVEC
   { sizeof(ToNstRow),           HT_T_MEDIUM  ,0 FILL }, // CN_TONSTROW
