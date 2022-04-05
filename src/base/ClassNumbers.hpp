@@ -170,7 +170,6 @@ enum eCN : u2 // Class Number
   /* */ CN_LOCK,
   /* */ CN_LOCKS,
   /* */ CN_LOCKSET,
-  /* */ CN_LOGICTIMER,
   /* */ CN_LOGICUNIT,
 
   /* */ CN__M__,
@@ -580,7 +579,6 @@ static Stz* aCN[]
   /* */ "LOCK"_Stz,                 // CN_LOCK
   /* */ "LOCKS"_Stz,                // CN_LOCKS
   /* */ "LOCKSET"_Stz,              // CN_LOCKSET
-  /* */ "LOGICTIMER"_Stz,           // CN_LOGICTIMER
   /* */ "LOGICUNIT"_Stz,            // CN_LOGICUNIT
 
   /* */ "_M__"_Stz,                 // CN__M__

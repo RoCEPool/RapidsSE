@@ -418,7 +418,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Lock),               HT_INVALID   ,0 FILL }, // CN_LOCK
   { sizeof(Locks),              HT_T_MEDIUM  ,0 FILL }, // CN_LOCKS
   { 0,                          HT_INVALID   ,0 FILL }, // CN_LOCKSET
-  { sizeof(LogicTimer),         HT_T_MEDIUM  ,0 FILL }, // CN_LOGICTIMER
   { sizeof(LogicUnit),          HT_T_LARGE   ,0 FILL }, // CN_LOGICUNIT
 
   { 'M' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__M__

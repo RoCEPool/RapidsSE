@@ -5,7 +5,6 @@
 #include "BASE.h"
 
 #include "eED.h"
-#include "eEO.h"
 #include "eYX.h"
 #include "eLR.h"
 
@@ -62,9 +61,6 @@
 #include "Table.hpp"
 
 #include "MY.hpp"
-
-
-extern EoArg EoArgs[];
 
 extern void* C_ADR_REGION;
 
@@ -245,9 +241,6 @@ LogicUnit::LogicUnit(void)
     m_xRluCommon.m_baJoinMap[i_Byte] = 0;
   m_xRluCommon.m_nJoinMapCnt = 0;
 
-  for (i8 i_Cond = 0; i_Cond < C_LOGIC_COND; i_Cond++)
-    m_baCondInd[i_Cond] = false;
-
   m_iNextCond = C_UNKNOWN;
   m_bSuperFrag = false;
   m_aLowerEntry = nullptr;
@@ -279,8 +272,6 @@ LogicUnit::LogicUnit(void)
   // m_oEntWrk
 
   m_uSelectColumns = 0;
-
-  m_pLogicTimer = nullptr;
   
   m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
   m_xRluCommon.m_pEntWrk = (void*)&m_oEntWrk;
@@ -431,8 +422,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   }
   
   delete m_pTknVec;
-
-  delete m_pLogicTimer;
 
 //  for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++)
 //    m_paReg[i_Reg]->vDump();

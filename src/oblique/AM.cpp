@@ -4092,11 +4092,9 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_DL: return aDL[i_Enum];
     case EG_DM: return aDM[i_Enum];
     case EG_DS: return aDS[i_Enum];
-      
-    case EG_EA: return aEA[i_Enum];
+
     case EG_EC: return aEC[i_Enum];
     case EG_ED: return aED[i_Enum];
-    case EG_EO: return aEO[i_Enum];
     case EG_EP: return aEP[i_Enum];
 
     case EG_FN: return aFN[i_Enum];

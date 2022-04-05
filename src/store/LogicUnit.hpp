@@ -24,7 +24,6 @@
 #include "RluDiary.hpp"
 #include "DevIXT.hpp"
 #include "DevROW.hpp"
-#include "LogicTimer.hpp"
 #include "ShardDef.hpp"
 #include "MetaGet.hpp"
 #include "BktMapGet.hpp"
@@ -64,10 +63,6 @@ namespace STORE { class IndexStream; class Node; class Node_I;
 
 namespace STORE
 {
-  static const i8 C_LOGIC_DEV   = 16;
-  static const i8 C_LOGIC_CODE  = C_4KB;
-  static const i8 C_LOGIC_COND  = 8;
-  static const i8 C_LOGIC_LABEL = 128;
 
   struct JumpLabel
   {
@@ -342,12 +337,8 @@ namespace STORE
     EntWrk     m_oEntWrkSRT;
     EntWrk     m_oEntWrkJ;
     EntWrk     m_oEntWrkT;
-  
-    LogicTimer* m_pLogicTimer;
 
     u8      m_uSelectColumns;
-
-    bool m_baCondInd[C_LOGIC_COND];
 
     i8 m_iNextCond;
   

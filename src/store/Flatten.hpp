@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "eEO.h"
-
 #include "CodeSynth.hpp"
 #include "TinyC.hpp"
 #include "SE_interface.h"
