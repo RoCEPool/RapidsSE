@@ -2253,11 +2253,11 @@ public:
   void vToTask(void);
 
   // toLglPtnCrw
-  void vToLglPtnCrwRegCompleted(void);
-  void vToLglPtnCrwRegConvert(void);
-  void vToLglPtnCrwRegCreate(void);
-  void vToLglPtnCrwRegDangling(void);
-  void vToLglPtnCrwRegDelete(void);
+  void vToLglPtnCrwCompleted(void);
+  void vToLglPtnCrwConvert(void);
+  void vToLglPtnCrwCreate(void);
+  void vToLglPtnCrwDangling(void);
+  void vToLglPtnCrwDelete(void);
 
   // toLglPtnRow
   void vToLglPtnRowCompleted(void);
@@ -2270,13 +2270,6 @@ public:
   void vToNstRowRegConvert(void);
   void vToNstRowRegCreate(void);
   void vToNstRowRegDelete(void);
-
-  // toPtnCrw
-  void vToPtnCrwRegCompleted(void);
-  void vToPtnCrwRegConvert(void);
-  void vToPtnCrwRegCreate(void);
-  void vToPtnCrwRegDangling(void);
-  void vToPtnCrwRegDelete(void);
 
   // toRow
   void vToRowCompleted(void);
