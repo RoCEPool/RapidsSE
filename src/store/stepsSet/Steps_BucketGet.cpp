@@ -12,7 +12,7 @@
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
-#include "BucketMap_dyn.hpp"
+#include "BucketMap.hpp"
 #include "Bucket.hpp"
 #include "TablePtn.hpp"
 #include "PtnStream.hpp"
@@ -198,7 +198,7 @@ void Step::vBucketGetCrw(void)
   if (!pCrwBuffer) {
 
       // DEBUG search all the buckets
-      for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+      for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
         //vTrace("    vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, iBkt, tPtnId.uPtnNo());
         pBucket = pTablePtn->pGetBucket(i_Bkt);
         pCrwBuffer = pBucket->pRootCrwBuffer();
@@ -212,7 +212,7 @@ void Step::vBucketGetCrw(void)
       for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsPerNode(); i_Ptn++) {
         pTablePtn = pTable->pTablePtn(i_Ptn);
         // DEBUG search all the buckets
-        for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+        for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
           //vTrace("    vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, i_Bkt, tPtnId.uPtnNo());
           pBucket = pTablePtn->pGetBucket(i_Bkt);
           pCrwBuffer = pBucket->pRootCrwBuffer();
@@ -378,7 +378,7 @@ void Step::vBucketGetGetBucket(void)
     //m_pDataStack->vPushPtr(pTablePtn);
 
     // Update bucket map here
-    BucketMap_dyn* pBucketMap = pTable->pBucketMap();
+    BucketMap* pBucketMap = pTable->pBucketMap();
     pBucketMap->vUpdateMap();
 
     BucketGet *pBucketGet = new BucketGet(pTablePtn, pBucket);

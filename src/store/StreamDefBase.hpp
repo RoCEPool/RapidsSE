@@ -84,8 +84,8 @@ namespace STORE
     Stz*    szStreamDefNm(void);
   
     i8      jTableSize(void);
-    void    vToColPix(RowPix* pRowPix, bool bPtnHash);
-    void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
+    void    vToColPix(RowPix* pRowPix, bool bAddKeyHash);
+    void    vToRowPix(RowPix* pRowPix, bool bAddKeyHash);
     void    vToMetadata(Stz* sMetaData);
 
     bool    bUnique(void);

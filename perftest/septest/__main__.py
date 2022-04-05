@@ -77,7 +77,7 @@ def main() -> int:
     invoking_user = args.user
     archive_metrics = args.archiveMetrics
     result_path = args.resultDir
-    no_build = args.no_build
+    no_build = args.nobuild
 
     if len(git_hash) == 0:
         git_hash = get_git_hash_from_system()

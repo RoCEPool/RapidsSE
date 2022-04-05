@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToBktRow.hpp -- Convert row buffers to partitioned row slab buffers        */
+/* ToLglPtnRow.hpp -- Convert row buff to logicl partitioned row buff         */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class ToBktRow : public Object
+  class ToLglPtnRow : public Object
   {
   private:
   
@@ -24,12 +24,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ToBktRow(void);
-   ~ToBktRow(void) noexcept(false);
+    ToLglPtnRow(void);
+   ~ToLglPtnRow(void) noexcept(false);
 
     static void vRepairHashSet(Object* pObject);
 
-    void vConvert(RowBuffer* pRowBuffer);
     void vConvert(Table* pTable, RowBuffer* pRowBuffer);
   
     RowBuffer* pCompleted(i8 i_Ptn);
@@ -45,7 +44,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  ToBktRow* _pToBktRow(void* aAddr);
+  ToLglPtnRow* _pToLglPtnRow(void* aAddr);
 }
 
 /*============================================================================*/

@@ -12,9 +12,8 @@ namespace STORE
 
     StreamDef* m_pStreamDef;
 
-    BucketMap_dyn* m_pBucketMap;
+    BucketMap* m_pBucketMap;
 
-    bool       m_bPtnHash;
     i8         m_nPtnsInGrid;
 
     i8         m_nErrors;
@@ -51,8 +50,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ToRow(StreamDef* pStreamDef, BucketMap_dyn* pBucketMap,
-          Format* pFmt, bool bPtnHash);
+    ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap, Format* pFmt);
 
 
    ~ToRow(void) noexcept(false);

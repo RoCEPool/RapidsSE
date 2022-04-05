@@ -110,15 +110,6 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the current buffer
   m_pCurrentBuffer = pCrwBuffer;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // now insert entries from the buffer into the indexes
-
-  // Index has moved to upper layer TablePtn
-#ifndef WITH_MULTI_BUCKET
-  //vInsertIndexEntries(pCrwBuffer);
-#endif
-  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ToBktRow.cpp - Convert row buffers to partitioned row slab buffers   */
+/* Steps_ToLglPtnRow.cpp - Convert row buff to logical partitioned row  buff  */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -24,23 +24,23 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_ToBktRow(void)
+void Step::vAddSteps_ToLglPtnRow(void)
 {
-  vAddStep("toBktRow[].completed"_Stz, &Step::vToBktRowRegCompleted);
-  vAddStep("toBktRow[].convert"_Stz,   &Step::vToBktRowRegConvert);
-  vAddStep("toBktRow[].create"_Stz,    &Step::vToBktRowRegCreate);
-  vAddStep("toBktRow[].dangling"_Stz,  &Step::vToBktRowRegDangling);
-  vAddStep("toBktRow[].delete"_Stz,    &Step::vToBktRowRegDelete);
+  vAddStep("toLglPtnRow[].completed"_Stz, &Step::vToLglPtnRowCompleted);
+  vAddStep("toLglPtnRow[].convert"_Stz,   &Step::vToLglPtnRowConvert);
+  vAddStep("toLglPtnRow[].create"_Stz,    &Step::vToLglPtnRowCreate);
+  vAddStep("toLglPtnRow[].dangling"_Stz,  &Step::vToLglPtnRowDangling);
+  vAddStep("toLglPtnRow[].delete"_Stz,    &Step::vToLglPtnRowDelete);
 }
 
 /*----------------------------------------------------------------------------*/
-/* toBktRow[].completed -- get any completed/full buffer                      */
+/* toLglPtnRow[].completed -- get any completed/full buffer                   */
 /*----------------------------------------------------------------------------*/
-void Step::vToBktRowRegCompleted(void)
+void Step::vToLglPtnRowCompleted(void)
 {
   ENTRY();
   
-  ToBktRow* pToBktRow = *m_pLogicUnit->m_xpToBktRow;
+  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToLglPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -52,13 +52,13 @@ void Step::vToBktRowRegCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toBktRow[].convert -- convert row buffer                                   */
+/* toLglPtnRow[].convert -- convert row buffer                                */
 /*----------------------------------------------------------------------------*/
-void Step::vToBktRowRegConvert(void)
+void Step::vToLglPtnRowConvert(void)
 {
   ENTRY();
 
-  ToBktRow* pToBktRow = *m_pLogicUnit->m_xpToBktRow;
+  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToLglPtnRow;
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -74,27 +74,27 @@ void Step::vToBktRowRegConvert(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toBktRow[].create -- create toBktRow                                       */
+/* toLglPtnRow[].create -- create toBktRow                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vToBktRowRegCreate(void)
+void Step::vToLglPtnRowCreate(void)
 {
   ENTRY();
     
-  ToBktRow* pToBktRow = new ToBktRow;
+  ToLglPtnRow* pToBktRow = new ToLglPtnRow;
       
-  m_pLogicUnit->m_xpToBktRow = pToBktRow;
+  m_pLogicUnit->m_xpToLglPtnRow = pToBktRow;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* toBktRow[].dangling -- get any dangling/last buffer                        */
+/* toLglPtnRow[].dangling -- get any dangling/last buffer                     */
 /*----------------------------------------------------------------------------*/
-void Step::vToBktRowRegDangling(void)
+void Step::vToLglPtnRowDangling(void)
 {
   ENTRY();
   
-  ToBktRow* pToBktRow = *m_pLogicUnit->m_xpToBktRow;
+  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToLglPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -106,14 +106,14 @@ void Step::vToBktRowRegDangling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toBktRow[].delete -- delete toBktRow                                       */
+/* toLglPtnRow[].delete -- delete toBktRow                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vToBktRowRegDelete(void)
+void Step::vToLglPtnRowDelete(void)
 {
   ENTRY();
   
-  ToBktRow* pToBktRow = *m_pLogicUnit->m_xpToBktRow;
-  m_pLogicUnit->m_xpToBktRow = nullptr;
+  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToLglPtnRow;
+  m_pLogicUnit->m_xpToLglPtnRow = nullptr;
   
   delete pToBktRow;
   

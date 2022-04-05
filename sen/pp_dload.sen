@@ -5,7 +5,7 @@
 " pp_dload.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* dload procedures                                                            */
+/* dload procedures                                                           */
 /*----------------------------------------------------------------------------*/
 
 : start::defProc_Dload
@@ -42,7 +42,7 @@
     toRow $table       | // (csvBuffer)  => (rowBuffer)
     // dump rowBuffer 1   |
 
-    toPtnRow           | // (rowBuffer)  => (rowBuffer 'ptn)
+    toLglPtnRow $table    | // (rowBuffer)  => (rowBuffer 'ptn)
     // dump rowBuffer 1   |
 
     toNstRow           | // (rowBuffer)  => (rowBuffer 'nst)

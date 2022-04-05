@@ -123,7 +123,7 @@
 #include "HeadsUp.hpp"
 
 #include "PtnId.hpp"
-#include "BucketMap_dyn.hpp"
+#include "BucketMap.hpp"
 #include "Stage.hpp"
 #include "SysMetrics.hpp"
 
@@ -184,7 +184,7 @@ PtnId AM::BKTMAP::tBktIdToLglPtnId(i8 iBktId)
 /*----------------------------------------------------------------------------*/
 /* get bucket map                                                             */
 /*----------------------------------------------------------------------------*/
-BucketMap_dyn* AM::BKTMAP::pBucketMap(void)
+BucketMap* AM::BKTMAP::pBucketMap(void)
 {
   _static_
   
@@ -198,7 +198,7 @@ i8 AM::BKTMAP::iHashToBktId(i8 iHash)
 {
   _static_
   
-  i8 iBktId = iHash % C_MAX_BUCKETS_IN_GRID;
+  i8 iBktId = iHash % C_MAX_BUCKETS;
 
   return iBktId;
 }
@@ -2444,7 +2444,7 @@ Sessions* AM::pSessions(void) { return gpAttachMap->m_pSessions;  }
 
 
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
-i8   AM::nBuckets(void)       { return C_MAX_BUCKETS_IN_GRID;                         }
+i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 
@@ -2665,7 +2665,7 @@ void AM::vDeleteOperand(Operand* pOperand)
      break;
     }
 
-    case CN_BUCKETMAP_dyn: {
+    case CN_BUCKETMAP: {
       break;
     }
 
@@ -3377,7 +3377,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
   
   switch (eClass_opd) {
 
-    case CN_BUCKETMAP_dyn: eOperand = ZK_D_BUCKETMAP_dyn; break;
+    case CN_BUCKETMAP: eOperand = ZK_D_BUCKETMAP_dyn; break;
     case CN_CRWBUFFER: eOperand = ZK_D_CRWBUFFER; break;
     case CN_CSVBUFFER: eOperand = ZK_D_CSVBUFFER; break;
     case CN_EACHROWBUFFER: eOperand = ZK_D_EACHROWBUFFER; break;

@@ -254,14 +254,13 @@ assert::stack_0
   "OP_tableSizes.sen"           include
   "OP_throw.sen"                include
   "OP_toBktCrw.sen"             include
-  "OP_toBktRow.sen"             include
+  "OP_toLglPtnRow.sen"          include
   "OP_toCsv.sen"                include
   "OP_toDemon.sen"              include
   "OP_toDfload.sen"             include
   "OP_toNstRow.sen"             include
   "OP_top.sen"                  include
   "OP_toPtnCrw.sen"             include
-  "OP_toPtnRow.sen"             include
   "OP_toRow.sen"                include
   "OP_toStatDemon.sen"          include
   "OP_totalCount.sen"           include

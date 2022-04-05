@@ -24,8 +24,6 @@ void Step::vAddSteps_CsvBuffer(void)
 
   vAddStep("csvBuffer[].csvAppend"_Stz,   &Step::vCsvBufferCsvAppend);
   vAddStep("csvBuffer[].csvData"_Stz,     &Step::vCsvBufferCsvData);
-  vAddStep("csvBuffer[].csvToRow"_Stz,    &Step::vCsvBufferCsvToRow);
-
   vAddStep("csvBuffer[]"_Stz,             &Step::vCsvBufferGet);
   vAddStep("csvBuffer[]\\clear"_Stz,      &Step::vCsvBufferGetAndClear);
   vAddStep("csvBuffer[].delete"_Stz,      &Step::vCsvBufferDelete);
@@ -110,23 +108,6 @@ void Step::vCsvBufferCsvData(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* CsvBuffer[].csvToRow -- convert csv buffer to row buffer                   */
-/*----------------------------------------------------------------------------*/
-void Step::vCsvBufferCsvToRow(void)
-{
-  ENTRY();
-
-  CsvBuffer* pCsvBuffer =
-      _pCsvBuffer(*m_pLogicUnit->m_xpCsvBuffer);
-
-  ToRow* pToRow = *m_pLogicUnit->m_xpToRow;
-
-  bool b = pToRow->bConvertCsv(pCsvBuffer);
-  UNUSED(b);
-
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* csvBuffer.print -- print                                                   */

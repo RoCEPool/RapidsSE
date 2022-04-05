@@ -5,8 +5,8 @@
 
 class Id_2part
 {
-  public:
-  
+  protected:
+
   union {
     struct {
       u8 m_uPartNo  : 48 ; // 0..256T
@@ -21,6 +21,9 @@ class Id_2part
   public:
 
   Id_2part(void);
+  Id_2part(i8 iAsI8);
+
+  void operator =(i8 iAsI8); // assignment
   
   i8   iAsI8(void);
   void vAsI8(i8 iAsI8);

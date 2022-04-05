@@ -213,10 +213,9 @@ namespace STORE
     static void vAddSteps_TinyC(void);
     static void vAddSteps_To(void);
     static void vAddSteps_ToBktCrw(void);
-    static void vAddSteps_ToBktRow(void);
+    static void vAddSteps_ToLglPtnRow(void);
     static void vAddSteps_ToNstRow(void);
     static void vAddSteps_ToPtnCrw(void);
-    static void vAddSteps_ToPtnRow(void);
     static void vAddSteps_ToRow(void);
     static void vAddSteps_TokenVec(void);
     static void vAddSteps_Trace(void);

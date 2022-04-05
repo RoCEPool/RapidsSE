@@ -83,7 +83,7 @@ LogicUnit::LogicUnit(void)
 ,      m_xpAdaptorWL(this,RF_REPAIR_DELETE,AdaptorWL::vRepair,      LR_ADAPTORWL)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       LR_AGGTIMER)
 ,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_AGGTYPESTACK)
-,      m_xpAnswerWL(this,RF_REPAIR_DELETE,AnswerWL::vRepair,      LR_ANSWERWL)
+,       m_xpAnswerWL(this,RF_REPAIR_DELETE,AnswerWL::vRepair,       LR_ANSWERWL)
 ,    m_xpPreExpStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_PREEXPSTACK)
 
 ,      m_xpBktMapGet(this,RF_REPAIR_DELETE,BktMapGet::vRepair,      LR_BKTMAP)
@@ -174,10 +174,9 @@ LogicUnit::LogicUnit(void)
 ,          m_xpTimer(this,RF_REPAIR_DELETE,Timer::vRepair,          LR_TIMER)
 ,          m_xpTinyC(this,RF_REPAIR_DELETE,TinyC::vRepair,          LR_TINYC)
 ,       m_xpToBktCrw(this,RF_REPAIR_DELETE,ToBktCrw::vRepairHashSet,LR_TOBKTCRW)
-,       m_xpToBktRow(this,RF_REPAIR_DELETE,ToBktRow::vRepairHashSet,LR_TOBKTROW)
+,    m_xpToLglPtnRow(this,RF_REPAIR_DELETE,ToLglPtnRow::vRepairHashSet,LR_TOLGLPTNROW)
 ,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,       LR_TONSTROW)
 ,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,ToPtnCrw::vRepairHashSet,LR_TOPTNCRW)
-,       m_xpToPtnRow(this,RF_REPAIR_DELETE,ToPtnRow::vRepairHashSet,LR_TOPTNROW)
 ,          m_xpToRow(this,RF_REPAIR_DELETE,ToRow::vRepairList,      LR_TOROW)
 ,            m_xpTub(this,RF_REPAIR_DELETE,Tub::vRepair,            LR_TUB)
 ,             m_xpTx(this,RF_REPAIR_DELETE,Tx::vRepair,             LR_TX)
@@ -351,10 +350,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpTablePtn.bIsNull());
   RASSERT(m_xpTimer.bIsNull());
   RASSERT(m_xpToBktCrw.bIsNull());
-  RASSERT(m_xpToBktRow.bIsNull());
+  RASSERT(m_xpToLglPtnRow.bIsNull());
   RASSERT(m_xpToNstRow.bIsNull());
   RASSERT(m_xpToPtnCrw.bIsNull());
-  RASSERT(m_xpToPtnRow.bIsNull());
   RASSERT(m_xpToRow.bIsNull());
   RASSERT(m_xpTx.bIsNull());
   

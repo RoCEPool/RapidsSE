@@ -14,28 +14,6 @@
 : start::defProc_Drop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compact index
-  
-  STD_PATH_TAG
-  "
-  procedure compact index
-    parameters $tableNm $indexNm
-  begin
-
-    stage stageA on origin :
-      start | pulse once | stageB
-
-    stage stageB on all partitions :
-      compactIndexPtn $tableNm $indexNm | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop catalog
   
   STD_PATH_TAG
@@ -185,28 +163,6 @@
 
   stage stageC on origin :
     output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // verify index
-  
-  STD_PATH_TAG
-  "
-  procedure verify index
-    parameters $tableNm $indexNm
-  begin
-
-    stage stageA on origin :
-      start | pulse once | stageB
-
-    stage stageB on all partitions :
-      verifyIndexPtn $tableNm $indexNm | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
 
   end ;
   "

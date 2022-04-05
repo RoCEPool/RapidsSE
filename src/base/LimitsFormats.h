@@ -3,12 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-static const i8 C_MAX_BUCKETS_IN_GRID = 64;    // with 2N4P2B
-static const i8 C_MAX_BKTS_PER_PTN  = 2;      // with 2N4P2B
+static const i8 C_MAX_BUCKETS       = 64;     // max bkts in grid   NOT ENOUGH!!
 static const i8 C_MAX_COLUMNS       = 150;    // max columns per table
 static const i8 C_MAX_DECKS         = 256;
 static const i8 C_MAX_DEFCOLUMNS    = 150;    // max columns in a stream definition
-static const i8 C_MAX_ENTRY_SIZE    = C_1KB;  // max index entry size
+static const i8 C_MAX_ENTRY         = C_1KB;  // max index entry size
 static const i8 C_MAX_EXPR          = 256;    // max expressions in expr vec
 static const i8 C_MAX_FROMVEC       = 16;
 static const i8 C_MAX_IDXCOLVEC     = 16;
@@ -20,13 +19,12 @@ static const i8 C_MAX_LOG_ENTRIES   = C_256K * 1;
 static const i8 C_MAX_LOG_NOTE      = C_1K;
 static const i8 C_MAX_LVL_LEVELS    = 6;
 static const i8 C_MAX_LVL_RATIO     = 6;
-static const i8 C_MAX_NESTED_PIPELINES = 16;
 static const i8 C_MAX_NESTED_WORDS  = 16;
 static const i8 C_MAX_NODES         = 128;    // max nodes in a grid
 static const i8 C_MAX_OPS           = 256;
 static const i8 C_MAX_PARCEL_ITEMS  = 16;
 static const i8 C_MAX_PATH          = 256;    // max length of file path
-static const i8 C_MAX_PAY           = C_1KB;  // max length of index entry payload
+static const i8 C_MAX_PAYLOAD       = C_1KB;  // max length of index entry payload
 static const i8 C_MAX_PREDICATEVEC  = 16;
 static const i8 C_MAX_PTNSPERNODE   = 64;    // max partitions per node
 static const i8 C_MAX_REGS          = 128;
@@ -41,7 +39,7 @@ static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
 static const i8 C_MAX_VERTEXES      = 256;
 
-// max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS_IN_GRID INSTEAD
+// max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS INSTEAD
 static const i8 C_MAX_LGLPTNS    = C_MAX_PTNSPERNODE * C_MAX_NODES;
 
 static const i8 C_MIN_LVL_LEVELS    = 2;

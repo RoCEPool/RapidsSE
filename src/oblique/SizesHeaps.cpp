@@ -73,7 +73,7 @@
 #include "PtnMap.hpp"
 
 
-#include "BucketMap_dyn.hpp"
+#include "BucketMap.hpp"
 #include "BufferMap.hpp"
 
 #include "CrwPacker.hpp"
@@ -195,7 +195,7 @@
 
 #include "TccLock.hpp"
 #include "ToBktCrw.hpp"
-#include "ToBktRow.hpp"
+#include "ToLglPtnRow.hpp"
 #include "TraceLock.hpp"
 #include "TraceMultiLock.hpp"
 #include "Tub.hpp"
@@ -286,7 +286,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Bucket),             HT_T_TINY    ,0 FILL }, // CN_BUCKET
   { sizeof(BucketGet),          HT_T_TINY    ,0 FILL }, // CN_BUCKETGET
   { sizeof(BucketInfo),         HT_T_TINY    ,0 FILL }, // CN_BUCKETINFO
-  { sizeof(BucketMap_dyn),      HT_T_SMALL   ,0 FILL }, // CN_BUCKETMAP_dyn
+  { sizeof(BucketMap),      HT_T_SMALL   ,0 FILL }, // CN_BUCKETMAP
   { sizeof(BktMapGet),          HT_T_TINY    ,0 FILL }, // CN_BKTMAPGET
   { sizeof(BucketVec),          HT_T_TINY    ,0 FILL }, // CN_BUCKETVEC
   { sizeof(BufferMap),          HT_INVALID   ,0 FILL }, // CN_BUFFERMAP
@@ -622,12 +622,11 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 FILL }, // CN_TINYVIRTUAL
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_TMEVAL
   { sizeof(ToBktCrw),           HT_T_LARGE   ,0 FILL }, // CN_TOBKTCRW
-  { sizeof(ToBktRow),           HT_T_LARGE   ,0 FILL }, // CN_TOBKTROW
   { sizeof(Token),              HT_T_TINY    ,0 FILL }, // CN_TOKEN
   { sizeof(TokenVec),           HT_T_LARGE   ,0 FILL }, // CN_TOKENVEC
+  { sizeof(ToLglPtnRow),        HT_T_LARGE   ,0 FILL }, // CN_TOLGLPTNROW
   { sizeof(ToNstRow),           HT_T_MEDIUM  ,0 FILL }, // CN_TONSTROW
   { sizeof(ToPtnCrw),           HT_T_LARGE   ,0 FILL }, // CN_TOPTNCRW
-  { sizeof(ToPtnRow),           HT_T_LARGE   ,0 FILL }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 FILL }, // CN_TOROW
   { sizeof(Totup),              HT_T_MEDIUM  ,0 FILL }, // CN_TOTUP
   { sizeof(TraceLock),          HT_T_TINY    ,0 FILL }, // CN_TRACELOCK

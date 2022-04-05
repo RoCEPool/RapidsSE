@@ -1,31 +1,31 @@
 /*============================================================================*/
-/* BucketMap_dyn.cpp -- Dynamic Bucket (to logical partition) Map             */
+/* BucketMap.cpp -- Bucket (to logical partition) Map                         */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "BucketMap_dyn.hpp"
+#include "BucketMap.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,BucketMap_dyn,CN_BUCKETMAP_dyn)
-__aNewFunction(BucketMap_dyn,CN_BUCKETMAP_dyn)
-__vDeleteFunction(BucketMap_dyn,CN_BUCKETMAP_dyn)
-__aFooterFunction(BucketMap_dyn);
+__pCastFunction(STORE,BucketMap,CN_BUCKETMAP)
+__aNewFunction(BucketMap,CN_BUCKETMAP)
+__vDeleteFunction(BucketMap,CN_BUCKETMAP)
+__aFooterFunction(BucketMap);
 
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-BucketMap_dyn::BucketMap_dyn(eTT eKind)
-: Operand(CN_BUCKETMAP_dyn)
+BucketMap::BucketMap(eTT eKind)
+: Operand(CN_BUCKETMAP)
 , m_okLock(this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
   m_iActive = 0;
   m_paPtnId = m_taPtnId_0;
@@ -36,29 +36,29 @@ BucketMap_dyn::BucketMap_dyn(eTT eKind)
   vAdjustMap(nCurrentPartitions);
   vAdjustSecondMap(nCurrentPartitions);
  
-  _checkInitialised_(CN_BUCKETMAP_dyn);
+  _checkInitialised_(CN_BUCKETMAP);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-BucketMap_dyn::~BucketMap_dyn(void) noexcept(false)
+BucketMap::~BucketMap(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
-void BucketMap_dyn::vPostRecv(void* aBucketMap)
+void BucketMap::vPostRecv(void* aBucketMap)
 {
   _static_
 
   
-  BucketMap_dyn* pBucketMap = _pBucketMap_dyn(aBucketMap);
+  BucketMap* pBucketMap = _pBucketMap(aBucketMap);
   UNUSED(pBucketMap);
 }
 
@@ -69,11 +69,11 @@ void BucketMap_dyn::vPostRecv(void* aBucketMap)
 /*----------------------------------------------------------------------------*/
 /* adjust map for given number of partitions                                  */
 /*----------------------------------------------------------------------------*/
-void BucketMap_dyn::vAdjustMap(i8 nCurrentPartitions)
+void BucketMap::vAdjustMap(i8 nCurrentPartitions)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     
     PtnId tPtnId = i_Bkt % nCurrentPartitions;
     
@@ -84,11 +84,11 @@ void BucketMap_dyn::vAdjustMap(i8 nCurrentPartitions)
 /*----------------------------------------------------------------------------*/
 /* adjust map for given number of partitions for the second map               */
 /*----------------------------------------------------------------------------*/
-void BucketMap_dyn::vAdjustSecondMap(i8 nCurrentPartitions)
+void BucketMap::vAdjustSecondMap(i8 nCurrentPartitions)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
 
     PtnId tPtnId = i_Bkt % nCurrentPartitions;
 
@@ -99,9 +99,9 @@ void BucketMap_dyn::vAdjustSecondMap(i8 nCurrentPartitions)
 /*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
-PtnId BucketMap_dyn::tBktToLglPtnId(i8 iBucketId)
+PtnId BucketMap::tBktToLglPtnId(i8 iBucketId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
   PtnId tPtnId;
   if (0 == m_iActive)
@@ -115,11 +115,11 @@ PtnId BucketMap_dyn::tBktToLglPtnId(i8 iBucketId)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 BucketMap_dyn::iPtnIdToBkt(PtnId tPtnId)
+i8 BucketMap::iPtnIdToBkt(PtnId tPtnId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     if (m_paPtnId[i_Bkt].iAsI8() == tPtnId.iAsI8())
       return i_Bkt;
   }
@@ -130,12 +130,12 @@ i8 BucketMap_dyn::iPtnIdToBkt(PtnId tPtnId)
 /*----------------------------------------------------------------------------*/
 /* Function to simulate random mapping update                                 */
 /*----------------------------------------------------------------------------*/
-void BucketMap_dyn::vRandomMap(i8 i)
+void BucketMap::vRandomMap(i8 i)
 {
   i8 nPartitions = AM::PTNMAP::nPtnsInGrid();
   PtnId tPtnId;
   i8 iPtn=0;
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     m_taPtnId_0[i_Bkt] = tPtnId;
     iPtn = tPtnId.iAsI8();
     tPtnId = (++iPtn) % nPartitions;
@@ -146,19 +146,19 @@ void BucketMap_dyn::vRandomMap(i8 i)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void BucketMap_dyn::vSetTableNm(Stz* szTableNm)
+void BucketMap::vSetTableNm(Stz* szTableNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   m_sTableNm = szTableNm;
 }
 
 
-Stz* BucketMap_dyn::szDumpMap(void)
+Stz* BucketMap::szDumpMap(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   s4K sDumpBuffer = ""_Stz;
 
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     sDumpBuffer.vCatSprint("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
   }
   sDumpBuffer.vConcat("======================\n"_Stz);
@@ -168,16 +168,16 @@ Stz* BucketMap_dyn::szDumpMap(void)
 /*----------------------------------------------------------------------------*/
 /* see the bucket map                                                         */
 /*----------------------------------------------------------------------------*/
-void BucketMap_dyn::vSee(void)
+void BucketMap::vSee(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
   vTrace("BktMap::\n"_Stz);
 
   PtnId tPtnId;
   
   vTrace("  m_iActive  %2lld\n"_Stz,m_iActive);
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     
     if (0 == m_iActive)
       tPtnId = m_taPtnId_0[i_Bkt];
@@ -198,9 +198,9 @@ void BucketMap_dyn::vSee(void)
 /*----------------------------------------------------------------------------*/
 /* Function to simulate swapping                                              */
 /*----------------------------------------------------------------------------*/
-void BucketMap_dyn::vSwapMap(void)
+void BucketMap::vSwapMap(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   if (m_iActive == 0) {
     m_iActive = 1;
     m_paPtnId = m_taPtnId_1;
@@ -231,7 +231,7 @@ void BucketMap_dyn::vSimulateUpdateMap (void)
 /*----------------------------------------------------------------------------*/
 /* Function to update map after send the data to new node                     */
 /*----------------------------------------------------------------------------*/
-void BucketMap_dyn::vUpdateMap (void)
+void BucketMap::vUpdateMap (void)
 {
   vAdjustMap(AM::PTNMAP::nPtnsInGrid());
 }
@@ -241,11 +241,11 @@ void BucketMap_dyn::vUpdateMap (void)
 /* get next bucket logical partition is currently mapped to                   */
 /* We can have a partition mapped into multiple buckets                       */
 /*----------------------------------------------------------------------------*/
-i8 BucketMap_dyn::iWhichBucketNext(PtnId tPtnId, i8 iBktNo)
+i8 BucketMap::iWhichBucketNext(PtnId tPtnId, i8 iBktNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   i8 iBkt=-1;
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     vTrace("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_paPtnId[i_Bkt].iAsI8());
     //if (m_paPtnId[i_Bkt].iAsI8() == tPtnId.iAsI8()) {
       if (i_Bkt > iBktNo) {
@@ -261,9 +261,9 @@ i8 BucketMap_dyn::iWhichBucketNext(PtnId tPtnId, i8 iBktNo)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 BucketMap_dyn::tWhichLglPtnId(i8 iBucketId)
+i8 BucketMap::tWhichLglPtnId(i8 iBucketId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   return tBktToLglPtnId(iBucketId).iAsI8();
 }
 

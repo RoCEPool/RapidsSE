@@ -12,31 +12,30 @@ assert::stack_0
   "pp_close_system.sen"     include
   "pp_open_system.sen"      include
   
-  "pp_create.sen"           include 
+  "pp_compact.sen"          include
+  "pp_create.sen"           include
   "pp_drop.sen"             include 
   "pp_scan.sen"             include 
-  "pp_api.sen"              include 
-  "pp_file.sen"             include 
+  "pp_verify.sen"           include
+  "pp_file.sen"             include
   "pp_elasticity.sen"       include 
   "pp_getMeta.sen"          include 
-  "pp_steadyState.sen"      include 
-  "pp_unloadReload.sen"     include 
+  "pp_unloadReload.sen"     include
   "pp_forgetRebalance.sen"  include 
 
-  "pp_planner.sen"          include 
+  "pp_range.sen"            include
   "pp_scanTables.sen"       include 
 
   "pp_dload.sen"            include
   "pp_flush.sen"            include
-  "pp_load1.sen"            include
-  "pp_load2.sen"            include 
+  "pp_load.sen"             include
+  "pp_dload.sen"            include
+  "pp_rload.sen"            include
   "pp_nextHB.sen"           include 
   "pp_export.sen"           include 
   "pp_jobRep.sen"           include 
 
   "pp_sqlCompiler.sen"      include 
-
-  "pp_puLoad.sen"           include 
  
 /*============================================================================*/
 /* end                                                                        */

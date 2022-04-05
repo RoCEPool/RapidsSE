@@ -314,8 +314,6 @@ public:
 
   void vCsvBufferCsvAppend(void);
   void vCsvBufferCsvData(void);
-  void vCsvBufferCsvToRow(void);
-
   void vCsvBufferDelete(void);
   void vCsvBufferGet(void);
   void vCsvBufferGetAndClear(void);
@@ -2261,12 +2259,12 @@ public:
   void vToBktCrwRegDangling(void);
   void vToBktCrwRegDelete(void);
 
-  // toBktRow
-  void vToBktRowRegCompleted(void);
-  void vToBktRowRegConvert(void);
-  void vToBktRowRegCreate(void);
-  void vToBktRowRegDangling(void);
-  void vToBktRowRegDelete(void);
+  // toLglPtnRow
+  void vToLglPtnRowCompleted(void);
+  void vToLglPtnRowConvert(void);
+  void vToLglPtnRowCreate(void);
+  void vToLglPtnRowDangling(void);
+  void vToLglPtnRowDelete(void);
 
   // toNstRow
   void vToNstRowRegConvert(void);
@@ -2280,16 +2278,10 @@ public:
   void vToPtnCrwRegDangling(void);
   void vToPtnCrwRegDelete(void);
 
-  // toPtnRow
-  void vToPtnRowRegCompleted(void);
-  void vToPtnRowRegConvert(void);
-  void vToPtnRowRegCreate(void);
-  void vToPtnRowRegDangling(void);
-  void vToPtnRowRegDelete(void);
-
   // toRow
   void vToRowCompleted(void);
   void vToRowCreate(void);
+  void vToRowCsvToRow(void);
   void vToRowDangling(void);
   void vToRowDelete(void);
   void vToRowFetch(void);

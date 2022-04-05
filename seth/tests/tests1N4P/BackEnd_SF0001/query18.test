@@ -18,38 +18,6 @@ select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
 */
 
 
-procedure load
-    parameters $table $file
-  begin
-
-    stage stageA on origin :
-        start
-      | pulse once
-      | chunk $file       // read chunks of file => (seekOffset)
-      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
-      | stageB localrobin
-
-    stage stageB on all partitions on origin :
-        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
-     // | toPtnRow          //    pf (rowBuffer) => (ptn rowBuffer)
-      | toBktRow $table         //       (rowBuffer) => (bkt rowBuffer)
-      | toNstRow          //       (rowBuffer) => (nst rowBuffer)
-    //  | toPtnCrw          //       (rowBuffer) => (ptn crwBuffer)
-      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)
-      | stageC hashcast
-
-    stage stageC on all partitions :
-        insert $table     // (crwBuffer) inserted into table
-      | stageD
-
-    stage stageD on origin :
-        progress 'Load'
-      | output
-      | toStatDemon
-      | sink
-      | stageA
-
-  end ;
 
 
   // Q18_0 create inner table

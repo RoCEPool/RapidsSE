@@ -1,39 +1,35 @@
 /*============================================================================*/
-/* pp_puLoad.sen -- puLoad procedure                                          */
+/* pp_compact.sen -- define compact related procedures                        */
 /*============================================================================*/
 
-" pp_puLoad.sen" .verbose
+" pp_compact.sen" .verbose
+
 
 /*----------------------------------------------------------------------------*/
-/* generate and load a pu table                                               */
+/* compact related procedures                                                 */
 /*----------------------------------------------------------------------------*/
 
-: start::defProc_pu
+"  start::defProc_Compact" .verbose
+
+: start::defProc_Compact
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compact index
   
   STD_PATH_TAG
   "
-  procedure puLoad
-    parameters $table
+  procedure compact index
+    parameters $tableNm $indexNm
   begin
 
     stage stageA on origin :
-        start
-      | pulse once
-      | puGen $table
-      | toPtnRow
-      | toNstRow
-      | toPtnCrw
-      | stageB hashcast
+      start | pulse once | stageB
 
     stage stageB on all partitions :
-        insert $table
-      | stageC
+      compactIndexPtn $tableNm $indexNm | stageC
 
     stage stageC on origin :
-        progress 'puLoad'
-      | output
-      | sink
-      | stageA
+      output | sink | stageA
 
   end ;
   "

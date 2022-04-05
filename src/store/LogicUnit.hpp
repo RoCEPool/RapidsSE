@@ -8,10 +8,9 @@
 #include "CrwToRow.hpp"
 #include "ToPtnCrw.hpp"
 #include "ToNstRow.hpp"
-#include "ToPtnRow.hpp"
 #include "ToRow.hpp"
 #include "ToBktCrw.hpp"
-#include "ToBktRow.hpp"
+#include "ToLglPtnRow.hpp"
 
 
 #include "Pot.hpp"
@@ -180,10 +179,9 @@ namespace STORE
     REG<Timer,          CN_TIMER         > m_xpTimer;
     REG<TinyC,          CN_TINYC         > m_xpTinyC;
     REG<ToBktCrw,       CN_TOBKTCRW      > m_xpToBktCrw;
-    REG<ToBktRow,       CN_TOBKTROW      > m_xpToBktRow;
+    REG<ToLglPtnRow,    CN_TOLGLPTNROW   > m_xpToLglPtnRow;
     REG<ToNstRow,       CN_TONSTROW      > m_xpToNstRow;
     REG<ToPtnCrw,       CN_TOPTNCRW      > m_xpToPtnCrw;
-    REG<ToPtnRow,       CN_TOPTNROW      > m_xpToPtnRow;
     REG<ToRow,          CN_TOROW         > m_xpToRow;
     REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;

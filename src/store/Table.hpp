@@ -24,7 +24,7 @@ namespace STORE
     StreamDef* m_pStreamDef;  // table stream def
     ShardDef*  m_pShardDef;   // partition/sharding key def
 
-    BucketMap_dyn* m_pBucketMap;  // bucket (to partition) map
+    BucketMap* m_pBucketMap;  // bucket (to partition) map
 
     IdxVec*    m_pIdxVec;     // index vector
     
@@ -58,8 +58,8 @@ namespace STORE
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);
     void    vAppendBuffer_replicated(DataBuffer* pDataBuffer);
 
-    BucketMap_dyn *pBucketMap(void);
-    void vBucketMap(BucketMap_dyn *pBucketMap);
+    BucketMap *pBucketMap(void);
+    void vBucketMap(BucketMap *pBucketMap);
 
     i8      nBuffers(void);
     void    vCompactIndex(Index* pIndex);

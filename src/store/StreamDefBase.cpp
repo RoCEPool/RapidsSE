@@ -530,7 +530,7 @@ i8 StreamDefBase::jTableSize(void)
 /*----------------------------------------------------------------------------*/
 /* convert columns of this streamDef to colPix (opt. adding a ptnhash column) */
 /*----------------------------------------------------------------------------*/
-void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
+void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddKeyHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -541,7 +541,7 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
   
   
   pRowPixDst->m_nNameOffset = sizeof(ColPix)
-                                * ( m_nColumns + (bAddPtnHash ? 1 : 0) );
+                                * ( m_nColumns + (bAddKeyHash ? 1 : 0) );
   pRowPixDst->m_nTotalChars = 0;
 
   char* azNames = aAdd<char*>(axaColPixDst,pRowPixDst->m_nNameOffset);
@@ -578,7 +578,7 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
 
   // i_Col falls thru
   
-  if (bAddPtnHash) {
+  if (bAddKeyHash) {
 
     //pRowPixDst->vPrint();
     ASSERT(! pRowPixDst->m_nExtraCols);
@@ -600,7 +600,7 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
     axColPixDst->m_bPtnKey   = (u8)false;
     axColPixDst->m_uSpare    = (u8)0;
     
-    StrLib::vCopy(azColNmDst,"__ptnHsh");
+    StrLib::vCopy(azColNmDst,"__keyHash");
     nNameSize = StrLib::nSize(azColNmDst);
 
     nStzOfs = nDifference(axColPixDst,azColNmDst);
@@ -619,7 +619,7 @@ void StreamDefBase::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
 /*----------------------------------------------------------------------------*/
 /* convert this streamDef to RowPix (optionally adding a ptnhash column)      */
 /*----------------------------------------------------------------------------*/
-void StreamDefBase::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
+void StreamDefBase::vToRowPix(RowPix* pRowPixDst, bool bAddKeyHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -639,7 +639,7 @@ void StreamDefBase::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
 //    pRowPixDst->m_bPtnHash = true;
 //  }
   
-  vToColPix(pRowPixDst,bAddPtnHash);
+  vToColPix(pRowPixDst,bAddKeyHash);
   
   pRowPixDst->m_bInitialised = true;
   

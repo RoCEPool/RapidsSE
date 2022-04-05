@@ -480,7 +480,7 @@ void ShardDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
     axColPixDst->m_bPtnKey   = (u8)false;
     axColPixDst->m_uSpare    = (u8)0;
     
-    StrLib::vCopy(azColNmDst,"__ptnHsh");
+    StrLib::vCopy(azColNmDst,"__keyHash");
     nNameSize = StrLib::nSize(azColNmDst);
 
     nStzOfs = nDifference(axColPixDst,azColNmDst);

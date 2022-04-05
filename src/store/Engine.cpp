@@ -7,7 +7,7 @@
 #include <signal.h>
 
 #include "CmdLineArgs.hpp"
-#include "BucketMap_dyn.hpp"
+#include "BucketMap.hpp"
 #include "PtnMap.hpp"
 
 #include "RowOnce.hpp"
@@ -1099,7 +1099,7 @@ void Engine::vOpenTrace(bool bPrompt)
 /*----------------------------------------------------------------------------*/
 void Engine::vPostRecvFns(void)
 {
-  gxaSizeHeap[CN_BUCKETMAP_dyn].m_fpPostRecvFn = (fpPOSTFN*)BucketMap_dyn::vPostRecv;
+  gxaSizeHeap[CN_BUCKETMAP].m_fpPostRecvFn = (fpPOSTFN*)BucketMap::vPostRecv;
   gxaSizeHeap[CN_CRWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CrwBuffer::vPostRecv;
   gxaSizeHeap[CN_CSVBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CsvBuffer::vPostRecv;
   //gxaSizeHeap[CN_EACHROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)EachRowBuffer::vPostRecv;
@@ -1155,11 +1155,10 @@ void Engine::vPrintConstants(void)
   vTrace("  C_LOW_BUFFERS        = %lld\n"_Stz,C_LOW_BUFFERS);
   
   vTrace("  C_MAX_BCD_PRECISION  = %lld\n"_Stz,C_MAX_BCD_PRECISION);
-  vTrace("  C_MAX_BUCKETS_IN_GRID        = %lld\n"_Stz,C_MAX_BUCKETS_IN_GRID);
-
+  vTrace("  C_MAX_BUCKETS        = %lld\n"_Stz,C_MAX_BUCKETS);
   vTrace("  C_MAX_COLUMNS        = %lld\n"_Stz,C_MAX_COLUMNS);
   vTrace("  C_MAX_DEFCOLUMNS     = %lld\n"_Stz,C_MAX_DEFCOLUMNS);
-  vTrace("  C_MAX_ENTRY_SIZE     = %lld\n"_Stz,C_MAX_ENTRY_SIZE);
+  vTrace("  C_MAX_ENTRY          = %lld\n"_Stz,C_MAX_ENTRY);
   vTrace("  C_MAX_EXPR           = %lld\n"_Stz,C_MAX_EXPR);
   vTrace("  C_MAX_FLT_PRECISION  = %lld\n"_Stz,C_MAX_FLT_PRECISION);
   vTrace("  C_MAX_FROMVEC        = %lld\n"_Stz,C_MAX_FROMVEC);
@@ -1175,9 +1174,9 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_NESTED_WORDS   = %lld\n"_Stz,C_MAX_NESTED_WORDS);
   vTrace("  C_MAX_NODES          = %lld\n"_Stz,C_MAX_NODES);
   vTrace("  C_MAX_OPS            = %lld\n"_Stz,C_MAX_OPS);
-  vTrace("  C_MAX_LGLPTNS     = %lld\n"_Stz,C_MAX_LGLPTNS);
+  vTrace("  C_MAX_LGLPTNS        = %lld\n"_Stz,C_MAX_LGLPTNS);
   vTrace("  C_MAX_PATH           = %lld\n"_Stz,C_MAX_PATH);
-  vTrace("  C_MAX_PAY            = %lld\n"_Stz,C_MAX_PAY);
+  vTrace("  C_MAX_PAYLOAD        = %lld\n"_Stz,C_MAX_PAYLOAD);
   vTrace("  C_MAX_PREDICATEVEC   = %lld\n"_Stz,C_MAX_PREDICATEVEC);
   vTrace("  C_MAX_PTNSPERNODE    = %lld\n"_Stz,C_MAX_PTNSPERNODE);
   vTrace("  C_MAX_RECORD         = %lld\n"_Stz,C_MAX_RECORD);
@@ -1561,7 +1560,7 @@ void Engine::vStartSystem(void)
       new PtnMap(gpAttachMap->m_pGrid->nKnownNodes(),
                  gpAttachMap->m_xSysArgs.m_nPtnsPerNode);
 
-  gpAttachMap->m_pBucketMap = new BucketMap_dyn(TT_NORMAL);
+  gpAttachMap->m_pBucketMap = new BucketMap(TT_NORMAL);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

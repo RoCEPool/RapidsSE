@@ -773,13 +773,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_ASSERT_MACRO"_Stz,(i8)false);
   #endif
-    
-  #ifdef WITH_BUCKET_HASHING
-  vAddConstant("WITH_BUCKET_HASHING"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_BUCKET_HASHING"_Stz,(i8)false);
-  #endif
-    
+        
   #ifdef WITH_CHECK_INITIALISED
   vAddConstant("WITH_CHECK_INITIALISED"_Stz,(i8)true);
   #else

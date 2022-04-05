@@ -38,7 +38,7 @@ enum eCN : u2 // Class Number
   /* */ CN_BUCKET,
   /* */ CN_BUCKETGET,
   /* */ CN_BUCKETINFO,
-  /* */ CN_BUCKETMAP_dyn,
+  /* */ CN_BUCKETMAP,
   /* */ CN_BKTMAPGET,
   /* */ CN_BUCKETVEC,
   /* */ CN_BUFFERMAP,
@@ -374,12 +374,11 @@ enum eCN : u2 // Class Number
   /* */ CN_TINYVIRTUAL,
   /* */ CN_TMEVAL,
   /* */ CN_TOBKTCRW,
-  /* */ CN_TOBKTROW,
   /* */ CN_TOKEN,
   /* */ CN_TOKENVEC,
+  /* */ CN_TOLGLPTNROW,
   /* */ CN_TONSTROW,
   /* */ CN_TOPTNCRW,
-  /* */ CN_TOPTNROW,
   /* */ CN_TOROW,
   /* */ CN_TOTUP,
   /* */ CN_TRACELOCK,
@@ -445,7 +444,7 @@ static Stz* aCN[]
   /* */ "BUCKET"_Stz,               // CN_BUCKET
   /* */ "BUCKETGET"_Stz,            // CN_BUCKETGET
   /* */ "BUCKETINFO"_Stz,           // CN_BUCKETINFO
-  /* */ "BUCKETMAP_dyn"_Stz,        // CN_BUCKETMAP_dyn
+  /* */ "BUCKETMAP_dyn"_Stz,        // CN_BUCKETMAP
   /* */ "BKTMAPGET"_Stz,            // CN_BKTMAPGET
   /* */ "BUCKETVEC"_Stz,            // CN_BUCKETVEC
   /* */ "BUFFERMAP"_Stz,            // CN_BUFFERMAP
@@ -782,11 +781,10 @@ static Stz* aCN[]
   /* */ "TMEVAL"_Stz,               // CN_TMEVAL
   /* */ "TOKEN"_Stz,                // CN_TOKEN
   /* */ "TOBKTCRW"_Stz,             // CN_TOBKTCRW
-  /* */ "TOBKTROW"_Stz,             // CN_TOBKTROW
   /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
+  /* */ "TOLGLPTNROW"_Stz,          // CN_TOLGLPTNROW
   /* */ "TONSTROW"_Stz,             // CN_TONSTROW
   /* */ "TOPTNCRW"_Stz,             // CN_TOPTNCRW
-  /* */ "TOPTNROW"_Stz,             // CN_TOPTNROW
   /* */ "TOROW"_Stz,                // CN_TOROW
   /* */ "TOTUP"_Stz,                // CN_TOTUP
   /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK
