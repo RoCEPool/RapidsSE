@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_D_STREAMDEF ...                                  DEFINITION */
 /*----------------------------------------------------------------------------*/
-: toBktCrw_StreamDef \handler
+: toLglPtnCrw_StreamDef \handler
 
   PipeIn[] to StreamDefLft[]
   nullptr to PipeIn[]
@@ -24,7 +24,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
-: toBktCrw_StartMarker \handler
+: toLglPtnCrw_StartMarker \handler
 
   ZK_M_START_handler
 ;
@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_DATAPULSE ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
-: toBktCrw_DataMarker \handler
+: toLglPtnCrw_DataMarker \handler
 
   ZK_M_DATAPULSE_handler
 ;
@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_ROWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
-: toBktCrw_RowBuffer \handler
+: toLglPtnCrw_RowBuffer \handler
 
   PipeIn[]\clear to RowBuffer[]
   RowBuffer[] ToBktCrw[].convert
@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
-: toBktCrw_EosMarker \handler
+: toLglPtnCrw_EosMarker \handler
 
   ptnmap::ptnsInGrid 0
   do
@@ -99,17 +99,17 @@
 /*----------------------------------------------------------------------------*/
 /* toRow request                                                        SPAWN */
 /*----------------------------------------------------------------------------*/
-: toBktCrw_op \operator
+: toLglPtnCrw_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: toBktCrw_EosMarker   ZK_M_EOS         [op].handler!
-  find: toBktCrw_DataMarker  ZK_M_DATAPULSE   [op].handler!
-  find: toBktCrw_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
-  find: toBktCrw_StartMarker ZK_M_START       [op].handler!
-  find: toBktCrw_StreamDef   ZK_D_STREAMDEF   [op].handler!
+  find: toLglPtnCrw_EosMarker   ZK_M_EOS         [op].handler!
+  find: toLglPtnCrw_DataMarker  ZK_M_DATAPULSE   [op].handler!
+  find: toLglPtnCrw_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+  find: toLglPtnCrw_StartMarker ZK_M_START       [op].handler!
+  find: toLglPtnCrw_StreamDef   ZK_D_STREAMDEF   [op].handler!
 
   op__loop
 
@@ -123,12 +123,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toBktCrw :: toBktCrw ;
+cmdSyntax: toLglPtnCrw :: toLglPtnCrw ;
 
-: toBktCrw_cmdTags _cmdTags tagCopy: op_tags
+: toLglPtnCrw_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "toBktCrw_op"
+    <opEntry> = "toLglPtnCrw_op"
   }
 ;
 

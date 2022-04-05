@@ -33,7 +33,7 @@
         toRow    $table   // (csvBuffer) => (rowBuffer w row+keyHash)
       | toLglPtnRow $table   // (rowBuffer) => (bkt rowBuffer)
       | toNstRow          // (rowBuffer) => (nst rowBuffer)
-      | toBktCrw          // (rowBuffer) => (bkt crwBuffer)
+      | toLglPtnCrw          // (rowBuffer) => (bkt crwBuffer)
       | stageC hashcast
 
     stage stageC on all partitions :

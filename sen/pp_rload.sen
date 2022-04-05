@@ -28,9 +28,9 @@
 
     stage stageB on all partitions on origin :
         toRow $table
-      | toLglPtnRow $table   
+      | toLglPtnRow $table
       | toNstRow          
-      | toBktCrw          
+      | toLglPtnCrw          
       | stageC broadcast
 
     stage stageC on all nodes :
@@ -69,7 +69,7 @@
         toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
       | toLglPtnRow $table   //       (rowBuffer) => (bkt rowBuffer)
       | toNstRow          //       (rowBuffer) => (nst rowBuffer)
-      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)
+      | toLglPtnCrw          //       (rowBuffer) => (bkt crwBuffer)
       | stageC hashcast
 
     stage stageC on all partitions :
