@@ -95,7 +95,6 @@ namespace PROMPT
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
     void vDebugMode(i8 iDebugMode);
-    bool bDemo(void);
     void vDivision(Stz* szDivision);
     i8   iDivisionNo(void);
     bool bContinue(void);
@@ -110,7 +109,6 @@ namespace PROMPT
     bool bExamineCommand(void);
     bool bExecuteFunction(void);
     SeDeputy* pFindDeputy(void);
-    bool bHandleDemo(void);
     TokenVec* pInpTknVec(void);
     Input* pInputGet(void);
     bool bIsPromptWord(void);
