@@ -377,9 +377,9 @@ enum eCN : u2 // Class Number
   /* */ CN_TINYVIRTUAL,
   /* */ CN_TMEVAL,
   /* */ CN_TOBKTCRW,
-  /* */ CN_TOBKTROW,
   /* */ CN_TOKEN,
   /* */ CN_TOKENVEC,
+  /* */ CN_TOLGLPTNROW,
   /* */ CN_TONSTROW,
   /* */ CN_TOPTNCRW,
   /* */ CN_TOROW,
@@ -787,8 +787,8 @@ static Stz* aCN[]
   /* */ "TMEVAL"_Stz,               // CN_TMEVAL
   /* */ "TOKEN"_Stz,                // CN_TOKEN
   /* */ "TOBKTCRW"_Stz,             // CN_TOBKTCRW
-  /* */ "TOBKTROW"_Stz,             // CN_TOBKTROW
   /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
+  /* */ "TOLGLPTNROW"_Stz,          // CN_TOLGLPTNROW
   /* */ "TONSTROW"_Stz,             // CN_TONSTROW
   /* */ "TOPTNCRW"_Stz,             // CN_TOPTNCRW
   /* */ "TOROW"_Stz,                // CN_TOROW

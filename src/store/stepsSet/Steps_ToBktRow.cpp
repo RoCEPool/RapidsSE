@@ -40,7 +40,7 @@ void Step::vToLglPtnRowCompleted(void)
 {
   ENTRY();
   
-  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToBktRow;
+  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToLglPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -58,7 +58,7 @@ void Step::vToLglPtnRowConvert(void)
 {
   ENTRY();
 
-  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToBktRow;
+  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToLglPtnRow;
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -82,7 +82,7 @@ void Step::vToLglPtnRowCreate(void)
     
   ToLglPtnRow* pToBktRow = new ToLglPtnRow;
       
-  m_pLogicUnit->m_xpToBktRow = pToBktRow;
+  m_pLogicUnit->m_xpToLglPtnRow = pToBktRow;
 
   EXIT();
 }
@@ -94,7 +94,7 @@ void Step::vToLglPtnRowDangling(void)
 {
   ENTRY();
   
-  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToBktRow;
+  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToLglPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
@@ -112,8 +112,8 @@ void Step::vToLglPtnRowDelete(void)
 {
   ENTRY();
   
-  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToBktRow;
-  m_pLogicUnit->m_xpToBktRow = nullptr;
+  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToLglPtnRow;
+  m_pLogicUnit->m_xpToLglPtnRow = nullptr;
   
   delete pToBktRow;
   

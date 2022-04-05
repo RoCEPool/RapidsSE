@@ -22,18 +22,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,ToLglPtnRow,CN_TOBKTROW)
-__aNewFunction(ToLglPtnRow,CN_TOBKTROW)
-__vDeleteFunction(ToLglPtnRow,CN_TOBKTROW)
+__pCastFunction(STORE,ToLglPtnRow,CN_TOLGLPTNROW)
+__aNewFunction(ToLglPtnRow,CN_TOLGLPTNROW)
+__vDeleteFunction(ToLglPtnRow,CN_TOLGLPTNROW)
 __aFooterFunction(ToLglPtnRow)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ToLglPtnRow::ToLglPtnRow(void)
-: Object(CN_TOBKTROW)
+: Object(CN_TOLGLPTNROW)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
   // m_oHashSet
 
@@ -41,7 +41,7 @@ ToLglPtnRow::ToLglPtnRow(void)
 
   m_pIntoRowBuffer   = nullptr;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,7 +49,7 @@ ToLglPtnRow::ToLglPtnRow(void)
 /*----------------------------------------------------------------------------*/
 ToLglPtnRow::~ToLglPtnRow(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +92,7 @@ void ToLglPtnRow::vRepairHashSet(Object* pObject)
 /*----------------------------------------------------------------------------*/
 void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
   m_pFromRowBuffer = pRowBuffer;
 
@@ -119,7 +119,7 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 RowBuffer* ToLglPtnRow::pCompleted(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
   
   RowBuffer* pRowBuffer = _pRowBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
   
@@ -131,7 +131,7 @@ RowBuffer* ToLglPtnRow::pCompleted(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 RowBuffer* ToLglPtnRow::pDangling(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
   
   RowBuffer* pRowBuffer = _pRowBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
   
@@ -146,7 +146,7 @@ RowBuffer* ToLglPtnRow::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 void ToLglPtnRow::vCopyRow(i8 i_Ptn, Row* aRowSrc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
   NEVER_REACH;
   // new a destination row in target partition row slab
   vNewDstRow(i_Ptn);
@@ -162,7 +162,7 @@ void ToLglPtnRow::vCopyRow(i8 i_Ptn, Row* aRowSrc)
 /*----------------------------------------------------------------------------*/
 void ToLglPtnRow::vCopyRow(i8 i_Ptn, i8 iBkt, Row* aRowSrc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
   // new a destination row in target partition row slab
   vNewDstRow(i_Ptn, iBkt);
@@ -178,7 +178,7 @@ void ToLglPtnRow::vCopyRow(i8 i_Ptn, i8 iBkt, Row* aRowSrc)
 /*----------------------------------------------------------------------------*/
 void ToLglPtnRow::vNewDstRow(i8 i_Ptn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
   NEVER_REACH;
   // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRowBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
@@ -212,7 +212,7 @@ void ToLglPtnRow::vNewDstRow(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 void ToLglPtnRow::vNewDstRow(i8 i_Ptn, i8 i_Bkt)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
   // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRowBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
