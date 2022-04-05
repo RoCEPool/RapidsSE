@@ -176,7 +176,6 @@ LogicUnit::LogicUnit(void)
 ,    m_xpToLglPtnCrw(this,RF_REPAIR_DELETE,   ToLglPtnCrw::vRepairHashSet,LR_TOLGLPTNCRW)
 ,    m_xpToLglPtnRow(this,RF_REPAIR_DELETE,   ToLglPtnRow::vRepairHashSet,LR_TOLGLPTNROW)
 ,       m_xpToNstRow(this,RF_REPAIR_DELETE,      ToNstRow::vRepair,       LR_TONSTROW)
-,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,      ToPtnCrw::vRepairHashSet,LR_TOPTNCRW)
 ,          m_xpToRow(this,RF_REPAIR_DELETE,         ToRow::vRepairList,      LR_TOROW)
 ,            m_xpTub(this,RF_REPAIR_DELETE,           Tub::vRepair,            LR_TUB)
 ,             m_xpTx(this,RF_REPAIR_DELETE,            Tx::vRepair,             LR_TX)
@@ -352,7 +351,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpToLglPtnCrw.bIsNull());
   RASSERT(m_xpToLglPtnRow.bIsNull());
   RASSERT(m_xpToNstRow.bIsNull());
-  RASSERT(m_xpToPtnCrw.bIsNull());
   RASSERT(m_xpToRow.bIsNull());
   RASSERT(m_xpTx.bIsNull());
   

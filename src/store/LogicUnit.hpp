@@ -181,7 +181,6 @@ namespace STORE
     REG<ToLglPtnCrw,    CN_TOLGLPTNCRW   > m_xpToLglPtnCrw;
     REG<ToLglPtnRow,    CN_TOLGLPTNROW   > m_xpToLglPtnRow;
     REG<ToNstRow,       CN_TONSTROW      > m_xpToNstRow;
-    REG<ToPtnCrw,       CN_TOPTNCRW      > m_xpToPtnCrw;
     REG<ToRow,          CN_TOROW         > m_xpToRow;
     REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;
