@@ -16,9 +16,11 @@
   start::defProc_Compact
   start::defProc_Create
   start::defProc_Drop
-  start::defProc_Scan
   start::defProc_Load
   start::defProc_Rload
+  start::defProc_Scan
+  start::defProc_Verify
+  
   start::defProc_NextHB
   start::defProc_Dload
   start::defProc_Export

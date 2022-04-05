@@ -16,6 +16,7 @@ assert::stack_0
   "pp_create.sen"           include
   "pp_drop.sen"             include 
   "pp_scan.sen"             include 
+  "pp_verify.sen"           include
   "pp_file.sen"             include
   "pp_elasticity.sen"       include 
   "pp_getMeta.sen"          include 
