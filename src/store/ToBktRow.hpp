@@ -29,7 +29,6 @@ namespace STORE
 
     static void vRepairHashSet(Object* pObject);
 
-    void vConvert(RowBuffer* pRowBuffer);
     void vConvert(Table* pTable, RowBuffer* pRowBuffer);
   
     RowBuffer* pCompleted(i8 i_Ptn);

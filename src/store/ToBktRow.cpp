@@ -90,34 +90,6 @@ void ToBktRow::vRepairHashSet(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ToBktRow::vConvert(RowBuffer* pRowBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
-  NEVER_REACH;
-  m_pFromRowBuffer = pRowBuffer;
-      
-  i8 nRows = pRowBuffer->nRows();
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
-
-    i8 iHash1 = pRowBuffer->iHashOfRow(aRowSrc);
-    i8 i_Bkt1 = iHash1 % C_MAX_BUCKETS;
-
-    PtnId i_Ptn1;
-    i_Ptn1 = pRowBuffer->pTable()->tBktToLglPtn(i_Bkt1);  //AM::PTNMAP::tToPtn(i_Bkt1);
-    if (pRowBuffer->pTable()) {
-      i_Ptn1 = pRowBuffer->pTable()->tBktToLglPtn(i_Bkt1);
-      vTrace("ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt1, i_Ptn1.iAsI8());
-    }
-    vCopyRow(i_Ptn1.iAsI8(),aRowSrc);
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert                                                                    */
-/*----------------------------------------------------------------------------*/
 void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);

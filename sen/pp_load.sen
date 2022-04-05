@@ -30,10 +30,10 @@
       | stageB localrobin
 
     stage stageB on all partitions on origin :
-        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+keyHash)
-      | toBktRow $table   //       (rowBuffer) => (bkt rowBuffer)
-      | toNstRow          //       (rowBuffer) => (nst rowBuffer)
-      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)
+        toRow    $table   // (csvBuffer) => (rowBuffer w row+keyHash)
+      | toBktRow $table   // (rowBuffer) => (bkt rowBuffer)
+      | toNstRow          // (rowBuffer) => (nst rowBuffer)
+      | toBktCrw          // (rowBuffer) => (bkt crwBuffer)
       | stageC hashcast
 
     stage stageC on all partitions :
