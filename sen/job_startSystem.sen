@@ -27,7 +27,6 @@
   start::defProc_File
   start::defProc_Elasticity
   start::defProc_getMeta
-  start::defProc_SteadyState
   start::defProc_UnloadReload
   start::defProc_ForgetRebalance
   start::defProc_Query

@@ -19,8 +19,7 @@ assert::stack_0
   "pp_file.sen"             include 
   "pp_elasticity.sen"       include 
   "pp_getMeta.sen"          include 
-  "pp_steadyState.sen"      include 
-  "pp_unloadReload.sen"     include 
+  "pp_unloadReload.sen"     include
   "pp_forgetRebalance.sen"  include 
 
   "pp_query.sen"            include 
