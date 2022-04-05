@@ -2259,12 +2259,12 @@ public:
   void vToBktCrwRegDangling(void);
   void vToBktCrwRegDelete(void);
 
-  // toBktRow
-  void vToBktRowRegCompleted(void);
-  void vToBktRowRegConvert(void);
-  void vToBktRowRegCreate(void);
-  void vToBktRowRegDangling(void);
-  void vToBktRowRegDelete(void);
+  // toLglPtnRow
+  void vToLglPtnRowCompleted(void);
+  void vToLglPtnRowConvert(void);
+  void vToLglPtnRowCreate(void);
+  void vToLglPtnRowDangling(void);
+  void vToLglPtnRowDelete(void);
 
   // toNstRow
   void vToNstRowRegConvert(void);
