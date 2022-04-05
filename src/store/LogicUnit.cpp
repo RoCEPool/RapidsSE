@@ -232,15 +232,6 @@ LogicUnit::LogicUnit(void)
   m_sString6  = ""_Stz;
   m_sString7  = ""_Stz;
 
-  m_xRluCommon.m_iCtr0 = 0;
-
-  for (i8 i_Local = 0; i_Local < C_LOGIC_LOCALS; i_Local++)
-    m_xRluCommon.m_iaLocals[i_Local] = C_UNKNOWN;
-
-  for (i8 i_Byte = 0; i_Byte < C_ROWS_PERBUFFER; i_Byte++)
-    m_xRluCommon.m_baJoinMap[i_Byte] = 0;
-  m_xRluCommon.m_nJoinMapCnt = 0;
-
   m_iNextCond = C_UNKNOWN;
   m_bSuperFrag = false;
   m_aLowerEntry = nullptr;
@@ -262,30 +253,14 @@ LogicUnit::LogicUnit(void)
   MemLib::vZero(&m_xRluCommon,sizeof(m_xRluCommon),CN_LOGICUNIT);
   m_xRluCommon.m_iCmnMagic  = 123456789;
   m_xRluCommon.m_iCmnFooter = 987654321;
-  
-  m_xRluCommon.m_nAltHeadSize = C_CRW_HEADBYTES;
-  m_xRluCommon.m_nSrcHeadSize = C_CRW_HEADBYTES;
-  m_xRluCommon.m_i_ColSet = 0;
 
   m_oSince.vStart();
   
   // m_oEntWrk
 
   m_uSelectColumns = 0;
-  
-  m_xRluCommon.m_aWrkEnt = (Ent_int*)m_oEntWrk.aEnt();
-  m_xRluCommon.m_pEntWrk = (void*)&m_oEntWrk;
-  m_xRluCommon.m_iJoinedRow = 0;
-
-  m_xRluCommon.m_pRowPix = (void*)&m_oRowPix;
-
-  m_xRluCommon.m_i_TablePtn = C_UNKNOWN;
-  m_xRluCommon.m_nPtns  = AM::PTNMAP::nPtnsInGrid();
-  m_xRluCommon.m_iHash  = 0;
 
   m_xRluCommon.m_pPot = nullptr;
-  m_xRluCommon.m_pIndexDef = nullptr;
-  m_xRluCommon.m_pIndexTree = nullptr;
 
   // m_ixRowsProcessed;
   // m_ixRowsInvalid;
@@ -618,15 +593,15 @@ void LogicUnit::vDiaryNote(i8 i_EnumGroup, i8 i_Enum, i8 iItem, i8 nNanoSecs,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
-  if (!m_pRluDiary)
-    m_pRluDiary = new RluDiary;
-
-  
-  m_pRluDiary->vAddNote(m_xRluCommon.m_iSql,m_xRluCommon.m_i_TablePtn,
-                        nQueueLength,
-                        
-                        i_EnumGroup,i_Enum,iItem,nNanoSecs,
-                        iAction,i_ActEnumGroup,i_ActEnum);
+//  if (!m_pRluDiary)
+//    m_pRluDiary = new RluDiary;
+//
+//
+//  m_pRluDiary->vAddNote(m_xRluCommon.m_iSql,m_xRluCommon.m_i_TablePtn,
+//                        nQueueLength,
+//
+//                        i_EnumGroup,i_Enum,iItem,nNanoSecs,
+//                        iAction,i_ActEnumGroup,i_ActEnum);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -679,10 +654,10 @@ void LogicUnit::vEnter(void)
   //         m_xRluCommon.m_nEnterCount,
   //         nNanoSeconds);
   
-    vDiaryNote(EG_ED,ED_ENTER,
-                m_xRluCommon.m_nEnterCount,
-                nNanoSeconds,
-                0,0,0,-1);
+//    vDiaryNote(EG_ED,ED_ENTER,
+//                m_xRluCommon.m_nEnterCount,
+//                nNanoSeconds,
+//                0,0,0,-1);
   }
 }
 
@@ -706,10 +681,10 @@ void LogicUnit::vExit(void)
   //         m_xRluCommon.m_nEnterCount,
   //         nNanoSeconds);
 
-    vDiaryNote(EG_ED,ED_EXIT,
-               m_xRluCommon.m_nEnterCount,
-               nNanoSeconds,
-               0,0,0,-1);
+//    vDiaryNote(EG_ED,ED_EXIT,
+//               m_xRluCommon.m_nEnterCount,
+//               nNanoSeconds,
+//               0,0,0,-1);
   }
 }
 
@@ -733,7 +708,7 @@ void LogicUnit::vFailure(void)
 void LogicUnit::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  m_xRluCommon.m_i_TablePtn = MY::pOp()->tPtnId().iAsI8();
+  //m_xRluCommon.m_i_TablePtn = MY::pOp()->tPtnId().iAsI8();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -823,22 +798,22 @@ void LogicUnit::vDiaryReport(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
-  s256 sDiaryPath;
-  
-  if (0 != m_xRluCommon.m_iSql)
-    sDiaryPath.vSprint("%s/RluDiary_%s_%lld_%lld.csv"_Stz,
-                       m_pRluDiary->szDiaryDir(),
-                       m_pRluDiary->szDiaryNm(),
-                       m_xRluCommon.m_iSql,
-                       m_xRluCommon.m_i_TablePtn
-                       );
-  else
-    sDiaryPath.vSprint("%s/RluDiary_%s.csv"_Stz,
-                       m_pRluDiary->szDiaryDir(),
-                       m_pRluDiary->szDiaryNm()
-                       );
-
-  m_pRluDiary->vReportDiary(sDiaryPath);
+//  s256 sDiaryPath;
+//
+//  if (0 != m_xRluCommon.m_iSql)
+//    sDiaryPath.vSprint("%s/RluDiary_%s_%lld_%lld.csv"_Stz,
+//                       m_pRluDiary->szDiaryDir(),
+//                       m_pRluDiary->szDiaryNm(),
+//                       m_xRluCommon.m_iSql,
+//                       m_xRluCommon.m_i_TablePtn
+//                       );
+//  else
+//    sDiaryPath.vSprint("%s/RluDiary_%s.csv"_Stz,
+//                       m_pRluDiary->szDiaryDir(),
+//                       m_pRluDiary->szDiaryNm()
+//                       );
+//
+//  m_pRluDiary->vReportDiary(sDiaryPath);
   
 }
 
