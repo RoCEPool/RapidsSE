@@ -18,7 +18,7 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_ToNstRow(void)
+void Step::vAddSteps_ToLglPtnNst(void)
 {
   vAddStep("toNstRow[].convert"_Stz,     &Step::vToLglPtnNstConvert);
   vAddStep("toNstRow[].create"_Stz,      &Step::vToLglPtnNstCreate);
@@ -32,7 +32,7 @@ void Step::vToLglPtnNstConvert(void)
 {
   ENTRY();
 
-  ToNstRow* pToNstRow = *m_pLogicUnit->m_xpToNstRow;
+  ToLglPtnNst* pToNstRow = *m_pLogicUnit->m_xpToNstRow;
   
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -50,7 +50,7 @@ void Step::vToLglPtnNstCreate(void)
 {
   ENTRY();
     
-  ToNstRow* pToNstRow = new ToNstRow;
+  ToLglPtnNst* pToNstRow = new ToLglPtnNst;
       
   m_pLogicUnit->m_xpToNstRow = pToNstRow;
 
@@ -64,7 +64,7 @@ void Step::vToLglPtnNstDelete(void)
 {
   ENTRY();
   
-  ToNstRow* pToNstRow = *m_pLogicUnit->m_xpToNstRow;
+  ToLglPtnNst* pToNstRow = *m_pLogicUnit->m_xpToNstRow;
   
   m_pLogicUnit->m_xpToNstRow = nullptr;
   

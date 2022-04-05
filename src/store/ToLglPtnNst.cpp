@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToNstRow.cpp -- Convert row to normalised string row slab buffers          */
+/* ToLglPtnNst.cpp -- Convert row buffer to have normalised strings           */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -22,15 +22,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,ToNstRow,CN_TONSTROW)
-__aNewFunction(ToNstRow,CN_TONSTROW)
-__vDeleteFunction(ToNstRow,CN_TONSTROW)
-__aFooterFunction(ToNstRow)
+__pCastFunction(STORE,ToLglPtnNst,CN_TONSTROW)
+__aNewFunction(ToLglPtnNst,CN_TONSTROW)
+__vDeleteFunction(ToLglPtnNst,CN_TONSTROW)
+__aFooterFunction(ToLglPtnNst)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToNstRow::ToNstRow(void)
+ToLglPtnNst::ToLglPtnNst(void)
 : Object(CN_TONSTROW)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
@@ -41,7 +41,7 @@ ToNstRow::ToNstRow(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ToNstRow::~ToNstRow(void) noexcept(false)
+ToLglPtnNst::~ToLglPtnNst(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
 }
@@ -51,16 +51,16 @@ ToNstRow::~ToNstRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* repair the ToNstRow                                                        */
+/* repair the ToLglPtnNst                                                     */
 /*----------------------------------------------------------------------------*/
-void ToNstRow::vRepair(Object* pObject)
+void ToLglPtnNst::vRepair(Object* pObject)
 {
   _static_
 
-  ToNstRow* pToNstRow = _pToNstRow(pObject);
+  ToLglPtnNst* pToLglPtnNst = _pToLglPtnNst(pObject);
 
   // delete the toNstRow
-  delete pToNstRow;
+  delete pToLglPtnNst;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@ void ToNstRow::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* convert                                                                    */
 /*----------------------------------------------------------------------------*/
-void ToNstRow::vConvert(RowBuffer* pRowBuffer)
+void ToLglPtnNst::vConvert(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
   

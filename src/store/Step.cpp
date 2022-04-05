@@ -229,8 +229,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_TinyC();
   Step::vAddSteps_To();
   Step::vAddSteps_ToLglPtnCrw();
+  Step::vAddSteps_ToLglPtnNst();
   Step::vAddSteps_ToLglPtnRow();
-  Step::vAddSteps_ToNstRow();
   Step::vAddSteps_ToRow();
   Step::vAddSteps_TokenVec();
   Step::vAddSteps_Trace();

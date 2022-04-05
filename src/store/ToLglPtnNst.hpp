@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* ToNstRow.hpp -- Convert row to normalised string row slab buffers          */
+/* ToLglPtnNst.hpp -- Convert row buffer to have normalised strings           */
 /*============================================================================*/
 #pragma once
 
 namespace STORE
 {
-  class ToNstRow : public Object
+  class ToLglPtnNst : public Object
   {
   private:
 
@@ -16,8 +16,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ToNstRow(void);
-   ~ToNstRow(void) noexcept(false);
+    ToLglPtnNst(void);
+   ~ToLglPtnNst(void) noexcept(false);
 
     static void vRepair(Object* pObjectr);
 
@@ -28,7 +28,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  ToNstRow* _pToNstRow(void* aAddr);
+  ToLglPtnNst* _pToLglPtnNst(void* aAddr);
 }
 
 /*============================================================================*/

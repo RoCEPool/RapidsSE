@@ -6,7 +6,7 @@
 #include "RowSingle.hpp"
 
 #include "CrwToRow.hpp"
-#include "ToNstRow.hpp"
+#include "ToLglPtnNst.hpp"
 #include "ToRow.hpp"
 #include "ToLglPtnCrw.hpp"
 #include "ToLglPtnRow.hpp"
@@ -179,7 +179,7 @@ namespace STORE
     REG<TinyC,          CN_TINYC         > m_xpTinyC;
     REG<ToLglPtnCrw,    CN_TOLGLPTNCRW   > m_xpToLglPtnCrw;
     REG<ToLglPtnRow,    CN_TOLGLPTNROW   > m_xpToLglPtnRow;
-    REG<ToNstRow,       CN_TONSTROW      > m_xpToNstRow;
+    REG<ToLglPtnNst,       CN_TONSTROW      > m_xpToNstRow;
     REG<ToRow,          CN_TOROW         > m_xpToRow;
     REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;
