@@ -22,20 +22,20 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,ToLglPtnNst,CN_TONSTROW)
-__aNewFunction(ToLglPtnNst,CN_TONSTROW)
-__vDeleteFunction(ToLglPtnNst,CN_TONSTROW)
+__pCastFunction(STORE,ToLglPtnNst,CN_TOLGLPTNNST)
+__aNewFunction(ToLglPtnNst,CN_TOLGLPTNNST)
+__vDeleteFunction(ToLglPtnNst,CN_TOLGLPTNNST)
 __aFooterFunction(ToLglPtnNst)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ToLglPtnNst::ToLglPtnNst(void)
-: Object(CN_TONSTROW)
+: Object(CN_TOLGLPTNNST)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNNST,_FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNNST,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@ ToLglPtnNst::ToLglPtnNst(void)
 /*----------------------------------------------------------------------------*/
 ToLglPtnNst::~ToLglPtnNst(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNNST,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +72,7 @@ void ToLglPtnNst::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 void ToLglPtnNst::vConvert(RowBuffer* pRowBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TONSTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNNST,_FOOTER_);
   
   pRowBuffer->vNormaliseStrings();
 }

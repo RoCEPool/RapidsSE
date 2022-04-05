@@ -178,8 +178,8 @@ namespace STORE
     REG<Timer,          CN_TIMER         > m_xpTimer;
     REG<TinyC,          CN_TINYC         > m_xpTinyC;
     REG<ToLglPtnCrw,    CN_TOLGLPTNCRW   > m_xpToLglPtnCrw;
+    REG<ToLglPtnNst,    CN_TOLGLPTNNST   > m_xpToLglPtnNst;
     REG<ToLglPtnRow,    CN_TOLGLPTNROW   > m_xpToLglPtnRow;
-    REG<ToLglPtnNst,       CN_TONSTROW      > m_xpToNstRow;
     REG<ToRow,          CN_TOROW         > m_xpToRow;
     REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;

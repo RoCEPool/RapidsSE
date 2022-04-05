@@ -32,7 +32,7 @@ void Step::vToLglPtnNstConvert(void)
 {
   ENTRY();
 
-  ToLglPtnNst* pToNstRow = *m_pLogicUnit->m_xpToNstRow;
+  ToLglPtnNst* pToNstRow = *m_pLogicUnit->m_xpToLglPtnNst;
   
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -52,7 +52,7 @@ void Step::vToLglPtnNstCreate(void)
     
   ToLglPtnNst* pToNstRow = new ToLglPtnNst;
       
-  m_pLogicUnit->m_xpToNstRow = pToNstRow;
+  m_pLogicUnit->m_xpToLglPtnNst = pToNstRow;
 
   EXIT();
 }
@@ -64,9 +64,9 @@ void Step::vToLglPtnNstDelete(void)
 {
   ENTRY();
   
-  ToLglPtnNst* pToNstRow = *m_pLogicUnit->m_xpToNstRow;
+  ToLglPtnNst* pToNstRow = *m_pLogicUnit->m_xpToLglPtnNst;
   
-  m_pLogicUnit->m_xpToNstRow = nullptr;
+  m_pLogicUnit->m_xpToLglPtnNst = nullptr;
   
   delete pToNstRow;
   
