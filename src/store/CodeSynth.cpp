@@ -856,6 +856,7 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
   StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_aEntIntT = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferT, aCombinedT->m_aEntIntT);");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n     goto L_IndexScanDeref;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // cleanup
   m_pExprStack->vReset();
@@ -4595,15 +4596,15 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate goto
-  if (bEosHandler)
+  //if (bEosHandler)
     vGenerateGoto(sLabelNext);
-  else {
-    StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iBufferDone)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n    else");
-    sCopy.vSprint("\n      goto %s;"_Stz, sLabelNext);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  }
+//  else {
+//    StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iBufferDone)");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n    else");
+//    sCopy.vSprint("\n      goto %s;"_Stz, sLabelNext);
+//    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+// }
 
 }
 
