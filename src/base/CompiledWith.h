@@ -95,8 +95,6 @@
 
 //#define WITH_COMBINEDOP_SE EndDefine          // compile combinedOP generated code with SE
 
-#define WITH_REPLICATED_PTN EndDefine       // 
-
 #define WITH_OPT_HASHCAST EndDefine       //
 
 #define WITH_SUBPIPELINE EndDefine       //

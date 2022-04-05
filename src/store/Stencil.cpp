@@ -1264,7 +1264,7 @@ void Stencil::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) {
   Table* pTable = pIndex->pTable();
 
   PtnId tPtnId;
-#ifdef WITH_REPLICATED_PTN
+
   StreamDef* pStreamDef = pTable->pStreamDef();
   if (pStreamDef->bReplicated()) {
 
@@ -1277,9 +1277,6 @@ void Stencil::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) {
   else {
     tPtnId = pOp->tPtnId();
   }
-#else
-  tPtnId = m_pOp->tPtnId();
-#endif
 
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
@@ -1326,7 +1323,6 @@ void Stencil::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   PtnId tPtnId;
 
-#ifdef WITH_REPLICATED_PTN
   StreamDef* pStreamDef = pTable->pStreamDef();
   if (pStreamDef->bReplicated()) {
 
@@ -1339,9 +1335,6 @@ void Stencil::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) {
   else {
     tPtnId = pOp->tPtnId();
   }
-#else
-  tPtnId = m_pOp->tPtnId();
-#endif
 
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
@@ -1383,22 +1376,18 @@ void Stencil::vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp) {
   Table* pTable = pIndex->pTable();
 
   PtnId tPtnId;
-#ifdef WITH_REPLICATED_PTN
   StreamDef* pStreamDef = pTable->pStreamDef();
-      if (pStreamDef->bReplicated()) {
+  if (pStreamDef->bReplicated()) {
 
-        Stage*  pStage   = pOp->pStage();
-        Stream* pStream0 = pStage->pGet(0);
-        Op*     pOp0_0   = pStream0->pGet(0);
+    Stage*  pStage   = pOp->pStage();
+    Stream* pStream0 = pStage->pGet(0);
+    Op*     pOp0_0   = pStream0->pGet(0);
 
-        tPtnId = pOp0_0->tPtnId();
-      }
-      else {
-        tPtnId = pOp->tPtnId();
-      }
-#else
-  tPtnId = pOp->tPtnId();
-#endif
+    tPtnId = pOp0_0->tPtnId();
+  }
+  else {
+    tPtnId = pOp->tPtnId();
+  }
 
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);

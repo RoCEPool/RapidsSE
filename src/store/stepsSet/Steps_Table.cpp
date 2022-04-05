@@ -381,7 +381,7 @@ void Step::vTableTablePtnFetch(void)
 
 
   PtnId tPtnId;
-#ifdef WITH_REPLICATED_PTN
+
   StreamDef* pStreamDef = pTable->pStreamDef();
   if (pStreamDef->bReplicated()) {
     
@@ -394,11 +394,6 @@ void Step::vTableTablePtnFetch(void)
   else {
     tPtnId = m_pOp->tPtnId();
   }
-#else
-  Op* pOp = MY::pOp();
-  tPtnId = pOp->tPtnId();
-#endif
-
 
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
