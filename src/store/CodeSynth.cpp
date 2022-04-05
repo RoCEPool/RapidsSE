@@ -959,6 +959,8 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel) {
   StrLib::vAppendString(&m_azCodeCrs, "\n    // get the next row (should be able to add rowsize)");
   StrLib::vAppendString(&m_azCodeCrs,
                         "\n    aCombinedT->m_aRowCellArrayT = aRowBuffer_GetCellArray(aCombinedT->m_aRowBuffer, i_CurrentRow);");
+  StrLib::vAppendString(&m_azCodeCrs,
+                        "\n    aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaTSav;");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert string offsets to string pointers
@@ -972,13 +974,14 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel) {
       sCopy.vSprint("\n    iOffset = piColumn[%lld];"_Stz, i_Col);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-      sCopy.vSprint("\n    amCellAddress = (m8*)&piColumn[%lld];"_Stz, i_Col);
+      StrLib::vAppendString(&m_azCodeCrs, "    if (iOffset != C_DATUM_NULL) {");
+
+      sCopy.vSprint("\n      amCellAddress = (m8*)&piColumn[%lld];"_Stz, i_Col);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-      sCopy.vSprint("\n    piColumn[%lld] = ADDR_ADD(i8, amCellAddress, iOffset);"_Stz, i_Col, i_Col);
+      sCopy.vSprint("\n      piColumn[%lld] = ADDR_ADD(i8, amCellAddress, iOffset);"_Stz, i_Col, i_Col);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-
+      StrLib::vAppendString(&m_azCodeCrs, "    }");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
     }
   }
@@ -1932,14 +1935,14 @@ void CodeSynth::vPayloadInsert(ePL ePayload, i8 iTopCount) {
 
   s4K sCopy;
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - -");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      // insert key in the payload");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - -");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // insert key in the payload");
 
   switch(ePayload) {
 
     case PL_GBY:
     case PL_SRT:
-      StrLib::vAppendString(&m_azCodeCrs, "\n      aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL);");
       break;
 
     case PL_TOP:
@@ -1953,30 +1956,29 @@ void CodeSynth::vPayloadInsert(ePL ePayload, i8 iTopCount) {
   }
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      if (aEntInserted) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aEntInserted) {");
 
   // TODO: check this out
-  StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iRowsProcessed++;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iRowsProcessed++;");
 
   // calculate the payload address
   if (m_pIndexDef->eKeyKind()) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
-    StrLib::vAppendString(&m_azCodeCrs, "\n          + sizeof(struct Ent_int)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n          + 8);");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
+    StrLib::vAppendString(&m_azCodeCrs, "\n        + sizeof(struct Ent_int)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n        + 8);");
   } else {
-    StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
-    StrLib::vAppendString(&m_azCodeCrs, "\n          + sizeof(struct Ent_int)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n          + ((struct Ent_int*)aEntInserted)->m_iIntElm0");
-    StrLib::vAppendString(&m_azCodeCrs, "\n          + 8);");
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
+    StrLib::vAppendString(&m_azCodeCrs, "\n        + sizeof(struct Ent_int)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n        + ((struct Ent_int*)aEntInserted)->m_iIntElm0");
+    StrLib::vAppendString(&m_azCodeCrs, "\n        + 8);");
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the payload values
   if ( ePayload != PL_GBY)
-    vPayloadPopulate(PL_TOP);
+    vPayloadPopulate(ePayload);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1995,16 +1997,12 @@ void CodeSynth::vPayloadPopulate(ePL ePayload) {
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // populate the payload");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   i8 iPayLoad = 0;
   i8 i_DupCtr = 1;
   s256 sColNm;
   for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
-
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-    StrLib::vAppendString(&m_azCodeCrs, "\n       // - - - - - - - - - - - - - - - ");
-    sCopy.vSprint("\n       // column %lld"_Stz, i_Col);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
 
@@ -2014,6 +2012,11 @@ void CodeSynth::vPayloadPopulate(ePL ePayload) {
     if (pIndexColumn) {
       continue;
     }
+
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - - ");
+    sCopy.vSprint("\n      // column %lld"_Stz, i_Col);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
     // make the column name
     vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
@@ -2132,7 +2135,6 @@ void CodeSynth::vPayloadKey(TypedStack* pExprStack) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // populate the payload key");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntIntPL->m_iIntElm0 = 0;");
@@ -2212,16 +2214,15 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
         RASSERT(pIndexDef->eKeyKind() == KE_GENERAL);
 
         sCopy.vSprint(
-            "\n       szSrcStz = ((char*)(&(((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0)) + 8 + iElemSize);\n"_Stz);
+            "\n      szSrcStz = ((char*)(&(((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0)) + 8 + iElemSize);\n"_Stz);
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
         //StrLib::vAppendString(&m_azCodeCrs, "\n      szSrcStz = ((char*)(&(((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0)) + 8 + iElemSize);");
 
-        StrLib::vAppendString(&m_azCodeCrs,"\n      _PSH_INT((i8)szSrcStz)");
+        StrLib::vAppendString(&m_azCodeCrs,"\n      _PSH_INT(*(i8*)szSrcStz)");
         StrLib::vAppendString(&m_azCodeCrs,"\n      _ISNULL(aCombinedT->m_iErrorCode);");
         StrLib::vAppendString(&m_azCodeCrs,"\n      _ASSIGN(bNullResult);");
         StrLib::vAppendString(&m_azCodeCrs,"\n      if (bNullResult) {");
-
         sCopy.vSprint("\n        p%s->%s = C_DATUM_NULL;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         StrLib::vAppendString(&m_azCodeCrs, "\n        iElemSize += 8;");
@@ -2229,11 +2230,11 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
         StrLib::vAppendString(&m_azCodeCrs, "\n      }");
 
         StrLib::vAppendString(&m_azCodeCrs, "\n      else {");
-        StrLib::vAppendString(&m_azCodeCrs, "\n      szDstStz = aCombinedT->m_racPayloadArea;");
+        StrLib::vAppendString(&m_azCodeCrs, "\n        szDstStz = aCombinedT->m_racPayloadArea;");
         StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-        StrLib::vAppendString(&m_azCodeCrs, "\n      nSrcSize = StrLib_iWordFlipBack(szDstStz,(char*)szSrcStz);");
-        sCopy.vSprint("\n      amCellAddress = (m8*) &p%s->%s;"_Stz, xRowRef[m_eStencilTo].m_szInclude,
+        StrLib::vAppendString(&m_azCodeCrs, "\n        nSrcSize = StrLib_iWordFlipBack(szDstStz,(char*)szSrcStz);");
+        sCopy.vSprint("\n        amCellAddress = (m8*) &p%s->%s;"_Stz, xRowRef[m_eStencilTo].m_szInclude,
                       sColNm.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -2269,13 +2270,6 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++, iExprStack++) {
 
-    StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - ");
-    sCopy.vSprint("\n      // column %lld"_Stz, i_Col);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-    // make the column name
-    vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2285,6 +2279,13 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
     if (pIndexColumn)
       continue;
 
+    StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - ");
+    sCopy.vSprint("\n      // column %lld"_Stz, i_Col);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+    // make the column name
+    vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // VARCHAR column
     if (pColumn->eColumnType() == CT_VARCHAR ||
@@ -2293,12 +2294,11 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, eP
       sCopy.vSprint("\n      szSrcStz = (char*)&aCombinedT->m_aiPayload[%lld];"_Stz, iPayLoad);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-      sCopy.vSprint("\n      _PSH_INT((i8)aCombinedT->m_aiPayload[%lld]);"_Stz, iPayLoad);
+      sCopy.vSprint("\n      _PSH_INT(aCombinedT->m_aiPayload[%lld]);"_Stz, iPayLoad);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs,"\n      _ISNULL(aCombinedT->m_iErrorCode);");
       StrLib::vAppendString(&m_azCodeCrs,"\n      _ASSIGN(bNullResult);");
       StrLib::vAppendString(&m_azCodeCrs,"\n      if (bNullResult) {");
-
       sCopy.vSprint("\n        p%s->%s = C_DATUM_NULL;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n      }");
@@ -4642,7 +4642,7 @@ void CodeSynth::vGenerateProcessRow(Stz* sLabel)
   s4K sCopy;
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iProcessRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
   sCopy.vSprint("\n      goto %s;"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
