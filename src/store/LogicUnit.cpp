@@ -232,8 +232,6 @@ LogicUnit::LogicUnit(void)
   m_sString6  = ""_Stz;
   m_sString7  = ""_Stz;
 
-  m_iNextCond = C_UNKNOWN;
-  m_bSuperFrag = false;
   m_aLowerEntry = nullptr;
   m_aUpperEntry = nullptr;
   m_pEntBufferOuter = nullptr;
@@ -262,12 +260,7 @@ LogicUnit::LogicUnit(void)
 
   m_xRluCommon.m_pPot = nullptr;
 
-  // m_ixRowsProcessed;
-  // m_ixRowsInvalid;
-  // m_ixRowsSkipped;
   m_eErrorCode_reg = EC_NONE;
-  
-  m_eSendKind = XK_NONE;
   
   m_nPotSize = 0;
   

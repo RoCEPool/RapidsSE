@@ -227,10 +227,7 @@ namespace STORE
     Ent* m_aLowerEntry;
     Ent* m_aUpperEntry;
     EntBuffer* m_pEntBufferOuter;
-        
-    Atomic m_ixRowsProcessed; // rows processed
-    Atomic m_ixRowsInvalid;   // invalid rows detected
-    Atomic m_ixRowsSkipped;   // rows skipped
+
     eEC    m_eErrorCode_reg;      // error code
     
     eZK m_ePipeInOperand;
@@ -253,21 +250,13 @@ namespace STORE
     RowPix     m_oRowPix;    // condensed stream def
     EntWrk     m_oEntWrk;
     EntWrk     m_oEntWrkPL;
-    EntWrk     m_oEntWrkSRT;
     EntWrk     m_oEntWrkJ;
     EntWrk     m_oEntWrkT;
 
     u8      m_uSelectColumns;
-
-    i8 m_iNextCond;
-  
-    bool m_bSuperFrag;
     
     i8   m_nPotSize;
-  
-    eXK  m_eSendKind;      // send kind
 
-  
     // must be last
     Footer m_xFooter;
   
