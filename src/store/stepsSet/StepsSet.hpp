@@ -2259,17 +2259,17 @@ public:
   void vToLglPtnCrwDangling(void);
   void vToLglPtnCrwDelete(void);
 
+  // toLglPtnNst
+  void vToLglPtnNstConvert(void);
+  void vToLglPtnNstCreate(void);
+  void vToLglPtnNstDelete(void);
+
   // toLglPtnRow
   void vToLglPtnRowCompleted(void);
   void vToLglPtnRowConvert(void);
   void vToLglPtnRowCreate(void);
   void vToLglPtnRowDangling(void);
   void vToLglPtnRowDelete(void);
-
-  // toNstRow
-  void vToNstRowRegConvert(void);
-  void vToNstRowRegCreate(void);
-  void vToNstRowRegDelete(void);
 
   // toRow
   void vToRowCompleted(void);

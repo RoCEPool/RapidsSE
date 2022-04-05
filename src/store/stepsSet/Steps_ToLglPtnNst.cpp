@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ToNstRow.cpp - Convert row to normalised string row buffers          */
+/* Steps_ToLglPtnNst.cpp - Convert row buffer to have normalised strings      */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -20,15 +20,15 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToNstRow(void)
 {
-  vAddStep("toNstRow[].convert"_Stz,     &Step::vToNstRowRegConvert);
-  vAddStep("toNstRow[].create"_Stz,      &Step::vToNstRowRegCreate);
-  vAddStep("toNstRow[].delete"_Stz,      &Step::vToNstRowRegDelete);
+  vAddStep("toNstRow[].convert"_Stz,     &Step::vToLglPtnNstConvert);
+  vAddStep("toNstRow[].create"_Stz,      &Step::vToLglPtnNstCreate);
+  vAddStep("toNstRow[].delete"_Stz,      &Step::vToLglPtnNstDelete);
 }
 
 /*----------------------------------------------------------------------------*/
 /* toNstRow[].convert -- convert row buffer                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vToNstRowRegConvert(void)
+void Step::vToLglPtnNstConvert(void)
 {
   ENTRY();
 
@@ -46,7 +46,7 @@ void Step::vToNstRowRegConvert(void)
 /*----------------------------------------------------------------------------*/
 /* toNstRow[].create -- create toNstRow                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vToNstRowRegCreate(void)
+void Step::vToLglPtnNstCreate(void)
 {
   ENTRY();
     
@@ -60,7 +60,7 @@ void Step::vToNstRowRegCreate(void)
 /*----------------------------------------------------------------------------*/
 /* toNstRow[].delete -- delete toNstRow                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vToNstRowRegDelete(void)
+void Step::vToLglPtnNstDelete(void)
 {
   ENTRY();
   
