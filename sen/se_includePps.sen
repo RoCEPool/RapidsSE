@@ -12,7 +12,8 @@ assert::stack_0
   "pp_close_system.sen"     include
   "pp_open_system.sen"      include
   
-  "pp_create.sen"           include 
+  "pp_compact.sen"          include
+  "pp_create.sen"           include
   "pp_drop.sen"             include 
   "pp_scan.sen"             include 
   "pp_file.sen"             include
@@ -26,7 +27,7 @@ assert::stack_0
   "pp_TPCH.sen"             include 
   "pp_TPCH_ASM.sen"         include 
   "pp_TPCH_ASM_I.sen"       include 
-  "pp_range.sen"            include 
+  "pp_range.sen"            include
   "pp_scanTables.sen"       include 
 
   "pp_dyntest.sen"          include
