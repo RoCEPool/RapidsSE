@@ -37314,7 +37314,7 @@ void Task::vAddMunged(Task* )
     "      | stageB localrobin\n"
     "\n"
     "    stage stageB on all partitions on origin :\n"
-    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)\n"
+    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+keyHash)\n"
     "      | toBktRow $table   //       (rowBuffer) => (bkt rowBuffer)\n"
     "      | toNstRow          //       (rowBuffer) => (nst rowBuffer)\n"
     "      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)\n"

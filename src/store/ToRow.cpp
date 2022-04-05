@@ -624,7 +624,7 @@ void ToRow::vNewRowBuffer(void)
   m_pRowBuffer->vDepositColVal(_colVal); \
   \
   if (xColPix.m_bPtnKey) \
-    HshLib::vRunningHash(&iPtnKeyHash,_colVal);
+    HshLib::vRunningHash(&iKeyHash,_colVal);
 
 #define vDEPOSIT_NULL(_errorCode) \
   \
@@ -634,7 +634,7 @@ void ToRow::vNewRowBuffer(void)
   m_pRowBuffer->vDepositColVal(C_DATUM_NULL); \
   \
   if (xColPix.m_bPtnKey) \
-    HshLib::vRunningHash(&iPtnKeyHash,C_DATUM_NULL);
+    HshLib::vRunningHash(&iKeyHash,C_DATUM_NULL);
 
 
 /*----------------------------------------------------------------------------*/
@@ -799,7 +799,7 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   char cNxtChr = *azCsvCrs;
 
   i8 i_Fld = 0;
-  i8 iPtnKeyHash = 0;
+  i8 iKeyHash = 0;
 
   eEC eError = EC_NONE;
   i8 i_ErrorCodeLine = -1;
@@ -2584,11 +2584,11 @@ L_RecordEndLineEnd:
   // skip record terminator, opt white space and line end
   vSKIP_RECORD_LINE_END();
   
-  // set partition hash
+  // deposit key hash
           
-  m_pRowBuffer->vDepositColVal(iPtnKeyHash);
+  m_pRowBuffer->vDepositColVal(iKeyHash);
     
-  iPtnKeyHash = 0;
+  iKeyHash = 0;
 
   if (iTraceBits & C_BIT_EndRecord) {
     HV_Record hvRecord(m_pStreamDef->pRowPix());
