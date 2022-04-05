@@ -23,16 +23,10 @@ assert::stack_0
   "pp_unloadReload.sen"     include 
   "pp_forgetRebalance.sen"  include 
 
-  "pp_query.sen"            include 
-  "pp_dynCompiler.sen"      include 
-  "pp_TPCH.sen"             include 
-  "pp_TPCH_ASM.sen"         include 
-  "pp_TPCH_ASM_I.sen"       include 
   "pp_planner.sen"          include 
   "pp_scanTables.sen"       include 
 
-  "pp_dload.sen"            include 
-  "pp_dyntest.sen"          include
+  "pp_dload.sen"            include
   "pp_flush.sen"            include
   "pp_load1.sen"            include
   "pp_load2.sen"            include 

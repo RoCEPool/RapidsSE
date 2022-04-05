@@ -177,7 +177,7 @@ Vertex* Deck::pVertex(void)
 /*----------------------------------------------------------------------------*/
 void Deck::vCreateStages(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VERTEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DECK,_FOOTER_);
 
   i8 nStages = m_pDeckSpec->nItems();
   for (i8 i_StageSpec = 0; i_StageSpec < nStages; i_StageSpec++ ) {
