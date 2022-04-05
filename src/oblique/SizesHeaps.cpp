@@ -624,8 +624,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Token),              HT_T_TINY    ,0 FILL }, // CN_TOKEN
   { sizeof(TokenVec),           HT_T_LARGE   ,0 FILL }, // CN_TOKENVEC
   { sizeof(ToLglPtnCrw),        HT_T_LARGE   ,0 FILL }, // CN_TOLGLPTNCRW
+  { sizeof(ToLglPtnNst),        HT_T_MEDIUM  ,0 FILL }, // CN_TOLGLPTNNST
   { sizeof(ToLglPtnRow),        HT_T_LARGE   ,0 FILL }, // CN_TOLGLPTNROW
-  { sizeof(ToLglPtnNst),    HT_T_MEDIUM  ,0 FILL }, // CN_TOLGLPTNNST
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 FILL }, // CN_TOROW
   { sizeof(Totup),              HT_T_MEDIUM  ,0 FILL }, // CN_TOTUP
   { sizeof(TraceLock),          HT_T_TINY    ,0 FILL }, // CN_TRACELOCK
