@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* OP_toNstRow.sen -- Convert row to normalised string row slab buffers       */
+/* OP_toLglPtnNst.sen -- Convert row buffer to have normalised strings        */
 /*============================================================================*/
 
-" OP_toNstRow.sen" .verbose
+" OP_toLglPtnNst.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_START ...                                                     INIT */
