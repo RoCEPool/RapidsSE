@@ -30,7 +30,6 @@
   start::defProc_UnloadReload
   start::defProc_ForgetRebalance
   start::defProc_Query
-  start::defProc_DynCompiler
   start::defProc_TPCH
   start::defProc_TPCH_ASM
   start::defProc_TPCH_ASM_I

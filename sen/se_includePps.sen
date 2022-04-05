@@ -24,7 +24,6 @@ assert::stack_0
   "pp_forgetRebalance.sen"  include 
 
   "pp_query.sen"            include 
-  "pp_dynCompiler.sen"      include 
   "pp_TPCH.sen"             include 
   "pp_TPCH_ASM.sen"         include 
   "pp_TPCH_ASM_I.sen"       include 
