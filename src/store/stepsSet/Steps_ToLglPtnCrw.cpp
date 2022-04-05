@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ToBktCrw.cpp - Convert ptn nst row buffers to hashed crw buffers     */
+/* Steps_ToLglPtnCrw.cpp - Convert lglptn nst row buff to lglptn crw buff     */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -34,7 +34,7 @@ void Step::vAddSteps_ToBktCrw(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToLglPtnCrw[].completed -- get any completed/full buffer                      */
+/* ToLglPtnCrw[].completed -- get any completed/full buffer                   */
 /*----------------------------------------------------------------------------*/
 void Step::vToBktCrwRegCompleted(void)
 {
@@ -52,7 +52,7 @@ void Step::vToBktCrwRegCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToLglPtnCrw[].convert -- convert row buffer                                   */
+/* ToLglPtnCrw[].convert -- convert row buffer                                */
 /*----------------------------------------------------------------------------*/
 void Step::vToBktCrwRegConvert(void)
 {
@@ -68,7 +68,7 @@ void Step::vToBktCrwRegConvert(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToLglPtnCrw[].create -- create toHshCrw                                       */
+/* ToLglPtnCrw[].create -- create toHshCrw                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vToBktCrwRegCreate(void)
 {
@@ -82,7 +82,7 @@ void Step::vToBktCrwRegCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToLglPtnCrw[].dangling -- get any dangling/last buffer                        */
+/* ToLglPtnCrw[].dangling -- get any dangling/last buffer                     */
 /*----------------------------------------------------------------------------*/
 void Step::vToBktCrwRegDangling(void)
 {
@@ -100,7 +100,7 @@ void Step::vToBktCrwRegDangling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToLglPtnCrw[].delete -- delete toHshCrw                                       */
+/* ToLglPtnCrw[].delete -- delete toHshCrw                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vToBktCrwRegDelete(void)
 {
