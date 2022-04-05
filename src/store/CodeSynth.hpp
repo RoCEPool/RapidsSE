@@ -85,18 +85,16 @@ namespace STORE {
 
     void vReset(void);
 
-    TypedStack* pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
+    TypedStack* pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop);
 
     void vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler, Stz *sLabel, Stz *sLabelNext);
 
     void vSynthAllocPotRow(TypedStack* pPostStack, Stz *sHashExpr, bool bEosHandler,
                            Stz *sLabel, Stz *sLabelNext);
 
-    void vSynthEos(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad, Stz* sLabelNext);
+    void vSynthEos(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
     void vSynthFilter(Stz *sFilterExpr, bool bOrdAgg, Stz *sLabel, Stz* sLabelPrev);
-
-    void vSynthFilterOrdAgg(Stz *sFilterExpr, Stz *sLabel, Stz *sLabelPrev);
 
     void vSynthIndexJoin(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
                          Stz *sJoinExpr, Stz *sLabel, Stz *sLabelNext, u8 uSelectColumns);
@@ -114,21 +112,20 @@ namespace STORE {
 
     void vSynthLimit(i8 iLimit, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop);
 
-    void vSynthOrdAgg(eEK eExprKind, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext,
-                      Stz *sLabelLoop, bool bHashRows);
+    void vSynthOrdAgg(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop);
 
-    TypedStack* pSynthPrjAgg(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
+    TypedStack* pSynthPrjAgg(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop);
 
     bool bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop,
                       bool bHashRows);
 
-    void vSynthSort(eEK eExprKind, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, bool bHashRows);
+    void vSynthSort( Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext);
 
     void vSynthStruct(u8 uSelectColumns, IndexDef* pIndexDef = nullptr);
 
     void vSynthStructArray(u8 uSelectColumns);
 
-    void vSynthTop(IndexDef *pIndexDef, Stz *sKeyExpr, i8 iTopCount, Stz *sLabel, Stz *sLabelLoop);
+    void vSynthTop(Stz *sKeyExpr, i8 iTopCount, Stz *sLabel, Stz *sLabelLoop);
 
   private:
     void vFindKey(IndexDef *pIndexDef, ePL ePayload);
@@ -176,15 +173,15 @@ namespace STORE {
     void vPayloadKey(TypedStack* pExprStack);
     void vPayloadPopulate(ePL ePayload);
     void vPayloadStore(IndexDef *pIndexDef);
-    void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad);
-    void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack, ePL ePayLoad, Stz* sLabelNext);
+    void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack);
+    void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
-    void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, ePE ePreExp, eEK eExprKind, eDM eExprType, bool bHashRows, i8 i_Col, i8& i_DupCtr);
-    void vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, IntStack* pTypeStack, eEK eExprKind,
+    void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, ePE ePreExp, eEK eExprKind, eDM eExprType, i8 i_Col, i8& i_DupCtr);
+    void vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, eEK eExprKind,
                         ePE ePreExp, Token* pTkn, i8 i_Col, i8& i_DupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, eDM eCastType);
-    void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, ePE ePreExp, eEK eExprKind, Token *pTkn);
+    void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn);
     void vPushCount(TypedStack *pExprStack, IntStack *pExprType, Token *pTkn);
     void vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreExp);
     void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, ePE ePreExp, eEK eExprKind, eDM eLiteral);
@@ -192,8 +189,7 @@ namespace STORE {
     void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, ePE ePreExp, eEK eExprKind, Token *pTkn);
     void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
 
-    void vGenerateExpr(char *sExpr, TypedStack* pPostStack,
-                       eEK eExprKind, bool bHashRows, StreamDef *pStreamDef);
+    void vGenerateExpr(char *sExpr, TypedStack* pPostStack, eEK eExprKind, StreamDef *pStreamDef);
     void vGenerateInExpr(void);
 
     Stz *szInfix(TypedStack *pExprStack, i8 iProject);

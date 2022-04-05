@@ -1709,7 +1709,7 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
 
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
 
-  pCodeSynth->vSynthEos(pIndexDef, m_pPostStack, PL_GBY, sLabelNext);
+  pCodeSynth->vSynthEos(pIndexDef, m_pPostStack,sLabelNext);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1784,7 +1784,7 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* 
 
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
 
-  pCodeSynth->vSynthEos(pIndexDef, m_pPostStack, PL_SRT, sLabelNext);
+  pCodeSynth->vSynthEos(pIndexDef, m_pPostStack, sLabelNext);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   Stz* sProjectExpr = ""_Stz;
@@ -1882,7 +1882,7 @@ void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp, Stz* 
 
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
 
-  pCodeSynth->vSynthEos(pIndexDef, nullptr, PL_TOP, sLabelNext);
+  pCodeSynth->vSynthEos(pIndexDef, nullptr, sLabelNext);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2312,12 +2312,10 @@ Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
-  pCodeSynth->vSynthOrdAgg( pLogicUnit->m_eExprKind,
-                            sProjectExpr,
+  pCodeSynth->vSynthOrdAgg( sProjectExpr,
                             sLabel,
                             sLabelNext,
-                            sLabelLoop,
-                            pCombined->aCombinedT()->m_iHashRows);
+                            sLabelLoop);
   pShape->vCodeSynthA(pCodeSynth);
 
   //m_pPostStack = pCodeSynth->pPostStack();
@@ -2373,8 +2371,7 @@ Shape* Stencil::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 
   m_pPostStack = pCodeSynth->pSynthPrjAgg(sProjectExpr,
                                                  sLabel,
-                                                 sLabelLoop,
-                                                 pCombined->aCombinedT()->m_iHashRows);
+                                                 sLabelLoop);
 
   pShape->vCodeSynthA(pCodeSynth);
 
@@ -2482,8 +2479,7 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
 
   m_pPostStack = pCodeSynth->pSynthAggGby(sProjectExpr,
                                           sLabel,
-                                          sLabelLoop,
-                                          pCombined->aCombinedT()->m_iHashRows);
+                                          sLabelLoop);
 
   pShape->vCodeSynthA(pCodeSynth);
 
@@ -2533,11 +2529,9 @@ Shape* Stencil::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR e
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexDef, pPreExpStack, ePrevStencil, ePrevStencil);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  pCodeSynth->vSynthSort( pLogicUnit->m_eExprKind,
-                            sProjectExpr,
+  pCodeSynth->vSynthSort( sProjectExpr,
                             sLabel,
-                            szLabelLoop,
-                            pCombined->aCombinedT()->m_iHashRows);
+                            szLabelLoop);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;
@@ -2582,7 +2576,7 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
 
   sLabelLoop = "L_AdvanceNextRow"_Stz;
 
-  pCodeSynth->vSynthTop(pIndexDef, sKeyExpr, iTopCount, sLabel, sLabelLoop);
+  pCodeSynth->vSynthTop(sKeyExpr, iTopCount, sLabel, sLabelLoop);
   pShape->vCodeSynthB(pCodeSynth);
 
   return pShape;
