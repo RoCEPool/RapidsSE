@@ -101,7 +101,6 @@ Combined::Combined(LogicUnit* pLogicUnit)
   // project (gby/payload)
   m_xCombinedT.m_nAggRows = 0;
   m_xCombinedT.m_iProcessRow    = 1;
-  m_xCombinedT.m_iBufferDone    = 0;
 
   // payload (gby/srt/top)
   m_xCombinedT.m_aiPayload      = nullptr;

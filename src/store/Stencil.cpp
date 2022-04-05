@@ -2146,7 +2146,7 @@ Shape* Stencil::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil) {
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
-  Op *pPrevOp = pStream->pGet(i_Op - 1);
+  //Op *pPrevOp = pStream->pGet(i_Op - 1);
   sLabelPrev = ""_Stz;
   pCodeSynth->vSynthFilter(sFilterExpr, false, sLabel, sLabelPrev);
 

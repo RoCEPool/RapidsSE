@@ -4640,20 +4640,11 @@ void CodeSynth::vGenerateProcessRow(Stz* sLabel)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s4K sCopy;
-/*
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow)");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iProcessRow = 1;");
   sCopy.vSprint("\n      goto %s;"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-*/
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iBufferDone)");
-  StrLib::vAppendString(&m_azCodeCrs, "\n        goto L_Return;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      else {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iProcessRow = 1;");
-  sCopy.vSprint("\n        goto %s;"_Stz, sLabel);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n      }");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
