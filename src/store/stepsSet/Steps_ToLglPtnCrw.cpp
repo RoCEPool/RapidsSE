@@ -26,17 +26,17 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToBktCrw(void)
 {
-  vAddStep("ToLglPtnCrw[].completed"_Stz, &Step::vToBktCrwRegCompleted);
-  vAddStep("ToLglPtnCrw[].convert"_Stz,   &Step::vToBktCrwRegConvert);
-  vAddStep("ToLglPtnCrw[].create"_Stz,    &Step::vToBktCrwRegCreate);
-  vAddStep("ToLglPtnCrw[].dangling"_Stz,  &Step::vToBktCrwRegDangling);
-  vAddStep("ToLglPtnCrw[].delete"_Stz,    &Step::vToBktCrwRegDelete);
+  vAddStep("ToLglPtnCrw[].completed"_Stz, &Step::vToLglPtnCrwRegCompleted);
+  vAddStep("ToLglPtnCrw[].convert"_Stz,   &Step::vToLglPtnCrwRegConvert);
+  vAddStep("ToLglPtnCrw[].create"_Stz,    &Step::vToLglPtnCrwRegCreate);
+  vAddStep("ToLglPtnCrw[].dangling"_Stz,  &Step::vToLglPtnCrwRegDangling);
+  vAddStep("ToLglPtnCrw[].delete"_Stz,    &Step::vToLglPtnCrwRegDelete);
 }
 
 /*----------------------------------------------------------------------------*/
 /* ToLglPtnCrw[].completed -- get any completed/full buffer                   */
 /*----------------------------------------------------------------------------*/
-void Step::vToBktCrwRegCompleted(void)
+void Step::vToLglPtnCrwRegCompleted(void)
 {
   ENTRY();
   
@@ -54,7 +54,7 @@ void Step::vToBktCrwRegCompleted(void)
 /*----------------------------------------------------------------------------*/
 /* ToLglPtnCrw[].convert -- convert row buffer                                */
 /*----------------------------------------------------------------------------*/
-void Step::vToBktCrwRegConvert(void)
+void Step::vToLglPtnCrwRegConvert(void)
 {
   ENTRY();
 
@@ -70,7 +70,7 @@ void Step::vToBktCrwRegConvert(void)
 /*----------------------------------------------------------------------------*/
 /* ToLglPtnCrw[].create -- create toHshCrw                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vToBktCrwRegCreate(void)
+void Step::vToLglPtnCrwRegCreate(void)
 {
   ENTRY();
     
@@ -84,7 +84,7 @@ void Step::vToBktCrwRegCreate(void)
 /*----------------------------------------------------------------------------*/
 /* ToLglPtnCrw[].dangling -- get any dangling/last buffer                     */
 /*----------------------------------------------------------------------------*/
-void Step::vToBktCrwRegDangling(void)
+void Step::vToLglPtnCrwRegDangling(void)
 {
   ENTRY();
   
@@ -102,7 +102,7 @@ void Step::vToBktCrwRegDangling(void)
 /*----------------------------------------------------------------------------*/
 /* ToLglPtnCrw[].delete -- delete toHshCrw                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vToBktCrwRegDelete(void)
+void Step::vToLglPtnCrwRegDelete(void)
 {
   ENTRY();
   

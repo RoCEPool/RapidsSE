@@ -2252,12 +2252,12 @@ public:
   void vToStr(void);
   void vToTask(void);
 
-  // toBktCrw
-  void vToBktCrwRegCompleted(void);
-  void vToBktCrwRegConvert(void);
-  void vToBktCrwRegCreate(void);
-  void vToBktCrwRegDangling(void);
-  void vToBktCrwRegDelete(void);
+  // toLglPtnCrw
+  void vToLglPtnCrwRegCompleted(void);
+  void vToLglPtnCrwRegConvert(void);
+  void vToLglPtnCrwRegCreate(void);
+  void vToLglPtnCrwRegDangling(void);
+  void vToLglPtnCrwRegDelete(void);
 
   // toLglPtnRow
   void vToLglPtnRowCompleted(void);
