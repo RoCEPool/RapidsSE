@@ -94,8 +94,6 @@
   start::it_verifyTable
 
 
-  start::defProc_pu
-
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //
   // This point onwards the SE execution model has been fully booted

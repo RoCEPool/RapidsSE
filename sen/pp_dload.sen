@@ -42,7 +42,7 @@
     toRow $table       | // (csvBuffer)  => (rowBuffer)
     // dump rowBuffer 1   |
 
-    toPtnRow           | // (rowBuffer)  => (rowBuffer 'ptn)
+    toBktRow $table    | // (rowBuffer)  => (rowBuffer 'ptn)
     // dump rowBuffer 1   |
 
     toNstRow           | // (rowBuffer)  => (rowBuffer 'nst)
