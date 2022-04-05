@@ -1,17 +1,17 @@
 /*============================================================================*/
-/* OP_toBktRow.sen -- Convert row buffers to partitioned row slab buffers     */
+/* OP_toLglPtnRow.sen -- Convert row buff to logical partitioned row buffers  */
 /*============================================================================*/
 
-" OP_toBktRow.sen" .verbose
+" OP_toLglPtnRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
-: toBktRow_StartMarker \handler
+: toLglPtnRow_StartMarker \handler
 
   <tableNm> op__table discard
 
-  ToBktRow[].create
+  toLglPtnRow[].create
 
   ZK_M_START_handler
 ;
@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_DATAPULSE ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
-: toBktRow_DataMarker \handler
+: toLglPtnRow_DataMarker \handler
 
   ZK_M_DATAPULSE_handler
 ;
@@ -27,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_ROWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
-: toBktRow_RowBuffer \handler
+: toLglPtnRow_RowBuffer \handler
 
   // check for low memory
   attachMap::isLowMemory if
@@ -38,19 +38,19 @@
   then
 
   PipeIn[]\clear to RowBuffer[]
-  Table[] RowBuffer[] ToBktRow[].convert
+  Table[] RowBuffer[] toLglPtnRow[].convert
   RowBuffer[].delete
 
   ptnmap::ptnsInGrid 0
   do
 
-    I ToBktRow[].completed to RowBuffer[]
+    I toLglPtnRow[].completed to RowBuffer[]
 
     begin
       RowBuffer[].isNull not
     while
       RowBuffer[].pipeOut
-      I ToBktRow[].completed to RowBuffer[]
+      I toLglPtnRow[].completed to RowBuffer[]
     repeat
 
   loop
@@ -61,23 +61,23 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_EOS ...                                                       END */
 /*----------------------------------------------------------------------------*/
-: toBktRow_EosMarker \handler
+: toLglPtnRow_EosMarker \handler
 
   ptnmap::ptnsInGrid 0
   do
 
-    I ToBktRow[].dangling to RowBuffer[]
+    I toLglPtnRow[].dangling to RowBuffer[]
 
     begin
       RowBuffer[].isNull not
     while
       RowBuffer[].pipeOut
-      I ToBktRow[].dangling to RowBuffer[]
+      I toLglPtnRow[].dangling to RowBuffer[]
     repeat
 
   loop
 
-  ToBktRow[].delete
+  toLglPtnRow[].delete
 
   PipeIn[].pipeOut
 
@@ -90,16 +90,16 @@
 /*----------------------------------------------------------------------------*/
 /* toRow request                                                        SPAWN */
 /*----------------------------------------------------------------------------*/
-: toBktRow_op \operator
+: toLglPtnRow_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: toBktRow_EosMarker   ZK_M_EOS         [op].handler!
-  find: toBktRow_DataMarker  ZK_M_DATAPULSE   [op].handler!
-  find: toBktRow_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
-  find: toBktRow_StartMarker ZK_M_START       [op].handler!
+  find: toLglPtnRow_EosMarker   ZK_M_EOS         [op].handler!
+  find: toLglPtnRow_DataMarker  ZK_M_DATAPULSE   [op].handler!
+  find: toLglPtnRow_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+  find: toLglPtnRow_StartMarker ZK_M_START       [op].handler!
 
   op__loop
 
@@ -113,12 +113,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toBktRow :: toBktRow <tableNm> ;
+cmdSyntax: toLglPtnRow :: toLglPtnRow <tableNm> ;
 
-: toBktRow_cmdTags _cmdTags tagCopy: op_tags
+: toLglPtnRow_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "toBktRow_op"
+    <opEntry> = "toLglPtnRow_op"
   }
 ;
 

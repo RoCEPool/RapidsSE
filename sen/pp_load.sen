@@ -31,7 +31,7 @@
 
     stage stageB on all partitions on origin :
         toRow    $table   // (csvBuffer) => (rowBuffer w row+keyHash)
-      | toBktRow $table   // (rowBuffer) => (bkt rowBuffer)
+      | toLglPtnRow $table   // (rowBuffer) => (bkt rowBuffer)
       | toNstRow          // (rowBuffer) => (nst rowBuffer)
       | toBktCrw          // (rowBuffer) => (bkt crwBuffer)
       | stageC hashcast

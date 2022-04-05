@@ -26,15 +26,15 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToBktRow(void)
 {
-  vAddStep("toBktRow[].completed"_Stz, &Step::vToBktRowRegCompleted);
-  vAddStep("toBktRow[].convert"_Stz,   &Step::vToBktRowRegConvert);
-  vAddStep("toBktRow[].create"_Stz,    &Step::vToBktRowRegCreate);
-  vAddStep("toBktRow[].dangling"_Stz,  &Step::vToBktRowRegDangling);
-  vAddStep("toBktRow[].delete"_Stz,    &Step::vToBktRowRegDelete);
+  vAddStep("toLglPtnRow[].completed"_Stz, &Step::vToBktRowRegCompleted);
+  vAddStep("toLglPtnRow[].convert"_Stz,   &Step::vToBktRowRegConvert);
+  vAddStep("toLglPtnRow[].create"_Stz,    &Step::vToBktRowRegCreate);
+  vAddStep("toLglPtnRow[].dangling"_Stz,  &Step::vToBktRowRegDangling);
+  vAddStep("toLglPtnRow[].delete"_Stz,    &Step::vToBktRowRegDelete);
 }
 
 /*----------------------------------------------------------------------------*/
-/* toBktRow[].completed -- get any completed/full buffer                      */
+/* toLglPtnRow[].completed -- get any completed/full buffer                      */
 /*----------------------------------------------------------------------------*/
 void Step::vToBktRowRegCompleted(void)
 {
@@ -52,7 +52,7 @@ void Step::vToBktRowRegCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toBktRow[].convert -- convert row buffer                                   */
+/* toLglPtnRow[].convert -- convert row buffer                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vToBktRowRegConvert(void)
 {
@@ -74,7 +74,7 @@ void Step::vToBktRowRegConvert(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toBktRow[].create -- create toBktRow                                       */
+/* toLglPtnRow[].create -- create toBktRow                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vToBktRowRegCreate(void)
 {
@@ -88,7 +88,7 @@ void Step::vToBktRowRegCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toBktRow[].dangling -- get any dangling/last buffer                        */
+/* toLglPtnRow[].dangling -- get any dangling/last buffer                        */
 /*----------------------------------------------------------------------------*/
 void Step::vToBktRowRegDangling(void)
 {
@@ -106,7 +106,7 @@ void Step::vToBktRowRegDangling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* toBktRow[].delete -- delete toBktRow                                       */
+/* toLglPtnRow[].delete -- delete toBktRow                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vToBktRowRegDelete(void)
 {
