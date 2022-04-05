@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToBktCrw.hpp -- Convert ptn nst row buffers to ptn crw buffers             */
+/* ToLglPtnCrw.hpp -- Convert lglptn nst row buff to lglptn crw buff          */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class ToBktCrw : public Object
+  class ToLglPtnCrw : public Object
   {
   private:
   
@@ -26,8 +26,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ToBktCrw(StreamDef* pStreamDef);
-   ~ToBktCrw(void) noexcept(false);
+    ToLglPtnCrw(StreamDef* pStreamDef);
+   ~ToLglPtnCrw(void) noexcept(false);
 
     static void vRepairHashSet(Object* pObject);
 
@@ -45,7 +45,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  ToBktCrw* _pToBktCrw(void* aAddr);
+  ToLglPtnCrw* _pToLglPtnCrw(void* aAddr);
 }
 
 /*============================================================================*/

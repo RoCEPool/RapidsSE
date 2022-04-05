@@ -9,7 +9,7 @@
 #include "ToPtnCrw.hpp"
 #include "ToNstRow.hpp"
 #include "ToRow.hpp"
-#include "ToBktCrw.hpp"
+#include "ToLglPtnCrw.hpp"
 #include "ToLglPtnRow.hpp"
 
 
@@ -178,7 +178,7 @@ namespace STORE
     REG<TagSet,         CN_TAGSET        > m_xpTagSet;
     REG<Timer,          CN_TIMER         > m_xpTimer;
     REG<TinyC,          CN_TINYC         > m_xpTinyC;
-    REG<ToBktCrw,       CN_TOBKTCRW      > m_xpToBktCrw;
+    REG<ToLglPtnCrw,    CN_TOLGLPTNCRW   > m_xpToLglPtnCrw;
     REG<ToLglPtnRow,    CN_TOLGLPTNROW   > m_xpToLglPtnRow;
     REG<ToNstRow,       CN_TONSTROW      > m_xpToNstRow;
     REG<ToPtnCrw,       CN_TOPTNCRW      > m_xpToPtnCrw;

@@ -173,7 +173,7 @@ LogicUnit::LogicUnit(void)
 ,         m_xpTagSet(this,RF_REPAIR_DELETE,        TagSet::vRepair,         LR_TAGSET)
 ,          m_xpTimer(this,RF_REPAIR_DELETE,         Timer::vRepair,          LR_TIMER)
 ,          m_xpTinyC(this,RF_REPAIR_DELETE,         TinyC::vRepair,          LR_TINYC)
-,       m_xpToBktCrw(this,RF_REPAIR_DELETE,      ToBktCrw::vRepairHashSet,LR_TOBKTCRW)
+,    m_xpToLglPtnCrw(this,RF_REPAIR_DELETE,   ToLglPtnCrw::vRepairHashSet,LR_TOLGLPTNCRW)
 ,    m_xpToLglPtnRow(this,RF_REPAIR_DELETE,   ToLglPtnRow::vRepairHashSet,LR_TOLGLPTNROW)
 ,       m_xpToNstRow(this,RF_REPAIR_DELETE,      ToNstRow::vRepair,       LR_TONSTROW)
 ,       m_xpToPtnCrw(this,RF_REPAIR_DELETE,      ToPtnCrw::vRepairHashSet,LR_TOPTNCRW)
@@ -349,7 +349,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpTable.bIsNull());
   RASSERT(m_xpTablePtn.bIsNull());
   RASSERT(m_xpTimer.bIsNull());
-  RASSERT(m_xpToBktCrw.bIsNull());
+  RASSERT(m_xpToLglPtnCrw.bIsNull());
   RASSERT(m_xpToLglPtnRow.bIsNull());
   RASSERT(m_xpToNstRow.bIsNull());
   RASSERT(m_xpToPtnCrw.bIsNull());
