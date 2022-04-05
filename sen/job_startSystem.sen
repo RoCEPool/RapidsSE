@@ -19,11 +19,10 @@
   start::defProc_Drop
   start::defProc_Scan
   start::defProc_Load
-  start::defProc_LoadSys
+  start::defProc_Rload
   start::defProc_NextHB
   start::defProc_Dload
   start::defProc_Export
-  start::defProc_Api
   start::defProc_File
   start::defProc_Elasticity
   start::defProc_getMeta

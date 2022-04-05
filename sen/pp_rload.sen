@@ -8,7 +8,7 @@
 /* load procedures                                                            */
 /*----------------------------------------------------------------------------*/
 
-: start::defProc_LoadSys
+: start::defProc_Rload
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // load replicated
