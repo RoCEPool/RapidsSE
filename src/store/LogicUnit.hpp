@@ -22,8 +22,6 @@
 
 #include "RluCommon.h"
 #include "RluDiary.hpp"
-#include "DevIXT.hpp"
-#include "DevROW.hpp"
 #include "ShardDef.hpp"
 #include "MetaGet.hpp"
 #include "BktMapGet.hpp"
@@ -63,7 +61,7 @@ namespace STORE { class IndexStream; class Node; class Node_I;
 
 namespace STORE
 {
-  
+
   //----------------------------------------------------------------------------
 
   class LogicUnit : public Object
