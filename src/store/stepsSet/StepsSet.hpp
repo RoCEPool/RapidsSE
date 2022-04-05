@@ -2278,13 +2278,6 @@ public:
   void vToPtnCrwRegDangling(void);
   void vToPtnCrwRegDelete(void);
 
-  // toPtnRow
-  void vToPtnRowRegCompleted(void);
-  void vToPtnRowRegConvert(void);
-  void vToPtnRowRegCreate(void);
-  void vToPtnRowRegDangling(void);
-  void vToPtnRowRegDelete(void);
-
   // toRow
   void vToRowCompleted(void);
   void vToRowCreate(void);

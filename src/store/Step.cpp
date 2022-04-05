@@ -232,7 +232,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_ToBktRow();
   Step::vAddSteps_ToNstRow();
   Step::vAddSteps_ToPtnCrw();
-  Step::vAddSteps_ToPtnRow();
   Step::vAddSteps_ToRow();
   Step::vAddSteps_TokenVec();
   Step::vAddSteps_Trace();
