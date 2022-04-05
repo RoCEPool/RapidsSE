@@ -5,9 +5,9 @@
 " OP_toNstRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
+/* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
-: toNstRow_StartMarker \handler
+: toLglPtnNst_StartMarker \handler
 
   ToNstRow[].create
 
@@ -15,17 +15,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                  BEGIN */
+/* on ZK_M_DATAPULSE ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
-: toNstRow_DataMarker \handler
+: toLglPtnNst_DataMarker \handler
 
   ZK_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                   EACH */
+/* on ZK_D_ROWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
-: toNstRow_RowBuffer \handler
+: toLglPtnNst_RowBuffer \handler
 
   PipeIn[]\clear to RowBuffer[]
   RowBuffer[]\clear ToNstRow[].convert to RowBuffer[]
@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
-: toNstRow_EosMarker \handler
+: toLglPtnNst_EosMarker \handler
 
   // delete ToNstRow
   ToNstRow[].delete
@@ -50,18 +50,18 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* toNstRow request                                                    SPAWN */
+/* toNstRow request                                                     SPAWN */
 /*----------------------------------------------------------------------------*/
-: toNstRow_op \operator
+: toLglPtnNst_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: toNstRow_EosMarker   ZK_M_EOS   [op].handler!
-  find: toNstRow_DataMarker  ZK_M_DATAPULSE   [op].handler!
-  find: toNstRow_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
-  find: toNstRow_StartMarker ZK_M_START [op].handler!
+  find: toLglPtnNst_EosMarker   ZK_M_EOS   [op].handler!
+  find: toLglPtnNst_DataMarker  ZK_M_DATAPULSE   [op].handler!
+  find: toLglPtnNst_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+  find: toLglPtnNst_StartMarker ZK_M_START [op].handler!
 
   op__loop
 
@@ -75,12 +75,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toNstRow :: toNstRow ;
+cmdSyntax: toLglPtnNst :: toLglPtnNst ;
 
-: toNstRow_cmdTags _cmdTags tagCopy: op_tags
+: toLglPtnNst_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "toNstRow_op"
+    <opEntry> = "toLglPtnNst_op"
   }
 ;
 

@@ -45,7 +45,7 @@
     toLglPtnRow $table    | // (rowBuffer)  => (rowBuffer 'ptn)
     // dump rowBuffer 1   |
 
-    toNstRow           | // (rowBuffer)  => (rowBuffer 'nst)
+    toLglPtnNst           | // (rowBuffer)  => (rowBuffer 'nst)
     //dump rowBuffer 1   |
 
     toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)
