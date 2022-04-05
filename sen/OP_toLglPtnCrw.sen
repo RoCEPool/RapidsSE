@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* OP_toBktCrw.sen -- Convert ptn nst row buffers to ptn crw buffers          */
+/* OP_toLglPtnCrw.sen -- Convert lglptn nst row buff to lglptn crw buff       */
 /*============================================================================*/
 
-" OP_toBktCrw.sen" .verbose
+" OP_toLglPtnCrw.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_D_STREAMDEF ...                                  DEFINITION */
