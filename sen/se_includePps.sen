@@ -15,7 +15,7 @@ assert::stack_0
   "pp_create.sen"           include 
   "pp_drop.sen"             include 
   "pp_scan.sen"             include 
-  "pp_file.sen"             include 
+  "pp_file.sen"             include
   "pp_elasticity.sen"       include 
   "pp_getMeta.sen"          include 
   "pp_unloadReload.sen"     include
@@ -26,7 +26,7 @@ assert::stack_0
   "pp_TPCH.sen"             include 
   "pp_TPCH_ASM.sen"         include 
   "pp_TPCH_ASM_I.sen"       include 
-  "pp_planner.sen"          include 
+  "pp_range.sen"            include 
   "pp_scanTables.sen"       include 
 
   "pp_dyntest.sen"          include
