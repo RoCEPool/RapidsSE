@@ -153,7 +153,6 @@ namespace STORE
     static void vAddSteps_RecvdObject(void);
     static void vAddSteps_RecvWL(void);
     static void vAddSteps_RefTimer(void);
-    static void vAddSteps_RegAggTimer(void);
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegFolder(void);
     static void vAddSteps_RegNow(void);

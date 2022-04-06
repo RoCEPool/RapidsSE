@@ -170,7 +170,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RecvdObject();
   Step::vAddSteps_RecvWL();
   Step::vAddSteps_RefTimer();
-  Step::vAddSteps_RegAggTimer();
   Step::vAddSteps_RegCounter();
   Step::vAddSteps_RegFolder();
   Step::vAddSteps_RegNow();

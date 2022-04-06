@@ -9,6 +9,7 @@
 #include "Steps.hpp"
 
 #include "SP_AggTimer.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -26,7 +27,38 @@ void Step::vAddSteps_AggTimer(void)
   vAddStep("aggTimer.reset"_Stz,     &Step::vAggTimerReset);
   vAddStep("aggTimer.secs"_Stz,      &Step::vAggTimerSecs);
   vAddStep("aggTimer.ticks"_Stz,     &Step::vAggTimerTicks);
+  
+  
+  vAddStep("aggTimer[]"_Stz,        &Step::vAggTimerGet);
+  vAddStep("aggTimer[].get"_Stz,    &Step::vAggTimerGet);
+  vAddStep("aggTimer[].set"_Stz,    &Step::vAggTimerSet);
+
 }
+
+/*----------------------------------------------------------------------------*/
+/* aggTimer[].get -- get timer                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vAggTimerGet(void)
+{
+  ENTRY();
+    
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpAggTimer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* aggTimer[].set -- set timer                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vAggTimerSet(void)
+{
+  ENTRY();
+    
+  m_pLogicUnit->m_xpAggTimer = _pAggTimer(m_pDataStack->pPopPtr(__func__));
+
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* aggTimer.add -- add to agg timer                                           */

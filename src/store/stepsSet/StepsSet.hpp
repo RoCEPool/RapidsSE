@@ -41,20 +41,6 @@ public:
   void vAnswerWLDelete(void);
   void vAnswerWLNew(void);
 
-  // recvWL
-  void vRecvWLGet(void);
-  void vRecvWLIsNotNull(void);
-  void vRecvWLIsNull(void);
-  void vRecvWLSet(void);
-
-  // SendWL
-  void vSendProcessEventA(void);
-  void vSendProcessEventB(void);
-  void vSendWLAction1(void);
-  void vSendWLAction2(void);
-  void vSendWLDelete(void);
-  void vSendWLNew(void);
-
   // address
   void vAddressEqual(void);
   void vAddressFetch(void);
@@ -63,6 +49,7 @@ public:
   // agg timer
   void vAggTimerAdd(void);
   void vAggTimerDelete(void);
+  void vAggTimerGet(void);
   void vAggTimerMicrosecs(void);
   void vAggTimerMillisecs(void);
   void vAggTimerNanosecs(void);
@@ -70,6 +57,7 @@ public:
   void vAggTimerReportStr(void);
   void vAggTimerReset(void);
   void vAggTimerSecs(void);
+  void vAggTimerSet(void);
   void vAggTimerTicks(void);
 
   // AM
@@ -1494,13 +1482,15 @@ public:
   void vRbCursorTableFetch(void);
   void vRbCursorTableStore(void);
 
+  // recvWL
+  void vRecvWLGet(void);
+  void vRecvWLIsNotNull(void);
+  void vRecvWLIsNull(void);
+  void vRecvWLSet(void);
+
   // reference timer
   void vRefTimerReset(void);
   void vRefTimerMilliseconds(void);
-
-  // reg agg timer
-  void vRegAggTimerGet(void);
-  void vRegAggTimerSet(void);
 
   // Consume
   void vRegSendsDelete(void);
@@ -1709,6 +1699,14 @@ public:
 
   void vSendNodeGet(void);
   void vSendNodeSet(void);
+
+  // SendWL
+  void vSendProcessEventA(void);
+  void vSendProcessEventB(void);
+  void vSendWLAction1(void);
+  void vSendWLAction2(void);
+  void vSendWLDelete(void);
+  void vSendWLNew(void);
 
   // session
   void vSessionCascadeFetch(void);
