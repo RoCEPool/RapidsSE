@@ -142,6 +142,7 @@ LogicUnit::LogicUnit(void)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,   PlanOperand::vRepair,    LR_PLANOPERAND)
 ,            m_xpPot(this,RF_REPAIR_DELETE,           Pot::vRepair,            LR_POT)
 ,    m_xpPreExpStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,    LR_PREEXPSTACK)
+,         m_xpPtnDef(this,RF_REPAIR_DELETE,        PtnDef::vRepair,         LR_PTNDEF)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,     PtnStream::vRepair,      LR_PTNSTREAM)
 
 ,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                    LR_RECVDOBJECT)
@@ -152,7 +153,6 @@ LogicUnit::LogicUnit(void)
 ,       m_xpSendNode(this,RF_SET_NULL,     nullptr,                       LR_SENDNODE)
 ,          m_xpSends(this,RF_REPAIR_NONE,  nullptr,                          LR_SENDS)
 ,         m_xpSendWL(this,RF_REPAIR_NONE,  nullptr,                         LR_SENDWL)
-,       m_xpShardDef(this,RF_REPAIR_DELETE,      PtnDef::vRepair,       LR_SHARDDEF)
 ,         m_xpSocket(this,RF_REPAIR_NEVER, nullptr,                         LR_SOCKET)
 ,          m_xpStage(this,RF_SET_NULL,     nullptr,                          LR_STAGE)
 ,          m_xpStats(this,RF_REPAIR_DELETE,nullptr,                          LR_STATS)
@@ -335,7 +335,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   RASSERT(m_xpSendNode.bIsNull());
   RASSERT(m_xpSends.bIsNull());
-  RASSERT(m_xpShardDef.bIsNull());
+  RASSERT(m_xpPtnDef.bIsNull());
   RASSERT(m_xpSocket.bIsNull());
   //RASSERT(m_xpStats.bIsNull());
   RASSERT(m_xpStreamDefLft.bIsNull());

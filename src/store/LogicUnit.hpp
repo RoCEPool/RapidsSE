@@ -146,6 +146,7 @@ namespace STORE
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
     REG<Pot,            CN_POT           > m_xpPot;
     REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
+    REG<PtnDef,         CN_PTNDEF        > m_xpPtnDef;
     REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;
 
     REG<Object,         CN_NONE          > m_xpRecvdObject;
@@ -156,7 +157,6 @@ namespace STORE
     REG<Node,           CN_NODE          > m_xpSendNode;
     REG<Sends,          CN_SENDS         > m_xpSends;
     REG<SendWL,         CN_SENDWL        > m_xpSendWL;
-    REG<PtnDef,         CN_PTNDEF        > m_xpShardDef;
     REG<Socket,         CN_SOCKET        > m_xpSocket;
     REG<Stage,          CN_STAGE         > m_xpStage;
     REG<Stats,          CN_STATS         > m_xpStats;
