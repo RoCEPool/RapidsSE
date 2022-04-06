@@ -172,11 +172,11 @@ SysMetrics* AM::ATTACHMAP::pSysMetricsChain(void)
 /*----------------------------------------------------------------------------*/
 /* convert bucket id to ptn id                                                */
 /*----------------------------------------------------------------------------*/
-LglPtn AM::BKTMAP::tLglPtnOf(i8 iBktId)
+LglPtn AM::BKTMAP::tLglPtnOf(KeyBkt tKeyBkt)
 {
   _static_
   
-  LglPtn tLglPtn = gpAttachMap->m_pBucketMap->tLglPtnOf(iBktId);
+  LglPtn tLglPtn = gpAttachMap->m_pBucketMap->tLglPtnOf(tKeyBkt);
 
   return tLglPtn;
 }

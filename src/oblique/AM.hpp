@@ -25,6 +25,8 @@
 #include "eVA.h"
 #include "eXA.h"
 
+#include "KeyBkt.hpp"
+
 
 class LglPtn;
 
@@ -236,7 +238,7 @@ namespace OBLIQUE
     class BKTMAP
     {
     public:
-      static LglPtn tLglPtnOf(i8 iBktId);
+      static LglPtn tLglPtnOf(KeyBkt tKeyBkt);
 
       static BucketMap* pBucketMap(void);
       static i8    iHashToBktId(i8 iHash);
