@@ -163,7 +163,7 @@
 #include "SeApi.hpp"
 #include "Sessions.hpp"
 
-#include "ShardDef.hpp"
+#include "PtnDef.hpp"
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
@@ -269,7 +269,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(AggTimer),           HT_T_TINY    ,0 FILL }, // CN_AGGTIMER
   { 0,                          HT_INVALID   ,0 FILL }, // CN_AM
   { sizeof(Api),                HT_INVALID   ,0 FILL }, // CN_API
-  { sizeof(AnswerWL),          HT_T_TINY    ,0 FILL }, // CN_ANSWERWL
+  { sizeof(AnswerWL),           HT_T_TINY    ,0 FILL }, // CN_ANSWERWL
   { sizeof(Arg),                HT_T_TINY    ,0 FILL }, // CN_ARG
   { sizeof(Arrange),            HT_T_TINY    ,0 FILL }, // CN_ARRANGE
   { sizeof(Atomic),             HT_INVALID   ,0 FILL }, // CN_ATOMIC
@@ -286,7 +286,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Bucket),             HT_T_TINY    ,0 FILL }, // CN_BUCKET
   { sizeof(BucketGet),          HT_T_TINY    ,0 FILL }, // CN_BUCKETGET
   { sizeof(BucketInfo),         HT_T_TINY    ,0 FILL }, // CN_BUCKETINFO
-  { sizeof(BucketMap),      HT_T_SMALL   ,0 FILL }, // CN_BUCKETMAP
+  { sizeof(BucketMap),          HT_T_SMALL   ,0 FILL }, // CN_BUCKETMAP
   { sizeof(BktMapGet),          HT_T_TINY    ,0 FILL }, // CN_BKTMAPGET
   { sizeof(BucketVec),          HT_T_TINY    ,0 FILL }, // CN_BUCKETVEC
   { sizeof(BufferMap),          HT_INVALID   ,0 FILL }, // CN_BUFFERMAP
@@ -476,6 +476,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Procedure),          HT_T_MEDIUM  ,0 FILL }, // CN_PROCEDURE
   { sizeof(Profile),            HT_T_MEDIUM  ,0 FILL }, // CN_PROFILE
   { sizeof(PsxThd),             HT_T_TINY    ,0 FILL }, // CN_PSXTHD
+  { sizeof(PtnDef),             HT_T_MEDIUM  ,0 FILL }, // CN_PTNDEF
   { sizeof(PtnMap),             HT_T_LARGE   ,0 FILL }, // CN_PTNMAP
   { sizeof(PtnStm_cursor),      HT_T_TINY    ,0 FILL }, // CN_PTNSTMCURSOR
   { sizeof(PtnStream),          HT_T_TINY    ,0 FILL }, // CN_PTNSTREAM
@@ -492,7 +493,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Reader),             HT_T_TINY    ,0 FILL }, // CN_READER
   { sizeof(ReapLock),           HT_T_TINY    ,0 FILL }, // CN_REAPLOCK
   { sizeof(Record),             HT_T_MEDIUM  ,0 FILL }, // CN_RECORD
-  { sizeof(RecvWL),          HT_T_TINY    ,0 FILL }, // CN_RECVWL
+  { sizeof(RecvWL),             HT_T_TINY    ,0 FILL }, // CN_RECVWL
   { sizeof(RelOp),              HT_T_TINY    ,0 FILL }, // CN_RELOP
   { sizeof(Resources),          HT_T_TINY    ,0 FILL }, // CN_RESOURCES
   { sizeof(Ribbon),             HT_T_SMALL   ,0 FILL }, // CN_RIBBON
@@ -531,12 +532,11 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SeeMe),              HT_INVALID   ,0 FILL }, // CN_SEEME
   { sizeof(SenCompiler),        HT_T_TINY    ,0 FILL }, // CN_SENCOMPILER
   { sizeof(Sends),              HT_T_TINY    ,0 FILL }, // CN_SENDS
-  { sizeof(SendWL),          HT_T_TINY    ,0 FILL }, // CN_SENDWL
+  { sizeof(SendWL),             HT_T_TINY    ,0 FILL }, // CN_SENDWL
   { sizeof(SePrompt),           HT_T_LARGE   ,0 FILL }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_LARGE   ,0 FILL }, // CN_SESSION
   { sizeof(Sessions),           HT_T_TINY    ,0 FILL }, // CN_SESSIONS
   { sizeof(Shape),              HT_T_TINY    ,0 FILL }, // CN_SHAPE
-  { sizeof(ShardDef),           HT_T_MEDIUM  ,0 FILL }, // CN_SHARDDEF
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 FILL }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 FILL }, // CN_SHORTCUTVEC
   { sizeof(Birth),              HT_INVALID   ,0 FILL }, // CN_SINCE

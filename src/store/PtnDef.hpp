@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ShardDef.hpp -- Shard Definition                                           */
+/* PtnDef.hpp -- Partition Definition                                         */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class ShardDef : public Definition,
+  class PtnDef : public Definition,
                    public WspConvergent_t<C_32KB,void,void>
   {
   public:
@@ -30,9 +30,9 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ShardDef(void);
-    ShardDef(ShardDef* pShardDef);
-   ~ShardDef(void) noexcept(false);
+    PtnDef(void);
+    PtnDef(PtnDef* pShardDef);
+   ~PtnDef(void) noexcept(false);
     
     static void vPostRecv(void* aShardDef);
     static void vRepair(Object* pObject);
@@ -79,7 +79,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  ShardDef* _pShardDef(void* aAddr);
+  PtnDef* _pPtnDef(void* aAddr);
 }
 
 /*============================================================================*/

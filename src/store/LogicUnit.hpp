@@ -20,7 +20,7 @@
 
 #include "RluCommon.h"
 #include "RluDiary.hpp"
-#include "ShardDef.hpp"
+#include "PtnDef.hpp"
 #include "MetaGet.hpp"
 #include "BktMapGet.hpp"
 #include "BucketGet.hpp"
@@ -156,7 +156,7 @@ namespace STORE
     REG<Node,           CN_NODE          > m_xpSendNode;
     REG<Sends,          CN_SENDS         > m_xpSends;
     REG<SendWL,         CN_SENDWL        > m_xpSendWL;
-    REG<ShardDef,       CN_SHARDDEF      > m_xpShardDef;
+    REG<PtnDef,         CN_PTNDEF        > m_xpShardDef;
     REG<Socket,         CN_SOCKET        > m_xpSocket;
     REG<Stage,          CN_STAGE         > m_xpStage;
     REG<Stats,          CN_STATS         > m_xpStats;

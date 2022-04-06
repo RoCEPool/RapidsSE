@@ -342,7 +342,7 @@ void Step::vTableDumpMeta(void)
 
   }
 
-  ShardDef*  pShard = pTable->pShardDef();
+  PtnDef*  pShard = pTable->pShardDef();
   sDumpBuffer.vCatSprint("\n\nShard Name:%s\n"_Stz, pShard->szShardDefNm() ? pShard->szShardDefNm()->azChar() : "");
   for (i8 iC=0; iC<pShard->nColumns(); iC++) {
     sDumpBuffer.vCatSprint("    %s  "_Stz, pShard->pGetColumn(iC) ? pShard->pGetColumn(iC)->szColNm()->azChar() : "");
@@ -721,7 +721,7 @@ void Step::vTableShardDefFetch(void)
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   ASSERT(CN_TABLE == pTable->eGetClassNo());
   
-  ShardDef* pShardDef = pTable->pShardDef();
+  PtnDef* pShardDef = pTable->pShardDef();
   
   m_pDataStack->vPushPtr(pShardDef);
   

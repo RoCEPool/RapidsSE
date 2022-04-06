@@ -10,7 +10,7 @@
 #include "Parcel.hpp"
 #include "TablePtn.hpp"
 
-namespace STORE { class InfoSet; class StreamDef; class ShardDef; }
+namespace STORE { class InfoSet; class StreamDef; class PtnDef; }
 
 namespace STORE
 {
@@ -22,7 +22,7 @@ namespace STORE
   
     Location   m_oLocation;   // logical location of table
     StreamDef* m_pStreamDef;  // table stream def
-    ShardDef*  m_pShardDef;   // partition/sharding key def
+    PtnDef*  m_pShardDef;   // partition/sharding key def
 
     BucketMap* m_pBucketMap;  // bucket (to partition) map
 
@@ -80,7 +80,7 @@ namespace STORE
     void    vRemoveIndex(Index* pIndex);
     void    vResetPointers(void);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
-    ShardDef*  pShardDef(void);
+    PtnDef*  pShardDef(void);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);

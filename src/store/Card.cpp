@@ -3,7 +3,7 @@
 #include "Card.hpp"
 #include "CardCtl.hpp"
 #include "Board.hpp"
-#include "ShardDef.hpp"
+#include "PtnDef.hpp"
 
 #include "eST.h"
 #include "eXK.h"
@@ -2533,7 +2533,7 @@ void Card::vTablePrint(Ribbon* pRibbon, i8 iDepth)
     return;
   
   //pCardTable->vPrintPartition(pRibbon);
-  ShardDef* pShardDef = pTable->pShardDef();
+  PtnDef* pShardDef = pTable->pShardDef();
   Column* pColumn = pShardDef->pGetColumn(0);
   
   pRibbon->vSput(FR_ATOM_SLASH,pColumn->szColNm());

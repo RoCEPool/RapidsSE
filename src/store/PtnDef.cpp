@@ -4,49 +4,26 @@
 
 #include "BASE.h"
 
-#include "ShardDef.hpp"
+#include "PtnDef.hpp"
 
 #include "eCX.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-ShardDef* STORE::_pShardDef(void* aAddr)
-{
-  ShardDef* pShardDef = reinterpret_cast<ShardDef*>(aAddr);
-  
-  RASSERT_TYPE(pShardDef,CN_SHARDDEF);
-  
-  return pShardDef;
-}
 
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* ShardDef::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_SHARDDEF);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void ShardDef::operator delete(void* aAddr)
-{
-  ShardDef* pShardDef = reinterpret_cast<ShardDef*>(aAddr);
-  
-  Heaps::vFree(pShardDef);
-}
+__pCastFunction(STORE,PtnDef,CN_PTNDEF)
+__aNewFunction(PtnDef,CN_PTNDEF)
+__vDeleteFunction(PtnDef,CN_PTNDEF)
+__aFooterFunction(PtnDef)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ShardDef::ShardDef(void)
-: Definition(CN_SHARDDEF)
+PtnDef::PtnDef(void)
+: Definition(CN_PTNDEF)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   //m_sShardDefNm;
  
@@ -57,41 +34,41 @@ ShardDef::ShardDef(void)
 
   m_nFixedSized = 0;
 
-  _checkInitialised_(CN_SHARDDEF);
+  _checkInitialised_(CN_PTNDEF);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ShardDef::ShardDef(ShardDef* pShardDef)
-: Definition(CN_SHARDDEF)
+PtnDef::PtnDef(PtnDef* pPtnDef)
+: Definition(CN_PTNDEF)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
-  m_sShardDefNm = pShardDef->m_sShardDefNm;
-  m_nColumns = pShardDef->m_nColumns;
+  m_sShardDefNm = pPtnDef->m_sShardDefNm;
+  m_nColumns = pPtnDef->m_nColumns;
     
   for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++) {
-    m_xaColumn[i_DefCol].vCopy(&pShardDef->m_xaColumn[i_DefCol]);
+    m_xaColumn[i_DefCol].vCopy(&pPtnDef->m_xaColumn[i_DefCol]);
   }
 
   //m_oRowPix;
 
-  m_nFixedSized = pShardDef->m_nFixedSized;
+  m_nFixedSized = pPtnDef->m_nFixedSized;
 
-  //_checkInitialised_(CN_SHARDDEF);
+  //_checkInitialised_(CN_PTNDEF);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ShardDef::~ShardDef(void) noexcept(false)
+PtnDef::~PtnDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
 }
 
@@ -102,26 +79,26 @@ ShardDef::~ShardDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
-void ShardDef::vPostRecv(void* aShardDef)
+void PtnDef::vPostRecv(void* aShardDef)
 {
   _static_
   
-  ShardDef* pShardDef = _pShardDef(aShardDef);
+  PtnDef* pPtnDef = _pPtnDef(aShardDef);
   
-  pShardDef->vResetPointers();
+  pPtnDef->vResetPointers();
 }
 
 /*----------------------------------------------------------------------------*/
 /* repair the shardDef                                                        */
 /*----------------------------------------------------------------------------*/
-void ShardDef::vRepair(Object* pObject)
+void PtnDef::vRepair(Object* pObject)
 {
   _static_
 
-  ShardDef* pShardDef = _pShardDef(pObject);
+  PtnDef* pPtnDef = _pPtnDef(pObject);
 
   // delete the shardDef
-  delete pShardDef;
+  delete pPtnDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,9 +107,9 @@ void ShardDef::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* add a column to the stream def to the current def set                      */
 /*----------------------------------------------------------------------------*/
-void ShardDef::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale)
+void PtnDef::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   m_xaColumn[m_nColumns].vColumnNo(m_nColumns);
   m_xaColumn[m_nColumns].vColumnNm(sColumnNm);
@@ -147,9 +124,9 @@ void ShardDef::vAddColumn(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 
 /*----------------------------------------------------------------------------*/
 /* convert streamDef to a string                                              */
 /*----------------------------------------------------------------------------*/
-void ShardDef::vAsString(String* pString)
+void PtnDef::vAsString(String* pString)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   pString->vSprint("streamDef %s: ("_Stz,m_sShardDefNm.szStz());
   
@@ -174,9 +151,9 @@ void ShardDef::vAsString(String* pString)
 /*----------------------------------------------------------------------------*/
 /* get no of columns in subset of streamDef                                   */
 /*----------------------------------------------------------------------------*/
-i8 ShardDef::nColumns(void)
+i8 PtnDef::nColumns(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
 
   return m_nColumns;
 }
@@ -184,9 +161,9 @@ i8 ShardDef::nColumns(void)
 /*----------------------------------------------------------------------------*/
 /* find column with given name                                                */
 /*----------------------------------------------------------------------------*/
-Column* ShardDef::pFindColumn(Stz* szColumnNm)
+Column* PtnDef::pFindColumn(Stz* szColumnNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
 
   for (i8 i_Column = 0; i_Column < m_nColumns; i_Column++) {
     
@@ -202,9 +179,9 @@ Column* ShardDef::pFindColumn(Stz* szColumnNm)
 /*----------------------------------------------------------------------------*/
 /* get column at index                                                        */
 /*----------------------------------------------------------------------------*/
-Column* ShardDef::pGetColumn(i8 iColumn)
+Column* PtnDef::pGetColumn(i8 iColumn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   return &m_xaColumn[iColumn];
 }
@@ -212,9 +189,9 @@ Column* ShardDef::pGetColumn(i8 iColumn)
 /*----------------------------------------------------------------------------*/
 /* list contents                                                              */
 /*----------------------------------------------------------------------------*/
-void ShardDef::vListContents(i8 i_Depth)
+void PtnDef::vListContents(i8 i_Depth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   vTrace("%sShardDef %s\n"_Stz,Stz::szTab(i_Depth),m_sShardDefNm.szStz());
 
@@ -228,9 +205,9 @@ void ShardDef::vListContents(i8 i_Depth)
 /*----------------------------------------------------------------------------*/
 /* get location                                                               */
 /*----------------------------------------------------------------------------*/
-Location* ShardDef::pLocation(void)
+Location* PtnDef::pLocation(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   return & m_oLocation;
 }
@@ -238,9 +215,9 @@ Location* ShardDef::pLocation(void)
 /*----------------------------------------------------------------------------*/
 /* get stream name                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* ShardDef::szShardDefNm(void)
+Stz* PtnDef::szShardDefNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   return m_sShardDefNm;
 }
@@ -248,9 +225,9 @@ Stz* ShardDef::szShardDefNm(void)
 /*----------------------------------------------------------------------------*/
 /* get column at index                                                        */
 /*----------------------------------------------------------------------------*/
-void ShardDef::vShardDefNm(Stz* sShardDefNm)
+void PtnDef::vShardDefNm(Stz* sShardDefNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   m_sShardDefNm = sShardDefNm;
 }
@@ -259,9 +236,9 @@ void ShardDef::vShardDefNm(Stz* sShardDefNm)
 /*----------------------------------------------------------------------------*/
 /* parse Create Table command                                                 */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParse(Stz* szCmd)
+eEC PtnDef::eParse(Stz* szCmd)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   eEC eError = EC_NONE;
   i8 i_Col = C_UNKNOWN;
@@ -372,9 +349,9 @@ L_RETURN:
 /*----------------------------------------------------------------------------*/
 /* print the stream def                                                       */
 /*----------------------------------------------------------------------------*/
-void ShardDef::vPrint(void)
+void PtnDef::vPrint(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   vTrace("ShardDef %s\n"_Stz,m_sShardDefNm.szStz());
 
@@ -388,9 +365,9 @@ void ShardDef::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* convert streamDef to condensed streamPix format                            */
 /*----------------------------------------------------------------------------*/
-RowPix* ShardDef::pRowPix(void)
+RowPix* PtnDef::pRowPix(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   vToRowPix(&m_oRowPix,false);
   
@@ -400,9 +377,9 @@ RowPix* ShardDef::pRowPix(void)
 /*----------------------------------------------------------------------------*/
 /* reset members which are pointers (after being received)                    */
 /*----------------------------------------------------------------------------*/
-void ShardDef::vResetPointers(void)
+void PtnDef::vResetPointers(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   // no pointers need to be reset
 }
@@ -410,9 +387,9 @@ void ShardDef::vResetPointers(void)
 /*----------------------------------------------------------------------------*/
 /* convert columns of this streamDef to colPix (opt. adding a ptnhash column) */
 /*----------------------------------------------------------------------------*/
-void ShardDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
+void PtnDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   ColPix* axaColPixDst = pRowPixDst->m_xaColPix;
   
@@ -499,9 +476,9 @@ void ShardDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
 /*----------------------------------------------------------------------------*/
 /* convert this streamDef to RowPix (optionally adding a ptnhash column)      */
 /*----------------------------------------------------------------------------*/
-void ShardDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
+void PtnDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   if (pRowPixDst->m_bInitialised)
     return;
@@ -534,9 +511,9 @@ void ShardDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
 /*----------------------------------------------------------------------------*/
 /* convert streamDef to its metadat format                                    */
 /*----------------------------------------------------------------------------*/
-void ShardDef::vToMetadata(Stz* sMetadata)
+void PtnDef::vToMetadata(Stz* sMetadata)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   sMetadata->vCopy("metadata: ("_Stz);
   
@@ -564,9 +541,9 @@ void ShardDef::vToMetadata(Stz* sMetadata)
 /*----------------------------------------------------------------------------*/
 /* parse column                                                               */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
+eEC PtnDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   eEC eError = EC_NONE;
   
@@ -640,9 +617,9 @@ eEC ShardDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /* parse boolean column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
+eEC PtnDef::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
   
   pCol->vColumnType(CT_BOOLEAN);
@@ -654,9 +631,9 @@ eEC ShardDef::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse date column                                                          */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
+eEC PtnDef::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
 
   pCol->vColumnType(CT_DATE);
@@ -668,9 +645,9 @@ eEC ShardDef::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse decimal column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
+eEC PtnDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   // set default precision and scale
   i8 iPrecision = C_MAX_BCD_PRECISION;
@@ -731,9 +708,9 @@ eEC ShardDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse float column                                                         */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
+eEC PtnDef::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   // set default size
   i8 iSize = C_MAX_FLT_PRECISION;
@@ -782,9 +759,9 @@ eEC ShardDef::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse integer column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
+eEC PtnDef::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
 
   pCol->vColumnType(CT_INTEGER);
@@ -797,9 +774,9 @@ eEC ShardDef::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse interval column                                                      */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
+eEC PtnDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
 
   pCol->vColumnType(CT_INTERVAL_DT);
@@ -811,9 +788,9 @@ eEC ShardDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse time column                                                          */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
+eEC PtnDef::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
 
   pCol->vColumnType(CT_TIME);
@@ -825,9 +802,9 @@ eEC ShardDef::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse timestamp column                                                     */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
+eEC PtnDef::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
 
   pCol->vColumnType(CT_TIMESTAMP);
@@ -839,9 +816,9 @@ eEC ShardDef::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse varchar column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
+eEC PtnDef::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   // set default size
   i8 iSize = C_64K;
@@ -891,9 +868,9 @@ eEC ShardDef::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse column clause                                                        */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
+eEC PtnDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   eEC eError = EC_NONE;
   
@@ -944,9 +921,9 @@ eEC ShardDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse not null column clause                                               */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseNotNull(TokenVec* pTknVec, Column* pCol)
+eEC PtnDef::eParseNotNull(TokenVec* pTknVec, Column* pCol)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
   
@@ -964,9 +941,9 @@ eEC ShardDef::eParseNotNull(TokenVec* pTknVec, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* parse table clauses                                                        */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseTableClauses(TokenVec* pTknVec)
+eEC PtnDef::eParseTableClauses(TokenVec* pTknVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   bool bSawPartition = false;
   
@@ -1011,9 +988,9 @@ eEC ShardDef::eParseTableClauses(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* parse partition clause                                                     */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParsePartitionBy(TokenVec* pTknVec)
+eEC PtnDef::eParsePartitionBy(TokenVec* pTknVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   // next token should be 'by'
   Token* pTkn = pTknVec->pNextToken(); dPT();
@@ -1076,9 +1053,9 @@ eEC ShardDef::eParsePartitionBy(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* parse rowsize clause                                                       */
 /*----------------------------------------------------------------------------*/
-eEC ShardDef::eParseRowSize(TokenVec* pTknVec)
+eEC PtnDef::eParseRowSize(TokenVec* pTknVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHARDDEF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
   // next token should be integer
   Token* pTkn = pTknVec->pNextToken(); dPT();
@@ -1095,11 +1072,6 @@ eEC ShardDef::eParseRowSize(TokenVec* pTknVec)
   
   return EC_NONE;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(ShardDef);
 
 /*============================================================================*/
 /* end                                                                        */

@@ -44,7 +44,7 @@ void Step::vShardDefColumnFetch(void)
 {
   ENTRY();
   
-  ShardDef* pShardDef = _pShardDef(*m_pLogicUnit->m_xpShardDef);
+  PtnDef* pShardDef = _pPtnDef(*m_pLogicUnit->m_xpShardDef);
                                       
   i8 iColumn = m_pDataStack->iPopInt(__func__);
   
@@ -60,7 +60,7 @@ void Step::vShardDefColumnCountFetch(void)
 {
   ENTRY();
   
-  ShardDef* pShardDef = _pShardDef(*m_pLogicUnit->m_xpShardDef);
+  PtnDef* pShardDef = _pPtnDef(*m_pLogicUnit->m_xpShardDef);
   
   m_pDataStack->vPushInt(pShardDef->nColumns());
   
@@ -112,7 +112,7 @@ void Step::vShardDefPrint(void)
 {
   ENTRY();
     
-  ShardDef* pShardDef = _pShardDef(*m_pLogicUnit->m_xpShardDef);
+  PtnDef* pShardDef = _pPtnDef(*m_pLogicUnit->m_xpShardDef);
   
   pShardDef->vPrint();
 
@@ -126,7 +126,7 @@ void Step::vShardDefSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpShardDef = _pShardDef(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpShardDef = _pPtnDef(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

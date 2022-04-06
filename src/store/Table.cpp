@@ -21,7 +21,7 @@
 #include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
-#include "ShardDef.hpp"
+#include "PtnDef.hpp"
 
 #include "Grid.hpp"
 #include "MY.hpp"
@@ -58,7 +58,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   
   m_oLocation.vSet();
   m_pStreamDef   = nullptr;
-  m_pShardDef    = new ShardDef;
+  m_pShardDef    = new PtnDef;
 
   m_pBucketMap   = new BucketMap(m_eKind);
 
@@ -638,7 +638,7 @@ EntBuffer* Table::pRootBuffer(i8 i_TablePtn, i8 i_Index)
 /*----------------------------------------------------------------------------*/
 /* get the sharding definition                                                */
 /*----------------------------------------------------------------------------*/
-ShardDef* Table::pShardDef(void)
+PtnDef* Table::pShardDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -891,8 +891,8 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
       case CN_STREAMDEF:
         m_pStreamDef = (StreamDef*) pObject;
         break;
-      case CN_SHARDDEF:
-        m_pShardDef = (ShardDef*) pObject;
+      case CN_PTNDEF:
+        m_pShardDef = (PtnDef*) pObject;
         break;
       case CN_BUCKETMAP:
         m_pBucketMap = (BucketMap *) pObject;

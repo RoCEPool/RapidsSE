@@ -228,6 +228,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PROCEDURE,
   /* */ CN_PROFILE,
   /* */ CN_PSXTHD,
+  /* */ CN_PTNDEF,
   /* */ CN_PTNMAP,
   /* */ CN_PTNSTMCURSOR,
   /* */ CN_PTNSTREAM,
@@ -288,7 +289,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SESSION,
   /* */ CN_SESSIONS,
   /* */ CN_SHAPE,
-  /* */ CN_SHARDDEF,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
   /* */ CN_SINCE,
@@ -633,6 +633,7 @@ static Stz* aCN[]
   /* */ "PROCEDURE"_Stz,            // CN_PROCEDURE
   /* */ "PROFILE"_Stz,              // CN_PROFILE
   /* */ "PSXTHD"_Stz,               // CN_PSXTHD
+  /* */ "PTNDEF"_Stz,               // CN_PTNDEF
   /* */ "PTNMAP"_Stz,               // CN_PTNMAP
   /* */ "PTNSTMCURSOR"_Stz,         // CN_PTNSTMCURSOR
   /* */ "PTNSTREAM"_Stz,            // CN_PTNSTREAM
@@ -693,7 +694,6 @@ static Stz* aCN[]
   /* */ "SESSION"_Stz,              // CN_SESSION
   /* */ "SESSIONS"_Stz,             // CN_SESSIONS
   /* */ "SHAPE"_Stz,                // CN_SHAPE
-  /* */ "SHARDDEF"_Stz,             // CN_SHARDDEF
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
   /* */ "SINCE"_Stz,                // CN_SINCE
