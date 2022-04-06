@@ -268,7 +268,7 @@ void DataBuffer::vGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set partition Id                                                           */
+/* set logocal partition                                                      */
 /*----------------------------------------------------------------------------*/
 void DataBuffer::vLglPtn(LglPtn tLglPtn)
 {
@@ -277,7 +277,7 @@ void DataBuffer::vLglPtn(LglPtn tLglPtn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition Id                                                           */
+/* get logical partition                                                      */
 /*----------------------------------------------------------------------------*/
 LglPtn DataBuffer::tLglPtn(void)
 {

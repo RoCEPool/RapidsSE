@@ -99,7 +99,7 @@ void BucketMap::vAdjustSecondMap(i8 nCurrentPartitions)
 /*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
-LglPtn BucketMap::tBktToLglPtnId(KeyBkt tKeyBkt)
+LglPtn BucketMap::tLglPtnOf(KeyBkt tKeyBkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
@@ -110,21 +110,6 @@ LglPtn BucketMap::tBktToLglPtnId(KeyBkt tKeyBkt)
     tLglPtn = m_taPtnId_1[tKeyBkt];
   
   return tLglPtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 BucketMap::iPtnIdToBkt(LglPtn tLglPtn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
-
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
-    if (m_paPtnId[i_Bkt].iAsI8() == tLglPtn.iAsI8())
-      return i_Bkt;
-  }
-
-  return -1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -264,7 +249,7 @@ i8 BucketMap::iWhichBucketNext(LglPtn tLglPtn, i8 iBktNo)
 i8 BucketMap::tWhichLglPtnId(i8 iBucketId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
-  return tBktToLglPtnId(iBucketId).iAsI8();
+  return tLglPtnOf(iBucketId).iAsI8();
 }
 
 /*============================================================================*/

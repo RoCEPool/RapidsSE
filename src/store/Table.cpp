@@ -343,9 +343,9 @@ void Table::vBucketMap(BucketMap* pBucketMap)
 /*----------------------------------------------------------------------------*/
 /* get the partition No from Bucket No                                        */
 /*----------------------------------------------------------------------------*/
-LglPtn  Table::tBktToLglPtn(KeyBkt tKeyBkt)
+LglPtn  Table::tLglPtnOf(KeyBkt tKeyBkt)
 {
-  return m_pBucketMap->tBktToLglPtnId(tKeyBkt);
+  return m_pBucketMap->tLglPtnOf(tKeyBkt);
 }
 
 

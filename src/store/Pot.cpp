@@ -76,7 +76,7 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
 
   i8 iHash = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
   i8 iBktId = AM::BKTMAP::iHashToBktId(iHash);
-  i8 i_LglPtn = AM::BKTMAP::tBktIdToLglPtnId(iBktId).iAsI8();
+  i8 i_LglPtn = AM::BKTMAP::tLglPtnOf(iBktId).iAsI8();
 
   // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[i_LglPtn]);
@@ -117,7 +117,7 @@ void Pot::vRowStrSize(Pot* pPot, i8 iMixIn, i8 nRowStrSize)
 
   i8 iHash = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
   i8 iBktId = AM::BKTMAP::iHashToBktId(iHash);
-  i8 i_Ptn = AM::BKTMAP::tBktIdToLglPtnId(iBktId).iAsI8();
+  i8 i_Ptn = AM::BKTMAP::tLglPtnOf(iBktId).iAsI8();
 
   RowBuffer* pRowBuffer = _pRowBuffer(pPot->pBuffer(i_Ptn));
 

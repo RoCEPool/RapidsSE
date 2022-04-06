@@ -111,7 +111,7 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
 
     // determine which lglPtn the keyBkt is currently mapped to
-    LglPtn tLglPtn = pTable->tBktToLglPtn(tKeyBkt);
+    LglPtn tLglPtn = pTable->tLglPtnOf(tKeyBkt);
 
     //vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tLglPtn.iAsI8());
     vCopyRow(tLglPtn,tKeyBkt,aRowSrc);
