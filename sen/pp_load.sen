@@ -31,9 +31,9 @@
 
     stage stageB on all partitions on origin :
         toKeyHshRow $table // (csvBuffer) => (rowBuffer w row+keyHash)
-      | toLglPtnRow $table // (rowBuffer) => (bkt rowBuffer)
-      | toLglPtnNst        // (rowBuffer) => (nst rowBuffer)
-      | toLglPtnCrw        // (rowBuffer) => (bkt crwBuffer)
+      | toLglPtnRow $table // (rowBuffer) => (rowBuffer x logical partitions)
+      | toLglPtnNst        // (rowBuffer) => (rowBuffer w normalised strings)
+      | toLglPtnCrw        // (rowBuffer) => (crwBuffer x logical partitions)
       | stageC hashcast
 
     stage stageC on all partitions :
