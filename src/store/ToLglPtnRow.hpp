@@ -11,7 +11,7 @@ namespace STORE
   {
   private:
   
-    HashSet  m_oHashSet;
+    HashSet  m_oLglBufSet;
   
     RowBuffer* m_pFromRowBuffer; // the
 
