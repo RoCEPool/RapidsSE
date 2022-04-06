@@ -3,7 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-class KeyBkt
+#include "SEtype.hpp"
+
+class KeyBkt : public SEtype
 {
   public:
   i8 m_iAsI8;

@@ -40,11 +40,11 @@ void Step::vToLglPtnRowCompleted(void)
 {
   ENTRY();
   
-  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToLglPtnRow;
+  ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  RowBuffer* pRowBuffer = pToBktRow->pCompleted(i_Ptn);
+  RowBuffer* pRowBuffer = pToLglPtnRow->pCompleted(i_Ptn);
 
   m_pDataStack->vPushPtr(pRowBuffer);
 
@@ -58,7 +58,7 @@ void Step::vToLglPtnRowConvert(void)
 {
   ENTRY();
 
-  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToLglPtnRow;
+  ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -66,7 +66,7 @@ void Step::vToLglPtnRowConvert(void)
 
   //vTrace("Hey, I got table:%s\n"_Stz, pTable->szTableNm()->azChar());
 
-  pToBktRow->vConvert(pTable, pRowBuffer);
+  pToLglPtnRow->vConvert(pTable, pRowBuffer);
   
   //delete pRowBuffer;
   
@@ -80,9 +80,9 @@ void Step::vToLglPtnRowCreate(void)
 {
   ENTRY();
     
-  ToLglPtnRow* pToBktRow = new ToLglPtnRow;
+  ToLglPtnRow* pToLglPtnRow = new ToLglPtnRow;
       
-  m_pLogicUnit->m_xpToLglPtnRow = pToBktRow;
+  m_pLogicUnit->m_xpToLglPtnRow = pToLglPtnRow;
 
   EXIT();
 }
@@ -94,11 +94,11 @@ void Step::vToLglPtnRowDangling(void)
 {
   ENTRY();
   
-  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToLglPtnRow;
+  ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  RowBuffer* pRowBuffer = pToBktRow->pDangling(i_Ptn);
+  RowBuffer* pRowBuffer = pToLglPtnRow->pDangling(i_Ptn);
   
   m_pDataStack->vPushPtr(pRowBuffer);
 
@@ -112,10 +112,10 @@ void Step::vToLglPtnRowDelete(void)
 {
   ENTRY();
   
-  ToLglPtnRow* pToBktRow = *m_pLogicUnit->m_xpToLglPtnRow;
+  ToLglPtnRow* pToLglPtnRow = *m_pLogicUnit->m_xpToLglPtnRow;
   m_pLogicUnit->m_xpToLglPtnRow = nullptr;
   
-  delete pToBktRow;
+  delete pToLglPtnRow;
   
   EXIT();
 }
