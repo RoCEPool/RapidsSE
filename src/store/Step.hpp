@@ -147,11 +147,8 @@ namespace STORE
     static void vAddSteps_Profile(void);
     static void vAddSteps_PtnMap(void);
     static void vAddSteps_PtnStream(void);
-    static void vAddSteps_PuGen(void);
     static void vAddSteps_Push(void);
   
-    static void vAddSteps_Schedule(void);
-
     static void vAddSteps_RecvdObject(void);
     static void vAddSteps_RecvWL(void);
     static void vAddSteps_RefTimer(void);
@@ -166,6 +163,7 @@ namespace STORE
     static void vAddSteps_RowBuffer(void);
     static void vAddSteps_Rstack(void);
 
+    static void vAddSteps_Schedule(void);
     static void vAddSteps_SeekOffsets(void);
     static void vAddSteps_Sen(void);
     static void vAddSteps_SenCompiler(void);

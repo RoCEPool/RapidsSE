@@ -1455,9 +1455,6 @@ public:
   void vPtnStreamSeek(void);
   void vPtnStreamSet(void);
 
-  // pu gen
-  void vPuGenX(void);
-
   // push
   void vPushI(void);
   void vPushJ(void);
