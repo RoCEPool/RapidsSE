@@ -50,6 +50,8 @@ namespace STORE
   
     bool bIsColNull(i8 i_Col);
 
+    i8   iKeyHsh(i8 i_KeyHsh);
+  
     void vSetColNull(i8 i_Col);
   
     RowBuffer* pToRowBuffer(void);

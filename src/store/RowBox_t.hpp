@@ -821,18 +821,18 @@ i8 RowBox_t<AREA>::nExtraCols(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the hash of row                                                        */
+/* get the key hash of row                                                    */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
 i8 RowBox_t<AREA>::iHashOfRow(Row* aRow)
 {
   _poolAddress_(this); _footer_();
 
-  i8 i_HshCol = m_pRowPix->m_nColumns - 1;
+  i8 i_KeyHsh = m_pRowPix->i_KeyHsh();
     
-  i8 iHash = aRow->iColVal_int(i_HshCol);
+  i8 iKeyHash = aRow->iColVal_int(i_KeyHsh);
   
-  return iHash;
+  return iKeyHash;
 }
 
 /*----------------------------------------------------------------------------*/
