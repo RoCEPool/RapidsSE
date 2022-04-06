@@ -16,7 +16,7 @@
   <tableNm> op__table if
 
     // create a ToRow using Table[].streamDef
-    ToKeyHshRow[].create
+    ToKeyHshRow[].new
 
     // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
     Table[] StreamDefOut[].newFromTable

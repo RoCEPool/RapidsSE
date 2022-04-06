@@ -26594,7 +26594,7 @@ void Task::vAddMunged(Task* )
     "  <tableNm> op__table if\n"
     "\n"
     "    // create a ToRow using Table[].streamDef\n"
-    "    ToKeyHshRow[].create\n"
+    "    ToKeyHshRow[].new\n"
     "\n"
     "    // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??\n"
     "    Table[] StreamDefOut[].newFromTable\n"

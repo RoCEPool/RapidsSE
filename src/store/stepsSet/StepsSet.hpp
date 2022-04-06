@@ -2260,11 +2260,11 @@ public:
   // toKeyHshRow
   void vToKeyHshRowCompleted(void);
   void vToKeyHshRowCountersFetch(void);
-  void vToKeyHshRowCreate(void);
   void vToKeyHshRowCsvToRow(void);
   void vToKeyHshRowDangling(void);
   void vToKeyHshRowDelete(void);
   void vToKeyHshRowFetch(void);
+  void vToKeyHshRowNew(void);
 
   // toLglPtnCrw
   void vToLglPtnCrwCompleted(void);
