@@ -449,7 +449,7 @@ void Step::vIndexIsValidUniqueIndex(void)
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   // get the table partition stream def
-  PtnDef* pShardDef = pIndex->pTable()->pPtnDef();
+  PtnDef* pPtnDef = pIndex->pTable()->pPtnDef();
   
   // get the index column vector
   IndexDef* pIndexDef = pIndex->pIndexDef();
@@ -459,11 +459,11 @@ void Step::vIndexIsValidUniqueIndex(void)
   //! ALKA: shouldn't this be checking for the leading edge of the index to include
   //!  all partition keys ???
   // a unique index must include all columns in the partitioning keys
-  i8 nPtnColumns = pShardDef->nColumns();
+  i8 nPtnColumns = pPtnDef->nColumns();
   bool bFound = false;
   for (i8 i = 0; i < nPtnColumns; i++)
   {
-    Column* pColumn = pShardDef->pGetColumn(i);
+    Column* pColumn = pPtnDef->pGetColumn(i);
     
     for (i8 i_Item = 0; i_Item < nIdxColumns; i_Item++) {
       if (pIndexDef->pGetColumn(i_Item)->iColumnNo() == pColumn->iColumnNo()) {

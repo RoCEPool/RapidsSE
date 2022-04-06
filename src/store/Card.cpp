@@ -2533,8 +2533,8 @@ void Card::vTablePrint(Ribbon* pRibbon, i8 iDepth)
     return;
   
   //pCardTable->vPrintPartition(pRibbon);
-  PtnDef* pShardDef = pTable->pPtnDef();
-  Column* pColumn = pShardDef->pGetColumn(0);
+  PtnDef* pPtnDef = pTable->pPtnDef();
+  Column* pColumn = pPtnDef->pGetColumn(0);
   
   pRibbon->vSput(FR_ATOM_SLASH,pColumn->szColNm());
 

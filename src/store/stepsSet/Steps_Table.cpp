@@ -342,10 +342,10 @@ void Step::vTableDumpMeta(void)
 
   }
 
-  PtnDef*  pShard = pTable->pPtnDef();
-  sDumpBuffer.vCatSprint("\n\nShard Name:%s\n"_Stz, pShard->szShardDefNm() ? pShard->szShardDefNm()->azChar() : "");
-  for (i8 iC=0; iC<pShard->nColumns(); iC++) {
-    sDumpBuffer.vCatSprint("    %s  "_Stz, pShard->pGetColumn(iC) ? pShard->pGetColumn(iC)->szColNm()->azChar() : "");
+  PtnDef* pPtnDef = pTable->pPtnDef();
+  sDumpBuffer.vCatSprint("\n\Ptn Name:%s\n"_Stz, pPtnDef->szShardDefNm() ? pPtnDef->szShardDefNm()->azChar() : "");
+  for (i8 iC=0; iC<pPtnDef->nColumns(); iC++) {
+    sDumpBuffer.vCatSprint("    %s  "_Stz, pPtnDef->pGetColumn(iC) ? pPtnDef->pGetColumn(iC)->szColNm()->azChar() : "");
   }
 
   sDumpBuffer.vConcat("\n======================================================\n\n"_Stz);

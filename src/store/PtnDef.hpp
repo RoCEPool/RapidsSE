@@ -31,7 +31,7 @@ namespace STORE
     void  operator delete(void*);
     
     PtnDef(void);
-    PtnDef(PtnDef* pShardDef);
+    PtnDef(PtnDef* pPtnDef);
    ~PtnDef(void) noexcept(false);
     
     static void vPostRecv(void* aShardDef);
