@@ -108,13 +108,13 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 
     i8 iKeyHsh = aRowSrc->iKeyHsh(i_KeyHsh);
     
-    i8 i_Bkt = BucketMap::i_ToBkt(iKeyHsh);
+    KeyBkt tKeyBkt = BucketMap::i_ToBkt(iKeyHsh);
 
     // convert i_Bkt to Ptn Id
-    PtnId tPtnId = pTable->tBktToLglPtn(i_Bkt);
+    PtnId tPtnId = pTable->tBktToLglPtn(tKeyBkt);
 
     //vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tPtnId.iAsI8());
-    vCopyRow(tPtnId,i_Bkt,aRowSrc);
+    vCopyRow(tPtnId,tKeyBkt,aRowSrc);
 
   }
 }

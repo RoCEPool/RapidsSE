@@ -243,7 +243,7 @@ void Step::vTableDumpBkt(void)
 
   i8 nPtns = AM::PTNMAP::nPtnsPerNode();
 
-  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_BUCKETS);
+  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_KEYBUCKETS);
 
   sDumpBuffer.vConcat(pTable->szDumpTablePtn());
 
@@ -266,7 +266,7 @@ void Step::vTableDumpBktMap(void)
 
   i8 nPtns = AM::PTNMAP::nPtnsPerNode();
 
-  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_BUCKETS);
+  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_KEYBUCKETS);
 
   sDumpBuffer.vConcat(pTable->szDumpBucketMap());
 

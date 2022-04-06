@@ -1155,7 +1155,6 @@ void Engine::vPrintConstants(void)
   vTrace("  C_LOW_BUFFERS        = %lld\n"_Stz,C_LOW_BUFFERS);
   
   vTrace("  C_MAX_BCD_PRECISION  = %lld\n"_Stz,C_MAX_BCD_PRECISION);
-  vTrace("  C_MAX_BUCKETS        = %lld\n"_Stz,C_MAX_BUCKETS);
   vTrace("  C_MAX_COLUMNS        = %lld\n"_Stz,C_MAX_COLUMNS);
   vTrace("  C_MAX_ENTRY          = %lld\n"_Stz,C_MAX_ENTRY);
   vTrace("  C_MAX_EXPR           = %lld\n"_Stz,C_MAX_EXPR);
@@ -1165,6 +1164,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_INDEX_COLUMNS  = %lld\n"_Stz,C_MAX_INDEX_COLUMNS);
   vTrace("  C_MAX_INT_PRECISION  = %lld\n"_Stz,C_MAX_INT_PRECISION);
   vTrace("  C_MAX_KEY            = %lld\n"_Stz,C_MAX_KEY);
+  vTrace("  C_MAX_KEYBUCKETS     = %lld\n"_Stz,C_MAX_KEYBUCKETS);
   vTrace("  C_MAX_LOG_ENTRIES    = %lld\n"_Stz,C_MAX_LOG_ENTRIES);
   vTrace("  C_MAX_LOG_NOTE       = %lld\n"_Stz,C_MAX_LOG_NOTE);
   vTrace("  C_MAX_LVL_LEVELS     = %lld\n"_Stz,C_MAX_LVL_LEVELS);

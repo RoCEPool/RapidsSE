@@ -67,7 +67,7 @@ TablePtn::TablePtn(Table *pTable, PtnId tPtnId)
   }
 
 
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++)
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++)
   {
     vAddBucket(pTable, tPtnId, m_eKind);
     //vTrace("Bkt:%lld \n"_Stz, i_Bkt);
