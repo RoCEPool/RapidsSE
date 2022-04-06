@@ -37,7 +37,6 @@ namespace STORE
    ~BucketMap(void) noexcept(false);
   
     static void vPostRecv(void* aBucketMap);
-    static i8 i_ToBkt(i8 iKeyHsh);
 
     PtnId tBktToLglPtnId(i8 iBucketId);
     i8    iPtnIdToBkt(PtnId tPtnId);

@@ -98,7 +98,7 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
   m_pFromRowBuffer = pRowBuffer;
   
   RowPix* pRowPix = pRowBuffer->pRowPix();
-  i8 i_KeyHsh = pRowPix->i_KeyHsh();
+  i8 i_KeyHshCol = pRowPix->i_KeyHsh();
 
   i8 nRows = pRowBuffer->nRows();
   //vTrace("ToBktRow::vConvert2 table:%s Total Rows:%lld \n"_Stz,pTable->szTableNm()->azChar(), nRows);
@@ -106,9 +106,9 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 
-    i8 iKeyHsh = aRowSrc->iKeyHsh(i_KeyHsh);
+    i8 iKeyHsh = aRowSrc->iKeyHsh(i_KeyHshCol);
     
-    KeyBkt tKeyBkt = BucketMap::i_ToBkt(iKeyHsh);
+    KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
 
     // convert i_Bkt to Ptn Id
     PtnId tPtnId = pTable->tBktToLglPtn(tKeyBkt);

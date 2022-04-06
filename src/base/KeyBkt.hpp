@@ -13,6 +13,8 @@ class KeyBkt : public SEtype
   KeyBkt(void);
   KeyBkt(i8 iAsI8);
 
+  static KeyBkt tToKeyBkt(i8 iKeyHsh);
+  
   // auto conversion
   operator i8(void);
   
@@ -26,7 +28,6 @@ class KeyBkt : public SEtype
   
   i8 iAsI8(void);
   void vAsI8(i8 iAsI8);
-
 };
 
 /*============================================================================*/
