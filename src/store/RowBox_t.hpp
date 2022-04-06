@@ -99,7 +99,6 @@ namespace STORE
     void  vDumpRow(i8 i_Row, Row* aRow);
 
     i8    nExtraCols(void);
-    i8    iHashOfRow(Row* aRow);
     void  vInitPix(StreamDef* pStreamDef, bool bAddKeyHash);
     NmlStr* pNmlStr(void);
     void  vNormaliseStrings(void);
@@ -818,21 +817,6 @@ i8 RowBox_t<AREA>::nExtraCols(void)
   _poolAddress_(this); _footer_();
 
   return m_pRowPix->m_nExtraCols;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the key hash of row                                                    */
-/*----------------------------------------------------------------------------*/
-template <i8 AREA>
-i8 RowBox_t<AREA>::iHashOfRow(Row* aRow)
-{
-  _poolAddress_(this); _footer_();
-
-  i8 i_KeyHsh = m_pRowPix->i_KeyHsh();
-    
-  i8 iKeyHash = aRow->iColVal_int(i_KeyHsh);
-  
-  return iKeyHash;
 }
 
 /*----------------------------------------------------------------------------*/

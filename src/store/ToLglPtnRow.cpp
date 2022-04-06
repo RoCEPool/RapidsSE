@@ -95,6 +95,9 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
   m_pFromRowBuffer = pRowBuffer;
+  
+  RowPix* pRowPix = pRowBuffer->pRowPix();
+  i8 i_KeyHsh = pRowPix->i_KeyHsh();
 
   i8 nRows = pRowBuffer->nRows();
   //vTrace("ToBktRow::vConvert2 table:%s Total Rows:%lld \n"_Stz,pTable->szTableNm()->azChar(), nRows);
@@ -102,7 +105,8 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 
-    i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
+    i8 iHash = aRowSrc->iKeyHsh(i_KeyHsh);
+    
     i8 i_Bkt = iHash % C_MAX_BUCKETS;
 
     // convert Bkt No to Ptn No
