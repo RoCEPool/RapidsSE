@@ -34,12 +34,13 @@ namespace STORE
     BucketMap(eTT eKind);
    ~BucketMap(void) noexcept(false);
   
-    static void vPostRecv(void* aBucketMap_dyn);
-    
+    static void vPostRecv(void* aBucketMap);
+    static i8 i_ToBkt(i8 iKeyHsh);
+
     PtnId tBktToLglPtnId(i8 iBucketId);
     i8    iPtnIdToBkt(PtnId tPtnId);
 
-    void vAdjustMap(i8 nnPartitions);
+    void vAdjustMap(i8 nPartitions);
     void vAdjustSecondMap(i8 nCurrentPartitions);
 
     void vUpdateMap(void);

@@ -12,6 +12,7 @@
 #include "IndexTree.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "BucketMap.hpp"
 
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
@@ -105,15 +106,15 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 
-    i8 iHash = aRowSrc->iKeyHsh(i_KeyHsh);
+    i8 iKeyHsh = aRowSrc->iKeyHsh(i_KeyHsh);
     
-    i8 i_Bkt = iHash % C_MAX_BUCKETS;
+    i8 i_Bkt = BucketMap::i_ToBkt(iKeyHsh);
 
-    // convert Bkt No to Ptn No
+    // convert i_Bkt to Ptn Id
     PtnId tPtnId = pTable->tBktToLglPtn(i_Bkt);
 
     //vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tPtnId.iAsI8());
-    vCopyRow(tPtnId.iAsI8(),i_Bkt,aRowSrc);
+    vCopyRow(tPtnId,i_Bkt,aRowSrc);
 
   }
 }
@@ -148,12 +149,12 @@ RowBuffer* ToLglPtnRow::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* copy source row into target partition row slab                             */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnRow::vCopyRow(i8 i_Ptn, i8 iBkt, Row* aRowSrc)
+void ToLglPtnRow::vCopyRow(PtnId tPtnId, i8 i_Bkt, Row* aRowSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
   // new a destination row in target partition row slab
-  vNewDstRow(i_Ptn, iBkt);
+  vNewDstRow(tPtnId, i_Bkt);
 
   // copy that
   bool bSrcHasPtnHash = true;
@@ -164,9 +165,11 @@ void ToLglPtnRow::vCopyRow(i8 i_Ptn, i8 iBkt, Row* aRowSrc)
 /*----------------------------------------------------------------------------*/
 /* new a destination row in row slab in hash set                              */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnRow::vNewDstRow(i8 i_Ptn, i8 i_Bkt)
+void ToLglPtnRow::vNewDstRow(PtnId tPtnId, i8 i_Bkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
+
+  i8 i_Ptn = tPtnId.iAsI8();
 
   // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRowBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
@@ -188,8 +191,6 @@ void ToLglPtnRow::vNewDstRow(i8 i_Ptn, i8 i_Bkt)
     ASSERT(aNewRow);
   }
 
-  PtnId tPtnId;
-  tPtnId = i_Ptn;
   pDstRowBuffer->vPtnId(tPtnId);
   pDstRowBuffer->vBucketNo(i_Bkt);
 
