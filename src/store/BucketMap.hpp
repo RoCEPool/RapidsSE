@@ -6,6 +6,7 @@
 #include "eTT.h"
 
 #include "KeyBkt.hpp"
+#include "KeyHsh.hpp"
 
 namespace STORE
 {

@@ -106,7 +106,7 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 
-    i8 iKeyHsh = aRowSrc->iKeyHsh(i_KeyHshCol);
+    KeyHsh iKeyHsh = aRowSrc->iKeyHsh(i_KeyHshCol);
     
     KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
 
