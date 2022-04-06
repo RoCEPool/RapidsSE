@@ -47,7 +47,7 @@ PtnDef::PtnDef(PtnDef* pPtnDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
-  m_sShardDefNm = pPtnDef->m_sShardDefNm;
+  m_sPtnDefNm = pPtnDef->m_sPtnDefNm;
   m_nColumns = pPtnDef->m_nColumns;
     
   for (i8 i_DefCol = 0; i_DefCol < m_nColumns; i_DefCol++) {
@@ -128,7 +128,7 @@ void PtnDef::vAsString(String* pString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
-  pString->vSprint("streamDef %s: ("_Stz,m_sShardDefNm.szStz());
+  pString->vSprint("streamDef %s: ("_Stz,m_sPtnDefNm.szStz());
   
   i8 i_DefSet = 0;
     
@@ -193,7 +193,7 @@ void PtnDef::vListContents(i8 i_Depth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
-  vTrace("%sShardDef %s\n"_Stz,Stz::szTab(i_Depth),m_sShardDefNm.szStz());
+  vTrace("%sShardDef %s\n"_Stz,Stz::szTab(i_Depth),m_sPtnDefNm.szStz());
 
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     Column* pColumn = pGetColumn(i_Col);
@@ -212,25 +212,6 @@ Location* PtnDef::pLocation(void)
   return & m_oLocation;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get stream name                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* PtnDef::szShardDefNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
-  
-  return m_sShardDefNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get column at index                                                        */
-/*----------------------------------------------------------------------------*/
-void PtnDef::vShardDefNm(Stz* sShardDefNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
-  
-  m_sShardDefNm = sShardDefNm;
-}
 
 #define dPT()
 /*----------------------------------------------------------------------------*/
@@ -268,7 +249,7 @@ eEC PtnDef::eParse(Stz* szCmd)
   // -- -- -- --
   
   pTkn = pTknVec->pNextToken(); dPT();
-  m_sShardDefNm = pTkn->szChars();
+  m_sPtnDefNm = pTkn->szChars();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: ( <columnDef> ,... )
@@ -353,13 +334,33 @@ void PtnDef::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   
-  vTrace("ShardDef %s\n"_Stz,m_sShardDefNm.szStz());
+  vTrace("ShardDef %s\n"_Stz,m_sPtnDefNm.szStz());
 
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     Column* pColumn = pGetColumn(i_Col);
 
     pColumn->vShow();
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ptnDef name                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* PtnDef::szPtnDefNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
+  
+  return m_sPtnDefNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set ptnDef name                                                            */
+/*----------------------------------------------------------------------------*/
+void PtnDef::vPtnDefNm(Stz* sPtnDefNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
+  
+  m_sPtnDefNm = sPtnDefNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -485,7 +486,7 @@ void PtnDef::vToRowPix(RowPix* pRowPixDst, bool bAddPtnHash)
   
   ASSERT(! pRowPixDst->m_bPtnHash);
 
-  pRowPixDst->m_sPixNm   = m_sShardDefNm;
+  pRowPixDst->m_sPixNm   = m_sPtnDefNm;
   pRowPixDst->m_nColumns = m_nColumns;
 
 //  if (bAddPtnHash) {

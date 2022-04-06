@@ -11,7 +11,7 @@ namespace STORE
                    public WspConvergent_t<C_32KB,void,void>
   {
   public:
-    s256 m_sShardDefNm;   // shardDef name
+    s256 m_sPtnDefNm;   // ptnDef name
   
     Location m_oLocation; // logical location of stream def
 
@@ -45,10 +45,10 @@ namespace STORE
     Column* pGetColumn(i8 i_Col);
     void    vListContents(i8 i_Depth);
     Location* pLocation(void);
-    void    vShardDefNm(Stz* szShardDefNm);
-    Stz*    szShardDefNm(void);
     eEC     eParse(Stz* szCmd);
     void    vPrint(void);
+    void    vPtnDefNm(Stz* szPtnDefNm);
+    Stz*    szPtnDefNm(void);
     void    vResetPointers(void);
     RowPix* pRowPix(void);
     void    vToColPix(RowPix* pRowPix, bool bPtnHash);
