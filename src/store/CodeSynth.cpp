@@ -79,7 +79,7 @@ CodeSynth::CodeSynth(void)
   m_sLowerPosition = ""_Stz;
   m_sUpperPosition = ""_Stz;
 
-  m_pPreExpStack = nullptr;
+  m_pPreExpStack  = nullptr;
   m_pStreamDefLft = nullptr;
   m_pStreamDefOut = nullptr;
   m_pIndexDef     = nullptr;
@@ -2665,7 +2665,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nItems(); i_Tkn++) {
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
-    /*
+
 #ifdef WITH_DEBUG_VERSION
     vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
@@ -2680,7 +2680,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
     vTrace("--------------------------------------\n"_Stz);
 #endif
-*/
+
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
 
@@ -2790,6 +2790,19 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the filter expression
+    if (pTkn->bSame("filter"_Stz)) {
+
+      eExprKind = EK_FILTER;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working stack
+      pExprStack = pWorkingStack(eExprKind, ePreExp, m_pExprStack);
+
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // bound
     if (pTkn->bSame("bound"_Stz)) {
       bIndexJoin = true;
@@ -2885,114 +2898,107 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the in expression
     if (pTkn->bSame("in"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_INX);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the between expression
     if (pTkn->bSame("between"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_BET);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the extract_day expression
     if (pTkn->bSame("extract_day"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_XDY);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the extract_hour expression
     if (pTkn->bSame("extract_hour"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_XHR);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the extract_min expression
     if (pTkn->bSame("extract_min"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_XMN);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the extract_month expression
     if (pTkn->bSame("extract_month"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_XMT);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the extract_second expression
     if (pTkn->bSame("extract_second"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_XSC);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the between expression
     if (pTkn->bSame("extract_year"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the in expression
-    if (pTkn->bSame("in"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_XYR);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the like expression
     if (pTkn->bSame("like2"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_LK2);
       continue;
     }
 
     if (pTkn->bSame("like3"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_LK3);
       continue;
     }
 
     if (pTkn->bSame("matchLeading"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_MLE);
       continue;
     }
 
     if (pTkn->bSame("matchMiddle"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_MMD);
       continue;
     }
 
     if (pTkn->bSame("matchMiddle1"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_MM1);
       continue;
     }
 
     if (pTkn->bSame("matchMiddle2"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_MM2);
       continue;
     }
 
     if (pTkn->bSame("matchTrailing"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_MTR);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the substring2 expression
     if (pTkn->bSame("substring2"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_SS2);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the substring3 expression
     if (pTkn->bSame("substring3"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_SS3);
       continue;
     }
 

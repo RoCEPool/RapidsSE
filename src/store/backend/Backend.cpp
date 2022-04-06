@@ -567,7 +567,7 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
 
   ASSERT(pOrdinalFilterExpr);
 
-  pBackend->vAppendNextOp("filter 2 \" type BOOLEAN "_Stz);
+  pBackend->vAppendNextOp("filter 2 \" filter type BOOLEAN "_Stz);
   pBackend->m_bCombinedOp = true;
 //  sPipeline->vCatSprint(
 //      "    filter 1 \" type BOOLEAN "
