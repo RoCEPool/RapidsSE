@@ -151,12 +151,12 @@ RowBuffer* ToLglPtnRow::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* copy source row into target partition row slab                             */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, i8 i_Bkt, Row* aRowSrc)
+void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, KeyBkt tKeyBkt, Row* aRowSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
   // new a destination row in target partition row slab
-  vNewDstRow(tLglPtn, i_Bkt);
+  vNewDstRow(tLglPtn, tKeyBkt);
 
   // copy that
   bool bSrcHasPtnHash = true;
@@ -167,7 +167,7 @@ void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, i8 i_Bkt, Row* aRowSrc)
 /*----------------------------------------------------------------------------*/
 /* new a destination row in row slab in hash set                              */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn, i8 i_Bkt)
+void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn, KeyBkt tKeyBkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
@@ -194,7 +194,7 @@ void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn, i8 i_Bkt)
   }
 
   pDstRowBuffer->vLglPtn(tLglPtn);
-  pDstRowBuffer->vBucketNo(i_Bkt);
+  pDstRowBuffer->vBucketNo(tKeyBkt);
 
   m_pIntoRowBuffer = pDstRowBuffer;
 }
