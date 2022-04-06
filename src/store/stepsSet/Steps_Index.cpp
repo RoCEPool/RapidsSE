@@ -449,7 +449,7 @@ void Step::vIndexIsValidUniqueIndex(void)
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   // get the table partition stream def
-  PtnDef* pShardDef = pIndex->pTable()->pShardDef();
+  PtnDef* pShardDef = pIndex->pTable()->pPtnDef();
   
   // get the index column vector
   IndexDef* pIndexDef = pIndex->pIndexDef();

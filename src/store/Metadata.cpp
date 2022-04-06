@@ -676,7 +676,7 @@ InfoSet* Metadata::pPartitionKey(Stz* szCatalogName,
     
     //vTrace("TABLE %s\n"_Stz,pTable->szTableNm());
         
-    PtnDef*  pShardDef= pTable->pShardDef();
+    PtnDef*  pShardDef= pTable->pPtnDef();
 
     i8 nCols = pShardDef->nColumns();
     for (i8 i_Col = 0; i_Col < nCols; i_Col++) {

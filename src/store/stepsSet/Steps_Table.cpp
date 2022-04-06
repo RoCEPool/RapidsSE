@@ -65,7 +65,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("Table[].listPartition"_Stz,    &Step::vTableListPartition);
   vAddStep("Table[].name@"_Stz,            &Step::vTableNameFetch);
-  vAddStep("Table[].shardDef@"_Stz,        &Step::vTableShardDefFetch);
+  vAddStep("Table[].ptnDef@"_Stz,          &Step::vTablePtnDefFetch);
   vAddStep("Table[].size"_Stz,             &Step::vTableSize);
   vAddStep("Table[].streamDef@"_Stz,       &Step::vTableStreamDefFetch);
   vAddStep("table.streamDef!"_Stz,         &Step::vTableStreamDefStore);
@@ -342,7 +342,7 @@ void Step::vTableDumpMeta(void)
 
   }
 
-  PtnDef*  pShard = pTable->pShardDef();
+  PtnDef*  pShard = pTable->pPtnDef();
   sDumpBuffer.vCatSprint("\n\nShard Name:%s\n"_Stz, pShard->szShardDefNm() ? pShard->szShardDefNm()->azChar() : "");
   for (i8 iC=0; iC<pShard->nColumns(); iC++) {
     sDumpBuffer.vCatSprint("    %s  "_Stz, pShard->pGetColumn(iC) ? pShard->pGetColumn(iC)->szColNm()->azChar() : "");
@@ -712,18 +712,18 @@ void Step::vTableNew(void) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* Table[].shardDef@ -- get the table ptn stream def                          */
+/* Table[].ptnDef@ -- get the table ptn stream def                            */
 /*----------------------------------------------------------------------------*/
-void Step::vTableShardDefFetch(void)
+void Step::vTablePtnDefFetch(void)
 {
   ENTRY();
   
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
   ASSERT(CN_TABLE == pTable->eGetClassNo());
   
-  PtnDef* pShardDef = pTable->pShardDef();
+  PtnDef* pPtnDef = pTable->pPtnDef();
   
-  m_pDataStack->vPushPtr(pShardDef);
+  m_pDataStack->vPushPtr(pPtnDef);
   
   EXIT();
 }

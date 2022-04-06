@@ -22,7 +22,7 @@ namespace STORE
   
     Location   m_oLocation;   // logical location of table
     StreamDef* m_pStreamDef;  // table stream def
-    PtnDef*  m_pShardDef;   // partition/sharding key def
+    PtnDef*    m_pPtnDef;     // partition/sharding key def
 
     BucketMap* m_pBucketMap;  // bucket (to partition) map
 
@@ -77,10 +77,10 @@ namespace STORE
     void    vKind(eTT eKind);
     void    vListContents(i8 i_Depth);
     bool    bPopulateIndex(i8 iIndexNo);
+    PtnDef*  pPtnDef(void);
     void    vRemoveIndex(Index* pIndex);
     void    vResetPointers(void);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
-    PtnDef*  pShardDef(void);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);

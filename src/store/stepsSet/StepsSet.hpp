@@ -2034,7 +2034,7 @@ public:
   void vTableListPartition(void);
   void vTableNameFetch(void);
   void vTableNew(void);
-  void vTableShardDefFetch(void);
+  void vTablePtnDefFetch(void);
   void vTableSet(void);
   void vTableSize(void);
   void vTableStreamDefFetch(void);

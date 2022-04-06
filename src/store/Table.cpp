@@ -58,7 +58,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   
   m_oLocation.vSet();
   m_pStreamDef   = nullptr;
-  m_pShardDef    = new PtnDef;
+  m_pPtnDef    = new PtnDef;
 
   m_pBucketMap   = new BucketMap(m_eKind);
 
@@ -111,7 +111,7 @@ Table::~Table(void) noexcept(false)
   delete m_pBucketMap;
 
   delete m_pStreamDef;
-  delete m_pShardDef;
+  delete m_pPtnDef;
   
   // delete the TablePtn's
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
@@ -382,7 +382,7 @@ void Table::vCreatePtnDef(void)
   
   Column* pColumn = nullptr;
 
-  m_pShardDef->m_nColumns = 0;
+  m_pPtnDef->m_nColumns = 0;
   
   // find the column from the table columnVector
   i8 iColumns = pStreamDef()->nColumns();
@@ -390,8 +390,8 @@ void Table::vCreatePtnDef(void)
   for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
     pColumn = pStreamDef()->pGetColumn(i_Col);
     if (pColumn->bIsPtnKey()) {
-      m_pShardDef->m_xaColumn[m_pShardDef->m_nColumns].vCopy(pColumn);
-      m_pShardDef->m_nColumns++;
+      m_pPtnDef->m_xaColumn[m_pPtnDef->m_nColumns].vCopy(pColumn);
+      m_pPtnDef->m_nColumns++;
     }
   }
 }
@@ -609,7 +609,7 @@ void Table::vResetPointers(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   m_pStreamDef = nullptr;
-  m_pShardDef  = nullptr;
+  m_pPtnDef  = nullptr;
   m_pBucketMap = nullptr;
   m_pIdxVec    = nullptr;
   m_pTablePtnVec = nullptr;
@@ -638,11 +638,11 @@ EntBuffer* Table::pRootBuffer(i8 i_TablePtn, i8 i_Index)
 /*----------------------------------------------------------------------------*/
 /* get the sharding definition                                                */
 /*----------------------------------------------------------------------------*/
-PtnDef* Table::pShardDef(void)
+PtnDef* Table::pPtnDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_pShardDef;
+  return m_pPtnDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -776,7 +776,7 @@ i8 Table::iPrepareParcel(void)
   if ( m_pStreamDef) {
     m_pParcel->vAddItem((Object *)m_pStreamDef);
   }
-  m_pParcel->vAddItem((Object *)m_pShardDef);
+  m_pParcel->vAddItem((Object *)m_pPtnDef);
 
   m_pParcel->vAddItem((Object *)m_pBucketMap);
 
@@ -799,7 +799,7 @@ void Table::vGetMetaParts(Parcel* pParcel)
   if (m_pStreamDef)
     pParcel->vAddItem((Object *)m_pStreamDef);
   
-  pParcel->vAddItem((Object *)m_pShardDef);
+  pParcel->vAddItem((Object *)m_pPtnDef);
 
   pParcel->vAddItem((Object *)m_pBucketMap);
 
@@ -892,7 +892,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
         m_pStreamDef = (StreamDef*) pObject;
         break;
       case CN_PTNDEF:
-        m_pShardDef = (PtnDef*) pObject;
+        m_pPtnDef = (PtnDef*) pObject;
         break;
       case CN_BUCKETMAP:
         m_pBucketMap = (BucketMap *) pObject;

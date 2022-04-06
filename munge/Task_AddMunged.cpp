@@ -6866,7 +6866,7 @@ void Task::vAddMunged(Task* )
     "  streamSetTable[] StreamSet[].new\n"
     "\n"
     "  // get the ptn stream def from the table\n"
-    "  Table[].shardDef@ to PtnDef[]\n"
+    "  Table[].ptnDef@ to PtnDef[]\n"
     "  PtnDef[].columnCount@ to nPtnCols\n"
     "\n"
     "  // insert a row in the infoset for each column\n"
