@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* OP_toRow.sen -- Convert csv buffers to row buffers                         */
+/* OP_toKeyHshRow.sen -- Convert csv buffers to row buffers                   */
 /*============================================================================*/
 
-" OP_toRow.sen" .verbose
+" OP_toKeyHshRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_START ...                                                     INIT */
