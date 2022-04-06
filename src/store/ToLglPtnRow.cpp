@@ -191,7 +191,7 @@ void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn, i8 i_Bkt)
     ASSERT(aNewRow);
   }
 
-  pDstRowBuffer->vPtnId(tLglPtn);
+  pDstRowBuffer->vLglPtn(tLglPtn);
   pDstRowBuffer->vBucketNo(i_Bkt);
 
   m_pIntoRowBuffer = pDstRowBuffer;

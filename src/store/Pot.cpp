@@ -99,7 +99,7 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
   }
 
   tLglPtn = i_LglPtn;
-  pDstRowBuffer->vPtnId(tLglPtn);
+  pDstRowBuffer->vLglPtn(tLglPtn);
 
   *aazStrArea = pDstRowBuffer->azDepositString_begin();
 
@@ -248,7 +248,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
   }
 
   tLglPtn = i_Ptn;
-  pDstRowBuffer->vPtnId(tLglPtn);
+  pDstRowBuffer->vLglPtn(tLglPtn);
 
   * ppRowBuffer = pDstRowBuffer;
 
@@ -302,7 +302,7 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
 
   LglPtn tLglPtn;
   tLglPtn = i_Ptn;
-  pAddBuffer->vPtnId(tLglPtn);
+  pAddBuffer->vLglPtn(tLglPtn);
 
   // link the old with this
   pAddBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);

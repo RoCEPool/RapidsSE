@@ -217,7 +217,7 @@ CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tLglPtn)
   
   pCrwBuffer->vStreamDef(m_pStreamDef);
 
-  pCrwBuffer->vPtnId(tLglPtn);
+  pCrwBuffer->vLglPtn(tLglPtn);
 
   // Set the bucket number
   i8 iBktNo = 0;
@@ -244,7 +244,7 @@ CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tLglPtn, i8 iBkt)
 
   pCrwBuffer->vStreamDef(m_pStreamDef);
 
-  pCrwBuffer->vPtnId(tLglPtn);
+  pCrwBuffer->vLglPtn(tLglPtn);
 
   pCrwBuffer->vBucketNo(iBkt);
 

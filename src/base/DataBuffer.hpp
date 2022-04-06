@@ -63,9 +63,9 @@ namespace BASE
 
     void vGrabWrite(void);
 
-    void vPtnId(LglPtn tLglPtn);
+    void vLglPtn(LglPtn tLglPtn);
 
-    void vPtnId(i8 tLglPtn);
+    void vLglPtn(i8 tLglPtn);
 
     LglPtn tLglPtn(void);
 

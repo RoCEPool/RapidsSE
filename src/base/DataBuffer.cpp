@@ -270,7 +270,7 @@ void DataBuffer::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 /* set partition Id                                                           */
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vPtnId(LglPtn tLglPtn)
+void DataBuffer::vLglPtn(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   m_tLglPtn = tLglPtn;

@@ -1170,7 +1170,7 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
 
   LglPtn tLglPtn;
   tLglPtn = m_i_TablePtn;
-  m_pRootEntBuffer->vPtnId(tLglPtn);
+  m_pRootEntBuffer->vLglPtn(tLglPtn);
 
   return m_pRootEntBuffer;
 }

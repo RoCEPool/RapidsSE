@@ -100,7 +100,7 @@ void Step::vEntBufferPartitionStore(void)
   LglPtn tLglPtn;
   tLglPtn = m_pDataStack->iPopInt(__func__);
 
-  pIndexBuffer->vPtnId(tLglPtn);
+  pIndexBuffer->vLglPtn(tLglPtn);
 
   EXIT();
 }
