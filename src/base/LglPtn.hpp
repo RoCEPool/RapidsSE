@@ -13,6 +13,9 @@ class LglPtn : public Gid_t<CN_PTNID>
   // auto conversion
   operator LglPtn*(void);
   
+  // auto conversion
+  operator i8(void);
+
   void operator =(i8 iAsI8);
   void operator =(LglPtn tLglPtn);
 

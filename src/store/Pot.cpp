@@ -75,8 +75,8 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
   Row* aDstRow;
 
   i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
-  i8 iBktId = KeyBkt::tToKeyBkt(iKeyHsh);
-  i8 i_LglPtn = AM::BKTMAP::tLglPtnOf(iBktId).iAsI8();
+  KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
+  i8 i_LglPtn = AM::BKTMAP::tLglPtnOf(tKeyBkt);
 
   // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[i_LglPtn]);
@@ -116,8 +116,8 @@ void Pot::vRowStrSize(Pot* pPot, i8 iMixIn, i8 nRowStrSize)
   RASSERT(CN_POT == pPot->eGetClassNo());
 
   i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
-  i8 iBktId = KeyBkt::tToKeyBkt(iKeyHsh);
-  i8 i_Ptn = AM::BKTMAP::tLglPtnOf(iBktId).iAsI8();
+  KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
+  i8 i_Ptn = AM::BKTMAP::tLglPtnOf(tKeyBkt);
 
   RowBuffer* pRowBuffer = _pRowBuffer(pPot->pBuffer(i_Ptn));
 
