@@ -16,7 +16,7 @@ namespace STORE
 
     i8    m_i_Stream;         // [stream] in stage
  
-    PtnId m_tPtnId;           // this stream processes m_tPtnId in grid
+    LglPtn m_tPtnId;           // this stream processes m_tPtnId in grid
                               //   will be C_UNKNOWN for stage with node topology
 
     i8    m_iNodeId;          // this stream processes NodeId in grid
@@ -36,7 +36,7 @@ namespace STORE
     Stream(Stage*     p_Stage,
            StageSpec* p_StageSpec,
            i8         i_Stream,
-           PtnId      tPtnId,
+           LglPtn      tPtnId,
            i8         iNodeId);
    ~Stream(void) noexcept(false);
     
@@ -48,7 +48,7 @@ namespace STORE
     Op*  pOp0(void);
     Pipeline* pPipeline(void);
 
-    PtnId  tPtnId(void);
+    LglPtn  tPtnId(void);
 
     void vSetInvoker(Task* pInvoker);
     Stage* pStage(void);

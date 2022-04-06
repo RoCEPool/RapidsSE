@@ -1318,7 +1318,7 @@ Op* Op::pPipeDstOp(void)
   Stage* pDstStage = pNextStage();
 
   // get the op to forward to depending on the cross topology
-  PtnId tThisPtnId = tPtnId();
+  LglPtn tThisPtnId = tPtnId();
   i8 iNxtOp        = iNextOp();
   Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
   
@@ -1587,11 +1587,11 @@ Operand* Op::pPopRight(void)
 /*----------------------------------------------------------------------------*/
 /* get partition from op                                                      */
 /*----------------------------------------------------------------------------*/
-PtnId Op::tPtnId(void)
+LglPtn Op::tPtnId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
 
   if (m_p_Stream->pStage()->pStageSpec()->bNodeTopo())
     tPtnId = C_UNKNOWN;

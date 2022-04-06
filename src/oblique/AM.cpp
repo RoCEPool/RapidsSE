@@ -122,7 +122,7 @@
 
 #include "HeadsUp.hpp"
 
-#include "PtnId.hpp"
+#include "LglPtn.hpp"
 #include "BucketMap.hpp"
 #include "Stage.hpp"
 #include "SysMetrics.hpp"
@@ -172,11 +172,11 @@ SysMetrics* AM::ATTACHMAP::pSysMetricsChain(void)
 /*----------------------------------------------------------------------------*/
 /* convert bucket id to ptn id                                                */
 /*----------------------------------------------------------------------------*/
-PtnId AM::BKTMAP::tBktIdToLglPtnId(i8 iBktId)
+LglPtn AM::BKTMAP::tBktIdToLglPtnId(i8 iBktId)
 {
   _static_
   
-  PtnId tPtnId = gpAttachMap->m_pBucketMap->tBktToLglPtnId(iBktId);
+  LglPtn tPtnId = gpAttachMap->m_pBucketMap->tBktToLglPtnId(iBktId);
 
   return tPtnId;
 }
@@ -1251,7 +1251,7 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* convert given hash to distributed partition number                         */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tHashToLglPtnId(i8 iHash)
+LglPtn AM::PTNMAP::tHashToLglPtnId(i8 iHash)
 {
   _static_
 
@@ -1290,7 +1290,7 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
+LglPtn AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 {
   _static_
   
@@ -1300,7 +1300,7 @@ PtnId AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
+LglPtn AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 {
   _static_
   
@@ -1310,7 +1310,7 @@ PtnId AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
+LglPtn AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
 {
   _static_
   
@@ -1581,7 +1581,7 @@ bool AM::SHOW::bSocket_Failure(void)
 /*----------------------------------------------------------------------------*/
 /* get operator                                                               */
 /*----------------------------------------------------------------------------*/
-Op* AM::STAGE::pGetOp(Stage* pStage, PtnId tPtnId, i8 i_Op)
+Op* AM::STAGE::pGetOp(Stage* pStage, LglPtn tPtnId, i8 i_Op)
 {
   _static_
   

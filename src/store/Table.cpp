@@ -78,7 +78,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      PtnId tPtnId = Table::tTablePtnToPtnId(i_TablePtn);
+      LglPtn tPtnId = Table::tTablePtnToPtnId(i_TablePtn);
       TablePtn* pTablePtn = new TablePtn(this,tPtnId);
 
       m_pTablePtnVec->vAppend(pTablePtn);
@@ -219,7 +219,7 @@ StreamDef* Table::pStreamDef(DicStack* pDicStack, Stz* szTableNm)
 /*----------------------------------------------------------------------------*/
 /* convert grid-wide partition number to table partition on its node          */
 /*----------------------------------------------------------------------------*/
-i8 Table::iPtnNoToTablePtn(PtnId tPtnId)
+i8 Table::iPtnNoToTablePtn(LglPtn tPtnId)
 {
   _static_
 
@@ -234,13 +234,13 @@ i8 Table::iPtnNoToTablePtn(PtnId tPtnId)
 /* convert tablePtn to partition ID (in grid)                                 */
 /*----------------------------------------------------------------------------*/
 
-PtnId Table::tTablePtnToPtnId(i8 i_TablePtn)
+LglPtn Table::tTablePtnToPtnId(i8 i_TablePtn)
 {
   _static_
 
   i8 iPtnId = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeId();
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
 
   tPtnId = iPtnId;
 
@@ -343,7 +343,7 @@ void Table::vBucketMap(BucketMap* pBucketMap)
 /*----------------------------------------------------------------------------*/
 /* get the partition No from Bucket No                                        */
 /*----------------------------------------------------------------------------*/
-PtnId  Table::tBktToLglPtn(KeyBkt tKeyBkt)
+LglPtn  Table::tBktToLglPtn(KeyBkt tKeyBkt)
 {
   return m_pBucketMap->tBktToLglPtnId(tKeyBkt);
 }
@@ -352,7 +352,7 @@ PtnId  Table::tBktToLglPtn(KeyBkt tKeyBkt)
 /*----------------------------------------------------------------------------*/
 /* get the Next Bucket No from partition No                                   */
 /*----------------------------------------------------------------------------*/
-i8  Table::iPtnToBktNext(PtnId tPtnNo, i8 iBktNo)
+i8  Table::iPtnToBktNext(LglPtn tPtnNo, i8 iBktNo)
 {
   return m_pBucketMap->iWhichBucketNext(tPtnNo, iBktNo);
 }
@@ -921,7 +921,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      PtnId tPtnNo = Table::tTablePtnToPtnId(i_TablePtn);
+      LglPtn tPtnNo = Table::tTablePtnToPtnId(i_TablePtn);
       TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
 
       m_pTablePtnVec->vAppend(pTablePtn);

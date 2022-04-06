@@ -34,7 +34,7 @@ __aFooterFunction(Stream)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
-               i8 i_Stream, PtnId tPtnId, i8 iNodeId)
+               i8 i_Stream, LglPtn tPtnId, i8 iNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
@@ -180,7 +180,7 @@ Pipeline* Stream::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get partition in grid this stream needs to run on                          */
 /*----------------------------------------------------------------------------*/
-PtnId Stream::tPtnId(void)
+LglPtn Stream::tPtnId(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   return m_tPtnId;

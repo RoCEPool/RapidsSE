@@ -98,7 +98,7 @@ void ToLglPtnCrw::vConvert(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
 
-   PtnId tPtnId = pRowBuffer->tPtnId();
+   LglPtn tPtnId = pRowBuffer->tPtnId();
    //i8 iBktNo = pRowBuffer->iBucketNo();
    //vTrace("ToBktCrw::vConvert PtnID:%lld Bkt:%lld\n"_Stz, tPtnId.iAsI8(), iBktNo);
   //pRowBuffer->pRowBuffer()->vDumpNst();
@@ -179,7 +179,7 @@ void ToLglPtnCrw::vAddNst(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnCrw::vAddRowsToBuffer(PtnId tPtnId, RowBuffer* pRowBuffer)
+void ToLglPtnCrw::vAddRowsToBuffer(LglPtn tPtnId, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
     
@@ -208,7 +208,7 @@ void ToLglPtnCrw::vAddRowsToBuffer(PtnId tPtnId, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(PtnId tPtnId)
+CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tPtnId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
   
@@ -235,7 +235,7 @@ CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(PtnId tPtnId)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(PtnId tPtnId, i8 iBkt)
+CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tPtnId, i8 iBkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
 

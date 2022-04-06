@@ -312,7 +312,7 @@ void Step::vGridTablePtnToPtnNo(void)
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
   tPtnId = AM::pPtnMap()->tToPtnNoOfThisNode(i_Ptn);
   m_pDataStack->vPushInt(tPtnId.iAsI8());
 
@@ -355,7 +355,7 @@ void Step::vGridToNode(void)
 {
   ENTRY();
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
   tPtnId = m_pDataStack->iPopInt(__func__);
 
   // for the moment its always node 0                      //! DISCUSS WITH ALKA

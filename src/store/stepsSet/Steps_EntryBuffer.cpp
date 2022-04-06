@@ -97,7 +97,7 @@ void Step::vEntBufferPartitionStore(void)
   
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
   tPtnId = m_pDataStack->iPopInt(__func__);
 
   pIndexBuffer->vPtnId(tPtnId);

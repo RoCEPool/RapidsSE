@@ -38,7 +38,7 @@ __aFooterFunction(RowTablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowTablePtn::RowTablePtn(Table* pTable, PtnId tPtnId, Bucket* pBucket)
+RowTablePtn::RowTablePtn(Table* pTable, LglPtn tPtnId, Bucket* pBucket)
 : Object(CN_ROWTABLEPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
@@ -140,7 +140,7 @@ void RowTablePtn::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
-PtnId RowTablePtn::tPtnId(void)
+LglPtn RowTablePtn::tPtnId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
   

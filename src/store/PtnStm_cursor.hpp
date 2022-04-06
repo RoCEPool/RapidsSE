@@ -15,7 +15,7 @@ namespace STORE
     Bucket*    m_pCurBkt;
     DataBuffer* m_pCurBuffer;
     i8         m_iCurBktNo;
-    PtnId      m_tCurPtnNo;
+    LglPtn      m_tCurPtnNo;
 
     // must be last
     Footer m_xFooter;

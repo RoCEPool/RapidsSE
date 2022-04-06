@@ -38,7 +38,7 @@ __aFooterFunction(TablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TablePtn::TablePtn(Table *pTable, PtnId tPtnId)
+TablePtn::TablePtn(Table *pTable, LglPtn tPtnId)
 : Object(CN_TABLEPTN), m_okLock(this)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
@@ -169,7 +169,7 @@ eCN TablePtn::eKind(void)
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
-PtnId TablePtn::tPtnId(void)
+LglPtn TablePtn::tPtnId(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
   return m_tPtnId;
@@ -193,7 +193,7 @@ Table *TablePtn::pTable(void)
 /*----------------------------------------------------------------------------*/
 /* add bucket                                                                 */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAddBucket(Table *pTable, PtnId tPtnId, eCN eKind)
+void TablePtn::vAddBucket(Table *pTable, LglPtn tPtnId, eCN eKind)
 {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);

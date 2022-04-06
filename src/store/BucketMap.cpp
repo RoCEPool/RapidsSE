@@ -75,7 +75,7 @@ void BucketMap::vAdjustMap(i8 nCurrentPartitions)
   
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
     
-    PtnId tPtnId = i_Bkt % nCurrentPartitions;
+    LglPtn tPtnId = i_Bkt % nCurrentPartitions;
     
     m_taPtnId_0[i_Bkt] = tPtnId;
   }
@@ -90,7 +90,7 @@ void BucketMap::vAdjustSecondMap(i8 nCurrentPartitions)
 
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
 
-    PtnId tPtnId = i_Bkt % nCurrentPartitions;
+    LglPtn tPtnId = i_Bkt % nCurrentPartitions;
 
     m_taPtnId_1[i_Bkt] = tPtnId;
   }
@@ -99,11 +99,11 @@ void BucketMap::vAdjustSecondMap(i8 nCurrentPartitions)
 /*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
-PtnId BucketMap::tBktToLglPtnId(KeyBkt tKeyBkt)
+LglPtn BucketMap::tBktToLglPtnId(KeyBkt tKeyBkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
   if (0 == m_iActive)
     tPtnId = m_taPtnId_0[tKeyBkt];
   else
@@ -115,7 +115,7 @@ PtnId BucketMap::tBktToLglPtnId(KeyBkt tKeyBkt)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 BucketMap::iPtnIdToBkt(PtnId tPtnId)
+i8 BucketMap::iPtnIdToBkt(LglPtn tPtnId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
@@ -133,7 +133,7 @@ i8 BucketMap::iPtnIdToBkt(PtnId tPtnId)
 void BucketMap::vRandomMap(i8 i)
 {
   i8 nPartitions = AM::PTNMAP::nPtnsInGrid();
-  PtnId tPtnId;
+  LglPtn tPtnId;
   i8 iPtn=0;
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
     m_taPtnId_0[i_Bkt] = tPtnId;
@@ -174,7 +174,7 @@ void BucketMap::vSee(void)
   
   vTrace("BktMap::\n"_Stz);
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
   
   vTrace("  m_iActive  %2lld\n"_Stz,m_iActive);
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
@@ -241,7 +241,7 @@ void BucketMap::vUpdateMap (void)
 /* get next bucket logical partition is currently mapped to                   */
 /* We can have a partition mapped into multiple buckets                       */
 /*----------------------------------------------------------------------------*/
-i8 BucketMap::iWhichBucketNext(PtnId tPtnId, i8 iBktNo)
+i8 BucketMap::iWhichBucketNext(LglPtn tPtnId, i8 iBktNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   i8 iBkt=-1;

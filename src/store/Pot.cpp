@@ -70,7 +70,7 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
 {
   _static_;
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
 
   Row* aDstRow;
 
@@ -213,7 +213,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 
   //ASSERT(0 == i_Ptn);
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
 
   Row* aDstRow;
 
@@ -300,7 +300,7 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
 
   //vTrace("Pot::vAddBuffer %lld\n"_Stz,i_Ptn);
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
   tPtnId = i_Ptn;
   pAddBuffer->vPtnId(tPtnId);
 

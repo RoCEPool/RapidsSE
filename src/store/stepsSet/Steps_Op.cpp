@@ -334,7 +334,7 @@ void Step::vOpPtnIdFetch(void)
 {
   ENTRY();
 
-  PtnId tPtn = m_pOp->tPtnId();
+  LglPtn tPtn = m_pOp->tPtnId();
 
   m_pDataStack->vPushInt(tPtn.uPtnNo());
 

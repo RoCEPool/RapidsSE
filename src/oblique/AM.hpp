@@ -26,7 +26,7 @@
 #include "eXA.h"
 
 
-class PtnId;
+class LglPtn;
 
 namespace OBLIQUE {
   class AM;
@@ -236,7 +236,7 @@ namespace OBLIQUE
     class BKTMAP
     {
     public:
-      static PtnId tBktIdToLglPtnId(i8 iBktId);
+      static LglPtn tBktIdToLglPtnId(i8 iBktId);
 
       static BucketMap* pBucketMap(void);
       static i8    iHashToBktId(i8 iHash);
@@ -396,13 +396,13 @@ namespace OBLIQUE
     class PTNMAP
     {
     public:
-      static PtnId tHashToLglPtnId(i8 iHash);
+      static LglPtn tHashToLglPtnId(i8 iHash);
       static i8 nKnownNodes(void);
       static i8 nPtnsPerNode(void);
       static i8 nPtnsInGrid(void);
-      static PtnId tRobinToDtdPtnStream(i8 iRobin);
-      static PtnId tRobinToLclPtnStream(i8 iRobin);
-      static PtnId tRobinToNdePtnNo(i8 iRobin);
+      static LglPtn tRobinToDtdPtnStream(i8 iRobin);
+      static LglPtn tRobinToLclPtnStream(i8 iRobin);
+      static LglPtn tRobinToNdePtnNo(i8 iRobin);
     };
 
     class SCHEDULER
@@ -444,7 +444,7 @@ namespace OBLIQUE
     class STAGE
     {
     public:
-      static Op* pGetOp(Stage* pStage, PtnId tPtnId, i8 i_Op);
+      static Op* pGetOp(Stage* pStage, LglPtn tPtnId, i8 i_Op);
     };
   
     class STARTER

@@ -270,7 +270,7 @@ void DataBuffer::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 /* set partition Id                                                           */
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vPtnId(PtnId tPtnId)
+void DataBuffer::vPtnId(LglPtn tPtnId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   m_tPtnId = tPtnId;
@@ -279,7 +279,7 @@ void DataBuffer::vPtnId(PtnId tPtnId)
 /*----------------------------------------------------------------------------*/
 /* get partition Id                                                           */
 /*----------------------------------------------------------------------------*/
-PtnId DataBuffer::tPtnId(void)
+LglPtn DataBuffer::tPtnId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   return m_tPtnId;

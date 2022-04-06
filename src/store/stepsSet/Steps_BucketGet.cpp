@@ -183,7 +183,7 @@ void Step::vBucketGetCrw(void)
   //  vTrace("C++ gets called: BucketGet[].getBucketCrw  Found the table:%s\n"_Stz, pBucketGet->sTableName().azChar());
   //}
   // Here we need to map the bucket to the partition
-  PtnId tPtnId =  pTable->tBktToLglPtn(pBucketGet->iBucketNo());
+  LglPtn tPtnId =  pTable->tBktToLglPtn(pBucketGet->iBucketNo());
   //vTrace(">>>  vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, pBucketGet->iBucketNo(), tPtnId.uPtnNo());
 
   TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.uPtnNo());
@@ -314,7 +314,7 @@ void Step::vBucketGetGetBucketTable(void)
     vTrace("C++ gets called: BucketGet::getBucketOfTable Found the table:%s\n"_Stz, sTableNm.azChar());
 
     // Here we need to map the bucket to the partition
-    PtnId tPtnId =  pTable->tBktToLglPtn(iBucket);
+    LglPtn tPtnId =  pTable->tBktToLglPtn(iBucket);
     TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.uPtnNo());
 
     //pBucket = pTablePtn->pGetBucket(0);
@@ -364,7 +364,7 @@ void Step::vBucketGetGetBucket(void)
   if (pTable) {
     // Here we need to map the bucket to the partition
     //pTable->pBucketMap()->vSee();
-    PtnId tPtnId =  pTable->tBktToLglPtn(iBucket);
+    LglPtn tPtnId =  pTable->tBktToLglPtn(iBucket);
     TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.uPtnNo());
 
     vTrace("C++ gets called: BucketGet::getBucket Found the table:%s ptn:%lld for bucket:%lld\n"_Stz, sTableNm.azChar(), tPtnId.uPtnNo(), iBucket);

@@ -37,7 +37,7 @@ __aFooterFunction(Bucket)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Bucket::Bucket(Table* pTable, PtnId tPtnId, eCN eKind)
+Bucket::Bucket(Table* pTable, LglPtn tPtnId, eCN eKind)
 : Object(CN_BUCKET)
 //, m_okLock(this)
 {
@@ -108,7 +108,7 @@ void Bucket::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
-PtnId Bucket::tPtnId(void)
+LglPtn Bucket::tPtnId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 

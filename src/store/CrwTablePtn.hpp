@@ -10,7 +10,7 @@ namespace STORE
   private:
     Table* m_pTable;        // table this partition belongs to
     Bucket*   m_pBucket;    // bucket this partition belongs to
-    PtnId    m_tPtnId;        // partition number (in grid)
+    LglPtn    m_tPtnId;        // partition number (in grid)
 
     CrwBuffer* m_pRootBuffer;    // the data root buffer
     CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
@@ -25,7 +25,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    CrwTablePtn(Table *pTable, PtnId tPtnId, Bucket *pBucket);
+    CrwTablePtn(Table *pTable, LglPtn tPtnId, Bucket *pBucket);
    ~CrwTablePtn(void) noexcept(false);
   
 

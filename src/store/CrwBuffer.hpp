@@ -42,7 +42,7 @@ namespace STORE
   
     static void       vPostRecv(void* aCrwBuffer);
 
-    void       vPtnToBkt(PtnId tPtnId);
+    void       vPtnToBkt(LglPtn tPtnId);
     void       vStreamDef(StreamDef* pStreamDef);
     void       vTable(Table* pTable);
 

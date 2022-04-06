@@ -3,18 +3,18 @@
 /*============================================================================*/
 #pragma once
 
-class PtnId : public Gid_t<CN_PTNID>
+class LglPtn : public Gid_t<CN_PTNID>
 {
   public:
 
-  PtnId(void);
-  PtnId(i8 iAsI8);
+  LglPtn(void);
+  LglPtn(i8 iAsI8);
 
   // auto conversion
-  operator PtnId*(void);
+  operator LglPtn*(void);
   
   void operator =(i8 iAsI8);
-  void operator =(PtnId tPtnId);
+  void operator =(LglPtn tPtnId);
 
   i8 operator ++(void); // increment (prefix form)
   i8 operator ++(int);  // increment (postfix)

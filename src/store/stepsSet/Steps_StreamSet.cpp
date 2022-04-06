@@ -345,7 +345,7 @@ void Step::vStreamSetAddListPartitions(void)
   // get the table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
   tPtnId = m_pDataStack->iPopInt(__func__);
 
   // get the streamDef from the table

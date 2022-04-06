@@ -111,7 +111,7 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
 
     // convert keyBkt to lglPtn
-    PtnId tPtnId = pTable->tBktToLglPtn(tKeyBkt);
+    LglPtn tPtnId = pTable->tBktToLglPtn(tKeyBkt);
 
     //vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tPtnId.iAsI8());
     vCopyRow(tPtnId,tKeyBkt,aRowSrc);
@@ -149,7 +149,7 @@ RowBuffer* ToLglPtnRow::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* copy source row into target partition row slab                             */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnRow::vCopyRow(PtnId tPtnId, i8 i_Bkt, Row* aRowSrc)
+void ToLglPtnRow::vCopyRow(LglPtn tPtnId, i8 i_Bkt, Row* aRowSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
@@ -165,7 +165,7 @@ void ToLglPtnRow::vCopyRow(PtnId tPtnId, i8 i_Bkt, Row* aRowSrc)
 /*----------------------------------------------------------------------------*/
 /* new a destination row in row slab in hash set                              */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnRow::vNewDstRow(PtnId tPtnId, i8 i_Bkt)
+void ToLglPtnRow::vNewDstRow(LglPtn tPtnId, i8 i_Bkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 

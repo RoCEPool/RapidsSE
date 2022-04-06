@@ -19,7 +19,7 @@ namespace STORE
 
     i8    m_iDstNode;        // destination node id
     i8    m_iDstStage;       // destination stage
-    PtnId m_tDstPtn;         // destination partition (in grid)
+    LglPtn m_tDstPtn;         // destination partition (in grid)
 
     // info of op_send
     i8    m_iSrcNodeId;        // source node
@@ -57,8 +57,8 @@ namespace STORE
     void vDistribute(Op* pSendOp);
     i8   iDstStage(void);
     i8   iDstNode(void);
-    PtnId tDstPtnId(void);
-    PtnId tDstPtnId(i8 i_BktNo);
+    LglPtn tDstPtnId(void);
+    LglPtn tDstPtnId(i8 i_BktNo);
   
     Object*  pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
@@ -99,7 +99,7 @@ namespace STORE
     void vPTN_unicast(Op* pSendOp);
 
     void vDispatchParcel(Op *pSendOp, i8 iCodeLine,
-                         i8 iDstNode, Stage* pDstStage, PtnId tDstPtnId);
+                         i8 iDstNode, Stage* pDstStage, LglPtn tDstPtnId);
   
     void vPipeBufferViaQueues(Op* pSendOp, Stage* pDstStage);
     void vPipeOperandViaQueues(Op* pSendOp, Stage* pDstStage);

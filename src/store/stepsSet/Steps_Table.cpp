@@ -385,7 +385,7 @@ void Step::vTableTablePtnFetch(void)
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
 
   StreamDef* pStreamDef = pTable->pStreamDef();
   if (pStreamDef->bReplicated()) {
@@ -417,7 +417,7 @@ void Step::vTableTablePtnGet(void)
   
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
   tPtnId = m_pDataStack->iPopInt(__func__);
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
 
@@ -437,7 +437,7 @@ void Step::vTableTablePtnZero(void)
   
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
 
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
@@ -589,7 +589,7 @@ void Step::vTableListPartition(void)
 
   StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
   tPtnId = m_pDataStack->iPopAsInt(__func__);
 
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);

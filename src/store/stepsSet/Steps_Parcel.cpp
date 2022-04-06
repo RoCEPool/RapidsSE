@@ -286,7 +286,7 @@ void Step::vParcelPipeOut(void)
         Stream* pDstStream = pDstStage->pGet(i_Stream);
 
         if (YG_ALL_PARTITIONS == eStageTopology) {
-          PtnId tDstPtnId = pDstStream->tPtnId();
+          LglPtn tDstPtnId = pDstStream->tPtnId();
           i8 iDstNodeId = AM::pPtnMap()->iMappedNodeId(tDstPtnId);
           if (iDstNodeId != iCurNodeId)
             continue;
@@ -351,7 +351,7 @@ void Step::vParcelPipeOut(void)
         for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
           Stream* pDstStream = pDstStage->pGet(i_Stream);
 
-          PtnId tDstPtnId = pDstStream->tPtnId();
+          LglPtn tDstPtnId = pDstStream->tPtnId();
           vTrace("i_Stream %lld tDstPtnId %lld\n"_Stz
                  ,i_Stream
                  ,tDstPtnId.iAsI8());

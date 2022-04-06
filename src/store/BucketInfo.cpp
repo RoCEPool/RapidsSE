@@ -35,7 +35,7 @@ BucketInfo::BucketInfo(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-BucketInfo::BucketInfo(s32 sTblNm, PtnId tPtnId, i8 iBucket)
+BucketInfo::BucketInfo(s32 sTblNm, LglPtn tPtnId, i8 iBucket)
 : Operand(CN_BUCKETINFO) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BUCKETINFO, _FOOTER_);
 
@@ -90,7 +90,7 @@ i8  BucketInfo::iBucketNo(void)
 /*----------------------------------------------------------------------------*/
 /* get partition number                                                       */
 /*----------------------------------------------------------------------------*/
-PtnId BucketInfo::tPtnId(void)
+LglPtn BucketInfo::tPtnId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETINFO,_FOOTER_);
   return m_tPtnId;

@@ -252,7 +252,7 @@ Op* Stage::pOp0(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp)
+Op *Stage::pPipeDstOp(LglPtn tDstPtnId, i8 i_DstOp)
 {
   i8 i_ThisNode = AM::iThisNodeId();
 
@@ -367,7 +367,7 @@ bool Stage::bEnqueueInvoke(void)
 void Stage::vCreateStreams(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
-  PtnId tPtnId;
+  LglPtn tPtnId;
 
   i8 i_Stream;
   Stream *pStream;

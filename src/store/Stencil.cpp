@@ -1263,7 +1263,7 @@ void Stencil::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) {
   // get the index tree for the index
   Table* pTable = pIndex->pTable();
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
 
   StreamDef* pStreamDef = pTable->pStreamDef();
   if (pStreamDef->bReplicated()) {
@@ -1321,7 +1321,7 @@ void Stencil::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) {
   // get the index tree for the index
   Table* pTable = pIndexScan->pTable();
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
 
   StreamDef* pStreamDef = pTable->pStreamDef();
   if (pStreamDef->bReplicated()) {
@@ -1375,7 +1375,7 @@ void Stencil::vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp) {
   // get the index tree for the index
   Table* pTable = pIndex->pTable();
 
-  PtnId tPtnId;
+  LglPtn tPtnId;
   StreamDef* pStreamDef = pTable->pStreamDef();
   if (pStreamDef->bReplicated()) {
 

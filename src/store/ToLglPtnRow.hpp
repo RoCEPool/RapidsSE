@@ -35,8 +35,8 @@ namespace STORE
     RowBuffer* pDangling(i8 i_Ptn);
   
   private:
-    void vCopyRow(PtnId tPtnId, i8 i_Bkt, Row* aRowSrc);
-    void vNewDstRow(PtnId tPtnId, i8 i_Bkt);
+    void vCopyRow(LglPtn tPtnId, i8 i_Bkt, Row* aRowSrc);
+    void vNewDstRow(LglPtn tPtnId, i8 i_Bkt);
 
     Footer* aFooter(void);
   };

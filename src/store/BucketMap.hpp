@@ -17,11 +17,11 @@ namespace STORE
   
     //Location m_oLocation; // logical location of BucketMap_dyn
   
-    PtnId* m_paPtnId;
+    LglPtn* m_paPtnId;
     i8     m_iActive;
 
-    PtnId m_taPtnId_0[C_MAX_KEYBUCKETS]; // KeyBkt -> PtnId
-    PtnId m_taPtnId_1[C_MAX_KEYBUCKETS]; // KeyBkt -> PtnId
+    LglPtn m_taPtnId_0[C_MAX_KEYBUCKETS]; // KeyBkt -> PtnId
+    LglPtn m_taPtnId_1[C_MAX_KEYBUCKETS]; // KeyBkt -> PtnId
 
     s32 m_sTableNm; // table name (leave for debug)
     eTT m_eKind;    // table kind (leave for debug)
@@ -38,8 +38,8 @@ namespace STORE
   
     static void vPostRecv(void* aBucketMap);
 
-    PtnId tBktToLglPtnId(KeyBkt tKeyBkt);
-    i8    iPtnIdToBkt(PtnId tPtnId);
+    LglPtn tBktToLglPtnId(KeyBkt tKeyBkt);
+    i8    iPtnIdToBkt(LglPtn tPtnId);
 
     void vAdjustMap(i8 nPartitions);
     void vAdjustSecondMap(i8 nCurrentPartitions);
@@ -53,7 +53,7 @@ namespace STORE
 
     void vSwapMap(void);
 
-    i8 iWhichBucketNext(PtnId tPtnId, i8 iBktNo);
+    i8 iWhichBucketNext(LglPtn tPtnId, i8 iBktNo);
     i8 tWhichLglPtnId(i8 iBucketId);
 
   private:
