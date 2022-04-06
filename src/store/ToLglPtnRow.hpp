@@ -35,9 +35,6 @@ namespace STORE
     RowBuffer* pDangling(i8 i_Ptn);
   
   private:
-    void vCopyRow(i8 i_Ptn, Row* aRowSrc);
-    void vNewDstRow(i8 i_Ptn);
-
     void vCopyRow(i8 i_Ptn, i8 iBkt, Row* aRowSrc);
     void vNewDstRow(i8 i_Ptn, i8 iBkt);
 

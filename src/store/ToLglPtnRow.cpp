@@ -148,22 +148,6 @@ RowBuffer* ToLglPtnRow::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* copy source row into target partition row slab                             */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnRow::vCopyRow(i8 i_Ptn, Row* aRowSrc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
-  NEVER_REACH;
-  // new a destination row in target partition row slab
-  vNewDstRow(i_Ptn);
-  
-  // copy that
-  bool bSrcHasPtnHash = true;
-  bool bCopyPtnHash   = false;
-  m_pIntoRowBuffer->vCopyRow(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy source row into target partition row slab                             */
-/*----------------------------------------------------------------------------*/
 void ToLglPtnRow::vCopyRow(i8 i_Ptn, i8 iBkt, Row* aRowSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
@@ -175,40 +159,6 @@ void ToLglPtnRow::vCopyRow(i8 i_Ptn, i8 iBkt, Row* aRowSrc)
   bool bSrcHasPtnHash = true;
   bool bCopyPtnHash   = false;
   m_pIntoRowBuffer->vCopyRow(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
-}
-
-/*----------------------------------------------------------------------------*/
-/* new a destination row in row slab in hash set                              */
-/*----------------------------------------------------------------------------*/
-void ToLglPtnRow::vNewDstRow(i8 i_Ptn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
-  NEVER_REACH;
-  // get row buffer for given partition (new a first buffer if ncessary)
-  RowBuffer* pDstRowBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
-  if (! pDstRowBuffer) {
-    pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->pRowPix());
-    pDstRowBuffer->pRowPix()->vRemovePtnHash();
-    m_oHashSet.vAddBuffer(i_Ptn,pDstRowBuffer);
-  }
-  
-  // new a row in row buffer (new another row buffer if necessary)
-  Row* aNewRow = pDstRowBuffer->pAllotRow();
-  if (! aNewRow) {
-    pDstRowBuffer = new RowBuffer;
-    pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->pRowPix());
-    pDstRowBuffer->pRowPix()->vRemovePtnHash();
-    m_oHashSet.vAddBuffer(i_Ptn,pDstRowBuffer);
-    aNewRow = pDstRowBuffer->pAllotRow();
-    ASSERT(aNewRow);
-  }
-
-  PtnId tPtnId;
-  tPtnId = i_Ptn;
-  pDstRowBuffer->vPtnId(tPtnId);
-
-  m_pIntoRowBuffer = pDstRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
