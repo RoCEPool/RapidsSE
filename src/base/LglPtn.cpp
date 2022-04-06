@@ -59,9 +59,9 @@ void LglPtn::operator =(i8 iAsI8)
 /*----------------------------------------------------------------------------*/
 /* assignment operator : ???                                                  */
 /*----------------------------------------------------------------------------*/
-void LglPtn::operator =(LglPtn tPtnId)
+void LglPtn::operator =(LglPtn tLglPtn)
 {
-  m_iAsI8 = tPtnId.iAsI8();
+  m_iAsI8 = tLglPtn.iAsI8();
 }
 
 

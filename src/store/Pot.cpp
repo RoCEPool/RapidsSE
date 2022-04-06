@@ -70,7 +70,7 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
 {
   _static_;
 
-  LglPtn tPtnId;
+  LglPtn tLglPtn;
 
   Row* aDstRow;
 
@@ -98,8 +98,8 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
     ASSERT(aDstRow);
   }
 
-  tPtnId = i_LglPtn;
-  pDstRowBuffer->vPtnId(tPtnId);
+  tLglPtn = i_LglPtn;
+  pDstRowBuffer->vPtnId(tLglPtn);
 
   *aazStrArea = pDstRowBuffer->azDepositString_begin();
 
@@ -213,7 +213,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 
   //ASSERT(0 == i_Ptn);
 
-  LglPtn tPtnId;
+  LglPtn tLglPtn;
 
   Row* aDstRow;
 
@@ -247,8 +247,8 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
     ASSERT(aDstRow);
   }
 
-  tPtnId = i_Ptn;
-  pDstRowBuffer->vPtnId(tPtnId);
+  tLglPtn = i_Ptn;
+  pDstRowBuffer->vPtnId(tLglPtn);
 
   * ppRowBuffer = pDstRowBuffer;
 
@@ -300,9 +300,9 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
 
   //vTrace("Pot::vAddBuffer %lld\n"_Stz,i_Ptn);
 
-  LglPtn tPtnId;
-  tPtnId = i_Ptn;
-  pAddBuffer->vPtnId(tPtnId);
+  LglPtn tLglPtn;
+  tLglPtn = i_Ptn;
+  pAddBuffer->vPtnId(tLglPtn);
 
   // link the old with this
   pAddBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);

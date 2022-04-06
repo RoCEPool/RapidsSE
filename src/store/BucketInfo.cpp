@@ -21,7 +21,7 @@ BucketInfo::BucketInfo(void)
   m_sNodeName = ""_Stz;
   m_sTableName = ""_Stz;
   m_iBucketNo = -1;
-  m_tPtnId = 0;
+  m_tLglPtn = 0;
   //m_pCrwBuffer = nullptr;
 
 
@@ -35,7 +35,7 @@ BucketInfo::BucketInfo(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-BucketInfo::BucketInfo(s32 sTblNm, LglPtn tPtnId, i8 iBucket)
+BucketInfo::BucketInfo(s32 sTblNm, LglPtn tLglPtn, i8 iBucket)
 : Operand(CN_BUCKETINFO) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BUCKETINFO, _FOOTER_);
 
@@ -43,7 +43,7 @@ BucketInfo::BucketInfo(s32 sTblNm, LglPtn tPtnId, i8 iBucket)
   m_sTableName = sTblNm;
   m_iBucketNo = iBucket;
 
-  m_tPtnId = tPtnId;
+  m_tLglPtn = tLglPtn;
   //m_pCrwBuffer = nullptr;
 
   _checkInitialised_(CN_BUCKETINFO);
@@ -90,10 +90,10 @@ i8  BucketInfo::iBucketNo(void)
 /*----------------------------------------------------------------------------*/
 /* get partition number                                                       */
 /*----------------------------------------------------------------------------*/
-LglPtn BucketInfo::tPtnId(void)
+LglPtn BucketInfo::tLglPtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETINFO,_FOOTER_);
-  return m_tPtnId;
+  return m_tLglPtn;
 }
 
 #if 0

@@ -78,8 +78,8 @@ Table::Table(Stz* szTableNm, eTT eKind)
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      LglPtn tPtnId = Table::tTablePtnToPtnId(i_TablePtn);
-      TablePtn* pTablePtn = new TablePtn(this,tPtnId);
+      LglPtn tLglPtn = Table::tTablePtnToPtnId(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tLglPtn);
 
       m_pTablePtnVec->vAppend(pTablePtn);
     }
@@ -219,11 +219,11 @@ StreamDef* Table::pStreamDef(DicStack* pDicStack, Stz* szTableNm)
 /*----------------------------------------------------------------------------*/
 /* convert grid-wide partition number to table partition on its node          */
 /*----------------------------------------------------------------------------*/
-i8 Table::iPtnNoToTablePtn(LglPtn tPtnId)
+i8 Table::iPtnNoToTablePtn(LglPtn tLglPtn)
 {
   _static_
 
-  i8 i_TablePtn = tPtnId.iAsI8() / AM::GRID::nKnownNodes();
+  i8 i_TablePtn = tLglPtn.iAsI8() / AM::GRID::nKnownNodes();
 
   return i_TablePtn;
 }
@@ -240,11 +240,11 @@ LglPtn Table::tTablePtnToPtnId(i8 i_TablePtn)
 
   i8 iPtnId = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeId();
 
-  LglPtn tPtnId;
+  LglPtn tLglPtn;
 
-  tPtnId = iPtnId;
+  tLglPtn = iPtnId;
 
-  return tPtnId;
+  return tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1002,7 +1002,7 @@ bool Table::bUpdateBucket(Parcel* pParcel)
       {
         CrwBuffer* pCrwBuffer = (CrwBuffer *) pObject;
 
-        TablePtn* pTablePtn = this->pTablePtn(pCrwBuffer->tPtnId().uPtnNo());
+        TablePtn* pTablePtn = this->pTablePtn(pCrwBuffer->tLglPtn().uPtnNo());
         pTablePtn->vAppendBuffer(pCrwBuffer);
 
         break;

@@ -266,7 +266,7 @@ CrwBuffer* IndexStream::pRead_idxstm(RowOnce* pRowOnce)
   // create a result buffer for the results
   pCrwBuffer = new CrwBuffer;
   pCrwBuffer->vTable(m_pTablePtn->pTable());
-  pCrwBuffer->vPtnId(m_pTablePtn->tPtnId()) ;
+  pCrwBuffer->vPtnId(m_pTablePtn->tLglPtn()) ;
   
   // create a row compactor for the crw buffer
   pRowCompactor = new RowCompactor;

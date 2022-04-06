@@ -124,7 +124,7 @@ void PtnStm_cursor::vReset(void)
   //m_pTablePtn->pTable()->vDumpTablePtn();
   //return ;
 
-  m_tCurPtnNo = m_pTablePtn->tPtnId();
+  m_tCurPtnNo = m_pTablePtn->tLglPtn();
 
   // Which bucket has data, get the first one
   for (i8 i_Bucket = 0; i_Bucket < C_MAX_KEYBUCKETS; i_Bucket++) {

@@ -488,7 +488,7 @@ void LogicUnit::vCleanup(void)
 
                ,m_pOp->szStageName()
                ,m_pOp->szOpNm()
-               ,m_pOp->tPtnId().iAsI8()
+               ,m_pOp->tLglPtn().iAsI8()
                ,m_xpStats->iMicroseconds()
                ,m_xpStats->m_nMaxQs
                ,m_xpStats->m_nOperands
@@ -697,7 +697,7 @@ void LogicUnit::vFailure(void)
 void LogicUnit::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
-  //m_xRluCommon.m_i_TablePtn = MY::pOp()->tPtnId().iAsI8();
+  //m_xRluCommon.m_i_TablePtn = MY::pOp()->tLglPtn().iAsI8();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -110,11 +110,11 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     
     KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
 
-    // convert keyBkt to lglPtn
-    LglPtn tPtnId = pTable->tBktToLglPtn(tKeyBkt);
+    // determine which lglPtn the keyBkt is currently mapped to
+    LglPtn tLglPtn = pTable->tBktToLglPtn(tKeyBkt);
 
-    //vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tPtnId.iAsI8());
-    vCopyRow(tPtnId,tKeyBkt,aRowSrc);
+    //vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tLglPtn.iAsI8());
+    vCopyRow(tLglPtn,tKeyBkt,aRowSrc);
 
   }
 }
@@ -149,12 +149,12 @@ RowBuffer* ToLglPtnRow::pDangling(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* copy source row into target partition row slab                             */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnRow::vCopyRow(LglPtn tPtnId, i8 i_Bkt, Row* aRowSrc)
+void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, i8 i_Bkt, Row* aRowSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
   // new a destination row in target partition row slab
-  vNewDstRow(tPtnId, i_Bkt);
+  vNewDstRow(tLglPtn, i_Bkt);
 
   // copy that
   bool bSrcHasPtnHash = true;
@@ -165,11 +165,11 @@ void ToLglPtnRow::vCopyRow(LglPtn tPtnId, i8 i_Bkt, Row* aRowSrc)
 /*----------------------------------------------------------------------------*/
 /* new a destination row in row slab in hash set                              */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnRow::vNewDstRow(LglPtn tPtnId, i8 i_Bkt)
+void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn, i8 i_Bkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
-  i8 i_Ptn = tPtnId.iAsI8();
+  i8 i_Ptn = tLglPtn.iAsI8();
 
   // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRowBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
@@ -191,7 +191,7 @@ void ToLglPtnRow::vNewDstRow(LglPtn tPtnId, i8 i_Bkt)
     ASSERT(aNewRow);
   }
 
-  pDstRowBuffer->vPtnId(tPtnId);
+  pDstRowBuffer->vPtnId(tLglPtn);
   pDstRowBuffer->vBucketNo(i_Bkt);
 
   m_pIntoRowBuffer = pDstRowBuffer;

@@ -1263,7 +1263,7 @@ void Stencil::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) {
   // get the index tree for the index
   Table* pTable = pIndex->pTable();
 
-  LglPtn tPtnId;
+  LglPtn tLglPtn;
 
   StreamDef* pStreamDef = pTable->pStreamDef();
   if (pStreamDef->bReplicated()) {
@@ -1272,13 +1272,13 @@ void Stencil::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) {
     Stream* pStream0 = pStage->pGet(0);
     Op*     pOp0_0   = pStream0->pGet(0);
 
-    tPtnId = pOp0_0->tPtnId();
+    tLglPtn = pOp0_0->tLglPtn();
   }
   else {
-    tPtnId = pOp->tPtnId();
+    tLglPtn = pOp->tLglPtn();
   }
 
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
   i8 iIndexNo = pIndex->iIndexNo();
@@ -1321,7 +1321,7 @@ void Stencil::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) {
   // get the index tree for the index
   Table* pTable = pIndexScan->pTable();
 
-  LglPtn tPtnId;
+  LglPtn tLglPtn;
 
   StreamDef* pStreamDef = pTable->pStreamDef();
   if (pStreamDef->bReplicated()) {
@@ -1330,13 +1330,13 @@ void Stencil::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) {
     Stream* pStream0 = pStage->pGet(0);
     Op*     pOp0_0   = pStream0->pGet(0);
 
-    tPtnId = pOp0_0->tPtnId();
+    tLglPtn = pOp0_0->tLglPtn();
   }
   else {
-    tPtnId = pOp->tPtnId();
+    tLglPtn = pOp->tLglPtn();
   }
 
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
   pCombined->aCombinedT()->m_nCols = pTable->pStreamDef()->nColumns();
@@ -1375,7 +1375,7 @@ void Stencil::vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp) {
   // get the index tree for the index
   Table* pTable = pIndex->pTable();
 
-  LglPtn tPtnId;
+  LglPtn tLglPtn;
   StreamDef* pStreamDef = pTable->pStreamDef();
   if (pStreamDef->bReplicated()) {
 
@@ -1383,13 +1383,13 @@ void Stencil::vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp) {
     Stream* pStream0 = pStage->pGet(0);
     Op*     pOp0_0   = pStream0->pGet(0);
 
-    tPtnId = pOp0_0->tPtnId();
+    tLglPtn = pOp0_0->tLglPtn();
   }
   else {
-    tPtnId = pOp->tPtnId();
+    tLglPtn = pOp->tLglPtn();
   }
 
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
   i8 iIndexNo = pIndex->iIndexNo();

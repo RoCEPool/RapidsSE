@@ -39,7 +39,7 @@ namespace STORE
     static void vPostRecv(void* aBucketMap);
 
     LglPtn tBktToLglPtnId(KeyBkt tKeyBkt);
-    i8    iPtnIdToBkt(LglPtn tPtnId);
+    i8    iPtnIdToBkt(LglPtn tLglPtn);
 
     void vAdjustMap(i8 nPartitions);
     void vAdjustSecondMap(i8 nCurrentPartitions);
@@ -53,7 +53,7 @@ namespace STORE
 
     void vSwapMap(void);
 
-    i8 iWhichBucketNext(LglPtn tPtnId, i8 iBktNo);
+    i8 iWhichBucketNext(LglPtn tLglPtn, i8 iBktNo);
     i8 tWhichLglPtnId(i8 iBucketId);
 
   private:

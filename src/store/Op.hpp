@@ -158,7 +158,7 @@ namespace STORE
     Operand* pPopOoO(void);
     Operand* pPopOoOLeft(void);
     Operand* pPopRight(void);
-    LglPtn  tPtnId(void);
+    LglPtn  tLglPtn(void);
     Operand* pPopLeft(void);
     i8   nPotSize(void);
     bool bPulsedLimit(void);

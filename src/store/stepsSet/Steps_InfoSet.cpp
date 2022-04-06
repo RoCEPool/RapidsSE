@@ -253,8 +253,8 @@ void Step::vInfoSetAddRowCount(void)
   // get the streamDef from the table
   StreamDef* pStreamDef = pInfoSetTable->pStreamDef();
   
-  LglPtn tPtnId = m_pOp->tPtnId();
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
+  LglPtn tLglPtn = m_pOp->tLglPtn();
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
 
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_COUNTINFO);

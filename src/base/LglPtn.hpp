@@ -14,7 +14,7 @@ class LglPtn : public Gid_t<CN_PTNID>
   operator LglPtn*(void);
   
   void operator =(i8 iAsI8);
-  void operator =(LglPtn tPtnId);
+  void operator =(LglPtn tLglPtn);
 
   i8 operator ++(void); // increment (prefix form)
   i8 operator ++(int);  // increment (postfix)

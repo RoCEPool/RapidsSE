@@ -57,8 +57,8 @@ namespace STORE
     void vDistribute(Op* pSendOp);
     i8   iDstStage(void);
     i8   iDstNode(void);
-    LglPtn tDstPtnId(void);
-    LglPtn tDstPtnId(i8 i_BktNo);
+    LglPtn tDstLglPtn(void);
+    LglPtn tDstLglPtn(i8 i_BktNo);
   
     Object*  pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
@@ -99,7 +99,7 @@ namespace STORE
     void vPTN_unicast(Op* pSendOp);
 
     void vDispatchParcel(Op *pSendOp, i8 iCodeLine,
-                         i8 iDstNode, Stage* pDstStage, LglPtn tDstPtnId);
+                         i8 iDstNode, Stage* pDstStage, LglPtn tDstLglPtn);
   
     void vPipeBufferViaQueues(Op* pSendOp, Stage* pDstStage);
     void vPipeOperandViaQueues(Op* pSendOp, Stage* pDstStage);

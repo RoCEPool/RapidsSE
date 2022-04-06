@@ -95,11 +95,11 @@ i8 PtnMap::nKnownNodes(void)
 /*----------------------------------------------------------------------------*/
 /* get which node id (of grid) a logical partition is mapped to               */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::iMappedNodeId(LglPtn tPtnId)
+i8 PtnMap::iMappedNodeId(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 iNodeId = m_xaPtnId_to_NodeIdPtnNo[tPtnId.iAsI8()].m_iNodeId;
+  i8 iNodeId = m_xaPtnId_to_NodeIdPtnNo[tLglPtn.iAsI8()].m_iNodeId;
 
   return iNodeId;
 }
@@ -107,11 +107,11 @@ i8 PtnMap::iMappedNodeId(LglPtn tPtnId)
 /*----------------------------------------------------------------------------*/
 /* get which partition no (within node) a logical partition is mapped to      */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::i_MappedPtnNo(LglPtn tPtnId)
+i8 PtnMap::i_MappedPtnNo(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  i8 i_PtnNo = m_xaPtnId_to_NodeIdPtnNo[tPtnId.iAsI8()].m_iPtnNo;
+  i8 i_PtnNo = m_xaPtnId_to_NodeIdPtnNo[tLglPtn.iAsI8()].m_iPtnNo;
 
   return i_PtnNo;
 }
@@ -142,11 +142,11 @@ i8 PtnMap::nPtnsPerNode(void)
 LglPtn PtnMap::tRobinToDtdPtnStream(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-  LglPtn tPtnId;
+  LglPtn tLglPtn;
   i8 iPtnNo = iRobin % m_nPtnsInGrid;
-  tPtnId = iPtnNo;
+  tLglPtn = iPtnNo;
 
-  return tPtnId;
+  return tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,10 +160,10 @@ LglPtn PtnMap::tRobinToLclPtnStream(i8 iRobin)
 
   i8 i_LglPtn = iRobin % m_nPtnsPerNode;
 
-  LglPtn tPtnId;
-  tPtnId = tToPtnNoOfThisNode(i_LglPtn);
+  LglPtn tLglPtn;
+  tLglPtn = tToPtnNoOfThisNode(i_LglPtn);
 
-  return tPtnId;
+  return tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -175,9 +175,9 @@ LglPtn PtnMap::tRobinToNdePtnNo(i8 iRobin)
 
   i8 i_LglPtn = iRobin % m_nPtnsPerNode;
 
-  LglPtn tPtnId = tToPtnNoOfThisNode(i_LglPtn);
+  LglPtn tLglPtn = tToPtnNoOfThisNode(i_LglPtn);
 
-  return tPtnId;
+  return tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,21 +216,21 @@ LglPtn PtnMap::tToPtnNoOfNode(i8 i_LglPtn, i8 iNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  LglPtn tPtnId;
-  tPtnId = C_UNKNOWN;
+  LglPtn tLglPtn;
+  tLglPtn = C_UNKNOWN;
 
   for (i8 i_NodePtn = 0; i_NodePtn < m_nPtnsInGrid; i_NodePtn++) {
     if (m_xaPtnId_to_NodeIdPtnNo[i_NodePtn].m_iNodeId != iNodeId)
       continue;
     if (m_xaPtnId_to_NodeIdPtnNo[i_NodePtn].m_iPtnNo != i_LglPtn)
       continue;
-    tPtnId = i_NodePtn;
+    tLglPtn = i_NodePtn;
     break;
   }
 
-  RASSERT(C_UNKNOWN != tPtnId.iAsI8());
+  RASSERT(C_UNKNOWN != tLglPtn.iAsI8());
 
-  return tPtnId;
+  return tLglPtn;
 }
 
 
@@ -244,9 +244,9 @@ LglPtn PtnMap::tToPtnNoOfThisNode(i8 i_LglPtn)
 
   i8 iThisNodeId = AM::GRID::iThisNodeId();
 
-  LglPtn tPtnId = tToPtnNoOfNode(i_LglPtn,iThisNodeId);
+  LglPtn tLglPtn = tToPtnNoOfNode(i_LglPtn,iThisNodeId);
 
-  return tPtnId;
+  return tLglPtn;
 }
 
 

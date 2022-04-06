@@ -176,9 +176,9 @@ LglPtn AM::BKTMAP::tBktIdToLglPtnId(i8 iBktId)
 {
   _static_
   
-  LglPtn tPtnId = gpAttachMap->m_pBucketMap->tBktToLglPtnId(iBktId);
+  LglPtn tLglPtn = gpAttachMap->m_pBucketMap->tBktToLglPtnId(iBktId);
 
-  return tPtnId;
+  return tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1581,11 +1581,11 @@ bool AM::SHOW::bSocket_Failure(void)
 /*----------------------------------------------------------------------------*/
 /* get operator                                                               */
 /*----------------------------------------------------------------------------*/
-Op* AM::STAGE::pGetOp(Stage* pStage, LglPtn tPtnId, i8 i_Op)
+Op* AM::STAGE::pGetOp(Stage* pStage, LglPtn tLglPtn, i8 i_Op)
 {
   _static_
   
-  Op* pOp = pStage->pPipeDstOp(tPtnId,i_Op);
+  Op* pOp = pStage->pPipeDstOp(tLglPtn,i_Op);
   
   return pOp;
 

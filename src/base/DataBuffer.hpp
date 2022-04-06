@@ -10,7 +10,7 @@ namespace BASE
   protected:
     Lock   m_okLock;        // lock
     i8     m_iBufferNo;     // this DataBuffer's buffer number
-    LglPtn  m_tPtnId;
+    LglPtn  m_tLglPtn;
     i8     m_iBucketNo;     // this DataBuffer's bucket number
 
     i8     m_iBufferHeight; // buffer height in the tree
@@ -63,11 +63,11 @@ namespace BASE
 
     void vGrabWrite(void);
 
-    void vPtnId(LglPtn tPtnId);
+    void vPtnId(LglPtn tLglPtn);
 
-    void vPtnId(i8 tPtnId);
+    void vPtnId(i8 tLglPtn);
 
-    LglPtn tPtnId(void);
+    LglPtn tLglPtn(void);
 
     Birth &oWhenNewed(void);
     // - - - - - - - - - - - - - -

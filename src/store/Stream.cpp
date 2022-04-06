@@ -34,14 +34,14 @@ __aFooterFunction(Stream)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
-               i8 i_Stream, LglPtn tPtnId, i8 iNodeId)
+               i8 i_Stream, LglPtn tLglPtn, i8 iNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
   m_p_StageSpec = p_StageSpec;
   m_p_Stage     = p_Stage;
 
-  m_tPtnId     = tPtnId;
+  m_tLglPtn     = tLglPtn;
   m_iNodeId    = iNodeId;
   m_i_Stream   = i_Stream;
   
@@ -180,10 +180,10 @@ Pipeline* Stream::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get partition in grid this stream needs to run on                          */
 /*----------------------------------------------------------------------------*/
-LglPtn Stream::tPtnId(void)
+LglPtn Stream::tLglPtn(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-  return m_tPtnId;
+  return m_tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -248,7 +248,7 @@ void Stream::vSpawnOpTasks(void)
     
   }
   else {
-    iOnNodeId = AM::pPtnMap()->iMappedNodeId(m_tPtnId);
+    iOnNodeId = AM::pPtnMap()->iMappedNodeId(m_tLglPtn);
   }
   
   if (iOnNodeId == iThisNodeId) {

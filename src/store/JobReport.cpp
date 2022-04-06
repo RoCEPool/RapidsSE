@@ -566,7 +566,7 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
                        ,pOp->pPipeline()->szPipelineNm()
                        ,pOp->szStageName()
                        ,pOp->pStage()->i_Stage()
-                       ,pOp->tPtnId().iAsI8()
+                       ,pOp->tLglPtn().iAsI8()
                        ,pOp->szOpNm()
 
                        ,i_Operand
@@ -706,7 +706,7 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
                      ,pOp->pPipeline()->szPipelineNm()
                      ,pOp->szStageName()
                      ,pOp->pStage()->i_Stage()
-                     ,pOp->tPtnId().iAsI8()
+                     ,pOp->tLglPtn().iAsI8()
                      ,pOp->szOpNm()
 
                      ,pStats->iMicroseconds()

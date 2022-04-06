@@ -8,7 +8,7 @@ namespace STORE {
     s32 m_sNodeName;
     s32 m_sTableName;
     i8 m_iBucketNo;
-    LglPtn m_tPtnId;
+    LglPtn m_tLglPtn;
 
     // CrwBuffer* m_pCrwBuffer
 
@@ -19,7 +19,7 @@ namespace STORE {
 
     void operator delete(void *);
 
-    BucketInfo(s32 sTblNm, LglPtn tPtnId, i8 iBucket);
+    BucketInfo(s32 sTblNm, LglPtn tLglPtn, i8 iBucket);
 
     BucketInfo(void);
 
@@ -30,7 +30,7 @@ namespace STORE {
 
     i8 iBucketNo(void);
 
-    LglPtn tPtnId(void);
+    LglPtn tLglPtn(void);
 
     void vNodeName(s32 sNodeName);
 

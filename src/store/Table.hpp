@@ -52,7 +52,7 @@ namespace STORE
   
     static void       vPostRecv(void* aTable);
     
-    i8      iPtnNoToTablePtn(LglPtn tPtnId);
+    i8      iPtnNoToTablePtn(LglPtn tLglPtn);
     LglPtn   tTablePtnToPtnId(i8 i_TablePtn);
 
     void    vAddIndex(Index* pIndex);
@@ -89,7 +89,7 @@ namespace STORE
 
     LglPtn   tBktToLglPtn(KeyBkt tKeyBkt);
 
-    i8      iPtnToBktNext(LglPtn tPtnId, i8 iBktNo);
+    i8      iPtnToBktNext(LglPtn tLglPtn, i8 iBktNo);
 
     
     //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, CrwBuffer* pCrwBuffer);

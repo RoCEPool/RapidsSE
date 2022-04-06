@@ -444,7 +444,7 @@ namespace OBLIQUE
     class STAGE
     {
     public:
-      static Op* pGetOp(Stage* pStage, LglPtn tPtnId, i8 i_Op);
+      static Op* pGetOp(Stage* pStage, LglPtn tLglPtn, i8 i_Op);
     };
   
     class STARTER

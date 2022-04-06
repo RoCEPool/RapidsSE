@@ -648,7 +648,7 @@ void RowBuffer::vShow(StreamDef* pStreamDef)
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          pPrevLinkedBuffer(),pNextLinkedBuffer());
 
-  vTrace("  partition: %lld \n"_Stz, m_tPtnId.iAsI8());
+  vTrace("  partition: %lld \n"_Stz, m_tLglPtn.iAsI8());
   
   Row* pRow = pFirstRow();
   HV_RowSingle hvRowSingle(pStreamDef);

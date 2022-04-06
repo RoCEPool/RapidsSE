@@ -288,7 +288,7 @@ void Step::vOpPartitionFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pOp->tPtnId().iAsI8());
+  m_pDataStack->vPushInt(m_pOp->tLglPtn().iAsI8());
 
   EXIT();
 }
@@ -334,7 +334,7 @@ void Step::vOpPtnIdFetch(void)
 {
   ENTRY();
 
-  LglPtn tPtn = m_pOp->tPtnId();
+  LglPtn tPtn = m_pOp->tLglPtn();
 
   m_pDataStack->vPushInt(tPtn.uPtnNo());
 

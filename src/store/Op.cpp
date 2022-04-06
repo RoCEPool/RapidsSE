@@ -218,7 +218,7 @@ void Op::vAckInvokingTask(void)
              szOpNm(),
              m_p_Stream->pStage()->szStageNm(),
              iNodeId(),
-             tPtnId().iAsI8());
+             tLglPtn().iAsI8());
     }
   }
 
@@ -239,7 +239,7 @@ void Op::vAckInvokingTask(void)
            szOpNm(),
            m_p_Stream->pStage()->szStageNm(),
            iNodeId(),
-           tPtnId().iAsI8(),
+           tLglPtn().iAsI8(),
            nAcksWereRemaining);
 
 }
@@ -414,7 +414,7 @@ void Op::vDump(void)
   vTrace("%p:\n"_Stz,this);
   vTrace("OpNm=%s\n"_Stz,szOpNm());
   vTrace("m_i_Node=%lld\n"_Stz,iNodeId());
-  vTrace("m_tPtnId=%lld\n"_Stz,tPtnId().iAsI8());
+  vTrace("m_tLglPtn=%lld\n"_Stz,tLglPtn().iAsI8());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1008,7 +1008,7 @@ i8 Op::iNodeId(void)
   if (m_p_Stream->pStage()->pStageSpec()->bNodeTopo())
     iNodeId = m_p_Stream->iNodeId();
   else
-    iNodeId = AM::pPtnMap()->iMappedNodeId(tPtnId());
+    iNodeId = AM::pPtnMap()->iMappedNodeId(tLglPtn());
 
   return iNodeId;
 }
@@ -1142,7 +1142,7 @@ void Op::vOpTrace(Operand* pOperand
          szOpNm(),
          m_p_Stream->pStage()->szStageNm(),
          iNodeId(),
-         tPtnId().iAsI8(),
+         tLglPtn().iAsI8(),
          pJobOfOp(),
 
          szFunNm,
@@ -1318,7 +1318,7 @@ Op* Op::pPipeDstOp(void)
   Stage* pDstStage = pNextStage();
 
   // get the op to forward to depending on the cross topology
-  LglPtn tThisPtnId = tPtnId();
+  LglPtn tThisPtnId = tLglPtn();
   i8 iNxtOp        = iNextOp();
   Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
   
@@ -1587,18 +1587,18 @@ Operand* Op::pPopRight(void)
 /*----------------------------------------------------------------------------*/
 /* get partition from op                                                      */
 /*----------------------------------------------------------------------------*/
-LglPtn Op::tPtnId(void)
+LglPtn Op::tLglPtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  LglPtn tPtnId;
+  LglPtn tLglPtn;
 
   if (m_p_Stream->pStage()->pStageSpec()->bNodeTopo())
-    tPtnId = C_UNKNOWN;
+    tLglPtn = C_UNKNOWN;
   else
-    tPtnId = m_p_Stream->tPtnId();
+    tLglPtn = m_p_Stream->tLglPtn();
 
-  return tPtnId;
+  return tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/

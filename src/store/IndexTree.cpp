@@ -1168,9 +1168,9 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
   
   m_pRootEntBuffer = new EntBuffer(this);
 
-  LglPtn tPtnId;
-  tPtnId = m_i_TablePtn;
-  m_pRootEntBuffer->vPtnId(tPtnId);
+  LglPtn tLglPtn;
+  tLglPtn = m_i_TablePtn;
+  m_pRootEntBuffer->vPtnId(tLglPtn);
 
   return m_pRootEntBuffer;
 }

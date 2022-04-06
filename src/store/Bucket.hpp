@@ -12,7 +12,7 @@ namespace STORE
   private:
     //Lock   m_okLock;  // lock on the partition
     Table* m_pTable;  // table this partition belongs to
-    LglPtn m_tPtnId;  // partition number (in grid)
+    LglPtn m_tLglPtn;  // partition number (in grid)
 
     eCN    m_eKind;   // what kind of table partition
 
@@ -29,14 +29,14 @@ namespace STORE
     void  operator delete(void*);
 
 
-    Bucket(Table* pTable, LglPtn tPtnId, eCN eKind);
+    Bucket(Table* pTable, LglPtn tLglPtn, eCN eKind);
 
 
     ~Bucket(void) noexcept(false);
 
     static void vRepair(Object* pObject);
 
-    LglPtn  tPtnId(void);
+    LglPtn  tLglPtn(void);
 
     Table* pTable(void);
 

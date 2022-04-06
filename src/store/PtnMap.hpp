@@ -43,8 +43,8 @@ namespace STORE
   
     i8 nKnownNodes(void);
   
-    i8 iMappedNodeId(LglPtn tPtnId);
-    i8 i_MappedPtnNo(LglPtn tPtnId);
+    i8 iMappedNodeId(LglPtn tLglPtn);
+    i8 i_MappedPtnNo(LglPtn tLglPtn);
 
     i8 nPtnsInGrid(void);
     i8 nPtnsPerNode(void);
