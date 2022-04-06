@@ -1157,12 +1157,10 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_BCD_PRECISION  = %lld\n"_Stz,C_MAX_BCD_PRECISION);
   vTrace("  C_MAX_BUCKETS        = %lld\n"_Stz,C_MAX_BUCKETS);
   vTrace("  C_MAX_COLUMNS        = %lld\n"_Stz,C_MAX_COLUMNS);
-  vTrace("  C_MAX_DEFCOLUMNS     = %lld\n"_Stz,C_MAX_DEFCOLUMNS);
   vTrace("  C_MAX_ENTRY          = %lld\n"_Stz,C_MAX_ENTRY);
   vTrace("  C_MAX_EXPR           = %lld\n"_Stz,C_MAX_EXPR);
   vTrace("  C_MAX_FLT_PRECISION  = %lld\n"_Stz,C_MAX_FLT_PRECISION);
   vTrace("  C_MAX_FROMVEC        = %lld\n"_Stz,C_MAX_FROMVEC);
-  vTrace("  C_MAX_IDXCOLVEC      = %lld\n"_Stz,C_MAX_IDXCOLVEC);
   vTrace("  C_MAX_INDEXES        = %lld\n"_Stz,C_MAX_INDEXES);
   vTrace("  C_MAX_INDEX_COLUMNS  = %lld\n"_Stz,C_MAX_INDEX_COLUMNS);
   vTrace("  C_MAX_INT_PRECISION  = %lld\n"_Stz,C_MAX_INT_PRECISION);
@@ -1187,7 +1185,6 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_STAGES         = %lld\n"_Stz,C_MAX_STAGES);
   vTrace("  C_MAX_STATEMENT      = %lld\n"_Stz,C_MAX_STATEMENT);
   vTrace("  C_MAX_STREAMS        = %lld\n"_Stz,C_MAX_STREAMS);
-  vTrace("  C_MAX_STREAMDEFS     = %lld\n"_Stz,C_MAX_STREAMDEFS);
   vTrace("  C_MAX_THREADS        = %lld\n"_Stz,C_MAX_THREADS);
   vTrace("  C_MAX_TOKENS         = %lld\n"_Stz,C_MAX_TOKENS);
   vTrace("  C_MAX_VCH            = %lld\n"_Stz,C_MAX_VCH);

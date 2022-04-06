@@ -21,7 +21,7 @@ namespace STORE
     Location m_oLocation; // logical location of stream def
 
     i8     m_nColumns;    // total columns
-    Column m_xaColumn[C_MAX_DEFCOLUMNS];  // array of columns
+    Column m_xaColumn[C_MAX_COLUMNS];  // array of columns
 
     RowPix m_oRowPix;     // row pix
     i8     m_jRowSize;    // size of fixed size row

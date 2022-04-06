@@ -51,7 +51,7 @@ ShardDef::ShardDef(void)
   //m_sShardDefNm;
  
   m_nColumns = 0;
-  //m_xaColumn[C_MAX_DEFCOLUMNS];
+  //m_xaColumn[C_MAX_COLUMNS];
 
   //m_oRowPix;
 
