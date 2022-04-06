@@ -29,17 +29,17 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ToRow(void)
 {
-  vAddStep("ToRow[]"_Stz,               &Step::vToRowFetch);
-  vAddStep("ToRow[].completed"_Stz,     &Step::vToRowCompleted);
-  vAddStep("ToRow[].create"_Stz,        &Step::vToRowCreate);
-  vAddStep("ToRow[].csvToRow"_Stz,      &Step::vToRowCsvToRow);
-  vAddStep("ToRow[].dangling"_Stz,      &Step::vToRowDangling);
-  vAddStep("ToRow[].delete"_Stz,        &Step::vToRowDelete);
-  vAddStep("ToRow[].rowCounters@@"_Stz, &Step::vToRowRowCountersFetch);
+  vAddStep("ToKeyHshRow[]"_Stz,               &Step::vToRowFetch);
+  vAddStep("ToKeyHshRow[].completed"_Stz,     &Step::vToRowCompleted);
+  vAddStep("ToKeyHshRow[].counters@@"_Stz,    &Step::vToRowCountersFetch);
+  vAddStep("ToKeyHshRow[].create"_Stz,        &Step::vToRowCreate);
+  vAddStep("ToKeyHshRow[].csvToRow"_Stz,      &Step::vToRowCsvToRow);
+  vAddStep("ToKeyHshRow[].dangling"_Stz,      &Step::vToRowDangling);
+  vAddStep("ToKeyHshRow[].delete"_Stz,        &Step::vToRowDelete);
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToRow[].completed -- full row buffer                                       */
+/* ToKeyHshRow[].completed -- full row buffer                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowCompleted(void)
 {
@@ -55,7 +55,23 @@ void Step::vToRowCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToRow[].csvToRow -- convert given csv buffer to row buffer                 */
+/* ToKeyHshRow[].counters@@ -- fetch row counters                             */
+/*----------------------------------------------------------------------------*/
+void Step::vToRowCountersFetch(void)
+{
+  ENTRY();
+  
+  ToKeyHshRow* pToRow = *m_pLogicUnit->m_xpToRow;
+
+  m_pDataStack->vPushInt(pToRow->iRowsSkipped());
+  m_pDataStack->vPushInt(pToRow->iRowsInvalid());
+  m_pDataStack->vPushInt(pToRow->iRowsProcessed());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ToKeyHshRow[].csvToRow -- convert given csv buffer to row buffer           */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowCsvToRow(void)
 {
@@ -73,7 +89,7 @@ void Step::vToRowCsvToRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToRow[].create -- create toRow                                             */
+/* ToKeyHshRow[].create -- create toRow                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowCreate(void)
 {
@@ -106,7 +122,7 @@ void Step::vToRowCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToRow[].dangling -- fetch row buffer                                       */
+/* ToKeyHshRow[].dangling -- fetch row buffer                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowDangling(void)
 {
@@ -125,7 +141,7 @@ void Step::vToRowDangling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToRow[].delete -- delete toRow                                             */
+/* ToKeyHshRow[].delete -- delete toRow                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowDelete(void)
 {
@@ -140,7 +156,7 @@ void Step::vToRowDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToRow[] -- fetch toRow                                                     */
+/* ToKeyHshRow[] -- fetch toRow                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vToRowFetch(void)
 {
@@ -149,22 +165,6 @@ void Step::vToRowFetch(void)
   ToKeyHshRow* pToRow = * m_pLogicUnit->m_xpToRow;
 
   m_pDataStack->vPushPtr(pToRow);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ToRow[].rowCounters@@ -- fetch row counters                                */
-/*----------------------------------------------------------------------------*/
-void Step::vToRowRowCountersFetch(void)
-{
-  ENTRY();
-  
-  ToKeyHshRow* pToRow = *m_pLogicUnit->m_xpToRow;
-
-  m_pDataStack->vPushInt(pToRow->iRowsSkipped());
-  m_pDataStack->vPushInt(pToRow->iRowsInvalid());
-  m_pDataStack->vPushInt(pToRow->iRowsProcessed());
 
   EXIT();
 }

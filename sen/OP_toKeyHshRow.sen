@@ -16,7 +16,7 @@
   <tableNm> op__table if
 
     // create a ToRow using Table[].streamDef
-    ToRow[].create
+    ToKeyHshRow[].create
 
     // new and pipe out (StreamDef)  DOES NOT SET StreamDefLft[]??
     Table[] StreamDefOut[].newFromTable
@@ -40,17 +40,17 @@
   //Operand[]
   //profile.start
 
-  CsvBuffer[] ToRow[].csvToRow
+  CsvBuffer[] ToKeyHshRow[].csvToRow
 
   //profile.end
 
   // test for any completed
-  ToRow[].completed to RowBuffer[]
+  ToKeyHshRow[].completed to RowBuffer[]
   begin
     RowBuffer[].isNull not
   while
     RowBuffer[].pipeOut
-    ToRow[].completed to RowBuffer[]
+    ToKeyHshRow[].completed to RowBuffer[]
   repeat
 
   RowBuffer[].isNull assert
@@ -66,12 +66,12 @@
 : toKeyHshRow_EosMarker \handler
 
   // test for any remainders
-  ToRow[].dangling to RowBuffer[]
+  ToKeyHshRow[].dangling to RowBuffer[]
   begin
     RowBuffer[].isNull not
   while
     RowBuffer[].pipeOut
-    ToRow[].dangling to RowBuffer[]
+    ToKeyHshRow[].dangling to RowBuffer[]
   repeat
 
 
@@ -81,7 +81,7 @@
   infoSetTable[] InfoSet[].new
   OI_LOADRESULT InfoSet[].opInfoset!
   
-  ToRow[].rowCounters@@ 3 InfoSet[].addRowVargs
+  ToKeyHshRow[].counters@@ 3 InfoSet[].addRowVargs
 
   InfoSet[].pipeOut
 
@@ -89,7 +89,7 @@
   // -- -- -- -- -- --
 
   // delete ToRow
-  ToRow[].delete
+  ToKeyHshRow[].delete
 
   // get the profile from the task
   //[task] task.profile@ to Operand[]

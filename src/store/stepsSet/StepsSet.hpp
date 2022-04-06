@@ -2270,12 +2270,12 @@ public:
 
   // toRow
   void vToRowCompleted(void);
+  void vToRowCountersFetch(void);
   void vToRowCreate(void);
   void vToRowCsvToRow(void);
   void vToRowDangling(void);
   void vToRowDelete(void);
   void vToRowFetch(void);
-  void vToRowRowCountersFetch(void);
 
   // tokenVec
   void vTokenVecDelete(void);
