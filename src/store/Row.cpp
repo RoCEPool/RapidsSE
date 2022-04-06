@@ -297,15 +297,15 @@ bool Row::bIsColNull(i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ptn key hash                                                           */
+/* get key hash                                                               */
 /*----------------------------------------------------------------------------*/
-i8 Row::iKeyHsh(i8 i_KeyHsh)
+KeyHsh Row::tKeyHsh(i8 i_KeyHsh)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   
-  i8 iKeyHsh = m_wxaColumnCell[i_KeyHsh].m_iWrd;
+  KeyHsh tKeyHsh = m_wxaColumnCell[i_KeyHsh].m_iWrd;
   
-  return iKeyHsh;
+  return tKeyHsh;
 }
 
 /*----------------------------------------------------------------------------*/

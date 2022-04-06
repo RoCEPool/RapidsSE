@@ -106,9 +106,9 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 
-    KeyHsh iKeyHsh = aRowSrc->iKeyHsh(i_KeyHshCol);
+    KeyHsh tKeyHsh = aRowSrc->tKeyHsh(i_KeyHshCol);
     
-    KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
+    KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(tKeyHsh);
 
     // determine which lglPtn the keyBkt is currently mapped to
     LglPtn tLglPtn = pTable->tLglPtnOf(tKeyBkt);
@@ -140,7 +140,9 @@ RowBuffer* ToLglPtnRow::pDangling(i8 i_Ptn)
   
   RowBuffer* pRowBuffer = _pRowBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
   
-  return pRowBuffer;}
+  return pRowBuffer;
+  
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
