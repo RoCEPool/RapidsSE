@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "HashSet.hpp"
+#include "LglBufSet.hpp"
 
 namespace STORE
 {

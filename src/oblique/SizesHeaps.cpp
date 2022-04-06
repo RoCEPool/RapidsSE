@@ -57,7 +57,7 @@
 #include "Marker.hpp"
 #include "Record.hpp"
 #include "RowBuffer.hpp"
-#include "HashSet.hpp"
+#include "LglBufSet.hpp"
 #include "Pot.hpp"
 
 #include "InfoSet.hpp"

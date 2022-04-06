@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* HashSet.cpp -- Set of Partition Hashed Buffers with dangling support       */
+/* LglBufSet.cpp -- Set of Partition Hashed Buffers with dangling support     */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "HashSet.hpp"
+#include "LglBufSet.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
