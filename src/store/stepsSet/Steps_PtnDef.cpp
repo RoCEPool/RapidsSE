@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ShardDef.cpp -- ShardDef step group                                  */
+/* Steps_PtnDef.cpp -- PtnDef step group                                      */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_ShardDef(void)
+void Step::vAddSteps_PtnDef(void)
 {
   vAddStep("ShardDef[]"_Stz,                 &Step::vShardDefGet);
   vAddStep("ShardDef[]\\clear"_Stz,          &Step::vShardDefGetAndClear);

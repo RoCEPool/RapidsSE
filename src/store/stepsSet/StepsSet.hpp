@@ -1574,6 +1574,15 @@ public:
   void vPipeinSet(void);
   void vPipeinWriteProfile(void);
 
+  // ptn def
+  void vPtnDefColumnFetch(void);
+  void vPtnDefColumnCountFetch(void);
+  void vPtnDefGet(void);
+  void vPtnDefGetAndClear(void);
+  void vPtnDefIsNull(void);
+  void vPtnDefPrint(void);
+  void vPtnDefSet(void);
+
   // received object
   void vRecvdObjectGet(void);
   void vRecvdObjectIsNotNull(void);
@@ -1721,15 +1730,6 @@ public:
   void vSessionToDoStore(void);
   void vSessionTxFetch(void);
   void vSessionTxStore(void);
-
-  // shard def
-  void vShardDefColumnFetch(void);
-  void vShardDefColumnCountFetch(void);
-  void vShardDefGet(void);
-  void vShardDefGetAndClear(void);
-  void vShardDefIsNull(void);
-  void vShardDefPrint(void);
-  void vShardDefSet(void);
 
   // shell
   void vShellExecute(void);

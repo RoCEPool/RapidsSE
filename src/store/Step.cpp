@@ -162,6 +162,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Procedure();
   Step::vAddSteps_Process();
   Step::vAddSteps_Profile();
+  Step::vAddSteps_PtnDef();
   Step::vAddSteps_PtnMap();
   Step::vAddSteps_PtnStream();
   Step::vAddSteps_Push();
@@ -186,7 +187,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_SendNode();
   Step::vAddSteps_SendWL();
   Step::vAddSteps_Session();
-  Step::vAddSteps_ShardDef();
   Step::vAddSteps_Shell();
   Step::vAddSteps_Socket();
   Step::vAddSteps_SqlCompiler();
