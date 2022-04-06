@@ -25,19 +25,19 @@
     stage stageA on origin :
         start
       | pulse once
-      | chunk $file       // read chunks of file => (seekOffset)
-      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
+      | chunk      $file   // read chunks of file => (seekOffset)
+      | rdCsvChunk $file   // (seekOffset) => (csvBuffer)
       | stageB localrobin
 
     stage stageB on all partitions on origin :
-        toRow       $table   // (csvBuffer) => (rowBuffer w row+keyHash)
-      | toLglPtnRow $table   // (rowBuffer) => (bkt rowBuffer)
-      | toLglPtnNst          // (rowBuffer) => (nst rowBuffer)
-      | toLglPtnCrw          // (rowBuffer) => (bkt crwBuffer)
+        toRow       $table // (csvBuffer) => (rowBuffer w row+keyHash)
+      | toLglPtnRow $table // (rowBuffer) => (bkt rowBuffer)
+      | toLglPtnNst        // (rowBuffer) => (nst rowBuffer)
+      | toLglPtnCrw        // (rowBuffer) => (bkt crwBuffer)
       | stageC hashcast
 
     stage stageC on all partitions :
-        insert $table     // (crwBuffer) inserted into table
+        insert      $table // (crwBuffer) inserted into table
       | stageD
 
     stage stageD on origin :

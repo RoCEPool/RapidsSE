@@ -1344,7 +1344,7 @@ L_Decimal:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit decimal
     
-  xBcdValue.vSet(iColVal_decimal,xColPix.m_uScale);
+  xBcdValue.vSet(iColVal_decimal,nPixFracDigits);
   vDEPOSIT_VALUE(xBcdValue);
 
   goto L_FieldEnd;
