@@ -99,15 +99,15 @@ void BucketMap::vAdjustSecondMap(i8 nCurrentPartitions)
 /*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
-PtnId BucketMap::tBktToLglPtnId(i8 iBucketId)
+PtnId BucketMap::tBktToLglPtnId(KeyBkt tKeyBkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
   PtnId tPtnId;
   if (0 == m_iActive)
-    tPtnId = m_taPtnId_0[iBucketId];
+    tPtnId = m_taPtnId_0[tKeyBkt];
   else
-    tPtnId = m_taPtnId_1[iBucketId];
+    tPtnId = m_taPtnId_1[tKeyBkt];
   
   return tPtnId;
 }

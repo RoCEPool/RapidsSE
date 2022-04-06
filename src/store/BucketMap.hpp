@@ -38,7 +38,7 @@ namespace STORE
   
     static void vPostRecv(void* aBucketMap);
 
-    PtnId tBktToLglPtnId(i8 iBucketId);
+    PtnId tBktToLglPtnId(KeyBkt tKeyBkt);
     i8    iPtnIdToBkt(PtnId tPtnId);
 
     void vAdjustMap(i8 nPartitions);

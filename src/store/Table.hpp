@@ -9,6 +9,7 @@
 #include "eTT.h"
 #include "Parcel.hpp"
 #include "TablePtn.hpp"
+#include "KeyBkt.hpp"
 
 namespace STORE { class InfoSet; class StreamDef; class PtnDef; }
 
@@ -86,7 +87,7 @@ namespace STORE
     Stz*    szTableNm(void);
     TablePtn* pTablePtn(i8 i_TablePtn);
 
-    PtnId   tBktToLglPtn(i8 iBktNo);
+    PtnId   tBktToLglPtn(KeyBkt tKeyBkt);
 
     i8      iPtnToBktNext(PtnId tPtnId, i8 iBktNo);
 

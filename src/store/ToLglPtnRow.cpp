@@ -110,7 +110,7 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     
     KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
 
-    // convert i_Bkt to Ptn Id
+    // convert keyBkt to lglPtn
     PtnId tPtnId = pTable->tBktToLglPtn(tKeyBkt);
 
     //vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tPtnId.iAsI8());
