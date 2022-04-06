@@ -27,7 +27,7 @@
       | stageB localrobin
 
     stage stageB on all partitions on origin :
-        toRow       $table
+        toKeyHshRow $table
       | toLglPtnRow $table
       | toLglPtnNst
       | toLglPtnCrw          
@@ -66,10 +66,10 @@
       | stageB localrobin
 
     stage stageB on all partitions on origin :
-        toRow      $table    // pf    (csvBuffer) => (rowBuffer w row+hash)
-      | toLglPtnRow $table   //       (rowBuffer) => (bkt rowBuffer)
-      | toLglPtnNst          //       (rowBuffer) => (nst rowBuffer)
-      | toLglPtnCrw          //       (rowBuffer) => (bkt crwBuffer)
+        toKeyHshRow $table // pf    (csvBuffer) => (rowBuffer w row+hash)
+      | toLglPtnRow $table //       (rowBuffer) => (bkt rowBuffer)
+      | toLglPtnNst        //       (rowBuffer) => (nst rowBuffer)
+      | toLglPtnCrw        //       (rowBuffer) => (bkt crwBuffer)
       | stageC hashcast
 
     stage stageC on all partitions :

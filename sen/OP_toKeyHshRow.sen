@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
-: toRow_StartMarker \handler
+: toKeyHshRow_StartMarker \handler
 
   // pipeout the (StartMarker)
   PipeIn[].pipeOut
@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_CSVBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
-: toRow_CsvBuffer \handler
+: toKeyHshRow_CsvBuffer \handler
 
   PipeIn[]\clear to CsvBuffer[]
 
@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
-: toRow_EosMarker \handler
+: toKeyHshRow_EosMarker \handler
 
   // test for any remainders
   ToRow[].dangling to RowBuffer[]
@@ -108,15 +108,15 @@
 /*----------------------------------------------------------------------------*/
 /* toRow request                                                        SPAWN */
 /*----------------------------------------------------------------------------*/
-: toRow_op \operator
+: toKeyHshRow_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: toRow_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
-  find: toRow_EosMarker   ZK_M_EOS         [op].handler!
-  find: toRow_StartMarker ZK_M_START       [op].handler!
+  find: toKeyHshRow_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
+  find: toKeyHshRow_EosMarker   ZK_M_EOS         [op].handler!
+  find: toKeyHshRow_StartMarker ZK_M_START       [op].handler!
 
   op__loop
 
@@ -130,12 +130,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toRow :: toRow <tableNm> ;
+cmdSyntax: toKeyHshRow :: toKeyHshRow <tableNm> ;
 
-: toRow_cmdTags _cmdTags tagCopy: op_tags
+: toKeyHshRow_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "toRow_op"
+    <opEntry> = "toKeyHshRow_op"
   }
 ;
 

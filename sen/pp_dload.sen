@@ -39,7 +39,7 @@
 
   stage stageC on all partitions :
 
-    toRow $table       | // (csvBuffer)  => (rowBuffer)
+    toKeyHshRow $table    | // (csvBuffer)  => (rowBuffer)
     // dump rowBuffer 1   |
 
     toLglPtnRow $table    | // (rowBuffer)  => (rowBuffer 'ptn)
