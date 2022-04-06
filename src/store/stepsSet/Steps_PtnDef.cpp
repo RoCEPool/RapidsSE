@@ -27,20 +27,20 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_PtnDef(void)
 {
-  vAddStep("ShardDef[]"_Stz,                 &Step::vShardDefGet);
-  vAddStep("ShardDef[]\\clear"_Stz,          &Step::vShardDefGetAndClear);
-  vAddStep("ShardDef[].columnCount@"_Stz,    &Step::vShardDefColumnCountFetch);
-  vAddStep("ShardDef[].column@"_Stz,         &Step::vShardDefColumnFetch);
-  vAddStep("ShardDef[].get"_Stz,             &Step::vShardDefGet);
-  vAddStep("ShardDef[].isNull"_Stz,          &Step::vShardDefIsNull);
-  vAddStep("ShardDef[].print"_Stz,           &Step::vShardDefPrint);
-  vAddStep("ShardDef[].set"_Stz,             &Step::vShardDefSet);
+  vAddStep("PtnDef[]"_Stz,                 &Step::vPtnDefGet);
+  vAddStep("PtnDef[]\\clear"_Stz,          &Step::vPtnDefGetAndClear);
+  vAddStep("PtnDef[].columnCount@"_Stz,    &Step::vPtnDefColumnCountFetch);
+  vAddStep("PtnDef[].column@"_Stz,         &Step::vPtnDefColumnFetch);
+  vAddStep("PtnDef[].get"_Stz,             &Step::vPtnDefGet);
+  vAddStep("PtnDef[].isNull"_Stz,          &Step::vPtnDefIsNull);
+  vAddStep("PtnDef[].print"_Stz,           &Step::vPtnDefPrint);
+  vAddStep("PtnDef[].set"_Stz,             &Step::vPtnDefSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].column@ -- get column from shardDef                             */
+/* PtnDef[].column@ -- get column from ptnDef                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefColumnFetch(void)
+void Step::vPtnDefColumnFetch(void)
 {
   ENTRY();
   
@@ -54,9 +54,9 @@ void Step::vShardDefColumnFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].columnCount@ -- get column count from shardDef                  */
+/* PtnDef[].columnCount@ -- get column count from ptnDef                      */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefColumnCountFetch(void)
+void Step::vPtnDefColumnCountFetch(void)
 {
   ENTRY();
   
@@ -68,9 +68,9 @@ void Step::vShardDefColumnCountFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].get -- get shardDef                                             */
+/* PtnDef[].get -- get ptnDef                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefGet(void)
+void Step::vPtnDefGet(void)
 {
   ENTRY();
   
@@ -80,9 +80,9 @@ void Step::vShardDefGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].getAndClear -- get shardDef and set to nullptr                  */
+/* PtnDef[].getAndClear -- get ptnDef and set to nullptr                      */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefGetAndClear(void)
+void Step::vPtnDefGetAndClear(void)
 {
   ENTRY();
 
@@ -94,9 +94,9 @@ void Step::vShardDefGetAndClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].isNull -- is shardDef null ?                                    */
+/* PtnDef[].isNull -- is ptnDef null ?                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefIsNull(void)
+void Step::vPtnDefIsNull(void)
 {
   ENTRY();
   
@@ -106,9 +106,9 @@ void Step::vShardDefIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].print -- print shardDef                                         */
+/* PtnDef[].print -- print ptnDef                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefPrint(void)
+void Step::vPtnDefPrint(void)
 {
   ENTRY();
     
@@ -120,9 +120,9 @@ void Step::vShardDefPrint(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].set -- set shardDef                                             */
+/* PtnDef[].set -- set ptnDef                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefSet(void)
+void Step::vPtnDefSet(void)
 {
   ENTRY();
   
