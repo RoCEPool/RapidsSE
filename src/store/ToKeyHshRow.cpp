@@ -680,6 +680,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   ColPix xColPix;
   eDM ePixDatum;
   i8 nPixLength;
+  i8 nPixScale;
   i8 nPixWholeDigits;
   i8 nPixFracDigits;
   bool bPixNullable;
@@ -991,6 +992,7 @@ L_NextFieldInRecord:
   
   ePixDatum       = (eDM) xColPix.m_uDatum;   // DM_BOL .. DM_VCH
   nPixLength      = xColPix.m_uLength;        // total number of digits or chars
+  nPixScale       = xColPix.m_uScale;         // scale
   nPixWholeDigits = xColPix.m_uLength         // max number digits to left of .
                       - xColPix.m_uScale;
   nPixFracDigits  = xColPix.m_uScale;         // max number digits to right of .
@@ -1344,7 +1346,7 @@ L_Decimal:
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                            deposit decimal
     
-  xBcdValue.vSet(iColVal_decimal,nPixFracDigits);
+  xBcdValue.vSet(iColVal_decimal,nPixScale);
   vDEPOSIT_VALUE(xBcdValue);
 
   goto L_FieldEnd;
