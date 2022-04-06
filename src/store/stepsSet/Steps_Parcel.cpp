@@ -227,7 +227,7 @@ void Step::vParcelPipeOut(void)
 
   if (pParcel->bOriginalParcel()) {
     //vTrace("bOriginalParcel\n"_Stz);
-    pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
+    pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtnId(),0);
       
     // CAUTION NOTE: Cannot access LU of OP after piping out operand
     // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
@@ -286,9 +286,9 @@ void Step::vParcelPipeOut(void)
         Stream* pDstStream = pDstStage->pGet(i_Stream);
 
         if (YG_ALL_PARTITIONS == eStageTopology) {
-          PtnId tDstPtn = pDstStream->tPtnId();
-          i8 iDstNde = AM::pPtnMap()->iMappedNodeId(tDstPtn);
-          if (iDstNde != iCurNodeId)
+          PtnId tDstPtnId = pDstStream->tPtnId();
+          i8 iDstNodeId = AM::pPtnMap()->iMappedNodeId(tDstPtnId);
+          if (iDstNodeId != iCurNodeId)
             continue;
         }
         else {
@@ -351,10 +351,10 @@ void Step::vParcelPipeOut(void)
         for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
           Stream* pDstStream = pDstStage->pGet(i_Stream);
 
-          PtnId tDstPtn = pDstStream->tPtnId();
-          vTrace("i_Stream %lld tDstPtn %lld\n"_Stz
+          PtnId tDstPtnId = pDstStream->tPtnId();
+          vTrace("i_Stream %lld tDstPtnId %lld\n"_Stz
                  ,i_Stream
-                 ,tDstPtn.iAsI8());
+                 ,tDstPtnId.iAsI8());
         }
         
       }
@@ -367,13 +367,13 @@ void Step::vParcelPipeOut(void)
     //  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~
 
     case RV_ONE_PTN:
-//        vTrace("RV_ONE_PTN  tDstPtn %lld\n"_Stz
-//               ,pParcel->tDstPtn().iAsI8());
+//        vTrace("RV_ONE_PTN  tDstPtnId %lld\n"_Stz
+//               ,pParcel->tDstPtnId().iAsI8());
       if (pOperand) {
-        pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
+        pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtnId(),0);
         if (!pDstOp) {
-          vTrace("huh? RV_ONE_PTN tDstPtn %lld\n"_Stz
-                 ,pParcel->tDstPtn().iAsI8());
+          vTrace("huh? RV_ONE_PTN tDstPtnId %lld\n"_Stz
+                 ,pParcel->tDstPtnId().iAsI8());
         }
         pDstOp->vAppendLeft(pOperand, this);
         nQueued++;

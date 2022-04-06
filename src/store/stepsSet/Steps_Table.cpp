@@ -590,11 +590,11 @@ void Step::vTableListPartition(void)
   Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
 
   for (;;) {
-    i8 i_Node     = AM::pPtnMap()->iMappedNodeId(tPtnId);
+    i8 iNodeId     = AM::pPtnMap()->iMappedNodeId(tPtnId);
     i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
 
     sOutput.vSprint("Ptn %lld : Node %lld TablePtn %lld"_Stz,
-                    tPtnId.iAsI8(),i_Node,i_TablePtn);
+                    tPtnId.iAsI8(),iNodeId,i_TablePtn);
 
     Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                       C_VARGS_BEGIN,

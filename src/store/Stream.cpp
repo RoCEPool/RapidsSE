@@ -233,25 +233,25 @@ void Stream::vSpawnOpTasks(void)
 
   i8 iThisNodeId = MY::iNodeId();
   
-  i8 i_OnNode = -1;
+  i8 iOnNodeId = -1;
   
   if (m_p_StageSpec->bNodeTopo()) {
     
     if (YG_NEXT_NODE == m_p_StageSpec->eStageTopology()) {
       if (iThisNodeId != pPipeline()->iOriginNodeId()) {
-        i_OnNode = m_iNodeId;
+        iOnNodeId = m_iNodeId;
       }
     }
     else {
-      i_OnNode = m_iNodeId;
+      iOnNodeId = m_iNodeId;
     }
     
   }
   else {
-    i_OnNode = AM::pPtnMap()->iMappedNodeId(m_tPtnId);
+    iOnNodeId = AM::pPtnMap()->iMappedNodeId(m_tPtnId);
   }
   
-  if (i_OnNode == iThisNodeId) {
+  if (iOnNodeId == iThisNodeId) {
     // for each operator in the stage ptn
     for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
       
