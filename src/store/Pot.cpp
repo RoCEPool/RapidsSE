@@ -70,21 +70,19 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
 {
   _static_;
 
-  LglPtn tLglPtn;
-
   Row* aDstRow;
 
   i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
   KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
-  i8 i_LglPtn = AM::BKTMAP::tLglPtnOf(tKeyBkt);
+  LglPtn tLglPtn = AM::BKTMAP::tLglPtnOf(tKeyBkt);
 
   // get row buffer for given partition (new a first buffer if ncessary)
-  RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[i_LglPtn]);
+  RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[tLglPtn]);
   if (! pDstRowBuffer) {
 
     pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
-    pPot->vAddBuffer(i_LglPtn,pDstRowBuffer);
+    pPot->vAddBuffer(tLglPtn,pDstRowBuffer);
   }
 
   // new a row in row buffer (new another row buffer if necessary)
@@ -92,13 +90,12 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
   if (! aDstRow) {
     pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
-    pPot->vAddBuffer(i_LglPtn,pDstRowBuffer);
+    pPot->vAddBuffer(tLglPtn,pDstRowBuffer);
     //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
     aDstRow = pDstRowBuffer->pAllotRow();
     ASSERT(aDstRow);
   }
 
-  tLglPtn = i_LglPtn;
   pDstRowBuffer->vLglPtn(tLglPtn);
 
   *aazStrArea = pDstRowBuffer->azDepositString_begin();
@@ -117,9 +114,9 @@ void Pot::vRowStrSize(Pot* pPot, i8 iMixIn, i8 nRowStrSize)
 
   i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
   KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
-  i8 i_Ptn = AM::BKTMAP::tLglPtnOf(tKeyBkt);
+  LglPtn tLglPtn = AM::BKTMAP::tLglPtnOf(tKeyBkt);
 
-  RowBuffer* pRowBuffer = _pRowBuffer(pPot->pBuffer(i_Ptn));
+  RowBuffer* pRowBuffer = _pRowBuffer(pPot->pBuffer(tLglPtn));
 
   pRowBuffer->vTakeHead(nRowStrSize);
 
