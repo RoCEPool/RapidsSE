@@ -25,6 +25,8 @@ class KeyHsh : public SEtype
   
   i8 iAsI8(void);
   void vAsI8(i8 iAsI8);
+  
+  void vRunningHash(i8 iMixVal);
 };
 
 /*============================================================================*/
