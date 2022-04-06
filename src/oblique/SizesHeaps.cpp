@@ -477,6 +477,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Profile),            HT_T_MEDIUM  ,0 FILL }, // CN_PROFILE
   { sizeof(PsxThd),             HT_T_TINY    ,0 FILL }, // CN_PSXTHD
   { sizeof(PtnDef),             HT_T_MEDIUM  ,0 FILL }, // CN_PTNDEF
+  { sizeof(PtnId),              HT_T_TINY    ,0 FILL }, // CN_PTNID
   { sizeof(PtnMap),             HT_T_LARGE   ,0 FILL }, // CN_PTNMAP
   { sizeof(PtnStm_cursor),      HT_T_TINY    ,0 FILL }, // CN_PTNSTMCURSOR
   { sizeof(PtnStream),          HT_T_TINY    ,0 FILL }, // CN_PTNSTREAM

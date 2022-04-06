@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-class PtnId : public Gid_t<CN_PTNSTREAM>
+class PtnId : public Gid_t<CN_PTNID>
 {
   public:
 
