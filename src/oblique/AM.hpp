@@ -241,7 +241,6 @@ namespace OBLIQUE
       static LglPtn tLglPtnOf(KeyBkt tKeyBkt);
 
       static BucketMap* pBucketMap(void);
-      static i8    iHashToBktId(i8 iHash);
     };
 
     class DIC
