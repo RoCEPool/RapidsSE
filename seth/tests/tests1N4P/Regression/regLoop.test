@@ -56,7 +56,7 @@ INCLUDE 'regrLoadData.test';
 //INCLUDE 'functions-substr.test';
 //INCLUDE 'functions-trim.test';
 //INCLUDE 'functions-upper.test';
-//INCLUDE 'having.test';
+INCLUDE 'having.test';
 //INCLUDE 'intersect.test';
 //INCLUDE 'intervals.test';
 INCLUDE 'isnull.test';

@@ -19,12 +19,6 @@
 #include "SN_Bcd.hpp"
 #include "eFM.h"
 
-extern i8 iMathOp_MaxValue(eDM eDatum);
-extern i8 iMathOp_MinValue(eDM eDatum);
-
-extern void vMathOp_MaxValue(Stz* sInitValue);
-extern void vMathOp_MinValue(Stz* sInitValue);
-
 RowRef xRowRef[]
 {
   { "none"_Stz },   // SR_NONE
@@ -458,9 +452,15 @@ void CodeSynth::vSynthEos(IndexDef* pIndexDef, TypedStack* pPostStack, Stz* sLab
   // generate the init variables
   vGenerateInitVars();
 
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate payload traversal
-  vPayloadTraversal(pIndexDef, pPostStack, sLabelNext);
+  if (pIndexDef)
+    vPayloadTraversal(pIndexDef, pPostStack, sLabelNext);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1225,7 +1225,7 @@ TypedStack* CodeSynth::pSynthPrjAgg(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelL
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection of expressions                                   */
 /*----------------------------------------------------------------------------*/
-bool CodeSynth::bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop, bool bHashRows) {
+bool CodeSynth::bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -2690,7 +2690,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
         pExprStack = m_pExprStack;
 
         // push assign column
-        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, pTkn, i_Col,
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col,
                        i_DupCtr);
 
       if (ePreExp != PE_GKY || (ePreExp == PE_GKY && eExprKind == EK_AGGORD))
@@ -2741,7 +2741,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       bGroupBy = false;
 
       // push assign column
-      vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, pTkn, i_Col,
+      vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col,
                      i_DupCtr);
 
       if (eExprKind == EK_GROUPBY)
@@ -2815,7 +2815,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // push upperBound assign column
       if (bUpperBound)
-        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, pTkn, i_Col, i_DupCtr);
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_DupCtr);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the lower bound  stack
@@ -2831,7 +2831,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // push lowerBound assign column
       if (bLowerBound)
-        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, pTkn, i_Col, i_DupCtr);
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_DupCtr);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the upper bound stack
@@ -3198,7 +3198,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   if (pExprStack == pPostStack)
     pExprStack = m_pExprStack;
 
-  vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, pTkn, i_Col, i_DupCtr);
+  vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_DupCtr);
 /*
 #ifdef WITH_DEBUG_VERSION
 
@@ -3318,11 +3318,10 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
   }
-  else {
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate process row
-    vGenerateProcessRow(sLabelNext);
-  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate process row
+  vGenerateProcessRow(sLabelNext);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -4014,7 +4013,7 @@ void CodeSynth::vPushRelational(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push assign column on the exprStack                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, eEK eExprKind, ePE ePreExp, Token* pTkn, i8 i_Col, i8& i_DupCtr) {
+void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, eEK eExprKind, ePE ePreExp, i8 i_Col, i8& i_DupCtr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -4454,11 +4453,10 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   }
-  else {
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate process row
-    vGenerateProcessRow(sLabelNext);
-  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate process row
+  vGenerateProcessRow(sLabelNext);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast

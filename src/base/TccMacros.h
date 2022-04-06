@@ -185,7 +185,6 @@
         _EQ_VCHVCH(eErrorCode)                                              \
         bFilterResult = *(--paW);                                           \
         if (bFilterResult) {                                                \
-          printf("EQUAL\n");                                                \
           break;                                                            \
           }      \
       }                                                                      \
