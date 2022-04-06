@@ -2249,6 +2249,23 @@ public:
   void vToStr(void);
   void vToTask(void);
 
+  // tokenVec
+  void vTokenVecDelete(void);
+  void vTokenVecDump(void);
+  void vTokenVecNew(void);
+  void vTokenVecRemoveToken(void);
+  void vTokenVecTokenise(void);
+  void vTokenVecToString(void);
+
+  // toKeyHshRow
+  void vToKeyHshRowCompleted(void);
+  void vToKeyHshRowCountersFetch(void);
+  void vToKeyHshRowCreate(void);
+  void vToKeyHshRowCsvToRow(void);
+  void vToKeyHshRowDangling(void);
+  void vToKeyHshRowDelete(void);
+  void vToKeyHshRowFetch(void);
+
   // toLglPtnCrw
   void vToLglPtnCrwCompleted(void);
   void vToLglPtnCrwConvert(void);
@@ -2267,23 +2284,6 @@ public:
   void vToLglPtnRowCreate(void);
   void vToLglPtnRowDangling(void);
   void vToLglPtnRowDelete(void);
-
-  // toRow
-  void vToRowCompleted(void);
-  void vToRowCountersFetch(void);
-  void vToRowCreate(void);
-  void vToRowCsvToRow(void);
-  void vToRowDangling(void);
-  void vToRowDelete(void);
-  void vToRowFetch(void);
-
-  // tokenVec
-  void vTokenVecDelete(void);
-  void vTokenVecDump(void);
-  void vTokenVecNew(void);
-  void vTokenVecRemoveToken(void);
-  void vTokenVecTokenise(void);
-  void vTokenVecToString(void);
 
   // trace
   void vTraceOff(void);

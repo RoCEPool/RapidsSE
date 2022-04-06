@@ -227,11 +227,11 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Timer();
   Step::vAddSteps_TinyC();
   Step::vAddSteps_To();
+  Step::vAddSteps_TokenVec();
+  Step::vAddSteps_ToKeyHshRow();
   Step::vAddSteps_ToLglPtnCrw();
   Step::vAddSteps_ToLglPtnNst();
   Step::vAddSteps_ToLglPtnRow();
-  Step::vAddSteps_ToRow();
-  Step::vAddSteps_TokenVec();
   Step::vAddSteps_Trace();
   Step::vAddSteps_Tub();
   Step::vAddSteps_Tx();
