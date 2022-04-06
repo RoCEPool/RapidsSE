@@ -567,7 +567,7 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
 
   ASSERT(pOrdinalFilterExpr);
 
-  pBackend->vAppendNextOp("filter 2 \" filter type BOOLEAN "_Stz);
+  pBackend->vAppendNextOp("filter 2 \" type BOOLEAN "_Stz);
   pBackend->m_bCombinedOp = true;
 //  sPipeline->vCatSprint(
 //      "    filter 1 \" type BOOLEAN "
@@ -1029,7 +1029,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       sPipeline->vCatSprint(" in "_Stz);
 
       // TODO: CHECK THIS OUT
-      return GraphNav::WALK_ABORT;
+      return GraphNav::WALK_SKIP_CHILDREN;
     }
 
     //delete pOrdinalExpr;
@@ -1299,7 +1299,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
     }
 
     else if (InExpr::bIsOfType(pOrdinalExpr)) {
-      sPipeline->vCatSprint(" in "_Stz);
+      // nothing to do
     }
     else if (BetweenExpr::bIsOfType(pOrdinalExpr)) {
       // nothing to do

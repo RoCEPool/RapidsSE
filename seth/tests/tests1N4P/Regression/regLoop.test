@@ -61,7 +61,7 @@ INCLUDE 'regrLoadData.test';
 //INCLUDE 'intervals.test';
 INCLUDE 'isnull.test';
 //INCLUDE 'joinTests.test';
-//INCLUDE 'like.test';
+INCLUDE 'like.test';
 //INCLUDE 'subqueries-select.test';
 //INCLUDE 'subqueries-where-single.test';
 

@@ -110,33 +110,26 @@ create table TABLE1 (
 );
 Load TABLE1 "../DATA/Load/tbl1data.csv" ;
 
+create table TABLE4 (
+  pcol4   INTEGER NOT NULL,
+  scol4   INTEGER NOT NULL,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5),
+  cola4   INTEGER,
+  colb4   VARCHAR(10),
+  colc4   TIMESTAMP,
+  cole4   DECIMAL(15, 2)
+);
+Load TABLE4 "../DATA/Load/tbl4data.csv" ;
+
 //explain stage transliterate
 //select count(*), sum(cola1), cast(avg(cold1) as decimal(10,7)) from table1 where colb1 < 'green';
 
-pipeline Q17
-begin
+//select pcol9, cole9, colb9 from table9 where pcol9 between 235 and 255 and cole9 is not null order by pcol9;
 
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageQ17_0
-
-  stage stageQ17_0 on all partitions :
-    scan rapidsse public part
-    | next broadcast
-
-  stage stageQ17_1_a on all partitions :
-    indexJoin 2 lineitem IxL_PARTKEY "bound $I1 $L1 =="
-    | project 2 "type integer p_partkey , j1_l_orderkey , j1_l_suppkey"
-    | filter 2 " type BOOLEAN  $2 $1 <  "
-    | combined 0
-    | next
-
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
+//explain stage transliterate
+select * from table4 where colb4 like '%l%' and ucolvc in ('ddd','ggg','ttt');
+//  order by pcol4
 
 /*
 

@@ -168,6 +168,35 @@
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INEXPR
+
+#define _INX_VCHVCH(eErrorCode)                                             \
+  {                                                                         \
+    bFilterResult = 0;                                                      \
+    iArg1 = *(--paW);                                                       \
+    if (eErrorCode != EC_NONE ||                                            \
+        iArg1 == C_DATUM_NULL) {                                            \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      iInCount = *(--paW);                                                  \
+      while(iInCount--) {                                                   \
+        *(paW++) = iArg1;                                                   \
+        _EQ_VCHVCH(eErrorCode)                                              \
+        bFilterResult = *(--paW);                                           \
+        if (bFilterResult) {                                                \
+          printf("EQUAL\n");                                                \
+          break;                                                            \
+          }      \
+      }                                                                      \
+      while(iInCount-- > 0) {                                               \
+        iArg2 = *(--paW);                                                   \
+      }                                                                     \
+      *(paW++) = bFilterResult;                                             \
+    }                                                                       \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // DUPS
 
 #define _DUP_FLT(eErrorCode)                                                \

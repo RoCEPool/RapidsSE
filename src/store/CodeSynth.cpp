@@ -4298,6 +4298,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       // match leading
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
+      eExpr3 = (eDM)pTypeStack->iPop();
       sOperation.vConcat("_MATCH_MIDDLE(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
