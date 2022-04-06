@@ -623,10 +623,10 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_TMEVAL
   { sizeof(Token),              HT_T_TINY    ,0 FILL }, // CN_TOKEN
   { sizeof(TokenVec),           HT_T_LARGE   ,0 FILL }, // CN_TOKENVEC
+  { sizeof(ToKeyHshRow),        HT_T_MEDIUM  ,0 FILL }, // CN_TOKEYHSHROW
   { sizeof(ToLglPtnCrw),        HT_T_LARGE   ,0 FILL }, // CN_TOLGLPTNCRW
   { sizeof(ToLglPtnNst),        HT_T_MEDIUM  ,0 FILL }, // CN_TOLGLPTNNST
   { sizeof(ToLglPtnRow),        HT_T_LARGE   ,0 FILL }, // CN_TOLGLPTNROW
-  { sizeof(ToRow),              HT_T_MEDIUM  ,0 FILL }, // CN_TOROW
   { sizeof(Totup),              HT_T_MEDIUM  ,0 FILL }, // CN_TOTUP
   { sizeof(TraceLock),          HT_T_TINY    ,0 FILL }, // CN_TRACELOCK
   { sizeof(TraceMultiLock),     HT_T_TINY    ,0 FILL }, // CN_TRACEMULTILOCK

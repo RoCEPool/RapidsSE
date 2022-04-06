@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToRow.cpp -- Fast ToRow of Csv Record                                      */
+/* ToKeyHshRow.cpp -- Csv Record to Row with key hash                         */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -24,18 +24,18 @@ static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,ToRow,CN_TOROW)
-__aNewFunction(ToRow,CN_TOROW)
-__vDeleteFunction(ToRow,CN_TOROW)
-__aFooterFunction(ToRow)
+__pCastFunction(STORE,ToKeyHshRow,CN_TOKEYHSHROW)
+__aNewFunction(ToKeyHshRow,CN_TOKEYHSHROW)
+__vDeleteFunction(ToKeyHshRow,CN_TOKEYHSHROW)
+__aFooterFunction(ToKeyHshRow)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap, Format* pFmt)
-: Object(CN_TOROW)
+ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, BucketMap* pBucketMap, Format* pFmt)
+: Object(CN_TOKEYHSHROW)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   m_pPipelineJob = AM::pPipelineJob();
 
@@ -77,7 +77,7 @@ ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap, Format* pFmt)
   m_iRowsInvalid   = 0;
   m_iRowsSkipped   = 0;
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
   
   vNewRowBuffer();
 }
@@ -85,9 +85,9 @@ ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ToRow::~ToRow(void) noexcept(false)
+ToKeyHshRow::~ToKeyHshRow(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
   
   delete m_pRowBuffer;
 }
@@ -97,13 +97,13 @@ ToRow::~ToRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* repair the ToRow                                                           */
+/* repair the ToKeyHshRow                                                     */
 /*----------------------------------------------------------------------------*/
-void ToRow::vRepairList(Object* pObject)
+void ToKeyHshRow::vRepairList(Object* pObject)
 {
   _static_
 
-  ToRow* pToRow = _pToRow(pObject);
+  ToKeyHshRow* pToRow = _pToKeyHshRow(pObject);
 
   RowBuffer* pRowBuffer = pToRow->m_pRowBuffer;
   RowBuffer* pNextRowBuffer;
@@ -127,9 +127,9 @@ void ToRow::vRepairList(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* return last remaining dangling rowBuffer (if any)                          */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToRow::pDanglingRowBuffer(void)
+RowBuffer* ToKeyHshRow::pDanglingRowBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
   
   RowBuffer* pRowBuffer = m_pRowBuffer;
   
@@ -141,9 +141,9 @@ RowBuffer* ToRow::pDanglingRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* return a full rowBuffer (if any)                                           */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToRow::pFullRowBuffer(void)
+RowBuffer* ToKeyHshRow::pFullRowBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   RowBuffer* pFullRiwBuffer = nullptr;
   
@@ -165,9 +165,9 @@ RowBuffer* ToRow::pFullRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* return last remaining dangling rowBuffer (if any)                          */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToRow::pRowBuffer(void)
+RowBuffer* ToKeyHshRow::pRowBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
     
   return m_pRowBuffer;
 }
@@ -175,9 +175,9 @@ RowBuffer* ToRow::pRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get rows processed                                                         */
 /*----------------------------------------------------------------------------*/
-i8 ToRow::iRowsProcessed(void)
+i8 ToKeyHshRow::iRowsProcessed(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   return m_iRowsProcessed;
 }
@@ -185,9 +185,9 @@ i8 ToRow::iRowsProcessed(void)
 /*----------------------------------------------------------------------------*/
 /* get rows processed                                                         */
 /*----------------------------------------------------------------------------*/
-i8 ToRow::iRowsInvalid(void)
+i8 ToKeyHshRow::iRowsInvalid(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   return m_iRowsInvalid;
 }
@@ -195,9 +195,9 @@ i8 ToRow::iRowsInvalid(void)
 /*----------------------------------------------------------------------------*/
 /* get rows skipped                                                           */
 /*----------------------------------------------------------------------------*/
-i8 ToRow::iRowsSkipped(void)
+i8 ToKeyHshRow::iRowsSkipped(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   return m_iRowsSkipped;
 }
@@ -209,9 +209,9 @@ i8 ToRow::iRowsSkipped(void)
 /*----------------------------------------------------------------------------*/
 /* create a new rowBuffer                                                     */
 /*----------------------------------------------------------------------------*/
-void ToRow::vNewRowBuffer(void)
+void ToKeyHshRow::vNewRowBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
   
   //  create a new buffer
   RowBuffer* pRowBuffer = new RowBuffer;
@@ -640,9 +640,9 @@ void ToRow::vNewRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a csv chunk (using standard csv format rules)    */
 /*----------------------------------------------------------------------------*/
-bool ToRow::bConvertCsv(CsvBuffer* pCsvBuffer)
+bool ToKeyHshRow::bConvertCsv(CsvBuffer* pCsvBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
   CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
 
@@ -656,9 +656,9 @@ bool ToRow::bConvertCsv(CsvBuffer* pCsvBuffer)
 /*----------------------------------------------------------------------------*/
 /* fast inline conversion of a csv chunk (using standard csv format rules)    */
 /*----------------------------------------------------------------------------*/
-bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
+bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
   UNUSED(azCsvChunk);
   UNUSED(pCsvMeta);
 

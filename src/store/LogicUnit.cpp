@@ -176,7 +176,7 @@ LogicUnit::LogicUnit(void)
 ,    m_xpToLglPtnCrw(this,RF_REPAIR_DELETE,   ToLglPtnCrw::vRepairHashSet,LR_TOLGLPTNCRW)
 ,    m_xpToLglPtnNst(this,RF_REPAIR_DELETE,   ToLglPtnNst::vRepair,       LR_TOLGLPTNNST)
 ,    m_xpToLglPtnRow(this,RF_REPAIR_DELETE,   ToLglPtnRow::vRepairHashSet,LR_TOLGLPTNROW)
-,          m_xpToRow(this,RF_REPAIR_DELETE,         ToRow::vRepairList,      LR_TOROW)
+,          m_xpToRow(this,RF_REPAIR_DELETE,         ToKeyHshRow::vRepairList,      LR_TOROW)
 ,            m_xpTub(this,RF_REPAIR_DELETE,           Tub::vRepair,            LR_TUB)
 ,             m_xpTx(this,RF_REPAIR_DELETE,            Tx::vRepair,             LR_TX)
 

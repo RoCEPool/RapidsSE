@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* ToRow.hpp -- Csv Record to Row                                             */
+/* ToKeyHshRow.hpp -- Csv Record to Row with key hash                         */
 /*============================================================================*/
 #pragma once
 
 namespace STORE
 {
-  class ToRow : public Object
+  class ToKeyHshRow : public Object
   {
   private:
     Job*       m_pPipelineJob;
@@ -50,10 +50,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap, Format* pFmt);
+    ToKeyHshRow(StreamDef* pStreamDef, BucketMap* pBucketMap, Format* pFmt);
 
 
-   ~ToRow(void) noexcept(false);
+   ~ToKeyHshRow(void) noexcept(false);
 
     static void vRepairList(Object* pObject);
 
@@ -74,7 +74,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  ToRow* _pToRow(void* aAddr);
+  ToKeyHshRow* _pToKeyHshRow(void* aAddr);
 
   static const i8 C_MAX_INTEGER_DIGITS  = 19;
   static const char C_MINUS_SIGN        = '-';

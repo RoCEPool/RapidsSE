@@ -7,7 +7,7 @@
 #include "PuGen.hpp"
 
 #include "StreamDef.hpp"
-#include "ToRow.hpp"
+#include "ToKeyHshRow.hpp"
 #include "RowBuffer.hpp"
 
 
@@ -18,7 +18,7 @@
 /*----------------------------------------------------------------------------*/
 /* generate pu table data                                                     */
 /*----------------------------------------------------------------------------*/
-void PuGen::vGen(i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef)
+void PuGen::vGen(i8& riNextKey, ToKeyHshRow* pToRow, StreamDef* pStreamDef)
 {
   Stz* szStreamDefNm = pStreamDef->szStreamDefNm();
   
@@ -40,7 +40,7 @@ void PuGen::vGen(i8& riNextKey, ToRow* pToRow, StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* generate Pu10k data                                                        */
 /*----------------------------------------------------------------------------*/
-void PuGen::vPu10k(ToRow* pToRow, i8& riNextKey)
+void PuGen::vPu10k(ToKeyHshRow* pToRow, i8& riNextKey)
 {
   pToRow->vNewRowBuffer();
   RowBuffer* pRowBuffer = pToRow->pRowBuffer();
@@ -66,7 +66,7 @@ void PuGen::vPu10k(ToRow* pToRow, i8& riNextKey)
 /*----------------------------------------------------------------------------*/
 /* generate Pu100k data                                                       */
 /*----------------------------------------------------------------------------*/
-void PuGen::vPu100k(ToRow* pToRow, i8& riNextKey)
+void PuGen::vPu100k(ToKeyHshRow* pToRow, i8& riNextKey)
 {
   pToRow->vNewRowBuffer();
   RowBuffer* pRowBuffer = pToRow->pRowBuffer();
@@ -93,7 +93,7 @@ void PuGen::vPu100k(ToRow* pToRow, i8& riNextKey)
 /*----------------------------------------------------------------------------*/
 /* generate Pu1m data                                                         */
 /*----------------------------------------------------------------------------*/
-void PuGen::vPu1m(ToRow* pToRow, i8& riNextKey)
+void PuGen::vPu1m(ToKeyHshRow* pToRow, i8& riNextKey)
 {
   pToRow->vNewRowBuffer();
   RowBuffer* pRowBuffer = pToRow->pRowBuffer();
@@ -122,7 +122,7 @@ void PuGen::vPu1m(ToRow* pToRow, i8& riNextKey)
 /*----------------------------------------------------------------------------*/
 /* generate Pu10m data                                                        */
 /*----------------------------------------------------------------------------*/
-void PuGen::vPu10m(ToRow* pToRow, i8& riNextKey)
+void PuGen::vPu10m(ToKeyHshRow* pToRow, i8& riNextKey)
 {
   pToRow->vNewRowBuffer();
   RowBuffer* pRowBuffer = pToRow->pRowBuffer();

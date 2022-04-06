@@ -375,10 +375,10 @@ enum eCN : u2 // Class Number
   /* */ CN_TMEVAL,
   /* */ CN_TOKEN,
   /* */ CN_TOKENVEC,
+  /* */ CN_TOKEYHSHROW,
   /* */ CN_TOLGLPTNCRW,
   /* */ CN_TOLGLPTNNST,
   /* */ CN_TOLGLPTNROW,
-  /* */ CN_TOROW,
   /* */ CN_TOTUP,
   /* */ CN_TRACELOCK,
   /* */ CN_TRACEMULTILOCK,
@@ -780,10 +780,10 @@ static Stz* aCN[]
   /* */ "TMEVAL"_Stz,               // CN_TMEVAL
   /* */ "TOKEN"_Stz,                // CN_TOKEN
   /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
+  /* */ "TOKEYHSHROW"_Stz,          // CN_TOKEYHSHROW
   /* */ "TOLGLPTNCRW"_Stz,          // CN_TOLGLPTNCRW
   /* */ "TOLGLPTNNST"_Stz,          // CN_TOLGLPTNNST
   /* */ "TOLGLPTNROW"_Stz,          // CN_TOLGLPTNROW
-  /* */ "TOROW"_Stz,                // CN_TOROW
   /* */ "TOTUP"_Stz,                // CN_TOTUP
   /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK
   /* */ "TRACEMULTILOCK"_Stz,       // CN_TRACEMULTILOCK

@@ -10,7 +10,7 @@
 
 
 #include "StreamDef.hpp"
-#include "ToRow.hpp"
+#include "ToKeyHshRow.hpp"
 #include "RowBuffer.hpp"
 
 #include "PuGen.hpp"
@@ -31,7 +31,7 @@ void Step::vPuGenX(void)
 {
   ENTRY();
   
-  ToRow* pToRow = _pToRow(m_pDataStack->pPopPtr(__func__));
+  ToKeyHshRow* pToRow = _pToKeyHshRow(m_pDataStack->pPopPtr(__func__));
 
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
