@@ -24,9 +24,9 @@ namespace STORE
   
     void vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer);
 
-    DataBuffer* pBuffer(i8 i_Ptn);
-    DataBuffer* pCompletedBuffer(i8 i_Ptn);
-    DataBuffer* pDanglingBuffer(i8 i_Ptn);
+    DataBuffer* pBuffer(LglPtn tLglPtn);
+    DataBuffer* pCompletedBuffer(LglPtn tLglPtn);
+    DataBuffer* pDanglingBuffer(LglPtn tLglPtn);
 
     Footer* aFooter(void);
   };

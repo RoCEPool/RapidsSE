@@ -68,11 +68,11 @@ void LglBufSet::vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer)
 /*----------------------------------------------------------------------------*/
 /* return a full crwBuffer for given partition (if any)                       */
 /*----------------------------------------------------------------------------*/
-DataBuffer* LglBufSet::pBuffer(i8 i_Ptn)
+DataBuffer* LglBufSet::pBuffer(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
-  DataBuffer* pBuffer = m_paBufferChain[i_Ptn];
+  DataBuffer* pBuffer = m_paBufferChain[tLglPtn];
 
   return pBuffer;
 }
@@ -80,15 +80,15 @@ DataBuffer* LglBufSet::pBuffer(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* return a full crwBuffer for given partition (if any)                       */
 /*----------------------------------------------------------------------------*/
-DataBuffer* LglBufSet::pCompletedBuffer(i8 i_Ptn)
+DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
   DataBuffer* pCompletedBuffer = nullptr;
   
   DataBuffer* pDataBuffer = (DataBuffer*)
-                              (m_paBufferChain[i_Ptn]
-                                 ? m_paBufferChain[i_Ptn]->pNextLinkedBuffer()
+                              (m_paBufferChain[tLglPtn]
+                                 ? m_paBufferChain[tLglPtn]->pNextLinkedBuffer()
                                  : nullptr);
   while (pDataBuffer) {
     pCompletedBuffer = pDataBuffer;
@@ -106,13 +106,13 @@ DataBuffer* LglBufSet::pCompletedBuffer(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* return any final dangling buffer                                           */
 /*----------------------------------------------------------------------------*/
-DataBuffer* LglBufSet::pDanglingBuffer(i8 i_Ptn)
+DataBuffer* LglBufSet::pDanglingBuffer(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
   
-  DataBuffer* pDataBuffer = m_paBufferChain[i_Ptn];
+  DataBuffer* pDataBuffer = m_paBufferChain[tLglPtn];
   
-  m_paBufferChain[i_Ptn] = nullptr;
+  m_paBufferChain[tLglPtn] = nullptr;
   
   return pDataBuffer;
 }
