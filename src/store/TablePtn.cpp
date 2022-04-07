@@ -281,6 +281,8 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer)
     pBucket = m_pBucketVec->pGet(iBktNo);
   }
 
+  RASSERT(iBktNo == m_tLglPtn);
+  
   if (pBucket) {
     pBucket->vAppendBuffer(pDataBuffer);
     //vTrace(">>>>>>>>>>>>>>>>> Append row to vec:%p bucket:%p Bkt:%lld\n"_Stz, m_pBucketVec , pBucket, iBktNo );
