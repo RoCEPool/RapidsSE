@@ -52,17 +52,17 @@ LglBufSet::~LglBufSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add row as first into buffer chain for partition                           */
 /*----------------------------------------------------------------------------*/
-void LglBufSet::vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer)
+void LglBufSet::vAddBuffer(LglPtn tLglPtn, DataBuffer* pDataBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
    // link the old with this
-   pDataBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);
+   pDataBuffer->vNextLinkedBuffer(m_paBufferChain[tLglPtn]);
    
-   if (m_paBufferChain[i_Ptn])
-     m_paBufferChain[i_Ptn]->vPrevLinkedBuffer(pDataBuffer);
+   if (m_paBufferChain[tLglPtn])
+     m_paBufferChain[tLglPtn]->vPrevLinkedBuffer(pDataBuffer);
    
-   m_paBufferChain[i_Ptn] = pDataBuffer;
+   m_paBufferChain[tLglPtn] = pDataBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
