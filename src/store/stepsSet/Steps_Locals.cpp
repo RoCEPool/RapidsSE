@@ -446,8 +446,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("ShardDef[]"_Stz)) {
-    pCurrentWord->vEncodeCall("ShardDef[].set"_Stz);
+  else if (szTerm->bSame("PtnDef[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PtnDef[].set"_Stz);
     EXIT();
     return;
   }

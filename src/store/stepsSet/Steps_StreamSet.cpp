@@ -345,8 +345,8 @@ void Step::vStreamSetAddListPartitions(void)
   // get the table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  PtnId tPtnId;
-  tPtnId = m_pDataStack->iPopInt(__func__);
+  LglPtn tLglPtn;
+  tLglPtn = m_pDataStack->iPopInt(__func__);
 
   // get the streamDef from the table
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
@@ -355,11 +355,11 @@ void Step::vStreamSetAddListPartitions(void)
   
   Grid* pGrid = AM::pGrid();
 
-  i8 i_Node = AM::pPtnMap()->iMappedNodeId(tPtnId);
-  Node* pNode = pGrid->pFindNodeById(i_Node);
+  i8 iNodeId = AM::pPtnMap()->iMappedNodeId(tLglPtn);
+  Node* pNode = pGrid->pFindNodeById(iNodeId);
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
-                                    tPtnId.iAsI8(),
+                                    tLglPtn.iAsI8(),
                                     pNode->szNodeNm(),
                                     C_VARGS_END);
 

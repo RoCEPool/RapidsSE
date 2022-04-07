@@ -29,7 +29,7 @@ namespace STORE
 
     bool m_bNodeTopo;       // is node-level topology (or partition)?
     i8   m_i_SpecificNode;  // run on specific node
-    PtnId m_tSpecificPtnNo; // run for specific ptn
+    LglPtn m_tSpecificPtnNo; // run for specific ptn
 
     // must be last
     Footer m_xFooter;
@@ -67,8 +67,8 @@ namespace STORE
   
     void vSpecificNode(i8 i_SpecificNode);
     i8   iSpecificNode(void);
-    PtnId tSpecificPtnNo(void);
-    void vSpecificPtnNo(PtnId tSpecificPtnNo);
+    LglPtn tSpecificPtnNo(void);
+    void vSpecificPtnNo(LglPtn tSpecificPtnNo);
     Stz* szStageNm(void);
     i8   i_StageSpec(void);
     eYG  eStageTopology(void);

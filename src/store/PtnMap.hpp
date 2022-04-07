@@ -39,24 +39,24 @@ namespace STORE
   
     void vAdjustMap(i8 nKnownNodes);
 
-    PtnId tHashToLglPtnId(i8 iHash);
+    LglPtn tHashToLglPtnId(i8 iHash);
   
     i8 nKnownNodes(void);
   
-    i8 iMappedNodeId(PtnId tPtnId);
-    i8 i_MappedPtnNo(PtnId tPtnId);
+    i8 iMappedNodeId(LglPtn tLglPtn);
+    i8 i_MappedPtnNo(LglPtn tLglPtn);
 
     i8 nPtnsInGrid(void);
     i8 nPtnsPerNode(void);
 
-    PtnId tRobinToDtdPtnStream(i8 iRobin);
-    PtnId tRobinToLclPtnStream(i8 iRobin);
-    PtnId tRobinToNdePtnNo(i8 iRobin);
+    LglPtn tRobinToDtdPtnStream(i8 iRobin);
+    LglPtn tRobinToLclPtnStream(i8 iRobin);
+    LglPtn tRobinToNdePtnNo(i8 iRobin);
 
     void vSee(void);
   
-    PtnId tToPtnNoOfNode(i8 i_Ptn, i8 iNodeId);
-    PtnId tToPtnNoOfThisNode(i8 i_Ptn);
+    LglPtn tToPtnNoOfNode(i8 i_Ptn, i8 iNodeId);
+    LglPtn tToPtnNoOfThisNode(i8 i_Ptn);
 
   private:
     void vRepartition(void);

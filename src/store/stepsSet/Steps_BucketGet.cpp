@@ -183,12 +183,12 @@ void Step::vBucketGetCrw(void)
   //  vTrace("C++ gets called: BucketGet[].getBucketCrw  Found the table:%s\n"_Stz, pBucketGet->sTableName().azChar());
   //}
   // Here we need to map the bucket to the partition
-  PtnId tPtnId =  pTable->tBktToLglPtn(pBucketGet->iBucketNo());
-  //vTrace(">>>  vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, pBucketGet->iBucketNo(), tPtnId.uPtnNo());
+  LglPtn tLglPtn =  pTable->tLglPtnOf(pBucketGet->iBucketNo());
+  //vTrace(">>>  vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, pBucketGet->iBucketNo(), tLglPtn.uPtnNo());
 
-  TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.uPtnNo());
+  TablePtn *pTablePtn = pTable->pTablePtn(tLglPtn.uPtnNo());
 
-  pTablePtn->vSetBucket(tPtnId.uPtnNo()); //not needed
+  pTablePtn->vSetBucket(tLglPtn.uPtnNo()); //not needed
 
   Bucket* pBucket = pTablePtn->pGetBucket(pBucketGet->iBucketNo());
 
@@ -198,12 +198,12 @@ void Step::vBucketGetCrw(void)
   if (!pCrwBuffer) {
 
       // DEBUG search all the buckets
-      for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-        //vTrace("    vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, iBkt, tPtnId.uPtnNo());
+      for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
+        //vTrace("    vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, iBkt, tLglPtn.uPtnNo());
         pBucket = pTablePtn->pGetBucket(i_Bkt);
         pCrwBuffer = pBucket->pRootCrwBuffer();
         if (pCrwBuffer) {
-          vTrace("vBucketGetCrw got data parcel bkt:%lld ptn:%lld\n"_Stz, i_Bkt, tPtnId.uPtnNo());
+          vTrace("vBucketGetCrw got data parcel bkt:%lld ptn:%lld\n"_Stz, i_Bkt, tLglPtn.uPtnNo());
           break;
         }
     }
@@ -212,12 +212,12 @@ void Step::vBucketGetCrw(void)
       for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsPerNode(); i_Ptn++) {
         pTablePtn = pTable->pTablePtn(i_Ptn);
         // DEBUG search all the buckets
-        for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-          //vTrace("    vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, i_Bkt, tPtnId.uPtnNo());
+        for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
+          //vTrace("    vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, i_Bkt, tLglPtn.uPtnNo());
           pBucket = pTablePtn->pGetBucket(i_Bkt);
           pCrwBuffer = pBucket->pRootCrwBuffer();
           if (pCrwBuffer) {
-            vTrace("vBucketGetCrw got data parcel bkt:%lld ptn:%lld (different ptn than originally looked for)\n"_Stz, i_Bkt, tPtnId.uPtnNo());
+            vTrace("vBucketGetCrw got data parcel bkt:%lld ptn:%lld (different ptn than originally looked for)\n"_Stz, i_Bkt, tLglPtn.uPtnNo());
             break;
           }
         }
@@ -230,7 +230,7 @@ void Step::vBucketGetCrw(void)
   Parcel *pParcel = new Parcel(true);
 
 
-  BucketInfo* pBucketInfo = new BucketInfo(pBucketGet->sTableName(), tPtnId, pBucketGet->iBucketNo());
+  BucketInfo* pBucketInfo = new BucketInfo(pBucketGet->sTableName(), tLglPtn, pBucketGet->iBucketNo());
   //pBucketInfo->vCrwBuffer(pCrwBuffer); leave data buffer separately
   pBucketInfo->vNodeName(AM::szNodeNm());
 
@@ -314,8 +314,8 @@ void Step::vBucketGetGetBucketTable(void)
     vTrace("C++ gets called: BucketGet::getBucketOfTable Found the table:%s\n"_Stz, sTableNm.azChar());
 
     // Here we need to map the bucket to the partition
-    PtnId tPtnId =  pTable->tBktToLglPtn(iBucket);
-    TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.uPtnNo());
+    LglPtn tLglPtn =  pTable->tLglPtnOf(iBucket);
+    TablePtn *pTablePtn = pTable->pTablePtn(tLglPtn.uPtnNo());
 
     //pBucket = pTablePtn->pGetBucket(0);
 
@@ -364,10 +364,10 @@ void Step::vBucketGetGetBucket(void)
   if (pTable) {
     // Here we need to map the bucket to the partition
     //pTable->pBucketMap()->vSee();
-    PtnId tPtnId =  pTable->tBktToLglPtn(iBucket);
-    TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.uPtnNo());
+    LglPtn tLglPtn =  pTable->tLglPtnOf(iBucket);
+    TablePtn *pTablePtn = pTable->pTablePtn(tLglPtn.uPtnNo());
 
-    vTrace("C++ gets called: BucketGet::getBucket Found the table:%s ptn:%lld for bucket:%lld\n"_Stz, sTableNm.azChar(), tPtnId.uPtnNo(), iBucket);
+    vTrace("C++ gets called: BucketGet::getBucket Found the table:%s ptn:%lld for bucket:%lld\n"_Stz, sTableNm.azChar(), tLglPtn.uPtnNo(), iBucket);
 
     pBucket = pTablePtn->pGetBucket(iBucket);
     //m_pDataStack->vPushPtr(pBucket);

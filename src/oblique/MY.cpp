@@ -42,7 +42,7 @@ i8 MY::iPtn(void)
   _static_
   
   Op* pOp = MY::pOp();
-  i8 iPtn = pOp ? pOp->tPtnId().iAsI8() : -1;
+  i8 iPtn = pOp ? pOp->tLglPtn().iAsI8() : -1;
   return iPtn;
 }
 

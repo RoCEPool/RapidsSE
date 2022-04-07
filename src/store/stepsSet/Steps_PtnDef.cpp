@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ShardDef.cpp -- ShardDef step group                                  */
+/* Steps_PtnDef.cpp -- PtnDef step group                                      */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -25,108 +25,108 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_ShardDef(void)
+void Step::vAddSteps_PtnDef(void)
 {
-  vAddStep("ShardDef[]"_Stz,                 &Step::vShardDefGet);
-  vAddStep("ShardDef[]\\clear"_Stz,          &Step::vShardDefGetAndClear);
-  vAddStep("ShardDef[].columnCount@"_Stz,    &Step::vShardDefColumnCountFetch);
-  vAddStep("ShardDef[].column@"_Stz,         &Step::vShardDefColumnFetch);
-  vAddStep("ShardDef[].get"_Stz,             &Step::vShardDefGet);
-  vAddStep("ShardDef[].isNull"_Stz,          &Step::vShardDefIsNull);
-  vAddStep("ShardDef[].print"_Stz,           &Step::vShardDefPrint);
-  vAddStep("ShardDef[].set"_Stz,             &Step::vShardDefSet);
+  vAddStep("PtnDef[]"_Stz,                 &Step::vPtnDefGet);
+  vAddStep("PtnDef[]\\clear"_Stz,          &Step::vPtnDefGetAndClear);
+  vAddStep("PtnDef[].columnCount@"_Stz,    &Step::vPtnDefColumnCountFetch);
+  vAddStep("PtnDef[].column@"_Stz,         &Step::vPtnDefColumnFetch);
+  vAddStep("PtnDef[].get"_Stz,             &Step::vPtnDefGet);
+  vAddStep("PtnDef[].isNull"_Stz,          &Step::vPtnDefIsNull);
+  vAddStep("PtnDef[].print"_Stz,           &Step::vPtnDefPrint);
+  vAddStep("PtnDef[].set"_Stz,             &Step::vPtnDefSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].column@ -- get column from shardDef                             */
+/* PtnDef[].column@ -- get column from ptnDef                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefColumnFetch(void)
+void Step::vPtnDefColumnFetch(void)
 {
   ENTRY();
   
-  ShardDef* pShardDef = _pShardDef(*m_pLogicUnit->m_xpShardDef);
+  PtnDef* pPtnDef = _pPtnDef(*m_pLogicUnit->m_xpPtnDef);
                                       
   i8 iColumn = m_pDataStack->iPopInt(__func__);
   
-  m_pDataStack->vPushPtr(pShardDef->pGetColumn(iColumn));
+  m_pDataStack->vPushPtr(pPtnDef->pGetColumn(iColumn));
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].columnCount@ -- get column count from shardDef                  */
+/* PtnDef[].columnCount@ -- get column count from ptnDef                      */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefColumnCountFetch(void)
+void Step::vPtnDefColumnCountFetch(void)
 {
   ENTRY();
   
-  ShardDef* pShardDef = _pShardDef(*m_pLogicUnit->m_xpShardDef);
+  PtnDef* pPtnDef = _pPtnDef(*m_pLogicUnit->m_xpPtnDef);
   
-  m_pDataStack->vPushInt(pShardDef->nColumns());
+  m_pDataStack->vPushInt(pPtnDef->nColumns());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].get -- get shardDef                                             */
+/* PtnDef[].get -- get ptnDef                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefGet(void)
+void Step::vPtnDefGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpShardDef);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPtnDef);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].getAndClear -- get shardDef and set to nullptr                  */
+/* PtnDef[].getAndClear -- get ptnDef and set to nullptr                      */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefGetAndClear(void)
+void Step::vPtnDefGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpShardDef);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpPtnDef);
 
-  m_pLogicUnit->m_xpShardDef = nullptr;
+  m_pLogicUnit->m_xpPtnDef = nullptr;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].isNull -- is shardDef null ?                                    */
+/* PtnDef[].isNull -- is ptnDef null ?                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefIsNull(void)
+void Step::vPtnDefIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpShardDef.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpPtnDef.bIsNull() ? 1 : 0);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].print -- print shardDef                                         */
+/* PtnDef[].print -- print ptnDef                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefPrint(void)
+void Step::vPtnDefPrint(void)
 {
   ENTRY();
     
-  ShardDef* pShardDef = _pShardDef(*m_pLogicUnit->m_xpShardDef);
+  PtnDef* pPtnDef = _pPtnDef(*m_pLogicUnit->m_xpPtnDef);
   
-  pShardDef->vPrint();
+  pPtnDef->vPrint();
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ShardDef[].set -- set shardDef                                             */
+/* PtnDef[].set -- set ptnDef                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vShardDefSet(void)
+void Step::vPtnDefSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpShardDef = _pShardDef(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpPtnDef = _pPtnDef(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

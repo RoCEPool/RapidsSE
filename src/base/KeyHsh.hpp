@@ -1,29 +1,32 @@
 /*============================================================================*/
-/* PtnId.hpp -- Node.Partiton identifier                                      */
+/* KeyHsh.hpp -- Key Hash                                                     */
 /*============================================================================*/
 #pragma once
 
-class PtnId : public Gid_t<CN_PTNSTREAM>
+#include "SEtype.hpp"
+
+class KeyHsh : public SEtype
 {
   public:
+  i8 m_iAsI8;
+  
+  KeyHsh(void);
+  KeyHsh(i8 iAsI8);
 
-  PtnId(void);
-  PtnId(i8 iAsI8);
-
+  static KeyHsh tToKeyHsh(i8 iKeyHsh);
+  
   // auto conversion
-  operator PtnId*(void);
+  operator i8(void);
   
   void operator =(i8 iAsI8);
-  void operator =(PtnId tPtnId);
+  void operator =(KeyHsh tKeyHsh);
 
-  i8 operator ++(void); // increment (prefix form)
-  i8 operator ++(int);  // increment (postfix)
   bool operator <(i8 iAsI8);
-
-  i8   nPtnBits(void);
-  u8   uPtnMask(void);
-  u8   uPtnNo(void);
-  void vPtnNo(u8 uPtnNo);
+  
+  i8 iAsI8(void);
+  void vAsI8(i8 iAsI8);
+  
+  void vRunningHash(i8 iMixVal);
 };
 
 /*============================================================================*/

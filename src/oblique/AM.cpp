@@ -122,7 +122,7 @@
 
 #include "HeadsUp.hpp"
 
-#include "PtnId.hpp"
+#include "LglPtn.hpp"
 #include "BucketMap.hpp"
 #include "Stage.hpp"
 #include "SysMetrics.hpp"
@@ -172,13 +172,13 @@ SysMetrics* AM::ATTACHMAP::pSysMetricsChain(void)
 /*----------------------------------------------------------------------------*/
 /* convert bucket id to ptn id                                                */
 /*----------------------------------------------------------------------------*/
-PtnId AM::BKTMAP::tBktIdToLglPtnId(i8 iBktId)
+LglPtn AM::BKTMAP::tLglPtnOf(KeyBkt tKeyBkt)
 {
   _static_
   
-  PtnId tPtnId = gpAttachMap->m_pBucketMap->tBktToLglPtnId(iBktId);
+  LglPtn tLglPtn = gpAttachMap->m_pBucketMap->tLglPtnOf(tKeyBkt);
 
-  return tPtnId;
+  return tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,18 +189,6 @@ BucketMap* AM::BKTMAP::pBucketMap(void)
   _static_
   
   return gpAttachMap->m_pBucketMap;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert hash to bucket id                                                  */
-/*----------------------------------------------------------------------------*/
-i8 AM::BKTMAP::iHashToBktId(i8 iHash)
-{
-  _static_
-  
-  i8 iBktId = iHash % C_MAX_BUCKETS;
-
-  return iBktId;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1251,7 +1239,7 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* convert given hash to distributed partition number                         */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tHashToLglPtnId(i8 iHash)
+LglPtn AM::PTNMAP::tHashToLglPtnId(i8 iHash)
 {
   _static_
 
@@ -1290,7 +1278,7 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
+LglPtn AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 {
   _static_
   
@@ -1300,7 +1288,7 @@ PtnId AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
+LglPtn AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 {
   _static_
   
@@ -1310,7 +1298,7 @@ PtnId AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
+LglPtn AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
 {
   _static_
   
@@ -1581,11 +1569,11 @@ bool AM::SHOW::bSocket_Failure(void)
 /*----------------------------------------------------------------------------*/
 /* get operator                                                               */
 /*----------------------------------------------------------------------------*/
-Op* AM::STAGE::pGetOp(Stage* pStage, PtnId tPtnId, i8 i_Op)
+Op* AM::STAGE::pGetOp(Stage* pStage, LglPtn tLglPtn, i8 i_Op)
 {
   _static_
   
-  Op* pOp = pStage->pPipeDstOp(tPtnId,i_Op);
+  Op* pOp = pStage->pPipeDstOp(tLglPtn,i_Op);
   
   return pOp;
 
@@ -2444,7 +2432,7 @@ Sessions* AM::pSessions(void) { return gpAttachMap->m_pSessions;  }
 
 
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
-i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
+i8   AM::nBuckets(void)       { return C_MAX_KEYBUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 

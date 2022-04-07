@@ -42,7 +42,7 @@ namespace STORE
     i8   nOpsExeOnNode(i8 iNodeId, i8 iOriginId);
     Pipeline* pPipeline(void);
     Vertex* pVertex(void);
-    Op*  pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp);
+    Op*  pPipeDstOp(LglPtn tDstLglPtn, i8 i_DstOp);
     i8   i_Stage(void);
     Stz* szStageNm(void);
     Stream* pStream0(void);

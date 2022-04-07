@@ -34,14 +34,14 @@ __aFooterFunction(Stream)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
-               i8 i_Stream, PtnId tPtnId, i8 iNodeId)
+               i8 i_Stream, LglPtn tLglPtn, i8 iNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
   m_p_StageSpec = p_StageSpec;
   m_p_Stage     = p_Stage;
 
-  m_tPtnId     = tPtnId;
+  m_tLglPtn     = tLglPtn;
   m_iNodeId    = iNodeId;
   m_i_Stream   = i_Stream;
   
@@ -180,10 +180,10 @@ Pipeline* Stream::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get partition in grid this stream needs to run on                          */
 /*----------------------------------------------------------------------------*/
-PtnId Stream::tPtnId(void)
+LglPtn Stream::tLglPtn(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-  return m_tPtnId;
+  return m_tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -233,25 +233,25 @@ void Stream::vSpawnOpTasks(void)
 
   i8 iThisNodeId = MY::iNodeId();
   
-  i8 i_OnNode = -1;
+  i8 iOnNodeId = -1;
   
   if (m_p_StageSpec->bNodeTopo()) {
     
     if (YG_NEXT_NODE == m_p_StageSpec->eStageTopology()) {
       if (iThisNodeId != pPipeline()->iOriginNodeId()) {
-        i_OnNode = m_iNodeId;
+        iOnNodeId = m_iNodeId;
       }
     }
     else {
-      i_OnNode = m_iNodeId;
+      iOnNodeId = m_iNodeId;
     }
     
   }
   else {
-    i_OnNode = AM::pPtnMap()->iMappedNodeId(m_tPtnId);
+    iOnNodeId = AM::pPtnMap()->iMappedNodeId(m_tLglPtn);
   }
   
-  if (i_OnNode == iThisNodeId) {
+  if (iOnNodeId == iThisNodeId) {
     // for each operator in the stage ptn
     for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
       

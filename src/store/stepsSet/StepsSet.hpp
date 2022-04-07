@@ -41,20 +41,6 @@ public:
   void vAnswerWLDelete(void);
   void vAnswerWLNew(void);
 
-  // recvWL
-  void vRecvWLGet(void);
-  void vRecvWLIsNotNull(void);
-  void vRecvWLIsNull(void);
-  void vRecvWLSet(void);
-
-  // SendWL
-  void vSendProcessEventA(void);
-  void vSendProcessEventB(void);
-  void vSendWLAction1(void);
-  void vSendWLAction2(void);
-  void vSendWLDelete(void);
-  void vSendWLNew(void);
-
   // address
   void vAddressEqual(void);
   void vAddressFetch(void);
@@ -63,6 +49,7 @@ public:
   // agg timer
   void vAggTimerAdd(void);
   void vAggTimerDelete(void);
+  void vAggTimerGet(void);
   void vAggTimerMicrosecs(void);
   void vAggTimerMillisecs(void);
   void vAggTimerNanosecs(void);
@@ -70,6 +57,7 @@ public:
   void vAggTimerReportStr(void);
   void vAggTimerReset(void);
   void vAggTimerSecs(void);
+  void vAggTimerSet(void);
   void vAggTimerTicks(void);
 
   // AM
@@ -1494,13 +1482,15 @@ public:
   void vRbCursorTableFetch(void);
   void vRbCursorTableStore(void);
 
+  // recvWL
+  void vRecvWLGet(void);
+  void vRecvWLIsNotNull(void);
+  void vRecvWLIsNull(void);
+  void vRecvWLSet(void);
+
   // reference timer
   void vRefTimerReset(void);
   void vRefTimerMilliseconds(void);
-
-  // reg agg timer
-  void vRegAggTimerGet(void);
-  void vRegAggTimerSet(void);
 
   // Consume
   void vRegSendsDelete(void);
@@ -1573,6 +1563,15 @@ public:
   void vPipeinPipeToOutput(void);
   void vPipeinSet(void);
   void vPipeinWriteProfile(void);
+
+  // ptn def
+  void vPtnDefColumnFetch(void);
+  void vPtnDefColumnCountFetch(void);
+  void vPtnDefGet(void);
+  void vPtnDefGetAndClear(void);
+  void vPtnDefIsNull(void);
+  void vPtnDefPrint(void);
+  void vPtnDefSet(void);
 
   // received object
   void vRecvdObjectGet(void);
@@ -1701,6 +1700,14 @@ public:
   void vSendNodeGet(void);
   void vSendNodeSet(void);
 
+  // SendWL
+  void vSendProcessEventA(void);
+  void vSendProcessEventB(void);
+  void vSendWLAction1(void);
+  void vSendWLAction2(void);
+  void vSendWLDelete(void);
+  void vSendWLNew(void);
+
   // session
   void vSessionCascadeFetch(void);
   void vSessionCascadeStore(void);
@@ -1721,15 +1728,6 @@ public:
   void vSessionToDoStore(void);
   void vSessionTxFetch(void);
   void vSessionTxStore(void);
-
-  // shard def
-  void vShardDefColumnFetch(void);
-  void vShardDefColumnCountFetch(void);
-  void vShardDefGet(void);
-  void vShardDefGetAndClear(void);
-  void vShardDefIsNull(void);
-  void vShardDefPrint(void);
-  void vShardDefSet(void);
 
   // shell
   void vShellExecute(void);
@@ -2034,7 +2032,7 @@ public:
   void vTableListPartition(void);
   void vTableNameFetch(void);
   void vTableNew(void);
-  void vTableShardDefFetch(void);
+  void vTablePtnDefFetch(void);
   void vTableSet(void);
   void vTableSize(void);
   void vTableStreamDefFetch(void);
@@ -2260,11 +2258,11 @@ public:
   // toKeyHshRow
   void vToKeyHshRowCompleted(void);
   void vToKeyHshRowCountersFetch(void);
-  void vToKeyHshRowCreate(void);
   void vToKeyHshRowCsvToRow(void);
   void vToKeyHshRowDangling(void);
   void vToKeyHshRowDelete(void);
   void vToKeyHshRowFetch(void);
+  void vToKeyHshRowNew(void);
 
   // toLglPtnCrw
   void vToLglPtnCrwCompleted(void);

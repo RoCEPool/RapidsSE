@@ -83,7 +83,7 @@ void Step::vEntBufferPartitionFetch(void)
   
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushInt(pIndexBuffer->tPtnId().iAsI8());
+  m_pDataStack->vPushInt(pIndexBuffer->tLglPtn().iAsI8());
 
   EXIT();
 }
@@ -97,10 +97,10 @@ void Step::vEntBufferPartitionStore(void)
   
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
 
-  PtnId tPtnId;
-  tPtnId = m_pDataStack->iPopInt(__func__);
+  LglPtn tLglPtn;
+  tLglPtn = m_pDataStack->iPopInt(__func__);
 
-  pIndexBuffer->vPtnId(tPtnId);
+  pIndexBuffer->vLglPtn(tLglPtn);
 
   EXIT();
 }

@@ -32,20 +32,20 @@ void Step::vAddSteps_ToKeyHshRow(void)
   vAddStep("ToKeyHshRow[]"_Stz,               &Step::vToKeyHshRowFetch);
   vAddStep("ToKeyHshRow[].completed"_Stz,     &Step::vToKeyHshRowCompleted);
   vAddStep("ToKeyHshRow[].counters@@"_Stz,    &Step::vToKeyHshRowCountersFetch);
-  vAddStep("ToKeyHshRow[].create"_Stz,        &Step::vToKeyHshRowCreate);
   vAddStep("ToKeyHshRow[].csvToRow"_Stz,      &Step::vToKeyHshRowCsvToRow);
   vAddStep("ToKeyHshRow[].dangling"_Stz,      &Step::vToKeyHshRowDangling);
   vAddStep("ToKeyHshRow[].delete"_Stz,        &Step::vToKeyHshRowDelete);
+  vAddStep("ToKeyHshRow[].new"_Stz,           &Step::vToKeyHshRowNew);
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToKeyHshRow[].completed -- full row buffer                                 */
+/* ToKeyHshRow[].completed -- fetch full/complete row buffer                  */
 /*----------------------------------------------------------------------------*/
 void Step::vToKeyHshRowCompleted(void)
 {
   ENTRY();
   
-  ToKeyHshRow* pToKeyHshRow = * m_pLogicUnit->m_xpToRow;
+  ToKeyHshRow* pToKeyHshRow = * m_pLogicUnit->m_xpToKeyHshRow;
 
   RowBuffer* pRowBuffer = pToKeyHshRow->pFullRowBuffer();
   
@@ -61,7 +61,7 @@ void Step::vToKeyHshRowCountersFetch(void)
 {
   ENTRY();
   
-  ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToRow;
+  ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToKeyHshRow;
 
   m_pDataStack->vPushInt(pToKeyHshRow->iRowsSkipped());
   m_pDataStack->vPushInt(pToKeyHshRow->iRowsInvalid());
@@ -79,7 +79,7 @@ void Step::vToKeyHshRowCsvToRow(void)
 
   CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pDataStack->pPopPtr(__func__));
 
-  ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToRow;
+  ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToKeyHshRow;
 
   bool b = pToKeyHshRow->bConvertCsv(pCsvBuffer);
 
@@ -89,9 +89,57 @@ void Step::vToKeyHshRowCsvToRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ToKeyHshRow[].create -- create toRow                                       */
+/* ToKeyHshRow[].dangling -- fetch dangling row buffer                        */
 /*----------------------------------------------------------------------------*/
-void Step::vToKeyHshRowCreate(void)
+void Step::vToKeyHshRowDangling(void)
+{
+  ENTRY();
+  
+  if (m_pLogicUnit->m_xpToKeyHshRow.bIsNull()) {
+    m_pDataStack->vPushPtr(nullptr);
+  }
+  else {
+    ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToKeyHshRow;
+    RowBuffer* pRowBuffer = pToKeyHshRow->pDanglingRowBuffer();
+    m_pDataStack->vPushPtr(pRowBuffer);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ToKeyHshRow[].delete -- delete ToKeyHshRow                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vToKeyHshRowDelete(void)
+{
+  ENTRY();
+  
+  ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToKeyHshRow;
+  m_pLogicUnit->m_xpToKeyHshRow = nullptr;
+  
+  delete pToKeyHshRow;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ToKeyHshRow[] -- fetch ToKeyHshRow                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vToKeyHshRowFetch(void)
+{
+  ENTRY();
+  
+  ToKeyHshRow* pToKeyHshRow = * m_pLogicUnit->m_xpToKeyHshRow;
+
+  m_pDataStack->vPushPtr(pToKeyHshRow);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ToKeyHshRow[].new -- new ToKeyHshRow                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vToKeyHshRowNew(void)
 {
   ENTRY();
   
@@ -114,58 +162,10 @@ void Step::vToKeyHshRowCreate(void)
 
   ToKeyHshRow* pToKeyHshRow = new ToKeyHshRow(pStreamDef,pBucketMap,pFmt);
       
-  m_pLogicUnit->m_xpToRow = pToKeyHshRow;
+  m_pLogicUnit->m_xpToKeyHshRow = pToKeyHshRow;
   
   delete pFmt;
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ToKeyHshRow[].dangling -- fetch row buffer                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vToKeyHshRowDangling(void)
-{
-  ENTRY();
-  
-  if (m_pLogicUnit->m_xpToRow.bIsNull()) {
-    m_pDataStack->vPushPtr(nullptr);
-  }
-  else {
-    ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToRow;
-    RowBuffer* pRowBuffer = pToKeyHshRow->pDanglingRowBuffer();
-    m_pDataStack->vPushPtr(pRowBuffer);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ToKeyHshRow[].delete -- delete toRow                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vToKeyHshRowDelete(void)
-{
-  ENTRY();
-  
-  ToKeyHshRow* pToKeyHshRow = *m_pLogicUnit->m_xpToRow;
-  m_pLogicUnit->m_xpToRow = nullptr;
-  
-  delete pToKeyHshRow;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ToKeyHshRow[] -- fetch toRow                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vToKeyHshRowFetch(void)
-{
-  ENTRY();
-  
-  ToKeyHshRow* pToKeyHshRow = * m_pLogicUnit->m_xpToRow;
-
-  m_pDataStack->vPushPtr(pToKeyHshRow);
-
   EXIT();
 }
 

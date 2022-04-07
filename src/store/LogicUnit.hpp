@@ -20,7 +20,7 @@
 
 #include "RluCommon.h"
 #include "RluDiary.hpp"
-#include "ShardDef.hpp"
+#include "PtnDef.hpp"
 #include "MetaGet.hpp"
 #include "BktMapGet.hpp"
 #include "BucketGet.hpp"
@@ -88,7 +88,6 @@ namespace STORE
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
     REG<AnswerWL,       CN_ANSWERWL      > m_xpAnswerWL;
     REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
-    REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
   
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
     REG<BucketGet,      CN_BUCKETGET     > m_xpBucketGet;
@@ -146,6 +145,8 @@ namespace STORE
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
     REG<Pot,            CN_POT           > m_xpPot;
+    REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
+    REG<PtnDef,         CN_PTNDEF        > m_xpPtnDef;
     REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;
 
     REG<Object,         CN_NONE          > m_xpRecvdObject;
@@ -156,7 +157,6 @@ namespace STORE
     REG<Node,           CN_NODE          > m_xpSendNode;
     REG<Sends,          CN_SENDS         > m_xpSends;
     REG<SendWL,         CN_SENDWL        > m_xpSendWL;
-    REG<ShardDef,       CN_SHARDDEF      > m_xpShardDef;
     REG<Socket,         CN_SOCKET        > m_xpSocket;
     REG<Stage,          CN_STAGE         > m_xpStage;
     REG<Stats,          CN_STATS         > m_xpStats;
@@ -177,10 +177,10 @@ namespace STORE
     REG<TagSet,         CN_TAGSET        > m_xpTagSet;
     REG<Timer,          CN_TIMER         > m_xpTimer;
     REG<TinyC,          CN_TINYC         > m_xpTinyC;
+    REG<ToKeyHshRow,    CN_TOKEYHSHROW   > m_xpToKeyHshRow;
     REG<ToLglPtnCrw,    CN_TOLGLPTNCRW   > m_xpToLglPtnCrw;
     REG<ToLglPtnNst,    CN_TOLGLPTNNST   > m_xpToLglPtnNst;
     REG<ToLglPtnRow,    CN_TOLGLPTNROW   > m_xpToLglPtnRow;
-    REG<ToKeyHshRow,          CN_TOKEYHSHROW         > m_xpToRow;
     REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;
   

@@ -33,14 +33,14 @@ __aFooterFunction(CrwTablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CrwTablePtn::CrwTablePtn(Table* pTable, PtnId tPtnId, Bucket* pBucket)
+CrwTablePtn::CrwTablePtn(Table* pTable, LglPtn tLglPtn, Bucket* pBucket)
     : Object(CN_CRWTABLEPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
   m_pTable    = pTable;
   m_pBucket   = pBucket;
-  m_tPtnId    = tPtnId;
+  m_tLglPtn    = tLglPtn;
 
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;

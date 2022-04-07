@@ -98,21 +98,21 @@ void ToLglPtnCrw::vConvert(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
 
-   PtnId tPtnId = pRowBuffer->tPtnId();
+   LglPtn tLglPtn = pRowBuffer->tLglPtn();
    //i8 iBktNo = pRowBuffer->iBucketNo();
-   //vTrace("ToBktCrw::vConvert PtnID:%lld Bkt:%lld\n"_Stz, tPtnId.iAsI8(), iBktNo);
+   //vTrace("ToBktCrw::vConvert PtnID:%lld Bkt:%lld\n"_Stz, tLglPtn.iAsI8(), iBktNo);
   //pRowBuffer->pRowBuffer()->vDumpNst();
   
-  m_pCrwBuffer = m_oHashSet.pBuffer(tPtnId.iAsI8()) ?
-      _pCrwBuffer(m_oHashSet.pBuffer(tPtnId.iAsI8())) : nullptr;
+  m_pCrwBuffer = m_oHashSet.pBuffer(tLglPtn.iAsI8()) ?
+      _pCrwBuffer(m_oHashSet.pBuffer(tLglPtn.iAsI8())) : nullptr;
   
   if (! m_pCrwBuffer) {
     //vTrace("ToBktCrw::vAddRowsToBuffer iBkt:%lld \n"_Stz,pRowBuffer->iBucketNo());
-    m_pCrwBuffer = pNewCrwBuffer(tPtnId, pRowBuffer->iBucketNo());
+    m_pCrwBuffer = pNewCrwBuffer(tLglPtn, pRowBuffer->iBucketNo());
     vAddNst(pRowBuffer);
   }
   
-  vAddRowsToBuffer(tPtnId,pRowBuffer);
+  vAddRowsToBuffer(tLglPtn,pRowBuffer);
   
   //delete pRowBuffer;
   
@@ -179,7 +179,7 @@ void ToLglPtnCrw::vAddNst(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnCrw::vAddRowsToBuffer(PtnId tPtnId, RowBuffer* pRowBuffer)
+void ToLglPtnCrw::vAddRowsToBuffer(LglPtn tLglPtn, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
     
@@ -197,7 +197,7 @@ void ToLglPtnCrw::vAddRowsToBuffer(PtnId tPtnId, RowBuffer* pRowBuffer)
     
     //m_pCrwBuffer->vPrintRows(m_pStreamDef);
     //vTrace("ToBktCrw::vAddRowsToBuffer iBkt:%lld \n"_Stz,pRowBuffer->iBucketNo());
-    m_pCrwBuffer = pNewCrwBuffer(tPtnId, pRowBuffer->iBucketNo());
+    m_pCrwBuffer = pNewCrwBuffer(tLglPtn, pRowBuffer->iBucketNo());
     vAddNst(pRowBuffer);
 
     bAppended = m_pCrwBuffer->bAppendRow(aRow);
@@ -208,7 +208,7 @@ void ToLglPtnCrw::vAddRowsToBuffer(PtnId tPtnId, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(PtnId tPtnId)
+CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
   
@@ -217,7 +217,7 @@ CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(PtnId tPtnId)
   
   pCrwBuffer->vStreamDef(m_pStreamDef);
 
-  pCrwBuffer->vPtnId(tPtnId);
+  pCrwBuffer->vLglPtn(tLglPtn);
 
   // Set the bucket number
   i8 iBktNo = 0;
@@ -225,9 +225,9 @@ CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(PtnId tPtnId)
   pCrwBuffer->vBucketNo(iBktNo);
 
   // open buffer for append
-  pCrwBuffer->vAppendOpen(m_paRowCompactor[tPtnId.iAsI8()],false);
+  pCrwBuffer->vAppendOpen(m_paRowCompactor[tLglPtn.iAsI8()],false);
 
-  m_oHashSet.vAddBuffer(tPtnId.iAsI8(),pCrwBuffer);
+  m_oHashSet.vAddBuffer(tLglPtn.iAsI8(),pCrwBuffer);
   
   return pCrwBuffer;
 }
@@ -235,7 +235,7 @@ CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(PtnId tPtnId)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(PtnId tPtnId, i8 iBkt)
+CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tLglPtn, i8 iBkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
 
@@ -244,14 +244,14 @@ CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(PtnId tPtnId, i8 iBkt)
 
   pCrwBuffer->vStreamDef(m_pStreamDef);
 
-  pCrwBuffer->vPtnId(tPtnId);
+  pCrwBuffer->vLglPtn(tLglPtn);
 
   pCrwBuffer->vBucketNo(iBkt);
 
   // open buffer for append
-  pCrwBuffer->vAppendOpen(m_paRowCompactor[tPtnId.iAsI8()],false);
+  pCrwBuffer->vAppendOpen(m_paRowCompactor[tLglPtn.iAsI8()],false);
 
-  m_oHashSet.vAddBuffer(tPtnId.iAsI8(),pCrwBuffer);
+  m_oHashSet.vAddBuffer(tLglPtn.iAsI8(),pCrwBuffer);
 
   return pCrwBuffer;
 }

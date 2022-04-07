@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ShardDef.hpp -- Shard Definition                                           */
+/* PtnDef.hpp -- Partition Definition                                         */
 /*============================================================================*/
 #pragma once
 
@@ -7,16 +7,16 @@
 
 namespace STORE
 {
-  class ShardDef : public Definition,
+  class PtnDef : public Definition,
                    public WspConvergent_t<C_32KB,void,void>
   {
   public:
-    s256 m_sShardDefNm;   // shardDef name
+    s256 m_sPtnDefNm;   // ptnDef name
   
     Location m_oLocation; // logical location of stream def
 
     i8     m_nColumns;                    // total columns
-    Column m_xaColumn[C_MAX_DEFCOLUMNS];  // array of columns
+    Column m_xaColumn[C_MAX_COLUMNS];     // array of columns
     i8     m_nFixedSized;                 // size of fixed size row
 
     RowPix  m_oRowPix;                    // row pix
@@ -30,9 +30,9 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ShardDef(void);
-    ShardDef(ShardDef* pShardDef);
-   ~ShardDef(void) noexcept(false);
+    PtnDef(void);
+    PtnDef(PtnDef* pPtnDef);
+   ~PtnDef(void) noexcept(false);
     
     static void vPostRecv(void* aShardDef);
     static void vRepair(Object* pObject);
@@ -45,10 +45,10 @@ namespace STORE
     Column* pGetColumn(i8 i_Col);
     void    vListContents(i8 i_Depth);
     Location* pLocation(void);
-    void    vShardDefNm(Stz* szShardDefNm);
-    Stz*    szShardDefNm(void);
     eEC     eParse(Stz* szCmd);
     void    vPrint(void);
+    void    vPtnDefNm(Stz* szPtnDefNm);
+    Stz*    szPtnDefNm(void);
     void    vResetPointers(void);
     RowPix* pRowPix(void);
     void    vToColPix(RowPix* pRowPix, bool bPtnHash);
@@ -79,7 +79,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  ShardDef* _pShardDef(void* aAddr);
+  PtnDef* _pPtnDef(void* aAddr);
 }
 
 /*============================================================================*/

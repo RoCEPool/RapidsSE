@@ -297,6 +297,18 @@ bool Row::bIsColNull(i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get key hash                                                               */
+/*----------------------------------------------------------------------------*/
+KeyHsh Row::tKeyHsh(i8 i_KeyHsh)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+  
+  KeyHsh tKeyHsh = m_wxaColumnCell[i_KeyHsh].m_iWrd;
+  
+  return tKeyHsh;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is column a null value?                                                    */
 /*----------------------------------------------------------------------------*/
 void Row::vSetColNull(i8 i_Col)

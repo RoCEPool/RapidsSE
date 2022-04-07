@@ -16,6 +16,7 @@
 #include "Record.hpp"
 #include "Pipeline.hpp"
 #include "Stream.hpp"
+#include "KeyHsh.hpp"
 
 static i8 iDaysPerMonth[13]     = { -1,31,28,31,30,31,30,31,31,30,31,30,31};
 static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};
@@ -624,7 +625,7 @@ void ToKeyHshRow::vNewRowBuffer(void)
   m_pRowBuffer->vDepositColVal(_colVal); \
   \
   if (xColPix.m_bPtnKey) \
-    HshLib::vRunningHash(&iKeyHash,_colVal);
+    tKeyHsh.vRunningHash(_colVal);
 
 #define vDEPOSIT_NULL(_errorCode) \
   \
@@ -634,7 +635,7 @@ void ToKeyHshRow::vNewRowBuffer(void)
   m_pRowBuffer->vDepositColVal(C_DATUM_NULL); \
   \
   if (xColPix.m_bPtnKey) \
-    HshLib::vRunningHash(&iKeyHash,C_DATUM_NULL);
+    tKeyHsh.vRunningHash(C_DATUM_NULL);
 
 
 /*----------------------------------------------------------------------------*/
@@ -800,7 +801,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   char cNxtChr = *azCsvCrs;
 
   i8 i_Fld = 0;
-  i8 iKeyHash = 0;
+  KeyHsh tKeyHsh = 0;
 
   eEC eError = EC_NONE;
   i8 i_ErrorCodeLine = -1;
@@ -2588,9 +2589,9 @@ L_RecordEndLineEnd:
   
   // deposit key hash
           
-  m_pRowBuffer->vDepositColVal(iKeyHash);
+  m_pRowBuffer->vDepositColVal(tKeyHsh);
     
-  iKeyHash = 0;
+  tKeyHsh = 0;
 
   if (iTraceBits & C_BIT_EndRecord) {
     HV_Record hvRecord(m_pStreamDef->pRowPix());

@@ -73,11 +73,11 @@ void BucketMap::vAdjustMap(i8 nCurrentPartitions)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
     
-    PtnId tPtnId = i_Bkt % nCurrentPartitions;
+    LglPtn tLglPtn = i_Bkt % nCurrentPartitions;
     
-    m_taPtnId_0[i_Bkt] = tPtnId;
+    m_taPtnId_0[i_Bkt] = tLglPtn;
   }
 }
 
@@ -88,43 +88,28 @@ void BucketMap::vAdjustSecondMap(i8 nCurrentPartitions)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
 
-    PtnId tPtnId = i_Bkt % nCurrentPartitions;
+    LglPtn tLglPtn = i_Bkt % nCurrentPartitions;
 
-    m_taPtnId_1[i_Bkt] = tPtnId;
+    m_taPtnId_1[i_Bkt] = tLglPtn;
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
-PtnId BucketMap::tBktToLglPtnId(i8 iBucketId)
+LglPtn BucketMap::tLglPtnOf(KeyBkt tKeyBkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 
-  PtnId tPtnId;
+  LglPtn tLglPtn;
   if (0 == m_iActive)
-    tPtnId = m_taPtnId_0[iBucketId];
+    tLglPtn = m_taPtnId_0[tKeyBkt];
   else
-    tPtnId = m_taPtnId_1[iBucketId];
+    tLglPtn = m_taPtnId_1[tKeyBkt];
   
-  return tPtnId;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 BucketMap::iPtnIdToBkt(PtnId tPtnId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
-
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    if (m_paPtnId[i_Bkt].iAsI8() == tPtnId.iAsI8())
-      return i_Bkt;
-  }
-
-  return -1;
+  return tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,13 +118,13 @@ i8 BucketMap::iPtnIdToBkt(PtnId tPtnId)
 void BucketMap::vRandomMap(i8 i)
 {
   i8 nPartitions = AM::PTNMAP::nPtnsInGrid();
-  PtnId tPtnId;
+  LglPtn tLglPtn;
   i8 iPtn=0;
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    m_taPtnId_0[i_Bkt] = tPtnId;
-    iPtn = tPtnId.iAsI8();
-    tPtnId = (++iPtn) % nPartitions;
-    //vTrace("Internal table i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, tPtnId.iAsI8());
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
+    m_taPtnId_0[i_Bkt] = tLglPtn;
+    iPtn = tLglPtn.iAsI8();
+    tLglPtn = (++iPtn) % nPartitions;
+    //vTrace("Internal table i_Bkt:%lld tLglPtn:%lld\n"_Stz, i_Bkt, tLglPtn.iAsI8());
   }
 }
 
@@ -158,8 +143,8 @@ Stz* BucketMap::szDumpMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   s4K sDumpBuffer = ""_Stz;
 
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    sDumpBuffer.vCatSprint("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
+    sDumpBuffer.vCatSprint("   i_Bkt:%lld tLglPtn:%lld\n"_Stz, i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
   }
   sDumpBuffer.vConcat("======================\n"_Stz);
   return sDumpBuffer;
@@ -174,20 +159,20 @@ void BucketMap::vSee(void)
   
   vTrace("BktMap::\n"_Stz);
 
-  PtnId tPtnId;
+  LglPtn tLglPtn;
   
   vTrace("  m_iActive  %2lld\n"_Stz,m_iActive);
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
     
     if (0 == m_iActive)
-      tPtnId = m_taPtnId_0[i_Bkt];
+      tLglPtn = m_taPtnId_0[i_Bkt];
     else
-      tPtnId = m_taPtnId_1[i_Bkt];
+      tLglPtn = m_taPtnId_1[i_Bkt];
 
-    vTrace("  m_taPtnId_%lld[i_Bkt %02lld] { tPtnId=%lld }\n"_Stz
+    vTrace("  m_taPtnId_%lld[i_Bkt %02lld] { tLglPtn=%lld }\n"_Stz
            ,m_iActive
            ,i_Bkt
-           ,(i8)tPtnId.uPtnNo()
+           ,(i8)tLglPtn.uPtnNo()
            );
   }
   
@@ -241,13 +226,13 @@ void BucketMap::vUpdateMap (void)
 /* get next bucket logical partition is currently mapped to                   */
 /* We can have a partition mapped into multiple buckets                       */
 /*----------------------------------------------------------------------------*/
-i8 BucketMap::iWhichBucketNext(PtnId tPtnId, i8 iBktNo)
+i8 BucketMap::iWhichBucketNext(LglPtn tLglPtn, i8 iBktNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   i8 iBkt=-1;
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    vTrace("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_paPtnId[i_Bkt].iAsI8());
-    //if (m_paPtnId[i_Bkt].iAsI8() == tPtnId.iAsI8()) {
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
+    vTrace("   i_Bkt:%lld tLglPtn:%lld\n"_Stz, i_Bkt, m_paPtnId[i_Bkt].iAsI8());
+    //if (m_paPtnId[i_Bkt].iAsI8() == tLglPtn.iAsI8()) {
       if (i_Bkt > iBktNo) {
         iBkt = i_Bkt;
         break;
@@ -264,7 +249,7 @@ i8 BucketMap::iWhichBucketNext(PtnId tPtnId, i8 iBktNo)
 i8 BucketMap::tWhichLglPtnId(i8 iBucketId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
-  return tBktToLglPtnId(iBucketId).iAsI8();
+  return tLglPtnOf(iBucketId).iAsI8();
 }
 
 /*============================================================================*/

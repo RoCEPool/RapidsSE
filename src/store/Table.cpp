@@ -21,7 +21,7 @@
 #include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
-#include "ShardDef.hpp"
+#include "PtnDef.hpp"
 
 #include "Grid.hpp"
 #include "MY.hpp"
@@ -58,7 +58,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
   
   m_oLocation.vSet();
   m_pStreamDef   = nullptr;
-  m_pShardDef    = new ShardDef;
+  m_pPtnDef    = new PtnDef;
 
   m_pBucketMap   = new BucketMap(m_eKind);
 
@@ -78,8 +78,8 @@ Table::Table(Stz* szTableNm, eTT eKind)
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      PtnId tPtnId = Table::tTablePtnToPtnId(i_TablePtn);
-      TablePtn* pTablePtn = new TablePtn(this,tPtnId);
+      LglPtn tLglPtn = Table::tTablePtnToPtnId(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tLglPtn);
 
       m_pTablePtnVec->vAppend(pTablePtn);
     }
@@ -111,7 +111,7 @@ Table::~Table(void) noexcept(false)
   delete m_pBucketMap;
 
   delete m_pStreamDef;
-  delete m_pShardDef;
+  delete m_pPtnDef;
   
   // delete the TablePtn's
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
@@ -219,11 +219,11 @@ StreamDef* Table::pStreamDef(DicStack* pDicStack, Stz* szTableNm)
 /*----------------------------------------------------------------------------*/
 /* convert grid-wide partition number to table partition on its node          */
 /*----------------------------------------------------------------------------*/
-i8 Table::iPtnNoToTablePtn(PtnId tPtnId)
+i8 Table::iPtnNoToTablePtn(LglPtn tLglPtn)
 {
   _static_
 
-  i8 i_TablePtn = tPtnId.iAsI8() / AM::GRID::nKnownNodes();
+  i8 i_TablePtn = tLglPtn.iAsI8() / AM::GRID::nKnownNodes();
 
   return i_TablePtn;
 }
@@ -234,17 +234,17 @@ i8 Table::iPtnNoToTablePtn(PtnId tPtnId)
 /* convert tablePtn to partition ID (in grid)                                 */
 /*----------------------------------------------------------------------------*/
 
-PtnId Table::tTablePtnToPtnId(i8 i_TablePtn)
+LglPtn Table::tTablePtnToPtnId(i8 i_TablePtn)
 {
   _static_
 
   i8 iPtnId = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeId();
 
-  PtnId tPtnId;
+  LglPtn tLglPtn;
 
-  tPtnId = iPtnId;
+  tLglPtn = iPtnId;
 
-  return tPtnId;
+  return tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -343,16 +343,16 @@ void Table::vBucketMap(BucketMap* pBucketMap)
 /*----------------------------------------------------------------------------*/
 /* get the partition No from Bucket No                                        */
 /*----------------------------------------------------------------------------*/
-PtnId  Table::tBktToLglPtn(i8 iBktNo)
+LglPtn  Table::tLglPtnOf(KeyBkt tKeyBkt)
 {
-  return m_pBucketMap->tBktToLglPtnId(iBktNo);
+  return m_pBucketMap->tLglPtnOf(tKeyBkt);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* get the Next Bucket No from partition No                                   */
 /*----------------------------------------------------------------------------*/
-i8  Table::iPtnToBktNext(PtnId tPtnNo, i8 iBktNo)
+i8  Table::iPtnToBktNext(LglPtn tPtnNo, i8 iBktNo)
 {
   return m_pBucketMap->iWhichBucketNext(tPtnNo, iBktNo);
 }
@@ -382,7 +382,7 @@ void Table::vCreatePtnDef(void)
   
   Column* pColumn = nullptr;
 
-  m_pShardDef->m_nColumns = 0;
+  m_pPtnDef->m_nColumns = 0;
   
   // find the column from the table columnVector
   i8 iColumns = pStreamDef()->nColumns();
@@ -390,8 +390,8 @@ void Table::vCreatePtnDef(void)
   for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
     pColumn = pStreamDef()->pGetColumn(i_Col);
     if (pColumn->bIsPtnKey()) {
-      m_pShardDef->m_xaColumn[m_pShardDef->m_nColumns].vCopy(pColumn);
-      m_pShardDef->m_nColumns++;
+      m_pPtnDef->m_xaColumn[m_pPtnDef->m_nColumns].vCopy(pColumn);
+      m_pPtnDef->m_nColumns++;
     }
   }
 }
@@ -609,7 +609,7 @@ void Table::vResetPointers(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   m_pStreamDef = nullptr;
-  m_pShardDef  = nullptr;
+  m_pPtnDef  = nullptr;
   m_pBucketMap = nullptr;
   m_pIdxVec    = nullptr;
   m_pTablePtnVec = nullptr;
@@ -638,11 +638,11 @@ EntBuffer* Table::pRootBuffer(i8 i_TablePtn, i8 i_Index)
 /*----------------------------------------------------------------------------*/
 /* get the sharding definition                                                */
 /*----------------------------------------------------------------------------*/
-ShardDef* Table::pShardDef(void)
+PtnDef* Table::pPtnDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_pShardDef;
+  return m_pPtnDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -776,7 +776,7 @@ i8 Table::iPrepareParcel(void)
   if ( m_pStreamDef) {
     m_pParcel->vAddItem((Object *)m_pStreamDef);
   }
-  m_pParcel->vAddItem((Object *)m_pShardDef);
+  m_pParcel->vAddItem((Object *)m_pPtnDef);
 
   m_pParcel->vAddItem((Object *)m_pBucketMap);
 
@@ -799,7 +799,7 @@ void Table::vGetMetaParts(Parcel* pParcel)
   if (m_pStreamDef)
     pParcel->vAddItem((Object *)m_pStreamDef);
   
-  pParcel->vAddItem((Object *)m_pShardDef);
+  pParcel->vAddItem((Object *)m_pPtnDef);
 
   pParcel->vAddItem((Object *)m_pBucketMap);
 
@@ -891,8 +891,8 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
       case CN_STREAMDEF:
         m_pStreamDef = (StreamDef*) pObject;
         break;
-      case CN_SHARDDEF:
-        m_pShardDef = (ShardDef*) pObject;
+      case CN_PTNDEF:
+        m_pPtnDef = (PtnDef*) pObject;
         break;
       case CN_BUCKETMAP:
         m_pBucketMap = (BucketMap *) pObject;
@@ -921,7 +921,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      PtnId tPtnNo = Table::tTablePtnToPtnId(i_TablePtn);
+      LglPtn tPtnNo = Table::tTablePtnToPtnId(i_TablePtn);
       TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
 
       m_pTablePtnVec->vAppend(pTablePtn);
@@ -1002,7 +1002,7 @@ bool Table::bUpdateBucket(Parcel* pParcel)
       {
         CrwBuffer* pCrwBuffer = (CrwBuffer *) pObject;
 
-        TablePtn* pTablePtn = this->pTablePtn(pCrwBuffer->tPtnId().uPtnNo());
+        TablePtn* pTablePtn = this->pTablePtn(pCrwBuffer->tLglPtn().uPtnNo());
         pTablePtn->vAppendBuffer(pCrwBuffer);
 
         break;

@@ -142,8 +142,8 @@ void Step::vRowBufferInsdelIntoTable(void)
 //  ASSERT(*m_pLogicUnit->m_xpRowBuffer);
 //
 //  Op* pOp = m_pJob->m_pOp;
-//  PtnId tPtnId = pOp->tPtnId();
-//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnId);
+//  PtnId tLglPtn = pOp->tLglPtn();
+//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tLglPtn);
 //
 
 //  // will delete this buffer
@@ -216,7 +216,7 @@ void Step::vRowBufferPtnId(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBuffer->tPtnId().iAsI8());
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpRowBuffer->tLglPtn().iAsI8());
 
   EXIT();
 }

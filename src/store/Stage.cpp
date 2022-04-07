@@ -150,7 +150,7 @@ Stream *Stage::pGetStream_byPtnNo(i8 i_Ptn)
     pStageSpec = pStream->pStageSpec();
 
     if (!pStageSpec->bNodeTopo() &&
-        pStream->tPtnId().iAsI8() == i_Ptn)
+        pStream->tLglPtn().iAsI8() == i_Ptn)
       return pStream;
   }
 
@@ -201,7 +201,7 @@ i8 Stage::nOpsExeOnNode(i8 iThisNodeId, i8 iOriginNodeId)
     for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
       Stream *pStream = pGet(i_Stream);
       
-      i8 iWhichNodeId = AM::pPtnMap()->iMappedNodeId(pStream->tPtnId());
+      i8 iWhichNodeId = AM::pPtnMap()->iMappedNodeId(pStream->tLglPtn());
       if (iWhichNodeId == iThisNodeId) {
         nOpsExe += pStream->nItems();
       }
@@ -252,7 +252,7 @@ Op* Stage::pOp0(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp)
+Op *Stage::pPipeDstOp(LglPtn tDstLglPtn, i8 i_DstOp)
 {
   i8 i_ThisNode = AM::iThisNodeId();
 
@@ -269,7 +269,7 @@ Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp)
       break;
 
     case YS_PTN_STREAM:
-      pStream = pGetStream_byPtnNo(tDstPtnId.iAsI8());
+      pStream = pGetStream_byPtnNo(tDstLglPtn.iAsI8());
       break;
 
     default:
@@ -367,7 +367,7 @@ bool Stage::bEnqueueInvoke(void)
 void Stage::vCreateStreams(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
-  PtnId tPtnId;
+  LglPtn tLglPtn;
 
   i8 i_Stream;
   Stream *pStream;
@@ -384,12 +384,12 @@ void Stage::vCreateStreams(void)
       RASSERT(m_pStageSpec->bNodeTopo());
       
       i_Stream = 0;
-      tPtnId = C_UNKNOWN;
+      tLglPtn = C_UNKNOWN;
       for (i8 i_Node = 0;
            i_Node < AM::pGrid()->nKnownNodes();
            i_Node++) {
         iNodeId = AM::GRID::iGetNthNodeId(i_Node);
-        pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iNodeId); //i_Node);
+        pStream = new Stream(this, m_pStageSpec, i_Stream, tLglPtn, iNodeId); //i_Node);
         vAppend(pStream);
       }
       break;
@@ -398,10 +398,10 @@ void Stage::vCreateStreams(void)
       RASSERT(m_pStageSpec->bNodeTopo());
       
       i_Stream = 0;
-      tPtnId = C_UNKNOWN;
+      tLglPtn = C_UNKNOWN;
       iOriginNodeId = pPipeline()->iOriginNodeId();
 
-      pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeId);
+      pStream = new Stream(this, m_pStageSpec, i_Stream, tLglPtn, iOriginNodeId);
       vAppend(pStream);
       break;
 
@@ -409,13 +409,13 @@ void Stage::vCreateStreams(void)
       RASSERT(m_pStageSpec->bNodeTopo());
 
       i_Stream = 0;
-      tPtnId = C_UNKNOWN;
+      tLglPtn = C_UNKNOWN;
       
       for (i8 i_Node = 0;
            i_Node < AM::pGrid()->nKnownNodes();
            i_Node++) {
         iNodeId = AM::GRID::iGetNthNodeId(i_Node);
-        pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iNodeId);
+        pStream = new Stream(this, m_pStageSpec, i_Stream, tLglPtn, iNodeId);
         vAppend(pStream);
       }
       break;
@@ -428,11 +428,11 @@ void Stage::vCreateStreams(void)
       for (i8 iPtnNo = 0;
            iPtnNo < AM::PTNMAP::nPtnsInGrid();
            iPtnNo++) {
-        tPtnId = iPtnNo;
-        iOriginNodeId = AM::pPtnMap()->iMappedNodeId(tPtnId);
+        tLglPtn = iPtnNo;
+        iOriginNodeId = AM::pPtnMap()->iMappedNodeId(tLglPtn);
 
-        i_Stream = AM::pPtnMap()->i_MappedPtnNo(tPtnId);
-        pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeId);
+        i_Stream = AM::pPtnMap()->i_MappedPtnNo(tLglPtn);
+        pStream = new Stream(this, m_pStageSpec, i_Stream, tLglPtn, iOriginNodeId);
         vAppend(pStream);
       }
       break;
@@ -443,12 +443,12 @@ void Stage::vCreateStreams(void)
       for (i8 iPtnNo = 0;
            iPtnNo < AM::PTNMAP::nPtnsInGrid();
            iPtnNo++) {
-        tPtnId = iPtnNo;
-        iOriginNodeId = AM::pPtnMap()->iMappedNodeId(tPtnId);
+        tLglPtn = iPtnNo;
+        iOriginNodeId = AM::pPtnMap()->iMappedNodeId(tLglPtn);
 
         if (iOriginNodeId == pPipeline()->iOriginNodeId()) {
-          i_Stream = AM::pPtnMap()->i_MappedPtnNo(tPtnId);
-          pStream = new Stream(this, m_pStageSpec, i_Stream, tPtnId, iOriginNodeId);
+          i_Stream = AM::pPtnMap()->i_MappedPtnNo(tLglPtn);
+          pStream = new Stream(this, m_pStageSpec, i_Stream, tLglPtn, iOriginNodeId);
           vAppend(pStream);
         }
       }

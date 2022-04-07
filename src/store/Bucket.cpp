@@ -37,22 +37,22 @@ __aFooterFunction(Bucket)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Bucket::Bucket(Table* pTable, PtnId tPtnId, eCN eKind)
+Bucket::Bucket(Table* pTable, LglPtn tLglPtn, eCN eKind)
 : Object(CN_BUCKET)
 //, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
   m_pTable = pTable;
-  m_tPtnId = tPtnId;
+  m_tLglPtn = tLglPtn;
   m_eKind = eKind;
 
   switch (m_eKind) {
     case CN_ROWTABLEPTN:
-      m_pRowTablePtn = new RowTablePtn(m_pTable,m_tPtnId,this);
+      m_pRowTablePtn = new RowTablePtn(m_pTable,m_tLglPtn,this);
       break;
     case CN_CRWTABLEPTN:
-      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tPtnId,this);
+      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tLglPtn,this);
       break;
     default: NEVER_REACH;
   }
@@ -108,11 +108,11 @@ void Bucket::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
-PtnId Bucket::tPtnId(void)
+LglPtn Bucket::tLglPtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-  return m_tPtnId;
+  return m_tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -390,10 +390,10 @@ Stz* Bucket::szDumpContents(i8 i_Bucket)
   i8 nBuffers = m_pCrwTablePtn->nBuffers();
   s4K sDumpBuffer = ""_Stz;
   if (nBuffers > 0) {
-    sDumpBuffer.vCatSprint("  PtnId:%lld   Bkt:%lld   nBuffers:%lld\n"_Stz, m_tPtnId.iAsI8(), i_Bucket, nBuffers);
+    sDumpBuffer.vCatSprint("  PtnId:%lld   Bkt:%lld   nBuffers:%lld\n"_Stz, m_tLglPtn.iAsI8(), i_Bucket, nBuffers);
     for (i8 i_Buffer = 0; i_Buffer < nBuffers; i_Buffer++) {
       i8 nRows = m_pCrwTablePtn->pRootCrwBuffer()->nRows();
-      sDumpBuffer.vCatSprint("     Buffer:%lld   PtnId:%lld  Bkt:%lld   nRows:%lld\n"_Stz, i_Buffer, m_tPtnId.iAsI8(), i_Bucket, nRows);
+      sDumpBuffer.vCatSprint("     Buffer:%lld   PtnId:%lld  Bkt:%lld   nRows:%lld\n"_Stz, i_Buffer, m_tLglPtn.iAsI8(), i_Bucket, nRows);
     }
   }
   return sDumpBuffer;

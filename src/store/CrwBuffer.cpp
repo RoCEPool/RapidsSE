@@ -286,7 +286,7 @@ void CrwBuffer::vAnalyze(i8& nBuffers, i8& nRows)
 //    if (bDetailed)
 //      sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
 //                           AM::szNodeNm(),
-//                           pNextBuffer->m_tPtnId,
+//                           pNextBuffer->m_tLglPtn,
 //                           iBuffers,
 //                           pNextBuffer->nRows());
     
@@ -754,7 +754,7 @@ void CrwBuffer::vShow(void)
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          pPrevLinkedBuffer(),pNextLinkedBuffer());
 
-  vTrace("  partition: %lld \n"_Stz, m_tPtnId.iAsI8());
+  vTrace("  partition: %lld \n"_Stz, m_tLglPtn.iAsI8());
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
@@ -891,7 +891,7 @@ EachRowBuffer* CrwBuffer::pToEachRowBuffer(i8 i_Row)
 //  i8 nRowRefs = 1;
 //  
 //  HV_RowSingle hvRowSingle(pTable()->pStreamDef(),C_ALL);
-//  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnId);
+//  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_tLglPtn);
 //  
 //  i8 nRows = nRows();
 //  
@@ -902,7 +902,7 @@ EachRowBuffer* CrwBuffer::pToEachRowBuffer(i8 i_Row)
 //    if ( ! pSrtSet ) {
 //      
 //      // create a new SrtBuffer
-//      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_tPtnId);
+//      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_tLglPtn);
 //      pNewSrtBuffer->vNextBuffer(pSrtBuffer);
 //      pSrtBuffer = pNewSrtBuffer;
 //      pSrtSet = pSrtBuffer->aAllotSrtSet();

@@ -3,7 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-class Id_2part
+#include "SEtype.hpp"
+
+class Id_2part : public SEtype
 {
   protected:
 

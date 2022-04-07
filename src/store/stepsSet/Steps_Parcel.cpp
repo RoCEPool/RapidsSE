@@ -227,7 +227,7 @@ void Step::vParcelPipeOut(void)
 
   if (pParcel->bOriginalParcel()) {
     //vTrace("bOriginalParcel\n"_Stz);
-    pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
+    pDstOp = pDstStage->pPipeDstOp(pParcel->tDstLglPtn(),0);
       
     // CAUTION NOTE: Cannot access LU of OP after piping out operand
     // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
@@ -286,9 +286,9 @@ void Step::vParcelPipeOut(void)
         Stream* pDstStream = pDstStage->pGet(i_Stream);
 
         if (YG_ALL_PARTITIONS == eStageTopology) {
-          PtnId tDstPtn = pDstStream->tPtnId();
-          i8 iDstNde = AM::pPtnMap()->iMappedNodeId(tDstPtn);
-          if (iDstNde != iCurNodeId)
+          LglPtn tDstLglPtn = pDstStream->tLglPtn();
+          i8 iDstNodeId = AM::pPtnMap()->iMappedNodeId(tDstLglPtn);
+          if (iDstNodeId != iCurNodeId)
             continue;
         }
         else {
@@ -296,9 +296,9 @@ void Step::vParcelPipeOut(void)
         }
         
         Op* pDstOp = pDstStream->pGet(0);
-//        vTrace("pDstOp %p pDstStream->tPtnId() %lld\n"_Stz
+//        vTrace("pDstOp %p pDstStream->tLglPtn() %lld\n"_Stz
 //               ,pDstOp
-//               ,pDstStream->tPtnId().iAsI8());
+//               ,pDstStream->tLglPtn().iAsI8());
 
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
               
@@ -351,10 +351,10 @@ void Step::vParcelPipeOut(void)
         for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
           Stream* pDstStream = pDstStage->pGet(i_Stream);
 
-          PtnId tDstPtn = pDstStream->tPtnId();
-          vTrace("i_Stream %lld tDstPtn %lld\n"_Stz
+          LglPtn tDstLglPtn = pDstStream->tLglPtn();
+          vTrace("i_Stream %lld tDstLglPtn %lld\n"_Stz
                  ,i_Stream
-                 ,tDstPtn.iAsI8());
+                 ,tDstLglPtn.iAsI8());
         }
         
       }
@@ -367,13 +367,13 @@ void Step::vParcelPipeOut(void)
     //  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~
 
     case RV_ONE_PTN:
-//        vTrace("RV_ONE_PTN  tDstPtn %lld\n"_Stz
-//               ,pParcel->tDstPtn().iAsI8());
+//        vTrace("RV_ONE_PTN  tDstLglPtn %lld\n"_Stz
+//               ,pParcel->tDstLglPtn().iAsI8());
       if (pOperand) {
-        pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
+        pDstOp = pDstStage->pPipeDstOp(pParcel->tDstLglPtn(),0);
         if (!pDstOp) {
-          vTrace("huh? RV_ONE_PTN tDstPtn %lld\n"_Stz
-                 ,pParcel->tDstPtn().iAsI8());
+          vTrace("huh? RV_ONE_PTN tDstLglPtn %lld\n"_Stz
+                 ,pParcel->tDstLglPtn().iAsI8());
         }
         pDstOp->vAppendLeft(pOperand, this);
         nQueued++;

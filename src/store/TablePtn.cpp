@@ -38,12 +38,12 @@ __aFooterFunction(TablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TablePtn::TablePtn(Table *pTable, PtnId tPtnId)
+TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn)
 : Object(CN_TABLEPTN), m_okLock(this)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
   m_pTable = pTable;
-  m_tPtnId = tPtnId;
+  m_tLglPtn = tLglPtn;
 
   m_pBucketVec = new BucketVec;
   m_pIndexTreeVec  = new IndexTreeVec;
@@ -67,13 +67,13 @@ TablePtn::TablePtn(Table *pTable, PtnId tPtnId)
   }
 
 
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++)
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++)
   {
-    vAddBucket(pTable, tPtnId, m_eKind);
+    vAddBucket(pTable, tLglPtn, m_eKind);
     //vTrace("Bkt:%lld \n"_Stz, i_Bkt);
   }
 
-//  vAddBucket(pTable, tPtnId, m_eKind);
+//  vAddBucket(pTable, tLglPtn, m_eKind);
 
 
   _checkInitialised_(CN_TABLEPTN);
@@ -169,10 +169,10 @@ eCN TablePtn::eKind(void)
 /*----------------------------------------------------------------------------*/
 /* get the partition number (in grid) of this table partition                 */
 /*----------------------------------------------------------------------------*/
-PtnId TablePtn::tPtnId(void)
+LglPtn TablePtn::tLglPtn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  return m_tPtnId;
+  return m_tLglPtn;
 
 }
 
@@ -193,11 +193,11 @@ Table *TablePtn::pTable(void)
 /*----------------------------------------------------------------------------*/
 /* add bucket                                                                 */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAddBucket(Table *pTable, PtnId tPtnId, eCN eKind)
+void TablePtn::vAddBucket(Table *pTable, LglPtn tLglPtn, eCN eKind)
 {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  Bucket *pBucket = new Bucket(pTable, tPtnId, eKind);
+  Bucket *pBucket = new Bucket(pTable, tLglPtn, eKind);
   m_pBucketVec->vAppend(pBucket);
 }
 
@@ -274,7 +274,7 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer)
   // Get bucket number
   i8 iBktNo = pDataBuffer->iBucketNo();
   //vTrace("TablePtn::vAppendBuffer BufferNo:%lld  BucketNo:%lld   Ptn:%lld\n"_Stz,
-  //       pDataBuffer->iBufferNo(), iBktNo, pDataBuffer->tPtnId().iAsI8());
+  //       pDataBuffer->iBufferNo(), iBktNo, pDataBuffer->tLglPtn().iAsI8());
 
   Bucket *pBucket = nullptr;
   if (iBktNo >= 0 && iBktNo < m_pBucketVec->nItems()) {
@@ -316,7 +316,7 @@ void TablePtn::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
   // Get bucket number
   //i8 iBktNo = pDataBuffer->iBucketNo();
   //vTrace("TablePtn::vAppendBuffer BufferNo:%lld  BucketNo:%lld   Ptn:%lld\n"_Stz,
-  //       pDataBuffer->iBufferNo(), iBktNo, pDataBuffer->tPtnId().iAsI8());
+  //       pDataBuffer->iBufferNo(), iBktNo, pDataBuffer->tLglPtn().iAsI8());
 
   Bucket *pBucket = m_pBucketVec->pGet(0);
 

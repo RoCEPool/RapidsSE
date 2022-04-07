@@ -5,6 +5,9 @@
 
 #include "eTT.h"
 
+#include "KeyBkt.hpp"
+#include "KeyHsh.hpp"
+
 namespace STORE
 {
   class BucketMap : public Operand
@@ -15,11 +18,11 @@ namespace STORE
   
     //Location m_oLocation; // logical location of BucketMap_dyn
   
-    PtnId* m_paPtnId;
+    LglPtn* m_paPtnId;
     i8     m_iActive;
 
-    PtnId m_taPtnId_0[C_MAX_BUCKETS]; // bucketId -> PtnId
-    PtnId m_taPtnId_1[C_MAX_BUCKETS]; // bucketId -> PtnId
+    LglPtn m_taPtnId_0[C_MAX_KEYBUCKETS]; // KeyBkt -> PtnId
+    LglPtn m_taPtnId_1[C_MAX_KEYBUCKETS]; // KeyBkt -> PtnId
 
     s32 m_sTableNm; // table name (leave for debug)
     eTT m_eKind;    // table kind (leave for debug)
@@ -34,12 +37,11 @@ namespace STORE
     BucketMap(eTT eKind);
    ~BucketMap(void) noexcept(false);
   
-    static void vPostRecv(void* aBucketMap_dyn);
-    
-    PtnId tBktToLglPtnId(i8 iBucketId);
-    i8    iPtnIdToBkt(PtnId tPtnId);
+    static void vPostRecv(void* aBucketMap);
 
-    void vAdjustMap(i8 nnPartitions);
+    LglPtn tLglPtnOf(KeyBkt tKeyBkt);
+
+    void vAdjustMap(i8 nPartitions);
     void vAdjustSecondMap(i8 nCurrentPartitions);
 
     void vUpdateMap(void);
@@ -51,7 +53,7 @@ namespace STORE
 
     void vSwapMap(void);
 
-    i8 iWhichBucketNext(PtnId tPtnId, i8 iBktNo);
+    i8 iWhichBucketNext(LglPtn tLglPtn, i8 iBktNo);
     i8 tWhichLglPtnId(i8 iBucketId);
 
   private:

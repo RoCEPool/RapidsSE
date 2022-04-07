@@ -145,6 +145,7 @@ namespace STORE
     static void vAddSteps_Procedure(void);
     static void vAddSteps_Process(void);
     static void vAddSteps_Profile(void);
+    static void vAddSteps_PtnDef(void);
     static void vAddSteps_PtnMap(void);
     static void vAddSteps_PtnStream(void);
     static void vAddSteps_Push(void);
@@ -152,7 +153,6 @@ namespace STORE
     static void vAddSteps_RecvdObject(void);
     static void vAddSteps_RecvWL(void);
     static void vAddSteps_RefTimer(void);
-    static void vAddSteps_RegAggTimer(void);
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegFolder(void);
     static void vAddSteps_RegNow(void);
@@ -170,7 +170,6 @@ namespace STORE
     static void vAddSteps_SendNode(void);
     static void vAddSteps_SendWL(void);
     static void vAddSteps_Session(void);
-    static void vAddSteps_ShardDef(void);
     static void vAddSteps_Shell(void);
     static void vAddSteps_Socket(void);
     static void vAddSteps_SqlCompiler(void);

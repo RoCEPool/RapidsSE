@@ -71,6 +71,7 @@ enum eLR // Logic Unit Registers
   /*  */ LR_POT,
   /*  */ LR_PLANOPERAND,
   /*  */ LR_PREEXPSTACK,
+  /*  */ LR_PTNDEF,
   /*  */ LR_PTNSTREAM,
   
   /*  */ LR_RECVDOBJECT,
@@ -81,9 +82,7 @@ enum eLR // Logic Unit Registers
   /*  */ LR_SENDNODE,
   /*  */ LR_SENDS,
   /*  */ LR_SENDWL,
-  /*  */ LR_SHARDDEF,
   /*  */ LR_SOCKET,
-  
   /*  */ LR_STAGE,
   /*  */ LR_STATS,
   /*  */ LR_STENCIL,
@@ -103,10 +102,10 @@ enum eLR // Logic Unit Registers
   /*  */ LR_TAGSET,
   /*  */ LR_TIMER,
   /*  */ LR_TINYC,
+  /*  */ LR_TOKEYHSHROW,
   /*  */ LR_TOLGLPTNCRW,
   /*  */ LR_TOLGLPTNNST,
   /*  */ LR_TOLGLPTNROW,
-  /*  */ LR_TOROW,
   /*  */ LR_TUB,
   /*  */ LR_TX,
 
@@ -184,6 +183,7 @@ static Stz* aLR[]
   /*  */ "LR_PLANOPERAND"_Stz,
   /*  */ "LR_POT"_Stz,
   /*  */ "LR_PREEXPSTACK"_Stz,
+  /*  */ "LR_PTNDEF"_Stz,
   /*  */ "LR_PTNSTREAM"_Stz,
   
   /*  */ "LR_RECVDOBJECT"_Stz,
@@ -194,7 +194,6 @@ static Stz* aLR[]
   /*  */ "LR_SENDNODE"_Stz,
   /*  */ "LR_SENDS"_Stz,
   /*  */ "LR_SENDWL"_Stz,
-  /*  */ "LR_SHARDDEF"_Stz,
   /*  */ "LR_SOCKET"_Stz,
   /*  */ "LR_STAGE"_Stz,
   /*  */ "LR_STATS"_Stz,
@@ -215,10 +214,10 @@ static Stz* aLR[]
   /*  */ "LR_TAGSET"_Stz,
   /*  */ "LR_TIMER"_Stz,
   /*  */ "LR_TINYC"_Stz,
+  /*  */ "LR_TOKEYHSHROW"_Stz,
   /*  */ "LR_TOLGLPTNCRW"_Stz,
   /*  */ "LR_TOLGLPTNNST"_Stz,
   /*  */ "LR_TOLGLPTNROW"_Stz,
-  /*  */ "LR_TOROW"_Stz,
   /*  */ "LR_TUB"_Stz,
   /*  */ "LR_TX"_Stz,
   

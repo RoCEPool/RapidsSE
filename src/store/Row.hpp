@@ -4,6 +4,7 @@
 #pragma once
 
 #include "StreamDef.hpp"
+#include "KeyHsh.hpp"
 
 namespace STORE
 {
@@ -50,6 +51,8 @@ namespace STORE
   
     bool bIsColNull(i8 i_Col);
 
+    KeyHsh tKeyHsh(i8 i_KeyHsh);
+  
     void vSetColNull(i8 i_Col);
   
     RowBuffer* pToRowBuffer(void);
