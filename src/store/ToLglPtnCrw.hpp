@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "HashSet.hpp"
+#include "LglBufSet.hpp"
 
 namespace STORE
 {
@@ -15,7 +15,7 @@ namespace STORE
     StreamDef* m_pStreamDef;
     CrwBuffer* m_pCrwBuffer;
 
-    HashSet    m_oHashSet;
+    LglBufSet    m_oHashSet;
   
     RowCompactor* m_paRowCompactor[C_MAX_LGLPTNS]; // row compactors
 

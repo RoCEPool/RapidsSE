@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* HashSet.hpp -- Set of Partition Hashed Buffers with dangling support       */
+/* LglBufSet.hpp -- Set of Partition Hashed Buffers with dangling support       */
 /*============================================================================*/
 #pragma once
 
 namespace STORE
 {
-  class HashSet : public Object
+  class LglBufSet : public Object
   {
   public:
     DataBuffer*  m_paBufferChain[C_MAX_LGLPTNS];
@@ -17,21 +17,21 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    HashSet(void);
-   ~HashSet(void) noexcept(false);
+    LglBufSet(void);
+   ~LglBufSet(void) noexcept(false);
     
   public:
   
     void vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer);
 
-    DataBuffer* pBuffer(i8 i_Ptn);
-    DataBuffer* pCompletedBuffer(i8 i_Ptn);
-    DataBuffer* pDanglingBuffer(i8 i_Ptn);
+    DataBuffer* pBuffer(LglPtn tLglPtn);
+    DataBuffer* pCompletedBuffer(LglPtn tLglPtn);
+    DataBuffer* pDanglingBuffer(LglPtn tLglPtn);
 
     Footer* aFooter(void);
   };
   
-  HashSet* _pHashSet(void* aAddr);
+  LglBufSet* _pLglBufSet(void* aAddr);
 }
 
 /*============================================================================*/

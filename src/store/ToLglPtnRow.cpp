@@ -126,7 +126,7 @@ RowBuffer* ToLglPtnRow::pCompleted(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
   
-  RowBuffer* pRowBuffer = _pRowBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_oLglBufSet.pCompletedBuffer(i_Ptn));
   
   return pRowBuffer;
 }
@@ -138,7 +138,7 @@ RowBuffer* ToLglPtnRow::pDangling(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
   
-  RowBuffer* pRowBuffer = _pRowBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_oLglBufSet.pDanglingBuffer(i_Ptn));
   
   return pRowBuffer;
   
@@ -165,21 +165,21 @@ void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, KeyBkt tKeyBkt, Row* aRowSrc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a destination row in row slab in hash set                              */
+/* new a destination row in row buffer in lgl ptn set                         */
 /*----------------------------------------------------------------------------*/
 void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn, KeyBkt tKeyBkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
-  i8 i_Ptn = tLglPtn.iAsI8();
+  //i8 i_Ptn = tLglPtn.iAsI8();
 
   // get row buffer for given partition (new a first buffer if ncessary)
-  RowBuffer* pDstRowBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
+  RowBuffer* pDstRowBuffer = _pRowBuffer(m_oLglBufSet.pBuffer(tLglPtn));
   if (! pDstRowBuffer) {
     pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->pRowPix());
     pDstRowBuffer->pRowPix()->vRemovePtnHash();
-    m_oHashSet.vAddBuffer(i_Ptn,pDstRowBuffer);
+    m_oLglBufSet.vAddBuffer(tLglPtn,pDstRowBuffer);
   }
 
   // new a row in row buffer (new another row buffer if necessary)
@@ -188,7 +188,7 @@ void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn, KeyBkt tKeyBkt)
     pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->pRowPix());
     pDstRowBuffer->pRowPix()->vRemovePtnHash();
-    m_oHashSet.vAddBuffer(i_Ptn,pDstRowBuffer);
+    m_oLglBufSet.vAddBuffer(tLglPtn,pDstRowBuffer);
     aNewRow = pDstRowBuffer->pAllotRow();
     ASSERT(aNewRow);
   }

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "HashSet.hpp"
+#include "LglBufSet.hpp"
 
 namespace STORE
 {
@@ -11,7 +11,7 @@ namespace STORE
   {
   private:
   
-    HashSet  m_oHashSet;
+    LglBufSet  m_oLglBufSet;
   
     RowBuffer* m_pFromRowBuffer; // the
 

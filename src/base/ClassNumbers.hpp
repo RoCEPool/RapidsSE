@@ -116,7 +116,6 @@ enum eCN : u2 // Class Number
   /* */ CN__H__,
   /* */ CN_HASHMAP,
   /* */ CN_HASHMAPSLOT,
-  /* */ CN_HASHSET,
   /* */ CN_HEAPBUFFER,
   /* */ CN_HEAPMEM,
 
@@ -152,6 +151,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LARGEPERSISTENT,
   /* */ CN_LARGETRANSIENT,
   /* */ CN_LARGEVIRTUAL,
+  /* */ CN_LGLBUFSET,
   /* */ CN_LICENCE,
   /* */ CN_LIMITS,
   /* */ CN_LISTEXONODE_t,
@@ -520,7 +520,6 @@ static Stz* aCN[]
   /* */ "GRID"_Stz,                 // CN_GRID
 
   /* */ "_H__"_Stz,                 // CN__H__
-  /* */ "HASHSET"_Stz,              // CN_HASHSET
   /* */ "HASHMAP"_Stz,              // CN_HASHMAP
   /* */ "HASHMAPSLOT"_Stz,          // CN_HASHMAPSLOT
   /* */ "HEAPBUFFER"_Stz,           // CN_HEAPBUFFER
@@ -558,6 +557,7 @@ static Stz* aCN[]
   /* */ "LARGEPERSISTENT"_Stz,      // CN_LARGEPERSISTENT
   /* */ "LARGETRANSIENT"_Stz,       // CN_LARGETRANSIENT
   /* */ "LARGEVIRTUAL"_Stz,         // CN_LARGEVIRTUAL
+  /* */ "LGLBUFSET"_Stz,            // CN_LGLBUFSET
   /* */ "LICENCE"_Stz,              // CN_LICENCE
   /* */ "LIMITS"_Stz,               // CN_LIMITS
   /* */ "LISTEXONODE_t"_Stz,        // CN_LISTEXONODE_t

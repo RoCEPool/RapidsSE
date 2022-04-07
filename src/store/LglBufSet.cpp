@@ -1,48 +1,48 @@
 /*============================================================================*/
-/* HashSet.cpp -- Set of Partition Hashed Buffers with dangling support       */
+/* LglBufSet.cpp -- Set of Partition Hashed Buffers with dangling support     */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "HashSet.hpp"
+#include "LglBufSet.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,HashSet,CN_HASHSET)
-__aNewFunction(HashSet,CN_HASHSET)
-__vDeleteFunction(HashSet,CN_HASHSET)
-__aFooterFunction(HashSet)
+__pCastFunction(STORE,LglBufSet,CN_LGLBUFSET)
+__aNewFunction(LglBufSet,CN_LGLBUFSET)
+__vDeleteFunction(LglBufSet,CN_LGLBUFSET)
+__aFooterFunction(LglBufSet)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashSet::HashSet(void)
-: Object(CN_HASHSET)
+LglBufSet::LglBufSet(void)
+: Object(CN_LGLBUFSET)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
   
 
-  for (i8 i_Ptn = 0; i_Ptn < C_MAX_LGLPTNS; i_Ptn++)
-    m_paBufferChain[i_Ptn] = nullptr;
+  for (LglPtn tLglPtn = 0; tLglPtn < C_MAX_LGLPTNS; tLglPtn++)
+    m_paBufferChain[tLglPtn] = nullptr;
     
-  _checkInitialised_(CN_HASHSET);
+  _checkInitialised_(CN_LGLBUFSET);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-HashSet::~HashSet(void) noexcept(false)
+LglBufSet::~LglBufSet(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
   // Assert we don't have any dangling buffers
-  for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsInGrid(); i_Ptn++)
-    RASSERT(! m_paBufferChain[i_Ptn]);
+  for (LglPtn tLglPtn = 0; tLglPtn < AM::PTNMAP::nPtnsInGrid(); tLglPtn++)
+    RASSERT(! m_paBufferChain[tLglPtn]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,9 +52,9 @@ HashSet::~HashSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add row as first into buffer chain for partition                           */
 /*----------------------------------------------------------------------------*/
-void HashSet::vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer)
+void LglBufSet::vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
    // link the old with this
    pDataBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);
@@ -68,11 +68,11 @@ void HashSet::vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer)
 /*----------------------------------------------------------------------------*/
 /* return a full crwBuffer for given partition (if any)                       */
 /*----------------------------------------------------------------------------*/
-DataBuffer* HashSet::pBuffer(i8 i_Ptn)
+DataBuffer* LglBufSet::pBuffer(LglPtn tLglPtn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
-  DataBuffer* pBuffer = m_paBufferChain[i_Ptn];
+  DataBuffer* pBuffer = m_paBufferChain[tLglPtn];
 
   return pBuffer;
 }
@@ -80,15 +80,15 @@ DataBuffer* HashSet::pBuffer(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* return a full crwBuffer for given partition (if any)                       */
 /*----------------------------------------------------------------------------*/
-DataBuffer* HashSet::pCompletedBuffer(i8 i_Ptn)
+DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
 
   DataBuffer* pCompletedBuffer = nullptr;
   
   DataBuffer* pDataBuffer = (DataBuffer*)
-                              (m_paBufferChain[i_Ptn]
-                                 ? m_paBufferChain[i_Ptn]->pNextLinkedBuffer()
+                              (m_paBufferChain[tLglPtn]
+                                 ? m_paBufferChain[tLglPtn]->pNextLinkedBuffer()
                                  : nullptr);
   while (pDataBuffer) {
     pCompletedBuffer = pDataBuffer;
@@ -106,13 +106,13 @@ DataBuffer* HashSet::pCompletedBuffer(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* return any final dangling buffer                                           */
 /*----------------------------------------------------------------------------*/
-DataBuffer* HashSet::pDanglingBuffer(i8 i_Ptn)
+DataBuffer* LglBufSet::pDanglingBuffer(LglPtn tLglPtn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LGLBUFSET,_FOOTER_);
   
-  DataBuffer* pDataBuffer = m_paBufferChain[i_Ptn];
+  DataBuffer* pDataBuffer = m_paBufferChain[tLglPtn];
   
-  m_paBufferChain[i_Ptn] = nullptr;
+  m_paBufferChain[tLglPtn] = nullptr;
   
   return pDataBuffer;
 }
