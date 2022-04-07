@@ -103,8 +103,8 @@ void ToLglPtnCrw::vConvert(RowBuffer* pRowBuffer)
    //vTrace("ToBktCrw::vConvert PtnID:%lld Bkt:%lld\n"_Stz, tLglPtn.iAsI8(), iBktNo);
   //pRowBuffer->pRowBuffer()->vDumpNst();
   
-  m_pCrwBuffer = m_oHashSet.pBuffer(tLglPtn.iAsI8()) ?
-      _pCrwBuffer(m_oHashSet.pBuffer(tLglPtn.iAsI8())) : nullptr;
+  m_pCrwBuffer = m_oLglBufSet.pBuffer(tLglPtn.iAsI8()) ?
+      _pCrwBuffer(m_oLglBufSet.pBuffer(tLglPtn.iAsI8())) : nullptr;
   
   if (! m_pCrwBuffer) {
     //vTrace("ToBktCrw::vAddRowsToBuffer iBkt:%lld \n"_Stz,pRowBuffer->iBucketNo());
@@ -126,7 +126,7 @@ CrwBuffer* ToLglPtnCrw::pCompleted(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
   
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oHashSet.pCompletedBuffer(i_Ptn));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oLglBufSet.pCompletedBuffer(i_Ptn));
   
 //  if (pCrwBuffer) {
 //    pCrwBuffer->vDump();
@@ -143,7 +143,7 @@ CrwBuffer* ToLglPtnCrw::pDangling(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
   
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oHashSet.pDanglingBuffer(i_Ptn));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oLglBufSet.pDanglingBuffer(i_Ptn));
 
   return pCrwBuffer;
 }
@@ -208,34 +208,7 @@ void ToLglPtnCrw::vAddRowsToBuffer(LglPtn tLglPtn, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tLglPtn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
-  
-  //  create a new buffer
-  CrwBuffer* pCrwBuffer = new CrwBuffer();
-  
-  pCrwBuffer->vStreamDef(m_pStreamDef);
-
-  pCrwBuffer->vLglPtn(tLglPtn);
-
-  // Set the bucket number
-  i8 iBktNo = 0;
-
-  pCrwBuffer->vBucketNo(iBktNo);
-
-  // open buffer for append
-  pCrwBuffer->vAppendOpen(m_paRowCompactor[tLglPtn.iAsI8()],false);
-
-  m_oHashSet.vAddBuffer(tLglPtn.iAsI8(),pCrwBuffer);
-  
-  return pCrwBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a new crw buffer                                                    */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tLglPtn, i8 iBkt)
+CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tLglPtn, KeyBkt tKeyBkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
 
@@ -246,12 +219,12 @@ CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tLglPtn, i8 iBkt)
 
   pCrwBuffer->vLglPtn(tLglPtn);
 
-  pCrwBuffer->vBucketNo(iBkt);
+  pCrwBuffer->vBucketNo(tKeyBkt);
 
   // open buffer for append
   pCrwBuffer->vAppendOpen(m_paRowCompactor[tLglPtn.iAsI8()],false);
 
-  m_oHashSet.vAddBuffer(tLglPtn.iAsI8(),pCrwBuffer);
+  m_oLglBufSet.vAddBuffer(tLglPtn.iAsI8(),pCrwBuffer);
 
   return pCrwBuffer;
 }

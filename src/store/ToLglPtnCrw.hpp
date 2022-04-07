@@ -15,7 +15,7 @@ namespace STORE
     StreamDef* m_pStreamDef;
     CrwBuffer* m_pCrwBuffer;
 
-    LglBufSet    m_oHashSet;
+    LglBufSet    m_oLglBufSet;
   
     RowCompactor* m_paRowCompactor[C_MAX_LGLPTNS]; // row compactors
 
@@ -39,8 +39,7 @@ namespace STORE
   private:
     void vAddNst(RowBuffer* pRowBuffer);
     void vAddRowsToBuffer(LglPtn tLglPtn, RowBuffer* pRowBuffer);
-    CrwBuffer* pNewCrwBuffer(LglPtn tLglPtn);
-    CrwBuffer* pNewCrwBuffer(LglPtn tLglPtn, i8 iBkt);
+    CrwBuffer* pNewCrwBuffer(LglPtn tLglPtn, KeyBkt tKeyBkt);
 
     Footer* aFooter(void);
   };
