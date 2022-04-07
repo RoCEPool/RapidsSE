@@ -116,8 +116,7 @@ namespace STORE {
 
     TypedStack* pSynthPrjAgg(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop);
 
-    bool bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop,
-                      bool bHashRows);
+    bool bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop);
 
     void vSynthSort( Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext);
 
@@ -178,7 +177,7 @@ namespace STORE {
 
     void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, ePE ePreExp, eEK eExprKind, eDM eExprType, i8 i_Col, i8& i_DupCtr);
     void vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, eEK eExprKind,
-                        ePE ePreExp, Token* pTkn, i8 i_Col, i8& i_DupCtr);
+                        ePE ePreExp, i8 i_Col, i8& i_DupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, eDM eCastType);
     void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn);

@@ -18,7 +18,7 @@ INCLUDE 'regrLoadData.test';
 //LOG 'Running regression tests...';
 
 //------------------------------------------------------------------------------
-//INCLUDE 'AndOrNot.test';
+INCLUDE 'AndOrNot.test';
 //INCLUDE 'InNotIn.test';
 //INCLUDE 'PartKey1way.test';
 //INCLUDE 'PartKey2way.test';
@@ -56,12 +56,12 @@ INCLUDE 'regrLoadData.test';
 //INCLUDE 'functions-substr.test';
 //INCLUDE 'functions-trim.test';
 //INCLUDE 'functions-upper.test';
-//INCLUDE 'having.test';
+INCLUDE 'having.test';
 //INCLUDE 'intersect.test';
 //INCLUDE 'intervals.test';
 INCLUDE 'isnull.test';
 //INCLUDE 'joinTests.test';
-//INCLUDE 'like.test';
+INCLUDE 'like.test';
 //INCLUDE 'subqueries-select.test';
 //INCLUDE 'subqueries-where-single.test';
 

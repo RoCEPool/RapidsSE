@@ -1,8 +1,10 @@
 
 // Source file: ../queries/having/rnhaving1.sql
 // Result file: none
+/*
+// TODO: ENABLE WHEN OPTIMIZER separates aggreg and sort
 select sum(cola1) as SumOf, colb1 from table1 group by colb1 having SumOf > 500 order by colb1;
-failure: 'Result file missing'
+failure contains: 'Result file missing'
 
 
 // Source file: ../queries/having/rhaving2.sql
@@ -85,4 +87,109 @@ ordered rows:
   (1373, 'tan')
   (1217, 'teal')
   (812, 'violet')
+*/
 
+select sum(cola1) as SumOf, colb1 from table1 group by colb1 having SumOf > 500;
+rows:
+  (2270,'BLACK')
+  (547,'BLUE')
+  (1188,'GREEN')
+  (1268,'PINK')
+  (1510,'PURPLE')
+  (1455,'TEAL')
+  (1444,'WHITE')
+  (1527,'YELLOW')
+  (660,'blue')
+  (563,'brown')
+  (700,'gold')
+  (1295,'green')
+  (601,'indigo')
+  (1557,'maroon')
+  (1657,'orange')
+  (688,'purple')
+  (1373,'tan')
+  (1217,'teal')
+  (812,'violet')
+
+// Source file: ../queries/having/rhaving2.sql
+// Result file: ../queries/having/results/having2.res
+/*
+TODO: COMPILER ERROR
+select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having avg(ucol) < 200;
+rows:
+  (62, 128, 'BLACK', 'ttt')
+  (243, 132, 'ORANGE', 'nnn')
+  (201, 122, 'PINK', 'vvv')
+  (457, 109, 'PURPLE', 'www')
+  (213, 93, 'RED', 'ccc')
+  (402, 172, 'TEAL', 'ccc')
+  (46, 106, 'aqua', 'nnn')
+  (74, 101, 'aqua', 'bbb')
+  (5, 123, 'black', 'iii')
+  (124, 144, 'black', 'mmm')
+  (235, 158, 'black', 'bbb')
+  (336, 40, 'blue', 'ppp')
+  (303, 62, 'gold', 'ccc')
+  (222, 62, 'green', 'yyy')
+  (415, 30, 'green', 'uuu')
+  (260, 81, 'grey', 'lll')
+  (380, 129, 'maroon', 'xxx')
+  (141, 31, 'orange', 'aaa')
+  (467, 57, 'orange', 'kkk')
+  (26, 86, 'peach', 'ooo')
+  (215, 140, 'purple', 'rrr')
+  (154, 178, 'violet', 'ddd')
+*/
+
+// Source file: ../queries/having/rhaving3.sql
+// Result file: ../queries/having/results/having3.res
+select sum(cola1), avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa';
+rows:
+  (95, 662, 'GREEN', 'aaa')
+  (235, 158, 'black', 'bbb')
+  (5, 123, 'black', 'iii')
+  (124, 144, 'black', 'mmm')
+  (175, 764, 'maroon', 'aaa')
+  (141, 31, 'orange', 'aaa')
+
+
+// Source file: ../queries/having/rhaving4.sql
+// Result file: ../queries/having/results/having4.res
+select sum(cola1), avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having colb1 = 'black';
+rows:
+  (235, 158, 'black', 'bbb')
+  (5, 123, 'black', 'iii')
+  (124, 144, 'black', 'mmm')
+
+
+// Source file: ../queries/having/rhaving5.sql
+// Result file: ../queries/having/results/having5.res
+select sum(cola1) as SumOf, colb1 from table1 group by colb1 having colb1 like 'bl%';
+rows:
+  (364, 'black')
+  (660, 'blue')
+
+
+// Source file: ../queries/having/rhaving1.sql
+// Result file: ../queries/having/results/having1.res
+select sum(cola1), colb1 from table1 group by colb1 having sum(cola1) > 500;
+rows:
+  (2270, 'BLACK')
+  (547, 'BLUE')
+  (1188, 'GREEN')
+  (1268, 'PINK')
+  (1510, 'PURPLE')
+  (1455, 'TEAL')
+  (1444, 'WHITE')
+  (1527, 'YELLOW')
+  (660, 'blue')
+  (563, 'brown')
+  (700, 'gold')
+  (1295, 'green')
+  (601, 'indigo')
+  (1557, 'maroon')
+  (1657, 'orange')
+  (688, 'purple')
+  (1373, 'tan')
+  (1217, 'teal')
+  (812, 'violet')

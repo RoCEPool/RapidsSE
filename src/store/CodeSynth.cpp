@@ -19,12 +19,6 @@
 #include "SN_Bcd.hpp"
 #include "eFM.h"
 
-extern i8 iMathOp_MaxValue(eDM eDatum);
-extern i8 iMathOp_MinValue(eDM eDatum);
-
-extern void vMathOp_MaxValue(Stz* sInitValue);
-extern void vMathOp_MinValue(Stz* sInitValue);
-
 RowRef xRowRef[]
 {
   { "none"_Stz },   // SR_NONE
@@ -79,7 +73,7 @@ CodeSynth::CodeSynth(void)
   m_sLowerPosition = ""_Stz;
   m_sUpperPosition = ""_Stz;
 
-  m_pPreExpStack = nullptr;
+  m_pPreExpStack  = nullptr;
   m_pStreamDefLft = nullptr;
   m_pStreamDefOut = nullptr;
   m_pIndexDef     = nullptr;
@@ -458,9 +452,15 @@ void CodeSynth::vSynthEos(IndexDef* pIndexDef, TypedStack* pPostStack, Stz* sLab
   // generate the init variables
   vGenerateInitVars();
 
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate payload traversal
-  vPayloadTraversal(pIndexDef, pPostStack, sLabelNext);
+  if (pIndexDef)
+    vPayloadTraversal(pIndexDef, pPostStack, sLabelNext);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -591,6 +591,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n L_IndexJoinDeref:");
+  StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_iProcessRow = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // check reached upper bound
@@ -1225,7 +1226,7 @@ TypedStack* CodeSynth::pSynthPrjAgg(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelL
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection of expressions                                   */
 /*----------------------------------------------------------------------------*/
-bool CodeSynth::bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop, bool bHashRows) {
+bool CodeSynth::bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -2665,7 +2666,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nItems(); i_Tkn++) {
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
-    /*
+
 #ifdef WITH_DEBUG_VERSION
     vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
@@ -2680,7 +2681,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
     vTrace("--------------------------------------\n"_Stz);
 #endif
-*/
+
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
 
@@ -2690,7 +2691,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
         pExprStack = m_pExprStack;
 
         // push assign column
-        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, pTkn, i_Col,
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col,
                        i_DupCtr);
 
       if (ePreExp != PE_GKY || (ePreExp == PE_GKY && eExprKind == EK_AGGORD))
@@ -2741,7 +2742,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       bGroupBy = false;
 
       // push assign column
-      vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, pTkn, i_Col,
+      vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col,
                      i_DupCtr);
 
       if (eExprKind == EK_GROUPBY)
@@ -2790,6 +2791,19 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the filter expression
+    if (pTkn->bSame("filter"_Stz)) {
+
+      eExprKind = EK_FILTER;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working stack
+      pExprStack = pWorkingStack(eExprKind, ePreExp, m_pExprStack);
+
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // bound
     if (pTkn->bSame("bound"_Stz)) {
       bIndexJoin = true;
@@ -2802,7 +2816,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // push upperBound assign column
       if (bUpperBound)
-        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, pTkn, i_Col, i_DupCtr);
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_DupCtr);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the lower bound  stack
@@ -2818,7 +2832,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // push lowerBound assign column
       if (bLowerBound)
-        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, pTkn, i_Col, i_DupCtr);
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_DupCtr);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the upper bound stack
@@ -2885,114 +2899,107 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the in expression
     if (pTkn->bSame("in"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_INX);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the between expression
     if (pTkn->bSame("between"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_BET);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the extract_day expression
     if (pTkn->bSame("extract_day"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_XDY);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the extract_hour expression
     if (pTkn->bSame("extract_hour"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_XHR);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the extract_min expression
     if (pTkn->bSame("extract_min"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_XMN);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the extract_month expression
     if (pTkn->bSame("extract_month"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_XMT);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the extract_second expression
     if (pTkn->bSame("extract_second"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_XSC);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the between expression
     if (pTkn->bSame("extract_year"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the in expression
-    if (pTkn->bSame("in"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_XYR);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the like expression
     if (pTkn->bSame("like2"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_LK2);
       continue;
     }
 
     if (pTkn->bSame("like3"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_LK3);
       continue;
     }
 
     if (pTkn->bSame("matchLeading"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_MLE);
       continue;
     }
 
     if (pTkn->bSame("matchMiddle"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_MMD);
       continue;
     }
 
     if (pTkn->bSame("matchMiddle1"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_MM1);
       continue;
     }
 
     if (pTkn->bSame("matchMiddle2"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_MM2);
       continue;
     }
 
     if (pTkn->bSame("matchTrailing"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_MTR);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the substring2 expression
     if (pTkn->bSame("substring2"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_SS2);
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the substring3 expression
     if (pTkn->bSame("substring3"_Stz)) {
-      vPushFunc(pExprStack, pExprType, ePreExp);
+      vPushFunc(pExprStack, pExprType, PE_SS3);
       continue;
     }
 
@@ -3192,7 +3199,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   if (pExprStack == pPostStack)
     pExprStack = m_pExprStack;
 
-  vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, pTkn, i_Col, i_DupCtr);
+  vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_DupCtr);
 /*
 #ifdef WITH_DEBUG_VERSION
 
@@ -3312,11 +3319,10 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
   }
-  else {
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate process row
-    vGenerateProcessRow(sLabelNext);
-  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate process row
+  vGenerateProcessRow(sLabelNext);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -4008,7 +4014,7 @@ void CodeSynth::vPushRelational(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push assign column on the exprStack                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, eEK eExprKind, ePE ePreExp, Token* pTkn, i8 i_Col, i8& i_DupCtr) {
+void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, eEK eExprKind, ePE ePreExp, i8 i_Col, i8& i_DupCtr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -4292,6 +4298,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       // match leading
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
+      eExpr3 = (eDM)pTypeStack->iPop();
       sOperation.vConcat("_MATCH_MIDDLE(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
@@ -4447,11 +4454,10 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   }
-  else {
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate process row
-    vGenerateProcessRow(sLabelNext);
-  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate process row
+  vGenerateProcessRow(sLabelNext);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast

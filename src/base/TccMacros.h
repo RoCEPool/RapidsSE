@@ -143,6 +143,59 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INEXPR
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INEXPR
+
+#define _INX_BCDBCD(eErrorCode)                                             \
+  {                                                                         \
+    bFilterResult = 0;                                                      \
+    iArg1 = *(--paW);                                                       \
+    if (eErrorCode != EC_NONE ||                                            \
+        iArg1 == C_DATUM_NULL) {                                            \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      iInCount = *(--paW);                                                  \
+      while(iInCount--) {                                                   \
+        *(paW++) = iArg1;                                                   \
+        _EQ_BCDBCD(eErrorCode)                                              \
+        bFilterResult = *(--paW);                                           \
+        if (bFilterResult) {                                                \
+          break;                                                            \
+          }      \
+      }                                                                      \
+      while(iInCount-- > 0) {                                               \
+        iArg2 = *(--paW);                                                   \
+      }                                                                     \
+      *(paW++) = bFilterResult;                                             \
+    }                                                                       \
+  }
+
+#define _INX_FLTFLT(eErrorCode)                                             \
+  {                                                                         \
+    bFilterResult = 0;                                                      \
+    iArg1 = *(--paW);                                                       \
+    if (eErrorCode != EC_NONE ||                                            \
+        iArg1 == C_DATUM_NULL) {                                            \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      iInCount = *(--paW);                                                  \
+      while(iInCount--) {                                                   \
+        *(paW++) = iArg1;                                                   \
+        _EQ_FLTFLT(eErrorCode)                                              \
+        bFilterResult = *(--paW);                                           \
+        if (bFilterResult) {                                                \
+          break;                                                            \
+          }      \
+      }                                                                      \
+      while(iInCount-- > 0) {                                               \
+        iArg2 = *(--paW);                                                   \
+      }                                                                     \
+      *(paW++) = bFilterResult;                                             \
+    }                                                                       \
+  }
+
 #define _INX_INTINT(eErrorCode)                                             \
   {                                                                         \
     bFilterResult = 0;                                                      \
@@ -160,6 +213,68 @@
            break;                                                           \
         }                                                                   \
       }                                                                     \
+      while(iInCount-- > 0) {                                               \
+        iArg2 = *(--paW);                                                   \
+      }                                                                     \
+      *(paW++) = bFilterResult;                                             \
+    }                                                                       \
+  }
+
+#define _INX_INTINT(eErrorCode)                                             \
+  {                                                                         \
+    bFilterResult = 0;                                                      \
+    iArg1 = *(--paW);                                                       \
+    if (eErrorCode != EC_NONE ||                                            \
+        iArg1 == C_DATUM_NULL) {                                            \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      iInCount = *(--paW);                                                  \
+      while(iInCount--) {                                                   \
+        iArg2 = *(--paW);                                                   \
+        if (iArg1 == iArg2) {                                               \
+           bFilterResult = 1;                                               \
+           break;                                                           \
+        }                                                                   \
+      }                                                                     \
+      while(iInCount-- > 0) {                                               \
+        iArg2 = *(--paW);                                                   \
+      }                                                                     \
+      *(paW++) = bFilterResult;                                             \
+    }                                                                       \
+  }
+
+#define _INX_IVLIVL(eErrorCode)                                             \
+  {                                                                         \
+    NEVER_REACH                                                             \
+  }
+
+#define _INX_IVYIVY(eErrorCode)                                             \
+  {                                                                         \
+    NEVER_REACH                                                             \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INEXPR
+
+#define _INX_VCHVCH(eErrorCode)                                             \
+  {                                                                         \
+    bFilterResult = 0;                                                      \
+    iArg1 = *(--paW);                                                       \
+    if (eErrorCode != EC_NONE ||                                            \
+        iArg1 == C_DATUM_NULL) {                                            \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      iInCount = *(--paW);                                                  \
+      while(iInCount--) {                                                   \
+        *(paW++) = iArg1;                                                   \
+        _EQ_VCHVCH(eErrorCode)                                              \
+        bFilterResult = *(--paW);                                           \
+        if (bFilterResult) {                                                \
+          break;                                                            \
+          }      \
+      }                                                                      \
       while(iInCount-- > 0) {                                               \
         iArg2 = *(--paW);                                                   \
       }                                                                     \

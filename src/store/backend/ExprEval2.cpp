@@ -221,8 +221,17 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
   while ( pTkn ) {
 
 #ifdef WITH_DEBUG_VERSION
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 #endif
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a FILTER ?
+    if (pTkn->bSame("FILTER"_Stz)) {
+
+      eExprKind = EK_FILTER;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a GROUPBY ?
@@ -612,7 +621,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     }
 
     if (pTkn->bSame("SUBSTRING3"_Stz)) {
-      ePreExp = PE_SS3;
+      ePreExp = PE_SS3;;
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -748,21 +757,25 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     pTkn = pTknVec->pNextToken();
   }
 
-  // push the predicate expression
-  pPreExpStack->vPush(ePreExp);
+  if (eExprKind != EK_FILTER) {
 
-  // add the last column to the indexDef
-  if (ePreExp == PE_TOP) {
-    vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+    // push the predicate expression
+    pPreExpStack->vPush(ePreExp);
 
-    // set the column no in the indexDef w.r to the streamDef
-    pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
+    // add the last column to the indexDef
+    if (ePreExp == PE_TOP) {
+      vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+
+      // set the column no in the indexDef w.r to the streamDef
+      pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
+    }
+
+    RASSERT(pColumnExpr->eColumnType() != CT_NONE);
+
+    // add the last column to the streamDefOut
+    if (ePreExp != PE_SRT && ePreExp != PE_TOP)
+      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
   }
-
-  // add the last column to the streamDefOut
-  if (pColumnExpr->eColumnType() != CT_NONE &&
-      ePreExp != PE_SRT && ePreExp != PE_TOP)
-    vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
   L_RETURN:
 
