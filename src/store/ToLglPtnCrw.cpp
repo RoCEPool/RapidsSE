@@ -122,11 +122,11 @@ void ToLglPtnCrw::vConvert(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* get any completed/full buffer                                              */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToLglPtnCrw::pCompleted(i8 i_Ptn)
+CrwBuffer* ToLglPtnCrw::pCompleted(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
   
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oLglBufSet.pCompletedBuffer(i_Ptn));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oLglBufSet.pCompletedBuffer(tLglPtn));
   
 //  if (pCrwBuffer) {
 //    pCrwBuffer->vDump();
@@ -139,11 +139,11 @@ CrwBuffer* ToLglPtnCrw::pCompleted(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* get any dangling/last buffer                                               */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToLglPtnCrw::pDangling(i8 i_Ptn)
+CrwBuffer* ToLglPtnCrw::pDangling(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
   
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oLglBufSet.pDanglingBuffer(i_Ptn));
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_oLglBufSet.pDanglingBuffer(tLglPtn));
 
   return pCrwBuffer;
 }
@@ -222,7 +222,7 @@ CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tLglPtn, KeyBkt tKeyBkt)
   pCrwBuffer->vBucketNo(tKeyBkt);
 
   // open buffer for append
-  pCrwBuffer->vAppendOpen(m_paRowCompactor[tLglPtn.iAsI8()],false);
+  pCrwBuffer->vAppendOpen(m_paRowCompactor[tLglPtn],false);
 
   m_oLglBufSet.vAddBuffer(tLglPtn.iAsI8(),pCrwBuffer);
 

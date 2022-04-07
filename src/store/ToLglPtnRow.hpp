@@ -31,8 +31,8 @@ namespace STORE
 
     void vConvert(Table* pTable, RowBuffer* pRowBuffer);
   
-    RowBuffer* pCompleted(i8 i_Ptn);
-    RowBuffer* pDangling(i8 i_Ptn);
+    RowBuffer* pCompleted(LglPtn tLglPtn);
+    RowBuffer* pDangling(LglPtn tLglPtn);
   
   private:
     void vCopyRow(LglPtn tLglPtn, KeyBkt tKeyBkt, Row* aRowSrc);

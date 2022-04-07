@@ -33,8 +33,8 @@ namespace STORE
 
     void vConvert(RowBuffer* pRowBuffer);
   
-    CrwBuffer* pCompleted(i8 i_Ptn);
-    CrwBuffer* pDangling(i8 i_Ptn);
+    CrwBuffer* pCompleted(LglPtn tLglPtn);
+    CrwBuffer* pDangling(LglPtn tLglPtn);
   
   private:
     void vAddNst(RowBuffer* pRowBuffer);

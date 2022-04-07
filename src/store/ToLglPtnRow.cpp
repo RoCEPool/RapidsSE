@@ -122,11 +122,11 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* get any completed/full buffer                                              */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToLglPtnRow::pCompleted(i8 i_Ptn)
+RowBuffer* ToLglPtnRow::pCompleted(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
   
-  RowBuffer* pRowBuffer = _pRowBuffer(m_oLglBufSet.pCompletedBuffer(i_Ptn));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_oLglBufSet.pCompletedBuffer(tLglPtn));
   
   return pRowBuffer;
 }
@@ -134,11 +134,11 @@ RowBuffer* ToLglPtnRow::pCompleted(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* get any dangling/last buffer                                               */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToLglPtnRow::pDangling(i8 i_Ptn)
+RowBuffer* ToLglPtnRow::pDangling(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
   
-  RowBuffer* pRowBuffer = _pRowBuffer(m_oLglBufSet.pDanglingBuffer(i_Ptn));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_oLglBufSet.pDanglingBuffer(tLglPtn));
   
   return pRowBuffer;
   
