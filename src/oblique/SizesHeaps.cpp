@@ -361,10 +361,9 @@ SizeHeap gxaSizeHeap[]
   { 'G' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__G__
   { sizeof(Grid),               HT_T_TINY    ,0 FILL }, // CN_GRID
 
-  { 'H' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN_HASHSET
+  { 'H' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__H__
   { sizeof(HashMap),            HT_T_LARGE   ,0 FILL }, // CN_HASHMAP
-  { sizeof(HashMapSlot),        HT_T_TINY    ,0 FILL }, // CN__H__
-  { sizeof(HashSet),            HT_T_LARGE   ,0 FILL }, // CN_HASHMAPSLOT
+  { sizeof(HashMapSlot),        HT_T_TINY    ,0 FILL }, // CN_HASHMAPSLOT
   { sizeof(HeapBuffer),         HT_INVALID   ,0 FILL }, // CN_HEAPBUFFER
   { sizeof(Heaps),              HT_INVALID   ,0 FILL }, // CN_HEAPMEM
 
@@ -400,6 +399,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL }, // CN_LARGEPERSISTENT
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL }, // CN_LARGETRANSIENT
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL }, // CN_LARGEVIRTUAL
+  { sizeof(LglBufSet),          HT_T_LARGE   ,0 FILL }, // CN_LGLBUFSET
   { sizeof(Licence),            HT_T_TINY    ,0 FILL }, // CN_LICENCE
   { sizeof(Limits),             HT_T_TINY    ,0 FILL }, // CN_LIMITS
   { sizeof(ListExoNode_t<Object>), HT_T_TINY ,0 FILL }, // CN_LISTEXONODE_t

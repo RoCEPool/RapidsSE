@@ -46,7 +46,7 @@ Pot::Pot(void)
   for (i8 i_Ptn = 0; i_Ptn < C_MAX_LGLPTNS; i_Ptn++)
     m_paBufferChain[i_Ptn] = nullptr;
   
-  _checkInitialised_(CN_HASHSET);
+  _checkInitialised_(CN_LGLBUFSET);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
 }
