@@ -22,8 +22,9 @@ namespace STORE
     Table* m_pTable;  // table this partition belongs to
 
 
-    LglPtn m_tLglPtn;  // partition number (in grid)
-  
+    LglPtn m_tLglPtn;  // logical partition (in grid)
+    PhyPtn m_tPhyPtn;  // physical partition (in grid)
+
     // must be last
     Footer m_xFooter;
     

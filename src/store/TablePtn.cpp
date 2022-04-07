@@ -42,8 +42,10 @@ TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn)
 : Object(CN_TABLEPTN), m_okLock(this)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  m_pTable = pTable;
+  
+  m_pTable  = pTable;
   m_tLglPtn = tLglPtn;
+  m_tPhyPtn = C_UNKNOWN;
 
   m_pBucketVec = new BucketVec;
   m_pIndexTreeVec  = new IndexTreeVec;
@@ -281,7 +283,7 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer)
     pBucket = m_pBucketVec->pGet(iBktNo);
   }
 
-  RASSERT(iBktNo == m_tLglPtn);
+  //RASSERT(iBktNo == m_tLglPtn);
   
   if (pBucket) {
     pBucket->vAppendBuffer(pDataBuffer);
