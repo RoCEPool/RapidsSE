@@ -131,17 +131,17 @@ rows: (*,'explainPlan',
    » column: (Expr = rapidsse.public.supplier.s_name ; Ordinal Expr = $9)
    » column: (Expr = rapidsse.public.partsupp.ps_suppkey ; Ordinal Expr = $16)
 
--> -> nestedLoopJoinOp
+-> -> abstractJoinOp
       » join type: Cross Join
       » predicate: (true)
       » ordinal predicate: (true)
 
--> -> -> nestedLoopJoinOp
+-> -> -> abstractJoinOp
          » join type: Cross Join
          » predicate: (true)
          » ordinal predicate: (true)
 
--> -> -> -> nestedLoopJoinOp
+-> -> -> -> abstractJoinOp
             » join type: Cross Join
             » predicate: (true)
             » ordinal predicate: (true)
@@ -334,7 +334,7 @@ rows: (*,'explainPlan',
    » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $5)
    » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
 
--> -> nestedLoopJoinOp
+-> -> abstractJoinOp
       » join type: Left Outer Join
       » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
       » ordinal predicate: ($1 = $6)
@@ -477,7 +477,7 @@ rows: (*,'explainPlan',
    » column: (Alias = colY ; Expr = rapidsse.public.t2.colY ; Ordinal Expr = $9)
    » column: (Alias = colZ ; Expr = rapidsse.public.t2.colZ ; Ordinal Expr = $10)
 
--> -> nestedLoopJoinOp
+-> -> abstractJoinOp
       » join type: Left Outer Join
       » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
       » ordinal predicate: ($1 = $5)

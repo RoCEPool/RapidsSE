@@ -42,7 +42,7 @@
 #include "TableRef.hpp"
 #include "AliasRef.hpp"
 
-#include "NestedLoopJoinOp.hpp"
+#include "AbstractJoinOp.hpp"
 #include "AggregateOp.hpp"
 
 #include "ExprList.hpp"
@@ -144,8 +144,6 @@ Backend::Backend(RootNode* pPlanRoot)
   m_bCombinedOp      = false;
   m_pPrevStageMarker = nullptr;
   m_bJoinPredicate   = false;
-  m_bIndexJoin       = false;
-  m_sIndexJoinTable  = ""_Stz;
   m_bInSubquery      = false;
   m_sIndent          = ""_Stz;
 
@@ -583,64 +581,6 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append indexjoinOp to the pipeline                                         */
-/*----------------------------------------------------------------------------*/
-void Backend::vAppendIndexJoinOp(Backend* pBackend, QueryNode* pNode)
-{
-  _static_
-
-  s4K sIndexJoin;
-  String* sPipeline = pBackend->m_sPipeline;
-
-  pBackend->m_pColExprList = JoinOp::pColumnExprs(pNode, pBackend->m_pPlanRoot);
-  QueryNode* pOrdinalJoinPredicate = JoinOp::pOrdinalJoinPredicate(pNode, pBackend->m_pPlanRoot);
-
-  // Get the joinType property
-  //eJT eJoinType = JoinOp::eJoinType(pNode);
-
-  // Get the joinPredicate property
-  //QueryNode* pJoinPredicate = JoinOp::pJoinPredicate(pNode);
-  //ASSERT(pJoinPredicate);
-
-  // save the left child columns
-  pBackend->m_bJoinPredicate = true;
-  pBackend->m_iColumnsOfLeftChild = JoinOp::iColumnsOfChild1(pNode, pBackend->m_pPlanRoot);
-
-  // NOTE: this will change , we should be able to get the joinIndex as a property
-  // of the index
-  // workaround: get the join index from the hints
-  QueryNode* pHint = PlanObject::pGetHint(_pQueryNode(pNode), "JoinIndex"_Stz);
-  if ( ! pHint) {
-    vTrace("Warning: No JoinIndex hint found\n"_Stz);
-    RASSERT(0);
-  }
-  ASSERT(Hint::bIsOfType(pHint));
-  QueryNode* pHintValue = _pQueryNode(pHint->pFirstChild());
-  Stz* sJoinIndex = pHintValue->szValue();
-
-  sIndexJoin.vSprint("indexJoin 2 %s %s \""_Stz, pBackend->m_sIndexJoinTable.azChar(), sJoinIndex);
-  pBackend->vAppendNextOp(sIndexJoin);
-  pBackend->m_bCombinedOp = true;
-
-  GraphNav::bGlobalWalk(pOrdinalJoinPredicate, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
-  sPipeline->vCatSprint(" \""_Stz);
-
-  // reset left child columns
-  pBackend->m_bJoinPredicate = false;
-  pBackend->m_iColumnsOfLeftChild = C_UNKNOWN;
-
-  // cleanup
-
-  pBackend->m_bIndexJoin = false;
-  pBackend->m_sIndexJoinTable = ""_Stz;
-
-  pBackend->m_pColExprList->vDeleteAll();
-  delete pBackend->m_pColExprList;
-
-  delete pOrdinalJoinPredicate;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append limit Op to the pipeline                                            */
 /*----------------------------------------------------------------------------*/
 void Backend::vAppendLimitOp(Backend* pBackend, QueryNode* pNode)
@@ -671,9 +611,9 @@ void Backend::vAppendLimitOp(Backend* pBackend, QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append loopjoinOp to the pipeline                                          */
+/* append abstractjoinOp to the pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendLoopJoinOp(Backend* pBackend, QueryNode* pNode)
+void Backend::vAppendAbstractJoinOp(Backend* pBackend, QueryNode* pNode)
 {
   _static_
 
@@ -693,7 +633,7 @@ void Backend::vAppendLoopJoinOp(Backend* pBackend, QueryNode* pNode)
   pBackend->m_bJoinPredicate = true;
   pBackend->m_iColumnsOfLeftChild = JoinOp::iColumnsOfChild1(pNode, pBackend->m_pPlanRoot);
 
-  pBackend->vAppendNextOp("loopJoin 0 \""_Stz);
+  pBackend->vAppendNextOp("abstractJoin 2 \""_Stz);
   GraphNav::bGlobalWalk(pOrdinalJoinPredicate, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   sPipeline->vCatSprint(" \""_Stz);
 
@@ -1043,7 +983,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
   if (ColumnOrdinal::bIsOfType(pOrdinalExpr)) {
     QueryNode* pColumnOrdinal = _pQueryNode(pOrdinalExpr);
     bool bJoinPredicate = pBackend->m_bJoinPredicate;
-    bool bIndexJoin = pBackend->m_bIndexJoin;
 
     RASSERT(pBackend->m_iColumnsOfLeftChild);
 
@@ -1051,31 +990,17 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     if (bJoinPredicate) {
 
-      if (bIndexJoin) {
-        if (iColumnOrdinal - pBackend->m_iColumnsOfLeftChild <= 0 )
-          sPipeline->vCatSprint(
-              " BOUND $L%lld"
-              ""_Stz,
-              iColumnOrdinal);
-        else
-          sPipeline->vCatSprint(
-              " $I%lld"
-              ""_Stz,
-              iColumnOrdinal - pBackend->m_iColumnsOfLeftChild);
-      }
-      else {
-        // loopJoin
-        if (iColumnOrdinal - pBackend->m_iColumnsOfLeftChild <= 0 )
-          sPipeline->vCatSprint(
-              " $L%lld"
-              ""_Stz,
-              iColumnOrdinal);
-        else
-          sPipeline->vCatSprint(
-              " $R%lld"
-              ""_Stz,
-              iColumnOrdinal - pBackend->m_iColumnsOfLeftChild);
-      }
+      if (iColumnOrdinal - pBackend->m_iColumnsOfLeftChild <= 0 )
+        sPipeline->vCatSprint(
+            " $L%lld"
+            ""_Stz,
+            iColumnOrdinal);
+      else
+        sPipeline->vCatSprint(
+            " $R%lld"
+            ""_Stz,
+            iColumnOrdinal - pBackend->m_iColumnsOfLeftChild);
+
     }
     else {
       sPipeline->vCatSprint(
@@ -1555,28 +1480,11 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s2K& sPath, 
 
     else if (TableScanOp::bIsOfType(pQueryNode)) {
       QueryNode *pParent = _pQueryNode(GraphNav::pGetParentOfPath(sPath, pBackend->m_pWalkNode));
-
-      if (NestedLoopJoinOp::bIsOfType(pParent))
-        vAppendScanRightOp(pBackend, pQueryNode);
-
-      else if (IndexLookupJoinOp::bIsOfType(pParent)) {
-        pBackend->m_bIndexJoin = true;
-        QueryNode *pTableRef = TableScanOp::pTableRef(pQueryNode);
-        pBackend->m_sIndexJoinTable = TableRef::szTable(pTableRef);
-      }
-
-      else {
-        vAppendScanOp(pBackend, pQueryNode);
-      }
-
+      vAppendScanOp(pBackend, pQueryNode);
     }
 
-    else if (NestedLoopJoinOp::bIsOfType(pQueryNode)) {
-      vAppendLoopJoinOp(pBackend, pQueryNode);
-    }
-
-    else if (IndexLookupJoinOp::bIsOfType(pQueryNode)) {
-      vAppendIndexJoinOp(pBackend, pQueryNode);
+    else if (AbstractJoinOp::bIsOfType(pQueryNode)) {
+      vAppendAbstractJoinOp(pBackend, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

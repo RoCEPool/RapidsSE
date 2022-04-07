@@ -1,0 +1,120 @@
+/*============================================================================*/
+/* _alka                                                                      */
+/*============================================================================*/
+
+_nation
+_region
+
+////////////////////////////////////////////////////////////////////////////////////
+//   INDEXJOIN TRANSLITERATE WITH HINTS
+////////////////////////////////////////////////////////////////////////////////////
+
+explain stage aggregateSplit
+  select n_nationkey, r_name from nation /*+ joinAlgorithm = index , joinIndex = IxR_REGIONKEY , joinRouting = unicast */
+    join region ON n_nationkey = r_regionkey;
+
+/*
+metadata: (stageNum INTEGER,stageName VARCHAR,explain VARCHAR)
+
+row: (15,'aggregateSplit','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: all partitions
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $6)
+
+-> -> -> stageMarker
+         » location: all partitions
+         » routing: local partition
+
+-> -> -> -> indexLookupJoinOp
+            » location: all partitions
+            » hints: joinAlgorithm = ''index'', joinIndex = ''IxR_REGIONKEY'', joinRouting = ''unicast''
+            » join type: Inner Join
+            » predicate: (rapidsse.public.nation.n_nationkey = rapidsse.public.region.r_regionkey)
+            » ordinal predicate: ($1 = $5)
+
+-> -> -> -> -> stageMarker
+               » location: all partitions
+               » routing: unicast
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.region)')
+
+success: 1 rows fetched
+*/
+
+explain stage transliterate
+  select n_nationkey, r_name from nation /*+ joinAlgorithm = index , joinIndex = IxR_REGIONKEY , joinRouting = unicast */
+    join region ON n_nationkey = r_regionkey;
+
+/*
+metadata: (stageNum INTEGER,stageName VARCHAR,explain VARCHAR)
+
+row: (16,'transliterate','pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0416
+  stage stageMarker0416 on all partitions :
+    scan rapidsse public nation
+    | stageMarker0419
+  stage stageMarker0419 on all partitions :
+    indexJoin 2 region IxR_REGIONKEY " BOUND $L1 $I1 ==  "
+    | combined 0
+    | stageMarker0422
+  stage stageMarker0422 on all partitions :
+    project 2 " type INTEGER as n_nationkey $1 , type VARCHAR as r_name $6 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ; 
+')
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////
+//   ABSTRACT JOIN TRANSLITERATE
+////////////////////////////////////////////////////////////////////////////////////
+
+explain stage transliterate select n_nationkey, r_name from nation join region ON n_nationkey = r_regionkey;
+
+/*
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0665
+  stage stageMarker0665 on all partitions :
+    scan rapidsse public nation
+    | stageMarker0668 broadcast
+  stage stageMarker0668 on all partitions :
+    scan rapidsse public region
+    | abstractJoin 2 " $L1 $R1 ==  "
+    | stageMarker0671
+  stage stageMarker0671 on all partitions :
+    project 2 " type INTEGER as n_nationkey $1 , type VARCHAR as r_name $6 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+*/
