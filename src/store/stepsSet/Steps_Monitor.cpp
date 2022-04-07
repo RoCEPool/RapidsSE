@@ -49,7 +49,7 @@ void Step::vMonitorUpdateNodeStatus(void) {
 
   for (i8 iNode = 0; iNode < C_MAX_NODES; iNode++) {
 
-    Node *pNode = AM::pGrid()->pFindNode(iNode);
+    Node *pNode = AM::pGrid()->pFindNodeById(iNode);
 
     // when we monitoring, we need to skip the null node, it might be removed as the
     // node had failed.

@@ -15,11 +15,13 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
-#include "PipelineSpec.hpp"
+#include "VertexSpec.hpp"
 #include "StageSpec.hpp"
 #include "SP_Stage.hpp"
 #include "TagConstants.h" //?
+#include "Deck.hpp"
 
 extern AttachMap gxAttachMap;
 
@@ -28,30 +30,26 @@ extern AttachMap gxAttachMap;
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction(STORE, Stage, CN_STAGE)
-
 __aNewFunction(Stage, CN_STAGE)
-
 __vDeleteFunction(Stage, CN_STAGE)
-
 __aFooterFunction(Stage)
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stage::Stage(StageSpec *pStageSpec, Pipeline *pPipeline)
-    : LifeGuard_t<Stage>(this, CN_STAGE) {
+Stage::Stage(Deck* pDeck, StageSpec *pStageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  m_sPipelineNm = pPipeline->szPipelineNm();
-  m_sStageNm = pStageSpec->szStageNm();
-  m_i_Stage = pStageSpec->i_StageSpec();
-
+  m_pDeck      = pDeck;
   m_pStageSpec = pStageSpec;
-  m_pPipeline = pPipeline;
+
+  m_i_Stage    = pStageSpec->i_StageSpec();
 
   _checkInitialised_(CN_STAGE);
 
-  //vCreateStreams();
+  vCreateStreams();
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 }
@@ -59,18 +57,22 @@ Stage::Stage(StageSpec *pStageSpec, Pipeline *pPipeline)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Stage::~Stage(void) noexcept(false) {
+Stage::~Stage(void) noexcept(false)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  i8 nStreams = this->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
-    Stream *pStream = pGet(i_Stream);
-
-    pStream->vGuardedDelete(CN_STREAM, &pStream,
-                            CN_STAGE, this, (Stz *) __func__);
-  }
-
-  vClear();
+//  i8 nStreams = this->nItems();
+//  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
+//    Stream *pStream = pGet(i_Stream);
+//
+//    delete pStream;
+//  }
+//
+//  vClear();
+  
+  while (Stream* pStream = pPop())
+    delete pStream;
+  vCheckEmpty();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +82,8 @@ Stage::~Stage(void) noexcept(false) {
 /*----------------------------------------------------------------------------*/
 /* send cancel marker to start ops of the stage                               */
 /*----------------------------------------------------------------------------*/
-void Stage::vCancelPipeline(Task *pTriggeringTask) {
+void Stage::vCancelPipeline(Task *pTriggeringTask)
+{
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   // would the start marker always be on ORIGIN???
@@ -90,7 +93,7 @@ void Stage::vCancelPipeline(Task *pTriggeringTask) {
   StageSpec *pStageSpec = pStream->pStageSpec();
 
   if (pStageSpec->bNodeTopo() &&
-      pStream->i_Node() == AM::pGrid()->iThisNodeNo()) {
+      pStream->iNodeId() == AM::pGrid()->iThisNodeId()) {
 
     // get first operator of this first stage
     Op *pOp = pStream->pGet(0);
@@ -100,11 +103,21 @@ void Stage::vCancelPipeline(Task *pTriggeringTask) {
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* get deck                                                                   */
+/*----------------------------------------------------------------------------*/
+Deck *Stage::pDeck(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
+
+  return m_pDeck;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get stream for given node                                                  */
 /*----------------------------------------------------------------------------*/
-Stream *Stage::pGetStream_byNodeNo(i8 i_Node) {
+Stream *Stage::pGetStream_byNodeId(i8 i_Node)
+{
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   Stream *pStream = nullptr;
@@ -115,7 +128,7 @@ Stream *Stage::pGetStream_byNodeNo(i8 i_Node) {
     pStageSpec = pStream->pStageSpec();
 
     if (pStageSpec->bNodeTopo() &&
-        pStream->i_Node() == i_Node)
+        pStream->iNodeId() == i_Node)
       return pStream;
   }
 
@@ -125,7 +138,8 @@ Stream *Stage::pGetStream_byNodeNo(i8 i_Node) {
 /*----------------------------------------------------------------------------*/
 /* get stream for given partition                                             */
 /*----------------------------------------------------------------------------*/
-Stream *Stage::pGetStream_byPtnNo(i8 i_Ptn) {
+Stream *Stage::pGetStream_byPtnNo(i8 i_Ptn)
+{
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   Stream *pStream = nullptr;
@@ -136,7 +150,7 @@ Stream *Stage::pGetStream_byPtnNo(i8 i_Ptn) {
     pStageSpec = pStream->pStageSpec();
 
     if (!pStageSpec->bNodeTopo() &&
-        pStream->tPtnId().iAsI8() == i_Ptn)
+        pStream->tLglPtn().iAsI8() == i_Ptn)
       return pStream;
   }
 
@@ -146,7 +160,8 @@ Stream *Stage::pGetStream_byPtnNo(i8 i_Ptn) {
 /*----------------------------------------------------------------------------*/
 /* get stream by streamNo                                                     */
 /*----------------------------------------------------------------------------*/
-Stream *Stage::pGetStream_byStreamNo(i8 i_Stream) {
+Stream *Stage::pGetStream_byStreamNo(i8 i_Stream)
+{
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   Stream *pStream = pGet(i_Stream);
@@ -155,33 +170,40 @@ Stream *Stage::pGetStream_byStreamNo(i8 i_Stream) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ops to be executed on given node                                       */
+/* get nOps that will executed by this stage on this given node               */
 /*----------------------------------------------------------------------------*/
-i8 Stage::nOpsOnNode(i8 iNode, i8 iOrigin) {
+i8 Stage::nOpsExeOnNode(i8 iThisNodeId, i8 iOriginNodeId)
+{
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
-  i8 nOps = 0;
+  i8 nOpsExe = 0;
 
-  for (i8 i_Node = 0; i_Node < nItems(); i_Node++) {
-    Stream *pStream = pGet(i_Node);
+  if (m_pStageSpec->bNodeTopo()) {
+    // stage has node topology
+    for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
+      Stream *pStream = pGet(i_Stream);
 
-    if (m_pStageSpec->bNodeTopo()) {
-      
       if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
-        if (MY::pNode()->iNodeNo() != iOrigin && pStream->i_Node() == iNode) {
-          nOps += pStream->nItems();
+        if (MY::pNode()->iNodeId() != iOriginNodeId &&
+            pStream->iNodeId() == iThisNodeId) {
+          nOpsExe += pStream->nItems();
         }
       }
       else
-      if (pStream->i_Node() == iNode) {
-        // skip if Op not for this node
-        nOps += pStream->nItems();
+      if (pStream->iNodeId() == iThisNodeId) {
+        nOpsExe += pStream->nItems();
       }
     }
-    else {
-      i8 iNode_exe = AM::pPtnMap()->iWhichNodeNo(pStream->tPtnId());
-      if (iNode_exe == iNode) {
-        nOps += pStream->nItems();
+    
+  }
+  else {
+    // stage has partitions topology
+    for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
+      Stream *pStream = pGet(i_Stream);
+      
+      i8 iWhichNodeId = AM::pPtnMap()->iMappedNodeId(pStream->tLglPtn());
+      if (iWhichNodeId == iThisNodeId) {
+        nOpsExe += pStream->nItems();
       }
     }
   }
@@ -189,25 +211,50 @@ i8 Stage::nOpsOnNode(i8 iNode, i8 iOrigin) {
   if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Stage: %s nOps=%lld\n"_Stz
            ,m_pStageSpec->szStageNm()
-           ,nOps);
+           ,nOpsExe);
 
-  return nOps;
+  return nOpsExe;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get piepline                                                               */
+/* get outer pipeline                                                         */
 /*----------------------------------------------------------------------------*/
-Pipeline *Stage::pPipeline(void) {
+Pipeline* Stage::pPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  return m_pDeck->pPipeline();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get vertex                                                                 */
+/*----------------------------------------------------------------------------*/
+Vertex *Stage::pVertex(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  return m_pPipeline;
+  return m_pDeck->pVertex();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get op 0                                                                   */
+/*----------------------------------------------------------------------------*/
+Op* Stage::pOp0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  Stream* pStream0 = this->pStream0();
+  Op* pOp0 = pStream0->pOp0();
+
+  return pOp0;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp) {
-  i8 i_ThisNode = AM::iThisNodeNo();
+Op *Stage::pPipeDstOp(LglPtn tDstLglPtn, i8 i_DstOp)
+{
+  i8 i_ThisNode = AM::iThisNodeId();
 
   Op *pOp = nullptr;
   Stream *pStream = nullptr;
@@ -217,12 +264,12 @@ Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp) {
   switch (eStreamTopology) {
 
     case YS_NODE_STREAM:
-      pStream = this->pGetStream_byNodeNo(i_ThisNode);
-      //vTrace("After pGetStream_byNodeNo %p\n"_Stz, pStream);
+      pStream = this->pGetStream_byNodeId(i_ThisNode);
+      //vTrace("After pGetStream_byNodeId %p\n"_Stz, pStream);
       break;
 
     case YS_PTN_STREAM:
-      pStream = pGetStream_byPtnNo(tDstPtnId.iAsI8());
+      pStream = pGetStream_byPtnNo(tDstLglPtn.iAsI8());
       break;
 
     default:
@@ -240,7 +287,8 @@ Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp) {
 /*----------------------------------------------------------------------------*/
 /* get stage number                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Stage::i_Stage(void) {
+i8 Stage::i_Stage(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
   return m_i_Stage;
@@ -249,25 +297,40 @@ i8 Stage::i_Stage(void) {
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz *Stage::szStageNm(void) {
+Stz *Stage::szStageNm(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  return m_sStageNm;
+  return m_pStageSpec->szStageNm();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-StageSpec *Stage::pStageSpec(void) {
+StageSpec *Stage::pStageSpec(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
   return m_pStageSpec;
 }
 
 /*----------------------------------------------------------------------------*/
+/* get stream 0                                                               */
+/*----------------------------------------------------------------------------*/
+Stream* Stage::pStream0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  Stream* pStream0 = this->pGet(0);
+
+  return pStream0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if to send startMarker to start op of the stage                       */
 /*----------------------------------------------------------------------------*/
-bool Stage::bStartPipeline(void) {
+bool Stage::bEnqueueInvoke(void)
+{
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   // would the start marker always be on ORIGIN???
@@ -277,7 +340,7 @@ bool Stage::bStartPipeline(void) {
   StageSpec *pStageSpec = pStream->pStageSpec();
 
   if (pStageSpec->bNodeTopo() &&
-      pStream->i_Node() == AM::pGrid()->iThisNodeNo()) {
+      pStream->iNodeId() == AM::pGrid()->iThisNodeId()) {
 
     // get first operator of this first stage
     Op *pOp = pStream->pGet(0);
@@ -293,64 +356,24 @@ bool Stage::bStartPipeline(void) {
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Stage::vWalk(void *aArg) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
-
-  eCN eClassNo = eGetClassNo();
-
-  vTrace("Walk %8s:%ll03d %p\n"_Stz, aCN[eClassNo], (i8) eClassNo, this
-  );
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-
-  i8 nStreams = this->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
-    Stream *pStream = pGet(i_Stream);
-
-    pStream->vWalk(aArg);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Stage::vWalkLambda(
-    i8 iDepth,
-    std::function<void(Object *pObject, i8 iDepth)> f_vClosure) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
-
-  f_vClosure(this, iDepth);
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-
-  i8 nStreams = this->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
-    Stream *pStream = pGet(i_Stream);
-
-    pStream->vWalkLambda(iDepth + 1, f_vClosure);
-  }
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create the stream instances for this stage based on stage topology         */
+/* create the streams for this stage                                          */
 /*----------------------------------------------------------------------------*/
-void Stage::vCreateStreams(void) {
+void Stage::vCreateStreams(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
-  PtnId tPtnId;
+  LglPtn tLglPtn;
 
-  i8 i_Node;
   i8 i_Stream;
   Stream *pStream;
-  i8 i_NodeNo;
-
+  i8 iNodeId;
+  i8 iOriginNodeId;
+  
   Node* pThisNode = MY::pNode();
   
   switch (m_pStageSpec->eStageTopology()) {
@@ -359,42 +382,41 @@ void Stage::vCreateStreams(void) {
 
     case YG_ALL_NODES: // create a stream for all nodes
       RASSERT(m_pStageSpec->bNodeTopo());
+      
       i_Stream = 0;
-      tPtnId = C_UNKNOWN;
-      for (i_Node = 0; i_Node < AM::pGrid()->nKnownNodes(); i_Node++) {
-        i_NodeNo = AM::GRID::iGetNthNodeNo(i_Node);
-        pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_NodeNo); //i_Node);
+      tLglPtn = C_UNKNOWN;
+      for (i8 i_Node = 0;
+           i_Node < AM::pGrid()->nKnownNodes();
+           i_Node++) {
+        iNodeId = AM::GRID::iGetNthNodeId(i_Node);
+        pStream = new Stream(this, m_pStageSpec, i_Stream, tLglPtn, iNodeId); //i_Node);
         vAppend(pStream);
-        pStream->vCreateOps();
       }
       break;
 
     case YG_ORIGIN: // create a stream for origin node only
       RASSERT(m_pStageSpec->bNodeTopo());
+      
       i_Stream = 0;
-      tPtnId = C_UNKNOWN;
-      i_Node = m_pPipeline->i_Origin();
+      tLglPtn = C_UNKNOWN;
+      iOriginNodeId = pPipeline()->iOriginNodeId();
 
-      pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
+      pStream = new Stream(this, m_pStageSpec, i_Stream, tLglPtn, iOriginNodeId);
       vAppend(pStream);
-      pStream->vCreateOps();
       break;
 
     case YG_NEXT_NODE: // create a stream for a next node only
       RASSERT(m_pStageSpec->bNodeTopo());
 
       i_Stream = 0;
-      tPtnId = C_UNKNOWN;
+      tLglPtn = C_UNKNOWN;
       
-      for (i_Node = 0; i_Node < AM::pGrid()->nKnownNodes(); i_Node++) {
-        i_NodeNo = AM::GRID::iGetNthNodeNo(i_Node);
-        //if (i_NodeNo == pThisNode->iNodeNo()) {
-          pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_NodeNo);
-          vAppend(pStream);
-        pStream->vCreateOps();
-          //break;
-        //}
-        //break;
+      for (i8 i_Node = 0;
+           i_Node < AM::pGrid()->nKnownNodes();
+           i_Node++) {
+        iNodeId = AM::GRID::iGetNthNodeId(i_Node);
+        pStream = new Stream(this, m_pStageSpec, i_Stream, tLglPtn, iNodeId);
+        vAppend(pStream);
       }
       break;
 
@@ -403,29 +425,31 @@ void Stage::vCreateStreams(void) {
     case YG_ALL_PARTITIONS: // create a stream for all partitions in grid
       RASSERT(!m_pStageSpec->bNodeTopo());
 
-      for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
-        tPtnId = iPtnNo;
-        i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
+      for (i8 iPtnNo = 0;
+           iPtnNo < AM::PTNMAP::nPtnsInGrid();
+           iPtnNo++) {
+        tLglPtn = iPtnNo;
+        iOriginNodeId = AM::pPtnMap()->iMappedNodeId(tLglPtn);
 
-        i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
-        pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
+        i_Stream = AM::pPtnMap()->i_MappedPtnNo(tLglPtn);
+        pStream = new Stream(this, m_pStageSpec, i_Stream, tLglPtn, iOriginNodeId);
         vAppend(pStream);
-        pStream->vCreateOps();
       }
       break;
 
     case YG_ALL_PARTITIONS_ON_ORIGIN: // create a stream for all ptns on origin
       RASSERT(!m_pStageSpec->bNodeTopo());
 
-      for (i8 iPtnNo = 0; iPtnNo < AM::PTNMAP::nPtnsInGrid(); iPtnNo++) {
-        tPtnId = iPtnNo;
-        i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
+      for (i8 iPtnNo = 0;
+           iPtnNo < AM::PTNMAP::nPtnsInGrid();
+           iPtnNo++) {
+        tLglPtn = iPtnNo;
+        iOriginNodeId = AM::pPtnMap()->iMappedNodeId(tLglPtn);
 
-        if (i_Node == m_pPipeline->i_Origin()) {
-          i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
-          pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
+        if (iOriginNodeId == pPipeline()->iOriginNodeId()) {
+          i_Stream = AM::pPtnMap()->i_MappedPtnNo(tLglPtn);
+          pStream = new Stream(this, m_pStageSpec, i_Stream, tLglPtn, iOriginNodeId);
           vAppend(pStream);
-          pStream->vCreateOps();
         }
       }
       break;

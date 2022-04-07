@@ -3,43 +3,40 @@
 /*============================================================================*/
 #pragma once
 
-static const i8 C_MAX_BUCKETS_IN_GRID = 64;    // with 2N4P2B
-static const i8 C_MAX_BKTS_PER_PTN  = 2;      // with 2N4P2B
 static const i8 C_MAX_COLUMNS       = 150;    // max columns per table
-static const i8 C_MAX_DEFCOLUMNS    = 150;    // max columns in a stream definition
-static const i8 C_MAX_ENTRY_SIZE    = C_1KB;  // max index entry size
+static const i8 C_MAX_DECKS         = 256;
+static const i8 C_MAX_ENTRY         = C_1KB;  // max index entry size
 static const i8 C_MAX_EXPR          = 256;    // max expressions in expr vec
 static const i8 C_MAX_FROMVEC       = 16;
-static const i8 C_MAX_IDXCOLVEC     = 16;
 static const i8 C_MAX_INDEXES       = 16;     // max indexes per table
 static const i8 C_MAX_INDEX_COLUMNS = 16;
 static const i8 C_MAX_KEY           = 256;    // max length of index entry key
+static const i8 C_MAX_KEYBUCKETS    = 64;     // max bkts in grid   NOT ENOUGH!!
 static const i8 C_MAX_LOCKS         = 16;     // max locks a task can hold
 static const i8 C_MAX_LOG_ENTRIES   = C_256K * 1;
 static const i8 C_MAX_LOG_NOTE      = C_1K;
 static const i8 C_MAX_LVL_LEVELS    = 6;
 static const i8 C_MAX_LVL_RATIO     = 6;
-static const i8 C_MAX_NESTED_PIPELINES = 16;
 static const i8 C_MAX_NESTED_WORDS  = 16;
 static const i8 C_MAX_NODES         = 128;    // max nodes in a grid
 static const i8 C_MAX_OPS           = 256;
 static const i8 C_MAX_PARCEL_ITEMS  = 16;
 static const i8 C_MAX_PATH          = 256;    // max length of file path
-static const i8 C_MAX_PAY           = C_1KB;  // max length of index entry payload
+static const i8 C_MAX_PAYLOAD       = C_1KB;  // max length of index entry payload
 static const i8 C_MAX_PREDICATEVEC  = 16;
 static const i8 C_MAX_PTNSPERNODE   = 64;    // max partitions per node
 static const i8 C_MAX_REGS          = 128;
 static const i8 C_MAX_SEEKOFFSETS   = 16;
-static const i8 C_MAX_SESSIONS      = 256;    // max number of sessions
+static const i8 C_MAX_SESSIONS      = 64;    // max number of sessions
 static const i8 C_MAX_SHORTCUTS     = 1024;
 static const i8 C_MAX_STAGES        = 256;
 static const i8 C_MAX_STREAMS       = 256;
-static const i8 C_MAX_STREAMDEFS    = 16;     // max stream definitions
 static const i8 C_MAX_STREAM_ORDER  = 8;
 static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
+static const i8 C_MAX_VERTEXES      = 256;
 
-// max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS_IN_GRID INSTEAD
+// max partitions in a grid         GET RID OF THIS.  USE  C_MAX_KEYBUCKETS INSTEAD
 static const i8 C_MAX_LGLPTNS    = C_MAX_PTNSPERNODE * C_MAX_NODES;
 
 static const i8 C_MIN_LVL_LEVELS    = 2;

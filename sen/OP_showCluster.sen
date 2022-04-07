@@ -30,10 +30,10 @@
   begin
     node_I[].node to pNode
 
-    pNode node.no streamSetTable[] streamSet[].addShowCluster  not if
+    pNode node.id streamSetTable[] streamSet[].addShowCluster  not if
       StreamSet[].pipeOut
       streamSetTable[] streamSet[].new
-      pNode node.no streamSetTable[] StreamSet[].addShowCluster assert
+      pNode node.id streamSetTable[] StreamSet[].addShowCluster assert
     then
 
     node_I[].next

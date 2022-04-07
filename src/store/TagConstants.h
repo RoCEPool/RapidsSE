@@ -113,7 +113,6 @@ static Stz* C_TAG_UBOUND_LITERAL = "<uboundLiteral>"_Stz;
 
 static Stz* C_VB_API             = "<vb_api>"_Stz;
 static Stz* C_VB_BOOT            = "<vb_boot>"_Stz;
-static Stz* C_VB_LOGICCOMPILER   = "<vb_logicCompiler>"_Stz;
 static Stz* C_VB_OP              = "<vb_op>"_Stz;
 static Stz* C_VB_ACK             = "<vb_ack>"_Stz;
 static Stz* C_VB_NODE            = "<vb_node>"_Stz;
@@ -121,7 +120,7 @@ static Stz* C_VB_PIPEIN_CRWBUF   = "<vb_pipein_crwbuf>"_Stz;
 static Stz* C_VB_PIPEIN_CSVBUF   = "<vb_pipein_csvbuf>"_Stz;
 static Stz* C_VB_PIPEIN_ROWBUF   = "<vb_pipein_rowbuf>"_Stz;
 static Stz* C_VB_PIPELINE        = "<vb_pipeline>"_Stz;
-static Stz* C_VB_PIPELINESPEC    = "<vb_pipelineSpec>"_Stz;
+static Stz* C_VB_PIPESPEC        = "<vb_pipeSpec>"_Stz;
 static Stz* C_VB_PIPEOUT_CRWBUF  = "<vb_pipeout_crwbuf>"_Stz;
 static Stz* C_VB_PIPEOUT_CSVBUF  = "<vb_pipeout_csvbuf>"_Stz;
 static Stz* C_VB_PIPEOUT_ROWBUF  = "<vb_pipeout_rowbuf>"_Stz;

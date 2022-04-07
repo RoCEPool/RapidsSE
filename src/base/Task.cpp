@@ -74,7 +74,6 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(Stz* szTaskNm, Job* pJob)
 : Object(CN_TASK)
-, LifeGuard_t<Task>(this,CN_TASK) 
 , m_okLock(this,false)
 , m_oReadLocks(this)
 , m_oWriteLocks(this)
@@ -84,7 +83,7 @@ Task::Task(Stz* szTaskNm, Job* pJob)
   vTask();
   
   m_sTaskNm = szTaskNm;
-  m_pJob_task    = pJob;
+  m_pJob    = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +91,6 @@ Task::Task(Stz* szTaskNm, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Task::Task(Stz* szTaskNm, Op* pOp)
 : Object(CN_TASK)
-, LifeGuard_t<Task>(this,CN_TASK)
 , m_okLock(this,false)
 , m_oReadLocks(this)
 , m_oWriteLocks(this)
@@ -114,6 +112,7 @@ void Task::vTask(void)
   
   m_pProfile     = nullptr;
 
+  m_pInvokingTask     = nullptr;
   m_pThread      = nullptr;
   
   m_bIsStart     = false;
@@ -124,7 +123,7 @@ void Task::vTask(void)
   m_eQueue       = QK_NONE;
   m_eEntryPoint  = EP_NONE;
 
-  m_oAcksRmg_task.vCheckInit();
+  m_oAcksRmg.vCheckInit();
   // m_oWakeup
   
   m_iTraceMask   = C_TRACE_NONE;
@@ -147,9 +146,11 @@ void Task::vTask(void)
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
   
-  m_p_TaskLogicUnit = nullptr;
+  m_pLogicUnit = nullptr;
   
   _checkInitialised_(CN_TASK);
+  
+  m_pLogicUnit = new LogicUnit;
     
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -165,8 +166,6 @@ Task::~Task(void) noexcept(false)
   //RASSERT(! bIsLocked());
   RASSERT(! m_pThread);
 
-  //RASSERT(! m_pJob_task);
-  
   ASSERT(! m_oWriteLocks.nItems());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -190,6 +189,8 @@ Task::~Task(void) noexcept(false)
   
   delete m_pProfile;
   m_pProfile = nullptr;
+  
+  delete m_pLogicUnit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,15 +222,7 @@ void Task::vTaskLoop(void)
   ASSERT(PsxThd::pTlsGet(giTLS_TaskKey) == this);
   
   vVerifyTaskComposition();
-  
-  if (m_pJob_task.bIsNotNull())
-    m_p_TaskLogicUnit = m_pJob_task->pJobLogicUnit();
-  else
-  if (m_pOp.bIsNotNull())
-    m_p_TaskLogicUnit = m_pOp->pOpLogicUnit();
-  else
-    NEVER_REACH;
-
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   while (TR_NONE == m_eTransition) {
@@ -241,9 +234,7 @@ void Task::vTaskLoop(void)
     
     // call the non-virtual member/step function against this task
     try {
-      
-      this->vAssertSelf(this);
-      
+            
       (this->*fpStepFn) ();
 
       //this->vAssertSelf(this);
@@ -312,14 +303,14 @@ void Task::vVerifyTaskComposition(void)
   RASSERT(CN_TASK == eGetClassNo());
   aFooter()->vAssertFooter();
   
-  if (m_pJob_task.bIsNotNull()) {
+  if (m_pJob.bIsNotNull()) {
     RASSERT(m_pOp.bIsNull());
-    RASSERT(m_sTaskNm.bSame(m_pJob_task->szJobNm()));
-    m_pJob_task->vVerifyJobComposition();
+    RASSERT(m_sTaskNm.bSame(m_pJob->szJobNm()));
+    m_pJob->vVerifyJobComposition();
   }
   else
   if (m_pOp.bIsNotNull()) {
-    RASSERT(m_pJob_task.bIsNull());
+    RASSERT(m_pJob.bIsNull());
     RASSERT(m_sTaskNm.bSame(m_pOp->szOpNm()));
     m_pOp->vVerifyOpComposition();
   }
@@ -381,9 +372,9 @@ void Task::vDumpOnException(void)
  
   vTrace("\n"_Stz);
 
-  if (m_pJob_task.bIsNotNull()) {
+  if (m_pJob.bIsNotNull()) {
     vTrace("1) Task (for Job)\n"_Stz);
-    vTrace("m_pJob_task=%p %s\n"_Stz,*m_pJob_task,m_pJob_task->szJobNm());
+    vTrace("m_pJob=%p %s\n"_Stz,*m_pJob,m_pJob->szJobNm());
 
   }
   else
@@ -412,7 +403,7 @@ void Task::vDumpOnException(void)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (m_pJob_task.bIsNotNull()) {
+  if (m_pJob.bIsNotNull()) {
     vTrace("\n"_Stz);
     vTrace("2) Job\n"_Stz);
     
@@ -463,10 +454,7 @@ void Task::vDumpOnException(void)
 void Task::vExceptionTrace(void)
 {
   _noPreconditions_
-  
-//  if (m_pJob_task->pJobTags()->bHasName("<recover>"_Stz))
-//    return;
-  
+    
   //
   // trace what is relevant for debugging.  could be quite substantial
   //
@@ -520,7 +508,7 @@ i8 Task::iAcksOriginal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iOriginal = m_oAcksRmg_task.nOriginalAcks();
+  i8 iOriginal = m_oAcksRmg.nOriginalAcks();
   
   return iOriginal;
 }
@@ -532,7 +520,7 @@ i8 Task::iAcksRmg_assert_only_(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iRmg = m_oAcksRmg_task.iPrintOnlyValue();
+  i8 iRmg = m_oAcksRmg.iPrintOnlyValue();
   
   return iRmg;
 }
@@ -549,7 +537,7 @@ void Task::vAcksRmg(i8 nAcksRmg)
   if (AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Task: Setting acks remaining %lld\n"_Stz,nAcksRmg);
 
-  m_oAcksRmg_task.vSetRemaining(nAcksRmg);
+  m_oAcksRmg.vSetRemaining(nAcksRmg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -559,7 +547,7 @@ bool Task::bAcksRmgDec(i8& nAcksWereRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  bool bAmDecider = m_oAcksRmg_task.bDecAndDecide(nAcksWereRemaining);
+  bool bAmDecider = m_oAcksRmg.bDecAndDecide(nAcksWereRemaining);
   
   return bAmDecider;
 }
@@ -692,8 +680,8 @@ void Task::vDotPrint(Stz* szFormat, ...)
   sFormatted.vSprintVA(szFormat,vaArgs);
   va_end(vaArgs);
   
-  if (m_pJob_task.bIsNotNull()) {
-    m_pJob_task->vDotPrint(sFormatted);
+  if (m_pJob.bIsNotNull()) {
+    m_pJob->vDotPrint(sFormatted);
   }
   else
   {
@@ -753,8 +741,8 @@ void Task::vDump(void)
 
   // dump the logicUnit registers
   // revised job/op model
-  if (m_pJob_task)
-    m_pJob_task->pJobLogicUnit()->vDumpRegisters();
+  if (m_pLogicUnit)
+    m_pLogicUnit->vDumpRegisters();
   
   vTrace("== End Task Dump ============================================\n"_Stz);
   
@@ -926,6 +914,27 @@ Input* Task::pInput(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the invoking task (super-op/pipe) of this task (sub-op/pipe)           */
+/*----------------------------------------------------------------------------*/
+Task* Task::pInvokingTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pInvokingTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the invoking task (super-op/pipe) of this task (sub-op/pipe)           */
+/*----------------------------------------------------------------------------*/
+void Task::vInvokingTask(Task* pInvokingTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  RASSERT(pInvokingTask);
+  m_pInvokingTask = pInvokingTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* immediate task?                                                            */
 /*----------------------------------------------------------------------------*/
 bool Task::bIsImmediate(void)
@@ -992,22 +1001,22 @@ bool Task::bIsTaskLocked(void)
 /*----------------------------------------------------------------------------*/
 /* get the job of this task                                                   */
 /*----------------------------------------------------------------------------*/
-Job* Task::pJob_task(void)
+Job* Task::pJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pJob_task;
+  return m_pJob;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the job of this task                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_task(Job* pJob)
+void Task::vJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   RASSERT(pJob);
-  m_pJob_task = pJob;
+  m_pJob = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1034,6 +1043,16 @@ void Task::vLocalsPush(void)
   pLocalsframe->vNext(m_pLocalsFrame);
   
   m_pLocalsFrame = pLocalsframe;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push a locals frame                                                        */
+/*----------------------------------------------------------------------------*/
+LogicUnit* Task::pLogicUnit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  return m_pLogicUnit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1286,7 +1305,7 @@ void Task::vSeeLogicUnitRegisters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_p_TaskLogicUnit->vDumpRegisters();
+  m_pLogicUnit->vDumpRegisters();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1297,6 +1316,24 @@ void Task::vSleepUsec(i8 iMicroseconds)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_oWakeup.vSleepFor(iMicroseconds);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the tasks instruction pointer to run the entry word                    */
+/*----------------------------------------------------------------------------*/
+void Task::vSetInxPtr(Stz* szEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Dic* pDicRoot = AM::DIC::pRoot();
+  
+  Word* pEntryWord = pDicRoot->pFindWord(szEntry);
+  if (! pEntryWord) {
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Unable to find task entry point: %s\n"_Stz,szEntry);
+  }
+  
+  vSetInxPtr(pEntryWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1429,9 +1466,9 @@ void Task::vTracePoint(Stz* aMark)
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s : a%2lld="_Stz,
         
          AM::szNodeNm(),
-         AM::iThisNodeNo(),
+         AM::iThisNodeId(),
          szTaskNm(),
-         m_oAcksRmg_task.iPrintOnlyValue(),
+         m_oAcksRmg.iPrintOnlyValue(),
          
          sWordWithCodeCell.azChar(),
          aMark,

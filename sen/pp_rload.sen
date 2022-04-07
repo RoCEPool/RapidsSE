@@ -1,0 +1,93 @@
+/*============================================================================*/
+/* pp_rload.sen -- replicated load pipeline procedures                        */
+/*============================================================================*/
+
+" pp_load.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* load procedures                                                            */
+/*----------------------------------------------------------------------------*/
+
+: start::defProc_Rload
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // load replicated
+
+  STD_PATH_TAG
+  "
+  procedure loadReplicated
+    parameters $table $file
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | chunk $file
+      | rdCsvChunk $file  
+      | stageB localrobin
+
+    stage stageB on all partitions on origin :
+        toKeyHshRow $table
+      | toLglPtnRow $table
+      | toLglPtnNst
+      | toLglPtnCrw          
+      | stageC broadcast
+
+    stage stageC on all nodes :
+        insert $table
+      | stageD
+
+    stage stageD on origin :
+        progress 'Load'
+      | output
+      | toStatDemon
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // load replicated
+
+  STD_PATH_TAG
+  "
+  procedure loadReplicated_1
+    parameters $table $file
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | chunk $file       // read chunks of file => (seekOffset)
+      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
+      | stageB localrobin
+
+    stage stageB on all partitions on origin :
+        toKeyHshRow $table // pf    (csvBuffer) => (rowBuffer w row+hash)
+      | toLglPtnRow $table //       (rowBuffer) => (bkt rowBuffer)
+      | toLglPtnNst        //       (rowBuffer) => (nst rowBuffer)
+      | toLglPtnCrw        //       (rowBuffer) => (bkt crwBuffer)
+      | stageC hashcast
+
+    stage stageC on all partitions :
+        insert $table     // (crwBuffer) inserted into table
+      | stageD
+
+    stage stageD on origin :
+        progress 'Load'
+      | output
+      | toStatDemon
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

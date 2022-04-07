@@ -30,7 +30,7 @@
   "dupCrw_req" .
   op__topology
 
-  find: dupCrw_CrwBuffer  ZK_D_CRWBUFFER op[].handler!
+  find: dupCrw_CrwBuffer  ZK_D_CRWBUFFER [op].handler!
  
   op__loop
 

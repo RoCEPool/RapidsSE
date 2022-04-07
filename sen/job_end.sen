@@ -5,82 +5,33 @@
 " job_end.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
-//                            on originating node                             //
+/*                          ON PARTICIPATING NODE                             */
 ////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* distribute Job_End to all participants                                     */
-/*----------------------------------------------------------------------------*/
-: end::distribute params| pJobOriginator |
-
-  //
-  // where:  On the originator node.
-  //
-
-  0 locals| pJob_End |
-
-  // new a temporary Job_End
-  pJobOriginator job_End::new to pJob_End
-
-  job[].tscEnding
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // set the no of acks expected in originator job
-  grid::knownNodes pJobOriginator job.acksRemaining!
-
-  // send Job_End to all nodes
-
-  0 locals| pNode |
-
-  C_ALL node_I[].new
-
-  begin
-    node_I[].node to pNode
-
-    pNode node.isConnected if
-      pNode node.no pJob_End job.forward
-    then
-
-    node_I[].next
-    node_i[].more while
-  repeat
-
-  node_I[].delete
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // delete the temporary Job_End
-  pJob_End job.delete2pc
-;
 
 /*----------------------------------------------------------------------------*/
 /* run received Job_End on participating node       recv: job.spawn */
 /*----------------------------------------------------------------------------*/
-: end::end
+: end:end
 
-  //
-  // where: on the participating node
-  //
-  //grid::thisNodeName@ "(%v) RECEIVED END" .printf
-  Job[] locals| pJob_End |
+  // "end:end" .
 
-  // find the job to be executed in the participating jobs
-  pJob_End job.id@ locals| iJobId |
-  iJobId plist::findJob discard
+  // find job to be ended in participating job list
+  [job] job.id@ ListedJob[].findParticipant discard
 
   // stall till job's previous phase (task) has completed
   begin
-    JobRef[].hasTask
+    ListedJob[].task@ task.state@ TS_HIBERNATING !=
   while
-    Task[].yield 
+    "job to be ended still has non-hibernating task" .
+    [task].yield
   repeat
-
-  JobRef[] job.scheduleNextPhase
-  JobRef[].returnReference
+  ListedJob[].task@ task.cycleLock
+    
+  // execute the job on this participating node
+  ListedJob[] job.scheduleNextPhase
   
-  _job_2pc_delete_
+  ListedJob[].returnReference
+  [job]:retire
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +43,7 @@ cmdSyntax: end :: end ;
 : end_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "end::end"
+    <entryPoint>    = "end:end"
     <path>     = "/"
 }
 ;

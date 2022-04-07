@@ -32,6 +32,25 @@ static Stz* szaAscii[128] = {
   "x"_Stz,  "y"_Stz,  "z"_Stz,  "{"_Stz,  "|"_Stz,  "}"_Stz,  "~"_Stz,"DEL"_Stz
 };
 
+/*----------------------------------------------------------------------------*/
+/* like: search for regexp anywhere in given string                           */
+/*----------------------------------------------------------------------------*/
+i8 StrLib_iLike2(char* azStr, char* azRegExp) {
+  _static_
+
+  i8 i = StrLib::iLike2(azStr, azRegExp);
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* like: search for regexp anywhere in given string                           */
+/*----------------------------------------------------------------------------*/
+i8 StrLib_iLike3(char* azStr, char* azRegExp, char cEsc) {
+  _static_
+
+  i8 i = StrLib::iLike3(azStr, azRegExp, cEsc);
+  return i;
+}
 
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
@@ -224,7 +243,7 @@ void StrLib::vAppendString(char** aazCrs, const char* pString, i8* piLineNumber)
         bInQuote = true;
     }
     if (*pString == '\n' && !bInQuote ) {
-      char* x = z;
+      //char* x = z;
       vSprintCat((Stz*)z, "\n/* %04d */ "_Stz, iLineNumber++);
       z += 12;
       pString++;
@@ -2852,6 +2871,123 @@ i8 StrLib::nLengthNonBlank(const char* s, const char cTerm, i8 iMax)
 }
 
 /*----------------------------------------------------------------------------*/
+/* like: search for regexp anywhere in given string                           */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iLike2(char* azStr, char* azRegExp)
+{
+  /*
+
+    Current set of metacharacters:
+
+      c  matches any literal character c
+      _  matches any single character
+      %  matches zero or more occurrences of any character
+
+   */
+
+  s256 sMatchRegExp;
+
+  char *r = azRegExp;
+  char *R = sMatchRegExp.azChar();
+
+  // handle empty string and empty regular expression
+  if (*azStr == '\0' && *r == '\0') {
+    return true;
+  }
+
+  // handle empty regular expression
+  if (*r == '\0') {
+    return false;
+  }
+
+  // iterate the regular expression
+  while (*r) {
+
+    // replace '%' with '.*'
+    if (*r == '%') {
+      *R++ = '.';
+      *R++ = '*';
+    }
+
+      // replace '_' with '.'
+    else if (*r == '_') {
+      *R++ = '.';
+    }
+    else
+      *R++ = *r;
+
+    r++;
+  }
+
+  // null terminate the new regular expression
+  *R++ = '\0';
+
+  return bMatch(azStr, sMatchRegExp.azChar());
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* like: search for regexp anywhere in given string (with escape character)   */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iLike3(char* azStr, char* azRegExp, char cEsc)
+{
+  /*
+
+    Current set of metacharacters:
+
+      c  matches any literal character c
+      _  matches any single character
+      %  matches zero or more occurrences of any character
+
+   */
+
+  s256 sMatchRegExp;
+
+  char *r = azRegExp;
+  char *R = sMatchRegExp.azChar();
+
+  // handle empty string and empty regular expression
+  if (*azStr == '\0' && *r == '\0') {
+    return true;
+  }
+
+  // handle empty regular expression
+  if (*r == '\0') {
+    return false;
+  }
+
+  // iterate the regular expression
+  while (*r) {
+
+    // escape character
+    if (*r == cEsc) {
+      r++;
+     *R++ = *r;
+    }
+
+    // replace '%' with '.*'
+    else if (*r == '%') {
+      *R++ = '.';
+      *R++ = '*';
+    }
+
+    // replace '_' with '.'
+    else if (*r == '_') {
+      *R++ = '.';
+    }
+    else
+      *R++ = *r;
+
+    r++;
+  }
+
+  // null terminate the new regular expression
+  *R++ = '\0';
+
+  return bMatch(azStr, sMatchRegExp.azChar());
+}
+
+/*----------------------------------------------------------------------------*/
 /* match: search for regexp anywhere in given string                          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bMatch(char* azStr, char* azRegExp)
@@ -2886,9 +3022,11 @@ bool StrLib::bMatch(char* azStr, char* azRegExp)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bMatchHere(char* azStr, char* azRegExp)
 {
-  if (azRegExp[0] == '\0')
+
+  //if (azRegExp[0] == '\0')
+  if (azRegExp[0] == '\0' && *azStr == '\0')
     return true;
-  
+
   if (azRegExp[1] == '*')
     return bMatchStar(azStr,azRegExp+2,azRegExp[0]);
   
@@ -3014,6 +3152,8 @@ void StrLib::vPut(char* azDst, i8 iAt, char cChr)
   _static_
   
   char* acEnd = StrLib::acLast(azDst);
+  UNUSED(acEnd);
+
   char* acDst = azDst + iAt;
   
   if (*acDst)
@@ -3028,6 +3168,7 @@ void StrLib::vPut(char* azDst, i8 iAt, char* azSrc)
   _static_
   
   char* acEnd = StrLib::acLast(azDst);
+  UNUSED(acEnd);
   char* acDst = azDst + iAt;
   
   while (*azSrc && *acDst)

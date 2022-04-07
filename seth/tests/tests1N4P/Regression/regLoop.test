@@ -1,0 +1,142 @@
+--------------------------------------------------------------------------------
+-- regression tests in a loop
+--------------------------------------------------------------------------------
+
+// Logging a message
+LOG 'Running regression tests in a loop.';
+
+LOOP 1 {
+
+//------------------------------------------------------------------------------
+LOG 'Create schema ...';
+INCLUDE 'regrCreateSchema.test';
+
+//------------------------------------------------------------------------------
+LOG 'Load data ...';
+INCLUDE 'regrLoadData.test';
+
+//LOG 'Running regression tests...';
+
+//------------------------------------------------------------------------------
+INCLUDE 'AndOrNot.test';
+//INCLUDE 'InNotIn.test';
+//INCLUDE 'PartKey1way.test';
+//INCLUDE 'PartKey2way.test';
+//INCLUDE 'Stage9.test';
+//INCLUDE 'Using1way.test';
+//INCLUDE 'aggs-avg.test';
+//INCLUDE 'aggs-count.test';
+//INCLUDE 'aggs-max.test';
+//INCLUDE 'aggs-min.test';
+//INCLUDE 'aggs-sum.test';
+//INCLUDE 'alias.test';
+//INCLUDE 'aliasSelAll.test';
+//INCLUDE 'between.test';
+//INCLUDE 'case.test';
+//INCLUDE 'cast.test';
+//INCLUDE 'ctas.test';
+//INCLUDE 'except.test';
+//INCLUDE 'exists.test';
+//INCLUDE 'functions-abs.test';
+//INCLUDE 'functions-ceil.test';
+//INCLUDE 'functions-char.test';
+//INCLUDE 'functions-charlen.test';
+//INCLUDE 'functions-coal.test';
+//INCLUDE 'functions-concat.test';
+//INCLUDE 'functions-extract.test';
+//INCLUDE 'functions-floor.test';
+//INCLUDE 'functions-left.test';
+//INCLUDE 'functions-lower.test';
+//INCLUDE 'functions-mod.test';
+//INCLUDE 'functions-position.test';
+//INCLUDE 'functions-power.test';
+//INCLUDE 'functions-right.test';
+//INCLUDE 'functions-round.test';
+//INCLUDE 'functions-rtrim.test';
+//INCLUDE 'functions-substr.test';
+//INCLUDE 'functions-trim.test';
+//INCLUDE 'functions-upper.test';
+INCLUDE 'having.test';
+//INCLUDE 'intersect.test';
+//INCLUDE 'intervals.test';
+INCLUDE 'isnull.test';
+//INCLUDE 'joinTests.test';
+INCLUDE 'like.test';
+//INCLUDE 'subqueries-select.test';
+//INCLUDE 'subqueries-where-single.test';
+
+//------------------------------------------------------------------------------
+LOG 'Drop schema ...';
+INCLUDE 'regrDropSchema.test';
+
+} -- end of loop
+
+CLEANUP {
+
+  drop table TABLE1;
+  mute
+
+  drop table TABLE2;
+  mute
+
+  drop table TABLE3;
+  mute
+
+  drop table TABLE4;
+  mute
+
+  drop table TABLE5;
+  mute
+
+  drop table TABLE6;
+  mute
+
+  drop table TABLE7;
+  mute
+
+  drop table TABLE8;
+  mute
+
+  drop table TABLE9;
+  mute
+
+  drop table CUSTOMERH;
+  mute
+
+  drop table ORDERS;
+  mute
+
+  drop table LINEITEM;
+  mute
+
+  drop table PART;
+  mute
+
+  drop table SUPPLIER;
+  mute
+
+  drop table PARTSUPP;
+  mute
+
+  drop table NATION;
+  mute
+
+  drop table REGION;
+  mute
+
+  drop table SHIPPING;
+  mute
+
+  drop table SHIPADDRESS;
+  mute
+
+  drop table MANUFACTURER;
+  mute
+
+  drop table RETURNS;
+  mute
+
+  bye;
+  mute
+}
+

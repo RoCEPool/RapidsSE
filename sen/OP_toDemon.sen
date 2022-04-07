@@ -15,7 +15,7 @@
 
   Marker[].newDataPulse Marker[]
     "__anyDemon" find word.object@
-    pipeline.pipeout
+    job.pipeToOp0
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +27,7 @@
 
   op__topology
 
-  find: OP_toDemon_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: OP_toDemon_DataMarker ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

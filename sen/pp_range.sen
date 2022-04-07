@@ -1,0 +1,43 @@
+/*============================================================================*/
+/* pp_range.sen -- define range procedures                                    */
+/*============================================================================*/
+
+" pp_range.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* range related procedures                                                   */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Range" .verbose
+
+: start::defProc_Range
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  
+  STD_PATH_TAG
+  "
+  procedure range
+    parameters $table $index $etc
+    begin
+
+    stage stageA on origin :
+      start | pulse once | stageB
+
+    stage stageB on all partitions :
+      indexScan 2 $table $index $etc
+      | combined 0
+      | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

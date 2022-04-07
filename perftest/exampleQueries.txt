@@ -1,0 +1,68 @@
+Assuming that you have a connection to AWS RDS on the database septest.
+
+EXPLAIN VERBOSE
+SELECT metricTs, metricName, metricValue
+FROM metricResults mr
+JOIN testResults tr
+  ON mr.testResultId = tr.testResultId
+JOIN jobResults jr
+  ON tr.jobResultId = jr.jobResultId
+JOIN jobs
+  ON jr.jobId = jobs.jobId
+JOIN tests
+  ON tr.testId = tests.testId
+WHERE
+  jobName = 'exampleJob' AND
+  tests.testName = 'createAndDropTables' AND
+  metricName = 'createTable' AND
+  tr.testPassed = true
+ORDER BY
+  metricName, metricTs
+;
+
+**************************
+EXAMPLE GRAFANA QUERIES:
+**************************
+
+SELECT
+  $__time(metricTs),
+  metricName as "metric",
+  metricValue
+FROM metricResults mr
+JOIN testResults tr
+  ON mr.testResultId = tr.testResultId
+JOIN jobResults jr
+  ON tr.jobResultId = jr.jobResultId
+JOIN jobs
+  ON jr.jobId = jobs.jobId
+JOIN tests
+  ON tr.testId = tests.testId
+WHERE
+  jobName = 'exampleJob' AND
+  tests.testName = 'createAndDropTables' AND
+  mr.metricName = 'createTable' AND
+  tr.testPassed = true AND
+  $__timeFilter(mr.metricTs)
+ORDER BY time
+
+
+SELECT
+  $__timeGroupAlias(metricTs, '5m'),
+  AVG(metricValue) as "AVG"
+FROM metricResults mr
+JOIN testResults tr
+  ON mr.testResultId = tr.testResultId
+JOIN jobResults jr
+  ON tr.jobResultId = jr.jobResultId
+JOIN jobs
+  ON jr.jobId = jobs.jobId
+JOIN tests
+  ON tr.testId = tests.testId
+WHERE
+  jobName = 'exampleJob' AND
+  tests.testName = 'createAndDropTables' AND
+  mr.metricName = 'createTable' AND
+  tr.testPassed = true AND
+  $__timeFilter(mr.metricTs)
+GROUP BY time, metricName
+ORDER BY time

@@ -64,11 +64,7 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
   _static_
   
   Procedure* pProcedure = new Procedure(pTokenVec);
-  
-#ifdef WITH_PROCEDURE_2
-#else
-#endif
-  
+    
   //pProcedure->vParseAndAdd();
   pProcedure->bParseAndAdd_2();
 

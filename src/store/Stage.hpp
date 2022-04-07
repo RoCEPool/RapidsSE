@@ -1,26 +1,23 @@
 /*============================================================================*/
-/* Stage.hpp -- Stage of Pipeline (being a vector of Stbream)                  */
+/* Stage.hpp -- Stage (of Deck of Vertex of Pipeline)                         */
 /*============================================================================*/
 #pragma once
 
 #include "eYS.h"
 
-#include "LifeGuard_t.hpp"
-
-namespace STORE { class Stream; class StageSpec; }
+namespace STORE { class Deck; class Vertex;
+                  class Stream; class StageSpec; }
 
 namespace STORE
 {
-  class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>,
-                public LifeGuard_t<Stage>
+  class Stage : public VectorNL_t<CN_STAGE,Stream,C_MAX_STREAMS>
   {
   private:
-    s32  m_sPipelineNm; // pipeline name
-    s32  m_sStageNm;    // name of this stage
+    Deck*      m_pDeck;
+    StageSpec* m_pStageSpec; // specification of this stage
+  
     i8   m_i_Stage;     // [stage] in pipeline
 
-    StageSpec*  m_pStageSpec; // specification of this stage
-    Pipeline*   m_pPipeline;  // which pipeline
   
     // -- -- -- -- -- --
 
@@ -31,28 +28,29 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Stage(StageSpec* pStageSpec, Pipeline* pPipeline);
+    Stage(Deck*      pDeck,
+          StageSpec* pStageSpec);
    ~Stage(void) noexcept(false);
       
     void vCancelPipeline(Task* pTriggeringTask);
-    Stream* pGetStream_byNodeNo(i8 i_Node);
+    Deck* pDeck(void);
+    bool bEnqueueInvoke(void);
+    Stream* pGetStream_byNodeId(i8 i_Node);
     Stream* pGetStream_byPtnNo(i8 i_Ptn);
     Stream* pGetStream_byStreamNo(i8 i_Stream);
-    i8   nOpsOnNode(i8 iNode, i8 iOrigin);
+    Op*  pOp0(void);
+    i8   nOpsExeOnNode(i8 iNodeId, i8 iOriginId);
     Pipeline* pPipeline(void);
-    Op*  pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp);
+    Vertex* pVertex(void);
+    Op*  pPipeDstOp(LglPtn tDstLglPtn, i8 i_DstOp);
     i8   i_Stage(void);
     Stz* szStageNm(void);
+    Stream* pStream0(void);
     StageSpec* pStageSpec(void);
-    bool bStartPipeline(void);
-    void vWalk(void* aArg);
-    void vWalkLambda(
-           i8 iDepth,
-           std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
 
-  void    vCreateStreams(void);
 
   private:
+    void    vCreateStreams(void);
 
     Footer* aFooter(void);
   };

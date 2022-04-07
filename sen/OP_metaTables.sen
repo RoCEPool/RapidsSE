@@ -84,8 +84,8 @@
 
   op__topology
 
-  find: metaTables_DataMarker    ZK_M_DATAPULSE  op[].handler!
-  find: metaTables_StartMarker   ZK_M_START      op[].handler!
+  find: metaTables_DataMarker    ZK_M_DATAPULSE  [op].handler!
+  find: metaTables_StartMarker   ZK_M_START      [op].handler!
 
   op__loop
 

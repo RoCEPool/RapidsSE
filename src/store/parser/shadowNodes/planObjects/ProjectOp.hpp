@@ -69,11 +69,11 @@ namespace Parser
 
     // Returns a new ProjectOp node with projected columns super-aggregating aggregated
     // expressions from each partition or node
-    static QueryNode* pCreateSuperAggregate(QueryNode* pSinglePartitionNode);
+    static QueryNode* pCreateSuperAggregate(QueryNode* pSinglePartitionNode, PlanNode* pRootNode);
 
     // Returns a new ProjectOp node with projected columns doubly super-aggregating aggregated
     // expressions from each partition or node. Used to factor in node-level aggregation.
-    static QueryNode* pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode);
+    static QueryNode* pCreateDoubleSuperAggregate(QueryNode* pSinglePartitionNode, PlanNode* pRootNode);
 
     // Returns the number of columns being projected
     static i8 nColumns(QueryNode* pNode);

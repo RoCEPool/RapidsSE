@@ -84,7 +84,7 @@
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"
-#include "PipelineSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Jobs.hpp"
@@ -122,8 +122,8 @@
 
 #include "HeadsUp.hpp"
 
-#include "PtnId.hpp"
-#include "BucketMap_dyn.hpp"
+#include "LglPtn.hpp"
+#include "BucketMap.hpp"
 #include "Stage.hpp"
 #include "SysMetrics.hpp"
 
@@ -172,35 +172,23 @@ SysMetrics* AM::ATTACHMAP::pSysMetricsChain(void)
 /*----------------------------------------------------------------------------*/
 /* convert bucket id to ptn id                                                */
 /*----------------------------------------------------------------------------*/
-PtnId AM::BKTMAP::tBktIdToLglPtnId(i8 iBktId)
+LglPtn AM::BKTMAP::tLglPtnOf(KeyBkt tKeyBkt)
 {
   _static_
   
-  PtnId tPtnId = gpAttachMap->m_pBucketMap->tBktToLglPtnId(iBktId);
+  LglPtn tLglPtn = gpAttachMap->m_pBucketMap->tLglPtnOf(tKeyBkt);
 
-  return tPtnId;
+  return tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get bucket map                                                             */
 /*----------------------------------------------------------------------------*/
-BucketMap_dyn* AM::BKTMAP::pBucketMap(void)
+BucketMap* AM::BKTMAP::pBucketMap(void)
 {
   _static_
   
   return gpAttachMap->m_pBucketMap;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert hash to bucket id                                                  */
-/*----------------------------------------------------------------------------*/
-i8 AM::BKTMAP::iHashToBktId(i8 iHash)
-{
-  _static_
-  
-  i8 iBktId = iHash % C_MAX_BUCKETS_IN_GRID;
-
-  return iBktId;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -247,21 +235,9 @@ Dic* AM::DIC::pRoot(void)
 /*----------------------------------------------------------------------------*/
 /* pipe given row buffer to named demon                                       */
 /*----------------------------------------------------------------------------*/
-void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
+void AM::DEMON::vPipeToOp0(Stz* szDemonNm, Operand* pOperand)
 {
   _static_
-
-  // for reference: sen code from : OP_toStatDemon_Profile \handler
-  
-//  PipeIn[]
-//  "__statDemon" find dup if
-//    word.object@
-//    pipeline.pipeout
-//    nullptr to PipeIn[]
-//  else
-//    discard discard
-//    PipeIn[].delete
-//  then
 
   Dic* pRootDic = AM::DIC::pRoot();
 
@@ -272,246 +248,15 @@ void AM::DEMON::vPipeTo(Stz* szDemonNm, Operand* pOperand)
     vNapMsec(3000,CN_PIPELINE);
   }
   
-  Job* pPipelineJob = _pJob(pDemonWord->pObject());
+  Job* pJob = _pJob(pDemonWord->pObject());
   
-  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
+  Pipeline* pPipeline = pJob->pPipeline();
   
   Op* pOp0 = pPipeline->pOp0();
 
-  //Task* pThisTask = AM::pThisTLSTask();
-  
   pOp0->vAppendLeft(pOperand,nullptr);
 }
 
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                  ENGINE                                    */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-#define bDELETE_RULE(CLASSNO,FUNNM) (CLASSNO == eDeleter && szDelFunNm->bSame(FUNNM))
-
-/*----------------------------------------------------------------------------*/
-/* assert EE delete rules                                                     */
-/*----------------------------------------------------------------------------*/
-void AM::EE::vAssertEEDelete(eCN     eInstance,
-                             Object* pInstance,
-                             
-                             eCN     eExpecting,
-                             eCN     eDeleter,
-                             Object* pDeleter,
-                             Stz*    szDelFunNm,
-                             bool    bTrace)
-{
-  _static_
-  
-  RASSERT(szDelFunNm);
-
-  if (eExpecting != eInstance) {
-    
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (false)
-    {;}
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  // freeChunk
-  
-  else if (CN_FREECHUNK == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
-      
-    NEVER_REACH;
-  }
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  // job
-
-  else if (CN_JOB == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p "
-             "from %s() "
-             "by %12s:%-3lld %p\n"_Stz
-             
-             ,aCN[eInstance],(i8)eInstance,pInstance
-             
-             ,szDelFunNm
-             
-             ,aCN[eDeleter],(i8)eDeleter,pDeleter
-             );
-
- 
-    if ( !
-           (
-            
-            //bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
-
-            //|| bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
-            //|| bDELETE_RULE(CN_API,     "vCallBootSystem"_Stz)
-               bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
-            || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
-           )
-        )
-      vDebugPoint();
-    
-    RASSERT(
-            //bDELETE_RULE(CN_JOBLIST, "pFindJob"_Stz        )
-
-            //|| bDELETE_RULE(CN_API,     "vDeleteImmediate"_Stz)
-            //|| bDELETE_RULE(CN_API,     "vCallBootSystem"_Stz)
-               bDELETE_RULE(CN_API,     "bReapJob"_Stz        )
-            || bDELETE_RULE(CN_STEP,    "vJobDelete2pc"_Stz   )
-
-//              || bDELETE_RULE(CN_AM,      "vJobDelete"_Stz      )
-//              || bDELETE_RULE(CN_AM,      "~Task"_Stz           )
-//              || bDELETE_RULE(CN_API,     "vDeleteJob"_Stz      )
-//              || bDELETE_RULE(CN_STEP,    "vJobDelete"_Stz      )
-            );
-  }
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  // logic unit
-
-  else if (CN_LOGICUNIT == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
-
-    RASSERT(   bDELETE_RULE(CN_AM,  "vDelete"_Stz         )
-            || bDELETE_RULE(CN_JOB, "~Job"_Stz            )
-            || bDELETE_RULE(CN_JOB, "vResetForCascade"_Stz)
-            || bDELETE_RULE(CN_OP,  "~Op"_Stz             )
-            );
-  }
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  // op
-  
-  else if (CN_OP == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
-    
-    RASSERT( bDELETE_RULE(CN_STREAM, "~Stream"_Stz ) );
-  }
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  // opSpec
-  
-  else if (CN_OPSPEC == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
-
-    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC, "vFirstSend"_Stz     )
-            || bDELETE_RULE(CN_PIPELINESPEC, "vOtherSend"_Stz)
-            || bDELETE_RULE(CN_STAGESPEC,    "~StageSpec"_Stz          )
-            );
-  }
-  
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  // pipeline
-
-  else if (CN_PIPELINE == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
-    
-    RASSERT( bDELETE_RULE(CN_LOGICUNIT, "~LogicUnit"_Stz ) );
-  }
-  
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  // pipelineSpec
-    
-  else if (CN_PIPELINESPEC == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
-
-    RASSERT(   bDELETE_RULE(CN_DYNAMO,   "pCompile"_Stz           )
-            || bDELETE_RULE(CN_DYNAMO,   "vDynamoCompile"_Stz )
-            || bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz          )
-            || bDELETE_RULE(CN_STEP,     "vPipelineSpecDelete"_Stz)
-            );
-  }
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  // stage
-  
-  else if (CN_STAGE == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
-
-    RASSERT( bDELETE_RULE(CN_PIPELINE, "~Pipeline"_Stz ) );
-  }
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  // stageSpec
-  
-  else if (CN_STAGESPEC == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
-
-    RASSERT( bDELETE_RULE(CN_PIPELINESPEC, "~PipelineSpec"_Stz) );
-  }
-  
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  // stream
-  
-  else if (CN_STREAM == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
-    
-    RASSERT( bDELETE_RULE(CN_STAGE, "~Stage"_Stz ) );
-  }
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  // task
-
-  else if (CN_TASK == eInstance) {
-    if (bTrace)
-      vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
-             aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
-      
-    if ( ! (   bDELETE_RULE(CN_JOB,       "~Job"_Stz)
-            || bDELETE_RULE(CN_OP,        "~Op"_Stz)
-            || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz)
-           )
-        )
-        vDebugPoint();
-        
-    RASSERT(   bDELETE_RULE(CN_JOB,       "~Job"_Stz)
-            || bDELETE_RULE(CN_OP,        "~Op"_Stz)
-            || bDELETE_RULE(CN_SCHEDULER, "vTaskSelf_DeleteThisTask"_Stz)
-            );
-  }
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  // unknown???
-  
-  else {
-    vTrace("del UNRECOGNISED %p CLASS BEING DELETED\n"_Stz,pInstance);
-
-    vTrace("eInstance=%lld:%s\n"_Stz,eInstance,aCN[eInstance]);
-
-    vTrace("eDeleter=%lld:%s\n"_Stz,eDeleter,aCN[eDeleter]);
-
-    vTrace("szDelFunNm=%s\n"_Stz,szDelFunNm);
-    
-    NEVER_REACH;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  RASSERT(eExpecting == eInstance);
-
-}
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -535,11 +280,11 @@ void AM::ENGINE::vSignalHandler(i8 iSignal)
 /*----------------------------------------------------------------------------*/
 /* get node for given node number                                             */
 /*----------------------------------------------------------------------------*/
-Node* AM::GRID::pGetNode(i8 iNodeNo)
+Node* AM::GRID::pGetNode(i8 iNodeId)
 {  
   _static_
   
-  Node* pNode = gpAttachMap->m_pGrid->pFindNode(iNodeNo);
+  Node* pNode = gpAttachMap->m_pGrid->pFindNodeById(iNodeId);
     
   return pNode;
 }
@@ -559,18 +304,18 @@ Node* AM::GRID::pGetThisNode(void)
 /*----------------------------------------------------------------------------*/
 /* get the node number of nth node                                            */
 /*----------------------------------------------------------------------------*/
-i8 AM::GRID::iGetNthNodeNo(i8 i_Node)
+i8 AM::GRID::iGetNthNodeId(i8 i_Node)
 {
   _static_
   
-  i8 iNodeNo = 0;
+  i8 iNodeId = 0;
   
   Node* pNode = gpAttachMap->m_pGrid->pGetNthNode(i_Node);
   
   if (pNode)
-    iNodeNo = pNode->iNodeNo();
+    iNodeId = pNode->iNodeId();
   
-  return iNodeNo;
+  return iNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -584,31 +329,19 @@ i8 AM::GRID::nKnownNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/**
- * @brief Add new node into the cluster
- * @details When a new node comes up, add it to the cluster.
- * <p>
- * @param[in] iNodeNo  ID of this node
- * @param[in] pszName  name of this node
- * @param[in] pszAddr  Address this node runs at
- * @param[in] iPort   port number this node listens to
- *
- *
- * @return none
- *
- */
-void AM::GRID::vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
+/*----------------------------------------------------------------------------*/
+void AM::GRID::vNodeDetected(i8 iNodeId, Stz* szNodeNm,
                        Stz* szIPAddr, i8 iPortNo,
                        Stz* szRegionNm)
 {
   _static_
   
   if (AM::SYSTEM::bStarted()) {
-    Node *pDetectedNode = AM::pGrid()->pFindNode(szNodeNm);
+    Node *pDetectedNode = AM::pGrid()->pFindNodeNm(szNodeNm);
     
     // check to make sure we haven't added the detected node yet
     if (! pDetectedNode) {
-      AM::pGrid()->vAddDetectedNode(iNodeNo, szNodeNm,
+      AM::pGrid()->vAddDetectedNode(iNodeId, szNodeNm,
                                     szIPAddr, iPortNo,
                                     szRegionNm);
     }
@@ -618,13 +351,13 @@ void AM::GRID::vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
 /*----------------------------------------------------------------------------*/
 /* get this node number                                                       */
 /*----------------------------------------------------------------------------*/
-i8 AM::GRID::iThisNodeNo(void)
+i8 AM::GRID::iThisNodeId(void)
 {
   _static_
   
-  i8 iNodeNo = gpAttachMap->m_pGrid->iThisNodeNo();
+  i8 iNodeId = gpAttachMap->m_pGrid->iThisNodeId();
     
-  return iNodeNo;
+  return iNodeId;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -832,9 +565,7 @@ void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
   LogicUnit* pLogicUnit = * ppLogicUnit;
   * ppLogicUnit = nullptr;
   
-  pLogicUnit->vGuardedDelete(CN_LOGICUNIT,&pLogicUnit,
-                             CN_AM,nullptr,(Stz*)__func__);
-
+  delete pLogicUnit;
 }
 
 
@@ -1049,9 +780,9 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
   if (gpAttachMap && gpAttachMap->m_pNumbering) {
     iNo = gpAttachMap->m_pNumbering->iNextNo(eClassNo);
     if (CN_JOB == eClassNo) {
-      i8 iNodeNo = AM::GRID::iThisNodeNo();
+      i8 iNodeId = AM::GRID::iThisNodeId();
       
-      iNo = iNodeNo << 48 | iNo;
+      iNo = iNodeId << 48 | iNo;
     }
   }
   else {
@@ -1508,7 +1239,7 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* convert given hash to distributed partition number                         */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tHashToLglPtnId(i8 iHash)
+LglPtn AM::PTNMAP::tHashToLglPtnId(i8 iHash)
 {
   _static_
 
@@ -1547,7 +1278,7 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
+LglPtn AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 {
   _static_
   
@@ -1557,7 +1288,7 @@ PtnId AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
+LglPtn AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 {
   _static_
   
@@ -1567,7 +1298,7 @@ PtnId AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
+LglPtn AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
 {
   _static_
   
@@ -1838,11 +1569,11 @@ bool AM::SHOW::bSocket_Failure(void)
 /*----------------------------------------------------------------------------*/
 /* get operator                                                               */
 /*----------------------------------------------------------------------------*/
-Op* AM::STAGE::pGetOp(Stage* pStage, PtnId tPtnId, i8 i_Op)
+Op* AM::STAGE::pGetOp(Stage* pStage, LglPtn tLglPtn, i8 i_Op)
 {
   _static_
   
-  Op* pOp = pStage->pPipeDstOp(tPtnId,i_Op);
+  Op* pOp = pStage->pPipeDstOp(tLglPtn,i_Op);
   
   return pOp;
 
@@ -2352,11 +2083,11 @@ void AM::TASK::vRetire(Task* pTask)
   
   if (Op* pOp = pTask->pOp()) {
     // retiring op of job
-    Job* pJob = pOp->pJob();
+    Job* pJob = pOp->pJobOfOp();
     pJob->vDecActiveOps();
   }
   else
-  if (Job* pJob = pTask->pJob_task()) {
+  if (Job* pJob = pTask->pJob()) {
     // retiring job
     //pJob->vReapable(true);
 //    if (pJob->bIsPipelineLocal()) {
@@ -2701,7 +2432,7 @@ Sessions* AM::pSessions(void) { return gpAttachMap->m_pSessions;  }
 
 
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
-i8   AM::nBuckets(void)       { return C_MAX_BUCKETS_IN_GRID;                         }
+i8   AM::nBuckets(void)       { return C_MAX_KEYBUCKETS;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 
@@ -2712,6 +2443,9 @@ i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
 Grid* AM::pGrid(void)         { return gpAttachMap ? gpAttachMap->m_pGrid : nullptr;                  }
+#ifdef WITH_HASHMAP
+HashMap* AM::pHashMap(void)   { return gpAttachMap->m_pHashMap;           }
+#endif
 Heaps* AM::pHeaps(void)   { return & gpAttachMap->m_xHeaps;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
@@ -2751,7 +2485,7 @@ Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
-i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNodeNo();     }
+i8   AM::iThisNodeId(void)    { return gpAttachMap->m_pGrid->iThisNodeId();     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; }
 bool AM::bTracepoint(void)    { return gpAttachMap->m_xSysArgs.m_bTracepoint;        }
@@ -2919,7 +2653,7 @@ void AM::vDeleteOperand(Operand* pOperand)
      break;
     }
 
-    case CN_BUCKETMAP_dyn: {
+    case CN_BUCKETMAP: {
       break;
     }
 
@@ -2960,9 +2694,6 @@ void AM::vIndexEntries(i8 nIndexEntries) {
 }
 void AM::vNextTempName(s32& sName) {
   gpAttachMap->m_oTempName.vNextName(sName);
-}
-void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
-  pTask->vAcksRmg(nAcks);
 }
 void AM::vSteps(Steps* pSteps) {
   gpAttachMap->m_pSteps = pSteps;
@@ -3017,10 +2748,6 @@ bool AM::bJobWasReceived(Job* pJob)
 void AM::vDumpApi(void) {
   pSessions()->vDump();
 }
-Task* AM::pExecutingTask(Job* pJob) {
-  Task* pTask = pJob->pJobTask();
-  return pTask;
-}
 
 i8 AM::nLvlLevels(void) {
   return gpAttachMap->m_xSysArgs.m_nLvlLevels;
@@ -3039,7 +2766,7 @@ Job* AM::pPipelineJob(void)
 {
   Op* pOp = pThisTLSTask()->pOp();
   
-  Job* pPipelineJob = pOp->pPipeline_op()->pPipelineJob();
+  Job* pPipelineJob = pOp->pPipeline()->pPipelineJob();
   
   return pPipelineJob;
 }
@@ -3131,18 +2858,23 @@ void AM::vTaskDump(void) {
 
 void AM::vTaskDump(Task* pTask)
 {
-  Job* pJob = pTask->pJob_task();
+  Job* pJob = pTask->pJob();
     
   if (! pJob)
     return;
   
   AM::vJobContentDump(pJob);
   
-  if (pJob->pJobLogicUnit()) {
-    if (pJob->pJobLogicUnit()->m_xpOp.bIsNotNull())
-      pJob->pJobLogicUnit()->m_xpOp->vDump();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
+  if (pLogicUnit) {
+    //pLogicUnit->vContentDump();
+  }
   
-    //pJob->pJobLogicUnit()->vContentDump();
+  Op* pOp = pTask->pOp();
+
+  if (pOp) {
+      pOp->vDump();
+    //pLogicUnit->vContentDump();
   }
 
 }
@@ -3158,15 +2890,10 @@ LogicUnit* AM::pTaskOpLogicUnit(Task* pTask) {
   return pOp->pOpLogicUnit();
 }
 
-LogicUnit* AM::pTaskLogicUnit(Task* pTask) {
-  Job* pJob = pTask->pJob_task();
-  return pJob->pJobLogicUnit();
-}
-
 
 void AM::vTaskFullTrace(Task* pTask)
 {
-  Job* pJob = pTask->pJob_task();
+  Job* pJob = pTask->pJob();
 
   // dump api state
   //AM::vDumpApi();
@@ -3175,8 +2902,6 @@ void AM::vTaskFullTrace(Task* pTask)
   
   if (pJob)
     AM::vJobContentDump(pJob);
-  
-  //pJob->pJobLogicUnit()->vContentDump();
   
   AM::pGrid()->vDsv();
 }
@@ -3212,8 +2937,7 @@ t8 AM::tThisTLSPespective(void)
 //}
 LogicUnit* AM::pThisTLSLogicUnit(void) {
   Task* pTask = Task::pThisTLSTask();
-  Job* pJob = pTask->pJob_task();
-  LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   return pLogicUnit;
 }
@@ -3230,8 +2954,7 @@ Tx* AM::pThisTLSTx(void) {
   if (! pTask)
     return nullptr;
   
-  Job* pJob = pTask->pJob_task();
-  LogicUnit* pLogicUnit = pJob->pJobLogicUnit();
+  LogicUnit* pLogicUnit = pTask->pLogicUnit();
 
   Tx* pTx = *pLogicUnit->m_xpTx;
   return pTx;
@@ -3287,9 +3010,9 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 /* get pSession given i_Session                                               */
 /*----------------------------------------------------------------------------*/
-Session* AM::pSessionGet(i8 i_Origin,  i8 i_Session)
+Session* AM::pSessionGet(i8 iOriginNodeId,  i8 i_Session)
 {
-  if (i_Origin != AM::iThisNodeNo())
+  if (iOriginNodeId != AM::iThisNodeId())
     return nullptr;
   
   if (C_UNKNOWN == i_Session)
@@ -3298,14 +3021,6 @@ Session* AM::pSessionGet(i8 i_Origin,  i8 i_Session)
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
 
   return pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
-void AM::vSpawnTaskDedicated_job(Job* pJob)
-{
-  Api::vSpawnTaskDedicated_job(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3650,7 +3365,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
   
   switch (eClass_opd) {
 
-    case CN_BUCKETMAP_dyn: eOperand = ZK_D_BUCKETMAP_dyn; break;
+    case CN_BUCKETMAP: eOperand = ZK_D_BUCKETMAP_dyn; break;
     case CN_CRWBUFFER: eOperand = ZK_D_CRWBUFFER; break;
     case CN_CSVBUFFER: eOperand = ZK_D_CSVBUFFER; break;
     case CN_EACHROWBUFFER: eOperand = ZK_D_EACHROWBUFFER; break;
@@ -3712,6 +3427,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_EXITING:            eOperand = ZK_M_EXITING;      break;
         case OM_EXITED:             eOperand = ZK_M_EXITED;       break;
         case OM_FLUSH:              eOperand = ZK_M_FLUSH;        break;
+        case OM_INVOKEMARKER:       eOperand = ZK_M_INVOKE;       break;
         case OM_LEAVEMARKER:        eOperand = ZK_M_LEAVE;        break;
         case OM_LEAVINGMARKER:      eOperand = ZK_M_LEAVING;      break;
         case OM_LEFTMARKER:         eOperand = ZK_M_LEFT;         break;
@@ -3954,8 +3670,7 @@ void AM::vJobDelete(Job** ppJob, Object* pDeleter, Stz* szFunc) {
   
   Job* pJob = * ppJob;
   
-  pJob->vGuardedDelete(CN_JOB,&pJob,
-                       CN_AM,pDeleter,szFunc);
+  delete pJob;
   
   * ppJob = nullptr;
 }
@@ -3970,11 +3685,11 @@ bool AM::bTaskIsLocked(Task* pTask) {
 }
 
 Job* AM::pTaskJob(void) {
-  return pThisTLSTask()->pJob_task();
+  return pThisTLSTask()->pJob();
 }
 Job* AM::pTaskJob(Task* pTask) {
   if (pTask)
-    return pTask->pJob_task();
+    return pTask->pJob();
   else
     return nullptr;
 }
@@ -4365,11 +4080,9 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_DL: return aDL[i_Enum];
     case EG_DM: return aDM[i_Enum];
     case EG_DS: return aDS[i_Enum];
-      
-    case EG_EA: return aEA[i_Enum];
+
     case EG_EC: return aEC[i_Enum];
     case EG_ED: return aED[i_Enum];
-    case EG_EO: return aEO[i_Enum];
     case EG_EP: return aEP[i_Enum];
 
     case EG_FN: return aFN[i_Enum];
@@ -4742,7 +4455,7 @@ void AM::vJob_RemoveRetired(Job* pJob)
 void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 {
   if (AM::SYSTEM::bStarted()) {
-    Node *pThisNode = AM::pGrid()->pFindNode(iNode);
+    Node *pThisNode = AM::pGrid()->pFindNodeById(iNode);
 
     if (pThisNode) {
       pThisNode->vPutHeartbeat(xHeartbeat);
@@ -4756,7 +4469,7 @@ void AM::vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat)
 bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 {
   if (AM::SYSTEM::bStarted()) {
-    Node *pThisNode = AM::pGrid()->pFindNode(pszName);
+    Node *pThisNode = AM::pGrid()->pFindNodeNm(pszName);
 
     if (pThisNode) {
       pThisNode->vPutHeartbeat(xHeartbeat);
@@ -4771,7 +4484,7 @@ bool AM::bPutHeartbeat(Stz* pszName, const Heartbeat& xHeartbeat )
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(i8 iNode)
 {
-  Node *pThisNode = AM::SYSTEM::bStarted() ? AM::pGrid()->pFindNode(iNode) : nullptr;
+  Node *pThisNode = AM::SYSTEM::bStarted() ? AM::pGrid()->pFindNodeById(iNode) : nullptr;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
@@ -4786,7 +4499,7 @@ Heartbeat AM::xGetHeartbeat(i8 iNode)
 /*----------------------------------------------------------------------------*/
 Heartbeat AM::xGetHeartbeat(Stz* pszName)
 {
-  Node *pThisNode = AM::SYSTEM::bStarted() ? AM::pGrid()->pFindNode(pszName) : nullptr;;
+  Node *pThisNode = AM::SYSTEM::bStarted() ? AM::pGrid()->pFindNodeNm(pszName) : nullptr;;
 
   if (!pThisNode) {
     vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
@@ -4811,7 +4524,7 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
 void AM::vRemoveNode(Stz* pszName)
 {
   if (AM::SYSTEM::bStarted()) {
-    Node *pThisNode = AM::pGrid()->pFindNode(pszName);
+    Node *pThisNode = AM::pGrid()->pFindNodeNm(pszName);
     // Check to make sure we have this node in the cluster/grid.
     if (pThisNode) {
 

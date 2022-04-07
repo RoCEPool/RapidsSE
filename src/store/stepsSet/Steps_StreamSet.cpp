@@ -88,7 +88,7 @@ void Step::vStreamSetAddAnalyzeIndex(void)
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
   
   // get the stream set
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
   i8 nBuffers = 0;
   i8 nEntries = 0;
@@ -131,7 +131,7 @@ void Step::vStreamSetAddAnalyzeTable(void)
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
   
   // get the stream set
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   i8 nBuffers = 0;
   i8 nRows = 0;
@@ -168,7 +168,7 @@ void Step::vStreamSetAddColumnDef(void)
 
   Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
@@ -204,7 +204,7 @@ void Step::vStreamSetAddGridSanity(void)
   
   //pNodeInfo->vDump(pStreamDefNI);
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   //Grid* pGrid = AM::pGrid();
   
@@ -253,7 +253,7 @@ void Step::vStreamSetAddListContents(void)
   s256 sContents;
   m_pDataStack->vPopStr(sContents, __func__);
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
@@ -288,7 +288,7 @@ void Step::vStreamSetAddListFolder(void)
   s256 sKind;
   m_pDataStack->vPopStr(sKind, __func__);
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
@@ -319,7 +319,7 @@ void Step::vStreamSetAddListIndex(void)
   // get the index
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
@@ -345,21 +345,21 @@ void Step::vStreamSetAddListPartitions(void)
   // get the table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  PtnId tPtnId;
-  tPtnId = m_pDataStack->iPopInt(__func__);
+  LglPtn tLglPtn;
+  tLglPtn = m_pDataStack->iPopInt(__func__);
 
   // get the streamDef from the table
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Grid* pGrid = AM::pGrid();
 
-  i8 i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
-  Node* pNode = pGrid->pFindNode(i_Node);
+  i8 iNodeId = AM::pPtnMap()->iMappedNodeId(tLglPtn);
+  Node* pNode = pGrid->pFindNodeById(iNodeId);
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
-                                    tPtnId.iAsI8(),
+                                    tLglPtn.iAsI8(),
                                     pNode->szNodeNm(),
                                     C_VARGS_END);
 
@@ -385,7 +385,7 @@ void Step::vStreamSetAddNodeHeartbeat(void)
   // get the streamDef from the table
   StreamDef *pStreamDef = pTable->pStreamDef();
 
-  StreamSet *pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet *pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
   Node* pThisNode = MY::pNode();
   
@@ -426,7 +426,7 @@ void Step::vStreamSetAddNodeStatus(void)
   // get the streamDef from the table
   StreamDef *pStreamDef = pTable->pStreamDef();
 
-  StreamSet *pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet *pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
   /* commented out, the old status command which is required to go to all nodes
    * for each node, it gets back a row and its status.
@@ -482,7 +482,7 @@ void Step::vStreamSetAddPingInfo(void)
   
   // get the streamDef from the table
   StreamDef* pStreamDef = pTable->pStreamDef();
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
@@ -506,7 +506,7 @@ void Step::vStreamSetAddProgressUnits(void)
   i8 iProgressUnits = m_pDataStack->iPopInt(__func__);
   
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
@@ -536,7 +536,7 @@ void Step::vStreamSetAddPwfInfo(void)
   // get the streamDef from the table
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
@@ -565,7 +565,7 @@ void Step::vStreamSetAddRowCount(void)
   
   i8 i_Count = m_pDataStack->iPopInt(__func__);
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
@@ -594,9 +594,9 @@ void Step::vStreamSetAddShowCluster(void)
   
   i8 i_Node = m_pDataStack->iPopInt(__func__);
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
-  Node* pNode = AM::pGrid()->pFindNode(i_Node);
+  Node* pNode = AM::pGrid()->pFindNodeById(i_Node);
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pNode->szNodeNm(),
@@ -628,7 +628,7 @@ void Step::vStreamSetAddSizeIndex(void)
   s256 sSize;
   m_pDataStack->vPopStr(sSize, __func__);
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
@@ -659,7 +659,7 @@ void Step::vStreamSetAddSizeTable(void)
   s256 sSize;
   m_pDataStack->vPopStr(sSize, __func__);
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
@@ -687,7 +687,7 @@ void Step::vStreamSetAddSpaceInfo(void)
   // get the streamDef from the table
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Grid* pGrid = AM::pGrid();
   
@@ -741,7 +741,7 @@ void Step::vStreamSetAddTableSizes(void)
   s256 sSize;
   m_pDataStack->vPopStr(sSize, __func__);
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
@@ -776,7 +776,7 @@ void Step::vStreamSetAddVerifyIndex(void)
   
   i8 iStatus = m_pDataStack->iPopInt(__func__);
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
@@ -809,7 +809,7 @@ void Step::vStreamSetAddVerifyTable(void)
   
   i8 iStatus = m_pDataStack->iPopInt(__func__);
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
@@ -832,9 +832,9 @@ void Step::vStreamSetDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpStreamSet);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpStreamSet);
   
-  m_p_TaskLogicUnit->m_xpStreamSet = nullptr;
+  m_pLogicUnit->m_xpStreamSet = nullptr;
   
   EXIT();
 }
@@ -846,7 +846,7 @@ void Step::vStreamSetFirstRow(void)
 {
   ENTRY();
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   m_pDataStack->vPushPtr(pStreamSet->pFirstRow());
 }
@@ -858,7 +858,7 @@ void Step::vStreamSetGet(void)
 {
   ENTRY();
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
   m_pDataStack->vPushPtr(pStreamSet);
 
@@ -872,9 +872,9 @@ void Step::vStreamSetInfoRows(void)
 {
   ENTRY();
   
-  ASSERT ( ! m_p_TaskLogicUnit->m_xpStreamSet.bIsNull() );
+  ASSERT ( ! m_pLogicUnit->m_xpStreamSet.bIsNull() );
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
   m_pDataStack->vPushInt(pStreamSet->nRows());
   
@@ -888,7 +888,7 @@ void Step::vStreamSetIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpStreamSet.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpStreamSet.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -900,7 +900,7 @@ void Step::vStreamSetName(void)
 {
   ENTRY();
   
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
   Stz* szBufferNm = pStreamSet->szBufferNm();
   
@@ -916,13 +916,13 @@ void Step::vStreamSetNew(void)
 {
   ENTRY();
   
-  ASSERT(m_p_TaskLogicUnit->m_xpStreamSet.bIsNull());
+  ASSERT(m_pLogicUnit->m_xpStreamSet.bIsNull());
   
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   StreamDef* pStreamDef = pTable->pStreamDef();
   
-  m_p_TaskLogicUnit->m_xpStreamSet = new StreamSet(pStreamDef);
+  m_pLogicUnit->m_xpStreamSet = new StreamSet(pStreamDef);
   
   EXIT();
 }
@@ -934,8 +934,8 @@ void Step::vStreamSetNextRow(void)
 {
   ENTRY();
 
-  StreamSet* pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
-  Row* pRow = _pRow(*m_p_TaskLogicUnit->m_xpInfoSetRow);
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+  Row* pRow = _pRow(*m_pLogicUnit->m_xpInfoSetRow);
 
   ASSERT(pRow);
 
@@ -949,9 +949,9 @@ void Step::vStreamSetReadChunk(void)
 {
   ENTRY();
   
-  ASSERT(*m_p_TaskLogicUnit->m_xpStreamSet);
+  ASSERT(*m_pLogicUnit->m_xpStreamSet);
 
-  File* pFile = _pFile(*m_p_TaskLogicUnit->m_xpFile0);
+  File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
   
   Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
   
@@ -981,8 +981,8 @@ void Step::vStreamSetSet(void)
   ENTRY();
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpStreamSet.bIsNull());
-  m_p_TaskLogicUnit->m_xpStreamSet = _pOperand(pOperand);
+  ASSERT(! pOperand || m_pLogicUnit->m_xpStreamSet.bIsNull());
+  m_pLogicUnit->m_xpStreamSet = _pOperand(pOperand);
   
   EXIT();
 }

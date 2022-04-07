@@ -1,0 +1,148 @@
+/*============================================================================*/
+/* cmd_pipelineLocal.sen -- Local Pipeline Job                                */
+/*============================================================================*/
+
+" cmd_pipelineLocal.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* terminate this pipeline                                                    */
+/*----------------------------------------------------------------------------*/
+: pipelineLocal::termination
+
+  [ddlLock].testDrop
+
+  ListedJob[].assertNoRef
+
+  [job].addRetired
+  [task].grabLock
+    TR_RETIRE_THIS_TASK [task].transition!
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute on local node                                                      */
+/*----------------------------------------------------------------------------*/
+: pipelineLocal::local
+
+  0 locals| nAcks |
+  
+  [job].assertStructure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compile the pipeline command
+  
+  "<show_command>" sysargs::tagSet@ tagSet.hasName
+  if
+    <cmd> "pipelineLocal::origin: %v\n" .printf
+    //[system].bpa
+  then
+
+  Dynamo[].new
+  <cmd> Dynamo[].compile to ErrorCode[]
+  ErrorCode[] EC_NONE == if
+    // clean compile
+    to PipeSpec[]
+    Dynamo[].delete
+  else
+    //"got error" .
+    ErrorCode[] [job].error!
+    
+    [ddlLock].testDrop
+
+    PipeSpec[].delete
+    Dynamo[].delete
+
+    // cross check
+    PipeSpec[] not assert
+
+    JS_SIGNALLED [job].state!
+      
+    [task].grabLock
+    [session].signal
+    [task].dropLock
+    
+    pipelineLocal::termination
+    
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // begin the pipeline job (spawning jobs for ops etc)
+  
+  PipeSpec[] assert
+
+  PipeSpec[] Pipeline[].create
+  Pipeline[].spawnOpTasks
+  
+  
+  // run <pre_execute>
+
+  "<pre_execute>"
+  [job].tagSet@ tagSet.hasName if
+    "<pre_execute>"
+    [job].tagSet@ tagSet.getStr locals| sPreExe |
+    sPreExe find
+    dup not if
+      sPreExe "Unable to find pre execute word: %v" .printf
+      process::quit
+    then
+      execute
+  else
+    [args].verbose if
+      <pipelineNm> "No pre execute word for pipeline: %v" .printf
+    then
+  then
+
+  // add job to the local job list
+  [job] job.jobList@ JL_DEMON == not if
+    [job].addLocal
+  then
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // enqueue start-marker to start op to execute the pipeline job
+
+  Pipeline[].rootDeck@ to Deck[]
+  deck:invoke
+  nullptr to Deck[]
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // remove job from the local job list
+  [job] job.jobList@ JL_DEMON == not if
+    [job].removeLocal
+  then
+
+  //<pipelineNm> [grid].thisNodeName@ "(%v) ALL DONE!!!" .
+  
+  
+  [ddlLock].testDrop
+  ListedJob[].assertNoRef
+
+  [job].addRetired
+  
+  JS_SIGNALLED [job].state!
+  [session].signal
+
+  [task].grabLock
+    TR_RETIRE_THIS_TASK [task].transition!
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+cmdSyntax: pipelineLocal :: pipelineLocal <pipelineNm> etc ;
+
+: pipelineLocal_cmdTags _cmdTags tagCopy: localJob_tags
+  tags{
+    <cmdDesc>    = "--desc for job--"
+    //<ddlLock>  = DL_GRAB_READ
+    <entryPoint> = "pipelineLocal::local"
+
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

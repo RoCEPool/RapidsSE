@@ -288,7 +288,7 @@ QueryNodeList* ProjectedColumn::pPartitionAggregates(QueryNode* pNode)
 /* Changes the aggregate expression in pNode to super-aggregate results from  */
 /* each partition or node                                                     */
 /*----------------------------------------------------------------------------*/
-void ProjectedColumn::vSuperAggregate(QueryNode* pNode)
+void ProjectedColumn::vSuperAggregate(QueryNode* pNode, PlanNode* pRootNode)
 {
   // e.g. an expression of SUM(col1), when all of the partitioned results are
   // being merged, will be super-aggregated with the expression SUM(SUM(col1)).
@@ -305,7 +305,7 @@ void ProjectedColumn::vSuperAggregate(QueryNode* pNode)
 
   QueryNode* pExpr = pExprNode(pNode);
 
-  Expr::vSuperAggregate(pExpr);
+  Expr::vSuperAggregate(pExpr, pRootNode);
   ASSERT(pExpr->szName()->bEqual(C_EXPR_PROP));
   ASSERT(Expr::bIsOfType(pExpr));
 }
@@ -315,7 +315,7 @@ void ProjectedColumn::vSuperAggregate(QueryNode* pNode)
 /* each partition or node. This version super-aggregates twice to factor in   */
 /* node-level aggregation.                                                    */
 /*----------------------------------------------------------------------------*/
-void ProjectedColumn::vDoubleSuperAggregate(QueryNode* pNode)
+void ProjectedColumn::vDoubleSuperAggregate(QueryNode* pNode, PlanNode* pRootNode)
 {
   // e.g. an expression of SUM(col1), when all of the partitioned results are
   // being merged, will be super-aggregated with the expression SUM(SUM(col1)).
@@ -334,8 +334,8 @@ void ProjectedColumn::vDoubleSuperAggregate(QueryNode* pNode)
 
   QueryNode* pExpr = pExprNode(pNode);
 
-  Expr::vSuperAggregate(pExpr);
-  Expr::vSuperAggregate(pExpr);
+  Expr::vSuperAggregate(pExpr, pRootNode);
+  Expr::vSuperAggregate(pExpr, pRootNode);
   ASSERT(pExpr->szName()->bEqual(C_EXPR_PROP));
   ASSERT(Expr::bIsOfType(pExpr));
 }

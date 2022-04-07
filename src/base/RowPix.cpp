@@ -168,6 +168,20 @@ i8 RowPix::nDynamicSize(void)
   return nSize;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get i_keyHsh                                                               */
+/*----------------------------------------------------------------------------*/
+i8 RowPix::i_KeyHsh(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+  
+  ASSERT(m_bInitialised);
+  ASSERT(m_nColumns);
+
+  i8 i_KeyHsh = m_nColumns - 1;
+  
+  return i_KeyHsh;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get pix name                                                               */

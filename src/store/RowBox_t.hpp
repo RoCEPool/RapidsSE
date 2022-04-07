@@ -99,8 +99,7 @@ namespace STORE
     void  vDumpRow(i8 i_Row, Row* aRow);
 
     i8    nExtraCols(void);
-    i8    iHashOfRow(Row* aRow);
-    void  vInitPix(StreamDef* pStreamDef, bool bPtnHash);
+    void  vInitPix(StreamDef* pStreamDef, bool bAddKeyHash);
     NmlStr* pNmlStr(void);
     void  vNormaliseStrings(void);
     i8    iPtnOfRow(Row* aRow);
@@ -821,32 +820,17 @@ i8 RowBox_t<AREA>::nExtraCols(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the hash of row                                                        */
-/*----------------------------------------------------------------------------*/
-template <i8 AREA>
-i8 RowBox_t<AREA>::iHashOfRow(Row* aRow)
-{
-  _poolAddress_(this); _footer_();
-
-  i8 i_HshCol = m_pRowPix->m_nColumns - 1;
-    
-  i8 iHash = aRow->iColVal_int(i_HshCol);
-  
-  return iHash;
-}
-
-/*----------------------------------------------------------------------------*/
 /* initilize col pix                                                          */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-void RowBox_t<AREA>::vInitPix(StreamDef* pStreamDef, bool bPtnHash)
+void RowBox_t<AREA>::vInitPix(StreamDef* pStreamDef, bool bAddKeyHash)
 {
   _poolAddress_(this); _footer_();
 
   //pAllotRowPix(sizeof(RowPix));
   pAllotRowPix(pStreamDef->pRowPix()->nDynamicSize());
 
-  pStreamDef->vToRowPix(m_pRowPix,bPtnHash);
+  pStreamDef->vToRowPix(m_pRowPix,bAddKeyHash);
   
   m_nRowSizeProper = Row::nRowProper(m_pRowPix->m_nColumns);
 }

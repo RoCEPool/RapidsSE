@@ -9,7 +9,6 @@
 #include "eJP.h"
 #include "eRS.h"
 
-#include "LifeGuard_t.hpp"
 #include "JobMetrics.hpp"
 
 
@@ -23,8 +22,7 @@
 namespace STORE
 {
   class Job : public Operand,
-              public CRM<Job>,
-              public LifeGuard_t<Job>
+              public CRM<Job>
   {
   private:
     Lock m_okLock;
@@ -49,7 +47,7 @@ namespace STORE
 
   public:
     // -- home is
-    i8 m_i_Origin;   // which node
+    i8 m_iOriginNodeId;   // which node
     i8 m_i_Session;  // which session in node's session array
     i8 m_iCmdNo;     // sequence no of the command from that session
   
@@ -58,7 +56,7 @@ namespace STORE
   
     // -- postage
     bool m_bWasReceived;   // was job received over a socket?          POST_RECV
-    i8   m_i_Participant;  // participant node no (FromNodeNo?)
+    i8   m_iParticipantNodeId;  // participant node 
   
     // -- state
     eJS m_eJobState;  // current state: JS_ACTIVE, _LOCKED, ...
@@ -70,7 +68,6 @@ namespace STORE
   
     // -- timer
     Timer   m_oTimer;        // timer (on origin only)
-    Decider m_oAcksRmg_job;  // acks remaining for coordinating 2pc job
     
     eEC     m_eError_job;    // error when starting job
                              // DOUBLE CHECK THIS BELONGS HERE
@@ -83,15 +80,12 @@ namespace STORE
     Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
   public:
 
-
-    // -- logic unit
-    LogicUnit* m_pJobLogicUnit;  // set of registers for task steps    POST_RECV
-
+  
   private:
     // -- tasking
     Task* m_pTask;  // task executing this job                         POST_RECV
   
-    s4K m_sEntry;   // sen entry code
+    s4K m_sEntryPoint;   // sen entry code
   
     i8  m_iTscParticipant;
 
@@ -119,20 +113,16 @@ namespace STORE
     void  operator delete(void*);
     
     Job(Stz* szJobNm,
-        i8 i_Origin,   // originated on which node
-        i8 i_Session,  // which session in session array
-        i8 iCmdNo      // the sequence no of the request from that session
+        i8 iOriginNodeId,  // originated on which node
+        i8 i_Session,      // which session in session array
+        i8 iCmdNo          // the sequence no of the request from that session
        );
 
    ~Job(void) noexcept(false);
   
     static void vPostRecv(void* aJob);
     static void vPrintJobNode(SkipNode* pNode, int i_Level);
-
-    i8   iAcksOriginal(void);
-    i8   iAcksRmg_printOnlyValue(void);
-    void vAcksRmg(i8 nAcks);
-    bool bAcksRmgDec(i8& nAcksWereRemaining);
+  
     i8   nActiveOps(void);
   
     bool bByPromptTag(void);
@@ -144,8 +134,8 @@ namespace STORE
     void vDotPrint(Stz* szText);
     void vDropLock(void);
 
-    Stz* szEntry(void);
-    void vEntry(Stz* szEntry);
+    Stz* szEntryPoint(void);
+    void vEntryPoint(Stz* szEntry);
   
     void vGrabLock(void);
   
@@ -174,22 +164,17 @@ namespace STORE
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
-    LogicUnit* pJobLogicUnit(void);
-    Task* pJobTask(void);
-    void vJobTask(Task* pTask);
 
-
-    void vNewJobLogicUnit(void);
-    void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
   
-    i8   iOriginatorNode(void);
+    i8   iOriginatorNodeId(void);
   
-    i8   iParticipantNode(void);
-    void vParticipantNode(i8 i_Node);
-    Pipeline* pPipeline_job(void);
+    i8   iParticipantNodeId(void);
+    void vParticipantNodeId(i8 i_Node);
+    Pipeline* pPipeline(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
+    void vPostRecv(void);
     Timer*  pProgressTimer(void);
   
     bool bReapable(void);
@@ -200,8 +185,11 @@ namespace STORE
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
     void vSetFromCascade(Stz* szCascade);
-    void vSignalJobMutex(void);
-  
+    void vSpawnTask(void);
+
+    Task* pTask(void);
+    void vTask(Task* pTask);
+
     i8   iTimerMsec(void);
     i8   iTimerStart(void);
     void vTimerStart(void);
@@ -237,10 +225,6 @@ namespace STORE
     void vVerifyJobComposition(void);
   
     void vWaitJobMutex(void);
-    void vWalk(void* aArg);
-    void vWalkLambda(
-           i8 iDepth,
-           std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
   

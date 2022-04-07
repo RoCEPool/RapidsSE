@@ -334,19 +334,7 @@ bool SePrompt::bExamineCommand(void)
 
   if (bRedirectFromFile())
     return false;
-  
-  // is it a demo statement ?
-  if (bDemo()) {
-    
-    // handle demo statement
-    if ( ! bHandleDemo() ) {
-      vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
-      if (AM::bDeveloper())
-        vDumpInpTknVec(true);
-      return false;
-    }
-  }
-  
+
   while (bSubSsnTags())
     {;}
 
@@ -374,7 +362,8 @@ bool SePrompt::bPrepareJob(void)
 
   m_pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   
-  eEC eError = Api::ePrepareJob(m_pCurrentDeputy->pSession(),m_pLitTknVec);
+  //eEC eError = Api::ePrepareJob(m_pCurrentDeputy->pSession(),m_pLitTknVec);
+  eEC eError = m_pCurrentDeputy->ePrepareJob(m_pLitTknVec);
 
   if (eError) {
     RASSERT(! m_pCurrentDeputy->pJob());
@@ -531,24 +520,6 @@ void SePrompt::vDebugMode(i8 iDebugMode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* demo?                                                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bDemo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Token* pTkn = m_pInpTknVec->pGet(0);
-  m_pLitTknVec->vSoftReset();
-  
-  // extract literals from the token vec
-  if (pTkn->bSame("demo"_Stz)) {
-    return true;
-  }
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set prompt section                                                         */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vDivision(Stz* szDivision)
@@ -677,116 +648,6 @@ void SePrompt::vOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* demo?                                                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bHandleDemo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Token* pTkn = m_pInpTknVec->pGet(0);
-  m_pLitTknVec->vSoftReset();
-  
-  // extract literals from the token vec
-  ASSERT(pTkn->bSame("demo"_Stz));
-    
-  i8 iHash = 0;
-  i8 nSize;
-  
-  // calculate hash of statement and extract literals
-  for (i8 i_Tkn = 1; i_Tkn < m_pInpTknVec->nTokens(); i_Tkn++) {
-    
-    pTkn = m_pInpTknVec->pGet(i_Tkn);
-    
-    if ( pTkn->bIsInteger()) {
-      m_pLitTknVec->vAppendToken(pTkn);
-      continue;
-    }
-    
-    if ( pTkn->bIsString()) {
-      m_pLitTknVec->vAppendToken(pTkn);
-      continue;
-    }
-    
-    nSize = StrLib::nLength(pTkn->azChars());
-    StrLib::vToLower(pTkn->azChars());
-    iHash += HshLib::iHash((byte*)pTkn->azChars(),nSize);
-  }
-  //m_pLitTknVec->vDumpVec(0);
-  
-  // reset the input token vector
-  m_pInpTknVec->vSoftReset();
-  
-  char* szToken;
-  bool bResult;
-  
-  switch (iHash) {
-      
-      // Query 1
-    case 201637548233:
-      m_pInpTknVec->vTokeniseCpp(C_Query1);
-      m_pInpTknVec->vIntegrityCheck();
-      break;
-      
-      // Query 3
-    case 127443435585:
-      m_pInpTknVec->vTokeniseCpp(C_Query3);
-      m_pInpTknVec->vIntegrityCheck();
-      
-      i8 iInteger;
-      i8 nDigits;
-      pTkn = m_pLitTknVec->pGet(3);
-      szToken = (char*)pTkn->szChars();
-      bResult = StrLib::bExtractInteger(&szToken, &iInteger, nDigits);
-      if ( ! bResult )
-        return false;
-      
-      break;
-      
-      // Query 4
-    case 97354348505:
-      m_pInpTknVec->vTokeniseCpp(C_Query4);
-      m_pInpTknVec->vIntegrityCheck();
-      break;
-      
-      // Query 6
-    case 67345495087: {
-      m_pInpTknVec->vTokeniseCpp(C_Query6);
-      m_pInpTknVec->vIntegrityCheck();
- 
-      i8 iDecimal;
-      pTkn = m_pLitTknVec->pGet(2);
-      szToken = (char*)pTkn->szChars();
-      bool bResult = StrLib::bExtractDecimal(&szToken, iDecimal, 15, 2);
-      if ( ! bResult )
-        return false;
-      StrLib::vSprint(pTkn->azChars(), "%lld"_Stz, iDecimal);
-      
-      pTkn = m_pLitTknVec->pGet(3);
-      szToken = (char*)pTkn->szChars();
-      bResult = StrLib::bExtractDecimal(&szToken, iDecimal, 15, 2);
-      if ( ! bResult )
-        return false;
-      StrLib::vSprint(pTkn->azChars(), "%lld"_Stz, iDecimal);
-      
-      i8 iInteger;
-      i8 nDigits;
-      pTkn = m_pLitTknVec->pGet(4);
-      szToken = (char*)pTkn->szChars();
-      bResult = StrLib::bExtractInteger(&szToken, &iInteger, nDigits);
-      if ( ! bResult )
-        return false;
-      
-    }
-      break;
-      
-    default:
-      return false;
-  }
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1168,7 +1029,7 @@ void SePrompt::vResetExtractedTagSet(void)
   
   m_pCmdTagSet->vReset();
   m_pCmdTagSet->vInsert(C_TAG_BYPROMPT,1);
-  m_pCmdTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
+  m_pCmdTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
   m_pCmdTagSet->vInsert(C_TAG_SESSION,m_pCurrentDeputy->pSession()->m_i_Session);
 }
 

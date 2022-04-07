@@ -7,7 +7,7 @@
 : sleep
 
   "sleeping" .
-  20 task::sleepSsec
+  20 [task].sleepSsec
   "awake" .
 ;
 

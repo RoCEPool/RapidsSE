@@ -11,27 +11,6 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: aggreg_Cleaning \handler
-
-  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
-
-  // cleanup the pot
-  PotRlu[].cleanup
-
-  //indexTreeRlu[].isNull not if
-  //  indexTreeRlu[].delete
-  //then
-
-  //Counter0[] cleanUpAsm
-
-  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
-
-  ZK_M_CLEANING_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                   END */
-/*----------------------------------------------------------------------------*/
 : aggreg_ComCleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
@@ -89,132 +68,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CRWBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: aggreg_CrwBuffer \handler
-
-  0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] DevLftIxt.crwBuffer!
-  ZK_D_CRWBUFFER Counter0[] executeAsmArgs
-
-  CrwBuffer[].delete
-
-  PotRlu[].pipeoutCompletedPtns
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                    END */
-/*----------------------------------------------------------------------------*/
-: aggreg_EosMarker \handler
-
-  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
-
-  // execute the eosMarker asm handler
-  ZK_M_EOS Counter0[] executeAsmArgs
-
-  // pipe out all PotRlu[]
-  PotRlu[].pipeoutDanglingPtns
-
-  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
-  ZK_M_EOS_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: aggreg_RowBuffer \handler
-
-  0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  pipeIn[]\clear to RowBuffer[]
-  RowBuffer[] DevLftRow.rowBuffer!
-  ZK_D_ROWBUFFER Counter0[] executeAsmArgs
-
-  RowBuffer[].delete
-
-  PotRlu[].pipeoutCompletedPtns
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
-/*----------------------------------------------------------------------------*/
-: aggreg_StartMarker \handler
-
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
-
-  // new the PotRlu[]
-  PotRlu[].new
-
-  // init the logicUnit[]
-  LogicUnit[].init
-
-  ZK_M_START_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
-/*----------------------------------------------------------------------------*/
-: aggreg_StreamDef \handler
-
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
-
-  EC_NONE locals| eError |
-
-  // move pipein[] to StreamDefLft[]
-  Pipein[]\clear to StreamDefLft[]
-
-  // evalute the expression
-  ExprEval[].new
-  StreamDefOut[].new
-
-  <expr> StreamDefLft[] StreamDefOut[] ExprEval[].evaluate to eError
-
-  // check for error
-  eError EC_NONE == not if
-    eError op__asmGenExecErr
-    true
-    exit
-  then
-
-  // generate the asm for projection
-  ExprEval[] LogicUnit[].genAggregate to eError
-  ExprEval[].delete
-
-  // check for error
-  eError EC_NONE == not if
-    eError op__asmGenExecErr
-    true
-    exit
-  then
-
-  // set the streamDef in the devLftRow
-  StreamDefLft[]\clear DevLftRow.streamDef!
-
-  // create rowPix in potRlu[] from streamDefOut[]
-  false streamDefOut[] PotRlu[].rowPix!
-
-  // pipeout the streamDefOut
-  StreamDefOut[].pipeout
-
-  // create the compiler
-  Counter0[] if
-    LogicCompiler[].new
-    LogicCompiler[].compile
-  then
-
-  // execute the streamDef asm handler
-  ZK_D_STREAMDEF Counter0[] executeAsmArgs
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -229,17 +82,9 @@
 
   op__topology
 
-  Counter0[] 2 == if
-    find: aggreg_ComCleaning   ZK_M_CLEANING      op[].handler!
-    find: aggreg_ComStreamDef  ZK_D_STREAMDEF     op[].handler!
-  else
-    find: aggreg_Cleaning      ZK_M_CLEANING      op[].handler!
-    find: aggreg_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-    find: aggreg_EosMarker     ZK_M_EOS           op[].handler!
-    find: aggreg_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-    find: aggreg_StartMarker   ZK_M_START         op[].handler!
-    find: aggreg_StreamDef     ZK_D_STREAMDEF     op[].handler!
-  then
+  Counter0[] 2 == assert
+  find: aggreg_ComCleaning   ZK_M_CLEANING      [op].handler!
+  find: aggreg_ComStreamDef  ZK_D_STREAMDEF     [op].handler!
 
   op__loop
 

@@ -5,8 +5,10 @@
 #include "BASE.h"
 
 #include "OpSpec.hpp"
-#include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
+#include "DeckSpec.hpp"
+#include "VertexSpec.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -16,19 +18,21 @@ __aNewFunction(StageSpec,CN_STAGESPEC)
 __vDeleteFunction(StageSpec,CN_STAGESPEC)
 __aFooterFunction(StageSpec)
 
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageSpec::StageSpec(Stz* szStageNm,
-                     PipelineSpec* pPipelineSpec)
+StageSpec::StageSpec(VertexSpec* pVertextSpec,
+                     DeckSpec*   pDeckSpec,
+                     Stz*        szStageNm)
 : ListNL_t<OpSpec>(CN_STAGESPEC)
-, LifeGuard_t<StageSpec>(this,CN_STAGESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_sStageNm        = szStageNm;
-  m_pPipelineSpec   = pPipelineSpec;
-
+  m_pVertexSpec = pVertextSpec;
+  m_pDeckSpec   = pDeckSpec;
+  m_sStageNm    = szStageNm;
+ 
   m_eStageTopology  = YG_NONE;
   m_eStreamTopology = YS_NONE;
   m_eParcelForward  = YF_NONE;
@@ -50,8 +54,7 @@ StageSpec::~StageSpec(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
     
   while (OpSpec* pOpSpec = pPop())
-    pOpSpec->vGuardedDelete(CN_OPSPEC,&pOpSpec,
-                            CN_STAGESPEC,this,(Stz*)__func__);
+    delete pOpSpec;
 
   vClear();
 }
@@ -373,12 +376,12 @@ void StageSpec::vParcelForward(eYF eParcelForward)
 /*----------------------------------------------------------------------------*/
 /* get i_Stage                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec* StageSpec::pPipelineSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
-  
-  return m_pPipelineSpec;
-}
+//PipeSpec* StageSpec::pPipeSpec(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+//
+//  return m_pPipeSpec->pPipeSpec();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get specific node                                                          */
@@ -403,7 +406,7 @@ void StageSpec::vSpecificNode(i8 i_SpecificNode)
 /*----------------------------------------------------------------------------*/
 /* get specific partition                                                     */
 /*----------------------------------------------------------------------------*/
-PtnId StageSpec::tSpecificPtnNo(void)
+LglPtn StageSpec::tSpecificPtnNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
 
@@ -413,7 +416,7 @@ PtnId StageSpec::tSpecificPtnNo(void)
 /*----------------------------------------------------------------------------*/
 /* set specific partition                                                     */
 /*----------------------------------------------------------------------------*/
-void StageSpec::vSpecificPtnNo(PtnId tSpecificPtnNo)
+void StageSpec::vSpecificPtnNo(LglPtn tSpecificPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
 
@@ -437,7 +440,7 @@ i8 StageSpec::i_StageSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  i8 i_StageSpec = m_pPipelineSpec->iFind(this);
+  i8 i_StageSpec = m_pDeckSpec->iFind(this);
   
   return i_StageSpec;
 }
@@ -535,7 +538,6 @@ void StageSpec::vToPipeStr(Stz* szPipeStr)
   }
 
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

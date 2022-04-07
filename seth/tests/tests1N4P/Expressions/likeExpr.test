@@ -1,0 +1,109 @@
+/*----------------------------------------------------------------------------*/
+/* LIKE expressions                                                           */
+/*----------------------------------------------------------------------------*/
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+load nation "../DATA/TPCH/nation.tbl" ;
+success
+
+SELECT n_name FROM nation where n_name LIKE '' ;
+rows: 0
+
+SELECT n_name FROM nation where n_name LIKE '%' ;
+rows: 25
+
+SELECT n_name FROM nation where n_name LIKE '_%_' ;
+rows: 25
+
+SELECT n_name FROM nation where n_name LIKE 'ALG' ;
+rows: 0
+
+SELECT n_name FROM nation where n_name LIKE 'ALG%' ;
+rows:
+  ('ALGERIA')
+
+SELECT n_name FROM nation where n_name LIKE '_LG%' ;
+rows:
+  ('ALGERIA')
+
+SELECT n_name FROM nation where n_name LIKE '_ALG%' ;
+rows: 0
+
+SELECT n_name FROM nation where n_name LIKE '%IA' ;
+rows:
+  ('ALGERIA')
+  ('ETHIOPIA')
+  ('INDIA')
+  ('INDONESIA')
+  ('ROMANIA')
+  ('SAUDI ARABIA')
+  ('RUSSIA')
+
+SELECT n_name FROM nation where n_name LIKE '%_IA' ;
+rows:
+  ('ALGERIA')
+  ('ETHIOPIA')
+  ('INDIA')
+  ('INDONESIA')
+  ('ROMANIA')
+  ('SAUDI ARABIA')
+  ('RUSSIA')
+
+SELECT n_name FROM nation where n_name LIKE '%ER%' ;
+rows:
+ ('ALGERIA')
+ ('GERMANY')
+ ('PERU')
+
+SELECT n_name FROM nation where n_name LIKE '%ITED%' ;
+rows:
+ ('UNITED KINGDOM')
+ ('UNITED STATES')
+
+select n_name from nation where n_name like '%TED%ING%';
+rows:
+ ('UNITED KINGDOM')
+
+SELECT n_name FROM nation where n_name LIKE 'ALGE_IA' ;
+rows:
+ ('ALGERIA')
+
+SELECT n_name FROM nation where n_name LIKE 'ALGE$_IA' ESCAPE '$' ;
+rows: 0
+
+SELECT 'abc_def' LIKE 'abc#_def' ESCAPE '#' FROM NATION LIMIT 1;
+rows: (true)
+
+drop table nation;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+}

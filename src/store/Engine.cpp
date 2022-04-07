@@ -7,7 +7,7 @@
 #include <signal.h>
 
 #include "CmdLineArgs.hpp"
-#include "BucketMap_dyn.hpp"
+#include "BucketMap.hpp"
 #include "PtnMap.hpp"
 
 #include "RowOnce.hpp"
@@ -1099,7 +1099,7 @@ void Engine::vOpenTrace(bool bPrompt)
 /*----------------------------------------------------------------------------*/
 void Engine::vPostRecvFns(void)
 {
-  gxaSizeHeap[CN_BUCKETMAP_dyn].m_fpPostRecvFn = (fpPOSTFN*)BucketMap_dyn::vPostRecv;
+  gxaSizeHeap[CN_BUCKETMAP].m_fpPostRecvFn = (fpPOSTFN*)BucketMap::vPostRecv;
   gxaSizeHeap[CN_CRWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CrwBuffer::vPostRecv;
   gxaSizeHeap[CN_CSVBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CsvBuffer::vPostRecv;
   //gxaSizeHeap[CN_EACHROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)EachRowBuffer::vPostRecv;
@@ -1155,19 +1155,16 @@ void Engine::vPrintConstants(void)
   vTrace("  C_LOW_BUFFERS        = %lld\n"_Stz,C_LOW_BUFFERS);
   
   vTrace("  C_MAX_BCD_PRECISION  = %lld\n"_Stz,C_MAX_BCD_PRECISION);
-  vTrace("  C_MAX_BUCKETS_IN_GRID        = %lld\n"_Stz,C_MAX_BUCKETS_IN_GRID);
-
   vTrace("  C_MAX_COLUMNS        = %lld\n"_Stz,C_MAX_COLUMNS);
-  vTrace("  C_MAX_DEFCOLUMNS     = %lld\n"_Stz,C_MAX_DEFCOLUMNS);
-  vTrace("  C_MAX_ENTRY_SIZE     = %lld\n"_Stz,C_MAX_ENTRY_SIZE);
+  vTrace("  C_MAX_ENTRY          = %lld\n"_Stz,C_MAX_ENTRY);
   vTrace("  C_MAX_EXPR           = %lld\n"_Stz,C_MAX_EXPR);
   vTrace("  C_MAX_FLT_PRECISION  = %lld\n"_Stz,C_MAX_FLT_PRECISION);
   vTrace("  C_MAX_FROMVEC        = %lld\n"_Stz,C_MAX_FROMVEC);
-  vTrace("  C_MAX_IDXCOLVEC      = %lld\n"_Stz,C_MAX_IDXCOLVEC);
   vTrace("  C_MAX_INDEXES        = %lld\n"_Stz,C_MAX_INDEXES);
   vTrace("  C_MAX_INDEX_COLUMNS  = %lld\n"_Stz,C_MAX_INDEX_COLUMNS);
   vTrace("  C_MAX_INT_PRECISION  = %lld\n"_Stz,C_MAX_INT_PRECISION);
   vTrace("  C_MAX_KEY            = %lld\n"_Stz,C_MAX_KEY);
+  vTrace("  C_MAX_KEYBUCKETS     = %lld\n"_Stz,C_MAX_KEYBUCKETS);
   vTrace("  C_MAX_LOG_ENTRIES    = %lld\n"_Stz,C_MAX_LOG_ENTRIES);
   vTrace("  C_MAX_LOG_NOTE       = %lld\n"_Stz,C_MAX_LOG_NOTE);
   vTrace("  C_MAX_LVL_LEVELS     = %lld\n"_Stz,C_MAX_LVL_LEVELS);
@@ -1175,9 +1172,9 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_NESTED_WORDS   = %lld\n"_Stz,C_MAX_NESTED_WORDS);
   vTrace("  C_MAX_NODES          = %lld\n"_Stz,C_MAX_NODES);
   vTrace("  C_MAX_OPS            = %lld\n"_Stz,C_MAX_OPS);
-  vTrace("  C_MAX_LGLPTNS     = %lld\n"_Stz,C_MAX_LGLPTNS);
+  vTrace("  C_MAX_LGLPTNS        = %lld\n"_Stz,C_MAX_LGLPTNS);
   vTrace("  C_MAX_PATH           = %lld\n"_Stz,C_MAX_PATH);
-  vTrace("  C_MAX_PAY            = %lld\n"_Stz,C_MAX_PAY);
+  vTrace("  C_MAX_PAYLOAD        = %lld\n"_Stz,C_MAX_PAYLOAD);
   vTrace("  C_MAX_PREDICATEVEC   = %lld\n"_Stz,C_MAX_PREDICATEVEC);
   vTrace("  C_MAX_PTNSPERNODE    = %lld\n"_Stz,C_MAX_PTNSPERNODE);
   vTrace("  C_MAX_RECORD         = %lld\n"_Stz,C_MAX_RECORD);
@@ -1188,7 +1185,6 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_STAGES         = %lld\n"_Stz,C_MAX_STAGES);
   vTrace("  C_MAX_STATEMENT      = %lld\n"_Stz,C_MAX_STATEMENT);
   vTrace("  C_MAX_STREAMS        = %lld\n"_Stz,C_MAX_STREAMS);
-  vTrace("  C_MAX_STREAMDEFS     = %lld\n"_Stz,C_MAX_STREAMDEFS);
   vTrace("  C_MAX_THREADS        = %lld\n"_Stz,C_MAX_THREADS);
   vTrace("  C_MAX_TOKENS         = %lld\n"_Stz,C_MAX_TOKENS);
   vTrace("  C_MAX_VCH            = %lld\n"_Stz,C_MAX_VCH);
@@ -1530,7 +1526,7 @@ void Engine::vStartSystem(void)
 
 
   
-  Node* pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
+  Node* pThisNode = AM::pGrid()->pFindNodeNm(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
 
   if (! pThisNode)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
@@ -1539,7 +1535,7 @@ void Engine::vStartSystem(void)
 
 
   AM::pGrid()->vThisNode(pThisNode); // newcode
-  //vTrace("This node:%lld\n"_Stz, AM::pGrid()->pThisNode()->iNodeNo());
+  //vTrace("This node:%lld\n"_Stz, AM::pGrid()->pThisNode()->iNodeId());
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
@@ -1561,7 +1557,7 @@ void Engine::vStartSystem(void)
       new PtnMap(gpAttachMap->m_pGrid->nKnownNodes(),
                  gpAttachMap->m_xSysArgs.m_nPtnsPerNode);
 
-  gpAttachMap->m_pBucketMap = new BucketMap_dyn(TT_NORMAL);
+  gpAttachMap->m_pBucketMap = new BucketMap(TT_NORMAL);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1660,10 +1656,10 @@ void Engine::vStartSystem(void)
 
 /**
  * @brief Initial creation of a Grid of Nodes
- * @details It uses a hash IP/Port of a node for the NodeNo
+ * @details It uses a hash IP/Port of a node for the NodeId
  *
  * <p>
- * @note We can use Hardware::iReadTscp() for unique NodeNo,
+ * @note We can use Hardware::iReadTscp() for unique NodeId,
  *       But it seems the value is very large and somewhere int system
  *       doesn't like it.
  *
@@ -1674,20 +1670,20 @@ void Engine::vCreateGridOfNodes(void)
 {
 
   s32 szNodeName;
-  i8 iNodeNo =0 ;
+  i8 iNodeId =0 ;
 
   for (i8 i_Node = 0;
        i_Node < gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes;
        i_Node++) {
 
     if (gxCmdLineArgs.m_xSysArgs.m_nDefinedNodes > 1) {
-      iNodeNo = i_Node;
+      iNodeId = i_Node;
       szNodeName = gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName;
     } else {
       CheckSum ChecksumValue((unsigned char *) gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.azChar(),
                            gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.nLength());
 
-      iNodeNo = (ChecksumValue.iGetBernstein() + gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
+      iNodeId = (ChecksumValue.iGetBernstein() + gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
 
       //szNodeName.vSprint("%s:%lld"_Stz, gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress.azChar(),
       //                   gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_iPortNo);
@@ -1695,7 +1691,7 @@ void Engine::vCreateGridOfNodes(void)
    }
 
 
-    Node* pNode = new Node(iNodeNo, //i_Node +  abs((i2)Hardware::iReadTscp()),
+    Node* pNode = new Node(iNodeId, //i_Node +  abs((i2)Hardware::iReadTscp()),
                            szNodeName, //gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sNodeName,
                            AM::SYSARGS::nPtnsPerNode(),
                            gxCmdLineArgs.m_xSysArgs.m_xNodeDefn[i_Node].m_sIPAddress,

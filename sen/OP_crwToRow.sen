@@ -86,9 +86,9 @@
 
   op__topology
 
-  find: crwToRow_StreamDef ZK_D_STREAMDEF  op[].handler!
-  find: crwToRow_CrwBuffer ZK_D_CRWBUFFER  op[].handler!
-  find: crwToRow_EosMarker ZK_M_EOS  op[].handler!
+  find: crwToRow_StreamDef ZK_D_STREAMDEF  [op].handler!
+  find: crwToRow_CrwBuffer ZK_D_CRWBUFFER  [op].handler!
+  find: crwToRow_EosMarker ZK_M_EOS  [op].handler!
 
   op__loop
 

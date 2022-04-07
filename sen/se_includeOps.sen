@@ -6,24 +6,24 @@
 
 assert::stack_0
 
-  "op__errors.sen"          include
-  "op__defHandlers.sen"     include
-  "op__EOCommon.sen"        include
-  "op__CompilerCommon.sen"  include
-  "op__stats.sen"           include
-  "op__common.sen"          include
-  "reg__common.sen"         include
-  "OP_failed.sen"           include
+  "op__errors.sen"              include
+  "op__defHandlers.sen"         include
+  "op__CompilerCommon.sen"      include
+  "op__stats.sen"               include
+  "op__common.sen"              include
+  "reg__common.sen"             include
+  "OP_failed.sen"               include
   
 "a" .verbose
 
+  "OP_adaptorWL.sen"            include
   "OP_addNode.sen"              include
   "OP_adjustPartitions.sen"     include
   "OP_aggreg.sen"               include
   "OP_aggregateSplit.sen"       include
   "OP_analyzeIndex.sen"         include
   "OP_analyzeTable.sen"         include
-  "OP_answer.sen"               include
+  "OP_answerSE.sen"             include
 
 "b" .verbose
 
@@ -34,17 +34,16 @@ assert::stack_0
   "OP_bloat.sen"                include
   "OP_bufferGen.sen"            include
   "OP_bktGet.sen"               include
-  "OP_bktGet0.sen"               include
+  "OP_bktGet0.sen"              include
   "OP_bktRecv.sen"              include
   //"OP_bktSend.sen"            include
 
   "OP_bucketGet.sen"            include
-  "OP_bktSend.sen"           include
+  "OP_bktSend.sen"              include
   "OP_bucketSend1.sen"          include
 
 "c" .verbose
 
-  "OP_call.sen"                 include
   "OP_callProc.sen"             include
   "OP_catFile.sen"              include
   "OP_changeFolder.sen"         include
@@ -53,7 +52,7 @@ assert::stack_0
   "OP_compactIdx.sen"           include
   "OP_compactIndexPtn.sen"      include
   "OP_compilerOpEg.sen"         include
-  "OP_connector.sen"            include
+  "OP_connectSE.sen"            include
   "OP_consume.sen"              include
   "OP_copyRows.sen"             include
   "OP_corrBySquash.sen"         include
@@ -83,13 +82,13 @@ assert::stack_0
   "OP_dumpMetaInfo.sen"         include
   "OP_dumpTable.sen"            include
   "OP_dupCrw.sen"               include
-  "OP_dynamic.sen"              include
 
 "e" .verbose
 
   "OP_eatAll.sen"               include
   "OP_eatSome.sen"              include
   "OP_eachPath.sen"             include
+  "OP_echo.sen"                 include
   "OP_emptyLoop.sen"            include
   "OP_etcTest.sen"              include
   "OP_exemplar.sen"             include
@@ -101,7 +100,6 @@ assert::stack_0
 
   "OP_fetch.sen"                include
   "OP_filter.sen"               include
-  "OP_filterRight.sen"          include
   "OP_flushDemon.sen"           include
 
 "g" .verbose
@@ -114,8 +112,7 @@ assert::stack_0
  
 "h" .verbose
 
-  "OP_hash.sen"                include
-  "OP_hashRight.sen"           include
+  "OP_hash.sen"                 include
 
 "i" .verbose
 
@@ -127,6 +124,7 @@ assert::stack_0
   "OP_inflateDynamic.sen"       include
   "OP_inflateRows.sen"          include
   "OP_insert.sen"               include
+  "OP_invoke.sen"               include
 
 "j" .verbose
   "OP_jobExit.sen"              include
@@ -154,7 +152,6 @@ assert::stack_0
   "OP_listTenants.sen"          include
   "OP_locks.sen"                include
   "OP_locksReset.sen"           include
-  "OP_loopJoin.sen"             include
 
 "m" .verbose
 
@@ -183,7 +180,6 @@ assert::stack_0
 "o" .verbose
 
   "OP_ordAgg.sen"               include
-  "OP_orderBy.sen"              include
   "OP_output.sen"               include
 
 "p" .verbose
@@ -198,10 +194,9 @@ assert::stack_0
   "OP_print.sen"                include
   "OP_progress.sen"             include
   "OP_project.sen"              include
-  "OP_projectRight.sen"         include
   "OP_projValidation.sen"       include
   "OP_ptnMap.sen"               include
-  "OP_puGen.sen"                include
+
   "OP_pulse.sen"                include
   "OP_pwf.sen"                  include
 
@@ -215,21 +210,18 @@ assert::stack_0
   "OP_reap.sen"                 include
   "OP_reapCtl.sen"              include
   "OP_recurring.sen"            include
-  "OP_recv.sen"                 include
+  "OP_recvSE.sen"               include
   "OP_refTmrReset.sen"          include
   "OP_reload.sen"               include
   "OP_removeNode.sen"           include
   "OP_report.sen"               include
-  "OP_rlu.sen"                  include
-  "OP_rluTest.sen"              include
   "OP_rowCount.sen"             include
   "OP_rowToList.sen"            include
 
 "s" .verbose
 
   "OP_scan.sen"                 include
-  "OP_scanRight.sen"            include
-  "OP_send.sen"                 include
+  "OP_sendSE.sen"               include
   "OP_setOpValidate.sen"        include
   "OP_showCluster.sen"          include
   "OP_sigsegv.sen"              include
@@ -238,6 +230,7 @@ assert::stack_0
   "OP_sizeTable.sen"            include
   "OP_sleep.sen"                include
   "OP_smlAgg.sen"               include
+  "OP_sort.sen"                 include
   "OP_space.sen"                include
   "OP_spawnNode.sen"            include
   "OP_sqlInit.sen"              include
@@ -260,16 +253,14 @@ assert::stack_0
 
   "OP_tableSizes.sen"           include
   "OP_throw.sen"                include
-  "OP_toBktCrw.sen"             include
-  "OP_toBktRow.sen"             include
+  "OP_toKeyHshRow.sen"          include
+  "OP_toLglPtnCrw.sen"          include
+  "OP_toLglPtnNst.sen"          include
+  "OP_toLglPtnRow.sen"          include
   "OP_toCsv.sen"                include
   "OP_toDemon.sen"              include
   "OP_toDfload.sen"             include
-  "OP_toNstRow.sen"             include
   "OP_top.sen"                  include
-  "OP_toPtnCrw.sen"             include
-  "OP_toPtnRow.sen"             include
-  "OP_toRow.sen"                include
   "OP_toStatDemon.sen"          include
   "OP_totalCount.sen"           include
   "OP_transliterate.sen"        include
@@ -299,7 +290,6 @@ assert::stack_0
 
 "x" .verbose
 
-
 "y" .verbose
 
   "Parcel.sen"                  include
@@ -307,9 +297,6 @@ assert::stack_0
 
 "z\n" .verbose
 
-
-  "OP_EOAsm.sen"                include
-  "OP_EOAsm2.sen"               include
 
 /*============================================================================*/
 /* end                                                                        */

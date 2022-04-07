@@ -18,8 +18,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Optimiser(void)
 {
+  vAddStep("Optimiser[]"_Stz,              &Step::vOptimiserGet);
   vAddStep("Optimiser[].delete"_Stz ,      &Step::vOptimiserDelete);
   vAddStep("Optimiser[].dissect"_Stz,      &Step::vOptimiserDissect);
+  vAddStep("Optimiser[].get"_Stz,          &Step::vOptimiserGet);
   vAddStep("Optimiser[].new"_Stz,          &Step::vOptimiserNew);
   vAddStep("Optimiser[].optimise"_Stz,     &Step::vOptimiserOptimise);
   vAddStep("Optimiser[].weave"_Stz,        &Step::vOptimiserWeave);
@@ -33,7 +35,7 @@ void Step::vOptimiserDelete(void)
 {
   ENTRY();
     
-  m_p_TaskLogicUnit->m_xpOptimiser.vDeleteComponent();
+  m_pLogicUnit->m_xpOptimiser.vDeleteComponent();
 
   EXIT();
 }
@@ -45,11 +47,26 @@ void Step::vOptimiserDissect(void)
 {
   ENTRY();
     
-  PipelineSpec* pUnOptPlineSpec =
-    _pPipelineSpec(m_pDataStack->pPopPtr(__func__));
+  VertexSpec* pUnOptPlineSpec =
+  _pVertexSpec(m_pDataStack->pPopPtr(__func__));
 
-  m_p_TaskLogicUnit->m_xpOptimiser->vDissect(pUnOptPlineSpec);
+  m_pLogicUnit->m_xpOptimiser->vDissect(pUnOptPlineSpec);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Optimiser[].get -- get optimiser                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vOptimiserGet(void)
+{
+  ENTRY();
+
+  if (m_pLogicUnit->m_xpOptimiser.bIsNotNull())
+    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpOptimiser);
+  else
+    m_pDataStack->vPushPtr(nullptr);
+  
   EXIT();
 }
 
@@ -62,20 +79,20 @@ void Step::vOptimiserNew(void)
     
   Job* pJob = nullptr;
 
-  if (m_pJob_task.bIsNotNull()) {
+  if (m_pJob.bIsNotNull()) {
     //RASSERT(! *m_pOp);
-    pJob = *m_pJob_task;
+    pJob = *m_pJob;
   }
   else
   if (m_pOp.bIsNotNull()) {
-    RASSERT(m_pJob_task.bIsNull());
-    pJob = m_pOp->pPipelineJob();
+    RASSERT(m_pJob.bIsNull());
+    pJob = m_pOp->pJobOfOp();
   }
   else {
     NEVER_REACH;
   }
 
-  m_p_TaskLogicUnit->m_xpOptimiser = new Optimiser(pJob->pJobTags());
+  m_pLogicUnit->m_xpOptimiser = new Optimiser(pJob->pJobTags());
 
   EXIT();
 }
@@ -87,7 +104,7 @@ void Step::vOptimiserOptimise(void)
 {
   ENTRY();
     
-  m_p_TaskLogicUnit->m_xpOptimiser->vOptimise();
+  m_pLogicUnit->m_xpOptimiser->vOptimise();
 
   EXIT();
 }
@@ -99,7 +116,7 @@ void Step::vOptimiserWeave(void)
 {
   ENTRY();
     
-  Stz* szOptPlineStmt = m_p_TaskLogicUnit->m_xpOptimiser->szWeave();
+  Stz* szOptPlineStmt = m_pLogicUnit->m_xpOptimiser->szWeave();
 
   m_pDataStack->vPushStz(szOptPlineStmt);
   

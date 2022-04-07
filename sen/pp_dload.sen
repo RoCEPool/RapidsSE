@@ -5,7 +5,7 @@
 " pp_dload.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* dload procedures                                                            */
+/* dload procedures                                                           */
 /*----------------------------------------------------------------------------*/
 
 : start::defProc_Dload
@@ -39,13 +39,13 @@
 
   stage stageC on all partitions :
 
-    toRow $table       | // (csvBuffer)  => (rowBuffer)
+    toKeyHshRow $table    | // (csvBuffer)  => (rowBuffer)
     // dump rowBuffer 1   |
 
-    toPtnRow           | // (rowBuffer)  => (rowBuffer 'ptn)
+    toLglPtnRow $table    | // (rowBuffer)  => (rowBuffer 'ptn)
     // dump rowBuffer 1   |
 
-    toNstRow           | // (rowBuffer)  => (rowBuffer 'nst)
+    toLglPtnNst           | // (rowBuffer)  => (rowBuffer 'nst)
     //dump rowBuffer 1   |
 
     toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)

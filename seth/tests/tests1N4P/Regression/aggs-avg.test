@@ -1,6 +1,8 @@
 
 // Source file: ../queries/aggs/avg/ravg25.sql
 // Result file: ../queries/aggs/avg/results/avg25.res
+// TODO: ENABLE WHEN JOINS
+/*
 select a.colb1, b.colb9, avg(a.colf1 + b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 10)
@@ -11,7 +13,7 @@ ordered rows:
   ('BLACK', 'GREEN', 0)
   ('black', 'GREEN', 13)
   ('teal', 'GREEN', 4)
-
+*/
 
 // Source file: ../queries/aggs/avg/ravg8.sql
 // Result file: ../queries/aggs/avg/results/avg8.res
@@ -49,6 +51,8 @@ ordered rows:
 
 // Source file: ../queries/aggs/avg/ravg33.sql
 // Result file: ../queries/aggs/avg/results/avg33.res
+// TODO: ENABLE WHEN JOINS
+/*
 select a.colb1, b.colb9, avg(a.cold1 + b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 56.31999999999999)
@@ -59,7 +63,7 @@ ordered rows:
   ('BLACK', 'GREEN', 300.48)
   ('black', 'GREEN', 192.28)
   ('teal', 'GREEN', 248.69)
-
+*/
 
 // Source file: ../queries/aggs/avg/ravg11.sql
 // Result file: ../queries/aggs/avg/results/avg11.res
@@ -97,6 +101,8 @@ ordered rows:
 
 // Source file: ../queries/aggs/avg/ravg18.sql
 // Result file: ../queries/aggs/avg/results/avg18.res
+// TODO: ENABLE WHEN JOINS
+/*
 select a.colb1, b.colb9, avg(a.cold1 - b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', -108.18)
@@ -107,7 +113,7 @@ ordered rows:
   ('BLACK', 'GREEN', 432.28)
   ('black', 'GREEN', 101.94000000000001)
   ('teal', 'GREEN', 260.12)
-
+*/
 
 // Source file: ../queries/aggs/avg/ravg4.sql
 // Result file: ../queries/aggs/avg/results/avg4.res
@@ -125,6 +131,8 @@ rows:
 
 // Source file: ../queries/aggs/avg/ravg24.sql
 // Result file: ../queries/aggs/avg/results/avg24.res
+// TODO: ENABLE WHEN JOINS
+/*
 select a.colb1, b.colb9, avg(a.cole1 + b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', -11.780000000000)
@@ -193,7 +201,7 @@ ordered rows:
   ('BLACK', 'GREEN', 395)
   ('black', 'GREEN', 243)
   ('teal', 'GREEN', 218)
-
+*/
 
 // Source file: ../queries/aggs/avg/ravg12.sql
 // Result file: ../queries/aggs/avg/results/avg12.res
@@ -279,6 +287,8 @@ ordered rows:
 
 // Source file: ../queries/aggs/avg/ravg19.sql
 // Result file: ../queries/aggs/avg/results/avg19.res
+// TODO: ENABLE WHEN JOINS
+/*
 select a.colb1, b.colb9, avg(a.cold1 * b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 13338.1728)
@@ -321,7 +331,7 @@ ordered rows:
   ('BLACK', 'violet', 164486)
   ('BLUE', 'WHITE', 71974)
   ('BLUE', 'peach', 4589)
-
+*/
 
 // Source file: ../queries/aggs/avg/ravg2.sql
 // Result file: ../queries/aggs/avg/results/avg2.res
@@ -366,6 +376,8 @@ ordered rows:
 
 // Source file: ../queries/aggs/avg/ravg30.sql
 // Result file: ../queries/aggs/avg/results/avg30.res
+// TODO: ENABLE WHEN JOINS
+/*
 select a.colb1, b.colb9, avg(a.cola1 + b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 441.62)
@@ -393,6 +405,7 @@ ordered rows:
   ('BLUE', 'WHITE', 565)
   ('BLUE', 'peach', 366)
 
+*/
 
 // Source file: ../queries/aggs/avg/ravg7.sql
 // Result file: ../queries/aggs/avg/results/avg7.res
@@ -430,6 +443,8 @@ ordered rows:
 
 // Source file: ../queries/aggs/avg/ravg23.sql
 // Result file: ../queries/aggs/avg/results/avg23.res
+// TODO: ENABLE WHEN JOINS
+/*
 select a.colb1, b.colb9, avg(a.cole1 - b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 22.460000000000)
@@ -469,6 +484,7 @@ ordered rows:
   ('black', 'GREEN', 285.22)
   ('teal', 'GREEN', -54.15999999999998)
 
+*/
 
 // Source file: ../queries/aggs/avg/ravg5.sql
 // Result file: ../queries/aggs/avg/results/avg5.res
@@ -479,6 +495,8 @@ rows:
 
 // Source file: ../queries/aggs/avg/ravg34.sql
 // Result file: ../queries/aggs/avg/results/avg34.res
+// TODO: ENABLE WHEN JOINS
+/*
 select a.colb1, b.colb9, avg(a.cola1 + b.colg9 + a.cole1 + b.cole9)/ 4  from table1 a join table9 b on pcol1 = pcol9 group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
   ('BLACK', 'GREEN', 156.995000000000)
@@ -578,7 +596,7 @@ ordered rows:
   ('violet', 'grey', 69.290000000000)
   ('violet', 'violet', 82.385000000000)
   ('yellow', 'BLACK', 47.682500000000)
-
+*/
 
 // Source file: ../queries/aggs/avg/ravg6.sql
 // Result file: ../queries/aggs/avg/results/avg6.res
@@ -616,6 +634,8 @@ ordered rows:
 
 // Source file: ../queries/aggs/avg/ravg27.sql
 // Result file: ../queries/aggs/avg/results/avg27.res
+// TODO: ENABLE WHEN JOINS
+/*
 select a.colb1, b.colb9, avg(a.colf1 * b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 16)
@@ -683,3 +703,4 @@ ordered rows:
   ('black', 'GREEN', -10.920000000000)
   ('teal', 'GREEN', 18091.353600000000)
 
+*/

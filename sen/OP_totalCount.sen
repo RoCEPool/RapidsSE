@@ -80,9 +80,9 @@
 
   op__topology
 
-  find: totalCount_EosMarker   ZK_M_EOS   op[].handler!
-  find: totalCount_DataMarker ZK_M_DATAPULSE op[].handler!
-  find: totalCount_countInfo   ZK_I_COUNTINFO   op[].handler!
+  find: totalCount_EosMarker   ZK_M_EOS   [op].handler!
+  find: totalCount_DataMarker ZK_M_DATAPULSE [op].handler!
+  find: totalCount_countInfo   ZK_I_COUNTINFO   [op].handler!
 
   op__loop
 

@@ -269,10 +269,12 @@ begin
     | combined 0
     | next
   stage stageC on all nodes :
-    project 1 " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    project 2 " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    | combined 0
     | next
   stage stageD on origin :
-    project 1 " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    project 2 " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    | combined 0
     | next
   stage stageLast on origin :
     output
@@ -296,14 +298,16 @@ begin
     | next broadcast
   stage stageB on all partitions :
     indexJoin 2 lineitem lineitem_part "bound $I1 $L1 =="
-    | aggreg 2 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
+    | aggreg 2 " groupBy type integer $1 aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  "
     | combined 0
     | next
   stage stageC on all nodes :
-    aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
+    aggreg 2 " groupBy  type integer $1 aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum "
+    | combined 0
     | next
   stage stageD on origin :
-    aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
+    aggreg 2 " groupBy  type integer $1 aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum "
+    | combined 0
     | next
   stage stageLast on origin :
     output
@@ -330,24 +334,25 @@ begin
       | next broadcast
   stage stageB on all partitions :
     indexJoin 2 lineitem lineitem_part "bound $I1 $L1 =="
-    | aggreg 2 " type INTEGER as P_PARTKEY P_PARTKEY ,
+    | aggreg 2 " groupBy type integer P_PARTKEY
+                 aggregates type INTEGER as P_PARTKEY $K1 ,
                  type DECIMAL as SUM_EXT )  J1_L_EXTENDEDPRICE sum  ,
-                 type INTEGER as CNT_EXT )  J1_L_EXTENDEDPRICE count
-                   groupBy type integer P_PARTKEY "
+                 type INTEGER as CNT_EXT )  J1_L_EXTENDEDPRICE count"
     | combined 0
     | next
   stage stageC on all nodes :
-    aggreg 2 " type INTEGER as P_PARTKEY P_PARTKEY ,
+    aggreg 2 " groupBy type integer P_PARTKEY
+               aggregates
+               type INTEGER as P_PARTKEY $K1 ,
                type DECIMAL as SUM_EXT ) SUM_EXT sum  ,
-               type INTEGER as CNT_EXT )  CNT_EXT sum
-                 groupBy type integer P_PARTKEY "
+               type INTEGER as CNT_EXT )  CNT_EXT sum"
     | combined 0
     | next
   stage stageD on origin :
-    aggreg 2 " type integer as P_PARTKEY P_PARTKEY ,
+    aggreg 2 " groupBy type integer P_PARTKEY
+               aggregates type integer as P_PARTKEY $K1 ,
                type DECIMAL as SUM_EXT ) SUM_EXT sum  ,
-               type INTEGER as CNT_EXT )  CNT_EXT sum
-                 groupBy  type integer P_PARTKEY "
+               type INTEGER as CNT_EXT )  CNT_EXT sum"
     | combined 0
     | next
   stage stageLast on origin :

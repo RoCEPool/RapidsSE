@@ -1,0 +1,127 @@
+/*============================================================================*/
+/* OP_toLglPtnRow.sen -- Convert row buff to logical partitioned row buffers  */
+/*============================================================================*/
+
+" OP_toLglPtnRow.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                     INIT */
+/*----------------------------------------------------------------------------*/
+: toLglPtnRow_StartMarker \handler
+
+  <tableNm> op__table discard
+
+  toLglPtnRow[].create
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_DATAPULSE ...                                                BEGIN */
+/*----------------------------------------------------------------------------*/
+: toLglPtnRow_DataMarker \handler
+
+  ZK_M_DATAPULSE_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_ROWBUFFER ...                                                 EACH */
+/*----------------------------------------------------------------------------*/
+: toLglPtnRow_RowBuffer \handler
+
+  // check for low memory
+  attachMap::isLowMemory if
+    EC_LOW_MEMORY op__execErr
+    PipeIn[].delete
+    true
+    exit
+  then
+
+  PipeIn[]\clear to RowBuffer[]
+  Table[] RowBuffer[] toLglPtnRow[].convert
+  RowBuffer[].delete
+
+  ptnmap::ptnsInGrid 0
+  do
+
+    I toLglPtnRow[].completed to RowBuffer[]
+
+    begin
+      RowBuffer[].isNull not
+    while
+      RowBuffer[].pipeOut
+      I toLglPtnRow[].completed to RowBuffer[]
+    repeat
+
+  loop
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_EOS ...                                                       END */
+/*----------------------------------------------------------------------------*/
+: toLglPtnRow_EosMarker \handler
+
+  ptnmap::ptnsInGrid 0
+  do
+
+    I toLglPtnRow[].dangling to RowBuffer[]
+
+    begin
+      RowBuffer[].isNull not
+    while
+      RowBuffer[].pipeOut
+      I toLglPtnRow[].dangling to RowBuffer[]
+    repeat
+
+  loop
+
+  toLglPtnRow[].delete
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* toRow request                                                        SPAWN */
+/*----------------------------------------------------------------------------*/
+: toLglPtnRow_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: toLglPtnRow_EosMarker   ZK_M_EOS         [op].handler!
+  find: toLglPtnRow_DataMarker  ZK_M_DATAPULSE   [op].handler!
+  find: toLglPtnRow_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+  find: toLglPtnRow_StartMarker ZK_M_START       [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: toLglPtnRow :: toLglPtnRow <tableNm> ;
+
+: toLglPtnRow_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "toLglPtnRow_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

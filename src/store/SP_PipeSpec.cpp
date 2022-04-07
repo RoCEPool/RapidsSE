@@ -1,0 +1,135 @@
+/*============================================================================*/
+/* SP_PipeSpec.cpp - PipeSpec sprint helper                                   */
+/*============================================================================*/
+
+#include "BASE.h"
+
+#include "VertexSpec.hpp"
+#include "StageSpec.hpp"
+#include "OpSpec.hpp"
+
+#include "SP_PipeSpec.hpp"
+#include "SP_StageSpec.hpp"
+#include "SP_OpSpec.hpp"
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+SP_PipeSpec::SP_PipeSpec(void)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+  
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+SP_PipeSpec::SP_PipeSpec(VertexSpec* pPipeSpec)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+  
+  vPipeSpec(pPipeSpec);
+  
+  _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+SP_PipeSpec::~SP_PipeSpec(void) noexcept(false)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* sprint pipeline                                                            */
+/*----------------------------------------------------------------------------*/
+void SP_PipeSpec::vPipeSpec(VertexSpec* pPipeSpec)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  vInit();
+  
+  vPipeSpec(pPipeSpec,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint pipeline                                                            */
+/*----------------------------------------------------------------------------*/
+void SP_PipeSpec::vPipeSpec(VertexSpec* pPipeSpec, i8 iDepth)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+   
+  SP_StageSpec spStageSpec;
+  SP_OpSpec spOpSpec;
+
+  vCatf(iDepth,"PipeSpec %s %p\n"_Stz
+        ,pPipeSpec->szVertexNm()
+        ,pPipeSpec
+        );
+  
+  i8 nSubSpecs = pPipeSpec->nItems();
+  for (i8 i_SubSpec = 0; i_SubSpec < nSubSpecs; i_SubSpec++) {
+    VertexSpec* pSubPipeSpec = pPipeSpec->pGet(i_SubSpec);
+    vPipeSpec(pSubPipeSpec,iDepth+1);
+  }
+  
+  for (i8 i_Stage = 0; i_Stage < pPipeSpec->nStageSpecs(); i_Stage++) {
+    StageSpec* pStageSpec = pPipeSpec->pStageSpec(i_Stage);
+    vCatf(iDepth,
+          "  %s"_Stz,spStageSpec.sz(pStageSpec));
+    
+    for (i8 i_Op = 0; i_Op < pStageSpec->nItems(); i_Op++) {
+      OpSpec* pOpSpec = pStageSpec->pOpSpec(i_Op);
+        vCatf(iDepth,
+              "    %s"_Stz,spOpSpec.sz(pOpSpec));
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* return Stz* of result                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* SP_PipeSpec::sz(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint Vch and return Stz* to result                                       */
+/*----------------------------------------------------------------------------*/
+Stz* SP_PipeSpec::sz(VertexSpec* pPipeSpec)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  vPipeSpec(pPipeSpec);
+  
+  return (Stz*) &m_caResult[0];
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* SP_PipeSpec::aFooter(void)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM);
+  
+  return &m_xFooter;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

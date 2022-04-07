@@ -46,7 +46,7 @@
         "File: %v; %v Progress: 100" str.format
       "%\n" str.cat .
     else
-      iPercent Job[].progressSeconds <string> StringA[]
+      iPercent [job].progressSeconds <string> StringA[]
         "File: %v; %v seconds %v Progress: %v" str.format
       "%" str.cat .
     then
@@ -99,9 +99,9 @@
 
   op__topology
 
-  find: Progress_EosMarker     ZK_M_EOS     op[].handler!
-  find: Progress_ProgressUnits ZK_I_PROGRESSUNITS op[].handler!
-  find: Progress_TotalUnits    ZK_I_TOTALUNITS    op[].handler!
+  find: Progress_EosMarker     ZK_M_EOS     [op].handler!
+  find: Progress_ProgressUnits ZK_I_PROGRESSUNITS [op].handler!
+  find: Progress_TotalUnits    ZK_I_TOTALUNITS    [op].handler!
 
   op__loop
 

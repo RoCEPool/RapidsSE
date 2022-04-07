@@ -35,8 +35,8 @@
 
   op__topology
 
-  find: print_promptOut    ZK_I_PROMPTOUT     op[].handler!
-  find: print_startMarker  ZK_M_START   op[].handler!
+  find: print_promptOut    ZK_I_PROMPTOUT     [op].handler!
+  find: print_startMarker  ZK_M_START   [op].handler!
 
   op__loop
 

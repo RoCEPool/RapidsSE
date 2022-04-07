@@ -14,6 +14,7 @@
 #include "Stream.hpp"
 #include "StageSpec.hpp"
 #include "Stage.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
 #include "StageSpec.hpp"
 #include "Node.hpp"
@@ -32,28 +33,23 @@ __aFooterFunction(Stream)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
-               PtnId tPtnId, i8 i_Node)
-: LifeGuard_t<Stream>(this,CN_STREAM)
+Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
+               i8 i_Stream, LglPtn tLglPtn, i8 iNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
-  m_sPipelineNm = pStage->pPipeline()->szPipelineNm();
-  m_sStageNm    = pStage->szStageNm();
+  m_p_StageSpec = p_StageSpec;
+  m_p_Stage     = p_Stage;
 
-  m_pStageSpec = pStageSpec;
-  m_pStage     = pStage;
-  m_pPipeline  = pStage->pPipeline();
-  
-  m_tPtnId     = tPtnId;
-  m_i_Node     = i_Node;
+  m_tLglPtn     = tLglPtn;
+  m_iNodeId    = iNodeId;
   m_i_Stream   = i_Stream;
   
   vSynthesiseName();
 
   _checkInitialised_(CN_STREAM);
   
-  //vCreateOps();
+  vCreateOps();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
 }
@@ -65,15 +61,18 @@ Stream::~Stream(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
-  i8 nOps = this->nItems();
-  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = pGet(i_Op);
-    
-    pOp->vGuardedDelete(CN_OP,&pOp,
-                        CN_STREAM,this,(Stz*)__func__);
-  }
-
-  vClear();
+//  i8 nOps = this->nItems();
+//  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+//    Op* pOp = pGet(i_Op);
+//
+//    delete pOp;
+//  }
+//
+//  vClear();
+  
+  while (Op* pOp = pPop())
+    delete pOp;
+  vCheckEmpty();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,16 +86,16 @@ void Stream::vCreateOps(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
+  for (i8 i_OpSpec = 0; i_OpSpec < m_p_StageSpec->nItems(); i_OpSpec++ ) {
     
-    OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
+    OpSpec* pOpSpec = m_p_StageSpec->pGet(i_OpSpec);
   
-    Op* pOp_New = new Op(pOpSpec,this);
+    Op* pOp_New = new Op(this,pOpSpec);
     vAppend(pOp_New);
 
     if (m_i_Stream > 0) {
       
-      Stream* pStream_0 = m_pStage->pGet(0);
+      Stream* pStream_0 = m_p_Stage->pGet(0);
       Op*     pOp_0_0   = pStream_0->pGet(i_OpSpec);
       
       TagSet* pTagSet_Op_0_0 = pOp_0_0->pOpTags();
@@ -133,53 +132,39 @@ void Stream::vCreateOps(void)
   } // for
 
 }
+
 /*----------------------------------------------------------------------------*/
-//void Stream::vCreateOps(void)
-//{
-//  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-//
-//  for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
-//
-//    OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
-//
-//    Op* pOp = new Op(pOpSpec,this);
-//
-//    pOp->vSetTags();
-//
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // form and parse op command string
-//
-//    sSTMT sOpCmd;
-//    pOp->vToCmdStr(sOpCmd);
-//
-//    //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
-//
-//    TokenVec* pTknVec = new TokenVec;
-//    pTknVec->vTokenise(sOpCmd);
-//
-//    bool b = AM::bParseCmd(pTknVec,pOp->pOpTags());
-//    RASSERT(b);
-//
-//    pTknVec->vSetAllTokens();
-//    delete pTknVec;
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//
-//    vAppend(pOp);
-//  }
-//
-//}
+/* get deck of this stream                                                    */
+/*----------------------------------------------------------------------------*/
+Deck* Stream::pDeck(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
+  
+  Deck* pDeck = m_p_Stage->pDeck();
+  
+  return pDeck;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get partition this stream needs to run on                                  */
 /*----------------------------------------------------------------------------*/
-i8 Stream::i_Node(void)
+i8 Stream::iNodeId(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_i_Node;
+  return m_iNodeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get op 0                                                                   */
+/*----------------------------------------------------------------------------*/
+Op* Stream::pOp0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
+  
+  Op* pOp0 = pGet(0);
+
+  return pOp0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,16 +174,16 @@ Pipeline* Stream::pPipeline(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_pPipeline;
+  return m_p_Stage->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get partition in grid this stream needs to run on                          */
 /*----------------------------------------------------------------------------*/
-PtnId Stream::tPtnId(void)
+LglPtn Stream::tLglPtn(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-  return m_tPtnId;
+  return m_tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,7 +193,25 @@ Stage* Stream::pStage(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_pStage;
+  return m_p_Stage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn tasks for all operators for partitions of given node                 */
+/*----------------------------------------------------------------------------*/
+void Stream::vSetInvoker(Task* pInvoker)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  // for each operator in the stage ptn
+  for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
+    
+    Op* pOp = pGet(i_Op);
+    
+    if (pOp)
+      pOp->vSetInvoker(pInvoker);
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,41 +221,43 @@ StageSpec* Stream::pStageSpec(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_pStageSpec;
+  return m_p_StageSpec;
 }
 
 /*----------------------------------------------------------------------------*/
 /* spawn tasks for all operators for partitions of given node                 */
 /*----------------------------------------------------------------------------*/
-void Stream::vSpawnOpTasks(i8 iSessionId, i8 i_ThisNode)
+void Stream::vSpawnOpTasks(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+
+  i8 iThisNodeId = MY::iNodeId();
   
-  i8 i_OnNode = -1;
+  i8 iOnNodeId = -1;
   
-  if (m_pStageSpec->bNodeTopo()) {
+  if (m_p_StageSpec->bNodeTopo()) {
     
-    if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
-      if (i_ThisNode != pPipeline()->i_Origin()) {
-        i_OnNode = m_i_Node;
+    if (YG_NEXT_NODE == m_p_StageSpec->eStageTopology()) {
+      if (iThisNodeId != pPipeline()->iOriginNodeId()) {
+        iOnNodeId = m_iNodeId;
       }
     }
     else {
-      i_OnNode = m_i_Node;
+      iOnNodeId = m_iNodeId;
     }
     
   }
   else {
-    i_OnNode = AM::pPtnMap()->iWhichNodeNo(m_tPtnId);
+    iOnNodeId = AM::pPtnMap()->iMappedNodeId(m_tLglPtn);
   }
   
-  if (i_OnNode == i_ThisNode) {
+  if (iOnNodeId == iThisNodeId) {
     // for each operator in the stage ptn
     for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
       
       Op* pOp = pGet(i_Op);
       
-      pOp->vSpawnOpTask(iSessionId);
+      pOp->vSpawnTask();
     }
   }
   
@@ -266,16 +271,6 @@ i8 Stream::i_Stream(void)
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
   return m_i_Stream;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stage name for this stream                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Stream::szStageNm(void)
-{
-  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-
-  return m_sStageNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -295,66 +290,18 @@ void Stream::vSynthesiseName(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
  
-  if (m_pStageSpec->bNodeTopo()) {
+  if (m_p_StageSpec->bNodeTopo()) {
     m_sStreamNm.vSprint("_stream_N%lld_of_%s"_Stz,
-                          m_i_Node,
-                          m_pStageSpec->szStageNm());
+                          m_iNodeId,
+                          m_p_StageSpec->szStageNm());
   }
   else {
     m_sStreamNm.vSprint("_streamv_N%lldS%lld_of_%s"_Stz,
-                          m_i_Node,
+                          m_iNodeId,
                           m_i_Stream,
-                          m_pStageSpec->szStageNm());
+                          m_p_StageSpec->szStageNm());
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Stream::vWalk(void* aArg)
-{
-  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-
-  eCN eClassNo = eGetClassNo();
-  
-  vTrace("Walk %8s:%ll03d %p\n"_Stz
-         
-         ,aCN[eClassNo]
-         ,(i8)eClassNo
-         ,this
-         );
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  i8 nOps = this->nItems();
-  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = pGet(i_Op);
-    
-    pOp->vWalk(aArg);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* walk                                                                       */
-/*----------------------------------------------------------------------------*/
-void Stream::vWalkLambda(
-               i8 iDepth,
-               std::function<void(Object* pObject, i8 iDepth)> f_vClosure)
-{
-  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-
-  f_vClosure(this,iDepth);
-
-  // -- -- -- -- -- -- -- -- -- -- -- --
-  
-  i8 nOps = this->nItems();
-  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = pGet(i_Op);
-    
-    pOp->vWalkLambda(iDepth+1,f_vClosure);
-  }
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

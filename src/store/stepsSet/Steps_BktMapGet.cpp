@@ -35,9 +35,9 @@ void Step::vBktMapDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpBktMapGet);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpBktMapGet);
 
-  m_p_TaskLogicUnit->m_xpBktMapGet = nullptr;
+  m_pLogicUnit->m_xpBktMapGet = nullptr;
 
   EXIT();
 }
@@ -51,7 +51,7 @@ void Step::vBktMapGet(void)
 
   //vTrace("C++ gets called: vBktMapGet\n"_Stz);
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpBktMapGet);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpBktMapGet);
 
   EXIT();
 }
@@ -63,9 +63,9 @@ void Step::vBktMapGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpBktMapGet);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpBktMapGet);
 
-  m_p_TaskLogicUnit->m_xpBktMapGet = nullptr;
+  m_pLogicUnit->m_xpBktMapGet = nullptr;
 
   EXIT();
 }
@@ -77,7 +77,7 @@ void Step::vBktMapIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpBktMapGet.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -89,7 +89,7 @@ void Step::vBktMapIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpBktMapGet.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -104,9 +104,9 @@ void Step::vBktMapSet(void)
   //vTrace("C++ gets called: vBktMapSet\n"_Stz);
   BktMapGet* pBktMapGet = _pBktMapGet(m_pDataStack->pPopPtr(__func__));
 
-  //ASSERT(! pBktMapGet || m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull());
+  //ASSERT(! pBktMapGet || m_pLogicUnit->m_xpBktMapGet.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpBktMapGet = pBktMapGet;
+  m_pLogicUnit->m_xpBktMapGet = pBktMapGet;
 
   EXIT();
 }
@@ -140,7 +140,7 @@ void Step::vBktMapGetGetTableName(void)
   ENTRY();
   //vTrace("C++ gets called: vBktMapGetGetTableName\n"_Stz);
 
-  BktMapGet* pBktMapGet = *m_p_TaskLogicUnit->m_xpBktMapGet;
+  BktMapGet* pBktMapGet = *m_pLogicUnit->m_xpBktMapGet;
 
   if (pBktMapGet) {
     s32 sTableNm = pBktMapGet->sTableName();

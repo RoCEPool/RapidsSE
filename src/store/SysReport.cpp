@@ -101,7 +101,7 @@ void SysReport::vSysLocks(Tub* pTub)
                 (
                   C_VARGS_BEGIN
                  
-                 ,pThisNode->iNodeNo()
+                 ,pThisNode->iNodeId()
                  ,pThisNode->szNodeNm()
 
                  ,nSince
@@ -185,7 +185,7 @@ void SysReport::vSysMetrics(Tub* pTub)
                 (
                   C_VARGS_BEGIN
                  
-                 ,pThisNode->iNodeNo()
+                 ,pThisNode->iNodeId()
                  ,pThisNode->szNodeNm()
 
 

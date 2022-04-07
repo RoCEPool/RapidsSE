@@ -10,11 +10,11 @@
 /*----------------------------------------------------------------------------*/
 : dumpGridInfo_action
 
-  grid::dumpInfo locals| pDumpBuffer |
+  [grid].dumpInfo locals| pDumpBuffer |
   //pDumpBuffer .
 
   // convert the string to operand to pipe out
-  pDumpBuffer str.toPromptOut op.pipeout
+  pDumpBuffer str.toPromptOut [op].pipeout
 
   true
 ;

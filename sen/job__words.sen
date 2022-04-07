@@ -66,7 +66,7 @@
 : job.send params| pJob |
 
 
-  //pJob job.name@ grid::thisNodeName@ "(%v) job.send %v" .printf
+  //pJob job.name@ [grid].thisNodeName@ "(%v) job.send %v" .printf
 
   SendNode[] node.sendSocket@ to Socket[]
 
@@ -87,7 +87,7 @@
   params| pJob |
   params| i_Node |
 
-  i_Node grid::findNodeByNo to SendNode[]
+  i_Node [grid].findNodeByNo to SendNode[]
 
   pJob job.send
   
@@ -102,7 +102,7 @@
   params| pJob |
   params| i_Node |
 
-  i_Node grid::findNodeByNo to SendNode[]
+  i_Node [grid].findNodeByNo to SendNode[]
 
   pJob job.send
   
@@ -121,7 +121,7 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: job::acquireDdlLock
+: [ddlLock]:acquireLock
 
   "<ddlLock>" <jobNm> _cmdTags::findTagSet tagSet.getInt
 
@@ -130,8 +130,8 @@
   dup DL_GRAB_WRITE
   == if
     discard
-    // "job::acquireDdlLock - grabbing ddl write lock" .
-    DdlLock[].grabWrite
+    // "[ddlLock]:acquireLock - grabbing ddl write lock" .
+    [ddlLock].grabWrite
     exit
   then
 
@@ -140,8 +140,8 @@
   dup DL_GRAB_READ
   == if
     discard
-    // "job::acquireDdlLock - grabbing ddl read lock" .
-    DdlLock[].grabRead
+    // "[ddlLock]:acquireLock - grabbing ddl read lock" .
+    [ddlLock].grabRead
     exit
   then
 
@@ -153,7 +153,7 @@
 /*----------------------------------------------------------------------------*/
 : job::seeTags
 
-  Job[].tagSet@ tagSet.asStr .
+  [job].tagSet@ tagSet.asStr .
 ;
 
 
@@ -191,7 +191,7 @@
 
   //"std_recoveryWord" .
   
-  //task::exception .
+  //[task].exception .
 
   "op__failureRecovery" FIND execute
   
@@ -204,13 +204,13 @@
 /*----------------------------------------------------------------------------*/
 /* queue given job onto exit demon                                            */
 /*----------------------------------------------------------------------------*/
-: job.queueExitDemon params| pJob |
+: [exitDemon]:queueJob params| pJob |
 
   "__exitDemon" find dup if
   
-    word.object@ locals| pExitDemon |
+    word.object@ locals| pExitDemonJob |
 
-    pJob pExitDemon pipeline.pipeOut
+    pJob pExitDemonJob job.pipeToOp0
 
   else
 
@@ -223,26 +223,46 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* 2pc job exits and is deleted immediately                                   */
+/* retire this job and its task                                               */
 /*----------------------------------------------------------------------------*/
-: _job_2pc_delete_
+: [job]:retire
 
-  DdlLock[].testDrop
+  [ddlLock].testDrop
   
   // check this task has no job reference
-  JobRef[].none
+  ListedJob[].assertNoRef
 
-  JS_DELETABLE Job[].state!
+  JS_DELETABLE [job].state!
 
-  Job[].addRetired
-  Task[].grabLock
-    Job[] job.queueExitDemon
-    TR_RETIRE_THIS_TASK Task[].transition!
+  [job].addRetired
+  [task].grabLock
+    [job] [exitDemon]:queueJob
+    TR_RETIRE_THIS_TASK [task].transition!
 
   
   HAZARD
 ;
 
+/*----------------------------------------------------------------------------*/
+/* run optional <pre_execute> word                                            */
+/*----------------------------------------------------------------------------*/
+: [job]:pre_execute
+
+  "<pre_execute>" [job].tagSet@ tagSet.hasName if
+    "<pre_execute>"
+    [job].tagSet@ tagSet.getStr locals| sPreExe |
+    sPreExe find
+    dup not if
+      sPreExe "Unable to find pre execute word: %v" .printf
+      process::quit
+    then
+      execute
+  else
+    [args].verbose if
+      <pipelineNm> "No pre execute word for pipeline: %v" .printf
+    then
+  then
+;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -321,6 +341,92 @@
     <localLiteOp> = 1
     <jobKind>     = JK_LOCAL
   }
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* distribute current originating job to all nodes as participating job       */
+/*----------------------------------------------------------------------------*/
+: [job]:distributeBegin ( -- )
+
+  // send the job to each connected node in the grid
+
+  0 locals| pNode |
+
+  C_ALL node_I[].new
+
+  begin
+    node_I[].node to pNode
+
+    pNode node.sendSocket@ if
+      pNode node.id [job] job.forward
+    else
+      "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
+    then
+
+    node_I[].next
+    node_i[].more
+  while
+  repeat
+
+  node_I[].delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* entry point                                                                */
+/*----------------------------------------------------------------------------*/
+: job::entryPoint
+
+  //" +++++++++++++++++++++++++++++++++++++++++++++++++++++++ job::entryPoint" .
+  
+  [job].entryPoint@ >interpret
+  
+  HAZARD
+;
+
+
+
+/*----------------------------------------------------------------------------*/
+/* distribute given job to all nodes                                          */
+/*----------------------------------------------------------------------------*/
+: job:broadcast params| pJob |
+
+  0 locals| pNode |
+  
+  C_ALL node_I[].new
+
+  begin
+    node_I[].node to pNode
+
+    pNode node.sendSocket@ if
+      pNode node.id pJob job.forward
+    else
+      "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
+    then
+
+    node_I[].next
+    node_i[].more
+  while
+  repeat
+
+  node_I[].delete
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* retired this [job] + [task]                                                */
+/*----------------------------------------------------------------------------*/
+: [cmd]:retire
+
+  // [job].tagSet@ tagSet.asStr .
+  
+  [job].addRetired
+  
+  JS_SIGNALLED [job].state!
+  [session].signal
+
+  [task].grabLock
+    TR_RETIRE_THIS_TASK [task].transition!
 ;
 
 /*============================================================================*/

@@ -26,11 +26,13 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | hash 0 "type INTEGER $1"
+    | hash 2 "type INTEGER $1"
+    | combined 0
     | stageC hashcast
 
   stage stageC on all partitions :
-    indexJoin 1 lineitem lineitem_idx2 "BOUND $I1 $L1 =="
+    indexJoin 2 lineitem lineitem_idx2 "BOUND $I1 $L1 =="
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -43,6 +45,8 @@ end ;
 rows: 5996
 
 
+// TODO: Uncomment once LEFTOUTER JOINS ARE ENABLED
+/*
 //------------------------------------------------------------------------------
 // LEFT OUTER INDEX JOIN
 // select * from orders left outer join lineitem on lineitem.l_orderkey = orders.o_orderkey;
@@ -56,11 +60,13 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | hash 0 "type INTEGER $1"
+    | hash 2 "type INTEGER $1"
+    | combined 0
     | stageC hashcast
 
   stage stageC on all partitions :
-    indexJoin 1 lineitem lineitem_idx2 "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin 2 lineitem lineitem_idx2 "LEFTOUTER BOUND $I1 $L1 =="
+    | combined 0
     | stageD
 
   stage stageD on origin :
@@ -71,6 +77,7 @@ begin
 end ;
 
 rows: 5997
+*/
 
 MemoryLeaks;
 rows: 0

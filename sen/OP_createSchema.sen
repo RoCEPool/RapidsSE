@@ -64,7 +64,7 @@
 
   op__topology
 
-  find: createSchema_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: createSchema_DataMarker ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

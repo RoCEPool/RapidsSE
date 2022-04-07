@@ -19,7 +19,7 @@ namespace BASE
   
     i8 operator ++(void); // increment (prefix form)
   
-    void vNodeNo(i8 iNodeNo);
+    void vNodeId(i8 iNodeId);
 
     Footer* aFooter(void);
   };

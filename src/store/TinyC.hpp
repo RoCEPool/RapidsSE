@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "eAM.h"
-#include "eEO.h"
 #include "eSR.h"
 
 #include "libtcc.h"
@@ -12,6 +10,12 @@
 namespace STORE
 {
   //----------------------------------------------------------------------------
+
+  struct DynamicSymbol
+  {
+    Stz* m_szSymbolNm;
+    const void *m_afSymbol;
+  };
 
   class TinyC : public Object
   {

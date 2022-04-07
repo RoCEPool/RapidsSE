@@ -7,21 +7,17 @@
 #include "eYS.h"
 #include "eYF.h"
 
-#include "LifeGuard_t.hpp"
-
-namespace STORE { class PipelineSpec; class StageSpec; }
+namespace STORE { class VertexSpec; class StageSpec; }
 
 namespace STORE
 {
   class OpSpec : public Object
-               , public LifeGuard_t<OpSpec>
-
                , public ListItem_t<OpSpec>
   {
   private:
+    StageSpec* m_pStageSpec;  // which stage spec
     s32  m_sOpNm;  // op name
   
-    StageSpec* m_pStageSpec;  // which stage spec
   
     TagSet m_oArgTags;
 
@@ -51,7 +47,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    OpSpec(Stz* szOpNm, StageSpec* pStageSpec);
+    OpSpec(StageSpec* pStageSpec, Stz* szOpNm);
    ~OpSpec(void) noexcept(false);
   
     void vArgTagAdd(Stz* sName, i8 iValue, eTN eToken);
@@ -67,7 +63,7 @@ namespace STORE
     void vNextStageOp(Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     Stz* szOpNm(void);
     void vOpNm(Stz* szOpNm);
-    i8   iOpSpec(void);
+    i8   i_OpSpec(void);
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Stz* szOtherStageNm(void);

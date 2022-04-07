@@ -31,7 +31,7 @@ void Step::vCombinedDelete(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpCombined.vDeleteComponent();
+  m_pLogicUnit->m_xpCombined.vDeleteComponent();
   
   EXIT();
 }
@@ -43,7 +43,7 @@ void Step::vCombinedGet(void)
 {
   ENTRY();
   
-  Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
+  Combined* pCombined = * m_pLogicUnit->m_xpCombined;
   
   m_pDataStack->vPushPtr(pCombined);
 
@@ -57,7 +57,7 @@ void Step::vCombinedExecute(void)
 {
   ENTRY();
   
-  Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
+  Combined* pCombined = * m_pLogicUnit->m_xpCombined;
   Combined_T* aCombinedT = pCombined->aCombinedT();
 
   i8 iTrace = m_pDataStack->iPopInt(__func__);
@@ -105,10 +105,10 @@ void Step::vCombinedExecute(void)
     //EOSMARKER
     // nothing to do
   }
-  //IndexTree* pIndexTree = (IndexTree*)aCombinedT->m_aIndexTreeGby;
+  //IndexTree* pIndexTree = (IndexTree*)aCombinedT->m_aIndexTreePL;
   //pIndexTree->vDump(false);
 
-  aCombinedT->m_eStrInflateRule = SI_STRAREA_OFS;
+  aCombinedT->m_eStrInflateRule = SI_STRAREA_ADR;
   aCombinedT->m_bTrace     = iTrace;
 
   i8 iResult = afFun(aCombinedT);
@@ -116,22 +116,14 @@ void Step::vCombinedExecute(void)
   //pTub->vInCrwBuffer(nullptr);
 
   // EOS marker handler done ?
-  if ( afFun ==  m_p_TaskLogicUnit->m_afFun3 ) {
-    IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreeGby);
+  if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
+    IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreePL);
     delete pIndexTree;
-    aCombinedT->m_aIndexTreeGby = nullptr;
+    aCombinedT->m_aIndexTreePL = nullptr;
 
-    IndexDef* pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefGby);
+    IndexDef* pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefPL);
     delete pIndexDef;
-    aCombinedT->m_aIndexDefGby = nullptr;
-
-    pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreeTOP);
-    delete pIndexTree;
-    aCombinedT->m_aIndexTreeTOP = nullptr;
-
-    pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefTOP);
-    delete pIndexDef;
-    aCombinedT->m_aIndexDefTOP = nullptr;
+    aCombinedT->m_aIndexDefPL = nullptr;
 
   }
 
@@ -150,7 +142,7 @@ void Step::vCombinedExecute(void)
 void Step::vCombinedHashRowsFetch(void) {
   ENTRY();
 
-  Combined *pCombined = *m_p_TaskLogicUnit->m_xpCombined;
+  Combined *pCombined = *m_pLogicUnit->m_xpCombined;
   Combined_T *aCombinedT = pCombined->aCombinedT();
 
   m_pDataStack->vPushInt(aCombinedT->m_iHashRows);
@@ -163,7 +155,7 @@ void Step::vCombinedIndexT(void)
 {
   ENTRY();
 
-  Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
+  Combined* pCombined = * m_pLogicUnit->m_xpCombined;
   Index* pIndex = _pIndex(pCombined->aCombinedT()->m_aIndexT);
 
   m_pDataStack->vPushPtr(pIndex);
@@ -178,7 +170,7 @@ void Step::vCombinedNew(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpCombined = new Combined(m_p_TaskLogicUnit);
+  m_pLogicUnit->m_xpCombined = new Combined(m_pLogicUnit);
   
   EXIT();
 }

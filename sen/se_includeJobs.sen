@@ -7,8 +7,7 @@
 assert::stack_0
 
   "job__words.sen"          include
-
-  "job_abstract.sen"        include
+  "pipeline__words.sen"     include
 
   "job_ended.sen"           include
   "job_end.sen"             include
@@ -18,8 +17,9 @@ assert::stack_0
   "job_execute.sen"         include
   "job_begun.sen"           include
 
-  "job_pipeline.sen"        include
-  "job_pipelineLocal.sen"   include
+  "cmd_pipeline.sen"        include
+  "cmd_pipelineLocal.sen"   include
+  "cmd_pipeSee.sen"         include
 
 /*============================================================================*/
 /* end                                                                        */

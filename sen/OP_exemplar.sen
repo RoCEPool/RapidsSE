@@ -24,7 +24,7 @@
   // set topology, next stage and op
   op__topology
 
-  //find: OP_exemplar_EosMarker ZK_M_EOS op[].handler!
+  //find: OP_exemplar_EosMarker ZK_M_EOS [op].handler!
 
   op__loop
 

@@ -46,7 +46,7 @@
   nullptr to Pipein[]
 
   // grab the ddl lock
-  DdlLock[].grabRead
+  [ddlLock].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check ok to create table
@@ -77,7 +77,7 @@
 
   op__topology
 
-  find: defineTable_StreamDef ZK_D_STREAMDEF op[].handler!
+  find: defineTable_StreamDef ZK_D_STREAMDEF [op].handler!
 
   op__loop
 

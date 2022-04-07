@@ -7,7 +7,7 @@
 
 #include "Dynamo.hpp"
 
-#include "SP_PipelineSpec.hpp"
+#include "SP_PipeSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -27,7 +27,7 @@ Optimiser::Optimiser(TagSet* p_JobTags)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
   m_p_JobTags = p_JobTags;
-  m_pUnOptPipelineSpec = nullptr;
+  m_pUnOptPipeSpec = nullptr;
   
   m_pCardCtl = new CardCtl;
   
@@ -94,16 +94,16 @@ CardCtl* Optimiser::pCardCtl(void)
 /*----------------------------------------------------------------------------*/
 /* dissect                                                                    */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vDissect(PipelineSpec* pUnOptPipelineSpec)
+void Optimiser::vDissect(VertexSpec* pm_pUnOptPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
    
-  m_pUnOptPipelineSpec = pUnOptPipelineSpec;
+  m_pUnOptPipeSpec = pm_pUnOptPipeSpec;
   
-  SP_PipelineSpec spPipelineSpec(m_pUnOptPipelineSpec);
-  vTrace("Optimiser: %s\n"_Stz,spPipelineSpec.sz());
+  SP_PipeSpec spPipeSpec(m_pUnOptPipeSpec);
+  vTrace("Optimiser: %s\n"_Stz,spPipeSpec.sz());
       
-  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipelineSpec);
+  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipeSpec);
   
   m_pBench->vPush(pBoard);
 
@@ -157,18 +157,18 @@ Card_SubSet* Optimiser::pPaste(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set m_pUnOptPipelineSpec                                                   */
+/* set m_pUnOptPipeSpec                                                   */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vPipelineSpec(PipelineSpec* pUnOptPipelineSpec)
+void Optimiser::vPipeSpec(VertexSpec* pm_pUnOptPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
-  if (m_pUnOptPipelineSpec) {
-    //delete m_pUnOptPipelineSpec;                                        LEAK!
-    m_pUnOptPipelineSpec = nullptr;
+  if (m_pUnOptPipeSpec) {
+    //delete m_pUnOptPipeSpec;                                        LEAK!
+    m_pUnOptPipeSpec = nullptr;
   }
   
-  m_pUnOptPipelineSpec = pUnOptPipelineSpec;
+  m_pUnOptPipeSpec = pm_pUnOptPipeSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -197,15 +197,15 @@ void Optimiser::vPushBoard(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* run dynamo                                                                 */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vToPipelineSpec(PipelineSpec* pPipelineSpec)
+void Optimiser::vToPipeSpec(VertexSpec* pPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
  
-  vPipelineSpec(pPipelineSpec);
+  vPipeSpec(pPipeSpec);
   
   delete m_pBench->pPop();
   
-  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipelineSpec);
+  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipeSpec);
 
   m_pBench->vAppend(pBoard);
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* se_include.sen -- main include sequence (called by bootSystem::bootSystem) */
+/* se_include.sen -- main include sequence (called by boot[system].bootSystem) */
 /*============================================================================*/
 
 "se_include.sen" .verbose
@@ -53,6 +53,9 @@ assert::stack_0
 "se_boot 4" .verbose
 
   "se_pipeline.sen"         include
+  "dp_answerSE.sen"         include
+  "dp_connectorSE.sen"      include
+  "dp_receiverSE.sen"       include
 
   "se_includeOps.sen"       include
 
@@ -65,9 +68,7 @@ assert::stack_0
 "se_boot 1" .verbose
 
   "se_demonInstall.sen"     include
-  "dp_answerDemon.sen"      include
   "dp_collectDemon.sen"     include
-  "dp_connDemon.sen"        include
   "dp_eventDemon.sen"       include
   "dp_exitDemon.sen"        include
   "dp_metricsDemon.sen"     include
@@ -77,6 +78,7 @@ assert::stack_0
   "dp_statDemon.sen"        include
   "dp_superDemon.sen"       include
   "dp_wakerDemon.sen"       include
+  
   "se_experiments.sen"      include
   "se_llc.sen"              include
   "se_memoryStats.sen"      include
@@ -151,6 +153,20 @@ cmd::fillOut_allCmds
 
 assert::stack_0
 
+procText:
+procedureLocal subPipeTest3
+begin
+  stage stageA on origin :
+      start
+    | pulse once
+    | echo "subPipeTest_procedure"
+    | debug all
+    | sink
+    | stageA
+end ;
+
+
+
 //............................................................................//
 //                            ...continues below...                           //
 //............................................................................//
@@ -214,12 +230,6 @@ assert::stack_0
 
 "Creating default folders" .verbose
 makeDefaultFolders
-
-"Extracting EO_ fragments" .verbose
-LogicCompiler[].extract
-
-"Extracting AM_ ASM Macros" .verbose
-LogicCompiler[].extractAsm
 
 assert::stack_0
 

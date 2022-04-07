@@ -31,7 +31,7 @@ void Step::vInfoSetRowGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpInfoSetRow);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpInfoSetRow);
   
   EXIT();
 }
@@ -45,7 +45,7 @@ void Step::vInfoSetRowGetIntColumn(void)
   
   i8 i_Col = m_pDataStack->iPopInt(__func__);
   
-  Row* pRow = *m_p_TaskLogicUnit->m_xpInfoSetRow;
+  Row* pRow = *m_pLogicUnit->m_xpInfoSetRow;
   
   m_pDataStack->vPushInt(pRow->iColVal_int(i_Col));
   
@@ -61,7 +61,7 @@ void Step::vInfoSetRowGetVchColumn(void)
   
   i8 i_Col = m_pDataStack->iPopInt(__func__);
   
-  Row* pRow = *m_p_TaskLogicUnit->m_xpInfoSetRow;
+  Row* pRow = *m_pLogicUnit->m_xpInfoSetRow;
   
   s256 sColumn = pRow->szColVal_ofs(i_Col);
   m_pDataStack->vPushStr(sColumn);
@@ -76,7 +76,7 @@ void Step::vInfoSetRowIsNull(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpInfoSetRow.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpInfoSetRow.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -90,7 +90,7 @@ void Step::vInfoSetRowSet(void)
 
   Row* pRow = _pRow(m_pDataStack->pPopPtr(__func__));
 
-  m_p_TaskLogicUnit->m_xpInfoSetRow = _pRow(pRow);
+  m_pLogicUnit->m_xpInfoSetRow = _pRow(pRow);
   
   EXIT();
 }

@@ -120,7 +120,7 @@ void Step::vCrwBufferAppendClose(void)
 {
   ENTRY();
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
   pCrwBuffer->vAppendClose();
 
   EXIT();
@@ -133,9 +133,9 @@ void Step::vCrwBufferDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpCrwBuffer);
 
-  m_p_TaskLogicUnit->m_xpCrwBuffer = nullptr;
+  m_pLogicUnit->m_xpCrwBuffer = nullptr;
 
   EXIT();
 }
@@ -147,7 +147,7 @@ void Step::vCrwBufferGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpCrwBuffer);
 
   EXIT();
 }
@@ -159,9 +159,9 @@ void Step::vCrwBufferGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpCrwBuffer);
 
-  m_p_TaskLogicUnit->m_xpCrwBuffer = nullptr;
+  m_pLogicUnit->m_xpCrwBuffer = nullptr;
 
   EXIT();
 }
@@ -173,7 +173,7 @@ void Step::vCrwBufferFlatten(void)
 {
   ENTRY();
 
-  CrwBuffer* pCrwBuffer = *m_p_TaskLogicUnit->m_xpCrwBuffer;
+  CrwBuffer* pCrwBuffer = *m_pLogicUnit->m_xpCrwBuffer;
 
   Flatten* pFlatten = new Flatten;
   pFlatten->vTestFlatten(pCrwBuffer);
@@ -192,7 +192,7 @@ void Step::vCrwBufferInflate(void)
 
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
-  CrwBuffer* pCrwBuffer = *m_p_TaskLogicUnit->m_xpCrwBuffer;
+  CrwBuffer* pCrwBuffer = *m_pLogicUnit->m_xpCrwBuffer;
   pCrwBuffer->vInflateRows(pStreamDef);
 
   EXIT();
@@ -207,7 +207,7 @@ void Step::vCrwBufferInflateTcc(void)
 
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
-  CrwBuffer* pCrwBuffer = *m_p_TaskLogicUnit->m_xpCrwBuffer;
+  CrwBuffer* pCrwBuffer = *m_pLogicUnit->m_xpCrwBuffer;
 
   pCrwBuffer->vInflateRows(pTub);
 
@@ -221,16 +221,16 @@ void Step::vCrwBufferInsdelIntoTable(void)
 {
   ENTRY();
 
-//  ASSERT(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+//  ASSERT(*m_pLogicUnit->m_xpCrwBuffer);
 //
 //  Op* pOp = m_pJob->m_pOp;
-//  PtnId tPtnId = pOp->tPtnId();
-//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnId);
+//  PtnId tLglPtn = pOp->tLglPtn();
+//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tLglPtn);
 //
-//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
 //  // will delete this buffer
 //  pCrwBuffer->vIsPermanent(false);
-//  m_p_TaskLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
+//  m_pLogicUnit->m_xpTable->vInsdelBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
 //
 
   EXIT();
@@ -243,7 +243,7 @@ void Step::vCrwBufferIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpCrwBuffer.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpCrwBuffer.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -255,7 +255,7 @@ void Step::vCrwBufferIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpCrwBuffer.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpCrwBuffer.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -267,7 +267,7 @@ void Step::vCrwBufferIsReport(void)
 {
   ENTRY();
 
-  Operand* pOperand = *m_p_TaskLogicUnit->m_xpCrwBuffer;
+  Operand* pOperand = *m_pLogicUnit->m_xpCrwBuffer;
   m_pDataStack->vPushInt(pOperand->eTailProcessing() == PT_REPORT ? true : false);
 
   EXIT();
@@ -282,9 +282,9 @@ void Step::vCrwBufferSet(void)
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pOperand || m_p_TaskLogicUnit->m_xpCrwBuffer.bIsNull());
+  ASSERT(! pOperand || m_pLogicUnit->m_xpCrwBuffer.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpCrwBuffer = _pCrwBuffer(pOperand);
+  m_pLogicUnit->m_xpCrwBuffer = _pCrwBuffer(pOperand);
 
   EXIT();
 }
@@ -296,7 +296,7 @@ void Step::vCrwBufferToCsv(void)
 {
   ENTRY();
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
  
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
   
@@ -312,7 +312,7 @@ void Step::vCrwBufferToCsv_OLD(void)
 {
   ENTRY();
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
   m_pDataStack->vPushPtr(pCrwBuffer->pToCsvBuffer());
 
   EXIT();
@@ -325,14 +325,14 @@ void Step::vCrwBufferUpsertIntoTable(void)
 {
   ENTRY();
 
-//  ASSERT(*m_p_TaskLogicUnit->m_xpCrwBuffer);
-//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+//  ASSERT(*m_pLogicUnit->m_xpCrwBuffer);
+//  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
 //
 //  Op* pOp = m_pJob->m_pOp;
-//  PtnId tPtnId = pOp->tPtnId();
-//  i8 i_TablePtn = Table:iPtnNoToTablePtn(tPtnId);
+//  PtnId tLglPtn = pOp->tLglPtn();
+//  i8 i_TablePtn = Table:iPtnNoToTablePtn(tLglPtn);
 //
-//  m_p_TaskLogicUnit->m_xpTable->vUpsertBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
+//  m_pLogicUnit->m_xpTable->vUpsertBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
 //
 //  // will delete this buffer
 //  pCrwBuffer->vIsPermanent(false);
@@ -347,16 +347,16 @@ void Step::vCrwBufferWriteToFile0(void)
 {
   ENTRY();
 
-  ASSERT(*m_p_TaskLogicUnit->m_xpCrwBuffer);
-  ASSERT(*m_p_TaskLogicUnit->m_xpFile0);
-  ASSERT(m_p_TaskLogicUnit->m_xpFile0->bIsOpen());
+  ASSERT(*m_pLogicUnit->m_xpCrwBuffer);
+  ASSERT(*m_pLogicUnit->m_xpFile0);
+  ASSERT(m_pLogicUnit->m_xpFile0->bIsOpen());
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_p_TaskLogicUnit->m_xpCrwBuffer);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
 
   byte* aCrwProper = aAdd<byte*>(pCrwBuffer,sizeof(DataBuffer));
   i8 nSizeCrwProper = sizeof(CrwBuffer) - sizeof(DataBuffer);
 
-  bool b = m_p_TaskLogicUnit->m_xpFile0->bWriteBytes(aCrwProper,nSizeCrwProper);
+  bool b = m_pLogicUnit->m_xpFile0->bWriteBytes(aCrwProper,nSizeCrwProper);
   ASSERT(b);
   UNUSED(b);
 

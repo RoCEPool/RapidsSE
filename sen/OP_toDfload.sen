@@ -54,7 +54,7 @@
 
   op__topology
 
-  find: toDfload_PathInfo ZK_I_PATHINFO op[].handler!
+  find: toDfload_PathInfo ZK_I_PATHINFO [op].handler!
 
   op__loop
 

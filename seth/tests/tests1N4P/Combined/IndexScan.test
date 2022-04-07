@@ -195,24 +195,24 @@ begin
     start | pulse once | stageB
   stage stageB on all partitions :
     indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | aggreg 2 "type INTEGER as PKEY L_PARTKEY ,
+    | aggreg 2 "groupby type INTEGER L_PARTKEY
+                aggregates type INTEGER as PKEY $K1 ,
                 type INTEGER as SUM_KEY ) L_ORDERKEY sum ,
-                type INTEGER as CNT_KEY ) L_ORDERKEY count
-                groupby type INTEGER L_PARTKEY"
+                type INTEGER as CNT_KEY ) L_ORDERKEY count"
     | combined 0
     | next
   stage stageC on all nodes :
-    aggreg 2 "type INTEGER as PKEY PKEY ,
-                type INTEGER as SUM_KEY ) SUM_KEY sum ,
-                type INTEGER as CNT_KEY ) CNT_KEY sum
-                groupby type INTEGER PKEY"
+    aggreg 2 "groupby type INTEGER PKEY
+              aggregates type INTEGER as PKEY $K1 ,
+              type INTEGER as SUM_KEY ) SUM_KEY sum ,
+              type INTEGER as CNT_KEY ) CNT_KEY sum"
     | combined 0
     | next
   stage stageD on origin :
-    aggreg 2 "type INTEGER as PKEY PKEY ,
-               type INTEGER as SUM_KEY ) SUM_KEY sum ,
-               type INTEGER as CNT_KEY ) CNT_KEY sum
-               groupby type INTEGER PKEY"
+    aggreg 2 "groupby type INTEGER PKEY
+              aggregates type INTEGER as PKEY $K1 ,
+              type INTEGER as SUM_KEY ) SUM_KEY sum ,
+              type INTEGER as CNT_KEY ) CNT_KEY sum"
    | combined 0
    | next
   stage stageLast on origin:

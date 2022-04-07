@@ -70,21 +70,19 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
 {
   _static_;
 
-  PtnId tPtnId;
-
   Row* aDstRow;
 
-  i8 iHash = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
-  i8 iBktId = AM::BKTMAP::iHashToBktId(iHash);
-  i8 i_LglPtn = AM::BKTMAP::tBktIdToLglPtnId(iBktId).iAsI8();
+  i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
+  KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
+  LglPtn tLglPtn = AM::BKTMAP::tLglPtnOf(tKeyBkt);
 
   // get row buffer for given partition (new a first buffer if ncessary)
-  RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[i_LglPtn]);
+  RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[tLglPtn]);
   if (! pDstRowBuffer) {
 
     pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
-    pPot->vAddBuffer(i_LglPtn,pDstRowBuffer);
+    pPot->vAddBuffer(tLglPtn,pDstRowBuffer);
   }
 
   // new a row in row buffer (new another row buffer if necessary)
@@ -92,14 +90,13 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
   if (! aDstRow) {
     pDstRowBuffer = new RowBuffer;
     pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
-    pPot->vAddBuffer(i_LglPtn,pDstRowBuffer);
+    pPot->vAddBuffer(tLglPtn,pDstRowBuffer);
     //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
     aDstRow = pDstRowBuffer->pAllotRow();
     ASSERT(aDstRow);
   }
 
-  tPtnId = i_LglPtn;
-  pDstRowBuffer->vPtnId(tPtnId);
+  pDstRowBuffer->vLglPtn(tLglPtn);
 
   *aazStrArea = pDstRowBuffer->azDepositString_begin();
 
@@ -115,11 +112,11 @@ void Pot::vRowStrSize(Pot* pPot, i8 iMixIn, i8 nRowStrSize)
 
   RASSERT(CN_POT == pPot->eGetClassNo());
 
-  i8 iHash = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
-  i8 iBktId = AM::BKTMAP::iHashToBktId(iHash);
-  i8 i_Ptn = AM::BKTMAP::tBktIdToLglPtnId(iBktId).iAsI8();
+  i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
+  KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
+  LglPtn tLglPtn = AM::BKTMAP::tLglPtnOf(tKeyBkt);
 
-  RowBuffer* pRowBuffer = _pRowBuffer(pPot->pBuffer(i_Ptn));
+  RowBuffer* pRowBuffer = _pRowBuffer(pPot->pBuffer(tLglPtn));
 
   pRowBuffer->vTakeHead(nRowStrSize);
 
@@ -213,7 +210,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 
   //ASSERT(0 == i_Ptn);
 
-  PtnId tPtnId;
+  LglPtn tLglPtn;
 
   Row* aDstRow;
 
@@ -247,8 +244,8 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
     ASSERT(aDstRow);
   }
 
-  tPtnId = i_Ptn;
-  pDstRowBuffer->vPtnId(tPtnId);
+  tLglPtn = i_Ptn;
+  pDstRowBuffer->vLglPtn(tLglPtn);
 
   * ppRowBuffer = pDstRowBuffer;
 
@@ -300,9 +297,9 @@ void Pot::vAddBuffer(i8 i_Ptn, DataBuffer* pAddBuffer)
 
   //vTrace("Pot::vAddBuffer %lld\n"_Stz,i_Ptn);
 
-  PtnId tPtnId;
-  tPtnId = i_Ptn;
-  pAddBuffer->vPtnId(tPtnId);
+  LglPtn tLglPtn;
+  tLglPtn = i_Ptn;
+  pAddBuffer->vLglPtn(tLglPtn);
 
   // link the old with this
   pAddBuffer->vNextLinkedBuffer(m_paBufferChain[i_Ptn]);

@@ -74,10 +74,10 @@
 
   op__topology
 
-  find: insDel_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
-  find: insDel_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
-  find: insDel_StartMarker ZK_M_START op[].handler!
-  find: insDel_StreamDef   ZK_D_STREAMDEF   op[].handler!
+  find: insDel_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!
+  find: insDel_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+  find: insDel_StartMarker ZK_M_START [op].handler!
+  find: insDel_StreamDef   ZK_D_STREAMDEF   [op].handler!
 
   op__loop
 

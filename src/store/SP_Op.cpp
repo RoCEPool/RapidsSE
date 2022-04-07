@@ -11,6 +11,7 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
 
@@ -114,7 +115,7 @@ Stz* SP_Op::szLeading(Op* pOp)
   OpSpec* pOpSpec = pOp->pOpSpec();
   StageSpec* pStageSpec = pOpSpec->pStageSpec();
   Stream* pStream = pOp->pStream();
-  Pipeline* pPipeline = pOp->pPipeline_op();
+  Pipeline* pPipeline = pOp->pPipeline();
 
   Word* pEventHandler = pOp->pEventHandler();
   
@@ -126,7 +127,7 @@ Stz* SP_Op::szLeading(Op* pOp)
         
         ,pStageSpec ? pStageSpec->i_StageSpec() : -1
         ,pStream    ? pStream->i_Stream()       : -1
-        ,pOpSpec    ? pOpSpec->iOpSpec()        : -1
+        ,pOpSpec    ? pOpSpec->i_OpSpec()        : -1
 
         ,pOp->szOpNm()
         ,pStageSpec ? pStageSpec->szStageNm()   : C_NO_NAME
@@ -159,7 +160,8 @@ Stz* SP_Op::szPath(Op* pOp)
   
   Stream*   pStream   = pOp->pStream();
   Stage*    pStage    = pStream->pStage();
-  Pipeline* pPipeline = pStage->pPipeline();
+  Pipeline* pPipeline = pStage->pVertex()->pPipeline();
+  
   Job*      pJob      = pPipeline->pPipelineJob();
 
   vInit();

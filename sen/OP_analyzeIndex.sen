@@ -27,7 +27,7 @@
   streamSetTable[] StreamSet[].new
 
   // add a row for each table ptn
-  grid::ptnsPerNode 0
+  [grid].ptnsPerNode 0
   do
     // insert index verify
     I Index[] streamSetTable[] StreamSet[].addAnalyzeIndex  not if

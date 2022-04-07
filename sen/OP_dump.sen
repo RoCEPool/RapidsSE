@@ -69,10 +69,10 @@
 
   op__topology
 
-  find: dump_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
-  find: dump_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: dump_RowBuffer   ZK_D_ROWBUFFER   op[].handler!
-  find: dump_SeekOffsets ZK_I_SEEKOFFSETS op[].handler!
+  find: dump_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!
+  find: dump_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
+  find: dump_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+  find: dump_SeekOffsets ZK_I_SEEKOFFSETS [op].handler!
 
   op__loop
 

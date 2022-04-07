@@ -36,7 +36,7 @@ namespace STORE
   static void vSubmitJob(Session* pSession);
   static void vWaitJob(Session* pSession);
 
-  static void vPushOperand(Session* pSession, Operand* pOperand);
+  //static void vPushOperand(Session* pSession, Operand* pOperand);
  
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);
@@ -58,7 +58,6 @@ namespace STORE
 
   static void vSpawnTask_job(Job* pJob);
   static void vSpawnTask_op(Op* pop);
-  static void vSpawnTaskDedicated_job(Job* pJob);
   static void vSpawnTaskDedicated_op(Op* pOp);
 
   static void vSpawnTask_demonJob(Job* pJob);
@@ -78,12 +77,12 @@ namespace STORE
   static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
 
   
-  
+  static void vSetTaskInxPtr(Task* pTask, Stz* szEntryPt);
+
   private:
   
-  static void vCreateTaskForJob(Job* pJob);
   static void vCreateTaskForOp(Op* pOp);
-  static void vSetTaskInxPtr(Task* pTask, Stz* szEntryPt);
+  static void vResetTaskForJob(Job* pJob);
 
   static void vMutexLock(Session* pSession, Job* pJob);
   static void vMutexUnlock(Session* pSession, Job* pJob);

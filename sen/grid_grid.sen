@@ -29,10 +29,10 @@
 
   sNodeList str.cat
 
-  " --size "              str.cat args.regionSize        >str   str.cat
-  " --regionPrefix "      str.cat args.regionPrefix             str.cat
-  " --partitionsPerNode " str.cat args.partitionsPerNode >str   str.cat
-  " --maxReadyLP "        str.cat args.maxReadyLP        >str   str.cat
+  " --size "              str.cat [args].regionSize        >str   str.cat
+  " --regionPrefix "      str.cat [args].regionPrefix             str.cat
+  " --partitionsPerNode " str.cat [args].partitionsPerNode >str   str.cat
+  " --maxReadyLP "        str.cat [args].maxReadyLP        >str   str.cat
 
   user::name "alka" str.same if
      " --commands /Users/alka/rapidsse/commands" str.cat
@@ -52,13 +52,13 @@
 
 
 
-  args.tracepoint  if " --tracepoint"   str.cat then
-  args.verbose     if " --verbose"      str.cat then
-  args.dontFree    if " --dontFree"     str.cat then
-  args.freeCB      if " --freeSpecific" str.cat then
-  args.metadata    if " --metadata"     str.cat then
-  args.munged      if " --munged"       str.cat then
-  args.heartbeat   if " --heartbeat BROADCAST 8888" str.cat then
+  [args].tracepoint  if " --tracepoint"   str.cat then
+  [args].verbose     if " --verbose"      str.cat then
+  [args].dontFree    if " --dontFree"     str.cat then
+  [args].freeCB      if " --freeSpecific" str.cat then
+  [args].metadata    if " --metadata"     str.cat then
+  [args].munged      if " --munged"       str.cat then
+  [args].heartbeat   if " --heartbeat BROADCAST 8888" str.cat then
 
   " &" str.cat locals| sShellCmd |
  
@@ -124,7 +124,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn all other nodes for a grid on this machine                           */
 /*----------------------------------------------------------------------------*/
-: grid::spawnOtherNodes ( -- )
+: [grid].spawnOtherNodes ( -- )
 
   // test for single node grid
   sysargs::definedNodes 1 == if exit then
@@ -165,7 +165,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn named node being added to a grid on this machine                     */
 /*----------------------------------------------------------------------------*/
-: grid::spawnAddingNode ( sNodeNm -- )
+: [grid].spawnAddingNode ( sNodeNm -- )
 
   params| sNodeNm   |
 
@@ -181,20 +181,20 @@
 /*----------------------------------------------------------------------------*/
 /* set start node                                                             */
 /*----------------------------------------------------------------------------*/
-: grid::setStartNode ( -- )
+: [grid].setStartNode ( -- )
 
   // set this node as the grid start node
-  // grid::thisNode@ grid::StartNode!
+  // [grid].thisNodeId@ [grid].StartNode!
 ;
 
 /*----------------------------------------------------------------------------*/
 /* forget named node (run by all participants)                                */
 /*----------------------------------------------------------------------------*/
-: grid::forgetNode ( "<NodeNm>" )
+: [grid].forgetNode ( "<NodeNm>" )
 
   params| sNodeNm |
 
-  sNodeNm grid::findNodeByName node.forget
+  sNodeNm [grid].findNodeByName node.forget
 ;
 
 

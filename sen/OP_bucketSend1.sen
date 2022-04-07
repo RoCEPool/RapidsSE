@@ -89,14 +89,14 @@
 
   0 locals| rateSecs |
 
-  // "<rateSecs>" Job[].tagSet@ tagSet.hasName if
-  "<rateSecs>" op[].tagSet@ tagSet.hasName if
+  // "<rateSecs>" [job].tagSet@ tagSet.hasName if
+  "<rateSecs>" [op].tagSet@ tagSet.hasName if
     <rateSecs> >int to rateSecs
   then
 
   rateSecs if
     rateSecs "Bucket Pausing for %v secs" str.format .
-    rateSecs task::sleepSsec
+    rateSecs [task].sleepSsec
     "Bucket awake" .
   then
 
@@ -188,7 +188,7 @@
   "bucketSend_req" .
   _lu_initialise_
 
-  "<catalogNm>"  Job[].tagSet@ tagSet.hasName if
+  "<catalogNm>"  [job].tagSet@ tagSet.hasName if
     <schemaNm> <catalogNm>
     "/tenants/boray/catalogs/%v/schemas/%v/tables" str.format
     str.toStrVec Path[].set
@@ -196,11 +196,11 @@
 
   op__topology
 
-  find: bucketSend_CancellingMarker  ZK_M_CANCELLING op[].handler!
-  find: bucketSend_Cleaning          ZK_M_CLEANING   op[].handler!
-  find: bucketSend_DataMarker        ZK_M_DATAPULSE  op[].handler!
-  find: bucketSend_NextBufferMarker  ZK_M_NEXTBUFFER op[].handler!
-  find: bucketSend_StartMarker       ZK_M_START      op[].handler!
+  find: bucketSend_CancellingMarker  ZK_M_CANCELLING [op].handler!
+  find: bucketSend_Cleaning          ZK_M_CLEANING   [op].handler!
+  find: bucketSend_DataMarker        ZK_M_DATAPULSE  [op].handler!
+  find: bucketSend_NextBufferMarker  ZK_M_NEXTBUFFER [op].handler!
+  find: bucketSend_StartMarker       ZK_M_START      [op].handler!
 
   op__loop
 

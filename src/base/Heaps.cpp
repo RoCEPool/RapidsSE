@@ -178,7 +178,7 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pHeaps->m_bNoFree) {
-    if (   CN_PIPELINESPEC == eFreeClass
+    if (   CN_VERTEXSPEC == eFreeClass
         || CN_STAGESPEC    == eFreeClass
         || CN_OPSPEC       == eFreeClass
         )

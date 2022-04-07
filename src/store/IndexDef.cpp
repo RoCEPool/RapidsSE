@@ -111,7 +111,9 @@ IndexDef::IndexDef(IndexDef* pIndexDef)
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     m_xaColumn[i_Col].vCopy(pIndexDef->pGetColumn(i_Col));
 
-    m_iaColSet[i_Col] = pIndexDef->pGetColumn(i_Col)->iColumnNo();
+    //m_iaColSet[i_Col] = pIndexDef->pGetColumn(i_Col)->iColumnNo();
+    i8* paiColSet = pIndexDef->aiaColSet();
+    m_iaColSet[i_Col] = paiColSet[i_Col];
     m_iaColSet[i_Col + 1] = -1;
   }
   
@@ -202,6 +204,16 @@ i8* IndexDef::aiaColSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the colset array                                                       */
+/*----------------------------------------------------------------------------*/
+i8 IndexDef::iGetStreamDefCol(i8 iColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  return m_iaColSet[iColumn];
+}
+
+/*----------------------------------------------------------------------------*/
 /* determine key kind                                                         */
 /*----------------------------------------------------------------------------*/
 void IndexDef::vDetermineKeyKind(void)
@@ -286,6 +298,31 @@ void IndexDef::vListContents(i8 i_Depth)
     Column* pColumn = pGetColumn(i_Col);
 
     pColumn->vListContents(i_Depth+1);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print the stream def                                                       */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  vTrace("IndexDef %s\n"_Stz,m_sIndexNm.szStz());
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    Column* pColumn = pGetColumn(i_Col);
+
+    vTrace("Column %02lld StreamDef_Col %02lld %s type %s length %lld scale %lld datum %s %s %s\n"_Stz,
+           pColumn->iColumnNo(),
+           m_iaColSet[i_Col],
+           pColumn->szColNm(),
+           aCT[pColumn->eColumnType()],
+           pColumn->iColumnLength(),
+           pColumn->iColumnScale(),
+           aDM[pColumn->eDatum()],
+           pColumn->bIsNullable() ? "nullable"_Stz : "not null"_Stz,
+           pColumn->bIsPtnKey() ? "partitionKey"_Stz : ""_Stz);
   }
 }
 
@@ -553,6 +590,22 @@ Column* IndexDef::pFindColumn(Stz* szColumnNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find column with given no matching aizColSet                               */
+/*----------------------------------------------------------------------------*/
+Column* IndexDef::pFindColumn(i8 i_ColSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    if (m_iaColSet[i_Col] == i_ColSet) {
+      Column* pColumn = & m_xaColumn[i_Col];
+      return pColumn;
+    }
+  }
+
+  return nullptr;
+}
+/*----------------------------------------------------------------------------*/
 /* get index column vector                                                    */
 /*----------------------------------------------------------------------------*/
 Column* IndexDef::pGetColumn(i8 iColumn)
@@ -560,6 +613,20 @@ Column* IndexDef::pGetColumn(i8 iColumn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   return &m_xaColumn[iColumn];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get index column no matching aiColSet                                      */
+/*----------------------------------------------------------------------------*/
+i8 IndexDef::iGetColumn(i8 iColSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    if (m_iaColSet[i_Col] == iColSet);
+      return i_Col;
+  }
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -580,6 +647,16 @@ void IndexDef::vResetPointers(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   // no pointers need to be reset
+}
+
+/*----------------------------------------------------------------------------*/
+/* set ColSet No                                                              */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vSetColSet(i8 iColumnNo, i8 iColumnSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  m_iaColSet[iColumnNo] = iColumnSet;
 }
 
 /*----------------------------------------------------------------------------*/

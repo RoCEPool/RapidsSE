@@ -57,19 +57,13 @@ Stz* SP_Job::sz(Job* pJob)
 
         );
   
-  if (pJob->iAcksOriginal()) {
+  if (pJob->pTask()->iAcksRmg_assert_only_()) {
     vCatf(" AcksRmg %lld (out of %lld)"_Stz
-           ,pJob->iAcksRmg_printOnlyValue()
-           ,pJob->iAcksOriginal()
+           ,pJob->pTask()->iAcksRmg_assert_only_()
+           ,pJob->pTask()->iAcksOriginal()
            );
   }
-  
-  //if (pJob->pPipeline_job()) {
-  //  vCatf(" %s"_Stz
-  //        ,pJob->pPipeline_job()->szPipelineNm()
-  //        );
-  //}
-  
+    
   vCats("}"_Stz);
 
   return (Stz*) &m_caResult[0];

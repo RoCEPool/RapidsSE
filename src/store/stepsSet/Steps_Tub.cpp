@@ -32,7 +32,7 @@ void Step::vTubAppend(void)
 {
   ENTRY();
 
-  Tub* pTub = * m_p_TaskLogicUnit->m_xpTub;
+  Tub* pTub = * m_pLogicUnit->m_xpTub;
 
   DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -48,7 +48,7 @@ void Step::vTubCompleted(void)
 {
   ENTRY();
   
-  Tub* pTub = * m_p_TaskLogicUnit->m_xpTub;
+  Tub* pTub = * m_pLogicUnit->m_xpTub;
   
   DataBuffer* pDataBuffer = pTub->pCompletedBuffer();
 
@@ -64,7 +64,7 @@ void Step::vTubDangling(void)
 {
   ENTRY();
   
-  Tub* pTub = * m_p_TaskLogicUnit->m_xpTub;
+  Tub* pTub = * m_pLogicUnit->m_xpTub;
   
   DataBuffer* pDataBuffer = pTub->pDanglingBuffer();
 
@@ -80,7 +80,7 @@ void Step::vTubDelete(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpTub.vDeleteComponent();
+  m_pLogicUnit->m_xpTub.vDeleteComponent();
   
   EXIT();
 }
@@ -92,7 +92,7 @@ void Step::vTubGet(void)
 {
   ENTRY();
   
-  Tub* pTub = * m_p_TaskLogicUnit->m_xpTub;
+  Tub* pTub = * m_pLogicUnit->m_xpTub;
   
   m_pDataStack->vPushPtr(pTub);
 
@@ -106,7 +106,7 @@ void Step::vTubIsEmpty(void)
 {
   ENTRY();
   
-  Tub* pTub = * m_p_TaskLogicUnit->m_xpTub;
+  Tub* pTub = * m_pLogicUnit->m_xpTub;
   
   bool bIsEmpty = pTub->bIsEmpty();
   
@@ -122,7 +122,7 @@ void Step::vTubNew(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpTub = new Tub;
+  m_pLogicUnit->m_xpTub = new Tub;
   
   EXIT();
 }

@@ -273,7 +273,7 @@ void Thread::vLoop_dedicated(void)
   
   m_eThreadState = HS_ASSIGNED;
   
-  while (m_pTask && (m_pTask->pOp() || m_pTask->pJob_task()))
+  while (m_pTask && (m_pTask->pOp() || m_pTask->pJob()))
     m_pTask->vTaskLoop();
 
   Scheduler::vThread_EndThreadLoop(this);
@@ -307,13 +307,9 @@ void Thread::vLoop_general(void)
                 ASSERT(m_pTask);
                 ASSERT(TR_NONE == m_pTask->eTransition());
                 RASSERT(this == m_pTask->pvThread_DONT_DEREF());
-    
-    m_pTask->vAssertSelf(m_pTask);
-    
+        
     m_pTask->vTaskLoop();
     
-    m_pTask->vAssertSelf(m_pTask);
-
                 RASSERT(HS_ASSIGNED == m_eThreadState);
                 ASSERT(m_pTask);
                 ASSERT(TR_NONE != m_pTask->eTransition());
@@ -321,7 +317,6 @@ void Thread::vLoop_general(void)
     Scheduler::vTaskSelf_LoopTransition(m_pTask,this);
 
     if (m_pTask) {
-      m_pTask->vAssertSelf(m_pTask);
       RASSERT(HS_ASSIGNED == m_eThreadState);
       RASSERT(m_pTask);
       continue;

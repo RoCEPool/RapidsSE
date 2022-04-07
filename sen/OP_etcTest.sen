@@ -25,7 +25,7 @@
 
   op__topology
 
-  find: etcTest_DataMarker ZK_M_DATAPULSE op[].handler!
+  find: etcTest_DataMarker ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

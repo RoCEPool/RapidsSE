@@ -1,0 +1,59 @@
+/*============================================================================*/
+/* pp_load.sen -- define load related procedures                              */
+/*============================================================================*/
+
+" pp_load.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* load related procedures                                                    */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Load" .verbose
+
+: start::defProc_Load
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // load
+  
+  STD_PATH_TAG
+  "
+  procedure load
+    parameters $table $file
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | chunk      $file   // read chunks of file => (seekOffset)
+      | rdCsvChunk $file   // (seekOffset) => (csvBuffer)
+      | stageB localrobin
+
+    stage stageB on all partitions on origin :
+        toKeyHshRow $table // (csvBuffer) => (rowBuffer w row+keyHash)
+      | toLglPtnRow $table // (rowBuffer) => (rowBuffer x logical partitions)
+      | toLglPtnNst        // (rowBuffer) => (rowBuffer w normalised strings)
+      | toLglPtnCrw        // (rowBuffer) => (crwBuffer x logical partitions)
+      | stageC hashcast
+
+    stage stageC on all partitions :
+        insert      $table // (crwBuffer) inserted into table
+      | stageD
+
+    stage stageD on origin :
+        progress 'Load'
+      | output
+      | toStatDemon
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

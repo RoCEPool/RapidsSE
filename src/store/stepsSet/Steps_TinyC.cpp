@@ -38,7 +38,7 @@ void Step::vTinyCCompile(void)
 {
   ENTRY();
 
-  TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
   
   Stencil* pStencil;
   pStencil = _pStencil(m_pDataStack->pPopPtr(__func__));
@@ -59,8 +59,8 @@ void Step::vTinyCDelete(void)
 {
   ENTRY();
     
-  TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
-  m_p_TaskLogicUnit->m_xpTinyC = nullptr;
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
+  m_pLogicUnit->m_xpTinyC = nullptr;
   
   pTinyC->vEnd();
 
@@ -76,7 +76,7 @@ void Step::vTinyCFind(void)
 {
   ENTRY();
 
-  TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
 
   s32 sFunNm;
   m_pDataStack->vPopStr(sFunNm,__func__);
@@ -97,7 +97,7 @@ void Step::vTinyCNew(void)
   ENTRY();
   
   TinyC* pTinyC = new TinyC;
-  m_p_TaskLogicUnit->m_xpTinyC = pTinyC;
+  m_pLogicUnit->m_xpTinyC = pTinyC;
 
   pTinyC->vBegin();
 
@@ -113,9 +113,9 @@ void Step::vTinyCRelocate(void)
 {
   ENTRY();
    
-  TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
 
-  if (pTinyC->bRelocate(m_p_TaskLogicUnit->m_aTinyFunc))
+  if (pTinyC->bRelocate(m_pLogicUnit->m_aTinyFunc))
     m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);
@@ -165,9 +165,11 @@ DynamicSymbol xaSymbolSet1[]
   { "aTub_AllotRow"_Stz,               (const void *)Tub::aAllotRow              },
   { "vTub_RowStrSize"_Stz,             (const void *)Tub::vRowStrSize            },
 
-  { "StrLib_iWordFlipBack"_Stz,        (const void *)StrLib::iWordFlipBack       },
+  { "StrLib_iLike2"_Stz,                (const void *)StrLib::iLike2             },
+  { "StrLib_iLike3"_Stz,                (const void *)StrLib::iLike3             },
+  { "StrLib_iWordFlipBack"_Stz,         (const void *)StrLib::iWordFlipBack      },
 
-  { "vNeverReach"_Stz,                 (const void *)vNeverReach                 },
+  { "vNeverReach"_Stz,                  (const void *)vNeverReach                },
 
   { nullptr, nullptr },
 };
@@ -185,7 +187,7 @@ void Step::vTinyCSymbols(void)
 {
   ENTRY();
     
-  TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
 
   i8 iSymbolSet = m_pDataStack->iPopInt(__func__);
 

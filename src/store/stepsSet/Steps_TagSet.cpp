@@ -137,7 +137,7 @@ void Step::vTagSetGet(void)
 {
   ENTRY();
   
-  TagSet* pTagSet = (* m_p_TaskLogicUnit->m_xpTagSet);
+  TagSet* pTagSet = (* m_pLogicUnit->m_xpTagSet);
 
   m_pDataStack->vPushPtr(pTagSet);
 
@@ -300,7 +300,7 @@ void Step::vTagSetSet(void)
   
   TagSet* pTagSet = _pTagSet(m_pDataStack->pPopPtr(__func__));
   
-  m_p_TaskLogicUnit->m_xpTagSet = pTagSet;
+  m_pLogicUnit->m_xpTagSet = pTagSet;
 
   EXIT();
 }

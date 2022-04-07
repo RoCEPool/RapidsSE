@@ -7,7 +7,7 @@
 #include "eYX.h"
 
 #include "OpSpec.hpp"
-#include "PipelineSpec.hpp"
+#include "VertexSpec.hpp"
 #include "StageSpec.hpp"
 
 
@@ -23,15 +23,14 @@ __aFooterFunction(OpSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
+OpSpec::OpSpec(StageSpec* pStageSpec, Stz* szOpNm)
 : Object(CN_OPSPEC)
-, LifeGuard_t<OpSpec>(this,CN_OPSPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_sOpNm         = szOpNm;
+  m_pStageSpec = pStageSpec;
+  m_sOpNm      = szOpNm;
     
-  m_pStageSpec    = pStageSpec;
 
   //m_oArgTags
   //m_oTopologyTags
@@ -205,7 +204,7 @@ void OpSpec::vOpNm(Stz* szOpNm)
 /*----------------------------------------------------------------------------*/
 /* get i_OpSpec                                                               */
 /*----------------------------------------------------------------------------*/
-i8 OpSpec::iOpSpec(void)
+i8 OpSpec::i_OpSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   

@@ -21,6 +21,7 @@ namespace BASE
     
     void  vAdd(ITEM* pItem);
     void  vAppend(ITEM* pItem);
+    void  vCheckEmpty(void);
     void  vClear(void);
     bool  bContains(ITEM* pItem);
     i8    iFind(ITEM* pItem);
@@ -100,6 +101,17 @@ void ListNL_t__<ITEM>::vClear(void)
   m_nItems = 0;
   m_pHead  = nullptr;
   m_pTail  = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check list is empty                                                        */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListNL_t__<ITEM>::vCheckEmpty(void)
+{
+  RASSERT(0 == m_nItems);
+  RASSERT(nullptr == m_pHead);
+  RASSERT(nullptr == m_pTail);
 }
 
 /*----------------------------------------------------------------------------*/

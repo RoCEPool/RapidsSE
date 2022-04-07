@@ -9,6 +9,10 @@
 select 1 from t;
 failure contains: "No such table"
 
+// dummy test to sleep for 5 secs inscase we have no other tests executing
+// Bamboo tests if the run took less than 5 seconds
+sleep 5000;
+
 CLEANUP {
 
   bye;

@@ -27,7 +27,7 @@
   // set topology, next stage and op
   op__topology
 
-  find: OP_EatAll_Xyz op[].handlerAll!
+  find: OP_EatAll_Xyz [op].handlerAll!
 
   op__loop
 

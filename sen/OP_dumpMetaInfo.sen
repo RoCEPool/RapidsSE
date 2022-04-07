@@ -15,7 +15,7 @@
   <TableNm> op__table if
       Table[].dumpmeta locals| pDumpBuffer |
       // convert the string to operand to pipe out
-        pDumpBuffer str.toPromptOut op.pipeout
+        pDumpBuffer str.toPromptOut [op].pipeout
       true
     else
       false

@@ -13,29 +13,23 @@
   "startSystem::startSystem" .verbose
 
   // define the system procedures
-  start::defProc_Create
-  
+  start::defProc_Compact
   start::defProc_Create
   start::defProc_Drop
-  start::defProc_Scan
   start::defProc_Load
-  start::defProc_LoadSys
+  start::defProc_Rload
+  start::defProc_Scan
+  start::defProc_Verify
+  
   start::defProc_NextHB
   start::defProc_Dload
   start::defProc_Export
-  start::defProc_Api
   start::defProc_File
   start::defProc_Elasticity
   start::defProc_getMeta
-  start::defProc_SteadyState
   start::defProc_UnloadReload
   start::defProc_ForgetRebalance
-  start::defProc_Query
-  start::defProc_DynCompiler
-  start::defProc_TPCH
-  start::defProc_TPCH_ASM
-  start::defProc_TPCH_ASM_I
-  start::defProc_Planner
+  start::defProc_Range
   start::defProc_ScanTables
   start::defProc_JobRep
   start::defProc_SqlCompiler
@@ -95,8 +89,6 @@
   start::it_verifyTable
 
 
-  start::defProc_pu
-
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //
   // This point onwards the SE execution model has been fully booted
@@ -107,82 +99,84 @@
   "spawning demons" .verbose
 
   // spawn metrics update
-  "" false metricsDemonPipeline api::spawnDemon not if
+  "" metricsDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   // spawn metrics collect
-  "" false collectDemonPipeline api::spawnDemon not if
+  "" collectDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   // spawn supervisor demon
-  "" false superDemonPipeline api::spawnDemon not if
+  "" superDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   // spawn monitor demon
-  "" false monDemonPipeline api::spawnDemon not if
+  "" monDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   // spawn reaper demon
-  "" false reaperDemonPipeline api::spawnDemon not if
+  "" reaperDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   //spawn report demon
-  "" false exitDemonPipeline api::spawnDemon not if
+  "" exitDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   //spawn recurring demon
-  "" false recurDemonPipeline api::spawnDemon not if
+  "" recurDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   // spawn stat demon
-  "" false statDemonPipeline api::spawnDemon not if
+  "" statDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   // spawn waker demon
-  "" false wakerDemonPipeline api::spawnDemon not if
+  "" wakerDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
   
   // spawn event demon
-  "" false eventDemonPipeline api::spawnDemon not if
+  "" eventDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // spawn answer demon
-  "" false answerDemonPipeline api::spawnDemon not if
+  // spawn answer demon for SE Adaptor
+  "" answerSE_procText api::spawnDemon not if
     "Error Code %v" .printf
   then
 
-  // spawn connector demon
-  "" false connDemonPipeline api::spawnDemon not if
+  // spawn connector demon for SE Adaptor
+  "" connectorSE_procText api::spawnDemon not if
     "Error Code %v" .printf
   then
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //system::started@ not if
-    grid::setStartNode
-    true system::started!
+  "demons spawned" .verbose
+
+  //[system].started@ not if
+    [grid].setStartNode
+    true [system].started!
     ": _Start completed" .boot
   //then
 
   "end startSystem::startSystem" .verbose
 
-  Job[].addRetired
-  Task[].grabLock
-    Job[] job.queueExitDemon
-    TR_RETIRE_THIS_TASK Task[].transition!
+  [job].addRetired
+  [task].grabLock
+    [job] [exitDemon]:queueJob
+    TR_RETIRE_THIS_TASK [task].transition!
 
   HAZARD
 ;

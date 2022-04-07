@@ -19,23 +19,6 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: filter_Cleaning \handler
-
-  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
-
-  // cleanup the pot
-  PotRlu[].cleanup
-
-  //Counter0[] cleanUpAsm
-
-  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
-
-  ZK_M_CLEANING_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                   END */
-/*----------------------------------------------------------------------------*/
 : filter_ComCleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
@@ -70,157 +53,29 @@
   Pipein[]\clear to StreamDefLft[]
 
   // generate selectColumns bitmap from expr and streamDefIn
-  <expr> StreamDefLft[].selectColumns to eError
+  //<expr> StreamDefLft[].selectColumns to eError
+
+  // streamDefLft[] is streamDefOut[]
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  <expr> nullptr StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if
+    StreamDefOut[].delete
     eError op__execErr
     true
     exit
   then
 
-  // evaluate the expression
+  // HACK
+  StreamDefOut[].delete
   StreamDefLft[].duplicate to StreamDefOut[]
 
   StreamDefLft[].duplicate to Pipein[]
 
   // pipe out the streamDef
   Pipein[].pipeout
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_D_CRWBUFFER ...                                                 EACH */
-/*----------------------------------------------------------------------------*/
-: filter_CrwBuffer \handler
-
-  0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] DevLftIxt.crwBuffer!
-  ZK_D_CRWBUFFER Counter0[] executeAsmArgs
-
-  PotRlu[].pipeoutCompletedPtns
-
-  CrwBuffer[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                        END */
-/*----------------------------------------------------------------------------*/
-: filter_EosMarker \handler
-
-  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
-
-  // execute the eosMarker asm handler
-  ZK_M_EOS Counter0[] executeAsmArgs
-
-  // pipeout all PotRlu[]
-  PotRlu[].pipeoutDanglingPtns
-
-  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
-  ZK_M_EOS_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: filter_RowBuffer \handler
-
-  0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  Pipein[]\clear to RowBuffer[]
-  RowBuffer[] DevLftRow.rowBuffer!
-  ZK_D_ROWBUFFER Counter0[] executeAsmArgs
-
-  PotRlu[].pipeoutCompletedPtns
-
-  RowBuffer[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
-/*----------------------------------------------------------------------------*/
-: filter_StartMarker \handler
-
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
-
-  // new the PotRlu[]
-  PotRlu[].new
-
-  // init the logicUnit[]
-  LogicUnit[].init
-
-  ZK_M_START_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
-/*----------------------------------------------------------------------------*/
-: filter_StreamDef \handler
-
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
-
-  EC_NONE locals| eError |
-
-  // HACK FOR LOOPJOIN
-  Counter1[] if
-    Pipein[].pipeOut
-    true
-    exit
-  then
-
-  1 to Counter1[]
-
-  // move pipein[] to StreamDefLft[]
-  Pipein[]\clear to StreamDefLft[]
-
-  // evaluate the expression
-  ExprEval[].new
-  StreamDefLft[].duplicate to StreamDefOut[]
-
-  <expr> StreamDefLft[] nullptr ExprEval[].evaluate to eError
-
-  // check for error
-  eError EC_NONE == not if
-    eError op__asmGenExecErr
-    true
-    exit
-  then
-
-  // generate the asm for the filter
-  ExprEval[] LogicUnit[].genFilter to eError
-  ExprEval[].delete
-
-  // check for error
-  eError EC_NONE == not if
-    eError op__asmGenExecErr
-    true
-    exit
-  then
-
-  // set the streamDef in the DevLftRow
-  StreamDefLft[]\clear DevLftRow.streamDef!
-
-  // create rowPix in potRlu[] from streamDefOut[]
-  false streamDefOut[] PotRlu[].rowPix!
-
-  // pipeout the streamDefOut
-  StreamDefOut[].pipeout
-
-  // create the compiler
-  Counter0[] if
-    LogicCompiler[].new
-    LogicCompiler[].compile
-  then
-
-  // execute the streamDef asm handler
-  ZK_D_STREAMDEF Counter0[] executeAsmArgs
 
   true
 ;
@@ -240,17 +95,9 @@
 
   op__topology
 
-  Counter0[] 2 == if
-    find: filter_ComCleaning   ZK_M_CLEANING      op[].handler!
-    find: filter_ComStreamDef  ZK_D_STREAMDEF     op[].handler!
-  else
-    find: filter_Cleaning      ZK_M_CLEANING      op[].handler!
-    find: filter_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-    find: filter_EosMarker     ZK_M_EOS           op[].handler!
-    find: filter_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-    find: filter_StartMarker   ZK_M_START         op[].handler!
-    find: filter_StreamDef     ZK_D_STREAMDEF     op[].handler!
-  then
+  Counter0[] 2 == assert
+  find: filter_ComCleaning   ZK_M_CLEANING      [op].handler!
+  find: filter_ComStreamDef  ZK_D_STREAMDEF     [op].handler!
 
   op__loop
 

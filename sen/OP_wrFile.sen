@@ -65,10 +65,10 @@
 
   op__topology
 
-  find: wrFile_Cleaning    ZK_M_CLEANING    op[].handler!
-  find: wrFile_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
-  find: wrFile_CsvBuffer   ZK_D_CSVBUFFER   op[].handler!
-  find: wrFile_StartMarker ZK_M_START       op[].handler!
+  find: wrFile_Cleaning    ZK_M_CLEANING    [op].handler!
+  find: wrFile_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!
+  find: wrFile_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
+  find: wrFile_StartMarker ZK_M_START       [op].handler!
 
   op__loop
 

@@ -106,9 +106,9 @@
 
   op__topology
 
-  find: metaScan_Cleaning      ZK_M_CLEANING   op[].handler!
-  find: metaScan_DataMarker    ZK_M_DATAPULSE  op[].handler!
-  find: metaScan_StartMarker   ZK_M_START      op[].handler!
+  find: metaScan_Cleaning      ZK_M_CLEANING   [op].handler!
+  find: metaScan_DataMarker    ZK_M_DATAPULSE  [op].handler!
+  find: metaScan_StartMarker   ZK_M_START      [op].handler!
 
   op__loop
 

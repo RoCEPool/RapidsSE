@@ -79,7 +79,7 @@ void Step::vIndexColumnFetch(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(*m_p_TaskLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
@@ -99,7 +99,7 @@ void Step::vIndexColumnCountFetch(void)
 {
   ENTRY();
   
-  Index* pIndex = *m_p_TaskLogicUnit->m_xpIndex;
+  Index* pIndex = *m_pLogicUnit->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   m_pDataStack->vPushInt(pIndex->nColumns());
@@ -114,7 +114,7 @@ void Step::vIndexCompact(void)
 {
   ENTRY();
   
-  Index* pIndex = *m_p_TaskLogicUnit->m_xpIndex;
+  Index* pIndex = *m_pLogicUnit->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   pIndex->pTable()->vCompactIndex(pIndex);
@@ -129,13 +129,13 @@ void Step::vIndexCompactPtn(void)
 {
   ENTRY();
   
-  Index* pIndex = *m_p_TaskLogicUnit->m_xpIndex;
+  Index* pIndex = *m_pLogicUnit->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iIdxNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
 
-  PtnId tPtn  = m_pOp->tPtnId();
+  LglPtn tPtn  = m_pOp->tLglPtn();
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
   
   IndexTree *pIndexTree = pTable->pTablePtn(i_TablePtn)->pIndexTree(iIdxNo);
@@ -168,7 +168,7 @@ void Step::vIndexDeleteNext(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the index and the table
-  Index* pIndex = _pIndex(*m_p_TaskLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -181,12 +181,12 @@ void Step::vIndexDeleteNext(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the lower and upper entries
-  Ent* aLowerEntry = m_p_TaskLogicUnit->m_aLowerEntry;
-  Ent* aUpperEntry = m_p_TaskLogicUnit->m_aUpperEntry;
+  Ent* aLowerEntry = m_pLogicUnit->m_aLowerEntry;
+  Ent* aUpperEntry = m_pLogicUnit->m_aUpperEntry;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the entry buffer to start from
-  EntBuffer* pEntBuffer = m_p_TaskLogicUnit->m_pEntBufferOuter;
+  EntBuffer* pEntBuffer = m_pLogicUnit->m_pEntBufferOuter;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get IndexTree
@@ -273,8 +273,8 @@ void Step::vIndexDeleteNext(void)
   
 L_Exit:
   vTrace("------------------------------------------\n"_Stz);
-  m_p_TaskLogicUnit->m_pEntBufferOuter = pEntBuffer;
-  m_p_TaskLogicUnit->m_aLowerEntry = aLowerEntry;
+  m_pLogicUnit->m_pEntBufferOuter = pEntBuffer;
+  m_pLogicUnit->m_aLowerEntry = aLowerEntry;
   
   EXIT();
 }
@@ -286,7 +286,7 @@ void Step::vIndexDump(void)
 {
   ENTRY();
   
-  Index* pIndex = *m_p_TaskLogicUnit->m_xpIndex;
+  Index* pIndex = *m_pLogicUnit->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iIndexNo = pIndex->iIndexNo();
@@ -340,14 +340,14 @@ void Step::vIndexIndexTree(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(*m_p_TaskLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
 
   // -- -- -- -- -- -- -- -- -- -- -- --
   
   Table* pTable = pIndex->pTable();
 
-  PtnId tPtnId;
-#ifdef WITH_REPLICATED_PTN
+  LglPtn tLglPtn;
+
   StreamDef* pStreamDef = pTable->pStreamDef();
   if (pStreamDef->bReplicated()) {
     
@@ -355,16 +355,13 @@ void Step::vIndexIndexTree(void)
     Stream* pStream0 = pStage->pGet(0);
     Op*     pOp0_0   = pStream0->pGet(0);
     
-    tPtnId = pOp0_0->tPtnId();
+    tLglPtn = pOp0_0->tLglPtn();
   }
   else {
-    tPtnId = m_pOp->tPtnId();
+    tLglPtn = m_pOp->tLglPtn();
   }
-#else
-  tPtn = m_pOp->tPtnId();
-#endif
   
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
   i8 iIndexNo = pIndex->iIndexNo();
@@ -385,7 +382,7 @@ void Step::vIndexIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpIndex.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpIndex.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -452,7 +449,7 @@ void Step::vIndexIsValidUniqueIndex(void)
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   // get the table partition stream def
-  ShardDef* pShardDef = pIndex->pTable()->pShardDef();
+  PtnDef* pPtnDef = pIndex->pTable()->pPtnDef();
   
   // get the index column vector
   IndexDef* pIndexDef = pIndex->pIndexDef();
@@ -462,11 +459,11 @@ void Step::vIndexIsValidUniqueIndex(void)
   //! ALKA: shouldn't this be checking for the leading edge of the index to include
   //!  all partition keys ???
   // a unique index must include all columns in the partitioning keys
-  i8 nPtnColumns = pShardDef->nColumns();
+  i8 nPtnColumns = pPtnDef->nColumns();
   bool bFound = false;
   for (i8 i = 0; i < nPtnColumns; i++)
   {
-    Column* pColumn = pShardDef->pGetColumn(i);
+    Column* pColumn = pPtnDef->pGetColumn(i);
     
     for (i8 i_Item = 0; i_Item < nIdxColumns; i_Item++) {
       if (pIndexDef->pGetColumn(i_Item)->iColumnNo() == pColumn->iColumnNo()) {
@@ -495,7 +492,7 @@ void Step::vIndexNameFetch(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the index
-  Index* pIndex = _pIndex(*m_p_TaskLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   s32 sIndexName = pIndex->szIndexNm();
@@ -548,7 +545,7 @@ void Step::vIndexSize(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(*m_p_TaskLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());
@@ -601,7 +598,7 @@ void Step::vIndexVerify(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(*m_p_TaskLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   bool bVerified = pIndex->pTable()->bVerifyIndex(pIndex);
@@ -617,12 +614,12 @@ void Step::vIndexVerifyPtn(void)
 {
   ENTRY();
   
-  Index* pIndex = *m_p_TaskLogicUnit->m_xpIndex;
+  Index* pIndex = *m_pLogicUnit->m_xpIndex;
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iIdxNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
-  PtnId tPtn  = m_pOp->tPtnId();
+  LglPtn tPtn  = m_pOp->tLglPtn();
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
 
   IndexTree *pIndexTree = pTable->pTablePtn(i_TablePtn)->pIndexTree(iIdxNo);
@@ -647,7 +644,7 @@ void Step::vIndexVisualize(void)
 {
   ENTRY();
   
-  Index* pIndex = _pIndex(*m_p_TaskLogicUnit->m_xpIndex);
+  Index* pIndex = _pIndex(*m_pLogicUnit->m_xpIndex);
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   i8 iIndexNo = pIndex->iIndexNo();
@@ -670,7 +667,7 @@ void Step::vIndexGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpIndex);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpIndex);
   
   EXIT();
 }
@@ -682,7 +679,7 @@ void Step::vIndexSet(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

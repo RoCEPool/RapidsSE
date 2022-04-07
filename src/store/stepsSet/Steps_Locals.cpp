@@ -256,6 +256,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Deck[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Deck[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("ErrorCode[]"_Stz)) {
     pCurrentWord->vEncodeCall("ErrorCode[].set"_Stz);
     EXIT();
@@ -263,6 +268,11 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("ExprEval[]"_Stz)) {
     pCurrentWord->vEncodeCall("ExprEval[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("ErrorMarker[]"_Stz)) {
+    pCurrentWord->vEncodeCall("ErrorMarker[].set"_Stz);
     EXIT();
     return;
   }
@@ -336,11 +346,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("ErrorMarker[]"_Stz)) {
-    pCurrentWord->vEncodeCall("ErrorMarker[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("Marker[]"_Stz)) {
     pCurrentWord->vEncodeCall("Marker[].set"_Stz);
     EXIT();
@@ -391,8 +396,13 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("PipelineSpec[]"_Stz)) {
-    pCurrentWord->vEncodeCall("PipelineSpec[].set"_Stz);
+  else if (szTerm->bSame("Pipeline[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Pipeline[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("PipeSpec[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PipeSpec[].set"_Stz);
     EXIT();
     return;
   }
@@ -431,8 +441,13 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("ShardDef[]"_Stz)) {
-    pCurrentWord->vEncodeCall("ShardDef[].set"_Stz);
+  else if (szTerm->bSame("Sends[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Sends[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("PtnDef[]"_Stz)) {
+    pCurrentWord->vEncodeCall("PtnDef[].set"_Stz);
     EXIT();
     return;
   }
@@ -441,8 +456,18 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Stage[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Stage[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Stats[]"_Stz)) {
     pCurrentWord->vEncodeCall("Stats[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Stream[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Stream[].set"_Stz);
     EXIT();
     return;
   }
@@ -476,6 +501,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("SubPipe[]"_Stz)) {
+    pCurrentWord->vEncodeCall("SubPipe[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Subset[]"_Stz)) {
     pCurrentWord->vEncodeCall("Subset[].set"_Stz);
     EXIT();
@@ -501,11 +531,13 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Sends[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Sends[].set"_Stz);
+  
+  else if (szTerm->bSame("Vertex[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Vertex[].set"_Stz);
     EXIT();
     return;
   }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get name of local from token stream
@@ -536,9 +568,9 @@ void Step::vLocalsTo(void)
     pCurrentWord->vEncodePush(xMetaNm);
     pCurrentWord->vEncodeCall("swap"_Stz);
 
-    //pCurrentWord->vEncodeCall("Job[]"_Stz);
+    //pCurrentWord->vEncodeCall("[job]"_Stz);
     //pCurrentWord->vEncodeCall("job.session@"_Stz);
-    pCurrentWord->vEncodeCall("session::tagSet@"_Stz);
+    pCurrentWord->vEncodeCall("[session].tagSet@"_Stz);
     
     pCurrentWord->vEncodeCall("tagSet.upsertStr"_Stz);
     

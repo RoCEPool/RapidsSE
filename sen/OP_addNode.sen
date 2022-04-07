@@ -29,7 +29,7 @@
 
   op__topology
 
-  find: addNode_DataPulse ZK_M_DATAPULSE op[].handler!
+  find: addNode_DataPulse ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

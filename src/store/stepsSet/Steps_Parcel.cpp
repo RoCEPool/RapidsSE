@@ -16,7 +16,9 @@
 #include "OpSpec.hpp"
 #include "Stage.hpp"
 #include "StageSpec.hpp"
+#include "Deck.hpp"
 #include "Stream.hpp"
+#include "Vertex.hpp"
 #include "PtnMap.hpp"
 #include "Node.hpp"
 #include "Pipeline.hpp"
@@ -80,18 +82,15 @@ void Step::vParcelDemonOut(void)
   //vTrace("vParcelPipeOut to demon %s\n"_Stz,szDemonNm);
   
   Word* pWord = AM::WORD::pFind(szDemonNm);
-  Job* pPipelineJob = _pJob(pWord->pObject());
+  Job* pJob = _pJob(pWord->pObject());
   
   
   // !!!!!!!!!!!!!!
   // move to AM
   
-  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
+  Pipeline* pPipeline = pJob->pPipeline();
+  Op*       pOp0      = pPipeline->pOp0();
   
-  Stage*    pStage0   = pPipeline->pGet(0);
-  Stream*   pStand0   = pStage0->pGet(0);
-  Op*       pOp0      = pStand0->pGet(0);
-
   pOp0->vAppendLeft(pOperand,this);
   // !!!!!!!!!!!!!!
 
@@ -159,7 +158,7 @@ void Step::vParcelLabel(void)
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-  pParcel->vLabel(pOp->pPipelineJob()->tJobId().iAsI8(),
+  pParcel->vLabel(pOp->pJobOfOp()->tJobId().iAsI8(),
                   pOpSpec->eParcelForward());
 
   EXIT();
@@ -189,17 +188,14 @@ void Step::vParcelPipeOut(void)
     vTrace("vParcelPipeOut to demon %s\n"_Stz,szDemonNm);
     
     Word* pWord = AM::WORD::pFind(szDemonNm);
-    Job* pPipelineJob = _pJob(pWord->pObject());
+    Job* pJob = _pJob(pWord->pObject());
     
     
     // !!!!!!!!!!!!!!
     // move to AM
     
-    Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-    
-    Stage*    pStage0   = pPipeline->pGet(0);
-    Stream*   pStand0   = pStage0->pGet(0);
-    Op*       pOp0      = pStand0->pGet(0);
+    Pipeline* pPipeline = pJob->pPipeline();
+    Op*       pOp0      = pPipeline->pOp0();
 
     pOp0->vAppendLeft(pOperand,this);
     // !!!!!!!!!!!!!!
@@ -214,11 +210,12 @@ void Step::vParcelPipeOut(void)
   // find the pipeline
   JobId tPipelineJob;
   tPipelineJob = pParcel->iPipelineJobId();
-  Job* pPipelineJob = AM::pJob_FindParticipating(tPipelineJob);
-  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
+  Job* pJob = AM::pJob_FindParticipating(tPipelineJob);
+  Pipeline* pPipeline = pJob->pPipeline();
   
   // get the next stage the send is supposed to send to
-  Stage* pDstStage = pPipeline->pGet(pParcel->iDstStage());
+  Vertex* pVertex = pPipeline->pVertexRoot();
+  Stage* pDstStage = pVertex->pDeck()->pGet(pParcel->iDstStage());
   i8 nStreamPtns = pDstStage->nItems();
 
   // get the op to forward to depending on the cross topology
@@ -230,7 +227,7 @@ void Step::vParcelPipeOut(void)
 
   if (pParcel->bOriginalParcel()) {
     //vTrace("bOriginalParcel\n"_Stz);
-    pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
+    pDstOp = pDstStage->pPipeDstOp(pParcel->tDstLglPtn(),0);
       
     // CAUTION NOTE: Cannot access LU of OP after piping out operand
     // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
@@ -255,7 +252,7 @@ void Step::vParcelPipeOut(void)
   eRV eRecvInstructions = pParcel->eRecvInstructions();
   //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
 
-  i8 iCurNode = MY::pNode()->iNodeNo();
+  i8 iCurNodeId = MY::pNode()->iNodeId();
   i8 nCopies = AM::PTNMAP::nPtnsPerNode();
 
   eCN eClass = pOperand->eGetClassNo();
@@ -289,9 +286,9 @@ void Step::vParcelPipeOut(void)
         Stream* pDstStream = pDstStage->pGet(i_Stream);
 
         if (YG_ALL_PARTITIONS == eStageTopology) {
-          PtnId tDstPtn = pDstStream->tPtnId();
-          i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
-          if (iDstNde != iCurNode)
+          LglPtn tDstLglPtn = pDstStream->tLglPtn();
+          i8 iDstNodeId = AM::pPtnMap()->iMappedNodeId(tDstLglPtn);
+          if (iDstNodeId != iCurNodeId)
             continue;
         }
         else {
@@ -299,9 +296,9 @@ void Step::vParcelPipeOut(void)
         }
         
         Op* pDstOp = pDstStream->pGet(0);
-//        vTrace("pDstOp %p pDstStream->tPtnId() %lld\n"_Stz
+//        vTrace("pDstOp %p pDstStream->tLglPtn() %lld\n"_Stz
 //               ,pDstOp
-//               ,pDstStream->tPtnId().iAsI8());
+//               ,pDstStream->tLglPtn().iAsI8());
 
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
               
@@ -354,10 +351,10 @@ void Step::vParcelPipeOut(void)
         for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
           Stream* pDstStream = pDstStage->pGet(i_Stream);
 
-          PtnId tDstPtn = pDstStream->tPtnId();
-          vTrace("i_Stream %lld tDstPtn %lld\n"_Stz
+          LglPtn tDstLglPtn = pDstStream->tLglPtn();
+          vTrace("i_Stream %lld tDstLglPtn %lld\n"_Stz
                  ,i_Stream
-                 ,tDstPtn.iAsI8());
+                 ,tDstLglPtn.iAsI8());
         }
         
       }
@@ -370,13 +367,13 @@ void Step::vParcelPipeOut(void)
     //  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~
 
     case RV_ONE_PTN:
-//        vTrace("RV_ONE_PTN  tDstPtn %lld\n"_Stz
-//               ,pParcel->tDstPtn().iAsI8());
+//        vTrace("RV_ONE_PTN  tDstLglPtn %lld\n"_Stz
+//               ,pParcel->tDstLglPtn().iAsI8());
       if (pOperand) {
-        pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
+        pDstOp = pDstStage->pPipeDstOp(pParcel->tDstLglPtn(),0);
         if (!pDstOp) {
-          vTrace("huh? RV_ONE_PTN tDstPtn %lld\n"_Stz
-                 ,pParcel->tDstPtn().iAsI8());
+          vTrace("huh? RV_ONE_PTN tDstLglPtn %lld\n"_Stz
+                 ,pParcel->tDstLglPtn().iAsI8());
         }
         pDstOp->vAppendLeft(pOperand, this);
         nQueued++;
@@ -393,54 +390,6 @@ void Step::vParcelPipeOut(void)
     
   EXIT();
 }
-/*----------------------------------------------------------------------------*/
-//void Step::vParcelPipeOut(void)
-//{
-//  ENTRY();
-//
-//  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
-//
-//  // find the pipeline participant job
-//  JobId tPipelineJob;
-//  tPipelineJob = pParcel->iPipelineJobId();
-//  Job* pPipelineJob = AM::pJob_FindParticipating(tPipelineJob);
-//
-//  // get the next stage the send is supposed to send to
-//  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
-//
-//  Stage* pStage = pPipeline->pGet(pParcel->iDstStage());
-//
-//  // Where do we see the BktNo, so that we can map it to the partition?
-//
-//  // get the op to forward to depending on the cross topology
-//  Op* pDstOp = pStage->pPipeDstOp(pParcel->eIntraTopology(),
-//                                  pParcel->tDstPtn(),
-//                                  0);
-//
-//  //! ALKA come back to this. May need a m_bAppendLeft in pParcel
-//
-//
-//  // CAUTION NOTE: Cannot access LU of OP after piping out operand
-//  // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
-//  LogicUnit* pLogicUnit = pDstOp->pOpLogicUnit();
-//  if (pLogicUnit && pLogicUnit->m_xpStats.bIsNotNull()) {
-//    pLogicUnit->m_xpStats->m_nParcelRecvs++;
-//    pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
-//  }
-//
-//  if (pParcel->bOriginalParcel()) {
-//    pDstOp->vAppendLeft(pParcel,this);
-//  }
-//  else {
-//    Operand* pOperand = pParcel->pGetOperand();
-//    if (pOperand) {
-//      pDstOp->vAppendLeft(pOperand, this);
-//      delete pParcel;
-//    }
-//  }
-//
-//  EXIT();
-//}
 
 /*----------------------------------------------------------------------------*/
 /* parcel.sendOut -- send parcel out to next operator in pipeline             */
@@ -474,9 +423,9 @@ void Step::vParcelDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpParcel);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpParcel);
 
-  m_p_TaskLogicUnit->m_xpParcel = nullptr;
+  m_pLogicUnit->m_xpParcel = nullptr;
 
   EXIT();
 }
@@ -488,7 +437,7 @@ void Step::vParcelGet(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpParcel);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpParcel);
 
   EXIT();
 }
@@ -500,9 +449,9 @@ void Step::vParcelGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpParcel);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpParcel);
 
-  m_p_TaskLogicUnit->m_xpParcel = nullptr;
+  m_pLogicUnit->m_xpParcel = nullptr;
 
   EXIT();
 }
@@ -514,7 +463,7 @@ void Step::vParcelIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpParcel.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpParcel.bIsNull() ? 0 : 1);
 
   EXIT();
 }
@@ -526,7 +475,7 @@ void Step::vParcelIsNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpParcel.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpParcel.bIsNull() ? 1 : 0);
 
   EXIT();
 }
@@ -540,9 +489,9 @@ void Step::vParcelSet(void)
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pParcel || m_p_TaskLogicUnit->m_xpParcel.bIsNull());
+  ASSERT(! pParcel || m_pLogicUnit->m_xpParcel.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpParcel = _pParcel(pParcel);
+  m_pLogicUnit->m_xpParcel = _pParcel(pParcel);
 
   EXIT();
 }

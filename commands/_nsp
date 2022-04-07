@@ -1,0 +1,89 @@
+/*============================================================================*/
+/* _nsp - nested subpipe testing                                              */
+/*============================================================================*/
+
+trackMemory;
+
+pipeSee
+pipeline nestedPipeTest
+begin
+
+  pipeline sp10
+  begin
+  
+    pipeline sp11
+    begin
+      stage stageA on origin :
+        start
+      | pulse once
+      | echo "sp11"
+      | debug all
+      | sink
+      | stageA
+    end
+
+    stage stageA on origin :
+      start
+    | pulse once
+    | echo "sp10"
+    | debug all
+    | sink
+    | stageA
+  end
+
+  stage stageA on origin :
+      start
+    | pulse once
+    | echo "pipeTest"
+    | debug all
+    | sink
+    | stageA
+end ;
+
+memoryLeaks;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*
+pipeline pipeTest
+begin
+  stage stageA on origin :
+      start
+    | pulse once
+    | echo "pipeTest"
+    | debug all
+    | sink
+    | stageA
+end ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+pipeline subPipeTest
+begin
+
+  pipeline sp01
+  begin
+    stage stageA on origin :
+      start
+    | pulse once
+    | echo "sp01"
+    | debug all
+    | sink
+    | stageA
+  end
+
+  stage stageA on origin :
+      start
+    | pulse once
+    | echo "pipeTest"
+    | debug all
+    | sink
+    | stageA
+end ;
+*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

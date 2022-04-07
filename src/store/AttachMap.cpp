@@ -20,7 +20,7 @@
 
 #include "Resources.hpp" //?
 #include "TagConstants.h"
-#include "BucketMap_dyn.hpp"
+#include "BucketMap.hpp"
 
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
@@ -84,6 +84,9 @@ AttachMap::AttachMap(bool bNoFree)
 
   m_pBucketMap      = nullptr;
   m_pDicRoot        = new Dic("__dicRoot"_Stz);
+#ifdef WITH_HASHMAP
+  m_pHashMap        = new HashMap();
+#endif
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;
   m_pNumbering      = new Numbering;

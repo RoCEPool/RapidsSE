@@ -60,9 +60,9 @@
 
   op__topology
 
-  find: upsertOp_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
-  find: upsertOp_StartMarker ZK_M_START op[].handler!
-  find: upsertOp_StreamDef   ZK_D_STREAMDEF   op[].handler!
+  find: upsertOp_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!
+  find: upsertOp_StartMarker ZK_M_START [op].handler!
+  find: upsertOp_StreamDef   ZK_D_STREAMDEF   [op].handler!
 
   op__loop
 

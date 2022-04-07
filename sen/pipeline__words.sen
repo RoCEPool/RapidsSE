@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* pipeline__words.sen -- Pipeline related words                              */
+/*============================================================================*/
+
+" pipeline__words.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* invoke the stages pointed to by the Deck[] register                        */
+/*----------------------------------------------------------------------------*/
+: deck:invoke
+
+  Deck[] assert
+  
+  [task].isLocked? not assert
+  
+  Deck[].opsExeOnNode@ locals| nAcks |
+
+  [task].grabLock
+    [task].isLocked? assert
+
+    nAcks if
+      [task] Deck[].setInvoker
+    
+      nAcks [task].acksRemaining!
+
+      Deck[].enqueueInvoke? if
+
+        Marker[].newInvokeMarker
+        Marker[]\clear Deck[].op0@ op.enqueOperand
+      then
+      [task].wait
+    else
+      [task].dropLock
+    then
+    
+  [task].isLocked? not assert
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

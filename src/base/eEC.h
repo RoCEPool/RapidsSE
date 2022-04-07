@@ -28,6 +28,8 @@ enum eEC : u2 // error codes
   EC_AMBIGUOUS_TABLE,               // SQL Compiler Subsystem
   EC_AMBIGUOUS_USING_COLUMN,        // SQL Compiler Subsystem
   EC_AMBIGUOUS_WITH_QUERY,          // SQL Compiler Subsystem
+  EC_ARITHMETIC_OVERFLOW,           // Arithmetic operation Overflow
+  EC_ARITHMETIC_UNDERFLOW,          // Arithmetic operation Underflow
   EC_ASSERT,
 
   /* _B_ */
@@ -136,12 +138,14 @@ enum eEC : u2 // error codes
   EC_INVALID_PARAMETERS,
   EC_INVALID_PARTITION,
   EC_INVALID_PARTITION_KEY,
+  EC_INVALID_PIPELINE,
   EC_INVALID_INDEX_COLUMN,
   EC_INVALID_INSTANCE,
   EC_INVALID_SIZE,
   EC_INVALID_SYNTAX,
   EC_INVALID_TIME_FORMAT,           // SQL Compiler Subsystem
   EC_INVALID_TIMESTAMP_FORMAT,      // SQL Compiler Subsystem
+  EC_INVALID_TYPES,
   EC_INVALID_VALUE,
 
   /* _J_ */
@@ -208,6 +212,7 @@ enum eEC : u2 // error codes
   EC_RESPONSE_PENDING,
 
   /* _S_ */
+  EC_SCALE_OUT_OF_BOUNDS,
   EC_SCHEMA_EXISTS,
   EC_SE_NOT_RUNNING,
   EC_SE_UNKNOWN_ERROR,
@@ -276,6 +281,8 @@ static Stz* aEC[] =
   /* EC_AMBIGUOUS_TABLE               */ (Stz*)"EC_AMBIGUOUS_TABLE",          // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_USING_COLUMN        */ (Stz*)"EC_AMBIGUOUS_USING_COLUMN",   // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_WITH_QUERY          */ (Stz*)"EC_AMBIGUOUS_WITH_QUERY",     // SQL Compiler Subsystem
+  /* EC_ARITHMETIC_OVERFLOW,          */ (Stz*)"EC_ARITHMETIC_OVERFLOW",      // Arithmetic operation Overflow
+  /* EC_ARITHMETIC_UNDERFLOW,         */ (Stz*)"EC_ARITHMETIC_UNDERFLOW",     // Arithmetic operation Underflow
   /* EC_ASSERT                        */ (Stz*)"assert",
 
   /* _B_ */
@@ -384,12 +391,14 @@ static Stz* aEC[] =
   /* EC_INVALID_PARAMETERS            */ (Stz*)"invalid parameters",
   /* EC_INVALID_PARTITION             */ (Stz*)"invalid partition",
   /* EC_INVALID_PARTITION_KEY         */ (Stz*)"invalid partition key",
+  /* EC_INVALID_PIPELINE              */ (Stz*)"invalid pipeline",
   /* EC_INVALID_INDEX_COLUMN          */ (Stz*)"invalid index column",
   /* EC_INVALID_INSTANCE              */ (Stz*)"invalid instance",
   /* EC_INVALID_SIZE                  */ (Stz*)"invalid size",
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"EC_INVALID_TIME_FORMAT",        // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"EC_INVALID_TIMESTAMP_FORMAT",   // SQL Compiler Subsystem
+  /* EC_INVALID_TYPES                 */ (Stz*)"EC_INVALID_TYPES",
   /* EC_INVALID_VALUE                 */ (Stz*)"invalid value",
 
   /* _J_ */
@@ -455,6 +464,7 @@ static Stz* aEC[] =
   /* EC_RESPONSE_PENDING              */ (Stz*)"response pending",
 
   /* _S_ */
+  /* EC_SCALE_OUT_OF_BOUNDS           */ (Stz*)"scale out of bounds",
   /* EC_SCHEMA_EXISTS                 */ (Stz*)"schema exists",
   /* EC_SE_NOT_RUNNING                */ (Stz*)"SE is not running",
   /* EC_SE_UNKNOWN_ERROR              */ (Stz*)"SE unknown error",
@@ -517,6 +527,8 @@ static Stz* aEC2[] = // error code
   /* EC_AMBIGUOUS_TABLE               */ (Stz*)"EC_AMBIGUOUS_TABLE",                // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_USING_COLUMN        */ (Stz*)"EC_AMBIGUOUS_USING_COLUMN",         // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_WITH_QUERY          */ (Stz*)"EC_AMBIGUOUS_WITH_QUERY",           // SQL Compiler Subsystem
+  /* EC_ARITHMETIC_OVERFLOW,          */ (Stz*)"EC_ARITHMETIC_OVERFLOW",            // Arithmetic operation Overflow
+  /* EC_ARITHMETIC_UNDERFLOW,         */ (Stz*)"EC_ARITHMETIC_UNDERFLOW",           // Arithmetic operation Underflow
   /* EC_ASSERT                        */ (Stz*)"EC_ASSERT",
 
   /* _B_ */
@@ -626,12 +638,14 @@ static Stz* aEC2[] = // error code
   /* EC_INVALID_PARAMETERS            */ (Stz*)"EC_INVALID_PARAMETERS",
   /* EC_INVALID_PARTITION             */ (Stz*)"EC_INVALID_PARTITION",
   /* EC_INVALID_PARTITION_KEY         */ (Stz*)"EC_INVALID_PARTITION_KEY",
+  /* EC_INVALID_PIPELINE              */ (Stz*)"EC_INVALID_PIPELINE",
   /* EC_INVALID_INDEX_COLUMN          */ (Stz*)"EC_INVALID_INDEX_COLUMN",
   /* EC_INVALID_INSTANCE              */ (Stz*)"EC_INVALID_INSTANCE",
   /* EC_INVALID_SIZE                  */ (Stz*)"EC_INVALID_SIZE",
   /* EC_INVALID_SYNTAX                */ (Stz*)"EC_INVALID_SYNTAX",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"EC_INVALID_TIME_FORMAT",            // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"EC_INVALID_TIMESTAMP_FORMAT",       // SQL Compiler Subsystem
+  /* EC_INVALID_TYPES                 */ (Stz*)"EC_INVALID_TYPES",
   /* EC_INVALID_VALUE                 */ (Stz*)"EC_INVALID_VALUE",
 
   /* _J_ */
@@ -697,6 +711,7 @@ static Stz* aEC2[] = // error code
   /* EC_RESPONSE_PENDING              */ (Stz*)"EC_RESPONSE_PENDING",
 
   /* _S_ */
+  /* EC_SCALE_OUT_OF_BOUNDS           */ (Stz*)"EC_SCALE_OUT_OF_BOUNDS",
   /* EC_SCHEMA_EXISTS                 */ (Stz*)"EC_SCHEMA_EXISTS",
   /* EC_SE_NOT_RUNNING                */ (Stz*)"EC_SE_NOT_RUNNING",
   /* EC_SE_UNKNOWN_ERROR              */ (Stz*)"EC_SE_UNKNOWN_ERROR",
@@ -769,6 +784,8 @@ static Stz* aErrorMsg[] =
   /* EC_AMBIGUOUS_TABLE               */ (Stz*)"Ambiguous table name",      // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_USING_COLUMN        */ (Stz*)"Ambiguous column name in USING clause",     // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_WITH_QUERY          */ (Stz*)"Ambiguous alias name in WITH clause",       // SQL Compiler Subsystem
+  /* EC_ARITHMETIC_OVERFLOW           */ (Stz*)"Arithmetic overflow",     // Arithmetic overflow
+  /* EC_ARITHMETIC_UNDERFLOW          */ (Stz*)"Arithmetic underflow",    // Arithmetic overflow
   /* EC_ASSERT                        */ (Stz*)"assert",
 
   /* _B_ */
@@ -878,12 +895,14 @@ static Stz* aErrorMsg[] =
   /* EC_INVALID_PARAMETERS            */ (Stz*)"invalid parameters",
   /* EC_INVALID_PARTITION             */ (Stz*)"invalid partition",
   /* EC_INVALID_PARTITION_KEY         */ (Stz*)"invalid partition key",
+  /* EC_INVALID_PIPELINE              */ (Stz*)"invalid pipeline",
   /* EC_INVALID_INDEX_COLUMN          */ (Stz*)"invalid index column",
   /* EC_INVALID_INSTANCE              */ (Stz*)"invalid instance",
   /* EC_INVALID_SIZE                  */ (Stz*)"invalid size",
   /* EC_INVALID_SYNTAX                */ (Stz*)"invalid syntax",
   /* EC_INVALID_TIME_FORMAT           */ (Stz*)"Invalid time string format. Must be of the form: 'hh:mm:ss'",    // SQL Compiler Subsystem
   /* EC_INVALID_TIMESTAMP_FORMAT      */ (Stz*)"Invalid timestamp string format. Must be of the form: 'YYYY-MM-DD hh:mm:ss[.ffffff]'",    // SQL Compiler Subsystem
+  /* EC_INVALID_TYPES                 */ (Stz*)"Invalid types in arithmetic/logical/relational operation",
   /* EC_INVALID_VALUE                 */ (Stz*)"invalid value",
 
   /* _J_ */
@@ -948,6 +967,7 @@ static Stz* aErrorMsg[] =
   /* EC_RESPONSE_PENDING              */ (Stz*)"response pending",
 
   /* _S_ */
+  /* EC_SCALE_OUT_OF_BOUNDS           */ (Stz*)"scale out of bounds",
   /* EC_SCHEMA_EXISTS                 */ (Stz*)"schema exists",
   /* EC_SE_NOT_RUNNING                */ (Stz*)"SE is not running",
   /* EC_SE_UNKNOWN_ERROR              */ (Stz*)"SE unknown error",

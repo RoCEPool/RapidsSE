@@ -37,6 +37,7 @@
     to errorCode
     CrwBuffer[].delete
     Tub[].deleteAllBuffers
+    Pot[].deleteAllBuffers
     errorCode op__execErr
     true
     exit
@@ -96,7 +97,17 @@
 
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
-  nullptr Fun3[] 0 Combined[].execute assert
+ 0 locals| errorCode |
+
+  nullptr Fun3[] 0 Combined[].execute not if
+    to errorCode
+    Pipein[].delete
+    Tub[].deleteAllBuffers
+    Pot[].deleteAllBuffers
+    errorCode op__execErr
+    true
+    exit
+  then
 
   // pipeout all Tub[]/Pot[]
   Combined[].hashRows@ if
@@ -117,10 +128,20 @@
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
+  0 locals| errorCode |
+
   //"OP_Combined got a ROWBUFFER" .
 
   Pipein[]\clear to RowBuffer[]
-  RowBuffer[] Fun1[] 0 Combined[].execute assert
+  RowBuffer[] Fun1[] 0 Combined[].execute not if
+    to errorCode
+    RowBuffer[].delete
+    Tub[].deleteAllBuffers
+    Pot[].deleteAllBuffers
+    errorCode op__execErr
+    true
+    exit
+  then
 
   RowBuffer[].delete
 
@@ -242,17 +263,17 @@
 
   op__topology
 
-  find: combined_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: combined_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-  find: combined_DataPulse     ZK_M_DATAPULSE     op[].handler!
-  find: combined_EosMarker     ZK_M_EOS           op[].handler!
-  find: combined_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-  find: combined_StartMarker   ZK_M_START         op[].handler!
+  find: combined_Cleaning      ZK_M_CLEANING      [op].handler!
+  find: combined_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
+  find: combined_DataPulse     ZK_M_DATAPULSE     [op].handler!
+  find: combined_EosMarker     ZK_M_EOS           [op].handler!
+  find: combined_RowBuffer     ZK_D_ROWBUFFER     [op].handler!
+  find: combined_StartMarker   ZK_M_START         [op].handler!
 
   Counter0[] 0 == if
-    find: combined_StreamDefGen  ZK_D_STREAMDEF     op[].handler!
+    find: combined_StreamDefGen  ZK_D_STREAMDEF     [op].handler!
   else
-    find: combined_StreamDef     ZK_D_STREAMDEF     op[].handler!
+    find: combined_StreamDef     ZK_D_STREAMDEF     [op].handler!
   then
 
   op__loop

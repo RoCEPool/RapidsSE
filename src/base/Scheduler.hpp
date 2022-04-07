@@ -20,6 +20,7 @@ namespace BASE
   
   private:
     static void vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread);
+    static void vTaskSelf_HibernateThisTask(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_RetireThisTask(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread);
@@ -33,6 +34,8 @@ namespace BASE
     static bool bTaskCross_AckWaiting(Task* pTaskWaiting,
                                       Task* pAckingTask,
                                       i8& nAcksWereRemaining);
+    static void vTaskCross_ResumeWaiting(Task* pTaskWaiting,
+                                         Task* pResumingTask);
     static void vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
                                              Task* pActiviating2PcTask);
     static void vTaskCross_TriggerBiding(Task* pTaskBiding,

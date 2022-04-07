@@ -21,10 +21,10 @@
     begin
        Counter1[]  Counter0[] >
     while
-      Task[].yield 
+      [task].yield 
       assert::stack_0
       "sleeping for 1 min" .
-      60 task::sleepSsec
+      60 [task].sleepSsec
       Counter0[] 1 + to Counter0[]
     repeat
     0 to  Counter0[]
@@ -37,7 +37,6 @@
 
   Marker[].newEndMarker
   Marker[].pipeOut
-  //Op.ackPipelineJob
 
   true
 ;
@@ -52,11 +51,11 @@
   0 locals| hours   |
   0 locals| minutes |
 
-  "<minutes>" Job[].tagSet@ tagSet.hasName if
+  "<minutes>" [job].tagSet@ tagSet.hasName if
     <minutes> >int to minutes
   then
 
-  "<hours>" Job[].tagSet@ tagSet.hasName if
+  "<hours>" [job].tagSet@ tagSet.hasName if
     <hours> >int to hours
   then
 
@@ -74,7 +73,7 @@
 
   op__topology
 
-  find: pulse_Trigger   ZK_M_TRIGGER   op[].handler!
+  find: pulse_Trigger   ZK_M_TRIGGER   [op].handler!
 
   op__loop
 

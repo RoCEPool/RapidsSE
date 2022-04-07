@@ -21,11 +21,11 @@
   <TableNm> bucketGet::getBucketOfTable locals| pBucket |
 
   // pipeout the pBucket instance
-  pBucket op.pipeout
+  pBucket [op].pipeout
 
   true
   //stk
-  //task::breakpoint set breakpoint back into C++ code, where the task loop is
+  //[task].breakpoint set breakpoint back into C++ code, where the task loop is
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@
   "bucketGet_req" .
   op__topology
 
-  find: bucketGet_getBucket   ZK_M_DATAPULSE   op[].handler!
+  find: bucketGet_getBucket   ZK_M_DATAPULSE   [op].handler!
 
   op__loop
 

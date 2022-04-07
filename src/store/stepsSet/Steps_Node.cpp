@@ -30,7 +30,7 @@ void Step::vAddSteps_Node(void)
   vAddStep("node.IP"_Stz,          &Step::vNodeIP);
   vAddStep("node.isThisNode"_Stz,  &Step::vNodeIsThisNode);
   vAddStep("node.name"_Stz,        &Step::vNodeName);
-  vAddStep("node.no"_Stz,          &Step::vNodeNo);
+  vAddStep("node.id"_Stz,          &Step::vNodeId);
   vAddStep("node.partitions"_Stz,  &Step::vNodePartitions);
   vAddStep("node.port"_Stz,        &Step::vNodePort);
   vAddStep("node.recvSocket!"_Stz, &Step::vNodeRecvSocketStore);
@@ -109,7 +109,7 @@ void Step::vNodeGet(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpNode);
+  m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpNode);
 
   EXIT();
 }
@@ -167,16 +167,16 @@ void Step::vNodeName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* node.no -- push node number of node (of a grid)                            */
+/* node.id -- push node id of of given node                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeNo(void)
+void Step::vNodeId(void)
 {
   ENTRY();
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_NODE == pNode->eGetClassNo());
   
-  m_pDataStack->vPushInt(pNode->iNodeNo());
+  m_pDataStack->vPushInt(pNode->iNodeId());
   
   EXIT();
 }
@@ -282,9 +282,9 @@ void Step::vNodeSet(void)
   
   Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(! pNode || m_p_TaskLogicUnit->m_xpNode.bIsNull());
+  ASSERT(! pNode || m_pLogicUnit->m_xpNode.bIsNull());
   
-  m_p_TaskLogicUnit->m_xpNode = pNode;
+  m_pLogicUnit->m_xpNode = pNode;
 
   EXIT();
 }

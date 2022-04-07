@@ -70,8 +70,8 @@
 
   op__topology
 
-  find: OP_statWrite_LockStats ZK_I_LOCKSTATS op[].handler!
-  find: OP_statWrite_Profile   ZK_D_PROFILE   op[].handler!
+  find: OP_statWrite_LockStats ZK_I_LOCKSTATS [op].handler!
+  find: OP_statWrite_Profile   ZK_D_PROFILE   [op].handler!
 
   op__loop
 

@@ -1,5 +1,6 @@
 """"Runs a job"""
 import datetime
+import time
 import os
 import shutil
 import string
@@ -26,6 +27,15 @@ C_EC2_BOOT_TIMEOUT_SEC = 300
 # The format specification for the artifact directory for each test result
 C_TEST_ARTIFACT_FMT = "tid{:02d}-{}"
 
+C_JUNIT_FILENAME = "results.xml"
+
+# The supportFiles directory, containing supporting scripts for tests
+C_SUPPORT_FILES_SRC = pathlib.Path("configs/tests/supportFiles").resolve()
+assert C_SUPPORT_FILES_SRC.exists(), f"Cannot find the supportFiles folder: {str(C_SUPPORT_FILES_SRC)}"
+
+# How long to sleep between checking the completion of tests / SE status
+C_TEST_MONITORING_SLEEP_IVL = 2
+
 
 class JobRunner:
     """Coordinates and runs a job, specified by a job config file"""
@@ -39,7 +49,8 @@ class JobRunner:
                  invoking_user: string,
                  archive_metrics: bool,
                  result_path: string,
-                 tags: dict):
+                 tags: dict,
+                 build_se: bool = True):
 
         # Parse the job file and the hardware and cluster configs that it references
         self.all_configs = AllConfigs(job_path)
@@ -70,6 +81,9 @@ class JobRunner:
         # A dictionary of key/value pairs that are stored with the job results
         self.tags: {} = tags
 
+        # Do we want to build SE and the installer?
+        self.build_se = build_se
+
         self.job_start_ts = datetime.datetime.now()  # timestamp of when the job began
         self.test_start_ts = None   # timestamp of when the tests were first executed
         self.test_end_ts = None     # timestamp of when the tests completed being executed
@@ -87,10 +101,18 @@ class JobRunner:
         # This file will be closed and deleted when this class is destructed.
         self.custom_cluster_config: tempfile.NamedTemporaryFile = None
 
+        # The current test that is running, and a lock to protect the changing of this variable
+        self.current_test_runner = None
+        self.test_runner_lock = threading.RLock()
+
+        # Is the test ending early due to an abnormality (timeout, crash, etc)?
+        self.abnormal_exit = False
+
     def run_job(self):
         """Runs the job and all of its tests"""
 
         job_timed_out = False
+        se_crashed = False
         last_error = None
 
         # Catch errors in the job setup and ensure that machines get terminated
@@ -110,12 +132,34 @@ class JobRunner:
 
             self.test_start_ts = datetime.datetime.now()
             test_thread.start()
-            test_thread.join(timeout)
+
+            (job_timed_out, se_crashed) = self.__wait_for_test_to_complete(test_thread, timeout)
+            # test_thread.join(timeout)
+
             self.test_end_ts = datetime.datetime.now()
-            job_timed_out = test_thread.is_alive()
+            # job_timed_out = test_thread.is_alive()
+
+            errmsg = None
+            if job_timed_out:
+                LOG.error(f"Job timeout of {self.all_configs.get_job().get_max_duration()} "
+                          f"minutes has been exceeded. Commencing shutdown hooks.")
+                errmsg = f"Job has timed out after {self.all_configs.get_job().get_max_duration()} minutes."
+
+            elif se_crashed:
+                LOG.error("RapidsSE has crashed!! Commencing shutdown hooks.")
+                errmsg = "RapidsSE has crashed. Please check the log artifact files for details."
+
+            # If we have had an abnormal exit and there is a test in progress then we need to
+            # mark it as failed and add its result.
+            if errmsg is not None:
+                with self.test_runner_lock:
+                    if self.current_test_runner is not None:
+                        errmsg = "" if job_timed_out else ""
+                        self.current_test_runner.result.set_test_ended(False, False, stderr=errmsg)
+                        self.test_results.append(self.current_test_runner.result)
 
             # (3) Gather results, logs and artifacts
-            self.__gather_results()
+            self.__gather_artifacts()
 
         except errors.Ec2InstanceTimeoutError as e:
             LOG.error(e)
@@ -134,7 +178,7 @@ class JobRunner:
             self.__cleanup_job()
 
             # (5) Record results
-            self.__record_results(job_timed_out)
+            self.__record_results(self.abnormal_exit)
 
             self.job_end_ts = datetime.datetime.now()
 
@@ -144,6 +188,8 @@ class JobRunner:
                 LOG.info(f"Job aborted with error in {str(job_duration)}")
             elif job_timed_out:
                 LOG.info(f"Job timed out after {str(job_duration)}")
+            elif se_crashed:
+                LOG.info("Job ended early due to RapidsSE crashing.")
             else:
                 LOG.info(f"Job completed in {str(job_duration)}")
 
@@ -167,7 +213,10 @@ class JobRunner:
         self.__delete_results_dir_contents()
 
         # Compile RapidsSE and build the installer
-        installer_path = clusterops.build_installer()
+        if self.build_se:
+            installer_path = clusterops.build_installer()
+        else:
+            installer_path = clusterops.find_installer()
 
         # Start up the necessary AWS hosts
         (self.instance_ids, self.ip_addresses) = ec2.start_instances(self.all_configs.get_hardware(),
@@ -199,6 +248,14 @@ class JobRunner:
         # set the classpath to find the above JDBC driver.
         clusterops.write_jmeter_property_file(self.ip_addresses[0], self.all_configs.cluster_config)
 
+        # Make the common perftests directory, to hold all tests, support files and their metrics
+        clusterops.make_perftests_dir(self.ip_addresses[0], self.all_configs.cluster_config)
+
+        # Copy the supportFiles directory to the first host
+        clusterops.copy_support_files(self.ip_addresses[0],
+                                      self.all_configs.cluster_config,
+                                      str(C_SUPPORT_FILES_SRC))
+
     def __run_tests(self):
         """Run each of the tests specified in this job file
             This should be run in a thread with a suitable timeout period.
@@ -208,28 +265,61 @@ class JobRunner:
         continue_on_test_failure = self.all_configs.get_job().get_continue_on_test_failure()
         skip_remaining_tests = False
         test_seq = 0
+        got_failures = False
 
         for (test_path, test_id) in self.test_tuples:
             test_seq += 1
 
             if skip_remaining_tests:
                 self.__skip_test(test_path, test_id)
+                LOG.debug(f"Test {TestRunner.get_test_name_from_path(test_path)} is being skipped.")
                 continue
 
             # Make the directory where this test will store artifacts
             artifact_dir = self.__make_test_artifact_dir(test_id, test_path)
 
-            test_runner = TestRunner(test_path, test_id, self.job_result_id, test_seq,
-                                     self.all_configs.get_cluster(), self.ip_addresses[0],
-                                     artifact_dir)
-            test_runner.run_test()
-            test_result = test_runner.result
-            self.test_results.append(test_result)
+            with self.test_runner_lock:
+                self.current_test_runner = TestRunner(test_path,
+                                                      test_id,
+                                                      self.job_result_id,
+                                                      test_seq,
+                                                      self.all_configs.get_cluster(),
+                                                      self.ip_addresses[0],
+                                                      artifact_dir)
+            self.current_test_runner.run_test()
 
-            if not continue_on_test_failure and test_result.test_passed is False:
-                skip_remaining_tests = True
+            with self.test_runner_lock:
+                test_result = self.current_test_runner.result
+                # No tests currently running
+                self.current_test_runner = None
 
-        LOG.info("Completed execution of all tests.")
+            #  Check if we are aborting abnormally due to a crash, timeout, etc.
+            if not self.abnormal_exit:
+                self.test_results.append(test_result)
+
+            if test_result.test_passed is False:
+                LOG.debug(f"Test {test_result.test_name} failed")
+                got_failures = True
+
+                if continue_on_test_failure is False or self.abnormal_exit:
+                    skip_remaining_tests = True
+
+                # If RapidsSE is no longer running then we also need to skip all remaining tests
+                # and log this.
+                if not self.abnormal_exit:
+                    (se_running, error_msg) = clusterops.is_rapidsse_running(self.ip_addresses[0],
+                                                                             self.all_configs.cluster_config)
+                    if se_running is False:
+                        # We can't run any more tests
+                        skip_remaining_tests = True
+                        LOG.error(error_msg)
+            else:
+                LOG.debug(f"Test {test_result.test_name} passed")
+
+        if got_failures:
+            LOG.info("Completed execution of tests, with failures.")
+        else:
+            LOG.info("Completed execution of all tests successfully.")
 
     def __skip_test(self, test_path: string, test_id: int):
         # Create a test_result for this skipped test and add it to the result list
@@ -271,7 +361,7 @@ class JobRunner:
         LOG.debug(f"Deleting artifact dir: {str(artifact_dir)}")
         shutil.rmtree(str(artifact_dir), ignore_errors=True)
 
-    def __gather_results(self):
+    def __gather_artifacts(self):
         """Collect all results, logs and artifacts from the machines used to run the tests"""
         # We gather test artifacts by default. Need to delete test artifacts if
         # self.archive_metrics is false and a given test is successful.
@@ -303,8 +393,47 @@ class JobRunner:
 
         pass
 
-    def __record_results(self, job_timed_out: bool):
+    def __record_results(self, abnormal_exit: bool):
         """Record the results of the test into the database and prepare the result files for Bamboo"""
-        septest.db.jobend.record_job_results(self.job_result_id, job_timed_out, self.test_results)
+        septest.db.jobend.record_job_results(self.job_result_id, abnormal_exit, self.test_results)
 
-        # TODO: prepare result files for Bamboo
+        # Write JUnit result files for Bamboo
+        result_path = pathlib.Path(self.result_path) / C_JUNIT_FILENAME
+        septest.results.summarise_to_junit(self.test_results, result_path)
+
+        # Write out a textual summary too
+        summary_text = septest.results.summarise_to_string(self.test_results)
+        LOG.info(f"\n{summary_text}\n")
+
+    def __wait_for_test_to_complete(self, test_thread: threading.Thread, timeout: float) -> (bool, bool):
+        """
+        Waits for the given test thread to complete, a given timeout to elapse, or for SE to crash.
+        Returns a tuple of booleans (timed_out, se_crashed) that indicate the end result.
+        """
+
+        timed_out = False
+        se_crashed = False
+
+        current_time = datetime.datetime.now()
+        end_time = current_time + datetime.timedelta(seconds=timeout)
+
+        while current_time < end_time:
+
+            if not test_thread.is_alive():
+                # test thread has ended normally
+                return timed_out, se_crashed
+
+            if not clusterops.is_rapidsse_running(self.ip_addresses[0], self.all_configs.cluster_config):
+                LOG.error("*** Detected that RapidsSE has crashed ***")
+                se_crashed = True
+                self.abnormal_exit = True
+                return timed_out, se_crashed
+
+            # Test thread still running and SE not crashed. Try again in a little bit.
+            time.sleep(C_TEST_MONITORING_SLEEP_IVL)
+            current_time = datetime.datetime.now()
+
+        # We have timed out and SE hasn't crashed
+        timed_out = True
+        self.abnormal_exit = True
+        return timed_out, se_crashed

@@ -37,14 +37,14 @@ namespace STORE
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vRepair(Object* pObject);
 
-    void vAddDetectedNode(i8 iNodeNo, Stz* szNodeNm,
+    void vAddDetectedNode(i8 iNodeId, Stz* szNodeNm,
                           Stz* szIPAddr, i8 iPortNo, Stz* szRegionNm);
     void vAddNode(Node* pNode);
     void vAdjustPtnMap(void);
     void vDsv(void);
     s16KB szDumpInfo(void);
-    Node* pFindNode(i8 iNodeNo);
-    Node* pFindNode(Stz* pName);
+    Node* pFindNodeById(i8 iNodeId);
+    Node* pFindNodeNm(Stz* pNodeNm);
     Node* pGetNthNode(i8 i_Node);
     Stz* szGridNm(void);
     i8   nKnownNodes(void);
@@ -54,7 +54,7 @@ namespace STORE
     void vSeeNodes(void);
     void vShowGrid(void);
     void vShowNetwork(void);
-    i8   iThisNodeNo(void);
+    i8   iThisNodeId(void);
     Node* pThisNode(void);
     void vThisNode(Node* pNode);
 

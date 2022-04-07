@@ -86,8 +86,8 @@
 
   op__topology
 
-  find: parser_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: parser_DataPulse     ZK_M_DATAPULSE     op[].handler!
+  find: parser_Cleaning      ZK_M_CLEANING      [op].handler!
+  find: parser_DataPulse     ZK_M_DATAPULSE     [op].handler!
 
   op__loop
 

@@ -45,7 +45,7 @@
   op__topology
 
   // Setup ZK_D_PARCEL handler here
-  find: metaRecv_Parcel ZK_D_PARCEL op[].handler!
+  find: metaRecv_Parcel ZK_D_PARCEL [op].handler!
 
   op__loop
 

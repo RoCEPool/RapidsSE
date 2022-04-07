@@ -939,11 +939,11 @@
                 <connectTime>true</connectTime>
               </value>
             </objProp>
-            <stringProp name="filename">DropTableGroup.csv</stringProp>
+            <stringProp name="filename">dropTableGroup.csv</stringProp>
           </ResultCollector>
           <hashTree/>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="nationGroup" enabled="true">
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="nationGroup" enabled="false">
           <stringProp name="TestPlan.comments">An example of how to return a metric from a regular query</stringProp>
         </GenericController>
         <hashTree>
@@ -1006,7 +1006,7 @@
                 <success>true</success>
                 <label>true</label>
                 <code>false</code>
-                <message>false</message>
+                <message>true</message>
                 <threadName>false</threadName>
                 <dataType>false</dataType>
                 <encoding>false</encoding>

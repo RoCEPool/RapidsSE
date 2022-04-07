@@ -7,8 +7,8 @@ namespace STORE
 {
   struct NodePtn
   {
-    i4  m_iNodeNo;    // node number
-    i4  m_i_NodePtn;  // node partition (aka partition of node)
+    i4  m_iNodeId;  // node id (in grid)
+    i4  m_iPtnNo;   // partition no (within node)
   };
 
 
@@ -23,8 +23,8 @@ namespace STORE
     i8 m_nKnownNodes;
     i8 m_nPtnsInGrid;
 
-    // which {nodeNo,i_ptn} a logical partition mPtnNo is in
-    NodePtn m_xaLglToNodePtn[C_MAX_LGLPTNS];
+    // which physical {nodeId,i_ptn} a logical partition PtnId is in
+    NodePtn m_xaPtnId_to_NodeIdPtnNo[C_MAX_LGLPTNS];
 
   
     // must be last
@@ -39,24 +39,24 @@ namespace STORE
   
     void vAdjustMap(i8 nKnownNodes);
 
-    void vSee(void);
-
-    PtnId tHashToLglPtnId(i8 iHash);
-    i8 iToBkt(PtnId tPtnId);
-    PtnId tToPtn(i8 iBktNo);
+    LglPtn tHashToLglPtnId(i8 iHash);
+  
     i8 nKnownNodes(void);
-    i8 iMappedNodeNo(PtnId tPtnId);
+  
+    i8 iMappedNodeId(LglPtn tLglPtn);
+    i8 i_MappedPtnNo(LglPtn tLglPtn);
+
     i8 nPtnsInGrid(void);
     i8 nPtnsPerNode(void);
 
-    PtnId tRobinToDtdPtnStream(i8 iRobin);
-    PtnId tRobinToLclPtnStream(i8 iRobin);
-    PtnId tRobinToNdePtnNo(i8 iRobin);
+    LglPtn tRobinToDtdPtnStream(i8 iRobin);
+    LglPtn tRobinToLclPtnStream(i8 iRobin);
+    LglPtn tRobinToNdePtnNo(i8 iRobin);
 
-    i8 iWhichNodeNo(PtnId tPtnId);
-    i8 i_WhichPtn(PtnId tPtnId);
-    PtnId tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);
-    PtnId tToPtnNoOfThisNode(i8 i_Ptn);
+    void vSee(void);
+  
+    LglPtn tToPtnNoOfNode(i8 i_Ptn, i8 iNodeId);
+    LglPtn tToPtnNoOfThisNode(i8 i_Ptn);
 
   private:
     void vRepartition(void);

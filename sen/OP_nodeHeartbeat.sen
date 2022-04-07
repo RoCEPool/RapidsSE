@@ -44,7 +44,7 @@
 
   op__topology
 
-  find: nodeHeartbeat_DataPulse  ZK_M_DATAPULSE op[].handler!
+  find: nodeHeartbeat_DataPulse  ZK_M_DATAPULSE [op].handler!
 
   op__loop
 

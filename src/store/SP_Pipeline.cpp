@@ -5,10 +5,12 @@
 #include "BASE.h"
 
 #include "Pipeline.hpp"
+#include "Vertex.hpp"
 #include "Grid.hpp"
 
 #include "SP_Pipeline.hpp"
 #include "SP_Stage.hpp"
+#include "SP_PipeWork.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +58,7 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
     
   vCatf("Pipeline %s %p "
         "on Grid %s N%lldP%lld "
-        "using PipelineSpec %p"_Stz
+        "using PipeSpec %p"_Stz
         
         ,pPipeline->szPipelineNm()
         ,pPipeline
@@ -65,15 +67,22 @@ void SP_Pipeline::vPipeline(Pipeline* pPipeline, bool bDescend)
         ,pGrid->nKnownNodes()
         ,AM::PTNMAP::nPtnsPerNode()
         
-        ,pPipeline->pPipelineSpec()
+        ,pPipeline->pPipeSpec()
         );
   
   if (bDescend) {
-    for (i8 i_Stage = 0; i_Stage < pPipeline->nItems(); i_Stage++ ) {
-      Stage* pStage = pPipeline->pGet(i_Stage);
-      SP_Stage spStage(pStage,true);
-      vCatf("%s"_Stz,spStage.sz());
-    }
+    
+    SP_PipeWork spPipeWork;
+
+    Vertex* pPipeWork = pPipeline->pVertexRoot();
+    
+    vCatf("%s"_Stz,spPipeWork.sz(pPipeWork));
+
+//    for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++ ) {
+//      Stage* pStage = pPipeWork->pGet(i_Stage);
+//      SP_Stage spStage(pStage,true);
+//      vCatf("%s"_Stz,spStage.sz());
+//    }
   }
   
 }
@@ -91,11 +100,11 @@ Stz* SP_Pipeline::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Pipeline::sz(Pipeline* pPipeline)
+Stz* SP_Pipeline::sz(Pipeline* pPipeline, bool bDescend)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  vPipeline(pPipeline);
+  vPipeline(pPipeline,bDescend);
   
   return (Stz*) &m_caResult[0];
 }
