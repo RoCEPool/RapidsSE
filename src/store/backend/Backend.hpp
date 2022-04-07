@@ -25,8 +25,6 @@ namespace STORE
     bool           m_bCombinedOp;
     QueryNode*     m_pPrevStageMarker;
     bool           m_bJoinPredicate;
-    bool           m_bIndexJoin;
-    s256           m_sIndexJoinTable;
     bool           m_bInSubquery;
     s32            m_sIndent;
     i8             m_iColumnsOfLeftChild;
@@ -54,9 +52,8 @@ namespace STORE
     static void vAppendExpr(Backend* pBackend, QueryNode* pExprNode, QueryNode* pOrdinalExpr, Stz* szAliasName);
     static void vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNode, QueryNode* pOrdinalExprNode, Stz* szAliasName);
     static void vAppendFilterOp(Backend* pBackend, QueryNode* pNode);
-    static void vAppendIndexJoinOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendLimitOp(Backend* pBackend, QueryNode* pNode);
-    static void vAppendLoopJoinOp(Backend* pBackend, QueryNode* pNode);
+    static void vAppendAbstractJoinOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendOrderByOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendProjectOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendScanOp(Backend* pBackend,  QueryNode* pNode);
