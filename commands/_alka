@@ -122,18 +122,61 @@ create table TABLE4 (
 );
 Load TABLE4 "../DATA/Load/tbl4data.csv" ;
 
-//explain stage transliterate
-//select count(*), sum(cola1), cast(avg(cold1) as decimal(10,7)) from table1 where colb1 < 'green';
+pipeline Q17
+begin
 
-//select pcol9, cole9, colb9 from table9 where pcol9 between 235 and 255 and cole9 is not null order by pcol9;
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageQ17_0
 
-//explain stage transliterate
-select * from table4 where colb4 like '%l%' and ucolvc in ('ddd','ggg','ttt');
-//  order by pcol4
+  stage stageQ17_0 on all partitions :
+    scan rapidsse public part
+      | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
+        | project 2 " type INTEGER as P_PARTKEY $1 "
+        | combined 0
+        | next broadcast
+
+  stage stageQ17_1_a on all partitions :
+    indexJoin 2 lineitem IxL_PARTKEY "bound $I1 $L1 =="
+    | aggreg 2 " groupBy  type integer $1 aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count   "
+    | combined 0
+    | next
+
+  stage stageQ17_1_b on all nodes :
+    aggreg 2 " groupBy  type integer $1 aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum   "
+    | combined 0
+    | next
+
+  stage stageQ17_1_c on origin :
+    aggreg 2 " groupBy  type integer $1  aggregates type integer as P_PARTKEY $K1 , type DECIMAL ) $2 sum , type INTEGER ) $3 sum  "
+    | combined 0
+    | next
+
+  stage stageQ17_1_d on origin :
+    project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV $2 $3  casttype DECIMAL cast / "
+    //project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.20 $2 $3  casttype DECIMAL cast / *"
+    | combined 0
+    | next broadcast
+/*
+  stage stageQ17_2_a on all partitions :
+    indexJoin 2 lineitem IxL_PARTKEY "bound $I1 $L1 =="
+    | filter 2 " type BOOLEAN  j1_l_quantity $2 <  "
+    | project 2 " type DECIMAL as avg_yearly ) j1_l_extendedprice sum  "
+    //| project 2 " type DECIMAL as avg_yearly j1_l_extendedprice  "
+    | combined 0
+    | next
+*/
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
 /*
 
-
+select sum(l_extendedprice) from lineitem where l_partkey = 53 and l_quantity < 5.4;
+select sum(l_extendedprice) from lineitem where l_partkey = 54 and l_quantity < 5.1;
 
 explain stage aggregateSplit select
   l_returnflag,
