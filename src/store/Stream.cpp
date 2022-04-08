@@ -40,7 +40,13 @@ Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
   
 //  if (m_i_Stream != m_tLglPtn)
 //    vTrace("m_i_Stream %lld ; m_tLglPtn %lld"_Stz,m_i_Stream,m_tLglPtn.iAsI8());
-  
+
+//  vTrace("Stream: L %lld N %lld P %lld\n"_Stz,
+//         tLglPtn.iAsI8(),
+//         iNodeId,
+//         i_Stream
+//         );
+
 
   m_p_StageSpec = p_StageSpec;
   m_p_Stage     = p_Stage;

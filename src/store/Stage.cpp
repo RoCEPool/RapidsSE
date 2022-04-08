@@ -379,7 +379,7 @@ void Stage::vCreateStreams(void)
   i8 iOriginNodeId;
   i8 iMappedNodeId;
 
-  Node* pThisNode = MY::pNode();
+  //Node* pThisNode = MY::pNode();
   
   switch (m_pStageSpec->eStageTopology()) {
 
@@ -436,7 +436,7 @@ void Stage::vCreateStreams(void)
         tLglPtn = tMpdPtn.tLglPtn();
         iMappedNodeId = AM::pPtnMap()->iMappedNodeId(tLglPtn);
 
-        i_Stream = AM::pPtnMap()->i_MappedPtnNo(tLglPtn);
+        i_Stream = AM::pPtnMap()->iMappedPtnNo(tLglPtn);
         pStream = new Stream(this, m_pStageSpec, i_Stream, tLglPtn, iMappedNodeId);
         vAppend(pStream);
       }
@@ -453,7 +453,7 @@ void Stage::vCreateStreams(void)
         if (iMappedNodeId != pPipeline()->iOriginNodeId())
           continue;
         
-        i_Stream = AM::pPtnMap()->i_MappedPtnNo(tLglPtn);
+        i_Stream = AM::pPtnMap()->iMappedPtnNo(tLglPtn);
         pStream = new Stream(this, m_pStageSpec, i_Stream, tLglPtn, iMappedNodeId);
         vAppend(pStream);
       }

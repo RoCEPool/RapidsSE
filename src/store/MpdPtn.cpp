@@ -73,7 +73,7 @@ void MpdPtn::operator =(MpdPtn tMpdPtn)
 i8 MpdPtn::operator ++(int)
 {
   i8 temp;
-  temp = m_u_LglPtn++;
+  temp = m_uLglPtn++;
   return temp;
 }
 
@@ -109,17 +109,9 @@ void MpdPtn::vAsI8(i8 iAsI8)
 /*----------------------------------------------------------------------------*/
 /* get i_LglPtn                                                               */
 /*----------------------------------------------------------------------------*/
-i8 MpdPtn::i_LglPtn(void)
+i8 MpdPtn::iLglPtn(void)
 {
-  return m_u_LglPtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set i_LglPtn                                                               */
-/*----------------------------------------------------------------------------*/
-void MpdPtn::v_LglPtn(i8 i_LglPtn)
-{
-  m_u_LglPtn = i_LglPtn;
+  return m_uLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,7 +119,15 @@ void MpdPtn::v_LglPtn(i8 i_LglPtn)
 /*----------------------------------------------------------------------------*/
 LglPtn MpdPtn::tLglPtn(void)
 {
-  return m_u_LglPtn;
+  return m_uLglPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set i_LglPtn                                                               */
+/*----------------------------------------------------------------------------*/
+void MpdPtn::vLglPtn(i8 iLglPtn)
+{
+  m_uLglPtn = iLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,7 +135,7 @@ LglPtn MpdPtn::tLglPtn(void)
 /*----------------------------------------------------------------------------*/
 void MpdPtn::vLglPtn(LglPtn tLglPtn)
 {
-  m_u_LglPtn = tLglPtn.iAsI8();
+  m_uLglPtn = tLglPtn.iAsI8();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,48 +143,48 @@ void MpdPtn::vLglPtn(LglPtn tLglPtn)
 /*----------------------------------------------------------------------------*/
 void MpdPtn::vMap(void)
 {
-  m_uMappedNodeId   = AM::pPtnMap()->iMappedNodeId(m_u_LglPtn);
-  m_uMappedStreamId = AM::pPtnMap()->i_MappedPtnNo(m_u_LglPtn);
+  m_uNodeId = AM::pPtnMap()->iMappedNodeId(m_uLglPtn);
+  m_uPtnNo  = AM::pPtnMap()->iMappedPtnNo(m_uLglPtn);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get iNodeId                                                                */
 /*----------------------------------------------------------------------------*/
-i8 MpdPtn::iMappedNodeId(void)
+i8 MpdPtn::iNodeId(void)
 {
-  return m_uMappedNodeId;
+  return m_uNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set iNodeId                                                                */
 /*----------------------------------------------------------------------------*/
-void MpdPtn::vMappedNodeId(i8 iMappedNodeId)
+void MpdPtn::vNodeId(i8 iNodeId)
 {
-  m_uMappedNodeId = iMappedNodeId;
+  m_uNodeId = iNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get iStreamId                                                              */
 /*----------------------------------------------------------------------------*/
-i8 MpdPtn::iMappedStreamId(void)
+i8 MpdPtn::iPtnNo(void)
 {
-  return m_uMappedStreamId;
+  return m_uPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set iStreamId                                                              */
 /*----------------------------------------------------------------------------*/
-void MpdPtn::vMappedStreamId(i8 iStreamId)
+void MpdPtn::vPtnNo(i8 iPtnNo)
 {
-  m_uMappedStreamId = iStreamId;
+  m_uPtnNo = iPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if valid / within bouns                                               */
+/* test if logical partition is valid / within bounds                         */
 /*----------------------------------------------------------------------------*/
 bool MpdPtn::bValid(void)
 {
-  if (m_u_LglPtn < AM::PTNMAP::nPtnsInGrid())
+  if (m_uLglPtn < AM::PTNMAP::nPtnsInGrid())
     return true;
   
   return false;
@@ -193,12 +193,12 @@ bool MpdPtn::bValid(void)
 /*----------------------------------------------------------------------------*/
 /* set tLglPtn, iNodeId, iStreamId                                            */
 /*----------------------------------------------------------------------------*/
-void MpdPtn::vSet(LglPtn tLglPtn, i8 iNodeId, i8 iStreamNo)
-{
-  vLglPtn(tLglPtn);
-  vMappedNodeId(iNodeId);
-  vMappedStreamId(iStreamNo);
-}
+//void MpdPtn::vSet(LglPtn tLglPtn, i8 iNodeId, i8 iStreamNo)
+//{
+//  vLglPtn(tLglPtn);
+//  vNodeId(iNodeId);
+//  vPtnNo(iStreamNo);
+//}
 
 /*============================================================================*/
 /* end                                                                        */

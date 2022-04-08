@@ -107,7 +107,7 @@ i8 PtnMap::iMappedNodeId(LglPtn tLglPtn)
 /*----------------------------------------------------------------------------*/
 /* get which partition no (within node) a logical partition is mapped to      */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::i_MappedPtnNo(LglPtn tLglPtn)
+i8 PtnMap::iMappedPtnNo(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
