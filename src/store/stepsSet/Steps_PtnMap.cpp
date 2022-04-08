@@ -28,7 +28,7 @@ void Step::vPtnMapAdjust(void)
 {
   ENTRY();
   
-  PtnMap* pPtnMap = AM::pPtnMap();
+  PtnMap* pPtnMap = AM::pLglPtnMap();
   
   pPtnMap->vAdjustMap(AM::GRID::nKnownNodes());
 
@@ -57,7 +57,7 @@ void Step::vPtnMapSee(void)
 {
   ENTRY();
   
-  PtnMap* pPtnMap = AM::pPtnMap();
+  PtnMap* pPtnMap = AM::pLglPtnMap();
   
   pPtnMap->vSee();
     

@@ -1243,7 +1243,7 @@ LglPtn AM::PTNMAP::tHashToLglPtnId(i8 iHash)
 {
   _static_
 
-  return gpAttachMap->m_pPtnMap->tHashToLglPtnId(iHash);
+  return gpAttachMap->m_pLglPtnMap->tHashToLglPtnId(iHash);
 }
 
 
@@ -1254,7 +1254,7 @@ i8 AM::PTNMAP::nKnownNodes(void)
 {
   _static_
 
-  return gpAttachMap->m_pPtnMap->nKnownNodes();
+  return gpAttachMap->m_pLglPtnMap->nKnownNodes();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1264,7 +1264,7 @@ i8 AM::PTNMAP::nPtnsInGrid(void)
 {
   _static_
 
-  return gpAttachMap->m_pPtnMap->nPtnsInGrid();
+  return gpAttachMap->m_pLglPtnMap->nPtnsInGrid();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1272,7 +1272,7 @@ i8 AM::PTNMAP::nPtnsInGrid(void)
 /*----------------------------------------------------------------------------*/
 i8 AM::PTNMAP::nPtnsPerNode(void)
 {
-  return gpAttachMap->m_pPtnMap->nPtnsPerNode();
+  return gpAttachMap->m_pLglPtnMap->nPtnsPerNode();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1282,7 +1282,7 @@ LglPtn AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 {
   _static_
   
-  return gpAttachMap->m_pPtnMap->tRobinToDtdPtnStream(iRobin);
+  return gpAttachMap->m_pLglPtnMap->tRobinToDtdPtnStream(iRobin);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1292,7 +1292,7 @@ LglPtn AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 {
   _static_
   
-  return gpAttachMap->m_pPtnMap->tRobinToLclPtnStream(iRobin);
+  return gpAttachMap->m_pLglPtnMap->tRobinToLclPtnStream(iRobin);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1302,7 +1302,7 @@ LglPtn AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
 {
   _static_
   
-  return gpAttachMap->m_pPtnMap->tRobinToNdePtnNo(iRobin);
+  return gpAttachMap->m_pLglPtnMap->tRobinToNdePtnNo(iRobin);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -2785,8 +2785,8 @@ void AM::vPrintStartupInfo(void) {
   gxCmdLineArgs.vPrintStartupInfo();
 }
 
-PtnMap* AM::pPtnMap(void) {
-  return gpAttachMap->m_pPtnMap;
+PtnMap* AM::pLglPtnMap(void) {
+  return gpAttachMap->m_pLglPtnMap;
 }
 
 

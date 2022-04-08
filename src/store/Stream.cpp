@@ -262,7 +262,7 @@ void Stream::vSpawnOpTasks(void)
     
   }
   else {
-    iOnNodeId = AM::pPtnMap()->iNodeId(m_tLglPtn);
+    iOnNodeId = AM::pLglPtnMap()->iNodeId(m_tLglPtn);
   }
   
   if (iOnNodeId == iThisNodeId) {

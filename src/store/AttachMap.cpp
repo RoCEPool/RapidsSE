@@ -90,7 +90,7 @@ AttachMap::AttachMap(bool bNoFree)
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;
   m_pNumbering      = new Numbering;
-  m_pPtnMap         = nullptr;
+  m_pLglPtnMap         = nullptr;
   m_bReapEnabled    = true;
   m_pStarter        = new Starter;
   m_pTxSet          = new TxSet;

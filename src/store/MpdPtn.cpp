@@ -143,8 +143,8 @@ void MpdPtn::vLglPtn(LglPtn tLglPtn)
 /*----------------------------------------------------------------------------*/
 void MpdPtn::vMap(void)
 {
-  m_uNodeId = AM::pPtnMap()->iNodeId(m_uLglPtn);
-  m_uPtnNo  = AM::pPtnMap()->iPtnNo(m_uLglPtn);
+  m_uNodeId = AM::pLglPtnMap()->iNodeId(m_uLglPtn);
+  m_uPtnNo  = AM::pLglPtnMap()->iPtnNo(m_uLglPtn);
 }
 
 /*----------------------------------------------------------------------------*/

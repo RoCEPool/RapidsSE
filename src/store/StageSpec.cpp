@@ -94,7 +94,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
     case YG_NEXT_NODE:      reParcelForward = YF_NEXT_NODE;
                             break;
       
-    case YG_ORIGIN:         reParcelForward = YF_ORIGIN;
+    case YG_ORIGIN_NODE:         reParcelForward = YF_ORIGIN;
                             break;
     default:
       vTrace("Invalid %s %s\n"_Stz,aYG[eToTopo]);
@@ -121,7 +121,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           
-        case YG_ORIGIN:
+        case YG_ORIGIN_NODE:
           reIntraTopology = YS_NODE_STREAM;
           return YX_ALL_NODES_TO_ORIGIN;
                               
@@ -148,7 +148,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
           
-        case YG_ORIGIN:
+        case YG_ORIGIN_NODE:
           reIntraTopology = YS_NODE_STREAM;
           return YX_ALL_PARTITIONS_TO_ORIGIN;
                               
@@ -177,7 +177,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           reIntraTopology = YS_PTN_STREAM;
           return YX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
           
-        case YG_ORIGIN:
+        case YG_ORIGIN_NODE:
           vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
                               
@@ -188,7 +188,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // from origin to ...
-    case YG_ORIGIN:
+    case YG_ORIGIN_NODE:
       switch(eToTopo) {
           
         case YG_ALL_NODES:
@@ -207,7 +207,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           reIntraTopology = YS_NODE_STREAM;
           return YX_ORIGIN_TO_NEXT_NODE;
           
-        case YG_ORIGIN:
+        case YG_ORIGIN_NODE:
           reIntraTopology = YS_NODE_STREAM;
           return YX_ORIGIN_TO_ORIGIN;
                               
@@ -223,7 +223,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
       
       switch(eToTopo) {
           
-        case YG_ORIGIN:
+        case YG_ORIGIN_NODE:
           reIntraTopology = YS_NODE_STREAM;
           return YX_NEXT_NODE_TO_ORIGIN;
 
@@ -258,7 +258,7 @@ eYS StageSpec::eStreamTopoCalc(eYG eStageTopology)
     case YG_ALL_NODES:                return YS_NODE_STREAM;
     case YG_ALL_PARTITIONS:           return YS_PTN_STREAM;
     case YG_ALL_PARTITIONS_ON_ORIGIN: return YS_PTN_STREAM;
-    case YG_ORIGIN:                   return YS_NODE_STREAM;
+    case YG_ORIGIN_NODE:                   return YS_NODE_STREAM;
     case YG_NEXT_NODE:                return YS_NODE_STREAM;
 
     default:
@@ -288,7 +288,7 @@ eAL StageSpec::eAggegLevel(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   eYG eStageTopology = this->eStageTopology();
-  if (YG_ORIGIN == eStageTopology)
+  if (YG_ORIGIN_NODE == eStageTopology)
     return AL_ORIGIN;
   else
   if (YG_ALL_NODES == eStageTopology)
@@ -489,7 +489,7 @@ void StageSpec::vStageTopology(eYG eStageTopology)
     case YG_ALL_PARTITIONS:           m_bNodeTopo = false;  break;
     case YG_ALL_PARTITIONS_ON_ORIGIN: m_bNodeTopo = false;  break;
     case YG_NEXT_NODE:                m_bNodeTopo = true;   break;
-    case YG_ORIGIN:                   m_bNodeTopo = true;   break;
+    case YG_ORIGIN_NODE:                   m_bNodeTopo = true;   break;
     default:                          m_bNodeTopo = true;   break;
   }
 

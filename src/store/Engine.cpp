@@ -1553,7 +1553,7 @@ void Engine::vStartSystem(void)
    if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("  Creating Partition Map\n"_Stz);
 
-  gpAttachMap->m_pPtnMap =
+  gpAttachMap->m_pLglPtnMap =
       new PtnMap(gpAttachMap->m_pGrid->nKnownNodes(),
                  gpAttachMap->m_xSysArgs.m_nPtnsPerNode);
 
@@ -1611,7 +1611,7 @@ void Engine::vStartSystem(void)
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     vTrace("Engine Instance %s started\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
-    gpAttachMap->m_pPtnMap->vSee();
+    gpAttachMap->m_pLglPtnMap->vSee();
   }
 
 

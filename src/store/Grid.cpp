@@ -137,7 +137,7 @@ void Grid::vAdjustPtnMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   // We have to readjust partition map when new connection or dropped connection
-  PtnMap* pPtnMap = AM::pPtnMap();
+  PtnMap* pPtnMap = AM::pLglPtnMap();
 
   pPtnMap->vAdjustMap(AM::GRID::nKnownNodes());
   pPtnMap->vSee();
