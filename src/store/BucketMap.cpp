@@ -172,7 +172,7 @@ void BucketMap::vSee(void)
     vTrace("  m_taPtnId_%lld[i_Bkt %02lld] { tLglPtn=%lld }\n"_Stz
            ,m_iActive
            ,i_Bkt
-           ,(i8)tLglPtn.uPtnNo()
+           ,(i8)tLglPtn.iAsI8()
            );
   }
   

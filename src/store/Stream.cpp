@@ -51,8 +51,8 @@ Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
   
   vSynthesiseName();
 
-  RASSERT(    (0 == m_i_Stream && -1 == m_tLglPtn.iAsI8())
-           || (m_i_Stream == m_tLglPtn));
+//  RASSERT(    (0 == m_i_Stream && -1 == m_tLglPtn.iAsI8())
+//           || (m_i_Stream == m_tLglPtn));
 
   _checkInitialised_(CN_STREAM);
   

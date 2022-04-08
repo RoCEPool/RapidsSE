@@ -1,17 +1,19 @@
 /*============================================================================*/
-/* LglPtn.hpp -- Node.Partiton identifier                                     */
+/* LglPtn.hpp -- Logical Partiton identifier                                  */
 /*============================================================================*/
 #pragma once
 
-class LglPtn : public Gid_t<CN_PTNID>
+//class LglPtn : public Gid_t<CN_PTNID>
+class LglPtn : public SEtype
 {
+  private:
+    i8 m_iLglPtn;
+  
   public:
 
   LglPtn(void);
   LglPtn(i8 iAsI8);
 
-  // auto conversion
-  operator LglPtn*(void);
   
   // auto conversion
   operator i8(void);
@@ -19,14 +21,11 @@ class LglPtn : public Gid_t<CN_PTNID>
   void operator =(i8 iAsI8);
   void operator =(LglPtn tLglPtn);
 
-  i8 operator ++(void); // increment (prefix form)
   i8 operator ++(int);  // increment (postfix)
   bool operator <(i8 iAsI8);
-
-  i8   nPtnBits(void);
-  u8   uPtnMask(void);
-  u8   uPtnNo(void);
-  void vPtnNo(u8 uPtnNo);
+  
+  i8   iAsI8(void);
+  void vAsI8(i8 iAsI8);
 };
 
 /*============================================================================*/

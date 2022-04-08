@@ -1019,7 +1019,7 @@ bool Table::bUpdateBucket(Parcel* pParcel)
       {
         CrwBuffer* pCrwBuffer = (CrwBuffer *) pObject;
 
-        TablePtn* pTablePtn = this->pTablePtn(pCrwBuffer->tLglPtn().uPtnNo());
+        TablePtn* pTablePtn = this->pTablePtn(pCrwBuffer->tLglPtn().iAsI8());
         pTablePtn->vAppendBuffer(pCrwBuffer);
 
         break;

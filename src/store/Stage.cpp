@@ -152,7 +152,7 @@ Stream *Stage::pGetStream_byPtnNo(i8 i_Ptn)
     if (!pStageSpec->bNodeTopo() &&
         pStream->tLglPtn().iAsI8() == i_Ptn) {
       
-      RASSERT(pStream->i_Stream() == i_Ptn);
+      //RASSERT(pStream->i_Stream() == i_Ptn);
       return pStream;
     }
   }
