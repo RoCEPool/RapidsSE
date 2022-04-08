@@ -13,7 +13,7 @@
 #include "RowBuffer.hpp"
 
 #include "StreamSet.hpp"
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"

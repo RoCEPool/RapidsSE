@@ -6,7 +6,7 @@
 
 #include "eYX.h"
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"

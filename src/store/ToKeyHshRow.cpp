@@ -6,7 +6,7 @@
 
 #include "RowBuffer.hpp"
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"

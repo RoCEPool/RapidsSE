@@ -8,7 +8,7 @@
 
 #include "Marker.hpp"
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 
 #include "Grid.hpp"
 

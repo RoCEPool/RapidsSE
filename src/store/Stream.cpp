@@ -6,7 +6,7 @@
 
 #include "eYX.h"
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 
 
 #include "OpSpec.hpp"

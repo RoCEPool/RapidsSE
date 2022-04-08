@@ -55,7 +55,7 @@
 
 #include "Crw.hpp"
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
@@ -2785,7 +2785,7 @@ void AM::vPrintStartupInfo(void) {
   gxCmdLineArgs.vPrintStartupInfo();
 }
 
-PtnMap* AM::pLglPtnMap(void) {
+LglPtnMap* AM::pLglPtnMap(void) {
   return gpAttachMap->m_pLglPtnMap;
 }
 

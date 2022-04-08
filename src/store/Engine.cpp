@@ -8,7 +8,7 @@
 
 #include "CmdLineArgs.hpp"
 #include "BucketMap.hpp"
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
@@ -1554,7 +1554,7 @@ void Engine::vStartSystem(void)
     vTrace("  Creating Partition Map\n"_Stz);
 
   gpAttachMap->m_pLglPtnMap =
-      new PtnMap(gpAttachMap->m_pGrid->nKnownNodes(),
+      new LglPtnMap(gpAttachMap->m_pGrid->nKnownNodes(),
                  gpAttachMap->m_xSysArgs.m_nPtnsPerNode);
 
   gpAttachMap->m_pBucketMap = new BucketMap(TT_NORMAL);

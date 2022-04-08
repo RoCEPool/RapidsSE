@@ -14,7 +14,7 @@
 #include "Stage.hpp"
 #include "StageSpec.hpp"
 #include "Stream.hpp"
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 #include "Node.hpp"
 #include "Grid.hpp"
 #include "Socket.hpp"

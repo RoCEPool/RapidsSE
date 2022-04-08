@@ -19,7 +19,7 @@
 #include "Deck.hpp"
 #include "Stream.hpp"
 #include "Vertex.hpp"
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 #include "Node.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
