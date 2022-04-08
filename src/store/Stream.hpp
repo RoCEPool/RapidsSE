@@ -35,9 +35,10 @@ namespace STORE
   
     Stream(Stage*     p_Stage,
            StageSpec* p_StageSpec,
-           i8         i_Stream,
-           LglPtn      tLglPtn,
-           i8         iNodeId);
+           LglPtn     tLglPtn,
+           i8         iNodeId,
+           i8         iMappedPtnNo
+           );
    ~Stream(void) noexcept(false);
     
     Deck* pDeck(void);

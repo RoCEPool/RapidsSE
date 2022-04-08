@@ -1008,7 +1008,7 @@ i8 Op::iNodeId(void)
   if (m_p_Stream->pStage()->pStageSpec()->bNodeTopo())
     iNodeId = m_p_Stream->iNodeId();
   else
-    iNodeId = AM::pPtnMap()->iMappedNodeId(tLglPtn());
+    iNodeId = AM::pPtnMap()->iNodeId(tLglPtn());
 
   return iNodeId;
 }

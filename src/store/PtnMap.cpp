@@ -95,7 +95,7 @@ i8 PtnMap::nKnownNodes(void)
 /*----------------------------------------------------------------------------*/
 /* get which node id (of grid) a logical partition is mapped to               */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::iMappedNodeId(LglPtn tLglPtn)
+i8 PtnMap::iNodeId(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
@@ -107,7 +107,7 @@ i8 PtnMap::iMappedNodeId(LglPtn tLglPtn)
 /*----------------------------------------------------------------------------*/
 /* get which partition no (within node) a logical partition is mapped to      */
 /*----------------------------------------------------------------------------*/
-i8 PtnMap::iMappedPtnNo(LglPtn tLglPtn)
+i8 PtnMap::iPtnNo(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 

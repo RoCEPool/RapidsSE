@@ -34,7 +34,7 @@ __aFooterFunction(Stream)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
-               i8 i_Stream, LglPtn tLglPtn, i8 iNodeId)
+               LglPtn tLglPtn, i8 iNodeId, i8 iPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
@@ -53,7 +53,7 @@ Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
 
   m_tLglPtn     = tLglPtn;
   m_iNodeId    = iNodeId;
-  m_i_Stream   = i_Stream;
+  m_i_Stream   = iPtnNo;
   
   vSynthesiseName();
 
@@ -262,7 +262,7 @@ void Stream::vSpawnOpTasks(void)
     
   }
   else {
-    iOnNodeId = AM::pPtnMap()->iMappedNodeId(m_tLglPtn);
+    iOnNodeId = AM::pPtnMap()->iNodeId(m_tLglPtn);
   }
   
   if (iOnNodeId == iThisNodeId) {

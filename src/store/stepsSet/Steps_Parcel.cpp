@@ -287,7 +287,7 @@ void Step::vParcelPipeOut(void)
 
         if (YG_ALL_PARTITIONS == eStageTopology) {
           LglPtn tDstLglPtn = pDstStream->tLglPtn();
-          i8 iDstNodeId = AM::pPtnMap()->iMappedNodeId(tDstLglPtn);
+          i8 iDstNodeId = AM::pPtnMap()->iNodeId(tDstLglPtn);
           if (iDstNodeId != iCurNodeId)
             continue;
         }
