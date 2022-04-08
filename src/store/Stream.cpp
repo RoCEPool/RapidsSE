@@ -38,6 +38,10 @@ Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
+//  if (m_i_Stream != m_tLglPtn)
+//    vTrace("m_i_Stream %lld ; m_tLglPtn %lld"_Stz,m_i_Stream,m_tLglPtn.iAsI8());
+  
+
   m_p_StageSpec = p_StageSpec;
   m_p_Stage     = p_Stage;
 
@@ -46,6 +50,9 @@ Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
   m_i_Stream   = i_Stream;
   
   vSynthesiseName();
+
+  RASSERT(    (0 == m_i_Stream && -1 == m_tLglPtn.iAsI8())
+           || (m_i_Stream == m_tLglPtn));
 
   _checkInitialised_(CN_STREAM);
   
@@ -183,6 +190,7 @@ Pipeline* Stream::pPipeline(void)
 LglPtn Stream::tLglPtn(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+  
   return m_tLglPtn;
 }
 

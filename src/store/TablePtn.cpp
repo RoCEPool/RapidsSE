@@ -38,14 +38,14 @@ __aFooterFunction(TablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn)
+TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn, PhyPtn tPhyPtn)
 : Object(CN_TABLEPTN), m_okLock(this)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
   
   m_pTable  = pTable;
   m_tLglPtn = tLglPtn;
-  m_tPhyPtn = C_UNKNOWN;
+  m_tPhyPtn = tPhyPtn;
 
   m_pBucketVec = new BucketVec;
   m_pIndexTreeVec  = new IndexTreeVec;

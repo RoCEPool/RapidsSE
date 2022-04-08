@@ -32,7 +32,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    TablePtn(Table* pTable, LglPtn tLglPtn);
+    TablePtn(Table* pTable, LglPtn tLglPtn, PhyPtn tPhyPtn);
    ~TablePtn(void) noexcept(false);
   
     void vDropRead(void);
