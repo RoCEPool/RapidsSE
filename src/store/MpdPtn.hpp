@@ -40,6 +40,9 @@ class MpdPtn : public SEtype
   i8   iAsI8(void);
   void vAsI8(i8 iAsI8);
 
+  bool bIsNode(i8 iNodeId);
+  bool bIsThisNode(void);
+
   i8     iLglPtn(void);
   LglPtn tLglPtn(void);
   void   vLglPtn(i8 iLglPtn);

@@ -107,7 +107,29 @@ void MpdPtn::vAsI8(i8 iAsI8)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get i_LglPtn                                                               */
+/* is the mapped node same as given node                                      */
+/*----------------------------------------------------------------------------*/
+bool MpdPtn::bIsNode(i8 iNodeId)
+{
+  if (iNodeId == m_uNodeId)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the mapped node same as this/current node                               */
+/*----------------------------------------------------------------------------*/
+bool MpdPtn::bIsThisNode(void)
+{
+  if (AM::GRID::iThisNodeId() == m_uNodeId)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get iLglPtn                                                                */
 /*----------------------------------------------------------------------------*/
 i8 MpdPtn::iLglPtn(void)
 {
