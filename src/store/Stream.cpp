@@ -44,16 +44,16 @@ Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
 //  vTrace("Stream: L %lld N %lld P %lld\n"_Stz,
 //         tLglPtn.iAsI8(),
 //         iNodeId,
-//         i_Stream
+//         iPtnNo
 //         );
 
 
   m_p_StageSpec = p_StageSpec;
   m_p_Stage     = p_Stage;
 
-  m_tLglPtn     = tLglPtn;
-  m_iNodeId    = iNodeId;
-  m_i_Stream   = iPtnNo;
+  m_tLglPtn  = tLglPtn;
+  m_iNodeId  = iNodeId;
+  m_iPtnNo   = iPtnNo;
   
   vSynthesiseName();
 
@@ -106,7 +106,7 @@ void Stream::vCreateOps(void)
     Op* pOp_New = new Op(this,pOpSpec);
     vAppend(pOp_New);
 
-    if (m_i_Stream > 0) {
+    if (m_iPtnNo > 0) {
       
       Stream* pStream_0 = m_p_Stage->pGet(0);
       Op*     pOp_0_0   = pStream_0->pGet(i_OpSpec);
@@ -280,11 +280,11 @@ void Stream::vSpawnOpTasks(void)
 /*----------------------------------------------------------------------------*/
 /* getm_i_Stream                                                              */
 /*----------------------------------------------------------------------------*/
-i8 Stream::i_Stream(void)
+i8 Stream::iPtnNo(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_i_Stream;
+  return m_iPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -312,7 +312,7 @@ void Stream::vSynthesiseName(void)
   else {
     m_sStreamNm.vSprint("_streamv_N%lldS%lld_of_%s"_Stz,
                           m_iNodeId,
-                          m_i_Stream,
+                          m_iPtnNo,
                           m_p_StageSpec->szStageNm());
   }
 }

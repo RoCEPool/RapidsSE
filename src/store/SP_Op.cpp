@@ -126,7 +126,7 @@ Stz* SP_Op::szLeading(Op* pOp)
         ,pPipeline  ? pPipeline->szPipelineNm() : C_NO_NAME
         
         ,pStageSpec ? pStageSpec->i_StageSpec() : -1
-        ,pStream    ? pStream->i_Stream()       : -1
+        ,pStream    ? pStream->iPtnNo()       : -1
         ,pOpSpec    ? pOpSpec->i_OpSpec()        : -1
 
         ,pOp->szOpNm()
@@ -171,7 +171,7 @@ Stz* SP_Op::szPath(Op* pOp)
         ,pJob->szJobNm()
         ,pPipeline->szPipelineNm()
         ,pStage->szStageNm()
-        ,pStream->i_Stream()
+        ,pStream->iPtnNo()
         ,pOp->szOpNm()
         );
 
