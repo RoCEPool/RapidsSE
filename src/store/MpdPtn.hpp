@@ -10,12 +10,12 @@ class MpdPtn : public SEtype
   private:
   union {
     struct {
-      u8 m_uLglPtn   : 16 ; // 0..65,535
-      u8 m_uNodeId   : 16 ; // 0..65,535
-      u8 m_uStreamId : 32 ; // 0..4B
-      //              ---
-      //               64
-      //              ===
+      u8 m_u_LglPtn        : 32 ; // 4B
+      u8 m_uMappedNodeId   : 16 ; // 0..65,535
+      u8 m_uMappedStreamId : 16 ; // 0..65,535
+      //                    ---
+      //                     64
+      //                    ===
     };
     i8 m_iAsI8;
   };
@@ -37,16 +37,22 @@ class MpdPtn : public SEtype
   i8   iAsI8(void);
   void vAsI8(i8 iAsI8);
 
+  i8   i_LglPtn(void);
+  void v_LglPtn(i8 i_LglPtn);
+  
   LglPtn tLglPtn(void);
   void   vLglPtn(LglPtn tLglPtn);
   
-  i8   iNodeId(void);
-  void vNodeId(i8 iNodeId);
+  void vMap(void);
 
-  void vSet(LglPtn tLglPtn, i8 iNodeId, i8 iStreamNo);
+  i8   iMappedNodeId(void);
+  void vMappedNodeId(i8 iMappedNodeId);
+  i8   iMappedStreamId(void);
+  void vMappedStreamId(i8 iMappedStreamId);
 
-  i8   iStreamId(void);
-  void vStreamId(i8 iStreamId);
+  void vSet(LglPtn tLglPtn, i8 iNodeId, i8 iStreamId);
+
+  bool bValid(void);
 };
 
 /*============================================================================*/

@@ -22,6 +22,7 @@
 #include "SP_Stage.hpp"
 #include "TagConstants.h" //?
 #include "Deck.hpp"
+#include "MpdPtn.hpp"
 
 extern AttachMap gxAttachMap;
 
@@ -384,7 +385,8 @@ void Stage::vCreateStreams(void)
 
     //                      -- node topologies --                             //
 
-    case YG_ALL_NODES: // create a stream for all nodes                          : tLglPtn = C_UNKNOWN ; i_Stream = 0
+    // create a stream for each node in the grid                                : tLglPtn = C_UNKNOWN ; i_Stream = 0
+    case YG_ALL_NODES:
       RASSERT(m_pStageSpec->bNodeTopo());
       
       i_Stream = 0;
@@ -397,7 +399,8 @@ void Stage::vCreateStreams(void)
       }
       break;
 
-    case YG_ORIGIN: // create a stream for origin node only                      : tLglPtn = C_UNKNOWN ; i_Stream = 0
+    // create a stream for the origin node only                                 : tLglPtn = C_UNKNOWN ; i_Stream = 0
+    case YG_ORIGIN:
       RASSERT(m_pStageSpec->bNodeTopo());
       
       i_Stream = 0;
@@ -408,7 +411,8 @@ void Stage::vCreateStreams(void)
       vAppend(pStream);
       break;
 
-    case YG_NEXT_NODE: // create a stream for a next node only                   : tLglPtn = C_UNKNOWN ; i_Stream = 0
+    // create a stream for a next node only                                     : tLglPtn = C_UNKNOWN ; i_Stream = 0
+    case YG_NEXT_NODE:
       RASSERT(m_pStageSpec->bNodeTopo());
 
       i_Stream = 0;
@@ -423,11 +427,13 @@ void Stage::vCreateStreams(void)
 
     //                    -- partition topologies --                          //
 
-    case YG_ALL_PARTITIONS: // create a stream for all partitions in grid        : tLglPtn = i_Ptn ; i_Stream = i_MappedPtnNo(i_Ptn)
+    // create a stream for all logical partitions in the grid                           : tLglPtn = i_Ptn ; i_Stream = i_MappedPtnNo(i_Ptn)
+    case YG_ALL_PARTITIONS:
       RASSERT(!m_pStageSpec->bNodeTopo());
 
-      for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsInGrid(); i_Ptn++) {
-        tLglPtn = i_Ptn;
+      //for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsInGrid(); i_Ptn++) {
+      for (MpdPtn tMpdPtn; tMpdPtn.bValid(); tMpdPtn++) {
+        tLglPtn = tMpdPtn.tLglPtn();
         iMappedNodeId = AM::pPtnMap()->iMappedNodeId(tLglPtn);
 
         i_Stream = AM::pPtnMap()->i_MappedPtnNo(tLglPtn);
@@ -436,7 +442,8 @@ void Stage::vCreateStreams(void)
       }
       break;
 
-    case YG_ALL_PARTITIONS_ON_ORIGIN: // create a stream for all ptns on origin  : tLglPtn = i_Ptn ; i_Stream = i_MappedPtnNo(tLglPtn)
+    // create a stream for all ptns on origin only                              : tLglPtn = i_Ptn ; i_Stream = i_MappedPtnNo(tLglPtn)
+    case YG_ALL_PARTITIONS_ON_ORIGIN:
       RASSERT(!m_pStageSpec->bNodeTopo());
 
       for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsInGrid(); i_Ptn++) {
