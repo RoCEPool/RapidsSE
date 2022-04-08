@@ -436,11 +436,22 @@ void Stage::vCreateStreams(void)
     case YG_ALL_PARTITIONS:
       RASSERT(!m_pStageSpec->bNodeTopo());
 
-      for (MpdPtn tMpdPtn; tMpdPtn.bValid(); tMpdPtn++) {
-        tLglPtn = tMpdPtn.tLglPtn();
-        iMappedNodeId = AM::pLglPtnMap()->iNodeId(tLglPtn);
-        iMappedPtnNo = AM::pLglPtnMap()->iPtnNo(tLglPtn);
-        
+//      for (MpdPtn tMpdPtn; tMpdPtn.bValid(); tMpdPtn++) {
+//        tLglPtn = tMpdPtn.tLglPtn();
+//        iMappedNodeId = AM::pLglPtnMap()->iNodeId(tLglPtn);
+//        iMappedPtnNo = AM::pLglPtnMap()->iPtnNo(tLglPtn);
+//
+//        pStream = new Stream(this, m_pStageSpec,
+//                             tLglPtn, iMappedNodeId, iMappedPtnNo);
+//        vAppend(pStream);
+//      }
+      
+      for (MpdPtn tMpdPtn; tMpdPtn.bMapValid(); tMpdPtn++) {
+        //tMpdPtn.vMap();
+        tLglPtn       = tMpdPtn.tLglPtn();
+        iMappedNodeId = tMpdPtn.iNodeId();
+        iMappedPtnNo  = tMpdPtn.iPtnNo();
+
         pStream = new Stream(this, m_pStageSpec,
                              tLglPtn, iMappedNodeId, iMappedPtnNo);
         vAppend(pStream);
@@ -462,8 +473,8 @@ void Stage::vCreateStreams(void)
 //                             tLglPtn, iMappedNodeId, iMappedPtnNo);
 //        vAppend(pStream);
 //      }
-      for (MpdPtn tMpdPtn; tMpdPtn.bValid(); tMpdPtn++) {
-        tMpdPtn.vMap();
+      for (MpdPtn tMpdPtn; tMpdPtn.bMapValid(); tMpdPtn++) {
+        //tMpdPtn.vMap();
         if (! tMpdPtn.bIsNode(pPipeline()->iOriginNodeId()))
           continue;
 

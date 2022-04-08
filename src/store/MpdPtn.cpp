@@ -170,6 +170,19 @@ void MpdPtn::vMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* map and then test if logical partition is valid / within bounds            */
+/*----------------------------------------------------------------------------*/
+bool MpdPtn::bMapValid(void)
+{
+  vMap();
+  
+  if (m_uLglPtn < AM::PTNMAP::nPtnsInGrid())
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get iNodeId                                                                */
 /*----------------------------------------------------------------------------*/
 i8 MpdPtn::iNodeId(void)

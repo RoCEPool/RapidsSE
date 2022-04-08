@@ -49,6 +49,7 @@ class MpdPtn : public SEtype
   void   vLglPtn(LglPtn tLglPtn);
   
   void vMap(void);
+  bool bMapValid(void);
 
   i8   iNodeId(void);
   void vNodeId(i8 iNodeId);
