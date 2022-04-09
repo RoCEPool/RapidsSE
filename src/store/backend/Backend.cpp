@@ -47,10 +47,12 @@
 
 #include "ExprList.hpp"
 
+#include "CaseExpr.hpp"
 #include "Expr.hpp"
 #include "ExtractExpr.hpp"
 #include "ComparisonExpr.hpp"
 #include "EqExpr.hpp"
+#include "ElseExpr.hpp"
 #include "ExistsExpr.hpp"
 #include "GeExpr.hpp"
 #include "GtExpr.hpp"
@@ -61,6 +63,7 @@
 #include "LikeExpr.hpp"
 #include "InExpr.hpp"
 #include "SubstringExpr.hpp"
+#include "WhenExpr.hpp"
 
 #include "LogicExpr.hpp"
 #include "AndExpr.hpp"
@@ -111,6 +114,8 @@
 #include "ProjectedColumn.hpp"
 #include "ProjectOp.hpp"
 #include "UnionOp.hpp"
+
+#include "ConditionalQueryNodeIter.hpp"
 
 #include "SP_Dte.hpp"
 #include "SP_Tme.hpp"
@@ -938,6 +943,50 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       GraphNav::bGlobalWalk(pPredicand, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
 
       sPipeline->vCatSprint(" between "_Stz);
+
+      return GraphNav::WALK_SKIP_CHILDREN;
+    }
+
+    if (CaseExpr::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" } "_Stz);
+
+      // get the when expr
+      ConditionalQueryNodeIter *pWhenIter = CaseExpr::pWhenExprIter(_pQueryNode(pOrdinalExpr));
+
+      while (pWhenIter->bHasNext()) {
+        QueryNode *pWhenExpr = pWhenIter->pNext();
+        ASSERT(WhenExpr::bIsOfType(pWhenExpr));
+
+        QueryNode *pTestExpr = WhenExpr::pPredicateExpr(_pQueryNode(pWhenExpr));
+        QueryNode *pResultExpr = WhenExpr::pResultExpr(_pQueryNode(pWhenExpr));
+
+        // Walk the then testexpr node plan graph
+        GraphNav::bGlobalWalk(pTestExpr, false, true, vVisitorExpr, vVisitorExpr, (void *) pBackend);
+
+        sPipeline->vConcat("WHEN "_Stz);
+
+        // Walk the then resultexpr node plan graph
+        GraphNav::bGlobalWalk(pResultExpr, false, true, vVisitorExpr, vVisitorExpr, (void *) pBackend);
+
+        sPipeline->vConcat("THEN "_Stz);
+      }
+
+      // get the else expr
+      QueryNode *pElseExpr = CaseExpr::pElseExpr(_pQueryNode(pOrdinalExpr));
+
+      // Walk the else expr node plan graph
+      GraphNav::bGlobalWalk(pElseExpr, false, true, vVisitorExpr, vVisitorExpr, (void *) pBackend);
+
+      sPipeline->vCatSprint(" ELSE "_Stz);
+
+      pWhenIter = CaseExpr::pWhenExprIter(_pQueryNode(pOrdinalExpr));
+      while (pWhenIter->bHasNext()) {
+        QueryNode* pWhenExpr = pWhenIter->pNext();
+        sPipeline->vCatSprint(" ENDIF "_Stz);
+      }
+
+      sPipeline->vCatSprint(" CASE "_Stz);
+      delete pWhenIter;
 
       return GraphNav::WALK_SKIP_CHILDREN;
     }

@@ -2897,6 +2897,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the case expression
+    if (pTkn->bSame("case"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_CSE);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the in expression
     if (pTkn->bSame("in"_Stz)) {
       vPushFunc(pExprStack, pExprType, PE_INX);
@@ -3112,6 +3119,35 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       RASSERT( ! bUpperBound );
 
       vPushArithmetic(pExprStack, pExprType, pTkn);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // else
+    if (pTkn->bSame("else"_Stz)) {
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // endif
+    if (pTkn->bSame("endif"_Stz)) {
+      pExprStack->vPushStz("}"_Stz);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // then
+    if (pTkn->bSame("then"_Stz)) {
+      pExprStack->vPushStz("}"_Stz);
+      pExprStack->vPushStz("else {"_Stz);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // when
+    if (pTkn->bSame("when"_Stz)) {
+      pExprStack->vPushStz("_ASSIGN(bFilterResult)"_Stz);
+      pExprStack->vPushStz("if (bFilterResult) {"_Stz);
       continue;
     }
 
@@ -4250,8 +4286,19 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
       pTypeStack->vPush(DM_BOL);
       break;
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // CASE EXPRESSIONS
+    case PE_CSE:
+      //eExpr1 = (eDM)pTypeStack->iPop();
+      //eExpr2 = (eDM)pTypeStack->iPop();
+      //sOperation = aFM[eMacro_Inx[eExpr1][eExpr2]];
+      //sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+      //pExprStack->vPushStz(sOperation);
+      //pTypeStack->vPush(DM_BOL);
+      break;
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // IN EXPRESSIONS LIST OPERATOR
+    // IN OPERATOR
     case PE_INX:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();

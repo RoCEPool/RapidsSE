@@ -530,6 +530,16 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
+    if (pTkn->bSame("ELSE"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("ENDIF"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bSame("EXTRACT_DAY"_Stz)) {
       ePreExp = PE_XDY;
       pTkn = pTknVec->pNextToken();
@@ -622,6 +632,16 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
     if (pTkn->bSame("SUBSTRING3"_Stz)) {
       ePreExp = PE_SS3;;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("THEN"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("WHEN"_Stz)) {
       pTkn = pTknVec->pNextToken();
       continue;
     }
