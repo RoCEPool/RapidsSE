@@ -464,7 +464,7 @@ void JobMetrics::vCollect(Job* pJob)
     for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
       Stream* pStream = pStage->pGet(i_Stream);
       
-      new(& m_oMetricsWsp) StreamMetrics(pStream->iPtnNo());
+      new(& m_oMetricsWsp) StreamMetrics(pStream->i_PtnOfNode());
 
       i8 nOps = pStream->nItems();
       for (i8 i_Op = 0; i_Op < nOps; i_Op++) {

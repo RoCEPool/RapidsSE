@@ -34,7 +34,7 @@ __aFooterFunction(Stream)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
-               LglPtn tLglPtn, i8 iNodeId, i8 iPtnNo)
+               LglPtn tLglPtn, i8 iNodeId, i8 i_PtnOfNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
@@ -51,9 +51,9 @@ Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
   m_p_StageSpec = p_StageSpec;
   m_p_Stage     = p_Stage;
 
-  m_tLglPtn  = tLglPtn;
-  m_iNodeId  = iNodeId;
-  m_iPtnNo   = iPtnNo;
+  m_tLglPtn = tLglPtn;
+  m_iNodeId = iNodeId;
+  m_i_PtnOfNode = i_PtnOfNode;
   
   vSynthesiseName();
 
@@ -93,60 +93,6 @@ Stream::~Stream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create the ops for this stream                                             */
-/*----------------------------------------------------------------------------*/
-void Stream::vCreateOps(void)
-{
-  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-  
-  for (i8 i_OpSpec = 0; i_OpSpec < m_p_StageSpec->nItems(); i_OpSpec++ ) {
-    
-    OpSpec* pOpSpec = m_p_StageSpec->pGet(i_OpSpec);
-  
-    Op* pOp_New = new Op(this,pOpSpec);
-    vAppend(pOp_New);
-
-    if (m_iPtnNo > 0) {
-      
-      Stream* pStream_0 = m_p_Stage->pGet(0);
-      Op*     pOp_0_0   = pStream_0->pGet(i_OpSpec);
-      
-      TagSet* pTagSet_Op_0_0 = pOp_0_0->pOpTags();
-
-      TagSet* pTagSet_Op_New = _pTagSet(pTagSet_Op_0_0->pMemoryCopy());
-      
-      pOp_New->vOpTags(pTagSet_Op_New);
-      
-      continue;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    Op* pOp_0 = pOp_New;
-    
-    pOp_0->vSetTags();
-
-    // form and parse op command string
-    
-    sSTMT sOpCmd;
-    pOp_0->vToCmdStr(sOpCmd);
-    
-    //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
-
-    TokenVec* pTknVec = new TokenVec;
-    pTknVec->vTokeniseSen(sOpCmd);
-
-    bool b = AM::bParseCmd(pTknVec,pOp_0->pOpTags());
-    //RASSERT(b);
-    
-    pTknVec->vSetAllTokens();
-    delete pTknVec;
-
-  } // for
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* get deck of this stream                                                    */
 /*----------------------------------------------------------------------------*/
 Deck* Stream::pDeck(void)
@@ -156,6 +102,16 @@ Deck* Stream::pDeck(void)
   Deck* pDeck = m_p_Stage->pDeck();
   
   return pDeck;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get i_PtnOfNode                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Stream::i_PtnOfNode(void)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+  
+  return m_i_PtnOfNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,16 +234,6 @@ void Stream::vSpawnOpTasks(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* getm_i_Stream                                                              */
-/*----------------------------------------------------------------------------*/
-i8 Stream::iPtnNo(void)
-{
-  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
-  
-  return m_iPtnNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get stage spec for this stream                                             */
 /*----------------------------------------------------------------------------*/
 Stz* Stream::szStreamNm(void)
@@ -296,6 +242,65 @@ Stz* Stream::szStreamNm(void)
   
   return m_sStreamNm;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create the ops for this stream                                             */
+/*----------------------------------------------------------------------------*/
+void Stream::vCreateOps(void)
+{
+  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+  
+  for (i8 i_OpSpec = 0; i_OpSpec < m_p_StageSpec->nItems(); i_OpSpec++ ) {
+    
+    OpSpec* pOpSpec = m_p_StageSpec->pGet(i_OpSpec);
+  
+    Op* pOp_New = new Op(this,pOpSpec);
+    vAppend(pOp_New);
+
+    if (m_i_PtnOfNode > 0) {
+      
+      Stream* pStream_0 = m_p_Stage->pGet(0);
+      Op*     pOp_0_0   = pStream_0->pGet(i_OpSpec);
+      
+      TagSet* pTagSet_Op_0_0 = pOp_0_0->pOpTags();
+
+      TagSet* pTagSet_Op_New = _pTagSet(pTagSet_Op_0_0->pMemoryCopy());
+      
+      pOp_New->vOpTags(pTagSet_Op_New);
+      
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    Op* pOp_0 = pOp_New;
+    
+    pOp_0->vSetTags();
+
+    // form and parse op command string
+    
+    sSTMT sOpCmd;
+    pOp_0->vToCmdStr(sOpCmd);
+    
+    //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
+
+    TokenVec* pTknVec = new TokenVec;
+    pTknVec->vTokeniseSen(sOpCmd);
+
+    bool b = AM::bParseCmd(pTknVec,pOp_0->pOpTags());
+    UNUSED(b);
+    
+    pTknVec->vSetAllTokens();
+    delete pTknVec;
+
+  } // for
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* synthesise name of this stream                                             */
@@ -312,7 +317,7 @@ void Stream::vSynthesiseName(void)
   else {
     m_sStreamNm.vSprint("_streamv_N%lldS%lld_of_%s"_Stz,
                           m_iNodeId,
-                          m_iPtnNo,
+                          m_i_PtnOfNode,
                           m_p_StageSpec->szStageNm());
   }
 }
