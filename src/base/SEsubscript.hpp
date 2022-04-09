@@ -26,6 +26,9 @@ class SEsubscript : public SEtype
   SEsubscript(i8 iLimit);
   SEsubscript(i8 iLimit, i8 iSubscript);
 
+  // auto conversion
+  operator i8(void);
+
   void operator =(i8 iSubscript); // assignment
   
   i8 operator ++(int); // increment (postfix form)
