@@ -24,6 +24,7 @@
 #include "Deck.hpp"
 #include "MpdPtn.hpp"
 #include "NodeSS.hpp"
+#include "NodeCR.hpp"
 
 extern AttachMap gxAttachMap;
 
@@ -414,8 +415,8 @@ void Stage::vCreateStreams(void)
 //        vAppend(pStream);
 //      }
       
-      for (NodeSS i_Node; i_Node.bValid(); i_Node++) {
-        iGridNodeId = AM::GRID::iGetNthNodeId(i_Node);
+      for (NodeCR crNode; crNode.bValid(); crNode++) {
+        iGridNodeId = crNode->iNodeId();
         
         pStream = new Stream(this, m_pStageSpec,
                              tLglPtn, iGridNodeId, iMappedPtnNo);
@@ -431,16 +432,16 @@ void Stage::vCreateStreams(void)
       iMappedPtnNo = 0;
       tLglPtn = C_UNKNOWN;
       
-//      for (i8 i_Node = 0; i_Node < AM::pGrid()->nKnownNodes(); i_Node++) {
+//      for (NodeSS i_Node; i_Node.bValid(); i_Node++) {
 //        iGridNodeId = AM::GRID::iGetNthNodeId(i_Node);
 //
 //        pStream = new Stream(this, m_pStageSpec,
 //                             tLglPtn, iGridNodeId, iMappedPtnNo);
 //        vAppend(pStream);
 //      }
-      for (NodeSS i_Node; i_Node.bValid(); i_Node++) {
-        iGridNodeId = AM::GRID::iGetNthNodeId(i_Node);
-        
+      for (NodeCR crNode; crNode.bValid(); crNode++) {
+        iGridNodeId = crNode->iNodeId();
+
         pStream = new Stream(this, m_pStageSpec,
                              tLglPtn, iGridNodeId, iMappedPtnNo);
         vAppend(pStream);

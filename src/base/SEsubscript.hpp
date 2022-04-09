@@ -34,6 +34,8 @@ class SEsubscript : public SEtype
   i8 operator ++(int); // increment (postfix form)
   bool operator <(i8 iSubscript);
 
+  void vIncSubscript(void);
+
   i8   iLimit(void);
   void vLimit(i8 iLimit);
 
