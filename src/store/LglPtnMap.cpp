@@ -266,8 +266,8 @@ void LglPtnMap::vRepartition(void)
   for (i8 i_LglPtn = 0; i_LglPtn < m_nPtnsInGrid; i_LglPtn++) {
     i4 i_Node = (i4)i_LglPtn % m_nKnownNodes;
 
-    m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iNodeId   = AM::GRID::iGetNthNodeId(i_Node);
-    m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iPtnNo = (i4)i_LglPtn / m_nKnownNodes;
+    m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iNodeId = (i4)AM::GRID::iGetNthNodeId(i_Node);
+    m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iPtnNo  = (i4)i_LglPtn / m_nKnownNodes;
   }
 
   m_iMapChange++;
@@ -281,8 +281,8 @@ void LglPtnMap::vResetNodePtnArray(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LGLPTNMAP,_FOOTER_);
   
   for (i8 i_LglPtn = 0; i_LglPtn < C_MAX_LGLPTNS; i_LglPtn++) {
-    m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iNodeId   = C_UNKNOWN;
-    m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iPtnNo = C_UNKNOWN;
+    m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iNodeId = C_UNKNOWN;
+    m_xaPtnId_to_NodeIdPtnNo[i_LglPtn].m_iPtnNo  = C_UNKNOWN;
   }
 }
 
