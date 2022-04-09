@@ -60,10 +60,10 @@ namespace STORE
     Heaps         m_xHeaps;
     InternalTables* m_pInternalTables;
     Jobs*         m_pJobs;
+    LglPtnMap*    m_pLglPtnMap;
     Locks         m_oLocks;
     Numbering*    m_pNumbering;
     Atomic        m_nxOperands;
-    PtnMap*       m_pPtnMap;
     i8            m_iQuit;
     b8            m_bReady;
     b8            m_bReapEnabled;

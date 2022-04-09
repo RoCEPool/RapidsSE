@@ -6,7 +6,7 @@
 
 #include "eYX.h"
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 
 
 #include "OpSpec.hpp"
@@ -34,18 +34,31 @@ __aFooterFunction(Stream)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stream::Stream(Stage* p_Stage, StageSpec* p_StageSpec,
-               i8 i_Stream, LglPtn tLglPtn, i8 iNodeId)
+               LglPtn tLglPtn, i8 iNodeId, i8 iPtnNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
   
+//  if (m_i_Stream != m_tLglPtn)
+//    vTrace("m_i_Stream %lld ; m_tLglPtn %lld"_Stz,m_i_Stream,m_tLglPtn.iAsI8());
+
+//  vTrace("Stream: L %lld N %lld P %lld\n"_Stz,
+//         tLglPtn.iAsI8(),
+//         iNodeId,
+//         iPtnNo
+//         );
+
+
   m_p_StageSpec = p_StageSpec;
   m_p_Stage     = p_Stage;
 
-  m_tLglPtn     = tLglPtn;
-  m_iNodeId    = iNodeId;
-  m_i_Stream   = i_Stream;
+  m_tLglPtn  = tLglPtn;
+  m_iNodeId  = iNodeId;
+  m_iPtnNo   = iPtnNo;
   
   vSynthesiseName();
+
+//  RASSERT(    (0 == m_i_Stream && -1 == m_tLglPtn.iAsI8())
+//           || (m_i_Stream == m_tLglPtn));
 
   _checkInitialised_(CN_STREAM);
   
@@ -93,7 +106,7 @@ void Stream::vCreateOps(void)
     Op* pOp_New = new Op(this,pOpSpec);
     vAppend(pOp_New);
 
-    if (m_i_Stream > 0) {
+    if (m_iPtnNo > 0) {
       
       Stream* pStream_0 = m_p_Stage->pGet(0);
       Op*     pOp_0_0   = pStream_0->pGet(i_OpSpec);
@@ -183,6 +196,7 @@ Pipeline* Stream::pPipeline(void)
 LglPtn Stream::tLglPtn(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+  
   return m_tLglPtn;
 }
 
@@ -248,7 +262,7 @@ void Stream::vSpawnOpTasks(void)
     
   }
   else {
-    iOnNodeId = AM::pPtnMap()->iMappedNodeId(m_tLglPtn);
+    iOnNodeId = AM::pLglPtnMap()->iNodeId(m_tLglPtn);
   }
   
   if (iOnNodeId == iThisNodeId) {
@@ -266,11 +280,11 @@ void Stream::vSpawnOpTasks(void)
 /*----------------------------------------------------------------------------*/
 /* getm_i_Stream                                                              */
 /*----------------------------------------------------------------------------*/
-i8 Stream::i_Stream(void)
+i8 Stream::iPtnNo(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_i_Stream;
+  return m_iPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,7 +312,7 @@ void Stream::vSynthesiseName(void)
   else {
     m_sStreamNm.vSprint("_streamv_N%lldS%lld_of_%s"_Stz,
                           m_iNodeId,
-                          m_i_Stream,
+                          m_iPtnNo,
                           m_p_StageSpec->szStageNm());
   }
 }

@@ -78,8 +78,9 @@ Table::Table(Stz* szTableNm, eTT eKind)
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      LglPtn tLglPtn = Table::tTablePtnToPtnId(i_TablePtn);
-      TablePtn* pTablePtn = new TablePtn(this,tLglPtn);
+      LglPtn tLglPtn = Table::tTablePtnToLglPtn(i_TablePtn);
+      PhyPtn tPhyPtn = Table::tTablePtnToPhyPtn(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tLglPtn,tPhyPtn);
 
       m_pTablePtnVec->vAppend(pTablePtn);
     }
@@ -233,8 +234,7 @@ i8 Table::iPtnNoToTablePtn(LglPtn tLglPtn)
 /*----------------------------------------------------------------------------*/
 /* convert tablePtn to partition ID (in grid)                                 */
 /*----------------------------------------------------------------------------*/
-
-LglPtn Table::tTablePtnToPtnId(i8 i_TablePtn)
+LglPtn Table::tTablePtnToLglPtn(i8 i_TablePtn)
 {
   _static_
 
@@ -245,6 +245,22 @@ LglPtn Table::tTablePtnToPtnId(i8 i_TablePtn)
   tLglPtn = iPtnId;
 
   return tLglPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert tablePtn to physical partition (on node)                           */
+/*----------------------------------------------------------------------------*/
+PhyPtn Table::tTablePtnToPhyPtn(i8 i_TablePtn)
+{
+  _static_
+
+  i8 iPtnId = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeId();
+
+  PhyPtn tPhyPtn;
+
+  tPhyPtn = iPtnId;
+
+  return tPhyPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -921,8 +937,9 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      LglPtn tPtnNo = Table::tTablePtnToPtnId(i_TablePtn);
-      TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
+      LglPtn tLglPtn = Table::tTablePtnToLglPtn(i_TablePtn);
+      PhyPtn tPhyPtn = Table::tTablePtnToPhyPtn(i_TablePtn);
+      TablePtn* pTablePtn = new TablePtn(this,tLglPtn,tPhyPtn);
 
       m_pTablePtnVec->vAppend(pTablePtn);
     }
@@ -1002,7 +1019,7 @@ bool Table::bUpdateBucket(Parcel* pParcel)
       {
         CrwBuffer* pCrwBuffer = (CrwBuffer *) pObject;
 
-        TablePtn* pTablePtn = this->pTablePtn(pCrwBuffer->tLglPtn().uPtnNo());
+        TablePtn* pTablePtn = this->pTablePtn(pCrwBuffer->tLglPtn().iAsI8());
         pTablePtn->vAppendBuffer(pCrwBuffer);
 
         break;

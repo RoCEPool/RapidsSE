@@ -122,11 +122,11 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* get any completed/full buffer                                              */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToLglPtnRow::pCompleted(i8 i_Ptn)
+RowBuffer* ToLglPtnRow::pCompleted(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
   
-  RowBuffer* pRowBuffer = _pRowBuffer(m_oLglBufSet.pCompletedBuffer(i_Ptn));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_oLglBufSet.pCompletedBuffer(tLglPtn));
   
   return pRowBuffer;
 }
@@ -134,11 +134,11 @@ RowBuffer* ToLglPtnRow::pCompleted(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* get any dangling/last buffer                                               */
 /*----------------------------------------------------------------------------*/
-RowBuffer* ToLglPtnRow::pDangling(i8 i_Ptn)
+RowBuffer* ToLglPtnRow::pDangling(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
   
-  RowBuffer* pRowBuffer = _pRowBuffer(m_oLglBufSet.pDanglingBuffer(i_Ptn));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_oLglBufSet.pDanglingBuffer(tLglPtn));
   
   return pRowBuffer;
   
@@ -173,10 +173,14 @@ void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn, KeyBkt tKeyBkt)
 
   //i8 i_Ptn = tLglPtn.iAsI8();
 
+  bool bNewBuffer = false;
+  
   // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRowBuffer = _pRowBuffer(m_oLglBufSet.pBuffer(tLglPtn));
   if (! pDstRowBuffer) {
     pDstRowBuffer = new RowBuffer;
+    bNewBuffer = true;
+    
     pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->pRowPix());
     pDstRowBuffer->pRowPix()->vRemovePtnHash();
     m_oLglBufSet.vAddBuffer(tLglPtn,pDstRowBuffer);
@@ -186,6 +190,8 @@ void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn, KeyBkt tKeyBkt)
   Row* aNewRow = pDstRowBuffer->pAllotRow();
   if (! aNewRow) {
     pDstRowBuffer = new RowBuffer;
+    bNewBuffer = true;
+    
     pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->pRowPix());
     pDstRowBuffer->pRowPix()->vRemovePtnHash();
     m_oLglBufSet.vAddBuffer(tLglPtn,pDstRowBuffer);
@@ -193,9 +199,11 @@ void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn, KeyBkt tKeyBkt)
     ASSERT(aNewRow);
   }
 
-  pDstRowBuffer->vLglPtn(tLglPtn);
-  pDstRowBuffer->vBucketNo(tKeyBkt);
-
+  if (bNewBuffer) {
+    pDstRowBuffer->vLglPtn(tLglPtn);
+    pDstRowBuffer->vBucketNo(tKeyBkt);
+  }
+  
   m_pIntoRowBuffer = pDstRowBuffer;
 }
 

@@ -6,7 +6,7 @@
 
 #include "RowBuffer.hpp"
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
@@ -737,7 +737,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
     
     bReplicated = true;
     
-    if (0 == pStream->i_Stream())
+    if (0 == pStream->iPtnNo())
       bReplicatedStream0 = true;
   }
 

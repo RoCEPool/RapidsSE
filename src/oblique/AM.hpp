@@ -179,7 +179,7 @@ namespace STORE {
   class OverLine;
 
   class Pipeline;
-  class PtnMap;
+  class LglPtnMap;
   class PtnStm_cursor;
   class PtnStream;
 
@@ -732,7 +732,7 @@ namespace OBLIQUE
     static Job* pPipelineJob(void);
     static void vPoolAnalyze(void);
     static void vPrintGlobals(void);
-    static PtnMap* pPtnMap(void);
+    static LglPtnMap* pLglPtnMap(void);
     static BucketMap* pBucketMap(void);
 
     static i8 iQueryNoInc(void);

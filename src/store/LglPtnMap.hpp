@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PtnMap.hpp -- Partition (to node,tablePtn) Map                             */
+/* LglPtnMap.hpp -- Logical Partition (to mapped node, ptn) Map               */
 /*============================================================================*/
 #pragma once
 
@@ -12,7 +12,7 @@ namespace STORE
   };
 
 
-  class PtnMap : public Object
+  class LglPtnMap : public Object
   {
   private:
     Lock m_okLock;
@@ -34,8 +34,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    PtnMap(i8 nKnownNodes, i8 nPtnsPerNode);
-   ~PtnMap(void) noexcept(false);
+    LglPtnMap(i8 nKnownNodes, i8 nPtnsPerNode);
+   ~LglPtnMap(void) noexcept(false);
   
     void vAdjustMap(i8 nKnownNodes);
 
@@ -43,8 +43,8 @@ namespace STORE
   
     i8 nKnownNodes(void);
   
-    i8 iMappedNodeId(LglPtn tLglPtn);
-    i8 i_MappedPtnNo(LglPtn tLglPtn);
+    i8 iNodeId(LglPtn tLglPtn);
+    i8 iPtnNo(LglPtn tLglPtn);
 
     i8 nPtnsInGrid(void);
     i8 nPtnsPerNode(void);
@@ -66,7 +66,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  PtnMap* _pPtnMap(void* aAddr);
+  LglPtnMap* _pLglPtnMap(void* aAddr);
 }
 
 /*============================================================================*/

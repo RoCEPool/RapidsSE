@@ -617,7 +617,7 @@ bool Dynamo::bRecogniseOnOrigin(StageSpec *p_StageSpec)
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
 
-    p_StageSpec->vStageTopology(YG_ORIGIN);
+    p_StageSpec->vStageTopology(YG_ORIGIN_NODE);
     p_StageSpec->vParcelForward(YF_ORIGIN);
     return true;
   }

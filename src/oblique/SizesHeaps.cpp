@@ -70,7 +70,7 @@
 
 #include "Encoding.hpp"
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 
 
 #include "BucketMap.hpp"
@@ -400,6 +400,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL }, // CN_LARGETRANSIENT
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL }, // CN_LARGEVIRTUAL
   { sizeof(LglBufSet),          HT_T_LARGE   ,0 FILL }, // CN_LGLBUFSET
+  { sizeof(LglPtnMap),          HT_T_LARGE   ,0 FILL }, // CN_LGLPTNMAP
   { sizeof(Licence),            HT_T_TINY    ,0 FILL }, // CN_LICENCE
   { sizeof(Limits),             HT_T_TINY    ,0 FILL }, // CN_LIMITS
   { sizeof(ListExoNode_t<Object>), HT_T_TINY ,0 FILL }, // CN_LISTEXONODE_t
@@ -478,7 +479,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PsxThd),             HT_T_TINY    ,0 FILL }, // CN_PSXTHD
   { sizeof(PtnDef),             HT_T_MEDIUM  ,0 FILL }, // CN_PTNDEF
   { sizeof(LglPtn),              HT_T_TINY    ,0 FILL }, // CN_PTNID
-  { sizeof(PtnMap),             HT_T_LARGE   ,0 FILL }, // CN_PTNMAP
   { sizeof(PtnStm_cursor),      HT_T_TINY    ,0 FILL }, // CN_PTNSTMCURSOR
   { sizeof(PtnStream),          HT_T_TINY    ,0 FILL }, // CN_PTNSTREAM
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_PTRVAL

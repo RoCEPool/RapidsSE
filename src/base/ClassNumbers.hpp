@@ -152,6 +152,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LARGETRANSIENT,
   /* */ CN_LARGEVIRTUAL,
   /* */ CN_LGLBUFSET,
+  /* */ CN_LGLPTNMAP,
   /* */ CN_LICENCE,
   /* */ CN_LIMITS,
   /* */ CN_LISTEXONODE_t,
@@ -230,7 +231,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PSXTHD,
   /* */ CN_PTNDEF,
   /* */ CN_PTNID,
-  /* */ CN_PTNMAP,
   /* */ CN_PTNSTMCURSOR,
   /* */ CN_PTNSTREAM,
   /* */ CN_PTRVAL,
@@ -558,6 +558,7 @@ static Stz* aCN[]
   /* */ "LARGETRANSIENT"_Stz,       // CN_LARGETRANSIENT
   /* */ "LARGEVIRTUAL"_Stz,         // CN_LARGEVIRTUAL
   /* */ "LGLBUFSET"_Stz,            // CN_LGLBUFSET
+  /* */ "LGLPTNMAP"_Stz,            // CN_LGLPTNMAP
   /* */ "LICENCE"_Stz,              // CN_LICENCE
   /* */ "LIMITS"_Stz,               // CN_LIMITS
   /* */ "LISTEXONODE_t"_Stz,        // CN_LISTEXONODE_t
@@ -636,7 +637,6 @@ static Stz* aCN[]
   /* */ "PSXTHD"_Stz,               // CN_PSXTHD
   /* */ "PTNDEF"_Stz,               // CN_PTNDEF
   /* */ "PTNID"_Stz,                // CN_PTNID
-  /* */ "PTNMAP"_Stz,               // CN_PTNMAP
   /* */ "PTNSTMCURSOR"_Stz,         // CN_PTNSTMCURSOR
   /* */ "PTNSTREAM"_Stz,            // CN_PTNSTREAM
   /* */ "PTRVAL"_Stz,               // CN_PTRVAL

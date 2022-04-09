@@ -22,8 +22,7 @@ namespace STORE
     
   public:
   
-    void vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer);
-
+    void vAddBuffer(LglPtn tLglPtn, DataBuffer* pDataBuffer);
     DataBuffer* pBuffer(LglPtn tLglPtn);
     DataBuffer* pCompletedBuffer(LglPtn tLglPtn);
     DataBuffer* pDanglingBuffer(LglPtn tLglPtn);

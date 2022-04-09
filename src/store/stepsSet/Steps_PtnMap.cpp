@@ -8,7 +8,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 #include "BucketMap.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -28,7 +28,7 @@ void Step::vPtnMapAdjust(void)
 {
   ENTRY();
   
-  PtnMap* pPtnMap = AM::pPtnMap();
+  LglPtnMap* pPtnMap = AM::pLglPtnMap();
   
   pPtnMap->vAdjustMap(AM::GRID::nKnownNodes());
 
@@ -57,7 +57,7 @@ void Step::vPtnMapSee(void)
 {
   ENTRY();
   
-  PtnMap* pPtnMap = AM::pPtnMap();
+  LglPtnMap* pPtnMap = AM::pLglPtnMap();
   
   pPtnMap->vSee();
     

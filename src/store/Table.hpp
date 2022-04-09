@@ -53,7 +53,8 @@ namespace STORE
     static void       vPostRecv(void* aTable);
     
     i8      iPtnNoToTablePtn(LglPtn tLglPtn);
-    LglPtn   tTablePtnToPtnId(i8 i_TablePtn);
+    LglPtn  tTablePtnToLglPtn(i8 i_TablePtn);
+    PhyPtn  tTablePtnToPhyPtn(i8 i_TablePtn);
 
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);

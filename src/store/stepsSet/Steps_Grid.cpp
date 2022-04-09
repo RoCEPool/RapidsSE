@@ -12,7 +12,7 @@
 
 #include "StreamSet.hpp"
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
@@ -313,7 +313,7 @@ void Step::vGridTablePtnToPtnNo(void)
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
 
   LglPtn tLglPtn;
-  tLglPtn = AM::pPtnMap()->tToPtnNoOfThisNode(i_Ptn);
+  tLglPtn = AM::pLglPtnMap()->tToPtnNoOfThisNode(i_Ptn);
   m_pDataStack->vPushInt(tLglPtn.iAsI8());
 
   EXIT();
@@ -361,7 +361,7 @@ void Step::vGridToNode(void)
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
   //m_pDataStack->vPush((i8)0);
 
-  i8 iNodeId = AM::pPtnMap()->iMappedNodeId(tLglPtn);
+  i8 iNodeId = AM::pLglPtnMap()->iNodeId(tLglPtn);
   m_pDataStack->vPushInt(iNodeId);
   
   EXIT();

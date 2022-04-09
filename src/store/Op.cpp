@@ -6,7 +6,7 @@
 
 #include "eYX.h"
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
@@ -1008,7 +1008,7 @@ i8 Op::iNodeId(void)
   if (m_p_Stream->pStage()->pStageSpec()->bNodeTopo())
     iNodeId = m_p_Stream->iNodeId();
   else
-    iNodeId = AM::pPtnMap()->iMappedNodeId(tLglPtn());
+    iNodeId = AM::pLglPtnMap()->iNodeId(tLglPtn());
 
   return iNodeId;
 }

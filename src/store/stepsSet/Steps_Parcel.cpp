@@ -19,7 +19,7 @@
 #include "Deck.hpp"
 #include "Stream.hpp"
 #include "Vertex.hpp"
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 #include "Node.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
@@ -287,7 +287,7 @@ void Step::vParcelPipeOut(void)
 
         if (YG_ALL_PARTITIONS == eStageTopology) {
           LglPtn tDstLglPtn = pDstStream->tLglPtn();
-          i8 iDstNodeId = AM::pPtnMap()->iMappedNodeId(tDstLglPtn);
+          i8 iDstNodeId = AM::pLglPtnMap()->iNodeId(tDstLglPtn);
           if (iDstNodeId != iCurNodeId)
             continue;
         }

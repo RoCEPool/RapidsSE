@@ -22,8 +22,9 @@ namespace STORE
     Table* m_pTable;  // table this partition belongs to
 
 
-    LglPtn m_tLglPtn;  // partition number (in grid)
-  
+    LglPtn m_tLglPtn;  // logical partition (in grid)
+    PhyPtn m_tPhyPtn;  // physical partition (in grid)
+
     // must be last
     Footer m_xFooter;
     
@@ -31,7 +32,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    TablePtn(Table* pTable, LglPtn tLglPtn);
+    TablePtn(Table* pTable, LglPtn tLglPtn, PhyPtn tPhyPtn);
    ~TablePtn(void) noexcept(false);
   
     void vDropRead(void);

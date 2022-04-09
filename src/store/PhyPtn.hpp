@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* PtnId.hpp -- Node.Partiton identifier                                      */
+/* PhyPtn.hpp -- Node.Partiton identifier                                     */
 /*============================================================================*/
 #pragma once
 
-class LglPtn : public Gid_t<CN_PTNID>
+class PhyPtn : public Gid_t<CN_PTNID>
 {
   public:
 
-  LglPtn(void);
-  LglPtn(i8 iAsI8);
+  PhyPtn(void);
+  PhyPtn(i8 iAsI8);
 
   // auto conversion
-  operator LglPtn*(void);
+  operator PhyPtn*(void);
   
   // auto conversion
   operator i8(void);
 
   void operator =(i8 iAsI8);
-  void operator =(LglPtn tLglPtn);
+  void operator =(PhyPtn tPhyPtn);
 
   i8 operator ++(void); // increment (prefix form)
   i8 operator ++(int);  // increment (postfix)

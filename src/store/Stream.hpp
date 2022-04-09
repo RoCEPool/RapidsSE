@@ -14,17 +14,17 @@ namespace STORE
     Stage*     m_p_Stage;      // which stage of pipeline
     StageSpec* m_p_StageSpec;  // stage specification for this stream
 
-    i8    m_i_Stream;         // [stream] in stage
- 
-    LglPtn m_tLglPtn;           // this stream processes m_tLglPtn in grid
-                              //   will be C_UNKNOWN for stage with node topology
+    LglPtn m_tLglPtn;  // this stream represents this logical ptn in grid
+                       //   will be C_UNKNOWN for stage with node topology
 
-    i8    m_iNodeId;          // this stream processes NodeId in grid
-                              //   is PtnMap::i_PtnNoToNode(m_tLglPtn);
+    i8     m_iNodeId;  // this stream processes NodeId in grid
+                       //   is PtnMap::i_PtnNoToNode(m_tLglPtn);
 
+    i8     m_iPtnNo;   // this stream processes PtnNo (in tables)
+  
     // -- -- -- -- -- --
 
-    s32  m_sStreamNm;         // syntehised name of this stream
+    s32  m_sStreamNm;  // synthesised name of this stream
 
     // must be last
     Footer m_xFooter;
@@ -35,15 +35,16 @@ namespace STORE
   
     Stream(Stage*     p_Stage,
            StageSpec* p_StageSpec,
-           i8         i_Stream,
-           LglPtn      tLglPtn,
-           i8         iNodeId);
+           LglPtn     tLglPtn,
+           i8         iNodeId,
+           i8         iPtnNo
+           );
    ~Stream(void) noexcept(false);
     
     Deck* pDeck(void);
   
     i8   iNodeId(void);
-    i8   i_Stream(void);
+    i8   iPtnNo(void);
 
     Op*  pOp0(void);
     Pipeline* pPipeline(void);

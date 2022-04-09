@@ -336,7 +336,7 @@ void Step::vOpPtnIdFetch(void)
 
   LglPtn tPtn = m_pOp->tLglPtn();
 
-  m_pDataStack->vPushInt(tPtn.uPtnNo());
+  m_pDataStack->vPushInt(tPtn.iAsI8());
 
   EXIT();
 }
