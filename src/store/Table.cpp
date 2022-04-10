@@ -238,7 +238,7 @@ LglPtn Table::tTablePtnToLglPtn(i8 i_TablePtn)
 {
   _static_
 
-  i8 iPtnId = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeId();
+  i8 iPtnId = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::NODE::iThisNodeId();
 
   LglPtn tLglPtn;
 
@@ -254,7 +254,7 @@ PhyPtn Table::tTablePtnToPhyPtn(i8 i_TablePtn)
 {
   _static_
 
-  i8 iPtnId = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::iThisNodeId();
+  i8 iPtnId = (i_TablePtn * AM::GRID::nKnownNodes()) + AM::NODE::iThisNodeId();
 
   PhyPtn tPhyPtn;
 

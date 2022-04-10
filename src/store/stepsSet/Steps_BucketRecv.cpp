@@ -50,7 +50,7 @@ void Step::vBucketRecvPutParts(void)
 
     if (pObject && (pObject->eGetClassNo() == CN_BUCKETINFO)) {
       pBucketInfo = (BucketInfo *) pObject;
-      vTrace("C++ gets called: bktRecv::putParts. %s Got  CN_BUCKETINFO from node:%s\n"_Stz, AM::szNodeNm()->azChar(), pBucketInfo->sNodeName().azChar());
+      vTrace("C++ gets called: bktRecv::putParts. %s Got  CN_BUCKETINFO from node:%s\n"_Stz, AM::NODE::szNodeNm()->azChar(), pBucketInfo->sNodeName().azChar());
       pUpdateTable = AM::pTableFind(pBucketInfo->sTableName());
       if (pUpdateTable) {
         //vTrace("C++ gets called: bktRecv::putParts. Got  CN_BUCKETINFO for table: %s OK\n"_Stz, pUpdateTable->szTableNm()->azChar());

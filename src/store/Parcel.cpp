@@ -860,7 +860,7 @@ void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
   // forward to this node, dst stage is a YS_NODE_STREAM
   
   if (YS_NODE_STREAM == pDstStage->pStageSpec()->eStreamTopology()) {
-    i8 i_ThisNode = AM::iThisNodeId();
+    i8 i_ThisNode = AM::NODE::iThisNodeId();
     Stream* pDstStream = pDstStage->pGetStream_byNodeId(i_ThisNode);
 
 //    eCN eClass = pOperand->eGetClassNo();
@@ -961,7 +961,7 @@ void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (YS_NODE_STREAM == pDstStage->pStageSpec()->eStreamTopology()) {
-    i8 i_ThisNode = AM::iThisNodeId();
+    i8 i_ThisNode = AM::NODE::iThisNodeId();
     Stream* pDstStream = pDstStage->pGetStream_byNodeId(i_ThisNode);
 
 //    eCN eClass = pOperand->eGetClassNo();

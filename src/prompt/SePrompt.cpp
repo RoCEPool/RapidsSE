@@ -847,7 +847,7 @@ void SePrompt::vPromptUser(void)
 
   bool bLowMem = gpBufferPool->bLowMemory();
   
-  Stz* szNodeNm = AM::szNodeNm();
+  Stz* szNodeNm = AM::NODE::szNodeNm();
   i8 iPid = Process::iGetPid();
 
   /*

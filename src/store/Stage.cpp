@@ -260,7 +260,7 @@ Op* Stage::pOp0(void)
 /*----------------------------------------------------------------------------*/
 Op *Stage::pPipeDstOp(LglPtn tDstLglPtn, i8 i_DstOp)
 {
-  i8 i_ThisNode = AM::iThisNodeId();
+  i8 i_ThisNode = AM::NODE::iThisNodeId();
 
   Op *pOp = nullptr;
   Stream *pStream = nullptr;

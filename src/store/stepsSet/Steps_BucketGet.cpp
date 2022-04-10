@@ -232,7 +232,7 @@ void Step::vBucketGetCrw(void)
 
   BucketInfo* pBucketInfo = new BucketInfo(pBucketGet->sTableName(), tLglPtn, pBucketGet->iBucketNo());
   //pBucketInfo->vCrwBuffer(pCrwBuffer); leave data buffer separately
-  pBucketInfo->vNodeName(AM::szNodeNm());
+  pBucketInfo->vNodeName(AM::NODE::szNodeNm());
 
   pParcel->vAddItem(pBucketInfo);
 

@@ -1465,8 +1465,8 @@ void Task::vTracePoint(Stz* aMark)
   
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s : a%2lld="_Stz,
         
-         AM::szNodeNm(),
-         AM::iThisNodeId(),
+         AM::NODE::szNodeNm(),
+         AM::NODE::iThisNodeId(),
          szTaskNm(),
          m_oAcksRmg.iPrintOnlyValue(),
          
