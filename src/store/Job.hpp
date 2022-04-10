@@ -106,7 +106,6 @@ namespace STORE
     void  operator delete(void*);
     
     Job(Stz* szJobNm,
-        i8 iOriginNodeId,  // originated on which node
         i8 i_Session,      // which session in session array
         i8 iCmdNo          // the sequence no of the request from that session
        );

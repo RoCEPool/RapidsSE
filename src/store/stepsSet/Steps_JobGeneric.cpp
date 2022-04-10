@@ -36,7 +36,6 @@ void Step::vJob_BegunNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   Job* pJobBegun = new Job("begun"_Stz,
-                           pDistJob->iOriginNodeId(),
                            pDistJob->i_Session(),
                            pDistJob->iCmdNo()
                            );
@@ -76,7 +75,6 @@ void Step::vJob_CancelNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobCancel = new Job("cancel"_Stz,
-                            pDistJob->iOriginNodeId(),
                             pDistJob->i_Session(),
                             pDistJob->iCmdNo()
                             );
@@ -116,7 +114,6 @@ void Step::vJob_CancelledNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   Job* pJobCancelled = new Job("cancelled"_Stz,
-                               pDistJob->iOriginNodeId(),
                                pDistJob->i_Session(),
                                pDistJob->iCmdNo()
                                );
@@ -158,7 +155,6 @@ void Step::vJob_EndNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobEnd = new Job("end"_Stz,
-                         pDistJob->iOriginNodeId(),
                          pDistJob->i_Session(),
                          pDistJob->iCmdNo()
                          );
@@ -199,7 +195,6 @@ void Step::vJob_EndedNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobEnded = new Job("ended"_Stz,
-                           pDistJob->iOriginNodeId(),
                            pDistJob->i_Session(),
                            pDistJob->iCmdNo()
                            );
@@ -241,7 +236,6 @@ void Step::vJob_ExecuteNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobExecute = new Job("execute"_Stz,
-                             pDistJob->iOriginNodeId(),
                              pDistJob->i_Session(),
                              pDistJob->iCmdNo()
                              );
@@ -283,7 +277,6 @@ void Step::vJob_ExecutedNew(void)
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Job* pJobExecuted = new Job("executed"_Stz,
-                              pDistJob->iOriginNodeId(),
                               pDistJob->i_Session(),
                               pDistJob->iCmdNo()
                               );

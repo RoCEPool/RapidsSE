@@ -363,7 +363,6 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   Job* pPrepareJob =
          pSession->m_pSsnJob =
            new Job(szJobNm,
-                   AM::GRID::iThisNodeId(),
                    pSession->m_i_Session,
                    pSession->m_iCmdNo++
                    );
@@ -810,7 +809,6 @@ void Api::vCallBootSystem(void)
   _static_
   
   Job* pJob = new Job("bootSystem"_Stz,
-                      AM::GRID::iThisNodeId(),
                       AM::SESSION::iInternalSession(),
                       1
                       );
@@ -869,7 +867,6 @@ void Api::vCallStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Job* pJob = new Job("StartSys"_Stz,
-                      AM::GRID::iThisNodeId(),
                       AM::SESSION::iInternalSession(),
                       1
                       );
