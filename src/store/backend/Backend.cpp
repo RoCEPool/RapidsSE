@@ -970,6 +970,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
         sPipeline->vConcat("THEN "_Stz);
       }
+      delete pWhenIter;
 
       // get the else expr
       QueryNode *pElseExpr = CaseExpr::pElseExpr(_pQueryNode(pOrdinalExpr));

@@ -1,0 +1,606 @@
+/*----------------------------------------------------------------------------*/
+/* General syntax & semantics tests for CASE expressions                      */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+CREATE TABLE region (
+	 R_REGIONKEY       INTEGER NOT NULL,
+	 R_NAME            CHAR(25) NOT NULL,
+	 R_COMMENT         VARCHAR(152)
+);
+success
+
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+success
+
+load region "../TPCH/SF_0001/region.csv";
+success
+
+load nation "../TPCH/SF_0001/nation.csv";
+success
+
+load datums "../DATA/Datums/datums.csv" ;
+success
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  CASE expressions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Simple CASE expr
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN 'here'
+        WHEN 'INDIA' THEN 'there'
+        ELSE 'everywhere'
+       END
+FROM nation;
+
+rows:
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('there')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+
+
+// Searched CASE expr
+SELECT CASE
+        WHEN n_name = 'AUSTRALIA' THEN 'here'
+        WHEN n_name = 'INDIA' THEN 'there'
+        ELSE 'everywhere'
+       END
+FROM nation;
+
+rows:
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('there')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+
+
+// CASE without ELSE
+SELECT CASE
+        WHEN n_name = 'AUSTRALIA' THEN 'here'
+        WHEN n_name = 'INDIA' THEN 'there'
+       END
+FROM nation;
+
+rows:
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  ('there')
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+
+// CASE returning different type than that of the predicant
+SELECT CASE
+        WHEN n_name = 'AUSTRALIA' THEN true
+        WHEN n_name = 'INDIA' THEN false
+        ELSE NULL
+       END
+FROM nation;
+
+rows:
+  (null)
+  (false)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+
+// CASE with one return type and NULL (1)
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN 'here'
+        WHEN 'INDIA' THEN 'there'
+        ELSE NULL
+       END
+FROM nation;
+
+rows:
+  (null)
+  ('there')
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+
+// CASE with one return type and NULL (2)
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN NULL
+        WHEN 'INDIA' THEN 'there'
+        ELSE 'everywhere'
+       END
+FROM nation;
+
+rows:
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('there')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+
+
+// CASE with one return type and NULL (3)
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN NULL
+        WHEN 'INDIA' THEN NULL
+        ELSE 'everywhere'
+       END
+FROM nation;
+
+rows:
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  (null)
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+
+// CASE with one return type and NULL (4)
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN NULL
+        WHEN 'INDIA' THEN NULL
+        ELSE NULL
+      END
+FROM nation;
+
+rows:
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+
+
+// Case with mix of numeric types. Integer is promoted to a float
+/*
+TODO: FIX (SE returning 1 instead of 1e0)
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN 1
+        WHEN 'INDIA' THEN 1.0e0
+        ELSE NULL
+      END
+FROM nation;
+
+rows:
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (1e0)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+*/
+
+
+// Case with mix of numeric types. Integer (col1) is promoted to a decimal (col9)
+/*
+TODO: FIX
+SELECT CASE vch_col14
+        WHEN 'hello' THEN int_col1
+        WHEN 'blue'  THEN dec_col6
+        ELSE NULL
+      END
+FROM datums;
+
+// Case with mix of numeric types. decimals (col9) are promoted to a float (col8)
+TODO: FIX
+SELECT vch_col14, flt_col8, dec_col6, CASE vch_col14
+        WHEN 'hello' THEN flt_col8
+        WHEN 'blue'  THEN dec_col6
+        ELSE NULL
+      END
+FROM datums;
+*/
+
+// Case with mix of numeric types. dates are promoted to timestamps
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN DATE '2000-01-01'
+        WHEN 'INDIA' THEN TIMESTAMP '2001-01-01 13:00:00'
+        ELSE NULL
+      END
+FROM nation;
+
+rows:
+  (null)
+  (2001-01-01 13:00:00)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+  (null)
+
+// CASE in a WHERE clause
+SELECT *
+FROM nation
+WHERE CASE
+        WHEN n_name = 'AUSTRALIA' THEN 'here'
+        WHEN n_name = 'INDIA' THEN 'there'
+        ELSE 'everywhere'
+      END = 'everywhere';
+
+rows:
+  (2,'BRAZIL',1,'y alongside of the pending deposits. carefully special packages are about the ironic forges. slyly special ')
+  (9,'INDONESIA',2,' slyly express asymptotes. regular deposits haggle slyly. carefully ironic hockey players sleep blithely. carefull')
+  (10,'IRAN',4,'efully alongside of the slyly final dependencies. ')
+  (18,'CHINA',2,'c dependencies. furiously express notornis sleep slyly regular accounts. ideas sleep. depos')
+  (22,'RUSSIA',3,' requests against the platelets use never according to the quickly regular pint')
+  (23,'UNITED KINGDOM',3,'eans boost carefully special requests. accounts are. carefull')
+  (24,'UNITED STATES',1,'y final packages. slow foxes cajole quickly. qui are. carefull')
+  (1,'ARGENTINA',1,'al foxes promise slyly according to the regular accounts. bold requests alon')
+  (5,'ETHIOPIA',0,'ven packages wake quickly. regu')
+  (11,'IRAQ',4,'nic deposits boost atop the quickly final requests? quickly regula')
+  (12,'JAPAN',2,'ously. final: express gifts cajole a')
+  (13,'JORDAN',4,'ic deposits are blithely about the carefully regular pa')
+  (16,'MOZAMBIQUE',0,'s. ironic: unusual asymptotes wake blithely r')
+  (17,'PERU',1,'platelets. blithely pending dependencies use fluffily across the even pinto beans. carefully silent accoun')
+  (19,'ROMANIA',3,'ular asymptotes are about the furious multipliers. express dependencies nag above the ironically ironic account')
+  (20,'SAUDI ARABIA',4,'ts. silent requests haggle. closely express packages sleep across the blithely')
+  (0,'ALGERIA',0,' haggle. carefully final deposits detect slyly agai')
+  (3,'CANADA',1,'eas hang ironic: silent packages. slyly regular packages are furiously over the tithes. fluffily bold')
+  (4,'EGYPT',4,'y above the carefully unusual theodolites. final dugouts are quickly across the furiously regular d')
+  (6,'FRANCE',3,'refully final requests. regular: ironi')
+  (7,'GERMANY',3,'l platelets. regular accounts x-ray: unusual: regular acco')
+  (14,'KENYA',0,' pending excuses haggle furiously deposits. pending: express pinto beans wake fluffily past t')
+  (15,'MOROCCO',0,'rns. blithely bold courts among the closely regular packages use furiously bold platelets?')
+  (21,'VIETNAM',2,'hely enticingly express accounts. even: final ')
+
+// CASE being part of a larger expression
+SELECT 1 + CASE n_name
+        WHEN 'AUSTRALIA' THEN 2 * n_nationkey
+        WHEN 'INDIA' THEN 3 * n_nationkey
+        ELSE n_nationkey
+      END
+FROM nation;
+
+rows:
+  (1)
+  (2)
+  (3)
+  (4)
+  (5)
+  (6)
+  (7)
+  (8)
+  (25)
+  (10)
+  (11)
+  (12)
+  (13)
+  (14)
+  (15)
+  (16)
+  (17)
+  (18)
+  (19)
+  (20)
+  (21)
+  (22)
+  (23)
+  (24)
+  (25)
+
+// Subquery within a CASE
+/*
+TODO: ENABLE WHEN SUBQUERY
+SELECT CASE n_name
+         WHEN (SELECT n_name FROM nation WHERE n_nationkey = (SELECT MAX(n_nationkey) FROM nation)) THEN 'here'
+         WHEN 'INDIA' THEN 'there'
+         ELSE 'everywhere'
+       END
+FROM nation;
+
+rows:
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('there')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('here')
+*/
+
+// Nested CASE
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN 'here'
+        WHEN 'INDIA' THEN 'there'
+        ELSE
+          CASE n_nationkey
+            WHEN 1 THEN 'out there'
+            WHEN 2 THEN 'over there'
+            ELSE 'everywhere'
+          END
+       END
+FROM nation;
+
+rows:
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('out there')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('over there')
+  ('there')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+  ('everywhere')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+  DROP TABLE region;
+  mute
+
+  DROP TABLE datums;
+  mute
+}
