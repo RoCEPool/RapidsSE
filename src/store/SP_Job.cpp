@@ -50,7 +50,7 @@ Stz* SP_Job::sz(Job* pJob)
 
         ,pJob
         
-        ,pJob->m_sJobNm.azChar()
+        ,pJob->szJobNm()
         ,aJK[pJob->eJobKind()]
         ,aJP[pJob->eJobPhase()]
         ,aJS[pJob->eJobState()]

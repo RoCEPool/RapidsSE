@@ -64,6 +64,8 @@ Job::Job(Stz* szJobNm,
   // -- a -------------------
   
   m_iOriginNodeId = iOriginNodeId;
+  
+  RASSERT(m_iOriginNodeId = m_tJobId.uNodeId())
   m_i_Session     = i_Session;
   m_iCmdNo        = iCmdNo;
 
@@ -446,6 +448,16 @@ JobId Job::tJobId(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the job id                                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vJobId(JobId tJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_tJobId = tJobId;
 }
 
 /*----------------------------------------------------------------------------*/

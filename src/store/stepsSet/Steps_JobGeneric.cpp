@@ -41,7 +41,7 @@ void Step::vJob_BegunNew(void)
                            pDistJob->iCmdNo()
                            );
   
-  pJobBegun->m_tJobId = pDistJob->tJobId();
+  pJobBegun->vJobId(pDistJob->tJobId());
   pJobBegun->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobBegun->vJobKind(JK_GENERIC);
   
@@ -81,7 +81,7 @@ void Step::vJob_CancelNew(void)
                             pDistJob->iCmdNo()
                             );
   
-  pJobCancel->m_tJobId = pDistJob->tJobId();
+  pJobCancel->vJobId(pDistJob->tJobId());
   pJobCancel->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobCancel->vJobKind(JK_GENERIC);
 
@@ -121,7 +121,7 @@ void Step::vJob_CancelledNew(void)
                                pDistJob->iCmdNo()
                                );
   
-  pJobCancelled->m_tJobId = pDistJob->tJobId();
+  pJobCancelled->vJobId(pDistJob->tJobId());
   pJobCancelled->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobCancelled->vJobKind(JK_GENERIC);
   
@@ -163,7 +163,7 @@ void Step::vJob_EndNew(void)
                          pDistJob->iCmdNo()
                          );
   
-  pJobEnd->m_tJobId = pDistJob->tJobId();
+  pJobEnd->vJobId(pDistJob->tJobId());
   pJobEnd->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobEnd->vJobKind(JK_GENERIC);
     
@@ -204,7 +204,7 @@ void Step::vJob_EndedNew(void)
                            pDistJob->iCmdNo()
                            );
   
-  pJobEnded->m_tJobId = pDistJob->tJobId();
+  pJobEnded->vJobId(pDistJob->tJobId());
   pJobEnded->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobEnded->vJobKind(JK_GENERIC);
   
@@ -246,7 +246,7 @@ void Step::vJob_ExecuteNew(void)
                              pDistJob->iCmdNo()
                              );
   
-  pJobExecute->m_tJobId = pDistJob->tJobId();
+  pJobExecute->vJobId(pDistJob->tJobId());
   pJobExecute->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobExecute->vJobKind(JK_GENERIC);
   
@@ -288,7 +288,7 @@ void Step::vJob_ExecutedNew(void)
                               pDistJob->iCmdNo()
                               );
   
-  pJobExecuted->m_tJobId = pDistJob->tJobId();
+  pJobExecuted->vJobId(pDistJob->tJobId());
   pJobExecuted->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobExecuted->vJobKind(JK_GENERIC);
   

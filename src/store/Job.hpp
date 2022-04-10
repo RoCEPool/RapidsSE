@@ -33,6 +33,7 @@ namespace STORE
     // universally immutable information                    UNIVERSAL
 
     // -- id, name and kind
+  private:
     JobId       m_tJobId;     // this job's id
     s32         m_sJobNm;     // name of job
     eJK         m_eJobKind;   // job kind: (needs work)
@@ -42,7 +43,6 @@ namespace STORE
 
 
     // -- command and tags
-  private:  
     TagSet m_oJobTags;  // tags for the job
 
   public:
@@ -152,6 +152,7 @@ namespace STORE
     bool bIsPipelineLocal(void);
   
     JobId tJobId(void);
+    void vJobId(JobId tJobId);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
     bool bJobHasError(void);
