@@ -37,8 +37,8 @@ void Step::vJob_BegunNew(void)
 
   Job* pJobBegun = new Job("begun"_Stz,
                            pDistJob->m_iOriginNodeId,
-                           pDistJob->m_i_Session,
-                           pDistJob->m_iCmdNo
+                           pDistJob->i_Session(),
+                           pDistJob->iCmdNo()
                            );
   
   pJobBegun->m_tJobId = pDistJob->tJobId();
@@ -77,8 +77,8 @@ void Step::vJob_CancelNew(void)
   
   Job* pJobCancel = new Job("cancel"_Stz,
                             pDistJob->m_iOriginNodeId,
-                            pDistJob->m_i_Session,
-                            pDistJob->m_iCmdNo
+                            pDistJob->i_Session(),
+                            pDistJob->iCmdNo()
                             );
   
   pJobCancel->m_tJobId = pDistJob->tJobId();
@@ -117,8 +117,8 @@ void Step::vJob_CancelledNew(void)
 
   Job* pJobCancelled = new Job("cancelled"_Stz,
                                pDistJob->m_iOriginNodeId,
-                               pDistJob->m_i_Session,
-                               pDistJob->m_iCmdNo
+                               pDistJob->i_Session(),
+                               pDistJob->iCmdNo()
                                );
   
   pJobCancelled->m_tJobId = pDistJob->tJobId();
@@ -159,8 +159,8 @@ void Step::vJob_EndNew(void)
   
   Job* pJobEnd = new Job("end"_Stz,
                          pDistJob->m_iOriginNodeId,
-                         pDistJob->m_i_Session,
-                         pDistJob->m_iCmdNo
+                         pDistJob->i_Session(),
+                         pDistJob->iCmdNo()
                          );
   
   pJobEnd->m_tJobId = pDistJob->tJobId();
@@ -200,8 +200,8 @@ void Step::vJob_EndedNew(void)
   
   Job* pJobEnded = new Job("ended"_Stz,
                            pDistJob->m_iOriginNodeId,
-                           pDistJob->m_i_Session,
-                           pDistJob->m_iCmdNo
+                           pDistJob->i_Session(),
+                           pDistJob->iCmdNo()
                            );
   
   pJobEnded->m_tJobId = pDistJob->tJobId();
@@ -242,8 +242,8 @@ void Step::vJob_ExecuteNew(void)
   
   Job* pJobExecute = new Job("execute"_Stz,
                              pDistJob->m_iOriginNodeId,
-                             pDistJob->m_i_Session,
-                             pDistJob->m_iCmdNo
+                             pDistJob->i_Session(),
+                             pDistJob->iCmdNo()
                              );
   
   pJobExecute->m_tJobId = pDistJob->tJobId();
@@ -284,8 +284,8 @@ void Step::vJob_ExecutedNew(void)
   
   Job* pJobExecuted = new Job("executed"_Stz,
                               pDistJob->m_iOriginNodeId,
-                              pDistJob->m_i_Session,
-                              pDistJob->m_iCmdNo
+                              pDistJob->i_Session(),
+                              pDistJob->iCmdNo()
                               );
   
   pJobExecuted->m_tJobId = pDistJob->tJobId();

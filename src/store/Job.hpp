@@ -46,17 +46,21 @@ namespace STORE
     TagSet m_oJobTags;  // tags for the job
 
   public:
+  
     // -- home is
     i8 m_iOriginNodeId;   // which node
+
+  private:
     i8 m_i_Session;  // which session in node's session array
     i8 m_iCmdNo;     // sequence no of the command from that session
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // information depending on job instance/location           MODAL
   
+    // information depending on job instance/location           MODAL
+
     // -- postage
     bool m_bWasReceived;   // was job received over a socket?          POST_RECV
-    i8   m_iParticipantNodeId;  // participant node 
+    i8   m_iParticipantNodeId;  // participant node
   
     // -- state
     eJS m_eJobState;  // current state: JS_ACTIVE, _LOCKED, ...
@@ -65,18 +69,17 @@ namespace STORE
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running as originator on origin                 ORIGINATOR
-  
+
     // -- timer
     Timer   m_oTimer;        // timer (on origin only)
-    
+  
     eEC     m_eError_job;    // error when starting job
                              // DOUBLE CHECK THIS BELONGS HERE
 
+
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running on participant node                    PARTICIPANT
-
-  private:
-    // -- participating job maintains
+ 
     Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
   public:
 
@@ -127,6 +130,7 @@ namespace STORE
   
     bool bByPromptTag(void);
   
+    i8   iCmdNo(void);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
@@ -181,7 +185,9 @@ namespace STORE
     void vReapable(bool bReapable);
     void vResetForCascade(Session* pSession);
 
+    i8   i_Session(void);
     Session* pSession(void);
+    void vSession(i8 i_Session);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
     void vSetFromCascade(Stz* szCascade);

@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* _dload : distributed load test 11 Apr 2022                                 */
+/*============================================================================*/
+
+print "Dload Test";
+
+_lineitem_dates
+
+status;
+
+space;
+
+lsptn lineitem;
+
+print "Loading";
+
+dload lineitem
+  paths "/Users/Shared/tpch/SF0/lineitem_10k_chunk0.csv"
+        "/Users/Shared/tpch/SF0/lineitem_10k_chunk1.csv"
+        "/Users/Shared/tpch/SF0/lineitem_10k_chunk2.csv"
+;
+
+tablesizes;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -184,7 +184,7 @@ Stz* SeApi::szOriginalCommand(void)
   if (! pJob)
     return nullptr;
 
-  i8 iSessionId = pJob->m_i_Session;
+  i8 iSessionId = pJob->i_Session();
   if (iSessionId == C_UNKNOWN)
     return nullptr;
   

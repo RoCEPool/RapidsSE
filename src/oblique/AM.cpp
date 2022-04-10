@@ -2723,12 +2723,12 @@ eCN AM::eJobClass(Job* pJob)
 
 Session* AM::pJobSession(Job* pJob)
 {
-  i8 iSessionId = pJob->m_i_Session;
+  i8 i_Session = pJob->i_Session();
   
   Session* pSession = nullptr;
   
-  if (iSessionId != C_UNKNOWN)
-    pSession = AM::pSessions()->pGetSession(iSessionId);
+  if (i_Session != C_UNKNOWN)
+    pSession = AM::pSessions()->pGetSession(i_Session);
 
   return pSession;
 }
