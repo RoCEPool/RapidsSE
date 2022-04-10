@@ -26,31 +26,19 @@ namespace STORE
   {
   private:
     Lock m_okLock;
-  
-  public:
-  
+    
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // universally immutable information                    UNIVERSAL
 
-    // -- id, name and kind
-  private:
     JobId       m_tJobId;     // this job's id
     s32         m_sJobNm;     // name of job
     eJK         m_eJobKind;   // job kind: (needs work)
 
     Atomic      m_noActiveOps; // number of active ops
 
-
-
     // -- command and tags
     TagSet m_oJobTags;  // tags for the job
 
-  public:
-  
-    // -- home is
-    i8 m_iOriginNodeId;   // which node
-
-  private:
     i8 m_i_Session;  // which session in node's session array
     i8 m_iCmdNo;     // sequence no of the command from that session
   
@@ -71,7 +59,7 @@ namespace STORE
     // job running as originator on origin                 ORIGINATOR
 
     // -- timer
-    Timer   m_oTimer;        // timer (on origin only)
+    Timer   m_oResponseTimer;  // timer (on origin only)
   
     eEC     m_eError_job;    // error when starting job
                              // DOUBLE CHECK THIS BELONGS HERE
@@ -81,10 +69,8 @@ namespace STORE
     // job running on participant node                    PARTICIPANT
  
     Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
-  public:
 
   
-  private:
     // -- tasking
     Task* m_pTask;  // task executing this job                         POST_RECV
   
@@ -101,12 +87,16 @@ namespace STORE
     i8  m_iTscCanceling;
     i8  m_iTscCanceled;
 
-    Timer m_oProgressTimer;
  
     b8  m_bReapable;  // can job be reaped?
   
     JobMetrics* m_pJobMetricsChain;                                // POST_RECV
 
+  
+    // TO BE MOVED
+    Timer m_oProgressTimer; // move to register
+
+  
     // must be last
     Footer m_xFooter;
     
@@ -170,9 +160,8 @@ namespace STORE
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
 
-    Stz* szNodeNm(void);
-  
-    i8   iOriginatorNodeId(void);
+    i8   iOriginNodeId(void);
+    Stz* szOriginNodeNm(void);
   
     i8   iParticipantNodeId(void);
     void vParticipantNodeId(i8 i_Node);
@@ -180,7 +169,7 @@ namespace STORE
     void vPrintJobContents(void);
     void vPrintJobLine(void);
     void vPostRecv(void);
-    Timer*  pProgressTimer(void);
+    Timer* pProgressTimer(void);
   
     bool bReapable(void);
     void vReapable(bool bReapable);
