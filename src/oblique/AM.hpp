@@ -231,6 +231,7 @@ namespace OBLIQUE
     class ATTACHMAP
     {
     public:
+      static i8 iCmdNoNext(void);
       static void vSysMetricsAdd(SysMetrics* pSysMetrics);
       static SysMetrics* pSysMetricsChain(void);
     };
