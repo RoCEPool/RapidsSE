@@ -121,7 +121,7 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan lineitem
-     | filter 2 " type boolean l_orderkey 3 =="
+     | filter " type boolean l_orderkey 3 =="
      | project " type INTEGER as COL0 L_PARTKEY 2  -  4  * "
      | combined 0
      | next

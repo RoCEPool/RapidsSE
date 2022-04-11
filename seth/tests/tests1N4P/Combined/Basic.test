@@ -70,7 +70,7 @@ begin
 
   stage Gs_ORDERS on all partitions :
     scan orders
-    | filter 2 " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
+    | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
                               O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
     | project expr type INTEGER as _orderkey O_ORDERKEY ,
                      type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
@@ -256,7 +256,7 @@ begin
     indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg 2 " ORDGROUPBY type integer $1
                  aggregates type integer $K1 , type decimal as total )  $5 sum  "
-    | filter 2 " type BOOLEAN  $2 50.0  >  "
+    | filter " type BOOLEAN  $2 50.0  >  "
     | combined 0
     | next
   stage stageLast on origin :
@@ -277,7 +277,7 @@ begin
     indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg 2 " ORDGROUPBY type integer $1
                  aggregates type integer $K1 , type decimal as total )  $5 sum  "
-    | filter 2 " type BOOLEAN  $2 100.0  >  "
+    | filter " type BOOLEAN  $2 100.0  >  "
     | top 2 "TOP type DECIMAL total" 10
     | combined 0
     | next
@@ -321,7 +321,7 @@ begin
     indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg 2 " ORDGROUPBY type integer $1
                  aggregates type integer $K1 , type decimal as total )  $5 sum  "
-    | filter 2 " type BOOLEAN  $2 90.0  >  "
+    | filter " type BOOLEAN  $2 90.0  >  "
     | combined 0
     | next
   stage stageLast on origin :
@@ -389,7 +389,7 @@ begin
 
   stage Gj_LINEITEM on all partitions :
     indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
-    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
     | aggreg 2 expr groupby type INTEGER O_ORDERKEY
        aggregates type DECIMAL as Revenue ) J1_L_DISCOUNT sum , type INTEGER as _orderkey $K1
@@ -419,7 +419,7 @@ begin
 
   stage Gj_LINEITEM on all partitions :
     indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
-    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
     | aggreg 2 expr groupby type INTEGER O_ORDERKEY
        aggregates type DECIMAL as Revenue ) J1_L_DISCOUNT sum , type INTEGER as _orderkey $K1
@@ -456,7 +456,7 @@ begin
 
   stage Gj_LINEITEM on all partitions :
     indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
-    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
     | aggreg 2 expr groupby type INTEGER O_ORDERKEY
        aggregates type INTEGER as _orderkey $K1 , type DECIMAL as Revenue ) J1_L_DISCOUNT sum

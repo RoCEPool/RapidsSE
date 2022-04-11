@@ -40,7 +40,7 @@ begin
   // ∀ LINEITEM σ L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
     scan lineitem
-    | filter 2 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
+    | filter " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
     | project " type TIMESTAMP as L_SHIPDATE  L_SHIPDATE "
     | combined 0
     | next
@@ -63,7 +63,7 @@ begin
   // ∀ LINEITEM σ L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
     scan lineitem
-    | filter 2 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
+    | filter " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
     | aggreg 2 "
       groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
               type VARCHAR as L_LINESTATUS L_LINESTATUS
@@ -177,7 +177,7 @@ begin
   stage Gs_LINEITEM on all partitions :
     scan lineitem
 
-    | filter 2 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
+    | filter " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
     | smlAgg 2 "
       groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
                type VARCHAR as L_LINESTATUS L_LINESTATUS

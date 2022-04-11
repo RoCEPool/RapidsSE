@@ -104,7 +104,7 @@ begin
     | combined 0
     | stageC
   stage stageC on all partitions :
-      filter 2 "type BOOLEAN $3 3 >= "
+      filter "type BOOLEAN $3 3 >= "
       | project "type VARCHAR $2"
       | combined 0
       | stageD

@@ -78,14 +78,14 @@ begin
 
   stage Gs_CUSTOMER on all partitions :
     indexscan 2 Customer IxC_CUSTKEY "LBOUND $I1 0 >="
-    | filter 2 "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
+    | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
     | project expr type INTEGER as _custkey C_CUSTKEY
     | combined 0
     | next
 
   stage Gj_ORDERS on all partitions :
     indexjoin 2 Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
-    | filter 2 "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
+    | filter "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
     | project "type INTEGER as _orderkey J1_O_ORDERKEY ,
          type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
          type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
@@ -95,7 +95,7 @@ begin
 
   stage Gj_LINEITEM on all partitions :
     indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
-    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
     | ordAgg 2 expr type INTEGER as _orderkey _orderkey ,
         type INTEGER as Revenue ) J1_L_EXTENDEDPRICE 1.0 J1_L_DISCOUNT - * sum ,
         type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
@@ -126,14 +126,14 @@ begin
 
   stage Gs_CUSTOMER on all partitions :
     indexscan 2 Customer IxC_CUSTKEY "LBOUND $I1 0 >="
-    | filter 2 "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
+    | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
     | project expr type INTEGER as _custkey C_CUSTKEY
     | combined 0
     | next
 
   stage Gj_ORDERS on all partitions :
     indexjoin 2 Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
-     | filter 2 "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
+     | filter "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
      | project "type INTEGER as _orderkey J1_O_ORDERKEY ,
          type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
          type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
@@ -143,7 +143,7 @@ begin
 
   stage Gj_LINEITEM on all partitions :
     indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
-    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
     | ordAgg 2 expr type INTEGER as _orderkey _orderkey ,
         type INTEGER as Revenue ) J1_L_EXTENDEDPRICE 1 J1_L_DISCOUNT - * sum ,
         type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,

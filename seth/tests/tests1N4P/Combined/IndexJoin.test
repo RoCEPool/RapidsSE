@@ -196,7 +196,7 @@ begin
     scan lineitem
     | indexjoin 2 Orders Orders_Orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
-    | filter 2 " type BOOLEAN O_CUSTKEY 120 > "
+    | filter " type BOOLEAN O_CUSTKEY 120 > "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -215,10 +215,10 @@ begin
     | stageMarker0374
   stage stageMarker0374 on all partitions :
     scan lineitem
-    | filter 2 " type BOOLEAN  L_ORDERKEY 1480  >  "
+    | filter " type BOOLEAN  L_ORDERKEY 1480  >  "
     | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
-    | filter 2 " type BOOLEAN  O_CUSTKEY 140  >  "
+    | filter " type BOOLEAN  O_CUSTKEY 140  >  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -238,7 +238,7 @@ begin
     | stageMarker0374
   stage stageMarker0374 on all partitions :
     scan lineitem
-    | filter 2 " type BOOLEAN  L_ORDERKEY 1480  >  "
+    | filter " type BOOLEAN  L_ORDERKEY 1480  >  "
     | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
     | combined 0
@@ -259,7 +259,7 @@ begin
     | next
   stage stageA on all partitions :
     scan rapidsse public part
-    | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
+    | filter " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
     | project " type INTEGER as P_PARTKEY P_PARTKEY"
     | combined 0
     | next broadcast
@@ -292,7 +292,7 @@ begin
     | next
   stage stageA on all partitions :
     scan rapidsse public part
-    | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
+    | filter " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
     | project " type INTEGER as P_PARTKEY P_PARTKEY"
     | combined 0
     | next broadcast
@@ -328,7 +328,7 @@ begin
     | next
   stage stageA on all partitions :
       scan rapidsse public part
-      | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
+      | filter " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
       | project " type INTEGER as P_PARTKEY P_PARTKEY"
       | combined 0
       | next broadcast

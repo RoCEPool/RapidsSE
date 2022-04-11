@@ -44,7 +44,7 @@ pipeline unnamed
      | combined 0
      | next
    stage stageB on all partitions :
-   filter 2 "type BOOLEAN L_ORDERKEY 2 >="
+   filter "type BOOLEAN L_ORDERKEY 2 >="
     | combined 0
     | next
   stage stageLast on origin :
@@ -74,7 +74,7 @@ pipeline unnamed
      | combined 0
      | next
   stage stageB on all partitions :
-     filter 2 "type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <= "
+     filter "type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <= "
      | combined 0
      | next
    stage stageLast on origin :
@@ -101,7 +101,7 @@ pipeline unnamed
      | combined 0
      | next
   stage stageB on all partitions :
-     filter 2 "type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <= "
+     filter "type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <= "
      | project " type INTEGER as orderkey L_ORDERKEY ,
                         type DATE as shipdate L_SHIPDATE"
      | combined 0
@@ -133,7 +133,7 @@ pipeline unnamed
   stage stageB on all partitions :
      project " type INTEGER as orderkey L_ORDERKEY ,
                  type DATE as shipdate L_SHIPDATE"
-     | filter 2 "type BOOLEAN shipdate DATE '1994-01-01'  <= "
+     | filter "type BOOLEAN shipdate DATE '1994-01-01'  <= "
      | combined 0
      | next
    stage stageLast on origin :

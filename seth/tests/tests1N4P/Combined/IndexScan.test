@@ -229,7 +229,7 @@ begin
     start | pulse once | stageB
   stage stageB on all partitions :
     indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | filter 2 " type BOOLEAN L_PARTKEY 20 <= "
+    | filter " type BOOLEAN L_PARTKEY 20 <= "
     | combined 0
     | next
   stage stageLast on origin:
@@ -310,7 +310,7 @@ begin
     indexScan 2 lineitem lineitem_ord "LBOUND $I1 0 >="
     | indexjoin 2 orders orders_ord "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
-    | filter 2 " type BOOLEAN O_CUSTKEY 120 > "
+    | filter " type BOOLEAN O_CUSTKEY 120 > "
     | combined 0
     | next
   stage stageLast on origin :

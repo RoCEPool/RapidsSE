@@ -94,7 +94,7 @@ begin
     | stageA
   stage stageA on all partitions :
     scan rapidsse public lineitem
-    | filter 2 " type BOOLEAN  L_ORDERKEY 2  >=  "
+    | filter " type BOOLEAN  L_ORDERKEY 2  >=  "
     | project " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as L_QUANTITY L_QUANTITY "
     | combined 0
     | stageLast
@@ -117,7 +117,7 @@ begin
     | stageA
   stage stageA on all partitions :
     scan rapidsse public lineitem
-    | filter 2 " type BOOLEAN  $1 2  >=  "
+    | filter " type BOOLEAN  $1 2  >=  "
     | project " type INTEGER $1 , type DECIMAL $5 "
     | combined 0
     | stageLast
@@ -140,7 +140,7 @@ rows:
      | stageA
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | filter 2 "type BOOLEAN L_ORDERKEY 2 >="
+     | filter "type BOOLEAN L_ORDERKEY 2 >="
      | project "type INTEGER L_ORDERKEY , type INTEGER L_PARTKEY , type VARCHAR L_COMMENT"
      | combined 0
      | stageLast
@@ -163,7 +163,7 @@ pipeline unnamed
      | stageA
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | filter 2 "type BOOLEAN $1 2 >="
+     | filter "type BOOLEAN $1 2 >="
      | project "type INTEGER $1 , type INTEGER $2 , type VARCHAR $16"
      | combined 0
      | stageLast
@@ -186,7 +186,7 @@ pipeline unnamed
      | stageA
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | filter 2 " type BOOLEAN L_ORDERKEY 2 <"
+     | filter " type BOOLEAN L_ORDERKEY 2 <"
      | project " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR L_SHIPMODE ,
        type VARCHAR L_COMMENT"
      | combined 0
@@ -212,7 +212,7 @@ pipeline unnamed
      | stageA
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | filter 2 " type BOOLEAN $1 2 <"
+     | filter " type BOOLEAN $1 2 <"
      | project " type INTEGER $1 , type VARCHAR $15 ,
        type VARCHAR L_COMMENT"
      | combined 0
@@ -238,7 +238,7 @@ begin
     | stageA
   stage stageA on all partitions :
     scan rapidsse public LineItem
-    | filter 2 "type BOOLEAN L_ORDERKEY 2 >="
+    | filter "type BOOLEAN L_ORDERKEY 2 >="
     | project "type INTEGER as SUM1 ) L_ORDERKEY sum , type INTEGER as SUM2 ) L_PARTKEY sum"
     | combined 0
     | stageB
@@ -266,7 +266,7 @@ begin
     | stageA
   stage stageA on all partitions :
     scan rapidsse public LineItem
-    | filter 2 "type BOOLEAN $1 2 >="
+    | filter "type BOOLEAN $1 2 >="
     | project "type INTEGER ) $1 sum , type INTEGER ) $2 sum"
     | combined 0
     | stageB

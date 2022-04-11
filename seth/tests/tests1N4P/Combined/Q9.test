@@ -111,7 +111,7 @@ begin
 
   stage Gj_LINEITEM on all partitions :
     indexJoin 2 lineitem IxL_PARTKEY "bound $I1 _partkey =="
-    | filter 2 "type BOOLEAN J1_L_SUPPKEY ps_suppkey =="
+    | filter "type BOOLEAN J1_L_SUPPKEY ps_suppkey =="
     | project "
       type INTEGER as _orderkey J1_L_ORDERKEY ,
       type DECIMAL as l_extendedprice J1_L_EXTENDEDPRICE ,

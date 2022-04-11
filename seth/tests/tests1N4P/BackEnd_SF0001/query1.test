@@ -42,7 +42,7 @@ begin
     | stageMarker1962
   stage stageMarker1962 on all partitions :
     scan rapidsse public lineitem
-    | filter 2 " type BOOLEAN  $11 DATE '1998-09-01'  <=  "
+    | filter " type BOOLEAN  $11 DATE '1998-09-01'  <=  "
     | aggreg 2 " type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10 , type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  , type DECIMAL )  $6 1  $7 -  *  sum  , type DECIMAL )  $6 1  $7 -  *  1  $8 +  *  sum  , type INTEGER )  $5 count  , type INTEGER )  $6 count  , type DECIMAL )  $7 sum  , type INTEGER )  $7 count  , type INTEGER )  countAll  groupBy  type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10 "
     | stageMarker1965
   stage stageMarker1965 on all nodes :

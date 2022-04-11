@@ -57,7 +57,7 @@ begin
 
   stage Gs_ORDERS on all partitions :
     scan orders
-    | filter 2 " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
+    | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
                               O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
     | project expr type INTEGER as _orderkey O_ORDERKEY ,
                      type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
@@ -135,7 +135,7 @@ begin
 
   stage Gs_ORDERS on all partitions :
     scan orders
-    | filter 2 " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
+    | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
                                  O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
     | project expr type INTEGER as _orderkey O_ORDERKEY ,
                      type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY

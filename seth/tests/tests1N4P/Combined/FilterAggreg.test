@@ -101,7 +101,7 @@ pipeline unnamed
      | stageA
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | filter 2 " type BOOLEAN  L_ORDERKEY 2  >=  "
+     | filter " type BOOLEAN  L_ORDERKEY 2  >=  "
      | aggreg 2 " groupBy type INTEGER as L_ORDERKEY L_ORDERKEY
                   aggregates type INTEGER as L_ORDERKEY $K1 , type DECIMAL as QUANTITY ) L_QUANTITY sum"
      | combined 0

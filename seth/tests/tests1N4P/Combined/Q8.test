@@ -140,7 +140,7 @@ begin
   // ∀ CUSTOMER /C_CUSTKEY/ _custkey π _suppkey
   stage Gj_CUSTOMER on all partitions :
     scan Customer
-    | filter 2
+    | filter
         "C_NATIONKEY 6 == C_NATIONKEY 7 == or"
     | project expr
         type INTEGER as _custkey    C_CUSTKEY ,
@@ -165,7 +165,7 @@ begin
   // ∀ LINEITEM /L_ORDERKEY/ π _orderkey
   stage Gs_LINEITEM on all partitions :
     indexJoin 2 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
-    | filter 2
+    | filter
         "J1_L_SHIPDATE timestamp '1995-01-01 00:00:00' >=
          J1_L_SHIPDATE timestamp '1996-12-31 00:00:00' <
          and"
@@ -181,7 +181,7 @@ begin
   // ⋈ SUPPLIER /C_SUPPKEY/
   stage Gj_SUPPLIER on all partitions :
     indexJoin 2 Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
-    | filter 2
+    | filter
         "C_NATIONKEY 6 == J1_S_NATIONKEY 7 == and
          C_NATIONKEY 7 == J1_S_NATIONKEY 6 == and or"
     | combined 0
