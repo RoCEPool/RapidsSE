@@ -18,7 +18,8 @@ namespace PROMPT
     
     Thread*   m_pThread;
 
-    
+    Input*    m_pInput;        // input stream
+
     bool      m_bAvailable;
     bool      m_bContinue;
     bool      m_bTerminated;
@@ -39,7 +40,7 @@ namespace PROMPT
     void vExecuteJob(void);
     void vDeleteJob(void);
 
-    eEC  ePrepareJob(void);
+    eEC  ePrepareJob(TokenVec* pCmdTknVec);
     void vPrintResults(void);
 
     // -- -- -- -- -- --

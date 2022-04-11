@@ -76,8 +76,6 @@ SePrompt::SePrompt(bool bOneCommand)
 
   m_iDebugMode = gxCmdLineArgs.m_xSysArgs.m_iPromptDebug;
 
-  m_pLitTknVec = new TokenVec;
-    
   m_nDeputies = 0;
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     m_paSeDeputy[i_Deputy] = nullptr;
@@ -107,7 +105,7 @@ SePrompt::SePrompt(bool bOneCommand)
     //m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
   }
 
-  m_pCmdTknVec = pInputGet()->pTokenVec();
+  //m_pCmdTknVec = pInputGet()->pTokenVec();
 
   pInputGet()->vDebugMode(m_iDebugMode);
 
@@ -139,10 +137,7 @@ SePrompt::~SePrompt(void) noexcept(false)
   delete m_pSnapshotAtTrackingMemory;
   delete m_pSnapshotAtMemoryLeaks;
   delete m_pSnapshotObjects;
-  
-  m_pLitTknVec->vSoftReset();
-  delete m_pLitTknVec;
-  
+    
   //delete m_pPrintOp;
   
   AM::THREAD::vDeleteThread(m_pThread);
@@ -362,7 +357,7 @@ bool SePrompt::bPrepareJob(void)
 
   m_pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   
-  eEC eError = m_pCurrentDeputy->ePrepareJob();
+  eEC eError = m_pCurrentDeputy->ePrepareJob(m_pCmdTknVec);
 
   if (eError) {
     RASSERT(! m_pCurrentDeputy->pJob());
@@ -805,26 +800,6 @@ i8 SePrompt::iNextSectionNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return ++m_iSectionNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get original command text                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* SePrompt::szOriginalCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Session* pSession = m_pCurrentDeputy->pSession();
-  if (! pSession)
-    return nullptr;
-  
-  Input* pInput = pSession->m_pInput;
-  if (! pInput)
-    return nullptr;
-
-  Stz* szCommand = pInput->szRawInput();
-  
-  return szCommand;
 }
 
 /*----------------------------------------------------------------------------*/

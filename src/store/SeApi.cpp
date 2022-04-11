@@ -176,32 +176,6 @@ bool SeApi::bIsKnownTableColumnNm(Stz* szTableNm, Stz* szColumnNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get original command text                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* SeApi::szOriginalCommand(void)
-{
-  Job* pJob = AM::pTaskJob();
-  if (! pJob)
-    return nullptr;
-
-  i8 iSessionId = pJob->i_Session();
-  if (iSessionId == C_UNKNOWN)
-    return nullptr;
-  
-  Session* pSession = AM::pSessions()->pGetSession(iSessionId);
-  if (! pSession)
-    return nullptr;
-  
-  Input* pInput = pSession->m_pInput;
-  if (! pInput)
-    return nullptr;
-
-  Stz* szCommand = pInput->szRawInput();
-  
-  return szCommand;
-}
-
-/*----------------------------------------------------------------------------*/
 /* print all columns of given table                                           */
 /*----------------------------------------------------------------------------*/
 void SeApi::vPrintAllColumnsOfTable(Stz* szTableNm)

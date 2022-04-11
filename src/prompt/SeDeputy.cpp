@@ -53,6 +53,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   
   m_pThread   = AM::THREAD::pNewThread();
 
+  m_pInput = new Input(nullptr);
 
   m_bAvailable  = false;
   m_bContinue   = true;
@@ -75,8 +76,8 @@ SeDeputy::~SeDeputy(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  while (m_pSession->m_pInput)
-    m_pSession->m_pInput = m_pSession->m_pInput->pDeleteInput();
+  while (m_pInput)
+    m_pInput = m_pInput->pDeleteInput();
 
   ApiHelper::vFreeSession();
 
@@ -172,11 +173,11 @@ void SeDeputy::vDeleteJob(void)
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC SeDeputy::ePrepareJob(void)
+eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  eEC eError = ApiHelper::ePrepareJob();
+  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec);
   
   return eError;
 }
@@ -249,7 +250,7 @@ Input* SeDeputy::pInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  return m_pSession->m_pInput;
+  return m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/

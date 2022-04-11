@@ -29,7 +29,7 @@ namespace PROMPT
   class SePrompt : public Object
   {
   private:
-    Thread*   m_pThread;
+    Thread*     m_pThread;
 
     bool        m_bContinue;    // continue processing commands?
     ShortCutVec m_oShortCutVec; // vector of short cuts
@@ -68,9 +68,6 @@ namespace PROMPT
     // -- -- -- -- -- --
     // delete
   
-    // temp for demo
-    TokenVec* m_pLitTknVec;  // literal token vector for demo
-
     Timer     m_oTimer;      // the timer
 
 
@@ -120,7 +117,6 @@ namespace PROMPT
     void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
-    Stz* szOriginalCommand(void);
     void vOutline(s4K& sOutline);
     void vPromptUser(void);
     TagSet* pPmtTagSet(void);

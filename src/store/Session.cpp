@@ -52,8 +52,6 @@ Session::Session(void)
   m_i_Session  = -1;
   m_eSession   = SK_NONE;
   
-  m_pInput     = nullptr;
-  
   m_eApiFun    = AC_NONE;
   m_iApiLoc    = 0;
   m_eApiError  = EC_NONE;
@@ -124,9 +122,7 @@ Session::Session(void)
 Session::~Session(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  ASSERT(! m_pInput);
-  
+    
   delete m_pStmtList;
   
   AM::pSessions()->vFreeSession(this);
@@ -296,10 +292,6 @@ void Session::vFinaliseSession(i8 i_NextFree)
   
   // -- -- -- -- -- --
   
-  while (m_pInput)
-    m_pInput = m_pInput->pDeleteInput();
-
-
   if (m_pOutput)
     delete m_pOutput;
   m_pOutput = nullptr;
@@ -419,8 +411,6 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
   m_oDicStack.vPush(pDic);
 
   //fprintf(stderr,"eInit M\n");
-  
-  m_pInput = new Input(m_pInput);
   
   m_pOutput = new Output(this);
 
