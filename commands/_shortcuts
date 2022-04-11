@@ -69,6 +69,7 @@ shortcut sw3  "../Expressions/_srcidx_walk_3";
 shortcut sw4  "../Expressions/_srcidx_walk_4";
 shortcut sw5  "../Expressions/_srcidx_walk_5";
 shortcut t    _unitTestA;
+shortcut tr    "../TPCH_TRANSLITERATE/__tpch";
 shortcut sf1  "../demo/_TPCH_SF1";
 shortcut sf10 "../demo/_TPCH_SF10";
 shortcut sf100 "../demo/_TPCH_SF100";
