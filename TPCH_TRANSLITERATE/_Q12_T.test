@@ -44,26 +44,26 @@ begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker18574
-  stage stageMarker18574 on all partitions :
+    | stageMarker31060
+  stage stageMarker31060 on all partitions :
     scan rapidsse public orders
-    | stageMarker18577 broadcast
-  stage stageMarker18577 on all partitions :
+    | stageMarker31063 broadcast
+  stage stageMarker31063 on all partitions :
     scan rapidsse public lineitem
-    | abstractJoin 2 " 1  "
-    | stageMarker18580
-  stage stageMarker18580 on all partitions :
+    | abstractJoin " 1  "
+    | stageMarker31066
+  stage stageMarker31066 on all partitions :
     filter " type BOOLEAN  $1 $10 ==  }  ''MAIL''  ''SHIP''  #2  $24 in  and  $21 $22 <  and  $20 $21 <  and  $22 TIMESTAMP ''1994-01-01 00:00:00''  >=  and  $22 TIMESTAMP ''1995-01-01 00:00:00''  <  and  "
     | aggreg " groupBy  type VARCHAR as l_shipmode $24 aggregates  type VARCHAR $K1 , type INTEGER )  }  $6 ''1-URGENT''  ==  $6 ''2-HIGH''  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , type INTEGER )  }  $6 ''1-URGENT''  !=  $6 ''2-HIGH''  !=  and WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
     | combined 0
-    | stageMarker18583
-  stage stageMarker18583 on all nodes :
+    | stageMarker31069
+  stage stageMarker31069 on all nodes :
     aggreg " groupBy  type VARCHAR as l_shipmode $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  "
     | combined 0
-    | stageMarker18586
-  stage stageMarker18586 on origin :
+    | stageMarker31072
+  stage stageMarker31072 on origin :
     aggreg " groupBy  type VARCHAR as l_shipmode $1 aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  "
-    | sort 2 " type VARCHAR as l_shipmode $1 ASC  "
+    | sort " type VARCHAR as l_shipmode $1 ASC  "
     | combined 0
     | stageLast
   stage stageLast on origin :

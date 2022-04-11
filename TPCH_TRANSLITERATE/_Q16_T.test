@@ -45,14 +45,14 @@ begin
     stage stageStart on origin :
       start
       | pulse once
-      | stageMarker21819
-    stage stageMarker21819 on all partitions :
+      | stageMarker34356
+    stage stageMarker34356 on all partitions :
       scan rapidsse public supplier
       | filter " type BOOLEAN  }  $7 ''%Customer%Complaints%''  8 10 matchMiddle1  "
       | project " type INTEGER as s_suppkey $1 "
       | combined 0
-      | stageMarker21822
-    stage stageMarker21822 on all partitions :
+      | stageMarker34359
+    stage stageMarker34359 on all partitions :
 
       stageLast
     stage stageLast on origin :
@@ -64,21 +64,21 @@ begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker21825
-  stage stageMarker21825 on all partitions :
+    | stageMarker34362
+  stage stageMarker34362 on all partitions :
     scan rapidsse public partsupp
-    | stageMarker21828 broadcast
-  stage stageMarker21828 on all partitions :
+    | stageMarker34365 broadcast
+  stage stageMarker34365 on all partitions :
     scan rapidsse public part
-    | abstractJoin 2 " 1  "
-    | stageMarker21831
-  stage stageMarker21831 on all partitions :
+    | abstractJoin " 1  "
+    | stageMarker34368
+  stage stageMarker34368 on all partitions :
     filter " type BOOLEAN  $6 $1 ==  $9 ''Brand#45''  !=  and  }  $10 ''MEDIUM POLISHED%''  16 matchLeading  not  and  }  49  14  23  45  19  3  36  9  #8  $11 in  and  }  __subquery0003  #1  $2 in  not  and  "
     | combined 0
-    | stageMarker21834
-  stage stageMarker21834 on origin :
+    | stageMarker34371
+  stage stageMarker34371 on origin :
     aggreg " groupBy  type VARCHAR as p_brand $9 , type VARCHAR as p_type $10 , type INTEGER as p_size $11 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type INTEGER as supplier_cnt )  $2 count  distinct  "
-    | sort 2 " type INTEGER $4 DESC  , type VARCHAR as p_brand $1 ASC  , type VARCHAR as p_type $2 ASC  , type INTEGER as p_size $3 ASC  "
+    | sort " type INTEGER $4 DESC  , type VARCHAR as p_brand $1 ASC  , type VARCHAR as p_type $2 ASC  , type INTEGER as p_size $3 ASC  "
     | combined 0
     | stageLast
   stage stageLast on origin :

@@ -584,6 +584,8 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
   GraphNav::bGlobalWalk(pOrdinalFilterExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   delete pOrdinalFilterExpr;
 
+  // cleanup
+  pBackend->m_pColExprList->vDeleteAll();
   delete pBackend->m_pColExprList;
   pBackend->m_pColExprList = nullptr;
 
@@ -644,7 +646,7 @@ void Backend::vAppendAbstractJoinOp(Backend* pBackend, QueryNode* pNode)
   pBackend->m_bJoinPredicate = true;
   pBackend->m_iColumnsOfLeftChild = JoinOp::iColumnsOfChild1(pNode, pBackend->m_pPlanRoot);
 
-  pBackend->vAppendNextOp("abstractJoin 2 \""_Stz);
+  pBackend->vAppendNextOp("abstractJoin \""_Stz);
   GraphNav::bGlobalWalk(pOrdinalJoinPredicate, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   sPipeline->vCatSprint(" \""_Stz);
 
@@ -653,7 +655,6 @@ void Backend::vAppendAbstractJoinOp(Backend* pBackend, QueryNode* pNode)
   pBackend->m_iColumnsOfLeftChild = C_UNKNOWN;
 
   // cleanup
-
   pBackend->m_pColExprList->vDeleteAll();
   delete pBackend->m_pColExprList;
   pBackend->m_pColExprList = nullptr;
@@ -686,7 +687,7 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
   // Iterate each projected expression
   if (pOrderItemList->bHasChildren()) {
 
-    pBackend->vAppendNextOp("sort 2 \""_Stz);
+    pBackend->vAppendNextOp("sort \""_Stz);
 //    sPipeline->vCatSprint(
 //        "    orderBy 0 \""
 //        ""_Stz);

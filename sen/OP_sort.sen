@@ -83,16 +83,7 @@
 
   _lu_initialise_
 
-  // get whether compiled or not
-  <compiled> >int to Counter0[]
-
   op__topology
-
-  Counter0[] 2 == not if
-    "Warning: sort works only with combinedOP" .
-    true
-    exit
-  then
 
   find: sort_Cleaning      ZK_M_CLEANING    [op].handler!
   find: sort_StreamDef     ZK_D_STREAMDEF   [op].handler!
@@ -109,7 +100,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: sort :: sort <compiled> <expr> ;
+cmdSyntax: sort :: sort <expr> ;
 
 : sort_cmdTags _cmdTags tagCopy: op_tags
   tags{

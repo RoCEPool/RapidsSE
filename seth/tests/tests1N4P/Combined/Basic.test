@@ -198,7 +198,7 @@ begin
   stage stageMarker0143 on all partitions :
     scan rapidsse public lineitem
     | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
-    | sort 2 " sort type INTEGER as l_partkey $2 ASC  "
+    | sort " sort type INTEGER as l_partkey $2 ASC  "
     | combined 0
     | next
   stage stageLast on origin :

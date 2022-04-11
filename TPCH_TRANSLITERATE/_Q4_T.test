@@ -42,14 +42,14 @@ begin
     stage stageStart on origin :
       start
       | pulse once
-      | stageMarker287516
-    stage stageMarker287516 on all partitions :
+      | stageMarker7926
+    stage stageMarker7926 on all partitions :
       scan rapidsse public lineitem
       | filter " type BOOLEAN  $1 ==  $12 $13 <  and  "
       | project " type INTEGER as L_ORDERKEY $1 , type INTEGER as L_PARTKEY $2 , type INTEGER as L_SUPPKEY $3 , type INTEGER as L_LINENUMBER $4 , type DECIMAL as L_QUANTITY $5 , type DECIMAL as L_EXTENDEDPRICE $6 , type DECIMAL as L_DISCOUNT $7 , type DECIMAL as L_TAX $8 , type VARCHAR as L_RETURNFLAG $9 , type VARCHAR as L_LINESTATUS $10 , type TIMESTAMP as L_SHIPDATE $11 , type TIMESTAMP as L_COMMITDATE $12 , type TIMESTAMP as L_RECEIPTDATE $13 , type VARCHAR as L_SHIPINSTRUCT $14 , type VARCHAR as L_SHIPMODE $15 , type VARCHAR as L_COMMENT $16 "
       | combined 0
-      | stageMarker287519
-    stage stageMarker287519 on all partitions :
+      | stageMarker7929
+    stage stageMarker7929 on all partitions :
 
       stageLast
     stage stageLast on origin :
@@ -61,20 +61,20 @@ begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker287522
-  stage stageMarker287522 on all partitions :
+    | stageMarker7932
+  stage stageMarker7932 on all partitions :
     scan rapidsse public orders
     | filter " type BOOLEAN  $5 TIMESTAMP ''1993-07-01 00:00:00''  >=  $5 TIMESTAMP ''1993-10-01 00:00:00''  <  and  $1 __subquery0003  exists  and  "
     | aggreg " groupBy  type VARCHAR as o_orderpriority $6 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  "
     | combined 0
-    | stageMarker287525
-  stage stageMarker287525 on all nodes :
+    | stageMarker7935
+  stage stageMarker7935 on all nodes :
     aggreg " groupBy  type VARCHAR as o_orderpriority $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
     | combined 0
-    | stageMarker287528
-  stage stageMarker287528 on origin :
+    | stageMarker7938
+  stage stageMarker7938 on origin :
     aggreg " groupBy  type VARCHAR as o_orderpriority $1 aggregates  type VARCHAR $K1 , type INTEGER as order_count )  $2 sum  "
-    | sort 2 " type VARCHAR as o_orderpriority $1 ASC  "
+    | sort " type VARCHAR as o_orderpriority $1 ASC  "
     | combined 0
     | stageLast
   stage stageLast on origin :

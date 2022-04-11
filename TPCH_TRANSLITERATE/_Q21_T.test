@@ -59,40 +59,40 @@ begin
     stage stageStart on origin :
       start
       | pulse once
-      | stageMarker3092
-    stage stageMarker3092 on all partitions :
+      | stageMarker44404
+    stage stageMarker44404 on all partitions :
       scan rapidsse public part
       | filter " type BOOLEAN  }  $2 ''forest%''  7 matchLeading  "
       | project " type INTEGER as p_partkey $1 "
       | combined 0
-      | stageMarker3095
-    stage stageMarker3095 on all partitions :
+      | stageMarker44407
+    stage stageMarker44407 on all partitions :
 
-      stageMarker3098
-    stage stageMarker3098 on all partitions :
+      stageMarker44410
+    stage stageMarker44410 on all partitions :
       scan rapidsse public lineitem
       | filter " type BOOLEAN  $2 ==  $3 ==  and  $11 TIMESTAMP ''1994-01-01 00:00:00''  >=  and  $11 TIMESTAMP ''1995-01-01 00:00:00''  <  and  "
       | project " type DECIMAL )  $5 sum  "
       | combined 0
-      | stageMarker3101
-    stage stageMarker3101 on all nodes :
+      | stageMarker44413
+    stage stageMarker44413 on all nodes :
       project " type DECIMAL )  $1 sum  "
       | combined 0
-      | stageMarker3104
-    stage stageMarker3104 on origin :
+      | stageMarker44416
+    stage stageMarker44416 on origin :
       project " type DECIMAL 0.5  )  $1 sum  *  "
       | combined 0
-      | stageMarker3107
-    stage stageMarker3107 on origin :
+      | stageMarker44419
+    stage stageMarker44419 on origin :
 
-      stageMarker3110
-    stage stageMarker3110 on all partitions :
+      stageMarker44422
+    stage stageMarker44422 on all partitions :
       scan rapidsse public partsupp
       | filter " type BOOLEAN  }  __subquery0003  #1  $1 in  $3 casttype DECIMAL CAST  $1 $2 __subquery0005  >  and  "
       | project " type INTEGER as ps_suppkey $2 "
       | combined 0
-      | stageMarker3113
-    stage stageMarker3113 on all partitions :
+      | stageMarker44425
+    stage stageMarker44425 on all partitions :
 
       stageLast
     stage stageLast on origin :
@@ -104,26 +104,26 @@ begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker3116
-  stage stageMarker3116 on all partitions :
+    | stageMarker44428
+  stage stageMarker44428 on all partitions :
     scan rapidsse public supplier
-    | stageMarker3119 broadcast
-  stage stageMarker3119 on all partitions :
+    | stageMarker44431 broadcast
+  stage stageMarker44431 on all partitions :
     scan rapidsse public nation
-    | abstractJoin 2 " 1  "
-    | stageMarker3122
-  stage stageMarker3122 on all partitions :
+    | abstractJoin " 1  "
+    | stageMarker44434
+  stage stageMarker44434 on all partitions :
     filter " type BOOLEAN  }  __subquery0007  #1  $1 in  $4 $8 ==  and  $9 ''CANADA''  ==  and  "
     | project " type VARCHAR as s_name $2 , type VARCHAR as s_address $3 "
-    | sort 2 " type VARCHAR as s_name $1 ASC  "
+    | sort " type VARCHAR as s_name $1 ASC  "
     | combined 0
-    | stageMarker3125
-  stage stageMarker3125 on all nodes :
-    sort 2 " type VARCHAR as s_name $1 ASC  "
+    | stageMarker44437
+  stage stageMarker44437 on all nodes :
+    sort " type VARCHAR as s_name $1 ASC  "
     | combined 0
-    | stageMarker3128
-  stage stageMarker3128 on origin :
-    sort 2 " type VARCHAR as s_name $1 ASC  "
+    | stageMarker44440
+  stage stageMarker44440 on origin :
+    sort " type VARCHAR as s_name $1 ASC  "
     | combined 0
     | stageLast
   stage stageLast on origin :

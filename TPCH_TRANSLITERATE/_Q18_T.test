@@ -43,26 +43,26 @@ begin
     stage stageStart on origin :
       start
       | pulse once
-      | stageMarker1214
-    stage stageMarker1214 on all partitions :
+      | stageMarker37668
+    stage stageMarker37668 on all partitions :
       scan rapidsse public lineitem
       | aggreg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $5 sum  "
       | combined 0
-      | stageMarker1217
-    stage stageMarker1217 on all nodes :
+      | stageMarker37671
+    stage stageMarker37671 on all nodes :
       aggreg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
       | combined 0
-      | stageMarker1244
-    stage stageMarker1244 on origin :
+      | stageMarker37698
+    stage stageMarker37698 on origin :
       aggreg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
       | filter " type BOOLEAN  $2 300.  >  "
       | combined 0
-      | stageMarker1220
-    stage stageMarker1220 on origin :
+      | stageMarker37674
+    stage stageMarker37674 on origin :
       project " type INTEGER as l_orderkey $1 "
       | combined 0
-      | stageMarker1223
-    stage stageMarker1223 on origin :
+      | stageMarker37677
+    stage stageMarker37677 on origin :
 
       stageLast
     stage stageLast on origin :
@@ -74,30 +74,30 @@ begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker1226
-  stage stageMarker1226 on all partitions :
+    | stageMarker37680
+  stage stageMarker37680 on all partitions :
     scan rapidsse public customer
-    | stageMarker1229 broadcast
-  stage stageMarker1229 on all partitions :
+    | stageMarker37683 broadcast
+  stage stageMarker37683 on all partitions :
     scan rapidsse public orders
-    | abstractJoin 2 " 1  "
-    | stageMarker1232 broadcast
-  stage stageMarker1232 on all partitions :
+    | abstractJoin " 1  "
+    | stageMarker37686 broadcast
+  stage stageMarker37686 on all partitions :
     scan rapidsse public lineitem
-    | abstractJoin 2 " 1  "
-    | stageMarker1235
-  stage stageMarker1235 on all partitions :
+    | abstractJoin " 1  "
+    | stageMarker37689
+  stage stageMarker37689 on all partitions :
     filter " type BOOLEAN  }  __subquery0003  #1  $9 in  $1 $10 ==  and  $9 $18 ==  and  "
     | aggreg " groupBy  type VARCHAR as c_name $2 , type INTEGER as c_custkey $1 , type INTEGER as o_orderkey $9 , type TIMESTAMP as o_orderdate $13 , type DECIMAL as o_totalprice $12 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type INTEGER $K3 , type TIMESTAMP $K4 , type DECIMAL $K5 , type DECIMAL )  $22 sum  "
     | combined 0
-    | stageMarker1238
-  stage stageMarker1238 on all nodes :
+    | stageMarker37692
+  stage stageMarker37692 on all nodes :
     aggreg " groupBy  type VARCHAR as c_name $1 , type INTEGER as c_custkey $2 , type INTEGER as o_orderkey $3 , type TIMESTAMP as o_orderdate $4 , type DECIMAL as o_totalprice $5 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type INTEGER $K3 , type TIMESTAMP $K4 , type DECIMAL $K5 , type DECIMAL )  $6 sum  "
     | combined 0
-    | stageMarker1241
-  stage stageMarker1241 on origin :
+    | stageMarker37695
+  stage stageMarker37695 on origin :
     aggreg " groupBy  type VARCHAR as c_name $1 , type INTEGER as c_custkey $2 , type INTEGER as o_orderkey $3 , type TIMESTAMP as o_orderdate $4 , type DECIMAL as o_totalprice $5 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type INTEGER $K3 , type TIMESTAMP $K4 , type DECIMAL $K5 , type DECIMAL )  $6 sum  "
-    | sort 2 " type DECIMAL as o_totalprice $5 DESC  , type TIMESTAMP as o_orderdate $4 ASC  "
+    | sort " type DECIMAL as o_totalprice $5 DESC  , type TIMESTAMP as o_orderdate $4 ASC  "
     | combined 0
     | stageLast
   stage stageLast on origin :

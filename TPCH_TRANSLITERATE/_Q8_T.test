@@ -59,44 +59,44 @@ begin
     stage stageStart on origin :
       start
       | pulse once
-      | stageMarker6866
-    stage stageMarker6866 on all partitions :
+      | stageMarker18992
+    stage stageMarker18992 on all partitions :
       scan rapidsse public part
-      | stageMarker6869 broadcast
-    stage stageMarker6869 on all partitions :
+      | stageMarker18995 broadcast
+    stage stageMarker18995 on all partitions :
       scan rapidsse public supplier
-      | abstractJoin 2 " 1  "
-      | stageMarker6872 broadcast
-    stage stageMarker6872 on all partitions :
+      | abstractJoin " 1  "
+      | stageMarker18998 broadcast
+    stage stageMarker18998 on all partitions :
       scan rapidsse public lineitem
-      | abstractJoin 2 " 1  "
-      | stageMarker6875 broadcast
-    stage stageMarker6875 on all partitions :
+      | abstractJoin " 1  "
+      | stageMarker19001 broadcast
+    stage stageMarker19001 on all partitions :
       scan rapidsse public orders
-      | abstractJoin 2 " 1  "
-      | stageMarker6878 broadcast
-    stage stageMarker6878 on all partitions :
+      | abstractJoin " 1  "
+      | stageMarker19004 broadcast
+    stage stageMarker19004 on all partitions :
       scan rapidsse public customer
-      | abstractJoin 2 " 1  "
-      | stageMarker6881 broadcast
-    stage stageMarker6881 on all partitions :
+      | abstractJoin " 1  "
+      | stageMarker19007 broadcast
+    stage stageMarker19007 on all partitions :
       scan rapidsse public nation
-      | abstractJoin 2 " 1  "
-      | stageMarker6884 broadcast
-    stage stageMarker6884 on all partitions :
+      | abstractJoin " 1  "
+      | stageMarker19010 broadcast
+    stage stageMarker19010 on all partitions :
       scan rapidsse public nation
-      | abstractJoin 2 " 1  "
-      | stageMarker6887 broadcast
-    stage stageMarker6887 on all partitions :
+      | abstractJoin " 1  "
+      | stageMarker19013 broadcast
+    stage stageMarker19013 on all partitions :
       scan rapidsse public region
-      | abstractJoin 2 " 1  "
-      | stageMarker6890
-    stage stageMarker6890 on all partitions :
+      | abstractJoin " 1  "
+      | stageMarker19016
+    stage stageMarker19016 on all partitions :
       filter " type BOOLEAN  $1 $18 ==  $10 $19 ==  and  $17 $33 ==  and  $34 $42 ==  and  $45 $50 ==  and  $52 $58 ==  and  $59 ''AMERICA''  ==  and  $13 $54 ==  and  $37 TIMESTAMP ''1995-01-01 00:00:00''  >=  and  $37 TIMESTAMP ''1996-12-31 00:00:00''  <=  and  $5 ''ECONOMY ANODIZED STEEL''  ==  and  "
       | project " type INTEGER as o_year $37 extract_year  , type DECIMAL as volume $22 1.  $23 -  *  , type VARCHAR as nation $55 "
       | combined 0
-      | stageMarker6893
-    stage stageMarker6893 on all partitions :
+      | stageMarker19019
+    stage stageMarker19019 on all partitions :
 
       stageLast
     stage stageLast on origin :
@@ -108,23 +108,23 @@ begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker6896
-  stage stageMarker6896 on all partitions :
+    | stageMarker19022
+  stage stageMarker19022 on all partitions :
     call "all_nations "
     | aggreg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  }  $3 ''BRAZIL''  == WHEN  $2THEN  0.  ELSE  ENDIF  CASE  sum  "
     | combined 0
-    | stageMarker6899
-  stage stageMarker6899 on all nodes :
+    | stageMarker19025
+  stage stageMarker19025 on all nodes :
     aggreg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
     | combined 0
-    | stageMarker7080
-  stage stageMarker7080 on origin :
+    | stageMarker19206
+  stage stageMarker19206 on origin :
     aggreg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
     | combined 0
-    | stageMarker6902
-  stage stageMarker6902 on origin :
+    | stageMarker19028
+  stage stageMarker19028 on origin :
     aggreg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL as mkt_share $3 $2 /  "
-    | sort 2 " type INTEGER as o_year $1 ASC  "
+    | sort " type INTEGER as o_year $1 ASC  "
     | combined 0
     | stageLast
   stage stageLast on origin :

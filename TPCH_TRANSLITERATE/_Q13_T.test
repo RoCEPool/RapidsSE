@@ -61,27 +61,27 @@ begin
     stage stageStart on origin :
       start
       | pulse once
-      | stageMarker19474
-    stage stageMarker19474 on all partitions :
+      | stageMarker32010
+    stage stageMarker32010 on all partitions :
       scan rapidsse public customer
-      | stageMarker19477 broadcast
-    stage stageMarker19477 on all partitions :
+      | stageMarker32013 broadcast
+    stage stageMarker32013 on all partitions :
       scan rapidsse public orders
-      | abstractJoin 2 " $L1 $R2 ==  }  $R9 ''%special%requests%''  7 8 matchMiddle1  not  and  "
-      | stageMarker19480
-    stage stageMarker19480 on all partitions :
+      | abstractJoin " $L1 $R2 ==  }  $R9 ''%special%requests%''  7 8 matchMiddle1  not  and  "
+      | stageMarker32016
+    stage stageMarker32016 on all partitions :
       aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER )  $9 count  "
       | combined 0
-      | stageMarker19483
-    stage stageMarker19483 on all nodes :
+      | stageMarker32019
+    stage stageMarker32019 on all nodes :
       aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER )  $2 sum  "
       | combined 0
-      | stageMarker19486
-    stage stageMarker19486 on origin :
+      | stageMarker32022
+    stage stageMarker32022 on origin :
       aggreg " groupBy  type INTEGER as c_custkey $1 aggregates  type INTEGER $K1 , type INTEGER as c_count )  $2 sum  "
       | combined 0
-      | stageMarker19489
-    stage stageMarker19489 on origin :
+      | stageMarker32025
+    stage stageMarker32025 on origin :
 
       stageLast
     stage stageLast on origin :
@@ -93,11 +93,11 @@ begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker19492
-  stage stageMarker19492 on origin :
+    | stageMarker32028
+  stage stageMarker32028 on origin :
     call "c_orders "
     | aggreg " groupBy  type INTEGER as c_count $2 aggregates  type INTEGER $K1 , type INTEGER as custdist )  countAll  "
-    | sort 2 " type INTEGER $2 DESC  , type INTEGER as c_count $1 DESC  "
+    | sort " type INTEGER $2 DESC  , type INTEGER as c_count $1 DESC  "
     | combined 0
     | stageLast
   stage stageLast on origin :

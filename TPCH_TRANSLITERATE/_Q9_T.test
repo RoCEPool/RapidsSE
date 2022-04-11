@@ -49,36 +49,36 @@ begin
     stage stageStart on origin :
       start
       | pulse once
-      | stageMarker11748
-    stage stageMarker11748 on all partitions :
+      | stageMarker23994
+    stage stageMarker23994 on all partitions :
       scan rapidsse public part
-      | stageMarker11751 broadcast
-    stage stageMarker11751 on all partitions :
+      | stageMarker23997 broadcast
+    stage stageMarker23997 on all partitions :
       scan rapidsse public supplier
-      | abstractJoin 2 " 1  "
-      | stageMarker11754 broadcast
-    stage stageMarker11754 on all partitions :
+      | abstractJoin " 1  "
+      | stageMarker24000 broadcast
+    stage stageMarker24000 on all partitions :
       scan rapidsse public lineitem
-      | abstractJoin 2 " 1  "
-      | stageMarker11757 broadcast
-    stage stageMarker11757 on all partitions :
+      | abstractJoin " 1  "
+      | stageMarker24003 broadcast
+    stage stageMarker24003 on all partitions :
       scan rapidsse public partsupp
-      | abstractJoin 2 " 1  "
-      | stageMarker11760 broadcast
-    stage stageMarker11760 on all partitions :
+      | abstractJoin " 1  "
+      | stageMarker24006 broadcast
+    stage stageMarker24006 on all partitions :
       scan rapidsse public orders
-      | abstractJoin 2 " 1  "
-      | stageMarker11763 broadcast
-    stage stageMarker11763 on all partitions :
+      | abstractJoin " 1  "
+      | stageMarker24009 broadcast
+    stage stageMarker24009 on all partitions :
       scan rapidsse public nation
-      | abstractJoin 2 " 1  "
-      | stageMarker11766
-    stage stageMarker11766 on all partitions :
+      | abstractJoin " 1  "
+      | stageMarker24012
+    stage stageMarker24012 on all partitions :
       filter " type BOOLEAN  $10 $19 ==  $34 $19 ==  and  $33 $18 ==  and  $1 $18 ==  and  $38 $17 ==  and  $13 $47 ==  and  }  $2 ''%green%''  5 matchMiddle  and  "
       | project " type VARCHAR as nation $48 , type INTEGER as o_year $42 extract_year  , type DECIMAL as amount $22 1.  $23 -  *  $36 $21 *  -  "
       | combined 0
-      | stageMarker11769
-    stage stageMarker11769 on all partitions :
+      | stageMarker24015
+    stage stageMarker24015 on all partitions :
 
       stageLast
     stage stageLast on origin :
@@ -90,19 +90,19 @@ begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker11772
-  stage stageMarker11772 on all partitions :
+    | stageMarker24018
+  stage stageMarker24018 on all partitions :
     call "profit "
     | aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
     | combined 0
-    | stageMarker11775
-  stage stageMarker11775 on all nodes :
+    | stageMarker24021
+  stage stageMarker24021 on all nodes :
     aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
     | combined 0
-    | stageMarker11778
-  stage stageMarker11778 on origin :
+    | stageMarker24024
+  stage stageMarker24024 on origin :
     aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
-    | sort 2 " type VARCHAR as nation $1 ASC  , type INTEGER as o_year $2 DESC  "
+    | sort " type VARCHAR as nation $1 ASC  , type INTEGER as o_year $2 DESC  "
     | combined 0
     | stageLast
   stage stageLast on origin :

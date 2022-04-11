@@ -32,28 +32,28 @@ begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker20566
-  stage stageMarker20566 on all partitions :
+    | stageMarker33102
+  stage stageMarker33102 on all partitions :
     scan rapidsse public lineitem
-    | stageMarker20569 broadcast
-  stage stageMarker20569 on all partitions :
+    | stageMarker33105 broadcast
+  stage stageMarker33105 on all partitions :
     scan rapidsse public part
-    | abstractJoin 2 " 1  "
-    | stageMarker20572
-  stage stageMarker20572 on all partitions :
+    | abstractJoin " 1  "
+    | stageMarker33108
+  stage stageMarker33108 on all partitions :
     filter " type BOOLEAN  $2 $17 ==  $11 TIMESTAMP ''1995-09-01 00:00:00''  >=  and  $11 TIMESTAMP ''1995-10-01 00:00:00''  <  and  "
     | project " type DECIMAL )  $6 1.  $7 -  *  sum  , type DECIMAL )  }  }  $21 ''PROMO%''  6 matchLeading WHEN  $6 1.  $7 -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
     | combined 0
-    | stageMarker20575
-  stage stageMarker20575 on all nodes :
+    | stageMarker33111
+  stage stageMarker33111 on all nodes :
     project " type DECIMAL )  $1 sum  , type DECIMAL )  $2 sum  "
     | combined 0
-    | stageMarker20677
-  stage stageMarker20677 on origin :
+    | stageMarker33213
+  stage stageMarker33213 on origin :
     project " type DECIMAL )  $1 sum  , type DECIMAL )  $2 sum  "
     | combined 0
-    | stageMarker20578
-  stage stageMarker20578 on origin :
+    | stageMarker33114
+  stage stageMarker33114 on origin :
     project " type DECIMAL as promo_revenue 100.00  $2 *  $1 /  "
     | combined 0
     | stageLast
