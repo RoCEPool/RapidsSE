@@ -362,7 +362,7 @@ bool SePrompt::bPrepareJob(void)
 
   m_pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   
-  eEC eError = m_pCurrentDeputy->ePrepareJob();
+  eEC eError = m_pCurrentDeputy->ePrepareJob(m_pCmdTknVec);
 
   if (eError) {
     RASSERT(! m_pCurrentDeputy->pJob());

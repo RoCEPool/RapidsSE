@@ -145,7 +145,7 @@ void Step::vApiExecuteCommand(void)
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
-  eError = Api::ePrepareJob(pSession);
+  eError = Api::ePrepareJob(pSession,pCmdTknVec);
   
   if (eError) {
     m_pDataStack->vPushInt(eError);
@@ -320,7 +320,7 @@ void Step::vApiSpawnDemon(void)
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
   //pTagSet->vDumpSet();
-  eError = Api::ePrepareJob(pSession);
+  eError = Api::ePrepareJob(pSession,pCmdTknVec);
 
 
   if (eError) {

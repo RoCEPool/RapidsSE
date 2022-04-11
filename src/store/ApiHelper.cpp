@@ -103,7 +103,7 @@ eEC ApiHelper::ePrepareJob(Stz* szCmd)
   
   pCmdTknVec->vTokeniseCpp(szCmd);
   
-  eEC eError = EC_NONE; //ApiHelper::ePrepareJob(pCmdTknVec);
+  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec);
 
   delete pCmdTknVec;
   
@@ -113,9 +113,9 @@ eEC ApiHelper::ePrepareJob(Stz* szCmd)
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob()
+eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec)
 {
-  eEC eError = Api::ePrepareJob(m_pSession);
+  eEC eError = Api::ePrepareJob(m_pSession,pCmdTknVec);
   
   return eError;
 }

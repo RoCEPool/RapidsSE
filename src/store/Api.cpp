@@ -312,7 +312,7 @@ bool Api::bExtractCmdTags(Session* pSession, TokenVec* pCmdTknVec)
 /*----------------------------------------------------------------------------*/
 /* new a and prepare it to execute the command in session                     */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Session* pSession)
+eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec)
 {
   _static_
 
@@ -321,7 +321,7 @@ eEC Api::ePrepareJob(Session* pSession)
     
   // get the command proper and the tag set
   TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
+  //TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
   TagSet*   pCmdTags   = & pSession->m_oJobTagSet;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
