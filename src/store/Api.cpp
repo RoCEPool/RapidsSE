@@ -318,7 +318,7 @@ bool Api::bExtractCmdTags(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* new a and prepare it to execute the command in session                     */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
+eEC Api::ePrepareJob(Session* pSession)
 {
   _static_
 
@@ -360,12 +360,14 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
   Stz* szJobNm = pCmdTags->szValue(C_TAG_JOBNM);
 
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
+  
   Job* pPrepareJob =
          pSession->m_pSsnJob =
            new Job(szJobNm,
-                   AM::GRID::iThisNodeId(),
                    pSession->m_i_Session,
-                   pSession->m_iCmdNo++
+                   tCmdId
                    );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -380,42 +382,6 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   pCmdTknVec->vVecToString(sStmt,0,true);
   pPrepareJob->vCmd(sStmt);
 
-  // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
-  //                          For DEMO (to be removed)                        //
-  // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
-  // create tags in the job for the params from the literal token vector
-  if (pDemoLiterals && pDemoLiterals->nItems()) {
-    
-    for (i8 i_Tkn = 0; i_Tkn < pDemoLiterals->nItems(); i_Tkn++) {
-      
-      Token* pTkn = pDemoLiterals->pGet(i_Tkn);
-      
-      Stz* szTag;
-      switch(i_Tkn) {
-        case 0: szTag = C_TAG_PARAM0; break;
-        case 1: szTag = C_TAG_PARAM1; break;
-        case 2: szTag = C_TAG_PARAM2; break;
-        case 3: szTag = C_TAG_PARAM3; break;
-        case 4: szTag = C_TAG_PARAM4; break;
-        default:
-          RASSERT(0);
-      }
-      
-      switch(pTkn->eToken()) {
-      case TN_STRING:
-        pPrepareJobTags->vInsert(szTag,pDemoLiterals->pGet(i_Tkn)->szChars());
-        break;
-      case TN_INTEGER:
-        pPrepareJobTags->vInsert(szTag,pDemoLiterals->pGet(i_Tkn)->iToI8());
-        break;
-      default:
-        RASSERT(0);
-      }
-
-    }
-    
-  }
-  // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
   
   pPrepareJobTags->vInsert(C_TAG_CMD,pPrepareJob->szCmd());
@@ -809,10 +775,12 @@ void Api::vCallBootSystem(void)
 {
   _static_
   
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
+  
   Job* pJob = new Job("bootSystem"_Stz,
-                      AM::GRID::iThisNodeId(),
                       AM::SESSION::iInternalSession(),
-                      1
+                      tCmdId
                       );
   Stz* szJobNm = pJob->szJobNm();
   Task* pBootTask = new Task(szJobNm,pJob);
@@ -868,10 +836,13 @@ void Api::vCallStartSystem(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
+  
+
   Job* pJob = new Job("StartSys"_Stz,
-                      AM::GRID::iThisNodeId(),
                       AM::SESSION::iInternalSession(),
-                      1
+                      tCmdId
                       );
   
   Stz* szJobNm = pJob->szJobNm();

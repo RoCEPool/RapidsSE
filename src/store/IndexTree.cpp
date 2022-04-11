@@ -359,7 +359,7 @@ Stz* IndexTree::pAnalyze(void)
   s48K sAnalysis;
   
   sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
-                        AM::iThisNodeId(),
+                        AM::NODE::iThisNodeId(),
                         m_pIndex->szIndexNm(),
                         m_pIndex->pTable()->szTableNm());
   

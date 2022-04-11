@@ -285,7 +285,7 @@ void CrwBuffer::vAnalyze(i8& nBuffers, i8& nRows)
     
 //    if (bDetailed)
 //      sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
-//                           AM::szNodeNm(),
+//                           AM::NODE::szNodeNm(),
 //                           pNextBuffer->m_tLglPtn,
 //                           iBuffers,
 //                           pNextBuffer->nRows());

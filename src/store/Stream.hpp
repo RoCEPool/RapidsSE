@@ -20,7 +20,7 @@ namespace STORE
     i8     m_iNodeId;  // this stream processes NodeId in grid
                        //   is PtnMap::i_PtnNoToNode(m_tLglPtn);
 
-    i8     m_iPtnNo;   // this stream processes PtnNo (in tables)
+    i8     m_i_PtnOfNode; // this stream processes PtnNo (in tables)
   
     // -- -- -- -- -- --
 
@@ -37,19 +37,20 @@ namespace STORE
            StageSpec* p_StageSpec,
            LglPtn     tLglPtn,
            i8         iNodeId,
-           i8         iPtnNo
+           i8         i_PtnOfNode
            );
    ~Stream(void) noexcept(false);
     
     Deck* pDeck(void);
   
     i8   iNodeId(void);
-    i8   iPtnNo(void);
+  
+    Pipeline* pPipeline(void);
+    i8   i_PtnOfNode(void);
 
     Op*  pOp0(void);
-    Pipeline* pPipeline(void);
 
-    LglPtn  tLglPtn(void);
+    LglPtn tLglPtn(void);
 
     void vSetInvoker(Task* pInvoker);
     Stage* pStage(void);

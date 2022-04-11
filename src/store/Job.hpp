@@ -10,6 +10,7 @@
 #include "eRS.h"
 
 #include "JobMetrics.hpp"
+#include "CmdId.hpp"
 
 
 /*                      IMPORTANT NOTE
@@ -26,37 +27,29 @@ namespace STORE
   {
   private:
     Lock m_okLock;
-  
-  public:
-  
+    
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // universally immutable information                    UNIVERSAL
 
-    // -- id, name and kind
     JobId       m_tJobId;     // this job's id
     s32         m_sJobNm;     // name of job
     eJK         m_eJobKind;   // job kind: (needs work)
 
     Atomic      m_noActiveOps; // number of active ops
 
-
-
     // -- command and tags
-  private:  
     TagSet m_oJobTags;  // tags for the job
 
-  public:
-    // -- home is
-    i8 m_iOriginNodeId;   // which node
     i8 m_i_Session;  // which session in node's session array
-    i8 m_iCmdNo;     // sequence no of the command from that session
+    CmdId m_tCmdId;
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // information depending on job instance/location           MODAL
   
+    // information depending on job instance/location           MODAL
+
     // -- postage
     bool m_bWasReceived;   // was job received over a socket?          POST_RECV
-    i8   m_iParticipantNodeId;  // participant node 
+    i8   m_iParticipantNodeId;  // participant node
   
     // -- state
     eJS m_eJobState;  // current state: JS_ACTIVE, _LOCKED, ...
@@ -65,23 +58,20 @@ namespace STORE
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running as originator on origin                 ORIGINATOR
+
+    Op*   m_pResponseOp;     // operator to where responses go         POST_RECV
+    Timer m_oResponseTimer;  // timer (on origin only)
   
-    // -- timer
-    Timer   m_oTimer;        // timer (on origin only)
-    
-    eEC     m_eError_job;    // error when starting job
+    eEC   m_eError_job;      // error when starting job
                              // DOUBLE CHECK THIS BELONGS HERE
+
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running on participant node                    PARTICIPANT
-
-  private:
-    // -- participating job maintains
+ 
     Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
-  public:
 
   
-  private:
     // -- tasking
     Task* m_pTask;  // task executing this job                         POST_RECV
   
@@ -98,12 +88,16 @@ namespace STORE
     i8  m_iTscCanceling;
     i8  m_iTscCanceled;
 
-    Timer m_oProgressTimer;
  
     b8  m_bReapable;  // can job be reaped?
   
     JobMetrics* m_pJobMetricsChain;                                // POST_RECV
 
+  
+    // TO BE MOVED
+    Timer m_oProgressTimer; // move to register
+
+  
     // must be last
     Footer m_xFooter;
     
@@ -112,10 +106,9 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Job(Stz* szJobNm,
-        i8 iOriginNodeId,  // originated on which node
-        i8 i_Session,      // which session in session array
-        i8 iCmdNo          // the sequence no of the request from that session
+    Job(Stz*  szJobNm,
+        i8    i_Session,  // which session in session array
+        CmdId tCmdId
        );
 
    ~Job(void) noexcept(false);
@@ -127,6 +120,7 @@ namespace STORE
   
     bool bByPromptTag(void);
   
+    CmdId tCmdId(void);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
@@ -148,6 +142,7 @@ namespace STORE
     bool bIsPipelineLocal(void);
   
     JobId tJobId(void);
+    void vJobId(JobId tJobId);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
     bool bJobHasError(void);
@@ -165,9 +160,8 @@ namespace STORE
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
 
-    Stz* szNodeNm(void);
-  
-    i8   iOriginatorNodeId(void);
+    i8   iOriginNodeId(void);
+    Stz* szOriginNodeNm(void);
   
     i8   iParticipantNodeId(void);
     void vParticipantNodeId(i8 i_Node);
@@ -175,13 +169,17 @@ namespace STORE
     void vPrintJobContents(void);
     void vPrintJobLine(void);
     void vPostRecv(void);
-    Timer*  pProgressTimer(void);
+    Timer* pProgressTimer(void);
   
     bool bReapable(void);
     void vReapable(bool bReapable);
     void vResetForCascade(Session* pSession);
+    Op*  pResponseOp(void);
+    void vResponseOp(Op* pResponseOp);
 
+    i8   i_Session(void);
     Session* pSession(void);
+    void vSession(i8 i_Session);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
     void vSetFromCascade(Stz* szCascade);

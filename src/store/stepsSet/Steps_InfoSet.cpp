@@ -765,7 +765,7 @@ void Step::vInfoSetRdCsvChunk(void)
   
   CsvMeta* pCsvMeta = pCsvBuffer->pCsvMeta();
   
-  pCsvMeta->vOriginNm(AM::szNodeNm());
+  pCsvMeta->vOriginNm(AM::NODE::szNodeNm());
   pCsvMeta->vFilePath(szFilePath);
   pCsvMeta->vOffset(iOffset);
   

@@ -362,8 +362,7 @@ bool SePrompt::bPrepareJob(void)
 
   m_pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   
-  //eEC eError = Api::ePrepareJob(m_pCurrentDeputy->pSession(),m_pLitTknVec);
-  eEC eError = m_pCurrentDeputy->ePrepareJob(m_pLitTknVec);
+  eEC eError = m_pCurrentDeputy->ePrepareJob();
 
   if (eError) {
     RASSERT(! m_pCurrentDeputy->pJob());
@@ -847,7 +846,7 @@ void SePrompt::vPromptUser(void)
 
   bool bLowMem = gpBufferPool->bLowMemory();
   
-  Stz* szNodeNm = AM::szNodeNm();
+  Stz* szNodeNm = AM::NODE::szNodeNm();
   i8 iPid = Process::iGetPid();
 
   /*

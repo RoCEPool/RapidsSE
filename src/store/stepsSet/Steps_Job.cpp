@@ -1035,7 +1035,7 @@ void Step::vJobSessionFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  i8 iSessionId = pJob->m_i_Session;
+  i8 iSessionId = pJob->i_Session();
   
   Session* pSession = nullptr;
   
@@ -1056,7 +1056,7 @@ void Step::vJobSessionStateFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->m_i_Session);
+  m_pDataStack->vPushInt(pJob->i_Session());
   
   EXIT();
 }

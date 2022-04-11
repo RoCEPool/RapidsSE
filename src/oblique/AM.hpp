@@ -231,6 +231,7 @@ namespace OBLIQUE
     class ATTACHMAP
     {
     public:
+      static i8 iCmdNoNext(void);
       static void vSysMetricsAdd(SysMetrics* pSysMetrics);
       static SysMetrics* pSysMetricsChain(void);
     };
@@ -339,6 +340,13 @@ namespace OBLIQUE
     {
     public:
       static bool bFree(void);
+    };
+
+    class NODE
+    {
+    public:
+      static Stz* szNodeNm(void);
+      static i8   iThisNodeId(void);
     };
 
     class OBJECT
@@ -613,7 +621,6 @@ namespace OBLIQUE
   
     static i8   iNextEpoch(void);
     static i8   iNextTxId(void);
-    static Stz* szNodeNm(void);
     static JobList* pOriginatingJobs(void);
     static JobList* pParticipatingJobs(void);
     static JobList* pRetiredJobs(void);
@@ -635,7 +642,6 @@ namespace OBLIQUE
     static i8   nTakenBytes(void);
     static MasterLock* pTccLock(void);
     static Word* pTenants(void);
-    static i8   iThisNodeId(void);
     static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);
     static bool bPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);
     static Heartbeat xGetHeartbeat(i8 iNode);

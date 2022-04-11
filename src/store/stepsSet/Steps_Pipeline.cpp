@@ -60,7 +60,7 @@ void Step::vPipelineCreate(void)
   // create subpipeline
   
   Pipeline* pPipeline =
-    new Pipeline(m_pJob,pPipeSpec,m_pJob->iOriginatorNodeId());
+    new Pipeline(m_pJob,pPipeSpec,m_pJob->iOriginNodeId());
   
   m_pLogicUnit->m_xpPipeline = pPipeline;
     

@@ -44,10 +44,10 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm,
-         i8 iOriginNodeId, // originated on which node
-         i8 i_Session,     // which session in session array
-         i8 iCmdNo         // the sequence no of the request from that session)
+Job::Job(Stz*  szJobNm,
+         i8    i_Session,     // which session in session array
+         CmdId tCmdId
+
         )
 : Operand(CN_JOB)
 , CRM<Job>(this)
@@ -63,11 +63,11 @@ Job::Job(Stz* szJobNm,
   
   // -- a -------------------
   
-  m_iOriginNodeId = iOriginNodeId;
-  m_i_Session     = i_Session;
-  m_iCmdNo        = iCmdNo;
+  m_i_Session   = i_Session;
+  m_tCmdId      = tCmdId;
 
-  m_oTimer.vStart();
+  m_pResponseOp = nullptr;
+  m_oResponseTimer.vStart();
 
   // -- b -------------------
   m_bWasReceived     = false;
@@ -228,6 +228,16 @@ bool Job::bByPromptTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get command id                                                             */
+/*----------------------------------------------------------------------------*/
+CmdId Job::tCmdId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_tCmdId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get command                                                                */
 /*----------------------------------------------------------------------------*/
 Stz* Job::szCmd(void)
@@ -268,7 +278,7 @@ void Job::vDotPrint(Stz* szText)
     
   SP_Timer spTimer;
   
-  m_oTimer.vUpdate();
+  m_oResponseTimer.vUpdate();
   
   vTrace("[%s: job %s %s] "
          "%s"
@@ -276,7 +286,7 @@ void Job::vDotPrint(Stz* szText)
          
          ,AM::pGrid()->pThisNode()->szNodeNm()
          ,m_sJobNm.szStz()
-         ,spTimer.sz(&m_oTimer)
+         ,spTimer.sz(&m_oResponseTimer)
          
          ,szText
          
@@ -439,6 +449,16 @@ JobId Job::tJobId(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the job id                                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vJobId(JobId tJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_tJobId = tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the job kind                                                           */
 /*----------------------------------------------------------------------------*/
 eJK Job::eJobKind(void)
@@ -571,29 +591,29 @@ TagSet* Job::pJobTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get name of node this came from                                            */
-/*----------------------------------------------------------------------------*/
-Stz* Job::szNodeNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 i_Node = iOriginatorNodeId();
-  
-  Stz* szNodeNm = AM::pGrid()->pFindNodeById(i_Node)->szNodeNm();
-  
-  return szNodeNm;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
-i8 Job::iOriginatorNodeId(void)
+i8 Job::iOriginNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
   i8 iOriginatorNodeId = m_tJobId.uNodeId();
   
   return iOriginatorNodeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of node this came from                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szOriginNodeNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 i_Node = iOriginNodeId();
+  
+  Stz* szNodeNm = AM::pGrid()->pFindNodeById(i_Node)->szNodeNm();
+  
+  return szNodeNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -687,15 +707,15 @@ void Job::vPrintJobContents(void)
          ,m_sJobNm.szStz()           // 1
          ,aJK[m_eJobKind]            // 2
          ,szCmd()                    // 3
-         ,m_iOriginNodeId            // 4
+         ,iOriginNodeId()            // 4
          ,m_i_Session                // 5
-         ,m_iCmdNo                   // 6
+         ,m_tCmdId.iCmdNo()          // 6
          ,m_bWasReceived ? "true" : "false" // 7
          ,m_iParticipantNodeId            // 8
          ,aJS[m_eJobState]           // 10
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
-         ,spTimer.sz(& m_oTimer)     // 13
+         ,spTimer.sz(& m_oResponseTimer)     // 13
          ,aEC[m_eError_job]          // 15
          ,spvSingularOp.sz(m_pSingularOp)  // 17
          ,spvTask.sz(m_pTask)        // 21
@@ -718,11 +738,13 @@ void Job::vPostRecv(void)
   
   m_bWasReceived = true;
   
-  m_eJobList = JL_NONE;
+  m_eJobList     = JL_NONE;
     
-  m_pTask = nullptr;
+  m_pTask        = nullptr;
 
-  m_pSingularOp = nullptr;
+  m_pResponseOp  = nullptr;
+  m_pSingularOp  = nullptr;
+  
   m_pJobMetricsChain = nullptr;
 
   m_okLock.vResetLock();
@@ -747,9 +769,9 @@ void Job::vPrintJobLine(void)
          );
 
   vTrace("originNodeId %lld session %lld command %lld "_Stz
-         ,this->m_iOriginNodeId
+         ,this->iOriginNodeId()
          ,this->m_i_Session
-         ,this->m_iCmdNo
+         ,this->m_tCmdId.iCmdNo()
          );
 
   if (C_UNKNOWN != this->iParticipantNodeId())
@@ -852,15 +874,57 @@ void Job::vResetForCascade(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pResponseOp                                                             */
+/*----------------------------------------------------------------------------*/
+Op* Job::pResponseOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pResponseOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pResponseOp                                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vResponseOp(Op* pResponseOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pResponseOp = pResponseOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get session                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Job::i_Session(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_i_Session;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pSession                                                               */
 /*----------------------------------------------------------------------------*/
 Session* Job::pSession(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Session* pSession = AM::pSessionGet(m_iOriginNodeId,m_i_Session);
+  i8 iOriginNodeId = this->iOriginNodeId();
+
+  Session* pSession = AM::pSessionGet(iOriginNodeId,m_i_Session);
 
   return pSession;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set session                                                                */
+/*----------------------------------------------------------------------------*/
+void Job::vSession(i8 i_Session)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_i_Session = i_Session;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -947,7 +1011,7 @@ i8 Job::iTimerMsec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_oTimer.iMilliseconds();
+  return m_oResponseTimer.iMilliseconds();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -957,7 +1021,7 @@ i8 Job::iTimerStart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_oTimer.iStart();
+  return m_oResponseTimer.iStart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -967,7 +1031,7 @@ void Job::vTimerStart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_oTimer.vStart();
+  m_oResponseTimer.vStart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -977,7 +1041,7 @@ void Job::vTimerUpdate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_oTimer.vUpdate();
+  m_oResponseTimer.vUpdate();
 }
 
 /*----------------------------------------------------------------------------*/

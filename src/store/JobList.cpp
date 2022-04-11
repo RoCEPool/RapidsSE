@@ -77,12 +77,12 @@ bool JobList::bMoveRight_id(JobId tJobId, Job *pRightJob, bool &bFoundKey) {
   //         ,pRightJob->m_tJobId.uJobNo());
 
   // do the id's match?
-  if (tJobId == pRightJob->m_tJobId) {
+  if (tJobId == pRightJob->tJobId()) {
     bFoundKey = true;
     return false;
   }
 
-  if (tJobId > pRightJob->m_tJobId)
+  if (tJobId > pRightJob->tJobId())
     return TRUE(move_right);
   else
     return FALSE(go_down);
@@ -204,7 +204,7 @@ void JobList::vInsertJob(Job *pJob) {
                                                 Job::vPrintJobNode);
     RASSERT(bWasInserted);
   } else {
-    JobId tJobId = pJob->m_tJobId;
+    JobId tJobId = pJob->tJobId();
 
     auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
       bool bMoveRight = bMoveRight_id(tJobId, _pJob(aRightJob), bFoundKey);
@@ -305,7 +305,7 @@ void JobList::vRemoveJob(Job *pJob) {
                                                bfMoveRightTest,
                                                Job::vPrintJobNode);
   } else {
-    JobId tJobId = pJob->m_tJobId;
+    JobId tJobId = pJob->tJobId();
 
     auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
 

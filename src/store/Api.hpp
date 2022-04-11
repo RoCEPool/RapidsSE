@@ -31,7 +31,7 @@ namespace STORE
   static void vExecuteJob(Session* pSession);
   static void vExtractCmdPaths(Session*  pSession);
   static bool bExtractCmdTags(Session*  pSession);
-  static eEC  ePrepareJob(Session*  pSession, TokenVec* pDemoLiterals = nullptr);
+  static eEC  ePrepareJob(Session*  pSession);
 
   static void vSubmitJob(Session* pSession);
   static void vWaitJob(Session* pSession);

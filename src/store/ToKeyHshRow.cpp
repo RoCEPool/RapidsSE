@@ -737,7 +737,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
     
     bReplicated = true;
     
-    if (0 == pStream->iPtnNo())
+    if (0 == pStream->i_PtnOfNode())
       bReplicatedStream0 = true;
   }
 

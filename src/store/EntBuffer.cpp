@@ -539,7 +539,7 @@ void EntBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   
   if (bDetailed)
     sAnalysis.vCatSprint(" row: (%s, %lld, %5lld,' L%lld', %lld)\n"_Stz,
-                         AM::szNodeNm(),
+                         AM::NODE::szNodeNm(),
                          m_tPtnNo,
                          iBuffers,
                          m_iBufferHeight,

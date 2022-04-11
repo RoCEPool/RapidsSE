@@ -87,7 +87,7 @@ void Step::vSystemSee(void)
   vTrace("See System::\n"_Stz);
 
   vTrace("  name %s\n"_Stz
-        ,AM::szNodeNm()
+        ,AM::NODE::szNodeNm()
          );
 
   vTrace("  pid %lld (%s)\n"_Stz
