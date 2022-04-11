@@ -124,7 +124,7 @@ begin
     | next
 
   stage stageQ18_1_g on origin :
-   limit 2 100
+   limit 100
    | combined 0
    | stageLast
 

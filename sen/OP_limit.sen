@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: limit_ComCleaning \handler
+: limit_Cleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
@@ -40,7 +40,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: limit_ComStreamDef \handler
+: limit_StreamDef \handler
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
@@ -69,15 +69,11 @@
 
   _lu_initialise_
 
-  // get whether compiled or not
-  <compiled> >int to Counter0[]
-
   op__topology
 
-  Counter0[] 2 == assert
   // handle combined operator
-  find: limit_ComCleaning    ZK_M_CLEANING      [op].handler!
-  find: limit_ComStreamDef   ZK_D_STREAMDEF     [op].handler!
+  find: limit_Cleaning    ZK_M_CLEANING      [op].handler!
+  find: limit_StreamDef   ZK_D_STREAMDEF     [op].handler!
 
   op__loop
 
@@ -91,7 +87,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: limit :: limit <compiled> <count> ;
+cmdSyntax: limit :: limit <count> ;
 
 : limit_cmdTags _cmdTags tagCopy: op_tags
   tags{
