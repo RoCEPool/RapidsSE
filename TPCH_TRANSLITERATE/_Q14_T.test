@@ -17,10 +17,51 @@ select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_dis
 //  Transliterate Query
 //------------------------------------------------------------------------------
 EXPLAIN STAGE TRANSLITERATE
+select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_discount) else 0
+     end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+     from lineitem, part
+     where l_partkey = p_partkey
+     and l_shipdate >= '1995-09-01'
+     and l_shipdate < '1995-10-01';
 
 //------------------------------------------------------------------------------
 // Pipeline Generated
 //------------------------------------------------------------------------------
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker20566
+  stage stageMarker20566 on all partitions :
+    scan rapidsse public lineitem
+    | stageMarker20569 broadcast
+  stage stageMarker20569 on all partitions :
+    scan rapidsse public part
+    | abstractJoin 2 " 1  "
+    | stageMarker20572
+  stage stageMarker20572 on all partitions :
+    filter " type BOOLEAN  $2 $17 ==  $11 TIMESTAMP ''1995-09-01 00:00:00''  >=  and  $11 TIMESTAMP ''1995-10-01 00:00:00''  <  and  "
+    | project " type DECIMAL )  $6 1.  $7 -  *  sum  , type DECIMAL )  }  }  $21 ''PROMO%''  6 matchLeading WHEN  $6 1.  $7 -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
+    | combined 0
+    | stageMarker20575
+  stage stageMarker20575 on all nodes :
+    project " type DECIMAL )  $1 sum  , type DECIMAL )  $2 sum  "
+    | combined 0
+    | stageMarker20677
+  stage stageMarker20677 on origin :
+    project " type DECIMAL )  $1 sum  , type DECIMAL )  $2 sum  "
+    | combined 0
+    | stageMarker20578
+  stage stageMarker20578 on origin :
+    project " type DECIMAL as promo_revenue 100.00  $2 *  $1 /  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
 /*============================================================================*/
 /* end                                                                        */

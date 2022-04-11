@@ -17,7 +17,6 @@
       and l_shipdate > '1995-03-15'
       group by l_orderkey, o_orderdate, o_shippriority
       order by revenue desc, o_orderdate;
-*/
 
 //------------------------------------------------------------------------------
 EXPLAIN STAGE TRANSLITERATE
@@ -37,7 +36,42 @@ select l_orderkey,
 //------------------------------------------------------------------------------
 // Pipeline Generated
 //------------------------------------------------------------------------------
-
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker285996
+  stage stageMarker285996 on all partitions :
+    scan rapidsse public customer
+    | stageMarker285999 broadcast
+  stage stageMarker285999 on all partitions :
+    scan rapidsse public orders
+    | abstractJoin 2 " 1  "
+    | stageMarker286002 broadcast
+  stage stageMarker286002 on all partitions :
+    scan rapidsse public lineitem
+    | abstractJoin 2 " 1  "
+    | stageMarker286005
+  stage stageMarker286005 on all partitions :
+    filter " type BOOLEAN  $7 ''BUILDING''  ==  $1 $10 ==  and  $18 $9 ==  and  $13 TIMESTAMP ''1995-03-15 00:00:00''  <  and  $28 TIMESTAMP ''1995-03-15 00:00:00''  >  and  "
+    | aggreg " groupBy  type INTEGER as l_orderkey $18 , type TIMESTAMP as o_orderdate $13 , type INTEGER as o_shippriority $16 aggregates  type INTEGER $K1 , type DECIMAL )  $23 1.  $24 -  *  sum  , type TIMESTAMP $K2 , type INTEGER $K3 "
+    | combined 0
+    | stageMarker286008
+  stage stageMarker286008 on all nodes :
+    aggreg " groupBy  type INTEGER as l_orderkey $1 , type TIMESTAMP as o_orderdate $3 , type INTEGER as o_shippriority $4 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type TIMESTAMP $K2 , type INTEGER $K3 "
+    | combined 0
+    | stageMarker286011
+  stage stageMarker286011 on origin :
+    aggreg " groupBy  type INTEGER as l_orderkey $1 , type TIMESTAMP as o_orderdate $3 , type INTEGER as o_shippriority $4 aggregates  type INTEGER $K1 , type DECIMAL as revenue )  $2 sum  , type TIMESTAMP $K2 , type INTEGER $K3 "
+    | sort 2 " type DECIMAL $2 DESC  , type TIMESTAMP as o_orderdate $3 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
 /*============================================================================*/
 /* end                                                                        */

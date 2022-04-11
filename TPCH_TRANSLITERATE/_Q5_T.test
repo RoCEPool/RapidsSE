@@ -40,7 +40,54 @@ select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue
 //------------------------------------------------------------------------------
 // Pipeline Generated
 //------------------------------------------------------------------------------
-
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker2262
+  stage stageMarker2262 on all partitions :
+    scan rapidsse public customer
+    | stageMarker2265 broadcast
+  stage stageMarker2265 on all partitions :
+    scan rapidsse public orders
+    | abstractJoin 2 " 1  "
+    | stageMarker2268 broadcast
+  stage stageMarker2268 on all partitions :
+    scan rapidsse public lineitem
+    | abstractJoin 2 " 1  "
+    | stageMarker2271 broadcast
+  stage stageMarker2271 on all partitions :
+    scan rapidsse public supplier
+    | abstractJoin 2 " 1  "
+    | stageMarker2274 broadcast
+  stage stageMarker2274 on all partitions :
+    scan rapidsse public nation
+    | abstractJoin 2 " 1  "
+    | stageMarker2277 broadcast
+  stage stageMarker2277 on all partitions :
+    scan rapidsse public region
+    | abstractJoin 2 " 1  "
+    | stageMarker2280
+  stage stageMarker2280 on all partitions :
+    filter " type BOOLEAN  $1 $10 ==  $18 $9 ==  and  $20 $34 ==  and  $4 $37 ==  and  $37 $41 ==  and  $43 $45 ==  and  $46 ''ASIA''  ==  and  $13 TIMESTAMP ''1994-01-01 00:00:00''  >=  and  $13 TIMESTAMP ''1995-01-01 00:00:00''  <  and  "
+    | aggreg " groupBy  type VARCHAR as n_name $42 aggregates  type VARCHAR $K1 , type DECIMAL )  $23 1.  $24 -  *  sum  "
+    | combined 0
+    | stageMarker2283
+  stage stageMarker2283 on all nodes :
+    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
+    | combined 0
+    | stageMarker2286
+  stage stageMarker2286 on origin :
+    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
+    | sort 2 " type DECIMAL $2 DESC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
 /*============================================================================*/
 /* end                                                                        */
