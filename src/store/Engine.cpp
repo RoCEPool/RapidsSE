@@ -57,6 +57,8 @@
 
 #include "STORE.h"
 
+#include "Heart.h"
+
 CmdLineArgs  gxCmdLineArgs;
 EnvFlags     gxEnvFlags;
 FnCatalog    gxFnCatalog;
@@ -97,6 +99,13 @@ pthread_key_t giTLS_StepKey    = C_UNKNOWN;
 /*----------------------------------------------------------------------------*/
 void Engine::vMainEntry(void)
 {
+  vHeartInit();
+
+  if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {
+    printf("Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
+    sleep((unsigned int)gxCmdLineArgs.m_xSysArgs.m_iDelay);
+  }
+
   vPreliminary();
 
   vRunCommandLine();
@@ -1430,24 +1439,6 @@ void Engine::vPrintWelcome(void)
   if (gxCmdLineArgs.m_xSysArgs.m_bWelcome && ! gxCmdLineArgs.m_xSysArgs.m_bStatus) {
     vTrace("%s\n"_Stz,sWelcome.szStz());
     vTrace("%s\n"_Stz,sCopyright.szStz());
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* run utilities                                                              */
-/*----------------------------------------------------------------------------*/
-void Engine::vRunUtility(int argc, Stz* argv[])
-{
-  // potentially run the shm utility
-  if (gxCmdLineArgs.m_xSysArgs.m_bUteShm) {
-    ShmUtility::vRun(argc,(Stz**)argv);
-    return;
-  }
-
-  // potentially run the api demo
-  if (gxCmdLineArgs.m_xSysArgs.m_bUteApiDemo) {
-    // ... more
-    return;
   }
 }
 
