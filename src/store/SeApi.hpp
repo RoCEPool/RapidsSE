@@ -27,7 +27,6 @@ namespace STORE
     static Stz* szCurrentFolderPath(String* szFolderPath);
     static bool bIsKnownTableNm(Stz* szTableNm);
     static bool bIsKnownTableColumnNm(Stz* szTableNm,Stz* szColumnNm);
-    static Stz* szOriginalCommand(void);
     static void vPrintAllColumnsOfTable(Stz* szTableNm);
     static void vPrintAllTablesInCurrentFolder(void);
 

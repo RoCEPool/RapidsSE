@@ -53,20 +53,20 @@ void Step::vApiAddProcedure(void)
 {
   ENTRY();
   
-  s48K sRequest;
-  m_pDataStack->vPopStr(sRequest,__func__);
+  s48K sProc;
+  m_pDataStack->vPopStr(sProc,__func__);
   
   s48K sWithTagStr;
   m_pDataStack->vPopStr(sWithTagStr,__func__);
   
   if (AM::TRACE::bVerbose(C_VB_BOOT)) {
-    vTrace("AddProcedure: %s\n"_Stz,sRequest.szStz());
+    vTrace("AddProcedure: %s\n"_Stz,sProc.szStz());
     vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  TokenVec* pDmnTknVec = TokenVec::pTokeniseSen(sRequest);
+  TokenVec* pDmnTknVec = TokenVec::pTokeniseSen(sProc);
   
   pDmnTknVec->vIntegrityCheck();
   
@@ -115,14 +115,14 @@ void Step::vApiExecuteCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop request and tag string
   
-  s48K sRequest;
-  m_pDataStack->vPopStr(sRequest,__func__);
+  s48K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
 
   s48K sWithTagStr;
   m_pDataStack->vPopStr(sWithTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ExecuteRequest: %s\n"_Stz,sRequest.szStz());
+    vTrace("ExecuteRequest: %s\n"_Stz,sCmd.szStz());
     vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
   }
   
@@ -136,17 +136,15 @@ void Step::vApiExecuteCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the request
   
-  //TokenVec* pReqTknVec = TokenVec::pTokenise(sRequest);
-  TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
-  pCmdTknVec->vTokeniseSen(sRequest);
-//  TagSet oTagSet;
-//  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
 
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
   eError = Api::ePrepareJob(pSession,pCmdTknVec);
-  
+
+  delete pCmdTknVec;
+
   if (eError) {
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
@@ -314,15 +312,15 @@ void Step::vApiSpawnDemon(void)
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
-  TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
-  pCmdTknVec->vTokeniseSen(sPipeline);
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sPipeline);
   
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
   //pTagSet->vDumpSet();
   eError = Api::ePrepareJob(pSession,pCmdTknVec);
 
-
+  delete pCmdTknVec;
+  
   if (eError) {
     Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);

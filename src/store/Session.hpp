@@ -46,7 +46,7 @@ namespace STORE
 
     DicStack m_oDicStack;     // dictionary stack
     TagSet   m_oJobTagSet;    // extra tags gleaned from the command
-    Input*   m_pInput;        // input processor
+
     Output*  m_pOutput;       // output processor
 
     Tx*      m_pTx;           // current transaction
