@@ -76,8 +76,6 @@ SePrompt::SePrompt(bool bOneCommand)
 
   m_iDebugMode = gxCmdLineArgs.m_xSysArgs.m_iPromptDebug;
 
-  m_pLitTknVec = new TokenVec;
-    
   m_nDeputies = 0;
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     m_paSeDeputy[i_Deputy] = nullptr;
@@ -139,10 +137,7 @@ SePrompt::~SePrompt(void) noexcept(false)
   delete m_pSnapshotAtTrackingMemory;
   delete m_pSnapshotAtMemoryLeaks;
   delete m_pSnapshotObjects;
-  
-  m_pLitTknVec->vSoftReset();
-  delete m_pLitTknVec;
-  
+    
   //delete m_pPrintOp;
   
   AM::THREAD::vDeleteThread(m_pThread);
