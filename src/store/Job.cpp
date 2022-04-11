@@ -46,7 +46,6 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 Job::Job(Stz*  szJobNm,
          i8    i_Session,     // which session in session array
-         i8    iCmdNo,         // the sequence no of the request from that session)
          CmdId tCmdId
 
         )
@@ -65,7 +64,6 @@ Job::Job(Stz*  szJobNm,
   // -- a -------------------
   
   m_i_Session     = i_Session;
-  m_iCmdNo        = iCmdNo;
   m_tCmdId        = tCmdId;
 
   m_oResponseTimer.vStart();
@@ -236,16 +234,6 @@ CmdId Job::tCmdId(void)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   return m_tCmdId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get command no                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Job::iCmdNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
-  return m_iCmdNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -718,9 +706,9 @@ void Job::vPrintJobContents(void)
          ,m_sJobNm.szStz()           // 1
          ,aJK[m_eJobKind]            // 2
          ,szCmd()                    // 3
-         ,iOriginNodeId()        // 4
+         ,iOriginNodeId()            // 4
          ,m_i_Session                // 5
-         ,m_iCmdNo                   // 6
+         ,m_tCmdId.iCmdNo()          // 6
          ,m_bWasReceived ? "true" : "false" // 7
          ,m_iParticipantNodeId            // 8
          ,aJS[m_eJobState]           // 10
@@ -780,7 +768,7 @@ void Job::vPrintJobLine(void)
   vTrace("originNodeId %lld session %lld command %lld "_Stz
          ,this->iOriginNodeId()
          ,this->m_i_Session
-         ,this->m_iCmdNo
+         ,this->m_tCmdId.iCmdNo()
          );
 
   if (C_UNKNOWN != this->iParticipantNodeId())

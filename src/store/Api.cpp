@@ -367,7 +367,6 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
          pSession->m_pSsnJob =
            new Job(szJobNm,
                    pSession->m_i_Session,
-                   pSession->m_iCmdNo++,
                    tCmdId
                    );
 
@@ -817,7 +816,6 @@ void Api::vCallBootSystem(void)
   
   Job* pJob = new Job("bootSystem"_Stz,
                       AM::SESSION::iInternalSession(),
-                      1,
                       tCmdId
                       );
   Stz* szJobNm = pJob->szJobNm();
@@ -880,7 +878,6 @@ void Api::vCallStartSystem(void)
 
   Job* pJob = new Job("StartSys"_Stz,
                       AM::SESSION::iInternalSession(),
-                      1,
                       tCmdId
                       );
   
