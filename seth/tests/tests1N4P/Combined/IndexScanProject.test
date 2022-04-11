@@ -26,7 +26,7 @@ begin
 
   stage stageB on all partitions :
     indexScan 2 nation idx "LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | project 2 "type INTEGER N_NATIONKEY"
+    | project "type INTEGER N_NATIONKEY"
     | combined 0
     | stageC
 
@@ -65,7 +65,7 @@ begin
     start | pulse once | stageB
   stage stageB on all partitions :
     indexScan 2 nation idx "LBOUND $I1 22 >= "
-    | project 2 "type VARCHAR $2"
+    | project "type VARCHAR $2"
     | combined 0
     | stageC
   stage stageC on origin:
@@ -85,7 +85,7 @@ begin
     start | pulse once | stageB
   stage stageB on all partitions :
     indexScan 2 nation idx "UBOUND $I1 -1 <= "
-    | project 2 "type INTEGER N_NATIONKEY"
+    | project "type INTEGER N_NATIONKEY"
     | combined 0
     | stageC
   stage stageC on origin:
@@ -100,12 +100,12 @@ begin
     start | pulse once | stageB
   stage stageB on all partitions :
     indexScan 2 nation idx "LBOUND $I1 22 >= "
-    | project 2 "type INTEGER $1 , type VARCHAR $2 , type integer $3"
+    | project "type INTEGER $1 , type VARCHAR $2 , type integer $3"
     | combined 0
     | stageC
   stage stageC on all partitions :
-      filter 2 "type BOOLEAN $3 3 >= "
-      | project 2 "type VARCHAR $2"
+      filter "type BOOLEAN $3 3 >= "
+      | project "type VARCHAR $2"
       | combined 0
       | stageD
   stage stageD on origin:

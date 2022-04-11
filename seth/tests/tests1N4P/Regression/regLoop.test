@@ -7,6 +7,9 @@ LOG 'Running regression tests in a loop.';
 
 LOOP 1 {
 
+trackMemory;
+success;
+
 //------------------------------------------------------------------------------
 LOG 'Create schema ...';
 INCLUDE 'regrCreateSchema.test';
@@ -68,6 +71,9 @@ INCLUDE 'like.test';
 //------------------------------------------------------------------------------
 LOG 'Drop schema ...';
 INCLUDE 'regrDropSchema.test';
+
+MemoryLeaks;
+rows: 0
 
 } -- end of loop
 

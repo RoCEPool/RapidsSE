@@ -37,14 +37,14 @@ pipeline unnamed
      | stageA
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | project 2 "type integer as L_ORDERKEY L_ORDERKEY ,
+     | project "type integer as L_ORDERKEY L_ORDERKEY ,
                   type DECIMAL as L_QUANTITY L_QUANTITY ,
                   type DATE    as L_SHIPDATE L_SHIPDATE ,
                   type VARCHAR as L_SHIPMODE L_SHIPMODE"
      | combined 0
      | next
    stage stageB on all partitions :
-   filter 2 "type BOOLEAN L_ORDERKEY 2 >="
+   filter "type BOOLEAN L_ORDERKEY 2 >="
     | combined 0
     | next
   stage stageLast on origin :
@@ -67,14 +67,14 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | project 2 "type INTEGER as L_ORDERKEY L_ORDERKEY ,
+     | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
                   type DECIMAL as L_QUANTITY L_QUANTITY ,
                   type DATE    as L_SHIPDATE L_SHIPDATE ,
                   type VARCHAR as L_SHIPMODE L_SHIPMODE"
      | combined 0
      | next
   stage stageB on all partitions :
-     filter 2 "type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <= "
+     filter "type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <= "
      | combined 0
      | next
    stage stageLast on origin :
@@ -94,15 +94,15 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | project 2 "type INTEGER as L_ORDERKEY L_ORDERKEY ,
+     | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
                   type DECIMAL as L_QUANTITY L_QUANTITY ,
                   type DATE    as L_SHIPDATE L_SHIPDATE ,
                   type VARCHAR as L_SHIPMODE L_SHIPMODE"
      | combined 0
      | next
   stage stageB on all partitions :
-     filter 2 "type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <= "
-     | project 2 " type INTEGER as orderkey L_ORDERKEY ,
+     filter "type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <= "
+     | project " type INTEGER as orderkey L_ORDERKEY ,
                         type DATE as shipdate L_SHIPDATE"
      | combined 0
      | next
@@ -124,16 +124,16 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | project 2 "type INTEGER as L_ORDERKEY L_ORDERKEY ,
+     | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
                   type DECIMAL as L_QUANTITY L_QUANTITY ,
                   type DATE    as L_SHIPDATE L_SHIPDATE ,
                   type VARCHAR as L_SHIPMODE L_SHIPMODE"
      | combined 0
      | next
   stage stageB on all partitions :
-     project 2 " type INTEGER as orderkey L_ORDERKEY ,
+     project " type INTEGER as orderkey L_ORDERKEY ,
                  type DATE as shipdate L_SHIPDATE"
-     | filter 2 "type BOOLEAN shipdate DATE '1994-01-01'  <= "
+     | filter "type BOOLEAN shipdate DATE '1994-01-01'  <= "
      | combined 0
      | next
    stage stageLast on origin :

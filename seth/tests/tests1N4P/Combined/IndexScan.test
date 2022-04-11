@@ -13,7 +13,7 @@ begin
 
   stage stageB on all partitions :
     indexscan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | project 2 "type INTEGER x"
+    | project "type INTEGER x"
     | combined 0
     | stageC
   stage stageC on origin:
@@ -50,7 +50,7 @@ begin
 
   stage stageB on all partitions :
     indexscan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | project 2 "type INTEGER l_orderkey"
+    | project "type INTEGER l_orderkey"
     | combined 0
     | stageC
   stage stageC on origin:
@@ -87,7 +87,7 @@ begin
 
   stage stageB on all partitions :
     indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | project 2 "type INTEGER $1"
+    | project "type INTEGER $1"
     | combined 0
     | stageC
 
@@ -127,7 +127,7 @@ begin
 
   stage stageB on all partitions :
     indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | project 2 "type INTEGER $1"
+    | project "type INTEGER $1"
     | combined 0
     | stageC
 
@@ -146,7 +146,7 @@ begin
 
   stage stageB on all partitions :
     indexScan 2 lineitem lineitem_ship "LBOUND $I1 DATE '1970-01-01' >= UBOUND $I1 DATE '1994-01-01' <="
-    | project 2 "type INTEGER $1"
+    | project "type INTEGER $1"
     | combined 0
     | stageC
 
@@ -166,17 +166,17 @@ begin
 
   stage stageB on all partitions :
     indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | project 2 "type INTEGER ) as SUM_KEY L_ORDERKEY sum ,
+    | project "type INTEGER ) as SUM_KEY L_ORDERKEY sum ,
                  type INTEGER ) as CNT_KEY L_ORDERKEY count"
     | combined 0
     | next
   stage stageC on all nodes :
-    project 2 "type INTEGER as SUM_KEY ) SUM_KEY sum ,
+    project "type INTEGER as SUM_KEY ) SUM_KEY sum ,
                  type INTEGER as CNT_KEY ) CNT_KEY sum"
     | combined 0
     | next
   stage stageD on origin :
-    project 2 "type INTEGER as SUM_KEY ) SUM_KEY sum ,
+    project "type INTEGER as SUM_KEY ) SUM_KEY sum ,
                  type INTEGER as CNT_KEY ) CNT_KEY sum"
     | combined 0
     | next
@@ -229,7 +229,7 @@ begin
     start | pulse once | stageB
   stage stageB on all partitions :
     indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | filter 2 " type BOOLEAN L_PARTKEY 20 <= "
+    | filter " type BOOLEAN L_PARTKEY 20 <= "
     | combined 0
     | next
   stage stageLast on origin:
@@ -309,8 +309,8 @@ begin
   stage stageA on all partitions :
     indexScan 2 lineitem lineitem_ord "LBOUND $I1 0 >="
     | indexjoin 2 orders orders_ord "BOUND $I1 L_ORDERKEY =="
-    | project 2 " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
-    | filter 2 " type BOOLEAN O_CUSTKEY 120 > "
+    | project " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | filter " type BOOLEAN O_CUSTKEY 120 > "
     | combined 0
     | next
   stage stageLast on origin :

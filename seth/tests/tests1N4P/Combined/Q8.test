@@ -140,9 +140,9 @@ begin
   // ∀ CUSTOMER /C_CUSTKEY/ _custkey π _suppkey
   stage Gj_CUSTOMER on all partitions :
     scan Customer
-    | filter 2
+    | filter
         "C_NATIONKEY 6 == C_NATIONKEY 7 == or"
-    | project 2 expr
+    | project expr
         type INTEGER as _custkey    C_CUSTKEY ,
         type INTEGER as C_NATIONKEY C_NATIONKEY
     | combined 0
@@ -153,7 +153,7 @@ begin
   // ∀ ORDERS /O_CUSTKEY/ π _custkey
   stage Gj_ORDERS on all partitions :
     indexJoin 2 Orders IxO_CUSTKEY expr bound $I1 _custkey ==
-    | project 2 expr
+    | project expr
         type INTEGER as _orderkey   J1_O_ORDERKEY ,
         type INTEGER as C_NATIONKEY C_NATIONKEY
     | hash 2 expr type INTEGER _orderkey
@@ -165,11 +165,11 @@ begin
   // ∀ LINEITEM /L_ORDERKEY/ π _orderkey
   stage Gs_LINEITEM on all partitions :
     indexJoin 2 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
-    | filter 2
+    | filter
         "J1_L_SHIPDATE timestamp '1995-01-01 00:00:00' >=
          J1_L_SHIPDATE timestamp '1996-12-31 00:00:00' <
          and"
-    | project 2 expr
+    | project expr
         type INTEGER as _suppkey    J1_L_SUPPKEY ,
         type INTEGER as C_NATIONKEY C_NATIONKEY
     | hash 2 expr type INTEGER _suppkey
@@ -181,7 +181,7 @@ begin
   // ⋈ SUPPLIER /C_SUPPKEY/
   stage Gj_SUPPLIER on all partitions :
     indexJoin 2 Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
-    | filter 2
+    | filter
         "C_NATIONKEY 6 == J1_S_NATIONKEY 7 == and
          C_NATIONKEY 7 == J1_S_NATIONKEY 6 == and or"
     | combined 0
@@ -190,17 +190,17 @@ begin
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   stage G_AGG_P on all partitions :
-    project 2 " type INTEGER as x_rowCntPtn )  countAll  "
+    project " type INTEGER as x_rowCntPtn )  countAll  "
     | combined 0
     | next
 
   stage G_AGG_N on all nodes :
-    project 2 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
+    project " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
     | combined 0
     | next
 
   stage G_AGG_O on origin :
-    project 2 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
+    project " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
     | combined 0
     | next
 

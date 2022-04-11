@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: project_ComCleaning \handler
+: project_Cleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: project_ComStreamDef \handler
+: project_StreamDef \handler
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
@@ -64,21 +64,17 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* filter request                                                       SPAWN */
+/* project request                                                       SPAWN */
 /*----------------------------------------------------------------------------*/
 : project_op \operator
 
   _lu_initialise_
 
-  // get whether compiled or not
-  <compiled> >int to Counter0[]
-
   op__topology
 
-  Counter0[] 2 == assert
   // handle combined operator
-  find: project_ComCleaning  ZK_M_CLEANING      [op].handler!
-  find: project_ComStreamDef ZK_D_STREAMDEF     [op].handler!
+  find: project_Cleaning  ZK_M_CLEANING      [op].handler!
+  find: project_StreamDef ZK_D_STREAMDEF     [op].handler!
 
   op__loop
 
@@ -92,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: project :: project <compiled> <expr> ;
+cmdSyntax: project :: project <expr> ;
 
 : project_cmdTags _cmdTags tagCopy: op_tags
   tags{

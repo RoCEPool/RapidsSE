@@ -570,7 +570,7 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
 
   ASSERT(pOrdinalFilterExpr);
 
-  pBackend->vAppendNextOp("filter 2 \" type BOOLEAN "_Stz);
+  pBackend->vAppendNextOp("filter \" type BOOLEAN "_Stz);
   pBackend->m_bCombinedOp = true;
 //  sPipeline->vCatSprint(
 //      "    filter 1 \" type BOOLEAN "
@@ -750,7 +750,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   // Iterate each projected expression
   if (pProjectedColumns->bHasChildren()) {
 
-    pBackend->vAppendNextOp("project 2 \""_Stz);
+    pBackend->vAppendNextOp("project \""_Stz);
     pBackend->m_bCombinedOp = true;
 
     // get a plan node iterator
@@ -1488,6 +1488,8 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s2K& sPath, 
 {
   _static_
 
+  UNUSED(iDepth);
+
   QueryNode* pQueryNode = static_cast<QueryNode *>(pRootNode);
 
   Backend* pBackend = (Backend*)pvArg;
@@ -1529,7 +1531,6 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s2K& sPath, 
     // TableScanOp
 
     else if (TableScanOp::bIsOfType(pQueryNode)) {
-      QueryNode *pParent = _pQueryNode(GraphNav::pGetParentOfPath(sPath, pBackend->m_pWalkNode));
       vAppendScanOp(pBackend, pQueryNode);
     }
 
@@ -1574,6 +1575,8 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iD
 {
   _static_
 
+  UNUSED(pvArg);
+
   // Continue walking till a StageMarker is hit
   if (!StageMarker::bIsOfType(pRootNode)) {
     return GraphNav::WALK_CONTINUE;
@@ -1615,11 +1618,6 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iD
     vAppendUnionOp(pBackend, pUnionOp);
     return GraphNav::WALK_SKIP_CHILDREN;
   }
-
-  // get the location of this stageMarker
-  QueryNode* pLocation = StageMarker::pLocation(pStageMarker);
-  RASSERT(pLocation);
-  Stz *szLocation = Parser::Location::szLocationType(pLocation);
 
   // Walk the current node and its children,
   // calling the visitor function for each node encountered. This is a
