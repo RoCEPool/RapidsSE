@@ -88,7 +88,74 @@ from (
 //------------------------------------------------------------------------------
 // Pipeline Generated
 //------------------------------------------------------------------------------
+pipeline unamed
+begin
+  pipeline shipping
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker2123
+    stage stageMarker2123 on all partitions :
+      scan rapidsse public supplier
+      | stageMarker2126 broadcast
+    stage stageMarker2126 on all partitions :
+      scan rapidsse public lineitem
+      | abstractJoin 2 " 1  "
+      | stageMarker2129 broadcast
+    stage stageMarker2129 on all partitions :
+      scan rapidsse public orders
+      | abstractJoin 2 " 1  "
+      | stageMarker2132 broadcast
+    stage stageMarker2132 on all partitions :
+      scan rapidsse public customer
+      | abstractJoin 2 " 1  "
+      | stageMarker2135 broadcast
+    stage stageMarker2135 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin 2 " 1  "
+      | stageMarker2138 broadcast
+    stage stageMarker2138 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin 2 " 1  "
+      | stageMarker2141
+    stage stageMarker2141 on all partitions :
+      filter " type BOOLEAN  $1 $10 ==  $24 $8 ==  and  $33 $25 ==  and  $4 $41 ==  and  $36 $45 ==  and  $42 ''FRANCE''  ==  $46 ''GERMANY''  ==  and  $42 ''GERMANY''  ==  $46 ''FRANCE''  ==  and  or  and  }  TIMESTAMP ''1995-01-01 00:00:00''  TIMESTAMP ''1996-12-31 00:00:00''  $18 between  and  "
+      | project " type VARCHAR as supp_nation $42 , type VARCHAR as cust_nation $46 , type INTEGER as l_year $18 extract_year  , type DECIMAL as volume $13 1.  $14 -  *  "
+      | combined 0
+      | stageMarker2144
+    stage stageMarker2144 on all partitions :
 
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker2147
+  stage stageMarker2147 on all partitions :
+    call "shipping "
+    | aggreg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL )  $4 sum  "
+    | combined 0
+    | stageMarker2150
+  stage stageMarker2150 on all nodes :
+    aggreg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL )  $4 sum  "
+    | combined 0
+    | stageMarker2153
+  stage stageMarker2153 on origin :
+    aggreg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL as revenue )  $4 sum  "
+    | sort 2 " type VARCHAR as supp_nation $1 ASC  , type VARCHAR as cust_nation $2 ASC  , type INTEGER as l_year $3 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
 /*============================================================================*/
 /* end                                                                        */

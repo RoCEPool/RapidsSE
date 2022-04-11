@@ -551,7 +551,7 @@ void Backend::vAppendCallSubQry(Backend* pBackend, QueryNode* pNode)
   s4K sCallSubqry;
   //String* sPipeline = pBackend->m_sPipeline;
 
-  sCallSubqry.vSprint("call 1 \"%s \""_Stz, SubqueryRefOp::szAliasName(pNode));
+  sCallSubqry.vSprint("call \"%s \""_Stz, SubqueryRefOp::szAliasName(pNode));
   pBackend->vAppendNextOp(sCallSubqry);
 
 }
