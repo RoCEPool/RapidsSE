@@ -33,7 +33,7 @@ namespace STORE
 
     void vPipeoutResults(Op* pCurrOp, Operand* pOperand, Task* pTriggeringTask);
     eEC  ePrepareJob(Stz* szCmd);
-    eEC  ePrepareJob(TokenVec* m_pLitTknVec);
+    eEC  ePrepareJob(void);
     void vPrintResults(void);
   
     void vResetResults(void);

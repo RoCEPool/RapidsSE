@@ -172,11 +172,11 @@ void SeDeputy::vDeleteJob(void)
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
+eEC SeDeputy::ePrepareJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec);
+  eEC eError = ApiHelper::ePrepareJob();
   
   return eError;
 }
