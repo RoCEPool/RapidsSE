@@ -181,7 +181,7 @@ void SePrompt::vPromptLoop(void)
   //PsxThd::vMarkNonSeThread();
   m_pThread->vThisTLSThread();
 
-  Thread* pThreadTest = AM::THREAD::pThisThread();
+  //Thread* pThreadTest = AM::THREAD::pThisThread();
 
   
 

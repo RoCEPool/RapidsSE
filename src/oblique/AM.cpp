@@ -3087,16 +3087,6 @@ void AM::vSpawnTask_op(Op* pOp)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnTask_session(Job* pJob)
-{
-  bool bResult = Api::bSpawnTask_session(pJob);
-  
-  return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
 void AM::vSpawnTask_receivedJob(Job* pJob)
 {
   Api::vSpawnTask_receivedJob(pJob);

@@ -92,9 +92,30 @@ void Api::vExecuteJob(Session* pSession)
 
   for (;;) {
   
-    bool bSpawned = Api::bSpawnTask_session(pJob);
-    UNUSED(bSpawned);
+    i8 iPid = AM::PROCESS::iSePid();
+    if (!Process::bTestPid(iPid)) {
+      // SE is not running anymore!
+      vTrace("Cannot find pid %lld\n"_Stz, iPid);
+      return;
+    }
 
+    //bool bSpawned = Api::bSpawnTask_session(pJob);
+    //UNUSED(bSpawned);
+
+    
+    vSubmitJob(pSession);
+
+    if (pJob->bHasTag(C_TAG_NOWAIT)) {
+      Api::vMutexUnlock(pSession,pJob);
+    }
+    else {
+      //pSession->m_oMutex.vObserve(true);
+//      Api::vMutexWaitCond(pSession,pJob);
+//      pJob->vResponseTimerUpdate();
+//      Api::vMutexUnlock(pSession,pJob);
+      vWaitJob(pSession);
+    }
+    
     if (! pSession->bHasCascade()) {
       pSession->vLastJobId(tJobId);
       return;
@@ -903,29 +924,31 @@ bool Api::bSpawnTask_session(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // before appending request for se, ensure that se is running
 
-  i8 iPid = AM::PROCESS::iSePid();
-  if (!Process::bTestPid(iPid)) {
-    // SE is not running anymore!
-    vTrace("Cannot find pid %lld\n"_Stz, iPid);
-    return false;
-  }
+//  i8 iPid = AM::PROCESS::iSePid();
+//  if (!Process::bTestPid(iPid)) {
+//    // SE is not running anymore!
+//    vTrace("Cannot find pid %lld\n"_Stz, iPid);
+//    return false;
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Session* pSession = pJob->pSession();
   
-  Api::vMutexLock(pSession,pJob);
-
-  RASSERT(JS_LOCKED == pJob->eJobState());
-
+//  Api::vMutexLock(pSession,pJob);
+//
+//  RASSERT(JS_LOCKED == pJob->eJobState());
+//
+//
+//  RASSERT(! pJob->pTask());
+//
+//
+//  pJob->vTaskCreate();
+//
+//  pJob->vResponseTimerStart();
+//  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
   
-  RASSERT(! pJob->pTask());
-  
-  
-  pJob->vTaskCreate();
-
-  pJob->vResponseTimerStart();
-  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
+  vSubmitJob(pSession);
 
   if (pJob->bHasTag(C_TAG_NOWAIT)) {
     Api::vMutexUnlock(pSession,pJob);
