@@ -539,6 +539,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   // cleanup
   pBackend->m_pColExprList->vDeleteAll();
   delete pBackend->m_pColExprList;
+  pBackend->m_pColExprList = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -570,6 +571,8 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
 
   ASSERT(pOrdinalFilterExpr);
 
+  pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
+
   pBackend->vAppendNextOp("filter \" type BOOLEAN "_Stz);
   pBackend->m_bCombinedOp = true;
 //  sPipeline->vCatSprint(
@@ -580,6 +583,9 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
   //GraphNav::bGlobalWalkBottomUp(pOrdinalFilterExpr, false, true, vVisitorExpr, (void *) pBackend);
   GraphNav::bGlobalWalk(pOrdinalFilterExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   delete pOrdinalFilterExpr;
+
+  delete pBackend->m_pColExprList;
+  pBackend->m_pColExprList = nullptr;
 
   sPipeline->vCatSprint(" \""_Stz);
 
@@ -650,6 +656,7 @@ void Backend::vAppendAbstractJoinOp(Backend* pBackend, QueryNode* pNode)
 
   pBackend->m_pColExprList->vDeleteAll();
   delete pBackend->m_pColExprList;
+  pBackend->m_pColExprList = nullptr;
 
   delete pOrdinalJoinPredicate;
 }
@@ -723,6 +730,7 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
   // cleanup
   pBackend->m_pColExprList->vDeleteAll();
   delete pBackend->m_pColExprList;
+  pBackend->m_pColExprList = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -791,6 +799,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   // cleanup
   pBackend->m_pColExprList->vDeleteAll();
   delete pBackend->m_pColExprList;
+  pBackend->m_pColExprList = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
