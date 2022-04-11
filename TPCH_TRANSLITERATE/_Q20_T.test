@@ -28,6 +28,11 @@ select s_name, s_address
 //------------------------------------------------------------------------------
 //  Transliterate Query
 //------------------------------------------------------------------------------
+
+-> -> -> -> -> filterOp
+               » expr: ((rapidsse.public.partsupp.ps_partkey IN __subquery0003()) AND ((CAST(rapidsse.public.partsupp.ps_availqty AS DECIMAL)) > __subquery0005(rapidsse.public.partsupp.ps_partkey, rapidsse.public.partsupp.ps_suppkey)))
+               » ordinal expr: (($1 IN __subquery0003()) AND ((CAST($3 AS DECIMAL)) > __subquery0005($1, $2)))
+
 EXPLAIN STAGE TRANSLITERATE
 select s_name, s_address
      from supplier, nation
@@ -52,6 +57,85 @@ select s_name, s_address
 //------------------------------------------------------------------------------
 // Pipeline Generated
 //------------------------------------------------------------------------------
+pipeline unamed
+begin
+  pipeline __subquery0007
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker1292
+    stage stageMarker1292 on all partitions :
+      scan rapidsse public part
+      | filter " type BOOLEAN  }  $2 ''forest%''  7 matchLeading  "
+      | project " type INTEGER as p_partkey $1 "
+      | combined 0
+      | stageMarker1295
+    stage stageMarker1295 on all partitions :
+
+      stageMarker1298
+    stage stageMarker1298 on all partitions :
+      scan rapidsse public lineitem
+      | filter " type BOOLEAN  $2 ==  $3 ==  and  $11 TIMESTAMP ''1994-01-01 00:00:00''  >=  and  $11 TIMESTAMP ''1995-01-01 00:00:00''  <  and  "
+      | project " type DECIMAL )  $5 sum  "
+      | combined 0
+      | stageMarker1301
+    stage stageMarker1301 on all nodes :
+      project " type DECIMAL )  $1 sum  "
+      | combined 0
+      | stageMarker1304
+    stage stageMarker1304 on origin :
+      project " type DECIMAL 0.5  )  $1 sum  *  "
+      | combined 0
+      | stageMarker1307
+    stage stageMarker1307 on origin :
+
+      stageMarker1310
+    stage stageMarker1310 on all partitions :
+      scan rapidsse public partsupp
+      | filter " type BOOLEAN  }  __subquery0003  #1  $1 in  $3 casttype DECIMAL CAST  $1 $2 __subquery0005  >  and  "
+      | project " type INTEGER as ps_suppkey $2 "
+      | combined 0
+      | stageMarker1313
+    stage stageMarker1313 on all partitions :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1316
+  stage stageMarker1316 on all partitions :
+    scan rapidsse public supplier
+    | stageMarker1319 broadcast
+  stage stageMarker1319 on all partitions :
+    scan rapidsse public nation
+    | abstractJoin 2 " 1  "
+    | stageMarker1322
+  stage stageMarker1322 on all partitions :
+    filter " type BOOLEAN  }  __subquery0007  #1  $1 in  $4 $8 ==  and  $9 ''CANADA''  ==  and  "
+    | project " type VARCHAR as s_name $2 , type VARCHAR as s_address $3 "
+    | sort 2 " type VARCHAR as s_name $1 ASC  "
+    | combined 0
+    | stageMarker1325
+  stage stageMarker1325 on all nodes :
+    sort 2 " type VARCHAR as s_name $1 ASC  "
+    | combined 0
+    | stageMarker1328
+  stage stageMarker1328 on origin :
+    sort 2 " type VARCHAR as s_name $1 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
 /*============================================================================*/
 /* end                                                                        */
