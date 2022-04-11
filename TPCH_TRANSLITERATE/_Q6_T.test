@@ -12,8 +12,6 @@ select sum(l_extendedprice*l_discount) as revenue
     and l_discount between 0.06 - 0.01 and 0.06 + 0.01
     and l_quantity < 24;
 
-*/
-
 //--------------------------------------------------------------------------------
 EXPLAIN STAGE TRANSLITERATE
 select sum(l_extendedprice*l_discount) as revenue
@@ -26,7 +24,31 @@ select sum(l_extendedprice*l_discount) as revenue
 //------------------------------------------------------------------------------
 // Pipeline Generated
 //------------------------------------------------------------------------------
-
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker4240
+  stage stageMarker4240 on all partitions :
+    scan rapidsse public lineitem
+    | filter " type BOOLEAN  $11 TIMESTAMP ''1994-01-01 00:00:00''  >=  $11 TIMESTAMP ''1995-01-01 00:00:00''  <  and  }  0.06  0.01  -  0.06  0.01  +  $7 between  and  $5 24.  <  and  "
+    | project " type DECIMAL )  $6 $7 *  sum  "
+    | combined 0
+    | stageMarker4243
+  stage stageMarker4243 on all nodes :
+    project " type DECIMAL )  $1 sum  "
+    | combined 0
+    | stageMarker4246
+  stage stageMarker4246 on origin :
+    project " type DECIMAL as revenue )  $1 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
 /*============================================================================*/
 /* end                                                                        */
