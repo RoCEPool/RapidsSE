@@ -139,7 +139,7 @@ begin
                                  O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
     | project expr type INTEGER as _orderkey O_ORDERKEY ,
                      type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
-    | hash 2 expr type INTEGER _orderkey
+    | hash expr type INTEGER _orderkey
     | combined 0
     | next hashcast
 

@@ -89,7 +89,7 @@ begin
     | project "type INTEGER as _orderkey J1_O_ORDERKEY ,
          type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
          type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
-    | hash 2 expr type INTEGER _orderkey
+    | hash expr type INTEGER _orderkey
     | combined 0
     | next hashcast
 
@@ -137,7 +137,7 @@ begin
      | project "type INTEGER as _orderkey J1_O_ORDERKEY ,
          type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
          type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
-    | hash 2 expr type INTEGER _orderkey
+    | hash expr type INTEGER _orderkey
     | combined 0
     | next hashcast
 

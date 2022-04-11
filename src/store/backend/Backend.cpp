@@ -1850,9 +1850,8 @@ Stz* Backend::szGetRouting(Backend* pBackend, QueryNode* pStageMarker) {
     RASSERT(pOrdHashExprList);
 
     pBackend->m_bCombinedOp = true;
-    //pBackend->vAppendNextOp("hash 2"_Stz);
     pBackend->m_sPipeline->vCatSprint(
-        "\n    %s| hash 2 \""
+        "\n    %s| hash \""
         ""_Stz,
         pBackend->m_sIndent.azChar()
     );

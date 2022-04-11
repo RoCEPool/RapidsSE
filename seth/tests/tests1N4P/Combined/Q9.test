@@ -118,7 +118,7 @@ begin
       type DECIMAL as l_discount J1_L_DISCOUNT ,
       type DECIMAL as l_quantity J1_L_QUANTITY ,
       type DECIMAL as ps_supplycost PS_SUPPLYCOST"
-    | hash 2 "type INTEGER _orderkey"
+    | hash "type INTEGER _orderkey"
     | combined 0
     | next hashCast
 

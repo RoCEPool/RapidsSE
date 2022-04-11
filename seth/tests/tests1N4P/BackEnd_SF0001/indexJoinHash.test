@@ -26,7 +26,7 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | hash 2 "type INTEGER $1"
+    | hash "type INTEGER $1"
     | combined 0
     | stageC hashcast
 
@@ -60,7 +60,7 @@ begin
 
   stage stageB on all partitions :
     scan orders
-    | hash 2 "type INTEGER $1"
+    | hash "type INTEGER $1"
     | combined 0
     | stageC hashcast
 

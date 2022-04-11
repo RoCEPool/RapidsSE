@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: hash_ComCleaning \handler
+: hash_Cleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: hash_ComStreamDef \handler
+: hash_StreamDef \handler
 
   EC_NONE locals| eError |
 
@@ -80,14 +80,10 @@
 
   _lu_initialise_
 
-  // get whether compiled or not
-  <compiled> >int to Counter0[]
-
   op__topology
 
-  Counter0[] 2 == assert
-  find: hash_ComCleaning   ZK_M_CLEANING      [op].handler!
-  find: hash_ComStreamDef  ZK_D_STREAMDEF     [op].handler!
+  find: hash_Cleaning   ZK_M_CLEANING      [op].handler!
+  find: hash_StreamDef  ZK_D_STREAMDEF     [op].handler!
 
   op__loop
 
@@ -101,7 +97,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: hash :: hash <compiled> <expr> ;
+cmdSyntax: hash :: hash <expr> ;
 
 : hash_cmdTags _cmdTags tagCopy: op_tags
   tags{

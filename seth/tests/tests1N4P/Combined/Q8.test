@@ -156,7 +156,7 @@ begin
     | project expr
         type INTEGER as _orderkey   J1_O_ORDERKEY ,
         type INTEGER as C_NATIONKEY C_NATIONKEY
-    | hash 2 expr type INTEGER _orderkey
+    | hash expr type INTEGER _orderkey
     | combined 0
     | next hashcast
 
@@ -172,7 +172,7 @@ begin
     | project expr
         type INTEGER as _suppkey    J1_L_SUPPKEY ,
         type INTEGER as C_NATIONKEY C_NATIONKEY
-    | hash 2 expr type INTEGER _suppkey
+    | hash expr type INTEGER _suppkey
     | combined 0
     | next hashcast
 
