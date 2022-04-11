@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: aggreg_ComCleaning \handler
+: aggreg_Cleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: aggreg_ComStreamDef \handler
+: aggreg_StreamDef \handler
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
@@ -77,14 +77,10 @@
 
   _lu_initialise_
 
-  // get whether compiled or not
-  <compiled> >int to Counter0[]
-
   op__topology
 
-  Counter0[] 2 == assert
-  find: aggreg_ComCleaning   ZK_M_CLEANING      [op].handler!
-  find: aggreg_ComStreamDef  ZK_D_STREAMDEF     [op].handler!
+  find: aggreg_Cleaning   ZK_M_CLEANING      [op].handler!
+  find: aggreg_StreamDef  ZK_D_STREAMDEF     [op].handler!
 
   op__loop
 
@@ -98,7 +94,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: aggreg :: aggreg <compiled> <expr> ;
+cmdSyntax: aggreg :: aggreg <expr> ;
 
 : aggreg_cmdTags _cmdTags tagCopy: op_tags
   tags{

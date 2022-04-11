@@ -444,7 +444,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   // Iterate each ordinal projected expression
   if (pProjectedColumns->bHasChildren()) {
 
-    pBackend->vAppendNextOp("aggreg 2 \""_Stz);
+    pBackend->vAppendNextOp("aggreg \""_Stz);
     pBackend->m_bCombinedOp = true;
 
     // Get the groupBy from ProjectOp

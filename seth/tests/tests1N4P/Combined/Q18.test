@@ -94,7 +94,7 @@ begin
     | combined 0
     | stageQ18_1_e
   stage stageQ18_1_e on all partitions :
-    aggreg 2 " groupBy type integer $1 , type integer $2 aggregates
+    aggreg " groupBy type integer $1 , type integer $2 aggregates
                type integer as CUSTKEY $K1 ,
                type integer as ORDERKEY $K2 ,
                type timestamp as ORDERDATE $3 ,
@@ -104,7 +104,7 @@ begin
     | next
 
   stage stageQ18_1_f on all nodes :
-     aggreg 2 " groupBy type integer $1 , type integer $2 aggregates
+     aggreg " groupBy type integer $1 , type integer $2 aggregates
                 type integer as CUSTKEY $K1 ,
                 type integer as ORDERKEY $K2 ,
                 type timestamp as ORDERDATE $3 ,
@@ -114,7 +114,7 @@ begin
      | next
 
   stage stageQ18_1_g on origin :
-    aggreg 2 " groupBy type integer $1 , type integer $2 aggregates
+    aggreg " groupBy type integer $1 , type integer $2 aggregates
     type integer as CUSTKEY $K1 ,
     type integer as ORDERKEY $K2 ,
     type timestamp as ORDERDATE $3 ,

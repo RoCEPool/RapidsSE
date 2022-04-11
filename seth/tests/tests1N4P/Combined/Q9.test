@@ -134,7 +134,7 @@ begin
     | next
 
 stage G_SUM_P on all partitions :
-    aggreg 2 "groupby type TIMESTAMP l_orderdate
+    aggreg "groupby type TIMESTAMP l_orderdate
       aggregates
       type TIMESTAMP as l_orderdate l_orderdate ,
       type DECIMAL as amount ) l_extendedprice 1.0  l_discount -  *  ps_supplycost l_quantity *  - sum"
@@ -142,7 +142,7 @@ stage G_SUM_P on all partitions :
     | next
 
 stage G_SUM_N on all nodes :
-    aggreg 2 "groupby type TIMESTAMP l_orderdate
+    aggreg "groupby type TIMESTAMP l_orderdate
     aggregates
       type TIMESTAMP as l_orderdate l_orderdate ,
       type DECIMAL as amount ) amount sum"
@@ -150,7 +150,7 @@ stage G_SUM_N on all nodes :
     | next
 
 stage G_SUM_O on origin :
-    aggreg 2 "groupby type TIMESTAMP l_orderdate
+    aggreg "groupby type TIMESTAMP l_orderdate
     aggregates
       type TIMESTAMP as o_year l_orderdate ,
       type DECIMAL as amount ) amount sum"

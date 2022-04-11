@@ -64,7 +64,7 @@ begin
   stage Gs_LINEITEM on all partitions :
     scan lineitem
     | filter " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
-    | aggreg 2 "
+    | aggreg "
       groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
               type VARCHAR as L_LINESTATUS L_LINESTATUS
       aggregates
@@ -86,7 +86,7 @@ begin
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
     stage G_AGG_N on all nodes :
-      aggreg 2 "
+      aggreg "
         groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
                 type VARCHAR as L_LINESTATUS L_LINESTATUS
         aggregates
@@ -106,7 +106,7 @@ begin
     | next
 
   stage G_AGG_O on origin :
-    aggreg 2 "
+    aggreg "
       groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
               type VARCHAR as L_LINESTATUS L_LINESTATUS
       aggregates
@@ -127,7 +127,7 @@ begin
       // TODO: to enable
 /*
    stage G_AGG_O_2 on origin :
-     aggreg 2 "
+     aggreg "
      groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
                    type VARCHAR as L_LINESTATUS L_LINESTATUS
            aggregates

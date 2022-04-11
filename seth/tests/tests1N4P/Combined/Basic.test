@@ -391,7 +391,7 @@ begin
     indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
     | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
-    | aggreg 2 expr groupby type INTEGER O_ORDERKEY
+    | aggreg expr groupby type INTEGER O_ORDERKEY
        aggregates type DECIMAL as Revenue ) J1_L_DISCOUNT sum , type INTEGER as _orderkey $K1
     | combined 0
     | next
@@ -421,7 +421,7 @@ begin
     indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
     | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
-    | aggreg 2 expr groupby type INTEGER O_ORDERKEY
+    | aggreg expr groupby type INTEGER O_ORDERKEY
        aggregates type DECIMAL as Revenue ) J1_L_DISCOUNT sum , type INTEGER as _orderkey $K1
     | combined 0
     | next
@@ -458,7 +458,7 @@ begin
     indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
     | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
-    | aggreg 2 expr groupby type INTEGER O_ORDERKEY
+    | aggreg expr groupby type INTEGER O_ORDERKEY
        aggregates type INTEGER as _orderkey $K1 , type DECIMAL as Revenue ) J1_L_DISCOUNT sum
     | combined 0
     | next
