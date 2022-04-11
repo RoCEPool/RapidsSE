@@ -238,7 +238,7 @@ void Job::vActiveOpsInc(void)
 /*----------------------------------------------------------------------------*/
 /* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
-void Job::vCascadeReset(Session* pSession)
+void Job::vCascadeReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -269,7 +269,7 @@ void Job::vCascadeReset(Session* pSession)
 
   m_pTask = nullptr;
 
-  RASSERT(pSession == this->pSession());
+  Session* pSession = this->pSession();
   pSession->m_pOutput->vDrainBufferQueue();
 
   vDebugPoint();
@@ -278,11 +278,11 @@ void Job::vCascadeReset(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* set job to execute cascade command                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vCascadeSet(Stz* szCascade)
+void Job::vCascadeSet(Stz* szCascadeCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_oJobTags.vReplace(C_TAG_CMD,szCascade);
+  m_oJobTags.vReplace(C_TAG_CMD,szCascadeCmd);
 
   //m_oJobTags.vDumpSet(true);
 }
@@ -410,6 +410,14 @@ bool Job::bHasByPromptTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is job in error?                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job::bIsInError(void)
+{
+  return m_eError_job == EC_NONE ? false : true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this an originator job?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Job::bIsOriginator(void)
@@ -480,14 +488,6 @@ eEC Job::eJobError(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_eError_job;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get job has error                                                          */
-/*----------------------------------------------------------------------------*/
-bool Job::bJobHasError(void)
-{
-  return m_eError_job == EC_NONE ? false : true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -780,7 +780,6 @@ void Job::vPrintJobContents(void)
   vTrace(";;\n\n"_Stz);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
@@ -886,7 +885,6 @@ void Job::vReapable(bool bReapable)
   m_bReapable = bReapable;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* get pResponseOp                                                             */
 /*----------------------------------------------------------------------------*/
@@ -905,6 +903,46 @@ void Job::vResponseOp(Op* pResponseOp)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pResponseOp = pResponseOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get elapsed time in milliseconds                                           */
+/*----------------------------------------------------------------------------*/
+i8 Job::iResponseTimerMsec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_oResponseTimer.iMilliseconds();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get timer start                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Job::iResponseTimerStart(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_oResponseTimer.iStart();
+}
+
+/*----------------------------------------------------------------------------*/
+/* start/reset timer                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vResponseTimerStart(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_oResponseTimer.vStart();
+}
+
+/*----------------------------------------------------------------------------*/
+/* update timer                                                               */
+/*----------------------------------------------------------------------------*/
+void Job::vResponseTimerUpdate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_oResponseTimer.vUpdate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -985,86 +1023,18 @@ void Job::vTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create and spawn task for job                                              */
+/* create task for job                                                        */
 /*----------------------------------------------------------------------------*/
-void Job::vTaskSpawn(void)
+void Job::vTaskCreate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Stz* szEntry = "job::entryPoint"_Stz;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   m_pTask = new Task(szJobNm(),this);
     
-  //vSetTaskInxPtr(pTask,szEntry);
-  m_pTask->vSetInxPtr(szEntry);
+  m_pTask->vSetInxPtr("job::entryPoint"_Stz);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vTimerStart();
+  vResponseTimerStart();
 }
-
-/*----------------------------------------------------------------------------*/
-/* get elapsed time in milliseconds                                           */
-/*----------------------------------------------------------------------------*/
-i8 Job::iTimerMsec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_oResponseTimer.iMilliseconds();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get timer start                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Job::iTimerStart(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_oResponseTimer.iStart();
-}
-
-/*----------------------------------------------------------------------------*/
-/* start/reset timer                                                          */
-/*----------------------------------------------------------------------------*/
-void Job::vTimerStart(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_oResponseTimer.vStart();
-}
-
-/*----------------------------------------------------------------------------*/
-/* update timer                                                               */
-/*----------------------------------------------------------------------------*/
-void Job::vTimerUpdate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_oResponseTimer.vUpdate();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the participant tsc                                                    */
-/*----------------------------------------------------------------------------*/
-i8 Job::iTscParticipant(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iTscParticipant;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the participant tsc                                                    */
-/*----------------------------------------------------------------------------*/
-void Job::vTscParticipant(i8 iTsc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iTscParticipant = iTsc;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* get the participant tsc                                                    */
@@ -1086,7 +1056,6 @@ void Job::vTscBeginning(i8 iTsc)
   m_iTscBeginning = iTsc;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* get the beginning tsc                                                      */
 /*----------------------------------------------------------------------------*/
@@ -1106,112 +1075,6 @@ void Job::vTscBegun(i8 iTsc)
   
   m_iTscBegun = iTsc;
 }
-
-
-/*----------------------------------------------------------------------------*/
-/* get the executing tsc                                                      */
-/*----------------------------------------------------------------------------*/
-i8 Job::iTscExecuting(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iTscExecuting;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the executing tsc                                                      */
-/*----------------------------------------------------------------------------*/
-void Job::vTscExecuting(i8 iTsc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iTscExecuting = iTsc;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get the executed tsc                                                       */
-/*----------------------------------------------------------------------------*/
-i8 Job::iTscExecuted(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iTscExecuted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the executed tsc                                                       */
-/*----------------------------------------------------------------------------*/
-void Job::vTscExecuted(i8 iTsc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iTscExecuted = iTsc;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get the ending tsc                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Job::iTscEnding(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iTscEnding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the ending tsc                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vTscEnding(i8 iTsc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iTscEnding = iTsc;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get the ended tsc                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Job::iTscEnded(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iTscEnded;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the ended tsc                                                          */
-/*----------------------------------------------------------------------------*/
-void Job::vTscEnded(i8 iTsc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iTscEnded = iTsc;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get the cancelling tsc                                                     */
-/*----------------------------------------------------------------------------*/
-i8 Job::iTscCanceling(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iTscCanceling;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the canceling tsc                                                      */
-/*----------------------------------------------------------------------------*/
-void Job::vTscCanceling(i8 iTsc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iTscCanceling = iTsc;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* get the canceled tsc                                                       */
@@ -1233,9 +1096,125 @@ void Job::vTscCanceled(i8 iTsc)
   m_iTscCanceled = iTsc;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the cancelling tsc                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Job::iTscCanceling(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iTscCanceling;
+}
 
+/*----------------------------------------------------------------------------*/
+/* set the canceling tsc                                                      */
+/*----------------------------------------------------------------------------*/
+void Job::vTscCanceling(i8 iTsc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iTscCanceling = iTsc;
+}
 
+/*----------------------------------------------------------------------------*/
+/* get the ended tsc                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Job::iTscEnded(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iTscEnded;
+}
 
+/*----------------------------------------------------------------------------*/
+/* set the ended tsc                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vTscEnded(i8 iTsc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iTscEnded = iTsc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the ending tsc                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Job::iTscEnding(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iTscEnding;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the ending tsc                                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vTscEnding(i8 iTsc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iTscEnding = iTsc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the executed tsc                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Job::iTscExecuted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iTscExecuted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the executed tsc                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vTscExecuted(i8 iTsc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iTscExecuted = iTsc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the executing tsc                                                      */
+/*----------------------------------------------------------------------------*/
+i8 Job::iTscExecuting(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iTscExecuting;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the executing tsc                                                      */
+/*----------------------------------------------------------------------------*/
+void Job::vTscExecuting(i8 iTsc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iTscExecuting = iTsc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the participant tsc                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Job::iTscParticipant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iTscParticipant;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the participant tsc                                                    */
+/*----------------------------------------------------------------------------*/
+void Job::vTscParticipant(i8 iTsc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iTscParticipant = iTsc;
+}
 
 /*----------------------------------------------------------------------------*/
 /* verify job is composed correctly and therefore capable of being executed   */

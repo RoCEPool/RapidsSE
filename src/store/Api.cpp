@@ -167,7 +167,7 @@ void Api::vExecuteJob(Session* pSession)
     
     //AM::pHeaps()->vSetTraceFree(true,MY::pTask());
     
-    pJob->vCascadeReset(pSession);
+    pJob->vCascadeReset();
     
     pJob->vCascadeSet(pSession->szCascade());
     
@@ -431,9 +431,9 @@ void Api::vSubmitJob(Session* pSession)
   
   RASSERT(! pJob->pTask());
   
-  pJob->vTaskSpawn();
+  pJob->vTaskCreate();
   
-  pJob->vTimerStart();
+  pJob->vResponseTimerStart();
   
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 }
@@ -447,7 +447,7 @@ void Api::vWaitJob(Session* pSession)
   
   //pSession->m_oMutex.vObserve(true);
   Api::vMutexWaitCond(pSession,pJob);
-  pJob->vTimerUpdate();
+  pJob->vResponseTimerUpdate();
   
   Api::vMutexUnlock(pSession,pJob);
 }
@@ -798,7 +798,7 @@ void Api::vCallBootSystem(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->vTimerStart();
+  pJob->vResponseTimerStart();
   vCallImmediate(pBootTask);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -854,7 +854,7 @@ void Api::vCallStartSystem(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->vTimerStart();
+  pJob->vResponseTimerStart();
   vCallImmediate(pStartTask);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -908,7 +908,7 @@ void Api::vSpawnTask_job(Job* pJob)
   _static_
   
   
-  pJob->vTaskSpawn();
+  pJob->vTaskCreate();
   Scheduler::vTaskApi_AddOp(pJob->pTask());
 }
 
@@ -947,7 +947,7 @@ void Api::vSpawnTask_demonJob(Job* pJob)
   
   RASSERT(! pJob->pTask());
 
-  pJob->vTaskSpawn();
+  pJob->vTaskCreate();
   Scheduler::vTaskApi_AddService(pJob->pTask());
 }
 
@@ -958,7 +958,7 @@ void Api::vSpawnTask_receivedJob(Job* pJob)
 {
   _static_
   
-  pJob->vTaskSpawn();
+  pJob->vTaskCreate();
   Scheduler::vTaskApi_AddReceived(pJob->pTask());
 }
 
@@ -988,15 +988,15 @@ bool Api::bSpawnTask_session(Job* pJob)
     return false;
   }
   
-  pJob->vTaskSpawn();
+  pJob->vTaskCreate();
 
-  pJob->vTimerStart();
+  pJob->vResponseTimerStart();
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 
   if (! pJob->bHasTag(C_TAG_NOWAIT)) {
     //pSession->m_oMutex.vObserve(true);
     Api::vMutexWaitCond(pSession,pJob);
-    pJob->vTimerUpdate();
+    pJob->vResponseTimerUpdate();
   }
   
   Api::vMutexUnlock(pSession,pJob);
@@ -1096,7 +1096,7 @@ void Api::vResetTaskForJob(Job* pJob)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->vTimerStart();
+  pJob->vResponseTimerStart();
 }
 
 /*----------------------------------------------------------------------------*/

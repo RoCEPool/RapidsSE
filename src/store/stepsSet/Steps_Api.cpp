@@ -192,16 +192,16 @@ void Step::vApiExecuteCommand(void)
   
 //  bool bSpawned = Api::bSpawnTask_session(pJob);
 //  UNUSED(bSpawned);
-  pJob->vTimerStart();
+  pJob->vResponseTimerStart();
   
   Api::vExecuteJob(pSession);
   
-  pJob->vTimerUpdate();
+  pJob->vResponseTimerUpdate();
 
 //  vTrace("Job Timer: %lldus\n"_Stz
 //         ,pJob->m_oTimer.iMicroseconds());
   
-  RASSERT(! pJob->bJobHasError() );
+  RASSERT(! pJob->bIsInError() );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete job and free session

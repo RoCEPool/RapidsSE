@@ -120,9 +120,8 @@ namespace STORE
     void vActiveOpsDec(void);
     void vActiveOpsInc(void);
 
-  
-    void vCascadeReset(Session* pSession);
-    void vCascadeSet(Stz* szCascade);
+    void vCascadeReset(void);
+    void vCascadeSet(Stz* szCascadeCmd);
     CmdId tCmdId(void);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
@@ -138,6 +137,7 @@ namespace STORE
     bool bHasByPromptTag(void);
     bool bHasTag(Stz* szTagNm);
   
+    bool bIsInError(void);
     bool bIsOriginator(void);
     bool bIsParticipant(void);
     bool bIsPipeline(void);
@@ -147,7 +147,6 @@ namespace STORE
     void vJobId(JobId tJobId);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
-    bool bJobHasError(void);
     eJK  eJobKind(void);
     void vJobKind(eJK eJobKind);
     eJL  eJobList(void);
@@ -177,6 +176,10 @@ namespace STORE
     void vReapable(bool bReapable);
     Op*  pResponseOp(void);
     void vResponseOp(Op* pResponseOp);
+    i8   iResponseTimerMsec(void);
+    i8   iResponseTimerStart(void);
+    void vResponseTimerStart(void);
+    void vResponseTimerUpdate(void);
 
     i8   i_Session(void);
     Session* pSession(void);
@@ -186,37 +189,23 @@ namespace STORE
 
     Task* pTask(void);
     void vTask(Task* pTask);
-    void vTaskSpawn(void);
-
-    i8   iTimerMsec(void);
-    i8   iTimerStart(void);
-    void vTimerStart(void);
-    void vTimerUpdate(void);
-  
+    void vTaskCreate(void);
     i8   iTscBeginning(void);
     void vTscBeginning(i8 iTsc);
-
     i8   iTscBegun(void);
     void vTscBegun(i8 iTsc);
-
-    i8   iTscExecuting(void);
-    void vTscExecuting(i8 iTsc);
-
-    i8   iTscExecuted(void);
-    void vTscExecuted(i8 iTsc);
-
-    i8   iTscEnding(void);
-    void vTscEnding(i8 iTsc);
-
-    i8   iTscEnded(void);
-    void vTscEnded(i8 iTsc);
-
-    i8   iTscCanceling(void);
-    void vTscCanceling(i8 iTsc);
-  
     i8   iTscCanceled(void);
     void vTscCanceled(i8 iTsc);
-
+    i8   iTscCanceling(void);
+    void vTscCanceling(i8 iTsc);
+    i8   iTscEnded(void);
+    void vTscEnded(i8 iTsc);
+    i8   iTscEnding(void);
+    void vTscEnding(i8 iTsc);
+    i8   iTscExecuted(void);
+    void vTscExecuted(i8 iTsc);
+    i8   iTscExecuting(void);
+    void vTscExecuting(i8 iTsc);
     i8   iTscParticipant(void);
     void vTscParticipant(i8 iTsc);
     

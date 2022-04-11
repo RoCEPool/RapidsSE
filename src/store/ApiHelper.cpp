@@ -132,7 +132,7 @@ void ApiHelper::vPrintResults(void)
   RASSERT(! m_pSession->m_pOutput->m_bExecErr );
   RASSERT(! m_pSession->m_pOutput->m_bCmdErr );
 
-  if (m_pSession->m_pSsnJob->bJobHasError()) {
+  if (m_pSession->m_pSsnJob->bIsInError()) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
            aEC[m_pSession->m_pSsnJob->eJobError()]);
   }
@@ -154,7 +154,7 @@ void ApiHelper::vResetResults(void)
 /*----------------------------------------------------------------------------*/
 i8 ApiHelper::iResponseTimeMsec(void)
 {
-  i8 iTimeMsec = m_pSession->m_pSsnJob->iTimerMsec();
+  i8 iTimeMsec = m_pSession->m_pSsnJob->iResponseTimerMsec();
   
   return iTimeMsec;
 }

@@ -141,7 +141,7 @@ void Output::vDrainBufferQueue(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   while (! m_bExitMarker   &&
-         ! m_pSession->m_pSsnJob->bJobHasError()) {
+         ! m_pSession->m_pSsnJob->bIsInError()) {
     
     Operand* pOperand = pPopBufferQueue_blocking();
     
@@ -325,7 +325,7 @@ Operand* Output::pPopBufferQueue_blocking(void)
     
     AM::vNapUsec(1000,CN_OUTPUT);
     
-    if (m_pSession->m_pSsnJob->bJobHasError())
+    if (m_pSession->m_pSsnJob->bIsInError())
       return nullptr;
   }
   
