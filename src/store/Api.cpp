@@ -360,11 +360,15 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
   Stz* szJobNm = pCmdTags->szValue(C_TAG_JOBNM);
 
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
+  
   Job* pPrepareJob =
          pSession->m_pSsnJob =
            new Job(szJobNm,
                    pSession->m_i_Session,
-                   pSession->m_iCmdNo++
+                   pSession->m_iCmdNo++,
+                   tCmdId
                    );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -808,9 +812,13 @@ void Api::vCallBootSystem(void)
 {
   _static_
   
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
+  
   Job* pJob = new Job("bootSystem"_Stz,
                       AM::SESSION::iInternalSession(),
-                      1
+                      1,
+                      tCmdId
                       );
   Stz* szJobNm = pJob->szJobNm();
   Task* pBootTask = new Task(szJobNm,pJob);
@@ -866,9 +874,14 @@ void Api::vCallStartSystem(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
+  
+
   Job* pJob = new Job("StartSys"_Stz,
                       AM::SESSION::iInternalSession(),
-                      1
+                      1,
+                      tCmdId
                       );
   
   Stz* szJobNm = pJob->szJobNm();

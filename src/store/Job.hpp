@@ -10,6 +10,7 @@
 #include "eRS.h"
 
 #include "JobMetrics.hpp"
+#include "CmdId.hpp"
 
 
 /*                      IMPORTANT NOTE
@@ -41,6 +42,7 @@ namespace STORE
 
     i8 m_i_Session;  // which session in node's session array
     i8 m_iCmdNo;     // sequence no of the command from that session
+    CmdId m_tCmdId;
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
@@ -105,9 +107,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Job(Stz* szJobNm,
-        i8 i_Session,      // which session in session array
-        i8 iCmdNo          // the sequence no of the request from that session
+    Job(Stz*  szJobNm,
+        i8    i_Session,  // which session in session array
+        i8    iCmdNo,     // the sequence no of the request from that session
+        CmdId tCmdId
        );
 
    ~Job(void) noexcept(false);
@@ -119,6 +122,7 @@ namespace STORE
   
     bool bByPromptTag(void);
   
+    CmdId tCmdId(void);
     i8   iCmdNo(void);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);

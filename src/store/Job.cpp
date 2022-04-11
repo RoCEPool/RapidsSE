@@ -44,9 +44,11 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm,
-         i8 i_Session,     // which session in session array
-         i8 iCmdNo         // the sequence no of the request from that session)
+Job::Job(Stz*  szJobNm,
+         i8    i_Session,     // which session in session array
+         i8    iCmdNo,         // the sequence no of the request from that session)
+         CmdId tCmdId
+
         )
 : Operand(CN_JOB)
 , CRM<Job>(this)
@@ -64,6 +66,7 @@ Job::Job(Stz* szJobNm,
   
   m_i_Session     = i_Session;
   m_iCmdNo        = iCmdNo;
+  m_tCmdId        = tCmdId;
 
   m_oResponseTimer.vStart();
 
@@ -223,6 +226,16 @@ bool Job::bByPromptTag(void)
   bool bByPrompt = bHasTag(C_TAG_BYPROMPT);
   
   return bByPrompt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command id                                                             */
+/*----------------------------------------------------------------------------*/
+CmdId Job::tCmdId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_tCmdId;
 }
 
 /*----------------------------------------------------------------------------*/
