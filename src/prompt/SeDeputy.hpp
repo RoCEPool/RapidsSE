@@ -18,7 +18,8 @@ namespace PROMPT
     
     Thread*   m_pThread;
 
-    
+    Input*    m_pInput;        // input stream
+
     bool      m_bAvailable;
     bool      m_bContinue;
     bool      m_bTerminated;

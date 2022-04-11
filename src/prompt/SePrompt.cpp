@@ -105,7 +105,7 @@ SePrompt::SePrompt(bool bOneCommand)
     //m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
   }
 
-  m_pCmdTknVec = pInputGet()->pTokenVec();
+  //m_pCmdTknVec = pInputGet()->pTokenVec();
 
   pInputGet()->vDebugMode(m_iDebugMode);
 

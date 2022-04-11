@@ -53,6 +53,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   
   m_pThread   = AM::THREAD::pNewThread();
 
+  m_pInput    = nullptr;
 
   m_bAvailable  = false;
   m_bContinue   = true;
@@ -77,6 +78,9 @@ SeDeputy::~SeDeputy(void) noexcept(false)
   
   while (m_pSession->m_pInput)
     m_pSession->m_pInput = m_pSession->m_pInput->pDeleteInput();
+
+  while (m_pInput)
+    m_pInput = m_pInput->pDeleteInput();
 
   ApiHelper::vFreeSession();
 
