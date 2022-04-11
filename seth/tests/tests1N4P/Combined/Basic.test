@@ -74,7 +74,7 @@ begin
                               O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
     | project expr type INTEGER as _orderkey O_ORDERKEY ,
                      type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
-    | keyExists 2 lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+    | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                          "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | combined 0
     | next
@@ -254,7 +254,7 @@ begin
     | next
   stage stageA on all partitions :
     indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | ordAgg 2 " ORDGROUPBY type integer $1
+    | ordAgg " ORDGROUPBY type integer $1
                  aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | filter " type BOOLEAN  $2 50.0  >  "
     | combined 0
@@ -275,7 +275,7 @@ begin
     | next
   stage stageA on all partitions :
     indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | ordAgg 2 " ORDGROUPBY type integer $1
+    | ordAgg " ORDGROUPBY type integer $1
                  aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | filter " type BOOLEAN  $2 100.0  >  "
     | top 2 "TOP type DECIMAL total" 10
@@ -319,7 +319,7 @@ begin
     | next
   stage stageA on all partitions :
     indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | ordAgg 2 " ORDGROUPBY type integer $1
+    | ordAgg " ORDGROUPBY type integer $1
                  aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | filter " type BOOLEAN  $2 90.0  >  "
     | combined 0
@@ -347,7 +347,7 @@ begin
     | next
   stage stageA on all partitions :
     indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | ordAgg 2 " ORDGROUPBY type integer $1 aggregates type integer $K1 , type decimal as total )  $5 sum  "
+    | ordAgg " ORDGROUPBY type integer $1 aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | top 2 "TOP type DECIMAL total" 8
     | combined 0
     | next

@@ -293,7 +293,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_OBYELIST
   /* */ "(none)"_Stz,          // CK_ON
   /* */ "(none)"_Stz,          // CK_OPTION
-  /* */ "ordagg    2"_Stz,     // CK_ORDAGG
+  /* */ "ordagg    "_Stz,      // CK_ORDAGG
 
   /* */ "(none)"_Stz,          // CK_PREDAND
   /* */ "(none)"_Stz,          // CK_PREDCMP
