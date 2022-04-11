@@ -54,55 +54,7 @@
 extern CmdLineArgs gxCmdLineArgs;
 extern AttachMap* gpAttachMap;
 
-using namespace Parser;
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* __Prompt_antlr.cpp -- antlr                                                */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_antlr (
-  PF_ANTLR,           // prompt function
-  "Prompt_antlr"_Stz, // name of the prompt function
-  "comment"_Stz,      // comment about the function
-  "antlr"_Stz,        // the prompt command
-  nullptr,            // the second word
-  bPrompt_antlr,      // prompt function
-  true,               // enabled
-
-  true,               // visible
-  "antlr"_Stz,        // help
-  ""_Stz              // description
-);
-
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_antlr(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-  
-  vTrace("_antrl: %s\n"_Stz,pPrompt->szOriginalCommand());
-
-  // Read in and parse the plan graph definitions
-  const PlanNode* pGraphTemplate = PlanDefinitionParser::pGraphTemplate();
-
-  if (pGraphTemplate == nullptr) {
-    return false;
-  }
-
-  // Parse the SQL command.
-
-  // First get the command from the prompt
-  Stz* szSql = pPrompt->szOriginalCommand();
-  vTrace("SQL Statement: %s"_Stz, szSql);
-
-  SqlPlanner* pPlanner = new SqlPlanner();
-  pPlanner->plan(szSql, pGraphTemplate);
-  delete pPlanner;
-
-  return true;
-}
+//using namespace Parser;
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_args.cpp -- show command line arguments                             */
@@ -3313,51 +3265,6 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 
   return true;
 }
-/*----------------------------------------------------------------------------*/
-//bool PROMPT::bPrompt_print(SePrompt* pPrompt)
-//{
-//  Session* pSession = pPrompt->pSession();
-//  Input* pInput = pSession->m_pInput;
-//
-//  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-//
-//  ASSERT(pInpTknVec->pGet(0)->bSame("print"_Stz));
-//
-//  //
-//  if (pInpTknVec->nTokens() == 1) {
-//    vTrace("\n"_Stz);
-//    return true;
-//
-//  }
-//
-//  if (pInpTknVec->nTokens() == 2) {
-//    vTrace("%s\n"_Stz,pInpTknVec->pGet(1)->szChars());
-//    return true;
-//  }
-//
-//  if (pInpTknVec->nTokens() == 3) {
-//
-//    Stz* szSectionNm = pInpTknVec->pGet(2)->szChars();
-//    pPrompt->vSection(szSectionNm);
-//
-//    vTrace("\n"_Stz);
-//    vTrace("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
-//          "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
-//          "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
-//          "/\n"_Stz);
-//    vTrace("§%s @line %lld Section %lld) %s : \n"_Stz,
-//          pInput->szPath(),
-//          pInpTknVec->pGet(2)->iLineNo(),
-//          pPrompt->iNextSectionNo(),
-//          pInpTknVec->pGet(2)->szChars()
-//          );
-//    vTrace("\n"_Stz);
-//    return true;
-//  }
-//
-//  vTrace("%s\n"_Stz,pInpTknVec->pGet(1)->szChars());
-//  return true;
-//}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_procedure.cpp -- define a stored procedure                          */

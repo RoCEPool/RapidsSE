@@ -120,7 +120,6 @@ namespace PROMPT
     void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
-    Stz* szOriginalCommand(void);
     void vOutline(s4K& sOutline);
     void vPromptUser(void);
     TagSet* pPmtTagSet(void);

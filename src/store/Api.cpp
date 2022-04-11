@@ -134,29 +134,12 @@ void Api::vExecuteJob(Session* pSession)
 {
   _static_
   
-  //AM::pHeaps()->vSetTraceFree(CN_PLANNODEBUILDERLIST);
-
   pSession->m_pOutput->vAssertEmptyQueue();
 
   pSession->m_pOutput->vBeginProcOneCmd();
   
   Job* pJob = pSession->m_pSsnJob;
-  
-//  TagSet* pJobTagSet = & pSession->m_oJobTagSet;
-//  TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();
-//
-//  if (AM::TRACE::bVerbose(C_VB_API)) {
-//    pInpTknVec->vDumpVec(false);
-//    pJobTagSet->vDumpSet(true);
-//  }
-//
-//  if (AM::bDeveloper() && pInpTknVec->nTokens() > C_1KB) {
-//    i8 nTokens = pInpTknVec->nTokens();
-//    i8 nUsed   = pInpTknVec->nUsedByteSpace();
-//    if (nTokens > C_1KB)
-//       vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
-//  }
-  
+    
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -205,7 +188,6 @@ void Api::vExtractCmdPaths(Session* pSession, TokenVec* pCmdTknVec)
 {
   _static_
   
-  //TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();;
   TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
   
   i8 i_Paths = pCmdTknVec->iFindToken("paths"_Stz,TN_NAME);
@@ -236,7 +218,6 @@ bool Api::bExtractCmdTags(Session* pSession, TokenVec* pCmdTknVec)
 {
   _static_
   
-  //TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();;
   TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -321,7 +302,6 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec)
     
   // get the command proper and the tag set
   TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  //TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
   TagSet*   pCmdTags   = & pSession->m_oJobTagSet;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -990,10 +970,6 @@ bool Api::bSpawnTask_session(Job* pJob)
   _static_
   
   Session* pSession = pJob->pSession();
-  
-//  if (pSession->m_pInput)
-//    vTrace("API szRawInput() :: %s\n"_Stz,pSession->m_pInput->szRawInput());
-//
   
   Api::vMutexLock(pSession,pJob);
 
