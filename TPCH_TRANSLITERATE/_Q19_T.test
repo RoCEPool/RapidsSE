@@ -33,10 +33,64 @@ select sum(l_extendedprice * (1 - l_discount) ) as revenue
 //  Transliterate Query
 //------------------------------------------------------------------------------
 EXPLAIN STAGE TRANSLITERATE
+select sum(l_extendedprice * (1 - l_discount) ) as revenue
+     from lineitem, part
+     where ( p_partkey = l_partkey
+     and p_brand = 'Brand#12'
+     and p_container in ( 'SM CASE', 'M BOX', 'SM PACK', 'SM PKG')
+     and l_quantity >= 1 and l_quantity <= 1 + 10
+     and p_size between 1 and 5
+     and l_shipmode in ('AIR', 'AIR REG')
+     and l_shipinstruct = 'DELIVER IN PERSON' )
+     or ( p_partkey = l_partkey
+     and p_brand = 'Brand#23'
+     and p_container in ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
+     and l_quantity >= 10 and l_quantity <= 10 + 10
+     and p_size between 1 and 10
+     and l_shipmode in ('AIR', 'AIR REG')
+     and l_shipinstruct = 'DELIVER IN PERSON' )
+     or ( p_partkey = l_partkey
+     and p_brand = 'Brand#34'
+     and p_container in ( 'LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
+     and l_quantity >= 20 and l_quantity <= 20 + 10
+     and p_size between 1 and 15
+     and l_shipmode in ('AIR', 'AIR REG')
+     and l_shipinstruct = 'DELIVER IN PERSON' );
 
 //------------------------------------------------------------------------------
 // Pipeline Generated
 //------------------------------------------------------------------------------
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker4294
+  stage stageMarker4294 on all partitions :
+    scan rapidsse public lineitem
+    | stageMarker4297 broadcast
+  stage stageMarker4297 on all partitions :
+    scan rapidsse public part
+    | abstractJoin 2 " 1  "
+    | stageMarker4300
+  stage stageMarker4300 on all partitions :
+    filter " type BOOLEAN  $17 $2 ==  $20 ''Brand#12''  ==  and  }  ''SM CASE''  ''M BOX''  ''SM PACK''  ''SM PKG''  #4  $23 in  and  $5 1.  >=  and  $5 1  10  +  casttype DECIMAL CAST  <=  and  }  1  5  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  $17 $2 ==  $20 ''Brand#23''  ==  and  }  ''MED BAG''  ''MED BOX''  ''MED PKG''  ''MED PACK''  #4  $23 in  and  $5 10.  >=  and  $5 10  10  +  casttype DECIMAL CAST  <=  and  }  1  10  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  or  $17 $2 ==  $20 ''Brand#34''  ==  and  }  ''LG CASE''  ''LG BOX''  ''LG PACK''  ''LG PKG''  #4  $23 in  and  $5 20.  >=  and  $5 20  10  +  casttype DECIMAL CAST  <=  and  }  1  15  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  or  "
+    | project " type DECIMAL )  $6 1.  $7 -  *  sum  "
+    | combined 0
+    | stageMarker4303
+  stage stageMarker4303 on all nodes :
+    project " type DECIMAL )  $1 sum  "
+    | combined 0
+    | stageMarker4306
+  stage stageMarker4306 on origin :
+    project " type DECIMAL as revenue )  $1 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
 /*============================================================================*/
 /* end                                                                        */

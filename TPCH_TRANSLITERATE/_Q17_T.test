@@ -16,10 +16,81 @@ select sum(l_extendedprice) / 7.0 as avg_yearly
 //  Transliterate Query
 //-----------------------------------------------------------------------------
 EXPLAIN STAGE TRANSLITERATE
+select sum(l_extendedprice) / 7.0 as avg_yearly
+     from lineitem, part
+     where p_partkey = l_partkey
+     and p_brand = 'Brand#23'
+     and p_container = 'MED BOX'
+     and l_quantity < ( select 0.2 * avg(l_quantity) from lineitem where l_partkey = p_partkey );
 
 //-----------------------------------------------------------------------------
 // Pipeline Generated
 //-----------------------------------------------------------------------------
+pipeline unamed
+begin
+  pipeline __subquery0003
+    params "p_partkey "
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker281024
+    stage stageMarker281024 on all partitions :
+      scan rapidsse public lineitem
+      | filter " type BOOLEAN  $2 ==  "
+      | project " type DECIMAL )  $5 sum  , type INTEGER )  $5 count  "
+      | combined 0
+      | stageMarker281027
+    stage stageMarker281027 on all nodes :
+      project " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+      | combined 0
+      | stageMarker281175
+    stage stageMarker281175 on origin :
+      project " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+      | combined 0
+      | stageMarker281030
+    stage stageMarker281030 on origin :
+      project " type DECIMAL 0.2  $2 $1 casttype DECIMAL CAST  /  *  "
+      | combined 0
+      | stageMarker281033
+    stage stageMarker281033 on origin :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker281036
+  stage stageMarker281036 on all partitions :
+    scan rapidsse public lineitem
+    | stageMarker281039 broadcast
+  stage stageMarker281039 on all partitions :
+    scan rapidsse public part
+    | abstractJoin 2 " 1  "
+    | stageMarker281042
+  stage stageMarker281042 on all partitions :
+    filter " type BOOLEAN  $17 $2 ==  $20 ''Brand#23''  ==  and  $23 ''MED BOX''  ==  and  $5 $17 __subquery0003  <  and  "
+    | project " type DECIMAL )  $6 sum  "
+    | combined 0
+    | stageMarker281045
+  stage stageMarker281045 on all nodes :
+    project " type DECIMAL )  $1 sum  "
+    | combined 0
+    | stageMarker281048
+  stage stageMarker281048 on origin :
+    project " type DECIMAL as avg_yearly )  $1 sum  7.0  /  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
 /*============================================================================*/
 /* end                                                                        */
