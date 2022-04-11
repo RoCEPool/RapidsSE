@@ -2,10 +2,6 @@
 /* Prompt_ALLINONE.hpp -- all the prompt functions in onw file                */
 /*============================================================================*/
 
-void vRapidsSE_ApiDemo_tableScan(void);
-void vRapidsSE_ApiDemo_getRows(void);
-void vRapidsSE_ApiDemo_putRows(void);
-
 
 // the following probably need to go into File?
 
@@ -35,7 +31,6 @@ void vHuh(d8 d);
 namespace PROMPT
 {
   bool bPrompt_antlr(SePrompt* pPrompt);
-  bool bPrompt_apiDemo(SePrompt* pPrompt);
   bool bPrompt_args(SePrompt* pPrompt);
   bool bPrompt_ascii(SePrompt* pPrompt);
   bool bPrompt_attachMap(SePrompt* pPrompt);
