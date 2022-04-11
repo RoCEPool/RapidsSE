@@ -205,7 +205,7 @@ void Step::vApiExecuteCommand(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete job and free session
-  Api::vDeleteJob(pSession);
+  Api::vReapableJob(pSession);
 
   Api::vFreeSession(pSession);
 

@@ -30,24 +30,6 @@ extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_HandlerKey;
 extern pthread_key_t giTLS_StepKey;
 
-/*----------------------------------------------------------------------------*/
-/*-- parsimonious API --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get a new instance of an operand                                           */
-/*----------------------------------------------------------------------------*/
-Operand* Api::pGetOperand(eZK eOperand)
-{
-  _static_
-  
-  switch (eOperand) {
-    default: NEVER_REACH;
-  }
-  
-  return nullptr;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -85,47 +67,6 @@ void Api::vFreeSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete job  =                                                              */
-/*----------------------------------------------------------------------------*/
-void Api::vDeleteJob(Session* pSession)
-{
-  _static_
-    
-  Job* pJob = pSession->m_pSsnJob;
-
-  if (pJob && pJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
-    pSession->m_pOutput->vProcessBufferQueue();
-
-  pSession->m_pOutput->m_pOutputQueue->vReset();
-  pSession->m_pOutput->vEndProcOneCmd();
-
-  pSession->m_pSsnJob = nullptr;
-  
-  
-  pJob->vReapable(true);
-      
-  
-  
-  if (pSession->m_pOutput->m_pStreamDef_result) {
-    StreamDef* pStreamDef = pSession->m_pOutput->m_pStreamDef_result;
-    pSession->m_pOutput->m_pStreamDef_result = nullptr;
-    delete pStreamDef;
-  }
-  
-  pSession->m_pOutput->m_bExitMarker      = false;
-  pSession->m_pOutput->m_bExitEarlyMarker = false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* examine command                                                            */
-/*----------------------------------------------------------------------------*/
-void Api::vExamineCommand(Session* pSession)
-{
-  _static_
-    
-}
 
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
@@ -309,6 +250,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec)
   vExtractCmdPaths(pSession,pCmdTknVec);
   
   bool b = bExtractCmdTags(pSession,pCmdTknVec);
+  UNUSED(b);
   
   if (bShortForm(pCmdTknVec)) {
     if (! bExpandToLongForm(pCmdTknVec)) {
@@ -416,6 +358,70 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set job as reapable                                                        */
+/*----------------------------------------------------------------------------*/
+void Api::vReapableJob(Session* pSession)
+{
+  _static_
+    
+  Job* pJob = pSession->m_pSsnJob;
+
+  if (pJob && pJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
+    pSession->m_pOutput->vProcessBufferQueue();
+
+  pSession->m_pOutput->m_pOutputQueue->vReset();
+  pSession->m_pOutput->vEndProcOneCmd();
+
+  pSession->m_pSsnJob = nullptr;
+  
+  
+  pJob->vReapable(true);
+      
+  
+  
+  if (pSession->m_pOutput->m_pStreamDef_result) {
+    StreamDef* pStreamDef = pSession->m_pOutput->m_pStreamDef_result;
+    pSession->m_pOutput->m_pStreamDef_result = nullptr;
+    delete pStreamDef;
+  }
+  
+  pSession->m_pOutput->m_bExitMarker      = false;
+  pSession->m_pOutput->m_bExitEarlyMarker = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to reap one job from the retired list                              */
+/*----------------------------------------------------------------------------*/
+void Api::vReapAllJobs(bool bForce)
+{
+  _static_
+  
+  if (bForce || AM::SYSTEM::bReapEnabled())
+    while (AM::pRetiredJobs()->nJobs())
+      while (Api::bReapJob())
+        {;}
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to reap one job from the retired list                              */
+/*----------------------------------------------------------------------------*/
+void Api::vReapJobsOnce(bool bForce)
+{
+  _static_
+  
+  if (bForce || AM::SYSTEM::bReapEnabled())
+    while (Api::bReapJob())
+      {;}
+}
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* submit job (spawn job but don't wait for completion)                       */
 /*----------------------------------------------------------------------------*/
 void Api::vSubmitJob(Session* pSession)
@@ -452,53 +458,6 @@ void Api::vWaitJob(Session* pSession)
   Api::vMutexUnlock(pSession,pJob);
 }
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* wait for job completion                                                    */
-/*----------------------------------------------------------------------------*/
-//void Api::vPushOperand(Session* pSession, Operand* pOperand)
-//{
-//  Job* pJob = pSession->m_pSsnJob;
-//
-//  Op* pInputOp = pJob->pSingularOp();
-//
-//  pInputOp->vOutboundOperand(pOperand);
-//  pOperand = nullptr;
-//  while (pInputOp->pOutboundOperand())
-//    AM::vNapUsec(100,CN_SEPROMPT);
-//}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* attempt to reap one job from the retired list                              */
-/*----------------------------------------------------------------------------*/
-void Api::vReapAllJobs(bool bForce)
-{
-  _static_
-  
-  if (bForce || AM::SYSTEM::bReapEnabled())
-    while (AM::pRetiredJobs()->nJobs())
-      while (Api::bReapJob())
-        {;}
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to reap one job from the retired list                              */
-/*----------------------------------------------------------------------------*/
-void Api::vReapJobsOnce(bool bForce)
-{
-  _static_
-  
-  if (bForce || AM::SYSTEM::bReapEnabled())
-    while (Api::bReapJob())
-      {;}
-}
 
 /*----------------------------------------------------------------------------*/
 /* attempt to reap one job from the retired list                              */
@@ -772,10 +731,13 @@ void Api::vCallBootSystem(void)
                       AM::SESSION::iInternalSession(),
                       tCmdId
                       );
+  
   Stz* szJobNm = pJob->szJobNm();
   Task* pBootTask = new Task(szJobNm,pJob);
-
   pJob->vTask(pBootTask);
+
+//  pJob->vTaskCreate();
+//  Task* pBootTask = pJob->pTask();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
      
@@ -785,7 +747,7 @@ void Api::vCallBootSystem(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
-  vSetTaskInxPtr(pBootTask,"bootSystem::bootSystem"_Stz);
+  pBootTask->vSetInxPtr("bootSystem::bootSystem"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -799,7 +761,7 @@ void Api::vCallBootSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob->vResponseTimerStart();
-  vCallImmediate(pBootTask);
+  vCallTaskImmediate(pBootTask);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -841,7 +803,7 @@ void Api::vCallStartSystem(void)
 
   pJob->vTask(pStartTask);
   
-  vSetTaskInxPtr(pStartTask,"startSystem::startSystem"_Stz);
+  pStartTask->vSetInxPtr("startSystem::startSystem"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -855,7 +817,7 @@ void Api::vCallStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob->vResponseTimerStart();
-  vCallImmediate(pStartTask);
+  vCallTaskImmediate(pStartTask);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -868,7 +830,7 @@ void Api::vCallStartSystem(void)
 /*----------------------------------------------------------------------------*/
 /* run task immediately                                                       */
 /*----------------------------------------------------------------------------*/
-void Api::vCallImmediate(Task* pImmediateTask)
+void Api::vCallTaskImmediate(Task* pImmediateTask)
 {
   Task* pSaveTask = _pTask(PsxThd::pTlsGet(giTLS_TaskKey));
 
@@ -879,37 +841,6 @@ void Api::vCallImmediate(Task* pImmediateTask)
   pImmediateTask->vTaskLoop();
   
   PsxThd::vTlsSet(giTLS_TaskKey,pSaveTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete task immediate                                                      */
-/*----------------------------------------------------------------------------*/
-void Api::vDeleteImmediate(Task** ppTask)
-{
-  NEVER_REACH;
-  
-  Task* pTask = *ppTask;
-  *ppTask = nullptr;
-
-  pTask->vState(TS_COMPLETED);
-  Job* pJob = pTask->pJob();
-  pTask->vJob(nullptr);
-  
-  //delete pJob;
-  if (pJob)
-    delete pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn task for given job                                                   */
-/*----------------------------------------------------------------------------*/
-void Api::vSpawnTask_job(Job* pJob)
-{
-  _static_
-  
-  
-  pJob->vTaskCreate();
-  Scheduler::vTaskApi_AddOp(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -927,7 +858,7 @@ void Api::vSpawnTask_op(Op* pOp)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-void Api::vSpawnTaskDedicated_op(Op* pOp)
+void Api::vSpawnTask_dedicatedOp(Op* pOp)
 {
   _static_
   
@@ -1092,7 +1023,7 @@ void Api::vResetTaskForJob(Job* pJob)
 
   Task* pTask = pJob->pTask();
     
-  vSetTaskInxPtr(pTask,szEntry);
+  pTask->vSetInxPtr(szEntry);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1118,28 +1049,6 @@ void Api::vCreateTaskForOp(Op* pOp)
   pOp->vTask(pTask);
 
   pTask->vSetInxPtr(pEntryWord);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set instruction pointer for task given entry point name                    */
-/*----------------------------------------------------------------------------*/
-void Api::vSetTaskInxPtr(Task* pTask, Stz* szEntryPt)
-{
-  _static_
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
-  
-  
-  Word* pEntryWord = pDicRoot->pFindWord(szEntryPt);
-
-  if (! pEntryWord) {
-
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Unable to find task entry point: %s\n"_Stz,szEntryPt);
-  }
-  
-  pTask->vSetInxPtr(pEntryWord);
-
 }
 
 /*----------------------------------------------------------------------------*/

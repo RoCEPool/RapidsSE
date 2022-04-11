@@ -43,7 +43,7 @@ void ApiHelper::vAllocateSession(void)
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vDeleteJob(void)
 {
-  Api::vDeleteJob(m_pSession);
+  Api::vReapableJob(m_pSession);
 }
 
 /*----------------------------------------------------------------------------*/
