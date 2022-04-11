@@ -342,7 +342,6 @@ rows:
 
 
 // Case with mix of numeric types. Integer is promoted to a float
-explain stage transliterate
 SELECT CASE n_name
         WHEN 'AUSTRALIA' THEN 1
         WHEN 'INDIA' THEN 1.0e0
