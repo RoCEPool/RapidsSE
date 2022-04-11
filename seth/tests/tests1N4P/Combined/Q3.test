@@ -101,12 +101,13 @@ begin
         type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
         type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
         groupby type INTEGER _orderkey
+    | top "Revenue" 10
     | combined 0
-    | top 1 "Revenue" 10
     | next
 
   stage last on origin :
-    top 1 "Revenue" 10
+    top "Revenue" 10
+    | combined 0
     | output
     | sink
     | first
@@ -149,12 +150,12 @@ begin
         type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
         type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
         groupby type INTEGER _orderkey
-    | top 2 "Revenue" 10
+    | top "Revenue" 10
     | combined 0
     | next
 
   stage last on origin :
-    top 2 "Revenue" 10
+    top "Revenue" 10
     | combined 0
     | output
     | sink

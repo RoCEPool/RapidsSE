@@ -221,15 +221,15 @@ begin
   stage stageA on all partitions :
     indexScan lineitem IxL_SHIPDATE "lbound $I1 TIMESTAMP '1900-01-01 00:00:00' >= "
     | project "type INTEGER $1 , type TIMESTAMP L_SHIPDATE"
-    | top 2 "TOP type TIMESTAMP $2" 2
+    | top "TOP type TIMESTAMP $2" 2
     | combined 0
     | next
   stage stageB on all nodes :
-    top 2 "TOP type TIMESTAMP $2" 2
+    top "TOP type TIMESTAMP $2" 2
     | combined 0
     | next
   stage stageC on origin :
-    top 2 "TOP type TIMESTAMP $2" 2
+    top "TOP type TIMESTAMP $2" 2
     | combined 0
     | next
   stage stageLast on origin :
@@ -278,17 +278,17 @@ begin
     | ordAgg " ORDGROUPBY type integer $1
                  aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | filter " type BOOLEAN  $2 100.0  >  "
-    | top 2 "TOP type DECIMAL total" 10
+    | top "TOP type DECIMAL total" 10
     | combined 0
     | next
 
  stage stageA on all nodes :
-    top 2 "TOP type DECIMAL total" 10
+    top "TOP type DECIMAL total" 10
     | combined 0
     | next
 
  stage stageA on origin :
-     top 2 "TOP type DECIMAL total" 10
+     top "TOP type DECIMAL total" 10
      | combined 0
      | next
 
@@ -348,15 +348,15 @@ begin
   stage stageA on all partitions :
     indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg " ORDGROUPBY type integer $1 aggregates type integer $K1 , type decimal as total )  $5 sum  "
-    | top 2 "TOP type DECIMAL total" 8
+    | top "TOP type DECIMAL total" 8
     | combined 0
     | next
   stage stageB on all nodes :
-    top 2 "TOP type DECIMAL total" 8
+    top "TOP type DECIMAL total" 8
     | combined 0
     | next
   stage stageC on origin :
-    top 2 "TOP type DECIMAL total" 8
+    top "TOP type DECIMAL total" 8
     | combined 0
     | next
   stage stageLast on origin :
@@ -464,12 +464,12 @@ begin
     | next
 
 stage Gj_LINEITEM on all nodes :
-    top 2 "TOP type DECIMAL Revenue" 10
+    top "TOP type DECIMAL Revenue" 10
     | combined 0
     | next
 
 stage Gj_LINEITEM on origin :
-    top 2 "TOP type DECIMAL Revenue" 10
+    top "TOP type DECIMAL Revenue" 10
     | combined 0
     | next
 

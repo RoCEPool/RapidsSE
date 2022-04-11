@@ -40,15 +40,15 @@ begin
   stage stageA on all partitions :
     indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | project " type integer as orderkey l_orderkey "
-    | top 2 "TOP type integer orderkey" 2
+    | top "TOP type integer orderkey" 2
     | combined 0
     | next
 stage stageA on all nodes :
-    top 2 "TOP type integer orderkey" 2
+    top "TOP type integer orderkey" 2
     | combined 0
     | next
 stage stageA on origin :
-    top 2 "TOP type integer orderkey" 2
+    top "TOP type integer orderkey" 2
     | combined 0
     | next
   stage stageLast on origin :
