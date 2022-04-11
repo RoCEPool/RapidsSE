@@ -29,7 +29,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "BOUND $I1 $L1 =="
     | combined 0
     | stageD
 
@@ -59,7 +59,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 =="
+    indexJoin customer customer_idx1 "BOUND $I1 $L2 =="
     | combined 0
     | stageD
 
@@ -89,7 +89,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
     | combined 0
     | stageD
 
@@ -118,7 +118,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
+    indexJoin customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
     | combined 0
     | stageD
 
@@ -151,7 +151,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 ==" 
+    indexJoin orders orders_idx1 "BOUND $I1 $L1 =="
     | combined 0
     | stageD
 
@@ -182,7 +182,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 ==" 
+    indexJoin customer customer_idx1 "BOUND $I1 $L2 =="
     | combined 0
     | stageD
 
@@ -215,7 +215,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 ==" 
+    indexJoin orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
     | combined 0
     | stageD
 
@@ -247,7 +247,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 ==" 
+    indexJoin customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
     | combined 0
     | stageD
 
@@ -277,7 +277,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "BOUND $I1 $L1 =="
     | filter "type boolean $9 4 >= "
     | combined 0
     | stageD
@@ -307,7 +307,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 =="
+    indexJoin customer customer_idx1 "BOUND $I1 $L2 =="
     | filter "type boolean $13 4 >= "
     | combined 0
     | stageD
@@ -339,7 +339,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
     | filter "type boolean $9 4 >= "
     | combined 0
     | stageD
@@ -369,7 +369,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
+    indexJoin customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
     | filter "type boolean $13 4 >= "
     | combined 0
     | stageD
@@ -400,7 +400,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "BOUND $I1 $L1 =="
     | filter "type boolean $9 4 >= "
     | combined 0
     | stageD
@@ -430,7 +430,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 =="
+    indexJoin customer customer_idx1 "BOUND $I1 $L2 =="
     | filter "type boolean $13 4 >= "
     | combined 0
     | stageD
@@ -462,7 +462,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
     | filter "type boolean $9 4 >= "
     | combined 0
     | stageD
@@ -491,7 +491,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
+    indexJoin customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
     | filter "type boolean $13 4 >= "
     | combined 0
     | stageD
@@ -525,7 +525,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "BOUND $I1 $L1 =="
     | combined 0
     | stageD
 
@@ -567,7 +567,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 =="
+    indexJoin customer customer_idx1 "BOUND $I1 $L2 =="
     | combined 0
     | stageD
 
@@ -601,7 +601,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
     | combined 0
     | stageD
 
@@ -633,7 +633,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
+    indexJoin customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
     | combined 0
     | stageD
 
@@ -665,7 +665,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "BOUND $I1 $L1 =="
     | project "type integer $1 , type integer $2 , type integer $4"
     | combined 0
     | stageD
@@ -699,7 +699,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 =="
+    indexJoin customer customer_idx1 "BOUND $I1 $L2 =="
     | project "type integer $2 , type integer $3 , type integer $6"
     | combined 0
     | stageD
@@ -735,7 +735,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
     | project "type integer $1 , type integer $4 "
     | combined 0
     | stageD
@@ -767,7 +767,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
+    indexJoin customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
     | project "type integer $2 , type integer $3 , type integer $6"
     | combined 0
     | stageD
@@ -800,7 +800,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "BOUND $I1 $L1 =="
     | filter "type boolean $9 4 >= "
     | project "type integer $1 , type integer $9 , type integer $10 "
     | combined 0
@@ -843,7 +843,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
     | filter "type boolean $9 4 >= "
     | project "type integer $1 , type integer $9 , type integer $10 "
     | combined 0
@@ -875,7 +875,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "BOUND $I1 $L1 =="
     | filter "type boolean $3 4 >= "
     | project "type integer $1 , type integer $3 , type integer $4 "
     | combined 0
@@ -909,7 +909,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
     | filter "type boolean $3 4 >= "
     | project "type integer $1 , type integer $3 , type integer $4 "
     | combined 0
@@ -937,7 +937,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    indexJoin orders orders_idx1 "BOUND $I1 $L1 =="
     | filter "type boolean $3 4 >= "
     | project "type integer $1 , type integer $3 , type integer $4 "
     | combined 0

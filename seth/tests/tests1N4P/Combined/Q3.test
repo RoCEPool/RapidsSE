@@ -77,14 +77,14 @@ begin
     | next
 
   stage Gs_CUSTOMER on all partitions :
-    indexscan 2 Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    indexScan Customer IxC_CUSTKEY "LBOUND $I1 0 >="
     | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
     | project expr type INTEGER as _custkey C_CUSTKEY
     | combined 0
     | next
 
   stage Gj_ORDERS on all partitions :
-    indexjoin 2 Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
+    indexJoin Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
     | filter "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
     | project "type INTEGER as _orderkey J1_O_ORDERKEY ,
          type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
@@ -94,7 +94,7 @@ begin
     | next hashcast
 
   stage Gj_LINEITEM on all partitions :
-    indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
     | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
     | ordAgg 2 expr type INTEGER as _orderkey _orderkey ,
         type INTEGER as Revenue ) J1_L_EXTENDEDPRICE 1.0 J1_L_DISCOUNT - * sum ,
@@ -125,14 +125,14 @@ begin
     | next
 
   stage Gs_CUSTOMER on all partitions :
-    indexscan 2 Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    indexScan Customer IxC_CUSTKEY "LBOUND $I1 0 >="
     | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
     | project expr type INTEGER as _custkey C_CUSTKEY
     | combined 0
     | next
 
   stage Gj_ORDERS on all partitions :
-    indexjoin 2 Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
+    indexJoin Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
      | filter "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
      | project "type INTEGER as _orderkey J1_O_ORDERKEY ,
          type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
@@ -142,7 +142,7 @@ begin
     | next hashcast
 
   stage Gj_LINEITEM on all partitions :
-    indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
     | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
     | ordAgg 2 expr type INTEGER as _orderkey _orderkey ,
         type INTEGER as Revenue ) J1_L_EXTENDEDPRICE 1 J1_L_DISCOUNT - * sum ,

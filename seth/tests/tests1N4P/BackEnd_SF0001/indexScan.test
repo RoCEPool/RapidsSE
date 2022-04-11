@@ -19,7 +19,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx2 "LBOUND $I1 5 >"
+    indexScan orders orders_idx2 "LBOUND $I1 5 >"
     | combined 0
     | stageC
 
@@ -43,7 +43,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx2 "LBOUND $I1 5 >="
+    indexScan orders orders_idx2 "LBOUND $I1 5 >="
     | combined 0
     | stageC
 
@@ -67,7 +67,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx2 "LBOUND $I1 0 >"
+    indexScan orders orders_idx2 "LBOUND $I1 0 >"
     | combined 0
     | stageC
 
@@ -91,7 +91,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx2 "LBOUND $I1 0 >="
+    indexScan orders orders_idx2 "LBOUND $I1 0 >="
     | combined 0
     | stageC
 
@@ -115,7 +115,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx2 "UBOUND $I1 100 <"
+    indexScan orders orders_idx2 "UBOUND $I1 100 <"
     | combined 0
     | stageC
 
@@ -139,7 +139,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx2 "UBOUND $I1 100 <="
+    indexScan orders orders_idx2 "UBOUND $I1 100 <="
     | combined 0
     | stageC
 
@@ -163,7 +163,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx2 "LBOUND $I1 5 >= UBOUND 1500 <"
+    indexScan orders orders_idx2 "LBOUND $I1 5 >= UBOUND 1500 <"
     | combined 0
     | stageC
 
@@ -188,7 +188,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx2 "LBOUND $I1 5 >= UBOUND 1500 <="
+    indexScan orders orders_idx2 "LBOUND $I1 5 >= UBOUND 1500 <="
     | combined 0
     | stageC
 
@@ -212,7 +212,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx2 "LBOUND $I1 5 > UBOUND 1500 <="
+    indexScan orders orders_idx2 "LBOUND $I1 5 > UBOUND 1500 <="
     | combined 0
     | stageC
 
@@ -237,7 +237,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx2 "BOUND $I1 5 =="
+    indexScan orders orders_idx2 "BOUND $I1 5 =="
     | combined 0
     | stageC
 
@@ -262,7 +262,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx2 "BOUND $I1 1600 =="
+    indexScan orders orders_idx2 "BOUND $I1 1600 =="
     | combined 0
     | stageC
 
@@ -286,7 +286,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx2 "BOUND $I1 1500 =="
+    indexScan orders orders_idx2 "BOUND $I1 1500 =="
     | combined 0
     | stageC
 
@@ -312,7 +312,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx1 "LBOUND $I1 5 >"
+    indexScan orders orders_idx1 "LBOUND $I1 5 >"
     | combined 0
     | stageC
 
@@ -336,7 +336,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx1 "LBOUND $I1 5 >="
+    indexScan orders orders_idx1 "LBOUND $I1 5 >="
     | combined 0
     | stageC
 
@@ -360,7 +360,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx1 "LBOUND $I1 0 >"
+    indexScan orders orders_idx1 "LBOUND $I1 0 >"
     | combined 0
     | stageC
 
@@ -384,7 +384,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx1 "UBOUND $I1 100 <"
+    indexScan orders orders_idx1 "UBOUND $I1 100 <"
     | combined 0
     | stageC
 
@@ -408,7 +408,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx1 "UBOUND $I1 100 <="
+    indexScan orders orders_idx1 "UBOUND $I1 100 <="
     | combined 0
     | stageC
 
@@ -432,7 +432,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx1 "LBOUND $I1 5 >= UBOUND 1500 <"
+    indexScan orders orders_idx1 "LBOUND $I1 5 >= UBOUND 1500 <"
     | combined 0
     | stageC
 
@@ -456,7 +456,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx1 "LBOUND $I1 5 >= UBOUND 1500 <="
+    indexScan orders orders_idx1 "LBOUND $I1 5 >= UBOUND 1500 <="
     | combined 0
     | stageC
 
@@ -481,7 +481,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx1 "LBOUND $I1 5 > UBOUND 1500 <="
+    indexScan orders orders_idx1 "LBOUND $I1 5 > UBOUND 1500 <="
     | combined 0
     | stageC
 
@@ -506,7 +506,7 @@ begin
     | stageB
 
   stage stageB on all partitions :
-    indexScan 2 orders orders_idx1 "LBOUND $I1 5 > UBOUND 1500 <"
+    indexScan orders orders_idx1 "LBOUND $I1 5 > UBOUND 1500 <"
     | combined 0
     | stageC
 

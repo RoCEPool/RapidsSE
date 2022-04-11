@@ -294,7 +294,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 T2 T2_idx "BOUND $I1 $L1 == "
+    indexJoin T2 T2_idx "BOUND $I1 $L1 == "
     | filter "type boolean $6 500 >= "
     | project "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | combined 0
@@ -320,7 +320,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 == "
+    indexJoin T2 T2_idx "LEFTOUTER BOUND $I1 $L1 == "
     | filter "type boolean $6 500 >= "
     | project "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | combined 0
@@ -437,7 +437,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin T2 T2_idx "BOUND $I1 $L1 =="
     | combined 0
     | stageD
 
@@ -462,7 +462,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
+    indexJoin T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
     | combined 0
     | stageD
 
@@ -498,7 +498,7 @@ begin
     | stageC
 
   stage stageC on all partitions :
-    indexJoin 2 T2 T2_idx "BOUND $I1 $L1 =="
+    indexJoin T2 T2_idx "BOUND $I1 $L1 =="
     | combined 0
     | stageD
 

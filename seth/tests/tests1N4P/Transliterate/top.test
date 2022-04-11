@@ -38,7 +38,7 @@ begin
     | pulse once
     | next
   stage stageA on all partitions :
-    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | project " type integer as orderkey l_orderkey "
     | top 2 "TOP type integer orderkey" 2
     | combined 0

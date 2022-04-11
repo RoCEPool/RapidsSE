@@ -252,7 +252,7 @@ static Stz* aCK_op[]
     
   /* */ "(none)"_Stz,          // CK_AGGELIST
   /* */ "(none)"_Stz,          // CK_AGGLEVEL
-  /* */ "aggreg    2"_Stz,     // CK_AGGREG
+  /* */ "aggreg   "_Stz,     // CK_AGGREG
   /* */ "(none)"_Stz,          // CK_AS
 
   /* */ "(none)"_Stz,          // CK_BOARD
@@ -269,7 +269,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_EXPRBOOL
   /* */ "(none)"_Stz,          // CK_EXPRCALC
 
-  /* */ "filter    2"_Stz,     // CK_FILTER
+  /* */ "filter   "_Stz,       // CK_FILTER
   /* */ "(none)"_Stz,          // CK_FILTELIST
 
   /* */ "(none)"_Stz,          // CK_GBYELIST
@@ -279,9 +279,9 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_HAVING
   
   /* */ "(none)"_Stz,          // CK_INDEX
-  /* */ "indexJoin 2"_Stz,     // CK_INDEXJOIN
+  /* */ "indexJoin "_Stz,      // CK_INDEXJOIN
   /* */ "(none)"_Stz,          // CK_INDEXPRED
-  /* */ "indexScan 2"_Stz,     // CK_INDEXSCAN
+  /* */ "indexScan "_Stz,      // CK_INDEXSCAN
   
   /* */ "(none)"_Stz,          // CK_LBOUND
   /* */ "limit     2"_Stz,     // CK_LIMIT
@@ -298,7 +298,7 @@ static Stz* aCK_op[]
   /* */ "(none)"_Stz,          // CK_PREDAND
   /* */ "(none)"_Stz,          // CK_PREDCMP
   /* */ "(none)"_Stz,          // CK_PREDOR
-  /* */ "project   2"_Stz,     // CK_PROJECT
+  /* */ "project   "_Stz,      // CK_PROJECT
   /* */ "(none)"_Stz,          // CK_PROJELIST
 
   /* */ "(none)"_Stz,          // CK_RBOUND

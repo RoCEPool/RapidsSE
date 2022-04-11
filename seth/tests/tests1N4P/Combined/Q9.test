@@ -93,7 +93,7 @@ begin
     | next
 
   stage Gs_PART on all partitions :
-    indexscan 2 part IxP_PARTKEY "UBOUND $I1 12000  <"
+    indexScan part IxP_PARTKEY "UBOUND $I1 12000  <"
     //| filter  1 " type BOOLEAN P_PARTKEY 12000  <  "
     | project "
       type INTEGER as _partkey P_PARTKEY"
@@ -101,7 +101,7 @@ begin
     | Gj_PARTSUPP broadcast
 
   stage Gj_PARTSUPP on all partitions :
-    indexJoin 2 partsupp IxPS_PARTKEY "bound $I1 _partkey =="
+    indexJoin partsupp IxPS_PARTKEY "bound $I1 _partkey =="
     | project "
       type INTEGER as _partkey _partkey ,
       type INTEGER as ps_suppkey J1_PS_SUPPKEY ,
@@ -110,7 +110,7 @@ begin
     | next broadcast
 
   stage Gj_LINEITEM on all partitions :
-    indexJoin 2 lineitem IxL_PARTKEY "bound $I1 _partkey =="
+    indexJoin lineitem IxL_PARTKEY "bound $I1 _partkey =="
     | filter "type BOOLEAN J1_L_SUPPKEY ps_suppkey =="
     | project "
       type INTEGER as _orderkey J1_L_ORDERKEY ,
@@ -123,7 +123,7 @@ begin
     | next hashCast
 
   stage Gj_ORDERS on all partitions :
-    indexJoin 2 orders IxO_ORDERKEY "bound $I1 _orderkey =="
+    indexJoin orders IxO_ORDERKEY "bound $I1 _orderkey =="
     | project "
       type TIMESTAMP as l_orderdate J1_O_ORDERDATE ,
       type DECIMAL as l_quantity L_QUANTITY ,

@@ -39,7 +39,7 @@ begin
 
   stage stageB on all partitions :
     scan T1
-    | indexJoin 2 T2 T2_a "BOUND $I1 a =="
+    | indexJoin T2 T2_a "BOUND $I1 a =="
     | combined 0
     | stageD
 
@@ -123,7 +123,7 @@ begin
     | stageMarker0374
   stage stageMarker0374 on all partitions :
     scan lineitem
-    | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
                   type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
     | combined 0
@@ -146,7 +146,7 @@ begin
     | stageMarker0374
   stage stageMarker0374 on all partitions :
     scan lineitem
-    | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
                   type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
     | combined 0
@@ -173,7 +173,7 @@ begin
     | stageMarker0374
   stage stageMarker0374 on all partitions :
     scan lineitem
-    | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
                   type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
     | combined 0
@@ -194,7 +194,7 @@ begin
     | stageMarker0374
   stage stageMarker0374 on all partitions :
     scan lineitem
-    | indexjoin 2 Orders Orders_Orderkey "BOUND $I1 L_ORDERKEY =="
+    | indexJoin Orders Orders_Orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
     | filter " type BOOLEAN O_CUSTKEY 120 > "
     | combined 0
@@ -216,7 +216,7 @@ begin
   stage stageMarker0374 on all partitions :
     scan lineitem
     | filter " type BOOLEAN  L_ORDERKEY 1480  >  "
-    | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
     | filter " type BOOLEAN  O_CUSTKEY 140  >  "
     | combined 0
@@ -239,7 +239,7 @@ begin
   stage stageMarker0374 on all partitions :
     scan lineitem
     | filter " type BOOLEAN  L_ORDERKEY 1480  >  "
-    | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | indexJoin Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
     | project " type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
     | combined 0
     | stageLast
@@ -264,7 +264,7 @@ begin
     | combined 0
     | next broadcast
   stage stageB on all partitions :
-    indexJoin 2 lineitem lineitem_part "bound $I1 $L1 =="
+    indexJoin lineitem lineitem_part "bound $I1 $L1 =="
     | project " type integer as SUM_PARTKEY ) J1_L_PARTKEY sum"
     | combined 0
     | next
@@ -297,7 +297,7 @@ begin
     | combined 0
     | next broadcast
   stage stageB on all partitions :
-    indexJoin 2 lineitem lineitem_part "bound $I1 $L1 =="
+    indexJoin lineitem lineitem_part "bound $I1 $L1 =="
     | aggreg " groupBy type integer $1 aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  "
     | combined 0
     | next
@@ -333,7 +333,7 @@ begin
       | combined 0
       | next broadcast
   stage stageB on all partitions :
-    indexJoin 2 lineitem lineitem_part "bound $I1 $L1 =="
+    indexJoin lineitem lineitem_part "bound $I1 $L1 =="
     | aggreg " groupBy type integer P_PARTKEY
                  aggregates type INTEGER as P_PARTKEY $K1 ,
                  type DECIMAL as SUM_EXT )  J1_L_EXTENDEDPRICE sum  ,

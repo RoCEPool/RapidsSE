@@ -75,13 +75,13 @@ begin
     | pulse once
     | Q18_0_a
   stage Q18_0_a on all partitions :
-    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg 2 " ordGroupBy  type integer $1 aggregates type integer $1 , type decimal )  $5 sum  "
     | filter " type BOOLEAN  $2 170.00  >  "
     | combined 0
     | next broadcast
   stage stageQ18_1_b on all partitions :
-    indexJoin 2 orders IxO_ORDERKEY "bound $I1 $L1 =="
+    indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
     | combined 0
     | stageQ18_1_c broadcast
 
@@ -90,7 +90,7 @@ begin
     | combined 0
     | stageQ18_1_d
   stage stageQ18_1_d on all partitions :
-    indexJoin 2 customer IxC_CUSTKEY "bound $I1 $L1 =="
+    indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
     | combined 0
     | stageQ18_1_e
   stage stageQ18_1_e on all partitions :
