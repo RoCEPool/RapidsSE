@@ -117,14 +117,16 @@ namespace STORE
     static void vPrintJobNode(SkipNode* pNode, int i_Level);
   
     i8   nActiveOps(void);
+    void vActiveOpsDec(void);
+    void vActiveOpsInc(void);
+
   
-    bool bByPromptTag(void);
-  
+    void vCascadeReset(Session* pSession);
+    void vCascadeSet(Stz* szCascade);
     CmdId tCmdId(void);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
-    void vDecActiveOps(void);
     void vDotPrint(Stz* szText);
     void vDropLock(void);
 
@@ -133,9 +135,9 @@ namespace STORE
   
     void vGrabLock(void);
   
+    bool bHasByPromptTag(void);
     bool bHasTag(Stz* szTagNm);
   
-    void vIncActiveOps(void);
     bool bIsOriginator(void);
     bool bIsParticipant(void);
     bool bIsPipeline(void);
@@ -173,7 +175,6 @@ namespace STORE
   
     bool bReapable(void);
     void vReapable(bool bReapable);
-    void vResetForCascade(Session* pSession);
     Op*  pResponseOp(void);
     void vResponseOp(Op* pResponseOp);
 
@@ -182,11 +183,10 @@ namespace STORE
     void vSession(i8 i_Session);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
-    void vSetFromCascade(Stz* szCascade);
-    void vSpawnTask(void);
 
     Task* pTask(void);
     void vTask(Task* pTask);
+    void vTaskSpawn(void);
 
     i8   iTimerMsec(void);
     i8   iTimerStart(void);

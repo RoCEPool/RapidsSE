@@ -1726,7 +1726,7 @@ void Op::vSpawnTask(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Job* pJob = this->pJobOfOp();
-  pJob->vIncActiveOps();
+  pJob->vActiveOpsInc();
   
   if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD)) {
     

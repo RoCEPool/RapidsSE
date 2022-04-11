@@ -216,15 +216,75 @@ i8 Job::nActiveOps(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this job has a <byPrompt> tag                                      */
+/* decrement number of active op's                                            */
 /*----------------------------------------------------------------------------*/
-bool Job::bByPromptTag(void)
+void Job::vActiveOpsDec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+
+  -- m_noActiveOps;
+}
+
+/*----------------------------------------------------------------------------*/
+/* icrement number of active op's                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vActiveOpsInc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  ++ m_noActiveOps;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset job for cascade reuse                                                */
+/*----------------------------------------------------------------------------*/
+void Job::vCascadeReset(Session* pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  vDebugPoint();
   
-  bool bByPrompt = bHasTag(C_TAG_BYPROMPT);
+  // -- a -------------------
+  // m_sJobNm;
+  // m_oTimer.vStart();
+
+  // -- b -------------------
+  m_bWasReceived     = false;
+  m_iParticipantNodeId = C_UNKNOWN;
+
+  // -- c -------------------
+  m_eJobKind  = JK_NONE;
+  m_eJobList  = JL_NONE;
+  m_eJobPhase = JP_NONE;
+  m_eJobState = JS_ACTIVE;
   
-  return bByPrompt;
+  // m_oJobTags
+  // m_xResult ???
+  
+  // -- e -------------------
+  if (m_pSingularOp) {
+    delete m_pSingularOp;
+    m_pSingularOp  = nullptr;
+  }
+
+  m_pTask = nullptr;
+
+  RASSERT(pSession == this->pSession());
+  pSession->m_pOutput->vDrainBufferQueue();
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job to execute cascade command                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vCascadeSet(Stz* szCascade)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_oJobTags.vReplace(C_TAG_CMD,szCascade);
+
+  //m_oJobTags.vDumpSet(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -338,23 +398,15 @@ bool Job::bHasTag(Stz* szTagNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* decrement number of active op's                                            */
+/* test if this job has a <byPrompt> tag                                      */
 /*----------------------------------------------------------------------------*/
-void Job::vDecActiveOps(void)
+bool Job::bHasByPromptTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-
-  -- m_noActiveOps;
-}
-
-/*----------------------------------------------------------------------------*/
-/* icrement number of active op's                                             */
-/*----------------------------------------------------------------------------*/
-void Job::vIncActiveOps(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  ++ m_noActiveOps;
+  
+  bool bByPrompt = bHasTag(C_TAG_BYPROMPT);
+  
+  return bByPrompt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -834,44 +886,6 @@ void Job::vReapable(bool bReapable)
   m_bReapable = bReapable;
 }
 
-/*----------------------------------------------------------------------------*/
-/* reset job for cascade reuse                                                */
-/*----------------------------------------------------------------------------*/
-void Job::vResetForCascade(Session* pSession)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  vDebugPoint();
-  
-  // -- a -------------------
-  // m_sJobNm;
-  // m_oTimer.vStart();
-
-  // -- b -------------------
-  m_bWasReceived     = false;
-  m_iParticipantNodeId = C_UNKNOWN;
-
-  // -- c -------------------
-  m_eJobKind  = JK_NONE;
-  m_eJobList  = JL_NONE;
-  m_eJobPhase = JP_NONE;
-  m_eJobState = JS_ACTIVE;
-  
-  // m_oJobTags
-  // m_xResult ???
-  
-  // -- e -------------------
-  if (m_pSingularOp) {
-    delete m_pSingularOp;
-    m_pSingularOp  = nullptr;
-  }
-
-  m_pTask = nullptr;
-
-  pSession->m_pOutput->vDrainBufferQueue();
-
-  vDebugPoint();
-}
 
 /*----------------------------------------------------------------------------*/
 /* get pResponseOp                                                             */
@@ -928,19 +942,6 @@ void Job::vSession(i8 i_Session)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set job to execute cascade command                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vSetFromCascade(Stz* szCascade)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_oJobTags.vReplace(C_TAG_CMD,szCascade);
-
-  //m_oJobTags.vDumpSet(true);
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* get the singular operator                                                  */
 /*----------------------------------------------------------------------------*/
 Op* Job::pSingularOp(void)
@@ -958,27 +959,6 @@ void Job::vSingularOp(Op* pSingularOp)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pSingularOp = pSingularOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create and spawn task for job                                              */
-/*----------------------------------------------------------------------------*/
-void Job::vSpawnTask(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Stz* szEntry = "job::entryPoint"_Stz;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pTask = new Task(szJobNm(),this);
-    
-  //vSetTaskInxPtr(pTask,szEntry);
-  m_pTask->vSetInxPtr(szEntry);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vTimerStart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1002,6 +982,27 @@ void Job::vTask(Task* pTask)
     vDebugPoint();
   
   m_pTask = pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create and spawn task for job                                              */
+/*----------------------------------------------------------------------------*/
+void Job::vTaskSpawn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Stz* szEntry = "job::entryPoint"_Stz;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pTask = new Task(szJobNm(),this);
+    
+  //vSetTaskInxPtr(pTask,szEntry);
+  m_pTask->vSetInxPtr(szEntry);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vTimerStart();
 }
 
 /*----------------------------------------------------------------------------*/

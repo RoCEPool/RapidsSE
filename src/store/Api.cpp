@@ -167,9 +167,9 @@ void Api::vExecuteJob(Session* pSession)
     
     //AM::pHeaps()->vSetTraceFree(true,MY::pTask());
     
-    pJob->vResetForCascade(pSession);
+    pJob->vCascadeReset(pSession);
     
-    pJob->vSetFromCascade(pSession->szCascade());
+    pJob->vCascadeSet(pSession->szCascade());
     
     pSession->vPopCascade();
 
@@ -431,7 +431,7 @@ void Api::vSubmitJob(Session* pSession)
   
   RASSERT(! pJob->pTask());
   
-  pJob->vSpawnTask();
+  pJob->vTaskSpawn();
   
   pJob->vTimerStart();
   
@@ -908,7 +908,7 @@ void Api::vSpawnTask_job(Job* pJob)
   _static_
   
   
-  pJob->vSpawnTask();
+  pJob->vTaskSpawn();
   Scheduler::vTaskApi_AddOp(pJob->pTask());
 }
 
@@ -947,7 +947,7 @@ void Api::vSpawnTask_demonJob(Job* pJob)
   
   RASSERT(! pJob->pTask());
 
-  pJob->vSpawnTask();
+  pJob->vTaskSpawn();
   Scheduler::vTaskApi_AddService(pJob->pTask());
 }
 
@@ -958,7 +958,7 @@ void Api::vSpawnTask_receivedJob(Job* pJob)
 {
   _static_
   
-  pJob->vSpawnTask();
+  pJob->vTaskSpawn();
   Scheduler::vTaskApi_AddReceived(pJob->pTask());
 }
 
@@ -988,7 +988,7 @@ bool Api::bSpawnTask_session(Job* pJob)
     return false;
   }
   
-  pJob->vSpawnTask();
+  pJob->vTaskSpawn();
 
   pJob->vTimerStart();
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
