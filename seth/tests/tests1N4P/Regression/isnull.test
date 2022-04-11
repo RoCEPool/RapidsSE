@@ -15,7 +15,7 @@ ordered rows:
 // Source file: ../queries/isnull/risnull4.sql
 // Result file: ../queries/isnull/results/isnull4.res
 /*
-TODO: ENABLE WHEN ABS and DESC
+TODO: ENABLE WHEN concat and DESC
 select colf9, concat(colb9,' - ',ucolvc) from table9 where colf9 is null order by concat(colb9,' - ',ucolvc), pcol9 desc;
 ordered rows:
   (NULL, '- mmm')

@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: indexScan_ComCleaning \handler
+: indexScan_Cleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
-: indexScan_ComStartMarker \handler
+: indexScan_StartMarker \handler
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
@@ -68,15 +68,11 @@
 
   _lu_initialise_
 
-  // get whether compiled or not
-  <compiled> >int to Counter0[]
-
   op__topology
 
-  Counter0[] 2 == assert
   // handle combined operator
-  find: indexScan_ComCleaning    ZK_M_CLEANING  [op].handler!
-  find: indexScan_ComStartMarker ZK_M_START     [op].handler!
+  find: indexScan_Cleaning    ZK_M_CLEANING  [op].handler!
+  find: indexScan_StartMarker ZK_M_START     [op].handler!
 
   op__loop
 
@@ -90,7 +86,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: indexScan :: indexScan <compiled> <tableNm> <indexNm> <expr> ;
+cmdSyntax: indexScan :: indexScan <tableNm> <indexNm> <expr> ;
 
 : indexScan_cmdTags _cmdTags tagCopy: op_tags
   tags{

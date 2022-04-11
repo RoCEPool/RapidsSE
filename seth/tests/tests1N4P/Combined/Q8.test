@@ -152,11 +152,11 @@ begin
 
   // ∀ ORDERS /O_CUSTKEY/ π _custkey
   stage Gj_ORDERS on all partitions :
-    indexJoin 2 Orders IxO_CUSTKEY expr bound $I1 _custkey ==
+    indexJoin Orders IxO_CUSTKEY expr bound $I1 _custkey ==
     | project expr
         type INTEGER as _orderkey   J1_O_ORDERKEY ,
         type INTEGER as C_NATIONKEY C_NATIONKEY
-    | hash 2 expr type INTEGER _orderkey
+    | hash expr type INTEGER _orderkey
     | combined 0
     | next hashcast
 
@@ -164,7 +164,7 @@ begin
 
   // ∀ LINEITEM /L_ORDERKEY/ π _orderkey
   stage Gs_LINEITEM on all partitions :
-    indexJoin 2 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
+    indexJoin Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
     | filter
         "J1_L_SHIPDATE timestamp '1995-01-01 00:00:00' >=
          J1_L_SHIPDATE timestamp '1996-12-31 00:00:00' <
@@ -172,7 +172,7 @@ begin
     | project expr
         type INTEGER as _suppkey    J1_L_SUPPKEY ,
         type INTEGER as C_NATIONKEY C_NATIONKEY
-    | hash 2 expr type INTEGER _suppkey
+    | hash expr type INTEGER _suppkey
     | combined 0
     | next hashcast
 
@@ -180,7 +180,7 @@ begin
 
   // ⋈ SUPPLIER /C_SUPPKEY/
   stage Gj_SUPPLIER on all partitions :
-    indexJoin 2 Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
+    indexJoin Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
     | filter
         "C_NATIONKEY 6 == J1_S_NATIONKEY 7 == and
          C_NATIONKEY 7 == J1_S_NATIONKEY 6 == and or"

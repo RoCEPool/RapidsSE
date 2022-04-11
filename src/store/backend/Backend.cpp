@@ -605,10 +605,10 @@ void Backend::vAppendLimitOp(Backend* pBackend, QueryNode* pNode)
 
   if (iOffset != C_UNKNOWN) {
     //sPipeline->vCatSprint("offset %lld"_Stz, iOffset);
-    sLimit.vCatSprint("limit 2 %lld offset %lld"_Stz, LimitOp::iLimit(pNode), iOffset);
+    sLimit.vCatSprint("limit %lld offset %lld"_Stz, LimitOp::iLimit(pNode), iOffset);
   }
   else {
-    sLimit.vCatSprint("limit 2 %lld"_Stz, LimitOp::iLimit(pNode));
+    sLimit.vCatSprint("limit %lld"_Stz, LimitOp::iLimit(pNode));
   }
   pBackend->m_bCombinedOp = true;
 
@@ -1850,9 +1850,8 @@ Stz* Backend::szGetRouting(Backend* pBackend, QueryNode* pStageMarker) {
     RASSERT(pOrdHashExprList);
 
     pBackend->m_bCombinedOp = true;
-    //pBackend->vAppendNextOp("hash 2"_Stz);
     pBackend->m_sPipeline->vCatSprint(
-        "\n    %s| hash 2 \""
+        "\n    %s| hash \""
         ""_Stz,
         pBackend->m_sIndent.azChar()
     );

@@ -26,7 +26,7 @@
       start | pulse once | stageB
 
     stage stageB on all partitions :
-      indexScan 2 $table $index $etc
+      indexScan $table $index $etc
       | combined 0
       | stageC
 

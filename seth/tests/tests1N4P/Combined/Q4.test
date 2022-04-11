@@ -61,7 +61,7 @@ begin
                               O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
     | project expr type INTEGER as _orderkey O_ORDERKEY ,
                      type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
-    | keyExists 2 lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+    | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                          "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | combined 0
     | next
@@ -139,12 +139,12 @@ begin
                                  O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
     | project expr type INTEGER as _orderkey O_ORDERKEY ,
                      type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
-    | hash 2 expr type INTEGER _orderkey
+    | hash expr type INTEGER _orderkey
     | combined 0
     | next hashcast
 
    stage Gs_LINEITEM on all partitions :
-     keyExists 2 lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+     keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                         "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | aggreg expr groupby type VARCHAR O_ORDERPRIORITY
                     aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
