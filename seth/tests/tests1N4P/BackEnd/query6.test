@@ -15,12 +15,12 @@ begin
     scan lineitem
     | filter "type boolean $11 DATE '1994-01-01' >=  $11 DATE '1995-01-01' < and "
     | filter "type boolean $7 0.06 0.01 - >= <> $7 0.06 0.01 +  <= <>"
-    | aggreg 2 " type decimal as revenue_p ) $6 $7 * sum "
+    | aggreg " type decimal as revenue_p ) $6 $7 * sum "
     | combined 0
     | stageC
 
   stage stageC on origin :
-    aggreg 2 " type decimal as revenue $1 "
+    aggreg " type decimal as revenue $1 "
     | combined 0
     | output | sink | stageA
 end;

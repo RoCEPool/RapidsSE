@@ -67,7 +67,7 @@ begin
     | next
 
   stage G_CNT_P on all partitions :
-    aggreg 2 expr groupby type VARCHAR O_ORDERPRIORITY
+    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
                   aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
                   type INTEGER as ORDER_COUNT ) countAll
 
@@ -75,7 +75,7 @@ begin
     | next
 
   stage G_CNT_N on all nodes :
-    aggreg 2 expr groupby type VARCHAR O_ORDERPRIORITY
+    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
                   aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
                   type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
 
@@ -83,7 +83,7 @@ begin
     | next
 
   stage G_CNT_O on origin :
-    aggreg 2 expr groupby type VARCHAR O_ORDERPRIORITY
+    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
                   aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
                   type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
 
@@ -146,7 +146,7 @@ begin
    stage Gs_LINEITEM on all partitions :
      keyExists 2 lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
                                         "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-    | aggreg 2 expr groupby type VARCHAR O_ORDERPRIORITY
+    | aggreg expr groupby type VARCHAR O_ORDERPRIORITY
                     aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
                     type INTEGER as ORDER_COUNT ) countAll
 
@@ -154,7 +154,7 @@ begin
     | next
 
   stage G_CNT_N on all nodes :
-    aggreg 2 expr groupby type VARCHAR O_ORDERPRIORITY
+    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
                   aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
                   type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
 
@@ -162,7 +162,7 @@ begin
     | next
 
   stage G_CNT_O on origin :
-    aggreg 2 expr groupby type VARCHAR O_ORDERPRIORITY
+    aggreg expr groupby type VARCHAR O_ORDERPRIORITY
                   aggregates type VARCHAR as O_ORDERPRIORITY $K1 ,
                   type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
 
