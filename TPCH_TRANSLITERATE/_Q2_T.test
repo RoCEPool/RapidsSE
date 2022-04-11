@@ -23,7 +23,6 @@
       and n_regionkey = r_regionkey
       and r_name = 'EUROPE' )
        order by s_acctbal desc, n_name, s_name, p_partkey;
-*/
 
 //--------------------------------------------------------------------------------
 //  Transliterate Query
@@ -51,7 +50,94 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
 //------------------------------------------------------------------------------
 // Pipeline Generated
 //------------------------------------------------------------------------------
+pipeline unamed
+begin
+  pipeline __subquery0003
+    params "p_partkey "
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker283631
+    stage stageMarker283631 on all partitions :
+      scan rapidsse public partsupp
+      | stageMarker283634 broadcast
+    stage stageMarker283634 on all partitions :
+      scan rapidsse public supplier
+      | abstractJoin 2 " 1  "
+      | stageMarker283637 broadcast
+    stage stageMarker283637 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin 2 " 1  "
+      | stageMarker283640 broadcast
+    stage stageMarker283640 on all partitions :
+      scan rapidsse public region
+      | abstractJoin 2 " 1  "
+      | stageMarker283643
+    stage stageMarker283643 on all partitions :
+      filter " type BOOLEAN  $1 ==  $6 $2 ==  and  $9 $13 ==  and  $15 $17 ==  and  $18 ''EUROPE''  ==  and  "
+      | project " type DECIMAL )  $4 min  "
+      | combined 0
+      | stageMarker283646
+    stage stageMarker283646 on all nodes :
+      project " type DECIMAL )  $1 min  "
+      | combined 0
+      | stageMarker283649
+    stage stageMarker283649 on origin :
+      project " type DECIMAL )  $1 min  "
+      | combined 0
+      | stageMarker283652
+    stage stageMarker283652 on origin :
 
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker283655
+  stage stageMarker283655 on all partitions :
+    scan rapidsse public part
+    | stageMarker283658 broadcast
+  stage stageMarker283658 on all partitions :
+    scan rapidsse public supplier
+    | abstractJoin 2 " 1  "
+    | stageMarker283661 broadcast
+  stage stageMarker283661 on all partitions :
+    scan rapidsse public partsupp
+    | abstractJoin 2 " 1  "
+    | stageMarker283664 broadcast
+  stage stageMarker283664 on all partitions :
+    scan rapidsse public nation
+    | abstractJoin 2 " 1  "
+    | stageMarker283667 broadcast
+  stage stageMarker283667 on all partitions :
+    scan rapidsse public region
+    | abstractJoin 2 " 1  "
+    | stageMarker283670
+  stage stageMarker283670 on all partitions :
+    filter " type BOOLEAN  $1 $17 ==  $10 $18 ==  and  $6 15  <  and  }  $5 ''%BRASS''  6 matchTrailing  and  $13 $22 ==  and  $24 $26 ==  and  $27 ''EUROPE''  ==  and  $20 $1 __subquery0003  ==  and  "
+    | project " type DECIMAL as s_acctbal $15 , type VARCHAR as s_name $11 , type VARCHAR as n_name $23 , type INTEGER as p_partkey $1 , type VARCHAR as p_mfgr $3 , type VARCHAR as s_address $12 , type VARCHAR as s_phone $14 , type VARCHAR as s_comment $16 "
+    | sort 2 " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | combined 0
+    | stageMarker283673
+  stage stageMarker283673 on all nodes :
+    sort 2 " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | combined 0
+    | stageMarker283676
+  stage stageMarker283676 on origin :
+    sort 2 " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
 /*============================================================================*/
 /* end                                                                        */
