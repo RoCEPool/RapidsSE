@@ -33,14 +33,11 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
-  
-  // external
-  static bool bSpawnTask_session(Job* pJob);
-  
+    
   // internal
   
-  static void vCallBootSystem(void);
-  static void vCallStartSystem(void);
+  static void vCallBootSystemJob(void);
+  static void vCallStartSystemJob(void);
 
   static void vCallTaskImmediate(Task* pImmediateTask);
 

@@ -98,10 +98,6 @@ void Api::vExecuteJob(Session* pSession)
       vTrace("Cannot find pid %lld\n"_Stz, iPid);
       return;
     }
-
-    //bool bSpawned = Api::bSpawnTask_session(pJob);
-    //UNUSED(bSpawned);
-
     
     vSubmitJob(pSession);
 
@@ -109,10 +105,6 @@ void Api::vExecuteJob(Session* pSession)
       Api::vMutexUnlock(pSession,pJob);
     }
     else {
-      //pSession->m_oMutex.vObserve(true);
-//      Api::vMutexWaitCond(pSession,pJob);
-//      pJob->vResponseTimerUpdate();
-//      Api::vMutexUnlock(pSession,pJob);
       vWaitJob(pSession);
     }
     
@@ -741,24 +733,21 @@ void Api::vIncStatistics(eAC eApiCall)
 /*----------------------------------------------------------------------------*/
 /* call the system boot job to compile the main dictionary                    */
 /*----------------------------------------------------------------------------*/
-void Api::vCallBootSystem(void)
+void Api::vCallBootSystemJob(void)
 {
   _static_
   
   CmdId tCmdId;
   tCmdId.vNextCmdId();
   
-  Job* pJob = new Job("bootSystem"_Stz,
-                      AM::SESSION::iInternalSession(),
-                      tCmdId
-                      );
+  Job* pBootJob = new Job("bootSystem"_Stz,
+                          AM::SESSION::iInternalSession(),
+                          tCmdId
+                          );
   
-  Stz* szJobNm = pJob->szJobNm();
-  Task* pBootTask = new Task(szJobNm,pJob);
-  pJob->vTask(pBootTask);
-
-//  pJob->vTaskCreate();
-//  Task* pBootTask = pJob->pTask();
+  Stz* szJobNm = pBootJob->szJobNm();
+  Task* pBootTask = new Task(szJobNm,pBootJob);
+  pBootJob->vTask(pBootTask);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
      
@@ -772,7 +761,7 @@ void Api::vCallBootSystem(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  TagSet* pJobTags = pJob->pJobTags();
+  TagSet* pJobTags = pBootJob->pJobTags();
   //pJobTags->vDumpSet();
 
   // (no cmd to parse)
@@ -781,7 +770,7 @@ void Api::vCallBootSystem(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->vResponseTimerStart();
+  pBootJob->vResponseTimerStart();
   vCallTaskImmediate(pBootTask);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -798,9 +787,9 @@ void Api::vCallBootSystem(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* call the system start job                                                  */
+/* call system start job to define procedures & internal tables, spawn demons */
 /*----------------------------------------------------------------------------*/
-void Api::vCallStartSystem(void)
+void Api::vCallStartSystemJob(void)
 {
   _static_
 
@@ -812,23 +801,22 @@ void Api::vCallStartSystem(void)
   CmdId tCmdId;
   tCmdId.vNextCmdId();
   
-
-  Job* pJob = new Job("StartSys"_Stz,
-                      AM::SESSION::iInternalSession(),
-                      tCmdId
-                      );
+  Job* pStartJob = new Job("startSystem"_Stz,
+                           AM::SESSION::iInternalSession(),
+                           tCmdId
+                           );
   
-  Stz* szJobNm = pJob->szJobNm();
-  Task* pStartTask = new Task(szJobNm,pJob);
+  Stz* szJobNm = pStartJob->szJobNm();
+  Task* pStartTask = new Task(szJobNm,pStartJob);
   pStartTask->vIsStart(true);
 
-  pJob->vTask(pStartTask);
+  pStartJob->vTask(pStartTask);
   
   pStartTask->vSetInxPtr("startSystem::startSystem"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  TagSet* pJobTags = pJob->pJobTags();
+  TagSet* pJobTags = pStartJob->pJobTags();
   //pJobTags->vDumpSet();
 
   // (no cmd to parse)
@@ -837,7 +825,7 @@ void Api::vCallStartSystem(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->vResponseTimerStart();
+  pStartJob->vResponseTimerStart();
   vCallTaskImmediate(pStartTask);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -915,56 +903,7 @@ void Api::vSpawnTask_receivedJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-bool Api::bSpawnTask_session(Job* pJob)
-{
-  _static_
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // before appending request for se, ensure that se is running
-
-//  i8 iPid = AM::PROCESS::iSePid();
-//  if (!Process::bTestPid(iPid)) {
-//    // SE is not running anymore!
-//    vTrace("Cannot find pid %lld\n"_Stz, iPid);
-//    return false;
-//  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Session* pSession = pJob->pSession();
-  
-//  Api::vMutexLock(pSession,pJob);
-//
-//  RASSERT(JS_LOCKED == pJob->eJobState());
-//
-//
-//  RASSERT(! pJob->pTask());
-//
-//
-//  pJob->vTaskCreate();
-//
-//  pJob->vResponseTimerStart();
-//  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
-  
-  vSubmitJob(pSession);
-
-  if (pJob->bHasTag(C_TAG_NOWAIT)) {
-    Api::vMutexUnlock(pSession,pJob);
-  }
-  else {
-    //pSession->m_oMutex.vObserve(true);
-    Api::vMutexWaitCond(pSession,pJob);
-    pJob->vResponseTimerUpdate();
-    Api::vMutexUnlock(pSession,pJob);
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
+/* schedule next phase of participant                                         */
 /*----------------------------------------------------------------------------*/
 void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
