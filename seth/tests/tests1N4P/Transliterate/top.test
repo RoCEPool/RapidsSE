@@ -39,7 +39,7 @@ begin
     | next
   stage stageA on all partitions :
     indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    | project 2 " type integer as orderkey l_orderkey "
+    | project " type integer as orderkey l_orderkey "
     | top 2 "TOP type integer orderkey" 2
     | combined 0
     | next

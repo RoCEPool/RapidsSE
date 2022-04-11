@@ -58,7 +58,7 @@ begin
   stage stageQ17_0 on all partitions :
     scan rapidsse public part
     | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
-    | project 2 " type INTEGER as P_PARTKEY $1 "
+    | project " type INTEGER as P_PARTKEY $1 "
     | combined 0
     | next broadcast
 
@@ -79,24 +79,24 @@ begin
     | next
 
   stage stageQ17_1_d on origin :
-    project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.20 $2 $3  casttype DECIMAL cast / *"
+    project " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.20 $2 $3  casttype DECIMAL cast / *"
     | combined 0
     | next broadcast
 
   stage stageQ17_2_a on all partitions :
     indexJoin 2 lineitem IxL_PARTKEY "bound $I1 $L1 =="
     | filter 2 " type BOOLEAN  $7 $2 <  "
-    | project 2 " type DECIMAL as avg_yearly ) $8 sum  "
+    | project " type DECIMAL as avg_yearly ) $8 sum  "
     | combined 0
     | next
 
   stage stageQ17_2_b on all nodes :
-    project 2 " type DECIMAL as avg_yearly ) $1 sum  "
+    project " type DECIMAL as avg_yearly ) $1 sum  "
     | combined 0
     | next
 
    stage stageQ17_2_c on origin :
-    project 2 " type DECIMAL as avg_yearly ) $1 sum 7.0 / "
+    project " type DECIMAL as avg_yearly ) $1 sum 7.0 / "
     | combined 0
     | stageLast
 

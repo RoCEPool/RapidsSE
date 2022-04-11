@@ -86,7 +86,7 @@ begin
     | stageQ18_1_c broadcast
 
   stage stageQ18_1_c on all partitions :
-    project 2 "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
+    project "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
     | combined 0
     | stageQ18_1_d
   stage stageQ18_1_d on all partitions :

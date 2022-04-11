@@ -15,13 +15,13 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan lineitem
-    | project  2 "type integer as orderkey $1"
+    | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  2 "type integer as orderkey $1"
+    | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
@@ -65,13 +65,13 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan lineitem
-    | project  2 "type integer as orderkey $1"
+    | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  2 "type integer as orderkey $1"
+    | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
@@ -105,13 +105,13 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan lineitem
-    | project  2 "type integer as orderkey $1"
+    | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  2 "type integer as orderkey $1"
+    | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
@@ -136,13 +136,13 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan lineitem
-    | project  2 "type integer as orderkey $1"
+    | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  2 "type integer as orderkey $1"
+    | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
@@ -180,13 +180,13 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan lineitem
-    | project  2 "type integer as orderkey $1"
+    | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  2 "type integer as orderkey $1"
+    | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
@@ -219,13 +219,13 @@ pipeline unionAll
 
   stage stageB on all partitions :
     scan lineitem
-    | project  2 "type integer as orderkey $1"
+    | project "type integer as orderkey $1"
     | combined 0
     | stageD
 
   stage stageC on all partitions :
     scan orders
-    | project  2 "type integer as orderkey $1"
+    | project "type integer as orderkey $1"
     | combined 0
     | stageD
 

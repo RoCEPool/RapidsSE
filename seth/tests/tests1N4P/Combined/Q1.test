@@ -41,7 +41,7 @@ begin
   stage Gs_LINEITEM on all partitions :
     scan lineitem
     | filter 2 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
-    | project 2 " type TIMESTAMP as L_SHIPDATE  L_SHIPDATE "
+    | project " type TIMESTAMP as L_SHIPDATE  L_SHIPDATE "
     | combined 0
     | next
   stage last on origin :
@@ -239,7 +239,7 @@ begin
       | next
 
    stage G_AGG_O_2 on origin :
-     project 2 "
+     project "
       type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL as SUM_QTY SUM_QTY ,

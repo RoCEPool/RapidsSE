@@ -100,7 +100,7 @@ pipeline unnamed
    stage stageA on all partitions :
      scan rapidsse public LineItem
      | filter 2 " type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <=  "
-     | project 2 " type INTEGER as orderkey L_ORDERKEY ,
+     | project " type INTEGER as orderkey L_ORDERKEY ,
                    type DATE as shipdate L_SHIPDATE"
      | combined 0
      | stageLast
@@ -121,7 +121,7 @@ pipeline unnamed
      | stageA
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | project 2 " type INTEGER as orderkey L_ORDERKEY ,
+     | project " type INTEGER as orderkey L_ORDERKEY ,
                    type DATE as L_SHIPDATE L_SHIPDATE"
      | filter 2 " type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <=  "
      | combined 0
@@ -144,7 +144,7 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | project 2 " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
+     | project " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
                    type DATE as shipdate L_SHIPDATE"
 
      | combined 0
@@ -165,15 +165,15 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | project 2 " type INTEGER as sum_orderkey ) L_ORDERKEY sum "
+     | project " type INTEGER as sum_orderkey ) L_ORDERKEY sum "
      | combined 0
      | next
    stage stageB on all nodes :
-     project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum "
+     project " type INTEGER as sum_orderkey ) sum_orderkey sum "
      | combined 0
      | next
    stage stageC on origin :
-     project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum "
+     project " type INTEGER as sum_orderkey ) sum_orderkey sum "
      | combined 0
      | next
    stage stageLast on origin :
@@ -193,17 +193,17 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | project 2 " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
+     | project " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
                    type INTEGER as cnt_orderkey ) L_ORDERKEY count"
      | combined 0
      | next
    stage stageB on all nodes :
-     project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum ,
+     project " type INTEGER as sum_orderkey ) sum_orderkey sum ,
                    type INTEGER as cnt_orderkey ) cnt_orderkey sum"
      | combined 0
      | next
    stage stageC on origin :
-     project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum ,
+     project " type INTEGER as sum_orderkey ) sum_orderkey sum ,
                    type INTEGER as cnt_orderkey ) cnt_orderkey sum"
      | combined 0
      | next
@@ -224,19 +224,19 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan rapidsse public LineItem
-     | project 2 " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
+     | project " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
                    type INTEGER as min_orderkey ) L_ORDERKEY min ,
                    type INTEGER as max_orderkey ) L_ORDERKEY max"
      | combined 0
      | next
    stage stageB on all nodes :
-      project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum ,
+      project " type INTEGER as sum_orderkey ) sum_orderkey sum ,
                     type INTEGER as min_orderkey ) min_orderkey min ,
                     type INTEGER as max_orderkey ) max_orderkey max"
       | combined 0
       | next
    stage stageC on origin :
-       project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum ,
+       project " type INTEGER as sum_orderkey ) sum_orderkey sum ,
                      type INTEGER as min_orderkey ) min_orderkey min ,
                      type INTEGER as max_orderkey ) max_orderkey max"
        | combined 0

@@ -36,15 +36,15 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan lineitem
-     | project 2 " type INTEGER as CNT ) countall"
+     | project " type INTEGER as CNT ) countall"
      | combined 0
      | next
    stage stageB on all nodes :
-    project 2 " type INTEGER as CNT ) CNT sum"
+    project " type INTEGER as CNT ) CNT sum"
     | combined 0
     | next
    stage stageC on origin :
-    project 2 " type INTEGER as CNT ) CNT sum"
+    project " type INTEGER as CNT ) CNT sum"
     | combined 0
     | next
   stage stageLast on origin :
@@ -122,7 +122,7 @@ pipeline unnamed
    stage stageA on all partitions :
      scan lineitem
      | filter 2 " type boolean l_orderkey 3 =="
-     | project 2 " type INTEGER as COL0 L_PARTKEY 2  -  4  * "
+     | project " type INTEGER as COL0 L_PARTKEY 2  -  4  * "
      | combined 0
      | next
    stage stageLast on origin :

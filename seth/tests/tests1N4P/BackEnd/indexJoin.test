@@ -296,7 +296,7 @@ begin
   stage stageC on all partitions :
     indexJoin 2 T2 T2_idx "BOUND $I1 $L1 == "
     | filter 2 "type boolean $6 500 >= "
-    | project 2 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
+    | project "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | combined 0
     | stageD
 
@@ -322,7 +322,7 @@ begin
   stage stageC on all partitions :
     indexJoin 2 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 == "
     | filter 2 "type boolean $6 500 >= "
-    | project 2 "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
+    | project "type integer $1 , type integer $2 , type integer $3 , type varchar $4 , type integer $5 , type varchar $8 "
     | combined 0
     | stageD
 
@@ -344,14 +344,14 @@ begin
   stage stageB on all partitions :
     scan T1
     | filter 2 "type boolean $2 500 >= "
-    | project 2 "type integer $1 , type varchar $4 "
+    | project "type integer $1 , type varchar $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin 0 T2 T2_idx "BOUND $I1 $L1 =="
     | filter 2 "type boolean $4 500 >= "
-    | project 2 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
+    | project "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | combined 0
     | stageD
 
@@ -371,14 +371,14 @@ begin
   stage stageB on all partitions :
     scan T1
     | filter 2 "type boolean $2 500 >= "
-    | project 2 "type integer $1 , type varchar $4 "
+    | project "type integer $1 , type varchar $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin 0 T2 T2_idx "LEFTOUTER BOUND $I1 $L1 =="
     | filter 2 "type boolean $4 500 >= "
-    | project 2 "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
+    | project "type integer $1 , type varchar $2 , type integer $3 , type varchar $6 "
     | combined 0
     | stageD
 

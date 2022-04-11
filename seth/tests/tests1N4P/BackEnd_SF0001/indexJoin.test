@@ -520,7 +520,7 @@ begin
   stage stageB on all partitions :
     scan customer
     | filter 2 "type boolean $4 4 >= "
-    | project 2 "type integer $1 , type integer $4 "
+    | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
@@ -562,7 +562,7 @@ begin
   stage stageB on all partitions :
     scan orders
     | filter 2 "type boolean $1 4 >= "
-    | project 2 "type integer $1 , type integer $2 "
+    | project "type integer $1 , type integer $2 "
     | combined 0
     | stageC
 
@@ -596,7 +596,7 @@ begin
   stage stageB on all partitions :
     scan customer
     | filter 2 "type boolean $4 4 >= "
-    | project 2 "type integer $1 , type integer $4 "
+    | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
@@ -628,7 +628,7 @@ begin
   stage stageB on all partitions :
     scan orders
     | filter 2 "type boolean $1 4 >= "
-    | project 2 "type integer $1 , type integer $2 "
+    | project "type integer $1 , type integer $2 "
     | combined 0
     | stageC
 
@@ -660,13 +660,13 @@ begin
   stage stageB on all partitions :
     scan customer
     | filter 2 "type boolean $4 4 >= "
-    | project 2 "type integer $1 , type integer $4 "
+    | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
-    | project 2 "type integer $1 , type integer $2 , type integer $4"
+    | project "type integer $1 , type integer $2 , type integer $4"
     | combined 0
     | stageD
 
@@ -694,13 +694,13 @@ begin
   stage stageB on all partitions :
     scan orders
     | filter 2 "type boolean $1 4 >= "
-    | project 2 "type integer $1 , type integer $2 "
+    | project "type integer $1 , type integer $2 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin 2 customer customer_idx1 "BOUND $I1 $L2 =="
-    | project 2 "type integer $2 , type integer $3 , type integer $6"
+    | project "type integer $2 , type integer $3 , type integer $6"
     | combined 0
     | stageD
 
@@ -730,13 +730,13 @@ begin
   stage stageB on all partitions :
     scan customer
     | filter 2 "type boolean $4 4 >= "
-    | project 2 "type integer $1 , type integer $4 "
+    | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
-    | project 2 "type integer $1 , type integer $4 "
+    | project "type integer $1 , type integer $4 "
     | combined 0
     | stageD
 
@@ -762,13 +762,13 @@ begin
   stage stageB on all partitions :
     scan orders
     | filter 2 "type boolean $1 4 >= "
-    | project 2 "type integer $1 , type integer $2 "
+    | project "type integer $1 , type integer $2 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin 2 customer customer_idx1 "LEFTOUTER BOUND $I1 $L2 =="
-    | project 2 "type integer $2 , type integer $3 , type integer $6"
+    | project "type integer $2 , type integer $3 , type integer $6"
     | combined 0
     | stageD
 
@@ -802,7 +802,7 @@ begin
   stage stageC on all partitions :
     indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
     | filter 2 "type boolean $9 4 >= "
-    | project 2 "type integer $1 , type integer $9 , type integer $10 "
+    | project "type integer $1 , type integer $9 , type integer $10 "
     | combined 0
     | stageD
 
@@ -845,7 +845,7 @@ begin
   stage stageC on all partitions :
     indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
     | filter 2 "type boolean $9 4 >= "
-    | project 2 "type integer $1 , type integer $9 , type integer $10 "
+    | project "type integer $1 , type integer $9 , type integer $10 "
     | combined 0
     | stageD
 
@@ -870,14 +870,14 @@ begin
   stage stageB on all partitions :
     scan customer
     | filter 2 "type boolean $4 4 >= "
-    | project 2 "type integer $1 , type integer $4 "
+    | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
     | filter 2 "type boolean $3 4 >= "
-    | project 2 "type integer $1 , type integer $3 , type integer $4 "
+    | project "type integer $1 , type integer $3 , type integer $4 "
     | combined 0
     | stageD
 
@@ -904,14 +904,14 @@ begin
   stage stageB on all partitions :
     scan customer
     | filter 2 "type boolean $4 4 >= "
-    | project 2 "type integer $1 , type integer $4 "
+    | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin 2 orders orders_idx1 "LEFTOUTER BOUND $I1 $L1 =="
     | filter 2 "type boolean $3 4 >= "
-    | project 2 "type integer $1 , type integer $3 , type integer $4 "
+    | project "type integer $1 , type integer $3 , type integer $4 "
     | combined 0
     | stageD
 
@@ -932,14 +932,14 @@ begin
   stage stageB on all partitions :
     scan customer
     | filter 2 "type boolean $4 4 >= "
-    | project 2 "type integer $1 , type integer $4 "
+    | project "type integer $1 , type integer $4 "
     | combined 0
     | stageC
 
   stage stageC on all partitions :
     indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
     | filter 2 "type boolean $3 4 >= "
-    | project 2 "type integer $1 , type integer $3 , type integer $4 "
+    | project "type integer $1 , type integer $3 , type integer $4 "
     | combined 0
     | stageD
 
