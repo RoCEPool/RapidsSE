@@ -59,10 +59,10 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running as originator on origin                 ORIGINATOR
 
-    // -- timer
-    Timer   m_oResponseTimer;  // timer (on origin only)
+    Op*   m_pResponseOp;     // operator to where responses go         POST_RECV
+    Timer m_oResponseTimer;  // timer (on origin only)
   
-    eEC     m_eError_job;    // error when starting job
+    eEC   m_eError_job;      // error when starting job
                              // DOUBLE CHECK THIS BELONGS HERE
 
 
@@ -174,6 +174,8 @@ namespace STORE
     bool bReapable(void);
     void vReapable(bool bReapable);
     void vResetForCascade(Session* pSession);
+    Op*  pResponseOp(void);
+    void vResponseOp(Op* pResponseOp);
 
     i8   i_Session(void);
     Session* pSession(void);

@@ -63,9 +63,10 @@ Job::Job(Stz*  szJobNm,
   
   // -- a -------------------
   
-  m_i_Session     = i_Session;
-  m_tCmdId        = tCmdId;
+  m_i_Session   = i_Session;
+  m_tCmdId      = tCmdId;
 
+  m_pResponseOp = nullptr;
   m_oResponseTimer.vStart();
 
   // -- b -------------------
@@ -737,11 +738,13 @@ void Job::vPostRecv(void)
   
   m_bWasReceived = true;
   
-  m_eJobList = JL_NONE;
+  m_eJobList     = JL_NONE;
     
-  m_pTask = nullptr;
+  m_pTask        = nullptr;
 
-  m_pSingularOp = nullptr;
+  m_pResponseOp  = nullptr;
+  m_pSingularOp  = nullptr;
+  
   m_pJobMetricsChain = nullptr;
 
   m_okLock.vResetLock();
@@ -868,6 +871,26 @@ void Job::vResetForCascade(Session* pSession)
   pSession->m_pOutput->vDrainBufferQueue();
 
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pResponseOp                                                             */
+/*----------------------------------------------------------------------------*/
+Op* Job::pResponseOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pResponseOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pResponseOp                                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vResponseOp(Op* pResponseOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pResponseOp = pResponseOp;
 }
 
 /*----------------------------------------------------------------------------*/
