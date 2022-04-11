@@ -978,7 +978,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
         // Walk the then resultexpr node plan graph
         GraphNav::bGlobalWalk(pResultExpr, false, true, vVisitorExpr, vVisitorExpr, (void *) pBackend);
 
-        sPipeline->vConcat("THEN "_Stz);
+        sPipeline->vConcat(" THEN "_Stz);
       }
       delete pWhenIter;
 
