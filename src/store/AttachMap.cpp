@@ -167,8 +167,8 @@ void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 
   AttachMap* pAttachMap = _pAttachMap(pObject);
   
-  vTrace("pid %lld utc %s regionSize %lld\n"_Stz,
-         pAttachMap->m_iPid,
+  vTrace("sepid %lld utc %s regionSize %lld\n"_Stz,
+         pAttachMap->m_iSePid,
          pAttachMap->m_oNow.sz(),
          pAttachMap->m_xSysArgs.m_iRegionSize);
 }
@@ -228,11 +228,11 @@ void AttachMap::vOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 /* get pid                                                                    */
 /*----------------------------------------------------------------------------*/
-i8 AttachMap::iPid(void)
+i8 AttachMap::iSePid(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   
-  return m_iPid;
+  return m_iSePid;
 }
 
 
@@ -242,7 +242,7 @@ i8 AttachMap::iPid(void)
 void AttachMap::vPrintAttachMap(void)
 {
   vTrace("\n-- ATTACH MAP --\n\n"_Stz);
-  vTrace("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
+  vTrace("SePid: %lld; \n"_Stz,   gpAttachMap->m_iSePid);
   vTrace("UTC: %s; \n"_Stz,     gpAttachMap->m_oNow.sz());
   
   vTrace("RegionName   : %s \n"_Stz,     gpAttachMap->m_xSysArgs.m_sRegionName.szStz());
@@ -401,7 +401,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   
   // ray -- not sure the following should be here
   
-  m_iPid = Process::iGetPid();
+  m_iSePid = Process::iGetPid();
   
   m_oBirth.vNow();
   m_oNow.vSetNowUTC();

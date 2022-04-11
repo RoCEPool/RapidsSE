@@ -900,6 +900,18 @@ bool Api::bSpawnTask_session(Job* pJob)
 {
   _static_
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // before appending request for se, ensure that se is running
+
+  i8 iPid = AM::PROCESS::iSePid();
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    vTrace("Cannot find pid %lld\n"_Stz, iPid);
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Session* pSession = pJob->pSession();
   
   Api::vMutexLock(pSession,pJob);
@@ -909,29 +921,22 @@ bool Api::bSpawnTask_session(Job* pJob)
   
   RASSERT(! pJob->pTask());
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Before appending request for se, ensure that se is running
-  // get the se pid from the attachmap
-  i8 iPid = AM::iPid();
-  if (!Process::bTestPid(iPid)) {
-    // SE is not running anymore!
-    vTrace("Cannot find pid %lld\n"_Stz, iPid);
-    return false;
-  }
   
   pJob->vTaskCreate();
 
   pJob->vResponseTimerStart();
   Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 
-  if (! pJob->bHasTag(C_TAG_NOWAIT)) {
+  if (pJob->bHasTag(C_TAG_NOWAIT)) {
+    Api::vMutexUnlock(pSession,pJob);
+  }
+  else {
     //pSession->m_oMutex.vObserve(true);
     Api::vMutexWaitCond(pSession,pJob);
     pJob->vResponseTimerUpdate();
+    Api::vMutexUnlock(pSession,pJob);
   }
   
-  Api::vMutexUnlock(pSession,pJob);
-
   return true;
 }
 

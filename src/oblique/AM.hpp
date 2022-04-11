@@ -393,6 +393,12 @@ namespace OBLIQUE
       static i8 nTinyHeap(void);
     };
 
+    class PROCESS
+    {
+    public:
+      static i8 iSePid(void);
+    };
+
     class PROMPT
     {
     public:
@@ -624,7 +630,6 @@ namespace OBLIQUE
     static JobList* pOriginatingJobs(void);
     static JobList* pParticipatingJobs(void);
     static JobList* pRetiredJobs(void);
-    static i8   iPid(void);
     static void vProcessExit(void);
     static i8   iSystemUsec(void);
     static i8   iUserUsec(void);

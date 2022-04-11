@@ -282,7 +282,7 @@ void AM::ENGINE::vSignalHandler(i8 iSignal)
 {
   _static_
   
-  Engine::vSignalHandler(iSignal);
+  Engine::vSignalHandler((int)iSignal);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -913,6 +913,7 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
     InfoSet* pInfoSet = _pInfoSet(pOperand);
     
     eOI eOpInfoSet = pInfoSet->eOpInfoSet();
+    UNUSED(eOpInfoSet);
     
 //    if (OI_PROGRESSUNITS == eOpInfoSet)
 //      return true;
@@ -1077,6 +1078,17 @@ i8 AM::POOL::nTinyHeap(void)
   
   return nBufferCount;
 }
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                               PROCESS                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+i8 AM::PROCESS::iSePid(void)
+{
+  return gpAttachMap->m_iSePid;
+}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                               PROMPT                                       */
@@ -2041,7 +2053,7 @@ void AM::SYSTEM::vSystemReady(void)
 {
   _static_
 
-  i8 iPid = AM::iPid();
+  i8 iPid = AM::PROCESS::iSePid();
   s32 sPid;
   sPid.vSprint("%lld\n"_Stz, iPid);
 
@@ -2274,7 +2286,7 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   }
 
   Job* pJob = MY::pJob();
-  Op* pOp = MY::pOp();
+  //Op* pOp = MY::pOp();
   
   if (! pJob)
     return false;
@@ -2495,7 +2507,7 @@ JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pJobs->pParticipatingJobs(); }
 JobList* AM::pRetiredJobs(void) {
   return gpAttachMap->m_pJobs->pRetiredJobs(); }
-i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
+
 
 void AM::vProcessExit(void)   { return Process::vExitFailure();                      }
 
@@ -2831,7 +2843,7 @@ i8 AM::nRndSkipLevel(void) {
 
   i8 nLevels;
   if (AM::bDeveloper()) {
-    Task* pTask = Task::pThisTLSTask();
+    //Task* pTask = Task::pThisTLSTask();
     nLevels =
       RndLib::iSkipLevel(nLvlLevels,
                          iLvlRatio,
@@ -4536,16 +4548,9 @@ Heartbeat AM::xGetHeartbeat(Stz* pszName)
 
 }
 
-/**
- * @brief Remove dead node from the cluster
- * @details When a node went down, remove it from the cluster.
- * <p>
- * @param[in] pszName  name of this node
- *
- *
- * @return none
- * @Todo  Must verify that we remove and delete the node here.
- */
+/*----------------------------------------------------------------------------*/
+/* remove node (by name)                                                      */
+/*----------------------------------------------------------------------------*/
 void AM::vRemoveNode(Stz* pszName)
 {
   if (AM::SYSTEM::bStarted()) {

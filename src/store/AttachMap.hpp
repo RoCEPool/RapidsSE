@@ -32,7 +32,7 @@ namespace STORE
   
     Birth m_oBirth;
     Now   m_oNow;
-    i8    m_iPid;
+    i8    m_iSePid;
     Timer m_oSince;
     i8    m_iTimePoint;
   
@@ -120,7 +120,7 @@ namespace STORE
   
     void vOutline(s4K& sOutline);
   
-    i8   iPid(void);
+    i8   iSePid(void);
     void vPrintAttachMap(void);
     void vPrintStartupInfo(void);
   

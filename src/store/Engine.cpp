@@ -834,7 +834,7 @@ void Engine::vKillPrev(void)
     
     AttachMap* pAttachMap = (AttachMap*)aAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
     
-    i8 iPid = pAttachMap->iPid();
+    i8 iPid = pAttachMap->iSePid();
     if (gxCmdLineArgs.m_xSysArgs.m_oArgTags.bHasName(C_SEE_SHM))
        vTrace("Engine::vKillPrev: prev pid %lld\n"_Stz,iPid);
 
@@ -1268,7 +1268,7 @@ void Engine::vPrintStatus(void)
     vAttachRegion();
     
     // check if the Pid in the shm is still alive
-    i8 iPid = AM::iPid();
+    i8 iPid = AM::PROCESS::iSePid();
     if ( Process::bTestPid(iPid) ) {
       vTrace("Engine instance %s running\n"_Stz,
              gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
