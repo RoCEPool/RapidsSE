@@ -141,34 +141,28 @@ void Api::vExecuteJob(Session* pSession)
   pSession->m_pOutput->vBeginProcOneCmd();
   
   Job* pJob = pSession->m_pSsnJob;
-  TagSet* pJobTagSet = & pSession->m_oJobTagSet;
-  TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();
-
-  //pInpTknVec->vDumpVec(false);
-  //pJobTagSet->vDumpSet(true);
-
-//  if (pJobTagSet->bHasName(C_TAG_TRACEAPI)) {
-//    vTrace("TagSet:\n"_Stz);
+  
+//  TagSet* pJobTagSet = & pSession->m_oJobTagSet;
+//  TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();
+//
+//  if (AM::TRACE::bVerbose(C_VB_API)) {
+//    pInpTknVec->vDumpVec(false);
 //    pJobTagSet->vDumpSet(true);
 //  }
-  
-  if (AM::TRACE::bVerbose(C_VB_API)) {
-    pInpTknVec->vDumpVec(false);
-    pJobTagSet->vDumpSet(true);
-  }
-      
-  if (AM::bDeveloper() && pInpTknVec->nTokens() > C_1KB) {
-    i8 nTokens = pInpTknVec->nTokens();
-    i8 nUsed   = pInpTknVec->nUsedByteSpace();
-    if (nTokens > C_1KB)
-       vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
-  }
+//
+//  if (AM::bDeveloper() && pInpTknVec->nTokens() > C_1KB) {
+//    i8 nTokens = pInpTknVec->nTokens();
+//    i8 nUsed   = pInpTknVec->nUsedByteSpace();
+//    if (nTokens > C_1KB)
+//       vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
+//  }
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();
-
+  TagSet* pJobTagSet = & pSession->m_oJobTagSet;
+ 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //RASSERT(! pSession->bHasCascade());
 
@@ -416,11 +410,27 @@ eEC Api::ePrepareJob(Session* pSession)
   //pPrepareJobTags->vDumpSet(true);
 
   
-  Dic* pDicRoot = AM::DIC::pRoot();
+  //Dic* pDicRoot = AM::DIC::pRoot();
   
   Stz* szEntry = pPrepareJobTags->szValue(C_TAG_ENTRYPOINT);
   
   pPrepareJob->vEntryPoint(szEntry);
+  
+  
+  TagSet* pJobTagSet = & pSession->m_oJobTagSet;
+  
+  if (AM::TRACE::bVerbose(C_VB_API)) {
+    pCmdTknVec->vDumpVec(false);
+    pJobTagSet->vDumpSet(true);
+  }
+      
+  if (AM::bDeveloper() && pCmdTknVec->nTokens() > C_1KB) {
+    i8 nTokens = pCmdTknVec->nTokens();
+    i8 nUsed   = pCmdTknVec->nUsedByteSpace();
+    if (nTokens > C_1KB)
+       vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
+  }
+
   
   return EC_NONE;
 }
