@@ -1644,19 +1644,9 @@ void Engine::vStartSystem(void)
   }
 }
 
-
-/**
- * @brief Initial creation of a Grid of Nodes
- * @details It uses a hash IP/Port of a node for the NodeId
- *
- * <p>
- * @note We can use Hardware::iReadTscp() for unique NodeId,
- *       But it seems the value is very large and somewhere int system
- *       doesn't like it.
- *
- *
- * @return none
- */
+/*----------------------------------------------------------------------------*/
+/* create grid of nodes                                                       */
+/*----------------------------------------------------------------------------*/
 void Engine::vCreateGridOfNodes(void)
 {
 
@@ -1791,16 +1781,6 @@ void Engine::vWriteRegionName(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("REGION NAME: %s\n"_Stz,gxCmdLineArgs.m_xSysArgs.m_sRegionName.azChar());
 }
-
-
-
-
-
-
-
-
-
-
 
 /*============================================================================*/
 /* end                                                                        */
