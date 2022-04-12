@@ -43,7 +43,8 @@ rows: 5
 
 //------------------------------------------------------------------------------
 select SUM(l_discount) FROM lineitem WHERE l_orderkey < 20 limit 3;
-row: (84.16)
+rows:
+  (84.16)
 
 //------------------------------------------------------------------------------
 SELECT l_orderkey, SUM(l_discount) FROM lineitem GROUP BY l_orderkey limit 3;
