@@ -1579,6 +1579,10 @@ public:
   void vRecvdObjectIsNull(void);
   void vRecvdObjectSet(void);
 
+  // respondToOp
+  void vResponseOpGet(void);
+  void vResponseOpPipeout(void);
+
   // row buffer
   void vRowBufferCopy(void);
   void vRowBufferDecile(void);

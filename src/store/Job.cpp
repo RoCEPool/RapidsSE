@@ -66,7 +66,7 @@ Job::Job(Stz*  szJobNm,
   m_i_Session   = i_Session;
   m_tCmdId      = tCmdId;
 
-  m_pResponseOp = nullptr;
+  m_p_ResponseOp = nullptr;
   m_oResponseTimer.vStart();
 
   // -- b -------------------
@@ -793,7 +793,7 @@ void Job::vPostRecv(void)
     
   m_pTask        = nullptr;
 
-  m_pResponseOp  = nullptr;
+  m_p_ResponseOp  = nullptr;
   m_pSingularOp  = nullptr;
   
   m_pJobMetricsChain = nullptr;
@@ -888,21 +888,21 @@ void Job::vReapable(bool bReapable)
 /*----------------------------------------------------------------------------*/
 /* get pResponseOp                                                             */
 /*----------------------------------------------------------------------------*/
-Op* Job::pResponseOp(void)
+Op* Job::p_ResponseOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_pResponseOp;
+  return m_p_ResponseOp;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set pResponseOp                                                            */
 /*----------------------------------------------------------------------------*/
-void Job::vResponseOp(Op* pResponseOp)
+void Job::vResponseOp(Op* p_ResponseOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pResponseOp = pResponseOp;
+  m_p_ResponseOp = p_ResponseOp;
 }
 
 /*----------------------------------------------------------------------------*/
