@@ -37,6 +37,7 @@ void Step::vAddSteps_StreamOfOp(void)
   vAddStep("[stream]"_Stz,                &Step::vStreamOfOpGet);
 
   vAddStep("[stream].dump"_Stz,           &Step::vStreamOfOpDump);
+  vAddStep("[stream].findOp"_Stz,         &Step::vStreamOfOpFindOp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,6 +50,25 @@ void Step::vStreamOfOpDump(void)
   //SP_Pipeline spSubPipe;
   
   // vTrace("%s\n"_Stz,spSubPipe.sz(* m_pLogicUnit->m_xpVertex,true));
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [stream].findOp -- find op by name                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamOfOpFindOp(void)
+{
+  ENTRY();
+   
+  s256 sOpNm;
+  m_pDataStack->vPopStr(sOpNm,__func__);
+  
+  Stream* pStream = m_pOp->pStream();
+  
+  Op* pOp = pStream->pFindOp(sOpNm);
+  
+  m_pDataStack->vPushPtr(pOp);
 
   EXIT();
 }

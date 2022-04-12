@@ -1826,6 +1826,7 @@ public:
 
   // stream (of op)
   void vStreamOfOpDump(void);
+  void vStreamOfOpFindOp(void);
   void vStreamOfOpGet(void);
 
   // string

@@ -105,13 +105,30 @@ Deck* Stream::pDeck(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get i_PtnOfNode                                                            */
+/* find an op (by name) in this stream                                        */
 /*----------------------------------------------------------------------------*/
-i8 Stream::i_PtnOfNode(void)
+Op* Stream::pFindOp(Stz* szOpNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
+    
+  for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
+    Op* pOp = pGet(i_Op);
+    
+    if (pOp->szOpNm()->bSame(szOpNm))
+      return pOp;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition in grid this stream needs to run on                          */
+/*----------------------------------------------------------------------------*/
+LglPtn Stream::tLglPtn(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_i_PtnOfNode;
+  return m_tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,13 +164,13 @@ Pipeline* Stream::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition in grid this stream needs to run on                          */
+/* get i_PtnOfNode                                                            */
 /*----------------------------------------------------------------------------*/
-LglPtn Stream::tLglPtn(void)
+i8 Stream::i_PtnOfNode(void)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  return m_tLglPtn;
+  return m_i_PtnOfNode;
 }
 
 /*----------------------------------------------------------------------------*/

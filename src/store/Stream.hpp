@@ -42,15 +42,17 @@ namespace STORE
    ~Stream(void) noexcept(false);
     
     Deck* pDeck(void);
+
+    Op*  pFindOp(Stz* szOpNm);
+
+    LglPtn tLglPtn(void);
   
     i8   iNodeId(void);
-  
-    Pipeline* pPipeline(void);
-    i8   i_PtnOfNode(void);
 
     Op*  pOp0(void);
 
-    LglPtn tLglPtn(void);
+    Pipeline* pPipeline(void);
+    i8   i_PtnOfNode(void);
 
     void vSetInvoker(Task* pInvoker);
     Stage* pStage(void);
