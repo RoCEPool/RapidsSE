@@ -69,7 +69,7 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running on participant node                    PARTICIPANT
  
-    Op*       m_pSingularOp;    //   or op (api input op )             POST_RECV
+    Op*  m_pSingularOp;      // op (api input op )                     POST_RECV
 
   
     // -- tasking

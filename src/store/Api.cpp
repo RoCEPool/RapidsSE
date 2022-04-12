@@ -139,7 +139,7 @@ void Api::vExecuteJob(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* fork job (spawn job but don't wait for completion)                         */
 /*----------------------------------------------------------------------------*/
-void Api::vForkJob(Session* pSession)
+void Api::vForkJob(Session* pSession, Op* pResponseOp)
 {
   _static_
   
@@ -556,7 +556,8 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
 /*----------------------------------------------------------------------------*/
 /* fork internal command with given tag string                                */
 /*----------------------------------------------------------------------------*/
-eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
+eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
+                      Op* pResponseOp)
 {
   _static_
   

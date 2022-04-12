@@ -21,7 +21,7 @@ namespace STORE
   static void vExecuteJob(Session* pSession);
   static void vExtractCmdPaths(Session*  pSession, TokenVec* pCmdTknVec);
   static bool bExtractCmdTags(Session*  pSession, TokenVec* pCmdTknVec);
-  static void vForkJob(Session* pSession);
+  static void vForkJob(Session* pSession, Op* pResponseOp);
   static eEC  ePrepareJob(Session*  pSession, TokenVec* pCmdTknVec);
   static void vReapableJob(Session* pSession);
 
@@ -32,7 +32,8 @@ namespace STORE
   static void vReapJobsOnce(bool bForce = false);
 
   static eEC  eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath);
-  static eEC  eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath);
+  static eEC  eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
+                           Op* pResponseOp);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
