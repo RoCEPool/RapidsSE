@@ -127,18 +127,18 @@ static eFM eMacro_Div[DM_ENUMS][DM_ENUMS] = {
 
 static eDM eMacro_DivResult[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD       BOL      DTE           FLT         INT           IVL         IVY         TME           TSP         VCH      UNK
-/*  0 NONE */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/*  1 BCD  */ { DM_NONE, DM_BCD,   DM_NONE, DM_NONE,      DM_FLT,     DM_BCD,       DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/*  2 BOL  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/*  3 DTE  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE/*?*/, DM_NONE,    DM_NONE,    DM_NONE/*?*/, DM_NONE,    DM_NONE, DM_NONE    },
-/*  4 FLT  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_FLT,     DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/*  5 INT  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE/*?*/, DM_NONE,    DM_INT,       DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/*  6 IVL  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/*  7 IVY  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/*  8 TME  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE/*?*/, DM_NONE,    DM_NONE/*?*/, DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/*  9 TSP  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/* 10 VCH  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
-/* 11 UNK  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    }
+/*  0 NONE */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_UNK    },
+/*  1 BCD  */ { DM_NONE, DM_BCD,   DM_NONE, DM_NONE,      DM_FLT,     DM_BCD,       DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_UNK    },
+/*  2 BOL  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_UNK    },
+/*  3 DTE  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE/*?*/, DM_NONE,    DM_NONE,    DM_NONE/*?*/, DM_NONE,    DM_NONE, DM_UNK    },
+/*  4 FLT  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_FLT,     DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_UNK    },
+/*  5 INT  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE/*?*/, DM_NONE,    DM_INT,       DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_UNK    },
+/*  6 IVL  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_UNK    },
+/*  7 IVY  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_UNK    },
+/*  8 TME  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE/*?*/, DM_NONE,    DM_NONE/*?*/, DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_UNK    },
+/*  9 TSP  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_UNK    },
+/* 10 VCH  */ { DM_NONE, DM_NONE,  DM_NONE, DM_NONE,      DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_UNK    },
+/* 11 UNK  */ { DM_NONE, DM_NONE,  DM_UNK, DM_UNK,      DM_UNK,    DM_UNK,      DM_UNK,    DM_UNK,    DM_UNK,      DM_UNK,    DM_UNK, DM_UNK    }
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -369,17 +369,17 @@ static eFM eMacro_Ge[DM_ENUMS][DM_ENUMS] = {
 static eFM eMacro_Gt[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY           TME           TSP           VCH           UNK
 /*  0 NONE */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
-/*  1 BCD  */ { FM_OPR_INVINV, FM_GT_BCDBCD,  FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
-/*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_GT_BOLBOL, FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
-/*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_GT_DTEDTE, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
-/*  4 FLT  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_FLTFLT,  FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
-/*  5 INT  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_GT_INTINT,  FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
-/*  6 IVL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_GT_IVLIVL, FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
-/*  6 IVY  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_GT_IVYIVY, FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
-/*  7 TME  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_TMETME, FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    },
-/*  8 TSP  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_TSPTSP, FM_OPR_INVINV,      FM_OPR_INVINV    },
-/*  9 VCH  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_VCHVCH, FM_OPR_INVINV    },
-/* 10 UNK  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV    }
+/*  1 BCD  */ { FM_OPR_INVINV, FM_GT_BCDBCD,  FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_ANYUNK    },
+/*  2 BOL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_GT_BOLBOL, FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_ANYUNK    },
+/*  3 DTE  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_GT_DTEDTE, FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_ANYUNK    },
+/*  4 FLT  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_FLTFLT,  FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_ANYUNK    },
+/*  5 INT  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_GT_INTINT,  FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_ANYUNK    },
+/*  6 IVL  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_GT_IVLIVL, FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_ANYUNK    },
+/*  6 IVY  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_GT_IVYIVY, FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_ANYUNK    },
+/*  7 TME  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_TMETME, FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_ANYUNK    },
+/*  8 TSP  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_TSPTSP, FM_OPR_INVINV,      FM_GT_ANYUNK    },
+/*  9 VCH  */ { FM_OPR_INVINV, FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,       FM_OPR_INVINV,       FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_OPR_INVINV,      FM_GT_VCHVCH, FM_GT_ANYUNK    },
+/* 10 UNK  */ { FM_OPR_INVINV, FM_GT_UNKANY,       FM_GT_UNKANY,      FM_GT_UNKANY,      FM_GT_UNKANY,       FM_GT_UNKANY,       FM_GT_UNKANY,      FM_GT_UNKANY,      FM_GT_UNKANY,      FM_GT_UNKANY,      FM_GT_UNKANY,      FM_GT_UNKANY    }
 };
 
 static eFM eMacro_Le[DM_ENUMS][DM_ENUMS] = {

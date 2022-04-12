@@ -8,10 +8,9 @@ decimal.test
 time.test
 filterInteger.test
 filterDecimal.test
+limit.test
 //indexJoin.test
 //indexJoinHash.test
-//loopJoinBroadcast1.test
-//loopJoinBroadcast2.test
 minMax.test
 project.test
 query6.test

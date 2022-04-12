@@ -475,6 +475,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   bool bProjectOp = false;
   bool bPayloadOp = false;
+  bool bSort = false;
 
   bool bGeneratePotTub = true;
   bool bGenerateFun3 = true;
@@ -483,6 +484,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   Op* pCombinedOp = nullptr;
   Op* pHavingFilterOp = nullptr;
   Op* pPostProjectOp = nullptr;
+  Op* pLimitOp = nullptr;
   IntStack *pPreExpStack = nullptr;
 
   eSR ePrevStencil = SR_NONE;
@@ -624,19 +626,24 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vAppend(pShape);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // is next op Having filter ?
+      // look for Having filter / limit ?
       i8 iNextOp = pOp->i_Op() + 1;
-      Op *pOpNext = pStream->pGet(iNextOp);
-
-      if (pOpNext->szOpNm()->bSame("filter"_Stz)) {
-        pHavingFilterOp = pOpNext;
+      for (i8 i_Op = iNextOp; i_Op < pStream->nItems(); i_Op++) {
+        Op *pOpNext = pStream->pGet(i_Op);
+        if (pOpNext->szOpNm()->bSame("filter"_Stz)) {
+          pHavingFilterOp = pOpNext;
+          continue;
+        }
+        if (pOpNext->szOpNm()->bSame("limit"_Stz)) {
+          pLimitOp = pOpNext;
+        }
       }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupEosPayload(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosProjectGby(pCombined, pStream, pOp, pHavingFilterOp, sHashExpr);
+      vSketchEosProjectGby(pCombined, pStream, pOp, pHavingFilterOp, pLimitOp, sHashExpr);
       bGeneratePotTub = false;
       bGenerateFun3 = false;
 
@@ -704,6 +711,11 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       pCombined->aCombinedT()->m_iLimitRows = 1;
 
+      // limit after a payload will move to EOSHandler
+      if (bPayloadOp) {
+        continue;
+      }
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchLimit(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
       vAppend(pShape);
@@ -722,15 +734,21 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         return EC_INVALID_PIPELINE;
       }
 
+      bSort = true;
       bPayloadOp = true;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // is next op project Op ?
+      // look for project/limit ?
       i8 iNextOp = pOp->i_Op() + 1;
-      Op *pOpNext = pStream->pGet(iNextOp);
-
-      if (pOpNext->szOpNm()->bSame("project"_Stz)) {
-        pPostProjectOp = pOpNext;
+      for (i8 i_Op = iNextOp; i_Op < pStream->nItems(); i_Op++) {
+        Op *pOpNext = pStream->pGet(i_Op);
+        if (pOpNext->szOpNm()->bSame("project"_Stz)) {
+          pPostProjectOp = pOpNext;
+          continue;
+        }
+        if (pOpNext->szOpNm()->bSame("limit"_Stz)) {
+          pLimitOp = pOpNext;
+        }
       }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -744,10 +762,10 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       }
       else {
-        vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
+        //vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil, sLabelNext);
+        pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
         vAppend(pShape);
       }
 
@@ -755,7 +773,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupEosPayload(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosSort(pCombined, pStream, pOp, pPostProjectOp, sHashExpr);
+      vSketchEosSort(pCombined, pStream, pOp, pPostProjectOp, pLimitOp, sHashExpr);
       bGeneratePotTub = false;
       bGenerateFun3 = false;
 
@@ -780,8 +798,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       Op *pPrevOp = pStream->pGet(i_Op - 1);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // project after sort will moe to the EOS marker
-      if ( ! pPrevOp->szOpNm()->bSame("sort"_Stz) ) {
+      // project after sort will move to the EOS marker
+      //if ( ! pPrevOp->szOpNm()->bSame("sort"_Stz) ) {
+      if ( ! bSort ) {
 
         // get the aggregate type stack
         pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -802,6 +821,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         } else {
 
           RASSERT(eExprKind == EK_AGGREG);
+          bPayloadOp = true;
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           vSetupProjectAgg(pCombined, pStream, pOp);
@@ -814,7 +834,21 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           vSetupEosPayload(pCombined, pStream, pOp);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          vSketchEosProjectAgg(pCombined, pStream, pOp, pHavingFilterOp, sHashExpr);
+          // look for filter/limit ?
+          i8 iNextOp = pOp->i_Op() + 1;
+          for (i8 i_Op = iNextOp; i_Op < pStream->nItems(); i_Op++) {
+            Op *pOpNext = pStream->pGet(i_Op);
+            if (pOpNext->szOpNm()->bSame("filter"_Stz)) {
+              pHavingFilterOp = pOpNext;
+              continue;
+            }
+            if (pOpNext->szOpNm()->bSame("limit"_Stz)) {
+              pLimitOp = pOpNext;
+            }
+          }
+
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          vSketchEosProjectAgg(pCombined, pStream, pOp, pHavingFilterOp, pLimitOp, sHashExpr);
           bGeneratePotTub = false;
           bGenerateFun3 = false;
 
@@ -849,15 +883,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the topOP
     if (pOp->szOpNm()->bSame("top"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // check stage-operator rules
-//      if (bPayloadOp) {
-//        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
-//               m_szStageNm.azChar());
-//
-//        return EC_INVALID_PIPELINE;
-//      }
 
       bPayloadOp = true;
 
@@ -1629,7 +1654,7 @@ void Stencil::vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp) {
 /* sketch code for Eos fun3 for Project agg OP                                */
 /*----------------------------------------------------------------------------*/
 void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                                   Op* pHavingFilterOp, Stz* sHashExpr) {
+                                   Op* pHavingFilterOp, Op* pLimitOp, Stz* sHashExpr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1663,15 +1688,35 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // to Tub/Pot
+  // payload to Tub/Pot
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, nullptr, pPreExpStack, SR_AT, SR_NONE);
 
-  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
+  Stz* sHavingExpr = ""_Stz;
+
+  if (pHavingFilterOp) {
+    // get filter expr from OP
+    TagSet *pOpTags = pHavingFilterOp->pOpTags();
+    sHavingExpr = pOpTags->szValue(C_TAG_EXPR);
+
+    sLabel.vSprint("L_%s_%d"_Stz, pHavingFilterOp->szOpNm(), pHavingFilterOp->i_Op());
+    pCodeSynth->vSynthFilter(sHavingExpr, false, sLabel, ""_Stz);
+    m_pShapeEOS->vCodeSynthB(pCodeSynth);
+  }
+
+  if (pLimitOp) {
+    // get limit from limitOp
+    TagSet* pOpTags = pLimitOp->pOpTags();
+    i8 iLimit = StrLib::iToI8((char*)(pOpTags->szValue(C_TAG_COUNT)));
+
+    sLabel.vSprint("L_%s_%d"_Stz, pLimitOp->szOpNm(), pLimitOp->i_Op());
+    vGetNextLabel(sLabelNext, pStream, pLimitOp->i_Op(), "L_AddRowToTubPot"_Stz);
+    pCodeSynth->vSynthLimit(iLimit, sLabel, sLabelNext, "L_ReturnFinal"_Stz);
+  }
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz);
   else
-    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, sLabel, "L_ReturnFinal"_Stz);
+    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz);
 
   // delete the postStack. No longer needed
   delete m_pPostStack;
@@ -1687,7 +1732,8 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for Project agg OP                                */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Op* pHavingFilterOp, Stz* sHashExpr) {
+void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream,
+                                   Op* pOp, Op* pHavingFilterOp, Op* pLimitOp, Stz* sHashExpr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1740,8 +1786,18 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
     m_pShapeEOS->vCodeSynthB(pCodeSynth);
   }
 
+  if (pLimitOp) {
+    // get limit from limitOp
+    TagSet* pOpTags = pLimitOp->pOpTags();
+    i8 iLimit = StrLib::iToI8((char*)(pOpTags->szValue(C_TAG_COUNT)));
+
+    sLabel.vSprint("L_%s_%d"_Stz, pLimitOp->szOpNm(), pLimitOp->i_Op());
+    vGetNextLabel(sLabelNext, pStream, pLimitOp->i_Op(), "L_AddRowToTubPot"_Stz);
+    pCodeSynth->vSynthLimit(iLimit, sLabel, sLabelNext, "L_AdvanceNextRow"_Stz);
+  }
+
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz);
 
@@ -1759,7 +1815,7 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for sort OP                                       */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp, Stz* sHashExpr) {
+void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp, Op* pLimitOp, Stz* sHashExpr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1837,6 +1893,16 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // payloadRow to Tub/Pot
   pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil, SR_NONE);
+
+  if (pLimitOp) {
+    // get limit from limitOp
+    TagSet* pOpTags = pLimitOp->pOpTags();
+    i8 iLimit = StrLib::iToI8((char*)(pOpTags->szValue(C_TAG_COUNT)));
+
+    sLabel.vSprint("L_%s_%d"_Stz, pLimitOp->szOpNm(), pLimitOp->i_Op());
+    vGetNextLabel(sLabelNext, pStream, pLimitOp->i_Op(), "L_AddRowToTubPot"_Stz);
+    pCodeSynth->vSynthLimit(iLimit, sLabel, sLabelNext, "L_ReturnFinal"_Stz);
+  }
 
   if (pCombined->aCombinedT()->m_iHashRows)
     pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
@@ -2254,7 +2320,7 @@ Shape* Stencil::pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR 
   // create a new shape for this OP
   Shape *pShape = new Shape;
 
-  // get limit from top
+  // get limit from limitOp
   TagSet* pOpTags = pOp->pOpTags();
   i8 iLimit = StrLib::iToI8((char*)(pOpTags->szValue(C_TAG_COUNT)));
 
