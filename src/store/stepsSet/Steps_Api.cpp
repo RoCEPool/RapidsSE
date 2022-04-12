@@ -125,18 +125,13 @@ void Step::vApiExecuteCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  eEC  eError = EC_NONE;
-  i8   iJobNo = C_UNKNOWN;
   Stz* szTagPath = nullptr;
-  
   if (m_pJob)
     szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
  
-  bool bSuccess = Api::bExecuteCommand(sCmd, sWithTagStr, szTagPath,
-                                       eError, iJobNo);
+  eEC eError = Api::eExecuteCommand(sCmd, sWithTagStr, szTagPath);
   
-  if (bSuccess) {
-    //m_pDataStack->vPushInt(iJobNo);
+  if (EC_NONE == eError) {
     m_pDataStack->vPushInt(true);
   }
   else {

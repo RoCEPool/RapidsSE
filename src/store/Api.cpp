@@ -454,8 +454,7 @@ void Api::vReapJobsOnce(bool bForce)
 /*----------------------------------------------------------------------------*/
 /* execute internal command with given tag string                             */
 /*----------------------------------------------------------------------------*/
-bool Api::bExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
-                          eEC& reError, i8& riJobNo)
+eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
 {
   _static_
   
@@ -464,7 +463,7 @@ bool Api::bExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
-  reError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
+  eEC reError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the request
@@ -482,7 +481,7 @@ bool Api::bExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
     //m_pDataStack->vPushInt(eError);
     //m_pDataStack->vPushInt(false);
     //EXIT();
-    return false;
+    return reError;
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -538,7 +537,6 @@ bool Api::bExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete job and free session
-  riJobNo = (i8)pJob->tJobId().uJobNo();
   Api::vReapableJob(pSession);
 
   Api::vFreeSession(pSession);
@@ -552,7 +550,7 @@ bool Api::bExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   //delete pReqTknVec;
   delete pWithTagStrTknVec;
 
-  return true;
+  return EC_NONE;
 }
 
 
