@@ -136,7 +136,7 @@ void Step::vApiExecuteCommand(void)
                                        eError, iJobNo);
   
   if (bSuccess) {
-    m_pDataStack->vPushInt(iJobNo);
+    //m_pDataStack->vPushInt(iJobNo);
     m_pDataStack->vPushInt(true);
   }
   else {
