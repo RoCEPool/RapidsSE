@@ -106,6 +106,50 @@ void Step::vApiDerefMetricsEnable(void)
 /*----------------------------------------------------------------------------*/
 /* api::executeCommand -- execute a command (internally)                      */
 /*----------------------------------------------------------------------------*/
+#if 1
+void Step::vApiExecuteCommand(void)
+{
+  ENTRY();
+
+  // pop command and tag string
+  
+  s48K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
+
+  s48K sWithTagStr;
+  m_pDataStack->vPopStr(sWithTagStr,__func__);
+
+  if (AM::TRACE::bVerbose(C_VB_API)) {
+    vTrace("ExecuteCommand: %s\n"_Stz,sCmd.szStz());
+    vTrace("      WithTags: %s\n"_Stz,sWithTagStr.szStz());
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  eEC  eError = EC_NONE;
+  i8   iJobNo = C_UNKNOWN;
+  Stz* szTagPath = nullptr;
+  
+  if (m_pJob)
+    szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
+ 
+  bool bSuccess = Api::bExecuteCommand(sCmd, sWithTagStr, szTagPath,
+                                       eError, iJobNo);
+  
+  if (bSuccess) {
+    m_pDataStack->vPushInt(iJobNo);
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+#else
 void Step::vApiExecuteCommand(void)
 {
   ENTRY();
@@ -222,6 +266,8 @@ void Step::vApiExecuteCommand(void)
   
   EXIT();
 }
+#endif
+
 
 /*----------------------------------------------------------------------------*/
 /* api::jobMetricsDisable -- disable job metrics                              */
