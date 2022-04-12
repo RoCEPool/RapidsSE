@@ -175,6 +175,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegNow();
   Step::vAddSteps_RegPath();
   Step::vAddSteps_RegSends();
+  Step::vAddSteps_ResponseOp();
   Step::vAddSteps_RowOnce();
   Step::vAddSteps_RowBuffer();
   Step::vAddSteps_Rstack();

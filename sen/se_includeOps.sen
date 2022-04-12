@@ -101,6 +101,7 @@ assert::stack_0
   "OP_fetch.sen"                include
   "OP_filter.sen"               include
   "OP_flushDemon.sen"           include
+  "OP_fork.sen"                 include
 
 "g" .verbose
 
@@ -196,7 +197,6 @@ assert::stack_0
   "OP_project.sen"              include
   "OP_projValidation.sen"       include
   "OP_ptnMap.sen"               include
-
   "OP_pulse.sen"                include
   "OP_pwf.sen"                  include
 
@@ -215,6 +215,7 @@ assert::stack_0
   "OP_reload.sen"               include
   "OP_removeNode.sen"           include
   "OP_report.sen"               include
+  "OP_respond.sen"              include
   "OP_rowCount.sen"             include
   "OP_rowToList.sen"            include
 
@@ -282,6 +283,7 @@ assert::stack_0
 
 "w" .verbose
 
+  "OP_wait.sen"                 include
   "OP_waitPipeline.sen"         include
   "OP_waker.sen"                include
   "OP_wrCsvFile.sen"            include
@@ -295,7 +297,6 @@ assert::stack_0
   "op__classWords.sen"          include
 
 "z\n" .verbose
-
 
 /*============================================================================*/
 /* end                                                                        */
