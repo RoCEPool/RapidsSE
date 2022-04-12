@@ -115,16 +115,7 @@ enum eFM : u2 // function macros
   /*  */ FM_TSP_TOTME,          // tsp to tme
   /*  */ FM_TSP_TOVCH,          // tsp to vch
 
-  /*  */ FM_UNK_TOBCD,          // unk to bcd
-  /*  */ FM_UNK_TOBOL,          // unk to bol
-  /*  */ FM_UNK_TODTE,          // unk to dte
-  /*  */ FM_UNK_TOFLT,          // unk to flt
-  /*  */ FM_UNK_TOINT,          // unk to int
-  /*  */ FM_UNK_TOIVL,          // unk to ivl
-  /*  */ FM_UNK_TOIVY,          // unk to ivy
-  /*  */ FM_UNK_TOTME,          // unk to tme
-  /*  */ FM_UNK_TOTSP,          // unk to tsp
-  /*  */ FM_UNK_TOVCH,          // unk to vch
+  /*  */ FM_UNK_TOANY,          // unk to any
 
   /*  */ FM_VCH_TOBCD,          // vch to bcd
   /*  */ FM_VCH_TODTE,          // vch to dte
@@ -421,16 +412,7 @@ static Stz* aFM[]
   /*  */ "_TSP_TOUNK"_Stz,
   /*  */ "_TSP_TOVCH"_Stz,
 
-  /*  */ "_UNK_TOBCD"_Stz,
-  /*  */ "_UNK_TOBOL"_Stz,
-  /*  */ "_UNK_TODTE"_Stz,
-  /*  */ "_UNK_TOFLT"_Stz,
-  /*  */ "_UNK_TOINT"_Stz,
-  /*  */ "_UNK_TOIVL"_Stz,
-  /*  */ "_UNK_TOIVY"_Stz,
-  /*  */ "_UNK_TOTME"_Stz,
-  /*  */ "_UNK_TOTSP"_Stz,
-  /*  */ "_UNK_TOVCH"_Stz,
+  /*  */ "_UNK_TOANY"_Stz,
 
   /*  */ "_VCH_TOBCD"_Stz,
   /*  */ "_VCH_TODTE"_Stz,

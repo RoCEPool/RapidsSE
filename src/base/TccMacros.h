@@ -20,7 +20,7 @@
 
 #define _PSH_FLT(dArg)        \
 {                             \
-  fltArg1.m_dFlt =   dArg;    \
+  fltArg1.m_dFlt = dArg;      \
   *paW++ = fltArg1.m_iAsI8;   \
 }
 
