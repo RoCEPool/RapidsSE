@@ -106,7 +106,6 @@ void Step::vApiDerefMetricsEnable(void)
 /*----------------------------------------------------------------------------*/
 /* api::executeCommand -- execute a command (internally)                      */
 /*----------------------------------------------------------------------------*/
-#if 1
 void Step::vApiExecuteCommand(void)
 {
   ENTRY();
@@ -147,127 +146,6 @@ void Step::vApiExecuteCommand(void)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-#else
-void Step::vApiExecuteCommand(void)
-{
-  ENTRY();
-
-  eEC eError;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop request and tag string
-  
-  s48K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
-
-  s48K sWithTagStr;
-  m_pDataStack->vPopStr(sWithTagStr,__func__);
-
-  if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ExecuteRequest: %s\n"_Stz,sCmd.szStz());
-    vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot a session
-  
-  Session* pSession = Api::pAllocSession(SK_INTERNAL);
-  
-  eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tokenise the request
-  
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-
-  TagSet* pTagSet =  & pSession->m_oJobTagSet;
-  pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-
-  eError = Api::ePrepareJob(pSession,pCmdTknVec);
-
-  delete pCmdTknVec;
-
-  if (eError) {
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
-    EXIT();
-    return;
-  }
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // update the job tag set
-  
-  Job* pJob = pSession->m_pSsnJob;
-
-  TagSet* pJobTagSet = pJob->pJobTags();
-  
-  if (m_pJob) {
-    Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
-    pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
-  }
-  
-  TokenVec* pWithTagStrTknVec = TokenVec::pTokeniseSen(sWithTagStr);
-  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
-  
-  
-  Now xNow;
-  xNow.vSetNow();
-
-  s32 sHostName;
-  Hardware::vHostName(sHostName);
-
-  pJobTagSet->vInsert(C_TAG_FREEPCT,gpBufferPool->iFreePercent());
-  pJobTagSet->vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
-  pJobTagSet->vInsert(C_TAG_HOST,sHostName);
-  pJobTagSet->vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
-  pJobTagSet->vInsert(C_TAG_REQUEST,pSession->m_iCmdNo);
-  pJobTagSet->vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
-  pJobTagSet->vInsert(C_TAG_WHEN,xNow.sz());
-
-  
-  
-  if (AM::TRACE::bVerbose(C_VB_API))
-    pJobTagSet->vDumpSet();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn job and wait for completion
-  
-//  bool bSpawned = Api::bSpawnTask_session(pJob);
-//  UNUSED(bSpawned);
-  pJob->vResponseTimerStart();
-  
-  Api::vExecuteJob(pSession);
-  
-  pJob->vResponseTimerUpdate();
-
-//  vTrace("Job Timer: %lldus\n"_Stz
-//         ,pJob->m_oTimer.iMicroseconds());
-  
-  RASSERT(! pJob->bIsInError() );
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete job and free session
-  Api::vReapableJob(pSession);
-
-  Api::vFreeSession(pSession);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //push result
-  
-  i8 iJobNo = (i8)pJob->tJobId().uJobNo();
-  
-  m_pDataStack->vPushInt(iJobNo);
-  m_pDataStack->vPushInt(true);
-  
-  //delete pReqTknVec;
-  delete pWithTagStrTknVec;
-  
-  EXIT();
-}
-#endif
-
 
 /*----------------------------------------------------------------------------*/
 /* api::jobMetricsDisable -- disable job metrics                              */
