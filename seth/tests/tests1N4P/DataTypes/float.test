@@ -97,6 +97,7 @@ rows:
   (200.213)
   (200.213)
   (200.213)
+
 //------------------------------------------------------------------------------
 select 0.0e0 < 2.2250738585072014e-308 from datums;
 rows:
@@ -249,23 +250,22 @@ rows:
   (11.66)
   (11.66)
   (11.66)
-/*
-select cast (flt_col8 as varchar)  , cast (flt_col9 as varchar) from datums order by flt_col8;
+
+select flt_col8, cast (flt_col8 as varchar)  , flt_col9, cast (flt_col9 as varchar) from datums order by flt_col8;
 rows:
- (null,'31.456')
- ('0.22','31.456')
- ('0.22',31.456)
- ('0.22','31.456')
- ('0.22','76.456')
- ('0.22','108.456')
- ('0.22','108.456')
- ('0.22','108.456')
- ('0.22','108.456')
- ('10.22','108.456')
- ('10.22','108.456')
- ('10.22','108.456')
- ('10.22','108.456')
-*/
+ (null,null,76.456,'76.4560')
+ (0.22,'0.22000',108.456,'108.456')
+ (0.22,'0.22000',108.456,'108.456')
+ (0.22,'0.22000',108.456,'108.456')
+ (0.22,'0.22000',108.456,'108.456')
+ (0.22,'0.22000',108.456,'108.456')
+ (0.22,'0.22000',108.456,'108.456')
+ (0.22,'0.22000',108.456,'108.456')
+ (0.22,'0.22000',108.456,'108.456')
+ (10.22,'10.2200',31.456,'31.4560')
+ (10.22,'10.2200',31.456,'31.4560')
+ (10.22,'10.2200',31.456,'31.4560')
+ (10.22,'10.2200',31.456,'31.4560')
 
 // exception : /0
 select (flt_col8/0e0) from datums;
@@ -317,29 +317,6 @@ rows: (0.44)
 select min(flt_col8) + min(flt_col8) from datums;
 rows: (0.44)
 
-// aggregates : min (with nulls and min/max ints)
-/*
-select min(int_col1) from datums;
-rows: (-9223372036854775806)
-
-select 10 + min(int_col1) from datums;
-rows: (-9223372036854775796)
-
-select min(int_col1) + 10 from datums;
-rows: (-9223372036854775796)
-
-select min(10 + int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-
-select min(int_col1 + 10) from datums;
-failure contains: 'Arithmetic overflow'
-
-select min(int_col1 + int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-
-select min(int_col1) + min(int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-*/
 // aggregates : max
 
 select max(flt_col8) from datums;
@@ -363,35 +340,9 @@ rows: (20.44)
 select max(flt_col8) + max(flt_col8) from datums;
 rows: (20.44)
 
-// aggregates : max (with nulls and min/max ints)
-/*
-select max(int_col1) from datums;
-rows: (9223372036854775806)
-
-select 10 + max(int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-
-select max(int_col1) + 10 from datums;
-failure contains: 'Arithmetic overflow'
-
-select max(10 + int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-
-select max(int_col1 + 10) from datums;
-failure contains: 'Arithmetic overflow'
-
-select max(int_col1 + int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-
-select max(int_col1) + max(int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-*/
-
 // drop the table
 drop table datums;
 success
-
-/*
 
 //------------------------------------------------------------------------------
 // create table
@@ -436,11 +387,11 @@ rows:
    (10.22)
 
 //------------------------------------------------------------------------------
-select cast(int_col0 as float) from datums order by int_col0;
+select cast(int_col1 as float) from datums order by int_col0;
 rows:
   (null)
   (0)
-  (-9223372036854775806)
+  (-9.22337e+18)
   (1000)
   (2000)
   (4000)
@@ -450,16 +401,45 @@ rows:
   (8000)
   (9000)
   (10000)
-  (9223372036854775806)
+  (9.22337e+18)
 
 //------------------------------------------------------------------------------
 select flt_col8 + 2 from datums;
-failure contains: "OVERFLOW"
+rows:
+  (12.22)
+  (2.22)
+  (12.22)
+  (2.22)
+  (null)
+  (2.22)
+  (12.22)
+  (2.22)
+  (12.22)
+  (2.22)
+  (2.22)
+  (2.22)
+  (2.22)
+
+//------------------------------------------------------------------------------
+select flt_col8 / 2 from datums;
+rows:
+  (5.11)
+  (0.11)
+  (5.11)
+  (0.11)
+  (null)
+  (0.11)
+  (5.11)
+  (0.11)
+  (5.11)
+  (0.11)
+  (0.11)
+  (0.11)
+  (0.11)
 
 // drop the table
 drop table datums;
 success
-*/
 
 // get memory leaks
 memoryLeaks;

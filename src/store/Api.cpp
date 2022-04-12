@@ -17,8 +17,10 @@
 #include "Sessions.hpp"
 #include "Output.hpp"
 #include "EventHandlers.hpp"
+#include "Grid.hpp"
 
 #include "TagConstants.h"
+#include "ePP.h"
 
 #include "SP_TagSet.hpp"
 
@@ -449,6 +451,109 @@ void Api::vReapJobsOnce(bool bForce)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* execute internal command with given tag string                             */
+/*----------------------------------------------------------------------------*/
+bool Api::bExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
+                          eEC& reError, i8& riJobNo)
+{
+  _static_
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allot a session
+  
+  Session* pSession = Api::pAllocSession(SK_INTERNAL);
+  
+  reError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenise the request
+  
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
+
+  TagSet* pTagSet =  & pSession->m_oJobTagSet;
+  pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+
+  reError = Api::ePrepareJob(pSession,pCmdTknVec);
+
+  delete pCmdTknVec;
+
+  if (reError) {
+    //m_pDataStack->vPushInt(eError);
+    //m_pDataStack->vPushInt(false);
+    //EXIT();
+    return false;
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // update the job tag set
+  
+  Job* pJob = pSession->m_pSsnJob;
+
+  TagSet* pJobTagSet = pJob->pJobTags();
+  
+  if (szTagPath) {
+    //Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
+    pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
+  }
+  
+  TokenVec* pWithTagStrTknVec = TokenVec::pTokeniseSen(szWithTagStr);
+  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
+  
+  
+  Now xNow;
+  xNow.vSetNow();
+
+  s32 sHostName;
+  Hardware::vHostName(sHostName);
+
+  pJobTagSet->vInsert(C_TAG_FREEPCT,gpBufferPool->iFreePercent());
+  pJobTagSet->vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
+  pJobTagSet->vInsert(C_TAG_HOST,sHostName);
+  pJobTagSet->vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
+  pJobTagSet->vInsert(C_TAG_REQUEST,pSession->m_iCmdNo);
+  pJobTagSet->vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
+  pJobTagSet->vInsert(C_TAG_WHEN,xNow.sz());
+
+  
+  
+  if (AM::TRACE::bVerbose(C_VB_API))
+    pJobTagSet->vDumpSet();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn job and wait for completion
+  
+//  bool bSpawned = Api::bSpawnTask_session(pJob);
+//  UNUSED(bSpawned);
+  pJob->vResponseTimerStart();
+  
+  Api::vExecuteJob(pSession);
+  
+  pJob->vResponseTimerUpdate();
+
+//  vTrace("Job Timer: %lldus\n"_Stz
+//         ,pJob->m_oTimer.iMicroseconds());
+  
+  RASSERT(! pJob->bIsInError() );
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete job and free session
+  riJobNo = (i8)pJob->tJobId().uJobNo();
+  Api::vReapableJob(pSession);
+
+  Api::vFreeSession(pSession);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //push result
+    
+  //m_pDataStack->vPushInt(iJobNo);
+  //m_pDataStack->vPushInt(true);
+  
+  //delete pReqTknVec;
+  delete pWithTagStrTknVec;
+
+  return true;
+}
 
 
 /*----------------------------------------------------------------------------*/

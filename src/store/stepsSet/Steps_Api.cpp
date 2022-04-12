@@ -35,15 +35,15 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::addProcedure"_Stz,        &Step::vApiAddProcedure);
   vAddStep("api::derefMetricsDisable"_Stz, &Step::vApiDerefMetricsDisable);
   vAddStep("api::derefMetricsEnable"_Stz,  &Step::vApiDerefMetricsEnable);
-  vAddStep("api::executeCommand"_Stz,    &Step::vApiExecuteCommand);
-  vAddStep("api::jobMetricsDisable"_Stz, &Step::vApiJobMetricsDisable);
-  vAddStep("api::jobMetricsEnable"_Stz,  &Step::vApiJobMetricsEnable);
-  vAddStep("api::reapDisable"_Stz,       &Step::vApiReapDisable);
-  vAddStep("api::reapEnable"_Stz,        &Step::vApiReapEnable);
-  vAddStep("api::reapJobs"_Stz,          &Step::vApiReapJobs);
-  vAddStep("api::spawnDemon"_Stz,        &Step::vApiSpawnDemon);
-  vAddStep("api::sysMetricsDisable"_Stz, &Step::vApiSysMetricsDisable);
-  vAddStep("api::sysMetricsEnable"_Stz,  &Step::vApiSysMetricsEnable);
+  vAddStep("api::executeCommand"_Stz,      &Step::vApiExecuteCommand);
+  vAddStep("api::jobMetricsDisable"_Stz,   &Step::vApiJobMetricsDisable);
+  vAddStep("api::jobMetricsEnable"_Stz,    &Step::vApiJobMetricsEnable);
+  vAddStep("api::reapDisable"_Stz,         &Step::vApiReapDisable);
+  vAddStep("api::reapEnable"_Stz,          &Step::vApiReapEnable);
+  vAddStep("api::reapJobs"_Stz,            &Step::vApiReapJobs);
+  vAddStep("api::spawnDemon"_Stz,          &Step::vApiSpawnDemon);
+  vAddStep("api::sysMetricsDisable"_Stz,   &Step::vApiSysMetricsDisable);
+  vAddStep("api::sysMetricsEnable"_Stz,    &Step::vApiSysMetricsEnable);
 }
 
 /*----------------------------------------------------------------------------*/
