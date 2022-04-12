@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* op__Compilercommon.sen -- SqlCompiler operator common words                */
+/* op__compilercommon.sen -- SqlCompiler operator common words                */
 /*============================================================================*/
 
-" op__Compilercommon.sen" .verbose
+" op__compilercommon.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_LEAVE ...                                                 */
