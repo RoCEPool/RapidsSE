@@ -43,7 +43,6 @@ Session* Api::pAllocSession(eSK eSession)
 {
   _static_
   
-  
   Sessions* pSessions = AM::pSessions();
   
   Session* pSession = pSessions->pAllocSession(eSession);
@@ -133,6 +132,28 @@ void Api::vExecuteJob(Session* pSession)
 
     //AM::pHeaps()->vSetTraceFree(false);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* fork job (spawn job but don't wait for completion)                         */
+/*----------------------------------------------------------------------------*/
+void Api::vForkJob(Session* pSession)
+{
+  _static_
+  
+  Job* pJob = pSession->m_pSsnJob;
+  RASSERT(! pJob->pTask());
+
+  Api::vMutexLock(pSession,pJob);
+  RASSERT(JS_LOCKED == pJob->eJobState());
+  
+  pJob->vTaskCreate();
+  
+  pJob->vResponseTimerStart();
+  
+  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
+  
+  Api::vMutexUnlock(pSession,pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -442,13 +463,10 @@ void Api::vSubmitJob(Session* pSession)
   _static_
   
   Job* pJob = pSession->m_pSsnJob;
+  RASSERT(! pJob->pTask());
 
   Api::vMutexLock(pSession,pJob);
-
   RASSERT(JS_LOCKED == pJob->eJobState());
-
-  
-  RASSERT(! pJob->pTask());
   
   pJob->vTaskCreate();
   
@@ -462,15 +480,17 @@ void Api::vSubmitJob(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Api::vWaitJob(Session* pSession)
 {
+  _static_
+  
   Job* pJob = pSession->m_pSsnJob;
   
   //pSession->m_oMutex.vObserve(true);
   Api::vMutexWaitCond(pSession,pJob);
+  
   pJob->vResponseTimerUpdate();
   
   Api::vMutexUnlock(pSession,pJob);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* attempt to reap one job from the retired list                              */
@@ -552,7 +572,8 @@ bool Api::bReapJob(void)
 /*----------------------------------------------------------------------------*/
 bool Api::bShortForm(TokenVec* pCmdTknVec)
 {
-
+  _static_
+  
   i8 i_Fan = pCmdTknVec->iFindToken("*|"_Stz);
   if (C_UNKNOWN != i_Fan)
     return true;
@@ -570,6 +591,8 @@ bool Api::bShortForm(TokenVec* pCmdTknVec)
 /*----------------------------------------------------------------------------*/
 bool Api::bExpandToLongForm(TokenVec* pCmdTknVec)
 {
+  _static_
+  
   TokenVec* pAllPtnVec;
   TokenVec* pOnOriginVec;
   
@@ -841,6 +864,8 @@ void Api::vCallStartSystemJob(void)
 /*----------------------------------------------------------------------------*/
 void Api::vCallTaskImmediate(Task* pImmediateTask)
 {
+  _static_
+  
   Task* pSaveTask = _pTask(PsxThd::pTlsGet(giTLS_TaskKey));
 
   pImmediateTask->vIsImmediate(true);
@@ -1060,7 +1085,6 @@ void Api::vMutexWaitCond(Session* pSession, Job* pJob)
   } while (pJob->eJobState() != JS_SIGNALLED);
 
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
