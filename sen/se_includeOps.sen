@@ -283,6 +283,7 @@ assert::stack_0
 
 "w" .verbose
 
+  "OP_wait.sen"                 include
   "OP_waitPipeline.sen"         include
   "OP_waker.sen"                include
   "OP_wrCsvFile.sen"            include
@@ -296,7 +297,6 @@ assert::stack_0
   "op__classWords.sen"          include
 
 "z\n" .verbose
-
 
 /*============================================================================*/
 /* end                                                                        */
