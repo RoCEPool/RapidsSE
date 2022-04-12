@@ -68,13 +68,6 @@ rows:
   (11.00)
 
 //------------------------------------------------------------------------------
-SELECT L_QUANTITY FROM lineitem order by L_TAX limit 3;
-rows:
-  (11.00)
-  (11.00)
-  (11.00)
-
-//------------------------------------------------------------------------------
 SELECT L_QUANTITY FROM lineitem order by L_ORDERKEY limit 8;
 rows:
   (6.00)
