@@ -36,6 +36,7 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::derefMetricsDisable"_Stz, &Step::vApiDerefMetricsDisable);
   vAddStep("api::derefMetricsEnable"_Stz,  &Step::vApiDerefMetricsEnable);
   vAddStep("api::executeCommand"_Stz,      &Step::vApiExecuteCommand);
+  vAddStep("api::forkCommand"_Stz,         &Step::vApiForkCommand);
   vAddStep("api::jobMetricsDisable"_Stz,   &Step::vApiJobMetricsDisable);
   vAddStep("api::jobMetricsEnable"_Stz,    &Step::vApiJobMetricsEnable);
   vAddStep("api::reapDisable"_Stz,         &Step::vApiReapDisable);
@@ -107,6 +108,45 @@ void Step::vApiDerefMetricsEnable(void)
 /* api::executeCommand -- execute a command (internally)                      */
 /*----------------------------------------------------------------------------*/
 void Step::vApiExecuteCommand(void)
+{
+  ENTRY();
+
+  // pop command and tag string
+  
+  s48K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
+
+  s48K sWithTagStr;
+  m_pDataStack->vPopStr(sWithTagStr,__func__);
+
+  if (AM::TRACE::bVerbose(C_VB_API)) {
+    vTrace("ExecuteCommand: %s\n"_Stz,sCmd.szStz());
+    vTrace("      WithTags: %s\n"_Stz,sWithTagStr.szStz());
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Stz* szTagPath = nullptr;
+  if (m_pJob)
+    szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
+ 
+  eEC eError = Api::eExecuteCommand(sCmd, sWithTagStr, szTagPath);
+  
+  if (EC_NONE == eError) {
+    m_pDataStack->vPushInt(true);
+  }
+  else {
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::forkCommand -- fork a command (internally)                            */
+/*----------------------------------------------------------------------------*/
+void Step::vApiForkCommand(void)
 {
   ENTRY();
 
