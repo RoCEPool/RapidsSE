@@ -34,10 +34,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_StreamOfOp(void)
 {
-  vAddStep("[stream]"_Stz,                &Step::vStreamOfOpGet);
+  vAddStep("[stream]"_Stz,          &Step::vStreamOfOpGet);
 
-  vAddStep("[stream].dump"_Stz,           &Step::vStreamOfOpDump);
-  vAddStep("[stream].findOp"_Stz,         &Step::vStreamOfOpFindOp);
+  vAddStep("[stream].dump"_Stz,     &Step::vStreamOfOpDump);
+  vAddStep("[stream].findOp"_Stz,   &Step::vStreamOfOpFindOp);
 }
 
 /*----------------------------------------------------------------------------*/

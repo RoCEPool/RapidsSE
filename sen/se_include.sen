@@ -16,6 +16,7 @@ assert::stack_0
   "se_word.sen"             include
   "se_str.sen"              include
   "se_api.sen"              include
+  "se_op.sen"               include
 
   "se_categories.sen"       include
   "se_cluster.sen"          include
