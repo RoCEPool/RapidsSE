@@ -158,14 +158,35 @@
       | pulse once
       | eachPathTag
       | pathToDfload2 $table
-      | forkCommand wait
-      | wait
+      | forkCommand dynamic waitFinished
+      | waitFinished
       | sink
       | stageA
 
   end ;
   "
   api::addProcedure
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dload_test
+  
+  STD_PATH_TAG
+  "
+  procedure dload_test
+    parameters $table
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+//      | eachPathTag
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+
 ;
 
 /*============================================================================*/

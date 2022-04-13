@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_wait.sen -- Operator wait                                               */
+/* OP_waitFinished.sen -- Operator wait finished                              */
 /*============================================================================*/
 
-" OP_wait.sen" .verbose
+" OP_waitFinished.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
-: wait_EosMarker \handler
+: waitFinished_Eos \handler
 
   ZK_M_EOS_handler
 ;
@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_FINISHED_handler ...                                      */
 /*----------------------------------------------------------------------------*/
-: wait_FinishedMarker \handler
+: waitFinished_Finished \handler
 
   ZK_M_FINISHED_handler
 ;
@@ -27,14 +27,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute wait op                                                            */
 /*----------------------------------------------------------------------------*/
- : wait_op \operator
+ : waitFinished_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: wait_EosMarker       ZK_M_EOS       [op].handler!
-  find: wait_FinishedMarker  ZK_M_FINISHED  [op].handler!
+  find: waitFinished_Eos       ZK_M_EOS       [op].handler!
+  find: waitFinished_Finished  ZK_M_FINISHED  [op].handler!
 
   op__loop
 
@@ -48,12 +48,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: wait :: wait ;
+cmdSyntax: waitFinished :: waitFinished ;
 
-: wait_cmdTags _cmdTags tagCopy: op_tags
+: waitFinished_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "wait_op"
+    <opEntry> = "waitFinished_op"
   }
 ;
 

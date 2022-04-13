@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
-: forkCommand_EosMarker \handler
+: forkCommand_Eos \handler
 
   <responseOpNm> [stream].findOp locals| pResponseOp |
 
@@ -15,7 +15,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_FORKCOMMAND ...                                           */
+/* handler for ZK_I_COMMAND ...                                               */
 /*----------------------------------------------------------------------------*/
 : forkCommand_Command \handler
 
@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: forkCommand_StartMarker \handler
+: forkCommand_Start \handler
   
   ZK_M_START_handler
 ;
@@ -46,9 +46,9 @@
 
   op__topology
 
-  find: forkCommand_EosMarker     ZK_M_EOS       [op].handler!
-  find: forkCommand_Command       ZK_I_COMMAND   [op].handler!
-  find: forkCommand_StartMarker   ZK_M_START     [op].handler!
+  find: forkCommand_Eos      ZK_M_EOS       [op].handler!
+  find: forkCommand_Command  ZK_I_COMMAND   [op].handler!
+  find: forkCommand_Start    ZK_M_START     [op].handler!
 
   op__loop
 
@@ -62,7 +62,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: forkCommand :: forkCommand <responseOpNm> ;
+cmdSyntax: forkCommand :: forkCommand dynamic <responseOpNm> ;
 
 : forkCommand_cmdTags _cmdTags tagCopy: op_tags
   tags{
