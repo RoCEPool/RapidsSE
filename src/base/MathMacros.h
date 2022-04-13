@@ -131,7 +131,7 @@
   }
 
   //_PSH_FLT(fltArg1.m_dFlt)
-
+  //*paW++ = fltArg1.m_iAsI8;
 #define _DIV_BCDBCD(eErrorCode)                                            \
   {                                                                        \
     bcdArg2.m_iAsI8 = *(--paW);                                            \
@@ -149,7 +149,7 @@
       else {                                                               \
         i8 max_col_decimal = TMP_TBLCOL_SCALE;                             \
         i8 tmpScaleDiff = bcdArg1.m_iScale - bcdArg2.m_iScale;             \
-        fltArg1.m_dFlt = ((d8)bcdArg1.m_iMantissa) / ((d8)bcdArg2.m_iMantissa);        \
+        fltArg1.m_dFlt = ((d8)bcdArg1.m_iMantissa) / ((d8)bcdArg2.m_iMantissa); \
         if(tmpScaleDiff < 0) {                                             \
           tmpScaleDiff*=-1;                                                \
           if(tmpScaleDiff > max_col_decimal) {                             \
@@ -160,14 +160,14 @@
           }                                                                \
         }                                                                  \
         else {                                                             \
-          if(tmpScaleDiff > max_col_decimal) {\
-            fltArg1.m_dFlt *= (1/iaPow10[max_col_decimal]);\
+          if(tmpScaleDiff > max_col_decimal) {                             \
+            fltArg1.m_dFlt *= (1/iaPow10[max_col_decimal]);                \
           }                                                                \
           else {                                                           \
-            fltArg1.m_dFlt *= (1/iaPow10[tmpScaleDiff]);\
-          }\
+            fltArg1.m_dFlt *= (1/iaPow10[tmpScaleDiff]);                   \
+          }                                                                \
         }                                                                  \
-        *paW++ = fltArg1.m_iAsI8;                                          \
+        _PSH_FLT(fltArg1.m_dFlt)                                           \
         _FLT_TOBCD(eErrorCode)                                             \
         if(eErrorCode != EC_NONE) {                                        \
           --paW;                                                           \
@@ -214,7 +214,7 @@
   }
 */
 
-#define _MUL_BCDBCD(eErrorCode)                                            \
+#define _MUL_BCDBCD(eErrorCode)                                          \
 {                                                                        \
   bcdArg2.m_iAsI8 = *(--paW);                                            \
   bcdArg1.m_iAsI8 = *(--paW);                                            \

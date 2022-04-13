@@ -88,65 +88,74 @@
 }
 
 // Float to int is just drop the decimal digits?
-#define _FLT_TOINT(iErrorCode) \
-{                              \
-  fltArg1.m_iAsI8 = *(--paW);                                                      \
-  if (iErrorCode != EC_NONE ||                                           \
-    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                             \
-    *paW++ = C_DATUM_NULL;                                               \
-  }                                                                      \
-  else {                                                                 \
-    if(fltArg1.m_iAsI8 > (i8)C_INT_MAX) {                                              \
-      iErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-      *paW++ = C_DATUM_NULL;                                             \
-    }                                                                    \
-    else if(fltArg1.m_iAsI8 < (i8) C_INT_MIN) {                                    \
-      iErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
-      *paW++ = C_DATUM_NULL;                                             \
-    }                                                                    \
-    else {                     \
-      fltArg1.m_iAsI8 = iArg1;                         \
-      *paW++ = (i8)fltArg1.m_dFlt;                                        \
-    }                          \
-  }                                                                      \
+#define _FLT_TOINT(iErrorCode)                                             \
+{                                                                          \
+  fltArg1.m_iAsI8 = *(--paW);                                              \
+  if (iErrorCode != EC_NONE ||                                             \
+    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                     \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }                                                                        \
+  else {                                                                   \
+    if(fltArg1.m_iAsI8 > (i8)C_INT_MAX) {                                  \
+      iErrorCode = EC_ARITHMETIC_OVERFLOW;                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else if(fltArg1.m_iAsI8 < (i8) C_INT_MIN) {                            \
+      iErrorCode = EC_ARITHMETIC_UNDERFLOW;                                \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      fltArg1.m_iAsI8 = iArg1;                                             \
+      *paW++ = (i8)fltArg1.m_dFlt;                                         \
+    }                                                                      \
+  }                                                                        \
 }
 
-// Float to BCD, WARNING this might not be correct
-#define _FLT_TOBCD(iErrorCode) \
-{                              \
-  fltArg1.m_iAsI8 = *(--paW);                                            \
-  if (iErrorCode != EC_NONE ||                                           \
-    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                   \
-    *paW++ = C_DATUM_NULL;                                               \
-  }                                                                      \
-  else {                                                                 \
-  if(fltArg1.m_dFlt > (d8)C_BCD_MAX) {                                              \
-      iErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-      *paW++ = C_DATUM_NULL;                                             \
-    }                                                                    \
-    else if(fltArg1.m_dFlt < (d8) C_BCD_MIN) {                                    \
-      iErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
-      *paW++ = C_DATUM_NULL;                                             \
-    }                                                                    \
-    else {                                                               \
-      i8 cnt=0;                                                       \
-      d8 dt = fltArg1.m_dFlt - (i8)(fltArg1.m_dFlt);                  \
-      if (fltArg1.m_dFlt < 0 ) dt = dt * -1;                          \
-      while (dt >= 0.0000001 ){                                       \
-        dt = dt * 10.0;                                               \
-        cnt++;                                                        \
-        dt = dt - (int)(dt+0.0000001);                                \
-      }                                                               \
-      if (cnt > 14) cnt = 14;                                         \
-      bcdArg1.m_iMantissa = fltArg1.m_iAsI8;                          \
-      bcdArg2.m_iMantissa = iaPow10[cnt];                             \
-                                                                      \
-      bcdArg1.m_iMantissa = (i8)(fltArg1.m_dFlt * (d8)bcdArg2.m_iMantissa);  \
-      bcdArg1.m_iScale = cnt;                                         \
-      *paW++ = bcdArg1.m_iAsI8;                                       \
-    }                                                                 \
-  }                                                                   \
+#define _FLT_TOBCD(iErrorCode)                                             \
+{                                                                          \
+  fltArg1.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+  if (iErrorCode != EC_NONE ||                                             \
+    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                     \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }                                                                        \
+  else {                                                                   \
+    if (fltArg1.m_dFlt > (d8)C_BCD_MAX) {                                  \
+      iErrorCode = EC_ARITHMETIC_OVERFLOW;                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else if (fltArg1.m_dFlt < (d8) C_BCD_MIN) {                            \
+      iErrorCode = EC_ARITHMETIC_UNDERFLOW;                                \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      i8 cnt = 0;                                                          \
+      d8 dt = fltArg1.m_dFlt - (i8)(fltArg1.m_dFlt);                       \
+      if (fltArg1.m_dFlt < 0 ) dt = dt * -1;                               \
+      while (dt >= 0.0000001 && cnt < 14) {                                \
+        dt = dt * 10.0;                                                    \
+        dt = dt - (int)(dt+0.0000001);                                     \
+        cnt++;                                                             \
+      }                                                                    \
+                                                                           \
+      bcdArg1.m_iMantissa = fltArg1.m_iAsI8;                               \
+      bcdArg2.m_iMantissa = iaPow10[cnt];                                  \
+                                                                           \
+      i8 iMantissa = (i8)(fltArg1.m_dFlt * (d8)bcdArg2.m_iMantissa);       \
+      while (iMantissa > C_BCD_MAX) {                                      \
+        iMantissa = iMantissa / 10;                                        \
+        cnt--;                                                             \
+      }                                                                    \
+                                                                           \
+      bcdArg1.m_iSpare = 0;                                                \
+      bcdArg1.m_iMantissa = iMantissa;                                     \
+      bcdArg1.m_iScale = cnt;                                              \
+                                                                           \
+      *paW++ = bcdArg1.m_iAsI8;                                            \
+    }                                                                      \
+  }                                                                        \
 }
+
 
 // how many decimal places , 10?
 //WARNING do we need to length of string?
