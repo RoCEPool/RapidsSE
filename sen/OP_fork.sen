@@ -12,6 +12,14 @@
   ZK_M_EOS_handler
 ;
 
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_EOS ...                                                   */
+/*----------------------------------------------------------------------------*/
+: fork_ForkCommand \handler
+
+  ZK_M_EOS_handler
+;
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -25,7 +33,8 @@
 
   op__topology
 
-  find: fork_EosMarker  ZK_M_EOS       [op].handler!
+  find: fork_EosMarker    ZK_M_EOS           [op].handler!
+  find: fork_ForkCommand  ZK_I_CALLPIPELINE  [op].handler!
 
   op__loop
 
@@ -39,7 +48,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: fork :: fork ;
+cmdSyntax: fork :: fork <responseOpNm> ;
 
 : fork_cmdTags _cmdTags tagCopy: op_tags
   tags{

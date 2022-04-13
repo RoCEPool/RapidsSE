@@ -573,6 +573,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_COMMANDERRORS"_Stz, OI_COMMANDERRORS);
   /*  0 */ vAddConstant("OI_COUNTINFO"_Stz,     OI_COUNTINFO);
   /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);
+  /*  0 */ vAddConstant("OI_FORKCOMMAND"_Stz,   OI_FORKCOMMAND);
   /*  0 */ vAddConstant("OI_LOADRESULT"_Stz,    OI_LOADRESULT);
   /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
   /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
