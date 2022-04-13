@@ -13,7 +13,7 @@
   PipeIn[].pipeOut
 
   // find the C_TABLEDEF_COUNT
-  C_TDEF_COUNT op__tableDef_streamSet assert
+  C_TDEF_COUNTINFO op__tableDef_streamSet assert
 
   // create a new streamDef
   streamSetTable[] StreamDefLft[].new

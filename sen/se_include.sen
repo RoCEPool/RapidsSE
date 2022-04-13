@@ -102,7 +102,7 @@ cmd::fillOut_allCmds
   "it_columnDefs.sen"       include
   "it_command.sen"          include
   "it_commandErrors.sen"    include
-  "it_count.sen"            include
+  //"it_count.sen"            include
   "it_countInfo.sen"        include
   "it_deref.sen"            include
   "it_eventLog.sen"         include
@@ -123,7 +123,7 @@ cmd::fillOut_allCmds
   "it_lockStats.sen"        include
   "it_lookupCatalog.sen"    include
   "it_lookupIndex.sen"      include
-  "it_lookupSchema.sen"     include 
+  "it_lookupSchema.sen"     include
   "it_lookupTable.sen"      include
   "it_memoryLog.sen"        include
   "it_nodeInfo.sen"         include
