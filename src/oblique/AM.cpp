@@ -3410,7 +3410,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OI_COMMANDERRORS:  eOperand = ZK_I_COMMANDERRORS;  break;
         case OI_COUNTINFO:      eOperand = ZK_I_COUNTINFO;      break;
         case OI_EXECERRORS:     eOperand = ZK_I_EXECERRORS;     break;
-        case OI_FORKCOMMAND:    eOperand = ZK_I_CALLPIPELINE;   break;
+        case OI_FORKCOMMAND:    eOperand = ZK_I_FORKCOMMAND;    break;
         case OI_LOADRESULT:     eOperand = ZK_I_LOADRESULT;     break;
         case OI_LOCKSTATS:      eOperand = ZK_I_LOCKSTATS;      break;
         case OI_NODEINFO:       eOperand = ZK_I_NODEINFO;       break;

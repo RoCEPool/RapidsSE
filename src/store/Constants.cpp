@@ -711,6 +711,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_I_COMMANDERRORS"_Stz,   ZK_I_COMMANDERRORS);
   /*  0 */ vAddConstant("ZK_I_COUNTINFO"_Stz,       ZK_I_COUNTINFO);
   /*  0 */ vAddConstant("ZK_I_EXECERRORS"_Stz,      ZK_I_EXECERRORS);
+  /*  0 */ vAddConstant("ZK_I_FORKCOMMAND"_Stz,     ZK_I_FORKCOMMAND);
   /*  0 */ vAddConstant("ZK_I_LOADRESULT"_Stz,      ZK_I_LOADRESULT);
   /*  0 */ vAddConstant("ZK_I_LOCKSTATS"_Stz,       ZK_I_LOCKSTATS);
   /*  0 */ vAddConstant("ZK_I_NODEINFO"_Stz,        ZK_I_NODEINFO);
