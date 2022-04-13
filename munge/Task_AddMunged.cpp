@@ -22711,7 +22711,7 @@ void Task::vAddMunged(Task* )
     "  find: output_CrwBuffer     ZK_D_CRWBUFFER   [op].handler!\n"
     "  find: output_CsvBuffer     ZK_D_CSVBUFFER   [op].handler!\n"
     "  find: output_DataMarker    ZK_M_DATAPULSE   [op].handler!\n"
-    "  find: output_EachRowBuffer ZK_EACHROWMARKER [op].handler!\n"
+    "  find: output_EachRowBuffer ZK_D_EACHROWBUFFER [op].handler!\n"
     "  find: output_EntBuffer     ZK_D_ENTBUFFER   [op].handler!\n"
     "  find: output_EosMarker     ZK_M_EOS         [op].handler!\n"
     "  find: output_ErrorMarker   ZK_M_ERROR       [op].handler!\n"
