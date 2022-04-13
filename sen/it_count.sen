@@ -6,11 +6,11 @@
 
 : start::it_count
 
-  // C_TDEF_COUNTINFO
+  // C_TDEF_COUNT
   
   STD_PATH_TAG
   "
-  define table __countInfo ( rowCount INTEGER NOT NULL ) < infoSet > = 1 ;
+  define table __count ( rowCount INTEGER NOT NULL ) < infoSet > = 1 ;
   "
   api::executeCommand api:executeCheck
 
