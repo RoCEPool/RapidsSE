@@ -109,6 +109,7 @@
   stage stageE on origin :
     |  progress 'Load'
     |  toStatDemon
+    |  respond
     |  sink
     |  stageA
 
@@ -133,6 +134,29 @@
       |   toDfload $table
       | callPipeline
       | waitPipeline
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dload2
+  
+  STD_PATH_TAG
+  "
+  procedure dload2
+    parameters $table
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | eachPath
+      |   toDfload $table
+      | fork wait
+      | wait
       | sink
       | stageA
 

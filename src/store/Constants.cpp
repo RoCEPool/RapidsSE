@@ -573,6 +573,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_COMMANDERRORS"_Stz, OI_COMMANDERRORS);
   /*  0 */ vAddConstant("OI_COUNTINFO"_Stz,     OI_COUNTINFO);
   /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);
+  /*  0 */ vAddConstant("OI_FORKCOMMAND"_Stz,   OI_FORKCOMMAND);
   /*  0 */ vAddConstant("OI_LOADRESULT"_Stz,    OI_LOADRESULT);
   /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
   /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
@@ -710,6 +711,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_I_COMMANDERRORS"_Stz,   ZK_I_COMMANDERRORS);
   /*  0 */ vAddConstant("ZK_I_COUNTINFO"_Stz,       ZK_I_COUNTINFO);
   /*  0 */ vAddConstant("ZK_I_EXECERRORS"_Stz,      ZK_I_EXECERRORS);
+  /*  0 */ vAddConstant("ZK_I_FORKCOMMAND"_Stz,     ZK_I_FORKCOMMAND);
   /*  0 */ vAddConstant("ZK_I_LOADRESULT"_Stz,      ZK_I_LOADRESULT);
   /*  0 */ vAddConstant("ZK_I_LOCKSTATS"_Stz,       ZK_I_LOCKSTATS);
   /*  0 */ vAddConstant("ZK_I_NODEINFO"_Stz,        ZK_I_NODEINFO);
