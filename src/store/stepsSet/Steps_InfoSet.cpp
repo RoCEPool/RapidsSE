@@ -257,7 +257,7 @@ void Step::vInfoSetAddRowCount(void)
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
 
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pInfoSet->vOpInfoSet(OI_COUNTINFO);
+  pInfoSet->vOpInfoSet(OI_COUNT);
   
   i8 nBuffers = 0;
   i8 nRows = 0;

@@ -570,7 +570,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
   /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
   /*  0 */ vAddConstant("OI_COMMANDERRORS"_Stz, OI_COMMANDERRORS);
-  /*  0 */ vAddConstant("OI_COUNTINFO"_Stz,     OI_COUNTINFO);
+  /*  0 */ vAddConstant("OI_COUNT"_Stz,     OI_COUNT);
   /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);
   /*  0 */ vAddConstant("OI_FORKCOMMAND"_Stz,   OI_FORKCOMMAND);
   /*  0 */ vAddConstant("OI_LOADRESULT"_Stz,    OI_LOADRESULT);
@@ -709,7 +709,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_I_CALLPIPELINE"_Stz,    ZK_I_CALLPIPELINE);
   /*  0 */ vAddConstant("ZK_I_COMMAND"_Stz,         ZK_I_COMMAND);
   /*  0 */ vAddConstant("ZK_I_COMMANDERRORS"_Stz,   ZK_I_COMMANDERRORS);
-  /*  0 */ vAddConstant("ZK_I_COUNTINFO"_Stz,       ZK_I_COUNTINFO);
+  /*  0 */ vAddConstant("ZK_I_COUNT"_Stz,       ZK_I_COUNT);
   /*  0 */ vAddConstant("ZK_I_EXECERRORS"_Stz,      ZK_I_EXECERRORS);
   /*  0 */ vAddConstant("ZK_I_FORKCOMMAND"_Stz,     ZK_I_FORKCOMMAND);
   /*  0 */ vAddConstant("ZK_I_LOADRESULT"_Stz,      ZK_I_LOADRESULT);
