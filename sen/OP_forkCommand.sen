@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_fork.sen -- Operator fork                                               */
+/* OP_forkCommand.sen -- Operator fork command                                */
 /*============================================================================*/
 
-" OP_fork.sen" .verbose
+" OP_forkCommand.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
-: fork_EosMarker \handler
+: forkCommand_EosMarker \handler
 
   <responseOpNm> [stream].findOp locals| pResponseOp |
 
@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_I_FORKCOMMAND ...                                           */
 /*----------------------------------------------------------------------------*/
-: fork_ForkCommand \handler
+: forkCommand_Command \handler
 
   <responseOpNm> [stream].findOp locals| pResponseOp |
   
@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
-: fork_StartMarker \handler
+: forkCommand_StartMarker \handler
   
   ZK_M_START_handler
 ;
@@ -40,15 +40,15 @@
 /*----------------------------------------------------------------------------*/
 /* execute fork op                                                            */
 /*----------------------------------------------------------------------------*/
- : fork_op \operator
+ : forkCommand_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: fork_EosMarker     ZK_M_EOS           [op].handler!
-  find: fork_ForkCommand   ZK_I_FORKCOMMAND   [op].handler!
-  find: fork_StartMarker   ZK_M_START         [op].handler!
+  find: forkCommand_EosMarker     ZK_M_EOS       [op].handler!
+  find: forkCommand_Command       ZK_I_COMMAND   [op].handler!
+  find: forkCommand_StartMarker   ZK_M_START     [op].handler!
 
   op__loop
 
@@ -62,12 +62,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: fork :: fork <responseOpNm> ;
+cmdSyntax: forkCommand :: forkCommand <responseOpNm> ;
 
-: fork_cmdTags _cmdTags tagCopy: op_tags
+: forkCommand_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "fork_op"
+    <opEntry> = "forkCommand_op"
   }
 ;
 

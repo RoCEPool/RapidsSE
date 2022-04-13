@@ -15489,15 +15489,15 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [165] OP_fork.sen
+  // munge of [165] OP_forkCommand.sen
 
   gszaMungedText[165] =
-    "\" munged OP_fork.sen \" .verbose \n"
+    "\" munged OP_forkCommand.sen \" .verbose \n"
     "/*============================================================================*/\n"
-    "/* OP_fork.sen -- Operator fork                                               */\n"
+    "/* OP_forkCommand.sen -- Operator fork                                               */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\" OP_fork.sen\" .verbose\n"
+    "\" OP_forkCommand.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_M_EOS ...                                                   */\n"
@@ -15573,7 +15573,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 165 CONSTANT OP_fork.sen "_Stz;
+  szSubScriptDef = " 165 CONSTANT OP_forkCommand.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -32961,7 +32961,7 @@ void Task::vAddMunged(Task* )
     "  \"OP_fetch.sen\"                include\n"
     "  \"OP_filter.sen\"               include\n"
     "  \"OP_flushDemon.sen\"           include\n"
-    "  \"OP_fork.sen\"                 include\n"
+    "  \"OP_forkCommand.sen\"                 include\n"
     "\n"
     "\"g\" .verbose\n"
     "\n"

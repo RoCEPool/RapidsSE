@@ -158,7 +158,7 @@
       | pulse once
       | eachPathTag
       | pathToDfload2 $table
-      | fork wait
+      | forkCommand wait
       | wait
       | sink
       | stageA
