@@ -47,9 +47,9 @@ void Step::vStreamOfOpDump(void)
 {
   ENTRY();
       
-  //SP_Pipeline spSubPipe;
+  Stream* pStream = m_pOp->pStream();
   
-  // vTrace("%s\n"_Stz,spSubPipe.sz(* m_pLogicUnit->m_xpVertex,true));
+  pStream->vDump();
 
   EXIT();
 }
@@ -80,10 +80,9 @@ void Step::vStreamOfOpGet(void)
 {
   ENTRY();
    
-//  if (m_pLogicUnit->m_xpVertex.bIsNull())
-//    m_pDataStack->vPushPtr(nullptr);
-//  else
-//    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpVertex);
+  Stream* pStream = m_pOp->pStream();
+  
+  m_pDataStack->vPushPtr(pStream);
 
   EXIT();
 }

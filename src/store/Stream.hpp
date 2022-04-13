@@ -42,6 +42,8 @@ namespace STORE
    ~Stream(void) noexcept(false);
     
     Deck* pDeck(void);
+  
+    void vDump(void);
 
     Op*  pFindOp(Stz* szOpNm);
 
