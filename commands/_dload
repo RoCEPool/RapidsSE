@@ -6,21 +6,21 @@ print "Dload Test";
 
 _lineitem_dates
 
-status;
+//status;
 
-space;
+//space;
 
-lsptn lineitem;
+//lsptn lineitem;
 
 print "Loading";
 
-dload lineitem
+dload_test lineitem
   paths "/Users/Shared/tpch/SF0/lineitem_10k_chunk0.csv"
         "/Users/Shared/tpch/SF0/lineitem_10k_chunk1.csv"
         "/Users/Shared/tpch/SF0/lineitem_10k_chunk2.csv"
 ;
 
-tablesizes;
+//tablesizes;
 
 /*============================================================================*/
 /* end                                                                        */

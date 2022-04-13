@@ -179,7 +179,7 @@
     stage stageA on origin :
         start
       | pulse once
-//      | eachPathTag
+      | eachPathTag
       | sink
       | stageA
 

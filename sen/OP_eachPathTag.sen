@@ -8,32 +8,42 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
-: eachPathTag_DataMarker \handler
+: eachPathTag_DataPulse \handler
  
-  "eachPathTag_DataMarker" .
+  "eachPathTag_DataPulse" .
 
   ZK_M_DATAPULSE_handler
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   <paths> locals| nPaths |
+  
+  0 0 0 locals| sPath iPathNo iPathOf |
 
   // find the __path table def
   C_TDEF_PATH op__tableDef_infoSet assert
 
   nPaths 0
   do
-    // create each infoSet operand
+    // create a new infoSet operand for each path
+    // refer to define table __path in it_path.sen
     infoSetTable[] InfoSet[].new
       OI_PATH InfoSet[].opInfoset!
 
-    nPaths
-     I
-     "<path" I >str str.cat ">" str.cat
+    // form: iPathOf iPathNo sPath
+    nPaths to iPathOf
+    I to iPathNo
+    "<path" I >str str.cat ">" str.cat
        [job].tagSet@ tagSet.getStr
-     3
-     InfoSet[].addRowVargs
+       to sPath
+     
+    // print the __path data
+    iPathOf iPathNo sPath "EachPathTag: %v %v %v" .printf
+
+    // add a __path row to infoset
+    iPathOf iPathNo sPath 3 InfoSet[].addRowVargs
         
+    // pipeout the infoset with one row in it
     InfoSet[].pipeOut
   loop
 ;
@@ -47,7 +57,7 @@
 
   op__topology
 
-  find: eachPathTag_DataMarker ZK_M_DATAPULSE [op].handler!
+  find: eachPathTag_DataPulse ZK_M_DATAPULSE [op].handler!
 
   op__loop
 
