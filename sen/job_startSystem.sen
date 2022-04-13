@@ -41,7 +41,6 @@
   start::it_callPipeline
   start::it_columnDefs
   start::it_commandErrors
-  //start::it_count
   start::it_countInfo
   start::it_deref
   start::it_eventLog

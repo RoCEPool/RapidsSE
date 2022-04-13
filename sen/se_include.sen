@@ -102,7 +102,6 @@ cmd::fillOut_allCmds
   "it_columnDefs.sen"       include
   "it_command.sen"          include
   "it_commandErrors.sen"    include
-  //"it_count.sen"            include
   "it_countInfo.sen"        include
   "it_deref.sen"            include
   "it_eventLog.sen"         include
