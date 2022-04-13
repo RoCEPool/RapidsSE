@@ -5,7 +5,7 @@
 " OP_toDfload2.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_PATHINFO ... an infoset with __pathinfo rows              */
+/* handler for ZK_I_PATH ... an infoset with __path rows                      */
 /*----------------------------------------------------------------------------*/
 : toDfload2_PathInfo \handler
  
@@ -13,8 +13,8 @@
 
   PipeIn[]\clear to InfoSet[]
 
-  // find the __pathInfo table def ; set infoSetTable[]
-  C_TDEF_PATHINFO op__tableDef_infoSet assert
+  // find the __path table def ; set infoSetTable[]
+  C_TDEF_PATH op__tableDef_infoSet assert
 
   InfoSet[].firstRow to infoSetRow[]
 
@@ -51,7 +51,7 @@
 
   op__topology
 
-  find: toDfload2_PathInfo ZK_I_PATHINFO [op].handler!
+  find: toDfload2_PathInfo ZK_I_PATH [op].handler!
 
   op__loop
 

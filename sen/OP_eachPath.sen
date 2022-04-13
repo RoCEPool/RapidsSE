@@ -20,13 +20,13 @@
   <paths> locals| nPaths |
 
   // find the __path table def
-  C_TDEF_PATHINFO op__tableDef_infoSet assert
+  C_TDEF_PATH op__tableDef_infoSet assert
 
   nPaths 0
   do
     // create each infoSet operand
     infoSetTable[] InfoSet[].new
-      OI_PATHINFO InfoSet[].opInfoset!
+      OI_PATH InfoSet[].opInfoset!
 
     nPaths
      I

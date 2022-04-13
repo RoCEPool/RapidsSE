@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* it_pathInfo.sen -- Define __pathInfo table                                 */
+/* it_path.sen -- Define __path table                                         */
 /*============================================================================*/
 
-" it_pathInfo.sen" .verbose
+" it_path.sen" .verbose
 
-: start::it_pathInfo
+: start::it_path
 
-  // C_TDEF_PATHINFO
+  // C_TDEF_PATH
 
   STD_PATH_TAG
   "
-  define table __pathInfo (
+  define table __path (
     path           VARCHAR NOT NULL ,
     pathNo         INTEGER NOT NULL ,
     pathOf         INTEGER NOT NULL

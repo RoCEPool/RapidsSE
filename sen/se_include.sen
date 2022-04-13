@@ -128,7 +128,7 @@ cmd::fillOut_allCmds
   "it_nodeInfo.sen"         include
   "it_operandLog.sen"       include
   "it_partitionKey.sen"     include
-  "it_pathInfo.sen"         include
+  "it_path.sen"             include
   "it_pingInfo.sen"         include
   "it_progressUnits.sen"    include
   "it_promptOut.sen"        include

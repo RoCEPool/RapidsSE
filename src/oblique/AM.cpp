@@ -3415,7 +3415,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OI_LOADRESULT:     eOperand = ZK_I_LOADRESULT;     break;
         case OI_LOCKSTATS:      eOperand = ZK_I_LOCKSTATS;      break;
         case OI_NODEINFO:       eOperand = ZK_I_NODEINFO;       break;
-        case OI_PATHINFO:       eOperand = ZK_I_PATHINFO;       break;
+        case OI_PATH:           eOperand = ZK_I_PATH;           break;
         case OI_PROGRESSUNITS:  eOperand = ZK_I_PROGRESSUNITS;  break;
         case OI_PROMPTOUT:      eOperand = ZK_I_PROMPTOUT;      break;
         case OI_RETURNPIPELINE: eOperand = ZK_I_RETURNPIPELINE; break;

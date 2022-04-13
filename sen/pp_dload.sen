@@ -76,6 +76,33 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dload
+  
+  STD_PATH_TAG
+  "
+  procedure dload
+    parameters $table
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | eachPath
+      |   toDfload $table
+      | callPipeline
+      | waitPipeline
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+ 
+ 
+  //----------------------------------------------------------------------------
+ 
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dfload2
   
   STD_PATH_TAG
@@ -118,29 +145,6 @@
   api::addProcedure
 
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dload
-  
-  STD_PATH_TAG
-  "
-  procedure dload
-    parameters $table
-  begin
-
-    stage stageA on origin :
-        start
-      | pulse once
-      | eachPath 
-      |   toDfload $table
-      | callPipeline
-      | waitPipeline
-      | sink
-      | stageA
-
-  end ;
-  "
-  api::addProcedure
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dload2
   

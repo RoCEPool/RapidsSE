@@ -69,7 +69,7 @@
 : ZK_I_LOADRESULT_handler       \handler STANDARD_PIPEOUT ;
 : ZK_I_LOCKSTATS_handler        \handler STANDARD_PIPEOUT ;
 : ZK_I_NODEINFO_handler         \handler STANDARD_PIPEOUT ;
-: ZK_I_PATHINFO_handler         \handler STANDARD_PIPEOUT ;
+: ZK_I_PATH_handler             \handler STANDARD_PIPEOUT ;
 : ZK_I_PROGRESSUNITS_handler    \handler STANDARD_PIPEOUT ;
 : ZK_I_PROMPTOUT_handler        \handler STANDARD_PIPEOUT ;
 : ZK_I_RETURNPIPELINE_handler   \handler STANDARD_PIPEOUT ;

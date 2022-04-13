@@ -67,7 +67,7 @@
   start::it_nodeInfo
   start::it_operandLog
   start::it_partitionKey
-  start::it_pathInfo
+  start::it_path
   start::it_pingInfo
   start::it_progressUnits
   start::it_promptOut
