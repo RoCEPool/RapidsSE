@@ -1,7 +1,7 @@
 /* Check some way in where code suppression caused various
    miscompilations.  */
 extern int printf (const char *, ...);
-typedef unsigned long size_t;
+typedef __SIZE_TYPE__ size_t;
 
 size_t _brk_start, _brk_end;
 void * extend_brk(size_t size, size_t align)
@@ -51,6 +51,7 @@ _Bool chk(unsigned long addr, unsigned long limit, unsigned long size)
      only with certain internal checking added that's not committed).  */
   if (0)
     ret = 0 != (!!(addr > limit - size));
+  return 0;
 }
 
 int main()

@@ -68,7 +68,7 @@ static int ar_usage(int ret) {
 
 ST_FUNC int tcc_tool_ar(TCCState *s1, int argc, char **argv)
 {
-    static ArHdr arhdr = {
+    static const ArHdr arhdr_init = {
         "/               ",
         "            ",
         "0     ",
@@ -78,15 +78,8 @@ ST_FUNC int tcc_tool_ar(TCCState *s1, int argc, char **argv)
         ARFMAG
         };
 
-    static ArHdr arhdro = {
-        "                ",
-        "            ",
-        "0     ",
-        "0     ",
-        "0       ",
-        "          ",
-        ARFMAG
-        };
+    ArHdr arhdr = arhdr_init;
+    ArHdr arhdro = arhdr_init;
 
     FILE *fi, *fh = NULL, *fo = NULL;
     ElfW(Ehdr) *ehdr;
@@ -207,6 +200,9 @@ ST_FUNC int tcc_tool_ar(TCCState *s1, int argc, char **argv)
                     (sym->st_info == 0x10
                     || sym->st_info == 0x11
                     || sym->st_info == 0x12
+                    || sym->st_info == 0x20
+                    || sym->st_info == 0x21
+                    || sym->st_info == 0x22
                     )) {
                     //printf("symtab: %2Xh %4Xh %2Xh %s\n", sym->st_info, sym->st_size, sym->st_shndx, strtab + sym->st_name);
                     istrlen = strlen(strtab + sym->st_name)+1;
@@ -392,10 +388,8 @@ usage:
     ret = 0;
 
 the_end:
-    /* cannot free memory received from tcc_get_dllexports
-       if it came from a dll */
-    /* if (p)
-        tcc_free(p); */
+    if (p)
+        tcc_free(p);
     if (fp)
         fclose(fp);
     if (op)
@@ -430,7 +424,7 @@ the_end:
 
 #if !defined TCC_TARGET_I386 && !defined TCC_TARGET_X86_64
 
-ST_FUNC void tcc_tool_cross(TCCState *s, char **argv, int option)
+ST_FUNC void tcc_tool_cross(TCCState *s1, char **argv, int option)
 {
     tcc_error("-m%d not implemented.", option);
 }
@@ -479,7 +473,7 @@ static int execvp_win32(const char *prog, char **argv)
 #define execvp execvp_win32
 #endif /* _WIN32 */
 
-ST_FUNC void tcc_tool_cross(TCCState *s, char **argv, int target)
+ST_FUNC void tcc_tool_cross(TCCState *s1, char **argv, int target)
 {
     char program[4096];
     char *a0 = argv[0];
@@ -506,20 +500,33 @@ ST_FUNC void tcc_tool_cross(TCCState *s, char **argv, int target)
 /* enable commandline wildcard expansion (tcc -o x.exe *.c) */
 
 #ifdef _WIN32
-int _CRT_glob = 1;
+const int _CRT_glob = 1;
 #ifndef _CRT_glob
-int _dowildcard = 1;
+const int _dowildcard = 1;
 #endif
 #endif
 
 /* -------------------------------------------------------------- */
 /* generate xxx.d file */
 
-ST_FUNC void gen_makedeps(TCCState *s, const char *target, const char *filename)
+static char *escape_target_dep(const char *s) {
+    char *res = tcc_malloc(strlen(s) * 2 + 1);
+    int j;
+    for (j = 0; *s; s++, j++) {
+        if (is_space(*s)) {
+            res[j++] = '\\';
+        }
+        res[j] = *s;
+    }
+    res[j] = '\0';
+    return res;
+}
+
+ST_FUNC void gen_makedeps(TCCState *s1, const char *target, const char *filename)
 {
     FILE *depout;
-    char buf[1024];
-    int i;
+    char buf[1024], *escaped_target;
+    int i, k;
 
     if (!filename) {
         /* compute filename automatically: dir/file.o -> dir/file.d */
@@ -528,17 +535,26 @@ ST_FUNC void gen_makedeps(TCCState *s, const char *target, const char *filename)
         filename = buf;
     }
 
-    if (s->verbose)
+    if (s1->verbose)
         printf("<- %s\n", filename);
 
-    /* XXX return err codes instead of error() ? */
-    depout = fopen(filename, "w");
+    if(!strcmp(filename, "-"))
+        depout = fdopen(1, "w");
+    else
+        /* XXX return err codes instead of error() ? */
+        depout = fopen(filename, "w");
     if (!depout)
         tcc_error("could not open '%s'", filename);
-
-    fprintf(depout, "%s: \\\n", target);
-    for (i=0; i<s->nb_target_deps; ++i)
-        fprintf(depout, " %s \\\n", s->target_deps[i]);
+    fprintf(depout, "%s:", target);
+    for (i = 0; i<s1->nb_target_deps; ++i) {
+        for (k = 0; k < i; ++k)
+            if (0 == strcmp(s1->target_deps[i], s1->target_deps[k]))
+                goto next;
+        escaped_target = escape_target_dep(s1->target_deps[i]);
+        fprintf(depout, " \\\n  %s", escaped_target);
+        tcc_free(escaped_target);
+    next:;
+    }
     fprintf(depout, "\n");
     fclose(depout);
 }

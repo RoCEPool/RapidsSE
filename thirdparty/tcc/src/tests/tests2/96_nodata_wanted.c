@@ -42,8 +42,8 @@ int main()
     __label__ ts0, te0, ts1, te1;
     int tl, dl;
 
-    static char ds0 = 0;
-    static char de0 = 0;
+    static const char ds0 = 0;
+    static const char de0 = 0;
     /* get reference size of empty jmp */
 ts0:;
     if (!SKIP) {}
@@ -52,14 +52,17 @@ te0:;
     tl = -(&&te0 - &&ts0);
 
     /* test data and code suppression */
-    static char ds1 = 0;
+    static const char ds1 = 0;
 ts1:;
     if (!SKIP) {
-        static void *p = (void*)&main;
-        static char cc[] = "static string";
-        static double d = 8.0;
-
-        static struct __attribute__((packed)) {
+        void *p = (void*)&main;
+        char cc[] = "static string";
+        double d = 8.0;
+        struct
+#ifndef __arm__
+        __attribute__((packed))
+#endif
+        {
             unsigned x : 12;
             unsigned char y : 7;
             unsigned z : 28, a: 4, b: 5;
@@ -72,13 +75,28 @@ ts1:;
             s.x, s.y, s.z, s.a, s.b);
     }
 te1:;
-    static char de1 = 0;
+    static const char de1 = 0;
 
     dl += &de1 - &ds1;
     tl += &&te1 - &&ts1;
     printf("size of data/text:\n  %s/%s\n",
         dl ? "non-zero":"zero", tl ? "non-zero":"zero");
     /*printf("# %d/%d\n", dl, tl);*/
+}
+
+#elif defined test_static_data
+
+#include <stdio.h>
+int main(int argc, char **argv)
+{
+    goto there;
+    if (0) {
+        static int a = 1;
+        printf("hello\n"); /* the "hello\n" string is still suppressed */
+there:
+        printf("a = %d\n", a);
+    }
+    return 0;
 }
 
 #endif
