@@ -66,6 +66,7 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newErroredMarker"_Stz,     &Step::vMarkerNewErroredMarker);
   vAddStep("Marker[].newExitingMarker"_Stz,     &Step::vMarkerNewExitingMarker);
   vAddStep("Marker[].newExitedMarker"_Stz,      &Step::vMarkerNewExitedMarker);
+  vAddStep("Marker[].newFinishedMarker"_Stz,    &Step::vMarkerNewFinishedMarker);
   vAddStep("Marker[].newFlushMarker"_Stz,       &Step::vMarkerNewFlushMarker);
   vAddStep("Marker[].newInvokeMarker"_Stz,      &Step::vMarkerNewInvokeMarker);
   vAddStep("Marker[].newLeaveMarker"_Stz,       &Step::vMarkerNewLeaveMarker);
@@ -395,6 +396,20 @@ void Step::vMarkerNewExitedMarker(void)
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
   m_pLogicUnit->m_xpMarker = new Marker(OM_EXITED);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Marker[].newFinishedMarker -- new a finished marker                        */
+/*----------------------------------------------------------------------------*/
+void Step::vMarkerNewFinishedMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
+
+  m_pLogicUnit->m_xpMarker = new Marker(OM_FINISHED);
 
   EXIT();
 }
