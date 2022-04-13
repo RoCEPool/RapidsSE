@@ -1,17 +1,16 @@
 /*============================================================================*/
-/* OP_eachPath.sen -- Operator Each Path                                      */
+/* OP_eachPathTag.sen -- Operator Each Path Tag                               */
 /*============================================================================*/
 
-" OP_eachPath.sen" .verbose
+" OP_eachPathTag.sen" .verbose
 
-// ... to be coded
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
-: eachPath_DataMarker \handler
+: eachPathTag_DataMarker \handler
  
-  "eachPath_DataMarker" .
+  "eachPathTag_DataMarker" .
 
   ZK_M_DATAPULSE_handler
 
@@ -42,13 +41,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : eachPath_op \operator
+ : eachPathTag_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: eachPath_DataMarker ZK_M_DATAPULSE [op].handler!
+  find: eachPathTag_DataMarker ZK_M_DATAPULSE [op].handler!
 
   op__loop
 
@@ -62,12 +61,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: eachPath :: eachPath ;
+cmdSyntax: eachPathTag :: eachPathTag ;
 
-: eachPath_cmdTags _cmdTags tagCopy: op_tags
+: eachPathTag_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "eachPath_op"
+    <opEntry> = "eachPathTag_op"
   }
 ;
 

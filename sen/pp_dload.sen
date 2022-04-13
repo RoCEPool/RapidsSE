@@ -87,7 +87,7 @@
     stage stageA on origin :
         start
       | pulse once
-      | eachPath
+      | eachPathTag
       |   toDfload $table
       | callPipeline
       | waitPipeline
@@ -129,14 +129,13 @@
     | stageC hashcast
 
   stage stageD on all partitions :
-
       insert $table      // (crwBuffer) inserted into table
     | stageE
 
   stage stageE on origin :
     |  progress 'Load'
     |  toStatDemon
-    |  respond
+    |  respond           // repond to responseOp as per fork
     |  sink
     |  stageA
 
@@ -157,7 +156,7 @@
     stage stageA on origin :
         start
       | pulse once
-      | eachPath
+      | eachPathTag
       | toDfload2 $table
       | fork wait
       | wait
