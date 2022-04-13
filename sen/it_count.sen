@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* it_countInfo.sen -- Define __countInfo table                               */
+/* it_count.sen -- Define __countInfo table                                   */
 /*============================================================================*/
 
-" it_countInfo.sen" .verbose
+" it_count.sen" .verbose
 
-: start::it_countInfo
+: start::it_count
 
   // C_TDEF_COUNTINFO
   
