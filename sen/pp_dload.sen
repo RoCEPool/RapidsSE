@@ -157,7 +157,7 @@
         start
       | pulse once
       | eachPathTag
-      | toDfload2 $table
+      | pathToDfload2 $table
       | fork wait
       | wait
       | sink

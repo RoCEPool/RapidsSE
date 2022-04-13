@@ -1,15 +1,15 @@
 /*============================================================================*/
-/* OP_toDfload2.sen -- Operator To Dfload                                     */
+/* OP_pathToDfload2.sen -- Operator Path To Dfload                            */
 /*============================================================================*/
 
-" OP_toDfload2.sen" .verbose
+" OP_pathToDfload2.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_I_PATH ... an infoset with __path rows                      */
 /*----------------------------------------------------------------------------*/
-: toDfload2_PathInfo \handler
+: pathToDfload2_Path \handler
  
-  "toDfload2_PathInfo" .
+  "pathToDfload2_Path" .
 
   PipeIn[]\clear to InfoSet[]
 
@@ -45,13 +45,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute for call pipeline req                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : toDfload2_op \operator
+ : pathToDfload2_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: toDfload2_PathInfo ZK_I_PATH [op].handler!
+  find: pathToDfload2_Path  ZK_I_PATH  [op].handler!
 
   op__loop
 
@@ -65,12 +65,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: toDfload2 :: toDfload2 <tableNm> ;
+cmdSyntax: pathToDfload2 :: pathToDfload2 <tableNm> ;
 
-: toDfload2_cmdTags _cmdTags tagCopy: op_tags
+: pathToDfload2_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "toDfload2_op"
+    <opEntry> = "pathToDfload2_op"
   }
 ;
 

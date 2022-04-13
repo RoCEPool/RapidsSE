@@ -13116,15 +13116,15 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [135] OP_toDfload2.sen
+  // munge of [135] OP_pathToDfload2.sen
 
   gszaMungedText[135] =
-    "\" munged OP_toDfload2.sen \" .verbose \n"
+    "\" munged OP_pathToDfload2.sen \" .verbose \n"
     "/*============================================================================*/\n"
-    "/* OP_toDfload2.sen -- Operator To Dfload                                     */\n"
+    "/* OP_pathToDfload2.sen -- Operator To Dfload                                     */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\" OP_toDfload2.sen\" .verbose\n"
+    "\" OP_pathToDfload2.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* handler for ZK_I_PATH ... an infoset with __path rows                      */\n"
@@ -13203,7 +13203,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 135 CONSTANT OP_toDfload2.sen "_Stz;
+  szSubScriptDef = " 135 CONSTANT OP_pathToDfload2.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -33120,7 +33120,7 @@ void Task::vAddMunged(Task* )
     "  \"OP_toCsv.sen\"                include\n"
     "  \"OP_toDemon.sen\"              include\n"
     "  \"OP_toDfload.sen\"             include\n"
-    "  \"OP_toDfload2.sen\"            include\n"
+    "  \"OP_pathToDfload2.sen\"            include\n"
     "  \"OP_top.sen\"                  include\n"
     "  \"OP_toStatDemon.sen\"          include\n"
     "  \"OP_totalCount.sen\"           include\n"
