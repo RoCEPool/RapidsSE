@@ -12,6 +12,14 @@
   ZK_M_EOS_handler
 ;
 
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_FINISHED_handler ...                                      */
+/*----------------------------------------------------------------------------*/
+: wait_FinishedMarker \handler
+
+  ZK_M_FINISHED_handler
+;
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -25,7 +33,8 @@
 
   op__topology
 
-  find: wait_EosMarker  ZK_M_EOS       [op].handler!
+  find: wait_EosMarker       ZK_M_EOS       [op].handler!
+  find: wait_FinishedMarker  ZK_M_FINISHED  [op].handler!
 
   op__loop
 

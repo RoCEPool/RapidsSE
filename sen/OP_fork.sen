@@ -9,17 +9,30 @@
 /*----------------------------------------------------------------------------*/
 : fork_EosMarker \handler
 
+  <responseOpNm> [stream].findOp locals| pResponseOp |
+
   ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                                   */
+/* handler for ZK_I_FORKCOMMAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : fork_ForkCommand \handler
 
-  ZK_M_EOS_handler
+  <responseOpNm> [stream].findOp locals| pResponseOp |
+  
+  pResponseOp "some-pipeline" api::forkCommand assert
+
+  true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: fork_StartMarker \handler
+  
+  ZK_M_START_handler
+;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -33,8 +46,9 @@
 
   op__topology
 
-  find: fork_EosMarker    ZK_M_EOS          [op].handler!
-  find: fork_ForkCommand  ZK_I_FORKCOMMAND  [op].handler!
+  find: fork_EosMarker     ZK_M_EOS           [op].handler!
+  find: fork_ForkCommand   ZK_I_FORKCOMMAND   [op].handler!
+  find: fork_StartMarker   ZK_M_START         [op].handler!
 
   op__loop
 
