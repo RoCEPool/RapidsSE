@@ -154,7 +154,7 @@
         start
       | pulse once
       | eachPath
-      |   toDfload $table
+      | toDfload2 $table
       | fork wait
       | wait
       | sink

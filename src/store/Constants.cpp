@@ -708,6 +708,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_D_PAGINGMETRICS"_Stz,   ZK_D_PAGINGMETRICS);
 
   /*  0 */ vAddConstant("ZK_I_CALLPIPELINE"_Stz,    ZK_I_CALLPIPELINE);
+  /*  0 */ vAddConstant("ZK_I_COMMAND"_Stz,         ZK_I_COMMAND);
   /*  0 */ vAddConstant("ZK_I_COMMANDERRORS"_Stz,   ZK_I_COMMANDERRORS);
   /*  0 */ vAddConstant("ZK_I_COUNTINFO"_Stz,       ZK_I_COUNTINFO);
   /*  0 */ vAddConstant("ZK_I_EXECERRORS"_Stz,      ZK_I_EXECERRORS);

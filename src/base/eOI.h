@@ -8,6 +8,7 @@ enum eOI // operator Infoset
   /*  0 */ OI_NONE=0,
   
   /*    */ OI_CALLPIPELINE,
+  /*    */ OI_COMMAND,
   /*    */ OI_COMMANDERRORS,
   /*    */ OI_COUNTINFO,
   /*    */ OI_EXECERRORS,
@@ -30,6 +31,7 @@ static Stz* aOI[]
   /*  0 */ "NONE"_Stz,
   
   /*    */ "CALLPIPELINE"_Stz,
+  /*    */ "COMMAND"_Stz,
   /*    */ "COMMANDERRORS"_Stz,
   /*    */ "COUNTINFO"_Stz,
   /*    */ "EXECERRORS"_Stz,

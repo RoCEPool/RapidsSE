@@ -5,16 +5,15 @@
 " OP_toDfload2.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_PATHINFO ...                                              */
+/* handler for ZK_I_PATHINFO ... an infoset with __pathinfo rows              */
 /*----------------------------------------------------------------------------*/
 : toDfload2_PathInfo \handler
  
   "toDfload2_PathInfo" .
 
-  PipeIn[] to InfoSet[]
-  nullptr to Pipein[]
+  PipeIn[]\clear to InfoSet[]
 
-  // find the __path table def
+  // find the __pathInfo table def ; set infoSetTable[]
   C_TDEF_PATHINFO op__tableDef_infoSet assert
 
   InfoSet[].firstRow to infoSetRow[]
@@ -26,17 +25,17 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  sPath <tableNm> "dfload %v \"%v\"" str.format locals| sRequest |
-  sRequest .
+  sPath <tableNm> "dfload2 %v \"%v\"" str.format locals| sCommand |
+      sCommand .
 
-  // find the __path table def
+  // find the __callPipeline table def ; set infoSetTable[]
   C_TDEF_CALLPIPELINE op__tableDef_infoSet assert
 
   // create an infoSet operand
-  infoSetTable[] InfoSet[].new
+  InfoSetTable[] InfoSet[].new
     OI_CALLPIPELINE InfoSet[].opInfoset!
 
-  iPathOf iPathNo sRequest 3 InfoSet[].addRowVargs
+  iPathOf iPathNo sCommand 3 InfoSet[].addRowVargs
     
   InfoSet[].pipeOut
 

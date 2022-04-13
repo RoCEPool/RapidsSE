@@ -37,6 +37,7 @@ enum eZK // operand kind
   /*    */ ZK_D_TABLEPTN,
 
   /*    */ ZK_I_CALLPIPELINE,
+  /*    */ ZK_I_COMMAND,
   /*    */ ZK_I_COMMANDERRORS,
   /*    */ ZK_I_COUNTINFO,
   /*    */ ZK_I_EXECERRORS,
@@ -121,6 +122,7 @@ static Stz* aZK[]
   /*    */ "ZK_D_TABLEPTN"_Stz,
 
   /*    */ "ZK_I_CALLPIPELINE"_Stz,
+  /*    */ "ZK_I_COMMAND"_Stz,
   /*    */ "ZK_I_COMMANDERRORS"_Stz,
   /*    */ "ZK_I_COUNTINFO"_Stz,
   /*    */ "ZK_I_EXECERRORS"_Stz,
