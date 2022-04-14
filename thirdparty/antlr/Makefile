@@ -12,7 +12,7 @@ LIBANTLR := libantlr4-runtime.a
 SRCZIP := $(CURRENT_PATH)/antlr4-cpp-runtime-4.8-source.zip
 
 # Let's work out what OS we are on 
-UNAME_S := $(shell uname -s)
+UNAME_S := $(u)
 
 ## Check for presence of cmake
 CMAKE_EXE := $(shell which cmake)
@@ -44,6 +44,10 @@ Then from the Source directory run the following command to build rapidsse:
   endif
 
   CMAKE_ARGS := -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+else ifeq ($(UNAME_S),Darwin)
+  ifeq ($(ARCH_FLAG_FORCE),x86_64)
+    CMAKE_ARGS := -DCMAKE_OSX_ARCHITECTURES=x86_64
+  endif
 endif
 
 all : $(LIBDIR)/$(LIBANTLR)
