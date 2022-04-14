@@ -40,6 +40,7 @@
   start::it_analyzeTable
   start::it_callPipeline
   start::it_columnDefs
+  start::it_command
   start::it_commandErrors
   start::it_count
   start::it_deref

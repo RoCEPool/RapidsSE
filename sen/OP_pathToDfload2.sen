@@ -35,22 +35,19 @@
 
   sCommand "pathToDfload2: %v" .printf
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // temp debug
-  true exit
-  
-  
-  
-  
+  //true exit
   
   // find the __callPipeline table def ; set infoSetTable[]
-  C_TDEF_CALLPIPELINE op__tableDef_infoSet assert
+  C_TDEF_COMMAND op__tableDef_infoSet assert
 
   // create an infoSet operand
   InfoSetTable[] InfoSet[].new
-    OI_CALLPIPELINE InfoSet[].opInfoset!
+    OI_COMMAND InfoSet[].opInfoset!
 
-  iPathOf iPathNo sCommand 3 InfoSet[].addRowVargs
+  sCommand 1 InfoSet[].addRowVargs
     
   InfoSet[].pipeOut
 

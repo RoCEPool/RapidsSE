@@ -86,7 +86,9 @@ void Step::vInfoSetTableSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpInfoSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  m_pLogicUnit->m_xpInfoSetTable = pTable;
   
   EXIT();
 }

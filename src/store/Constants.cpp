@@ -210,6 +210,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_ANALYZETABLE"_Stz,  C_TDEF_ANALYZETABLE);
   vAddConstant("C_TDEF_CALLPIPELINE"_Stz,  C_TDEF_CALLPIPELINE);
   vAddConstant("C_TDEF_COLUMNDEFS"_Stz,    C_TDEF_COLUMNDEFS);
+  vAddConstant("C_TDEF_COMMAND"_Stz,       C_TDEF_COMMAND);
   vAddConstant("C_TDEF_COMMANDERRORS"_Stz, C_TDEF_COMMANDERRORS);
   vAddConstant("C_TDEF_COUNT"_Stz,         C_TDEF_COUNT);
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,    C_TDEF_GRIDSANITY);
@@ -569,6 +570,7 @@ void Constants::vAddConstantsCpp(void)
   // OI_ : operator infoset
   /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
   /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
+  /*  0 */ vAddConstant("OI_COMMAND"_Stz,       OI_COMMANDERRORS);
   /*  0 */ vAddConstant("OI_COMMANDERRORS"_Stz, OI_COMMANDERRORS);
   /*  0 */ vAddConstant("OI_COUNT"_Stz,         OI_COUNT);
   /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);

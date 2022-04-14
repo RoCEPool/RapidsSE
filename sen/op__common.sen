@@ -96,6 +96,8 @@
 
   params| sTableNm |
 
+  //sTableNm .
+  
   // save current path
   Path[].save
 
