@@ -180,6 +180,7 @@
         start
       | pulse once
       | eachPathTag
+      | pathToDfload2 $table
       | sink
       | stageA
 

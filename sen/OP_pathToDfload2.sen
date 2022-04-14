@@ -16,18 +16,33 @@
   // find the __path table def ; set infoSetTable[]
   C_TDEF_PATH op__tableDef_infoSet assert
 
+  // get the first (one and only) row from this infoset
   InfoSet[].firstRow to infoSetRow[]
 
-  0 InfoSet[].colVal@ locals| sPath   | sPath .
-  1 InfoSet[].colVal@ locals| iPathNo | iPathNo .
-  2 InfoSet[].colVal@ locals| iPathOf | iPathOf .
+  // extract the vaues
+  0 InfoSet[].colVal@ locals| sPath   |
+  1 InfoSet[].colVal@ locals| iPathNo |
+  2 InfoSet[].colVal@ locals| iPathOf | 
+  
+  // print the __path data
+  iPathOf iPathNo sPath "pathToDfload2: %v %v %v" .printf
+
   InfoSet[].delete
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   sPath <tableNm> "dfload2 %v \"%v\"" str.format locals| sCommand |
-      sCommand .
 
+  sCommand "pathToDfload2: %v" .printf
+
+
+  // temp debug
+  true exit
+  
+  
+  
+  
+  
   // find the __callPipeline table def ; set infoSetTable[]
   C_TDEF_CALLPIPELINE op__tableDef_infoSet assert
 

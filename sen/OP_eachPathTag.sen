@@ -20,7 +20,7 @@
   
   0 0 0 locals| sPath iPathNo iPathOf |
 
-  // find the __path table def
+  // find the __path table def ; set infoSetTable[]
   C_TDEF_PATH op__tableDef_infoSet assert
 
   nPaths 0
@@ -38,7 +38,7 @@
        to sPath
      
     // print the __path data
-    iPathOf iPathNo sPath "EachPathTag: %v %v %v" .printf
+    iPathOf iPathNo sPath "eachPathTag: %v %v %v" .printf
 
     // add a __path row to infoset
     iPathOf iPathNo sPath 3 InfoSet[].addRowVargs
