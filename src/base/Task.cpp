@@ -426,7 +426,7 @@ void Task::vDumpOnException(void)
     vTrace("EventHandler %lld:%s (+%lld times)\n"_Stz,
          (i8)m_pOp->eCurHandler(),
          aZK[m_pOp->eCurHandler()],
-         m_pOp->iHandlerCount(m_pOp->eCurHandler())
+         m_pOp->nEventCount(m_pOp->eCurHandler())
          );
   }
   

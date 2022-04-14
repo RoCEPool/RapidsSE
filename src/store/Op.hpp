@@ -42,7 +42,7 @@ namespace STORE
 
     eZK   m_eCurHandler;
     EventHandlers* m_pEventHandlers;
-    i8    m_naEventCount[ZK_ENUMS];    // counts of event handlers
+    //i8    m_naEventCount[ZK_ENUMS];    // counts of event handlers
   
     i8    m_eCurOperand;
     i8    m_naOperandCount[ZK_ENUMS];  // counts of operands piped-in
@@ -107,9 +107,9 @@ namespace STORE
 
     void vGrabTaskLock(void);
   
-    i8   iHandlerCount(i8 i_Handler);
+    //i8   iHandlerCount(i8 i_Handler);
   
-    void vIncHandlerCount(eZK eEvent);
+    //void vIncHandlerCount(eZK eEvent);
     void vIncOperandCount(eZK eEvent);
     void vIncWorkDone(void);
     void vInitOperandHandlers(void);

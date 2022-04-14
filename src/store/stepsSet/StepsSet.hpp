@@ -1254,7 +1254,7 @@ public:
   void vOpHandlerStore(void);
   void vOpHandlerAllStore(void);
   void vOpIsOperandValid(void);
-  void vOpIncHandlerCount(void);
+  //void vOpIncHandlerCount(void);
   void vOpIncOperandCount(void);
   void vOpNameFetch(void);
   void vOpOpNameFetch(void);

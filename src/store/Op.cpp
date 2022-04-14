@@ -445,7 +445,7 @@ i8 Op::nEventCount(eZK eEvent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  i8 nCount = m_naEventCount[eEvent];
+  i8 nCount = m_naOperandCount[eEvent];
   
   return nCount;
 }
@@ -477,28 +477,28 @@ void Op::vGrabTaskLock(void)
 /*----------------------------------------------------------------------------*/
 /* get handler count for given handler                                        */
 /*----------------------------------------------------------------------------*/
-i8 Op::iHandlerCount(i8 i_Handler)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  i8 iCount = m_naEventCount[i_Handler];
-  
-  return iCount;
-}
+//i8 Op::iHandlerCount(i8 i_Handler)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+//
+//  i8 iCount = m_naEventCount[i_Handler];
+//
+//  return iCount;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* inc handler count for given handler                                        */
 /*----------------------------------------------------------------------------*/
-void Op::vIncHandlerCount(eZK eEvent)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_eCurHandler = eEvent;
-  
-  m_naEventCount[m_eCurHandler]++;
-  
-  RASSERT(m_naEventCount[eEvent] == m_naOperandCount[eEvent]);
-}
+//void Op::vIncHandlerCount(eZK eEvent)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+//
+//  m_eCurHandler = eEvent;
+//
+//  m_naEventCount[m_eCurHandler]++;
+//
+//  RASSERT(m_naEventCount[eEvent] == m_naOperandCount[eEvent]);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* inc operand count for given operand kind                                   */
@@ -552,7 +552,7 @@ void Op::vInitOperandHandlers(void)
 //    m_paEventHandler[i_Kind] = pHandler;
 
     m_naOperandCount[i_Kind] = 0;
-    m_naEventCount[i_Kind] = 0;
+    //m_naEventCount[i_Kind] = 0;
 
   }
 

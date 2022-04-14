@@ -138,7 +138,7 @@ Stz* SP_Op::szLeading(Op* pOp)
     vCatf("%-24s #%04lld ?> ## "_Stz
         
          ,pEventHandler->szWordNm()
-         ,pOp->iHandlerCount(pOp->eCurHandler())
+         ,pOp->nEventCount(pOp->eCurHandler())
         );
   }
   else {

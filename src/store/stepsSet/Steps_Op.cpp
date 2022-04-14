@@ -39,7 +39,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("[op].handler!"_Stz,         &Step::vOpHandlerStore);
   vAddStep("[op].handlerAll!"_Stz,      &Step::vOpHandlerAllStore);
   vAddStep("[op].isOperandValid"_Stz,   &Step::vOpIsOperandValid);
-  vAddStep("[op].incHandlerCount"_Stz,  &Step::vOpIncHandlerCount);
+  //vAddStep("[op].incHandlerCount"_Stz,  &Step::vOpIncHandlerCount);
   vAddStep("[op].incOperandCount"_Stz,  &Step::vOpIncOperandCount);
   vAddStep("[op].job@"_Stz,             &Step::vOpJobFetch);
   vAddStep("[op].opName@"_Stz,          &Step::vOpOpNameFetch);
@@ -224,16 +224,16 @@ void Step::vOpIsOperandValid(void)
 /*----------------------------------------------------------------------------*/
 /* [op].incHandlerCount -- inc handler count                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vOpIncHandlerCount(void)
-{
-  ENTRY();
-  
-  eZK eEvent = (eZK)m_pDataStack->iPopInt(__func__);
-  
-  m_pOp->vIncHandlerCount(eEvent);
-  
-  EXIT();
-}
+//void Step::vOpIncHandlerCount(void)
+//{
+//  ENTRY();
+//
+//  eZK eEvent = (eZK)m_pDataStack->iPopInt(__func__);
+//
+//  m_pOp->vIncHandlerCount(eEvent);
+//
+//  EXIT();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* [op].incOperandCount -- inc operand count                                  */
