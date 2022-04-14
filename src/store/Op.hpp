@@ -42,7 +42,7 @@ namespace STORE
 
     EventHandlers* m_pEventHandlers;
   
-    i8    m_eCurOperand;
+    eZK   m_eCurEvent;
     i8    m_naOperandCount[ZK_ENUMS];  // counts of operands piped-in
 
     OperandWatch* m_pOperandWatch;
@@ -89,7 +89,7 @@ namespace STORE
     Stz* szArgs(void);
   
     eYX  eCrossTopology(void);
-    eZK  eCurOperand(void);
+    eZK  eCurEvent(void);
     Word* pCurWord(void);
   
     Deck* pDeck(void);

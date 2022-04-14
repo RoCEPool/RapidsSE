@@ -338,11 +338,11 @@ eYX Op::eCrossTopology(void)
 /*----------------------------------------------------------------------------*/
 /* get current operand                                                        */
 /*----------------------------------------------------------------------------*/
-eZK Op::eCurOperand(void)
+eZK Op::eCurEvent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return (eZK)m_eCurOperand;
+  return m_eCurEvent;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -481,12 +481,12 @@ void Op::vIncOperandCount(eZK eEvent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  m_eCurOperand = eEvent;
+  m_eCurEvent = eEvent;
 
-  m_naOperandCount[m_eCurOperand]++;
+  m_naOperandCount[m_eCurEvent]++;
   
   i8 iTscp = BASE::iRdtscp();
-  m_pOperandWatch->vSaw(m_eCurOperand,iTscp);
+  m_pOperandWatch->vSaw(m_eCurEvent,iTscp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -514,7 +514,7 @@ void Op::vInitOperandHandlers(void)
     m_naOperandCount[i_Kind] = 0;
   }
 
-  m_eCurOperand = ZK_NONE;
+  m_eCurEvent = ZK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1146,7 +1146,7 @@ void Op::vOpTrace(Operand* pOperand
            
             ,szFunNm
             ,AM::pOperandName(pOperand)
-            ,m_naOperandCount[m_eCurOperand]
+            ,m_naOperandCount[m_eCurEvent]
             ,pOperand
             ,szSupplemental
            );
