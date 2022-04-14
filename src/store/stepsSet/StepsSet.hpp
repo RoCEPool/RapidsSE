@@ -1253,8 +1253,8 @@ public:
   void vOpHandlerFetch(void);
   void vOpHandlerStore(void);
   void vOpHandlerAllStore(void);
-  void vOpIsOperandValid(void);
-  void vOpIncOperandCount(void);
+  void vOpIsEventValid(void);
+  void vOpEventCountInc(void);
   void vOpNameFetch(void);
   void vOpOpNameFetch(void);
   void vOpPartitionFetch(void);

@@ -33,13 +33,13 @@ void Step::vAddSteps_Op(void)
   
   vAddStep("[op]"_Stz,                  &Step::vOpGet);
   vAddStep("[op].ackInvokingTask"_Stz,  &Step::vOpAckInvokingTask);
+  vAddStep("[op].eventCountInc"_Stz,    &Step::vOpEventCountInc);
   vAddStep("[op].handlerEntry"_Stz,     &Step::vOpHandlerEntry);
   vAddStep("[op].handlerExit"_Stz,      &Step::vOpHandlerExit);
   vAddStep("[op].handler@"_Stz,         &Step::vOpHandlerFetch);
   vAddStep("[op].handler!"_Stz,         &Step::vOpHandlerStore);
   vAddStep("[op].handlerAll!"_Stz,      &Step::vOpHandlerAllStore);
-  vAddStep("[op].isOperandValid"_Stz,   &Step::vOpIsOperandValid);
-  vAddStep("[op].incOperandCount"_Stz,  &Step::vOpIncOperandCount);
+  vAddStep("[op].isEventValid"_Stz,     &Step::vOpIsEventValid);
   vAddStep("[op].job@"_Stz,             &Step::vOpJobFetch);
   vAddStep("[op].opName@"_Stz,          &Step::vOpOpNameFetch);
   vAddStep("[op].partition@"_Stz,       &Step::vOpPartitionFetch);
@@ -78,6 +78,20 @@ void Step::vOpEnqueOperand(void)
 
   pOp->vAppendLeft(pOperand,this);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].eventCountInc -- inc operand count                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vOpEventCountInc(void)
+{
+  ENTRY();
+  
+  eZK eEvent = (eZK) m_pDataStack->iPopInt(__func__);
+  
+  m_pOp->vIncOperandCount(eEvent);
+  
   EXIT();
 }
 
@@ -198,9 +212,9 @@ void Step::vOpHandlerAllStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [op].isOperandValid -- check if operand is valid                           */
+/* [op].isEventValid -- check if operand is valid                           */
 /*----------------------------------------------------------------------------*/
-void Step::vOpIsOperandValid(void)
+void Step::vOpIsEventValid(void)
 {
   ENTRY();
   
@@ -216,20 +230,6 @@ void Step::vOpIsOperandValid(void)
     RASSERT(0);
   
   m_pDataStack->vPushInt(bValid);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [op].incOperandCount -- inc operand count                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vOpIncOperandCount(void)
-{
-  ENTRY();
-  
-  eZK eEvent = (eZK) m_pDataStack->iPopInt(__func__);
-  
-  m_pOp->vIncOperandCount(eEvent);
   
   EXIT();
 }
