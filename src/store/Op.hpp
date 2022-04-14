@@ -43,7 +43,7 @@ namespace STORE
     EventHandlers* m_pEventHandlers;
   
     eZK   m_eCurEvent;
-    i8    m_naOperandCount[ZK_ENUMS];  // counts of operands piped-in
+    i8    m_naEventCount[ZK_ENUMS];  // counts of events (operands piped-in)
 
     OperandWatch* m_pOperandWatch;
   
@@ -99,17 +99,17 @@ namespace STORE
   
     Word* pEntryWord(void);
     i8    nEventCount(eZK eEvent);
+    void vEventCountInc(eZK eEvent);
     Word* pEventHandler(void);
     Word* pEventHandler(i8 i_OperandKind);
     void vEventHandler(i8 i_OperandKind, Word* pHandler);
 
     void vGrabTaskLock(void);
   
-    void vIncOperandCount(eZK eEvent);
     void vIncWorkDone(void);
     void vInitOperandHandlers(void);
     bool bIsLocked(void);
-    bool bIsOperandValid(i8 i_OperandKind);
+    bool bIsEventValid(i8 i_OperandKind);
   
     i8   iLocalRobinNext(void);
   
@@ -123,9 +123,7 @@ namespace STORE
     i8   iNextStage(void);
     Stage* pNextStage(void);
     i8   iNodeId(void);
-  
-    i8   iOperandCount(i8 i_OperandKind);
-  
+    
     i8   i_Op(void);
     OperandWatch* pOperandWatch(void);
     LogicUnit* pOpLogicUnit(void);

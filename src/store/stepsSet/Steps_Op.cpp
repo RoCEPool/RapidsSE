@@ -90,7 +90,7 @@ void Step::vOpEventCountInc(void)
   
   eZK eEvent = (eZK) m_pDataStack->iPopInt(__func__);
   
-  m_pOp->vIncOperandCount(eEvent);
+  m_pOp->vEventCountInc(eEvent);
   
   EXIT();
 }
@@ -224,7 +224,7 @@ void Step::vOpIsEventValid(void)
   
   // skip consumeOp operand validation
   if ( ! m_pOp->szOpNm()->bSame("consumeOP"_Stz))
-    bValid = m_pOp->bIsOperandValid(i_OperandKind);
+    bValid = m_pOp->bIsEventValid(i_OperandKind);
   
   if ( ! bValid )
     RASSERT(0);
