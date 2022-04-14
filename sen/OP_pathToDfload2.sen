@@ -40,7 +40,7 @@
   // temp debug
   //true exit
   
-  // find the __callPipeline table def ; set infoSetTable[]
+  // find the __command table def ; set infoSetTable[]
   C_TDEF_COMMAND op__tableDef_infoSet assert
 
   // create an infoSet operand

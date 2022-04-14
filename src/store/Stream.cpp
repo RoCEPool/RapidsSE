@@ -124,7 +124,8 @@ Op* Stream::pFindOp(Stz* szOpNm)
   for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {
     Op* pOp = pGet(i_Op);
     
-    if (pOp->szOpNm()->bSame(szOpNm))
+    Stz* szTestOpNm = pOp->szOpNm();
+    if (szTestOpNm->bSame(szOpNm))
       return pOp;
   }
   

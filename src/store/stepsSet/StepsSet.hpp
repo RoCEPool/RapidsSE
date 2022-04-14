@@ -1255,6 +1255,7 @@ public:
   void vOpIsOperandValid(void);
   void vOpIncHandlerCount(void);
   void vOpIncOperandCount(void);
+  void vOpNameFetch(void);
   void vOpOpNameFetch(void);
   void vOpPartitionFetch(void);
   void vOpJobFetch(void);

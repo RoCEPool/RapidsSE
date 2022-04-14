@@ -26,7 +26,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Op(void)
 {
-  vAddStep("Op.enqueOperand"_Stz,       &Step::vOpEnqueOperand);
+  vAddStep("op.enqueOperand"_Stz,       &Step::vOpEnqueOperand);
+  vAddStep("op.name@"_Stz,              &Step::vOpNameFetch);
+
   vAddStep("Op::findOp"_Stz,            &Step::vOpFindOp);
   
   vAddStep("[op]"_Stz,                  &Step::vOpGet);
@@ -62,7 +64,7 @@ void Step::vOpAckInvokingTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op.enqueOperand -- enqueue operand                                         */
+/* op.enqueOperand -- enqueue operand                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vOpEnqueOperand(void)
 {
@@ -264,6 +266,22 @@ void Step::vOpJobFetch(void)
     m_pDataStack->vPushPtr(pPipelineJob);
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* op.name@ -- name fetch                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOpNameFetch(void)
+{
+  ENTRY();
+  
+  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
+
+  Stz* szOpNm = pOp->szOpNm();
+
+  m_pDataStack->vPushStz(szOpNm);
+
   EXIT();
 }
 

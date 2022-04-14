@@ -182,6 +182,7 @@
       | eachPathTag
       | pathToDfload2 $table
       | forkCommand dynamic waitFinished
+      | waitFinished
       | sink
       | stageA
 

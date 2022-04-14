@@ -570,7 +570,7 @@ void Constants::vAddConstantsCpp(void)
   // OI_ : operator infoset
   /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
   /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
-  /*  0 */ vAddConstant("OI_COMMAND"_Stz,       OI_COMMANDERRORS);
+  /*  0 */ vAddConstant("OI_COMMAND"_Stz,       OI_COMMAND);
   /*  0 */ vAddConstant("OI_COMMANDERRORS"_Stz, OI_COMMANDERRORS);
   /*  0 */ vAddConstant("OI_COUNT"_Stz,         OI_COUNT);
   /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);

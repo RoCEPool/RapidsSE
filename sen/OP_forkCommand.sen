@@ -21,7 +21,13 @@
 
   <responseOpNm> [stream].findOp locals| pResponseOp |
   
-  pResponseOp "some-pipeline" api::forkCommand assert
+  pResponseOp op.name@ "forkCommand: responseOp %v" .printf
+  
+  //pResponseOp "some-pipeline" api::forkCommand assert
+
+  PipeIn[]\clear to InfoSet[]
+
+  InfoSet[].delete
 
   true
 ;
@@ -44,7 +50,7 @@
   // extract the values
   0 InfoSet[].colVal@ locals| nPaths   |
 
-  nPaths "forkCommand: nPaths %v" .printf
+  nPaths "forkCount: nPaths %v" .printf
     
   InfoSet[].delete
 
@@ -71,10 +77,10 @@
 
   op__topology
 
-  find: forkCommand_Count  ZK_I_COUNT     [op].handler!
+  find: forkCommand_Command  ZK_I_COMMAND   [op].handler!
+  find: forkCommand_Count    ZK_I_COUNT     [op].handler!
 
   //find: forkCommand_Eos      ZK_M_EOS       [op].handler!
-  //find: forkCommand_Command  ZK_I_COMMAND   [op].handler!
   //find: forkCommand_Start    ZK_M_START     [op].handler!
 
   op__loop
