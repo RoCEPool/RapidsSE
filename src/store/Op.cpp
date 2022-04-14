@@ -336,13 +336,13 @@ eYX Op::eCrossTopology(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get current handler                                                        */
+/* get current operand                                                        */
 /*----------------------------------------------------------------------------*/
-eZK Op::eCurHandler(void)
+eZK Op::eCurOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_eCurHandler;
+  return (eZK)m_eCurOperand;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -514,8 +514,7 @@ void Op::vInitOperandHandlers(void)
     m_naOperandCount[i_Kind] = 0;
   }
 
-  m_eCurHandler = ZK_NONE;
-  m_eCurOperand = 0;
+  m_eCurOperand = ZK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

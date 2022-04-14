@@ -40,7 +40,6 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // event handling
 
-    eZK   m_eCurHandler;
     EventHandlers* m_pEventHandlers;
   
     i8    m_eCurOperand;
@@ -90,7 +89,7 @@ namespace STORE
     Stz* szArgs(void);
   
     eYX  eCrossTopology(void);
-    eZK  eCurHandler(void);
+    eZK  eCurOperand(void);
     Word* pCurWord(void);
   
     Deck* pDeck(void);

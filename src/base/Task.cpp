@@ -424,9 +424,9 @@ void Task::vDumpOnException(void)
   
   if (m_pOp) {
     vTrace("EventHandler %lld:%s (+%lld times)\n"_Stz,
-         (i8)m_pOp->eCurHandler(),
-         aZK[m_pOp->eCurHandler()],
-         m_pOp->nEventCount(m_pOp->eCurHandler())
+         (i8)m_pOp->eCurOperand(),
+         aZK[m_pOp->eCurOperand()],
+         m_pOp->nEventCount(m_pOp->eCurOperand())
          );
   }
   
