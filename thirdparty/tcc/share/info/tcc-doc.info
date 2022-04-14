@@ -209,6 +209,11 @@ with `-fno-'.
 `-fdollars-in-identifiers'
      Allow dollar signs in identifiers
 
+`-ftest-coverage'
+     Create code coverage code. After running the resulting code an
+     executable.tcov or sofile.tcov file is generated with code
+     coverage.
+
 
    Warning options:
 
@@ -230,11 +235,12 @@ beginning with `-Wno-'.
      *'.
 
 `-Werror'
-     Abort compilation if warnings are issued.
+     Abort compilation if a warning is issued. Can be given an option
+     to enable the specified warning and turn it into an error, for
+     example `-Werror=unsupported'.
 
 `-Wall'
-     Activate all warnings, except `-Werror', `-Wunusupported' and
-     `-Wwrite-strings'.
+     Activate some useful warnings.
 
 
    Linker options:
@@ -289,6 +295,12 @@ beginning with `-Wno-'.
           COFF output format (only for executable output for
           TMS320C67xx target)
 
+`-Wl,--export-all-symbols'
+
+`-Wl,--export-dynamic'
+     Export global symbols to the dynamic linker. It is useful when a
+     library opened with `dlopen()' needs to access executable symbols.
+
 `-Wl,-subsystem=console/gui/wince/...'
      Set type for PE (Windows) executables.
 
@@ -311,21 +323,32 @@ beginning with `-Wno-'.
 
 `-b'
      Generate additional support code to check memory allocations and
-     array/pointer bounds. `-g' is implied. Note that the generated
-     code is slower and bigger in this case.
+     array/pointer bounds (*note Bounds::). `-g' is implied.
 
-     Note: `-b' is only available on i386 when using libtcc for the
-     moment.
-
-`-bt N'
+`-bt[N]'
      Display N callers in stack traces. This is useful with `-g' or
-     `-b'.
+     `-b'.  With executables, additional support for stack traces is
+     included.
+
+     A function ` int tcc_backtrace(const char *fmt, ...); ' is provided
+     to trigger a stack trace with a message on demand.
 
 
    Misc options:
 
+`-M'
+     Just output makefile fragment with dependencies
+
+`-MM'
+     Like -M except mention only user header files, not system header
+     files.
+
 `-MD'
      Generate makefile fragment with dependencies.
+
+`-MMD'
+     Like -MD except mention only user header files, not system header
+     files.
 
 `-MF depfile'
      Use `depfile' as output for -MD.
@@ -477,6 +500,10 @@ TCC implements some GNU C extensions:
 
         * `dllexport': export function from dll/executable (win32 only)
 
+        * `nodecorate': do not apply any decorations that would
+          otherwise be applied when exporting function from
+          dll/executable (win32 only)
+
 
      Here are some examples:
               int a __attribute__ ((aligned(8), section(".mysection")));
@@ -547,8 +574,6 @@ TCC implements some GNU C extensions:
    * `#!' at the start of a line is ignored to allow scripting.
 
    * Binary digits can be entered (`0b101' instead of `5').
-
-   * `__BOUNDS_CHECKING_ON' is defined if bound checking is activated.
 
 
 
@@ -732,17 +757,8 @@ File: tcc-doc.info,  Node: Bounds,  Next: Libtcc,  Prev: linker,  Up: Top
 6 TinyCC Memory and Bound checks
 ********************************
 
-This feature is activated with the `-b' (*note Invoke::).
-
-   Note that pointer size is _unchanged_ and that code generated with
-bound checks is _fully compatible_ with unchecked code. When a pointer
-comes from unchecked code, it is assumed to be valid. Even very obscure
-C code with casts should work correctly.
-
-   For more information about the ideas behind this method, see
-`http://www.doc.ic.ac.uk/~phjk/BoundsChecking.html'.
-
-   Here are some examples of caught errors:
+This feature is activated with the `-b' option (*note Invoke::).  Here
+are some examples of caught errors:
 
 Invalid range with standard string function:
           {
@@ -763,7 +779,7 @@ Out of bounds-error in malloc'ed data:
               int *tab;
               tab = malloc(20 * sizeof(int));
               for(i=0;i<21;i++) {
-                  sum += tab4[i];
+                  sum += tab[i];
               }
               free(tab);
           }
@@ -774,7 +790,7 @@ Access of freed memory:
               tab = malloc(20 * sizeof(int));
               free(tab);
               for(i=0;i<20;i++) {
-                  sum += tab4[i];
+                  sum += tab[i];
               }
           }
 
@@ -786,6 +802,71 @@ Double free:
               free(tab);
           }
 
+   TCC defines `__BOUNDS_CHECKING_ON' if activated.
+
+   There are five environment variables that can be used to control the
+behavior:
+   * TCC_BOUNDS_WARN_POINTER_ADD - Print warning when pointer add
+     creates an illegal pointer.
+
+   * TCC_BOUNDS_PRINT_CALLS - Print bound checking calls. Can be used
+     for debugging.
+
+   * TCC_BOUNDS_PRINT_HEAP - Print heap objects that are not freed at
+     exit of program.
+
+   * TCC_BOUNDS_PRINT_STATISTIC - Print statistic information at exit
+     of program.
+
+   * TCC_BOUNDS_NEVER_FATAL - Try to continue in case of a bound
+     checking error.
+
+   Also, a function `__bounds_checking(x)' can be used to turn off/on
+bounds checking from usercode (see below).
+
+   Notes:
+   * Only available on i386 (linux and windows), x86_64 (linux and
+     windows), arm, arm64 and riscv64 for the moment.
+
+   * The generated code is slower and bigger.
+
+   * The bound checking code is not included in shared libraries. The
+     main executable should always be compiled with the `-b'.
+
+   * Pointer size is _unchanged_ and code generated with bound checks is
+     _fully compatible_ with unchecked code. When a pointer comes from
+     unchecked code, it is assumed to be valid. Even very obscure C
+     code with casts should work correctly.
+
+   * Signal handlers are not compatible with bounds checking. The
+     bounds checking code disables checking in signal/sigaction
+     handlers.  The fork() function call in a multi threaded
+     application is also a problem.  The bound checking code fixes this
+     for the child process.
+
+   * The reason that signals and fork have problems is that we use
+     locking inside the bounds checking code.  Inside a signal handler
+     we can not use locks. Also in a multi threaded application after a
+     fork the child process can have the lock set by another thread.
+
+   * The BOUNDS_CHECKING_OFF and BOUNDS_CHECKING_ON can also be used to
+     disable bounds checking for some code.
+
+   * The __bounds_checking call adds a value to a thread local value.
+     The value starts at 0. If the value is not 0 the code is not
+     checked for bounds checking errors.
+
+     #if defined(__TINYC__) && __BOUNDS_CHECKING_ON
+     extern void __bounds_checking (int x);
+     # define BOUNDS_CHECKING_OFF __bounds_checking(1)
+     # define BOUNDS_CHECKING_ON  __bounds_checking(-1)
+     #else
+     # define BOUNDS_CHECKING_OFF
+     # define BOUNDS_CHECKING_ON
+     #endif
+
+   For more information about the ideas behind this method, see
+`http://www.doc.ic.ac.uk/~phjk/BoundsChecking.html'.
 
 
 File: tcc-doc.info,  Node: Libtcc,  Next: devel,  Prev: Bounds,  Up: Top
@@ -1150,11 +1231,6 @@ See the `i386-gen.c' file to have an example.
 `gen_cvt_ftof()'
      floating point to floating point of different size conversion.
 
-`gen_bounded_ptr_add()'
-
-`gen_bounded_ptr_deref()'
-     are only used for bounds checking.
-
 
 8.8 Optimizations done
 ======================
@@ -1172,22 +1248,22 @@ Concept Index
  [index ]
 * Menu:
 
-* __asm__:                               Clang.               (line 141)
+* __asm__:                               Clang.               (line 145)
 * align directive:                       asm.                 (line  68)
 * aligned attribute:                     Clang.               (line  84)
 * ascii directive:                       asm.                 (line  68)
 * asciz directive:                       asm.                 (line  68)
 * assembler:                             asm.                 (line 116)
 * assembler directives:                  asm.                 (line  68)
-* assembly, inline:                      Clang.               (line 141)
+* assembly, inline:                      Clang.               (line 145)
 * bound checks:                          Bounds.              (line   6)
 * bss directive:                         asm.                 (line  68)
 * byte directive:                        asm.                 (line  68)
-* caching processor flags:               devel.               (line 356)
+* caching processor flags:               devel.               (line 351)
 * cdecl attribute:                       Clang.               (line  84)
 * code generation:                       devel.               (line 181)
-* comparison operators:                  devel.               (line 356)
-* constant propagation:                  devel.               (line 356)
+* comparison operators:                  devel.               (line 351)
+* constant propagation:                  devel.               (line 351)
 * CPU dependent:                         devel.               (line 308)
 * data directive:                        asm.                 (line  68)
 * directives, assembler:                 asm.                 (line  68)
@@ -1195,19 +1271,20 @@ Concept Index
 * ELF:                                   linker.              (line   9)
 * FILE, linker command:                  linker.              (line  40)
 * fill directive:                        asm.                 (line  68)
-* flags, caching:                        devel.               (line 356)
-* gas:                                   Clang.               (line 160)
+* flags, caching:                        devel.               (line 351)
+* gas:                                   Clang.               (line 164)
 * global directive:                      asm.                 (line  68)
 * globl directive:                       asm.                 (line  68)
 * GROUP, linker command:                 linker.              (line  40)
-* inline assembly:                       Clang.               (line 141)
+* inline assembly:                       Clang.               (line 145)
 * int directive:                         asm.                 (line  68)
-* jump optimization:                     devel.               (line 356)
+* jump optimization:                     devel.               (line 351)
 * linker:                                linker.              (line   6)
 * linker scripts:                        linker.              (line  40)
 * long directive:                        asm.                 (line  68)
 * memory checks:                         Bounds.              (line   6)
-* optimizations:                         devel.               (line 356)
+* nodecorate attribute:                  Clang.               (line  84)
+* optimizations:                         devel.               (line 351)
 * org directive:                         asm.                 (line  68)
 * OUTPUT_FORMAT, linker command:         linker.              (line  40)
 * packed attribute:                      Clang.               (line  84)
@@ -1222,7 +1299,7 @@ Concept Index
 * skip directive:                        asm.                 (line  68)
 * space directive:                       asm.                 (line  68)
 * stdcall attribute:                     Clang.               (line  84)
-* strength reduction:                    devel.               (line 356)
+* strength reduction:                    devel.               (line 351)
 * string directive:                      asm.                 (line  68)
 * TARGET, linker command:                linker.              (line  40)
 * text directive:                        asm.                 (line  68)
@@ -1237,11 +1314,11 @@ Tag Table:
 Node: Top207
 Node: Introduction927
 Node: Invoke2248
-Node: Clang10323
-Node: asm16021
-Node: linker18621
-Node: Bounds20352
-Node: Libtcc21917
-Node: devel22416
+Node: Clang11064
+Node: asm16853
+Node: linker19453
+Node: Bounds21184
+Node: Libtcc24937
+Node: devel25436
 
 End Tag Table
