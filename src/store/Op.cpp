@@ -475,32 +475,6 @@ void Op::vGrabTaskLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get handler count for given handler                                        */
-/*----------------------------------------------------------------------------*/
-//i8 Op::iHandlerCount(i8 i_Handler)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-//
-//  i8 iCount = m_naEventCount[i_Handler];
-//
-//  return iCount;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* inc handler count for given handler                                        */
-/*----------------------------------------------------------------------------*/
-//void Op::vIncHandlerCount(eZK eEvent)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-//
-//  m_eCurHandler = eEvent;
-//
-//  m_naEventCount[m_eCurHandler]++;
-//
-//  RASSERT(m_naEventCount[eEvent] == m_naOperandCount[eEvent]);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* inc operand count for given operand kind                                   */
 /*----------------------------------------------------------------------------*/
 void Op::vIncOperandCount(eZK eEvent)
@@ -537,23 +511,7 @@ void Op::vInitOperandHandlers(void)
   s32 sHandlerNm;
 
   for (i8 i_Kind = 1; i_Kind < ZK_ENUMS; i_Kind++) {
-
-//    sHandlerNm = aZK[i_Kind];
-//    sHandlerNm.vConcat("_handler"_Stz);
-//
-//    //vTrace("Handler: %s\n"_Stz,sHandlerNm.szStz());
-//
-//    Word* pHandler = pDicRoot->pFindWord(sHandlerNm);
-//    if (! pHandler)
-//      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-//             "Unable to find operand handler for: %s"_Stz,
-//             sHandlerNm.szStz());
-//
-//    m_paEventHandler[i_Kind] = pHandler;
-
     m_naOperandCount[i_Kind] = 0;
-    //m_naEventCount[i_Kind] = 0;
-
   }
 
   m_eCurHandler = ZK_NONE;
