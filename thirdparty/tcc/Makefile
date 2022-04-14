@@ -11,6 +11,13 @@ LIBTCC1 := $(LIBDIR)/tcc/libtcc1.a
 CPPFLAGS := 
 unexport
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+  ifeq ($(ARCH_FLAG_FORCE),x86_64)
+    CONFIGURE_FLAGS = --extra-cflags="-arch x86_64" --extra-ldflags="-arch x86_64" --cpu=x86_64
+  endif
+endif
+
 all : $(LIBTCC) 
 
 $(LIBTCC) :
@@ -19,7 +26,7 @@ $(LIBTCC) :
 	@echo ""
 	mkdir -p $(BINDIR)
 	mkdir -p $(LIBDIR)
-	cd src && ./configure --prefix=./.. --libdir=./../lib --bindir=./../bin
+	cd src && ./configure $(CONFIGURE_FLAGS) --prefix=./.. --libdir=./../lib --bindir=./../bin
 	+cd src && $(MAKE) && $(MAKE) install
 
 clean :

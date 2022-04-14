@@ -32,10 +32,20 @@ CURRENT_PATH := $(notdir $(patsubst %/,%,$(dir $(MAKEFILE_PATH))))
 # variables and rules.
 UNAME_S := $(shell uname -s)
 
+# Forces RapidsSe to be built in the specified architecture on Mac OSX.
+# Currently used to build and run RapidsSe in x86_64 architecture on
+# the Arm M1 chip, that allows rosetta to kick in and translate from
+# x86_64 to arm64, since tinyc support for the M1 chip is not ready yet.
+#ARCH_FLAG_FORCE = x86_64
+export ARCH_FLAG_FORCE
+
 ifeq ($(UNAME_S),Linux)
   include makefile.linux.in
 else ifeq ($(UNAME_S),Darwin)
   include makefile.darwin.in
+  ifeq ($(ARCH_FLAG_FORCE),x86_64)
+    CPPFLAGS_ARCH = -arch x86_64
+  endif
 else
   $(error This makefile does not handle this operating system: $(UNAME_S))
 endif
@@ -174,7 +184,7 @@ $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	@echo ""
 	@echo "Linking the rapidsse dynamic library..."
 	@echo ""
-	$(CPP) $(LDFLAGS) $(LIB_DIRS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
+	$(CPP) $(CPPFLAGS_ARCH) $(LDFLAGS) $(LIB_DIRS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
 	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_LIBRARY))
 
 # RapidsSE executable
@@ -185,23 +195,23 @@ $(TARGET_EXE): $(TARGET_LIBRARY) $(MAIN_O) $(COMPILED_LIBS)
 	@echo ""
 	@echo "Linking the rapidsse executable..."
 	@echo ""
-	$(CPP) $(MAIN_O) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
+	$(CPP) $(CPPFLAGS_ARCH) $(MAIN_O) $(LIB_DIRS) $(RAPIDS_LIBS) $(LIBS) -o $(TARGET_EXE)
 	@echo "$(BUILD_CONFIG)" > $(call targetConfigFile, $(TARGET_EXE))
 
 # Compile source .cpp files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
-	$(CPP) -c $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
+	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile source .c files into object files
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.c $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
-	$(CPP) -c $(CFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
+	$(CPP) -c $(CPPFLAGS_ARCH) $(CFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile assembly files into objects
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.s 
 	$(DIR_GUARD)
-	$(CPP) -c $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
+	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
 # Include all of the generated dependency rules from all .d files.
 # The '-' means ignore the exit status of the command.
@@ -234,7 +244,7 @@ $(OBJ_DIR)/%.d: $(SRC_DIR)/%.cpp
 	@echo "Generating dependency file: $@"
 	@set -e; \
 	rm -f $@; \
-	$(CPP) $(CPPFLAGS) $(INCLUDES) -MM $< > $@.$$$$; \
+	$(CPP) $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES) -MM $< > $@.$$$$; \
 	sed 's,^.*\.o[ :]*,$(OBJ_DIR)/$*.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$;
 #	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; 
@@ -244,7 +254,7 @@ $(OBJ_DIR)/%.d: $(SRC_DIR)/%.c
 	@echo "Generating dependency file: $@"
 	@set -e; \
 	rm -f $@; \
-	$(CPP) $(CPPFLAGS) $(INCLUDES) -MM $< > $@.$$$$; \
+	$(CPP) $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES) -MM $< > $@.$$$$; \
 	sed 's,^.*\.o[ :]*,$(OBJ_DIR)/$*.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$;
 
