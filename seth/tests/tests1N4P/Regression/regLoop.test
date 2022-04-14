@@ -21,7 +21,7 @@ INCLUDE 'regrLoadData.test';
 //LOG 'Running regression tests...';
 
 //------------------------------------------------------------------------------
-INCLUDE 'AndOrNot.test';
+//INCLUDE 'AndOrNot.test';
 //INCLUDE 'InNotIn.test';
 //INCLUDE 'PartKey1way.test';
 //INCLUDE 'PartKey2way.test';

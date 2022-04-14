@@ -94,30 +94,26 @@
   {                                                                        \
     bcdArg2.m_iAsI8 = *(--paW);                                            \
     bcdArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
     if (eErrorCode != EC_NONE ||                                           \
-        bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
+      bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-        if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                          \
-          *paW++ = bcdArg2.m_iAsI8;                                        \
-          *paW++ = bcdArg1.m_iAsI8;                                        \
-          _RESCALE_BCD(eErrorCode)                                         \
-          bcdArg1.m_iAsI8 = *(--paW);                                      \
-          bcdArg2.m_iAsI8 = *(--paW);                                      \
-        }                                                                  \
-        else if(bcdArg1.m_iScale > bcdArg2.m_iScale) {                     \
+                                                                           \
+        if (bcdArg1.m_iScale != bcdArg2.m_iScale) {                        \
           *paW++ = bcdArg1.m_iAsI8;                                        \
           *paW++ = bcdArg2.m_iAsI8;                                        \
-          _RESCALE_BCD(eErrorCode)                                         \
+          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
           bcdArg2.m_iAsI8 = *(--paW);                                      \
           bcdArg1.m_iAsI8 = *(--paW);                                      \
         }                                                                  \
+                                                                           \
         if(eErrorCode != EC_NONE) {                                        \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
+          *paW++ = C_DATUM_NULL;                                           \
+        }                                                                  \
+        else {                                                             \
         eErrorCode = _OF_BCDADD;                                           \
         if(eErrorCode != EC_NONE) {                                        \
           *paW++ = C_DATUM_NULL;                                           \
@@ -130,89 +126,48 @@
     }                                                                      \
   }
 
-  //_PSH_FLT(fltArg1.m_dFlt)
-  //*paW++ = fltArg1.m_iAsI8;
 #define _DIV_BCDBCD(eErrorCode)                                            \
   {                                                                        \
     bcdArg2.m_iAsI8 = *(--paW);                                            \
     bcdArg1.m_iAsI8 = *(--paW);                                            \
+                                                                           \
     if (eErrorCode != EC_NONE ||                                           \
-        bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
+      bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      eErrorCode = _OF_BCDDIV;                                             \
-      if(eErrorCode != EC_NONE) {                                          \
-          *paW++ = C_DATUM_NULL;                                           \
-      }                                                                    \
-      else {                                                               \
-        i8 max_col_decimal = TMP_TBLCOL_SCALE;                             \
-        i8 tmpScaleDiff = bcdArg1.m_iScale - bcdArg2.m_iScale;             \
-        fltArg1.m_dFlt = ((d8)bcdArg1.m_iMantissa) / ((d8)bcdArg2.m_iMantissa); \
-        if(tmpScaleDiff < 0) {                                             \
-          tmpScaleDiff*=-1;                                                \
-          if(tmpScaleDiff > max_col_decimal) {                             \
-            fltArg1.m_dFlt *= iaPow10[max_col_decimal];                    \
-          }                                                                \
-          else {                                                           \
-            fltArg1.m_dFlt *= iaPow10[tmpScaleDiff];                       \
-          }                                                                \
+                                                                           \
+        if (bcdArg1.m_iScale != bcdArg2.m_iScale) {                        \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+          *paW++ = bcdArg2.m_iAsI8;                                        \
+          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
+          bcdArg2.m_iAsI8 = *(--paW);                                      \
+          bcdArg1.m_iAsI8 = *(--paW);                                      \
         }                                                                  \
-        else {                                                             \
-          if(tmpScaleDiff > max_col_decimal) {                             \
-            fltArg1.m_dFlt *= (1/iaPow10[max_col_decimal]);                \
-          }                                                                \
-          else {                                                           \
-            fltArg1.m_dFlt *= (1/iaPow10[tmpScaleDiff]);                   \
-          }                                                                \
-        }                                                                  \
-        _PSH_FLT(fltArg1.m_dFlt)                                           \
-        _FLT_TOBCD(eErrorCode)                                             \
+                                                                           \
         if(eErrorCode != EC_NONE) {                                        \
-          --paW;                                                           \
           *paW++ = C_DATUM_NULL;                                           \
-        }                                                                  \
-      }                                                                    \
-    }                                                                      \
-  }
-  /*
-#define _MUL_BCDBCD(eErrorCode)                                            \
-  {                                                                        \
-    bcdArg2.m_iAsI8 = *(--paW);                                            \
-    bcdArg1.m_iAsI8 = *(--paW);                                            \
-    if (eErrorCode != EC_NONE ||                                           \
-        bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
-      *paW++ = C_DATUM_NULL;                                               \
-    }                                                                      \
-    else {                                                                 \
-      eErrorCode = _OF_BCDMUL;                                             \
-      if(eErrorCode != EC_NONE) {                                          \
-          *paW++ = C_DATUM_NULL;                                           \
-      }                                                                    \
-      else {                                                               \
-        i8 max_col_decimal = TMP_TBLCOL_SCALE;                             \
-        bcdArg1.m_iMantissa = bcdArg1.m_iMantissa * bcdArg2.m_iMantissa;   \
-        i8 tmpScale = bcdArg1.m_iScale + bcdArg2.m_iScale;                 \
-        if(tmpScale > max_col_decimal) {                                   \
-          bcdArg1.m_iMantissa /= iaPow10[tmpScale - max_col_decimal - 1];  \
-          if(bcdArg1.m_iMantissa % 10 >= 5) {                              \
-            bcdArg1.m_iMantissa = (bcdArg1.m_iMantissa / 10) + 1;          \
-          }                                                                \
-          else {                                                           \
-            bcdArg1.m_iMantissa = bcdArg1.m_iMantissa / 10;                \
-          }                                                                \
-          bcdArg1.m_iScale = max_col_decimal;                              \
         }                                                                  \
         else {                                                             \
-          bcdArg1.m_iScale = tmpScale;                                     \
+          eErrorCode = _OF_BCDDIV;                                         \
+          if(eErrorCode != EC_NONE) {                                      \
+            *paW++ = C_DATUM_NULL;                                         \
+          }                                                                \
+          else {                                                           \
+            fltArg1.m_dFlt = ((d8)bcdArg1.m_iMantissa) / ((d8)bcdArg2.m_iMantissa); \
+            *paW++ = bcdArg1.m_iScale + 1;                                 \
+            _PSH_FLT(fltArg1.m_dFlt)                                       \
+            _FLT_TOBCD_TO_SCALE(eErrorCode)                                \
+            _ROUND_BCD(eErrorCode)                                         \
+            if(eErrorCode != EC_NONE) {                                    \
+              --paW;                                                       \
+              *paW++ = C_DATUM_NULL;                                       \
+          }                                                                \
         }                                                                  \
-        *paW++ = bcdArg1.m_iAsI8;                                          \
       }                                                                    \
     }                                                                      \
   }
-*/
 
 #define _MUL_BCDBCD(eErrorCode)                                          \
 {                                                                        \
@@ -225,31 +180,27 @@
   }                                                                      \
   else {                                                                 \
     eErrorCode = _OF_BCDMUL;                                             \
-    if(eErrorCode != EC_NONE) {                                          \
-        *paW++ = C_DATUM_NULL;                                           \
+    if (eErrorCode != EC_NONE) {                                         \
+      *paW++ = C_DATUM_NULL;                                             \
     }                                                                    \
     else {                                                               \
-      i8 max_col_decimal = TMP_TBLCOL_SCALE;                             \
-      bcdArg1.m_iMantissa = bcdArg1.m_iMantissa * bcdArg2.m_iMantissa;   \
-      i8 tmpScale = bcdArg1.m_iScale + bcdArg2.m_iScale;                 \
-      if(tmpScale > max_col_decimal) {                                   \
-        bcdArg1.m_iMantissa /= iaPow10[tmpScale - max_col_decimal - 1];  \
-        if(bcdArg1.m_iMantissa % 10 >= 5) {                              \
-          bcdArg1.m_iMantissa = (bcdArg1.m_iMantissa / 10) + 1;          \
-        }                                                                \
-        else {                                                           \
-          bcdArg1.m_iMantissa = bcdArg1.m_iMantissa / 10;                \
-        }                                                                \
-        bcdArg1.m_iScale = max_col_decimal;                              \
+      i8 iScaleNew = bcdArg1.m_iScale > bcdArg2.m_iScale ? bcdArg1.m_iScale : bcdArg2.m_iScale;  \
+      i8 iResult = bcdArg1.m_iMantissa * bcdArg2.m_iMantissa;            \
+      iScale = bcdArg1.m_iScale + bcdArg2.m_iScale;                      \
+      if (iScale != iScaleNew) {                                         \
+        bcdArg1.m_iMantissa = iResult / iaPow10[iScale - iScaleNew - 1]; \
+        bcdArg1.m_iScale = iScaleNew + 1;                                \
+        *paW++ = bcdArg1.m_iAsI8;                                        \
+        _ROUND_BCD(eErrorCode)                                           \
       }                                                                  \
       else {                                                             \
-        bcdArg1.m_iScale = tmpScale;                                     \
-      }                                                                  \
-      *paW++ = bcdArg1.m_iAsI8;                                          \
+        bcdArg1.m_iMantissa = iResult;                                   \
+        bcdArg1.m_iScale = iScaleNew;                                    \
+       *paW++ = bcdArg1.m_iAsI8;                                         \
+       }                                                                 \
     }                                                                    \
   }                                                                      \
 }
-
 
 #define _NEG_BCD(eErrorCode)                                               \
   {                                                                        \
@@ -275,7 +226,7 @@
     }                                                                      \
   }
 
-#define _SUB_BCDBCD(eErrorCode) \
+#define _SUB_BCDBCD(eErrorCode)                                            \
   {                                                                        \
     bcdArg2.m_iAsI8 = *(--paW);                                            \
     bcdArg1.m_iAsI8 = *(--paW);                                            \
@@ -285,24 +236,18 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-        if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                          \
-          *paW++ = bcdArg2.m_iAsI8;                                        \
+        if (bcdArg1.m_iScale != bcdArg2.m_iScale) {                        \
           *paW++ = bcdArg1.m_iAsI8;                                        \
-          _RESCALE_BCD(eErrorCode)                                         \
-          bcdArg1.m_iAsI8 = *(--paW);                                      \
-          bcdArg2.m_iAsI8 = *(--paW);                                      \
-        }                                                                  \
-        else if(bcdArg1.m_iScale > bcdArg2.m_iScale) {                     \
-          *paW++ = bcdArg1.m_iAsI8;                                        \
-          *paW++ = bcdArg2.m_iAsI8;                                        \
-          _RESCALE_BCD(eErrorCode)                                         \
+          *paW++ = bcdArg2.m_iAsI8;                                       \
+          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
           bcdArg2.m_iAsI8 = *(--paW);                                      \
           bcdArg1.m_iAsI8 = *(--paW);                                      \
         }                                                                  \
+                                                                           \
         if(eErrorCode != EC_NONE) {                                        \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else {                                                               \
+          *paW++ = C_DATUM_NULL;                                           \
+        }                                                                  \
+        else {                                                             \
         eErrorCode = _OF_BCDSUB;                                           \
         if(eErrorCode != EC_NONE) {                                        \
           *paW++ = C_DATUM_NULL;                                           \
@@ -329,17 +274,10 @@
       *paW++ = bcdArg1.m_iAsI8;                                            \
     }                                                                      \
     else {                                                                 \
-        if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                          \
-          *paW++ = bcdArg2.m_iAsI8;                                        \
-          *paW++ = bcdArg1.m_iAsI8;                                        \
-          _RESCALE_BCD(eErrorCode)                                         \
-          bcdArg1.m_iAsI8 = *(--paW);                                      \
-          bcdArg2.m_iAsI8 = *(--paW);                                      \
-        }                                                                  \
-        else if(bcdArg1.m_iScale > bcdArg2.m_iScale) {                     \
+       if (bcdArg1.m_iScale != bcdArg2.m_iScale) {                         \
           *paW++ = bcdArg1.m_iAsI8;                                        \
           *paW++ = bcdArg2.m_iAsI8;                                        \
-          _RESCALE_BCD(eErrorCode)                                         \
+          _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                              \
           bcdArg2.m_iAsI8 = *(--paW);                                      \
           bcdArg1.m_iAsI8 = *(--paW);                                      \
         }                                                                  \
@@ -380,29 +318,29 @@
     {                                                                    \
       *paW++ = C_DATUM_NULL;                                             \
     }                                                                    \
-    else { \
+    else {                                                               \
       if(fltArg1.m_dFlt >= C_FLT_MAX ||                                  \
-        fltArg2.m_dFlt >= C_FLT_MAX) {  \
-        eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else if(fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                          \
-        fltArg2.m_dFlt < (d8)-C_FLT_MAX) {                                 \
-          eErrorCode = EC_ARITHMETIC_UNDERFLOW;                            \
-          *paW++ = C_DATUM_NULL;                                           \
-      }                                                                    \
-      else                                                                 \
-      {                                                                    \
-        fltArg1.m_dFlt += fltArg2.m_dFlt;                                  \
-        if(fltArg1.m_dFlt > C_FLT_MAX) {                                   \
-        eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-          *paW++ = C_DATUM_NULL;                        \
-        }                        \
-        else                        \
-          *paW++ = fltArg1.m_iAsI8;                                          \
-      }                                                                    \
-    }                                                                      \
-  }                                                                        \
+        fltArg2.m_dFlt >= C_FLT_MAX) {                                   \
+        eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
+        *paW++ = C_DATUM_NULL;                                           \
+      }                                                                  \
+      else if(fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                        \
+        fltArg2.m_dFlt < (d8)-C_FLT_MAX) {                               \
+          eErrorCode = EC_ARITHMETIC_UNDERFLOW;                          \
+          *paW++ = C_DATUM_NULL;                                         \
+      }                                                                  \
+      else                                                               \
+      {                                                                  \
+        fltArg1.m_dFlt += fltArg2.m_dFlt;                                \
+        if(fltArg1.m_dFlt > C_FLT_MAX) {                                 \
+        eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
+          *paW++ = C_DATUM_NULL;                                         \
+        }                                                                \
+        else                                                             \
+          *paW++ = fltArg1.m_iAsI8;                                      \
+      }                                                                  \
+    }                                                                    \
+  }                                                                      \
 }
 
 
@@ -444,13 +382,13 @@
 }
 
 
-#define _DIV_FLTFLT(eErrorCode)                                            \
+#define _DIV_FLTFLT(eErrorCode)                                          \
 {                                                                        \
-  fltArg2.m_iAsI8 = *(--paW);                                                      \
-  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  fltArg2.m_iAsI8 = *(--paW);                                            \
+  fltArg1.m_iAsI8 = *(--paW);                                            \
   if (eErrorCode != EC_NONE ||                                           \
-    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                           \
-    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
     *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
@@ -460,7 +398,7 @@
     }                                                                    \
     else {                                                               \
       if(fltArg1.m_dFlt > C_FLT_MAX ||                                   \
-        fltArg2.m_dFlt > C_FLT_MAX) {  \
+        fltArg2.m_dFlt > C_FLT_MAX) {                                    \
         eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
         *paW++ = C_DATUM_NULL;                                           \
       }                                                                  \
@@ -478,7 +416,16 @@
 }
 
 #define _NEG_FLT(eErrorCode)                                             \
-  NEVER_REACH
+{                                                                        \
+  fltArg1.m_iAsI8 = *(--paW);                                            \
+  if (eErrorCode != EC_NONE ||                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL) {                                   \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    *paW++ = -fltArg1.m_iAsI8;                                           \
+  }                                                                      \
+}
 
 #define _SUB_FLTFLT(eErrorCode)                                          \
 {                                                                        \
@@ -496,7 +443,7 @@
       }                                                                  \
       else {                                                             \
         if(fltArg1.m_dFlt > C_FLT_MAX ||                                 \
-          fltArg2.m_dFlt > C_FLT_MAX) {  \
+          fltArg2.m_dFlt > C_FLT_MAX) {                                  \
           eErrorCode = EC_ARITHMETIC_OVERFLOW;                           \
           *paW++ = C_DATUM_NULL;                                         \
       }                                                                  \
@@ -504,10 +451,10 @@
       fltArg2.m_dFlt < C_FLT_MIN) {                                      \
         eErrorCode = EC_ARITHMETIC_UNDERFLOW;                            \
         *paW++ = C_DATUM_NULL;                                           \
-      }                                       \
+      }                                                                  \
       else {                                                             \
         fltArg1.m_dFlt -= fltArg2.m_dFlt;                                \
-        *paW++ = fltArg1.m_iAsI8;                      \
+        *paW++ = fltArg1.m_iAsI8;                                        \
       }                                                                  \
     }                                                                    \
   }                                                                      \
@@ -515,44 +462,44 @@
 
 
 
-#define _MUL_FLTFLT(eErrorCode) \
+#define _MUL_FLTFLT(eErrorCode)                                          \
 {                                                                        \
-  fltArg2.m_iAsI8 = *(--paW);                                                      \
-  fltArg1.m_iAsI8 = *(--paW);                                                      \
+  fltArg2.m_iAsI8 = *(--paW);                                            \
+  fltArg1.m_iAsI8 = *(--paW);                                            \
   if (eErrorCode != EC_NONE ||                                           \
-    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                           \
-    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                           \
+    fltArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
+    fltArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
     *paW++ = C_DATUM_NULL;                                               \
   }                                                                      \
   else {                                                                 \
-    if (fltArg2.m_iAsI8 == 0) {                                                    \
-        *paW++ = C_DATUM_NULL;                                            \
-        eErrorCode = EC_DIVIDE_BY_ZERO;                                   \
+    if (fltArg2.m_iAsI8 == 0) {                                          \
+        *paW++ = C_DATUM_NULL;                                           \
+        eErrorCode = EC_DIVIDE_BY_ZERO;                                  \
     }                                                                    \
     else {                                                               \
-      if(fltArg1.m_dFlt > C_FLT_MAX ||                              \
-        fltArg2.m_dFlt > C_FLT_MAX) {  \
-        eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                                                    \
-      else if(fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                         \
-      fltArg2.m_dFlt < (d8)-C_FLT_MAX) { \
-        eErrorCode = EC_ARITHMETIC_UNDERFLOW;                              \
-        *paW++ = C_DATUM_NULL;                                             \
-      }                                       \
+      if(fltArg1.m_dFlt > C_FLT_MAX ||                                   \
+        fltArg2.m_dFlt > C_FLT_MAX) {                                    \
+        eErrorCode = EC_ARITHMETIC_OVERFLOW;                             \
+        *paW++ = C_DATUM_NULL;                                           \
+      }                                                                  \
+      else if(fltArg1.m_dFlt <  (d8)-C_FLT_MAX ||                        \
+      fltArg2.m_dFlt < (d8)-C_FLT_MAX) {                                 \
+        eErrorCode = EC_ARITHMETIC_UNDERFLOW;                            \
+        *paW++ = C_DATUM_NULL;                                           \
+      }                                                                  \
       else {                                                             \
-        fltArg1.m_dFlt *= fltArg2.m_dFlt;                        \
-        if(fltArg1.m_dFlt > C_FLT_MAX) {                                   \
-          eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-          *paW++ = C_DATUM_NULL;                        \
-        }                        \
-        else                                              \
-        if(fltArg1.m_dFlt < C_FLT_MIN) {                                   \
-          eErrorCode = EC_ARITHMETIC_OVERFLOW;                               \
-          *paW++ = C_DATUM_NULL;                        \
-        }                                                \
-        else                    \
-          *paW++ = fltArg1.m_iAsI8 ;                      \
+        fltArg1.m_dFlt *= fltArg2.m_dFlt;                                \
+        if(fltArg1.m_dFlt > C_FLT_MAX) {                                 \
+          eErrorCode = EC_ARITHMETIC_OVERFLOW;                           \
+          *paW++ = C_DATUM_NULL;                                         \
+        }                                                                \
+        else                                                             \
+        if(fltArg1.m_dFlt < C_FLT_MIN) {                                 \
+          eErrorCode = EC_ARITHMETIC_OVERFLOW;                           \
+          *paW++ = C_DATUM_NULL;                                         \
+        }                                                                \
+        else                                                             \
+          *paW++ = fltArg1.m_iAsI8 ;                                     \
       }                                                                  \
     }                                                                    \
   }                                                                      \
@@ -600,7 +547,7 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      eErrorCode = _OF_I8ADD;                                          \
+      eErrorCode = _OF_I8ADD;                                              \
       if(eErrorCode != EC_NONE)                                            \
       {                                                                    \
         *paW++ = C_DATUM_NULL;                                             \
@@ -653,7 +600,7 @@
          eErrorCode = EC_DIVIDE_BY_ZERO;                                   \
       }                                                                    \
       else {                                                               \
-        eErrorCode = _OF_I8DIV;                                        \
+        eErrorCode = _OF_I8DIV;                                            \
         if(eErrorCode != EC_NONE) {                                        \
           *paW++ = C_DATUM_NULL;                                           \
         }                                                                  \
@@ -696,7 +643,7 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      eErrorCode = _OF_I8MUL;                                          \
+      eErrorCode = _OF_I8MUL;                                              \
       if(eErrorCode != EC_NONE) {                                          \
         *paW++ = C_DATUM_NULL;                                             \
       }                                                                    \
@@ -739,7 +686,7 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      eErrorCode = _OF_I8SUB;                                          \
+      eErrorCode = _OF_I8SUB;                                              \
       if(eErrorCode != EC_NONE)                                            \
       {                                                                    \
         *paW++ = C_DATUM_NULL;                                             \
