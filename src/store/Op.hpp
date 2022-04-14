@@ -100,6 +100,7 @@ namespace STORE
     void vDump(void);
   
     Word* pEntryWord(void);
+    i8    nEventCount(eZK eEvent);
     Word* pEventHandler(void);
     Word* pEventHandler(i8 i_OperandKind);
     void vEventHandler(i8 i_OperandKind, Word* pHandler);

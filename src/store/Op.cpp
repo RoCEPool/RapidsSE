@@ -439,6 +439,18 @@ Word* Op::pEntryWord(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get count for given event                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Op::nEventCount(eZK eEvent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  i8 nCount = m_naEventCount[eEvent];
+  
+  return nCount;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get event hander                                                           */
 /*----------------------------------------------------------------------------*/
 Word* Op::pEventHandler(void)

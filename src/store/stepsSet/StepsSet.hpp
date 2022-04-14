@@ -505,6 +505,7 @@ public:
   void vErrorCodeSet(void);
 
   // event
+  void vEventCountFetch(void);
   void vEventHandlerName(void);
   void vEventName(void);
 
@@ -1277,10 +1278,6 @@ public:
 
   // operand
   void vOperandToParcel(void);
-
-  // operandCount
-  void vOperandCountInc(void);
-  void vOperandCountGet(void);
 
   // OperandOoO
   void vOperandOoODelete(void);

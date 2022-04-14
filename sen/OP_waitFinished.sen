@@ -31,11 +31,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                                   */
+/* handler for ZK_M_END ...                                                   */
 /*----------------------------------------------------------------------------*/
-: waitFinished_Eos \handler
+: waitFinished_End \handler
 
-  ZK_M_EOS_handler
+  ZK_M_END Event[].count@ "waitFinished: ZK_M_END %v" .printf
+
+  ZK_M_END_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +76,7 @@
   op__topology
 
   find: waitFinished_Count     ZK_I_COUNT     [op].handler!
-  find: waitFinished_Eos       ZK_M_EOS       [op].handler!
+  find: waitFinished_End       ZK_M_END       [op].handler!
   find: waitFinished_Finished  ZK_M_FINISHED  [op].handler!
   find: waitFinished_Start     ZK_M_START     [op].handler!
 
