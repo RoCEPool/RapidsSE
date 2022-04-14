@@ -6,6 +6,39 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BCD
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _ROUND_BCD(eErrorCode)                                       \
+  {                                                                  \
+    bcdArg1.m_iAsI8 = *(--paW);                                      \
+    if (bcdArg1.m_iMantissa % 10 >= 5) {                             \
+      bcdArg1.m_iMantissa = (bcdArg1.m_iMantissa / 10) + 1;          \
+    }                                                                \
+    else {                                                           \
+      bcdArg1.m_iMantissa = bcdArg1.m_iMantissa / 10;                \
+    }                                                                \
+    bcdArg1.m_iScale--;                                              \
+    *paW++ = bcdArg1.m_iAsI8;                                        \
+  }
+
+// rescale BCD to max scale of the two bcd's
+// CHECK FOR OVERFLOW !!!
+#define _RESCALE_BCD_MAX_OF_TWO(eErrorCode)                           \
+  {                                                                   \
+    bcdArg2.m_iAsI8 = *(--paW);                                       \
+    bcdArg1.m_iAsI8 = *(--paW);                                       \
+    iScaleDiff = bcdArg1.m_iScale - bcdArg2.m_iScale;                 \
+                                                                      \
+    if (iScaleDiff > 0) {                                             \
+      bcdArg2.m_iScale = bcdArg1.m_iScale;                            \
+      bcdArg2.m_iMantissa = bcdArg2.m_iMantissa * iaPow10[iScaleDiff];\
+    }                                                                 \
+    else {                                                            \
+      bcdArg1.m_iScale = bcdArg2.m_iScale;                            \
+      bcdArg1.m_iMantissa = bcdArg1.m_iMantissa * iaPow10[-iScaleDiff];\
+    }                                                                 \
+                                                                      \
+    *paW++ = bcdArg1.m_iAsI8;                                         \
+    *paW++ = bcdArg2.m_iAsI8;                                         \
+  }
 
 //Rescale macro assumes we put the larger scaled argument on the stack first, and then the smaller scaled value.
 //So bcdArg1 will be rescaled to a higher scale since it's popped off the stack first.

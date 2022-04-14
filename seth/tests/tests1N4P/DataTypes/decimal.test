@@ -195,7 +195,58 @@ rows:
   (478.48)
   (478.48)
   (4002.48)
-/*
+
+select 820.12 + 12.346 from datums;
+contains rows:
+ (832.466)
+
+select 820.1278 + 12.3 from datums;
+contains rows:
+  (832.4278)
+
+select 820.12 + 12.35 from datums;
+contains rows:
+  (832.47)
+
+//------------------------------------------------------------------------------
+select 820.12 - 12.346 from datums;
+contains rows:
+  (807.774)
+
+select 820.1278 - 12.3 from datums;
+contains rows:
+  (807.8278)
+
+select 820.12 - 12.35 from datums;
+contains rows:
+  (807.77)
+
+//------------------------------------------------------------------------------
+select 820.12 / 12.346 from datums;
+contains rows:
+  (66.428)
+
+select 820.1278 / 12.3 from datums;
+contains rows:
+  (66.6771)
+
+select 820.12 / 12.35 from datums;
+contains rows:
+  (66.41)
+
+//------------------------------------------------------------------------------
+select 820.12 * 12.346 from datums;
+contains rows:
+  (10125.202)
+
+select 820.1278 * 12.3 from datums;
+contains rows:
+  (10087.5719)
+
+select 820.12 * 12.35 from datums;
+contains rows:
+  (10128.48)
+
 select cast (dec_col6 as varchar)  , cast (dec_col7 as varchar) from datums order by dec_col6;
 rows:
   (null,'10.04')
@@ -211,127 +262,55 @@ rows:
   ('477.04','10.04')
   ('477.04','10.04')
   ('4001.04','1041.04')
-*/
+
 // exception : /0
-select (flt_col8/0e0) from datums;
+select dec_col6/0 from datums;
 failure contains: 'divide by zero'
 
-/*
 // aggregates : sum
+select sum(dec_col6) from datums;
+rows: (6143.44)
 
-select sum(flt_col8) from datums;
-rows: (42.64)
+select 10.44 + sum(dec_col6) from datums;
+rows: (6153.88)
 
-select 10.44 + sum(flt_col8) from datums;
-rows: (53.08)
+select sum(dec_col6) + 10.44 from datums;
+rows: (6153.88)
 
-select sum(flt_col8) + 10.44 from datums;
-rows: (53.08)
+select sum(10.1 + dec_col6) from datums;
+rows: (6254.54)
 
-select sum(10.1 + flt_col8) from datums;
-rows: (163.84)
+select sum(dec_col6 + 10.1) from datums;
+rows: (6254.54)
 
-select sum(flt_col8 + 10.1) from datums;
-rows: (163.84)
+select sum(dec_col6 + dec_col6) from datums;
+rows: (12286.88)
 
-select sum(flt_col8 + flt_col8) from datums;
-rows: (85.28)
-
-select sum(flt_col8) + sum(flt_col8) from datums;
-rows: (85.28)
+select sum(dec_col6) + sum(dec_col6) from datums;
+rows: (12286.88)
 
 // aggregates : min
 
-select min(flt_col8) from datums;
-rows: (0.22)
+select min(dec_col6) from datums;
+rows: (23.04)
 
-select 10.3 + min(flt_col8) from datums;
-rows: (10.52)
+select 10.3 + min(dec_col6) from datums;
+rows: (33.34)
 
-select min(flt_col8) + 10.3 from datums;
-rows: (10.52)
+select min(dec_col6) + 10.3 from datums;
+rows: (33.34)
 
-select min(10 + flt_col8) from datums;
-rows: (10.22)
+select min(10 + dec_col6) from datums;
+rows: (33.04)
 
-select min(flt_col8 + 10) from datums;
-rows: (10.22)
+select min(dec_col6 + 10) from datums;
+rows: (33.04)
 
-select min(flt_col8 + flt_col8) from datums;
-rows: (0.44)
+select min(dec_col6 + dec_col6) from datums;
+rows: (46.08)
 
-select min(flt_col8) + min(flt_col8) from datums;
-rows: (0.44)
-
-// aggregates : min (with nulls and min/max ints)
-
-select min(int_col1) from datums;
-rows: (-9223372036854775806)
-
-select 10 + min(int_col1) from datums;
-rows: (-9223372036854775796)
-
-select min(int_col1) + 10 from datums;
-rows: (-9223372036854775796)
-
-select min(10 + int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-
-select min(int_col1 + 10) from datums;
-failure contains: 'Arithmetic overflow'
-
-select min(int_col1 + int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-
-select min(int_col1) + min(int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-
-// aggregates : max
-
-select max(flt_col8) from datums;
-rows: (10.22)
-
-select 10 + max(flt_col8) from datums;
-rows: (20.22)
-
-select max(flt_col8) + 10 from datums;
-rows: (20.22)
-
-select max(10 + flt_col8) from datums;
-rows: (20.22)
-
-select max(flt_col8 + 10) from datums;
-rows: (20.22)
-
-select max(flt_col8 + flt_col8) from datums;
-rows: (20.44)
-
-select max(flt_col8) + max(flt_col8) from datums;
-rows: (20.44)
-
-// aggregates : max (with nulls and min/max ints)
-
-select max(int_col1) from datums;
-rows: (9223372036854775806)
-/*
-select 10 + max(int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-
-select max(int_col1) + 10 from datums;
-failure contains: 'Arithmetic overflow'
-
-select max(10 + int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-
-select max(int_col1 + 10) from datums;
-failure contains: 'Arithmetic overflow'
-
-select max(int_col1 + int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-
-select max(int_col1) + max(int_col1) from datums;
-failure contains: 'Arithmetic overflow'
-*/
+select min(dec_col6) + min(dec_col6) from datums;
+rows: (46.08)
 
 /*
 

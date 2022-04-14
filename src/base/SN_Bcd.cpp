@@ -63,7 +63,7 @@ i8 SN_Bcd::i(char** aacCrs, Format* pFmt)
   i8 iPointPos = StrLib::iFind(szStr->azChar(), '.');
   ASSERT(iPointPos >= 0);
 
-  i8 iScale = nLen - iPointPos - iSign - 1;
+  i8 iScale = nLen - iPointPos - 1;
   i8 iPrecision = nLen - iSign - 1;
 
   i8 iMantissa;

@@ -290,6 +290,7 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    i8    iArg1;"
       "\n    i8    iArg2;"
       "\n    i8    iArg3;"
+      "\n    i8    iScale;"
       "\n    i8    iInCount;"
       "\n    i8*   paW;"
       "\n    union Bcd_T bcdArg1;"
