@@ -496,6 +496,8 @@ void Op::vIncHandlerCount(eZK eEvent)
   m_eCurHandler = eEvent;
   
   m_naEventCount[m_eCurHandler]++;
+  
+  RASSERT(m_naEventCount[eEvent] == m_naOperandCount[eEvent]);
 }
 
 /*----------------------------------------------------------------------------*/
