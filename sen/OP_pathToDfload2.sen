@@ -19,7 +19,7 @@
   // get the first (one and only) row from this infoset
   InfoSet[].firstRow to infoSetRow[]
 
-  // extract the vaues
+  // extract the values
   0 InfoSet[].colVal@ locals| sPath   |
   1 InfoSet[].colVal@ locals| iPathNo |
   2 InfoSet[].colVal@ locals| iPathOf | 

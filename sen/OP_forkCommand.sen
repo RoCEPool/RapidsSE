@@ -27,6 +27,31 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_I_COUNT ...                                                 */
+/*----------------------------------------------------------------------------*/
+: forkCommand_Count \handler
+  
+  "forkCommand_Count" .
+
+  PipeIn[]\clear to InfoSet[]
+  
+  // find the __path table def ; set infoSetTable[]
+  C_TDEF_COUNT op__tableDef_infoSet assert
+
+  // get the first (one and only) row from this infoset
+  InfoSet[].firstRow to infoSetRow[]
+
+  // extract the values
+  0 InfoSet[].colVal@ locals| nPaths   |
+
+  nPaths "forkCommand: nPaths %v" .printf
+    
+  InfoSet[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : forkCommand_Start \handler
@@ -46,9 +71,11 @@
 
   op__topology
 
-  find: forkCommand_Eos      ZK_M_EOS       [op].handler!
-  find: forkCommand_Command  ZK_I_COMMAND   [op].handler!
-  find: forkCommand_Start    ZK_M_START     [op].handler!
+  find: forkCommand_Count  ZK_I_COUNT     [op].handler!
+
+  //find: forkCommand_Eos      ZK_M_EOS       [op].handler!
+  //find: forkCommand_Command  ZK_I_COMMAND   [op].handler!
+  //find: forkCommand_Start    ZK_M_START     [op].handler!
 
   op__loop
 
