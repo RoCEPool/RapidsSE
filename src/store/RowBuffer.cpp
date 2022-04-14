@@ -263,7 +263,8 @@ Row* RowBuffer::pAllotCopyRow(RowSingle* pRowSingle)
       ASSERT(nCopyBytes + 1 == nSrcLength);
       UNUSED(nCopyBytes);
       // set offset of tail string
-      pRow->vColVal_ofs(i_Col,iToOffset(acDstString));
+      //pRow->vColVal_ofs(i_Col,iToOffset(acDstString));
+      pRow->vColVal_ofs(i_Col,acDstString);
       // END STRING_DEPOSIT
 
       continue;
@@ -808,12 +809,12 @@ bool RowBuffer::bVerify(void)
 
 // I THINK THIS NEEDS TO GO
 
-i8 RowBuffer::iToOffset(Stz* szStr)
-{
-  i4 iOffset = static_cast<i4>(nDifference(szStr,this));
-  
-  return iOffset;
-}
+//i8 RowBuffer::iToOffset(Stz* szStr)
+//{
+//  i4 iOffset = static_cast<i4>(nDifference(szStr,this));
+//
+//  return iOffset;
+//}
 
 /*============================================================================*/
 /* end                                                                        */
