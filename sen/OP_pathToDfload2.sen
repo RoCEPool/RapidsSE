@@ -1,0 +1,91 @@
+/*============================================================================*/
+/* OP_pathToDfload2.sen -- Operator Path To Dfload                            */
+/*============================================================================*/
+
+" OP_pathToDfload2.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_I_PATH ... an infoset with __path rows                      */
+/*----------------------------------------------------------------------------*/
+: pathToDfload2_Path \handler
+ 
+  "pathToDfload2_Path" .
+
+  PipeIn[]\clear to InfoSet[]
+
+  // find the __path table def ; set infoSetTable[]
+  C_TDEF_PATH op__tableDef_infoSet assert
+
+  // get the first (one and only) row from this infoset
+  InfoSet[].firstRow to infoSetRow[]
+
+  // extract the values
+  0 InfoSet[].colVal@ locals| sPath   |
+  1 InfoSet[].colVal@ locals| iPathNo |
+  2 InfoSet[].colVal@ locals| iPathOf | 
+  
+  // print the __path data
+  iPathOf iPathNo sPath "pathToDfload2: %v %v %v" .printf
+
+  InfoSet[].delete
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  sPath <tableNm> "dfload2 %v \"%v\"" str.format locals| sCommand |
+
+  sCommand "pathToDfload2: %v" .printf
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // temp debug
+  //true exit
+  
+  // find the __command table def ; set infoSetTable[]
+  C_TDEF_COMMAND op__tableDef_infoSet assert
+
+  // create an infoSet operand
+  InfoSetTable[] InfoSet[].new
+    OI_COMMAND InfoSet[].opInfoset!
+
+  sCommand 1 InfoSet[].addRowVargs
+    
+  InfoSet[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for call pipeline req                      (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : pathToDfload2_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: pathToDfload2_Path  ZK_I_PATH  [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: pathToDfload2 :: pathToDfload2 <tableNm> ;
+
+: pathToDfload2_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "pathToDfload2_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

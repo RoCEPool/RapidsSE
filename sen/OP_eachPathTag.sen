@@ -1,0 +1,101 @@
+/*============================================================================*/
+/* OP_eachPathTag.sen -- Operator Each Path Tag                               */
+/*============================================================================*/
+
+" OP_eachPathTag.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: eachPathTag_DataPulse \handler
+ 
+  "eachPathTag_DataPulse" .
+
+  ZK_M_DATAPULSE_handler
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  <paths> locals| nPaths |
+
+  // find the __callPipeline table def ; set infoSetTable[]
+  C_TDEF_COUNT op__tableDef_infoSet assert
+
+  // create an infoSet operand
+  InfoSetTable[] InfoSet[].new
+    OI_COUNT InfoSet[].opInfoset!
+
+  nPaths 1 InfoSet[].addRowVargs
+    
+  InfoSet[].pipeOut
+  
+  nPaths "eachPathTag: nPaths %v" .printf
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  0 0 0 locals| sPath iPathNo iPathOf |
+
+  // find the __path table def ; set infoSetTable[]
+  C_TDEF_PATH op__tableDef_infoSet assert
+
+  nPaths 0
+  do
+    // create a new infoSet operand for each path
+    // refer to define table __path in it_path.sen
+    infoSetTable[] InfoSet[].new
+      OI_PATH InfoSet[].opInfoset!
+
+    // form: iPathOf iPathNo sPath
+    nPaths to iPathOf
+    I to iPathNo
+    "<path" I >str str.cat ">" str.cat
+       [job].tagSet@ tagSet.getStr
+       to sPath
+     
+    // print the __path data
+    iPathOf iPathNo sPath "eachPathTag: %v %v %v" .printf
+
+    // add a __path row to infoset
+    iPathOf iPathNo sPath 3 InfoSet[].addRowVargs
+        
+    // pipeout the infoset with one row in it
+    InfoSet[].pipeOut
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for call pipeline req                      (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : eachPathTag_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: eachPathTag_DataPulse ZK_M_DATAPULSE [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: eachPathTag :: eachPathTag ;
+
+: eachPathTag_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "eachPathTag_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

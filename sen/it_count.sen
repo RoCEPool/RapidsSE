@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* it_count.sen -- Define __count table                                       */
+/* it_count.sen -- Define __countInfo table                                   */
 /*============================================================================*/
 
 " it_count.sen" .verbose
@@ -7,7 +7,7 @@
 : start::it_count
 
   // C_TDEF_COUNT
-
+  
   STD_PATH_TAG
   "
   define table __count ( rowCount INTEGER NOT NULL ) < infoSet > = 1 ;

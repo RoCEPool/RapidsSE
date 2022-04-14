@@ -210,9 +210,9 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_ANALYZETABLE"_Stz,  C_TDEF_ANALYZETABLE);
   vAddConstant("C_TDEF_CALLPIPELINE"_Stz,  C_TDEF_CALLPIPELINE);
   vAddConstant("C_TDEF_COLUMNDEFS"_Stz,    C_TDEF_COLUMNDEFS);
+  vAddConstant("C_TDEF_COMMAND"_Stz,       C_TDEF_COMMAND);
   vAddConstant("C_TDEF_COMMANDERRORS"_Stz, C_TDEF_COMMANDERRORS);
   vAddConstant("C_TDEF_COUNT"_Stz,         C_TDEF_COUNT);
-  vAddConstant("C_TDEF_COUNTINFO"_Stz,     C_TDEF_COUNTINFO);
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,    C_TDEF_GRIDSANITY);
   vAddConstant("C_TDEF_EXECERRORS"_Stz,    C_TDEF_EXECERRORS);
   vAddConstant("C_TDEF_EXPLAIN"_Stz,       C_TDEF_EXPLAIN);
@@ -230,7 +230,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_LOOKUPSCHEMA"_Stz,  C_TDEF_LOOKUPSCHEMA);
   vAddConstant("C_TDEF_LOOKUPTABLE"_Stz,   C_TDEF_LOOKUPTABLE);
   vAddConstant("C_TDEF_NODEINFO"_Stz,      C_TDEF_NODEINFO);
-  vAddConstant("C_TDEF_PATHINFO"_Stz,      C_TDEF_PATHINFO);
+  vAddConstant("C_TDEF_PATH"_Stz,          C_TDEF_PATH);
   vAddConstant("C_TDEF_PARTITIONKEY"_Stz,  C_TDEF_PARTITIONKEY);
   vAddConstant("C_TDEF_PINGINFO"_Stz,      C_TDEF_PINGINFO);
   vAddConstant("C_TDEF_PROGRESSUNITS"_Stz, C_TDEF_PROGRESSUNITS);
@@ -570,14 +570,15 @@ void Constants::vAddConstantsCpp(void)
   // OI_ : operator infoset
   /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
   /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
+  /*  0 */ vAddConstant("OI_COMMAND"_Stz,       OI_COMMAND);
   /*  0 */ vAddConstant("OI_COMMANDERRORS"_Stz, OI_COMMANDERRORS);
-  /*  0 */ vAddConstant("OI_COUNTINFO"_Stz,     OI_COUNTINFO);
+  /*  0 */ vAddConstant("OI_COUNT"_Stz,         OI_COUNT);
   /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);
   /*  0 */ vAddConstant("OI_FORKCOMMAND"_Stz,   OI_FORKCOMMAND);
   /*  0 */ vAddConstant("OI_LOADRESULT"_Stz,    OI_LOADRESULT);
   /*  0 */ vAddConstant("OI_LOCKSTATS"_Stz,     OI_LOCKSTATS);
   /*  0 */ vAddConstant("OI_NODEINFO"_Stz,      OI_NODEINFO);
-  /*  0 */ vAddConstant("OI_PATHINFO"_Stz,      OI_PATHINFO);
+  /*  0 */ vAddConstant("OI_PATH"_Stz,          OI_PATH);
   /*  0 */ vAddConstant("OI_PROGRESSUNITS"_Stz, OI_PROGRESSUNITS);
   /*  0 */ vAddConstant("OI_RETURNPIPELINE"_Stz,OI_RETURNPIPELINE);
   /*  0 */ vAddConstant("OI_SEEKOFFSETS"_Stz,   OI_SEEKOFFSETS);
@@ -708,14 +709,15 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_D_PAGINGMETRICS"_Stz,   ZK_D_PAGINGMETRICS);
 
   /*  0 */ vAddConstant("ZK_I_CALLPIPELINE"_Stz,    ZK_I_CALLPIPELINE);
+  /*  0 */ vAddConstant("ZK_I_COMMAND"_Stz,         ZK_I_COMMAND);
   /*  0 */ vAddConstant("ZK_I_COMMANDERRORS"_Stz,   ZK_I_COMMANDERRORS);
-  /*  0 */ vAddConstant("ZK_I_COUNTINFO"_Stz,       ZK_I_COUNTINFO);
+  /*  0 */ vAddConstant("ZK_I_COUNT"_Stz,           ZK_I_COUNT);
   /*  0 */ vAddConstant("ZK_I_EXECERRORS"_Stz,      ZK_I_EXECERRORS);
   /*  0 */ vAddConstant("ZK_I_FORKCOMMAND"_Stz,     ZK_I_FORKCOMMAND);
   /*  0 */ vAddConstant("ZK_I_LOADRESULT"_Stz,      ZK_I_LOADRESULT);
   /*  0 */ vAddConstant("ZK_I_LOCKSTATS"_Stz,       ZK_I_LOCKSTATS);
   /*  0 */ vAddConstant("ZK_I_NODEINFO"_Stz,        ZK_I_NODEINFO);
-  /*  0 */ vAddConstant("ZK_I_PATHINFO"_Stz,        ZK_I_PATHINFO);
+  /*  0 */ vAddConstant("ZK_I_PATH"_Stz,            ZK_I_PATH);
   /*  0 */ vAddConstant("ZK_I_PROGRESSUNITS"_Stz,   ZK_I_PROGRESSUNITS);
   /*  0 */ vAddConstant("ZK_I_PROMPTOUT"_Stz,       ZK_I_PROMPTOUT);
   /*  0 */ vAddConstant("ZK_I_RETURNPIPELINE"_Stz,  ZK_I_RETURNPIPELINE);

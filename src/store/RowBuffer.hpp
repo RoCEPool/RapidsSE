@@ -75,7 +75,7 @@ namespace STORE
   
   private:
 
-    i8   iToOffset(Stz* szStr);
+    //i8   iToOffset(Stz* szStr);
   
     Footer* aFooter(void);
 

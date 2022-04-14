@@ -76,6 +76,33 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dload
+  
+  STD_PATH_TAG
+  "
+  procedure dload
+    parameters $table
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | eachPathTag
+      |   toDfload $table
+      | callPipeline
+      | waitPipeline
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+ 
+ 
+  //----------------------------------------------------------------------------
+ 
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dfload2
   
   STD_PATH_TAG
@@ -102,14 +129,13 @@
     | stageC hashcast
 
   stage stageD on all partitions :
-
       insert $table      // (crwBuffer) inserted into table
     | stageE
 
   stage stageE on origin :
     |  progress 'Load'
     |  toStatDemon
-    |  respond
+    |  respond           // repond to responseOp as per fork
     |  sink
     |  stageA
 
@@ -118,29 +144,6 @@
   api::addProcedure
 
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dload
-  
-  STD_PATH_TAG
-  "
-  procedure dload
-    parameters $table
-  begin
-
-    stage stageA on origin :
-        start
-      | pulse once
-      | eachPath 
-      |   toDfload $table
-      | callPipeline
-      | waitPipeline
-      | sink
-      | stageA
-
-  end ;
-  "
-  api::addProcedure
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dload2
   
@@ -153,16 +156,40 @@
     stage stageA on origin :
         start
       | pulse once
-      | eachPath
-      |   toDfload $table
-      | fork wait
-      | wait
+      | eachPathTag
+      | pathToDfload2 $table
+      | forkCommand dynamic waitFinished
+      | waitFinished
       | sink
       | stageA
 
   end ;
   "
   api::addProcedure
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dload_test
+  
+  STD_PATH_TAG
+  "
+  procedure dload_test
+    parameters $table
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | eachPathTag
+      | pathToDfload2 $table
+      | forkCommand dynamic waitFinished
+      | waitFinished
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+
 ;
 
 /*============================================================================*/

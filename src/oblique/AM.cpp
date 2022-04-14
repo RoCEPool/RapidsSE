@@ -3407,14 +3407,15 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       eOI eInfoSet = pInfoSet->eOpInfoSet();
       switch(eInfoSet) {
         case OI_CALLPIPELINE:   eOperand = ZK_I_CALLPIPELINE;   break;
+        case OI_COMMAND:        eOperand = ZK_I_COMMAND;        break;
         case OI_COMMANDERRORS:  eOperand = ZK_I_COMMANDERRORS;  break;
-        case OI_COUNTINFO:      eOperand = ZK_I_COUNTINFO;      break;
+        case OI_COUNT:          eOperand = ZK_I_COUNT;          break;
         case OI_EXECERRORS:     eOperand = ZK_I_EXECERRORS;     break;
         case OI_FORKCOMMAND:    eOperand = ZK_I_FORKCOMMAND;    break;
         case OI_LOADRESULT:     eOperand = ZK_I_LOADRESULT;     break;
         case OI_LOCKSTATS:      eOperand = ZK_I_LOCKSTATS;      break;
         case OI_NODEINFO:       eOperand = ZK_I_NODEINFO;       break;
-        case OI_PATHINFO:       eOperand = ZK_I_PATHINFO;       break;
+        case OI_PATH:           eOperand = ZK_I_PATH;           break;
         case OI_PROGRESSUNITS:  eOperand = ZK_I_PROGRESSUNITS;  break;
         case OI_PROMPTOUT:      eOperand = ZK_I_PROMPTOUT;      break;
         case OI_RETURNPIPELINE: eOperand = ZK_I_RETURNPIPELINE; break;

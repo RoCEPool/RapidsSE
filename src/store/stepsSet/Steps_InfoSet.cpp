@@ -257,7 +257,7 @@ void Step::vInfoSetAddRowCount(void)
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
 
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pInfoSet->vOpInfoSet(OI_COUNTINFO);
+  pInfoSet->vOpInfoSet(OI_COUNT);
   
   i8 nBuffers = 0;
   i8 nRows = 0;
@@ -293,7 +293,8 @@ void Step::vInfoSetAddRowVargs(void)
   Row* aRow = pInfoSet->RowBuffer::pAllotRow();
   Stz* szTail;
   i8   nSize;
-
+  i8   iOfs;
+  
   i8 iInt;
   s256 sStr;
   for (i8 i_Arg = 0; i_Arg < nArgs && i_Arg < nCols; i_Arg++) {
@@ -315,8 +316,10 @@ void Step::vInfoSetAddRowVargs(void)
         m_pDataStack->vPopStr(sStr,__func__);
         nSize = sStr.nSize();
         szTail = (Stz*)pInfoSet->aAllotTail(nSize);
+        iOfs = pInfoSet->iToOffset(szTail);
         StrLib::vCopy(szTail->azChar(),sStr.azChar());
-        aRow->vColVal_ofs(i_Arg,pInfoSet->iToOffset(szTail));
+        //aRow->vColVal_ofs(i_Arg,iOfs);
+        aRow->vColVal_ofs(i_Arg,szTail);
         // END STRING_DEPOSIT
         
         break;
@@ -521,7 +524,8 @@ void Step::vInfoSetColValFetch(void)
   i8 iInt;
   s256 sStr;
   Dtm wDtm;
-  
+  Stz* szStr;
+
   switch (eDatum) {
       
     case DM_INT:
@@ -531,6 +535,7 @@ void Step::vInfoSetColValFetch(void)
       
     case DM_VCH:
       wDtm = aRow->wColDtm(i_Col);
+      szStr = aRow->szColVal_ofs(i_Col);
       sStr = aRow->szColVal_ofs(i_Col);
       m_pDataStack->vPushStz(sStr);
       break;
