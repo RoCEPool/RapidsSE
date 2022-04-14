@@ -5,6 +5,32 @@
 " OP_waitFinished.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_I_COUNT ...                                                 */
+/*----------------------------------------------------------------------------*/
+: waitFinished_Count \handler
+  
+  "waitFinished_Count" .
+
+  PipeIn[]\clear to InfoSet[]
+  
+  // find the __path table def ; set infoSetTable[]
+  C_TDEF_COUNT op__tableDef_infoSet assert
+
+  // get the first (one and only) row from this infoset
+  InfoSet[].firstRow to infoSetRow[]
+
+  // extract the values
+  0 InfoSet[].colVal@ to Counter0[]
+
+  Counter0[] "waitFinished: nFinishesExpected %v" .printf
+    
+
+  InfoSet[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : waitFinished_Eos \handler
@@ -17,7 +43,21 @@
 /*----------------------------------------------------------------------------*/
 : waitFinished_Finished \handler
 
-  ZK_M_FINISHED_handler
+  Counter1[] 1 + to Counter1[]
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: waitFinished_Start \handler
+  
+  0 to Counter0[]
+  0 to Counter1[]
+  0 to Counter2[]
+
+  ZK_M_START_handler
 ;
 
 
@@ -33,8 +73,10 @@
 
   op__topology
 
+  find: waitFinished_Count     ZK_I_COUNT     [op].handler!
   find: waitFinished_Eos       ZK_M_EOS       [op].handler!
   find: waitFinished_Finished  ZK_M_FINISHED  [op].handler!
+  find: waitFinished_Start     ZK_M_START     [op].handler!
 
   op__loop
 
