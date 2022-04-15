@@ -12,7 +12,7 @@ LIBANTLR := libantlr4-runtime.a
 SRCZIP := $(CURRENT_PATH)/antlr4-cpp-runtime-4.8-source.zip
 
 # Let's work out what OS we are on 
-UNAME_S := $(u)
+UNAME_S := $(shell uname -s)
 
 ## Check for presence of cmake
 CMAKE_EXE := $(shell which cmake)
