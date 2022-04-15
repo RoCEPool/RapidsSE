@@ -30,12 +30,10 @@
   // mutable pipeSpec, pipeline and subpipeline in logicUnit should be null
   PipeSpec[] not assert
   Pipeline[] not assert
-  SubPipe[]  not assert
   
   // immutable op, subPLineOfOp and pipelineOfOp should be null
   [op]           not assert
-  [subPipeOfOp]  not assert
-  [pipelineOfOp] not assert
+  [pipeline] not assert
 
   // and so we start...
   [job].tscBeginning
@@ -55,7 +53,7 @@
       [job].addRetired
       
       JS_SIGNALLED [job].state!
-        [session].signal
+      [session].signal
 
       [task].grabLock
         TR_RETIRE_THIS_TASK [task].transition!
@@ -163,6 +161,7 @@
     "pipeline:begin" [job].entryPoint!
     
     [task].grabLock
+      [grid].knownNodes [task].acksRemaining!
       [job] job:broadcast
     [task].wait
 
@@ -182,6 +181,7 @@
     [job] job_Execute::new to pJob_Execute
 
     [task].grabLock
+      [grid].knownNodes [task].acksRemaining!
       pJob_Execute job:broadcast
     [task].wait
 
@@ -206,6 +206,7 @@
     [job] job_End::new to pJob_End
 
     [task].grabLock
+      [grid].knownNodes [task].acksRemaining!
       pJob_End job:broadcast
     [task].wait
 
@@ -235,7 +236,7 @@
     [job].addRetired
     
     JS_SIGNALLED [job].state!
-      [session].signal
+    [session].signal
       
     [task].grabLock
       TR_RETIRE_THIS_TASK [task].transition!
@@ -286,7 +287,7 @@
   <path> str.toStrVec Path[].set
 
   // set participant node of job
-  [grid].thisNodeNo@ [job].participantNodeNo!
+  [grid].thisNodeId@ [job].participantNodeId!
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -365,11 +366,11 @@
   JP_EXECUTING [job].phase!
 
   // set task's dictionary stack from path in job
-  <path> str.toStrVec Path[].set
+  //<path> str.toStrVec Path[].set
   //[task].dump
 
   // acquire ddl lock
-  job::acquireDdlLock
+  [ddlLock]:acquireLock
   
   [job].assertStructure
 
@@ -377,33 +378,15 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run optional <pre_execute> word
 
-  "<pre_execute>" [job].tagSet@ tagSet.hasName if
-    "<pre_execute>"
-    [job].tagSet@ tagSet.getStr locals| sPreExe |
-    sPreExe find
-    dup not if
-      sPreExe "Unable to find pre execute word: %v" .printf
-      process::quit
-    then
-      execute
-  else
-    [args].verbose if
-      <pipelineNm> "No pre execute word for pipeline: %v" .printf
-    then
-  then
-
+  [job]:pre_execute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
 
-  Pipeline[] to SubPipe[]
-   
-  // SubPipe[].dump
-     
-  subPipe:invoke
+  Pipeline[].rootDeck@ to Deck[]
+  deck:invoke
+  nullptr to Deck[]
 
-  nullptr to SubPipe[]
-  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has executed
@@ -443,37 +426,17 @@
   [job].assertStructure
   [job].assertParticipant
 
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // this job is ending
-
-  JP_ENDING [job].phase!
-
+  // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + + 8
+  JP_ENDING [job].phase!               // this job is ending
   [ddlLock].testDrop
  
- 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // this job has ended
-  
-  JP_ENDED [job].phase!
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove job from plist
-  
+  JP_ENDED [job].phase!                // this job has ended
   [job].removeParticipant
 
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // reply ended to originator
-  
-  [job] ended:reply
+  [job] ended:reply                    // reply ended to originator
 
-  JS_DELETABLE [job].state!
+  JS_DELETABLE [job].state!            // job retires
   [job].addRetired
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // task retires (with job in retired list)
 
   [task].grabLock
     [job] [exitDemon]:queueJob
@@ -492,20 +455,19 @@
   [job].assertStructure
   [job].assertParticipant
 
-    // [ senCompiler::current@ word.name@ encode::push ] .
+  // [ senCompiler::current@ word.name@ encode::push ] .
 
   JP_CANCELING [job].phase!
 
   JP_CANCELED [job].phase!
-
 
   [job].removeParticipant
 
   [job] cancelled:reply
 
   JS_DELETABLE [job].state!
-
   [job].addRetired
+  
   [task].grabLock
     [job] [exitDemon]:queueJob
     TR_RETIRE_THIS_TASK [task].transition!

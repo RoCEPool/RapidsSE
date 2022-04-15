@@ -224,8 +224,8 @@ void Step::vCrwBufferInsdelIntoTable(void)
 //  ASSERT(*m_pLogicUnit->m_xpCrwBuffer);
 //
 //  Op* pOp = m_pJob->m_pOp;
-//  PtnId tPtnId = pOp->tPtnId();
-//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tPtnId);
+//  PtnId tLglPtn = pOp->tLglPtn();
+//  i8 i_TablePtn = Table::iPtnNoToTablePtn(tLglPtn);
 //
 //  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
 //  // will delete this buffer
@@ -329,8 +329,8 @@ void Step::vCrwBufferUpsertIntoTable(void)
 //  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pLogicUnit->m_xpCrwBuffer);
 //
 //  Op* pOp = m_pJob->m_pOp;
-//  PtnId tPtnId = pOp->tPtnId();
-//  i8 i_TablePtn = Table:iPtnNoToTablePtn(tPtnId);
+//  PtnId tLglPtn = pOp->tLglPtn();
+//  i8 i_TablePtn = Table:iPtnNoToTablePtn(tLglPtn);
 //
 //  m_pLogicUnit->m_xpTable->vUpsertBuffer(C_UNKNOWN, i_TablePtn, pCrwBuffer);
 //

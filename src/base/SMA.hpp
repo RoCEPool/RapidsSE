@@ -125,7 +125,7 @@ namespace BASE
     /*------------------------------------------------------------------------*/
     bool bIsNull(void)
     {
-      if ( ! m_pObject )
+      if (! m_pObject)
         return true;
       else
         return false;

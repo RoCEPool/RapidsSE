@@ -82,7 +82,7 @@ void StreamDef::vPostRecv(void* aStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* repair the logicCompiler                                                   */
+/* repair the streamDef                                                       */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vRepair(Object* pObject)
 {

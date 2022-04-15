@@ -135,7 +135,7 @@ void Step::vIndexCompactPtn(void)
   i8 iIdxNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
 
-  PtnId tPtn  = m_pOp->tPtnId();
+  LglPtn tPtn  = m_pOp->tLglPtn();
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
   
   IndexTree *pIndexTree = pTable->pTablePtn(i_TablePtn)->pIndexTree(iIdxNo);
@@ -346,8 +346,8 @@ void Step::vIndexIndexTree(void)
   
   Table* pTable = pIndex->pTable();
 
-  PtnId tPtnId;
-#ifdef WITH_REPLICATED_PTN
+  LglPtn tLglPtn;
+
   StreamDef* pStreamDef = pTable->pStreamDef();
   if (pStreamDef->bReplicated()) {
     
@@ -355,16 +355,13 @@ void Step::vIndexIndexTree(void)
     Stream* pStream0 = pStage->pGet(0);
     Op*     pOp0_0   = pStream0->pGet(0);
     
-    tPtnId = pOp0_0->tPtnId();
+    tLglPtn = pOp0_0->tLglPtn();
   }
   else {
-    tPtnId = m_pOp->tPtnId();
+    tLglPtn = m_pOp->tLglPtn();
   }
-#else
-  tPtn = m_pOp->tPtnId();
-#endif
   
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
   i8 iIndexNo = pIndex->iIndexNo();
@@ -452,7 +449,7 @@ void Step::vIndexIsValidUniqueIndex(void)
   ASSERT(CN_INDEX == pIndex->eGetClassNo());
   
   // get the table partition stream def
-  ShardDef* pShardDef = pIndex->pTable()->pShardDef();
+  PtnDef* pPtnDef = pIndex->pTable()->pPtnDef();
   
   // get the index column vector
   IndexDef* pIndexDef = pIndex->pIndexDef();
@@ -462,11 +459,11 @@ void Step::vIndexIsValidUniqueIndex(void)
   //! ALKA: shouldn't this be checking for the leading edge of the index to include
   //!  all partition keys ???
   // a unique index must include all columns in the partitioning keys
-  i8 nPtnColumns = pShardDef->nColumns();
+  i8 nPtnColumns = pPtnDef->nColumns();
   bool bFound = false;
   for (i8 i = 0; i < nPtnColumns; i++)
   {
-    Column* pColumn = pShardDef->pGetColumn(i);
+    Column* pColumn = pPtnDef->pGetColumn(i);
     
     for (i8 i_Item = 0; i_Item < nIdxColumns; i_Item++) {
       if (pIndexDef->pGetColumn(i_Item)->iColumnNo() == pColumn->iColumnNo()) {
@@ -622,7 +619,7 @@ void Step::vIndexVerifyPtn(void)
   
   i8 iIdxNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
-  PtnId tPtn  = m_pOp->tPtnId();
+  LglPtn tPtn  = m_pOp->tLglPtn();
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
 
   IndexTree *pIndexTree = pTable->pTablePtn(i_TablePtn)->pIndexTree(iIdxNo);

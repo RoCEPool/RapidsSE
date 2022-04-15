@@ -247,7 +247,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     // compute the size of the left key
     
     i8 nEntrySizeBytes = xLeftEntWrk.aEnt()->nSizeBytes();
-    RASSERT(nEntrySizeBytes <= C_MAX_ENTRY_SIZE);
+    RASSERT(nEntrySizeBytes <= C_MAX_ENTRY);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get a new left buffer if not enough space in current left buffer
@@ -539,7 +539,7 @@ void EntBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   
   if (bDetailed)
     sAnalysis.vCatSprint(" row: (%s, %lld, %5lld,' L%lld', %lld)\n"_Stz,
-                         AM::szNodeNm(),
+                         AM::NODE::szNodeNm(),
                          m_tPtnNo,
                          iBuffers,
                          m_iBufferHeight,
@@ -1589,7 +1589,7 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
          pHigherEntBuffer(),sHigherBuffer.szStz(),pPrevEntBuffer(),pNextEntBuffer());
 
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
-         m_pIndexTree && m_pIndexTree->pIndex() ? m_pIndexTree->pIndex()->szIndexNm() : C_NULL,m_tPtnId.iAsI8(),m_iBufferHeight);
+         m_pIndexTree && m_pIndexTree->pIndex() ? m_pIndexTree->pIndex()->szIndexNm() : C_NULL,m_tLglPtn.iAsI8(),m_iBufferHeight);
   SkipRoots* aSkipRoots = this->aSkipRoots();
   vTrace("  skipRoots: %p[%lld, %lld, %lld, %lld, %lld, %lld]\n"_Stz,
          aSkipRoots,

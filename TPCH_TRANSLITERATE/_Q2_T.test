@@ -1,0 +1,144 @@
+/*============================================================================*/
+/* _Q2_T                                                                      */
+/*============================================================================*/
+
+//------------------------------------------------------------------------------
+//  Original Query
+//------------------------------------------------------------------------------
+  select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
+     from part, supplier, partsupp, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and p_size < 15
+      and p_type like '%BRASS'
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'EUROPE'
+      and ps_supplycost = (
+      select min(ps_supplycost)
+      from partsupp, supplier, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'EUROPE' )
+       order by s_acctbal desc, n_name, s_name, p_partkey;
+
+//--------------------------------------------------------------------------------
+//  Transliterate Query
+//--------------------------------------------------------------------------------
+EXPLAIN STAGE TRANSLITERATE
+select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
+     from part, supplier, partsupp, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and p_size < 15
+      and p_type like '%BRASS'
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'EUROPE'
+      and ps_supplycost = (
+      select min(ps_supplycost)
+      from partsupp, supplier, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'EUROPE' )
+       order by s_acctbal desc, n_name, s_name, p_partkey;
+
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  pipeline __subquery0003
+    params "p_partkey "
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker3881
+    stage stageMarker3881 on all partitions :
+      scan rapidsse public partsupp
+      | stageMarker3884 broadcast
+    stage stageMarker3884 on all partitions :
+      scan rapidsse public supplier
+      | abstractJoin " 1  "
+      | stageMarker3887 broadcast
+    stage stageMarker3887 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin " 1  "
+      | stageMarker3890 broadcast
+    stage stageMarker3890 on all partitions :
+      scan rapidsse public region
+      | abstractJoin " 1  "
+      | stageMarker3893
+    stage stageMarker3893 on all partitions :
+      filter " type BOOLEAN  $1 ==  $6 $2 ==  and  $9 $13 ==  and  $15 $17 ==  and  $18 ''EUROPE''  ==  and  "
+      | project " type DECIMAL )  $4 min  "
+      | combined 0
+      | stageMarker3896
+    stage stageMarker3896 on all nodes :
+      project " type DECIMAL )  $1 min  "
+      | combined 0
+      | stageMarker3899
+    stage stageMarker3899 on origin :
+      project " type DECIMAL )  $1 min  "
+      | combined 0
+      | stageMarker3902
+    stage stageMarker3902 on origin :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker3905
+  stage stageMarker3905 on all partitions :
+    scan rapidsse public part
+    | stageMarker3908 broadcast
+  stage stageMarker3908 on all partitions :
+    scan rapidsse public supplier
+    | abstractJoin " 1  "
+    | stageMarker3911 broadcast
+  stage stageMarker3911 on all partitions :
+    scan rapidsse public partsupp
+    | abstractJoin " 1  "
+    | stageMarker3914 broadcast
+  stage stageMarker3914 on all partitions :
+    scan rapidsse public nation
+    | abstractJoin " 1  "
+    | stageMarker3917 broadcast
+  stage stageMarker3917 on all partitions :
+    scan rapidsse public region
+    | abstractJoin " 1  "
+    | stageMarker3920
+  stage stageMarker3920 on all partitions :
+    filter " type BOOLEAN  $1 $17 ==  $10 $18 ==  and  $6 15  <  and  }  $5 ''%BRASS''  6 matchTrailing  and  $13 $22 ==  and  $24 $26 ==  and  $27 ''EUROPE''  ==  and  $20 $1 __subquery0003  ==  and  "
+    | project " type DECIMAL as s_acctbal $15 , type VARCHAR as s_name $11 , type VARCHAR as n_name $23 , type INTEGER as p_partkey $1 , type VARCHAR as p_mfgr $3 , type VARCHAR as s_address $12 , type VARCHAR as s_phone $14 , type VARCHAR as s_comment $16 "
+    | sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | combined 0
+    | stageMarker3923
+  stage stageMarker3923 on all nodes :
+    sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | combined 0
+    | stageMarker3926
+  stage stageMarker3926 on origin :
+    sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

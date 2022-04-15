@@ -7,7 +7,7 @@
 // ... to be coded
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_PATHINFO ...                                              */
+/* handler for ZK_I_PATH ...                                                  */
 /*----------------------------------------------------------------------------*/
 : toDfload_PathInfo \handler
  
@@ -17,7 +17,7 @@
   nullptr to Pipein[]
 
   // find the __path table def
-  C_TDEF_PATHINFO op__tableDef_infoSet assert
+  C_TDEF_PATH op__tableDef_infoSet assert
 
   InfoSet[].firstRow to infoSetRow[]
 
@@ -31,7 +31,7 @@
   sPath <tableNm> "dfload %v \"%v\"" str.format locals| sRequest |
   sRequest .
 
-  // find the __path table def
+  // find the __callPipeline table def
   C_TDEF_CALLPIPELINE op__tableDef_infoSet assert
 
   // create an infoSet operand
@@ -54,7 +54,7 @@
 
   op__topology
 
-  find: toDfload_PathInfo ZK_I_PATHINFO [op].handler!
+  find: toDfload_PathInfo ZK_I_PATH [op].handler!
 
   op__loop
 

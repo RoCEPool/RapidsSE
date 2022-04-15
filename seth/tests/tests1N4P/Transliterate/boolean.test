@@ -5,9 +5,9 @@ success
 // create table
 create table datums (
 int_col0   INTEGER,
-int_col1  INTEGER,
+int_col1   INTEGER,
 bol_col2   BOOLEAN,
-bol_col3   BOOLEAN,
+bol_col3   BOOLEAN NOT NULL,
 dte_col4   DATE,
 dte_col5   DATE,
 dec_col6   DECIMAL(19,2),

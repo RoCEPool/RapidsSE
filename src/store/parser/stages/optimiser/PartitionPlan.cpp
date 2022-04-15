@@ -416,13 +416,13 @@ void PartitionPlan::vPartitionAggregateOp(QueryNode* pNode, GraphChains* pChains
 
     // Need to add a super-aggregating AggregateOp to the node level.
     // This is based on the partitioned aggregate.
-    QueryNode* pNodeAggregate = ProjectOp::pCreateSuperAggregate(pPartitionAggregate);
+    QueryNode* pNodeAggregate = ProjectOp::pCreateSuperAggregate(pPartitionAggregate, pRootNode);
     ASSERT(AggregateOp::bIsExactType(pPartitionAggregate));
     vPushOnNodeChain(pNodeAggregate, pChains);
 
     // Need to add a super-aggregating AggregateOp to the origin.
     // This is based on the original logical aggregateOp
-    QueryNode* pOriginAggregate = ProjectOp::pCreateDoubleSuperAggregate(pNode);
+    QueryNode* pOriginAggregate = ProjectOp::pCreateDoubleSuperAggregate(pNode, pRootNode);
     ASSERT(AggregateOp::bIsExactType(pPartitionAggregate));
     vPushOnOriginChain(pOriginAggregate, pChains);
 
@@ -481,8 +481,8 @@ void PartitionPlan::vPartitionFilterOp(QueryNode* pNode, GraphChains* pChains,
       // We need to convert the expression to be a super-aggregated expression,
       // keeping in mind that a super-aggregation also occurs at the node level.
       QueryNode* pNewExpr = pExpr->pDeepCopy(true);
-      Expr::vSuperAggregate(pNewExpr);  //  <-- node-level super-aggregation
-      Expr::vSuperAggregate(pNewExpr);  //  <-- origin-level super-aggregation
+      Expr::vSuperAggregate(pNewExpr, pRootNode);  //  <-- node-level super-aggregation
+      Expr::vSuperAggregate(pNewExpr, pRootNode);  //  <-- origin-level super-aggregation
       QueryNode* pOriginFilter = FilterOp::pCreate(pNewExpr);
       vPushOnOriginChain(pOriginFilter, pChains);
 
@@ -580,7 +580,7 @@ void PartitionPlan::vPartitionOrderOp(QueryNode* pNode, GraphChains* pChains,
     }
 
     if (OrderOp::bContainsAnAggregate(pNode)) {
-      QueryNode* pOriginOrder = OrderOp::pCreateDoubleSuperAggregate(pNode);
+      QueryNode* pOriginOrder = OrderOp::pCreateDoubleSuperAggregate(pNode, pRootNode);
       vPushOnOriginChain(pOriginOrder, pChains);
 
     } else {
@@ -618,7 +618,7 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains,
       if (bHasAnAggregate) {
         // Post project with aggregates. Need to super-aggregate the aggregates before placing
         // on the origin chain.
-        QueryNode* pOriginProject = ProjectOp::pCreateDoubleSuperAggregate(pNode); // super-aggregating the node super-aggregate
+        QueryNode* pOriginProject = ProjectOp::pCreateDoubleSuperAggregate(pNode, pRootNode); // super-aggregating the node super-aggregate
         vPushOnOriginChain(pOriginProject, pChains);
 
       } else {
@@ -643,12 +643,12 @@ void PartitionPlan::vPartitionProjectOp(QueryNode* pNode, GraphChains* pChains,
         // Need to add a super-aggregating projectOp to the node and origin levels.
         // The node-level super-aggregate is based on the partitionedProject, which has
         // already split any AVG() into separate SUM()'s and COUNT()'s.
-        QueryNode* pNodeProject = ProjectOp::pCreateSuperAggregate(pPartitionProject);
+        QueryNode* pNodeProject = ProjectOp::pCreateSuperAggregate(pPartitionProject, pRootNode);
         vPushOnNodeChain(pNodeProject, pChains);
 
         // The origin-level super-aggregate is based on the original logical project,
         // but it also needs to factor in that there was a node-level aggregation too.
-        QueryNode* pOriginProject = ProjectOp::pCreateDoubleSuperAggregate(pNode);
+        QueryNode* pOriginProject = ProjectOp::pCreateDoubleSuperAggregate(pNode, pRootNode);
         vPushOnOriginChain(pOriginProject, pChains);
 
       } else {

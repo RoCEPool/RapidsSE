@@ -1,0 +1,143 @@
+/*============================================================================*/
+/* _Q20_T                                                                     */
+/*============================================================================*/
+
+//------------------------------------------------------------------------------
+//  Original Query
+//------------------------------------------------------------------------------
+select s_name, s_address
+     from supplier, nation
+     where s_suppkey in (
+     select ps_suppkey
+     from partsupp
+     where ps_partkey in (
+     select p_partkey
+     from part
+     where p_name like 'forest%' )
+     and ps_availqty > (
+     select 0.5 * sum(l_quantity)
+     from lineitem
+     where l_partkey = ps_partkey
+     and l_suppkey = ps_suppkey
+     and l_shipdate >= '1994-01-01'
+     and l_shipdate < '1995-01-01' ) )
+     and s_nationkey = n_nationkey
+     and n_name = 'CANADA'
+     order by s_name;
+
+//------------------------------------------------------------------------------
+//  Transliterate Query
+//------------------------------------------------------------------------------
+
+-> -> -> -> -> filterOp
+               » expr: ((rapidsse.public.partsupp.ps_partkey IN __subquery0003()) AND ((CAST(rapidsse.public.partsupp.ps_availqty AS DECIMAL)) > __subquery0005(rapidsse.public.partsupp.ps_partkey, rapidsse.public.partsupp.ps_suppkey)))
+               » ordinal expr: (($1 IN __subquery0003()) AND ((CAST($3 AS DECIMAL)) > __subquery0005($1, $2)))
+
+EXPLAIN STAGE TRANSLITERATE
+select s_name, s_address
+     from supplier, nation
+     where s_suppkey in (
+     select ps_suppkey
+     from partsupp
+     where ps_partkey in (
+     select p_partkey
+     from part
+     where p_name like 'forest%' )
+     and ps_availqty > (
+     select 0.5 * sum(l_quantity)
+     from lineitem
+     where l_partkey = ps_partkey
+     and l_suppkey = ps_suppkey
+     and l_shipdate >= '1994-01-01'
+     and l_shipdate < '1995-01-01' ) )
+     and s_nationkey = n_nationkey
+     and n_name = 'CANADA'
+     order by s_name;
+
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  pipeline __subquery0007
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker42604
+    stage stageMarker42604 on all partitions :
+      scan rapidsse public part
+      | filter " type BOOLEAN  }  $2 ''forest%''  7 matchLeading  "
+      | project " type INTEGER as p_partkey $1 "
+      | combined 0
+      | stageMarker42607
+    stage stageMarker42607 on all partitions :
+
+      stageMarker42610
+    stage stageMarker42610 on all partitions :
+      scan rapidsse public lineitem
+      | filter " type BOOLEAN  $2 ==  $3 ==  and  $11 TIMESTAMP ''1994-01-01 00:00:00''  >=  and  $11 TIMESTAMP ''1995-01-01 00:00:00''  <  and  "
+      | project " type DECIMAL )  $5 sum  "
+      | combined 0
+      | stageMarker42613
+    stage stageMarker42613 on all nodes :
+      project " type DECIMAL )  $1 sum  "
+      | combined 0
+      | stageMarker42616
+    stage stageMarker42616 on origin :
+      project " type DECIMAL 0.5  )  $1 sum  *  "
+      | combined 0
+      | stageMarker42619
+    stage stageMarker42619 on origin :
+
+      stageMarker42622
+    stage stageMarker42622 on all partitions :
+      scan rapidsse public partsupp
+      | filter " type BOOLEAN  }  __subquery0003  #1  $1 in  $3 casttype DECIMAL CAST  $1 $2 __subquery0005  >  and  "
+      | project " type INTEGER as ps_suppkey $2 "
+      | combined 0
+      | stageMarker42625
+    stage stageMarker42625 on all partitions :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker42628
+  stage stageMarker42628 on all partitions :
+    scan rapidsse public supplier
+    | stageMarker42631 broadcast
+  stage stageMarker42631 on all partitions :
+    scan rapidsse public nation
+    | abstractJoin " 1  "
+    | stageMarker42634
+  stage stageMarker42634 on all partitions :
+    filter " type BOOLEAN  }  __subquery0007  #1  $1 in  $4 $8 ==  and  $9 ''CANADA''  ==  and  "
+    | project " type VARCHAR as s_name $2 , type VARCHAR as s_address $3 "
+    | sort " type VARCHAR as s_name $1 ASC  "
+    | combined 0
+    | stageMarker42637
+  stage stageMarker42637 on all nodes :
+    sort " type VARCHAR as s_name $1 ASC  "
+    | combined 0
+    | stageMarker42640
+  stage stageMarker42640 on origin :
+    sort " type VARCHAR as s_name $1 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

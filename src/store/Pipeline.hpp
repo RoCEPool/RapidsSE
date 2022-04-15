@@ -3,33 +3,29 @@
 /*============================================================================*/
 #pragma once
 
-#include "LifeGuard_t.hpp"
-
-namespace STORE { class PipeWork; class Stage; class PipeSpec; }
+namespace STORE { class Deck; class Stage; class Vertex; class VertexSpec; }
 
 namespace STORE
 {
   class Pipeline : public Object
-                   //public VectorNL_t<CN_PIPELINE,Stage,C_MAX_STAGES>,
-                 , public LifeGuard_t<Pipeline>
-
   {
   private:
+
+    // -- belongs to
+    Job*        m_pPipelineJob;    // which job
+    VertexSpec* m_pVertexSpecRoot; // root specification of this pipeline
+    i8          m_iOriginNodeId;   // originating node
 
     // -- id, name and kind
     Gid_t<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
     s32  m_sPipelineNm;  // name of this pipeline
 
     // -- substructure
-    PipeWork* m_pPipeWork; // formwork of this pipeline
+    Vertex* m_pVertexRoot; // root of vertex tree
 
-    // -- belongs to
-    Job* m_pPipelineJob;  // which job
   
     // -- refers to
-    PipeSpec* m_pPipeSpec; // specification of this pipeline
   
-    i8   m_i_Origin;    // originating node
   
 
   
@@ -55,41 +51,43 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 i_Origin);
+    Pipeline(Job* pPipelineJob, VertexSpec* pVertexSpecRoot, i8 iOriginNodeId);
    ~Pipeline(void) noexcept(false);
   
     void vAddAccum(i8 i_Accum, i8 iValue);
     bool bCancel(Task* pTriggeringTask);
     void vCancelled(bool bCancelled);
     bool bCancelled(void);
+    Deck* pDeck0(void);
     void vDropDebugLock(void);
     void vDump(bool bRecursive=true);
     bool bEarlyExit(void);
     void vEarlyExit(bool bEarlyExit);
     bool bErrored(void);
     void vErrored(bool bErrored);
-    PipeWork* pPipeWork(void);
     i8   iGetAccum(i8 i_Accum);
     void vGrabDebugLock(void);
-    i8   i_Origin(void);
+    i8   iOriginNodeId(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);
     Op*  pOpToPulse(void);
     void vOpToPulse(Op* pOpToPulse);
     Job* pPipelineJob(void);
     Stz* szPipelineNm(void);
-    PipeSpec* pPipeSpec(void);
+    VertexSpec* pPipeSpec(void);
     bool bPulsed(void);
     void vPulsed(bool bPulsed);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
+    void vSetInvoker(Task* pInvoker);
     void vSetupJob(void);
     void vSpawnOpTasks(void);
     Stage* pStage0(void);
     Stream* pStream0(void);
+    Vertex* pVertexRoot(void);
 
   private:
-    void vCreatePipework();
+    void vCreateVertexes();
 
     Footer* aFooter(void);
   };

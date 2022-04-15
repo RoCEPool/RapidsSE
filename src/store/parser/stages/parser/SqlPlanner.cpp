@@ -35,7 +35,7 @@
 #include "store/parser/shadowNodes/planObjects/UnionOp.hpp"
 #include "store/parser/shadowNodes/planObjects/ExplainOp.hpp"
 #include "store/parser/shadowNodes/planObjects/OrderOp.hpp"
-#include "store/parser/shadowNodes/planObjects/joins/NestedLoopJoinOp.hpp"
+#include "store/parser/shadowNodes/planObjects/joins/AbstractJoinOp.hpp"
 #include "store/parser/shadowNodes/planObjects/dataSources/SubqueryRefOp.hpp"
 
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
@@ -1118,7 +1118,7 @@ antlrcpp::Any SqlPlanner::visitJoinOn(sqlParser::JoinOnContext *pCtx)
     m_pExprStack = nullptr;
   }
 
-  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, pJoinPredicate, nullptr);
+  QueryNode* pJoinOp = AbstractJoinOp::pCreate(eJoinType, pJoinPredicate, nullptr);
   pJoinOp->vAppendChild(pTableExpr1);
   pJoinOp->vAppendChild(pTableExpr2);
 
@@ -1172,7 +1172,7 @@ antlrcpp::Any SqlPlanner::visitJoinUsing(sqlParser::JoinUsingContext *pCtx)
 
   ASSERT(pUsingList->nChildren() > 0);
 
-  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, nullptr, pUsingList);
+  QueryNode* pJoinOp = AbstractJoinOp::pCreate(eJoinType, nullptr, pUsingList);
   pJoinOp->vAppendChild(pTableExpr1);
   pJoinOp->vAppendChild(pTableExpr2);
 
@@ -1203,7 +1203,7 @@ antlrcpp::Any SqlPlanner::visitCrossJoin(sqlParser::CrossJoinContext *pCtx)
   // A cross join is the same as an inner join with join predicate of TRUE.
   QueryNode* pJoinPredicate = BooleanLiteral::pCreate(true);
 
-  QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, pJoinPredicate, nullptr);
+  QueryNode* pJoinOp = AbstractJoinOp::pCreate(eJoinType, pJoinPredicate, nullptr);
   pJoinOp->vAppendChild(pTableExpr1);
   pJoinOp->vAppendChild(pTableExpr2);
 

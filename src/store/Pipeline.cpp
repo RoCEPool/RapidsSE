@@ -11,9 +11,9 @@
 #include "OpSpec.hpp"
 #include "Stream.hpp"
 #include "Stage.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "StageSpec.hpp"
 
 #include "SP_Pipeline.hpp"
@@ -31,20 +31,23 @@ __aFooterFunction(Pipeline)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 i_Origin)
+Pipeline::Pipeline(Job*        pPipelineJob,
+                   VertexSpec* pVertexSpecRoot,
+                   i8          iOriginNodeId)
 : Object(CN_PIPELINE)
-, LifeGuard_t<Pipeline>(this,CN_PIPELINE)
 , m_okDebugLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_sPipelineNm   = pPipeSpec->szPipelineNm();
+  m_pPipelineJob    = pPipelineJob;
+  m_pVertexSpecRoot = pVertexSpecRoot;
+  m_iOriginNodeId   = iOriginNodeId;
+
+  m_pVertexRoot     = nullptr;
   
-  m_pPipeWork     = nullptr;
-  
-  m_pPipelineJob  = pPipelineJob;
-  m_pPipeSpec     = pPipeSpec;
-  m_i_Origin      = i_Origin;
+  // -- -- -- -- -- --
+
+  m_sPipelineNm     = pVertexSpecRoot->szVertexNm();
 
   m_bEarlyExit    = false;
   m_bErrored      = false;
@@ -60,8 +63,8 @@ Pipeline::Pipeline(Job* pPipelineJob, PipeSpec* pPipeSpec, i8 i_Origin)
 
   _checkInitialised_(CN_PIPELINE);
   
-  m_pPipeWork = new PipeWork(this,pPipeSpec);
-  //vCreatePipework();
+  //m_pVertexRoot = new Vertex(this,nullptr,m_pVertexSpecRoot);
+  vCreateVertexes();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 }
@@ -73,11 +76,9 @@ Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_pPipeWork->vGuardedDelete(CN_PIPEWORK,&m_pPipeWork,
-                              CN_PIPELINE,this,(Stz*)__func__);
+  delete m_pVertexRoot;
   
-  m_pPipeSpec->vGuardedDelete(CN_PIPESPEC,&m_pPipeSpec,
-                                  CN_PIPELINE,this,(Stz*)__func__);
+  delete m_pVertexSpecRoot;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,7 +112,7 @@ bool Pipeline::bCancel(Task* pTriggeringTask)
   if (m_bPulsed)
     return false;
   
-  bool bCancelled = m_pPipeWork->bCancel(pTriggeringTask);
+  bool bCancelled = m_pVertexRoot->bCancel(pTriggeringTask);
   
   return bCancelled;
 }
@@ -137,6 +138,18 @@ bool Pipeline::bCancelled(void)
     vDebugPoint();
   
   return m_bCancelled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get deck 0                                                                 */
+/*----------------------------------------------------------------------------*/
+Deck* Pipeline::pDeck0(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  Deck* pDeck0 = m_pVertexRoot->pDeck();
+
+  return pDeck0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,16 +212,6 @@ bool Pipeline::bErrored(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get formwork                                                               */
-/*----------------------------------------------------------------------------*/
-PipeWork* Pipeline::pPipeWork(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-  
-  return m_pPipeWork;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get accumumlator                                                           */
 /*----------------------------------------------------------------------------*/
 i8 Pipeline::iGetAccum(i8 i_Accum)
@@ -241,11 +244,11 @@ void Pipeline::vGrabDebugLock(void)
 /*----------------------------------------------------------------------------*/
 /* get the originating node                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Pipeline::i_Origin(void)
+i8 Pipeline::iOriginNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_i_Origin;
+  return m_iOriginNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,7 +268,7 @@ Op* Pipeline::pOp0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Op* pOp0 = m_pPipeWork->pOp0();
+  Op* pOp0 = m_pVertexRoot->pOp0();
 
   return pOp0;
 }
@@ -277,7 +280,7 @@ i8 Pipeline::nOpsOnNode(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  i8 nOps = m_pPipeWork->nOpsOnNode(iNode);
+  i8 nOps = m_pVertexRoot->nOpsOnNode(iNode);
     
   return nOps;
 }
@@ -315,11 +318,11 @@ Stz* Pipeline::szPipelineNm(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeline spec                                                          */
 /*----------------------------------------------------------------------------*/
-PipeSpec* Pipeline::pPipeSpec(void)
+VertexSpec* Pipeline::pPipeSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  return m_pPipeSpec;
+  return m_pVertexSpecRoot;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -363,13 +366,24 @@ bool Pipeline::bPulsed(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* spawn operaator jobs for the pipeline                                      */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vSetInvoker(Task* pInvoker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  m_pVertexRoot->vSetInvoker(pInvoker);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* set up the pipeline job                                                    */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vSetupJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_pPipeWork->vSetupJob();
+  m_pVertexRoot->vSetupJob();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -379,7 +393,7 @@ void Pipeline::vSpawnOpTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pPipeWork->vSpawnOpTasks();
+  m_pVertexRoot->vSpawnOpTasks();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -389,7 +403,7 @@ Stage* Pipeline::pStage0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Stage* pStage0 = m_pPipeWork->pStage0();
+  Stage* pStage0 = m_pVertexRoot->pStage0();
 
   return pStage0;
 }
@@ -401,9 +415,19 @@ Stream* Pipeline::pStream0(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  Stream* pStream0 = m_pPipeWork->pStream0();
+  Stream* pStream0 = m_pVertexRoot->pStream0();
 
   return pStream0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get root of vertex tree                                                    */
+/*----------------------------------------------------------------------------*/
+Vertex* Pipeline::pVertexRoot(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  return m_pVertexRoot;
 }
 
 
@@ -413,13 +437,13 @@ Stream* Pipeline::pStream0(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create the formwork for this pipeline                                      */
+/* create the vertexes for this pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void Pipeline::vCreatePipework(void)
+void Pipeline::vCreateVertexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  m_pPipeWork->vCreatePipework();
+  m_pVertexRoot = new Vertex(this,nullptr,m_pVertexSpecRoot);
 }
 
 /*============================================================================*/

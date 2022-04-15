@@ -19,7 +19,7 @@
   pJobParticipant job_Begun::new locals| pJob_Begun |
 
   // send the begun job
-  pJobParticipant [job].originNodeNo@ pJob_Begun job.reply
+  pJobParticipant [job].originNodeId@ pJob_Begun job.reply
 
   pJob_Begun job.delete
 ;
@@ -45,15 +45,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // decrement the acks remaining in the originating job
-  ListedJob[].dec2pcDecider if
-
-    // notify the originating task
-    ListedJob[].task@ task.ack
-    ListedJob[].returnReference
-
-  then
-
+  ListedJob[].task@ task.ack
+  
   ListedJob[].returnReference
   [job]:retire
 ;

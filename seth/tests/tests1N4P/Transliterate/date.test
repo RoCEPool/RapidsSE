@@ -396,13 +396,15 @@ rows:
 (8)
 
 //------------------------------------------------------------------------------
+// TODO: check
+/*
 select int_col0 from datums where dte_col4 = NULL OR dte_col5 = DATE '2041-11-01';
 rows:
 (2)
 (4)
 (6)
 (8)
-
+*/
 //------------------------------------------------------------------------------
 select int_col0 from datums where dte_col5 = DATE '2047-01-01' OR dte_col4 = DATE '2068-10-20';
 rows:

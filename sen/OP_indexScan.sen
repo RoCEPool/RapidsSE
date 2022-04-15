@@ -15,23 +15,6 @@
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  // cleanup the pot
-  PotRlu[].cleanup
-
-  //Counter0[] cleanUpAsm
-
-  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
-
-  ZK_M_CLEANING_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                   END */
-/*----------------------------------------------------------------------------*/
-: indexScan_ComCleaning \handler
-
-  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
-
   // Need to hold on to the streamDef's till the combined op
   // has created the stencil
 
@@ -52,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
-: indexScan_ComStartMarker \handler
+: indexScan_StartMarker \handler
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
@@ -76,129 +59,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
-/*----------------------------------------------------------------------------*/
-: indexScan_StartMarker \handler
-
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
-
-  EC_NONE locals| eError |
-
-  PipeIn[]\clear [op].pipeout
-
-  <tableNm> <indexNm> op__table_index not if
-    true
-    exit
-  then
-
-  // new the PotRlu[]
-  PotRlu[].new
-
-  // init the logicUnit[]
-  LogicUnit[].init
-
-  //Index[].indexTree to indexTreeRlu[]
-  //indexTreeRlu[].asSrc
-
-  // set the indexTree in the devSrcIxt
-  Index[].indexTree DevLftIxt.indexTree!
-
-  // new a stream def
-  Table[] StreamDefLft[].new
-  StreamDefLft[].duplicate to streamDefOut[]
-
-  // evalute the expression
-  ExprEval[].new
-
-  <expr> Index[].indexTree ExprEval[].evaluateIndexScan to eError
-
-  // check for error
-  eError EC_NONE == not if
-    eError op__asmGenExecErr
-    true
-    exit
-  then
-
-  // generate the asm for projection
-  ExprEval[] LogicUnit[].genIndexScan to eError
-  ExprEval[].delete
-
-  // check for error
-  eError EC_NONE == not if
-    eError op__asmGenExecErr
-    true
-    exit
-  then
-
-  // set the streamDef in the DevLftRow
-  StreamDefLft[]\clear DevLftRow.streamDef!
-
-  // create rowPix in potRlu[] from streamDefOut[]
-  false streamDefOut[] PotRlu[].rowPix!
-
-  // pipeout the streamDefOut
-  streamDefOut[].pipeOut
-
-  // create the compiler
-  Counter0[] if
-    LogicCompiler[].new
-    LogicCompiler[].compile
-  then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                        END */
-/*----------------------------------------------------------------------------*/
-: indexScan_EosMarker \handler
-
-  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
-
-  // execute the eosMarker asm handler
-  ZK_M_EOS Counter0[] executeAsmArgs
-
-  // pipe out all PotRlu[]
-  PotRlu[].pipeoutDanglingPtns
-
-  // create a new eos marker
-  Marker[].newEosMarker
-  Marker[] to Pipein[]
-
-  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
-  ZK_M_EOS_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                            DATAPULSE */
-/*----------------------------------------------------------------------------*/
-: indexScan_Datapulse \handler
-
-  0 ZK_M_DATAPULSE EG_ZK LogicUnit[].diaryNote
-
-  //Pipein[].isNull if
-    // create a new eos marker
-    //Marker[].newEosMarker
-    //Marker[] to Pipein[]
-  //then
-
-  PipeIn[].pipeOut
-  ZK_M_DATAPULSE Counter0[] executeAsmArgs
-
-  LogicUnit[].callAgain@ not if
-
-    // force op loop to call EOAsm_EosMarker to end
-    "indexScan_EosMarker" word::find LogicUnit[].handler!
-    true LogicUnit[].callAgain!
-
-  then
-
-  PotRlu[].pipeoutCompletedPtns
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -208,20 +68,11 @@
 
   _lu_initialise_
 
-  // get whether compiled or not
-  <compiled> >int to Counter0[]
-
   op__topology
 
-  Counter0[] 2 == if
-    // handle combined operator
-    find: indexScan_ComCleaning    ZK_M_CLEANING  [op].handler!
-    find: indexScan_ComStartMarker ZK_M_START     [op].handler!
-  else
-    find: indexScan_Cleaning       ZK_M_CLEANING  [op].handler!
-    find: indexScan_DataPulse      ZK_M_DATAPULSE [op].handler!
-    find: indexScan_StartMarker    ZK_M_START     [op].handler!
-  then
+  // handle combined operator
+  find: indexScan_Cleaning    ZK_M_CLEANING  [op].handler!
+  find: indexScan_StartMarker ZK_M_START     [op].handler!
 
   op__loop
 
@@ -235,7 +86,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: indexScan :: indexScan <compiled> <tableNm> <indexNm> <expr> ;
+cmdSyntax: indexScan :: indexScan <tableNm> <indexNm> <expr> ;
 
 : indexScan_cmdTags _cmdTags tagCopy: op_tags
   tags{

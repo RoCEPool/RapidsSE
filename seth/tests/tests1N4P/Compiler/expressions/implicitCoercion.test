@@ -250,7 +250,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> nestedLoopJoinOp
+-> -> -> abstractJoinOp
          » join type: Inner Join
          » predicate: ((CAST(rapidsse.public.nation.n_nationkey AS FLOAT)) = (rapidsse.public.coercionTest.col8 + 1.000000e+00))
          » ordinal predicate: ((CAST($1 AS FLOAT)) = ($10 + 1.000000e+00))

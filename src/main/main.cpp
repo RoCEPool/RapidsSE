@@ -8,7 +8,7 @@
 
 #include "CmdLineArgs.hpp"
 
-#include "Heart.h"
+//#include "Heart.h"
 #include "Engine.hpp"
 
 
@@ -126,10 +126,10 @@ int main(int argc, char* argv[])
       Process::vExitFailure();
     
     // potentially run utilities
-    if (gxCmdLineArgs.m_xSysArgs.m_bUtility) {
-      Engine::vRunUtility(argc,(Stz**)argv);
-      Process::vExitSuccess();
-    }
+//    if (gxCmdLineArgs.m_xSysArgs.m_bUtility) {
+//      Engine::vRunUtility(argc,(Stz**)argv);
+//      Process::vExitSuccess();
+//    }
     
     // temp for debugging hang in bamboo
 //    gxCmdLineArgs.m_xSysArgs.m_bDeveloper = true;
@@ -137,15 +137,33 @@ int main(int argc, char* argv[])
 //    gxCmdLineArgs.m_xSysArgs.m_oArgTags.vInsert(C_VB_OP);
     // end temp
     
-    vHeartInit();
+    switch (gxCmdLineArgs.m_xSysArgs.m_eUtility) {
+        
+      case UT_APIDEMO:
+        NOT_IMPLEMENTED_YET;
+        break;
+        
+      case UT_SHM:
+        ShmUtility::vRun(argc,(Stz**)argv);
+        Process::vExitSuccess();
+        break;
+ 
+      case UT_RAPIDSSE:
+//        vHeartInit();
+//
+//        if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {
+//          printf("Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
+//          sleep((unsigned int)gxCmdLineArgs.m_xSysArgs.m_iDelay);
+//        }
 
-    if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {
-      printf("Delayed %lld seconds\n", gxCmdLineArgs.m_xSysArgs.m_iDelay);
-      sleep(gxCmdLineArgs.m_xSysArgs.m_iDelay);
+        // run SE
+        Engine::vMainEntry();
+        break;
+        
+      default:
+        NEVER_REACH;
     }
-
-    // run SE
-    Engine::vMainEntry();
+    
   }
   
   catch (Exception xException) {

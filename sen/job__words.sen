@@ -121,7 +121,7 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: job::acquireDdlLock
+: [ddlLock]:acquireLock
 
   "<ddlLock>" <jobNm> _cmdTags::findTagSet tagSet.getInt
 
@@ -130,7 +130,7 @@
   dup DL_GRAB_WRITE
   == if
     discard
-    // "job::acquireDdlLock - grabbing ddl write lock" .
+    // "[ddlLock]:acquireLock - grabbing ddl write lock" .
     [ddlLock].grabWrite
     exit
   then
@@ -140,7 +140,7 @@
   dup DL_GRAB_READ
   == if
     discard
-    // "job::acquireDdlLock - grabbing ddl read lock" .
+    // "[ddlLock]:acquireLock - grabbing ddl read lock" .
     [ddlLock].grabRead
     exit
   then
@@ -243,6 +243,26 @@
   HAZARD
 ;
 
+/*----------------------------------------------------------------------------*/
+/* run optional <pre_execute> word                                            */
+/*----------------------------------------------------------------------------*/
+: [job]:pre_execute
+
+  "<pre_execute>" [job].tagSet@ tagSet.hasName if
+    "<pre_execute>"
+    [job].tagSet@ tagSet.getStr locals| sPreExe |
+    sPreExe find
+    dup not if
+      sPreExe "Unable to find pre execute word: %v" .printf
+      process::quit
+    then
+      execute
+  else
+    [args].verbose if
+      <pipelineNm> "No pre execute word for pipeline: %v" .printf
+    then
+  then
+;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -339,7 +359,7 @@
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
-      pNode node.no [job] job.forward
+      pNode node.id [job] job.forward
     else
       "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
     then
@@ -373,22 +393,13 @@
 
   0 locals| pNode |
   
-  // set the no of 2pc acks expected by this job
-  //   to be the number of defined nodes in the grid
-  [grid].knownNodes [job].2pcDecider!
-
-  // set acks for this task
-  1 [task].acksRemaining!
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   C_ALL node_I[].new
 
   begin
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
-      pNode node.no pJob job.forward
+      pNode node.id pJob job.forward
     else
       "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
     then
@@ -412,7 +423,7 @@
   [job].addRetired
   
   JS_SIGNALLED [job].state!
-    [session].signal
+  [session].signal
 
   [task].grabLock
     TR_RETIRE_THIS_TASK [task].transition!

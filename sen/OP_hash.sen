@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: hash_ComCleaning \handler
+: hash_Cleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: hash_ComStreamDef \handler
+: hash_StreamDef \handler
 
   EC_NONE locals| eError |
 
@@ -71,147 +71,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                   END */
-/*----------------------------------------------------------------------------*/
-: hash_Cleaning \handler
-
-  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
-
-  // cleanup the pot
-  PotRlu[].cleanup
-
-  //Counter0[] cleanUpAsm
-
-  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
-
-  ZK_M_CLEANING_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_D_CRWBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: hash_CrwBuffer \handler
-
-  0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] DevLftIxt.crwBuffer!
-  ZK_D_CRWBUFFER Counter0[] executeAsmArgs
-
-  PotRlu[].pipeoutCompletedPtns
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                    END */
-/*----------------------------------------------------------------------------*/
-: hash_EosMarker \handler
-
-  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
-
-  // execute the eosMarker asm handler
-  ZK_M_EOS Counter0[] executeAsmArgs
-
-  // pipeout all PotRlu[]
-  PotRlu[].pipeoutDanglingPtns
-
-  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
-  ZK_M_EOS_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                   EACH */
-/*----------------------------------------------------------------------------*/
-: hash_RowBuffer \handler
-
-  0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
-
-  Pipein[]\clear to RowBuffer[]
-  RowBuffer[] DevLftRow.rowBuffer!
-  ZK_D_ROWBUFFER Counter0[] executeAsmArgs
-
-  RowBuffer[].delete
-
-  PotRlu[].pipeoutCompletedPtns
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
-/*----------------------------------------------------------------------------*/
-: hash_StartMarker \handler
-
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
-
-  // new the PotRlu[]
-  PotRlu[].new
-
-  // init the logicUnit[]
-  LogicUnit[].init
-
-  ZK_M_START_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
-/*----------------------------------------------------------------------------*/
-: hash_StreamDef \handler
-
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
-
-  EC_NONE locals| eError |
-
-  // move pipein[] to StreamDefLft[]
-  Pipein[]\clear to StreamDefLft[]
-
-  // evaluate the expression
-  ExprEval[].new
-  StreamDefLft[].duplicate to StreamDefOut[]
-
-  <expr> StreamDefLft[] nullptr ExprEval[].evaluate to eError
-
-  // check for error
-  eError EC_NONE == not if
-    eError op__asmGenExecErr
-    true
-    exit
-  then
-
-  // generate the asm for the hash
-  ExprEval[] LogicUnit[].genHash to eError
-  ExprEval[].delete
-
-  // check for error
-  eError EC_NONE == not if
-    eError op__asmGenExecErr
-    true
-    exit
-  then
-
-  // set the streamDef in the DevLftRow
-  StreamDefLft[]\clear DevLftRow.streamDef!
-
-  // create rowPix in potRlu[] from streamDefOut[]
-  false streamDefOut[] PotRlu[].rowPix!
-
-  // pipeout the streamDefOut
-  StreamDefOut[].pipeout
-
-  // create the compiler
-  Counter0[] if
-    LogicCompiler[].new
-    LogicCompiler[].compile
-  then
-
-  // execute the streamDef asm handler
-  ZK_D_STREAMDEF Counter0[] executeAsmArgs
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -221,22 +80,10 @@
 
   _lu_initialise_
 
-  // get whether compiled or not
-  <compiled> >int to Counter0[]
-
   op__topology
 
-  Counter0[] 2 == if
-    find: hash_ComCleaning   ZK_D_STREAMDEF     [op].handler!
-    find: hash_ComStreamDef  ZK_D_STREAMDEF     [op].handler!
-  else
-    find: hash_Cleaning      ZK_M_CLEANING      [op].handler!
-    find: hash_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
-    find: hash_EosMarker     ZK_M_EOS           [op].handler!
-    find: hash_RowBuffer     ZK_D_ROWBUFFER     [op].handler!
-    find: hash_StartMarker   ZK_M_START         [op].handler!
-    find: hash_StreamDef     ZK_D_STREAMDEF     [op].handler!
-  then
+  find: hash_Cleaning   ZK_M_CLEANING      [op].handler!
+  find: hash_StreamDef  ZK_D_STREAMDEF     [op].handler!
 
   op__loop
 
@@ -250,7 +97,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: hash :: hash <compiled> <expr> ;
+cmdSyntax: hash :: hash <expr> ;
 
 : hash_cmdTags _cmdTags tagCopy: op_tags
   tags{

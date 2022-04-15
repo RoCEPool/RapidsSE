@@ -32,7 +32,7 @@ namespace STORE
   
     Birth m_oBirth;
     Now   m_oNow;
-    i8    m_iPid;
+    i8    m_iSePid;
     Timer m_oSince;
     i8    m_iTimePoint;
   
@@ -43,11 +43,12 @@ namespace STORE
   
     bool          m_bBootError;
 
-    BucketMap_dyn* m_pBucketMap;
+    BucketMap* m_pBucketMap;
 
     BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;
     ClassFlags    m_oClassFlags;
+    Atomic        m_ixCmdNo;
     Word*         m_pConstantRoot;
     Dic*          m_pDicRoot;
     i8            m_iEpoch;
@@ -60,13 +61,15 @@ namespace STORE
     Heaps         m_xHeaps;
     InternalTables* m_pInternalTables;
     Jobs*         m_pJobs;
+    LglPtnMap*    m_pLglPtnMap;
     Locks         m_oLocks;
     Numbering*    m_pNumbering;
     Atomic        m_nxOperands;
-    PtnMap*       m_pPtnMap;
+    Atomic        m_ixQueryNo;
     i8            m_iQuit;
     b8            m_bReady;
     b8            m_bReapEnabled;
+    ReapLock      m_oReapLock;
     Timer         m_oReferenceTimer;
     Resources     m_oResources;
     Schedule*     m_pSchedule;
@@ -83,14 +86,10 @@ namespace STORE
     Word*         m_pTenants;
     TempName      m_oTempName;
     File*         m_pTraceFile;
-    TxSet*        m_pTxSet;
-    Word*         m_pWordRoot;
-    Atomic        m_ixQueryNo;
-  
-  private:
-    ReapLock       m_oReapLock;
     TraceLock      m_oTraceLock;
     TraceMultiLock m_oTraceMultiLock;
+    TxSet*        m_pTxSet;
+    Word*         m_pWordRoot;
 
     // must be last
     Footer m_xFooter;
@@ -108,33 +107,37 @@ namespace STORE
   
     void vAttachMapState(u8 uState);
     u8   uAttachMapState(void);
+  
+    i8   iCmdNoNext(void);
+
     eAC  eFindApi(Stz* aApiNm);
-    void vOutline(s4K& sOutline);
+  
     void vGetGlobals(void);
+  
     void vIndexEntries(i8 nIndexEntries);
+  
     void vNextTempName(s32& sName);
-    i8   iPid(void);
+  
+    void vOutline(s4K& sOutline);
+  
+    i8   iSePid(void);
     void vPrintAttachMap(void);
     void vPrintStartupInfo(void);
   
-    bool  bReapEnabled(void);
-    void  vReapEnabled(bool bReapEnabled);
-  
+    bool bReapEnabled(void);
+    void vReapEnabled(bool bReapEnabled);
     void vReapLockDrop(void);
     void vReapLockGrab(void);
-
     void vRecordArguments(CmdLineArgs* CmdLineArgs);
-    Sessions* pSessions(void);
   
+    Sessions* pSessions(void);
     void vSysMetricsAdd(SysMetrics* pSysMetrics);
     SysMetrics* pSysMetricsChain(void);
 
     File* pTraceFile(void);
     void  vTraceFile(File* pTraceFile);
-
     void vTraceLockDrop(void);
     void vTraceLockGrab(void);
-  
     void vTraceMultiLockDrop(void);
     void vTraceMultiLockGrab(void);
 

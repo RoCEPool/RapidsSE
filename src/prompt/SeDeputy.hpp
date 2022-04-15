@@ -4,11 +4,13 @@
 #pragma once
 
 #include "BASE.h"
+#include "ApiHelper.hpp"
 
 
 namespace PROMPT
 {
   class SeDeputy : public Object
+                 , public ApiHelper
   {
   private:
     i8        m_i_Deputy;
@@ -16,8 +18,8 @@ namespace PROMPT
     
     Thread*   m_pThread;
 
-    Session*  m_pSession;  // rapidsse session
-    
+    Input*    m_pInput;        // input stream
+
     bool      m_bAvailable;
     bool      m_bContinue;
     bool      m_bTerminated;
@@ -37,6 +39,9 @@ namespace PROMPT
     void vDeputyLoop(void);
     void vExecuteJob(void);
     void vDeleteJob(void);
+
+    eEC  ePrepareJob(TokenVec* pCmdTknVec);
+    void vPrintResults(void);
 
     // -- -- -- -- -- --
   

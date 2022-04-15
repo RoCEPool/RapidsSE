@@ -24,7 +24,7 @@
 #include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
-#include "ShardDef.hpp"
+#include "PtnDef.hpp"
 
 #include "Grid.hpp"
 
@@ -676,11 +676,11 @@ InfoSet* Metadata::pPartitionKey(Stz* szCatalogName,
     
     //vTrace("TABLE %s\n"_Stz,pTable->szTableNm());
         
-    ShardDef*  pShardDef= pTable->pShardDef();
+    PtnDef* pPtnDef= pTable->pPtnDef();
 
-    i8 nCols = pShardDef->nColumns();
+    i8 nCols = pPtnDef->nColumns();
     for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-      Column* pColumn = pShardDef->pGetColumn(i_Col);
+      Column* pColumn = pPtnDef->pGetColumn(i_Col);
       
       pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
                                  szCatalogName,

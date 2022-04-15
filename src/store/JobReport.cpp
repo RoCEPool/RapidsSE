@@ -15,8 +15,9 @@
 #include "IndexStream.hpp"
 #include "Table.hpp"
 #include "Pipeline.hpp"
-#include "PipeWork.hpp"
+#include "Vertex.hpp"
 #include "Stage.hpp"
+#include "Deck.hpp"
 #include "LogicUnit.hpp"
 #include "Stream.hpp"
 #include "Op.hpp"
@@ -151,7 +152,7 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
                        
                        ,iJob
 
-                       ,pThisNode->iNodeNo()
+                       ,pThisNode->iNodeId()
                        ,pThisNode->szNodeNm()
 
                        ,pPipelineMetrics->szPipelineNm()
@@ -257,10 +258,10 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                    
                    ,iJob
 
-                   ,pThisNode->iNodeNo()
+                   ,pThisNode->iNodeId()
                    ,pThisNode->szNodeNm()
 
-                   ,pNode->iNodeNo()
+                   ,pNode->iNodeId()
                    ,pNode->szNodeNm()
                    
                    ,"sndSkt"_Stz
@@ -294,10 +295,10 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                    
                    ,iJob
 
-                   ,pThisNode->iNodeNo()
+                   ,pThisNode->iNodeId()
                    ,pThisNode->szNodeNm()
 
-                   ,pNode->iNodeNo()
+                   ,pNode->iNodeId()
                    ,pNode->szNodeNm()
                    
                    ,"sndSkt"_Stz
@@ -334,10 +335,10 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                    
                    ,iJob
 
-                   ,pThisNode->iNodeNo()
+                   ,pThisNode->iNodeId()
                    ,pThisNode->szNodeNm()
 
-                   ,pNode->iNodeNo()
+                   ,pNode->iNodeId()
                    ,pNode->szNodeNm()
                    
                    ,"rcvSkt"_Stz
@@ -371,10 +372,10 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                    
                    ,iJob
 
-                   ,pThisNode->iNodeNo()
+                   ,pThisNode->iNodeId()
                    ,pThisNode->szNodeNm()
 
-                   ,pNode->iNodeNo()
+                   ,pNode->iNodeId()
                    ,pNode->szNodeNm()
                    
                    ,"rcvSkt"_Stz
@@ -455,10 +456,10 @@ eEC JobReport::eNetworkReport(i8 iJob, Tub* pTub)
                  
                  ,iJob
 
-                 ,pThisNode->iNodeNo()
+                 ,pThisNode->iNodeId()
                  ,pThisNode->szNodeNm()
 
-                 ,pNode->iNodeNo()
+                 ,pNode->iNodeId()
                  ,pNode->szNodeNm()
                  ,pNode->szIPAddr()
                  ,pNode->iPortNo()
@@ -531,9 +532,9 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // each stage in the pipeline
-  PipeWork* pPipeWork = pPipeline->pPipeWork();
+  Vertex* pPipeWork = pPipeline->pVertexRoot();
   for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++) {
-    Stage* pStage = pPipeWork->pGet(i_Stage);
+    Stage* pStage = pPipeWork->pDeck()->pGet(i_Stage);
 
     // each stream in the stage
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
@@ -559,13 +560,13 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
                        
                        ,iJob
                        
-                       ,pThisNode->iNodeNo()
+                       ,pThisNode->iNodeId()
                        ,pThisNode->szNodeNm()
                        
-                       ,pOp->pPipelineOfOp()->szPipelineNm()
+                       ,pOp->pPipeline()->szPipelineNm()
                        ,pOp->szStageName()
                        ,pOp->pStage()->i_Stage()
-                       ,pOp->tPtnId().iAsI8()
+                       ,pOp->tLglPtn().iAsI8()
                        ,pOp->szOpNm()
 
                        ,i_Operand
@@ -645,10 +646,10 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
 
   // each stage in the pipeline
-  PipeWork* pPipeWork = pPipeline->pPipeWork();
+  Vertex* pPipeWork = pPipeline->pVertexRoot();
   for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++) {
 
-    Stage* pStage = pPipeWork->pGet(i_Stage);
+    Stage* pStage = pPipeWork->pDeck()->pGet(i_Stage);
 
     // each stream in the stage
     for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
@@ -699,13 +700,13 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
                                             
                      ,iJob
                       
-                     ,pThisNode->iNodeNo()
+                     ,pThisNode->iNodeId()
                      ,pThisNode->szNodeNm()
                      
-                     ,pOp->pPipelineOfOp()->szPipelineNm()
+                     ,pOp->pPipeline()->szPipelineNm()
                      ,pOp->szStageName()
                      ,pOp->pStage()->i_Stage()
-                     ,pOp->tPtnId().iAsI8()
+                     ,pOp->tLglPtn().iAsI8()
                      ,pOp->szOpNm()
 
                      ,pStats->iMicroseconds()
@@ -770,7 +771,7 @@ Job* JobReport::pFindOriginalJobId(JobId tJobId)
 //             : "participant"_Stz
 //           );
     
-    if (tJobNo_test == tJobId && C_UNKNOWN == pJobScan->iParticipantNode()) {
+    if (tJobNo_test == tJobId && C_UNKNOWN == pJobScan->iParticipantNodeId()) {
       pJob = pJobScan;
     }
   }
@@ -801,7 +802,7 @@ Job* JobReport::pFindOriginalJobNo(i8 iJobNo)
   //vTrace("bFindParts: %lld\n"_Stz,m_iJobNo);
   
   
-  // form jobId from nodeNo.m_jobNo
+  // form jobId from NodeId.m_jobNo
   
   Job* pJob = nullptr;
   JobList* pRetiredJobs = AM::pRetiredJobs();
@@ -822,7 +823,7 @@ Job* JobReport::pFindOriginalJobNo(i8 iJobNo)
 //             : "participant"_Stz
 //           );
     
-    if (iJobNo_test == iJobNo && C_UNKNOWN == pJobScan->iParticipantNode()) {
+    if (iJobNo_test == iJobNo && C_UNKNOWN == pJobScan->iParticipantNodeId()) {
       pJob = pJobScan;
     }
   }
@@ -869,7 +870,7 @@ Job* JobReport::pFindParticipantJobId(JobId tJobId)
 //           ,tJobId.iAsI8()
 //           );
 
-    if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iParticipantNode()) {
+    if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iParticipantNodeId()) {
       if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
         pJob = pJobScan;
     }
@@ -917,7 +918,7 @@ Job* JobReport::pFindParticipantJobNo(i8 iJobNo)
 //           ,iJobNo
 //           );
 
-    if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iParticipantNode()) {
+    if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iParticipantNodeId()) {
       if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
         pJob = pJobScan;
     }

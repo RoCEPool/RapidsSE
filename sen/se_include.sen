@@ -15,6 +15,8 @@ assert::stack_0
 
   "se_word.sen"             include
   "se_str.sen"              include
+  "se_api.sen"              include
+  "se_op.sen"               include
 
   "se_categories.sen"       include
   "se_cluster.sen"          include
@@ -53,6 +55,9 @@ assert::stack_0
 "se_boot 4" .verbose
 
   "se_pipeline.sen"         include
+  "dp_answerSE.sen"         include
+  "dp_connectorSE.sen"      include
+  "dp_receiverSE.sen"       include
 
   "se_includeOps.sen"       include
 
@@ -65,9 +70,7 @@ assert::stack_0
 "se_boot 1" .verbose
 
   "se_demonInstall.sen"     include
-  "dp_answerDemon.sen"      include
   "dp_collectDemon.sen"     include
-  "dp_connDemon.sen"        include
   "dp_eventDemon.sen"       include
   "dp_exitDemon.sen"        include
   "dp_metricsDemon.sen"     include
@@ -77,6 +80,7 @@ assert::stack_0
   "dp_statDemon.sen"        include
   "dp_superDemon.sen"       include
   "dp_wakerDemon.sen"       include
+  
   "se_experiments.sen"      include
   "se_llc.sen"              include
   "se_memoryStats.sen"      include
@@ -92,57 +96,57 @@ cmd::fillOut_allCmds
 
   "se_includePps.sen"       include
   
-  "it_analyzeIndex.sen"     include //
-  "it_analyzeTable.sen"     include //
-  "it_callPipeline.sen"     include //
-  "it_columnDefs.sen"       include //
-  "it_commandErrors.sen"    include //
-  "it_count.sen"            include //
-  "it_countInfo.sen"        include //
-  "it_deref.sen"            include //
-  "it_eventLog.sen"         include //
-  "it_execErrors.sen"       include //
-  "it_explain.sen"          include //
-  "it_gridSanity.sen"       include //
-  "it_indexColumnDefs.sen"  include //
-  "it_jobTables.sen"        include //
-  "it_jobNetwork.sen"       include //
-  "it_jobNetDissect.sen"    include //
-  "it_listColumns.sen"      include //
-  "it_listContents.sen"     include //
-  "it_listFolder.sen"       include //
-  "it_listIndex.sen"        include //
-  "it_listNodes.sen"        include //
-  "it_listPartitions.sen"   include //
-  "it_loadResult.sen"       include //
-  "it_lockStats.sen"        include //
-  "it_lookupCatalog.sen"    include //
-  "it_lookupIndex.sen"      include //
-  "it_lookupSchema.sen"     include //
-  "it_lookupTable.sen"      include //
-  "it_memoryLog.sen"        include //
-  "it_nodeInfo.sen"         include //
-  "it_operandLog.sen"       include //
-  "it_partitionKey.sen"     include //
-  "it_pathInfo.sen"         include //
-  "it_pingInfo.sen"         include //
-  "it_progressUnits.sen"    include //
-  "it_promptOut.sen"        include //
-  "it_pwf.sen"              include //
-  "it_resourceLog.sen"      include //
-  "it_returnPipeline.sen"   include //
-  "it_seekOffsets.sen"      include //
-  "it_showCluster.sen"      include //
-  "it_sizeIndex.sen"        include //
-  "it_sizeTable.sen"        include //
-  "it_space.sen"            include //
-  "it_status.sen"           include //
-  "it_sysLocks.sen"         include //
-  "it_sysMetrics.sen"       include //
-  "it_tableSizes.sen"       include //
-  "it_totalUnits.sen"       include //
-  "it_verifyIndex.sen"      include //
-  "it_verifyTable.sen"      include //
+  "it_analyzeIndex.sen"     include
+  "it_analyzeTable.sen"     include
+  "it_callPipeline.sen"     include
+  "it_columnDefs.sen"       include
+  "it_command.sen"          include
+  "it_commandErrors.sen"    include
+  "it_count.sen"            include
+  "it_deref.sen"            include
+  "it_eventLog.sen"         include
+  "it_execErrors.sen"       include
+  "it_explain.sen"          include
+  "it_gridSanity.sen"       include
+  "it_indexColumnDefs.sen"  include
+  "it_jobTables.sen"        include
+  "it_jobNetwork.sen"       include
+  "it_jobNetDissect.sen"    include
+  "it_listColumns.sen"      include
+  "it_listContents.sen"     include
+  "it_listFolder.sen"       include
+  "it_listIndex.sen"        include
+  "it_listNodes.sen"        include
+  "it_listPartitions.sen"   include
+  "it_loadResult.sen"       include
+  "it_lockStats.sen"        include
+  "it_lookupCatalog.sen"    include
+  "it_lookupIndex.sen"      include
+  "it_lookupSchema.sen"     include
+  "it_lookupTable.sen"      include
+  "it_memoryLog.sen"        include
+  "it_nodeInfo.sen"         include
+  "it_operandLog.sen"       include
+  "it_partitionKey.sen"     include
+  "it_path.sen"             include
+  "it_pingInfo.sen"         include
+  "it_progressUnits.sen"    include
+  "it_promptOut.sen"        include
+  "it_pwf.sen"              include
+  "it_resourceLog.sen"      include
+  "it_returnPipeline.sen"   include
+  "it_seekOffsets.sen"      include
+  "it_showCluster.sen"      include
+  "it_sizeIndex.sen"        include
+  "it_sizeTable.sen"        include
+  "it_space.sen"            include
+  "it_status.sen"           include
+  "it_sysLocks.sen"         include
+  "it_sysMetrics.sen"       include
+  "it_tableSizes.sen"       include
+  "it_totalUnits.sen"       include
+  "it_verifyIndex.sen"      include
+  "it_verifyTable.sen"      include
 
   
   "job_startSystem.sen"     include // last last
@@ -151,8 +155,8 @@ cmd::fillOut_allCmds
 
 assert::stack_0
 
-procedure:
-procedureLocal subPipeTest
+procText:
+procedureLocal subPipeTest3
 begin
   stage stageA on origin :
       start
@@ -228,12 +232,6 @@ end ;
 
 "Creating default folders" .verbose
 makeDefaultFolders
-
-"Extracting EO_ fragments" .verbose
-LogicCompiler[].extract
-
-"Extracting AM_ ASM Macros" .verbose
-LogicCompiler[].extractAsm
 
 assert::stack_0
 

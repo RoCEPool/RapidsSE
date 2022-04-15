@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Dissect.hpp"
-#include "SubPipeSpecs.hpp"
 #include "Optimiser.hpp"
 
 
@@ -56,19 +55,18 @@ Dissect::~Dissect(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dissect pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
-Board* Dissect::pDissectSpec(PipeSpec* pPipeSpec)
+
+Board* Dissect::pDissectSpec(VertexSpec* pPipeSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
         
-  SubPipeSpecs* pSubPipelines = pPipeSpec->pSubPipeSpecs();
-  if (pSubPipelines) {
-    i8 nSubPipelines = pSubPipelines->nItems();
-    for (i8 i_SubPipeline = 0; i_SubPipeline < nSubPipelines; i_SubPipeline++) {
-      m_pPipeSpec = pSubPipelines->pGet(i_SubPipeline);
-      
-      vPipeline();
-    }
+  i8 nSubPipelines = pPipeSpec->nItems();
+  for (i8 i_SubPipeline = 0; i_SubPipeline < nSubPipelines; i_SubPipeline++) {
+    m_pPipeSpec = pPipeSpec->pGet(i_SubPipeline);
+    
+    vPipeline();
   }
+
   
   m_pPipeSpec = pPipeSpec;
   vPipeline();
@@ -93,7 +91,7 @@ void Dissect::vPipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Stz* szPipelineNm = m_pPipeSpec->szPipelineNm();
+  Stz* szPipelineNm = m_pPipeSpec->szVertexNm();
   //TagSet* pJobTags = m_pPipeSpec->pJobTags();
   //pJobTags->vDumpSet(true);
 
@@ -104,7 +102,7 @@ void Dissect::vPipeline(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  i8 nStageSpecs = m_pPipeSpec->nStages();
+  i8 nStageSpecs = m_pPipeSpec->nStageSpecs();
   for (i8 i_StageSpec = 1; i_StageSpec < nStageSpecs - 1; i_StageSpec++) {
     m_pStageSpec = m_pPipeSpec->pStageSpec(i_StageSpec);
     
@@ -174,7 +172,7 @@ void Dissect::vOp(i8 i_OpSpec)
   else if (szOpNm->bSame("pulse"_Stz))     pCard = pCard_Pulse    (pArgTags);
   else if (szOpNm->bSame("project"_Stz))   pCard = pCard_Project  (pArgTags);
   else if (szOpNm->bSame("scan"_Stz))      pCard = pCard_Scan     (pArgTags);
-  else if (szOpNm->bSame("send"_Stz))      pCard = pCard_Send     (pArgTags);
+  else if (szOpNm->bSame("sendSE"_Stz))    pCard = pCard_Send     (pArgTags);
   else if (szOpNm->bSame("sink"_Stz))      pCard = pCard_Sink     (pArgTags);
   else if (szOpNm->bSame("sort"_Stz))      pCard = pCard_Sort     (pArgTags);
   else if (szOpNm->bSame("start"_Stz))     pCard = pCard_Start    (pArgTags);

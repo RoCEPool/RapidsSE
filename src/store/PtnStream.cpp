@@ -40,7 +40,7 @@ PtnStream::PtnStream(TablePtn* pTablePtn)
   m_pNextBuffer  = nullptr;
   m_iLglBufferNo = -1; // correct
 
-  //vTrace("PtnStream for partition:%lld\n"_Stz, pTablePtn->tPtnId().iAsI8());
+  //vTrace("PtnStream for partition:%lld\n"_Stz, pTablePtn->tLglPtn().iAsI8());
   m_pPtnStm_cursor = new PtnStm_cursor(pTablePtn);
 
   _checkInitialised_(CN_PTNSTREAM);

@@ -70,7 +70,7 @@ RowOnce::~RowOnce(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* repair the logicCompiler                                                   */
+/* repair the rowOnce                                                         */
 /*----------------------------------------------------------------------------*/
 void RowOnce::vRepair(Object* pObject)
 {
@@ -78,7 +78,7 @@ void RowOnce::vRepair(Object* pObject)
 
   RowOnce* pRowOnce = _pRowOnce(pObject);
 
-  // delete the logicCompiler
+  // delete the rowOnce
   delete pRowOnce;
 }
 

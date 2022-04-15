@@ -1,0 +1,140 @@
+/*----------------------------------------------------------------------------*/
+/* regrDropSchema -- drop schema                                              */
+/*----------------------------------------------------------------------------*/
+
+ drop table table1;
+ success
+
+ drop table table2;
+ success
+
+ drop table table3;
+ success
+
+ drop table table4;
+ success
+
+ drop table table5;
+ success
+
+ drop table table6;
+ success
+
+ drop table table7;
+ success
+
+ drop table table8;
+ success
+
+ drop table table9;
+ success
+
+ drop table orders;
+ success
+
+ drop table lineitem;
+ success
+
+ drop table customerh;
+ success
+
+ drop table partsupp;
+ success
+
+ drop table part;
+ success
+
+ drop table shipping;
+ success
+
+ drop table shipaddress;
+ success
+
+ drop table supplier;
+ success
+
+ drop table manufacturer;
+ success
+
+ drop table nation;
+ success
+
+ drop table region;
+ success
+
+ drop table returns;
+ success
+
+CLEANUP {
+  
+  drop table table1;
+  mute
+
+  drop table table2;
+  mute
+  
+  drop table table3;
+  mute
+  
+  drop table table4;
+  mute
+  
+  drop table table5;
+  mute
+  
+  drop table table6;
+  mute
+  
+  drop table table7;
+  mute
+  
+  drop table table8;
+  mute
+  
+  drop table table9;
+  mute
+  
+  drop table orders;
+  mute
+  
+  drop table lineitem;
+  mute
+  
+  drop table customerh;
+  mute
+  
+  drop table partsupp;
+  mute
+  
+  drop table part;
+  mute
+  
+  drop table shipping;
+  mute
+  
+  drop table shipaddress;
+  mute
+  
+  drop table supplier;
+  mute
+  
+  drop table manufacturer;
+  mute
+  
+  drop table nation;
+  mute
+  
+  drop table region;
+  mute
+  
+  drop table returns;
+  mute
+
+  bye;
+  mute
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/

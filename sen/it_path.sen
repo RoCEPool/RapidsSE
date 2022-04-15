@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* it_path.sen -- Define __path table                                         */
+/*============================================================================*/
+
+" it_path.sen" .verbose
+
+: start::it_path
+
+  // C_TDEF_PATH
+
+  STD_PATH_TAG
+  "
+  define table __path (
+    path           VARCHAR NOT NULL ,
+    pathNo         INTEGER NOT NULL ,
+    pathOf         INTEGER NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  
+  api::executeCommand api:executeCheck
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

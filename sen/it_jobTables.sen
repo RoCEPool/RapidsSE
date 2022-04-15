@@ -18,7 +18,7 @@
   (
     jobId             INTEGER NOT NULL ,
     
-    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeId        INTEGER NOT NULL ,
     thisNodeName      VARCHAR NOT NULL ,
 
     pipelineName      VARCHAR NOT NULL ,
@@ -38,7 +38,7 @@
 
   ) < internal > = 1 ;
   "
-  api::executeCommand 2discard
+  api::executeCommand api:executeCheck
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBOPERATORS
@@ -48,7 +48,7 @@
   (
     jobId             INTEGER NOT NULL ,
     
-    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeId        INTEGER NOT NULL ,
     thisNodeName      VARCHAR NOT NULL ,
 
     pipelineName      VARCHAR NOT NULL ,
@@ -83,7 +83,7 @@
 
   ) < internal > = 1 ;
   "
-  api::executeCommand 2discard
+  api::executeCommand api:executeCheck
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBREPORT
@@ -103,7 +103,7 @@
 
   ) < internal > = 1 ;
   "
-  api::executeCommand 2discard
+  api::executeCommand api:executeCheck
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -114,7 +114,7 @@
   (
     jobId             INTEGER NOT NULL ,
         
-    nodeNo            INTEGER NOT NULL ,
+    NodeId            INTEGER NOT NULL ,
     nodeName          VARCHAR NOT NULL ,
 
     pipelineName      VARCHAR NOT NULL ,
@@ -135,7 +135,7 @@
     
   ) < internal > = 1 ;
   "
-  api::executeCommand 2discard
+  api::executeCommand api:executeCheck
 
 ;
 

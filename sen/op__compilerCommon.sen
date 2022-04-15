@@ -1,0 +1,79 @@
+/*============================================================================*/
+/* op__compilercommon.sen -- SqlCompiler operator common words                */
+/*============================================================================*/
+
+" op__compilercommon.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_LEAVE ...                                                 */
+/*----------------------------------------------------------------------------*/
+: compiler_LeaveMarker \handler
+
+  // save the pipein in streamSet[]
+  StreamSet[].isNull not assert
+  StreamSet[].pipeout
+
+  ZK_M_LEAVE_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_STREAMSET ...                                             */
+/*----------------------------------------------------------------------------*/
+: compiler_StreamSet \handler
+
+  // save the pipein in streamSet[]
+  Pipein[]\clear to StreamSet[]
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* common code for handling plan operand ...                                  */
+/*----------------------------------------------------------------------------*/
+: compiler_PlanOperand ( sOperatorName )
+
+  params| sOperatorName |
+
+  PlanOperand[].isNull if
+
+    // We got an error, but were we going to do an explain?
+    StreamSet[].isNull not if
+      StreamSet[].delete
+    then
+
+    op__cmdErrOut
+
+    true
+    exit
+  then
+
+  // no error, delete the infoset
+  InfoSet[].delete
+
+  // does the sql have an explain ?
+  PlanOperand[] sOperatorName sqlCompiler::hasExplain if
+
+    // execute explain for this operator
+    PlanOperand[] sOperatorName sqlCompiler::doExplain
+
+    // pipeout explain
+    StreamSet[].pipeout
+
+    LogicUnit[].compilerToExit if
+      PlanOperand[].delete
+      Marker[].newLeaveMarker
+      Marker[].pipeout
+      true
+      exit
+    then
+
+  then
+
+  PlanOperand[].pipeOut
+
+  true
+ ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

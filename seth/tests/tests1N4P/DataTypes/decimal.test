@@ -1,0 +1,401 @@
+/*----------------------------------------------------------------------------*/
+/* decimal.test -- DECIMAL DATUM tests                                        */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+success
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/DataTypes/dataTypes.csv" ;
+success
+
+//------------------------------------------------------------------------------
+select 0.0 < dec_col7 from datums;
+rows:
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+
+
+//------------------------------------------------------------------------------
+select 0.0 > dec_col7 from datums;
+rows:
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+
+//------------------------------------------------------------------------------
+select 0.0 < dec_col6 from datums;
+rows:
+  (true)
+  (true)
+  (true)
+  (true)
+  (null)
+  (null)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+  (true)
+
+//------------------------------------------------------------------------------
+select 0.0 > dec_col6 from datums;
+rows:
+  (false)
+  (false)
+  (false)
+  (false)
+  (null)
+  (null)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+  (false)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums order by dec_col6;
+rows:
+  (null)
+  (null)
+  (23.04)
+  (41.04)
+  (41.04)
+  (41.04)
+  (41.04)
+  (47.04)
+  (477.04)
+  (477.04)
+  (477.04)
+  (477.04)
+  (4001.04)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums where dec_col6 > 47.04;
+rows:
+  (477.04)
+  (477.04)
+  (477.04)
+  (477.04)
+  (4001.04)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums where dec_col6 = 47.04;
+rows:
+  (47.04)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums where dec_col6 = 41.04;
+rows:
+  (41.04)
+  (41.04)
+  (41.04)
+  (41.04)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums where dec_col6 >= 41.04 order by dec_col6;
+rows:
+  (41.04)
+  (41.04)
+  (41.04)
+  (41.04)
+  (47.04)
+  (477.04)
+  (477.04)
+  (477.04)
+  (477.04)
+  (4001.04)
+
+//------------------------------------------------------------------------------
+select dec_col6 from datums where dec_col6 <= 41.04 order by dec_col6;
+rows:
+  (23.04)
+  (41.04)
+  (41.04)
+  (41.04)
+  (41.04)
+
+//------------------------------------------------------------------------------
+select dec_col6 * 10.10 from datums;
+rows:
+  (414.50)
+  (414.50)
+  (4818.10)
+  (4818.10)
+  (4818.10)
+  (475.10)
+  (232.70)
+  (40410.50)
+  (4818.10)
+  (414.50)
+  (null)
+  (null)
+  (414.50)
+
+//------------------------------------------------------------------------------
+select dec_col6 + 1.44 from datums order by dec_col6;
+rows:
+  (null)
+  (null)
+  (24.48)
+  (42.48)
+  (42.48)
+  (42.48)
+  (42.48)
+  (48.48)
+  (478.48)
+  (478.48)
+  (478.48)
+  (478.48)
+  (4002.48)
+
+select 820.12 + 12.346 from datums;
+contains rows:
+ (832.466)
+
+select 820.1278 + 12.3 from datums;
+contains rows:
+  (832.4278)
+
+select 820.12 + 12.35 from datums;
+contains rows:
+  (832.47)
+
+//------------------------------------------------------------------------------
+select 820.12 - 12.346 from datums;
+contains rows:
+  (807.774)
+
+select 820.1278 - 12.3 from datums;
+contains rows:
+  (807.8278)
+
+select 820.12 - 12.35 from datums;
+contains rows:
+  (807.77)
+
+//------------------------------------------------------------------------------
+select 820.12 / 12.346 from datums;
+contains rows:
+  (66.428)
+
+select 820.1278 / 12.3 from datums;
+contains rows:
+  (66.6771)
+
+select 820.12 / 12.35 from datums;
+contains rows:
+  (66.41)
+
+//------------------------------------------------------------------------------
+select 820.12 * 12.346 from datums;
+contains rows:
+  (10125.202)
+
+select 820.1278 * 12.3 from datums;
+contains rows:
+  (10087.5719)
+
+select 820.12 * 12.35 from datums;
+contains rows:
+  (10128.48)
+
+select cast (dec_col6 as varchar)  , cast (dec_col7 as varchar) from datums order by dec_col6;
+rows:
+  (null,'10.04')
+  (null,'10.04')
+  ('23.04','10.04')
+  ('41.04','1041.04')
+  ('41.04','1041.04')
+  ('41.04','1041.04')
+  ('41.04','1041.04')
+  ('47.04','10.04')
+  ('477.04','10.04')
+  ('477.04','10.04')
+  ('477.04','10.04')
+  ('477.04','10.04')
+  ('4001.04','1041.04')
+
+// exception : /0
+select dec_col6/0 from datums;
+failure contains: 'divide by zero'
+
+// aggregates : sum
+select sum(dec_col6) from datums;
+rows: (6143.44)
+
+select 10.44 + sum(dec_col6) from datums;
+rows: (6153.88)
+
+select sum(dec_col6) + 10.44 from datums;
+rows: (6153.88)
+
+select sum(10.1 + dec_col6) from datums;
+rows: (6254.54)
+
+select sum(dec_col6 + 10.1) from datums;
+rows: (6254.54)
+
+select sum(dec_col6 + dec_col6) from datums;
+rows: (12286.88)
+
+select sum(dec_col6) + sum(dec_col6) from datums;
+rows: (12286.88)
+
+// aggregates : min
+
+select min(dec_col6) from datums;
+rows: (23.04)
+
+select 10.3 + min(dec_col6) from datums;
+rows: (33.34)
+
+select min(dec_col6) + 10.3 from datums;
+rows: (33.34)
+
+select min(10 + dec_col6) from datums;
+rows: (33.04)
+
+select min(dec_col6 + 10) from datums;
+rows: (33.04)
+
+select min(dec_col6 + dec_col6) from datums;
+rows: (46.08)
+
+select min(dec_col6) + min(dec_col6) from datums;
+rows: (46.08)
+
+/*
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/DataTypes/dataTypesOver.csv" ;
+success
+
+//------------------------------------------------------------------------------
+select flt_col8 from datums order by flt_col8;
+rows:
+   (null)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (0.22)
+   (10.22)
+   (10.22)
+   (10.22)
+   (10.22)
+
+//------------------------------------------------------------------------------
+select cast(int_col0 as float) from datums order by int_col0;
+rows:
+  (null)
+  (0)
+  (-9223372036854775806)
+  (1000)
+  (2000)
+  (4000)
+  (5000)
+  (6000)
+  (7000)
+  (8000)
+  (9000)
+  (10000)
+  (9223372036854775806)
+
+//------------------------------------------------------------------------------
+select flt_col8 + 2 from datums;
+failure contains: "OVERFLOW"
+
+*/
+// drop the table
+drop table datums;
+success
+
+// get memory leaks
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  // drop the table
+  drop table datums;
+  mute
+
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/

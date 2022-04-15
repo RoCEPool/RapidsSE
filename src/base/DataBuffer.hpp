@@ -73,11 +73,11 @@ namespace BASE
 
     void vGrabWrite(void);
 
-    void vPtnId(PtnId tPtnId);
+    void vLglPtn(LglPtn tLglPtn);
 
-    void vPtnId(i8 tPtnId);
+    void vLglPtn(i8 tLglPtn);
 
-    PtnId tPtnId(void);
+    LglPtn tLglPtn(void);
 
     Birth &oWhenNewed(void);
     // - - - - - - - - - - - - - -

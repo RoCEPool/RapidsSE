@@ -9,8 +9,9 @@
 #include "eTT.h"
 #include "Parcel.hpp"
 #include "TablePtn.hpp"
+#include "KeyBkt.hpp"
 
-namespace STORE { class InfoSet; class StreamDef; class ShardDef; }
+namespace STORE { class InfoSet; class StreamDef; class PtnDef; }
 
 namespace STORE
 {
@@ -22,9 +23,9 @@ namespace STORE
   
     Location   m_oLocation;   // logical location of table
     StreamDef* m_pStreamDef;  // table stream def
-    ShardDef*  m_pShardDef;   // partition/sharding key def
+    PtnDef*    m_pPtnDef;     // partition/sharding key def
 
-    BucketMap_dyn* m_pBucketMap;  // bucket (to partition) map
+    BucketMap* m_pBucketMap;  // bucket (to partition) map
 
     IdxVec*    m_pIdxVec;     // index vector
     
@@ -51,15 +52,16 @@ namespace STORE
   
     static void       vPostRecv(void* aTable);
     
-    i8      iPtnNoToTablePtn(PtnId tPtnId);
-    PtnId   tTablePtnToPtnId(i8 i_TablePtn);
+    i8      iPtnNoToTablePtn(LglPtn tLglPtn);
+    LglPtn  tTablePtnToLglPtn(i8 i_TablePtn);
+    PhyPtn  tTablePtnToPhyPtn(i8 i_TablePtn);
 
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);
     void    vAppendBuffer_replicated(DataBuffer* pDataBuffer);
 
-    BucketMap_dyn *pBucketMap(void);
-    void vBucketMap(BucketMap_dyn *pBucketMap);
+    BucketMap *pBucketMap(void);
+    void vBucketMap(BucketMap *pBucketMap);
 
     i8      nBuffers(void);
     void    vCompactIndex(Index* pIndex);
@@ -77,18 +79,18 @@ namespace STORE
     void    vKind(eTT eKind);
     void    vListContents(i8 i_Depth);
     bool    bPopulateIndex(i8 iIndexNo);
+    PtnDef*  pPtnDef(void);
     void    vRemoveIndex(Index* pIndex);
     void    vResetPointers(void);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
-    ShardDef*  pShardDef(void);
     StreamDef* pStreamDef(void);
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);
     TablePtn* pTablePtn(i8 i_TablePtn);
 
-    PtnId   tBktToLglPtn(i8 iBktNo);
+    LglPtn   tLglPtnOf(KeyBkt tKeyBkt);
 
-    i8      iPtnToBktNext(PtnId tPtnId, i8 iBktNo);
+    i8      iPtnToBktNext(LglPtn tLglPtn, i8 iBktNo);
 
     
     //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, CrwBuffer* pCrwBuffer);

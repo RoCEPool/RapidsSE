@@ -33,7 +33,7 @@ void Step::vSsnIncBegun(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  i8 i_Session = pJob->m_i_Session;
+  i8 i_Session = pJob->i_Session();
   
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
   
@@ -51,7 +51,7 @@ void Step::vSsnIncCancelled(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  i8 i_Session = pJob->m_i_Session;
+  i8 i_Session = pJob->i_Session();
   
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
 
@@ -69,7 +69,7 @@ void Step::vSsnIncEnded(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  i8 i_Session = pJob->m_i_Session;
+  i8 i_Session = pJob->i_Session();
   
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
 
@@ -87,7 +87,7 @@ void Step::vSsnIncExecuted(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  i8 i_Session = pJob->m_i_Session;
+  i8 i_Session = pJob->i_Session();
   
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
 
@@ -124,7 +124,7 @@ void Step::vSsnTraceSession(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  i8 i_Session = pJob->m_i_Session;
+  i8 i_Session = pJob->i_Session();
   
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
   UNUSED(pSession);

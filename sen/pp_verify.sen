@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* pp_verify.sen -- define verify related procedures                          */
+/*============================================================================*/
+
+" pp_verify.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* verify related procedures                                                  */ 
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Verify" .verbose
+
+: start::defProc_Verify
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify index
+  
+  STD_PATH_TAG
+  "
+  procedure verify index
+    parameters $tableNm $indexNm
+  begin
+
+    stage stageA on origin :
+      start | pulse once | stageB
+
+    stage stageB on all partitions :
+      verifyIndexPtn $tableNm $indexNm | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

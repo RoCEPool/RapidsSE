@@ -1,0 +1,93 @@
+/*============================================================================*/
+/* _Q16_T                                                                     */
+/*============================================================================*/
+
+//------------------------------------------------------------------------------
+//  Original Query
+//------------------------------------------------------------------------------
+select p_brand, p_type, p_size, count(distinct ps_suppkey) as supplier_cnt
+     from partsupp, part
+     where p_partkey = ps_partkey
+     and p_brand <> 'Brand#45'
+     and p_type not like 'MEDIUM POLISHED%'
+     and p_size in (49,14,23,45,19,3,36,9)
+     and ps_suppkey not in (
+     select s_suppkey
+     from supplier
+     where s_comment like '%Customer%Complaints%' )
+     group by p_brand, p_type, p_size
+     order by supplier_cnt desc, p_brand, p_type, p_size;
+
+//------------------------------------------------------------------------------
+//  Transliterate Query
+//------------------------------------------------------------------------------
+EXPLAIN STAGE TRANSLITERATE
+select p_brand, p_type, p_size, count(distinct ps_suppkey) as supplier_cnt
+     from partsupp, part
+     where p_partkey = ps_partkey
+     and p_brand <> 'Brand#45'
+     and p_type not like 'MEDIUM POLISHED%'
+     and p_size in (49,14,23,45,19,3,36,9)
+     and ps_suppkey not in (
+     select s_suppkey
+     from supplier
+     where s_comment like '%Customer%Complaints%' )
+     group by p_brand, p_type, p_size
+     order by supplier_cnt desc, p_brand, p_type, p_size;
+
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker34356
+    stage stageMarker34356 on all partitions :
+      scan rapidsse public supplier
+      | filter " type BOOLEAN  }  $7 ''%Customer%Complaints%''  8 10 matchMiddle1  "
+      | project " type INTEGER as s_suppkey $1 "
+      | combined 0
+      | stageMarker34359
+    stage stageMarker34359 on all partitions :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker34362
+  stage stageMarker34362 on all partitions :
+    scan rapidsse public partsupp
+    | stageMarker34365 broadcast
+  stage stageMarker34365 on all partitions :
+    scan rapidsse public part
+    | abstractJoin " 1  "
+    | stageMarker34368
+  stage stageMarker34368 on all partitions :
+    filter " type BOOLEAN  $6 $1 ==  $9 ''Brand#45''  !=  and  }  $10 ''MEDIUM POLISHED%''  16 matchLeading  not  and  }  49  14  23  45  19  3  36  9  #8  $11 in  and  }  __subquery0003  #1  $2 in  not  and  "
+    | combined 0
+    | stageMarker34371
+  stage stageMarker34371 on origin :
+    aggreg " groupBy  type VARCHAR as p_brand $9 , type VARCHAR as p_type $10 , type INTEGER as p_size $11 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type INTEGER as supplier_cnt )  $2 count  distinct  "
+    | sort " type INTEGER $4 DESC  , type VARCHAR as p_brand $1 ASC  , type VARCHAR as p_type $2 ASC  , type INTEGER as p_size $3 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

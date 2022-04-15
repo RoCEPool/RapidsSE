@@ -34,7 +34,7 @@
   pJobParticipant job_Cancelled::new locals| pJob_Cancelled |
 
   // send the cancelled job
-  pJobParticipant [job].originNodeNo@ pJob_Cancelled job.reply
+  pJobParticipant [job].originNodeId@ pJob_Cancelled job.reply
 
   pJob_Cancelled job.delete
 ;
@@ -60,15 +60,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // decrement the acks remaining in the originating job
-  ListedJob[].dec2pcDecider if
-
-    // notify the originating task
-    ListedJob[].task@ task.ack
-    ListedJob[].returnReference
-
-  then
-
+  ListedJob[].task@ task.ack
+  
   ListedJob[].returnReference
   [job]:retire
 ;

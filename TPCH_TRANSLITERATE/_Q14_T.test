@@ -1,0 +1,68 @@
+/*============================================================================*/
+/* _Q14_T                                                                     */
+/*============================================================================*/
+
+//------------------------------------------------------------------------------
+//  Original Query
+//------------------------------------------------------------------------------
+select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_discount) else 0
+     end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+     from lineitem, part
+     where l_partkey = p_partkey
+     and l_shipdate >= '1995-09-01'
+     and l_shipdate < '1995-10-01';
+
+
+//------------------------------------------------------------------------------
+//  Transliterate Query
+//------------------------------------------------------------------------------
+EXPLAIN STAGE TRANSLITERATE
+select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_discount) else 0
+     end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+     from lineitem, part
+     where l_partkey = p_partkey
+     and l_shipdate >= '1995-09-01'
+     and l_shipdate < '1995-10-01';
+
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker33102
+  stage stageMarker33102 on all partitions :
+    scan rapidsse public lineitem
+    | stageMarker33105 broadcast
+  stage stageMarker33105 on all partitions :
+    scan rapidsse public part
+    | abstractJoin " 1  "
+    | stageMarker33108
+  stage stageMarker33108 on all partitions :
+    filter " type BOOLEAN  $2 $17 ==  $11 TIMESTAMP ''1995-09-01 00:00:00''  >=  and  $11 TIMESTAMP ''1995-10-01 00:00:00''  <  and  "
+    | project " type DECIMAL )  $6 1.  $7 -  *  sum  , type DECIMAL )  }  }  $21 ''PROMO%''  6 matchLeading WHEN  $6 1.  $7 -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
+    | combined 0
+    | stageMarker33111
+  stage stageMarker33111 on all nodes :
+    project " type DECIMAL )  $1 sum  , type DECIMAL )  $2 sum  "
+    | combined 0
+    | stageMarker33213
+  stage stageMarker33213 on origin :
+    project " type DECIMAL )  $1 sum  , type DECIMAL )  $2 sum  "
+    | combined 0
+    | stageMarker33114
+  stage stageMarker33114 on origin :
+    project " type DECIMAL as promo_revenue 100.00  $2 *  $1 /  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

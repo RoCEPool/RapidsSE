@@ -26,7 +26,7 @@ namespace OBLIQUE
   {
   public:
     static i8 nNanoseconds(void);
-    static i8 iNodeNo(void);
+    static i8 iNodeId(void);
     static i8 iPtn(void);
   
     static Stz* szCallerNm(void);

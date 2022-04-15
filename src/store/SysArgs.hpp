@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eUT.h"
+
 namespace STORE
 {
   class SysArgs
@@ -109,15 +111,10 @@ namespace STORE
     bool m_bTouch;           // touch all shm pages during region create
     bool m_bTracepoint;      // print tracepoint
     bool m_bTracing;         // tracing
+    eUT  m_eUtility;         // which utility 
     bool m_bVBlong;          // long vb_ traces
     bool m_bVerbose;         // print extra stuff
     bool m_bWelcome;         // print banner
-
-    // utilities
-    bool m_bUtility;         // run utility
-    bool m_bUteShm;          // shm utility
-    bool m_bUteApiDemo;      // api demo
-
   };
 }
 

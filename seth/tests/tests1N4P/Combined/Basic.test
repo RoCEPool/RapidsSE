@@ -1,0 +1,515 @@
+/*----------------------------------------------------------------------------*/
+/* Basic CombinedOP tests                                                     */
+/*----------------------------------------------------------------------------*/
+//trackmemory;
+//success
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
+  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
+  L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+success;
+
+create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
+success;
+
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+success
+
+create table orders (
+	 O_ORDERKEY        INTEGER       NOT NULL,
+	 O_CUSTKEY         INTEGER       NOT NULL,
+	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
+	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+	 O_ORDERDATE       TIMESTAMP     NOT NULL,
+	 O_ORDERPRIORITY   CHAR(15)      NOT NULL,
+	 O_CLERK           CHAR(15)      NOT NULL,
+	 O_SHIPPRIORITY    INTEGER       NOT NULL,
+	 O_COMMENT         VARCHAR(79)   NOT NULL
+);
+success
+
+create index IxO_ORDERKEY  ON Orders (O_ORDERKEY)  ;
+success;
+
+load Orders "../TPCH/SF_0001/orders.csv";
+success
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  basic aggregate
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  basic key exists
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    scan orders
+    | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
+                              O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
+    | project expr type INTEGER as _orderkey O_ORDERKEY ,
+                     type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
+    | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+                                         "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+   end ;
+
+rows:
+ (402, '5-LOW')
+ (403, '4-NOT SPECIFIED')
+ (519, '1-URGENT')
+ (709, '3-MEDIUM')
+ (710, '2-HIGH')
+ (772, '2-HIGH')
+ (781, '5-LOW')
+ (1139, '3-MEDIUM')
+ (1156, '3-MEDIUM')
+ (1269, '1-URGENT')
+ (1277, '3-MEDIUM')
+ (67, '4-NOT SPECIFIED')
+ (104, '5-LOW')
+ (197, '3-MEDIUM')
+ (342, '1-URGENT')
+ (390, '3-MEDIUM')
+ (404, '5-LOW')
+ (592, '1-URGENT')
+ (649, '2-HIGH')
+ (776, '3-MEDIUM')
+ (863, '1-URGENT')
+ (871, '1-URGENT')
+ (873, '3-MEDIUM')
+ (877, '2-HIGH')
+ (1159, '3-MEDIUM')
+ (1430, '4-NOT SPECIFIED')
+ (78, '3-MEDIUM')
+ (94, '2-HIGH')
+ (161, '5-LOW')
+ (183, '4-NOT SPECIFIED')
+ (255, '5-LOW')
+ (523, '3-MEDIUM')
+ (570, '4-NOT SPECIFIED')
+ (1041, '5-LOW')
+ (1242, '3-MEDIUM')
+ (49, '1-URGENT')
+ (131, '4-NOT SPECIFIED')
+ (381, '5-LOW')
+ (471, '4-NOT SPECIFIED')
+ (614, '2-HIGH')
+ (663, '5-LOW')
+ (780, '1-URGENT')
+ (801, '4-NOT SPECIFIED')
+ (924, '2-HIGH')
+ (937, '5-LOW')
+ (1236, '1-URGENT')
+ (1365, '5-LOW')
+ (1391, '3-MEDIUM')
+ (1446, '5-LOW')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  basic index scan
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline Q
+  begin
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_LINEITEM on all partitions :
+    indexScan lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
+                                       UBOUND $I1 TIMESTAMP '1995-01-01 00:00:00' <"
+    //| project "type TIMESTAMP L_SHIPDATE"
+
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+rows: 921
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  basic index join
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageM on all partitions :
+    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+    | combined 0
+    | stageLast
+
+   stage stageLast on origin :
+     output
+     | sink
+     | first
+   end ;
+
+rows: 5996
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  basic orderby
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0143
+  stage stageMarker0143 on all partitions :
+    scan rapidsse public lineitem
+    | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
+    | sort " sort type INTEGER as l_partkey $2 ASC  "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows: 6000
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  basic top
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexScan lineitem IxL_SHIPDATE "lbound $I1 TIMESTAMP '1900-01-01 00:00:00' >= "
+    | project "type INTEGER $1 , type TIMESTAMP L_SHIPDATE"
+    | top "TOP type TIMESTAMP $2" 2
+    | combined 0
+    | next
+  stage stageB on all nodes :
+    top "TOP type TIMESTAMP $2" 2
+    | combined 0
+    | next
+  stage stageC on origin :
+    top "TOP type TIMESTAMP $2" 2
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+ordered rows:
+ (1117,DATE '1998-11-25')
+ (221,DATE '1998-11-27')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  basic ordered aggregate
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg " ORDGROUPBY type integer $1
+                 aggregates type integer $K1 , type decimal as total )  $5 sum  "
+    | filter " type BOOLEAN  $2 50.0  >  "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+rows: 1448
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg " ORDGROUPBY type integer $1
+                 aggregates type integer $K1 , type decimal as total )  $5 sum  "
+    | filter " type BOOLEAN  $2 100.0  >  "
+    | top "TOP type DECIMAL total" 10
+    | combined 0
+    | next
+
+ stage stageA on all nodes :
+    top "TOP type DECIMAL total" 10
+    | combined 0
+    | next
+
+ stage stageA on origin :
+     top "TOP type DECIMAL total" 10
+     | combined 0
+     | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+  rows:
+   (850,173.00)
+   (1211,173.00)
+   (1148,174.00)
+   (751,175.00)
+   (974,176.00)
+   (390,176.00)
+   (497,177.00)
+   (1048,182.00)
+   (1130,182.00)
+   (1064,183.00)
+
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg " ORDGROUPBY type integer $1
+                 aggregates type integer $K1 , type decimal as total )  $5 sum  "
+    | filter " type BOOLEAN  $2 90.0  >  "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+contains rows:
+ (1491,116.00)
+ (1492,107.00)
+ (1493,126.00)
+ (1496,123.00)
+ (1497,97.00)
+ (1499,94.00)
+
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg " ORDGROUPBY type integer $1 aggregates type integer $K1 , type decimal as total )  $5 sum  "
+    | top "TOP type DECIMAL total" 8
+    | combined 0
+    | next
+  stage stageB on all nodes :
+    top "TOP type DECIMAL total" 8
+    | combined 0
+    | next
+  stage stageC on origin :
+    top "TOP type DECIMAL total" 8
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+rows:
+ (1148,174.00)
+ (751,175.00)
+ (390,176.00)
+ (974,176.00)
+ (497,177.00)
+ (1048,182.00)
+ (1130,182.00)
+ (1064,183.00)
+*/
+pipeline Q3
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gj_ORDERS on all partitions :
+    scan Orders
+    | next
+
+  stage Gj_LINEITEM on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+
+    | aggreg expr groupby type INTEGER O_ORDERKEY
+       aggregates type DECIMAL as Revenue ) J1_L_DISCOUNT sum , type INTEGER as _orderkey $K1
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+    | sink
+    | first
+
+end ;
+
+rows: 1451
+
+pipeline Q3
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gj_ORDERS on all partitions :
+    scan Orders
+    | next
+
+  stage Gj_LINEITEM on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+
+    | aggreg expr groupby type INTEGER O_ORDERKEY
+       aggregates type DECIMAL as Revenue ) J1_L_DISCOUNT sum , type INTEGER as _orderkey $K1
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+    | sink
+    | first
+
+end ;
+
+contains rows:
+ (1.03,1494)
+ (2.09,1495)
+ (1.02,1496)
+ (1.06,1497)
+ (1.07,1498)
+ (2.15,1499)
+
+
+pipeline Q3
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gj_ORDERS on all partitions :
+    scan Orders
+    | next
+
+  stage Gj_LINEITEM on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+
+    | aggreg expr groupby type INTEGER O_ORDERKEY
+       aggregates type INTEGER as _orderkey $K1 , type DECIMAL as Revenue ) J1_L_DISCOUNT sum
+    | combined 0
+    | next
+
+stage Gj_LINEITEM on all nodes :
+    top "TOP type DECIMAL Revenue" 10
+    | combined 0
+    | next
+
+stage Gj_LINEITEM on origin :
+    top "TOP type DECIMAL Revenue" 10
+    | combined 0
+    | next
+
+  stage last on origin :
+    output
+    | sink
+    | first
+
+end ;
+
+contains rows:
+  ( 905,4.31)
+  ( 780,4.31)
+  ( 907,4.31)
+  ( 508,4.32)
+  (1380,4.32)
+  ( 393,4.33)
+  (  21,4.34)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+DROP TABLE lineitem;
+success
+
+DROP TABLE orders;
+success
+
+//memoryleaks;
+//rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE lineitem;
+  mute
+
+  DROP TABLE orders;
+  mute
+}

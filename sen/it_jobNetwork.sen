@@ -14,10 +14,10 @@
   (
     jobId             INTEGER NOT NULL ,
     
-    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeId        INTEGER NOT NULL ,
     thisNodeName      VARCHAR NOT NULL ,
 
-    nodeNo            INTEGER NOT NULL ,
+    NodeId            INTEGER NOT NULL ,
     nodeName          VARCHAR NOT NULL ,
     nodeIP            VARCHAR NOT NULL ,
     portNo            INTEGER NOT NULL ,
@@ -33,7 +33,7 @@
   ) < internal > = 1 ;
   "
 
-  api::executeCommand 2discard
+  api::executeCommand api:executeCheck
 ;
 
 /*============================================================================*/

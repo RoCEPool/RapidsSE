@@ -6,12 +6,10 @@
 #include "RowSingle.hpp"
 
 #include "CrwToRow.hpp"
-#include "ToPtnCrw.hpp"
-#include "ToNstRow.hpp"
-#include "ToPtnRow.hpp"
-#include "ToRow.hpp"
-#include "ToBktCrw.hpp"
-#include "ToBktRow.hpp"
+#include "ToLglPtnNst.hpp"
+#include "ToKeyHshRow.hpp"
+#include "ToLglPtnCrw.hpp"
+#include "ToLglPtnRow.hpp"
 
 
 #include "Pot.hpp"
@@ -22,13 +20,7 @@
 
 #include "RluCommon.h"
 #include "RluDiary.hpp"
-#include "DevIXT.hpp"
-#include "DevROW.hpp"
-#include "LogicTimer.hpp"
-#include "LogicCompiler.hpp"
-#include "ExprEval.hpp"
-#include "Range.hpp"
-#include "ShardDef.hpp"
+#include "PtnDef.hpp"
 #include "MetaGet.hpp"
 #include "BktMapGet.hpp"
 #include "BucketGet.hpp"
@@ -41,16 +33,23 @@
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "NamedBuffer.hpp"
 #include "Optimiser.hpp"
+#include "AdaptorWL.hpp"
+#include "AnswerWL.hpp"
+#include "RecvWL.hpp"
+#include "SendWL.hpp"
 
 #include "IndexTree.hpp"
 #include "JobMetrics.hpp"
+#include "Vertex.hpp"
+#include "Deck.hpp"
 
 #include "eLH.h"
 #include "eXK.h"
-#include "ePJ.h"
+#include "eEK.h"
+#include "ePE.h"
 
 #include "REG_t.hpp"
 
@@ -60,94 +59,10 @@ namespace STORE { class IndexStream; class Node; class Node_I;
 
 namespace STORE
 {
-  static const i8 C_LOGIC_DEV   = 16;
-  static const i8 C_LOGIC_CODE  = C_4KB;
-  static const i8 C_LOGIC_COND  = 8;
-  static const i8 C_LOGIC_LABEL = 128;
-
-  struct JumpLabel
-  {
-    s32  m_sLabelNm;
-    bool m_bDefined;
-    bool m_bSubroutine;
-    bool m_bDestination;
-    union {
-      i8 m_i_Code;
-      i8 m_i_Chain;
-    };
-  };
-
-
-#define I_PushInt(__iValue) \
-  *(++aiDstk) = __iValue;
-
-#define I_PopInt()   *(aiDstk--)
-
-#define P_PushPtr(__pPtr) \
-  *(++aiDstk) = (i8)__pPtr;
-
-#define P_PopPtr()   (void*)(*(aiDstk--))
-
-#define S_PushStr(__azStr) \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  if (((i8)(__azStr)) == C_DATUM_NULL) {  \
-    *(++aiDstk) = C_DATUM_NULL; \
-  } \
-  else { \
-    nSize = StrLib::nSize((char*)__azStr); \
-    azDst = (char*)(++aiDstk); \
-    StrLib::vCopy(azDst,(char*)__azStr); \
-    aiDstk += nWordRoundedStrBytes(nSize)/8 - 1; \
-    *(++aiDstk) = nSize;   \
-  }
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8); */
-
-#define S_PopStr(__azDst) \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/ \
-  if (*aiDstk == C_DATUM_NULL)    {                                      \
-    *(i8*)__azDst = C_DATUM_NULL;                                        \
-    aiDstk--;                                                            \
-  } \
-  else { \
-    nSize = *(aiDstk--); \
-    azSrc = (char*)(aiDstk - (nWordRoundedStrBytes(nSize)/8 - 1)); \
-    StrLib::vCopy(__azDst,azSrc); \
-    aiDstk -= nWordRoundedStrBytes(nSize)/8;                        \
-  }                       \
-  /*MemLib::vDumpWords(iaDataStack,nDifference(iaDataStack,aiDstk)+8);*/
-
-#define S_StrAdr() \
-  ( (char*)(aiDstk) - nWordRoundedStrBytes(*aiDstk))
-
-#define S_StrDrp() \
-  if (*aiDstk == C_DATUM_NULL)    {                              \
-    aiDstk--;  \
-  } \
-  else {                 \
-    nSize = *(aiDstk--); \
-    aiDstk -= nWordRoundedStrBytes(nSize)/8;    \
-  }
-
-#define S_StrDup() \
-  if (*aiDstk == C_DATUM_NULL)    {                                      \
-    *(++aiDstk) = C_DATUM_NULL;  \
-  } \
-  else { \
-    nSize = *(aiDstk); \
-    azSrc = (char*)(aiDstk - (nWordRoundedStrBytes(nSize)/8 - 1) - 1);  \
-    azDst = (char*)(++aiDstk); \
-    StrLib::vCopy(azDst,(char*)azSrc); \
-    aiDstk += nWordRoundedStrBytes(nSize)/8 - 1; \
-    *(++aiDstk) = nSize;                                                 \
-  }
-
-#define JumpTo(__iArg,__EO) \
-  aeCode = &m_eaCode[__iArg];
 
   //----------------------------------------------------------------------------
 
-  class LogicUnit : public Object,
-                    public LifeGuard_t<LogicUnit>
+  class LogicUnit : public Object
   {
   private:
   
@@ -167,10 +82,12 @@ namespace STORE
     REG<Object,CN_NONE>*        m_paReg[C_MAX_REGS];
     i8 m_nRegs;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    REG<AdaptorWL,      CN_ADAPTORWL     > m_xpAdaptorWL;
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
-    REG<IntStack,       CN_INTSTACK      > m_xpAggTypeStack;
+    REG<AnswerWL,       CN_ANSWERWL      > m_xpAnswerWL;
+    REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
   
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
     REG<BucketGet,      CN_BUCKETGET     > m_xpBucketGet;
@@ -183,16 +100,15 @@ namespace STORE
     REG<CsvBuffer,      CN_CSVBUFFER     > m_xpCsvBuffer;
 
     REG<DataBuffer,     CN_NONE          > m_xpDataBuffer;
+    REG<Deck,           CN_DECK          > m_xpDeck;
     REG<Dir,            CN_DIR           > m_xpDir0;
     REG<Dir,            CN_DIR           > m_xpDir1;
     REG<Dynamo,         CN_DYNAMO        > m_xpDynamo;
 
     REG<Operand,        CN_NONE          > m_xpErrorMarker;
-    REG<ExprEval,       CN_EXPREVAL      > m_xpExprEval;
 
     REG<File,           CN_FILE          > m_xpFile0;
     REG<File,           CN_FILE          > m_xpFile1;
-    REG<ExprEval,       CN_EXPREVAL      > m_xpFilter;
   
     REG<Grid,           CN_GRID          > m_xpGrid;
   
@@ -209,7 +125,6 @@ namespace STORE
     REG<JobMetrics,     CN_JOBMETRICS    > m_xpJobMetrics;
   
     REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
-    REG<LogicCompiler,  CN_LOGICCOMPILER > m_xpLogicCompiler;
 
     REG<Operand,        CN_NONE          > m_xpMarker;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpMemoryHog;
@@ -228,18 +143,20 @@ namespace STORE
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
-    REG<PipeSpec,       CN_PIPESPEC      > m_xpPipeSpec;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
     REG<Pot,            CN_POT           > m_xpPot;
+    REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
+    REG<PtnDef,         CN_PTNDEF        > m_xpPtnDef;
     REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;
 
     REG<Object,         CN_NONE          > m_xpRecvdObject;
+    REG<RecvWL,         CN_RECVWL        > m_xpRecvWL;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBuffer;
     REG<RowOnce,        CN_ROWONCE       > m_xpRowOnce;
 
     REG<Node,           CN_NODE          > m_xpSendNode;
     REG<Sends,          CN_SENDS         > m_xpSends;
-    REG<ShardDef,       CN_SHARDDEF      > m_xpShardDef;
+    REG<SendWL,         CN_SENDWL        > m_xpSendWL;
     REG<Socket,         CN_SOCKET        > m_xpSocket;
     REG<Stage,          CN_STAGE         > m_xpStage;
     REG<Stats,          CN_STATS         > m_xpStats;
@@ -260,21 +177,23 @@ namespace STORE
     REG<TagSet,         CN_TAGSET        > m_xpTagSet;
     REG<Timer,          CN_TIMER         > m_xpTimer;
     REG<TinyC,          CN_TINYC         > m_xpTinyC;
-    REG<ToBktCrw,       CN_TOBKTCRW      > m_xpToBktCrw;
-    REG<ToBktRow,       CN_TOBKTROW      > m_xpToBktRow;
-    REG<ToNstRow,       CN_TONSTROW      > m_xpToNstRow;
-    REG<ToPtnCrw,       CN_TOPTNCRW      > m_xpToPtnCrw;
-    REG<ToPtnRow,       CN_TOPTNROW      > m_xpToPtnRow;
-    REG<ToRow,          CN_TOROW         > m_xpToRow;
+    REG<ToKeyHshRow,    CN_TOKEYHSHROW   > m_xpToKeyHshRow;
+    REG<ToLglPtnCrw,    CN_TOLGLPTNCRW   > m_xpToLglPtnCrw;
+    REG<ToLglPtnNst,    CN_TOLGLPTNNST   > m_xpToLglPtnNst;
+    REG<ToLglPtnRow,    CN_TOLGLPTNROW   > m_xpToLglPtnRow;
     REG<Tub,            CN_TUB           > m_xpTub;
     REG<Tx,             CN_TX            > m_xpTx;
+  
+    REG<Vertex,         CN_VERTEX        > m_xpVertex;
+    REG<VertexSpec,     CN_VERTEXSPEC    > m_xpVertexSpec;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     bool m_bCompilerToExit;
     bool m_bIsLftCrwBuffer; // left buffer is a CRW buffer (joins)
 
-    ePJ  m_eProjectKind;
+    eEK  m_eExprKind;
 
     i8   m_iCounterA;   // counter
     i8   m_iCounter0;   // counter
@@ -304,10 +223,7 @@ namespace STORE
     Ent* m_aLowerEntry;
     Ent* m_aUpperEntry;
     EntBuffer* m_pEntBufferOuter;
-        
-    Atomic m_ixRowsProcessed; // rows processed
-    Atomic m_ixRowsInvalid;   // invalid rows detected
-    Atomic m_ixRowsSkipped;   // rows skipped
+
     eEC    m_eErrorCode_reg;      // error code
     
     eZK m_ePipeInOperand;
@@ -333,37 +249,10 @@ namespace STORE
     EntWrk     m_oEntWrkJ;
     EntWrk     m_oEntWrkT;
 
-    DevROW*    m_pDevDstRow;
-    DevROW*    m_pDevLftRow;
-    DevROW*    m_pDevRhtRow;
-    DevROW*    m_pDevAltRow;
-
-    DevIXT*    m_pDevAltIxt;
-    DevIXT*    m_pDevLftIxt;
-    DevIXT*    m_pDevRhtIxt;
-    DevIXT*    m_pDevTmpIxt;
-  
-    LogicTimer* m_pLogicTimer;
-
     u8      m_uSelectColumns;
-
-    i8      m_i_Code;
-    char    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }
-
-    i8        m_nLabels;
-    JumpLabel m_xaJumpLabel[C_LOGIC_LABEL];
-
-    bool m_baCondInd[C_LOGIC_COND];
-
-    i8 m_iNextCond;
-  
-    bool m_bSuperFrag;
     
     i8   m_nPotSize;
-  
-    eXK  m_eSendKind;      // send kind
 
-  
     // must be last
     Footer m_xFooter;
   
@@ -375,17 +264,11 @@ namespace STORE
    ~LogicUnit(void) noexcept(false);
   
     void vContentDump(void);
-    i8   iTransform(i8 nArgs, i8 iArg0);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vAddReg(REG<Object,CN_NONE>* pReg);
-    void vCC(i8 i_Cond);
     void vCleanup(void);
-    eEO  eCode(i8 i_Code);
-    i8   nCodes(void);
-    char* aCodeArg(i8 i_Code);
-    i8   iCodeArg(i8 i_Code);
     RluDiary* pDiary(void);
     void vDiaryJobNote(Stz* szJobNote);
     void vDiaryName(Stz* szName);
@@ -394,26 +277,14 @@ namespace STORE
     void vDiaryDir(Stz* szDir);
     void vDiaryTitle(Stz* szTitle);
     void vDumpRegisters(void);
-    i8   iDynFun(i8 nOuterArgs, i8 iOuterArg0);
-    void vEndOptimise(void);
     void vEnter(void);
     void vExit(void);
     void vFailure(void);
-    i8   iFindLabel(i8 i_Code);
-    i8   iFindLabel(Stz* szLabelNm);
     void vInit(void);
     Job* pJob(void);
     void vJob(Job* pJob);
-    i8   iLabelCode(i8 i_Label);
-    bool bLabelIsDst(i8 i_Label);
-    bool bLabelIsSbr(i8 i_Label);
-    i8   nLabels(void);
-    Stz* szLabelNm(i8 i_Label);
     Op*  pOp(void);
     void vOp(Op* pOp);
-    void vOptimise(eEO eOpt);
-    i8   iQueryFragment(void);
-    void vSetCC(i8 i_Cond, bool bState);
     void vSetPipein(Operand* pOperand);
 
 
@@ -427,48 +298,11 @@ namespace STORE
 
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);
-    void vCollectOpcode(void);
-  
-    bool bGenerateAsm(Stz* sText);
-
-    eEC eGenerateAggregate(ExprEval* pExprEval);
-    eEC eGenerateFilter(ExprEval* pExprEval);
-    eEC eGenerateFilterProject(ExprEval* pFilter, ExprEval* pProject);
-    eEC eGenerateGroupBy(ExprEval* pExprEval);
-    eEC eGenerateHash(ExprEval* pExprEval);
-    eEC eGenerateIndexJoin(ExprEval* pExprEval);
-    eEC eGenerateIndexScan(ExprEval* pExprEval);
-    eEC eGenerateLimit(i8 iLimit);
-    eEC eGenerateLoopJoin(ExprEval* pExprEval);
-    eEC eGenerateProjection(ExprEval* pExprEva);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-    #include "RLU_interface.h"
 
   private:
-    void vAddCode(eEO eCode);
-    void vAddCodeArg(eEO eCode, i8 iArg);
-    void vAddCodeArg(eEO eCode, Token* pTkn);
-    void vAddCodeDte(eEO eCode, Stz* szLiteral);
-    void vAddCodeLabel(eEO eCode, Stz* szLabelNm);
-    void vAddCodeLabel(eEO eCode, Token* pTkn);
-    void vAddCodeString(eEO eCode, Stz* szString);
-    void vAddCodeTme(eEO eCode, Stz* szLiteral);
-    void vAddCodeTsp(eEO eCode, Stz* szLiteral);
-    i8   iAddLabel(Stz* szLabelNm, bool bDefined);
-    void vCorrectLabel(i8 i_Label);
-    i8   iDecodeLabel(Stz* szLabelNm);
-    void vDefineLabel(Stz* szLabelNm);
-    void vDeleteLabel(Stz* szLabelNm);
     void vDiaryReport(void);
-    void vPrintLabels(void);
-    Stz* szFindCode(i8 i_Code);
-
-
-    // last
-    void vDumpCode(void);
-    i8   iCompute(i8 nOuterArgs, i8 iArg0);
 
   private:
     Footer* aFooter(void);

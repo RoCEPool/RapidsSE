@@ -1,0 +1,97 @@
+/*============================================================================*/
+/* _Q17_T                                                                     */
+/*============================================================================*/
+
+//------------------------------------------------------------------------------
+//  Original Query
+//------------------------------------------------------------------------------
+select sum(l_extendedprice) / 7.0 as avg_yearly
+     from lineitem, part
+     where p_partkey = l_partkey
+     and p_brand = 'Brand#23'
+     and p_container = 'MED BOX'
+     and l_quantity < ( select 0.2 * avg(l_quantity) from lineitem where l_partkey = p_partkey );
+
+//-----------------------------------------------------------------------------
+//  Transliterate Query
+//-----------------------------------------------------------------------------
+EXPLAIN STAGE TRANSLITERATE
+select sum(l_extendedprice) / 7.0 as avg_yearly
+     from lineitem, part
+     where p_partkey = l_partkey
+     and p_brand = 'Brand#23'
+     and p_container = 'MED BOX'
+     and l_quantity < ( select 0.2 * avg(l_quantity) from lineitem where l_partkey = p_partkey );
+
+//-----------------------------------------------------------------------------
+// Pipeline Generated
+//-----------------------------------------------------------------------------
+pipeline unamed
+begin
+  pipeline __subquery0003
+    params "p_partkey "
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker35863
+    stage stageMarker35863 on all partitions :
+      scan rapidsse public lineitem
+      | filter " type BOOLEAN  $2 ==  "
+      | project " type DECIMAL )  $5 sum  , type INTEGER )  $5 count  "
+      | combined 0
+      | stageMarker35866
+    stage stageMarker35866 on all nodes :
+      project " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+      | combined 0
+      | stageMarker36014
+    stage stageMarker36014 on origin :
+      project " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+      | combined 0
+      | stageMarker35869
+    stage stageMarker35869 on origin :
+      project " type DECIMAL 0.2  $2 $1 casttype DECIMAL CAST  /  *  "
+      | combined 0
+      | stageMarker35872
+    stage stageMarker35872 on origin :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker35875
+  stage stageMarker35875 on all partitions :
+    scan rapidsse public lineitem
+    | stageMarker35878 broadcast
+  stage stageMarker35878 on all partitions :
+    scan rapidsse public part
+    | abstractJoin " 1  "
+    | stageMarker35881
+  stage stageMarker35881 on all partitions :
+    filter " type BOOLEAN  $17 $2 ==  $20 ''Brand#23''  ==  and  $23 ''MED BOX''  ==  and  $5 $17 __subquery0003  <  and  "
+    | project " type DECIMAL )  $6 sum  "
+    | combined 0
+    | stageMarker35884
+  stage stageMarker35884 on all nodes :
+    project " type DECIMAL )  $1 sum  "
+    | combined 0
+    | stageMarker35887
+  stage stageMarker35887 on origin :
+    project " type DECIMAL as avg_yearly )  $1 sum  7.0  /  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

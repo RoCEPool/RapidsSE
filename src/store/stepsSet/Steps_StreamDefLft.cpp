@@ -10,6 +10,8 @@
 
 #include "eYX.h"
 
+#include "ExprEval2.hpp"
+
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
@@ -29,7 +31,6 @@ void Step::vAddSteps_StreamDefLft(void)
 {
   vAddStep("StreamDefLft[]"_Stz,                 &Step::vStreamDefLftGet);
   vAddStep("StreamDefLft[]\\clear"_Stz,          &Step::vStreamDefLftGetAndClear);
-  vAddStep("StreamDefLft[].asSrcStreamDef"_Stz,  &Step::vStreamDefLftAsSrcStreamDef);
   vAddStep("StreamDefLft[].asStr"_Stz,           &Step::vStreamDefLftAsStr);
   vAddStep("StreamDefLft[].columnCount@"_Stz,    &Step::vStreamDefLftColumnCountFetch);
   vAddStep("StreamDefLft[].column@"_Stz,         &Step::vStreamDefLftColumnFetch);
@@ -62,24 +63,6 @@ void Step::vStreamDefLftAsStr(void)
   pStreamDef->vAsString(sStreamDef.pString());
   
   m_pDataStack->vPushStr(sStreamDef);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamDefLft[].asSrcStreamDef -- use this stream def as src stream def     */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamDefLftAsSrcStreamDef(void)
-{
-  ENTRY();
-  
-  StreamDef* pStreamDef = *m_pLogicUnit->m_xpStreamDefLft;
-
-  StreamDef* pStreamDefOld = _pStreamDef(m_pLogicUnit->m_pDevLftRow->m_pStreamDef);
-  if (pStreamDefOld)
-    delete pStreamDefOld;
-
-  m_pLogicUnit->m_pDevLftRow->m_pStreamDef = pStreamDef;
   
   EXIT();
 }
@@ -168,9 +151,8 @@ void Step::vStreamDefLftSelectColumns(void)
   s4K sExpr;
   m_pDataStack->vPopStr(sExpr, __func__);
 
-  eEC eError = ExprEval::eGenerateSelectColumns(pStreamDefIn, sExpr, &m_pLogicUnit->m_uSelectColumns);
-
-    m_pDataStack->vPushInt(eError);
+  eEC eError = ExprEval2::eGenerateSelectColumns(pStreamDefIn, sExpr, &m_pLogicUnit->m_uSelectColumns);
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }

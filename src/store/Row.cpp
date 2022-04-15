@@ -187,9 +187,9 @@ Stz* Row::szColVal_ofs(i8 i_Col)
   if (i_Ofs == C_DATUM_NULL)
     return (Stz*)C_DATUM_NULL;
 
-  Stz* pStz = aAdd<Stz*>(amCellAddress,i_Ofs);
+  Stz* szStz = aAdd<Stz*>(amCellAddress,i_Ofs);
   
-  return pStz;
+  return szStz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -294,6 +294,18 @@ bool Row::bIsColNull(i8 i_Col)
   bool bNull = m_wxaColumnCell[i_Col].bIsNull();
   
   return bNull;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get key hash                                                               */
+/*----------------------------------------------------------------------------*/
+KeyHsh Row::tKeyHsh(i8 i_KeyHsh)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+  
+  KeyHsh tKeyHsh = m_wxaColumnCell[i_KeyHsh].m_iWrd;
+  
+  return tKeyHsh;
 }
 
 /*----------------------------------------------------------------------------*/

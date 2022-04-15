@@ -1,0 +1,138 @@
+/*============================================================================*/
+/* _Q8_T                                                                      */
+/*============================================================================*/
+
+//------------------------------------------------------------------------------
+//  Original Query
+//------------------------------------------------------------------------------
+select o_year,
+     sum(case when nation = 'BRAZIL' then volume else 0 end) / sum(volume) as mkt_share
+     from ( select extract(year from o_orderdate) as o_year,
+     l_extendedprice * (1-l_discount) as volume,
+     n2.n_name as nation
+     from part, supplier, lineitem, orders, customer, nation n1, nation n2, region
+     where p_partkey = l_partkey
+     and s_suppkey = l_suppkey
+     and l_orderkey = o_orderkey
+     and o_custkey = c_custkey
+     and c_nationkey = n1.n_nationkey
+     and n1.n_regionkey = r_regionkey
+     and r_name = 'AMERICA'
+     and s_nationkey = n2.n_nationkey
+     and o_orderdate >= '1995-01-01'
+     and o_orderdate <= '1996-12-31'
+     and p_type = 'ECONOMY ANODIZED STEEL' ) as all_nations
+     group by o_year
+     order by o_year;
+
+//--------------------------------------------------------------------------------
+//  Transliterate Query
+//--------------------------------------------------------------------------------
+EXPLAIN STAGE TRANSLITERATE
+select o_year,
+     sum(case when nation = 'BRAZIL' then volume else 0 end) / sum(volume) as mkt_share
+     from ( select extract(year from o_orderdate) as o_year,
+     l_extendedprice * (1-l_discount) as volume,
+     n2.n_name as nation
+     from part, supplier, lineitem, orders, customer, nation n1, nation n2, region
+     where p_partkey = l_partkey
+     and s_suppkey = l_suppkey
+     and l_orderkey = o_orderkey
+     and o_custkey = c_custkey
+     and c_nationkey = n1.n_nationkey
+     and n1.n_regionkey = r_regionkey
+     and r_name = 'AMERICA'
+     and s_nationkey = n2.n_nationkey
+     and o_orderdate >= '1995-01-01'
+     and o_orderdate <= '1996-12-31'
+     and p_type = 'ECONOMY ANODIZED STEEL' ) as all_nations
+     group by o_year
+     order by o_year;
+
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  pipeline all_nations
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker18992
+    stage stageMarker18992 on all partitions :
+      scan rapidsse public part
+      | stageMarker18995 broadcast
+    stage stageMarker18995 on all partitions :
+      scan rapidsse public supplier
+      | abstractJoin " 1  "
+      | stageMarker18998 broadcast
+    stage stageMarker18998 on all partitions :
+      scan rapidsse public lineitem
+      | abstractJoin " 1  "
+      | stageMarker19001 broadcast
+    stage stageMarker19001 on all partitions :
+      scan rapidsse public orders
+      | abstractJoin " 1  "
+      | stageMarker19004 broadcast
+    stage stageMarker19004 on all partitions :
+      scan rapidsse public customer
+      | abstractJoin " 1  "
+      | stageMarker19007 broadcast
+    stage stageMarker19007 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin " 1  "
+      | stageMarker19010 broadcast
+    stage stageMarker19010 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin " 1  "
+      | stageMarker19013 broadcast
+    stage stageMarker19013 on all partitions :
+      scan rapidsse public region
+      | abstractJoin " 1  "
+      | stageMarker19016
+    stage stageMarker19016 on all partitions :
+      filter " type BOOLEAN  $1 $18 ==  $10 $19 ==  and  $17 $33 ==  and  $34 $42 ==  and  $45 $50 ==  and  $52 $58 ==  and  $59 ''AMERICA''  ==  and  $13 $54 ==  and  $37 TIMESTAMP ''1995-01-01 00:00:00''  >=  and  $37 TIMESTAMP ''1996-12-31 00:00:00''  <=  and  $5 ''ECONOMY ANODIZED STEEL''  ==  and  "
+      | project " type INTEGER as o_year $37 extract_year  , type DECIMAL as volume $22 1.  $23 -  *  , type VARCHAR as nation $55 "
+      | combined 0
+      | stageMarker19019
+    stage stageMarker19019 on all partitions :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker19022
+  stage stageMarker19022 on all partitions :
+    call "all_nations "
+    | aggreg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  }  $3 ''BRAZIL''  == WHEN  $2THEN  0.  ELSE  ENDIF  CASE  sum  "
+    | combined 0
+    | stageMarker19025
+  stage stageMarker19025 on all nodes :
+    aggreg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
+    | combined 0
+    | stageMarker19206
+  stage stageMarker19206 on origin :
+    aggreg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
+    | combined 0
+    | stageMarker19028
+  stage stageMarker19028 on origin :
+    aggreg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL as mkt_share $3 $2 /  "
+    | sort " type INTEGER as o_year $1 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

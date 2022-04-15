@@ -36,7 +36,7 @@ void vHeartInit(void) {
   if (gxCmdLineArgs.m_xSysArgs.m_nDefinedHeartbeats > 0) {
     //vTrace("SE Heart (sizeof(Heartbeat)=%lld\n"_Stz, (i8) sizeof(Heartbeat));
 
-    int iPort = gxCmdLineArgs.m_xSysArgs.m_xHeartbeatDefn[0].m_iPortNo;
+    int iPort = (int)gxCmdLineArgs.m_xSysArgs.m_xHeartbeatDefn[0].m_iPortNo;
     char szAddr[32];
 
     if (iPort == 0) {
@@ -65,9 +65,6 @@ void vHeartInit(void) {
 
   // Process::vExitFailure();
 }
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* heart send loop: pick up a packet from ringbuffer and send                 */
@@ -113,7 +110,6 @@ void vHeartInit(void) {
   Heartbeat xHeartbeat;
 
   char azHeartbeat[C_1KB];
-  int iCnt = 0;
   MemLib::vZero(&azHeartbeat,sizeof(azHeartbeat),CN_NONE);
 
   if (! AM::SYSTEM::bStarted()) {
@@ -154,19 +150,9 @@ void vHeartInit(void) {
   }
 }
 
-
-/**
- * @brief heart read loop
- * @details reads heartbeat data from the inbound ringbuffer and updates the node heartbeat
- * <p>
- * @param[in] void * (unused)
- *
- * @return none
- *
- * @todo If the heartbeat comes from a new node, that is not exists in the grid
- *       we should add this node
- *       Will add the correct global version number
- */
+/*----------------------------------------------------------------------------*/
+/* read heartbeat data from inbound ringbuffer and updates the node heartbeat */
+/*----------------------------------------------------------------------------*/
 [[noreturn]] void *vHeartReadLoop(void *pVoid)
 {
   UNUSED(pVoid);
@@ -186,7 +172,7 @@ void vHeartInit(void) {
           // meaning we don't have this node in the cluster/grid yet.
           // Then we need to add this node into the cluster/grid.
           if (xHeartbeat.m_u2Version >= AM::iVersionNumber()) {// will add the correct global version number
-            AM::GRID::vNodeDetected(xHeartbeat.m_iNodeNo,
+            AM::GRID::vNodeDetected(xHeartbeat.m_iNodeId,
                                     (Stz *) xHeartbeat.m_acNodeName,
                                     (Stz *) xHeartbeat.m_acAddr,
                                     xHeartbeat.m_iPort,
@@ -206,8 +192,6 @@ void vHeartInit(void) {
 
   //return nullptr;
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -356,17 +356,6 @@ void Step::vTestTest22(void)
   
   //vTest22();
   
-  s16KB sText;
-  File* pFile = new File(nullptr);
-  
-  bool b = pFile->bOpenRead("../EO_text/QRY_601.txt"_Stz);
-  RASSERT(b);
-  i8 nSize = pFile->iSize();
-  i8 nBytes = pFile->nReadBytes((void*)sText.azChar(), nSize);
-  UNUSED(nBytes);
-
-  m_pLogicUnit->bGenerateAsm(sText);
-  
   EXIT();
 }
 

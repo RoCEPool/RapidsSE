@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: keyExists_ComCleaning \handler
+: keyExists_Cleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
@@ -24,15 +24,9 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
-: keyExists_ComStart \handler
+: keyExists_Start \handler
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
-
-  Counter0[] 2 == not if
-    "Warning: keyExists works only with combinedOP" .
-    true
-    exit
-  then
 
   <tableNm> <indexNm> op__table_index not if
     false
@@ -45,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: keyExists_ComStreamDef \handler
+: keyExists_StreamDef \handler
 
   EC_NONE locals| eError |
 
@@ -58,14 +52,19 @@
   Table[] StreamDefRht[].newFromTable
 
   // generate selectColumns bitmap from filter expr and streamDefRht
-  <expr> StreamDefRht[].selectColumns to eError
+  //<expr> StreamDefRht[].selectColumns to eError
+  <expr> nullptr StreamDefRht[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if
+    StreamDefOut[].delete
     eError op__execErr
     true
     exit
   then
+
+  // delete the streamDefOut[]. Not needed for filter
+  StreamDefOut[].delete
 
   // evaluate the expression
   StreamDefLft[].duplicate to StreamDefOut[]
@@ -88,14 +87,11 @@
 
   _lu_initialise_
 
-  // get whether combined or not
-  <combined> >int to Counter0[]
-
   op__topology
 
-  find: keyExists_ComCleaning    ZK_M_CLEANING   [op].handler!
-  find: keyExists_ComStart       ZK_M_START      [op].handler!
-  find: keyExists_ComStreamDef   ZK_D_STREAMDEF  [op].handler!
+  find: keyExists_Cleaning    ZK_M_CLEANING   [op].handler!
+  find: keyExists_Start       ZK_M_START      [op].handler!
+  find: keyExists_StreamDef   ZK_D_STREAMDEF  [op].handler!
 
   op__loop
 
@@ -109,7 +105,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: top :: keyExists <combined> <tableNm> <indexNm> <keyExpr> <expr> ;
+cmdSyntax: top :: keyExists <tableNm> <indexNm> <keyExpr> <expr> ;
 
 : keyExists_cmdTags _cmdTags tagCopy: op_tags
   tags{

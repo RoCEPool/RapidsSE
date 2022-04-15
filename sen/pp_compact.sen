@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* pp_compact.sen -- define compact related procedures                        */
+/*============================================================================*/
+
+" pp_compact.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* compact related procedures                                                 */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Compact" .verbose
+
+: start::defProc_Compact
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compact index
+  
+  STD_PATH_TAG
+  "
+  procedure compact index
+    parameters $tableNm $indexNm
+  begin
+
+    stage stageA on origin :
+      start | pulse once | stageB
+
+    stage stageB on all partitions :
+      compactIndexPtn $tableNm $indexNm | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

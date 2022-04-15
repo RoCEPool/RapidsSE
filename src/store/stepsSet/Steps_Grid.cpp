@@ -12,7 +12,7 @@
 
 #include "StreamSet.hpp"
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
@@ -44,7 +44,7 @@ void Step::vAddSteps_Grid(void)
   vAddStep("[grid].seeNodes"_Stz,          &Step::vGridSeeNodes);
   vAddStep("[grid].show"_Stz,              &Step::vGridShow);
   vAddStep("[grid].tablePtnToPtnNo"_Stz,   &Step::vGridTablePtnToPtnNo);
-  vAddStep("[grid].thisNodeNo@"_Stz,         &Step::vGridThisNodeFetch);
+  vAddStep("[grid].thisNodeId@"_Stz,       &Step::vGridThisNodeIdFetch);
   vAddStep("[grid].thisNodeName@"_Stz,     &Step::vGridThisNodeNameFetch);
   vAddStep("[grid].toNode"_Stz,            &Step::vGridToNode);
 
@@ -84,7 +84,7 @@ void Step::vGridFindNodeByName(void)
   s256 sNodeNm;
   m_pDataStack->vPopStr(sNodeNm,__func__);
   
-  Node* pNode = AM::pGrid()->pFindNode(sNodeNm);
+  Node* pNode = AM::pGrid()->pFindNodeNm(sNodeNm);
   
   m_pDataStack->vPushPtr(pNode);
 
@@ -101,7 +101,7 @@ void Step::vGridFindNodeByNo(void)
   
   i8 iNode = m_pDataStack->iPopInt(__func__);
   
-  Node* pNode = AM::pGrid()->pFindNode(iNode);
+  Node* pNode = AM::pGrid()->pFindNodeById(iNode);
   
   m_pDataStack->vPushPtr(pNode);
   
@@ -136,7 +136,7 @@ void Step::vGridGetGridParts(void)
 
   vTrace("C++ gets called: vGridGetGridParts for pGrid:%s %lld\n"_Stz,
          pGrid->szGridNm()->azChar(),
-         pGrid->iThisNodeNo());
+         pGrid->iThisNodeId());
 
   pGrid->iPrepareParcel();
   Parcel* pParcel = pGrid->pParcel();
@@ -211,7 +211,7 @@ void Step::vGridPutGridParts(void)
     for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
       Node* pNode = (*oNode_I);
 
-      if (pGridRemote->pFindNode(pNode->iNodeNo()) == nullptr) {
+      if (pGridRemote->pFindNodeById(pNode->iNodeId()) == nullptr) {
         bMatched = false;
         break;
       }
@@ -267,7 +267,7 @@ void Step::vGridShow(void)
 //    pRcvSkt =  pNode->pRecvSocket();
 //
 //    vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
-//           ,pNode->iNodeNo()
+//           ,pNode->iNodeId()
 //           ,pNode->szNodeNm()
 //           ,pNode->szIPAddr()
 //           ,pNode->iPortNo()
@@ -304,7 +304,7 @@ void Step::vGridShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].TablePtnToPtnNo -- get tPtnId { m_iNodeNo=thisNode, m_i_Ptn=i_Ptn } */
+/* [grid].TablePtnToPtnNo -- get tLglPtn { m_iNodeId=thisNode, m_i_Ptn=i_Ptn } */
 /*----------------------------------------------------------------------------*/
 void Step::vGridTablePtnToPtnNo(void)
 {
@@ -312,23 +312,23 @@ void Step::vGridTablePtnToPtnNo(void)
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
 
-  PtnId tPtnId;
-  tPtnId = AM::pPtnMap()->tToPtnNoOfThisNode(i_Ptn);
-  m_pDataStack->vPushInt(tPtnId.iAsI8());
+  LglPtn tLglPtn;
+  tLglPtn = AM::pLglPtnMap()->tToPtnNoOfThisNode(i_Ptn);
+  m_pDataStack->vPushInt(tLglPtn.iAsI8());
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [grid].thisNodeNo@ -- get this nodeNo from the grid                        */
+/* [grid].thisNodeId@ -- get this NodeId from the grid                        */
 /*----------------------------------------------------------------------------*/
-void Step::vGridThisNodeFetch(void)
+void Step::vGridThisNodeIdFetch(void)
 {
   ENTRY();
     
-  i8 iNodeNo = AM::pGrid()->iThisNodeNo();
+  i8 iNodeId = AM::pGrid()->iThisNodeId();
   
-  m_pDataStack->vPushInt(iNodeNo);
+  m_pDataStack->vPushInt(iNodeId);
   
   EXIT();
 }
@@ -355,14 +355,14 @@ void Step::vGridToNode(void)
 {
   ENTRY();
 
-  PtnId tPtnId;
-  tPtnId = m_pDataStack->iPopInt(__func__);
+  LglPtn tLglPtn;
+  tLglPtn = m_pDataStack->iPopInt(__func__);
 
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
   //m_pDataStack->vPush((i8)0);
 
-  i8 i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
-  m_pDataStack->vPushInt(i_Node);
+  i8 iNodeId = AM::pLglPtnMap()->iNodeId(tLglPtn);
+  m_pDataStack->vPushInt(iNodeId);
   
   EXIT();
 }

@@ -76,7 +76,7 @@
 "
   locals| sStmt |
 
-  "" sStmt api::executeCommand 2discard
+  "" sStmt api::executeCommand api:executeCheck
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -52,11 +52,11 @@ i8 NextGid::operator ++(void)
 /*----------------------------------------------------------------------------*/
 /* atomically subtract                                                        */
 /*----------------------------------------------------------------------------*/
-void NextGid::vNodeNo(i8 iNodeNo)
+void NextGid::vNodeId(i8 iNodeId)
 {
   _precondition_(_MAGIC_,CN_NEXTGID,_FOOTER_);
   
-  m_ixId = iNodeNo << 48;
+  m_ixId = iNodeId << 48;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -69,9 +69,17 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n"
       "\n  static const void* C_ADR_REGION = (void*)0x204800000000;"
       "\n  static const i8 C_DATUM_NULL = -9223372036854775807;"
+      "\n  static const i8 C_I8_MIN = -9223372036854775806;"
+      "\n  static const i8 C_I8_MAX = 9223372036854775806;"
+      "\n  static const i8 C_BCD_MIN = -140737488355328;"
+      "\n  static const i8 C_BCD_MAX = 140737488355327;"
       "\n  static const i8 C_CRW_HEADBYTES = 32;"
       "\n  static const i8 C_CRW_FIRSTHEAD = 640;"
       "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
+      "\n  static const d8 C_FLT_MAX = 1.797693134862315708145274237317043567981e+308;"
+      "\n  static const d8 C_FLT_MIN = -1.797693134862315708145274237317043567981e+308;"
+      "\n  static const u8 C_YEAR_BASE  = 1900;"
+      "\n  static const i8 TMP_TBLCOL_SCALE  = 2;"//ALKA: replace TMP_TBLCOL_SCALE with scale decimal value in table column definition
       "\n"
       "\n  int strcmp(const char *__s1, const char *__s2);"
       "\n  void strncpy(const char *__s1, const char *__s2, size_t);"
@@ -82,7 +90,11 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n  #define C_UNKNOWN -1"   "\n"
       "\n  #include \"../src/store/Ent_int.h\""
       "\n  #include \"../src/base/eEC.h\""
-      "\n  #include \"../src/base/FunMacros.h\""
+      "\n  #include \"../src/base/CastMacros.h\""
+      "\n  #include \"../src/base/LogicalMacros.h\""
+      "\n  #include \"../src/base/RelationalMacros.h\""
+      "\n  #include \"../src/base/MathMacros.h\""
+      "\n  #include \"../src/base/TccMacros.h\""
       "\n"
       "";
 
@@ -182,6 +194,8 @@ void Fragments::vAppendConcludingFunc3(char *azStr)
 
   char* azFrag = (char*)
       "\n"
+      "\n   L_Return:"
+      "\n     goto L_ReturnFinal;"
       "\n   L_ReturnFinal:"
       "\n     return 1;"
       "\n  }"
@@ -242,6 +256,65 @@ void Fragments::vAppendInflate(char *azStr)
 
   StrLib::vAppendString(&azStr,azFrag);
 }
+/*----------------------------------------------------------------------------*/
+/* the locals fragment                                                        */
+/*----------------------------------------------------------------------------*/
+void Fragments::vAppendLocals(char *azStr) {
+  _static_
+
+  char *azFrag = (char *)
+      "\n"
+      "\n    char* szSrcStz;"
+      "\n    char* szDstStz;"
+      "\n    char* szStrArea;"
+      "\n    char* szArg1;"
+      "\n    char* szArg2;"
+      "\n    char* szArg3;"
+      "\n    m8*   amCellAddress;"
+      "\n    i8    bFilterResult;"
+      "\n    i8    bNullResult;"
+      "\n    i8    bFound;"
+      "\n    i8*   piColumn;"
+      "\n    i8    iIndex;"
+      "\n    i8    nSrcSize;"
+      "\n    i8    iOffset;"
+      "\n    i8    iMixIn;"
+      "\n    i8    iBufferJ;"
+      "\n    i8    iItemJ;"
+      "\n    i8    i_BaseOffsetDataJ;"
+      "\n    i8    i_BaseOffsetDataT;"
+      "\n    i8    iIndexScanBuffer;"
+      "\n    i8    iIndexScanItem;"
+      "\n    i8    i_CurrentRow;"
+      "\n    i8    iElemSize;"
+      "\n    i8    iArg1;"
+      "\n    i8    iArg2;"
+      "\n    i8    iArg3;"
+      "\n    i8    iScale;"
+      "\n    i8    iInCount;"
+      "\n    i8*   paW;"
+      "\n    union Bcd_T bcdArg1;"
+      "\n    union Bcd_T bcdArg2;"
+      "\n    union Bcd_T bcdArg3;"
+      "\n    i8    iaPow10[15];"
+      "\n    i8    iScaleDiff;"
+      "\n    union Dte_T xDte1;"
+      "\n    union Dte_T xDte2;"
+      "\n    union Flt_T fltArg1;"
+      "\n    union Flt_T fltArg2;"
+      "\n    union Tsp_T xTsp1;"
+      "\n    union Tsp_T xTsp2;"
+      "\n    union Tme_T xTme1;"
+      "\n    union Tme_T xTme2;"
+      "\n    void* aIndexScanCrw;"
+      "\n    void* aEntInserted;"
+      "\n    void* aEntFound;"
+      "\n    void* aCrwJ;";
+  "\n"
+  "";
+
+  StrLib::vAppendString(&azStr, azFrag);
+}
 
 /*----------------------------------------------------------------------------*/
 /* append preliminary fragment code for func0                                 */
@@ -267,25 +340,10 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n    #include \"../src/store/vFLAT_PreliminaryCrw.h\""
       "\n"
-      "\n    char* szSrcStz;"
-      "\n    char* szDstStz;"
-      "\n    m8*   amCellAddress;"
-      "\n    i8    bFound;"
-      "\n    i8    iIndex;"
-      "\n    i8    nSrcSize;"
-      "\n    i8    iOffset;"
-      "\n    i8    iMixIn;"
-      "\n    i8    iBufferJ;"
-      "\n    i8    iItemJ;"
-      "\n    i8    i_BaseOffsetDataJ;"
-      "\n    i8    iElemSize;"
-      "\n    eEC   eErrorCode;"
-      "\n    void* aEntInserted;"
-      "\n    void* aEntFound;"
-      "\n    void* aCrwJ;"
-      "\n"
       "";
      StrLib::vAppendString(&azStr,azFrag);
+
+  vAppendLocals(azStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -311,29 +369,10 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n"
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n"
-      "\n    char* szSrcStz;"
-      "\n    char* szDstStz;"
-      "\n    m8*   amCellAddress;"
-      "\n    i8    bFound;"
-      "\n    i8*   piColumn;"
-      "\n    i8    iIndex;"
-      "\n    i8    nSrcSize;"
-      "\n    i8    iOffset;"
-      "\n    i8    iMixIn;"
-      "\n    i8    iBufferJ;"
-      "\n    i8    iItemJ;"
-      "\n    i8    i_BaseOffsetDataJ;"
-      "\n    i8    i_Row = -1;"
-      "\n    i8    iElemSize;"
-      "\n    eEC   eErrorCode = EC_NONE;"
-      "\n    void* aEntInserted;"
-      "\n    void* aEntFound;"
-      "\n    void* aCrwJ;";
-      "\n"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
-
+  vAppendLocals(azStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -359,30 +398,10 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n"
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n"
-      "\n    char* szSrcStz;"
-      "\n    char* szDstStz;"
-      "\n    m8*   amCellAddress;"
-      "\n    i8    bFound;"
-      "\n    i8    iIndex;"
-      "\n    i8    nSrcSize;"
-      "\n    i8    iOffset;"
-      "\n    i8    iMixIn;"
-      "\n    i8    iBufferJ;"
-      "\n    i8    iItemJ;"
-      "\n    i8    i_BaseOffsetDataJ;"
-      "\n    i8    iIndexScanBuffer;"
-      "\n    i8    iIndexScanItem;"
-      "\n    i8    i_BaseOffsetDataT;"
-      "\n    i8    iElemSize;"
-      "\n    eEC   eErrorCode = EC_NONE;"
-      "\n    void* aEntInserted;"
-      "\n    void* aIndexScanCrw;"
-      "\n    void* aEntFound;"
-      "\n    void* aCrwJ;";
-      "\n"
       "";
 
     StrLib::vAppendString(&azStr,azFrag);
+    vAppendLocals(azStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -391,19 +410,6 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
 void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
 {
   _static_
-
-  char* azHeaders = (char*)
-      "\n"
-      "\n  //#include <stdio.h>"
-      "\n  //#include <string.h>"
-      "\n"
-      "\n  #include \"tcclib.h\" // include libc header for TCC"
-      "\n"
-      "\n  #include \"../src/base/BaseTypes_tcc.h\""
-      "\n  #include \"../src/base/TccStuff.h\""
-      "\n  #include \"../src/base/FunMacros.h\""
-      "";
-  StrLib::vAppendString(&azStr,azHeaders);
 
   char* azFrag = (char*)
       "\n"
@@ -417,29 +423,11 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
   StrLib::vAppendString(&azStr,szFunSignature->azChar());
 
   azFrag = (char*)
-      "\n"
       "\n  {"
-      "\n"
-      "\n    char* szSrcStz;"
-      "\n    char* szDstStz;"
-      "\n    m8*   amCellAddress;"
-      "\n    i8    bFound;"
-      "\n    i8    iIndex;"
-      "\n    i8    nSrcSize;"
-      "\n    i8    iOffset;"
-      "\n    i8    iMixIn;"
-      "\n    i8    iBufferJ;"
-      "\n    i8    iItemJ;"
-      "\n    i8    i_BaseOffsetDataJ;"
-      "\n    i8    iElemSize;"
-      "\n    eEC   eErrorCode = EC_NONE;"
-      "\n    void* aEntInserted;"
-      "\n    void* aEntFound;"
-      "\n    void* aCrwJ;";
-      "\n"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
+  vAppendLocals(azStr);
 }
 
 /*============================================================================*/

@@ -26,24 +26,22 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Op(void)
 {
-  vAddStep("Op.enqueOperand"_Stz,       &Step::vOpEnqueOperand);
+  vAddStep("op.enqueOperand"_Stz,       &Step::vOpEnqueOperand);
+  vAddStep("op.name@"_Stz,              &Step::vOpNameFetch);
+
   vAddStep("Op::findOp"_Stz,            &Step::vOpFindOp);
   
   vAddStep("[op]"_Stz,                  &Step::vOpGet);
   vAddStep("[op].ackInvokingTask"_Stz,  &Step::vOpAckInvokingTask);
-  vAddStep("[op].downstreamOp!"_Stz,    &Step::vOpDownstreamOpStore);
+  vAddStep("[op].eventCountInc"_Stz,    &Step::vOpEventCountInc);
   vAddStep("[op].handlerEntry"_Stz,     &Step::vOpHandlerEntry);
   vAddStep("[op].handlerExit"_Stz,      &Step::vOpHandlerExit);
   vAddStep("[op].handler@"_Stz,         &Step::vOpHandlerFetch);
   vAddStep("[op].handler!"_Stz,         &Step::vOpHandlerStore);
   vAddStep("[op].handlerAll!"_Stz,      &Step::vOpHandlerAllStore);
-  vAddStep("[op].isOperandValid"_Stz,   &Step::vOpIsOperandValid);
-  vAddStep("[op].incHandlerCount"_Stz,  &Step::vOpIncHandlerCount);
-  vAddStep("[op].incOperandCount"_Stz,  &Step::vOpIncOperandCount);
+  vAddStep("[op].isEventValid"_Stz,     &Step::vOpIsEventValid);
   vAddStep("[op].job@"_Stz,             &Step::vOpJobFetch);
   vAddStep("[op].opName@"_Stz,          &Step::vOpOpNameFetch);
-  vAddStep("[op].outboundOperand@"_Stz, &Step::vOpOutboundOperandFetch);
-  vAddStep("[op].outboundOperand!"_Stz, &Step::vOpOutboundOperandStore);
   vAddStep("[op].partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("[op].pipeBackin"_Stz,       &Step::vOpPipeBackIn);
   vAddStep("[op].pipeout"_Stz,          &Step::vOpPipeOut);
@@ -65,21 +63,7 @@ void Step::vOpAckInvokingTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [op].downstreamOp! -- store downstream op                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vOpDownstreamOpStore(void)
-{
-  ENTRY();
-    
-  Op* pDownstreamOp = _pOp(m_pDataStack->pPopPtr(__func__));
-  
-  m_pOp->vDownstreamOp(pDownstreamOp);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.enqueOperand -- enqueue operand                                         */
+/* op.enqueOperand -- enqueue operand                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vOpEnqueOperand(void)
 {
@@ -94,6 +78,20 @@ void Step::vOpEnqueOperand(void)
 
   pOp->vAppendLeft(pOperand,this);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [op].eventCountInc -- inc operand count                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vOpEventCountInc(void)
+{
+  ENTRY();
+  
+  eZK eEvent = (eZK) m_pDataStack->iPopInt(__func__);
+  
+  m_pOp->vEventCountInc(eEvent);
+  
   EXIT();
 }
 
@@ -214,9 +212,9 @@ void Step::vOpHandlerAllStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [op].isOperandValid -- check if operand is valid                           */
+/* [op].isEventValid -- check if operand is valid                           */
 /*----------------------------------------------------------------------------*/
-void Step::vOpIsOperandValid(void)
+void Step::vOpIsEventValid(void)
 {
   ENTRY();
   
@@ -226,40 +224,12 @@ void Step::vOpIsOperandValid(void)
   
   // skip consumeOp operand validation
   if ( ! m_pOp->szOpNm()->bSame("consumeOP"_Stz))
-    bValid = m_pOp->bIsOperandValid(i_OperandKind);
+    bValid = m_pOp->bIsEventValid(i_OperandKind);
   
   if ( ! bValid )
     RASSERT(0);
   
   m_pDataStack->vPushInt(bValid);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [op].incHandlerCount -- inc handler count                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vOpIncHandlerCount(void)
-{
-  ENTRY();
-  
-  eZK eEvent = (eZK)m_pDataStack->iPopInt(__func__);
-  
-  m_pOp->vIncHandlerCount(eEvent);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [op].incOperandCount -- inc operand count                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vOpIncOperandCount(void)
-{
-  ENTRY();
-  
-  eZK eEvent = (eZK) m_pDataStack->iPopInt(__func__);
-  
-  m_pOp->vIncOperandCount(eEvent);
   
   EXIT();
 }
@@ -271,7 +241,7 @@ void Step::vOpJobFetch(void)
 {
   ENTRY();
     
-  Pipeline* pPipeline = m_pOp->pPipelineOfOp();
+  Pipeline* pPipeline = m_pOp->pPipeline();
   
   if (! pPipeline) {
     m_pDataStack->vPushPtr(nullptr);
@@ -281,6 +251,22 @@ void Step::vOpJobFetch(void)
     m_pDataStack->vPushPtr(pPipelineJob);
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* op.name@ -- name fetch                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOpNameFetch(void)
+{
+  ENTRY();
+  
+  Op* pOp = _pOp(m_pDataStack->pPopPtr(__func__));
+
+  Stz* szOpNm = pOp->szOpNm();
+
+  m_pDataStack->vPushStz(szOpNm);
+
   EXIT();
 }
 
@@ -299,39 +285,13 @@ void Step::vOpOpNameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [op].outboundOperand@ -- fetch outbound operand from op                    */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOutboundOperandFetch(void)
-{
-  ENTRY();
-    
-  m_pDataStack->vPushPtr(m_pOp->pOutboundOperand());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [op].outboundOperand! -- store outbound operand into op                    */
-/*----------------------------------------------------------------------------*/
-void Step::vOpOutboundOperandStore(void)
-{
-  ENTRY();
-    
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-
-  m_pOp->vOutboundOperand(pOperand);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* [op].partition@ -- fetch partition from op                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vOpPartitionFetch(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(m_pOp->tPtnId().iAsI8());
+  m_pDataStack->vPushInt(m_pOp->tLglPtn().iAsI8());
 
   EXIT();
 }
@@ -377,9 +337,9 @@ void Step::vOpPtnIdFetch(void)
 {
   ENTRY();
 
-  PtnId tPtn = m_pOp->tPtnId();
+  LglPtn tPtn = m_pOp->tLglPtn();
 
-  m_pDataStack->vPushInt(tPtn.uPtnNo());
+  m_pDataStack->vPushInt(tPtn.iAsI8());
 
   EXIT();
 }

@@ -1,0 +1,137 @@
+/*============================================================================*/
+/* OP_toLglPtnCrw.sen -- Convert lglptn nst row buff to lglptn crw buff       */
+/*============================================================================*/
+
+" OP_toLglPtnCrw.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_STREAMDEF ...                                  DEFINITION */
+/*----------------------------------------------------------------------------*/
+: toLglPtnCrw_StreamDef \handler
+
+  PipeIn[] to StreamDefLft[]
+  nullptr to PipeIn[]
+
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  ToLglPtnCrw[].create
+
+  StreamDefOut[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                     INIT */
+/*----------------------------------------------------------------------------*/
+: toLglPtnCrw_StartMarker \handler
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_DATAPULSE ...                                                BEGIN */
+/*----------------------------------------------------------------------------*/
+: toLglPtnCrw_DataMarker \handler
+
+  ZK_M_DATAPULSE_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_ROWBUFFER ...                                                 EACH */
+/*----------------------------------------------------------------------------*/
+: toLglPtnCrw_RowBuffer \handler
+
+  PipeIn[]\clear to RowBuffer[]
+  RowBuffer[] ToLglPtnCrw[].convert
+  RowBuffer[].delete
+
+  ptnmap::ptnsInGrid 0
+  do
+
+    I ToLglPtnCrw[].completed to CrwBuffer[]
+
+    begin
+      CrwBuffer[].isNull not
+    while
+      CrwBuffer[].appendClose
+      CrwBuffer[].pipeOut
+      I ToLglPtnCrw[].completed to CrwBuffer[]
+    repeat
+
+  loop
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_EOS ...                                                        END */
+/*----------------------------------------------------------------------------*/
+: toLglPtnCrw_EosMarker \handler
+
+  ptnmap::ptnsInGrid 0
+  do
+
+    I ToLglPtnCrw[].dangling to CrwBuffer[]
+
+    begin
+      CrwBuffer[].isNull not
+    while
+      CrwBuffer[].appendClose
+      CrwBuffer[].pipeOut
+      I ToLglPtnCrw[].dangling to CrwBuffer[]
+    repeat
+
+  loop
+
+  StreamDefLft[].delete
+
+  ToLglPtnCrw[].delete
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* toRow request                                                        SPAWN */
+/*----------------------------------------------------------------------------*/
+: toLglPtnCrw_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: toLglPtnCrw_EosMarker   ZK_M_EOS         [op].handler!
+  find: toLglPtnCrw_DataMarker  ZK_M_DATAPULSE   [op].handler!
+  find: toLglPtnCrw_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+  find: toLglPtnCrw_StartMarker ZK_M_START       [op].handler!
+  find: toLglPtnCrw_StreamDef   ZK_D_STREAMDEF   [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: toLglPtnCrw :: toLglPtnCrw ;
+
+: toLglPtnCrw_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "toLglPtnCrw_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

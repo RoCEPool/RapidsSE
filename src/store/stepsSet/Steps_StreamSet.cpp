@@ -15,7 +15,7 @@
 #include "StreamSet.hpp"
 
 
-#include "PtnMap.hpp"
+#include "LglPtnMap.hpp"
 
 
 #include "SkipRoots.hpp"
@@ -98,7 +98,7 @@ void Step::vStreamSetAddAnalyzeIndex(void)
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
-                                    pStreamSetTable->tTablePtnToPtnId(i_TablePtn).iAsI8(),
+                                    pStreamSetTable->tTablePtnToLglPtn(i_TablePtn).iAsI8(),
                                     nBuffers,
                                     nEntries,
                                     C_VARGS_END);
@@ -141,7 +141,7 @@ void Step::vStreamSetAddAnalyzeTable(void)
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
                                     AM::pGrid()->pThisNode()->szNodeNm(),
-                                    pStreamSetTable->tTablePtnToPtnId(i_TablePtn).iAsI8(),
+                                    pStreamSetTable->tTablePtnToLglPtn(i_TablePtn).iAsI8(),
                                     nBuffers,
                                     nRows,
                                     C_VARGS_END);
@@ -345,8 +345,8 @@ void Step::vStreamSetAddListPartitions(void)
   // get the table
   Table* pStreamSetTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  PtnId tPtnId;
-  tPtnId = m_pDataStack->iPopInt(__func__);
+  LglPtn tLglPtn;
+  tLglPtn = m_pDataStack->iPopInt(__func__);
 
   // get the streamDef from the table
   StreamDef* pStreamDef = pStreamSetTable->pStreamDef();
@@ -355,11 +355,11 @@ void Step::vStreamSetAddListPartitions(void)
   
   Grid* pGrid = AM::pGrid();
 
-  i8 i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
-  Node* pNode = pGrid->pFindNode(i_Node);
+  i8 iNodeId = AM::pLglPtnMap()->iNodeId(tLglPtn);
+  Node* pNode = pGrid->pFindNodeById(iNodeId);
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,
-                                    tPtnId.iAsI8(),
+                                    tLglPtn.iAsI8(),
                                     pNode->szNodeNm(),
                                     C_VARGS_END);
 
@@ -596,7 +596,7 @@ void Step::vStreamSetAddShowCluster(void)
   
   StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
   
-  Node* pNode = AM::pGrid()->pFindNode(i_Node);
+  Node* pNode = AM::pGrid()->pFindNodeById(i_Node);
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,
                                   pNode->szNodeNm(),

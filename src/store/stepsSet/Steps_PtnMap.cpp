@@ -8,8 +8,8 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "PtnMap.hpp"
-#include "BucketMap_dyn.hpp"
+#include "LglPtnMap.hpp"
+#include "BucketMap.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -28,11 +28,11 @@ void Step::vPtnMapAdjust(void)
 {
   ENTRY();
   
-  PtnMap* pPtnMap = AM::pPtnMap();
+  LglPtnMap* pPtnMap = AM::pLglPtnMap();
   
   pPtnMap->vAdjustMap(AM::GRID::nKnownNodes());
 
-  BucketMap_dyn* pBktMap = AM::BKTMAP::pBucketMap();
+  BucketMap* pBktMap = AM::BKTMAP::pBucketMap();
   pBktMap->vAdjustMap(pPtnMap->nPtnsInGrid());
 
   EXIT();
@@ -57,7 +57,7 @@ void Step::vPtnMapSee(void)
 {
   ENTRY();
   
-  PtnMap* pPtnMap = AM::pPtnMap();
+  LglPtnMap* pPtnMap = AM::pLglPtnMap();
   
   pPtnMap->vSee();
     

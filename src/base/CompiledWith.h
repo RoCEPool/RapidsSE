@@ -72,34 +72,17 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // WIP
 
-#define WITH_KEEP_ROW_HASH EndDefine       // keep row hash in row of rowBuffer
-                                           //   instead of partition no
-
-//#define WITH_BUCKET_HASHING EndDefine      // code for bucket hashing compiled in
-
-#define WITH_MULTI_BUCKET EndDefine
-
-#define WITH_BKTMAP_2N4P EndDefine         // code for buckets up to 2N4P
-
-
-
 //#define WITH_DEDICATED_SLEEP EndDefine     // only dedicated threads can sleep
 
-//#define WITH_SSN_SKIPLIST EndDefine       // using SsnId
+//#define WITH_SSN_SKIPLIST EndDefine        // using SsnId
 
-//#define WITH_NO_SPEC_NUMBERING EndDefine       // use lists for spec's
-#define WITH_SPEC_NUMBERING EndDefine       // use lists for spec's
-
-//#define WITH_PROCEDURE_2 EndDefine       // use lists for spec's
-
-
-//#define WITH_COMBINEDOP_SE EndDefine          // compile combinedOP generated code with SE
-
-#define WITH_REPLICATED_PTN EndDefine       // 
+//#define WITH_COMBINEDOP_SE EndDefine       // compile combinedOP generated code with SE
 
 #define WITH_OPT_HASHCAST EndDefine       //
 
 #define WITH_SUBPIPELINE EndDefine       //
+
+#define WITH_STAGESET EndDefine       //
 
 //#define WITH_HASHMAP EndDefine             // code for hashmap compiled in
 //#define WITH_HASHMAP_DEBUG EndDefine       // enable debug for hashmap

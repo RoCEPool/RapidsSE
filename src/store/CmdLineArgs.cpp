@@ -167,13 +167,10 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_bTouch           = false;
   m_xSysArgs.m_bTracepoint      = false;
   m_xSysArgs.m_bTracing         = false;
+  m_xSysArgs.m_eUtility         = UT_RAPIDSSE;
   m_xSysArgs.m_bVBlong          = false;
   m_xSysArgs.m_bVerbose         = false;
   m_xSysArgs.m_bWelcome         = true;
-
-  m_xSysArgs.m_bUtility         = false;
-  m_xSysArgs.m_bUteShm          = false;
-  m_xSysArgs.m_bUteApiDemo      = false;
 
   _checkInitialised_(CN_CMDLINEARGS);
   
@@ -217,15 +214,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 {
   _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
     
-  if (argv[1].bSame("shm"_Stz)) {
-    m_xSysArgs.m_bUtility = true;
-    m_xSysArgs.m_bUteShm = true;
+  if (argv[1].bSame("apiDemo"_Stz)) {
+    m_xSysArgs.m_eUtility = UT_APIDEMO;
     return true;
   }
   
-  if (argv[1].bSame("apiDemo"_Stz)) {
-    m_xSysArgs.m_bUtility = true;
-    m_xSysArgs.m_bUteApiDemo = true;
+  if (argv[1].bSame("shm"_Stz)) {
+    m_xSysArgs.m_eUtility = UT_SHM;
     return true;
   }
   

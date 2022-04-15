@@ -12,7 +12,7 @@
   "
   define table se__sysLocks
   (
-    nodeNo            INTEGER NOT NULL ,
+    NodeId            INTEGER NOT NULL ,
     nodeName          VARCHAR NOT NULL ,
 
     nSince            INTEGER NOT NULL ,
@@ -29,7 +29,7 @@
 
   ) < internal > = 1 ;
   "
-  api::executeCommand 2discard
+  api::executeCommand api:executeCheck
 ;
 
 /*============================================================================*/

@@ -12,8 +12,8 @@
   //"Operand:- ZK_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
-  // find the __countInfo table
-  C_TDEF_COUNTINFO op__tableDef_infoSet assert
+  // find the __count table
+  C_TDEF_COUNT op__tableDef_infoSet assert
 
   // create a new streamDef
   infoSetTable[] InfoSet[].new

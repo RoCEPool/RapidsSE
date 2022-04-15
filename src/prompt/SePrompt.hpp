@@ -29,7 +29,7 @@ namespace PROMPT
   class SePrompt : public Object
   {
   private:
-    Thread*   m_pThread;
+    Thread*     m_pThread;
 
     bool        m_bContinue;    // continue processing commands?
     ShortCutVec m_oShortCutVec; // vector of short cuts
@@ -44,7 +44,7 @@ namespace PROMPT
     Mutex       m_oMutex;       // mutex for seprompt-sedeputy
     SeDeputy*   m_pCurrentDeputy;
   
-    TokenVec*   m_pInpTknVec;   // token vector from deputy->ssn->input
+    TokenVec*   m_pCmdTknVec;   // token vector from deputy->ssn->input
 
     TagSet*     m_pCmdTagSet;   // extra tags gleaned from the prompt command
     TagSet      m_oPmtTagSet;   // tag set which controls this prompt
@@ -68,9 +68,6 @@ namespace PROMPT
     // -- -- -- -- -- --
     // delete
   
-    // temp for demo
-    TokenVec* m_pLitTknVec;  // literal token vector for demo
-
     Timer     m_oTimer;      // the timer
 
 
@@ -95,7 +92,6 @@ namespace PROMPT
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
     void vDebugMode(i8 iDebugMode);
-    bool bDemo(void);
     void vDivision(Stz* szDivision);
     i8   iDivisionNo(void);
     bool bContinue(void);
@@ -110,7 +106,6 @@ namespace PROMPT
     bool bExamineCommand(void);
     bool bExecuteFunction(void);
     SeDeputy* pFindDeputy(void);
-    bool bHandleDemo(void);
     TokenVec* pInpTknVec(void);
     Input* pInputGet(void);
     bool bIsPromptWord(void);
@@ -122,7 +117,6 @@ namespace PROMPT
     void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
-    Stz* szOriginalCommand(void);
     void vOutline(s4K& sOutline);
     void vPromptUser(void);
     TagSet* pPmtTagSet(void);

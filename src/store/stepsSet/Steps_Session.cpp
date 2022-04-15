@@ -188,7 +188,7 @@ void Step::vSessionSignal(void)
   
   //pJob->vJobState(JS_SIGNALLED);
 
-  i8 i_Session = pJob->m_i_Session;
+  i8 i_Session = pJob->i_Session();
   
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
   Sessions::vMarkSignalled(pSession);

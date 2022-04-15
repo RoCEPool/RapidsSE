@@ -28,8 +28,10 @@ success
 create index tblidx6 on table9(cole9);
 success
 
-predicateFetch TABLE9 "cole9 -5.0 > cole9 5.0 < and";
-rows: 12
+//ALKA: UNCOMMENT
+//predicateFetch TABLE9 "cole9 -5.0 > cole9 5.0 < and";
+//select * from TABLE9 where cole9 -5.0 > and cole9 5.0 <;
+//rows: 12
 
 // now drop the table
 drop table table9;

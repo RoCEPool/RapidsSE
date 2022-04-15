@@ -96,6 +96,8 @@
 
   params| sTableNm |
 
+  //sTableNm .
+  
   // save current path
   Path[].save
 
@@ -470,13 +472,12 @@
 
       // debug::flag@ if "(Revised) Calling handler for OoO operand" . then
 
-      PipeIn[].kind [op].isOperandValid not if
+      PipeIn[].kind [op].isEventValid not if
         find: INVALID_OPERAND_handler op__callHandler to iContinue
         continue_if
       then
 
-      PipeIn[].kind [op].incOperandCount
-      PipeIn[].kind [op].incHandlerCount
+      PipeIn[].kind [op].eventCountInc
       PipeIn[].kind [op].handler@ LogicUnit[].handler!
       op__callHandler to iContinue
       continue_if
@@ -525,13 +526,12 @@
 
     //debug::flag@ if "(Revised) Calling handler for NEXT operand" . then
 
-    PipeIn[].kind [op].isOperandValid not if
+    PipeIn[].kind [op].isEventValid not if
       find: INVALID_OPERAND_handler op__callHandler to iContinue
       continue_if
     then
     
-    PipeIn[].kind [op].incOperandCount
-    PipeIn[].kind [op].incHandlerCount
+    PipeIn[].kind [op].eventCountInc
     PipeIn[].kind [op].handler@ LogicUnit[].handler!
     op__callHandler to iContinue
 

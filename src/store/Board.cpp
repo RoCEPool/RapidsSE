@@ -4,7 +4,7 @@
 
 #include "Board.hpp"
 
-#include "ShardDef.hpp"
+#include "PtnDef.hpp"
 #include "Cue.hpp"
 
 #include "Optimiser.hpp"

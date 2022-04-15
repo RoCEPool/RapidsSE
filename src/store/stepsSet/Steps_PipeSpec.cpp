@@ -15,7 +15,7 @@
 #include "Stream.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
@@ -48,9 +48,9 @@ void Step::vPipeSpecDelete(void)
 {
   ENTRY();
    
-  if (m_pLogicUnit->m_xpPipeSpec.bIsNotNull()) {
+  if (m_pLogicUnit->m_xpVertexSpec.bIsNotNull()) {
     m_pLogicUnit
-      ->m_xpPipeSpec.vGuardedDeleteComponent(CN_PIPESPEC,
+      ->m_xpVertexSpec.vGuardedDeleteComponent(CN_VERTEXSPEC,
                                                  CN_STEP,this,(Stz*)__func__);
   }
     
@@ -66,7 +66,7 @@ void Step::vPipeSpecDump(void)
   
   SP_PipeSpec spPipeSpec;
   
-  vTrace("%s\n"_Stz,spPipeSpec.sz(* m_pLogicUnit->m_xpPipeSpec));
+  vTrace("%s\n"_Stz,spPipeSpec.sz(* m_pLogicUnit->m_xpVertexSpec));
   
   EXIT();
 }
@@ -78,8 +78,8 @@ void Step::vPipeSpecGet(void)
 {
   ENTRY();
 
-  if (m_pLogicUnit->m_xpPipeSpec.bIsNotNull())
-    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpPipeSpec);
+  if (m_pLogicUnit->m_xpVertexSpec.bIsNotNull())
+    m_pDataStack->vPushPtr(* m_pLogicUnit->m_xpVertexSpec);
   else
     m_pDataStack->vPushPtr(nullptr);
 
@@ -95,21 +95,21 @@ void Step::vPipeSpecOptimisable(void)
   
   bool bOptimisable = false;
   
-  PipeSpec* pPipeSpec = (* m_pLogicUnit->m_xpPipeSpec);
+  VertexSpec* pPipeSpec = (* m_pLogicUnit->m_xpVertexSpec);
   
   
   
   Job* pJob = MY::pJob();
   
-  Stz* szPipelineNm = pPipeSpec->szPipelineNm();
+  Stz* szPipeSpecNm = pPipeSpec->szVertexNm();
   
   i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
 
   if (   ! iOptimiserLvl
       || ! pJob->bIsOriginator()
-      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
-      || ! pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
-      ||   pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
+      ||   szPipeSpecNm->bSame("sqlCompiler"_Stz)
+     // || ! pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
+     // ||   pPipeSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
       )
     bOptimisable = false;
   else
@@ -128,8 +128,8 @@ void Step::vPipeSpecSet(void)
 {
   ENTRY();
   
-  m_pLogicUnit->m_xpPipeSpec =
-    _pPipeSpec(m_pDataStack->pPopPtr(__func__));
+  m_pLogicUnit->m_xpVertexSpec =
+    _pVertexSpec(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

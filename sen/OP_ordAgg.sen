@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: ordAgg_ComCleaning \handler
+: ordAgg_Cleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
@@ -27,10 +27,6 @@
     StreamDefOut[].delete
   then
 
-  IndexDef[].isNull not if
-    IndexDef[].delete
-  then
-
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
   ZK_M_CLEANING_handler
@@ -39,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: ordAgg_ComStreamDef \handler
+: ordAgg_StreamDef \handler
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
@@ -48,11 +44,10 @@
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 
-  // create an indexDef[]
-  indexDef[].new
+  IndexDef[].new
 
   // generate streamDefOut from expr and streamDefIn
-  <expr> indexDef[] StreamDefLft[] StreamDefOut[].generate to eError
+  <expr> IndexDef[] StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -77,17 +72,10 @@
 
   _lu_initialise_
 
-  // get whether compiled or not
-  <compiled> >int to Counter0[]
-
   op__topology
 
-  Counter0[] 2 == if
-    find: aggreg_ComCleaning   ZK_M_CLEANING      [op].handler!
-    find: aggreg_ComStreamDef  ZK_D_STREAMDEF     [op].handler!
-  else
-    0 assert
-  then
+  find: ordAgg_Cleaning   ZK_M_CLEANING      [op].handler!
+  find: ordAgg_StreamDef  ZK_D_STREAMDEF     [op].handler!
 
   op__loop
 
@@ -101,7 +89,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: ordAgg :: ordAgg <compiled> <expr> ;
+cmdSyntax: ordAgg :: ordAgg <expr> ;
 
 : ordAgg_cmdTags _cmdTags tagCopy: op_tags
   tags{

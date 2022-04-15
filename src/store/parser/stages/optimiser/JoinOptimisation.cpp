@@ -49,7 +49,8 @@ void JoinOptimisation::vOptimiseJoins(PlanNode *pRootNode)
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
 
-  vApplyJoinHint(pRootNode);
+  // NOTE: Currently nothing to do here as we are now taking care of join
+  //       types in the optimiser.
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,0 +1,106 @@
+/*============================================================================*/
+/* OP_waitFinished.sen -- Operator wait finished                              */
+/*============================================================================*/
+
+" OP_waitFinished.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_I_COUNT ...                                                 */
+/*----------------------------------------------------------------------------*/
+: waitFinished_Count \handler
+  
+  "waitFinished_Count" .
+
+  PipeIn[]\clear to InfoSet[]
+  
+  // find the __path table def ; set infoSetTable[]
+  C_TDEF_COUNT op__tableDef_infoSet assert
+
+  // get the first (one and only) row from this infoset
+  InfoSet[].firstRow to infoSetRow[]
+
+  // extract the values
+  0 InfoSet[].colVal@ to Counter0[]
+
+  Counter0[] "waitFinished: nFinishesExpected %v" .printf
+    
+
+  InfoSet[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+: waitFinished_End \handler
+
+  ZK_M_END Event[].count@ "waitFinished: ZK_M_END %v" .printf
+
+  ZK_M_END_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_FINISHED_handler ...                                      */
+/*----------------------------------------------------------------------------*/
+: waitFinished_Finished \handler
+
+  Counter1[] 1 + to Counter1[]
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: waitFinished_Start \handler
+  
+  0 to Counter0[]
+  0 to Counter1[]
+  0 to Counter2[]
+
+  ZK_M_START_handler
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute wait op                                                            */
+/*----------------------------------------------------------------------------*/
+ : waitFinished_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: waitFinished_Count     ZK_I_COUNT     [op].handler!
+  find: waitFinished_End       ZK_M_END       [op].handler!
+  find: waitFinished_Finished  ZK_M_FINISHED  [op].handler!
+  find: waitFinished_Start     ZK_M_START     [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: waitFinished :: waitFinished ;
+
+: waitFinished_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "waitFinished_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

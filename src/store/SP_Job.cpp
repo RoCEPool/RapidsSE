@@ -50,17 +50,17 @@ Stz* SP_Job::sz(Job* pJob)
 
         ,pJob
         
-        ,pJob->m_sJobNm.azChar()
-        ,aJK[pJob->m_eJobKind]
-        ,aJP[pJob->m_eJobPhase]
-        ,aJS[pJob->m_eJobState]
+        ,pJob->szJobNm()
+        ,aJK[pJob->eJobKind()]
+        ,aJP[pJob->eJobPhase()]
+        ,aJS[pJob->eJobState()]
 
         );
   
-  if (pJob->i2pcDeciderOriginal()) {
+  if (pJob->pTask()->iAcksRmg_assert_only_()) {
     vCatf(" AcksRmg %lld (out of %lld)"_Stz
-           ,pJob->i2pcDeciderRmg_printOnlyValue()
-           ,pJob->i2pcDeciderOriginal()
+           ,pJob->pTask()->iAcksRmg_assert_only_()
+           ,pJob->pTask()->iAcksOriginal()
            );
   }
     

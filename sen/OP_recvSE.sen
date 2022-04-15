@@ -1,0 +1,149 @@
+/*============================================================================*/
+/* OP_recvSE.sen -- Operator recv for SE Adaptor                              */
+/*============================================================================*/
+
+" OP_recvSE.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* recv init                                                                  */
+/*----------------------------------------------------------------------------*/
+: recvSE_init ( -- )
+
+  //CN_JOB [task] task.thread@ thread.dedicated!
+
+  NS_ACTIVE [grid].thisNodeId@ [grid].findNodeByNo node.state!
+
+  [args].verbose if
+    [grid].thisNodeId@ "receiver running on node %v" .printf
+  then
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "<ansNode>" [job].tagSet@ tagSet.hasName assert
+
+  <ansNode> >int >ptr node.recvSocket@ to Socket[]
+;
+
+/*----------------------------------------------------------------------------*/
+/* recv next object(s)                                                        */
+/*----------------------------------------------------------------------------*/
+: recvSE_recvNext
+  
+  nullptr to recvdObject[]
+
+  Socket[].recvObject
+  
+  Socket[].success@ not if
+    exit
+  then
+  
+  Socket[].object@\clear to recvdObject[]
+
+  Socket[].success@
+;
+
+/*----------------------------------------------------------------------------*/
+/* recv loop: receive a job (possibly with operand), dispatch it              */
+/*----------------------------------------------------------------------------*/
+: recvSE_dispatch ( -- )
+
+  // null object (low memory)
+  recvdObject[].isNull if
+    exit
+  then
+    
+  recvdObject[] recvdObject[] object.postRecvWord@ execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* receiver loop: receive a job (possibly with operand), dispatch it          */
+/*----------------------------------------------------------------------------*/
+: recvSE_loop ( -- )
+
+  begin
+
+    trap::stackDepthZero
+
+    // receive next object(s)
+    recvSE_recvNext
+    not if
+      exit
+    then
+        
+    recvSE_dispatch
+
+  again
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: recvSE_StartMarker \handler
+
+  "Receiver Demon Started" .boot
+
+  // initialise
+  recvSE_init
+
+  // loop, receiving and executing jobs
+  recvSE_loop
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for receiver req                           (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : recvSE_op \operator
+ 
+  _lu_initialise_
+
+  op__topology
+
+  find: recvSE_StartMarker ZK_M_START [op].handler!
+
+  // get the pipeline job of the operator
+  [op].job@ locals| pPipelineJob |
+
+  // peek to see if any operand
+  begin
+    Pipein[].peek
+  not while
+    "receiver waiting for STARTMARKER..." .verbose
+    2 thread::sleepMsec
+  repeat
+
+  assert::stack_0
+
+  // pop operand from queue into PipeIn[]
+  PipeIn[].peek assert
+  PipeIn[].next
+
+  // execute the operator's handler for the operand
+  PipeIn[].kind [op].handler@ execute
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: recvSE :: recvSE ;
+
+: recvSE_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "recvSE_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

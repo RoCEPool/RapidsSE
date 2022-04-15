@@ -37,8 +37,11 @@ def build_installer() -> pathlib.Path:
     Assumes we are running from the <proj_root>/perftest directory
     """
     LOG.info("About to invoke the RapidsSE installer packager script to build and package RapidsSE.")
-    # TODO: Remove the NO_MOD_CHECK and NO_BUILD below
-    command = "NO_MOD_CHECK=1 NO_BUILD=1 ../installer/packaging/package.sh"
+
+    # Note: For debugging only
+    # command = "NO_MOD_CHECK=1 NO_BUILD=1 ../installer/packaging/package.sh"
+
+    command = "../installer/packaging/package.sh"
 
     try:
         subprocess.run(command,
@@ -53,6 +56,14 @@ def build_installer() -> pathlib.Path:
               f"\nStderr Output:\n{e.stderr}"
         raise errors.CompilationError(msg) from e
 
+    return find_installer()
+
+
+def find_installer() -> pathlib.Path:
+    """
+    Attempts to find the RapidsSE installer and returns the path to it.
+    Throws an assertion error if the installer cannot be found.
+    """
     # Find the installer file that was built
     install_file_path = pathlib.Path("../installer/output").resolve()
     install_file_glob = "rapidsse-*.run"

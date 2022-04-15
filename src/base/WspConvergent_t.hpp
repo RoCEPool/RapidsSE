@@ -197,9 +197,9 @@ TAIL* WspConvergent_t<AREA,HEAD,TAIL>::aAllotTail(i8 nBytes)
   if (C_UNKNOWN == m_nTailSize) {
     m_nTailSize = nBytes;
   }
-  else {
-    ASSERT(nBytes == m_nTailSize);
-  }
+  //else {
+  //  ASSERT(nBytes == m_nTailSize);
+  //}
 
   vTakeTail(nBytes);
   

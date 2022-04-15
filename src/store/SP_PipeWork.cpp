@@ -5,8 +5,10 @@
 #include "BASE.h"
 
 #include "Pipeline.hpp"
-#include "PipeWork.hpp"
+#include "VertexSpec.hpp"
+#include "Vertex.hpp"
 #include "Grid.hpp"
+#include "Deck.hpp"
 
 #include "SP_PipeWork.hpp"
 #include "SP_Stage.hpp"
@@ -25,11 +27,11 @@ SP_PipeWork::SP_PipeWork(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_PipeWork::SP_PipeWork(PipeWork* pPipeWork, bool bDescend)
+SP_PipeWork::SP_PipeWork(Vertex* pPipeWork)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
-  vPipeWork(pPipeWork,bDescend);
+  vPipeWork(pPipeWork);
   
   _postcondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
 }
@@ -49,16 +51,35 @@ SP_PipeWork::~SP_PipeWork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_PipeWork::vPipeWork(PipeWork* pPipeWork, bool bDescend)
+void SP_PipeWork::vPipeWork(Vertex* pPipeWork)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  if (bDescend) {
-    
-  }
+  vInit();
   
+  vPipeWork(pPipeWork,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint pipeline                                                            */
+/*----------------------------------------------------------------------------*/
+void SP_PipeWork::vPipeWork(Vertex* pPipeWork, i8 iDepth)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+    
+  vCatf(iDepth,"PipeWork %s %p\n"_Stz
+        ,pPipeWork->pVertexSpec()->szVertexNm()
+        ,pPipeWork
+        );
+
+  i8 nSubWorks = pPipeWork->nItems();
+  for (i8 i_SubWork = 0; i_SubWork < nSubWorks; i_SubWork++) {
+    Vertex* pSubPipeWork = pPipeWork->pGet(i_SubWork);
+    vPipeWork(pSubPipeWork,iDepth+1);
+  }
+
   for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++ ) {
-    Stage* pStage = pPipeWork->pGet(i_Stage);
+    Stage* pStage = pPipeWork->pDeck()->pGet(i_Stage);
     SP_Stage spStage(pStage,true);
     vCatf("%s"_Stz,spStage.sz());
   }
@@ -77,7 +98,7 @@ Stz* SP_PipeWork::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_PipeWork::sz(PipeWork* pPipeWork)
+Stz* SP_PipeWork::sz(Vertex* pPipeWork)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 

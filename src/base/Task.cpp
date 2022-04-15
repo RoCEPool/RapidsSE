@@ -74,7 +74,6 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(Stz* szTaskNm, Job* pJob)
 : Object(CN_TASK)
-, LifeGuard_t<Task>(this,CN_TASK) 
 , m_okLock(this,false)
 , m_oReadLocks(this)
 , m_oWriteLocks(this)
@@ -92,7 +91,6 @@ Task::Task(Stz* szTaskNm, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Task::Task(Stz* szTaskNm, Op* pOp)
 : Object(CN_TASK)
-, LifeGuard_t<Task>(this,CN_TASK)
 , m_okLock(this,false)
 , m_oReadLocks(this)
 , m_oWriteLocks(this)
@@ -114,6 +112,7 @@ void Task::vTask(void)
   
   m_pProfile     = nullptr;
 
+  m_pInvokingTask     = nullptr;
   m_pThread      = nullptr;
   
   m_bIsStart     = false;
@@ -191,8 +190,7 @@ Task::~Task(void) noexcept(false)
   delete m_pProfile;
   m_pProfile = nullptr;
   
-  m_pLogicUnit->vGuardedDelete(CN_LOGICUNIT,&m_pLogicUnit,
-                                    CN_TASK,this,(Stz*)__func__);
+  delete m_pLogicUnit;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -236,9 +234,7 @@ void Task::vTaskLoop(void)
     
     // call the non-virtual member/step function against this task
     try {
-      
-      this->vAssertSelf(this);
-      
+            
       (this->*fpStepFn) ();
 
       //this->vAssertSelf(this);
@@ -428,9 +424,9 @@ void Task::vDumpOnException(void)
   
   if (m_pOp) {
     vTrace("EventHandler %lld:%s (+%lld times)\n"_Stz,
-         (i8)m_pOp->eCurHandler(),
-         aZK[m_pOp->eCurHandler()],
-         m_pOp->iHandlerCount(m_pOp->eCurHandler())
+         (i8)m_pOp->eCurEvent(),
+         aZK[m_pOp->eCurEvent()],
+         m_pOp->nEventCount(m_pOp->eCurEvent())
          );
   }
   
@@ -915,6 +911,27 @@ Input* Task::pInput(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   return m_pInput;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the invoking task (super-op/pipe) of this task (sub-op/pipe)           */
+/*----------------------------------------------------------------------------*/
+Task* Task::pInvokingTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pInvokingTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the invoking task (super-op/pipe) of this task (sub-op/pipe)           */
+/*----------------------------------------------------------------------------*/
+void Task::vInvokingTask(Task* pInvokingTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  RASSERT(pInvokingTask);
+  m_pInvokingTask = pInvokingTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1448,8 +1465,8 @@ void Task::vTracePoint(Stz* aMark)
   
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s : a%2lld="_Stz,
         
-         AM::szNodeNm(),
-         AM::iThisNodeNo(),
+         AM::NODE::szNodeNm(),
+         AM::NODE::iThisNodeId(),
          szTaskNm(),
          m_oAcksRmg.iPrintOnlyValue(),
          

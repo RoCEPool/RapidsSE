@@ -51,40 +51,6 @@
   // listFile "/Users/Shared/tpch/SF1/nation.csv" ;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // xyz file
-  
-  STD_PATH_TAG
-  "
-  procedure xyzFile
-    parameters $Table $File $Ntimes
-  begin
-
-    stage stageA on origin :
-      start
-        | pulse once
-//        | catFile $File
-        | rdCsvCyclic $File $NTimes
-        | toRow $Table
-        | toPtnRow
-        | toNstRow
-        | stageB hashcast
-
-    stage stageB on all partitions :
-      noop
-        | stageC
-
-    stage stageC on origin :
-      output
-        | sink
-        | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // xyzFile nation "/Users/Shared/tpch/SF1/nation.csv" 3 ;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cycle read file
   
   STD_PATH_TAG

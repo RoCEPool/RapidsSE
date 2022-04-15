@@ -4,14 +4,13 @@
 
 #include "BASE.h"
 
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 
 #include "SP_PipeSpec.hpp"
 #include "SP_StageSpec.hpp"
 #include "SP_OpSpec.hpp"
-#include "SubPipeSpecs.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +26,7 @@ SP_PipeSpec::SP_PipeSpec(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_PipeSpec::SP_PipeSpec(PipeSpec* pPipeSpec)
+SP_PipeSpec::SP_PipeSpec(VertexSpec* pPipeSpec)
 {
   _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
   
@@ -51,7 +50,7 @@ SP_PipeSpec::~SP_PipeSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec)
+void SP_PipeSpec::vPipeSpec(VertexSpec* pPipeSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -63,7 +62,7 @@ void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec)
 /*----------------------------------------------------------------------------*/
 /* sprint pipeline                                                            */
 /*----------------------------------------------------------------------------*/
-void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec, i8 iDepth)
+void SP_PipeSpec::vPipeSpec(VertexSpec* pPipeSpec, i8 iDepth)
 {
   _precondition_(_MAGIC_,_FOOTER_);
    
@@ -71,20 +70,17 @@ void SP_PipeSpec::vPipeSpec(PipeSpec* pPipeSpec, i8 iDepth)
   SP_OpSpec spOpSpec;
 
   vCatf(iDepth,"PipeSpec %s %p\n"_Stz
-        ,pPipeSpec->szPipelineNm()
+        ,pPipeSpec->szVertexNm()
         ,pPipeSpec
         );
   
-  SubPipeSpecs* pSubPipeSpecs = pPipeSpec->pSubPipeSpecs();
-  if (pSubPipeSpecs) {
-    i8 nSubSpecs = pSubPipeSpecs->nItems();
-    for (i8 i_SubSpec = 0; i_SubSpec < nSubSpecs; i_SubSpec++) {
-      PipeSpec* pSubPipeSpec = pSubPipeSpecs->pGet(i_SubSpec);
-      vPipeSpec(pSubPipeSpec,iDepth+1);
-    }
+  i8 nSubSpecs = pPipeSpec->nItems();
+  for (i8 i_SubSpec = 0; i_SubSpec < nSubSpecs; i_SubSpec++) {
+    VertexSpec* pSubPipeSpec = pPipeSpec->pGet(i_SubSpec);
+    vPipeSpec(pSubPipeSpec,iDepth+1);
   }
   
-  for (i8 i_Stage = 0; i_Stage < pPipeSpec->nStages(); i_Stage++) {
+  for (i8 i_Stage = 0; i_Stage < pPipeSpec->nStageSpecs(); i_Stage++) {
     StageSpec* pStageSpec = pPipeSpec->pStageSpec(i_Stage);
     vCatf(iDepth,
           "  %s"_Stz,spStageSpec.sz(pStageSpec));
@@ -110,7 +106,7 @@ Stz* SP_PipeSpec::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_PipeSpec::sz(PipeSpec* pPipeSpec)
+Stz* SP_PipeSpec::sz(VertexSpec* pPipeSpec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 

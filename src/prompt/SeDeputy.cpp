@@ -53,7 +53,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   
   m_pThread   = AM::THREAD::pNewThread();
 
-  m_pSession  = nullptr;
+  m_pInput = new Input(nullptr);
 
   m_bAvailable  = false;
   m_bContinue   = true;
@@ -61,8 +61,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 
   _checkInitialised_(CN_SEDEPUTY);
   
-  m_pSession = Api::pAllocSession(SK_EXTERNAL);
-
+  ApiHelper::vAllocateSession();
+  
   eEC eError = m_pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
   RASSERT(EC_NONE == eError);
   
@@ -76,12 +76,11 @@ SeDeputy::~SeDeputy(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  while (m_pSession->m_pInput)
-    m_pSession->m_pInput = m_pSession->m_pInput->pDeleteInput();
+  while (m_pInput)
+    m_pInput = m_pInput->pDeleteInput();
 
-  Api::vFreeSession(m_pSession);
-  m_pSession = nullptr;
-  
+  ApiHelper::vFreeSession();
+
   AM::THREAD::vDeleteThread(m_pThread);
 }
 
@@ -132,6 +131,8 @@ void SeDeputy::vDeputyLoop(void)
     
     
     vExecuteJob();
+    
+    vPrintResults();
 
     if (! m_pSession->m_pSsnJob->bHasTag(C_TAG_BG)) {
       m_pSePrompt->pMutex()->vLock(m_pSePrompt);
@@ -155,33 +156,8 @@ void SeDeputy::vExecuteJob(void)
   if (m_pSession != m_pSession->m_pSsnJob->pSession())
     vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pSession->m_pSsnJob->pSession());
   RASSERT(m_pSession == m_pSession->m_pSsnJob->pSession());
-  
-//  Craig, try uncommenting this and see what raw input looks like got you
-//         at this point.
-//  Stz* szRaw = m_pSession->m_pInput->szRawInput();
-//  vTrace("vSeDeputy::vExecuteJob : %s\n"_Stz,szRaw);
-  
-  //m_pSession->m_pOutput->vBeginProcOneCmd();
-  
-  Api::vExecuteJob(m_pSession);
-  
-  // start the buffer queue processing while the pipeline ops are running
-  if (m_pSession->m_pSsnJob->bIsPipeline())
-    m_pSession->m_pOutput->vProcessBufferQueue();
-
-  RASSERT(! m_pSession->m_pOutput->m_bExecErr );
-  RASSERT(! m_pSession->m_pOutput->m_bCmdErr );
-
-  if (m_pSession->m_pSsnJob->bJobHasError()) {
-    vTrace("error: (node%lld) %s\n"_Stz, AM::iThisNodeNo(),
-           aEC[m_pSession->m_pSsnJob->eJobError()]);
-  }
-
-  vReportTime();
-  
-  m_pSession->m_pOutput->m_pOutputQueue->vReset();
-  
-  m_pSession->m_pOutput->vEndProcOneCmd();
+    
+  ApiHelper::vExecuteJob();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,8 +167,35 @@ void SeDeputy::vDeleteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  Api::vDeleteJob(m_pSession);
+  ApiHelper::vDeleteJob();
 }
+
+/*----------------------------------------------------------------------------*/
+/* prepare job                                                                */
+/*----------------------------------------------------------------------------*/
+eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec);
+  
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print results                                                              */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vPrintResults(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+    
+  ApiHelper::vPrintResults();
+  
+  vReportTime();
+    
+  ApiHelper::vResetResults();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -247,7 +250,7 @@ Input* SeDeputy::pInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  return m_pSession->m_pInput;
+  return m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -277,31 +280,31 @@ void SeDeputy::vReportTime(void)
            );
   }
   
-  vTrace("time %lldms\n\n"_Stz,m_pSession->m_pSsnJob->iTimerMsec());
+  vTrace("time %lldms\n\n"_Stz,ApiHelper::iResponseTimeMsec());
   
   Timer oTimer;
 
-  oTimer.vSet(m_pSession->m_pSsnJob->iTimerStart(),
+  oTimer.vSet(m_pSession->m_pSsnJob->iResponseTimerStart(),
               m_pSession->m_pSsnJob->iTscBeginning());
   vTrace("Begin    %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pSession->m_pSsnJob->iTimerStart(),
+  oTimer.vSet(m_pSession->m_pSsnJob->iResponseTimerStart(),
               m_pSession->m_pSsnJob->iTscBegun());
   vTrace("Begun    %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pSession->m_pSsnJob->iTimerStart(),
+  oTimer.vSet(m_pSession->m_pSsnJob->iResponseTimerStart(),
               m_pSession->m_pSsnJob->iTscExecuting());
   vTrace("Execute  %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pSession->m_pSsnJob->iTimerStart(),
+  oTimer.vSet(m_pSession->m_pSsnJob->iResponseTimerStart(),
               m_pSession->m_pSsnJob->iTscExecuted());
   vTrace("Executed %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pSession->m_pSsnJob->iTimerStart(),
+  oTimer.vSet(m_pSession->m_pSsnJob->iResponseTimerStart(),
               m_pSession->m_pSsnJob->iTscEnding());
   vTrace("End      %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pSession->m_pSsnJob->iTimerStart(),
+  oTimer.vSet(m_pSession->m_pSsnJob->iResponseTimerStart(),
               m_pSession->m_pSsnJob->iTscEnded());
   vTrace("Ended    %lldus\n"_Stz,oTimer.iMicroseconds());
 

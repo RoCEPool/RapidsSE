@@ -29,7 +29,7 @@ namespace STORE
   
     // - - - - - - - - - - - - - - - //
     //     opt. payload              //
-    byte   m_yaPaySpace[C_MAX_PAY];  // more space to cater for payload
+    byte   m_yaPaySpace[C_MAX_PAYLOAD];  // more space to cater for payload
     // - - - - - - - - - - - - - - - //
     
     Footer m_xFooter;

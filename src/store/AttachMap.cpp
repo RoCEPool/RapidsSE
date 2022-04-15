@@ -20,7 +20,7 @@
 
 #include "Resources.hpp" //?
 #include "TagConstants.h"
-#include "BucketMap_dyn.hpp"
+#include "BucketMap.hpp"
 
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
@@ -90,7 +90,7 @@ AttachMap::AttachMap(bool bNoFree)
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;
   m_pNumbering      = new Numbering;
-  m_pPtnMap         = nullptr;
+  m_pLglPtnMap         = nullptr;
   m_bReapEnabled    = true;
   m_pStarter        = new Starter;
   m_pTxSet          = new TxSet;
@@ -126,17 +126,65 @@ AttachMap::~AttachMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* the subsystem function                                                     */
+/* find api which matches given name                                          */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vSubSystem(TokenVec* pTokenVec)
+void AttachMap::vAttachMapState(u8 uState)
 {
-  _static_
-  UNUSED(pTokenVec);
-
-  vTrace("AttachMap::vSubSystem\n"_Stz);
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   
-  if (AM::bAttached())
-    AM::vPrintAttachMap();
+  m_uAttachMapState = uState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find api which matches given name                                          */
+/*----------------------------------------------------------------------------*/
+u8 AttachMap::uAttachMapState(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  return m_uAttachMapState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate next command no                                                   */
+/*----------------------------------------------------------------------------*/
+i8 AttachMap::iCmdNoNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  i8 iCmdNo = ++ m_ixCmdNo;
+  
+  return iCmdNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump this attachmap                                                        */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  UNUSED(eClass);
+  UNUSED(aTab);
+
+  AttachMap* pAttachMap = _pAttachMap(pObject);
+  
+  vTrace("sepid %lld utc %s regionSize %lld\n"_Stz,
+         pAttachMap->m_iSePid,
+         pAttachMap->m_oNow.sz(),
+         pAttachMap->m_xSysArgs.m_iRegionSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find api which matches given name                                          */
+/*----------------------------------------------------------------------------*/
+eAC AttachMap::eFindApi(Stz* aApiNm)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  for (i8 i_Api = 0; i_Api < AC_ENUMS; i_Api++)
+    if (aApiNm->bSame(aAC[i_Api]))
+      return (eAC)i_Api;
+  
+  return AC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,16 +206,6 @@ void AttachMap::vIndexEntries(i8 nIndexEntries)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pid                                                                    */
-/*----------------------------------------------------------------------------*/
-i8 AttachMap::iPid(void)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  return m_iPid;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next temp name                                                         */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vNextTempName(s32& sName)
@@ -178,12 +216,33 @@ void AttachMap::vNextTempName(s32& sName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* outline                                                                    */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vOutline(s4K& sOutline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pid                                                                    */
+/*----------------------------------------------------------------------------*/
+i8 AttachMap::iSePid(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  return m_iSePid;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* print atachmap                                                             */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vPrintAttachMap(void)
 {
   vTrace("\n-- ATTACH MAP --\n\n"_Stz);
-  vTrace("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
+  vTrace("SePid: %lld; \n"_Stz,   gpAttachMap->m_iSePid);
   vTrace("UTC: %s; \n"_Stz,     gpAttachMap->m_oNow.sz());
   
   vTrace("RegionName   : %s \n"_Stz,     gpAttachMap->m_xSysArgs.m_sRegionName.szStz());
@@ -233,6 +292,61 @@ void AttachMap::vPrintAttachMap(void)
   gpAttachMap->m_xSysArgs.m_oArgTags.vDumpSet();
 
   vTrace("\n-- ATTACH MAP END --\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print arguments                                                            */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vPrintStartupInfo(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  vTrace("\nArgs:\n"_Stz);
+  
+  vTrace("  --name %s\n"_Stz,m_pGrid->pThisNode()->szNodeNm()->azChar());
+  vTrace("  --region %s\n"_Stz,m_xSysArgs.m_sRegionName.azChar());
+  vTrace("  --size %lld\n"_Stz,m_xSysArgs.m_iRegionSize);
+  vTrace("  --partitionsPerNode %lld\n"_Stz,AM::PTNMAP::nPtnsPerNode());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get reap enabled?                                                          */
+/*----------------------------------------------------------------------------*/
+bool AttachMap::bReapEnabled(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  return m_bReapEnabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set reap enabled?                                                          */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vReapEnabled(bool bReapEnabled)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_bReapEnabled = bReapEnabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop reap lock                                                             */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vReapLockDrop(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_oReapLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab reap lock                                                             */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vReapLockGrab(void)
+{
+  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_oReapLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +401,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   
   // ray -- not sure the following should be here
   
-  m_iPid = Process::iGetPid();
+  m_iSePid = Process::iGetPid();
   
   m_oBirth.vNow();
   m_oNow.vSetNowUTC();
@@ -329,6 +443,20 @@ Sessions* AttachMap::pSessions(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* the subsystem function                                                     */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vSubSystem(TokenVec* pTokenVec)
+{
+  _static_
+  UNUSED(pTokenVec);
+
+  vTrace("AttachMap::vSubSystem\n"_Stz);
+  
+  if (AM::bAttached())
+    AM::vPrintAttachMap();
+}
+
+/*----------------------------------------------------------------------------*/
 /* add sys metrics to chain                                                   */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vSysMetricsAdd(SysMetrics* pSysMetrics)
@@ -350,121 +478,6 @@ SysMetrics* AttachMap::pSysMetricsChain(void)
   return m_pSysMetricsChain;
 }
 
-/*----------------------------------------------------------------------------*/
-/* dump this attachmap                                                        */
-/*----------------------------------------------------------------------------*/
-void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  UNUSED(eClass);
-  UNUSED(aTab);
-
-  AttachMap* pAttachMap = _pAttachMap(pObject);
-  
-  vTrace("pid %lld utc %s regionSize %lld\n"_Stz,
-         pAttachMap->m_iPid,
-         pAttachMap->m_oNow.sz(),
-         pAttachMap->m_xSysArgs.m_iRegionSize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print arguments                                                            */
-/*----------------------------------------------------------------------------*/
-void AttachMap::vPrintStartupInfo(void)
-{
-  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  vTrace("\nArgs:\n"_Stz);
-  
-  vTrace("  --name %s\n"_Stz,m_pGrid->pThisNode()->szNodeNm()->azChar());
-  vTrace("  --region %s\n"_Stz,m_xSysArgs.m_sRegionName.azChar());
-  vTrace("  --size %lld\n"_Stz,m_xSysArgs.m_iRegionSize);
-  vTrace("  --partitionsPerNode %lld\n"_Stz,AM::PTNMAP::nPtnsPerNode());
-}
-
-/*----------------------------------------------------------------------------*/
-/* find api which matches given name                                          */
-/*----------------------------------------------------------------------------*/
-void AttachMap::vAttachMapState(u8 uState)
-{
-  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  m_uAttachMapState = uState;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find api which matches given name                                          */
-/*----------------------------------------------------------------------------*/
-u8 AttachMap::uAttachMapState(void)
-{
-  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  return m_uAttachMapState;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* find api which matches given name                                          */
-/*----------------------------------------------------------------------------*/
-eAC AttachMap::eFindApi(Stz* aApiNm)
-{
-  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  for (i8 i_Api = 0; i_Api < AC_ENUMS; i_Api++)
-    if (aApiNm->bSame(aAC[i_Api]))
-      return (eAC)i_Api;
-  
-  return AC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* outline                                                                    */
-/*----------------------------------------------------------------------------*/
-void AttachMap::vOutline(s4K& sOutline)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get reap enabled?                                                          */
-/*----------------------------------------------------------------------------*/
-bool AttachMap::bReapEnabled(void)
-{
-  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  return m_bReapEnabled;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set reap enabled?                                                          */
-/*----------------------------------------------------------------------------*/
-void AttachMap::vReapEnabled(bool bReapEnabled)
-{
-  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  m_bReapEnabled = bReapEnabled;
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop reap lock                                                             */
-/*----------------------------------------------------------------------------*/
-void AttachMap::vReapLockDrop(void)
-{
-  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  m_oReapLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grab reap lock                                                             */
-/*----------------------------------------------------------------------------*/
-void AttachMap::vReapLockGrab(void)
-{
-  _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-  
-  m_oReapLock.vGrabWrite();
-}
 
 
 /*----------------------------------------------------------------------------*/

@@ -23,9 +23,11 @@ namespace STORE
     static void vAddStep(Stz* aName, fpSTEPFN fpStepFn, bool bImmediate=false);
 
     static void vAddSteps_AccessPath(void);
+    static void vAddSteps_AdaptorWL(void);
     static void vAddSteps_Address(void);
     static void vAddSteps_AggTimer(void);
     static void vAddSteps_AM(void);
+    static void vAddSteps_AnswerWL(void);
     static void vAddSteps_Api(void);
     static void vAddSteps_SysArgs(void);
     static void vAddSteps_Arrange(void);
@@ -55,10 +57,8 @@ namespace STORE
     static void vAddSteps_DataBuffer(void);
     static void vAddSteps_DdlLock(void);
     static void vAddSteps_Debug(void);
-    static void vAddSteps_DevLftIxt(void);
-    static void vAddSteps_DevLftRow(void);
-    static void vAddSteps_DevRhtIxt(void);
-    static void vAddSteps_DevRhtRow(void);
+    static void vAddSteps_Deck(void);
+    static void vAddSteps_DeckOfOp(void);
     static void vAddSteps_Dic(void);
     static void vAddSteps_DicLock(void);
     static void vAddSteps_Dir(void);
@@ -74,11 +74,9 @@ namespace STORE
     static void vAddSteps_ErrorMarker(void);
     static void vAddSteps_Event(void);
     static void vAddSteps_Executable(void);
-    static void vAddSteps_ExprEval(void);
 
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
-    static void vAddSteps_Filter(void);
     static void vAddSteps_Fun(void);
     static void vAddSteps_Flush(void);
 
@@ -88,9 +86,7 @@ namespace STORE
   
     static void vAddSteps_Index(void);
     static void vAddSteps_IndexDef(void);
-    static void vAddSteps_IndexDefRlu(void);
     static void vAddSteps_IndexStream(void);
-    static void vAddSteps_IndexTreeRlu(void);
     static void vAddSteps_InfoSet(void);
     static void vAddSteps_InfoSetRow(void);
     static void vAddSteps_InfoSetTable(void);
@@ -113,7 +109,6 @@ namespace STORE
     static void vAddSteps_Lock(void);
     static void vAddSteps_Locks(void);
     static void vAddSteps_Logic(void);
-    static void vAddSteps_LogicCompiler(void);
     static void vAddSteps_LogicUnit(void);
 
     static void vAddSteps_Machine(void);
@@ -150,51 +145,51 @@ namespace STORE
     static void vAddSteps_Procedure(void);
     static void vAddSteps_Process(void);
     static void vAddSteps_Profile(void);
+    static void vAddSteps_PtnDef(void);
     static void vAddSteps_PtnMap(void);
     static void vAddSteps_PtnStream(void);
-    static void vAddSteps_PuGen(void);
     static void vAddSteps_Push(void);
   
-    static void vAddSteps_Schedule(void);
-
     static void vAddSteps_RecvdObject(void);
+    static void vAddSteps_RecvWL(void);
     static void vAddSteps_RefTimer(void);
-    static void vAddSteps_RegAggTimer(void);
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegFolder(void);
     static void vAddSteps_RegNow(void);
     static void vAddSteps_RegPath(void);
     static void vAddSteps_Pipein(void);
     static void vAddSteps_RegSends(void);
+    static void vAddSteps_ResponseOp(void);
     static void vAddSteps_RowOnce(void);
     static void vAddSteps_RowBuffer(void);
     static void vAddSteps_Rstack(void);
 
+    static void vAddSteps_Schedule(void);
     static void vAddSteps_SeekOffsets(void);
     static void vAddSteps_Sen(void);
     static void vAddSteps_SenCompiler(void);
     static void vAddSteps_SendNode(void);
+    static void vAddSteps_SendWL(void);
     static void vAddSteps_Session(void);
-    static void vAddSteps_ShardDef(void);
     static void vAddSteps_Shell(void);
     static void vAddSteps_Socket(void);
     static void vAddSteps_SqlCompiler(void);
     static void vAddSteps_SsnState(void);
     static void vAddSteps_Stage(void);
+    static void vAddSteps_StageOfOp(void);
     static void vAddSteps_Stats(void);
     static void vAddSteps_Stencil(void);
     static void vAddSteps_Steps(void);
     static void vAddSteps_Str(void);
     static void vAddSteps_Stream(void);
-    static void vAddSteps_StringA(void);
     static void vAddSteps_StreamDefLft(void);
     static void vAddSteps_StreamDefOut(void);
     static void vAddSteps_StreamDefRht(void);
+    static void vAddSteps_StreamOfOp(void);
     static void vAddSteps_StreamSet(void);
     static void vAddSteps_StreamSetTable(void);
+    static void vAddSteps_StringA(void);
     static void vAddSteps_SubCall(void);
-    static void vAddSteps_SubPipe(void);
-    static void vAddSteps_SubPipeOfOp(void);
     static void vAddSteps_SubReturn(void);
     static void vAddSteps_Subset(void);
     static void vAddSteps_Supervisor(void);
@@ -215,13 +210,11 @@ namespace STORE
     static void vAddSteps_Timer(void);
     static void vAddSteps_TinyC(void);
     static void vAddSteps_To(void);
-    static void vAddSteps_ToBktCrw(void);
-    static void vAddSteps_ToBktRow(void);
-    static void vAddSteps_ToNstRow(void);
-    static void vAddSteps_ToPtnCrw(void);
-    static void vAddSteps_ToPtnRow(void);
-    static void vAddSteps_ToRow(void);
     static void vAddSteps_TokenVec(void);
+    static void vAddSteps_ToKeyHshRow(void);
+    static void vAddSteps_ToLglPtnCrw(void);
+    static void vAddSteps_ToLglPtnNst(void);
+    static void vAddSteps_ToLglPtnRow(void);
     static void vAddSteps_Trace(void);
     static void vAddSteps_Tub(void);
     static void vAddSteps_Tx(void);
@@ -229,6 +222,9 @@ namespace STORE
   
     static void vAddSteps_User(void);
  
+    static void vAddSteps_Vertex(void);
+    static void vAddSteps_VertexOfOp(void);
+
     static void vAddSteps_With(void);
     static void vAddSteps_Word(void);
 

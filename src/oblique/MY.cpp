@@ -25,13 +25,13 @@ i8 MY::nNanoseconds(void)
 /*----------------------------------------------------------------------------*/
 /* get current no node                                                        */
 /*----------------------------------------------------------------------------*/
-i8 MY::iNodeNo(void)
+i8 MY::iNodeId(void)
 {
   _static_
   
-  i8 iThisNodeNo = AM::pGrid()->iThisNodeNo();
+  i8 iThisNodeId = AM::pGrid()->iThisNodeId();
 
-  return iThisNodeNo;
+  return iThisNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ i8 MY::iPtn(void)
   _static_
   
   Op* pOp = MY::pOp();
-  i8 iPtn = pOp ? pOp->tPtnId().iAsI8() : -1;
+  i8 iPtn = pOp ? pOp->tLglPtn().iAsI8() : -1;
   return iPtn;
 }
 
@@ -439,7 +439,7 @@ Pipeline* MY::pPipeline(void)
   if (! pOp)
     return nullptr;
   
-  return pOp->pPipelineOfOp();
+  return pOp->pPipeline();
 }
 
 /*----------------------------------------------------------------------------*/

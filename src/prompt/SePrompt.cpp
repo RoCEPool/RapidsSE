@@ -61,7 +61,7 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pThread   = AM::THREAD::pNewThread();
   
-  m_pInpTknVec = nullptr;
+  m_pCmdTknVec = nullptr;
   
   m_iDivisionNo = 0;
   m_iSectionNo  = 0;
@@ -76,8 +76,6 @@ SePrompt::SePrompt(bool bOneCommand)
 
   m_iDebugMode = gxCmdLineArgs.m_xSysArgs.m_iPromptDebug;
 
-  m_pLitTknVec = new TokenVec;
-    
   m_nDeputies = 0;
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     m_paSeDeputy[i_Deputy] = nullptr;
@@ -107,7 +105,7 @@ SePrompt::SePrompt(bool bOneCommand)
     //m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
   }
 
-  m_pInpTknVec = pInputGet()->pTokenVec();
+  //m_pCmdTknVec = pInputGet()->pTokenVec();
 
   pInputGet()->vDebugMode(m_iDebugMode);
 
@@ -139,10 +137,7 @@ SePrompt::~SePrompt(void) noexcept(false)
   delete m_pSnapshotAtTrackingMemory;
   delete m_pSnapshotAtMemoryLeaks;
   delete m_pSnapshotObjects;
-  
-  m_pLitTknVec->vSoftReset();
-  delete m_pLitTknVec;
-  
+    
   //delete m_pPrintOp;
   
   AM::THREAD::vDeleteThread(m_pThread);
@@ -186,7 +181,7 @@ void SePrompt::vPromptLoop(void)
   //PsxThd::vMarkNonSeThread();
   m_pThread->vThisTLSThread();
 
-  Thread* pThreadTest = AM::THREAD::pThisThread();
+  //Thread* pThreadTest = AM::THREAD::pThisThread();
 
   
 
@@ -238,7 +233,7 @@ void SePrompt::vPromptLoop(void)
       RASSERT(0);
     }
     
-    m_pInpTknVec = pInputGet()->pTokenVec();
+    m_pCmdTknVec = pInputGet()->pTokenVec();
     m_pCmdTagSet = m_pCurrentDeputy->pJobTagSet();
     
     Stz* szToDo = m_pCurrentDeputy->pSession()->m_sToDo;
@@ -334,28 +329,16 @@ bool SePrompt::bExamineCommand(void)
 
   if (bRedirectFromFile())
     return false;
-  
-  // is it a demo statement ?
-  if (bDemo()) {
-    
-    // handle demo statement
-    if ( ! bHandleDemo() ) {
-      vTrace("error: %s\n"_Stz,aEC[EC_INVALID_COMMAND]);
-      if (AM::bDeveloper())
-        vDumpInpTknVec(true);
-      return false;
-    }
-  }
-  
+
   while (bSubSsnTags())
     {;}
-
-  Api::vExtractCmdPaths(m_pCurrentDeputy->pSession());
-  if (! Api::bExtractCmdTags(m_pCurrentDeputy->pSession()))
+  
+  Api::vExtractCmdPaths(m_pCurrentDeputy->pSession(),m_pCmdTknVec);
+  if (! Api::bExtractCmdTags(m_pCurrentDeputy->pSession(),m_pCmdTknVec))
     return false;
 
   if (bIsPromptWord())
-    m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
+    m_pCmdTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
 
   if (bExecuteFunction())
     return false;
@@ -374,7 +357,7 @@ bool SePrompt::bPrepareJob(void)
 
   m_pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   
-  eEC eError = Api::ePrepareJob(m_pCurrentDeputy->pSession(),m_pLitTknVec);
+  eEC eError = m_pCurrentDeputy->ePrepareJob(m_pCmdTknVec);
 
   if (eError) {
     RASSERT(! m_pCurrentDeputy->pJob());
@@ -433,7 +416,7 @@ bool SePrompt::bBlankLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
     
-  bool bBlankLine = m_pInpTknVec->bBlankLine();
+  bool bBlankLine = m_pCmdTknVec->bBlankLine();
 
   return bBlankLine;
 }
@@ -531,24 +514,6 @@ void SePrompt::vDebugMode(i8 iDebugMode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* demo?                                                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bDemo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Token* pTkn = m_pInpTknVec->pGet(0);
-  m_pLitTknVec->vSoftReset();
-  
-  // extract literals from the token vec
-  if (pTkn->bSame("demo"_Stz)) {
-    return true;
-  }
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set prompt section                                                         */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vDivision(Stz* szDivision)
@@ -606,13 +571,13 @@ void SePrompt::vDumpInpTknVec(bool bForce)
   if (! bDumpTokens() && ! bForce)
     return;
 
-  if (! m_pInpTknVec->nTokens() && ! bForce)
+  if (! m_pCmdTknVec->nTokens() && ! bForce)
     return;
 
   s48K sCommand;
 
-  m_pInpTknVec->vVecToString(sCommand,0,false);
-  vTrace("InpTknVec %lld tokens: %s\n"_Stz,m_pInpTknVec->nTokens(),sCommand.szStz());
+  m_pCmdTknVec->vVecToString(sCommand,0,false);
+  vTrace("InpTknVec %lld tokens: %s\n"_Stz,m_pCmdTknVec->nTokens(),sCommand.szStz());
   
   BASE::vDebugPoint();
 }
@@ -680,123 +645,13 @@ void SePrompt::vOutline(s4K& sOutline)
 }
 
 /*----------------------------------------------------------------------------*/
-/* demo?                                                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bHandleDemo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Token* pTkn = m_pInpTknVec->pGet(0);
-  m_pLitTknVec->vSoftReset();
-  
-  // extract literals from the token vec
-  ASSERT(pTkn->bSame("demo"_Stz));
-    
-  i8 iHash = 0;
-  i8 nSize;
-  
-  // calculate hash of statement and extract literals
-  for (i8 i_Tkn = 1; i_Tkn < m_pInpTknVec->nTokens(); i_Tkn++) {
-    
-    pTkn = m_pInpTknVec->pGet(i_Tkn);
-    
-    if ( pTkn->bIsInteger()) {
-      m_pLitTknVec->vAppendToken(pTkn);
-      continue;
-    }
-    
-    if ( pTkn->bIsString()) {
-      m_pLitTknVec->vAppendToken(pTkn);
-      continue;
-    }
-    
-    nSize = StrLib::nLength(pTkn->azChars());
-    StrLib::vToLower(pTkn->azChars());
-    iHash += HshLib::iHash((byte*)pTkn->azChars(),nSize);
-  }
-  //m_pLitTknVec->vDumpVec(0);
-  
-  // reset the input token vector
-  m_pInpTknVec->vSoftReset();
-  
-  char* szToken;
-  bool bResult;
-  
-  switch (iHash) {
-      
-      // Query 1
-    case 201637548233:
-      m_pInpTknVec->vTokeniseCpp(C_Query1);
-      m_pInpTknVec->vIntegrityCheck();
-      break;
-      
-      // Query 3
-    case 127443435585:
-      m_pInpTknVec->vTokeniseCpp(C_Query3);
-      m_pInpTknVec->vIntegrityCheck();
-      
-      i8 iInteger;
-      i8 nDigits;
-      pTkn = m_pLitTknVec->pGet(3);
-      szToken = (char*)pTkn->szChars();
-      bResult = StrLib::bExtractInteger(&szToken, &iInteger, nDigits);
-      if ( ! bResult )
-        return false;
-      
-      break;
-      
-      // Query 4
-    case 97354348505:
-      m_pInpTknVec->vTokeniseCpp(C_Query4);
-      m_pInpTknVec->vIntegrityCheck();
-      break;
-      
-      // Query 6
-    case 67345495087: {
-      m_pInpTknVec->vTokeniseCpp(C_Query6);
-      m_pInpTknVec->vIntegrityCheck();
- 
-      i8 iDecimal;
-      pTkn = m_pLitTknVec->pGet(2);
-      szToken = (char*)pTkn->szChars();
-      bool bResult = StrLib::bExtractDecimal(&szToken, iDecimal, 15, 2);
-      if ( ! bResult )
-        return false;
-      StrLib::vSprint(pTkn->azChars(), "%lld"_Stz, iDecimal);
-      
-      pTkn = m_pLitTknVec->pGet(3);
-      szToken = (char*)pTkn->szChars();
-      bResult = StrLib::bExtractDecimal(&szToken, iDecimal, 15, 2);
-      if ( ! bResult )
-        return false;
-      StrLib::vSprint(pTkn->azChars(), "%lld"_Stz, iDecimal);
-      
-      i8 iInteger;
-      i8 nDigits;
-      pTkn = m_pLitTknVec->pGet(4);
-      szToken = (char*)pTkn->szChars();
-      bResult = StrLib::bExtractInteger(&szToken, &iInteger, nDigits);
-      if ( ! bResult )
-        return false;
-      
-    }
-      break;
-      
-    default:
-      return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is a prompt word?                                                          */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bIsPromptWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn0 = m_pInpTknVec->pGet(0);
+  Token* pTkn0 = m_pCmdTknVec->pGet(0);
 
   s32 sWordNm;
   sWordNm = pTkn0->szChars();
@@ -839,11 +694,11 @@ void SePrompt::vLogCommand(void)
   
   sSTMT sCommand;
   
-  Token* pTkn0 = m_pInpTknVec->pGet(0);
+  Token* pTkn0 = m_pCmdTknVec->pGet(0);
   if (pTkn0->bSame("logNote"_Stz))
   return;
   
-  m_pInpTknVec->vVecToString(sCommand,0,true);
+  m_pCmdTknVec->vVecToString(sCommand,0,true);
   sCommand.vSizeMax(C_MAX_LOG_NOTE / 2);
 }
 
@@ -948,26 +803,6 @@ i8 SePrompt::iNextSectionNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get original command text                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* SePrompt::szOriginalCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Session* pSession = m_pCurrentDeputy->pSession();
-  if (! pSession)
-    return nullptr;
-  
-  Input* pInput = pSession->m_pInput;
-  if (! pInput)
-    return nullptr;
-
-  Stz* szCommand = pInput->szRawInput();
-  
-  return szCommand;
-}
-
-/*----------------------------------------------------------------------------*/
 /* prompt the user for input                                                  */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vPromptUser(void)
@@ -986,7 +821,7 @@ void SePrompt::vPromptUser(void)
 
   bool bLowMem = gpBufferPool->bLowMemory();
   
-  Stz* szNodeNm = AM::szNodeNm();
+  Stz* szNodeNm = AM::NODE::szNodeNm();
   i8 iPid = Process::iGetPid();
 
   /*
@@ -1081,7 +916,7 @@ bool SePrompt::bReadNextCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
    
-  m_pInpTknVec->vIntegrityCheck();
+  m_pCmdTknVec->vIntegrityCheck();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case: initial command supplied as an SE command line argument
@@ -1090,9 +925,9 @@ bool SePrompt::bReadNextCommand(void)
     gxCmdLineArgs.m_xSysArgs.m_bInitial = false;
     
     s4K szInitial = AM::szInitial();
-    m_pInpTknVec->vTokeniseSen(szInitial);
-    m_pInpTknVec->vStripSemicolon();
-    m_pInpTknVec->vIntegrityCheck();
+    m_pCmdTknVec->vTokeniseSen(szInitial);
+    m_pCmdTknVec->vStripSemicolon();
+    m_pCmdTknVec->vIntegrityCheck();
     return true;
   }
   
@@ -1103,9 +938,9 @@ bool SePrompt::bReadNextCommand(void)
     m_bOneRun = true;
     
     s4K szCommand = AM::szCommand();
-    m_pInpTknVec->vTokeniseSen(szCommand);
-    m_pInpTknVec->vStripSemicolon();
-    m_pInpTknVec->vIntegrityCheck();
+    m_pCmdTknVec->vTokeniseSen(szCommand);
+    m_pCmdTknVec->vStripSemicolon();
+    m_pCmdTknVec->vIntegrityCheck();
     return true;
   }
   
@@ -1113,11 +948,11 @@ bool SePrompt::bReadNextCommand(void)
   // special case: a previous command has requested to prompt to do something
   
   if (* m_pCurrentDeputy->pSession()->m_sToDo.azChar()) {
-    m_pInpTknVec->vTokeniseSen(m_pCurrentDeputy->pSession()->m_sToDo);
-    m_pInpTknVec->vStripSemicolon();
+    m_pCmdTknVec->vTokeniseSen(m_pCurrentDeputy->pSession()->m_sToDo);
+    m_pCmdTknVec->vStripSemicolon();
 
     m_pCurrentDeputy->pSession()->m_sToDo = ""_Stz;
-    m_pInpTknVec->vIntegrityCheck();
+    m_pCmdTknVec->vIntegrityCheck();
     return true;
   }
   
@@ -1125,7 +960,7 @@ bool SePrompt::bReadNextCommand(void)
   // special case:
   
   if (m_bOneCommand && pInputGet()->bIsStdin()) {
-    m_pInpTknVec->vIntegrityCheck();
+    m_pCmdTknVec->vIntegrityCheck();
     return false;
   }
 
@@ -1133,7 +968,7 @@ bool SePrompt::bReadNextCommand(void)
   // general case
   
   pInputGet()->vReadCommand();
-  m_pInpTknVec->vIntegrityCheck();
+  m_pCmdTknVec->vIntegrityCheck();
 
   return true;
 }
@@ -1145,7 +980,7 @@ bool SePrompt::bRedirectFromFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Stz* szPath = m_pInpTknVec->pGet(0)->szChars();
+  Stz* szPath = m_pCmdTknVec->pGet(0)->szChars();
 
   if (! File::bExists(szPath, false))
     return false;
@@ -1168,7 +1003,7 @@ void SePrompt::vResetExtractedTagSet(void)
   
   m_pCmdTagSet->vReset();
   m_pCmdTagSet->vInsert(C_TAG_BYPROMPT,1);
-  m_pCmdTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeNo());
+  m_pCmdTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
   m_pCmdTagSet->vInsert(C_TAG_SESSION,m_pCurrentDeputy->pSession()->m_i_Session);
 }
 
@@ -1293,7 +1128,7 @@ bool SePrompt::bShortCut(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn = m_pInpTknVec->pGet(0);
+  Token* pTkn = m_pCmdTknVec->pGet(0);
   
   i8 nShortCuts = m_oShortCutVec.nItems();
   for (i8 i_ShortCut = 0; i_ShortCut < nShortCuts; i_ShortCut++) {
@@ -1330,10 +1165,10 @@ bool SePrompt::bSubSsnTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 nTokens = m_pInpTknVec->nTokens();
+  i8 nTokens = m_pCmdTknVec->nTokens();
   for (i8 i_Token = 0; i_Token < nTokens - 2; i_Token++) { //! note the - 2
     
-    Token* pToken = m_pInpTknVec->pGet(i_Token);
+    Token* pToken = m_pCmdTknVec->pGet(i_Token);
     
 //    if (0 == i_Token && pToken->bSame("tag"_Stz))
 //      return false;
@@ -1344,9 +1179,9 @@ bool SePrompt::bSubSsnTags(void)
     if (! pToken->bSame("<"_Stz))
       continue;
     
-    Token* pToken_name = m_pInpTknVec->pGet(i_Token + 1);
+    Token* pToken_name = m_pCmdTknVec->pGet(i_Token + 1);
     
-    pToken = m_pInpTknVec->pGet(i_Token + 2);
+    pToken = m_pCmdTknVec->pGet(i_Token + 2);
     if (! pToken->bSame(">"_Stz))
       continue;
 
@@ -1364,16 +1199,16 @@ bool SePrompt::bSubSsnTags(void)
     s256 sTagValue;
     sTagValue = pSsnTagSet->szValue(sTagName);
     
-    m_pInpTknVec->vRemoveToken(i_Token);
-    m_pInpTknVec->vRemoveToken(i_Token);
-    m_pInpTknVec->vRemoveToken(i_Token);
+    m_pCmdTknVec->vRemoveToken(i_Token);
+    m_pCmdTknVec->vRemoveToken(i_Token);
+    m_pCmdTknVec->vRemoveToken(i_Token);
     
     nTokens -= 3;
     
     if (i_Token >= nTokens)
-      m_pInpTknVec->vAppendToken(sTagValue,TN_STRING);
+      m_pCmdTknVec->vAppendToken(sTagValue,TN_STRING);
     else
-      m_pInpTknVec->vInsertToken(i_Token,sTagValue,TN_STRING);
+      m_pCmdTknVec->vInsertToken(i_Token,sTagValue,TN_STRING);
 
     return true;
   }
@@ -1409,7 +1244,7 @@ TokenVec* SePrompt::pInpTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pInpTknVec;
+  return m_pCmdTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1429,7 +1264,7 @@ Token* SePrompt::pTkn(i8 i_Token)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn = m_pInpTknVec->pGet(i_Token,true);
+  Token* pTkn = m_pCmdTknVec->pGet(i_Token,true);
   
   return pTkn;
 }
@@ -1473,11 +1308,11 @@ bool SePrompt::bTranslateProcedure(void)
   sSTMT sPipelineSmt;
   
   if (! Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
-                                        m_pInpTknVec))
+                                        m_pCmdTknVec))
     return false;
     
-  m_pInpTknVec->vSoftReset();
-  m_pInpTknVec->vTokeniseSen(sPipelineSmt);
+  m_pCmdTknVec->vSoftReset();
+  m_pCmdTknVec->vTokeniseSen(sPipelineSmt);
   
   return false;
 }

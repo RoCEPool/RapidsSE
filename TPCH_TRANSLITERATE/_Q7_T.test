@@ -1,0 +1,162 @@
+/*============================================================================*/
+/* _Q7_T                                                                      */
+/*============================================================================*/
+
+//------------------------------------------------------------------------------
+//  Original Query
+//------------------------------------------------------------------------------
+select
+    supp_nation,
+    cust_nation,
+    l_year,
+    sum(volume) as revenue
+from (
+    select
+       n1.n_name as supp_nation,
+       n2.n_name as cust_nation,
+       extract(year from l_shipdate) as l_year,
+       l_extendedprice * (1 - l_discount) as volume
+     from
+       supplier,
+       lineitem,
+       orders,
+       customer,
+       nation n1,
+       nation n2
+     where
+       s_suppkey = l_suppkey
+       and o_orderkey = l_orderkey
+       and c_custkey = o_custkey
+       and s_nationkey = n1.n_nationkey
+       and c_nationkey = n2.n_nationkey
+       and ( (n1.n_name = 'FRANCE' and n2.n_name = 'GERMANY')
+       or (n1.n_name = 'GERMANY' and n2.n_name = 'FRANCE'))
+       and l_shipdate between '1995-01-01' and '1996-12-31'
+
+     ) as shipping
+     group by
+       supp_nation,
+       cust_nation,
+       l_year
+     order by
+       supp_nation,
+       cust_nation,
+       l_year;
+
+//--------------------------------------------------------------------------------
+//  Transliterate Query
+//--------------------------------------------------------------------------------
+EXPLAIN STAGE TRANSLITERATE
+select
+    supp_nation,
+    cust_nation,
+    l_year,
+    sum(volume) as revenue
+from (
+    select
+       n1.n_name as supp_nation,
+       n2.n_name as cust_nation,
+       extract(year from l_shipdate) as l_year,
+       l_extendedprice * (1 - l_discount) as volume
+     from
+       supplier,
+       lineitem,
+       orders,
+       customer,
+       nation n1,
+       nation n2
+     where
+       s_suppkey = l_suppkey
+       and o_orderkey = l_orderkey
+       and c_custkey = o_custkey
+       and s_nationkey = n1.n_nationkey
+       and c_nationkey = n2.n_nationkey
+       and ( (n1.n_name = 'FRANCE' and n2.n_name = 'GERMANY')
+       or (n1.n_name = 'GERMANY' and n2.n_name = 'FRANCE'))
+       and l_shipdate between '1995-01-01' and '1996-12-31'
+
+     ) as shipping
+     group by
+       supp_nation,
+       cust_nation,
+       l_year
+     order by
+       supp_nation,
+       cust_nation,
+       l_year;
+
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  pipeline shipping
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker14153
+    stage stageMarker14153 on all partitions :
+      scan rapidsse public supplier
+      | stageMarker14156 broadcast
+    stage stageMarker14156 on all partitions :
+      scan rapidsse public lineitem
+      | abstractJoin " 1  "
+      | stageMarker14159 broadcast
+    stage stageMarker14159 on all partitions :
+      scan rapidsse public orders
+      | abstractJoin " 1  "
+      | stageMarker14162 broadcast
+    stage stageMarker14162 on all partitions :
+      scan rapidsse public customer
+      | abstractJoin " 1  "
+      | stageMarker14165 broadcast
+    stage stageMarker14165 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin " 1  "
+      | stageMarker14168 broadcast
+    stage stageMarker14168 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin " 1  "
+      | stageMarker14171
+    stage stageMarker14171 on all partitions :
+      filter " type BOOLEAN  $1 $10 ==  $24 $8 ==  and  $33 $25 ==  and  $4 $41 ==  and  $36 $45 ==  and  $42 ''FRANCE''  ==  $46 ''GERMANY''  ==  and  $42 ''GERMANY''  ==  $46 ''FRANCE''  ==  and  or  and  }  TIMESTAMP ''1995-01-01 00:00:00''  TIMESTAMP ''1996-12-31 00:00:00''  $18 between  and  "
+      | project " type VARCHAR as supp_nation $42 , type VARCHAR as cust_nation $46 , type INTEGER as l_year $18 extract_year  , type DECIMAL as volume $13 1.  $14 -  *  "
+      | combined 0
+      | stageMarker14174
+    stage stageMarker14174 on all partitions :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker14177
+  stage stageMarker14177 on all partitions :
+    call "shipping "
+    | aggreg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL )  $4 sum  "
+    | combined 0
+    | stageMarker14180
+  stage stageMarker14180 on all nodes :
+    aggreg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL )  $4 sum  "
+    | combined 0
+    | stageMarker14183
+  stage stageMarker14183 on origin :
+    aggreg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL as revenue )  $4 sum  "
+    | sort " type VARCHAR as supp_nation $1 ASC  , type VARCHAR as cust_nation $2 ASC  , type INTEGER as l_year $3 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -45,7 +45,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 #endif
 
   m_iBucketNo  = C_UNKNOWN;
-  m_tPtnId     = C_UNKNOWN;
+  m_tLglPtn     = C_UNKNOWN;
   
   m_iBufferHeight = 0;
   m_oWhenNewed.vNow();
@@ -273,21 +273,21 @@ void DataBuffer::vGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set partition Id                                                           */
+/* set logocal partition                                                      */
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vPtnId(PtnId tPtnId)
+void DataBuffer::vLglPtn(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  m_tPtnId = tPtnId;
+  m_tLglPtn = tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition Id                                                           */
+/* get logical partition                                                      */
 /*----------------------------------------------------------------------------*/
-PtnId DataBuffer::tPtnId(void)
+LglPtn DataBuffer::tLglPtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  return m_tPtnId;
+  return m_tLglPtn;
 }
 
 /*----------------------------------------------------------------------------*/

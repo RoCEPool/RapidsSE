@@ -59,17 +59,17 @@ void SP_Stream::vStream(Stream* pStream, bool bDescend)
 
   if (pStageSpec->bNodeTopo()) {
     vCatf("[%02lld] Node-Stream %s (N%lld) "_Stz
-          ,pStream->i_Stream()
+          ,pStream->i_PtnOfNode()
           ,pStream->szStreamNm()
-          ,pStream->i_Node()
+          ,pStream->iNodeId()
           );
   }
   else {
     vCatf("[%02lld] Partition-Stream %s (N%lld,S%02lld) "_Stz
-          ,pStream->i_Stream()
+          ,pStream->i_PtnOfNode()
           ,pStream->szStreamNm()
-          ,pStream->i_Node()
-          ,pStream->i_Stream()
+          ,pStream->iNodeId()
+          ,pStream->i_PtnOfNode()
           );
   }
   

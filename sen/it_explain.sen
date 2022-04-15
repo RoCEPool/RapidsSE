@@ -16,7 +16,7 @@
       explain     VARCHAR NOT NULL
     ) < infoSet > = 1 ;
   "
-  api::executeCommand 2discard
+  api::executeCommand api:executeCheck
 
 ;
 

@@ -33,7 +33,7 @@ void Step::vAddSteps_Sen(void)
   vAddStep("mungedText"_Stz,       &Step::vSenMungedText);
   vAddStep("nop"_Stz,              &Step::vSenNop);
   vAddStep("postpone"_Stz,         &Step::vSenPostpone,         true);
-  vAddStep("procedure:"_Stz,       &Step::vSenProcedure,        true);
+  vAddStep("procText:"_Stz,        &Step::vSenProcText,         true);
   vAddStep("reenter"_Stz,          &Step::vSenReenter);
   vAddStep("see"_Stz,              &Step::vSenSee,              true);
   vAddStep(";"_Stz,                &Step::vSenSemicolon,        true);
@@ -82,7 +82,7 @@ void Step::vSenColon(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* comment -- comment                                                         */
+/* ( comment -- comment                                              IMMEDIATE*/
 /*----------------------------------------------------------------------------*/
 void Step::vSenComment(void)
 {
@@ -235,7 +235,7 @@ void Step::vSenExit_RT(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find -- find and push word named by next token                             */
+/* find: -- find and push word named by next token                  IMMEDIATE */
 /*----------------------------------------------------------------------------*/
 void Step::vSenFind(void)
 {
@@ -279,7 +279,7 @@ void Step::vSenHazard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* immediate -- make the word being compiled an immediate word                */
+/* immediate -- make the word being compiled an immediate word      IMMEDIATE */
 /*----------------------------------------------------------------------------*/
 void Step::vSenImmediate(void)
 {
@@ -661,7 +661,8 @@ void Step::vSenNop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* postpone -- encode call to word named by next token into word being compiled  */
+/* postpone -- encode call to word named by next token                        */
+/*               into word being compiled                           IMMEDIATE */
 /*----------------------------------------------------------------------------*/
 void Step::vSenPostpone(void)
 {
@@ -706,12 +707,13 @@ void Step::vSenPostpone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* procedure: -- add procedure                                                */
+/* procedure: -- store procedure text into root dic                 IMMEDIATE */
 /*----------------------------------------------------------------------------*/
-void Step::vSenProcedure(void)
+void Step::vSenProcText(void)
 {
   ENTRY();
   
+  s256 sWordNm;
   s4K sProcedure;
   
   // to be coded ...
@@ -719,15 +721,51 @@ void Step::vSenProcedure(void)
     m_pInput->vReadToken();
     if (m_pInput->szChars()->bEqual(";"_Stz))
       break;
+    
+    if (1 == i_Tkn)
+      sWordNm = m_pInput->szChars();
+    
     if (i_Tkn)
       sProcedure.vConcat(" "_Stz);
-    sProcedure.vConcat(m_pInput->szChars());
+    
+    if (TN_STRING == m_pInput->eToken()) {
+      sProcedure.vConcat("\""_Stz);
+      sProcedure.vConcat(m_pInput->szChars());
+      sProcedure.vConcat("\""_Stz);
+    }
+    else {
+      sProcedure.vConcat(m_pInput->szChars());
+    }
+//    vTrace("procedure: %s\n"_Stz,
+//           sProcedure.szStz());
   }
 
-  TokenVec* pTknVec = TokenVec::pTokeniseSen(sProcedure);
-  
-  Procedure::vAddProcedure(pTknVec);
+//  vTrace("procedure: %s %s\n"_Stz,
+//         sWordNm.szStz(),
+//         sProcedure.szStz());
+//  vTrace("---\n"_Stz);
 
+
+  Dic* pDic = AM::DIC::pRoot();
+
+  Word* pFoundWord = pDic->pFindWord(sWordNm);
+  if (pFoundWord) {
+    vTrace("\nvColon : word already defined [++] : %s\n\n"_Stz,sWordNm.szStz());
+  }
+  
+  Word* pNewWord = new(pDic) Word(sWordNm);
+
+  CellSingle xVar;
+  
+  xVar = sProcedure;
+
+  pNewWord->vEncodePush(xVar);
+
+  pNewWord->vEncodeCall("dup"_Stz);
+  pNewWord->vEncodeCall("."_Stz);
+  
+  pNewWord->vEncodeCall("exit_rt"_Stz);
+  
   EXIT();
 }
 
@@ -746,7 +784,7 @@ void Step::vSenReenter(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* see -- see inx contents of word                                            */
+/* see -- see inx contents of word                                  IMMEDIATE */
 /*----------------------------------------------------------------------------*/
 void Step::vSenSee(void)
 {
@@ -760,7 +798,7 @@ void Step::vSenSee(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ; -- end compilation of current word, enter interpreter state              */
+/* ; -- end compilation of current word, enter interpreter state    IMMEDIATE */
 /*----------------------------------------------------------------------------*/
 void Step::vSenSemicolon(void)
 {

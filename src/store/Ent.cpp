@@ -490,7 +490,7 @@ i8 Ent::nSizeBytes(void)
   
   i8 nRoundedBytes = MemLib::nRoundUp(nProperBytes,C_ENT_QUANTA);
 
-  RASSERT(nRoundedBytes <= C_MAX_ENTRY_SIZE);
+  RASSERT(nRoundedBytes <= C_MAX_ENTRY);
 
   return nRoundedBytes;
 }

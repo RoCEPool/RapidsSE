@@ -1,0 +1,88 @@
+/*============================================================================*/
+/* OP_forkCommand.sen -- Operator fork command                                */
+/*============================================================================*/
+
+" OP_forkCommand.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_I_COMMAND ...                                               */
+/*----------------------------------------------------------------------------*/
+: forkCommand_Command \handler
+
+  <responseOpNm> [stream].findOp locals| pResponseOp |
+  
+  pResponseOp op.name@ "forkCommand: responseOp %v" .printf
+  
+  //pResponseOp "some-pipeline" api::forkCommand assert
+
+  PipeIn[]\clear to InfoSet[]
+
+  InfoSet[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_I_COUNT ...                                                 */
+/*----------------------------------------------------------------------------*/
+: forkCommand_Count \handler
+  
+  "forkCommand_Count" .
+
+  PipeIn[]\clear to InfoSet[]
+  
+  // find the __path table def ; set infoSetTable[]
+  C_TDEF_COUNT op__tableDef_infoSet assert
+
+  // get the first (one and only) row from this infoset
+  InfoSet[].firstRow to infoSetRow[]
+
+  // extract the values
+  0 InfoSet[].colVal@ locals| nPaths   |
+
+  nPaths "forkCount: nPaths %v" .printf
+    
+  InfoSet[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute fork op                                                            */
+/*----------------------------------------------------------------------------*/
+ : forkCommand_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: forkCommand_Command  ZK_I_COMMAND   [op].handler!
+  //find: forkCommand_Count    ZK_I_COUNT     [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: forkCommand :: forkCommand dynamic <responseOpNm> ;
+
+: forkCommand_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "forkCommand_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

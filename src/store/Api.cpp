@@ -17,8 +17,10 @@
 #include "Sessions.hpp"
 #include "Output.hpp"
 #include "EventHandlers.hpp"
+#include "Grid.hpp"
 
 #include "TagConstants.h"
+#include "ePP.h"
 
 #include "SP_TagSet.hpp"
 
@@ -29,24 +31,6 @@ extern pthread_key_t giTLS_ThreadKey;
 extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_HandlerKey;
 extern pthread_key_t giTLS_StepKey;
-
-/*----------------------------------------------------------------------------*/
-/*-- parsimonious API --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get a new instance of an operand                                           */
-/*----------------------------------------------------------------------------*/
-Operand* Api::pGetOperand(eZK eOperand)
-{
-  _static_
-  
-  switch (eOperand) {
-    default: NEVER_REACH;
-  }
-  
-  return nullptr;
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +44,6 @@ Operand* Api::pGetOperand(eZK eOperand)
 Session* Api::pAllocSession(eSK eSession)
 {
   _static_
-  
   
   Sessions* pSessions = AM::pSessions();
   
@@ -87,96 +70,45 @@ void Api::vFreeSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* delete job  =                                                              */
-/*----------------------------------------------------------------------------*/
-void Api::vDeleteJob(Session* pSession)
-{
-  _static_
-    
-  Job* pJob = pSession->m_pSsnJob;
-
-  if (pJob && pJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
-    pSession->m_pOutput->vProcessBufferQueue();
-
-  pSession->m_pOutput->m_pOutputQueue->vReset();
-  pSession->m_pOutput->vEndProcOneCmd();
-
-  pSession->m_pSsnJob = nullptr;
-  
-  
-  pJob->vReapable(true);
-      
-  
-  
-  if (pSession->m_pOutput->m_pStreamDef_result) {
-    StreamDef* pStreamDef = pSession->m_pOutput->m_pStreamDef_result;
-    pSession->m_pOutput->m_pStreamDef_result = nullptr;
-    delete pStreamDef;
-  }
-  
-  pSession->m_pOutput->m_bExitMarker      = false;
-  pSession->m_pOutput->m_bExitEarlyMarker = false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* examine command                                                            */
-/*----------------------------------------------------------------------------*/
-void Api::vExamineCommand(Session* pSession)
-{
-  _static_
-    
-}
-
-/*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
 void Api::vExecuteJob(Session* pSession)
 {
   _static_
   
-  //AM::pHeaps()->vSetTraceFree(CN_PLANNODEBUILDERLIST);
-
   pSession->m_pOutput->vAssertEmptyQueue();
 
   pSession->m_pOutput->vBeginProcOneCmd();
   
   Job* pJob = pSession->m_pSsnJob;
-  TagSet* pJobTagSet = & pSession->m_oJobTagSet;
-  TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();
-
-  //pInpTknVec->vDumpVec(false);
-  //pJobTagSet->vDumpSet(true);
-
-//  if (pJobTagSet->bHasName(C_TAG_TRACEAPI)) {
-//    vTrace("TagSet:\n"_Stz);
-//    pJobTagSet->vDumpSet(true);
-//  }
-  
-  if (AM::TRACE::bVerbose(C_VB_API)) {
-    pInpTknVec->vDumpVec(false);
-    pJobTagSet->vDumpSet(true);
-  }
-      
-  if (AM::bDeveloper() && pInpTknVec->nTokens() > C_1KB) {
-    i8 nTokens = pInpTknVec->nTokens();
-    i8 nUsed   = pInpTknVec->nUsedByteSpace();
-    if (nTokens > C_1KB)
-       vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
-  }
-  
+    
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();
-
+  TagSet* pJobTagSet = & pSession->m_oJobTagSet;
+ 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //RASSERT(! pSession->bHasCascade());
 
   for (;;) {
   
-    bool bSpawned = Api::bSpawnTask_session(pJob);
-    UNUSED(bSpawned);
+    i8 iPid = AM::PROCESS::iSePid();
+    if (!Process::bTestPid(iPid)) {
+      // SE is not running anymore!
+      vTrace("Cannot find pid %lld\n"_Stz, iPid);
+      return;
+    }
+    
+    vSubmitJob(pSession);
 
+    if (pJob->bHasTag(C_TAG_NOWAIT)) {
+      Api::vMutexUnlock(pSession,pJob);
+    }
+    else {
+      vWaitJob(pSession);
+    }
+    
     if (! pSession->bHasCascade()) {
       pSession->vLastJobId(tJobId);
       return;
@@ -190,9 +122,9 @@ void Api::vExecuteJob(Session* pSession)
     
     //AM::pHeaps()->vSetTraceFree(true,MY::pTask());
     
-    pJob->vResetForCascade(pSession);
+    pJob->vCascadeReset();
     
-    pJob->vSetFromCascade(pSession->szCascade());
+    pJob->vCascadeSet(pSession->szCascade());
     
     pSession->vPopCascade();
 
@@ -205,30 +137,51 @@ void Api::vExecuteJob(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract paths                                                              */
+/* fork job (spawn job but don't wait for completion)                         */
 /*----------------------------------------------------------------------------*/
-void Api::vExtractCmdPaths(Session* pSession)
+void Api::vForkJob(Session* pSession, Op* pResponseOp)
 {
   _static_
   
-  TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();;
+  Job* pJob = pSession->m_pSsnJob;
+  RASSERT(! pJob->pTask());
+
+  Api::vMutexLock(pSession,pJob);
+  RASSERT(JS_LOCKED == pJob->eJobState());
+  
+  pJob->vTaskCreate();
+  
+  pJob->vResponseTimerStart();
+  
+  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
+  
+  Api::vMutexUnlock(pSession,pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract paths                                                              */
+/*----------------------------------------------------------------------------*/
+void Api::vExtractCmdPaths(Session* pSession, TokenVec* pCmdTknVec)
+{
+  _static_
+  
   TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
   
-  i8 i_Paths = pInpTknVec->iFindToken("paths"_Stz,TN_NAME);
+  i8 i_Paths = pCmdTknVec->iFindToken("paths"_Stz,TN_NAME);
 
   if (C_UNKNOWN == i_Paths)
     return;
   
-  pInpTknVec->vRemoveToken(i_Paths);
+  pCmdTknVec->vRemoveToken(i_Paths);
 
   s32 sName;
   
   i8 nPaths;
-  for (nPaths = 0; i_Paths < pInpTknVec->nTokens(); nPaths++) {
+  for (nPaths = 0; i_Paths < pCmdTknVec->nTokens(); nPaths++) {
     sName.vSprint("<path%lld>"_Stz,nPaths);
-    Token* pTkn = pInpTknVec->pGet(i_Paths);
+    Token* pTkn = pCmdTknVec->pGet(i_Paths);
     pJobTagSet->vAppend(sName,pTkn->szChars());
-    pInpTknVec->vRemoveToken(i_Paths);
+    pCmdTknVec->vRemoveToken(i_Paths);
   }
   
   pJobTagSet->vAppend("<paths>"_Stz,nPaths);
@@ -238,69 +191,68 @@ void Api::vExtractCmdPaths(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* extract tags                                                               */
 /*----------------------------------------------------------------------------*/
-bool Api::bExtractCmdTags(Session* pSession)
+bool Api::bExtractCmdTags(Session* pSession, TokenVec* pCmdTknVec)
 {
   _static_
   
-  TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();;
   TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract leading job control tags (such as /time or /nowait)
   
-  Token* pTkn0 = pInpTknVec->pGet(0,true);
+  Token* pTkn0 = pCmdTknVec->pGet(0,true);
   
   s32 sTag;
   
   while ('/' == * pTkn0->azChars() ) {
     
-    Token* pTkn1 = pInpTknVec->pGet(1,true);
+    Token* pTkn1 = pCmdTknVec->pGet(1,true);
     sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
     
     pJobTagSet->vInsert(sTag,1);
     
-    pInpTknVec->vRemoveToken(0);
-    pInpTknVec->vRemoveToken(0);
+    pCmdTknVec->vRemoveToken(0);
+    pCmdTknVec->vRemoveToken(0);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract trailing job supplemtntal tags ( such as <field_delimiter> = | )
 
-  i8 i_TagBegin = pInpTknVec->iFirstTag2();
+  i8 i_TagBegin = pCmdTknVec->iFirstTag2();
   if (C_UNKNOWN == i_TagBegin)
     return true;
 
-  Token* pTkn_begin = pInpTknVec->pGet(i_TagBegin);
+  Token* pTkn_begin = pCmdTknVec->pGet(i_TagBegin);
   UNUSED(pTkn_begin);
   
-  i8 nTkns = pInpTknVec->nTokens();
+  i8 nTkns = pCmdTknVec->nTokens();
 
   i8 i_Scan = i_TagBegin;
   while (i_Scan < nTkns) {
   
-    Token* pScan = pInpTknVec->pGet(i_Scan++);        // <
+    Token* pScan = pCmdTknVec->pGet(i_Scan++);        // <
     if (i_Scan >= nTkns)
       return false;
     if (! pScan->bIsLessThan())
       return false;
     
-    Token* pTkn_name = pInpTknVec->pGet(i_Scan++);    // name
+    Token* pTkn_name = pCmdTknVec->pGet(i_Scan++);    // name
     if (i_Scan >= nTkns)
       return false;
     if (! pTkn_name->bIsName())
       return false;
 
-    pScan = pInpTknVec->pGet(i_Scan++);               // >
+    pScan = pCmdTknVec->pGet(i_Scan++);               // >
     if (! pScan->bIsGreaterThan())
       return false;
     
-    pScan = pInpTknVec->pGet(i_Scan++);               // =
+    pScan = pCmdTknVec->pGet(i_Scan++);               // =
     if (i_Scan >= nTkns)
       return false;
     if (! pScan->bIsAssign())
       return false;
 
-    Token* pTkn_value = pInpTknVec->pGet(i_Scan++);   // value
+    Token* pTkn_value = pCmdTknVec->pGet(i_Scan++);   // value
     //if (! pTkn_value->bIsString())
     //  return false;
 
@@ -309,7 +261,7 @@ bool Api::bExtractCmdTags(Session* pSession)
     pJobTagSet->vAppend(sName,pTkn_value->szChars());
   }
     
-  pInpTknVec->vTrimTokens(i_TagBegin);
+  pCmdTknVec->vTrimTokens(i_TagBegin);
   
   return true;
 
@@ -318,7 +270,7 @@ bool Api::bExtractCmdTags(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* new a and prepare it to execute the command in session                     */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
+eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec)
 {
   _static_
 
@@ -327,14 +279,14 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
     
   // get the command proper and the tag set
   TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
   TagSet*   pCmdTags   = & pSession->m_oJobTagSet;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vExtractCmdPaths(pSession);
+  vExtractCmdPaths(pSession,pCmdTknVec);
   
-  bool b = bExtractCmdTags(pSession);
+  bool b = bExtractCmdTags(pSession,pCmdTknVec);
+  UNUSED(b);
   
   if (bShortForm(pCmdTknVec)) {
     if (! bExpandToLongForm(pCmdTknVec)) {
@@ -360,12 +312,14 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
   Stz* szJobNm = pCmdTags->szValue(C_TAG_JOBNM);
 
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
+  
   Job* pPrepareJob =
          pSession->m_pSsnJob =
            new Job(szJobNm,
-                   AM::GRID::iThisNodeNo(),
                    pSession->m_i_Session,
-                   pSession->m_iCmdNo++
+                   tCmdId
                    );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -380,42 +334,6 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   pCmdTknVec->vVecToString(sStmt,0,true);
   pPrepareJob->vCmd(sStmt);
 
-  // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
-  //                          For DEMO (to be removed)                        //
-  // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
-  // create tags in the job for the params from the literal token vector
-  if (pDemoLiterals && pDemoLiterals->nItems()) {
-    
-    for (i8 i_Tkn = 0; i_Tkn < pDemoLiterals->nItems(); i_Tkn++) {
-      
-      Token* pTkn = pDemoLiterals->pGet(i_Tkn);
-      
-      Stz* szTag;
-      switch(i_Tkn) {
-        case 0: szTag = C_TAG_PARAM0; break;
-        case 1: szTag = C_TAG_PARAM1; break;
-        case 2: szTag = C_TAG_PARAM2; break;
-        case 3: szTag = C_TAG_PARAM3; break;
-        case 4: szTag = C_TAG_PARAM4; break;
-        default:
-          RASSERT(0);
-      }
-      
-      switch(pTkn->eToken()) {
-      case TN_STRING:
-        pPrepareJobTags->vInsert(szTag,pDemoLiterals->pGet(i_Tkn)->szChars());
-        break;
-      case TN_INTEGER:
-        pPrepareJobTags->vInsert(szTag,pDemoLiterals->pGet(i_Tkn)->iToI8());
-        break;
-      default:
-        RASSERT(0);
-      }
-
-    }
-    
-  }
-  // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
   
   pPrepareJobTags->vInsert(C_TAG_CMD,pPrepareJob->szCmd());
@@ -450,74 +368,62 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   //pPrepareJobTags->vDumpSet(true);
 
   
-  Dic* pDicRoot = AM::DIC::pRoot();
+  //Dic* pDicRoot = AM::DIC::pRoot();
   
   Stz* szEntry = pPrepareJobTags->szValue(C_TAG_ENTRYPOINT);
   
   pPrepareJob->vEntryPoint(szEntry);
   
+  
+  TagSet* pJobTagSet = & pSession->m_oJobTagSet;
+  
+  if (AM::TRACE::bVerbose(C_VB_API)) {
+    pCmdTknVec->vDumpVec(false);
+    pJobTagSet->vDumpSet(true);
+  }
+      
+  if (AM::bDeveloper() && pCmdTknVec->nTokens() > C_1KB) {
+    i8 nTokens = pCmdTknVec->nTokens();
+    i8 nUsed   = pCmdTknVec->nUsedByteSpace();
+    if (nTokens > C_1KB)
+       vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
+  }
+
+  
   return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
-/* submit job (spawn job but don't wait for completion)                       */
+/* set job as reapable                                                        */
 /*----------------------------------------------------------------------------*/
-void Api::vSubmitJob(Session* pSession)
+void Api::vReapableJob(Session* pSession)
 {
   _static_
-  
+    
   Job* pJob = pSession->m_pSsnJob;
 
-  Api::vMutexLock(pSession,pJob);
+  if (pJob && pJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
+    pSession->m_pOutput->vProcessBufferQueue();
 
-  RASSERT(JS_LOCKED == pJob->eJobState());
+  pSession->m_pOutput->m_pOutputQueue->vReset();
+  pSession->m_pOutput->vEndProcOneCmd();
 
+  pSession->m_pSsnJob = nullptr;
   
-  RASSERT(! pJob->pTask());
   
-  pJob->vSpawnTask();
+  pJob->vReapable(true);
+      
   
-  pJob->vTimerStart();
   
-  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
+  if (pSession->m_pOutput->m_pStreamDef_result) {
+    StreamDef* pStreamDef = pSession->m_pOutput->m_pStreamDef_result;
+    pSession->m_pOutput->m_pStreamDef_result = nullptr;
+    delete pStreamDef;
+  }
+  
+  pSession->m_pOutput->m_bExitMarker      = false;
+  pSession->m_pOutput->m_bExitEarlyMarker = false;
 }
-
-/*----------------------------------------------------------------------------*/
-/* wait for job completion                                                    */
-/*----------------------------------------------------------------------------*/
-void Api::vWaitJob(Session* pSession)
-{
-  Job* pJob = pSession->m_pSsnJob;
-  
-  //pSession->m_oMutex.vObserve(true);
-  Api::vMutexWaitCond(pSession,pJob);
-  pJob->vTimerUpdate();
-  
-  Api::vMutexUnlock(pSession,pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* wait for job completion                                                    */
-/*----------------------------------------------------------------------------*/
-void Api::vPushOperand(Session* pSession, Operand* pOperand)
-{
-  Job* pJob = pSession->m_pSsnJob;
-
-  Op* pInputOp = pJob->pSingularOp();
-
-  pInputOp->vOutboundOperand(pOperand);
-  pOperand = nullptr;
-  while (pInputOp->pOutboundOperand())
-    AM::vNapUsec(100,CN_SEPROMPT);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* attempt to reap one job from the retired list                              */
@@ -542,6 +448,254 @@ void Api::vReapJobsOnce(bool bForce)
   if (bForce || AM::SYSTEM::bReapEnabled())
     while (Api::bReapJob())
       {;}
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* execute internal command with given tag string                             */
+/*----------------------------------------------------------------------------*/
+eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
+{
+  _static_
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allot a session
+  
+  Session* pSession = Api::pAllocSession(SK_INTERNAL);
+  
+  eEC reError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenise the request
+  
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
+
+  TagSet* pTagSet =  & pSession->m_oJobTagSet;
+  pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+
+  reError = Api::ePrepareJob(pSession,pCmdTknVec);
+
+  delete pCmdTknVec;
+
+  if (reError) {
+    //m_pDataStack->vPushInt(eError);
+    //m_pDataStack->vPushInt(false);
+    //EXIT();
+    return reError;
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // update the job tag set
+  
+  Job* pJob = pSession->m_pSsnJob;
+
+  TagSet* pJobTagSet = pJob->pJobTags();
+  
+  if (szTagPath) {
+    //Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
+    pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
+  }
+  
+  TokenVec* pWithTagStrTknVec = TokenVec::pTokeniseSen(szWithTagStr);
+  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
+  
+  
+  Now xNow;
+  xNow.vSetNow();
+
+  s32 sHostName;
+  Hardware::vHostName(sHostName);
+
+  pJobTagSet->vInsert(C_TAG_FREEPCT,gpBufferPool->iFreePercent());
+  pJobTagSet->vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
+  pJobTagSet->vInsert(C_TAG_HOST,sHostName);
+  pJobTagSet->vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
+  pJobTagSet->vInsert(C_TAG_REQUEST,pSession->m_iCmdNo);
+  pJobTagSet->vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
+  pJobTagSet->vInsert(C_TAG_WHEN,xNow.sz());
+
+  
+  
+  if (AM::TRACE::bVerbose(C_VB_API))
+    pJobTagSet->vDumpSet();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn job and wait for completion
+  
+//  bool bSpawned = Api::bSpawnTask_session(pJob);
+//  UNUSED(bSpawned);
+  pJob->vResponseTimerStart();
+  
+  Api::vExecuteJob(pSession);
+  
+  pJob->vResponseTimerUpdate();
+
+//  vTrace("Job Timer: %lldus\n"_Stz
+//         ,pJob->m_oTimer.iMicroseconds());
+  
+  RASSERT(! pJob->bIsInError() );
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete job and free session
+  Api::vReapableJob(pSession);
+
+  Api::vFreeSession(pSession);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //push result
+    
+  //m_pDataStack->vPushInt(iJobNo);
+  //m_pDataStack->vPushInt(true);
+  
+  //delete pReqTknVec;
+  delete pWithTagStrTknVec;
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* fork internal command with given tag string                                */
+/*----------------------------------------------------------------------------*/
+eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
+                      Op* pResponseOp)
+{
+  _static_
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allot a session
+  
+  Session* pSession = Api::pAllocSession(SK_INTERNAL);
+  
+  eEC reError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenise the request
+  
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
+
+  TagSet* pTagSet =  & pSession->m_oJobTagSet;
+  pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+
+  reError = Api::ePrepareJob(pSession,pCmdTknVec);
+
+  delete pCmdTknVec;
+
+  if (reError) {
+    //m_pDataStack->vPushInt(eError);
+    //m_pDataStack->vPushInt(false);
+    //EXIT();
+    return reError;
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // update the job tag set
+  
+  Job* pJob = pSession->m_pSsnJob;
+
+  TagSet* pJobTagSet = pJob->pJobTags();
+  
+  if (szTagPath) {
+    //Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
+    pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
+  }
+  
+  TokenVec* pWithTagStrTknVec = TokenVec::pTokeniseSen(szWithTagStr);
+  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
+  
+  
+  Now xNow;
+  xNow.vSetNow();
+
+  s32 sHostName;
+  Hardware::vHostName(sHostName);
+
+  pJobTagSet->vInsert(C_TAG_FREEPCT,gpBufferPool->iFreePercent());
+  pJobTagSet->vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
+  pJobTagSet->vInsert(C_TAG_HOST,sHostName);
+  pJobTagSet->vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
+  pJobTagSet->vInsert(C_TAG_REQUEST,pSession->m_iCmdNo);
+  pJobTagSet->vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
+  pJobTagSet->vInsert(C_TAG_WHEN,xNow.sz());
+
+  
+  
+  if (AM::TRACE::bVerbose(C_VB_API))
+    pJobTagSet->vDumpSet();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn job and wait for completion
+  
+//  bool bSpawned = Api::bSpawnTask_session(pJob);
+//  UNUSED(bSpawned);
+  pJob->vResponseTimerStart();
+  
+  Api::vExecuteJob(pSession);
+  
+  pJob->vResponseTimerUpdate();
+
+//  vTrace("Job Timer: %lldus\n"_Stz
+//         ,pJob->m_oTimer.iMicroseconds());
+  
+  RASSERT(! pJob->bIsInError() );
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete job and free session
+  Api::vReapableJob(pSession);
+
+  Api::vFreeSession(pSession);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //push result
+    
+  //m_pDataStack->vPushInt(iJobNo);
+  //m_pDataStack->vPushInt(true);
+  
+  //delete pReqTknVec;
+  delete pWithTagStrTknVec;
+
+  return EC_NONE;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* submit job (spawn job but don't wait for completion)                       */
+/*----------------------------------------------------------------------------*/
+void Api::vSubmitJob(Session* pSession)
+{
+  _static_
+  
+  Job* pJob = pSession->m_pSsnJob;
+  RASSERT(! pJob->pTask());
+
+  Api::vMutexLock(pSession,pJob);
+  RASSERT(JS_LOCKED == pJob->eJobState());
+  
+  pJob->vTaskCreate();
+  
+  pJob->vResponseTimerStart();
+  
+  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
+}
+
+/*----------------------------------------------------------------------------*/
+/* wait for job completion                                                    */
+/*----------------------------------------------------------------------------*/
+void Api::vWaitJob(Session* pSession)
+{
+  _static_
+  
+  Job* pJob = pSession->m_pSsnJob;
+  
+  //pSession->m_oMutex.vObserve(true);
+  Api::vMutexWaitCond(pSession,pJob);
+  
+  pJob->vResponseTimerUpdate();
+  
+  Api::vMutexUnlock(pSession,pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -614,11 +768,7 @@ bool Api::bReapJob(void)
   pReapableJob->pTask()->vDropTaskLock((Stz*)__func__);
 
 
-  pReapableJob->vGuardedDelete(CN_JOB,&pReapableJob,
-                               CN_API,nullptr,(Stz*)__func__);
-  
-//  pSelfTask->vGuardedDelete(CN_TASK,&pSelfTask,
-//                            CN_SCHEDULER,nullptr,(Stz*)__func__);
+  delete pReapableJob;
 
   return TRUE(reaped_a_job);
 }
@@ -628,7 +778,8 @@ bool Api::bReapJob(void)
 /*----------------------------------------------------------------------------*/
 bool Api::bShortForm(TokenVec* pCmdTknVec)
 {
-
+  _static_
+  
   i8 i_Fan = pCmdTknVec->iFindToken("*|"_Stz);
   if (C_UNKNOWN != i_Fan)
     return true;
@@ -646,6 +797,8 @@ bool Api::bShortForm(TokenVec* pCmdTknVec)
 /*----------------------------------------------------------------------------*/
 bool Api::bExpandToLongForm(TokenVec* pCmdTknVec)
 {
+  _static_
+  
   TokenVec* pAllPtnVec;
   TokenVec* pOnOriginVec;
   
@@ -809,19 +962,21 @@ void Api::vIncStatistics(eAC eApiCall)
 /*----------------------------------------------------------------------------*/
 /* call the system boot job to compile the main dictionary                    */
 /*----------------------------------------------------------------------------*/
-void Api::vCallBootSystem(void)
+void Api::vCallBootSystemJob(void)
 {
   _static_
   
-  Job* pJob = new Job("bootSystem"_Stz,
-                      AM::GRID::iThisNodeNo(),
-                      AM::SESSION::iInternalSession(),
-                      1
-                      );
-  Stz* szJobNm = pJob->szJobNm();
-  Task* pBootTask = new Task(szJobNm,pJob);
-
-  pJob->vTask(pBootTask);
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
+  
+  Job* pBootJob = new Job("bootSystem"_Stz,
+                          AM::SESSION::iInternalSession(),
+                          tCmdId
+                          );
+  
+  Stz* szJobNm = pBootJob->szJobNm();
+  Task* pBootTask = new Task(szJobNm,pBootJob);
+  pBootJob->vTask(pBootTask);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
      
@@ -831,11 +986,11 @@ void Api::vCallBootSystem(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
-  vSetTaskInxPtr(pBootTask,"bootSystem::bootSystem"_Stz);
+  pBootTask->vSetInxPtr("bootSystem::bootSystem"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  TagSet* pJobTags = pJob->pJobTags();
+  TagSet* pJobTags = pBootJob->pJobTags();
   //pJobTags->vDumpSet();
 
   // (no cmd to parse)
@@ -844,8 +999,8 @@ void Api::vCallBootSystem(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->vTimerStart();
-  vCallImmediate(pBootTask);
+  pBootJob->vResponseTimerStart();
+  vCallTaskImmediate(pBootTask);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -861,9 +1016,9 @@ void Api::vCallBootSystem(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* call the system start job                                                  */
+/* call system start job to define procedures & internal tables, spawn demons */
 /*----------------------------------------------------------------------------*/
-void Api::vCallStartSystem(void)
+void Api::vCallStartSystemJob(void)
 {
   _static_
 
@@ -872,23 +1027,25 @@ void Api::vCallStartSystem(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Job* pJob = new Job("StartSys"_Stz,
-                      AM::GRID::iThisNodeNo(),
-                      AM::SESSION::iInternalSession(),
-                      1
-                      );
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
   
-  Stz* szJobNm = pJob->szJobNm();
-  Task* pStartTask = new Task(szJobNm,pJob);
+  Job* pStartJob = new Job("startSystem"_Stz,
+                           AM::SESSION::iInternalSession(),
+                           tCmdId
+                           );
+  
+  Stz* szJobNm = pStartJob->szJobNm();
+  Task* pStartTask = new Task(szJobNm,pStartJob);
   pStartTask->vIsStart(true);
 
-  pJob->vTask(pStartTask);
+  pStartJob->vTask(pStartTask);
   
-  vSetTaskInxPtr(pStartTask,"startSystem::startSystem"_Stz);
+  pStartTask->vSetInxPtr("startSystem::startSystem"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  TagSet* pJobTags = pJob->pJobTags();
+  TagSet* pJobTags = pStartJob->pJobTags();
   //pJobTags->vDumpSet();
 
   // (no cmd to parse)
@@ -897,8 +1054,8 @@ void Api::vCallStartSystem(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->vTimerStart();
-  vCallImmediate(pStartTask);
+  pStartJob->vResponseTimerStart();
+  vCallTaskImmediate(pStartTask);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -911,8 +1068,10 @@ void Api::vCallStartSystem(void)
 /*----------------------------------------------------------------------------*/
 /* run task immediately                                                       */
 /*----------------------------------------------------------------------------*/
-void Api::vCallImmediate(Task* pImmediateTask)
+void Api::vCallTaskImmediate(Task* pImmediateTask)
 {
+  _static_
+  
   Task* pSaveTask = _pTask(PsxThd::pTlsGet(giTLS_TaskKey));
 
   pImmediateTask->vIsImmediate(true);
@@ -922,41 +1081,6 @@ void Api::vCallImmediate(Task* pImmediateTask)
   pImmediateTask->vTaskLoop();
   
   PsxThd::vTlsSet(giTLS_TaskKey,pSaveTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete task immediate                                                      */
-/*----------------------------------------------------------------------------*/
-void Api::vDeleteImmediate(Task** ppTask)
-{
-  NEVER_REACH;
-  
-  Task* pTask = *ppTask;
-  *ppTask = nullptr;
-
-  pTask->vState(TS_COMPLETED);
-  Job* pJob = pTask->pJob();
-  pTask->vJob(nullptr);
-  
-  //delete pJob;
-  if (pJob)
-    pJob->vGuardedDelete(CN_JOB,&pJob,
-                         CN_API,nullptr,(Stz*)__func__);
-  
-  
-  //delete pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn task for given job                                                   */
-/*----------------------------------------------------------------------------*/
-void Api::vSpawnTask_job(Job* pJob)
-{
-  _static_
-  
-  
-  pJob->vSpawnTask();
-  Scheduler::vTaskApi_AddOp(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -974,20 +1098,7 @@ void Api::vSpawnTask_op(Op* pOp)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-void Api::vSpawnTaskDedicated_job(Job* pJob)
-{
-  _static_
-  
-  //RASSERT(! pJob->pTask());
-  
-  pJob->vSpawnTask();
-  Scheduler::vTaskApi_AddDedicated(pJob->pTask());
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-void Api::vSpawnTaskDedicated_op(Op* pOp)
+void Api::vSpawnTask_dedicatedOp(Op* pOp)
 {
   _static_
   
@@ -1007,7 +1118,7 @@ void Api::vSpawnTask_demonJob(Job* pJob)
   
   RASSERT(! pJob->pTask());
 
-  pJob->vSpawnTask();
+  pJob->vTaskCreate();
   Scheduler::vTaskApi_AddService(pJob->pTask());
 }
 
@@ -1018,58 +1129,12 @@ void Api::vSpawnTask_receivedJob(Job* pJob)
 {
   _static_
   
-  pJob->vSpawnTask();
+  pJob->vTaskCreate();
   Scheduler::vTaskApi_AddReceived(pJob->pTask());
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-bool Api::bSpawnTask_session(Job* pJob)
-{
-  _static_
-  
-  Session* pSession = pJob->pSession();
-  
-//  if (pSession->m_pInput)
-//    vTrace("API szRawInput() :: %s\n"_Stz,pSession->m_pInput->szRawInput());
-//
-  
-  Api::vMutexLock(pSession,pJob);
-
-  RASSERT(JS_LOCKED == pJob->eJobState());
-
-  
-  RASSERT(! pJob->pTask());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Before appending request for se, ensure that se is running
-  // get the se pid from the attachmap
-  i8 iPid = AM::iPid();
-  if (!Process::bTestPid(iPid)) {
-    // SE is not running anymore!
-    vTrace("Cannot find pid %lld\n"_Stz, iPid);
-    return false;
-  }
-  
-  pJob->vSpawnTask();
-
-  pJob->vTimerStart();
-  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
-
-  if (! pJob->bHasTag(C_TAG_NOWAIT)) {
-    //pSession->m_oMutex.vObserve(true);
-    Api::vMutexWaitCond(pSession,pJob);
-    pJob->vTimerUpdate();
-  }
-  
-  Api::vMutexUnlock(pSession,pJob);
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
+/* schedule next phase of participant                                         */
 /*----------------------------------------------------------------------------*/
 void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
@@ -1156,11 +1221,11 @@ void Api::vResetTaskForJob(Job* pJob)
 
   Task* pTask = pJob->pTask();
     
-  vSetTaskInxPtr(pTask,szEntry);
+  pTask->vSetInxPtr(szEntry);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->vTimerStart();
+  pJob->vResponseTimerStart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1182,28 +1247,6 @@ void Api::vCreateTaskForOp(Op* pOp)
   pOp->vTask(pTask);
 
   pTask->vSetInxPtr(pEntryWord);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set instruction pointer for task given entry point name                    */
-/*----------------------------------------------------------------------------*/
-void Api::vSetTaskInxPtr(Task* pTask, Stz* szEntryPt)
-{
-  _static_
-  
-  Dic* pDicRoot = AM::DIC::pRoot();
-  
-  
-  Word* pEntryWord = pDicRoot->pFindWord(szEntryPt);
-
-  if (! pEntryWord) {
-
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Unable to find task entry point: %s\n"_Stz,szEntryPt);
-  }
-  
-  pTask->vSetInxPtr(pEntryWord);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1248,7 +1291,6 @@ void Api::vMutexWaitCond(Session* pSession, Job* pJob)
   } while (pJob->eJobState() != JS_SIGNALLED);
 
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

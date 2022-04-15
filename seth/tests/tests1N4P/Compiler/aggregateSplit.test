@@ -94,7 +94,7 @@ rows:
    » routing: unicast
 
 -> -> projectOp
-      » column: (Expr = (SUM(SUM(SUM(rapidsse.public.nation.n_nationkey)))) / (SUM(SUM(COUNT(rapidsse.public.nation.n_nationkey)))) ; Ordinal Expr = $2 / $1)
+      » column: (Expr = (CAST(SUM(SUM(SUM(rapidsse.public.nation.n_nationkey))) AS DECIMAL)) / (CAST(SUM(SUM(COUNT(rapidsse.public.nation.n_nationkey))) AS DECIMAL)) ; Ordinal Expr = (CAST($2 AS DECIMAL)) / (CAST($1 AS DECIMAL)))
 
 -> -> -> stageMarker
          » location: origin

@@ -28,6 +28,32 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: Pot[].deleteAllBuffers
+
+    ptnmap::ptnsInGrid 0
+    do
+      begin
+        I Pot[].completedPtn to DataBuffer[]
+        DataBuffer[].isNotNull
+      while
+        DataBuffer[].delete
+      repeat
+    loop
+
+   ptnmap::ptnsInGrid 0
+     do
+       begin
+         I Pot[].danglingPtn to DataBuffer[]
+         DataBuffer[].isNotNull
+       while
+         DataBuffer[].delete
+       repeat
+     loop
+;
+
+/*----------------------------------------------------------------------------*/
 /* pipe out all completed buffers in the pot for all partitions               */
 /*----------------------------------------------------------------------------*/
 : Pot[].pipeoutCompletedPtns

@@ -7,7 +7,7 @@
 #include "Job.hpp"
 #include "JobList.hpp"
 
-#include "PipeSpec.hpp"
+#include "VertexSpec.hpp"
 #include "LogicUnit.hpp"
 #include "SP_Gid.hpp"
 #include "eLH.h"
@@ -77,12 +77,12 @@ bool JobList::bMoveRight_id(JobId tJobId, Job *pRightJob, bool &bFoundKey) {
   //         ,pRightJob->m_tJobId.uJobNo());
 
   // do the id's match?
-  if (tJobId == pRightJob->m_tJobId) {
+  if (tJobId == pRightJob->tJobId()) {
     bFoundKey = true;
     return false;
   }
 
-  if (tJobId > pRightJob->m_tJobId)
+  if (tJobId > pRightJob->tJobId())
     return TRUE(move_right);
   else
     return FALSE(go_down);
@@ -160,7 +160,7 @@ void JobList::vInsertJob(Job *pJob) {
 
   //  vTrace("vInsertJob %s : %lld.%lld %p\n"_Stz
   //         ,aJL[m_eJobList]
-  //         ,(i8)pJob->tJobId().uNodeNo()
+  //         ,(i8)pJob->tJobId().uNodeId()
   //         ,(i8)pJob->tJobId().uJobNo()
   //         ,pJob
   //         );
@@ -204,7 +204,7 @@ void JobList::vInsertJob(Job *pJob) {
                                                 Job::vPrintJobNode);
     RASSERT(bWasInserted);
   } else {
-    JobId tJobId = pJob->m_tJobId;
+    JobId tJobId = pJob->tJobId();
 
     auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
       bool bMoveRight = bMoveRight_id(tJobId, _pJob(aRightJob), bFoundKey);
@@ -279,7 +279,7 @@ void JobList::vRemoveJob(Job *pJob) {
 
   //  vTrace("vRemoveJob %s : %lld.%lld %p\n"_Stz
   //         ,aJL[m_eJobList]
-  //         ,(i8)pJob->tJobId().uNodeNo()
+  //         ,(i8)pJob->tJobId().uNodeId()
   //         ,(i8)pJob->tJobId().uJobNo()
   //         ,pJob
   //         );
@@ -305,7 +305,7 @@ void JobList::vRemoveJob(Job *pJob) {
                                                bfMoveRightTest,
                                                Job::vPrintJobNode);
   } else {
-    JobId tJobId = pJob->m_tJobId;
+    JobId tJobId = pJob->tJobId();
 
     auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
 
@@ -327,7 +327,7 @@ void JobList::vRemoveJob(Job *pJob) {
 
   if (!bWasRemoved) {
     vTrace("------------------------------------\n"_Stz);
-    vTrace("%s Failed to Remove JobId %lld.%lld\n"_Stz, aJL[m_eJobList], (i8) pJob->tJobId().uNodeNo(),
+    vTrace("%s Failed to Remove JobId %lld.%lld\n"_Stz, aJL[m_eJobList], (i8) pJob->tJobId().uNodeId(),
            (i8) pJob->tJobId().uJobNo());
     vTrace("------------------------------------\n"_Stz);
     vListJobs();

@@ -5,28 +5,28 @@
 " pipeline__words.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* invoke the sub-pipeline pointed to by the SubPipe[] register               */
+/* invoke the stages pointed to by the Deck[] register                        */
 /*----------------------------------------------------------------------------*/
-: subPipe:invoke
+: deck:invoke
 
-  SubPipe[] assert
+  Deck[] assert
   
   [task].isLocked? not assert
   
-  SubPipe[].opsOnNode@ locals| nAcks |
+  Deck[].opsExeOnNode@ locals| nAcks |
 
   [task].grabLock
     [task].isLocked? assert
 
-    SubPipe[].opsOnNode@ to nAcks
-
     nAcks if
+      [task] Deck[].setInvoker
+    
       nAcks [task].acksRemaining!
 
-      SubPipe[].enqueueStart? if
+      Deck[].enqueueInvoke? if
 
-        Marker[].newStartMarker
-        Marker[]\clear SubPipe[].op0@ op.enqueOperand
+        Marker[].newInvokeMarker
+        Marker[]\clear Deck[].op0@ op.enqueOperand
       then
       [task].wait
     else

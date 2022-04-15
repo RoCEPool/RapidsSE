@@ -11,7 +11,7 @@
   STD_PATH_TAG
   "
   define table __lockStats (
-    nodeNo         INTEGER        NOT NULL ,
+    NodeId         INTEGER        NOT NULL ,
     takeNo         INTEGER        NOT NULL ,
 
     lockNo         INTEGER        NOT NULL ,
@@ -26,7 +26,7 @@
     WritePercent   INTEGER        NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand 2discard
+  api::executeCommand api:executeCheck
 
 ;
 

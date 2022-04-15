@@ -1,0 +1,121 @@
+/*============================================================================*/
+/* _Q22_T                                                                     */
+/*============================================================================*/
+
+//--------------------------------------------------------------------------------
+//  Original Query
+//--------------------------------------------------------------------------------
+select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal
+     from ( select substring(c_phone from 1 for 2) as cntrycode, c_acctbal
+              from customer
+             where substring(c_phone from 1 for 2) in ('13','31','23','29','30','18','17')
+               and c_acctbal > ( select avg(c_acctbal)
+                                   from customer
+                                  where c_acctbal > 0.00
+                                    and substring (c_phone from 1 for 2) in ('13','31','23','29','30','18','17') )
+                                    and not exists ( select * from orders where o_custkey = c_custkey )
+                                ) as custsale
+     group by cntrycode
+     order by cntrycode;
+
+//--------------------------------------------------------------------------------
+//  Transliterate Query
+//--------------------------------------------------------------------------------
+EXPLAIN STAGE TRANSLITERATE
+select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal
+     from ( select substring(c_phone from 1 for 2) as cntrycode, c_acctbal
+              from customer
+             where substring(c_phone from 1 for 2) in ('13','31','23','29','30','18','17')
+               and c_acctbal > ( select avg(c_acctbal)
+                                   from customer
+                                  where c_acctbal > 0.00
+                                    and substring (c_phone from 1 for 2) in ('13','31','23','29','30','18','17') )
+                                    and not exists ( select * from orders where o_custkey = c_custkey )
+                                ) as custsale
+     group by cntrycode
+     order by cntrycode;
+
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  pipeline custsale
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker45947
+    stage stageMarker45947 on all partitions :
+      scan rapidsse public orders
+      | filter " type BOOLEAN  $2 ==  "
+      | project " type INTEGER as O_ORDERKEY $1 , type INTEGER as O_CUSTKEY $2 , type VARCHAR as O_ORDERSTATUS $3 , type DECIMAL as O_TOTALPRICE $4 , type TIMESTAMP as O_ORDERDATE $5 , type VARCHAR as O_ORDERPRIORITY $6 , type VARCHAR as O_CLERK $7 , type INTEGER as O_SHIPPRIORITY $8 , type VARCHAR as O_COMMENT $9 "
+      | combined 0
+      | stageMarker45950
+    stage stageMarker45950 on all partitions :
+
+      stageMarker45953
+    stage stageMarker45953 on all partitions :
+      scan rapidsse public customer
+      | filter " type BOOLEAN  $6 0.00  >  }  ''13''  ''31''  ''23''  ''29''  ''30''  ''18''  ''17''  #7  $5 1  2  substring3  in  and  "
+      | project " type DECIMAL )  $6 sum  , type INTEGER )  $6 count  "
+      | combined 0
+      | stageMarker45956
+    stage stageMarker45956 on all nodes :
+      project " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+      | combined 0
+      | stageMarker46098
+    stage stageMarker46098 on origin :
+      project " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+      | combined 0
+      | stageMarker45959
+    stage stageMarker45959 on origin :
+      project " type DECIMAL $2 $1 casttype DECIMAL CAST  /  "
+      | combined 0
+      | stageMarker45962
+    stage stageMarker45962 on origin :
+
+      stageMarker45965
+    stage stageMarker45965 on all partitions :
+      scan rapidsse public customer
+      | filter " type BOOLEAN  }  ''13''  ''31''  ''23''  ''29''  ''30''  ''18''  ''17''  #7  $5 1  2  substring3  in  $6 __subquery0003  >  and  $1 __subquery0005  exists  not  and  "
+      | project " type VARCHAR as cntrycode $5 1  2  substring3  , type DECIMAL as c_acctbal $6 "
+      | combined 0
+      | stageMarker45968
+    stage stageMarker45968 on all partitions :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker45971
+  stage stageMarker45971 on all partitions :
+    call "custsale "
+    | aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    | combined 0
+    | stageMarker45974
+  stage stageMarker45974 on all nodes :
+    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    | combined 0
+    | stageMarker45977
+  stage stageMarker45977 on origin :
+    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    | sort " type VARCHAR as cntrycode $1 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

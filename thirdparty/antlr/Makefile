@@ -44,6 +44,10 @@ Then from the Source directory run the following command to build rapidsse:
   endif
 
   CMAKE_ARGS := -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+else ifeq ($(UNAME_S),Darwin)
+  ifeq ($(ARCH_FLAG_FORCE),x86_64)
+    CMAKE_ARGS := -DCMAKE_OSX_ARCHITECTURES=x86_64
+  endif
 endif
 
 all : $(LIBDIR)/$(LIBANTLR)

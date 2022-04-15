@@ -22,8 +22,9 @@ namespace STORE
     Table* m_pTable;  // table this partition belongs to
 
 
-    PtnId m_tPtnId;  // partition number (in grid)
-  
+    LglPtn m_tLglPtn;  // logical partition (in grid)
+    PhyPtn m_tPhyPtn;  // physical partition (in grid)
+
     // must be last
     Footer m_xFooter;
     
@@ -31,7 +32,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    TablePtn(Table* pTable, PtnId tPtnId);
+    TablePtn(Table* pTable, LglPtn tLglPtn, PhyPtn tPhyPtn);
    ~TablePtn(void) noexcept(false);
   
     void vDropRead(void);
@@ -41,14 +42,14 @@ namespace STORE
     bool bIsLocked(void);
     eCN  eKind(void);
 
-    PtnId  tPtnId(void);
+    LglPtn  tLglPtn(void);
 
     Table* pTable(void);
 
     Bucket* pGetBucket(i8 i_Bucket);
     void vSetBucket(i8 iBucket);
 
-    void vAddBucket(Table* pTable, PtnId tPtnId, eCN eKind);
+    void vAddBucket(Table* pTable, LglPtn tLglPtn, eCN eKind);
 
     void vRemoveBucket(i8 i_Bucket);
     void vAddIndex(IndexTree* pIndexTree);

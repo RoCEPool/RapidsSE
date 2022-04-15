@@ -102,23 +102,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // enqueue start-marker to start op to execute the pipeline job
 
-  [task].grabLock
-
-    Pipeline[].opsOnNode@ to nAcks
-
-    nAcks if
-      nAcks [task].acksRemaining!
-    
-      Pipeline[].enqueueStart? if
-    
-        Marker[].newStartMarker
-        Marker[]\clear Pipeline[].op0@ op.enqueOperand
-      then
-      [task].wait
-    else
-      [task].dropLock
-    then
-
+  Pipeline[].rootDeck@ to Deck[]
+  deck:invoke
+  nullptr to Deck[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -136,7 +122,7 @@
   [job].addRetired
   
   JS_SIGNALLED [job].state!
-    [session].signal
+  [session].signal
 
   [task].grabLock
     TR_RETIRE_THIS_TASK [task].transition!

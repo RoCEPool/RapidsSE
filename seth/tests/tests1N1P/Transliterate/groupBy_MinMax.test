@@ -24,7 +24,7 @@ create table datums (
 success
 
 load datums "../DATA/Transliterate/groupBy.csv" ;
-failure contains: '10 invalid'
+success
 
 
 //-------------------------------------MAX TESTS------------------------------------------

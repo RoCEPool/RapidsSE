@@ -1,0 +1,116 @@
+/*============================================================================*/
+/* _Q9_T                                                                      */
+/*============================================================================*/
+
+//------------------------------------------------------------------------------
+//  Original Query
+//------------------------------------------------------------------------------
+select nation, o_year, sum(amount) as sum_profit
+    from ( select n_name as nation,
+    extract(year from o_orderdate) as o_year,
+    l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+    from part, supplier, lineitem, partsupp, orders, nation
+    where s_suppkey = l_suppkey
+    and ps_suppkey = l_suppkey
+    and ps_partkey = l_partkey
+    and p_partkey = l_partkey
+    and o_orderkey = l_orderkey
+    and s_nationkey = n_nationkey
+    and p_name like '%green%' ) as profit
+    group by nation, o_year
+    order by nation, o_year desc;
+
+//------------------------------------------------------------------------------
+//  Transliterate Query
+//------------------------------------------------------------------------------
+EXPLAIN STAGE TRANSLITERATE
+select nation, o_year, sum(amount) as sum_profit
+    from ( select n_name as nation,
+    extract(year from o_orderdate) as o_year,
+    l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+    from part, supplier, lineitem, partsupp, orders, nation
+    where s_suppkey = l_suppkey
+    and ps_suppkey = l_suppkey
+    and ps_partkey = l_partkey
+    and p_partkey = l_partkey
+    and o_orderkey = l_orderkey
+    and s_nationkey = n_nationkey
+    and p_name like '%green%' ) as profit
+    group by nation, o_year
+    order by nation, o_year desc;
+
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  pipeline profit
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker23994
+    stage stageMarker23994 on all partitions :
+      scan rapidsse public part
+      | stageMarker23997 broadcast
+    stage stageMarker23997 on all partitions :
+      scan rapidsse public supplier
+      | abstractJoin " 1  "
+      | stageMarker24000 broadcast
+    stage stageMarker24000 on all partitions :
+      scan rapidsse public lineitem
+      | abstractJoin " 1  "
+      | stageMarker24003 broadcast
+    stage stageMarker24003 on all partitions :
+      scan rapidsse public partsupp
+      | abstractJoin " 1  "
+      | stageMarker24006 broadcast
+    stage stageMarker24006 on all partitions :
+      scan rapidsse public orders
+      | abstractJoin " 1  "
+      | stageMarker24009 broadcast
+    stage stageMarker24009 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin " 1  "
+      | stageMarker24012
+    stage stageMarker24012 on all partitions :
+      filter " type BOOLEAN  $10 $19 ==  $34 $19 ==  and  $33 $18 ==  and  $1 $18 ==  and  $38 $17 ==  and  $13 $47 ==  and  }  $2 ''%green%''  5 matchMiddle  and  "
+      | project " type VARCHAR as nation $48 , type INTEGER as o_year $42 extract_year  , type DECIMAL as amount $22 1.  $23 -  *  $36 $21 *  -  "
+      | combined 0
+      | stageMarker24015
+    stage stageMarker24015 on all partitions :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker24018
+  stage stageMarker24018 on all partitions :
+    call "profit "
+    | aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    | combined 0
+    | stageMarker24021
+  stage stageMarker24021 on all nodes :
+    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    | combined 0
+    | stageMarker24024
+  stage stageMarker24024 on origin :
+    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
+    | sort " type VARCHAR as nation $1 ASC  , type INTEGER as o_year $2 DESC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

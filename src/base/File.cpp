@@ -714,6 +714,28 @@ bool File::bOpenWrite(Stz* szFilePath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Preallocate space for an open file starting at nOffset for nBytes          */
+/*----------------------------------------------------------------------------*/
+void File::vPreAllocate(i8 nOffset, i8 nBytes)
+{
+  if (! m_aFile) {
+    m_oSysCall.vFailure(0);
+    vTrace("File::vPreAllocate: file not open: %s"_Stz,m_sPath.azChar());
+    return;
+  }
+
+  i8 fd = fileno(m_aFile);
+#ifdef WITH_LINUX
+  if(posix_fallocate(fd, nOffset, nBytes) != 0)
+  {
+    m_oSysCall.vFailure(0);
+    vTrace("File::vPreAllocate: posix_fallocate failed: %s"_Stz,m_sPath.azChar());
+    return;
+  }
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* formatted print                                                            */
 /*----------------------------------------------------------------------------*/
 void File::vPrint(Stz* szFormat, ...)

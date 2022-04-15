@@ -38,6 +38,9 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_iHeadSize   = 0;
   m_xCombinedT.m_eStrInflateRule = SI_NONE;
 
+  for (i8 i_Stack = 0; i_Stack < 256; i_Stack++)
+    m_xCombinedT.m_aW[i_Stack] = 0;
+
   // rowbuffer
   m_xCombinedT.m_aRowBuffer    = nullptr;
 
@@ -89,36 +92,32 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_racStrAreaSavP = nullptr;
 
   // project (agg)
-  m_xCombinedT.m_nAggRows = 0;
-  m_xCombinedT.m_iProcessRow    = 1;
   m_xCombinedT.m_iRowsProcessed = 0;
   m_xCombinedT.m_aRowSingleAgg  = nullptr;
   m_xCombinedT.m_aRowCellArrayAgg = nullptr;
   m_xCombinedT.m_racStrAreaAgg  = nullptr;
+  m_xCombinedT.m_racStrAreaSavAgg  = nullptr;
 
   // project (gby/payload)
+  m_xCombinedT.m_nAggRows = 0;
+  m_xCombinedT.m_iProcessRow    = 1;
+
+  // payload (gby/srt/top)
   m_xCombinedT.m_aiPayload      = nullptr;
   m_xCombinedT.m_aPayloadRow    = nullptr;
+  m_xCombinedT.m_aPayloadCellArray = nullptr;
   m_xCombinedT.m_racPayloadArea = nullptr;
-  m_xCombinedT.m_aIndexTreeGby  = nullptr;
-  m_xCombinedT.m_aIndexDefGby   = nullptr;
+  m_xCombinedT.m_racPayloadAreaSav = nullptr;
+  m_xCombinedT.m_aIndexTreePL   = nullptr;
+  m_xCombinedT.m_aIndexDefPL    = nullptr;
   m_xCombinedT.m_aEntBufferPL   = nullptr;
   m_xCombinedT.m_aEntWrkPL      = (void*)&pLogicUnit->m_oEntWrkPL;
   m_xCombinedT.m_aEntKeyPL      = ((EntWrk*)m_xCombinedT.m_aEntWrkPL)->aKey();
-  m_xCombinedT.m_aEntIntPL      = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();;
+  m_xCombinedT.m_aEntBottomPL     = nullptr;
+  m_xCombinedT.m_aEntIntPL      = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();
 
   // top
   m_xCombinedT.m_iTopInit         = 0;
-  m_xCombinedT.m_aiTopPayload     = nullptr;
-  m_xCombinedT.m_racTopPayloadArea = nullptr;
-  m_xCombinedT.m_aTopPayloadRow   = nullptr;
-  m_xCombinedT.m_aIndexDefTOP     = nullptr;
-  m_xCombinedT.m_aIndexTreeTOP    = nullptr;
-  m_xCombinedT.m_aEntBufferTOP    = nullptr;
-  m_xCombinedT.m_aEntBottomTOP    = nullptr;
-  m_xCombinedT.m_aEntWrkTOP       = (void*)&pLogicUnit->m_oEntWrkPL;
-  m_xCombinedT.m_aEntKeyTOP       = ((EntWrk*)m_xCombinedT.m_aEntWrkPL)->aKey();
-  m_xCombinedT.m_aEntIntTOP       = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();;
   m_xCombinedT.m_iInsertCntTOP    = 0;
 
   // limit
@@ -162,6 +161,9 @@ Combined::~Combined(void) noexcept(false)
   delete pRowSingle;
 
   pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleAgg);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xCombinedT.m_aPayloadRow);
   delete pRowSingle;
 }
 

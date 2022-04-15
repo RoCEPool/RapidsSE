@@ -359,7 +359,7 @@ Stz* IndexTree::pAnalyze(void)
   s48K sAnalysis;
   
   sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
-                        AM::iThisNodeNo(),
+                        AM::NODE::iThisNodeId(),
                         m_pIndex->szIndexNm(),
                         m_pIndex->pTable()->szTableNm());
   
@@ -1168,9 +1168,9 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
   
   m_pRootEntBuffer = new EntBuffer(this);
 
-  PtnId tPtnId;
-  tPtnId = m_i_TablePtn;
-  m_pRootEntBuffer->vPtnId(tPtnId);
+  LglPtn tLglPtn;
+  tLglPtn = m_i_TablePtn;
+  m_pRootEntBuffer->vLglPtn(tLglPtn);
 
   return m_pRootEntBuffer;
 }

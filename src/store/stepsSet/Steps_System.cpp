@@ -87,12 +87,12 @@ void Step::vSystemSee(void)
   vTrace("See System::\n"_Stz);
 
   vTrace("  name %s\n"_Stz
-        ,AM::szNodeNm()
+        ,AM::NODE::szNodeNm()
          );
 
   vTrace("  pid %lld (%s)\n"_Stz
-         ,AM::iPid()
-         ,Process::bTestPid(AM::iPid()) ? "exists"_Stz : "non-existant"_Stz
+         ,AM::PROCESS::iSePid()
+         ,Process::bTestPid(AM::PROCESS::iSePid()) ? "exists"_Stz : "non-existant"_Stz
          );
 
   vTrace("  system %s\n"_Stz

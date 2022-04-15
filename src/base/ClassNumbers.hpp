@@ -17,8 +17,10 @@ enum eCN : u2 // Class Number
   /* */ CN__A__,
   /* */ CN_ACCESSPATH,
   /* */ CN_ACTION,
+  /* */ CN_ADAPTORWL,
   /* */ CN_AGGTIMER,
   /* */ CN_AM,
+  /* */ CN_ANSWERWL,
   /* */ CN_API,
   /* */ CN_ARG,
   /* */ CN_ARRANGE,
@@ -36,7 +38,7 @@ enum eCN : u2 // Class Number
   /* */ CN_BUCKET,
   /* */ CN_BUCKETGET,
   /* */ CN_BUCKETINFO,
-  /* */ CN_BUCKETMAP_dyn,
+  /* */ CN_BUCKETMAP,
   /* */ CN_BKTMAPGET,
   /* */ CN_BUCKETVEC,
   /* */ CN_BUFFERMAP,
@@ -70,10 +72,10 @@ enum eCN : u2 // Class Number
   /* */ CN_DDLLOCK,
   /* */ CN_DECACNT,
   /* */ CN_DECIDER,
+  /* */ CN_DECK,
+  /* */ CN_DECKSPEC,
   /* */ CN_DEFINITIONNODE,
   /* */ CN_DEREFMETRICS,
-  /* */ CN_DEVIXT,
-  /* */ CN_DEVROW,
   /* */ CN_DIC,
   /* */ CN_DICLOCK,
   /* */ CN_DICSTACK,
@@ -94,7 +96,6 @@ enum eCN : u2 // Class Number
   /* */ CN_ENUMFLAGS,
   /* */ CN_EVENTHANDLERS,
   /* */ CN_EXEMPLAR,
-  /* */ CN_EXPREVAL,
 
   /* */ CN__F__,
   /* */ CN_FIFO,
@@ -115,7 +116,6 @@ enum eCN : u2 // Class Number
   /* */ CN__H__,
   /* */ CN_HASHMAP,
   /* */ CN_HASHMAPSLOT,
-  /* */ CN_HASHSET,
   /* */ CN_HEAPBUFFER,
   /* */ CN_HEAPMEM,
 
@@ -151,6 +151,8 @@ enum eCN : u2 // Class Number
   /* */ CN_LARGEPERSISTENT,
   /* */ CN_LARGETRANSIENT,
   /* */ CN_LARGEVIRTUAL,
+  /* */ CN_LGLBUFSET,
+  /* */ CN_LGLPTNMAP,
   /* */ CN_LICENCE,
   /* */ CN_LIMITS,
   /* */ CN_LISTEXONODE_t,
@@ -167,8 +169,6 @@ enum eCN : u2 // Class Number
   /* */ CN_LOCK,
   /* */ CN_LOCKS,
   /* */ CN_LOCKSET,
-  /* */ CN_LOGICCOMPILER,
-  /* */ CN_LOGICTIMER,
   /* */ CN_LOGICUNIT,
 
   /* */ CN__M__,
@@ -214,8 +214,6 @@ enum eCN : u2 // Class Number
   /* */ CN_PERUSE,
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINEMETRICS,
-  /* */ CN_PIPEWORK,
-  /* */ CN_PIPESPEC,
   /* */ CN_PLANDEFINITIONPARSER,
   /* */ CN_PLANNERLOCK,
   /* */ CN_PLANNODE,
@@ -231,7 +229,8 @@ enum eCN : u2 // Class Number
   /* */ CN_PROCEDURE,
   /* */ CN_PROFILE,
   /* */ CN_PSXTHD,
-  /* */ CN_PTNMAP,
+  /* */ CN_PTNDEF,
+  /* */ CN_PTNID,
   /* */ CN_PTNSTMCURSOR,
   /* */ CN_PTNSTREAM,
   /* */ CN_PTRVAL,
@@ -244,10 +243,10 @@ enum eCN : u2 // Class Number
   /* */ CN_QUEUEBUFFER,
 
   /* */ CN__R__,
-  /* */ CN_RANGE,
   /* */ CN_READER,
   /* */ CN_REAPLOCK,
   /* */ CN_RECORD,
+  /* */ CN_RECVWL,
   /* */ CN_RELOP,
   /* */ CN_RESOURCES,
   /* */ CN_RIBBON,
@@ -286,11 +285,11 @@ enum eCN : u2 // Class Number
   /* */ CN_SEEME,
   /* */ CN_SENCOMPILER,
   /* */ CN_SENDS,
+  /* */ CN_SENDWL,
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
   /* */ CN_SESSIONS,
   /* */ CN_SHAPE,
-  /* */ CN_SHARDDEF,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
   /* */ CN_SINCE,
@@ -339,8 +338,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SUBCALL,
-  /* */ CN_SUBPIPESPECS,
-  /* */ CN_SUBPIPEWORKS,
   /* */ CN_SUBRETURN,
   /* */ CN_SYSCALL,
   /* */ CN_SYSMETRICS,
@@ -377,14 +374,12 @@ enum eCN : u2 // Class Number
   /* */ CN_TINYTRANSIENT,
   /* */ CN_TINYVIRTUAL,
   /* */ CN_TMEVAL,
-  /* */ CN_TOBKTCRW,
-  /* */ CN_TOBKTROW,
   /* */ CN_TOKEN,
   /* */ CN_TOKENVEC,
-  /* */ CN_TONSTROW,
-  /* */ CN_TOPTNCRW,
-  /* */ CN_TOPTNROW,
-  /* */ CN_TOROW,
+  /* */ CN_TOKEYHSHROW,
+  /* */ CN_TOLGLPTNCRW,
+  /* */ CN_TOLGLPTNNST,
+  /* */ CN_TOLGLPTNROW,
   /* */ CN_TOTUP,
   /* */ CN_TRACELOCK,
   /* */ CN_TRACEMULTILOCK,
@@ -399,6 +394,8 @@ enum eCN : u2 // Class Number
 
   /* */ CN__V__,
   /* */ CN_VERBOSE,
+  /* */ CN_VERTEX,
+  /* */ CN_VERTEXSPEC,
 
   /* */ CN__W__,
   /* */ CN_WAKEUP,
@@ -426,8 +423,10 @@ static Stz* aCN[]
   /* */ "_A__"_Stz,                 // CN__A__
   /* */ "ACCESSPATH"_Stz,           // CN_ACCESSPATH
   /* */ "ACTION"_Stz,               // CN_ACTION
+  /* */ "ADAPTORWL"_Stz,            // CN_ADAPTORWL
   /* */ "AGGTIMER"_Stz,             // CN_AGGTIMER
   /* */ "AM"_Stz,                   // CN_AM
+  /* */ "ANSWERWL"_Stz,             // CN_ANSWERWL
   /* */ "API"_Stz,                  // CN_API
   /* */ "ARG"_Stz,                  // CN_ARG
   /* */ "ARRANGE"_Stz,              // CN_ARRANGE
@@ -445,7 +444,7 @@ static Stz* aCN[]
   /* */ "BUCKET"_Stz,               // CN_BUCKET
   /* */ "BUCKETGET"_Stz,            // CN_BUCKETGET
   /* */ "BUCKETINFO"_Stz,           // CN_BUCKETINFO
-  /* */ "BUCKETMAP_dyn"_Stz,        // CN_BUCKETMAP_dyn
+  /* */ "BUCKETMAP_dyn"_Stz,        // CN_BUCKETMAP
   /* */ "BKTMAPGET"_Stz,            // CN_BKTMAPGET
   /* */ "BUCKETVEC"_Stz,            // CN_BUCKETVEC
   /* */ "BUFFERMAP"_Stz,            // CN_BUFFERMAP
@@ -479,10 +478,10 @@ static Stz* aCN[]
   /* */ "DDLLOCK"_Stz,              // CN_DDLLOCK
   /* */ "DECACNT"_Stz,              // CN_DECACNT
   /* */ "DECIDER"_Stz,              // CN_DECIDER
+  /* */ "DECK"_Stz,                 // CN_DECK
+  /* */ "DECKSPEC"_Stz,             // CN_DECKSPEC
   /* */ "DEFINITIONNODE"_Stz,       // CN_DEFINITIONNODE
   /* */ "DEREFMETRICS"_Stz,         // CN_DEREFMETRICS
-  /* */ "DEVIXT"_Stz,               // CN_DEVIXT
-  /* */ "DEVROW"_Stz,               // CN_DEVROW
   /* */ "DIC"_Stz,                  // CN_DIC
   /* */ "DICLOCK"_Stz,              // CN_DICLOCK
   /* */ "DICSTACK"_Stz,             // CN_DICSTACK
@@ -503,7 +502,6 @@ static Stz* aCN[]
   /* */ "ENUMFLAGS"_Stz,            // CN_ENUMFLAGS
   /* */ "EVENTHANDLERS"_Stz,        // CN_EVENTHANDLERS
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
-  /* */ "EXPREVAL"_Stz,             // CN_EXPREVAL
 
   /* */ "_F__"_Stz,                 // CN__F__
   /* */ "FIFO"_Stz,                 // CN_FIFO
@@ -522,7 +520,6 @@ static Stz* aCN[]
   /* */ "GRID"_Stz,                 // CN_GRID
 
   /* */ "_H__"_Stz,                 // CN__H__
-  /* */ "HASHSET"_Stz,              // CN_HASHSET
   /* */ "HASHMAP"_Stz,              // CN_HASHMAP
   /* */ "HASHMAPSLOT"_Stz,          // CN_HASHMAPSLOT
   /* */ "HEAPBUFFER"_Stz,           // CN_HEAPBUFFER
@@ -560,6 +557,8 @@ static Stz* aCN[]
   /* */ "LARGEPERSISTENT"_Stz,      // CN_LARGEPERSISTENT
   /* */ "LARGETRANSIENT"_Stz,       // CN_LARGETRANSIENT
   /* */ "LARGEVIRTUAL"_Stz,         // CN_LARGEVIRTUAL
+  /* */ "LGLBUFSET"_Stz,            // CN_LGLBUFSET
+  /* */ "LGLPTNMAP"_Stz,            // CN_LGLPTNMAP
   /* */ "LICENCE"_Stz,              // CN_LICENCE
   /* */ "LIMITS"_Stz,               // CN_LIMITS
   /* */ "LISTEXONODE_t"_Stz,        // CN_LISTEXONODE_t
@@ -576,8 +575,6 @@ static Stz* aCN[]
   /* */ "LOCK"_Stz,                 // CN_LOCK
   /* */ "LOCKS"_Stz,                // CN_LOCKS
   /* */ "LOCKSET"_Stz,              // CN_LOCKSET
-  /* */ "LOGICCOMPILER"_Stz,        // CN_LOGICCOMPILER
-  /* */ "LOGICTIMER"_Stz,           // CN_LOGICTIMER
   /* */ "LOGICUNIT"_Stz,            // CN_LOGICUNIT
 
   /* */ "_M__"_Stz,                 // CN__M__
@@ -623,8 +620,6 @@ static Stz* aCN[]
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
-  /* */ "PIPEWORK"_Stz,             // CN_PIPEWORK
-  /* */ "PIPESPEC"_Stz,             // CN_PIPESPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
   /* */ "PLANNERLOCK"_Stz,          // CN_PLANNERLOCK
   /* */ "PLANNODE"_Stz,             // CN_PLANNODE
@@ -640,7 +635,8 @@ static Stz* aCN[]
   /* */ "PROCEDURE"_Stz,            // CN_PROCEDURE
   /* */ "PROFILE"_Stz,              // CN_PROFILE
   /* */ "PSXTHD"_Stz,               // CN_PSXTHD
-  /* */ "PTNMAP"_Stz,               // CN_PTNMAP
+  /* */ "PTNDEF"_Stz,               // CN_PTNDEF
+  /* */ "PTNID"_Stz,                // CN_PTNID
   /* */ "PTNSTMCURSOR"_Stz,         // CN_PTNSTMCURSOR
   /* */ "PTNSTREAM"_Stz,            // CN_PTNSTREAM
   /* */ "PTRVAL"_Stz,               // CN_PTRVAL
@@ -653,10 +649,10 @@ static Stz* aCN[]
   /* */ "QUEUEBUFFER"_Stz,          // CN_QUEUEBUFFER
 
   /* */ "_R__"_Stz,                 // CN__R__
-  /* */ "RANGE"_Stz,                // CN_RANGE
   /* */ "READER"_Stz,               // CN_READER
   /* */ "REAPLOCK"_Stz,             // CN_REAPLOCK
   /* */ "RECORD"_Stz,               // CN_RECORD
+  /* */ "RECVWL"_Stz,               // CN_RECVWL
   /* */ "RELOP"_Stz,                // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
   /* */ "RIBBON"_Stz,               // CN_RIBBON
@@ -695,11 +691,11 @@ static Stz* aCN[]
   /* */ "SEEME"_Stz,                // CN_SEEME
   /* */ "SENCOMPILER"_Stz,          // CN_SENCOMPILER
   /* */ "SENDS"_Stz,                // CN_SENDS
+  /* */ "SENDWL"_Stz,               // CN_SENDWL
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
   /* */ "SESSIONS"_Stz,             // CN_SESSIONS
   /* */ "SHAPE"_Stz,                // CN_SHAPE
-  /* */ "SHARDDEF"_Stz,             // CN_SHARDDEF
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
   /* */ "SINCE"_Stz,                // CN_SINCE
@@ -748,8 +744,6 @@ static Stz* aCN[]
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SUBCALL"_Stz,              // CN_SUBCALL
-  /* */ "SUBPIPESPECS"_Stz,         // CN_SUBPIPESPECS
-  /* */ "SUBPIPEWORKS"_Stz,         // CN_SUBPIPEWORKS
   /* */ "SUBRETURN"_Stz,            // CN_SUBRETURN
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS
@@ -787,13 +781,11 @@ static Stz* aCN[]
   /* */ "TINYVIRTUAL"_Stz,          // CN_TINYVIRTUAL
   /* */ "TMEVAL"_Stz,               // CN_TMEVAL
   /* */ "TOKEN"_Stz,                // CN_TOKEN
-  /* */ "TOBKTCRW"_Stz,             // CN_TOBKTCRW
-  /* */ "TOBKTROW"_Stz,             // CN_TOBKTROW
   /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
-  /* */ "TONSTROW"_Stz,             // CN_TONSTROW
-  /* */ "TOPTNCRW"_Stz,             // CN_TOPTNCRW
-  /* */ "TOPTNROW"_Stz,             // CN_TOPTNROW
-  /* */ "TOROW"_Stz,                // CN_TOROW
+  /* */ "TOKEYHSHROW"_Stz,          // CN_TOKEYHSHROW
+  /* */ "TOLGLPTNCRW"_Stz,          // CN_TOLGLPTNCRW
+  /* */ "TOLGLPTNNST"_Stz,          // CN_TOLGLPTNNST
+  /* */ "TOLGLPTNROW"_Stz,          // CN_TOLGLPTNROW
   /* */ "TOTUP"_Stz,                // CN_TOTUP
   /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK
   /* */ "TRACEMULTILOCK"_Stz,       // CN_TRACEMULTILOCK
@@ -808,6 +800,8 @@ static Stz* aCN[]
 
   /* */ "_V__"_Stz,                 // CN__V__
   /* */ "VERBOSE"_Stz,              // CN_VERBOSE
+  /* */ "VERTEX"_Stz,               // CN_VERTEX
+  /* */ "VERTEXSPEC"_Stz,           // CN_VERTEXSPEC
 
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WAKEUP"_Stz,               // CN_WAKEUP
