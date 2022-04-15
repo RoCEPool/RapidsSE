@@ -16,7 +16,7 @@ namespace BASE
     BufferId     m_oBufferId;     // Set wherever bufferno is set, with bit flag set
 #endif
 
-    PtnId  m_tPtnId;
+    LglPtn m_tLglPtn;
     i8     m_iBucketNo;     // this DataBuffer's bucket number
 
     i8     m_iBufferHeight; // buffer height in the tree
