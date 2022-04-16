@@ -218,12 +218,17 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     m_xSysArgs.m_eUtility = UT_APIDEMO;
     return true;
   }
-  
+
+  if (argv[1].bSame("pfile"_Stz)) {
+    m_xSysArgs.m_eUtility = UT_PFILE;
+    return true;
+  }
+
   if (argv[1].bSame("shm"_Stz)) {
     m_xSysArgs.m_eUtility = UT_SHM;
     return true;
   }
-  
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   
   m_xSysArgs.m_oArgTags.vInsert(C_SHOW_RECURRING);

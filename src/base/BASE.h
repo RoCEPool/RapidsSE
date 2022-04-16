@@ -320,6 +320,8 @@ extern d8 C_D8_MID;
 
 #include "Format.hpp"
 
+#include "PFileUtility.hpp"
+
 //------------------------------------------------------------------------------
 
 #include "ColPix.h"

@@ -793,7 +793,7 @@ namespace OBLIQUE
     static i8   iTaskState(Task* pTask);
 
      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+     // Arjun: Not used anywhere
     static HeapBuffer* pToHeapBuffer(i8 iBufferNo);
     static Object* pToLargeObect(i8 iBufferNo);
 
