@@ -13,7 +13,8 @@ assert::stack_0
   "op__common.sen"              include
   "reg__common.sen"             include
   "OP_failed.sen"               include
-  
+  "se_infoset.sen"              include
+
 "a" .verbose
 
   "OP_adaptorWL.sen"            include
