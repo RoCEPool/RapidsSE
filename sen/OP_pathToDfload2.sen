@@ -13,13 +13,6 @@
 
   PipeIn[]\clear to InfoSet[]
 
-/*
-  // find the __path table def ; set infoSetTable[]
-  C_TDEF_PATH op__tableDef_infoSet assert
-
-  // get the first (one and only) row from this infoset
-  InfoSet[].firstRow to infoSetRow[]
-*/
   C_TDEF_PATH infoSetRow:getFirstRow
 
   // extract the values
