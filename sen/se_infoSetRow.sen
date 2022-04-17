@@ -1,26 +1,22 @@
 /*============================================================================*/
-/* se_infoset.sen -- additional infoset related words                         */
+/* se_infoSetRow.sen -- additional InfoSetRow related words                   */
 /*============================================================================*/
 
-" se_infoset.sen" .verbose
+" se_infoSetRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* create infoset ; add varg row ; pipeout ; delete                           */
+/* get first row of named infoset                                             */
 /*----------------------------------------------------------------------------*/
-: infoset:pipeoutRow params| sInfoSetNm eInfoSet nArgs |
+: infoSetRow:getFirstRow params| sInfoSetNm |
 
-  InfoSet[].isNull assert
-  
+  InfoSet[].isNotNull assert
+  InfoSetRow[].isNull assert
+
+  // find the sInfoSetNm table def ; set infoSetTable[]
   sInfoSetNm op__tableDef_infoSet assert
-  
-  InfoSetTable[] InfoSet[].new
-    eInfoSet InfoSet[].opInfoset!
-    
-  nArgs InfoSet[].addRowVargs
- 
-  InfoSet[].pipeOut
 
-  InfoSet[].isNull assert
+  // get the first (one and only) row from this infoset
+  InfoSet[].firstRow to InfoSetRow[]
 ;
 
 /*============================================================================*/

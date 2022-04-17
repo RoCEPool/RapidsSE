@@ -1,0 +1,28 @@
+/*============================================================================*/
+/* se_infoSet.sen -- additional InfoSet related words                         */
+/*============================================================================*/
+
+" se_infoSet.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create infoset ; add varg row ; pipeout ; delete                           */
+/*----------------------------------------------------------------------------*/
+: infoSet:pipeoutRow params| sInfoSetNm eInfoSet nArgs |
+
+  InfoSet[].isNull assert
+  
+  sInfoSetNm op__tableDef_infoSet assert
+  
+  InfoSetTable[] InfoSet[].new
+    eInfoSet InfoSet[].opInfoset!
+    
+  nArgs InfoSet[].addRowVargs
+ 
+  InfoSet[].pipeOut
+
+  InfoSet[].isNull assert
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
