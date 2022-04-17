@@ -29,7 +29,6 @@ namespace STORE
 
     SMA<Task,CN_TASK>     m_pTask;     // task of op
 
-    // -- id, name and kind
     Gid_t<CN_OP> m_xOpId;     // op id in grid
     s256         m_sPath;     // operator path
 
@@ -41,7 +40,6 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // event handling
 
-  SeeMe m_xSeeMe;
     EventHandlers* m_pEventHandlers;
   
     eZK   m_eCurEvent;
@@ -53,10 +51,6 @@ namespace STORE
     // in-bound queues and outbound operand
     PipeIn* m_pPipeIn;
   
-//    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueLeft;   // left input queue
-//    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueRight;  // right input queue
-//    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueOoO;    // out-of-order queue
-
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // move these in logic unit???
   
@@ -111,7 +105,6 @@ namespace STORE
     void vGrabTaskLock(void);
   
     void vIncWorkDone(void);
-    void vInitOperandHandlers(void);
     bool bIsLocked(void);
     bool bIsEventValid(i8 i_OperandKind);
   

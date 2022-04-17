@@ -64,35 +64,32 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
 
   m_pTask   = nullptr;
 
-  // -- -- -- -- -- --
-  
-  //m_sPath
-  
+  //m_xOpId
+
+  SP_Op spOp;
+  m_sPath = spOp.szPath(this);
+
   m_pOpTags = nullptr;
   m_bTraceOp    = false;
   m_bTraceAck   = false;
 
   // -- -- -- -- -- --
 
-    
-  // -- -- -- -- -- --
-
   m_pEventHandlers
     = _pEventHandlers(AM::HANDLERS::pEventHandlers()->pMemoryCopy());
 
   m_eCurEvent = ZK_NONE;
-  
+  for (i8 i_Event = 0; i_Event < ZK_ENUMS; i_Event++) {
+    m_naEventCount[i_Event] = 0;
+  }
+
   m_pOperandWatch = new OperandWatch;
 
-  vInitOperandHandlers();
+  // -- -- -- -- -- --
 
   m_pPipeIn = new PipeIn;
-//  m_pQueueLeft    = new OperandQueue;
-//  m_pQueueRight   = new OperandQueue;
-//  m_pQueueOoO     = new OperandQueue;
 
-  
-  
+  // -- -- -- -- -- --
 
   m_iSendNode   = C_UNKNOWN;
   m_eSendCast   = XK_NONE;
@@ -105,10 +102,6 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   
   m_iMetricsQueued = 0;
 
-  //vInitOperandHandlers();
-  
-
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   SMA<Job,CN_JOB> pPipelineJob;
@@ -125,11 +118,6 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   if (AM::TRACE::bVerbose(C_VB_ACK)) {
     m_bTraceAck = true;
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  SP_Op spOp;
-  m_sPath = spOp.szPath(this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -169,11 +157,7 @@ Op::~Op(void) noexcept(false)
   delete m_pOperandWatch;
 
   delete m_pPipeIn;
-  
-//  delete m_pQueueLeft;
-//  delete m_pQueueRight;
-//  delete m_pQueueOoO;
-  
+    
   if (m_pTask.bIsNotNull()) {
     Task* pTask = *m_pTask;
     
@@ -532,24 +516,6 @@ void Op::vIncWorkDone(void)
  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iWorkDone++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* init operand handlers                                                      */
-/*----------------------------------------------------------------------------*/
-void Op::vInitOperandHandlers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-//  Dic* pDicRoot = AM::DIC::pRoot();
-
-  s32 sHandlerNm;
-
-  for (i8 i_Kind = 0; i_Kind < ZK_ENUMS; i_Kind++) {
-    m_naEventCount[i_Kind] = 0;
-  }
-
-  m_eCurEvent = ZK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1690,13 +1656,7 @@ void Op::vSpawnTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
       
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //vInitOperandHandlers();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+    
   Job* pJob = this->pJobOfOp();
   pJob->vActiveOpsInc();
   
