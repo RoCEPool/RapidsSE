@@ -73,7 +73,7 @@ Stz* SP_Op::sz(Op* pOp)
 
         ,pOp
         ,nQueuedOperands
-        ,pOp->szPath()
+        ,pOp->szSpot()
   );
         
 
@@ -154,7 +154,7 @@ Stz* SP_Op::szLeading(Op* pOp)
 /*----------------------------------------------------------------------------*/
 /* sprint path of an op                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Op::szPath(Op* pOp)
+Stz* SP_Op::szSpot(Op* pOp)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   

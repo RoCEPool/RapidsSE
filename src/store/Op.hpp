@@ -31,7 +31,7 @@ namespace STORE
     SMA<Task,CN_TASK>     m_pTask;     // task of op
 
     Gid_t<CN_OP> m_xOpId;     // op id in grid
-    s256         m_sPath;     // operator path
+    s256         m_sSpot;     // operator grid position/path
 
     TagSet*  m_pOpTags;   // tags for the op
     bool     m_bTraceOp;  // tracing this operator
@@ -127,7 +127,7 @@ namespace STORE
     i8   iOtherStage(void);
     Stage* pOtherStage(void);
 
-    Stz* szPath(void);
+    Stz* szSpot(void);
     bool bPause(void);
     bool bPeekLeft(void);
     bool bPeekOoO(void);

@@ -383,7 +383,7 @@ void Task::vDumpOnException(void)
     SP_Op spOp;
     vTrace("m_pOp=%p (%s); %lld queued operands\n"_Stz
            ,*m_pOp
-           ,spOp.szPath(m_pOp)
+           ,spOp.szSpot(m_pOp)
            ,m_pOp->nQueuedOperands());
   }
 

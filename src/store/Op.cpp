@@ -67,7 +67,7 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   //m_xOpId
 
   SP_Op spOp;
-  m_sPath = spOp.szPath(this);
+  m_sSpot = spOp.szSpot(this);
 
   m_pOpTags   = nullptr;
   m_bTraceOp  = false;
@@ -1169,13 +1169,13 @@ Stage* Op::pOtherStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get operator path                                                          */
+/* get operator grid position/path                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Op::szPath(void)
+Stz* Op::szSpot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_sPath;
+  return m_sSpot;
 }
 
 /*----------------------------------------------------------------------------*/
