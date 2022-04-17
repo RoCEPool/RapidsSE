@@ -5,13 +5,22 @@
 " se_infoSet.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* create infoset ; add varg row ; pipeout ; delete                           */
+/* discover infoset by name                                                   */
 /*----------------------------------------------------------------------------*/
-: InfoSet:pipeoutRow params| sInfoSetNm eInfoSet nArgs |
+: InfoSet:discover params| sInfoSetNm |
 
   InfoSet[].isNull assert
   
   sInfoSetNm op__tableDef_infoSet assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* add single varg row to infoet ; pipeout infoset                            */
+/*----------------------------------------------------------------------------*/
+: InfoSet:pipeoutRow params| eInfoSet nArgs |
+  
+  InfoSetTable[] assert
+  InfoSet[].isNull assert
   
   InfoSetTable[] InfoSet[].new
     eInfoSet InfoSet[].opInfoset!

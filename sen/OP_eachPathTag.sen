@@ -17,40 +17,31 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   <paths> locals| nPaths |
+  
   nPaths "eachPathTag: nPaths %v" .printf
 
-  nPaths 1 OI_COUNT C_TDEF_COUNT InfoSet:pipeoutRow
-
+  C_TDEF_COUNT InfoSet:discover
+  
+  nPaths 1 OI_COUNT InfoSet:pipeoutRow
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   0 0 0 locals| sPath iPathNo iPathOf |
 
-  // find the __path table def ; set infoSetTable[]
-  C_TDEF_PATH op__tableDef_infoSet assert
+  C_TDEF_PATH InfoSet:discover
 
   nPaths 0
   do
-    // create a new infoSet operand for each path
-    // refer to define table __path in it_path.sen
-    infoSetTable[] InfoSet[].new
-      OI_PATH InfoSet[].opInfoset!
-
     // form: iPathOf iPathNo sPath
     nPaths to iPathOf
     I to iPathNo
     "<path" I >str str.cat ">" str.cat
        [job].tagSet@ tagSet.getStr
        to sPath
-     
-    // print the __path data
+       
     iPathOf iPathNo sPath "eachPathTag: %v %v %v" .printf
-
-    // add a __path row to infoset
-    iPathOf iPathNo sPath 3 InfoSet[].addRowVargs
-        
-    // pipeout the infoset with one row in it
-    InfoSet[].pipeOut
+    
+    iPathOf iPathNo sPath 3 OI_PATH InfoSet:pipeoutRow
   loop
 ;
 
