@@ -9,6 +9,7 @@
 #include "eZK.h"
 
 #include "OperandWatch.hpp"
+#include "PipeIn.hpp"
 
 namespace BASE { class OperandQueue; }
 
@@ -49,6 +50,7 @@ namespace STORE
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // in-bound queues and outbound operand
+    PipeIn* m_pPipeIn;
   
     SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueLeft;   // left input queue
     SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueRight;  // right input queue

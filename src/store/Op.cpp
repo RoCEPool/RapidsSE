@@ -84,6 +84,7 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
 
   m_pOperandWatch = new OperandWatch;
   
+  m_pPipeIn = new PipeIn;
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
   m_pQueueOoO     = new OperandQueue;
@@ -126,6 +127,8 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
 
   ++ gixOp;
   
+  _checkInitialised_(CN_OP);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
 
@@ -157,6 +160,8 @@ Op::~Op(void) noexcept(false)
 
   delete m_pOperandWatch;
 
+  delete m_pPipeIn;
+  
   delete m_pQueueLeft;
   delete m_pQueueRight;
   delete m_pQueueOoO;

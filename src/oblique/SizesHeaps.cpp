@@ -236,6 +236,7 @@
 #include "Deck.hpp"
 #include "DeckSpec.hpp"
 #include "AdaptorWL.hpp"
+#include "PipeIn.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -460,6 +461,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(PathVec),            HT_T_MEDIUM  ,0 FILL }, // CN_PATHVEC
   { sizeof(Permit),             HT_T_TINY    ,0 FILL }, // CN_PERMIT
   { sizeof(Peruse),             HT_T_MEDIUM  ,0 FILL }, // CN_PERUSE
+  { sizeof(PipeIn),             HT_T_TINY    ,0 FILL }, // CN_PIPEIN
   { sizeof(Pipeline),           HT_T_TINY    ,0 FILL }, // CN_PIPELINE
   { sizeof(PipelineMetrics),    HT_T_TINY    ,0 FILL }, // CN_PIPELINEMETRICS
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM,-8 FILL }, // CN_PLANDEFINITIONPARSER
