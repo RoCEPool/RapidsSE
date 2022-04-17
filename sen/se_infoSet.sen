@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* create infoset ; add varg row ; pipeout ; delete                           */
 /*----------------------------------------------------------------------------*/
-: infoSet:pipeoutRow params| sInfoSetNm eInfoSet nArgs |
+: InfoSet:pipeoutRow params| sInfoSetNm eInfoSet nArgs |
 
   InfoSet[].isNull assert
   

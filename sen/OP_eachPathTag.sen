@@ -17,19 +17,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   <paths> locals| nPaths |
-
-  // find the __callPipeline table def ; set infoSetTable[]
-  C_TDEF_COUNT op__tableDef_infoSet assert
-
-  // create an infoSet operand
-  InfoSetTable[] InfoSet[].new
-    OI_COUNT InfoSet[].opInfoset!
-
-  nPaths 1 InfoSet[].addRowVargs
-    
-  InfoSet[].pipeOut
-  
   nPaths "eachPathTag: nPaths %v" .printf
+
+  nPaths 1 OI_COUNT C_TDEF_COUNT InfoSet:pipeoutRow
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

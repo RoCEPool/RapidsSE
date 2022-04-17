@@ -37,7 +37,7 @@
   // temp debug
   //true exit
 
-  sCommand 1 OI_COMMAND C_TDEF_COMMAND infoset:pipeoutRow
+  sCommand 1 OI_COMMAND C_TDEF_COMMAND InfoSet:pipeoutRow
   
   true
 ;
