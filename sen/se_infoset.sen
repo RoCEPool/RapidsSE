@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : infoset:pipeoutRow params| sInfoSetNm eInfoSet nArgs |
 
-  InfoSet[] not assert
+  InfoSet[].isNull assert
   
   sInfoSetNm op__tableDef_infoSet assert
   
@@ -20,7 +20,7 @@
  
   InfoSet[].pipeOut
 
-  InfoSet[].delete
+  InfoSet[].isNull assert
 ;
 
 /*============================================================================*/

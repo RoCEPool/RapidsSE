@@ -39,7 +39,8 @@
 
   // temp debug
   //true exit
-  
+
+/*
   // find the __command table def ; set infoSetTable[]
   C_TDEF_COMMAND op__tableDef_infoSet assert
 
@@ -50,7 +51,10 @@
   sCommand 1 InfoSet[].addRowVargs
     
   InfoSet[].pipeOut
+*/
 
+  sCommand 1 OI_COMMAND C_TDEF_COMMAND infoset:pipeoutRow
+  
   true
 ;
 
