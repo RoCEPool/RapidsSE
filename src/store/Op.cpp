@@ -74,7 +74,9 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   m_bTraceAck   = false;
 
   // -- -- -- -- -- --
-
+  
+  m_pEvMgr = new EvMgr;
+  
   m_pEventHandlers
     = _pEventHandlers(AM::HANDLERS::pEventHandlers()->pMemoryCopy());
 
@@ -153,6 +155,8 @@ Op::~Op(void) noexcept(false)
     }
     RASSERT(0);
   }
+
+  delete m_pEvMgr;
 
   delete m_pOperandWatch;
 

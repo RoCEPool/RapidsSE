@@ -8,6 +8,7 @@
 #include "eXK.h"
 #include "eZK.h"
 
+#include "EvMgr.hpp"
 #include "OperandWatch.hpp"
 #include "PipeIn.hpp"
 
@@ -38,8 +39,10 @@ namespace STORE
 
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // event handling
+    // event manager
 
+    EvMgr* m_pEvMgr;
+  
     EventHandlers* m_pEventHandlers;
   
     eZK   m_eCurEvent;
@@ -48,7 +51,8 @@ namespace STORE
     OperandWatch* m_pOperandWatch;
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // in-bound queues and outbound operand
+    // in-bound queue management
+  
     PipeIn* m_pPipeIn;
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --

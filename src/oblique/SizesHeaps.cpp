@@ -237,6 +237,7 @@
 #include "DeckSpec.hpp"
 #include "AdaptorWL.hpp"
 #include "PipeIn.hpp"
+#include "EvMgr.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -344,6 +345,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntWrk),             HT_INVALID   ,0 FILL }, // CN_ENTWRK
   { sizeof(ClassFlags),         HT_T_TINY    ,0 FILL }, // CN_ENUMFLAGS
   { sizeof(EventHandlers),      HT_T_TINY    ,0 FILL }, // CN_EVENTHANDLERS
+  { sizeof(EvMgr),              HT_T_TINY    ,0 FILL }, // CN_EVMGR
   { sizeof(Exemplar),           HT_T_TINY    ,0 FILL }, // CN_EXEMPLAR
 
   { 'F' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__F__
