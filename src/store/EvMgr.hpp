@@ -5,12 +5,22 @@
 
 #include "BASE.h"
 
+#include "OperandWatch.hpp"
+
 namespace STORE
 {
   class EvMgr : public Object
   {
   public:
   
+    EventHandlers* m_pEventHandlers;
+
+    eZK m_eCurEvent;
+  
+    i8  m_naEventCount[ZK_ENUMS];  // counts of events (operands piped-in)
+
+    OperandWatch* m_pOperandWatch;
+
     // must be last
     Footer m_xFooter;
     

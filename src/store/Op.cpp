@@ -69,29 +69,15 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   SP_Op spOp;
   m_sPath = spOp.szPath(this);
 
-  m_pOpTags = nullptr;
-  m_bTraceOp    = false;
-  m_bTraceAck   = false;
-
-  // -- -- -- -- -- --
+  m_pOpTags   = nullptr;
+  m_bTraceOp  = false;
+  m_bTraceAck = false;
   
-  m_pEvMgr = new EvMgr;
+  m_pEvMgr    = new EvMgr;
   
-  m_pEventHandlers
-    = _pEventHandlers(AM::HANDLERS::pEventHandlers()->pMemoryCopy());
+  m_pPipeIn   = new PipeIn;
 
-  m_eCurEvent = ZK_NONE;
-  for (i8 i_Event = 0; i_Event < ZK_ENUMS; i_Event++) {
-    m_naEventCount[i_Event] = 0;
-  }
-
-  m_pOperandWatch = new OperandWatch;
-
-  // -- -- -- -- -- --
-
-  m_pPipeIn = new PipeIn;
-
-  // -- -- -- -- -- --
+  // -- - -- - -- - -- - -- - -- - --
 
   m_iSendNode   = C_UNKNOWN;
   m_eSendCast   = XK_NONE;
@@ -104,11 +90,11 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   
   m_iMetricsQueued = 0;
 
+  _checkInitialised_(CN_OP);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  SMA<Job,CN_JOB> pPipelineJob;
-  
-  pPipelineJob = p_Stream->pPipeline()->pPipelineJob();
+  SMA<Job,CN_JOB> pPipelineJob = p_Stream->pPipeline()->pPipelineJob();
   
   TagSet* pJobTags = AM::pJobTags(pPipelineJob);
   
@@ -121,11 +107,7 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
     m_bTraceAck = true;
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   ++ gixOp;
-  
-  _checkInitialised_(CN_OP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
@@ -158,7 +140,7 @@ Op::~Op(void) noexcept(false)
 
   delete m_pEvMgr;
 
-  delete m_pOperandWatch;
+  //delete m_pOperandWatch;
 
   delete m_pPipeIn;
     
@@ -182,7 +164,6 @@ Op::~Op(void) noexcept(false)
 
   }
 
-  delete m_pEventHandlers;
   delete m_pOpTags;
 
   -- gixOp;
@@ -343,7 +324,7 @@ eZK Op::eCurEvent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_eCurEvent;
+  return m_pEvMgr->m_eCurEvent;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -446,7 +427,7 @@ i8 Op::nEventCount(eZK eEvent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  i8 nCount = m_naEventCount[eEvent];
+  i8 nCount = m_pEvMgr->m_naEventCount[eEvent];
   
   return nCount;
 }
@@ -458,12 +439,12 @@ void Op::vEventCountInc(eZK eEvent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  m_eCurEvent = eEvent;
+  m_pEvMgr->m_eCurEvent = eEvent;
 
-  m_naEventCount[m_eCurEvent]++;
+  m_pEvMgr->m_naEventCount[m_pEvMgr->m_eCurEvent]++;
   
   i8 iTscp = BASE::iRdtscp();
-  m_pOperandWatch->vSaw(m_eCurEvent,iTscp);
+  m_pEvMgr->m_pOperandWatch->vSaw(m_pEvMgr->m_eCurEvent,iTscp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -487,7 +468,7 @@ Word* Op::pEventHandler(i8 i_OperandKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Word* pHandler = m_pEventHandlers->pGet((eZK) i_OperandKind);
+  Word* pHandler = m_pEvMgr->m_pEventHandlers->pGet((eZK) i_OperandKind);
   
   return pHandler;
 }
@@ -499,7 +480,7 @@ void Op::vEventHandler(i8 i_OperandKind, Word* pHandler)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_pEventHandlers->vSet((eZK) i_OperandKind, pHandler);
+  m_pEvMgr->m_pEventHandlers->vSet((eZK) i_OperandKind, pHandler);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -546,13 +527,13 @@ bool Op::bIsEventValid(i8 i_OperandKind)
     case ZK_M_CANCELLING:
       
       // should not have received a ZK_M_CANCELLING already
-      if (m_naEventCount[i_OperandKind]) {
+      if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("%s: multiple ZK_M_CANCELLING arrived\n"_Stz, szOpNm());
         return false;
       }
       
       // should not have received a ZK_M_CANCELLED
-      if ( m_naEventCount[ZK_M_CANCELLED]) {
+      if ( m_pEvMgr->m_naEventCount[ZK_M_CANCELLED]) {
         vTrace("%s: %s  arrived after ZK_M_CANCELLED\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
@@ -568,14 +549,14 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       }
       
       // should have received a ZK_M_CANCEL
-      if ( ! m_naEventCount[ZK_M_CANCEL]) {
+      if ( ! m_pEvMgr->m_naEventCount[ZK_M_CANCEL]) {
         vTrace("%s: %s arrived without a prior ZK_M_CANCEL\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       
       // should not have received a ZK_M_CANCELLED already
-      if (m_naEventCount[i_OperandKind]) {
+      if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("multiple ZK_M_CANCELLED arrived\n"_Stz);
         return false;
       }
@@ -584,7 +565,7 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case ZK_D_CSVBUFFER:
       // should have received a ZK_M_START
-      if ( ! m_naEventCount[ZK_M_START]) {
+      if ( ! m_pEvMgr->m_naEventCount[ZK_M_START]) {
         vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
@@ -597,21 +578,21 @@ bool Op::bIsEventValid(i8 i_OperandKind)
     case ZK_D_ROWBUFFER:
     case ZK_D_SRTBUFFER:
       // should have received a ZK_M_DATAPULSE
-      if ( ! m_naEventCount[ZK_M_DATAPULSE]) {
+      if ( ! m_pEvMgr->m_naEventCount[ZK_M_DATAPULSE]) {
         vTrace("%s: %s arrived without a prior ZK_M_DATAPULSE\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       
       // should have received a ZK_D_STREAMDEF
-      if ( ! m_naEventCount[ZK_D_STREAMDEF]) {
+      if ( ! m_pEvMgr->m_naEventCount[ZK_D_STREAMDEF]) {
         vTrace("%s: %s arrived without a prior ZK_D_STREAMDEF\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       
       // should not have received ZK_M_EOS's > ZK_M_DATAPULSE's
-      if ( m_naEventCount[ZK_M_EOS] > m_naEventCount[ZK_M_DATAPULSE]) {
+      if ( m_pEvMgr->m_naEventCount[ZK_M_EOS] > m_pEvMgr->m_naEventCount[ZK_M_DATAPULSE]) {
         vTrace("%s: %s arrived after ZK_M_EOS and no new ZK_M_DATAPULSE\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
@@ -621,14 +602,14 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case ZK_M_DATAPULSE:
       // should have received a ZK_M_START
-      if ( ! m_naEventCount[ZK_M_START]) {
+      if ( ! m_pEvMgr->m_naEventCount[ZK_M_START]) {
         vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       
       // should not have received a ZK_M_END
-      if ( m_naEventCount[ZK_M_END]) {
+      if ( m_pEvMgr->m_naEventCount[ZK_M_END]) {
         vTrace("%s: %s arrived after ZK_M_END\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
@@ -637,13 +618,13 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case ZK_M_ENDCRWRHT:
       // should not have received a ZK_M_ENDROWRHT already
-      if (m_naEventCount[ZK_M_ENDROWRHT]) {
+      if (m_pEvMgr->m_naEventCount[ZK_M_ENDROWRHT]) {
         vTrace("%s: ZK_M_ENDROWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
       // should have received a ~ ZK_M_STARTCRWRHT already
-      if (m_naEventCount[i_OperandKind] == m_naEventCount[ZK_M_STARTCRWRHT] ) {
+      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[ZK_M_STARTCRWRHT] ) {
         vTrace("%s: ZK_M_STARTCRWRHT not yet arrived\n"_Stz, szOpNm());
         return false;
       }
@@ -651,13 +632,13 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case ZK_M_ENDROWRHT:
       // should not have received a ZK_M_ENDCRWRHT already
-      if (m_naEventCount[ZK_M_ENDCRWRHT]) {
+      if (m_pEvMgr->m_naEventCount[ZK_M_ENDCRWRHT]) {
         vTrace("%s: ZK_M_ENDCRWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
       // should have received a ~ ZK_M_STARTROWRHT already
-      if (m_naEventCount[i_OperandKind] == m_naEventCount[ZK_M_STARTROWRHT] ) {
+      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[ZK_M_STARTROWRHT] ) {
         vTrace("%s: ZK_M_STARTROWRHT not yet arrived\n"_Stz, szOpNm());
         return false;
       }
@@ -665,20 +646,20 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case ZK_M_EOS:
       // should have received a ZK_M_START
-      if ( ! m_naEventCount[ZK_M_START]) {
+      if ( ! m_pEvMgr->m_naEventCount[ZK_M_START]) {
         vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
       
       // should not have received a ZK_M_EOS
-      if ( m_naEventCount[ZK_M_EOS]) {
+      if ( m_pEvMgr->m_naEventCount[ZK_M_EOS]) {
         vTrace("%s: multiple ZK_M_EOS arrived\n"_Stz, szOpNm());
         return false;
       }
       
       // should not have received a ZK_M_DATAPULSE
-      if ( ! m_naEventCount[ZK_M_DATAPULSE]) {
+      if ( ! m_pEvMgr->m_naEventCount[ZK_M_DATAPULSE]) {
         vTrace("%s: %s arrived without a prior ZK_M_DATAPULSE\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
@@ -687,7 +668,7 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case ZK_M_ERROR:
       // should not have received a ZK_ERRORREDMARKER
-      if ( m_naEventCount[ZK_M_ERRORED]) {
+      if ( m_pEvMgr->m_naEventCount[ZK_M_ERRORED]) {
         vTrace("%s: %s arrived after ZK_M_ERROR\n"_Stz, szOpNm());
         return false;
       }
@@ -702,7 +683,7 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       }
       
       // should have received an ZK_M_ERROR
-      if (m_naEventCount[ZK_M_ERROR]) {
+      if (m_pEvMgr->m_naEventCount[ZK_M_ERROR]) {
         vTrace("%s: %s arrived without a prior ZK_M_ERROR\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
@@ -718,13 +699,13 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 //      }
       
       // should not have received a ZK_M_EXITING already
-      if (m_naEventCount[i_OperandKind]) {
+      if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("%s: multiple ZK_M_EXITING arrived\n"_Stz, szOpNm());
         return false;
       }
       
       // should not have received a ZK_M_EXITED
-      if ( m_naEventCount[ZK_M_EXITED]) {
+      if ( m_pEvMgr->m_naEventCount[ZK_M_EXITED]) {
         vTrace("%s: %s arrived after ZK_M_EXITED\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
@@ -733,14 +714,14 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case ZK_M_LEAVE:
       // should have received a ZK_M_START
-      if ( ! m_naEventCount[ZK_M_START]) {
+      if ( ! m_pEvMgr->m_naEventCount[ZK_M_START]) {
         vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
       }
 
       // should not have received a ZK_M_EXITING already
-      if (m_naEventCount[i_OperandKind]) {
+      if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("%s: multiple ZK_M_EXITING arrived\n"_Stz, szOpNm());
         return false;
       }
@@ -754,7 +735,7 @@ bool Op::bIsEventValid(i8 i_OperandKind)
         return false;
       }
       // should not have received an ZK_M_EXITED already
-      if (m_naEventCount[i_OperandKind]) {
+      if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("%s: multiple ZK_M_EXITED arrived\n"_Stz, szOpNm());
         return false;
       }
@@ -768,7 +749,7 @@ bool Op::bIsEventValid(i8 i_OperandKind)
         return false;
       }
       // should not have received an ZK_M_EXITED already
-      if (m_naEventCount[i_OperandKind]) {
+      if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("%s: multiple ZK_M_EXITED arrived\n"_Stz, szOpNm());
         return false;
       }
@@ -776,7 +757,7 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case ZK_M_END:
       // should have received a ZK_M_START
-      if ( ! m_naEventCount[ZK_M_START]) {
+      if ( ! m_pEvMgr->m_naEventCount[ZK_M_START]) {
         vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
                szOpNm(), aZK[i_OperandKind]);
         return false;
@@ -785,7 +766,7 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case ZK_M_INVOKE:
       // should not have received a ZK_M_INVOKE already
-      if (m_naEventCount[ZK_M_INVOKE]) {
+      if (m_pEvMgr->m_naEventCount[ZK_M_INVOKE]) {
         vTrace("%s: multiple ZK_M_INVOKES's arrived\n"_Stz, szOpNm());
         return false;
       }
@@ -793,13 +774,13 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       
     case ZK_M_STARTCRWRHT:
       // should not have received a ZK_M_STARTROWRHT already
-      if (m_naEventCount[ZK_M_STARTROWRHT]) {
+      if (m_pEvMgr->m_naEventCount[ZK_M_STARTROWRHT]) {
         vTrace("%s: ZK_M_STARTROWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
       // should not have received a ~ ZK_M_ENDCRWRHT already
-      if (m_naEventCount[i_OperandKind] == m_naEventCount[ZK_M_ENDCRWRHT] + 1 ) {
+      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[ZK_M_ENDCRWRHT] + 1 ) {
         vTrace("%s: ZK_M_ENDCRWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
@@ -807,7 +788,7 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case ZK_M_START:
       // should not have received a ZK_M_START already
-      if (m_naEventCount[i_OperandKind]) {
+      if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("%s: multiple ZK_M_START's arrived\n"_Stz, szOpNm());
         return false;
       }
@@ -815,13 +796,13 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case ZK_M_STARTROWRHT:
       // should not have received a ZK_M_STARTCRWRHT already
-      if (m_naEventCount[ZK_M_STARTCRWRHT]) {
+      if (m_pEvMgr->m_naEventCount[ZK_M_STARTCRWRHT]) {
         vTrace("%s: ZK_M_STARTCRWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
 
       // should not have received a ~ ZK_M_STARTROWRHT already
-      if (m_naEventCount[i_OperandKind] == m_naEventCount[ZK_M_ENDROWRHT] + 1 ) {
+      if (m_pEvMgr->m_naEventCount[i_OperandKind] == m_pEvMgr->m_naEventCount[ZK_M_ENDROWRHT] + 1 ) {
         vTrace("%s: ZK_M_ENDROWRHT already arrived\n"_Stz, szOpNm());
         return false;
       }
@@ -831,14 +812,14 @@ bool Op::bIsEventValid(i8 i_OperandKind)
     case ZK_M_STARTED:
       // should have received a ZK_M_START
       if (szOpNm()->bSame("start"_Stz) ) {
-        if (! m_naEventCount[ZK_M_INVOKE]) {
+        if (! m_pEvMgr->m_naEventCount[ZK_M_INVOKE]) {
           vTrace("%s: %s arrived without a prior ZK_M_INVOKE\n"_Stz,
                  szOpNm(), aZK[i_OperandKind]);
           return false;
         }
       }
       else {
-        if (! m_naEventCount[ZK_M_START]) {
+        if (! m_pEvMgr->m_naEventCount[ZK_M_START]) {
           vTrace("%s: %s arrived without a prior ZK_M_START\n"_Stz,
                  szOpNm(), aZK[i_OperandKind]);
           return false;
@@ -846,7 +827,7 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       }
       
       // should not have received a ZK_M_STARTED already
-      if (m_naEventCount[i_OperandKind]) {
+      if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("%s: multiple ZK_M_STARTED's arrived\n"_Stz, szOpNm());
         return false;
       }
@@ -861,7 +842,7 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 
     case ZK_D_STREAMDEF:
       // should have received a ZK_M_START
-      if ( ! m_naEventCount[ZK_M_START]) {
+      if ( ! m_pEvMgr->m_naEventCount[ZK_M_START]) {
         vTrace("ZK_M_STARTED arrived without a prior ZK_M_START\n"_Stz);
         return false;
       }
@@ -1006,7 +987,7 @@ OperandWatch* Op::pOperandWatch(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOperandWatch;
+  return m_pEvMgr->m_pOperandWatch;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1117,7 +1098,7 @@ void Op::vOpTrace(Operand* pOperand
            
             ,szFunNm
             ,AM::pOperandName(pOperand)
-            ,m_naEventCount[m_eCurEvent]
+            ,m_pEvMgr->m_naEventCount[m_pEvMgr->m_eCurEvent]
             ,pOperand
             ,szSupplemental
            );

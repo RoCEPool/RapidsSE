@@ -33,29 +33,15 @@ namespace STORE
     Gid_t<CN_OP> m_xOpId;     // op id in grid
     s256         m_sPath;     // operator path
 
-    TagSet*    m_pOpTags;   // tags for the op
-    bool       m_bTraceOp;  // tracing this operator
-    bool       m_bTraceAck; // tracing ack of this operator
+    TagSet*  m_pOpTags;   // tags for the op
+    bool     m_bTraceOp;  // tracing this operator
+    bool     m_bTraceAck; // tracing ack of this operator
 
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // event manager
-
-    EvMgr* m_pEvMgr;
-  
-    EventHandlers* m_pEventHandlers;
-  
-    eZK   m_eCurEvent;
-    i8    m_naEventCount[ZK_ENUMS];  // counts of events (operands piped-in)
-
-    OperandWatch* m_pOperandWatch;
-  
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // in-bound queue management
-  
-    PipeIn* m_pPipeIn;
-  
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    EvMgr*   m_pEvMgr;    // event handlers
+         
+    PipeIn*  m_pPipeIn;   // in-bound queues
+ 
+    // -- - -- - -- - -- - -- - -- - --
     // move these in logic unit???
   
     i8   m_iSendNode;   // send node (for send)

@@ -3,7 +3,9 @@
 /*============================================================================*/
 
 #include "STORE.h"
+
 #include "EvMgr.hpp"
+#include "EventHandlers.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -22,6 +24,16 @@ EvMgr::EvMgr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EVMGR,_FOOTER_);
   
+  m_pEventHandlers
+    = _pEventHandlers(AM::HANDLERS::pEventHandlers()->pMemoryCopy());
+
+  m_eCurEvent = ZK_NONE;
+
+  for (i8 i_Event = 0; i_Event < ZK_ENUMS; i_Event++)
+    m_naEventCount[i_Event] = 0;
+  
+  m_pOperandWatch = new OperandWatch;
+  
   _checkInitialised_(CN_EVMGR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_EVMGR,_FOOTER_);
@@ -34,6 +46,7 @@ EvMgr::~EvMgr(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EVMGR,_FOOTER_);
   
+  delete m_pEventHandlers;
 }
 
 /*----------------------------------------------------------------------------*/
