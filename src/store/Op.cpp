@@ -68,38 +68,46 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   
   //m_sPath
   
+  m_pOpTags = nullptr;
   m_bTraceOp    = false;
   m_bTraceAck   = false;
 
   // -- -- -- -- -- --
 
-  // m_oOpTags
-  m_pOpTags = nullptr;
     
   // -- -- -- -- -- --
 
-  m_bPulsedLimit  = false;
-  m_iWorkQuanta   = 1;
-  m_iWorkDone     = 0;
+  m_pEventHandlers
+    = _pEventHandlers(AM::HANDLERS::pEventHandlers()->pMemoryCopy());
 
-  m_pOperandWatch = new OperandWatch;
+  m_eCurEvent = ZK_NONE;
   
+  m_pOperandWatch = new OperandWatch;
+
+  vInitOperandHandlers();
+
   m_pPipeIn = new PipeIn;
-  m_pQueueLeft    = new OperandQueue;
-  m_pQueueRight   = new OperandQueue;
-  m_pQueueOoO     = new OperandQueue;
+//  m_pQueueLeft    = new OperandQueue;
+//  m_pQueueRight   = new OperandQueue;
+//  m_pQueueOoO     = new OperandQueue;
+
+  
+  
 
   m_iSendNode   = C_UNKNOWN;
   m_eSendCast   = XK_NONE;
   m_iRobin      = 0;
   m_iLocalRobin = 0;
 
+  m_bPulsedLimit = false;
+  m_iWorkQuanta = 0;
+  m_iWorkDone = 0;
+  
   m_iMetricsQueued = 0;
 
   //vInitOperandHandlers();
   
-  m_pEventHandlers
-    = _pEventHandlers(AM::HANDLERS::pEventHandlers()->pMemoryCopy());
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -139,21 +147,21 @@ Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  if (m_pQueueLeft->nItems() != 0) {
+  if (m_pPipeIn->pQueueLeft()->nItems() != 0) {
     vTrace("Operand Queue not empty\n"_Stz);
-    Operand *pOperand = m_pQueueLeft->pPopQueue();
+    Operand *pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     while (pOperand) {
       vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
-      pOperand = m_pQueueLeft->pPopQueue();
+      pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     }
     RASSERT(0);
   }
-  if (m_pQueueRight->nItems() != 0) {
+  if (m_pPipeIn->pQueueRight()->nItems() != 0) {
     vTrace("Operand Queue not empty\n"_Stz);
-    Operand *pOperand = m_pQueueRight->pPopQueue();
+    Operand *pOperand = m_pPipeIn->pQueueRight()->pPopQueue();
     while (pOperand) {
       vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
-      pOperand = m_pQueueRight->pPopQueue();
+      pOperand = m_pPipeIn->pQueueRight()->pPopQueue();
     }
     RASSERT(0);
   }
@@ -162,9 +170,9 @@ Op::~Op(void) noexcept(false)
 
   delete m_pPipeIn;
   
-  delete m_pQueueLeft;
-  delete m_pQueueRight;
-  delete m_pQueueOoO;
+//  delete m_pQueueLeft;
+//  delete m_pQueueRight;
+//  delete m_pQueueOoO;
   
   if (m_pTask.bIsNotNull()) {
     Task* pTask = *m_pTask;
@@ -276,7 +284,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
   vGrabTaskLock();
   RASSERT(bIsLocked());
 
-  i8 nOperands = m_pQueueLeft->iAppendOperand(pOperand);
+  i8 nOperands = m_pPipeIn->pQueueLeft()->iAppendOperand(pOperand);
 
   if (pOpLogicUnit()->m_xpStats.bIsNotNull()) {
     if (nOperands > pOpLogicUnit()->m_xpStats->m_nMaxQs)
@@ -312,7 +320,7 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
   vGrabTaskLock();
   RASSERT(bIsLocked());
 
-  IGNORE_RETURN(m_pQueueOoO->iAppendOperand(pOperand));
+  IGNORE_RETURN(m_pPipeIn->pQueueOoO()->iAppendOperand(pOperand));
 
   AM::vOperandsInc();
 
@@ -537,7 +545,7 @@ void Op::vInitOperandHandlers(void)
 
   s32 sHandlerNm;
 
-  for (i8 i_Kind = 1; i_Kind < ZK_ENUMS; i_Kind++) {
+  for (i8 i_Kind = 0; i_Kind < ZK_ENUMS; i_Kind++) {
     m_naEventCount[i_Kind] = 0;
   }
 
@@ -1246,7 +1254,7 @@ bool Op::bPeekLeft(void)
   
   vGrabTaskLock();
   
-  bOperand = m_pQueueLeft->bPeekQueue();
+  bOperand = m_pPipeIn->pQueueLeft()->bPeekQueue();
   
   vDropTaskLock();
   
@@ -1264,7 +1272,7 @@ bool Op::bPeekOoO(void)
   
   vGrabTaskLock();
   
-  bOperandOoO = m_pQueueLeft->bPeekOoO();
+  bOperandOoO = m_pPipeIn->pQueueLeft()->bPeekOoO();
   
   vDropTaskLock();
   
@@ -1404,7 +1412,7 @@ Operand* Op::pPopLeft(void)
   vGrabTaskLock();
   RASSERT(bIsLocked());
   
-  Operand* pOperand = m_pQueueLeft->pPopQueue();
+  Operand* pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1433,7 +1441,7 @@ Operand* Op::pPopOoO(void)
   vGrabTaskLock();
   RASSERT(bIsLocked());
 
-  Operand* pOperand = m_pQueueOoO->pPopOoO();
+  Operand* pOperand = m_pPipeIn->pQueueOoO()->pPopOoO();
   
   vDropTaskLock();
   
@@ -1459,9 +1467,9 @@ Operand* Op::pPopOoOLeft(void)
   
   bool bLeft = false;
   
-  Operand* pOperand = m_pQueueOoO->pPopOoO();
+  Operand* pOperand = m_pPipeIn->pQueueOoO()->pPopOoO();
   if (! pOperand) {
-    pOperand = m_pQueueLeft->pPopQueue();
+    pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     bLeft = true;
   }
 
@@ -1527,7 +1535,7 @@ Operand* Op::pPopRight(void)
   
   vGrabTaskLock();
   
-  pOperand = m_pQueueRight->pPopQueue();
+  pOperand = m_pPipeIn->pQueueRight()->pPopQueue();
   
   if (pOperand) {
     vDropTaskLock();
@@ -1592,8 +1600,8 @@ i8 Op::nQueuedOperands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  i8 nLeft = m_pQueueLeft->nQueuedOperands();
-  i8 nOoO  = m_pQueueOoO->nQueuedOperands();
+  i8 nLeft = m_pPipeIn->pQueueLeft()->nQueuedOperands();
+  i8 nOoO  = m_pPipeIn->pQueueOoO()->nQueuedOperands();
 
   i8 nOperands = nLeft + nOoO;
   
@@ -1685,7 +1693,7 @@ void Op::vSpawnTask(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vInitOperandHandlers();
+  //vInitOperandHandlers();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

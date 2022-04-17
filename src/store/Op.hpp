@@ -41,6 +41,7 @@ namespace STORE
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // event handling
 
+  SeeMe m_xSeeMe;
     EventHandlers* m_pEventHandlers;
   
     eZK   m_eCurEvent;
@@ -52,9 +53,9 @@ namespace STORE
     // in-bound queues and outbound operand
     PipeIn* m_pPipeIn;
   
-    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueLeft;   // left input queue
-    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueRight;  // right input queue
-    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueOoO;    // out-of-order queue
+//    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueLeft;   // left input queue
+//    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueRight;  // right input queue
+//    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueOoO;    // out-of-order queue
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // move these in logic unit???
@@ -64,6 +65,7 @@ namespace STORE
     i8   m_iRobin;      // send Round Robin partition/node/thread
     i8   m_iLocalRobin; // send Round Robin local ptn/node/thread
       
+
     // can these go???
     bool m_bPulsedLimit;  // is this a pulsed operand?
     i8   m_iWorkQuanta;   // quanta of work between pulses
