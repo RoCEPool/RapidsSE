@@ -18,6 +18,8 @@ namespace STORE
   static Session* pAllocSession(eSK eSession);
   static void vFreeSession(Session* pSession);
 
+  static Job* pAllocJob(Session* pSession);
+
   static void vExecuteJob(Session* pSession, Job* pJob);
   static void vExtractCmdPaths(Session*  pSession, TokenVec* pCmdTknVec);
   static bool bExtractCmdTags(Session*  pSession, TokenVec* pCmdTknVec);

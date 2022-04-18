@@ -64,6 +64,28 @@ void Api::vFreeSession(Session* pSession)
   pSessions->vFreeSession(pSession);
 }
 
+/*----------------------------------------------------------------------------*/
+/* alloc a new job for session                                                */
+/*----------------------------------------------------------------------------*/
+Job* Api::pAllocJob(Session* pSession)
+{
+  _static_
+
+  RASSERT(pSession);
+    
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
+  
+  TagSet* pCmdTags = & pSession->m_oJobTagSet;
+  Stz* szJobNm = pCmdTags->szValue(C_TAG_JOBNM);
+
+  Job* pJob = new Job(szJobNm,
+                      pSession->m_i_Session,
+                      tCmdId
+                      );
+
+  return pJob;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -307,16 +329,18 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //pCmdTags->vDumpSet();
 
-  Stz* szJobNm = pCmdTags->szValue(C_TAG_JOBNM);
+//  Stz* szJobNm = pCmdTags->szValue(C_TAG_JOBNM);
+//
+//  CmdId tCmdId;
+//  tCmdId.vNextCmdId();
+//
+//  rpJob = new Job(szJobNm,
+//                  pSession->m_i_Session,
+//                  tCmdId
+//                  );
 
-  CmdId tCmdId;
-  tCmdId.vNextCmdId();
+  rpJob = pAllocJob(pSession);
   
-  rpJob = new Job(szJobNm,
-                  pSession->m_i_Session,
-                  tCmdId
-                  );
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   TagSet* pPrepareJobTags = rpJob->pJobTags();
