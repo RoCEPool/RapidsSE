@@ -11,6 +11,7 @@
 
   [EvMgr].curEventNm@ "forkCommand: %v" .printf
   
+  0 0 locals| eError tForkedJobId |
   
   PipeIn[]\clear to InfoSet[]
 
@@ -22,8 +23,17 @@
   <responseOpNm> [stream].findOp locals| pResponseOp |
   
   pResponseOp op.name@ "forkCommand: responseOp %v" .printf
-  
-  //pResponseOp "some-pipeline" api::forkCommand assert
+    
+/*
+
+  "" sCmd pResponseOp api::forkCommand if
+    to tForkedJobId
+    tForkedJobId "forkCommand: job %v" .printf
+  else
+    to eError
+    eError ErrorCode::decodeError eError "forkCommand: error %v %v" .printf
+  then
+*/
 
   true
 ;

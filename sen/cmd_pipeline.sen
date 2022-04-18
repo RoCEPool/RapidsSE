@@ -230,6 +230,19 @@
   
   [job].wasForked? if
     "JOB WAS FORKED" .
+        
+    HAZARD // temp
+    
+    [ddlLock].testDrop
+    ListedJob[].assertNoRef
+
+    [job].addRetired
+          
+    [task].grabLock
+      TR_RETIRE_THIS_TASK [task].transition!
+      
+    HAZARD
+
   else
   [session].hasCascade@ not if
       

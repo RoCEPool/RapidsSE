@@ -281,7 +281,9 @@ void Step::vApiSpawnDemon(void)
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
   //pTagSet->vDumpSet();
-  eError = Api::ePrepareJob(pSession,pCmdTknVec);
+  
+  Job* pJob;
+  eError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
 
   delete pCmdTknVec;
   

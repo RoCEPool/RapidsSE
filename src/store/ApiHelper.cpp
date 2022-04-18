@@ -97,13 +97,13 @@ void ApiHelper::vPipeoutResults(Op* pCurrOp,
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob(Stz* szCmd)
+eEC ApiHelper::ePrepareJob(Stz* szCmd, Job*& rpJob)
 {
   TokenVec* pCmdTknVec = new TokenVec;
   
   pCmdTknVec->vTokeniseCpp(szCmd);
   
-  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec);
+  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec,rpJob);
 
   delete pCmdTknVec;
   
@@ -113,9 +113,9 @@ eEC ApiHelper::ePrepareJob(Stz* szCmd)
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec)
+eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec, Job*& rpJob)
 {
-  eEC eError = Api::ePrepareJob(m_pSession,pCmdTknVec);
+  eEC eError = Api::ePrepareJob(m_pSession,pCmdTknVec,rpJob);
   
   return eError;
 }

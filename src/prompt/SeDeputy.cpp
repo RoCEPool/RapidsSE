@@ -177,7 +177,8 @@ eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec);
+  Job* pJob;
+  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec,pJob);
   
   return eError;
 }

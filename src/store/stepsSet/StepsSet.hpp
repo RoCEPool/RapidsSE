@@ -501,6 +501,7 @@ public:
   void vEnvGet(void);
 
   // error code
+  void vErrorCodeDecodeError(void);
   void vErrorCodeGet(void);
   void vErrorCodeSet(void);
 
