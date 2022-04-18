@@ -505,9 +505,10 @@ public:
   void vErrorCodeSet(void);
 
   // event
-  void vEventCountFetch(void);
-  void vEventHandlerName(void);
-  void vEventName(void);
+  void vEventEventCountFetch(void);
+  void vEventCurEventNmFetch(void);
+  void vEventDecodeHandlerNm(void);
+  void vEventDecodeEventNm(void);
 
   // extractRow
   void vExtractRowCreate(void);

@@ -48,7 +48,7 @@
   
   0 C_TDEF_COUNT InfoSet:getCol to Counter0[]
   
-  Counter0[] "waitFinished: ZK_I_COUNT expecting %v" .printf
+  Counter0[] [EvMgr].curEventNm@ "waitFinished: %v expecting %v" .printf
 
   true
 ;
@@ -62,7 +62,7 @@
 
   waitFinished_mayProceed if
   
-    "waitFinished: ZK_M_END may proceed" .printf
+    [EvMgr].curEventNm@ "waitFinished: %v may proceed" .printf
     
     Marker[].newEndMarker
     Marker[].pipeOut
@@ -70,7 +70,7 @@
     
   else
   
-    "waitFinished: ZK_M_END cannot proceed" .printf
+    [EvMgr].curEventNm@ "waitFinished: %v cannot proceed" .printf
 
     Marker[].newEndMarker
     Marker[].pipeOut
@@ -86,7 +86,25 @@
 
   Counter1[] 1 + to Counter1[]
   
-  true
+  PipeIn[].delete
+
+  waitFinished_mayProceed if
+  
+    [EvMgr].curEventNm@ "waitFinished: %v may proceed" .printf
+    
+    Marker[].newEndMarker
+    Marker[].pipeOut
+    true
+    
+  else
+  
+    [EvMgr].curEventNm@ "waitFinished: %v cannot proceed" .printf
+
+    Marker[].newEndMarker
+    Marker[].pipeOut
+    true
+    
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -94,6 +112,8 @@
 /*----------------------------------------------------------------------------*/
 : waitFinished_Start \handler
   
+  [EvMgr].curEventNm@ "waitFinished: %v" .printf
+    
   0 to Counter0[] // tracks the number of ZK_M_FINISHED expected
   0 to Counter1[] // tracks the number of ZK_M_FINISHED processed so far
 

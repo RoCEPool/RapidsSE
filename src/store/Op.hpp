@@ -91,6 +91,7 @@ namespace STORE
     Word* pEventHandler(void);
     Word* pEventHandler(i8 i_OperandKind);
     void vEventHandler(i8 i_OperandKind, Word* pHandler);
+    EvMgr* pEvMgr(void);
 
     void vGrabTaskLock(void);
   

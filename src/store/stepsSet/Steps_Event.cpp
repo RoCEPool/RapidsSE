@@ -15,16 +15,30 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Event(void)
 {
-  vAddStep("Event[].count@"_Stz,       &Step::vEventCountFetch);
-
-  vAddStep("event::handlerName@"_Stz,  &Step::vEventHandlerName);
-  vAddStep("event::name@"_Stz,         &Step::vEventName);
+  vAddStep("[EvMgr].curEventNm@"_Stz,       &Step::vEventCurEventNmFetch);
+  vAddStep("[EvMgr].decodeEventNm"_Stz,     &Step::vEventDecodeEventNm);
+  vAddStep("[EvMgr].decodeHandlerNm"_Stz,   &Step::vEventDecodeHandlerNm);
+  vAddStep("[EvMgr].eventCount@"_Stz,       &Step::vEventEventCountFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Event[].count@ -- get count of given event so far                          */
+/* [EvMgr].curEventNm@ -- get name of current event                           */
 /*----------------------------------------------------------------------------*/
-void Step::vEventCountFetch(void)
+void Step::vEventCurEventNmFetch(void)
+{
+  ENTRY();
+    
+  eZK eCurEvent = m_pOp->pEvMgr()->m_eCurEvent;
+    
+  m_pDataStack->vPushStz(aZK[eCurEvent]);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [EvMgr].eventCount@ -- get count of given event so far                     */
+/*----------------------------------------------------------------------------*/
+void Step::vEventEventCountFetch(void)
 {
   ENTRY();
   
@@ -37,11 +51,26 @@ void Step::vEventCountFetch(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* [EvMgr].decodeEventNm -- deccode eZK into aZK                              */
+/*----------------------------------------------------------------------------*/
+void Step::vEventDecodeEventNm(void)
+{
+  ENTRY();
+  
+  i8 iZK = m_pDataStack->iPopInt(__func__);
+
+  Stz* szEventNm = aZK[iZK];
+  
+  m_pDataStack->vPushStz(szEventNm);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* event::handlerName -- deccode eZK into handler name                        */
 /*----------------------------------------------------------------------------*/
-void Step::vEventHandlerName(void)
+void Step::vEventDecodeHandlerNm(void)
 {
   ENTRY();
   
@@ -53,22 +82,6 @@ void Step::vEventHandlerName(void)
   sHandlerNm.vSprint("%s_handler"_Stz,szEventNm);
   
   m_pDataStack->vPushStr(sHandlerNm);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* event::name -- deccode eZK into aZK                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vEventName(void)
-{
-  ENTRY();
-  
-  i8 iZK = m_pDataStack->iPopInt(__func__);
-
-  Stz* szEventNm = aZK[iZK];
-  
-  m_pDataStack->vPushStz(szEventNm);
   
   EXIT();
 }
