@@ -59,6 +59,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_bContinue   = true;
   m_bTerminated = false;
 
+  m_pJob = nullptr;
+
   _checkInitialised_(CN_SEDEPUTY);
   
   ApiHelper::vAllocateSession();
@@ -140,7 +142,7 @@ void SeDeputy::vDeputyLoop(void)
       m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
     }
     
-    vDeleteJob();
+    vRepeableJob();
   }
   
   m_bTerminated = true;
@@ -157,17 +159,17 @@ void SeDeputy::vExecuteJob(void)
     vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pSession->m_pSsnJob->pSession());
   RASSERT(m_pSession == m_pSession->m_pSsnJob->pSession());
     
-  ApiHelper::vExecuteJob();
+  ApiHelper::vExecuteJob(m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* delete completed job                                                       */
 /*----------------------------------------------------------------------------*/
-void SeDeputy::vDeleteJob(void)
+void SeDeputy::vRepeableJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  ApiHelper::vDeleteJob();
+  ApiHelper::vReapableJob(m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,8 +179,7 @@ eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  Job* pJob;
-  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec,pJob);
+  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec,m_pJob);
   
   return eError;
 }

@@ -24,6 +24,8 @@ namespace PROMPT
     bool      m_bContinue;
     bool      m_bTerminated;
 
+    Job*      m_pJob;
+  
     // must be last
     Footer m_xFooter;
   
@@ -38,7 +40,7 @@ namespace PROMPT
   
     void vDeputyLoop(void);
     void vExecuteJob(void);
-    void vDeleteJob(void);
+    void vRepeableJob(void);
 
     eEC  ePrepareJob(TokenVec* pCmdTknVec);
     void vPrintResults(void);

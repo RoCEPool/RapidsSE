@@ -72,7 +72,7 @@ void Api::vFreeSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
-void Api::vExecuteJob(Session* pSession)
+void Api::vExecuteJob(Session* pSession, Job* pJob)
 {
   _static_
   
@@ -80,7 +80,7 @@ void Api::vExecuteJob(Session* pSession)
 
   pSession->m_pOutput->vBeginProcOneCmd();
   
-  Job* pJob = pSession->m_pSsnJob;
+  //Job* pJob = pSession->m_pSsnJob;
     
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -396,13 +396,13 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 /* set job as reapable                                                        */
 /*----------------------------------------------------------------------------*/
-void Api::vReapableJob(Session* pSession)
+void Api::vReapableJob(Session* pSession, Job*& rpJob)
 {
   _static_
     
-  Job* pJob = pSession->m_pSsnJob;
+  //Job* pJob = pSession->m_pSsnJob;
 
-  if (pJob && pJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
+  if (rpJob && rpJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
     pSession->m_pOutput->vProcessBufferQueue();
 
   pSession->m_pOutput->m_pOutputQueue->vReset();
@@ -411,7 +411,7 @@ void Api::vReapableJob(Session* pSession)
   pSession->m_pSsnJob = nullptr;
   
   
-  pJob->vReapable(true);
+  rpJob->vReapable(true);
       
   
   
@@ -423,6 +423,8 @@ void Api::vReapableJob(Session* pSession)
   
   pSession->m_pOutput->m_bExitMarker      = false;
   pSession->m_pOutput->m_bExitEarlyMarker = false;
+  
+  rpJob = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -527,7 +529,7 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
 //  UNUSED(bSpawned);
   pJob->vResponseTimerStart();
   
-  Api::vExecuteJob(pSession);
+  Api::vExecuteJob(pSession,pJob);
   
   pJob->vResponseTimerUpdate();
 
@@ -538,7 +540,7 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete job and free session
-  Api::vReapableJob(pSession);
+  Api::vReapableJob(pSession,pJob);
 
   Api::vFreeSession(pSession);
 

@@ -41,17 +41,17 @@ void ApiHelper::vAllocateSession(void)
 /*----------------------------------------------------------------------------*/
 /* delete job                                                                 */
 /*----------------------------------------------------------------------------*/
-void ApiHelper::vDeleteJob(void)
+void ApiHelper::vReapableJob(Job*& rpJob)
 {
-  Api::vReapableJob(m_pSession);
+  Api::vReapableJob(m_pSession,rpJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* execute job                                                                */
 /*----------------------------------------------------------------------------*/
-void ApiHelper::vExecuteJob(void)
+void ApiHelper::vExecuteJob(Job* pJob)
 {
-  Api::vExecuteJob(m_pSession);
+  Api::vExecuteJob(m_pSession,pJob);
 }
 
 /*----------------------------------------------------------------------------*/
