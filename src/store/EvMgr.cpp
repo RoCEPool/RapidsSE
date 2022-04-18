@@ -47,6 +47,7 @@ EvMgr::~EvMgr(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_EVMGR,_FOOTER_);
   
   delete m_pEventHandlers;
+  delete m_pOperandWatch;
 }
 
 /*----------------------------------------------------------------------------*/

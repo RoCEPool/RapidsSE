@@ -228,6 +228,9 @@
   // ordinary job            / this job exits                                 //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
   
+  [job].wasForked? if
+    "JOB WAS FORKED" .
+  else
   [session].hasCascade@ not if
       
     [ddlLock].testDrop
@@ -254,7 +257,7 @@
   
     HAZARD
     
-  then
+  then then
 
   HAZARD
 ;
