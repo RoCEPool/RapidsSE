@@ -287,18 +287,18 @@ bool Api::bExtractCmdTags(Session* pSession, TokenVec* pCmdTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a and prepare it to execute the command in session                     */
+/* parse command                                                              */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
+eEC Api::eParseCmd(Session* pSession, TokenVec* pCmdTknVec, TagSet* pCmdTags)
 {
   _static_
 
   RASSERT(pSession);
-  RASSERT(! rpJob);
-    
+
+  //Session* pSession = pJob->pSession();
+  
   // get the command proper and the tag set
-  TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  TagSet*   pCmdTags   = & pSession->m_oJobTagSet;
+  //TagSet*   pCmdTags   = & pSession->m_oJobTagSet;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -325,6 +325,52 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
   if (! AM::bParseCmd(pCmdTknVec,pCmdTags))
     return EC_INVALID_COMMAND;
 
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new a and prepare it to execute the command in session                     */
+/*----------------------------------------------------------------------------*/
+eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
+{
+  _static_
+
+  RASSERT(pSession);
+  RASSERT(! rpJob);
+    
+  // get the command proper and the tag set
+  TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
+  TagSet*   pCmdTags   = & pSession->m_oJobTagSet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//  vExtractCmdPaths(pSession,pCmdTknVec);
+//
+//  bool b = bExtractCmdTags(pSession,pCmdTknVec);
+//  UNUSED(b);
+//
+//  if (bShortForm(pCmdTknVec)) {
+//    if (! bExpandToLongForm(pCmdTknVec)) {
+//      return EC_INVALID_COMMAND;
+//    }
+//  }
+//  else {
+//    sSTMT sPipelineSmt;
+//    if (Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
+//                                          pCmdTknVec)) {
+//
+//      pCmdTknVec->vSoftReset();
+//      pCmdTknVec->vTokeniseSen(sPipelineSmt);
+//    }
+//  }
+//
+//  if (! AM::bParseCmd(pCmdTknVec,pCmdTags))
+//    return EC_INVALID_COMMAND;
+
+  eEC eError = eParseCmd(pSession,pCmdTknVec,pCmdTags);
+  if (EC_NONE != eError)
+    return eError;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //pCmdTags->vDumpSet();
