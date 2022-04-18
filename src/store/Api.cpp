@@ -557,7 +557,7 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
 /* fork internal command with given tag string                                */
 /*----------------------------------------------------------------------------*/
 eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
-                      Op* pResponseOp)
+                      Op* pResponseOp, JobId& rtJobId)
 {
   _static_
   
@@ -587,10 +587,13 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
     return reError;
   }
     
+  Job* pJob = pSession->m_pSsnJob;
+
+  rtJobId = pJob->tJobId();
+   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // update the job tag set
   
-  Job* pJob = pSession->m_pSsnJob;
 
   TagSet* pJobTagSet = pJob->pJobTags();
   
@@ -617,11 +620,18 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   pJobTagSet->vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
   pJobTagSet->vInsert(C_TAG_WHEN,xNow.sz());
 
-  
+
   
   if (AM::TRACE::bVerbose(C_VB_API))
     pJobTagSet->vDumpSet();
 
+#if 1
+  pJob->vResponseTimerStart();
+  
+  Api::vForkJob(pSession,pResponseOp);
+
+  
+#else
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn job and wait for completion
   
@@ -649,6 +659,9 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
     
   //m_pDataStack->vPushInt(iJobNo);
   //m_pDataStack->vPushInt(true);
+#endif
+  
+  
   
   //delete pReqTknVec;
   delete pWithTagStrTknVec;

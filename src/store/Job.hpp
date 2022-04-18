@@ -43,6 +43,8 @@ namespace STORE
     i8 m_i_Session;  // which session in node's session array
     CmdId m_tCmdId;
   
+    bool m_bForked;
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
     // information depending on job instance/location           MODAL
@@ -132,6 +134,9 @@ namespace STORE
     Stz* szEntryPoint(void);
     void vEntryPoint(Stz* szEntry);
   
+    bool bForked(void);
+    void vForked(bool bForked);
+
     void vGrabLock(void);
   
     bool bHasByPromptTag(void);
