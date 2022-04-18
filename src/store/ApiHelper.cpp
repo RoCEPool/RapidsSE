@@ -123,18 +123,18 @@ eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec, Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 /* print results                                                              */
 /*----------------------------------------------------------------------------*/
-void ApiHelper::vPrintResults(void)
+void ApiHelper::vPrintResults(Job* pJob)
 {
   // start the buffer queue processing while the pipeline ops are running
-  if (m_pSession->m_pSsnJob->bIsPipeline())
-    m_pSession->m_pOutput->vProcessBufferQueue();
+  if (pJob->bIsPipeline())
+    m_pSession->m_pOutput->vProcessBufferQueue(pJob);
 
   RASSERT(! m_pSession->m_pOutput->m_bExecErr );
   RASSERT(! m_pSession->m_pOutput->m_bCmdErr );
 
-  if (m_pSession->m_pSsnJob->bIsInError()) {
+  if (pJob->bIsInError()) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
-           aEC[m_pSession->m_pSsnJob->eJobError()]);
+           aEC[pJob->eJobError()]);
   }
 
 }

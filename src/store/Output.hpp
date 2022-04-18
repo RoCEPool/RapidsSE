@@ -48,9 +48,9 @@ namespace STORE
   
     void vAssertEmptyQueue(void);
     void vBeginProcOneCmd(void);
-    void vDrainBufferQueue(void);
+    void vDrainBufferQueue(Job* pJob);
     void vEndProcOneCmd(void);
-    void vProcessBufferQueue(void);
+    void vProcessBufferQueue(Job* pJob);
     bool bPrintEnabled(void);
     void vPrintEnabled(bool bPrintEnabled);
 

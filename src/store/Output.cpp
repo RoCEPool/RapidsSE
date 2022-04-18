@@ -136,12 +136,12 @@ void Output::vBeginProcOneCmd(void)
 /*----------------------------------------------------------------------------*/
 /* drain the result/output queue                                              */
 /*----------------------------------------------------------------------------*/
-void Output::vDrainBufferQueue(void)
+void Output::vDrainBufferQueue(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   while (! m_bExitMarker   &&
-         ! m_pSession->m_pSsnJob->bIsInError()) {
+         ! pJob->bIsInError()) {
     
     Operand* pOperand = pPopBufferQueue_blocking();
     
@@ -218,7 +218,7 @@ void Output::vEndProcOneCmd(void)
 /*----------------------------------------------------------------------------*/
 /* process the result/output queue                                            */
 /*----------------------------------------------------------------------------*/
-void Output::vProcessBufferQueue(void)
+void Output::vProcessBufferQueue(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
@@ -233,7 +233,7 @@ void Output::vProcessBufferQueue(void)
 
   }
   
-  vDrainBufferQueue();
+  vDrainBufferQueue(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

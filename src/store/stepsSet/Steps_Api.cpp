@@ -282,7 +282,7 @@ void Step::vApiSpawnDemon(void)
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
   //pTagSet->vDumpSet();
   
-  Job* pJob;
+  Job* pJob = nullptr;
   eError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
 
   delete pCmdTknVec;
@@ -296,8 +296,8 @@ void Step::vApiSpawnDemon(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Job* pSsnJob = pSession->m_pSsnJob;
-  TagSet* pSsnJobTags = pSsnJob->pJobTags();
+  //Job* pSsnJob = pSession->m_pSsnJob;
+  TagSet* pSsnJobTags = pJob->pJobTags();
   
   Job* pPipelineJob = MY::pJob();
   TagSet* pPipelineJobTags = pPipelineJob->pJobTags();
@@ -312,7 +312,7 @@ void Step::vApiSpawnDemon(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Api::vSpawnTask_demonJob(pSsnJob);
+  Api::vSpawnTask_demonJob(pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

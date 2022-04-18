@@ -79,9 +79,7 @@ void Api::vExecuteJob(Session* pSession, Job* pJob)
   pSession->m_pOutput->vAssertEmptyQueue();
 
   pSession->m_pOutput->vBeginProcOneCmd();
-  
-  //Job* pJob = pSession->m_pSsnJob;
-    
+      
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -143,7 +141,6 @@ void Api::vForkJob(Session* pSession, Op* pResponseOp, Job*& rpJob)
 {
   _static_
   
-  //Job* pJob = pSession->m_pSsnJob;
   RASSERT(! rpJob->pTask());
 
   Api::vMutexLock(pSession,rpJob);
@@ -275,7 +272,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
   _static_
 
   RASSERT(pSession);
-  RASSERT(! pSession->m_pSsnJob);
+  RASSERT(! rpJob);
     
   // get the command proper and the tag set
   TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
@@ -315,12 +312,10 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
   CmdId tCmdId;
   tCmdId.vNextCmdId();
   
-  rpJob =
-    pSession->m_pSsnJob =
-      new Job(szJobNm,
-              pSession->m_i_Session,
-              tCmdId
-              );
+  rpJob = new Job(szJobNm,
+                  pSession->m_i_Session,
+                  tCmdId
+                  );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -400,16 +395,11 @@ void Api::vReapableJob(Session* pSession, Job*& rpJob)
 {
   _static_
     
-  //Job* pJob = pSession->m_pSsnJob;
-
   if (rpJob && rpJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
-    pSession->m_pOutput->vProcessBufferQueue();
+    pSession->m_pOutput->vProcessBufferQueue(rpJob);
 
   pSession->m_pOutput->m_pOutputQueue->vReset();
   pSession->m_pOutput->vEndProcOneCmd();
-
-  pSession->m_pSsnJob = nullptr;
-  
   
   rpJob->vReapable(true);
       
@@ -475,7 +465,7 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
-  Job* pJob;
+  Job* pJob = nullptr;
   reError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
 
   delete pCmdTknVec;
@@ -490,8 +480,6 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // update the job tag set
   
-  //Job* pJob = pSession->m_pSsnJob;
-
   TagSet* pJobTagSet = pJob->pJobTags();
   
   if (szTagPath) {
@@ -591,8 +579,6 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
     return reError;
   }
     
-  //Job* pJob = pSession->m_pSsnJob;
-
   rtJobId = pJob->tJobId();
    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -685,7 +671,6 @@ void Api::vSubmitJob(Session* pSession, Job* pJob)
 {
   _static_
   
-  //Job* pJob = pSession->m_pSsnJob;
   RASSERT(! pJob->pTask());
 
   Api::vMutexLock(pSession,pJob);
@@ -704,9 +689,7 @@ void Api::vSubmitJob(Session* pSession, Job* pJob)
 void Api::vWaitJob(Session* pSession, Job* pJob)
 {
   _static_
-  
-  //Job* pJob = pSession->m_pSsnJob;
-  
+    
   //pSession->m_oMutex.vObserve(true);
   Api::vMutexWaitCond(pSession,pJob);
   
