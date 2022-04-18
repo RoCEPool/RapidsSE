@@ -63,7 +63,7 @@ void Process::vEntry(void)
 {
   fprintf(stderr,"Calling exit(%lld)\n",(i8)EXIT_SUCCESS);
   
-  vThreadCallStackDump();
+//  vThreadCallStackDump();
   
   exit((int)EXIT_SUCCESS);
 }

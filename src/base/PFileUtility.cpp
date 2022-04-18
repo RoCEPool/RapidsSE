@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ShmUtility.cpp - share memory utility                                      */
+/* PFileUtility.cpp - share memory utility                                    */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -9,8 +9,8 @@ bool  mbDeletePFile = false;
 bool  mbDumpPFile = false;
 
 char* gaSePFileRegionAddress = nullptr;
-//i8    miPFileRegionSize = 0;
-s32   msPFilePath;
+s32    miPFileRegionSize;
+s256   msPFilePath;
 
 extern Header* gaSeShmRegion;
 
@@ -21,6 +21,7 @@ void PFileUtility::vRun(int argc, Stz* argv[])
 {
   vTrace("PFile...\n"_Stz);
 
+  miPFileRegionSize = ""_Stz;
   msPFilePath = ""_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -33,6 +34,11 @@ void PFileUtility::vRun(int argc, Stz* argv[])
       continue;
     }
 
+    if (argv[i_Arg]->bSame("--Name"_Stz)) {
+      msPFilePath = (Stz*)argv[++i_Arg];
+      continue;
+    }
+
     if (argv[i_Arg]->bSame("--Delete"_Stz)) {
       mbDeletePFile = true;
       continue;
@@ -40,6 +46,11 @@ void PFileUtility::vRun(int argc, Stz* argv[])
 
     if (argv[i_Arg]->bSame("--Dump"_Stz)) {
       mbDumpPFile = true;
+      continue;
+    }
+
+    if (argv[i_Arg]->bSame("--Size"_Stz)) {
+      miPFileRegionSize = (Stz*)argv[++i_Arg];
       continue;
     }
   }
@@ -68,6 +79,28 @@ void PFileUtility::vRun(int argc, Stz* argv[])
 void PFileUtility::vCreate(void)
 {
   vTrace("PFile::vCreate\n"_Stz);
+
+  if(1 == File::bExists(msPFilePath, true))
+  {
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Page file already exists!\n"_Stz);
+  }
+  else
+  {
+#ifdef WITH_APPLE
+    s2K sCmdNm;
+    StrLib::vSprint(sCmdNm, "mkfile -n %s %s"_Stz, miPFileRegionSize.azChar(), msPFilePath.azChar());
+
+    int rv = system(sCmdNm.azChar());
+    if(0 != rv)
+    {
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+             "Error creating page file\n"_Stz);
+    }
+
+    vTrace("Executed cmd: %s\n"_Stz, sCmdNm.azChar());
+#endif
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,6 +109,26 @@ void PFileUtility::vCreate(void)
 void PFileUtility::vDelete(void)
 {
   vTrace("PFile::vDelete\n"_Stz);
+
+  if(0 == File::bExists(msPFilePath, true))
+  {
+    vTrace("%s does not exist\n"_Stz, msPFilePath.azChar());
+    return;
+  }
+  else
+  {
+    s2K sCmdNm;
+    StrLib::vSprint(sCmdNm, "rm %s"_Stz, msPFilePath.azChar());
+
+    int rv = system(sCmdNm.azChar());
+    if(0 != rv)
+    {
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+             "Error deleting page file %s\n"_Stz, msPFilePath.azChar());
+    }
+
+    vTrace("Deleted page file: %s\n"_Stz, sCmdNm.azChar());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
