@@ -180,11 +180,11 @@ void Api::vForkJob(Session* pSession, Op* pResponseOp, Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 /* extract paths                                                              */
 /*----------------------------------------------------------------------------*/
-void Api::vExtractCmdPaths(Session* pSession, TokenVec* pCmdTknVec)
+void Api::vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTags)
 {
   _static_
   
-  TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
+  //TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
   
   i8 i_Paths = pCmdTknVec->iFindToken("paths"_Stz,TN_NAME);
 
@@ -199,11 +199,11 @@ void Api::vExtractCmdPaths(Session* pSession, TokenVec* pCmdTknVec)
   for (nPaths = 0; i_Paths < pCmdTknVec->nTokens(); nPaths++) {
     sName.vSprint("<path%lld>"_Stz,nPaths);
     Token* pTkn = pCmdTknVec->pGet(i_Paths);
-    pJobTagSet->vAppend(sName,pTkn->szChars());
+    pCmdTags->vAppend(sName,pTkn->szChars());
     pCmdTknVec->vRemoveToken(i_Paths);
   }
   
-  pJobTagSet->vAppend("<paths>"_Stz,nPaths);
+  pCmdTags->vAppend("<paths>"_Stz,nPaths);
 
 }
 
@@ -302,7 +302,7 @@ eEC Api::eParseCmd(Session* pSession, TokenVec* pCmdTknVec, TagSet* pCmdTags)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vExtractCmdPaths(pSession,pCmdTknVec);
+  vExtractCmdPaths(pCmdTknVec,pCmdTags);
   
   bool b = bExtractCmdTags(pSession,pCmdTknVec);
   UNUSED(b);

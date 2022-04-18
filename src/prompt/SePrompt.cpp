@@ -333,7 +333,10 @@ bool SePrompt::bExamineCommand(void)
   while (bSubSsnTags())
     {;}
   
-  Api::vExtractCmdPaths(m_pCurrentDeputy->pSession(),m_pCmdTknVec);
+  Session* pSession = m_pCurrentDeputy->pSession();
+  TagSet*  pCmdTags = & pSession->m_oJobTagSet;
+
+  Api::vExtractCmdPaths(m_pCmdTknVec,pCmdTags);
   if (! Api::bExtractCmdTags(m_pCurrentDeputy->pSession(),m_pCmdTknVec))
     return false;
 
