@@ -8,19 +8,21 @@ enum eUT // utility
   /*  0 */ UT_NONE=0,
   
   /*  1 */ UT_APIDEMO,
-  /*  2 */ UT_RAPIDSSE,
-  /*  3 */ UT_SHM,
-  
-  /*  4 */ UT_ENUMS
+  /*  2 */ UT_PFILE,
+  /*  3 */ UT_RAPIDSSE,
+  /*  4 */ UT_SHM,
+
+  /*  5 */ UT_ENUMS
 };
 
 static Stz* aUT[]
 {
   /*  0 */ "NONE"_Stz,
   /*  1 */ "UT_APIDEMO"_Stz,
-  /*  2 */ "UT_RAPIDSSE"_Stz,
-  /*  2 */ "UT_SHM"_Stz,
-  /*  3 */ "ENUMS"_Stz,
+  /*  2 */ "UT_PFILE"_Stz,
+  /*  3 */ "UT_RAPIDSSE"_Stz,
+  /*  4 */ "UT_SHM"_Stz,
+  /*  5 */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/

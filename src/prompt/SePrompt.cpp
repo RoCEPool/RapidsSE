@@ -334,10 +334,10 @@ bool SePrompt::bExamineCommand(void)
     {;}
   
   Session* pSession = m_pCurrentDeputy->pSession();
-  TagSet*  pCmdTags = & pSession->m_oCmdTagSet;
+  TagSet*  pCmdTagSet = & pSession->m_oCmdTagSet;
 
-  Api::vExtractCmdPaths(m_pCmdTknVec,pCmdTags);
-  if (! Api::bExtractCmdTags(m_pCmdTknVec,pCmdTags))
+  Api::vExtractCmdPaths(m_pCmdTknVec,pCmdTagSet);
+  if (! Api::bExtractCmdTags(m_pCmdTknVec,pCmdTagSet))
     return false;
 
   if (bIsPromptWord())

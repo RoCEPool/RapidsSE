@@ -142,7 +142,12 @@ int main(int argc, char* argv[])
       case UT_APIDEMO:
         NOT_IMPLEMENTED_YET;
         break;
-        
+
+      case UT_PFILE:
+        PFileUtility::vRun(argc,(Stz**)argv);
+        Process::vExitSuccess();
+        break;
+
       case UT_SHM:
         ShmUtility::vRun(argc,(Stz**)argv);
         Process::vExitSuccess();

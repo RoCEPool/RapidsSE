@@ -76,8 +76,8 @@ Job* Api::pAllocJob(Session* pSession)
   CmdId tCmdId;
   tCmdId.vNextCmdId();
   
-  TagSet* pCmdTags = & pSession->m_oCmdTagSet;
-  Stz* szJobNm = pCmdTags->szValue(C_TAG_JOBNM);
+  TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
 
   Job* pJob = new Job(szJobNm,
                       pSession->m_i_Session,
@@ -180,7 +180,7 @@ void Api::vForkJob(Session* pSession, Op* pResponseOp, Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 /* extract paths                                                              */
 /*----------------------------------------------------------------------------*/
-void Api::vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTags)
+void Api::vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   _static_
   
@@ -199,18 +199,18 @@ void Api::vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTags)
   for (nPaths = 0; i_Paths < pCmdTknVec->nTokens(); nPaths++) {
     sName.vSprint("<path%lld>"_Stz,nPaths);
     Token* pTkn = pCmdTknVec->pGet(i_Paths);
-    pCmdTags->vAppend(sName,pTkn->szChars());
+    pCmdTagSet->vAppend(sName,pTkn->szChars());
     pCmdTknVec->vRemoveToken(i_Paths);
   }
   
-  pCmdTags->vAppend("<paths>"_Stz,nPaths);
+  pCmdTagSet->vAppend("<paths>"_Stz,nPaths);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract tags                                                               */
 /*----------------------------------------------------------------------------*/
-bool Api::bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTags)
+bool Api::bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   _static_
   
@@ -226,7 +226,7 @@ bool Api::bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTags)
     Token* pTkn1 = pCmdTknVec->pGet(1,true);
     sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
     
-    pCmdTags->vInsert(sTag,1);
+    pCmdTagSet->vInsert(sTag,1);
     
     pCmdTknVec->vRemoveToken(0);
     pCmdTknVec->vRemoveToken(0);
@@ -275,7 +275,7 @@ bool Api::bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTags)
 
     s32 sName;
     sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
-    pCmdTags->vAppend(sName,pTkn_value->szChars());
+    pCmdTagSet->vAppend(sName,pTkn_value->szChars());
   }
     
   pCmdTknVec->vTrimTokens(i_TagBegin);
@@ -287,13 +287,13 @@ bool Api::bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTags)
 /*----------------------------------------------------------------------------*/
 /* parse command                                                              */
 /*----------------------------------------------------------------------------*/
-eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTags)
+eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   _static_
 
-  vExtractCmdPaths(pCmdTknVec,pCmdTags);
+  vExtractCmdPaths(pCmdTknVec,pCmdTagSet);
   
-  bool b = bExtractCmdTags(pCmdTknVec,pCmdTags);
+  bool b = bExtractCmdTags(pCmdTknVec,pCmdTagSet);
   UNUSED(b);
   
   if (bShortForm(pCmdTknVec)) {
@@ -311,7 +311,7 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTags)
     }
   }
     
-  if (! AM::bParseCmd(pCmdTknVec,pCmdTags))
+  if (! AM::bParseCmd(pCmdTknVec,pCmdTagSet))
     return EC_INVALID_COMMAND;
 
 
@@ -330,11 +330,11 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
     
   // get the command proper and the tag set
   TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  TagSet*   pCmdTags   = & pSession->m_oCmdTagSet;
+  TagSet*   pCmdTagSet   = & pSession->m_oCmdTagSet;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  eEC eError = eParseCmd(pCmdTknVec,pCmdTags);
+  eEC eError = eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError)
     return eError;
 
@@ -356,9 +356,9 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
   
   pPrepareJobTags->vCopy(pSsnTags);
 
-  //pCmdTags->vDumpSet(true);
+  //pCmdTagSet->vDumpSet(true);
   
-  pPrepareJobTags->vCopy(pCmdTags);
+  pPrepareJobTags->vCopy(pCmdTagSet);
   
   if (AM::TRACE::bVerbose(C_VB_API))
     pPrepareJobTags->vDumpSet();
