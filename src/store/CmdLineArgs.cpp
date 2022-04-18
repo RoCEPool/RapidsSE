@@ -616,6 +616,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_nPeriodicSleep = argv[++i_Arg].iToI8();
       continue;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--pFile"_Stz)) {
+      m_xSysArgs.m_sPageFilePath = (Stz*)argv[++i_Arg];
+      continue;
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--progress"_Stz)) {
