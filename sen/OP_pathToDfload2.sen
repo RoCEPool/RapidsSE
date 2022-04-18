@@ -28,9 +28,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  sPath <tableNm> "dfload2 %v \"%v\"" str.format locals| sCommand |
+  sPath <tableNm> "dfload2 %v \"%v\"" str.format locals| sCmd |
 
-  sCommand "pathToDfload2: %v" .printf
+  sCmd "pathToDfload2: %v" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -38,7 +38,7 @@
   //true exit
 
   C_TDEF_COMMAND InfoSet:discover
-  sCommand 1 OI_COMMAND InfoSet:pipeoutRow
+  sCmd 1 OI_COMMAND InfoSet:pipeoutRow
 
   true
 ;
