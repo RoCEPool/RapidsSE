@@ -282,7 +282,7 @@ void SeDeputy::vReportTime(void)
            );
   }
   
-  vTrace("time %lldms\n\n"_Stz,ApiHelper::iResponseTimeMsec());
+  vTrace("time %lldms\n\n"_Stz,m_pJob->iResponseTimerMsec());
   
   Timer oTimer;
 

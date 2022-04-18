@@ -149,16 +149,6 @@ void ApiHelper::vResetResults(void)
   m_pSession->m_pOutput->vEndProcOneCmd();
 }
 
-/*----------------------------------------------------------------------------*/
-/* get response time (in milliseconds)                                        */
-/*----------------------------------------------------------------------------*/
-i8 ApiHelper::iResponseTimeMsec(void)
-{
-  i8 iTimeMsec = m_pSession->m_pSsnJob->iResponseTimerMsec();
-  
-  return iTimeMsec;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

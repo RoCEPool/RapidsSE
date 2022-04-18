@@ -4675,8 +4675,6 @@ bool PROMPT::bPrompt_ssn(SePrompt* pPrompt)
     return false;
   }
     
-  pSession->vReport();
-  
   return true;
 }
 

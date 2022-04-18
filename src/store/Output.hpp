@@ -57,7 +57,7 @@ namespace STORE
     void vPrintResult(void);
   
 //  private:
-    Operand* pPopBufferQueue_blocking(void);
+    Operand* pPopBufferQueue_blocking(Job* pJob);
     bool bProcessOperand(Operand* pOperand);
         
     Footer* aFooter(void);

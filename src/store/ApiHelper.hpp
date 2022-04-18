@@ -36,7 +36,6 @@ namespace STORE
   
     void vReapableJob(Job*& rpJob);
     void vResetResults(void);
-    i8   iResponseTimeMsec(void);
     i8   nRowCount(void);
     i8   nRowsAffected(void);
 

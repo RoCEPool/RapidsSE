@@ -296,8 +296,7 @@ void Step::vApiSpawnDemon(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //Job* pSsnJob = pSession->m_pSsnJob;
-  TagSet* pSsnJobTags = pJob->pJobTags();
+   TagSet* pSsnJobTags = pJob->pJobTags();
   
   Job* pPipelineJob = MY::pJob();
   TagSet* pPipelineJobTags = pPipelineJob->pJobTags();

@@ -143,7 +143,7 @@ void Output::vDrainBufferQueue(Job* pJob)
   while (! m_bExitMarker   &&
          ! pJob->bIsInError()) {
     
-    Operand* pOperand = pPopBufferQueue_blocking();
+    Operand* pOperand = pPopBufferQueue_blocking(pJob);
     
     if (! pOperand) {
       AM::vNapUsec(1000,CN_OUTPUT);
@@ -226,7 +226,7 @@ void Output::vProcessBufferQueue(Job* pJob)
   
   Operand* pOperand;
   
-  while ( (pOperand = pPopBufferQueue_blocking()) ) {
+  while ( (pOperand = pPopBufferQueue_blocking(pJob)) ) {
 
     if (! bProcessOperand(pOperand))
       break;
@@ -312,7 +312,7 @@ void Output::vPrintResult(void)
 /*----------------------------------------------------------------------------*/
 /* pop next operand from result queue                                         */
 /*----------------------------------------------------------------------------*/
-Operand* Output::pPopBufferQueue_blocking(void)
+Operand* Output::pPopBufferQueue_blocking(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
@@ -325,7 +325,7 @@ Operand* Output::pPopBufferQueue_blocking(void)
     
     AM::vNapUsec(1000,CN_OUTPUT);
     
-    if (m_pSession->m_pSsnJob->bIsInError())
+    if (pJob->bIsInError())
       return nullptr;
   }
   
