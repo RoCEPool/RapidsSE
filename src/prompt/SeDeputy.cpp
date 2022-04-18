@@ -59,6 +59,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_bContinue   = true;
   m_bTerminated = false;
 
+  m_pJob = nullptr;
+
   _checkInitialised_(CN_SEDEPUTY);
   
   ApiHelper::vAllocateSession();
@@ -114,10 +116,10 @@ void SeDeputy::vDeputyLoop(void)
   
   while (m_bContinue) {
 
-    RASSERT(!m_pSession->m_pSsnJob);
+    RASSERT(!m_pJob);
 
     m_pThread->pMutex()->vLock(m_pSePrompt);
-    RASSERT(!m_pSession->m_pSsnJob);
+    RASSERT(!m_pJob);
     m_bAvailable = true;
     m_pThread->pMutex()->vWait(m_pSePrompt);
     m_pThread->pMutex()->vUnlock(m_pSePrompt);
@@ -125,22 +127,22 @@ void SeDeputy::vDeputyLoop(void)
     if (! m_bContinue)
       break;
     
-    RASSERT(m_pSession->m_pSsnJob);
-    if (m_pSession != m_pSession->m_pSsnJob->pSession())
-      vTrace("vDeputyLoop %p v %p\n"_Stz,m_pSession,m_pSession->m_pSsnJob->pSession());
+    RASSERT(m_pJob);
+    if (m_pSession != m_pJob->pSession())
+      vTrace("vDeputyLoop %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
     
     
     vExecuteJob();
     
     vPrintResults();
 
-    if (! m_pSession->m_pSsnJob->bHasTag(C_TAG_BG)) {
+    if (! m_pJob->bHasTag(C_TAG_BG)) {
       m_pSePrompt->pMutex()->vLock(m_pSePrompt);
       m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
       m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
     }
     
-    vDeleteJob();
+    vRepeableJob();
   }
   
   m_bTerminated = true;
@@ -153,21 +155,21 @@ void SeDeputy::vExecuteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
     
-  if (m_pSession != m_pSession->m_pSsnJob->pSession())
-    vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pSession->m_pSsnJob->pSession());
-  RASSERT(m_pSession == m_pSession->m_pSsnJob->pSession());
+  if (m_pSession != m_pJob->pSession())
+    vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
+  RASSERT(m_pSession == m_pJob->pSession());
     
-  ApiHelper::vExecuteJob();
+  ApiHelper::vExecuteJob(m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* delete completed job                                                       */
 /*----------------------------------------------------------------------------*/
-void SeDeputy::vDeleteJob(void)
+void SeDeputy::vRepeableJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  ApiHelper::vDeleteJob();
+  ApiHelper::vReapableJob(m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,7 +179,7 @@ eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec);
+  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec,m_pJob);
   
   return eError;
 }
@@ -189,7 +191,7 @@ void SeDeputy::vPrintResults(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
     
-  ApiHelper::vPrintResults();
+  ApiHelper::vPrintResults(m_pJob);
   
   vReportTime();
     
@@ -230,7 +232,7 @@ Job* SeDeputy::pJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  return m_pSession->m_pSsnJob;
+  return m_pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,14 +262,14 @@ void SeDeputy::vReportTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  //m_pSession->m_pSsnJob->pTagSet()->vPrint();
+  //m_pJob->pTagSet()->vPrint();
   
-  if (! m_pSession->m_pSsnJob->bHasTag(C_TAG_TIME))
+  if (! m_pJob->bHasTag(C_TAG_TIME))
     return;
   
-  if (m_pSession->m_pSsnJob->bHasTag(C_TAG_SUMMARY)) {
+  if (m_pJob->bHasTag(C_TAG_SUMMARY)) {
     
-    Stz* szNote = m_pSession->m_pSsnJob->pJobTags()->szValue(C_TAG_NOTE);
+    Stz* szNote = m_pJob->pJobTags()->szValue(C_TAG_NOTE);
     
     Now spNow;
     vTrace("[%s %lldN%lldP%lldT %s %s] "_Stz,
@@ -280,32 +282,32 @@ void SeDeputy::vReportTime(void)
            );
   }
   
-  vTrace("time %lldms\n\n"_Stz,ApiHelper::iResponseTimeMsec());
+  vTrace("time %lldms\n\n"_Stz,m_pJob->iResponseTimerMsec());
   
   Timer oTimer;
 
-  oTimer.vSet(m_pSession->m_pSsnJob->iResponseTimerStart(),
-              m_pSession->m_pSsnJob->iTscBeginning());
+  oTimer.vSet(m_pJob->iResponseTimerStart(),
+              m_pJob->iTscBeginning());
   vTrace("Begin    %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pSession->m_pSsnJob->iResponseTimerStart(),
-              m_pSession->m_pSsnJob->iTscBegun());
+  oTimer.vSet(m_pJob->iResponseTimerStart(),
+              m_pJob->iTscBegun());
   vTrace("Begun    %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pSession->m_pSsnJob->iResponseTimerStart(),
-              m_pSession->m_pSsnJob->iTscExecuting());
+  oTimer.vSet(m_pJob->iResponseTimerStart(),
+              m_pJob->iTscExecuting());
   vTrace("Execute  %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pSession->m_pSsnJob->iResponseTimerStart(),
-              m_pSession->m_pSsnJob->iTscExecuted());
+  oTimer.vSet(m_pJob->iResponseTimerStart(),
+              m_pJob->iTscExecuted());
   vTrace("Executed %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pSession->m_pSsnJob->iResponseTimerStart(),
-              m_pSession->m_pSsnJob->iTscEnding());
+  oTimer.vSet(m_pJob->iResponseTimerStart(),
+              m_pJob->iTscEnding());
   vTrace("End      %lldus\n"_Stz,oTimer.iMicroseconds());
 
-  oTimer.vSet(m_pSession->m_pSsnJob->iResponseTimerStart(),
-              m_pSession->m_pSsnJob->iTscEnded());
+  oTimer.vSet(m_pJob->iResponseTimerStart(),
+              m_pJob->iTscEnded());
   vTrace("Ended    %lldus\n"_Stz,oTimer.iMicroseconds());
 
 }

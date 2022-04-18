@@ -18,22 +18,22 @@ namespace STORE
   static Session* pAllocSession(eSK eSession);
   static void vFreeSession(Session* pSession);
 
-  static void vExecuteJob(Session* pSession);
+  static void vExecuteJob(Session* pSession, Job* pJob);
   static void vExtractCmdPaths(Session*  pSession, TokenVec* pCmdTknVec);
   static bool bExtractCmdTags(Session*  pSession, TokenVec* pCmdTknVec);
-  static void vForkJob(Session* pSession, Op* pResponseOp);
-  static eEC  ePrepareJob(Session*  pSession, TokenVec* pCmdTknVec);
-  static void vReapableJob(Session* pSession);
+  static void vForkJob(Session* pSession, Op* pResponseOp, Job*& rpJob);
+  static eEC  ePrepareJob(Session*  pSession, TokenVec* pCmdTknVec, Job*& rpJob);
+  static void vReapableJob(Session* pSession, Job*& rpJob);
 
-  static void vSubmitJob(Session* pSession);
-  static void vWaitJob(Session* pSession);
+  static void vSubmitJob(Session* pSession, Job* pJob);
+  static void vWaitJob(Session* pSession, Job* pJob);
  
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);
 
   static eEC  eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath);
   static eEC  eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
-                           Op* pResponseOp);
+                           Op* pResponseOp, JobId& rtJobId);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

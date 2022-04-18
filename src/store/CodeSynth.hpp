@@ -87,10 +87,11 @@ namespace STORE {
 
     TypedStack* pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop);
 
-    void vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler, Stz *sLabel, Stz *sLabelNext);
+    void vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler, Stz *sLabel, Stz *sLabelNext,
+                           Stz* sLabelOrdAgg);
 
     void vSynthAllocPotRow(TypedStack* pPostStack, Stz *sHashExpr, bool bEosHandler,
-                           Stz *sLabel, Stz *sLabelNext);
+                           Stz *sLabel, Stz *sLabelNext, Stz* sLabelOrdAgg);
 
     void vSynthEos(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
@@ -118,6 +119,8 @@ namespace STORE {
 
     bool bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop);
 
+    void vSynthReturn(void);
+
     void vSynthSort( Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext);
 
     void vSynthStruct(u8 uSelectColumns, IndexDef* pIndexDef = nullptr);
@@ -144,6 +147,7 @@ namespace STORE {
     void vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz *sExpr);
 
     void vGenerateProcessRow(Stz *sLabel);
+    void vGenerateProcessRowOrdAgg(Stz *sLabel);
 
     void vGeneratePrjAgg(void);
 

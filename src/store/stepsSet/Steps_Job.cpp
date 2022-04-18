@@ -119,6 +119,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].tscCanceling"_Stz,     &Step::vJobTscCanceling);
   vAddStep("[job].tscCanceled"_Stz,      &Step::vJobTscCanceled);
   vAddStep("[job].tscParticipant"_Stz,   &Step::vJobTscParticipant);
+  
+  vAddStep("[job].wasForked?"_Stz,       &Step::vJobWasForkedFetch);
+  vAddStep("[job].wasForked!"_Stz,       &Step::vJobWasForkedStore);
 }
 
 
@@ -1308,6 +1311,36 @@ void Step::vJobTscParticipant(void)
   ENTRY();
   
   m_pJob->vTscParticipant(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].wasForked? -- fetch if the job was forked?                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobWasForkedFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob;
+
+  m_pDataStack->vPushInt(pJob->bWasForked());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].phase! -- store if the job was forked                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobWasForkedStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob;
+
+  i8 iWasForked = m_pDataStack->iPopAsInt(__func__);
+  
+  pJob->vWasForked((bool)iWasForked);
   
   EXIT();
 }

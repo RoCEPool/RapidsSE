@@ -95,6 +95,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ENTWRK,
   /* */ CN_ENUMFLAGS,
   /* */ CN_EVENTHANDLERS,
+  /* */ CN_EVMGR,
   /* */ CN_EXEMPLAR,
 
   /* */ CN__F__,
@@ -212,6 +213,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PATHVEC,
   /* */ CN_PERMIT,
   /* */ CN_PERUSE,
+  /* */ CN_PIPEIN,
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINEMETRICS,
   /* */ CN_PLANDEFINITIONPARSER,
@@ -501,6 +503,7 @@ static Stz* aCN[]
   /* */ "ENTWRK"_Stz,               // CN_ENTWRK
   /* */ "ENUMFLAGS"_Stz,            // CN_ENUMFLAGS
   /* */ "EVENTHANDLERS"_Stz,        // CN_EVENTHANDLERS
+  /* */ "EVMGR"_Stz,                // CN_EVMGR
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
 
   /* */ "_F__"_Stz,                 // CN__F__
@@ -618,6 +621,7 @@ static Stz* aCN[]
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
   /* */ "PERMIT"_Stz,               // CN_PERMIT
   /* */ "PERUSE"_Stz,               // CN_PERUSE
+  /* */ "PIPEIN"_Stz,               // CN_PIPEIN
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER

@@ -64,7 +64,10 @@ begin
 
   stage stageQ17_1_a on all partitions :
     indexJoin lineitem IxL_PARTKEY "bound $I1 $L1 =="
-    | aggreg " groupBy  type integer $1 aggregates type integer as P_PARTKEY $K1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count   "
+    | aggreg " groupBy  type integer $1 aggregates
+               type integer as P_PARTKEY $K1 ,
+               type DECIMAL )  $6 sum  ,
+               type INTEGER )  $6 count   "
     | combined 0
     | next
 
@@ -74,7 +77,9 @@ begin
     | next
 
   stage stageQ17_1_c on origin :
-    aggreg " groupBy  type integer $1  aggregates type integer as P_PARTKEY $K1 , type DECIMAL ) $2 sum , type INTEGER ) $3 sum  "
+    aggreg " groupBy  type integer $1  aggregates
+             type integer as P_PARTKEY $K1 ,
+             type DECIMAL ) $2 sum , type INTEGER ) $3 sum  "
     | combined 0
     | next
 

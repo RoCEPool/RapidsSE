@@ -85,7 +85,6 @@ Session::Session(void)
   m_i_FixedPtn  = C_UNKNOWN;
   
   //m_oDicStack;
-  m_pSsnJob     = nullptr;
   m_pTx         = nullptr;
 
   m_sToDo       = ""_Stz;
@@ -287,7 +286,6 @@ void Session::vFinaliseSession(i8 i_NextFree)
   m_nJobNew    = 0;
   m_nJobDelete = 0;
   
-  m_pSsnJob    = nullptr;
   m_pTx        = nullptr;
   
   // -- -- -- -- -- --
@@ -420,16 +418,6 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get session job                                                             */
-/*----------------------------------------------------------------------------*/
-Job* Session::pJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  return m_pSsnJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* last job run                                                               */
 /*----------------------------------------------------------------------------*/
 JobId Session::tLastJobId(void)
@@ -490,18 +478,6 @@ void Session::vPopCascade(void)
   //vTrace("vPopCascade: %s\n"_Stz,szText);
 
   delete pStatement;
-}
-
-/*----------------------------------------------------------------------------*/
-/* report this session                                                        */
-/*----------------------------------------------------------------------------*/
-void Session::vReport(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  vTrace("Session %llx job %llx\n"_Stz,
-         this,
-         m_pSsnJob);
 }
 
 /*----------------------------------------------------------------------------*/

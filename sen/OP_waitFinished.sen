@@ -4,28 +4,49 @@
 
 " OP_waitFinished.sen" .verbose
 
+/*
+
+  Counter0[] : tracks the number of ZK_M_FINISHED expected
+  
+  Counter1[] : tracks the number of ZK_M_FINISHED processed so far
+
+*/
+
+/*----------------------------------------------------------------------------*/
+/* test                                                                       */
+/*----------------------------------------------------------------------------*/
+: waitFinished_mayProceed
+  
+  "waitFinished_test" .
+
+  Counter1[] Counter0[] "waitFinished: expected %v processed %v" .printf
+  
+  Counter0[] not if
+    false
+    exit
+  then
+  
+  Counter1[] Counter0[] == if
+    true
+  else
+    false
+  then
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_I_COUNT ...                                                 */
 /*----------------------------------------------------------------------------*/
 : waitFinished_Count \handler
   
-  "waitFinished_Count" .
-
   PipeIn[]\clear to InfoSet[]
   
-  // find the __path table def ; set infoSetTable[]
-  C_TDEF_COUNT op__tableDef_infoSet assert
-
-  // get the first (one and only) row from this infoset
-  InfoSet[].firstRow to infoSetRow[]
-
-  // extract the values
-  0 InfoSet[].colVal@ to Counter0[]
-
-  Counter0[] "waitFinished: nFinishesExpected %v" .printf
-    
-
-  InfoSet[].delete
+  0 C_TDEF_COUNT InfoSet:getCol to Counter0[]
+  
+  Counter0[] [EvMgr].curEventNm@ "waitFinished: %v expecting %v" .printf
 
   true
 ;
@@ -35,9 +56,25 @@
 /*----------------------------------------------------------------------------*/
 : waitFinished_End \handler
 
-  ZK_M_END Event[].count@ "waitFinished: ZK_M_END %v" .printf
+  PipeIn[].delete
 
-  ZK_M_END_handler
+  waitFinished_mayProceed if
+  
+    [EvMgr].curEventNm@ "waitFinished: %v may proceed" .printf
+    
+    Marker[].newEndMarker
+    Marker[].pipeOut
+    true
+    
+  else
+  
+    [EvMgr].curEventNm@ "waitFinished: %v cannot proceed" .printf
+
+    Marker[].newEndMarker
+    Marker[].pipeOut
+    true
+    
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +84,25 @@
 
   Counter1[] 1 + to Counter1[]
   
-  true
+  PipeIn[].delete
+
+  waitFinished_mayProceed if
+  
+    [EvMgr].curEventNm@ "waitFinished: %v may proceed" .printf
+    
+    Marker[].newEndMarker
+    Marker[].pipeOut
+    true
+    
+  else
+  
+    [EvMgr].curEventNm@ "waitFinished: %v cannot proceed" .printf
+
+    Marker[].newEndMarker
+    Marker[].pipeOut
+    true
+    
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -55,9 +110,10 @@
 /*----------------------------------------------------------------------------*/
 : waitFinished_Start \handler
   
-  0 to Counter0[]
-  0 to Counter1[]
-  0 to Counter2[]
+  [EvMgr].curEventNm@ "waitFinished: %v" .printf
+    
+  0 to Counter0[] // tracks the number of ZK_M_FINISHED expected
+  0 to Counter1[] // tracks the number of ZK_M_FINISHED processed so far
 
   ZK_M_START_handler
 ;

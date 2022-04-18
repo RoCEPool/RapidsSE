@@ -150,6 +150,8 @@ void Step::vApiForkCommand(void)
 {
   ENTRY();
 
+  Op* pResponseOp = _pOp(m_pDataStack->pPopPtr(__func__));
+
   // pop command and tag string
   
   s48K sCmd;
@@ -169,9 +171,12 @@ void Step::vApiForkCommand(void)
   if (m_pJob)
     szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
  
-  eEC eError = Api::eExecuteCommand(sCmd, sWithTagStr, szTagPath);
+  JobId tForkedJobId;
+  eEC eError = Api::eForkCommand(sCmd,sWithTagStr,szTagPath,
+                                 pResponseOp,tForkedJobId);
   
   if (EC_NONE == eError) {
+    m_pDataStack->vPushInt(tForkedJobId.iAsI8());
     m_pDataStack->vPushInt(true);
   }
   else {
@@ -276,7 +281,9 @@ void Step::vApiSpawnDemon(void)
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
   //pTagSet->vDumpSet();
-  eError = Api::ePrepareJob(pSession,pCmdTknVec);
+  
+  Job* pJob = nullptr;
+  eError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
 
   delete pCmdTknVec;
   
@@ -289,8 +296,7 @@ void Step::vApiSpawnDemon(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Job* pSsnJob = pSession->m_pSsnJob;
-  TagSet* pSsnJobTags = pSsnJob->pJobTags();
+   TagSet* pSsnJobTags = pJob->pJobTags();
   
   Job* pPipelineJob = MY::pJob();
   TagSet* pPipelineJobTags = pPipelineJob->pJobTags();
@@ -305,7 +311,7 @@ void Step::vApiSpawnDemon(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Api::vSpawnTask_demonJob(pSsnJob);
+  Api::vSpawnTask_demonJob(pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

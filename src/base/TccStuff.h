@@ -344,6 +344,10 @@ struct Combined_T
   char*   m_racStrAreaAgg;
   char*   m_racStrAreaSavAgg;
 
+  // ordered aggregates
+  i8      m_iHasOrdAggRow;
+  i8      m_iOrdAggDone;
+
   // project (gby)
   i8      m_nAggRows;
   i8      m_iProcessRow;
