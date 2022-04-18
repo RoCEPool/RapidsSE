@@ -245,7 +245,6 @@ ordered rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic ordered aggregate
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/*
 pipeline Q
 begin
   stage stageStart on origin :
@@ -278,7 +277,7 @@ begin
     | ordAgg " ORDGROUPBY type integer $1
                  aggregates type integer $K1 , type decimal as total )  $5 sum  "
     | filter " type BOOLEAN  $2 100.0  >  "
-    | top "TOP type DECIMAL total" 10
+    //| top "TOP type DECIMAL total" 10
     | combined 0
     | next
 
@@ -348,7 +347,7 @@ begin
   stage stageA on all partitions :
     indexScan lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg " ORDGROUPBY type integer $1 aggregates type integer $K1 , type decimal as total )  $5 sum  "
-    | top "TOP type DECIMAL total" 8
+    //| top "TOP type DECIMAL total" 8
     | combined 0
     | next
   stage stageB on all nodes :
@@ -374,7 +373,7 @@ rows:
  (1048,182.00)
  (1130,182.00)
  (1064,183.00)
-*/
+
 pipeline Q3
 begin
 
