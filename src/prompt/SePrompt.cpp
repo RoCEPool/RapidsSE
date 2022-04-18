@@ -337,7 +337,7 @@ bool SePrompt::bExamineCommand(void)
   TagSet*  pCmdTags = & pSession->m_oJobTagSet;
 
   Api::vExtractCmdPaths(m_pCmdTknVec,pCmdTags);
-  if (! Api::bExtractCmdTags(m_pCurrentDeputy->pSession(),m_pCmdTknVec))
+  if (! Api::bExtractCmdTags(m_pCmdTknVec,pCmdTags))
     return false;
 
   if (bIsPromptWord())

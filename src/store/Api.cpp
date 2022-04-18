@@ -210,12 +210,10 @@ void Api::vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTags)
 /*----------------------------------------------------------------------------*/
 /* extract tags                                                               */
 /*----------------------------------------------------------------------------*/
-bool Api::bExtractCmdTags(Session* pSession, TokenVec* pCmdTknVec)
+bool Api::bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTags)
 {
   _static_
   
-  TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract leading job control tags (such as /time or /nowait)
   
@@ -228,7 +226,7 @@ bool Api::bExtractCmdTags(Session* pSession, TokenVec* pCmdTknVec)
     Token* pTkn1 = pCmdTknVec->pGet(1,true);
     sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
     
-    pJobTagSet->vInsert(sTag,1);
+    pCmdTags->vInsert(sTag,1);
     
     pCmdTknVec->vRemoveToken(0);
     pCmdTknVec->vRemoveToken(0);
@@ -277,7 +275,7 @@ bool Api::bExtractCmdTags(Session* pSession, TokenVec* pCmdTknVec)
 
     s32 sName;
     sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
-    pJobTagSet->vAppend(sName,pTkn_value->szChars());
+    pCmdTags->vAppend(sName,pTkn_value->szChars());
   }
     
   pCmdTknVec->vTrimTokens(i_TagBegin);
@@ -304,7 +302,7 @@ eEC Api::eParseCmd(Session* pSession, TokenVec* pCmdTknVec, TagSet* pCmdTags)
 
   vExtractCmdPaths(pCmdTknVec,pCmdTags);
   
-  bool b = bExtractCmdTags(pSession,pCmdTknVec);
+  bool b = bExtractCmdTags(pCmdTknVec,pCmdTags);
   UNUSED(b);
   
   if (bShortForm(pCmdTknVec)) {
