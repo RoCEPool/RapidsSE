@@ -9,9 +9,23 @@
 /*----------------------------------------------------------------------------*/
 : InfoSet:discover params| sInfoSetNm |
 
-  InfoSet[].isNull assert
+  //InfoSet[].isNull assert
   
   sInfoSetNm op__tableDef_infoSet assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* discover infoset by name                                                   */
+/*----------------------------------------------------------------------------*/
+: InfoSet:getCol params| sInfoSetNm i_Col |
+
+  sInfoSetNm InfoSet:discover
+  
+  InfoSet[].firstRow to infoSetRow[]
+
+  i_Col InfoSet[].colVal@
+  
+  InfoSet[].delete
 ;
 
 /*----------------------------------------------------------------------------*/
