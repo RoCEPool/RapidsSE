@@ -504,10 +504,11 @@ public:
   void vErrorCodeGet(void);
   void vErrorCodeSet(void);
 
-  // event
-  void vEventCountFetch(void);
-  void vEventHandlerName(void);
-  void vEventName(void);
+  // event manager
+  void vEvMgrEventCountFetch(void);
+  void vEvMgrCurEventNmFetch(void);
+  void vEvMgrDecodeHandlerNm(void);
+  void vEvMgrDecodeEventNm(void);
 
   // extractRow
   void vExtractRowCreate(void);

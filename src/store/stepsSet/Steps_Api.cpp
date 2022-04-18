@@ -150,6 +150,8 @@ void Step::vApiForkCommand(void)
 {
   ENTRY();
 
+  Op* pResponseOp = _pOp(m_pDataStack->pPopPtr(__func__));
+
   // pop command and tag string
   
   s48K sCmd;
@@ -169,9 +171,12 @@ void Step::vApiForkCommand(void)
   if (m_pJob)
     szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
  
-  eEC eError = Api::eExecuteCommand(sCmd, sWithTagStr, szTagPath);
+  JobId tForkedJobId;
+  eEC eError = Api::eForkCommand(sCmd,sWithTagStr,szTagPath,
+                                 pResponseOp,tForkedJobId);
   
   if (EC_NONE == eError) {
+    m_pDataStack->vPushInt(tForkedJobId.iAsI8());
     m_pDataStack->vPushInt(true);
   }
   else {

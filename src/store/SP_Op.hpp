@@ -22,7 +22,7 @@ namespace STORE
     Stz* szAck(Op* pOp);
     Stz* szExHandler(Op* pOp);
     Stz* szLeading(Op* pOp);
-    Stz* szPath(Op* pOp);
+    Stz* szSpot(Op* pOp);
     Stz* szStream(Op* pOp, bool bDescend=false);
   
   private:
