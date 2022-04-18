@@ -80,20 +80,17 @@ void PFileUtility::vCreate(void)
 {
   vTrace("PFile::vCreate\n"_Stz);
 
-  if(1 == File::bExists(msPFilePath, true))
-  {
+  if(1 == File::bExists(msPFilePath, true)) {
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Page file already exists!\n"_Stz);
   }
-  else
-  {
+  else {
 #ifdef WITH_APPLE
     s2K sCmdNm;
     StrLib::vSprint(sCmdNm, "mkfile -n %s %s"_Stz, miPFileRegionSize.azChar(), msPFilePath.azChar());
 
     int rv = system(sCmdNm.azChar());
-    if(0 != rv)
-    {
+    if(0 != rv) {
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "Error creating page file\n"_Stz);
     }
@@ -110,19 +107,16 @@ void PFileUtility::vDelete(void)
 {
   vTrace("PFile::vDelete\n"_Stz);
 
-  if(0 == File::bExists(msPFilePath, true))
-  {
+  if(0 == File::bExists(msPFilePath, true)) {
     vTrace("%s does not exist\n"_Stz, msPFilePath.azChar());
     return;
   }
-  else
-  {
+  else {
     s2K sCmdNm;
     StrLib::vSprint(sCmdNm, "rm %s"_Stz, msPFilePath.azChar());
 
     int rv = system(sCmdNm.azChar());
-    if(0 != rv)
-    {
+    if(0 != rv) {
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "Error deleting page file %s\n"_Stz, msPFilePath.azChar());
     }
