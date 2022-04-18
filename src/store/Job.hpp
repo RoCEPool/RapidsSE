@@ -43,7 +43,7 @@ namespace STORE
     i8 m_i_Session;  // which session in node's session array
     CmdId m_tCmdId;
   
-    bool m_bForked;
+    bool m_bWasForked;
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
@@ -134,9 +134,6 @@ namespace STORE
     Stz* szEntryPoint(void);
     void vEntryPoint(Stz* szEntry);
   
-    bool bForked(void);
-    void vForked(bool bForked);
-
     void vGrabLock(void);
   
     bool bHasByPromptTag(void);
@@ -217,6 +214,8 @@ namespace STORE
     void vVerifyJobComposition(void);
   
     void vWaitJobMutex(void);
+    bool bWasForked(void);
+    void vWasForked(bool bWasForked);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
   

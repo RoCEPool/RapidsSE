@@ -61,7 +61,7 @@ Job::Job(Stz*  szJobNm,
 
   m_bReapable = false;
   
-  m_bForked = false;
+  m_bWasForked = false;
   // -- a -------------------
   
   m_i_Session   = i_Session;
@@ -373,26 +373,6 @@ void Job::vEntryPoint(Stz* szEntry)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_sEntryPoint = szEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* was job forked (or executed)?                                              */
-/*----------------------------------------------------------------------------*/
-bool Job::bForked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_bForked;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job forke                                                              */
-/*----------------------------------------------------------------------------*/
-void Job::vForked(bool bForked)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_bForked = bForked;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1247,6 +1227,26 @@ void Job::vVerifyJobComposition(void)
   RASSERT(EC_NONE == eValidHeader());
   RASSERT(CN_JOB == eGetClassNo());
   aFooter()->vAssertFooter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* was job forked (or executed)?                                              */
+/*----------------------------------------------------------------------------*/
+bool Job::bWasForked(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_bWasForked;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job forked                                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vWasForked(bool bWasForked)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bWasForked = bWasForked;
 }
 
 /*----------------------------------------------------------------------------*/
