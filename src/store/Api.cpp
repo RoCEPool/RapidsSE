@@ -100,13 +100,13 @@ void Api::vExecuteJob(Session* pSession, Job* pJob)
       return;
     }
     
-    vSubmitJob(pSession);
+    vSubmitJob(pSession,pJob);
 
     if (pJob->bHasTag(C_TAG_NOWAIT)) {
       Api::vMutexUnlock(pSession,pJob);
     }
     else {
-      vWaitJob(pSession);
+      vWaitJob(pSession,pJob);
     }
     
     if (! pSession->bHasCascade()) {
@@ -139,23 +139,23 @@ void Api::vExecuteJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* fork job (spawn job but don't wait for completion)                         */
 /*----------------------------------------------------------------------------*/
-void Api::vForkJob(Session* pSession, Op* pResponseOp)
+void Api::vForkJob(Session* pSession, Op* pResponseOp, Job*& rpJob)
 {
   _static_
   
-  Job* pJob = pSession->m_pSsnJob;
-  RASSERT(! pJob->pTask());
+  //Job* pJob = pSession->m_pSsnJob;
+  RASSERT(! rpJob->pTask());
 
-  Api::vMutexLock(pSession,pJob);
-  RASSERT(JS_LOCKED == pJob->eJobState());
+  Api::vMutexLock(pSession,rpJob);
+  RASSERT(JS_LOCKED == rpJob->eJobState());
   
-  pJob->vTaskCreate();
+  rpJob->vTaskCreate();
   
-  pJob->vResponseTimerStart();
+  rpJob->vResponseTimerStart();
   
-  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
+  Scheduler::vTaskApi_AddPrompt(rpJob->pTask());
   
-  Api::vMutexUnlock(pSession,pJob);
+  Api::vMutexUnlock(pSession,rpJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -632,7 +632,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
 #if 1
   pJob->vResponseTimerStart();
   
-  Api::vForkJob(pSession,pResponseOp);
+  Api::vForkJob(pSession,pResponseOp,pJob);
 
   
 #else
@@ -681,11 +681,11 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
 /*----------------------------------------------------------------------------*/
 /* submit job (spawn job but don't wait for completion)                       */
 /*----------------------------------------------------------------------------*/
-void Api::vSubmitJob(Session* pSession)
+void Api::vSubmitJob(Session* pSession, Job* pJob)
 {
   _static_
   
-  Job* pJob = pSession->m_pSsnJob;
+  //Job* pJob = pSession->m_pSsnJob;
   RASSERT(! pJob->pTask());
 
   Api::vMutexLock(pSession,pJob);
@@ -701,11 +701,11 @@ void Api::vSubmitJob(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* wait for job completion                                                    */
 /*----------------------------------------------------------------------------*/
-void Api::vWaitJob(Session* pSession)
+void Api::vWaitJob(Session* pSession, Job* pJob)
 {
   _static_
   
-  Job* pJob = pSession->m_pSsnJob;
+  //Job* pJob = pSession->m_pSsnJob;
   
   //pSession->m_oMutex.vObserve(true);
   Api::vMutexWaitCond(pSession,pJob);
