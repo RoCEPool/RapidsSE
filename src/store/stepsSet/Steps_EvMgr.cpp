@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Event.cpp - event group                                              */
+/* Steps_EvMgr.cpp - Event Manager steps                                      */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -13,18 +13,18 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Event(void)
+void Step::vAddSteps_EvMgr(void)
 {
-  vAddStep("[EvMgr].curEventNm@"_Stz,       &Step::vEventCurEventNmFetch);
-  vAddStep("[EvMgr].decodeEventNm"_Stz,     &Step::vEventDecodeEventNm);
-  vAddStep("[EvMgr].decodeHandlerNm"_Stz,   &Step::vEventDecodeHandlerNm);
-  vAddStep("[EvMgr].eventCount@"_Stz,       &Step::vEventEventCountFetch);
+  vAddStep("[EvMgr].curEventNm@"_Stz,       &Step::vEvMgrCurEventNmFetch);
+  vAddStep("[EvMgr].decodeEventNm"_Stz,     &Step::vEvMgrDecodeEventNm);
+  vAddStep("[EvMgr].decodeHandlerNm"_Stz,   &Step::vEvMgrDecodeHandlerNm);
+  vAddStep("[EvMgr].eventCount@"_Stz,       &Step::vEvMgrEventCountFetch);
 }
 
 /*----------------------------------------------------------------------------*/
 /* [EvMgr].curEventNm@ -- get name of current event                           */
 /*----------------------------------------------------------------------------*/
-void Step::vEventCurEventNmFetch(void)
+void Step::vEvMgrCurEventNmFetch(void)
 {
   ENTRY();
     
@@ -38,7 +38,7 @@ void Step::vEventCurEventNmFetch(void)
 /*----------------------------------------------------------------------------*/
 /* [EvMgr].eventCount@ -- get count of given event so far                     */
 /*----------------------------------------------------------------------------*/
-void Step::vEventEventCountFetch(void)
+void Step::vEvMgrEventCountFetch(void)
 {
   ENTRY();
   
@@ -54,7 +54,7 @@ void Step::vEventEventCountFetch(void)
 /*----------------------------------------------------------------------------*/
 /* [EvMgr].decodeEventNm -- deccode eZK into aZK                              */
 /*----------------------------------------------------------------------------*/
-void Step::vEventDecodeEventNm(void)
+void Step::vEvMgrDecodeEventNm(void)
 {
   ENTRY();
   
@@ -70,7 +70,7 @@ void Step::vEventDecodeEventNm(void)
 /*----------------------------------------------------------------------------*/
 /* event::handlerName -- deccode eZK into handler name                        */
 /*----------------------------------------------------------------------------*/
-void Step::vEventDecodeHandlerNm(void)
+void Step::vEvMgrDecodeHandlerNm(void)
 {
   ENTRY();
   
