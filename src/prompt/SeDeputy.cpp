@@ -242,7 +242,7 @@ TagSet* SeDeputy::pJobTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  return &m_pSession->m_oJobTagSet;
+  return &m_pSession->m_oCmdTagSet;
 }
 
 /*----------------------------------------------------------------------------*/

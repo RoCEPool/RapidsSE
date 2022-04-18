@@ -278,7 +278,7 @@ void Step::vApiSpawnDemon(void)
 
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sPipeline);
   
-  TagSet* pTagSet =  & pSession->m_oJobTagSet;
+  TagSet* pTagSet =  & pSession->m_oCmdTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
   //pTagSet->vDumpSet();
   

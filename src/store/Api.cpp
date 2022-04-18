@@ -76,7 +76,7 @@ Job* Api::pAllocJob(Session* pSession)
   CmdId tCmdId;
   tCmdId.vNextCmdId();
   
-  TagSet* pCmdTags = & pSession->m_oJobTagSet;
+  TagSet* pCmdTags = & pSession->m_oCmdTagSet;
   Stz* szJobNm = pCmdTags->szValue(C_TAG_JOBNM);
 
   Job* pJob = new Job(szJobNm,
@@ -106,7 +106,7 @@ void Api::vExecuteJob(Session* pSession, Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();
-  TagSet* pJobTagSet = & pSession->m_oJobTagSet;
+  TagSet* pJobTagSet = & pSession->m_oCmdTagSet;
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //RASSERT(! pSession->bHasCascade());
@@ -287,18 +287,9 @@ bool Api::bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTags)
 /*----------------------------------------------------------------------------*/
 /* parse command                                                              */
 /*----------------------------------------------------------------------------*/
-eEC Api::eParseCmd(Session* pSession, TokenVec* pCmdTknVec, TagSet* pCmdTags)
+eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTags)
 {
   _static_
-
-  RASSERT(pSession);
-
-  //Session* pSession = pJob->pSession();
-  
-  // get the command proper and the tag set
-  //TagSet*   pCmdTags   = & pSession->m_oJobTagSet;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vExtractCmdPaths(pCmdTknVec,pCmdTags);
   
@@ -339,66 +330,28 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
     
   // get the command proper and the tag set
   TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  TagSet*   pCmdTags   = & pSession->m_oJobTagSet;
+  TagSet*   pCmdTags   = & pSession->m_oCmdTagSet;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  vExtractCmdPaths(pSession,pCmdTknVec);
-//
-//  bool b = bExtractCmdTags(pSession,pCmdTknVec);
-//  UNUSED(b);
-//
-//  if (bShortForm(pCmdTknVec)) {
-//    if (! bExpandToLongForm(pCmdTknVec)) {
-//      return EC_INVALID_COMMAND;
-//    }
-//  }
-//  else {
-//    sSTMT sPipelineSmt;
-//    if (Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
-//                                          pCmdTknVec)) {
-//
-//      pCmdTknVec->vSoftReset();
-//      pCmdTknVec->vTokeniseSen(sPipelineSmt);
-//    }
-//  }
-//
-//  if (! AM::bParseCmd(pCmdTknVec,pCmdTags))
-//    return EC_INVALID_COMMAND;
-
-  eEC eError = eParseCmd(pSession,pCmdTknVec,pCmdTags);
+  eEC eError = eParseCmd(pCmdTknVec,pCmdTags);
   if (EC_NONE != eError)
     return eError;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //pCmdTags->vDumpSet();
-
-//  Stz* szJobNm = pCmdTags->szValue(C_TAG_JOBNM);
-//
-//  CmdId tCmdId;
-//  tCmdId.vNextCmdId();
-//
-//  rpJob = new Job(szJobNm,
-//                  pSession->m_i_Session,
-//                  tCmdId
-//                  );
 
   rpJob = pAllocJob(pSession);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   TagSet* pPrepareJobTags = rpJob->pJobTags();
-  //pPrepareJobTags->vDumpSet();
 
 
   // parse cmd
-    
   sSTMT sStmt;
   pCmdTknVec->vVecToString(sStmt,0,true);
   rpJob->vCmd(sStmt);
 
-
-  
   pPrepareJobTags->vInsert(C_TAG_CMD,rpJob->szCmd());
   
   pPrepareJobTags->vCopy(pSsnTags);
@@ -438,7 +391,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
   rpJob->vEntryPoint(szEntry);
   
   
-  TagSet* pJobTagSet = & pSession->m_oJobTagSet;
+  TagSet* pJobTagSet = & pSession->m_oCmdTagSet;
   
   if (AM::TRACE::bVerbose(C_VB_API)) {
     pCmdTknVec->vDumpVec(false);
@@ -452,7 +405,6 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
        vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
   }
 
-  
   return EC_NONE;
 }
 
@@ -530,7 +482,7 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
 
-  TagSet* pTagSet =  & pSession->m_oJobTagSet;
+  TagSet* pTagSet =  & pSession->m_oCmdTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
   Job* pJob = nullptr;
@@ -632,7 +584,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
 
-  TagSet* pTagSet =  & pSession->m_oJobTagSet;
+  TagSet* pTagSet =  & pSession->m_oCmdTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
   Job* pJob;

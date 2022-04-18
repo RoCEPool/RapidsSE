@@ -114,7 +114,7 @@ void Output::vBeginProcOneCmd(void)
     vTrace("Ssn <fileOut> = %s\n"_Stz,pSsnTagSet->szValue("<fileOut>"_Stz));
   }
   
-  TagSet* pJobTagSet = &m_pSession->m_oJobTagSet;
+  TagSet* pJobTagSet = &m_pSession->m_oCmdTagSet;
   if (pJobTagSet->bHasName("<fileOut>"_Stz)) {
     
     Stz* szFileOutNm = pJobTagSet->szValue("<fileOut>"_Stz);
