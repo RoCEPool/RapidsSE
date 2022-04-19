@@ -31,8 +31,7 @@ namespace BASE
     FileMap(void);
     ~FileMap(void);
 
-
-    void vInitialise(bool bTouch, bool bProgress);
+    void vInitialise(void);
   private:
 
     Footer* aFooter(void);

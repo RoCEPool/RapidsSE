@@ -53,6 +53,8 @@ FileMap::FileMap(void)
            this,
            sizeof(FileMap));
 
+  vInitialise();
+
   _checkInitialised_(CN_FILEMAP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,10 +75,57 @@ NEVER_REACH;
 /*----------------------------------------------------------------------------*/
 /* initialise all buffers on disk                                             */
 /*----------------------------------------------------------------------------*/
-void FileMap::vInitialise(bool bTouch, bool bProgress)
+void FileMap::vInitialise(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
 
+  bool bProgress = false, bTouch = false;
+  i8 iBufferMod;
+
+  i8 i_Buffer = gpBufferPool->m_nNonPageableBuffers;
+  // Pickup initialization of the pageable buffers from, where BufferPool left off.
+  // From m_nNonPageableBuffers...m_nBuffers-1
+
+  while (C_NIL != i_Buffer) {
+
+    if (bProgress) {
+      iBufferMod = i_Buffer % 1000;
+      if (! iBufferMod) {
+        fflush(stdout);
+      }
+    }
+
+    FreeBuffer* pFreeBuffer = gpBufferPool->pToFreeBuffer(i_Buffer);
+
+    pFreeBuffer->vSetMagic();
+    pFreeBuffer->vSetClassNo(CN_FREEBUFFER);
+
+    //pFreeBuffer->aFooter()->vSetFooter();
+    if (bTouch)
+      pFreeBuffer->vZeroData();
+
+    pFreeBuffer->vSetFooter();
+    pFreeBuffer->vBufferNo(i_Buffer);
+    i_Buffer = gpBufferPool->iBufferNext(i_Buffer);
+    pFreeBuffer->vNextFree(i_Buffer);
+
+    gpBufferPool->m_nFreeCount++;
+  }
+
+  FreeBuffer* pLastBuffer = gpBufferPool->pToFreeBuffer(gpBufferPool->iBufferLast());
+
+  pLastBuffer->vSetMagic();
+  pLastBuffer->vSetClassNo(CN_FREEBUFFER);
+  //pLastBuffer->aFooter()->vSetFooter();
+  if (bTouch)
+    pLastBuffer->vZeroData();
+
+  pLastBuffer->vSetFooter();
+  pLastBuffer->vBufferNo(gpBufferPool->iBufferLast());
+  pLastBuffer->vNextFree(C_NIL);
+
+
+  //vDump();
 }
 
 /*----------------------------------------------------------------------------*/
