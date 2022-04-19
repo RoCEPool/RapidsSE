@@ -105,8 +105,6 @@ eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd)
   
   TagSet* pCmdTagSet = new TagSet;
   
-  TagSet* pSsnTagSet = & m_pSession->m_oSsnTagSet;
-  pCmdTagSet->vCopy(pSsnTagSet);
   eEC eError = ApiHelper::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
@@ -125,22 +123,7 @@ eEC ApiHelper::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet
   if (EC_NONE != eError)
     return eError;
 
-  rpJob = Api::pAllocJob(m_pSession);
-  //TagSet* pJobTagSet = rpJob->pJobTags();
-
-  
-  
-  
-  // get the command proper and the tag set
-  //TagSet*   pSsnTags   = & m_pSession->m_oSsnTagSet;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
-  
-  //pJobTagSet->vCopy(pSsnTags);
-
-  
-  
-  
+  rpJob = Api::pAllocJob(m_pSession);  
 
   eError = Api::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
   
