@@ -305,15 +305,15 @@ void Step::vApiSpawnDemon(void)
 {
   ENTRY();
   
-  s48K sPipeline;
-  m_pDataStack->vPopStr(sPipeline,__func__);
+  s48K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
    
-  s48K sTagStr;
-  m_pDataStack->vPopStr(sTagStr,__func__);
+  s48K sCmdTagStr;
+  m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("SpawnDemon: %s\n"_Stz,sPipeline.szStz());
-    vTrace("WithTags: %s\n"_Stz,sTagStr.szStz());
+    vTrace("SpawnDemon: %s\n"_Stz,sCmd.szStz());
+    vTrace("WithTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
 
   
@@ -325,13 +325,15 @@ void Step::vApiSpawnDemon(void)
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sPipeline);
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
   
-  TagSet* pCmdTagSet =  & pSession->m_oCmdTagSet;
+  TagSet* pCmdTagSet = new TagSet;
   //pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
-  //pTagSet->vDumpSet();
+  //pCmdTagSet->vDumpSet();
   
-  
+  TokenVec* pTagStrTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  Api::vPopulateTagSet(pCmdTagSet,pTagStrTknVec);
+
   eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError)
     NEVER_REACH;
@@ -341,7 +343,6 @@ void Step::vApiSpawnDemon(void)
   TagSet* pJobTagSet = pJob->pJobTags();
   //pJobTagSet->vDumpSet();
   
-  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
   
@@ -349,16 +350,11 @@ void Step::vApiSpawnDemon(void)
   pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
   pJobTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
 
-  
-  
-  
-  
-  
-  
   eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
-  
+  delete pCmdTagSet;
+
   if (eError) {
     Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
@@ -374,8 +370,6 @@ void Step::vApiSpawnDemon(void)
   //Stz* szTagPath = pPipelineJobTags->szValue(C_TAG_PATH);
   //pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
   
-  TokenVec* pTagStrTknVec = TokenVec::pTokeniseSen(sTagStr);
-  Api::vPopulateTagSet(pJobTagSet,pTagStrTknVec);
   if (AM::TRACE::bVerbose(C_VB_API))
     pJobTagSet->vDumpSet();
   
