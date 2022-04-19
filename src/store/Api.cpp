@@ -452,7 +452,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tokenise the request
+  // tokenise the command
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
 
@@ -465,14 +465,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   Job* pJob = pAllocJob(pSession);
   TagSet* pJobTagSet = pJob->pJobTags();
-  
-  // get the command proper and the tag set
-  TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
-  
-
-  pJobTagSet->vCopy(pSsnTags);
+  pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
 
   
   
@@ -484,9 +477,6 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   delete pCmdTknVec;
 
   if (eError) {
-    //m_pDataStack->vPushInt(eError);
-    //m_pDataStack->vPushInt(false);
-    //EXIT();
     return eError;
   }
     

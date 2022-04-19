@@ -342,10 +342,6 @@ void Step::vApiSpawnDemon(void)
   //pJobTagSet->vDumpSet();
   
   
-  
-  // get the command proper and the tag set
-  //TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  //pSsnTags->vDumpSet();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
   
