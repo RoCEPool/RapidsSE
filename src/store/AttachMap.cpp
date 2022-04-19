@@ -82,9 +82,9 @@ AttachMap::AttachMap(bool bNoFree)
   // create the heaps
   m_xHeaps.vInit();
 
+  m_pFileMap        = new FileMap();
   m_pBucketMap      = nullptr;
   m_pDicRoot        = new Dic("__dicRoot"_Stz);
-  m_pFileMap        = new FileMap();
 #ifdef WITH_HASHMAP
   m_pHashMap        = new HashMap();
 #endif

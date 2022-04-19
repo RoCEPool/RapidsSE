@@ -964,6 +964,7 @@ void Engine::vOpenPool(void)
                     gxCmdLineArgs.m_xSysArgs.m_bVerbose,
                     gxCmdLineArgs.m_xSysArgs.m_aRegionAddr,
                     gxCmdLineArgs.m_xSysArgs.m_iRegionSize,
+                    gxCmdLineArgs.m_xSysArgs.m_iNonPageableSize,
                     gxCmdLineArgs.m_xSysArgs.m_bTouch,
                     gxCmdLineArgs.m_xSysArgs.m_bProgress,
                     gxCmdLineArgs.m_xSysArgs.m_bShmLock,

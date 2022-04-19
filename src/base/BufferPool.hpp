@@ -17,6 +17,7 @@ namespace BASE
 
   protected:
     i8      m_nBuffers;   // number of buffers in pool
+    i8 m_nNonPageableBuffers; // starting set of buffers to never page out
     PoolBuffer* m_pBase;  // starting address of pool (large section)
     PoolBuffer* m_pLimit; // address after pool
     bool    m_bDontFree;  // dont actually free objects back to heap
@@ -45,6 +46,7 @@ namespace BASE
     void  operator delete(void* pRegion);
     
     BufferPool(Stz* aRegionName, i8 iRegionSize,
+               i8 iNonPageableSize,
                bool bTouch, bool bProgress,
                bool bDontFree, bool bFreeSpecific);
    ~BufferPool(void) noexcept(false);
