@@ -288,7 +288,8 @@ void Step::vApiSpawnDemon(void)
     NEVER_REACH;
   
   
-  Job* pJob = nullptr;
+  Job* pJob = Api::pAllocJob(pSession);
+  
   eError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
 
   delete pCmdTknVec;

@@ -326,7 +326,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
   _static_
 
   RASSERT(pSession);
-  RASSERT(! rpJob);
+  RASSERT(rpJob);
     
   // get the command proper and the tag set
   TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
@@ -340,7 +340,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  rpJob = pAllocJob(pSession);
+  //rpJob = pAllocJob(pSession);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -491,7 +491,8 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
   if (EC_NONE != eError)
     return eError;
   
-  Job* pJob = nullptr;
+  Job* pJob = pAllocJob(pSession);
+  
   eError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
 
   delete pCmdTknVec;
@@ -597,7 +598,8 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   if (EC_NONE != eError)
     return eError;
   
-  Job* pJob;
+  Job* pJob = pAllocJob(pSession);
+  
   eError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
 
   delete pCmdTknVec;

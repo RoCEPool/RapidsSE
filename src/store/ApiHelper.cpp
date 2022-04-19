@@ -121,6 +121,8 @@ eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec, Job*& rpJob)
   if (EC_NONE != eError)
     return eError;
 
+  rpJob = Api::pAllocJob(m_pSession);
+
   eError = Api::ePrepareJob(m_pSession,pCmdTknVec,rpJob);
   
   return eError;
