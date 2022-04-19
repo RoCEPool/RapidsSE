@@ -210,6 +210,7 @@ extern d8 C_D8_MID;
 #include "PersistenceHelper.hpp"
 #include "BufferAddress.h"
 #include "BufferMap.hpp"
+#include "FileMap.hpp"
 
 #include "HeapBuffer.hpp"
 #include "Heaps.hpp"

@@ -53,6 +53,7 @@ namespace STORE
     Dic*          m_pDicRoot;
     i8            m_iEpoch;
     EventHandlers m_oEventHandlers;
+    FileMap*      m_pFileMap;
     Format        m_oFormat;
     Grid*         m_pGrid;
 #ifdef WITH_HASHMAP

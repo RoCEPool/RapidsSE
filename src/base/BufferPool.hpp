@@ -13,7 +13,9 @@ namespace BASE
   class BufferPool : public Object
   {
   friend class BASE::PoolHelper;
-  private:
+  friend class FileMap;
+
+  protected:
     i8      m_nBuffers;   // number of buffers in pool
     PoolBuffer* m_pBase;  // starting address of pool (large section)
     PoolBuffer* m_pLimit; // address after pool

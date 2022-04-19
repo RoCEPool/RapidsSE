@@ -101,6 +101,7 @@ enum eCN : u2 // Class Number
   /* */ CN__F__,
   /* */ CN_FIFO,
   /* */ CN_FILE,
+  /* */ CN_FILEMAP,
   /* */ CN_FIPVAL,
   /* */ CN_FLATTEN,
   /* */ CN_FLTVAL,
@@ -509,6 +510,7 @@ static Stz* aCN[]
   /* */ "_F__"_Stz,                 // CN__F__
   /* */ "FIFO"_Stz,                 // CN_FIFO
   /* */ "FILE"_Stz,                 // CN_FILE
+  /* */ "FILEMAP"_Stz,              // CN_FILEMAP
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
