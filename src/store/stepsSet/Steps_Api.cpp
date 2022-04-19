@@ -316,25 +316,17 @@ void Step::vApiSpawnDemon(void)
     vTrace("WithTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Session* pSession = Api::pAllocSession(SK_INTERNAL);
-  eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
   
   TagSet* pCmdTagSet = new TagSet;
-  //pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
-  //pCmdTagSet->vDumpSet();
   
   TokenVec* pTagStrTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
   Api::vPopulateTagSet(pCmdTagSet,pTagStrTknVec);
+  delete pTagStrTknVec;
 
-  eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError)
     NEVER_REACH;
   
@@ -343,48 +335,32 @@ void Step::vApiSpawnDemon(void)
   Job* pJob = Api::pAllocJob(szJobNm);
   TagSet* pJobTagSet = pJob->pJobTags();
   //pJobTagSet->vDumpSet();
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
-  
-  //pJobTagSet->vCopy(pSsnTags);
+    
   pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
   pJobTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
 
-  eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
 
+  eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
   delete pCmdTknVec;
   delete pCmdTagSet;
 
   if (eError) {
-    Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-  //Job* pPipelineJob = MY::pJob();
-  //TagSet* pPipelineJobTags = pPipelineJob->pJobTags();
-  
-  //Stz* szTagPath = pPipelineJobTags->szValue(C_TAG_PATH);
-  //pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
   
   if (AM::TRACE::bVerbose(C_VB_API))
     pJobTagSet->vDumpSet();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   Api::vForkDemon(pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Api::vFreeSession(pSession);
 
   m_pDataStack->vPushInt(true);
-  
-  delete pTagStrTknVec;
   
   EXIT();
 }
