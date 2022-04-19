@@ -334,9 +334,9 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  eEC eError = eParseCmd(pCmdTknVec,pCmdTagSet);
-  if (EC_NONE != eError)
-    return eError;
+//  eEC eError = eParseCmd(pCmdTknVec,pCmdTagSet);
+//  if (EC_NONE != eError)
+//    return eError;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -477,26 +477,30 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
-  eEC reError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
+  eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the request
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
 
-  TagSet* pTagSet =  & pSession->m_oCmdTagSet;
-  pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+  TagSet* pCmdTagSet =  & pSession->m_oCmdTagSet;
+  pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
+  eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+  if (EC_NONE != eError)
+    return eError;
+  
   Job* pJob = nullptr;
-  reError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
+  eError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
 
   delete pCmdTknVec;
 
-  if (reError) {
+  if (eError) {
     //m_pDataStack->vPushInt(eError);
     //m_pDataStack->vPushInt(false);
     //EXIT();
-    return reError;
+    return eError;
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -579,26 +583,30 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
-  eEC reError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
+  eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the request
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
 
-  TagSet* pTagSet =  & pSession->m_oCmdTagSet;
-  pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+  TagSet* pCmdTagSet =  & pSession->m_oCmdTagSet;
+  pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
+  eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+  if (EC_NONE != eError)
+    return eError;
+  
   Job* pJob;
-  reError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
+  eError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
 
   delete pCmdTknVec;
 
-  if (reError) {
+  if (eError) {
     //m_pDataStack->vPushInt(eError);
     //m_pDataStack->vPushInt(false);
     //EXIT();
-    return reError;
+    return eError;
   }
     
   rtJobId = pJob->tJobId();

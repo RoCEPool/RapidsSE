@@ -278,9 +278,15 @@ void Step::vApiSpawnDemon(void)
 
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sPipeline);
   
-  TagSet* pTagSet =  & pSession->m_oCmdTagSet;
-  pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
+  TagSet* pCmdTagSet =  & pSession->m_oCmdTagSet;
+  pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
   //pTagSet->vDumpSet();
+  
+  
+  eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+  if (EC_NONE != eError)
+    NEVER_REACH;
+  
   
   Job* pJob = nullptr;
   eError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);

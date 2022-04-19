@@ -115,7 +115,13 @@ eEC ApiHelper::ePrepareJob(Stz* szCmd, Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec, Job*& rpJob)
 {
-  eEC eError = Api::ePrepareJob(m_pSession,pCmdTknVec,rpJob);
+  TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
+
+  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+  if (EC_NONE != eError)
+    return eError;
+
+  eError = Api::ePrepareJob(m_pSession,pCmdTknVec,rpJob);
   
   return eError;
 }
