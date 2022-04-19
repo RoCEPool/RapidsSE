@@ -154,6 +154,26 @@ void Step::vApiExecuteCommand(void)
   
   Job* pJob = Api::pAllocJob(pSession);
   
+  
+  
+  
+  
+  
+  // get the command proper and the tag set
+  TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
+  
+  TagSet* pJobTagSet = pJob->pJobTags();
+  pJobTagSet->vCopy(pSsnTags);
+
+  
+  
+  
+  
+  
+  
+  
   eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
@@ -318,6 +338,24 @@ void Step::vApiSpawnDemon(void)
   
   
   Job* pJob = Api::pAllocJob(pSession);
+  
+  
+  
+  
+  // get the command proper and the tag set
+  TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
+  
+  TagSet* pJobTagSet = pJob->pJobTags();
+  pJobTagSet->vCopy(pSsnTags);
+
+  
+  
+  
+  
+  
+  
   
   eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
 

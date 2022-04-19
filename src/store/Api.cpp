@@ -326,31 +326,19 @@ eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
   _static_
 
   RASSERT(pJob);
-  
-  Session* pSession = pJob->pSession();
-  RASSERT(pSession);
     
-  // get the command proper and the tag set
-  TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
   
   TagSet* pJobTagSet = pJob->pJobTags();
-  pJobTagSet->vCopy(pSsnTags);
-
 
   // parse cmd
   sSTMT sStmt;
   pCmdTknVec->vVecToString(sStmt,0,true);
   pJob->vCmd(sStmt);
-
-  //pJobTagSet->vInsert(C_TAG_CMD,pJob->szCmd());
-  
-
-  //pCmdTagSet->vDumpSet(true);
   
   pJobTagSet->vCopy(pCmdTagSet);
-  
+  //pCmdTagSet->vDumpSet(true);
+
   if (AM::TRACE::bVerbose(C_VB_API))
     pJobTagSet->vDumpSet();
 
@@ -477,6 +465,20 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   Job* pJob = pAllocJob(pSession);
   
+  
+  // get the command proper and the tag set
+  TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
+  
+  TagSet* pJobTagSet = pJob->pJobTags();
+  pJobTagSet->vCopy(pSsnTags);
+
+  
+  
+  
+  
+  
   eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
@@ -494,7 +496,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   // update the job tag set
   
 
-  TagSet* pJobTagSet = pJob->pJobTags();
+  //TagSet* pJobTagSet = pJob->pJobTags();
   
   if (szTagPath) {
     //Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);

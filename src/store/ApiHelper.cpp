@@ -122,6 +122,21 @@ eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec, Job*& rpJob)
     return eError;
 
   rpJob = Api::pAllocJob(m_pSession);
+  
+  
+  
+  
+  // get the command proper and the tag set
+  TagSet*   pSsnTags   = & m_pSession->m_oSsnTagSet;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
+  
+  TagSet* pJobTagSet = rpJob->pJobTags();
+  pJobTagSet->vCopy(pSsnTags);
+
+  
+  
+  
 
   eError = Api::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
   
