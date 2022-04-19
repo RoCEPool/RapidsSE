@@ -23,9 +23,9 @@ namespace STORE
   static void vExecuteJob(Job* pJob);
   static void vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
   static bool bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-  static void vForkJob(Op* pResponseOp, Job*& rpJob);
+  static void vForkJob(Job*& rpJob, Op* pResponseOp);
   static eEC  eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-  static eEC  ePrepareJob(Session*  pSession, TokenVec* pCmdTknVec, Job*& rpJob);
+  static eEC  ePrepareJob(Job*& rpJob, Session*  pSession, TokenVec* pCmdTknVec);
   static void vReapableJob(Job*& rpJob);
 
   static void vSubmitJob(Job* pJob);

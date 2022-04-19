@@ -161,7 +161,7 @@ void Api::vExecuteJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* fork job (spawn job but don't wait for completion)                         */
 /*----------------------------------------------------------------------------*/
-void Api::vForkJob(Op* pResponseOp, Job*& rpJob)
+void Api::vForkJob(Job*& rpJob, Op* pResponseOp)
 {
   _static_
   
@@ -321,7 +321,7 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 /*----------------------------------------------------------------------------*/
 /* new a and prepare it to execute the command in session                     */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
+eEC Api::ePrepareJob(Job*& rpJob, Session* pSession, TokenVec* pCmdTknVec)
 {
   _static_
 
@@ -493,7 +493,7 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
   
   Job* pJob = pAllocJob(pSession);
   
-  eError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
+  eError = Api::ePrepareJob(pJob,pSession,pCmdTknVec);
 
   delete pCmdTknVec;
 
@@ -600,7 +600,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   Job* pJob = pAllocJob(pSession);
   
-  eError = Api::ePrepareJob(pSession,pCmdTknVec,pJob);
+  eError = Api::ePrepareJob(pJob,pSession,pCmdTknVec);
 
   delete pCmdTknVec;
 
@@ -650,7 +650,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
 #if 1
   pJob->vResponseTimerStart();
   
-  Api::vForkJob(pResponseOp,pJob);
+  Api::vForkJob(pJob,pResponseOp);
 
   
 #else
