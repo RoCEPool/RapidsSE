@@ -22,7 +22,7 @@
   begin
     ListedJob[].task@ task.state@ TS_HIBERNATING !=
   while
-    "job to be executed still has non-hibernating task" .
+    // "job to be executed still has non-hibernating task" .
     [task].yield
   repeat
   ListedJob[].task@ task.cycleLock

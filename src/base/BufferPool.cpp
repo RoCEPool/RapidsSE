@@ -525,10 +525,11 @@ PoolBuffer* BufferPool::pLimit(void)
 bool BufferPool::bLowMemory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
-  bool bLow = nFreeCount() < C_LOW_BUFFERS ? true : false;
-  
-  return bLow;
+    
+  if (nFreeCount() >= C_LOW_BUFFERS)
+    return false;
+    
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

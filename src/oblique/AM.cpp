@@ -735,6 +735,29 @@ void AM::MASTERLOCK::vGrabTraceMulti(void)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 MEMORY                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* is memory running low?                                                     */
+/*----------------------------------------------------------------------------*/
+bool AM::MEMORY::bIsRunningLow(void)
+{
+  _static_
+  
+  bool bIsLow = false;
+  
+  if (gpBufferPool) {
+    bIsLow = gpBufferPool->bLowMemory();
+  
+    if (bIsLow)
+      PoolHelper::vPoolAnalyze();
+  }
+  
+  return bIsLow;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                METRICS                                     */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -1940,7 +1963,7 @@ bool AM::SYSTEM::bPassesLowMem(Job* pJob)
 {
   _static_
 
-  if (! gpBufferPool->bLowMemory())
+  if (! AM::MEMORY::bIsRunningLow())
     return true;
   
   pJob->pJobTags()->vContentDump();
@@ -3198,7 +3221,7 @@ void AM::vWriteTrace_vargs(File* pFile, Stz* aFormat, va_list xArgs)
   static char caFormatted[C_1MB] = {'\0'};
   
   bool bUseLock = (gpAttachMap ? true : false);
-  bool bLowMem  = gpBufferPool ? gpBufferPool->bLowMemory() : false;
+  bool bLowMem  = AM::MEMORY::bIsRunningLow();
   
   if (bUseLock)
     gpAttachMap->vTraceLockGrab();

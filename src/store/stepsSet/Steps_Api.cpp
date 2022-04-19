@@ -146,6 +146,8 @@ void Step::vApiExecuteCommand(void)
 
   eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError) {
+    delete pCmdTknVec;
+    Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();
@@ -179,6 +181,8 @@ void Step::vApiExecuteCommand(void)
   delete pCmdTknVec;
 
   if (eError) {
+    
+    Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();

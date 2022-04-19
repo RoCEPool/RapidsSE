@@ -155,7 +155,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 
     // check for low memory when allocating a LARGE buffer
     if (m_eHeap == HT_T_LARGE &&
-        gpBufferPool->bLowMemory() &&
+        AM::MEMORY::bIsRunningLow() &&
         gxaSizeHeap[eAllocClass].m_bLowMemoryDiscard) {
       // error: we have run out of space
       //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);

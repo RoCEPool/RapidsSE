@@ -678,7 +678,7 @@ bool Api::bReapJob(void)
 //
 //               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
 //               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
-//               ,nActiveOps,pRetiredJob->m_bReapable ? "reapable" : "not-reapable"
+//               ,nActiveOps,pRetiredJob->bReapable() ? "reapable" : "not-reapable"
 //               );
       }
     }

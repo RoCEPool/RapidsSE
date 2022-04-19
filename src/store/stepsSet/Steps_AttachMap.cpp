@@ -72,7 +72,7 @@ void Step::vAttachMapIsLowMemory(void)
 {
   ENTRY();
   
-  m_pDataStack->vPushInt(gpBufferPool->bLowMemory());
+  m_pDataStack->vPushInt(AM::MEMORY::bIsRunningLow());
 }
 
 /*----------------------------------------------------------------------------*/
