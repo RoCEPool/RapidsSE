@@ -27,7 +27,7 @@ void* BufferId::vAddressFromId(BufferId oBufferId)
 
 }
 
-void* BufferId::vBufferIdFromNo(i8 iBufferNo)
+BufferId BufferId::vBufferIdFromNo(i8 iBufferNo)
 {
   _static_
 
@@ -37,6 +37,6 @@ void* BufferId::vBufferIdFromNo(i8 iBufferNo)
 
   oBufferId.m_bIdFlag = 1;
 
-  return oBufferId.m_vAsAddress;
+  return oBufferId;
 
 }

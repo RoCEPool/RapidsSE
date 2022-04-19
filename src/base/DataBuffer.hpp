@@ -7,8 +7,7 @@ namespace BASE
 {
   class DataBuffer : public LinkedBuffer
   {
-    //TODO: Change to protected
-  public:
+  protected:
     Lock         m_okLock;        // lock
     i8           m_iBufferNo;     // this DataBuffer's buffer number
 
@@ -88,6 +87,8 @@ namespace BASE
     i8   iBufferNo(void);
 #ifdef WITH_BUFFER_ID
     BufferId oGetBufferId(void);
+    void     vSetBufferId(BufferId oBufferId);
+    void     vSetBufferNo(i8 iBufferNo);
 #endif
   };
   

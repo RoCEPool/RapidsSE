@@ -41,7 +41,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   m_iBufferNo  = iBufferNo();
 
 #ifdef WITH_BUFFER_ID
-  m_oBufferId.m_vAsAddress  = BufferId::vBufferIdFromNo(m_iBufferNo);
+  m_oBufferId  = BufferId::vBufferIdFromNo(m_iBufferNo);
 #endif
 
   m_iBucketNo  = C_UNKNOWN;
@@ -347,6 +347,27 @@ BufferId DataBuffer::oGetBufferId(void)
 
   return m_oBufferId;
 }
+
+/*----------------------------------------------------------------------------*/
+/* set the buffer id                                                          */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vSetBufferId(BufferId oBufferId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_oBufferId = oBufferId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the buffer no                                                          */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vSetBufferNo(i8 iBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_iBufferNo = iBufferNo;
+}
+
 #endif
 /*============================================================================*/
 /* end                                                                        */
