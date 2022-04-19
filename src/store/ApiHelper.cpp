@@ -103,36 +103,40 @@ eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd)
   
   pCmdTknVec->vTokeniseCpp(szCmd);
   
-  eEC eError = ApiHelper::ePrepareJob(rpJob,pCmdTknVec);
+  TagSet* pCmdTagSet = new TagSet;
+  
+  TagSet* pSsnTagSet = & m_pSession->m_oSsnTagSet;
+  pCmdTagSet->vCopy(pSsnTagSet);
+  eEC eError = ApiHelper::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
-  
+  delete pCmdTagSet;
   return eError;
 }
 
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec)
+eEC ApiHelper::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
-  TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
+  //TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
 
   eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError)
     return eError;
 
   rpJob = Api::pAllocJob(m_pSession);
-  TagSet* pJobTagSet = rpJob->pJobTags();
+  //TagSet* pJobTagSet = rpJob->pJobTags();
 
   
   
   
   // get the command proper and the tag set
-  TagSet*   pSsnTags   = & m_pSession->m_oSsnTagSet;
+  //TagSet*   pSsnTags   = & m_pSession->m_oSsnTagSet;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
   
-  pJobTagSet->vCopy(pSsnTags);
+  //pJobTagSet->vCopy(pSsnTags);
 
   
   
