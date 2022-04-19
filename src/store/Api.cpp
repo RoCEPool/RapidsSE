@@ -464,14 +464,14 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
     return eError;
   
   Job* pJob = pAllocJob(pSession);
-  
+  TagSet* pJobTagSet = pJob->pJobTags();
   
   // get the command proper and the tag set
   TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
   
-  TagSet* pJobTagSet = pJob->pJobTags();
+
   pJobTagSet->vCopy(pSsnTags);
 
   

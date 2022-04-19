@@ -153,7 +153,7 @@ void Step::vApiExecuteCommand(void)
    }
   
   Job* pJob = Api::pAllocJob(pSession);
-  
+  TagSet* pJobTagSet = pJob->pJobTags();
   
   
   
@@ -164,7 +164,7 @@ void Step::vApiExecuteCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
   
-  TagSet* pJobTagSet = pJob->pJobTags();
+
   pJobTagSet->vCopy(pSsnTags);
 
   
@@ -338,18 +338,19 @@ void Step::vApiSpawnDemon(void)
   
   
   Job* pJob = Api::pAllocJob(pSession);
-  
+  TagSet* pJobTagSet = pJob->pJobTags();
+  //pJobTagSet->vDumpSet();
   
   
   
   // get the command proper and the tag set
-  TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  
+  //TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
+  //pSsnTags->vDumpSet();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
   
-  TagSet* pJobTagSet = pJob->pJobTags();
-  pJobTagSet->vCopy(pSsnTags);
-
+  //pJobTagSet->vCopy(pSsnTags);
+  pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
   
   
   

@@ -122,7 +122,8 @@ eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec, Job*& rpJob)
     return eError;
 
   rpJob = Api::pAllocJob(m_pSession);
-  
+  TagSet* pJobTagSet = rpJob->pJobTags();
+
   
   
   
@@ -131,7 +132,6 @@ eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec, Job*& rpJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
   
-  TagSet* pJobTagSet = rpJob->pJobTags();
   pJobTagSet->vCopy(pSsnTags);
 
   
