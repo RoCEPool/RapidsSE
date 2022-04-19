@@ -393,9 +393,17 @@ void Heap::vFreeObject(Object* pObject)
 //    //vTrace("Object %p valid\n"_Stz,pObject);
 //  }
 
-  if (CN_LARGETRANSIENT == eClassNo) {
+  //if (CN_LARGETRANSIENT == eClassNo) {
+    
+  if (HT_T_LARGE == gxaSizeHeap[eClassNo].m_eWhichHeap) {
+    
+    RASSERT(CN_LARGETRANSIENT == this->eGetClassNo());
+    
+    //vTrace("FREE CN_LARGETRANSIENT\n"_Stz);
     
     if (m_nFreeChunks > 10) {
+      //vTrace("FREE INTO POOL\n"_Stz);
+      
       PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(pObject);
       
       HeapBuffer* pHeapBuffer = _pHeapBuffer(pPoolBuffer);
