@@ -332,21 +332,11 @@ eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
     
   // get the command proper and the tag set
   TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  //TagSet*   pCmdTagSet   = & pSession->m_oCmdTagSet;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  eEC eError = eParseCmd(pCmdTknVec,pCmdTagSet);
-//  if (EC_NONE != eError)
-//    return eError;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //rpJob = pAllocJob(pSession);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
   
   TagSet* pJobTagSet = pJob->pJobTags();
+  pJobTagSet->vCopy(pSsnTags);
 
 
   // parse cmd
@@ -354,9 +344,8 @@ eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
   pCmdTknVec->vVecToString(sStmt,0,true);
   pJob->vCmd(sStmt);
 
-  pJobTagSet->vInsert(C_TAG_CMD,pJob->szCmd());
+  //pJobTagSet->vInsert(C_TAG_CMD,pJob->szCmd());
   
-  pJobTagSet->vCopy(pSsnTags);
 
   //pCmdTagSet->vDumpSet(true);
   
@@ -382,11 +371,6 @@ eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
   if (pJobTagSet->bHasName(C_SEE_JOB))
     pJob->vPrintJobContents();
   
-  
-  //pPrepareJobTags->vDumpSet(true);
-
-  
-  //Dic* pDicRoot = AM::DIC::pRoot();
   
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
   
