@@ -34,7 +34,6 @@ namespace STORE
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);
 
-  static eEC  eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath);
   static eEC  eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
                            Op* pResponseOp, JobId& rtJobId);
 

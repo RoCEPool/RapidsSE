@@ -129,16 +129,45 @@ void Step::vApiExecuteCommand(void)
   Stz* szTagPath = nullptr;
   if (m_pJob)
     szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
- 
-  eEC eError = Api::eExecuteCommand(sCmd, sWithTagStr, szTagPath);
   
-  if (EC_NONE == eError) {
-    m_pDataStack->vPushInt(true);
-  }
-  else {
+  
+  
+  Session* pSession = Api::pAllocSession(SK_INTERNAL);
+  
+  eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenise the request
+  
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
+
+  TagSet* pCmdTagSet =  & pSession->m_oCmdTagSet;
+  pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
+
+  eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+  if (EC_NONE != eError) {
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
+    EXIT();
+    return;
+   }
+  
+  Job* pJob = Api::pAllocJob(pSession);
+  
+  eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
+
+  delete pCmdTknVec;
+
+  if (eError) {
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+    EXIT();
+    return;
   }
+
+  Api::vExecuteJob(pJob);
+  
+  m_pDataStack->vPushInt(true);
   
   EXIT();
 }
