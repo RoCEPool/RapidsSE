@@ -161,7 +161,7 @@ void Api::vExecuteJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* fork job (spawn job but don't wait for completion)                         */
 /*----------------------------------------------------------------------------*/
-void Api::vForkJob(Session* pSession, Op* pResponseOp, Job*& rpJob)
+void Api::vForkJob(Op* pResponseOp, Job*& rpJob)
 {
   _static_
   
@@ -640,7 +640,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
 #if 1
   pJob->vResponseTimerStart();
   
-  Api::vForkJob(pSession,pResponseOp,pJob);
+  Api::vForkJob(pResponseOp,pJob);
 
   
 #else
