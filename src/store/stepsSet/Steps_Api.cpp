@@ -328,7 +328,7 @@ void Step::vApiSpawnDemon(void)
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sPipeline);
   
   TagSet* pCmdTagSet =  & pSession->m_oCmdTagSet;
-  pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
+  //pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
   //pTagSet->vDumpSet();
   
   
@@ -347,7 +347,8 @@ void Step::vApiSpawnDemon(void)
   
   //pJobTagSet->vCopy(pSsnTags);
   pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
-  
+  pJobTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
+
   
   
   
@@ -366,23 +367,21 @@ void Step::vApiSpawnDemon(void)
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+  //Job* pPipelineJob = MY::pJob();
+  //TagSet* pPipelineJobTags = pPipelineJob->pJobTags();
   
-   TagSet* pSsnJobTags = pJob->pJobTags();
-  
-  Job* pPipelineJob = MY::pJob();
-  TagSet* pPipelineJobTags = pPipelineJob->pJobTags();
-  
-  Stz* szTagPath = pPipelineJobTags->szValue(C_TAG_PATH);
-  pSsnJobTags->vAppend(C_TAG_PATH,szTagPath);
+  //Stz* szTagPath = pPipelineJobTags->szValue(C_TAG_PATH);
+  //pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
   
   TokenVec* pTagStrTknVec = TokenVec::pTokeniseSen(sTagStr);
-  Api::vPopulateTagSet(pSsnJobTags,pTagStrTknVec);
+  Api::vPopulateTagSet(pJobTagSet,pTagStrTknVec);
   if (AM::TRACE::bVerbose(C_VB_API))
-    pSsnJobTags->vDumpSet();
+    pJobTagSet->vDumpSet();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Api::vSpawnTask_demonJob(pJob);
+  Api::vForkDemon(pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -3097,7 +3097,7 @@ void AM::vSpawnTask_receivedJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vSpawnTask_demonJob(Job* pJob)
 {
-  Api::vSpawnTask_demonJob(pJob);
+  Api::vForkDemon(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

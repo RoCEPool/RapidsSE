@@ -108,7 +108,7 @@ void Api::vExecuteJob(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();
-  TagSet* pJobTagSet = & pSession->m_oCmdTagSet;
+  TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //RASSERT(! pSession->bHasCascade());
@@ -150,12 +150,27 @@ void Api::vExecuteJob(Job* pJob)
     
     pSession->vPopCascade();
 
-    Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+    Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
     
     pJob->vEntryPoint(szEntry);
 
     //AM::pHeaps()->vSetTraceFree(false);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* form given job (as demon)                                                  */
+/*----------------------------------------------------------------------------*/
+void Api::vForkDemon(Job*& rpJob)
+{
+  _static_
+  
+  RASSERT(! rpJob->pTask());
+
+  rpJob->vTaskCreate();
+  Scheduler::vTaskApi_AddService(rpJob->pTask());
+  
+  rpJob = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1011,19 +1026,6 @@ void Api::vSpawnTask_dedicatedOp(Op* pOp)
   Scheduler::vTaskApi_AddDedicated(pOp->pTask());
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-void Api::vSpawnTask_demonJob(Job* pJob)
-{
-  _static_
-  
-  RASSERT(! pJob->pTask());
-
-  pJob->vTaskCreate();
-  Scheduler::vTaskApi_AddService(pJob->pTask());
-}
 
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
