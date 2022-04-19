@@ -290,7 +290,7 @@ void Step::vApiSpawnDemon(void)
   
   Job* pJob = Api::pAllocJob(pSession);
   
-  eError = Api::ePrepareJob(pJob,pSession,pCmdTknVec);
+  eError = Api::ePrepareJob(pJob,pCmdTknVec);
 
   delete pCmdTknVec;
   

@@ -321,12 +321,14 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 /*----------------------------------------------------------------------------*/
 /* new a and prepare it to execute the command in session                     */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Job*& rpJob, Session* pSession, TokenVec* pCmdTknVec)
+eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec)
 {
   _static_
 
+  RASSERT(pJob);
+  
+  Session* pSession = pJob->pSession();
   RASSERT(pSession);
-  RASSERT(rpJob);
     
   // get the command proper and the tag set
   TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
@@ -344,15 +346,15 @@ eEC Api::ePrepareJob(Job*& rpJob, Session* pSession, TokenVec* pCmdTknVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  TagSet* pPrepareJobTags = rpJob->pJobTags();
+  TagSet* pPrepareJobTags = pJob->pJobTags();
 
 
   // parse cmd
   sSTMT sStmt;
   pCmdTknVec->vVecToString(sStmt,0,true);
-  rpJob->vCmd(sStmt);
+  pJob->vCmd(sStmt);
 
-  pPrepareJobTags->vInsert(C_TAG_CMD,rpJob->szCmd());
+  pPrepareJobTags->vInsert(C_TAG_CMD,pJob->szCmd());
   
   pPrepareJobTags->vCopy(pSsnTags);
 
@@ -363,22 +365,22 @@ eEC Api::ePrepareJob(Job*& rpJob, Session* pSession, TokenVec* pCmdTknVec)
   if (AM::TRACE::bVerbose(C_VB_API))
     pPrepareJobTags->vDumpSet();
 
-  if (rpJob->bHasTag(C_TAG_LIFE)) {
+  if (pJob->bHasTag(C_TAG_LIFE)) {
     SP_TagSet spTagSet;
     vTrace("Job New: %s"_Stz,spTagSet.sz(pPrepareJobTags));
     //pJob->pTagSet()->vPrint();
   }
   
-  if ( rpJob->bHasTag(C_SHOW_CMD_TAGS))
+  if ( pJob->bHasTag(C_SHOW_CMD_TAGS))
     pPrepareJobTags->vDumpSet(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   eJK eJobKind = (eJK) pPrepareJobTags->iValue(C_TAG_JOBKIND);
-  rpJob->vJobKind(eJobKind);
+  pJob->vJobKind(eJobKind);
     
   if (pPrepareJobTags->bHasName(C_SEE_JOB))
-    rpJob->vPrintJobContents();
+    pJob->vPrintJobContents();
   
   
   //pPrepareJobTags->vDumpSet(true);
@@ -388,14 +390,12 @@ eEC Api::ePrepareJob(Job*& rpJob, Session* pSession, TokenVec* pCmdTknVec)
   
   Stz* szEntry = pPrepareJobTags->szValue(C_TAG_ENTRYPOINT);
   
-  rpJob->vEntryPoint(szEntry);
+  pJob->vEntryPoint(szEntry);
   
-  
-  TagSet* pJobTagSet = & pSession->m_oCmdTagSet;
-  
+    
   if (AM::TRACE::bVerbose(C_VB_API)) {
     pCmdTknVec->vDumpVec(false);
-    pJobTagSet->vDumpSet(true);
+    pCmdTagSet->vDumpSet(true);
   }
       
   if (AM::bDeveloper() && pCmdTknVec->nTokens() > C_1KB) {
@@ -493,7 +493,7 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
   
   Job* pJob = pAllocJob(pSession);
   
-  eError = Api::ePrepareJob(pJob,pSession,pCmdTknVec);
+  eError = Api::ePrepareJob(pJob,pCmdTknVec);
 
   delete pCmdTknVec;
 
@@ -600,7 +600,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   Job* pJob = pAllocJob(pSession);
   
-  eError = Api::ePrepareJob(pJob,pSession,pCmdTknVec);
+  eError = Api::ePrepareJob(pJob,pCmdTknVec);
 
   delete pCmdTknVec;
 

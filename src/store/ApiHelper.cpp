@@ -123,7 +123,7 @@ eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec, Job*& rpJob)
 
   rpJob = Api::pAllocJob(m_pSession);
 
-  eError = Api::ePrepareJob(rpJob,m_pSession,pCmdTknVec);
+  eError = Api::ePrepareJob(rpJob,pCmdTknVec);
   
   return eError;
 }
