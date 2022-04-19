@@ -18,6 +18,7 @@ namespace STORE
   static Session* pAllocSession(eSK eSession);
   static void vFreeSession(Session* pSession);
 
+  static Job* pAllocJob(Stz* szJobNm);
   static Job* pAllocJob(Session* pSession);
 
   static void vExecuteJob(Job* pJob);

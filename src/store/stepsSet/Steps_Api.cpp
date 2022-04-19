@@ -338,8 +338,9 @@ void Step::vApiSpawnDemon(void)
   if (EC_NONE != eError)
     NEVER_REACH;
   
-  
-  Job* pJob = Api::pAllocJob(pSession);
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+
+  Job* pJob = Api::pAllocJob(szJobNm);
   TagSet* pJobTagSet = pJob->pJobTags();
   //pJobTagSet->vDumpSet();
   

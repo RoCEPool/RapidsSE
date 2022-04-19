@@ -67,6 +67,24 @@ void Api::vFreeSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* alloc a new job for session                                                */
 /*----------------------------------------------------------------------------*/
+Job* Api::pAllocJob(Stz* szJobNm)
+{
+  _static_
+
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
+  
+  Job* pJob = new Job(szJobNm,
+                      C_UNKNOWN,
+                      tCmdId
+                      );
+
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* alloc a new job for session                                                */
+/*----------------------------------------------------------------------------*/
 Job* Api::pAllocJob(Session* pSession)
 {
   _static_
