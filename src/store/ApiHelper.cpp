@@ -51,7 +51,7 @@ void ApiHelper::vReapableJob(Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vExecuteJob(Job* pJob)
 {
-  Api::vExecuteJob(m_pSession,pJob);
+  Api::vExecuteJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

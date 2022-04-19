@@ -94,9 +94,11 @@ Job* Api::pAllocJob(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
-void Api::vExecuteJob(Session* pSession, Job* pJob)
+void Api::vExecuteJob(Job* pJob)
 {
   _static_
+  
+  Session* pSession = pJob->pSession();
   
   pSession->m_pOutput->vAssertEmptyQueue();
 
@@ -537,7 +539,7 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
 //  UNUSED(bSpawned);
   pJob->vResponseTimerStart();
   
-  Api::vExecuteJob(pSession,pJob);
+  Api::vExecuteJob(pJob);
   
   pJob->vResponseTimerUpdate();
 

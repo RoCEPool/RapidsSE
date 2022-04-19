@@ -20,7 +20,7 @@ namespace STORE
 
   static Job* pAllocJob(Session* pSession);
 
-  static void vExecuteJob(Session* pSession, Job* pJob);
+  static void vExecuteJob(Job* pJob);
   static void vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
   static bool bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
   static void vForkJob(Session* pSession, Op* pResponseOp, Job*& rpJob);
