@@ -190,7 +190,6 @@ CodeSynth::~CodeSynth(void) noexcept(false)
   delete m_pGbyStack;
   delete m_pLowerStack;
   delete m_pUpperStack;
-
   delete m_pInitStack;
 }
 
@@ -1150,31 +1149,6 @@ void CodeSynth::vSynthOrdAgg(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, St
   // generate the expression code
   vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGORD, m_pStreamDefLft);
 
-//  StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow) {");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iBufferDone)");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n        goto L_Return;");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n      else {");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n         aCombinedT->m_iProcessRow = 1;");
-//  sCopy.vSprint("\n         goto %s;"_Stz, sLabel);
-//  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-//  StrLib::vAppendString(&m_azCodeCrs, "\n       }");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n     }");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate processRow check
-  vGenerateProcessRow(sLabelLoop);
-
-  //RASSERT(eExprKind == EK_AGGORD);
-
-//  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iBufferDone ) {");
-//  //StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AddRowToTub;");
-//  sCopy.vSprint("\n     goto %s;"_Stz, sLabelNext);
-//  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-//
-//  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate ordered gby
   vOrdAggGby(sLabelNext, sLabelLoop);
@@ -1258,6 +1232,17 @@ bool CodeSynth::bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, St
   m_pInitStack->vReset();
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* synthesize return                                                          */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vSynthReturn(void) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  StrLib::vAppendString(&m_azCodeCrs, "L_Return:");
+  StrLib::vAppendString(&m_azCodeCrs, "  goto L_ReturnFinal;");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1769,38 +1754,44 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast the ProjectRow to eStencilTo structure
-  StrLib::vAppendString(&m_azCodeCrs,"\n");
   sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude,
                    xRowRef[m_eStencilTo].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allocate aggregate ProjectRow
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iProjectInit == 0 ) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      // allocate a projectRow from the tub");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProjectInit = 1;");
+  // generate processRow check
+  vGenerateProcessRowOrdAgg(sLabelNext);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if all done
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // check if ordered aggregate is done");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iOrdAggDone ) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iHasOrdAggRow = 0;");
+  sCopy.vSprint("\n      goto %s;"_Stz, sLabelNext);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the init code for each aggregate column expression
-  //vGenerateAggInitCode(pPreExpStack);
+  // allocate aggregate ProjectRow
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iHasOrdAggRow == 0 ) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iHasOrdAggRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the expression code
   vGenerateExprCode(m_pGbyStack, "  "_Stz);
-
   vGenerateExprCode(m_pInitStack, "  "_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate Agg code for each projected agg column
+  vGenerateExprCode(m_pExprStack, ""_Stz);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n     goto L_AdvanceNextRow;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // process the last row");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iBufferDone) {");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
-//  sCopy.vSprint("\n      goto %s;"_Stz, sLabelNext);
-//  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-//  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // is it a new key ?
 
@@ -1851,15 +1842,26 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
   // generate Agg code for each projected agg column
   vGenerateExprCode(m_pExprStack, ""_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if all done
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // check if ordered aggregate is done");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iOrdAggDone ) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iHasOrdAggRow = 0;");
+  sCopy.vSprint("\n      goto %s;"_Stz, sLabelNext);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
   sCopy.vSprint("\n     goto %s;"_Stz, sLabelLoop);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   else {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_iProjectInit = 0;");
-  sCopy.vSprint("\n     goto %s;"_Stz, sLabelNext);
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_iHasOrdAggRow = 0;");
+
+  sCopy.vSprint("\n   goto %s;"_Stz, sLabelNext);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   }");
 
   // cleanup
   m_pExprStack->vReset();
@@ -2446,6 +2448,7 @@ void CodeSynth::vGeneratePrjGby(void) {
 
   vPayloadAgg();
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* generate code for sort                                                     */
@@ -3328,7 +3331,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 /* allocate row in the pot                                                    */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool bEosHandler,
-                                  Stz* sLabel, Stz* sLabelNext) {
+                                  Stz* sLabel, Stz* sLabelNext, Stz* sLabelOrdAgg) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -3358,7 +3361,20 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate process row
-  vGenerateProcessRow(sLabelNext);
+
+  if ( ! sLabelOrdAgg->bSame(""_Stz) ) {
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      // check if ordered aggregate is done");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      if ( aCombinedT->m_iOrdAggDone ) {");
+    vGenerateGoto("L_Return"_Stz);
+    StrLib::vAppendString(&m_azCodeCrs, "\n      } else {");
+    vGenerateGoto(sLabelOrdAgg);
+    StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n");}
+  else
+    vGenerateProcessRow(sLabelNext);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -3448,7 +3464,32 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate goto
-  vGenerateGoto(sLabelNext);
+  if ( ! sLabelOrdAgg->bSame(""_Stz) ) {
+    StrLib::vAppendString(&m_azCodeCrs, "\n    // check if ordered aggregate is done");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iOrdAggDone ) {");
+    vGenerateGoto("L_Return"_Stz);
+    StrLib::vAppendString(&m_azCodeCrs, "\n    } else {");
+    vGenerateGoto(sLabelOrdAgg);
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate return
+    StrLib::vAppendString(&m_azCodeCrs, "\n  L_Return:");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iHasOrdAggRow ) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iOrdAggDone = 1;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iHasOrdAggRow = 1;");
+    vGenerateGoto(sLabelOrdAgg);
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+    vGenerateGoto("L_ReturnFinal"_Stz);
+  }
+  else {
+    vGenerateGoto(sLabelNext);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate return
+    StrLib::vAppendString(&m_azCodeCrs, "\n  L_Return:");
+    vGenerateGoto("L_ReturnFinal"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4092,10 +4133,12 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
       else
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
 
-      if (ePreExp == PE_NONE)
+      if (ePreExp == PE_NONE) {
         m_pInitStack->vPushStz(sPush);
-      else
+      }
+      else {
         pExprStack->vPushStz(sPush);
+      }
 
       if (pPostStack->nValues() > 1) {
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
@@ -4472,7 +4515,7 @@ void CodeSynth::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePre
 /* allocate row in tub                                                        */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
-                                  Stz* sLabel, Stz* sLabelNext)
+                                  Stz* sLabel, Stz* sLabelNext, Stz* sLabelOrdAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -4504,7 +4547,20 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate process row
-  vGenerateProcessRow(sLabelNext);
+
+  if ( ! sLabelOrdAgg->bSame(""_Stz) ) {
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      // check if ordered aggregate is done");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      if ( aCombinedT->m_iOrdAggDone ) {");
+    vGenerateGoto("L_Return"_Stz);
+    StrLib::vAppendString(&m_azCodeCrs, "\n      } else {");
+    vGenerateGoto(sLabelOrdAgg);
+    StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n");}
+  else
+    vGenerateProcessRow(sLabelNext);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -4590,15 +4646,32 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate goto
-  //if (bEosHandler)
+  if ( ! sLabelOrdAgg->bSame(""_Stz) ) {
+    StrLib::vAppendString(&m_azCodeCrs, "\n    // check if ordered aggregate is done");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iOrdAggDone ) {");
+    vGenerateGoto("L_Return"_Stz);
+    StrLib::vAppendString(&m_azCodeCrs, "\n    } else {");
+    vGenerateGoto(sLabelOrdAgg);
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate return
+    StrLib::vAppendString(&m_azCodeCrs, "\n  L_Return:");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iHasOrdAggRow ) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iOrdAggDone = 1;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iHasOrdAggRow = 1;");
+    vGenerateGoto(sLabelOrdAgg);
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+    vGenerateGoto("L_ReturnFinal"_Stz);
+  }
+  else {
     vGenerateGoto(sLabelNext);
-//  else {
-//    StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iBufferDone)");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n    else");
-//    sCopy.vSprint("\n      goto %s;"_Stz, sLabelNext);
-//    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-// }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate return
+    StrLib::vAppendString(&m_azCodeCrs, "\n  L_Return:");
+    vGenerateGoto("L_ReturnFinal"_Stz);
+  }
 
 }
 
@@ -4639,6 +4712,31 @@ void CodeSynth::vGenerateProcessRow(Stz* sLabel)
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
   sCopy.vSprint("\n      goto %s;"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for check for process row for ordAgg                         */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateProcessRowOrdAgg(Stz* sLabel)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s4K sCopy;
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iHasOrdAggRow) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iHasOrdAggRow = 0;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iProcessRow = 1;");
+  sCopy.vSprint("\n        goto %s;"_Stz, sLabel);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      else {");
+  sCopy.vSprint("\n        goto %s;"_Stz, "L_Return"_Stz);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n      }");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 

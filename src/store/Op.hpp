@@ -8,7 +8,9 @@
 #include "eXK.h"
 #include "eZK.h"
 
+#include "EvMgr.hpp"
 #include "OperandWatch.hpp"
+#include "PipeIn.hpp"
 
 namespace BASE { class OperandQueue; }
 
@@ -28,33 +30,18 @@ namespace STORE
 
     SMA<Task,CN_TASK>     m_pTask;     // task of op
 
-    // -- id, name and kind
     Gid_t<CN_OP> m_xOpId;     // op id in grid
-    s256         m_sPath;     // operator path
+    s256         m_sSpot;     // operator grid position/path
 
-    TagSet*    m_pOpTags;   // tags for the op
-    bool       m_bTraceOp;  // tracing this operator
-    bool       m_bTraceAck; // tracing ack of this operator
+    TagSet*  m_pOpTags;   // tags for the op
+    bool     m_bTraceOp;  // tracing this operator
+    bool     m_bTraceAck; // tracing ack of this operator
 
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // event handling
-
-    EventHandlers* m_pEventHandlers;
-  
-    eZK   m_eCurEvent;
-    i8    m_naEventCount[ZK_ENUMS];  // counts of events (operands piped-in)
-
-    OperandWatch* m_pOperandWatch;
-  
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // in-bound queues and outbound operand
-  
-    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueLeft;   // left input queue
-    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueRight;  // right input queue
-    SMA<OperandQueue,CN_OPERANDQUEUE> m_pQueueOoO;    // out-of-order queue
-
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    EvMgr*   m_pEvMgr;    // event handlers
+         
+    PipeIn*  m_pPipeIn;   // in-bound queues
+ 
+    // -- - -- - -- - -- - -- - -- - --
     // move these in logic unit???
   
     i8   m_iSendNode;   // send node (for send)
@@ -62,6 +49,7 @@ namespace STORE
     i8   m_iRobin;      // send Round Robin partition/node/thread
     i8   m_iLocalRobin; // send Round Robin local ptn/node/thread
       
+
     // can these go???
     bool m_bPulsedLimit;  // is this a pulsed operand?
     i8   m_iWorkQuanta;   // quanta of work between pulses
@@ -103,11 +91,11 @@ namespace STORE
     Word* pEventHandler(void);
     Word* pEventHandler(i8 i_OperandKind);
     void vEventHandler(i8 i_OperandKind, Word* pHandler);
+    EvMgr* pEvMgr(void);
 
     void vGrabTaskLock(void);
   
     void vIncWorkDone(void);
-    void vInitOperandHandlers(void);
     bool bIsLocked(void);
     bool bIsEventValid(i8 i_OperandKind);
   
@@ -140,7 +128,7 @@ namespace STORE
     i8   iOtherStage(void);
     Stage* pOtherStage(void);
 
-    Stz* szPath(void);
+    Stz* szSpot(void);
     bool bPause(void);
     bool bPeekLeft(void);
     bool bPeekOoO(void);

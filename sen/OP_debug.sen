@@ -80,8 +80,8 @@
   
   //pOperand object.class@ class::name "DEBUG: %v" .printf
   
-  PipeIn[].kind event::name@ "EVENT: %v" .printf
-  PipeIn[].kind event::handlerName@ find execute
+  PipeIn[].kind [EvMgr].decodeEventNm "EVENT: %v" .printf
+  PipeIn[].kind [EvMgr].decodeHandlerNm find execute
 ;
 
 /*----------------------------------------------------------------------------*/

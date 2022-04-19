@@ -32,9 +32,6 @@ namespace STORE
     i8 m_i_Session;  // which session in sessions on this node
     i8 m_iPid;       // which process created this session
 
-    // -- refers to
-    Job* m_pSsnJob;  // job currently being executing
-
     // -- tags
     TagSet m_oSsnTagSet;  // session level tags
   
@@ -45,7 +42,7 @@ namespace STORE
     i8       m_i_FixedPtn;    // specific partition being processed
 
     DicStack m_oDicStack;     // dictionary stack
-    TagSet   m_oJobTagSet;    // extra tags gleaned from the command
+    TagSet   m_oCmdTagSet;    // extra tags gleaned from the command
 
     Output*  m_pOutput;       // output processor
 
@@ -120,12 +117,10 @@ namespace STORE
     void vFinaliseSession(i8 i_NextFree);
     bool bHasCascade(void);
     eEC  eInitaliseSession(Stz* pCatalogName, Stz* pSchemaName);
-    Job* pJob(void);
     JobId tLastJobId(void);
     void vLastJobId(JobId tLastJobId);
     DicStack* pPathStack(void);
     void vPopCascade(void);
-    void vReport(void);
     void vSee(void);
     void vTraceSession(void);
     Tx*  pTx(void);

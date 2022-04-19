@@ -491,7 +491,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
     pFreeBuffer->vNextFree(i_Buffer);
     
     m_nFreeCount++;
-}
+  }
   
   FreeBuffer* pLastBuffer = pToFreeBuffer(iBufferLast());
   

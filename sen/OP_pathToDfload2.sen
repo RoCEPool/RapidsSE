@@ -13,11 +13,7 @@
 
   PipeIn[]\clear to InfoSet[]
 
-  // find the __path table def ; set infoSetTable[]
-  C_TDEF_PATH op__tableDef_infoSet assert
-
-  // get the first (one and only) row from this infoset
-  InfoSet[].firstRow to infoSetRow[]
+  C_TDEF_PATH infoSetRow:getFirstRow
 
   // extract the values
   0 InfoSet[].colVal@ locals| sPath   |
@@ -28,28 +24,21 @@
   iPathOf iPathNo sPath "pathToDfload2: %v %v %v" .printf
 
   InfoSet[].delete
+  nullptr to InfoSetRow[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  sPath <tableNm> "dfload2 %v \"%v\"" str.format locals| sCommand |
+  sPath <tableNm> "dfload2 %v \"%v\"" str.format locals| sCmd |
 
-  sCommand "pathToDfload2: %v" .printf
+  sCmd "pathToDfload2: %v" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // temp debug
   //true exit
-  
-  // find the __command table def ; set infoSetTable[]
-  C_TDEF_COMMAND op__tableDef_infoSet assert
 
-  // create an infoSet operand
-  InfoSetTable[] InfoSet[].new
-    OI_COMMAND InfoSet[].opInfoset!
-
-  sCommand 1 InfoSet[].addRowVargs
-    
-  InfoSet[].pipeOut
+  C_TDEF_COMMAND InfoSet:discover
+  sCmd 1 OI_COMMAND InfoSet:pipeoutRow
 
   true
 ;

@@ -1,0 +1,51 @@
+/*============================================================================*/
+/* se_infoSet.sen -- additional InfoSet related words                         */
+/*============================================================================*/
+
+" se_infoSet.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* discover infoset by name                                                   */
+/*----------------------------------------------------------------------------*/
+: InfoSet:discover params| sInfoSetNm |
+
+  //InfoSet[].isNull assert
+  
+  sInfoSetNm op__tableDef_infoSet assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* discover infoset by name                                                   */
+/*----------------------------------------------------------------------------*/
+: InfoSet:getCol params| sInfoSetNm i_Col |
+
+  sInfoSetNm InfoSet:discover
+  
+  InfoSet[].firstRow to infoSetRow[]
+
+  i_Col InfoSet[].colVal@
+  
+  InfoSet[].delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* add single varg row to infoet ; pipeout infoset                            */
+/*----------------------------------------------------------------------------*/
+: InfoSet:pipeoutRow params| eInfoSet nArgs |
+  
+  InfoSetTable[] assert
+  InfoSet[].isNull assert
+  
+  InfoSetTable[] InfoSet[].new
+    eInfoSet InfoSet[].opInfoset!
+    
+  nArgs InfoSet[].addRowVargs
+ 
+  InfoSet[].pipeOut
+
+  InfoSet[].isNull assert
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

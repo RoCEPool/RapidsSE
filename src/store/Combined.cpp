@@ -102,6 +102,10 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_nAggRows = 0;
   m_xCombinedT.m_iProcessRow    = 1;
 
+  // project (ordAgg)
+  m_xCombinedT.m_iHasOrdAggRow = 0;
+  m_xCombinedT.m_iOrdAggDone = 0;
+
   // payload (gby/srt/top)
   m_xCombinedT.m_aiPayload      = nullptr;
   m_xCombinedT.m_aPayloadRow    = nullptr;

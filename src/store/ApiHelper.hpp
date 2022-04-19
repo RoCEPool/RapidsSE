@@ -18,9 +18,7 @@ namespace STORE
 
     i8   iCommandKind(void);
   
-    void vDeleteJob(void);
-  
-    void vExecuteJob(void);
+    void vExecuteJob(Job* pJob);
 
     void* pForkDemon(Stz* szPipeline);
     void vFreeSession(void);
@@ -32,12 +30,12 @@ namespace STORE
     void* pMetaData(void*);
 
     void vPipeoutResults(Op* pCurrOp, Operand* pOperand, Task* pTriggeringTask);
-    eEC  ePrepareJob(Stz* szCmd);
-    eEC  ePrepareJob(TokenVec* pCmdTknVec);
-    void vPrintResults(void);
+    eEC  ePrepareJob(Stz* szCmd, Job*& rpJob);
+    eEC  ePrepareJob(TokenVec* pCmdTknVec, Job*& rpJob);
+    void vPrintResults(Job* pJob);
   
+    void vReapableJob(Job*& rpJob);
     void vResetResults(void);
-    i8   iResponseTimeMsec(void);
     i8   nRowCount(void);
     i8   nRowsAffected(void);
 

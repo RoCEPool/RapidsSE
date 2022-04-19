@@ -114,7 +114,7 @@ void Output::vBeginProcOneCmd(void)
     vTrace("Ssn <fileOut> = %s\n"_Stz,pSsnTagSet->szValue("<fileOut>"_Stz));
   }
   
-  TagSet* pJobTagSet = &m_pSession->m_oJobTagSet;
+  TagSet* pJobTagSet = &m_pSession->m_oCmdTagSet;
   if (pJobTagSet->bHasName("<fileOut>"_Stz)) {
     
     Stz* szFileOutNm = pJobTagSet->szValue("<fileOut>"_Stz);
@@ -136,14 +136,14 @@ void Output::vBeginProcOneCmd(void)
 /*----------------------------------------------------------------------------*/
 /* drain the result/output queue                                              */
 /*----------------------------------------------------------------------------*/
-void Output::vDrainBufferQueue(void)
+void Output::vDrainBufferQueue(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   while (! m_bExitMarker   &&
-         ! m_pSession->m_pSsnJob->bIsInError()) {
+         ! pJob->bIsInError()) {
     
-    Operand* pOperand = pPopBufferQueue_blocking();
+    Operand* pOperand = pPopBufferQueue_blocking(pJob);
     
     if (! pOperand) {
       AM::vNapUsec(1000,CN_OUTPUT);
@@ -218,7 +218,7 @@ void Output::vEndProcOneCmd(void)
 /*----------------------------------------------------------------------------*/
 /* process the result/output queue                                            */
 /*----------------------------------------------------------------------------*/
-void Output::vProcessBufferQueue(void)
+void Output::vProcessBufferQueue(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
@@ -226,14 +226,14 @@ void Output::vProcessBufferQueue(void)
   
   Operand* pOperand;
   
-  while ( (pOperand = pPopBufferQueue_blocking()) ) {
+  while ( (pOperand = pPopBufferQueue_blocking(pJob)) ) {
 
     if (! bProcessOperand(pOperand))
       break;
 
   }
   
-  vDrainBufferQueue();
+  vDrainBufferQueue(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -312,7 +312,7 @@ void Output::vPrintResult(void)
 /*----------------------------------------------------------------------------*/
 /* pop next operand from result queue                                         */
 /*----------------------------------------------------------------------------*/
-Operand* Output::pPopBufferQueue_blocking(void)
+Operand* Output::pPopBufferQueue_blocking(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
@@ -325,7 +325,7 @@ Operand* Output::pPopBufferQueue_blocking(void)
     
     AM::vNapUsec(1000,CN_OUTPUT);
     
-    if (m_pSession->m_pSsnJob->bIsInError())
+    if (pJob->bIsInError())
       return nullptr;
   }
   

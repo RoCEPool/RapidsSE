@@ -43,6 +43,8 @@ namespace STORE
     i8 m_i_Session;  // which session in node's session array
     CmdId m_tCmdId;
   
+    bool m_bWasForked;
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
     // information depending on job instance/location           MODAL
@@ -212,6 +214,8 @@ namespace STORE
     void vVerifyJobComposition(void);
   
     void vWaitJobMutex(void);
+    bool bWasForked(void);
+    void vWasForked(bool bWasForked);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
   

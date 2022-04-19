@@ -18,22 +18,26 @@ namespace STORE
   static Session* pAllocSession(eSK eSession);
   static void vFreeSession(Session* pSession);
 
-  static void vExecuteJob(Session* pSession);
-  static void vExtractCmdPaths(Session*  pSession, TokenVec* pCmdTknVec);
-  static bool bExtractCmdTags(Session*  pSession, TokenVec* pCmdTknVec);
-  static void vForkJob(Session* pSession, Op* pResponseOp);
-  static eEC  ePrepareJob(Session*  pSession, TokenVec* pCmdTknVec);
-  static void vReapableJob(Session* pSession);
+  static Job* pAllocJob(Stz* szJobNm);
+  static Job* pAllocJob(Session* pSession);
 
-  static void vSubmitJob(Session* pSession);
-  static void vWaitJob(Session* pSession);
+  static void vExecuteJob(Job* pJob);
+  static void vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+  static bool bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+  static void vForkDemon(Job*& rpJob);
+  static void vForkJob(Job*& rpJob, Op* pResponseOp);
+  static eEC  eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+  static eEC  ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+  static void vReapableJob(Job*& rpJob);
+
+  static void vSubmitJob(Job* pJob);
+  static void vWaitJob(Job* pJob);
  
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);
 
-  static eEC  eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath);
   static eEC  eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
-                           Op* pResponseOp);
+                           Op* pResponseOp, JobId& rtJobId);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -49,7 +53,6 @@ namespace STORE
   static void vSpawnTask_op(Op* pop);
   static void vSpawnTask_dedicatedOp(Op* pOp);
 
-  static void vSpawnTask_demonJob(Job* pJob);
   static void vSpawnTask_receivedJob(Job* pJob);
   
   static void vSpinTillAllJobsCompleted(void);
@@ -70,9 +73,9 @@ namespace STORE
   static void vCreateTaskForOp(Op* pOp);
   static void vResetTaskForJob(Job* pJob);
 
-  static void vMutexLock(Session* pSession, Job* pJob);
-  static void vMutexUnlock(Session* pSession, Job* pJob);
-  static void vMutexWaitCond(Session* pSession, Job* pJob);
+  static void vMutexLock(Job* pJob);
+  static void vMutexUnlock(Job* pJob);
+  static void vMutexWaitCond(Job* pJob);
 
   static bool bReapJob(void);
 

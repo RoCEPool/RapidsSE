@@ -41,17 +41,17 @@ void ApiHelper::vAllocateSession(void)
 /*----------------------------------------------------------------------------*/
 /* delete job                                                                 */
 /*----------------------------------------------------------------------------*/
-void ApiHelper::vDeleteJob(void)
+void ApiHelper::vReapableJob(Job*& rpJob)
 {
-  Api::vReapableJob(m_pSession);
+  Api::vReapableJob(rpJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* execute job                                                                */
 /*----------------------------------------------------------------------------*/
-void ApiHelper::vExecuteJob(void)
+void ApiHelper::vExecuteJob(Job* pJob)
 {
-  Api::vExecuteJob(m_pSession);
+  Api::vExecuteJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,13 +97,13 @@ void ApiHelper::vPipeoutResults(Op* pCurrOp,
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob(Stz* szCmd)
+eEC ApiHelper::ePrepareJob(Stz* szCmd, Job*& rpJob)
 {
   TokenVec* pCmdTknVec = new TokenVec;
   
   pCmdTknVec->vTokeniseCpp(szCmd);
   
-  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec);
+  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec,rpJob);
 
   delete pCmdTknVec;
   
@@ -113,9 +113,32 @@ eEC ApiHelper::ePrepareJob(Stz* szCmd)
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec)
+eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec, Job*& rpJob)
 {
-  eEC eError = Api::ePrepareJob(m_pSession,pCmdTknVec);
+  TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
+
+  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+  if (EC_NONE != eError)
+    return eError;
+
+  rpJob = Api::pAllocJob(m_pSession);
+  TagSet* pJobTagSet = rpJob->pJobTags();
+
+  
+  
+  
+  // get the command proper and the tag set
+  TagSet*   pSsnTags   = & m_pSession->m_oSsnTagSet;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
+  
+  pJobTagSet->vCopy(pSsnTags);
+
+  
+  
+  
+
+  eError = Api::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
   
   return eError;
 }
@@ -123,18 +146,18 @@ eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec)
 /*----------------------------------------------------------------------------*/
 /* print results                                                              */
 /*----------------------------------------------------------------------------*/
-void ApiHelper::vPrintResults(void)
+void ApiHelper::vPrintResults(Job* pJob)
 {
   // start the buffer queue processing while the pipeline ops are running
-  if (m_pSession->m_pSsnJob->bIsPipeline())
-    m_pSession->m_pOutput->vProcessBufferQueue();
+  if (pJob->bIsPipeline())
+    m_pSession->m_pOutput->vProcessBufferQueue(pJob);
 
   RASSERT(! m_pSession->m_pOutput->m_bExecErr );
   RASSERT(! m_pSession->m_pOutput->m_bCmdErr );
 
-  if (m_pSession->m_pSsnJob->bIsInError()) {
+  if (pJob->bIsInError()) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
-           aEC[m_pSession->m_pSsnJob->eJobError()]);
+           aEC[pJob->eJobError()]);
   }
 
 }
@@ -147,16 +170,6 @@ void ApiHelper::vResetResults(void)
   m_pSession->m_pOutput->m_pOutputQueue->vReset();
   
   m_pSession->m_pOutput->vEndProcOneCmd();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get response time (in milliseconds)                                        */
-/*----------------------------------------------------------------------------*/
-i8 ApiHelper::iResponseTimeMsec(void)
-{
-  i8 iTimeMsec = m_pSession->m_pSsnJob->iResponseTimerMsec();
-  
-  return iTimeMsec;
 }
 
 /*============================================================================*/
