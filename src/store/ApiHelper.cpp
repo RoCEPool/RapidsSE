@@ -43,7 +43,7 @@ void ApiHelper::vAllocateSession(void)
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vReapableJob(Job*& rpJob)
 {
-  Api::vReapableJob(m_pSession,rpJob);
+  Api::vReapableJob(rpJob);
 }
 
 /*----------------------------------------------------------------------------*/

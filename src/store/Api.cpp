@@ -409,10 +409,12 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pCmdTknVec, Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 /* set job as reapable                                                        */
 /*----------------------------------------------------------------------------*/
-void Api::vReapableJob(Session* pSession, Job*& rpJob)
+void Api::vReapableJob(Job*& rpJob)
 {
   _static_
     
+  Session* pSession = rpJob->pSession();
+  
   if (rpJob && rpJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
     pSession->m_pOutput->vProcessBufferQueue(rpJob);
 
@@ -546,7 +548,7 @@ eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete job and free session
-  Api::vReapableJob(pSession,pJob);
+  Api::vReapableJob(pJob);
 
   Api::vFreeSession(pSession);
 
@@ -658,7 +660,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete job and free session
-  Api::vReapableJob(pSession);
+  Api::vReapableJob(pJob);
 
   Api::vFreeSession(pSession);
 
