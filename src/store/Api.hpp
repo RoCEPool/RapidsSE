@@ -28,8 +28,8 @@ namespace STORE
   static eEC  ePrepareJob(Session*  pSession, TokenVec* pCmdTknVec, Job*& rpJob);
   static void vReapableJob(Session* pSession, Job*& rpJob);
 
-  static void vSubmitJob(Session* pSession, Job* pJob);
-  static void vWaitJob(Session* pSession, Job* pJob);
+  static void vSubmitJob(Job* pJob);
+  static void vWaitJob(Job* pJob);
  
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);
@@ -73,9 +73,9 @@ namespace STORE
   static void vCreateTaskForOp(Op* pOp);
   static void vResetTaskForJob(Job* pJob);
 
-  static void vMutexLock(Session* pSession, Job* pJob);
-  static void vMutexUnlock(Session* pSession, Job* pJob);
-  static void vMutexWaitCond(Session* pSession, Job* pJob);
+  static void vMutexLock(Job* pJob);
+  static void vMutexUnlock(Job* pJob);
+  static void vMutexWaitCond(Job* pJob);
 
   static bool bReapJob(void);
 

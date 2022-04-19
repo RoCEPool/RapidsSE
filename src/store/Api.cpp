@@ -120,13 +120,13 @@ void Api::vExecuteJob(Session* pSession, Job* pJob)
       return;
     }
     
-    vSubmitJob(pSession,pJob);
+    vSubmitJob(pJob);
 
     if (pJob->bHasTag(C_TAG_NOWAIT)) {
-      Api::vMutexUnlock(pSession,pJob);
+      Api::vMutexUnlock(pJob);
     }
     else {
-      vWaitJob(pSession,pJob);
+      vWaitJob(pJob);
     }
     
     if (! pSession->bHasCascade()) {
@@ -165,7 +165,7 @@ void Api::vForkJob(Session* pSession, Op* pResponseOp, Job*& rpJob)
   
   RASSERT(! rpJob->pTask());
 
-  Api::vMutexLock(pSession,rpJob);
+  Api::vMutexLock(rpJob);
   RASSERT(JS_LOCKED == rpJob->eJobState());
   
   rpJob->vTaskCreate();
@@ -174,7 +174,7 @@ void Api::vForkJob(Session* pSession, Op* pResponseOp, Job*& rpJob)
   
   Scheduler::vTaskApi_AddPrompt(rpJob->pTask());
   
-  Api::vMutexUnlock(pSession,rpJob);
+  Api::vMutexUnlock(rpJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,9 +183,7 @@ void Api::vForkJob(Session* pSession, Op* pResponseOp, Job*& rpJob)
 void Api::vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   _static_
-  
-  //TagSet* pJobTagSet = & pSession->m_oJobTagSet;;
-  
+    
   i8 i_Paths = pCmdTknVec->iFindToken("paths"_Stz,TN_NAME);
 
   if (C_UNKNOWN == i_Paths)
@@ -687,13 +685,13 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
 /*----------------------------------------------------------------------------*/
 /* submit job (spawn job but don't wait for completion)                       */
 /*----------------------------------------------------------------------------*/
-void Api::vSubmitJob(Session* pSession, Job* pJob)
+void Api::vSubmitJob(Job* pJob)
 {
   _static_
   
   RASSERT(! pJob->pTask());
-
-  Api::vMutexLock(pSession,pJob);
+  
+  Api::vMutexLock(pJob);
   RASSERT(JS_LOCKED == pJob->eJobState());
   
   pJob->vTaskCreate();
@@ -706,16 +704,18 @@ void Api::vSubmitJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* wait for job completion                                                    */
 /*----------------------------------------------------------------------------*/
-void Api::vWaitJob(Session* pSession, Job* pJob)
+void Api::vWaitJob(Job* pJob)
 {
   _static_
     
+  Session* pSession = pJob->pSession();
+  
   //pSession->m_oMutex.vObserve(true);
-  Api::vMutexWaitCond(pSession,pJob);
+  Api::vMutexWaitCond(pJob);
   
   pJob->vResponseTimerUpdate();
   
-  Api::vMutexUnlock(pSession,pJob);
+  Api::vMutexUnlock(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1272,10 +1272,12 @@ void Api::vCreateTaskForOp(Op* pOp)
 /*----------------------------------------------------------------------------*/
 /* lock mutex and mark job as locked                                          */
 /*----------------------------------------------------------------------------*/
-void Api::vMutexLock(Session* pSession, Job* pJob)
+void Api::vMutexLock(Job* pJob)
 {
   _static_
   
+  Session* pSession = pJob->pSession();
+
   pSession->m_oMutex.vLock(pSession);
         
   pJob->vJobState(JS_LOCKED);
@@ -1284,12 +1286,14 @@ void Api::vMutexLock(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* mark job as running and unlock session mutex                               */
 /*----------------------------------------------------------------------------*/
-void Api::vMutexUnlock(Session* pSession, Job* pJob)
+void Api::vMutexUnlock(Job* pJob)
 {
   _static_
   
   RASSERT(JS_ACTIVE != pJob->eJobState());
     
+  Session* pSession = pJob->pSession();
+
   pJob->vJobState(JS_ACTIVE);
   
   pSession->m_oMutex.vUnlock(pSession);
@@ -1298,10 +1302,12 @@ void Api::vMutexUnlock(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* wait for session mutex to be signalled                                     */
 /*----------------------------------------------------------------------------*/
-void Api::vMutexWaitCond(Session* pSession, Job* pJob)
+void Api::vMutexWaitCond(Job* pJob)
 {
   _static_
   
+  Session* pSession = pJob->pSession();
+
   do {
     
     //vTrace("WAIT session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
