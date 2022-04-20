@@ -165,6 +165,9 @@ namespace STORE
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
 
+    void vMutexCreate(void);
+    void vMutexDestroy(void);
+
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);
   

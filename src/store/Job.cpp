@@ -165,6 +165,8 @@ Job::~Job(void) noexcept(false)
   
   AM::JOBS::vJobsActiveDec();
 
+  if (m_pMutex)
+    vMutexDestroy();
 }
 
 
@@ -648,6 +650,31 @@ TagSet* Job::pJobTags(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return & m_oJobTags;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new mutex for this job                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexCreate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(! m_pMutex);
+  
+  m_pMutex = new Mutex(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destroy this job's mutex                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexDestroy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(m_pMutex);
+  
+  delete m_pMutex;
+  m_pMutex = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

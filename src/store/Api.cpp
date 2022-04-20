@@ -100,6 +100,8 @@ void Api::vExecuteJob(Job* pJob)
   pSession->m_pOutput->vBeginProcOneCmd();
       
 
+  pJob->vMutexCreate();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();
