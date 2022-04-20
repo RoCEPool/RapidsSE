@@ -54,7 +54,6 @@ namespace STORE
 
   static void vSpawnTask_receivedJob(Job* pJob);
   
-  static void vSpinTillAllJobsCompleted(void);
   static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

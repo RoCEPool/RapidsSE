@@ -2540,33 +2540,25 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
     bPrompt_memoryLeaks_dump(pPrompt);
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait for all jobs in the system to complete
   
-  // note: the tracking of memory works with an assumption that
-  //       whatever was started after trackingMemory has completed
-  //Api::vSpinTillAllJobsCompleted();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ObjectSnapshot* pPoolSnapshot_then = pPrompt->pSnapshotAtTrackingMemory();
   ObjectSnapshot* pPoolSnapshot_curr = pPrompt->pSnapshotAtMemoryLeaks();
   
-  // NOTE: Need to wait for job to complete and cleanup
-  // Loop C_ATTEMPTS times to wait for memory leaks to go away
-  
-  
+
   
   if (gpBufferPool->bDontFree() || AM::pHeaps()->m_bNoFree) {
     vTrace("bPrompt_memoryLeaks: skipping ... (--dontFree supplied)\n"_Stz);
     goto L_END;
   }
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for all uset jobs in the system to complete
 
-  
-  
-  
+  // note: the tracking of memory works with an assumption that
+  //       whatever was started after trackingMemory has completed
+
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
     
     Api::vReapJobsOnce();

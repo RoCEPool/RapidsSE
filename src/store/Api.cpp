@@ -1081,32 +1081,6 @@ eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
   return EC_NONE;
 }
 
-/*----------------------------------------------------------------------------*/
-/* spi wait till all jobs completed                                           */
-/*----------------------------------------------------------------------------*/
-void Api::vSpinTillAllJobsCompleted(void)
-{
-  _static_
-  
-  // wait till no local jobs
-  AM::pLocalJobs()->vGrabLock();
-  while (AM::pLocalJobs()->nJobs())
-    ;
-  AM::pLocalJobs()->vDropLock();
-  
-  // wait till no participating jobs
-  AM::pParticipatingJobs()->vGrabLock();
-  while (AM::pParticipatingJobs()->nJobs())
-    ;
-  AM::pParticipatingJobs()->vDropLock();
-  
-  // wait till no originating jobs
-  AM::pOriginatingJobs()->vGrabLock();
-  while (AM::pOriginatingJobs()->nJobs())
-    ;
-  AM::pOriginatingJobs()->vDropLock();
-  
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
