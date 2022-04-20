@@ -79,6 +79,7 @@ namespace PROMPT
   bool bPrompt_indexEntries(SePrompt* pPrompt);
 
   bool bPrompt_job(SePrompt* pPrompt);
+  bool bPrompt_jobs(SePrompt* pPrompt);
 
   bool bPrompt_lastJob(SePrompt* pPrompt);
   bool bPrompt_limits(SePrompt* pPrompt);

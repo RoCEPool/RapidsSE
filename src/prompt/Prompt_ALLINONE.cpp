@@ -2024,6 +2024,39 @@ bool PROMPT::bPrompt_job(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_jobs.cpp -- jobs                                                    */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_jobs (
+  PF_JOBS,              // prompt function
+  "Prompt_jobs"_Stz,    // name of the prompt function
+  "comment"_Stz,        // comment about the function
+  "jobs"_Stz,           // the prompt command
+  nullptr,              // the second word
+  bPrompt_jobs,         // prompt function
+  true,                 // enabled
+
+  true,                 // visible
+  "jobs"_Stz,           // help
+  ""_Stz                // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_jobs(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+  
+  vTrace("Jobs : %lld (threshold %lld)\n"_Stz
+         ,AM::JOBS::nJobsActive()
+         ,AM::JOBS::nJobsThreshold()
+         );
+  
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_lastJob.cpp -- last job id                                          */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 

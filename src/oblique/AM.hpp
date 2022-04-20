@@ -291,6 +291,16 @@ namespace OBLIQUE
       static eEC  ePreExecuteTest(Job* pJob);
     };
   
+    class JOBS
+    {
+    public:
+      static i8   nJobsActive(void);
+      static void vJobsActiveDec(void);
+      static void vJobsActiveInc(void);
+      static i8   nJobsThreshold(void);
+      static void vJobsThreshold(i8 nJobs);
+    };
+
     class LOCK
     {
     public:

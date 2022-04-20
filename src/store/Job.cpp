@@ -107,6 +107,8 @@ Job::Job(Stz*  szJobNm,
 
   _checkInitialised_(CN_JOB);
   
+  AM::JOBS::vJobsActiveInc();
+  
   m_oJobTags.vInsert(C_TAG_DISTID,m_tJobId.iAsI8());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
@@ -119,7 +121,7 @@ Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  
+ 
 //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
 //
 //    SP_TagSet spTagSet;
@@ -158,6 +160,9 @@ Job::~Job(void) noexcept(false)
     delete m_pTask;
 
   }
+  
+  AM::JOBS::vJobsActiveDec();
+
 }
 
 
