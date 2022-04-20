@@ -56,7 +56,6 @@ Session::Session(void)
   m_iApiLoc    = 0;
   m_eApiError  = EC_NONE;
   m_bRunning   = false;
-  m_bSignalled = false;
   
   m_aStackBase = nullptr;
   m_aStackPtr  = nullptr;
@@ -264,7 +263,6 @@ void Session::vFinaliseSession(i8 i_NextFree)
   m_iApiLoc    = 0;
   m_eApiError  = EC_NONE;
   m_bRunning   = false;
-  m_bSignalled = false;
   
   m_aStackBase = nullptr;
   m_aStackPtr  = nullptr;
@@ -520,7 +518,7 @@ void Session::vTraceSession(void)
   
   vTrace("  %lld: session %p base %llx ptr %llx (%lldB)\n"
          "     apiFun %s apiLoc %lld job %s jobLoc %lld senLoc %lld \n"
-         "     %s %s apiError %s time %lldus\n"
+         "     %s apiError %s time %lldus\n"
          "     dist2PC: begun %lld executed %lld cancelled %lld ended %lld\n"
          "     #calls %lld, #errors %lld, #jobNew %lld #jobDelete %lld total %lldus\n"_Stz,
          
@@ -537,7 +535,6 @@ void Session::vTraceSession(void)
          m_iSenLoc,
          
          m_bRunning   ? "running"   : "completed",
-         m_bSignalled ? "signalled" : "not signalled",
          aEC[m_eApiError],
          m_oTimer.iMicroseconds(),
          

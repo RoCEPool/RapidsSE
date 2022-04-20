@@ -163,14 +163,6 @@ void Sessions::vMarkSenLoc(Session* pSession, i8 iSenLoc)
   AM::pSessions()->vApiLoc(pSession,iSenLoc);
 }
 
-/*----------------------------------------------------------------------------*/
-/* mark that job has had its mutex signalled                                  */
-/*----------------------------------------------------------------------------*/
-void Sessions::vMarkSignalled(Session* pSession)
-{
-  AM::pSessions()->vSignalled(pSession);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -371,7 +363,6 @@ void Sessions::vApiCall(Session* pSession, eAC eApiCall)
   pSession->m_iApiLoc    = 0;
   pSession->m_eApiError  = EC_NONE;
   pSession->m_bRunning   = true;
-  pSession->m_bSignalled = false;
 
   pSession->m_aStackBase = PsxThd::aGetStackBase();
   pSession->m_aStackPtr  = PsxThd::aGetStackPointer();
@@ -506,15 +497,6 @@ void Sessions::vSenLoc(Session* pSession, i8 iSenLoc)
   pSession->m_iSenLoc = iSenLoc;
 }
 
-/*----------------------------------------------------------------------------*/
-/* set that job has had its mutex signalled                                   */
-/*----------------------------------------------------------------------------*/
-void Sessions::vSignalled(Session* pSession)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONS,_FOOTER_);
-
-  pSession->m_bSignalled = true;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

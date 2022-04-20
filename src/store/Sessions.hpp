@@ -41,7 +41,6 @@ namespace STORE
     static void vMarkIncExecuted(Session* pSession);
     static void vMarkReturn(Session* pSession);
     static void vMarkSenLoc(Session* pSession, i8 iSenLoc);
-    static void vMarkSignalled(Session* pSession);
   
     void     vAllocInternal(void);
     Session* pAllocSession(eSK eSssion);
@@ -67,7 +66,6 @@ namespace STORE
     void vIncEnded(Session* pSession);
     void vJobLoc(Session* pSession, i8 iJobLoc);
     void vSenLoc(Session* pSession, i8 iSenLoc);
-    void vSignalled(Session* pSession);
 
     Footer* aFooter(void);
   };

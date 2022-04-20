@@ -1123,7 +1123,6 @@ void Step::vJobSignalWaiter(void)
   i8 i_Session = pJob->i_Session();
   
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
-  Sessions::vMarkSignalled(pSession);
 
     
   pSession->m_oMutex.vLock(this);

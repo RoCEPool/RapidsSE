@@ -53,7 +53,6 @@ namespace STORE
   
     Mutex    m_oMutex;        //
     bool     m_bRunning;      // api call still running?
-    bool     m_bSignalled;    // calling thread has been signalled?
 
     void*    m_aStackBase;    // stack base of thread which made api call
     void*    m_aStackPtr;     // stack addr of thread which made api call
