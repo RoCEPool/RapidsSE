@@ -131,13 +131,10 @@ begin
                     type VARCHAR as P_TYPE $K2 ,
                     type INTEGER as P_SIZE $K3 ,
                     type INTEGER as PS_SUPPKEY $K4 "
+    //| hash " type INTEGER PS_SUPPKEY"
     | combined 0
+    //| next hashcast
     | next
-
-stage G_CNT_O_2 on origin :
-    hash " type INTEGER PS_SUPPKEY"
-    | combined 0
-    | next hashcast
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -177,7 +174,6 @@ stage G_CNT_DISTINCT_C on origin :
 | combined 0
 | next
 
-
   stage G_Last on origin :
     output
     | sink
@@ -185,7 +181,12 @@ stage G_CNT_DISTINCT_C on origin :
     
 end ;
 
-
+/*
+stage G_CNT_O_2 on origin :
+    hash " type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
