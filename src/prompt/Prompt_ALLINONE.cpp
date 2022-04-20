@@ -2564,6 +2564,28 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  
+  
+  
+  for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
+    
+    Api::vReapJobsOnce();
+    
+    i8 nJobsActive    = AM::JOBS::nJobsActive();
+    i8 nJobsThreshold = AM::JOBS::nJobsThreshold();
+    
+    vTrace("bPrompt_memoryLeaks: %lld active %lld threshold\n"_Stz,
+           nJobsActive,nJobsThreshold);
+    
+    if (nJobsActive <= nJobsThreshold)
+      break;
+    
+    AM::vNapMsec(200,CN_SEPROMPT);
+  }
+  
+  
+  
+  
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
     Api::vReapJobsOnce();
@@ -5764,6 +5786,9 @@ bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
 
   pPrompt->vTrackMemory(true);
 
+  i8 nJobs = AM::JOBS::nJobsActive();
+  AM::JOBS::vJobsThreshold(nJobs);
+  
   vTrace("\nsuccess: 0 rows affected\n"_Stz);
   
   return true;
