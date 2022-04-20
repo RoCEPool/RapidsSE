@@ -32,6 +32,11 @@ namespace BASE
     // must be last
     Footer m_xFooter;
   
+  public:
+  
+    void* operator new(size_t);
+    void  operator delete(void*);
+
     Mutex(Object* bIsFor);
    ~Mutex(void) noexcept(false);
   
