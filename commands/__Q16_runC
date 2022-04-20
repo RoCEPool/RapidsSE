@@ -31,40 +31,8 @@ Q16_0: select
 *******************************************************************************/
 
 /*
-/time pipeline Q16
-begin
 
-  stage G_Start on origin :
-    start
-    | pulse once
-    | G_PART
-
-  stage G_PART on all partitions :
-    scan part
-    | filter " type BOOLEAN P_BRAND 'Brand#45'  !=
-               }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
-               }  49  14  23  45  19  3  36  9  #8  P_SIZE in and  "
-    | aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
-                       type VARCHAR as P_TYPE P_TYPE ,
-                       type INTEGER as P_SIZE P_SIZE
-             aggregates
-             type VARCHAR as P_BRAND $K1 ,
-             type VARCHAR as P_TYPE $K2 ,
-             type INTEGER as P_SIZE $K3"
-    | combined 1
-    | next
-
-  stage G_Last on origin :
-    output
-    | sink
-    | G_Start
-
-end ;
-
-
-
-/time pipeline unamed
-begin
+/time
   pipeline __subquery0003
   begin
     stage stageStart on origin :
@@ -76,14 +44,16 @@ begin
       | filter " type BOOLEAN  }  $7 '%Customer%Complaints%'  8 10 matchMiddle1  "
       | project " type INTEGER as s_suppkey $1 "
       | combined 0
-      | stageMarker34359
+      | next
     stage stageMarker34359 on all partitions :
       stageLast
     stage stageLast on origin :
       output
       | sink
       | stageStart
-  end
+  end;
+
+
 */
 
 
