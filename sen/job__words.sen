@@ -423,7 +423,7 @@
   [job].addRetired
   
   JS_SIGNALLED [job].state!
-  [session].signal
+  [job].signalWaiter
 
   [task].grabLock
     TR_RETIRE_THIS_TASK [task].transition!

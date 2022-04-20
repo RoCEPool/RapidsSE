@@ -863,10 +863,11 @@ public:
   void vJobReportOperands(void);
   void vJobReportOperators(void);
 
+  void vJobScheduleNextPhase(void);
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
   void vJobShow(void);
-  void vJobScheduleNextPhase(void);
+  void vJobSignalWaiter(void);
   void vJobSpawn(void);
   void vJobStateFetch(void);
   void vJobStateStore(void);
@@ -1727,7 +1728,6 @@ public:
   void vSessionLastJobId(void);
   void vSessionPid(void);
   void vSessionSee(void);
-  void vSessionSignal(void);
   void vSessionSystemCloserFetch(void);
   void vSessionSystemCloserStore(void);
   void vSessionTagSetFetch(void);

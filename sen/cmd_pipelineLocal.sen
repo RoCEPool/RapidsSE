@@ -59,7 +59,7 @@
     JS_SIGNALLED [job].state!
       
     [task].grabLock
-    [session].signal
+    [job].signalWaiter
     [task].dropLock
     
     pipelineLocal::termination
@@ -122,7 +122,7 @@
   [job].addRetired
   
   JS_SIGNALLED [job].state!
-  [session].signal
+  [job].signalWaiter
 
   [task].grabLock
     [system].started@ if

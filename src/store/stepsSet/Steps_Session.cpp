@@ -28,7 +28,6 @@ void Step::vAddSteps_Session(void)
   vAddStep("[session].lastJobId"_Stz,     &Step::vSessionLastJobId);
   vAddStep("[session].pid"_Stz,           &Step::vSessionPid);
   vAddStep("[session].see"_Stz,           &Step::vSessionSee);
-  vAddStep("[session].signal"_Stz,        &Step::vSessionSignal);
   vAddStep("[session].systemCloser@"_Stz, &Step::vSessionSystemCloserFetch);
   vAddStep("[session].systemCloser!"_Stz, &Step::vSessionSystemCloserStore);
   vAddStep("[session].tablePtn@"_Stz,     &Step::vSessionTablePtnFetch);
@@ -166,47 +165,6 @@ void Step::vSessionSee(void)
   Session* pSession = MY::pSession();
 
   pSession->vSee();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [session].signal -- signal the waiting session                             */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionSignal(void)
-{
-  ENTRY();
-  
-  // there will be a thread waiting on completion of the job
-  // this could be a prompt thread or a java thread via the connector
-  
-  Job* pJob = MY::pJob();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  vGrabTaskLock((Stz*)__func__);
-  
-  //pJob->vJobState(JS_SIGNALLED);
-
-  i8 i_Session = pJob->i_Session();
-  
-  Session* pSession = AM::pSessions()->pGetSession(i_Session);
-  Sessions::vMarkSignalled(pSession);
-
-    
-  pSession->m_oMutex.vLock(this);
-  //vTrace("SIGNAL session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
-  pSession->m_oMutex.vSignal(this);
-  pSession->m_oMutex.vUnlock(this);
-
-//  vDropTaskLock((Stz*)__func__);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //vScheduleCompletion();
-  
-
   
   EXIT();
 }

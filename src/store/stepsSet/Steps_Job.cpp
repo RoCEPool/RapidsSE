@@ -105,6 +105,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("[job].removeRetired"_Stz,    &Step::vJobRemoveRetired);
     
+  vAddStep("[job].signalWaiter"_Stz,     &Step::vJobSignalWaiter);
   vAddStep("[job].state@"_Stz,           &Step::vJobStateFetch);
   vAddStep("[job].state!"_Stz,           &Step::vJobStateStore);
 
@@ -1030,6 +1031,24 @@ void Step::vJobRemoveRetired(void)
 }
   
 /*----------------------------------------------------------------------------*/
+/* job.scheduleNextPhase -- schedule next phase for the job                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJobScheduleNextPhase(void)
+{
+  ENTRY();
+    
+  Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  Task* pTaskParticipant = pJobParticipant->pTask();
+  RASSERT(pTaskParticipant);
+  
+  AM::vScheduleNextPhase(pJobParticipant,this);
+
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.session@ -- fetch job session                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobSessionFetch(void)
@@ -1080,22 +1099,51 @@ void Step::vJobShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.scheduleNextPhase -- schedule next phase for the job                   */
+/* [job].signalWaiter -- signal the actor waiting on this job/session mutex   */
 /*----------------------------------------------------------------------------*/
-void Step::vJobScheduleNextPhase(void)
+void Step::vJobSignalWaiter(void)
 {
   ENTRY();
+  
+  // there will be a thread waiting on completion of the job
+  // this could be a prompt thread or a java thread via the connector
+  
+  //Job* pJob = MY::pJob();
+  Job* pJob = * m_pJob;
+
+  eJL eJobList = pJob->eJobList();
+  RASSERT(JL_NONE == eJobList || JL_RETIRED == eJobList)
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//  vGrabTaskLock((Stz*)__func__);
+  
+  //pJob->vJobState(JS_SIGNALLED);
+
+  i8 i_Session = pJob->i_Session();
+  
+  Session* pSession = AM::pSessions()->pGetSession(i_Session);
+  Sessions::vMarkSignalled(pSession);
+
     
-  Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
+  pSession->m_oMutex.vLock(this);
+  //vTrace("SIGNAL session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
+  pSession->m_oMutex.vSignal(this);
+  pSession->m_oMutex.vUnlock(this);
+
+//  vDropTaskLock((Stz*)__func__);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //vScheduleCompletion();
   
-  Task* pTaskParticipant = pJobParticipant->pTask();
-  RASSERT(pTaskParticipant);
-  
-  AM::vScheduleNextPhase(pJobParticipant,this);
 
   
   EXIT();
 }
+
+
 
 /*----------------------------------------------------------------------------*/
 /* job.spawn -- spawn the job on the stack                                    */
