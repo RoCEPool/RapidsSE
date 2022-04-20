@@ -330,6 +330,12 @@ namespace OBLIQUE
       static u8   uDdlLockWord(void);
     };
   
+    class MEMORY
+    {
+    public:
+      static bool bIsRunningLow(void);
+    };
+  
     class METRICS
     {
     public:

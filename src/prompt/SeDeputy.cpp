@@ -179,7 +179,12 @@ eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec,m_pJob);
+  TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
+
+  TagSet* pSsnTagSet = & m_pSession->m_oSsnTagSet;
+  pCmdTagSet->vCopy(pSsnTagSet);
+
+  eEC eError = ApiHelper::ePrepareJob(m_pJob,pCmdTknVec,pCmdTagSet);
   
   return eError;
 }
@@ -242,7 +247,7 @@ TagSet* SeDeputy::pJobTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  return &m_pSession->m_oJobTagSet;
+  return &m_pSession->m_oCmdTagSet;
 }
 
 /*----------------------------------------------------------------------------*/

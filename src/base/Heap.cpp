@@ -155,12 +155,13 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 
     // check for low memory when allocating a LARGE buffer
     if (m_eHeap == HT_T_LARGE &&
-        gpBufferPool->bLowMemory() &&
+        AM::MEMORY::bIsRunningLow() &&
         gxaSizeHeap[eAllocClass].m_bLowMemoryDiscard) {
       // error: we have run out of space
       //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
       //vTrace("Heap::pAllocObject: unable to extend heap\n"_Stz);
-      vTrace("LOW MEMORY!!!\n"_Stz);
+      vTrace("LOW MEMORY encountered : %s %s %lld!!!\n"_Stz,
+             __FILE__,__func__,(i8)__LINE__);
       m_okLock.vDropWrite();
       THROW_LOWMEMORY();
       return nullptr;
@@ -170,6 +171,8 @@ Object* Heap::pAllocObject(eCN eAllocClass)
       // error: we have run out of space
       //vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
       //vTrace("Heap::pAllocObject: unable to extend heap\n"_Stz);
+      vTrace("LOW MEMORY encountered : %s %s %lld!!!\n"_Stz,
+             __FILE__,__func__,(i8)__LINE__);
       m_okLock.vDropWrite();
       THROW_LOWMEMORY();
       return nullptr;
@@ -393,9 +396,17 @@ void Heap::vFreeObject(Object* pObject)
 //    //vTrace("Object %p valid\n"_Stz,pObject);
 //  }
 
-  if (CN_LARGETRANSIENT == eClassNo) {
+  //if (CN_LARGETRANSIENT == eClassNo) {
+    
+  if (HT_T_LARGE == gxaSizeHeap[eClassNo].m_eWhichHeap) {
+    
+    RASSERT(CN_LARGETRANSIENT == this->eGetClassNo());
+    
+    //vTrace("FREE CN_LARGETRANSIENT\n"_Stz);
     
     if (m_nFreeChunks > 10) {
+      //vTrace("FREE INTO POOL\n"_Stz);
+      
       PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(pObject);
       
       HeapBuffer* pHeapBuffer = _pHeapBuffer(pPoolBuffer);

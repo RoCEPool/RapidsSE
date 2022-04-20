@@ -421,7 +421,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Lock),               HT_INVALID   ,0 FILL }, // CN_LOCK
   { sizeof(Locks),              HT_T_MEDIUM  ,0 FILL }, // CN_LOCKS
   { 0,                          HT_INVALID   ,0 FILL }, // CN_LOCKSET
-  { sizeof(LogicUnit),          HT_T_LARGE   ,0 FILL }, // CN_LOGICUNIT
+  { sizeof(LogicUnit),          HT_T_MEDIUM  ,0 FILL }, // CN_LOGICUNIT
 
   { 'M' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__M__
   { sizeof(Marker),             HT_T_TINY    ,0 FILL }, // CN_MARKER
@@ -448,7 +448,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ObjBuffer),          HT_T_LARGE   ,0 FILL }, // CN_OBJBUFFER
   { sizeof(ObjectSnapshot),     HT_T_SMALL   ,0 FILL }, // CN_OBJECTSNAPSHOT
   { sizeof(Output),             HT_T_TINY    ,0 FILL }, // CN_OUTPUT
-  { sizeof(Op),                 HT_T_MEDIUM  ,0 FILL }, // CN_OP
+  { sizeof(Op),                 HT_T_TINY    ,0 FILL }, // CN_OP
   { sizeof(OpenFiles),          HT_T_TINY    ,0 FILL }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 FILL }, // CN_OPERANDQUEUE
   { sizeof(OperandWatch),       HT_T_SMALL   ,0 FILL }, // CN_OPERANDWATCH

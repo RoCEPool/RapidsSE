@@ -333,8 +333,11 @@ bool SePrompt::bExamineCommand(void)
   while (bSubSsnTags())
     {;}
   
-  Api::vExtractCmdPaths(m_pCurrentDeputy->pSession(),m_pCmdTknVec);
-  if (! Api::bExtractCmdTags(m_pCurrentDeputy->pSession(),m_pCmdTknVec))
+  Session* pSession = m_pCurrentDeputy->pSession();
+  TagSet*  pCmdTagSet = & pSession->m_oCmdTagSet;
+
+  Api::vExtractCmdPaths(m_pCmdTknVec,pCmdTagSet);
+  if (! Api::bExtractCmdTags(m_pCmdTknVec,pCmdTagSet))
     return false;
 
   if (bIsPromptWord())
@@ -819,7 +822,7 @@ void SePrompt::vPromptUser(void)
   }
   
 
-  bool bLowMem = gpBufferPool->bLowMemory();
+  bool bLowMem = AM::MEMORY::bIsRunningLow();
   
   Stz* szNodeNm = AM::NODE::szNodeNm();
   i8 iPid = Process::iGetPid();

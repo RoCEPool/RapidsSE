@@ -61,7 +61,6 @@
 /*----------------------------------------------------------------------------*/
 : node::testEnoughBuffers
 
-  // return true if enough buffers, others return error code
   bp::freeBuffers C_LOW_BUFFERS > if
     true
   else
