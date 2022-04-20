@@ -973,11 +973,11 @@ Session* Job::pSession(void)
 /*----------------------------------------------------------------------------*/
 /* set session                                                                */
 /*----------------------------------------------------------------------------*/
-void Job::vSession(i8 i_Session)
+void Job::vSession(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_i_Session = i_Session;
+  m_i_Session = pSession->m_i_Session;
 }
 
 /*----------------------------------------------------------------------------*/
