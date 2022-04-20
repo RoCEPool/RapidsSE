@@ -154,7 +154,11 @@ void Step::vApiExecuteCommand(void)
     return;
    }
   
-  Job* pJob = Api::pAllocJob(pSession);
+  //Job* pJob = Api::pAllocJob(pSession);
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  Job* pJob = Api::pAllocJob(szJobNm);
+  pJob->vSession(pSession);
+
   TagSet* pJobTagSet = pJob->pJobTags();
   
   

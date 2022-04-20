@@ -65,7 +65,7 @@ void Api::vFreeSession(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* alloc a new job                                                            */
+/* alloc a new job for session                                                */
 /*----------------------------------------------------------------------------*/
 Job* Api::pAllocJob(Stz* szJobNm)
 {
@@ -76,29 +76,6 @@ Job* Api::pAllocJob(Stz* szJobNm)
   
   Job* pJob = new Job(szJobNm,
                       C_UNKNOWN,
-                      tCmdId
-                      );
-
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* alloc a new job for session                                                */
-/*----------------------------------------------------------------------------*/
-Job* Api::pAllocJob(Session* pSession)
-{
-  _static_
-
-  RASSERT(pSession);
-    
-  CmdId tCmdId;
-  tCmdId.vNextCmdId();
-  
-  TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
-  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
-
-  Job* pJob = new Job(szJobNm,
-                      pSession->m_i_Session,
                       tCmdId
                       );
 
@@ -352,7 +329,7 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prepare job                                                                */
+/* new a and prepare it to execute the command in session                     */
 /*----------------------------------------------------------------------------*/
 eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
@@ -496,7 +473,12 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   if (EC_NONE != eError)
     return eError;
   
-  Job* pJob = pAllocJob(pSession);
+  //Job* pJob = pAllocJob(pSession);
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  Job* pJob = Api::pAllocJob(szJobNm);
+  pJob->vSession(pSession);
+  
+  
   TagSet* pJobTagSet = pJob->pJobTags();
   pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
 
@@ -559,6 +541,8 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn job and wait for completion
   
+//  bool bSpawned = Api::bSpawnTask_session(pJob);
+//  UNUSED(bSpawned);
   pJob->vResponseTimerStart();
   
   Api::vExecuteJob(pSession);
@@ -571,7 +555,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   RASSERT(! pJob->bIsInError() );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- 
+  // delete job and free session
   Api::vReapableJob(pJob);
 
   Api::vFreeSession(pSession);
@@ -669,15 +653,15 @@ bool Api::bReapJob(void)
         break;
       }
       else {
-//        vTrace("Cant reap retired job %p %lld "
-//               "%s %s "
-//               "activeOps %lld %s "
-//               "\n"_Stz
-//
-//               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
-//               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
-//               ,nActiveOps,pRetiredJob->bReapable() ? "reapable" : "not-reapable"
-//               );
+        vTrace("Cant reap retired job %p %lld "
+               "%s %s "
+               "activeOps %lld %s "
+               "\n"_Stz
+
+               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
+               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
+               ,nActiveOps,pRetiredJob->bReapable() ? "reapable" : "not-reapable"
+               );
       }
     }
   }

@@ -19,7 +19,6 @@ namespace STORE
   static void vFreeSession(Session* pSession);
 
   static Job* pAllocJob(Stz* szJobNm);
-  static Job* pAllocJob(Session* pSession);
 
   static void vExecuteJob(Job* pJob);
   static void vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);

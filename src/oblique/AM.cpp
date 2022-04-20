@@ -749,9 +749,6 @@ bool AM::MEMORY::bIsRunningLow(void)
   
   if (gpBufferPool) {
     bIsLow = gpBufferPool->bLowMemory();
-  
-    if (bIsLow)
-      PoolHelper::vPoolAnalyze();
   }
   
   return bIsLow;
@@ -1963,9 +1960,12 @@ bool AM::SYSTEM::bPassesLowMem(Job* pJob)
 {
   _static_
 
-  if (! AM::MEMORY::bIsRunningLow())
+  if (! AM::MEMORY::bIsRunningLow()) {
     return true;
+  }
   
+  PoolHelper::vPoolAnalyze();
+
   pJob->pJobTags()->vContentDump();
   
   if (pJob->bHasTag(C_TAG_LOWMEMORY))
