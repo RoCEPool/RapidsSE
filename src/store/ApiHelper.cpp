@@ -53,7 +53,10 @@ void ApiHelper::vReapableJob(Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vExecuteJob(Job* pJob)
 {
-  Api::vExecuteJob(pJob);
+  Session* pSession = pJob->pSession();
+  TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
+
+  Api::vExecuteJob(pJob,pCmdTagSet);
 }
 
 /*----------------------------------------------------------------------------*/

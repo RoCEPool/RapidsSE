@@ -89,7 +89,7 @@ Job* Api::pAllocJob(Stz* szJobNm)
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
-void Api::vExecuteJob(Job* pJob)
+void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
 {
   _static_
   
@@ -105,7 +105,7 @@ void Api::vExecuteJob(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();
-  TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
+  //TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //RASSERT(! pSession->bHasCascade());

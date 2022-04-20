@@ -193,7 +193,7 @@ void Step::vApiExecuteCommand(void)
     return;
   }
 
-  Api::vExecuteJob(pJob);
+  Api::vExecuteJob(pJob,pCmdTagSet);
   
   m_pDataStack->vPushInt(true);
   
