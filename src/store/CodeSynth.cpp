@@ -938,14 +938,14 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel) {
       sCopy.vSprint("\n    iOffset = piColumn[%lld];"_Stz, i_Col);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-      StrLib::vAppendString(&m_azCodeCrs, "    if (iOffset != C_DATUM_NULL) {");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    if (iOffset != C_DATUM_NULL) {");
 
       sCopy.vSprint("\n      amCellAddress = (m8*)&piColumn[%lld];"_Stz, i_Col);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       sCopy.vSprint("\n      piColumn[%lld] = ADDR_ADD(i8, amCellAddress, iOffset);"_Stz, i_Col, i_Col);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "    }");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
     }
   }
@@ -1241,8 +1241,8 @@ void CodeSynth::vSynthReturn(void) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs, "L_Return:");
-  StrLib::vAppendString(&m_azCodeCrs, "  goto L_ReturnFinal;");
+  StrLib::vAppendString(&m_azCodeCrs, "\nL_Return:");
+  StrLib::vAppendString(&m_azCodeCrs, "\n  goto L_ReturnFinal;");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1898,18 +1898,18 @@ void CodeSynth::vPayloadInsert(ePL ePayload, i8 iTopCount) {
 
   s4K sCopy;
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - -");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // insert key in the payload");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - -");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      // insert key in the payload");
 
   switch(ePayload) {
 
     case PL_GBY:
     case PL_SRT:
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL);");
       break;
 
     case PL_TOP:
-      sCopy.vSprint("\n    aEntInserted = aIndexTree_insertEntTop(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_aEntBottomPL,%lld);"_Stz,
+      sCopy.vSprint("\n      aEntInserted = aIndexTree_insertEntTop(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_aEntBottomPL,%lld);"_Stz,
                     iTopCount);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       break;
@@ -1919,21 +1919,21 @@ void CodeSynth::vPayloadInsert(ePL ePayload, i8 iTopCount) {
   }
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aEntInserted) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      if (aEntInserted) {");
 
   // TODO: check this out
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iRowsProcessed++;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_iRowsProcessed++;");
 
   // calculate the payload address
   if (m_pIndexDef->eKeyKind()) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        + sizeof(struct Ent_int)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        + 8);");
+    StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
+    StrLib::vAppendString(&m_azCodeCrs, "\n          + sizeof(struct Ent_int)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n          + 8);");
   } else {
-    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        + sizeof(struct Ent_int)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        + ((struct Ent_int*)aEntInserted)->m_iIntElm0");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        + 8);");
+    StrLib::vAppendString(&m_azCodeCrs, "\n        aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted");
+    StrLib::vAppendString(&m_azCodeCrs, "\n          + sizeof(struct Ent_int)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n          + ((struct Ent_int*)aEntInserted)->m_iIntElm0");
+    StrLib::vAppendString(&m_azCodeCrs, "\n          + 8);");
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1941,7 +1941,7 @@ void CodeSynth::vPayloadInsert(ePL ePayload, i8 iTopCount) {
   if ( ePayload != PL_GBY)
     vPayloadPopulate(ePayload);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      }");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2332,6 +2332,8 @@ void CodeSynth::vPayloadTraversal(IndexDef* pIndexDef, TypedStack* pPostStack, S
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   }
 
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_racPayloadArea = aCombinedT->m_racPayloadAreaSav;");
+
   // calculate the payload address
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aiPayload = (i8 *) ((char *) aCombinedT->m_aEntIntPL ");
   StrLib::vAppendString(&m_azCodeCrs, "\n        + sizeof(struct Ent_int)");
@@ -2498,7 +2500,7 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
       sOperation.vSprintCat("_PSH_INT(0)"_Stz);
       break;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case PE_MIN:
       switch (eExprType) {
         case DM_BCD:
@@ -3050,7 +3052,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     if ( pTkn->bSame("count"_Stz)    ||
-         pTkn->bSame("countall"_Stz) ||
+         pTkn->bSame("countAll"_Stz) ||
+         pTkn->bSame("countDistinct"_Stz) ||
          pTkn->bSame("min"_Stz)      ||
          pTkn->bSame("max"_Stz)      ||
          pTkn->bSame("sum"_Stz)
