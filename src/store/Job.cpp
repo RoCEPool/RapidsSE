@@ -104,6 +104,8 @@ Job::Job(Stz*  szJobNm,
   // -- -- -- -- -- --
       
   m_pJobMetricsChain  = nullptr;
+  
+  m_pMutex = nullptr;
 
   _checkInitialised_(CN_JOB);
   
@@ -799,10 +801,12 @@ void Job::vPostRecv(void)
     
   m_pTask        = nullptr;
 
-  m_p_ResponseOp  = nullptr;
+  m_p_ResponseOp = nullptr;
   m_pSingularOp  = nullptr;
   
   m_pJobMetricsChain = nullptr;
+  
+  m_pMutex = nullptr;
 
   m_okLock.vResetLock();
   m_okLock.vResetStats();

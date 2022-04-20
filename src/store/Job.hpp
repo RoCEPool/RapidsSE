@@ -95,7 +95,9 @@ namespace STORE
   
     JobMetrics* m_pJobMetricsChain;                                // POST_RECV
 
-  
+
+    Mutex* m_pMutex;                                               // POST_RECV
+
     // TO BE MOVED
     Timer m_oProgressTimer; // move to register
 
