@@ -96,7 +96,7 @@ namespace STORE
     JobMetrics* m_pJobMetricsChain;                                // POST_RECV
 
 
-    Mutex* m_pMutex;                                               // POST_RECV
+    Mutex* m_pMutex_job;                                               // POST_RECV
 
     // TO BE MOVED
     Timer m_oProgressTimer; // move to register
@@ -170,6 +170,7 @@ namespace STORE
     void vMutexLock(void);
     void vMutexSignal(void);
     void vMutexUnlock(void);
+    void vMutexWait(void);
 
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);

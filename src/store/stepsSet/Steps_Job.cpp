@@ -1120,15 +1120,19 @@ void Step::vJobSignalWaiter(void)
   
   //pJob->vJobState(JS_SIGNALLED);
 
-  i8 i_Session = pJob->i_Session();
+  //i8 i_Session = pJob->i_Session();
   
-  Session* pSession = AM::pSessions()->pGetSession(i_Session);
+  //Session* pSession = AM::pSessions()->pGetSession(i_Session);
 
     
-  pSession->m_oMutex_ssn.vLock(this);
+  //pSession->m_oMutex_ssn.vLock(this);
   //vTrace("SIGNAL session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
-  pSession->m_oMutex_ssn.vSignal(this);
-  pSession->m_oMutex_ssn.vUnlock(this);
+  //pSession->m_oMutex_ssn.vSignal(this);
+  //pSession->m_oMutex_ssn.vUnlock(this);
+
+  pJob->vMutexLock();
+  pJob->vMutexSignal();
+  pJob->vMutexUnlock();
 
 //  vDropTaskLock((Stz*)__func__);
 

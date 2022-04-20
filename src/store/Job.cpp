@@ -105,7 +105,7 @@ Job::Job(Stz*  szJobNm,
       
   m_pJobMetricsChain  = nullptr;
   
-  m_pMutex = nullptr;
+  m_pMutex_job = nullptr;
 
   _checkInitialised_(CN_JOB);
   
@@ -165,7 +165,7 @@ Job::~Job(void) noexcept(false)
   
   AM::JOBS::vJobsActiveDec();
 
-  if (m_pMutex)
+  if (m_pMutex_job)
     vMutexDestroy();
 }
 
@@ -659,9 +659,9 @@ void Job::vMutexCreate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(! m_pMutex);
+  RASSERT(! m_pMutex_job);
   
-  m_pMutex = new Mutex(this);
+  m_pMutex_job = new Mutex(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -671,10 +671,10 @@ void Job::vMutexDestroy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(m_pMutex);
+  RASSERT(m_pMutex_job);
   
-  delete m_pMutex;
-  m_pMutex = nullptr;
+  delete m_pMutex_job;
+  m_pMutex_job = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -684,7 +684,7 @@ void Job::vMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_pMutex->vLock(this);
+  m_pMutex_job->vLock(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -694,7 +694,7 @@ void Job::vMutexSignal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_pMutex->vSignal(this);
+  m_pMutex_job->vSignal(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -704,7 +704,17 @@ void Job::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_pMutex->vUnlock(this);
+  m_pMutex_job->vUnlock(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* wait on this job's mutex                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexWait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_pMutex_job->vWait(this);
 }
 
 
@@ -864,7 +874,7 @@ void Job::vPostRecv(void)
   
   m_pJobMetricsChain = nullptr;
   
-  m_pMutex = nullptr;
+  m_pMutex_job = nullptr;
 
   m_okLock.vResetLock();
   m_okLock.vResetStats();
