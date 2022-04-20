@@ -2545,7 +2545,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   
   // note: the tracking of memory works with an assumption that
   //       whatever was started after trackingMemory has completed
-  Api::vSpinTillAllJobsCompleted();
+  //Api::vSpinTillAllJobsCompleted();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
