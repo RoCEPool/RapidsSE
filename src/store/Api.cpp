@@ -1136,11 +1136,7 @@ void Api::vCreateTaskForOp(Op* pOp)
 void Api::vMutexLock(Job* pJob)
 {
   _static_
-  
-  //Session* pSession = pJob->pSession();
-
-  //pSession->m_oMutex_ssn.vLock(pSession);
-    
+      
   pJob->vMutexLock();
   pJob->vJobState(JS_LOCKED);
 }
@@ -1154,11 +1150,8 @@ void Api::vMutexUnlock(Job* pJob)
   
   RASSERT(JS_ACTIVE != pJob->eJobState());
     
-  //Session* pSession = pJob->pSession();
-
   pJob->vJobState(JS_ACTIVE);
   
-  //pSession->m_oMutex_ssn.vUnlock(pSession);
   pJob->vMutexUnlock();
 }
 
@@ -1169,14 +1162,8 @@ void Api::vMutexWaitCond(Job* pJob)
 {
   _static_
   
-  //Session* pSession = pJob->pSession();
-
   do {
-    
-    //vTrace("WAIT session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
-
-    //pSession->m_oMutex_ssn.vWait(pSession);
-    
+        
     pJob->vMutexWait();
     
   } while (pJob->eJobState() != JS_SIGNALLED);

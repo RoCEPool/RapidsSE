@@ -51,7 +51,6 @@ namespace STORE
     i8       m_iCmdNo;        // the sequence no of the request from that session
 
   
-    Mutex    m_oMutex_ssn;        //
     bool     m_bRunning;      // api call still running?
 
     void*    m_aStackBase;    // stack base of thread which made api call
