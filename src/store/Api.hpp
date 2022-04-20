@@ -18,14 +18,16 @@ namespace STORE
   static Session* pAllocSession(eSK eSession);
   static void vFreeSession(Session* pSession);
 
+  static Job* pAllocJob(Stz* szJobNm);
   static Job* pAllocJob(Session* pSession);
 
   static void vExecuteJob(Job* pJob);
   static void vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
   static bool bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+  static void vForkDemon(Job*& rpJob);
   static void vForkJob(Job*& rpJob, Op* pResponseOp);
   static eEC  eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-  static eEC  ePrepareJob(Job* pJob, TokenVec* pCmdTknVec);
+  static eEC  ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
   static void vReapableJob(Job*& rpJob);
 
   static void vSubmitJob(Job* pJob);
@@ -34,7 +36,6 @@ namespace STORE
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);
 
-  static eEC  eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath);
   static eEC  eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
                            Op* pResponseOp, JobId& rtJobId);
 
@@ -52,7 +53,6 @@ namespace STORE
   static void vSpawnTask_op(Op* pop);
   static void vSpawnTask_dedicatedOp(Op* pOp);
 
-  static void vSpawnTask_demonJob(Job* pJob);
   static void vSpawnTask_receivedJob(Job* pJob);
   
   static void vSpinTillAllJobsCompleted(void);

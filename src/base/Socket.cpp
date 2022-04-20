@@ -587,7 +587,7 @@ Object* Socket::pRecvObject(void)
   
   RASSERT(! pReceivedObject());
 
-  bool bLowMem = gpBufferPool->bLowMemory();
+  bool bLowMem = AM::MEMORY::bIsRunningLow();
 
   char caObjectHeader[sizeof(Object) + C_1K];
   Header* aHeader = (Header*) & caObjectHeader[0];

@@ -65,6 +65,24 @@ void Api::vFreeSession(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
+/* alloc a new job                                                            */
+/*----------------------------------------------------------------------------*/
+Job* Api::pAllocJob(Stz* szJobNm)
+{
+  _static_
+
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
+  
+  Job* pJob = new Job(szJobNm,
+                      C_UNKNOWN,
+                      tCmdId
+                      );
+
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* alloc a new job for session                                                */
 /*----------------------------------------------------------------------------*/
 Job* Api::pAllocJob(Session* pSession)
@@ -108,7 +126,7 @@ void Api::vExecuteJob(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();
-  TagSet* pJobTagSet = & pSession->m_oCmdTagSet;
+  TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //RASSERT(! pSession->bHasCascade());
@@ -150,12 +168,27 @@ void Api::vExecuteJob(Job* pJob)
     
     pSession->vPopCascade();
 
-    Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+    Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
     
     pJob->vEntryPoint(szEntry);
 
     //AM::pHeaps()->vSetTraceFree(false);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* form given job (as demon)                                                  */
+/*----------------------------------------------------------------------------*/
+void Api::vForkDemon(Job*& rpJob)
+{
+  _static_
+  
+  RASSERT(! rpJob->pTask());
+
+  rpJob->vTaskCreate();
+  Scheduler::vTaskApi_AddService(rpJob->pTask());
+  
+  rpJob = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,76 +352,48 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a and prepare it to execute the command in session                     */
+/* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec)
+eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   _static_
 
   RASSERT(pJob);
-  
-  Session* pSession = pJob->pSession();
-  RASSERT(pSession);
     
-  // get the command proper and the tag set
-  TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  TagSet*   pCmdTagSet   = & pSession->m_oCmdTagSet;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  eEC eError = eParseCmd(pCmdTknVec,pCmdTagSet);
-//  if (EC_NONE != eError)
-//    return eError;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //rpJob = pAllocJob(pSession);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  TagSet* pPrepareJobTags = pJob->pJobTags();
-
+  TagSet* pJobTagSet = pJob->pJobTags();
 
   // parse cmd
   sSTMT sStmt;
   pCmdTknVec->vVecToString(sStmt,0,true);
   pJob->vCmd(sStmt);
-
-  pPrepareJobTags->vInsert(C_TAG_CMD,pJob->szCmd());
   
-  pPrepareJobTags->vCopy(pSsnTags);
-
+  pJobTagSet->vCopy(pCmdTagSet);
   //pCmdTagSet->vDumpSet(true);
-  
-  pPrepareJobTags->vCopy(pCmdTagSet);
-  
+
   if (AM::TRACE::bVerbose(C_VB_API))
-    pPrepareJobTags->vDumpSet();
+    pJobTagSet->vDumpSet();
 
   if (pJob->bHasTag(C_TAG_LIFE)) {
     SP_TagSet spTagSet;
-    vTrace("Job New: %s"_Stz,spTagSet.sz(pPrepareJobTags));
+    vTrace("Job New: %s"_Stz,spTagSet.sz(pJobTagSet));
     //pJob->pTagSet()->vPrint();
   }
   
   if ( pJob->bHasTag(C_SHOW_CMD_TAGS))
-    pPrepareJobTags->vDumpSet(true);
+    pJobTagSet->vDumpSet(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  eJK eJobKind = (eJK) pPrepareJobTags->iValue(C_TAG_JOBKIND);
+  eJK eJobKind = (eJK) pJobTagSet->iValue(C_TAG_JOBKIND);
   pJob->vJobKind(eJobKind);
     
-  if (pPrepareJobTags->bHasName(C_SEE_JOB))
+  if (pJobTagSet->bHasName(C_SEE_JOB))
     pJob->vPrintJobContents();
   
   
-  //pPrepareJobTags->vDumpSet(true);
-
-  
-  //Dic* pDicRoot = AM::DIC::pRoot();
-  
-  Stz* szEntry = pPrepareJobTags->szValue(C_TAG_ENTRYPOINT);
+  Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
   
   pJob->vEntryPoint(szEntry);
   
@@ -464,113 +469,6 @@ void Api::vReapJobsOnce(bool bForce)
       {;}
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* execute internal command with given tag string                             */
-/*----------------------------------------------------------------------------*/
-eEC Api::eExecuteCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath)
-{
-  _static_
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot a session
-  
-  Session* pSession = Api::pAllocSession(SK_INTERNAL);
-  
-  eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tokenise the request
-  
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
-
-  TagSet* pCmdTagSet =  & pSession->m_oCmdTagSet;
-  pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-
-  eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
-  if (EC_NONE != eError)
-    return eError;
-  
-  Job* pJob = pAllocJob(pSession);
-  
-  eError = Api::ePrepareJob(pJob,pCmdTknVec);
-
-  delete pCmdTknVec;
-
-  if (eError) {
-    //m_pDataStack->vPushInt(eError);
-    //m_pDataStack->vPushInt(false);
-    //EXIT();
-    return eError;
-  }
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // update the job tag set
-  
-  TagSet* pJobTagSet = pJob->pJobTags();
-  
-  if (szTagPath) {
-    //Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
-    pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
-  }
-  
-  TokenVec* pWithTagStrTknVec = TokenVec::pTokeniseSen(szWithTagStr);
-  Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
-  
-  
-  Now xNow;
-  xNow.vSetNow();
-
-  s32 sHostName;
-  Hardware::vHostName(sHostName);
-
-  pJobTagSet->vInsert(C_TAG_FREEPCT,gpBufferPool->iFreePercent());
-  pJobTagSet->vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
-  pJobTagSet->vInsert(C_TAG_HOST,sHostName);
-  pJobTagSet->vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
-  pJobTagSet->vInsert(C_TAG_REQUEST,pSession->m_iCmdNo);
-  pJobTagSet->vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
-  pJobTagSet->vInsert(C_TAG_WHEN,xNow.sz());
-
-  
-  
-  if (AM::TRACE::bVerbose(C_VB_API))
-    pJobTagSet->vDumpSet();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn job and wait for completion
-  
-//  bool bSpawned = Api::bSpawnTask_session(pJob);
-//  UNUSED(bSpawned);
-  pJob->vResponseTimerStart();
-  
-  Api::vExecuteJob(pJob);
-  
-  pJob->vResponseTimerUpdate();
-
-//  vTrace("Job Timer: %lldus\n"_Stz
-//         ,pJob->m_oTimer.iMicroseconds());
-  
-  RASSERT(! pJob->bIsInError() );
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete job and free session
-  Api::vReapableJob(pJob);
-
-  Api::vFreeSession(pSession);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //push result
-    
-  //m_pDataStack->vPushInt(iJobNo);
-  //m_pDataStack->vPushInt(true);
-  
-  //delete pReqTknVec;
-  delete pWithTagStrTknVec;
-
-  return EC_NONE;
-}
-
 /*----------------------------------------------------------------------------*/
 /* fork internal command with given tag string                                */
 /*----------------------------------------------------------------------------*/
@@ -587,7 +485,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tokenise the request
+  // tokenise the command
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
 
@@ -599,15 +497,19 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
     return eError;
   
   Job* pJob = pAllocJob(pSession);
+  TagSet* pJobTagSet = pJob->pJobTags();
+  pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
+
   
-  eError = Api::ePrepareJob(pJob,pCmdTknVec);
+  
+  
+  
+  
+  eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
 
   if (eError) {
-    //m_pDataStack->vPushInt(eError);
-    //m_pDataStack->vPushInt(false);
-    //EXIT();
     return eError;
   }
     
@@ -617,7 +519,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   // update the job tag set
   
 
-  TagSet* pJobTagSet = pJob->pJobTags();
+  //TagSet* pJobTagSet = pJob->pJobTags();
   
   if (szTagPath) {
     //Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
@@ -657,8 +559,6 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn job and wait for completion
   
-//  bool bSpawned = Api::bSpawnTask_session(pJob);
-//  UNUSED(bSpawned);
   pJob->vResponseTimerStart();
   
   Api::vExecuteJob(pSession);
@@ -671,7 +571,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   RASSERT(! pJob->bIsInError() );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete job and free session
+ 
   Api::vReapableJob(pJob);
 
   Api::vFreeSession(pSession);
@@ -776,7 +676,7 @@ bool Api::bReapJob(void)
 //
 //               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
 //               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
-//               ,nActiveOps,pRetiredJob->m_bReapable ? "reapable" : "not-reapable"
+//               ,nActiveOps,pRetiredJob->bReapable() ? "reapable" : "not-reapable"
 //               );
       }
     }
@@ -1142,19 +1042,6 @@ void Api::vSpawnTask_dedicatedOp(Op* pOp)
   Scheduler::vTaskApi_AddDedicated(pOp->pTask());
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-void Api::vSpawnTask_demonJob(Job* pJob)
-{
-  _static_
-  
-  RASSERT(! pJob->pTask());
-
-  pJob->vTaskCreate();
-  Scheduler::vTaskApi_AddService(pJob->pTask());
-}
 
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */

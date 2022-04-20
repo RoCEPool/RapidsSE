@@ -114,7 +114,20 @@ Object* Object::pMemoryCopy(void)
 
   Object* pCopy = (Operand*)Heaps::pAllocate(eClass);
   MemLib::vCopy(pCopy,this,nSize,eClass);
-  
+
+  //TODO: If Object derives from DataBuffer, we should not overwrite DataBuffer's members
+  // when we do a memcpy. Below code extracts the buffer no from the pool buffer that
+  // the object lives in and then set that rowbuffer member which was overwritten.
+#ifdef WITH_BUFFER_ID
+  if (eClass == CN_ROWBUFFER) {
+    RowBuffer* pRowBuffer = _pRowBuffer(pCopy);
+    i8 iBufferNo = pRowBuffer->iBufferNo();
+    pRowBuffer->vSetBufferNo(iBufferNo);
+    pRowBuffer->vSetBufferId(
+        BufferId::vBufferIdFromNo(iBufferNo));
+  }
+#endif
+
   return pCopy;
 }
 

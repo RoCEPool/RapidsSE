@@ -446,7 +446,7 @@ void Task::vAddAxioms(void)
                                                 \
       [job].addLocal                            \
                                                 \
-      [args].munged if                            \
+      [args].munged if                          \
         \"compiling munged dictionary...\" .    \
       then                                      \
                                                 \
@@ -456,7 +456,7 @@ void Task::vAddAxioms(void)
       [job].addRetired                          \
                                                 \
       [task].grabLock                           \
-        true [job].reapable!                    \
+        1 [job].reapable!                       \
         TR_RETIRE_THIS_TASK [task].transition!  \
                                                 \
     ;"_Stz;

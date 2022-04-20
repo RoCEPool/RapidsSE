@@ -8,9 +8,14 @@ namespace BASE
   class DataBuffer : public LinkedBuffer
   {
   protected:
-    Lock   m_okLock;        // lock
-    i8     m_iBufferNo;     // this DataBuffer's buffer number
-    LglPtn  m_tLglPtn;
+    Lock         m_okLock;        // lock
+    i8           m_iBufferNo;     // this DataBuffer's buffer number
+
+#ifdef WITH_BUFFER_ID
+    BufferId     m_oBufferId;     // Set wherever bufferno is set, with bit flag set
+#endif
+
+    LglPtn m_tLglPtn;
     i8     m_iBucketNo;     // this DataBuffer's bucket number
 
     i8     m_iBufferHeight; // buffer height in the tree
@@ -22,7 +27,11 @@ namespace BASE
 
     tXN m_tTxnNo; // transaction number
 
+#ifdef WITH_BUFFER_ID
+    PadWord m__PadToCacheLine[17];
+#else
     PadWord m__PadToCacheLine[18];
+#endif
 
   public:
     DataBuffer(eCN eClass, bool bIsPermanent);
@@ -76,6 +85,11 @@ namespace BASE
     void vIsPermanent(bool bIsPermanent);
 
     i8   iBufferNo(void);
+#ifdef WITH_BUFFER_ID
+    BufferId oGetBufferId(void);
+    void     vSetBufferId(BufferId oBufferId);
+    void     vSetBufferNo(i8 iBufferNo);
+#endif
   };
   
   DataBuffer* _pDataBuffer(void* aAddr);

@@ -125,6 +125,12 @@
   [session].signal
 
   [task].grabLock
+    //[system].started@ if
+    //  "SYSTEM STARTED" .
+    //else
+    //  "SYSTEM NOT STARTED" .
+    //  true [job].reapable!
+    //then
     TR_RETIRE_THIS_TASK [task].transition!
 ;
 

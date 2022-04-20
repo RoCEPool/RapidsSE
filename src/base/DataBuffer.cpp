@@ -39,6 +39,11 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 
   m_iBufferNo  = iBufferNo();
+
+#ifdef WITH_BUFFER_ID
+  m_oBufferId  = BufferId::vBufferIdFromNo(m_iBufferNo);
+#endif
+
   m_iBucketNo  = C_UNKNOWN;
   m_tLglPtn     = C_UNKNOWN;
   
@@ -50,7 +55,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   m_pStreamDef = nullptr;
 
   m_tTxnNo = C_UNKNOWN;
-    
+
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 
@@ -332,6 +337,38 @@ void DataBuffer::vIsPermanent(bool bIsPermanent)
   m_bIsPermanent = bIsPermanent;
 }
 
+#ifdef WITH_BUFFER_ID
+/*----------------------------------------------------------------------------*/
+/* get the buffer id of the pool buffer that the object is within             */
+/*----------------------------------------------------------------------------*/
+BufferId DataBuffer::oGetBufferId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_oBufferId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the buffer id                                                          */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vSetBufferId(BufferId oBufferId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_oBufferId = oBufferId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the buffer no                                                          */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vSetBufferNo(i8 iBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_iBufferNo = iBufferNo;
+}
+
+#endif
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

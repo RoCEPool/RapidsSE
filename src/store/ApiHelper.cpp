@@ -97,33 +97,35 @@ void ApiHelper::vPipeoutResults(Op* pCurrOp,
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob(Stz* szCmd, Job*& rpJob)
+eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd)
 {
   TokenVec* pCmdTknVec = new TokenVec;
   
   pCmdTknVec->vTokeniseCpp(szCmd);
   
-  eEC eError = ApiHelper::ePrepareJob(pCmdTknVec,rpJob);
+  TagSet* pCmdTagSet = new TagSet;
+  
+  eEC eError = ApiHelper::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
-  
+  delete pCmdTagSet;
   return eError;
 }
 
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob(TokenVec* pCmdTknVec, Job*& rpJob)
+eEC ApiHelper::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
-  TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
+  //TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
 
   eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError)
     return eError;
 
-  rpJob = Api::pAllocJob(m_pSession);
+  rpJob = Api::pAllocJob(m_pSession);  
 
-  eError = Api::ePrepareJob(rpJob,pCmdTknVec);
+  eError = Api::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
   
   return eError;
 }
