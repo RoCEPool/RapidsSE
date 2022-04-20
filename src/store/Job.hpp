@@ -185,7 +185,7 @@ namespace STORE
 
     i8   i_Session(void);
     Session* pSession(void);
-    void vSession(Session* pSession);
+    void vSession(i8 i_Session);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
 

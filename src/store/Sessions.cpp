@@ -412,7 +412,7 @@ void Sessions::vApiJob(Session* pSession, Job* pJob)
 
   pSession->m_nJobNew++;
   
-  pJob->vSession(pSession);
+  pJob->vSession(pSession->m_i_Session);
 }
 
 /*----------------------------------------------------------------------------*/

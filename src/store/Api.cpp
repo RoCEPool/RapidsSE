@@ -65,7 +65,7 @@ void Api::vFreeSession(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* alloc a new job                                                            */
+/* alloc a new job for session                                                */
 /*----------------------------------------------------------------------------*/
 Job* Api::pAllocJob(Stz* szJobNm)
 {
@@ -352,7 +352,7 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prepare job                                                                */
+/* new a and prepare it to execute the command in session                     */
 /*----------------------------------------------------------------------------*/
 eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
@@ -559,6 +559,8 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn job and wait for completion
   
+//  bool bSpawned = Api::bSpawnTask_session(pJob);
+//  UNUSED(bSpawned);
   pJob->vResponseTimerStart();
   
   Api::vExecuteJob(pSession);
@@ -571,7 +573,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   RASSERT(! pJob->bIsInError() );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- 
+  // delete job and free session
   Api::vReapableJob(pJob);
 
   Api::vFreeSession(pSession);
