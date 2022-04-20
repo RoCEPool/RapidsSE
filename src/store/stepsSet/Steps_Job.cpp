@@ -1125,10 +1125,10 @@ void Step::vJobSignalWaiter(void)
   Session* pSession = AM::pSessions()->pGetSession(i_Session);
 
     
-  pSession->m_oMutex.vLock(this);
+  pSession->m_oMutex_ssn.vLock(this);
   //vTrace("SIGNAL session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
-  pSession->m_oMutex.vSignal(this);
-  pSession->m_oMutex.vUnlock(this);
+  pSession->m_oMutex_ssn.vSignal(this);
+  pSession->m_oMutex_ssn.vUnlock(this);
 
 //  vDropTaskLock((Stz*)__func__);
 

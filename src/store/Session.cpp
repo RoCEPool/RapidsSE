@@ -45,7 +45,7 @@ Session* STORE::_pSession(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 Session::Session(void)
 : Object(CN_SESSION)
-, m_oMutex(this)
+, m_oMutex_ssn(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
