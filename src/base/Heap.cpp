@@ -163,6 +163,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
       vTrace("LOW MEMORY encountered : %s %s %lld!!!\n"_Stz,
              __FILE__,__func__,(i8)__LINE__);
       m_okLock.vDropWrite();
+      PoolHelper::vPoolAnalyze();
       THROW_LOWMEMORY();
       return nullptr;
     }
@@ -174,6 +175,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
       vTrace("LOW MEMORY encountered : %s %s %lld!!!\n"_Stz,
              __FILE__,__func__,(i8)__LINE__);
       m_okLock.vDropWrite();
+      PoolHelper::vPoolAnalyze();
       THROW_LOWMEMORY();
       return nullptr;
     }
