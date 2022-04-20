@@ -1,0 +1,221 @@
+/*============================================================================*/
+/* __Q16_run                                                                  */
+/*============================================================================*/
+
+print "Q16";
+
+/******************************************************************************
+Q16_0: select
+         p_brand,
+         p_type,
+         p_size,
+         count(distinct ps_suppkey) as supplier_cnt
+
+  from PartSupp, Part
+ 
+ where     p_partkey  =  ps_partkey
+       and p_brand    <> 'Brand#45'
+       and p_type     not like 'MEDIUM POLISHED%'
+       and p_size     in (49,14,23,45,19,3,36,9)
+       and ps_suppkey not in
+
+             ( Q16_0_1: select s_suppkey
+
+                 from Supplier
+ 
+                where s_comment like '%Customer%Complaints%' )
+
+ group by p_brand, p_type, p_size
+
+ order by supplier_cnt desc, p_brand, p_type, p_size;
+*******************************************************************************/
+
+/*
+/time pipeline Q16
+begin
+
+  stage G_Start on origin :
+    start
+    | pulse once
+    | G_PART
+
+  stage G_PART on all partitions :
+    scan part
+    | filter " type BOOLEAN P_BRAND 'Brand#45'  !=
+               }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
+               }  49  14  23  45  19  3  36  9  #8  P_SIZE in and  "
+    | aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
+                       type VARCHAR as P_TYPE P_TYPE ,
+                       type INTEGER as P_SIZE P_SIZE
+             aggregates
+             type VARCHAR as P_BRAND $K1 ,
+             type VARCHAR as P_TYPE $K2 ,
+             type INTEGER as P_SIZE $K3"
+    | combined 1
+    | next
+
+  stage G_Last on origin :
+    output
+    | sink
+    | G_Start
+
+end ;
+
+
+
+/time pipeline unamed
+begin
+  pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker34356
+    stage stageMarker34356 on all partitions :
+      scan rapidsse public supplier
+      | filter " type BOOLEAN  }  $7 '%Customer%Complaints%'  8 10 matchMiddle1  "
+      | project " type INTEGER as s_suppkey $1 "
+      | combined 0
+      | stageMarker34359
+    stage stageMarker34359 on all partitions :
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+*/
+
+
+/time pipeline Q16
+begin
+
+  stage G_Start on origin :
+    start
+    | pulse once
+    | G_PART
+
+  //
+  // Q16_0:
+  //   a) scan PartSupp  /PS_PARTKEY/  # _partkey    _suppkey
+  //   b) join Part      /P_PARTKEY/   # _partkey
+  //
+
+  stage G_PART on all partitions :
+    scan part
+    | filter " type BOOLEAN P_BRAND 'Brand#45'  !=
+               }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading  not and
+               }  49  14  23  45  19  3  36  9  #8  P_SIZE in and  "
+
+    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
+               type VARCHAR as P_BRAND P_BRAND ,
+               type VARCHAR as P_TYPE P_TYPE ,
+               type INTEGER as P_SIZE P_SIZE"
+                   | combined 0
+    | next
+
+  stage G_PARTSUPP on all partitions :
+    indexJoin partsupp IxPS_PARTKEY "bound $I1 p_partkey =="
+    | project "    type VARCHAR as P_BRAND P_BRAND ,
+                   type VARCHAR as P_TYPE P_TYPE ,
+                   type INTEGER as P_SIZE P_SIZE ,
+                   type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY"
+    | combined 0
+    | next
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  stage G_CNT_P on all partitions :
+    aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
+             type VARCHAR as P_TYPE P_TYPE ,
+             type INTEGER as P_SIZE P_SIZE ,
+             type INTEGER as PS_SUPPKEY PS_SUPPKEY
+             aggregates
+             type VARCHAR as P_BRAND $K1 ,
+             type VARCHAR as P_TYPE $K2 ,
+             type INTEGER as P_SIZE $K3 ,
+             type INTEGER as PS_SUPPKEY $K4 "
+    | combined 0
+    | next
+
+  stage G_CNT_N on all nodes :
+    aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
+                 type VARCHAR as P_TYPE P_TYPE ,
+                 type INTEGER as P_SIZE P_SIZE ,
+                 type INTEGER as PS_SUPPKEY PS_SUPPKEY
+                 aggregates
+                  type VARCHAR as P_BRAND $K1 ,
+                  type VARCHAR as P_TYPE $K2 ,
+                  type INTEGER as P_SIZE $K3 ,
+                  type INTEGER as PS_SUPPKEY $K4 "
+    | combined 0
+    | next
+
+  stage G_CNT_O on origin :
+    aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
+                   type VARCHAR as P_TYPE P_TYPE ,
+                   type INTEGER as P_SIZE P_SIZE ,
+                   type INTEGER as PS_SUPPKEY PS_SUPPKEY
+                   aggregates
+                    type VARCHAR as P_BRAND $K1 ,
+                    type VARCHAR as P_TYPE $K2 ,
+                    type INTEGER as P_SIZE $K3 ,
+                    type INTEGER as PS_SUPPKEY $K4 "
+    | combined 0
+    | next
+
+stage G_CNT_O_2 on origin :
+    hash " type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  stage G_CNT_DISTINCT_A on all partitions :
+     aggreg " groupBy type VARCHAR P_BRAND ,
+                      type VARCHAR as P_TYPE P_TYPE ,
+                      type INTEGER as P_SIZE P_SIZE
+               aggregates
+               type VARCHAR as P_BRAND $K1 ,
+               type VARCHAR as P_TYPE $K2 ,
+               type INTEGER as P_SIZE $K3 ,
+               type INTEGER as SUPPLIER_CNT ) $4 COUNT"
+  | combined 0
+  | next
+
+  stage G_CNT_DISTINCT_B on all nodes :
+     aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
+                      type VARCHAR as P_TYPE P_TYPE ,
+                      type INTEGER as P_SIZE P_SIZE
+               aggregates
+                         type VARCHAR as P_BRAND $K1 ,
+                         type VARCHAR as P_TYPE $K2 ,
+                         type INTEGER as P_SIZE $K3 ,
+                         type INTEGER as SUPPLIER_CNT ) $4 SUM"
+| combined 0
+| next
+
+stage G_CNT_DISTINCT_C on origin :
+   aggreg " groupBy type VARCHAR as P_BRAND P_BRAND ,
+                         type VARCHAR as P_TYPE P_TYPE ,
+                         type INTEGER as P_SIZE P_SIZE
+                  aggregates
+                            type VARCHAR as P_BRAND $K1 ,
+                            type VARCHAR as P_TYPE $K2 ,
+                            type INTEGER as P_SIZE $K3 ,
+                            type INTEGER as SUPPLIER_CNT ) $4 SUM"
+| combined 0
+| next
+
+
+  stage G_Last on origin :
+    output
+    | sink
+    | G_Start
+    
+end ;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1273,10 +1273,12 @@ void Stencil::vSetupEosPayload(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aPayloadCellArray =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aPayloadRow,
                                       &pCombined->aCombinedT()->m_racPayloadArea);
+  pCombined->aCombinedT()->m_racPayloadAreaSav = pCombined->aCombinedT()->m_racPayloadArea;
 
 }
 
 /*----------------------------------------------------------------------------*/
+/* set up for indexJoin                                                       */
 /* set up for indexJoin                                                       */
 /*----------------------------------------------------------------------------*/
 void Stencil::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) {
@@ -1522,7 +1524,7 @@ void Stencil::vSetupEosAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aPayloadCellArray =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aPayloadRow,
                                       &pCombined->aCombinedT()->m_racPayloadArea);
-
+  pCombined->aCombinedT()->m_racPayloadAreaSav = pCombined->aCombinedT()->m_racPayloadArea;
 }
 
 /*----------------------------------------------------------------------------*/
