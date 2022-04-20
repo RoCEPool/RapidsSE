@@ -83,29 +83,6 @@ Job* Api::pAllocJob(Stz* szJobNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* alloc a new job for session                                                */
-/*----------------------------------------------------------------------------*/
-Job* Api::pAllocJob(Session* pSession)
-{
-  _static_
-
-  RASSERT(pSession);
-    
-  CmdId tCmdId;
-  tCmdId.vNextCmdId();
-  
-  TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
-  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
-
-  Job* pJob = new Job(szJobNm,
-                      pSession->m_i_Session,
-                      tCmdId
-                      );
-
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -496,7 +473,12 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   if (EC_NONE != eError)
     return eError;
   
-  Job* pJob = pAllocJob(pSession);
+  //Job* pJob = pAllocJob(pSession);
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  Job* pJob = Api::pAllocJob(szJobNm);
+  pJob->vSession(pSession);
+  
+  
   TagSet* pJobTagSet = pJob->pJobTags();
   pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
 

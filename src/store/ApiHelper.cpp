@@ -11,6 +11,8 @@
 #include "Session.hpp"
 #include "Job.hpp"
 
+#include "TagConstants.h"
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -123,8 +125,11 @@ eEC ApiHelper::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet
   if (EC_NONE != eError)
     return eError;
 
-  rpJob = Api::pAllocJob(m_pSession);  
-
+  //rpJob = Api::pAllocJob(m_pSession);
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  rpJob = Api::pAllocJob(szJobNm);
+  rpJob->vSession(m_pSession);
+  
   eError = Api::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
   
   return eError;
