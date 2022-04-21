@@ -144,6 +144,7 @@ namespace STORE
     bool bHasTag(Stz* szTagNm);
   
     bool bIsInError(void);
+    bool bIsOnOrigin(void);
     bool bIsOriginator(void);
     bool bIsParticipant(void);
     bool bIsPipeline(void);
@@ -178,6 +179,7 @@ namespace STORE
     void vOutputCreate(void);
     void vOutputDestroy(void);
     void vOutputEnabled(bool bEnabled);
+    Job* pOriginatingParentJob(void);
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);
   

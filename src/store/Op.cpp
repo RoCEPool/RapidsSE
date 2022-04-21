@@ -1351,6 +1351,8 @@ void Op::vPipeToOutput(Operand* pOperand)
   
   Session* pSession = MY::pSession();
   
+  //RASSERT(MY::pJob()->pOutput());
+  
   Queue* pOutputQueue = AM::pOutputQueue(pSession);
 
   RASSERT(pOutputQueue);

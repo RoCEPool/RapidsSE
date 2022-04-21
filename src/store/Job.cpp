@@ -167,6 +167,8 @@ Job::~Job(void) noexcept(false)
 
   if (m_pMutex_job)
     vMutexDestroy();
+  if (m_pOutput_job)
+    vOutputDestroy();
 }
 
 
@@ -425,6 +427,22 @@ bool Job::bHasByPromptTag(void)
 bool Job::bIsInError(void)
 {
   return m_eError_job == EC_NONE ? false : true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* are we on the origin?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Job::bIsOnOrigin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  i8 iOrigin = iOriginNodeId();
+  i8 iParticipant = iParticipantNodeId();
+ 
+  if (iParticipant == iOrigin)
+    return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -756,6 +774,19 @@ void Job::vOutputDestroy(void)
 void Job::vOutputEnabled(bool bEnabled)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the parent originating job (on origin only)                            */
+/*----------------------------------------------------------------------------*/
+Job* Job::pOriginatingParentJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+      
+  RASSERT(bIsOriginator());
+  
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

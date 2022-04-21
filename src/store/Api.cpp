@@ -101,7 +101,8 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
       
 
   pJob->vMutexCreate();
-  
+  pJob->vOutputCreate();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();

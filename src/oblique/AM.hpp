@@ -387,12 +387,24 @@ namespace OBLIQUE
       static bool bIsOoO(Operand* pOperand);
     };
 
+    class OLIST
+    {
+    public:
+      static Job* pFindJob(JobId tJobId, bool bLockJob=false);
+    };
+  
     class PARCEL
     {
     public:
       static void vRecvContents(Parcel* pParcel, Socket* pSocket);
     };
   
+    class PLIST
+    {
+    public:
+      static Job* pFindJob(JobId tJobId, bool bLockJob=false);
+    };
+
     class POOL
     {
     public:
