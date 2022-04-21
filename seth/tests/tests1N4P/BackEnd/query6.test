@@ -22,8 +22,12 @@ begin
   stage stageC on origin :
     aggreg " type decimal as revenue $1 "
     | combined 0
-    | output | sink | stageA
+    | last
+
+  stage stageD on origin :
+    output | sink | stageA
 end;
+
 failure contains: "Table does not exist"
 
 //------------------------------------------------------------------------------
@@ -66,7 +70,10 @@ begin
   stage stageC on origin :
     project " type decimal as revenue ) $1 sum "
     | combined 0
-    | output | sink | stageA
+    | last
+
+    stage stageD on origin :
+    output | sink | stageA
 end;
 rows: 0
 
@@ -148,7 +155,10 @@ begin
   stage stageC on origin :
     project " type decimal $6 , type decimal $7"
     | combined 0
-    | output | sink | stageA
+    | next
+
+  stage stageLast on origin:
+    output | sink | stageA
 end;
 rows:
  (39620.34,0.06)
@@ -168,7 +178,10 @@ begin
   stage stageC on origin :
     project " type decimal $6 , type decimal $7 , type decimal $6 $7 * "
     | combined 0
-    | output | sink | stageA
+    | next
+
+   stage stageLast on origin:
+     output | sink | stageA
 end;
 rows:
   (39620.34,0.06,2377.22)
@@ -189,7 +202,10 @@ begin
   stage stageC on origin :
     project " type decimal as revenue ) $6 $7 * sum "
     | combined 0
-    | output | sink | stageA
+    | next
+
+  stage stageLast on origin:
+    output | sink | stageA
 end;
 rows:
   (2377.22)
@@ -211,7 +227,10 @@ begin
   stage stageC on origin :
     project " type decimal as revenue ) $1 sum "
     | combined 0
-    | output | sink | stageA
+    | next
+
+  stage stageLast on origin:
+    output | sink | stageA
 end;
 rows:
   (2377.22)
@@ -232,7 +251,10 @@ begin
   stage stageC on origin :
     project " type decimal as revenue ) $1 sum "
     | combined 0
-    | output | sink | stageA
+    | next
+
+  stage stageLast on origin:
+    output | sink | stageA
 end;
 rows:
   (2377.22)
@@ -252,7 +274,10 @@ begin
   stage stageC on origin :
     project " type decimal $6 , type decimal $7 , type decimal $6 $7 * "
     | combined 0
-    | output | sink | stageA
+    | next
+
+  stage stageLast on origin:
+     output | sink | stageA
 end;
 rows:
   (86083.65,0.06,5165.02)
@@ -274,7 +299,10 @@ begin
   stage stageC on origin :
     project " type decimal as revenue ) $1 sum "
     | combined 0
-    | output | sink | stageA
+    | next
+
+  stage stageLast on origin:
+     output | sink | stageA
 end;
 rows:
   (7542.24)

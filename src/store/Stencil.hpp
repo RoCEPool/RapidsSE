@@ -15,7 +15,6 @@ struct stageOps {
 
   i8 m_iAggregOp;
   i8 m_iCombinedOp;
-  i8 m_iConsumeOp;
   i8 m_iFilterOp;
   i8 m_iHashOp;
   i8 m_iIndexJoinOp;
@@ -25,7 +24,6 @@ struct stageOps {
   i8 m_iOrdAggOp;
   i8 m_iProjectOp;
   i8 m_iScanOp;
-  i8 m_iSendSE;
   i8 m_iSortOp;
   i8 m_iTopOp;
 
@@ -133,10 +131,10 @@ static const i8 C_MAX_SHAPES = 32;
 
     void vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                              Op* pHavingFilterOp, Op* pLimitOp, Stz* sHashExpr);
-    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Op* pHavingFilterOp, Op* pLimitOp, Stz* sHashExpr);
-    void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp, Op* pLimitOp, Stz* sHashExpr);
-    void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp, Stz* sHashExpr);
+                              Op* pHavingFilterOp, Op* pLimitOp);
+    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Op* pHavingFilterOp, Op* pLimitOp);
+    void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp, Op* pLimitOp);
+    void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
     Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
@@ -157,7 +155,7 @@ static const i8 C_MAX_SHAPES = 32;
     Shape* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
                              eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchPot(Combined* pCombined, Op* pLastOp, eSR ePrevStencil, IntStack* pPreExpStack,
-                      Stz* sHashExpr, Stz* szLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg);
+                      Stz* szLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg);
     Shape* pSketchReturn(void);
     Shape* pSketchTub(Combined* pCombined, Op* pLastOp, eSR ePrevStencil, IntStack* pPreExpStack,
                       Stz* szLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg);
