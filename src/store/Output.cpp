@@ -55,7 +55,9 @@ Output::Output(Session* pSession)
 
   m_iOutputState      = 0;
   
+  m_bFileOut          = false;
   m_pFileOut          = nullptr;
+  //m_sFilePath
 
   _checkInitialised_(CN_OUTPUT);
   
@@ -107,29 +109,20 @@ void Output::vBeginProcOneCmd(void)
   //RASSERT(! m_iOutputState);
   m_iOutputState = 1;
   
-  TagSet* pSsnTagSet = &m_pSession->m_oSsnTagSet;
-  
-  if (pSsnTagSet->bHasName("<fileOut>"_Stz)) {
+ if (!m_bFileOut)
+   return;
     
-    vTrace("Ssn <fileOut> = %s\n"_Stz,pSsnTagSet->szValue("<fileOut>"_Stz));
-  }
-  
-  TagSet* pJobTagSet = &m_pSession->m_oCmdTagSet;
-  if (pJobTagSet->bHasName("<fileOut>"_Stz)) {
-    
-    Stz* szFileOutNm = pJobTagSet->szValue("<fileOut>"_Stz);
-    vTrace("Job <fileOut> = %s\n"_Stz,szFileOutNm);
-    
-    m_pFileOut = new File(this);
-    
-    if (! m_pFileOut->bOpenWrite(szFileOutNm)) {
+  vTrace("<fileOut> = %s\n"_Stz,m_sFilePath.szStz());
       
-      vTrace("Output: unable to open file `%s` for writing\n"_Stz,szFileOutNm);
-      
-      delete m_pFileOut;
-      m_pFileOut = nullptr;
-    }
+  m_pFileOut = new File(this);
     
+  if (! m_pFileOut->bOpenWrite(m_sFilePath.szStz())) {
+      
+    vTrace("Output: unable to open file `%s` for writing\n"_Stz,
+           m_sFilePath.szStz());
+      
+    delete m_pFileOut;
+    m_pFileOut = nullptr;
   }
 }
 
@@ -213,6 +206,26 @@ void Output::vEndProcOneCmd(void)
   }
   
   m_iOutputState = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bFileOut                                                               */
+/*----------------------------------------------------------------------------*/
+void Output::vFileOut(bool bFileOut)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+  
+  m_bFileOut = bFileOut;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set sFilePath                                                              */
+/*----------------------------------------------------------------------------*/
+void Output::vFilePath(Stz* szFilePath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+  
+  m_sFilePath = szFilePath;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -316,9 +329,11 @@ Operand* Output::pPopBufferQueue_blocking(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
+  RASSERT(this == m_pSession->m_pOutput_ssn);
+  
   for (;;) {
     
-    Operand* pOperand = _pOperand(m_pSession->m_pOutput_ssn->m_pOutputQueue->pPop());
+    Operand* pOperand = _pOperand(m_pOutputQueue->pPop());
     
     if (pOperand)
       return pOperand;

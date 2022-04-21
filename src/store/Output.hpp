@@ -32,8 +32,10 @@ namespace STORE
   
     i8         m_iOutputState;
 
+    bool       m_bFileOut;
     File*      m_pFileOut;
-  
+    s256       m_sFilePath;
+
   private:
 
     // must be last
@@ -50,6 +52,8 @@ namespace STORE
     void vBeginProcOneCmd(void);
     void vDrainBufferQueue(Job* pJob);
     void vEndProcOneCmd(void);
+    void vFileOut(bool bFileOut);
+    void vFilePath(Stz* szFilePath);
     void vProcessBufferQueue(Job* pJob);
     bool bPrintEnabled(void);
     void vPrintEnabled(bool bPrintEnabled);
