@@ -148,6 +148,56 @@ end ;
 failure contains: 'EC_INVALID_PIPELINE'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// multiple projectOp's
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    scan orders
+    | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
+    | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+end ;
+failure contains: 'EC_INVALID_PIPELINE'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// project after aggregate
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    scan orders
+    | aggreg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1  , type INTEGER )  $2 sum "
+    | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+end ;
+failure contains: 'EC_INVALID_PIPELINE'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

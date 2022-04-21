@@ -499,7 +499,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   bool bInflateGenerated = false;
 
-  bool bProjectOp = false;
   bool bPayloadOp = false;
   bool bSort = false;
 
@@ -824,16 +823,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the projectOP
     if (pOp->szOpNm()->bSame("project"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // check stage-operator rules
-      if (bProjectOp) {
-        vTrace("Error: Cannot have multiple project operators in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      bProjectOp = true;
 
       Op *pPrevOp = pStream->pGet(i_Op - 1);
 
@@ -2992,7 +2981,7 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // filterOp
-    if (pOp->szOpNm()->bSame("filterOp"_Stz)) {
+    if (pOp->szOpNm()->bSame("filter"_Stz)) {
       m_xStageOps.m_iFilterOp++;
       continue;
     }
@@ -3026,37 +3015,54 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // indexJoinOp
-    if (pOp->szOpNm()->bSame("indexJoinOp"_Stz)) {
+    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
       m_xStageOps.m_iIndexJoinOp++;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // indexScanOp
-    if (pOp->szOpNm()->bSame("indexScanOp"_Stz)) {
+    if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
       m_xStageOps.m_iIndexScanOp++;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // keyExistsOp
-    if (pOp->szOpNm()->bSame("keyExistsOp"_Stz)) {
+    if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
       m_xStageOps.m_iKeyExistsOp++;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // limitOp
-    if (pOp->szOpNm()->bSame("limitOp"_Stz)) {
+    if (pOp->szOpNm()->bSame("limit"_Stz)) {
       m_xStageOps.m_iLimitOp++;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ordAggOp
-    if (pOp->szOpNm()->bSame("ordAggOp"_Stz)) {
+    if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
       m_xStageOps.m_iOrdAggOp++;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // projectOp
-    if (pOp->szOpNm()->bSame("projectOp"_Stz)) {
+    if (pOp->szOpNm()->bSame("project"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE PROJECT-OP's
+      if (m_xStageOps.m_iProjectOp) {
+        vTrace("Error: Cannot have multiple project operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // PROJECT-OP after AGGREG-OP
+      if (m_xStageOps.m_iAggregOp) {
+        vTrace("Error: Cannot have project operator after an aggregate operator in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
       m_xStageOps.m_iProjectOp++;
     }
 
