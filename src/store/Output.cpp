@@ -61,6 +61,8 @@ Output::Output(Job* pJob, Session* pSession)
 
   _checkInitialised_(CN_OUTPUT);
   
+  m_pOutputQueue = new Queue(CN_QUEUE);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 }
 
