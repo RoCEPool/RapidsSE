@@ -1266,7 +1266,7 @@ void CodeSynth::vSynthSort(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate processRow check
-  //vGenerateProcessRow(sLabelLoop);
+  vGenerateProcessRow(sLabelLoop);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate sort
@@ -1788,7 +1788,10 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
   // generate Agg code for each projected agg column
   vGenerateExprCode(m_pExprStack, ""_Stz);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n     goto L_AdvanceNextRow;");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n     goto L_AdvanceNextRow;");
+  sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 

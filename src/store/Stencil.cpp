@@ -68,10 +68,38 @@ Stencil::Stencil(void)
   m_bIndexScan   = false;
   m_bRowBuffer   = false;
   m_pPostStack   = nullptr;
+
+  m_xStageOps.m_iAggregOp    = 0;
+  m_xStageOps.m_iCombinedOp  = 0;
+  m_xStageOps.m_iConsumeOp   = 0;
+  m_xStageOps.m_iFilterOp    = 0;
+  m_xStageOps.m_iHashOp      = 0;
+  m_xStageOps.m_iIndexJoinOp = 0;
+  m_xStageOps.m_iIndexScanOp = 0;
+  m_xStageOps.m_iKeyExistsOp = 0;
+  m_xStageOps.m_iLimitOp     = 0;
+  m_xStageOps.m_iOrdAggOp    = 0;
+  m_xStageOps.m_iProjectOp   = 0;
+  m_xStageOps.m_iScanOp      = 0;
+  m_xStageOps.m_iSendSE      = 0;
+  m_xStageOps.m_iSortOp      = 0;
+  m_xStageOps.m_iTopOp       = 0;
+
+  m_xStageOps.m_bPayloadOp      = false;
+  m_xStageOps.m_bGeneratePotTub = false;
+  m_xStageOps.m_bGenerateFun3   = false;
+
+  m_xStageOps.m_pCombinedOp     = nullptr;
+  m_xStageOps.m_oHavingFilterOp = nullptr;
+  m_xStageOps.m_pPostProjectOp  = nullptr;
+  m_xStageOps.m_pLimitOp        = nullptr;
+
+  m_xStageOps.m_sHashExpr = ""_Stz;
+
   m_pBannerHead  = new CodeSynth;
   m_pBannerTail  = new CodeSynth;
 
-  m_pPreliminary = new CodeSynth;
+  m_pPreliminary     = new CodeSynth;
   m_pPreliminaryFun0 = new CodeSynth;
   m_pPreliminaryFun1 = new CodeSynth;
   m_pPreliminaryFun2 = new CodeSynth;
@@ -501,6 +529,11 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   sReturnLabel = ""_Stz;
   sLabelLoop = "L_AdvanceNextRow"_Stz;
+
+  // collect the op information from the stage
+  eEC eError = eCollectStage(pCombined, pStream);
+  if (eError != EC_NONE)
+    return eError;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // driving op indexScan ?
@@ -2911,6 +2944,165 @@ void Stencil::vAppendHeaderEntries(i8 iStage) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append banner tail
   m_pOpHeader->vAppendFragment(m_pBannerTail);
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect and validate the stage information of stage being combined         */
+/*----------------------------------------------------------------------------*/
+eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the hashExpr upfront
+  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
+
+    // get the op
+    Op *pOp = pStream->pGet(i_Op);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // OP after SendSE ?
+    if ( m_xStageOps.m_iSendSE ) {
+      vTrace("Error: Cannot have OP's after combinedOp (%s)!!!\n"_Stz,
+             m_szStageNm.azChar());
+      return EC_INVALID_PIPELINE;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // aggregate Op
+    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
+
+      m_xStageOps.m_iAggregOp++;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE PAYLOAD OP's
+      if (m_xStageOps.m_bPayloadOp) {
+        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top)"
+            "in the same stage (%s)!!!\n"_Stz,
+            m_szStageNm.azChar());
+
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_bPayloadOp = true;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // combined OP
+    if (pOp->szOpNm()->bSame("combined"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE COMBINED OP's
+      if (m_xStageOps.m_iCombinedOp) {
+        vTrace("Error: Cannot have multiple combinedOp's (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_iCombinedOp++;
+      m_xStageOps.m_pCombinedOp = pOp;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // consumeOP
+    if (pOp->szOpNm()->bSame("consumeOp"_Stz)) {
+      m_xStageOps.m_iConsumeOp++;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // filterOp
+    if (pOp->szOpNm()->bSame("filterOp"_Stz)) {
+      m_xStageOps.m_iFilterOp++;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // hashOp
+    if (pOp->szOpNm()->bSame("hash"_Stz)) {
+
+      m_xStageOps.m_iHashOp++;
+      pCombined->aCombinedT()->m_iHashRows = 1;
+
+      TagSet *pOpTags = pOp->pOpTags();
+
+      // get hash expr from OP
+      m_xStageOps.m_sHashExpr = pOpTags->szValue(C_TAG_EXPR);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // indexJoinOp
+    if (pOp->szOpNm()->bSame("indexJoinOp"_Stz)) {
+      m_xStageOps.m_iIndexJoinOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // indexScanOp
+    if (pOp->szOpNm()->bSame("indexScanOp"_Stz)) {
+      m_xStageOps.m_iIndexScanOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // keyExistsOp
+    if (pOp->szOpNm()->bSame("keyExistsOp"_Stz)) {
+      m_xStageOps.m_iKeyExistsOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // limitOp
+    if (pOp->szOpNm()->bSame("limitOp"_Stz)) {
+      m_xStageOps.m_iLimitOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ordAggOp
+    if (pOp->szOpNm()->bSame("ordAggOp"_Stz)) {
+      m_xStageOps.m_iOrdAggOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // projectOp
+    if (pOp->szOpNm()->bSame("projectOp"_Stz)) {
+      m_xStageOps.m_iProjectOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // scanOp
+    if (pOp->szOpNm()->bSame("scan"_Stz)) {
+      m_xStageOps.m_iScanOp++;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // sendSE
+    if (pOp->szOpNm()->bSame("sendSE"_Stz)) {
+
+      // we should have seen a combinedOP ?
+      if ( !m_xStageOps.m_pCombinedOp ) {
+        vTrace("Error: Missing combinedOp (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_iSendSE++;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // sortOp
+    if (pOp->szOpNm()->bSame("sortOp"_Stz)) {
+      m_xStageOps.m_iSortOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // topOp
+    if (pOp->szOpNm()->bSame("topOp"_Stz)) {
+      m_xStageOps.m_iTopOp++;
+    }
+  }
+
+  return EC_NONE;
 }
 
 //*============================================================================*/
