@@ -176,9 +176,11 @@ namespace STORE
     void vMutexWait(void);
 
     Output* pOutput(void);
+    void vOutputBeginProc(void);
     void vOutputCreate(void);
     void vOutputDestroy(void);
     void vOutputEnabled(bool bEnabled);
+    void vOutputEndProc(void);
     Job* pOriginatingParentJob(void);
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);

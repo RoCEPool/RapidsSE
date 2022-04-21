@@ -746,6 +746,16 @@ Output* Job::pOutput(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* begin output processor                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vOutputBeginProc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pOutput_job->vBeginProcOneCmd();
+}
+
+/*----------------------------------------------------------------------------*/
 /* create output processor                                                    */
 /*----------------------------------------------------------------------------*/
 void Job::vOutputCreate(void)
@@ -774,6 +784,16 @@ void Job::vOutputDestroy(void)
 void Job::vOutputEnabled(bool bEnabled)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* end output processor                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vOutputEndProc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pOutput_job->vEndProcOneCmd();
 }
 
 /*----------------------------------------------------------------------------*/
