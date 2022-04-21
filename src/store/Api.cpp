@@ -89,15 +89,15 @@ Job* Api::pAllocJob(Stz* szJobNm)
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
-void Api::vExecuteJob(Job* pJob)
+void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
 {
   _static_
   
   Session* pSession = pJob->pSession();
   
-  pSession->m_pOutput->vAssertEmptyQueue();
+  pSession->m_pOutput_ssn->vAssertEmptyQueue();
 
-  pSession->m_pOutput->vBeginProcOneCmd();
+  pSession->m_pOutput_ssn->vBeginProcOneCmd();
       
 
   pJob->vMutexCreate();
@@ -105,7 +105,6 @@ void Api::vExecuteJob(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();
-  TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //RASSERT(! pSession->bHasCascade());
@@ -401,24 +400,24 @@ void Api::vReapableJob(Job*& rpJob)
     
   Session* pSession = rpJob->pSession();
   
-  if (rpJob && rpJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
-    pSession->m_pOutput->vProcessBufferQueue(rpJob);
+  if (rpJob && rpJob->bIsPipeline() && ! pSession->m_pOutput_ssn->m_bExitMarker)
+    pSession->m_pOutput_ssn->vProcessBufferQueue(rpJob);
 
-  pSession->m_pOutput->m_pOutputQueue->vReset();
-  pSession->m_pOutput->vEndProcOneCmd();
+  pSession->m_pOutput_ssn->m_pOutputQueue->vReset();
+  pSession->m_pOutput_ssn->vEndProcOneCmd();
   
   rpJob->vReapable(true);
       
   
   
-  if (pSession->m_pOutput->m_pStreamDef_result) {
-    StreamDef* pStreamDef = pSession->m_pOutput->m_pStreamDef_result;
-    pSession->m_pOutput->m_pStreamDef_result = nullptr;
+  if (pSession->m_pOutput_ssn->m_pStreamDef_result) {
+    StreamDef* pStreamDef = pSession->m_pOutput_ssn->m_pStreamDef_result;
+    pSession->m_pOutput_ssn->m_pStreamDef_result = nullptr;
     delete pStreamDef;
   }
   
-  pSession->m_pOutput->m_bExitMarker      = false;
-  pSession->m_pOutput->m_bExitEarlyMarker = false;
+  pSession->m_pOutput_ssn->m_bExitMarker      = false;
+  pSession->m_pOutput_ssn->m_bExitEarlyMarker = false;
   
   rpJob = nullptr;
 }
@@ -468,7 +467,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
 
-  TagSet* pCmdTagSet =  & pSession->m_oCmdTagSet;
+  TagSet* pCmdTagSet =  new TagSet;
   pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
   eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
@@ -492,6 +491,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
+  delete pCmdTagSet;
 
   if (eError) {
     return eError;

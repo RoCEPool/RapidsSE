@@ -2638,7 +2638,7 @@ void AM::vAttachMap(Header* aHeader) {
 
 Queue* AM::pOutputQueue(Session* pSession) {
     
-  return pSession->m_pOutput->m_pOutputQueue;
+  return pSession->m_pOutput_ssn->m_pOutputQueue;
 }
 
 

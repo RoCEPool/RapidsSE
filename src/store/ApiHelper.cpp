@@ -51,9 +51,9 @@ void ApiHelper::vReapableJob(Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 /* execute job                                                                */
 /*----------------------------------------------------------------------------*/
-void ApiHelper::vExecuteJob(Job* pJob)
+void ApiHelper::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
 {
-  Api::vExecuteJob(pJob);
+ Api::vExecuteJob(pJob,pCmdTagSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,8 +119,6 @@ eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd)
 /*----------------------------------------------------------------------------*/
 eEC ApiHelper::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
-  //TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
-
   eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError)
     return eError;
@@ -142,10 +140,10 @@ void ApiHelper::vPrintResults(Job* pJob)
 {
   // start the buffer queue processing while the pipeline ops are running
   if (pJob->bIsPipeline())
-    m_pSession->m_pOutput->vProcessBufferQueue(pJob);
+    m_pSession->m_pOutput_ssn->vProcessBufferQueue(pJob);
 
-  RASSERT(! m_pSession->m_pOutput->m_bExecErr );
-  RASSERT(! m_pSession->m_pOutput->m_bCmdErr );
+  RASSERT(! m_pSession->m_pOutput_ssn->m_bExecErr );
+  RASSERT(! m_pSession->m_pOutput_ssn->m_bCmdErr );
 
   if (pJob->bIsInError()) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
@@ -159,9 +157,9 @@ void ApiHelper::vPrintResults(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vResetResults(void)
 {
-  m_pSession->m_pOutput->m_pOutputQueue->vReset();
+  m_pSession->m_pOutput_ssn->m_pOutputQueue->vReset();
   
-  m_pSession->m_pOutput->vEndProcOneCmd();
+  m_pSession->m_pOutput_ssn->vEndProcOneCmd();
 }
 
 /*============================================================================*/
