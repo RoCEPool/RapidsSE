@@ -43,8 +43,6 @@ namespace STORE
 
     DicStack m_oDicStack;     // dictionary stack
  
-    //Output*  m_pOutput_ssn;       // output processor
-
     Tx*      m_pTx;           // current transaction
   
     i8       m_iCmdNo;        // the sequence no of the request from that session

@@ -94,11 +94,7 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
   _static_
   
   Session* pSession = pJob->pSession();
-  
-  //pSession->m_pOutput_ssn->vAssertEmptyQueue();
-
-  //pSession->m_pOutput_ssn->vBeginProcOneCmd();
-      
+        
 
   pJob->vMutexCreate();
   pJob->vOutputCreate();

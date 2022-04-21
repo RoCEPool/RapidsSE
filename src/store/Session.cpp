@@ -92,9 +92,6 @@ Session::Session(void)
   m_bSystemCloser = false;
   
   // -- -- -- -- -- --
-  //m_pOutput_ssn           = nullptr;
-  
-  
   
   m_iCmdNo = 0;
 
@@ -285,11 +282,6 @@ void Session::vFinaliseSession(i8 i_NextFree)
   
   m_pTx        = nullptr;
   
-  // -- -- -- -- -- --
-  
-  //if (m_pOutput_ssn)
-  //  delete m_pOutput_ssn;
-  //m_pOutput_ssn = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -405,8 +397,6 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
 
   //fprintf(stderr,"eInit M\n");
   
-  //m_pOutput_ssn = new Output(nullptr,this);
-
   return EC_NONE;
 }
 
