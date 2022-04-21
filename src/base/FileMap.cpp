@@ -4,10 +4,11 @@
 
 #include "BASE.h"
 #include "FileMap.hpp"
+#include "CmdLineArgs.hpp"
 
 //extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
-
+extern CmdLineArgs  gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -48,10 +49,12 @@ FileMap::FileMap(void)
     : Object(CN_FILEMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP);
+  m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
 
-    vTrace("Created file map %p: sizeof(FileMap)=%lldB\n"_Stz,
+    vTrace("Created file map %p: sizeof(FileMap)=%lldB, pathToPageFile: %s\n"_Stz,
            this,
-           sizeof(FileMap));
+           sizeof(FileMap),
+           m_szFilePath);
 
   vInitialise();
 

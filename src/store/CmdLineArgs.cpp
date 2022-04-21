@@ -80,6 +80,7 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_sGridName     = "SEgrid"_Stz;
   m_xSysArgs.m_sNodeName     = "node"_Stz;
   m_xSysArgs.m_iNonPageableSize  = (12 * C_SIZE_POOL_BUFFER);
+  m_xSysArgs.m_sPageFilePath = "../../tmp/pfile.dat"_Stz;
   m_xSysArgs.m_nPtnsPerNode  = 4;
   m_xSysArgs.m_aRegionAddr   = (void*)C_ADR_REGION;
   m_xSysArgs.m_sRegionName   = ""_Stz;
