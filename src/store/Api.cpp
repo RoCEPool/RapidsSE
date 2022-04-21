@@ -608,9 +608,7 @@ void Api::vWaitJob(Job* pJob)
 {
   _static_
     
-  Session* pSession = pJob->pSession();
-  
-  //pSession->m_oMutex.vObserve(true);
+  //pJob->m_oMutex.vObserve(true);
   Api::vMutexWaitCond(pJob);
   
   pJob->vResponseTimerUpdate();

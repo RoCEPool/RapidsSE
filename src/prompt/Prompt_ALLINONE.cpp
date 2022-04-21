@@ -3016,6 +3016,7 @@ bool PROMPT::bPrompt_output(SePrompt* pPrompt)
     
     vTrace("OUTPUT DISABLE\n"_Stz);
     pOutput->vPrintEnabled(false);
+    pPrompt->vOutputEnabled(false);
   }
   else
   if (pPrompt->pInpTknVec()->nItems() == 2 &&
@@ -3023,9 +3024,10 @@ bool PROMPT::bPrompt_output(SePrompt* pPrompt)
 
     vTrace("OUTPUT ENABLE\n"_Stz);
     pOutput->vPrintEnabled(true);
+    pPrompt->vOutputEnabled(true);
   }
   else {
-    if (pOutput->bPrintEnabled())
+    if (pOutput->bPrintEnabled() || pPrompt->bOutputEnabled())
       vTrace("OUTPUT IS ENABLED\n"_Stz);
     else
       vTrace("OUTPUT IS DISABLED\n"_Stz);

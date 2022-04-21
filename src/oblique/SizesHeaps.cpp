@@ -533,7 +533,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Scheduler),          HT_INVALID   ,0 FILL }, // CN_SCHEDULER
   { sizeof(Schema),             HT_T_TINY    ,0 FILL }, // CN_SCHEMA
   { sizeof(SeApi),              HT_T_LARGE   ,0 FILL }, // CN_SEAPI
-  { sizeof(SeDeputy),           HT_T_TINY    ,0 FILL }, // CN_SEDEPUTY
+  { sizeof(SeDeputy),           HT_T_MEDIUM  ,0 FILL }, // CN_SEDEPUTY
   { sizeof(SeeMe),              HT_INVALID   ,0 FILL }, // CN_SEEME
   { sizeof(SenCompiler),        HT_T_TINY    ,0 FILL }, // CN_SENCOMPILER
   { sizeof(Sends),              HT_T_TINY    ,0 FILL }, // CN_SENDS

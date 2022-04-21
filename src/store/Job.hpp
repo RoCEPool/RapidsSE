@@ -172,6 +172,7 @@ namespace STORE
     void vMutexUnlock(void);
     void vMutexWait(void);
 
+    void vOutputEnabled(bool bEnabled);
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);
   

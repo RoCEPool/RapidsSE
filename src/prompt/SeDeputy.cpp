@@ -159,7 +159,7 @@ void SeDeputy::vExecuteJob(void)
     vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
   RASSERT(m_pSession == m_pJob->pSession());
     
-  TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
+  TagSet* pCmdTagSet = this->pCmdTagSet();
 
   ApiHelper::vExecuteJob(m_pJob,pCmdTagSet);
 }
@@ -181,7 +181,7 @@ eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
+  TagSet* pCmdTagSet = this->pCmdTagSet();
 
   TagSet* pSsnTagSet = & m_pSession->m_oSsnTagSet;
   pCmdTagSet->vCopy(pSsnTagSet);
@@ -220,6 +220,16 @@ bool SeDeputy::bAvailable(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get cmd tag set                                                            */
+/*----------------------------------------------------------------------------*/
+TagSet* SeDeputy::pCmdTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return & m_oCmdTagSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* signal this deputy to execute its job                                      */
 /*----------------------------------------------------------------------------*/
 void SeDeputy::vDeputiseJob(void)
@@ -240,16 +250,6 @@ Job* SeDeputy::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get job tag set                                                            */
-/*----------------------------------------------------------------------------*/
-TagSet* SeDeputy::pJobTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return &m_pSession->m_oCmdTagSet;
 }
 
 /*----------------------------------------------------------------------------*/

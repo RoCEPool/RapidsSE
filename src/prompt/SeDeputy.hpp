@@ -26,6 +26,8 @@ namespace PROMPT
 
     Job*      m_pJob;
   
+    TagSet   m_oCmdTagSet;    // extra tags gleaned from the command
+
     // must be last
     Footer m_xFooter;
   
@@ -48,11 +50,10 @@ namespace PROMPT
     // -- -- -- -- -- --
   
     bool bAvailable(void);
+    TagSet* pCmdTagSet(void);
     void vDeputiseJob(void);
     Input* pInput(void);
     Job* pJob(void);
-    TagSet* pJobTagSet(void);
-
     void vReportTime(void);
     Session* pSession(void);
     void vTerminate(void);

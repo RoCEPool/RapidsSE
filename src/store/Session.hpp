@@ -42,8 +42,7 @@ namespace STORE
     i8       m_i_FixedPtn;    // specific partition being processed
 
     DicStack m_oDicStack;     // dictionary stack
-    TagSet   m_oCmdTagSet;    // extra tags gleaned from the command
-
+ 
     Output*  m_pOutput_ssn;       // output processor
 
     Tx*      m_pTx;           // current transaction

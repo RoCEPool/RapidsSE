@@ -717,6 +717,12 @@ void Job::vMutexWait(void)
   m_pMutex_job->vWait(this);
 }
 
+/*----------------------------------------------------------------------------*/
+/* set if output is enabled                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vOutputEnabled(bool bEnabled)
+{
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
