@@ -3009,7 +3009,7 @@ bool PROMPT::bPrompt_output(SePrompt* pPrompt)
   RASSERT(pPrompt);
 
   Session* pSession = pPrompt->pSession();
-  Output* pOutput = pSession->m_pOutput;
+  Output* pOutput = pSession->m_pOutput_ssn;
 
   if (pPrompt->pInpTknVec()->nItems() == 2 &&
       pPrompt->pInpTknVec()->pGet(1)->bSame("disable"_Stz)) {

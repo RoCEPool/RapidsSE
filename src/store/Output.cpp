@@ -318,7 +318,7 @@ Operand* Output::pPopBufferQueue_blocking(Job* pJob)
   
   for (;;) {
     
-    Operand* pOperand = _pOperand(m_pSession->m_pOutput->m_pOutputQueue->pPop());
+    Operand* pOperand = _pOperand(m_pSession->m_pOutput_ssn->m_pOutputQueue->pPop());
     
     if (pOperand)
       return pOperand;

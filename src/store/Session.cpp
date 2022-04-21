@@ -92,7 +92,7 @@ Session::Session(void)
   m_bSystemCloser = false;
   
   // -- -- -- -- -- --
-  m_pOutput           = nullptr;
+  m_pOutput_ssn           = nullptr;
   
   
   
@@ -287,9 +287,9 @@ void Session::vFinaliseSession(i8 i_NextFree)
   
   // -- -- -- -- -- --
   
-  if (m_pOutput)
-    delete m_pOutput;
-  m_pOutput = nullptr;
+  if (m_pOutput_ssn)
+    delete m_pOutput_ssn;
+  m_pOutput_ssn = nullptr;
   
   m_oCmdTagSet.vReset();
 }
@@ -407,9 +407,9 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
 
   //fprintf(stderr,"eInit M\n");
   
-  m_pOutput = new Output(this);
+  m_pOutput_ssn = new Output(this);
 
-  m_pOutput->m_pOutputQueue = new Queue(CN_QUEUE);
+  m_pOutput_ssn->m_pOutputQueue = new Queue(CN_QUEUE);
 
   return EC_NONE;
 }

@@ -280,7 +280,7 @@ void Job::vCascadeReset(void)
   m_pTask = nullptr;
 
   Session* pSession = this->pSession();
-  pSession->m_pOutput->vDrainBufferQueue(this);
+  pSession->m_pOutput_ssn->vDrainBufferQueue(this);
 
   vDebugPoint();
 }
