@@ -9,6 +9,38 @@
 #include "Shape.hpp"
 #include "Combined.hpp"
 
+// information about the stage being combined and its Operators
+// this will help in adding in the rules
+struct stageOps {
+
+  i8 m_iAggregOp;
+  i8 m_iCombinedOp;
+  i8 m_iConsumeOp;
+  i8 m_iFilterOp;
+  i8 m_iHashOp;
+  i8 m_iIndexJoinOp;
+  i8 m_iIndexScanOp;
+  i8 m_iKeyExistsOp;
+  i8 m_iLimitOp;
+  i8 m_iOrdAggOp;
+  i8 m_iProjectOp;
+  i8 m_iScanOp;
+  i8 m_iSendSE;
+  i8 m_iSortOp;
+  i8 m_iTopOp;
+
+  bool m_bPayloadOp;
+  bool m_bGeneratePotTub;
+  bool m_bGenerateFun3;
+
+  Op* m_pCombinedOp;
+  Op* m_oHavingFilterOp;
+  Op* m_pPostProjectOp;
+  Op* m_pLimitOp;
+
+  s256 m_sHashExpr;
+};
+
 namespace STORE
 {
 static const i8 C_MAX_SHAPES = 32;
@@ -26,6 +58,7 @@ static const i8 C_MAX_SHAPES = 32;
 
     TypedStack* m_pPostStack;
 
+    stageOps   m_xStageOps;
     CodeSynth* m_pBannerHead;
     CodeSynth* m_pBannerTail;
     CodeSynth* m_pPreliminary;
@@ -78,6 +111,8 @@ static const i8 C_MAX_SHAPES = 32;
     void vAppendFuncHeader2(void);
     void vAppendFuncHeader3(void);
     void vAppendHeaderEntries(i8 iStage);
+
+    eEC eCollectStage(Combined* pCombined, Stream* pStream);
 
     void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
     u8   uGetSelectColumns(Stream* pStream);
