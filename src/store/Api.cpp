@@ -105,7 +105,6 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();
-  //TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //RASSERT(! pSession->bHasCascade());
@@ -468,7 +467,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
 
-  TagSet* pCmdTagSet =  & pSession->m_oCmdTagSet;
+  TagSet* pCmdTagSet =  new TagSet;
   pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
   eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
@@ -492,6 +491,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
+  delete pCmdTagSet;
 
   if (eError) {
     return eError;

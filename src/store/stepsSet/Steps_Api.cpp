@@ -141,12 +141,13 @@ void Step::vApiExecuteCommand(void)
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
 
-  TagSet* pCmdTagSet =  & pSession->m_oCmdTagSet;
+  TagSet* pCmdTagSet =  new TagSet;
   pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
   eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError) {
     delete pCmdTknVec;
+    delete pCmdTagSet;
     Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
@@ -183,6 +184,7 @@ void Step::vApiExecuteCommand(void)
   eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
+  delete pCmdTagSet;
 
   if (eError) {
     
