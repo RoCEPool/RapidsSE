@@ -507,7 +507,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   bool bGenerateFun3 = true;
 
   Shape* pShape;
-  Op* pCombinedOp = nullptr;
   Op* pHavingFilterOp = nullptr;
   Op* pPostProjectOp = nullptr;
   Op* pLimitOp = nullptr;
@@ -558,7 +557,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
     // break when we reach the combined OP
     if (pOp->szOpNm()->bSame("combined"_Stz)) {
-      pCombinedOp = pOp;
       break;
     }
 
@@ -952,7 +950,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // synthesize code for allotting final tub row/ pot row
-  Op* pLastOp = pStream->pGet(pCombinedOp->i_Op() - 1);
+  Op* pLastOp = pStream->pGet(m_xStageOps.m_pCombinedOp->i_Op() - 1);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // synthesize code for allotting tub row
@@ -1022,10 +1020,12 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
   bool bInflateGenerated = false;
   eEK  eExprKind = EK_NONE;
 
-  Op* pCombinedOp = nullptr;
-
   Tub* pTub = _pTub(pCombined->aCombinedT()->m_pTub);
   Pot* pPot = _pPot(pCombined->aCombinedT()->m_pPot);
+
+  // collect the op information from the stage
+  eEC eError = eCollectStage(pCombined, pStream);
+  RASSERT(eError != EC_NONE);
 
   if (pStream->pGet(1)->szOpNm()->bSame("indexScan"_Stz)) {
     m_bIndexScan = true;
@@ -1049,7 +1049,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
 
     // break when we reach the combined OP
     if (pOp->szOpNm()->bSame("combined"_Stz)) {
-      pCombinedOp = pOp;
       break;
     }
 
@@ -1174,7 +1173,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
   }
 
   // get the lastOp
-  Op* pLastOp = pStream->pGet(pCombinedOp->i_Op() - 1);
+  Op* pLastOp = pStream->pGet(m_xStageOps.m_pCombinedOp->i_Op() - 1);
   LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
@@ -3012,8 +3011,8 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // Should be the last OP before CombinedOp
-      if (m_xStageOps.m_iHashOp) {
-        vTrace("Error: Cannot have multiple hashOp's (%s)!!!\n"_Stz,
+      if (i_Op != pStream->nItems() - 3) {
+        vTrace("Error: HashOP should be the last OP before combinedOP (%s)!!!\n"_Stz,
                m_szStageNm.azChar());
         return EC_INVALID_PIPELINE;
       }
@@ -3086,6 +3085,21 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     vTrace("Error: Missing combinedOp (%s)!!!\n"_Stz,
            m_szStageNm.azChar());
     return EC_INVALID_PIPELINE;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Should have a hashCast in the SendSE if hashOP
+  if (m_xStageOps.m_iHashOp) {
+    Op *pOp = pStream->pGet(pStream->nItems() - 1);
+
+    // should be a SendSE OP
+    RASSERT(pOp->szOpNm()->bSame("sendSE"_Stz));
+
+    if (pOp->eSendCast() != XK_HASHCAST) {
+      vTrace("Error: Missing hashcast (hashOP) (%s)!!!\n"_Stz,
+             m_szStageNm.azChar());
+      return EC_INVALID_PIPELINE;
+    }
   }
 
   return EC_NONE;
