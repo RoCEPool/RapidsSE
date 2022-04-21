@@ -499,7 +499,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   bool bInflateGenerated = false;
 
-  bool bPayloadOp = false;
   bool bSort = false;
 
   bool bGeneratePotTub = true;
@@ -525,6 +524,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   sReturnLabel = ""_Stz;
   sLabelLoop = "L_AdvanceNextRow"_Stz;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect the op information from the stage
   eEC eError = eCollectStage(pCombined, pStream);
   if (eError != EC_NONE)
@@ -641,17 +641,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the aggregOp
     if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // check stage-operator rules
-      if (bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-
-        return EC_INVALID_PIPELINE;
-      }
-
-      bPayloadOp = true;
-
       // get the project kind
       eExprKind = pLogicUnit->m_eExprKind;
 
@@ -707,7 +696,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("hash"_Stz)) {
       pCombined->aCombinedT()->m_iHashRows = 1;
 
-      if (bPayloadOp)
+      if (m_xStageOps.m_bPayloadOp)
         continue;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -751,7 +740,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       pCombined->aCombinedT()->m_iLimitRows = 1;
 
       // limit after a payload will move to EOSHandler
-      if (bPayloadOp) {
+      if (m_xStageOps.m_bPayloadOp) {
         continue;
       }
 
@@ -764,17 +753,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the orderByOp
     if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // check stage-operator rules
-      if (bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-
-        return EC_INVALID_PIPELINE;
-      }
-
       bSort = true;
-      bPayloadOp = true;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // look for project/limit ?
@@ -850,7 +829,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         } else {
 
           RASSERT(eExprKind == EK_AGGREG);
-          bPayloadOp = true;
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           vSetupProjectAgg(pCombined, pStream, pOp);
@@ -910,8 +888,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the topOP
     if (pOp->szOpNm()->bSame("top"_Stz)) {
-
-      bPayloadOp = true;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupTop(pCombined, pStream, pOp);
@@ -1014,7 +990,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
 
   // collect the op information from the stage
   eEC eError = eCollectStage(pCombined, pStream);
-  RASSERT(eError != EC_NONE);
+  RASSERT(eError == EC_NONE);
 
   if (pStream->pGet(1)->szOpNm()->bSame("indexScan"_Stz)) {
     m_bIndexScan = true;
@@ -3063,6 +3039,12 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
         return EC_INVALID_PIPELINE;
       }
 
+      eEK eExprKind = pOp->pOpLogicUnit()->m_eExprKind;
+
+      if (eExprKind == EK_AGGREG) {
+        m_xStageOps.m_bPayloadOp = true;
+      }
+
       m_xStageOps.m_iProjectOp++;
     }
 
@@ -3075,13 +3057,26 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // sortOp
-    if (pOp->szOpNm()->bSame("sortOp"_Stz)) {
+    if (pOp->szOpNm()->bSame("sort"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE PAYLOAD OP's
+      if (m_xStageOps.m_bPayloadOp) {
+        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_bPayloadOp = true;
       m_xStageOps.m_iSortOp++;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // topOp
-    if (pOp->szOpNm()->bSame("topOp"_Stz)) {
+    if (pOp->szOpNm()->bSame("top"_Stz)) {
+
+      m_xStageOps.m_bPayloadOp = true;
       m_xStageOps.m_iTopOp++;
     }
   }
