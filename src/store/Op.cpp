@@ -1350,8 +1350,16 @@ void Op::vPipeToOutput(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   Session* pSession = MY::pSession();
+
+  Job* pJob = MY::pJob();
+  RASSERT(pJob);
   
-  //RASSERT(MY::pJob()->pOutput());
+  Output* pOutput = pJob->pOutput();
+  if (! pOutput) {
+    Job* pParentJob = pJob->pOriginatingParentJob();
+    pOutput = pParentJob->pOutput();
+  }
+  RASSERT(pOutput);
   
   Queue* pOutputQueue = AM::pOutputQueue(pSession);
 

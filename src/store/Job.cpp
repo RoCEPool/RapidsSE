@@ -783,10 +783,11 @@ Job* Job::pOriginatingParentJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
       
-  RASSERT(bIsOriginator());
+  //RASSERT(bIsOnOrigin());
   
+  Job* pParentJob = AM::OLIST::pFindJob(m_tJobId);
   
-  return nullptr;
+  return pParentJob;
 }
 
 /*----------------------------------------------------------------------------*/
