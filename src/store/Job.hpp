@@ -11,6 +11,7 @@
 
 #include "JobMetrics.hpp"
 #include "CmdId.hpp"
+#include "Output.hpp"
 
 
 /*                      IMPORTANT NOTE
@@ -67,6 +68,7 @@ namespace STORE
     eEC   m_eError_job;      // error when starting job
                              // DOUBLE CHECK THIS BELONGS HERE
 
+    Output*  m_pOutput_job;  // output processor                       POST_RECV
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running on participant node                    PARTICIPANT
@@ -172,6 +174,9 @@ namespace STORE
     void vMutexUnlock(void);
     void vMutexWait(void);
 
+    Output* pOutput(void);
+    void vOutputCreate(void);
+    void vOutputDestroy(void);
     void vOutputEnabled(bool bEnabled);
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);

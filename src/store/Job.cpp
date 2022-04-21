@@ -79,7 +79,7 @@ Job::Job(Stz*  szJobNm,
   m_eJobPhase = JP_NONE;
   m_eJobState = JS_ACTIVE;
   m_eError_job    = EC_NONE;
-  
+  m_pOutput_job = nullptr;
   
   // m_oJobTags
   // m_xResult
@@ -718,10 +718,44 @@ void Job::vMutexWait(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get output processor                                                       */
+/*----------------------------------------------------------------------------*/
+Output* Job::pOutput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pOutput_job;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create output processor                                                    */
+/*----------------------------------------------------------------------------*/
+void Job::vOutputCreate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(! m_pOutput_job);
+  
+  m_pOutput_job = new Output(this,nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destroy output processor                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vOutputDestroy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  delete m_pOutput_job;
+  m_pOutput_job = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set if output is enabled                                                   */
 /*----------------------------------------------------------------------------*/
 void Job::vOutputEnabled(bool bEnabled)
 {
+  _precondition_(_ADDRESS_,_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -870,17 +904,14 @@ void Job::vPostRecv(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
   
   m_bWasReceived = true;
-  
   m_eJobList     = JL_NONE;
     
   m_pTask        = nullptr;
-
   m_p_ResponseOp = nullptr;
+  m_pOutput_job  = nullptr;
   m_pSingularOp  = nullptr;
-  
+  m_pMutex_job   = nullptr;
   m_pJobMetricsChain = nullptr;
-  
-  m_pMutex_job = nullptr;
 
   m_okLock.vResetLock();
   m_okLock.vResetStats();
