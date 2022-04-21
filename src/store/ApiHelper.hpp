@@ -35,7 +35,7 @@ namespace STORE
     void vPrintResults(Job* pJob);
   
     void vReapableJob(Job*& rpJob);
-    void vResetResults(void);
+    void vResetResults(Job* pJob);
     i8   nRowCount(void);
     i8   nRowsAffected(void);
 

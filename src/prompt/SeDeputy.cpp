@@ -138,7 +138,7 @@ void SeDeputy::vDeputyLoop(void)
     
     vReportTime();
       
-    ApiHelper::vResetResults();
+    ApiHelper::vResetResults(m_pJob);
 
     if (! m_pJob->bHasTag(C_TAG_BG)) {
       m_pSePrompt->pMutex()->vLock(m_pSePrompt);

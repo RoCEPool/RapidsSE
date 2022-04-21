@@ -155,7 +155,7 @@ void ApiHelper::vPrintResults(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* reset results                                                              */
 /*----------------------------------------------------------------------------*/
-void ApiHelper::vResetResults(void)
+void ApiHelper::vResetResults(Job* pJob)
 {
   m_pSession->m_pOutput_ssn->m_pOutputQueue->vReset();
   
