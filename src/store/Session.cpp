@@ -407,7 +407,7 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
 
   //fprintf(stderr,"eInit M\n");
   
-  m_pOutput_ssn = new Output(this);
+  m_pOutput_ssn = new Output(nullptr,this);
 
   m_pOutput_ssn->m_pOutputQueue = new Queue(CN_QUEUE);
 

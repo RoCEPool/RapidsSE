@@ -39,7 +39,7 @@ __aFooterFunction(Output)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Output::Output(Session* pSession)
+Output::Output(Job* pJob, Session* pSession)
 : Object(CN_OUTPUT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
@@ -157,39 +157,6 @@ void Output::vDrainBufferQueue(Job* pJob)
   }
 
 }
-/*----------------------------------------------------------------------------*/
-//void Output::vDrainBufferQueue(Session* pSession)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-//
-//  Operand* pOperand;
-//
-//  while ( (pOperand = pPopBufferQueue_blocking(pSession)) ) {
-//    eCN eOperandClass = pOperand->eGetClassNo();
-//
-//    if (eOperandClass == CN_MARKER) {
-//      Marker *pMarker = _pMarker(pOperand);
-//      eOM eOpMarker = pMarker->eOpMarker();
-//
-//      if (eOpMarker == OM_CANCELMARKER)
-//        m_bExitMarker = true;
-//
-//      if (eOpMarker == OM_EXITMARKER)
-//        m_bCancelMarker = true;
-//
-//      AM::vDeleteOperand(pOperand);
-//
-//      if (eOpMarker == OM_CANCELMARKER ||
-//          eOpMarker == OM_EXITMARKER)
-//        break;
-//    }
-//    else {
-//      AM::vDeleteOperand(pOperand);
-//    }
-//  }
-//
-//}
-
 
 /*----------------------------------------------------------------------------*/
 /* end procssing queue for one command                                        */
@@ -328,9 +295,7 @@ void Output::vPrintResult(void)
 Operand* Output::pPopBufferQueue_blocking(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-  
-  RASSERT(this == m_pSession->m_pOutput_ssn);
-  
+    
   for (;;) {
     
     Operand* pOperand = _pOperand(m_pOutputQueue->pPop());
