@@ -51,12 +51,9 @@ void ApiHelper::vReapableJob(Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 /* execute job                                                                */
 /*----------------------------------------------------------------------------*/
-void ApiHelper::vExecuteJob(Job* pJob)
+void ApiHelper::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
 {
-  Session* pSession = pJob->pSession();
-  TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
-
-  Api::vExecuteJob(pJob,pCmdTagSet);
+ Api::vExecuteJob(pJob,pCmdTagSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,8 +119,6 @@ eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd)
 /*----------------------------------------------------------------------------*/
 eEC ApiHelper::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
-  //TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
-
   eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError)
     return eError;

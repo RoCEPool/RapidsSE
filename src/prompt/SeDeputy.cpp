@@ -159,7 +159,9 @@ void SeDeputy::vExecuteJob(void)
     vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
   RASSERT(m_pSession == m_pJob->pSession());
     
-  ApiHelper::vExecuteJob(m_pJob);
+  TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
+
+  ApiHelper::vExecuteJob(m_pJob,pCmdTagSet);
 }
 
 /*----------------------------------------------------------------------------*/
