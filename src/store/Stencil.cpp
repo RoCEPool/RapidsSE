@@ -71,7 +71,6 @@ Stencil::Stencil(void)
 
   m_xStageOps.m_iAggregOp    = 0;
   m_xStageOps.m_iCombinedOp  = 0;
-  m_xStageOps.m_iConsumeOp   = 0;
   m_xStageOps.m_iFilterOp    = 0;
   m_xStageOps.m_iHashOp      = 0;
   m_xStageOps.m_iIndexJoinOp = 0;
@@ -81,7 +80,6 @@ Stencil::Stencil(void)
   m_xStageOps.m_iOrdAggOp    = 0;
   m_xStageOps.m_iProjectOp   = 0;
   m_xStageOps.m_iScanOp      = 0;
-  m_xStageOps.m_iSendSE      = 0;
   m_xStageOps.m_iSortOp      = 0;
   m_xStageOps.m_iTopOp       = 0;
 
@@ -498,7 +496,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   s4K sLabelNext;
   s4K sLabelOrdAgg;
   s4K sFunSignature;
-  s256 sHashExpr;
 
   bool bInflateGenerated = false;
 
@@ -549,12 +546,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
     if (pOp->szOpNm()->bSame("hash"_Stz)) {
       pCombined->aCombinedT()->m_iHashRows = 1;
-
-      TagSet* pOpTags = pOp->pOpTags();
-
-      // get hash expr from OP
-      sHashExpr = pOpTags->szValue(C_TAG_EXPR);
-
     }
   }
 
@@ -694,7 +685,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupEosPayload(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosProjectGby(pCombined, pStream, pOp, pHavingFilterOp, pLimitOp, sHashExpr);
+      vSketchEosProjectGby(pCombined, pStream, pOp, pHavingFilterOp, pLimitOp);
       bGeneratePotTub = false;
       bGenerateFun3 = false;
 
@@ -717,10 +708,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the hashOP
     if (pOp->szOpNm()->bSame("hash"_Stz)) {
-      //pCombined->aCombinedT()->m_iHashRows = 1;
-
-      // get hash expr from OP
-      //sHashExpr = pOpTags->szValue(C_TAG_EXPR);
+      pCombined->aCombinedT()->m_iHashRows = 1;
 
       if (bPayloadOp)
         continue;
@@ -827,7 +815,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupEosPayload(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosSort(pCombined, pStream, pOp, pPostProjectOp, pLimitOp, sHashExpr);
+      vSketchEosSort(pCombined, pStream, pOp, pPostProjectOp, pLimitOp);
       bGeneratePotTub = false;
       bGenerateFun3 = false;
 
@@ -902,7 +890,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           }
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          vSketchEosProjectAgg(pCombined, pStream, pOp, pHavingFilterOp, pLimitOp, sHashExpr);
+          vSketchEosProjectAgg(pCombined, pStream, pOp, pHavingFilterOp, pLimitOp);
           bGeneratePotTub = false;
           bGenerateFun3 = false;
 
@@ -949,7 +937,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupEosPayload(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosTop(pCombined, pStream, pOp, sHashExpr);
+      vSketchEosTop(pCombined, pStream, pOp);
       bGeneratePotTub = false;
       bGenerateFun3 = false;
     }
@@ -989,7 +977,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     sLabel.vSprint("L_AddRowToTubPot"_Stz);
 
     if (pCombined->aCombinedT()->m_iHashRows)
-      pShape = pSketchPot(pCombined, pLastOp, ePrevStencil, pPreExpStack, sHashExpr, sLabel, sLabelLoop, sLabelOrdAgg);
+      pShape = pSketchPot(pCombined, pLastOp, ePrevStencil, pPreExpStack, sLabel, sLabelLoop, sLabelOrdAgg);
     else
       pShape = pSketchTub(pCombined, pLastOp, ePrevStencil, pPreExpStack, sLabel, sLabelLoop, sLabelOrdAgg);
 
@@ -1714,7 +1702,7 @@ void Stencil::vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp) {
 /* sketch code for Eos fun3 for Project agg OP                                */
 /*----------------------------------------------------------------------------*/
 void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                                   Op* pHavingFilterOp, Op* pLimitOp, Stz* sHashExpr) {
+                                   Op* pHavingFilterOp, Op* pLimitOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1774,7 +1762,7 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
   }
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz, ""_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz,""_Stz);
 
@@ -1793,7 +1781,7 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
 /* sketch code for Eos fun3 for Project agg OP                                */
 /*----------------------------------------------------------------------------*/
 void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream,
-                                   Op* pOp, Op* pHavingFilterOp, Op* pLimitOp, Stz* sHashExpr) {
+                                   Op* pOp, Op* pHavingFilterOp, Op* pLimitOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1857,7 +1845,7 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream,
   }
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
 
@@ -1875,7 +1863,7 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream,
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for sort OP                                       */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp, Op* pLimitOp, Stz* sHashExpr) {
+void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp, Op* pLimitOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1965,8 +1953,8 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* 
   }
 
   if (pCombined->aCombinedT()->m_iHashRows)
-   // pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz, ""_Stz);
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
+   // pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, sLabel, "L_ReturnFinal"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
 
@@ -1987,7 +1975,7 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* 
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for top OP                                        */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp, Stz* sHashExpr) {
+void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -2028,7 +2016,7 @@ void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp, Stz* 
   pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, SR_PL, SR_NONE);
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
 
@@ -2474,7 +2462,6 @@ Shape* Stencil::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp,
   s4K sLabelNext;
   s4K sFunSignature;
   s256 szStageNm;
-  s256 sHashExpr;
 
   i8 i_Op = pOp->i_Op();
   CodeSynth *pCodeSynth;
@@ -2723,7 +2710,7 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
 /* sketch pot                                                                 */
 /*----------------------------------------------------------------------------*/
 Shape* Stencil::pSketchPot(Combined* pCombined, Op* pLastOp, eSR ePrevStencil,
-                           IntStack* pPreExpStack, Stz* sHashExpr, Stz* sLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg) {
+                           IntStack* pPreExpStack, Stz* sLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -2737,7 +2724,7 @@ Shape* Stencil::pSketchPot(Combined* pCombined, Op* pLastOp, eSR ePrevStencil,
 
   CodeSynth* pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil, SR_NONE);
 
-  pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, false, sLabel, sLabelLoop, sLabelOrdAgg);
+  pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, false, sLabel, sLabelLoop, sLabelOrdAgg);
   pShape->vCodeSynthB(pCodeSynth);
 
   // delete the postStack. No longer needed
@@ -2954,15 +2941,15 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the hashExpr upfront
-  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
+  // iterate the operators (skipping consumeOP and sendSE)
+  for (i8 i_Op = 1; i_Op < pStream->nItems() - 1; i_Op++) {
 
     // get the op
     Op *pOp = pStream->pGet(i_Op);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // OP after SendSE ?
-    if ( m_xStageOps.m_iSendSE ) {
+    // OP after CombinedOp ?
+    if ( m_xStageOps.m_iCombinedOp ) {
       vTrace("Error: Cannot have OP's after combinedOp (%s)!!!\n"_Stz,
              m_szStageNm.azChar());
       return EC_INVALID_PIPELINE;
@@ -3005,13 +2992,6 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // consumeOP
-    if (pOp->szOpNm()->bSame("consumeOp"_Stz)) {
-      m_xStageOps.m_iConsumeOp++;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // filterOp
     if (pOp->szOpNm()->bSame("filterOp"_Stz)) {
       m_xStageOps.m_iFilterOp++;
@@ -3022,12 +3002,26 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     // hashOp
     if (pOp->szOpNm()->bSame("hash"_Stz)) {
 
-      m_xStageOps.m_iHashOp++;
-      pCombined->aCombinedT()->m_iHashRows = 1;
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE HASH OP's
+      if (m_xStageOps.m_iHashOp) {
+        vTrace("Error: Cannot have multiple hashOp's (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
 
-      TagSet *pOpTags = pOp->pOpTags();
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // Should be the last OP before CombinedOp
+      if (m_xStageOps.m_iHashOp) {
+        vTrace("Error: Cannot have multiple hashOp's (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_iHashOp++;
 
       // get hash expr from OP
+      TagSet *pOpTags = pOp->pOpTags();
       m_xStageOps.m_sHashExpr = pOpTags->szValue(C_TAG_EXPR);
     }
 
@@ -3075,21 +3069,6 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // sendSE
-    if (pOp->szOpNm()->bSame("sendSE"_Stz)) {
-
-      // we should have seen a combinedOP ?
-      if ( !m_xStageOps.m_pCombinedOp ) {
-        vTrace("Error: Missing combinedOp (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_iSendSE++;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // sortOp
     if (pOp->szOpNm()->bSame("sortOp"_Stz)) {
       m_xStageOps.m_iSortOp++;
@@ -3100,6 +3079,13 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     if (pOp->szOpNm()->bSame("topOp"_Stz)) {
       m_xStageOps.m_iTopOp++;
     }
+  }
+
+  // we should have seen a combinedOP ?
+  if ( !m_xStageOps.m_pCombinedOp ) {
+    vTrace("Error: Missing combinedOp (%s)!!!\n"_Stz,
+           m_szStageNm.azChar());
+    return EC_INVALID_PIPELINE;
   }
 
   return EC_NONE;
