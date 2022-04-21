@@ -70,7 +70,7 @@ void Step::vSessionCascadeStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.dicStack@ -- get session dic stack                                 */
+/* [session].dicStack@ -- get session dic stack                               */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionDicStackFetch(void)
 {
@@ -84,7 +84,7 @@ void Step::vSessionDicStackFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.dump -- dump of SE interface                                       */
+/* [session].dump -- dump of SE interface                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionDump(void)
 {
@@ -98,7 +98,7 @@ void Step::vSessionDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [session].hasCascade@ -- fetch bHasCascade from session                     */
+/* [session].hasCascade@ -- fetch bHasCascade from session                    */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionHasCascadeFetch(void)
 {
@@ -112,7 +112,7 @@ void Step::vSessionHasCascadeFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* s[session].hasCascade! -- store bHasCascade into session                    */
+/* [session].hasCascade! -- store bHasCascade into session                    */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionHasCascadeStore(void)
 {
@@ -126,7 +126,7 @@ void Step::vSessionHasCascadeStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.pid -- get pid of SE session                                       */
+/* [session].pid -- get pid of SE session                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionPid(void)
 {
@@ -140,7 +140,7 @@ void Step::vSessionPid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.lastJobId -- get last job id                                       */
+/* [session].lastJobId -- get last job id                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionLastJobId(void)
 {
@@ -185,7 +185,7 @@ void Step::vSessionSystemCloserFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* s[session].systemCloser! -- store m_bSystemCloser into session              */
+/* [session].systemCloser! -- store m_bSystemCloser into session              */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionSystemCloserStore(void)
 {
@@ -199,7 +199,7 @@ void Step::vSessionSystemCloserStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.tablePtn@ -- fetch tablePtn of SE session                           */
+/* [session].tablePtn@ -- fetch tablePtn of SE session                        */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionTablePtnFetch(void)
 {
@@ -213,7 +213,7 @@ void Step::vSessionTablePtnFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.tagSet@ -- fetch tagset of session                                 */
+/* [session].tagSet@ -- fetch tagset of session                               */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionTagSetFetch(void)
 {
@@ -229,7 +229,7 @@ void Step::vSessionTagSetFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.todo@ -- fetch todo of SE session                                  */
+/* [session].todo@ -- fetch todo of SE session                                */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionToDoFetch(void)
 {
@@ -243,7 +243,7 @@ void Step::vSessionToDoFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.toDo! -- store todo of SE session                                  */
+/* [session].toDo! -- store todo of SE session                                */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionToDoStore(void)
 {
@@ -260,7 +260,7 @@ void Step::vSessionToDoStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.tx@ -- fetch tx of SE session                                      */
+/* [session].tx@ -- fetch tx of SE session                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionTxFetch(void)
 {
@@ -276,7 +276,7 @@ void Step::vSessionTxFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.tx! -- store tx of SE session                                      */
+/* [session].tx! -- store tx of SE session                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionTxStore(void)
 {

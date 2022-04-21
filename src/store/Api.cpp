@@ -395,9 +395,7 @@ eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 void Api::vReapableJob(Job*& rpJob)
 {
   _static_
-    
-  Session* pSession = rpJob->pSession();
-  
+      
   if (rpJob && rpJob->bIsPipeline() && ! rpJob->pOutput()->m_bExitMarker)
     rpJob->pOutput()->vProcessBufferQueue(rpJob);
 
@@ -1138,7 +1136,7 @@ void Api::vMutexLock(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* mark job as running and unlock session mutex                               */
+/* mark job as running and unlock mutex                                      */
 /*----------------------------------------------------------------------------*/
 void Api::vMutexUnlock(Job* pJob)
 {
@@ -1152,7 +1150,7 @@ void Api::vMutexUnlock(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* wait for session mutex to be signalled                                     */
+/* wait for mutex to be signalled                                             */
 /*----------------------------------------------------------------------------*/
 void Api::vMutexWaitCond(Job* pJob)
 {

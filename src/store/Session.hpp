@@ -41,7 +41,7 @@ namespace STORE
     
     i8       m_i_FixedPtn;    // specific partition being processed
 
-    DicStack m_oDicStack;     // dictionary stack
+    DicStack m_oDicStack_ssn;     // dictionary stack
  
     Tx*      m_pTx;           // current transaction
   

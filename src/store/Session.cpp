@@ -311,8 +311,8 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
   //fprintf(stderr,"eInit A\n");
   
   // first discard whatever is there on the DicStack
-  for (i8 iCount = m_oDicStack.nItems(); iCount; iCount--)
-    m_oDicStack.vDiscard();
+  for (i8 iCount = m_oDicStack_ssn.nItems(); iCount; iCount--)
+    m_oDicStack_ssn.vDiscard();
   
   //fprintf(stderr,"eInit B\n");
   
@@ -326,25 +326,25 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
   RASSERT(pTenants);
 
   pDic = _pDic(pTenants->pObject());
-  m_oDicStack.vPush(pDic);
+  m_oDicStack_ssn.vPush(pDic);
   
   //fprintf(stderr,"eInit D\n");
   
   // /tenants/boray
-  Word* pTenant = m_oDicStack.pFindInCurrent("boray"_Stz);
+  Word* pTenant = m_oDicStack_ssn.pFindInCurrent("boray"_Stz);
   RASSERT(pTenant);
 
   pDic = _pDic(pTenant->pObject());
-  m_oDicStack.vPush(pDic);
+  m_oDicStack_ssn.vPush(pDic);
 
   //fprintf(stderr,"eInit E\n");
   
   // /tenants/boray/catalogs
-  Word* pCatalogs = m_oDicStack.pFindInCurrent("catalogs"_Stz);
+  Word* pCatalogs = m_oDicStack_ssn.pFindInCurrent("catalogs"_Stz);
   RASSERT(pCatalogs);
 
   pDic = _pDic(pCatalogs->pObject());
-  m_oDicStack.vPush(pDic);
+  m_oDicStack_ssn.vPush(pDic);
 
   //fprintf(stderr,"eInit F\n");
   
@@ -352,24 +352,24 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
     return EC_NONE;
   
   // /tenants/boray/catalogs/rapidsse
-  Word* pCatalog = m_oDicStack.pFindInCurrent(szCatalogName);
+  Word* pCatalog = m_oDicStack_ssn.pFindInCurrent(szCatalogName);
   if ( ! pCatalog)
     return EC_NO_SUCH_CATALOG;
   
   pDic = _pDic(pCatalog->pObject());
-  m_oDicStack.vPush(pDic);
+  m_oDicStack_ssn.vPush(pDic);
 
   //fprintf(stderr,"eInit G\n");
   
   // /tenants/boray/catalogs/rapidsse/schemas
-  Word* pSchemas = m_oDicStack.pFindInCurrent("schemas"_Stz);
+  Word* pSchemas = m_oDicStack_ssn.pFindInCurrent("schemas"_Stz);
   RASSERT(pSchemas);
   
   //fprintf(stderr,"eInit H\n");
   pDic = _pDic(pSchemas->pObject());
   //fprintf(stderr,"eInit I\n");
   
-  m_oDicStack.vPush(pDic);
+  m_oDicStack_ssn.vPush(pDic);
 
   if ( ! szSchemaName )
     return EC_NONE;
@@ -377,23 +377,23 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
   //fprintf(stderr,"eInit J\n");
   
   // /tenants/boray/catalogs/rapidsse/schemas/public
-  Word* pSchema = m_oDicStack.pFindInCurrent(szSchemaName);
+  Word* pSchema = m_oDicStack_ssn.pFindInCurrent(szSchemaName);
   if ( ! pSchema)
     return EC_NO_SUCH_SCHEMA;
   
   pDic = _pDic(pSchema->pObject());
-  m_oDicStack.vPush(pDic);
+  m_oDicStack_ssn.vPush(pDic);
 
   //fprintf(stderr,"eInit K\n");
   
   // /tenants/boray/catalogs/rapidsse/schemas/public/tables
-  Word* pTables = m_oDicStack.pFindInCurrent("tables"_Stz);
+  Word* pTables = m_oDicStack_ssn.pFindInCurrent("tables"_Stz);
   RASSERT(pTables);
   
   //fprintf(stderr,"eInit L\n");
   
   pDic = _pDic(pTables->pObject());
-  m_oDicStack.vPush(pDic);
+  m_oDicStack_ssn.vPush(pDic);
 
   //fprintf(stderr,"eInit M\n");
   
@@ -445,7 +445,7 @@ DicStack* Session::pPathStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return &m_oDicStack;
+  return &m_oDicStack_ssn;
 }
 
 /*----------------------------------------------------------------------------*/
