@@ -134,7 +134,11 @@ void SeDeputy::vDeputyLoop(void)
     
     vExecuteJob();
     
-    vPrintResults();
+    ApiHelper::vPrintResults(m_pJob);
+    
+    vReportTime();
+      
+    ApiHelper::vResetResults();
 
     if (! m_pJob->bHasTag(C_TAG_BG)) {
       m_pSePrompt->pMutex()->vLock(m_pSePrompt);
@@ -191,19 +195,6 @@ eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
   return eError;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print results                                                              */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vPrintResults(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-    
-  ApiHelper::vPrintResults(m_pJob);
-  
-  vReportTime();
-    
-  ApiHelper::vResetResults();
-}
 
 
 /*----------------------------------------------------------------------------*/

@@ -45,7 +45,6 @@ namespace PROMPT
     void vRepeableJob(void);
 
     eEC  ePrepareJob(TokenVec* pCmdTknVec);
-    void vPrintResults(void);
 
     // -- -- -- -- -- --
   
