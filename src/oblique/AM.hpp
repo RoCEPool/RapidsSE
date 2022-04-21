@@ -691,7 +691,6 @@ namespace OBLIQUE
                                 Task* pTaskAcking,
                                 i8& nAcksWereRemaining);
     static void vAddConstant(Stz* szName,Stz* szValue);
-    static Queue* pOutputQueue(Session* pSession);
     static void vAttachMap(Header* aHeader);
     static void vBootError(bool bBootError);
     static void vDropTaskLock(Task* pTask, Stz* szFunc);

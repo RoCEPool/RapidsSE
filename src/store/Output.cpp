@@ -74,6 +74,11 @@ Output::~Output(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   if (m_pOutputQueue) {
+    //vDrainBufferQueue(m_pJob);
+    
+    while (Operand* pOperand = _pOperand(m_pOutputQueue->pPop()))
+      AM::vDeleteOperand(pOperand);
+
     RASSERT(! m_pOutputQueue->nItems());
     delete m_pOutputQueue;
     m_pOutputQueue = nullptr;

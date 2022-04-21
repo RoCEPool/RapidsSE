@@ -43,7 +43,7 @@ namespace STORE
 
     DicStack m_oDicStack;     // dictionary stack
  
-    Output*  m_pOutput_ssn;       // output processor
+    //Output*  m_pOutput_ssn;       // output processor
 
     Tx*      m_pTx;           // current transaction
   

@@ -2666,10 +2666,6 @@ void AM::vAttachMap(Header* aHeader) {
   gpAttachMap = static_cast<AttachMap*>(aHeader);
 }
 
-Queue* AM::pOutputQueue(Session* pSession) {
-    
-  return pSession->m_pOutput_ssn->m_pOutputQueue;
-}
 
 
 void AM::vBootError(bool bBootError) {

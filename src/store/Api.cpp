@@ -95,13 +95,14 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
   
   Session* pSession = pJob->pSession();
   
-  pSession->m_pOutput_ssn->vAssertEmptyQueue();
+  //pSession->m_pOutput_ssn->vAssertEmptyQueue();
 
-  pSession->m_pOutput_ssn->vBeginProcOneCmd();
+  //pSession->m_pOutput_ssn->vBeginProcOneCmd();
       
 
   pJob->vMutexCreate();
   pJob->vOutputCreate();
+  pJob->vOutputBeginProc();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -401,24 +402,24 @@ void Api::vReapableJob(Job*& rpJob)
     
   Session* pSession = rpJob->pSession();
   
-  if (rpJob && rpJob->bIsPipeline() && ! pSession->m_pOutput_ssn->m_bExitMarker)
-    pSession->m_pOutput_ssn->vProcessBufferQueue(rpJob);
+  if (rpJob && rpJob->bIsPipeline() && ! rpJob->pOutput()->m_bExitMarker)
+    rpJob->pOutput()->vProcessBufferQueue(rpJob);
 
-  pSession->m_pOutput_ssn->m_pOutputQueue->vReset();
-  pSession->m_pOutput_ssn->vEndProcOneCmd();
+  rpJob->pOutput()->m_pOutputQueue->vReset();
+  rpJob->pOutput()->vEndProcOneCmd();
   
   rpJob->vReapable(true);
       
   
   
-  if (pSession->m_pOutput_ssn->m_pStreamDef_result) {
-    StreamDef* pStreamDef = pSession->m_pOutput_ssn->m_pStreamDef_result;
-    pSession->m_pOutput_ssn->m_pStreamDef_result = nullptr;
+  if (rpJob->pOutput()->m_pStreamDef_result) {
+    StreamDef* pStreamDef = rpJob->pOutput()->m_pStreamDef_result;
+    rpJob->pOutput()->m_pStreamDef_result = nullptr;
     delete pStreamDef;
   }
   
-  pSession->m_pOutput_ssn->m_bExitMarker      = false;
-  pSession->m_pOutput_ssn->m_bExitEarlyMarker = false;
+  rpJob->pOutput()->m_bExitMarker      = false;
+  rpJob->pOutput()->m_bExitEarlyMarker = false;
   
   rpJob = nullptr;
 }

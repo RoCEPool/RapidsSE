@@ -140,10 +140,10 @@ void ApiHelper::vPrintResults(Job* pJob)
 {
   // start the buffer queue processing while the pipeline ops are running
   if (pJob->bIsPipeline())
-    m_pSession->m_pOutput_ssn->vProcessBufferQueue(pJob);
+    pJob->pOutput()->vProcessBufferQueue(pJob);
 
-  RASSERT(! m_pSession->m_pOutput_ssn->m_bExecErr );
-  RASSERT(! m_pSession->m_pOutput_ssn->m_bCmdErr );
+  RASSERT(! pJob->pOutput()->m_bExecErr );
+  RASSERT(! pJob->pOutput()->m_bCmdErr );
 
   if (pJob->bIsInError()) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
@@ -157,9 +157,9 @@ void ApiHelper::vPrintResults(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vResetResults(Job* pJob)
 {
-  m_pSession->m_pOutput_ssn->m_pOutputQueue->vReset();
+  pJob->pOutput()->m_pOutputQueue->vReset();
   
-  m_pSession->m_pOutput_ssn->vEndProcOneCmd();
+  pJob->pOutput()->vEndProcOneCmd();
 }
 
 /*============================================================================*/

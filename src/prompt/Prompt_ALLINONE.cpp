@@ -925,6 +925,8 @@ bool PROMPT::bPrompt_edit(SePrompt* pPrompt) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read the file back in
   i8 nBytes = pFile->nReadFile(sSMT);
+  UNUSED(nBytes);
+  
   vTrace("%s\n"_Stz, sSMT.azChar());
 
   return true;
@@ -3008,14 +3010,10 @@ bool PROMPT::bPrompt_output(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  Session* pSession = pPrompt->pSession();
-  Output* pOutput = pSession->m_pOutput_ssn;
-
   if (pPrompt->pInpTknVec()->nItems() == 2 &&
       pPrompt->pInpTknVec()->pGet(1)->bSame("disable"_Stz)) {
     
     vTrace("OUTPUT DISABLE\n"_Stz);
-    pOutput->vPrintEnabled(false);
     pPrompt->vOutputEnabled(false);
   }
   else
@@ -3023,11 +3021,10 @@ bool PROMPT::bPrompt_output(SePrompt* pPrompt)
       pPrompt->pInpTknVec()->pGet(1)->bSame("enable"_Stz)) {
 
     vTrace("OUTPUT ENABLE\n"_Stz);
-    pOutput->vPrintEnabled(true);
     pPrompt->vOutputEnabled(true);
   }
   else {
-    if (pOutput->bPrintEnabled() || pPrompt->bOutputEnabled())
+    if (pPrompt->bOutputEnabled())
       vTrace("OUTPUT IS ENABLED\n"_Stz);
     else
       vTrace("OUTPUT IS DISABLED\n"_Stz);
