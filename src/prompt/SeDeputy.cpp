@@ -61,8 +61,6 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 
   m_pJob = nullptr;
 
-  m_sFolderPath = C_SE_PATH;
-  
   _checkInitialised_(CN_SEDEPUTY);
   
   ApiHelper::vAllocateSession();
@@ -147,8 +145,6 @@ void SeDeputy::vDeputyLoop(void)
       m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
       m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
     }
-    
-    m_sFolderPath = m_pJob->szFolderPath();
     
     vRepeableJob();
   }
