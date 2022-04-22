@@ -522,8 +522,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     return eError;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // for each operator in the stream
-  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
+  // for each operator in the stream (skip consumeOP)
+  for (i8 i_Op = 1; i_Op < pStream->nItems(); i_Op++) {
 
     // get the op
     Op *pOp = pStream->pGet(i_Op);
@@ -532,10 +532,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("combined"_Stz)) {
       break;
     }
-
-    // skip consumeOP
-    if (pOp->szOpNm()->bSame("consumeOp"_Stz))
-      continue;
 
     // skip scan OP
     if (pOp->szOpNm()->bSame("scan"_Stz))
@@ -549,7 +545,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       m_pShapeIDX = pSketchIndexScan(pCombined, pStream, pOp);
-      //vAppend(m_pShapeIDX);
 
       bInflateGenerated = true;
       ePrevStencil = SR_IT;
@@ -574,11 +569,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         vSetupScan(pCombined, pStream, pOp);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        //vAppendFuncHeader0();
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
-        //vAppend(m_pShapeCRW);
       }
       else {
 
@@ -586,17 +577,11 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           vSetupScan(pCombined, pStream, pOp);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          //vAppendFuncHeader0();
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          //vAppendFuncHeader1();
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           m_pShapeROW = pSketchInflateRow(pStream, pOp);
-          //vAppend(m_pShapeROW);
+
           m_bRowBuffer = true;
       }
       bInflateGenerated = true;
@@ -643,7 +628,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the hashOP
     if (pOp->szOpNm()->bSame("hash"_Stz)) {
-      pCombined->aCombinedT()->m_iHashRows = 1;
 
       if (m_xStageOps.m_bPayloadOp)
         continue;
@@ -713,7 +697,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       }
       else {
-        //vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
@@ -787,7 +770,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // get the project kind
       eExprKind = pLogicUnit->m_eExprKind;
-      //RASSERT(eExprKind == EK_ORDAGG);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupOrdAgg(pCombined, pStream, pOp);
