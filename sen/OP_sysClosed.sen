@@ -19,8 +19,6 @@
 
   [system].activeJobs "$$$ ActiveJobs %v" .printf
   
-
-  true [session].systemCloser!
   true [op].job@ job.masterJob job.systemCloser!
 
   "system closed" .

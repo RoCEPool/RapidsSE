@@ -89,7 +89,7 @@ Session::Session(void)
     
   m_pStmtList   = new StmtList;
   
-  m_bSystemCloser = false;
+  m_bSystemCloser_ssn = false;
   
   // -- -- -- -- -- --
   
@@ -346,8 +346,6 @@ void Session::vSee(void)
          ,m_iPid
          ,Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
         );
-  if (m_bSystemCloser)
-    vTrace("  system closer\n"_Stz);
 
   vTrace(";;\n\n"_Stz);
 }

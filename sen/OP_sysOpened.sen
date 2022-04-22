@@ -9,7 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : sysOpened_sysOpened \handler
 
-  false [session].systemCloser!
   false [op].job@ job.masterJob job.systemCloser!
 
   "system opened" .

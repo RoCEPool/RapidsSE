@@ -95,7 +95,7 @@ void Step::vSessionSystemCloserFetch(void)
   
   Session* pSession = MY::pSession();
 
-  m_pDataStack->vPushInt(pSession->m_bSystemCloser);
+  m_pDataStack->vPushInt(pSession->m_bSystemCloser_ssn);
   
   EXIT();
 }
@@ -109,7 +109,7 @@ void Step::vSessionSystemCloserStore(void)
   
   Session* pSession = MY::pSession();
 
-  pSession->m_bSystemCloser = m_pDataStack->iPopInt(__func__);
+  pSession->m_bSystemCloser_ssn = m_pDataStack->iPopInt(__func__);
   
   EXIT();
 }

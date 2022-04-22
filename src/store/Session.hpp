@@ -53,7 +53,7 @@ namespace STORE
     s4K      m_sToDo;         // prompt to do
     
   
-    bool     m_bSystemCloser; // is this session the system closer?
+    bool     m_bSystemCloser_ssn; // is this session the system closer?
   
     // -- -- -- -- -- --
 

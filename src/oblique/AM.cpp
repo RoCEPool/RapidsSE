@@ -2086,7 +2086,7 @@ bool AM::SYSTEM::bPassesOpenSystem(Job* pJob)
   if (bSystemOpen())
     return true;
     
-  if (MY::pSession()->m_bSystemCloser)
+  if (pJob->bSystemCloser())
     return true;
   
   return false;
