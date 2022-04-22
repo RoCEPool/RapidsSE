@@ -194,6 +194,10 @@ eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
 
   TagSet* pSsnTagSet = & m_pSession->m_oSsnTagSet;
   pCmdTagSet->vCopy(pSsnTagSet);
+  
+  pCmdTagSet->vDumpSet();
+  vTrace("FolderPath: %s\n"_Stz,m_sFolderPath.szStz());
+  //pCmdTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
 
   eEC eError = ApiHelper::ePrepareJob(m_pJob,pCmdTknVec,pCmdTagSet);
   
