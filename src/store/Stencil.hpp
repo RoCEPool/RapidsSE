@@ -27,12 +27,16 @@ struct stageOps {
   i8 m_iSortOp;
   i8 m_iTopOp;
 
+  bool m_bScan;
+  bool m_bIndexScan;
+
   bool m_bPayloadOp;
+
   bool m_bGeneratePotTub;
   bool m_bGenerateFun3;
 
   Op* m_pCombinedOp;
-  Op* m_oHavingFilterOp;
+  Op* m_pHavingFilterOp;
   Op* m_pPostProjectOp;
   Op* m_pLimitOp;
 
@@ -51,7 +55,6 @@ static const i8 C_MAX_SHAPES = 32;
 
     s256        m_szStageNm;
     bool        m_bScan;
-    bool        m_bIndexScan;
     bool        m_bRowBuffer;
 
     TypedStack* m_pPostStack;
@@ -130,10 +133,9 @@ static const i8 C_MAX_SHAPES = 32;
     void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
     void vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                              Op* pHavingFilterOp, Op* pLimitOp);
-    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Op* pHavingFilterOp, Op* pLimitOp);
-    void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp, Op* pLimitOp);
+    void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp);
     void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
     Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil);
