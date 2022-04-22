@@ -20,9 +20,10 @@ namespace PROMPT
 
     Input*    m_pInput;        // input stream
 
-    bool      m_bAvailable;
-    bool      m_bContinue;
-    bool      m_bTerminated;
+    b8        m_bAvailable;
+    b8        m_bContinue;
+    b8        m_bTerminated;
+    b8        m_bSystemCloser; // is this deputy the system closer?
 
     Job*      m_pJob;
   

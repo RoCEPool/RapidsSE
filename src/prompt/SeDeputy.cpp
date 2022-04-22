@@ -55,9 +55,10 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 
   m_pInput = new Input(nullptr);
 
-  m_bAvailable  = false;
-  m_bContinue   = true;
-  m_bTerminated = false;
+  m_bAvailable    = false;
+  m_bContinue     = true;
+  m_bTerminated   = false;
+  m_bSystemCloser = false;
 
   m_pJob = nullptr;
 
@@ -132,6 +133,7 @@ void SeDeputy::vDeputyLoop(void)
     
     m_pJob->vFolderPath(m_sFolderPath);
     m_pJob->vLastJobId(m_tLastJobId);
+    m_pJob->vSystemCloser(m_bSystemCloser);
 
     vExecuteJob();
     
@@ -147,8 +149,9 @@ void SeDeputy::vDeputyLoop(void)
       m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
     }
     
-    m_sFolderPath = m_pJob->szFolderPath();
-    m_tLastJobId = m_pJob->tLastJobId();
+    m_sFolderPath   = m_pJob->szFolderPath();
+    m_tLastJobId    = m_pJob->tLastJobId();
+    m_bSystemCloser = m_pJob->bSystemCloser();
 
     vRepeableJob();
   }
