@@ -2987,6 +2987,14 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // Should be the first OP after consumeOp
+      if (i_Op != 1) {
+        vTrace("Error: indexScanOP should be the first OP in the stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // MULTIPLE INDEXSCAN-OP's
       if (m_xStageOps.m_iIndexScanOp) {
         vTrace("Error: Cannot have multiple indexScan operators in the same stage (%s)!!!\n"_Stz,
@@ -3049,6 +3057,14 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // scanOp
     if (pOp->szOpNm()->bSame("scan"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // Should be the first OP after consumeOp
+      if (i_Op != 1) {
+        vTrace("Error: scanOP should be the first OP in the stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // MULTIPLE SCAN-OP's
