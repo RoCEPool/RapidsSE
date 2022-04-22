@@ -877,6 +877,8 @@ public:
   void vJobSpawn(void);
   void vJobStateFetch(void);
   void vJobStateStore(void);
+  void vJobSystemCloserFetch(void);
+  void vJobSystemCloserStore(void);
 
   void vJobTagSetFetch(void);
   void vJobTaskFetch(void);

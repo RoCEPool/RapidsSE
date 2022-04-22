@@ -72,6 +72,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
+  vAddStep("job.systemCloser?"_Stz,    &Step::vJobSystemCloserFetch);
+  vAddStep("job.systemCloser!"_Stz,    &Step::vJobSystemCloserStore);
 
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch_other);
   
@@ -1278,6 +1280,37 @@ void Step::vJobStateStore(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* job.systemCloser? -- fetch system closer from job                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSystemCloserFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  bool bSystemCloser = pJob->bSystemCloser();
+  
+  m_pDataStack->vPushInt(bSystemCloser);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.systemCloser! -- store system closer into job                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSystemCloserStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  i8 iSystemCloser = m_pDataStack->iPopInt(__func__);
+    
+  pJob->vSystemCloser(iSystemCloser);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* [job].tagSet@ -- push ptr to job TagSet                                    */
