@@ -9,7 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : jobOperators_action
 
-  //[session].lastJobId "Last Job Id %v" .printf
   [op].job@ job.masterJob job.lastJobId@ "Last Job Id %v" .printf
 
   <jobno> >int locals| iJob |

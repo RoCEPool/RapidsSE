@@ -23,7 +23,6 @@ void Step::vAddSteps_Session(void)
   vAddStep("[session].cascade!"_Stz,      &Step::vSessionCascadeStore);
   vAddStep("[session].hasCascade@"_Stz,   &Step::vSessionHasCascadeFetch);
   vAddStep("[session].hasCascade!"_Stz,   &Step::vSessionHasCascadeStore);
-  vAddStep("[session].lastJobId"_Stz,     &Step::vSessionLastJobId);
   vAddStep("[session].systemCloser@"_Stz, &Step::vSessionSystemCloserFetch);
   vAddStep("[session].systemCloser!"_Stz, &Step::vSessionSystemCloserStore);
   vAddStep("[session].tagSet@"_Stz,       &Step::vSessionTagSetFetch);
@@ -85,22 +84,6 @@ void Step::vSessionHasCascadeStore(void)
 
   i8 iCascade = m_pDataStack->iPopBol(__func__);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [session].lastJobId -- get last job id                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionLastJobId(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  JobId tLastJobId = pSession->tLastJobId();
-  
-  m_pDataStack->vPushInt(tLastJobId.iAsI8());
-  
   EXIT();
 }
 

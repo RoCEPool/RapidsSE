@@ -1729,7 +1729,6 @@ public:
   void vSessionCommand(void);
   void vSessionHasCascadeFetch(void);
   void vSessionHasCascadeStore(void);
-  void vSessionLastJobId(void);
   void vSessionSystemCloserFetch(void);
   void vSessionSystemCloserStore(void);
   void vSessionTagSetFetch(void);

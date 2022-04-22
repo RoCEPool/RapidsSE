@@ -86,7 +86,7 @@ namespace STORE
 
     StmtList* m_pStmtList;    // list of cascade statements
 
-   JobId  m_tLastJobId;  // last job which was run
+   JobId  m_tLastJobId_ssn;  // last job which was run
 
     // must be last
     Footer m_xFooter;

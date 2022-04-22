@@ -10923,7 +10923,6 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": jobOperators_action\n"
     "\n"
-    "  //[session].lastJobId \"Last Job Id %v\" .printf\n"
     "  [op].job@ job.masterJob job.lastJobId@ \"Last Job Id %v\" .printf\n"
     "\n"
     "  <jobno> >int locals| iJob |\n"
