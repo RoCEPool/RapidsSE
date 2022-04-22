@@ -26,7 +26,9 @@ namespace PROMPT
 
     Job*      m_pJob;
   
-    TagSet   m_oCmdTagSet;    // extra tags gleaned from the command
+    s256      m_sFolderPath;   // folder path
+
+    TagSet    m_oCmdTagSet;    // extra tags gleaned from the command
 
     // must be last
     Footer m_xFooter;
