@@ -59,7 +59,53 @@ create index IxC_CUSTKEY  ON customer (C_CUSTKEY)  ;
 success;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// multiple combinedOp's
+// zero OP's to  combine
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+   scan lineitem
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+end ;
+failure contains: 'EC_INVALID_PIPELINE'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// zero OP's to  combine (nothing to do)
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+end ;
+affected: 0
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// multiple combinedOp's (scan and nothing to combine)
 pipeline Q
 begin
 

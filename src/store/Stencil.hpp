@@ -33,7 +33,6 @@ struct stageOps {
   bool m_bPayloadOp;
 
   bool m_bGeneratePotTub;
-  bool m_bGenerateFun3;
 
   Op* m_pCombinedOp;
   Op* m_pHavingFilterOp;

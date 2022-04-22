@@ -86,8 +86,7 @@ Stencil::Stencil(void)
 
   m_xStageOps.m_bPayloadOp      = false;
 
-  m_xStageOps.m_bGeneratePotTub = false;
-  m_xStageOps.m_bGenerateFun3   = false;
+  m_xStageOps.m_bGeneratePotTub = true;
 
   m_xStageOps.m_pCombinedOp     = nullptr;
   m_xStageOps.m_pHavingFilterOp = nullptr;
@@ -500,9 +499,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   bool bInflateGenerated = false;
 
-  bool bGeneratePotTub = true;
-  bool bGenerateFun3 = true;
-
   Shape* pShape;
   IntStack *pPreExpStack = nullptr;
 
@@ -512,7 +508,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   m_szStageNm = pStream->pStage()->szStageNm();
 
   i8 iStage = pStream->pStage()->i_Stage();
-  i8 iOpsCombined = 0;
 
   Tub* pTub = _pTub(pCombined->aCombinedT()->m_pTub);
   Pot* pPot = _pPot(pCombined->aCombinedT()->m_pPot);
@@ -543,11 +538,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       continue;
 
     // skip scan OP
-    if (pOp->szOpNm()->bSame("scan"_Stz)) {
+    if (pOp->szOpNm()->bSame("scan"_Stz))
       continue;
-    }
-
-    iOpsCombined++;
 
     // skip indexscan OP
     if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
@@ -630,8 +622,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSketchEosProjectGby(pCombined, pStream, pOp);
-      bGeneratePotTub = false;
-      bGenerateFun3 = false;
+      m_xStageOps.m_bGeneratePotTub = false;
 
       ePrevStencil = SR_AT;
     }
@@ -734,8 +725,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSketchEosSort(pCombined, pStream, pOp);
-      bGeneratePotTub = false;
-      bGenerateFun3 = false;
+      m_xStageOps.m_bGeneratePotTub = false;
 
       ePrevStencil = SR_AT;
 
@@ -783,8 +773,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           vSketchEosProjectAgg(pCombined, pStream, pOp);
-          bGeneratePotTub = false;
-          bGenerateFun3 = false;
+          m_xStageOps.m_bGeneratePotTub = false;
 
           ePrevStencil = SR_AT;
         }
@@ -828,16 +817,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSketchEosTop(pCombined, pStream, pOp);
-      bGeneratePotTub = false;
-      bGenerateFun3 = false;
+      m_xStageOps.m_bGeneratePotTub = false;
     }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // any ops combined ?
-  if (iOpsCombined == 0) {
-    vTrace("No Operators to combine!!!\n"_Stz);
-    return EC_INVALID_COMMAND;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -862,7 +843,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
   }
 
-  if (bGeneratePotTub) {
+  if (m_xStageOps.m_bGeneratePotTub) {
 
     sLabel.vSprint("L_AddRowToTubPot"_Stz);
 
@@ -881,8 +862,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     vAppend(pShape);
   }
 
-  // generate empty func3
-  if ( bGenerateFun3 ) {
+  // generate empty func3 if we have already generated pot/tub
+  if ( m_xStageOps.m_bGeneratePotTub ) {
 
     pCodeSynth = new CodeSynth;
 
@@ -2801,6 +2782,8 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
+  i8 iOpsToCombine = 0;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate the operators (skipping consumeOP and sendSE)
   for (i8 i_Op = 1; i_Op < pStream->nItems() - 1; i_Op++) {
@@ -2815,6 +2798,52 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
              m_szStageNm.azChar());
       return EC_INVALID_PIPELINE;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // scanOp
+    if (pOp->szOpNm()->bSame("scan"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // Should be the first OP after consumeOp
+      if (i_Op != 1) {
+        vTrace("Error: scanOP should be the first OP in the stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE SCAN-OP's
+      if (m_xStageOps.m_iScanOp) {
+        vTrace("Error: Cannot have multiple scan operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_bScan = true;
+      m_xStageOps.m_iScanOp++;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // combined OP
+    if (pOp->szOpNm()->bSame("combined"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE COMBINED OP's
+      if (m_xStageOps.m_iCombinedOp) {
+        vTrace("Error: Cannot have multiple combinedOp's (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_iCombinedOp++;
+      m_xStageOps.m_pCombinedOp = pOp;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip scanOP and combinedOP and count no of OPS to combine
+    iOpsToCombine++;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // aggregate Op
@@ -2833,23 +2862,6 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
       }
 
       m_xStageOps.m_bPayloadOp = true;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // combined OP
-    if (pOp->szOpNm()->bSame("combined"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE COMBINED OP's
-      if (m_xStageOps.m_iCombinedOp) {
-        vTrace("Error: Cannot have multiple combinedOp's (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_iCombinedOp++;
-      m_xStageOps.m_pCombinedOp = pOp;
-      continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3021,31 +3033,6 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // scanOp
-    if (pOp->szOpNm()->bSame("scan"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // Should be the first OP after consumeOp
-      if (i_Op != 1) {
-        vTrace("Error: scanOP should be the first OP in the stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE SCAN-OP's
-      if (m_xStageOps.m_iScanOp) {
-        vTrace("Error: Cannot have multiple scan operators in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_bScan = true;
-      m_xStageOps.m_iScanOp++;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // sortOp
     if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
@@ -3118,6 +3105,14 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
              m_szStageNm.azChar());
       return EC_INVALID_PIPELINE;
     }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // any OP's to combine ?
+  if (iOpsToCombine == 0) {
+    vTrace("Error: Zero OP's to combine (%s)!!!\n"_Stz,
+           m_szStageNm.azChar());
+    return EC_INVALID_PIPELINE;
   }
 
   return EC_NONE;
