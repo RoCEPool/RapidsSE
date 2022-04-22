@@ -39,6 +39,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.entry@"_Stz,           &Step::vJobEntryFetch_other);
   vAddStep("job.entry!"_Stz,           &Step::vJobEntryStore_other);
   
+  vAddStep("job.folderPath@"_Stz,      &Step::vJobFolderPathFetch);
+  vAddStep("job.folderPath!"_Stz,      &Step::vJobFolderPathStore);
+  
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch_other);
   
   vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
@@ -48,6 +51,8 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.name@"_Stz,            &Step::vJobNameFetch);
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
+  
+  vAddStep("job.originJob"_Stz,        &Step::vJobOriginJob);
   
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
   vAddStep("job.pipeToOp0"_Stz,        &Step::vJobPipeToOp0);
@@ -84,9 +89,6 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("[job].error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("[job].error!"_Stz,           &Step::vJobErrorStore);
-
-  vAddStep("[job].folderPath@"_Stz,      &Step::vJobFolderPathFetch);
-  vAddStep("[job].folderPath!"_Stz,      &Step::vJobFolderPathStore);
   
   vAddStep("[job].id@"_Stz,              &Step::vJobIdFetch);
     
@@ -448,19 +450,6 @@ void Step::vJobClass(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.printMember -- print a member of the job                               */
-/*----------------------------------------------------------------------------*/
-void Step::vJobPrintMember(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));  
-  vTrace("Job: %p Class: %p\n"_Stz, pJob, aCN[pJob->eGetClassNo()]);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.delete -- delete the job                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobDelete(void)
@@ -601,13 +590,13 @@ void Step::vJobErrorStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].folderPath@ -- fetch folder path from job                            */
+/* job.folderPath@ -- fetch folder path from job                              */
 /*----------------------------------------------------------------------------*/
 void Step::vJobFolderPathFetch(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob;
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   Stz* szFolderPath = pJob->szFolderPath();
   
@@ -617,13 +606,13 @@ void Step::vJobFolderPathFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].folderPath! -- store folder path into job                            */
+/* job.folderPath! -- store folder path into job                              */
 /*----------------------------------------------------------------------------*/
 void Step::vJobFolderPathStore(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob;
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   s256 sFolderPath;
   m_pDataStack->vPopStr(sFolderPath,__func__);
@@ -764,6 +753,27 @@ void Step::vJobNoWaitFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.originJob -- get the origin job of this (participant) job              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobOriginJob(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  Job* pOriginJob = pJob->pOriginatingParentJob();
+  if (pOriginJob) {
+    m_pDataStack->vPushPtr(pOriginJob);
+  }
+  else {
+    Job* pLocalJob = pJob;
+    m_pDataStack->vPushPtr(pLocalJob);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].originNodeId@ -- fetch the originator node no from this job          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobOriginNodeIdFetch(void)
@@ -810,20 +820,6 @@ void Step::vJobParticipantNodeIdStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.preExecuteTest -- test if job can be run                               */
-/*----------------------------------------------------------------------------*/
-void Step::vJobPreExecuteTest(void)
-{
-  ENTRY();
-  
-  eEC eError = AM::JOB::ePreExecuteTest(m_pJob);
-  
-  m_pDataStack->vPushInt(eError);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* [job].phase@ -- fetch the job phase                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobPhaseFetch(void)
@@ -847,6 +843,33 @@ void Step::vJobPhaseFetch_other(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   m_pDataStack->vPushInt(pJob->eJobPhase());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.preExecuteTest -- test if job can be run                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobPreExecuteTest(void)
+{
+  ENTRY();
+  
+  eEC eError = AM::JOB::ePreExecuteTest(m_pJob);
+  
+  m_pDataStack->vPushInt(eError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.printMember -- print a member of the job                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobPrintMember(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  vTrace("Job: %p Class: %p\n"_Stz, pJob, aCN[pJob->eGetClassNo()]);
   
   EXIT();
 }

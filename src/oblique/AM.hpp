@@ -317,6 +317,12 @@ namespace OBLIQUE
       static void vDelete(LogicUnit** ppLogicUnit);
     };
 
+    class LLIST
+    {
+    public:
+      static Job* pFindJob(JobId tJobId, bool bLockJob=false);
+    };
+
     class MASTERLOCK
     {
     public:
