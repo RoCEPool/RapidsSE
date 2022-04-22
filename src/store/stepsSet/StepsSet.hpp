@@ -833,6 +833,9 @@ public:
 
   void vJobKindFetch(void);
 
+  void vJobLastJobIdFetch(void);
+  void vJobLastJobIdStore(void);
+
   void vJobNameFetch(void);
   void vJobNoWaitFetch(void);
 

@@ -27,6 +27,7 @@ namespace PROMPT
     Job*      m_pJob;
   
     s256      m_sFolderPath;   // folder path
+    JobId     m_tLastJobId;    // last job id
 
     TagSet    m_oCmdTagSet;    // extra tags gleaned from the command
 

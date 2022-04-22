@@ -49,6 +49,12 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.kind@"_Stz,            &Step::vJobKindFetch);
   
+  vAddStep("job.folderPath@"_Stz,      &Step::vJobFolderPathFetch);
+  vAddStep("job.folderPath!"_Stz,      &Step::vJobFolderPathStore);
+  
+  vAddStep("job.lastJobId@"_Stz,       &Step::vJobLastJobIdFetch);
+  vAddStep("job.lastJobId!"_Stz,       &Step::vJobLastJobIdStore);
+  
   vAddStep("job.masterJob"_Stz,        &Step::vJobMasterJob);
   
   vAddStep("job.name@"_Stz,            &Step::vJobNameFetch);
@@ -343,7 +349,7 @@ void Step::vJobAssertOrdinary(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].assertOriginator -- assert job is in originator job set                */
+/* [job].assertOriginator -- assert job is in originator job set              */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAssertOriginator(void)
 {
@@ -372,7 +378,7 @@ void Step::vJobAssertOriginator(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].assertParticipant -- assert job is in participant job set              */
+/* [job].assertParticipant -- assert job is in participant job set            */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAssertParticipant(void)
 {
@@ -471,7 +477,7 @@ void Step::vJobDelete(void)
   
 
 /*----------------------------------------------------------------------------*/
-/* [job].entryPoint@ -- fetch the job sen entry code                               */
+/* [job].entryPoint@ -- fetch the job sen entry code                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobEntryPointFetch(void)
 {
@@ -720,6 +726,42 @@ void Step::vJobKindFetch(void)
   
   m_pDataStack->vPushInt(pJob->eJobKind());
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.lastJobId@ -- fetch last job id from job                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobLastJobIdFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  JobId tLastJobId = pJob->tLastJobId();
+  
+  m_pDataStack->vPushInt(tLastJobId.iAsI8());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.lastJobId! -- store last job id into job                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobLastJobIdStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  i8 iLastJobId = m_pDataStack->iPopInt(__func__);
+  
+  JobId tLastJobId;
+  
+  tLastJobId = iLastJobId;
+  
+  pJob->vLastJobId(tLastJobId);
+  
   EXIT();
 }
 

@@ -82,6 +82,8 @@ namespace STORE
     s4K m_sEntryPoint;   // sen entry code
   
     s256 m_sFolderPath;   // folder path
+  
+    JobId m_tLastJobId;    // last job id
 
     i8  m_iTscParticipant;
 
@@ -172,6 +174,9 @@ namespace STORE
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
+
+    JobId tLastJobId(void);
+    void  vLastJobId(JobId tLastJobId);
 
     void vMutexCreate(void);
     void vMutexDestroy(void);

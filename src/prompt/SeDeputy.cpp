@@ -134,6 +134,7 @@ void SeDeputy::vDeputyLoop(void)
       vTrace("vDeputyLoop %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
     
     m_pJob->vFolderPath(m_sFolderPath);
+    m_pJob->vLastJobId(m_tLastJobId);
 
     vExecuteJob();
     
@@ -150,7 +151,8 @@ void SeDeputy::vDeputyLoop(void)
     }
     
     m_sFolderPath = m_pJob->szFolderPath();
-    
+    m_tLastJobId = m_pJob->tLastJobId();
+
     vRepeableJob();
   }
   
