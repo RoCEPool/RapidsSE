@@ -12067,7 +12067,7 @@ void Task::vAddMunged(Task* )
     "  Path[].depth strVec::toPath\n"
     "    //to /session <path>\n"
     "    dup to /session <path>\n"
-    "        [op].job@ job.originJob job.folderPath!\n"
+    "        [op].job@ job.masterJob job.folderPath!\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"

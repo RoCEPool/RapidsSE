@@ -19,7 +19,7 @@
   Path[].depth strVec::toPath
     //to /session <path>
     dup to /session <path>
-        [op].job@ job.originJob job.folderPath!
+        [op].job@ job.masterJob job.folderPath!
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -836,7 +836,7 @@ public:
   void vJobNameFetch(void);
   void vJobNoWaitFetch(void);
 
-  void vJobOriginJob(void);
+  void vJobMasterJob(void);
   void vJobOriginNodeIdFetch(void);
 
   void vJobParticipantNodeIdFetch(void);

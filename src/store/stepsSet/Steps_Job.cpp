@@ -49,10 +49,10 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.kind@"_Stz,            &Step::vJobKindFetch);
   
+  vAddStep("job.masterJob"_Stz,        &Step::vJobMasterJob);
+  
   vAddStep("job.name@"_Stz,            &Step::vJobNameFetch);
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
-  
-  vAddStep("job.originJob"_Stz,        &Step::vJobOriginJob);
   
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
   vAddStep("job.pipeToOp0"_Stz,        &Step::vJobPipeToOp0);
@@ -724,6 +724,27 @@ void Step::vJobKindFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.masterJob -- get the master job of this (participant/local) job        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobMasterJob(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  Job* pOriginJob = pJob->pOriginatingParentJob();
+  if (pOriginJob) {
+    m_pDataStack->vPushPtr(pOriginJob);
+  }
+  else {
+    Job* pLocalJob = pJob;
+    m_pDataStack->vPushPtr(pLocalJob);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.name@ -- get name of job                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobNameFetch(void)
@@ -748,27 +769,6 @@ void Step::vJobNoWaitFetch(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pJob->bHasTag(C_TAG_NOWAIT));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.originJob -- get the origin job of this (participant) job              */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOriginJob(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  Job* pOriginJob = pJob->pOriginatingParentJob();
-  if (pOriginJob) {
-    m_pDataStack->vPushPtr(pOriginJob);
-  }
-  else {
-    Job* pLocalJob = pJob;
-    m_pDataStack->vPushPtr(pLocalJob);
-  }
   
   EXIT();
 }
