@@ -1726,7 +1726,6 @@ public:
   // session
   void vSessionCascadeFetch(void);
   void vSessionCascadeStore(void);
-  void vSessionCommand(void);
   void vSessionHasCascadeFetch(void);
   void vSessionHasCascadeStore(void);
   void vSessionSystemCloserFetch(void);

@@ -455,7 +455,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
-  eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
+ // eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the command
@@ -465,7 +465,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   TagSet* pCmdTagSet =  new TagSet;
   pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
-  eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError)
     return eError;
   

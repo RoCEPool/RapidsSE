@@ -67,8 +67,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   
   ApiHelper::vAllocateSession();
   
-  eEC eError = m_pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
-  RASSERT(EC_NONE == eError);
+//  eEC eError = m_pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
+//  RASSERT(EC_NONE == eError);
   
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }

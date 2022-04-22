@@ -110,7 +110,6 @@ namespace STORE
     bool bHasCascade(void);
     eEC  eInitaliseSession(Stz* pCatalogName, Stz* pSchemaName);
     JobId tLastJobId(void);
-    DicStack* pPathStack(void);
     void vPopCascade(void);
     void vSee(void);
     void vTraceSession(void);

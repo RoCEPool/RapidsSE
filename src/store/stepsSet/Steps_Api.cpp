@@ -134,7 +134,7 @@ void Step::vApiExecuteCommand(void)
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
-  eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
+  //eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the request
@@ -144,7 +144,7 @@ void Step::vApiExecuteCommand(void)
   TagSet* pCmdTagSet =  new TagSet;
   pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
-  eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError) {
     delete pCmdTknVec;
     delete pCmdTagSet;
