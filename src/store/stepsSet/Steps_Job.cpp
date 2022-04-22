@@ -85,6 +85,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("[job].error!"_Stz,           &Step::vJobErrorStore);
 
+  vAddStep("[job].folderPath@"_Stz,      &Step::vJobErrorFetch);
+  vAddStep("[job].folderPath!"_Stz,      &Step::vJobErrorStore);
+  
   vAddStep("[job].id@"_Stz,              &Step::vJobIdFetch);
     
   vAddStep("[job].originNodeId@"_Stz,    &Step::vJobOriginNodeIdFetch);
@@ -520,7 +523,7 @@ void Step::vJobEntryFetch_other(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].entryPoint! -- store the job entry code                                   */
+/* [job].entryPoint! -- store the job entry code                              */
 /*----------------------------------------------------------------------------*/
 void Step::vJobEntryPointStore(void)
 {
@@ -593,6 +596,39 @@ void Step::vJobErrorStore(void)
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
   pJob->vJobError((eEC)iJobError);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].folderPath@ -- fetch folder path from job                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobFolderPathFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob;
+
+  Stz* szFolderPath = pJob->szFolderPath();
+  
+  m_pDataStack->vPushStz(szFolderPath);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].folderPath! -- store folder path into job                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobFolderPathStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob;
+
+  s256 sFolderPath;
+  m_pDataStack->vPopStr(sFolderPath,__func__);
+
+  pJob->vFolderPath(sFolderPath);
   
   EXIT();
 }

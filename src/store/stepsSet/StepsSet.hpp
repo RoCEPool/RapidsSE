@@ -817,9 +817,11 @@ public:
   void vJobEntryFetch_other(void);
   void vJobEntryPointStore(void);
   void vJobEntryStore_other(void);
-
   void vJobErrorFetch(void);
   void vJobErrorStore(void);
+
+  void vJobFolderPathFetch(void);
+  void vJobFolderPathStore(void);
 
   void vJobGet(void);
 

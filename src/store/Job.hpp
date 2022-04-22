@@ -81,6 +81,8 @@ namespace STORE
   
     s4K m_sEntryPoint;   // sen entry code
   
+    s256 m_sFolderPath;   // folder path
+
     i8  m_iTscParticipant;
 
     i8  m_iTscBeginning;
@@ -137,6 +139,9 @@ namespace STORE
 
     Stz* szEntryPoint(void);
     void vEntryPoint(Stz* szEntry);
+  
+    Stz* szFolderPath(void);
+    void vFolderPath(Stz* szFolderPath);
   
     void vGrabLock(void);
   
