@@ -2561,8 +2561,6 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, pIndexDef, nullptr, ePrevStencil, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
-  sLabelLoop = "L_AdvanceNextRow"_Stz;
-
   pCodeSynth->vSynthTop(sKeyExpr, iTopCount, sLabel, sLabelLoop);
   pShape->vCodeSynthB(pCodeSynth);
 
@@ -2896,6 +2894,15 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // indexJoinOp
     if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE INDEXJOIN OP's
+      if (m_xStageOps.m_iIndexJoinOp) {
+        vTrace("Error: Cannot have multiple indexJoinOP's (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
       m_xStageOps.m_iIndexJoinOp++;
     }
 
@@ -2926,12 +2933,30 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // keyExistsOp
     if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE LIMIT-OP's
+      if (m_xStageOps.m_iKeyExistsOp) {
+        vTrace("Error: Cannot have multiple keyExists operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
       m_xStageOps.m_iKeyExistsOp++;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // limitOp
     if (pOp->szOpNm()->bSame("limit"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE LIMIT-OP's
+      if (m_xStageOps.m_iLimitOp) {
+        vTrace("Error: Cannot have multiple limit operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
       m_xStageOps.m_pLimitOp = pOp;
       m_xStageOps.m_iLimitOp++;
     }
@@ -2939,6 +2964,16 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ordAggOp
     if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE LIMIT-OP's
+      if (m_xStageOps.m_iOrdAggOp) {
+        vTrace("Error: Cannot have multiple ordAgg operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+
       m_xStageOps.m_iOrdAggOp++;
     }
 
@@ -2965,6 +3000,16 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
       eEK eExprKind = pOp->pOpLogicUnit()->m_eExprKind;
 
       if (eExprKind == EK_AGGREG) {
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // MULTIPLE PAYLOAD OP's
+        if (m_xStageOps.m_bPayloadOp) {
+          vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+                 m_szStageNm.azChar());
+
+          return EC_INVALID_PIPELINE;
+        }
+
         m_xStageOps.m_bPayloadOp = true;
       }
 
@@ -3005,6 +3050,14 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE SORT-OP's
+      if (m_xStageOps.m_iSortOp) {
+        vTrace("Error: Cannot have multiple sort operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // MULTIPLE PAYLOAD OP's
       if (m_xStageOps.m_bPayloadOp) {
         vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
@@ -3021,6 +3074,23 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
     // topOp
     if (pOp->szOpNm()->bSame("top"_Stz)) {
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE TOP-OP's
+      if (m_xStageOps.m_iTopOp) {
+        vTrace("Error: Cannot have multiple top operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE PAYLOAD OP's
+      if (m_xStageOps.m_bPayloadOp) {
+        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+
+        return EC_INVALID_PIPELINE;
+      }
+
       m_xStageOps.m_bPayloadOp = true;
       m_xStageOps.m_iTopOp++;
     }
@@ -3036,6 +3106,8 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Should have a hashCast in the SendSE if hashOP
   if (m_xStageOps.m_iHashOp) {
+
+    // get the lastOp
     Op *pOp = pStream->pGet(pStream->nItems() - 1);
 
     // should be a SendSE OP

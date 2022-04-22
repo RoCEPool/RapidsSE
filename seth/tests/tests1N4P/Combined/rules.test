@@ -43,6 +43,21 @@ success
 create index IxO_ORDERKEY  ON orders (O_ORDERKEY)  ;
 success;
 
+create table customer (
+	C_CUSTKEY       INTEGER       NOT NULL,  // 0)
+	C_NAME          VARCHAR(25)   NOT NULL,  // 1)
+	C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
+	C_NATIONKEY     INTEGER       NOT NULL,  // 3)
+	C_PHONE         CHAR(15)      NOT NULL,  // 4)
+	C_ACCTBAL       DECIMAL(15,2) NOT NULL,  // 5)
+	C_MKTSEGMENT    CHAR(10)      NOT NULL,  // 6)
+	C_COMMENT       VARCHAR(117)  NOT NULL   // 7)
+);
+success
+
+create index IxC_CUSTKEY  ON customer (C_CUSTKEY)  ;
+success;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // multiple combinedOp's
 pipeline Q
@@ -289,6 +304,143 @@ begin
 end ;
 failure contains: 'EC_INVALID_PIPELINE'
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Multiple indexJoinOp's
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+    | indexJoin customer IxC_CUSTKEY "bound $I1 $L2 =="
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+end ;
+failure contains: 'EC_INVALID_PIPELINE'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Multiple limitOp's
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+    | limit 3
+    | limit 3
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+end ;
+failure contains: 'EC_INVALID_PIPELINE'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Multiple keyExistsOp's
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+      scan orders
+      | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
+                                O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
+      | project expr type INTEGER as _orderkey O_ORDERKEY ,
+                       type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
+      | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+                                           "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+      | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+                                              "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+      | combined 0
+      | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+end ;
+failure contains: 'EC_INVALID_PIPELINE'
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Multiple sortOp's
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+    | sort "type INTEGER L_PARTKEY ASC"
+    | sort "type INTEGER L_ORDERKEY ASC"
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+end ;
+failure contains: 'EC_INVALID_PIPELINE'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Multiple topOp's
+
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+    | top "TOP type INTEGER L_PARTKEY" 2
+    | top "TOP type INTEGER L_PARTKEY" 2
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+end ;
+failure contains: 'EC_INVALID_PIPELINE'
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -299,6 +451,9 @@ success
 DROP TABLE orders;
 success
 
+DROP TABLE customer;
+success
+
 memoryleaks;
 rows: 0
 
@@ -307,9 +462,13 @@ rows: 0
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CLEANUP {
+
   DROP TABLE lineitem;
   mute
 
   DROP TABLE orders;
+  mute
+
+  DROP TABLE customer;
   mute
 }
