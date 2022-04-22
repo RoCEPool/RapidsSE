@@ -330,9 +330,6 @@ bool SePrompt::bExamineCommand(void)
 
   if (bRedirectFromFile())
     return false;
-
-  while (bSubSsnTags())
-    {;}
   
   TagSet*  pCmdTagSet = m_pCurrentDeputy->pCmdTagSet();
 
@@ -1180,64 +1177,6 @@ bool SePrompt::bStdIn(void)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* subsititute session tags                                                   */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bSubSsnTags(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  i8 nTokens = m_pCmdTknVec->nTokens();
-  for (i8 i_Token = 0; i_Token < nTokens - 2; i_Token++) { //! note the - 2
-    
-    Token* pToken = m_pCmdTknVec->pGet(i_Token);
-    
-//    if (0 == i_Token && pToken->bSame("tag"_Stz))
-//      return false;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // do we have a known ssn tag?
-    
-    if (! pToken->bSame("<"_Stz))
-      continue;
-    
-    Token* pToken_name = m_pCmdTknVec->pGet(i_Token + 1);
-    
-    pToken = m_pCmdTknVec->pGet(i_Token + 2);
-    if (! pToken->bSame(">"_Stz))
-      continue;
-
-    s32 sTagName;
-    sTagName.vSprint("<%s>"_Stz,pToken_name->szChars());
-
-    TagSet* pSsnTagSet = & m_pCurrentDeputy->pSession()->m_oSsnTagSet;
-
-    if (! pSsnTagSet->bHasName(sTagName))
-      continue;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // substitute the value of the session tag into the input vector
-    
-    s256 sTagValue;
-    sTagValue = pSsnTagSet->szValue(sTagName);
-    
-    m_pCmdTknVec->vRemoveToken(i_Token);
-    m_pCmdTknVec->vRemoveToken(i_Token);
-    m_pCmdTknVec->vRemoveToken(i_Token);
-    
-    nTokens -= 3;
-    
-    if (i_Token >= nTokens)
-      m_pCmdTknVec->vAppendToken(sTagValue,TN_STRING);
-    else
-      m_pCmdTknVec->vInsertToken(i_Token,sTagValue,TN_STRING);
-
-    return true;
-  }
-  
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

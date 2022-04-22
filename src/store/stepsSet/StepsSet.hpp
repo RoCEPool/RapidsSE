@@ -1731,7 +1731,6 @@ public:
   void vSessionHasCascadeStore(void);
   void vSessionSystemCloserFetch(void);
   void vSessionSystemCloserStore(void);
-  void vSessionTagSetFetch(void);
 
   // shell
   void vShellExecute(void);

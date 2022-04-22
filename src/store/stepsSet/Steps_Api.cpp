@@ -165,20 +165,7 @@ void Step::vApiExecuteCommand(void)
   pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
   
   
-  
-  // get the command proper and the tag set
-  TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
-  
-
-  //pJobTagSet->vCopy(pSsnTags);
-
-  
-  
-  
-  
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -`- - - - - - - - - -
   
   
   eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);

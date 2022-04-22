@@ -126,7 +126,6 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
     }
     
     if (! pSession->bHasCascade()) {
-      pSession->vLastJobId(tJobId);
       return;
     }
   

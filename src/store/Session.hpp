@@ -31,10 +31,7 @@ namespace STORE
     // -- belongs to
     i8 m_i_Session;  // which session in sessions on this node
     i8 m_iPid;       // which process created this session
-
-    // -- tags
-    TagSet m_oSsnTagSet;  // session level tags
-  
+ 
     // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
 
     i8       m_i_NextFree;    // next state in free chain
@@ -113,7 +110,6 @@ namespace STORE
     bool bHasCascade(void);
     eEC  eInitaliseSession(Stz* pCatalogName, Stz* pSchemaName);
     JobId tLastJobId(void);
-    void vLastJobId(JobId tLastJobId);
     DicStack* pPathStack(void);
     void vPopCascade(void);
     void vSee(void);

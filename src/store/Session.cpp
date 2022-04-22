@@ -101,10 +101,7 @@ Session::Session(void)
   _checkInitialised_(CN_SESSION);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - -
-  
-  // set initial session <path>
-  m_oSsnTagSet.vInsert(C_TAG_PATH,C_SE_PATH);
-  
+    
   ++ gixSession;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
@@ -408,24 +405,6 @@ JobId Session::tLastJobId(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return m_tLastJobId_ssn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set last job run                                                           */
-/*----------------------------------------------------------------------------*/
-void Session::vLastJobId(JobId tLastJobId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  m_tLastJobId_ssn = tLastJobId;
-  
-  s32 sName;
-  s32 sValue;
-
-  sName = "<LastJobId>"_Stz;
-  sValue.vSprint("%lld"_Stz,tLastJobId.iAsI8());
-  
-  m_oSsnTagSet.vReplace(sName,sValue);
 }
 
 /*----------------------------------------------------------------------------*/

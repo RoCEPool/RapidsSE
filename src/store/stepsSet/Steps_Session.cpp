@@ -25,7 +25,6 @@ void Step::vAddSteps_Session(void)
   vAddStep("[session].hasCascade!"_Stz,   &Step::vSessionHasCascadeStore);
   vAddStep("[session].systemCloser@"_Stz, &Step::vSessionSystemCloserFetch);
   vAddStep("[session].systemCloser!"_Stz, &Step::vSessionSystemCloserStore);
-  vAddStep("[session].tagSet@"_Stz,       &Step::vSessionTagSetFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,22 +110,6 @@ void Step::vSessionSystemCloserStore(void)
   Session* pSession = MY::pSession();
 
   pSession->m_bSystemCloser = m_pDataStack->iPopInt(__func__);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [session].tagSet@ -- fetch tagset of session                               */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionTagSetFetch(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  TagSet* pSsnTagSet = & pSession->m_oSsnTagSet;
-  
-  m_pDataStack->vPushPtr(pSsnTagSet);
   
   EXIT();
 }

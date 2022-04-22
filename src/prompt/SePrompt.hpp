@@ -139,7 +139,6 @@ namespace PROMPT
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
-    bool bSubSsnTags(void);
     Timer* pTimer(void);
     void vTrackMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
