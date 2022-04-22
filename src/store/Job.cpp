@@ -105,7 +105,8 @@ Job::Job(Stz*  szJobNm,
       
   m_pJobMetricsChain  = nullptr;
   
-  m_pMutex_job = nullptr;
+  m_pMutex_job     = nullptr;
+  m_bSystemCloser  = false;
 
   _checkInitialised_(CN_JOB);
   
@@ -1204,6 +1205,26 @@ void Job::vSingularOp(Op* pSingularOp)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pSingularOp = pSingularOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is jsystem closer?                                                         */
+/*----------------------------------------------------------------------------*/
+bool Job::bSystemCloser(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_bSystemCloser;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set system closer?                                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vSystemCloser(bool bSystemCloser)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bSystemCloser = bSystemCloser;
 }
 
 /*----------------------------------------------------------------------------*/

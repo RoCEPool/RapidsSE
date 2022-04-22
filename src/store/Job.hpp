@@ -44,14 +44,14 @@ namespace STORE
     i8 m_i_Session;  // which session in node's session array
     CmdId m_tCmdId;
   
-    bool m_bWasForked;
+    b8 m_bWasForked;
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
     // information depending on job instance/location           MODAL
 
     // -- postage
-    bool m_bWasReceived;   // was job received over a socket?          POST_RECV
+    b8 m_bWasReceived;   // was job received over a socket?          POST_RECV
     i8   m_iParticipantNodeId;  // participant node
   
     // -- state
@@ -99,6 +99,8 @@ namespace STORE
  
     b8  m_bReapable;  // can job be reaped?
   
+    b8  m_bSystemCloser; // is this job the system closer?
+
     JobMetrics* m_pJobMetricsChain;                                // POST_RECV
 
 
@@ -217,6 +219,8 @@ namespace STORE
     void vSession(Session* pSession);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
+    bool bSystemCloser(void);
+    void vSystemCloser(bool bSystemCloser);
 
     Task* pTask(void);
     void vTask(Task* pTask);
