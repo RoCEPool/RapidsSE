@@ -195,7 +195,7 @@ eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
   TagSet* pCmdTagSet = this->pCmdTagSet();
 
   TagSet* pSsnTagSet = & m_pSession->m_oSsnTagSet;
-  pCmdTagSet->vCopy(pSsnTagSet);
+  //pCmdTagSet->vCopy(pSsnTagSet);
   
   pCmdTagSet->vDumpSet();
   vTrace("FolderPath: %s\n"_Stz,m_sFolderPath.szStz());

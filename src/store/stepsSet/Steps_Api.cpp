@@ -162,7 +162,7 @@ void Step::vApiExecuteCommand(void)
 
   TagSet* pJobTagSet = pJob->pJobTags();
   
-  
+  pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
   
   
   
@@ -172,7 +172,7 @@ void Step::vApiExecuteCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
   
 
-  pJobTagSet->vCopy(pSsnTags);
+  //pJobTagSet->vCopy(pSsnTags);
 
   
   
