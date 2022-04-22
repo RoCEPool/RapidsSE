@@ -527,17 +527,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     return eError;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the hashExpr upfront
-//  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
-//    // get the op
-//    Op *pOp = pStream->pGet(i_Op);
-//
-//    if (pOp->szOpNm()->bSame("hash"_Stz)) {
-//      pCombined->aCombinedT()->m_iHashRows = 1;
-//    }
-//  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each operator in the stream
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
 
@@ -565,9 +554,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupIndexScan(pCombined, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vAppendFuncHeader2();
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       m_pShapeIDX = pSketchIndexScan(pCombined, pStream, pOp);
@@ -632,28 +618,12 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // get the project kind
       eExprKind = pLogicUnit->m_eExprKind;
 
-      //RASSERT(eExprKind == EK_AGGGBY);
-
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupAggreg(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchProjectGby(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
       vAppend(pShape);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // look for Having filter / limit ?
-//      i8 iNextOp = pOp->i_Op() + 1;
-//      for (i8 i_Op = iNextOp; i_Op < pStream->nItems(); i_Op++) {
-//        Op *pOpNext = pStream->pGet(i_Op);
-//        if (pOpNext->szOpNm()->bSame("filter"_Stz)) {
-//          pHavingFilterOp = pOpNext;
-//          continue;
-//        }
-//        if (pOpNext->szOpNm()->bSame("limit"_Stz)) {
-//          pLimitOp = pOpNext;
-//        }
-//      }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupEosPayload(pCombined, pStream, pOp);
@@ -991,12 +961,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the hashOP
-//    if (pOp->szOpNm()->bSame("hash"_Stz)) {
-//      pCombined->aCombinedT()->m_iHashRows = 1;
-//    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOp / projectOP
     if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
 
@@ -1062,15 +1026,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // is next op project Op ?
-//      i8 iNextOp = pOp->i_Op() + 1;
-//      Op *pOpNext = pStream->pGet(iNextOp);
-//      Op* pPostProjectOp = nullptr;
-//
-//      if (pOpNext->szOpNm()->bSame("project"_Stz)) {
-//        pPostProjectOp = pOpNext;
-//      }
-
       vSetupSort(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1081,6 +1036,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     // generate the code for the topOP
     if (pOp->szOpNm()->bSame("top"_Stz)) {
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupTop(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1121,8 +1077,7 @@ void Stencil::vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDef
   Op *pOpNext = pStream->pGet(iNextOp);
 
   if (pOpNext->szOpNm()->bSame("combined"_Stz) || pOpNext->szOpNm()->bSame("hash"_Stz)) {
-    // if nextOp is combined, then next label is sDefault
-    //ASSERT(pStream->pGet(iNextOp)->szOpNm()->bSame("combined"_Stz));
+    // if nextOp is combined/hash, then next label is sDefault
     sLabelNext->vCopy(sDefault);
   }
   else {
