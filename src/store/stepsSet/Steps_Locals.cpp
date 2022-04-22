@@ -162,9 +162,7 @@ void Step::vLocalsPush(void)
 void Step::vLocalsTo(void)
 {
   ENTRY();
-  
-  bool bSessionLevelTag = false;
-  
+    
   Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
   
   // advance to token after to
@@ -176,12 +174,7 @@ void Step::vLocalsTo(void)
   
   Stz* szTerm = m_pInput->szChars();
   
-  if (szTerm->bSame("/session"_Stz)) {
-    
-    bSessionLevelTag = true;
-    m_pInput->vReadToken();
-  }
-  else if (szTerm->bSame("AggTimer[]"_Stz)) {
+  if (szTerm->bSame("AggTimer[]"_Stz)) {
     pCurrentWord->vEncodeCall("AggTimer[].set"_Stz);
     EXIT();
     return;
@@ -549,35 +542,10 @@ void Step::vLocalsTo(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no such local or <metaSymbol>
   
-  if (! pLocalWord && !bSessionLevelTag)
+  if (! pLocalWord)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "No such local: %s\n"_Stz,sLocalNm.azChar());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // handle a meta-symbol
-  
-  if (bSessionLevelTag) {
     
-    RASSERT(szTerm->bSame(C_TAG_PATH));
-
-    Word* pCurrentWord = m_pSenCompiler->pCurrentWord();
-    
-    CellSingle xMetaNm;
-    xMetaNm = sLocalNm;
-    
-    pCurrentWord->vEncodePush(xMetaNm);
-    pCurrentWord->vEncodeCall("swap"_Stz);
-
-    //pCurrentWord->vEncodeCall("[job]"_Stz);
-    //pCurrentWord->vEncodeCall("job.session@"_Stz);
-    pCurrentWord->vEncodeCall("[session].tagSet@"_Stz);
-    
-    pCurrentWord->vEncodeCall("tagSet.upsertStr"_Stz);
-    
-    EXIT();
-    return;
-  }
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle a local
 
