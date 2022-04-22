@@ -63,6 +63,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 
   _checkInitialised_(CN_SEDEPUTY);
   
+  m_sFolderPath = C_SE_PATH;
+  
   ApiHelper::vAllocateSession();
   
   eEC eError = m_pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
@@ -131,7 +133,8 @@ void SeDeputy::vDeputyLoop(void)
     if (m_pSession != m_pJob->pSession())
       vTrace("vDeputyLoop %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
     
-    
+    m_pJob->vFolderPath(m_sFolderPath);
+
     vExecuteJob();
     
     ApiHelper::vPrintResults(m_pJob);
@@ -145,6 +148,8 @@ void SeDeputy::vDeputyLoop(void)
       m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
       m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
     }
+    
+    m_sFolderPath = m_pJob->szFolderPath();
     
     vRepeableJob();
   }

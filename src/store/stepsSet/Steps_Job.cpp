@@ -85,8 +85,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("[job].error!"_Stz,           &Step::vJobErrorStore);
 
-  vAddStep("[job].folderPath@"_Stz,      &Step::vJobErrorFetch);
-  vAddStep("[job].folderPath!"_Stz,      &Step::vJobErrorStore);
+  vAddStep("[job].folderPath@"_Stz,      &Step::vJobFolderPathFetch);
+  vAddStep("[job].folderPath!"_Stz,      &Step::vJobFolderPathStore);
   
   vAddStep("[job].id@"_Stz,              &Step::vJobIdFetch);
     

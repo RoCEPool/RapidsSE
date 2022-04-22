@@ -16,7 +16,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // store path into the sessions <path>=<...>
-  Path[].depth strVec::toPath to /session <path>
+  Path[].depth strVec::toPath
+    dup to /session <path>
+        [job].folderPath!
 ;
 
 /*----------------------------------------------------------------------------*/
