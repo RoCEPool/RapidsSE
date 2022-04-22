@@ -88,9 +88,7 @@ Session::Session(void)
   m_sToDo       = ""_Stz;
     
   m_pStmtList   = new StmtList;
-  
-  m_bSystemCloser_ssn = false;
-  
+    
   // -- -- -- -- -- --
   
   m_iCmdNo = 0;

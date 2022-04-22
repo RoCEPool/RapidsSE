@@ -1730,8 +1730,6 @@ public:
   void vSessionCascadeStore(void);
   void vSessionHasCascadeFetch(void);
   void vSessionHasCascadeStore(void);
-  void vSessionSystemCloserFetch(void);
-  void vSessionSystemCloserStore(void);
 
   // shell
   void vShellExecute(void);

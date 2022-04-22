@@ -23,8 +23,6 @@ void Step::vAddSteps_Session(void)
   vAddStep("[session].cascade!"_Stz,      &Step::vSessionCascadeStore);
   vAddStep("[session].hasCascade@"_Stz,   &Step::vSessionHasCascadeFetch);
   vAddStep("[session].hasCascade!"_Stz,   &Step::vSessionHasCascadeStore);
-  vAddStep("[session].systemCloser@"_Stz, &Step::vSessionSystemCloserFetch);
-  vAddStep("[session].systemCloser!"_Stz, &Step::vSessionSystemCloserStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,34 +81,6 @@ void Step::vSessionHasCascadeStore(void)
 
   i8 iCascade = m_pDataStack->iPopBol(__func__);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [session].systemCloser@ -- fetch m_bSystemCloser from session               */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionSystemCloserFetch(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  m_pDataStack->vPushInt(pSession->m_bSystemCloser_ssn);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [session].systemCloser! -- store m_bSystemCloser into session              */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionSystemCloserStore(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  pSession->m_bSystemCloser_ssn = m_pDataStack->iPopInt(__func__);
-  
   EXIT();
 }
 

@@ -52,9 +52,7 @@ namespace STORE
   
     s4K      m_sToDo;         // prompt to do
     
-  
-    bool     m_bSystemCloser_ssn; // is this session the system closer?
-  
+
     // -- -- -- -- -- --
 
     Timer m_oTimer;      // call timer
