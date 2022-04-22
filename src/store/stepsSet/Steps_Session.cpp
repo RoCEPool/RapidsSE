@@ -21,21 +21,12 @@ void Step::vAddSteps_Session(void)
 {
   vAddStep("[session].cascade@"_Stz,      &Step::vSessionCascadeFetch);
   vAddStep("[session].cascade!"_Stz,      &Step::vSessionCascadeStore);
-  vAddStep("[session].dicStack@"_Stz,     &Step::vSessionDicStackFetch);
-  vAddStep("[session].dump"_Stz,          &Step::vSessionDump);
   vAddStep("[session].hasCascade@"_Stz,   &Step::vSessionHasCascadeFetch);
   vAddStep("[session].hasCascade!"_Stz,   &Step::vSessionHasCascadeStore);
   vAddStep("[session].lastJobId"_Stz,     &Step::vSessionLastJobId);
-  vAddStep("[session].pid"_Stz,           &Step::vSessionPid);
-  vAddStep("[session].see"_Stz,           &Step::vSessionSee);
   vAddStep("[session].systemCloser@"_Stz, &Step::vSessionSystemCloserFetch);
   vAddStep("[session].systemCloser!"_Stz, &Step::vSessionSystemCloserStore);
-  vAddStep("[session].tablePtn@"_Stz,     &Step::vSessionTablePtnFetch);
   vAddStep("[session].tagSet@"_Stz,       &Step::vSessionTagSetFetch);
-  vAddStep("[session].todo@"_Stz,         &Step::vSessionToDoFetch);
-  vAddStep("[session].todo!"_Stz,         &Step::vSessionToDoStore);
-  vAddStep("[session].tx@"_Stz,           &Step::vSessionTxFetch);
-  vAddStep("[session].tx!"_Stz,           &Step::vSessionTxStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,34 +61,6 @@ void Step::vSessionCascadeStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [session].dicStack@ -- get session dic stack                               */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionDicStackFetch(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  m_pDataStack->vPushPtr(pSession->pPathStack());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [session].dump -- dump of SE interface                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionDump(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  pSession->vContentDump();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* [session].hasCascade@ -- fetch bHasCascade from session                    */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionHasCascadeFetch(void)
@@ -126,20 +89,6 @@ void Step::vSessionHasCascadeStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [session].pid -- get pid of SE session                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionPid(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  m_pDataStack->vPushInt(pSession->m_iPid);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* [session].lastJobId -- get last job id                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionLastJobId(void)
@@ -154,21 +103,6 @@ void Step::vSessionLastJobId(void)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* [session].see -- see session                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionSee(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  pSession->vSee();
-  
-  EXIT();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* [session].systemCloser@ -- fetch m_bSystemCloser from session               */
@@ -199,20 +133,6 @@ void Step::vSessionSystemCloserStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [session].tablePtn@ -- fetch tablePtn of SE session                        */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionTablePtnFetch(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  m_pDataStack->vPushInt(pSession->i_FixedPtn());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* [session].tagSet@ -- fetch tagset of session                               */
 /*----------------------------------------------------------------------------*/
 void Step::vSessionTagSetFetch(void)
@@ -227,70 +147,6 @@ void Step::vSessionTagSetFetch(void)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* [session].todo@ -- fetch todo of SE session                                */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionToDoFetch(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  m_pDataStack->vPushStr(pSession->m_sToDo);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [session].toDo! -- store todo of SE session                                */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionToDoStore(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  s4K sToDo;
-  m_pDataStack->vPopStr(sToDo,__func__);
-
-  pSession->m_sToDo = sToDo;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [session].tx@ -- fetch tx of SE session                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionTxFetch(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  Tx* pTx = pSession->pTx();
-  
-  m_pDataStack->vPushPtr(pTx);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [session].tx! -- store tx of SE session                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionTxStore(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
-  
-  pSession->vTx(pTx);
-  
-  EXIT();
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1721,21 +1721,12 @@ public:
   void vSessionCascadeFetch(void);
   void vSessionCascadeStore(void);
   void vSessionCommand(void);
-  void vSessionDicStackFetch(void);
-  void vSessionDump(void);
   void vSessionHasCascadeFetch(void);
   void vSessionHasCascadeStore(void);
   void vSessionLastJobId(void);
-  void vSessionPid(void);
-  void vSessionSee(void);
   void vSessionSystemCloserFetch(void);
   void vSessionSystemCloserStore(void);
   void vSessionTagSetFetch(void);
-  void vSessionTablePtnFetch(void);
-  void vSessionToDoFetch(void);
-  void vSessionToDoStore(void);
-  void vSessionTxFetch(void);
-  void vSessionTxStore(void);
 
   // shell
   void vShellExecute(void);
