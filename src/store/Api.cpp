@@ -455,8 +455,6 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
- // eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the command
   

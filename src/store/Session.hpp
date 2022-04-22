@@ -37,8 +37,6 @@ namespace STORE
     i8       m_i_NextFree;    // next state in free chain
     
     i8       m_i_FixedPtn;    // specific partition being processed
-
-    DicStack m_oDicStack_ssn;     // dictionary stack
  
     Tx*      m_pTx;           // current transaction
   
@@ -108,7 +106,6 @@ namespace STORE
     void vOutline(s4K& sOutline);
     void vFinaliseSession(i8 i_NextFree);
     bool bHasCascade(void);
-    eEC  eInitaliseSession(Stz* pCatalogName, Stz* pSchemaName);
     JobId tLastJobId(void);
     void vPopCascade(void);
     void vSee(void);

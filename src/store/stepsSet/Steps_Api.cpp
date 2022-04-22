@@ -134,8 +134,6 @@ void Step::vApiExecuteCommand(void)
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
-  //eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the request
   
