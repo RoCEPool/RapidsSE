@@ -497,7 +497,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   s4K sLabelLoop;
   s4K sLabelNext;
   s4K sLabelOrdAgg;
-  s4K sFunSignature;
 
   bool bInflateGenerated = false;
 
@@ -1985,7 +1984,6 @@ Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, 
 
   CodeSynth *pCodeSynth;
 
-  s256 sFunSignature;
   s256 sLabelNext;
   s256 sReturnLabel;
 
@@ -2044,7 +2042,6 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
   Shape* pShape;
   CodeSynth *pCodeSynth;
 
-  s256 sFunSignature;
   s256 sLabel;
   s256 sLabelNext;
   s256 sReturnLabel;
@@ -2102,7 +2099,6 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp)
   Shape* pShape;
   CodeSynth *pCodeSynth;
 
-  s256 sFunSignature;
   s256 sLabel;
   s256 sReturnLabel;
 
@@ -2142,7 +2138,6 @@ Shape* Stencil::pSketchInflateRow(Stream* pStream, Op* pOp) {
   Shape *pShape;
   CodeSynth *pCodeSynth;
 
-  s256 sFunSignature;
   s256 sLabel;
 
   // get the streamDefOut
@@ -2409,7 +2404,6 @@ Shape* Stencil::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 
   s4K sLabel;
   s4K sLabelNext;
-  s4K sFunSignature;
   s256 szStageNm;
 
   i8 i_Op = pOp->i_Op();
@@ -2515,7 +2509,6 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
 
   s4K sLabel;
   s4K sLabelNext;
-  s256 sFunSignature;
 
   i8 i_Op = pOp->i_Op();
   CodeSynth *pCodeSynth;

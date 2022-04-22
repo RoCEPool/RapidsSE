@@ -43,22 +43,6 @@ success
 create index IxO_ORDERKEY  ON orders (O_ORDERKEY)  ;
 success;
 
-create table orders (
-	 O_ORDERKEY        INTEGER       NOT NULL,
-	 O_CUSTKEY         INTEGER       NOT NULL,
-	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
-	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
-	 O_ORDERDATE       TIMESTAMP     NOT NULL,
-	 O_ORDERPRIORITY   CHAR(15)      NOT NULL,
-	 O_CLERK           CHAR(15)      NOT NULL,
-	 O_SHIPPRIORITY    INTEGER       NOT NULL,
-	 O_COMMENT         VARCHAR(79)   NOT NULL
-);
-success
-
-create index IxO_ORDERKEY  ON Orders (O_ORDERKEY)  ;
-success;
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // multiple combinedOp's
 pipeline Q
@@ -233,6 +217,7 @@ failure contains: 'EC_INVALID_PIPELINE'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple scanOp's
+/*
 pipeline Q
 begin
 
@@ -254,6 +239,7 @@ begin
 
 end ;
 failure contains: 'EC_INVALID_PIPELINE'
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // indexScan to be a first OP
