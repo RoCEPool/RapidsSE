@@ -44,7 +44,7 @@ begin
     | sink
     | stageStart
 end ;
-failure contains: 'invalid command'
+failure contains: 'EC_INVALID_PIPELINE'
 
 //------------------------------------------------------------------------------
 pipeline unnamed
