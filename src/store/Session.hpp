@@ -77,7 +77,7 @@ namespace STORE
       
   private:
 
-    StmtList* m_pStmtList;    // list of cascade statements
+    StmtList* m_pStmtList_ssn;    // list of cascade statements
 
    JobId  m_tLastJobId_ssn;  // last job which was run
 

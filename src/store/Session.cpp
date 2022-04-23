@@ -87,7 +87,7 @@ Session::Session(void)
 
   m_sToDo       = ""_Stz;
     
-  m_pStmtList   = new StmtList;
+  m_pStmtList_ssn   = new StmtList;
     
   // -- -- -- -- -- --
   
@@ -112,7 +112,7 @@ Session::~Session(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
     
-  delete m_pStmtList;
+  delete m_pStmtList_ssn;
   
   AM::pSessions()->vFreeSession(this);
           
@@ -153,7 +153,7 @@ void Session::vAppendCascade(Stz* szCascade)
   //vTrace("vAppendCascade: %s\n"_Stz,szCascade);
   Statement* pStatement = new Statement(szCascade);
   
-  m_pStmtList->vAppend(pStatement);
+  m_pStmtList_ssn->vAppend(pStatement);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -175,7 +175,7 @@ Stz*  Session::szCascade(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
       
-  Statement* pStatement = m_pStmtList->pHead();
+  Statement* pStatement = m_pStmtList_ssn->pHead();
 
   Stz* szText = pStatement->szText();
   
@@ -286,7 +286,7 @@ bool Session::bHasCascade(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
       
-  if (m_pStmtList->nItems())
+  if (m_pStmtList_ssn->nItems())
     return true;
   else
     return false;
@@ -320,7 +320,7 @@ void Session::vPopCascade(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
     
-  Statement* pStatement = m_pStmtList->pPop();
+  Statement* pStatement = m_pStmtList_ssn->pPop();
 
   Stz* szText = pStatement->szText();
   //vTrace("vPopCascade: %s\n"_Stz,szText);

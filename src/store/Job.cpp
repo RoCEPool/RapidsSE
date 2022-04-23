@@ -1211,6 +1211,41 @@ void Job::vSingularOp(Op* pSingularOp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return statement list                                                      */
+/*----------------------------------------------------------------------------*/
+StmtList* Job::pStmtList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_pStmtList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a statement list for this job                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vStmtListCreate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(! m_pStmtList);
+  
+  m_pStmtList = new StmtList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* destroy this job's statement list                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vStmtListDestroy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(m_pStmtList);
+  
+  delete m_pStmtList;
+  m_pStmtList = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is jsystem closer?                                                         */
 /*----------------------------------------------------------------------------*/
 bool Job::bSystemCloser(void)

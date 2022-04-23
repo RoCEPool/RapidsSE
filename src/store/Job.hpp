@@ -223,6 +223,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vSession(Session* pSession);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
+    StmtList*  pStmtList(void);
+    void vStmtListCreate(void);
+    void vStmtListDestroy(void);
     bool bSystemCloser(void);
     void vSystemCloser(bool bSystemCloser);
 
