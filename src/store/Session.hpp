@@ -47,11 +47,7 @@ namespace STORE
 
     void*    m_aStackBase;    // stack base of thread which made api call
     void*    m_aStackPtr;     // stack addr of thread which made api call
-
-    // -- -- -- -- -- --
   
-    s4K      m_sToDo_ssn;         // prompt to do
-    
 
     // -- -- -- -- -- --
 
