@@ -128,8 +128,6 @@ void SeDeputy::vDeputyLoop(void)
       break;
     
     RASSERT(m_pJob);
-    if (m_pSession != m_pJob->pSession())
-      vTrace("vDeputyLoop %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
     
     m_pJob->vFolderPath(m_sFolderPath);
     m_pJob->vLastJobId(m_tLastJobId);
@@ -166,11 +164,7 @@ void SeDeputy::vDeputyLoop(void)
 void SeDeputy::vExecuteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-    
-  if (m_pSession != m_pJob->pSession())
-    vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
-  RASSERT(m_pSession == m_pJob->pSession());
-    
+        
   TagSet* pCmdTagSet = this->pCmdTagSet();
 
   ApiHelper::vExecuteJob(m_pJob,pCmdTagSet);
