@@ -108,6 +108,8 @@ Job::Job(Stz*  szJobNm,
   m_pMutex_job     = nullptr;
   m_bSystemCloser  = false;
 
+  m_pStmtList = nullptr;
+  
   _checkInitialised_(CN_JOB);
   
   AM::JOBS::vJobsActiveInc();
@@ -1005,6 +1007,7 @@ void Job::vPostRecv(void)
   m_pSingularOp  = nullptr;
   m_pMutex_job   = nullptr;
   m_pJobMetricsChain = nullptr;
+  m_pStmtList = nullptr;
 
   m_okLock.vResetLock();
   m_okLock.vResetStats();

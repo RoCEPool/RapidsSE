@@ -12,6 +12,7 @@
 #include "JobMetrics.hpp"
 #include "CmdId.hpp"
 #include "Output.hpp"
+#include "Statement.hpp"
 
 
 /*                      IMPORTANT NOTE
@@ -23,6 +24,8 @@
 
 namespace STORE
 {
+typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
+
   class Job : public Operand,
               public CRM<Job>
   {
@@ -109,6 +112,7 @@ namespace STORE
     // TO BE MOVED
     Timer m_oProgressTimer; // move to register
 
+    StmtList* m_pStmtList;    // list of cascade statements
   
     // must be last
     Footer m_xFooter;
