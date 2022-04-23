@@ -140,6 +140,8 @@ namespace PROMPT
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
     Timer* pTimer(void);
+    Stz* szToDo(void);
+    void vToDo(Stz* szToDo);
     void vTrackMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);

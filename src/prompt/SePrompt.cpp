@@ -1234,6 +1234,28 @@ Token* SePrompt::pTkn(i8 i_Token)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get to do                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* SePrompt::szToDo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Stz* szToDo = m_pCurrentDeputy->szToDo();
+  
+  return szToDo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set to do                                                                  */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vToDo(Stz* szToDo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pCurrentDeputy->vToDo(szToDo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bTrackingMemory(void)
