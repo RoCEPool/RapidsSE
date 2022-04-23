@@ -2887,18 +2887,6 @@ eCN AM::eJobClass(Job* pJob)
 }
 
 
-Session* AM::pJobSession(Job* pJob)
-{
-  i8 i_Session = pJob->i_Session();
-  
-  Session* pSession = nullptr;
-  
-  if (i_Session != C_UNKNOWN)
-    pSession = AM::pSessions()->pGetSession(i_Session);
-
-  return pSession;
-}
-
 
 TagSet* AM::pJobTags(Job* pJob)
 {
