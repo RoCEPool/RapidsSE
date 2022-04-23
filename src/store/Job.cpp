@@ -44,11 +44,7 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz*  szJobNm,
-         i8    i_Session,     // which session in session array
-         CmdId tCmdId
-
-        )
+Job::Job(Stz* szJobNm, CmdId tCmdId)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -64,7 +60,7 @@ Job::Job(Stz*  szJobNm,
   m_bWasForked = false;
   // -- a -------------------
   
-  m_i_Session_job   = i_Session;
+  m_i_Session_job   = C_UNKNOWN;
   m_tCmdId      = tCmdId;
 
   m_p_ResponseOp = nullptr;

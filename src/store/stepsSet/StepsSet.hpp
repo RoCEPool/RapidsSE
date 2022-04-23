@@ -1773,14 +1773,6 @@ public:
   void vSqlCompilerStageMarkers(void);
   void vSqlCompilerTransliterate(void);
 
-  // ssn
-  void vSsnIncBegun(void);
-  void vSsnIncCancelled(void);
-  void vSsnIncEnded(void);
-  void vSsnIncExecuted(void);
-  void vSsnSenLoc(void);
-  void vSsnTraceSession(void);
-
   // stage
   void vStageGet(void);
   void vStageSet(void);

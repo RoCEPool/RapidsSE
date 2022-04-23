@@ -74,10 +74,7 @@ Job* Api::pAllocJob(Stz* szJobNm)
   CmdId tCmdId;
   tCmdId.vNextCmdId();
   
-  Job* pJob = new Job(szJobNm,
-                      C_UNKNOWN,
-                      tCmdId
-                      );
+  Job* pJob = new Job(szJobNm,tCmdId);
 
   return pJob;
 }
@@ -876,10 +873,7 @@ void Api::vCallBootSystemJob(void)
   CmdId tCmdId;
   tCmdId.vNextCmdId();
   
-  Job* pBootJob = new Job("bootSystem"_Stz,
-                          AM::SESSION::iInternalSession(),
-                          tCmdId
-                          );
+  Job* pBootJob = new Job("bootSystem"_Stz,tCmdId);
   
   Stz* szJobNm = pBootJob->szJobNm();
   Task* pBootTask = new Task(szJobNm,pBootJob);
@@ -937,10 +931,7 @@ void Api::vCallStartSystemJob(void)
   CmdId tCmdId;
   tCmdId.vNextCmdId();
   
-  Job* pStartJob = new Job("startSystem"_Stz,
-                           AM::SESSION::iInternalSession(),
-                           tCmdId
-                           );
+  Job* pStartJob = new Job("startSystem"_Stz,tCmdId);
   
   Stz* szJobNm = pStartJob->szJobNm();
   Task* pStartTask = new Task(szJobNm,pStartJob);

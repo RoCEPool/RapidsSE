@@ -122,10 +122,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Job(Stz*  szJobNm,
-        i8    i_Session,  // which session in session array
-        CmdId tCmdId
-       );
+    Job(Stz* szJobNm, CmdId tCmdId);
 
    ~Job(void) noexcept(false);
   

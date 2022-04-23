@@ -189,7 +189,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Shell();
   Step::vAddSteps_Socket();
   Step::vAddSteps_SqlCompiler();
-  Step::vAddSteps_SsnState();
   Step::vAddSteps_Stage();
   Step::vAddSteps_StageOfOp();
   Step::vAddSteps_Stats();
