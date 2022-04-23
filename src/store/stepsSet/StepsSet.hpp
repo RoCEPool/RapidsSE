@@ -1729,10 +1729,6 @@ public:
   void vSendWLDelete(void);
   void vSendWLNew(void);
 
-  // session
-  void vSessionCascadeFetch(void);
-  void vSessionCascadeStore(void);
-  void vSessionHasCascadeFetch(void);
 
   // shell
   void vShellExecute(void);

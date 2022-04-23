@@ -77,8 +77,6 @@ namespace STORE
       
   private:
 
-    StmtList* m_pStmtList_ssn;    // list of cascade statements
-
    JobId  m_tLastJobId_ssn;  // last job which was run
 
     // must be last
@@ -93,9 +91,7 @@ namespace STORE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    void vAppendCascade(Stz* szCascade);
     bool bBeginTx(void);
-    Stz* szCascade(void);
     void vCommitTx(void);
     void vContentDump(void);
     void vEndTx(void);
@@ -103,9 +99,7 @@ namespace STORE
     void vFixedPtn(i8 i_FixedPtn);
     void vOutline(s4K& sOutline);
     void vFinaliseSession(i8 i_NextFree);
-    bool bHasCascade(void);
     JobId tLastJobId(void);
-    void vPopCascade(void);
     void vSee(void);
     void vTraceSession(void);
     Tx*  pTx(void);

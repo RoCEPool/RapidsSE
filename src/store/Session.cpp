@@ -86,9 +86,7 @@ Session::Session(void)
   m_pTx         = nullptr;
 
   m_sToDo       = ""_Stz;
-    
-  m_pStmtList_ssn   = new StmtList;
-    
+        
   // -- -- -- -- -- --
   
   m_iCmdNo = 0;
@@ -111,8 +109,6 @@ Session::Session(void)
 Session::~Session(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  delete m_pStmtList_ssn;
   
   AM::pSessions()->vFreeSession(this);
           
@@ -144,21 +140,6 @@ void Session::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append cascade                                                             */
-/*----------------------------------------------------------------------------*/
-void Session::vAppendCascade(Stz* szCascade)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  NEVER_REACH;
-  
-  //vTrace("vAppendCascade: %s\n"_Stz,szCascade);
-  Statement* pStatement = new Statement(szCascade);
-  
-  m_pStmtList_ssn->vAppend(pStatement);
-}
-
-/*----------------------------------------------------------------------------*/
 /* begin a tx                                                                 */
 /*----------------------------------------------------------------------------*/
 bool Session::bBeginTx()
@@ -168,21 +149,6 @@ bool Session::bBeginTx()
   m_pTx = new Tx;
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get sCascade                                                               */
-/*----------------------------------------------------------------------------*/
-Stz*  Session::szCascade(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-      
-  NEVER_REACH;
-  Statement* pStatement = m_pStmtList_ssn->pHead();
-
-  Stz* szText = pStatement->szText();
-  
-  return szText;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -283,21 +249,6 @@ void Session::vFinaliseSession(i8 i_NextFree)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get bHasCascade                                                            */
-/*----------------------------------------------------------------------------*/
-bool Session::bHasCascade(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-      
-  NEVER_REACH;
-  if (m_pStmtList_ssn->nItems())
-    return true;
-  else
-    return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* last job run                                                               */
 /*----------------------------------------------------------------------------*/
 JobId Session::tLastJobId(void)
@@ -315,22 +266,6 @@ void Session::vOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop cascade                                                                */
-/*----------------------------------------------------------------------------*/
-void Session::vPopCascade(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  NEVER_REACH;
-  Statement* pStatement = m_pStmtList_ssn->pPop();
-
-  Stz* szText = pStatement->szText();
-  //vTrace("vPopCascade: %s\n"_Stz,szText);
-
-  delete pStatement;
 }
 
 /*----------------------------------------------------------------------------*/
