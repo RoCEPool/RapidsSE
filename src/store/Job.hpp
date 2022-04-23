@@ -136,6 +136,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vActiveOpsDec(void);
     void vActiveOpsInc(void);
 
+    Stz* szCascade(void);
+    void vCascadeAppend(Stz* szCascade);
+    void vCascadePop(void);
     void vCascadeReset(void);
     void vCascadeSet(Stz* szCascadeCmd);
     CmdId tCmdId(void);

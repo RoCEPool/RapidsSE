@@ -251,6 +251,49 @@ void Job::vActiveOpsInc(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get sCascade                                                               */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szCascade(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Statement* pStatement = m_pStmtList->pHead();
+
+  Stz* szText = pStatement->szText();
+  
+  return szText;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append cascade                                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vCascadeAppend(Stz* szCascade)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  //vTrace("vAppendCascade: %s\n"_Stz,szCascade);
+  Statement* pStatement = new Statement(szCascade);
+  
+  m_pStmtList->vAppend(pStatement);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop cascade                                                                */
+/*----------------------------------------------------------------------------*/
+void Job::vCascadePop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Statement* pStatement = m_pStmtList->pPop();
+
+  Stz* szText = pStatement->szText();
+  UNUSED(szText);
+  //vTrace("vPopCascade: %s\n"_Stz,szText);
+
+  delete pStatement;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vCascadeReset(void)
