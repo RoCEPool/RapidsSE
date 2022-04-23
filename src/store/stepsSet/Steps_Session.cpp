@@ -22,7 +22,6 @@ void Step::vAddSteps_Session(void)
   vAddStep("[session].cascade@"_Stz,      &Step::vSessionCascadeFetch);
   vAddStep("[session].cascade!"_Stz,      &Step::vSessionCascadeStore);
   vAddStep("[session].hasCascade@"_Stz,   &Step::vSessionHasCascadeFetch);
-  vAddStep("[session].hasCascade!"_Stz,   &Step::vSessionHasCascadeStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,20 +66,6 @@ void Step::vSessionHasCascadeFetch(void)
 
   m_pDataStack->vPushInt(pSession->bHasCascade());
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [session].hasCascade! -- store bHasCascade into session                    */
-/*----------------------------------------------------------------------------*/
-void Step::vSessionHasCascadeStore(void)
-{
-  ENTRY();
-  
-  Session* pSession = MY::pSession();
-
-  i8 iCascade = m_pDataStack->iPopBol(__func__);
-    
   EXIT();
 }
 

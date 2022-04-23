@@ -1729,7 +1729,6 @@ public:
   void vSessionCascadeFetch(void);
   void vSessionCascadeStore(void);
   void vSessionHasCascadeFetch(void);
-  void vSessionHasCascadeStore(void);
 
   // shell
   void vShellExecute(void);

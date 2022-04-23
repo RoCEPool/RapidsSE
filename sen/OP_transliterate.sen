@@ -25,8 +25,6 @@
 
   end ;
   " [session].cascade!
-  
-  true [session].hasCascade!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -91,13 +89,12 @@
 
   sPipeline [session].cascade!
 
-  true [session].hasCascade!
   
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : transliterate_StartMarker \handler
 
