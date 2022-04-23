@@ -3034,10 +3034,10 @@ PsxThd* AM::pThisTLSPsxThd(void) {
   return pPsxThd;
 }
 
-HeapBuffer* AM::pToHeapBuffer(i8 i_Buffer) {
+HeapBuffer* AM::pToHeapBuffer(i8 i_PoolBuffer) {
   
   HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_Buffer));
+    reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_PoolBuffer));
   
   return pHeapBuffer;
 
@@ -3045,9 +3045,9 @@ HeapBuffer* AM::pToHeapBuffer(i8 i_Buffer) {
 
 
 
-Object* AM::pToLargeObect(i8 i_Buffer) {
+Object* AM::pToLargeObect(i8 i_PoolBuffer) {
     
-  HeapBuffer* pHeapBuffer = pToHeapBuffer(i_Buffer);
+  HeapBuffer* pHeapBuffer = pToHeapBuffer(i_PoolBuffer);
   
   Object* pObject = reinterpret_cast<Object*>(pHeapBuffer->aFirstChunk());
 

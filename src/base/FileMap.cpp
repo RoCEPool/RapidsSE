@@ -85,20 +85,20 @@ void FileMap::vInitialise(void)
   bool bProgress = false, bTouch = false;
   i8 iBufferMod;
 
-  i8 i_Buffer = gpBufferPool->m_nNonPageableBuffers;
+  i8 i_PoolBuffer = gpBufferPool->m_nNonPageableBuffers;
   // Pickup initialization of the pageable buffers from, where BufferPool left off.
   // From m_nNonPageableBuffers...m_nBuffers-1
 
-  while (C_NIL != i_Buffer) {
+  while (C_NIL != i_PoolBuffer) {
 
     if (bProgress) {
-      iBufferMod = i_Buffer % 1000;
+      iBufferMod = i_PoolBuffer % 1000;
       if (! iBufferMod) {
         fflush(stdout);
       }
     }
 
-    FreeBuffer* pFreeBuffer = gpBufferPool->pToFreeBuffer(i_Buffer);
+    FreeBuffer* pFreeBuffer = gpBufferPool->pToFreeBuffer(i_PoolBuffer);
 
     pFreeBuffer->vSetMagic();
     pFreeBuffer->vSetClassNo(CN_FREEBUFFER);
@@ -108,9 +108,9 @@ void FileMap::vInitialise(void)
       pFreeBuffer->vZeroData();
 
     pFreeBuffer->vSetFooter();
-    pFreeBuffer->vBufferNo(i_Buffer);
-    i_Buffer = gpBufferPool->iBufferNext(i_Buffer);
-    pFreeBuffer->vNextFree(i_Buffer);
+    pFreeBuffer->vBufferNo(i_PoolBuffer);
+    i_PoolBuffer = gpBufferPool->iBufferNext(i_PoolBuffer);
+    pFreeBuffer->vNextFree(i_PoolBuffer);
 
     gpBufferPool->m_nFreeCount++;
   }

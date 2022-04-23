@@ -1058,10 +1058,10 @@ Ent* EntBuffer::aInsertEntUpwards(eIU eReason, Ent* aEnt, EntBuffer** ppRootBuff
   
   if (pInsertIntoBuffer->m_iBufferHeight) {
     Rrf xRef = aInsertedEntry->rxRef();
-    i8 i_Buffer = xRef.iBuffer();
+    i8 i_PoolBuffer = xRef.iBuffer();
     
     HeapBuffer* pHeapBuffer =
-      reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_Buffer));
+      reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_PoolBuffer));
     
     EntBuffer* pChildBuffer =
       reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
@@ -1699,10 +1699,10 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
          aMovedEntry = pNewRightBuffer->aNextEntry(aMovedEntry, 0)) {
       
       xRef = aMovedEntry->rxRef();
-      i8 i_Buffer = xRef.iBuffer();
+      i8 i_PoolBuffer = xRef.iBuffer();
       
       HeapBuffer* pHeapBuffer =
-      reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_Buffer));
+      reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_PoolBuffer));
       
       EntBuffer* pChildBuffer =
       reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());

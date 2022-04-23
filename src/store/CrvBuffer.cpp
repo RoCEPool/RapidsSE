@@ -104,9 +104,9 @@ Crv* CrvBuffer::aToCrv(i8 iBufferNo,i8 i_Crv)
 /*----------------------------------------------------------------------------*/
 /* get crv buffer given buffer no                                             */
 /*----------------------------------------------------------------------------*/
-CrvBuffer* CrvBuffer::aToCrvBuffer(i8 i_Buffer)
+CrvBuffer* CrvBuffer::aToCrvBuffer(i8 i_PoolBuffer)
 {
-  CrvBuffer* pCrvBuffer = _pCrvBuffer(AM::pToLargeObect(i_Buffer));
+  CrvBuffer* pCrvBuffer = _pCrvBuffer(AM::pToLargeObect(i_PoolBuffer));
 
   return pCrvBuffer;
 }

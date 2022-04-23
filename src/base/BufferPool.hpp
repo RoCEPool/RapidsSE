@@ -85,8 +85,7 @@ namespace BASE
     Stz* szShmNm(void);
     void vTakeBuffers(i8 nSpareBuffers);
     i8   iTotalSpace(void);
-//    PoolBuffer* pToPoolBuffer(i8 i_Buffer);
-    FreeBuffer* pToFreeBuffer(i8 i_Buffer);
+    FreeBuffer* pToFreeBuffer(i8 i_PoolBuffer);
     FreeBuffer* pToFreeBuffer(PoolBuffer* pBuffer);
     i8   iUsedSpace(void);
     bool bValidAddress(const void* aAddress);
