@@ -85,7 +85,7 @@ Session::Session(void)
   //m_oDicStack;
   m_pTx         = nullptr;
 
-  m_sToDo       = ""_Stz;
+  m_sToDo_ssn       = ""_Stz;
         
   // -- -- -- -- -- --
   

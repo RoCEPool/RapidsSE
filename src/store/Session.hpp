@@ -50,7 +50,7 @@ namespace STORE
 
     // -- -- -- -- -- --
   
-    s4K      m_sToDo;         // prompt to do
+    s4K      m_sToDo_ssn;         // prompt to do
     
 
     // -- -- -- -- -- --
