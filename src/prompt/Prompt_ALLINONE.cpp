@@ -3881,9 +3881,7 @@ bool PROMPT::bPrompt_scan(SePrompt* pPrompt)
   s48K sPipelineStmt;
   
   if (AM::PROMPT::bToPipelineStmt(sPipelineStmt,pInpTknVec)) {
-    
-    pPrompt->pSession()->m_sToDo_ssn = sPipelineStmt;
-    
+    pPrompt->vToDo(sPipelineStmt);
   }
   
   return true;
@@ -3946,7 +3944,7 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   s16KB sSqlCompiler;
   sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,szRaw);
 
-  pPrompt->pSession()->m_sToDo_ssn = sSqlCompiler;
+  pPrompt->vToDo(sSqlCompiler);
   
   return true;
 }

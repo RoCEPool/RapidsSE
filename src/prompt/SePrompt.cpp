@@ -98,7 +98,7 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCurrentDeputy = pDeputyCreate();
   
-  m_pCurrentDeputy->pSession()->m_sToDo_ssn = "_seprompt"_Stz;
+  vToDo("_seprompt"_Stz);
   
   if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
     //m_oPmtTagSet.vInsert(C_PMT_BUFPOOL);
@@ -237,7 +237,7 @@ void SePrompt::vPromptLoop(void)
     m_pCmdTknVec = pInputGet()->pTokenVec();
     m_pCmdTagSet = m_pCurrentDeputy->pCmdTagSet();
     
-    Stz* szToDo = m_pCurrentDeputy->pSession()->m_sToDo_ssn;
+    Stz* szToDo = this->szToDo();
     
     if (! *szToDo->azChar())
       pInputGet()->vRawInputClear();
@@ -289,7 +289,7 @@ bool SePrompt::bGetCommand(void)
 //  s32 sHostName;
 //  Hardware::vHostName(sHostName);
 
-  if (bStdIn() && ! *m_pCurrentDeputy->pSession()->m_sToDo_ssn.azChar()) {
+  if (bStdIn() && ! *this->szToDo()->azChar()) {
     //vReportOther();
     vPromptUser();
   }
@@ -969,11 +969,11 @@ bool SePrompt::bReadNextCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case: a previous command has requested to prompt to do something
   
-  if (* m_pCurrentDeputy->pSession()->m_sToDo_ssn.azChar()) {
-    m_pCmdTknVec->vTokeniseSen(m_pCurrentDeputy->pSession()->m_sToDo_ssn);
+  if (* this->szToDo()->azChar()) {
+    m_pCmdTknVec->vTokeniseSen(this->szToDo());
     m_pCmdTknVec->vStripSemicolon();
 
-    m_pCurrentDeputy->pSession()->m_sToDo_ssn = ""_Stz;
+    vToDo(""_Stz);
     m_pCmdTknVec->vIntegrityCheck();
     return true;
   }
@@ -1159,7 +1159,7 @@ bool SePrompt::bShortCut(void)
     if (! pShortCut->m_sName.bSame(pTkn->szChars()))
       continue;
     
-    m_pCurrentDeputy->pSession()->m_sToDo_ssn = pShortCut->m_sCmd;
+    vToDo(pShortCut->m_sCmd);
     
     return true;
   }
