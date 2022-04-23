@@ -438,7 +438,7 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Rrf& xRrf)
   i8 i_Buffer = xRrf.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-    _pHeapBuffer(gpBufferPool->pToPoolBuffer(i_Buffer));
+    _pHeapBuffer(FileMap::pToPoolBuffer(i_Buffer));
   
   EntBuffer* pEntBuffer =
     _pEntBuffer(pHeapBuffer->aFirstChunk());
@@ -1739,7 +1739,7 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
   i8 i_Buffer = xRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+  reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_Buffer));
   
   EntBuffer* pChildBuffer =
   reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());

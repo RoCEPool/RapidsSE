@@ -15,7 +15,7 @@ void* BufferId::vAddressFromId(BufferId oBufferId)
 
   // Convert BufferId to BufferNo to BufferAddress
   PoolBuffer* pPoolBuffer =
-      gpBufferPool->pToPoolBuffer(oBufferId.m_iAsI8);
+      FileMap::pToPoolBuffer(oBufferId.m_iAsI8);
 
   HeapBuffer* pHeapBuffer =
       reinterpret_cast<HeapBuffer*>(pPoolBuffer);

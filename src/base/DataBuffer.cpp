@@ -81,7 +81,7 @@ DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
   i8 i_Buffer = xRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+  reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_Buffer));
   
   DataBuffer* pDataBuffer =
   reinterpret_cast<DataBuffer*>(pHeapBuffer->aFirstChunk());

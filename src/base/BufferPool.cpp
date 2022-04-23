@@ -606,16 +606,16 @@ i8 BufferPool::iTotalSpace(void)
 /*----------------------------------------------------------------------------*/
 /* translate buffer number to allocated buffer                                */
 /*----------------------------------------------------------------------------*/
-PoolBuffer* BufferPool::pToPoolBuffer(i8 i_Buffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
-  i8 iOffset = C_SIZE_POOL_BUFFER * i_Buffer;
-  
-  PoolBuffer* pBuffer = static_cast<PoolBuffer*>(MemLib::aAddBytes(m_pBase,iOffset));
-  
-  return pPoolCheck<PoolBuffer*>(pBuffer,__func__);
-}
+//PoolBuffer* BufferPool::pToPoolBuffer(i8 i_Buffer)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+//
+//  i8 iOffset = C_SIZE_POOL_BUFFER * i_Buffer;
+//
+//  PoolBuffer* pBuffer = static_cast<PoolBuffer*>(MemLib::aAddBytes(m_pBase,iOffset));
+//
+//  return pPoolCheck<PoolBuffer*>(pBuffer,__func__);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* transalate buffer number to free buffer                                    */
@@ -625,7 +625,7 @@ FreeBuffer* BufferPool::pToFreeBuffer(i8 i_Buffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   FreeBuffer* pBufferFree =
-    static_cast<FreeBuffer*>(pToPoolBuffer(i_Buffer));
+    static_cast<FreeBuffer*>(FileMap::pToPoolBuffer(i_Buffer));
   
   return pPoolCheck<FreeBuffer*>(pBufferFree,__func__);
 }
@@ -696,7 +696,7 @@ void BufferPool::vVerifyPool(void)
     
     RASSERT(pBufferVerify->bIsMagicValid());
     RASSERT(CN_FREEBUFFER == pBufferVerify->eGetClassNo());
-    
+
     i_Buffer = pBufferVerify->iNextFree();
     RASSERT(i_Buffer < m_nBuffers);
   }

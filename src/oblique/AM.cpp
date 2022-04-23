@@ -3037,7 +3037,7 @@ PsxThd* AM::pThisTLSPsxThd(void) {
 HeapBuffer* AM::pToHeapBuffer(i8 i_Buffer) {
   
   HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+    reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_Buffer));
   
   return pHeapBuffer;
 

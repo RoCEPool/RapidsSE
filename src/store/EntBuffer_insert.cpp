@@ -586,7 +586,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
     i8 iChildNo = aEnt->iBuffer();
     
     HeapBuffer* pHeapBuffer =
-      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(iChildNo));
+      reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(iChildNo));
     
     EntBuffer* pChildBuffer =
       reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
@@ -894,7 +894,7 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer)
     i8 iChildBuffer = aEntry->iBuffer();
     
     HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(iChildBuffer));
+    reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(iChildBuffer));
     
     EntBuffer* pChildBuffer =
     reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
@@ -1061,7 +1061,7 @@ Ent* EntBuffer::aInsertEntUpwards(eIU eReason, Ent* aEnt, EntBuffer** ppRootBuff
     i8 i_Buffer = xRef.iBuffer();
     
     HeapBuffer* pHeapBuffer =
-      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+      reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_Buffer));
     
     EntBuffer* pChildBuffer =
       reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
@@ -1702,7 +1702,7 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
       i8 i_Buffer = xRef.iBuffer();
       
       HeapBuffer* pHeapBuffer =
-      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+      reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_Buffer));
       
       EntBuffer* pChildBuffer =
       reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());

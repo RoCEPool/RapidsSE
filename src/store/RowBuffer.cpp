@@ -199,7 +199,7 @@ RowBuffer* RowBuffer::pRefdRowBuffer(Rrf& xRef)
   i8 i_Buffer = xRef.iBuffer();
 
   HeapBuffer* pHeapBuffer =
-      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+      reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_Buffer));
 
   RowBuffer* pRowBuffer =
       reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());

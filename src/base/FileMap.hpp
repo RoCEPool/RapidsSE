@@ -5,12 +5,6 @@
 #pragma once
 
 #include "BASE.h"
-#include "Resources.hpp" //?
-#include "ReapLock.hpp"
-#include "TraceMultiLock.hpp"
-#include "Starter.hpp"
-//#include "EventHandlers.hpp"
-//#include "SysMetrics.hpp"
 
 namespace BASE
 {
@@ -20,6 +14,8 @@ namespace BASE
     Stz* m_szFilePath;
     i8 m_iFileSize;
     i8 m_iCreated;
+
+    // Store start and end address of pageable area?
 
     // must be last
     Footer m_xFooter;
@@ -32,6 +28,8 @@ namespace BASE
     ~FileMap(void);
 
     void vInitialise(void);
+    static PoolBuffer* pToPoolBuffer(i8 i_PoolBuffer);
+
   private:
 
     Footer* aFooter(void);

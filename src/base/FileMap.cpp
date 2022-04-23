@@ -132,6 +132,20 @@ void FileMap::vInitialise(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* translate pool buffer number to allocated buffer                           */
+/*----------------------------------------------------------------------------*/
+PoolBuffer* FileMap::pToPoolBuffer(i8 i_PoolBuffer)
+{
+  _static_
+
+  i8 iOffset = C_SIZE_POOL_BUFFER * i_PoolBuffer;
+
+  PoolBuffer* pPoolBuffer = static_cast<PoolBuffer*>(MemLib::aAddBytes(gpBufferPool->m_pBase,iOffset));
+
+  return pPoolCheck<PoolBuffer*>(pPoolBuffer,__func__);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 Footer* FileMap::aFooter(void)

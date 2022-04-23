@@ -44,7 +44,7 @@ void PersistenceHelper::vWriteBuffers(Stz* sFilePath)
        i_Buffer <= gpBufferPool->iBufferLast();
        i_Buffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
+    PoolBuffer* pBuffer = FileMap::pToPoolBuffer(i_Buffer);
     bool bResult = pFile->bWriteBytes((void*)pBuffer,C_SIZE_POOL_BUFFER);
     ASSERT(bResult);
     UNUSED(bResult);
