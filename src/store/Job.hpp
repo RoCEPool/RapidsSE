@@ -44,7 +44,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // -- command and tags
     TagSet m_oJobTags;  // tags for the job
 
-    i8 m_i_Session;  // which session in node's session array
+    i8 m_i_Session_job;  // which session in node's session array
     CmdId m_tCmdId;
   
     b8 m_bWasForked;

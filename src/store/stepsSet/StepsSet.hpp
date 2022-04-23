@@ -874,8 +874,6 @@ public:
   void vJobReportOperators(void);
 
   void vJobScheduleNextPhase(void);
-  void vJobSessionFetch(void);
-  void vJobSessionStateFetch(void);
   void vJobShow(void);
   void vJobSignalWaiter(void);
   void vJobSpawn(void);

@@ -72,8 +72,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.reapable@"_Stz,        &Step::vJobReapableFetch_other);
   vAddStep("job.reapable!"_Stz,        &Step::vJobReapableStore_other);
   
-  vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
-  vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
@@ -1196,41 +1194,6 @@ void Step::vJobScheduleNextPhase(void)
   
   AM::vScheduleNextPhase(pJobParticipant,this);
 
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.session@ -- fetch job session                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSessionFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iSessionId = pJob->i_Session();
-  
-  Session* pSession = nullptr;
-  
-  if (iSessionId != C_UNKNOWN)
-    pSession = AM::pSessions()->pGetSession(iSessionId);
-  
-  m_pDataStack->vPushPtr(pSession);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.sessionState@ -- fetch job session state                               */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSessionStateFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob->i_Session());
   
   EXIT();
 }

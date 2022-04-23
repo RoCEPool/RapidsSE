@@ -64,7 +64,7 @@ Job::Job(Stz*  szJobNm,
   m_bWasForked = false;
   // -- a -------------------
   
-  m_i_Session   = i_Session;
+  m_i_Session_job   = i_Session;
   m_tCmdId      = tCmdId;
 
   m_p_ResponseOp = nullptr;
@@ -1030,7 +1030,7 @@ void Job::vPrintJobContents(void)
          ,aJK[m_eJobKind]            // 2
          ,szCmd()                    // 3
          ,iOriginNodeId()            // 4
-         ,m_i_Session                // 5
+         ,m_i_Session_job                // 5
          ,m_tCmdId.iCmdNo()          // 6
          ,m_bWasReceived ? "true" : "false" // 7
          ,m_iParticipantNodeId            // 8
@@ -1091,7 +1091,7 @@ void Job::vPrintJobLine(void)
 
   vTrace("originNodeId %lld session %lld command %lld "_Stz
          ,this->iOriginNodeId()
-         ,this->m_i_Session
+         ,this->m_i_Session_job
          ,this->m_tCmdId.iCmdNo()
          );
 
@@ -1222,7 +1222,7 @@ i8 Job::i_Session(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  return m_i_Session;
+  return m_i_Session_job;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1234,7 +1234,7 @@ Session* Job::pSession(void)
   
   i8 iOriginNodeId = this->iOriginNodeId();
 
-  Session* pSession = AM::pSessionGet(iOriginNodeId,m_i_Session);
+  Session* pSession = AM::pSessionGet(iOriginNodeId,m_i_Session_job);
 
   return pSession;
 }
@@ -1246,7 +1246,7 @@ void Job::vSession(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_i_Session = pSession->m_i_Session;
+  m_i_Session_job = pSession->m_i_Session;
 }
 
 /*----------------------------------------------------------------------------*/
