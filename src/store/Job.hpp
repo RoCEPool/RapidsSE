@@ -223,7 +223,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vResponseTimerUpdate(void);
 
     i8   i_Session(void);
-    Session* pSession(void);
     void vSession(Session* pSession);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);

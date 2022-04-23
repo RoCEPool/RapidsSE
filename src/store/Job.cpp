@@ -1226,20 +1226,6 @@ i8 Job::i_Session(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pSession                                                               */
-/*----------------------------------------------------------------------------*/
-Session* Job::pSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 iOriginNodeId = this->iOriginNodeId();
-
-  Session* pSession = AM::pSessionGet(iOriginNodeId,m_i_Session_job);
-
-  return pSession;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set session                                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vSession(Session* pSession)
