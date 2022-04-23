@@ -87,7 +87,7 @@ Session::Session(void)
         
   // -- -- -- -- -- --
   
-  m_iCmdNo = 0;
+  m_iCmdNo_ssn = 0;
 
   _checkInitialised_(CN_SESSION);
   

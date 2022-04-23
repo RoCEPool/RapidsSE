@@ -40,7 +40,7 @@ namespace STORE
  
     Tx*      m_pTx;           // current transaction
   
-    i8       m_iCmdNo;        // the sequence no of the request from that session
+    i8       m_iCmdNo_ssn;        // the sequence no of the request from that session
 
   
     bool     m_bRunning;      // api call still running?

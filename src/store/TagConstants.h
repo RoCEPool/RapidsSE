@@ -46,7 +46,6 @@ static Stz* C_TAG_PARAM3       = "<param3>"_Stz;
 static Stz* C_TAG_PARAM4       = "<param4>"_Stz;
 static Stz* C_TAG_PLPROTOCOL   = "<plProtocol>"_Stz;
 static Stz* C_TAG_REPLICATED   = "<replicated>"_Stz;
-static Stz* C_TAG_REQUEST      = "<request>"_Stz;
 static Stz* C_TAG_REQNO        = "<reqNo>"_Stz;
 static Stz* C_TAG_REQOF        = "<reqOf>"_Stz;
 static Stz* C_TAG_RESOURCELOG  = "<resourceLog>"_Stz;
