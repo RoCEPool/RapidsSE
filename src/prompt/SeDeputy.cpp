@@ -135,6 +135,7 @@ void SeDeputy::vDeputyLoop(void)
     m_pJob->vLastJobId(m_tLastJobId);
     m_pJob->vSystemCloser(m_bSystemCloser);
 
+    m_pJob->vStmtListCreate();
     vExecuteJob();
     
     ApiHelper::vPrintResults(m_pJob);

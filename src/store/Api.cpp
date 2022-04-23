@@ -125,7 +125,7 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
       vWaitJob(pJob);
     }
     
-    if (! pSession->bHasCascade()) {
+    if (! pJob->bHasCascade()) {
       return;
     }
   
@@ -139,9 +139,9 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
     
     pJob->vCascadeReset();
     
-    pJob->vCascadeSet(pSession->szCascade());
+    pJob->vCascadeSet(pJob->szCascade());
     
-    pSession->vPopCascade();
+    pJob->vCascadePop();
 
     Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
     

@@ -24,7 +24,7 @@
     | stageA
 
   end ;
-  " [session].cascade!
+  " [op].job@ job.masterJob job.cascade!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +87,7 @@
 
   //sPipeline .
 
-  sPipeline [session].cascade!
+  sPipeline [op].job@ job.masterJob job.cascade!
 
   
   true

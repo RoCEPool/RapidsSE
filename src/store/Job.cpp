@@ -172,6 +172,9 @@ Job::~Job(void) noexcept(false)
     vMutexDestroy();
   if (m_pOutput_job)
     vOutputDestroy();
+  
+  if (m_pStmtList)
+    vStmtListDestroy();
 }
 
 
@@ -485,6 +488,19 @@ bool Job::bHasByPromptTag(void)
   bool bByPrompt = bHasTag(C_TAG_BYPROMPT);
   
   return bByPrompt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bHasCascade                                                            */
+/*----------------------------------------------------------------------------*/
+bool Job::bHasCascade(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if (m_pStmtList && m_pStmtList->nItems())
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/

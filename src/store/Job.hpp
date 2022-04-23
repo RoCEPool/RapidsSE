@@ -157,6 +157,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vGrabLock(void);
   
     bool bHasByPromptTag(void);
+    bool bHasCascade(void);
     bool bHasTag(Stz* szTagNm);
   
     bool bIsInError(void);

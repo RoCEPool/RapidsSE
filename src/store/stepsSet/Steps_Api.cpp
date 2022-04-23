@@ -180,6 +180,7 @@ void Step::vApiExecuteCommand(void)
     return;
   }
 
+  pJob->vStmtListCreate();
   Api::vExecuteJob(pJob,pCmdTagSet);
   
   m_pDataStack->vPushInt(true);

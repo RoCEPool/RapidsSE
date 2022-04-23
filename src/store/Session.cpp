@@ -150,6 +150,8 @@ void Session::vAppendCascade(Stz* szCascade)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
     
+  NEVER_REACH;
+  
   //vTrace("vAppendCascade: %s\n"_Stz,szCascade);
   Statement* pStatement = new Statement(szCascade);
   
@@ -175,6 +177,7 @@ Stz*  Session::szCascade(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
       
+  NEVER_REACH;
   Statement* pStatement = m_pStmtList_ssn->pHead();
 
   Stz* szText = pStatement->szText();
@@ -286,6 +289,7 @@ bool Session::bHasCascade(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
       
+  NEVER_REACH;
   if (m_pStmtList_ssn->nItems())
     return true;
   else
@@ -320,6 +324,7 @@ void Session::vPopCascade(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
     
+  NEVER_REACH;
   Statement* pStatement = m_pStmtList_ssn->pPop();
 
   Stz* szText = pStatement->szText();

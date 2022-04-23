@@ -447,32 +447,32 @@ void Step::vJobAssertStructure(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].cascade@ -- fetch sCascade from session                           */
+/* job.cascade@ -- fetch sCascade from job                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vJobCascadeFetch(void)
 {
   ENTRY();
   
-  Session* pSession = MY::pSession();
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushStz(pSession->szCascade());
+  m_pDataStack->vPushStz(pJob ->szCascade());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].cascade! -- store sCascade into session                          */
+/* job.cascade! -- store sCascade into job                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vJobCascadeStore(void)
 {
   ENTRY();
   
-  Session* pSession = MY::pSession();
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   s16KB sStmt;
   m_pDataStack->vPopStr(sStmt,__func__);
   
-  pSession->vAppendCascade(sStmt);
+  pJob->vCascadeAppend(sStmt);
 
   EXIT();
 }
@@ -673,9 +673,9 @@ void Step::vJobHasCascadeFetch(void)
 {
   ENTRY();
   
-  Session* pSession = MY::pSession();
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushInt(pSession->bHasCascade());
+  m_pDataStack->vPushInt(pJob->bHasCascade());
   
   EXIT();
 }
