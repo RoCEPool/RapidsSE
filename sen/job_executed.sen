@@ -38,10 +38,6 @@
   // find the originating job
   [job] job.id@ ListedJob[].findOriginator discard
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // increment the number of executed jobs received in api state
-  ListedJob[] ssn::incExecuted
-  ListedJob[] ssn::traceSession
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

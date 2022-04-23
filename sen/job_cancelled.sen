@@ -54,11 +54,6 @@
   [job] job.id@ ListedJob[].findOriginator discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // increment the number of cancelled jobs received in api state
-  ListedJob[] ssn::incCancelled
-  ListedJob[] ssn::traceSession
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   ListedJob[].task@ task.ack
   
