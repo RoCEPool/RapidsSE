@@ -2083,9 +2083,9 @@ bool PROMPT::bPrompt_lastJob(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  Session* pSession = pPrompt->pSession();
-
-  JobId tLastJobId = pSession->tLastJobId();
+  SeDeputy* pDeputy = pPrompt->pCurrentDeputy();
+  
+  JobId tLastJobId = pDeputy->tLastJobId();
   
   vTrace("Last Job Id : %llu\n"_Stz
          ,tLastJobId.uJobNo()

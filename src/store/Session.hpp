@@ -77,8 +77,6 @@ namespace STORE
       
   private:
 
-   JobId  m_tLastJobId_ssn;  // last job which was run
-
     // must be last
     Footer m_xFooter;
     

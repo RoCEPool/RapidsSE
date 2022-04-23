@@ -57,6 +57,7 @@ namespace PROMPT
     void vDeputiseJob(void);
     Input* pInput(void);
     Job* pJob(void);
+    JobId tLastJobId(void);
     void vReportTime(void);
     Session* pSession(void);
     void vTerminate(void);

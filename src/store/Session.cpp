@@ -91,9 +91,6 @@ Session::Session(void)
   
   m_iCmdNo = 0;
 
-  
-  m_tLastJobId_ssn = 0;
-  
   _checkInitialised_(CN_SESSION);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - -
@@ -246,16 +243,6 @@ void Session::vFinaliseSession(i8 i_NextFree)
   
   m_pTx        = nullptr;
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* last job run                                                               */
-/*----------------------------------------------------------------------------*/
-JobId Session::tLastJobId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  return m_tLastJobId_ssn;
 }
 
 /*----------------------------------------------------------------------------*/
