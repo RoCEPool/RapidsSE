@@ -34,6 +34,9 @@ void Step::vAddSteps_Job(void)
 {
   vAddStep("job.class"_Stz,            &Step::vJobClass);
   
+  vAddStep("job.cascade@"_Stz,         &Step::vJobCascadeFetch);
+  vAddStep("job.cascade!"_Stz,         &Step::vJobCascadeStore);
+  
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   
   vAddStep("job.entry@"_Stz,           &Step::vJobEntryFetch_other);
@@ -41,6 +44,8 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.folderPath@"_Stz,      &Step::vJobFolderPathFetch);
   vAddStep("job.folderPath!"_Stz,      &Step::vJobFolderPathStore);
+  
+  vAddStep("job.hasCascade@"_Stz,     &Step::vJobHasCascadeFetch);
   
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch_other);
   
@@ -442,6 +447,37 @@ void Step::vJobAssertStructure(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].cascade@ -- fetch sCascade from session                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobCascadeFetch(void)
+{
+  ENTRY();
+  
+  Session* pSession = MY::pSession();
+
+  m_pDataStack->vPushStz(pSession->szCascade());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].cascade! -- store sCascade into session                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobCascadeStore(void)
+{
+  ENTRY();
+  
+  Session* pSession = MY::pSession();
+
+  s16KB sStmt;
+  m_pDataStack->vPopStr(sStmt,__func__);
+  
+  pSession->vAppendCascade(sStmt);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.class -- get the class of the job                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJobClass(void)
@@ -630,6 +666,19 @@ void Step::vJobFolderPathStore(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* [job].hasCascade@ -- fetch bHasCascade from session                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobHasCascadeFetch(void)
+{
+  ENTRY();
+  
+  Session* pSession = MY::pSession();
+
+  m_pDataStack->vPushInt(pSession->bHasCascade());
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* [job].id@ -- fetch the job id of the job                                   */
 /*----------------------------------------------------------------------------*/

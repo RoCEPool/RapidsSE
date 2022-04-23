@@ -809,6 +809,8 @@ public:
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
+  void vJobCascadeFetch(void);
+  void vJobCascadeStore(void);
   void vJobClass(void);
 
   void vJobDelete(void);
@@ -824,6 +826,8 @@ public:
   void vJobFolderPathStore(void);
 
   void vJobGet(void);
+
+  void vJobHasCascadeFetch(void);
 
   void vJobIdFetch(void);
   void vJobIdFetch_other(void);
