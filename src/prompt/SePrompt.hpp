@@ -98,10 +98,10 @@ namespace PROMPT
     i8   iDivisionNo(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
-    SeDeputy* pCreateDeputy(void);
-    SeDeputy* pCurrentDeputy(void);
-    void vCurrentDeputy(SeDeputy* pCurrentDeputy);
     void vCutToken(i8 i_Tkn);
+    SeDeputy* pDeputyCreate(void);
+    SeDeputy* pDeputyCurrent(void);
+    void vDeputyCurrent(SeDeputy* pCurrentDeputy);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);

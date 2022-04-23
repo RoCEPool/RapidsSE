@@ -96,7 +96,7 @@ SePrompt::SePrompt(bool bOneCommand)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initial settings
   
-  m_pCurrentDeputy = pCreateDeputy();
+  m_pCurrentDeputy = pDeputyCreate();
   
   m_pCurrentDeputy->pSession()->m_sToDo_ssn = "_seprompt"_Stz;
   
@@ -447,47 +447,6 @@ void SePrompt::vContinue(bool bContinue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new deputy                                                        */
-/*----------------------------------------------------------------------------*/
-SeDeputy* SePrompt::pCreateDeputy(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  if (m_nDeputies >= C_MAX_DEPUTY)
-    return nullptr;
-  
-  SeDeputy* m_pCurrentDeputy =
-    m_paSeDeputy[m_nDeputies] = new SeDeputy(m_nDeputies,this);
-  
-  m_nDeputies++;
-  
-  while (! m_pCurrentDeputy->bAvailable())
-    AM::vNapMsec(10,CN_SEPROMPT);
-  
-  return m_pCurrentDeputy;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get current deputy                                                         */
-/*----------------------------------------------------------------------------*/
-SeDeputy* SePrompt::pCurrentDeputy(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  return m_pCurrentDeputy;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set current deputy                                                         */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCurrentDeputy(SeDeputy* pCurrentDeputy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  m_pCurrentDeputy = pCurrentDeputy;
-}
-
-/*----------------------------------------------------------------------------*/
 /* cut a token from token vector                                              */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCutToken(i8 i_Tkn)
@@ -501,6 +460,48 @@ void SePrompt::vCutToken(i8 i_Tkn)
   pInpTknVec->vRemoveToken(i_Tkn);
 
   //pTknVec->vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new deputy                                                        */
+/*----------------------------------------------------------------------------*/
+SeDeputy* SePrompt::pDeputyCreate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  if (m_nDeputies >= C_MAX_DEPUTY)
+    return nullptr;
+  
+  SeDeputy* pDeputy =
+    m_paSeDeputy[m_nDeputies] =
+      new SeDeputy(m_nDeputies,this);
+  
+  m_nDeputies++;
+  
+  while (! pDeputy->bAvailable())
+    AM::vNapMsec(10,CN_SEPROMPT);
+  
+  return pDeputy;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current deputy                                                         */
+/*----------------------------------------------------------------------------*/
+SeDeputy* SePrompt::pDeputyCurrent(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  return m_pCurrentDeputy;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current deputy                                                         */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDeputyCurrent(SeDeputy* pCurrentDeputy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  m_pCurrentDeputy = pCurrentDeputy;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -632,7 +633,7 @@ SeDeputy* SePrompt::pFindDeputy(void)
   if (pFoundDeputy)
     return pFoundDeputy;
   
-  pFoundDeputy = pCreateDeputy();
+  pFoundDeputy = pDeputyCreate();
   if (pFoundDeputy)
     return pFoundDeputy;
 

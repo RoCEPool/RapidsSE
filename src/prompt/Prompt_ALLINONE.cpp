@@ -2083,7 +2083,7 @@ bool PROMPT::bPrompt_lastJob(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  SeDeputy* pDeputy = pPrompt->pCurrentDeputy();
+  SeDeputy* pDeputy = pPrompt->pDeputyCurrent();
   
   JobId tLastJobId = pDeputy->tLastJobId();
   
