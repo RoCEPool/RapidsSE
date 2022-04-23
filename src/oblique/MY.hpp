@@ -56,7 +56,6 @@ namespace OBLIQUE
     static eZK        eOperand(void);
     static Pipeline*  pPipeline(void);
     static Dic*       pSchemaDic(void);
-    static Session*   pSession(void);
     static Stage*     pStage(void);
     static Stream*    pStream(void);
     static Dic*       pTableDic(void);
