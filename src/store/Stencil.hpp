@@ -9,6 +9,39 @@
 #include "Shape.hpp"
 #include "Combined.hpp"
 
+// information about the stage being combined and its Operators
+// this will help in adding in the rules
+struct stageOps {
+
+  i8 m_iAggregOp;
+  i8 m_iCombinedOp;
+  i8 m_iFilterOp;
+  i8 m_iHashOp;
+  i8 m_iIndexJoinOp;
+  i8 m_iIndexScanOp;
+  i8 m_iKeyExistsOp;
+  i8 m_iLimitOp;
+  i8 m_iOrdAggOp;
+  i8 m_iProjectOp;
+  i8 m_iScanOp;
+  i8 m_iSortOp;
+  i8 m_iTopOp;
+
+  bool m_bScan;
+  bool m_bIndexScan;
+
+  bool m_bPayloadOp;
+
+  bool m_bGeneratePotTub;
+
+  Op* m_pCombinedOp;
+  Op* m_pHavingFilterOp;
+  Op* m_pPostProjectOp;
+  Op* m_pLimitOp;
+
+  s256 m_sHashExpr;
+};
+
 namespace STORE
 {
 static const i8 C_MAX_SHAPES = 32;
@@ -21,11 +54,11 @@ static const i8 C_MAX_SHAPES = 32;
 
     s256        m_szStageNm;
     bool        m_bScan;
-    bool        m_bIndexScan;
     bool        m_bRowBuffer;
 
     TypedStack* m_pPostStack;
 
+    stageOps   m_xStageOps;
     CodeSynth* m_pBannerHead;
     CodeSynth* m_pBannerTail;
     CodeSynth* m_pPreliminary;
@@ -79,6 +112,8 @@ static const i8 C_MAX_SHAPES = 32;
     void vAppendFuncHeader3(void);
     void vAppendHeaderEntries(i8 iStage);
 
+    eEC eCollectStage(Combined* pCombined, Stream* pStream);
+
     void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
     u8   uGetSelectColumns(Stream* pStream);
 
@@ -93,15 +128,14 @@ static const i8 C_MAX_SHAPES = 32;
     void vSetupProjectExp(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pProjectOp);
+    void vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
     void vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                              Op* pHavingFilterOp, Op* pLimitOp, Stz* sHashExpr);
-    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Op* pHavingFilterOp, Op* pLimitOp, Stz* sHashExpr);
-    void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp, Op* pLimitOp, Stz* sHashExpr);
-    void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp, Stz* sHashExpr);
+    void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
     Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
@@ -122,7 +156,7 @@ static const i8 C_MAX_SHAPES = 32;
     Shape* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
                              eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchPot(Combined* pCombined, Op* pLastOp, eSR ePrevStencil, IntStack* pPreExpStack,
-                      Stz* sHashExpr, Stz* szLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg);
+                      Stz* szLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg);
     Shape* pSketchReturn(void);
     Shape* pSketchTub(Combined* pCombined, Op* pLastOp, eSR ePrevStencil, IntStack* pPreExpStack,
                       Stz* szLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg);

@@ -37,7 +37,9 @@ namespace PROMPT
 
     bool        m_bOneCommand;  // run one command only
     bool        m_bOneRun;      // one command has been run?
-   
+
+    bool        m_bOutputEnabled; // is output enabled?
+
     i8          m_nDeputies;    // current number of deputies
     SeDeputy*   m_paSeDeputy[C_MAX_DEPUTY];
 
@@ -118,6 +120,8 @@ namespace PROMPT
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
     void vOutline(s4K& sOutline);
+    bool bOutputEnabled(void);
+    void vOutputEnabled(bool bOutputEnabled);
     void vPromptUser(void);
     TagSet* pPmtTagSet(void);
     Stz* szRawInput(void);
@@ -135,7 +139,6 @@ namespace PROMPT
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
-    bool bSubSsnTags(void);
     Timer* pTimer(void);
     void vTrackMemory(bool bTrackMemory);
     bool bTrackingMemory(void);

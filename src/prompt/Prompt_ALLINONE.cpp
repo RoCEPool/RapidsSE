@@ -925,6 +925,8 @@ bool PROMPT::bPrompt_edit(SePrompt* pPrompt) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read the file back in
   i8 nBytes = pFile->nReadFile(sSMT);
+  UNUSED(nBytes);
+  
   vTrace("%s\n"_Stz, sSMT.azChar());
 
   return true;
@@ -2024,6 +2026,39 @@ bool PROMPT::bPrompt_job(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_jobs.cpp -- jobs                                                    */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_jobs (
+  PF_JOBS,              // prompt function
+  "Prompt_jobs"_Stz,    // name of the prompt function
+  "comment"_Stz,        // comment about the function
+  "jobs"_Stz,           // the prompt command
+  nullptr,              // the second word
+  bPrompt_jobs,         // prompt function
+  true,                 // enabled
+
+  true,                 // visible
+  "jobs"_Stz,           // help
+  ""_Stz                // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_jobs(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+  
+  vTrace("Jobs : %lld (threshold %lld)\n"_Stz
+         ,AM::JOBS::nJobsActive()
+         ,AM::JOBS::nJobsThreshold()
+         );
+  
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_lastJob.cpp -- last job id                                          */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -2048,9 +2083,9 @@ bool PROMPT::bPrompt_lastJob(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  Session* pSession = pPrompt->pSession();
-
-  JobId tLastJobId = pSession->tLastJobId();
+  SeDeputy* pDeputy = pPrompt->pCurrentDeputy();
+  
+  JobId tLastJobId = pDeputy->tLastJobId();
   
   vTrace("Last Job Id : %llu\n"_Stz
          ,tLastJobId.uJobNo()
@@ -2507,30 +2542,44 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
     bPrompt_memoryLeaks_dump(pPrompt);
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait for all jobs in the system to complete
   
-  // note: the tracking of memory works with an assumption that
-  //       whatever was started after trackingMemory has completed
-  Api::vSpinTillAllJobsCompleted();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ObjectSnapshot* pPoolSnapshot_then = pPrompt->pSnapshotAtTrackingMemory();
   ObjectSnapshot* pPoolSnapshot_curr = pPrompt->pSnapshotAtMemoryLeaks();
   
-  // NOTE: Need to wait for job to complete and cleanup
-  // Loop C_ATTEMPTS times to wait for memory leaks to go away
-  
-  
+
   
   if (gpBufferPool->bDontFree() || AM::pHeaps()->m_bNoFree) {
     vTrace("bPrompt_memoryLeaks: skipping ... (--dontFree supplied)\n"_Stz);
     goto L_END;
   }
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for all uset jobs in the system to complete
 
+  // note: the tracking of memory works with an assumption that
+  //       whatever was started after trackingMemory has completed
+
+  for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
+    
+    Api::vReapJobsOnce();
+    
+    i8 nJobsActive    = AM::JOBS::nJobsActive();
+    i8 nJobsThreshold = AM::JOBS::nJobsThreshold();
+    
+    vTrace("bPrompt_memoryLeaks: %lld active %lld threshold\n"_Stz,
+           nJobsActive,nJobsThreshold);
+    
+    if (nJobsActive <= nJobsThreshold)
+      break;
+    
+    AM::vNapMsec(200,CN_SEPROMPT);
+  }
+  
+  
+  
+  
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
     Api::vReapJobsOnce();
@@ -2961,24 +3010,21 @@ bool PROMPT::bPrompt_output(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  Session* pSession = pPrompt->pSession();
-  Output* pOutput = pSession->m_pOutput;
-
   if (pPrompt->pInpTknVec()->nItems() == 2 &&
       pPrompt->pInpTknVec()->pGet(1)->bSame("disable"_Stz)) {
     
     vTrace("OUTPUT DISABLE\n"_Stz);
-    pOutput->vPrintEnabled(false);
+    pPrompt->vOutputEnabled(false);
   }
   else
   if (pPrompt->pInpTknVec()->nItems() == 2 &&
       pPrompt->pInpTknVec()->pGet(1)->bSame("enable"_Stz)) {
 
     vTrace("OUTPUT ENABLE\n"_Stz);
-    pOutput->vPrintEnabled(true);
+    pPrompt->vOutputEnabled(true);
   }
   else {
-    if (pOutput->bPrintEnabled())
+    if (pPrompt->bOutputEnabled())
       vTrace("OUTPUT IS ENABLED\n"_Stz);
     else
       vTrace("OUTPUT IS DISABLED\n"_Stz);
@@ -5731,6 +5777,9 @@ bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
 
   pPrompt->vTrackMemory(true);
 
+  i8 nJobs = AM::JOBS::nJobsActive();
+  AM::JOBS::vJobsThreshold(nJobs);
+  
   vTrace("\nsuccess: 0 rows affected\n"_Stz);
   
   return true;

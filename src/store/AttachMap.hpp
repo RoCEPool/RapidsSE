@@ -42,9 +42,7 @@ namespace STORE
     s256  m_sLogTxtFile;
   
     bool          m_bBootError;
-
-    BucketMap* m_pBucketMap;
-
+    BucketMap*    m_pBucketMap;
     BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;
     ClassFlags    m_oClassFlags;
@@ -62,6 +60,8 @@ namespace STORE
     Heaps         m_xHeaps;
     InternalTables* m_pInternalTables;
     Jobs*         m_pJobs;
+    Atomic        m_nxJobsActive;
+    i8            m_nJobsThreshold;
     LglPtnMap*    m_pLglPtnMap;
     Locks         m_oLocks;
     Numbering*    m_pNumbering;

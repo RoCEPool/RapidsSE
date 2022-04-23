@@ -61,7 +61,8 @@ enum ePF // prompt function
   
   /*    */ PF_JOB,
   /*    */ PF_JOBCLASS,
-  
+  /*    */ PF_JOBS,
+
   /*    */ PF_LASTJOB,
   /*    */ PF_LET,
   /*    */ PF_LIMITS,
@@ -226,7 +227,8 @@ static Stz* aPF[]
   
   /*    */ "PF_JOB"_Stz,
   /*    */ "PF_JOBCLASS"_Stz,
-  
+  /*    */ "PF_JOBS"_Stz,
+
   /*    */ "PF_LASTJOB"_Stz,
   /*    */ "PF_LET"_Stz,
   /*    */ "PF_LIMITS"_Stz,

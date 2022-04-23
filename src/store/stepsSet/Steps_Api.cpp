@@ -134,19 +134,18 @@ void Step::vApiExecuteCommand(void)
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
-  eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the request
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
 
-  TagSet* pCmdTagSet =  & pSession->m_oCmdTagSet;
+  TagSet* pCmdTagSet =  new TagSet;
   pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
-  eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError) {
     delete pCmdTknVec;
+    delete pCmdTagSet;
     Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
@@ -154,31 +153,23 @@ void Step::vApiExecuteCommand(void)
     return;
    }
   
-  Job* pJob = Api::pAllocJob(pSession);
+  //Job* pJob = Api::pAllocJob(pSession);
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  Job* pJob = Api::pAllocJob(szJobNm);
+  pJob->vSession(pSession);
+
   TagSet* pJobTagSet = pJob->pJobTags();
   
+  pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
   
   
-  
-  
-  // get the command proper and the tag set
-  TagSet*   pSsnTags   = & pSession->m_oSsnTagSet;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
-  
-
-  pJobTagSet->vCopy(pSsnTags);
-
-  
-  
-  
-  
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -`- - - - - - - - - -
   
   
   eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
+  delete pCmdTagSet;
 
   if (eError) {
     
@@ -189,7 +180,8 @@ void Step::vApiExecuteCommand(void)
     return;
   }
 
-  Api::vExecuteJob(pJob);
+  pJob->vStmtListCreate();
+  Api::vExecuteJob(pJob,pCmdTagSet);
   
   m_pDataStack->vPushInt(true);
   

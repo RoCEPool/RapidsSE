@@ -19,9 +19,8 @@
 
   [system].activeJobs "$$$ ActiveJobs %v" .printf
   
+  true [op].job@ job.masterJob job.systemCloser!
 
-  true [session].systemCloser!
-  
   "system closed" .
 
   PipeIn[].pipeOut

@@ -9,12 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : jobOperators_action
 
-  [session].lastJobId "Last Job Id %v" .printf
+  [op].job@ job.masterJob job.lastJobId@ "Last Job Id %v" .printf
 
   <jobno> >int locals| iJob |
   
   iJob not if
-    [session].lastJobId to iJob
+    [op].job@ job.masterJob job.lastJobId@ to iJob
   then
 
   0 locals| eError |

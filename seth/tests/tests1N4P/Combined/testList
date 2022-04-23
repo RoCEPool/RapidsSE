@@ -14,4 +14,5 @@ Q9.test
 Q17.test
 //Q18.test
 rowBuffer.test
+rules.test
 scan.test

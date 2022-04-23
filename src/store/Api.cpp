@@ -83,50 +83,26 @@ Job* Api::pAllocJob(Stz* szJobNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* alloc a new job for session                                                */
-/*----------------------------------------------------------------------------*/
-Job* Api::pAllocJob(Session* pSession)
-{
-  _static_
-
-  RASSERT(pSession);
-    
-  CmdId tCmdId;
-  tCmdId.vNextCmdId();
-  
-  TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
-  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
-
-  Job* pJob = new Job(szJobNm,
-                      pSession->m_i_Session,
-                      tCmdId
-                      );
-
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
-void Api::vExecuteJob(Job* pJob)
+void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
 {
   _static_
   
   Session* pSession = pJob->pSession();
-  
-  pSession->m_pOutput->vAssertEmptyQueue();
+        
 
-  pSession->m_pOutput->vBeginProcOneCmd();
-      
+  pJob->vMutexCreate();
+  pJob->vOutputCreate();
+  pJob->vOutputBeginProc();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();
-  TagSet* pCmdTagSet = & pSession->m_oCmdTagSet;
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //RASSERT(! pSession->bHasCascade());
@@ -149,8 +125,7 @@ void Api::vExecuteJob(Job* pJob)
       vWaitJob(pJob);
     }
     
-    if (! pSession->bHasCascade()) {
-      pSession->vLastJobId(tJobId);
+    if (! pJob->bHasCascade()) {
       return;
     }
   
@@ -164,9 +139,9 @@ void Api::vExecuteJob(Job* pJob)
     
     pJob->vCascadeReset();
     
-    pJob->vCascadeSet(pSession->szCascade());
+    pJob->vCascadeSet(pJob->szCascade());
     
-    pSession->vPopCascade();
+    pJob->vCascadePop();
 
     Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
     
@@ -419,27 +394,25 @@ eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 void Api::vReapableJob(Job*& rpJob)
 {
   _static_
-    
-  Session* pSession = rpJob->pSession();
-  
-  if (rpJob && rpJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
-    pSession->m_pOutput->vProcessBufferQueue(rpJob);
+      
+  if (rpJob && rpJob->bIsPipeline() && ! rpJob->pOutput()->m_bExitMarker)
+    rpJob->pOutput()->vProcessBufferQueue(rpJob);
 
-  pSession->m_pOutput->m_pOutputQueue->vReset();
-  pSession->m_pOutput->vEndProcOneCmd();
+  rpJob->pOutput()->m_pOutputQueue->vReset();
+  rpJob->pOutput()->vEndProcOneCmd();
   
   rpJob->vReapable(true);
       
   
   
-  if (pSession->m_pOutput->m_pStreamDef_result) {
-    StreamDef* pStreamDef = pSession->m_pOutput->m_pStreamDef_result;
-    pSession->m_pOutput->m_pStreamDef_result = nullptr;
+  if (rpJob->pOutput()->m_pStreamDef_result) {
+    StreamDef* pStreamDef = rpJob->pOutput()->m_pStreamDef_result;
+    rpJob->pOutput()->m_pStreamDef_result = nullptr;
     delete pStreamDef;
   }
   
-  pSession->m_pOutput->m_bExitMarker      = false;
-  pSession->m_pOutput->m_bExitEarlyMarker = false;
+  rpJob->pOutput()->m_bExitMarker      = false;
+  rpJob->pOutput()->m_bExitEarlyMarker = false;
   
   rpJob = nullptr;
 }
@@ -482,21 +455,24 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   Session* pSession = Api::pAllocSession(SK_INTERNAL);
   
-  eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the command
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
 
-  TagSet* pCmdTagSet =  & pSession->m_oCmdTagSet;
+  TagSet* pCmdTagSet =  new TagSet;
   pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
-  eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError)
     return eError;
   
-  Job* pJob = pAllocJob(pSession);
+  //Job* pJob = pAllocJob(pSession);
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  Job* pJob = Api::pAllocJob(szJobNm);
+  pJob->vSession(pSession);
+  
+  
   TagSet* pJobTagSet = pJob->pJobTags();
   pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
 
@@ -508,6 +484,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
+  delete pCmdTagSet;
 
   if (eError) {
     return eError;
@@ -624,9 +601,7 @@ void Api::vWaitJob(Job* pJob)
 {
   _static_
     
-  Session* pSession = pJob->pSession();
-  
-  //pSession->m_oMutex.vObserve(true);
+  //pJob->m_oMutex.vObserve(true);
   Api::vMutexWaitCond(pJob);
   
   pJob->vResponseTimerUpdate();
@@ -671,15 +646,15 @@ bool Api::bReapJob(void)
         break;
       }
       else {
-//        vTrace("Cant reap retired job %p %lld "
-//               "%s %s "
-//               "activeOps %lld %s "
-//               "\n"_Stz
-//
-//               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
-//               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
-//               ,nActiveOps,pRetiredJob->bReapable() ? "reapable" : "not-reapable"
-//               );
+        vTrace("Cant reap retired job %p %lld "
+               "%s %s "
+               "activeOps %lld %s "
+               "\n"_Stz
+
+               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
+               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
+               ,nActiveOps,pRetiredJob->bReapable() ? "reapable" : "not-reapable"
+               );
       }
     }
   }
@@ -1099,32 +1074,6 @@ eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
   return EC_NONE;
 }
 
-/*----------------------------------------------------------------------------*/
-/* spi wait till all jobs completed                                           */
-/*----------------------------------------------------------------------------*/
-void Api::vSpinTillAllJobsCompleted(void)
-{
-  _static_
-  
-  // wait till no local jobs
-  AM::pLocalJobs()->vGrabLock();
-  while (AM::pLocalJobs()->nJobs())
-    ;
-  AM::pLocalJobs()->vDropLock();
-  
-  // wait till no participating jobs
-  AM::pParticipatingJobs()->vGrabLock();
-  while (AM::pParticipatingJobs()->nJobs())
-    ;
-  AM::pParticipatingJobs()->vDropLock();
-  
-  // wait till no originating jobs
-  AM::pOriginatingJobs()->vGrabLock();
-  while (AM::pOriginatingJobs()->nJobs())
-    ;
-  AM::pOriginatingJobs()->vDropLock();
-  
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -1178,16 +1127,13 @@ void Api::vCreateTaskForOp(Op* pOp)
 void Api::vMutexLock(Job* pJob)
 {
   _static_
-  
-  Session* pSession = pJob->pSession();
-
-  pSession->m_oMutex.vLock(pSession);
-        
+      
+  pJob->vMutexLock();
   pJob->vJobState(JS_LOCKED);
 }
 
 /*----------------------------------------------------------------------------*/
-/* mark job as running and unlock session mutex                               */
+/* mark job as running and unlock mutex                                      */
 /*----------------------------------------------------------------------------*/
 void Api::vMutexUnlock(Job* pJob)
 {
@@ -1195,27 +1141,21 @@ void Api::vMutexUnlock(Job* pJob)
   
   RASSERT(JS_ACTIVE != pJob->eJobState());
     
-  Session* pSession = pJob->pSession();
-
   pJob->vJobState(JS_ACTIVE);
   
-  pSession->m_oMutex.vUnlock(pSession);
+  pJob->vMutexUnlock();
 }
 
 /*----------------------------------------------------------------------------*/
-/* wait for session mutex to be signalled                                     */
+/* wait for mutex to be signalled                                             */
 /*----------------------------------------------------------------------------*/
 void Api::vMutexWaitCond(Job* pJob)
 {
   _static_
   
-  Session* pSession = pJob->pSession();
-
   do {
-    
-    //vTrace("WAIT session %p mutex %p\n"_Stz,pSession,&pSession->m_oMutex);
-
-    pSession->m_oMutex.vWait(pSession);
+        
+    pJob->vMutexWait();
     
   } while (pJob->eJobState() != JS_SIGNALLED);
 

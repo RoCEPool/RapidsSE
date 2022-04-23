@@ -16,7 +16,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // store path into the sessions <path>=<...>
-  Path[].depth strVec::toPath to /session <path>
+  Path[].depth strVec::toPath
+    [op].job@ job.masterJob job.folderPath!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -423,7 +424,7 @@
   [job].addRetired
   
   JS_SIGNALLED [job].state!
-  [session].signal
+  [job].signalWaiter
 
   [task].grabLock
     TR_RETIRE_THIS_TASK [task].transition!

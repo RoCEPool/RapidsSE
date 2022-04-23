@@ -15,6 +15,7 @@ namespace STORE
   {
 
   public:
+    Job*       m_pJob;
     Session*   m_pSession;
     Queue*     m_pOutputQueue;     // queue of buffers being the job output
 
@@ -32,8 +33,10 @@ namespace STORE
   
     i8         m_iOutputState;
 
+    bool       m_bFileOut;
     File*      m_pFileOut;
-  
+    s256       m_sFilePath;
+
   private:
 
     // must be last
@@ -43,13 +46,15 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Output(Session* pSession);
+    Output(Job* pJob, Session* pSession);
    ~Output(void) noexcept(false);
   
     void vAssertEmptyQueue(void);
     void vBeginProcOneCmd(void);
     void vDrainBufferQueue(Job* pJob);
     void vEndProcOneCmd(void);
+    void vFileOut(bool bFileOut);
+    void vFilePath(Stz* szFilePath);
     void vProcessBufferQueue(Job* pJob);
     bool bPrintEnabled(void);
     void vPrintEnabled(bool bPrintEnabled);

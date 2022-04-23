@@ -27,6 +27,10 @@
     StreamDefOut[].delete
   then
 
+  IndexDef[].isNull not if
+    IndexDef[].delete
+  then
+
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
   ZK_M_CLEANING_handler

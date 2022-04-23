@@ -45,7 +45,6 @@ Session* STORE::_pSession(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 Session::Session(void)
 : Object(CN_SESSION)
-, m_oMutex(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
@@ -56,7 +55,6 @@ Session::Session(void)
   m_iApiLoc    = 0;
   m_eApiError  = EC_NONE;
   m_bRunning   = false;
-  m_bSignalled = false;
   
   m_aStackBase = nullptr;
   m_aStackPtr  = nullptr;
@@ -88,28 +86,15 @@ Session::Session(void)
   m_pTx         = nullptr;
 
   m_sToDo       = ""_Stz;
-    
-  m_pStmtList   = new StmtList;
-  
-  m_bSystemCloser = false;
-  
+        
   // -- -- -- -- -- --
-  m_pOutput           = nullptr;
-  
-  
   
   m_iCmdNo = 0;
 
-  
-  m_tLastJobId = 0;
-  
   _checkInitialised_(CN_SESSION);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - -
-  
-  // set initial session <path>
-  m_oSsnTagSet.vInsert(C_TAG_PATH,C_SE_PATH);
-  
+    
   ++ gixSession;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
@@ -121,8 +106,6 @@ Session::Session(void)
 Session::~Session(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  delete m_pStmtList;
   
   AM::pSessions()->vFreeSession(this);
           
@@ -154,19 +137,6 @@ void Session::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append cascade                                                             */
-/*----------------------------------------------------------------------------*/
-void Session::vAppendCascade(Stz* szCascade)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  //vTrace("vAppendCascade: %s\n"_Stz,szCascade);
-  Statement* pStatement = new Statement(szCascade);
-  
-  m_pStmtList->vAppend(pStatement);
-}
-
-/*----------------------------------------------------------------------------*/
 /* begin a tx                                                                 */
 /*----------------------------------------------------------------------------*/
 bool Session::bBeginTx()
@@ -176,20 +146,6 @@ bool Session::bBeginTx()
   m_pTx = new Tx;
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get sCascade                                                               */
-/*----------------------------------------------------------------------------*/
-Stz*  Session::szCascade(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-      
-  Statement* pStatement = m_pStmtList->pHead();
-
-  Stz* szText = pStatement->szText();
-  
-  return szText;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -264,7 +220,6 @@ void Session::vFinaliseSession(i8 i_NextFree)
   m_iApiLoc    = 0;
   m_eApiError  = EC_NONE;
   m_bRunning   = false;
-  m_bSignalled = false;
   
   m_aStackBase = nullptr;
   m_aStackPtr  = nullptr;
@@ -288,161 +243,6 @@ void Session::vFinaliseSession(i8 i_NextFree)
   
   m_pTx        = nullptr;
   
-  // -- -- -- -- -- --
-  
-  if (m_pOutput)
-    delete m_pOutput;
-  m_pOutput = nullptr;
-  
-  m_oCmdTagSet.vReset();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bHasCascade                                                            */
-/*----------------------------------------------------------------------------*/
-bool Session::bHasCascade(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-      
-  if (m_pStmtList->nItems())
-    return true;
-  else
-    return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* initialise this session                                                    */
-/*----------------------------------------------------------------------------*/
-eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  Dic* pDic = nullptr;
-  //m_oDicStack.vContentDump();
- 
-  //fprintf(stderr,"eInit A\n");
-  
-  // first discard whatever is there on the DicStack
-  for (i8 iCount = m_oDicStack.nItems(); iCount; iCount--)
-    m_oDicStack.vDiscard();
-  
-  //fprintf(stderr,"eInit B\n");
-  
-  // set up initial default path
-  
-  // /tenants
-  //Word* pTenants = gpAttachMap->m_oRootDic.pFindWord("tenants"_Stz);
-  Word* pTenants = AM::pTenants();
-  //fprintf(stderr,"eInit C\n");
-  
-  RASSERT(pTenants);
-
-  pDic = _pDic(pTenants->pObject());
-  m_oDicStack.vPush(pDic);
-  
-  //fprintf(stderr,"eInit D\n");
-  
-  // /tenants/boray
-  Word* pTenant = m_oDicStack.pFindInCurrent("boray"_Stz);
-  RASSERT(pTenant);
-
-  pDic = _pDic(pTenant->pObject());
-  m_oDicStack.vPush(pDic);
-
-  //fprintf(stderr,"eInit E\n");
-  
-  // /tenants/boray/catalogs
-  Word* pCatalogs = m_oDicStack.pFindInCurrent("catalogs"_Stz);
-  RASSERT(pCatalogs);
-
-  pDic = _pDic(pCatalogs->pObject());
-  m_oDicStack.vPush(pDic);
-
-  //fprintf(stderr,"eInit F\n");
-  
-  if ( ! szCatalogName)
-    return EC_NONE;
-  
-  // /tenants/boray/catalogs/rapidsse
-  Word* pCatalog = m_oDicStack.pFindInCurrent(szCatalogName);
-  if ( ! pCatalog)
-    return EC_NO_SUCH_CATALOG;
-  
-  pDic = _pDic(pCatalog->pObject());
-  m_oDicStack.vPush(pDic);
-
-  //fprintf(stderr,"eInit G\n");
-  
-  // /tenants/boray/catalogs/rapidsse/schemas
-  Word* pSchemas = m_oDicStack.pFindInCurrent("schemas"_Stz);
-  RASSERT(pSchemas);
-  
-  //fprintf(stderr,"eInit H\n");
-  pDic = _pDic(pSchemas->pObject());
-  //fprintf(stderr,"eInit I\n");
-  
-  m_oDicStack.vPush(pDic);
-
-  if ( ! szSchemaName )
-    return EC_NONE;
-  
-  //fprintf(stderr,"eInit J\n");
-  
-  // /tenants/boray/catalogs/rapidsse/schemas/public
-  Word* pSchema = m_oDicStack.pFindInCurrent(szSchemaName);
-  if ( ! pSchema)
-    return EC_NO_SUCH_SCHEMA;
-  
-  pDic = _pDic(pSchema->pObject());
-  m_oDicStack.vPush(pDic);
-
-  //fprintf(stderr,"eInit K\n");
-  
-  // /tenants/boray/catalogs/rapidsse/schemas/public/tables
-  Word* pTables = m_oDicStack.pFindInCurrent("tables"_Stz);
-  RASSERT(pTables);
-  
-  //fprintf(stderr,"eInit L\n");
-  
-  pDic = _pDic(pTables->pObject());
-  m_oDicStack.vPush(pDic);
-
-  //fprintf(stderr,"eInit M\n");
-  
-  m_pOutput = new Output(this);
-
-  m_pOutput->m_pOutputQueue = new Queue(CN_QUEUE);
-
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* last job run                                                               */
-/*----------------------------------------------------------------------------*/
-JobId Session::tLastJobId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  return m_tLastJobId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set last job run                                                           */
-/*----------------------------------------------------------------------------*/
-void Session::vLastJobId(JobId tLastJobId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  m_tLastJobId = tLastJobId;
-  
-  s32 sName;
-  s32 sValue;
-
-  sName = "<LastJobId>"_Stz;
-  sValue.vSprint("%lld"_Stz,tLastJobId.iAsI8());
-  
-  m_oSsnTagSet.vReplace(sName,sValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -453,31 +253,6 @@ void Session::vOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get path stack                                                             */
-/*----------------------------------------------------------------------------*/
-DicStack* Session::pPathStack(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  return &m_oDicStack;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop cascade                                                                */
-/*----------------------------------------------------------------------------*/
-void Session::vPopCascade(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  Statement* pStatement = m_pStmtList->pPop();
-
-  Stz* szText = pStatement->szText();
-  //vTrace("vPopCascade: %s\n"_Stz,szText);
-
-  delete pStatement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -496,8 +271,6 @@ void Session::vSee(void)
          ,m_iPid
          ,Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
         );
-  if (m_bSystemCloser)
-    vTrace("  system closer\n"_Stz);
 
   vTrace(";;\n\n"_Stz);
 }
@@ -520,7 +293,7 @@ void Session::vTraceSession(void)
   
   vTrace("  %lld: session %p base %llx ptr %llx (%lldB)\n"
          "     apiFun %s apiLoc %lld job %s jobLoc %lld senLoc %lld \n"
-         "     %s %s apiError %s time %lldus\n"
+         "     %s apiError %s time %lldus\n"
          "     dist2PC: begun %lld executed %lld cancelled %lld ended %lld\n"
          "     #calls %lld, #errors %lld, #jobNew %lld #jobDelete %lld total %lldus\n"_Stz,
          
@@ -537,7 +310,6 @@ void Session::vTraceSession(void)
          m_iSenLoc,
          
          m_bRunning   ? "running"   : "completed",
-         m_bSignalled ? "signalled" : "not signalled",
          aEC[m_eApiError],
          m_oTimer.iMicroseconds(),
          

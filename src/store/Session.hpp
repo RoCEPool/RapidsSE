@@ -31,29 +31,19 @@ namespace STORE
     // -- belongs to
     i8 m_i_Session;  // which session in sessions on this node
     i8 m_iPid;       // which process created this session
-
-    // -- tags
-    TagSet m_oSsnTagSet;  // session level tags
-  
+ 
     // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
 
     i8       m_i_NextFree;    // next state in free chain
     
     i8       m_i_FixedPtn;    // specific partition being processed
-
-    DicStack m_oDicStack;     // dictionary stack
-    TagSet   m_oCmdTagSet;    // extra tags gleaned from the command
-
-    Output*  m_pOutput;       // output processor
-
+ 
     Tx*      m_pTx;           // current transaction
   
     i8       m_iCmdNo;        // the sequence no of the request from that session
 
   
-    Mutex    m_oMutex;        //
     bool     m_bRunning;      // api call still running?
-    bool     m_bSignalled;    // calling thread has been signalled?
 
     void*    m_aStackBase;    // stack base of thread which made api call
     void*    m_aStackPtr;     // stack addr of thread which made api call
@@ -62,9 +52,7 @@ namespace STORE
   
     s4K      m_sToDo;         // prompt to do
     
-  
-    bool     m_bSystemCloser; // is this session the system closer?
-  
+
     // -- -- -- -- -- --
 
     Timer m_oTimer;      // call timer
@@ -89,10 +77,6 @@ namespace STORE
       
   private:
 
-    StmtList* m_pStmtList;    // list of cascade statements
-
-   JobId  m_tLastJobId;  // last job which was run
-
     // must be last
     Footer m_xFooter;
     
@@ -105,9 +89,7 @@ namespace STORE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    void vAppendCascade(Stz* szCascade);
     bool bBeginTx(void);
-    Stz* szCascade(void);
     void vCommitTx(void);
     void vContentDump(void);
     void vEndTx(void);
@@ -115,12 +97,7 @@ namespace STORE
     void vFixedPtn(i8 i_FixedPtn);
     void vOutline(s4K& sOutline);
     void vFinaliseSession(i8 i_NextFree);
-    bool bHasCascade(void);
-    eEC  eInitaliseSession(Stz* pCatalogName, Stz* pSchemaName);
     JobId tLastJobId(void);
-    void vLastJobId(JobId tLastJobId);
-    DicStack* pPathStack(void);
-    void vPopCascade(void);
     void vSee(void);
     void vTraceSession(void);
     Tx*  pTx(void);

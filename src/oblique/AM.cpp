@@ -436,6 +436,78 @@ eEC AM::JOB::ePreExecuteTest(Job* pJob)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   JOB                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get number of active jobs in the system                                    */
+/*----------------------------------------------------------------------------*/
+i8 AM::JOBS::nJobsActive(void)
+{
+  _static_
+  
+  i8 nJobs = gpAttachMap->m_nxJobsActive.iVal();
+  
+  return nJobs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dec number of active jobs in the system                                    */
+/*----------------------------------------------------------------------------*/
+void AM::JOBS::vJobsActiveDec(void)
+{
+  _static_
+  
+  -- gpAttachMap->m_nxJobsActive;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc number of active jobs in the system                                    */
+/*----------------------------------------------------------------------------*/
+void AM::JOBS::vJobsActiveInc(void)
+{
+  _static_
+  
+  ++ gpAttachMap->m_nxJobsActive;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get active job threshold previously recorded                               */
+/*----------------------------------------------------------------------------*/
+i8 AM::JOBS::nJobsThreshold(void)
+{
+  _static_
+  
+  i8 nJobs = gpAttachMap->m_nJobsThreshold;
+  
+  return nJobs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set active job threshold                                                   */
+/*----------------------------------------------------------------------------*/
+void AM::JOBS::vJobsThreshold(i8 nJobs)
+{
+  _static_
+  
+  gpAttachMap->m_nJobsThreshold = nJobs;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 LLIST                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* find job in locals list                                                    */
+/*----------------------------------------------------------------------------*/
+Job* AM::LLIST::pFindJob(JobId tJobId, bool bLockJob)
+{
+  Job* pJob = AM::pLocalJobs()->pFindJob(tJobId,bLockJob);
+    
+  return pJob;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                  LOCK                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -749,9 +821,6 @@ bool AM::MEMORY::bIsRunningLow(void)
   
   if (gpBufferPool) {
     bIsLow = gpBufferPool->bLowMemory();
-  
-    if (bIsLow)
-      PoolHelper::vPoolAnalyze();
   }
   
   return bIsLow;
@@ -900,6 +969,21 @@ void AM::OP::vPipeToOp(Op* pOp, Operand* pOperand,
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 OLIST                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* find job in originating list                                               */
+/*----------------------------------------------------------------------------*/
+Job* AM::OLIST::pFindJob(JobId tJobId, bool bLockJob)
+{
+  Job* pJob = AM::pOriginatingJobs()->pFindJob(tJobId,bLockJob);
+    
+  return pJob;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 OPERAND                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -964,6 +1048,21 @@ void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
   _static_
   
   pParcel->vRecvContents(pSocket);
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 PLIST                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* find job in participant list                                               */
+/*----------------------------------------------------------------------------*/
+Job* AM::PLIST::pFindJob(JobId tJobId, bool bLockJob)
+{
+  Job* pJob = AM::pParticipatingJobs()->pFindJob(tJobId,bLockJob);
+    
+  return pJob;
 }
 
 
@@ -1963,9 +2062,12 @@ bool AM::SYSTEM::bPassesLowMem(Job* pJob)
 {
   _static_
 
-  if (! AM::MEMORY::bIsRunningLow())
+  if (! AM::MEMORY::bIsRunningLow()) {
     return true;
+  }
   
+  PoolHelper::vPoolAnalyze();
+
   pJob->pJobTags()->vContentDump();
   
   if (pJob->bHasTag(C_TAG_LOWMEMORY))
@@ -1984,7 +2086,7 @@ bool AM::SYSTEM::bPassesOpenSystem(Job* pJob)
   if (bSystemOpen())
     return true;
     
-  if (MY::pSession()->m_bSystemCloser)
+  if (pJob->bSystemCloser())
     return true;
   
   return false;
@@ -2578,10 +2680,6 @@ void AM::vAttachMap(Header* aHeader) {
   gpAttachMap = static_cast<AttachMap*>(aHeader);
 }
 
-Queue* AM::pOutputQueue(Session* pSession) {
-    
-  return pSession->m_pOutput->m_pOutputQueue;
-}
 
 
 void AM::vBootError(bool bBootError) {

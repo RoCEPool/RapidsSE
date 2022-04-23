@@ -24,9 +24,7 @@
     | stageA
 
   end ;
-  " [session].cascade!
-  
-  true [session].hasCascade!
+  " [op].job@ job.masterJob job.cascade!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -89,15 +87,14 @@
 
   //sPipeline .
 
-  sPipeline [session].cascade!
+  sPipeline [op].job@ job.masterJob job.cascade!
 
-  true [session].hasCascade!
   
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : transliterate_StartMarker \handler
 

@@ -291,6 +291,16 @@ namespace OBLIQUE
       static eEC  ePreExecuteTest(Job* pJob);
     };
   
+    class JOBS
+    {
+    public:
+      static i8   nJobsActive(void);
+      static void vJobsActiveDec(void);
+      static void vJobsActiveInc(void);
+      static i8   nJobsThreshold(void);
+      static void vJobsThreshold(i8 nJobs);
+    };
+
     class LOCK
     {
     public:
@@ -305,6 +315,12 @@ namespace OBLIQUE
     public:
       static void vAddReg(LogicUnit* pLogicUnit, void* aReg);
       static void vDelete(LogicUnit** ppLogicUnit);
+    };
+
+    class LLIST
+    {
+    public:
+      static Job* pFindJob(JobId tJobId, bool bLockJob=false);
     };
 
     class MASTERLOCK
@@ -377,12 +393,24 @@ namespace OBLIQUE
       static bool bIsOoO(Operand* pOperand);
     };
 
+    class OLIST
+    {
+    public:
+      static Job* pFindJob(JobId tJobId, bool bLockJob=false);
+    };
+  
     class PARCEL
     {
     public:
       static void vRecvContents(Parcel* pParcel, Socket* pSocket);
     };
   
+    class PLIST
+    {
+    public:
+      static Job* pFindJob(JobId tJobId, bool bLockJob=false);
+    };
+
     class POOL
     {
     public:
@@ -669,7 +697,6 @@ namespace OBLIQUE
                                 Task* pTaskAcking,
                                 i8& nAcksWereRemaining);
     static void vAddConstant(Stz* szName,Stz* szValue);
-    static Queue* pOutputQueue(Session* pSession);
     static void vAttachMap(Header* aHeader);
     static void vBootError(bool bBootError);
     static void vDropTaskLock(Task* pTask, Stz* szFunc);

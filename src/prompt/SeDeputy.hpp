@@ -20,12 +20,18 @@ namespace PROMPT
 
     Input*    m_pInput;        // input stream
 
-    bool      m_bAvailable;
-    bool      m_bContinue;
-    bool      m_bTerminated;
+    b8        m_bAvailable;
+    b8        m_bContinue;
+    b8        m_bTerminated;
+    b8        m_bSystemCloser; // is this deputy the system closer?
 
     Job*      m_pJob;
   
+    s256      m_sFolderPath;   // folder path
+    JobId     m_tLastJobId;    // last job id
+
+    TagSet    m_oCmdTagSet;    // extra tags gleaned from the command
+
     // must be last
     Footer m_xFooter;
   
@@ -43,16 +49,15 @@ namespace PROMPT
     void vRepeableJob(void);
 
     eEC  ePrepareJob(TokenVec* pCmdTknVec);
-    void vPrintResults(void);
 
     // -- -- -- -- -- --
   
     bool bAvailable(void);
+    TagSet* pCmdTagSet(void);
     void vDeputiseJob(void);
     Input* pInput(void);
     Job* pJob(void);
-    TagSet* pJobTagSet(void);
-
+    JobId tLastJobId(void);
     void vReportTime(void);
     Session* pSession(void);
     void vTerminate(void);

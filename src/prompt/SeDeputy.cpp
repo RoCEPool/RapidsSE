@@ -55,19 +55,19 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 
   m_pInput = new Input(nullptr);
 
-  m_bAvailable  = false;
-  m_bContinue   = true;
-  m_bTerminated = false;
+  m_bAvailable    = false;
+  m_bContinue     = true;
+  m_bTerminated   = false;
+  m_bSystemCloser = false;
 
   m_pJob = nullptr;
 
   _checkInitialised_(CN_SEDEPUTY);
   
+  m_sFolderPath = C_SE_PATH;
+  
   ApiHelper::vAllocateSession();
-  
-  eEC eError = m_pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
-  RASSERT(EC_NONE == eError);
-  
+    
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
 
@@ -131,10 +131,18 @@ void SeDeputy::vDeputyLoop(void)
     if (m_pSession != m_pJob->pSession())
       vTrace("vDeputyLoop %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
     
-    
+    m_pJob->vFolderPath(m_sFolderPath);
+    m_pJob->vLastJobId(m_tLastJobId);
+    m_pJob->vSystemCloser(m_bSystemCloser);
+
+    m_pJob->vStmtListCreate();
     vExecuteJob();
     
-    vPrintResults();
+    ApiHelper::vPrintResults(m_pJob);
+    
+    vReportTime();
+      
+    ApiHelper::vResetResults(m_pJob);
 
     if (! m_pJob->bHasTag(C_TAG_BG)) {
       m_pSePrompt->pMutex()->vLock(m_pSePrompt);
@@ -142,6 +150,10 @@ void SeDeputy::vDeputyLoop(void)
       m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
     }
     
+    m_sFolderPath   = m_pJob->szFolderPath();
+    m_tLastJobId    = m_pJob->tLastJobId();
+    m_bSystemCloser = m_pJob->bSystemCloser();
+
     vRepeableJob();
   }
   
@@ -159,7 +171,9 @@ void SeDeputy::vExecuteJob(void)
     vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
   RASSERT(m_pSession == m_pJob->pSession());
     
-  ApiHelper::vExecuteJob(m_pJob);
+  TagSet* pCmdTagSet = this->pCmdTagSet();
+
+  ApiHelper::vExecuteJob(m_pJob,pCmdTagSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,29 +193,17 @@ eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
-
-  TagSet* pSsnTagSet = & m_pSession->m_oSsnTagSet;
-  pCmdTagSet->vCopy(pSsnTagSet);
+  TagSet* pCmdTagSet = this->pCmdTagSet();
+  
+  pCmdTagSet->vDumpSet();
+  vTrace("FolderPath: %s\n"_Stz,m_sFolderPath.szStz());
+  pCmdTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
 
   eEC eError = ApiHelper::ePrepareJob(m_pJob,pCmdTknVec,pCmdTagSet);
   
   return eError;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print results                                                              */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vPrintResults(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-    
-  ApiHelper::vPrintResults(m_pJob);
-  
-  vReportTime();
-    
-  ApiHelper::vResetResults();
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -215,6 +217,16 @@ bool SeDeputy::bAvailable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_bAvailable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get cmd tag set                                                            */
+/*----------------------------------------------------------------------------*/
+TagSet* SeDeputy::pCmdTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return & m_oCmdTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,13 +253,13 @@ Job* SeDeputy::pJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get job tag set                                                            */
+/* last job run                                                               */
 /*----------------------------------------------------------------------------*/
-TagSet* SeDeputy::pJobTagSet(void)
+JobId SeDeputy::tLastJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return &m_pSession->m_oCmdTagSet;
+
+  return m_tLastJobId;
 }
 
 /*----------------------------------------------------------------------------*/

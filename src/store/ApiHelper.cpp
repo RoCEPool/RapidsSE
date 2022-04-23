@@ -11,6 +11,8 @@
 #include "Session.hpp"
 #include "Job.hpp"
 
+#include "TagConstants.h"
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -49,9 +51,9 @@ void ApiHelper::vReapableJob(Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 /* execute job                                                                */
 /*----------------------------------------------------------------------------*/
-void ApiHelper::vExecuteJob(Job* pJob)
+void ApiHelper::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
 {
-  Api::vExecuteJob(pJob);
+ Api::vExecuteJob(pJob,pCmdTagSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,14 +119,15 @@ eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd)
 /*----------------------------------------------------------------------------*/
 eEC ApiHelper::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
-  //TagSet* pCmdTagSet = & m_pSession->m_oCmdTagSet;
-
   eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError)
     return eError;
 
-  rpJob = Api::pAllocJob(m_pSession);  
-
+  //rpJob = Api::pAllocJob(m_pSession);
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  rpJob = Api::pAllocJob(szJobNm);
+  rpJob->vSession(m_pSession);
+  
   eError = Api::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
   
   return eError;
@@ -137,10 +140,10 @@ void ApiHelper::vPrintResults(Job* pJob)
 {
   // start the buffer queue processing while the pipeline ops are running
   if (pJob->bIsPipeline())
-    m_pSession->m_pOutput->vProcessBufferQueue(pJob);
+    pJob->pOutput()->vProcessBufferQueue(pJob);
 
-  RASSERT(! m_pSession->m_pOutput->m_bExecErr );
-  RASSERT(! m_pSession->m_pOutput->m_bCmdErr );
+  RASSERT(! pJob->pOutput()->m_bExecErr );
+  RASSERT(! pJob->pOutput()->m_bCmdErr );
 
   if (pJob->bIsInError()) {
     vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
@@ -152,11 +155,11 @@ void ApiHelper::vPrintResults(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* reset results                                                              */
 /*----------------------------------------------------------------------------*/
-void ApiHelper::vResetResults(void)
+void ApiHelper::vResetResults(Job* pJob)
 {
-  m_pSession->m_pOutput->m_pOutputQueue->vReset();
+  pJob->pOutput()->m_pOutputQueue->vReset();
   
-  m_pSession->m_pOutput->vEndProcOneCmd();
+  pJob->pOutput()->vEndProcOneCmd();
 }
 
 /*============================================================================*/

@@ -59,7 +59,7 @@
     JS_SIGNALLED [job].state!
       
     [task].grabLock
-    [session].signal
+    [job].signalWaiter
     [task].dropLock
     
     pipelineLocal::termination
@@ -122,15 +122,15 @@
   [job].addRetired
   
   JS_SIGNALLED [job].state!
-  [session].signal
+  [job].signalWaiter
 
   [task].grabLock
-    //[system].started@ if
+    [system].started@ if
     //  "SYSTEM STARTED" .
-    //else
+    else
     //  "SYSTEM NOT STARTED" .
-    //  true [job].reapable!
-    //then
+      true [job].reapable!
+    then
     TR_RETIRE_THIS_TASK [task].transition!
 ;
 

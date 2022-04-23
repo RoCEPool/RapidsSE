@@ -11,6 +11,8 @@
 
 #include "JobMetrics.hpp"
 #include "CmdId.hpp"
+#include "Output.hpp"
+#include "Statement.hpp"
 
 
 /*                      IMPORTANT NOTE
@@ -22,6 +24,8 @@
 
 namespace STORE
 {
+typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
+
   class Job : public Operand,
               public CRM<Job>
   {
@@ -43,14 +47,14 @@ namespace STORE
     i8 m_i_Session;  // which session in node's session array
     CmdId m_tCmdId;
   
-    bool m_bWasForked;
+    b8 m_bWasForked;
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
     // information depending on job instance/location           MODAL
 
     // -- postage
-    bool m_bWasReceived;   // was job received over a socket?          POST_RECV
+    b8 m_bWasReceived;   // was job received over a socket?          POST_RECV
     i8   m_iParticipantNodeId;  // participant node
   
     // -- state
@@ -67,6 +71,7 @@ namespace STORE
     eEC   m_eError_job;      // error when starting job
                              // DOUBLE CHECK THIS BELONGS HERE
 
+    Output*  m_pOutput_job;  // output processor                       POST_RECV
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running on participant node                    PARTICIPANT
@@ -79,6 +84,10 @@ namespace STORE
   
     s4K m_sEntryPoint;   // sen entry code
   
+    s256 m_sFolderPath;   // folder path
+  
+    JobId m_tLastJobId;    // last job id
+
     i8  m_iTscParticipant;
 
     i8  m_iTscBeginning;
@@ -93,12 +102,17 @@ namespace STORE
  
     b8  m_bReapable;  // can job be reaped?
   
+    b8  m_bSystemCloser; // is this job the system closer?
+
     JobMetrics* m_pJobMetricsChain;                                // POST_RECV
 
-  
+
+    Mutex* m_pMutex_job;                                               // POST_RECV
+
     // TO BE MOVED
     Timer m_oProgressTimer; // move to register
 
+    StmtList* m_pStmtList;    // list of cascade statements
   
     // must be last
     Footer m_xFooter;
@@ -122,6 +136,9 @@ namespace STORE
     void vActiveOpsDec(void);
     void vActiveOpsInc(void);
 
+    Stz* szCascade(void);
+    void vCascadeAppend(Stz* szCascade);
+    void vCascadePop(void);
     void vCascadeReset(void);
     void vCascadeSet(Stz* szCascadeCmd);
     CmdId tCmdId(void);
@@ -134,12 +151,17 @@ namespace STORE
     Stz* szEntryPoint(void);
     void vEntryPoint(Stz* szEntry);
   
+    Stz* szFolderPath(void);
+    void vFolderPath(Stz* szFolderPath);
+  
     void vGrabLock(void);
   
     bool bHasByPromptTag(void);
+    bool bHasCascade(void);
     bool bHasTag(Stz* szTagNm);
   
     bool bIsInError(void);
+    bool bIsOnOrigin(void);
     bool bIsOriginator(void);
     bool bIsParticipant(void);
     bool bIsPipeline(void);
@@ -163,6 +185,23 @@ namespace STORE
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
 
+    JobId tLastJobId(void);
+    void  vLastJobId(JobId tLastJobId);
+
+    void vMutexCreate(void);
+    void vMutexDestroy(void);
+    void vMutexLock(void);
+    void vMutexSignal(void);
+    void vMutexUnlock(void);
+    void vMutexWait(void);
+
+    Output* pOutput(void);
+    void vOutputBeginProc(void);
+    void vOutputCreate(void);
+    void vOutputDestroy(void);
+    void vOutputEnabled(bool bEnabled);
+    void vOutputEndProc(void);
+    Job* pOriginatingParentJob(void);
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);
   
@@ -185,9 +224,14 @@ namespace STORE
 
     i8   i_Session(void);
     Session* pSession(void);
-    void vSession(i8 i_Session);
+    void vSession(Session* pSession);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
+    StmtList*  pStmtList(void);
+    void vStmtListCreate(void);
+    void vStmtListDestroy(void);
+    bool bSystemCloser(void);
+    void vSystemCloser(bool bSystemCloser);
 
     Task* pTask(void);
     void vTask(Task* pTask);

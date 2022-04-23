@@ -53,7 +53,7 @@
       [job].addRetired
       
       JS_SIGNALLED [job].state!
-      [session].signal
+      [job].signalWaiter
 
       [task].grabLock
         TR_RETIRE_THIS_TASK [task].transition!
@@ -244,15 +244,14 @@
     HAZARD
 
   else
-  [session].hasCascade@ not if
-      
+  [job] job.hasCascade@ not if
     [ddlLock].testDrop
     ListedJob[].assertNoRef
 
     [job].addRetired
     
     JS_SIGNALLED [job].state!
-    [session].signal
+    [job].signalWaiter
       
     [task].grabLock
       TR_RETIRE_THIS_TASK [task].transition!
@@ -263,7 +262,7 @@
       
     [ddlLock].testDrop
     JS_SIGNALLED [job].state!
-    [session].signal
+    [job].signalWaiter
  
     [task].grabLock
       TR_DELETE_THIS_TASK [task].transition!

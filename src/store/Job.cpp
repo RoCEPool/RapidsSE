@@ -79,7 +79,7 @@ Job::Job(Stz*  szJobNm,
   m_eJobPhase = JP_NONE;
   m_eJobState = JS_ACTIVE;
   m_eError_job    = EC_NONE;
-  
+  m_pOutput_job = nullptr;
   
   // m_oJobTags
   // m_xResult
@@ -104,8 +104,15 @@ Job::Job(Stz*  szJobNm,
   // -- -- -- -- -- --
       
   m_pJobMetricsChain  = nullptr;
+  
+  m_pMutex_job     = nullptr;
+  m_bSystemCloser  = false;
 
+  m_pStmtList = nullptr;
+  
   _checkInitialised_(CN_JOB);
+  
+  AM::JOBS::vJobsActiveInc();
   
   m_oJobTags.vInsert(C_TAG_DISTID,m_tJobId.iAsI8());
   
@@ -119,7 +126,7 @@ Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  
+ 
 //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
 //
 //    SP_TagSet spTagSet;
@@ -158,6 +165,16 @@ Job::~Job(void) noexcept(false)
     delete m_pTask;
 
   }
+  
+  AM::JOBS::vJobsActiveDec();
+
+  if (m_pMutex_job)
+    vMutexDestroy();
+  if (m_pOutput_job)
+    vOutputDestroy();
+  
+  if (m_pStmtList)
+    vStmtListDestroy();
 }
 
 
@@ -237,6 +254,49 @@ void Job::vActiveOpsInc(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get sCascade                                                               */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szCascade(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Statement* pStatement = m_pStmtList->pHead();
+
+  Stz* szText = pStatement->szText();
+  
+  return szText;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append cascade                                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vCascadeAppend(Stz* szCascade)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  //vTrace("vAppendCascade: %s\n"_Stz,szCascade);
+  Statement* pStatement = new Statement(szCascade);
+  
+  m_pStmtList->vAppend(pStatement);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop cascade                                                                */
+/*----------------------------------------------------------------------------*/
+void Job::vCascadePop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Statement* pStatement = m_pStmtList->pPop();
+
+  Stz* szText = pStatement->szText();
+  UNUSED(szText);
+  //vTrace("vPopCascade: %s\n"_Stz,szText);
+
+  delete pStatement;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vCascadeReset(void)
@@ -270,8 +330,8 @@ void Job::vCascadeReset(void)
 
   m_pTask = nullptr;
 
-  Session* pSession = this->pSession();
-  pSession->m_pOutput->vDrainBufferQueue(this);
+  //Session* pSession = this->pSession();
+  m_pOutput_job->vDrainBufferQueue(this);
 
   vDebugPoint();
 }
@@ -376,6 +436,26 @@ void Job::vEntryPoint(Stz* szEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get folder path                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szFolderPath(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_sFolderPath;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set folder path                                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vFolderPath(Stz* szFolderPath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_sFolderPath = szFolderPath;
+}
+
+/*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Job::vGrabLock(void)
@@ -411,11 +491,40 @@ bool Job::bHasByPromptTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get bHasCascade                                                            */
+/*----------------------------------------------------------------------------*/
+bool Job::bHasCascade(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if (m_pStmtList && m_pStmtList->nItems())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is job in error?                                                           */
 /*----------------------------------------------------------------------------*/
 bool Job::bIsInError(void)
 {
   return m_eError_job == EC_NONE ? false : true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* are we on the origin?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Job::bIsOnOrigin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  i8 iOrigin = iOriginNodeId();
+  i8 iParticipant = iParticipantNodeId();
+ 
+  if (iParticipant == iOrigin)
+    return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -644,6 +753,166 @@ TagSet* Job::pJobTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get last job id                                                            */
+/*----------------------------------------------------------------------------*/
+JobId Job::tLastJobId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_tLastJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set last job id                                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vLastJobId(JobId tLastJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_tLastJobId = tLastJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new mutex for this job                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexCreate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(! m_pMutex_job);
+  
+  m_pMutex_job = new Mutex(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destroy this job's mutex                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexDestroy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(m_pMutex_job);
+  
+  delete m_pMutex_job;
+  m_pMutex_job = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock this job's mutex                                                      */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_pMutex_job->vLock(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* signal this job's mutex                                                    */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexSignal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_pMutex_job->vSignal(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* unlock this job's mutex                                                    */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexUnlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_pMutex_job->vUnlock(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* wait on this job's mutex                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexWait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_pMutex_job->vWait(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get output processor                                                       */
+/*----------------------------------------------------------------------------*/
+Output* Job::pOutput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pOutput_job;
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin output processor                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vOutputBeginProc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pOutput_job->vBeginProcOneCmd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* create output processor                                                    */
+/*----------------------------------------------------------------------------*/
+void Job::vOutputCreate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(! m_pOutput_job);
+  
+  m_pOutput_job = new Output(this,nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destroy output processor                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vOutputDestroy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  delete m_pOutput_job;
+  m_pOutput_job = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set if output is enabled                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vOutputEnabled(bool bEnabled)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* end output processor                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vOutputEndProc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pOutput_job->vEndProcOneCmd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the parent originating job (on origin only)                            */
+/*----------------------------------------------------------------------------*/
+Job* Job::pOriginatingParentJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+      
+  //RASSERT(bIsOnOrigin());
+  
+  Job* pParentJob = AM::OLIST::pFindJob(m_tJobId);
+  
+  return pParentJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
 i8 Job::iOriginNodeId(void)
@@ -789,15 +1058,15 @@ void Job::vPostRecv(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
   
   m_bWasReceived = true;
-  
   m_eJobList     = JL_NONE;
     
   m_pTask        = nullptr;
-
-  m_p_ResponseOp  = nullptr;
+  m_p_ResponseOp = nullptr;
+  m_pOutput_job  = nullptr;
   m_pSingularOp  = nullptr;
-  
+  m_pMutex_job   = nullptr;
   m_pJobMetricsChain = nullptr;
+  m_pStmtList = nullptr;
 
   m_okLock.vResetLock();
   m_okLock.vResetStats();
@@ -973,11 +1242,11 @@ Session* Job::pSession(void)
 /*----------------------------------------------------------------------------*/
 /* set session                                                                */
 /*----------------------------------------------------------------------------*/
-void Job::vSession(i8 i_Session)
+void Job::vSession(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_i_Session = i_Session;
+  m_i_Session = pSession->m_i_Session;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -998,6 +1267,61 @@ void Job::vSingularOp(Op* pSingularOp)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pSingularOp = pSingularOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return statement list                                                      */
+/*----------------------------------------------------------------------------*/
+StmtList* Job::pStmtList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_pStmtList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a statement list for this job                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vStmtListCreate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(! m_pStmtList);
+  
+  m_pStmtList = new StmtList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* destroy this job's statement list                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vStmtListDestroy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(m_pStmtList);
+  
+  delete m_pStmtList;
+  m_pStmtList = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is jsystem closer?                                                         */
+/*----------------------------------------------------------------------------*/
+bool Job::bSystemCloser(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_bSystemCloser;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set system closer?                                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vSystemCloser(bool bSystemCloser)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bSystemCloser = bSystemCloser;
 }
 
 /*----------------------------------------------------------------------------*/

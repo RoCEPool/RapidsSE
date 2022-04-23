@@ -19,9 +19,8 @@ namespace STORE
   static void vFreeSession(Session* pSession);
 
   static Job* pAllocJob(Stz* szJobNm);
-  static Job* pAllocJob(Session* pSession);
 
-  static void vExecuteJob(Job* pJob);
+  static void vExecuteJob(Job* pJob, TagSet* pCmdTagSet);
   static void vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
   static bool bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
   static void vForkDemon(Job*& rpJob);
@@ -55,7 +54,6 @@ namespace STORE
 
   static void vSpawnTask_receivedJob(Job* pJob);
   
-  static void vSpinTillAllJobsCompleted(void);
   static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -809,6 +809,8 @@ public:
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
+  void vJobCascadeFetch(void);
+  void vJobCascadeStore(void);
   void vJobClass(void);
 
   void vJobDelete(void);
@@ -817,11 +819,15 @@ public:
   void vJobEntryFetch_other(void);
   void vJobEntryPointStore(void);
   void vJobEntryStore_other(void);
-
   void vJobErrorFetch(void);
   void vJobErrorStore(void);
 
+  void vJobFolderPathFetch(void);
+  void vJobFolderPathStore(void);
+
   void vJobGet(void);
+
+  void vJobHasCascadeFetch(void);
 
   void vJobIdFetch(void);
   void vJobIdFetch_other(void);
@@ -831,9 +837,13 @@ public:
 
   void vJobKindFetch(void);
 
+  void vJobLastJobIdFetch(void);
+  void vJobLastJobIdStore(void);
+
   void vJobNameFetch(void);
   void vJobNoWaitFetch(void);
 
+  void vJobMasterJob(void);
   void vJobOriginNodeIdFetch(void);
 
   void vJobParticipantNodeIdFetch(void);
@@ -863,13 +873,16 @@ public:
   void vJobReportOperands(void);
   void vJobReportOperators(void);
 
+  void vJobScheduleNextPhase(void);
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
   void vJobShow(void);
-  void vJobScheduleNextPhase(void);
+  void vJobSignalWaiter(void);
   void vJobSpawn(void);
   void vJobStateFetch(void);
   void vJobStateStore(void);
+  void vJobSystemCloserFetch(void);
+  void vJobSystemCloserStore(void);
 
   void vJobTagSetFetch(void);
   void vJobTaskFetch(void);
@@ -1716,26 +1729,6 @@ public:
   void vSendWLDelete(void);
   void vSendWLNew(void);
 
-  // session
-  void vSessionCascadeFetch(void);
-  void vSessionCascadeStore(void);
-  void vSessionCommand(void);
-  void vSessionDicStackFetch(void);
-  void vSessionDump(void);
-  void vSessionHasCascadeFetch(void);
-  void vSessionHasCascadeStore(void);
-  void vSessionLastJobId(void);
-  void vSessionPid(void);
-  void vSessionSee(void);
-  void vSessionSignal(void);
-  void vSessionSystemCloserFetch(void);
-  void vSessionSystemCloserStore(void);
-  void vSessionTagSetFetch(void);
-  void vSessionTablePtnFetch(void);
-  void vSessionToDoFetch(void);
-  void vSessionToDoStore(void);
-  void vSessionTxFetch(void);
-  void vSessionTxStore(void);
 
   // shell
   void vShellExecute(void);

@@ -64,14 +64,41 @@ Stencil::Stencil(void)
     
   m_ePattern     = LP_NONE;
   m_szStageNm    = ""_Stz;
-  m_bScan        = false;
-  m_bIndexScan   = false;
   m_bRowBuffer   = false;
   m_pPostStack   = nullptr;
+
+  m_xStageOps.m_iAggregOp    = 0;
+  m_xStageOps.m_iCombinedOp  = 0;
+  m_xStageOps.m_iFilterOp    = 0;
+  m_xStageOps.m_iHashOp      = 0;
+  m_xStageOps.m_iIndexJoinOp = 0;
+  m_xStageOps.m_iIndexScanOp = 0;
+  m_xStageOps.m_iKeyExistsOp = 0;
+  m_xStageOps.m_iLimitOp     = 0;
+  m_xStageOps.m_iOrdAggOp    = 0;
+  m_xStageOps.m_iProjectOp   = 0;
+  m_xStageOps.m_iScanOp      = 0;
+  m_xStageOps.m_iSortOp      = 0;
+  m_xStageOps.m_iTopOp       = 0;
+
+  m_xStageOps.m_bScan           = false;
+  m_xStageOps.m_bIndexScan      = false;
+
+  m_xStageOps.m_bPayloadOp      = false;
+
+  m_xStageOps.m_bGeneratePotTub = true;
+
+  m_xStageOps.m_pCombinedOp     = nullptr;
+  m_xStageOps.m_pHavingFilterOp = nullptr;
+  m_xStageOps.m_pPostProjectOp  = nullptr;
+  m_xStageOps.m_pLimitOp        = nullptr;
+
+  m_xStageOps.m_sHashExpr = ""_Stz;
+
   m_pBannerHead  = new CodeSynth;
   m_pBannerTail  = new CodeSynth;
 
-  m_pPreliminary = new CodeSynth;
+  m_pPreliminary     = new CodeSynth;
   m_pPreliminaryFun0 = new CodeSynth;
   m_pPreliminaryFun1 = new CodeSynth;
   m_pPreliminaryFun2 = new CodeSynth;
@@ -197,7 +224,7 @@ void Stencil::vCombine(void)
   // append preliminary
   m_pOpSource->vAppendFragment(m_pPreliminary, &iLineNumber);
 
-  if (m_bScan || m_bRowBuffer) {
+  if (m_xStageOps.m_bScan || m_bRowBuffer) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     m_pOpSource->vAppendFragment(m_pPreliminaryFun0, &iLineNumber);
@@ -288,7 +315,7 @@ void Stencil::vCombine(void)
     m_pOpSource->vAppendFragment(m_pEmptyFun2, &iLineNumber);
   }
 
-  else if (m_bIndexScan) {
+  else if (m_xStageOps.m_bIndexScan) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     m_pOpSource->vAppendFragment(m_pPreliminaryFun2, &iLineNumber);
@@ -469,23 +496,10 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   s4K sLabelLoop;
   s4K sLabelNext;
   s4K sLabelOrdAgg;
-  s4K sFunSignature;
-  s256 sHashExpr;
 
   bool bInflateGenerated = false;
 
-  bool bProjectOp = false;
-  bool bPayloadOp = false;
-  bool bSort = false;
-
-  bool bGeneratePotTub = true;
-  bool bGenerateFun3 = true;
-
   Shape* pShape;
-  Op* pCombinedOp = nullptr;
-  Op* pHavingFilterOp = nullptr;
-  Op* pPostProjectOp = nullptr;
-  Op* pLimitOp = nullptr;
   IntStack *pPreExpStack = nullptr;
 
   eSR ePrevStencil = SR_NONE;
@@ -494,7 +508,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   m_szStageNm = pStream->pStage()->szStageNm();
 
   i8 iStage = pStream->pStage()->i_Stage();
-  i8 iOpsCombined = 0;
 
   Tub* pTub = _pTub(pCombined->aCombinedT()->m_pTub);
   Pot* pPot = _pPot(pCombined->aCombinedT()->m_pPot);
@@ -503,35 +516,26 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   sLabelLoop = "L_AdvanceNextRow"_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // driving op indexScan ?
-  if (pStream->pGet(1)->szOpNm()->bSame("indexScan"_Stz)) {
-    m_bIndexScan = true;
-  }
+  // collect the op information from the stage
+  eEC eError = eCollectStage(pCombined, pStream);
+  if (eError != EC_NONE)
+    return eError;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // for each operator in the stream
-  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
+  // for each operator in the stream (skip consumeOP)
+  for (i8 i_Op = 1; i_Op < pStream->nItems(); i_Op++) {
 
     // get the op
     Op *pOp = pStream->pGet(i_Op);
 
     // break when we reach the combined OP
     if (pOp->szOpNm()->bSame("combined"_Stz)) {
-      pCombinedOp = pOp;
       break;
     }
 
-    // skip consumeOP
-    if (pOp->szOpNm()->bSame("consumeOp"_Stz))
-      continue;
-
     // skip scan OP
-    if (pOp->szOpNm()->bSame("scan"_Stz)) {
-      m_bScan = true;
+    if (pOp->szOpNm()->bSame("scan"_Stz))
       continue;
-    }
-
-    iOpsCombined++;
 
     // skip indexscan OP
     if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
@@ -540,13 +544,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupIndexScan(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vAppendFuncHeader2();
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       m_pShapeIDX = pSketchIndexScan(pCombined, pStream, pOp);
-      //vAppend(m_pShapeIDX);
 
-      m_bIndexScan = true;
       bInflateGenerated = true;
       ePrevStencil = SR_IT;
       continue;
@@ -562,19 +561,15 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for inflate (driving code) if not already inflated
     if ( ! bInflateGenerated ) {
 
-      RASSERT( ! m_bIndexScan );
+      RASSERT( ! m_xStageOps.m_bIndexScan );
 
-      if (m_bScan) {
+      if (m_xStageOps.m_bScan) {
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         vSetupScan(pCombined, pStream, pOp);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        //vAppendFuncHeader0();
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
-        //vAppend(m_pShapeCRW);
       }
       else {
 
@@ -582,17 +577,11 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           vSetupScan(pCombined, pStream, pOp);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          //vAppendFuncHeader0();
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          //vAppendFuncHeader1();
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           m_pShapeROW = pSketchInflateRow(pStream, pOp);
-          //vAppend(m_pShapeROW);
+
           m_bRowBuffer = true;
       }
       bInflateGenerated = true;
@@ -603,21 +592,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the aggregOp
     if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // check stage-operator rules
-      if (bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-
-        return EC_INVALID_PIPELINE;
-      }
-
-      bPayloadOp = true;
-
       // get the project kind
       eExprKind = pLogicUnit->m_eExprKind;
-
-      //RASSERT(eExprKind == EK_AGGGBY);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupAggreg(pCombined, pStream, pOp);
@@ -627,26 +603,11 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vAppend(pShape);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // look for Having filter / limit ?
-      i8 iNextOp = pOp->i_Op() + 1;
-      for (i8 i_Op = iNextOp; i_Op < pStream->nItems(); i_Op++) {
-        Op *pOpNext = pStream->pGet(i_Op);
-        if (pOpNext->szOpNm()->bSame("filter"_Stz)) {
-          pHavingFilterOp = pOpNext;
-          continue;
-        }
-        if (pOpNext->szOpNm()->bSame("limit"_Stz)) {
-          pLimitOp = pOpNext;
-        }
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupEosPayload(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosProjectGby(pCombined, pStream, pOp, pHavingFilterOp, pLimitOp, sHashExpr);
-      bGeneratePotTub = false;
-      bGenerateFun3 = false;
+      vSketchEosProjectGby(pCombined, pStream, pOp);
+      m_xStageOps.m_bGeneratePotTub = false;
 
       ePrevStencil = SR_AT;
     }
@@ -667,10 +628,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the hashOP
     if (pOp->szOpNm()->bSame("hash"_Stz)) {
-      pCombined->aCombinedT()->m_iHashRows = 1;
 
-      // get hash expr from OP
-      sHashExpr = pOpTags->szValue(C_TAG_EXPR);
+      if (m_xStageOps.m_bPayloadOp)
+        continue;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchLabel(pCombined, pStream, pOp);
@@ -713,7 +673,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       pCombined->aCombinedT()->m_iLimitRows = 1;
 
       // limit after a payload will move to EOSHandler
-      if (bPayloadOp) {
+      if (m_xStageOps.m_bPayloadOp) {
         continue;
       }
 
@@ -727,35 +687,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // check stage-operator rules
-      if (bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
+      vSetupSort(pCombined, pStream, pOp);
 
-        return EC_INVALID_PIPELINE;
-      }
-
-      bSort = true;
-      bPayloadOp = true;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // look for project/limit ?
-      i8 iNextOp = pOp->i_Op() + 1;
-      for (i8 i_Op = iNextOp; i_Op < pStream->nItems(); i_Op++) {
-        Op *pOpNext = pStream->pGet(i_Op);
-        if (pOpNext->szOpNm()->bSame("project"_Stz)) {
-          pPostProjectOp = pOpNext;
-          continue;
-        }
-        if (pOpNext->szOpNm()->bSame("limit"_Stz)) {
-          pLimitOp = pOpNext;
-        }
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupSort(pCombined, pStream, pOp, pPostProjectOp);
-
-      if (pPostProjectOp) {
+      if (m_xStageOps.m_pPostProjectOp) {
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
@@ -763,7 +697,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       }
       else {
-        //vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         pShape = pSketchSort(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
@@ -774,9 +707,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupEosPayload(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosSort(pCombined, pStream, pOp, pPostProjectOp, pLimitOp, sHashExpr);
-      bGeneratePotTub = false;
-      bGenerateFun3 = false;
+      vSketchEosSort(pCombined, pStream, pOp);
+      m_xStageOps.m_bGeneratePotTub = false;
 
       ePrevStencil = SR_AT;
 
@@ -786,22 +718,11 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the projectOP
     if (pOp->szOpNm()->bSame("project"_Stz)) {
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // check stage-operator rules
-      if (bProjectOp) {
-        vTrace("Error: Cannot have multiple project operators in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      bProjectOp = true;
-
       Op *pPrevOp = pStream->pGet(i_Op - 1);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // project after sort will move to the EOS marker
-      //if ( ! pPrevOp->szOpNm()->bSame("sort"_Stz) ) {
-      if ( ! bSort ) {
+      if ( ! m_xStageOps.m_pPostProjectOp ) {
 
         // get the aggregate type stack
         pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -822,7 +743,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         } else {
 
           RASSERT(eExprKind == EK_AGGREG);
-          bPayloadOp = true;
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           vSetupProjectAgg(pCombined, pStream, pOp);
@@ -835,23 +755,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           vSetupEosPayload(pCombined, pStream, pOp);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          // look for filter/limit ?
-          i8 iNextOp = pOp->i_Op() + 1;
-          for (i8 i_Op = iNextOp; i_Op < pStream->nItems(); i_Op++) {
-            Op *pOpNext = pStream->pGet(i_Op);
-            if (pOpNext->szOpNm()->bSame("filter"_Stz)) {
-              pHavingFilterOp = pOpNext;
-              continue;
-            }
-            if (pOpNext->szOpNm()->bSame("limit"_Stz)) {
-              pLimitOp = pOpNext;
-            }
-          }
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          vSketchEosProjectAgg(pCombined, pStream, pOp, pHavingFilterOp, pLimitOp, sHashExpr);
-          bGeneratePotTub = false;
-          bGenerateFun3 = false;
+          vSketchEosProjectAgg(pCombined, pStream, pOp);
+          m_xStageOps.m_bGeneratePotTub = false;
 
           ePrevStencil = SR_AT;
         }
@@ -865,7 +770,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // get the project kind
       eExprKind = pLogicUnit->m_eExprKind;
-      //RASSERT(eExprKind == EK_ORDAGG);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupOrdAgg(pCombined, pStream, pOp);
@@ -883,8 +787,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the topOP
     if (pOp->szOpNm()->bSame("top"_Stz)) {
 
-      bPayloadOp = true;
-
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupTop(pCombined, pStream, pOp);
 
@@ -896,22 +798,14 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupEosPayload(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosTop(pCombined, pStream, pOp, sHashExpr);
-      bGeneratePotTub = false;
-      bGenerateFun3 = false;
+      vSketchEosTop(pCombined, pStream, pOp);
+      m_xStageOps.m_bGeneratePotTub = false;
     }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // any ops combined ?
-  if (iOpsCombined == 0) {
-    vTrace("No Operators to combine!!!\n"_Stz);
-    return EC_INVALID_COMMAND;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // synthesize code for allotting final tub row/ pot row
-  Op* pLastOp = pStream->pGet(pCombinedOp->i_Op() - 1);
+  Op* pLastOp = pStream->pGet(m_xStageOps.m_pCombinedOp->i_Op() - 1);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // synthesize code for allotting tub row
@@ -931,12 +825,12 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
   }
 
-  if (bGeneratePotTub) {
+  if (m_xStageOps.m_bGeneratePotTub) {
 
     sLabel.vSprint("L_AddRowToTubPot"_Stz);
 
     if (pCombined->aCombinedT()->m_iHashRows)
-      pShape = pSketchPot(pCombined, pLastOp, ePrevStencil, pPreExpStack, sHashExpr, sLabel, sLabelLoop, sLabelOrdAgg);
+      pShape = pSketchPot(pCombined, pLastOp, ePrevStencil, pPreExpStack, sLabel, sLabelLoop, sLabelOrdAgg);
     else
       pShape = pSketchTub(pCombined, pLastOp, ePrevStencil, pPreExpStack, sLabel, sLabelLoop, sLabelOrdAgg);
 
@@ -950,8 +844,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     vAppend(pShape);
   }
 
-  // generate empty func3
-  if ( bGenerateFun3 ) {
+  // generate empty func3 if we have already generated pot/tub
+  if ( m_xStageOps.m_bGeneratePotTub ) {
 
     pCodeSynth = new CodeSynth;
 
@@ -981,14 +875,12 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
   bool bInflateGenerated = false;
   eEK  eExprKind = EK_NONE;
 
-  Op* pCombinedOp = nullptr;
-
   Tub* pTub = _pTub(pCombined->aCombinedT()->m_pTub);
   Pot* pPot = _pPot(pCombined->aCombinedT()->m_pPot);
 
-  if (pStream->pGet(1)->szOpNm()->bSame("indexScan"_Stz)) {
-    m_bIndexScan = true;
-  }
+  // collect the op information from the stage
+  eEC eError = eCollectStage(pCombined, pStream);
+  RASSERT(eError == EC_NONE);
 
   // for each operator in the stream
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
@@ -1002,13 +894,11 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
 
     // skip scan OP
     if (pOp->szOpNm()->bSame("scan"_Stz)) {
-      m_bScan = true;
       continue;
     }
 
     // break when we reach the combined OP
     if (pOp->szOpNm()->bSame("combined"_Stz)) {
-      pCombinedOp = pOp;
       break;
     }
 
@@ -1017,12 +907,12 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (for first OP)
-    if ( m_bScan && ! bInflateGenerated && ! m_bIndexScan) {
+    if ( m_xStageOps.m_bScan && ! bInflateGenerated && ! m_xStageOps.m_bIndexScan) {
       vSetupScan(pCombined, pStream, pOp);
       bInflateGenerated = true;
     }
 
-    if ( ! m_bScan && ! m_bRowBuffer && ! m_bIndexScan) {
+    if ( ! m_xStageOps.m_bScan && ! m_bRowBuffer && ! m_xStageOps.m_bIndexScan) {
       // row buffer processing
       m_bRowBuffer = true;
     }
@@ -1031,12 +921,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     // generate the code for the filterOP
     if (pOp->szOpNm()->bSame("filter"_Stz)) {
       continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the hashOP
-    if (pOp->szOpNm()->bSame("hash"_Stz)) {
-      pCombined->aCombinedT()->m_iHashRows = 1;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1082,11 +966,11 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
 
       // there should be no RowBuffer or scan
-      RASSERT( !m_bScan );
+      RASSERT( !m_xStageOps.m_bScan );
       RASSERT( !bInflateGenerated );
       RASSERT( !m_bRowBuffer );
 
-      RASSERT(m_bIndexScan);
+      RASSERT(m_xStageOps.m_bIndexScan);
 
       // indexScan should be the second op after consume
       RASSERT(i_Op == 1);
@@ -1105,16 +989,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // is next op project Op ?
-      i8 iNextOp = pOp->i_Op() + 1;
-      Op *pOpNext = pStream->pGet(iNextOp);
-      Op* pPostProjectOp = nullptr;
-
-      if (pOpNext->szOpNm()->bSame("project"_Stz)) {
-        pPostProjectOp = pOpNext;
-      }
-
-      vSetupSort(pCombined, pStream, pOp, pPostProjectOp);
+      vSetupSort(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupEosPayload(pCombined, pStream, pOp);
@@ -1124,6 +999,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     // generate the code for the topOP
     if (pOp->szOpNm()->bSame("top"_Stz)) {
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupTop(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1133,7 +1009,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
   }
 
   // get the lastOp
-  Op* pLastOp = pStream->pGet(pCombinedOp->i_Op() - 1);
+  Op* pLastOp = pStream->pGet(m_xStageOps.m_pCombinedOp->i_Op() - 1);
   LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
@@ -1164,8 +1040,7 @@ void Stencil::vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDef
   Op *pOpNext = pStream->pGet(iNextOp);
 
   if (pOpNext->szOpNm()->bSame("combined"_Stz) || pOpNext->szOpNm()->bSame("hash"_Stz)) {
-    // if nextOp is combined, then next label is sDefault
-    //ASSERT(pStream->pGet(iNextOp)->szOpNm()->bSame("combined"_Stz));
+    // if nextOp is combined/hash, then next label is sDefault
     sLabelNext->vCopy(sDefault);
   }
   else {
@@ -1273,10 +1148,12 @@ void Stencil::vSetupEosPayload(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aPayloadCellArray =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aPayloadRow,
                                       &pCombined->aCombinedT()->m_racPayloadArea);
+  pCombined->aCombinedT()->m_racPayloadAreaSav = pCombined->aCombinedT()->m_racPayloadArea;
 
 }
 
 /*----------------------------------------------------------------------------*/
+/* set up for indexJoin                                                       */
 /* set up for indexJoin                                                       */
 /*----------------------------------------------------------------------------*/
 void Stencil::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) {
@@ -1522,13 +1399,13 @@ void Stencil::vSetupEosAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aPayloadCellArray =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aPayloadRow,
                                       &pCombined->aCombinedT()->m_racPayloadArea);
-
+  pCombined->aCombinedT()->m_racPayloadAreaSav = pCombined->aCombinedT()->m_racPayloadArea;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set up for sort                                                            */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pProjectOp) {
+void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1549,7 +1426,7 @@ void Stencil::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPro
   EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
 
   // create RowSingleP
-  if (pProjectOp) {
+  if (m_xStageOps.m_pPostProjectOp) {
     pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
     pCombined->aCombinedT()->m_aRowCellArrayP =
         (byte *) RowSingle::aGetCellArray((RowSingle *) pCombined->aCombinedT()->m_aRowSingleP,
@@ -1658,8 +1535,7 @@ void Stencil::vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp) {
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for Project agg OP                                */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                                   Op* pHavingFilterOp, Op* pLimitOp, Stz* sHashExpr) {
+void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1698,28 +1574,28 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
 
   Stz* sHavingExpr = ""_Stz;
 
-  if (pHavingFilterOp) {
+  if (m_xStageOps.m_pHavingFilterOp) {
     // get filter expr from OP
-    TagSet *pOpTags = pHavingFilterOp->pOpTags();
+    TagSet *pOpTags = m_xStageOps.m_pHavingFilterOp->pOpTags();
     sHavingExpr = pOpTags->szValue(C_TAG_EXPR);
 
-    sLabel.vSprint("L_%s_%d"_Stz, pHavingFilterOp->szOpNm(), pHavingFilterOp->i_Op());
+    sLabel.vSprint("L_%s_%d"_Stz, m_xStageOps.m_pHavingFilterOp->szOpNm(), m_xStageOps.m_pHavingFilterOp->i_Op());
     pCodeSynth->vSynthFilter(sHavingExpr, false, sLabel, ""_Stz);
     m_pShapeEOS->vCodeSynthB(pCodeSynth);
   }
 
-  if (pLimitOp) {
+  if (m_xStageOps.m_pLimitOp) {
     // get limit from limitOp
-    TagSet* pOpTags = pLimitOp->pOpTags();
+    TagSet* pOpTags = m_xStageOps.m_pLimitOp->pOpTags();
     i8 iLimit = StrLib::iToI8((char*)(pOpTags->szValue(C_TAG_COUNT)));
 
-    sLabel.vSprint("L_%s_%d"_Stz, pLimitOp->szOpNm(), pLimitOp->i_Op());
-    vGetNextLabel(sLabelNext, pStream, pLimitOp->i_Op(), "L_AddRowToTubPot"_Stz);
+    sLabel.vSprint("L_%s_%d"_Stz, m_xStageOps.m_pLimitOp->szOpNm(), m_xStageOps.m_pLimitOp->i_Op());
+    vGetNextLabel(sLabelNext, pStream, m_xStageOps.m_pLimitOp->i_Op(), "L_AddRowToTubPot"_Stz);
     pCodeSynth->vSynthLimit(iLimit, sLabel, sLabelNext, "L_ReturnFinal"_Stz);
   }
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz, ""_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz,""_Stz);
 
@@ -1737,8 +1613,7 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for Project agg OP                                */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream,
-                                   Op* pOp, Op* pHavingFilterOp, Op* pLimitOp, Stz* sHashExpr) {
+void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1781,28 +1656,28 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream,
 
   Stz* sHavingExpr = ""_Stz;
 
-  if (pHavingFilterOp) {
+  if (m_xStageOps.m_pHavingFilterOp) {
     // get filter expr from OP
-    TagSet *pOpTags = pHavingFilterOp->pOpTags();
+    TagSet *pOpTags = m_xStageOps.m_pHavingFilterOp->pOpTags();
     sHavingExpr = pOpTags->szValue(C_TAG_EXPR);
 
-    sLabel.vSprint("L_%s_%d"_Stz, pHavingFilterOp->szOpNm(), pHavingFilterOp->i_Op());
+    sLabel.vSprint("L_%s_%d"_Stz, m_xStageOps.m_pHavingFilterOp->szOpNm(), m_xStageOps.m_pHavingFilterOp->i_Op());
     pCodeSynth->vSynthFilter(sHavingExpr, false, sLabel, ""_Stz);
     m_pShapeEOS->vCodeSynthB(pCodeSynth);
   }
 
-  if (pLimitOp) {
+  if (m_xStageOps.m_pLimitOp) {
     // get limit from limitOp
-    TagSet* pOpTags = pLimitOp->pOpTags();
+    TagSet* pOpTags = m_xStageOps.m_pLimitOp->pOpTags();
     i8 iLimit = StrLib::iToI8((char*)(pOpTags->szValue(C_TAG_COUNT)));
 
-    sLabel.vSprint("L_%s_%d"_Stz, pLimitOp->szOpNm(), pLimitOp->i_Op());
-    vGetNextLabel(sLabelNext, pStream, pLimitOp->i_Op(), "L_AddRowToTubPot"_Stz);
+    sLabel.vSprint("L_%s_%d"_Stz, m_xStageOps.m_pLimitOp->szOpNm(), m_xStageOps.m_pLimitOp->i_Op());
+    vGetNextLabel(sLabelNext, pStream, m_xStageOps.m_pLimitOp->i_Op(), "L_AddRowToTubPot"_Stz);
     pCodeSynth->vSynthLimit(iLimit, sLabel, sLabelNext, "L_AdvanceNextRow"_Stz);
   }
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
 
@@ -1820,7 +1695,7 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream,
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for sort OP                                       */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* pPostProjectOp, Op* pLimitOp, Stz* sHashExpr) {
+void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1863,15 +1738,15 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* 
 
   ePrevStencil = SR_PL;
 
-  if (pPostProjectOp) {
+  if (m_xStageOps.m_pPostProjectOp) {
 
-    pLogicUnit = pPostProjectOp->pOpLogicUnit();
+    pLogicUnit = m_xStageOps.m_pPostProjectOp->pOpLogicUnit();
     pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
     // get filter expr from OP
-    TagSet *pOpTags = pPostProjectOp->pOpTags();
+    TagSet *pOpTags = m_xStageOps.m_pPostProjectOp->pOpTags();
     sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
-    i_Op = pPostProjectOp->i_Op();
+    i_Op = m_xStageOps.m_pPostProjectOp->i_Op();
 
     // get the aggregate type stack
     IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -1886,7 +1761,7 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* 
     // payloadRow to Tub/Pot
     pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, pIndexDef, pPreExpStack, ePrevStencil, SR_PT);
 
-    sLabel.vSprint("L_%s_%d"_Stz, pPostProjectOp->szOpNm(), i_Op);
+    sLabel.vSprint("L_%s_%d"_Stz, m_xStageOps.m_pPostProjectOp->szOpNm(), i_Op);
     vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
 
     pCodeSynth->bSynthPrjExp(sProjectExpr, sLabel, sLabelNext, "L_AdvanceNextRow"_Stz) ;
@@ -1899,22 +1774,23 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* 
   // payloadRow to Tub/Pot
   pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil, SR_NONE);
 
-  if (pLimitOp) {
+  if (m_xStageOps.m_pLimitOp) {
     // get limit from limitOp
-    TagSet* pOpTags = pLimitOp->pOpTags();
+    TagSet* pOpTags = m_xStageOps.m_pLimitOp->pOpTags();
     i8 iLimit = StrLib::iToI8((char*)(pOpTags->szValue(C_TAG_COUNT)));
 
-    sLabel.vSprint("L_%s_%d"_Stz, pLimitOp->szOpNm(), pLimitOp->i_Op());
-    vGetNextLabel(sLabelNext, pStream, pLimitOp->i_Op(), "L_AddRowToTubPot"_Stz);
+    sLabel.vSprint("L_%s_%d"_Stz, m_xStageOps.m_pLimitOp->szOpNm(), m_xStageOps.m_pLimitOp->i_Op());
+    vGetNextLabel(sLabelNext, pStream, m_xStageOps.m_pLimitOp->i_Op(), "L_AddRowToTubPot"_Stz);
     pCodeSynth->vSynthLimit(iLimit, sLabel, sLabelNext, "L_ReturnFinal"_Stz);
   }
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz, ""_Stz);
+   // pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, sLabel, "L_ReturnFinal"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
 
-  if (pPostProjectOp)
+  if (m_xStageOps.m_pPostProjectOp)
     m_pShapeEOS->vCodeSynthC(pCodeSynth);
   else
     m_pShapeEOS->vCodeSynthB(pCodeSynth);
@@ -1931,7 +1807,7 @@ void Stencil::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp, Op* 
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for top OP                                        */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp, Stz* sHashExpr) {
+void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1972,7 +1848,7 @@ void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp, Stz* 
   pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, SR_PL, SR_NONE);
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_ReturnFinal"_Stz, ""_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
 
@@ -1992,7 +1868,6 @@ Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, 
 
   CodeSynth *pCodeSynth;
 
-  s256 sFunSignature;
   s256 sLabelNext;
   s256 sReturnLabel;
 
@@ -2051,7 +1926,6 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
   Shape* pShape;
   CodeSynth *pCodeSynth;
 
-  s256 sFunSignature;
   s256 sLabel;
   s256 sLabelNext;
   s256 sReturnLabel;
@@ -2109,7 +1983,6 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp)
   Shape* pShape;
   CodeSynth *pCodeSynth;
 
-  s256 sFunSignature;
   s256 sLabel;
   s256 sReturnLabel;
 
@@ -2149,7 +2022,6 @@ Shape* Stencil::pSketchInflateRow(Stream* pStream, Op* pOp) {
   Shape *pShape;
   CodeSynth *pCodeSynth;
 
-  s256 sFunSignature;
   s256 sLabel;
 
   // get the streamDefOut
@@ -2416,9 +2288,7 @@ Shape* Stencil::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 
   s4K sLabel;
   s4K sLabelNext;
-  s4K sFunSignature;
   s256 szStageNm;
-  s256 sHashExpr;
 
   i8 i_Op = pOp->i_Op();
   CodeSynth *pCodeSynth;
@@ -2523,7 +2393,6 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
 
   s4K sLabel;
   s4K sLabelNext;
-  s256 sFunSignature;
 
   i8 i_Op = pOp->i_Op();
   CodeSynth *pCodeSynth;
@@ -2655,8 +2524,6 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, pIndexDef, nullptr, ePrevStencil, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
-  sLabelLoop = "L_AdvanceNextRow"_Stz;
-
   pCodeSynth->vSynthTop(sKeyExpr, iTopCount, sLabel, sLabelLoop);
   pShape->vCodeSynthB(pCodeSynth);
 
@@ -2667,7 +2534,7 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
 /* sketch pot                                                                 */
 /*----------------------------------------------------------------------------*/
 Shape* Stencil::pSketchPot(Combined* pCombined, Op* pLastOp, eSR ePrevStencil,
-                           IntStack* pPreExpStack, Stz* sHashExpr, Stz* sLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg) {
+                           IntStack* pPreExpStack, Stz* sLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -2681,7 +2548,7 @@ Shape* Stencil::pSketchPot(Combined* pCombined, Op* pLastOp, eSR ePrevStencil,
 
   CodeSynth* pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil, SR_NONE);
 
-  pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, false, sLabel, sLabelLoop, sLabelOrdAgg);
+  pCodeSynth->vSynthAllocPotRow(m_pPostStack, m_xStageOps.m_sHashExpr, false, sLabel, sLabelLoop, sLabelOrdAgg);
   pShape->vCodeSynthB(pCodeSynth);
 
   // delete the postStack. No longer needed
@@ -2888,6 +2755,349 @@ void Stencil::vAppendHeaderEntries(i8 iStage) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append banner tail
   m_pOpHeader->vAppendFragment(m_pBannerTail);
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect and validate the stage information of stage being combined         */
+/*----------------------------------------------------------------------------*/
+eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  i8 iOpsToCombine = 0;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate the operators (skipping consumeOP and sendSE)
+  for (i8 i_Op = 1; i_Op < pStream->nItems() - 1; i_Op++) {
+
+    // get the op
+    Op *pOp = pStream->pGet(i_Op);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // OP after CombinedOp ?
+    if ( m_xStageOps.m_iCombinedOp ) {
+      vTrace("Error: Cannot have OP's after combinedOp (%s)!!!\n"_Stz,
+             m_szStageNm.azChar());
+      return EC_INVALID_PIPELINE;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // scanOp
+    if (pOp->szOpNm()->bSame("scan"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // Should be the first OP after consumeOp
+      if (i_Op != 1) {
+        vTrace("Error: scanOP should be the first OP in the stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE SCAN-OP's
+      if (m_xStageOps.m_iScanOp) {
+        vTrace("Error: Cannot have multiple scan operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_bScan = true;
+      m_xStageOps.m_iScanOp++;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // combined OP
+    if (pOp->szOpNm()->bSame("combined"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE COMBINED OP's
+      if (m_xStageOps.m_iCombinedOp) {
+        vTrace("Error: Cannot have multiple combinedOp's (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_iCombinedOp++;
+      m_xStageOps.m_pCombinedOp = pOp;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip scanOP and combinedOP and count no of OPS to combine
+    iOpsToCombine++;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // aggregate Op
+    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
+
+      m_xStageOps.m_iAggregOp++;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE PAYLOAD OP's
+      if (m_xStageOps.m_bPayloadOp) {
+        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top)"
+            "in the same stage (%s)!!!\n"_Stz,
+            m_szStageNm.azChar());
+
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_bPayloadOp = true;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // filterOp
+    if (pOp->szOpNm()->bSame("filter"_Stz)) {
+      if (m_xStageOps.m_bPayloadOp)
+        m_xStageOps.m_pHavingFilterOp = pOp;
+      m_xStageOps.m_iFilterOp++;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // hashOp
+    if (pOp->szOpNm()->bSame("hash"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE HASH OP's
+      if (m_xStageOps.m_iHashOp) {
+        vTrace("Error: Cannot have multiple hashOp's (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // Should be the last OP before CombinedOp
+      if (i_Op != pStream->nItems() - 3) {
+        vTrace("Error: HashOP should be the last OP before combinedOP (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_iHashOp++;
+
+      // set hashRows in combined (needed at runtime)
+      pCombined->aCombinedT()->m_iHashRows = 1;
+
+      // get hash expr from OP
+      TagSet *pOpTags = pOp->pOpTags();
+      m_xStageOps.m_sHashExpr = pOpTags->szValue(C_TAG_EXPR);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // indexJoinOp
+    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE INDEXJOIN OP's
+      if (m_xStageOps.m_iIndexJoinOp) {
+        vTrace("Error: Cannot have multiple indexJoinOP's (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_iIndexJoinOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // indexScanOp
+    if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // Should be the first OP after consumeOp
+      if (i_Op != 1) {
+        vTrace("Error: indexScanOP should be the first OP in the stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE INDEXSCAN-OP's
+      if (m_xStageOps.m_iIndexScanOp) {
+        vTrace("Error: Cannot have multiple indexScan operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_bIndexScan = true;
+      m_xStageOps.m_iIndexScanOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // keyExistsOp
+    if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE LIMIT-OP's
+      if (m_xStageOps.m_iKeyExistsOp) {
+        vTrace("Error: Cannot have multiple keyExists operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_iKeyExistsOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // limitOp
+    if (pOp->szOpNm()->bSame("limit"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE LIMIT-OP's
+      if (m_xStageOps.m_iLimitOp) {
+        vTrace("Error: Cannot have multiple limit operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_pLimitOp = pOp;
+      m_xStageOps.m_iLimitOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ordAggOp
+    if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE LIMIT-OP's
+      if (m_xStageOps.m_iOrdAggOp) {
+        vTrace("Error: Cannot have multiple ordAgg operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+
+      m_xStageOps.m_iOrdAggOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // projectOp
+    if (pOp->szOpNm()->bSame("project"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE PROJECT-OP's
+      if (m_xStageOps.m_iProjectOp) {
+        vTrace("Error: Cannot have multiple project operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // PROJECT-OP after AGGREG-OP
+      if (m_xStageOps.m_iAggregOp) {
+        vTrace("Error: Cannot have project operator after an aggregate operator in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      eEK eExprKind = pOp->pOpLogicUnit()->m_eExprKind;
+
+      if (eExprKind == EK_AGGREG) {
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // MULTIPLE PAYLOAD OP's
+        if (m_xStageOps.m_bPayloadOp) {
+          vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+                 m_szStageNm.azChar());
+
+          return EC_INVALID_PIPELINE;
+        }
+
+        m_xStageOps.m_bPayloadOp = true;
+      }
+
+      // is this project after the sort ?
+      if (m_xStageOps.m_iSortOp) {
+        m_xStageOps.m_pPostProjectOp = pOp;
+      }
+      m_xStageOps.m_iProjectOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // sortOp
+    if (pOp->szOpNm()->bSame("sort"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE SORT-OP's
+      if (m_xStageOps.m_iSortOp) {
+        vTrace("Error: Cannot have multiple sort operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE PAYLOAD OP's
+      if (m_xStageOps.m_bPayloadOp) {
+        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_bPayloadOp = true;
+      m_xStageOps.m_iSortOp++;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // topOp
+    if (pOp->szOpNm()->bSame("top"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE TOP-OP's
+      if (m_xStageOps.m_iTopOp) {
+        vTrace("Error: Cannot have multiple top operators in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE PAYLOAD OP's
+      if (m_xStageOps.m_bPayloadOp) {
+        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_bPayloadOp = true;
+      m_xStageOps.m_iTopOp++;
+    }
+  }
+
+  // we should have seen a combinedOP ?
+  if ( !m_xStageOps.m_pCombinedOp ) {
+    vTrace("Error: Missing combinedOp (%s)!!!\n"_Stz,
+           m_szStageNm.azChar());
+    return EC_INVALID_PIPELINE;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Should have a hashCast in the SendSE if hashOP
+  if (m_xStageOps.m_iHashOp) {
+
+    // get the lastOp
+    Op *pOp = pStream->pGet(pStream->nItems() - 1);
+
+    // should be a SendSE OP
+    RASSERT(pOp->szOpNm()->bSame("sendSE"_Stz));
+
+    if (pOp->eSendCast() != XK_HASHCAST) {
+      vTrace("Error: Missing hashcast (hashOP) (%s)!!!\n"_Stz,
+             m_szStageNm.azChar());
+      return EC_INVALID_PIPELINE;
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // any OP's to combine ?
+  if (iOpsToCombine == 0) {
+    vTrace("Error: Zero OP's to combine (%s)!!!\n"_Stz,
+           m_szStageNm.azChar());
+    return EC_INVALID_PIPELINE;
+  }
+
+  return EC_NONE;
 }
 
 //*============================================================================*/

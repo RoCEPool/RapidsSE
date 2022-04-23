@@ -1089,13 +1089,16 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
         // isDistinct
         bool bIsDistinct = AggregateExpr::bIsDistinct(pOrdinalExpr);
 
-        sPipeline->vCatSprint(
-            " count "_Stz);
+
 
         // ALKA: to do in exprEval
         if (bIsDistinct) {
           sPipeline->vCatSprint(
-              " distinct "_Stz);
+              " countDistinct "_Stz);
+        }
+        else {
+          sPipeline->vCatSprint(
+              " count "_Stz);
         }
       }
 
