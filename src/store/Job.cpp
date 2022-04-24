@@ -859,7 +859,7 @@ void Job::vOutputCreate(void)
   
   RASSERT(! m_pOutput_job);
   
-  m_pOutput_job = new Output(this,nullptr);
+  m_pOutput_job = new Output(this);
 }
 
 /*----------------------------------------------------------------------------*/

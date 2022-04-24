@@ -39,13 +39,12 @@ __aFooterFunction(Output)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Output::Output(Job* pJob, Session* pSession)
+Output::Output(Job* pJob)
 : Object(CN_OUTPUT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
   m_pJob              = nullptr;
-  m_pSession          = pSession;
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
