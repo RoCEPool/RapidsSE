@@ -445,7 +445,6 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   if (EC_NONE != eError)
     return eError;
   
-  //Job* pJob = pAllocJob(pSession);
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   Job* pJob = Api::pAllocJob(szJobNm);
 
@@ -503,41 +502,11 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   if (AM::TRACE::bVerbose(C_VB_API))
     pJobTagSet->vDumpSet();
 
-#if 1
   pJob->vResponseTimerStart();
   
   Api::vForkJob(pJob,pResponseOp);
 
   
-#else
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn job and wait for completion
-  
-//  bool bSpawned = Api::bSpawnTask_session(pJob);
-//  UNUSED(bSpawned);
-  pJob->vResponseTimerStart();
-  
-  Api::vExecuteJob(pSession);
-  
-  pJob->vResponseTimerUpdate();
-
-//  vTrace("Job Timer: %lldus\n"_Stz
-//         ,pJob->m_oTimer.iMicroseconds());
-  
-  RASSERT(! pJob->bIsInError() );
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete job and free session
-  Api::vReapableJob(pJob);
-
-  Api::vFreeSession(pSession);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //push result
-    
-  //m_pDataStack->vPushInt(iJobNo);
-  //m_pDataStack->vPushInt(true);
-#endif
   
   
   
@@ -1013,36 +982,6 @@ void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
   
   Task* pTaskParticipant = pParticipantJob->pTask();
   Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* validate the SE session                                                    */
-/*----------------------------------------------------------------------------*/
-eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
-{
-  _static_
-  UNUSED(iTrace);
-  UNUSED(eApiCall);
-
-  // pSession cannot be null
-  if (pSession == nullptr) {
-    TRACE_API_ERROR("eValidateSession(a)", EC_INVALID_INTERFACE);
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // pSession should be a pool address
-  if (!gpBufferPool->bValidAddress(pSession)) {
-    TRACE_API_ERROR("eValidateSession(b)", EC_INVALID_INTERFACE);
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // pSession should be an SESSION class
-  if (pSession->eGetClassNo() != CN_SESSION) {
-    TRACE_API_ERROR("eValidateSession(c)", EC_INVALID_INTERFACE);
-    return EC_INVALID_INTERFACE;
-  }
-  
-  return EC_NONE;
 }
 
 
