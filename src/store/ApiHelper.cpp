@@ -126,7 +126,6 @@ eEC ApiHelper::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet
   //rpJob = Api::pAllocJob(m_pSession);
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   rpJob = Api::pAllocJob(szJobNm);
-  rpJob->vSession(m_pSession);
   
   eError = Api::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
   

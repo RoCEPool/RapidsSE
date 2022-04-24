@@ -44,7 +44,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // -- command and tags
     TagSet m_oJobTags;  // tags for the job
 
-    i8 m_i_Session_job;  // which session in node's session array
     CmdId m_tCmdId;
   
     b8 m_bWasForked;
@@ -219,8 +218,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vResponseTimerStart(void);
     void vResponseTimerUpdate(void);
 
-    i8   i_Session(void);
-    void vSession(Session* pSession);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
     StmtList*  pStmtList(void);

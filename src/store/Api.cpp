@@ -464,7 +464,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   //Job* pJob = pAllocJob(pSession);
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   Job* pJob = Api::pAllocJob(szJobNm);
-  pJob->vSession(pSession);
+
   
   
   TagSet* pJobTagSet = pJob->pJobTags();
