@@ -656,15 +656,6 @@ eBO Engine::eDecodeCommandLine(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete an se session                                                       */
-/*----------------------------------------------------------------------------*/
-void Engine::vDeleteSession(Session* pSession)
-{
-  //delete pSession;
-  AM::pSessions()->vFreeSession(pSession);
-}
-
-/*----------------------------------------------------------------------------*/
 /* translate debug flag env variables                                         */
 /*----------------------------------------------------------------------------*/
 void Engine::vEnvFlags(void)
