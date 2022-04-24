@@ -15,9 +15,6 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // external API functions
   
-  static Session* pAllocSession(eSK eSession);
-  static void vFreeSession(Session* pSession);
-
   static Job* pAllocJob(Stz* szJobNm);
 
   static void vExecuteJob(Job* pJob, TagSet* pCmdTagSet);

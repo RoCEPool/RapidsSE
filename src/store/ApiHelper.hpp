@@ -14,14 +14,12 @@ namespace STORE
     ApiHelper(void);
    ~ApiHelper(void) noexcept(false);
 
-    void vAllocateSession(void);
 
     i8   iCommandKind(void);
   
     void vExecuteJob(Job* pJob, TagSet* pCmdTagSet);
 
     void* pForkDemon(Stz* szPipeline);
-    void vFreeSession(void);
   
     i8   iJobId(void);
 
