@@ -6,7 +6,6 @@
 
 #include "eYX.h"
 
-#include "ApiMacros.h"
 #include "Api.hpp"
 #include "Session.hpp"
 #include "Job.hpp"

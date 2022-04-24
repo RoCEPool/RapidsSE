@@ -466,13 +466,6 @@ namespace OBLIQUE
       static void vWhereAmI(void);
     };
   
-    class SESSION
-    {
-    public:
-      static i8 iInternalSession(void);
-      static Session* pInternalSession(void);
-    };
-
     class SHOW
     {
     public:
@@ -793,7 +786,6 @@ namespace OBLIQUE
     static void vFreeInc(RU_Memory* pRU_Memory, eCN eAllocClass);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static Session* pSessionGet(i8 iOriginId,  i8 i_Session);
         
     static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
     static void vSpawnTaskDedicated_op(Op* pOp);
