@@ -131,8 +131,6 @@ void Step::vApiExecuteCommand(void)
   
   
   
-  Session* pSession = Api::pAllocSession(SK_INTERNAL);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the request
   
@@ -144,7 +142,6 @@ void Step::vApiExecuteCommand(void)
   if (EC_NONE != eError) {
     delete pCmdTknVec;
     delete pCmdTagSet;
-    Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();
@@ -170,7 +167,6 @@ void Step::vApiExecuteCommand(void)
 
   if (eError) {
     
-    Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();
