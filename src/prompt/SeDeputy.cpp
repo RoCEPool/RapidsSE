@@ -65,9 +65,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   _checkInitialised_(CN_SEDEPUTY);
   
   m_sFolderPath = C_SE_PATH;
-  
-  ApiHelper::vAllocateSession();
-    
+      
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
 
@@ -80,8 +78,6 @@ SeDeputy::~SeDeputy(void) noexcept(false)
   
   while (m_pInput)
     m_pInput = m_pInput->pDeleteInput();
-
-  ApiHelper::vFreeSession();
 
   AM::THREAD::vDeleteThread(m_pThread);
 }
