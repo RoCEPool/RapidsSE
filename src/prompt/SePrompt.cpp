@@ -10,7 +10,6 @@
 
 #include "Node.hpp"
 #include "Grid.hpp"
-#include "Session.hpp"
 #include "AttachMap.hpp"
 #include "Job.hpp"
 #include "Procedure.hpp"

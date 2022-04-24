@@ -622,7 +622,6 @@ namespace OBLIQUE
     static Stz* szLogTxtFile(void);
     
     //
-    static Sessions* pSessions(void);
     static bool bBootError(void);
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
@@ -728,8 +727,7 @@ namespace OBLIQUE
     static Crv* aCrv(DataBuffer* pDataBuffer, i8 iItem);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vDumpApi(void);
-
+ 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static eCN eJobClass(Job* pJob);
     static Stz* szJobNm(Job* pJob);

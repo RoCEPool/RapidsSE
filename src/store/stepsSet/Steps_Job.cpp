@@ -12,7 +12,6 @@
 
 #include "Grid.hpp"
 #include "Api.hpp"
-#include "Session.hpp"
 #include "Stream.hpp"
 #include "Op.hpp"
 #include "Stage.hpp"
@@ -23,7 +22,6 @@
 #include "LogicUnit.hpp"
 
 #include "JobList.hpp"
-#include "Sessions.hpp"
 
 #include "TagConstants.h"
 

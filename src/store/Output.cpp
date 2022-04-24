@@ -11,7 +11,6 @@
 #include "InfoSet.hpp"
 
 #include "StreamSet.hpp"
-#include "Session.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"

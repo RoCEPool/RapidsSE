@@ -169,7 +169,6 @@ extern d8 C_D8_MID;
 
 #include "Gid_t.hpp"
 #include "JobId.hpp"
-#include "SsnId.hpp"
 #include "LglPtn.hpp"
 #include "PhyPtn.hpp"
 #include "Lock.hpp"

@@ -7,13 +7,11 @@
 #include "eYX.h"
 
 #include "Api.hpp"
-#include "Session.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Op.hpp"
 #include "LogicUnit.hpp"
 #include "Procedure.hpp"
-#include "Sessions.hpp"
 #include "Output.hpp"
 #include "EventHandlers.hpp"
 #include "Grid.hpp"

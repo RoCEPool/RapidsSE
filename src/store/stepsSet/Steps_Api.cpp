@@ -14,7 +14,6 @@
 #include "Node_I.hpp"
 #include "Grid.hpp"
 #include "Api.hpp"
-#include "Session.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
 #include "Job.hpp"

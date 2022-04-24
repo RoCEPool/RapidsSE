@@ -13,7 +13,6 @@
 #include "Api.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
-#include "Session.hpp"
 #include "Definition.hpp"
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
@@ -26,7 +25,6 @@
 
 #include "Pipeline.hpp"
 #include "Procedure.hpp"
-#include "Sessions.hpp"
 
 #include "Dynamo.hpp"
 
@@ -1533,7 +1531,6 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   }
   
   gxPromptCatalog.vFuns(PF_LOGSECTION);
-  gxPromptCatalog.vFuns(PF_SSNSTATE);
   gxPromptCatalog.vFuns(PF_ARGS);
   gxPromptCatalog.vFuns(PF_ASCII);
   gxPromptCatalog.vFuns(PF_ATTACHMAP);
@@ -4299,7 +4296,6 @@ bool PROMPT::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("\n"_Stz);
 
   vTrace("  sizeof(FreeChunk)    = %lu; \n"_Stz, sizeof(FreeChunk));
-  vTrace("  sizeof(Sessions) = %lu; \n"_Stz, sizeof(Sessions));
   vTrace("\n"_Stz);
   
   return true;
@@ -4668,44 +4664,6 @@ bool PROMPT::bPrompt_socket(SePrompt* pPrompt)
   return true;
 }
 
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_ssnState.hpp -- Print Session State Information                     */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_ssnState (
-  PF_SSNSTATE,            // prompt function
-  "Prompt_ssnState"_Stz,  // name of the prompt function
-  "comment"_Stz,          // comment about the function
-  "ssnState"_Stz,         // the prompt command
-  nullptr,                // the second word
-  bPrompt_ssnState,       // prompt function
-  true,                   // enabled
-
-  true,                   // visible
-  "ssnState"_Stz,         // help
-  ""_Stz                  // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_ssnState(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  Token* pArg = nullptr;
-  
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 nTokens = pInpTknVec->nItems();
-
-  if (nTokens == 2)
-    pArg = pInpTknVec->pGet(1);
-  
-  AM::pSessions()->vDump();
-  
-  return true;
-}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_start -- Prompt Start                                               */

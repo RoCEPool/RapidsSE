@@ -87,8 +87,6 @@
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Jobs.hpp"
-#include "Session.hpp"
-#include "Sessions.hpp"
 #include "Parcel.hpp"
 #include "Numbering.hpp"
 #include "Output.hpp"
@@ -2575,9 +2573,6 @@ Stz* AM::szLogRegion(void)    { return gpAttachMap->m_sLogRegion;             }
 Stz* AM::szLogCsvFile(void)   { return gpAttachMap->m_sLogCsvFile;            }
 Stz* AM::szLogTxtFile(void)   { return gpAttachMap->m_sLogTxtFile;            }
 
-//
-Sessions* AM::pSessions(void) { return gpAttachMap->m_pSessions;  }
-
 
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 i8   AM::nBuckets(void)       { return C_MAX_KEYBUCKETS;                         }
@@ -2874,9 +2869,6 @@ bool AM::bJobWasReceived(Job* pJob)
 }
 
 
-void AM::vDumpApi(void) {
-  pSessions()->vDump();
-}
 
 i8 AM::nLvlLevels(void) {
   return gpAttachMap->m_xSysArgs.m_nLvlLevels;

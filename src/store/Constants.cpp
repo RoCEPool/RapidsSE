@@ -26,7 +26,6 @@
 #include "Table.hpp"
 #include "Node.hpp"
 #include "Grid.hpp"
-#include "Session.hpp"
 #include "Job.hpp"
 
 #include "EnumGroups.h"

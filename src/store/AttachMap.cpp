@@ -15,7 +15,6 @@
 #include "Numbering.hpp"
 #include "Jobs.hpp"
 #include "InternalTables.hpp"
-#include "Session.hpp"
 #include "Step.hpp"
 
 #include "Resources.hpp" //?
@@ -432,14 +431,6 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
     
   m_iStop       = 0;
   m_iQuit       = 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get session array                                                          */
-/*----------------------------------------------------------------------------*/
-Sessions* AttachMap::pSessions(void)
-{
-  return m_pSessions;
 }
 
 /*----------------------------------------------------------------------------*/
