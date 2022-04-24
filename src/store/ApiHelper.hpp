@@ -8,7 +8,6 @@ namespace STORE
   class ApiHelper
   {
   protected:
-    Session* m_pSession;  // rapidsse session
 
   public:
     ApiHelper(void);

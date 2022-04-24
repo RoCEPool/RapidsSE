@@ -61,7 +61,6 @@ namespace PROMPT
     Job* pJob(void);
     JobId tLastJobId(void);
     void vReportTime(void);
-    Session* pSession(void);
     void vTerminate(void);
     bool bTerminated(void);
     Stz* szToDo(void);

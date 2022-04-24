@@ -1120,16 +1120,6 @@ void SePrompt::vSection(Stz* szSection)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the rapidsse session                                                   */
-/*----------------------------------------------------------------------------*/
-Session* SePrompt::pSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  return m_paSeDeputy[0]->pSession();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get shortcut vector                                                        */
 /*----------------------------------------------------------------------------*/
 ShortCutVec* SePrompt::pShortCutVec(void)

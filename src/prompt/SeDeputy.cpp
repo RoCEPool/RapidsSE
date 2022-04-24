@@ -320,16 +320,6 @@ void SeDeputy::vReportTime(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get session                                                                */
-/*----------------------------------------------------------------------------*/
-Session* SeDeputy::pSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return m_pSession;
-}
-
-/*----------------------------------------------------------------------------*/
 /* signal this deputy to terminate                                            */
 /*----------------------------------------------------------------------------*/
 void SeDeputy::vTerminate(void)

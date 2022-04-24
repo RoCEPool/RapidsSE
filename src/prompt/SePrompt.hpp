@@ -135,7 +135,6 @@ namespace PROMPT
     void vResetSectionNo(void);
     i8   iRequestId(void);
     void vSection(Stz* szSection);
-    Session* pSession(void);
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
