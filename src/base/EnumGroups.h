@@ -82,7 +82,6 @@ enum eEG // enum groups
   EG_PF,
   EG_PK,
   EG_YG,
-  EG_PP,
   EG_PT,
   EG_YX,
   EG_PY,

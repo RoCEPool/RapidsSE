@@ -27,7 +27,6 @@
 #include "eOI.h"
 #include "eOR.h"
 #include "ePF.h"
-#include "ePP.h"
 #include "eYG.h"
 #include "ePY.h"
 #include "eYX.h"
@@ -4148,7 +4147,6 @@ static Stz* aEG[]
   "EG_PF"_Stz,
   "EG_PK"_Stz,
   "EG_YG"_Stz,
-  "EG_PP"_Stz,
   "EG_PT"_Stz,
   "EG_YX"_Stz,
   "EG_PY"_Stz,
@@ -4267,7 +4265,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_PA: return aPA[i_Enum];
     case EG_PF: return aPF[i_Enum];
     case EG_PK: return aPK[i_Enum];
-    case EG_PP: return aPP[i_Enum];
     case EG_PT: return aPT[i_Enum];
     case EG_PY: return aPY[i_Enum];
 

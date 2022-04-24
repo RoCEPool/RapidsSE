@@ -24,7 +24,6 @@
 #include "Procedure.hpp"
 
 #include "MY.hpp"
-#include "ePP.h"
 #include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
@@ -140,7 +139,6 @@ void Step::vApiExecuteCommand(void)
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
 
   TagSet* pCmdTagSet =  new TagSet;
-  pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
   eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError) {
@@ -332,7 +330,6 @@ void Step::vApiSpawnDemon(void)
   //pJobTagSet->vDumpSet();
     
   pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
-  pJobTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
 

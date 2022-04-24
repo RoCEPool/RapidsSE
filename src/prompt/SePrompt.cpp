@@ -24,7 +24,6 @@
 
 #include "Prompt_ALLINONE.hpp"
 
-#include "ePP.h"
 #include "TagConstants.h"
 #include "Op.hpp"
 
@@ -354,8 +353,6 @@ bool SePrompt::bPrepareJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
   m_pCmdTagSet->vCopy(& m_oUsrTagSet);
-
-  m_pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   
   eEC eError = m_pCurrentDeputy->ePrepareJob(m_pCmdTknVec);
 

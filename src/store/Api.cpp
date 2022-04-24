@@ -20,7 +20,6 @@
 #include "Grid.hpp"
 
 #include "TagConstants.h"
-#include "ePP.h"
 
 #include "SP_TagSet.hpp"
 
@@ -65,7 +64,7 @@ void Api::vFreeSession(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* alloc a new job for session                                                */
+/* alloc a new job                                                            */
 /*----------------------------------------------------------------------------*/
 Job* Api::pAllocJob(Stz* szJobNm)
 {
@@ -99,7 +98,6 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
   JobId tJobId = pJob->tJobId();
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //RASSERT(! pSession->bHasCascade());
 
   for (;;) {
   
@@ -122,15 +120,7 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
     if (! pJob->bHasCascade()) {
       return;
     }
-  
-//    if (AM::TRACE::bVerbose(C_VB_API))
-//      vTrace("<vb_api>:: cascading: \n"
-//             "%s\n"
-//             "end <vb_api>\n"_Stz
-//             ,pSession->szCascade());
-    
-    //AM::pHeaps()->vSetTraceFree(true,MY::pTask());
-    
+          
     pJob->vCascadeReset();
     
     pJob->vCascadeSet(pJob->szCascade());
@@ -321,7 +311,7 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a and prepare it to execute the command in session                     */
+/* new a job and prepare it to execute a command                              */
 /*----------------------------------------------------------------------------*/
 eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
@@ -443,19 +433,13 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
                       Op* pResponseOp, JobId& rtJobId)
 {
   _static_
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot a session
-  
-  Session* pSession = Api::pAllocSession(SK_INTERNAL);
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the command
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
 
   TagSet* pCmdTagSet =  new TagSet;
-  pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
   eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError)
