@@ -45,6 +45,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aRowBuffer    = nullptr;
 
   // index scan T
+  m_xCombinedT.m_iIndexScan  = 0;
   m_xCombinedT.m_aIndexT     = nullptr;
   m_xCombinedT.m_aIndexTreeT = nullptr;
   m_xCombinedT.m_aIndexDefT  = nullptr;
