@@ -390,6 +390,16 @@ EventHandlers* AM::HANDLERS::pEventHandlers(void)
 /*----------------------------------------------------------------------------*/
 /* find job in jobs list                                                      */
 /*----------------------------------------------------------------------------*/
+bool AM::JLIST::bFindJob(Job* pJob, bool bLockJob)
+{
+  bool bFound = gpAttachMap->m_pJobs->pJobsList()->bFindJob(pJob,bLockJob);
+    
+  return bFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job in jobs list                                                      */
+/*----------------------------------------------------------------------------*/
 Job* AM::JLIST::pFindJob(JobId tJobId, bool bLockJob)
 {
   Job* pJob = gpAttachMap->m_pJobs->pJobsList()->pFindJob(tJobId,bLockJob);
@@ -412,6 +422,10 @@ JobList* AM::JLIST::pJobsList(void)
 /*----------------------------------------------------------------------------*/
 void AM::JLIST::vInsertJob(Job* pJob)
 {
+//  vTrace("JLIST Inserting %p %lld %lld\n"_Stz,
+//         pJob,
+//         pJob->tCmdId().iCmdNo(),
+//         pJob->tJobId().iAsI8());
   gpAttachMap->m_pJobs->pJobsList()->vInsertJob(pJob);
 }
 
@@ -420,6 +434,10 @@ void AM::JLIST::vInsertJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::JLIST::vRemoveJob(Job* pJob)
 {
+//  vTrace("JLIST Removing %p %lld %lld\n"_Stz,
+//         pJob,
+//         pJob->tCmdId().iCmdNo(),
+//         pJob->tJobId().iAsI8());
   gpAttachMap->m_pJobs->pJobsList()->vRemoveJob(pJob);
 }
 

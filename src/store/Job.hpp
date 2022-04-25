@@ -35,16 +35,16 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // universally immutable information                    UNIVERSAL
 
-    JobId       m_tJobId;     // this job's id
-    s32         m_sJobNm;     // name of job
-    eJK         m_eJobKind;   // job kind: (needs work)
+    CmdId   m_tCmdId;      // distributed command id
+    JobId   m_tJobId;      // this job's id
+    s32     m_sJobNm;      // name of job
+    eJK     m_eJobKind;    // job kind: (needs work)
 
-    Atomic      m_noActiveOps; // number of active ops
+    Atomic  m_noActiveOps; // number of active ops
 
     // -- command and tags
     TagSet m_oJobTags;  // tags for the job
 
-    CmdId m_tCmdId;
   
     b8 m_bWasForked;
   

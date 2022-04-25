@@ -122,7 +122,8 @@ Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  AM::JLIST::vRemoveJob(this);
+  if (AM::JLIST::bFindJob(this))
+    AM::JLIST::vRemoveJob(this);
 
 //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
 //

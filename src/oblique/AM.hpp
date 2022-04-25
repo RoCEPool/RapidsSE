@@ -286,6 +286,7 @@ namespace OBLIQUE
     class JLIST
     {
     public:
+      static bool bFindJob(Job* pJob, bool bLockJob=false);
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
       static void vInsertJob(Job* pJob);
       static JobList* pJobsList(void);

@@ -59,12 +59,18 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_bTerminated   = false;
   m_bSystemCloser = false;
 
+  m_pRootJob = nullptr;
   m_pJob = nullptr;
 
   _checkInitialised_(CN_SEDEPUTY);
   
   m_sFolderPath = C_SE_PATH;
-      
+  
+  CmdId tCmdId;
+  tCmdId.vNextCmdId();
+ 
+  m_pRootJob = new Job("SeDeputy"_Stz,tCmdId);
+
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
 
@@ -78,6 +84,9 @@ SeDeputy::~SeDeputy(void) noexcept(false)
   while (m_pInput)
     m_pInput = m_pInput->pDeleteInput();
 
+  delete m_pRootJob;
+  m_pRootJob = nullptr;
+  
   AM::THREAD::vDeleteThread(m_pThread);
 }
 
