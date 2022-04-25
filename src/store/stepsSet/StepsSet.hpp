@@ -840,12 +840,14 @@ public:
   void vJobLastJobIdFetch(void);
   void vJobLastJobIdStore(void);
 
+  void vJobMasterJob(void);
+
   void vJobNameFetch(void);
   void vJobNoWaitFetch(void);
 
-  void vJobMasterJob(void);
   void vJobOriginNodeIdFetch(void);
 
+  void vJobParentIdFetch(void);
   void vJobParticipantNodeIdFetch(void);
   void vJobParticipantNodeIdStore(void);
   void vJobPipeToOp0(void);

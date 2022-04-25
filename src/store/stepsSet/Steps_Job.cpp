@@ -103,6 +103,7 @@ void Step::vAddSteps_Job(void)
     
   vAddStep("[job].originNodeId@"_Stz,    &Step::vJobOriginNodeIdFetch);
   
+  vAddStep("[job].parentId@"_Stz,        &Step::vJobParentIdFetch);
   vAddStep("[job].participantNodeId@"_Stz, &Step::vJobParticipantNodeIdFetch);
   vAddStep("[job].participantNodeId!"_Stz, &Step::vJobParticipantNodeIdStore);
   vAddStep("[job].preExecuteTest"_Stz,   &Step::vJobPreExecuteTest);
@@ -675,6 +676,7 @@ void Step::vJobHasCascadeFetch(void)
   
   EXIT();
 }
+
 /*----------------------------------------------------------------------------*/
 /* [job].id@ -- fetch the job id of the job                                   */
 /*----------------------------------------------------------------------------*/
@@ -874,6 +876,18 @@ void Step::vJobOriginNodeIdFetch(void)
   i8 iNodeId = (i8)tJobId.uNodeId();
   
   m_pDataStack->vPushInt(iNodeId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].parentId@ -- fetch the parent job id of the job                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobParentIdFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pJob->tParentId().iAsI8());
   
   EXIT();
 }
