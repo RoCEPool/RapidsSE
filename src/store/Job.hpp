@@ -35,7 +35,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // universally immutable information                    UNIVERSAL
 
-    CmdId   m_tCmdId;      // distributed command id
+    CmdId   m_tParentId;      // distributed command id
     JobId   m_tJobId;      // this job's id
     s32     m_sJobNm;      // name of job
     eJK     m_eJobKind;    // job kind: (needs work)
@@ -137,7 +137,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vCascadePop(void);
     void vCascadeReset(void);
     void vCascadeSet(Stz* szCascadeCmd);
-    CmdId tCmdId(void);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
@@ -201,6 +200,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);
   
+    CmdId tParentId(void);
     i8   iParticipantNodeId(void);
     void vParticipantNodeId(i8 i_Node);
     Pipeline* pPipeline(void);

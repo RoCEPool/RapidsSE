@@ -43,7 +43,7 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm, CmdId tCmdId)
+Job::Job(Stz* szJobNm, CmdId tParentId)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -51,6 +51,8 @@ Job::Job(Stz* szJobNm, CmdId tCmdId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
  
   m_tJobId.vNextJobId();
+  m_tParentId = tParentId;
+
   m_sJobNm   = szJobNm;
   m_eJobKind = JK_NONE;
 
@@ -59,7 +61,6 @@ Job::Job(Stz* szJobNm, CmdId tCmdId)
   m_bWasForked = false;
   // -- a -------------------
   
-  m_tCmdId      = tCmdId;
 
   m_p_ResponseOp = nullptr;
   m_oResponseTimer.vStart();
@@ -343,16 +344,6 @@ void Job::vCascadeSet(Stz* szCascadeCmd)
   m_oJobTags.vReplace(C_TAG_CMD,szCascadeCmd);
 
   //m_oJobTags.vDumpSet(true);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get command id                                                             */
-/*----------------------------------------------------------------------------*/
-CmdId Job::tCmdId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
-  return m_tCmdId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -936,6 +927,16 @@ Stz* Job::szOriginNodeNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get command id                                                             */
+/*----------------------------------------------------------------------------*/
+CmdId Job::tParentId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_tParentId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the participant node                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Job::iParticipantNodeId(void)
@@ -1028,7 +1029,7 @@ void Job::vPrintJobContents(void)
          ,szCmd()                    // 3
          ,iOriginNodeId()            // 4
 
-         ,m_tCmdId.iCmdNo()          // 6
+         ,m_tParentId.iCmdNo()          // 6
          ,m_bWasReceived ? "true" : "false" // 7
          ,m_iParticipantNodeId            // 8
          ,aJS[m_eJobState]           // 10
@@ -1088,7 +1089,7 @@ void Job::vPrintJobLine(void)
 
   vTrace("originNodeId %lld command %lld "_Stz
          ,this->iOriginNodeId()
-         ,this->m_tCmdId.iCmdNo()
+         ,this->m_tParentId.iCmdNo()
          );
 
   if (C_UNKNOWN != this->iParticipantNodeId())
