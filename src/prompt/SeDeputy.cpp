@@ -66,10 +66,10 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   
   m_sFolderPath = C_SE_PATH;
   
-  CmdId tCmdId;
-  tCmdId.vNextCmdId();
+  CmdId tParentId;
+  tParentId.vNextCmdId();
  
-  m_pRootJob = new Job("SeDeputy"_Stz,tCmdId);
+  m_pRootJob = new Job("SeDeputy"_Stz,tParentId);
 
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
