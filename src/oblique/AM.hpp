@@ -287,7 +287,9 @@ namespace OBLIQUE
     {
     public:
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
+      static void vInsertJob(Job* pJob);
       static JobList* pJobsList(void);
+      static void vRemoveJob(Job* pJob);
     };
   
     class JOB

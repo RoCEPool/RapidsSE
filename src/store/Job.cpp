@@ -110,6 +110,8 @@ Job::Job(Stz* szJobNm, CmdId tCmdId)
   
   m_oJobTags.vInsert(C_TAG_DISTID,m_tJobId.iAsI8());
   
+  AM::JLIST::vInsertJob(this);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
 }
 
@@ -120,7 +122,8 @@ Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
- 
+  AM::JLIST::vRemoveJob(this);
+
 //  if (bHasTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
 //
 //    SP_TagSet spTagSet;
