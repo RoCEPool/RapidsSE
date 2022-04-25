@@ -739,9 +739,6 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n L_IndexScanDeref:");
     StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_aEntIntT ) {");
-    //StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iBufferDone = 1;");
-    //sCopy.vSprint("\n      goto %s;"_Stz, sReturnLabel);
-    //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -775,9 +772,6 @@ void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // reached upper bound ?");
     StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_aEntIntT == aCombinedT->m_aEntUpperT) {");
-    //StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iBufferDone = 1;");
-    //sCopy.vSprint("\n      goto %s;"_Stz, sReturnLabel);
-    //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 
@@ -933,7 +927,6 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel, Stz* sLabelOrdAgg) {
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i_CurrentRow++;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (i_CurrentRow  >= aCombinedT->m_nRows) {");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iBufferDone = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -1362,13 +1355,6 @@ void CodeSynth::vSynthTop(Stz* sKeyExpr, i8 iTopCount, Stz* sLabel, Stz* sLabelL
   // insert entry in payload
   vPayloadInsert(PL_TOP, iTopCount);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // populate the payload values
-  //vPayloadPopulate(PL_TOP);
-
-//  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iBufferDone)");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n    else");
   sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
@@ -3497,15 +3483,6 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate return
-//    StrLib::vAppendString(&m_azCodeCrs, "\n  L_Return:");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iHasOrdAggRow ) {");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iOrdAggDone = 1;");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iHasOrdAggRow = 1;");
-//    vGenerateGoto(sLabelOrdAgg);
-//    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-
     StrLib::vAppendString(&m_azCodeCrs, "\nL_Return:");
     vGenerateGoto("L_ReturnFinal"_Stz);
   }
@@ -4682,18 +4659,7 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate return
-//    StrLib::vAppendString(&m_azCodeCrs, "\n  L_Return:");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iHasOrdAggRow ) {");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iOrdAggDone = 1;");
-//    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iHasOrdAggRow = 1;");
-//    vGenerateGoto(sLabelOrdAgg);
-//    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     StrLib::vAppendString(&m_azCodeCrs, "\nL_Return:");
-    //StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iOrdAggDone && aCombinedT->m_iHasOrdAggRow ) {");
-    //vGenerateGoto(sLabelOrdAgg);
-    //StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     vGenerateGoto("L_ReturnFinal"_Stz);
   }
   else {
