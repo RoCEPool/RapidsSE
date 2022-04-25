@@ -1022,7 +1022,7 @@ void Job::vPrintJobContents(void)
 
          ""_Stz
          
-         ,spJobId.sz(* m_tJobId)     // 0
+         ,spJobId.sz(m_tJobId.iAsI8())     // 0
          ,m_sJobNm.szStz()           // 1
          ,aJK[m_eJobKind]            // 2
          ,szCmd()                    // 3
