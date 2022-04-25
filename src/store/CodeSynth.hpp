@@ -95,7 +95,7 @@ namespace STORE {
 
     void vSynthEos(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
-    void vSynthFilter(Stz *sFilterExpr, bool bOrdAgg, Stz *sLabel, Stz* sLabelPrev, Stz* sLabelLoop);
+    void vSynthFilter(Stz *sFilterExpr, Stz *sLabel, Stz* sLabelPrev, Stz* sLabelLoop);
 
     void vSynthIndexJoin(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
                          Stz *sJoinExpr, Stz *sLabel, Stz *sLabelNext, u8 uSelectColumns);
@@ -147,7 +147,7 @@ namespace STORE {
     void vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz *sExpr);
 
     void vGenerateProcessRow(Stz *sLabel);
-    void vGenerateProcessRowOrdAgg(Stz *sLabel);
+    void vGenerateProcessRowOrdAgg(Stz *sLabelOrdAgg);
 
     void vGeneratePrjAgg(void);
 

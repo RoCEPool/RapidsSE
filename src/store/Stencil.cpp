@@ -1528,7 +1528,7 @@ void Stencil::vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp) {
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
   sLabelPrev = ""_Stz;
-  pCodeSynth->vSynthFilter(sFilterExpr, false, sLabel, sLabelPrev, sLabelNext);
+  pCodeSynth->vSynthFilter(sFilterExpr, sLabel, sLabelPrev, sLabelNext);
 
   m_pShapeEOS->vCodeSynthB(pCodeSynth);
 }
@@ -1582,7 +1582,7 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
 
     sLabel.vSprint("L_%s_%d"_Stz, m_xStageOps.m_pHavingFilterOp->szOpNm(), m_xStageOps.m_pHavingFilterOp->i_Op());
     vGetNextLabel(sLabelNext, pStream, m_xStageOps.m_pHavingFilterOp->i_Op(), "L_AdvanceNextRow"_Stz);
-    pCodeSynth->vSynthFilter(sHavingExpr, false, sLabel, ""_Stz, sLabelNext);
+    pCodeSynth->vSynthFilter(sHavingExpr, sLabel, ""_Stz, sLabelNext);
     m_pShapeEOS->vCodeSynthB(pCodeSynth);
   }
 
@@ -1665,7 +1665,7 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
 
     sLabel.vSprint("L_%s_%d"_Stz, m_xStageOps.m_pHavingFilterOp->szOpNm(), m_xStageOps.m_pHavingFilterOp->i_Op());
     vGetNextLabel(sLabelNext, pStream, m_xStageOps.m_pHavingFilterOp->i_Op(), "L_AdvanceNextRow"_Stz);
-    pCodeSynth->vSynthFilter(sHavingExpr, false, sLabel, ""_Stz, sLabelNext);
+    pCodeSynth->vSynthFilter(sHavingExpr, sLabel, ""_Stz, sLabelNext);
     m_pShapeEOS->vCodeSynthB(pCodeSynth);
   }
 
@@ -2093,7 +2093,7 @@ Shape* Stencil::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* s
 
   //Op *pPrevOp = pStream->pGet(i_Op - 1);
   sLabelPrev = ""_Stz;
-  pCodeSynth->vSynthFilter(sFilterExpr, false, sLabel, sLabelPrev, sLabelLoop);
+  pCodeSynth->vSynthFilter(sFilterExpr, sLabel, sLabelPrev, sLabelLoop);
 
   pShape->vCodeSynthB(pCodeSynth);
 
