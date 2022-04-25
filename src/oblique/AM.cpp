@@ -424,7 +424,7 @@ void AM::JLIST::vInsertJob(Job* pJob)
 {
 //  vTrace("JLIST Inserting %p %lld %lld\n"_Stz,
 //         pJob,
-//         pJob->tCmdId().iCmdNo(),
+//         pJob->tJobId().iJobNo(),
 //         pJob->tJobId().iAsI8());
   gpAttachMap->m_pJobs->pJobsList()->vInsertJob(pJob);
 }
@@ -436,7 +436,7 @@ void AM::JLIST::vRemoveJob(Job* pJob)
 {
 //  vTrace("JLIST Removing %p %lld %lld\n"_Stz,
 //         pJob,
-//         pJob->tCmdId().iCmdNo(),
+//         pJob->tJobId().iJobNo(),
 //         pJob->tJobId().iAsI8());
   gpAttachMap->m_pJobs->pJobsList()->vRemoveJob(pJob);
 }
