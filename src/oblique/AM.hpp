@@ -283,6 +283,13 @@ namespace OBLIQUE
       static EventHandlers* pEventHandlers(void);
     };
 
+    class JLIST
+    {
+    public:
+      static Job* pFindJob(JobId tJobId, bool bLockJob=false);
+      static JobList* pJobsList(void);
+    };
+  
     class JOB
     {
     public:
