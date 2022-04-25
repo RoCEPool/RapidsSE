@@ -40,6 +40,8 @@ struct stageOps {
   Op* m_pLimitOp;
 
   s256 m_sHashExpr;
+  s256 m_sLabelOrdAgg;
+
 };
 
 namespace STORE
@@ -137,7 +139,7 @@ static const i8 C_MAX_SHAPES = 32;
     void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
-    Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil);
+    Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
     Shape* pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel);
 

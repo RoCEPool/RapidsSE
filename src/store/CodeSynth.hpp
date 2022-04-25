@@ -95,16 +95,16 @@ namespace STORE {
 
     void vSynthEos(IndexDef *pIndexDef, TypedStack* pPostStack, Stz* sLabelNext);
 
-    void vSynthFilter(Stz *sFilterExpr, bool bOrdAgg, Stz *sLabel, Stz* sLabelPrev);
+    void vSynthFilter(Stz *sFilterExpr, Stz *sLabel, Stz* sLabelPrev, Stz* sLabelLoop);
 
     void vSynthIndexJoin(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
                          Stz *sJoinExpr, Stz *sLabel, Stz *sLabelNext, u8 uSelectColumns);
 
-    void vSynthIndexScan(Stz *sIndexScanExpr, Stz *sLabel, Stz *sLabelNext, u8 uSelectColumns);
+    void vSynthIndexScan(Stz *sIndexScanExpr, Stz *sLabel, Stz *sLabelNext, Stz* sLabelOrdAgg, u8 uSelectColumns);
 
-    void vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz *sReturnLabel, u8 *puSelectColumns);
+    void vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz *sReturnLabel, Stz* sLabelOrdAgg, u8 *puSelectColumns);
 
-    void vSynthInflateRow(Stz *sLabel);
+    void vSynthInflateRow(Stz *sLabel, Stz* sLabelOrdAgg);
 
     void vSynthLabel(Stz* szOpNm, Stz *sLabel, Stz* sNextLabel);
 
@@ -147,7 +147,7 @@ namespace STORE {
     void vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz *sExpr);
 
     void vGenerateProcessRow(Stz *sLabel);
-    void vGenerateProcessRowOrdAgg(Stz *sLabel);
+    void vGenerateProcessRowOrdAgg(Stz *sLabelOrdAgg);
 
     void vGeneratePrjAgg(void);
 
