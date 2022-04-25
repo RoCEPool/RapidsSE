@@ -32,6 +32,8 @@ namespace PROMPT
 
     TagSet    m_oCmdTagSet;    // extra tags gleaned from the command
 
+    s4K       m_sToDo;         // prompt to do
+
     // must be last
     Footer m_xFooter;
   
@@ -57,10 +59,12 @@ namespace PROMPT
     void vDeputiseJob(void);
     Input* pInput(void);
     Job* pJob(void);
+    JobId tLastJobId(void);
     void vReportTime(void);
-    Session* pSession(void);
     void vTerminate(void);
     bool bTerminated(void);
+    Stz* szToDo(void);
+    void vToDo(Stz* szToDo);
 
   private:
     Footer* aFooter(void);

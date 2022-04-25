@@ -244,8 +244,7 @@
     HAZARD
 
   else
-  [session].hasCascade@ not if
-      
+  [job] job.hasCascade@ not if
     [ddlLock].testDrop
     ListedJob[].assertNoRef
 

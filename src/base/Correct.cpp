@@ -478,10 +478,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   
   // write activity log
   AM::vWriteLog();
-  
-  // dump api state
-  AM::vDumpApi();
-  
+   
   // put a breakpoint here
   sleep(0);
   

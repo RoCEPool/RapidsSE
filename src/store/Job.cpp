@@ -22,7 +22,6 @@
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "Output.hpp"
-#include "Session.hpp"
 #include "Api.hpp"
 
 #include "TagConstants.h"
@@ -44,11 +43,7 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz*  szJobNm,
-         i8    i_Session,     // which session in session array
-         CmdId tCmdId
-
-        )
+Job::Job(Stz* szJobNm, CmdId tCmdId)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -64,7 +59,6 @@ Job::Job(Stz*  szJobNm,
   m_bWasForked = false;
   // -- a -------------------
   
-  m_i_Session   = i_Session;
   m_tCmdId      = tCmdId;
 
   m_p_ResponseOp = nullptr;
@@ -172,6 +166,9 @@ Job::~Job(void) noexcept(false)
     vMutexDestroy();
   if (m_pOutput_job)
     vOutputDestroy();
+  
+  if (m_pStmtList)
+    vStmtListDestroy();
 }
 
 
@@ -251,6 +248,49 @@ void Job::vActiveOpsInc(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get sCascade                                                               */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szCascade(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Statement* pStatement = m_pStmtList->pHead();
+
+  Stz* szText = pStatement->szText();
+  
+  return szText;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append cascade                                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vCascadeAppend(Stz* szCascade)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  //vTrace("vAppendCascade: %s\n"_Stz,szCascade);
+  Statement* pStatement = new Statement(szCascade);
+  
+  m_pStmtList->vAppend(pStatement);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop cascade                                                                */
+/*----------------------------------------------------------------------------*/
+void Job::vCascadePop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Statement* pStatement = m_pStmtList->pPop();
+
+  Stz* szText = pStatement->szText();
+  UNUSED(szText);
+  //vTrace("vPopCascade: %s\n"_Stz,szText);
+
+  delete pStatement;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vCascadeReset(void)
@@ -284,7 +324,6 @@ void Job::vCascadeReset(void)
 
   m_pTask = nullptr;
 
-  //Session* pSession = this->pSession();
   m_pOutput_job->vDrainBufferQueue(this);
 
   vDebugPoint();
@@ -442,6 +481,19 @@ bool Job::bHasByPromptTag(void)
   bool bByPrompt = bHasTag(C_TAG_BYPROMPT);
   
   return bByPrompt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bHasCascade                                                            */
+/*----------------------------------------------------------------------------*/
+bool Job::bHasCascade(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if (m_pStmtList && m_pStmtList->nItems())
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -807,7 +859,7 @@ void Job::vOutputCreate(void)
   
   RASSERT(! m_pOutput_job);
   
-  m_pOutput_job = new Output(this,nullptr);
+  m_pOutput_job = new Output(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -944,7 +996,7 @@ void Job::vPrintJobContents(void)
          "              sCmd "  "%s"    " \n"  // 3
          
          "     iOriginNodeId "  "%lld"  " \n"  // 4
-         "         i_Session "  "%lld"  " \n"  // 5
+
          "            iCmdNo "  "%lld"  " \n"  // 6
 
          "      bWasReceived "  "%s"    " \n"  // 7
@@ -971,7 +1023,7 @@ void Job::vPrintJobContents(void)
          ,aJK[m_eJobKind]            // 2
          ,szCmd()                    // 3
          ,iOriginNodeId()            // 4
-         ,m_i_Session                // 5
+
          ,m_tCmdId.iCmdNo()          // 6
          ,m_bWasReceived ? "true" : "false" // 7
          ,m_iParticipantNodeId            // 8
@@ -1030,9 +1082,8 @@ void Job::vPrintJobLine(void)
          ,this->szJobNm()
          );
 
-  vTrace("originNodeId %lld session %lld command %lld "_Stz
+  vTrace("originNodeId %lld command %lld "_Stz
          ,this->iOriginNodeId()
-         ,this->m_i_Session
          ,this->m_tCmdId.iCmdNo()
          );
 
@@ -1157,40 +1208,6 @@ void Job::vResponseTimerUpdate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get session                                                                */
-/*----------------------------------------------------------------------------*/
-i8 Job::i_Session(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
-  return m_i_Session;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get pSession                                                               */
-/*----------------------------------------------------------------------------*/
-Session* Job::pSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 iOriginNodeId = this->iOriginNodeId();
-
-  Session* pSession = AM::pSessionGet(iOriginNodeId,m_i_Session);
-
-  return pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set session                                                                */
-/*----------------------------------------------------------------------------*/
-void Job::vSession(Session* pSession)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
-  m_i_Session = pSession->m_i_Session;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the singular operator                                                  */
 /*----------------------------------------------------------------------------*/
 Op* Job::pSingularOp(void)
@@ -1208,6 +1225,41 @@ void Job::vSingularOp(Op* pSingularOp)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pSingularOp = pSingularOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return statement list                                                      */
+/*----------------------------------------------------------------------------*/
+StmtList* Job::pStmtList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_pStmtList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a statement list for this job                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vStmtListCreate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(! m_pStmtList);
+  
+  m_pStmtList = new StmtList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* destroy this job's statement list                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vStmtListDestroy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(m_pStmtList);
+  
+  delete m_pStmtList;
+  m_pStmtList = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -98,10 +98,10 @@ namespace PROMPT
     i8   iDivisionNo(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
-    SeDeputy* pCreateDeputy(void);
-    SeDeputy* pCurrentDeputy(void);
-    void vCurrentDeputy(SeDeputy* pCurrentDeputy);
     void vCutToken(i8 i_Tkn);
+    SeDeputy* pDeputyCreate(void);
+    SeDeputy* pDeputyCurrent(void);
+    void vDeputyCurrent(SeDeputy* pCurrentDeputy);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);
@@ -135,11 +135,12 @@ namespace PROMPT
     void vResetSectionNo(void);
     i8   iRequestId(void);
     void vSection(Stz* szSection);
-    Session* pSession(void);
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
     Timer* pTimer(void);
+    Stz* szToDo(void);
+    void vToDo(Stz* szToDo);
     void vTrackMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);

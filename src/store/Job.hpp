@@ -44,7 +44,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // -- command and tags
     TagSet m_oJobTags;  // tags for the job
 
-    i8 m_i_Session;  // which session in node's session array
     CmdId m_tCmdId;
   
     b8 m_bWasForked;
@@ -122,10 +121,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Job(Stz*  szJobNm,
-        i8    i_Session,  // which session in session array
-        CmdId tCmdId
-       );
+    Job(Stz* szJobNm, CmdId tCmdId);
 
    ~Job(void) noexcept(false);
   
@@ -136,6 +132,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vActiveOpsDec(void);
     void vActiveOpsInc(void);
 
+    Stz* szCascade(void);
+    void vCascadeAppend(Stz* szCascade);
+    void vCascadePop(void);
     void vCascadeReset(void);
     void vCascadeSet(Stz* szCascadeCmd);
     CmdId tCmdId(void);
@@ -154,6 +153,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vGrabLock(void);
   
     bool bHasByPromptTag(void);
+    bool bHasCascade(void);
     bool bHasTag(Stz* szTagNm);
   
     bool bIsInError(void);
@@ -218,11 +218,11 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vResponseTimerStart(void);
     void vResponseTimerUpdate(void);
 
-    i8   i_Session(void);
-    Session* pSession(void);
-    void vSession(Session* pSession);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
+    StmtList*  pStmtList(void);
+    void vStmtListCreate(void);
+    void vStmtListDestroy(void);
     bool bSystemCloser(void);
     void vSystemCloser(bool bSystemCloser);
 

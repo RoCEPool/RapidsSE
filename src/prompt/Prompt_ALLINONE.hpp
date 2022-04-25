@@ -147,8 +147,6 @@ namespace PROMPT
   bool bPrompt_snapshotObjects(SePrompt* pPrompt);
   bool bPrompt_so(SePrompt* pPrompt);
   bool bPrompt_socket(SePrompt* pPrompt);
-  bool bPrompt_ssn(SePrompt* pPrompt);
-  bool bPrompt_ssnState(SePrompt* pPrompt);
   bool bPrompt_start(SePrompt* pPrompt);
   bool bPrompt_startCompleted(SePrompt* pPrompt);
   bool bPrompt_startNow(SePrompt* pPrompt);

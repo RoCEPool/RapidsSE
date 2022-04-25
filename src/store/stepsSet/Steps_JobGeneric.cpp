@@ -35,10 +35,7 @@ void Step::vJob_BegunNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  Job* pJobBegun = new Job("begun"_Stz,
-                           pDistJob->i_Session(),
-                           pDistJob->tCmdId()
-                           );
+  Job* pJobBegun = new Job("begun"_Stz,pDistJob->tCmdId());
   
   pJobBegun->vJobId(pDistJob->tJobId());
   pJobBegun->vParticipantNodeId(AM::pGrid()->iThisNodeId());
@@ -74,10 +71,7 @@ void Step::vJob_CancelNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobCancel = new Job("cancel"_Stz,
-                            pDistJob->i_Session(),
-                            pDistJob->tCmdId()
-                            );
+  Job* pJobCancel = new Job("cancel"_Stz,pDistJob->tCmdId());
   
   pJobCancel->vJobId(pDistJob->tJobId());
   pJobCancel->vParticipantNodeId(AM::pGrid()->iThisNodeId());
@@ -113,10 +107,7 @@ void Step::vJob_CancelledNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  Job* pJobCancelled = new Job("cancelled"_Stz,
-                               pDistJob->i_Session(),
-                               pDistJob->tCmdId()
-                               );
+  Job* pJobCancelled = new Job("cancelled"_Stz,pDistJob->tCmdId());
   
   pJobCancelled->vJobId(pDistJob->tJobId());
   pJobCancelled->vParticipantNodeId(AM::pGrid()->iThisNodeId());
@@ -146,7 +137,7 @@ void Step::vJob_CancelledNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_end::new - new a job_end for this distributed 2pc job                */
+/* job_end::new - new a job_end for this distributed 2pc job                  */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_EndNew(void)
 {
@@ -154,10 +145,7 @@ void Step::vJob_EndNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobEnd = new Job("end"_Stz,
-                         pDistJob->i_Session(),
-                         pDistJob->tCmdId()
-                         );
+  Job* pJobEnd = new Job("end"_Stz,pDistJob->tCmdId());
   
   pJobEnd->vJobId(pDistJob->tJobId());
   pJobEnd->vParticipantNodeId(AM::pGrid()->iThisNodeId());
@@ -186,7 +174,7 @@ void Step::vJob_EndNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_ended::new -- new a job_ended for this distributed 2pc job           */
+/* job_ended::new -- new a job_ended for this distributed 2pc job             */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_EndedNew(void)
 {
@@ -194,10 +182,7 @@ void Step::vJob_EndedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobEnded = new Job("ended"_Stz,
-                           pDistJob->i_Session(),
-                           pDistJob->tCmdId()
-                           );
+  Job* pJobEnded = new Job("ended"_Stz,pDistJob->tCmdId());
   
   pJobEnded->vJobId(pDistJob->tJobId());
   pJobEnded->vParticipantNodeId(AM::pGrid()->iThisNodeId());
@@ -235,10 +220,7 @@ void Step::vJob_ExecuteNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobExecute = new Job("execute"_Stz,
-                             pDistJob->i_Session(),
-                             pDistJob->tCmdId()
-                             );
+  Job* pJobExecute = new Job("execute"_Stz,pDistJob->tCmdId());
   
   pJobExecute->vJobId(pDistJob->tJobId());
   pJobExecute->vParticipantNodeId(AM::pGrid()->iThisNodeId());
@@ -276,10 +258,7 @@ void Step::vJob_ExecutedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobExecuted = new Job("executed"_Stz,
-                              pDistJob->i_Session(),
-                              pDistJob->tCmdId()
-                              );
+  Job* pJobExecuted = new Job("executed"_Stz,pDistJob->tCmdId());
   
   pJobExecuted->vJobId(pDistJob->tJobId());
   pJobExecuted->vParticipantNodeId(AM::pGrid()->iThisNodeId());

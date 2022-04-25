@@ -14,7 +14,6 @@
 #include "Node_I.hpp"
 #include "Grid.hpp"
 #include "Api.hpp"
-#include "Session.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
 #include "Job.hpp"
@@ -24,7 +23,6 @@
 #include "Procedure.hpp"
 
 #include "MY.hpp"
-#include "ePP.h"
 #include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
@@ -132,21 +130,17 @@ void Step::vApiExecuteCommand(void)
   
   
   
-  Session* pSession = Api::pAllocSession(SK_INTERNAL);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the request
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
 
   TagSet* pCmdTagSet =  new TagSet;
-  pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
   eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError) {
     delete pCmdTknVec;
     delete pCmdTagSet;
-    Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();
@@ -156,7 +150,6 @@ void Step::vApiExecuteCommand(void)
   //Job* pJob = Api::pAllocJob(pSession);
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   Job* pJob = Api::pAllocJob(szJobNm);
-  pJob->vSession(pSession);
 
   TagSet* pJobTagSet = pJob->pJobTags();
   
@@ -173,13 +166,13 @@ void Step::vApiExecuteCommand(void)
 
   if (eError) {
     
-    Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();
     return;
   }
 
+  pJob->vStmtListCreate();
   Api::vExecuteJob(pJob,pCmdTagSet);
   
   m_pDataStack->vPushInt(true);
@@ -332,7 +325,6 @@ void Step::vApiSpawnDemon(void)
   //pJobTagSet->vDumpSet();
     
   pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
-  pJobTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
 

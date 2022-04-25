@@ -186,11 +186,9 @@ void Step::vAddSteps(void)
   Step::vAddSteps_SenCompiler();
   Step::vAddSteps_SendNode();
   Step::vAddSteps_SendWL();
-  Step::vAddSteps_Session();
   Step::vAddSteps_Shell();
   Step::vAddSteps_Socket();
   Step::vAddSteps_SqlCompiler();
-  Step::vAddSteps_SsnState();
   Step::vAddSteps_Stage();
   Step::vAddSteps_StageOfOp();
   Step::vAddSteps_Stats();

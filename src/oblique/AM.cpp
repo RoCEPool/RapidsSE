@@ -27,7 +27,6 @@
 #include "eOI.h"
 #include "eOR.h"
 #include "ePF.h"
-#include "ePP.h"
 #include "eYG.h"
 #include "ePY.h"
 #include "eYX.h"
@@ -88,8 +87,6 @@
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Jobs.hpp"
-#include "Session.hpp"
-#include "Sessions.hpp"
 #include "Parcel.hpp"
 #include "Numbering.hpp"
 #include "Output.hpp"
@@ -1548,30 +1545,6 @@ void AM::SE::vWhereAmI(void)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                SESSION                                     */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-/*----------------------------------------------------------------------------*/
-/* get the internal session subscript                                         */
-/*----------------------------------------------------------------------------*/
-i8 AM::SESSION::iInternalSession(void)
-{
-  _static_
-  
-  return gpAttachMap->m_pSessions->pInternalSession()->m_i_Session;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the internal session                                                   */
-/*----------------------------------------------------------------------------*/
-Session* AM::SESSION::pInternalSession(void)
-{
-  _static_
-  
-  return gpAttachMap->m_pSessions->pInternalSession();
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 SHOW                                       */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -2600,9 +2573,6 @@ Stz* AM::szLogRegion(void)    { return gpAttachMap->m_sLogRegion;             }
 Stz* AM::szLogCsvFile(void)   { return gpAttachMap->m_sLogCsvFile;            }
 Stz* AM::szLogTxtFile(void)   { return gpAttachMap->m_sLogTxtFile;            }
 
-//
-Sessions* AM::pSessions(void) { return gpAttachMap->m_pSessions;  }
-
 
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 i8   AM::nBuckets(void)       { return C_MAX_KEYBUCKETS;                         }
@@ -2887,18 +2857,6 @@ eCN AM::eJobClass(Job* pJob)
 }
 
 
-Session* AM::pJobSession(Job* pJob)
-{
-  i8 i_Session = pJob->i_Session();
-  
-  Session* pSession = nullptr;
-  
-  if (i_Session != C_UNKNOWN)
-    pSession = AM::pSessions()->pGetSession(i_Session);
-
-  return pSession;
-}
-
 
 TagSet* AM::pJobTags(Job* pJob)
 {
@@ -2911,9 +2869,6 @@ bool AM::bJobWasReceived(Job* pJob)
 }
 
 
-void AM::vDumpApi(void) {
-  pSessions()->vDump();
-}
 
 i8 AM::nLvlLevels(void) {
   return gpAttachMap->m_xSysArgs.m_nLvlLevels;
@@ -3174,23 +3129,7 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get pSession given i_Session                                               */
-/*----------------------------------------------------------------------------*/
-Session* AM::pSessionGet(i8 iOriginNodeId,  i8 i_Session)
-{
-  if (iOriginNodeId != AM::NODE::iThisNodeId())
-    return nullptr;
-  
-  if (C_UNKNOWN == i_Session)
-    return nullptr;
-  
-  Session* pSession = AM::pSessions()->pGetSession(i_Session);
-
-  return pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
+/* spawn op                                                                   */
 /*----------------------------------------------------------------------------*/
 void AM::vSpawnTaskDedicated_op(Op* pOp)
 {
@@ -4160,7 +4099,6 @@ static Stz* aEG[]
   "EG_PF"_Stz,
   "EG_PK"_Stz,
   "EG_YG"_Stz,
-  "EG_PP"_Stz,
   "EG_PT"_Stz,
   "EG_YX"_Stz,
   "EG_PY"_Stz,
@@ -4176,7 +4114,6 @@ static Stz* aEG[]
   
   "EG_SC"_Stz,
   "EG_SI"_Stz,
-  "EG_SK"_Stz,
   "EG_ST"_Stz,
 
   "EG_TA"_Stz,
@@ -4279,7 +4216,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_PA: return aPA[i_Enum];
     case EG_PF: return aPF[i_Enum];
     case EG_PK: return aPK[i_Enum];
-    case EG_PP: return aPP[i_Enum];
     case EG_PT: return aPT[i_Enum];
     case EG_PY: return aPY[i_Enum];
 
@@ -4294,7 +4230,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
       
     case EG_SC: return aSC[i_Enum];
     case EG_SI: return aSI[i_Enum];
-    case EG_SK: return aSK[i_Enum];
     case EG_ST: return aST[i_Enum];
 
     case EG_TA: return aTA[i_Enum];

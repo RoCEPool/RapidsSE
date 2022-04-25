@@ -6,21 +6,17 @@
 
 #include "eYX.h"
 
-#include "ApiMacros.h"
 #include "Api.hpp"
-#include "Session.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
 #include "Op.hpp"
 #include "LogicUnit.hpp"
 #include "Procedure.hpp"
-#include "Sessions.hpp"
 #include "Output.hpp"
 #include "EventHandlers.hpp"
 #include "Grid.hpp"
 
 #include "TagConstants.h"
-#include "ePP.h"
 
 #include "SP_TagSet.hpp"
 
@@ -37,35 +33,8 @@ extern pthread_key_t giTLS_StepKey;
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
 /*----------------------------------------------------------------------------*/
-/* allocate a session                                                         */
-/*----------------------------------------------------------------------------*/
-Session* Api::pAllocSession(eSK eSession)
-{
-  _static_
-  
-  Sessions* pSessions = AM::pSessions();
-  
-  Session* pSession = pSessions->pAllocSession(eSession);
-    
-  return pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* free a session                                                             */
-/*----------------------------------------------------------------------------*/
-void Api::vFreeSession(Session* pSession)
-{
-  _static_
-  
-  Sessions* pSessions = AM::pSessions();
-
-  pSessions->vFreeSession(pSession);
-}
-
-/*----------------------------------------------------------------------------*/
-/* alloc a new job for session                                                */
+/* alloc a new job                                                            */
 /*----------------------------------------------------------------------------*/
 Job* Api::pAllocJob(Stz* szJobNm)
 {
@@ -74,10 +43,7 @@ Job* Api::pAllocJob(Stz* szJobNm)
   CmdId tCmdId;
   tCmdId.vNextCmdId();
   
-  Job* pJob = new Job(szJobNm,
-                      C_UNKNOWN,
-                      tCmdId
-                      );
+  Job* pJob = new Job(szJobNm,tCmdId);
 
   return pJob;
 }
@@ -92,9 +58,6 @@ Job* Api::pAllocJob(Stz* szJobNm)
 void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
 {
   _static_
-  
-  Session* pSession = pJob->pSession();
-        
 
   pJob->vMutexCreate();
   pJob->vOutputCreate();
@@ -105,7 +68,6 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
   JobId tJobId = pJob->tJobId();
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //RASSERT(! pSession->bHasCascade());
 
   for (;;) {
   
@@ -125,23 +87,15 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
       vWaitJob(pJob);
     }
     
-    if (! pSession->bHasCascade()) {
+    if (! pJob->bHasCascade()) {
       return;
     }
-  
-//    if (AM::TRACE::bVerbose(C_VB_API))
-//      vTrace("<vb_api>:: cascading: \n"
-//             "%s\n"
-//             "end <vb_api>\n"_Stz
-//             ,pSession->szCascade());
-    
-    //AM::pHeaps()->vSetTraceFree(true,MY::pTask());
-    
+          
     pJob->vCascadeReset();
     
-    pJob->vCascadeSet(pSession->szCascade());
+    pJob->vCascadeSet(pJob->szCascade());
     
-    pSession->vPopCascade();
+    pJob->vCascadePop();
 
     Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
     
@@ -327,7 +281,7 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a and prepare it to execute the command in session                     */
+/* new a job and prepare it to execute a command                              */
 /*----------------------------------------------------------------------------*/
 eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
@@ -449,28 +403,21 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
                       Op* pResponseOp, JobId& rtJobId)
 {
   _static_
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot a session
-  
-  Session* pSession = Api::pAllocSession(SK_INTERNAL);
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the command
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
 
   TagSet* pCmdTagSet =  new TagSet;
-  pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
   eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError)
     return eError;
   
-  //Job* pJob = pAllocJob(pSession);
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   Job* pJob = Api::pAllocJob(szJobNm);
-  pJob->vSession(pSession);
+
   
   
   TagSet* pJobTagSet = pJob->pJobTags();
@@ -517,7 +464,6 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   pJobTagSet->vInsert(C_TAG_GRID,AM::pGrid()->szGridNm());
   pJobTagSet->vInsert(C_TAG_HOST,sHostName);
   pJobTagSet->vInsert(C_TAG_NODE,AM::pGrid()->pThisNode()->szNodeNm());
-  pJobTagSet->vInsert(C_TAG_REQUEST,pSession->m_iCmdNo);
   pJobTagSet->vInsert(C_TAG_SHM,gpBufferPool->szShmNm());
   pJobTagSet->vInsert(C_TAG_WHEN,xNow.sz());
 
@@ -526,41 +472,11 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   if (AM::TRACE::bVerbose(C_VB_API))
     pJobTagSet->vDumpSet();
 
-#if 1
   pJob->vResponseTimerStart();
   
   Api::vForkJob(pJob,pResponseOp);
 
   
-#else
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn job and wait for completion
-  
-//  bool bSpawned = Api::bSpawnTask_session(pJob);
-//  UNUSED(bSpawned);
-  pJob->vResponseTimerStart();
-  
-  Api::vExecuteJob(pSession);
-  
-  pJob->vResponseTimerUpdate();
-
-//  vTrace("Job Timer: %lldus\n"_Stz
-//         ,pJob->m_oTimer.iMicroseconds());
-  
-  RASSERT(! pJob->bIsInError() );
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // delete job and free session
-  Api::vReapableJob(pJob);
-
-  Api::vFreeSession(pSession);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //push result
-    
-  //m_pDataStack->vPushInt(iJobNo);
-  //m_pDataStack->vPushInt(true);
-#endif
   
   
   
@@ -880,10 +796,7 @@ void Api::vCallBootSystemJob(void)
   CmdId tCmdId;
   tCmdId.vNextCmdId();
   
-  Job* pBootJob = new Job("bootSystem"_Stz,
-                          AM::SESSION::iInternalSession(),
-                          tCmdId
-                          );
+  Job* pBootJob = new Job("bootSystem"_Stz,tCmdId);
   
   Stz* szJobNm = pBootJob->szJobNm();
   Task* pBootTask = new Task(szJobNm,pBootJob);
@@ -941,10 +854,7 @@ void Api::vCallStartSystemJob(void)
   CmdId tCmdId;
   tCmdId.vNextCmdId();
   
-  Job* pStartJob = new Job("startSystem"_Stz,
-                           AM::SESSION::iInternalSession(),
-                           tCmdId
-                           );
+  Job* pStartJob = new Job("startSystem"_Stz,tCmdId);
   
   Stz* szJobNm = pStartJob->szJobNm();
   Task* pStartTask = new Task(szJobNm,pStartJob);
@@ -1042,36 +952,6 @@ void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
   
   Task* pTaskParticipant = pParticipantJob->pTask();
   Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* validate the SE session                                                    */
-/*----------------------------------------------------------------------------*/
-eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
-{
-  _static_
-  UNUSED(iTrace);
-  UNUSED(eApiCall);
-
-  // pSession cannot be null
-  if (pSession == nullptr) {
-    TRACE_API_ERROR("eValidateSession(a)", EC_INVALID_INTERFACE);
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // pSession should be a pool address
-  if (!gpBufferPool->bValidAddress(pSession)) {
-    TRACE_API_ERROR("eValidateSession(b)", EC_INVALID_INTERFACE);
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // pSession should be an SESSION class
-  if (pSession->eGetClassNo() != CN_SESSION) {
-    TRACE_API_ERROR("eValidateSession(c)", EC_INVALID_INTERFACE);
-    return EC_INVALID_INTERFACE;
-  }
-  
-  return EC_NONE;
 }
 
 

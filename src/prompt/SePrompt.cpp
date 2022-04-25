@@ -10,7 +10,6 @@
 
 #include "Node.hpp"
 #include "Grid.hpp"
-#include "Session.hpp"
 #include "AttachMap.hpp"
 #include "Job.hpp"
 #include "Procedure.hpp"
@@ -24,7 +23,6 @@
 
 #include "Prompt_ALLINONE.hpp"
 
-#include "ePP.h"
 #include "TagConstants.h"
 #include "Op.hpp"
 
@@ -96,9 +94,9 @@ SePrompt::SePrompt(bool bOneCommand)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initial settings
   
-  m_pCurrentDeputy = pCreateDeputy();
+  m_pCurrentDeputy = pDeputyCreate();
   
-  m_pCurrentDeputy->pSession()->m_sToDo = "_seprompt"_Stz;
+  vToDo("_seprompt"_Stz);
   
   if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
     //m_oPmtTagSet.vInsert(C_PMT_BUFPOOL);
@@ -237,7 +235,7 @@ void SePrompt::vPromptLoop(void)
     m_pCmdTknVec = pInputGet()->pTokenVec();
     m_pCmdTagSet = m_pCurrentDeputy->pCmdTagSet();
     
-    Stz* szToDo = m_pCurrentDeputy->pSession()->m_sToDo;
+    Stz* szToDo = this->szToDo();
     
     if (! *szToDo->azChar())
       pInputGet()->vRawInputClear();
@@ -289,7 +287,7 @@ bool SePrompt::bGetCommand(void)
 //  s32 sHostName;
 //  Hardware::vHostName(sHostName);
 
-  if (bStdIn() && ! *m_pCurrentDeputy->pSession()->m_sToDo.azChar()) {
+  if (bStdIn() && ! *this->szToDo()->azChar()) {
     //vReportOther();
     vPromptUser();
   }
@@ -354,8 +352,6 @@ bool SePrompt::bPrepareJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
   m_pCmdTagSet->vCopy(& m_oUsrTagSet);
-
-  m_pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
   
   eEC eError = m_pCurrentDeputy->ePrepareJob(m_pCmdTknVec);
 
@@ -447,47 +443,6 @@ void SePrompt::vContinue(bool bContinue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new deputy                                                        */
-/*----------------------------------------------------------------------------*/
-SeDeputy* SePrompt::pCreateDeputy(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  if (m_nDeputies >= C_MAX_DEPUTY)
-    return nullptr;
-  
-  SeDeputy* m_pCurrentDeputy =
-    m_paSeDeputy[m_nDeputies] = new SeDeputy(m_nDeputies,this);
-  
-  m_nDeputies++;
-  
-  while (! m_pCurrentDeputy->bAvailable())
-    AM::vNapMsec(10,CN_SEPROMPT);
-  
-  return m_pCurrentDeputy;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get current deputy                                                         */
-/*----------------------------------------------------------------------------*/
-SeDeputy* SePrompt::pCurrentDeputy(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  return m_pCurrentDeputy;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set current deputy                                                         */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCurrentDeputy(SeDeputy* pCurrentDeputy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  m_pCurrentDeputy = pCurrentDeputy;
-}
-
-/*----------------------------------------------------------------------------*/
 /* cut a token from token vector                                              */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCutToken(i8 i_Tkn)
@@ -501,6 +456,48 @@ void SePrompt::vCutToken(i8 i_Tkn)
   pInpTknVec->vRemoveToken(i_Tkn);
 
   //pTknVec->vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new deputy                                                        */
+/*----------------------------------------------------------------------------*/
+SeDeputy* SePrompt::pDeputyCreate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  if (m_nDeputies >= C_MAX_DEPUTY)
+    return nullptr;
+  
+  SeDeputy* pDeputy =
+    m_paSeDeputy[m_nDeputies] =
+      new SeDeputy(m_nDeputies,this);
+  
+  m_nDeputies++;
+  
+  while (! pDeputy->bAvailable())
+    AM::vNapMsec(10,CN_SEPROMPT);
+  
+  return pDeputy;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current deputy                                                         */
+/*----------------------------------------------------------------------------*/
+SeDeputy* SePrompt::pDeputyCurrent(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  return m_pCurrentDeputy;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current deputy                                                         */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDeputyCurrent(SeDeputy* pCurrentDeputy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  m_pCurrentDeputy = pCurrentDeputy;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -632,7 +629,7 @@ SeDeputy* SePrompt::pFindDeputy(void)
   if (pFoundDeputy)
     return pFoundDeputy;
   
-  pFoundDeputy = pCreateDeputy();
+  pFoundDeputy = pDeputyCreate();
   if (pFoundDeputy)
     return pFoundDeputy;
 
@@ -968,11 +965,11 @@ bool SePrompt::bReadNextCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case: a previous command has requested to prompt to do something
   
-  if (* m_pCurrentDeputy->pSession()->m_sToDo.azChar()) {
-    m_pCmdTknVec->vTokeniseSen(m_pCurrentDeputy->pSession()->m_sToDo);
+  if (* this->szToDo()->azChar()) {
+    m_pCmdTknVec->vTokeniseSen(this->szToDo());
     m_pCmdTknVec->vStripSemicolon();
 
-    m_pCurrentDeputy->pSession()->m_sToDo = ""_Stz;
+    vToDo(""_Stz);
     m_pCmdTknVec->vIntegrityCheck();
     return true;
   }
@@ -1025,7 +1022,6 @@ void SePrompt::vResetExtractedTagSet(void)
   m_pCmdTagSet->vReset();
   m_pCmdTagSet->vInsert(C_TAG_BYPROMPT,1);
   m_pCmdTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
-  m_pCmdTagSet->vInsert(C_TAG_SESSION,m_pCurrentDeputy->pSession()->m_i_Session);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1123,16 +1119,6 @@ void SePrompt::vSection(Stz* szSection)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the rapidsse session                                                   */
-/*----------------------------------------------------------------------------*/
-Session* SePrompt::pSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  return m_paSeDeputy[0]->pSession();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get shortcut vector                                                        */
 /*----------------------------------------------------------------------------*/
 ShortCutVec* SePrompt::pShortCutVec(void)
@@ -1158,7 +1144,7 @@ bool SePrompt::bShortCut(void)
     if (! pShortCut->m_sName.bSame(pTkn->szChars()))
       continue;
     
-    m_pCurrentDeputy->pSession()->m_sToDo = pShortCut->m_sCmd;
+    vToDo(pShortCut->m_sCmd);
     
     return true;
   }
@@ -1230,6 +1216,28 @@ Token* SePrompt::pTkn(i8 i_Token)
   Token* pTkn = m_pCmdTknVec->pGet(i_Token,true);
   
   return pTkn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get to do                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* SePrompt::szToDo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Stz* szToDo = m_pCurrentDeputy->szToDo();
+  
+  return szToDo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set to do                                                                  */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vToDo(Stz* szToDo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pCurrentDeputy->vToDo(szToDo);
 }
 
 /*----------------------------------------------------------------------------*/

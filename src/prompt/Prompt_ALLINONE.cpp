@@ -13,7 +13,6 @@
 #include "Api.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
-#include "Session.hpp"
 #include "Definition.hpp"
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
@@ -26,7 +25,6 @@
 
 #include "Pipeline.hpp"
 #include "Procedure.hpp"
-#include "Sessions.hpp"
 
 #include "Dynamo.hpp"
 
@@ -1533,7 +1531,6 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   }
   
   gxPromptCatalog.vFuns(PF_LOGSECTION);
-  gxPromptCatalog.vFuns(PF_SSNSTATE);
   gxPromptCatalog.vFuns(PF_ARGS);
   gxPromptCatalog.vFuns(PF_ASCII);
   gxPromptCatalog.vFuns(PF_ATTACHMAP);
@@ -1598,7 +1595,6 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_SLEEPERS);
   gxPromptCatalog.vFuns(PF_SLEEPING);
   gxPromptCatalog.vFuns(PF_SOCKET);
-  gxPromptCatalog.vFuns(PF_SSN);
   gxPromptCatalog.vFuns(PF_ST);
   gxPromptCatalog.vFuns(PF_START);
   gxPromptCatalog.vFuns(PF_STARTLINE);
@@ -2083,9 +2079,9 @@ bool PROMPT::bPrompt_lastJob(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  Session* pSession = pPrompt->pSession();
-
-  JobId tLastJobId = pSession->tLastJobId();
+  SeDeputy* pDeputy = pPrompt->pDeputyCurrent();
+  
+  JobId tLastJobId = pDeputy->tLastJobId();
   
   vTrace("Last Job Id : %llu\n"_Stz
          ,tLastJobId.uJobNo()
@@ -3881,9 +3877,7 @@ bool PROMPT::bPrompt_scan(SePrompt* pPrompt)
   s48K sPipelineStmt;
   
   if (AM::PROMPT::bToPipelineStmt(sPipelineStmt,pInpTknVec)) {
-    
-    pPrompt->pSession()->m_sToDo = sPipelineStmt;
-    
+    pPrompt->vToDo(sPipelineStmt);
   }
   
   return true;
@@ -3946,7 +3940,7 @@ bool PROMPT::bPrompt_select(SePrompt* pPrompt)
   s16KB sSqlCompiler;
   sSqlCompiler.vSprint("sqlCompiler \"%s\""_Stz,szRaw);
 
-  pPrompt->pSession()->m_sToDo = sSqlCompiler;
+  pPrompt->vToDo(sSqlCompiler);
   
   return true;
 }
@@ -4302,7 +4296,6 @@ bool PROMPT::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("\n"_Stz);
 
   vTrace("  sizeof(FreeChunk)    = %lu; \n"_Stz, sizeof(FreeChunk));
-  vTrace("  sizeof(Sessions) = %lu; \n"_Stz, sizeof(Sessions));
   vTrace("\n"_Stz);
   
   return true;
@@ -4671,96 +4664,6 @@ bool PROMPT::bPrompt_socket(SePrompt* pPrompt)
   return true;
 }
 
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_ssn.hpp -- Print Session Information                                */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_ssn (
-  PF_SSN,                 // prompt function
-  "Prompt_ssn"_Stz,       // name of the prompt function
-  "comment"_Stz,          // comment about the function
-  "ssn"_Stz,              // the prompt command
-  nullptr,                // the second word
-  bPrompt_ssn,            // prompt function
-  true,                   // enabled
-
-  true,                   // visible
-  "ssn"_Stz,              // help
-  ""_Stz                  // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_ssn(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  Token* pArg0 = nullptr;
-  Token* pArg1 = nullptr;
-
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 nTokens = pInpTknVec->nItems();
-
-  if (nTokens != 3)
-    return false;
-
-  pArg0 = pInpTknVec->pGet(1);
-  pArg1 = pInpTknVec->pGet(2);
-
-  s32 sNumber;
-  sNumber.vConcat(pArg1->szChars());
-  vTrace("Session: %s\n"_Stz,sNumber.szStz());
-
-  i8 iNumber = sNumber.iToI8();
-  
-  Session* pSession = _pSession(iNumber);
-  
-  if (! pSession) {
-    vTrace("Not a session\n"_Stz);
-    return false;
-  }
-    
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_ssnState.hpp -- Print Session State Information                     */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_ssnState (
-  PF_SSNSTATE,            // prompt function
-  "Prompt_ssnState"_Stz,  // name of the prompt function
-  "comment"_Stz,          // comment about the function
-  "ssnState"_Stz,         // the prompt command
-  nullptr,                // the second word
-  bPrompt_ssnState,       // prompt function
-  true,                   // enabled
-
-  true,                   // visible
-  "ssnState"_Stz,         // help
-  ""_Stz                  // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_ssnState(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  Token* pArg = nullptr;
-  
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 nTokens = pInpTknVec->nItems();
-
-  if (nTokens == 2)
-    pArg = pInpTknVec->pGet(1);
-  
-  AM::pSessions()->vDump();
-  
-  return true;
-}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_start -- Prompt Start                                               */

@@ -809,6 +809,8 @@ public:
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
+  void vJobCascadeFetch(void);
+  void vJobCascadeStore(void);
   void vJobClass(void);
 
   void vJobDelete(void);
@@ -824,6 +826,8 @@ public:
   void vJobFolderPathStore(void);
 
   void vJobGet(void);
+
+  void vJobHasCascadeFetch(void);
 
   void vJobIdFetch(void);
   void vJobIdFetch_other(void);
@@ -870,8 +874,6 @@ public:
   void vJobReportOperators(void);
 
   void vJobScheduleNextPhase(void);
-  void vJobSessionFetch(void);
-  void vJobSessionStateFetch(void);
   void vJobShow(void);
   void vJobSignalWaiter(void);
   void vJobSpawn(void);
@@ -1725,10 +1727,6 @@ public:
   void vSendWLDelete(void);
   void vSendWLNew(void);
 
-  // session
-  void vSessionCascadeFetch(void);
-  void vSessionCascadeStore(void);
-  void vSessionHasCascadeFetch(void);
 
   // shell
   void vShellExecute(void);
@@ -1774,14 +1772,6 @@ public:
   void vSqlCompilerSetOpValidate(void);
   void vSqlCompilerStageMarkers(void);
   void vSqlCompilerTransliterate(void);
-
-  // ssn
-  void vSsnIncBegun(void);
-  void vSsnIncCancelled(void);
-  void vSsnIncEnded(void);
-  void vSsnIncExecuted(void);
-  void vSsnSenLoc(void);
-  void vSsnTraceSession(void);
 
   // stage
   void vStageGet(void);

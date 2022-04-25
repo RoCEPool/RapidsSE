@@ -4,7 +4,6 @@
 #pragma once
 
 #include "eAC.h"
-#include "eSK.h"
 
 namespace STORE
 {
@@ -15,9 +14,6 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // external API functions
   
-  static Session* pAllocSession(eSK eSession);
-  static void vFreeSession(Session* pSession);
-
   static Job* pAllocJob(Stz* szJobNm);
 
   static void vExecuteJob(Job* pJob, TagSet* pCmdTagSet);
@@ -53,9 +49,7 @@ namespace STORE
   static void vSpawnTask_dedicatedOp(Op* pOp);
 
   static void vSpawnTask_receivedJob(Job* pJob);
-  
-  static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
-    
+      
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   static void vIncStatistics(eAC eApiCall);

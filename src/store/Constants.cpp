@@ -26,14 +26,12 @@
 #include "Table.hpp"
 #include "Node.hpp"
 #include "Grid.hpp"
-#include "Session.hpp"
 #include "Job.hpp"
 
 #include "EnumGroups.h"
 #include "eAT.h"
 #include "eDL.h"
 #include "ePD.h"
-#include "ePP.h"
 #include "ePY.h"
 #include "eRG.h"
 #include "eUF.h"
@@ -481,7 +479,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_PA"_Stz,   EG_PA);
   vAddConstant("EG_PF"_Stz,   EG_PF);
   vAddConstant("EG_PK"_Stz,   EG_PK);
-  vAddConstant("EG_PP"_Stz,   EG_PP);
   vAddConstant("EG_PT"_Stz,   EG_PT);
   vAddConstant("EG_PY"_Stz,   EG_PY);
   vAddConstant("EG_QK"_Stz,   EG_QK);
@@ -493,7 +490,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_RU"_Stz,   EG_RU);
   vAddConstant("EG_SC"_Stz,   EG_SC);
   vAddConstant("EG_SI"_Stz,   EG_SI);
-  vAddConstant("EG_SK"_Stz,   EG_SK);
   vAddConstant("EG_ST"_Stz,   EG_ST);
   vAddConstant("EG_TA"_Stz,   EG_TA);
   vAddConstant("EG_TN"_Stz,   EG_TN);
@@ -585,15 +581,10 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_TOTALUNITS"_Stz,    OI_TOTALUNITS);
 
   // PD_ : pipe direction
-  /*  0 */ vAddConstant("PD_NONE"_Stz,      PP_NONE);
+  /*  0 */ vAddConstant("PD_NONE"_Stz,      PD_NONE);
   /*  0 */ vAddConstant("PD_PIPE_IN"_Stz,   PD_PIPE_IN);
   /*  0 */ vAddConstant("PD_PIPE_OUT"_Stz,  PD_PIPE_OUT);
-  
-  // PP_ : pipeline protocol
-  /*  0 */ vAddConstant("PP_NONE"_Stz,            PP_NONE);
-  /*  0 */ vAddConstant("PP_SIGNAL_SESSION"_Stz,  PP_SIGNAL_SESSION);
-  /*  0 */ vAddConstant("PP_RETURN_PIPELINE"_Stz, PP_RETURN_PIPELINE);
-  
+    
   // PY_ : priority
   /*  0 */ vAddConstant("PY_NONE"_Stz,      PY_NONE);
   /*  0 */ vAddConstant("PY_LOW"_Stz,       PY_LOW);

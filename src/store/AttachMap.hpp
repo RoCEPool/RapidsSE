@@ -9,6 +9,7 @@
 #include "Starter.hpp"
 #include "EventHandlers.hpp"
 #include "SysMetrics.hpp"
+#include "eAC.h"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
 
@@ -73,7 +74,6 @@ namespace STORE
     Timer         m_oReferenceTimer;
     Resources     m_oResources;
     Schedule*     m_pSchedule;
-    Sessions*     m_pSessions;
     bool          m_bStarted;
     Starter*      m_pStarter;
     Statistics    m_oStatistics;
@@ -130,7 +130,6 @@ namespace STORE
     void vReapLockGrab(void);
     void vRecordArguments(CmdLineArgs* CmdLineArgs);
   
-    Sessions* pSessions(void);
     void vSysMetricsAdd(SysMetrics* pSysMetrics);
     SysMetrics* pSysMetricsChain(void);
 

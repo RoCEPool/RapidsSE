@@ -289,8 +289,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SENDS,
   /* */ CN_SENDWL,
   /* */ CN_SEPROMPT,
-  /* */ CN_SESSION,
-  /* */ CN_SESSIONS,
   /* */ CN_SHAPE,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
@@ -697,8 +695,6 @@ static Stz* aCN[]
   /* */ "SENDS"_Stz,                // CN_SENDS
   /* */ "SENDWL"_Stz,               // CN_SENDWL
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
-  /* */ "SESSION"_Stz,              // CN_SESSION
-  /* */ "SESSIONS"_Stz,             // CN_SESSIONS
   /* */ "SHAPE"_Stz,                // CN_SHAPE
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC

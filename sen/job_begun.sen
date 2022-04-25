@@ -37,13 +37,6 @@
   [job] job.id@ ListedJob[].findOriginator discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process __begun job on this originating node
-
-  // increment the number of __begun jobs received in api state
-  ListedJob[] ssn::incBegun
-  ListedJob[] ssn::traceSession
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   ListedJob[].task@ task.ack
   

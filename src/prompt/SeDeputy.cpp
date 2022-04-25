@@ -11,7 +11,6 @@
 #include "Api.hpp"
 #include "SeApi.hpp"
 #include "Output.hpp"
-#include "Session.hpp"
 #include "Job.hpp"
 
 #include "TagConstants.h"
@@ -65,9 +64,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   _checkInitialised_(CN_SEDEPUTY);
   
   m_sFolderPath = C_SE_PATH;
-  
-  ApiHelper::vAllocateSession();
-    
+      
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
 
@@ -80,8 +77,6 @@ SeDeputy::~SeDeputy(void) noexcept(false)
   
   while (m_pInput)
     m_pInput = m_pInput->pDeleteInput();
-
-  ApiHelper::vFreeSession();
 
   AM::THREAD::vDeleteThread(m_pThread);
 }
@@ -128,13 +123,12 @@ void SeDeputy::vDeputyLoop(void)
       break;
     
     RASSERT(m_pJob);
-    if (m_pSession != m_pJob->pSession())
-      vTrace("vDeputyLoop %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
     
     m_pJob->vFolderPath(m_sFolderPath);
     m_pJob->vLastJobId(m_tLastJobId);
     m_pJob->vSystemCloser(m_bSystemCloser);
 
+    m_pJob->vStmtListCreate();
     vExecuteJob();
     
     ApiHelper::vPrintResults(m_pJob);
@@ -165,11 +159,7 @@ void SeDeputy::vDeputyLoop(void)
 void SeDeputy::vExecuteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-    
-  if (m_pSession != m_pJob->pSession())
-    vTrace("vExecuteJob %p v %p\n"_Stz,m_pSession,m_pJob->pSession());
-  RASSERT(m_pSession == m_pJob->pSession());
-    
+        
   TagSet* pCmdTagSet = this->pCmdTagSet();
 
   ApiHelper::vExecuteJob(m_pJob,pCmdTagSet);
@@ -252,6 +242,16 @@ Job* SeDeputy::pJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* last job run                                                               */
+/*----------------------------------------------------------------------------*/
+JobId SeDeputy::tLastJobId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+
+  return m_tLastJobId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get input                                                                  */
 /*----------------------------------------------------------------------------*/
 Input* SeDeputy::pInput(void)
@@ -319,16 +319,6 @@ void SeDeputy::vReportTime(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get session                                                                */
-/*----------------------------------------------------------------------------*/
-Session* SeDeputy::pSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return m_pSession;
-}
-
-/*----------------------------------------------------------------------------*/
 /* signal this deputy to terminate                                            */
 /*----------------------------------------------------------------------------*/
 void SeDeputy::vTerminate(void)
@@ -349,6 +339,26 @@ bool SeDeputy::bTerminated(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_bTerminated;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get to do                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* SeDeputy::szToDo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_sToDo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set to do                                                                  */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vToDo(Stz* szToDo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  m_sToDo = szToDo;
 }
 
 /*============================================================================*/
