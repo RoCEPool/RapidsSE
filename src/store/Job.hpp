@@ -11,6 +11,7 @@
 
 #include "JobMetrics.hpp"
 #include "CmdId.hpp"
+#include "JobId.hpp"
 #include "Output.hpp"
 #include "Statement.hpp"
 
@@ -35,8 +36,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // universally immutable information                    UNIVERSAL
 
-    CmdId   m_tParentId;      // distributed command id
     JobId   m_tJobId;      // this job's id
+    JobId   m_tParentId;   // parents command id
     s32     m_sJobNm;      // name of job
     eJK     m_eJobKind;    // job kind: (needs work)
 
@@ -121,7 +122,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Job(Stz* szJobNm, CmdId tCmdId);
+    Job(Stz* szJobNm, JobId tParentId);
 
    ~Job(void) noexcept(false);
   
@@ -200,7 +201,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);
   
-    CmdId tParentId(void);
+    JobId tParentId(void);
     i8   iParticipantNodeId(void);
     void vParticipantNodeId(i8 i_Node);
     Pipeline* pPipeline(void);

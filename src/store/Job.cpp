@@ -43,7 +43,7 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm, CmdId tParentId)
+Job::Job(Stz* szJobNm, JobId tParentId)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -927,9 +927,9 @@ Stz* Job::szOriginNodeNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command id                                                             */
+/* get parent job id                                                          */
 /*----------------------------------------------------------------------------*/
-CmdId Job::tParentId(void)
+JobId Job::tParentId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
@@ -1029,7 +1029,7 @@ void Job::vPrintJobContents(void)
          ,szCmd()                    // 3
          ,iOriginNodeId()            // 4
 
-         ,m_tParentId.iCmdNo()          // 6
+         ,m_tParentId.uJobNo()          // 6
          ,m_bWasReceived ? "true" : "false" // 7
          ,m_iParticipantNodeId            // 8
          ,aJS[m_eJobState]           // 10
@@ -1089,7 +1089,7 @@ void Job::vPrintJobLine(void)
 
   vTrace("originNodeId %lld command %lld "_Stz
          ,this->iOriginNodeId()
-         ,this->m_tParentId.iCmdNo()
+         ,this->m_tParentId.uJobNo()
          );
 
   if (C_UNKNOWN != this->iParticipantNodeId())

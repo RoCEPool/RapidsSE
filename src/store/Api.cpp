@@ -40,8 +40,8 @@ Job* Api::pAllocJob(Stz* szJobNm)
 {
   _static_
 
-  CmdId tParentId;
-  tParentId.vNextCmdId();
+  JobId tParentId;
+  tParentId.vNextJobId();
   
   Job* pJob = new Job(szJobNm,tParentId);
 
@@ -65,7 +65,7 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  JobId tJobId = pJob->tJobId();
+  //JobId tJobId = pJob->tJobId();
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -793,8 +793,8 @@ void Api::vCallBootSystemJob(void)
 {
   _static_
   
-  CmdId tParentId;
-  tParentId.vNextCmdId();
+  JobId tParentId;
+  tParentId.vNextJobId();
   
   Job* pBootJob = new Job("bootSystem"_Stz,tParentId);
   
@@ -851,8 +851,8 @@ void Api::vCallStartSystemJob(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  CmdId tParentId;
-  tParentId.vNextCmdId();
+  JobId tParentId;
+  tParentId.vNextJobId();
   
   Job* pStartJob = new Job("startSystem"_Stz,tParentId);
   
