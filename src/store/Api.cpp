@@ -450,31 +450,6 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the command
-
-/*
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
-
-  TagSet* pCmdTagSet =  new TagSet;
-
-  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
-  if (EC_NONE != eError)
-    return eError;
-  
-  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
-  Job* pJob = Api::pAllocJob(szJobNm);
-  
-  TagSet* pJobTagSet = pJob->pJobTags();
-  
-  eError = Api::ePrepareJob(pJob,"JobNm"_Stz,szCmd,nullptr,true,pCmdTknVec,pCmdTagSet);
-
-  delete pCmdTknVec;
-  delete pCmdTagSet;
-
-  if (eError) {
-    return eError;
-  }
- 
-*/
   
   TokenVec* pCmdTknVec = nullptr;;
   TagSet* pCmdTagSet = nullptr;

@@ -132,7 +132,8 @@ void Step::vApiExecuteCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the request
-  
+
+/*
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
 
   TagSet* pCmdTagSet =  new TagSet;
@@ -147,13 +148,8 @@ void Step::vApiExecuteCommand(void)
     return;
    }
   
-  //Job* pJob = Api::pAllocJob(pSession);
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   Job* pJob = Api::pAllocJob(szJobNm);
-    
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -`- - - - - - - - - -
-  
   
   eError = Api::ePrepareJob(pJob,"JobNm"_Stz,sCmd,nullptr,true,pCmdTknVec,pCmdTagSet);
 
@@ -167,6 +163,27 @@ void Step::vApiExecuteCommand(void)
     EXIT();
     return;
   }
+  
+*/
+  
+  
+  TokenVec* pCmdTknVec = nullptr;;
+  TagSet* pCmdTagSet = nullptr;
+
+  Job* pJob = nullptr;
+  eEC eError = Api::ePrepareJob(pJob,"JobNm"_Stz,sCmd,sWithTagStr,false,pCmdTknVec,pCmdTagSet);
+
+  if (eError) {
+    
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+    EXIT();
+    return;
+  }
+
+  
+  
+  
 
   pJob->vStmtListCreate();
   Api::vExecuteJob(pJob,pCmdTagSet);
