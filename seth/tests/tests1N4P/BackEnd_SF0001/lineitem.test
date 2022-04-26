@@ -24,18 +24,15 @@ create table lineitem (
 success
 
 //------------------------------------------------------------------------------
-// create an index on shipdate
-CREATE INDEX lineitem_idx1 ON lineitem(L_SHIPDATE);
+// create the indexes
+
+create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
 affected: 0
 
-//------------------------------------------------------------------------------
-// create an index on orderkey
-CREATE INDEX lineitem_idx2 ON lineitem(L_ORDERKEY);
+create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
 affected: 0
 
-//------------------------------------------------------------------------------
-// create an index on suppkey
-CREATE INDEX lineitem_idx3 ON lineitem(L_SUPPKEY);
+create index IxL_SHIPDATE  ON Lineitem (L_SHIPDATE)  ;
 affected: 0
 
 // load the table
@@ -44,6 +41,15 @@ success
 
 select count(*) from lineitem;
 rows: (6000)
+
+compactidx lineitem IxL_ORDERKEY;
+success
+
+compactidx lineitem IxL_PARTKEY;
+success
+
+compactidx lineitem IxL_SHIPDATE;
+success
 
 CLEANUP {
 

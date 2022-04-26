@@ -12,8 +12,11 @@ N_COMMENT         VARCHAR(152)
 success
 
 //------------------------------------------------------------------------------
-// create an index on suppkey
-CREATE INDEX nation_idx1 ON nation(N_NATIONKEY);
+// create the indexes
+CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
+affected: 0
+
+CREATE INDEX IxN_REGIONKEY ON nation(N_NATIONKEY);
 affected: 0
 
 // load the table
@@ -23,7 +26,10 @@ success
 select count(*) from nation;
 rows: (25)
 
-compactidx nation nation_idx1;
+compactidx nation IxN_NATIONKEY;
+success
+
+compactidx nation IxN_REGIONKEY;
 success
 
 CLEANUP {

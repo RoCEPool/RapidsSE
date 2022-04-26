@@ -124,119 +124,6 @@ begin
 
       | combined 0
       | next
-      // TODO: to enable
-/*
-   stage G_AGG_O_2 on origin :
-     aggreg "
-     groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-                   type VARCHAR as L_LINESTATUS L_LINESTATUS
-           aggregates
-      type VARCHAR as L_RETURNFLAG $K1 ,
-      type VARCHAR as L_LINESTATUS $K2,
-      type DECIMAL as SUM_QTY SUM_QTY ,
-      type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE ,
-      type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE ,
-      type DECIMAL as SUM_CHARGE SUM_CHARGE ,
-      type DECIMAL as AVG_QTY SUM_QTY CNT_QTY /  ,
-      type DECIMAL as AVG_PRICE SUM_BASE_PRICE CNT_EXTENDEDPRICE /  ,
-      type DECIMAL as AVG_DISC SUM_DISCOUNT CNT_DISCOUNT / ,
-      type INTEGER as COUNT_ORDER COUNT_ORDER "
-    | combined 0
-    | next
-*/
-  stage last on origin :
-    output
-    | sink
-    | first
-
-end ;
-
-rows:
-  ('A','F',37474.00,56250004.88,*,*,*,*,*,1478,1478)
-  ('N','F',1041.00,1614635.42,*,*,*,*,*,38,38)
-  ('N','O',75062.00,112768276.42,*,*,*,*,*,2936,2936)
-  ('R','F',36470.00,54082045.78,*,*,*,*,*,1456,1456)
-/*
-  ('A','F',37474.00,56250004.88,*,*,25.35,38058.19,1.05,1478)
-  ('N','F',1041.00,1614635.42,*,*,27.39,42490.40,1.04,38)
-  ('N','O',75062.00,112768276.42,*,*,25.56,38408.81,1.04,2936)
-  ('R','F',36470.00,54082045.78,*,*,25.04,37144.26,1.05,1456)
-*/
-//------------------------------------------------------------------------------
-// Q1 with smlAgg
-/*
-pipeline Q1
-begin
-
-  stage first on origin :
-    start
-    | pulse once
-    | next
-
-  // ∀ LINEITEM σ L_ORDERKEY as _orderkey
-  stage Gs_LINEITEM on all partitions :
-    scan lineitem
-
-    | filter " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
-    | smlAgg 2 "
-      groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-               type VARCHAR as L_LINESTATUS L_LINESTATUS
-      aggreagtes
-      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
-      type DECIMAL as SUM_QTY )  L_QUANTITY sum  ,
-      type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
-      type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  sum  ,
-      type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  1  L_TAX +  *  sum  ,
-      type INTEGER as CNT_EXTENDEDPRICE ) L_EXTENDEDPRICE count  ,
-      type INTEGER as CNT_QTY )  L_QUANTITY count  ,
-      type DECIMAL as SUM_DISCOUNT ) L_DISCOUNT sum  ,
-      type INTEGER as CNT_DISCOUNT ) L_DISCOUNT count  ,
-      type INTEGER as COUNT_ORDER ) countall"
-
-    | combined 0
-    | next
-
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-    stage G_AGG_N on all nodes :
-      smlAgg 2 "
-        groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-                type VARCHAR as L_LINESTATUS L_LINESTATUS
-        aggregates
-        type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-        type VARCHAR as L_LINESTATUS L_LINESTATUS ,
-        type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
-        type DECIMAL as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
-        type DECIMAL as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
-        type DECIMAL as SUM_CHARGE        ) SUM_CHARGE  sum  ,
-        type INTEGER as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
-        type INTEGER as CNT_QTY           ) CNT_QTY sum  ,
-        type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
-        type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
-        type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum"
-
-    | combined 0
-    | next
-
-  stage G_AGG_O on origin :
-    smlAgg 2 "
-      groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-               type VARCHAR as L_LINESTATUS L_LINESTATUS
-      aggregates
-      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
-      type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
-      type DECIMAL as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
-      type DECIMAL as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
-      type DECIMAL as SUM_CHARGE        ) SUM_CHARGE  sum  ,
-      type INTEGER as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
-      type INTEGER as CNT_QTY           ) CNT_QTY sum  ,
-      type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
-      type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
-      type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum"
-      | combined 0
-      | next
 
    stage G_AGG_O_2 on origin :
      project "
@@ -246,9 +133,9 @@ begin
       type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE ,
       type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE ,
       type DECIMAL as SUM_CHARGE SUM_CHARGE ,
-      type DECIMAL as AVG_QTY SUM_QTY CNT_QTY /  ,
-      type DECIMAL as AVG_PRICE SUM_BASE_PRICE CNT_EXTENDEDPRICE /  ,
-      type DECIMAL as AVG_DISC SUM_DISCOUNT CNT_DISCOUNT / ,
+      type DECIMAL as AVG_QTY SUM_QTY CNT_QTY casttype DECIMAL CAST  /  ,
+      type DECIMAL as AVG_PRICE SUM_BASE_PRICE CNT_EXTENDEDPRICE casttype DECIMAL CAST  /  ,
+      type DECIMAL as AVG_DISC SUM_DISCOUNT CNT_DISCOUNT casttype DECIMAL CAST  / ,
       type INTEGER as COUNT_ORDER COUNT_ORDER "
     | combined 0
     | next
@@ -261,11 +148,11 @@ begin
 end ;
 
 rows:
-  ('A','F',37474.00,56250004.88,*,*,25.35,38058.19,1.05,1478)
-  ('N','F',1041.00,1614635.42,*,*,27.39,42490.40,1.04,38)
-  ('N','O',75062.00,112768276.42,*,*,25.56,38408.81,1.04,2936)
-  ('R','F',36470.00,54082045.78,*,*,25.04,37144.26,1.05,1456)
-*/
+  ('A','F',37474.00,56250004.88,-2850613.26,-5813077.32,25.35,38058.19,1.05,1478)
+  ('N','F',1041.00,1614635.42,-64993.33,-132418.45,27.39,42490.41,1.04,38)
+  ('N','O',75062.00,112768276.42,-5569437.53,-11358753.47,25.57,38408.81,1.05,2936)
+  ('R','F',36470.00,54082045.78,-2697671.68,-5504499.33,25.05,37144.26,1.05,1456)
+
 //------------------------------------------------------------------------------
 // drop the tables
 drop table lineitem;

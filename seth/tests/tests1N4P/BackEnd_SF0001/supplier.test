@@ -16,8 +16,8 @@ success
 
 
 //------------------------------------------------------------------------------
-// create an index on suppkey
-create index supplier_idx1 on supplier (S_SUPPKEY);
+// create the indexes
+create index IxS_SUPPKEY on supplier (S_SUPPKEY);
 affected: 0
 
 -----------------------------------------------------------------------
@@ -28,7 +28,7 @@ success
 select count(*) from supplier;
 rows: (10)
 
-compactidx supplier supplier_idx1;
+compactidx supplier IxS_SUPPKEY;
 success
 
 CLEANUP {
