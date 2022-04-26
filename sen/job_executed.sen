@@ -36,6 +36,7 @@
   // "executed:executed" .
 
   // find the originating job
+  //[job] job.id@ [job].parentId@ == assert
   [job] job.id@ ListedJob[].findOriginator discard
 
 

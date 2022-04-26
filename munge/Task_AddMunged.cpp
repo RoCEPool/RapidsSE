@@ -16542,6 +16542,7 @@ void Task::vAddMunged(Task* )
     "  // \"executed:executed\" .\n"
     "\n"
     "  // find the originating job\n"
+    "  //[job] job.id@ [job].parentId@ == assert\n"
     "  [job] job.id@ ListedJob[].findOriginator discard\n"
     "\n"
     "\n"
