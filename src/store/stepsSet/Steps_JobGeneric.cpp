@@ -27,17 +27,15 @@ void Step::vAddSteps_JobGeneric(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_begun::new -- new a job_begun for this distributed 2pc job            */
+/* job_begun::new -- new a job_begun for this distributed 2pc job             */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_BegunNew(void)
 {
   ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  Job* pJobBegun = new Job("begun"_Stz,pDistJob->tCmdId());
   
-  pJobBegun->vJobId(pDistJob->tJobId());
+  Job* pJobBegun = new Job("begun"_Stz,pDistJob->tJobId());
   pJobBegun->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobBegun->vJobKind(JK_GENERIC);
   
@@ -63,17 +61,15 @@ void Step::vJob_BegunNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_cancel::new -- new a job_cancel for this distributed 2pc job         */
+/* job_cancel::new -- new a job_cancel for this distributed 2pc job           */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_CancelNew(void)
 {
   ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Job* pJobCancel = new Job("cancel"_Stz,pDistJob->tCmdId());
-  
-  pJobCancel->vJobId(pDistJob->tJobId());
+    
+  Job* pJobCancel = new Job("cancel"_Stz,pDistJob->tJobId());
   pJobCancel->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobCancel->vJobKind(JK_GENERIC);
 
@@ -99,7 +95,7 @@ void Step::vJob_CancelNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_cancelled::new -- new a job_cancelled for this distributed 2pc job   */
+/* job_cancelled::new -- new a job_cancelled for this distributed 2pc job     */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_CancelledNew(void)
 {
@@ -107,9 +103,8 @@ void Step::vJob_CancelledNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  Job* pJobCancelled = new Job("cancelled"_Stz,pDistJob->tCmdId());
-  
-  pJobCancelled->vJobId(pDistJob->tJobId());
+  Job* pJobCancelled = new Job("cancelled"_Stz,pDistJob->tJobId());
+
   pJobCancelled->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobCancelled->vJobKind(JK_GENERIC);
   
@@ -145,9 +140,7 @@ void Step::vJob_EndNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobEnd = new Job("end"_Stz,pDistJob->tCmdId());
-  
-  pJobEnd->vJobId(pDistJob->tJobId());
+  Job* pJobEnd = new Job("end"_Stz,pDistJob->tJobId());
   pJobEnd->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobEnd->vJobKind(JK_GENERIC);
     
@@ -182,12 +175,9 @@ void Step::vJob_EndedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobEnded = new Job("ended"_Stz,pDistJob->tCmdId());
-  
-  pJobEnded->vJobId(pDistJob->tJobId());
+  Job* pJobEnded = new Job("ended"_Stz,pDistJob->tJobId());
   pJobEnded->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobEnded->vJobKind(JK_GENERIC);
-  
   
   TagSet* pJobEndedTags = pJobEnded->pJobTags();
 
@@ -212,7 +202,7 @@ void Step::vJob_EndedNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_execute::new -- new a job_execute for this distributed 2pc job       */
+/* job_execute::new -- new a job_execute for this distributed 2pc job         */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ExecuteNew(void)
 {
@@ -220,9 +210,7 @@ void Step::vJob_ExecuteNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobExecute = new Job("execute"_Stz,pDistJob->tCmdId());
-  
-  pJobExecute->vJobId(pDistJob->tJobId());
+  Job* pJobExecute = new Job("execute"_Stz,pDistJob->tJobId());
   pJobExecute->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobExecute->vJobKind(JK_GENERIC);
   
@@ -250,7 +238,7 @@ void Step::vJob_ExecuteNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_executed::new -- new a job_executed for this distributed 2pc job     */
+/* job_executed::new -- new a job_executed for this distributed 2pc job       */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ExecutedNew(void)
 {
@@ -258,9 +246,7 @@ void Step::vJob_ExecutedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobExecuted = new Job("executed"_Stz,pDistJob->tCmdId());
-  
-  pJobExecuted->vJobId(pDistJob->tJobId());
+  Job* pJobExecuted = new Job("executed"_Stz,pDistJob->tJobId());
   pJobExecuted->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobExecuted->vJobKind(JK_GENERIC);
   

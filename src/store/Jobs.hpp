@@ -10,6 +10,7 @@ namespace STORE
   class Jobs : public Object
   {
   private:
+    JobList*  m_pJobsList;          // list of all jobs
   
     JobList*  m_pDemonJobs;         // jobs belonging to demons
     JobList*  m_pLocalJobs;         // jobs per local pipelines
@@ -30,6 +31,8 @@ namespace STORE
   
     void vCreateJobLists(void);
   
+    JobList* pJobsList(void);
+
     JobList* pDemonJobs(void);
     JobList* pLocalJobs(void);
     JobList* pOriginatingJobs(void);

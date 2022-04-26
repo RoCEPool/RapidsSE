@@ -384,6 +384,64 @@ EventHandlers* AM::HANDLERS::pEventHandlers(void)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 JLIST                                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* find job in jobs list                                                      */
+/*----------------------------------------------------------------------------*/
+bool AM::JLIST::bFindJob(Job* pJob, bool bLockJob)
+{
+  bool bFound = gpAttachMap->m_pJobs->pJobsList()->bFindJob(pJob,bLockJob);
+    
+  return bFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job in jobs list                                                      */
+/*----------------------------------------------------------------------------*/
+Job* AM::JLIST::pFindJob(JobId tJobId, bool bLockJob)
+{
+  Job* pJob = gpAttachMap->m_pJobs->pJobsList()->pFindJob(tJobId,bLockJob);
+    
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job in jobs list                                                      */
+/*----------------------------------------------------------------------------*/
+JobList* AM::JLIST::pJobsList(void)
+{
+  JobList* pJobsList = gpAttachMap->m_pJobs->pJobsList();
+    
+  return pJobsList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert job into jobs list                                                  */
+/*----------------------------------------------------------------------------*/
+void AM::JLIST::vInsertJob(Job* pJob)
+{
+//  vTrace("JLIST Inserting %p %lld %lld\n"_Stz,
+//         pJob,
+//         pJob->tJobId().iJobNo(),
+//         pJob->tJobId().iAsI8());
+  gpAttachMap->m_pJobs->pJobsList()->vInsertJob(pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove job from jobs list                                                  */
+/*----------------------------------------------------------------------------*/
+void AM::JLIST::vRemoveJob(Job* pJob)
+{
+//  vTrace("JLIST Removing %p %lld %lld\n"_Stz,
+//         pJob,
+//         pJob->tJobId().iJobNo(),
+//         pJob->tJobId().iAsI8());
+  gpAttachMap->m_pJobs->pJobsList()->vRemoveJob(pJob);
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   JOB                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 

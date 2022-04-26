@@ -513,18 +513,12 @@ void Constants::vAddConstantsCpp(void)
   
   
   // JK_ : job kind
-  /*  0 */ vAddConstant("JK_NONE"_Stz,      JK_NONE);
-  /*  1 */ vAddConstant("JK_BOOT"_Stz,      JK_BOOT);
-  /*  2 */ vAddConstant("JK_CHILD"_Stz,     JK_CHILD);
-  /*  3 */ vAddConstant("JK_PIPELINE"_Stz,   JK_PIPELINE);
-  /*  4 */ vAddConstant("JK_GENERIC"_Stz,   JK_GENERIC);
-  /*  5 */ vAddConstant("JK_GRANDKID"_Stz,  JK_GRANDKID);
-  /*  6 */ vAddConstant("JK_INFO"_Stz,      JK_INFO);
-  /*  7 */ vAddConstant("JK_LOCAL"_Stz,     JK_LOCAL);
-  /*  8 */ vAddConstant("JK_META"_Stz,      JK_META);
-  /*  9 */ vAddConstant("JK_OP"_Stz,        JK_OP);
-  /* 10 */ vAddConstant("JK_SERVICE"_Stz,   JK_SERVICE);
-  /* 11 */ vAddConstant("JK_OTHER"_Stz,     JK_OTHER);
+  /*   */ vAddConstant("JK_NONE"_Stz,      JK_NONE);
+  /*   */ vAddConstant("JK_BOOT"_Stz,      JK_BOOT);
+  /*   */ vAddConstant("JK_PIPELINE"_Stz,   JK_PIPELINE);
+  /*   */ vAddConstant("JK_GENERIC"_Stz,   JK_GENERIC);
+  /*   */ vAddConstant("JK_LOCAL"_Stz,     JK_LOCAL);
+  /*   */ vAddConstant("JK_OP"_Stz,        JK_OP);
 
   /* 0 */ vAddConstant("JL_NONE"_Stz,         JL_NONE);
   /* 1 */ vAddConstant("JL_DEMON"_Stz,        JL_DEMON);

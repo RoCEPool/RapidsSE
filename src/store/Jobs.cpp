@@ -25,7 +25,9 @@ Jobs::Jobs(void)
 : Object(CN_JOBS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
-  
+
+  m_pJobsList          = nullptr;
+
   m_pDemonJobs         = nullptr;
   m_pLocalJobs         = nullptr;
   m_pOriginatingJobs   = nullptr;
@@ -57,6 +59,8 @@ void Jobs::vCreateJobLists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
 
+  m_pJobsList          = new JobList(JL_JOBS);
+
   m_pDemonJobs         = new JobList(JL_DEMON);
   m_pLocalJobs         = new JobList(JL_LOCAL);
   m_pOriginatingJobs   = new JobList(JL_ORIGINATING);
@@ -64,6 +68,18 @@ void Jobs::vCreateJobLists(void)
   
   m_pRetiredJobs       = new JobList(JL_RETIRED);
 }
+
+/*----------------------------------------------------------------------------*/
+/* get job list                                                               */
+/*----------------------------------------------------------------------------*/
+JobList* Jobs::pJobsList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
+
+  return m_pJobsList;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* get demon job list                                                         */

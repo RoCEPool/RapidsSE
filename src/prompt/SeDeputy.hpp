@@ -25,6 +25,7 @@ namespace PROMPT
     b8        m_bTerminated;
     b8        m_bSystemCloser; // is this deputy the system closer?
 
+    Job*      m_pRootJob;
     Job*      m_pJob;
   
     s256      m_sFolderPath;   // folder path
