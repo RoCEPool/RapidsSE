@@ -283,20 +283,29 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 /*----------------------------------------------------------------------------*/
 /* new a job and prepare it to execute a command                              */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+eEC Api::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   _static_
 
-  RASSERT(pJob);
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
+  //eEC eError = EC_NONE;
   
-  TagSet* pJobTagSet = pJob->pJobTags();
+  if (! rpJob) {
+    
+    Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+    rpJob = Api::pAllocJob(szJobNm);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RASSERT(rpJob);
+
+  TagSet* pJobTagSet = rpJob->pJobTags();
 
   // parse cmd
   sSTMT sStmt;
   pCmdTknVec->vVecToString(sStmt,0,true);
-  pJob->vCmd(sStmt);
+  rpJob->vCmd(sStmt);
   
   pJobTagSet->vCopy(pCmdTagSet);
   //pCmdTagSet->vDumpSet(true);
@@ -304,27 +313,27 @@ eEC Api::ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
   if (AM::TRACE::bVerbose(C_VB_API))
     pJobTagSet->vDumpSet();
 
-  if (pJob->bHasTag(C_TAG_LIFE)) {
+  if (rpJob->bHasTag(C_TAG_LIFE)) {
     SP_TagSet spTagSet;
     vTrace("Job New: %s"_Stz,spTagSet.sz(pJobTagSet));
     //pJob->pTagSet()->vPrint();
   }
   
-  if ( pJob->bHasTag(C_SHOW_CMD_TAGS))
+  if ( rpJob->bHasTag(C_SHOW_CMD_TAGS))
     pJobTagSet->vDumpSet(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   eJK eJobKind = (eJK) pJobTagSet->iValue(C_TAG_JOBKIND);
-  pJob->vJobKind(eJobKind);
+  rpJob->vJobKind(eJobKind);
     
   if (pJobTagSet->bHasName(C_SEE_JOB))
-    pJob->vPrintJobContents();
+    rpJob->vPrintJobContents();
   
   
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
   
-  pJob->vEntryPoint(szEntry);
+  rpJob->vEntryPoint(szEntry);
   
     
   if (AM::TRACE::bVerbose(C_VB_API)) {

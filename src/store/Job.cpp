@@ -110,7 +110,8 @@ Job::Job(Stz* szJobNm, JobId tParentId)
   AM::JOBS::vJobsActiveInc();
   
   m_oJobTags.vInsert(C_TAG_DISTID,m_tJobId.iAsI8());
-  
+  m_oJobTags.vInsert(C_TAG_PATH,C_SE_PATH);
+
   AM::JLIST::vInsertJob(this);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
