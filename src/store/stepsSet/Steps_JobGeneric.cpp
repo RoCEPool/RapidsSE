@@ -35,9 +35,10 @@ void Step::vJob_BegunNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  Job* pJobBegun = new Job("begun"_Stz,pDistJob->tParentId());
+  //Job* pJobBegun = new Job("begun"_Stz,pDistJob->tParentId());
+  //pJobBegun->vJobId(pDistJob->tJobId());
   
-  pJobBegun->vJobId(pDistJob->tJobId());
+  Job* pJobBegun = new Job("begun"_Stz,pDistJob->tJobId());
   pJobBegun->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobBegun->vJobKind(JK_GENERIC);
   
@@ -107,9 +108,11 @@ void Step::vJob_CancelledNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  Job* pJobCancelled = new Job("cancelled"_Stz,pDistJob->tParentId());
-  
-  pJobCancelled->vJobId(pDistJob->tJobId());
+  //Job* pJobCancelled = new Job("cancelled"_Stz,pDistJob->tParentId());
+  //pJobCancelled->vJobId(pDistJob->tJobId());
+
+  Job* pJobCancelled = new Job("cancelled"_Stz,pDistJob->tJobId());
+
   pJobCancelled->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobCancelled->vJobKind(JK_GENERIC);
   
@@ -182,9 +185,11 @@ void Step::vJob_EndedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobEnded = new Job("ended"_Stz,pDistJob->tParentId());
-  
-  pJobEnded->vJobId(pDistJob->tJobId());
+  //Job* pJobEnded = new Job("ended"_Stz,pDistJob->tParentId());
+  //pJobEnded->vJobId(pDistJob->tJobId());
+
+  Job* pJobEnded = new Job("ended"_Stz,pDistJob->tJobId());
+
   pJobEnded->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobEnded->vJobKind(JK_GENERIC);
   
@@ -258,9 +263,10 @@ void Step::vJob_ExecutedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  Job* pJobExecuted = new Job("executed"_Stz,pDistJob->tParentId());
+  //Job* pJobExecuted = new Job("executed"_Stz,pDistJob->tParentId());
+  //pJobExecuted->vJobId(pDistJob->tJobId());
   
-  pJobExecuted->vJobId(pDistJob->tJobId());
+  Job* pJobExecuted = new Job("executed"_Stz,pDistJob->tJobId());
   pJobExecuted->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobExecuted->vJobKind(JK_GENERIC);
   
