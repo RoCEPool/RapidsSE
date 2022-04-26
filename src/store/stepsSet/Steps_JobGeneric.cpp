@@ -34,9 +34,6 @@ void Step::vJob_BegunNew(void)
   ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  //Job* pJobBegun = new Job("begun"_Stz,pDistJob->tParentId());
-  //pJobBegun->vJobId(pDistJob->tJobId());
   
   Job* pJobBegun = new Job("begun"_Stz,pDistJob->tJobId());
   pJobBegun->vParticipantNodeId(AM::pGrid()->iThisNodeId());
@@ -71,10 +68,7 @@ void Step::vJob_CancelNew(void)
   ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  //Job* pJobCancel = new Job("cancel"_Stz,pDistJob->tParentId());
-  //pJobCancel->vJobId(pDistJob->tJobId());
-  
+    
   Job* pJobCancel = new Job("cancel"_Stz,pDistJob->tJobId());
   pJobCancel->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobCancel->vJobKind(JK_GENERIC);
@@ -108,9 +102,6 @@ void Step::vJob_CancelledNew(void)
   ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  //Job* pJobCancelled = new Job("cancelled"_Stz,pDistJob->tParentId());
-  //pJobCancelled->vJobId(pDistJob->tJobId());
 
   Job* pJobCancelled = new Job("cancelled"_Stz,pDistJob->tJobId());
 
@@ -149,9 +140,6 @@ void Step::vJob_EndNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  //Job* pJobEnd = new Job("end"_Stz,pDistJob->tParentId());
-  //pJobEnd->vJobId(pDistJob->tJobId());
-  
   Job* pJobEnd = new Job("end"_Stz,pDistJob->tJobId());
   pJobEnd->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobEnd->vJobKind(JK_GENERIC);
@@ -187,9 +175,6 @@ void Step::vJob_EndedNew(void)
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  //Job* pJobEnded = new Job("ended"_Stz,pDistJob->tParentId());
-  //pJobEnded->vJobId(pDistJob->tJobId());
-
   Job* pJobEnded = new Job("ended"_Stz,pDistJob->tJobId());
   pJobEnded->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobEnded->vJobKind(JK_GENERIC);
@@ -224,9 +209,6 @@ void Step::vJob_ExecuteNew(void)
   ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  //Job* pJobExecute = new Job("execute"_Stz,pDistJob->tParentId());
-  //pJobExecute->vJobId(pDistJob->tJobId());
   
   Job* pJobExecute = new Job("execute"_Stz,pDistJob->tJobId());
   pJobExecute->vParticipantNodeId(AM::pGrid()->iThisNodeId());
@@ -263,9 +245,6 @@ void Step::vJob_ExecutedNew(void)
   ENTRY();
   
   Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  //Job* pJobExecuted = new Job("executed"_Stz,pDistJob->tParentId());
-  //pJobExecuted->vJobId(pDistJob->tJobId());
   
   Job* pJobExecuted = new Job("executed"_Stz,pDistJob->tJobId());
   pJobExecuted->vParticipantNodeId(AM::pGrid()->iThisNodeId());

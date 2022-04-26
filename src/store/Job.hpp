@@ -163,7 +163,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool bIsPipelineLocal(void);
   
     JobId tJobId(void);
-    void vJobId(JobId tJobId);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
     eJK  eJobKind(void);
