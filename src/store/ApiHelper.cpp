@@ -110,7 +110,7 @@ eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd,
 //  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
 //  rpJob = Api::pAllocJob(szJobNm);
   
-  eEC eError = Api::ePrepareJob(rpJob,szCmd,pCmdTknVec,pCmdTagSet);
+  eEC eError = Api::ePrepareJob(rpJob,"JobNm"_Stz,szCmd,nullptr,true,pCmdTknVec,pCmdTagSet);
   
   return eError;
 }

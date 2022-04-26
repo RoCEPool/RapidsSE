@@ -283,23 +283,35 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 /*----------------------------------------------------------------------------*/
 /* new a job and prepare it to execute a command                              */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Job*& rpJob, Stz* szCmd,
-                     TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+eEC Api::ePrepareJob(Job*& rpJob, Stz* szJobNm,
+                     Stz* szCmd, Stz* szCmdTagStr,
+                     bool bParsed, TokenVec*& rpCmdTknVec, TagSet*& rpCmdTagSet)
 {
   _static_
 
   eEC eError = EC_NONE;
+
+  
+  RASSERT(bParsed);
+
+  
+  
   
   if (! rpJob) {
     
-    eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+    eError = Api::eParseCmd(rpCmdTknVec,rpCmdTagSet);
     if (EC_NONE != eError)
       return eError;
 
-    Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+    Stz* szJobNm = rpCmdTagSet->szValue(C_TAG_JOBNM);
     rpJob = Api::pAllocJob(szJobNm);
   }
   
+  
+  
+  
+  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -309,10 +321,10 @@ eEC Api::ePrepareJob(Job*& rpJob, Stz* szCmd,
 
   // parse cmd
   sSTMT sStmt;
-  pCmdTknVec->vVecToString(sStmt,0,true);
+  rpCmdTknVec->vVecToString(sStmt,0,true);
   rpJob->vCmd(sStmt);
   
-  pJobTagSet->vCopy(pCmdTagSet);
+  pJobTagSet->vCopy(rpCmdTagSet);
   //pCmdTagSet->vDumpSet(true);
 
   if (AM::TRACE::bVerbose(C_VB_API))
@@ -342,13 +354,13 @@ eEC Api::ePrepareJob(Job*& rpJob, Stz* szCmd,
   
     
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    pCmdTknVec->vDumpVec(false);
-    pCmdTagSet->vDumpSet(true);
+    rpCmdTknVec->vDumpVec(false);
+    rpCmdTagSet->vDumpSet(true);
   }
       
-  if (AM::bDeveloper() && pCmdTknVec->nTokens() > C_1KB) {
-    i8 nTokens = pCmdTknVec->nTokens();
-    i8 nUsed   = pCmdTknVec->nUsedByteSpace();
+  if (AM::bDeveloper() && rpCmdTknVec->nTokens() > C_1KB) {
+    i8 nTokens = rpCmdTknVec->nTokens();
+    i8 nUsed   = rpCmdTknVec->nUsedByteSpace();
     if (nTokens > C_1KB)
        vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
   }
@@ -441,7 +453,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   
   
-  eError = Api::ePrepareJob(pJob,szCmd,pCmdTknVec,pCmdTagSet);
+  eError = Api::ePrepareJob(pJob,"JobNm"_Stz,szCmd,nullptr,true,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
   delete pCmdTagSet;

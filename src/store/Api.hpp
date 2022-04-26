@@ -22,8 +22,9 @@ namespace STORE
   static void vForkDemon(Job*& rpJob);
   static void vForkJob(Job*& rpJob, Op* pResponseOp);
   static eEC  eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-  static eEC  ePrepareJob(Job*& rpJob, Stz* szCmd,
-                          TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+  static eEC  ePrepareJob(Job*& rpJob, Stz* szJobNm,
+                          Stz* szCmd, Stz* szCmdTagStr,
+                          bool bParsed, TokenVec*& rpCmdTknVec, TagSet*& rpCmdTagSet);
   static void vReapableJob(Job*& rpJob);
 
   static void vSubmitJob(Job* pJob);
