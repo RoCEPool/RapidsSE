@@ -302,6 +302,7 @@ void Step::vApiSpawnDemon(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/*
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
   
   TagSet* pCmdTagSet = new TagSet;
@@ -320,13 +321,20 @@ void Step::vApiSpawnDemon(void)
   TagSet* pJobTagSet = pJob->pJobTags();
   //pJobTagSet->vDumpSet();
     
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
-
   eError = Api::ePrepareJob(pJob,"JobNm"_Stz,sCmd,nullptr,true,pCmdTknVec,pCmdTagSet);
   delete pCmdTknVec;
   delete pCmdTagSet;
+*/
+    
+  TokenVec* pCmdTknVec = nullptr;;
+  TagSet* pCmdTagSet = nullptr;
 
+  Job* pJob = nullptr;
+  eEC eError = Api::ePrepareJob(pJob,"JobNm"_Stz,sCmd,sCmdTagStr,false,pCmdTknVec,pCmdTagSet);
+
+  
   if (eError) {
+    NEVER_REACH;
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();
@@ -334,8 +342,8 @@ void Step::vApiSpawnDemon(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::TRACE::bVerbose(C_VB_API))
-    pJobTagSet->vDumpSet();
+ // if (AM::TRACE::bVerbose(C_VB_API))
+ //   pJobTagSet->vDumpSet();
   
   Api::vForkDemon(pJob);
 

@@ -292,17 +292,34 @@ eEC Api::ePrepareJob(Job*& rpJob, Stz* szJobNm,
   eEC eError = EC_NONE;
 
   
-  RASSERT(bParsed);
+  //RASSERT(bParsed);
 
   
-  
+  if (! bParsed) {
+   rpCmdTknVec = TokenVec::pTokeniseSen(szCmd);
+   rpCmdTagSet = new TagSet;
+
+    TokenVec* pTagStrTknVec = TokenVec::pTokeniseSen(szCmdTagStr);
+    Api::vPopulateTagSet(rpCmdTagSet,pTagStrTknVec);
+    delete pTagStrTknVec;
+
+    eEC eError = Api::eParseCmd(rpCmdTknVec,rpCmdTagSet);
+    if (EC_NONE != eError) {
+      delete rpCmdTknVec;
+      rpCmdTknVec = nullptr;
+      delete rpCmdTagSet;
+      rpCmdTknVec = nullptr;
+      return eError;
+    }
+  }
   
   if (! rpJob) {
     
     eError = Api::eParseCmd(rpCmdTknVec,rpCmdTagSet);
-    if (EC_NONE != eError)
+    if (EC_NONE != eError) {
       return eError;
-
+    }
+    
     Stz* szJobNm = rpCmdTagSet->szValue(C_TAG_JOBNM);
     rpJob = Api::pAllocJob(szJobNm);
   }
