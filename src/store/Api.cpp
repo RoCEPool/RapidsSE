@@ -371,8 +371,9 @@ eEC Api::ePrepareJob(Job*& rpJob, Stz* szJobNm,
   
     
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    rpCmdTknVec->vDumpVec(false);
-    rpCmdTagSet->vDumpSet(true);
+    //rpCmdTknVec->vDumpVec(false);
+    //rpCmdTagSet->vDumpSet(true);
+    pJobTagSet->vDumpSet();
   }
       
   if (AM::bDeveloper() && rpCmdTknVec->nTokens() > C_1KB) {
@@ -449,7 +450,8 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the command
-  
+
+/*
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szCmd);
 
   TagSet* pCmdTagSet =  new TagSet;
@@ -460,15 +462,8 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   Job* pJob = Api::pAllocJob(szJobNm);
-
-  
   
   TagSet* pJobTagSet = pJob->pJobTags();
-
-  
-  
-  
-  
   
   eError = Api::ePrepareJob(pJob,"JobNm"_Stz,szCmd,nullptr,true,pCmdTknVec,pCmdTagSet);
 
@@ -478,14 +473,26 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   if (eError) {
     return eError;
   }
-    
+ 
+*/
+  
+  TokenVec* pCmdTknVec = nullptr;;
+  TagSet* pCmdTagSet = nullptr;
+
+  Job* pJob = nullptr;
+  eEC eError = Api::ePrepareJob(pJob,"JobNm"_Stz,szCmd,szWithTagStr,false,pCmdTknVec,pCmdTagSet);
+
+  if (eError) {
+    return eError;
+  }
+  
   rtJobId = pJob->tJobId();
    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // update the job tag set
   
 
-  //TagSet* pJobTagSet = pJob->pJobTags();
+  TagSet* pJobTagSet = pJob->pJobTags();
   
   if (szTagPath) {
     pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
