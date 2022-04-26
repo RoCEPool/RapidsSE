@@ -34,7 +34,6 @@
 : begun:begun
 
   // find the originating job
-  //[job] job.id@ ListedJob[].findOriginator discard
   [job].parentId@ ListedJob[].findOriginator discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

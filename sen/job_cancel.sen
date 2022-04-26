@@ -16,7 +16,6 @@
   // "cancel:cancel" .
 
   // find job to be canceled in participating job list
-  //[job] job.id@ ListedJob[].findParticipant discard
   [job].parentId@ ListedJob[].findParticipant discard
 
   // stall till job's previous phase (task) has completed
