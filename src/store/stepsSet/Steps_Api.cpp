@@ -150,11 +150,7 @@ void Step::vApiExecuteCommand(void)
   //Job* pJob = Api::pAllocJob(pSession);
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   Job* pJob = Api::pAllocJob(szJobNm);
-
-  TagSet* pJobTagSet = pJob->pJobTags();
-  
-  pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
-  
+    
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -`- - - - - - - - - -
   
@@ -324,8 +320,6 @@ void Step::vApiSpawnDemon(void)
   TagSet* pJobTagSet = pJob->pJobTags();
   //pJobTagSet->vDumpSet();
     
-  pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
 
   eError = Api::ePrepareJob(pJob,sCmd,pCmdTknVec,pCmdTagSet);

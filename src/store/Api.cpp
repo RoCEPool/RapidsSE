@@ -435,7 +435,6 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   
   TagSet* pJobTagSet = pJob->pJobTags();
-  pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
 
   
   
@@ -460,7 +459,6 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   //TagSet* pJobTagSet = pJob->pJobTags();
   
   if (szTagPath) {
-    //Stz* szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
     pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
   }
   
@@ -833,7 +831,7 @@ void Api::vCallBootSystemJob(void)
 
   // (no cmd to parse)
 
-  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -885,7 +883,7 @@ void Api::vCallStartSystemJob(void)
 
   // (no cmd to parse)
 
-  pJobTags->vInsert(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
