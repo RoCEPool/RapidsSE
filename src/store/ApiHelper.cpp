@@ -89,7 +89,7 @@ eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd)
   
   TagSet* pCmdTagSet = new TagSet;
   
-  eEC eError = ApiHelper::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
+  eEC eError = ApiHelper::ePrepareJob(rpJob,szCmd,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
   delete pCmdTagSet;
@@ -99,17 +99,18 @@ eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd)
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd,
+                           TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
-  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
-  if (EC_NONE != eError)
-    return eError;
-
-  //rpJob = Api::pAllocJob(m_pSession);
-  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
-  rpJob = Api::pAllocJob(szJobNm);
+//  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+//  if (EC_NONE != eError)
+//    return eError;
+//
+//  //rpJob = Api::pAllocJob(m_pSession);
+//  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+//  rpJob = Api::pAllocJob(szJobNm);
   
-  eError = Api::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
+  eEC eError = Api::ePrepareJob(rpJob,szCmd,pCmdTknVec,pCmdTagSet);
   
   return eError;
 }

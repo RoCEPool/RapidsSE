@@ -187,7 +187,7 @@ void SeDeputy::vRepeableJob(void)
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
+eEC SeDeputy::ePrepareJob(Stz* szCmd,TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
@@ -197,7 +197,7 @@ eEC SeDeputy::ePrepareJob(TokenVec* pCmdTknVec)
   vTrace("FolderPath: %s\n"_Stz,m_sFolderPath.szStz());
   pCmdTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
 
-  eEC eError = ApiHelper::ePrepareJob(m_pJob,pCmdTknVec,pCmdTagSet);
+  eEC eError = ApiHelper::ePrepareJob(m_pJob,szCmd,pCmdTknVec,pCmdTagSet);
   
   return eError;
 }

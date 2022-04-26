@@ -283,14 +283,19 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 /*----------------------------------------------------------------------------*/
 /* new a job and prepare it to execute a command                              */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+eEC Api::ePrepareJob(Job*& rpJob, Stz* szCmd,
+                     TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   _static_
 
-  //eEC eError = EC_NONE;
+  eEC eError = EC_NONE;
   
   if (! rpJob) {
     
+    eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
+    if (EC_NONE != eError)
+      return eError;
+
     Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
     rpJob = Api::pAllocJob(szJobNm);
   }
@@ -437,7 +442,7 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   
   
   
-  eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
+  eError = Api::ePrepareJob(pJob,szCmd,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
   delete pCmdTagSet;

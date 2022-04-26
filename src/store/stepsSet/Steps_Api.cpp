@@ -159,7 +159,7 @@ void Step::vApiExecuteCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -`- - - - - - - - - -
   
   
-  eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
+  eError = Api::ePrepareJob(pJob,sCmd,pCmdTknVec,pCmdTagSet);
 
   delete pCmdTknVec;
   delete pCmdTagSet;
@@ -328,7 +328,7 @@ void Step::vApiSpawnDemon(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
 
-  eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
+  eError = Api::ePrepareJob(pJob,sCmd,pCmdTknVec,pCmdTagSet);
   delete pCmdTknVec;
   delete pCmdTagSet;
 

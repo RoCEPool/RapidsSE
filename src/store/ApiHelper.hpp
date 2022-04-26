@@ -28,7 +28,7 @@ namespace STORE
 
     void vPipeoutResults(Op* pCurrOp, Operand* pOperand, Task* pTriggeringTask);
     eEC  ePrepareJob(Job*& rpJob, Stz* szCmd);
-    eEC  ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+    eEC  ePrepareJob(Job*& rpJob, Stz* szCmd, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
     void vPrintResults(Job* pJob);
   
     void vReapableJob(Job*& rpJob);
