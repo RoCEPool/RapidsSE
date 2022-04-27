@@ -97,8 +97,11 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
     
     pJob->vCascadePop();
 
-    Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
-    
+    TagSet* pJobTagSet = pJob->pJobTags();
+    //Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
+    Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+    //vTrace("szEntry: %s\n"_Stz,szEntry);
+
     pJob->vEntryPoint(szEntry);
 
     //AM::pHeaps()->vSetTraceFree(false);
@@ -401,6 +404,7 @@ eEC Api::ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 
   eEC eError = Api::eParseCmd(pCmdTknVec,pSynTagSet);
   if (EC_NONE != eError) {
+    delete pSynTagSet;
     return eError;
   }
 
@@ -419,7 +423,13 @@ eEC Api::ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
   rpJob->vCmd(sCmd);
 
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+  //vTrace("szEntry: %s\n"_Stz,szEntry);
   rpJob->vEntryPoint(szEntry);
+
+  eJK eJobKind = (eJK) pJobTagSet->iValue(C_TAG_JOBKIND);
+  rpJob->vJobKind(eJobKind);
+
+  delete pSynTagSet;
 
   return EC_NONE;
 }

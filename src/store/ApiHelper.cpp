@@ -91,6 +91,17 @@ eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd, Stz* szCmdTagStr,
 }
 
 /*----------------------------------------------------------------------------*/
+/* prepare job                                                                */
+/*----------------------------------------------------------------------------*/
+eEC ApiHelper::ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+{
+  eEC eError =
+    Api::ePrepareJob_2(rpJob,pCmdTknVec,pCmdTagSet);
+  
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print results                                                              */
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vPrintResults(Job* pJob)
