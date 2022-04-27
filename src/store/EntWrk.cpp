@@ -378,9 +378,9 @@ i8 EntWrk::iBuffer(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 i_Buffer = m_xEnt.iBuffer();
+  i8 i_PoolBuffer = m_xEnt.iBuffer();
   
-  return i_Buffer;
+  return i_PoolBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

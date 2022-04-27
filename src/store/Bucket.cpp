@@ -391,9 +391,9 @@ Stz* Bucket::szDumpContents(i8 i_Bucket)
   s4K sDumpBuffer = ""_Stz;
   if (nBuffers > 0) {
     sDumpBuffer.vCatSprint("  PtnId:%lld   Bkt:%lld   nBuffers:%lld\n"_Stz, m_tLglPtn.iAsI8(), i_Bucket, nBuffers);
-    for (i8 i_Buffer = 0; i_Buffer < nBuffers; i_Buffer++) {
+    for (i8 i_PoolBuffer = 0; i_PoolBuffer < nBuffers; i_PoolBuffer++) {
       i8 nRows = m_pCrwTablePtn->pRootCrwBuffer()->nRows();
-      sDumpBuffer.vCatSprint("     Buffer:%lld   PtnId:%lld  Bkt:%lld   nRows:%lld\n"_Stz, i_Buffer, m_tLglPtn.iAsI8(), i_Bucket, nRows);
+      sDumpBuffer.vCatSprint("     Buffer:%lld   PtnId:%lld  Bkt:%lld   nRows:%lld\n"_Stz, i_PoolBuffer, m_tLglPtn.iAsI8(), i_Bucket, nRows);
     }
   }
   return sDumpBuffer;

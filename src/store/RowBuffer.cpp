@@ -196,10 +196,10 @@ RowBuffer* RowBuffer::pRefdRowBuffer(Rrf& xRef)
 {
   _static_
 
-  i8 i_Buffer = xRef.iBuffer();
+  i8 i_PoolBuffer = xRef.iBuffer();
 
   HeapBuffer* pHeapBuffer =
-      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+      reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_PoolBuffer));
 
   RowBuffer* pRowBuffer =
       reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());

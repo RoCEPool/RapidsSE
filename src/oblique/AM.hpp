@@ -824,11 +824,6 @@ namespace OBLIQUE
     static LogicUnit* pTaskOpLogicUnit(Task* pTask);
     static i8   iTaskState(Task* pTask);
 
-     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-     // Arjun: Not used anywhere
-    static HeapBuffer* pToHeapBuffer(i8 iBufferNo);
-    static Object* pToLargeObect(i8 iBufferNo);
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vWelcomeText(s256& sWelcome);
     static void vWordSeeDoes(Word* pDoesWord, CodeCell* aFip,

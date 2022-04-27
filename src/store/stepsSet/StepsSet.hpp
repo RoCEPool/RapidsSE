@@ -165,7 +165,7 @@ public:
   // bp
   void vBpReadBufferPool(void);
   void vBpWriteBufferPool(void);
-  void vBpFreeBuffers(void);
+  void vBpFreePoolBuffers(void);
   void vBpFreePercent(void);
   void vBpFreeSpace(void);
   void vBpInUseSpace(void);

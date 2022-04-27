@@ -200,7 +200,7 @@ extern d8 C_D8_MID;
 //------------------------------------------------------------------------------
 
 #include "PoolBuffer.hpp"
-#include "FreeBuffer.hpp"
+#include "FreePoolBuffer.hpp"
 #include "FreeChunk.hpp"
 #include "FreedNot.hpp"
 #include "BufferPool.hpp"
@@ -210,6 +210,7 @@ extern d8 C_D8_MID;
 #include "BufferAddress.h"
 #include "BufferId.hpp"
 #include "BufferMap.hpp"
+#include "FileMap.hpp"
 
 #include "HeapBuffer.hpp"
 #include "Heaps.hpp"

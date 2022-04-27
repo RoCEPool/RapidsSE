@@ -60,7 +60,7 @@ i8 BufferNo::iToBufferNo(Object* pObject)
 /*----------------------------------------------------------------------------*/
 HeapBuffer* BufferNo::pToHeapBuffer(i8 iBufferNo)
 {
-  PoolBuffer* pPoolBuffer = pToPoolBuffer(iBufferNo);
+  PoolBuffer* pPoolBuffer = FileMap::pToPoolBuffer(iBufferNo);
   
   HeapBuffer* pHeapBuffer = reinterpret_cast<HeapBuffer*>(pPoolBuffer);
 
@@ -85,7 +85,7 @@ LinkedBuffer* BufferNo::pToLinkedBuffer(i8 iBufferNo)
 /*----------------------------------------------------------------------------*/
 PoolBuffer* BufferNo::pToPoolBuffer(i8 iBufferNo)
 {
-  PoolBuffer* pPoolBuffer = gpBufferPool->pToPoolBuffer(iBufferNo);
+  PoolBuffer* pPoolBuffer = FileMap::pToPoolBuffer(iBufferNo);
     
   return pPoolBuffer;
 }
@@ -156,7 +156,7 @@ PoolBuffer* BufferNo::pGetPoolBuffer(void)
   if (C_UNKNOWN == m_iBufferNo)
     return nullptr;
   
-  PoolBuffer* pPoolBuffer = BufferNo::pToPoolBuffer(m_iBufferNo);
+  PoolBuffer* pPoolBuffer = FileMap::pToPoolBuffer(m_iBufferNo);
   
   return pPoolBuffer;
 }

@@ -348,11 +348,12 @@ SizeHeap gxaSizeHeap[]
   { 'F' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__F__
   { sizeof(Fifo),               HT_T_TINY    ,0 FILL }, // CN_FIFO
   { sizeof(File),               HT_T_TINY    ,0 FILL }, // CN_FILE
+  { sizeof(FileMap),            HT_INVALID   ,0 FILL }, // CN_FILEMAP
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 FILL }, // CN_FIPVAL
   { sizeof(Flatten), /*yes*/    HT_T_TINY    ,0 FILL }, // CN_FLATTEN
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 FILL }, // CN_FLTVAL
   { sizeof(Format),             HT_T_TINY    ,0 FILL }, // CN_FORMAT
-  { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 FILL }, // CN_FREEBUFFER
+  { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 FILL }, // CN_FREEPOOLBUFFER
   { sizeof(FreeChunk),          HT_INVALID   ,0 FILL }, // CN_FREECHUNK
   { sizeof(FreedNot),           HT_INVALID   ,0 FILL }, // CN_FREEDNOT
   { 0,                          HT_INVALID   ,0 FILL }, // CN_FREEITEM

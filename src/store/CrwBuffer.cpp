@@ -141,10 +141,10 @@ CrwBuffer* CrwBuffer::pRefdCrwBuffer(Rrf& xRef)
 {
   _static_
   
-  i8 i_Buffer = xRef.iBuffer();
+  i8 i_PoolBuffer = xRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+  reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_PoolBuffer));
   
   CrwBuffer* pCrwBuffer =
   reinterpret_cast<CrwBuffer*>(pHeapBuffer->aFirstChunk());
@@ -672,11 +672,11 @@ void CrwBuffer::vRestore(void)
   // set the table to nullptr (this pointer is not valid any more)
   vTable(nullptr);
   
-  // get the buffer no
-  i8 i_Buffer = iBufferNo();
+  // get the pool buffer no
+  i8 i_PoolBuffer = iBufferNo();
   
   // restore the bufferNo
-  m_iBufferNo = i_Buffer;
+  m_iBufferNo = i_PoolBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -40,11 +40,11 @@ void PersistenceHelper::vWriteBuffers(Stz* sFilePath)
   
   i8 iStart  = TickingDevice::iGetTick();
   
-  for (i8 i_Buffer = gpBufferPool->iBufferFirst();
-       i_Buffer <= gpBufferPool->iBufferLast();
-       i_Buffer++) {
+  for (i8 i_PoolBuffer = gpBufferPool->iBufferFirst();
+       i_PoolBuffer <= gpBufferPool->iBufferLast();
+       i_PoolBuffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
+    PoolBuffer* pBuffer = FileMap::pToPoolBuffer(i_PoolBuffer);
     bool bResult = pFile->bWriteBytes((void*)pBuffer,C_SIZE_POOL_BUFFER);
     ASSERT(bResult);
     UNUSED(bResult);

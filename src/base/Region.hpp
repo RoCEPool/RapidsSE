@@ -12,6 +12,7 @@ namespace BASE
                         void *aRegionAddr);
     static void vCreate(s32& sRegionName, bool bVerbose,
                         void *aRegionAddr, i8 iRegionSize,
+                        i8 iNonPageableSize,
                         bool bTouch, bool bProgress,
                         bool bLock, bool bRestart,
                         bool bDontFree, bool bFreeSpecific);

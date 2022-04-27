@@ -13,8 +13,11 @@ namespace BASE
   class BufferPool : public Object
   {
   friend class BASE::PoolHelper;
-  private:
+  friend class FileMap;
+
+  protected:
     i8      m_nBuffers;   // number of buffers in pool
+    i8 m_nNonPageableBuffers; // starting set of buffers to never page out
     PoolBuffer* m_pBase;  // starting address of pool (large section)
     PoolBuffer* m_pLimit; // address after pool
     bool    m_bDontFree;  // dont actually free objects back to heap
@@ -43,6 +46,7 @@ namespace BASE
     void  operator delete(void* pRegion);
     
     BufferPool(Stz* aRegionName, i8 iRegionSize,
+               i8 iNonPageableSize,
                bool bTouch, bool bProgress,
                bool bDontFree, bool bFreeSpecific);
    ~BufferPool(void) noexcept(false);
@@ -81,18 +85,17 @@ namespace BASE
     Stz* szShmNm(void);
     void vTakeBuffers(i8 nSpareBuffers);
     i8   iTotalSpace(void);
-    PoolBuffer* pToPoolBuffer(i8 i_Buffer);
-    FreeBuffer* pToFreeBuffer(i8 i_Buffer);
-    FreeBuffer* pToFreeBuffer(PoolBuffer* pBuffer);
+    FreePoolBuffer* pToFreePoolBuffer(i8 i_PoolBuffer);
+    FreePoolBuffer* pToFreePoolBuffer(PoolBuffer* pBuffer);
     i8   iUsedSpace(void);
     bool bValidAddress(const void* aAddress);
     bool bVerifyBoundaries(void);
     void vVerifyPool(void);
   
   private:
-    FreeBuffer* pPopFreeBuffer(void);
+    FreePoolBuffer* pPopFreePoolBuffer(void);
     void vPrintProgress(void);
-    void vPushFreeBuffer(PoolBuffer* pBuffer);
+    void vPushFreePoolBuffer(PoolBuffer* pBuffer);
 
     Footer* aFooter(void);
    };

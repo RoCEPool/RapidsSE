@@ -78,10 +78,10 @@ DataBuffer* DataBuffer::pRefdDataBuffer(Rrf& xRef)
 {
   _static_
   
-  i8 i_Buffer = xRef.iBuffer();
+  i8 i_PoolBuffer = xRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+  reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_PoolBuffer));
   
   DataBuffer* pDataBuffer =
   reinterpret_cast<DataBuffer*>(pHeapBuffer->aFirstChunk());
@@ -312,9 +312,9 @@ i8 DataBuffer::iBufferNo(void)
 
   PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(this);
   
-  i8 i_Buffer = pPoolBuffer->iBufferNo();
+  i8 i_PoolBuffer = pPoolBuffer->iBufferNo();
 
-  return i_Buffer;
+  return i_PoolBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

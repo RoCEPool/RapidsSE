@@ -101,11 +101,12 @@ enum eCN : u2 // Class Number
   /* */ CN__F__,
   /* */ CN_FIFO,
   /* */ CN_FILE,
+  /* */ CN_FILEMAP,
   /* */ CN_FIPVAL,
   /* */ CN_FLATTEN,
   /* */ CN_FLTVAL,
   /* */ CN_FORMAT,
-  /* */ CN_FREEBUFFER,
+  /* */ CN_FREEPOOLBUFFER,
   /* */ CN_FREECHUNK,
   /* */ CN_FREEDNOT,
   /* */ CN_FREEITEM,
@@ -507,11 +508,12 @@ static Stz* aCN[]
   /* */ "_F__"_Stz,                 // CN__F__
   /* */ "FIFO"_Stz,                 // CN_FIFO
   /* */ "FILE"_Stz,                 // CN_FILE
+  /* */ "FILEMAP"_Stz,              // CN_FILEMAP
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
   /* */ "FORMAT"_Stz,               // CN_FORMAT
-  /* */ "FREEBUFFER"_Stz,           // CN_FREEBUFFER
+  /* */ "FREEPOOLBUFFER"_Stz,       // CN_FREEPOOLBUFFER
   /* */ "FREECHUNK"_Stz,            // CN_FREECHUNK
   /* */ "FREEDNOT"_Stz,             // CN_FREEDNOT
   /* */ "FREEITEM"_Stz,             // CN_FREEITEM

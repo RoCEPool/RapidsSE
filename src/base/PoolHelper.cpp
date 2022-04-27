@@ -250,11 +250,11 @@ void PoolHelper::vObjectSummary(void)
     iCountObjects[i_Index] = 0;
   
 
-  for (i8 i_Buffer = gpBufferPool->iBufferFirst();
-       i_Buffer <= gpBufferPool->iBufferLast();
-       i_Buffer++) {
+  for (i8 i_PoolBuffer = gpBufferPool->iBufferFirst();
+       i_PoolBuffer <= gpBufferPool->iBufferLast();
+       i_PoolBuffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
+    PoolBuffer* pBuffer = FileMap::pToPoolBuffer(i_PoolBuffer);
     iCountObjects[pBuffer->eGetClassNo()]++;
   }
   
@@ -456,11 +456,11 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Buffer = gpBufferPool->iBufferFirst();
-       i_Buffer <= gpBufferPool->iBufferLast();
-       i_Buffer++) {
+  for (i8 i_PoolBuffer = gpBufferPool->iBufferFirst();
+       i_PoolBuffer <= gpBufferPool->iBufferLast();
+       i_PoolBuffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
+    PoolBuffer* pBuffer = FileMap::pToPoolBuffer(i_PoolBuffer);
     
     eCN eClass = pBuffer->eGetClassNo();
         
@@ -861,11 +861,11 @@ void PoolHelper::vWordList(i8 iEpoch)
   PoolBuffer* pMediumTransient = nullptr;
   PoolBuffer* pSmallTransient  = nullptr;
   
-  for (i8 i_Buffer = gpBufferPool->iBufferFirst();
-       i_Buffer <= gpBufferPool->iBufferLast();
-       i_Buffer++) {
+  for (i8 i_PoolBuffer = gpBufferPool->iBufferFirst();
+       i_PoolBuffer <= gpBufferPool->iBufferLast();
+       i_PoolBuffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
+    PoolBuffer* pBuffer = FileMap::pToPoolBuffer(i_PoolBuffer);
     
     if (CN_MEDIUMTRANSIENT == pBuffer->eGetClassNo())
       pMediumTransient = pBuffer;

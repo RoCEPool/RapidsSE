@@ -65,9 +65,9 @@ namespace BASE
     {
       PoolBuffer* pBuffer = pWithinPoolBuffer(pObject);
     
-      i8 i_Buffer = pBuffer->iBufferNo();
+      i8 i_PoolBuffer = pBuffer->iBufferNo();
     
-      return i_Buffer;
+      return i_PoolBuffer;
     }
   
   };

@@ -56,7 +56,7 @@ AttachMap::AttachMap(bool bNoFree)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
   
   gpAttachMap = this;
-  
+//  gpAttachMap->vRecordArguments(&gxCmdLineArgs);
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Created attach map %p: sizeof(AttachMap)=%lldB\n"_Stz,
           gpAttachMap,
@@ -81,6 +81,7 @@ AttachMap::AttachMap(bool bNoFree)
   // create the heaps
   m_xHeaps.vInit();
 
+  m_pFileMap        = new FileMap();
   m_pBucketMap      = nullptr;
   m_pDicRoot        = new Dic("__dicRoot"_Stz);
 #ifdef WITH_HASHMAP

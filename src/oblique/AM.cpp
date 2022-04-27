@@ -2413,7 +2413,7 @@ bool AM::TRACE::bVerbose(Stz* szVBtag)
   
   TagSet* pTags;
   
-  if (! gpAttachMap) {
+  if (! gpAttachMap || gxCmdLineArgs.m_xSysArgs.m_bVerbose != gpAttachMap->m_xSysArgs.m_bVerbose) {
   
     if (gxCmdLineArgs.m_xSysArgs.m_bVerbose)
       return true;
@@ -3143,27 +3143,6 @@ PsxThd* AM::pThisTLSPsxThd(void) {
   Thread* pThread = Thread::pThisTLSThread();
   PsxThd* pPsxThd =pThread->pPsxThd();
   return pPsxThd;
-}
-
-HeapBuffer* AM::pToHeapBuffer(i8 i_Buffer) {
-  
-  HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
-  
-  return pHeapBuffer;
-
-}
-
-
-
-Object* AM::pToLargeObect(i8 i_Buffer) {
-    
-  HeapBuffer* pHeapBuffer = pToHeapBuffer(i_Buffer);
-  
-  Object* pObject = reinterpret_cast<Object*>(pHeapBuffer->aFirstChunk());
-
-  return pObject;
-
 }
 
 void AM::vWelcomeText(s256& sWelcome) {

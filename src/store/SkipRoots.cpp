@@ -30,9 +30,9 @@ SkipRoots::SkipRoots(void)
 
   
   PoolBuffer* pBuffer = PoolBuffer::pWithinPoolBuffer((Object*)this);
-  i8 i_Buffer = pBuffer->iBufferNo();
+  i8 i_PoolBuffer = pBuffer->iBufferNo();
 
-  vBuffer(i_Buffer);
+  vBuffer(i_PoolBuffer);
   vSkipLevels(nLvlLevels);
   vElmSeqSize(0);
 

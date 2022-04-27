@@ -435,10 +435,10 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Rrf& xRrf)
 {
   _static_
   
-  i8 i_Buffer = xRrf.iBuffer();
+  i8 i_PoolBuffer = xRrf.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-    _pHeapBuffer(gpBufferPool->pToPoolBuffer(i_Buffer));
+    _pHeapBuffer(FileMap::pToPoolBuffer(i_PoolBuffer));
   
   EntBuffer* pEntBuffer =
     _pEntBuffer(pHeapBuffer->aFirstChunk());
@@ -1453,14 +1453,14 @@ void EntBuffer::vRestore(void)
   }
   
   // get the buffer no
-  i8 i_Buffer = iBufferNo();
+  i8 i_PoolBuffer = iBufferNo();
     
   // now restore the row id's to point to this buffer no
   for (Ent* aEnt = aLeadEntry();
        aEnt != nullptr;
        aEnt = aNextEntry(aEnt, 0)) {
     
-    Rrf xRef(i_Buffer, aEnt->rxRef().iItem(), aEnt->nSkipLevels());
+    Rrf xRef(i_PoolBuffer, aEnt->rxRef().iItem(), aEnt->nSkipLevels());
     aEnt->vRef(xRef);
   }
   
@@ -1736,10 +1736,10 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
   
   Rrf xRef;
   xRef = aFirstEntry->rxRef();
-  i8 i_Buffer = xRef.iBuffer();
+  i8 i_PoolBuffer = xRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+  reinterpret_cast<HeapBuffer*>(FileMap::pToPoolBuffer(i_PoolBuffer));
   
   EntBuffer* pChildBuffer =
   reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
