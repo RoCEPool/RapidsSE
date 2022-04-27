@@ -46,7 +46,7 @@ void FileMap::operator delete(void* pFileMapAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FileMap::FileMap(void)
-    : Object(CN_FILEMAP)
+    : PoolBuffer(CN_FILEMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP);
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;

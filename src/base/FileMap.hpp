@@ -8,7 +8,7 @@
 
 namespace BASE
 {
-  class FileMap : public Object
+  class FileMap : public PoolBuffer
   {
   public:
     Stz* m_szFilePath;
