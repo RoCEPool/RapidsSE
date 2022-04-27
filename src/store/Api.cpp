@@ -49,104 +49,6 @@ Job* Api::pAllocJob(Stz* szJobNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* execute job (spawn job and wait for completion)                            */
-/*----------------------------------------------------------------------------*/
-void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
-{
-  _static_
-
-  pJob->vMutexCreate();
-  pJob->vOutputCreate();
-  pJob->vOutputBeginProc();
-
-  //JobId tJobId = pJob->tJobId();
- 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  for (;;) {
-  
-    i8 iPid = AM::PROCESS::iSePid();
-    if (!Process::bTestPid(iPid)) {
-      // SE is not running anymore!
-      vTrace("Cannot find pid %lld\n"_Stz, iPid);
-      return;
-    }
-    
-    RASSERT(! pJob->pTask());
-    
-    Api::vMutexLock(pJob);
-    RASSERT(JS_LOCKED == pJob->eJobState());
-    
-    pJob->vTaskCreate();
-    
-    pJob->vResponseTimerStart();
-    
-    Scheduler::vTaskApi_AddPrompt(pJob->pTask());
-
-    if (pJob->bHasTag(C_TAG_NOWAIT)) {
-      Api::vMutexUnlock(pJob);
-      return;
-    }
-
-    Api::vMutexWaitCond(pJob);
-    
-    pJob->vResponseTimerUpdate();
-    
-    Api::vMutexUnlock(pJob);
-
-    
-    if (! pJob->bHasCascade()) {
-      return;
-    }
-          
-    pJob->vCascadeReset();
-    
-    pJob->vCascadeSet(pJob->szCascade());
-    
-    pJob->vCascadePop();
-
-    TagSet* pJobTagSet = pJob->pJobTags();
-    //Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
-    Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
-    //vTrace("szEntry: %s\n"_Stz,szEntry);
-
-    pJob->vEntryPoint(szEntry);
-
-    //AM::pHeaps()->vSetTraceFree(false);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* fork job (spawn job but don't wait for completion)                         */
-/*----------------------------------------------------------------------------*/
-void Api::vForkJob(Job*& rpJob, Op* pResponseOp)
-{
-  _static_
-  
-  RASSERT(! rpJob->pTask());
-  
-  RASSERT(rpJob->bHasTag(C_TAG_NOWAIT));
-
-
-  //Api::vMutexLock(rpJob);
-  //RASSERT(JS_LOCKED == rpJob->eJobState());
-  
-  rpJob->vTaskCreate();
-  
-  rpJob->vResponseTimerStart();
-  
-  Scheduler::vTaskApi_AddPrompt(rpJob->pTask());
-  
-  //Api::vMutexUnlock(rpJob);
-  
-  rpJob = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract paths                                                              */
 /*----------------------------------------------------------------------------*/
 void Api::vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
@@ -249,6 +151,104 @@ bool Api::bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
   
   return true;
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute job (spawn job and wait for completion)                            */
+/*----------------------------------------------------------------------------*/
+void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
+{
+  _static_
+
+  pJob->vMutexCreate();
+  pJob->vOutputCreate();
+  pJob->vOutputBeginProc();
+
+  //JobId tJobId = pJob->tJobId();
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (;;) {
+  
+    i8 iPid = AM::PROCESS::iSePid();
+    if (!Process::bTestPid(iPid)) {
+      // SE is not running anymore!
+      vTrace("Cannot find pid %lld\n"_Stz, iPid);
+      return;
+    }
+    
+    RASSERT(! pJob->pTask());
+    
+    Api::vMutexLock(pJob);
+    RASSERT(JS_LOCKED == pJob->eJobState());
+    
+    pJob->vTaskCreate();
+    
+    pJob->vResponseTimerStart();
+    
+    Scheduler::vTaskApi_AddPrompt(pJob->pTask());
+
+    if (pJob->bHasTag(C_TAG_NOWAIT)) {
+      Api::vMutexUnlock(pJob);
+      return;
+    }
+
+    Api::vMutexWaitCond(pJob);
+    
+    pJob->vResponseTimerUpdate();
+    
+    Api::vMutexUnlock(pJob);
+
+    
+    if (! pJob->bHasCascade()) {
+      return;
+    }
+          
+    pJob->vCascadeReset();
+    
+    pJob->vCascadeSet(pJob->szCascade());
+    
+    pJob->vCascadePop();
+
+    TagSet* pJobTagSet = pJob->pJobTags();
+    //Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
+    Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+    //vTrace("szEntry: %s\n"_Stz,szEntry);
+
+    pJob->vEntryPoint(szEntry);
+
+    //AM::pHeaps()->vSetTraceFree(false);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* fork job (spawn job but don't wait for completion)                         */
+/*----------------------------------------------------------------------------*/
+void Api::vForkJob(Job*& rpJob, Op* pResponseOp)
+{
+  _static_
+  
+  RASSERT(! rpJob->pTask());
+  
+  RASSERT(rpJob->bHasTag(C_TAG_NOWAIT));
+
+
+  //Api::vMutexLock(rpJob);
+  //RASSERT(JS_LOCKED == rpJob->eJobState());
+  
+  rpJob->vTaskCreate();
+  
+  rpJob->vResponseTimerStart();
+  
+  Scheduler::vTaskApi_AddPrompt(rpJob->pTask());
+  
+  //Api::vMutexUnlock(rpJob);
+  
+  rpJob = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -381,28 +381,6 @@ void Api::vReapJobsOnce(bool bForce)
   if (bForce || AM::SYSTEM::bReapEnabled())
     while (Api::bReapJob())
       {;}
-}
-
-/*----------------------------------------------------------------------------*/
-/* fork command                                                               */
-/*----------------------------------------------------------------------------*/
-eEC Api::eForkCommand(TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
-                        Op* pResponseOp, JobId& rtJobId)
-{
-  _static_
-
-  Job* pJob = nullptr;
-  eEC eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
-  
-  if (EC_NONE != eError)
-    return eError;
-  
-  rtJobId = pJob->tJobId();
-  
-  Api::vForkJob(pJob,pResponseOp);
-  RASSERT(! pJob);
-  
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

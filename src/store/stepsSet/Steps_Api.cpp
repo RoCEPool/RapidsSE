@@ -196,12 +196,28 @@ void Step::vApiForkCommand(void)
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sWithTagStr);
   Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
+  /*
   eEC eError = Api::eForkCommand(pCmdTknVec,pCmdTagSet,
                                    pResponseOp,tForkedJobId);
 
+  */
   
+  Job* pJob = nullptr;
+  eEC eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
   
+  if (EC_NONE != eError) {
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+    EXIT();
+    return;
+  }
   
+  tForkedJobId = pJob->tJobId();
+  
+  Api::vForkJob(pJob,pResponseOp);
+  RASSERT(! pJob);
+  
+
   
   
   

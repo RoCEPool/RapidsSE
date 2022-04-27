@@ -16,20 +16,16 @@ namespace STORE
   
   static Job* pAllocJob(Stz* szJobNm);
 
-  static void vExecuteJob(Job* pJob, TagSet* pCmdTagSet);
   static void vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
   static bool bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+
+  static void vExecuteJob(Job* pJob, TagSet* pCmdTagSet);
   static void vForkJob(Job*& rpJob, Op* pResponseOp);
-  
   static eEC  ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
 
   static void vReapableJob(Job*& rpJob);
- 
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);
-
-  static eEC  eForkCommand(TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
-                             Op* pResponseOp, JobId& rtJobId);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
