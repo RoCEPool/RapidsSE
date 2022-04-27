@@ -411,7 +411,8 @@ eEC Api::ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 
   TagSet* pJobTagSet = rpJob->pJobTags();
   pJobTagSet->vCopy(pSynTagSet);
-  pCmdTagSet->vCopy(pSynTagSet);
+  pJobTagSet->vCopy(pCmdTagSet);
+  //pCmdTagSet->vCopy(pSynTagSet);
   
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);

@@ -301,7 +301,7 @@ void Step::vApiSpawnDemon(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+/*
   TokenVec* pCmdTknVec = nullptr;;
   TagSet* pCmdTagSet = nullptr;
 
@@ -315,7 +315,29 @@ void Step::vApiSpawnDemon(void)
     m_pDataStack->vPushInt(false);
     EXIT();
   }
+*/
+  
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
+  
+  
+  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  TagSet* pCmdTagSet = new TagSet;
+  Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
+
+
+  Job* pJob = nullptr;
+  eEC eError = Api::ePrepareJob_2(pJob,pCmdTknVec,pCmdTagSet);
+
+  if (eError) {
+    delete pCmdTknVec;
+    delete pCmdTagSet;
     
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+    EXIT();
+    return;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   Api::vForkDemon(pJob);
