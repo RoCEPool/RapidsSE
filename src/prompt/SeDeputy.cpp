@@ -187,10 +187,19 @@ void SeDeputy::vRepeableJob(void)
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC SeDeputy::ePrepareJob(Stz* szCmd,TokenVec* pCmdTknVec)
+eEC SeDeputy::ePrepareJob(Stz* szCmd, TokenVec* pCmdTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
+  TokenVec* pCmdTknVec_test = new TokenVec;
+  pCmdTknVec_test->vTokeniseCpp(szCmd);
+  pCmdTknVec_test->vStripSemicolon();
+  
+  vTrace("ePrepareJob: %s\n"_Stz,szCmd);
+
+  pCmdTknVec->vDumpVec(0);
+  pCmdTknVec_test->vDumpVec(0);
+
   TagSet* pCmdTagSet = this->pCmdTagSet();
   
   pCmdTagSet->vDumpSet();
@@ -201,6 +210,8 @@ eEC SeDeputy::ePrepareJob(Stz* szCmd,TokenVec* pCmdTknVec)
   pCmdTagSet->vToString(sCmdTagStr);
 
   eEC eError = ApiHelper::ePrepareJob(m_pJob,szCmd,sCmdTagStr,pCmdTknVec,pCmdTagSet);
+  
+  delete pCmdTknVec_test;
   
   return eError;
 }

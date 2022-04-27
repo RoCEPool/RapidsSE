@@ -386,6 +386,41 @@ eEC Api::ePrepareJob(Job*& rpJob, Stz* szJobNm,
   return EC_NONE;
 }
 
+
+
+/*----------------------------------------------------------------------------*/
+/* new a job for given command and prepare to execute it                      */
+/*----------------------------------------------------------------------------*/
+eEC Api::ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec)
+{
+  _static_
+  
+  TagSet* pSynTagSet = new TagSet;
+
+  eEC eError = Api::eParseCmd(pCmdTknVec,pSynTagSet);
+  if (EC_NONE != eError) {
+    return eError;
+  }
+
+  Stz* szJobNm = pSynTagSet->szValue(C_TAG_JOBNM);
+  RASSERT(szJobNm);
+  
+  rpJob = Api::pAllocJob(szJobNm);
+
+  TagSet* pJobTagSet = rpJob->pJobTags();
+  pJobTagSet->vCopy(pSynTagSet);
+  
+  sSTMT sCmd;
+  pCmdTknVec->vVecToString(sCmd,0,true);
+  rpJob->vCmd(sCmd);
+
+  Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+  rpJob->vEntryPoint(szEntry);
+
+  return EC_NONE;
+}
+
+
 /*----------------------------------------------------------------------------*/
 /* set job as reapable                                                        */
 /*----------------------------------------------------------------------------*/
