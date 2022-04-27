@@ -85,17 +85,17 @@ namespace BASE
     Stz* szShmNm(void);
     void vTakeBuffers(i8 nSpareBuffers);
     i8   iTotalSpace(void);
-    FreeBuffer* pToFreeBuffer(i8 i_PoolBuffer);
-    FreeBuffer* pToFreeBuffer(PoolBuffer* pBuffer);
+    FreePoolBuffer* pToFreePoolBuffer(i8 i_PoolBuffer);
+    FreePoolBuffer* pToFreePoolBuffer(PoolBuffer* pBuffer);
     i8   iUsedSpace(void);
     bool bValidAddress(const void* aAddress);
     bool bVerifyBoundaries(void);
     void vVerifyPool(void);
   
   private:
-    FreeBuffer* pPopFreeBuffer(void);
+    FreePoolBuffer* pPopFreePoolBuffer(void);
     void vPrintProgress(void);
-    void vPushFreeBuffer(PoolBuffer* pBuffer);
+    void vPushFreePoolBuffer(PoolBuffer* pBuffer);
 
     Footer* aFooter(void);
    };

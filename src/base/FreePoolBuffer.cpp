@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FreeBuffer.cpp -- buffer when its in the buffer pool free chain            */
+/* FreePoolBuffer.cpp -- buffer when its in the buffer pool free chain            */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PoolBuffer* FreeBuffer::_pFreeBuffer(void* aAddr)
+PoolBuffer* FreePoolBuffer::_pFreePoolBuffer(void* aAddr)
 {
   PoolBuffer* pBuffer = reinterpret_cast<PoolBuffer*>(aAddr);
   
-  RASSERT_TYPE(pBuffer,CN_FREEBUFFER);
+  RASSERT_TYPE(pBuffer, CN_FREEPOOLBUFFER);
   
   return pBuffer;
 }
@@ -19,12 +19,12 @@ PoolBuffer* FreeBuffer::_pFreeBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor -- never called                                                */
 /*----------------------------------------------------------------------------*/
-FreeBuffer::FreeBuffer(void)
-: PoolBuffer(CN_FREEBUFFER) // correct
+FreePoolBuffer::FreePoolBuffer(void)
+: PoolBuffer(CN_FREEPOOLBUFFER) // correct
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FREEPOOLBUFFER, _FOOTER_);
   
-  _checkInitialised_(CN_FREEBUFFER);
+  _checkInitialised_(CN_FREEPOOLBUFFER);
   
   NEVER_REACH;
 }
@@ -32,9 +32,9 @@ FreeBuffer::FreeBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* destructor -- never called                                                 */
 /*----------------------------------------------------------------------------*/
-FreeBuffer::~FreeBuffer(void) noexcept(false)
+FreePoolBuffer::~FreePoolBuffer(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FREEPOOLBUFFER, _FOOTER_);
   
   NEVER_REACH;
 }
@@ -42,9 +42,9 @@ FreeBuffer::~FreeBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get next free buffer                                                       */
 /*----------------------------------------------------------------------------*/
-i8 FreeBuffer::iNextFree(void)
+i8 FreePoolBuffer::iNextFree(void)
 {  
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FREEPOOLBUFFER, _FOOTER_);
   
   return m_iNextFree;
 }
@@ -52,9 +52,9 @@ i8 FreeBuffer::iNextFree(void)
 /*----------------------------------------------------------------------------*/
 /* set next free buffer                                                       */
 /*----------------------------------------------------------------------------*/
-void FreeBuffer::vNextFree(i8 iNextFree)
+void FreePoolBuffer::vNextFree(i8 iNextFree)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_FREEPOOLBUFFER, _FOOTER_);
   
   m_iNextFree = iNextFree;
 }
@@ -62,7 +62,7 @@ void FreeBuffer::vNextFree(i8 iNextFree)
 /*----------------------------------------------------------------------------*/
 /* set footer                                                                 */
 /*----------------------------------------------------------------------------*/
-void FreeBuffer::vSetFooter(void)
+void FreePoolBuffer::vSetFooter(void)
 {
   _setFooter_();
 }
@@ -70,12 +70,12 @@ void FreeBuffer::vSetFooter(void)
 /*----------------------------------------------------------------------------*/
 /* zero data                                                                  */
 /*----------------------------------------------------------------------------*/
-void FreeBuffer::vZeroData(void)
+void FreePoolBuffer::vZeroData(void)
 {
-  Stz* aData  = aAdd<Stz*>(this,sizeof(FreeBuffer));
-  i8   nBytes = C_SIZE_POOL_BUFFER - sizeof(FreeBuffer) - sizeof(Footer);
+  Stz* aData  = aAdd<Stz*>(this,sizeof(FreePoolBuffer));
+  i8   nBytes = C_SIZE_POOL_BUFFER - sizeof(FreePoolBuffer) - sizeof(Footer);
   
-  MemLib::vSet(aData,0x00,nBytes,CN_FREEBUFFER);
+  MemLib::vSet(aData, 0x00, nBytes, CN_FREEPOOLBUFFER);
 }
 
 /*============================================================================*/

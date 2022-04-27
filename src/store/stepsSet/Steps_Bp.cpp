@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Bp(void)
 {
-  vAddStep("bp::freeBuffers"_Stz,    &Step::vBpFreeBuffers);
+  vAddStep("bp::freePoolBuffers"_Stz,    &Step::vBpFreePoolBuffers);
   vAddStep("bp::freePercent"_Stz,    &Step::vBpFreePercent);
   vAddStep("bp::freeSpace"_Stz,      &Step::vBpFreeSpace);
   vAddStep("bp::inUseSpace"_Stz,     &Step::vBpInUseSpace);
@@ -51,15 +51,15 @@ void Step::vBpWriteBufferPool(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bp::freeBuffers -- push number of free buffers in buffer pool onto stack   */
+/* bp::freePoolBuffers -- push number of free buffers in buffer pool onto stack   */
 /*----------------------------------------------------------------------------*/
-void Step::vBpFreeBuffers(void)
+void Step::vBpFreePoolBuffers(void)
 {
   ENTRY();
   
-  i8 nFreeBuffers = gpBufferPool->nFreeCount();
+  i8 nFreePoolBuffers = gpBufferPool->nFreeCount();
   
-  m_pDataStack->vPushInt(nFreeBuffers);
+  m_pDataStack->vPushInt(nFreePoolBuffers);
   
   EXIT();
 }

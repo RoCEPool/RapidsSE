@@ -23,7 +23,7 @@ LinkedBuffer* BASE::_pLinkedBuffer(void* aAddress)
     
     ASSERT(CN_CRWBUFFER  == eClassNo ||
            CN_EACHROWBUFFER == eClassNo ||
-           CN_FREEBUFFER == eClassNo ||
+           CN_FREEPOOLBUFFER == eClassNo ||
            CN_ROWBUFFER  == eClassNo );
   }
   

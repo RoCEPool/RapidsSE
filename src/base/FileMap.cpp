@@ -98,27 +98,27 @@ void FileMap::vInitialise(void)
       }
     }
 
-    FreeBuffer* pFreeBuffer = gpBufferPool->pToFreeBuffer(i_PoolBuffer);
+    FreePoolBuffer* pFreePoolBuffer = gpBufferPool->pToFreePoolBuffer(i_PoolBuffer);
 
-    pFreeBuffer->vSetMagic();
-    pFreeBuffer->vSetClassNo(CN_FREEBUFFER);
+    pFreePoolBuffer->vSetMagic();
+    pFreePoolBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
 
-    //pFreeBuffer->aFooter()->vSetFooter();
+    //pFreePoolBuffer->aFooter()->vSetFooter();
     if (bTouch)
-      pFreeBuffer->vZeroData();
+      pFreePoolBuffer->vZeroData();
 
-    pFreeBuffer->vSetFooter();
-    pFreeBuffer->vBufferNo(i_PoolBuffer);
+    pFreePoolBuffer->vSetFooter();
+    pFreePoolBuffer->vBufferNo(i_PoolBuffer);
     i_PoolBuffer = gpBufferPool->iBufferNext(i_PoolBuffer);
-    pFreeBuffer->vNextFree(i_PoolBuffer);
+    pFreePoolBuffer->vNextFree(i_PoolBuffer);
 
     gpBufferPool->m_nFreeCount++;
   }
 
-  FreeBuffer* pLastBuffer = gpBufferPool->pToFreeBuffer(gpBufferPool->iBufferLast());
+  FreePoolBuffer* pLastBuffer = gpBufferPool->pToFreePoolBuffer(gpBufferPool->iBufferLast());
 
   pLastBuffer->vSetMagic();
-  pLastBuffer->vSetClassNo(CN_FREEBUFFER);
+  pLastBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
   //pLastBuffer->aFooter()->vSetFooter();
   if (bTouch)
     pLastBuffer->vZeroData();

@@ -2591,7 +2591,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
       
       eCN eClass = (eCN)i_Class;
       
-      if (eClass == CN_FREEBUFFER || eClass == CN_HEAPBUFFER)
+      if (eClass == CN_FREEPOOLBUFFER || eClass == CN_HEAPBUFFER)
         continue;
 
       // check if this class to be ignored for memory leak detection
@@ -2638,7 +2638,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
     
     eCN eClass = (eCN)i_Class;
     
-    if (eClass == CN_FREEBUFFER || eClass == CN_HEAPBUFFER)
+    if (eClass == CN_FREEPOOLBUFFER || eClass == CN_HEAPBUFFER)
       continue;
 
     // check if this class to be ignored for memory leak detection

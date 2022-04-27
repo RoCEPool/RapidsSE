@@ -48,7 +48,7 @@
 : node::checkEnoughBuffers
 
   // return true if enough buffers, others return error code
-  bp::freeBuffers C_LOW_BUFFERS > if
+  bp::freePoolBuffers C_LOW_BUFFERS > if
     true
   else
     EC_LOW_MEMORY
@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 : node::testEnoughBuffers
 
-  bp::freeBuffers C_LOW_BUFFERS > if
+  bp::freePoolBuffers C_LOW_BUFFERS > if
     true
   else
     false
