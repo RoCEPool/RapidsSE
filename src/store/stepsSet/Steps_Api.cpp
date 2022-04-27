@@ -343,7 +343,7 @@ void Step::vApiSpawnDemon(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   pJob->pJobTags()->vReplace(C_TAG_NOWAIT,1);
-  Api::vForkDemon(pJob);
+  Api::vForkJob(pJob,nullptr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

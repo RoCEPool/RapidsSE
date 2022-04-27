@@ -121,23 +121,6 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* form given job (as demon)                                                  */
-/*----------------------------------------------------------------------------*/
-void Api::vForkDemon(Job*& rpJob)
-{
-  _static_
-  
-  RASSERT(! rpJob->pTask());
-
-  RASSERT(rpJob->bHasTag(C_TAG_NOWAIT));
-                
-  rpJob->vTaskCreate();
-  Scheduler::vTaskApi_AddService(rpJob->pTask());
-  
-  rpJob = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* fork job (spawn job but don't wait for completion)                         */
 /*----------------------------------------------------------------------------*/
 void Api::vForkJob(Job*& rpJob, Op* pResponseOp)
@@ -149,8 +132,8 @@ void Api::vForkJob(Job*& rpJob, Op* pResponseOp)
   RASSERT(rpJob->bHasTag(C_TAG_NOWAIT));
 
 
-  Api::vMutexLock(rpJob);
-  RASSERT(JS_LOCKED == rpJob->eJobState());
+  //Api::vMutexLock(rpJob);
+  //RASSERT(JS_LOCKED == rpJob->eJobState());
   
   rpJob->vTaskCreate();
   
@@ -158,7 +141,7 @@ void Api::vForkJob(Job*& rpJob, Op* pResponseOp)
   
   Scheduler::vTaskApi_AddPrompt(rpJob->pTask());
   
-  Api::vMutexUnlock(rpJob);
+  //Api::vMutexUnlock(rpJob);
   
   rpJob = nullptr;
 }

@@ -19,9 +19,7 @@ namespace STORE
   static void vExecuteJob(Job* pJob, TagSet* pCmdTagSet);
   static void vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
   static bool bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-  static void vForkDemon(Job*& rpJob);
   static void vForkJob(Job*& rpJob, Op* pResponseOp);
-  static eEC  eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
   
   static eEC  ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
 
@@ -60,7 +58,8 @@ namespace STORE
   static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
 
   private:
-  
+  static eEC  eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+
   static void vCreateTaskForOp(Op* pOp);
   static void vResetTaskForJob(Job* pJob);
 
