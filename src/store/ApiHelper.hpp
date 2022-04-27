@@ -27,7 +27,6 @@ namespace STORE
     void* pMetaData(void*);
 
     void vPipeoutResults(Op* pCurrOp, Operand* pOperand, Task* pTriggeringTask);
-    eEC  ePrepareJob(Job*& rpJob, Stz* szCmd);
     eEC  ePrepareJob(Job*& rpJob, Stz* szCmd, Stz* szCmdTagStr,
                      TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
     void vPrintResults(Job* pJob);
