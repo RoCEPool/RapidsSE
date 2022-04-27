@@ -27,7 +27,7 @@ namespace STORE
                           Stz* szCmd, Stz* szCmdTagStr,
                           bool bParsed, TokenVec*& rpCmdTknVec, TagSet*& rpCmdTagSet);
 
-  static eEC  ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec);
+  static eEC  ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
 
   static void vReapableJob(Job*& rpJob);
 

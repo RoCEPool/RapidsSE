@@ -132,7 +132,7 @@ void Step::vApiExecuteCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
-  
+/*
   TokenVec* pCmdTknVec = nullptr;;
   TagSet* pCmdTagSet = nullptr;
 
@@ -146,14 +146,31 @@ void Step::vApiExecuteCommand(void)
     EXIT();
     return;
   }
+*/
+  
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
+  TagSet* pCmdTagSet = new TagSet;
 
-  
-  
+  Job* pJob = nullptr;
+  eEC eError = Api::ePrepareJob_2(pJob,pCmdTknVec,pCmdTagSet);
+
+  if (eError) {
+    delete pCmdTknVec;
+    delete pCmdTagSet;
+    
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+    EXIT();
+    return;
+  }
   
 
   pJob->vStmtListCreate();
   Api::vExecuteJob(pJob,pCmdTagSet);
   
+  delete pCmdTknVec;
+  delete pCmdTagSet;
+
   m_pDataStack->vPushInt(true);
   
   EXIT();

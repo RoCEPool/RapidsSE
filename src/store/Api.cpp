@@ -391,10 +391,12 @@ eEC Api::ePrepareJob(Job*& rpJob, Stz* szJobNm,
 /*----------------------------------------------------------------------------*/
 /* new a job for given command and prepare to execute it                      */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec)
+eEC Api::ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   _static_
   
+  //vTrace("Api::ePrepareJob_2\n"_Stz);
+
   TagSet* pSynTagSet = new TagSet;
 
   eEC eError = Api::eParseCmd(pCmdTknVec,pSynTagSet);
@@ -409,6 +411,7 @@ eEC Api::ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec)
 
   TagSet* pJobTagSet = rpJob->pJobTags();
   pJobTagSet->vCopy(pSynTagSet);
+  pCmdTagSet->vCopy(pSynTagSet);
   
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
