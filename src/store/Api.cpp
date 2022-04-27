@@ -129,6 +129,8 @@ void Api::vForkDemon(Job*& rpJob)
   
   RASSERT(! rpJob->pTask());
 
+  RASSERT(rpJob->bHasTag(C_TAG_NOWAIT));
+                
   rpJob->vTaskCreate();
   Scheduler::vTaskApi_AddService(rpJob->pTask());
   
@@ -768,7 +770,8 @@ void Api::vCallStartSystemJob(void)
   // (no cmd to parse)
 
   pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
-  
+  pJobTags->vReplace(C_TAG_NOWAIT,1);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pStartJob->vResponseTimerStart();
