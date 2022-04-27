@@ -57,7 +57,7 @@ AttachMap::AttachMap(bool bNoFree)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
   
   gpAttachMap = this;
-  
+//  gpAttachMap->vRecordArguments(&gxCmdLineArgs);
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("Created attach map %p: sizeof(AttachMap)=%lldB\n"_Stz,
           gpAttachMap,

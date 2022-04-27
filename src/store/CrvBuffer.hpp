@@ -28,9 +28,6 @@ namespace STORE
   
     CrvBuffer(StreamDef* pStreamDef);
    ~CrvBuffer(void) noexcept(false);
-  
-    static Crv* aToCrv(i8 iBufferNo,i8 iItemNo);
-    static CrvBuffer* aToCrvBuffer(i8 iBufferNo);
 
     i8   iAddCrwVersion(Rrf xwRef, Crw* pCrw);
     i8   nCrv(void);
