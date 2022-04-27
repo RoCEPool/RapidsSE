@@ -142,6 +142,8 @@ void Api::vForkJob(Job*& rpJob, Op* pResponseOp)
   Scheduler::vTaskApi_AddPrompt(rpJob->pTask());
   
   Api::vMutexUnlock(rpJob);
+  
+  rpJob = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -558,6 +560,27 @@ eEC Api::eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
   return EC_NONE;
 }
 
+/*----------------------------------------------------------------------------*/
+/* fork command                                                               */
+/*----------------------------------------------------------------------------*/
+eEC Api::eForkCommand_2(TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                        Op* pResponseOp, JobId& rtJobId)
+{
+  _static_
+
+  Job* pJob = nullptr;
+  eEC eError = Api::ePrepareJob_2(pJob,pCmdTknVec,pCmdTagSet);
+  
+  if (EC_NONE != eError)
+    return eError;
+  
+  rtJobId = pJob->tJobId();
+  
+  Api::vForkJob(pJob,pResponseOp);
+  RASSERT(! pJob);
+  
+  return EC_NONE;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

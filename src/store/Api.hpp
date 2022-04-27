@@ -39,6 +39,8 @@ namespace STORE
 
   static eEC  eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
                            Op* pResponseOp, JobId& rtJobId);
+  static eEC  eForkCommand_2(TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                             Op* pResponseOp, JobId& rtJobId);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
