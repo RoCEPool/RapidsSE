@@ -799,7 +799,6 @@ namespace OBLIQUE
     static void vSpawnTaskDedicated_op(Op* pOp);
     static void vSpawnTask_op(Op* pOp);
     static void vSpawnTask_receivedJob(Job* pJob);
-    static void vSpawnTask_demonJob(Job* pJob);
     static Stz* szSummary(s256& sSummary);
     static Stz* szSummaryDir(s256& sSummary, Stz* szNote);
     static bool bSupervisorHalt(void);

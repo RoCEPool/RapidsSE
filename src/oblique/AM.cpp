@@ -3192,14 +3192,6 @@ void AM::vSpawnTask_receivedJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vSpawnTask_demonJob(Job* pJob)
-{
-  Api::vForkDemon(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
 void AM::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
   Api::vScheduleNextPhase(pParticipantJob,pActiviating2PcTask);
