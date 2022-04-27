@@ -145,6 +145,9 @@ void Api::vForkJob(Job*& rpJob, Op* pResponseOp)
   _static_
   
   RASSERT(! rpJob->pTask());
+  
+  RASSERT(rpJob->bHasTag(C_TAG_NOWAIT));
+
 
   Api::vMutexLock(rpJob);
   RASSERT(JS_LOCKED == rpJob->eJobState());
