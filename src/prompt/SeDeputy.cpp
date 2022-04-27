@@ -205,7 +205,7 @@ eEC SeDeputy::ePrepareJob(Stz* szCmd, TokenVec* pCmdTknVec)
 
   //eEC eError = ApiHelper::ePrepareJob(m_pJob,szCmd,sCmdTagStr,pCmdTknVec,pCmdTagSet);
 
-  eEC eError = ApiHelper::ePrepareJob_2(m_pJob,pCmdTknVec,pCmdTagSet);
+  eEC eError = ApiHelper::ePrepareJob(m_pJob,pCmdTknVec,pCmdTagSet);
 
   return eError;
 }

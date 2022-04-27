@@ -81,10 +81,10 @@ void ApiHelper::vPipeoutResults(Op* pCurrOp,
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+eEC ApiHelper::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   eEC eError =
-    Api::ePrepareJob_2(rpJob,pCmdTknVec,pCmdTagSet);
+    Api::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
   
   return eError;
 }

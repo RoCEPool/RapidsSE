@@ -136,7 +136,7 @@ void Step::vApiExecuteCommand(void)
   TagSet* pCmdTagSet = new TagSet;
 
   Job* pJob = nullptr;
-  eEC eError = Api::ePrepareJob_2(pJob,pCmdTknVec,pCmdTagSet);
+  eEC eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
 
   if (eError) {
     delete pCmdTknVec;
@@ -196,7 +196,7 @@ void Step::vApiForkCommand(void)
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sWithTagStr);
   Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
-  eEC eError = Api::eForkCommand_2(pCmdTknVec,pCmdTagSet,
+  eEC eError = Api::eForkCommand(pCmdTknVec,pCmdTagSet,
                                    pResponseOp,tForkedJobId);
 
   
@@ -328,7 +328,7 @@ void Step::vApiSpawnDemon(void)
 
 
   Job* pJob = nullptr;
-  eEC eError = Api::ePrepareJob_2(pJob,pCmdTknVec,pCmdTagSet);
+  eEC eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
 
   if (eError) {
     delete pCmdTknVec;

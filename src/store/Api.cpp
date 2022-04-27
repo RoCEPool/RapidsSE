@@ -288,7 +288,7 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 /*----------------------------------------------------------------------------*/
 /* new a job for given command and prepare to execute it                      */
 /*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+eEC Api::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   _static_
   
@@ -386,13 +386,13 @@ void Api::vReapJobsOnce(bool bForce)
 /*----------------------------------------------------------------------------*/
 /* fork command                                                               */
 /*----------------------------------------------------------------------------*/
-eEC Api::eForkCommand_2(TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+eEC Api::eForkCommand(TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                         Op* pResponseOp, JobId& rtJobId)
 {
   _static_
 
   Job* pJob = nullptr;
-  eEC eError = Api::ePrepareJob_2(pJob,pCmdTknVec,pCmdTagSet);
+  eEC eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
   
   if (EC_NONE != eError)
     return eError;

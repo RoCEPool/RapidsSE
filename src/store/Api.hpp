@@ -23,7 +23,7 @@ namespace STORE
   static void vForkJob(Job*& rpJob, Op* pResponseOp);
   static eEC  eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
   
-  static eEC  ePrepareJob_2(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+  static eEC  ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
 
   static void vReapableJob(Job*& rpJob);
 
@@ -33,7 +33,7 @@ namespace STORE
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);
 
-  static eEC  eForkCommand_2(TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+  static eEC  eForkCommand(TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                              Op* pResponseOp, JobId& rtJobId);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
