@@ -31,7 +31,6 @@ namespace STORE
     static void vCreateFileNames(void);
     static void vCreateTmpDir(void);
     static eBO  eDecodeCommandLine(void);
-    static void vDeleteSession(Session* pSession);
     static void vEnvFlags(void);
     static void vErrorHandler(Error* pError);
     static void vGetCopyright(s256& sCopyright);

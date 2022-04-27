@@ -17,12 +17,7 @@ success
 
 //------------------------------------------------------------------------------
 // create an index on custkey
-CREATE INDEX customer_idx1 ON customer(c_custkey);
-affected: 0
-
-//------------------------------------------------------------------------------
-// create an index on nationkey
-CREATE INDEX customer_idx2 ON customer(c_nationkey);
+create index IxC_CUSTKEY ON CUSTOMER  (C_CUSTKEY)  ;
 affected: 0
 
 // load the table
@@ -32,10 +27,7 @@ success
 select count(*) from customer;
 rows: (150)
 
-compactidx customer customer_idx1;
-success
-
-compactidx customer customer_idx2;
+compactidx customer IxC_CUSTKEY;
 success
 
 CLEANUP {

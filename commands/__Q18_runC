@@ -45,40 +45,42 @@ begin
     | Q18_0_a
 
   stage Q18_0_a on all partitions :
-    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
-    //| filter 2 "type boolean $1 136 =="
-    | ordAgg 2 " OrdGroupBy  type integer $1 aggregates type integer $K1 , type decimal )  $5 sum  "
-    | filter 2 " type BOOLEAN  $2 100.00  >  "
+    indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | ordAgg " OrdGroupBy  type integer $1 aggregates type integer $K1 , type decimal )  $5 sum  "
+    | filter  " type BOOLEAN  $2 300.00  >  "
     | combined 0
-    | next //broadcast
-        /*
+    | next broadcast
+
   stage stageQ18_1_b on all partitions :
-    indexJoin 2 orders IxO_ORDERKEY "bound $I1 $L1 =="
+    indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
     | combined 0
-    | next //broadcast
+    | next broadcast
+
   stage stageQ18_1_c on all partitions :
-    project 2 "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
+    project "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
     | combined 0
     | next
 
   stage stageQ18_1_d on all partitions :
-    indexJoin 2 customer IxC_CUSTKEY "bound $I1 $L1 =="
+    indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
     | combined 0
     | next
+
   stage stageQ18_1_e on all partitions :
-    aggreg 2 " groupBy type integer $1 , type integer $2 aggregates type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum "
+    aggreg " groupBy type integer $1 , type integer $2 aggregates type integer as CUSTKEY $K1 , type integer as ORDERKEY $K2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum "
     | combined 0
     | next
   stage stageQ18_1_f on all nodes :
-     aggreg 2 " groupBy type integer $1 , type integer $2 aggregates type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum "
+     aggreg " groupBy type integer $1 , type integer $2 aggregates type integer as CUSTKEY $K1 , type integer as ORDERKEY $K2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum "
      | combined 0
      | next
+
   stage stageQ18_1_g on origin :
-    aggreg 2 " groupBy type integer $1 , type integer $2 aggregates type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum "
-    | limit 2 100
+    aggreg " groupBy type integer $1 , type integer $2 aggregates type integer as CUSTKEY $K1 , type integer as ORDERKEY $K2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum "
+    | limit 100
     | combined 0
     | stageLast
-    */
+
   stage stageLast on origin :
     output
     | sink

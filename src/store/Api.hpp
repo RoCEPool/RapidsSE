@@ -4,7 +4,6 @@
 #pragma once
 
 #include "eAC.h"
-#include "eSK.h"
 
 namespace STORE
 {
@@ -15,9 +14,6 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // external API functions
   
-  static Session* pAllocSession(eSK eSession);
-  static void vFreeSession(Session* pSession);
-
   static Job* pAllocJob(Stz* szJobNm);
 
   static void vExecuteJob(Job* pJob, TagSet* pCmdTagSet);
@@ -26,7 +22,9 @@ namespace STORE
   static void vForkDemon(Job*& rpJob);
   static void vForkJob(Job*& rpJob, Op* pResponseOp);
   static eEC  eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-  static eEC  ePrepareJob(Job* pJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+  static eEC  ePrepareJob(Job*& rpJob, Stz* szJobNm,
+                          Stz* szCmd, Stz* szCmdTagStr,
+                          bool bParsed, TokenVec*& rpCmdTknVec, TagSet*& rpCmdTagSet);
   static void vReapableJob(Job*& rpJob);
 
   static void vSubmitJob(Job* pJob);
@@ -53,9 +51,7 @@ namespace STORE
   static void vSpawnTask_dedicatedOp(Op* pOp);
 
   static void vSpawnTask_receivedJob(Job* pJob);
-  
-  static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
-    
+      
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   static void vIncStatistics(eAC eApiCall);

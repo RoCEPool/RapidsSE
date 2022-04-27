@@ -12,14 +12,12 @@
 
 #include "Grid.hpp"
 #include "Api.hpp"
-#include "Session.hpp"
 #include "Op.hpp"
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
 #include "JobList.hpp"
-#include "Sessions.hpp"
 
 #include "TagConstants.h"
 

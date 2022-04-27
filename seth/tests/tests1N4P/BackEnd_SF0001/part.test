@@ -18,13 +18,8 @@ success
 
 
 //------------------------------------------------------------------------------
-// create an index on p_partkey
-CREATE INDEX part_idx1 ON part(p_partkey);
-affected: 0
-
-//------------------------------------------------------------------------------
-// create an index on p_brand
-CREATE INDEX part_idx2 ON part(p_brand);
+// create the indexes
+CREATE INDEX IxP_PARTKEY ON part(p_partkey);
 affected: 0
 
 // load the table
@@ -34,7 +29,7 @@ success
 select count(*) from part;
 rows: (200)
 
-compactidx part part_idx1;
+compactidx part IxP_PARTKEY;
 success
 
 CLEANUP {

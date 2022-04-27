@@ -283,6 +283,16 @@ namespace OBLIQUE
       static EventHandlers* pEventHandlers(void);
     };
 
+    class JLIST
+    {
+    public:
+      static bool bFindJob(Job* pJob, bool bLockJob=false);
+      static Job* pFindJob(JobId tJobId, bool bLockJob=false);
+      static void vInsertJob(Job* pJob);
+      static JobList* pJobsList(void);
+      static void vRemoveJob(Job* pJob);
+    };
+  
     class JOB
     {
     public:
@@ -466,13 +476,6 @@ namespace OBLIQUE
       static void vWhereAmI(void);
     };
   
-    class SESSION
-    {
-    public:
-      static i8 iInternalSession(void);
-      static Session* pInternalSession(void);
-    };
-
     class SHOW
     {
     public:
@@ -629,7 +632,6 @@ namespace OBLIQUE
     static Stz* szLogTxtFile(void);
     
     //
-    static Sessions* pSessions(void);
     static bool bBootError(void);
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
@@ -735,12 +737,10 @@ namespace OBLIQUE
     static Crv* aCrv(DataBuffer* pDataBuffer, i8 iItem);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vDumpApi(void);
-
+ 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static eCN eJobClass(Job* pJob);
     static Stz* szJobNm(Job* pJob);
-    static Session* pJobSession(Job* pJob);
     static TagSet* pJobTags(Job* pJob);
     static bool bJobWasReceived(Job* pJob);
 
@@ -794,7 +794,6 @@ namespace OBLIQUE
     static void vFreeInc(RU_Memory* pRU_Memory, eCN eAllocClass);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static Session* pSessionGet(i8 iOriginId,  i8 i_Session);
         
     static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
     static void vSpawnTaskDedicated_op(Op* pOp);

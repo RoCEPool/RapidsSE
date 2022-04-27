@@ -292,6 +292,7 @@ struct Combined_T
   void*   m_aRowBuffer;
 
   // index scan T
+  i8      m_iIndexScan;
   void*   m_aIndexT;
   void*   m_aIndexTreeT;
   void*   m_aIndexDefT;

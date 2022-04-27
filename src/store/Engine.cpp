@@ -14,7 +14,6 @@
 #include "IndexStream.hpp"
 #include "Node.hpp"
 #include "Grid.hpp"
-#include "Session.hpp"
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Engine.hpp"
@@ -25,8 +24,6 @@
 #include "Jobs.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
-
-#include "Sessions.hpp"
 
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
@@ -653,15 +650,6 @@ eBO Engine::eDecodeCommandLine(void)
   if (gxCmdLineArgs.m_xSysArgs.m_bAddNode)                     return BO_ADD_NODE;
 
   return BO_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete an se session                                                       */
-/*----------------------------------------------------------------------------*/
-void Engine::vDeleteSession(Session* pSession)
-{
-  //delete pSession;
-  AM::pSessions()->vFreeSession(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1533,9 +1521,6 @@ void Engine::vStartSystem(void)
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("  Creating Sessions\n"_Stz);
 
-
-  gpAttachMap->m_pSessions = new Sessions;
-  gpAttachMap->m_pSessions->vAllocInternal();
 
   // create the tx set
   gpAttachMap->m_pTxSet = new TxSet();

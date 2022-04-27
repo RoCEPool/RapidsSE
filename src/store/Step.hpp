@@ -173,7 +173,6 @@ namespace STORE
     static void vAddSteps_Shell(void);
     static void vAddSteps_Socket(void);
     static void vAddSteps_SqlCompiler(void);
-    static void vAddSteps_SsnState(void);
     static void vAddSteps_Stage(void);
     static void vAddSteps_StageOfOp(void);
     static void vAddSteps_Stats(void);

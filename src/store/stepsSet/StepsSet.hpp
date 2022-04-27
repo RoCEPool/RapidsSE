@@ -840,12 +840,14 @@ public:
   void vJobLastJobIdFetch(void);
   void vJobLastJobIdStore(void);
 
+  void vJobMasterJob(void);
+
   void vJobNameFetch(void);
   void vJobNoWaitFetch(void);
 
-  void vJobMasterJob(void);
   void vJobOriginNodeIdFetch(void);
 
+  void vJobParentIdFetch(void);
   void vJobParticipantNodeIdFetch(void);
   void vJobParticipantNodeIdStore(void);
   void vJobPipeToOp0(void);
@@ -874,8 +876,6 @@ public:
   void vJobReportOperators(void);
 
   void vJobScheduleNextPhase(void);
-  void vJobSessionFetch(void);
-  void vJobSessionStateFetch(void);
   void vJobShow(void);
   void vJobSignalWaiter(void);
   void vJobSpawn(void);
@@ -1774,14 +1774,6 @@ public:
   void vSqlCompilerSetOpValidate(void);
   void vSqlCompilerStageMarkers(void);
   void vSqlCompilerTransliterate(void);
-
-  // ssn
-  void vSsnIncBegun(void);
-  void vSsnIncCancelled(void);
-  void vSsnIncEnded(void);
-  void vSsnIncExecuted(void);
-  void vSsnSenLoc(void);
-  void vSsnTraceSession(void);
 
   // stage
   void vStageGet(void);

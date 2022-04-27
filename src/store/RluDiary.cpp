@@ -6,8 +6,6 @@
 
 #include "RluDiary.hpp"
 
-#include "ePP.h"
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -213,7 +211,7 @@ void RluDiary::vReportDiary(Stz *szFilePath)
     
     if (m_xaDiaryEnt[i_Ent].m_iAction)
       
-      pFile->vPrint("%lld,%lld,%lld,%lld,%lld,%s,%lld,%lld,%lld,%s,%s\n"_Stz,
+      pFile->vPrint("%lld,%lld,%lld,%lld,%lld,%s,%lld,%lld,%lld,%s\n"_Stz,
              
                     i_Ent,
                     (i8)m_xaDiaryEnt[i_Ent].m_iThreadNo,
@@ -228,7 +226,6 @@ void RluDiary::vReportDiary(Stz *szFilePath)
                     (i8)m_xaDiaryEnt[i_Ent].m_nNanoSecs,
                     (i8)m_xaDiaryEnt[i_Ent].m_nNanoSecs - nPrevNanoSecs,
 
-                    aPP[m_xaDiaryEnt[i_Ent].m_iAction],
                     AM::szEnumText(m_xaDiaryEnt[i_Ent].m_i_ActEnumGroup,
                                           m_xaDiaryEnt[i_Ent].m_i_ActEnum)
 

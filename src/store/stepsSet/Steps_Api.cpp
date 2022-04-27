@@ -14,7 +14,6 @@
 #include "Node_I.hpp"
 #include "Grid.hpp"
 #include "Api.hpp"
-#include "Session.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
 #include "Job.hpp"
@@ -24,7 +23,6 @@
 #include "Procedure.hpp"
 
 #include "MY.hpp"
-#include "ePP.h"
 #include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
@@ -132,53 +130,26 @@ void Step::vApiExecuteCommand(void)
   
   
   
-  Session* pSession = Api::pAllocSession(SK_INTERNAL);
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tokenise the request
+ 
   
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
+  TokenVec* pCmdTknVec = nullptr;;
+  TagSet* pCmdTagSet = nullptr;
 
-  TagSet* pCmdTagSet =  new TagSet;
-  pCmdTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
-
-  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
-  if (EC_NONE != eError) {
-    delete pCmdTknVec;
-    delete pCmdTagSet;
-    Api::vFreeSession(pSession);
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
-    EXIT();
-    return;
-   }
-  
-  //Job* pJob = Api::pAllocJob(pSession);
-  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
-  Job* pJob = Api::pAllocJob(szJobNm);
-  pJob->vSession(pSession);
-
-  TagSet* pJobTagSet = pJob->pJobTags();
-  
-  pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -`- - - - - - - - - -
-  
-  
-  eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
-
-  delete pCmdTknVec;
-  delete pCmdTagSet;
+  Job* pJob = nullptr;
+  eEC eError = Api::ePrepareJob(pJob,"JobNm"_Stz,sCmd,sWithTagStr,false,pCmdTknVec,pCmdTagSet);
 
   if (eError) {
     
-    Api::vFreeSession(pSession);
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();
     return;
   }
+
+  
+  
+  
 
   pJob->vStmtListCreate();
   Api::vExecuteJob(pJob,pCmdTagSet);
@@ -313,45 +284,23 @@ void Step::vApiSpawnDemon(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  
-  TagSet* pCmdTagSet = new TagSet;
-  
-  TokenVec* pTagStrTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
-  Api::vPopulateTagSet(pCmdTagSet,pTagStrTknVec);
-  delete pTagStrTknVec;
-
-  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
-  if (EC_NONE != eError)
-    NEVER_REACH;
-  
-  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
-
-  Job* pJob = Api::pAllocJob(szJobNm);
-  TagSet* pJobTagSet = pJob->pJobTags();
-  //pJobTagSet->vDumpSet();
     
-  pJobTagSet->vReplace(C_TAG_PATH,C_SE_PATH);
-  pJobTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
+  TokenVec* pCmdTknVec = nullptr;;
+  TagSet* pCmdTagSet = nullptr;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - -` - - - - - - - - - -
+  Job* pJob = nullptr;
+  eEC eError = Api::ePrepareJob(pJob,"JobNm"_Stz,sCmd,sCmdTagStr,false,pCmdTknVec,pCmdTagSet);
 
-  eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
-  delete pCmdTknVec;
-  delete pCmdTagSet;
-
+  
   if (eError) {
+    NEVER_REACH;
     m_pDataStack->vPushInt(eError);
     m_pDataStack->vPushInt(false);
     EXIT();
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (AM::TRACE::bVerbose(C_VB_API))
-    pJobTagSet->vDumpSet();
-  
+    
   Api::vForkDemon(pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

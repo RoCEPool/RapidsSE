@@ -36,12 +36,7 @@
   // "ended:ended" .
 
   // find the originating job
-  [job] job.id@ ListedJob[].findOriginator discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // increment the number of ended jobs received in api state
-  ListedJob[] ssn::incEnded
-  ListedJob[] ssn::traceSession
+  [job].parentId@ ListedJob[].findOriginator discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

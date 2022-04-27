@@ -10,7 +10,7 @@
 #include "eRS.h"
 
 #include "JobMetrics.hpp"
-#include "CmdId.hpp"
+#include "JobId.hpp"
 #include "Output.hpp"
 #include "Statement.hpp"
 
@@ -35,17 +35,16 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // universally immutable information                    UNIVERSAL
 
-    JobId       m_tJobId;     // this job's id
-    s32         m_sJobNm;     // name of job
-    eJK         m_eJobKind;   // job kind: (needs work)
+    JobId   m_tJobId;      // this job's id
+    JobId   m_tParentId;   // parents command id
+    s32     m_sJobNm;      // name of job
+    eJK     m_eJobKind;    // job kind: (needs work)
 
-    Atomic      m_noActiveOps; // number of active ops
+    Atomic  m_noActiveOps; // number of active ops
 
     // -- command and tags
     TagSet m_oJobTags;  // tags for the job
 
-    i8 m_i_Session;  // which session in node's session array
-    CmdId m_tCmdId;
   
     b8 m_bWasForked;
   
@@ -122,10 +121,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Job(Stz*  szJobNm,
-        i8    i_Session,  // which session in session array
-        CmdId tCmdId
-       );
+    Job(Stz* szJobNm, JobId tParentId);
 
    ~Job(void) noexcept(false);
   
@@ -141,7 +137,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vCascadePop(void);
     void vCascadeReset(void);
     void vCascadeSet(Stz* szCascadeCmd);
-    CmdId tCmdId(void);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
@@ -168,7 +163,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool bIsPipelineLocal(void);
   
     JobId tJobId(void);
-    void vJobId(JobId tJobId);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
     eJK  eJobKind(void);
@@ -205,6 +199,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);
   
+    JobId tParentId(void);
     i8   iParticipantNodeId(void);
     void vParticipantNodeId(i8 i_Node);
     Pipeline* pPipeline(void);
@@ -222,9 +217,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vResponseTimerStart(void);
     void vResponseTimerUpdate(void);
 
-    i8   i_Session(void);
-    Session* pSession(void);
-    void vSession(Session* pSession);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
     StmtList*  pStmtList(void);

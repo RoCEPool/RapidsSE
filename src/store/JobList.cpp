@@ -105,6 +105,37 @@ void JobList::vDropLock(void) {
 /*----------------------------------------------------------------------------*/
 /* find job in skip list matching given job id                                */
 /*----------------------------------------------------------------------------*/
+bool JobList::bFindJob(Job* pJob, bool bLockJob)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_JOBLIST, _FOOTER_);
+
+  Job *pJobFound = nullptr;
+
+  RASSERT(m_eJobList == JL_JOBS);
+
+  auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
+    bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);
+    return bMoveRight;
+  };
+
+  vGrabLock();
+  pJobFound = _pJob(m_pJobSkipList->pFindByKey(bfMoveRightTest,
+                                          Job::vPrintJobNode));
+  
+  if (pJobFound && bLockJob)
+    pJobFound->vGrabLock();
+  
+  vDropLock();
+
+  if (pJobFound)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job in skip list matching given job id                                */
+/*----------------------------------------------------------------------------*/
 Job *JobList::pFindJob(JobId tJobId, bool bLockJob)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOBLIST, _FOOTER_);
@@ -183,16 +214,18 @@ void JobList::vInsertJob(Job *pJob) {
          (JL_LOCAL == m_eJobList && !pJob->bWasReceived()) ||
          (JL_ORIGINATING == m_eJobList && !pJob->bWasReceived()) ||
          (JL_PARTICIPATING == m_eJobList && pJob->bWasReceived()) ||
-         (JL_RETIRED == m_eJobList)
+         (JL_RETIRED == m_eJobList) ||
+         (JL_JOBS == m_eJobList) 
+
   );
 
-
-  pJob->vJobList(m_eJobList);
+  if (JL_JOBS != m_eJobList)
+    pJob->vJobList(m_eJobList);
 
 
   bool bWasInserted;
 
-  if (JL_RETIRED == m_eJobList) {
+  if (JL_RETIRED == m_eJobList || JL_JOBS == m_eJobList) {
 
     auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
       bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);
@@ -291,9 +324,9 @@ void JobList::vRemoveJob(Job *pJob) {
   vGrabLock();
   ASSERT(m_okLock.bIsLocked());
 
-  ASSERT(m_eJobList == pJob->eJobList());
+  ASSERT(JL_JOBS == m_eJobList || m_eJobList == pJob->eJobList());
 
-  if (JL_RETIRED == m_eJobList) {
+  if (JL_RETIRED == m_eJobList || JL_JOBS == m_eJobList) {
     auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
 
       bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);

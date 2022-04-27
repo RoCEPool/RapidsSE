@@ -93,6 +93,7 @@ Stencil::Stencil(void)
   m_xStageOps.m_pPostProjectOp  = nullptr;
   m_xStageOps.m_pLimitOp        = nullptr;
 
+  m_xStageOps.m_sLabelOrdAgg = ""_Stz;
   m_xStageOps.m_sHashExpr = ""_Stz;
 
   m_pBannerHead  = new CodeSynth;
@@ -620,7 +621,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       if ( ! pPrevOp->szOpNm()->bSame("aggreg"_Stz) ) {
-        pShape = pSketchFilter(pStream, pOp, ePrevStencil);
+        pShape = pSketchFilter(pStream, pOp, ePrevStencil, sLabelLoop);
         vAppend(pShape);
       }
     }
@@ -1527,7 +1528,7 @@ void Stencil::vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp) {
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
   sLabelPrev = ""_Stz;
-  pCodeSynth->vSynthFilter(sFilterExpr, false, sLabel, sLabelPrev);
+  pCodeSynth->vSynthFilter(sFilterExpr, sLabel, sLabelPrev, sLabelNext);
 
   m_pShapeEOS->vCodeSynthB(pCodeSynth);
 }
@@ -1580,7 +1581,8 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
     sHavingExpr = pOpTags->szValue(C_TAG_EXPR);
 
     sLabel.vSprint("L_%s_%d"_Stz, m_xStageOps.m_pHavingFilterOp->szOpNm(), m_xStageOps.m_pHavingFilterOp->i_Op());
-    pCodeSynth->vSynthFilter(sHavingExpr, false, sLabel, ""_Stz);
+    vGetNextLabel(sLabelNext, pStream, m_xStageOps.m_pHavingFilterOp->i_Op(), "L_AdvanceNextRow"_Stz);
+    pCodeSynth->vSynthFilter(sHavingExpr, sLabel, ""_Stz, sLabelNext);
     m_pShapeEOS->vCodeSynthB(pCodeSynth);
   }
 
@@ -1662,7 +1664,8 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
     sHavingExpr = pOpTags->szValue(C_TAG_EXPR);
 
     sLabel.vSprint("L_%s_%d"_Stz, m_xStageOps.m_pHavingFilterOp->szOpNm(), m_xStageOps.m_pHavingFilterOp->i_Op());
-    pCodeSynth->vSynthFilter(sHavingExpr, false, sLabel, ""_Stz);
+    vGetNextLabel(sLabelNext, pStream, m_xStageOps.m_pHavingFilterOp->i_Op(), "L_AdvanceNextRow"_Stz);
+    pCodeSynth->vSynthFilter(sHavingExpr, sLabel, ""_Stz, sLabelNext);
     m_pShapeEOS->vCodeSynthB(pCodeSynth);
   }
 
@@ -1928,7 +1931,9 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
 
   s256 sLabel;
   s256 sLabelNext;
-  s256 sReturnLabel;
+  s256 sOrdAggLabel;
+
+  sOrdAggLabel = ""_Stz;
 
   // get the streamDefOut
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
@@ -1961,13 +1966,11 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
 
-//  Op *pNextOp = pStream->pGet(pOp->i_Op()+1);
-//  if ( pNextOp->szOpNm()->bSame("ordAgg"_Stz) )
-//    sReturnLabel = sLabelNext;
-//  else
-//    sReturnLabel = "L_Return"_Stz;
+  Op *pNextOp = pStream->pGet(pOp->i_Op()+1);
+  if ( pNextOp->szOpNm()->bSame("ordAgg"_Stz) )
+    sOrdAggLabel = sLabelNext;
 
-  pCodeSynth->vSynthIndexScan(sIndexScanExpr, sLabel, sLabelNext, uSelectColumns);
+  pCodeSynth->vSynthIndexScan(sIndexScanExpr, sLabel, sLabelNext, sOrdAggLabel, uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;
@@ -2006,7 +2009,7 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp)
   pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
   sLabel.vSprint("L_InflateT"_Stz);
   sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
-  pCodeSynth->vSynthInflateCrw("T"_Stz, sLabel, sReturnLabel, &uSelectColumns);
+  pCodeSynth->vSynthInflateCrw("T"_Stz, sLabel, m_xStageOps.m_sLabelOrdAgg, sReturnLabel, &uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;
@@ -2041,7 +2044,7 @@ Shape* Stencil::pSketchInflateRow(Stream* pStream, Op* pOp) {
   // generate the code for the row inflate
   pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
   sLabel.vSprint("L_InflateT"_Stz);
-  pCodeSynth->vSynthInflateRow(sLabel);
+  pCodeSynth->vSynthInflateRow(sLabel, m_xStageOps.m_sLabelOrdAgg);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;
@@ -2050,14 +2053,13 @@ Shape* Stencil::pSketchInflateRow(Stream* pStream, Op* pOp) {
 /*----------------------------------------------------------------------------*/
 /* sketch filter                                                              */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil) {
+Shape* Stencil::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
   s4K sLabelPrev;
-  s4K sLabelLoop;
 
   bool bLastFilter = false;
 
@@ -2087,11 +2089,11 @@ Shape* Stencil::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil) {
   // generate the code for the OP
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, nullptr, pPreExpStack, ePrevStencil, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
+  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
 
   //Op *pPrevOp = pStream->pGet(i_Op - 1);
   sLabelPrev = ""_Stz;
-  pCodeSynth->vSynthFilter(sFilterExpr, false, sLabel, sLabelPrev);
+  pCodeSynth->vSynthFilter(sFilterExpr, sLabel, sLabelPrev, sLabelLoop);
 
   pShape->vCodeSynthB(pCodeSynth);
 
@@ -2920,6 +2922,9 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
         return EC_INVALID_PIPELINE;
       }
 
+      // set indexScan in combined (needed at runtime)
+      pCombined->aCombinedT()->m_iIndexScan = 1;
+
       m_xStageOps.m_bIndexScan = true;
       m_xStageOps.m_iIndexScanOp++;
     }
@@ -2967,6 +2972,8 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
         return EC_INVALID_PIPELINE;
       }
 
+
+      m_xStageOps.m_sLabelOrdAgg.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
 
       m_xStageOps.m_iOrdAggOp++;
     }
@@ -3048,6 +3055,15 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
       if (m_xStageOps.m_iTopOp) {
         vTrace("Error: Cannot have multiple top operators in the same stage (%s)!!!\n"_Stz,
                m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // TOP with ORDAGG
+      if (m_xStageOps.m_iOrdAggOp) {
+        vTrace("Error: Cannot have top with OrdAggOP the same stage (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+
         return EC_INVALID_PIPELINE;
       }
 

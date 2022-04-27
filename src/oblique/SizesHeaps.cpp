@@ -21,7 +21,6 @@
 #include "eOK.h"
 #include "eOR.h"
 #include "ePF.h"
-#include "ePP.h"
 #include "eYG.h"
 #include "ePY.h"
 #include "eYX.h"
@@ -100,7 +99,6 @@
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
-#include "Session.hpp"
 #include "Arg.hpp"
 #include "RelOp.hpp"
 #include "Predicate.hpp"
@@ -161,7 +159,6 @@
 #include "Scanner.hpp"
 
 #include "SeApi.hpp"
-#include "Sessions.hpp"
 
 #include "PtnDef.hpp"
 #include "ShortCut.hpp"
@@ -540,8 +537,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Sends),              HT_T_TINY    ,0 FILL }, // CN_SENDS
   { sizeof(SendWL),             HT_T_TINY    ,0 FILL }, // CN_SENDWL
   { sizeof(SePrompt),           HT_T_LARGE   ,0 FILL }, // CN_SEPROMPT
-  { sizeof(Session),            HT_T_LARGE   ,0 FILL }, // CN_SESSION
-  { sizeof(Sessions),           HT_T_TINY    ,0 FILL }, // CN_SESSIONS
   { sizeof(Shape),              HT_T_TINY    ,0 FILL }, // CN_SHAPE
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 FILL }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 FILL }, // CN_SHORTCUTVEC

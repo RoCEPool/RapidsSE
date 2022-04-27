@@ -17,19 +17,21 @@ Q03_0: select
        and c_custkey    = o_custkey
        and l_orderkey   = o_orderkey
        and o_orderdate  < TIMESTAMP '1995-03-15'
-       and l_shipdate   > TIMESTAMP '1995-03-15'
+
 
  group by l_orderkey, o_orderdate, o_shippriority
+ order by l_orderkey;
 
  order by Revenue desc, o_orderdate
 
  limit 10;
-
+       and l_shipdate   > TIMESTAMP '1995-03-15'
 
  select
           l_orderkey,
-          sum(l_extendedprice * (1 - l_discount)) as Revenue
-
+          sum(l_extendedprice * (1 - l_discount)) as Revenue,
+         o_orderdate,
+         o_shippriority
    from Customer, Orders, LineItem
 
   where     c_mktsegment = 'BUILDING'
@@ -38,7 +40,9 @@ Q03_0: select
         and o_orderdate  < TIMESTAMP '1995-03-15 00:00:00'
         and l_shipdate   > TIMESTAMP '1995-03-15 00:00:00'
 
-  group by l_orderkey;
+  group by l_orderkey, o_orderdate, o_shippriority
+   order by Revenue desc, o_orderdate
+    limit 10;
 
 
 pipeline unnamed
@@ -90,37 +94,47 @@ begin
     | next
 
   stage Gs_CUSTOMER on all partitions :
-    indexscan 2 Customer IxC_CUSTKEY "LBOUND $I1 0 >="
-    | filter 2 "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
-    | project 2 expr type INTEGER as _custkey C_CUSTKEY
+    indexscan Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
+    | project expr type INTEGER as _custkey C_CUSTKEY
     | combined 0
     | next
 
   stage Gj_ORDERS on all partitions :
-    indexjoin 2 Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
-     | filter 2 "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
-     | project 2 "type INTEGER as _orderkey J1_O_ORDERKEY ,
+    indexjoin Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
+     | filter "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
+     | project "type INTEGER as _orderkey J1_O_ORDERKEY ,
          type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
          type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
-    | hash 2 expr type INTEGER _orderkey
+    | hash expr type INTEGER _orderkey
     | combined 0
     | next hashcast
 
-  stage Gj_LINEITEM on all partitions :
-    indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
-    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
-    | ordAgg 2 expr type INTEGER as _orderkey _orderkey ,
-        type INTEGER as Revenue ) J1_L_EXTENDEDPRICE 1 J1_L_DISCOUNT - * sum ,
-        type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
-        type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
-        groupby type INTEGER _orderkey
+  stage Gj_ORDERS_1 on all partitions :
+    sort "type INTEGER _orderkey ASC"
     | combined 0
-    | top 1 "Revenue" 10
     | next
 
-  stage last on origin :
-    top 1 "Revenue" 10
-    | output
+  stage Gj_LINEITEM on all partitions :
+    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
+    | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | ordAgg expr ordgroupby type INTEGER _orderkey
+    //| aggreg expr groupby type INTEGER _orderkey
+            aggregates
+            type INTEGER as _orderkey $K1 ,
+            type DECIMAL as Revenue ) J1_L_EXTENDEDPRICE 1.0 J1_L_DISCOUNT - * sum ,
+            type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
+            type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
+    | combined 0
+    | next
+
+  stage Gj_LINEITEM_TOP on origin :
+    top "TOP type DECIMAL Revenue" 10
+    | combined 0
+    | next
+
+   stage last on origin :
+    output
     | sink
     | first
 

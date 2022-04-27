@@ -16,7 +16,7 @@
   // "end:end" .
 
   // find job to be ended in participating job list
-  [job] job.id@ ListedJob[].findParticipant discard
+  [job].parentId@ ListedJob[].findParticipant discard
 
   // stall till job's previous phase (task) has completed
   begin

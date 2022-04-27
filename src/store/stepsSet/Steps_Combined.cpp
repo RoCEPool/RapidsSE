@@ -56,7 +56,9 @@ void Step::vCombinedGet(void)
 void Step::vCombinedExecute(void)
 {
   ENTRY();
-  
+
+  i8 iResult;
+
   Combined* pCombined = * m_pLogicUnit->m_xpCombined;
   Combined_T* aCombinedT = pCombined->aCombinedT();
 
@@ -111,7 +113,18 @@ void Step::vCombinedExecute(void)
   aCombinedT->m_eStrInflateRule = SI_STRAREA_ADR;
   aCombinedT->m_bTrace     = iTrace;
 
-  i8 iResult = afFun(aCombinedT);
+  if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
+    // invoke with null databuffer (ordAgg)
+    if (aCombinedT->m_iHasOrdAggRow) {
+      aCombinedT->m_iOrdAggDone = 1;
+      if (aCombinedT->m_iIndexScan)
+        iResult = m_pLogicUnit->m_afFun2(aCombinedT);
+      else
+        iResult = m_pLogicUnit->m_afFun1(aCombinedT);
+    }
+  }
+
+  iResult = afFun(aCombinedT);
 
   //pTub->vInCrwBuffer(nullptr);
 

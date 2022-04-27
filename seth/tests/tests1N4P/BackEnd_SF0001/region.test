@@ -10,6 +10,12 @@ R_COMMENT         VARCHAR(152)
 );
 success
 
+//------------------------------------------------------------------------------
+// create the indexes
+CREATE INDEX IxR_REGIONKEY ON region(R_REGIONKEY);
+affected: 0
+
+
 -----------------------------------------------------------------------
 // load the table
 load region "../TPCH/SF_0001/region.csv";
@@ -17,6 +23,10 @@ success
 
 select count(*) from region;
 rows: (5)
+
+compactidx region IxR_REGIONKEY;
+success
+
 
 CLEANUP {
 

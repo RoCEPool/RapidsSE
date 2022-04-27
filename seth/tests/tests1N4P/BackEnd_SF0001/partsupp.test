@@ -14,7 +14,7 @@ success
 
 //------------------------------------------------------------------------------
 // create an index on suppkey
-CREATE INDEX partsupp_idx1 ON partsupp(ps_suppkey);
+CREATE INDEX IxPS_PARTKEY ON partsupp(ps_suppkey);
 affected: 0
 
 // load the table
@@ -24,7 +24,7 @@ success
 select count(*) from partsupp;
 rows: (800)
 
-compactidx partsupp partsupp_idx1;
+compactidx partsupp IxPS_PARTKEY;
 success
 
 CLEANUP {

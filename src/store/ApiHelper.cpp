@@ -8,7 +8,6 @@
 #include "Api.hpp"
 
 #include "Output.hpp"
-#include "Session.hpp"
 #include "Job.hpp"
 
 #include "TagConstants.h"
@@ -18,7 +17,6 @@
 /*----------------------------------------------------------------------------*/
 ApiHelper::ApiHelper(void)
 {
-  m_pSession  = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,14 +29,6 @@ ApiHelper::~ApiHelper(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* allocate session                                                           */
-/*----------------------------------------------------------------------------*/
-void ApiHelper::vAllocateSession(void)
-{
-  m_pSession = Api::pAllocSession(SK_EXTERNAL);
-}
 
 /*----------------------------------------------------------------------------*/
 /* delete job                                                                 */
@@ -67,14 +57,6 @@ void* ApiHelper::pForkDemon(Stz* szPipeline)
   return nullptr;
 }
 
-/*----------------------------------------------------------------------------*/
-/* free session                                                               */
-/*----------------------------------------------------------------------------*/
-void ApiHelper::vFreeSession(void)
-{
-  Api::vFreeSession(m_pSession);
-  m_pSession = nullptr;
-}
 
 /*----------------------------------------------------------------------------*/
 /* kill demon                                                                 */
@@ -99,36 +81,11 @@ void ApiHelper::vPipeoutResults(Op* pCurrOp,
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd)
-{
-  TokenVec* pCmdTknVec = new TokenVec;
-  
-  pCmdTknVec->vTokeniseCpp(szCmd);
-  
-  TagSet* pCmdTagSet = new TagSet;
-  
-  eEC eError = ApiHelper::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
-
-  delete pCmdTknVec;
-  delete pCmdTagSet;
-  return eError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prepare job                                                                */
-/*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
-{
-  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
-  if (EC_NONE != eError)
-    return eError;
-
-  //rpJob = Api::pAllocJob(m_pSession);
-  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
-  rpJob = Api::pAllocJob(szJobNm);
-  rpJob->vSession(m_pSession);
-  
-  eError = Api::ePrepareJob(rpJob,pCmdTknVec,pCmdTagSet);
+eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd, Stz* szCmdTagStr,
+                           TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+{  
+  eEC eError =
+    Api::ePrepareJob(rpJob,"JobNm"_Stz,szCmd,szCmdTagStr,true,pCmdTknVec,pCmdTagSet);
   
   return eError;
 }

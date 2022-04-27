@@ -1,23 +1,9 @@
 /*============================================================================*/
-/* eSK.h - Session Kind                                                       */
+/* ArrayNL_t.cpp -- Array of Objects template                                 */
 /*============================================================================*/
-#pragma once
 
-enum eSK // session kind
-{
-  /*  0 */ SK_NONE=0,
-  /*  1 */ SK_INTERNAL, // error status
-  /*  2 */ SK_EXTERNAL, // failure status
-  /*  3 */ SK_ENUMS
-};
+#include "BASE.h"
 
-static Stz* aSK[]
-{
-  /*  0 */ "SK_NONE"_Stz,
-  /*  1 */ "SK_INTERNAL"_Stz,
-  /*  2 */ "SK_EXTERNAL"_Stz,
-  /*  3 */ "SK_ENUMS"_Stz
-};
 
 /*============================================================================*/
 /* end                                                                        */
