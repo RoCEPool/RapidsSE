@@ -26,9 +26,6 @@ namespace STORE
   static eEC  ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
 
   static void vReapableJob(Job*& rpJob);
-
-  static void vSubmitJob(Job* pJob);
-  static void vWaitJob(Job* pJob);
  
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);

@@ -63,8 +63,6 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
   pJob->vOutputCreate();
   pJob->vOutputBeginProc();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   //JobId tJobId = pJob->tJobId();
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -78,14 +76,28 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
       return;
     }
     
-    vSubmitJob(pJob);
+    RASSERT(! pJob->pTask());
+    
+    Api::vMutexLock(pJob);
+    RASSERT(JS_LOCKED == pJob->eJobState());
+    
+    pJob->vTaskCreate();
+    
+    pJob->vResponseTimerStart();
+    
+    Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 
     if (pJob->bHasTag(C_TAG_NOWAIT)) {
       Api::vMutexUnlock(pJob);
+      return;
     }
-    else {
-      vWaitJob(pJob);
-    }
+
+    Api::vMutexWaitCond(pJob);
+    
+    pJob->vResponseTimerUpdate();
+    
+    Api::vMutexUnlock(pJob);
+
     
     if (! pJob->bHasCascade()) {
       return;
@@ -408,40 +420,6 @@ eEC Api::eForkCommand(TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* submit job (spawn job but don't wait for completion)                       */
-/*----------------------------------------------------------------------------*/
-void Api::vSubmitJob(Job* pJob)
-{
-  _static_
-  
-  RASSERT(! pJob->pTask());
-  
-  Api::vMutexLock(pJob);
-  RASSERT(JS_LOCKED == pJob->eJobState());
-  
-  pJob->vTaskCreate();
-  
-  pJob->vResponseTimerStart();
-  
-  Scheduler::vTaskApi_AddPrompt(pJob->pTask());
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait for job completion                                                    */
-/*----------------------------------------------------------------------------*/
-void Api::vWaitJob(Job* pJob)
-{
-  _static_
-    
-  //pJob->m_oMutex.vObserve(true);
-  Api::vMutexWaitCond(pJob);
-  
-  pJob->vResponseTimerUpdate();
-  
-  Api::vMutexUnlock(pJob);
-}
 
 /*----------------------------------------------------------------------------*/
 /* attempt to reap one job from the retired list                              */
