@@ -132,22 +132,6 @@ void Step::vApiExecuteCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
-/*
-  TokenVec* pCmdTknVec = nullptr;;
-  TagSet* pCmdTagSet = nullptr;
-
-  Job* pJob = nullptr;
-  eEC eError = Api::ePrepareJob(pJob,"JobNm"_Stz,sCmd,sWithTagStr,false,pCmdTknVec,pCmdTagSet);
-
-  if (eError) {
-    
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
-    EXIT();
-    return;
-  }
-*/
-  
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
   TagSet* pCmdTagSet = new TagSet;
 
@@ -205,8 +189,26 @@ void Step::vApiForkCommand(void)
     szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
  
   JobId tForkedJobId;
-  eEC eError = Api::eForkCommand(sCmd,sWithTagStr,szTagPath,
-                                 pResponseOp,tForkedJobId);
+  
+    
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
+  TagSet* pCmdTagSet = new TagSet;
+  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sWithTagStr);
+  Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
+
+  eEC eError = Api::eForkCommand_2(pCmdTknVec,pCmdTagSet,
+                                   pResponseOp,tForkedJobId);
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   if (EC_NONE == eError) {
     m_pDataStack->vPushInt(tForkedJobId.iAsI8());
@@ -320,8 +322,8 @@ void Step::vApiSpawnDemon(void)
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
   
   
-  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
   TagSet* pCmdTagSet = new TagSet;
+  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
   Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
 
