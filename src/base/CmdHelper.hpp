@@ -9,7 +9,7 @@ namespace BASE
   {
   public:
   
-    static TagSet* pCmdTagSet(Stz* szCmdNm);
+    static TagSet* pDefTagSet(Stz* szCmdNm);
   
     static void vExtractCmdPaths(TokenVec* pCmdTknVec,
                                  TagSet* pCmdTagSet);

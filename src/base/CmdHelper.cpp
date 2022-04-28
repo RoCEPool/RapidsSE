@@ -16,7 +16,7 @@
 /*----------------------------------------------------------------------------*/
 /* get the cmd tag set of the job                                             */
 /*----------------------------------------------------------------------------*/
-TagSet* CmdHelper::pCmdTagSet(Stz* szCmdNm)
+TagSet* CmdHelper::pDefTagSet(Stz* szCmdNm)
 {
   // form the cmdTag name
   s32 sCmdTagNm(szCmdNm);
@@ -140,7 +140,7 @@ bool CmdHelper::bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 /*----------------------------------------------------------------------------*/
 /* parse command                                                              */
 /*----------------------------------------------------------------------------*/
-bool CmdHelper::bParseCmd(TokenVec* pTknVec, TagSet* pTagSet)
+bool CmdHelper::bParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   Dic* pDicRoot = AM::DIC::pRoot();
 
@@ -158,17 +158,17 @@ bool CmdHelper::bParseCmd(TokenVec* pTknVec, TagSet* pTagSet)
     //vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
     //pSyntax->pTagSet()->vDumpSet();
     
-    if (CmdHelper::bMatchesSyntax(pTknVec,pSyntax->pWrdTagSet())) {
+    if (CmdHelper::bMatchesSyntax(pCmdTknVec,pSyntax->pWrdTagSet())) {
       
       //vTrace("    matches\n"_Stz);
       
       s32 sCmdName(pSyntax->pWrdTagSet()->szValue("__cmdNm__"_Stz));
       
-      // get the CmdTag words tagSet
-      TagSet* pCmdTagSet = CmdHelper::pCmdTagSet(sCmdName);
+      // get the default set of tags for the comman
+      TagSet* pDefTagSet = CmdHelper::pDefTagSet(sCmdName);
       
       // copy the cmd tag set into the pTagSet
-      pTagSet->vCopy(pCmdTagSet);
+      pCmdTagSet->vCopy(pDefTagSet);
       
       goto L_Matched;
     }
@@ -181,7 +181,7 @@ bool CmdHelper::bParseCmd(TokenVec* pTknVec, TagSet* pTagSet)
     if (AM::bDeveloper()) {
       SP_TknVecStr spTvs;
       vTrace("Unable to match command syntax:-\n"_Stz);
-      vTrace("  Tokens: %s\n"_Stz,spTvs.sz(pTknVec));
+      vTrace("  Tokens: %s\n"_Stz,spTvs.sz(pCmdTknVec));
     }
     return false;
   }
@@ -191,13 +191,13 @@ bool CmdHelper::bParseCmd(TokenVec* pTknVec, TagSet* pTagSet)
   
   L_Matched:
   
-  bool b = bExtractAllArgs(pTagSet,pSyntax->pWrdTagSet(),pTknVec);
+  bool b = bExtractAllArgs(pCmdTagSet,pSyntax->pWrdTagSet(),pCmdTknVec);
   if (! b) {
     if (AM::bDeveloper()) {
       SP_TknVecStr spTvs;
       SP_TagSet spTags;
       vTrace("Unable to extract arguments:-\n"_Stz);
-      vTrace("  Tokens: %s\n"_Stz,spTvs.sz(pTknVec));
+      vTrace("  Tokens: %s\n"_Stz,spTvs.sz(pCmdTknVec));
       vTrace("  Syntax: %s\n"_Stz,spTags.sz(pSyntax->pWrdTagSet()));
     }
     return false;
