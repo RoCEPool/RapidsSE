@@ -31,8 +31,6 @@ namespace PROMPT
     s256      m_sFolderPath;   // folder path
     JobId     m_tLastJobId;    // last job id
 
-    TagSet    m_oCmdTagSet;    // extra tags gleaned from the command
-
     s4K       m_sToDo;         // prompt to do
 
     // must be last
@@ -51,12 +49,12 @@ namespace PROMPT
     void vExecuteJob(void);
     void vRepeableJob(void);
 
-    eEC  ePrepareJob(Stz* szCmd, TokenVec* pCmdTknVec, TagSet* pInpTagSet);
+    eEC  ePrepareJob(Stz* szCmd);
 
     // -- -- -- -- -- --
   
     bool bAvailable(void);
-    TagSet* pCmdTagSet(void);
+    TagSet* pInpTagSet(void);
     void vDeputiseJob(void);
     Input* pInput(void);
     Job* pJob(void);

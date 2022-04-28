@@ -48,7 +48,7 @@ namespace PROMPT
   
     TokenVec*   m_pInpTknVec;   // token vector from deputy->ssn->input
 
-    TagSet*     m_pCmdTagSet;   // extra tags gleaned from the prompt command
+    TagSet*     m_pInpTagSet;   // extra tags gleaned from the prompt command
     TagSet      m_oPmtTagSet;   // tag set which controls this prompt
 
 

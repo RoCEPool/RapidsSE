@@ -82,7 +82,7 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCurrentDeputy = nullptr;
   
-  m_pCmdTagSet = nullptr;
+  m_pInpTagSet = nullptr;
   
   m_pPrintOp = nullptr;
   
@@ -210,7 +210,7 @@ void SePrompt::vPromptLoop(void)
     }
     
     m_pInpTknVec = pInputGet()->pInpTknVec();
-    m_pCmdTagSet = m_pCurrentDeputy->pCmdTagSet();
+    m_pInpTagSet = pInputGet()->pInpTagSet();
     
     Stz* szToDo = this->szToDo();
     
@@ -232,8 +232,8 @@ void SePrompt::vPromptLoop(void)
     i8   iCmdLine  = pTkn(0)->iLineNo();
 
     if (*szCmdFile->azChar()) {
-      m_pCmdTagSet->vInsert(C_TAG_CMDFILE,szCmdFile);
-      m_pCmdTagSet->vInsert(C_TAG_CMDLINE,iCmdLine);
+      m_pInpTagSet->vInsert(C_TAG_CMDFILE,szCmdFile);
+      m_pInpTagSet->vInsert(C_TAG_CMDLINE,iCmdLine);
     }
 
     if (! bPrepareJob()) {
@@ -306,7 +306,7 @@ bool SePrompt::bExamineCommand(void)
   if (bRedirectFromFile())
     return false;
   
-  TagSet*  pCmdTagSet = m_pCurrentDeputy->pCmdTagSet();
+  TagSet*  pCmdTagSet = m_pCurrentDeputy->pInpTagSet();
 
   CmdHelper::vExtractCmdPaths(m_pInpTknVec,pCmdTagSet);
   if (! CmdHelper::bExtractCmdTags(m_pInpTknVec,pCmdTagSet))
@@ -328,12 +328,12 @@ bool SePrompt::bPrepareJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  m_pCmdTagSet->vCopy(& m_oPmtTagSet);
+  m_pInpTagSet->vCopy(& m_oPmtTagSet);
   
   s4K sCmd;
   m_pInpTknVec->vToTknString(sCmd);
   
-  eEC eError = m_pCurrentDeputy->ePrepareJob(sCmd,m_pInpTknVec,m_pCmdTagSet);
+  eEC eError = m_pCurrentDeputy->ePrepareJob(sCmd);
 
   if (eError) {
     RASSERT(! m_pCurrentDeputy->pJob());
@@ -585,7 +585,7 @@ bool SePrompt::bExecuteFunction(void)
   (pPromptDesc->m_fPrompt)(this);
   oTimer.vUpdate();
 
-  if (m_pCmdTagSet->bHasName(C_TAG_TIME))
+  if (m_pInpTagSet->bHasName(C_TAG_TIME))
     vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
 
   return true;
@@ -999,9 +999,9 @@ void SePrompt::vResetExtractedTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pCmdTagSet->vReset();
-  m_pCmdTagSet->vInsert(C_TAG_BYPROMPT,1);
-  m_pCmdTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  m_pInpTagSet->vReset();
+  m_pInpTagSet->vInsert(C_TAG_BYPROMPT,1);
+  m_pInpTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 }
 
 /*----------------------------------------------------------------------------*/

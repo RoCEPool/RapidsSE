@@ -185,7 +185,7 @@ void SeDeputy::vRepeableJob(void)
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC SeDeputy::ePrepareJob(Stz* szCmd, TokenVec* , TagSet* )
+eEC SeDeputy::ePrepareJob(Stz* szCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
     
@@ -195,7 +195,7 @@ eEC SeDeputy::ePrepareJob(Stz* szCmd, TokenVec* , TagSet* )
   //RASSERT(pCmdTknVec == m_pInput->pInpTknVec());
 
   TokenVec* pInpTknVec = m_pInput->pInpTknVec();
-  TagSet* pCmdTagSet = this->pCmdTagSet();
+  TagSet* pCmdTagSet = this->pInpTagSet();
   
   pCmdTagSet->vDumpSet();
   vTrace("FolderPath: %s\n"_Stz,m_sFolderPath.szStz());
@@ -227,11 +227,11 @@ bool SeDeputy::bAvailable(void)
 /*----------------------------------------------------------------------------*/
 /* get cmd tag set                                                            */
 /*----------------------------------------------------------------------------*/
-TagSet* SeDeputy::pCmdTagSet(void)
+TagSet* SeDeputy::pInpTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  return & m_oCmdTagSet;
+  return m_pInput->pInpTagSet();
 }
 
 /*----------------------------------------------------------------------------*/
