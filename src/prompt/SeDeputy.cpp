@@ -185,14 +185,16 @@ void SeDeputy::vRepeableJob(void)
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC SeDeputy::ePrepareJob(Stz* szCmd, TokenVec* pCmdTknVec, TagSet* pInpTagSet)
+eEC SeDeputy::ePrepareJob(Stz* szCmd, TokenVec* , TagSet* )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
     
   vTrace("ePrepareJob: %s\n"_Stz,szCmd);
 
-  RASSERT(pInpTagSet == & m_oCmdTagSet);
-  
+  //RASSERT(pInpTagSet == & m_oCmdTagSet);
+  //RASSERT(pCmdTknVec == m_pInput->pInpTknVec());
+
+  TokenVec* pInpTknVec = m_pInput->pInpTknVec();
   TagSet* pCmdTagSet = this->pCmdTagSet();
   
   pCmdTagSet->vDumpSet();
@@ -202,9 +204,7 @@ eEC SeDeputy::ePrepareJob(Stz* szCmd, TokenVec* pCmdTknVec, TagSet* pInpTagSet)
   s48K sCmdTagStr;
   pCmdTagSet->vToString(sCmdTagStr);
 
-  //eEC eError = ApiHelper::ePrepareJob(m_pJob,szCmd,sCmdTagStr,pCmdTknVec,pCmdTagSet);
-
-  eEC eError = ApiHelper::ePrepareJob(m_pJob,pCmdTknVec,pCmdTagSet);
+  eEC eError = ApiHelper::ePrepareJob(m_pJob,pInpTknVec,pCmdTagSet);
 
   return eError;
 }
