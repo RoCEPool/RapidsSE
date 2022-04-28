@@ -268,8 +268,8 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
     pCmdTknVec->vSoftReset();
     pCmdTknVec->vTokeniseSen(sPipelineSmt);
   }
-    
-  if (! AM::bParseCmd(pCmdTknVec,pCmdTagSet))
+        
+  if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet))
     return EC_INVALID_COMMAND;
 
   return EC_NONE;

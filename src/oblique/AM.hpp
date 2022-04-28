@@ -772,7 +772,6 @@ namespace OBLIQUE
     static i8   iOperandZkKind(Operand* pOperand);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static bool bParseCmd(TokenVec* pTknVec, TagSet* pExtraTagSet);
     static Job* pPipelineJob(void);
     static void vPoolAnalyze(void);
     static void vPrintGlobals(void);

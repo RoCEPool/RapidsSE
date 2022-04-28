@@ -2935,12 +2935,6 @@ i8 AM::iLvlRatio(void) {
   return gpAttachMap->m_xSysArgs.m_iLvlRatio;
 }
 
-bool AM::bParseCmd(TokenVec* pTknVec, TagSet* pExtraTagSet)
-{
-  return CmdHelper::bParseCmd(pTknVec,pExtraTagSet);
-}
-
-
 Job* AM::pPipelineJob(void)
 {
   Op* pOp = pThisTLSTask()->pOp();
