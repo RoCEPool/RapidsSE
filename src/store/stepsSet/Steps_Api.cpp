@@ -150,6 +150,8 @@ void Step::vApiExecuteCommand(void)
 
   pJob->vStmtListCreate();
   
+  pJob->pJobTags()->vReplace(C_TAG_WAIT,1);
+
   Api::vExecuteJob(pJob);
   
   delete pCmdTknVec;
@@ -167,19 +169,19 @@ void Step::vApiForkCommand(void)
 {
   ENTRY();
 
-  Op* pResponseOp = _pOp(m_pDataStack->pPopPtr(__func__));
+  //Op* pResponseOp = _pOp(m_pDataStack->pPopPtr(__func__));
 
   // pop command and tag string
   
   s48K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
 
-  s48K sWithTagStr;
-  m_pDataStack->vPopStr(sWithTagStr,__func__);
+  s48K sCmdTagStr;
+  m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ExecuteCommand: %s\n"_Stz,sCmd.szStz());
-    vTrace("      WithTags: %s\n"_Stz,sWithTagStr.szStz());
+    vTrace("FormCommand: %s\n"_Stz,sCmd.szStz());
+    vTrace("  CmdTagStr: %s\n"_Stz,sCmdTagStr.szStz());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -190,17 +192,10 @@ void Step::vApiForkCommand(void)
  
   JobId tForkedJobId;
   
-    
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
   TagSet* pCmdTagSet = new TagSet;
-  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sWithTagStr);
+  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
   Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
-
-  /*
-  eEC eError = Api::eForkCommand(pCmdTknVec,pCmdTagSet,
-                                   pResponseOp,tForkedJobId);
-
-  */
   
   Job* pJob = nullptr;
   eEC eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
@@ -221,14 +216,6 @@ void Step::vApiForkCommand(void)
   RASSERT(! pJob);
   
 
-  
-  
-  
-  
-  
-  
-  
-  
   if (EC_NONE == eError) {
     m_pDataStack->vPushInt(tForkedJobId.iAsI8());
     m_pDataStack->vPushInt(true);

@@ -204,6 +204,8 @@ eEC SeDeputy::ePrepareJob(Stz* szCmd)
   s48K sCmdTagStr;
   pCmdTagSet->vToString(sCmdTagStr);
 
+  pCmdTagSet->vReplace(C_TAG_WAIT,1);
+
   eEC eError = ApiHelper::ePrepareJob(m_pJob,pInpTknVec,pCmdTagSet);
 
   return eError;

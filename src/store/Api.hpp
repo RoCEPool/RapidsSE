@@ -19,7 +19,10 @@ namespace STORE
   static void vExecuteJob(Job* pJob);
   static void vForkJob(Job*& rpJob);
   static eEC  ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+  
+  static eEC  eForkJob(JobId& rtJobId, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
 
+  
   static void vReapableJob(Job*& rpJob);
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);

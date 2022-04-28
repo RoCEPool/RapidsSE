@@ -11,6 +11,7 @@ static Stz* C_TAG_CMD          = "<cmd>"_Stz;
 static Stz* C_TAG_CMDFILE      = "<cmdFile>"_Stz;
 static Stz* C_TAG_CMDLINE      = "<cmdLine>"_Stz;
 static Stz* C_TAG_COUNT        = "<count>"_Stz;
+static Stz* C_TAG_DBG_ACKS     = "<dbg_acks>"_Stz;
 static Stz* C_TAG_DEDICATEDTHD = "<dedicatedThd>"_Stz;
 static Stz* C_TAG_DIARY        = "<diary>"_Stz;
 static Stz* C_TAG_DIARYDIR     = "<diaryDir>"_Stz;
@@ -60,8 +61,8 @@ static Stz* C_TAG_WHEN         = "<when>"_Stz;
 static Stz* C_TAG_XFER         = "<xfer>"_Stz;
 static Stz* C_TAG_SENDKIND     = "<sendKind>"_Stz;
 static Stz* C_TAG_SENDS        = "<sends>"_Stz;
- 
-static Stz* C_TAG_DBG_ACKS     = "<dbg_acks>"_Stz;
+static Stz* C_TAG_WAIT         = "<wait>"_Stz;
+
 
 static Stz* C_TAG_LD_DATE_FORMAT          = "<date_format>"_Stz;
 static Stz* C_TAG_LD_ENCLOSED_BY_LEADING  = "<enclosed_by_leading>"_Stz;

@@ -761,7 +761,7 @@ void Input::vCollectVecTillSemicolon(void)
   //ASSERT(m_pTknVec->pGet(0)->bHasChars());
   
   // we should not have seen ';'
-  ASSERT( ! m_pTknVec->bHasSemicolon());
+  ASSERT( ! m_pInpTknVec->bHasSemicolon());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -782,7 +782,7 @@ void Input::vCollectVecTillSemicolon(void)
       break;
   }
 
-  ASSERT(m_pTknVec->bHasSemicolon());
+  ASSERT(m_pInpTknVec->bHasSemicolon());
   
   if (d_iDebugMode) {
     vJot1(':',"TokenVec:"_Stz);

@@ -88,9 +88,14 @@ void Api::vExecuteJob(Job* pJob)
     Scheduler::vTaskApi_AddPrompt(pJob->pTask());
 
     if (pJob->bHasTag(C_TAG_NOWAIT)) {
+      RASSERT(! pJob->bHasTag(C_TAG_WAIT));
       Api::vMutexUnlock(pJob);
       return;
     }
+    
+    RASSERT(pJob->bHasTag(C_TAG_WAIT));
+    RASSERT(! pJob->bHasTag(C_TAG_NOWAIT));
+
 
     Api::vMutexWaitCond(pJob);
     
@@ -144,6 +149,16 @@ void Api::vForkJob(Job*& rpJob)
   //Api::vMutexUnlock(rpJob);
   
   rpJob = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* fork a child job for given command                                         */
+/*----------------------------------------------------------------------------*/
+eEC Api::eForkJob(JobId& rtJobId, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+{
+  _static_
+  
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -489,7 +504,7 @@ void Api::vCallStartSystemJob(void)
   // (no cmd to parse)
 
   pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_NOWAIT,1);
+  pJobTags->vReplace(C_TAG_WAIT,1);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
