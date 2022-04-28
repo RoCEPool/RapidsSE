@@ -33,7 +33,7 @@ Input::Input(Input* pNext)
   
   m_xAnnChar.vReset();
       
-  m_pTknVec  = new TokenVec;
+  m_pInpTknVec  = new TokenVec;
   m_pCurrTkn = nullptr;
   
   // debugging aids
@@ -63,7 +63,7 @@ Input::~Input(void) noexcept(false)
   
   RASSERT(! m_pNext);
 
-  delete m_pTknVec;
+  delete m_pInpTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +92,7 @@ Stz* Input::szChars(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
 
-  Token* pCurrToken = m_pTknVec->pCurrToken();
+  Token* pCurrToken = m_pInpTknVec->pCurrToken();
   
   return pCurrToken->szChars();
 }
@@ -171,7 +171,7 @@ void Input::vDump(void)
   vTrace("Input::vDump\n"_Stz);
   vTrace("----------------\n"_Stz);
 
-  Token* pCurTkn = m_pTknVec->pCurrToken();
+  Token* pCurTkn = m_pInpTknVec->pCurrToken();
   
   vTrace("Current Token: '%s' : %s @%lld,%lld\n"_Stz,
          pCurTkn->szChars(),
@@ -229,6 +229,16 @@ void Input::vFormSenTokens(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
     
   m_eTknForm = UF_SEN_TOKENS;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get input token vector                                                     */
+/*----------------------------------------------------------------------------*/
+TokenVec* Input::pInpTknVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  return m_pInpTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -364,20 +374,20 @@ void Input::vReadCommand(void)
   vSingleLineCmd(true);
     
   if (d_iDebugMode)
-    m_pTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec(16);
   
   vCollectVecFirstLine();
   //vTrace(" : >>>%s<<<\n"_Stz,m_pCharser->szRawInput());
 
   if (d_iDebugMode)
-    m_pTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec(16);
 
-  m_pTknVec->vIntegrityCheck();
+  m_pInpTknVec->vIntegrityCheck();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for empty file
 
-  if (0 == m_pTknVec->nTokens()) {
+  if (0 == m_pInpTknVec->nTokens()) {
     if (d_iDebugMode)
       vJot1('r',"empty line return"_Stz);
     goto L_Exit;
@@ -387,8 +397,8 @@ void Input::vReadCommand(void)
   // test for a command file
   
   // if its a command file just return
-  if ( ! m_pTknVec->pGet(0)->bSame("/"_Stz) &&
-      File::bExists(m_pTknVec->pGet(0)->szChars())) {
+  if ( ! m_pInpTknVec->pGet(0)->bSame("/"_Stz) &&
+      File::bExists(m_pInpTknVec->pGet(0)->szChars())) {
     if (d_iDebugMode)
       vJot1('r',"is cmd file return"_Stz);
     goto L_Exit;
@@ -397,10 +407,10 @@ void Input::vReadCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // have we already seen the ';'
   
-  if (m_pTknVec->bHasSemicolon()) {
-    m_pTknVec->vRemoveSemicolon();
-    m_pTknVec->vIntegrityCheck();
-    m_pTknVec->vListTokens();
+  if (m_pInpTknVec->bHasSemicolon()) {
+    m_pInpTknVec->vRemoveSemicolon();
+    m_pInpTknVec->vIntegrityCheck();
+    m_pInpTknVec->vListTokens();
     goto L_Exit;
   }
   
@@ -412,32 +422,32 @@ void Input::vReadCommand(void)
   
   // read more till ;
   if (d_iDebugMode)
-    m_pTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec(16);
   
   vCollectVecTillSemicolon();
   //vTrace(" : %s\n"_Stz,m_pCharser->szRawInput());
   
   if (d_iDebugMode)
-    m_pTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec(16);
 
-  m_pTknVec->vIntegrityCheck();
+  m_pInpTknVec->vIntegrityCheck();
   if (d_iDebugMode) {
     vJot1('r',"collected till semicolon"_Stz);
-    m_pTknVec->vListTokens();
+    m_pInpTknVec->vListTokens();
   }
 
   // switch back to single line command
   vSingleLineCmd(true);
   
   // stip off ;
-  m_pTknVec->vStripSemicolon();
-  m_pTknVec->vIntegrityCheck();
+  m_pInpTknVec->vStripSemicolon();
+  m_pInpTknVec->vIntegrityCheck();
 
   // stip off &
   //m_pTknVec->vStripAmpersand();
   //m_pTknVec->vIntegrityCheck();
 
-  m_pTknVec->vIntegrityCheck();
+  m_pInpTknVec->vIntegrityCheck();
   
   
 L_Exit:
@@ -445,7 +455,7 @@ L_Exit:
     i8 i = iJotSummary(':',(Stz*)__func__,"TokenVec:"_Stz);
     UNUSED(i);
 
-    m_pTknVec->vListTokens();
+    m_pInpTknVec->vListTokens();
     vJot2('<',(Stz*)__func__,""_Stz);
   }
 
@@ -553,21 +563,11 @@ eTN Input::eToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  Token* pCurrToken = m_pTknVec->pCurrToken();
+  Token* pCurrToken = m_pInpTknVec->pCurrToken();
   
   eTN eToken = pCurrToken->eToken();
   
   return eToken;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token string                                                           */
-/*----------------------------------------------------------------------------*/
-TokenVec* Input::pTokenVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  return m_pTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -692,17 +692,17 @@ void Input::vCollectVecFirstLine(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTknVec->vSoftReset();
+  m_pInpTknVec->vSoftReset();
   
   for (;;) {
 
     vCursorAdvance();
     
     if (d_iDebugMode)
-      m_pTknVec->vDumpVec(16);
+      m_pInpTknVec->vDumpVec(16);
     vCollectOneToken();
     if (d_iDebugMode)
-      m_pTknVec->vDumpVec(16);
+      m_pInpTknVec->vDumpVec(16);
 
     if (m_pCurrTkn->bIsNull()) {
       if (d_iDebugMode)
@@ -714,7 +714,7 @@ void Input::vCollectVecFirstLine(void)
     }
   }
 
-  if (! m_pTknVec->nTokens() && bSeenEOF()) {
+  if (! m_pInpTknVec->nTokens() && bSeenEOF()) {
     bool b = bPopCharser();
     UNUSED(b);
 
@@ -723,7 +723,7 @@ void Input::vCollectVecFirstLine(void)
   
   if (d_iDebugMode) {
     vJot1(':',"TokenVec:"_Stz);
-    m_pTknVec->vListTokens();
+    m_pInpTknVec->vListTokens();
     vJot2('<',(Stz*)__func__,""_Stz);
   }
  }
@@ -754,7 +754,7 @@ void Input::vCollectVecTillSemicolon(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   if (d_iDebugMode)
-    m_pTknVec->vDumpVec(16);
+    m_pInpTknVec->vDumpVec(16);
   
   // get tokens delimited by ';'
   for (;;) {
@@ -774,7 +774,7 @@ void Input::vCollectVecTillSemicolon(void)
   
   if (d_iDebugMode) {
     vJot1(':',"TokenVec:"_Stz);
-    m_pTknVec->vListTokens();
+    m_pInpTknVec->vListTokens();
     vJot2('<',(Stz*)__func__,""_Stz);
   }
 }
@@ -1786,7 +1786,7 @@ void Input::vTokenCollectBegin(void)
 //
 //  m_pCurrTkn->vChars(szLatter);
   
-  m_pTknVec->vCollectBegin(m_pCurrTkn);
+  m_pInpTknVec->vCollectBegin(m_pCurrTkn);
     
   m_pCurrTkn->vLineNo(m_xAnnChar.m_iLine);
   m_pCurrTkn->vColNo(m_xAnnChar.m_iCol);
@@ -1808,7 +1808,7 @@ void Input::vTokenCollectEnd(void)
 //
 //  vTrace("Chars: %s\n"_Stz,m_pCurrTkn->szChars());
   
-  m_pTknVec->vCollectEnd(m_pCurrTkn);
+  m_pInpTknVec->vCollectEnd(m_pCurrTkn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1831,9 +1831,9 @@ void Input::vCursorAdvance(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
 
-  m_pTknVec->vAdvanceCurr(true);
+  m_pInpTknVec->vAdvanceCurr(true);
   
-  m_pCurrTkn = m_pTknVec->pCurrToken();
+  m_pCurrTkn = m_pInpTknVec->pCurrToken();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1843,7 +1843,7 @@ void Input::vCursorReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  m_pTknVec->vSoftReset();
+  m_pInpTknVec->vSoftReset();
   m_pCurrTkn = nullptr;
 }
 
@@ -1856,11 +1856,11 @@ void Input::vCursorRewind(void)
   
   Token* pTkn = m_pCurrTkn;
   
-  m_pTknVec->vRewindCurr();
+  m_pInpTknVec->vRewindCurr();
   
   pTkn->vReset();
     
-  m_pCurrTkn = m_pTknVec->pCurrToken();
+  m_pCurrTkn = m_pInpTknVec->pCurrToken();
 }
 
 /*============================================================================*/

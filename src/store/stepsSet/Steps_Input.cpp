@@ -179,7 +179,7 @@ void Step::vInputPushVecAsStr(void)
 {
   ENTRY();
   
-  TokenVec* pTknVec = m_pInput->pTokenVec();
+  TokenVec* pTknVec = m_pInput->pInpTknVec();
   
   s48K sAsStr;
   

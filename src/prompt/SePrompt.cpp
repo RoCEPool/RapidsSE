@@ -232,7 +232,7 @@ void SePrompt::vPromptLoop(void)
       RASSERT(0);
     }
     
-    m_pCmdTknVec = pInputGet()->pTokenVec();
+    m_pCmdTknVec = pInputGet()->pInpTknVec();
     m_pCmdTagSet = m_pCurrentDeputy->pCmdTagSet();
     
     Stz* szToDo = this->szToDo();
@@ -452,7 +452,7 @@ void SePrompt::vCutToken(i8 i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pInpTknVec = pInputGet()->pTokenVec();
+  TokenVec* pInpTknVec = pInputGet()->pInpTknVec();
   
   //pTknVec->vPrint();
   
