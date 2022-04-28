@@ -179,23 +179,18 @@ eEC Api::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
   
   //vTrace("Api::ePrepareJob_2\n"_Stz);
 
-  TagSet* pSynTagSet = new TagSet;
-
-  eEC eError = Api::eParseCmd(pCmdTknVec,pSynTagSet);
+  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
   if (EC_NONE != eError) {
-    delete pSynTagSet;
     return eError;
   }
 
-  Stz* szJobNm = pSynTagSet->szValue(C_TAG_JOBNM);
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   RASSERT(szJobNm);
   
   rpJob = Api::pAllocJob(szJobNm);
 
   TagSet* pJobTagSet = rpJob->pJobTags();
-  pJobTagSet->vCopy(pSynTagSet);
   pJobTagSet->vCopy(pCmdTagSet);
-  //pCmdTagSet->vCopy(pSynTagSet);
   
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
@@ -207,8 +202,6 @@ eEC Api::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 
   eJK eJobKind = (eJK) pJobTagSet->iValue(C_TAG_JOBKIND);
   rpJob->vJobKind(eJobKind);
-
-  delete pSynTagSet;
 
   return EC_NONE;
 }
