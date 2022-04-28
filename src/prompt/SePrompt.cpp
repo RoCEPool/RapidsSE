@@ -59,7 +59,7 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pThread   = AM::THREAD::pNewThread();
   
-  m_pCmdTknVec = nullptr;
+  m_pInpTknVec = nullptr;
   
   m_iDivisionNo = 0;
   m_iSectionNo  = 0;
@@ -183,29 +183,6 @@ void SePrompt::vPromptLoop(void)
   //Thread* pThreadTest = AM::THREAD::pThisThread();
 
   
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
-//  m_pPrintOp = Api::pGetOperator("print"_Stz);
-//  Task* pOpTask = AM::pTaskNew(pOp);
-//
-//  AM::DEMON::vPipeTo("__threadDemon"_Stz, m_pPrintOp);
-//
-//
-//  Marker* pStartMarker = new Marker(OM_STARTMARKER);
-//  m_pPrintOp->vAppend(pStartMarker,nullptr);
-//
-//
-//  InfoSet* pPromptOut = AM::PROMPT::pToPromptOut("OP print test ###################################\n"_Stz);
-//
-//  m_pPrintOp->vAppend(pPromptOut,nullptr);
-//
-//
-//  Marker* pExitMarker = new Marker(OM_EXITMARKER);
-//  m_pPrintOp->vAppend(pExitMarker,nullptr);
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-
   ASSERT(0 == pInputGet()->iDepth());
   pInputGet()->vUseStdin();
   pInputGet()->vFormCppTokens();
@@ -232,7 +209,7 @@ void SePrompt::vPromptLoop(void)
       RASSERT(0);
     }
     
-    m_pCmdTknVec = pInputGet()->pInpTknVec();
+    m_pInpTknVec = pInputGet()->pInpTknVec();
     m_pCmdTagSet = m_pCurrentDeputy->pCmdTagSet();
     
     Stz* szToDo = this->szToDo();
@@ -331,12 +308,12 @@ bool SePrompt::bExamineCommand(void)
   
   TagSet*  pCmdTagSet = m_pCurrentDeputy->pCmdTagSet();
 
-  CmdHelper::vExtractCmdPaths(m_pCmdTknVec,pCmdTagSet);
-  if (! CmdHelper::bExtractCmdTags(m_pCmdTknVec,pCmdTagSet))
+  CmdHelper::vExtractCmdPaths(m_pInpTknVec,pCmdTagSet);
+  if (! CmdHelper::bExtractCmdTags(m_pInpTknVec,pCmdTagSet))
     return false;
 
   if (bIsPromptWord())
-    m_pCmdTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
+    m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
 
   if (bExecuteFunction())
     return false;
@@ -354,9 +331,9 @@ bool SePrompt::bPrepareJob(void)
   m_pCmdTagSet->vCopy(& m_oPmtTagSet);
   
   s4K sCmd;
-  m_pCmdTknVec->vToTknString(sCmd);
+  m_pInpTknVec->vToTknString(sCmd);
   
-  eEC eError = m_pCurrentDeputy->ePrepareJob(sCmd,m_pCmdTknVec);
+  eEC eError = m_pCurrentDeputy->ePrepareJob(sCmd,m_pInpTknVec);
 
   if (eError) {
     RASSERT(! m_pCurrentDeputy->pJob());
@@ -420,7 +397,7 @@ bool SePrompt::bBlankLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
     
-  bool bBlankLine = m_pCmdTknVec->bBlankLine();
+  bool bBlankLine = m_pInpTknVec->bBlankLine();
 
   return bBlankLine;
 }
@@ -576,13 +553,13 @@ void SePrompt::vDumpInpTknVec(bool bForce)
   if (! bDumpTokens() && ! bForce)
     return;
 
-  if (! m_pCmdTknVec->nTokens() && ! bForce)
+  if (! m_pInpTknVec->nTokens() && ! bForce)
     return;
 
   s48K sCommand;
 
-  m_pCmdTknVec->vVecToString(sCommand,0,false);
-  vTrace("InpTknVec %lld tokens: %s\n"_Stz,m_pCmdTknVec->nTokens(),sCommand.szStz());
+  m_pInpTknVec->vVecToString(sCommand,0,false);
+  vTrace("InpTknVec %lld tokens: %s\n"_Stz,m_pInpTknVec->nTokens(),sCommand.szStz());
   
   BASE::vDebugPoint();
 }
@@ -672,7 +649,7 @@ bool SePrompt::bIsPromptWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn0 = m_pCmdTknVec->pGet(0);
+  Token* pTkn0 = m_pInpTknVec->pGet(0);
 
   s32 sWordNm;
   sWordNm = pTkn0->szChars();
@@ -715,11 +692,11 @@ void SePrompt::vLogCommand(void)
   
   sSTMT sCommand;
   
-  Token* pTkn0 = m_pCmdTknVec->pGet(0);
+  Token* pTkn0 = m_pInpTknVec->pGet(0);
   if (pTkn0->bSame("logNote"_Stz))
   return;
   
-  m_pCmdTknVec->vVecToString(sCommand,0,true);
+  m_pInpTknVec->vVecToString(sCommand,0,true);
   sCommand.vSizeMax(C_MAX_LOG_NOTE / 2);
 }
 
@@ -937,7 +914,7 @@ bool SePrompt::bReadNextCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
    
-  m_pCmdTknVec->vIntegrityCheck();
+  m_pInpTknVec->vIntegrityCheck();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case: initial command supplied as an SE command line argument
@@ -946,9 +923,9 @@ bool SePrompt::bReadNextCommand(void)
     gxCmdLineArgs.m_xSysArgs.m_bInitial = false;
     
     s4K szInitial = AM::szInitial();
-    m_pCmdTknVec->vTokeniseSen(szInitial);
-    m_pCmdTknVec->vStripSemicolon();
-    m_pCmdTknVec->vIntegrityCheck();
+    m_pInpTknVec->vTokeniseSen(szInitial);
+    m_pInpTknVec->vStripSemicolon();
+    m_pInpTknVec->vIntegrityCheck();
     return true;
   }
   
@@ -959,9 +936,9 @@ bool SePrompt::bReadNextCommand(void)
     m_bOneRun = true;
     
     s4K szCommand = AM::szCommand();
-    m_pCmdTknVec->vTokeniseSen(szCommand);
-    m_pCmdTknVec->vStripSemicolon();
-    m_pCmdTknVec->vIntegrityCheck();
+    m_pInpTknVec->vTokeniseSen(szCommand);
+    m_pInpTknVec->vStripSemicolon();
+    m_pInpTknVec->vIntegrityCheck();
     return true;
   }
   
@@ -969,11 +946,11 @@ bool SePrompt::bReadNextCommand(void)
   // special case: a previous command has requested to prompt to do something
   
   if (* this->szToDo()->azChar()) {
-    m_pCmdTknVec->vTokeniseSen(this->szToDo());
-    m_pCmdTknVec->vStripSemicolon();
+    m_pInpTknVec->vTokeniseSen(this->szToDo());
+    m_pInpTknVec->vStripSemicolon();
 
     vToDo(""_Stz);
-    m_pCmdTknVec->vIntegrityCheck();
+    m_pInpTknVec->vIntegrityCheck();
     return true;
   }
   
@@ -981,7 +958,7 @@ bool SePrompt::bReadNextCommand(void)
   // special case:
   
   if (m_bOneCommand && pInputGet()->bIsStdin()) {
-    m_pCmdTknVec->vIntegrityCheck();
+    m_pInpTknVec->vIntegrityCheck();
     return false;
   }
 
@@ -989,7 +966,7 @@ bool SePrompt::bReadNextCommand(void)
   // general case
   
   pInputGet()->vReadCommand();
-  m_pCmdTknVec->vIntegrityCheck();
+  m_pInpTknVec->vIntegrityCheck();
 
   return true;
 }
@@ -1001,7 +978,7 @@ bool SePrompt::bRedirectFromFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Stz* szPath = m_pCmdTknVec->pGet(0)->szChars();
+  Stz* szPath = m_pInpTknVec->pGet(0)->szChars();
 
   if (! File::bExists(szPath, false))
     return false;
@@ -1138,7 +1115,7 @@ bool SePrompt::bShortCut(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn = m_pCmdTknVec->pGet(0);
+  Token* pTkn = m_pInpTknVec->pGet(0);
   
   i8 nShortCuts = m_oShortCutVec.nItems();
   for (i8 i_ShortCut = 0; i_ShortCut < nShortCuts; i_ShortCut++) {
@@ -1185,7 +1162,7 @@ TokenVec* SePrompt::pInpTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pCmdTknVec;
+  return m_pInpTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1205,7 +1182,7 @@ Token* SePrompt::pTkn(i8 i_Token)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn = m_pCmdTknVec->pGet(i_Token,true);
+  Token* pTkn = m_pInpTknVec->pGet(i_Token,true);
   
   return pTkn;
 }
@@ -1271,11 +1248,11 @@ bool SePrompt::bTranslateProcedure(void)
   sSTMT sPipelineSmt;
   
   if (! Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
-                                        m_pCmdTknVec))
+                                        m_pInpTknVec))
     return false;
     
-  m_pCmdTknVec->vSoftReset();
-  m_pCmdTknVec->vTokeniseSen(sPipelineSmt);
+  m_pInpTknVec->vSoftReset();
+  m_pInpTknVec->vTokeniseSen(sPipelineSmt);
   
   return false;
 }
