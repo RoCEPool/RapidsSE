@@ -333,7 +333,7 @@ bool SePrompt::bPrepareJob(void)
   s4K sCmd;
   m_pInpTknVec->vToTknString(sCmd);
   
-  eEC eError = m_pCurrentDeputy->ePrepareJob(sCmd,m_pInpTknVec);
+  eEC eError = m_pCurrentDeputy->ePrepareJob(sCmd,m_pInpTknVec,m_pCmdTagSet);
 
   if (eError) {
     RASSERT(! m_pCurrentDeputy->pJob());

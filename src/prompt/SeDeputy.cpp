@@ -185,13 +185,14 @@ void SeDeputy::vRepeableJob(void)
 /*----------------------------------------------------------------------------*/
 /* prepare job                                                                */
 /*----------------------------------------------------------------------------*/
-eEC SeDeputy::ePrepareJob(Stz* szCmd, TokenVec* pCmdTknVec)
+eEC SeDeputy::ePrepareJob(Stz* szCmd, TokenVec* pCmdTknVec, TagSet* pInpTagSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
     
   vTrace("ePrepareJob: %s\n"_Stz,szCmd);
 
-
+  RASSERT(pInpTagSet == & m_oCmdTagSet);
+  
   TagSet* pCmdTagSet = this->pCmdTagSet();
   
   pCmdTagSet->vDumpSet();
