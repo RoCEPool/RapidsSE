@@ -16,9 +16,6 @@ namespace STORE
   
   static Job* pAllocJob(Stz* szJobNm);
 
-  static void vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-  static bool bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-
   static void vExecuteJob(Job* pJob, TagSet* pCmdTagSet);
   static void vForkJob(Job*& rpJob, Op* pResponseOp);
   static eEC  ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
@@ -49,8 +46,6 @@ namespace STORE
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  static bool bShortForm(TokenVec* pCmdTknVec);
-  static bool bExpandToLongForm(TokenVec* pCmdTknVec);
   static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
 
   private:
