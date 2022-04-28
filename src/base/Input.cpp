@@ -35,7 +35,8 @@ Input::Input(Input* pNext)
       
   m_pInpTknVec  = new TokenVec;
   m_pCurrTkn = nullptr;
-  
+  m_pInpTagSet  = new TagSet;
+
   // debugging aids
   d_iDebugMode               = false;
   
@@ -63,6 +64,7 @@ Input::~Input(void) noexcept(false)
   
   RASSERT(! m_pNext);
 
+  delete m_pInpTagSet;
   delete m_pInpTknVec;
 }
 
@@ -229,6 +231,16 @@ void Input::vFormSenTokens(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
     
   m_eTknForm = UF_SEN_TOKENS;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get input tag set                                                          */
+/*----------------------------------------------------------------------------*/
+TagSet* Input::pInpTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  return m_pInpTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
