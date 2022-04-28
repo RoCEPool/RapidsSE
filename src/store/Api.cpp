@@ -204,10 +204,6 @@ void Api::vReapableJob(Job*& rpJob)
   rpJob->pOutput()->m_pOutputQueue->vReset();
   rpJob->pOutput()->vEndProcOneCmd();
   
-  rpJob->vReapable(true);
-      
-  
-  
   if (rpJob->pOutput()->m_pStreamDef_result) {
     StreamDef* pStreamDef = rpJob->pOutput()->m_pStreamDef_result;
     rpJob->pOutput()->m_pStreamDef_result = nullptr;
@@ -217,6 +213,8 @@ void Api::vReapableJob(Job*& rpJob)
   rpJob->pOutput()->m_bExitMarker      = false;
   rpJob->pOutput()->m_bExitEarlyMarker = false;
   
+  rpJob->vReapable(true);
+
   rpJob = nullptr;
 }
 
