@@ -200,6 +200,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Stz* szOriginNodeNm(void);
   
     JobId tParentId(void);
+    void vParentId(JobId tParentId);
     i8   iParticipantNodeId(void);
     void vParticipantNodeId(i8 i_Node);
     Pipeline* pPipeline(void);

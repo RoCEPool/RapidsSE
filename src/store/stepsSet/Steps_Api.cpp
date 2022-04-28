@@ -114,21 +114,19 @@ void Step::vApiExecuteCommand(void)
   s48K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
 
-  s48K sWithTagStr;
-  m_pDataStack->vPopStr(sWithTagStr,__func__);
+  s48K sCmdTagStr;
+  m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
     vTrace("ExecuteCommand: %s\n"_Stz,sCmd.szStz());
-    vTrace("      WithTags: %s\n"_Stz,sWithTagStr.szStz());
+    vTrace("      WithTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Stz* szTagPath = nullptr;
-  if (m_pJob)
-    szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
-  
-  
+  RASSERT(m_pJob)
+  szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
@@ -148,8 +146,10 @@ void Step::vApiExecuteCommand(void)
     return;
   }
   
+  pJob->vParentId(m_pJob->tParentId());
 
   pJob->vStmtListCreate();
+  
   Api::vExecuteJob(pJob);
   
   delete pCmdTknVec;
