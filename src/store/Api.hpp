@@ -16,8 +16,8 @@ namespace STORE
   
   static Job* pAllocJob(Stz* szJobNm);
 
-  static void vExecuteJob(Job* pJob, TagSet* pCmdTagSet);
-  static void vForkJob(Job*& rpJob, Op* pResponseOp);
+  static void vExecuteJob(Job* pJob);
+  static void vForkJob(Job*& rpJob);
   static eEC  ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
 
   static void vReapableJob(Job*& rpJob);
@@ -49,7 +49,6 @@ namespace STORE
   static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
 
   private:
-  static eEC  eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
 
   static void vCreateTaskForOp(Op* pOp);
   static void vResetTaskForJob(Job* pJob);

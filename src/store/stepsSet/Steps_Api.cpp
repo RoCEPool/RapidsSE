@@ -150,7 +150,7 @@ void Step::vApiExecuteCommand(void)
   
 
   pJob->vStmtListCreate();
-  Api::vExecuteJob(pJob,pCmdTagSet);
+  Api::vExecuteJob(pJob);
   
   delete pCmdTknVec;
   delete pCmdTagSet;
@@ -213,8 +213,11 @@ void Step::vApiForkCommand(void)
   }
   
   tForkedJobId = pJob->tJobId();
+
+  // todo: put pResponseOp into job
   
-  Api::vForkJob(pJob,pResponseOp);
+  
+  Api::vForkJob(pJob);
   RASSERT(! pJob);
   
 
@@ -359,7 +362,7 @@ void Step::vApiSpawnDemon(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   pJob->pJobTags()->vReplace(C_TAG_NOWAIT,1);
-  Api::vForkJob(pJob,nullptr);
+  Api::vForkJob(pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

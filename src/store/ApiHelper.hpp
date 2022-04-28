@@ -16,7 +16,7 @@ namespace STORE
 
     i8   iCommandKind(void);
   
-    void vExecuteJob(Job* pJob, TagSet* pCmdTagSet);
+    void vExecuteJob(Job* pJob);
 
     void* pForkDemon(Stz* szPipeline);
   

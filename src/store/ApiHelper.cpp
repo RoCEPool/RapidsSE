@@ -41,9 +41,9 @@ void ApiHelper::vReapableJob(Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 /* execute job                                                                */
 /*----------------------------------------------------------------------------*/
-void ApiHelper::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
+void ApiHelper::vExecuteJob(Job* pJob)
 {
- Api::vExecuteJob(pJob,pCmdTagSet);
+ Api::vExecuteJob(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

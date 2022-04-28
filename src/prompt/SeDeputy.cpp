@@ -168,10 +168,8 @@ void SeDeputy::vDeputyLoop(void)
 void SeDeputy::vExecuteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-        
-  TagSet* pCmdTagSet = this->pCmdTagSet();
 
-  ApiHelper::vExecuteJob(m_pJob,pCmdTagSet);
+  ApiHelper::vExecuteJob(m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/

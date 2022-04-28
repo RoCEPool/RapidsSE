@@ -55,7 +55,7 @@ Job* Api::pAllocJob(Stz* szJobNm)
 /*----------------------------------------------------------------------------*/
 /* execute job (spawn job and wait for completion)                            */
 /*----------------------------------------------------------------------------*/
-void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
+void Api::vExecuteJob(Job* pJob)
 {
   _static_
 
@@ -123,7 +123,7 @@ void Api::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
 /*----------------------------------------------------------------------------*/
 /* fork job (spawn job but don't wait for completion)                         */
 /*----------------------------------------------------------------------------*/
-void Api::vForkJob(Job*& rpJob, Op* pResponseOp)
+void Api::vForkJob(Job*& rpJob)
 {
   _static_
   
@@ -147,12 +147,12 @@ void Api::vForkJob(Job*& rpJob, Op* pResponseOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse command                                                              */
+/* new a job for given command and prepare to execute it                      */
 /*----------------------------------------------------------------------------*/
-eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+eEC Api::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   _static_
-
+  
   CmdHelper::vExtractCmdPaths(pCmdTknVec,pCmdTagSet);
   
   bool b = CmdHelper::bExtractCmdTags(pCmdTknVec,pCmdTagSet);
@@ -167,22 +167,6 @@ eEC Api::eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
   if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet))
     return EC_INVALID_COMMAND;
 
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new a job for given command and prepare to execute it                      */
-/*----------------------------------------------------------------------------*/
-eEC Api::ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
-{
-  _static_
-  
-  //vTrace("Api::ePrepareJob_2\n"_Stz);
-
-  eEC eError = Api::eParseCmd(pCmdTknVec,pCmdTagSet);
-  if (EC_NONE != eError) {
-    return eError;
-  }
 
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   RASSERT(szJobNm);
