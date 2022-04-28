@@ -305,11 +305,9 @@ bool SePrompt::bExamineCommand(void)
 
   if (bRedirectFromFile())
     return false;
-  
-  TagSet*  pCmdTagSet = m_pCurrentDeputy->pInpTagSet();
-
-  CmdHelper::vExtractCmdPaths(m_pInpTknVec,pCmdTagSet);
-  if (! CmdHelper::bExtractCmdTags(m_pInpTknVec,pCmdTagSet))
+    
+  CmdHelper::vExtractCmdPaths(m_pInpTknVec,m_pInpTagSet);
+  if (! CmdHelper::bExtractCmdTags(m_pInpTknVec,m_pInpTagSet))
     return false;
 
   if (bIsPromptWord())
