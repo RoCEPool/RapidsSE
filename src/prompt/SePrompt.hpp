@@ -50,7 +50,6 @@ namespace PROMPT
 
     TagSet*     m_pCmdTagSet;   // extra tags gleaned from the prompt command
     TagSet      m_oPmtTagSet;   // tag set which controls this prompt
-    TagSet      m_oUsrTagSet;   // tag set which are passed to session
 
 
     // -- -- -- -- -- --
@@ -144,7 +143,6 @@ namespace PROMPT
     void vTrackMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);
-    TagSet* pUsrTagSet(void);
 
   
     ObjectSnapshot* pSnapshotAtTrackingMemory(void);

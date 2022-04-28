@@ -351,7 +351,7 @@ bool SePrompt::bPrepareJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  m_pCmdTagSet->vCopy(& m_oUsrTagSet);
+  m_pCmdTagSet->vCopy(& m_oPmtTagSet);
   
   s4K sCmd;
   m_pCmdTknVec->vToTknString(sCmd);
@@ -1177,17 +1177,6 @@ Timer* SePrompt::pTimer(void)
   
   return & m_oTimer;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get the user/session tag set                                               */
-/*----------------------------------------------------------------------------*/
-TagSet* SePrompt::pUsrTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return &m_oUsrTagSet;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
