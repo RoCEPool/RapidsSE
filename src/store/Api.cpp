@@ -158,7 +158,120 @@ eEC Api::eForkJob(JobId& rtJobId, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   _static_
   
-  return EC_NONE;
+  rtJobId = C_UNKNOWN;
+  
+  Job* pChildJob = nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // prepare job
+
+  CmdHelper::vExtractCmdPaths(pCmdTknVec,pCmdTagSet);
+  
+  bool b = CmdHelper::bExtractCmdTags(pCmdTknVec,pCmdTagSet);
+  UNUSED(b);
+  
+  sSTMT sPipelineSmt;
+  if (Procedure::bTranslateToPipeline(sPipelineSmt.pString(),pCmdTknVec)) {
+    pCmdTknVec->vSoftReset();
+    pCmdTknVec->vTokeniseSen(sPipelineSmt);
+  }
+        
+  if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {
+    rtJobId = C_UNKNOWN;
+    return EC_INVALID_COMMAND;
+  }
+
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  RASSERT(szJobNm);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // alloc job
+  pChildJob = Api::pAllocJob(szJobNm);
+  rtJobId = pChildJob->tJobId();
+
+  TagSet* pJobTagSet = pChildJob->pJobTags();
+  pJobTagSet->vCopy(pCmdTagSet);
+  
+  sSTMT sCmd;
+  pCmdTknVec->vVecToString(sCmd,0,true);
+  pChildJob->vCmd(sCmd);
+
+  Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+  //vTrace("szEntry: %s\n"_Stz,szEntry);
+  pChildJob->vEntryPoint(szEntry);
+
+  eJK eJobKind = (eJK) pJobTagSet->iValue(C_TAG_JOBKIND);
+  pChildJob->vJobKind(eJobKind);
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fork
+  
+  pChildJob->vMutexCreate();
+  pChildJob->vOutputCreate();
+  pChildJob->vOutputBeginProc();
+
+  //JobId tJobId = pJob->tJobId();
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (;;) {
+  
+    i8 iPid = AM::PROCESS::iSePid();
+    if (!Process::bTestPid(iPid)) {
+      // SE is not running anymore!
+      vTrace("Cannot find pid %lld\n"_Stz, iPid);
+      rtJobId = C_UNKNOWN;
+      return EC_SE_NOT_RUNNING;
+    }
+    
+    RASSERT(! pChildJob->pTask());
+    
+    Api::vMutexLock(pChildJob);
+    RASSERT(JS_LOCKED == pChildJob->eJobState());
+    
+    pChildJob->vTaskCreate();
+    
+    pChildJob->vResponseTimerStart();
+    
+    Scheduler::vTaskApi_AddPrompt(pChildJob->pTask());
+
+    if (pChildJob->bHasTag(C_TAG_NOWAIT)) {
+      RASSERT(! pChildJob->bHasTag(C_TAG_WAIT));
+      Api::vMutexUnlock(pChildJob);
+      return EC_NONE;
+    }
+    
+    RASSERT(pChildJob->bHasTag(C_TAG_WAIT));
+    RASSERT(! pChildJob->bHasTag(C_TAG_NOWAIT));
+
+
+    Api::vMutexWaitCond(pChildJob);
+    
+    pChildJob->vResponseTimerUpdate();
+    
+    Api::vMutexUnlock(pChildJob);
+
+    
+    if (! pChildJob->bHasCascade()) {
+      return EC_NONE;
+    }
+          
+    pChildJob->vCascadeReset();
+    
+    pChildJob->vCascadeSet(pChildJob->szCascade());
+    
+    pChildJob->vCascadePop();
+
+    TagSet* pJobTagSet = pChildJob->pJobTags();
+    //Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
+    Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+    //vTrace("szEntry: %s\n"_Stz,szEntry);
+
+    pChildJob->vEntryPoint(szEntry);
+
+    //AM::pHeaps()->vSetTraceFree(false);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
