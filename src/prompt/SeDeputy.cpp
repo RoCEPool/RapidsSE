@@ -99,7 +99,11 @@ void* SeDeputy::aEntryPoint(void* pArg)
   
   SeDeputy* pSeDeputy = _pSeDeputy(pArg);
   
+#ifdef WITH_API_FORK
+  pSeDeputy->vDeputyLoop_2();
+#else
   pSeDeputy->vDeputyLoop();
+#endif
   
   return nullptr;
 }
@@ -161,6 +165,70 @@ void SeDeputy::vDeputyLoop(void)
   
   m_bTerminated = true;
 }
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vDeputyLoop_2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+    
+  m_pThread->vThisTLSThread();
+  RASSERT(AM::THREAD::pThisThread());
+  
+  while (m_bContinue) {
+
+    RASSERT(!m_pJob);
+
+    m_pThread->pMutex()->vLock(m_pSePrompt);
+    RASSERT(!m_pJob);
+    m_bAvailable = true;
+    m_pThread->pMutex()->vWait(m_pSePrompt);
+    m_pThread->pMutex()->vUnlock(m_pSePrompt);
+  
+    if (! m_bContinue)
+      break;
+    
+    /*
+    RASSERT(m_pJob);
+    
+    m_pJob->vFolderPath(m_sFolderPath);
+    m_pJob->vLastJobId(m_tLastJobId);
+    m_pJob->vSystemCloser(m_bSystemCloser);
+
+    m_pJob->vStmtListCreate();
+    vExecuteJob();
+    
+    ApiHelper::vPrintResults(m_pJob);
+    
+    vReportTime();
+      
+    ApiHelper::vResetResults(m_pJob);
+
+    if (! m_pJob->bHasTag(C_TAG_BG)) {
+      m_pSePrompt->pMutex()->vLock(m_pSePrompt);
+      m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
+      m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
+    }
+    
+    m_sFolderPath   = m_pJob->szFolderPath();
+    m_tLastJobId    = m_pJob->tLastJobId();
+    m_bSystemCloser = m_pJob->bSystemCloser();
+    */
+    
+    TokenVec* pInpTknVec = m_pInput->pInpTknVec();
+    TagSet* pInpTagSet   = m_pInput->pInpTagSet();
+
+    JobId tChildJobId;
+    
+    Api::eForkJob(tChildJobId,m_pRootJob,pInpTknVec,pInpTagSet);
+    
+    m_sFolderPath   = pInpTagSet->szValue(C_TAG_PATH);
+    m_tLastJobId    = tChildJobId;
+    m_bSystemCloser = pInpTagSet->iValue(C_TAG_SYSTEMCLOSER);
+
+    vRepeableJob();
+  }
+  
+  m_bTerminated = true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* execute job in SE                                                          */
@@ -195,18 +263,18 @@ eEC SeDeputy::ePrepareJob(Stz* szCmd)
   //RASSERT(pCmdTknVec == m_pInput->pInpTknVec());
 
   TokenVec* pInpTknVec = m_pInput->pInpTknVec();
-  TagSet* pCmdTagSet = this->pInpTagSet();
+  TagSet* pInpTagSet   = m_pInput->pInpTagSet();
   
-  pCmdTagSet->vDumpSet();
+  pInpTagSet->vDumpSet();
   vTrace("FolderPath: %s\n"_Stz,m_sFolderPath.szStz());
-  pCmdTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
+  pInpTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
   
   s48K sCmdTagStr;
-  pCmdTagSet->vToString(sCmdTagStr);
+  pInpTagSet->vToString(sCmdTagStr);
 
-  pCmdTagSet->vReplace(C_TAG_WAIT,1);
+  pInpTagSet->vReplace(C_TAG_WAIT,1);
 
-  eEC eError = ApiHelper::ePrepareJob(m_pJob,pInpTknVec,pCmdTagSet);
+  eEC eError = ApiHelper::ePrepareJob(m_pJob,pInpTknVec,pInpTagSet);
 
   return eError;
 }

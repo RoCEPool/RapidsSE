@@ -85,10 +85,12 @@ namespace PROMPT
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vPromptLoop(void);
+    void vPromptLoop_2(void);
 
     bool bGetCommand(void);
     bool bPrepareJob(void);
     void vDeputiseJob(void);
+    void vForkJob(void);
 
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);

@@ -399,7 +399,11 @@ void Engine::vCallPrompt(void)
 
   SePrompt* pSePrompt = new SePrompt(gxCmdLineArgs.m_xSysArgs.m_bCommand);
   
+#ifdef WITH_API_FORK
+  pSePrompt->vPromptLoop_2();
+#else
   pSePrompt->vPromptLoop();
+#endif
   
   delete pSePrompt;
 

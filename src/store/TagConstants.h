@@ -53,6 +53,7 @@ static Stz* C_TAG_SECTION      = "<section>"_Stz;
 static Stz* C_TAG_SHM          = "<shm>"_Stz;
 static Stz* C_TAG_STMT         = "<stmt>"_Stz;
 static Stz* C_TAG_SUMMARY      = "<summary>"_Stz;
+static Stz* C_TAG_SYSTEMCLOSER = "<systemCloser>"_Stz;
 static Stz* C_TAG_TABLENM      = "<tableNm>"_Stz;
 static Stz* C_TAG_TIME         = "<time>"_Stz;
 static Stz* C_TAG_TRACEAPI     = "<traceApi>"_Stz;

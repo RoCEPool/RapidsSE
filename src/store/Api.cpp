@@ -154,11 +154,12 @@ void Api::vForkJob(Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 /* fork a child job for given command                                         */
 /*----------------------------------------------------------------------------*/
-eEC Api::eForkJob(JobId& rtJobId, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
+                  TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
   _static_
   
-  rtJobId = C_UNKNOWN;
+  rtChildJobId = C_UNKNOWN;
   
   Job* pChildJob = nullptr;
   
@@ -177,7 +178,7 @@ eEC Api::eForkJob(JobId& rtJobId, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
   }
         
   if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {
-    rtJobId = C_UNKNOWN;
+    rtChildJobId = C_UNKNOWN;
     return EC_INVALID_COMMAND;
   }
 
@@ -187,7 +188,7 @@ eEC Api::eForkJob(JobId& rtJobId, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alloc job
   pChildJob = Api::pAllocJob(szJobNm);
-  rtJobId = pChildJob->tJobId();
+  rtChildJobId = pChildJob->tJobId();
 
   TagSet* pJobTagSet = pChildJob->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
@@ -221,7 +222,7 @@ eEC Api::eForkJob(JobId& rtJobId, TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
     if (!Process::bTestPid(iPid)) {
       // SE is not running anymore!
       vTrace("Cannot find pid %lld\n"_Stz, iPid);
-      rtJobId = C_UNKNOWN;
+      rtChildJobId = C_UNKNOWN;
       return EC_SE_NOT_RUNNING;
     }
     
