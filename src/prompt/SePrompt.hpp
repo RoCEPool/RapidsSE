@@ -90,6 +90,7 @@ namespace PROMPT
     bool bGetCommand(void);
     bool bPrepareJob(void);
     void vDeputiseJob(void);
+    void vDeputiseJob_2(void);
     void vForkJob(void);
 
     // these are the prompt.xyz task primitives

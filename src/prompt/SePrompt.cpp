@@ -327,6 +327,7 @@ void SePrompt::vPromptLoop_2(void)
       m_pInpTagSet->vInsert(C_TAG_CMDLINE,iCmdLine);
     }
 
+    /*
     if (! bPrepareJob()) {
       
       if (m_bOneRun) {
@@ -335,8 +336,10 @@ void SePrompt::vPromptLoop_2(void)
       
       continue;
     }
-    
-    vDeputiseJob();
+    */
+    m_pInpTagSet->vCopy(& m_oPmtTagSet);
+
+    vDeputiseJob_2();
 
     m_pCurrentDeputy = nullptr;
     
@@ -471,6 +474,43 @@ void SePrompt::vDeputiseJob(void)
     m_pCurrentDeputy->vDeputiseJob();
   }
   
+  m_pCurrentDeputy = nullptr;
+}
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDeputiseJob_2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+//  Job* pJob = m_pCurrentDeputy->pJob();
+//
+//  pJob->vOutputEnabled(m_bOutputEnabled);
+//
+//  if (! pJob->bHasTag(C_TAG_BG)) {
+//
+//    m_oMutex.vLock(this);
+//
+//    m_pCurrentDeputy->vDeputiseJob();
+//
+//    m_oMutex.vWait(this);
+//    m_oMutex.vUnlock(this);
+//
+//    while (! m_pCurrentDeputy->bAvailable())
+//      AM::vNapMsec(10,CN_SEPROMPT);
+//  }
+//  else {
+//    m_pCurrentDeputy->vDeputiseJob();
+//  }
+
+  m_oMutex.vLock(this);
+  
+  m_pCurrentDeputy->vDeputiseJob();
+
+  m_oMutex.vWait(this);
+  m_oMutex.vUnlock(this);
+  
+  while (! m_pCurrentDeputy->bAvailable())
+    AM::vNapMsec(10,CN_SEPROMPT);
+
   m_pCurrentDeputy = nullptr;
 }
 

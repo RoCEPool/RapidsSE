@@ -155,13 +155,14 @@ void Api::vForkJob(Job*& rpJob)
 /* fork a child job for given command                                         */
 /*----------------------------------------------------------------------------*/
 eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
-                  TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+                  TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                  Job*& rpChildJob_tbr)
 {
   _static_
   
   rtChildJobId = C_UNKNOWN;
   
-  Job* pChildJob = nullptr;
+  //Job* pChildJob = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prepare job
@@ -187,34 +188,48 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alloc job
-  pChildJob = Api::pAllocJob(szJobNm);
-  rtChildJobId = pChildJob->tJobId();
+  rpChildJob_tbr = Api::pAllocJob(szJobNm);
+  rtChildJobId = rpChildJob_tbr->tJobId();
 
-  TagSet* pJobTagSet = pChildJob->pJobTags();
+  TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
   
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
-  pChildJob->vCmd(sCmd);
+  rpChildJob_tbr->vCmd(sCmd);
 
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
   //vTrace("szEntry: %s\n"_Stz,szEntry);
-  pChildJob->vEntryPoint(szEntry);
+  rpChildJob_tbr->vEntryPoint(szEntry);
 
   eJK eJobKind = (eJK) pJobTagSet->iValue(C_TAG_JOBKIND);
-  pChildJob->vJobKind(eJobKind);
+  rpChildJob_tbr->vJobKind(eJobKind);
 
   
+  Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
+  rpChildJob_tbr->vFolderPath(szFolderPath);
+
+  JobId tLastJobId;
+  tLastJobId = pJobTagSet->iValue(C_TAG_LASTJOBID);
+  rpChildJob_tbr->vLastJobId(tLastJobId);
+
+  bool m_bSystemCloser = pJobTagSet->iValue(C_TAG_SYSTEMCLOSER);
+  rpChildJob_tbr->vSystemCloser(m_bSystemCloser);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fork
   
-  pChildJob->vMutexCreate();
-  pChildJob->vOutputCreate();
-  pChildJob->vOutputBeginProc();
+  rpChildJob_tbr->vMutexCreate();
+  rpChildJob_tbr->vOutputCreate();
+  rpChildJob_tbr->vOutputBeginProc();
+
+  rpChildJob_tbr->vOutputEnabled(true);
 
   //JobId tJobId = pJob->tJobId();
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  rpChildJob_tbr->vStmtListCreate();
 
   for (;;) {
   
@@ -226,50 +241,50 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
       return EC_SE_NOT_RUNNING;
     }
     
-    RASSERT(! pChildJob->pTask());
+    RASSERT(! rpChildJob_tbr->pTask());
     
-    Api::vMutexLock(pChildJob);
-    RASSERT(JS_LOCKED == pChildJob->eJobState());
+    Api::vMutexLock(rpChildJob_tbr);
+    RASSERT(JS_LOCKED == rpChildJob_tbr->eJobState());
     
-    pChildJob->vTaskCreate();
+    rpChildJob_tbr->vTaskCreate();
     
-    pChildJob->vResponseTimerStart();
+    rpChildJob_tbr->vResponseTimerStart();
     
-    Scheduler::vTaskApi_AddPrompt(pChildJob->pTask());
+    Scheduler::vTaskApi_AddPrompt(rpChildJob_tbr->pTask());
 
-    if (pChildJob->bHasTag(C_TAG_NOWAIT)) {
-      RASSERT(! pChildJob->bHasTag(C_TAG_WAIT));
-      Api::vMutexUnlock(pChildJob);
+    if (rpChildJob_tbr->bHasTag(C_TAG_NOWAIT)) {
+      RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_WAIT));
+      Api::vMutexUnlock(rpChildJob_tbr);
       return EC_NONE;
     }
     
-    RASSERT(pChildJob->bHasTag(C_TAG_WAIT));
-    RASSERT(! pChildJob->bHasTag(C_TAG_NOWAIT));
+    RASSERT(rpChildJob_tbr->bHasTag(C_TAG_WAIT));
+    RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_NOWAIT));
 
 
-    Api::vMutexWaitCond(pChildJob);
+    Api::vMutexWaitCond(rpChildJob_tbr);
     
-    pChildJob->vResponseTimerUpdate();
+    rpChildJob_tbr->vResponseTimerUpdate();
     
-    Api::vMutexUnlock(pChildJob);
+    Api::vMutexUnlock(rpChildJob_tbr);
 
     
-    if (! pChildJob->bHasCascade()) {
+    if (! rpChildJob_tbr->bHasCascade()) {
       return EC_NONE;
     }
           
-    pChildJob->vCascadeReset();
+    rpChildJob_tbr->vCascadeReset();
     
-    pChildJob->vCascadeSet(pChildJob->szCascade());
+    rpChildJob_tbr->vCascadeSet(rpChildJob_tbr->szCascade());
     
-    pChildJob->vCascadePop();
+    rpChildJob_tbr->vCascadePop();
 
-    TagSet* pJobTagSet = pChildJob->pJobTags();
+    TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
     //Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
     Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
     //vTrace("szEntry: %s\n"_Stz,szEntry);
 
-    pChildJob->vEntryPoint(szEntry);
+    rpChildJob_tbr->vEntryPoint(szEntry);
 
     //AM::pHeaps()->vSetTraceFree(false);
   }

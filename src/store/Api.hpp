@@ -21,7 +21,8 @@ namespace STORE
   static eEC  ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
   
   static eEC  eForkJob(JobId& rtChildJobId, Job* pParentJob,
-                       TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
+                       TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                       Job*& rpChildJob_tbr);
 
   
   static void vReapableJob(Job*& rpJob);

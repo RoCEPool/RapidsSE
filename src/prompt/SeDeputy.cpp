@@ -215,14 +215,39 @@ void SeDeputy::vDeputyLoop_2(void)
     
     TokenVec* pInpTknVec = m_pInput->pInpTknVec();
     TagSet* pInpTagSet   = m_pInput->pInpTagSet();
+    
+    pInpTagSet->vReplace(C_TAG_WAIT,1);
+    pInpTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
+    pInpTagSet->vReplace(C_TAG_LASTJOBID,m_tLastJobId.iAsI8());
+    pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_bSystemCloser);
 
     JobId tChildJobId;
     
-    Api::eForkJob(tChildJobId,m_pRootJob,pInpTknVec,pInpTagSet);
+    eEC eError = Api::eForkJob(tChildJobId,m_pRootJob,
+                               pInpTknVec,pInpTagSet,
+                               m_pJob // TO BE REMOVED
+                               );
     
-    m_sFolderPath   = pInpTagSet->szValue(C_TAG_PATH);
-    m_tLastJobId    = tChildJobId;
-    m_bSystemCloser = pInpTagSet->iValue(C_TAG_SYSTEMCLOSER);
+    if (EC_NONE != eError)
+      continue;
+    
+    ApiHelper::vPrintResults(m_pJob);
+    
+    vReportTime();
+      
+    ApiHelper::vResetResults(m_pJob);
+
+    if (! m_pJob->bHasTag(C_TAG_BG)) {
+      m_pSePrompt->pMutex()->vLock(m_pSePrompt);
+      m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
+      m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
+    }
+    
+    // NEEDS CORRECTION
+    m_sFolderPath   = m_pJob->szFolderPath();
+    m_tLastJobId    = m_pJob->tLastJobId();
+    m_bSystemCloser = m_pJob->bSystemCloser();
+    
 
     vRepeableJob();
   }
