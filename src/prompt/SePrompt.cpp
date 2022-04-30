@@ -261,44 +261,9 @@ void SePrompt::vPromptLoop(void)
   } // while
 }
 
-/*----------------------------------------------------------------------------*/
-/* examine command                                                            */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExamineCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  if (m_pInpTknVec->bBlankLine())
-    return false;
-
-  if (bDumpTokens())
-    vDumpInpTknVec(false);
-
-  if (bTagCommand())
-    return false;
-  
-  if (bShortCut())
-    return false;
-
-  if (bRedirectFromFile())
-    return false;
-    
-  CmdHelper::vExtractCmdPaths(m_pInpTknVec,m_pInpTagSet);
-  if (! CmdHelper::bExtractCmdTags(m_pInpTknVec,m_pInpTagSet))
-    return false;
-
-  if (bIsPromptWord())
-    m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
-
-  if (bPromptFunction())
-    return false;
-
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 
 /*----------------------------------------------------------------------------*/
@@ -443,6 +408,41 @@ void SePrompt::vDumpInpTknVec(bool bForce)
   vTrace("InpTknVec %lld tokens: %s\n"_Stz,m_pInpTknVec->nTokens(),sCommand.szStz());
   
   BASE::vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* examine command                                                            */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExamineCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+    
+  if (m_pInpTknVec->bBlankLine())
+    return false;
+
+  if (bDumpTokens())
+    vDumpInpTknVec(false);
+
+  if (bTagCommand())
+    return false;
+  
+  if (bShortCut())
+    return false;
+
+  if (bRedirectFromFile())
+    return false;
+    
+  CmdHelper::vExtractCmdPaths(m_pInpTknVec,m_pInpTagSet);
+  if (! CmdHelper::bExtractCmdTags(m_pInpTknVec,m_pInpTagSet))
+    return false;
+
+  if (bIsPromptWord())
+    m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
+
+  if (bPromptFunction())
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
