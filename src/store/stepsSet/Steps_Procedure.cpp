@@ -25,10 +25,13 @@ void Step::vProcedureAdd(void)
 {
   ENTRY();
   
-  s48K sProcText;
-  m_pDataStack->vPopStr(sProcText,__func__);
+  s48K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
   
-  TokenVec* pTokenVec = TokenVec::pTokeniseSen(sProcText);
+  s48K sCmdTagStr;
+  m_pDataStack->vPopStr(sCmdTagStr,__func__);
+
+  TokenVec* pTokenVec = TokenVec::pTokeniseSen(sCmd);
   
   Procedure::vAddProcedure(pTokenVec);
   

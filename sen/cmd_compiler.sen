@@ -74,15 +74,15 @@
 
   iParams 2 == if
     "/liteOp/" sOpNm OP__tpl_lite_procedure2 str.replace to sText
-    sText procedure::add
+    "" sText procedure::add
   else
   iParams 1 == if
     "/liteOp/" sOpNm OP__tpl_lite_procedure1 str.replace to sText
-    sText procedure::add
+    "" sText procedure::add
   else
   iParams 0 == assert
     "/liteOp/" sOpNm OP__tpl_lite_procedure0 str.replace to sText
-    sText procedure::add
+    "" sText procedure::add
   then then
 ;
 
@@ -108,15 +108,15 @@
 
   iParams 2 == if
     "/localLiteOp/" sOpNm OP__tpl_locallite_procedure2 str.replace to sText
-    sText procedure::add
+    "" sText procedure::add
   else
   iParams 1 == if
     "/localLiteOp/" sOpNm OP__tpl_locallite_procedure1 str.replace to sText
-    sText procedure::add
+    "" sText procedure::add
   else
   iParams 0 == assert
     "/localLiteOp/" sOpNm OP__tpl_locallite_procedure0 str.replace to sText
-    sText procedure::add
+    "" sText procedure::add
   then then
 ;
 
