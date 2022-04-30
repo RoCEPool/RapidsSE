@@ -27,6 +27,7 @@ namespace PROMPT
 
     Job*      m_pRootJob;
     Job*      m_pJob;
+    eEC       m_eError;
   
     s256      m_sFolderPath;   // folder path
     JobId     m_tLastJobId;    // last job id
@@ -56,8 +57,10 @@ namespace PROMPT
     // -- -- -- -- -- --
   
     bool bAvailable(void);
-    TagSet* pInpTagSet(void);
     void vDeputiseJob(void);
+    eEC  eError(void);
+    void vError(eEC eError);
+    TagSet* pInpTagSet(void);
     Input* pInput(void);
     Job* pJob(void);
     JobId tLastJobId(void);

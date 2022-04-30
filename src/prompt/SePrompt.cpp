@@ -339,8 +339,24 @@ void SePrompt::vPromptLoop_2(void)
     */
     m_pInpTagSet->vCopy(& m_oPmtTagSet);
 
-    vDeputiseJob_2();
+    //vDeputiseJob_2();
+    m_oMutex.vLock(this);
+    m_pCurrentDeputy->vDeputiseJob();
+    m_oMutex.vWait(this);
+    m_oMutex.vUnlock(this);
+    while (! m_pCurrentDeputy->bAvailable())
+      AM::vNapMsec(10,CN_SEPROMPT);
 
+    
+    eEC eError = m_pCurrentDeputy->eError();
+    m_pCurrentDeputy->vError(EC_NONE);
+
+    if (EC_NONE != eError) {
+      vTrace("error: %s\n"_Stz,aEC[eError]);
+      if (AM::bDeveloper())
+        vDumpInpTknVec(true);
+    }
+    
     m_pCurrentDeputy = nullptr;
     
     //vLogFreeSpace();
@@ -511,7 +527,7 @@ void SePrompt::vDeputiseJob_2(void)
   while (! m_pCurrentDeputy->bAvailable())
     AM::vNapMsec(10,CN_SEPROMPT);
 
-  m_pCurrentDeputy = nullptr;
+  //m_pCurrentDeputy = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

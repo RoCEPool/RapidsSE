@@ -89,7 +89,7 @@
 
 //#define WITH_BUFFER_ID EndDefine
 
-//#define WITH_API_FORK EndDefine       // RAY
+#define WITH_API_FORK EndDefine       // RAY
 
 /*============================================================================*/
 /* end                                                                        */

@@ -61,6 +61,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 
   m_pRootJob = nullptr;
   m_pJob = nullptr;
+  m_eError = EC_NONE;
 
   _checkInitialised_(CN_SEDEPUTY);
   
@@ -223,13 +224,17 @@ void SeDeputy::vDeputyLoop_2(void)
 
     JobId tChildJobId;
     
-    eEC eError = Api::eForkJob(tChildJobId,m_pRootJob,
-                               pInpTknVec,pInpTagSet,
-                               m_pJob // TO BE REMOVED
-                               );
+    m_eError = Api::eForkJob(tChildJobId,m_pRootJob,
+                             pInpTknVec,pInpTagSet,
+                             m_pJob // TO BE REMOVED
+                             );
     
-    if (EC_NONE != eError)
+    if (EC_NONE != m_eError) {
+      m_pSePrompt->pMutex()->vLock(m_pSePrompt);
+      m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
+      m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
       continue;
+    }
     
     ApiHelper::vPrintResults(m_pJob);
     
@@ -320,16 +325,6 @@ bool SeDeputy::bAvailable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get cmd tag set                                                            */
-/*----------------------------------------------------------------------------*/
-TagSet* SeDeputy::pInpTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return m_pInput->pInpTagSet();
-}
-
-/*----------------------------------------------------------------------------*/
 /* signal this deputy to execute its job                                      */
 /*----------------------------------------------------------------------------*/
 void SeDeputy::vDeputiseJob(void)
@@ -340,6 +335,26 @@ void SeDeputy::vDeputiseJob(void)
   m_bAvailable = false;
   m_pThread->pMutex()->vSignal(m_pThread);
   m_pThread->pMutex()->vUnlock(m_pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get last error                                                             */
+/*----------------------------------------------------------------------------*/
+eEC SeDeputy::eError(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+
+  return m_eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set last error                                                             */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vError(eEC eError)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+
+  m_eError = eError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -360,6 +375,16 @@ JobId SeDeputy::tLastJobId(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
 
   return m_tLastJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get input tag set                                                          */
+/*----------------------------------------------------------------------------*/
+TagSet* SeDeputy::pInpTagSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_pInput->pInpTagSet();
 }
 
 /*----------------------------------------------------------------------------*/
