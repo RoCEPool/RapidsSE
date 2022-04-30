@@ -561,29 +561,23 @@ SeDeputy* SePrompt::pFindDeputy(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* outline                                                                    */
+/* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vOutline(s4K& sOutline)
+TokenVec* SePrompt::pInpTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+  return m_pInpTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get output enabled                                                         */
+/* get input                                                                  */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bOutputEnabled(void)
+Input* SePrompt::pInputGet(void)
 {
-  return m_bOutputEnabled;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set output enabled                                                         */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vOutputEnabled(bool bOutputEnabled)
-{
-  m_bOutputEnabled = bOutputEnabled;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -711,6 +705,32 @@ i8 SePrompt::iNextSectionNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return ++m_iSectionNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* outline                                                                    */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vOutline(s4K& sOutline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get output enabled                                                         */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bOutputEnabled(void)
+{
+  return m_bOutputEnabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set output enabled                                                         */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vOutputEnabled(bool bOutputEnabled)
+{
+  m_bOutputEnabled = bOutputEnabled;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1046,6 +1066,46 @@ bool SePrompt::bShortCut(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with trackingMemory command)                  */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* SePrompt::pSnapshotAtTrackingMemory(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSnapshotAtTrackingMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with memoryLeaks command)                     */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* SePrompt::pSnapshotAtMemoryLeaks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSnapshotAtMemoryLeaks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with snapshotObjects command)                 */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* SePrompt::pSnapshotObjects(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSnapshotObjects;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object snapshot (for use with snapshotObjects command)                 */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vSnapshotObjects(ObjectSnapshot* pSnapshotObjects)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pSnapshotObjects = pSnapshotObjects;
+}
+
+/*----------------------------------------------------------------------------*/
 /* are we currently reading from stdin?                                       */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bStdIn(void)
@@ -1066,26 +1126,6 @@ Timer* SePrompt::pTimer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return & m_oTimer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token vector                                                           */
-/*----------------------------------------------------------------------------*/
-TokenVec* SePrompt::pInpTknVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pInpTknVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get input                                                                  */
-/*----------------------------------------------------------------------------*/
-Input* SePrompt::pInputGet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1168,49 +1208,6 @@ bool SePrompt::bTranslateProcedure(void)
   m_pInpTknVec->vTokeniseSen(sPipelineSmt);
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get object snapshot (for use with trackingMemory command)                  */
-/*----------------------------------------------------------------------------*/
-ObjectSnapshot* SePrompt::pSnapshotAtTrackingMemory(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pSnapshotAtTrackingMemory;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get object snapshot (for use with memoryLeaks command)                     */
-/*----------------------------------------------------------------------------*/
-ObjectSnapshot* SePrompt::pSnapshotAtMemoryLeaks(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pSnapshotAtMemoryLeaks;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get object snapshot (for use with snapshotObjects command)                 */
-/*----------------------------------------------------------------------------*/
-ObjectSnapshot* SePrompt::pSnapshotObjects(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pSnapshotObjects;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set object snapshot (for use with snapshotObjects command)                 */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vSnapshotObjects(ObjectSnapshot* pSnapshotObjects)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_pSnapshotObjects = pSnapshotObjects;
 }
 
 /*============================================================================*/
