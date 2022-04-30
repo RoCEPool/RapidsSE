@@ -90,26 +90,22 @@ namespace PROMPT
     bool bGetCommand(void);
 
     // these are the prompt.xyz task primitives
-    bool bBlankLine(void);
-    void vDebugMode(i8 iDebugMode);
-    void vDivision(Stz* szDivision);
-    i8   iDivisionNo(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
-    void vCutToken(i8 i_Tkn);
+    void vDebugMode(i8 iDebugMode);
     SeDeputy* pDeputyCreate(void);
     SeDeputy* pDeputyCurrent(void);
     void vDeputyCurrent(SeDeputy* pCurrentDeputy);
+    void vDivision(Stz* szDivision);
+    i8   iDivisionNo(void);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);
     bool bExamineCommand(void);
-    bool bExecuteFunction(void);
     SeDeputy* pFindDeputy(void);
     TokenVec* pInpTknVec(void);
     Input* pInputGet(void);
     bool bIsPromptWord(void);
-    bool bIsTagCommand(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
     Mutex* pMutex(void);
@@ -119,6 +115,7 @@ namespace PROMPT
     void vOutline(s4K& sOutline);
     bool bOutputEnabled(void);
     void vOutputEnabled(bool bOutputEnabled);
+    bool bPromptFunction(void);
     void vPromptUser(void);
     TagSet* pPmtTagSet(void);
     Stz* szRawInput(void);
@@ -135,6 +132,7 @@ namespace PROMPT
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
+    bool bTagCommand(void);
     Timer* pTimer(void);
     Stz* szToDo(void);
     void vToDo(Stz* szToDo);

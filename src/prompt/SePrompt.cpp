@@ -299,16 +299,14 @@ bool SePrompt::bExamineCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
     
-  if (bBlankLine())
+  if (m_pInpTknVec->bBlankLine())
     return false;
 
   if (bDumpTokens())
     vDumpInpTknVec(false);
 
-  if (bIsTagCommand()) {
-    bExecuteFunction();
+  if (bTagCommand())
     return false;
-  }
   
   if (bShortCut())
     return false;
@@ -323,7 +321,7 @@ bool SePrompt::bExamineCommand(void)
   if (bIsPromptWord())
     m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
 
-  if (bExecuteFunction())
+  if (bPromptFunction())
     return false;
 
   return true;
@@ -333,18 +331,6 @@ bool SePrompt::bExamineCommand(void)
 /*----------------------------------------------------------------------------*/
 
 
-
-/*----------------------------------------------------------------------------*/
-/* test for blank line                                                        */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bBlankLine(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  bool bBlankLine = m_pInpTknVec->bBlankLine();
-
-  return bBlankLine;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get continue                                                               */
@@ -364,22 +350,6 @@ void SePrompt::vContinue(bool bContinue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   m_bContinue = bContinue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* cut a token from token vector                                              */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCutToken(i8 i_Tkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  TokenVec* pInpTknVec = m_pInput->pInpTknVec();
-  
-  //pTknVec->vPrint();
-  
-  pInpTknVec->vRemoveToken(i_Tkn);
-
-  //pTknVec->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -509,33 +479,6 @@ void SePrompt::vDumpInpTknVec(bool bForce)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potentially execute a prompt function                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteFunction(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Timer oTimer;
-
-  PromptFun* pPromptDesc =
-    gxPromptCatalog.pFindFun(pTkn(0)->szChars(), pTkn(1)->szChars());
-  
-  if (! pPromptDesc)
-    return false;
-  
-  //vTrace("Executing function %s\n"_Stz,pTkn(0)->szChars());
-  
-  oTimer.vStart();
-  (pPromptDesc->m_fPrompt)(this);
-  oTimer.vUpdate();
-
-  if (m_pInpTagSet->bHasName(C_TAG_TIME))
-    vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find an available deputy                                                   */
 /*----------------------------------------------------------------------------*/
 SeDeputy* SePrompt::pFindDeputy(void)
@@ -604,21 +547,6 @@ bool SePrompt::bIsPromptWord(void)
     return true;
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is the tag command ?                                                       */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bIsTagCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Token* pTkn0 = pTkn(0);
-  
-  if (pTkn0->bSame("tag"_Stz))
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -731,6 +659,33 @@ bool SePrompt::bOutputEnabled(void)
 void SePrompt::vOutputEnabled(bool bOutputEnabled)
 {
   m_bOutputEnabled = bOutputEnabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially execute a prompt function                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bPromptFunction(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Timer oTimer;
+
+  PromptFun* pPromptDesc =
+    gxPromptCatalog.pFindFun(pTkn(0)->szChars(), pTkn(1)->szChars());
+  
+  if (! pPromptDesc)
+    return false;
+  
+  //vTrace("Executing function %s\n"_Stz,pTkn(0)->szChars());
+  
+  oTimer.vStart();
+  (pPromptDesc->m_fPrompt)(this);
+  oTimer.vUpdate();
+
+  if (m_pInpTagSet->bHasName(C_TAG_TIME))
+    vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1116,6 +1071,24 @@ bool SePrompt::bStdIn(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the tag command ?                                                       */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bTagCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Token* pTkn0 = pTkn(0);
+  
+  if (! pTkn0->bSame("tag"_Stz))
+    return false;
+  
+  bool b = bPromptFunction();
+  UNUSED(b);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
