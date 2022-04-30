@@ -86,7 +86,6 @@ namespace PROMPT
   
     void vPromptLoop(void);
 
-    bool bGetCommand(void);
 
     // these are the prompt.xyz task primitives
     bool bContinue(void);
@@ -118,7 +117,7 @@ namespace PROMPT
     bool bPromptFunction(void);
     TagSet* pPmtTagSet(void);
     Stz* szRawInput(void);
-    bool bReadNextCommand(void);
+    bool bReadCommand(void);
     bool bRedirectFromFile(void);
     void vReportObjects();
     void vReportOther(void);

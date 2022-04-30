@@ -216,7 +216,7 @@ void SePrompt::vPromptLoop(void)
     if (! *szToDo->azChar())
       m_pInput->vRawInputClear();
     
-    if (! bGetCommand())
+    if (! bReadCommand())
       continue;
  
 //    Stz* szRaw = szRawInput();
@@ -259,34 +259,6 @@ void SePrompt::vPromptLoop(void)
     //vLogFreeSpace();
 
   } // while
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next command from input                                                */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bGetCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-//  s32 sHostName;
-//  Hardware::vHostName(sHostName);
-
-  if (bStdIn() && ! *this->szToDo()->azChar()) {
-    //vReportOther();
-    vPrintPrompt();
-  }
-  
-  vResetExtractedTagSet();
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // read next command
-  
-  if (! bReadNextCommand()) {
-    m_bContinue = false;
-    return false;
-  }
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -791,12 +763,31 @@ Stz* SePrompt::szRawInput(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read next command from                                                     */
+/* read command from input                                                    */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bReadNextCommand(void)
+bool SePrompt::bReadCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-   
+  
+//  s32 sHostName;
+//  Hardware::vHostName(sHostName);
+
+  if (bStdIn() && ! *this->szToDo()->azChar()) {
+    //vReportOther();
+    vPrintPrompt();
+  }
+  
+  vResetExtractedTagSet();
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read next command
+  /*
+  if (! bReadNextCommand()) {
+    m_bContinue = false;
+    return false;
+  }
+  */
+  
   m_pInpTknVec->vIntegrityCheck();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -842,6 +833,7 @@ bool SePrompt::bReadNextCommand(void)
   
   if (m_bOneCommand && m_pInput->bIsStdin()) {
     m_pInpTknVec->vIntegrityCheck();
+    m_bContinue = false;
     return false;
   }
 
@@ -850,7 +842,7 @@ bool SePrompt::bReadNextCommand(void)
   
   m_pInput->vReadCommand();
   m_pInpTknVec->vIntegrityCheck();
-
+  
   return true;
 }
 
