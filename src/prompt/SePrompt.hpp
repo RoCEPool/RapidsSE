@@ -114,8 +114,8 @@ namespace PROMPT
     void vOutline(s4K& sOutline);
     bool bOutputEnabled(void);
     void vOutputEnabled(bool bOutputEnabled);
+    void vPrintPrompt(void);
     bool bPromptFunction(void);
-    void vPromptUser(void);
     TagSet* pPmtTagSet(void);
     Stz* szRawInput(void);
     bool bReadNextCommand(void);

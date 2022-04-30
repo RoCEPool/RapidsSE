@@ -30,13 +30,12 @@
 #include "Marker.hpp"
 
 
-extern CmdLineArgs   gxCmdLineArgs;
-
 extern AttachMap*    gpAttachMap;
+extern BufferPool*   gpBufferPool;
+extern Stz*          gsBuildGitHash;
+extern CmdLineArgs   gxCmdLineArgs;
 extern PromptCatalog gxPromptCatalog;
 
-extern Stz* gsBuildGitHash;
-extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -274,7 +273,7 @@ bool SePrompt::bGetCommand(void)
 
   if (bStdIn() && ! *this->szToDo()->azChar()) {
     //vReportOther();
-    vPromptUser();
+    vPrintPrompt();
   }
   
   vResetExtractedTagSet();
@@ -658,36 +657,9 @@ void SePrompt::vOutputEnabled(bool bOutputEnabled)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potentially execute a prompt function                                      */
+/* print the se> prompt onto the screen                                       */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bPromptFunction(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Timer oTimer;
-
-  PromptFun* pPromptDesc =
-    gxPromptCatalog.pFindFun(pTkn(0)->szChars(), pTkn(1)->szChars());
-  
-  if (! pPromptDesc)
-    return false;
-  
-  //vTrace("Executing function %s\n"_Stz,pTkn(0)->szChars());
-  
-  oTimer.vStart();
-  (pPromptDesc->m_fPrompt)(this);
-  oTimer.vUpdate();
-
-  if (m_pInpTagSet->bHasName(C_TAG_TIME))
-    vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt the user for input                                                  */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPromptUser(void)
+void SePrompt::vPrintPrompt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -767,6 +739,33 @@ void SePrompt::vPromptUser(void)
         );
 
   fflush(stdin);
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially execute a prompt function                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bPromptFunction(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Timer oTimer;
+
+  PromptFun* pPromptDesc =
+    gxPromptCatalog.pFindFun(pTkn(0)->szChars(), pTkn(1)->szChars());
+  
+  if (! pPromptDesc)
+    return false;
+  
+  //vTrace("Executing function %s\n"_Stz,pTkn(0)->szChars());
+  
+  oTimer.vStart();
+  (pPromptDesc->m_fPrompt)(this);
+  oTimer.vUpdate();
+
+  if (m_pInpTagSet->bHasName(C_TAG_TIME))
+    vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
