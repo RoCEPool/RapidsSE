@@ -227,9 +227,9 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
 
   //JobId tJobId = pJob->tJobId();
  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   rpChildJob_tbr->vStmtListCreate();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   for (;;) {
   

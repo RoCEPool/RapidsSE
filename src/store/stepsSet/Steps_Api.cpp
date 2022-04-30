@@ -40,7 +40,7 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::reapDisable"_Stz,         &Step::vApiReapDisable);
   vAddStep("api::reapEnable"_Stz,          &Step::vApiReapEnable);
   vAddStep("api::reapJobs"_Stz,            &Step::vApiReapJobs);
-  vAddStep("api::spawnDemon"_Stz,          &Step::vApiSpawnDemon);
+  vAddStep("api::spawnDemon"_Stz,          &Step::vApiSpawnDemon_2);
   vAddStep("api::sysMetricsDisable"_Stz,   &Step::vApiSysMetricsDisable);
   vAddStep("api::sysMetricsEnable"_Stz,    &Step::vApiSysMetricsEnable);
 }
@@ -370,29 +370,14 @@ void Step::vApiSpawnDemon_2(void)
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
     vTrace("SpawnDemon: %s\n"_Stz,sCmd.szStz());
-    vTrace("WithTags: %s\n"_Stz,sCmdTagStr.szStz());
+    vTrace("  WithTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/*
-  TokenVec* pCmdTknVec = nullptr;;
-  TagSet* pCmdTagSet = nullptr;
 
-  Job* pJob = nullptr;
-  eEC eError = Api::ePrepareJob(pJob,"JobNm"_Stz,sCmd,sCmdTagStr,false,pCmdTknVec,pCmdTagSet);
-
-  
-  if (eError) {
-    NEVER_REACH;
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
-    EXIT();
-  }
-*/
-  
+  /*
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  
-  
+    
   TagSet* pCmdTagSet = new TagSet;
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
   Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
@@ -410,12 +395,29 @@ void Step::vApiSpawnDemon_2(void)
     EXIT();
     return;
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   pJob->pJobTags()->vReplace(C_TAG_NOWAIT,1);
   Api::vForkJob(pJob);
+  */
+  
+  
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
+    
+  TagSet* pCmdTagSet = new TagSet;
+  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
+  pCmdTagSet->vReplace(C_TAG_NOWAIT,1);
+
+  JobId tChildJobId;
+  
+  Job* pJob = nullptr;
+  eEC eError = Api::eForkJob(tChildJobId,m_pJob,
+                           pCmdTknVec,pCmdTagSet,
+                           pJob // TO BE REMOVED
+                           );
+  RASSERT(EC_NONE == eError);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pDataStack->vPushInt(true);
