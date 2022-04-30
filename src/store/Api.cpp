@@ -172,10 +172,10 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
   bool b = CmdHelper::bExtractCmdTags(pCmdTknVec,pCmdTagSet);
   UNUSED(b);
   
-  sSTMT sPipelineSmt;
-  if (Procedure::bTranslateToPipeline(sPipelineSmt.pString(),pCmdTknVec)) {
+  sSTMT sMaybePipelineSmt;
+  if (Procedure::bTranslateToPipeline(sMaybePipelineSmt.pString(),pCmdTknVec)) {
     pCmdTknVec->vSoftReset();
-    pCmdTknVec->vTokeniseSen(sPipelineSmt);
+    pCmdTknVec->vTokeniseSen(sMaybePipelineSmt);
   }
         
   if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {

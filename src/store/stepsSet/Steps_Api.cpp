@@ -357,6 +357,71 @@ void Step::vApiSpawnDemon(void)
   
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+void Step::vApiSpawnDemon_2(void)
+{
+  ENTRY();
+  
+  s48K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
+   
+  s48K sCmdTagStr;
+  m_pDataStack->vPopStr(sCmdTagStr,__func__);
+
+  if (AM::TRACE::bVerbose(C_VB_API)) {
+    vTrace("SpawnDemon: %s\n"_Stz,sCmd.szStz());
+    vTrace("WithTags: %s\n"_Stz,sCmdTagStr.szStz());
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+  TokenVec* pCmdTknVec = nullptr;;
+  TagSet* pCmdTagSet = nullptr;
+
+  Job* pJob = nullptr;
+  eEC eError = Api::ePrepareJob(pJob,"JobNm"_Stz,sCmd,sCmdTagStr,false,pCmdTknVec,pCmdTagSet);
+
+  
+  if (eError) {
+    NEVER_REACH;
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+    EXIT();
+  }
+*/
+  
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
+  
+  
+  TagSet* pCmdTagSet = new TagSet;
+  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
+
+
+  Job* pJob = nullptr;
+  eEC eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
+
+  if (eError) {
+    delete pCmdTknVec;
+    delete pCmdTagSet;
+    
+    m_pDataStack->vPushInt(eError);
+    m_pDataStack->vPushInt(false);
+    EXIT();
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+  pJob->pJobTags()->vReplace(C_TAG_NOWAIT,1);
+  Api::vForkJob(pJob);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pDataStack->vPushInt(true);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* api::sysMetricsDisable -- disable sys metrics                              */

@@ -47,7 +47,6 @@ namespace PROMPT
     static void* aEntryPoint(void* pArg);
   
     void vDeputyLoop(void);
-    void vDeputyLoop_2(void);
     void vExecuteJob(void);
     void vRepeableJob(void);
 
