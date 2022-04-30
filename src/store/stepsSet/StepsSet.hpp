@@ -79,13 +79,13 @@ public:
   void vApiAddProcedure(void);
   void vApiDerefMetricsDisable(void);
   void vApiDerefMetricsEnable(void);
-  void vApiExecuteCommand(void);
+  void vApiForkChild_wait(void);
   void vApiJobMetricsDisable(void);
   void vApiJobMetricsEnable(void);
   void vApiReapDisable(void);
   void vApiReapEnable(void);
   void vApiReapJobs(void);
-  void vApiSpawnDemon(void);
+  void vApiForkChild_noWait(void);
   void vApiSysMetricsDisable(void);
   void vApiSysMetricsEnable(void);
 

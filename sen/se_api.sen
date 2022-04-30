@@ -5,7 +5,7 @@
 " se_api.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check the result of an api::executeCommand call                            */
+/* check the result of an api::forkChild_wait call                            */
 /*----------------------------------------------------------------------------*/
 : api:executeCheck
 

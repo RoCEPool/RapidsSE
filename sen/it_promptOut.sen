@@ -13,7 +13,7 @@
     promptLine  VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::executeCommand api:executeCheck
+  api::forkChild_wait api:executeCheck
 ;
 
 

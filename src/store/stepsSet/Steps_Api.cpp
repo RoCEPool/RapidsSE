@@ -33,13 +33,13 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::addProcedure"_Stz,        &Step::vApiAddProcedure);
   vAddStep("api::derefMetricsDisable"_Stz, &Step::vApiDerefMetricsDisable);
   vAddStep("api::derefMetricsEnable"_Stz,  &Step::vApiDerefMetricsEnable);
-  vAddStep("api::executeCommand"_Stz,      &Step::vApiExecuteCommand);
+  vAddStep("api::forkChild_noWait"_Stz,    &Step::vApiForkChild_noWait);
+  vAddStep("api::forkChild_wait"_Stz,      &Step::vApiForkChild_wait);
   vAddStep("api::jobMetricsDisable"_Stz,   &Step::vApiJobMetricsDisable);
   vAddStep("api::jobMetricsEnable"_Stz,    &Step::vApiJobMetricsEnable);
   vAddStep("api::reapDisable"_Stz,         &Step::vApiReapDisable);
   vAddStep("api::reapEnable"_Stz,          &Step::vApiReapEnable);
   vAddStep("api::reapJobs"_Stz,            &Step::vApiReapJobs);
-  vAddStep("api::spawnDemon"_Stz,          &Step::vApiSpawnDemon);
   vAddStep("api::sysMetricsDisable"_Stz,   &Step::vApiSysMetricsDisable);
   vAddStep("api::sysMetricsEnable"_Stz,    &Step::vApiSysMetricsEnable);
 }
@@ -102,9 +102,53 @@ void Step::vApiDerefMetricsEnable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* api::executeCommand -- execute a command (internally)                      */
+/* api::forkChild_noWait -- fork child job (no wait)                          */
 /*----------------------------------------------------------------------------*/
-void Step::vApiExecuteCommand(void)
+void Step::vApiForkChild_noWait(void)
+{
+  ENTRY();
+  
+  s48K sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
+   
+  s48K sCmdTagStr;
+  m_pDataStack->vPopStr(sCmdTagStr,__func__);
+
+  if (AM::TRACE::bVerbose(C_VB_API)) {
+    vTrace("SpawnDemon: %s\n"_Stz,sCmd.szStz());
+    vTrace("  WithTags: %s\n"_Stz,sCmdTagStr.szStz());
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
+    
+  TagSet* pCmdTagSet = new TagSet;
+  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
+
+  pCmdTagSet->vReplace(C_TAG_NOWAIT,1);
+
+  JobId tChildJobId;
+  
+  Job* pJob = nullptr;
+  eEC eError = Api::eForkJob(tChildJobId,m_pJob,
+                           pCmdTknVec,pCmdTagSet,
+                           pJob // TO BE REMOVED
+                           );
+  RASSERT(EC_NONE == eError);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pDataStack->vPushInt(true);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::forkChild_wait -- fork child job (wait)                               */
+/*----------------------------------------------------------------------------*/
+void Step::vApiForkChild_wait(void)
 {
   ENTRY();
 
@@ -207,50 +251,6 @@ void Step::vApiReapJobs(void)
 
   Api::vReapJobsOnce(iForce);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::spawnDemon -- spawn a demon                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vApiSpawnDemon(void)
-{
-  ENTRY();
-  
-  s48K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
-   
-  s48K sCmdTagStr;
-  m_pDataStack->vPopStr(sCmdTagStr,__func__);
-
-  if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("SpawnDemon: %s\n"_Stz,sCmd.szStz());
-    vTrace("  WithTags: %s\n"_Stz,sCmdTagStr.szStz());
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-    
-  TagSet* pCmdTagSet = new TagSet;
-  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
-  Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
-
-  pCmdTagSet->vReplace(C_TAG_NOWAIT,1);
-
-  JobId tChildJobId;
-  
-  Job* pJob = nullptr;
-  eEC eError = Api::eForkJob(tChildJobId,m_pJob,
-                           pCmdTknVec,pCmdTagSet,
-                           pJob // TO BE REMOVED
-                           );
-  RASSERT(EC_NONE == eError);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pDataStack->vPushInt(true);
-  
   EXIT();
 }
 

@@ -26,7 +26,7 @@
     
 /*
 
-  "" sCmd pResponseOp api::spawnDemon if
+  "" sCmd pResponseOp api::forkChild_noWait if
     to tForkedJobId
     tForkedJobId "forkCommand: job %v" .printf
   else
