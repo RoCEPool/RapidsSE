@@ -80,6 +80,7 @@ public:
   void vApiDerefMetricsDisable(void);
   void vApiDerefMetricsEnable(void);
   void vApiExecuteCommand(void);
+  void vApiExecuteCommand_2(void);
   void vApiForkCommand(void);
   void vApiJobMetricsDisable(void);
   void vApiJobMetricsEnable(void);
