@@ -34,7 +34,6 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::derefMetricsDisable"_Stz, &Step::vApiDerefMetricsDisable);
   vAddStep("api::derefMetricsEnable"_Stz,  &Step::vApiDerefMetricsEnable);
   vAddStep("api::executeCommand"_Stz,      &Step::vApiExecuteCommand);
-  vAddStep("api::forkCommand"_Stz,         &Step::vApiForkCommand);
   vAddStep("api::jobMetricsDisable"_Stz,   &Step::vApiJobMetricsDisable);
   vAddStep("api::jobMetricsEnable"_Stz,    &Step::vApiJobMetricsEnable);
   vAddStep("api::reapDisable"_Stz,         &Step::vApiReapDisable);
@@ -124,38 +123,6 @@ void Step::vApiExecuteCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  /*
-  Stz* szTagPath = nullptr;
-  RASSERT(m_pJob)
-  szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
-   
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  TagSet* pCmdTagSet = new TagSet;
-
-  Job* pJob = nullptr;
-  eEC eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
-
-  if (eError) {
-    delete pCmdTknVec;
-    delete pCmdTagSet;
-    
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
-    EXIT();
-    return;
-  }
-  
-  pJob->vParentId(m_pJob->tParentId());
-
-  pJob->vStmtListCreate();
-  
-  pJob->pJobTags()->vReplace(C_TAG_WAIT,1);
-
-  Api::vExecuteJob(pJob);
-  
-  delete pCmdTknVec;
-  delete pCmdTagSet;
-  */
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
     
@@ -177,129 +144,6 @@ void Step::vApiExecuteCommand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pDataStack->vPushInt(true);
-  
-  EXIT();
-}
-/*----------------------------------------------------------------------------*/
-void Step::vApiExecuteCommand_2(void)
-{
-  ENTRY();
-
-  // pop command and tag string
-  
-  s48K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
-
-  s48K sCmdTagStr;
-  m_pDataStack->vPopStr(sCmdTagStr,__func__);
-
-  if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ExecuteCommand: %s\n"_Stz,sCmd.szStz());
-    vTrace("      WithTags: %s\n"_Stz,sCmdTagStr.szStz());
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Stz* szTagPath = nullptr;
-  RASSERT(m_pJob)
-  szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- 
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  TagSet* pCmdTagSet = new TagSet;
-
-  Job* pJob = nullptr;
-  eEC eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
-
-  if (eError) {
-    delete pCmdTknVec;
-    delete pCmdTagSet;
-    
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
-    EXIT();
-    return;
-  }
-  
-  pJob->vParentId(m_pJob->tParentId());
-
-  pJob->vStmtListCreate();
-  
-  pJob->pJobTags()->vReplace(C_TAG_WAIT,1);
-
-  Api::vExecuteJob(pJob);
-  
-  delete pCmdTknVec;
-  delete pCmdTagSet;
-
-  m_pDataStack->vPushInt(true);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::forkCommand -- fork a command (internally)                            */
-/*----------------------------------------------------------------------------*/
-void Step::vApiForkCommand(void)
-{
-  ENTRY();
-
-  //Op* pResponseOp = _pOp(m_pDataStack->pPopPtr(__func__));
-
-  // pop command and tag string
-  
-  s48K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
-
-  s48K sCmdTagStr;
-  m_pDataStack->vPopStr(sCmdTagStr,__func__);
-
-  if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("FormCommand: %s\n"_Stz,sCmd.szStz());
-    vTrace("  CmdTagStr: %s\n"_Stz,sCmdTagStr.szStz());
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Stz* szTagPath = nullptr;
-  if (m_pJob)
-    szTagPath = m_pJob->pJobTags()->szValue(C_TAG_PATH);
- 
-  JobId tForkedJobId;
-  
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  TagSet* pCmdTagSet = new TagSet;
-  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
-  Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
-  
-  Job* pJob = nullptr;
-  eEC eError = Api::ePrepareJob(pJob,pCmdTknVec,pCmdTagSet);
-  
-  if (EC_NONE != eError) {
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
-    EXIT();
-    return;
-  }
-  
-  tForkedJobId = pJob->tJobId();
-
-  // todo: put pResponseOp into job
-  
-  
-  Api::vForkJob(pJob);
-  RASSERT(! pJob);
-  
-
-  if (EC_NONE == eError) {
-    m_pDataStack->vPushInt(tForkedJobId.iAsI8());
-    m_pDataStack->vPushInt(true);
-  }
-  else {
-    m_pDataStack->vPushInt(eError);
-    m_pDataStack->vPushInt(false);
-  }
   
   EXIT();
 }

@@ -24252,7 +24252,7 @@ void Task::vAddMunged(Task* )
     "    \n"
     "/*\n"
     "\n"
-    "  \"\" sCmd pResponseOp api::forkCommand if\n"
+    "  \"\" sCmd pResponseOp api::spawnDemon if\n"
     "    to tForkedJobId\n"
     "    tForkedJobId \"forkCommand: job %v\" .printf\n"
     "  else\n"
