@@ -87,7 +87,6 @@ public:
   void vApiReapEnable(void);
   void vApiReapJobs(void);
   void vApiSpawnDemon(void);
-  void vApiSpawnDemon_2(void);
   void vApiSysMetricsDisable(void);
   void vApiSysMetricsEnable(void);
 
