@@ -30,41 +30,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Api(void)
 {
-  vAddStep("api::derefMetricsDisable"_Stz, &Step::vApiDerefMetricsDisable);
-  vAddStep("api::derefMetricsEnable"_Stz,  &Step::vApiDerefMetricsEnable);
   vAddStep("api::forkChild_noWait"_Stz,    &Step::vApiForkChild_noWait);
   vAddStep("api::forkChild_wait"_Stz,      &Step::vApiForkChild_wait);
-  vAddStep("api::jobMetricsDisable"_Stz,   &Step::vApiJobMetricsDisable);
-  vAddStep("api::jobMetricsEnable"_Stz,    &Step::vApiJobMetricsEnable);
-  vAddStep("api::reapDisable"_Stz,         &Step::vApiReapDisable);
-  vAddStep("api::reapEnable"_Stz,          &Step::vApiReapEnable);
   vAddStep("api::reapJobs"_Stz,            &Step::vApiReapJobs);
-  vAddStep("api::sysMetricsDisable"_Stz,   &Step::vApiSysMetricsDisable);
-  vAddStep("api::sysMetricsEnable"_Stz,    &Step::vApiSysMetricsEnable);
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::derefMetricsDisable -- disable deref metrics                          */
-/*----------------------------------------------------------------------------*/
-void Step::vApiDerefMetricsDisable(void)
-{
-  ENTRY();
-  
-  AM::SYSARGS::vDerefMetrics(false);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::dferefMetricsEnable -- enable deref metrics                           */
-/*----------------------------------------------------------------------------*/
-void Step::vApiDerefMetricsEnable(void)
-{
-  ENTRY();
-  
-  AM::SYSARGS::vDerefMetrics(true);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,53 +126,6 @@ void Step::vApiForkChild_wait(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* api::jobMetricsDisable -- disable job metrics                              */
-/*----------------------------------------------------------------------------*/
-void Step::vApiJobMetricsDisable(void)
-{
-  ENTRY();
-  
-  AM::SYSARGS::vJobMetrics(false);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::jobMetricsEnable -- enable job metrics                                */
-/*----------------------------------------------------------------------------*/
-void Step::vApiJobMetricsEnable(void)
-{
-  ENTRY();
-  
-  AM::SYSARGS::vJobMetrics(true);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::reapDisable -- disble reaping of retired jobs                         */
-/*----------------------------------------------------------------------------*/
-void Step::vApiReapDisable(void)
-{
-  ENTRY();
-  
-  AM::SYSTEM::vReapEnabled(false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::reapEnable -- enable reaping of retired jobs                          */
-/*----------------------------------------------------------------------------*/
-void Step::vApiReapEnable(void)
-{
-  ENTRY();
-  
-  AM::SYSTEM::vReapEnabled(true);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* api::reapJobs -- reap retired jobs                                         */
@@ -219,32 +140,6 @@ void Step::vApiReapJobs(void)
 
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* api::sysMetricsDisable -- disable sys metrics                              */
-/*----------------------------------------------------------------------------*/
-void Step::vApiSysMetricsDisable(void)
-{
-  ENTRY();
-  
-  AM::SYSARGS::vSysMetrics(false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::sysMetricsEnable -- enable sys metrics                                */
-/*----------------------------------------------------------------------------*/
-void Step::vApiSysMetricsEnable(void)
-{
-  ENTRY();
-  
-  AM::SYSARGS::vSysMetrics(true);
-
-  EXIT();
-}
-
-
 
 /*============================================================================*/
 /* end                                                                        */

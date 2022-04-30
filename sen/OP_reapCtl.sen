@@ -10,10 +10,10 @@
 : reapCtl_action
 
   <setting> "disable" str.same if
-    api::reapDisable
+    AM::reapDisable
   else
   <setting> "enable" str.same if
-    api::reapEnable
+    AM::reapEnable
   then then
   
   true

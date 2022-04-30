@@ -75,18 +75,20 @@ public:
   void vAM_Show_Socket(void);
   void vAM_Show_Socket_Failure(void);
 
+  void vAM_DerefMetricsDisable(void);
+  void vAM_DerefMetricsEnable(void);
+  void vAM_JobMetricsDisable(void);
+  void vAM_JobMetricsEnable(void);
+  void vAM_ReapDisable(void);
+  void vAM_ReapEnable(void);
+  void vAM_SysMetricsDisable(void);
+  void vAM_SysMetricsEnable(void);
+
+
   // api
-  void vApiDerefMetricsDisable(void);
-  void vApiDerefMetricsEnable(void);
   void vApiForkChild_noWait(void);
   void vApiForkChild_wait(void);
-  void vApiJobMetricsDisable(void);
-  void vApiJobMetricsEnable(void);
-  void vApiReapDisable(void);
-  void vApiReapEnable(void);
   void vApiReapJobs(void);
-  void vApiSysMetricsDisable(void);
-  void vApiSysMetricsEnable(void);
 
   // arrange
   void vArrangeBegin(void);
