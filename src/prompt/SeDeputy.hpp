@@ -48,18 +48,13 @@ namespace PROMPT
   
     void vDeputyLoop(void);
 
-    eEC  ePrepareJob(Stz* szCmd);
-    eEC  eForkJob(Stz* szCmd);
-
     // -- -- -- -- -- --
   
     bool bAvailable(void);
     void vDeputiseJob(void);
     eEC  eError(void);
     void vError(eEC eError);
-    TagSet* pInpTagSet(void);
     Input* pInput(void);
-    Job* pJob(void);
     JobId tLastJobId(void);
     void vReportTime(void);
     void vTerminate(void);

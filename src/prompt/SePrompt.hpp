@@ -111,7 +111,6 @@ namespace PROMPT
     bool bIsTagCommand(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
-    void vMakeDiaryDir(void);
     Mutex* pMutex(void);
     void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);

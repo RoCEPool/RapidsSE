@@ -20,12 +20,12 @@
 
 #include "CmdLineArgs.hpp"
 
-extern CmdLineArgs          gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
+extern Stz*          gsBuildGitHash;
+extern CmdLineArgs   gxCmdLineArgs;
 extern PromptCatalog gxPromptCatalog;
 
-extern Stz* gsBuildGitHash;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -50,9 +50,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_i_Deputy  = i_Deputy;
   m_pSePrompt = pSePrompt;
   
-  m_pThread   = AM::THREAD::pNewThread();
-
-  m_pInput = new Input(nullptr);
+  m_pThread = AM::THREAD::pNewThread();
+  m_pInput  = new Input(nullptr);
 
   m_bAvailable    = false;
   m_bContinue     = true;
@@ -60,8 +59,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_bSystemCloser = false;
 
   m_pRootJob = nullptr;
-  m_pJob = nullptr;
-  m_eError = EC_NONE;
+  m_pJob     = nullptr;
+  m_eError   = EC_NONE;
 
   _checkInitialised_(CN_SEDEPUTY);
   
@@ -178,39 +177,10 @@ void SeDeputy::vDeputyLoop(void)
   m_bTerminated = true;
 }
 
-/*----------------------------------------------------------------------------*/
-/* prepare job                                                                */
-/*----------------------------------------------------------------------------*/
-eEC SeDeputy::ePrepareJob(Stz* szCmd)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-    
-  vTrace("ePrepareJob: %s\n"_Stz,szCmd);
-
-  //RASSERT(pInpTagSet == & m_oCmdTagSet);
-  //RASSERT(pCmdTknVec == m_pInput->pInpTknVec());
-
-  TokenVec* pInpTknVec = m_pInput->pInpTknVec();
-  TagSet* pInpTagSet   = m_pInput->pInpTagSet();
-  
-  pInpTagSet->vDumpSet();
-  vTrace("FolderPath: %s\n"_Stz,m_sFolderPath.szStz());
-  pInpTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
-  
-  s48K sCmdTagStr;
-  pInpTagSet->vToString(sCmdTagStr);
-
-  pInpTagSet->vReplace(C_TAG_WAIT,1);
-
-  eEC eError = ApiHelper::ePrepareJob(m_pJob,pInpTknVec,pInpTagSet);
-
-  return eError;
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /* is this deputy available to execute jobs?                                  */
@@ -256,16 +226,6 @@ void SeDeputy::vError(eEC eError)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get job                                                                    */
-/*----------------------------------------------------------------------------*/
-Job* SeDeputy::pJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return m_pJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* last job run                                                               */
 /*----------------------------------------------------------------------------*/
 JobId SeDeputy::tLastJobId(void)
@@ -273,16 +233,6 @@ JobId SeDeputy::tLastJobId(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
 
   return m_tLastJobId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get input tag set                                                          */
-/*----------------------------------------------------------------------------*/
-TagSet* SeDeputy::pInpTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return m_pInput->pInpTagSet();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -349,7 +299,6 @@ void SeDeputy::vReportTime(void)
   oTimer.vSet(m_pJob->iResponseTimerStart(),
               m_pJob->iTscEnded());
   vTrace("Ended    %lldus\n"_Stz,oTimer.iMicroseconds());
-
 }
 
 /*----------------------------------------------------------------------------*/
