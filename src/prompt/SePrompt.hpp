@@ -33,7 +33,6 @@ namespace PROMPT
 
     bool        m_bContinue;    // continue processing commands?
     ShortCutVec m_oShortCutVec; // vector of short cuts
-    i8          m_iDebugMode;   // debug mode?
 
     bool        m_bOneCommand;  // run one command only
     bool        m_bOneRun;      // one command has been run?

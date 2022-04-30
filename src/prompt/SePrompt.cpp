@@ -72,8 +72,6 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pSnapshotAtMemoryLeaks = new ObjectSnapshot;
   m_pSnapshotObjects = nullptr;
 
-  m_iDebugMode = gxCmdLineArgs.m_xSysArgs.m_iPromptDebug;
-
   m_nDeputies = 0;
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
     m_paSeDeputy[i_Deputy] = nullptr;
@@ -107,7 +105,7 @@ SePrompt::SePrompt(bool bOneCommand)
     //m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
   }
 
-  m_pInput->vDebugMode(m_iDebugMode);
+  m_pInput->vDebugMode(gxCmdLineArgs.m_xSysArgs.m_iPromptDebug);
 
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
@@ -190,12 +188,12 @@ void SePrompt::vPromptLoop(void)
   m_pInput->vUseBegin();
   //m_pInput->vInspect();
 
-  if (m_iDebugMode) {
-    vJotDebug(m_iDebugMode);
+  //if (m_iDebugMode) {
+    //vJotDebug(m_iDebugMode);
     //vJotFilter("AnnChar:(some)"_Stz);
     //vJotTrigger(0x0e,m_iDebugMode);
     //vJotDisable(0x27,0);
-  }
+  //}
     
   //vTrace("vPromptLoop\n"_Stz);
   
@@ -401,10 +399,8 @@ void SePrompt::vDebugMode(i8 iDebugMode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_iDebugMode = iDebugMode;
-
-  if (m_iDebugMode > 1)
-    m_pInput->vDebugMode(m_iDebugMode);
+  if (iDebugMode > 1)
+    m_pInput->vDebugMode(iDebugMode);
   else
     m_pInput->vDebugMode(0);
 }
