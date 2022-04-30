@@ -76,16 +76,15 @@ public:
   void vAM_Show_Socket_Failure(void);
 
   // api
-  void vApiAddProcedure(void);
   void vApiDerefMetricsDisable(void);
   void vApiDerefMetricsEnable(void);
+  void vApiForkChild_noWait(void);
   void vApiForkChild_wait(void);
   void vApiJobMetricsDisable(void);
   void vApiJobMetricsEnable(void);
   void vApiReapDisable(void);
   void vApiReapEnable(void);
   void vApiReapJobs(void);
-  void vApiForkChild_noWait(void);
   void vApiSysMetricsDisable(void);
   void vApiSysMetricsEnable(void);
 

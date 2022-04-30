@@ -37,7 +37,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 ;
 

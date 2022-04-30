@@ -27,7 +27,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // copyFile "/Users/Shared/tpch/SF1/nation.csv" "/Users/Shared/tpch/SF1/nation_COPY.csv" ;
 
@@ -46,7 +46,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // listFile "/Users/Shared/tpch/SF1/nation.csv" ;
 
@@ -65,7 +65,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 // cyclicRdFile "/Users/Shared/tpch/SF1/nation.csv" 3 ;
 // cyclicRdFile "/Users/Shared/tpch/SF1/supplier.csv" 3 ;

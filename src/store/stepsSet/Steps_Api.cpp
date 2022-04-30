@@ -30,7 +30,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Api(void)
 {
-  vAddStep("api::addProcedure"_Stz,        &Step::vApiAddProcedure);
   vAddStep("api::derefMetricsDisable"_Stz, &Step::vApiDerefMetricsDisable);
   vAddStep("api::derefMetricsEnable"_Stz,  &Step::vApiDerefMetricsEnable);
   vAddStep("api::forkChild_noWait"_Stz,    &Step::vApiForkChild_noWait);
@@ -42,39 +41,6 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::reapJobs"_Stz,            &Step::vApiReapJobs);
   vAddStep("api::sysMetricsDisable"_Stz,   &Step::vApiSysMetricsDisable);
   vAddStep("api::sysMetricsEnable"_Stz,    &Step::vApiSysMetricsEnable);
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::addProcedure -- add a procedure                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vApiAddProcedure(void)
-{
-  ENTRY();
-  
-  s48K sProc;
-  m_pDataStack->vPopStr(sProc,__func__);
-  
-  s48K sWithTagStr;
-  m_pDataStack->vPopStr(sWithTagStr,__func__);
-  
-  if (AM::TRACE::bVerbose(C_VB_BOOT)) {
-    vTrace("AddProcedure: %s\n"_Stz,sProc.szStz());
-    vTrace("WithTags: %s\n"_Stz,sWithTagStr.szStz());
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  TokenVec* pDmnTknVec = TokenVec::pTokeniseSen(sProc);
-  
-  pDmnTknVec->vIntegrityCheck();
-  
-  Token* pTkn0 = pDmnTknVec->pGet(0);
-  ASSERT(pTkn0->bSame("procedure"_Stz) || pTkn0->bSame("procedureLocal"_Stz));
-  UNUSED(pTkn0);
-
-  //Stz* ssProcNm = pDmnTknVec->pGet(1)->szChars();
-  
-  Procedure::vAddProcedure(pDmnTknVec);
 }
 
 /*----------------------------------------------------------------------------*/
