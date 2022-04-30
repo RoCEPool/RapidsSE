@@ -131,34 +131,7 @@ void SeDeputy::vDeputyLoop(void)
   
     if (! m_bContinue)
       break;
-    
-    /*
-    RASSERT(m_pJob);
-    
-    m_pJob->vFolderPath(m_sFolderPath);
-    m_pJob->vLastJobId(m_tLastJobId);
-    m_pJob->vSystemCloser(m_bSystemCloser);
-
-    m_pJob->vStmtListCreate();
-    vExecuteJob();
-    
-    ApiHelper::vPrintResults(m_pJob);
-    
-    vReportTime();
-      
-    ApiHelper::vResetResults(m_pJob);
-
-    if (! m_pJob->bHasTag(C_TAG_BG)) {
-      m_pSePrompt->pMutex()->vLock(m_pSePrompt);
-      m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
-      m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
-    }
-    
-    m_sFolderPath   = m_pJob->szFolderPath();
-    m_tLastJobId    = m_pJob->tLastJobId();
-    m_bSystemCloser = m_pJob->bSystemCloser();
-    */
-    
+        
     TokenVec* pInpTknVec = m_pInput->pInpTknVec();
     TagSet* pInpTagSet   = m_pInput->pInpTagSet();
     
@@ -199,30 +172,10 @@ void SeDeputy::vDeputyLoop(void)
     m_bSystemCloser = m_pJob->bSystemCloser();
     
 
-    vRepeableJob();
+    Api::vReapableJob(m_pJob);
   }
   
   m_bTerminated = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute job in SE                                                          */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vExecuteJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-
-  ApiHelper::vExecuteJob(m_pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete completed job                                                       */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vRepeableJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  ApiHelper::vReapableJob(m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -47,8 +47,6 @@ namespace PROMPT
     static void* aEntryPoint(void* pArg);
   
     void vDeputyLoop(void);
-    void vExecuteJob(void);
-    void vRepeableJob(void);
 
     eEC  ePrepareJob(Stz* szCmd);
     eEC  eForkJob(Stz* szCmd);

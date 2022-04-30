@@ -236,19 +236,8 @@ void SePrompt::vPromptLoop(void)
       m_pInpTagSet->vInsert(C_TAG_CMDLINE,iCmdLine);
     }
 
-    /*
-    if (! bPrepareJob()) {
-      
-      if (m_bOneRun) {
-        AM::vProcessExit();
-      }
-      
-      continue;
-    }
-    */
     m_pInpTagSet->vCopy(& m_oPmtTagSet);
 
-    //vDeputiseJob_2();
     m_oMutex.vLock(this);
     m_pCurrentDeputy->vDeputiseJob();
     m_oMutex.vWait(this);
@@ -336,115 +325,6 @@ bool SePrompt::bExamineCommand(void)
     return false;
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* use SE api to create and prepare a job for commmand                        */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bPrepareJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  m_pInpTagSet->vCopy(& m_oPmtTagSet);
-  
-  s4K sCmd;
-  m_pInpTknVec->vToTknString(sCmd);
-  
-  eEC eError = m_pCurrentDeputy->ePrepareJob(sCmd);
-
-  if (eError) {
-    RASSERT(! m_pCurrentDeputy->pJob());
-    
-    if (EC_INVALID_COMMAND == eError) {
-      bool b = bPrompt_selfies(this);
-      UNUSED(b);
-    }
-    else {
-      vTrace("error: %s\n"_Stz,aEC[eError]);
-      if (AM::bDeveloper())
-        vDumpInpTknVec(true);
-    }
-    return false;
-  }
-  
-  vMakeDiaryDir();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next command from input                                                */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vDeputiseJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Job* pJob = m_pCurrentDeputy->pJob();
-  
-  pJob->vOutputEnabled(m_bOutputEnabled);
-  
-  if (! pJob->bHasTag(C_TAG_BG)) {
-    
-    m_oMutex.vLock(this);
-  
-    m_pCurrentDeputy->vDeputiseJob();
-    
-    m_oMutex.vWait(this);
-    m_oMutex.vUnlock(this);
-    
-    while (! m_pCurrentDeputy->bAvailable())
-      AM::vNapMsec(10,CN_SEPROMPT);
-  }
-  else {
-    m_pCurrentDeputy->vDeputiseJob();
-  }
-  
-  m_pCurrentDeputy = nullptr;
-}
-/*----------------------------------------------------------------------------*/
-void SePrompt::vDeputiseJob_2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-//  Job* pJob = m_pCurrentDeputy->pJob();
-//
-//  pJob->vOutputEnabled(m_bOutputEnabled);
-//
-//  if (! pJob->bHasTag(C_TAG_BG)) {
-//
-//    m_oMutex.vLock(this);
-//
-//    m_pCurrentDeputy->vDeputiseJob();
-//
-//    m_oMutex.vWait(this);
-//    m_oMutex.vUnlock(this);
-//
-//    while (! m_pCurrentDeputy->bAvailable())
-//      AM::vNapMsec(10,CN_SEPROMPT);
-//  }
-//  else {
-//    m_pCurrentDeputy->vDeputiseJob();
-//  }
-
-  m_oMutex.vLock(this);
-  
-  m_pCurrentDeputy->vDeputiseJob();
-
-  m_oMutex.vWait(this);
-  m_oMutex.vUnlock(this);
-  
-  while (! m_pCurrentDeputy->bAvailable())
-    AM::vNapMsec(10,CN_SEPROMPT);
-
-  //m_pCurrentDeputy = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* frok command                                                               */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vForkJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
