@@ -59,7 +59,6 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pThread   = AM::THREAD::pNewThread();
   
-  m_pInpTknVec = nullptr;
   
   m_iDivisionNo = 0;
   m_iSectionNo  = 0;
@@ -67,7 +66,7 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_bOneCommand = bOneCommand;
   m_bOneRun     = false;
-  m_bOutputEnabled     = true;
+  m_bOutputEnabled  = true;
 
   m_pSnapshotAtTrackingMemory = new ObjectSnapshot;
   m_pSnapshotAtMemoryLeaks = new ObjectSnapshot;
@@ -82,8 +81,10 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCurrentDeputy = nullptr;
   
+  m_pInput     = nullptr;
+  m_pInpTknVec = nullptr;
   m_pInpTagSet = nullptr;
-  
+
   m_pPrintOp = nullptr;
   
   m_oTimer.vStart();
@@ -96,6 +97,8 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCurrentDeputy = pDeputyCreate();
   
+  m_pInput = m_pCurrentDeputy->pInput();
+
   vToDo("_seprompt"_Stz);
   
   if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
@@ -106,7 +109,7 @@ SePrompt::SePrompt(bool bOneCommand)
 
   //m_pCmdTknVec = pInputGet()->pTokenVec();
 
-  pInputGet()->vDebugMode(m_iDebugMode);
+  m_pInput->vDebugMode(m_iDebugMode);
 
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
@@ -184,10 +187,10 @@ void SePrompt::vPromptLoop(void)
 
   
   ASSERT(0 == pInputGet()->iDepth());
-  pInputGet()->vUseStdin();
-  pInputGet()->vFormCppTokens();
-  pInputGet()->vUseBegin();
-  //pInputGet()->vInspect();
+  m_pInput->vUseStdin();
+  m_pInput->vFormCppTokens();
+  m_pInput->vUseBegin();
+  //m_pInput->vInspect();
 
   if (m_iDebugMode) {
     vJotDebug(m_iDebugMode);
@@ -209,13 +212,14 @@ void SePrompt::vPromptLoop(void)
       RASSERT(0);
     }
     
-    m_pInpTknVec = pInputGet()->pInpTknVec();
-    m_pInpTagSet = pInputGet()->pInpTagSet();
+    m_pInput     = m_pCurrentDeputy->pInput();
+    m_pInpTknVec = m_pInput->pInpTknVec();
+    m_pInpTagSet = m_pInput->pInpTagSet();
     
     Stz* szToDo = this->szToDo();
     
     if (! *szToDo->azChar())
-      pInputGet()->vRawInputClear();
+      m_pInput->vRawInputClear();
     
     if (! bGetCommand())
       continue;

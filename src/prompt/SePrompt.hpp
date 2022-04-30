@@ -46,11 +46,12 @@ namespace PROMPT
     Mutex       m_oMutex;       // mutex for seprompt-sedeputy
     SeDeputy*   m_pCurrentDeputy;
   
-    TokenVec*   m_pInpTknVec;   // token vector from deputy->ssn->input
-
-    TagSet*     m_pInpTagSet;   // extra tags gleaned from the prompt command
     TagSet      m_oPmtTagSet;   // tag set which controls this prompt
-
+  
+    Input*      m_pInput;       // current input from current deputy
+    TokenVec*   m_pInpTknVec;   // token vector from deputy->ssn->input
+    TagSet*     m_pInpTagSet;   // extra tags gleaned from the prompt command
+ 
 
     // -- -- -- -- -- --
   
