@@ -16,10 +16,6 @@ namespace STORE
   
   static Job* pAllocJob(Stz* szJobNm);
 
-  static void vExecuteJob(Job* pJob);
-  static void vForkJob(Job*& rpJob);
-  static eEC  ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-  
   static eEC  eForkJob(JobId& rtChildJobId, Job* pParentJob,
                        TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                        Job*& rpChildJob_tbr);

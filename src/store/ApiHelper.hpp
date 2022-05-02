@@ -16,8 +16,6 @@ namespace STORE
 
     i8   iCommandKind(void);
   
-    void vExecuteJob(Job* pJob);
-
     void* pForkDemon(Stz* szPipeline);
   
     i8   iJobId(void);
@@ -28,8 +26,6 @@ namespace STORE
 
     void vPipeoutResults(Op* pCurrOp, Operand* pOperand, Task* pTriggeringTask);
   
-    eEC  ePrepareJob(Job*& rpJob, TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-
     void vPrintResults(Job* pJob);
   
     void vReapableJob(Job*& rpJob);
