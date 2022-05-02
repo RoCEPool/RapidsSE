@@ -97,11 +97,11 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
     pCmdTagSet->vDumpSet();
     THROW("Api::eForkJob: no C_TAG_LASTJOBID"_Stz);
   }
-  /*
   if (! pCmdTagSet->bHasName(C_TAG_JOBKIND)) {
     pCmdTagSet->vDumpSet();
     THROW("Api::eForkJob: no C_TAG_JOBKIND"_Stz);
   }
+  /*
   if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
     pCmdTagSet->vDumpSet();
     THROW("Api::eForkJob: no C_TAG_PATH"_Stz);
