@@ -39,14 +39,6 @@ void ApiHelper::vReapableJob(Job*& rpJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* execute job                                                                */
-/*----------------------------------------------------------------------------*/
-void ApiHelper::vExecuteJob(Job* pJob, TagSet* pCmdTagSet)
-{
- Api::vExecuteJob(pJob,pCmdTagSet);
-}
-
-/*----------------------------------------------------------------------------*/
 /* fork demon                                                                 */
 /*----------------------------------------------------------------------------*/
 void* ApiHelper::pForkDemon(Stz* szPipeline)
@@ -76,18 +68,6 @@ void ApiHelper::vPipeoutResults(Op* pCurrOp,
 {
   // to be coded
   NOT_IMPLEMENTED_YET;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prepare job                                                                */
-/*----------------------------------------------------------------------------*/
-eEC ApiHelper::ePrepareJob(Job*& rpJob, Stz* szCmd, Stz* szCmdTagStr,
-                           TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
-{  
-  eEC eError =
-    Api::ePrepareJob(rpJob,"JobNm"_Stz,szCmd,szCmdTagStr,true,pCmdTknVec,pCmdTagSet);
-  
-  return eError;
 }
 
 /*----------------------------------------------------------------------------*/

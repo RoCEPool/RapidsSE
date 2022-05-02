@@ -25,6 +25,18 @@ void Step::vAddSteps_AM(void)
   vAddStep("AM::SHOW::bRecurring"_Stz,      &Step::vAM_Show_Recurring);
   vAddStep("AM::SHOW::bSocket"_Stz,         &Step::vAM_Show_Socket);
   vAddStep("AM::SHOW::bSocket_Failure"_Stz, &Step::vAM_Show_Socket_Failure);
+  
+  vAddStep("AM::derefMetricsDisable"_Stz,   &Step::vAM_DerefMetricsDisable);
+  vAddStep("AM::derefMetricsEnable"_Stz,    &Step::vAM_DerefMetricsEnable);
+  
+  vAddStep("AM::jobMetricsDisable"_Stz,     &Step::vAM_JobMetricsDisable);
+  vAddStep("AM::jobMetricsEnable"_Stz,      &Step::vAM_JobMetricsEnable);
+  
+  vAddStep("AM::reapDisable"_Stz,           &Step::vAM_ReapDisable);
+  vAddStep("AM::reapEnable"_Stz,            &Step::vAM_ReapEnable);
+
+  vAddStep("AM::sysMetricsDisable"_Stz,     &Step::vAM_SysMetricsDisable);
+  vAddStep("AM::sysMetricsEnable"_Stz,      &Step::vAM_SysMetricsEnable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,6 +203,104 @@ void Step::vAM_Show_Socket_Failure(void)
   b8 bSocket_Failure = AM::SHOW::bSocket_Failure();
   
   m_pDataStack->vPushInt(bSocket_Failure);
+
+  EXIT();
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* AM::derefMetricsDisable -- disable deref metrics                           */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_DerefMetricsDisable(void)
+{
+  ENTRY();
+  
+  AM::SYSARGS::vDerefMetrics(false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::dferefMetricsEnable -- enable deref metrics                           */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_DerefMetricsEnable(void)
+{
+  ENTRY();
+  
+  AM::SYSARGS::vDerefMetrics(true);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::jobMetricsDisable -- disable job metrics                              */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_JobMetricsDisable(void)
+{
+  ENTRY();
+  
+  AM::SYSARGS::vJobMetrics(false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::jobMetricsEnable -- enable job metrics                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_JobMetricsEnable(void)
+{
+  ENTRY();
+  
+  AM::SYSARGS::vJobMetrics(true);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::reapDisable -- disble reaping of retired jobs                          */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_ReapDisable(void)
+{
+  ENTRY();
+  
+  AM::SYSTEM::vReapEnabled(false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::reapEnable -- enable reaping of retired jobs                           */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_ReapEnable(void)
+{
+  ENTRY();
+  
+  AM::SYSTEM::vReapEnabled(true);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::sysMetricsDisable -- disable sys metrics                               */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_SysMetricsDisable(void)
+{
+  ENTRY();
+  
+  AM::SYSARGS::vSysMetrics(false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::sysMetricsEnable -- enable sys metrics                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_SysMetricsEnable(void)
+{
+  ENTRY();
+  
+  AM::SYSARGS::vSysMetrics(true);
 
   EXIT();
 }

@@ -40,7 +40,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // adjust partitions
@@ -68,7 +68,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove node
@@ -89,7 +89,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn node
@@ -110,7 +110,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // prototype assertGrid
@@ -135,7 +135,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump grid info
@@ -149,7 +149,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  //  dump table meta info
@@ -164,7 +164,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump bucket info
@@ -179,7 +179,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  //  dump table bucket map
@@ -194,7 +194,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get bucket object, for prototyping, use two table params $TableNm1 -> $TableNm2
@@ -218,7 +218,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object
@@ -241,7 +241,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 ;
 
@@ -268,7 +268,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 ;
 
@@ -299,7 +299,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -329,7 +329,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete rows from bucket # of a table
@@ -358,7 +358,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get bucket(s) for all tables
@@ -388,7 +388,7 @@
 
     end ;
     "
-    api::addProcedure
+    procedure::add
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get all metadata for user tables
@@ -418,7 +418,7 @@
 
     end ;
     "
-    api::addProcedure
+    procedure::add
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get all bucketmap for user tables
@@ -448,7 +448,7 @@
 
     end ;
     "
-    api::addProcedure
+    procedure::add
 
   ;
 /*============================================================================*/

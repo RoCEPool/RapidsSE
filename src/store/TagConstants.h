@@ -11,6 +11,7 @@ static Stz* C_TAG_CMD          = "<cmd>"_Stz;
 static Stz* C_TAG_CMDFILE      = "<cmdFile>"_Stz;
 static Stz* C_TAG_CMDLINE      = "<cmdLine>"_Stz;
 static Stz* C_TAG_COUNT        = "<count>"_Stz;
+static Stz* C_TAG_DBG_ACKS     = "<dbg_acks>"_Stz;
 static Stz* C_TAG_DEDICATEDTHD = "<dedicatedThd>"_Stz;
 static Stz* C_TAG_DIARY        = "<diary>"_Stz;
 static Stz* C_TAG_DIARYDIR     = "<diaryDir>"_Stz;
@@ -28,6 +29,7 @@ static Stz* C_TAG_INTERNAL     = "<internal>"_Stz;
 static Stz* C_TAG_JOBKIND      = "<jobKind>"_Stz;
 static Stz* C_TAG_JOBNM        = "<jobNm>"_Stz;
 static Stz* C_TAG_KEYEXPR      = "<keyExpr>"_Stz;
+static Stz* C_TAG_LASTJOBID    = "<lastJobId>"_Stz;
 static Stz* C_TAG_LIFE         = "<life>"_Stz;
 static Stz* C_TAG_LOWMEMORY    = "<lowMemory>"_Stz;
 static Stz* C_TAG_MEMORYLOG    = "<memoryLog>"_Stz;
@@ -52,6 +54,7 @@ static Stz* C_TAG_SECTION      = "<section>"_Stz;
 static Stz* C_TAG_SHM          = "<shm>"_Stz;
 static Stz* C_TAG_STMT         = "<stmt>"_Stz;
 static Stz* C_TAG_SUMMARY      = "<summary>"_Stz;
+static Stz* C_TAG_SYSTEMCLOSER = "<systemCloser>"_Stz;
 static Stz* C_TAG_TABLENM      = "<tableNm>"_Stz;
 static Stz* C_TAG_TIME         = "<time>"_Stz;
 static Stz* C_TAG_TRACEAPI     = "<traceApi>"_Stz;
@@ -60,8 +63,8 @@ static Stz* C_TAG_WHEN         = "<when>"_Stz;
 static Stz* C_TAG_XFER         = "<xfer>"_Stz;
 static Stz* C_TAG_SENDKIND     = "<sendKind>"_Stz;
 static Stz* C_TAG_SENDS        = "<sends>"_Stz;
- 
-static Stz* C_TAG_DBG_ACKS     = "<dbg_acks>"_Stz;
+static Stz* C_TAG_WAIT         = "<wait>"_Stz;
+
 
 static Stz* C_TAG_LD_DATE_FORMAT          = "<date_format>"_Stz;
 static Stz* C_TAG_LD_ENCLOSED_BY_LEADING  = "<enclosed_by_leading>"_Stz;

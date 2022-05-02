@@ -319,7 +319,7 @@ void Stream::vCreateOps(void)
     TokenVec* pTknVec = new TokenVec;
     pTknVec->vTokeniseSen(sOpCmd);
 
-    bool b = AM::bParseCmd(pTknVec,pOp_0->pOpTags());
+    bool b = CmdHelper::bParseCmd(pTknVec,pOp_0->pOpTags());
     UNUSED(b);
     
     pTknVec->vSetAllTokens();

@@ -34,7 +34,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop index
@@ -60,7 +60,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop schema
@@ -83,7 +83,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop table
@@ -115,7 +115,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop all tables
@@ -143,7 +143,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop tenant
@@ -166,7 +166,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 ;
 
 /*============================================================================*/

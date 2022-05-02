@@ -27,11 +27,10 @@ namespace PROMPT
 
     Job*      m_pRootJob;
     Job*      m_pJob;
+    eEC       m_eError;
   
     s256      m_sFolderPath;   // folder path
     JobId     m_tLastJobId;    // last job id
-
-    TagSet    m_oCmdTagSet;    // extra tags gleaned from the command
 
     s4K       m_sToDo;         // prompt to do
 
@@ -48,18 +47,14 @@ namespace PROMPT
     static void* aEntryPoint(void* pArg);
   
     void vDeputyLoop(void);
-    void vExecuteJob(void);
-    void vRepeableJob(void);
-
-    eEC  ePrepareJob(Stz* szCmd, TokenVec* pCmdTknVec);
 
     // -- -- -- -- -- --
   
     bool bAvailable(void);
-    TagSet* pCmdTagSet(void);
     void vDeputiseJob(void);
+    eEC  eError(void);
+    void vError(eEC eError);
     Input* pInput(void);
-    Job* pJob(void);
     JobId tLastJobId(void);
     void vReportTime(void);
     void vTerminate(void);

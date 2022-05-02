@@ -772,7 +772,6 @@ namespace OBLIQUE
     static i8   iOperandZkKind(Operand* pOperand);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static bool bParseCmd(TokenVec* pTknVec, TagSet* pExtraTagSet);
     static Job* pPipelineJob(void);
     static void vPoolAnalyze(void);
     static void vPrintGlobals(void);
@@ -799,7 +798,6 @@ namespace OBLIQUE
     static void vSpawnTaskDedicated_op(Op* pOp);
     static void vSpawnTask_op(Op* pOp);
     static void vSpawnTask_receivedJob(Job* pJob);
-    static void vSpawnTask_demonJob(Job* pJob);
     static Stz* szSummary(s256& sSummary);
     static Stz* szSummaryDir(s256& sSummary, Stz* szNote);
     static bool bSupervisorHalt(void);

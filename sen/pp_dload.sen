@@ -73,7 +73,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dload
@@ -96,7 +96,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
  
  
   //----------------------------------------------------------------------------
@@ -141,7 +141,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -165,7 +165,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dload_test
@@ -188,7 +188,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 ;
 

@@ -14,9 +14,10 @@ namespace BASE
     Input*    m_pNext;     // next input in chain
   
     eUF       m_eTknForm;   // form of tokens to be collected
-    TokenVec* m_pTknVec;    // set of collected tokens
+    TokenVec* m_pInpTknVec; // set of collected tokens
     Token*    m_pCurrTkn;   // current token
-  
+    TagSet*   m_pInpTagSet; // extra tags gleaned from the prompt command
+
     Charser*  m_pCharser;   // charser
     AnnChar   m_xAnnChar;   // annotated char from charser
 
@@ -52,6 +53,8 @@ namespace BASE
     void vForkReset(void);
     void vFormCppTokens(void);
     void vFormSenTokens(void);
+    TagSet* pInpTagSet(void);
+    TokenVec* pInpTknVec(void);
     void vInspect(void);
     bool bIsStdin(void);
     Stz* szPath(void);
@@ -68,7 +71,6 @@ namespace BASE
     void vSingleLineCmd(bool bLineMode);
     bool bSingleLineCmd(void);
     eTN  eToken(void);
-    TokenVec* pTokenVec(void);
     void vUseBegin(void);
     void vUseClose(void);
     void vUseEnd(void);

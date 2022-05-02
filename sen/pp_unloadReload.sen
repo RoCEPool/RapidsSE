@@ -38,7 +38,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // /time unload LineItem "/tmp/lineitem.crw" ;
 
@@ -63,7 +63,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // /time reload LineItem "/tmp/lineitem.crw" ;
 
@@ -90,7 +90,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 ;
 

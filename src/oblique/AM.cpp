@@ -2935,12 +2935,6 @@ i8 AM::iLvlRatio(void) {
   return gpAttachMap->m_xSysArgs.m_iLvlRatio;
 }
 
-bool AM::bParseCmd(TokenVec* pTknVec, TagSet* pExtraTagSet)
-{
-  return CmdHelper::bParseCmd(pTknVec,pExtraTagSet);
-}
-
-
 Job* AM::pPipelineJob(void)
 {
   Op* pOp = pThisTLSTask()->pOp();
@@ -3187,14 +3181,6 @@ void AM::vSpawnTask_op(Op* pOp)
 void AM::vSpawnTask_receivedJob(Job* pJob)
 {
   Api::vSpawnTask_receivedJob(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
-void AM::vSpawnTask_demonJob(Job* pJob)
-{
-  Api::vForkDemon(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

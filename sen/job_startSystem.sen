@@ -99,22 +99,22 @@
   "spawning demons" .verbose
 
   // spawn metrics update
-  "" metricsDemonPipeline api::spawnDemon not if
+  "" metricsDemonPipeline api::forkChild_noWait not if
     "Error Code %v" .printf
   then
 
   // spawn metrics collect
-  "" collectDemonPipeline api::spawnDemon not if
+  "" collectDemonPipeline api::forkChild_noWait not if
     "Error Code %v" .printf
   then
 
   // spawn supervisor demon
-  "" superDemonPipeline api::spawnDemon not if
+  "" superDemonPipeline api::forkChild_noWait not if
     "Error Code %v" .printf
   then
 
   // spawn monitor demon
-  "" monDemonPipeline api::spawnDemon not if
+  "" monDemonPipeline api::forkChild_noWait not if
     "Error Code %v" .printf
   then
 
@@ -124,44 +124,44 @@
   //then
 
   // spawn reaper demon
-  "" reaperDemonPipeline api::spawnDemon not if
+  "" reaperDemonPipeline api::forkChild_noWait not if
     "Error Code %v" .printf
   then
 
   //spawn report demon
-  "" exitDemonPipeline api::spawnDemon not if
+  "" exitDemonPipeline api::forkChild_noWait not if
     "Error Code %v" .printf
   then
 
   //spawn recurring demon
-  "" recurDemonPipeline api::spawnDemon not if
+  "" recurDemonPipeline api::forkChild_noWait not if
     "Error Code %v" .printf
   then
 
   // spawn stat demon
-  "" statDemonPipeline api::spawnDemon not if
+  "" statDemonPipeline api::forkChild_noWait not if
     "Error Code %v" .printf
   then
 
   // spawn waker demon
-  "" wakerDemonPipeline api::spawnDemon not if
+  "" wakerDemonPipeline api::forkChild_noWait not if
     "Error Code %v" .printf
   then
   
   // spawn event demon
-  "" eventDemonPipeline api::spawnDemon not if
+  "" eventDemonPipeline api::forkChild_noWait not if
     "Error Code %v" .printf
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // spawn answer demon for SE Adaptor
-  "" answerSE_procText api::spawnDemon not if
+  "" answerSE_procText api::forkChild_noWait not if
     "Error Code %v" .printf
   then
 
   // spawn connector demon for SE Adaptor
-  "" connectorSE_procText api::spawnDemon not if
+  "" connectorSE_procText api::forkChild_noWait not if
     "Error Code %v" .printf
   then
 

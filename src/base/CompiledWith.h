@@ -88,6 +88,9 @@
 //#define WITH_HASHMAP_DEBUG EndDefine       // enable debug for hashmap
 
 //#define WITH_BUFFER_ID EndDefine
+
+#define WITH_API_FORK EndDefine       // RAY
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

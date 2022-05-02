@@ -9,11 +9,19 @@ namespace BASE
   {
   public:
   
-    static TagSet* pCmdTagSet(Stz* szCmdNm);
-    static bool    bParseCmd(TokenVec* pTknVec,
-                             TagSet*   pArgTags);
+    static TagSet* pDefTagSet(Stz* szCmdNm);
+  
+    static void vExtractCmdPaths(TokenVec* pCmdTknVec,
+                                 TagSet* pCmdTagSet);
+  
+    static bool bExtractCmdTags(TokenVec* pCmdTknVec,
+                                TagSet* pCmdTagSet);
+
+    static bool bParseCmd(TokenVec* pTknVec,
+                          TagSet*   pArgTags);
     
   private:
+  
     static bool bExtractAllArgs(TagSet*   pArgTags,
                                 TagSet*   pSynTags,
                                 TokenVec* pTknVec);

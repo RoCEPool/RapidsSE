@@ -12,30 +12,30 @@
   <which> "jobMetrics" str.same if
   
     <setting> "disable" str.same if
-      api::jobMetricsDisable
+      AM::jobMetricsDisable
     else
     <setting> "enable" str.same if
-      api::jobMetricsEnable
+      AM::jobMetricsEnable
     then then
 
   else
   <which> "sysMetrics" str.same if
 
     <setting> "disable" str.same if
-      api::sysMetricsDisable
+      AM::sysMetricsDisable
     else
     <setting> "enable" str.same if
-      api::sysMetricsEnable
+      AM::sysMetricsEnable
     then then
 
   else
   <which> "derefMetrics" str.same if
 
     <setting> "disable" str.same if
-      api::derefMetricsDisable
+      AM::derefMetricsDisable
     else
     <setting> "enable" str.same if
-      api::derefMetricsEnable
+      AM::derefMetricsEnable
     then then
 
   else

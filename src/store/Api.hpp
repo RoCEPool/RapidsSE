@@ -16,25 +16,14 @@ namespace STORE
   
   static Job* pAllocJob(Stz* szJobNm);
 
-  static void vExecuteJob(Job* pJob, TagSet* pCmdTagSet);
-  static void vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-  static bool bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-  static void vForkDemon(Job*& rpJob);
-  static void vForkJob(Job*& rpJob, Op* pResponseOp);
-  static eEC  eParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet);
-  static eEC  ePrepareJob(Job*& rpJob, Stz* szJobNm,
-                          Stz* szCmd, Stz* szCmdTagStr,
-                          bool bParsed, TokenVec*& rpCmdTknVec, TagSet*& rpCmdTagSet);
-  static void vReapableJob(Job*& rpJob);
+  static eEC  eForkJob(JobId& rtChildJobId, Job* pParentJob,
+                       TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                       Job*& rpChildJob_tbr);
 
-  static void vSubmitJob(Job* pJob);
-  static void vWaitJob(Job* pJob);
- 
+  
+  static void vReapableJob(Job*& rpJob);
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);
-
-  static eEC  eForkCommand(Stz* szCmd, Stz* szWithTagStr, Stz* szTagPath,
-                           Op* pResponseOp, JobId& rtJobId);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -58,12 +47,10 @@ namespace STORE
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  static bool bShortForm(TokenVec* pCmdTknVec);
-  static bool bExpandToLongForm(TokenVec* pCmdTknVec);
   static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
 
   private:
-  
+
   static void vCreateTaskForOp(Op* pOp);
   static void vResetTaskForJob(Job* pJob);
 

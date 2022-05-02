@@ -33,7 +33,6 @@ namespace PROMPT
 
     bool        m_bContinue;    // continue processing commands?
     ShortCutVec m_oShortCutVec; // vector of short cuts
-    i8          m_iDebugMode;   // debug mode?
 
     bool        m_bOneCommand;  // run one command only
     bool        m_bOneRun;      // one command has been run?
@@ -46,12 +45,12 @@ namespace PROMPT
     Mutex       m_oMutex;       // mutex for seprompt-sedeputy
     SeDeputy*   m_pCurrentDeputy;
   
-    TokenVec*   m_pCmdTknVec;   // token vector from deputy->ssn->input
-
-    TagSet*     m_pCmdTagSet;   // extra tags gleaned from the prompt command
     TagSet      m_oPmtTagSet;   // tag set which controls this prompt
-    TagSet      m_oUsrTagSet;   // tag set which are passed to session
-
+  
+    Input*      m_pInput;       // current input from current deputy
+    TokenVec*   m_pInpTknVec;   // token vector from deputy->ssn->input
+    TagSet*     m_pInpTagSet;   // extra tags gleaned from the prompt command
+ 
 
     // -- -- -- -- -- --
   
@@ -87,34 +86,26 @@ namespace PROMPT
   
     void vPromptLoop(void);
 
-    bool bGetCommand(void);
-    bool bPrepareJob(void);
-    void vDeputiseJob(void);
 
     // these are the prompt.xyz task primitives
-    bool bBlankLine(void);
-    void vDebugMode(i8 iDebugMode);
-    void vDivision(Stz* szDivision);
-    i8   iDivisionNo(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
-    void vCutToken(i8 i_Tkn);
+    void vDebugMode(i8 iDebugMode);
     SeDeputy* pDeputyCreate(void);
     SeDeputy* pDeputyCurrent(void);
     void vDeputyCurrent(SeDeputy* pCurrentDeputy);
+    void vDivision(Stz* szDivision);
+    i8   iDivisionNo(void);
     bool bDumpTokens(void);
     void vDumpTokens(bool bDumpTokens);
     void vDumpInpTknVec(bool bForce);
     bool bExamineCommand(void);
-    bool bExecuteFunction(void);
     SeDeputy* pFindDeputy(void);
     TokenVec* pInpTknVec(void);
     Input* pInputGet(void);
     bool bIsPromptWord(void);
-    bool bIsTagCommand(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
-    void vMakeDiaryDir(void);
     Mutex* pMutex(void);
     void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);
@@ -122,10 +113,11 @@ namespace PROMPT
     void vOutline(s4K& sOutline);
     bool bOutputEnabled(void);
     void vOutputEnabled(bool bOutputEnabled);
-    void vPromptUser(void);
+    void vPrintPrompt(void);
+    bool bPromptFunction(void);
     TagSet* pPmtTagSet(void);
     Stz* szRawInput(void);
-    bool bReadNextCommand(void);
+    bool bReadCommand(void);
     bool bRedirectFromFile(void);
     void vReportObjects();
     void vReportOther(void);
@@ -138,13 +130,13 @@ namespace PROMPT
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
+    bool bTagCommand(void);
     Timer* pTimer(void);
     Stz* szToDo(void);
     void vToDo(Stz* szToDo);
     void vTrackMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);
-    TagSet* pUsrTagSet(void);
 
   
     ObjectSnapshot* pSnapshotAtTrackingMemory(void);

@@ -32,7 +32,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create index
@@ -57,7 +57,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create unique index
@@ -82,7 +82,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -111,7 +111,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create unique index
@@ -139,7 +139,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 */
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -162,7 +162,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create table
@@ -190,7 +190,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create tenant
@@ -212,7 +212,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create table as
@@ -237,7 +237,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // define table
@@ -254,7 +254,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete
@@ -276,7 +276,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 ;
 

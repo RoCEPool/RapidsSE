@@ -30,13 +30,12 @@
 #include "Marker.hpp"
 
 
-extern CmdLineArgs   gxCmdLineArgs;
-
 extern AttachMap*    gpAttachMap;
+extern BufferPool*   gpBufferPool;
+extern Stz*          gsBuildGitHash;
+extern CmdLineArgs   gxCmdLineArgs;
 extern PromptCatalog gxPromptCatalog;
 
-extern Stz* gsBuildGitHash;
-extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -59,7 +58,6 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pThread   = AM::THREAD::pNewThread();
   
-  m_pCmdTknVec = nullptr;
   
   m_iDivisionNo = 0;
   m_iSectionNo  = 0;
@@ -67,13 +65,11 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_bOneCommand = bOneCommand;
   m_bOneRun     = false;
-  m_bOutputEnabled     = true;
+  m_bOutputEnabled  = true;
 
   m_pSnapshotAtTrackingMemory = new ObjectSnapshot;
   m_pSnapshotAtMemoryLeaks = new ObjectSnapshot;
   m_pSnapshotObjects = nullptr;
-
-  m_iDebugMode = gxCmdLineArgs.m_xSysArgs.m_iPromptDebug;
 
   m_nDeputies = 0;
   for (i8 i_Deputy = 0; i_Deputy < C_MAX_DEPUTY; i_Deputy++) {
@@ -82,8 +78,10 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCurrentDeputy = nullptr;
   
-  m_pCmdTagSet = nullptr;
-  
+  m_pInput     = nullptr;
+  m_pInpTknVec = nullptr;
+  m_pInpTagSet = nullptr;
+
   m_pPrintOp = nullptr;
   
   m_oTimer.vStart();
@@ -96,6 +94,8 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCurrentDeputy = pDeputyCreate();
   
+  m_pInput = m_pCurrentDeputy->pInput();
+
   vToDo("_seprompt"_Stz);
   
   if (gxCmdLineArgs.m_xSysArgs.m_bDeveloper) {
@@ -104,13 +104,11 @@ SePrompt::SePrompt(bool bOneCommand)
     //m_oPmtTagSet.vInsert(C_PMT_TRCFILE);
   }
 
-  //m_pCmdTknVec = pInputGet()->pTokenVec();
-
-  pInputGet()->vDebugMode(m_iDebugMode);
+  m_pInput->vDebugMode(gxCmdLineArgs.m_xSysArgs.m_iPromptDebug);
 
   // reset stdin as on Linux when another process(prompt)
   //   accesses the stdin , its not a valid fp
-  pInputGet()->vForkReset();
+  m_pInput->vForkReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,41 +181,18 @@ void SePrompt::vPromptLoop(void)
   //Thread* pThreadTest = AM::THREAD::pThisThread();
 
   
+  ASSERT(0 == m_pInput->iDepth());
+  m_pInput->vUseStdin();
+  m_pInput->vFormCppTokens();
+  m_pInput->vUseBegin();
+  //m_pInput->vInspect();
 
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
-//  m_pPrintOp = Api::pGetOperator("print"_Stz);
-//  Task* pOpTask = AM::pTaskNew(pOp);
-//
-//  AM::DEMON::vPipeTo("__threadDemon"_Stz, m_pPrintOp);
-//
-//
-//  Marker* pStartMarker = new Marker(OM_STARTMARKER);
-//  m_pPrintOp->vAppend(pStartMarker,nullptr);
-//
-//
-//  InfoSet* pPromptOut = AM::PROMPT::pToPromptOut("OP print test ###################################\n"_Stz);
-//
-//  m_pPrintOp->vAppend(pPromptOut,nullptr);
-//
-//
-//  Marker* pExitMarker = new Marker(OM_EXITMARKER);
-//  m_pPrintOp->vAppend(pExitMarker,nullptr);
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-
-  ASSERT(0 == pInputGet()->iDepth());
-  pInputGet()->vUseStdin();
-  pInputGet()->vFormCppTokens();
-  pInputGet()->vUseBegin();
-  //pInputGet()->vInspect();
-
-  if (m_iDebugMode) {
-    vJotDebug(m_iDebugMode);
+  //if (m_iDebugMode) {
+    //vJotDebug(m_iDebugMode);
     //vJotFilter("AnnChar:(some)"_Stz);
     //vJotTrigger(0x0e,m_iDebugMode);
     //vJotDisable(0x27,0);
-  }
+  //}
     
   //vTrace("vPromptLoop\n"_Stz);
   
@@ -232,15 +207,16 @@ void SePrompt::vPromptLoop(void)
       RASSERT(0);
     }
     
-    m_pCmdTknVec = pInputGet()->pTokenVec();
-    m_pCmdTagSet = m_pCurrentDeputy->pCmdTagSet();
+    m_pInput     = m_pCurrentDeputy->pInput();
+    m_pInpTknVec = m_pInput->pInpTknVec();
+    m_pInpTagSet = m_pInput->pInpTagSet();
     
     Stz* szToDo = this->szToDo();
     
     if (! *szToDo->azChar())
-      pInputGet()->vRawInputClear();
+      m_pInput->vRawInputClear();
     
-    if (! bGetCommand())
+    if (! bReadCommand())
       continue;
  
 //    Stz* szRaw = szRawInput();
@@ -249,27 +225,35 @@ void SePrompt::vPromptLoop(void)
     if (! bExamineCommand())
       continue;
 
-    //vTrace("Prompt-RawInput: %s\n"_Stz,pInputGet()->szRawInput());
+    //vTrace("Prompt-RawInput: %s\n"_Stz,m_pInput->szRawInput());
     
-    Stz* szCmdFile = pInputGet()->szPath();
+    Stz* szCmdFile = m_pInput->szPath();
     i8   iCmdLine  = pTkn(0)->iLineNo();
 
     if (*szCmdFile->azChar()) {
-      m_pCmdTagSet->vInsert(C_TAG_CMDFILE,szCmdFile);
-      m_pCmdTagSet->vInsert(C_TAG_CMDLINE,iCmdLine);
+      m_pInpTagSet->vInsert(C_TAG_CMDFILE,szCmdFile);
+      m_pInpTagSet->vInsert(C_TAG_CMDLINE,iCmdLine);
     }
 
-    if (! bPrepareJob()) {
-      
-      if (m_bOneRun) {
-        AM::vProcessExit();
-      }
-      
-      continue;
+    m_pInpTagSet->vCopy(& m_oPmtTagSet);
+
+    m_oMutex.vLock(this);
+    m_pCurrentDeputy->vDeputiseJob();
+    m_oMutex.vWait(this);
+    m_oMutex.vUnlock(this);
+    while (! m_pCurrentDeputy->bAvailable())
+      AM::vNapMsec(10,CN_SEPROMPT);
+
+    
+    eEC eError = m_pCurrentDeputy->eError();
+    m_pCurrentDeputy->vError(EC_NONE);
+
+    if (EC_NONE != eError) {
+      vTrace("error: %s\n"_Stz,aEC[eError]);
+      if (AM::bDeveloper())
+        vDumpInpTknVec(true);
     }
     
-    vDeputiseJob();
-
     m_pCurrentDeputy = nullptr;
     
     //vLogFreeSpace();
@@ -277,153 +261,10 @@ void SePrompt::vPromptLoop(void)
   } // while
 }
 
-/*----------------------------------------------------------------------------*/
-/* get next command from input                                                */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bGetCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-//  s32 sHostName;
-//  Hardware::vHostName(sHostName);
-
-  if (bStdIn() && ! *this->szToDo()->azChar()) {
-    //vReportOther();
-    vPromptUser();
-  }
-  
-  vResetExtractedTagSet();
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // read next command
-  
-  if (! bReadNextCommand()) {
-    m_bContinue = false;
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* examine command                                                            */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bExamineCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  if (bBlankLine())
-    return false;
-
-  if (bDumpTokens())
-    vDumpInpTknVec(false);
-
-  if (bIsTagCommand()) {
-    bExecuteFunction();
-    return false;
-  }
-  
-  if (bShortCut())
-    return false;
-
-  if (bRedirectFromFile())
-    return false;
-  
-  TagSet*  pCmdTagSet = m_pCurrentDeputy->pCmdTagSet();
-
-  Api::vExtractCmdPaths(m_pCmdTknVec,pCmdTagSet);
-  if (! Api::bExtractCmdTags(m_pCmdTknVec,pCmdTagSet))
-    return false;
-
-  if (bIsPromptWord())
-    m_pCmdTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
-
-  if (bExecuteFunction())
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* use SE api to create and prepare a job for commmand                        */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bPrepareJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  m_pCmdTagSet->vCopy(& m_oUsrTagSet);
-  
-  s4K sCmd;
-  m_pCmdTknVec->vToTknString(sCmd);
-  
-  eEC eError = m_pCurrentDeputy->ePrepareJob(sCmd,m_pCmdTknVec);
-
-  if (eError) {
-    RASSERT(! m_pCurrentDeputy->pJob());
-    
-    if (EC_INVALID_COMMAND == eError) {
-      bool b = bPrompt_selfies(this);
-      UNUSED(b);
-    }
-    else {
-      vTrace("error: %s\n"_Stz,aEC[eError]);
-      if (AM::bDeveloper())
-        vDumpInpTknVec(true);
-    }
-    return false;
-  }
-  
-  vMakeDiaryDir();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next command from input                                                */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vDeputiseJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Job* pJob = m_pCurrentDeputy->pJob();
-  
-  pJob->vOutputEnabled(m_bOutputEnabled);
-  
-  if (! pJob->bHasTag(C_TAG_BG)) {
-    
-    m_oMutex.vLock(this);
-  
-    m_pCurrentDeputy->vDeputiseJob();
-    
-    m_oMutex.vWait(this);
-    m_oMutex.vUnlock(this);
-    
-    while (! m_pCurrentDeputy->bAvailable())
-      AM::vNapMsec(10,CN_SEPROMPT);
-  }
-  else {
-    m_pCurrentDeputy->vDeputiseJob();
-  }
-  
-  m_pCurrentDeputy = nullptr;
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-
-/*----------------------------------------------------------------------------*/
-/* test for blank line                                                        */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bBlankLine(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-    
-  bool bBlankLine = m_pCmdTknVec->bBlankLine();
-
-  return bBlankLine;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get continue                                                               */
@@ -443,22 +284,6 @@ void SePrompt::vContinue(bool bContinue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   m_bContinue = bContinue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* cut a token from token vector                                              */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCutToken(i8 i_Tkn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  TokenVec* pInpTknVec = pInputGet()->pTokenVec();
-  
-  //pTknVec->vPrint();
-  
-  pInpTknVec->vRemoveToken(i_Tkn);
-
-  //pTknVec->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -510,12 +335,10 @@ void SePrompt::vDebugMode(i8 iDebugMode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_iDebugMode = iDebugMode;
-
-  if (m_iDebugMode > 1)
-    pInputGet()->vDebugMode(m_iDebugMode);
+  if (iDebugMode > 1)
+    m_pInput->vDebugMode(iDebugMode);
   else
-    pInputGet()->vDebugMode(0);
+    m_pInput->vDebugMode(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -525,7 +348,7 @@ void SePrompt::vDivision(Stz* szDivision)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  pInputGet()->vDivision(szDivision);
+  m_pInput->vDivision(szDivision);
   
   m_iSectionNo = 0;
 }
@@ -576,40 +399,48 @@ void SePrompt::vDumpInpTknVec(bool bForce)
   if (! bDumpTokens() && ! bForce)
     return;
 
-  if (! m_pCmdTknVec->nTokens() && ! bForce)
+  if (! m_pInpTknVec->nTokens() && ! bForce)
     return;
 
   s48K sCommand;
 
-  m_pCmdTknVec->vVecToString(sCommand,0,false);
-  vTrace("InpTknVec %lld tokens: %s\n"_Stz,m_pCmdTknVec->nTokens(),sCommand.szStz());
+  m_pInpTknVec->vVecToString(sCommand,0,false);
+  vTrace("InpTknVec %lld tokens: %s\n"_Stz,m_pInpTknVec->nTokens(),sCommand.szStz());
   
   BASE::vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
-/* potentially execute a prompt function                                      */
+/* examine command                                                            */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteFunction(void)
+bool SePrompt::bExamineCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Timer oTimer;
+    
+  if (m_pInpTknVec->bBlankLine())
+    return false;
 
-  PromptFun* pPromptDesc =
-    gxPromptCatalog.pFindFun(pTkn(0)->szChars(), pTkn(1)->szChars());
-  
-  if (! pPromptDesc)
+  if (bDumpTokens())
+    vDumpInpTknVec(false);
+
+  if (bTagCommand())
     return false;
   
-  //vTrace("Executing function %s\n"_Stz,pTkn(0)->szChars());
-  
-  oTimer.vStart();
-  (pPromptDesc->m_fPrompt)(this);
-  oTimer.vUpdate();
+  if (bShortCut())
+    return false;
 
-  if (m_pCmdTagSet->bHasName(C_TAG_TIME))
-    vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
+  if (bRedirectFromFile())
+    return false;
+    
+  CmdHelper::vExtractCmdPaths(m_pInpTknVec,m_pInpTagSet);
+  if (! CmdHelper::bExtractCmdTags(m_pInpTknVec,m_pInpTagSet))
+    return false;
+
+  if (bIsPromptWord())
+    m_pInpTknVec->vInsertToken(0,"docol"_Stz,TN_NAME);
+
+  if (bPromptFunction())
+    return false;
 
   return true;
 }
@@ -640,29 +471,23 @@ SeDeputy* SePrompt::pFindDeputy(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* outline                                                                    */
+/* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vOutline(s4K& sOutline)
+TokenVec* SePrompt::pInpTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+  return m_pInpTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get output enabled                                                         */
+/* get input                                                                  */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bOutputEnabled(void)
+Input* SePrompt::pInputGet(void)
 {
-  return m_bOutputEnabled;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set output enabled                                                         */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vOutputEnabled(bool bOutputEnabled)
-{
-  m_bOutputEnabled = bOutputEnabled;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -672,7 +497,7 @@ bool SePrompt::bIsPromptWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn0 = m_pCmdTknVec->pGet(0);
+  Token* pTkn0 = m_pInpTknVec->pGet(0);
 
   s32 sWordNm;
   sWordNm = pTkn0->szChars();
@@ -692,21 +517,6 @@ bool SePrompt::bIsPromptWord(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is the tag command ?                                                       */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bIsTagCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Token* pTkn0 = pTkn(0);
-  
-  if (pTkn0->bSame("tag"_Stz))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* log command                                                                */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vLogCommand(void)
@@ -715,11 +525,11 @@ void SePrompt::vLogCommand(void)
   
   sSTMT sCommand;
   
-  Token* pTkn0 = m_pCmdTknVec->pGet(0);
+  Token* pTkn0 = m_pInpTknVec->pGet(0);
   if (pTkn0->bSame("logNote"_Stz))
   return;
   
-  m_pCmdTknVec->vVecToString(sCommand,0,true);
+  m_pInpTknVec->vVecToString(sCommand,0,true);
   sCommand.vSizeMax(C_MAX_LOG_NOTE / 2);
 }
 
@@ -735,37 +545,6 @@ void SePrompt::vLogFreeSpace(void)
   
   s32 sFreeSpaceMag;
   MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
-}
-
-/*----------------------------------------------------------------------------*/
-/* make diary dir                                                             */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vMakeDiaryDir(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  if (! m_pCurrentDeputy->pJob()->bHasTag(C_TAG_DIARY))
-    return;
-  
-  TagSet* pJobTagSet = m_pCurrentDeputy->pJob()->pJobTags();
-  
-  Stz* szNote = pJobTagSet->szValue(C_TAG_NOTE);
-  
-  s256 sSummary;
-  
-  s256 sDiaryPath;
-  
-  sDiaryPath.vSprint("../tmp/Diary_%s"_Stz,AM::szSummaryDir(sSummary,szNote));
-  
-  vTrace("vMakeDiaryDir: %s\n"_Stz,sDiaryPath.szStz());
-  
-  if (! Dir::bExists(sDiaryPath)) {
-    bool b = Dir::bMake(sDiaryPath);
-    ASSERT(b);
-    UNUSED(b);
-  }
-  
-  //pJobTagSet->vInsert(C_TAG_DIARYDIR,sDiaryPath);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -824,9 +603,35 @@ i8 SePrompt::iNextSectionNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prompt the user for input                                                  */
+/* outline                                                                    */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vPromptUser(void)
+void SePrompt::vOutline(s4K& sOutline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eGetClassNo()]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get output enabled                                                         */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bOutputEnabled(void)
+{
+  return m_bOutputEnabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set output enabled                                                         */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vOutputEnabled(bool bOutputEnabled)
+{
+  m_bOutputEnabled = bOutputEnabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print the se> prompt onto the screen                                       */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vPrintPrompt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -909,6 +714,33 @@ void SePrompt::vPromptUser(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* potentially execute a prompt function                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bPromptFunction(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Timer oTimer;
+
+  PromptFun* pPromptDesc =
+    gxPromptCatalog.pFindFun(pTkn(0)->szChars(), pTkn(1)->szChars());
+  
+  if (! pPromptDesc)
+    return false;
+  
+  //vTrace("Executing function %s\n"_Stz,pTkn(0)->szChars());
+  
+  oTimer.vStart();
+  (pPromptDesc->m_fPrompt)(this);
+  oTimer.vUpdate();
+
+  if (m_pInpTagSet->bHasName(C_TAG_TIME))
+    vTrace("time %lldms\n\n"_Stz,oTimer.iMilliseconds());
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the prompt settings tag set                                            */
 /*----------------------------------------------------------------------------*/
 TagSet* SePrompt::pPmtTagSet(void)
@@ -925,19 +757,38 @@ Stz* SePrompt::szRawInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Stz* szRaw = pInputGet()->szRawInput();
+  Stz* szRaw = m_pInput->szRawInput();
   
   return szRaw;
 }
 
 /*----------------------------------------------------------------------------*/
-/* read next command from                                                     */
+/* read command from input                                                    */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bReadNextCommand(void)
+bool SePrompt::bReadCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-   
-  m_pCmdTknVec->vIntegrityCheck();
+  
+//  s32 sHostName;
+//  Hardware::vHostName(sHostName);
+
+  if (bStdIn() && ! *this->szToDo()->azChar()) {
+    //vReportOther();
+    vPrintPrompt();
+  }
+  
+  vResetExtractedTagSet();
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read next command
+  /*
+  if (! bReadNextCommand()) {
+    m_bContinue = false;
+    return false;
+  }
+  */
+  
+  m_pInpTknVec->vIntegrityCheck();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case: initial command supplied as an SE command line argument
@@ -946,9 +797,9 @@ bool SePrompt::bReadNextCommand(void)
     gxCmdLineArgs.m_xSysArgs.m_bInitial = false;
     
     s4K szInitial = AM::szInitial();
-    m_pCmdTknVec->vTokeniseSen(szInitial);
-    m_pCmdTknVec->vStripSemicolon();
-    m_pCmdTknVec->vIntegrityCheck();
+    m_pInpTknVec->vTokeniseSen(szInitial);
+    m_pInpTknVec->vStripSemicolon();
+    m_pInpTknVec->vIntegrityCheck();
     return true;
   }
   
@@ -959,9 +810,9 @@ bool SePrompt::bReadNextCommand(void)
     m_bOneRun = true;
     
     s4K szCommand = AM::szCommand();
-    m_pCmdTknVec->vTokeniseSen(szCommand);
-    m_pCmdTknVec->vStripSemicolon();
-    m_pCmdTknVec->vIntegrityCheck();
+    m_pInpTknVec->vTokeniseSen(szCommand);
+    m_pInpTknVec->vStripSemicolon();
+    m_pInpTknVec->vIntegrityCheck();
     return true;
   }
   
@@ -969,28 +820,29 @@ bool SePrompt::bReadNextCommand(void)
   // special case: a previous command has requested to prompt to do something
   
   if (* this->szToDo()->azChar()) {
-    m_pCmdTknVec->vTokeniseSen(this->szToDo());
-    m_pCmdTknVec->vStripSemicolon();
+    m_pInpTknVec->vTokeniseSen(this->szToDo());
+    m_pInpTknVec->vStripSemicolon();
 
     vToDo(""_Stz);
-    m_pCmdTknVec->vIntegrityCheck();
+    m_pInpTknVec->vIntegrityCheck();
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // special case:
   
-  if (m_bOneCommand && pInputGet()->bIsStdin()) {
-    m_pCmdTknVec->vIntegrityCheck();
+  if (m_bOneCommand && m_pInput->bIsStdin()) {
+    m_pInpTknVec->vIntegrityCheck();
+    m_bContinue = false;
     return false;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // general case
   
-  pInputGet()->vReadCommand();
-  m_pCmdTknVec->vIntegrityCheck();
-
+  m_pInput->vReadCommand();
+  m_pInpTknVec->vIntegrityCheck();
+  
   return true;
 }
 
@@ -1001,16 +853,16 @@ bool SePrompt::bRedirectFromFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Stz* szPath = m_pCmdTknVec->pGet(0)->szChars();
+  Stz* szPath = m_pInpTknVec->pGet(0)->szChars();
 
   if (! File::bExists(szPath, false))
     return false;
       
-  pInputGet()->vPushCharser();
-  bool b = pInputGet()->bUseFile(szPath);
+  m_pInput->vPushCharser();
+  bool b = m_pInput->bUseFile(szPath);
   UNUSED(b);
   
-  pInputGet()->vUseBegin();
+  m_pInput->vUseBegin();
 
   return true;
 }
@@ -1022,9 +874,9 @@ void SePrompt::vResetExtractedTagSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pCmdTagSet->vReset();
-  m_pCmdTagSet->vInsert(C_TAG_BYPROMPT,1);
-  m_pCmdTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  m_pInpTagSet->vReset();
+  m_pInpTagSet->vInsert(C_TAG_BYPROMPT,1);
+  m_pInpTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1118,7 +970,7 @@ void SePrompt::vSection(Stz* szSection)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  pInputGet()->vSection(szSection);
+  m_pInput->vSection(szSection);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1138,7 +990,7 @@ bool SePrompt::bShortCut(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn = m_pCmdTknVec->pGet(0);
+  Token* pTkn = m_pInpTknVec->pGet(0);
   
   i8 nShortCuts = m_oShortCutVec.nItems();
   for (i8 i_ShortCut = 0; i_ShortCut < nShortCuts; i_ShortCut++) {
@@ -1156,16 +1008,74 @@ bool SePrompt::bShortCut(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with trackingMemory command)                  */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* SePrompt::pSnapshotAtTrackingMemory(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSnapshotAtTrackingMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with memoryLeaks command)                     */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* SePrompt::pSnapshotAtMemoryLeaks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSnapshotAtMemoryLeaks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with snapshotObjects command)                 */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* SePrompt::pSnapshotObjects(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSnapshotObjects;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object snapshot (for use with snapshotObjects command)                 */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vSnapshotObjects(ObjectSnapshot* pSnapshotObjects)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pSnapshotObjects = pSnapshotObjects;
+}
+
+/*----------------------------------------------------------------------------*/
 /* are we currently reading from stdin?                                       */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bStdIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (pInputGet()->bIsStdin())
+  if (m_pInput->bIsStdin())
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the tag command ?                                                       */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bTagCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Token* pTkn0 = pTkn(0);
+  
+  if (! pTkn0->bSame("tag"_Stz))
+    return false;
+  
+  bool b = bPromptFunction();
+  UNUSED(b);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1179,44 +1089,13 @@ Timer* SePrompt::pTimer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the user/session tag set                                               */
-/*----------------------------------------------------------------------------*/
-TagSet* SePrompt::pUsrTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return &m_oUsrTagSet;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get token vector                                                           */
-/*----------------------------------------------------------------------------*/
-TokenVec* SePrompt::pInpTknVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pCmdTknVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get input                                                                  */
-/*----------------------------------------------------------------------------*/
-Input* SePrompt::pInputGet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pCurrentDeputy->pInput();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get token from token vector                                                */
 /*----------------------------------------------------------------------------*/
 Token* SePrompt::pTkn(i8 i_Token)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn = m_pCmdTknVec->pGet(i_Token,true);
+  Token* pTkn = m_pInpTknVec->pGet(i_Token,true);
   
   return pTkn;
 }
@@ -1282,56 +1161,13 @@ bool SePrompt::bTranslateProcedure(void)
   sSTMT sPipelineSmt;
   
   if (! Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
-                                        m_pCmdTknVec))
+                                        m_pInpTknVec))
     return false;
     
-  m_pCmdTknVec->vSoftReset();
-  m_pCmdTknVec->vTokeniseSen(sPipelineSmt);
+  m_pInpTknVec->vSoftReset();
+  m_pInpTknVec->vTokeniseSen(sPipelineSmt);
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get object snapshot (for use with trackingMemory command)                  */
-/*----------------------------------------------------------------------------*/
-ObjectSnapshot* SePrompt::pSnapshotAtTrackingMemory(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pSnapshotAtTrackingMemory;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get object snapshot (for use with memoryLeaks command)                     */
-/*----------------------------------------------------------------------------*/
-ObjectSnapshot* SePrompt::pSnapshotAtMemoryLeaks(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pSnapshotAtMemoryLeaks;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get object snapshot (for use with snapshotObjects command)                 */
-/*----------------------------------------------------------------------------*/
-ObjectSnapshot* SePrompt::pSnapshotObjects(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pSnapshotObjects;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set object snapshot (for use with snapshotObjects command)                 */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vSnapshotObjects(ObjectSnapshot* pSnapshotObjects)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_pSnapshotObjects = pSnapshotObjects;
 }
 
 /*============================================================================*/

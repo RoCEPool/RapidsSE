@@ -20,12 +20,12 @@
 
 #include "CmdLineArgs.hpp"
 
-extern CmdLineArgs          gxCmdLineArgs;
 
 extern AttachMap*    gpAttachMap;
+extern Stz*          gsBuildGitHash;
+extern CmdLineArgs   gxCmdLineArgs;
 extern PromptCatalog gxPromptCatalog;
 
-extern Stz* gsBuildGitHash;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -50,9 +50,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_i_Deputy  = i_Deputy;
   m_pSePrompt = pSePrompt;
   
-  m_pThread   = AM::THREAD::pNewThread();
-
-  m_pInput = new Input(nullptr);
+  m_pThread = AM::THREAD::pNewThread();
+  m_pInput  = new Input(nullptr);
 
   m_bAvailable    = false;
   m_bContinue     = true;
@@ -60,7 +59,8 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_bSystemCloser = false;
 
   m_pRootJob = nullptr;
-  m_pJob = nullptr;
+  m_pJob     = nullptr;
+  m_eError   = EC_NONE;
 
   _checkInitialised_(CN_SEDEPUTY);
   
@@ -130,15 +130,28 @@ void SeDeputy::vDeputyLoop(void)
   
     if (! m_bContinue)
       break;
+        
+    TokenVec* pInpTknVec = m_pInput->pInpTknVec();
+    TagSet* pInpTagSet   = m_pInput->pInpTagSet();
     
-    RASSERT(m_pJob);
-    
-    m_pJob->vFolderPath(m_sFolderPath);
-    m_pJob->vLastJobId(m_tLastJobId);
-    m_pJob->vSystemCloser(m_bSystemCloser);
+    pInpTagSet->vReplace(C_TAG_WAIT,1);
+    pInpTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
+    pInpTagSet->vReplace(C_TAG_LASTJOBID,m_tLastJobId.iAsI8());
+    pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_bSystemCloser);
 
-    m_pJob->vStmtListCreate();
-    vExecuteJob();
+    JobId tChildJobId;
+    
+    m_eError = Api::eForkJob(tChildJobId,m_pRootJob,
+                             pInpTknVec,pInpTagSet,
+                             m_pJob // TO BE REMOVED
+                             );
+    
+    if (EC_NONE != m_eError) {
+      m_pSePrompt->pMutex()->vLock(m_pSePrompt);
+      m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
+      m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
+      continue;
+    }
     
     ApiHelper::vPrintResults(m_pJob);
     
@@ -152,63 +165,22 @@ void SeDeputy::vDeputyLoop(void)
       m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
     }
     
+    // NEEDS CORRECTION
     m_sFolderPath   = m_pJob->szFolderPath();
     m_tLastJobId    = m_pJob->tLastJobId();
     m_bSystemCloser = m_pJob->bSystemCloser();
+    
 
-    vRepeableJob();
+    Api::vReapableJob(m_pJob);
   }
   
   m_bTerminated = true;
 }
 
-/*----------------------------------------------------------------------------*/
-/* execute job in SE                                                          */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vExecuteJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-        
-  TagSet* pCmdTagSet = this->pCmdTagSet();
-
-  ApiHelper::vExecuteJob(m_pJob,pCmdTagSet);
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete completed job                                                       */
-/*----------------------------------------------------------------------------*/
-void SeDeputy::vRepeableJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  ApiHelper::vReapableJob(m_pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* prepare job                                                                */
-/*----------------------------------------------------------------------------*/
-eEC SeDeputy::ePrepareJob(Stz* szCmd,TokenVec* pCmdTknVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  TagSet* pCmdTagSet = this->pCmdTagSet();
-  
-  pCmdTagSet->vDumpSet();
-  vTrace("FolderPath: %s\n"_Stz,m_sFolderPath.szStz());
-  pCmdTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
-  
-  s48K sCmdTagStr;
-  pCmdTagSet->vToString(sCmdTagStr);
-
-  eEC eError = ApiHelper::ePrepareJob(m_pJob,szCmd,sCmdTagStr,pCmdTknVec,pCmdTagSet);
-  
-  return eError;
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /* is this deputy available to execute jobs?                                  */
@@ -218,16 +190,6 @@ bool SeDeputy::bAvailable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
   return m_bAvailable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get cmd tag set                                                            */
-/*----------------------------------------------------------------------------*/
-TagSet* SeDeputy::pCmdTagSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return & m_oCmdTagSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,13 +206,23 @@ void SeDeputy::vDeputiseJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get job                                                                    */
+/* get last error                                                             */
 /*----------------------------------------------------------------------------*/
-Job* SeDeputy::pJob(void)
+eEC SeDeputy::eError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return m_pJob;
+
+  return m_eError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set last error                                                             */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vError(eEC eError)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+
+  m_eError = eError;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -327,7 +299,6 @@ void SeDeputy::vReportTime(void)
   oTimer.vSet(m_pJob->iResponseTimerStart(),
               m_pJob->iTscEnded());
   vTrace("Ended    %lldus\n"_Stz,oTimer.iMicroseconds());
-
 }
 
 /*----------------------------------------------------------------------------*/

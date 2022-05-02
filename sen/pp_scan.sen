@@ -34,7 +34,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gridSanity
@@ -55,7 +55,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -78,7 +78,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // select table
@@ -100,7 +100,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tableScan
@@ -122,7 +122,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // truncate
@@ -145,7 +145,7 @@
 
   end ;
   "
-  api::addProcedure
+  procedure::add
 ;
 
 
