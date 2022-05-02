@@ -247,6 +247,9 @@ Job* Api::pNewGenericJob(Stz* szJobNm, JobId tParentId)
   Stz* szJobNm_tag = pCmdTagSet->szValue(C_TAG_JOBNM);
   RASSERT(szJobNm_tag && szJobNm_tag->bSame(szJobNm));
 
+  TagSet* pJobTagSet = pJobGeneric->pJobTags();
+  pJobTagSet->vCopy(pCmdTagSet);
+
   delete pCmdTknVec;
   delete pCmdTagSet;
   return pJobGeneric;

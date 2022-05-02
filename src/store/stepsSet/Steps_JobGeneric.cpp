@@ -48,11 +48,11 @@ void Step::vJob_BegunNew(void)
   
   TagSet* pJobBegunTags = pJobBegun->pJobTags();
   
-  Word* pwCmdBegunTags = AM::WORD::pFind("begun_cmdTags"_Stz);
-  TagSet* pCmdBegunTags = pwCmdBegunTags->pWrdTagSet();
-  pJobBegunTags->vCopy(pCmdBegunTags);
+  //Word* pwCmdBegunTags = AM::WORD::pFind("begun_cmdTags"_Stz);
+  //TagSet* pCmdBegunTags = pwCmdBegunTags->pWrdTagSet();
+  //pJobBegunTags->vCopy(pCmdBegunTags);
   
-  pJobBegunTags->vInsert(C_TAG_JOBNM,"begun"_Stz);
+  //pJobBegunTags->vInsert(C_TAG_JOBNM,"begun"_Stz);
   pJobBegunTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
   pJobBegunTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
@@ -86,13 +86,13 @@ void Step::vJob_CancelNew(void)
 
   TagSet* pJobCancelTags = pJobCancel->pJobTags();
 
-  Word* pwCmdCancelTags = AM::WORD::pFind("cancel_cmdTags"_Stz);
-  TagSet* pCmdCancelTags = pwCmdCancelTags->pWrdTagSet();
-  pJobCancelTags->vCopy(pCmdCancelTags);
+  //Word* pwCmdCancelTags = AM::WORD::pFind("cancel_cmdTags"_Stz);
+  //TagSet* pCmdCancelTags = pwCmdCancelTags->pWrdTagSet();
+  //pJobCancelTags->vCopy(pCmdCancelTags);
 
-  pJobCancel->pJobTags()->vInsert(C_TAG_JOBNM,"cancel"_Stz);
-  pJobCancel->pJobTags()->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobCancel->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobCancel->pJobTags()->vInsert(C_TAG_JOBNM,"cancel"_Stz);
+  pJobCancelTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
+  pJobCancelTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobCancel->pJobTags()->vInsert(C_TAG_FLOW,1);
@@ -125,15 +125,15 @@ void Step::vJob_CancelledNew(void)
   
   TagSet* pJobCancelledTags = pJobCancelled->pJobTags();
 
-  Word* pwCmdCancelledTags = AM::WORD::pFind("cancelled_cmdTags"_Stz);
-  TagSet* pCmdCancelledTags = pwCmdCancelledTags->pWrdTagSet();
-  pJobCancelledTags->vCopy(pCmdCancelledTags);
+  //Word* pwCmdCancelledTags = AM::WORD::pFind("cancelled_cmdTags"_Stz);
+  //TagSet* pCmdCancelledTags = pwCmdCancelledTags->pWrdTagSet();
+  //pJobCancelledTags->vCopy(pCmdCancelledTags);
 
 
   
-  pJobCancelled->pJobTags()->vInsert(C_TAG_JOBNM,"cancelled"_Stz);
-  pJobCancelled->pJobTags()->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobCancelled->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobCancelled->pJobTags()->vInsert(C_TAG_JOBNM,"cancelled"_Stz);
+  pJobCancelledTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
+  pJobCancelledTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobCancelled->pJobTags()->vInsert(C_TAG_FLOW,1);
@@ -165,14 +165,14 @@ void Step::vJob_EndNew(void)
     
   TagSet* pJobEndTags = pJobEnd->pJobTags();
 
-  Word* pwCmdEndTags = AM::WORD::pFind("end_cmdTags"_Stz);
-  TagSet* pCmdEndTags = pwCmdEndTags->pWrdTagSet();
-  pJobEndTags->vCopy(pCmdEndTags);
+  //Word* pwCmdEndTags = AM::WORD::pFind("end_cmdTags"_Stz);
+  //TagSet* pCmdEndTags = pwCmdEndTags->pWrdTagSet();
+  //pJobEndTags->vCopy(pCmdEndTags);
 
 
-  pJobEnd->pJobTags()->vInsert(C_TAG_JOBNM,"end"_Stz);
-  pJobEnd->pJobTags()->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobEnd->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobEnd->pJobTags()->vInsert(C_TAG_JOBNM,"end"_Stz);
+  pJobEndTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
+  pJobEndTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobEnd->pJobTags()->vInsert(C_TAG_FLOW,1);
@@ -204,14 +204,14 @@ void Step::vJob_EndedNew(void)
   
   TagSet* pJobEndedTags = pJobEnded->pJobTags();
 
-  Word* pwCmdEndedTags = AM::WORD::pFind("ended_cmdTags"_Stz);
-  TagSet* pCmdEndedTags = pwCmdEndedTags->pWrdTagSet();
-  pJobEndedTags->vCopy(pCmdEndedTags);
+  //Word* pwCmdEndedTags = AM::WORD::pFind("ended_cmdTags"_Stz);
+  //TagSet* pCmdEndedTags = pwCmdEndedTags->pWrdTagSet();
+  //pJobEndedTags->vCopy(pCmdEndedTags);
 
 
-  pJobEnded->pJobTags()->vInsert(C_TAG_JOBNM,"ended"_Stz);
-  pJobEnded->pJobTags()->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobEnded->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobEnded->pJobTags()->vInsert(C_TAG_JOBNM,"ended"_Stz);
+  pJobEndedTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
+  pJobEndedTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobEnded->pJobTags()->vInsert(C_TAG_FLOW,1);
@@ -244,14 +244,14 @@ void Step::vJob_ExecuteNew(void)
   
   TagSet* pJobExecuteTags = pJobExecute->pJobTags();
 
-  Word* pwCmdExecuteTags = AM::WORD::pFind("execute_cmdTags"_Stz);
-  TagSet* pCmdExecuteTags = pwCmdExecuteTags->pWrdTagSet();
-  pJobExecuteTags->vCopy(pCmdExecuteTags);
+  //Word* pwCmdExecuteTags = AM::WORD::pFind("execute_cmdTags"_Stz);
+  //TagSet* pCmdExecuteTags = pwCmdExecuteTags->pWrdTagSet();
+  //pJobExecuteTags->vCopy(pCmdExecuteTags);
 
 
-  pJobExecute->pJobTags()->vInsert(C_TAG_JOBNM,"execute"_Stz);
-  pJobExecute->pJobTags()->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobExecute->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobExecute->pJobTags()->vInsert(C_TAG_JOBNM,"execute"_Stz);
+  pJobExecuteTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
+  pJobExecuteTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobExecute->pJobTags()->vInsert(C_TAG_FLOW,1);
@@ -283,14 +283,14 @@ void Step::vJob_ExecutedNew(void)
   
   TagSet* pJobExecutedTags = pJobExecuted->pJobTags();
 
-  Word* pwCmdExecutedTags = AM::WORD::pFind("executed_cmdTags"_Stz);
-  TagSet* pCmdExecutedTags = pwCmdExecutedTags->pWrdTagSet();
-  pJobExecutedTags->vCopy(pCmdExecutedTags);
+  //Word* pwCmdExecutedTags = AM::WORD::pFind("executed_cmdTags"_Stz);
+  //TagSet* pCmdExecutedTags = pwCmdExecutedTags->pWrdTagSet();
+  //pJobExecutedTags->vCopy(pCmdExecutedTags);
 
 
-  pJobExecuted->pJobTags()->vInsert(C_TAG_JOBNM,"executed"_Stz);
-  pJobExecuted->pJobTags()->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobExecuted->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobExecuted->pJobTags()->vInsert(C_TAG_JOBNM,"executed"_Stz);
+  pJobExecutedTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
+  pJobExecutedTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
   
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobExecuted->pJobTags()->vInsert(C_TAG_FLOW,1);
