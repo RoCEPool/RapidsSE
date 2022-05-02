@@ -119,7 +119,7 @@
   then
 
   // spawn page out demon
-  //"" pageOutDemonPipeline api::spawnDemon not if
+  //"" pageOutDemonPipeline api::forkChild_noWait not if
   //  "Error Code %v" .printf
   //then
 
