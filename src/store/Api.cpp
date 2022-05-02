@@ -235,6 +235,20 @@ Job* Api::pNewGenericJob(Stz* szJobNm, JobId tParentId)
   pJobGeneric->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobGeneric->vJobKind(JK_GENERIC);
 
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szJobNm);
+  TagSet*   pCmdTagSet = new TagSet;
+
+  if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {
+    delete pCmdTknVec;
+    delete pCmdTagSet;
+    return nullptr;
+  }
+
+  Stz* szJobNm_tag = pCmdTagSet->szValue(C_TAG_JOBNM);
+  RASSERT(szJobNm_tag && szJobNm_tag->bSame(szJobNm));
+
+  delete pCmdTknVec;
+  delete pCmdTagSet;
   return pJobGeneric;
 }
 
