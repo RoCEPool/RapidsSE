@@ -46,7 +46,7 @@ void Step::vJob_BegunNew(void)
   //pJobBegun->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   //pJobBegun->vJobKind(JK_GENERIC);
   
-  TagSet* pJobBegunTags = pJobBegun->pJobTags();
+  //TagSet* pJobBegunTags = pJobBegun->pJobTags();
   
   //Word* pwCmdBegunTags = AM::WORD::pFind("begun_cmdTags"_Stz);
   //TagSet* pCmdBegunTags = pwCmdBegunTags->pWrdTagSet();
@@ -54,11 +54,14 @@ void Step::vJob_BegunNew(void)
   
   //pJobBegunTags->vInsert(C_TAG_JOBNM,"begun"_Stz);
   //pJobBegunTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobBegunTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobBegunTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobBegun->pJobTags()->vInsert(C_TAG_FLOW,1);
 
+  TagSet* pJobTagSet = pJobBegun->pJobTags();
+  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("begun:begun"_Stz));
+  
   pJobBegun->vEntryPoint("begun:begun"_Stz);
   
   m_pDataStack->vPushPtr(pJobBegun);
@@ -84,7 +87,7 @@ void Step::vJob_CancelNew(void)
   //pJobCancel->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   //pJobCancel->vJobKind(JK_GENERIC);
 
-  TagSet* pJobCancelTags = pJobCancel->pJobTags();
+  //TagSet* pJobCancelTags = pJobCancel->pJobTags();
 
   //Word* pwCmdCancelTags = AM::WORD::pFind("cancel_cmdTags"_Stz);
   //TagSet* pCmdCancelTags = pwCmdCancelTags->pWrdTagSet();
@@ -92,11 +95,14 @@ void Step::vJob_CancelNew(void)
 
   //pJobCancel->pJobTags()->vInsert(C_TAG_JOBNM,"cancel"_Stz);
   //pJobCancelTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobCancelTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobCancelTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobCancel->pJobTags()->vInsert(C_TAG_FLOW,1);
     
+  TagSet* pJobTagSet = pJobCancel->pJobTags();
+  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("cancel:cancel"_Stz));
+  
   pJobCancel->vEntryPoint("cancel:cancel"_Stz);
   
   m_pDataStack->vPushPtr(pJobCancel);
@@ -123,7 +129,7 @@ void Step::vJob_CancelledNew(void)
   //pJobCancelled->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   //pJobCancelled->vJobKind(JK_GENERIC);
   
-  TagSet* pJobCancelledTags = pJobCancelled->pJobTags();
+  //TagSet* pJobCancelledTags = pJobCancelled->pJobTags();
 
   //Word* pwCmdCancelledTags = AM::WORD::pFind("cancelled_cmdTags"_Stz);
   //TagSet* pCmdCancelledTags = pwCmdCancelledTags->pWrdTagSet();
@@ -133,10 +139,13 @@ void Step::vJob_CancelledNew(void)
   
   //pJobCancelled->pJobTags()->vInsert(C_TAG_JOBNM,"cancelled"_Stz);
   //pJobCancelledTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobCancelledTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobCancelledTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobCancelled->pJobTags()->vInsert(C_TAG_FLOW,1);
+  
+  TagSet* pJobTagSet = pJobCancelled->pJobTags();
+  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("cancelled:cancelled"_Stz));
   
   pJobCancelled->vEntryPoint("cancelled:cancelled"_Stz);
   
@@ -163,7 +172,7 @@ void Step::vJob_EndNew(void)
   //pJobEnd->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   //pJobEnd->vJobKind(JK_GENERIC);
     
-  TagSet* pJobEndTags = pJobEnd->pJobTags();
+  //TagSet* pJobEndTags = pJobEnd->pJobTags();
 
   //Word* pwCmdEndTags = AM::WORD::pFind("end_cmdTags"_Stz);
   //TagSet* pCmdEndTags = pwCmdEndTags->pWrdTagSet();
@@ -172,10 +181,13 @@ void Step::vJob_EndNew(void)
 
   //pJobEnd->pJobTags()->vInsert(C_TAG_JOBNM,"end"_Stz);
   //pJobEndTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobEndTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobEndTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobEnd->pJobTags()->vInsert(C_TAG_FLOW,1);
+  
+  TagSet* pJobTagSet = pJobEnd->pJobTags();
+  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("end:end"_Stz));
   
   pJobEnd->vEntryPoint("end:end"_Stz);
   
@@ -202,7 +214,7 @@ void Step::vJob_EndedNew(void)
   //pJobEnded->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   //pJobEnded->vJobKind(JK_GENERIC);
   
-  TagSet* pJobEndedTags = pJobEnded->pJobTags();
+  //TagSet* pJobEndedTags = pJobEnded->pJobTags();
 
   //Word* pwCmdEndedTags = AM::WORD::pFind("ended_cmdTags"_Stz);
   //TagSet* pCmdEndedTags = pwCmdEndedTags->pWrdTagSet();
@@ -211,11 +223,14 @@ void Step::vJob_EndedNew(void)
 
   //pJobEnded->pJobTags()->vInsert(C_TAG_JOBNM,"ended"_Stz);
   //pJobEndedTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobEndedTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobEndedTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobEnded->pJobTags()->vInsert(C_TAG_FLOW,1);
     
+  TagSet* pJobTagSet = pJobEnded->pJobTags();
+  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("ended:ended"_Stz));
+  
   pJobEnded->vEntryPoint("ended:ended"_Stz);
   
   m_pDataStack->vPushPtr(pJobEnded);
@@ -242,7 +257,6 @@ void Step::vJob_ExecuteNew(void)
   //pJobExecute->vJobKind(JK_GENERIC);
   
   
-  TagSet* pJobExecuteTags = pJobExecute->pJobTags();
 
   //Word* pwCmdExecuteTags = AM::WORD::pFind("execute_cmdTags"_Stz);
   //TagSet* pCmdExecuteTags = pwCmdExecuteTags->pWrdTagSet();
@@ -251,11 +265,14 @@ void Step::vJob_ExecuteNew(void)
 
   //pJobExecute->pJobTags()->vInsert(C_TAG_JOBNM,"execute"_Stz);
   //pJobExecuteTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobExecuteTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobExecuteTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobExecute->pJobTags()->vInsert(C_TAG_FLOW,1);
   
+  TagSet* pJobTagSet = pJobExecute->pJobTags();
+  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("execute:execute"_Stz));
+
   pJobExecute->vEntryPoint("execute:execute"_Stz);
   
   m_pDataStack->vPushPtr(pJobExecute);
@@ -281,7 +298,7 @@ void Step::vJob_ExecutedNew(void)
   //pJobExecuted->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   //pJobExecuted->vJobKind(JK_GENERIC);
   
-  TagSet* pJobExecutedTags = pJobExecuted->pJobTags();
+  //TagSet* pJobExecutedTags = pJobExecuted->pJobTags();
 
   //Word* pwCmdExecutedTags = AM::WORD::pFind("executed_cmdTags"_Stz);
   //TagSet* pCmdExecutedTags = pwCmdExecutedTags->pWrdTagSet();
@@ -290,10 +307,13 @@ void Step::vJob_ExecutedNew(void)
 
   //pJobExecuted->pJobTags()->vInsert(C_TAG_JOBNM,"executed"_Stz);
   //pJobExecutedTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
-  pJobExecutedTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
+  //pJobExecutedTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
   
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobExecuted->pJobTags()->vInsert(C_TAG_FLOW,1);
+  
+  TagSet* pJobTagSet = pJobExecuted->pJobTags();
+  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("executed:executed"_Stz));
   
   pJobExecuted->vEntryPoint("executed:executed"_Stz);
   

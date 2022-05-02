@@ -876,7 +876,6 @@ void SePrompt::vResetExtractedTagSet(void)
   
   m_pInpTagSet->vReset();
   m_pInpTagSet->vInsert(C_TAG_BYPROMPT,1);
-  m_pInpTagSet->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 }
 
 /*----------------------------------------------------------------------------*/
