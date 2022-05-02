@@ -12,6 +12,8 @@
 #include "Job.hpp"
 #include "TagConstants.h"
 
+#include "Api.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -39,7 +41,7 @@ void Step::vJob_BegunNew(void)
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobBegun = new Job("begun"_Stz,tDistJobId);
+  Job* pJobBegun = Api::pNewGenericJob("begun"_Stz,tDistJobId);
 
   pJobBegun->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobBegun->vJobKind(JK_GENERIC);
@@ -77,7 +79,7 @@ void Step::vJob_CancelNew(void)
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobCancel = new Job("cancel"_Stz,tDistJobId);
+  Job* pJobCancel = Api::pNewGenericJob("cancel"_Stz,tDistJobId);
 
   pJobCancel->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobCancel->vJobKind(JK_GENERIC);
@@ -115,7 +117,7 @@ void Step::vJob_CancelledNew(void)
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobCancelled = new Job("cancelled"_Stz,tDistJobId);
+  Job* pJobCancelled = Api::pNewGenericJob("cancelled"_Stz,tDistJobId);
 
 
   pJobCancelled->vParticipantNodeId(AM::pGrid()->iThisNodeId());
@@ -156,7 +158,7 @@ void Step::vJob_EndNew(void)
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobEnd = new Job("end"_Stz,tDistJobId);
+  Job* pJobEnd = Api::pNewGenericJob("end"_Stz,tDistJobId);
 
   pJobEnd->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobEnd->vJobKind(JK_GENERIC);
@@ -195,7 +197,7 @@ void Step::vJob_EndedNew(void)
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobEnded = new Job("ended"_Stz,tDistJobId);
+  Job* pJobEnded = Api::pNewGenericJob("ended"_Stz,tDistJobId);
 
   pJobEnded->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobEnded->vJobKind(JK_GENERIC);
@@ -234,7 +236,7 @@ void Step::vJob_ExecuteNew(void)
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobExecute = new Job("execute"_Stz,tDistJobId);
+  Job* pJobExecute = Api::pNewGenericJob("execute"_Stz,tDistJobId);
 
   pJobExecute->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobExecute->vJobKind(JK_GENERIC);
@@ -274,7 +276,7 @@ void Step::vJob_ExecutedNew(void)
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobExecuted = new Job("executed"_Stz,tDistJobId);
+  Job* pJobExecuted = Api::pNewGenericJob("executed"_Stz,tDistJobId);
 
   pJobExecuted->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobExecuted->vJobKind(JK_GENERIC);

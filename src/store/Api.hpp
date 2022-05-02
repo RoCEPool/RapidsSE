@@ -20,7 +20,8 @@ namespace STORE
                        TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                        Job*& rpChildJob_tbr);
 
-  
+  static Job* pNewGenericJob(Stz* szJobNm, JobId tParentId);
+
   static void vReapableJob(Job*& rpJob);
   static void vReapAllJobs(bool bForce = false);
   static void vReapJobsOnce(bool bForce = false);
