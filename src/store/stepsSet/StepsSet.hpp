@@ -1313,6 +1313,9 @@ public:
   void vPagingMetricsDelete(void);
   void vPagingMetricsUpdate(void);
 
+  // page out
+  void vPageOutTestPrint(void);
+
   // path identifier
   void vPathIdentifierChoosePaths(void);
   void vPathIdentifierChosenPath(void);

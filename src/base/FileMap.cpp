@@ -51,10 +51,10 @@ FileMap::FileMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP);
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
 
-    vTrace("Created file map %p: sizeof(FileMap)=%lldB, pathToPageFile: %s\n"_Stz,
-           this,
-           sizeof(FileMap),
-           m_szFilePath);
+//    vTrace("Created file map %p: sizeof(FileMap)=%lldB, pathToPageFile: %s\n"_Stz,
+//           this,
+//           sizeof(FileMap),
+//           m_szFilePath);
 
   vInitialise();
 

@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* OP_pageOut.sen -- Page Out Operator                                        */
+/*============================================================================*/
+
+" OP_pageOut.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* put the pageout periodic activity here                                     */
+/*----------------------------------------------------------------------------*/
+: pageout::activity
+
+  //"Page Out Activity" .
+
+  // update node status based on heartbeat related info
+  PageOut::testPrint
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: pageout_StartMarker \handler
+
+  "Page Out Demon Started" .boot
+
+  begin
+
+    pageout::activity
+    60 thread::sleepSsec
+
+  again
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for pageout req                            (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: pageout_op \operator
+
+  _lu_initialise_
+
+  "<testTag>" [job].tagSet@ tagSet.hasName if
+      <testTag> .
+  then
+
+  op__topology
+
+  find: pageout_StartMarker ZK_M_START [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: pageout :: pageout ;
+
+: pageout_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <dedicatedThd> = 1
+    <opEntry> = "pageout_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

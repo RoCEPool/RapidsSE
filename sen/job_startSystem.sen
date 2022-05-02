@@ -118,6 +118,11 @@
     "Error Code %v" .printf
   then
 
+  // spawn page out demon
+  //"" pageOutDemonPipeline api::forkChild_noWait not if
+  //  "Error Code %v" .printf
+  //then
+
   // spawn reaper demon
   "" reaperDemonPipeline api::forkChild_noWait not if
     "Error Code %v" .printf
