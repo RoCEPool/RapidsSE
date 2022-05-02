@@ -178,7 +178,7 @@
 
     [job].tscExecuting
 
-    [job] job_Execute::new to pJob_Execute
+    [job].id@ job_Execute::new to pJob_Execute
 
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
@@ -203,7 +203,7 @@
     
     [job].tscEnding
     
-    [job] job_End::new to pJob_End
+    [job].id@ job_End::new to pJob_End
 
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!

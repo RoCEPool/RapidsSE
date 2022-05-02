@@ -88,7 +88,8 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
   RASSERT(szJobNm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // verify tags
+  // verify minimum needed tags
+  
   if (! pCmdTagSet->bHasName(C_TAG_ENTRYPOINT)) {
     pCmdTagSet->vDumpSet();
     THROW("Api::eForkJob: no C_TAG_ENTRYPOINT"_Stz);
