@@ -348,7 +348,7 @@
 
   //[job] begun:reply
   
-  [job] job_Begun::new locals| pJob_Begun |
+  [job].id@ job_Begun::new locals| pJob_Begun |
 
   // send the begun job
   [job] [job].originNodeId@ pJob_Begun job.reply
@@ -432,7 +432,7 @@
   //[job] executed:reply
   
   // new a temporary Job_Executed
-  [job] job_Executed::new locals| pJob_Executed |
+  [job].id@ job_Executed::new locals| pJob_Executed |
 
   // send the executed job
   [job] [job].originNodeId@ pJob_Executed job.reply
@@ -466,7 +466,21 @@
   JP_ENDED [job].phase!                // this job has ended
   [job].removeParticipant
 
-  [job] ended:reply                    // reply ended to originator
+  //[job] ended:reply                    // reply ended to originator
+
+  // new a temporary Job_Ended
+  [job].id@ job_Ended::new locals| pJob_Ended |
+
+  // send the ended job
+  [job] [job].originNodeId@ pJob_Ended job.reply
+
+  pJob_Ended job.delete
+
+
+
+
+
+
 
   JS_DELETABLE [job].state!            // job retires
   [job].addRetired
@@ -496,7 +510,14 @@
 
   [job].removeParticipant
 
-  [job] cancelled:reply
+  //[job] cancelled:reply
+  // new a temporary Job_Cancelled
+  [job].id@ job_Cancelled::new locals| pJob_Cancelled |
+
+  // send the cancelled job
+  [job] [job].originNodeId@ pJob_Cancelled job.reply
+
+  pJob_Cancelled job.delete
 
   JS_DELETABLE [job].state!
   [job].addRetired

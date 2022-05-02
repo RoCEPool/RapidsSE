@@ -5,40 +5,6 @@
 " job_cancelled.sen" .verbose
 
 
-/*----------------------------------------------------------------------------*/
-/* retire                                                                     */
-/*----------------------------------------------------------------------------*/
-: cancelled::retire
-
-  [ddlLock].testDrop
-  
-  [task].grabLock
-    [job] [exitDemon]:queueJob
-    TR_RETIRE_THIS_TASK [task].transition!
-
-  HAZARD
-;
-
-////////////////////////////////////////////////////////////////////////////////
-//                            on participating node                           //
-////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* send Job_Cancelled back to originating node                                */
-/*----------------------------------------------------------------------------*/
-: cancelled:reply params| pJobParticipant |
-
-  // "cancelled:reply" .
-  
-  // new a temporary Job_Cancelled
-  pJobParticipant job_Cancelled::new locals| pJob_Cancelled |
-
-  // send the cancelled job
-  pJobParticipant [job].originNodeId@ pJob_Cancelled job.reply
-
-  pJob_Cancelled job.delete
-;
-
 ////////////////////////////////////////////////////////////////////////////////
 //                            on originating node                             //
 ////////////////////////////////////////////////////////////////////////////////

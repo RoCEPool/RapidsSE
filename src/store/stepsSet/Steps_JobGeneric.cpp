@@ -33,9 +33,14 @@ void Step::vJob_BegunNew(void)
 {
   ENTRY();
   
-  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJobBegun = new Job("begun"_Stz,pDistJob->tJobId());
   
-  Job* pJobBegun = new Job("begun"_Stz,pDistJob->tJobId());
+  i8 iDistJobId = m_pDataStack->iPopInt(__func__);
+  JobId tDistJobId;
+  tDistJobId = iDistJobId;
+  Job* pJobBegun = new Job("begun"_Stz,tDistJobId);
+
   pJobBegun->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobBegun->vJobKind(JK_GENERIC);
   
@@ -46,11 +51,11 @@ void Step::vJob_BegunNew(void)
   pJobBegunTags->vCopy(pCmdBegunTags);
   
   pJobBegunTags->vInsert(C_TAG_JOBNM,"begun"_Stz);
-  pJobBegunTags->vInsert(C_TAG_DISTID,pDistJob->tJobId().iAsI8());
+  pJobBegunTags->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
   pJobBegunTags->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
-  if (pDistJob->bHasTag(C_TAG_FLOW))
-    pJobBegun->pJobTags()->vInsert(C_TAG_FLOW,1);
+  //if (pDistJob->bHasTag(C_TAG_FLOW))
+  //  pJobBegun->pJobTags()->vInsert(C_TAG_FLOW,1);
 
   pJobBegun->vEntryPoint("begun:begun"_Stz);
   
@@ -184,9 +189,14 @@ void Step::vJob_EndedNew(void)
 {
   ENTRY();
   
-  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJobEnded = new Job("ended"_Stz,pDistJob->tJobId());
   
-  Job* pJobEnded = new Job("ended"_Stz,pDistJob->tJobId());
+  i8 iDistJobId = m_pDataStack->iPopInt(__func__);
+  JobId tDistJobId;
+  tDistJobId = iDistJobId;
+  Job* pJobEnded = new Job("ended"_Stz,tDistJobId);
+
   pJobEnded->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobEnded->vJobKind(JK_GENERIC);
   
@@ -198,11 +208,11 @@ void Step::vJob_EndedNew(void)
 
 
   pJobEnded->pJobTags()->vInsert(C_TAG_JOBNM,"ended"_Stz);
-  pJobEnded->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->tJobId().iAsI8());
+  pJobEnded->pJobTags()->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
   pJobEnded->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
 
-  if (pDistJob->bHasTag(C_TAG_FLOW))
-    pJobEnded->pJobTags()->vInsert(C_TAG_FLOW,1);
+  //if (pDistJob->bHasTag(C_TAG_FLOW))
+  //  pJobEnded->pJobTags()->vInsert(C_TAG_FLOW,1);
     
   pJobEnded->vEntryPoint("ended:ended"_Stz);
   
@@ -258,9 +268,14 @@ void Step::vJob_ExecutedNew(void)
 {
   ENTRY();
   
-  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  //Job* pJobExecuted = new Job("executed"_Stz,pDistJob->tJobId());
   
-  Job* pJobExecuted = new Job("executed"_Stz,pDistJob->tJobId());
+  i8 iDistJobId = m_pDataStack->iPopInt(__func__);
+  JobId tDistJobId;
+  tDistJobId = iDistJobId;
+  Job* pJobExecuted = new Job("executed"_Stz,tDistJobId);
+
   pJobExecuted->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobExecuted->vJobKind(JK_GENERIC);
   
@@ -272,11 +287,11 @@ void Step::vJob_ExecutedNew(void)
 
 
   pJobExecuted->pJobTags()->vInsert(C_TAG_JOBNM,"executed"_Stz);
-  pJobExecuted->pJobTags()->vInsert(C_TAG_DISTID,pDistJob->tJobId().iAsI8());
+  pJobExecuted->pJobTags()->vInsert(C_TAG_DISTID,tDistJobId.iAsI8());
   pJobExecuted->pJobTags()->vInsert(C_TAG_ORIGIN,AM::pGrid()->iThisNodeId());
   
-  if (pDistJob->bHasTag(C_TAG_FLOW))
-    pJobExecuted->pJobTags()->vInsert(C_TAG_FLOW,1);
+  //if (pDistJob->bHasTag(C_TAG_FLOW))
+  //  pJobExecuted->pJobTags()->vInsert(C_TAG_FLOW,1);
   
   pJobExecuted->vEntryPoint("executed:executed"_Stz);
   
