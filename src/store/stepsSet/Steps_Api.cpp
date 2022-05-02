@@ -67,10 +67,17 @@ void Step::vApiForkChild_noWait(void)
     if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
       pCmdTagSet->vReplace(C_TAG_LASTJOBID,m_pJob->tJobId().iAsI8());
     }
+    if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
+      pCmdTagSet->vReplace(C_TAG_PATH,
+                           m_pJob->pJobTags()->szValue(C_TAG_PATH));
+    }
   }
   else {
     if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
       pCmdTagSet->vReplace(C_TAG_LASTJOBID,C_UNKNOWN);
+    }
+    if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
+      pCmdTagSet->vReplace(C_TAG_PATH,C_SE_PATH_ROOT);
     }
   }
 
