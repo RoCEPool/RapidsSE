@@ -88,7 +88,28 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
   RASSERT(szJobNm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify tags
+  if (! pCmdTagSet->bHasName(C_TAG_ENTRYPOINT)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: no C_TAG_ENTRYPOINT"_Stz);
+  }
+  if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: no C_TAG_LASTJOBID"_Stz);
+  }
+  /*
+  if (! pCmdTagSet->bHasName(C_TAG_JOBKIND)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: no C_TAG_JOBKIND"_Stz);
+  }
+  if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: no C_TAG_PATH"_Stz);
+  }
+  */
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alloc job
+  
   rpChildJob_tbr = Api::pAllocJob(szJobNm);
   rtChildJobId = rpChildJob_tbr->tJobId();
 

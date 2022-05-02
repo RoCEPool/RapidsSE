@@ -63,6 +63,17 @@ void Step::vApiForkChild_noWait(void)
 
   pCmdTagSet->vReplace(C_TAG_NOWAIT,1);
 
+  if (m_pJob) {
+    if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
+      pCmdTagSet->vReplace(C_TAG_LASTJOBID,m_pJob->tJobId().iAsI8());
+    }
+  }
+  else {
+    if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
+      pCmdTagSet->vReplace(C_TAG_LASTJOBID,C_UNKNOWN);
+    }
+  }
+
   JobId tChildJobId;
   
   Job* pJob = nullptr;
@@ -108,6 +119,38 @@ void Step::vApiForkChild_wait(void)
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
   Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
+  
+  /*
+  if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
+    
+    if (m_pJob) {
+      TagSet* pParentJobTagSet = m_pJob->pJobTags();
+      if (! pParentJobTagSet->bHasName(C_TAG_PATH)) {
+        pCmdTagSet->vDumpSet();
+        pParentJobTagSet->vDumpSet();
+        THROW("Step::vApiForkChild_noWait: no C_TAG_PATH"_Stz);
+      }
+      pCmdTagSet->vReplace(C_TAG_PATH,pParentJobTagSet->szValue(C_TAG_PATH));
+    }
+    else {
+      // this is a standalone op like answerSE                                  FIX!!
+      pCmdTagSet->vReplace(C_TAG_PATH,C_SE_PATH_ROOT);
+    }
+  }
+  */
+  
+  
+  if (m_pJob) {
+    if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
+      pCmdTagSet->vReplace(C_TAG_LASTJOBID,m_pJob->tJobId().iAsI8());
+    }
+  }
+  else {
+    if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
+      pCmdTagSet->vReplace(C_TAG_LASTJOBID,C_UNKNOWN);
+    }
+  }
+  
   pCmdTagSet->vReplace(C_TAG_WAIT,1);
   
   JobId tChildJobId;
