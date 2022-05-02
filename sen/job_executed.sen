@@ -4,25 +4,6 @@
 
 " job_executed.sen" .verbose
 
-////////////////////////////////////////////////////////////////////////////////
-//                            on participating node                           //
-////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* send Job_Executed back to originating node                                 */
-/*----------------------------------------------------------------------------*/
-: executed:reply params| pJobParticipant |
-
-  // "executed:reply" .
-    
-  // new a temporary Job_Executed
-  pJobParticipant job_Executed::new locals| pJob_Executed |
-
-  // send the executed job
-  pJobParticipant [job].originNodeId@ pJob_Executed job.reply
-
-  pJob_Executed job.delete
-;
 
 ////////////////////////////////////////////////////////////////////////////////
 //                            on originating node                             //

@@ -429,8 +429,15 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply executed to originator
   
-  [job] executed:reply
+  //[job] executed:reply
   
+  // new a temporary Job_Executed
+  [job] job_Executed::new locals| pJob_Executed |
+
+  // send the executed job
+  [job] [job].originNodeId@ pJob_Executed job.reply
+
+  pJob_Executed job.delete
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task hibernates (with job in participant list)
