@@ -118,6 +118,11 @@
     "Error Code %v" .printf
   then
 
+  // spawn page out demon
+  //"" pageOutDemonPipeline api::spawnDemon not if
+  //  "Error Code %v" .printf
+  //then
+
   // spawn reaper demon
   "" reaperDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf

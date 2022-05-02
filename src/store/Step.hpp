@@ -133,6 +133,7 @@ namespace STORE
     static void vAddSteps_Optimiser(void);
 
     static void vAddSteps_PagingMetrics(void);
+    static void vAddSteps_PageOut(void);
     static void vAddSteps_Parcel(void);
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
