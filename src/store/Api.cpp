@@ -232,7 +232,9 @@ Job* Api::pNewGenericJob(Stz* szJobNm, JobId tParentId)
   
   Job* pJobGeneric = new Job(szJobNm,tParentId);
   
-  
+  pJobGeneric->vParticipantNodeId(AM::pGrid()->iThisNodeId());
+  pJobGeneric->vJobKind(JK_GENERIC);
+
   return pJobGeneric;
 }
 

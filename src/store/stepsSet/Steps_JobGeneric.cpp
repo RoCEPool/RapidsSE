@@ -43,8 +43,8 @@ void Step::vJob_BegunNew(void)
   tDistJobId = iDistJobId;
   Job* pJobBegun = Api::pNewGenericJob("begun"_Stz,tDistJobId);
 
-  pJobBegun->vParticipantNodeId(AM::pGrid()->iThisNodeId());
-  pJobBegun->vJobKind(JK_GENERIC);
+  //pJobBegun->vParticipantNodeId(AM::pGrid()->iThisNodeId());
+  //pJobBegun->vJobKind(JK_GENERIC);
   
   TagSet* pJobBegunTags = pJobBegun->pJobTags();
   
@@ -81,8 +81,8 @@ void Step::vJob_CancelNew(void)
   tDistJobId = iDistJobId;
   Job* pJobCancel = Api::pNewGenericJob("cancel"_Stz,tDistJobId);
 
-  pJobCancel->vParticipantNodeId(AM::pGrid()->iThisNodeId());
-  pJobCancel->vJobKind(JK_GENERIC);
+  //pJobCancel->vParticipantNodeId(AM::pGrid()->iThisNodeId());
+  //pJobCancel->vJobKind(JK_GENERIC);
 
   TagSet* pJobCancelTags = pJobCancel->pJobTags();
 
@@ -120,8 +120,8 @@ void Step::vJob_CancelledNew(void)
   Job* pJobCancelled = Api::pNewGenericJob("cancelled"_Stz,tDistJobId);
 
 
-  pJobCancelled->vParticipantNodeId(AM::pGrid()->iThisNodeId());
-  pJobCancelled->vJobKind(JK_GENERIC);
+  //pJobCancelled->vParticipantNodeId(AM::pGrid()->iThisNodeId());
+  //pJobCancelled->vJobKind(JK_GENERIC);
   
   TagSet* pJobCancelledTags = pJobCancelled->pJobTags();
 
@@ -160,8 +160,8 @@ void Step::vJob_EndNew(void)
   tDistJobId = iDistJobId;
   Job* pJobEnd = Api::pNewGenericJob("end"_Stz,tDistJobId);
 
-  pJobEnd->vParticipantNodeId(AM::pGrid()->iThisNodeId());
-  pJobEnd->vJobKind(JK_GENERIC);
+  //pJobEnd->vParticipantNodeId(AM::pGrid()->iThisNodeId());
+  //pJobEnd->vJobKind(JK_GENERIC);
     
   TagSet* pJobEndTags = pJobEnd->pJobTags();
 
@@ -199,8 +199,8 @@ void Step::vJob_EndedNew(void)
   tDistJobId = iDistJobId;
   Job* pJobEnded = Api::pNewGenericJob("ended"_Stz,tDistJobId);
 
-  pJobEnded->vParticipantNodeId(AM::pGrid()->iThisNodeId());
-  pJobEnded->vJobKind(JK_GENERIC);
+  //pJobEnded->vParticipantNodeId(AM::pGrid()->iThisNodeId());
+  //pJobEnded->vJobKind(JK_GENERIC);
   
   TagSet* pJobEndedTags = pJobEnded->pJobTags();
 
@@ -238,8 +238,8 @@ void Step::vJob_ExecuteNew(void)
   tDistJobId = iDistJobId;
   Job* pJobExecute = Api::pNewGenericJob("execute"_Stz,tDistJobId);
 
-  pJobExecute->vParticipantNodeId(AM::pGrid()->iThisNodeId());
-  pJobExecute->vJobKind(JK_GENERIC);
+  //pJobExecute->vParticipantNodeId(AM::pGrid()->iThisNodeId());
+  //pJobExecute->vJobKind(JK_GENERIC);
   
   
   TagSet* pJobExecuteTags = pJobExecute->pJobTags();
@@ -278,8 +278,8 @@ void Step::vJob_ExecutedNew(void)
   tDistJobId = iDistJobId;
   Job* pJobExecuted = Api::pNewGenericJob("executed"_Stz,tDistJobId);
 
-  pJobExecuted->vParticipantNodeId(AM::pGrid()->iThisNodeId());
-  pJobExecuted->vJobKind(JK_GENERIC);
+  //pJobExecuted->vParticipantNodeId(AM::pGrid()->iThisNodeId());
+  //pJobExecuted->vJobKind(JK_GENERIC);
   
   TagSet* pJobExecutedTags = pJobExecuted->pJobTags();
 
