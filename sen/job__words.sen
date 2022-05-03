@@ -5,7 +5,7 @@
 " job__words.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* set dictionary path of this task back into session                         */
+/* set dictionary path of this task back into job                             */
 /*----------------------------------------------------------------------------*/
 : setPath ( -- )
 
@@ -17,7 +17,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // store path into the sessions <path>=<...>
   Path[].depth strVec::toPath
-    [op].job@ job.masterJob job.folderPath!
+    //[op].job@ job.masterJob job.folderPath!
+    [job] job.folderPath!
 ;
 
 /*----------------------------------------------------------------------------*/
