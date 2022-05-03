@@ -209,12 +209,16 @@ void Step::vApiNewGenericJob(void)
   s256 sEntryNm;
   m_pDataStack->vPopStr(sEntryNm,__func__);
     
-  i8 iDistJobId = m_pDataStack->iPopInt(__func__);
+//  i8 iDistJobId = m_pDataStack->iPopInt(__func__);
+//  JobId tDistJobId;
+//  tDistJobId = iDistJobId;
+//  Job* pJobBegun = Api::pNewGenericJob(sEntryNm,tDistJobId);
+
   JobId tDistJobId;
-  tDistJobId = iDistJobId;
-  Job* pJobBegun = Api::pNewGenericJob(sEntryNm,tDistJobId);
-  
-  m_pDataStack->vPushPtr(pJobBegun);
+  tDistJobId = m_pJob->tJobId();
+  Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tDistJobId);
+
+  m_pDataStack->vPushPtr(pJobGeneric);
   
   EXIT();
 }
