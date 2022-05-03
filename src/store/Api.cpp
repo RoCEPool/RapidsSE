@@ -249,6 +249,11 @@ Job* Api::pNewGenericJob(Stz* szJobNm, JobId tParentId)
 
   TagSet* pJobTagSet = pJobGeneric->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
+  
+  
+  Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+  pJobGeneric->vEntryPoint(szEntry);
+
 
   delete pCmdTknVec;
   delete pCmdTagSet;

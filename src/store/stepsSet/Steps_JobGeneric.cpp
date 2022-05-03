@@ -62,7 +62,7 @@ void Step::vJob_BegunNew(void)
   TagSet* pJobTagSet = pJobBegun->pJobTags();
   RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("begun:begun"_Stz));
   
-  pJobBegun->vEntryPoint("begun:begun"_Stz);
+  //pJobBegun->vEntryPoint("begun:begun"_Stz);
   
   m_pDataStack->vPushPtr(pJobBegun);
   
@@ -103,7 +103,7 @@ void Step::vJob_CancelNew(void)
   TagSet* pJobTagSet = pJobCancel->pJobTags();
   RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("cancel:cancel"_Stz));
   
-  pJobCancel->vEntryPoint("cancel:cancel"_Stz);
+  //pJobCancel->vEntryPoint("cancel:cancel"_Stz);
   
   m_pDataStack->vPushPtr(pJobCancel);
   
@@ -147,7 +147,7 @@ void Step::vJob_CancelledNew(void)
   TagSet* pJobTagSet = pJobCancelled->pJobTags();
   RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("cancelled:cancelled"_Stz));
   
-  pJobCancelled->vEntryPoint("cancelled:cancelled"_Stz);
+  //pJobCancelled->vEntryPoint("cancelled:cancelled"_Stz);
   
   m_pDataStack->vPushPtr(pJobCancelled);
   
@@ -189,7 +189,7 @@ void Step::vJob_EndNew(void)
   TagSet* pJobTagSet = pJobEnd->pJobTags();
   RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("end:end"_Stz));
   
-  pJobEnd->vEntryPoint("end:end"_Stz);
+  //pJobEnd->vEntryPoint("end:end"_Stz);
   
   m_pDataStack->vPushPtr(pJobEnd);
   
@@ -231,7 +231,7 @@ void Step::vJob_EndedNew(void)
   TagSet* pJobTagSet = pJobEnded->pJobTags();
   RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("ended:ended"_Stz));
   
-  pJobEnded->vEntryPoint("ended:ended"_Stz);
+  //pJobEnded->vEntryPoint("ended:ended"_Stz);
   
   m_pDataStack->vPushPtr(pJobEnded);
   
@@ -273,7 +273,7 @@ void Step::vJob_ExecuteNew(void)
   TagSet* pJobTagSet = pJobExecute->pJobTags();
   RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("execute:execute"_Stz));
 
-  pJobExecute->vEntryPoint("execute:execute"_Stz);
+  //pJobExecute->vEntryPoint("execute:execute"_Stz);
   
   m_pDataStack->vPushPtr(pJobExecute);
   
@@ -315,7 +315,7 @@ void Step::vJob_ExecutedNew(void)
   TagSet* pJobTagSet = pJobExecuted->pJobTags();
   RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("executed:executed"_Stz));
   
-  pJobExecuted->vEntryPoint("executed:executed"_Stz);
+  //pJobExecuted->vEntryPoint("executed:executed"_Stz);
   
   m_pDataStack->vPushPtr(pJobExecuted);
   
