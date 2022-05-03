@@ -351,7 +351,7 @@
   [job].id@ "begun" api::newGenericJob locals| pJob_Begun |
 
   // send the begun job
-  [job] [job].originNodeId@ pJob_Begun job.reply
+  [job].originNodeId@ pJob_Begun job.reply
 
   pJob_Begun job.delete
 
@@ -435,7 +435,7 @@
   [job].id@ "executed" api::newGenericJob locals| pJob_Executed |
 
   // send the executed job
-  [job] [job].originNodeId@ pJob_Executed job.reply
+  [job].originNodeId@ pJob_Executed job.reply
 
   pJob_Executed job.delete
   
@@ -472,7 +472,7 @@
   [job].id@ "ended" api::newGenericJob locals| pJob_Ended |
 
   // send the ended job
-  [job] [job].originNodeId@ pJob_Ended job.reply
+  [job].originNodeId@ pJob_Ended job.reply
 
   pJob_Ended job.delete
 
@@ -515,7 +515,7 @@
   [job].id@ "cancelled" api::newGenericJob locals| pJob_Cancelled |
 
   // send the cancelled job
-  [job] [job].originNodeId@ pJob_Cancelled job.reply
+  [job].originNodeId@ pJob_Cancelled job.reply
 
   pJob_Cancelled job.delete
 

@@ -98,12 +98,9 @@
 /*----------------------------------------------------------------------------*/
 /* send job back to originating node                                          */
 /*----------------------------------------------------------------------------*/
-: job.reply ( i_Node pJob -- )
+: job.reply params| pJob iNodeId |
 
-  params| pJob |
-  params| i_Node |
-
-  i_Node [grid].findNodeByNo to SendNode[]
+  iNodeId [grid].findNodeByNo to SendNode[]
 
   pJob job.send
   
