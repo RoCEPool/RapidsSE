@@ -222,17 +222,31 @@ if [ -n "${DEBUG}" ] ; then echo "Compiling RapidsSE"; fi;
 if [ -z "${NO_BUILD}" ] || [ "${NO_BUILD}" -ne 1 ] 
 then
 
-  gccver="$(gcc -dumpversion | cut -f1 -d.)"
-  if [[ -n "${gccver}" && "${gccver}" -lt 5 ]] && which scl 2>/dev/null; then
+  gccVersion="$(gcc -dumpversion | cut -f1-2 -d.)"
+  hasOldGcc="$(echo "${gccVersion} < 5" | bc)"
+
+  if [ "${hasOldGcc}" -eq 1 ]; then
+    # Is the Software Collections (SCL) repository installed?
+    if ! which scl &>/dev/null ; then
+      errorExit "A more modern c++ compiler is required. Either install a newer version of gcc or install the software collections (SCL) repository to get a newer gcc."
+    fi
+
+    newestGccVer=$(scl --list | grep devtoolset | cut -d- -f2 | sort -rn | head -n 1)
+
+    if [ -z "${newestGccVer}" ] || ! [[ ${newestGccVer} =~ ^[0-9]+$ ]]; then
+      errorExit "Could not determine the newest version of gcc in SCL library."
+    fi
+
+    echo "Using GCC version ${newestGccVer} from SCL"
     (
       cd "${SOURCE_DIR}"
-      scl enable devtoolset-8 'make clean && make -j 8'
+      scl enable "devtoolset-${newestGccVer}" "make clean && make -j $(nproc)"
     )
 
   else
     (
       cd "${SOURCE_DIR}"
-      make clean && make -j $(nproc)
+      make clean && make -j "$(nproc)"
     )
   fi
 fi
