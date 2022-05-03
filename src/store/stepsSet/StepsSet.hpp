@@ -910,12 +910,6 @@ public:
 
   // job generic
   void vJob_BegunNew(void);
-  void vJob_CancelNew(void);
-  void vJob_CancelledNew(void);
-  void vJob_EndNew(void);
-  void vJob_EndedNew(void);
-  void vJob_ExecuteNew(void);
-  void vJob_ExecutedNew(void);
 
   // job analyzeIndex
   void vJob_AnalyzeIndexIsDetailed(void);

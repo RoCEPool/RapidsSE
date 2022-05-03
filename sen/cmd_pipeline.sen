@@ -178,7 +178,7 @@
 
     [job].tscExecuting
 
-    [job].id@ "execute" job_Execute::new to pJob_Execute
+    [job].id@ "execute" api::newGenericJob to pJob_Execute
 
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
@@ -203,7 +203,7 @@
     
     [job].tscEnding
     
-    [job].id@ "end" job_End::new to pJob_End
+    [job].id@ "end" api::newGenericJob to pJob_End
 
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
@@ -348,7 +348,7 @@
 
   //[job] begun:reply
   
-  [job].id@ "begun" job_Begun::new locals| pJob_Begun |
+  [job].id@ "begun" api::newGenericJob locals| pJob_Begun |
 
   // send the begun job
   [job] [job].originNodeId@ pJob_Begun job.reply
@@ -432,7 +432,7 @@
   //[job] executed:reply
   
   // new a temporary Job_Executed
-  [job].id@ "executed" job_Executed::new locals| pJob_Executed |
+  [job].id@ "executed" api::newGenericJob locals| pJob_Executed |
 
   // send the executed job
   [job] [job].originNodeId@ pJob_Executed job.reply
@@ -469,7 +469,7 @@
   //[job] ended:reply                    // reply ended to originator
 
   // new a temporary Job_Ended
-  [job].id@ "ended" job_Ended::new locals| pJob_Ended |
+  [job].id@ "ended" api::newGenericJob locals| pJob_Ended |
 
   // send the ended job
   [job] [job].originNodeId@ pJob_Ended job.reply
@@ -512,7 +512,7 @@
 
   //[job] cancelled:reply
   // new a temporary Job_Cancelled
-  [job].id@ "cancelled" job_Cancelled::new locals| pJob_Cancelled |
+  [job].id@ "cancelled" api::newGenericJob locals| pJob_Cancelled |
 
   // send the cancelled job
   [job] [job].originNodeId@ pJob_Cancelled job.reply
