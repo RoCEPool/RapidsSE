@@ -72,7 +72,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
-  vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
   vAddStep("job.systemCloser?"_Stz,    &Step::vJobSystemCloserFetch);
   vAddStep("job.systemCloser!"_Stz,    &Step::vJobSystemCloserStore);
 
@@ -1251,28 +1250,6 @@ void Step::vJobSignalWaiter(void)
 }
 
 
-
-/*----------------------------------------------------------------------------*/
-/* job.spawn -- spawn the job on the stack                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSpawn(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Task* pTask = pJob->pTask();
-  RASSERT(! pTask);
-//  if ( pTask) {
-//    vTrace("****Job: %s has a task in job.spawn\n"_Stz,pJob->szJobNm());
-//    RASSERT(QK_NONE == pTask->eQueue());
-//    RASSERT(TR_NONE == pTask->eTransition());
-//  }
-  
-  Api::vSpawnTask_receivedJob(pJob);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* [job].phase@ -- fetch the job phase                                        */

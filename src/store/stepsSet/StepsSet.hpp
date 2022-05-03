@@ -89,8 +89,8 @@ public:
   void vApiForkChild_noWait(void);
   void vApiForkChild_wait(void);
   void vApiNewGenericJob(void);
-
   void vApiReapJobs(void);
+  void vApiSpawnJob(void);
 
   // arrange
   void vArrangeBegin(void);
@@ -880,7 +880,6 @@ public:
   void vJobScheduleNextPhase(void);
   void vJobShow(void);
   void vJobSignalWaiter(void);
-  void vJobSpawn(void);
   void vJobStateFetch(void);
   void vJobStateStore(void);
   void vJobSystemCloserFetch(void);

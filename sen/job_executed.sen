@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job_Executed on originating node              recv: job.spawn */
+/* run received Job_Executed on originating node              recv: api::spawnJob_noWait */
 /*----------------------------------------------------------------------------*/
 : executed:executed
 

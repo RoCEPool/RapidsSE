@@ -34,6 +34,7 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::forkChild_wait"_Stz,      &Step::vApiForkChild_wait);
   vAddStep("api::newGenericJob"_Stz,       &Step::vApiNewGenericJob);
   vAddStep("api::reapJobs"_Stz,            &Step::vApiReapJobs);
+  vAddStep("api::spawnJob_noWait"_Stz,     &Step::vApiSpawnJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -211,6 +212,29 @@ void Step::vApiReapJobs(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* api::spawnJob_noWait -- spawn the job on the stack                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vApiSpawnJob(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  Task* pTask = pJob->pTask();
+  RASSERT(! pTask);
+//  if ( pTask) {
+//    vTrace("****Job: %s has a task in api::spawnJob_noWait\n"_Stz,pJob->szJobNm());
+//    RASSERT(QK_NONE == pTask->eQueue());
+//    RASSERT(TR_NONE == pTask->eTransition());
+//  }
+  
+  Api::vSpawnTask_receivedJob(pJob);
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

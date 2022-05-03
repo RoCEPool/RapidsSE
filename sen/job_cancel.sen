@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job_Cancel on participating node    recv: job.spawn */
+/* run received Job_Cancel on participating node    recv: api::spawnJob_noWait */
 /*----------------------------------------------------------------------------*/
 : cancel:cancel
 
