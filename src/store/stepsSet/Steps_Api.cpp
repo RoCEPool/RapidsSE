@@ -32,6 +32,7 @@ void Step::vAddSteps_Api(void)
 {
   vAddStep("api::forkChild_noWait"_Stz,    &Step::vApiForkChild_noWait);
   vAddStep("api::forkChild_wait"_Stz,      &Step::vApiForkChild_wait);
+  vAddStep("api::forkGeneric_noWait"_Stz,  &Step::vApiForkGeneric_noWait);
   vAddStep("api::newGenericJob"_Stz,       &Step::vApiNewGenericJob);
   vAddStep("api::reapJobs"_Stz,            &Step::vApiReapJobs);
   vAddStep("api::spawnJob_noWait"_Stz,     &Step::vApiSpawnJob);
@@ -179,7 +180,27 @@ void Step::vApiForkChild_wait(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_begun::new -- new a job_begun for this distributed 2pc job             */
+/* api::forkGeneric_noWait -- fork a pipeline coordination job                */
+/*----------------------------------------------------------------------------*/
+void Step::vApiForkGeneric_noWait(void)
+{
+  ENTRY();
+  
+  s256 sEntryNm;
+  m_pDataStack->vPopStr(sEntryNm,__func__);
+    
+//  i8 iDistJobId = m_pDataStack->iPopInt(__func__);
+//  JobId tDistJobId;
+//  tDistJobId = iDistJobId;
+//  Job* pJobBegun = Api::pNewGenericJob(sEntryNm,tDistJobId);
+//
+//  m_pDataStack->vPushPtr(pJobBegun);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::newGenericJob -- new a pipeline coordination job                      */
 /*----------------------------------------------------------------------------*/
 void Step::vApiNewGenericJob(void)
 {

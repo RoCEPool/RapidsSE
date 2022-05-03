@@ -88,6 +88,7 @@ public:
   // api
   void vApiForkChild_noWait(void);
   void vApiForkChild_wait(void);
+  void vApiForkGeneric_noWait(void);
   void vApiNewGenericJob(void);
   void vApiReapJobs(void);
   void vApiSpawnJob(void);

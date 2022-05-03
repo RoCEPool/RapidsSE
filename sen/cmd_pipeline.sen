@@ -353,6 +353,8 @@
   // send the begun job
   [job].originNodeId@ pJob_Begun job.reply
 
+  "begun" api::forkGeneric_noWait
+
   pJob_Begun job.delete
 
   
