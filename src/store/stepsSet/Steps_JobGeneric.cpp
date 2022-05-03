@@ -59,8 +59,8 @@ void Step::vJob_BegunNew(void)
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobBegun->pJobTags()->vInsert(C_TAG_FLOW,1);
 
-  TagSet* pJobTagSet = pJobBegun->pJobTags();
-  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("begun:begun"_Stz));
+  //TagSet* pJobTagSet = pJobBegun->pJobTags();
+  //RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("begun:begun"_Stz));
   
   //pJobBegun->vEntryPoint("begun:begun"_Stz);
   
@@ -100,8 +100,8 @@ void Step::vJob_CancelNew(void)
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobCancel->pJobTags()->vInsert(C_TAG_FLOW,1);
     
-  TagSet* pJobTagSet = pJobCancel->pJobTags();
-  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("cancel:cancel"_Stz));
+  //TagSet* pJobTagSet = pJobCancel->pJobTags();
+  //RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("cancel:cancel"_Stz));
   
   //pJobCancel->vEntryPoint("cancel:cancel"_Stz);
   
@@ -144,8 +144,8 @@ void Step::vJob_CancelledNew(void)
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobCancelled->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  TagSet* pJobTagSet = pJobCancelled->pJobTags();
-  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("cancelled:cancelled"_Stz));
+  //TagSet* pJobTagSet = pJobCancelled->pJobTags();
+  //RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("cancelled:cancelled"_Stz));
   
   //pJobCancelled->vEntryPoint("cancelled:cancelled"_Stz);
   
@@ -186,8 +186,8 @@ void Step::vJob_EndNew(void)
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobEnd->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  TagSet* pJobTagSet = pJobEnd->pJobTags();
-  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("end:end"_Stz));
+  //TagSet* pJobTagSet = pJobEnd->pJobTags();
+  //RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("end:end"_Stz));
   
   //pJobEnd->vEntryPoint("end:end"_Stz);
   
@@ -228,8 +228,8 @@ void Step::vJob_EndedNew(void)
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobEnded->pJobTags()->vInsert(C_TAG_FLOW,1);
     
-  TagSet* pJobTagSet = pJobEnded->pJobTags();
-  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("ended:ended"_Stz));
+  //TagSet* pJobTagSet = pJobEnded->pJobTags();
+  //RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("ended:ended"_Stz));
   
   //pJobEnded->vEntryPoint("ended:ended"_Stz);
   
@@ -270,8 +270,8 @@ void Step::vJob_ExecuteNew(void)
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobExecute->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  TagSet* pJobTagSet = pJobExecute->pJobTags();
-  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("execute:execute"_Stz));
+  //TagSet* pJobTagSet = pJobExecute->pJobTags();
+  //RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("execute:execute"_Stz));
 
   //pJobExecute->vEntryPoint("execute:execute"_Stz);
   
@@ -312,8 +312,8 @@ void Step::vJob_ExecutedNew(void)
   //if (pDistJob->bHasTag(C_TAG_FLOW))
   //  pJobExecuted->pJobTags()->vInsert(C_TAG_FLOW,1);
   
-  TagSet* pJobTagSet = pJobExecuted->pJobTags();
-  RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("executed:executed"_Stz));
+  //TagSet* pJobTagSet = pJobExecuted->pJobTags();
+  //RASSERT(pJobTagSet->szValue(C_TAG_ENTRYPOINT)->bSame("executed:executed"_Stz));
   
   //pJobExecuted->vEntryPoint("executed:executed"_Stz);
   
