@@ -32,6 +32,7 @@ void Step::vAddSteps_Api(void)
 {
   vAddStep("api::forkChild_noWait"_Stz,    &Step::vApiForkChild_noWait);
   vAddStep("api::forkChild_wait"_Stz,      &Step::vApiForkChild_wait);
+  vAddStep("api::newGenericJob"_Stz,       &Step::vApiNewGenericJob);
   vAddStep("api::reapJobs"_Stz,            &Step::vApiReapJobs);
 }
 
@@ -172,6 +173,26 @@ void Step::vApiForkChild_wait(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pDataStack->vPushInt(true);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_begun::new -- new a job_begun for this distributed 2pc job             */
+/*----------------------------------------------------------------------------*/
+void Step::vApiNewGenericJob(void)
+{
+  ENTRY();
+  
+  s256 sEntryNm;
+  m_pDataStack->vPopStr(sEntryNm,__func__);
+    
+  i8 iDistJobId = m_pDataStack->iPopInt(__func__);
+  JobId tDistJobId;
+  tDistJobId = iDistJobId;
+  Job* pJobBegun = Api::pNewGenericJob(sEntryNm,tDistJobId);
+  
+  m_pDataStack->vPushPtr(pJobBegun);
   
   EXIT();
 }

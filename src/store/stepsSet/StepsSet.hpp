@@ -88,6 +88,8 @@ public:
   // api
   void vApiForkChild_noWait(void);
   void vApiForkChild_wait(void);
+  void vApiNewGenericJob(void);
+
   void vApiReapJobs(void);
 
   // arrange
@@ -907,9 +909,6 @@ public:
   void vJobMetricsJobSet(void);
   void vJobMetricsNew(void);
   void vJobMetricsUpdate(void);
-
-  // job generic
-  void vJob_BegunNew(void);
 
   // job analyzeIndex
   void vJob_AnalyzeIndexIsDetailed(void);
