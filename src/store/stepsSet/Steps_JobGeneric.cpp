@@ -19,13 +19,13 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobGeneric(void)
 {
-  vAddStep("job_Begun::new"_Stz,        &Step::vJob_BegunNew);
-  vAddStep("job_Cancel::new"_Stz,       &Step::vJob_CancelNew);
-  vAddStep("job_Cancelled::new"_Stz,    &Step::vJob_CancelledNew);
-  vAddStep("job_End::new"_Stz,          &Step::vJob_EndNew);
-  vAddStep("job_Ended::new"_Stz,        &Step::vJob_EndedNew);
-  vAddStep("job_Execute::new"_Stz,      &Step::vJob_ExecuteNew);
-  vAddStep("job_Executed::new"_Stz,     &Step::vJob_ExecutedNew);
+  vAddStep("job_Begun::new"_Stz,        &Step::vJob_BegunNew); //&Step::vJob_BegunNew);
+  vAddStep("job_Cancel::new"_Stz,       &Step::vJob_BegunNew); //&Step::vJob_CancelNew);
+  vAddStep("job_Cancelled::new"_Stz,    &Step::vJob_BegunNew); //&Step::vJob_CancelledNew);
+  vAddStep("job_End::new"_Stz,          &Step::vJob_BegunNew); //&Step::vJob_EndNew);
+  vAddStep("job_Ended::new"_Stz,        &Step::vJob_BegunNew); //&Step::vJob_EndedNew);
+  vAddStep("job_Execute::new"_Stz,      &Step::vJob_BegunNew); //&Step::vJob_ExecuteNew);
+  vAddStep("job_Executed::new"_Stz,     &Step::vJob_BegunNew); //&Step::vJob_ExecutedNew);
 }
 
 /*----------------------------------------------------------------------------*/
