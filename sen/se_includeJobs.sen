@@ -9,13 +9,13 @@ assert::stack_0
   "job__words.sen"          include
   "pipeline__words.sen"     include
 
-  "job_ended.sen"           include
-  "job_end.sen"             include
-  "job_cancelled.sen"       include
-  "job_cancel.sen"          include
-  "job_executed.sen"        include
-  "job_execute.sen"         include
-  "job_begun.sen"           include
+  "cmd_ended.sen"           include
+  "cmd_end.sen"             include
+  "cmd_cancelled.sen"       include
+  "cmd_cancel.sen"          include
+  "cmd_executed.sen"        include
+  "cmd_execute.sen"         include
+  "cmd_begun.sen"           include
 
   "cmd_pipeline.sen"        include
   "cmd_pipelineLocal.sen"   include

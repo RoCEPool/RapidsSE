@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_executed.sen -- executed 2pc job (pipeline coordination)               */
+/* cmd_ended.sen -- ended 2pc job (pipeline coordination)                     */
 /*============================================================================*/
 
-" job_executed.sen" .verbose
+" cmd_ended.sen" .verbose
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -10,20 +10,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job_Executed on originating node                              */
+/* run received Job_Ended on originating node                                 */
 /*----------------------------------------------------------------------------*/
-: executed:executed
+: ended:ended
 
-  // "executed:executed" .
+  // "ended:ended" .
 
   // find the originating job
   [job].parentId@ ListedJob[].findOriginator discard
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // decrement the acks remaining in the originating job
-  
   ListedJob[].task@ task.ack
   
   ListedJob[].returnReference
@@ -34,13 +31,13 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: executed :: executed ;
+cmdSyntax: ended :: ended ;
 
-: executed_cmdTags _cmdTags tagCopy: genericJob_tags
+: ended_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
-    <cmdDesc>     = "--desc for job--"
-    <entryPoint>  = "executed:executed"
-    <path>        = "/"
+    <cmdDesc>  = "--desc for job--"
+    <entryPoint>    = "ended:ended"
+    <path>     = "/"
   }
 ;
 

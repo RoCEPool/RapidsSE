@@ -1,27 +1,34 @@
 /*============================================================================*/
-/* job_cancelled.sen -- cancelled 2pc job (pipeline coordination)             */
+/* job_cmd.sen -- end 2pc job (pipeline coordination)                         */
 /*============================================================================*/
 
-" job_cancelled.sen" .verbose
-
+" job_cmd.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
-//                            on originating node                             //
+/*                          ON PARTICIPATING NODE                             */
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run recieved Job_Cancelled on originating node                             */
+/* run received Job_End on participating node                                 */
 /*----------------------------------------------------------------------------*/
-: cancelled:cancelled
+: end:end
 
-  // "cancelled:cancelled" .
+  // "end:end" .
 
-  // find the originating job
-  [job].parentId@ ListedJob[].findOriginator discard
+  // find job to be ended in participating job list
+  [job].parentId@ ListedJob[].findParticipant discard
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  ListedJob[].task@ task.ack
+  // stall till job's previous phase (task) has completed
+  begin
+    ListedJob[].task@ task.state@ TS_HIBERNATING !=
+  while
+    "job to be ended still has non-hibernating task" .
+    [task].yield
+  repeat
+  ListedJob[].task@ task.cycleLock
+    
+  // execute the job on this participating node
+  ListedJob[] job.scheduleNextPhase
   
   ListedJob[].returnReference
   [job]:retire
@@ -31,15 +38,16 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: cancelled :: cancelled ;
+cmdSyntax: end :: end ;
 
-: cancelled_cmdTags _cmdTags tagCopy: genericJob_tags
+: end_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "cancelled:cancelled"
+    <entryPoint>    = "end:end"
     <path>     = "/"
-  }
+}
 ;
+
 
 /*============================================================================*/
 /* end                                                                        */

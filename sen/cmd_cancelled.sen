@@ -1,34 +1,27 @@
 /*============================================================================*/
-/* job_execute.sen -- execute 2pc job (pipeline coordination)                 */
+/* cmd_cancelled.sen -- cancelled 2pc job (pipeline coordination)             */
 /*============================================================================*/
 
-" job_execute.sen" .verbose
+" cmd_cancelled.sen" .verbose
+
 
 ////////////////////////////////////////////////////////////////////////////////
-/*                          ON PARTICIPATING NODE                             */
+//                            on originating node                             //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job_Execute on participating node                             */
+/* run recieved Job_Cancelled on originating node                             */
 /*----------------------------------------------------------------------------*/
-: execute:execute
+: cancelled:cancelled
 
-  // "execute:execute" .
+  // "cancelled:cancelled" .
 
-  // find job to be executed in participating job list
-  [job].parentId@ ListedJob[].findParticipant discard
+  // find the originating job
+  [job].parentId@ ListedJob[].findOriginator discard
 
-  // stall till job's previous phase (task) has completed
-  begin
-    ListedJob[].task@ task.state@ TS_HIBERNATING !=
-  while
-    // "job to be executed still has non-hibernating task" .
-    [task].yield
-  repeat
-  ListedJob[].task@ task.cycleLock
-    
-  // execute the job on this participating node
-  ListedJob[] job.scheduleNextPhase
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  ListedJob[].task@ task.ack
   
   ListedJob[].returnReference
   [job]:retire
@@ -38,16 +31,15 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: execute :: execute ;
+cmdSyntax: cancelled :: cancelled ;
 
-: execute_cmdTags _cmdTags tagCopy: genericJob_tags
+: cancelled_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
-    <cmdDesc>     = "--desc for job--"
-    <entryPoint>  = "execute:execute"
-    <path>        = "/"
+    <cmdDesc>  = "--desc for job--"
+    <entryPoint>    = "cancelled:cancelled"
+    <path>     = "/"
   }
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */

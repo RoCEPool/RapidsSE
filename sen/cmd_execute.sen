@@ -1,24 +1,34 @@
 /*============================================================================*/
-/* job_begun.sen -- begun 2pc job (pipeline coordination)                     */
+/* cmd_execute.sen -- execute 2pc job (pipeline coordination)                 */
 /*============================================================================*/
 
-" job_begun.sen" .verbose
+" cmd_execute.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
-//                            on originating node                             //
+/*                          ON PARTICIPATING NODE                             */
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run this received Job_Begun on originating node                            */
+/* run received Job_Execute on participating node                             */
 /*----------------------------------------------------------------------------*/
-: begun:begun
+: execute:execute
 
-  // find the originating job
-  [job].parentId@ ListedJob[].findOriginator discard
+  // "execute:execute" .
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find job to be executed in participating job list
+  [job].parentId@ ListedJob[].findParticipant discard
 
-  ListedJob[].task@ task.ack
+  // stall till job's previous phase (task) has completed
+  begin
+    ListedJob[].task@ task.state@ TS_HIBERNATING !=
+  while
+    // "job to be executed still has non-hibernating task" .
+    [task].yield
+  repeat
+  ListedJob[].task@ task.cycleLock
+    
+  // execute the job on this participating node
+  ListedJob[] job.scheduleNextPhase
   
   ListedJob[].returnReference
   [job]:retire
@@ -28,15 +38,16 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: begun :: begun ;
+cmdSyntax: execute :: execute ;
 
-: begun_cmdTags _cmdTags tagCopy: genericJob_tags
+: execute_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>     = "--desc for job--"
-    <entryPoint>  = "begun:begun"
+    <entryPoint>  = "execute:execute"
     <path>        = "/"
   }
 ;
+
 
 /*============================================================================*/
 /* end                                                                        */

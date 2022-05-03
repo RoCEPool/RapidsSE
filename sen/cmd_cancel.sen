@@ -1,33 +1,34 @@
 /*============================================================================*/
-/* job_end.sen -- end 2pc job (pipeline coordination)                         */
+/* cmd_cancel.sen -- cancel 2pc job (pipeline coordination)                   */
 /*============================================================================*/
 
-" job_end.sen" .verbose
+" cmd_cancel.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
 /*                          ON PARTICIPATING NODE                             */
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job_End on participating node                                 */
+/* run received Job_Cancel on participating node                              */
 /*----------------------------------------------------------------------------*/
-: end:end
+: cancel:cancel
 
-  // "end:end" .
+  // "cancel:cancel" .
 
-  // find job to be ended in participating job list
+  // find job to be canceled in participating job list
   [job].parentId@ ListedJob[].findParticipant discard
 
   // stall till job's previous phase (task) has completed
   begin
     ListedJob[].task@ task.state@ TS_HIBERNATING !=
   while
-    "job to be ended still has non-hibernating task" .
+    "job to be cancelled still has non-hibernating task" .
     [task].yield
   repeat
   ListedJob[].task@ task.cycleLock
     
   // execute the job on this participating node
+  "pipeline:cancel" ListedJob[] job.entry!
   ListedJob[] job.scheduleNextPhase
   
   ListedJob[].returnReference
@@ -38,15 +39,16 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: end :: end ;
+cmdSyntax: cancel :: cancel ;
 
-: end_cmdTags _cmdTags tagCopy: genericJob_tags
+: cancel_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "end:end"
+    <entryPoint>    = "cancel:cancel"
     <path>     = "/"
-}
+  }
 ;
+
 
 
 /*============================================================================*/
