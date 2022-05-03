@@ -813,7 +813,6 @@ public:
 
   void vJobCascadeFetch(void);
   void vJobCascadeStore(void);
-  void vJobClass(void);
 
   void vJobDelete(void);
 
@@ -837,8 +836,6 @@ public:
   void vJobJobClass(void);
   void vJobJobListFetch(void);
 
-  void vJobKindFetch(void);
-
   void vJobLastJobIdFetch(void);
   void vJobLastJobIdStore(void);
 
@@ -857,7 +854,6 @@ public:
   void vJobPhaseFetch(void);
   void vJobPhaseFetch_other(void);
   void vJobPhaseStore(void);
-  void vJobPrintMember(void);
   void vJobProgress(void);
   void vJobProgressReset(void);
   void vJobProgressSeconds(void);

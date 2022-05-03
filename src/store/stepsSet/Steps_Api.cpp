@@ -214,7 +214,7 @@ void Step::vApiReapJobs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* api::spawnJob_noWait -- spawn the job on the stack                                    */
+/* api::spawnJob_noWait -- spawn the job on the stack                         */
 /*----------------------------------------------------------------------------*/
 void Step::vApiSpawnJob(void)
 {

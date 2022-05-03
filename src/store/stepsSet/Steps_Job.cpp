@@ -30,8 +30,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
-  vAddStep("job.class"_Stz,            &Step::vJobClass);
-  
   vAddStep("job.cascade@"_Stz,         &Step::vJobCascadeFetch);
   vAddStep("job.cascade!"_Stz,         &Step::vJobCascadeStore);
   
@@ -49,12 +47,7 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
   vAddStep("job.jobList@"_Stz,         &Step::vJobJobListFetch);
-  
-  vAddStep("job.kind@"_Stz,            &Step::vJobKindFetch);
-  
-  vAddStep("job.folderPath@"_Stz,      &Step::vJobFolderPathFetch);
-  vAddStep("job.folderPath!"_Stz,      &Step::vJobFolderPathStore);
-  
+    
   vAddStep("job.lastJobId@"_Stz,       &Step::vJobLastJobIdFetch);
   vAddStep("job.lastJobId!"_Stz,       &Step::vJobLastJobIdStore);
   
@@ -65,7 +58,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
   vAddStep("job.pipeToOp0"_Stz,        &Step::vJobPipeToOp0);
-  vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
   vAddStep("job.reapable@"_Stz,        &Step::vJobReapableFetch_other);
   vAddStep("job.reapable!"_Stz,        &Step::vJobReapableStore_other);
@@ -474,22 +466,6 @@ void Step::vJobCascadeStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.class -- get the class of the job                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vJobClass(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  eCN eClass = pJob->eGetClassNo();
-  
-  m_pDataStack->vPushInt(eClass);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.delete -- delete the job                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobDelete(void)
@@ -763,21 +739,6 @@ void Step::vJobJobListFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.kind@ -- fetch job kind                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobKindFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  
-  m_pDataStack->vPushInt(pJob->eJobKind());
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.lastJobId@ -- fetch last job id from job                               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobLastJobIdFetch(void)
@@ -960,19 +921,6 @@ void Step::vJobPreExecuteTest(void)
   
   m_pDataStack->vPushInt(eError);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.printMember -- print a member of the job                               */
-/*----------------------------------------------------------------------------*/
-void Step::vJobPrintMember(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  vTrace("Job: %p Class: %p\n"_Stz, pJob, aCN[pJob->eGetClassNo()]);
-  
   EXIT();
 }
 

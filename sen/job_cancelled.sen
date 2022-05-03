@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run recieved Job_Cancelled on originating node   recv: api::spawnJob_noWait */
+/* run recieved Job_Cancelled on originating node                             */
 /*----------------------------------------------------------------------------*/
 : cancelled:cancelled
 
