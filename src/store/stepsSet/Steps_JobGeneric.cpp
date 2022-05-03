@@ -35,13 +35,16 @@ void Step::vJob_BegunNew(void)
 {
   ENTRY();
   
+  s256 sEntryNm;
+  m_pDataStack->vPopStr(sEntryNm,__func__);
+  
   //Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   //Job* pJobBegun = new Job("begun"_Stz,pDistJob->tJobId());
   
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobBegun = Api::pNewGenericJob("begun"_Stz,tDistJobId);
+  Job* pJobBegun = Api::pNewGenericJob(sEntryNm,tDistJobId);
 
   //pJobBegun->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   //pJobBegun->vJobKind(JK_GENERIC);
@@ -79,10 +82,13 @@ void Step::vJob_CancelNew(void)
   //Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   //Job* pJobCancel = new Job("cancel"_Stz,pDistJob->tJobId());
   
+  s256 sEntryNm;
+  m_pDataStack->vPopStr(sEntryNm,__func__);
+  
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobCancel = Api::pNewGenericJob("cancel"_Stz,tDistJobId);
+  Job* pJobCancel = Api::pNewGenericJob(sEntryNm,tDistJobId);
 
   //pJobCancel->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   //pJobCancel->vJobKind(JK_GENERIC);
@@ -120,10 +126,13 @@ void Step::vJob_CancelledNew(void)
   //Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   //Job* pJobCancelled = new Job("cancelled"_Stz,pDistJob->tJobId());
 
+  s256 sEntryNm;
+  m_pDataStack->vPopStr(sEntryNm,__func__);
+  
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobCancelled = Api::pNewGenericJob("cancelled"_Stz,tDistJobId);
+  Job* pJobCancelled = Api::pNewGenericJob(sEntryNm,tDistJobId);
 
 
   //pJobCancelled->vParticipantNodeId(AM::pGrid()->iThisNodeId());
@@ -164,10 +173,13 @@ void Step::vJob_EndNew(void)
   //Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   //Job* pJobEnd = new Job("end"_Stz,pDistJob->tJobId());
   
+  s256 sEntryNm;
+  m_pDataStack->vPopStr(sEntryNm,__func__);
+  
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobEnd = Api::pNewGenericJob("end"_Stz,tDistJobId);
+  Job* pJobEnd = Api::pNewGenericJob(sEntryNm,tDistJobId);
 
   //pJobEnd->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   //pJobEnd->vJobKind(JK_GENERIC);
@@ -206,10 +218,13 @@ void Step::vJob_EndedNew(void)
   //Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   //Job* pJobEnded = new Job("ended"_Stz,pDistJob->tJobId());
   
+  s256 sEntryNm;
+  m_pDataStack->vPopStr(sEntryNm,__func__);
+  
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobEnded = Api::pNewGenericJob("ended"_Stz,tDistJobId);
+  Job* pJobEnded = Api::pNewGenericJob(sEntryNm,tDistJobId);
 
   //pJobEnded->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   //pJobEnded->vJobKind(JK_GENERIC);
@@ -248,10 +263,13 @@ void Step::vJob_ExecuteNew(void)
   //Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   //Job* pJobExecute = new Job("execute"_Stz,pDistJob->tJobId());
   
+  s256 sEntryNm;
+  m_pDataStack->vPopStr(sEntryNm,__func__);
+  
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobExecute = Api::pNewGenericJob("execute"_Stz,tDistJobId);
+  Job* pJobExecute = Api::pNewGenericJob(sEntryNm,tDistJobId);
 
   //pJobExecute->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   //pJobExecute->vJobKind(JK_GENERIC);
@@ -290,10 +308,13 @@ void Step::vJob_ExecutedNew(void)
   //Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
   //Job* pJobExecuted = new Job("executed"_Stz,pDistJob->tJobId());
   
+  s256 sEntryNm;
+  m_pDataStack->vPopStr(sEntryNm,__func__);
+  
   i8 iDistJobId = m_pDataStack->iPopInt(__func__);
   JobId tDistJobId;
   tDistJobId = iDistJobId;
-  Job* pJobExecuted = Api::pNewGenericJob("executed"_Stz,tDistJobId);
+  Job* pJobExecuted = Api::pNewGenericJob(sEntryNm,tDistJobId);
 
   //pJobExecuted->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   //pJobExecuted->vJobKind(JK_GENERIC);
