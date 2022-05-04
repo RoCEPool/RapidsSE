@@ -20,6 +20,7 @@
     ListedJob[].task@ task.ack
   
     ListedJob[].returnReference
+    
   then
   
   [job]:retire
@@ -37,9 +38,11 @@
 /*----------------------------------------------------------------------------*/
 : begun:begun
 
-  [job].originNodeId@ pJob_Begun job.reply
+  [job].parentOriginNodeId@ [grid].findNodeByNo to SendNode[]
+  
+  [job] job.send
 
-  [job]:retire
+  nullptr to SendNode[]
 ;
 
 /*----------------------------------------------------------------------------*/
