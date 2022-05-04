@@ -95,11 +95,12 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].originNodeId@"_Stz,    &Step::vJobOriginNodeIdFetch);
   
   vAddStep("[job].parentId@"_Stz,        &Step::vJobParentIdFetch);
+  vAddStep("[job].parentOriginNodeId@"_Stz, &Step::vJobParentOriginNodeIdFetch);
   vAddStep("[job].participantNodeId@"_Stz, &Step::vJobParticipantNodeIdFetch);
   vAddStep("[job].participantNodeId!"_Stz, &Step::vJobParticipantNodeIdStore);
-  vAddStep("[job].preExecuteTest"_Stz,   &Step::vJobPreExecuteTest);
   vAddStep("[job].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("[job].phase!"_Stz,           &Step::vJobPhaseStore);
+  vAddStep("[job].preExecuteTest"_Stz,   &Step::vJobPreExecuteTest);
   vAddStep("[job].progress"_Stz,         &Step::vJobProgress);
   vAddStep("[job].progressReset"_Stz,    &Step::vJobProgressReset);
   vAddStep("[job].progressSeconds"_Stz,  &Step::vJobProgressSeconds);
@@ -853,7 +854,24 @@ void Step::vJobParentIdFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.partptNodeId@ -- fetch the participant node from the job                */
+/* [job].parentOriginNodeId@ -- fetch origin node of of this job's parent job */
+/*----------------------------------------------------------------------------*/
+void Step::vJobParentOriginNodeIdFetch(void)
+{
+  ENTRY();
+  
+  JobId tParentJobId = m_pJob->tParentId();
+  
+  i8 iNodeId = (i8)tParentJobId.uNodeId();
+  
+  m_pDataStack->vPushInt(iNodeId);
+  
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* job.participantNodeId@ -- fetch the participant node from the job          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobParticipantNodeIdFetch(void)
 {

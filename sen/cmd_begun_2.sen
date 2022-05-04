@@ -37,14 +37,8 @@
 /*----------------------------------------------------------------------------*/
 : begun:begun
 
-  // find the originating job
-  [job].parentId@ ListedJob[].findOriginator? discard
+  [job].originNodeId@ pJob_Begun job.reply
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  ListedJob[].task@ task.ack
-  
-  ListedJob[].returnReference
   [job]:retire
 ;
 

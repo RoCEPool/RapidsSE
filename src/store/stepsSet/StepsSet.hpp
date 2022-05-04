@@ -848,6 +848,7 @@ public:
   void vJobOriginNodeIdFetch(void);
 
   void vJobParentIdFetch(void);
+  void vJobParentOriginNodeIdFetch(void);
   void vJobParticipantNodeIdFetch(void);
   void vJobParticipantNodeIdStore(void);
   void vJobPipeToOp0(void);

@@ -346,16 +346,13 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply begun to originator
 
-  //[job] begun:reply
-  
-  "begun" api::newGenericJob locals| pJob_Begun |
-
   // send the begun job
+  "begun" api::newGenericJob locals| pJob_Begun |
   [job].originNodeId@ pJob_Begun job.reply
-
-  "begun" api::forkGeneric_noWait
-
   pJob_Begun job.delete
+
+  //"begun" api::forkGeneric_noWait
+
 
   
   
