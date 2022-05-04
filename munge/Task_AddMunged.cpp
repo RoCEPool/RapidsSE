@@ -38100,7 +38100,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  depth 0 == if exit_rt then\n"
     "\n"
-    "  [task] task.name@ \"TypedStack of task %v has grown\" .printf\n"
+    "  [task].name@ \"TypedStack of task %v has grown\" .printf\n"
     "\n"
     "  debug::breakpoint\n"
     " ;\n"

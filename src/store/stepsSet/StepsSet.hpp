@@ -2081,7 +2081,6 @@ public:
   void vTaskException(void);
   void vTaskGet(void);
   void vTaskGrabLock(void);
-  void vTaskIsAckSet(void);
   void vTaskIsLocked(void);
   void vTaskIsWaiting(void);
   void vTaskNameFetch(void);

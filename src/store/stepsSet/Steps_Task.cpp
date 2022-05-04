@@ -24,9 +24,7 @@ void Step::vAddSteps_Task(void)
 {
   vAddStep("task.ack"_Stz,             &Step::vTaskAck);
   vAddStep("task.cycleLock"_Stz,       &Step::vTaskCycleLock);
-  vAddStep("task.isAckSet?"_Stz,       &Step::vTaskIsAckSet);
   vAddStep("task.isWaiting?"_Stz,      &Step::vTaskIsWaiting);
-  vAddStep("task.name@"_Stz,           &Step::vTaskNameFetch);
   vAddStep("task.profile@"_Stz,        &Step::vTaskProfileFetch);
   vAddStep("task.profile!"_Stz,        &Step::vTaskProfileStore);
   vAddStep("task.state@"_Stz,          &Step::vTaskStateFetch);
@@ -44,6 +42,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("[task].exception"_Stz,      &Step::vTaskException);
   vAddStep("[task].grabLock"_Stz,       &Step::vTaskGrabLock);
   vAddStep("[task].islocked?"_Stz,      &Step::vTaskIsLocked);
+  vAddStep("[task].name@"_Stz,          &Step::vTaskNameFetch);
   vAddStep("[task].operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
   vAddStep("[task].operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
   vAddStep("[task].releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
@@ -99,22 +98,6 @@ void Step::vTaskCycleLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.isAckSet? -- is ack set for given task?                               */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskIsAckSet(void)
-{
-  ENTRY();
-  
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iIsAckSet = pThatTask->m_oAcksRmg.bIsSet();
-    
-  m_pDataStack->vPushInt(iIsAckSet);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* task.isWaiting? -- is given task waiting?                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskIsWaiting(void)
@@ -132,17 +115,15 @@ void Step::vTaskIsWaiting(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.name@ -- fetch name of given task                                     */
+/* [task].name@ -- fetch name of given task                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskNameFetch(void)
 {
   ENTRY();
+    
+  s256 sTaskNm((Stz*)szTaskNm());
   
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-  
-  s256 sName((Stz*)pThatTask->szTaskNm());
-  
-  m_pDataStack->vPushStr(sName);
+  m_pDataStack->vPushStr(sTaskNm);
   
   EXIT();
 }
