@@ -2074,8 +2074,8 @@ public:
   void vTaskAcksStore(void);
   void vTaskBreakPoint(void);
   void vTaskCycleLock(void);
-  void vTaskDestructorTraceFetch(void);
-  void vTaskDestructorTraceStore(void);
+  void vTaskDebugMarkFetch(void);
+  void vTaskDebugMarkStore(void);
   void vTaskDropLock(void);
   void vTaskDump(void);
   void vTaskException(void);

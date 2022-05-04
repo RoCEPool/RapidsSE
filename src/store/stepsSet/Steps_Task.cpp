@@ -37,6 +37,8 @@ void Step::vAddSteps_Task(void)
   vAddStep("[task]"_Stz,                &Step::vTaskGet);
   vAddStep("[task].acksRemaining!"_Stz, &Step::vTaskAcksStore);
   vAddStep("[task].breakPoint"_Stz,     &Step::vTaskBreakPoint);
+  vAddStep("[task].debugMark@"_Stz,     &Step::vTaskDebugMarkFetch);
+  vAddStep("[task].debugMark!"_Stz,     &Step::vTaskDebugMarkStore);
   vAddStep("[task].dropLock"_Stz,       &Step::vTaskDropLock);
   vAddStep("[task].dump"_Stz,           &Step::vTaskDump);
   vAddStep("[task].exception"_Stz,      &Step::vTaskException);
@@ -237,6 +239,30 @@ void Step::vTaskBreakPoint(void)
 {
   ENTRY();
     
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].debugMark@ -- debug mark fetch                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskDebugMarkFetch(void)
+{
+  ENTRY();
+    
+  m_pDataStack->vPushInt(m_iDebugMark);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].debugMark! -- debug mark store                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskDebugMarkStore(void)
+{
+  ENTRY();
+    
+  m_iDebugMark = m_pDataStack->iPopInt(__func__);
+
   EXIT();
 }
 

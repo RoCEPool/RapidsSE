@@ -21235,6 +21235,8 @@ void Task::vAddMunged(Task* )
     "  [job].originNodeId@ pJob_Begun job.reply\n"
     "  pJob_Begun job.delete\n"
     "\n"
+    "  1 [task].debugMark!\n"
+    "\n"
     "  //0 locals| pJob_Begun |\n"
     "  //\"begun_2\" api::forkGeneric_noWait\n"
     "\n"

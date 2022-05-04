@@ -110,9 +110,10 @@ void Task::vTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  m_iDebugMark   = 0;
   m_pProfile     = nullptr;
 
-  m_pInvokingTask     = nullptr;
+  m_pInvokingTask = nullptr;
   m_pThread      = nullptr;
   
   m_bIsStart     = false;

@@ -31,6 +31,8 @@ namespace BASE
   friend class STORE::Job; // temp
 
   private:
+  
+    i8 m_iDebugMark;
 
     Gid_t<CN_TASK>  m_xTaskId;  // task id in grid
     s32 m_sTaskNm;  // name of this task

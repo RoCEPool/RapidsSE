@@ -351,6 +351,8 @@
   [job].originNodeId@ pJob_Begun job.reply
   pJob_Begun job.delete
 
+  1 [task].debugMark!
+
   //0 locals| pJob_Begun |
   //"begun_2" api::forkGeneric_noWait
 
