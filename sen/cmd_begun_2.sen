@@ -11,8 +11,10 @@
 /*----------------------------------------------------------------------------*/
 /* on originating node                                                        */
 /*----------------------------------------------------------------------------*/
-: begun:onOrigin
+: begun_2:onOrigin
 
+  "begun_2:onOrigin" .
+  
   // find the originating job
   
   [job].parentId@ ListedJob[].findOriginator? if
@@ -24,9 +26,7 @@
   then
   
   [job]:retire
-  
   HAZARD
-
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -36,25 +36,32 @@
 /*----------------------------------------------------------------------------*/
 /* run this received Job_Begun on originating node                            */
 /*----------------------------------------------------------------------------*/
-: begun:begun
+: begun_2:begun_2
+
+  "begun_2:begun_2" .
+
+  "begun_2:onOrigin" [job].entryPoint!
 
   [job].parentOriginNodeId@ [grid].findNodeByNo to SendNode[]
   
   [job] job.send
 
   nullptr to SendNode[]
+  
+  [job]:retire
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-cmdSyntax: begun :: begun ;
+cmdSyntax: begun_2 :: begun_2 ;
 
-: begun_cmdTags _cmdTags tagCopy: genericJob_tags
+: begun_2_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>     = "--desc for job--"
-    <entryPoint>  = "begun:begun"
+    <entryPoint>  = "begun_2:begun_2"
     <path>        = "/"
   }
 ;
