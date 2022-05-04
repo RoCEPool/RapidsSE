@@ -30,7 +30,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.profile@"_Stz,        &Step::vTaskProfileFetch);
   vAddStep("task.profile!"_Stz,        &Step::vTaskProfileStore);
   vAddStep("task.state@"_Stz,          &Step::vTaskStateFetch);
-  vAddStep("task.thread@"_Stz,         &Step::vTaskThread);
+
   
   // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -53,6 +53,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("[task].sleepMsec"_Stz,      &Step::vTaskSleepMsec);
   vAddStep("[task].sleepSsec"_Stz,      &Step::vTaskSleepSsec);
   vAddStep("[task].sleepUsec"_Stz,      &Step::vTaskSleepUsec);
+  vAddStep("[task].thread@"_Stz,        &Step::vTaskThreadFetch);
   vAddStep("[task].transition!"_Stz,    &Step::vTaskTransitionStore);
   vAddStep("[task].wait"_Stz,           &Step::vTaskWait);
   vAddStep("[task].yield"_Stz,          &Step::vTaskYield);
@@ -188,22 +189,6 @@ void Step::vTaskStateFetch(void)
   eTS eState = pThatTask->m_eState;
   
   m_pDataStack->vPushInt((i8)eState);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.thread@ -- push given tasks thread                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskThread(void)
-{
-  ENTRY();
-  
-  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
-
-  Thread* pThread = pThatTask->m_pThread;
-  m_pDataStack->vPushPtr(pThread);
-  ASSERT(pThread);
   
   EXIT();
 }
@@ -475,6 +460,18 @@ void Step::vTaskSleepUsec(void)
   vGrabTaskLock((Stz*)__func__);
   vScheduleSleep();
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].thread@ -- push this tasks thread                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskThreadFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushPtr(m_pThread);
+  
   EXIT();
 }
 

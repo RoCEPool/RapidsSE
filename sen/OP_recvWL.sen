@@ -9,8 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : recvWL_init ( -- )
 
-  //CN_JOB [task] task.thread@ thread.dedicated!
-
   NS_ACTIVE [grid].thisNodeNo@ [grid].findNodeByNo node.state!
 
   [args].verbose if

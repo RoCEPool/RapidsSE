@@ -2098,7 +2098,7 @@ public:
   void vTaskSleepSsec(void);
   void vTaskSleepUsec(void);
   void vTaskStateFetch(void);
-  void vTaskThread(void);
+  void vTaskThreadFetch(void);
   void vTaskTransitionStore(void);
   void vTaskWait(void);
   void vTaskYield(void);
