@@ -17,7 +17,7 @@
   // "cancelled:cancelled" .
 
   // find the originating job
-  [job].parentId@ ListedJob[].findOriginator discard
+  [job].parentId@ ListedJob[].findOriginator? discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

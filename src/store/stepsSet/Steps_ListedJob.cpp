@@ -20,8 +20,8 @@ void Step::vAddSteps_ListedJob(void)
   vAddStep("ListedJob[]"_Stz,                 &Step::vListedJobPointer);
 
   vAddStep("ListedJob[].assertNoRef"_Stz,     &Step::vListedJobAssertNoRef);
-  vAddStep("ListedJob[].findOriginator"_Stz,  &Step::vListedJobFindOriginator);
-  vAddStep("ListedJob[].findParticipant"_Stz, &Step::vListedJobFindParticipant);
+  vAddStep("ListedJob[].findOriginator?"_Stz, &Step::vListedJobFindOriginator);
+  vAddStep("ListedJob[].findParticipant?"_Stz,&Step::vListedJobFindParticipant);
   vAddStep("ListedJob[].hasTask"_Stz,         &Step::vListedJobHasTask);
   vAddStep("ListedJob[].references"_Stz,      &Step::vListedJobReferences);
   vAddStep("ListedJob[].returnReference"_Stz, &Step::vListedJobReturn);
@@ -42,7 +42,7 @@ void Step::vListedJobAssertNoRef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ListedJob[].findOriginator -- find job from originator job set             */
+/* ListedJob[].findOriginator? -- find job from originator job set             */
 /*----------------------------------------------------------------------------*/
 void Step::vListedJobFindOriginator(void)
 {
@@ -65,7 +65,7 @@ void Step::vListedJobFindOriginator(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ListedJob[].findParticipant -- find job from participant job set           */
+/* ListedJob[].findParticipant? -- find job from participant job set           */
 /*----------------------------------------------------------------------------*/
 void Step::vListedJobFindParticipant(void)
 {

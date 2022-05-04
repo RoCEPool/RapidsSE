@@ -16,7 +16,7 @@
   // "execute:execute" .
 
   // find job to be executed in participating job list
-  [job].parentId@ ListedJob[].findParticipant discard
+  [job].parentId@ ListedJob[].findParticipant? discard
 
   // stall till job's previous phase (task) has completed
   begin

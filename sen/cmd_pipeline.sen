@@ -478,16 +478,6 @@
 
   pJob_Ended job.delete
 
-
-/*
-  JS_DELETABLE [job].state!            // job retires
-  [job].addRetired
-
-  [task].grabLock
-    [job] [exitDemon]:queueJob
-    TR_RETIRE_THIS_TASK [task].transition!
-*/
-
   [job]:retire
   
   HAZARD
@@ -519,15 +509,6 @@
   [job].originNodeId@ pJob_Cancelled job.reply
 
   pJob_Cancelled job.delete
-
-/*
-  JS_DELETABLE [job].state!
-  [job].addRetired
-  
-  [task].grabLock
-    [job] [exitDemon]:queueJob
-    TR_RETIRE_THIS_TASK [task].transition!
-*/
 
   [job]:retire
   
