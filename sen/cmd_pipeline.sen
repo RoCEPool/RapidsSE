@@ -178,16 +178,13 @@
 
     [job].tscExecuting
 
-    "execute" api::newGenericJob to pJob_Execute
-
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      pJob_Execute job:broadcast
+      "execute" api::forkGeneric_noWait
     [task].wait
 
     [job].tscExecuted
 
-    pJob_Execute job.delete
   then
   
   
@@ -203,16 +200,13 @@
     
     [job].tscEnding
     
-    "end" api::newGenericJob to pJob_End
-
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      pJob_End job:broadcast
+      "end" api::forkGeneric_noWait
     [task].wait
 
     [job].tscEnded
 
-    pJob_End job.delete
   then
 
 
@@ -347,20 +341,8 @@
   // reply begun to originator
 
   // send the begun job
-  "begun" api::newGenericJob locals| pJob_Begun |
-  [job].originNodeId@ pJob_Begun job.reply
-  pJob_Begun job.delete
-
   1 [task].debugMark!
-
-  //0 locals| pJob_Begun |
-  //"begun_2" api::forkGeneric_noWait
-
-
-  
-  
-  
-  //"pipeline:begin post begun:reply" [job].progress
+  "begun" api::forkGeneric_noWait
 
   [ddlLock].testDrop
 
@@ -372,6 +354,8 @@
     
   [task].grabLock
         
+    //1 [task].trace!
+    //[task].preHibernate
     TR_HIBERNATE_THIS_TASK [task].transition!
 
   HAZARD
@@ -383,6 +367,8 @@
 : pipeline:execute ( -- )
 
   //"pipeline:execute" .
+  
+
   
   0 locals| nAcks |
   
@@ -397,11 +383,12 @@
 
   // set task's dictionary stack from path in job
   //<path> str.toStrVec Path[].set
-  //[task].dump
 
+ 
   // acquire ddl lock
   [ddlLock]:acquireLock
   
+ 
   [job].assertStructure
 
 
@@ -417,7 +404,7 @@
   deck:invoke
   nullptr to Deck[]
 
-  
+ 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has executed
   
@@ -429,19 +416,14 @@
   [ddlLock].testDrop
   ListedJob[].assertNoRef
   
-  
+ 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply executed to originator
   
-  //[job] executed:reply
   
-  // new a temporary Job_Executed
-  "executed" api::newGenericJob locals| pJob_Executed |
-
   // send the executed job
-  [job].originNodeId@ pJob_Executed job.reply
+  "executed" api::forkGeneric_noWait
 
-  pJob_Executed job.delete
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task hibernates (with job in participant list)
@@ -470,15 +452,8 @@
   JP_ENDED [job].phase!                // this job has ended
   [job].removeParticipant
 
-  //[job] ended:reply                    // reply ended to originator
-
-  // new a temporary Job_Ended
-  "ended" api::newGenericJob locals| pJob_Ended |
-
   // send the ended job
-  [job].originNodeId@ pJob_Ended job.reply
-
-  pJob_Ended job.delete
+  "ended" api::forkGeneric_noWait
 
   [job]:retire
   HAZARD
@@ -489,7 +464,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:cancel ( -- )
 
-  // "pipeline:cancel" .
+  //"pipeline:cancel" .
   
   [job].assertStructure
   [job].assertParticipant
@@ -502,14 +477,8 @@
 
   [job].removeParticipant
 
-  //[job] cancelled:reply
-  // new a temporary Job_Cancelled
-  "cancelled" api::newGenericJob locals| pJob_Cancelled |
-
   // send the cancelled job
-  [job].originNodeId@ pJob_Cancelled job.reply
-
-  pJob_Cancelled job.delete
+  "cancelled" api::forkGeneric_noWait
 
   [job]:retire
   

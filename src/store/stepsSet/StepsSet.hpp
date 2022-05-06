@@ -815,12 +815,8 @@ public:
   void vJobCascadeFetch(void);
   void vJobCascadeStore(void);
 
-  void vJobDelete(void);
-
   void vJobEntryPointFetch(void);
-  void vJobEntryFetch_other(void);
   void vJobEntryPointStore(void);
-  void vJobEntryStore_other(void);
   void vJobErrorFetch(void);
   void vJobErrorStore(void);
 
@@ -834,7 +830,6 @@ public:
   void vJobIdFetch(void);
   void vJobIdFetch_other(void);
 
-  void vJobJobClass(void);
   void vJobJobListFetch(void);
 
   void vJobLastJobIdFetch(void);
@@ -843,7 +838,6 @@ public:
   void vJobMasterJob(void);
 
   void vJobNameFetch(void);
-  void vJobNoWaitFetch(void);
 
   void vJobOriginNodeIdFetch(void);
 
@@ -1707,6 +1701,7 @@ public:
   void vSenCompilerIsDiscarding(void);
   void vSenCompilerIsInterpreting(void);
   void vSenCompilerIsPostponing(void);
+  void vSenCompilerLocalsFetch(void);
   void vSenCompilerNestedFetch(void);
   void vSenCompilerNestedStore(void);
   void vSenCompilerPostponing(void);
@@ -2086,6 +2081,7 @@ public:
   void vTaskNameFetch(void);
   void vTaskOperandYieldFetch(void);
   void vTaskOperandYieldStore(void);
+  void vTaskPreHibernate(void);
   void vTaskProfileFetch(void);
   void vTaskProfileStore(void);
   void vTaskReleaseLockSets(void);
@@ -2098,6 +2094,8 @@ public:
   void vTaskSleepUsec(void);
   void vTaskStateFetch(void);
   void vTaskThreadFetch(void);
+  void vTaskTraceFetch(void);
+  void vTaskTraceStore(void);
   void vTaskTransitionStore(void);
   void vTaskWait(void);
   void vTaskYield(void);

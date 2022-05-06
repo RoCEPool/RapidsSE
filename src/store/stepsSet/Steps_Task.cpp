@@ -45,6 +45,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("[task].name@"_Stz,          &Step::vTaskNameFetch);
   vAddStep("[task].operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
   vAddStep("[task].operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
+  vAddStep("[task].preHibernate"_Stz,   &Step::vTaskPreHibernate);
   vAddStep("[task].releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
   vAddStep("[task].seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
   vAddStep("[task].seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
@@ -52,6 +53,8 @@ void Step::vAddSteps_Task(void)
   vAddStep("[task].sleepMsec"_Stz,      &Step::vTaskSleepMsec);
   vAddStep("[task].sleepSsec"_Stz,      &Step::vTaskSleepSsec);
   vAddStep("[task].sleepUsec"_Stz,      &Step::vTaskSleepUsec);
+  vAddStep("[task].trace@"_Stz,         &Step::vTaskTraceFetch);
+  vAddStep("[task].trace!"_Stz,         &Step::vTaskTraceStore);
   vAddStep("[task].thread@"_Stz,        &Step::vTaskThreadFetch);
   vAddStep("[task].transition!"_Stz,    &Step::vTaskTransitionStore);
   vAddStep("[task].wait"_Stz,           &Step::vTaskWait);
@@ -346,6 +349,28 @@ void Step::vTaskOperandYieldStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [task].preHibernate -- get task ready to hibernate                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskPreHibernate(void)
+{
+  ENTRY();
+    
+//  m_pAuxStack->vReset();
+//  m_pDataStack->vReset();
+//  m_pReturnStack->vReset();
+  
+  while (m_pLocalsFrame) {
+    
+    LocalChain* pLocalsFrame = m_pLocalsFrame;
+    m_pLocalsFrame = m_pLocalsFrame->pNext();
+    
+    delete pLocalsFrame;
+  }
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [task].releaseLockSets -- release all locks in read and write lock sets    */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskReleaseLockSets(void)
@@ -452,6 +477,30 @@ void Step::vTaskThreadFetch(void)
   ENTRY();
   
   m_pDataStack->vPushPtr(m_pThread);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].trace@ -- fetch trace mask                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskTraceFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_iTraceMask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].trace! -- store trace mask                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskTraceStore(void)
+{
+  ENTRY();
+  
+  m_iTraceMask = m_pDataStack->iPopInt(__func__);
   
   EXIT();
 }
