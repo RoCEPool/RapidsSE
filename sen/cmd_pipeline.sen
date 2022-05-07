@@ -235,7 +235,7 @@
     HAZARD
 
   else
-  [job] job.hasCascade@ not if
+  [job] job(Id).hasCascade@ not if
     [ddlLock].testDrop
     ListedJob[].assertNoRef
 

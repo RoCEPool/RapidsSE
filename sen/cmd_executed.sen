@@ -44,7 +44,7 @@
 
   [job].parentOriginNodeId@ [grid].findNodeByNo to SendNode[]
   
-  [job] job.send
+  [job] job(Id).send
 
   nullptr to SendNode[]
   
