@@ -52,6 +52,7 @@ Job::Job(Stz* szJobNm, JobId tParentId)
  
   m_tJobId.vNextJobId();
   m_tParentId = tParentId;
+  m_tDistId = C_UNKNOWN;
 
   m_sJobNm   = szJobNm;
   m_eJobKind = JK_NONE;
@@ -315,6 +316,26 @@ void Job::vCmd(Stz* szCmd)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get distributed job id                                                     */
+/*----------------------------------------------------------------------------*/
+JobId Job::tDistId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_tDistId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set distributed job id                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vDistId(JobId tDistId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_tDistId = tDistId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Job::vDropLock(void)
@@ -542,6 +563,16 @@ JobId Job::tJobId(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the job id from distributed id                                         */
+/*----------------------------------------------------------------------------*/
+void  Job::vJobIdFromDist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_tJobId = m_tDistId;
 }
 
 /*----------------------------------------------------------------------------*/

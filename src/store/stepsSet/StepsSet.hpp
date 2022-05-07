@@ -815,6 +815,9 @@ public:
   void vJobIdCascadeFetch(void);
   void vJobIdCascadeStore(void);
 
+  void vJobDistIdFetch(void);
+  void vJobDistIdGenerate(void);
+
   void vJobEntryPointFetch(void);
   void vJobEntryPointStore(void);
   void vJobErrorFetch(void);

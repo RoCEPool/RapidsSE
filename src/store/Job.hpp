@@ -36,7 +36,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // universally immutable information                    UNIVERSAL
 
     JobId   m_tJobId;      // this job's id
-    JobId   m_tParentId;   // parents command id
+    JobId   m_tParentId;   // job id of parent
+    JobId   m_tDistId;     // distributed id
+  
     s32     m_sJobNm;      // name of job
     eJK     m_eJobKind;    // job kind: (needs work)
 
@@ -136,6 +138,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
+    JobId tDistId(void);
+    void vDistId(JobId tDistId);
     void vDotPrint(Stz* szText);
     void vDropLock(void);
 
@@ -158,9 +162,10 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool bIsPipeline(void);
     bool bIsPipelineLocal(void);
   
-    JobId tJobId(void);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
+    JobId tJobId(void);
+    void vJobIdFromDist(void);
     eJK  eJobKind(void);
     void vJobKind(eJK eJobKind);
     eJL  eJobList(void);

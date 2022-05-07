@@ -44,6 +44,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].assertReceived"_Stz,   &Step::vJobAssertReceived);
   vAddStep("[job].assertStructure"_Stz,  &Step::vJobAssertStructure);
 
+  vAddStep("[job].distId@"_Stz,          &Step::vJobDistIdFetch);
+  vAddStep("[job].distIdGenerate"_Stz,   &Step::vJobDistIdGenerate);
+
   vAddStep("[job].entryPoint@"_Stz,      &Step::vJobEntryPointFetch);
   vAddStep("[job].entryPoint!"_Stz,      &Step::vJobEntryPointStore);
 
@@ -396,6 +399,30 @@ void Step::vJobAssertStructure(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].distId@ -- fetch the distributed id of the job                       */
+/*----------------------------------------------------------------------------*/
+void Step::vJobDistIdFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pJob->tDistId().iAsI8());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].distIdGenerate -- generate a distributed id for the job              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobDistIdGenerate(void)
+{
+  ENTRY();
+    
+  m_pJob->tDistId().vNextJobId();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].entryPoint@ -- fetch the job sen entry code                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobEntryPointFetch(void)
@@ -571,7 +598,7 @@ void Step::vJobParentOriginNodeIdFetch(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* job.participantNodeId@ -- fetch the participant node from the job          */
+/* [job].participantNodeId@ -- fetch the participant node from the job        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobParticipantNodeIdFetch(void)
 {
@@ -629,7 +656,7 @@ void Step::vJobIdPhaseFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.preExecuteTest -- test if job can be run                               */
+/* [job].preExecuteTest -- test if job can be run                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobPreExecuteTest(void)
 {
@@ -830,8 +857,6 @@ void Step::vJobSignalWaiter(void)
 
   EXIT();
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* [job].phase@ -- fetch the job phase                                        */
@@ -1043,7 +1068,7 @@ void Step::vJobWasForkedFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].phase! -- store if the job was forked                                */
+/* [job].wasForked! -- store if the job was forked                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJobWasForkedStore(void)
 {
