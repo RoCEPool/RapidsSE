@@ -4,7 +4,7 @@
 
 " op__classWords.sen" .verbose
 
-  find: job.dispatch CN_JOB class::postRecvWord!
+  find: job:spawn CN_JOB class::postRecvWord!
 
   find: parcel.dispatch CN_PARCEL class::postRecvWord!
 

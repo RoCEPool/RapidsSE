@@ -56,7 +56,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.reapable!"_Stz,        &Step::vJobReapableStore_other);
   
   vAddStep("job.show"_Stz,             &Step::vJobShow);
-  vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
   vAddStep("job.systemCloser?"_Stz,    &Step::vJobSystemCloserFetch);
   vAddStep("job.systemCloser!"_Stz,    &Step::vJobSystemCloserStore);
 
@@ -437,7 +436,9 @@ void Step::vJobCascadeFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushStz(pJob ->szCascade());
+  sSTMT sStmt;
+  pJob->vStmtListPop(sStmt);
+  m_pDataStack->vPushStz(sStmt);
   
   EXIT();
 }
@@ -454,7 +455,7 @@ void Step::vJobCascadeStore(void)
   s16KB sStmt;
   m_pDataStack->vPopStr(sStmt,__func__);
   
-  pJob->vCascadeAppend(sStmt);
+  pJob->vStmtListAppend(sStmt);
 
   EXIT();
 }
@@ -589,7 +590,7 @@ void Step::vJobHasCascadeFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushInt(pJob->bHasCascade());
+  m_pDataStack->vPushInt(pJob->bHasStmtList());
   
   EXIT();
 }
@@ -1068,24 +1069,6 @@ void Step::vJobRemoveRetired(void)
   EXIT();
 }
   
-/*----------------------------------------------------------------------------*/
-/* job.scheduleNextPhase -- schedule next phase for the job                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobScheduleNextPhase(void)
-{
-  ENTRY();
-    
-  Job* pJobParticipant = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  Task* pTaskParticipant = pJobParticipant->pTask();
-  RASSERT(pTaskParticipant);
-  
-  AM::vScheduleNextPhase(pJobParticipant,this);
-
-  
-  EXIT();
-}
-
 /*----------------------------------------------------------------------------*/
 /* job.show -- show the job                                                   */
 /*----------------------------------------------------------------------------*/

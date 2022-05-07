@@ -21,7 +21,6 @@ namespace BASE
   private:
     static void vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_HibernateThisTask(Task* pSelfTask, Thread* pThread);
-    static void vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_RetireThisTask(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_SleepSomeTime(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_WaitForResume(Task* pSelfTask, Thread* pThread);
