@@ -123,7 +123,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Job(Stz* szJobNm, JobId tParentId);
+    Job(Stz* szJobNm, JobId tParentId, JobId tDistId);
 
    ~Job(void) noexcept(false);
   

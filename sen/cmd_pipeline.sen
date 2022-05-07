@@ -155,6 +155,7 @@
   [job].error@ not if
     // + compiled without error..
     
+    [job].distIdGenerate
     "pipeline:begin" [job].entryPoint!
     
     [task].grabLock

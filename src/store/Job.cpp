@@ -43,7 +43,7 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm, JobId tParentId)
+Job::Job(Stz* szJobNm, JobId tParentId, JobId tDistId)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -52,7 +52,7 @@ Job::Job(Stz* szJobNm, JobId tParentId)
  
   m_tJobId.vNextJobId();
   m_tParentId = tParentId;
-  m_tDistId = C_UNKNOWN;
+  m_tDistId = tDistId;
 
   m_sJobNm   = szJobNm;
   m_eJobKind = JK_NONE;

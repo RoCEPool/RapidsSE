@@ -14,7 +14,7 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // external API functions
   
-  static Job* pAllocJob(Stz* szJobNm);
+  static Job* pAllocJob(Stz* szJobNm, JobId tParentId, JobId tDistId);
 
   static eEC  eForkJob(JobId& rtChildJobId, Job* pParentJob,
                        TokenVec* pCmdTknVec, TagSet* pCmdTagSet,

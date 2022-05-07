@@ -21008,6 +21008,7 @@ void Task::vAddMunged(Task* )
     "  [job].error@ not if\n"
     "    // + compiled without error..\n"
     "    \n"
+    "    [job].distIdGenerate\n"
     "    \"pipeline:begin\" [job].entryPoint!\n"
     "    \n"
     "    [task].grabLock\n"

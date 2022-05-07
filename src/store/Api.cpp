@@ -36,14 +36,11 @@ extern pthread_key_t giTLS_StepKey;
 /*----------------------------------------------------------------------------*/
 /* alloc a new job                                                            */
 /*----------------------------------------------------------------------------*/
-Job* Api::pAllocJob(Stz* szJobNm)
+Job* Api::pAllocJob(Stz* szJobNm, JobId tParentId, JobId tDistId)
 {
   _static_
-
-  JobId tParentId;
-  tParentId.vNextJobId();
   
-  Job* pJob = new Job(szJobNm,tParentId);
+  Job* pJob = new Job(szJobNm,tParentId,tDistId);
 
   return pJob;
 }
@@ -121,7 +118,19 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alloc job
   
-  rpChildJob_tbr = Api::pAllocJob(szJobNm);
+  JobId tParentId;
+  if (pParentJob)
+    tParentId = pParentJob->tJobId();
+  else
+    tParentId = C_UNKNOWN;
+  
+  JobId tDistId;
+  if (pParentJob)
+    tDistId = pParentJob->tDistId();
+  else
+    tDistId = C_UNKNOWN;
+
+  rpChildJob_tbr = Api::pAllocJob(szJobNm,tParentId,tDistId);
   rtChildJobId = rpChildJob_tbr->tJobId();
 
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
@@ -250,7 +259,10 @@ Job* Api::pNewGenericJob(Stz* szJobNm, JobId tParentId)
 {
   _static_
   
-  Job* pJobGeneric = new Job(szJobNm,tParentId);
+  JobId tDistId;
+  tDistId = C_UNKNOWN;
+  
+  Job* pJobGeneric = new Job(szJobNm,tParentId,tDistId);
   
   pJobGeneric->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobGeneric->vJobKind(JK_GENERIC);
@@ -502,7 +514,10 @@ void Api::vCallBootSystemJob(void)
   JobId tParentId;
   tParentId.vNextJobId();
   
-  Job* pBootJob = new Job("bootSystem"_Stz,tParentId);
+  JobId tDistId;
+  tDistId = C_UNKNOWN;
+
+  Job* pBootJob = new Job("bootSystem"_Stz,tParentId,tDistId);
   
   Stz* szJobNm = pBootJob->szJobNm();
   Task* pBootTask = new Task(szJobNm,pBootJob);
@@ -560,7 +575,11 @@ void Api::vCallStartSystemJob(void)
   JobId tParentId;
   tParentId.vNextJobId();
   
-  Job* pStartJob = new Job("startSystem"_Stz,tParentId);
+  JobId tDistId;
+  tDistId = C_UNKNOWN;
+
+
+  Job* pStartJob = new Job("startSystem"_Stz,tParentId,tDistId);
   
   Stz* szJobNm = pStartJob->szJobNm();
   Task* pStartTask = new Task(szJobNm,pStartJob);
