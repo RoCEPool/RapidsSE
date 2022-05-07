@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Job.cpp - job step group                                             */
+/* Steps_job(Id).cpp - job step group                                         */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -30,43 +30,43 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobId(void)
 {
-  vAddStep("job(Id).cascade@"_Stz,       &Step::vJobCascadeFetch);
-  vAddStep("job(Id).cascade!"_Stz,       &Step::vJobCascadeStore);
+  vAddStep("job(Id).cascade@"_Stz,       &Step::vJobIdCascadeFetch);
+  vAddStep("job(Id).cascade!"_Stz,       &Step::vJobIdCascadeStore);
     
-  vAddStep("job(Id).folderPath@"_Stz,    &Step::vJobFolderPathFetch);
-  vAddStep("job(Id).folderPath!"_Stz,    &Step::vJobFolderPathStore);
+  vAddStep("job(Id).folderPath@"_Stz,    &Step::vJobIdFolderPathFetch);
+  vAddStep("job(Id).folderPath!"_Stz,    &Step::vJobIdFolderPathStore);
   
-  vAddStep("job(Id).hasCascade@"_Stz,    &Step::vJobHasCascadeFetch);
+  vAddStep("job(Id).hasCascade@"_Stz,    &Step::vJobIdHasCascadeFetch);
   
-  vAddStep("job(Id).id@"_Stz,            &Step::vJobIdFetch_other);
+  vAddStep("job(Id).id@"_Stz,            &Step::vJobIdIdFetch);
   
-  vAddStep("job(Id).jobList@"_Stz,       &Step::vJobJobListFetch);
+  vAddStep("job(Id).jobList@"_Stz,       &Step::vJobIdJobListFetch);
     
-  vAddStep("job(Id).lastJobId@"_Stz,     &Step::vJobLastJobIdFetch);
-  vAddStep("job(Id).lastJobId!"_Stz,     &Step::vJobLastJobIdStore);
+  vAddStep("job(Id).lastJobId@"_Stz,     &Step::vJobIdLastJobIdFetch);
+  vAddStep("job(Id).lastJobId!"_Stz,     &Step::vJobIdLastJobIdStore);
   
-  vAddStep("job(Id).masterJob"_Stz,      &Step::vJobMasterJob);
+  vAddStep("job(Id).masterJob"_Stz,      &Step::vJobIdMasterJob);
   
-  vAddStep("job(Id).name@"_Stz,          &Step::vJobNameFetch);
+  vAddStep("job(Id).name@"_Stz,          &Step::vJobIdNameFetch);
   
-  vAddStep("job(Id).phase@"_Stz,         &Step::vJobPhaseFetch_other);
-  vAddStep("job(Id).pipeToOp0"_Stz,      &Step::vJobPipeToOp0);
+  vAddStep("job(Id).phase@"_Stz,         &Step::vJobIdPhaseFetch);
+  vAddStep("job(Id).pipeToOp0"_Stz,      &Step::vJobIdPipeToOp0);
 
-  vAddStep("job(Id).reapable@"_Stz,      &Step::vJobReapableFetch_other);
-  vAddStep("job(Id).reapable!"_Stz,      &Step::vJobReapableStore_other);
+  vAddStep("job(Id).reapable@"_Stz,      &Step::vJobIdReapableFetch);
+  vAddStep("job(Id).reapable!"_Stz,      &Step::vJobIdReapableStore);
   
-  vAddStep("job(Id).show"_Stz,           &Step::vJobShow);
-  vAddStep("job(Id).systemCloser?"_Stz,  &Step::vJobSystemCloserFetch);
-  vAddStep("job(Id).systemCloser!"_Stz,  &Step::vJobSystemCloserStore);
+  vAddStep("job(Id).show"_Stz,           &Step::vJobIdShow);
+  vAddStep("job(Id).systemCloser?"_Stz,  &Step::vJobIdSystemCloserFetch);
+  vAddStep("job(Id).systemCloser!"_Stz,  &Step::vJobIdSystemCloserStore);
 
-  vAddStep("job(Id).task@"_Stz,          &Step::vJobTaskFetch_other);
+  vAddStep("job(Id).task@"_Stz,          &Step::vJobIdTaskFetch);
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* job.cascade@ -- fetch sCascade from job                                    */
+/* job(Id).cascade@ -- fetch sCascade from job                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJobCascadeFetch(void)
+void Step::vJobIdCascadeFetch(void)
 {
   ENTRY();
   
@@ -80,9 +80,9 @@ void Step::vJobCascadeFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.cascade! -- store sCascade into job                                    */
+/* job(Id).cascade! -- store sCascade into job                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJobCascadeStore(void)
+void Step::vJobIdCascadeStore(void)
 {
   ENTRY();
   
@@ -97,9 +97,9 @@ void Step::vJobCascadeStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.folderPath@ -- fetch folder path from job                              */
+/* job(Id).folderPath@ -- fetch folder path from job                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJobFolderPathFetch(void)
+void Step::vJobIdFolderPathFetch(void)
 {
   ENTRY();
   
@@ -113,9 +113,9 @@ void Step::vJobFolderPathFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.folderPath! -- store folder path into job                              */
+/* job(Id).folderPath! -- store folder path into job                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJobFolderPathStore(void)
+void Step::vJobIdFolderPathStore(void)
 {
   ENTRY();
   
@@ -130,9 +130,9 @@ void Step::vJobFolderPathStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.hasCascade@ -- fetch bHasCascade from session                          */
+/* job(Id).hasCascade@ -- fetch bHasCascade from session                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobHasCascadeFetch(void)
+void Step::vJobIdHasCascadeFetch(void)
 {
   ENTRY();
   
@@ -144,9 +144,9 @@ void Step::vJobHasCascadeFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.id@ -- fetch the job id of the job                                     */
+/* job(Id).id@ -- fetch the job id of the job                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJobIdFetch_other(void)
+void Step::vJobIdIdFetch(void)
 {
   ENTRY();
   
@@ -158,9 +158,9 @@ void Step::vJobIdFetch_other(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.jobList@ -- fetch job list                                             */
+/* job(Id).jobList@ -- fetch job list                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJobJobListFetch(void)
+void Step::vJobIdJobListFetch(void)
 {
   ENTRY();
   
@@ -172,9 +172,9 @@ void Step::vJobJobListFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.lastJobId@ -- fetch last job id from job                               */
+/* job(Id).lastJobId@ -- fetch last job id from job                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobLastJobIdFetch(void)
+void Step::vJobIdLastJobIdFetch(void)
 {
   ENTRY();
   
@@ -188,9 +188,9 @@ void Step::vJobLastJobIdFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.lastJobId! -- store last job id into job                               */
+/* job(Id).lastJobId! -- store last job id into job                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobLastJobIdStore(void)
+void Step::vJobIdLastJobIdStore(void)
 {
   ENTRY();
   
@@ -208,9 +208,9 @@ void Step::vJobLastJobIdStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.masterJob -- get the master job of this (participant/local) job        */
+/* job(Id).masterJob -- get the master job of this (participant/local) job    */
 /*----------------------------------------------------------------------------*/
-void Step::vJobMasterJob(void)
+void Step::vJobIdMasterJob(void)
 {
   ENTRY();
   
@@ -229,9 +229,9 @@ void Step::vJobMasterJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.name@ -- get name of job                                               */
+/* job(Id).name@ -- get name of job                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobNameFetch(void)
+void Step::vJobIdNameFetch(void)
 {
   ENTRY();
   
@@ -244,9 +244,9 @@ void Step::vJobNameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.pipeToOp0 -- append operand onto op0 of given job                      */
+/* job(Id).pipeToOp0 -- append operand onto op0 of given job                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJobPipeToOp0(void)
+void Step::vJobIdPipeToOp0(void)
 {
   ENTRY();
 
@@ -265,9 +265,9 @@ void Step::vJobPipeToOp0(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.reapable@ -- fetch the job reapable flag                               */
+/* job(Id).reapable@ -- fetch the job reapable flag                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobReapableFetch_other(void)
+void Step::vJobIdReapableFetch(void)
 {
   ENTRY();
   
@@ -279,9 +279,9 @@ void Step::vJobReapableFetch_other(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.reapable! -- store the job reapable flag                               */
+/* job(Id).reapable! -- store the job reapable flag                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobReapableStore_other(void)
+void Step::vJobIdReapableStore(void)
 {
   ENTRY();
   
@@ -295,9 +295,9 @@ void Step::vJobReapableStore_other(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.show -- show the job                                                   */
+/* job(Id).show -- show the job                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJobShow(void)
+void Step::vJobIdShow(void)
 {
   ENTRY();
   
@@ -310,9 +310,9 @@ void Step::vJobShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.systemCloser? -- fetch system closer from job                          */
+/* job(Id).systemCloser? -- fetch system closer from job                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobSystemCloserFetch(void)
+void Step::vJobIdSystemCloserFetch(void)
 {
   ENTRY();
   
@@ -326,9 +326,9 @@ void Step::vJobSystemCloserFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.systemCloser! -- store system closer into job                          */
+/* job(Id).systemCloser! -- store system closer into job                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobSystemCloserStore(void)
+void Step::vJobIdSystemCloserStore(void)
 {
   ENTRY();
   

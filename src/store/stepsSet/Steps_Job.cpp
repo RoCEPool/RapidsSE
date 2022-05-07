@@ -617,7 +617,7 @@ void Step::vJobPhaseFetch(void)
 /*----------------------------------------------------------------------------*/
 /* [job].phase@ -- fetch the job phase                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJobPhaseFetch_other(void)
+void Step::vJobIdPhaseFetch(void)
 {
   ENTRY();
   
@@ -909,7 +909,7 @@ void Step::vJobTaskFetch(void)
 /*----------------------------------------------------------------------------*/
 /* job.task@ -- fetch the task executing the job                              */
 /*----------------------------------------------------------------------------*/
-void Step::vJobTaskFetch_other(void)
+void Step::vJobIdTaskFetch(void)
 {
   ENTRY();
   
