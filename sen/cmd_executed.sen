@@ -17,7 +17,7 @@
 
   // find the originating job
   
-  [job].parentId@ ListedJob[].findOriginator? if
+  [job].distId@ ListedJob[].findOriginator? if
   
     ListedJob[].taskAck
   

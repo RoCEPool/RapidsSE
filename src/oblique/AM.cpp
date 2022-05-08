@@ -2660,6 +2660,8 @@ JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pJobs->pParticipatingJobs(); }
 JobList* AM::pRetiredJobs(void) {
   return gpAttachMap->m_pJobs->pRetiredJobs(); }
+JobList* AM::pJobsList(void) {
+  return gpAttachMap->m_pJobs->pJobsList(); }
 
 
 void AM::vProcessExit(void)   { return Process::vExitFailure();                      }

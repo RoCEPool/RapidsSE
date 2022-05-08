@@ -52,12 +52,16 @@ LOG 'Running index joins with hash...';
 INCLUDE 'indexJoinHash.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 1...';
-//INCLUDE 'query1.test';
+LOG 'Running tpch query 1...';
+INCLUDE 'query1.test';
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch query 3...';
 //INCLUDE 'query3.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 6...';
+INCLUDE 'query6.test';
 
 //------------------------------------------------------------------------------
 // 'truncating tpch tables...';

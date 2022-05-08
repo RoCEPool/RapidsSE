@@ -43,7 +43,7 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm, JobId tParentId)
+Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -52,6 +52,8 @@ Job::Job(Stz* szJobNm, JobId tParentId)
  
   m_tJobId.vNextJobId();
   m_tParentId = tParentId;
+  m_tDistId   = tDistId;
+  m_tOriginId = tOriginId;
 
   m_sJobNm   = szJobNm;
   m_eJobKind = JK_NONE;
@@ -111,6 +113,11 @@ Job::Job(Stz* szJobNm, JobId tParentId)
   
   m_oJobTags.vInsert(C_TAG_PATH,C_SE_PATH);
 
+  if (AM::JLIST::bFindJob(this)) {
+    vTrace("Found job in job list\n"_Stz);
+    RASSERT(0);
+  }
+    
   AM::JLIST::vInsertJob(this);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);
@@ -312,6 +319,36 @@ void Job::vCmd(Stz* szCmd)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   m_oJobTags.vReplace(C_TAG_CMD,szCmd);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get distributed job id                                                     */
+/*----------------------------------------------------------------------------*/
+JobId Job::tDistId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_tDistId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set distributed job id                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vDistId(JobId tDistId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_tDistId = tDistId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate distributed job id                                                */
+/*----------------------------------------------------------------------------*/
+void Job::vDistIdGenerate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_tDistId.vNextJobId();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -542,6 +579,16 @@ JobId Job::tJobId(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the job id from distributed id                                         */
+/*----------------------------------------------------------------------------*/
+void  Job::vJobIdFromDist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_tJobId = m_tDistId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -831,9 +878,29 @@ Job* Job::pOriginatingParentJob(void)
       
   //RASSERT(bIsOnOrigin());
   
-  Job* pParentJob = AM::OLIST::pFindJob(m_tJobId);
+  Job* pParentJob = AM::OLIST::pFindJob(m_tDistId);
   
   return pParentJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get origin job id                                                          */
+/*----------------------------------------------------------------------------*/
+JobId Job::tOriginId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_tOriginId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set distributed job id                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vOriginId(JobId tOriginId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_tOriginId = tOriginId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -843,9 +910,9 @@ i8 Job::iOriginNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  i8 iOriginatorNodeId = m_tJobId.uNodeId();
+  i8 iOriginNodeId = m_tOriginId.uNodeId();
   
-  return iOriginatorNodeId;
+  return iOriginNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1043,28 +1110,30 @@ void Job::vPrintJobLine(void)
            ,this->iParticipantNodeId()
            );
 
-  LogicUnit* pLogicUnit = m_pTask->pLogicUnit();
-  
-  if (pLogicUnit) {
-    if (pLogicUnit->m_xpVertexSpec.bIsNotNull())
+  if (m_pTask) {
+    LogicUnit* pLogicUnit = m_pTask->pLogicUnit();
+    
+    if (pLogicUnit) {
+      if (pLogicUnit->m_xpVertexSpec.bIsNotNull())
+        vTrace("%s "_Stz
+               ,pLogicUnit->m_xpVertexSpec->szVertexNm()
+               );
       vTrace("%s "_Stz
-             ,pLogicUnit->m_xpVertexSpec->szVertexNm()
+             ,aLH[pLogicUnit->m_eDdlLocked]
              );
-    vTrace("%s "_Stz
-           ,aLH[pLogicUnit->m_eDdlLocked]
+    }
+    
+    vTrace("AcksRmg %lld (out of %lld)"_Stz
+           ,this->pTask()->iAcksRmg_assert_only_()
+           ,this->pTask()->iAcksOriginal()
+           );
+
+    vTrace("logicUnit %p task %p"_Stz
+           ,pLogicUnit
+           ,m_pTask
            );
   }
   
-  vTrace("AcksRmg %lld (out of %lld)"_Stz
-         ,this->pTask()->iAcksRmg_assert_only_()
-         ,this->pTask()->iAcksOriginal()
-         );
-
-  vTrace("logicUnit %p task %p"_Stz
-         ,pLogicUnit
-         ,m_pTask
-         );
-
   vTrace("\n"_Stz);
 }
 

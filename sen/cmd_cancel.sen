@@ -16,7 +16,7 @@
   //"cancel:onParticipant" .
 
   // find job to be canceled in participating job list
-  [job].parentId@ ListedJob[].findParticipant? if
+  [job].distId@ ListedJob[].findParticipant? if
 
     // stall till job's previous phase (task) has completed
     begin

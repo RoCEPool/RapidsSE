@@ -36,14 +36,11 @@ extern pthread_key_t giTLS_StepKey;
 /*----------------------------------------------------------------------------*/
 /* alloc a new job                                                            */
 /*----------------------------------------------------------------------------*/
-Job* Api::pAllocJob(Stz* szJobNm)
+Job* Api::pAllocJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 {
   _static_
-
-  JobId tParentId;
-  tParentId.vNextJobId();
   
-  Job* pJob = new Job(szJobNm,tParentId);
+  Job* pJob = new Job(szJobNm,tParentId,tOriginId,tDistId);
 
   return pJob;
 }
@@ -121,7 +118,19 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alloc job
   
-  rpChildJob_tbr = Api::pAllocJob(szJobNm);
+  JobId tParentId;
+  if (pParentJob)
+    tParentId = pParentJob->tJobId();
+  
+  JobId tOriginId;
+  //if (pParentJob)
+  //  tOriginId = pParentJob->tOriginId();
+  
+  JobId tDistId;
+  //if (pParentJob)
+  //  tDistId = pParentJob->tDistId();
+
+  rpChildJob_tbr = Api::pAllocJob(szJobNm,tParentId,tOriginId,tDistId);
   rtChildJobId = rpChildJob_tbr->tJobId();
 
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
@@ -246,11 +255,11 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
 /*----------------------------------------------------------------------------*/
 /* new a generic job        THIS IS TEMP REFACTOR                             */
 /*----------------------------------------------------------------------------*/
-Job* Api::pNewGenericJob(Stz* szJobNm, JobId tParentId)
+Job* Api::pNewGenericJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 {
   _static_
   
-  Job* pJobGeneric = new Job(szJobNm,tParentId);
+  Job* pJobGeneric = new Job(szJobNm,tParentId,tOriginId,tDistId);
   
   pJobGeneric->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   pJobGeneric->vJobKind(JK_GENERIC);
@@ -500,9 +509,15 @@ void Api::vCallBootSystemJob(void)
   _static_
   
   JobId tParentId;
-  tParentId.vNextJobId();
+  RASSERT(tParentId.bIsUnknown());
   
-  Job* pBootJob = new Job("bootSystem"_Stz,tParentId);
+  JobId tOriginId;
+  RASSERT(tOriginId.bIsUnknown());
+
+  JobId tDistId;
+  RASSERT(tDistId.bIsUnknown());
+
+  Job* pBootJob = new Job("bootSystem"_Stz,tParentId,tOriginId,tDistId);
   
   Stz* szJobNm = pBootJob->szJobNm();
   Task* pBootTask = new Task(szJobNm,pBootJob);
@@ -558,9 +573,15 @@ void Api::vCallStartSystemJob(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tParentId;
-  tParentId.vNextJobId();
+  RASSERT(tParentId.bIsUnknown());
   
-  Job* pStartJob = new Job("startSystem"_Stz,tParentId);
+  JobId tOriginId;
+  RASSERT(tOriginId.bIsUnknown());
+
+  JobId tDistId;
+  RASSERT(tDistId.bIsUnknown());
+
+  Job* pStartJob = new Job("startSystem"_Stz,tParentId,tOriginId,tDistId);
   
   Stz* szJobNm = pStartJob->szJobNm();
   Task* pStartTask = new Task(szJobNm,pStartJob);

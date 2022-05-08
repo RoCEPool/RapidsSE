@@ -88,9 +88,9 @@ void Step::vApiForkChild_noWait(void)
   
   Job* pJob = nullptr;
   eEC eError = Api::eForkJob(tChildJobId,m_pJob,
-                           pCmdTknVec,pCmdTagSet,
-                           pJob // TO BE REMOVED
-                           );
+                             pCmdTknVec,pCmdTagSet,
+                             pJob // TO BE REMOVED
+                             );
   RASSERT(EC_NONE == eError);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -196,9 +196,16 @@ void Step::vApiForkGeneric_noWait(void)
 //
 //  m_pDataStack->vPushPtr(pJobBegun);
 
-  JobId tJobId;
-  tJobId = m_pJob->tJobId();
-  Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tJobId);
+  JobId tParentId;
+  tParentId = m_pJob->tParentId();
+  
+  JobId tOriginId;
+  tOriginId = m_pJob->tOriginId();
+  
+  JobId tDistId;
+  tDistId = m_pJob->tDistId();
+  
+  Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tParentId,tOriginId,tDistId);
 
   Api::vSpawnTask_receivedJob(pJobGeneric);
  
@@ -223,9 +230,16 @@ void Step::vApiNewGenericJob(void)
 //  tDistJobId = iDistJobId;
 //  Job* pJobBegun = Api::pNewGenericJob(sEntryNm,tDistJobId);
 
-  JobId tJobId;
-  tJobId = m_pJob->tJobId();
-  Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tJobId);
+  JobId tParentId;
+  tParentId = m_pJob->tParentId();
+  
+  JobId tDistId;
+  tDistId = m_pJob->tDistId();
+  
+  JobId tOriginId;
+  tOriginId = m_pJob->tDistId();
+  
+  Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tParentId,tOriginId,tDistId);
 
   m_pDataStack->vPushPtr(pJobGeneric);
   
