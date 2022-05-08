@@ -905,9 +905,9 @@ i8 Job::iOriginNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  i8 iOriginatorNodeId = m_tJobId.uNodeId();
+  i8 iOriginNodeId = m_tOriginId.uNodeId();
   
-  return iOriginatorNodeId;
+  return iOriginNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
