@@ -63,6 +63,19 @@ void Scheduler::vTaskSelf_LoopTransition(Task* pSelfTask, Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) move task out of executing queue
   
+  eTS eState = pSelfTask->eState();
+  eQK eQueue = pSelfTask->eQueue();
+  if (TS_EXECUTING != eState) {
+    vTrace("vTaskSelf_LoopTransition: \n"
+           "  expecting TS_EXECUTING got %lld %s\n"
+           "  queue %lld %s\n"_Stz,
+           eState,
+           aTS[eState],
+           eQueue,
+           aQK[eQueue]
+           );
+  }
+  
   RASSERT(TS_EXECUTING == pSelfTask->eState());
   RASSERT(QK_EXECUTING_SET == pSelfTask->eQueue());
 
