@@ -2602,7 +2602,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 //             pPoolSnapshot_then->m_nObjects[eClass],
 //             nDelta);
       
-      if (0 == nDelta)
+      if (nDelta <= 0)
         continue;
       
       // we have a memory leak
@@ -2644,7 +2644,7 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
     i8 nDelta = pPoolSnapshot_curr->m_nObjects[eClass] -
                   pPoolSnapshot_then->m_nObjects[eClass];
     
-    if (0 == nDelta)
+    if (nDelta <= 0)
       continue;
     
     vTrace("row: ('%s',  %lld)\n"_Stz,aCN[eClass],nDelta);
