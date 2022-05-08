@@ -273,6 +273,10 @@ true find: CASE word.immediate!
   else
     discard
   then
+  
+  senCompiler::locals@ if
+    POSTPONE locals.pop
+  then
 
   POSTPONE exit_rt
 ;

@@ -17,7 +17,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // store path into the sessions <path>=<...>
   Path[].depth strVec::toPath
-    [op].job@ job.masterJob job.folderPath!
+    [op].job@ job(Id).masterJob job(Id).folderPath!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* print job notice                                                           */
 /*----------------------------------------------------------------------------*/
-: job.notice ( pJob -- )
+: job(Id).notice ( pJob -- )
 
   params| pJob |
 
@@ -64,10 +64,10 @@
 /*----------------------------------------------------------------------------*/
 /* send job (to the node which is in task)                                    */
 /*----------------------------------------------------------------------------*/
-: job.send params| pJob |
+: job(Id).send params| pJob |
 
 
-  //pJob job.name@ [grid].thisNodeName@ "(%v) job.send %v" .printf
+  //pJob job(Id).name@ [grid].thisNodeName@ "(%v) job(Id).send %v" .printf
 
   SendNode[] node.sendSocket@ to Socket[]
 
@@ -83,14 +83,14 @@
 /*----------------------------------------------------------------------------*/
 /* send job to given participating node                                       */
 /*----------------------------------------------------------------------------*/
-: job.forward ( i_Node pJob -- )
+: job(Id).forward ( i_Node pJob -- )
 
   params| pJob |
   params| i_Node |
 
   i_Node [grid].findNodeByNo to SendNode[]
 
-  pJob job.send
+  pJob job(Id).send
   
   nullptr to SendNode[]
 ;
@@ -98,19 +98,19 @@
 /*----------------------------------------------------------------------------*/
 /* send job back to originating node                                          */
 /*----------------------------------------------------------------------------*/
-: job.reply params| pJob iNodeId |
+: job(Id).reply params| pJob iNodeId |
 
   iNodeId [grid].findNodeByNo to SendNode[]
 
-  pJob job.send
+  pJob job(Id).send
   
   nullptr to SendNode[]
 ;
 
 /*----------------------------------------------------------------------------*/
-/* dispatch received job                                                      */
+/* spawn received job                                                         */
 /*----------------------------------------------------------------------------*/
-: job.dispatch params| pJob |
+: job:spawn params| pJob |
 
 
   pJob api::spawnJob_noWait
@@ -208,13 +208,13 @@
   
     word.object@ locals| pExitDemonJob |
 
-    pJob pExitDemonJob job.pipeToOp0
+    pJob pExitDemonJob job(Id).pipeToOp0
 
   else
 
     discard
 
-    true pJob job.reapable!
+    true pJob job(Id).reapable!
 
   then
 
@@ -246,9 +246,11 @@
 /*----------------------------------------------------------------------------*/
 : [job]:pre_execute
 
+  "" locals| sPreExe |
+  
   "<pre_execute>" [job].tagSet@ tagSet.hasName if
     "<pre_execute>"
-    [job].tagSet@ tagSet.getStr locals| sPreExe |
+    [job].tagSet@ tagSet.getStr to sPreExe
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
@@ -357,7 +359,7 @@
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
-      pNode node.id [job] job.forward
+      pNode node.id [job] job(Id).forward
     else
       "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
     then
@@ -397,7 +399,7 @@
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
-      pNode node.id pJob job.forward
+      pNode node.id pJob job(Id).forward
     else
       "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
     then
