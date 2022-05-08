@@ -515,13 +515,15 @@ void Api::vCallBootSystemJob(void)
   _static_
   
   JobId tParentId;
-  tParentId.vNextJobId();
-  
-  JobId tDistId;
-  tDistId = C_UNKNOWN;
+  //tParentId.vNextJobId();
+  RASSERT(tParentId.bIsUnknown());
   
   JobId tOriginId;
-  tOriginId = C_UNKNOWN;
+  //tOriginId = C_UNKNOWN;
+  RASSERT(tOriginId.bIsUnknown());
+    JobId tDistId;
+  //tDistId = C_UNKNOWN;
+  RASSERT(tDistId.bIsUnknown());
 
   Job* pBootJob = new Job("bootSystem"_Stz,tParentId,tOriginId,tDistId);
   
@@ -579,13 +581,16 @@ void Api::vCallStartSystemJob(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tParentId;
-  tParentId.vNextJobId();
+  //tParentId.vNextJobId();
+  RASSERT(tParentId.bIsUnknown());
   
-  JobId tDistId;
-  tDistId = C_UNKNOWN;
-
   JobId tOriginId;
-  tOriginId = C_UNKNOWN;
+  //tOriginId = C_UNKNOWN;
+  RASSERT(tOriginId.bIsUnknown());
+
+  JobId tDistId;
+  //tDistId = C_UNKNOWN;
+  RASSERT(tDistId.bIsUnknown());
 
   Job* pStartJob = new Job("startSystem"_Stz,tParentId,tOriginId,tDistId);
   
