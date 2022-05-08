@@ -1799,7 +1799,7 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
     // get the index col no matching the streamDef column no
     i8 iIndexCol = m_pIndexDef->iGetColumn(pColumn->iColumnNo());
 
-    vMakeIdxColNmStruct(m_pIndexDef, sColNm, iIndexCol);
+    vMakeColumnNmStruct(m_pStreamDefLft, sColNm, i_DupCtr, iIndexCol);
 
     // NOT SURE: COME BACK
     // make the column name
@@ -1819,7 +1819,7 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
 
       if (pColumn->eColumnType() == CT_VARCHAR ||
           pColumn->eColumnType() == CT_CHAR) {
-        sCopy.vSprint("\n    if (strcmp((char*)p%s->%s, (char*)p%s->%s) == 0) {"_Stz,
+        sCopy.vSprint("\n    if (strcmp(p%s->%s, p%s->%s) == 0)"_Stz,
                       xRowRef[m_eStencilTo].m_szInclude, sColOutNm.azChar(),
                       xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());

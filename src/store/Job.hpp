@@ -36,10 +36,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // universally immutable information                    UNIVERSAL
 
     JobId   m_tJobId;      // this job's id
-    JobId   m_tParentId;   // job id of parent
-    JobId   m_tDistId;     // distributed id
-    JobId   m_tOriginId;   // origin id
-
+    JobId   m_tParentId;   // parents command id
     s32     m_sJobNm;      // name of job
     eJK     m_eJobKind;    // job kind: (needs work)
 
@@ -124,7 +121,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId);
+    Job(Stz* szJobNm, JobId tParentId);
 
    ~Job(void) noexcept(false);
   
@@ -139,9 +136,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
-    JobId tDistId(void);
-    void vDistId(JobId tDistId);
-    void vDistIdGenerate(void);
     void vDotPrint(Stz* szText);
     void vDropLock(void);
 
@@ -164,10 +158,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool bIsPipeline(void);
     bool bIsPipelineLocal(void);
   
+    JobId tJobId(void);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
-    JobId tJobId(void);
-    void vJobIdFromDist(void);
     eJK  eJobKind(void);
     void vJobKind(eJK eJobKind);
     eJL  eJobList(void);
@@ -199,8 +192,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vOutputEnabled(bool bEnabled);
     void vOutputEndProc(void);
     Job* pOriginatingParentJob(void);
-    JobId tOriginId(void);
-    void vOriginId(JobId tOriginId);
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);
   

@@ -66,8 +66,6 @@
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // add this job to originator job list
-  [job].distIdGenerate
-  [job].setOriginId
   [job].addOriginator
   [job].assertOriginator
 
@@ -278,8 +276,6 @@
 : pipeline:begin ( -- )
 
   //"pipeline:begin" .
-
-  [job].setOriginId
 
   [job].progressReset
   

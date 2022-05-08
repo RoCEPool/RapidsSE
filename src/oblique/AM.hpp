@@ -666,7 +666,6 @@ namespace OBLIQUE
     static JobList* pOriginatingJobs(void);
     static JobList* pParticipatingJobs(void);
     static JobList* pRetiredJobs(void);
-    static JobList* pJobsList(void);
     static void vProcessExit(void);
     static i8   iSystemUsec(void);
     static i8   iUserUsec(void);

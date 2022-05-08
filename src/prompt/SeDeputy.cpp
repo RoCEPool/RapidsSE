@@ -67,15 +67,9 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_sFolderPath = C_SE_PATH;
   
   JobId tParentId;
-  RASSERT(tParentId.bIsUnknown());
-  
-  JobId tOriginId;
-  RASSERT(tOriginId.bIsUnknown());
-
-  JobId tDistId;
-  RASSERT(tDistId.bIsUnknown());
-
-  m_pRootJob = new Job("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
+  tParentId.vNextJobId();
+ 
+  m_pRootJob = new Job("SeDeputy"_Stz,tParentId);
 
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }

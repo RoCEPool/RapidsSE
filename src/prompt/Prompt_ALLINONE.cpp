@@ -753,7 +753,7 @@ bool PROMPT::bPrompt_describe(SePrompt* pPrompt)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 PromptFun __Prompt_dlist (
-  PF_DLIST,             // prompt function
+  PF_OLIST,             // prompt function
   "Prompt_dlist"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the function
   "dlist"_Stz,          // the prompt command
@@ -1967,36 +1967,6 @@ bool PROMPT::bPrompt_indexEntries(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_jlist.cpp -- participant list report                                */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_jlist (
-  PF_PLIST,             // prompt function
-  "Prompt_jlist"_Stz,   // name of the prompt function
-  "comment"_Stz,        // comment about the function
-  "jlist"_Stz,          // the prompt command
-  nullptr,              // the second word
-  bPrompt_jlist,        // prompt function
-  true,                 // enabled
-
-  true,                 // visible
-  "jlist"_Stz,          // help
-  ""_Stz                // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_jlist(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  AM::pJobsList()->vListJobs();
-
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_job.hpp -- Print Job Information                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -2161,7 +2131,7 @@ bool PROMPT::bPrompt_limits(SePrompt* pPrompt)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 PromptFun __Prompt_llist (
-  PF_LLIST,             // prompt function
+  PF_OLIST,             // prompt function
   "Prompt_llist"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the function
   "llist"_Stz,          // the prompt command

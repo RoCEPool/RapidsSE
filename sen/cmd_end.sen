@@ -16,7 +16,7 @@
   // "end:end" .
 
   // find job to be ended in participating job list
-  [job].distId@ ListedJob[].findParticipant? if
+  [job].parentId@ ListedJob[].findParticipant? if
 
     // stall till job's previous phase (task) has completed
     begin

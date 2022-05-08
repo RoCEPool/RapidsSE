@@ -815,9 +815,6 @@ public:
   void vJobIdCascadeFetch(void);
   void vJobIdCascadeStore(void);
 
-  void vJobDistIdFetch(void);
-  void vJobDistIdGenerate(void);
-
   void vJobEntryPointFetch(void);
   void vJobEntryPointStore(void);
   void vJobErrorFetch(void);
@@ -874,8 +871,6 @@ public:
 
   void vListedJobScheduleNextPhase(void);
   void vJobIdShow(void);
-
-  void vJobSetOriginId(void);
   void vJobSignalWaiter(void);
   void vJobStateFetch(void);
   void vJobStateStore(void);

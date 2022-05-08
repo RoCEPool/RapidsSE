@@ -14,13 +14,13 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // external API functions
   
-  static Job* pAllocJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId);
+  static Job* pAllocJob(Stz* szJobNm);
 
   static eEC  eForkJob(JobId& rtChildJobId, Job* pParentJob,
                        TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                        Job*& rpChildJob_tbr);
 
-  static Job* pNewGenericJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId);
+  static Job* pNewGenericJob(Stz* szJobNm, JobId tParentId);
 
   static void vReapableJob(Job*& rpJob);
   static void vReapAllJobs(bool bForce = false);

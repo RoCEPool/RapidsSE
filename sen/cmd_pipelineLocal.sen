@@ -29,9 +29,6 @@
   
   [job].assertStructure
 
-  [job].setOriginId
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
   
