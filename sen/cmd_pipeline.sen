@@ -66,6 +66,7 @@
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // add this job to originator job list
+  [job].distIdGenerate
   [job].addOriginator
   [job].assertOriginator
 
@@ -155,7 +156,6 @@
   [job].error@ not if
     // + compiled without error..
     
-    [job].distIdGenerate
     "pipeline:begin" [job].entryPoint!
     
     [task].grabLock

@@ -336,6 +336,16 @@ void Job::vDistId(JobId tDistId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate distributed job id                                                */
+/*----------------------------------------------------------------------------*/
+void Job::vDistIdGenerate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_tDistId.vNextJobId();
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Job::vDropLock(void)
@@ -862,7 +872,7 @@ Job* Job::pOriginatingParentJob(void)
       
   //RASSERT(bIsOnOrigin());
   
-  Job* pParentJob = AM::OLIST::pFindJob(m_tJobId);
+  Job* pParentJob = AM::OLIST::pFindJob(m_tDistId);
   
   return pParentJob;
 }

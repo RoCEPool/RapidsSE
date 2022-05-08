@@ -139,6 +139,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vCmd(Stz* szCmd);
 
     JobId tDistId(void);
+    void vDistIdGenerate(void);
     void vDistId(JobId tDistId);
     void vDotPrint(Stz* szText);
     void vDropLock(void);

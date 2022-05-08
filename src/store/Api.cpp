@@ -255,12 +255,9 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
 /*----------------------------------------------------------------------------*/
 /* new a generic job        THIS IS TEMP REFACTOR                             */
 /*----------------------------------------------------------------------------*/
-Job* Api::pNewGenericJob(Stz* szJobNm, JobId tParentId)
+Job* Api::pNewGenericJob(Stz* szJobNm, JobId tParentId, JobId tDistId)
 {
   _static_
-  
-  JobId tDistId;
-  tDistId = C_UNKNOWN;
   
   Job* pJobGeneric = new Job(szJobNm,tParentId,tDistId);
   
