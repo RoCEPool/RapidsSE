@@ -123,12 +123,12 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
     tParentId = pParentJob->tJobId();
   
   JobId tOriginId;
-  if (pParentJob)
-    tOriginId = pParentJob->tOriginId();
+  //if (pParentJob)
+  //  tOriginId = pParentJob->tOriginId();
   
   JobId tDistId;
-  if (pParentJob)
-    tDistId = pParentJob->tDistId();
+  //if (pParentJob)
+  //  tDistId = pParentJob->tDistId();
 
   rpChildJob_tbr = Api::pAllocJob(szJobNm,tParentId,tOriginId,tDistId);
   rtChildJobId = rpChildJob_tbr->tJobId();
