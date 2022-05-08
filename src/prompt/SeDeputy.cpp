@@ -67,15 +67,12 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   m_sFolderPath = C_SE_PATH;
   
   JobId tParentId;
-  //tParentId.vNextJobId();
   RASSERT(tParentId.bIsUnknown());
   
   JobId tOriginId;
-  //tOriginId = C_UNKNOWN;
   RASSERT(tOriginId.bIsUnknown());
 
   JobId tDistId;
-  //tDistId = C_UNKNOWN;
   RASSERT(tDistId.bIsUnknown());
 
   m_pRootJob = new Job("SeDeputy"_Stz,tParentId,tOriginId,tDistId);

@@ -121,20 +121,14 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
   JobId tParentId;
   if (pParentJob)
     tParentId = pParentJob->tJobId();
-  else
-    tParentId = C_UNKNOWN;
+  
+  JobId tOriginId;
+  if (pParentJob)
+    tOriginId = pParentJob->tOriginId();
   
   JobId tDistId;
   if (pParentJob)
     tDistId = pParentJob->tDistId();
-  else
-    tDistId = C_UNKNOWN;
-
-  JobId tOriginId;
-  if (pParentJob)
-    tOriginId = pParentJob->tDistId();
-  else
-    tOriginId = C_UNKNOWN;
 
   rpChildJob_tbr = Api::pAllocJob(szJobNm,tParentId,tOriginId,tDistId);
   rtChildJobId = rpChildJob_tbr->tJobId();
@@ -515,14 +509,12 @@ void Api::vCallBootSystemJob(void)
   _static_
   
   JobId tParentId;
-  //tParentId.vNextJobId();
   RASSERT(tParentId.bIsUnknown());
   
   JobId tOriginId;
-  //tOriginId = C_UNKNOWN;
   RASSERT(tOriginId.bIsUnknown());
-    JobId tDistId;
-  //tDistId = C_UNKNOWN;
+
+  JobId tDistId;
   RASSERT(tDistId.bIsUnknown());
 
   Job* pBootJob = new Job("bootSystem"_Stz,tParentId,tOriginId,tDistId);
@@ -581,15 +573,12 @@ void Api::vCallStartSystemJob(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tParentId;
-  //tParentId.vNextJobId();
   RASSERT(tParentId.bIsUnknown());
   
   JobId tOriginId;
-  //tOriginId = C_UNKNOWN;
   RASSERT(tOriginId.bIsUnknown());
 
   JobId tDistId;
-  //tDistId = C_UNKNOWN;
   RASSERT(tDistId.bIsUnknown());
 
   Job* pStartJob = new Job("startSystem"_Stz,tParentId,tOriginId,tDistId);

@@ -199,11 +199,11 @@ void Step::vApiForkGeneric_noWait(void)
   JobId tParentId;
   tParentId = m_pJob->tParentId();
   
+  JobId tOriginId;
+  tOriginId = m_pJob->tOriginId();
+  
   JobId tDistId;
   tDistId = m_pJob->tDistId();
-  
-  JobId tOriginId;
-  tOriginId = m_pJob->tDistId();
   
   Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tParentId,tOriginId,tDistId);
 
