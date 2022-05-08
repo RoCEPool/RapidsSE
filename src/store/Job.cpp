@@ -113,6 +113,11 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   
   m_oJobTags.vInsert(C_TAG_PATH,C_SE_PATH);
 
+  if (AM::JLIST::bFindJob(this)) {
+    vTrace("Found job in job list\n"_Stz);
+    RASSERT(0);
+  }
+    
   AM::JLIST::vInsertJob(this);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB);

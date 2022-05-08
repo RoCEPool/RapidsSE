@@ -67,6 +67,7 @@
 
   // add this job to originator job list
   [job].distIdGenerate
+  [job].setOriginId
   [job].addOriginator
   [job].assertOriginator
 

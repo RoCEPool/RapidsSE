@@ -15,7 +15,7 @@ load part "<tpch_dir>/part.<suffix>" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
+/*
 procedure subPipeTest
 begin
   stage stageA on origin :
@@ -41,7 +41,7 @@ begin
     | stageA
 end ;
 subPipeTest2;
-
+*/
 
 optimiserLvl 2;
 
