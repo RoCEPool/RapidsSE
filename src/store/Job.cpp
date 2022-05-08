@@ -43,7 +43,7 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm, JobId tParentId, JobId tDistId)
+Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -52,7 +52,8 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tDistId)
  
   m_tJobId.vNextJobId();
   m_tParentId = tParentId;
-  m_tDistId = tDistId;
+  m_tDistId   = tDistId;
+  m_tOriginId = tOriginId;
 
   m_sJobNm   = szJobNm;
   m_eJobKind = JK_NONE;
@@ -875,6 +876,26 @@ Job* Job::pOriginatingParentJob(void)
   Job* pParentJob = AM::OLIST::pFindJob(m_tDistId);
   
   return pParentJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get origin job id                                                          */
+/*----------------------------------------------------------------------------*/
+JobId Job::tOriginId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_tOriginId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set distributed job id                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vOriginId(JobId tOriginId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_tOriginId = tOriginId;
 }
 
 /*----------------------------------------------------------------------------*/

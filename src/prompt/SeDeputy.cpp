@@ -71,8 +71,11 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
 
   JobId tDistId;
   tDistId = C_UNKNOWN;
-  
-  m_pRootJob = new Job("SeDeputy"_Stz,tParentId,tDistId);
+
+  JobId tOriginId;
+  tOriginId = C_UNKNOWN;
+
+  m_pRootJob = new Job("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
 
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
