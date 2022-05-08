@@ -17,6 +17,7 @@ select sum(l_extendedprice*l_discount) as revenue
 // SCAN -> INDEXSCAN
 // 1.05 - 0.01 -> 1.04
 // 1.05 + 0.01 -> 1.06
+// Need multiple threads per partition to improve performance
 //------------------------------------------------------------------------------
 
 pipeline unnamed
