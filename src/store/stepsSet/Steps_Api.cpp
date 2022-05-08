@@ -88,9 +88,9 @@ void Step::vApiForkChild_noWait(void)
   
   Job* pJob = nullptr;
   eEC eError = Api::eForkJob(tChildJobId,m_pJob,
-                           pCmdTknVec,pCmdTagSet,
-                           pJob // TO BE REMOVED
-                           );
+                             pCmdTknVec,pCmdTagSet,
+                             pJob // TO BE REMOVED
+                             );
   RASSERT(EC_NONE == eError);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

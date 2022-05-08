@@ -238,6 +238,8 @@ void JobList::vInsertJob(Job *pJob) {
   //         ,pJob
   //         );
 
+  vListJobs();
+  
   vGrabLock();
 
   ASSERT(bIsLocked());
@@ -316,6 +318,8 @@ void JobList::vInsertJob(Job *pJob) {
   ASSERT(bIsLocked());
 
   vDropLock();
+  
+  vListJobs();
 }
 
 /*----------------------------------------------------------------------------*/

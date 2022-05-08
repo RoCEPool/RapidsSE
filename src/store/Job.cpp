@@ -1105,28 +1105,30 @@ void Job::vPrintJobLine(void)
            ,this->iParticipantNodeId()
            );
 
-  LogicUnit* pLogicUnit = m_pTask->pLogicUnit();
-  
-  if (pLogicUnit) {
-    if (pLogicUnit->m_xpVertexSpec.bIsNotNull())
+  if (m_pTask) {
+    LogicUnit* pLogicUnit = m_pTask->pLogicUnit();
+    
+    if (pLogicUnit) {
+      if (pLogicUnit->m_xpVertexSpec.bIsNotNull())
+        vTrace("%s "_Stz
+               ,pLogicUnit->m_xpVertexSpec->szVertexNm()
+               );
       vTrace("%s "_Stz
-             ,pLogicUnit->m_xpVertexSpec->szVertexNm()
+             ,aLH[pLogicUnit->m_eDdlLocked]
              );
-    vTrace("%s "_Stz
-           ,aLH[pLogicUnit->m_eDdlLocked]
+    }
+    
+    vTrace("AcksRmg %lld (out of %lld)"_Stz
+           ,this->pTask()->iAcksRmg_assert_only_()
+           ,this->pTask()->iAcksOriginal()
+           );
+
+    vTrace("logicUnit %p task %p"_Stz
+           ,pLogicUnit
+           ,m_pTask
            );
   }
   
-  vTrace("AcksRmg %lld (out of %lld)"_Stz
-         ,this->pTask()->iAcksRmg_assert_only_()
-         ,this->pTask()->iAcksOriginal()
-         );
-
-  vTrace("logicUnit %p task %p"_Stz
-         ,pLogicUnit
-         ,m_pTask
-         );
-
   vTrace("\n"_Stz);
 }
 
