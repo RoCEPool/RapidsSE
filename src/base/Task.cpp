@@ -747,7 +747,7 @@ void Task::vDump(void)
   
   vTrace("== End Task Dump ============================================\n"_Stz);
   
-  AM::MASTERLOCK::vGrabTraceMulti();
+  AM::MASTERLOCK::vDropTraceMulti();
 }
 
 /*----------------------------------------------------------------------------*/
