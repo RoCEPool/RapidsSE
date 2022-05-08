@@ -857,7 +857,7 @@ void AM::MASTERLOCK::vGrabTraceMulti(void)
 {
   _static_
   
-  gpAttachMap->vTraceMultiLockGrab();
+  gpAttachMap->vTraceMultiLockDrop();
 }
 
 

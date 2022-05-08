@@ -145,10 +145,6 @@ void Step::vLocalsPush(void)
 {
   ENTRY();
   
-  if (m_iDebugMark)
-    vDebugPoint();
-
-  
   LocalChain* pLocalsFrame = new LocalChain;
   
   pLocalsFrame->vDiscardPoint((TypedCell*)m_pReturnStack->aTopVal());
