@@ -311,8 +311,6 @@ void JobList::vInsertJob(Job *pJob) {
       RASSERT(bWasInserted);
     }
 
-    
-    
   }
 
   ASSERT(bIsLocked());
