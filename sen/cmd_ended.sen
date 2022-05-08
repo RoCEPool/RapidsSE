@@ -9,21 +9,47 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
 
 /*----------------------------------------------------------------------------*/
+/* on originating node                                                        */
+/*----------------------------------------------------------------------------*/
+: ended:onOrigin
+
+  //"ended:onOrigin" .
+
+  // find the originating job
+  
+  [job].parentId@ ListedJob[].findOriginator? if
+
+    ListedJob[].taskAck
+  
+    ListedJob[].returnReference
+    
+  then
+  
+  [job]:retire
+  HAZARD
+;
+
+////////////////////////////////////////////////////////////////////////////////
+//                    ON ORIGINATING NODE OF GIVEN PIPELINE                   //
+/////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
+
+/*----------------------------------------------------------------------------*/
 /* run received Job_Ended on originating node                                 */
 /*----------------------------------------------------------------------------*/
 : ended:ended
 
-  // "ended:ended" .
+  //"ended:ended" .
 
-  // find the originating job
-  [job].parentId@ ListedJob[].findOriginator? discard
+  "ended:onOrigin" [job].entryPoint!
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  ListedJob[].task@ task.ack
+  [job].parentOriginNodeId@ [grid].findNodeByNo to SendNode[]
   
-  ListedJob[].returnReference
+  [job] job(Id).send
+
+  nullptr to SendNode[]
+  
   [job]:retire
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -34,9 +60,9 @@ cmdSyntax: ended :: ended ;
 
 : ended_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
-    <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "ended:ended"
-    <path>     = "/"
+    <cmdDesc>     = "--desc for job--"
+    <entryPoint>  = "ended:ended"
+    <path>        = "/"
   }
 ;
 

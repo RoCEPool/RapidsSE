@@ -253,49 +253,6 @@ void Job::vActiveOpsInc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get sCascade                                                               */
-/*----------------------------------------------------------------------------*/
-Stz* Job::szCascade(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Statement* pStatement = m_pStmtList->pHead();
-
-  Stz* szText = pStatement->szText();
-  
-  return szText;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append cascade                                                             */
-/*----------------------------------------------------------------------------*/
-void Job::vCascadeAppend(Stz* szCascade)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  //vTrace("vAppendCascade: %s\n"_Stz,szCascade);
-  Statement* pStatement = new Statement(szCascade);
-  
-  m_pStmtList->vAppend(pStatement);
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop cascade                                                                */
-/*----------------------------------------------------------------------------*/
-void Job::vCascadePop(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Statement* pStatement = m_pStmtList->pPop();
-
-  Stz* szText = pStatement->szText();
-  UNUSED(szText);
-  //vTrace("vPopCascade: %s\n"_Stz,szText);
-
-  delete pStatement;
-}
-
-/*----------------------------------------------------------------------------*/
 /* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vCascadeReset(void)
@@ -327,23 +284,12 @@ void Job::vCascadeReset(void)
     m_pSingularOp  = nullptr;
   }
 
-  m_pTask = nullptr;
+  m_pTask->vState(TS_NONE);
+  m_pTask->vSetInxPtr("job::entryPoint"_Stz);
 
   m_pOutput_job->vDrainBufferQueue(this);
 
   vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job to execute cascade command                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vCascadeSet(Stz* szCascadeCmd)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_oJobTags.vReplace(C_TAG_CMD,szCascadeCmd);
-
-  //m_oJobTags.vDumpSet(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -479,9 +425,9 @@ bool Job::bHasByPromptTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get bHasCascade                                                            */
+/* get bHasStmtList                                                           */
 /*----------------------------------------------------------------------------*/
-bool Job::bHasCascade(void)
+bool Job::bHasStmtList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -1233,13 +1179,16 @@ void Job::vSingularOp(Op* pSingularOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return statement list                                                      */
+/* append cascade to statement list                                           */
 /*----------------------------------------------------------------------------*/
-StmtList* Job::pStmtList(void)
+void Job::vStmtListAppend(Stz* szStmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-    
-  return m_pStmtList;
+
+  //vTrace("vStmtListAppend: %s\n"_Stz,szStmt);
+  Statement* pStatement = new Statement(szStmt);
+  
+  m_pStmtList->vAppend(pStatement);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1268,7 +1217,22 @@ void Job::vStmtListDestroy(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is jsystem closer?                                                         */
+/* pop top statement from statement list                                      */
+/*----------------------------------------------------------------------------*/
+void Job::vStmtListPop(String* pString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Statement* pStatement = m_pStmtList->pPop();
+  Stz* szStmt = pStatement->szText();
+  
+  pString->vCopy(szStmt);
+  
+  delete pStatement;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is system closer?                                                          */
 /*----------------------------------------------------------------------------*/
 bool Job::bSystemCloser(void)
 {

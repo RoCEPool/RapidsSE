@@ -26,19 +26,20 @@ namespace BASE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    LocalChain* pNext(void);
-    void      vNext(LocalChain* pLocalSet);
-    
     TypedCell* aDiscardPoint(void);
-    void    vDiscardPoint(TypedCell* aDiscardPoint);
-    
-    Local*    pLocal(i8 i_Local);
+    void vDiscardPoint(TypedCell* aDiscardPoint);
+    void vDump(void);
+
+    Local* pLocal(i8 i_Local);
+ 
+    LocalChain* pNext(void);
+    void vNext(LocalChain* pLocalSet);
   
     // must be last
     Footer* aFooter(void);
   };
   
-  LocalChain* _pLocalSet(void* aAddr);
+  LocalChain* _pLocalChain(void* aAddr);
 }
 
 /*============================================================================*/

@@ -812,38 +812,32 @@ public:
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
-  void vJobCascadeFetch(void);
-  void vJobCascadeStore(void);
-
-  void vJobDelete(void);
+  void vJobIdCascadeFetch(void);
+  void vJobIdCascadeStore(void);
 
   void vJobEntryPointFetch(void);
-  void vJobEntryFetch_other(void);
   void vJobEntryPointStore(void);
-  void vJobEntryStore_other(void);
   void vJobErrorFetch(void);
   void vJobErrorStore(void);
 
-  void vJobFolderPathFetch(void);
-  void vJobFolderPathStore(void);
+  void vJobIdFolderPathFetch(void);
+  void vJobIdFolderPathStore(void);
 
   void vJobGet(void);
 
-  void vJobHasCascadeFetch(void);
+  void vJobIdHasCascadeFetch(void);
 
   void vJobIdFetch(void);
-  void vJobIdFetch_other(void);
+  void vJobIdIdFetch(void);
 
-  void vJobJobClass(void);
-  void vJobJobListFetch(void);
+  void vJobIdJobListFetch(void);
 
-  void vJobLastJobIdFetch(void);
-  void vJobLastJobIdStore(void);
+  void vJobIdLastJobIdFetch(void);
+  void vJobIdLastJobIdStore(void);
 
-  void vJobMasterJob(void);
+  void vJobIdMasterJob(void);
 
-  void vJobNameFetch(void);
-  void vJobNoWaitFetch(void);
+  void vJobIdNameFetch(void);
 
   void vJobOriginNodeIdFetch(void);
 
@@ -851,19 +845,19 @@ public:
   void vJobParentOriginNodeIdFetch(void);
   void vJobParticipantNodeIdFetch(void);
   void vJobParticipantNodeIdStore(void);
-  void vJobPipeToOp0(void);
+  void vJobIdPipeToOp0(void);
   void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);
-  void vJobPhaseFetch_other(void);
+  void vJobIdPhaseFetch(void);
   void vJobPhaseStore(void);
   void vJobProgress(void);
   void vJobProgressReset(void);
   void vJobProgressSeconds(void);
 
   void vJobReapableFetch(void);
-  void vJobReapableFetch_other(void);
+  void vJobIdReapableFetch(void);
   void vJobReapableStore(void);
-  void vJobReapableStore_other(void);
+  void vJobIdReapableStore(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
@@ -875,17 +869,17 @@ public:
   void vJobReportOperands(void);
   void vJobReportOperators(void);
 
-  void vJobScheduleNextPhase(void);
-  void vJobShow(void);
+  void vListedJobScheduleNextPhase(void);
+  void vJobIdShow(void);
   void vJobSignalWaiter(void);
   void vJobStateFetch(void);
   void vJobStateStore(void);
-  void vJobSystemCloserFetch(void);
-  void vJobSystemCloserStore(void);
+  void vJobIdSystemCloserFetch(void);
+  void vJobIdSystemCloserStore(void);
 
   void vJobTagSetFetch(void);
   void vJobTaskFetch(void);
-  void vJobTaskFetch_other(void);
+  void vJobIdTaskFetch(void);
 
   void vJobTscBeginning(void);
   void vJobTscBegun(void);
@@ -1038,12 +1032,14 @@ public:
 
   // listed job
   void vListedJobAssertNoRef(void);
+  void vKistedJobCycleTaskLock(void);
   void vListedJobFindOriginator(void);
   void vListedJobFindParticipant(void);
   void vListedJobHasTask(void);
   void vListedJobPointer(void);
   void vListedJobReturn(void);
   void vListedJobReferences(void);
+  void vListedJobTaskAck(void);
   void vListedJobTaskFetch(void);
 
   // loader
@@ -1707,6 +1703,7 @@ public:
   void vSenCompilerIsDiscarding(void);
   void vSenCompilerIsInterpreting(void);
   void vSenCompilerIsPostponing(void);
+  void vSenCompilerLocalsFetch(void);
   void vSenCompilerNestedFetch(void);
   void vSenCompilerNestedStore(void);
   void vSenCompilerPostponing(void);
@@ -2070,10 +2067,8 @@ public:
   void vTagSetNew(void);
 
   // task
-  void vTaskAck(void);
   void vTaskAcksStore(void);
   void vTaskBreakPoint(void);
-  void vTaskCycleLock(void);
   void vTaskDebugMarkFetch(void);
   void vTaskDebugMarkStore(void);
   void vTaskDropLock(void);
@@ -2086,8 +2081,7 @@ public:
   void vTaskNameFetch(void);
   void vTaskOperandYieldFetch(void);
   void vTaskOperandYieldStore(void);
-  void vTaskProfileFetch(void);
-  void vTaskProfileStore(void);
+  void vTaskPreHibernate(void);
   void vTaskReleaseLockSets(void);
   void vTaskSeeFrameStack(void);
   void vTaskSeeLockSets(void);
@@ -2096,8 +2090,10 @@ public:
   void vTaskSleepNsec(void);
   void vTaskSleepSsec(void);
   void vTaskSleepUsec(void);
-  void vTaskStateFetch(void);
+  void vListedJobTaskStateFetch(void);
   void vTaskThreadFetch(void);
+  void vTaskTraceFetch(void);
+  void vTaskTraceStore(void);
   void vTaskTransitionStore(void);
   void vTaskWait(void);
   void vTaskYield(void);
