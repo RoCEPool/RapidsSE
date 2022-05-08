@@ -215,8 +215,8 @@ void Step::vApiNewGenericJob(void)
   s256 sEntryNm;
   m_pDataStack->vPopStr(sEntryNm,__func__);
     
-//  if (sEntryNm.bSame("executed"_Stz))
-//    vTrace("vApiNewGenericJob: executed\n"_Stz);
+  if (sEntryNm.bSame("executed"_Stz))
+    vTrace("vApiNewGenericJob: executed\n"_Stz);
   
 //  i8 iDistJobId = m_pDataStack->iPopInt(__func__);
 //  JobId tDistJobId;

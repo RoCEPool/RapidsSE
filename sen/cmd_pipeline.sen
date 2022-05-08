@@ -284,7 +284,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:begin ( -- )
 
-  //"pipeline:begin" .
+  "pipeline:begin" .
 
   [job].progressReset
   
@@ -368,8 +368,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task hibernates (with job in participant list)
   
-  //[task].dump
-    
   [task].grabLock
         
     TR_HIBERNATE_THIS_TASK [task].transition!
@@ -382,7 +380,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:execute ( -- )
 
-  //"pipeline:execute" .
+  "pipeline:execute" .
   
   0 locals| nAcks |
   
@@ -458,7 +456,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:end ( -- )
 
-  //"pipeline:end" .
+  "pipeline:end" .
 
   [job].assertStructure
   [job].assertParticipant
