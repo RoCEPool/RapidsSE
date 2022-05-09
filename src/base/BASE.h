@@ -210,7 +210,7 @@ extern d8 C_D8_MID;
 #include "BufferAddress.h"
 #include "BufferId.hpp"
 #include "BufferMap.hpp"
-#include "FileMap.hpp"
+
 
 #include "HeapBuffer.hpp"
 #include "Heaps.hpp"
@@ -375,6 +375,9 @@ extern d8 C_D8_MID;
 #include "BufferNo.hpp"
 #include "LinkedBuffer.hpp"
 
+
+#include "FileMap.hpp"
+#include "PageFile.hpp"
 //------------------------------------------------------------------------------
 
 #include "Tx.hpp"
