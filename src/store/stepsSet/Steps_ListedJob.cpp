@@ -20,7 +20,7 @@ void Step::vAddSteps_ListedJob(void)
   vAddStep("ListedJob[]"_Stz,                  &Step::vListedJobPointer);
 
   vAddStep("ListedJob[].assertNoRef"_Stz,      &Step::vListedJobAssertNoRef);
-  vAddStep("ListedJob[].cycleTaskLock"_Stz,    &Step::vKistedJobCycleTaskLock);
+  vAddStep("ListedJob[].cycleTaskLock"_Stz,    &Step::vListedJobCycleTaskLock);
   vAddStep("ListedJob[].findOriginator?"_Stz,  &Step::vListedJobFindOriginator);
   vAddStep("ListedJob[].findParticipant?"_Stz, &Step::vListedJobFindParticipant);
   vAddStep("ListedJob[].hasTask"_Stz,          &Step::vListedJobHasTask);
@@ -48,7 +48,7 @@ void Step::vListedJobAssertNoRef(void)
 /*----------------------------------------------------------------------------*/
 /* ListedJob[].cycleTaskLock -- grab and drop lock of given task                         */
 /*----------------------------------------------------------------------------*/
-void Step::vKistedJobCycleTaskLock(void)
+void Step::vListedJobCycleTaskLock(void)
 {
   ENTRY();
   
@@ -58,8 +58,7 @@ void Step::vKistedJobCycleTaskLock(void)
   Task* pThatTask = pJob->pTask();
 
   // cycle the task lock to ensure task has fully entered next state
-  pThatTask->vGrabTaskLock((Stz*)__func__);
-  pThatTask->vDropTaskLock((Stz*)__func__);
+  pThatTask->vCycleTaskLock((Stz*)__func__);
 
   EXIT();
 }

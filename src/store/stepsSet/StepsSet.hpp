@@ -1033,7 +1033,7 @@ public:
 
   // listed job
   void vListedJobAssertNoRef(void);
-  void vKistedJobCycleTaskLock(void);
+  void vListedJobCycleTaskLock(void);
   void vListedJobFindOriginator(void);
   void vListedJobFindParticipant(void);
   void vListedJobHasTask(void);

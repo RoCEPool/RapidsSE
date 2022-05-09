@@ -121,6 +121,7 @@ namespace BASE
     void vCheckBreakPt(void);
     bool bCorrectLayout(void);
     void vContentDump(void);
+    void vCycleTaskLock(Stz* szFunc);
     Word* pCurWord(void);
   
     void vDeleteInput(void);

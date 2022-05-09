@@ -658,6 +658,17 @@ void Task::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cycle task lock                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vCycleTaskLock(Stz* szFunc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vGrabTaskLock(szFunc);
+  vDropTaskLock(szFunc);
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete input                                                               */
 /*----------------------------------------------------------------------------*/
 void Task::vDeleteInput(void)

@@ -221,7 +221,8 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
     
     Api::vMutexUnlock(rpChildJob_tbr);
 
-    
+    rpChildJob_tbr->pTask()->vCycleTaskLock((Stz*)__func__);
+
     if (! rpChildJob_tbr->bHasStmtList()) {
       return EC_NONE;
     }
