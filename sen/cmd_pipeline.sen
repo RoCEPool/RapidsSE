@@ -14,6 +14,9 @@
 : pipeline:origin ( -- <R> )
 
   //"pipeline:origin" .
+    
+  0 0 locals| pJob_Execute pJob_End |
+  
   
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
   // ordinary job            / run pre-checks                                 //
@@ -256,7 +259,7 @@
     [job].signalWaiter
  
     [task].grabLock
-      TR_HIBERNATE_THIS_TASK [task].transition!
+      TR_DELETE_THIS_TASK [task].transition!
   
     HAZARD
     
@@ -364,7 +367,11 @@
 : pipeline:execute ( -- )
 
   //"pipeline:execute" .
-    
+  
+
+  
+  0 locals| nAcks |
+  
   [job].assertStructure
   [job].assertParticipant
 

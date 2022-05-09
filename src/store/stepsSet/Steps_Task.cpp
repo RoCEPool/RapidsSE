@@ -22,7 +22,12 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Task(void)
 {
+  vAddStep("task.ack"_Stz,             &Step::vTaskAck);
+  vAddStep("task.cycleLock"_Stz,       &Step::vTaskCycleLock);
   vAddStep("task.isWaiting?"_Stz,      &Step::vTaskIsWaiting);
+  vAddStep("task.profile@"_Stz,        &Step::vTaskProfileFetch);
+  vAddStep("task.profile!"_Stz,        &Step::vTaskProfileStore);
+  vAddStep("task.state@"_Stz,          &Step::vTaskStateFetch);
 
   
   // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -58,6 +63,44 @@ void Step::vAddSteps_Task(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task.ack -- acknowledge waiting task of this tasks completion              */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskAck(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  i8 nAcksWereRemaining;
+  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pThatTask,this,
+                                                     nAcksWereRemaining);
+  UNUSED(bWasQueued);
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  if (bWasQueued)
+    gpAttachMap->m_oStatistics.Task.m_nAcks++;
+#endif
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.cycleLock -- grab and drop lock of given task                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskCycleLock(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  // cycle the task lock to ensure task has fully entered next state
+  pThatTask->vGrabTaskLock((Stz*)__func__);
+  pThatTask->vDropTaskLock((Stz*)__func__);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* task.isWaiting? -- is given task waiting?                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskIsWaiting(void)
@@ -84,6 +127,52 @@ void Step::vTaskNameFetch(void)
   s256 sTaskNm((Stz*)szTaskNm());
   
   m_pDataStack->vPushStr(sTaskNm);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.profile@ -- fetch this task profile                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskProfileFetch(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  m_pDataStack->vPushPtr(pThatTask->pProfile());
+  pThatTask->vProfile(nullptr);
+   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.profile! -- store this task profile                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskProfileStore(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Profile* pProfile = _pProfile(m_pDataStack->pPopPtr(__func__));
+  
+  pThatTask->vProfile(pProfile);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.state@ -- fetch state of task                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskStateFetch(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  eTS eState = pThatTask->m_eState;
+  
+  m_pDataStack->vPushInt((i8)eState);
   
   EXIT();
 }

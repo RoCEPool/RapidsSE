@@ -20,15 +20,15 @@
 
     // stall till job's previous phase (task) has completed
     begin
-      ListedJob[].taskState@ TS_HIBERNATING !=
+      ListedJob[].task@ task.state@ TS_HIBERNATING !=
     while
       "job to be cancelled still has non-hibernating task" .
       [task].yield
     repeat
-    ListedJob[].cycleTaskLock
+    ListedJob[].task@ task.cycleLock
       
     // execute the job on this participating node
-    ListedJob[].scheduleNextPhase
+    ListedJob[] job.scheduleNextPhase
     
     ListedJob[].returnReference
   
