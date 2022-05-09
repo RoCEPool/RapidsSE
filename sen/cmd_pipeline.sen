@@ -252,10 +252,12 @@
   else
       
     [ddlLock].testDrop
-    JS_SIGNALLED [job].state!
-    [job].signalWaiter
- 
+    
     [task].grabLock
+    
+      JS_SIGNALLED [job].state!
+      [job].signalWaiter
+ 
       TR_HIBERNATE_THIS_TASK [task].transition!
   
     HAZARD
