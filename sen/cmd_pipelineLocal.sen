@@ -121,10 +121,11 @@
 
   [job].addRetired
   
-  JS_SIGNALLED [job].state!
-  [job].signalWaiter
-
   [task].grabLock
+  
+    JS_SIGNALLED [job].state!
+    [job].signalWaiter
+
     [system].started@ if
     //  "SYSTEM STARTED" .
     else

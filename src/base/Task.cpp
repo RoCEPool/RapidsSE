@@ -1544,17 +1544,6 @@ void Task::vScheduleBide(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vScheduleDelete(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  RASSERT(bIsLocked());
-  m_eTransition = TR_DELETE_THIS_TASK;
-}
-
-/*----------------------------------------------------------------------------*/
 /* schedule sleep                                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vScheduleSleep(void)
