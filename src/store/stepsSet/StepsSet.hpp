@@ -815,8 +815,6 @@ public:
   void vJobCascadeFetch(void);
   void vJobCascadeStore(void);
 
-  void vJobDelete(void);
-
   void vJobEntryPointFetch(void);
   void vJobEntryPointStore(void);
   void vJobErrorFetch(void);

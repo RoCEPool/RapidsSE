@@ -33,8 +33,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.cascade@"_Stz,         &Step::vJobCascadeFetch);
   vAddStep("job.cascade!"_Stz,         &Step::vJobCascadeStore);
     
-  vAddStep("job.delete"_Stz,           &Step::vJobDelete);
-  
   vAddStep("job.folderPath@"_Stz,      &Step::vJobFolderPathFetch);
   vAddStep("job.folderPath!"_Stz,      &Step::vJobFolderPathStore);
   
@@ -460,28 +458,6 @@ void Step::vJobCascadeStore(void)
 
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* job.delete -- delete the job                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vJobDelete(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  //vTrace("Deleting job %p\n"_Stz, pJob);
-  
-  // find the job in the catalog
-  eCN eClass = pJob->eGetClassNo();
-  UNUSED(eClass);
-
-  delete pJob;
-
-  EXIT();
-}
-  
-
 
 /*----------------------------------------------------------------------------*/
 /* [job].entryPoint@ -- fetch the job sen entry code                          */

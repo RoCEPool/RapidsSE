@@ -9,29 +9,50 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job_Execute on participating node                             */
+/* on participating node                                                      */
+/*----------------------------------------------------------------------------*/
+: execute:onParticipant
+
+  //"execute:onParticipant" .
+
+  // find job to be executed in participating job list
+  [job].parentId@ ListedJob[].findParticipant? if
+
+    // stall till job's previous phase (task) has completed
+    begin
+      ListedJob[].task@ task.state@ TS_HIBERNATING !=
+    while
+      // "job to be executed still has non-hibernating task" .
+      [task].yield
+    repeat
+    ListedJob[].task@ task.cycleLock
+    
+    // execute the job on this participating node
+    ListedJob[] job.scheduleNextPhase
+  
+    ListedJob[].returnReference
+  then
+  
+  [job]:retire
+;
+
+////////////////////////////////////////////////////////////////////////////////
+/*                 ON ORIGINATING NODE OF GIVEN PIPELINE                      */
+/////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
+
+/*----------------------------------------------------------------------------*/
+/* on origin node                                                             */
 /*----------------------------------------------------------------------------*/
 : execute:execute
 
-  // "execute:execute" .
+  //"execute:execute" .
 
-  // find job to be executed in participating job list
-  [job].parentId@ ListedJob[].findParticipant? discard
+  "execute:onParticipant" [job].entryPoint!
 
-  // stall till job's previous phase (task) has completed
-  begin
-    ListedJob[].task@ task.state@ TS_HIBERNATING !=
-  while
-    // "job to be executed still has non-hibernating task" .
-    [task].yield
-  repeat
-  ListedJob[].task@ task.cycleLock
-    
-  // execute the job on this participating node
-  ListedJob[] job.scheduleNextPhase
-  
-  ListedJob[].returnReference
+  [job] job:broadcast
+
   [job]:retire
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
