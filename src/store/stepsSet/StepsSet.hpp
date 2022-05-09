@@ -2068,10 +2068,8 @@ public:
   void vTagSetNew(void);
 
   // task
-  void vTaskAck(void);
   void vTaskAcksStore(void);
   void vTaskBreakPoint(void);
-  void vTaskCycleLock(void);
   void vTaskDebugMarkFetch(void);
   void vTaskDebugMarkStore(void);
   void vTaskDropLock(void);
@@ -2085,8 +2083,6 @@ public:
   void vTaskOperandYieldFetch(void);
   void vTaskOperandYieldStore(void);
   void vTaskPreHibernate(void);
-  void vTaskProfileFetch(void);
-  void vTaskProfileStore(void);
   void vTaskReleaseLockSets(void);
   void vTaskSeeFrameStack(void);
   void vTaskSeeLockSets(void);
@@ -2095,7 +2091,6 @@ public:
   void vTaskSleepNsec(void);
   void vTaskSleepSsec(void);
   void vTaskSleepUsec(void);
-  void vTaskStateFetch(void);
   void vListedJobTaskStateFetch(void);
   void vTaskThreadFetch(void);
   void vTaskTraceFetch(void);
