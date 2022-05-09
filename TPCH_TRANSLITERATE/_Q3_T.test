@@ -31,7 +31,8 @@ select l_orderkey,
       and o_orderdate < '1995-03-15'
       and l_shipdate > '1995-03-15'
       group by l_orderkey, o_orderdate, o_shippriority
-      order by revenue desc, o_orderdate;
+      order by revenue desc, o_orderdate
+      limit 10;
 
 //------------------------------------------------------------------------------
 // Pipeline Generated
@@ -65,6 +66,7 @@ begin
   stage stageMarker6355 on origin :
     aggreg " groupBy  type INTEGER as l_orderkey $1 , type TIMESTAMP as o_orderdate $3 , type INTEGER as o_shippriority $4 aggregates  type INTEGER $K1 , type DECIMAL as revenue )  $2 sum  , type TIMESTAMP $K2 , type INTEGER $K3 "
     | sort " type DECIMAL $2 DESC  , type TIMESTAMP as o_orderdate $3 ASC  "
+    | limit 10
     | combined 0
     | stageLast
   stage stageLast on origin :

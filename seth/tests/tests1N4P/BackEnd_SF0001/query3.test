@@ -13,13 +13,33 @@
       and o_orderdate < '1995-03-15'
       and l_shipdate > '1995-03-15'
       group by l_orderkey, o_orderdate, o_shippriority
-      order by revenue desc, o_orderdate;
+      order by revenue desc, o_orderdate
+      limit 10;
 */
 
 //------------------------------------------------------------------------------
-// pipeline by compiler
+// Pipeline Generated
+//------------------------------------------------------------------------------
 
 /*
+
+// changed desc to asc
+
+EXPLAIN STAGE TRANSLITERATE
+select l_orderkey,
+      sum(l_extendedprice*(1-l_discount)) as revenue,
+      o_orderdate,
+      o_shippriority
+      from customer, orders, lineitem
+      where c_mktsegment = 'BUILDING'
+      and c_custkey = o_custkey
+      and l_orderkey = o_orderkey
+      and o_orderdate < '1995-03-15'
+      and l_shipdate > '1995-03-15'
+      group by l_orderkey, o_orderdate, o_shippriority
+      order by revenue asc, o_orderdate
+      limit 10;
+
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -30,49 +50,26 @@ begin
     scan rapidsse public customer
     | stageMarker6343 broadcast
   stage stageMarker6343 on all partitions :
-    indexjoin Orders IxO_CUSTKEY "BOUND $I1 C_custkey =="
-    //| abstractJoin " 1  "
+    scan rapidsse public orders
+    | abstractJoin " 1  "
     | stageMarker6346 broadcast
   stage stageMarker6346 on all partitions :
-    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 J1_L_orderkey =="
-    //| abstractJoin " 1  "
+    scan rapidsse public lineitem
+    | abstractJoin " 1  "
     | stageMarker6349
   stage stageMarker6349 on all partitions :
-    filter " type BOOLEAN  $7 BUILDING'  ==
-                           $1 $10 ==  and
-                           $18 $9 ==  and
-                           $13 TIMESTAMP '1995-03-15 00:00:00'  <  and
-                           $28 TIMESTAMP '1995-03-15 00:00:00'  >  and  "
-    | aggreg " groupBy  type INTEGER as l_orderkey $18 ,
-                        type TIMESTAMP as o_orderdate $13 ,
-                        type INTEGER as o_shippriority $16
-                        aggregates
-                        type INTEGER $K1 , type DECIMAL )  $23 1.  $24 -  *  sum  ,
-                        type TIMESTAMP $K2 ,
-                        type INTEGER $K3 "
+    filter " type BOOLEAN  $7 ''BUILDING''  ==  $1 $10 ==  and  $18 $9 ==  and  $13 DATE ''1995-03-15''  <  and  $28 DATE ''1995-03-15''  >  and  "
+    | aggreg " groupBy  type INTEGER as l_orderkey $18 , type DATE as o_orderdate $13 , type INTEGER as o_shippriority $16 aggregates  type INTEGER $K1 , type DECIMAL )  $23 1.  $24 -  *  sum  , type TIMESTAMP $K2 , type INTEGER $K3 "
     | combined 0
     | stageMarker6352
   stage stageMarker6352 on all nodes :
-    aggreg " groupBy  type INTEGER as l_orderkey $1 ,
-                      type TIMESTAMP as o_orderdate $3 ,
-                      type INTEGER as o_shippriority $4
-                      aggregates
-                      type INTEGER $K1 ,
-                      type DECIMAL )  $2 sum  ,
-                      type TIMESTAMP $K2 ,
-                      type INTEGER $K3 "
+    aggreg " groupBy  type INTEGER as l_orderkey $1 , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type TIMESTAMP $K2 , type INTEGER $K3 "
     | combined 0
     | stageMarker6355
   stage stageMarker6355 on origin :
-    aggreg " groupBy  type INTEGER as l_orderkey $1 ,
-                      type TIMESTAMP as o_orderdate $3 ,
-                      type INTEGER as o_shippriority $4
-                      aggregates
-                      type INTEGER $K1 ,
-                      type DECIMAL as revenue )  $2 sum  ,
-                      type TIMESTAMP $K2 ,
-                      type INTEGER $K3 "
-    | sort " type DECIMAL $2 DESC  , type TIMESTAMP as o_orderdate $3 ASC  "
+    aggreg " groupBy  type INTEGER as l_orderkey $1 , type DATE as o_orderdate $3 , type INTEGER as o_shippriority $4 aggregates  type INTEGER $K1 , type DECIMAL as revenue )  $2 sum  , type TIMESTAMP $K2 , type INTEGER $K3 "
+    | sort " type DECIMAL $2 DESC  , type DATE as o_orderdate $3 ASC  "
+    | limit 10
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -81,131 +78,494 @@ begin
     | stageStart
 end ;
 
-rows: 144
 */
 
 //------------------------------------------------------------------------------
-// POC pipeline
+// OPTIMIZED Q3_v1
+// Changed all pipe to - next and first (makes it easier)
+// Changed all Ordinal columns to Symbolic (makes it easier)
+// Changed Scans followed by AbstractJoins to concrete joins
+// Removed C_CUSTKEY J1_O_CUSTKEY ==  and
+//                   J2_L_ORDERKEY J1_O_ORDERKEY ==
+// from filter in stage stageMarker6349 as part of join
+// Moved SORT to a new stage as CodeSynthesizer does not allow
+//     aggregates and sort operators in the same stage
+// Modified DESC to ASC as DESC not yet supported
 //------------------------------------------------------------------------------
-pipeline Q3
-begin
 
-  stage first on origin :
+pipeline unamed
+begin
+  stage stageStart on origin :
     start
     | pulse once
-    | next
+    | stageMarker6340
 
-  stage Gs_CUSTOMER on all partitions :
-    indexscan Customer IxC_CUSTKEY "LBOUND $I1 0 >="
-    | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
-    | project expr type INTEGER as _custkey C_CUSTKEY
+  stage stageMarker6340 on all partitions :
+    scan rapidsse public customer
+    | stageMarker6343 broadcast
+
+  stage stageMarker6343 on all partitions :
+    //scan rapidsse public orders
+    //| abstractJoin " 1  "
+    indexjoin Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+    | combined 0
+    | next broadcast
+
+  stage stageMarker6346 on all partitions :
+    //scan rapidsse public lineitem
+    //| abstractJoin " 1  "
+    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 J1_O_ORDERKEY =="
     | combined 0
     | next
 
-  stage Gj_ORDERS on all partitions :
-    indexjoin Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
-     | filter "type BOOLEAN J1_O_ORDERDATE DATE '1995-03-15' <"
-     | project "type INTEGER as _orderkey J1_O_ORDERKEY ,
-         type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
-         type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
-    | hash expr type INTEGER _orderkey
-    | combined 0
-    | next hashcast
+  stage stageMarker6349 on all partitions :
+    filter " type BOOLEAN  C_MKTSEGMENT 'BUILDING'  ==
+                           //C_CUSTKEY J1_O_CUSTKEY ==  and
+                           //J2_L_ORDERKEY J1_O_ORDERKEY ==  and
+                           J1_O_ORDERDATE DATE '1995-03-15'  <  and
+                           J2_L_SHIPDATE DATE '1995-03-15'  >  and  "
+    | aggreg " groupBy  type INTEGER  J2_L_ORDERKEY ,
+                        type TIMESTAMP J1_O_ORDERDATE ,
+                        type INTEGER J1_O_SHIPPRIORITY
+                        aggregates
+                        type INTEGER as J2_L_ORDERKEY $K1 ,
+                        type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  ,
+                        type TIMESTAMP as J1_O_ORDERDATE  $K2 ,
+                        type INTEGER as J1_O_SHIPPRIORITY $K3 "
 
-  stage Gj_ORDERS_1 on all partitions :
-    sort "type INTEGER _orderkey ASC"
-    | combined 0
-    | next
-
-  stage Gj_LINEITEM on all partitions :
-    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
-    | filter "type BOOLEAN J1_L_SHIPDATE DATE '1995-03-15' >"
-    | ordAgg expr ordgroupby type INTEGER _orderkey
-            aggregates
-            type INTEGER as _orderkey $K1 ,
-            type DECIMAL as Revenue ) J1_L_EXTENDEDPRICE 1.0 J1_L_DISCOUNT - * sum ,
-            type DATE as O_ORDERDATE O_ORDERDATE ,
-            type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
     | combined 0
     | next
 
-   stage last on origin :
+  stage stageMarker6352 on all nodes :
+    aggreg " groupBy  type INTEGER J2_L_ORDERKEY ,
+                      type DATE J1_O_ORDERDATE ,
+                      type INTEGER J1_O_SHIPPRIORITY
+                      aggregates
+                      type INTEGER as J2_L_ORDERKEY $K1 ,
+                      type DECIMAL )  $2 sum  ,
+                      type DATE as J1_O_ORDERDATE  $K2 ,
+                      type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+
+  stage stageMarker6355 on origin :
+    aggreg " groupBy type INTEGER J2_L_ORDERKEY ,
+                     type DATE J1_O_ORDERDATE ,
+                     type INTEGER J1_O_SHIPPRIORITY
+                     aggregates
+                     type INTEGER as J2_L_ORDERKEY $K1 ,
+                     type DECIMAL )  $2 sum  ,
+                     type DATE as J1_O_ORDERDATE  $K2 ,
+                     type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+
+   stage stageNew on origin :
+    //| sort " type DECIMAL REVENUE DESC  , type DATE as o_orderdate J1_O_ORDERDATE ASC  "
+    sort " type DECIMAL as REVENUE $2 ASC  , type DATE as o_orderdate J1_O_ORDERDATE ASC  "
+    | limit 10
+    | combined 0
+    | next
+
+  stage stageLast on origin :
     output
     | sink
     | first
-
 end ;
 
-rows: 144
+rows:
+ (1131,-15650.62,DATE '1992-03-17',1)
+ (751, -13688.21,DATE '1992-01-07',1)
+ (1471,-13617.39,DATE '1993-11-22',1)
+ (698, -13025.53,DATE '1992-03-22',1)
+ (497, -12953.24,DATE '1994-09-02',1)
+ (36,  -12668.14,DATE '1993-06-11',1)
+ (498, -11984.95,DATE '1994-05-05',1)
+ (673, -11831.49,DATE '1992-04-09',1)
+ (381, -11178.56,DATE '1993-07-08',1)
+ (1227,-10534.75,DATE '1993-10-18',1)
 
 //------------------------------------------------------------------------------
-// limit 10
-pipeline Q3
-begin
+// OPTIMIZED Q3_v2
+// Changed Scan of Customer to an indexScan
+// Pushed up filter on customer C_MKTSEGMENT to after indexScan of customer in stageMarker6340
+// added a projection to stageMarker6340 (reducing width of data)
+//------------------------------------------------------------------------------
 
-  stage first on origin :
+pipeline unamed
+begin
+  stage stageStart on origin :
     start
     | pulse once
     | next
 
-  stage Gs_CUSTOMER on all partitions :
+  stage stageMarker6340 on all partitions :
+    //scan rapidsse public customer
     indexscan Customer IxC_CUSTKEY "LBOUND $I1 0 >="
     | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
-    | project expr type INTEGER as _custkey C_CUSTKEY
+    | project expr type INTEGER as C_CUSTKEY C_CUSTKEY
+    | combined 0
+    | next broadcast
+
+  stage stageMarker6343 on all partitions :
+    indexjoin Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+    | combined 0
+    | next broadcast
+
+  stage stageMarker6346 on all partitions :
+    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 J1_O_ORDERKEY =="
     | combined 0
     | next
 
-  stage Gj_ORDERS on all partitions :
-    indexjoin Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
-     | filter "type BOOLEAN J1_O_ORDERDATE DATE '1995-03-15' <"
-     | project "type INTEGER as _orderkey J1_O_ORDERKEY ,
-         type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
-         type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
-    | hash expr type INTEGER _orderkey
+  stage stageMarker6349 on all partitions :
+    filter " type BOOLEAN  //C_MKTSEGMENT 'BUILDING'  ==
+                           //J1_O_ORDERDATE DATE '1995-03-15'  <  and
+                           J1_O_ORDERDATE DATE '1995-03-15'  <
+                           J2_L_SHIPDATE DATE '1995-03-15'  >  and  "
+    | aggreg " groupBy  type INTEGER  J2_L_ORDERKEY ,
+                        type TIMESTAMP J1_O_ORDERDATE ,
+                        type INTEGER J1_O_SHIPPRIORITY
+                        aggregates
+                        type INTEGER as J2_L_ORDERKEY $K1 ,
+                        type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  ,
+                        type DATE as J1_O_ORDERDATE  $K2 ,
+                        type INTEGER as J1_O_SHIPPRIORITY $K3 "
+
+    | combined 0
+    | next
+
+  stage stageMarker6352 on all nodes :
+    aggreg " groupBy  type INTEGER J2_L_ORDERKEY ,
+                      type TIMESTAMP J1_O_ORDERDATE ,
+                      type INTEGER J1_O_SHIPPRIORITY
+                      aggregates
+                      type INTEGER as J2_L_ORDERKEY $K1 ,
+                      type DECIMAL )  $2 sum  ,
+                      type DATE as J1_O_ORDERDATE  $K2 ,
+                      type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+
+  stage stageMarker6355 on origin :
+    aggreg " groupBy type INTEGER J2_L_ORDERKEY ,
+                     type TIMESTAMP J1_O_ORDERDATE ,
+                     type INTEGER J1_O_SHIPPRIORITY
+                     aggregates
+                     type INTEGER as J2_L_ORDERKEY $K1 ,
+                     type DECIMAL )  $2 sum  ,
+                     type DATE as J1_O_ORDERDATE  $K2 ,
+                     type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+
+   stage stageNew on origin :
+    sort " type DECIMAL as REVENUE $2 ASC  , type TIMESTAMP as o_orderdate J1_O_ORDERDATE ASC  "
+    | limit 10
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+  (1131,-15650.62,DATE '1992-03-17',1)
+  (751, -13688.21,DATE '1992-01-07',1)
+  (1471,-13617.39,DATE '1993-11-22',1)
+  (698, -13025.53,DATE '1992-03-22',1)
+  (497, -12953.24,DATE '1994-09-02',1)
+  (36,  -12668.14,DATE '1993-06-11',1)
+  (498, -11984.95,DATE '1994-05-05',1)
+  (673, -11831.49,DATE '1992-04-09',1)
+  (381, -11178.56,DATE '1993-07-08',1)
+  (1227,-10534.75,DATE '1993-10-18',1)
+
+
+
+//------------------------------------------------------------------------------
+// OPTIMIZED Q3_v3
+// Pushed up filter on orders J1_O_ORDERDATE to after indexJoin with Orders in stageMarker6343
+// added a projection to stageMarker6343 (reducing width of data)
+// added a hash and hashcast ( as orders (partitioned on custkey) is being joined with lineitem on orderkey)
+//------------------------------------------------------------------------------
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker6340 on all partitions :
+    indexscan Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
+    | project expr type INTEGER as C_CUSTKEY C_CUSTKEY
+    | combined 0
+    | next broadcast
+
+  stage stageMarker6343 on all partitions :
+    indexjoin Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+    | filter "type BOOLEAN J1_O_ORDERDATE DATE '1995-03-15' <"
+    | project "type INTEGER as J1_O_ORDERKEY J1_O_ORDERKEY ,
+               type TIMESTAMP as J1_O_ORDERDATE J1_O_ORDERDATE ,
+               type INTEGER as J1_O_SHIPPRIORITY J1_O_SHIPPRIORITY"
+    | hash expr type INTEGER J1_O_ORDERKEY
     | combined 0
     | next hashcast
 
-  stage Gj_ORDERS_1 on all partitions :
-    sort "type INTEGER _orderkey ASC"
+  stage stageMarker6346 on all partitions :
+    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 J1_O_ORDERKEY =="
+    | filter "type BOOLEAN J2_L_SHIPDATE DATE '1995-03-15' >"
     | combined 0
     | next
 
-  stage Gj_LINEITEM on all partitions :
-    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
-    | filter "type BOOLEAN J1_L_SHIPDATE DATE '1995-03-15' >"
-    | ordAgg expr ordgroupby type INTEGER _orderkey
-            aggregates
-            type INTEGER as _orderkey $K1 ,
-            type DECIMAL as Revenue ) J1_L_EXTENDEDPRICE 1.0 J1_L_DISCOUNT - * sum ,
-            type DATE as O_ORDERDATE O_ORDERDATE ,
-            type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
+  stage stageMarker6349 on all partitions :
+    //filter " type BOOLEAN  J1_O_ORDERDATE DATE '1995-03-15'  <
+    //                       J2_L_SHIPDATE DATE '1995-03-15'  >  and  "
+
+    aggreg " groupBy  type INTEGER  J2_L_ORDERKEY ,
+                        type TIMESTAMP J1_O_ORDERDATE ,
+                        type INTEGER J1_O_SHIPPRIORITY
+                        aggregates
+                        type INTEGER as J2_L_ORDERKEY $K1 ,
+                        type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  ,
+                        type DATE as J1_O_ORDERDATE  $K2 ,
+                        type INTEGER as J1_O_SHIPPRIORITY $K3 "
     | combined 0
     | next
 
-  stage Gj_LINEITEM_TOP on origin :
+  stage stageMarker6352 on all nodes :
+    aggreg " groupBy  type INTEGER J2_L_ORDERKEY ,
+                      type TIMESTAMP J1_O_ORDERDATE ,
+                      type INTEGER J1_O_SHIPPRIORITY
+                      aggregates
+                      type INTEGER as J2_L_ORDERKEY $K1 ,
+                      type DECIMAL )  $2 sum  ,
+                      type DATE as J1_O_ORDERDATE  $K2 ,
+                      type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+
+  stage stageMarker6355 on origin :
+    aggreg " groupBy type INTEGER J2_L_ORDERKEY ,
+                     type TIMESTAMP J1_O_ORDERDATE ,
+                     type INTEGER J1_O_SHIPPRIORITY
+                     aggregates
+                     type INTEGER as J2_L_ORDERKEY $K1 ,
+                     type DECIMAL )  $2 sum  ,
+                     type DATE as J1_O_ORDERDATE  $K2 ,
+                     type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+
+   stage stageNew on origin :
+    sort " type DECIMAL as REVENUE $2 ASC  , type TIMESTAMP as J1_O_ORDERDATE $3 ASC  "
+    | limit 10
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+  (1131,-15650.62,DATE '1992-03-17',1)
+  (751, -13688.21,DATE '1992-01-07',1)
+  (1471,-13617.39,DATE '1993-11-22',1)
+  (698, -13025.53,DATE '1992-03-22',1)
+  (497, -12953.24,DATE '1994-09-02',1)
+  (36,  -12668.14,DATE '1993-06-11',1)
+  (498, -11984.95,DATE '1994-05-05',1)
+  (673, -11831.49,DATE '1992-04-09',1)
+  (381, -11178.56,DATE '1993-07-08',1)
+  (1227,-10534.75,DATE '1993-10-18',1)
+
+
+
+//------------------------------------------------------------------------------
+// OPTIMIZED Q3_v4
+// added a new stage stageNew2 to order the orderkey
+// merged stage stageMarker6349 into stageMarker6346 replacing aggreg to ordAgg on only ORDERKEY
+// removed stages stageMarker6349, stageMarker6352, stageMarker6355 (no longer needed with ordered aggregate)
+//------------------------------------------------------------------------------
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker6340 on all partitions :
+    indexscan Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
+    | project expr type INTEGER as C_CUSTKEY C_CUSTKEY
+    | combined 0
+    | next broadcast
+
+  stage stageMarker6343 on all partitions :
+    indexjoin Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+    | filter "type BOOLEAN J1_O_ORDERDATE DATE '1995-03-15' <"
+    | project "type INTEGER as J1_O_ORDERKEY J1_O_ORDERKEY ,
+               type TIMESTAMP as J1_O_ORDERDATE J1_O_ORDERDATE ,
+               type INTEGER as J1_O_SHIPPRIORITY J1_O_SHIPPRIORITY"
+    | hash expr type INTEGER J1_O_ORDERKEY
+    | combined 0
+    | next hashcast
+
+  stage stageNew2 on all partitions :
+    sort "type INTEGER J1_O_ORDERKEY ASC"
+    | combined 0
+    | next
+
+  stage stageMarker6346 on all partitions :
+    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 J1_O_ORDERKEY =="
+    | filter "type BOOLEAN J2_L_SHIPDATE DATE '1995-03-15' >"
+    | ordAgg " ordGroupBy type INTEGER J2_L_ORDERKEY
+                        //type TIMESTAMP J1_O_ORDERDATE ,
+                        //type INTEGER J1_O_SHIPPRIORITY
+                        aggregates
+                        type INTEGER as J2_L_ORDERKEY $K1 ,
+                        type DECIMAL as REVENUE )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  ,
+                        type DATE as J1_O_ORDERDATE  J1_O_ORDERDATE ,
+                        type INTEGER as J1_O_SHIPPRIORITY J1_O_SHIPPRIORITY "
+    | combined 0
+    | next
+
+/*
+  stage stageMarker6349 on all partitions :
+    aggreg " groupBy  type INTEGER  J2_L_ORDERKEY ,
+                        type TIMESTAMP J1_O_ORDERDATE ,
+                        type INTEGER J1_O_SHIPPRIORITY
+                        aggregates
+                        type INTEGER as J2_L_ORDERKEY $K1 ,
+                        type DECIMAL as REVENUE )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  ,
+                        type DATE as J1_O_ORDERDATE  $K2 ,
+                        type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+
+  stage stageMarker6352 on all nodes :
+    aggreg " groupBy  type INTEGER J2_L_ORDERKEY ,
+                      type TIMESTAMP J1_O_ORDERDATE ,
+                      type INTEGER J1_O_SHIPPRIORITY
+                      aggregates
+                      type INTEGER as J2_L_ORDERKEY $K1 ,
+                      type DECIMAL )  $2 sum  ,
+                      type DATE as J1_O_ORDERDATE  $K2 ,
+                      type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+
+  stage stageMarker6355 on origin :
+    aggreg " groupBy type INTEGER J2_L_ORDERKEY ,
+                     type TIMESTAMP J1_O_ORDERDATE ,
+                     type INTEGER J1_O_SHIPPRIORITY
+                     aggregates
+                     type INTEGER as J2_L_ORDERKEY $K1 ,
+                     type as REVENUE DECIMAL )  $2 sum  ,
+                     type DATE as J1_O_ORDERDATE  $K2 ,
+                     type INTEGER as J1_O_SHIPPRIORITY $K3 "
+    | combined 0
+    | next
+*/
+   stage stageNew on origin :
+    sort " type DECIMAL $2 ASC  , type DATE as J1_O_ORDERDATE J1_O_ORDERDATE ASC  "
+    | limit 10
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+  (1131,-15650.62,DATE '1992-03-17',1)
+  (751, -13688.21,DATE '1992-01-07',1)
+  (1471,-13617.39,DATE '1993-11-22',1)
+  (698, -13025.53,DATE '1992-03-22',1)
+  (497, -12953.24,DATE '1994-09-02',1)
+  (36,  -12668.14,DATE '1993-06-11',1)
+  (498, -11984.95,DATE '1994-05-05',1)
+  (673, -11831.49,DATE '1992-04-09',1)
+  (381, -11178.56,DATE '1993-07-08',1)
+  (1227,-10534.75,DATE '1993-10-18',1)
+
+
+//------------------------------------------------------------------------------
+// OPTIMIZED Q3_v4
+// replaced sort and limit by top
+//------------------------------------------------------------------------------
+
+/time pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker6340 on all partitions :
+    indexscan Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    | filter "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
+    | project expr type INTEGER as C_CUSTKEY C_CUSTKEY
+    | combined 0
+    | next broadcast
+
+  stage stageMarker6343 on all partitions :
+    indexjoin Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+    | filter "type BOOLEAN J1_O_ORDERDATE DATE '1995-03-15' <"
+    | project "type INTEGER as J1_O_ORDERKEY J1_O_ORDERKEY ,
+               type TIMESTAMP as J1_O_ORDERDATE J1_O_ORDERDATE ,
+               type INTEGER as J1_O_SHIPPRIORITY J1_O_SHIPPRIORITY"
+    | hash expr type INTEGER J1_O_ORDERKEY
+    | combined 0
+    | next hashcast
+
+  stage stageNew2 on all partitions :
+    sort "type INTEGER J1_O_ORDERKEY ASC"
+    | combined 0
+    | next
+
+  stage stageMarker6346 on all partitions :
+    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 J1_O_ORDERKEY =="
+    | filter "type BOOLEAN J2_L_SHIPDATE DATE '1995-03-15' >"
+    | ordAgg " ordGroupBy type INTEGER J2_L_ORDERKEY
+                        aggregates
+                        type INTEGER as J2_L_ORDERKEY $K1 ,
+                        type DECIMAL as REVENUE )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  ,
+                        type DATE as J1_O_ORDERDATE  J1_O_ORDERDATE ,
+                        type INTEGER as J1_O_SHIPPRIORITY J1_O_SHIPPRIORITY "
+    | combined 0
+    | next
+
+   stage stageNew on origin :
     top "TOP type DECIMAL Revenue" 10
     | combined 0
     | next
 
-   stage last on origin :
+  stage stageLast on origin :
     output
     | sink
     | first
-
 end ;
 
 rows:
- (64, -251.04, DATE '1993-10-19', 1)
- (327, -206.60, DATE '1994-07-05', 1)
- (553, -110.41, DATE '1992-07-10', 1)
- (83, -50.90, DATE '1994-03-26', 1)
- (884, -40.47, DATE '1992-05-03', 1)
- (402, 0.00, DATE '1993-08-05', 1)
- (47, 0.00, DATE '1993-01-04', 1)
- (514, 0.00, DATE '1994-06-02', 1)
- (98, 0.00, DATE '1995-01-25', 1)
- (1386, 0.00, DATE '1993-12-25', 1)
-
+  (64, -251.04,DATE '1993-10-19',1)
+  (327,-206.60,DATE '1994-07-05',1)
+  (553,-110.41,DATE '1992-07-10',1)
+  (83, -50.90, DATE '1994-03-26',1)
+  (884,-40.47, DATE '1992-05-03',1)
+  (514, 0.00,  DATE '1994-06-02',1)
+  (98,  0.00,  DATE '1995-01-25',1)
+  (1386,0.00,  DATE '1993-12-25',1)
+  (402, 0.00,  DATE '1993-08-05',1)
+  (47, 0.00,   DATE '1993-01-04',1)
 
 CLEANUP {
   bye;

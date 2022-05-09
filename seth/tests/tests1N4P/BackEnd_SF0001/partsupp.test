@@ -1,4 +1,3 @@
---------------------------------------------------------------------------------
 -- create index in a loop tests
 --------------------------------------------------------------------------------
 
@@ -14,7 +13,7 @@ success
 
 //------------------------------------------------------------------------------
 // create an index on suppkey
-CREATE INDEX IxPS_PARTKEY ON partsupp(ps_suppkey);
+CREATE INDEX IxPS_SUPPKEY ON partsupp(ps_suppkey);
 affected: 0
 
 // load the table
@@ -24,7 +23,7 @@ success
 select count(*) from partsupp;
 rows: (800)
 
-compactidx partsupp IxPS_PARTKEY;
+compactidx partsupp IxPS_SUPPKEY;
 success
 
 CLEANUP {
