@@ -95,6 +95,9 @@ void Step::vApiForkChild_noWait(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  delete pCmdTknVec;
+  delete pCmdTagSet;
+  
   m_pDataStack->vPushInt(true);
   
   EXIT();
