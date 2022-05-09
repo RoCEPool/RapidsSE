@@ -108,9 +108,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* dispatch received job                                                      */
+/* spawn received job                                                         */
 /*----------------------------------------------------------------------------*/
-: job.dispatch params| pJob |
+: job:spawn params| pJob |
 
 
   pJob api::spawnJob_noWait

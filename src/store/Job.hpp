@@ -132,11 +132,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vActiveOpsDec(void);
     void vActiveOpsInc(void);
 
-    Stz* szCascade(void);
-    void vCascadeAppend(Stz* szCascade);
-    void vCascadePop(void);
     void vCascadeReset(void);
-    void vCascadeSet(Stz* szCascadeCmd);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
@@ -152,7 +148,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vGrabLock(void);
   
     bool bHasByPromptTag(void);
-    bool bHasCascade(void);
+    bool bHasStmtList(void);
     bool bHasTag(Stz* szTagNm);
   
     bool bIsInError(void);
@@ -220,9 +216,10 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
-    StmtList*  pStmtList(void);
+    void vStmtListAppend(Stz* szCascade);
     void vStmtListCreate(void);
     void vStmtListDestroy(void);
+    void vStmtListPop(String* pString);
     bool bSystemCloser(void);
     void vSystemCloser(bool bSystemCloser);
 

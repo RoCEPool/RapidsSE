@@ -164,6 +164,25 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  i8 iPid = AM::PROCESS::iSePid();
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    vTrace("Cannot find pid %lld\n"_Stz, iPid);
+    rtChildJobId = C_UNKNOWN;
+    return EC_SE_NOT_RUNNING;
+  }
+
+  RASSERT(! rpChildJob_tbr->pTask());
+
+  Api::vMutexLock(rpChildJob_tbr);
+  RASSERT(JS_LOCKED == rpChildJob_tbr->eJobState());
+  
+  rpChildJob_tbr->vTaskCreate();
+
+  Api::vMutexUnlock(rpChildJob_tbr);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   for (;;) {
   
     i8 iPid = AM::PROCESS::iSePid();
@@ -174,12 +193,13 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
       return EC_SE_NOT_RUNNING;
     }
     
-    RASSERT(! rpChildJob_tbr->pTask());
     
     Api::vMutexLock(rpChildJob_tbr);
     RASSERT(JS_LOCKED == rpChildJob_tbr->eJobState());
     
-    rpChildJob_tbr->vTaskCreate();
+    RASSERT(rpChildJob_tbr->pTask());
+
+    //rpChildJob_tbr->vTaskCreate();
     
     rpChildJob_tbr->vResponseTimerStart();
     
@@ -202,16 +222,16 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
     Api::vMutexUnlock(rpChildJob_tbr);
 
     
-    if (! rpChildJob_tbr->bHasCascade()) {
+    if (! rpChildJob_tbr->bHasStmtList()) {
       return EC_NONE;
     }
           
     rpChildJob_tbr->vCascadeReset();
     
-    rpChildJob_tbr->vCascadeSet(rpChildJob_tbr->szCascade());
+    sSTMT sStmt;
+    rpChildJob_tbr->vStmtListPop(sStmt);
+    rpChildJob_tbr->vCmd(sStmt);
     
-    rpChildJob_tbr->vCascadePop();
-
     TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
     //Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
     Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
