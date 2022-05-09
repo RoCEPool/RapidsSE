@@ -869,6 +869,7 @@ public:
   void vJobReportOperands(void);
   void vJobReportOperators(void);
 
+  void vListedJobScheduleNextPhase(void);
   void vJobScheduleNextPhase(void);
   void vJobShow(void);
   void vJobSignalWaiter(void);
@@ -1032,12 +1033,14 @@ public:
 
   // listed job
   void vListedJobAssertNoRef(void);
+  void vKistedJobCycleTaskLock(void);
   void vListedJobFindOriginator(void);
   void vListedJobFindParticipant(void);
   void vListedJobHasTask(void);
   void vListedJobPointer(void);
   void vListedJobReturn(void);
   void vListedJobReferences(void);
+  void vListedJobTaskAck(void);
   void vListedJobTaskFetch(void);
 
   // loader
@@ -2093,6 +2096,7 @@ public:
   void vTaskSleepSsec(void);
   void vTaskSleepUsec(void);
   void vTaskStateFetch(void);
+  void vListedJobTaskStateFetch(void);
   void vTaskThreadFetch(void);
   void vTaskTraceFetch(void);
   void vTaskTraceStore(void);
