@@ -52,7 +52,7 @@ FileMap::FileMap(void)
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
 
   vInitialise();
-  
+
   m_pPageFile = new PageFile(m_szFilePath);
 
   _checkInitialised_(CN_FILEMAP);
@@ -137,7 +137,7 @@ void FileMap::vToDisk(Operand* pOperand)
 
   //---------------------------------------------------------------------------
   // Operand could be an address or a buffer id. Check flag bit.
-
+#ifdef WITH_BUFFER_ID
   BufferId oBufferId;// TODO Arjun: Code readability
   oBufferId.m_bIdFlag = 0;
   oBufferId.m_vAsAddress = (void*) pOperand;
@@ -160,6 +160,7 @@ void FileMap::vToDisk(Operand* pOperand)
   RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
 
   m_pPageFile->vWriteDataBufferToPFile(pRowBuffer);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

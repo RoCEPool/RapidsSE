@@ -54,6 +54,7 @@ namespace BASE {
   class DicStack;
 
   class File;
+  class FileMap;
   class Format;
 
 #ifdef WITH_HASHMAP

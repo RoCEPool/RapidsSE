@@ -113,6 +113,7 @@ void PageFile::vInitialise()
 void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+#ifdef WITH_BUFFER_ID
   BufferId oBufferId = pRowBuffer->oGetBufferId();
   i8 iSeek = oBufferId.m_uBuffOffset;
   m_pFile->vSeek(iSeek);
@@ -128,6 +129,7 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
   i8 iMilli = iTicks * C_1K / iTicksPerSec;
 
   vTrace("Writing data buffer %p took %lld ms\n"_Stz, pRowBuffer, iMilli);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
