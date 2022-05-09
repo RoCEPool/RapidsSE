@@ -32,11 +32,8 @@ void Step::vAddSteps_Job(void)
 {
   vAddStep("job.cascade@"_Stz,         &Step::vJobCascadeFetch);
   vAddStep("job.cascade!"_Stz,         &Step::vJobCascadeStore);
-  
+    
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
-  
-  vAddStep("job.entry@"_Stz,           &Step::vJobEntryFetch_other);
-  vAddStep("job.entry!"_Stz,           &Step::vJobEntryStore_other);
   
   vAddStep("job.folderPath@"_Stz,      &Step::vJobFolderPathFetch);
   vAddStep("job.folderPath!"_Stz,      &Step::vJobFolderPathStore);
@@ -45,7 +42,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch_other);
   
-  vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
   vAddStep("job.jobList@"_Stz,         &Step::vJobJobListFetch);
     
   vAddStep("job.lastJobId@"_Stz,       &Step::vJobLastJobIdFetch);
@@ -54,7 +50,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.masterJob"_Stz,        &Step::vJobMasterJob);
   
   vAddStep("job.name@"_Stz,            &Step::vJobNameFetch);
-  vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
   
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
   vAddStep("job.pipeToOp0"_Stz,        &Step::vJobPipeToOp0);
@@ -487,6 +482,7 @@ void Step::vJobDelete(void)
 }
   
 
+
 /*----------------------------------------------------------------------------*/
 /* [job].entryPoint@ -- fetch the job sen entry code                          */
 /*----------------------------------------------------------------------------*/
@@ -515,20 +511,6 @@ void Step::vJobEntryPointFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.entry@ -- fetch the job sen entry code                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vJobEntryFetch_other(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  m_pDataStack->vPushStz(pJob->szEntryPoint());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* [job].entryPoint! -- store the job entry code                              */
 /*----------------------------------------------------------------------------*/
 void Step::vJobEntryPointStore(void)
@@ -536,23 +518,6 @@ void Step::vJobEntryPointStore(void)
   ENTRY();
   
   Job* pJob = * m_pJob;
-
-  s4K sEntry;
-  m_pDataStack->vPopStr(sEntry,__func__);
-  
-  pJob->vEntryPoint(sEntry);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.entry! -- store the job entry code                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vJobEntryStore_other(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   s4K sEntry;
   m_pDataStack->vPopStr(sEntry,__func__);
@@ -710,22 +675,6 @@ void Step::vJobGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.jobClass -- get the JobClass of the job                                */
-/*----------------------------------------------------------------------------*/
-void Step::vJobJobClass(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  i8 iJobClass_p = (i8)pJob->eGetClassNo();
-  
-  m_pDataStack->vPushInt(iJobClass_p);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.jobList@ -- fetch job list                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobJobListFetch(void)
@@ -807,20 +756,6 @@ void Step::vJobNameFetch(void)
   
   s32 szName = pJob->szJobNm();
   m_pDataStack->vPushStr(szName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.noWait@ -- fetch no-wait                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vJobNoWaitFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  m_pDataStack->vPushInt(pJob->bHasTag(C_TAG_NOWAIT));
   
   EXIT();
 }

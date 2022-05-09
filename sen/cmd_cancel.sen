@@ -28,7 +28,6 @@
   ListedJob[].task@ task.cycleLock
     
   // execute the job on this participating node
-  "pipeline:cancel" ListedJob[] job.entry!
   ListedJob[] job.scheduleNextPhase
   
   ListedJob[].returnReference

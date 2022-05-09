@@ -246,9 +246,11 @@
 /*----------------------------------------------------------------------------*/
 : [job]:pre_execute
 
+  "" locals| sPreExe |
+  
   "<pre_execute>" [job].tagSet@ tagSet.hasName if
     "<pre_execute>"
-    [job].tagSet@ tagSet.getStr locals| sPreExe |
+    [job].tagSet@ tagSet.getStr to sPreExe
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
