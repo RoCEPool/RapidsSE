@@ -6,14 +6,36 @@
 
 
 /*----------------------------------------------------------------------------*/
-/*-- LifeCycle ---------------------------------------------------------------*/
+/* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
+LocalChain* BASE::_pLocalSet(void* aAddr)
+{
+  LocalChain* pLocalSet = reinterpret_cast<LocalChain*>(aAddr);
+  
+  RASSERT_TYPE(pLocalSet,CN_LOCALCHAIN);
 
-__pCastFunction(BASE,LocalChain,CN_LOCALCHAIN)
-__aNewFunction(LocalChain,CN_LOCALCHAIN)
-__vDeleteFunction(LocalChain,CN_LOCALCHAIN)
-__aFooterFunction(LocalChain)
+  return pLocalSet;
+}
 
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* LocalChain::operator new(size_t)
+{
+  void* pLocalSet = Heaps::pAllocate(CN_LOCALCHAIN);
+  
+  return pLocalSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void LocalChain::operator delete(void* pLocalSetAddress)
+{
+  LocalChain* pLocalSet = _pLocalSet(pLocalSetAddress);
+  
+  Heaps::vFree(pLocalSet);
+}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -48,7 +70,7 @@ void LocalChain::vDump(eCN eClass, Object* pObject, Stz* aTab)
   UNUSED(eClass);
   UNUSED(aTab);
   
-  LocalChain* pLocalSet = _pLocalChain(pObject);
+  LocalChain* pLocalSet = _pLocalSet(pObject);
   UNUSED(pLocalSet);
 
   vTrace("\n"_Stz);
@@ -57,6 +79,26 @@ void LocalChain::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get next set of locals                                                     */
+/*----------------------------------------------------------------------------*/
+LocalChain* LocalChain::pNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
+  
+  return m_pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next set of locals                                                     */
+/*----------------------------------------------------------------------------*/
+void LocalChain::vNext(LocalChain* pNext)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
+  
+  m_pNext = pNext;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get return point where this local set should be discarded                  */
@@ -79,21 +121,6 @@ void LocalChain::vDiscardPoint(TypedCell* aDiscardPoint)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump the local chain                                                       */
-/*----------------------------------------------------------------------------*/
-void LocalChain::vDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
-  
-  vTrace("LocalChain: %p discardPoint %p"_Stz,
-         this,
-         m_aDiscardPoint);
-  
-  if (m_pNext)
-    m_pNext->vDump();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get given local                                                            */
 /*----------------------------------------------------------------------------*/
 Local* LocalChain::pLocal(i8 i_Local)
@@ -106,24 +133,9 @@ Local* LocalChain::pLocal(i8 i_Local)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next set of locals                                                     */
+/*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-LocalChain* LocalChain::pNext(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
-  
-  return m_pNext;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set next set of locals                                                     */
-/*----------------------------------------------------------------------------*/
-void LocalChain::vNext(LocalChain* pNext)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALCHAIN,_FOOTER_);
-  
-  m_pNext = pNext;
-}
+__aFooterFunction(LocalChain)
 
 /*============================================================================*/
 /* end                                                                        */

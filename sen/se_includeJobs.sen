@@ -16,6 +16,7 @@ assert::stack_0
   "cmd_executed.sen"        include
   "cmd_execute.sen"         include
   "cmd_begun.sen"           include
+  "cmd_begun_2.sen"         include
 
   "cmd_pipeline.sen"        include
   "cmd_pipelineLocal.sen"   include

@@ -21,7 +21,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  ListedJob[].taskAck
+  ListedJob[].task@ task.ack
   
   ListedJob[].returnReference
   [job]:retire

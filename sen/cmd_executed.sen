@@ -9,47 +9,24 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
 
 /*----------------------------------------------------------------------------*/
-/* on originating node                                                        */
-/*----------------------------------------------------------------------------*/
-: executed:onOrigin
-
-  //"executed:onOrigin" .
-
-  // find the originating job
-  
-  [job].parentId@ ListedJob[].findOriginator? if
-  
-    ListedJob[].taskAck
-  
-    ListedJob[].returnReference
-  
-  then
-  
-  [job]:retire
-  HAZARD
-;
-
-////////////////////////////////////////////////////////////////////////////////
-/*                 ON PARTICIPATING NODE OF GIVEN PIPELINE                    */
-/////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
-
-/*----------------------------------------------------------------------------*/
-/* on participating node                                                      */
+/* run received Job_Executed on originating node                              */
 /*----------------------------------------------------------------------------*/
 : executed:executed
 
-  //"executed:executed" .
+  // "executed:executed" .
 
-  "executed:onOrigin" [job].entryPoint!
+  // find the originating job
+  [job].parentId@ ListedJob[].findOriginator? discard
 
-  [job].parentOriginNodeId@ [grid].findNodeByNo to SendNode[]
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // decrement the acks remaining in the originating job
   
-  [job] job(Id).send
-
-  nullptr to SendNode[]
+  ListedJob[].task@ task.ack
   
+  ListedJob[].returnReference
   [job]:retire
-  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

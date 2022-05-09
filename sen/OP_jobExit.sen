@@ -43,7 +43,7 @@
 
   "<job_report>" sysargs::tagSet@ tagSet.hasName not
   if
-    true pJob job(Id).reapable!
+    true pJob job.reapable!
     true
     exit
   then
@@ -52,7 +52,7 @@
   
   //pJob jobReport::reportJob to eError
   
-  true pJob job(Id).reapable!
+  true pJob job.reapable!
 
   eError EC_NONE == not if
     eError op__execErr

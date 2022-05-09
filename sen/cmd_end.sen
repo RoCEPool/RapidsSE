@@ -1,58 +1,37 @@
 /*============================================================================*/
-/* cmd_end.sen -- 1sc: given pipeline is to end on participant                */
+/* job_cmd.sen -- 1sc: given pipeline is to end on participant                */
 /*============================================================================*/
 
-" cmd_end.sen" .verbose
+" job_cmd.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
 /*                 ON PARTICIPATING NODE OF GIVEN PIPELINE                    */
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
 
 /*----------------------------------------------------------------------------*/
-/* on participating node                                                      */
+/* run received Job_End on participating node                                 */
 /*----------------------------------------------------------------------------*/
-: end:onParticipant
+: end:end
 
   // "end:end" .
 
   // find job to be ended in participating job list
-  [job].parentId@ ListedJob[].findParticipant? if
+  [job].parentId@ ListedJob[].findParticipant? discard
 
-    // stall till job's previous phase (task) has completed
-    begin
-      ListedJob[].taskState@ TS_HIBERNATING !=
-    while
-      "job to be ended still has non-hibernating task" .
-      [task].yield
-    repeat
-    ListedJob[].cycleTaskLock
-      
-    // execute the job on this participating node
-    ListedJob[].scheduleNextPhase
+  // stall till job's previous phase (task) has completed
+  begin
+    ListedJob[].task@ task.state@ TS_HIBERNATING !=
+  while
+    "job to be ended still has non-hibernating task" .
+    [task].yield
+  repeat
+  ListedJob[].task@ task.cycleLock
     
-    ListedJob[].returnReference
-  then
+  // execute the job on this participating node
+  ListedJob[] job.scheduleNextPhase
   
+  ListedJob[].returnReference
   [job]:retire
-;
-
-////////////////////////////////////////////////////////////////////////////////
-/*                 ON ORIGINATING NODE OF GIVEN PIPELINE                      */
-/////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
-
-/*----------------------------------------------------------------------------*/
-/* on origin node                                                             */
-/*----------------------------------------------------------------------------*/
-: end:end
-
-  //"end:end" .
-
-  "end:onParticipant" [job].entryPoint!
-
-  [job] job:broadcast
-
-  [job]:retire
-  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

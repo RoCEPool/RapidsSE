@@ -22,7 +22,12 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Task(void)
 {
+  vAddStep("task.ack"_Stz,             &Step::vTaskAck);
+  vAddStep("task.cycleLock"_Stz,       &Step::vTaskCycleLock);
   vAddStep("task.isWaiting?"_Stz,      &Step::vTaskIsWaiting);
+  vAddStep("task.profile@"_Stz,        &Step::vTaskProfileFetch);
+  vAddStep("task.profile!"_Stz,        &Step::vTaskProfileStore);
+  vAddStep("task.state@"_Stz,          &Step::vTaskStateFetch);
 
   
   // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -40,7 +45,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("[task].name@"_Stz,          &Step::vTaskNameFetch);
   vAddStep("[task].operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
   vAddStep("[task].operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
-  vAddStep("[task].preHibernate"_Stz,   &Step::vTaskPreHibernate);
   vAddStep("[task].releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
   vAddStep("[task].seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
   vAddStep("[task].seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
@@ -48,13 +52,49 @@ void Step::vAddSteps_Task(void)
   vAddStep("[task].sleepMsec"_Stz,      &Step::vTaskSleepMsec);
   vAddStep("[task].sleepSsec"_Stz,      &Step::vTaskSleepSsec);
   vAddStep("[task].sleepUsec"_Stz,      &Step::vTaskSleepUsec);
-  vAddStep("[task].trace@"_Stz,         &Step::vTaskTraceFetch);
-  vAddStep("[task].trace!"_Stz,         &Step::vTaskTraceStore);
   vAddStep("[task].thread@"_Stz,        &Step::vTaskThreadFetch);
   vAddStep("[task].transition!"_Stz,    &Step::vTaskTransitionStore);
   vAddStep("[task].wait"_Stz,           &Step::vTaskWait);
   vAddStep("[task].yield"_Stz,          &Step::vTaskYield);
   vAddStep("[task].yield_opLoop"_Stz,   &Step::vTaskYield_opLoop);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.ack -- acknowledge waiting task of this tasks completion              */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskAck(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  i8 nAcksWereRemaining;
+  bool bWasQueued = Scheduler::bTaskCross_AckWaiting(pThatTask,this,
+                                                     nAcksWereRemaining);
+  UNUSED(bWasQueued);
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  if (bWasQueued)
+    gpAttachMap->m_oStatistics.Task.m_nAcks++;
+#endif
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.cycleLock -- grab and drop lock of given task                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskCycleLock(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  // cycle the task lock to ensure task has fully entered next state
+  pThatTask->vGrabTaskLock((Stz*)__func__);
+  pThatTask->vDropTaskLock((Stz*)__func__);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,6 +124,52 @@ void Step::vTaskNameFetch(void)
   s256 sTaskNm((Stz*)szTaskNm());
   
   m_pDataStack->vPushStr(sTaskNm);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.profile@ -- fetch this task profile                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskProfileFetch(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  m_pDataStack->vPushPtr(pThatTask->pProfile());
+  pThatTask->vProfile(nullptr);
+   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.profile! -- store this task profile                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskProfileStore(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  Profile* pProfile = _pProfile(m_pDataStack->pPopPtr(__func__));
+  
+  pThatTask->vProfile(pProfile);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.state@ -- fetch state of task                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskStateFetch(void)
+{
+  ENTRY();
+  
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
+  
+  eTS eState = pThatTask->m_eState;
+  
+  m_pDataStack->vPushInt((i8)eState);
   
   EXIT();
 }
@@ -260,28 +346,6 @@ void Step::vTaskOperandYieldStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [task].preHibernate -- get task ready to hibernate                         */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskPreHibernate(void)
-{
-  ENTRY();
-    
-//  m_pAuxStack->vReset();
-//  m_pDataStack->vReset();
-//  m_pReturnStack->vReset();
-  
-  while (m_pLocalsFrame) {
-    
-    LocalChain* pLocalsFrame = m_pLocalsFrame;
-    m_pLocalsFrame = m_pLocalsFrame->pNext();
-    
-    delete pLocalsFrame;
-  }
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* [task].releaseLockSets -- release all locks in read and write lock sets    */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskReleaseLockSets(void)
@@ -388,30 +452,6 @@ void Step::vTaskThreadFetch(void)
   ENTRY();
   
   m_pDataStack->vPushPtr(m_pThread);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [task].trace@ -- fetch trace mask                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskTraceFetch(void)
-{
-  ENTRY();
-  
-  m_pDataStack->vPushInt(m_iTraceMask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [task].trace! -- store trace mask                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskTraceStore(void)
-{
-  ENTRY();
-  
-  m_iTraceMask = m_pDataStack->iPopInt(__func__);
   
   EXIT();
 }

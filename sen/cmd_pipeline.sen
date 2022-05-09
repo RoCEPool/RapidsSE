@@ -14,6 +14,9 @@
 : pipeline:origin ( -- <R> )
 
   //"pipeline:origin" .
+    
+  0 0 locals| pJob_Execute pJob_End |
+  
   
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
   // ordinary job            / run pre-checks                                 //
@@ -175,13 +178,16 @@
 
     [job].tscExecuting
 
+    "execute" api::newGenericJob to pJob_Execute
+
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      "execute" api::forkGeneric_noWait
+      pJob_Execute job:broadcast
     [task].wait
 
     [job].tscExecuted
 
+    pJob_Execute job.delete
   then
   
   
@@ -197,13 +203,16 @@
     
     [job].tscEnding
     
+    "end" api::newGenericJob to pJob_End
+
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      "end" api::forkGeneric_noWait
+      pJob_End job:broadcast
     [task].wait
 
     [job].tscEnded
 
+    pJob_End job.delete
   then
 
 
@@ -235,7 +244,7 @@
     HAZARD
 
   else
-  [job] job(Id).hasCascade@ not if
+  [job] job.hasCascade@ not if
     [ddlLock].testDrop
     ListedJob[].assertNoRef
 
@@ -256,7 +265,7 @@
     [job].signalWaiter
  
     [task].grabLock
-      TR_HIBERNATE_THIS_TASK [task].transition!
+      TR_DELETE_THIS_TASK [task].transition!
   
     HAZARD
     
@@ -338,8 +347,20 @@
   // reply begun to originator
 
   // send the begun job
+  "begun" api::newGenericJob locals| pJob_Begun |
+  [job].originNodeId@ pJob_Begun job.reply
+  pJob_Begun job.delete
+
   1 [task].debugMark!
-  "begun" api::forkGeneric_noWait
+
+  //0 locals| pJob_Begun |
+  //"begun_2" api::forkGeneric_noWait
+
+
+  
+  
+  
+  //"pipeline:begin post begun:reply" [job].progress
 
   [ddlLock].testDrop
 
@@ -351,8 +372,6 @@
     
   [task].grabLock
         
-    //1 [task].trace!
-    //[task].preHibernate
     TR_HIBERNATE_THIS_TASK [task].transition!
 
   HAZARD
@@ -364,7 +383,9 @@
 : pipeline:execute ( -- )
 
   //"pipeline:execute" .
-    
+  
+  0 locals| nAcks |
+  
   [job].assertStructure
   [job].assertParticipant
 
@@ -376,12 +397,11 @@
 
   // set task's dictionary stack from path in job
   //<path> str.toStrVec Path[].set
+  //[task].dump
 
- 
   // acquire ddl lock
   [ddlLock]:acquireLock
   
- 
   [job].assertStructure
 
 
@@ -397,7 +417,7 @@
   deck:invoke
   nullptr to Deck[]
 
- 
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has executed
   
@@ -409,14 +429,19 @@
   [ddlLock].testDrop
   ListedJob[].assertNoRef
   
- 
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply executed to originator
   
+  //[job] executed:reply
   
-  // send the executed job
-  "executed" api::forkGeneric_noWait
+  // new a temporary Job_Executed
+  "executed" api::newGenericJob locals| pJob_Executed |
 
+  // send the executed job
+  [job].originNodeId@ pJob_Executed job.reply
+
+  pJob_Executed job.delete
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task hibernates (with job in participant list)
@@ -445,8 +470,15 @@
   JP_ENDED [job].phase!                // this job has ended
   [job].removeParticipant
 
+  //[job] ended:reply                    // reply ended to originator
+
+  // new a temporary Job_Ended
+  "ended" api::newGenericJob locals| pJob_Ended |
+
   // send the ended job
-  "ended" api::forkGeneric_noWait
+  [job].originNodeId@ pJob_Ended job.reply
+
+  pJob_Ended job.delete
 
   [job]:retire
   HAZARD
@@ -457,7 +489,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:cancel ( -- )
 
-  //"pipeline:cancel" .
+  // "pipeline:cancel" .
   
   [job].assertStructure
   [job].assertParticipant
@@ -470,8 +502,14 @@
 
   [job].removeParticipant
 
+  //[job] cancelled:reply
+  // new a temporary Job_Cancelled
+  "cancelled" api::newGenericJob locals| pJob_Cancelled |
+
   // send the cancelled job
-  "cancelled" api::forkGeneric_noWait
+  [job].originNodeId@ pJob_Cancelled job.reply
+
+  pJob_Cancelled job.delete
 
   [job]:retire
   
