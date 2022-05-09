@@ -23,6 +23,7 @@ namespace BASE
 
     static void* vAddressFromId(BufferId oBuffId);
     static BufferId vBufferIdFromNo(i8 iBufferNo);
+    static bool bIsAddress(BufferId oBufferId);
 
   };
 }

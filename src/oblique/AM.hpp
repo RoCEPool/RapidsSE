@@ -640,6 +640,7 @@ namespace OBLIQUE
     static MasterLock* pDicLock(void);
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);
+    static FileMap* pFileMap(void);
     static Format* pFmt(void);
     static Grid* pGrid(void);
     static i8   nDefinedNodes(void);

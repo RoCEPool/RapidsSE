@@ -1314,6 +1314,7 @@ public:
   void vPagingMetricsUpdate(void);
 
   // page out
+  void vPageOutPoolBuffer(void);
   void vPageOutTestPrint(void);
 
   // path identifier

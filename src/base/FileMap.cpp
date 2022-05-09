@@ -51,12 +51,9 @@ FileMap::FileMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP);
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
 
-//    vTrace("Created file map %p: sizeof(FileMap)=%lldB, pathToPageFile: %s\n"_Stz,
-//           this,
-//           sizeof(FileMap),
-//           m_szFilePath);
-
   vInitialise();
+  
+  m_pPageFile = new PageFile(m_szFilePath);
 
   _checkInitialised_(CN_FILEMAP);
 
@@ -129,6 +126,40 @@ void FileMap::vInitialise(void)
 
 
   //vDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Decide where on disk this operand should be written to and write to disk   */
+/*----------------------------------------------------------------------------*/
+void FileMap::vToDisk(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+
+  //---------------------------------------------------------------------------
+  // Operand could be an address or a buffer id. Check flag bit.
+
+  BufferId oBufferId;// TODO Arjun: Code readability
+  oBufferId.m_bIdFlag = 0;
+  oBufferId.m_vAsAddress = (void*) pOperand;
+
+  if(0 == BufferId::bIsAddress(oBufferId)) {
+    pOperand = (Operand*) BufferId::vAddressFromId(oBufferId);
+  }
+
+  ASSERT (CN_ROWBUFFER == pOperand->eGetClassNo())
+
+  //---------------------------------------------------------------------------
+  // Look at page no bits in buffer id and assign to corresponding PageFile
+
+    // To do once we have multiple page files...
+    // m_pPageFile[oBufferId.m_uPageFile];
+
+  //---------------------------------------------------------------------------
+  // Write to page file
+
+  RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+
+  m_pPageFile->vWriteDataBufferToPFile(pRowBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
