@@ -51,12 +51,9 @@ FileMap::FileMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP);
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
 
-//    vTrace("Created file map %p: sizeof(FileMap)=%lldB, pathToPageFile: %s\n"_Stz,
-//           this,
-//           sizeof(FileMap),
-//           m_szFilePath);
+//  vInitialise();
 
-  vInitialise();
+  m_pPageFile = new PageFile(m_szFilePath);
 
   _checkInitialised_(CN_FILEMAP);
 
@@ -76,59 +73,35 @@ NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialise all buffers on disk                                             */
+/* Decide where on disk this operand should be written to and write to disk   */
 /*----------------------------------------------------------------------------*/
-void FileMap::vInitialise(void)
+void FileMap::vToDisk(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
 
-  bool bProgress = false, bTouch = false;
-  i8 iBufferMod;
+  //---------------------------------------------------------------------------
+  // Operand could be an address or a buffer id. Check flag bit.
+#ifdef WITH_BUFFER_ID
+  BufferId oBufferId;// TODO Arjun: Code readability
+  oBufferId.m_pvAsAddress = (void*) pOperand;
 
-  i8 i_PoolBuffer = gpBufferPool->m_nNonPageableBuffers;
-  // Pickup initialization of the pageable buffers from, where BufferPool left off.
-  // From m_nNonPageableBuffers...m_nBuffers-1
-
-  while (C_NIL != i_PoolBuffer) {
-
-    if (bProgress) {
-      iBufferMod = i_PoolBuffer % 1000;
-      if (! iBufferMod) {
-        fflush(stdout);
-      }
-    }
-
-    FreePoolBuffer* pFreePoolBuffer = gpBufferPool->pToFreePoolBuffer(i_PoolBuffer);
-
-    pFreePoolBuffer->vSetMagic();
-    pFreePoolBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
-
-    //pFreePoolBuffer->aFooter()->vSetFooter();
-    if (bTouch)
-      pFreePoolBuffer->vZeroData();
-
-    pFreePoolBuffer->vSetFooter();
-    pFreePoolBuffer->vBufferNo(i_PoolBuffer);
-    i_PoolBuffer = gpBufferPool->iBufferNext(i_PoolBuffer);
-    pFreePoolBuffer->vNextFree(i_PoolBuffer);
-
-    gpBufferPool->m_nFreeCount++;
+  if(0 == BufferId::bIsAddress(oBufferId)) {
+    pOperand = (Operand*) BufferId::vAddressFromId(oBufferId);//hashmap
   }
 
-  FreePoolBuffer* pLastBuffer = gpBufferPool->pToFreePoolBuffer(gpBufferPool->iBufferLast());
+  //---------------------------------------------------------------------------
+  // Look at page no bits in buffer id and assign to corresponding PageFile
 
-  pLastBuffer->vSetMagic();
-  pLastBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
-  //pLastBuffer->aFooter()->vSetFooter();
-  if (bTouch)
-    pLastBuffer->vZeroData();
+    // To do once we have multiple page files...
+    // m_pPageFile[oBufferId.m_uPageFile];
 
-  pLastBuffer->vSetFooter();
-  pLastBuffer->vBufferNo(gpBufferPool->iBufferLast());
-  pLastBuffer->vNextFree(C_NIL);
+  //---------------------------------------------------------------------------
+  // Write to page file
 
+  RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
 
-  //vDump();
+  m_pPageFile->vWriteDataBufferToPFile(pRowBuffer);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
