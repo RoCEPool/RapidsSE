@@ -53,7 +53,7 @@ enum eEG // enum groups
   EG_JK,
   EG_JL,
   EG_JP,
-  EG_MX,
+  EG_MS,
   
   EG_KC,
   EG_KE,

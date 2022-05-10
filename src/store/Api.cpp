@@ -184,7 +184,7 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
   RASSERT(! rpChildJob_tbr->pTask());
 
   Api::vMutexLock(rpChildJob_tbr);
-  RASSERT(MX_LOCKED == rpChildJob_tbr->eMutex());
+  RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
   
   rpChildJob_tbr->vTaskCreate();
 
@@ -204,7 +204,7 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
     
     
     Api::vMutexLock(rpChildJob_tbr);
-    RASSERT(MX_LOCKED == rpChildJob_tbr->eMutex());
+    RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
     
     RASSERT(rpChildJob_tbr->pTask());
 
@@ -738,7 +738,7 @@ void Api::vMutexLock(Job* pJob)
   _static_
       
   pJob->vMutexLock();
-  pJob->vMutex(MX_LOCKED);
+  pJob->vMutexSide(MS_LOCKED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -748,9 +748,9 @@ void Api::vMutexUnlock(Job* pJob)
 {
   _static_
   
-  RASSERT(MX_UNBLOCKED != pJob->eMutex());
+  RASSERT(MS_UNBLOCKED != pJob->eMutexSide());
     
-  pJob->vMutex(MX_UNBLOCKED);
+  pJob->vMutexSide(MS_UNBLOCKED);
   
   pJob->vMutexUnlock();
 }
@@ -766,7 +766,7 @@ void Api::vMutexWaitCond(Job* pJob)
         
     pJob->vMutexWait();
     
-  } while (pJob->eMutex() != MX_SIGNALLED);
+  } while (pJob->eMutexSide() != MS_SIGNALLED);
 
 }
 

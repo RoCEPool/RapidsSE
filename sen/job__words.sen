@@ -420,7 +420,7 @@
   
   [job].addRetired
   
-  MX_SIGNALLED [job].mutex!
+  MS_SIGNALLED [job].mutex!
   [job].signalWaiter
 
   [task].grabLock

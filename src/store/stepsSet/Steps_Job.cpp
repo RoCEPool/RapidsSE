@@ -567,7 +567,7 @@ void Step::vJobMutexFetch(void)
   
   Job* pJob = m_pJob;
 
-  m_pDataStack->vPushInt(pJob->eMutex());
+  m_pDataStack->vPushInt(pJob->eMutexSide());
   
   EXIT();
 }
@@ -583,7 +583,7 @@ void Step::vJobMutexStore(void)
 
   i8 iMutex = m_pDataStack->iPopAsInt(__func__);
   
-  pJob->vMutex((eMX)iMutex);
+  pJob->vMutexSide((eMS)iMutex);
   
   EXIT();
 }

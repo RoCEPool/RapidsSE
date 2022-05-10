@@ -5,7 +5,7 @@
 
 #include "eJK.h"
 #include "eJL.h"
-#include "eMX.h"
+#include "eMS.h"
 #include "eJP.h"
 #include "eRS.h"
 
@@ -60,8 +60,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     i8   m_iParticipantNodeId;  // participant node
   
     // -- state
-    eMX m_eMutex;     // mutex state: MX_UNBLOCKED, _LOCKED, ...
-    eJP m_eJobPhase;  // current phase: JP_BEGINNING, begun, ...
+    eMS m_eMutexSide; // mutex side   : MS_UNBLOCKED, _LOCKED, ...
+    eJP m_eJobPhase;  // current phase: JP_BEGINNING, _BEGUN, ...
     eJL m_eJobList;   // current list : JL_ORIGINATING, ...            POST_RECV
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -183,11 +183,11 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     JobId tLastJobId(void);
     void  vLastJobId(JobId tLastJobId);
 
-    eMX  eMutex(void);
-    void vMutex(eMX eMutex);
     void vMutexCreate(void);
     void vMutexDestroy(void);
     void vMutexLock(void);
+    eMS  eMutexSide(void);
+    void vMutexSide(eMS eMutexSide);
     void vMutexSignal(void);
     void vMutexUnlock(void);
     void vMutexWait(void);

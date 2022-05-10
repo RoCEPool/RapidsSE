@@ -4213,7 +4213,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_JK: return aJK[i_Enum];
     case EG_JL: return aJL[i_Enum];
     case EG_JP: return aJP[i_Enum];
-    case EG_MX: return aMX[i_Enum];
+    case EG_MS: return aMS[i_Enum];
       
     case EG_KC: return aKC[i_Enum];
     case EG_KE: return aKE[i_Enum];

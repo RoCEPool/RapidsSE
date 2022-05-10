@@ -458,7 +458,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_JK"_Stz,   EG_JK);
   vAddConstant("EG_JL"_Stz,   EG_JL);
   vAddConstant("EG_JP"_Stz,   EG_JP);
-  vAddConstant("EG_MX"_Stz,   EG_MX);
+  vAddConstant("EG_MS"_Stz,   EG_MS);
   vAddConstant("EG_KC"_Stz,   EG_KC);
   vAddConstant("EG_KE"_Stz,   EG_KE);
   vAddConstant("EG_KK"_Stz,   EG_KK);
@@ -538,12 +538,12 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("JP_CANCELED"_Stz,  JP_CANCELED);
   /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
 
-  // MX_ : mutex state
-  /*  0 */ vAddConstant("MX_NONE"_Stz,      MX_NONE);
-  /*  0 */ vAddConstant("MX_LOCKED"_Stz,    MX_LOCKED);
-  /*  0 */ vAddConstant("MX_SIGNALLED"_Stz, MX_SIGNALLED);
-  /*  0 */ vAddConstant("MX_UNBLOCKED"_Stz, MX_UNBLOCKED);
-  /*  0 */ vAddConstant("MX_WAITING"_Stz,   MX_WAITING);
+  // MS_ : mutex state
+  /*  0 */ vAddConstant("MS_NONE"_Stz,      MS_NONE);
+  /*  0 */ vAddConstant("MS_LOCKED"_Stz,    MS_LOCKED);
+  /*  0 */ vAddConstant("MS_SIGNALLED"_Stz, MS_SIGNALLED);
+  /*  0 */ vAddConstant("MS_UNBLOCKED"_Stz, MS_UNBLOCKED);
+  /*  0 */ vAddConstant("MS_WAITING"_Stz,   MS_WAITING);
 
   // C_MAX : MAX
   /*  0 */ vAddConstant("C_MAX_BCD_PRECISION"_Stz, C_MAX_BCD_PRECISION);
