@@ -29,7 +29,6 @@ namespace BASE
     FileMap(void);
     ~FileMap(void);
 
-    void vInitialise(void);
     void vToDisk(Operand* pOperand);
     static PoolBuffer* pToPoolBuffer(i8 i_PoolBuffer);
 

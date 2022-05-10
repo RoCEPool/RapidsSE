@@ -250,15 +250,6 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
   
   AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_ENQUEUE);
 
-#ifdef WITH_BUFFER_ID
-  if(CN_ROWBUFFER == pOperand->eGetClassNo())
-  {
-    // Replace RowBuffer address with BufferId and append to queue
-    RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-    BufferId oBufferId = pRowBuffer->oGetBufferId();
-    pOperand = (Operand*) oBufferId.m_pvAsAddress;
-  }
-#endif
   vGrabTaskLock();
   RASSERT(bIsLocked());
 
@@ -1461,17 +1452,6 @@ Operand* Op::pPopOoOLeft(void)
   
   vDropTaskLock();
   AM::vOperandsDec();
-
-#ifdef WITH_BUFFER_ID
-  BufferId oBufferId;
-  oBufferId.m_bIdFlag = 0;
-  oBufferId.m_pvAsAddress = (void*) pOperand;
-
-  //Did we get a buffer id or address
-  if(oBufferId.m_bIdFlag == 1) {
-    pOperand = (Operand*) BufferId::vAddressFromId(oBufferId);
-  }
-#endif
 
   AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
 

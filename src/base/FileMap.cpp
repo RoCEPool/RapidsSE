@@ -51,7 +51,7 @@ FileMap::FileMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP);
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
 
-  vInitialise();
+//  vInitialise();
 
   m_pPageFile = new PageFile(m_szFilePath);
 
@@ -70,62 +70,6 @@ FileMap::~FileMap(void)
 _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
 
 NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* initialise all buffers on disk                                             */
-/*----------------------------------------------------------------------------*/
-void FileMap::vInitialise(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
-
-  bool bProgress = false, bTouch = false;
-  i8 iBufferMod;
-
-  i8 i_PoolBuffer = gpBufferPool->m_nNonPageableBuffers;
-  // Pickup initialization of the pageable buffers from, where BufferPool left off.
-  // From m_nNonPageableBuffers...m_nBuffers-1
-
-  while (C_NIL != i_PoolBuffer) {
-
-    if (bProgress) {
-      iBufferMod = i_PoolBuffer % 1000;
-      if (! iBufferMod) {
-        fflush(stdout);
-      }
-    }
-
-    FreePoolBuffer* pFreePoolBuffer = gpBufferPool->pToFreePoolBuffer(i_PoolBuffer);
-
-    pFreePoolBuffer->vSetMagic();
-    pFreePoolBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
-
-    //pFreePoolBuffer->aFooter()->vSetFooter();
-    if (bTouch)
-      pFreePoolBuffer->vZeroData();
-
-    pFreePoolBuffer->vSetFooter();
-    pFreePoolBuffer->vBufferNo(i_PoolBuffer);
-    i_PoolBuffer = gpBufferPool->iBufferNext(i_PoolBuffer);
-    pFreePoolBuffer->vNextFree(i_PoolBuffer);
-
-    gpBufferPool->m_nFreeCount++;
-  }
-
-  FreePoolBuffer* pLastBuffer = gpBufferPool->pToFreePoolBuffer(gpBufferPool->iBufferLast());
-
-  pLastBuffer->vSetMagic();
-  pLastBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
-  //pLastBuffer->aFooter()->vSetFooter();
-  if (bTouch)
-    pLastBuffer->vZeroData();
-
-  pLastBuffer->vSetFooter();
-  pLastBuffer->vBufferNo(gpBufferPool->iBufferLast());
-  pLastBuffer->vNextFree(C_NIL);
-
-
-  //vDump();
 }
 
 /*----------------------------------------------------------------------------*/
