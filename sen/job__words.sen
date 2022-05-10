@@ -230,8 +230,6 @@
   // check this task has no job reference
   ListedJob[].assertNoRef
 
-  JS_DELETABLE [job].state!
-
   [job].addRetired
   [task].grabLock
     [job] [exitDemon]:queueJob

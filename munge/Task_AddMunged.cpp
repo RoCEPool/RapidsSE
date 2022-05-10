@@ -12128,8 +12128,6 @@ void Task::vAddMunged(Task* )
     "  // check this task has no job reference\n"
     "  ListedJob[].assertNoRef\n"
     "\n"
-    "  JS_DELETABLE [job].state!\n"
-    "\n"
     "  [job].addRetired\n"
     "  [task].grabLock\n"
     "    [job] [exitDemon]:queueJob\n"
