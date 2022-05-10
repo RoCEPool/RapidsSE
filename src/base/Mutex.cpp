@@ -33,8 +33,6 @@ Mutex::Mutex(Object* pIsFor)
   m_pLockedBy = nullptr;
   m_pWaitedBy = nullptr;
 
-  m_eMutex = MX_UNBLOCKED;
-  
   // m_ixBroadcast;
   // m_ixSignal;
   // m_ixWaitIndef;
@@ -286,26 +284,6 @@ void Mutex::vLock(Object* pLockFor)
   // failure -- some error has occurred
   
   ++ gixMutex_err;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the mutex state                                                        */
-/*----------------------------------------------------------------------------*/
-eMX Mutex::eMutex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
- 
-  return m_eMutex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the mutex state                                                        */
-/*----------------------------------------------------------------------------*/
-void Mutex::vMutex(eMX eMutex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
- 
-  m_eMutex = eMutex;
 }
 
 /*----------------------------------------------------------------------------*/

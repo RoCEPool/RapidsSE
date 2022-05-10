@@ -3,19 +3,15 @@
 /*============================================================================*/
 #pragma once
 
-#include "eMX.h"
-
 namespace BASE
 {
   class Mutex : public Object
   {
   public:
-    Object*  m_pIsFor;
+    Object*    m_pIsFor;
     Object*  m_pLockedBy; // by whom is the mutex locked?
     Object*  m_pWaitedBy; // for whom is the mutex being waited on?
 
-    eMX m_eMutex;
-  
     pthread_mutex_t     m_xMutex;     // posix mutex variable
     pthread_mutexattr_t m_xMutexAttr; // posix mutex attribute
   
@@ -44,9 +40,6 @@ namespace BASE
     Mutex(Object* bIsFor);
    ~Mutex(void) noexcept(false);
   
-    eMX  eMutex(void);
-    void vMutex(eMX eMutex); // temp
-
     void vBroadcast(void);
     bool bIsLocked(void);
     bool bIsLockedByCaller(Object* pLockedBy);
