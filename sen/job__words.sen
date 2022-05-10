@@ -420,7 +420,7 @@
   
   [job].addRetired
   
-  JS_SIGNALLED [job].state!
+  MX_SIGNALLED [job].state!
   [job].signalWaiter
 
   [task].grabLock

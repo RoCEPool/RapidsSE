@@ -59,7 +59,7 @@
     // cross check
     PipeSpec[] not assert
 
-    JS_SIGNALLED [job].state!
+    MX_SIGNALLED [job].state!
       
     [task].grabLock
     [job].signalWaiter
@@ -126,7 +126,7 @@
   
   [task].grabLock
   
-    JS_SIGNALLED [job].state!
+    MX_SIGNALLED [job].state!
     [job].signalWaiter
 
     [system].started@ if

@@ -74,7 +74,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   // -- c -------------------
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
-  m_eJobState = JS_ACTIVE;
+  m_eMutex = MX_ACTIVE;
   m_eError_job    = EC_NONE;
   m_pOutput_job = nullptr;
   
@@ -275,7 +275,7 @@ void Job::vCascadeReset(void)
   m_eJobKind  = JK_NONE;
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
-  m_eJobState = JS_ACTIVE;
+  m_eMutex = MX_ACTIVE;
   
   // m_oJobTags
   // m_xResult ???
@@ -691,21 +691,21 @@ void Job::vJobPhase(eJP eJobPhase)
 /*----------------------------------------------------------------------------*/
 /* get the job state                                                          */
 /*----------------------------------------------------------------------------*/
-eJS Job::eJobState(void)
+eMX Job::eJobState(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_eJobState;
+  return m_eMutex;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the job state                                                          */
 /*----------------------------------------------------------------------------*/
-void Job::vJobState(eJS eJobState)
+void Job::vJobState(eMX eJobState)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_eJobState = eJobState;
+  m_eMutex = eJobState;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1040,7 +1040,7 @@ void Job::vPrintJobContents(void)
          ,m_tParentId.uJobNo()          // 6
          ,m_bWasReceived ? "true" : "false" // 7
          ,m_iParticipantNodeId            // 8
-         ,aJS[m_eJobState]           // 10
+         ,aMX[m_eMutex]           // 10
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
          ,spTimer.sz(& m_oResponseTimer)     // 13

@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* eJS.h -- Job State                                                         */
+/* eMX.h -- Mutex State                                                       */
 /*============================================================================*/
 #pragma once
 
-enum eJS // job state
+enum eMX // mutex state
 {
-  /*  0 */ JS_NONE=0,
-  /*  1 */ JS_ACTIVE,
-  /*  2 */ JS_LOCKED,
-  /*  3 */ JS_SIGNALLED,
-  /*  4 */ JS_WAITING,
-  /*  5 */ JS_ENUMS,
+  /*  0 */ MX_NONE=0,
+  /*  1 */ MX_ACTIVE,
+  /*  2 */ MX_LOCKED,
+  /*  3 */ MX_SIGNALLED,
+  /*  4 */ MX_WAITING,
+  /*  5 */ MX_ENUMS,
 };
 
-static Stz* aJS[]
+static Stz* aMX[]
 {
-  /*  0 */ "JS_NONE"_Stz,
-  /*  1 */ "JS_ACTIVE"_Stz,
-  /*  2 */ "JS_LOCKED"_Stz,
-  /*  3 */ "JS_SIGNALLED"_Stz,
-  /*  4 */ "JS_WAITING"_Stz,
-  /*  5 */ "JS_ENUMS"_Stz,
+  /*  0 */ "MX_NONE"_Stz,
+  /*  1 */ "MX_ACTIVE"_Stz,
+  /*  2 */ "MX_LOCKED"_Stz,
+  /*  3 */ "MX_SIGNALLED"_Stz,
+  /*  4 */ "MX_WAITING"_Stz,
+  /*  5 */ "MX_ENUMS"_Stz,
 };
 
 /*============================================================================*/

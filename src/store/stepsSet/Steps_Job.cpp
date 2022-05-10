@@ -892,7 +892,7 @@ void Step::vJobStateStore(void)
 
   i8 iJobState = m_pDataStack->iPopAsInt(__func__);
   
-  pJob->vJobState((eJS)iJobState);
+  pJob->vJobState((eMX)iJobState);
   
   EXIT();
 }

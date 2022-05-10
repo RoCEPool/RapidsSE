@@ -184,7 +184,7 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
   RASSERT(! rpChildJob_tbr->pTask());
 
   Api::vMutexLock(rpChildJob_tbr);
-  RASSERT(JS_LOCKED == rpChildJob_tbr->eJobState());
+  RASSERT(MX_LOCKED == rpChildJob_tbr->eJobState());
   
   rpChildJob_tbr->vTaskCreate();
 
@@ -204,7 +204,7 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
     
     
     Api::vMutexLock(rpChildJob_tbr);
-    RASSERT(JS_LOCKED == rpChildJob_tbr->eJobState());
+    RASSERT(MX_LOCKED == rpChildJob_tbr->eJobState());
     
     RASSERT(rpChildJob_tbr->pTask());
 
@@ -738,7 +738,7 @@ void Api::vMutexLock(Job* pJob)
   _static_
       
   pJob->vMutexLock();
-  pJob->vJobState(JS_LOCKED);
+  pJob->vJobState(MX_LOCKED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -748,9 +748,9 @@ void Api::vMutexUnlock(Job* pJob)
 {
   _static_
   
-  RASSERT(JS_ACTIVE != pJob->eJobState());
+  RASSERT(MX_ACTIVE != pJob->eJobState());
     
-  pJob->vJobState(JS_ACTIVE);
+  pJob->vJobState(MX_ACTIVE);
   
   pJob->vMutexUnlock();
 }
@@ -766,7 +766,7 @@ void Api::vMutexWaitCond(Job* pJob)
         
     pJob->vMutexWait();
     
-  } while (pJob->eJobState() != JS_SIGNALLED);
+  } while (pJob->eJobState() != MX_SIGNALLED);
 
 }
 
