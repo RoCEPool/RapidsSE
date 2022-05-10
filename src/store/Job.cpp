@@ -771,6 +771,7 @@ void Job::vMutexLock(void)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   m_pMutex->vLock(this);
+  vMutexSide(MS_LOCKED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -780,7 +781,10 @@ void Job::vMutexSignal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
+  m_pMutex->vLock(this);
+  vMutexSide(MS_SIGNALLED);
   m_pMutex->vSignal(this);
+  m_pMutex->vUnlock(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -790,6 +794,7 @@ void Job::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
+  vMutexSide(MS_UNBLOCKED);
   m_pMutex->vUnlock(this);
 }
 
@@ -800,7 +805,14 @@ void Job::vMutexWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_pMutex->vWait(this);
+  //m_pMutex->vWait(this);
+  
+  do {
+        
+    m_pMutex->vWait(this);
+    
+  } while (eMutexSide() != MS_SIGNALLED);
+
 }
 
 /*----------------------------------------------------------------------------*/

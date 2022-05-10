@@ -874,10 +874,10 @@ void Step::vJobSignalWaiter(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->vMutexLock();
-  pJob->vMutexSide(MS_SIGNALLED);
+  //pJob->vMutexLock();
+  //pJob->vMutexSide(MS_SIGNALLED);
   pJob->vMutexSignal();
-  pJob->vMutexUnlock();
+  //pJob->vMutexUnlock();
 
   EXIT();
 }

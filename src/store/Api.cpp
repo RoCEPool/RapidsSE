@@ -738,7 +738,7 @@ void Api::vMutexLock(Job* pJob)
   _static_
       
   pJob->vMutexLock();
-  pJob->vMutexSide(MS_LOCKED);
+  //pJob->vMutexSide(MS_LOCKED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -748,10 +748,12 @@ void Api::vMutexUnlock(Job* pJob)
 {
   _static_
   
-  RASSERT(MS_UNBLOCKED != pJob->eMutexSide());
-    
-  pJob->vMutexSide(MS_UNBLOCKED);
-  
+//  RASSERT(MS_UNBLOCKED != pJob->eMutexSide());
+//
+//  pJob->vMutexSide(MS_UNBLOCKED);
+//
+//  pJob->vMutexUnlock();
+
   pJob->vMutexUnlock();
 }
 
@@ -762,11 +764,13 @@ void Api::vMutexWaitCond(Job* pJob)
 {
   _static_
   
-  do {
-        
-    pJob->vMutexWait();
-    
-  } while (pJob->eMutexSide() != MS_SIGNALLED);
+//  do {
+//
+//    pJob->vMutexWait();
+//
+//  } while (pJob->eMutexSide() != MS_SIGNALLED);
+
+  pJob->vMutexWait();
 
 }
 
