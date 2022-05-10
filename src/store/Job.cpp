@@ -274,7 +274,6 @@ void Job::vCascadeReset(void)
   m_eJobKind  = JK_NONE;
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
-  vMutexSide(MS_INACTIVE);
   
   // m_oJobTags
   // m_xResult ???
@@ -730,16 +729,6 @@ eMS Job::eMutexSide(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the mutex state                                                        */
-/*----------------------------------------------------------------------------*/
-void Job::vMutexSide(eMS eMutex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_pMutex->vMutex(eMutex);
-}
-
-/*----------------------------------------------------------------------------*/
 /* create a new mutex for this job                                            */
 /*----------------------------------------------------------------------------*/
 void Job::vMutexCreate(void)
@@ -772,7 +761,6 @@ void Job::vMutexLock(void)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   m_pMutex->vLock(this);
-  vMutexSide(MS_LOCKED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -794,7 +782,6 @@ void Job::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  vMutexSide(MS_INACTIVE);
   m_pMutex->vUnlock(this);
 }
 

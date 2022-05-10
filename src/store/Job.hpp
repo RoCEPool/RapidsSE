@@ -186,7 +186,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vMutexDestroy(void);
     void vMutexLock(void);
     eMS  eMutexSide(void);
-    void vMutexSide(eMS eMutexSide);
     void vMutexSignal(void);
     void vMutexUnlock(void);
     void vMutexWait(void);

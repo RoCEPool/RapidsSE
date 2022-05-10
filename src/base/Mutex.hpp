@@ -52,7 +52,6 @@ namespace BASE
     bool bLock(Object* pLockFor);
     void vLock(Object* pLockedBy);
     eMS  eMutex(void);
-    void vMutex(eMS eMutex);
     void vPause(Object* pLockFor, i8 iMicroSeconds);
     void vSignalAndUnlock(Object* pLockedBy);
     void vUnlock(Object* pLockedBy);

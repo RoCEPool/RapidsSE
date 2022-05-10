@@ -278,7 +278,7 @@ void Mutex::vLock(Object* pLockFor)
   if (0 == iRetVal) {
     RASSERT(! m_pLockedBy);
     m_pLockedBy = pLockFor;
-    
+    m_eMutex = MS_LOCKED;
     ++ m_ixLocked;
     
     return;
@@ -298,16 +298,6 @@ eMS Mutex::eMutex(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   return m_eMutex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set eMutex                                                                 */
-/*----------------------------------------------------------------------------*/
-void Mutex::vMutex(eMS eMutex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
-  
-  m_eMutex = eMutex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -453,6 +443,7 @@ void Mutex::vUnlock(Object* pLockedBy)
   
   // clear tracking of the mutex lock state
   m_pLockedBy = nullptr;
+  m_eMutex = MS_INACTIVE;
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 iRetVal = pthread_mutex_unlock(&m_xMutex);                  // non-blocking
@@ -518,6 +509,7 @@ void Mutex::vWait(Object* pLockedBy)
   if (0 == iRetVal) {
     m_pLockedBy = m_pWaitedBy;
     m_pWaitedBy = nullptr;
+    m_eMutex = MS_LOCKED;
 
     ++ m_ixSignaled;
     return;
@@ -535,6 +527,8 @@ void Mutex::vWait(Object* pLockedBy)
 void Mutex::vWaitForSignalLoop(Object* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  m_eMutex = MS_WAITING;
   
   do {
         
