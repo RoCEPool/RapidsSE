@@ -60,7 +60,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     i8   m_iParticipantNodeId;  // participant node
   
     // -- state
-    eMS m_eMutexSide; // mutex side   : MS_UNBLOCKED, _LOCKED, ...
     eJP m_eJobPhase;  // current phase: JP_BEGINNING, _BEGUN, ...
     eJL m_eJobList;   // current list : JL_ORIGINATING, ...            POST_RECV
 
