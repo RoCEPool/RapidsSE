@@ -580,13 +580,9 @@ void SePrompt::vMutexWaitAndUnlock(Object* pLockBy)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
   Mutex* pMutex = m_pThread->pMutex();
-
-  //do {
         
-    pMutex->vWait(this);
+  pMutex->vWaitForSignalLoop(this);
     
-  //} while (eMutexSide() != MS_SIGNALLED);
-
   pMutex->vUnlock(pLockBy);
 
 }

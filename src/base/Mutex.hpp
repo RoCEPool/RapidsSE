@@ -8,10 +8,13 @@ namespace BASE
   class Mutex : public Object
   {
   public:
-    Object*    m_pIsFor;
+    Object*  m_pIsFor;
     Object*  m_pLockedBy; // by whom is the mutex locked?
     Object*  m_pWaitedBy; // for whom is the mutex being waited on?
 
+    b8 m_bSignalled;
+  
+  
     pthread_mutex_t     m_xMutex;     // posix mutex variable
     pthread_mutexattr_t m_xMutexAttr; // posix mutex attribute
   
@@ -49,7 +52,8 @@ namespace BASE
     void vSignalAndUnlock(Object* pLockedBy);
     void vUnlock(Object* pLockedBy);
     void vWait(Object* pLockedBy);
-  
+    void vWaitForSignalLoop(Object* pLockedBy);
+
     void vOutline(s4K& sOutline);
   
     Footer* aFooter(void);

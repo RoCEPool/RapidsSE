@@ -128,11 +128,10 @@ void SeDeputy::vDeputyLoop(void)
 
     RASSERT(!m_pJob);
 
-    m_pThread->pMutex()->vLock(m_pSePrompt);
+    vMutexLock(this);
     RASSERT(!m_pJob);
     m_bAvailable = true;
-    m_pThread->pMutex()->vWait(m_pSePrompt);
-    m_pThread->pMutex()->vUnlock(m_pSePrompt);
+    vMutexWaitAndUnlock(this);
   
     if (! m_bContinue)
       break;
@@ -282,13 +281,9 @@ void SeDeputy::vMutexWaitAndUnlock(Object* pLockBy)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
 
   Mutex* pMutex = m_pThread->pMutex();
-
-  //do {
         
-    pMutex->vWait(this);
+  pMutex->vWaitForSignalLoop(this);
     
-  //} while (eMutexSide() != MS_SIGNALLED);
-
   pMutex->vUnlock(pLockBy);
 
 }

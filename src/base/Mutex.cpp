@@ -32,6 +32,8 @@ Mutex::Mutex(Object* pIsFor)
     
   m_pLockedBy = nullptr;
   m_pWaitedBy = nullptr;
+  
+  m_bSignalled = false;
 
   // m_ixBroadcast;
   // m_ixSignal;
@@ -401,6 +403,7 @@ void Mutex::vSignalAndUnlock(Object* pLockedBy)
   
   if (0 == iRetVal) {
     ASSERT(pLockedBy == m_pLockedBy);
+    m_bSignalled = true;
     vUnlock(pLockedBy);
     return;
   }
@@ -450,7 +453,7 @@ void Mutex::vUnlock(Object* pLockedBy)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calling thread waits indefinitely to be signaled           (blocking call) */
+/* calling thread waits indefinitely to be signalled          (blocking call) */
 /*----------------------------------------------------------------------------*/
 void Mutex::vWait(Object* pLockedBy)
 {
@@ -478,6 +481,7 @@ void Mutex::vWait(Object* pLockedBy)
   // clear tracking of the mutex lock state
   m_pWaitedBy = m_pLockedBy;
   m_pLockedBy = nullptr;
+  m_bSignalled = false;
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 iRetVal = pthread_cond_wait(&m_xCond,&m_xMutex);                // BLOCKING
@@ -502,6 +506,22 @@ void Mutex::vWait(Object* pLockedBy)
 
   ++ gixMutex_err;
 }
+
+/*----------------------------------------------------------------------------*/
+/* calling thread waits indefinitely to be signalled          (blocking call) */
+/*----------------------------------------------------------------------------*/
+void Mutex::vWaitForSignalLoop(Object* pLockedBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  do {
+        
+    vWait(pLockedBy);
+    
+  } while (! m_bSignalled);
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* outline                                                                    */
