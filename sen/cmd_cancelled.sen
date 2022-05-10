@@ -17,11 +17,11 @@
   // "cancelled:cancelled" .
 
   // find the originating job
-  [job].parentId@ ListedJob[].findOriginator? discard
+  [job].distId@ ListedJob[].findOriginator? discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  ListedJob[].task@ task.ack
+  ListedJob[].taskAck
   
   ListedJob[].returnReference
   [job]:retire

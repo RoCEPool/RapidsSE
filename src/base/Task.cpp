@@ -658,6 +658,17 @@ void Task::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cycle task lock                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vCycleTaskLock(Stz* szFunc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vGrabTaskLock(szFunc);
+  vDropTaskLock(szFunc);
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete input                                                               */
 /*----------------------------------------------------------------------------*/
 void Task::vDeleteInput(void)
@@ -734,6 +745,11 @@ void Task::vDump(void)
   m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
   m_pAuxStack->vDump(&m_oDicStack,   "m_pAuxStack:"_Stz);
 
+  if (m_pLocalsFrame)
+    m_pLocalsFrame->vDump();
+  else
+    vTrace("LocalsChain: none\n"_Stz);
+  
   m_oDicStack.vContentDump();
   
   if (pWord)
@@ -1525,17 +1541,6 @@ void Task::vScheduleBide(void)
   
   RASSERT(bIsLocked());
   m_eTransition = TR_BIDE_FOR_OPERAND;
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedule delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vScheduleDelete(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  RASSERT(bIsLocked());
-  m_eTransition = TR_DELETE_THIS_TASK;
 }
 
 /*----------------------------------------------------------------------------*/

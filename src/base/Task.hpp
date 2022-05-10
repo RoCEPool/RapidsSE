@@ -121,6 +121,7 @@ namespace BASE
     void vCheckBreakPt(void);
     bool bCorrectLayout(void);
     void vContentDump(void);
+    void vCycleTaskLock(Stz* szFunc);
     Word* pCurWord(void);
   
     void vDeleteInput(void);
@@ -188,7 +189,6 @@ namespace BASE
     void vTracePoint(Stz* aMark);
     void vTraceStep(Stz* aStepNm);
     void vScheduleBide(void);
-    void vScheduleDelete(void);
     void vScheduleSleep(void);
     void vScheduleYield(void);
     void vScheduleWait(void);

@@ -14,6 +14,7 @@
 #include "ProjectOp.hpp"
 #include "AggregateOp.hpp"
 #include "ProjectedColumn.hpp"
+#include "ProjectedColumns.hpp"
 #include "Expr.hpp"
 
 using namespace Parser;
@@ -103,7 +104,7 @@ void AggregateSplit::vSplitAggregates(QueryNode *pPlanNode, PlanNode *pRootNode)
       }
 
       // The ordinal expression contains aggregations. But does it contain
-      // more than one expression? Get a list of aggregation expressions that exist
+      // more than one aggregate? Get a list of aggregation expressions that exist
       // in pOrdExpr. Note that these are pointers to exprs in pOrdExpr, not copies.
       QueryNodeList* pAggList = Expr::pAggregateExprs(pOrdExpr, false);
 
@@ -173,7 +174,7 @@ void AggregateSplit::vInsertProjection(QueryNodeList* pAggList,
   ASSERT(pParentNode);
   ASSERT(ProjectOp::bIsOfType(pParentNode));
 
-  // Duplicate pParentNode as pChild
+  // Duplicate pParentNode as pChild, but without any children.
   QueryNode* pChild = pParentNode->pDeepCopy(true, nullptr);
 
   // Remove projected columns from pChild that contain multiple aggregations
@@ -212,6 +213,54 @@ void AggregateSplit::vInsertProjection(QueryNodeList* pAggList,
   // Insert pChild as child of pParent
   pParentNode->vInsertAsParentOfChildren(pChild);
   PlanObject::vClearLocation(pParentNode);
+
+  // Do we need to change pParent from an AggregateOp to a ProjectOp?
+  // The expressions in pParent that combine multiple aggregate terms probably
+  // don't involve any grouping.
+  if (AggregateOp::bIsOfType(pParentNode)) {
+
+    QueryNode* pOrdProjCols = AggregateOp::pOrdinalProjectedColumns(pParentNode, pRootNode);
+    ASSERT(ProjectedColumns::bIsOfType(pOrdProjCols));
+
+    b1 bHasAggs = ProjectedColumns::bContainsAnAggregate(pOrdProjCols);
+    delete pOrdProjCols;
+
+    if (!bHasAggs) {
+      // We need to modify pParent in place because we are walking a graph.
+      // First make a template.
+
+      // Make a list of projected columns, because that's what we need to construct a ProjectOp.
+      QueryNodeList* pProjCols = new QueryNodeList();
+
+      // Deep copy the columns as they will be taken in the ProjectOp
+      PlanNodeIter* pSymbolicColIter = ProjectOp::pProjectedColumns(pParentNode)->pNewChildrenIter();
+      while (pSymbolicColIter->bHasNext()) {
+        QueryNode* pProjectedColumn = _pQueryNode(pSymbolicColIter->pNext());
+        ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
+
+        pProjCols->vAppend(pProjectedColumn->pDeepCopy(true));
+      }
+      delete pSymbolicColIter;
+
+      QueryNode* pProjectOpTemplate = ProjectOp::pCreate(pProjCols);
+
+      // Snip pChild from pParentNode. We will add it back in later.
+      ASSERT(pParentNode->iNumChildren() == 1);
+      ASSERT(pParentNode->pFirstChild() == pChild);
+      pParentNode->pPopChild();
+
+
+      ASSERT(pProjCols->nItems() == 0);
+      delete pProjCols;
+
+      pParentNode->vTransmogrifyTo(pProjectOpTemplate);
+      delete pProjectOpTemplate;
+
+      // Now put pChild back as a child of pParentNode
+      pParentNode->vAppendChild(pChild);
+    }
+  }
+
 }
 
 /*============================================================================*/

@@ -15,7 +15,7 @@
 
   Marker[].newDataPulse Marker[]
     "__anyDemon" find word.object@
-    job.pipeToOp0
+    job(Id).pipeToOp0
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -25,7 +25,7 @@ void Step::vAddSteps_SenCompiler(void)
 
   vAddStep("senCompiler::current@"_Stz,       &Step::vSenCompilerCurrentFetch);
   vAddStep("senCompiler::current!"_Stz,       &Step::vSenCompilerCurrentStore);
-  
+  vAddStep("senCompiler::locals@"_Stz,        &Step::vSenCompilerLocalsFetch);
   vAddStep("senCompiler::nested@"_Stz,        &Step::vSenCompilerNestedFetch);
   vAddStep("senCompiler::nested!"_Stz,        &Step::vSenCompilerNestedStore);
 
@@ -204,6 +204,20 @@ void Step::vSenCompilerCurrentStore(void)
 /*----------------------------------------------------------------------------*/
 /*                        - FETCH / STORE NESTED WORD -                       */
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* senCompiler::locals@ -- get number of locals                               */
+/*----------------------------------------------------------------------------*/
+void Step::vSenCompilerLocalsFetch(void)
+{
+  ENTRY();
+    
+  i8 nLocals = m_pSenCompiler->nLocals();
+  
+  m_pDataStack->vPushInt(nLocals);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* senCompiler::nested@ -- get nested word                                    */
