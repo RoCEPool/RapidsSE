@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eMS.h"
+
 namespace BASE
 {
   class Mutex : public Object
@@ -14,6 +16,7 @@ namespace BASE
 
     b8 m_bSignalled;
   
+    eMS m_eMutex;
   
     pthread_mutex_t     m_xMutex;     // posix mutex variable
     pthread_mutexattr_t m_xMutexAttr; // posix mutex attribute
@@ -48,6 +51,8 @@ namespace BASE
     bool bIsLockedByCaller(Object* pLockedBy);
     bool bLock(Object* pLockFor);
     void vLock(Object* pLockedBy);
+    eMS  eMutex(void);
+    void vMutex(eMS eMutex);
     void vPause(Object* pLockFor, i8 iMicroSeconds);
     void vSignalAndUnlock(Object* pLockedBy);
     void vUnlock(Object* pLockedBy);

@@ -289,6 +289,26 @@ void Mutex::vLock(Object* pLockFor)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get eMutex                                                                 */
+/*----------------------------------------------------------------------------*/
+eMS Mutex::eMutex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  return m_eMutex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set eMutex                                                                 */
+/*----------------------------------------------------------------------------*/
+void Mutex::vMutex(eMS eMutex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  m_eMutex = eMutex;
+}
+
+/*----------------------------------------------------------------------------*/
 /* calling thread pauses for limited time to be signalled     (blocking call) */
 /*----------------------------------------------------------------------------*/
 void Mutex::vPause(Object* pLockedBy, i8 iMicroSeconds)
