@@ -15,16 +15,7 @@
 __aNewFunction(RowBuffer,CN_ROWBUFFER)
 __vDeleteFunction(RowBuffer,CN_ROWBUFFER)
 __aFooterFunction(RowBuffer);
-
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-RowBuffer* STORE::_pRowBuffer(void* aAddress)
-{
-  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(aAddress);
-  
-  return pRowBuffer;
-}
+__pCastFunction(STORE, RowBuffer, CN_ROWBUFFER);
 
 /*----------------------------------------------------------------------------*/
 /* get address of cell array of row                                           */
