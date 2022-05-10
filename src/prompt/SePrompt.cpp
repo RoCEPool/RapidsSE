@@ -237,7 +237,7 @@ void SePrompt::vPromptLoop(void)
     m_pInpTagSet->vCopy(& m_oPmtTagSet);
 
     vMutexLock(this);
-    m_pCurrentDeputy->vDeputiseJob();
+    m_pCurrentDeputy->vDeputiseJob(this);
     vMutexWaitAndUnlock(this);
     
     while (! m_pCurrentDeputy->bAvailable())
@@ -572,26 +572,13 @@ void SePrompt::vMutexSignalAndUnlock(Object* pLockBy)
   pMutex->vSignalAndUnlock(pLockBy);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* unlock this prompt's mutex                                                 */
-/*----------------------------------------------------------------------------*/
-//void SePrompt::vMutexUnlock(Object* pLockBy)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-//
-//  Mutex* pMutex = m_pThread->pMutex();
-//
-//  pMutex->vUnlock(pLockBy);
-//}
-
 /*----------------------------------------------------------------------------*/
 /* wait on this prompt's mutex                                                */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vMutexWaitAndUnlock(Object* pLockBy)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
   Mutex* pMutex = m_pThread->pMutex();
 
   //do {

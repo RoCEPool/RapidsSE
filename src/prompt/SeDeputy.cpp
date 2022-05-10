@@ -199,13 +199,13 @@ bool SeDeputy::bAvailable(void)
 /*----------------------------------------------------------------------------*/
 /* signal this deputy to execute its job                                      */
 /*----------------------------------------------------------------------------*/
-void SeDeputy::vDeputiseJob(void)
+void SeDeputy::vDeputiseJob(SePrompt* pSePrompt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  m_pThread->pMutex()->vLock(m_pThread);
+  m_pThread->pMutex()->vLock(pSePrompt);
   m_bAvailable = false;
-  m_pThread->pMutex()->vSignalAndUnlock(m_pThread);
+  m_pThread->pMutex()->vSignalAndUnlock(pSePrompt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,6 +229,16 @@ void SeDeputy::vError(eEC eError)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get input                                                                  */
+/*----------------------------------------------------------------------------*/
+Input* SeDeputy::pInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_pInput;
+}
+
+/*----------------------------------------------------------------------------*/
 /* last job run                                                               */
 /*----------------------------------------------------------------------------*/
 JobId SeDeputy::tLastJobId(void)
@@ -239,14 +249,50 @@ JobId SeDeputy::tLastJobId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get input                                                                  */
+/* lock this prompt's mutex                                                   */
 /*----------------------------------------------------------------------------*/
-Input* SeDeputy::pInput(void)
+void SeDeputy::vMutexLock(Object* pLockBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return m_pInput;
+
+  Mutex* pMutex = m_pThread->pMutex();
+
+  pMutex->vLock(pLockBy);
 }
+
+/*----------------------------------------------------------------------------*/
+/* signal this job's mutex                                                    */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vMutexSignalAndUnlock(Object* pLockBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+
+  Mutex* pMutex = m_pThread->pMutex();
+
+  //pMutex->vLock(pLockBy);
+
+  pMutex->vSignalAndUnlock(pLockBy);
+}
+
+/*----------------------------------------------------------------------------*/
+/* wait on this prompt's mutex                                                */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vMutexWaitAndUnlock(Object* pLockBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+
+  Mutex* pMutex = m_pThread->pMutex();
+
+  //do {
+        
+    pMutex->vWait(this);
+    
+  //} while (eMutexSide() != MS_SIGNALLED);
+
+  pMutex->vUnlock(pLockBy);
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* report time taken by last command                                          */
