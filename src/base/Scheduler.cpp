@@ -925,8 +925,8 @@ bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
   
   pThread->vTask(pKnownTask);
     
-  pThread->pMutex()->vSignal(pKnownTask);
-  pThread->pMutex()->vUnlock(pKnownTask);
+  pThread->pMutex()->vSignalAndUnlock(pKnownTask);
+  //pThread->pMutex()->vUnlock(pKnownTask);
   
   // mutex can now be acquired by the m_pPsxThd of pThread
   

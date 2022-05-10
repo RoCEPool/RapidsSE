@@ -783,8 +783,8 @@ void Job::vMutexSignal(void)
     
   m_pMutex->vLock(this);
   vMutexSide(MS_SIGNALLED);
-  m_pMutex->vSignal(this);
-  m_pMutex->vUnlock(this);
+  m_pMutex->vSignalAndUnlock(this);
+  //m_pMutex->vUnlock(this);
 }
 
 /*----------------------------------------------------------------------------*/

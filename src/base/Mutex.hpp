@@ -46,7 +46,7 @@ namespace BASE
     bool bLock(Object* pLockFor);
     void vLock(Object* pLockedBy);
     void vPause(Object* pLockFor, i8 iMicroSeconds);
-    void vSignal(Object* pLockedBy);
+    void vSignalAndUnlock(Object* pLockedBy);
     void vUnlock(Object* pLockedBy);
     void vWait(Object* pLockedBy);
   

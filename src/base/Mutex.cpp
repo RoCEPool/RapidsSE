@@ -373,15 +373,10 @@ void Mutex::vPause(Object* pLockedBy, i8 iMicroSeconds)
 /*----------------------------------------------------------------------------*/
 /* signal the condition variable of this mutex                                */
 /*----------------------------------------------------------------------------*/
-void Mutex::vSignal(Object* pLockedBy)
+void Mutex::vSignalAndUnlock(Object* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
-  
-  // uncomment his if you wish to observe the signal
-//  if (m_bObserve) {
-//    vDebugPoint();
-//  }
-  
+    
   //!
   //! Calling thread must have locked the mutex
   //!
@@ -406,6 +401,7 @@ void Mutex::vSignal(Object* pLockedBy)
   
   if (0 == iRetVal) {
     ASSERT(pLockedBy == m_pLockedBy);
+    vUnlock(pLockedBy);
     return;
   }
   

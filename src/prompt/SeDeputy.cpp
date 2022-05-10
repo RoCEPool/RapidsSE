@@ -154,8 +154,8 @@ void SeDeputy::vDeputyLoop(void)
     
     if (EC_NONE != m_eError) {
       m_pSePrompt->pMutex()->vLock(m_pSePrompt);
-      m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
-      m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
+      m_pSePrompt->pMutex()->vSignalAndUnlock(m_pSePrompt);
+      //m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
       continue;
     }
     
@@ -167,8 +167,8 @@ void SeDeputy::vDeputyLoop(void)
 
     if (! m_pJob->bHasTag(C_TAG_BG)) {
       m_pSePrompt->pMutex()->vLock(m_pSePrompt);
-      m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
-      m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
+      m_pSePrompt->pMutex()->vSignalAndUnlock(m_pSePrompt);
+      //m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
     }
     
     // NEEDS CORRECTION
@@ -207,8 +207,8 @@ void SeDeputy::vDeputiseJob(void)
   
   m_pThread->pMutex()->vLock(m_pThread);
   m_bAvailable = false;
-  m_pThread->pMutex()->vSignal(m_pThread);
-  m_pThread->pMutex()->vUnlock(m_pThread);
+  m_pThread->pMutex()->vSignalAndUnlock(m_pThread);
+  //m_pThread->pMutex()->vUnlock(m_pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -316,8 +316,8 @@ void SeDeputy::vTerminate(void)
   
   m_pThread->pMutex()->vLock(m_pThread);
   m_bContinue = false;
-  m_pThread->pMutex()->vSignal(m_pThread);
-  m_pThread->pMutex()->vUnlock(m_pThread);
+  m_pThread->pMutex()->vSignalAndUnlock(m_pThread);
+  //m_pThread->pMutex()->vUnlock(m_pThread);
 }
 
 /*----------------------------------------------------------------------------*/
