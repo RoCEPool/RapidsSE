@@ -55,9 +55,6 @@ namespace STORE
   static void vCreateTaskForOp(Op* pOp);
   static void vResetTaskForJob(Job* pJob);
 
-  static void vMutexLock(Job* pJob);
-  static void vMutexUnlock(Job* pJob);
-  static void vMutexWaitCond(Job* pJob);
 
   static bool bReapJob(void);
 

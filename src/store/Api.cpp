@@ -183,12 +183,12 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
 
   RASSERT(! rpChildJob_tbr->pTask());
 
-  Api::vMutexLock(rpChildJob_tbr);
+  rpChildJob_tbr->vMutexLock();
   RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
   
   rpChildJob_tbr->vTaskCreate();
 
-  Api::vMutexUnlock(rpChildJob_tbr);
+  rpChildJob_tbr->vMutexUnlock();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -203,7 +203,7 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
     }
     
     
-    Api::vMutexLock(rpChildJob_tbr);
+    rpChildJob_tbr->vMutexLock();
     RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
     
     RASSERT(rpChildJob_tbr->pTask());
@@ -216,7 +216,7 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
 
     if (rpChildJob_tbr->bHasTag(C_TAG_NOWAIT)) {
       RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_WAIT));
-      Api::vMutexUnlock(rpChildJob_tbr);
+      rpChildJob_tbr->vMutexUnlock();
       return EC_NONE;
     }
     
@@ -224,11 +224,11 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
     RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_NOWAIT));
 
 
-    Api::vMutexWaitCond(rpChildJob_tbr);
-    
+    rpChildJob_tbr->vMutexWait();
+
     rpChildJob_tbr->vResponseTimerUpdate();
     
-    Api::vMutexUnlock(rpChildJob_tbr);
+    rpChildJob_tbr->vMutexUnlock();
 
     rpChildJob_tbr->pTask()->vCycleTaskLock((Stz*)__func__);
 
@@ -728,50 +728,6 @@ void Api::vCreateTaskForOp(Op* pOp)
   pOp->vTask(pTask);
 
   pTask->vSetInxPtr(pEntryWord);
-}
-
-/*----------------------------------------------------------------------------*/
-/* lock mutex and mark job as locked                                          */
-/*----------------------------------------------------------------------------*/
-void Api::vMutexLock(Job* pJob)
-{
-  _static_
-      
-  pJob->vMutexLock();
-  //pJob->vMutexSide(MS_LOCKED);
-}
-
-/*----------------------------------------------------------------------------*/
-/* mark job as running and unlock mutex                                      */
-/*----------------------------------------------------------------------------*/
-void Api::vMutexUnlock(Job* pJob)
-{
-  _static_
-  
-//  RASSERT(MS_UNBLOCKED != pJob->eMutexSide());
-//
-//  pJob->vMutexSide(MS_UNBLOCKED);
-//
-//  pJob->vMutexUnlock();
-
-  pJob->vMutexUnlock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait for mutex to be signalled                                             */
-/*----------------------------------------------------------------------------*/
-void Api::vMutexWaitCond(Job* pJob)
-{
-  _static_
-  
-//  do {
-//
-//    pJob->vMutexWait();
-//
-//  } while (pJob->eMutexSide() != MS_SIGNALLED);
-
-  pJob->vMutexWait();
-
 }
 
 /*============================================================================*/
