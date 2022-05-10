@@ -241,10 +241,9 @@ rows:
          » location: origin
          » routing: unicast
 
--> -> -> -> aggregateOp
+-> -> -> -> projectOp
             » column: (Expr = (SUM(SUM(SUM(rapidsse.public.nation.n_nationkey)))) + (SUM(SUM(COUNT(rapidsse.public.nation.n_nationkey)))) ; Ordinal Expr = $3 + $2)
             » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $1)
-            » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> stageMarker
                » location: origin
