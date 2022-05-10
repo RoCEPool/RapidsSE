@@ -55,6 +55,9 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("[job].id@"_Stz,              &Step::vJobIdFetch);
     
+  vAddStep("[job].mutex@"_Stz,           &Step::vJobMutexFetch);
+  vAddStep("[job].mutex!"_Stz,           &Step::vJobMutexStore);
+  
   vAddStep("[job].originNodeId@"_Stz,    &Step::vJobOriginNodeIdFetch);
   
   vAddStep("[job].parentId@"_Stz,        &Step::vJobParentIdFetch);
@@ -77,8 +80,6 @@ void Step::vAddSteps_Job(void)
     
   vAddStep("[job].setOriginId"_Stz,      &Step::vJobSetOriginId);
   vAddStep("[job].signalWaiter"_Stz,     &Step::vJobSignalWaiter);
-  vAddStep("[job].state@"_Stz,           &Step::vJobStateFetch);
-  vAddStep("[job].state!"_Stz,           &Step::vJobStateStore);
 
   vAddStep("[job].tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("[job].task@"_Stz,            &Step::vJobTaskFetch);
@@ -558,6 +559,36 @@ void Step::vJobGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].mutex@ -- fetch the job mutex state                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJobMutexFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob;
+
+  m_pDataStack->vPushInt(pJob->eMutex());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].mutex! -- store the job mutex state                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJobMutexStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob;
+
+  i8 iMutex = m_pDataStack->iPopAsInt(__func__);
+  
+  pJob->vMutex((eMX)iMutex);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].originNodeId@ -- fetch the originator node no from this job          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobOriginNodeIdFetch(void)
@@ -864,36 +895,6 @@ void Step::vJobSignalWaiter(void)
   pJob->vMutexSignal();
   pJob->vMutexUnlock();
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [job].phase@ -- fetch the job phase                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobStateFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = m_pJob;
-
-  m_pDataStack->vPushInt(pJob->eJobState());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [job].phase! -- store the job phase                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobStateStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = m_pJob;
-
-  i8 iJobState = m_pDataStack->iPopAsInt(__func__);
-  
-  pJob->vJobState((eMX)iJobState);
-  
   EXIT();
 }
 

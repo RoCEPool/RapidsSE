@@ -53,7 +53,7 @@ Stz* SP_Job::sz(Job* pJob)
         ,pJob->szJobNm()
         ,aJK[pJob->eJobKind()]
         ,aJP[pJob->eJobPhase()]
-        ,aMX[pJob->eJobState()]
+        ,aMX[pJob->eMutex()]
 
         );
   

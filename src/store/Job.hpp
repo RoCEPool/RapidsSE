@@ -109,7 +109,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     JobMetrics* m_pJobMetricsChain;                                // POST_RECV
 
 
-    Mutex* m_pMutex_job;                                               // POST_RECV
+    Mutex* m_pMutex;                                               // POST_RECV
 
     // TO BE MOVED
     Timer m_oProgressTimer; // move to register
@@ -178,13 +178,13 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vJobNm(Stz* szJobNm);
     eJP  eJobPhase(void);
     void vJobPhase(eJP eJobPhase);
-    eMX  eJobState(void);
-    void vJobState(eMX eJobState);
     TagSet* pJobTags(void);
 
     JobId tLastJobId(void);
     void  vLastJobId(JobId tLastJobId);
 
+    eMX  eMutex(void);
+    void vMutex(eMX eMutex);
     void vMutexCreate(void);
     void vMutexDestroy(void);
     void vMutexLock(void);

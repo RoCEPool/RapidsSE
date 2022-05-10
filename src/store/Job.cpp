@@ -102,7 +102,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
       
   m_pJobMetricsChain  = nullptr;
   
-  m_pMutex_job     = nullptr;
+  m_pMutex     = nullptr;
   m_bSystemCloser  = false;
 
   m_pStmtList = nullptr;
@@ -169,7 +169,7 @@ Job::~Job(void) noexcept(false)
   
   AM::JOBS::vJobsActiveDec();
 
-  if (m_pMutex_job)
+  if (m_pMutex)
     vMutexDestroy();
   if (m_pOutput_job)
     vOutputDestroy();
@@ -689,26 +689,6 @@ void Job::vJobPhase(eJP eJobPhase)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the job state                                                          */
-/*----------------------------------------------------------------------------*/
-eMX Job::eJobState(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_eMutex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job state                                                          */
-/*----------------------------------------------------------------------------*/
-void Job::vJobState(eMX eJobState)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eMutex = eJobState;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get ename set                                                              */
 /*----------------------------------------------------------------------------*/
 TagSet* Job::pJobTags(void)
@@ -739,15 +719,35 @@ void Job::vLastJobId(JobId tLastJobId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the mutex state                                                        */
+/*----------------------------------------------------------------------------*/
+eMX Job::eMutex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_eMutex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the mutex state                                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vMutex(eMX eMutex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eMutex = eMutex;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a new mutex for this job                                            */
 /*----------------------------------------------------------------------------*/
 void Job::vMutexCreate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(! m_pMutex_job);
+  RASSERT(! m_pMutex);
   
-  m_pMutex_job = new Mutex(this);
+  m_pMutex = new Mutex(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -757,10 +757,10 @@ void Job::vMutexDestroy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(m_pMutex_job);
+  RASSERT(m_pMutex);
   
-  delete m_pMutex_job;
-  m_pMutex_job = nullptr;
+  delete m_pMutex;
+  m_pMutex = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -770,7 +770,7 @@ void Job::vMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_pMutex_job->vLock(this);
+  m_pMutex->vLock(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -780,7 +780,7 @@ void Job::vMutexSignal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_pMutex_job->vSignal(this);
+  m_pMutex->vSignal(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -790,7 +790,7 @@ void Job::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_pMutex_job->vUnlock(this);
+  m_pMutex->vUnlock(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -800,7 +800,7 @@ void Job::vMutexWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_pMutex_job->vWait(this);
+  m_pMutex->vWait(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1070,7 +1070,7 @@ void Job::vPostRecv(void)
   m_p_ResponseOp = nullptr;
   m_pOutput_job  = nullptr;
   m_pSingularOp  = nullptr;
-  m_pMutex_job   = nullptr;
+  m_pMutex   = nullptr;
   m_pJobMetricsChain = nullptr;
   m_pStmtList = nullptr;
 

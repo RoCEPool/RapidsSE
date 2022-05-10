@@ -878,8 +878,8 @@ public:
 
   void vJobSetOriginId(void);
   void vJobSignalWaiter(void);
-  void vJobStateFetch(void);
-  void vJobStateStore(void);
+  void vJobMutexFetch(void);
+  void vJobMutexStore(void);
   void vJobIdSystemCloserFetch(void);
   void vJobIdSystemCloserStore(void);
 
