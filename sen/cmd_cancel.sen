@@ -1,0 +1,77 @@
+/*============================================================================*/
+/* cmd_cancel.sen -- 1sc: given pipeline is to cancel on participant          */
+/*============================================================================*/
+
+" cmd_cancel.sen" .verbose
+
+////////////////////////////////////////////////////////////////////////////////
+/*                 ON PARTICIPATING NODE OF GIVEN PIPELINE                    */
+/////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
+
+/*----------------------------------------------------------------------------*/
+/* on participating node                                                      */
+/*----------------------------------------------------------------------------*/
+: cancel:onParticipant
+
+  //"cancel:onParticipant" .
+
+  // find job to be canceled in participating job list
+  [job].distId@ ListedJob[].findParticipant? if
+
+    // stall till job's previous phase (task) has completed
+    begin
+      ListedJob[].taskState@ TS_HIBERNATING !=
+    while
+      "job to be cancelled still has non-hibernating task" .
+      [task].yield
+    repeat
+    ListedJob[].cycleTaskLock
+      
+    // execute the job on this participating node
+    ListedJob[].scheduleNextPhase
+    
+    ListedJob[].returnReference
+  
+  then
+  
+  [job]:retire
+;
+
+////////////////////////////////////////////////////////////////////////////////
+/*                 ON ORIGINATING NODE OF GIVEN PIPELINE                      */
+/////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
+
+/*----------------------------------------------------------------------------*/
+/* on origin node                                                             */
+/*----------------------------------------------------------------------------*/
+: cancel:cancel
+
+  //"cancel:cancel" .
+
+  "cancel:onParticipant" [job].entryPoint!
+
+  [job] job:broadcast
+
+  [job]:retire
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+cmdSyntax: cancel :: cancel ;
+
+: cancel_cmdTags _cmdTags tagCopy: genericJob_tags
+  tags{
+    <cmdDesc>  = "--desc for job--"
+    <entryPoint>    = "cancel:cancel"
+    <path>     = "/"
+  }
+;
+
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

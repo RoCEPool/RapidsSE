@@ -1,52 +1,55 @@
 /*============================================================================*/
-/* job_executed.sen -- executed 2pc job (pipeline coordination)               */
+/* cmd_executed.sen -- 1sc: given pipeline has executed on participant        */
 /*============================================================================*/
 
-" job_executed.sen" .verbose
+" cmd_executed.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
-//                            on participating node                           //
-////////////////////////////////////////////////////////////////////////////////
+//                    ON ORIGINATING NODE OF GIVEN PIPELINE                   //
+/////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
 
 /*----------------------------------------------------------------------------*/
-/* send Job_Executed back to originating node                                 */
+/* on originating node                                                        */
 /*----------------------------------------------------------------------------*/
-: executed:reply params| pJobParticipant |
+: executed:onOrigin
 
-  // "executed:reply" .
-    
-  // new a temporary Job_Executed
-  pJobParticipant job_Executed::new locals| pJob_Executed |
+  //"executed:onOrigin" .
 
-  // send the executed job
-  pJobParticipant [job].originNodeId@ pJob_Executed job.reply
-
-  pJob_Executed job.delete
+  // find the originating job
+  
+  [job].distId@ ListedJob[].findOriginator? if
+  
+    ListedJob[].taskAck
+  
+    ListedJob[].returnReference
+  
+  then
+  
+  [job]:retire
+  HAZARD
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
-//                            on originating node                             //
-////////////////////////////////////////////////////////////////////////////////
+/*                 ON PARTICIPATING NODE OF GIVEN PIPELINE                    */
+/////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job_Executed on originating node              recv: job.spawn */
+/* on participating node                                                      */
 /*----------------------------------------------------------------------------*/
 : executed:executed
 
-  // "executed:executed" .
+  //"executed:executed" .
 
-  // find the originating job
-  [job].parentId@ ListedJob[].findOriginator discard
+  "executed:onOrigin" [job].entryPoint!
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // decrement the acks remaining in the originating job
+  [job].parentOriginNodeId@ [grid].findNodeByNo to SendNode[]
   
-  ListedJob[].task@ task.ack
+  [job] job(Id).send
+
+  nullptr to SendNode[]
   
-  ListedJob[].returnReference
   [job]:retire
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

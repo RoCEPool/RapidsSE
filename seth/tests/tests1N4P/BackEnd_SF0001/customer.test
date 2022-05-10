@@ -17,7 +17,7 @@ success
 
 //------------------------------------------------------------------------------
 // create an index on custkey
-create index IxC_CUSTKEY ON CUSTOMER  (C_CUSTKEY)  ;
+create index IxC_CUSTKEY ON CUSTOMER (C_CUSTKEY)  ;
 affected: 0
 
 // load the table

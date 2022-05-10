@@ -43,7 +43,7 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm, JobId tParentId)
+Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -52,6 +52,8 @@ Job::Job(Stz* szJobNm, JobId tParentId)
  
   m_tJobId.vNextJobId();
   m_tParentId = tParentId;
+  m_tDistId   = tDistId;
+  m_tOriginId = tOriginId;
 
   m_sJobNm   = szJobNm;
   m_eJobKind = JK_NONE;
@@ -109,7 +111,6 @@ Job::Job(Stz* szJobNm, JobId tParentId)
   
   AM::JOBS::vJobsActiveInc();
   
-  m_oJobTags.vInsert(C_TAG_DISTID,m_tJobId.iAsI8());
   m_oJobTags.vInsert(C_TAG_PATH,C_SE_PATH);
 
   AM::JLIST::vInsertJob(this);
@@ -254,49 +255,6 @@ void Job::vActiveOpsInc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get sCascade                                                               */
-/*----------------------------------------------------------------------------*/
-Stz* Job::szCascade(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Statement* pStatement = m_pStmtList->pHead();
-
-  Stz* szText = pStatement->szText();
-  
-  return szText;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append cascade                                                             */
-/*----------------------------------------------------------------------------*/
-void Job::vCascadeAppend(Stz* szCascade)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  //vTrace("vAppendCascade: %s\n"_Stz,szCascade);
-  Statement* pStatement = new Statement(szCascade);
-  
-  m_pStmtList->vAppend(pStatement);
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop cascade                                                                */
-/*----------------------------------------------------------------------------*/
-void Job::vCascadePop(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  Statement* pStatement = m_pStmtList->pPop();
-
-  Stz* szText = pStatement->szText();
-  UNUSED(szText);
-  //vTrace("vPopCascade: %s\n"_Stz,szText);
-
-  delete pStatement;
-}
-
-/*----------------------------------------------------------------------------*/
 /* reset job for cascade reuse                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vCascadeReset(void)
@@ -328,23 +286,12 @@ void Job::vCascadeReset(void)
     m_pSingularOp  = nullptr;
   }
 
-  m_pTask = nullptr;
+  m_pTask->vState(TS_NONE);
+  m_pTask->vSetInxPtr("job::entryPoint"_Stz);
 
   m_pOutput_job->vDrainBufferQueue(this);
 
   vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job to execute cascade command                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vCascadeSet(Stz* szCascadeCmd)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_oJobTags.vReplace(C_TAG_CMD,szCascadeCmd);
-
-  //m_oJobTags.vDumpSet(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,6 +314,36 @@ void Job::vCmd(Stz* szCmd)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   m_oJobTags.vReplace(C_TAG_CMD,szCmd);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get distributed job id                                                     */
+/*----------------------------------------------------------------------------*/
+JobId Job::tDistId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_tDistId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set distributed job id                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vDistId(JobId tDistId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_tDistId = tDistId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate distributed job id                                                */
+/*----------------------------------------------------------------------------*/
+void Job::vDistIdGenerate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_tDistId.vNextJobId();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -480,9 +457,9 @@ bool Job::bHasByPromptTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get bHasCascade                                                            */
+/* get bHasStmtList                                                           */
 /*----------------------------------------------------------------------------*/
-bool Job::bHasCascade(void)
+bool Job::bHasStmtList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -597,6 +574,16 @@ JobId Job::tJobId(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_tJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the job id from distributed id                                         */
+/*----------------------------------------------------------------------------*/
+void  Job::vJobIdFromDist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_tJobId = m_tDistId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -886,9 +873,29 @@ Job* Job::pOriginatingParentJob(void)
       
   //RASSERT(bIsOnOrigin());
   
-  Job* pParentJob = AM::OLIST::pFindJob(m_tJobId);
+  Job* pParentJob = AM::OLIST::pFindJob(m_tDistId);
   
   return pParentJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get origin job id                                                          */
+/*----------------------------------------------------------------------------*/
+JobId Job::tOriginId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_tOriginId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set distributed job id                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vOriginId(JobId tOriginId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_tOriginId = tOriginId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -898,9 +905,9 @@ i8 Job::iOriginNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  i8 iOriginatorNodeId = m_tJobId.uNodeId();
+  i8 iOriginNodeId = m_tOriginId.uNodeId();
   
-  return iOriginatorNodeId;
+  return iOriginNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1234,13 +1241,16 @@ void Job::vSingularOp(Op* pSingularOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return statement list                                                      */
+/* append cascade to statement list                                           */
 /*----------------------------------------------------------------------------*/
-StmtList* Job::pStmtList(void)
+void Job::vStmtListAppend(Stz* szStmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-    
-  return m_pStmtList;
+
+  //vTrace("vStmtListAppend: %s\n"_Stz,szStmt);
+  Statement* pStatement = new Statement(szStmt);
+  
+  m_pStmtList->vAppend(pStatement);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1269,7 +1279,22 @@ void Job::vStmtListDestroy(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is jsystem closer?                                                         */
+/* pop top statement from statement list                                      */
+/*----------------------------------------------------------------------------*/
+void Job::vStmtListPop(String* pString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Statement* pStatement = m_pStmtList->pPop();
+  Stz* szStmt = pStatement->szText();
+  
+  pString->vCopy(szStmt);
+  
+  delete pStatement;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is system closer?                                                          */
 /*----------------------------------------------------------------------------*/
 bool Job::bSystemCloser(void)
 {

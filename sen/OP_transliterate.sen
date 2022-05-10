@@ -24,7 +24,7 @@
     | stageA
 
   end ;
-  " [op].job@ job.masterJob job.cascade!
+  " [op].job@ job(Id).masterJob job(Id).cascade!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +87,7 @@
 
   //sPipeline .
 
-  sPipeline [op].job@ job.masterJob job.cascade!
+  sPipeline [op].job@ job(Id).masterJob job(Id).cascade!
 
   
   true

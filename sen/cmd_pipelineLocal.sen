@@ -25,9 +25,12 @@
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::local
 
-  0 locals| nAcks |
-  
+  "" locals| sPreExe |
+      
   [job].assertStructure
+
+  [job].setOriginId
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
@@ -80,7 +83,7 @@
   "<pre_execute>"
   [job].tagSet@ tagSet.hasName if
     "<pre_execute>"
-    [job].tagSet@ tagSet.getStr locals| sPreExe |
+    [job].tagSet@ tagSet.getStr to sPreExe
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
@@ -94,7 +97,7 @@
   then
 
   // add job to the local job list
-  [job] job.jobList@ JL_DEMON == not if
+  [job] job(Id).jobList@ JL_DEMON == not if
     [job].addLocal
   then
 
@@ -109,7 +112,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // remove job from the local job list
-  [job] job.jobList@ JL_DEMON == not if
+  [job] job(Id).jobList@ JL_DEMON == not if
     [job].removeLocal
   then
 
@@ -121,10 +124,11 @@
 
   [job].addRetired
   
-  JS_SIGNALLED [job].state!
-  [job].signalWaiter
-
   [task].grabLock
+  
+    JS_SIGNALLED [job].state!
+    [job].signalWaiter
+
     [system].started@ if
     //  "SYSTEM STARTED" .
     else

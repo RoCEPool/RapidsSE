@@ -88,7 +88,10 @@ public:
   // api
   void vApiForkChild_noWait(void);
   void vApiForkChild_wait(void);
+  void vApiForkGeneric_noWait(void);
+  void vApiNewGenericJob(void);
   void vApiReapJobs(void);
+  void vApiSpawnJob(void);
 
   // arrange
   void vArrangeBegin(void);
@@ -809,61 +812,55 @@ public:
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
-  void vJobCascadeFetch(void);
-  void vJobCascadeStore(void);
-  void vJobClass(void);
+  void vJobIdCascadeFetch(void);
+  void vJobIdCascadeStore(void);
 
-  void vJobDelete(void);
+  void vJobDistIdFetch(void);
+  void vJobDistIdGenerate(void);
 
   void vJobEntryPointFetch(void);
-  void vJobEntryFetch_other(void);
   void vJobEntryPointStore(void);
-  void vJobEntryStore_other(void);
   void vJobErrorFetch(void);
   void vJobErrorStore(void);
 
-  void vJobFolderPathFetch(void);
-  void vJobFolderPathStore(void);
+  void vJobIdFolderPathFetch(void);
+  void vJobIdFolderPathStore(void);
 
   void vJobGet(void);
 
-  void vJobHasCascadeFetch(void);
+  void vJobIdHasCascadeFetch(void);
 
   void vJobIdFetch(void);
-  void vJobIdFetch_other(void);
+  void vJobIdIdFetch(void);
 
-  void vJobJobClass(void);
-  void vJobJobListFetch(void);
+  void vJobIdJobListFetch(void);
 
-  void vJobKindFetch(void);
+  void vJobIdLastJobIdFetch(void);
+  void vJobIdLastJobIdStore(void);
 
-  void vJobLastJobIdFetch(void);
-  void vJobLastJobIdStore(void);
+  void vJobIdMasterJob(void);
 
-  void vJobMasterJob(void);
-
-  void vJobNameFetch(void);
-  void vJobNoWaitFetch(void);
+  void vJobIdNameFetch(void);
 
   void vJobOriginNodeIdFetch(void);
 
   void vJobParentIdFetch(void);
+  void vJobParentOriginNodeIdFetch(void);
   void vJobParticipantNodeIdFetch(void);
   void vJobParticipantNodeIdStore(void);
-  void vJobPipeToOp0(void);
+  void vJobIdPipeToOp0(void);
   void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);
-  void vJobPhaseFetch_other(void);
+  void vJobIdPhaseFetch(void);
   void vJobPhaseStore(void);
-  void vJobPrintMember(void);
   void vJobProgress(void);
   void vJobProgressReset(void);
   void vJobProgressSeconds(void);
 
   void vJobReapableFetch(void);
-  void vJobReapableFetch_other(void);
+  void vJobIdReapableFetch(void);
   void vJobReapableStore(void);
-  void vJobReapableStore_other(void);
+  void vJobIdReapableStore(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
@@ -875,18 +872,20 @@ public:
   void vJobReportOperands(void);
   void vJobReportOperators(void);
 
+  void vListedJobScheduleNextPhase(void);
   void vJobScheduleNextPhase(void);
-  void vJobShow(void);
+  void vJobIdShow(void);
+
+  void vJobSetOriginId(void);
   void vJobSignalWaiter(void);
-  void vJobSpawn(void);
   void vJobStateFetch(void);
   void vJobStateStore(void);
-  void vJobSystemCloserFetch(void);
-  void vJobSystemCloserStore(void);
+  void vJobIdSystemCloserFetch(void);
+  void vJobIdSystemCloserStore(void);
 
   void vJobTagSetFetch(void);
   void vJobTaskFetch(void);
-  void vJobTaskFetch_other(void);
+  void vJobIdTaskFetch(void);
 
   void vJobTscBeginning(void);
   void vJobTscBegun(void);
@@ -907,15 +906,6 @@ public:
   void vJobMetricsJobSet(void);
   void vJobMetricsNew(void);
   void vJobMetricsUpdate(void);
-
-  // job generic
-  void vJob_BegunNew(void);
-  void vJob_CancelNew(void);
-  void vJob_CancelledNew(void);
-  void vJob_EndNew(void);
-  void vJob_EndedNew(void);
-  void vJob_ExecuteNew(void);
-  void vJob_ExecutedNew(void);
 
   // job analyzeIndex
   void vJob_AnalyzeIndexIsDetailed(void);
@@ -1048,12 +1038,14 @@ public:
 
   // listed job
   void vListedJobAssertNoRef(void);
+  void vListedJobCycleTaskLock(void);
   void vListedJobFindOriginator(void);
   void vListedJobFindParticipant(void);
   void vListedJobHasTask(void);
   void vListedJobPointer(void);
   void vListedJobReturn(void);
   void vListedJobReferences(void);
+  void vListedJobTaskAck(void);
   void vListedJobTaskFetch(void);
 
   // loader
@@ -1718,6 +1710,7 @@ public:
   void vSenCompilerIsDiscarding(void);
   void vSenCompilerIsInterpreting(void);
   void vSenCompilerIsPostponing(void);
+  void vSenCompilerLocalsFetch(void);
   void vSenCompilerNestedFetch(void);
   void vSenCompilerNestedStore(void);
   void vSenCompilerPostponing(void);
@@ -2081,25 +2074,21 @@ public:
   void vTagSetNew(void);
 
   // task
-  void vTaskAck(void);
   void vTaskAcksStore(void);
   void vTaskBreakPoint(void);
-  void vTaskCycleLock(void);
-  void vTaskDestructorTraceFetch(void);
-  void vTaskDestructorTraceStore(void);
+  void vTaskDebugMarkFetch(void);
+  void vTaskDebugMarkStore(void);
   void vTaskDropLock(void);
   void vTaskDump(void);
   void vTaskException(void);
   void vTaskGet(void);
   void vTaskGrabLock(void);
-  void vTaskIsAckSet(void);
   void vTaskIsLocked(void);
   void vTaskIsWaiting(void);
   void vTaskNameFetch(void);
   void vTaskOperandYieldFetch(void);
   void vTaskOperandYieldStore(void);
-  void vTaskProfileFetch(void);
-  void vTaskProfileStore(void);
+  void vTaskPreHibernate(void);
   void vTaskReleaseLockSets(void);
   void vTaskSeeFrameStack(void);
   void vTaskSeeLockSets(void);
@@ -2108,8 +2097,10 @@ public:
   void vTaskSleepNsec(void);
   void vTaskSleepSsec(void);
   void vTaskSleepUsec(void);
-  void vTaskStateFetch(void);
-  void vTaskThread(void);
+  void vListedJobTaskStateFetch(void);
+  void vTaskThreadFetch(void);
+  void vTaskTraceFetch(void);
+  void vTaskTraceStore(void);
   void vTaskTransitionStore(void);
   void vTaskWait(void);
   void vTaskYield(void);

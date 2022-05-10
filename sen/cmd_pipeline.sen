@@ -14,9 +14,6 @@
 : pipeline:origin ( -- <R> )
 
   //"pipeline:origin" .
-    
-  0 0 locals| pJob_Execute pJob_End |
-  
   
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
   // ordinary job            / run pre-checks                                 //
@@ -69,6 +66,7 @@
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // add this job to originator job list
+  [job].distIdGenerate
   [job].addOriginator
   [job].assertOriginator
 
@@ -178,16 +176,13 @@
 
     [job].tscExecuting
 
-    [job] job_Execute::new to pJob_Execute
-
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      pJob_Execute job:broadcast
+      "execute" api::forkGeneric_noWait
     [task].wait
 
     [job].tscExecuted
 
-    pJob_Execute job.delete
   then
   
   
@@ -203,16 +198,13 @@
     
     [job].tscEnding
     
-    [job] job_End::new to pJob_End
-
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      pJob_End job:broadcast
+      "end" api::forkGeneric_noWait
     [task].wait
 
     [job].tscEnded
 
-    pJob_End job.delete
   then
 
 
@@ -244,7 +236,7 @@
     HAZARD
 
   else
-  [job] job.hasCascade@ not if
+  [job] job(Id).hasCascade@ not if
     [ddlLock].testDrop
     ListedJob[].assertNoRef
 
@@ -261,11 +253,13 @@
   else
       
     [ddlLock].testDrop
-    JS_SIGNALLED [job].state!
-    [job].signalWaiter
- 
+    
     [task].grabLock
-      TR_DELETE_THIS_TASK [task].transition!
+    
+      JS_SIGNALLED [job].state!
+      [job].signalWaiter
+ 
+      TR_HIBERNATE_THIS_TASK [task].transition!
   
     HAZARD
     
@@ -284,7 +278,9 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:begin ( -- )
 
-  // "pipeline:begin" .
+  //"pipeline:begin" .
+
+  [job].setOriginId
 
   [job].progressReset
   
@@ -346,8 +342,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply begun to originator
 
-  [job] begun:reply
-  //"pipeline:begin post begun:reply" [job].progress
+  // send the begun job
+  1 [task].debugMark!
+  "begun" api::forkGeneric_noWait
 
   [ddlLock].testDrop
 
@@ -355,8 +352,12 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task hibernates (with job in participant list)
   
+  //[task].dump
+    
   [task].grabLock
         
+    //1 [task].trace!
+    //[task].preHibernate
     TR_HIBERNATE_THIS_TASK [task].transition!
 
   HAZARD
@@ -367,10 +368,8 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:execute ( -- )
 
-  // "pipeline:execute" .
-  
-  0 locals| nAcks |
-  
+  //"pipeline:execute" .
+    
   [job].assertStructure
   [job].assertParticipant
 
@@ -382,11 +381,12 @@
 
   // set task's dictionary stack from path in job
   //<path> str.toStrVec Path[].set
-  //[task].dump
 
+ 
   // acquire ddl lock
   [ddlLock]:acquireLock
   
+ 
   [job].assertStructure
 
 
@@ -402,7 +402,7 @@
   deck:invoke
   nullptr to Deck[]
 
-  
+ 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // this job has executed
   
@@ -414,12 +414,14 @@
   [ddlLock].testDrop
   ListedJob[].assertNoRef
   
-  
+ 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply executed to originator
   
-  [job] executed:reply
   
+  // send the executed job
+  "executed" api::forkGeneric_noWait
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task hibernates (with job in participant list)
@@ -436,7 +438,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:end ( -- )
 
-  // "pipeline:end" .
+  //"pipeline:end" .
 
   [job].assertStructure
   [job].assertParticipant
@@ -448,15 +450,10 @@
   JP_ENDED [job].phase!                // this job has ended
   [job].removeParticipant
 
-  [job] ended:reply                    // reply ended to originator
+  // send the ended job
+  "ended" api::forkGeneric_noWait
 
-  JS_DELETABLE [job].state!            // job retires
-  [job].addRetired
-
-  [task].grabLock
-    [job] [exitDemon]:queueJob
-    TR_RETIRE_THIS_TASK [task].transition!
-
+  [job]:retire
   HAZARD
 ;
 
@@ -465,7 +462,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline:cancel ( -- )
 
-  // "pipeline:cancel" .
+  //"pipeline:cancel" .
   
   [job].assertStructure
   [job].assertParticipant
@@ -478,15 +475,11 @@
 
   [job].removeParticipant
 
-  [job] cancelled:reply
+  // send the cancelled job
+  "cancelled" api::forkGeneric_noWait
 
-  JS_DELETABLE [job].state!
-  [job].addRetired
+  [job]:retire
   
-  [task].grabLock
-    [job] [exitDemon]:queueJob
-    TR_RETIRE_THIS_TASK [task].transition!
-
   HAZARD
 ;
 

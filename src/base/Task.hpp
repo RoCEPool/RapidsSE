@@ -31,6 +31,8 @@ namespace BASE
   friend class STORE::Job; // temp
 
   private:
+  
+    i8 m_iDebugMark;
 
     Gid_t<CN_TASK>  m_xTaskId;  // task id in grid
     s32 m_sTaskNm;  // name of this task
@@ -119,6 +121,7 @@ namespace BASE
     void vCheckBreakPt(void);
     bool bCorrectLayout(void);
     void vContentDump(void);
+    void vCycleTaskLock(Stz* szFunc);
     Word* pCurWord(void);
   
     void vDeleteInput(void);
@@ -186,7 +189,6 @@ namespace BASE
     void vTracePoint(Stz* aMark);
     void vTraceStep(Stz* aStepNm);
     void vScheduleBide(void);
-    void vScheduleDelete(void);
     void vScheduleSleep(void);
     void vScheduleYield(void);
     void vScheduleWait(void);

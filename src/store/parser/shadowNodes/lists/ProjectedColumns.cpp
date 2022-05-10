@@ -87,6 +87,34 @@ b1 ProjectedColumns::bIsExactType(PlanNode *pNode)
   return ShadowNode::bIsExactType(pNode, C_PROJECTEDCOLUMNS_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if any one of the projected columns contains an aggregate expr*/
+/*----------------------------------------------------------------------------*/
+b1 ProjectedColumns::bContainsAnAggregate(QueryNode* pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  if (pNode->nChildren() == 0) {
+    return false;
+  }
+
+  b1 bResult = false;
+
+  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode *pChild = _pQueryNode(pIter->pNext());
+    ASSERT(ProjectedColumn::bIsOfType(pChild));
+
+    if (ProjectedColumn::bContainsAnAggregate(pChild)) {
+      bResult = true;
+      break;
+    }
+  }
+
+  delete pIter;
+  return bResult;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if the given expression is equal to or a superset of          */
