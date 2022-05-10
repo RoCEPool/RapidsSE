@@ -58,8 +58,6 @@
 
     // cross check
     PipeSpec[] not assert
-
-    MS_SIGNALLED [job].mutex!
       
     [task].grabLock
     [job].signalWaiter
@@ -126,7 +124,6 @@
   
   [task].grabLock
   
-    MS_SIGNALLED [job].mutex!
     [job].signalWaiter
 
     [system].started@ if

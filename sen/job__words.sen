@@ -420,7 +420,6 @@
   
   [job].addRetired
   
-  MS_SIGNALLED [job].mutex!
   [job].signalWaiter
 
   [task].grabLock

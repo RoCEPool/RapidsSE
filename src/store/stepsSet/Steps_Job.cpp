@@ -56,7 +56,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].id@"_Stz,              &Step::vJobIdFetch);
     
   vAddStep("[job].mutex@"_Stz,           &Step::vJobMutexFetch);
-  vAddStep("[job].mutex!"_Stz,           &Step::vJobMutexStore);
   
   vAddStep("[job].originNodeId@"_Stz,    &Step::vJobOriginNodeIdFetch);
   
@@ -573,22 +572,6 @@ void Step::vJobMutexFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].mutex! -- store the job mutex state                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vJobMutexStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = m_pJob;
-
-  i8 iMutex = m_pDataStack->iPopAsInt(__func__);
-  
-  pJob->vMutexSide((eMS)iMutex);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* [job].originNodeId@ -- fetch the originator node no from this job          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobOriginNodeIdFetch(void)
@@ -892,6 +875,7 @@ void Step::vJobSignalWaiter(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob->vMutexLock();
+  pJob->vMutexSide(MS_SIGNALLED);
   pJob->vMutexSignal();
   pJob->vMutexUnlock();
 
