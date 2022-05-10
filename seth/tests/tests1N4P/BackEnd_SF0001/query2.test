@@ -6,7 +6,7 @@
      from part, supplier, partsupp, nation, region
       where p_partkey = ps_partkey
       and s_suppkey = ps_suppkey
-      and p_size < 15
+      and p_size = 15
       and p_type like '%BRASS'
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
@@ -65,55 +65,49 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
 /////////////////////
 
 //------------------------------------------------------------------------------
-/*
-select min(ps_supplycost)
-      from partsupp, supplier, nation, region
-      where s_suppkey = ps_suppkey
-      and s_nationkey = n_nationkey
-      and n_regionkey = r_regionkey
-      and r_name = 'EUROPE';
-*/
 
-pipeline unnamed
+// OUTER QUERY
+pipeline unamed
 begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker5703
-  stage stageMarker5703 on all partitions :
-    scan rapidsse public partsupp
-    | stageMarker5706 broadcast
-  stage stageMarker5706 on all partitions :
-    scanRight rapidsse public supplier
-    | loopJoin 0 " 1  "
-    | stageMarker5709 broadcast
-  stage stageMarker5709 on all partitions :
-    scanRight rapidsse public nation
-    | loopJoin 0 " 1  "
-    | stageMarker5712 broadcast
-  stage stageMarker5712 on all partitions :
-    scanRight rapidsse public region
-    | loopJoin 0 " 1  "
-    | stageMarker5715
-  stage stageMarker5715 on all partitions :
-    filter 1 " type BOOLEAN  $6 $2 ==  $9 $13 ==  and  $15 $17 ==  and  $18 'EUROPE'  ==  and  "
-    | project 0 " type DECIMAL )  $4 min  "
-    | stageMarker5718
-  stage stageMarker5718 on all nodes :
-    project 0 " type DECIMAL )  $1 min  "
-    | stageMarker5721
-  stage stageMarker5721 on origin :
-    project 0 " type DECIMAL )  $1 min  "
+    | stageMarker3905
+  stage stageMarker3905 on all partitions :
+    scan rapidsse public part
+    | stageMarker3908
+  stage stageMarker3911 on all partitions :
+    indexJoin 1 parsupp IxPS_SUPPKEY "BOUND $I1 $L1 =="
+    | stageMarker3914 hashcast
+  stage stageMarker3908 on all partitions :
+    indexJoin 1 supplier IxS_SUPPKEY "BOUND $I1 $L1 =="
+    | hash 2 "type INTEGER _orderkey"
+    | stageMarker3911 hashcast
+  stage stageMarker3914 on all partitions :
+    indexJoin 1 nation IxN_NATIONKEY "BOUND $I1 $L1 =="
+    | stageMarker3917 broadcast
+  stage stageMarker3917 on all partitions :
+    indexJoin 1 region IxR_REGIONKEY "BOUND $I1 $L1 =="
+    | stageMarker3920
+  stage stageMarker3920 on all partitions :
+    filter " type BOOLEAN  $1 $17 ==  $10 $18 ==  and  $6 15  <  and  }  $5 ''%BRASS''  6 matchTrailing  and  $13 $22 ==  and  $24 $26 ==  and  $27 ''EUROPE''  ==  and  /* $20 $1 __subquery0003  ==  and*/  "
+    | project " type DECIMAL as s_acctbal $15 , type VARCHAR as s_name $11 , type VARCHAR as n_name $23 , type INTEGER as p_partkey $1 , type VARCHAR as p_mfgr $3 , type VARCHAR as s_address $12 , type VARCHAR as s_phone $14 , type VARCHAR as s_comment $16 "
+    | sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | combined 0
+    | stageMarker3923
+  stage stageMarker3923 on all nodes :
+    sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | combined 0
+    | stageMarker3926
+  stage stageMarker3926 on origin :
+    sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | combined 0
     | stageLast
   stage stageLast on origin :
     output
     | sink
     | stageStart
 end ;
-
-rows:
---verfified
-  (3.14)
 
 CLEANUP {
   bye;
