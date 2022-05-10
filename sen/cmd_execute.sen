@@ -16,7 +16,7 @@
   //"execute:onParticipant" .
 
   // find job to be executed in participating job list
-  [job].parentId@ ListedJob[].findParticipant? if
+  [job].distId@ ListedJob[].findParticipant? if
 
     // stall till job's previous phase (task) has completed
     begin

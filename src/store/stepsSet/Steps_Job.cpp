@@ -44,6 +44,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].assertReceived"_Stz,   &Step::vJobAssertReceived);
   vAddStep("[job].assertStructure"_Stz,  &Step::vJobAssertStructure);
 
+  vAddStep("[job].distId@"_Stz,          &Step::vJobDistIdFetch);
+  vAddStep("[job].distIdGenerate"_Stz,   &Step::vJobDistIdGenerate);
+
   vAddStep("[job].entryPoint@"_Stz,      &Step::vJobEntryPointFetch);
   vAddStep("[job].entryPoint!"_Stz,      &Step::vJobEntryPointStore);
 
@@ -165,7 +168,10 @@ void Step::vJobAddParticipant(void)
 //  AM::pParticipatingJobs()->vGrabLock();
 //  AM::pParticipatingJobs()->vAddJob(pJob);
 //  AM::pParticipatingJobs()->vDropLock();
-  
+
+  //                                                                        HACK
+  //m_pJob->vDistId(m_pJob->tJobId());
+
   AM::vJob_AddParticipating(* m_pJob);
 
   //vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
@@ -225,14 +231,14 @@ void Step::vJobAssertBegin(void)
              "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
              aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
     
-    Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->tJobId());
+    Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->tDistId());
     if (! pJobFound)
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "[job].assertBegin: "
              "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
              aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
     
-    pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->tJobId());
+    pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->tDistId());
     if (pJobFound)
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "[job].assertBegin: "
@@ -257,14 +263,14 @@ void Step::vJobAssertBegin(void)
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
   
-  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->tJobId());
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->tDistId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "[job].assertBegin: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
   
-  pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->tJobId());
+  pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->tDistId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "[job].assertBegin: "
@@ -287,14 +293,14 @@ void Step::vJobAssertOrdinary(void)
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
   
-  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tJobId());
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tDistId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "[job].assertOrdinary: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
 
-  pJobFound = AM::pParticipatingJobs()->pFindJob(m_pJob->tJobId());
+  pJobFound = AM::pParticipatingJobs()->pFindJob(m_pJob->tDistId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "[job].assertOrdinary: "
@@ -323,7 +329,7 @@ void Step::vJobAssertOriginator(void)
            "Job::m_bWasReceived is true [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
   
-  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tJobId());
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tDistId());
   if (! pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "[job].assertOriginator: "
@@ -352,7 +358,7 @@ void Step::vJobAssertParticipant(void)
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
   
-  Job* pJobFound = AM::pParticipatingJobs()->pFindJob(m_pJob->tJobId());
+  Job* pJobFound = AM::pParticipatingJobs()->pFindJob(m_pJob->tDistId());
   if (! pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "[job].assertParticipant: "
@@ -391,6 +397,31 @@ void Step::vJobAssertStructure(void)
   
   RASSERT(m_pJob.bIsNotNull());
   RASSERT(m_pJob->pTask() == this);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].distId@ -- fetch the distributed id of the job                       */
+/*----------------------------------------------------------------------------*/
+void Step::vJobDistIdFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pJob->tDistId().iAsI8());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].distIdGenerate -- generate a distributed id for the job              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobDistIdGenerate(void)
+{
+  ENTRY();
+    
+  //m_pJob->vDistId(m_pJob->tParentId());
+  m_pJob->vDistIdGenerate();
   
   EXIT();
 }
@@ -571,7 +602,7 @@ void Step::vJobParentOriginNodeIdFetch(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* job.participantNodeId@ -- fetch the participant node from the job          */
+/* [job].participantNodeId@ -- fetch the participant node from the job        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobParticipantNodeIdFetch(void)
 {
@@ -616,7 +647,7 @@ void Step::vJobPhaseFetch(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* job.preExecuteTest -- test if job can be run                               */
+/* [job].preExecuteTest -- test if job can be run                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobPreExecuteTest(void)
 {
@@ -818,8 +849,6 @@ void Step::vJobSignalWaiter(void)
   EXIT();
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /* [job].phase@ -- fetch the job phase                                        */
 /*----------------------------------------------------------------------------*/
@@ -1016,7 +1045,7 @@ void Step::vJobWasForkedFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].phase! -- store if the job was forked                                */
+/* [job].wasForked! -- store if the job was forked                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJobWasForkedStore(void)
 {
