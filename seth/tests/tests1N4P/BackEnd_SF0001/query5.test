@@ -114,6 +114,9 @@ end ;
 // SORT DESC TO ASC
 //------------------------------------------------------------------------------
 
+trackMemory
+success;
+
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -456,6 +459,9 @@ end ;
 rows:
  ('PERU',-14237.80)
  ('ARGENTI',-8058.15)
+
+MemoryLeaks;
+rows: 0
 
 CLEANUP {
   bye;

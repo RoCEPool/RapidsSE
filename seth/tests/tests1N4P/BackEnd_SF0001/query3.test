@@ -93,6 +93,9 @@ end ;
 // Modified DESC to ASC as DESC not yet supported
 //------------------------------------------------------------------------------
 
+trackMemory;
+success
+
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -566,6 +569,9 @@ rows:
   (1386,0.00,  DATE '1993-12-25',1)
   (402, 0.00,  DATE '1993-08-05',1)
   (47, 0.00,   DATE '1993-01-04',1)
+
+MemoryLeaks;
+rows: 0
 
 CLEANUP {
   bye;
