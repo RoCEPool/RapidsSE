@@ -6,9 +6,9 @@
 enum eMX // mutex state
 {
   /*  0 */ MX_NONE=0,
-  /*  1 */ MX_ACTIVE,
-  /*  2 */ MX_LOCKED,
-  /*  3 */ MX_SIGNALLED,
+  /*  1 */ MX_LOCKED,
+  /*  2 */ MX_SIGNALLED,
+  /*  3 */ MX_UNBLOCKED,
   /*  4 */ MX_WAITING,
   /*  5 */ MX_ENUMS,
 };
@@ -16,9 +16,9 @@ enum eMX // mutex state
 static Stz* aMX[]
 {
   /*  0 */ "MX_NONE"_Stz,
-  /*  1 */ "MX_ACTIVE"_Stz,
-  /*  2 */ "MX_LOCKED"_Stz,
-  /*  3 */ "MX_SIGNALLED"_Stz,
+  /*  1 */ "MX_LOCKED"_Stz,
+  /*  2 */ "MX_SIGNALLED"_Stz,
+  /*  3 */ "MX_UNBLOCKED"_Stz,
   /*  4 */ "MX_WAITING"_Stz,
   /*  5 */ "MX_ENUMS"_Stz,
 };

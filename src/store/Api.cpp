@@ -748,9 +748,9 @@ void Api::vMutexUnlock(Job* pJob)
 {
   _static_
   
-  RASSERT(MX_ACTIVE != pJob->eJobState());
+  RASSERT(MX_UNBLOCKED != pJob->eJobState());
     
-  pJob->vJobState(MX_ACTIVE);
+  pJob->vJobState(MX_UNBLOCKED);
   
   pJob->vMutexUnlock();
 }

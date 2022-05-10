@@ -74,7 +74,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   // -- c -------------------
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
-  m_eMutex = MX_ACTIVE;
+  m_eMutex = MX_UNBLOCKED;
   m_eError_job    = EC_NONE;
   m_pOutput_job = nullptr;
   
@@ -275,7 +275,7 @@ void Job::vCascadeReset(void)
   m_eJobKind  = JK_NONE;
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
-  m_eMutex = MX_ACTIVE;
+  m_eMutex = MX_UNBLOCKED;
   
   // m_oJobTags
   // m_xResult ???

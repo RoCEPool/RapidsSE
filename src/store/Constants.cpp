@@ -538,11 +538,12 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("JP_CANCELED"_Stz,  JP_CANCELED);
   /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
 
-  // MX_ : job state
+  // MX_ : mutex state
   /*  0 */ vAddConstant("MX_NONE"_Stz,      MX_NONE);
-  /*  0 */ vAddConstant("MX_ACTIVE"_Stz,    MX_ACTIVE);
   /*  0 */ vAddConstant("MX_LOCKED"_Stz,    MX_LOCKED);
   /*  0 */ vAddConstant("MX_SIGNALLED"_Stz, MX_SIGNALLED);
+  /*  0 */ vAddConstant("MX_UNBLOCKED"_Stz, MX_UNBLOCKED);
+  /*  0 */ vAddConstant("MX_WAITING"_Stz,   MX_WAITING);
 
   // C_MAX : MAX
   /*  0 */ vAddConstant("C_MAX_BCD_PRECISION"_Stz, C_MAX_BCD_PRECISION);
