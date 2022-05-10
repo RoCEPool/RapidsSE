@@ -244,6 +244,20 @@ void Step::vJobIdNameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* jobI(Id).phase@ -- fetch the job phase                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJobIdPhaseFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushInt(pJob->eJobPhase());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job(Id).pipeToOp0 -- append operand onto op0 of given job                  */
 /*----------------------------------------------------------------------------*/
 void Step::vJobIdPipeToOp0(void)
@@ -340,6 +354,22 @@ void Step::vJobIdSystemCloserStore(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* job(Id).task@ -- fetch the task executing the job                              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobIdTaskFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushPtr(pJob->pTask());
+  
+  EXIT();
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

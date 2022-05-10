@@ -614,19 +614,6 @@ void Step::vJobPhaseFetch(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* [job].phase@ -- fetch the job phase                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdPhaseFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
-
-  m_pDataStack->vPushInt(pJob->eJobPhase());
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* job.preExecuteTest -- test if job can be run                               */
@@ -900,20 +887,6 @@ void Step::vJobTaskFetch(void)
   ENTRY();
   
   Job* pJob = * m_pJob;
-
-  m_pDataStack->vPushPtr(pJob->pTask());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.task@ -- fetch the task executing the job                              */
-/*----------------------------------------------------------------------------*/
-void Step::vJobIdTaskFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   m_pDataStack->vPushPtr(pJob->pTask());
   
