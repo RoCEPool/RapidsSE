@@ -225,10 +225,10 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
 
 
     rpChildJob_tbr->vMutexWait();
+    rpChildJob_tbr->vMutexUnlock();
 
     rpChildJob_tbr->vResponseTimerUpdate();
     
-    rpChildJob_tbr->vMutexUnlock();
 
     rpChildJob_tbr->pTask()->vCycleTaskLock((Stz*)__func__);
 

@@ -52,7 +52,6 @@ __aFooterFunction(SePrompt)
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(bool bOneCommand)
 : Object(CN_SEPROMPT)
-, m_oMutex(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -237,10 +236,10 @@ void SePrompt::vPromptLoop(void)
 
     m_pInpTagSet->vCopy(& m_oPmtTagSet);
 
-    m_oMutex.vLock(this);
+    vMutexLock(this);
     m_pCurrentDeputy->vDeputiseJob();
-    m_oMutex.vWait(this);
-    m_oMutex.vUnlock(this);
+    vMutexWaitAndUnlock(this);
+    
     while (! m_pCurrentDeputy->bAvailable())
       AM::vNapMsec(10,CN_SEPROMPT);
 
@@ -548,52 +547,61 @@ void SePrompt::vLogFreeSpace(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get mutex                                                                  */
-/*----------------------------------------------------------------------------*/
-Mutex* SePrompt::pMutex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return &m_oMutex;
-}
-
-/*----------------------------------------------------------------------------*/
 /* lock this prompt's mutex                                                   */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vMutexLock(void)
+void SePrompt::vMutexLock(Object* pLockBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  Mutex* pMutex = &m_oMutex;
+  Mutex* pMutex = m_pThread->pMutex();
 
-  pMutex->vLock(this);
+  pMutex->vLock(pLockBy);
 }
 
 /*----------------------------------------------------------------------------*/
 /* signal this job's mutex                                                    */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vMutexSignalAndUnlock(void)
+void SePrompt::vMutexSignalAndUnlock(Object* pLockBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  Mutex* pMutex = &m_oMutex;
+  Mutex* pMutex = m_pThread->pMutex();
 
-  pMutex->vLock(this);
+  //pMutex->vLock(pLockBy);
 
-  pMutex->vSignalAndUnlock(this);
+  pMutex->vSignalAndUnlock(pLockBy);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* unlock this prompt's mutex                                                 */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vMutexUnlock(void)
+//void SePrompt::vMutexUnlock(Object* pLockBy)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+//
+//  Mutex* pMutex = m_pThread->pMutex();
+//
+//  pMutex->vUnlock(pLockBy);
+//}
+
+/*----------------------------------------------------------------------------*/
+/* wait on this prompt's mutex                                                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vMutexWaitAndUnlock(Object* pLockBy)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  Mutex* pMutex = m_pThread->pMutex();
 
-  Mutex* pMutex = &m_oMutex;
+  //do {
+        
+    pMutex->vWait(this);
+    
+  //} while (eMutexSide() != MS_SIGNALLED);
 
-  pMutex->vUnlock(this);
+  pMutex->vUnlock(pLockBy);
+
 }
 
 

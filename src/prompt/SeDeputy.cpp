@@ -153,8 +153,8 @@ void SeDeputy::vDeputyLoop(void)
                              );
     
     if (EC_NONE != m_eError) {
-      m_pSePrompt->pMutex()->vLock(m_pSePrompt);
-      m_pSePrompt->pMutex()->vSignalAndUnlock(m_pSePrompt);
+      m_pSePrompt->vMutexLock(this);
+      m_pSePrompt->vMutexSignalAndUnlock(this);
        continue;
     }
     
@@ -165,8 +165,8 @@ void SeDeputy::vDeputyLoop(void)
     ApiHelper::vResetResults(m_pJob);
 
     if (! m_pJob->bHasTag(C_TAG_BG)) {
-      m_pSePrompt->pMutex()->vLock(m_pSePrompt);
-      m_pSePrompt->pMutex()->vSignalAndUnlock(m_pSePrompt);
+      m_pSePrompt->vMutexLock(this);
+      m_pSePrompt->vMutexSignalAndUnlock(this);
     }
     
     // NEEDS CORRECTION

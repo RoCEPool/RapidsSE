@@ -42,7 +42,7 @@ namespace PROMPT
     i8          m_nDeputies;    // current number of deputies
     SeDeputy*   m_paSeDeputy[C_MAX_DEPUTY];
 
-    Mutex       m_oMutex;       // mutex for seprompt-sedeputy
+
     SeDeputy*   m_pCurrentDeputy;
   
     TagSet      m_oPmtTagSet;   // tag set which controls this prompt
@@ -106,11 +106,10 @@ namespace PROMPT
     bool bIsPromptWord(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
-    Mutex* pMutex(void);
-    void vMutexLock(void);
-    void vMutexSignalAndUnlock(void);
-    void vMutexUnlock(void);
-    void vMutexWait(void);
+
+    void vMutexLock(Object* pLockBy);
+    void vMutexSignalAndUnlock(Object* pLockBy);
+    void vMutexWaitAndUnlock(Object* pLockBy);
 
     void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);
