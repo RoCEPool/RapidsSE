@@ -35,6 +35,8 @@ Mutex::Mutex(Object* pIsFor)
   
   m_bSignalled = false;
 
+  m_eMutex = MS_INACTIVE;
+  
   // m_ixBroadcast;
   // m_ixSignal;
   // m_ixWaitIndef;

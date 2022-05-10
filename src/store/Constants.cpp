@@ -538,13 +538,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("JP_CANCELED"_Stz,  JP_CANCELED);
   /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
 
-  // MS_ : mutex state
-  /*  0 */ vAddConstant("MS_NONE"_Stz,      MS_NONE);
-  /*  0 */ vAddConstant("MS_LOCKED"_Stz,    MS_LOCKED);
-  /*  0 */ vAddConstant("MS_SIGNALLED"_Stz, MS_SIGNALLED);
-  /*  0 */ vAddConstant("MS_UNBLOCKED"_Stz, MS_UNBLOCKED);
-  /*  0 */ vAddConstant("MS_WAITING"_Stz,   MS_WAITING);
-
   // C_MAX : MAX
   /*  0 */ vAddConstant("C_MAX_BCD_PRECISION"_Stz, C_MAX_BCD_PRECISION);
   /*  0 */ vAddConstant("C_MAX_FLT_PRECISION"_Stz, C_MAX_FLT_PRECISION);

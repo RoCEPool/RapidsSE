@@ -7,8 +7,7 @@ enum eMS // mutex side
 {
   /*  0 */ MS_NONE=0,
   /*  1 */ MS_LOCKED,
-  /*  2 */ MS_SIGNALLED,
-  /*  3 */ MS_UNBLOCKED,
+  /*  3 */ MS_INACTIVE,
   /*  4 */ MS_WAITING,
   /*  5 */ MS_ENUMS,
 };
@@ -17,8 +16,7 @@ static Stz* aMS[]
 {
   /*  0 */ "MS_NONE"_Stz,
   /*  1 */ "MS_LOCKED"_Stz,
-  /*  2 */ "MS_SIGNALLED"_Stz,
-  /*  3 */ "MS_UNBLOCKED"_Stz,
+  /*  3 */ "MS_INACTIVE"_Stz,
   /*  4 */ "MS_WAITING"_Stz,
   /*  5 */ "MS_ENUMS"_Stz,
 };

@@ -274,7 +274,7 @@ void Job::vCascadeReset(void)
   m_eJobKind  = JK_NONE;
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
-  vMutexSide(MS_UNBLOCKED);
+  vMutexSide(MS_INACTIVE);
   
   // m_oJobTags
   // m_xResult ???
@@ -794,7 +794,7 @@ void Job::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  vMutexSide(MS_UNBLOCKED);
+  vMutexSide(MS_INACTIVE);
   m_pMutex->vUnlock(this);
 }
 
