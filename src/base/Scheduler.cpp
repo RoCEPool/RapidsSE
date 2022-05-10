@@ -922,11 +922,8 @@ bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
   RASSERT(HS_IDLE == pThread->eThreadState());
 
   pThread->pMutex()->vLock(pKnownTask);
-  
   pThread->vTask(pKnownTask);
-    
   pThread->pMutex()->vSignalAndUnlock(pKnownTask);
-  //pThread->pMutex()->vUnlock(pKnownTask);
   
   // mutex can now be acquired by the m_pPsxThd of pThread
   

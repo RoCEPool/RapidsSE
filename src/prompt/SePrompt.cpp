@@ -558,6 +558,46 @@ Mutex* SePrompt::pMutex(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* lock this prompt's mutex                                                   */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vMutexLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  Mutex* pMutex = &m_oMutex;
+
+  pMutex->vLock(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* signal this job's mutex                                                    */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vMutexSignalAndUnlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  Mutex* pMutex = &m_oMutex;
+
+  pMutex->vLock(this);
+
+  pMutex->vSignalAndUnlock(this);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* unlock this prompt's mutex                                                 */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vMutexUnlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  Mutex* pMutex = &m_oMutex;
+
+  pMutex->vUnlock(this);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* nap till all bg jobs have completed                                        */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vNapTillBgJobsCompleted(void)

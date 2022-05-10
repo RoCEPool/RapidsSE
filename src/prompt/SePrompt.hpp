@@ -107,6 +107,11 @@ namespace PROMPT
     void vLogCommand(void);
     void vLogFreeSpace(void);
     Mutex* pMutex(void);
+    void vMutexLock(void);
+    void vMutexSignalAndUnlock(void);
+    void vMutexUnlock(void);
+    void vMutexWait(void);
+
     void vNapTillBgJobsCompleted(void);
     i8   iNextDivisionNo(void);
     i8   iNextSectionNo(void);
