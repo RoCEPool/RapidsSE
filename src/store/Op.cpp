@@ -256,7 +256,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
     // Replace RowBuffer address with BufferId and append to queue
     RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
     BufferId oBufferId = pRowBuffer->oGetBufferId();
-    pOperand = (Operand*) oBufferId.m_vAsAddress;
+    pOperand = (Operand*) oBufferId.m_pvAsAddress;
   }
 #endif
   vGrabTaskLock();
@@ -1465,7 +1465,7 @@ Operand* Op::pPopOoOLeft(void)
 #ifdef WITH_BUFFER_ID
   BufferId oBufferId;
   oBufferId.m_bIdFlag = 0;
-  oBufferId.m_vAsAddress = (void*) pOperand;
+  oBufferId.m_pvAsAddress = (void*) pOperand;
 
   //Did we get a buffer id or address
   if(oBufferId.m_bIdFlag == 1) {

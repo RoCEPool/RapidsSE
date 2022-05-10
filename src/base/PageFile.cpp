@@ -114,21 +114,19 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 #ifdef WITH_BUFFER_ID
-  BufferId oBufferId = pRowBuffer->oGetBufferId();
-  i8 iSeek = oBufferId.m_uBuffOffset;
-  m_pFile->vSeek(iSeek);
+  Timer oTimer;
 
-  i8 iStart  = TickingDevice::iGetTick();
+  BufferId oBufferId = pRowBuffer->oGetBufferId();
+  i8 iSeekOffset = oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER;
+  m_pFile->vSeek(iSeekOffset);
+
+  oTimer.vStart();
 
   bool bResult = m_pFile->bWriteBytes((void*)pRowBuffer,C_SIZE_POOL_BUFFER);
   ASSERT(bResult);
+  oTimer.vUpdate();
 
-  i8 iUpdate = TickingDevice::iGetTick();
-  i8 iTicks = (iUpdate - iStart);
-  i8 iTicksPerSec = TickingDevice::iTicksPerSec();
-  i8 iMilli = iTicks * C_1K / iTicksPerSec;
-
-  vTrace("Writing data buffer %p took %lld ms\n"_Stz, pRowBuffer, iMilli);
+  vTrace("Writing data buffer %p took %lld ns\n"_Stz, pRowBuffer, oTimer.iNanoseconds());
 #endif
 }
 

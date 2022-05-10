@@ -139,14 +139,11 @@ void FileMap::vToDisk(Operand* pOperand)
   // Operand could be an address or a buffer id. Check flag bit.
 #ifdef WITH_BUFFER_ID
   BufferId oBufferId;// TODO Arjun: Code readability
-  oBufferId.m_bIdFlag = 0;
-  oBufferId.m_vAsAddress = (void*) pOperand;
+  oBufferId.m_pvAsAddress = (void*) pOperand;
 
   if(0 == BufferId::bIsAddress(oBufferId)) {
-    pOperand = (Operand*) BufferId::vAddressFromId(oBufferId);
+    pOperand = (Operand*) BufferId::vAddressFromId(oBufferId);//hashmap
   }
-
-  ASSERT (CN_ROWBUFFER == pOperand->eGetClassNo())
 
   //---------------------------------------------------------------------------
   // Look at page no bits in buffer id and assign to corresponding PageFile
