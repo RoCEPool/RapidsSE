@@ -280,6 +280,8 @@
 
   //"pipeline:begin" .
 
+  [job].setOriginId
+
   [job].progressReset
   
   [job].assertStructure

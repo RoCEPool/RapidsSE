@@ -75,6 +75,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("[job].removeRetired"_Stz,    &Step::vJobRemoveRetired);
     
+  vAddStep("[job].setOriginId"_Stz,      &Step::vJobSetOriginId);
   vAddStep("[job].signalWaiter"_Stz,     &Step::vJobSignalWaiter);
   vAddStep("[job].state@"_Stz,           &Step::vJobStateFetch);
   vAddStep("[job].state!"_Stz,           &Step::vJobStateStore);
@@ -824,6 +825,23 @@ void Step::vJobRemoveRetired(void)
   EXIT();
 }
   
+/*----------------------------------------------------------------------------*/
+/* [job].setOriginId -- set the origin id of this job                         */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSetOriginId(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob;
+  
+  JobId tJobId;
+
+  tJobId = pJob->tJobId();
+  pJob->vOriginId(tJobId);
+
+  EXIT();
+}
+
 /*----------------------------------------------------------------------------*/
 /* [job].signalWaiter -- signal the actor waiting on this job/session mutex   */
 /*----------------------------------------------------------------------------*/

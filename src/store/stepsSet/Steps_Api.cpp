@@ -201,9 +201,14 @@ void Step::vApiForkGeneric_noWait(void)
 
   JobId tParentId;
   tParentId = m_pJob->tParentId();
+  
+  JobId tOriginId;
+  tOriginId = m_pJob->tOriginId();
+  
   JobId tDistId;
   tDistId = m_pJob->tDistId();
-  Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tParentId,tDistId);
+  
+  Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tParentId,tOriginId,tDistId);
 
   Api::vSpawnTask_receivedJob(pJobGeneric);
  
@@ -230,9 +235,14 @@ void Step::vApiNewGenericJob(void)
 
   JobId tParentId;
   tParentId = m_pJob->tParentId();
+  
   JobId tDistId;
   tDistId = m_pJob->tDistId();
-  Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tParentId,tDistId);
+  
+  JobId tOriginId;
+  tOriginId = m_pJob->tDistId();
+  
+  Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tParentId,tOriginId,tDistId);
 
   m_pDataStack->vPushPtr(pJobGeneric);
   

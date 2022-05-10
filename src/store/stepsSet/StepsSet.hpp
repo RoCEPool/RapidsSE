@@ -875,6 +875,8 @@ public:
   void vListedJobScheduleNextPhase(void);
   void vJobScheduleNextPhase(void);
   void vJobIdShow(void);
+
+  void vJobSetOriginId(void);
   void vJobSignalWaiter(void);
   void vJobStateFetch(void);
   void vJobStateStore(void);

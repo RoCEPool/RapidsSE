@@ -22,8 +22,7 @@ namespace BASE
     };
 
     JobId(void);
-      
-    operator JobId*(void);
+    JobId(i8 iAsI8);
     
     void operator =(i8 iAsI8);
     void operator =(JobId tJobId);
@@ -32,6 +31,8 @@ namespace BASE
     bool operator >(JobId tArg);
 
     i8   iAsI8(void);
+  
+    bool bIsUnknown(void);
 
     i8   nJobBits(void);
     u8   uJobMask(void);
