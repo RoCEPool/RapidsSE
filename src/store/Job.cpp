@@ -74,6 +74,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   // -- c -------------------
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
+  m_eMutex = MX_UNBLOCKED;
   m_eError_job    = EC_NONE;
   m_pOutput_job = nullptr;
   
@@ -274,6 +275,7 @@ void Job::vCascadeReset(void)
   m_eJobKind  = JK_NONE;
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
+  m_eMutex = MX_UNBLOCKED;
   
   // m_oJobTags
   // m_xResult ???
@@ -723,12 +725,7 @@ eMX Job::eMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  eMX eMutex = MX_NONE;
-  
-  if (m_pMutex)
-    eMutex = m_pMutex->eMutex();
-  
-  return eMutex;
+  return m_eMutex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -738,8 +735,7 @@ void Job::vMutex(eMX eMutex)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (m_pMutex)
-    m_pMutex->vMutex(eMutex);
+  m_eMutex = eMutex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1044,7 +1040,7 @@ void Job::vPrintJobContents(void)
          ,m_tParentId.uJobNo()          // 6
          ,m_bWasReceived ? "true" : "false" // 7
          ,m_iParticipantNodeId            // 8
-         ,aMX[eMutex()]           // 10
+         ,aMX[m_eMutex]           // 10
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
          ,spTimer.sz(& m_oResponseTimer)     // 13
