@@ -1,0 +1,121 @@
+/*============================================================================*/
+/* __NCsub : Non-Correlated sub queries                                       */
+/*============================================================================*/
+
+print "Non-Correlated sub queries";
+
+_lineitem
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+
+
+// SELECT L_ORDERKEY from lineitem;
+
+verbose enable;
+
+pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+
+    stage stageMarker0889 on all partitions :
+      scan rapidsse public lineitem
+      //| project " type INTEGER as l_orderkey $1 "
+      //| combined 0
+      | next
+
+    stage stageCreateTable on all nodes :
+      createTableNC SQTBL
+      | next
+
+   stage stageToCrw on origin :
+      dupCrw
+      | next broadcast
+
+   stage stageInsertTable on all nodes :
+     insert SQTBL
+     | next
+
+    stage stageLast on origin :
+      output
+      | sink
+      | first
+  end ;
+
+/*
+EXPLAIN with_names STAGE transliterate
+ SELECT l_orderkey FROM ( SELECT L_ORDERKEY from lineitem);
+
+pipeline unamed
+begin
+  pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker0889
+    stage stageMarker0889 on all partitions :
+      scan rapidsse public lineitem
+      | project " type INTEGER as l_orderkey $1 "
+      | combined 0
+      | stageMarker0892
+    stage stageMarker0892 on all partitions :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0895
+  stage stageMarker0895 on all partitions :
+    call "__subquery0003 "
+    | project " type INTEGER as l_orderkey $1 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+*/
+
+/*
+
+// table subquery
+EXPLAIN with_names STAGE aggregateSplit, transliterate
+ SELECT l_orderkey FROM ( SELECT * from lineitem);
+
+// exists subquery
+EXPLAIN STAGE aggregateSplit, transliterate
+ SELECT o_orderpriority FROM Orders WHERE exists
+   ( SELECT *
+       FROM LineItem
+      WHERE L_ORDERKEY = O_ORDERKEY and L_SHIPDATE = O_ORDERDATE);
+
+// predicate subquery
+EXPLAIN with_names STAGE aggregateSplit, transliterate
+  SELECT n_regionkey FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation );
+
+// select list subquery
+EXPLAIN STAGE aggregateSplit, transliterate
+  SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) FROM nation;
+
+
+// exists subquery
+EXPLAIN STAGE aggregateSplit
+  SELECT o_orderpriority FROM Orders WHERE exists
+    ( SELECT *
+        FROM LineItem
+       WHERE L_ORDERKEY   = O_ORDERKEY );
+
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

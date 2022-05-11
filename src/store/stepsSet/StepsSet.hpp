@@ -1875,6 +1875,7 @@ public:
   void vStreamDefLftParse(void);
   void vStreamDefLftPipeIn(void);
   void vStreamDefLftPrint(void);
+  void vStreamDefLftReplicated(void);
   void vStreamDefLftRowSize(void);
   void vStreamDefLftSelectColumns(void);
   void vStreamDefLftSet(void);

@@ -62,6 +62,7 @@ assert::stack_0
   "OP_createIndex.sen"          include
   "OP_createSchema.sen"         include
   "OP_createTable.sen"          include
+  "OP_createTableNC.sen"        include
   "OP_createTenant.sen"         include
   "OP_crwToRow.sen"             include
 
