@@ -505,75 +505,13 @@ void Api::vIncStatistics(eAC eApiCall)
 /*----------------------------------------------------------------------------*/
 /* call the system boot job to compile the main dictionary                    */
 /*----------------------------------------------------------------------------*/
-void Api::vCallBootSystemJob(void)
+void Api::vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms)
 {
   _static_
   
-  JobId tParentId;
-  RASSERT(tParentId.bIsUnknown());
-  
-  JobId tOriginId;
-  RASSERT(tOriginId.bIsUnknown());
-
-  JobId tDistId;
-  RASSERT(tDistId.bIsUnknown());
-
-  Job* pBootJob = new Job("bootSystem"_Stz,tParentId,tOriginId,tDistId);
-  
-  Stz* szJobNm = pBootJob->szJobNm();
-  Task* pBootTask = new Task(szJobNm,pBootJob);
-  pBootJob->vTask(pBootTask);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-     
-  pBootTask->vAddAxioms();
-  pBootTask->vAddMunged();
-  
-  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
-  
-  pBootTask->vSetInxPtr("bootSystem::bootSystem"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //TagSet* pJobTags = pBootJob->pJobTags();
-  //pJobTags->vDumpSet();
-
-  // (no cmd to parse)
-
-  //pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //pBootJob->vResponseTimerStart();
-  //vCallTaskImmediate(pBootTask);
-  vCallJobImmediate(pBootJob);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pBootTask->vState(TS_RETIRED);
-  pBootTask->vDropTaskLock((Stz*)__func__);
-
-  Api::vReapJobsOnce();
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  AM::HANDLERS::pEventHandlers()->vInitialise();
-}
-
-/*----------------------------------------------------------------------------*/
-/* call system start job to define procedures & internal tables, spawn demons */
-/*----------------------------------------------------------------------------*/
-void Api::vCallStartSystemJob(void)
-{
-  _static_
-
   // this is the main thread
   PsxThd::vMarkNonSeThread();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   JobId tParentId;
   RASSERT(tParentId.bIsUnknown());
   
@@ -583,36 +521,29 @@ void Api::vCallStartSystemJob(void)
   JobId tDistId;
   RASSERT(tDistId.bIsUnknown());
 
-  Job* pStartJob = new Job("startSystem"_Stz,tParentId,tOriginId,tDistId);
-  
-  Stz* szJobNm = pStartJob->szJobNm();
-  Task* pStartTask = new Task(szJobNm,pStartJob);
-
-  pStartJob->vTask(pStartTask);
-  
-  pStartTask->vSetInxPtr("startSystem::startSystem"_Stz);
+  Job* pEngineJob   = new Job(szJobNm,tParentId,tOriginId,tDistId);
+  Task* pEngineTask = new Task(szJobNm,pEngineJob);
+  pEngineJob->vTask(pEngineTask);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     
+  if (bAddAxioms) {
+    pEngineTask->vAddAxioms();
+    pEngineTask->vAddMunged();
+  }
+  
+  pEngineTask->vSetInxPtr(szEntryPt);
     
-  //TagSet* pJobTags = pStartJob->pJobTags();
-  //pJobTags->vDumpSet();
-
-  // (no cmd to parse)
-
-  //pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
-  //pJobTags->vReplace(C_TAG_WAIT,1);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //vCallTaskImmediate(pStartTask);
-  vCallJobImmediate(pStartJob);
+  vCallJobImmediate(pEngineJob);
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pStartTask->vState(TS_RETIRED);
-  pStartTask->vDropTaskLock((Stz*)__func__);
-  
-  Api::vReapJobsOnce();
+  if (bAddAxioms) {
+    AM::HANDLERS::pEventHandlers()->vInitialise();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -627,23 +558,14 @@ void Api::vCallJobImmediate(Job* pImmediateJob)
 
   pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace(C_TAG_WAIT,1);
-
-
   
   pImmediateJob->vResponseTimerStart();
 
   Task* pImmediateTask = pImmediateJob->pTask();
   
-  vCallTaskImmediate(pImmediateTask);
-}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/*----------------------------------------------------------------------------*/
-/* run task immediately                                                       */
-/*----------------------------------------------------------------------------*/
-void Api::vCallTaskImmediate(Task* pImmediateTask)
-{
-  _static_
-  
+  //vCallTaskImmediate(pImmediateTask);
   Task* pSaveTask = _pTask(PsxThd::pTlsGet(giTLS_TaskKey));
   
   pImmediateTask->vState(TS_EXECUTING);
@@ -651,6 +573,13 @@ void Api::vCallTaskImmediate(Task* pImmediateTask)
   pImmediateTask->vTaskLoop();
   
   PsxThd::vTlsSet(giTLS_TaskKey,pSaveTask);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pImmediateTask->vState(TS_RETIRED);
+  pImmediateTask->vDropTaskLock((Stz*)__func__);
+
+  Api::vReapJobsOnce();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1561,7 +1561,12 @@ void Engine::vStartSystem(void)
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("  Running Boot Job\n"_Stz);
-  Api::vCallBootSystemJob();
+  
+  if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
+    vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
+  
+  Api::vCallEngineJob("bootSystem"_Stz,"bootSystem::bootSystem"_Stz,true);
+  
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threading
   
@@ -1575,7 +1580,7 @@ void Engine::vStartSystem(void)
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("  Calling StartSystem job\n"_Stz);
-  Api::vCallStartSystemJob();
+  Api::vCallEngineJob("startSystem"_Stz,"startSystem::startSystem"_Stz,false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // internal tables
