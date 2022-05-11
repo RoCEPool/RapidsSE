@@ -52,8 +52,9 @@
       [job].signalWaiter
 
       [task].grabLock
-        TR_RETIRE_THIS_TASK [task].transition!
-      
+        //TR_RETIRE_THIS_TASK [task].transition!
+        [task].retire
+        
       HAZARD
 
     then
@@ -228,8 +229,9 @@
       "<signalWaiter>" [job].tagSet@ tagSet.hasName assert
       [job].signalWaiter
  
-      TR_HIBERNATE_THIS_TASK [task].transition!
-  
+      //TR_HIBERNATE_THIS_TASK [task].transition!
+      [task].hibernate
+      
     HAZARD
     
   then
@@ -246,8 +248,9 @@
       [job].signalWaiter
     then
     
-    TR_RETIRE_THIS_TASK [task].transition!
-    
+    //TR_RETIRE_THIS_TASK [task].transition!
+    [task].retire
+
   HAZARD
 ;
 
@@ -341,7 +344,8 @@
         
     //1 [task].trace!
     //[task].preHibernate
-    TR_HIBERNATE_THIS_TASK [task].transition!
+    //TR_HIBERNATE_THIS_TASK [task].transition!
+    [task].hibernate
 
   HAZARD
 ;
@@ -411,7 +415,8 @@
 
   [task].grabLock
       
-    TR_HIBERNATE_THIS_TASK [task].transition!
+    //TR_HIBERNATE_THIS_TASK [task].transition!
+    [task].hibernate
 
   HAZARD
 ;

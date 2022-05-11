@@ -233,7 +233,8 @@
   [job].addRetired
   [task].grabLock
     [job] [exitDemon]:queueJob
-    TR_RETIRE_THIS_TASK [task].transition!
+    //TR_RETIRE_THIS_TASK [task].transition!
+    [task].retire
 
   
   HAZARD
@@ -423,7 +424,8 @@
   [job].signalWaiter
 
   [task].grabLock
-    TR_RETIRE_THIS_TASK [task].transition!
+    //TR_RETIRE_THIS_TASK [task].transition!
+    [task].retire
 ;
 
 /*============================================================================*/

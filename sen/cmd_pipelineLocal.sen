@@ -15,7 +15,8 @@
 
   [job].addRetired
   [task].grabLock
-    TR_RETIRE_THIS_TASK [task].transition!
+    //TR_RETIRE_THIS_TASK [task].transition!
+    [task].retire
 
   HAZARD
 ;
@@ -132,7 +133,8 @@
     //  "SYSTEM NOT STARTED" .
       true [job].reapable!
     then
-    TR_RETIRE_THIS_TASK [task].transition!
+    //TR_RETIRE_THIS_TASK [task].transition!
+    [task].retire
 ;
 
 /*----------------------------------------------------------------------------*/
