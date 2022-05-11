@@ -771,7 +771,6 @@ void Job::vMutexSignal(void)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   m_pMutex->vLock(this);
-  //vMutexSide(MS_SIGNALLED);
   m_pMutex->vSignalAndUnlock(this);
 }
 
@@ -792,12 +791,6 @@ void Job::vMutexWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
       
-//  do {
-//
-//    m_pMutex->vWait(this);
-//
-//  } while (eMutexSide() != MS_SIGNALLED);
-
   m_pMutex->vWaitForSignalLoop(this);
 }
 
