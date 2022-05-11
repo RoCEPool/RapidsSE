@@ -1143,6 +1143,26 @@ void Job::vReapable(bool bReapable)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset task for given job                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vResetTaskForJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szEntry = "job::entryPoint"_Stz;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Task* pTask = this->pTask();
+    
+  pTask->vSetInxPtr(szEntry);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vResponseTimerStart();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pResponseOp                                                             */
 /*----------------------------------------------------------------------------*/
 Op* Job::p_ResponseOp(void)

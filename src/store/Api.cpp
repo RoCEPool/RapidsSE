@@ -615,7 +615,7 @@ void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
   _static_
   
-  vResetTaskForJob(pParticipantJob);
+  pParticipantJob->vResetTaskForJob();
   
   Task* pTaskParticipant = pParticipantJob->pTask();
   Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);
@@ -625,27 +625,6 @@ void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* reset task for given job                                                   */
-/*----------------------------------------------------------------------------*/
-void Api::vResetTaskForJob(Job* pJob)
-{
-  _static_
-    
-  Stz* szEntry = "job::entryPoint"_Stz;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Task* pTask = pJob->pTask();
-    
-  pTask->vSetInxPtr(szEntry);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pJob->vResponseTimerStart();
-}
 
 /*----------------------------------------------------------------------------*/
 /* create task for given op                                                   */

@@ -50,7 +50,6 @@ namespace STORE
   private:
 
   static void vCreateTaskForOp(Op* pOp);
-  static void vResetTaskForJob(Job* pJob);
 
 
   static bool bReapJob(void);
