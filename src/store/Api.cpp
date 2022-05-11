@@ -298,23 +298,8 @@ Job* Api::pNewGenericJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId t
 void Api::vReapableJob(Job*& rpJob)
 {
   _static_
-      
-  if (rpJob && rpJob->bIsPipeline() && ! rpJob->pOutput()->m_bExitMarker)
-    rpJob->pOutput()->vProcessBufferQueue(rpJob);
-
-  rpJob->pOutput()->m_pOutputQueue->vReset();
-  rpJob->pOutput()->vEndProcOneCmd();
-  
-  if (rpJob->pOutput()->m_pStreamDef_result) {
-    StreamDef* pStreamDef = rpJob->pOutput()->m_pStreamDef_result;
-    rpJob->pOutput()->m_pStreamDef_result = nullptr;
-    delete pStreamDef;
-  }
-  
-  rpJob->pOutput()->m_bExitMarker      = false;
-  rpJob->pOutput()->m_bExitEarlyMarker = false;
-  
-  rpJob->vReapable(true);
+        
+  rpJob->vReapableJob();
 
   rpJob = nullptr;
 }

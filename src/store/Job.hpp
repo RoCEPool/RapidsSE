@@ -212,6 +212,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   
     bool bReapable(void);
     void vReapable(bool bReapable);
+    void vReapableJob(void);
     void vResetTaskForJob(void);
     Op*  p_ResponseOp(void);
     void vResponseOp(Op* p_ResponseOp);

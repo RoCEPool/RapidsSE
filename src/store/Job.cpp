@@ -1143,6 +1143,31 @@ void Job::vReapable(bool bReapable)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set job as reapable                                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vReapableJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (bIsPipeline() && ! pOutput()->m_bExitMarker)
+    pOutput()->vProcessBufferQueue(this);
+
+  pOutput()->m_pOutputQueue->vReset();
+  pOutput()->vEndProcOneCmd();
+  
+  if (pOutput()->m_pStreamDef_result) {
+    StreamDef* pStreamDef = pOutput()->m_pStreamDef_result;
+    pOutput()->m_pStreamDef_result = nullptr;
+    delete pStreamDef;
+  }
+  
+  pOutput()->m_bExitMarker      = false;
+  pOutput()->m_bExitEarlyMarker = false;
+  
+  vReapable(true);
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset task for given job                                                   */
 /*----------------------------------------------------------------------------*/
 void Job::vResetTaskForJob(void)
