@@ -5,7 +5,7 @@
 
 #include "eJK.h"
 #include "eJL.h"
-#include "eJS.h"
+#include "eMS.h"
 #include "eJP.h"
 #include "eRS.h"
 
@@ -60,8 +60,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     i8   m_iParticipantNodeId;  // participant node
   
     // -- state
-    eJS m_eJobState;  // current state: JS_ACTIVE, _LOCKED, ...
-    eJP m_eJobPhase;  // current phase: JP_BEGINNING, begun, ...
+    eJP m_eJobPhase;  // current phase: JP_BEGINNING, _BEGUN, ...
     eJL m_eJobList;   // current list : JL_ORIGINATING, ...            POST_RECV
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -109,7 +108,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     JobMetrics* m_pJobMetricsChain;                                // POST_RECV
 
 
-    Mutex* m_pMutex_job;                                               // POST_RECV
+    Mutex* m_pMutex;                                               // POST_RECV
 
     // TO BE MOVED
     Timer m_oProgressTimer; // move to register
@@ -178,8 +177,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vJobNm(Stz* szJobNm);
     eJP  eJobPhase(void);
     void vJobPhase(eJP eJobPhase);
-    eJS  eJobState(void);
-    void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
 
     JobId tLastJobId(void);
@@ -188,6 +185,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vMutexCreate(void);
     void vMutexDestroy(void);
     void vMutexLock(void);
+    eMS  eMutexSide(void);
     void vMutexSignal(void);
     void vMutexUnlock(void);
     void vMutexWait(void);

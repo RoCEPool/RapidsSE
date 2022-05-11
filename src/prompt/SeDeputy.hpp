@@ -51,11 +51,14 @@ namespace PROMPT
     // -- -- -- -- -- --
   
     bool bAvailable(void);
-    void vDeputiseJob(void);
+    void vDeputiseJob(SePrompt* pSePrompt);
     eEC  eError(void);
     void vError(eEC eError);
     Input* pInput(void);
     JobId tLastJobId(void);
+    void vMutexLock(Object* pLockBy);
+    void vMutexSignalAndUnlock(Object* pLockBy);
+    void vMutexWaitAndUnlock(Object* pLockBy);
     void vReportTime(void);
     void vTerminate(void);
     bool bTerminated(void);
