@@ -11,8 +11,9 @@ namespace BASE
   class PageFile : public Object
   {
   private:
-    Stz* m_szPFilePath;
-    File* m_pFile;
+    File*  m_pFile;
+    Stz*   m_szPFilePath;
+    u8     m_uPFSize;
 
     // must be last
     Footer m_xFooter;
@@ -24,6 +25,8 @@ namespace BASE
     PageFile(Stz* sPath);
     ~PageFile(void);
 
+    void vCheckFooter(void);
+    void vCheckMagic(void);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     void vInitialise();
     void vWriteDataBufferToPFile(RowBuffer* pRowBuffer);

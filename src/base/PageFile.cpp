@@ -51,6 +51,7 @@ PageFile::PageFile(Stz* sPath)
 
   m_szPFilePath = sPath;
   m_pFile = new File(this);
+  m_uPFSize = C_SIZE_PAGE_FILE;
 
   vInitialise();
   _checkInitialised_(CN_PAGEFILE);
@@ -63,8 +64,46 @@ PageFile::PageFile(Stz* sPath)
 PageFile::~PageFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PAGEFILE,_FOOTER_);
-  m_pFile->vClose();
+  if (m_pFile->bIsOpen()) {
+    m_pFile->vClose();
+  }
   delete m_pFile;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check or initialize footer in page file                                    */
+/*----------------------------------------------------------------------------*/
+void PageFile::vCheckFooter(void)
+{
+  u8 uFooter;
+  i8 iSeekOffset = m_uPFSize - sizeof(C_FOOTER);
+  m_pFile->vSeek(iSeekOffset);
+  m_pFile->nReadBytes(&uFooter, sizeof(C_FOOTER));
+
+  if (uFooter != C_FOOTER) {
+    uFooter = C_FOOTER;
+    m_pFile->vSeek(iSeekOffset);
+    bool bResult = m_pFile->bWriteBytes((void*)&uFooter,sizeof(C_FOOTER));
+    ASSERT(bResult);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* check or initialize magic in page file                                     */
+/*----------------------------------------------------------------------------*/
+void PageFile::vCheckMagic(void)
+{
+  u8 uMagic = 0;
+  m_pFile->vSeekStart();
+  m_pFile->nReadBytes(&uMagic, sizeof(C_MAGIC));
+
+  if(uMagic != C_MAGIC)
+  {
+    uMagic = C_MAGIC;
+    m_pFile->vSeekStart();
+    bool bResult = m_pFile->bWriteBytes(&uMagic,sizeof(C_MAGIC));
+    ASSERT(bResult);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,17 +129,21 @@ void PageFile::vInitialise()
   // Sanity check page file path
 
   //---------------------------------------------------------------------------
-  // Open to read and write
-  if (0 == m_pFile->bOpenWrite(m_szPFilePath)) {
+  // Open page file to read and write
+
+  if (0 == m_pFile->bOpenMode(m_szPFilePath, C_OPEN_READ_WRITE_EXIST)) {
     vTrace("Error opening page file\n"_Stz);
   }
 
   //---------------------------------------------------------------------------
-  // Check if header and footer are written to file
-    // If not, initialize file
+  // Check if magic header and footer are written to file
+  // If not, initialize file
 
-  //---------------------------------------------------------------------------
-  // Save total file size
+  vCheckMagic();
+
+  vCheckFooter();
+
+  m_pFile->vFlush();
 
   //---------------------------------------------------------------------------
   // Check which areas are written to?
