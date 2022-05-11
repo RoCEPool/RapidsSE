@@ -219,37 +219,8 @@
   // ordinary job            / this job exits                                 //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
   
-  [job].wasForked? if
-    "JOB WAS FORKED" .
-        
-    HAZARD // temp
-    
-    [ddlLock].testDrop
-    ListedJob[].assertNoRef
+  [job] job(Id).hasCascade@ if
 
-    [job].addRetired
-          
-    [task].grabLock
-      TR_RETIRE_THIS_TASK [task].transition!
-      
-    HAZARD
-
-  else
-  [job] job(Id).hasCascade@ not if
-    [ddlLock].testDrop
-    ListedJob[].assertNoRef
-
-    [job].addRetired
-    
-    [job].signalWaiter
-      
-    [task].grabLock
-      TR_RETIRE_THIS_TASK [task].transition!
-      
-    HAZARD
-
-  else
-      
     [ddlLock].testDrop
     
     [task].grabLock
@@ -260,8 +231,20 @@
   
     HAZARD
     
-  then then
+  then
+  
+  [ddlLock].testDrop
+  
+  ListedJob[].assertNoRef
 
+  [job].addRetired
+  
+  [task].grabLock
+  
+    [job].signalWaiter
+    
+    TR_RETIRE_THIS_TASK [task].transition!
+    
   HAZARD
 ;
 
