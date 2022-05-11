@@ -446,7 +446,7 @@ bool BufferPool::bInBufferPool(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialise the non-pageable buffers in the pool                            */
+/* initialise all pool buffers in the pool                                    */
 /*----------------------------------------------------------------------------*/
 void BufferPool::vInitialise(bool bTouch, bool bProgress)
 {
@@ -468,9 +468,8 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
 
   i8 iBufferMod;
 
-  //Initialization of buffers from 0..m_nNonPageableBuffers
   i8 i_PoolBuffer = iBufferFirst();
-  while (C_NIL != i_PoolBuffer && m_nNonPageableBuffers > i_PoolBuffer) {
+  while (C_NIL != i_PoolBuffer) {
 
     if (bProgress) {
       iBufferMod = i_PoolBuffer % 1000;
@@ -495,6 +494,18 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
     
     m_nFreeCount++;
   }
+
+  FreePoolBuffer* pLastBuffer = gpBufferPool->pToFreePoolBuffer(gpBufferPool->iBufferLast());
+
+  pLastBuffer->vSetMagic();
+  pLastBuffer->vSetClassNo(CN_FREEPOOLBUFFER);
+  //pLastBuffer->aFooter()->vSetFooter();
+  if (bTouch)
+    pLastBuffer->vZeroData();
+
+  pLastBuffer->vSetFooter();
+  pLastBuffer->vBufferNo(gpBufferPool->iBufferLast());
+  pLastBuffer->vNextFree(C_NIL);
 
   //vDump();
 }

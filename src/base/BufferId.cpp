@@ -5,6 +5,8 @@
 #include "BASE.h"
 
 // We will update this to use the HashMap, and page in from disk
+// What happens if page out receives a buffer not in memory?
+// Potentially page it in, just to page it back out.
 void* BufferId::vAddressFromId(BufferId oBufferId)
 {
   _static_
@@ -38,5 +40,13 @@ BufferId BufferId::vBufferIdFromNo(i8 iBufferNo)
   oBufferId.m_bIdFlag = 1;
 
   return oBufferId;
+
+}
+
+bool BufferId::bIsAddress(BufferId oBufferId)
+{
+  _static_
+
+  return oBufferId.m_bIdFlag == 0;
 
 }

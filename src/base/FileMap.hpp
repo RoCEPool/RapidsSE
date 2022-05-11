@@ -5,6 +5,7 @@
 #pragma once
 
 #include "BASE.h"
+#include "PageFile.hpp"
 
 namespace BASE
 {
@@ -14,6 +15,7 @@ namespace BASE
     Stz* m_szFilePath;
     i8 m_iFileSize;
     i8 m_iCreated;
+    PageFile* m_pPageFile; // TODO Arjun: Update to list
 
     // Store start and end address of pageable area?
 
@@ -27,7 +29,7 @@ namespace BASE
     FileMap(void);
     ~FileMap(void);
 
-    void vInitialise(void);
+    void vToDisk(Operand* pOperand);
     static PoolBuffer* pToPoolBuffer(i8 i_PoolBuffer);
 
   private:
