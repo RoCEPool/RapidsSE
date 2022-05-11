@@ -425,49 +425,6 @@ bool Api::bReapJob(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* inc statistics                                                             */
-/*----------------------------------------------------------------------------*/
-void Api::vIncStatistics(eAC eApiCall)
-{
-  _static_
-  
-  
-  if (! AM::bAttached())
-    return;
-  
-  Statistics* pStats = AM::pStatistics();
-
-  switch (eApiCall) {
-    case AC_BeginFetch:          pStats->Api.m_nBeginFetch++;          break;
-    case AC_BeginInsert:         pStats->Api.m_nBeginInsert++;          break;
-    case AC_BeginSubInserter:    pStats->Api.m_nBeginSubInserter++;     break;
-    case AC_CheckVersion:        pStats->Api.m_nCheckVersion++;         break;
-    case AC_DeleteSession:       pStats->Api.m_nDeleteSession++;        break;
-    case AC_EndInsert:           pStats->Api.m_nEndInsert++;            break;
-    case AC_EndJobs:             pStats->Api.m_nEndJobs++;              break;
-    case AC_EndSubInserter:      pStats->Api.m_nEndSubInserter++;       break;
-    case AC_ExecuteCommand:      pStats->Api.m_nExecuteCommand++;       break;
-    case AC_FetchNextBuffer:     pStats->Api.m_nFetchNextBuffer++;      break;
-    case AC_FetchTable:          pStats->Api.m_nFetchTable++;           break;
-    case AC_GetFirstBuffer:      pStats->Api.m_nGetFirstBuffer++;       break;
-    case AC_GetLoadResult:       pStats->Api.m_nGetLoadResult++;        break;
-    case AC_GetNextBuffer:       pStats->Api.m_nGetNextBuffer++;        break;
-    case AC_GetRow:              pStats->Api.m_nGetRow++;               break;
-    case AC_GetRowCount:         pStats->Api.m_nGetRowCount++;          break;
-    case AC_GetTableColumnRow:   pStats->Api.m_nGetTableColumnRow++;    break;
-    case AC_GetTableColumnRowCount: pStats->Api.m_nGetTableColumnRowCount++;  break;
-    case AC_InsertRow:           pStats->Api.m_nInsertRow++;            break;
-    case AC_IsInvalidSession:    pStats->Api.m_nIsInvalidSession++;     break;
-    case AC_NewSession:          pStats->Api.m_nNewSession++;           break;
-    case AC_NextRow:             pStats->Api.m_nNextRow++;              break;
-    case AC_OpenPool:            pStats->Api.m_nPoolOpen++;             break;
-    case AC_TranslateError:      pStats->Api.m_nTranslateError++;       break;
-    default:
-      NEVER_REACH;
-  }
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* call the system boot job to compile the main dictionary                    */

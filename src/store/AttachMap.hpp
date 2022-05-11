@@ -77,7 +77,6 @@ namespace STORE
     Schedule*     m_pSchedule;
     bool          m_bStarted;
     Starter*      m_pStarter;
-    Statistics    m_oStatistics;
     Steps*        m_pSteps;
     i8            m_iStop;
     bool          m_bSupervisorHalt;

@@ -571,7 +571,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StageSpec),          HT_T_TINY    ,0 FILL }, // CN_STAGESPEC
   { sizeof(Starter),            HT_T_TINY    ,0 FILL }, // CN_STARTER
   { sizeof(Statement),          HT_T_MEDIUM  ,0 FILL }, // CN_STATEMENT
-  { sizeof(Statistics),         HT_INVALID   ,0 FILL }, // CN_STATISTICS
   { sizeof(Stats),              HT_T_TINY    ,0 FILL }, // CN_STATS
   { sizeof(Stencil),            HT_T_SMALL   ,0 FILL }, // CN_STENCIL
   { sizeof(StepAccum),          HT_INVALID   ,0 FILL }, // CN_STEPACCUM

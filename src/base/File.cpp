@@ -272,35 +272,6 @@ i8 File::nSize(Stz* szFilePath)
   return C_UNKNOWN;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print file statistics                                                      */
-/*----------------------------------------------------------------------------*/
-void File::vStatistics(void)
-{
-  Statistics* pStats = AM::pStatistics();
-
-  s32 sByteMag;
-  
-  vTrace("  nFileCloses  %lld\n"_Stz,pStats->File.m_nCloses);
-  vTrace("  nFileFlushes %lld\n"_Stz,pStats->File.m_nFlushes);
-  vTrace("  nFileGetcs   %lld\n"_Stz,pStats->File.m_nGetcs);
-  vTrace("  nFileOpens   %lld\n"_Stz,pStats->File.m_nOpens);
-  vTrace("  nFilePrints  %lld\n"_Stz,pStats->File.m_nPrints);
-  vTrace("  nFileReads   %lld\n"_Stz,pStats->File.m_nReads);
-  vTrace("  nFileWrites  %lld\n"_Stz,pStats->File.m_nWrites);
-  vTrace("  nFileSeeks   %lld\n"_Stz,pStats->File.m_nSeeks);
-  vTrace("  nFileTells   %lld\n"_Stz,pStats->File.m_nTells);
-  vTrace("  nFileUngetcs %lld\n"_Stz,pStats->File.m_nUngetcs);
-  vTrace("\n"_Stz);
-
-  MagLib::vByteMag(pStats->File.m_nReadBytes,  sByteMag);
-  vTrace("  nFileReadBytes  %s\n"_Stz,sByteMag.szStz());
-  MagLib::vByteMag(pStats->File.m_nPrintBytes, sByteMag);
-  vTrace("  nFilePrintBytes %s\n"_Stz,sByteMag.szStz());
-  MagLib::vByteMag(pStats->File.m_nWriteBytes, sByteMag);
-  vTrace("  nFileWriteBytes %s\n"_Stz,sByteMag.szStz());
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

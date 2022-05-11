@@ -44,9 +44,6 @@ print "creating index idx1..." ;
 create index idx1 on lineitem (L_ORDERKEY);
 
 print "loading lineitem.csv..." ;
-//docol stepsReset;
-//docol memoryReset;
-//docol schedulerReset;
 oldLoad lineitem "/tpch/SF10/lineitem.csv" ;
 //sleep 10 ;
 //space;

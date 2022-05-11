@@ -2680,7 +2680,6 @@ Resources* AM::pResources(void) {
 
 Word* AM::pConstantRoot(void) { return gpAttachMap->m_pConstantRoot;          }
 Word* AM::pWordRoot(void)     { return gpAttachMap->m_pWordRoot;              }
-Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
 Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }

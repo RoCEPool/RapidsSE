@@ -1065,36 +1065,6 @@ bool PROMPT::bPrompt_fact(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_file.cpp -- file statistics                                         */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_file (
-  PF_FILESTATS,      // prompt function
-  "Prompt_file"_Stz, // name of the prompt function
-  "comment"_Stz,     // comment about the function
-  "file"_Stz,        // the prompt command
-  nullptr,           // the second word
-  bPrompt_file,      // prompt function
-  true,              // enabled
-
-  true,              // visible
-  "file"_Stz,        // help
-  ""_Stz             // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_file(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-  
-  File::vStatistics();
-  
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_fileCat.cpp -- file cat                                             */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -2440,46 +2410,6 @@ bool PROMPT::bPrompt_memTest(SePrompt* pPrompt)
   vTrace("%lld\n"_Stz,iCmp);
   
   delete pMemTest;
-  
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_memory.cpp -- memory statistics                                     */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_memory (
-  PF_MEMORY,           // prompt function
-  "Prompt_memory"_Stz, // name of the prompt function
-  "comment"_Stz,       // comment about the function
-  "memory"_Stz,        // the prompt command
-  nullptr,             // the second word
-  bPrompt_memory,      // prompt function
-  true,                // enabled
-
-  true,                // visible
-  "memory"_Stz,        // help
-  ""_Stz               // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_memory(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  bool bReset = false;
-  
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pInpTknVec->nItems();
-  if (3 == iNumTokens)
-    bReset = pInpTknVec->pGet(2)->bSame("reset"_Stz);
-
-  PromptHelper::vMemoryStatistics();
-  
-  if (bReset)
-    MemLib::vReset();
   
   return true;
 }
@@ -4338,48 +4268,6 @@ bool PROMPT::bPrompt_sleep(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_sleepers.cpp -- sleepers statistics                                 */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-#include "PsxThd.hpp"  //?
-
-PromptFun __Prompt_sleepers (
-  PF_SLEEPERS,           // prompt function
-  "Prompt_sleepers"_Stz, // name of the prompt function
-  "comment"_Stz,         // comment about the function
-  "sleepers"_Stz,        // the prompt command
-  nullptr,               // the second word
-  bPrompt_sleepers,      // prompt function
-  true,                  // enabled
-
-  true,                  // visible
-  "sleepers"_Stz,        // help
-  ""_Stz                 // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_sleepers(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  bool bReset = false;
-  
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pInpTknVec->nItems();
-  if (3 == iNumTokens)
-    bReset = pInpTknVec->pGet(2)->bSame("reset"_Stz);
-
-  PsxThd::vSleepers();
-  
-  if (bReset)
-    MemLib::vReset();
-  
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_sleeping.cpp -- sleeping queue report                               */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -4631,39 +4519,6 @@ bool PROMPT::bPrompt_so(SePrompt* pPrompt)
          
   return true;
 }
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_socket.cpp -- socket statistics                                     */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-#include "Socket.hpp" //?
-
-PromptFun __Prompt_socket (
-  PF_SOCKET,           // prompt function
-  "Prompt_socket"_Stz, // name of the prompt function
-  "comment"_Stz,       // comment about the function
-  "socket"_Stz,        // the prompt command
-  nullptr,             // the second word
-  bPrompt_socket,      // prompt function
-  true,                // enabled
-
-  true,                // visible
-  "socket"_Stz,        // help
-  ""_Stz               // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_socket(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-  
-  Socket::vStatistics();
-  
-  return true;
-}
-
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_start -- Prompt Start                                               */

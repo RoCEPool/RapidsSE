@@ -38,8 +38,6 @@ namespace STORE
   static void vSpawnTask_receivedJob(Job* pJob);
       
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  static void vIncStatistics(eAC eApiCall);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

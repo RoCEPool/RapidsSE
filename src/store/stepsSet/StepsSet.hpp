@@ -1173,7 +1173,6 @@ void vDdlLockAssertNone(void);
 
   // memory
   void vMemoryByteDump(void);
-  void vMemoryReset(void);
   void vMemoryStatistics(void);
   void vMemoryWordDump(void);
 
