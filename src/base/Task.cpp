@@ -1544,6 +1544,28 @@ void Task::vScheduleBide(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule hibernate                                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleHibernate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RASSERT(bIsLocked());
+  m_eTransition = TR_HIBERNATE_THIS_TASK;
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule retire                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleRetire(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RASSERT(bIsLocked());
+  m_eTransition = TR_RETIRE_THIS_TASK;
+}
+
+/*----------------------------------------------------------------------------*/
 /* schedule sleep                                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vScheduleSleep(void)
