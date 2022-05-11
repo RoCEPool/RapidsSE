@@ -76,6 +76,7 @@ namespace STORE
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
   
+    void vCreateTaskForOp(void);
     eYX  eCrossTopology(void);
     eZK  eCurEvent(void);
     Word* pCurWord(void);

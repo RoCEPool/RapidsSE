@@ -43,8 +43,6 @@ namespace STORE
 
   private:
 
-  static void vCreateTaskForOp(Op* pOp);
-
 
   static bool bReapJob(void);
 

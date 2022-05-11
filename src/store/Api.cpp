@@ -502,7 +502,7 @@ void Api::vSpawnTask_op(Op* pOp)
 {
   _static_
   
-  vCreateTaskForOp(pOp);
+  pOp->vCreateTaskForOp();
   
   Scheduler::vTaskApi_AddOp(pOp->pTask());
 }
@@ -514,9 +514,8 @@ void Api::vSpawnTask_dedicatedOp(Op* pOp)
 {
   _static_
   
-  //RASSERT(! pJob->pTask());
+  pOp->vCreateTaskForOp();
   
-  vCreateTaskForOp(pOp);
   Scheduler::vTaskApi_AddDedicated(pOp->pTask());
 }
 
@@ -536,27 +535,6 @@ void Api::vSpawnTask_receivedJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* create task for given op                                                   */
-/*----------------------------------------------------------------------------*/
-void Api::vCreateTaskForOp(Op* pOp)
-{
-  _static_
-    
-  Task* pTask = pOp->pTask();
-  RASSERT(! pTask);
-
-  Word* pEntryWord = pOp->pEntryWord();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pTask = new Task(pOp->szOpNm(),pOp);
-
-  pOp->vTask(pTask);
-
-  pTask->vSetInxPtr(pEntryWord);
-}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -308,6 +308,27 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create task for op                                                         */
+/*----------------------------------------------------------------------------*/
+void Op::vCreateTaskForOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  Task* pTask = this->pTask();
+  RASSERT(! pTask);
+
+  Word* pEntryWord = this->pEntryWord();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pTask = new Task(this->szOpNm(),this);
+
+  vTask(pTask);
+
+  pTask->vSetInxPtr(pEntryWord);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cross topology                                                         */
 /*----------------------------------------------------------------------------*/
 eYX Op::eCrossTopology(void)
