@@ -645,8 +645,6 @@ void Api::vCallTaskImmediate(Task* pImmediateTask)
   _static_
   
   Task* pSaveTask = _pTask(PsxThd::pTlsGet(giTLS_TaskKey));
-
-  pImmediateTask->vIsImmediate(true);
   
   pImmediateTask->vState(TS_EXECUTING);
   

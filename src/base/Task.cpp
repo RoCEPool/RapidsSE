@@ -116,8 +116,6 @@ void Task::vTask(void)
   m_pInvokingTask = nullptr;
   m_pThread      = nullptr;
   
-  m_bIsImmediate = false;
-
   m_eState       = TS_NONE;
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
@@ -948,26 +946,6 @@ void Task::vInvokingTask(Task* pInvokingTask)
 
   RASSERT(pInvokingTask);
   m_pInvokingTask = pInvokingTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* immediate task?                                                            */
-/*----------------------------------------------------------------------------*/
-bool Task::bIsImmediate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  return m_bIsImmediate;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set immediate task                                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vIsImmediate(bool bIsImmediate)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  m_bIsImmediate = bIsImmediate;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -47,8 +47,6 @@ namespace BASE
 
     Lock         m_okLock;        // lock for this task
    
-    bool         m_bIsImmediate;  // is this an immediate task?
-
     eTR          m_eTransition;   // schedulre transition request
     eQK          m_eQueue;        // which queue the task is currently in
     eEP          m_eEntryPoint;   // task entry point
@@ -137,8 +135,6 @@ namespace BASE
   
     Task* pInvokingTask(void);
     void vInvokingTask(Task* pInvokingTask);
-    bool bIsImmediate(void);
-    void vIsImmediate(bool bIsImmediate);
     bool bIsLocked(void);
 
     bool bIsTaskLocked(void);
