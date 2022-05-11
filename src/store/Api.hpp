@@ -31,13 +31,7 @@ namespace STORE
   // internal
   
   static void vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms);
-
-  static void vSpawnTask_receivedJob(Job* pJob);
       
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   private:
 
 

@@ -3162,14 +3162,6 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vSpawnTask_receivedJob(Job* pJob)
-{
-  Api::vSpawnTask_receivedJob(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
 void AM::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
   //Api::vScheduleNextPhase(pParticipantJob,pActiviating2PcTask);

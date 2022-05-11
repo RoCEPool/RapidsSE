@@ -210,7 +210,7 @@ void Step::vApiForkGeneric_noWait(void)
   
   Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tParentId,tOriginId,tDistId);
 
-  Api::vSpawnTask_receivedJob(pJobGeneric);
+  pJobGeneric->vSpawnReceivedJob();
  
   EXIT();
 }
@@ -281,7 +281,7 @@ void Step::vApiSpawnJob(void)
 //    RASSERT(TR_NONE == pTask->eTransition());
 //  }
   
-  Api::vSpawnTask_receivedJob(pJob);
+  pJob->vSpawnReceivedJob();
   
   EXIT();
 }
