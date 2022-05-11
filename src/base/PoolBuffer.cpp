@@ -121,7 +121,7 @@ Stz* PoolBuffer::aLastUsableByte(void)
   Stz* aLastByte = reinterpret_cast<Stz*>(this) + C_SIZE_POOL_BUFFER - 1;
   
   // last byte before footer
-  Stz* aLastUsableByte = aLastByte - sizeof(C_FOOTER);
+  Stz* aLastUsableByte = aLastByte - sizeof(Footer);
   
   return aLastUsableByte;
 }
