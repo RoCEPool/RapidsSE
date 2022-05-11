@@ -27,8 +27,6 @@ namespace STORE
   static void vReapJobsOnce(bool bForce = false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
     
   // internal
   

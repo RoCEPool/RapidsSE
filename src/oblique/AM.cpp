@@ -3189,7 +3189,12 @@ void AM::vSpawnTask_receivedJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void AM::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
 {
-  Api::vScheduleNextPhase(pParticipantJob,pActiviating2PcTask);
+  //Api::vScheduleNextPhase(pParticipantJob,pActiviating2PcTask);
+  
+  pParticipantJob->vResetTaskForJob();
+  
+  Task* pTaskParticipant = pParticipantJob->pTask();
+  Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);
 }
 
 /*----------------------------------------------------------------------------*/

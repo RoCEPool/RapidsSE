@@ -608,19 +608,6 @@ void Api::vSpawnTask_receivedJob(Job* pJob)
   Scheduler::vTaskApi_AddReceived(pJob->pTask());
 }
 
-/*----------------------------------------------------------------------------*/
-/* schedule next phase of participant                                         */
-/*----------------------------------------------------------------------------*/
-void Api::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
-{
-  _static_
-  
-  pParticipantJob->vResetTaskForJob();
-  
-  Task* pTaskParticipant = pParticipantJob->pTask();
-  Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
