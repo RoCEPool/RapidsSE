@@ -23,8 +23,6 @@ namespace STORE
   static Job* pNewGenericJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId);
 
   static void vReapableJob(Job*& rpJob);
-  static void vReapAllJobs(bool bForce = false);
-  static void vReapJobsOnce(bool bForce = false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

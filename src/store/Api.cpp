@@ -9,12 +9,14 @@
 #include "Api.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
+#include "Jobs.hpp"
 #include "Op.hpp"
 #include "LogicUnit.hpp"
 #include "Procedure.hpp"
 #include "Output.hpp"
 #include "EventHandlers.hpp"
 #include "Grid.hpp"
+#include "AttachMap.hpp"
 
 #include "TagConstants.h"
 
@@ -317,30 +319,6 @@ void Api::vReapableJob(Job*& rpJob)
   rpJob = nullptr;
 }
 
-/*----------------------------------------------------------------------------*/
-/* attempt to reap one job from the retired list                              */
-/*----------------------------------------------------------------------------*/
-void Api::vReapAllJobs(bool bForce)
-{
-  _static_
-  
-  if (bForce || AM::SYSTEM::bReapEnabled())
-    while (AM::pRetiredJobs()->nJobs())
-      while (Api::bReapJob())
-        {;}
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to reap one job from the retired list                              */
-/*----------------------------------------------------------------------------*/
-void Api::vReapJobsOnce(bool bForce)
-{
-  _static_
-  
-  if (bForce || AM::SYSTEM::bReapEnabled())
-    while (Api::bReapJob())
-      {;}
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -486,7 +464,8 @@ void Api::vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms)
   pEngineTask->vState(TS_RETIRED);
   pEngineTask->vDropTaskLock((Stz*)__func__);
 
-  Api::vReapJobsOnce();
+  //Api::vReapJobsOnce();
+  gpAttachMap->pJobs()->vReapJobsOnce();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

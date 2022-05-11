@@ -46,8 +46,10 @@
 #include "SP_Job.hpp"
 
 #include "UT_SkipList.hpp"
+#include "SysArgs.hpp"
 #include "AttachMap.hpp"
 #include "Output.hpp"
+#include "Jobs.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 extern AttachMap* gpAttachMap;
@@ -2489,8 +2491,9 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
 
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
     
-    Api::vReapJobsOnce();
-    
+    //Api::vReapJobsOnce();
+    gpAttachMap->pJobs()->vReapJobsOnce();
+
     i8 nJobsActive    = AM::JOBS::nJobsActive();
     i8 nJobsThreshold = AM::JOBS::nJobsThreshold();
     
@@ -2508,8 +2511,9 @@ bool PROMPT::bPrompt_memoryLeaks(SePrompt* pPrompt)
   
   for (i8 iAttempt = 0; iAttempt < C_ATTEMPTS; iAttempt++) {
 
-    Api::vReapJobsOnce();
-    
+    //Api::vReapJobsOnce();
+    gpAttachMap->pJobs()->vReapJobsOnce();
+
     nLeaksDetected = 0;
     pPoolSnapshot_curr->vTakeSnapshot();
     
@@ -3610,14 +3614,14 @@ bool PROMPT::bPrompt_reap(SePrompt* pPrompt)
 
     vTrace("REAP FORCE\n"_Stz);
     
-    Api::vReapAllJobs(true);
+    gpAttachMap->pJobs()->vReapAllJobs(true);
   }
   else
   if (pPrompt->pInpTknVec()->nItems() == 1) {
     
     vTrace("REAP LIST\n"_Stz);
     
-    Api::vReapAllJobs();
+    gpAttachMap->pJobs()->vReapAllJobs();
   }
   
   vTrace("\nsuccess: 0 rows affected\n"_Stz);
@@ -5515,7 +5519,8 @@ bool PROMPT::bPrompt_trackMemory(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  Api::vReapJobsOnce();
+  //Api::vReapJobsOnce();
+  gpAttachMap->pJobs()->vReapJobsOnce();
 
   pPrompt->vTrackMemory(true);
 

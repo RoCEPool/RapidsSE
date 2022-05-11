@@ -9,6 +9,7 @@
 #include "Starter.hpp"
 #include "EventHandlers.hpp"
 #include "SysMetrics.hpp"
+#include "CmdLineArgs.hpp"
 #include "eAC.h"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
@@ -115,6 +116,8 @@ namespace STORE
     void vGetGlobals(void);
   
     void vIndexEntries(i8 nIndexEntries);
+  
+    Jobs* pJobs(void);
   
     void vNextTempName(s32& sName);
   

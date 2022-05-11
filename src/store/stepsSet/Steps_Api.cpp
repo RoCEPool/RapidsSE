@@ -21,9 +21,14 @@
 #include "LogicUnit.hpp"
 
 #include "Procedure.hpp"
+#include "SysArgs.hpp"
+#include "AttachMap.hpp"
 
 #include "MY.hpp"
 #include "TagConstants.h"
+#include "Jobs.hpp"
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -259,7 +264,8 @@ void Step::vApiReapJobs(void)
   
   i8 iForce = (i8)m_pDataStack->iPopBol(__func__);
 
-  Api::vReapJobsOnce(iForce);
+  //Api::vReapJobsOnce(iForce);
+  gpAttachMap->pJobs()->vReapJobsOnce(iForce);
 
   EXIT();
 }
