@@ -52,6 +52,8 @@ PageFile::PageFile(Stz* sPath)
   m_szPFilePath = sPath;
   m_pFile = new File(this);
   m_uPFSize = C_SIZE_PAGE_FILE;
+  m_uFirstUsableByte = sizeof(C_MAGIC);
+  m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
 
   vInitialise();
   _checkInitialised_(CN_PAGEFILE);
@@ -121,7 +123,7 @@ void PageFile::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* write pool buffers to disk                                                 */
 /*----------------------------------------------------------------------------*/
-void PageFile::vInitialise()
+void PageFile::vInitialise(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PAGEFILE,_FOOTER_);
 
@@ -145,6 +147,9 @@ void PageFile::vInitialise()
 
   m_pFile->vFlush();
 
+  m_uFirstUsableByte = sizeof(C_MAGIC);
+
+  m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
   //---------------------------------------------------------------------------
   // Check which areas are written to?
 
@@ -160,7 +165,14 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
   Timer oTimer;
 
   BufferId oBufferId = pRowBuffer->oGetBufferId();
-  i8 iSeekOffset = oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER;
+  i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);
+
+  if(iSeekOffset + C_SIZE_POOL_BUFFER > m_uLastUsableByte)
+  {
+    vTrace("Error: writing buffer at %lld may exceed page file size %llu\n"_Stz, iSeekOffset, m_uPFSize);
+    return;
+  }
+
   m_pFile->vSeek(iSeekOffset);
 
   oTimer.vStart();
@@ -172,22 +184,6 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
   vTrace("Writing data buffer %p took %lld ns\n"_Stz, pRowBuffer, oTimer.iNanoseconds());
 #endif
 }
-
-/*----------------------------------------------------------------------------*/
-/* get address of last usable byte in buffer                                  */
-/*----------------------------------------------------------------------------*/
-//Stz* PoolBuffer::aLastUsableByte(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-//
-//  // last byte in buffer
-//  Stz* aLastByte = reinterpret_cast<Stz*>(this) + C_SIZE_POOL_BUFFER - 1;
-//
-//  // last byte before footer
-//  Stz* aLastUsableByte = aLastByte - sizeof(C_FOOTER);
-//
-//  return aLastUsableByte;
-//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

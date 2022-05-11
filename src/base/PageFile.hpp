@@ -14,6 +14,8 @@ namespace BASE
     File*  m_pFile;
     Stz*   m_szPFilePath;
     u8     m_uPFSize;
+    u8     m_uFirstUsableByte;
+    u8     m_uLastUsableByte;
 
     // must be last
     Footer m_xFooter;
@@ -28,7 +30,7 @@ namespace BASE
     void vCheckFooter(void);
     void vCheckMagic(void);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    void vInitialise();
+    void vInitialise(void);
     void vWriteDataBufferToPFile(RowBuffer* pRowBuffer);
     static void vToDisk(Operand* pOperand);
 
