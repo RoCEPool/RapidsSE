@@ -536,50 +536,39 @@ void Api::vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vCallJobImmediate(pEngineJob);
+  //vCallJobImmediate(pEngineJob);
   
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (bAddAxioms) {
-    AM::HANDLERS::pEventHandlers()->vInitialise();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* run job immediately                                                        */
-/*----------------------------------------------------------------------------*/
-void Api::vCallJobImmediate(Job* pImmediateJob)
-{
-  _static_
-
-  TagSet* pJobTags = pImmediateJob->pJobTags();
+  TagSet* pJobTags = pEngineJob->pJobTags();
   //pJobTags->vDumpSet();
 
   pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
   pJobTags->vReplace(C_TAG_WAIT,1);
   
-  pImmediateJob->vResponseTimerStart();
-
-  Task* pImmediateTask = pImmediateJob->pTask();
-  
+  pEngineJob->vResponseTimerStart();
+ 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   //vCallTaskImmediate(pImmediateTask);
   Task* pSaveTask = _pTask(PsxThd::pTlsGet(giTLS_TaskKey));
   
-  pImmediateTask->vState(TS_EXECUTING);
+  pEngineTask->vState(TS_EXECUTING);
   
-  pImmediateTask->vTaskLoop();
+  pEngineTask->vTaskLoop();
   
   PsxThd::vTlsSet(giTLS_TaskKey,pSaveTask);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pImmediateTask->vState(TS_RETIRED);
-  pImmediateTask->vDropTaskLock((Stz*)__func__);
+  pEngineTask->vState(TS_RETIRED);
+  pEngineTask->vDropTaskLock((Stz*)__func__);
 
   Api::vReapJobsOnce();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (bAddAxioms) {
+    AM::HANDLERS::pEventHandlers()->vInitialise();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

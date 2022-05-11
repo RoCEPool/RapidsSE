@@ -34,8 +34,6 @@ namespace STORE
   
   static void vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms);
 
-  static void vCallJobImmediate(Job* pImmediateJob);
-
   static void vSpawnTask_op(Op* pop);
   static void vSpawnTask_dedicatedOp(Op* pOp);
 
