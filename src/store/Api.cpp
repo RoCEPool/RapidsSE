@@ -587,7 +587,6 @@ void Api::vCallStartSystemJob(void)
   
   Stz* szJobNm = pStartJob->szJobNm();
   Task* pStartTask = new Task(szJobNm,pStartJob);
-  pStartTask->vIsStart(true);
 
   pStartJob->vTask(pStartTask);
   

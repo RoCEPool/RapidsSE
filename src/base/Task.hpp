@@ -47,7 +47,6 @@ namespace BASE
 
     Lock         m_okLock;        // lock for this task
    
-    bool         m_bIsStart;      // is this the start task?
     bool         m_bIsImmediate;  // is this an immediate task?
 
     eTR          m_eTransition;   // schedulre transition request
@@ -141,8 +140,7 @@ namespace BASE
     bool bIsImmediate(void);
     void vIsImmediate(bool bIsImmediate);
     bool bIsLocked(void);
-    bool bIsStart(void);
-    void vIsStart(bool bIsStart);
+
     bool bIsTaskLocked(void);
   
     Job* pJob(void);

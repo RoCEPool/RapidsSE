@@ -116,7 +116,6 @@ void Task::vTask(void)
   m_pInvokingTask = nullptr;
   m_pThread      = nullptr;
   
-  m_bIsStart     = false;
   m_bIsImmediate = false;
 
   m_eState       = TS_NONE;
@@ -981,26 +980,6 @@ bool Task::bIsLocked(void)
   bool b = m_okLock.bIsLocked();
   
   return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is the start task?                                                         */
-/*----------------------------------------------------------------------------*/
-bool Task::bIsStart(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  return m_bIsStart;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set start task                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vIsStart(bool bIsStart)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  m_bIsStart = bIsStart;
 }
 
 /*----------------------------------------------------------------------------*/
