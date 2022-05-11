@@ -189,6 +189,8 @@ namespace BASE
     void vTracePoint(Stz* aMark);
     void vTraceStep(Stz* aStepNm);
     void vScheduleBide(void);
+    void vScheduleHibernate(void);
+    void vScheduleRetire(void);
     void vScheduleSleep(void);
     void vScheduleYield(void);
     void vScheduleWait(void);

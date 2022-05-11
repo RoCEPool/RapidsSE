@@ -878,8 +878,7 @@ public:
 
   void vJobSetOriginId(void);
   void vJobSignalWaiter(void);
-  void vJobStateFetch(void);
-  void vJobStateStore(void);
+  void vJobMutexFetch(void);
   void vJobIdSystemCloserFetch(void);
   void vJobIdSystemCloserStore(void);
 
@@ -2084,6 +2083,7 @@ public:
   void vTaskException(void);
   void vTaskGet(void);
   void vTaskGrabLock(void);
+  void vTaskHibernate(void);
   void vTaskIsLocked(void);
   void vTaskIsWaiting(void);
   void vTaskNameFetch(void);
@@ -2091,6 +2091,7 @@ public:
   void vTaskOperandYieldStore(void);
   void vTaskPreHibernate(void);
   void vTaskReleaseLockSets(void);
+  void vTaskRetire(void);
   void vTaskSeeFrameStack(void);
   void vTaskSeeLockSets(void);
   void vTaskSeeLogicUnit(void);

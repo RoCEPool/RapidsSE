@@ -36,12 +36,14 @@ void Step::vAddSteps_Task(void)
   vAddStep("[task].dump"_Stz,           &Step::vTaskDump);
   vAddStep("[task].exception"_Stz,      &Step::vTaskException);
   vAddStep("[task].grabLock"_Stz,       &Step::vTaskGrabLock);
+  vAddStep("[task].hibernate"_Stz,      &Step::vTaskHibernate);
   vAddStep("[task].islocked?"_Stz,      &Step::vTaskIsLocked);
   vAddStep("[task].name@"_Stz,          &Step::vTaskNameFetch);
   vAddStep("[task].operandYield@"_Stz,  &Step::vTaskOperandYieldFetch);
   vAddStep("[task].operandYield!"_Stz,  &Step::vTaskOperandYieldStore);
   vAddStep("[task].preHibernate"_Stz,   &Step::vTaskPreHibernate);
   vAddStep("[task].releaseLockSets"_Stz,&Step::vTaskReleaseLockSets);
+  vAddStep("[task].retire"_Stz,         &Step::vTaskRetire);
   vAddStep("[task].seeFrameStack"_Stz,  &Step::vTaskSeeFrameStack);
   vAddStep("[task].seeLockSets"_Stz,    &Step::vTaskSeeLockSets);
   vAddStep("[task].seeLogicUnit"_Stz,   &Step::vTaskSeeLogicUnit);
@@ -223,6 +225,18 @@ void Step::vTaskGrabLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [task].hibernate -- this task to hibernate for next use                    */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskHibernate(void)
+{
+  ENTRY();
+  
+  vScheduleHibernate();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* task[].isLocked? -- is task locked?                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskIsLocked(void)
@@ -290,6 +304,18 @@ void Step::vTaskReleaseLockSets(void)
   ENTRY();
   
   vReleaseLockSets();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].retire -- this task to retire (exit, reap)                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskRetire(void)
+{
+  ENTRY();
+  
+  vScheduleRetire();
 
   EXIT();
 }

@@ -15,7 +15,8 @@
 
   [job].addRetired
   [task].grabLock
-    TR_RETIRE_THIS_TASK [task].transition!
+    //TR_RETIRE_THIS_TASK [task].transition!
+    [task].retire
 
   HAZARD
 ;
@@ -58,8 +59,6 @@
 
     // cross check
     PipeSpec[] not assert
-
-    JS_SIGNALLED [job].state!
       
     [task].grabLock
     [job].signalWaiter
@@ -126,7 +125,6 @@
   
   [task].grabLock
   
-    JS_SIGNALLED [job].state!
     [job].signalWaiter
 
     [system].started@ if
@@ -135,7 +133,8 @@
     //  "SYSTEM NOT STARTED" .
       true [job].reapable!
     then
-    TR_RETIRE_THIS_TASK [task].transition!
+    //TR_RETIRE_THIS_TASK [task].transition!
+    [task].retire
 ;
 
 /*----------------------------------------------------------------------------*/

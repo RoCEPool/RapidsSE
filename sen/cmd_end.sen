@@ -49,7 +49,7 @@
 
   "end:onParticipant" [job].entryPoint!
 
-  [job] job:broadcast
+  [job]:broadcast
 
   [job]:retire
   HAZARD

@@ -29,7 +29,7 @@
   Pipeline[] not assert
   
   // immutable op, subPLineOfOp and pipelineOfOp should be null
-  [op]           not assert
+  [op]       not assert
   [pipeline] not assert
 
   // and so we start...
@@ -49,12 +49,12 @@
 
       [job].addRetired
       
-      JS_SIGNALLED [job].state!
       [job].signalWaiter
 
       [task].grabLock
-        TR_RETIRE_THIS_TASK [task].transition!
-      
+        //TR_RETIRE_THIS_TASK [task].transition!
+        [task].retire
+        
       HAZARD
 
     then
@@ -160,7 +160,7 @@
     
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      [job] job:broadcast
+      [job]:broadcast
     [task].wait
 
     [job].tscBegun
@@ -220,50 +220,36 @@
   // ordinary job            / this job exits                                 //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
   
-  [job].wasForked? if
-    "JOB WAS FORKED" .
-        
-    HAZARD // temp
-    
-    [ddlLock].testDrop
-    ListedJob[].assertNoRef
+  [job] job(Id).hasCascade@ if
 
-    [job].addRetired
-          
-    [task].grabLock
-      TR_RETIRE_THIS_TASK [task].transition!
-      
-    HAZARD
-
-  else
-  [job] job(Id).hasCascade@ not if
-    [ddlLock].testDrop
-    ListedJob[].assertNoRef
-
-    [job].addRetired
-    
-    JS_SIGNALLED [job].state!
-    [job].signalWaiter
-      
-    [task].grabLock
-      TR_RETIRE_THIS_TASK [task].transition!
-      
-    HAZARD
-
-  else
-      
     [ddlLock].testDrop
     
     [task].grabLock
     
-      JS_SIGNALLED [job].state!
+      "<signalWaiter>" [job].tagSet@ tagSet.hasName assert
       [job].signalWaiter
  
-      TR_HIBERNATE_THIS_TASK [task].transition!
-  
+      //TR_HIBERNATE_THIS_TASK [task].transition!
+      [task].hibernate
+      
     HAZARD
     
-  then then
+  then
+  
+  [ddlLock].testDrop
+  
+  ListedJob[].assertNoRef
+
+  [job].addRetired
+  
+  [task].grabLock
+  
+    "<signalWaiter>" [job].tagSet@ tagSet.hasName if
+      [job].signalWaiter
+    then
+    
+    //TR_RETIRE_THIS_TASK [task].transition!
+    [task].retire
 
   HAZARD
 ;
@@ -358,7 +344,8 @@
         
     //1 [task].trace!
     //[task].preHibernate
-    TR_HIBERNATE_THIS_TASK [task].transition!
+    //TR_HIBERNATE_THIS_TASK [task].transition!
+    [task].hibernate
 
   HAZARD
 ;
@@ -428,7 +415,8 @@
 
   [task].grabLock
       
-    TR_HIBERNATE_THIS_TASK [task].transition!
+    //TR_HIBERNATE_THIS_TASK [task].transition!
+    [task].hibernate
 
   HAZARD
 ;

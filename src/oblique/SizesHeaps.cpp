@@ -537,7 +537,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SenCompiler),        HT_T_TINY    ,0 FILL }, // CN_SENCOMPILER
   { sizeof(Sends),              HT_T_TINY    ,0 FILL }, // CN_SENDS
   { sizeof(SendWL),             HT_T_TINY    ,0 FILL }, // CN_SENDWL
-  { sizeof(SePrompt),           HT_T_LARGE   ,0 FILL }, // CN_SEPROMPT
+  { sizeof(SePrompt),           HT_T_MEDIUM  ,0 FILL }, // CN_SEPROMPT
   { sizeof(Shape),              HT_T_TINY    ,0 FILL }, // CN_SHAPE
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 FILL }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 FILL }, // CN_SHORTCUTVEC

@@ -458,7 +458,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_JK"_Stz,   EG_JK);
   vAddConstant("EG_JL"_Stz,   EG_JL);
   vAddConstant("EG_JP"_Stz,   EG_JP);
-  vAddConstant("EG_JS"_Stz,   EG_JS);
+  vAddConstant("EG_MS"_Stz,   EG_MS);
   vAddConstant("EG_KC"_Stz,   EG_KC);
   vAddConstant("EG_KE"_Stz,   EG_KE);
   vAddConstant("EG_KK"_Stz,   EG_KK);
@@ -537,14 +537,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("JP_CANCELING"_Stz, JP_CANCELING);
   /*  0 */ vAddConstant("JP_CANCELED"_Stz,  JP_CANCELED);
   /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
-
-  // JS_ : job state
-  /*  0 */ vAddConstant("JS_NONE"_Stz,      JS_NONE);
-  /*  0 */ vAddConstant("JS_ACTIVE"_Stz,    JS_ACTIVE);
-  /*  0 */ vAddConstant("JS_DELETABLE"_Stz, JS_DELETABLE);
-  /*  0 */ vAddConstant("JS_LOCKED"_Stz,    JS_LOCKED);
-  /*  0 */ vAddConstant("JS_RETIRED"_Stz,   JS_RETIRED);
-  /*  0 */ vAddConstant("JS_SIGNALLED"_Stz, JS_SIGNALLED);
 
   // C_MAX : MAX
   /*  0 */ vAddConstant("C_MAX_BCD_PRECISION"_Stz, C_MAX_BCD_PRECISION);
