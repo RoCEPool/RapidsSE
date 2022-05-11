@@ -536,18 +536,19 @@ void Api::vCallBootSystemJob(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  TagSet* pJobTags = pBootJob->pJobTags();
+  //TagSet* pJobTags = pBootJob->pJobTags();
   //pJobTags->vDumpSet();
 
   // (no cmd to parse)
 
-  pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
+  //pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pBootJob->vResponseTimerStart();
-  vCallTaskImmediate(pBootTask);
-  
+  //pBootJob->vResponseTimerStart();
+  //vCallTaskImmediate(pBootTask);
+  vCallJobImmediate(pBootJob);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pBootTask->vState(TS_RETIRED);
@@ -594,25 +595,47 @@ void Api::vCallStartSystemJob(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  TagSet* pJobTags = pStartJob->pJobTags();
+  //TagSet* pJobTags = pStartJob->pJobTags();
   //pJobTags->vDumpSet();
 
   // (no cmd to parse)
 
-  pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
-  pJobTags->vReplace(C_TAG_WAIT,1);
+  //pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
+  //pJobTags->vReplace(C_TAG_WAIT,1);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pStartJob->vResponseTimerStart();
-  vCallTaskImmediate(pStartTask);
-
+  //vCallTaskImmediate(pStartTask);
+  vCallJobImmediate(pStartJob);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pStartTask->vState(TS_RETIRED);
   pStartTask->vDropTaskLock((Stz*)__func__);
   
   Api::vReapJobsOnce();
+}
+
+/*----------------------------------------------------------------------------*/
+/* run job immediately                                                        */
+/*----------------------------------------------------------------------------*/
+void Api::vCallJobImmediate(Job* pImmediateJob)
+{
+  _static_
+
+  TagSet* pJobTags = pImmediateJob->pJobTags();
+  //pJobTags->vDumpSet();
+
+  pJobTags->vReplace(C_TAG_PATH,"/"_Stz);
+  pJobTags->vReplace(C_TAG_WAIT,1);
+
+
+  
+  pImmediateJob->vResponseTimerStart();
+
+  Task* pImmediateTask = pImmediateJob->pTask();
+  
+  vCallTaskImmediate(pImmediateTask);
 }
 
 /*----------------------------------------------------------------------------*/

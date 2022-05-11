@@ -35,6 +35,8 @@ namespace STORE
   static void vCallBootSystemJob(void);
   static void vCallStartSystemJob(void);
 
+  static void vCallJobImmediate(Job* pImmediateJob);
+
   static void vCallTaskImmediate(Task* pImmediateTask);
 
   static void vSpawnTask_op(Op* pop);
