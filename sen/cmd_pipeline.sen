@@ -29,7 +29,7 @@
   Pipeline[] not assert
   
   // immutable op, subPLineOfOp and pipelineOfOp should be null
-  [op]           not assert
+  [op]       not assert
   [pipeline] not assert
 
   // and so we start...
@@ -159,7 +159,7 @@
     
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      [job] job:broadcast
+      [job]:broadcast
     [task].wait
 
     [job].tscBegun
@@ -225,6 +225,7 @@
     
     [task].grabLock
     
+      "<signalWaiter>" [job].tagSet@ tagSet.hasName assert
       [job].signalWaiter
  
       TR_HIBERNATE_THIS_TASK [task].transition!
@@ -241,7 +242,9 @@
   
   [task].grabLock
   
-    [job].signalWaiter
+    "<signalWaiter>" [job].tagSet@ tagSet.hasName if
+      [job].signalWaiter
+    then
     
     TR_RETIRE_THIS_TASK [task].transition!
     

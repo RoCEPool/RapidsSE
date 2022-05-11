@@ -50,6 +50,7 @@ static Stz* C_TAG_REQOF        = "<reqOf>"_Stz;
 static Stz* C_TAG_RESOURCELOG  = "<resourceLog>"_Stz;
 static Stz* C_TAG_SECTION      = "<section>"_Stz;
 static Stz* C_TAG_SHM          = "<shm>"_Stz;
+static Stz* C_TAG_SIGNALWAITER = "<signalWaiter>"_Stz;
 static Stz* C_TAG_STMT         = "<stmt>"_Stz;
 static Stz* C_TAG_SUMMARY      = "<summary>"_Stz;
 static Stz* C_TAG_SYSTEMCLOSER = "<systemCloser>"_Stz;

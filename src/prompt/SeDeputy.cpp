@@ -140,6 +140,7 @@ void SeDeputy::vDeputyLoop(void)
     TagSet* pInpTagSet   = m_pInput->pInpTagSet();
     
     pInpTagSet->vReplace(C_TAG_WAIT,1);
+    pInpTagSet->vReplace(C_TAG_SIGNALWAITER,1);
     pInpTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
     pInpTagSet->vReplace(C_TAG_LASTJOBID,m_tLastJobId.iAsI8());
     pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_bSystemCloser);
