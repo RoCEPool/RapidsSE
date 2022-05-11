@@ -81,7 +81,6 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   // m_xResult
 
   // -- e -------------------
-  m_pSingularOp  = nullptr;
 
   // -- g -------------------
   m_pTask     = nullptr;
@@ -279,10 +278,6 @@ void Job::vCascadeReset(void)
   // m_xResult ???
   
   // -- e -------------------
-  if (m_pSingularOp) {
-    delete m_pSingularOp;
-    m_pSingularOp  = nullptr;
-  }
 
   m_pTask->vState(TS_NONE);
   m_pTask->vSetInxPtr("job::entryPoint"_Stz);
@@ -1013,8 +1008,6 @@ void Job::vPrintJobContents(void)
          "            oTimer "  "%s"    " \n"  // 13
          "            eError "  "%s"    " \n"  // 15
 
-         "       pSingularOp "  "%s"    " \n"  // 17
-
  
          "             pTask "  "%s"    " \n"  // 21
         
@@ -1036,7 +1029,6 @@ void Job::vPrintJobContents(void)
          ,aJL[m_eJobList]            // 12
          ,spTimer.sz(& m_oResponseTimer)     // 13
          ,aEC[m_eError_job]          // 15
-         ,spvSingularOp.sz(m_pSingularOp)  // 17
          ,spvTask.sz(m_pTask)        // 21
          ,spvJobLogicUnit.sz(pLogicUnit) // 22
          
@@ -1060,7 +1052,6 @@ void Job::vPostRecv(void)
   m_pTask        = nullptr;
   m_p_ResponseOp = nullptr;
   m_pOutput_job  = nullptr;
-  m_pSingularOp  = nullptr;
   m_pMutex   = nullptr;
   m_pJobMetricsChain = nullptr;
   m_pStmtList = nullptr;
@@ -1209,26 +1200,6 @@ void Job::vResponseTimerUpdate(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_oResponseTimer.vUpdate();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the singular operator                                                  */
-/*----------------------------------------------------------------------------*/
-Op* Job::pSingularOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_pSingularOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the singular operator                                                  */
-/*----------------------------------------------------------------------------*/
-void Job::vSingularOp(Op* pSingularOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_pSingularOp = pSingularOp;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -77,8 +77,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running on participant node                    PARTICIPANT
  
-    Op*  m_pSingularOp;      // op (api input op )                     POST_RECV
-
   
     // -- tasking
     Task* m_pTask;  // task executing this job                         POST_RECV
@@ -221,8 +219,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vResponseTimerStart(void);
     void vResponseTimerUpdate(void);
 
-    Op*  pSingularOp(void);
-    void vSingularOp(Op* pSingularOp);
     void vStmtListAppend(Stz* szCascade);
     void vStmtListCreate(void);
     void vStmtListDestroy(void);
