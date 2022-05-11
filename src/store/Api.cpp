@@ -496,18 +496,6 @@ void Api::vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn task for given op                                                    */
-/*----------------------------------------------------------------------------*/
-void Api::vSpawnTask_op(Op* pOp)
-{
-  _static_
-  
-  pOp->vCreateTaskForOp();
-  
-  Scheduler::vTaskApi_AddOp(pOp->pTask());
-}
-
-/*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
 void Api::vSpawnTask_dedicatedOp(Op* pOp)

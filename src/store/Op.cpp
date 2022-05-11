@@ -1681,7 +1681,6 @@ void Op::vSpawnTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
       
-    
   Job* pJob = this->pJobOfOp();
   pJob->vActiveOpsInc();
   
@@ -1691,18 +1690,12 @@ void Op::vSpawnTask(void)
     
     AM::vSpawnTaskDedicated_op(this);
   }
-//  else
-//  if (StrLib::bSame(szOpNm(), "recv")) {
-//    
-//    m_oOpTags.vDumpSet(true);
-//    
-//    AM::vSpawnTaskDedicated_op(this);
-//  }
   else {
     
-    AM::vSpawnTask_op(this);
+    vCreateTaskForOp();
+    
+    Scheduler::vTaskApi_AddOp(pTask());
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
