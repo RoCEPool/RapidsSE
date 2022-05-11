@@ -33,9 +33,6 @@ namespace STORE
   private:
 
 
-  static bool bReapJob(void);
-
-
   };
 }
 

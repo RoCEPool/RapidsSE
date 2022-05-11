@@ -324,85 +324,6 @@ void Api::vReapableJob(Job*& rpJob)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* attempt to reap one job from the retired list                              */
-/*----------------------------------------------------------------------------*/
-bool Api::bReapJob(void)
-{
-  _static_
-   
-  JobList* pRetiredJobs = AM::pRetiredJobs();
-
-  if (! pRetiredJobs->nJobs()) {
-    //vTrace("Empty retired list\n"_Stz);
-    return FALSE(empty_list);
-  }
-  
-  AM::MASTERLOCK::vGrabReap(nullptr);
-  
-  pRetiredJobs->vGrabLock();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Job* pReapableJob = nullptr;
-  
-  for (SkipNode* pCursor = pRetiredJobs->pFirst();
-       pCursor;
-       pCursor = pRetiredJobs->pNext(pCursor)) {
-    
-    Job* pRetiredJob = _pJob(pCursor->m_pObject);
-    
-    if (pRetiredJob) {
-      i8 nActiveOps = pRetiredJob->nActiveOps();
-//      vTrace("REAP CANDIDATE Job %p Reapable %lld Active Ops %lld\n"_Stz
-//             ,pRetiredJob,(i8)pRetiredJob->m_bReapable,nActiveOps);
-      if (pRetiredJob->bReapable() && ! nActiveOps) {
-        pReapableJob = pRetiredJob;
-        break;
-      }
-      else {
-        vTrace("Cant reap retired job %p %lld "
-               "%s %s "
-               "activeOps %lld %s "
-               "\n"_Stz
-
-               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
-               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
-               ,nActiveOps,pRetiredJob->bReapable() ? "reapable" : "not-reapable"
-               );
-      }
-    }
-  }
-
-  pRetiredJobs->vDropLock();
-  
-  if (! pReapableJob) {
-    AM::MASTERLOCK::vDropReap(nullptr);
-    return FALSE(nothing_to_reap);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pRetiredJobs->vRemoveJob(pReapableJob);
-
-  AM::MASTERLOCK::vDropReap(nullptr);
-
-  // delete the reapavle job
-  
-  RASSERT(pReapableJob->pTask());
-  pReapableJob->pTask()->vGrabTaskLock((Stz*)__func__);
-  pReapableJob->pTask()->vDropTaskLock((Stz*)__func__);
-
-
-  delete pReapableJob;
-
-  return TRUE(reaped_a_job);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /* call the system boot job to compile the main dictionary                    */
@@ -474,10 +395,6 @@ void Api::vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms)
   }
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*============================================================================*/
 /* end                                                                        */
