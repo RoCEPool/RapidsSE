@@ -422,39 +422,6 @@ bool Api::bReapJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* populate tagset from given token vector                                    */
-/*----------------------------------------------------------------------------*/
-void Api::vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec)
-{
-  _static_
-  
-  i8 nTkns = pTknVec->nTokens();
-
-  i8 i_Scan = 0;
-  while (i_Scan < nTkns) {
-    
-    Token* pTkn_name = pTknVec->pGet(i_Scan++);    // <tagNm>
-    if (i_Scan >= nTkns)
-      break;
-    if (TN_TAG != pTkn_name->eToken())
-      break;
-
-    Token* pTkn_equals = pTknVec->pGet(i_Scan++);  // =
-    UNUSED(pTkn_equals);
-    
-    if (i_Scan >= nTkns)
-      break;
-    //if (! pTkn_equals->bIsAssign())
-    //  break;
-
-    Token* pTkn_value = pTknVec->pGet(i_Scan++);   // value
-    
-    pTagSet->vReplace(pTkn_name->szChars(),pTkn_value->szChars());
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

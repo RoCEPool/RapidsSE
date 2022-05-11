@@ -62,7 +62,7 @@ void Step::vApiForkChild_noWait(void)
     
   TagSet* pCmdTagSet = new TagSet;
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
-  Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
+  CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
   pCmdTagSet->vReplace(C_TAG_NOWAIT,1);
 
@@ -130,7 +130,7 @@ void Step::vApiForkChild_wait(void)
     
   TagSet* pCmdTagSet = new TagSet;
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
-  Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
+  CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
   
   /*

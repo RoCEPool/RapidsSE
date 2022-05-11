@@ -43,8 +43,6 @@ namespace STORE
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
-
   private:
 
   static void vCreateTaskForOp(Op* pOp);

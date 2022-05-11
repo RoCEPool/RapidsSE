@@ -20,6 +20,9 @@ namespace BASE
     static bool bParseCmd(TokenVec* pTknVec,
                           TagSet*   pArgTags);
     
+    static void vPopulateTagSet(TagSet* pTagSet,
+                                TokenVec* pTknVec);
+
   private:
   
     static bool bExtractAllArgs(TagSet*   pArgTags,
