@@ -795,7 +795,6 @@ namespace OBLIQUE
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
-    static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
     static Stz* szSummary(s256& sSummary);
     static Stz* szSummaryDir(s256& sSummary, Stz* szNote);
     static bool bSupervisorHalt(void);

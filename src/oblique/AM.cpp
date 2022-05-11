@@ -3160,19 +3160,6 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
-void AM::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
-{
-  //Api::vScheduleNextPhase(pParticipantJob,pActiviating2PcTask);
-  
-  pParticipantJob->vResetTaskForJob();
-  
-  Task* pTaskParticipant = pParticipantJob->pTask();
-  Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, pActiviating2PcTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* quick config summary                                                       */
 /*----------------------------------------------------------------------------*/
 Stz* AM::szSummary(s256& sSummary)
