@@ -61,7 +61,7 @@
   ListedJob[].assertNoRef
 
   // check this task has no ddl lock
-  [ddlLock].none
+  [ddlLock].assertNone
 ;
 
 /*----------------------------------------------------------------------------*/

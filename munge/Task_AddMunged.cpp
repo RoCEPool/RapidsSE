@@ -26143,7 +26143,7 @@ void Task::vAddMunged(Task* )
     "  ListedJob[].assertNoRef\n"
     "\n"
     "  // check this task has no ddl lock\n"
-    "  [ddlLock].none\n"
+    "  [ddlLock].assertNone\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"

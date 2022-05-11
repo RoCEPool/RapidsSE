@@ -331,11 +331,14 @@ public:
   void vDataBufferSet(void);
 
   // ddllock
+void vDdlLockAssertNone(void);
   void vDdlLockDropRead(void);
   void vDdlLockDropWrite(void);
   void vDdlLockGrabRead(void);
   void vDdlLockGrabWrite(void);
-  void vDdlLockNone(void);
+  void vDdlLockHasLock(void);
+  void vDdlLockHasRead(void);
+  void vDdlLockHasWrite(void);
   void vDdlLockTestDrop(void);
 
   // debug
