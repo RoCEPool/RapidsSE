@@ -223,7 +223,7 @@
 /*----------------------------------------------------------------------------*/
 /* retire this job and its task                                               */
 /*----------------------------------------------------------------------------*/
-: [job]:retire
+: [job]:retireAndExit
 
   [ddlLock].testDrop
   
@@ -233,9 +233,8 @@
   [job].addRetired
   [task].grabLock
     [job] [exitDemon]:queueJob
-    //TR_RETIRE_THIS_TASK [task].transition!
-    [task].retire
 
+    [task].retire
   
   HAZARD
 ;
@@ -409,23 +408,6 @@
   repeat
 
   node_I[].delete
-;
-
-
-/*----------------------------------------------------------------------------*/
-/* retired this [job] + [task]                                                */
-/*----------------------------------------------------------------------------*/
-: [cmd]:retire
-
-  // [job].tagSet@ tagSet.asStr .
-  
-  [job].addRetired
-  
-  [job].signalWaiter
-
-  [task].grabLock
-    //TR_RETIRE_THIS_TASK [task].transition!
-    [task].retire
 ;
 
 /*============================================================================*/

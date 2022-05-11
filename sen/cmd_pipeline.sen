@@ -52,8 +52,7 @@
       [job].signalWaiter
 
       [task].grabLock
-        //TR_RETIRE_THIS_TASK [task].transition!
-        [task].retire
+        [task].retire // does not queue onto exit demon
         
       HAZARD
 
@@ -229,7 +228,6 @@
       "<signalWaiter>" [job].tagSet@ tagSet.hasName assert
       [job].signalWaiter
  
-      //TR_HIBERNATE_THIS_TASK [task].transition!
       [task].hibernate
       
     HAZARD
@@ -248,8 +246,7 @@
       [job].signalWaiter
     then
     
-    //TR_RETIRE_THIS_TASK [task].transition!
-    [task].retire
+    [task].retire // does not queue onto exit demon
 
   HAZARD
 ;
@@ -344,7 +341,7 @@
         
     //1 [task].trace!
     //[task].preHibernate
-    //TR_HIBERNATE_THIS_TASK [task].transition!
+
     [task].hibernate
 
   HAZARD
@@ -415,7 +412,6 @@
 
   [task].grabLock
       
-    //TR_HIBERNATE_THIS_TASK [task].transition!
     [task].hibernate
 
   HAZARD
@@ -441,7 +437,7 @@
   // send the ended job
   "ended" api::forkGeneric_noWait
 
-  [job]:retire
+  [job]:retireAndExit
   HAZARD
 ;
 
@@ -466,7 +462,7 @@
   // send the cancelled job
   "cancelled" api::forkGeneric_noWait
 
-  [job]:retire
+  [job]:retireAndExit
   
   HAZARD
 ;

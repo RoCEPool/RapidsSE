@@ -577,7 +577,7 @@
 : op__retires
 
   [task].grabLock
-    //TR_RETIRE_THIS_TASK [task].transition!
+
     [task].retire
 ;
 
