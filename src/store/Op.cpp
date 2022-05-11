@@ -1688,7 +1688,9 @@ void Op::vSpawnTask(void)
     
     //m_oOpTags.vDumpSet(true);
     
-    AM::vSpawnTaskDedicated_op(this);
+    vCreateTaskForOp();
+    
+    Scheduler::vTaskApi_AddDedicated(pTask());
   }
   else {
     
