@@ -107,6 +107,12 @@ eEC Api::eForkCommon(JobId& rtChildJobId,
     pCmdTagSet->vReplace(C_TAG_LASTJOBID,C_UNKNOWN);
   }
 
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  RASSERT(szJobNm);
+  
+  rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
+  rtChildJobId = rpChildJob_tbr->tJobId();
+
   return EC_NONE;
 }
 
@@ -142,8 +148,8 @@ eEC Api::eForkJob(JobId& rtChildJobId,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alloc job
   
-  rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
-  rtChildJobId = rpChildJob_tbr->tJobId();
+  //rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
+  //rtChildJobId = rpChildJob_tbr->tJobId();
 
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
@@ -284,8 +290,8 @@ eEC Api::eNewGenericJob(JobId& rtChildJobId,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
-  rtChildJobId = rpChildJob_tbr->tJobId();
+  //rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
+  //rtChildJobId = rpChildJob_tbr->tJobId();
 
   rpChildJob_tbr->vParticipantNodeId(AM::pGrid()->iThisNodeId());
 
