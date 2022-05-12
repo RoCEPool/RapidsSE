@@ -277,7 +277,6 @@
 : pipelineJob_tags
   tags{
     <distJob> = 1
-    <jobKind>  = JK_PIPELINE
   }
 ;
         
@@ -287,7 +286,6 @@
 : genericJob_tags
   tags{
     <genericJob> = 1
-    <jobKind>  = JK_GENERIC
   }
 ;
 
@@ -297,7 +295,6 @@
 : localJob_tags
   tags{
     <localJob> = 1
-    <jobKind>  = JK_LOCAL
   }
 ;
         
@@ -327,7 +324,6 @@
 : liteOp_tags tagCopy: operator_tags
   tags{
     <liteOp> = 1
-    <jobKind>  = JK_LOCAL
   }
 ;
 
@@ -337,7 +333,6 @@
 : localLiteOp_tags tagCopy: operator_tags
   tags{
     <localLiteOp> = 1
-    <jobKind>     = JK_LOCAL
   }
 ;
 

@@ -199,12 +199,12 @@ bool Jobs::bReapJob(void)
       }
       else {
         vTrace("Cant reap retired job %p %lld "
-               "%s %s "
+               "%s "
                "activeOps %lld %s "
                "\n"_Stz
 
                ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
-               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
+               ,pRetiredJob->szJobNm()
                ,nActiveOps,pRetiredJob->bReapable() ? "reapable" : "not-reapable"
                );
       }

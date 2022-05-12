@@ -454,7 +454,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_IS"_Stz,   EG_IS);
   vAddConstant("EG_IT"_Stz,   EG_IT);
   vAddConstant("EG_JF"_Stz,   EG_JF);
-  vAddConstant("EG_JK"_Stz,   EG_JK);
   vAddConstant("EG_JL"_Stz,   EG_JL);
   vAddConstant("EG_JP"_Stz,   EG_JP);
   vAddConstant("EG_MS"_Stz,   EG_MS);
@@ -511,13 +510,6 @@ void Constants::vAddConstantsCpp(void)
   
   
   
-  // JK_ : job kind
-  /*   */ vAddConstant("JK_NONE"_Stz,      JK_NONE);
-  /*   */ vAddConstant("JK_BOOT"_Stz,      JK_BOOT);
-  /*   */ vAddConstant("JK_PIPELINE"_Stz,   JK_PIPELINE);
-  /*   */ vAddConstant("JK_GENERIC"_Stz,   JK_GENERIC);
-  /*   */ vAddConstant("JK_LOCAL"_Stz,     JK_LOCAL);
-  /*   */ vAddConstant("JK_OP"_Stz,        JK_OP);
 
   /* 0 */ vAddConstant("JL_NONE"_Stz,         JL_NONE);
   /* 1 */ vAddConstant("JL_DEMON"_Stz,        JL_DEMON);

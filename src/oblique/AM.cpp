@@ -4058,7 +4058,6 @@ static Stz* aEG[]
   "EG_IT"_Stz,
 
   "EG_JF"_Stz,
-  "EG_JK"_Stz,
   "EG_JL"_Stz,
   "EG_JP"_Stz,
   "EG_MX"_Stz,
@@ -4175,7 +4174,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_IT: return aIT[i_Enum];
       
     case EG_JF: return aJF[i_Enum];
-    case EG_JK: return aJK[i_Enum];
     case EG_JL: return aJL[i_Enum];
     case EG_JP: return aJP[i_Enum];
     case EG_MS: return aMS[i_Enum];

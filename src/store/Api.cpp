@@ -42,6 +42,7 @@ void Api::vDeleteRootJob(Job*& rpRootJob)
 {
   _static_
         
+  rpRootJob->vReapable(true);
   delete rpRootJob;
 
   rpRootJob = nullptr;
@@ -121,10 +122,6 @@ eEC Api::eForkJob(JobId& rtChildJobId,
     pCmdTagSet->vDumpSet();
     THROW("Api::eForkJob: no C_TAG_LASTJOBID"_Stz);
   }
-  if (! pCmdTagSet->bHasName(C_TAG_JOBKIND)) {
-    pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: no C_TAG_JOBKIND"_Stz);
-  }
   if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
     pCmdTagSet->vDumpSet();
     THROW("Api::eForkJob: no C_TAG_PATH"_Stz);
@@ -157,10 +154,6 @@ eEC Api::eForkJob(JobId& rtChildJobId,
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
   //vTrace("szEntry: %s\n"_Stz,szEntry);
   rpChildJob_tbr->vEntryPoint(szEntry);
-
-  eJK eJobKind = (eJK) pJobTagSet->iValue(C_TAG_JOBKIND);
-  rpChildJob_tbr->vJobKind(eJobKind);
-
   
   Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
   rpChildJob_tbr->vFolderPath(szFolderPath);
@@ -294,7 +287,6 @@ eEC Api::eNewGenericJob(JobId& rtChildJobId,
   rtChildJobId = rpChildJob_tbr->tJobId();
 
   rpChildJob_tbr->vParticipantNodeId(AM::pGrid()->iThisNodeId());
-  rpChildJob_tbr->vJobKind(JK_GENERIC);
 
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);

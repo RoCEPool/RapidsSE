@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "eJK.h"
 #include "eJL.h"
 #include "eMS.h"
 #include "eJP.h"
@@ -41,7 +40,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     JobId   m_tOriginId;   // origin id
 
     s32     m_sJobNm;      // name of job
-    eJK     m_eJobKind;    // job kind: (needs work)
 
     Atomic  m_noActiveOps; // number of active ops
 
@@ -165,8 +163,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eEC  eJobError(void);
     JobId tJobId(void);
     void vJobIdFromDist(void);
-    eJK  eJobKind(void);
-    void vJobKind(eJK eJobKind);
     eJL  eJobList(void);
     void vJobList(eJL eJobList);
     void vJobMetricsAdd(JobMetrics* pJobMetrics);

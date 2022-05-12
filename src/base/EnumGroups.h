@@ -49,7 +49,6 @@ enum eEG // enum groups
   EG_IT,
   
   EG_JF,
-  EG_JK,
   EG_JL,
   EG_JP,
   EG_MS,

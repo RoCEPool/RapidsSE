@@ -56,7 +56,6 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_tOriginId = tOriginId;
 
   m_sJobNm   = szJobNm;
-  m_eJobKind = JK_NONE;
 
   m_bReapable = false;
   
@@ -137,16 +136,13 @@ Job::~Job(void) noexcept(false)
   
   //! this assert may fail if a job completes before its references
   //! are completely returned
-  if (JK_GENERIC != m_eJobKind && JK_NONE != m_eJobKind) {
-    while (nReferences() || TS_RETIRED != m_pTask->eState() ) {
-      vTrace("Napping\n"_Stz);
-      AM::vNapMsec(10, eGetClassNo());
-    }
+  while (nReferences() ||
+         (m_pTask && TS_RETIRED != m_pTask->eState()) ) {
+    vTrace("Napping ... job staill has references???\n"_Stz);
+    AM::vNapMsec(10, eGetClassNo());
   }
 
-  RASSERT(JK_GENERIC == m_eJobKind ||
-          JK_NONE    == m_eJobKind ||
-          m_bReapable);
+  RASSERT(m_bReapable);
   
   if (m_pJobMetricsChain) {
     while (m_pJobMetricsChain) {
@@ -270,7 +266,6 @@ void Job::vCascadeReset(void)
   m_iParticipantNodeId = C_UNKNOWN;
 
   // -- c -------------------
-  m_eJobKind  = JK_NONE;
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
   
@@ -577,26 +572,6 @@ void  Job::vJobIdFromDist(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_tJobId = m_tDistId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the job kind                                                           */
-/*----------------------------------------------------------------------------*/
-eJK Job::eJobKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_eJobKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job kind                                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vJobKind(eJK eJobKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eJobKind = eJobKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -990,7 +965,6 @@ void Job::vPrintJobContents(void)
          
          "            sJobId "  "%s"    " \n"  // 0
          "            sJobNm "  "%s"    " \n"  // 1
-         "          sJobKind "  "%s"    " \n"  // 2
 
          "              sCmd "  "%s"    " \n"  // 3
          
@@ -1017,7 +991,6 @@ void Job::vPrintJobContents(void)
          
          ,spJobId.sz(m_tJobId.iAsI8())     // 0
          ,m_sJobNm.szStz()           // 1
-         ,aJK[m_eJobKind]            // 2
          ,szCmd()                    // 3
          ,iOriginNodeId()            // 4
 
