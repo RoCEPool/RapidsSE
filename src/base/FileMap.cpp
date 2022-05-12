@@ -50,6 +50,7 @@ FileMap::FileMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP);
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
+  m_uPageFileSubset = 0;
 
 //  vInitialise();
 
@@ -97,6 +98,7 @@ void FileMap::vToDisk(Operand* pOperand)
 
   //---------------------------------------------------------------------------
   // Write to page file
+  ASSERT(CN_ROWBUFFER == pOperand->eGetClassNo());
 
   RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
 

@@ -31,6 +31,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_D_ROWBUFFER ...                                             */
+/*----------------------------------------------------------------------------*/
+: pageout_RowBuffer \handler
+
+  Pipein[]\clear to RowBuffer[]
+
+  RowBuffer[]\clear PageOut::pageOutPoolBuffer
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for pageout req                            (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : pageout_op \operator
@@ -43,7 +55,8 @@
 
   op__topology
 
-  find: pageout_StartMarker ZK_M_START [op].handler!
+  //find: pageout_StartMarker ZK_M_START [op].handler!
+  find: pageout_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
 
   op__loop
 
@@ -61,7 +74,7 @@ cmdSyntax: pageout :: pageout ;
 
 : pageout_cmdTags _cmdTags tagCopy: op_tags
   tags{
-    <dedicatedThd> = 1
+    //<dedicatedThd> = 1
     <opEntry> = "pageout_op"
   }
 ;

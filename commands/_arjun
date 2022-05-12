@@ -24,3 +24,26 @@ create table datums (
 load datums "../DATA/Datums/datums.csv" ;
 
 //select * from datums;
+
+pipeline __pageout
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+
+    stage stageB on all partitions :
+      scan datums
+      | project " type INTEGER as intCol0 $1 "
+      | combined 0
+      | next
+
+    stage stageB on all nodes :
+      pageout
+      | next
+
+    stage stageLast on origin :
+      output
+      | sink
+      | first
+  end ;
