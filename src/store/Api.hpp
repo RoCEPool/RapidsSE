@@ -21,8 +21,7 @@ namespace STORE
                        JobId tParentId, JobId tOriginId, JobId tDistId,
                        Job*& rpChildJob_tbr);
 
-  static eEC eNewGenericJob(Stz* szJobNm,
-                            JobId& rtChildJobId,
+  static eEC eNewGenericJob(JobId& rtChildJobId,
                             TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                             JobId tParentId, JobId tOriginId, JobId tDistId,
                             Job*& rpChildJob_tbr);

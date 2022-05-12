@@ -244,9 +244,9 @@ void Step::vApiForkGeneric_noWait(void)
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sEntryNm);
   TagSet*   pCmdTagSet = new TagSet;
 
+  pCmdTagSet->vReplace(C_TAG_JOBNM,sEntryNm);
   
-  eEC eError = Api::eNewGenericJob(sEntryNm,
-                                   tChildJobId,
+  eEC eError = Api::eNewGenericJob(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,
                                    pJobGeneric);
@@ -292,8 +292,9 @@ void Step::vApiNewGenericJob(void)
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sEntryNm);
   TagSet*   pCmdTagSet = new TagSet;
 
-  eEC eError = Api::eNewGenericJob(sEntryNm,
-                                   tChildJobId,
+  pCmdTagSet->vReplace(C_TAG_JOBNM,sEntryNm);
+
+  eEC eError = Api::eNewGenericJob(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,
                                    pJobGeneric);

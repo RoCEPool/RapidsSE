@@ -247,14 +247,15 @@ eEC Api::eForkJob(JobId& rtChildJobId,
 /*----------------------------------------------------------------------------*/
 /* new a generic job        THIS IS TEMP REFACTOR                             */
 /*----------------------------------------------------------------------------*/
-eEC Api::eNewGenericJob(Stz* szJobNm,
-                        JobId& rtChildJobId,
+eEC Api::eNewGenericJob(JobId& rtChildJobId,
                         TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                         JobId tParentId, JobId tOriginId, JobId tDistId,
                         Job*& rpChildJob_tbr)
 {
   _static_
   
+  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+
   rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
   rtChildJobId = rpChildJob_tbr->tJobId();
 
@@ -270,8 +271,8 @@ eEC Api::eNewGenericJob(Stz* szJobNm,
     return EC_INVALID_COMMAND;
   }
 
-  Stz* szJobNm_tag = pCmdTagSet->szValue(C_TAG_JOBNM);
-  RASSERT(szJobNm_tag && szJobNm_tag->bSame(szJobNm));
+  //Stz* szJobNm_tag = pCmdTagSet->szValue(C_TAG_JOBNM);
+  //RASSERT(szJobNm_tag && szJobNm_tag->bSame(szJobNm));
 
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
