@@ -17,12 +17,28 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_DdlLock(void)
 {
-  vAddStep("[ddlLock].dropRead"_Stz,  &Step::vDdlLockDropRead);
-  vAddStep("[ddlLock].dropWrite"_Stz, &Step::vDdlLockDropWrite);
-  vAddStep("[ddlLock].grabRead"_Stz,  &Step::vDdlLockGrabRead);
-  vAddStep("[ddlLock].grabWrite"_Stz, &Step::vDdlLockGrabWrite);
-  vAddStep("[ddlLock].none"_Stz,      &Step::vDdlLockNone);
-  vAddStep("[ddlLock].testDrop"_Stz,  &Step::vDdlLockTestDrop);
+  vAddStep("[ddlLock].assertNone"_Stz, &Step::vDdlLockAssertNone);
+  vAddStep("[ddlLock].dropRead"_Stz,   &Step::vDdlLockDropRead);
+  vAddStep("[ddlLock].dropWrite"_Stz,  &Step::vDdlLockDropWrite);
+  vAddStep("[ddlLock].grabRead"_Stz,   &Step::vDdlLockGrabRead);
+  vAddStep("[ddlLock].grabWrite"_Stz,  &Step::vDdlLockGrabWrite);
+  vAddStep("[ddlLock].hasLock?"_Stz,   &Step::vDdlLockHasLock);
+  vAddStep("[ddlLock].hasRead?"_Stz,   &Step::vDdlLockHasRead);
+  vAddStep("[ddlLock].hasWrite?"_Stz,  &Step::vDdlLockHasWrite);
+  vAddStep("[ddlLock].testDrop"_Stz,   &Step::vDdlLockTestDrop);
+}
+
+/*----------------------------------------------------------------------------*/
+/* [ddlLock].assertNone -- check for no ddl lock                              */
+/*----------------------------------------------------------------------------*/
+void Step::vDdlLockAssertNone(void)
+{
+  ENTRY();
+
+  if (LH_HAVE_NO_LOCK != m_pLogicUnit->m_eDdlLocked)
+    THROW("[ddlLock].assertNone : register still has ddl locked"_Stz);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,14 +90,46 @@ void Step::vDdlLockGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [ddlLock].none -- check for no ddl lock                                    */
+/* [ddlLock].hasLock? -- does the logic unit have a ddl read or write lock?   */
 /*----------------------------------------------------------------------------*/
-void Step::vDdlLockNone(void)
+void Step::vDdlLockHasLock(void)
 {
   ENTRY();
+    
+  if (LH_HAVE_NO_LOCK == m_pLogicUnit->m_eDdlLocked)
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
 
-  if (LH_HAVE_NO_LOCK != m_pLogicUnit->m_eDdlLocked)
-    THROW("[ddlLock].none : register still has ddl locked"_Stz);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [ddlLock].hasRead? -- does the logic unit have a ddl read lock?            */
+/*----------------------------------------------------------------------------*/
+void Step::vDdlLockHasRead(void)
+{
+  ENTRY();
+    
+  if (LH_HAVE_READ_LOCK == m_pLogicUnit->m_eDdlLocked)
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [ddlLock].hasWrite? -- does the logic unit have a ddl write lock?          */
+/*----------------------------------------------------------------------------*/
+void Step::vDdlLockHasWrite(void)
+{
+  ENTRY();
+    
+  if (LH_HAVE_WRITE_LOCK == m_pLogicUnit->m_eDdlLocked)
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
 
   EXIT();
 }

@@ -69,7 +69,7 @@ void Step::vTaskIsWaiting(void)
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
   // should never s=check for DEDICATED tasks
-  RASSERT(pThatTask->eEntryPoint() != EP_DEDICATED);
+  RASSERT(! pThatTask->bDedicatedThread());
   
   m_pDataStack->vPushInt(pThatTask->eState() == TS_WAITING ? true : false);
   

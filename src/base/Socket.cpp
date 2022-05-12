@@ -138,31 +138,6 @@ void Socket::vDump(eCN eClass, Object* pObject, Stz* aTab)
          pSocket->m_bBlocking ? "blocking"_Stz : "non-blocking"_Stz);
 }
 
-/*----------------------------------------------------------------------------*/
-/* statistics                                                                 */
-/*----------------------------------------------------------------------------*/
-void Socket::vStatistics(void)
-{
-  s32 sByteMag;
-  
-  Statistics* pStat = AM::pStatistics();
-
-  vTrace("  nSocketAccepts    %lld\n"_Stz,pStat->Socket_.m_nAccepts);
-  vTrace("  nSocketCloses     %lld\n"_Stz,pStat->Socket_.m_nCloses);
-  vTrace("  nSocketConnects   %lld\n"_Stz,pStat->Socket_.m_nConnects);
-  vTrace("  nSocketListens    %lld\n"_Stz,pStat->Socket_.m_nListens);
-  vTrace("  nSocketPeeks      %lld\n"_Stz,pStat->Socket_.m_nPeeks);
-  vTrace("  nSocketRecvs      %lld\n"_Stz,pStat->Socket_.m_nRecvs);
-  vTrace("  nSocketRecvFroms  %lld\n"_Stz,pStat->Socket_.m_nRecvFroms);
-  vTrace("  nSocketSends      %lld\n"_Stz,pStat->Socket_.m_nSends);
-  vTrace("  nSocketSendTos    %lld\n"_Stz,pStat->Socket_.m_nSendTos);
-
-  MagLib::vByteMag(pStat->Socket_.m_nRecvBytes,  sByteMag);
-  vTrace("  nSocketRecvBytes  %s\n"_Stz,sByteMag.szStz());
-  MagLib::vByteMag(pStat->Socket_.m_nSentBytes,  sByteMag);
-  vTrace("  nSocketSendBytes  %s\n"_Stz,sByteMag.szStz());
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 //                              tcp/ip support                               //
 ///////////////////////////////////////////////////////////////////////////////

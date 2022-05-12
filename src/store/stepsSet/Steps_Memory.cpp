@@ -15,7 +15,6 @@
 void Step::vAddSteps_Memory(void)
 {
   vAddStep("memory.byteDump"_Stz,   &Step::vMemoryByteDump);
-  vAddStep("memory::reset"_Stz,     &Step::vMemoryReset);
   vAddStep("memory::statistics"_Stz,&Step::vMemoryStatistics);
   vAddStep("memory.wordDump"_Stz,   &Step::vMemoryWordDump);
 }
@@ -34,18 +33,6 @@ void Step::vMemoryByteDump(void)
   //pWord->vByteDump(iSize);
   MemLib::vHexDump(pWord,iSize);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* memory.reset -- reset memory statistics                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vMemoryReset(void)
-{
-  ENTRY();
-  
-  MemLib::vReset();
-    
   EXIT();
 }
 

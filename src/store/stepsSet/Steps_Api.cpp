@@ -21,9 +21,14 @@
 #include "LogicUnit.hpp"
 
 #include "Procedure.hpp"
+#include "SysArgs.hpp"
+#include "AttachMap.hpp"
 
 #include "MY.hpp"
 #include "TagConstants.h"
+#include "Jobs.hpp"
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -33,7 +38,6 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::forkChild_noWait"_Stz,    &Step::vApiForkChild_noWait);
   vAddStep("api::forkChild_wait"_Stz,      &Step::vApiForkChild_wait);
   vAddStep("api::forkGeneric_noWait"_Stz,  &Step::vApiForkGeneric_noWait);
-  vAddStep("api::newGenericJob"_Stz,       &Step::vApiNewGenericJob);
   vAddStep("api::reapJobs"_Stz,            &Step::vApiReapJobs);
   vAddStep("api::spawnJob_noWait"_Stz,     &Step::vApiSpawnJob);
 }
@@ -62,7 +66,7 @@ void Step::vApiForkChild_noWait(void)
     
   TagSet* pCmdTagSet = new TagSet;
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
-  Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
+  CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
   pCmdTagSet->vReplace(C_TAG_NOWAIT,1);
 
@@ -86,11 +90,24 @@ void Step::vApiForkChild_noWait(void)
 
   JobId tChildJobId;
   
+  JobId tParentId;
+  if (m_pJob)
+    tParentId = m_pJob->tJobId();
+
+  JobId tOriginId;
+  if (m_pJob)
+    tOriginId = m_pJob->tOriginId();
+
+  JobId tDistId;
+  if (m_pJob)
+    tDistId = m_pJob->tDistId();
+
   Job* pJob = nullptr;
-  eEC eError = Api::eForkJob(tChildJobId,m_pJob,
-                           pCmdTknVec,pCmdTagSet,
-                           pJob // TO BE REMOVED
-                           );
+  eEC eError = Api::eForkJob(tChildJobId,
+                             pCmdTknVec,pCmdTagSet,
+                             tParentId,tOriginId,tDistId,
+                             pJob // TO BE REMOVED
+                            );
   RASSERT(EC_NONE == eError);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -130,7 +147,7 @@ void Step::vApiForkChild_wait(void)
     
   TagSet* pCmdTagSet = new TagSet;
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
-  Api::vPopulateTagSet(pCmdTagSet,pTagTknVec);
+  CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
   
   /*
@@ -168,11 +185,23 @@ void Step::vApiForkChild_wait(void)
   
   JobId tChildJobId;
   
+  
+  JobId tParentId;
+  tParentId = m_pJob->tJobId();
+
+  JobId tOriginId;
+  tOriginId = m_pJob->tOriginId();
+
+  JobId tDistId;
+  tDistId = m_pJob->tDistId();
+
+  
   Job* pJob = nullptr;
-  eEC eError = Api::eForkJob(tChildJobId,m_pJob,
-                           pCmdTknVec,pCmdTagSet,
-                           pJob // TO BE REMOVED
-                           );
+  eEC eError = Api::eForkJob(tChildJobId,
+                             pCmdTknVec,pCmdTagSet,
+                             tParentId,tOriginId,tDistId,
+                             pJob // TO BE REMOVED
+                             );
   RASSERT(EC_NONE == eError);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -189,66 +218,32 @@ void Step::vApiForkGeneric_noWait(void)
 {
   ENTRY();
   
-  s256 sEntryNm;
-  m_pDataStack->vPopStr(sEntryNm,__func__);
+  s256 sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
     
-//  i8 iDistJobId = m_pDataStack->iPopInt(__func__);
-//  JobId tDistJobId;
-//  tDistJobId = iDistJobId;
-//  Job* pJobBegun = Api::pNewGenericJob(sEntryNm,tDistJobId);
-//
-//  m_pDataStack->vPushPtr(pJobBegun);
+  JobId tParentId = m_pJob->tParentId();
+  JobId tOriginId = m_pJob->tOriginId();
+  JobId tDistId   = m_pJob->tDistId();
+  
+  Job* pJobGeneric = nullptr;
+  JobId tChildJobId;
+  
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
+  TagSet*   pCmdTagSet = new TagSet;
 
-  JobId tParentId;
-  tParentId = m_pJob->tParentId();
+  pCmdTagSet->vReplace(C_TAG_JOBNM,sCmd);
   
-  JobId tOriginId;
-  tOriginId = m_pJob->tOriginId();
+  eEC eError = Api::eNewGenericJob(tChildJobId,
+                                   pCmdTknVec,pCmdTagSet,
+                                   tParentId,tOriginId,tDistId,
+                                   pJobGeneric);
+  RASSERT(EC_NONE == eError);
   
-  JobId tDistId;
-  tDistId = m_pJob->tDistId();
-  
-  Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tParentId,tOriginId,tDistId);
-
-  Api::vSpawnTask_receivedJob(pJobGeneric);
+  delete pCmdTknVec;
+  delete pCmdTagSet;
  
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* api::newGenericJob -- new a pipeline coordination job                      */
-/*----------------------------------------------------------------------------*/
-void Step::vApiNewGenericJob(void)
-{
-  ENTRY();
-  
-  s256 sEntryNm;
-  m_pDataStack->vPopStr(sEntryNm,__func__);
-    
-//  if (sEntryNm.bSame("executed"_Stz))
-//    vTrace("vApiNewGenericJob: executed\n"_Stz);
-  
-//  i8 iDistJobId = m_pDataStack->iPopInt(__func__);
-//  JobId tDistJobId;
-//  tDistJobId = iDistJobId;
-//  Job* pJobBegun = Api::pNewGenericJob(sEntryNm,tDistJobId);
-
-  JobId tParentId;
-  tParentId = m_pJob->tParentId();
-  
-  JobId tDistId;
-  tDistId = m_pJob->tDistId();
-  
-  JobId tOriginId;
-  tOriginId = m_pJob->tDistId();
-  
-  Job* pJobGeneric = Api::pNewGenericJob(sEntryNm,tParentId,tOriginId,tDistId);
-
-  m_pDataStack->vPushPtr(pJobGeneric);
-  
-  EXIT();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* api::reapJobs -- reap retired jobs                                         */
@@ -259,7 +254,8 @@ void Step::vApiReapJobs(void)
   
   i8 iForce = (i8)m_pDataStack->iPopBol(__func__);
 
-  Api::vReapJobsOnce(iForce);
+  //Api::vReapJobsOnce(iForce);
+  gpAttachMap->pJobs()->vReapJobsOnce(iForce);
 
   EXIT();
 }
@@ -281,7 +277,7 @@ void Step::vApiSpawnJob(void)
 //    RASSERT(TR_NONE == pTask->eTransition());
 //  }
   
-  Api::vSpawnTask_receivedJob(pJob);
+  pJob->vSpawnReceivedJob();
   
   EXIT();
 }

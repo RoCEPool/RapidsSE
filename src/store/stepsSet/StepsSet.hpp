@@ -89,7 +89,6 @@ public:
   void vApiForkChild_noWait(void);
   void vApiForkChild_wait(void);
   void vApiForkGeneric_noWait(void);
-  void vApiNewGenericJob(void);
   void vApiReapJobs(void);
   void vApiSpawnJob(void);
 
@@ -331,11 +330,14 @@ public:
   void vDataBufferSet(void);
 
   // ddllock
+void vDdlLockAssertNone(void);
   void vDdlLockDropRead(void);
   void vDdlLockDropWrite(void);
   void vDdlLockGrabRead(void);
   void vDdlLockGrabWrite(void);
-  void vDdlLockNone(void);
+  void vDdlLockHasLock(void);
+  void vDdlLockHasRead(void);
+  void vDdlLockHasWrite(void);
   void vDdlLockTestDrop(void);
 
   // debug
@@ -1170,7 +1172,6 @@ public:
 
   // memory
   void vMemoryByteDump(void);
-  void vMemoryReset(void);
   void vMemoryStatistics(void);
   void vMemoryWordDump(void);
 

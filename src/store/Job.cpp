@@ -1143,6 +1143,51 @@ void Job::vReapable(bool bReapable)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set job as reapable                                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vReapableJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (bIsPipeline() && ! pOutput()->m_bExitMarker)
+    pOutput()->vProcessBufferQueue(this);
+
+  pOutput()->m_pOutputQueue->vReset();
+  pOutput()->vEndProcOneCmd();
+  
+  if (pOutput()->m_pStreamDef_result) {
+    StreamDef* pStreamDef = pOutput()->m_pStreamDef_result;
+    pOutput()->m_pStreamDef_result = nullptr;
+    delete pStreamDef;
+  }
+  
+  pOutput()->m_bExitMarker      = false;
+  pOutput()->m_bExitEarlyMarker = false;
+  
+  vReapable(true);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset task for given job                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vResetTaskForJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szEntry = "job::entryPoint"_Stz;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Task* pTask = this->pTask();
+    
+  pTask->vSetInxPtr(szEntry);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vResponseTimerStart();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pResponseOp                                                             */
 /*----------------------------------------------------------------------------*/
 Op* Job::p_ResponseOp(void)
@@ -1200,6 +1245,17 @@ void Job::vResponseTimerUpdate(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_oResponseTimer.vUpdate();
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn given job                                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vSpawnReceivedJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  vTaskCreate();
+  Scheduler::vTaskApi_Add(pTask());
 }
 
 /*----------------------------------------------------------------------------*/

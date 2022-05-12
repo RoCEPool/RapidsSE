@@ -57,7 +57,6 @@ namespace PROMPT
   bool bPrompt_executing(SePrompt* pPrompt);
 
   bool bPrompt_fact(SePrompt* pPrompt);
-  bool bPrompt_file(SePrompt* pPrompt);
   bool bPrompt_fileCat(SePrompt* pPrompt);
   bool bPrompt_fileProc(SePrompt* pPrompt);
   bool bPrompt_fileRand(SePrompt* pPrompt);
@@ -95,7 +94,6 @@ namespace PROMPT
   bool bPrompt_memoryLeaks(SePrompt* pPrompt);
   bool bPrompt_memoryLeaks_dump(SePrompt* pPrompt);
   bool bPrompt_memTest(SePrompt* pPrompt);
-  bool bPrompt_memory(SePrompt* pPrompt);
   bool bPrompt_mkfifo(SePrompt* pPrompt);
 
   bool bPrompt_now(SePrompt* pPrompt);
@@ -138,7 +136,6 @@ namespace PROMPT
   bool bPrompt_show(SePrompt* pPrompt);
   bool bPrompt_sizes(SePrompt* pPrompt);
   bool bPrompt_sleep(SePrompt* pPrompt);
-  bool bPrompt_sleepers(SePrompt* pPrompt);
   bool bPrompt_sleeping(SePrompt* pPrompt);
   bool bPrompt_snapshotDelta(SePrompt* pPrompt);
   bool bPrompt_snapshotInspect(SePrompt* pPrompt);
@@ -146,7 +143,6 @@ namespace PROMPT
   bool bPrompt_snapshotNewer(SePrompt* pPrompt);
   bool bPrompt_snapshotObjects(SePrompt* pPrompt);
   bool bPrompt_so(SePrompt* pPrompt);
-  bool bPrompt_socket(SePrompt* pPrompt);
   bool bPrompt_start(SePrompt* pPrompt);
   bool bPrompt_startCompleted(SePrompt* pPrompt);
   bool bPrompt_startNow(SePrompt* pPrompt);

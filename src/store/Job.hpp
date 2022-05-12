@@ -212,6 +212,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   
     bool bReapable(void);
     void vReapable(bool bReapable);
+    void vReapableJob(void);
+    void vResetTaskForJob(void);
     Op*  p_ResponseOp(void);
     void vResponseOp(Op* p_ResponseOp);
     i8   iResponseTimerMsec(void);
@@ -219,6 +221,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vResponseTimerStart(void);
     void vResponseTimerUpdate(void);
 
+    void vSpawnReceivedJob(void);
     void vStmtListAppend(Stz* szCascade);
     void vStmtListCreate(void);
     void vStmtListDestroy(void);

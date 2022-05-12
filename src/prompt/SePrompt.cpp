@@ -431,8 +431,8 @@ bool SePrompt::bExamineCommand(void)
   if (bRedirectFromFile())
     return false;
     
-  CmdHelper::vExtractCmdPaths(m_pInpTknVec,m_pInpTagSet);
-  if (! CmdHelper::bExtractCmdTags(m_pInpTknVec,m_pInpTagSet))
+  CmdHelper::vExtractCmdPaths(m_pInpTagSet,m_pInpTknVec);
+  if (! CmdHelper::bExtractCmdTags(m_pInpTagSet,m_pInpTknVec))
     return false;
 
   if (bIsPromptWord())

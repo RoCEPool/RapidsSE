@@ -206,6 +206,16 @@ void AttachMap::vIndexEntries(i8 nIndexEntries)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get jobs manager                                                           */
+/*----------------------------------------------------------------------------*/
+Jobs* AttachMap::pJobs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  return m_pJobs;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next temp name                                                         */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vNextTempName(s32& sName)
@@ -469,8 +479,6 @@ SysMetrics* AttachMap::pSysMetricsChain(void)
 
   return m_pSysMetricsChain;
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* get trace file                                                             */

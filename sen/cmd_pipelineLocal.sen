@@ -15,8 +15,7 @@
 
   [job].addRetired
   [task].grabLock
-    //TR_RETIRE_THIS_TASK [task].transition!
-    [task].retire
+    [task].retire // does not queue onto exit demon
 
   HAZARD
 ;
@@ -133,8 +132,8 @@
     //  "SYSTEM NOT STARTED" .
       true [job].reapable!
     then
-    //TR_RETIRE_THIS_TASK [task].transition!
-    [task].retire
+
+    [task].retire // does not queue onto exit demon
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -308,6 +308,27 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create task for op                                                         */
+/*----------------------------------------------------------------------------*/
+void Op::vCreateTaskForOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  Task* pTask = this->pTask();
+  RASSERT(! pTask);
+
+  Word* pEntryWord = this->pEntryWord();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pTask = new Task(this->szOpNm(),this);
+
+  vTask(pTask);
+
+  pTask->vSetInxPtr(pEntryWord);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cross topology                                                         */
 /*----------------------------------------------------------------------------*/
 eYX Op::eCrossTopology(void)
@@ -1660,28 +1681,16 @@ void Op::vSpawnTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
       
-    
   Job* pJob = this->pJobOfOp();
   pJob->vActiveOpsInc();
   
-  if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD)) {
-    
-    //m_oOpTags.vDumpSet(true);
-    
-    AM::vSpawnTaskDedicated_op(this);
-  }
-//  else
-//  if (StrLib::bSame(szOpNm(), "recv")) {
-//    
-//    m_oOpTags.vDumpSet(true);
-//    
-//    AM::vSpawnTaskDedicated_op(this);
-//  }
-  else {
-    
-    AM::vSpawnTask_op(this);
-  }
+  vCreateTaskForOp();
+  Task* pTask = this->pTask();
   
+  if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD))
+    pTask->vDedicatedThread(true);
+        
+  Scheduler::vTaskApi_Add(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

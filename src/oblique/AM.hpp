@@ -679,7 +679,6 @@ namespace OBLIQUE
     static void vRootConstant(Word* pConstantRoot);
     static Word* pWordRoot(void);
     static void vRootWord(Word* pWordRoot);
-    static Statistics* pStatistics(void);
     static Steps* pSteps(void);
     static PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);
@@ -796,10 +795,6 @@ namespace OBLIQUE
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
-    static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
-    static void vSpawnTaskDedicated_op(Op* pOp);
-    static void vSpawnTask_op(Op* pOp);
-    static void vSpawnTask_receivedJob(Job* pJob);
     static Stz* szSummary(s256& sSummary);
     static Stz* szSummaryDir(s256& sSummary, Stz* szNote);
     static bool bSupervisorHalt(void);

@@ -61,7 +61,7 @@
   ListedJob[].assertNoRef
 
   // check this task has no ddl lock
-  [ddlLock].none
+  [ddlLock].assertNone
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -577,7 +577,7 @@
 : op__retires
 
   [task].grabLock
-    //TR_RETIRE_THIS_TASK [task].transition!
+
     [task].retire
 ;
 

@@ -25,7 +25,7 @@
   
   then
   
-  [job]:retire
+  [job]:retireAndExit
   HAZARD
 ;
 
@@ -48,7 +48,7 @@
 
   nullptr to SendNode[]
   
-  [job]:retire
+  [job]:retireAndExit
   HAZARD
 ;
 

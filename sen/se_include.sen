@@ -84,7 +84,6 @@ assert::stack_0
   "dp_pageOutDemon.sen"     include
   "se_experiments.sen"      include
   "se_llc.sen"              include
-  "se_memoryStats.sen"      include
   "se_munge.sen"            include
   "se_stepTests.sen"        include
   "se_stepTiming.sen"       include

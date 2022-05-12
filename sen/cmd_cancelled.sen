@@ -24,7 +24,7 @@
   ListedJob[].taskAck
   
   ListedJob[].returnReference
-  [job]:retire
+  [job]:retireAndExit
 ;
 
 /*----------------------------------------------------------------------------*/

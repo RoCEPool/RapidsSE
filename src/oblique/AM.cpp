@@ -2680,7 +2680,6 @@ Resources* AM::pResources(void) {
 
 Word* AM::pConstantRoot(void) { return gpAttachMap->m_pConstantRoot;          }
 Word* AM::pWordRoot(void)     { return gpAttachMap->m_pWordRoot;              }
-Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
 Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
@@ -3159,38 +3158,6 @@ void AM::vWriteLog(void) {
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* spawn op                                                                   */
-/*----------------------------------------------------------------------------*/
-void AM::vSpawnTaskDedicated_op(Op* pOp)
-{
-  Api::vSpawnTask_dedicatedOp(pOp);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn task for given op                                                    */
-/*----------------------------------------------------------------------------*/
-void AM::vSpawnTask_op(Op* pOp)
-{
-  Api::vSpawnTask_op(pOp);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
-void AM::vSpawnTask_receivedJob(Job* pJob)
-{
-  Api::vSpawnTask_receivedJob(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
-void AM::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
-{
-  Api::vScheduleNextPhase(pParticipantJob,pActiviating2PcTask);
-}
 
 /*----------------------------------------------------------------------------*/
 /* quick config summary                                                       */
@@ -4077,7 +4044,6 @@ static Stz* aEG[]
   "EG_ED"_Stz,
   "EG_EK"_Stz,
   "EG_EO"_Stz,
-  "EG_EP"_Stz,
 
   "EG_FN"_Stz,
 
@@ -4195,7 +4161,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 
     case EG_EC: return aEC[i_Enum];
     case EG_ED: return aED[i_Enum];
-    case EG_EP: return aEP[i_Enum];
 
     case EG_FN: return aFN[i_Enum];
 

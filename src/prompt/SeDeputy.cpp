@@ -75,7 +75,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   JobId tDistId;
   RASSERT(tDistId.bIsUnknown());
 
-  m_pRootJob = new Job("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
+  m_pRootJob = Api::pNewRootJob("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
 
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
@@ -90,8 +90,7 @@ SeDeputy::~SeDeputy(void) noexcept(false)
   while (m_pInput)
     m_pInput = m_pInput->pDeleteInput();
 
-  delete m_pRootJob;
-  m_pRootJob = nullptr;
+  Api::vDeleteRootJob(m_pRootJob);
   
   AM::THREAD::vDeleteThread(m_pThread);
 }
@@ -147,8 +146,19 @@ void SeDeputy::vDeputyLoop(void)
 
     JobId tChildJobId;
     
-    m_eError = Api::eForkJob(tChildJobId,m_pRootJob,
+  JobId tParentId;
+  tParentId = m_pRootJob->tJobId();
+
+  JobId tOriginId;
+  tOriginId = m_pRootJob->tOriginId();
+
+  JobId tDistId;
+  tDistId = m_pRootJob->tDistId();
+
+    
+    m_eError = Api::eForkJob(tChildJobId,
                              pInpTknVec,pInpTagSet,
+                             tParentId,tOriginId,tDistId,
                              m_pJob // TO BE REMOVED
                              );
     

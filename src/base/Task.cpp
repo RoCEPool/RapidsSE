@@ -112,18 +112,14 @@ void Task::vTask(void)
   
   m_iDebugMark   = 0;
   m_pProfile     = nullptr;
-
   m_pInvokingTask = nullptr;
   m_pThread      = nullptr;
   
-  m_bIsStart     = false;
-  m_bIsImmediate = false;
-
   m_eState       = TS_NONE;
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
-  m_eEntryPoint  = EP_NONE;
-
+  m_bDedicatedThread = false;
+  
   m_oAcksRmg.vCheckInit();
   // m_oWakeup
   
@@ -669,6 +665,26 @@ void Task::vCycleTaskLock(Stz* szFunc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get dedicated thread                                                       */
+/*----------------------------------------------------------------------------*/
+bool Task::bDedicatedThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  return m_bDedicatedThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set dedicated thread                                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vDedicatedThread(bool bDedicatedThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_bDedicatedThread = bDedicatedThread;
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete input                                                               */
 /*----------------------------------------------------------------------------*/
 void Task::vDeleteInput(void)
@@ -764,26 +780,6 @@ void Task::vDump(void)
   vTrace("== End Task Dump ============================================\n"_Stz);
   
   AM::MASTERLOCK::vDropTraceMulti();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get entry point                                                            */
-/*----------------------------------------------------------------------------*/
-eEP Task::eEntryPoint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_eEntryPoint;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set entry point                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vEntryPoint(eEP eEntryPoint)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_eEntryPoint = eEntryPoint;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -952,26 +948,6 @@ void Task::vInvokingTask(Task* pInvokingTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* immediate task?                                                            */
-/*----------------------------------------------------------------------------*/
-bool Task::bIsImmediate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  return m_bIsImmediate;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set immediate task                                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vIsImmediate(bool bIsImmediate)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  m_bIsImmediate = bIsImmediate;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is task locked?                                                            */
 /*----------------------------------------------------------------------------*/
 bool Task::bIsLocked(void)
@@ -981,26 +957,6 @@ bool Task::bIsLocked(void)
   bool b = m_okLock.bIsLocked();
   
   return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is the start task?                                                         */
-/*----------------------------------------------------------------------------*/
-bool Task::bIsStart(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  return m_bIsStart;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set start task                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vIsStart(bool bIsStart)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  m_bIsStart = bIsStart;
 }
 
 /*----------------------------------------------------------------------------*/

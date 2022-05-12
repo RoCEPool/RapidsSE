@@ -34,7 +34,7 @@
   
   then
   
-  [job]:retire
+  [job]:retireAndExit
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@
 
   [job]:broadcast
 
-  [job]:retire
+  [job]:retireAndExit
   HAZARD
 ;
 
