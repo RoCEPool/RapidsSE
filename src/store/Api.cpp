@@ -68,9 +68,9 @@ eEC Api::eForkJob(JobId& rtChildJobId,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prepare job
 
-  CmdHelper::vExtractCmdPaths(pCmdTknVec,pCmdTagSet);
+  CmdHelper::vExtractCmdPaths(pCmdTagSet,pCmdTknVec);
   
-  bool b = CmdHelper::bExtractCmdTags(pCmdTknVec,pCmdTagSet);
+  bool b = CmdHelper::bExtractCmdTags(pCmdTagSet,pCmdTknVec);
   UNUSED(b);
   
   sSTMT sMaybePipelineSmt;

@@ -34,105 +34,105 @@ TagSet* CmdHelper::pDefTagSet(Stz* szCmdNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract paths                                                              */
+/* extract paths from token vector into tag set                               */
 /*----------------------------------------------------------------------------*/
-void CmdHelper::vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+void CmdHelper::vExtractCmdPaths(TagSet* pDstCmdTagSet, TokenVec* pSrcCmdTknVec)
 {
   _static_
     
-  i8 i_Paths = pCmdTknVec->iFindToken("paths"_Stz,TN_NAME);
+  i8 i_Paths = pSrcCmdTknVec->iFindToken("paths"_Stz,TN_NAME);
 
   if (C_UNKNOWN == i_Paths)
     return;
   
-  pCmdTknVec->vRemoveToken(i_Paths);
+  pSrcCmdTknVec->vRemoveToken(i_Paths);
 
   s32 sName;
   
   i8 nPaths;
-  for (nPaths = 0; i_Paths < pCmdTknVec->nTokens(); nPaths++) {
+  for (nPaths = 0; i_Paths < pSrcCmdTknVec->nTokens(); nPaths++) {
     sName.vSprint("<path%lld>"_Stz,nPaths);
-    Token* pTkn = pCmdTknVec->pGet(i_Paths);
-    pCmdTagSet->vAppend(sName,pTkn->szChars());
-    pCmdTknVec->vRemoveToken(i_Paths);
+    Token* pTkn = pSrcCmdTknVec->pGet(i_Paths);
+    pDstCmdTagSet->vAppend(sName,pTkn->szChars());
+    pSrcCmdTknVec->vRemoveToken(i_Paths);
   }
   
-  pCmdTagSet->vAppend("<paths>"_Stz,nPaths);
+  pDstCmdTagSet->vAppend("<paths>"_Stz,nPaths);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract tags                                                               */
 /*----------------------------------------------------------------------------*/
-bool CmdHelper::bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+bool CmdHelper::bExtractCmdTags(TagSet* pDstCmdTagSet, TokenVec* pSrcCmdTknVec)
 {
   _static_
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract leading job control tags (such as /time or /nowait)
   
-  Token* pTkn0 = pCmdTknVec->pGet(0,true);
+  Token* pTkn0 = pSrcCmdTknVec->pGet(0,true);
   
   s32 sTag;
   
   while ('/' == * pTkn0->azChars() ) {
     
-    Token* pTkn1 = pCmdTknVec->pGet(1,true);
+    Token* pTkn1 = pSrcCmdTknVec->pGet(1,true);
     sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
     
-    pCmdTagSet->vInsert(sTag,1);
+    pDstCmdTagSet->vInsert(sTag,1);
     
-    pCmdTknVec->vRemoveToken(0);
-    pCmdTknVec->vRemoveToken(0);
+    pSrcCmdTknVec->vRemoveToken(0);
+    pSrcCmdTknVec->vRemoveToken(0);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract trailing job supplemtntal tags ( such as <field_delimiter> = | )
 
-  i8 i_TagBegin = pCmdTknVec->iFirstTag2();
+  i8 i_TagBegin = pSrcCmdTknVec->iFirstTag2();
   if (C_UNKNOWN == i_TagBegin)
     return true;
 
-  Token* pTkn_begin = pCmdTknVec->pGet(i_TagBegin);
+  Token* pTkn_begin = pSrcCmdTknVec->pGet(i_TagBegin);
   UNUSED(pTkn_begin);
   
-  i8 nTkns = pCmdTknVec->nTokens();
+  i8 nTkns = pSrcCmdTknVec->nTokens();
 
   i8 i_Scan = i_TagBegin;
   while (i_Scan < nTkns) {
   
-    Token* pScan = pCmdTknVec->pGet(i_Scan++);        // <
+    Token* pScan = pSrcCmdTknVec->pGet(i_Scan++);        // <
     if (i_Scan >= nTkns)
       return false;
     if (! pScan->bIsLessThan())
       return false;
     
-    Token* pTkn_name = pCmdTknVec->pGet(i_Scan++);    // name
+    Token* pTkn_name = pSrcCmdTknVec->pGet(i_Scan++);    // name
     if (i_Scan >= nTkns)
       return false;
     if (! pTkn_name->bIsName())
       return false;
 
-    pScan = pCmdTknVec->pGet(i_Scan++);               // >
+    pScan = pSrcCmdTknVec->pGet(i_Scan++);               // >
     if (! pScan->bIsGreaterThan())
       return false;
     
-    pScan = pCmdTknVec->pGet(i_Scan++);               // =
+    pScan = pSrcCmdTknVec->pGet(i_Scan++);               // =
     if (i_Scan >= nTkns)
       return false;
     if (! pScan->bIsAssign())
       return false;
 
-    Token* pTkn_value = pCmdTknVec->pGet(i_Scan++);   // value
+    Token* pTkn_value = pSrcCmdTknVec->pGet(i_Scan++);   // value
     //if (! pTkn_value->bIsString())
     //  return false;
 
     s32 sName;
     sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
-    pCmdTagSet->vAppend(sName,pTkn_value->szChars());
+    pDstCmdTagSet->vAppend(sName,pTkn_value->szChars());
   }
     
-  pCmdTknVec->vTrimTokens(i_TagBegin);
+  pSrcCmdTknVec->vTrimTokens(i_TagBegin);
   
   return true;
 
