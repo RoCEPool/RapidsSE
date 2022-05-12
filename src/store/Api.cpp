@@ -113,6 +113,19 @@ eEC Api::eForkCommon(JobId& rtChildJobId,
   rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
   rtChildJobId = rpChildJob_tbr->tJobId();
 
+  TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
+  pJobTagSet->vCopy(pCmdTagSet);
+  
+  sSTMT sCmd;
+  pCmdTknVec->vVecToString(sCmd,0,true);
+  rpChildJob_tbr->vCmd(sCmd);
+
+  Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+  rpChildJob_tbr->vEntryPoint(szEntry);
+  
+  Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
+  rpChildJob_tbr->vFolderPath(szFolderPath);
+
   return EC_NONE;
 }
 
@@ -148,22 +161,25 @@ eEC Api::eForkJob(JobId& rtChildJobId,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alloc job
   
-  //rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
-  //rtChildJobId = rpChildJob_tbr->tJobId();
 
+
+//  TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
+//  pJobTagSet->vCopy(pCmdTagSet);
+//
+//  sSTMT sCmd;
+//  pCmdTknVec->vVecToString(sCmd,0,true);
+//  rpChildJob_tbr->vCmd(sCmd);
+//
+//  Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+//  rpChildJob_tbr->vEntryPoint(szEntry);
+//
+//  Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
+//  rpChildJob_tbr->vFolderPath(szFolderPath);
+
+  
+  
+  
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
-  pJobTagSet->vCopy(pCmdTagSet);
-  
-  sSTMT sCmd;
-  pCmdTknVec->vVecToString(sCmd,0,true);
-  rpChildJob_tbr->vCmd(sCmd);
-
-  Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
-  //vTrace("szEntry: %s\n"_Stz,szEntry);
-  rpChildJob_tbr->vEntryPoint(szEntry);
-  
-  Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
-  rpChildJob_tbr->vFolderPath(szFolderPath);
 
   JobId tLastJobId;
   tLastJobId = pJobTagSet->iValue(C_TAG_LASTJOBID);
@@ -290,18 +306,26 @@ eEC Api::eNewGenericJob(JobId& rtChildJobId,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-  //rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
-  //rtChildJobId = rpChildJob_tbr->tJobId();
 
-  rpChildJob_tbr->vParticipantNodeId(AM::pGrid()->iThisNodeId());
+//  TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
+//  pJobTagSet->vCopy(pCmdTagSet);
+//
+//  sSTMT sCmd;
+//  pCmdTknVec->vVecToString(sCmd,0,true);
+//  rpChildJob_tbr->vCmd(sCmd);
+//
+//  Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
+//  rpChildJob_tbr->vEntryPoint(szEntry);
+//
+//  Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
+//  rpChildJob_tbr->vFolderPath(szFolderPath);
 
-  TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
-  pJobTagSet->vCopy(pCmdTagSet);
   
   
-  Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
-  rpChildJob_tbr->vEntryPoint(szEntry);
-
+  
+  
+  
+  
   rpChildJob_tbr->vTaskCreate();
   Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
 

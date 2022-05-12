@@ -771,7 +771,7 @@ Job* JobReport::pFindOriginalJobId(JobId tJobId)
 //             : "participant"_Stz
 //           );
     
-    if (tJobNo_test == tJobId && C_UNKNOWN == pJobScan->iParticipantNodeId()) {
+    if (tJobNo_test == tJobId && C_UNKNOWN == pJobScan->iForkNodeId()) {
       pJob = pJobScan;
     }
   }
@@ -823,7 +823,7 @@ Job* JobReport::pFindOriginalJobNo(i8 iJobNo)
 //             : "participant"_Stz
 //           );
     
-    if (iJobNo_test == iJobNo && C_UNKNOWN == pJobScan->iParticipantNodeId()) {
+    if (iJobNo_test == iJobNo && C_UNKNOWN == pJobScan->iForkNodeId()) {
       pJob = pJobScan;
     }
   }
@@ -870,7 +870,7 @@ Job* JobReport::pFindParticipantJobId(JobId tJobId)
 //           ,tJobId.iAsI8()
 //           );
 
-    if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iParticipantNodeId()) {
+    if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iForkNodeId()) {
       if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
         pJob = pJobScan;
     }
@@ -918,7 +918,7 @@ Job* JobReport::pFindParticipantJobNo(i8 iJobNo)
 //           ,iJobNo
 //           );
 
-    if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iParticipantNodeId()) {
+    if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iForkNodeId()) {
       if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
         pJob = pJobScan;
     }

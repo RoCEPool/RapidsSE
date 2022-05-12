@@ -625,7 +625,7 @@ void Step::vJobParticipantNodeIdFetch(void)
   
   Job* pJob = * m_pJob;
 
-  m_pDataStack->vPushInt(pJob->iParticipantNodeId());
+  m_pDataStack->vPushInt(pJob->iForkNodeId());
   
   EXIT();
 }
@@ -641,7 +641,7 @@ void Step::vJobParticipantNodeIdStore(void)
 
   i8 iParticipantNodeId = m_pDataStack->iPopAsInt(__func__);
   
-  pJob->vParticipantNodeId(iParticipantNodeId);
+  pJob->vForkNodeId(iParticipantNodeId);
   
   EXIT();
 }

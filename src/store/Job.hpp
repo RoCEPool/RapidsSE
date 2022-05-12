@@ -38,6 +38,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     JobId   m_tParentId;   // job id of parent
     JobId   m_tDistId;     // distributed id
     JobId   m_tOriginId;   // origin id
+    i8      m_iForkNodeId;  // participant node
 
     s32     m_sJobNm;      // name of job
 
@@ -55,7 +56,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     // -- postage
     b8 m_bWasReceived;   // was job received over a socket?          POST_RECV
-    i8   m_iParticipantNodeId;  // participant node
   
     // -- state
     eJP m_eJobPhase;  // current phase: JP_BEGINNING, _BEGUN, ...
@@ -145,7 +145,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   
     Stz* szFolderPath(void);
     void vFolderPath(Stz* szFolderPath);
-  
+    i8   iForkNodeId(void);
+    void vForkNodeId(i8 iForkNodeId);
+
     void vGrabLock(void);
   
     bool bHasByPromptTag(void);
@@ -198,8 +200,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   
     JobId tParentId(void);
     void vParentId(JobId tParentId);
-    i8   iParticipantNodeId(void);
-    void vParticipantNodeId(i8 i_Node);
     Pipeline* pPipeline(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
