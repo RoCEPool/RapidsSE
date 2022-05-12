@@ -232,7 +232,8 @@ void Step::vApiForkGeneric_noWait(void)
   TagSet*   pCmdTagSet = new TagSet;
 
   pCmdTagSet->vReplace(C_TAG_JOBNM,sCmd);
-  
+  pCmdTagSet->vReplace(C_TAG_NOWAIT,1);
+
   eEC eError = Api::eNewGenericJob(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,

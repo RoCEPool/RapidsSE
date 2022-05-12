@@ -79,6 +79,33 @@ eEC Api::eForkCommon(JobId& rtChildJobId,
     return EC_INVALID_COMMAND;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify minimum needed tags
+  
+  if (! pCmdTagSet->bHasName(C_TAG_ENTRYPOINT)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: no C_TAG_ENTRYPOINT"_Stz);
+  }
+  if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: no C_TAG_PATH"_Stz);
+  }
+  
+  if ((! pCmdTagSet->bHasName(C_TAG_NOWAIT)) &&
+      (! pCmdTagSet->bHasName(C_TAG_WAIT))) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: neither C_TAG_NOWAIT or C_TAG_WAIT"_Stz);
+  }
+  if (pCmdTagSet->bHasName(C_TAG_NOWAIT) &&
+      pCmdTagSet->bHasName(C_TAG_WAIT)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: both C_TAG_NOWAIT and C_TAG_WAIT"_Stz);
+  }
+
+  // temp
+  if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
+    pCmdTagSet->vReplace(C_TAG_LASTJOBID,C_UNKNOWN);
+  }
 
   return EC_NONE;
 }
@@ -111,32 +138,6 @@ eEC Api::eForkJob(JobId& rtChildJobId,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // verify minimum needed tags
-  
-  if (! pCmdTagSet->bHasName(C_TAG_ENTRYPOINT)) {
-    pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: no C_TAG_ENTRYPOINT"_Stz);
-  }
-  if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
-    pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: no C_TAG_LASTJOBID"_Stz);
-  }
-  if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
-    pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: no C_TAG_PATH"_Stz);
-  }
-  
-  if ((! pCmdTagSet->bHasName(C_TAG_NOWAIT)) &&
-      (! pCmdTagSet->bHasName(C_TAG_WAIT))) {
-    pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: neither C_TAG_NOWAIT or C_TAG_WAIT"_Stz);
-  }
-  if (pCmdTagSet->bHasName(C_TAG_NOWAIT) &&
-      pCmdTagSet->bHasName(C_TAG_WAIT)) {
-    pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: both C_TAG_NOWAIT and C_TAG_WAIT"_Stz);
-  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alloc job
