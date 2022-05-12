@@ -692,7 +692,14 @@ JobId Job::tLastJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_tLastJobId;
+  TagSet* pJobTags = this->pJobTags();
+
+  if (! pJobTags->bHasName(C_TAG_LASTJOBID))
+    return C_UNKNOWN;
+  
+  JobId tLastJobId = pJobTags->iValue(C_TAG_LASTJOBID);
+  
+  return tLastJobId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -702,7 +709,9 @@ void Job::vLastJobId(JobId tLastJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_tLastJobId = tLastJobId;
+  TagSet* pJobTags = this->pJobTags();
+
+  pJobTags->vReplace(C_TAG_LASTJOBID,tLastJobId.iAsI8());
 }
 
 /*----------------------------------------------------------------------------*/

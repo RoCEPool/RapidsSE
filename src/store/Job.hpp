@@ -83,8 +83,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   
     s256 m_sFolderPath;   // folder path
   
-    JobId m_tLastJobId;    // last job id
-
     i8  m_iTscParticipant;
 
     i8  m_iTscBeginning;
