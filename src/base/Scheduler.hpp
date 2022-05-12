@@ -46,14 +46,9 @@ namespace BASE
     // task api (pTask is not known to scheduler)
   
   public:
+    static void vTaskApi_Add(Task* pNewTask);
     static void vTaskApi_AddDedicated(Task* pNewTask);
   
-    static void vTaskApi_AddConnector(Task* pNewTask);
-    static void vTaskApi_AddOp(Task* pNewTask);
-    static void vTaskApi_AddPrompt(Task* pNewTask);
-    static void vTaskApi_AddReceived(Task* pNewTask);
-    static void vTaskApi_AddService(Task* pNewTask);
-    static void vTaskApi_AddSystem(Task* pNewTask);
     static void vTaskApi_BeginExecutingDedicated(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

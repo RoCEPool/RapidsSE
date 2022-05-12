@@ -1255,7 +1255,7 @@ void Job::vSpawnReceivedJob(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   vTaskCreate();
-  Scheduler::vTaskApi_AddReceived(pTask());
+  Scheduler::vTaskApi_Add(pTask());
 }
 
 /*----------------------------------------------------------------------------*/

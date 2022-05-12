@@ -199,7 +199,7 @@ eEC Api::eForkJob(JobId& rtChildJobId,
     
     rpChildJob_tbr->vResponseTimerStart();
     
-    Scheduler::vTaskApi_AddPrompt(rpChildJob_tbr->pTask());
+    Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
 
     if (rpChildJob_tbr->bHasTag(C_TAG_NOWAIT)) {
       RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_WAIT));

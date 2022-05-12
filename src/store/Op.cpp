@@ -1696,7 +1696,7 @@ void Op::vSpawnTask(void)
     
     vCreateTaskForOp();
     
-    Scheduler::vTaskApi_AddOp(pTask());
+    Scheduler::vTaskApi_Add(pTask());
   }
 }
 
