@@ -240,12 +240,20 @@ void Step::vApiForkGeneric_noWait(void)
   
   Job* pJobGeneric = nullptr;
   JobId tChildJobId;
+  
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sEntryNm);
+  TagSet*   pCmdTagSet = new TagSet;
+
+  
   eEC eError = Api::eNewGenericJob(sEntryNm,
                                    tChildJobId,
-                                   nullptr,nullptr,
+                                   pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,
                                    pJobGeneric);
   RASSERT(EC_NONE == eError);
+  
+  delete pCmdTknVec;
+  delete pCmdTagSet;
   pJobGeneric->vSpawnReceivedJob();
  
   EXIT();
@@ -280,13 +288,20 @@ void Step::vApiNewGenericJob(void)
   
   Job* pJobGeneric = nullptr;
   JobId tChildJobId;
+  
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sEntryNm);
+  TagSet*   pCmdTagSet = new TagSet;
+
   eEC eError = Api::eNewGenericJob(sEntryNm,
                                    tChildJobId,
-                                   nullptr,nullptr,
+                                   pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,
                                    pJobGeneric);
   RASSERT(EC_NONE == eError);
  
+  delete pCmdTknVec;
+  delete pCmdTagSet;
+  
   m_pDataStack->vPushPtr(pJobGeneric);
   
   EXIT();

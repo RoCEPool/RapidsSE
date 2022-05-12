@@ -249,7 +249,7 @@ eEC Api::eForkJob(JobId& rtChildJobId,
 /*----------------------------------------------------------------------------*/
 eEC Api::eNewGenericJob(Stz* szJobNm,
                         JobId& rtChildJobId,
-                        TokenVec* , TagSet* ,
+                        TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                         JobId tParentId, JobId tOriginId, JobId tDistId,
                         Job*& rpChildJob_tbr)
 {
@@ -261,8 +261,8 @@ eEC Api::eNewGenericJob(Stz* szJobNm,
   rpChildJob_tbr->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   rpChildJob_tbr->vJobKind(JK_GENERIC);
 
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szJobNm);
-  TagSet*   pCmdTagSet = new TagSet;
+  //TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szJobNm);
+  //TagSet*   pCmdTagSet = new TagSet;
 
   if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {
     delete pCmdTknVec;
@@ -281,8 +281,8 @@ eEC Api::eNewGenericJob(Stz* szJobNm,
   rpChildJob_tbr->vEntryPoint(szEntry);
 
 
-  delete pCmdTknVec;
-  delete pCmdTagSet;
+  //delete pCmdTknVec;
+  //delete pCmdTagSet;
   return EC_NONE;
 }
 
