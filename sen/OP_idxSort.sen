@@ -9,23 +9,23 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                   END */
+/* on EV_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
 : idxSort_Cleaning \handler
 
-  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+  0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+  EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                        END */
+/* on EV_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : idxSort_EosMarker \handler
 
-  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
+  0 EV_M_EOS EG_ZK LogicUnit[].diaryNote
 
   // begin the indexTree scan
   indexStream[].scanBegin
@@ -49,16 +49,16 @@
   // delete the indexStream
   indexStream[].delete
 
-  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
-  ZK_M_EOS_handler
+  EV_M_EOS EG_ZK PD_PIPE_OUT 0 EV_M_EOS EG_ZK LogicUnit[].diaryAction
+  EV_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                 EACH */
+/* on EV_D_ROWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : idxSort_RowBuffer \handler
 
-  0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 EV_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   pipeIn[]\clear to RowBuffer[]
   RowBuffer[] StreamDefLft[] IndexStream[].populate
@@ -71,11 +71,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
+/* on EV_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : idxSort_StartMarker \handler
 
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   // init the logicUnit[]
   LogicUnit[].init
@@ -83,15 +83,15 @@
   // create a tub to hold the rowBuffers
   Tub[].new
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/* on EV_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : idxSort_StreamDef \handler
 
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
@@ -131,11 +131,11 @@
 
   op__topology
 
-  find: idxSort_Cleaning      ZK_M_CLEANING      [op].handler!
-  find: idxSort_EosMarker     ZK_M_EOS           [op].handler!
-  find: idxSort_RowBuffer     ZK_D_ROWBUFFER     [op].handler!
-  find: idxSort_StartMarker   ZK_M_START         [op].handler!
-  find: idxSort_StreamDef     ZK_D_STREAMDEF     [op].handler!
+  find: idxSort_Cleaning      EV_M_CLEANING      [op].handler!
+  find: idxSort_EosMarker     EV_M_EOS           [op].handler!
+  find: idxSort_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  find: idxSort_StartMarker   EV_M_START         [op].handler!
+  find: idxSort_StreamDef     EV_D_STREAMDEF     [op].handler!
 
   op__loop
 

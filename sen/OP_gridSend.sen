@@ -5,7 +5,7 @@
 " OP_gridSend.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_METAGET ...                                                          */
+/* on EV_D_METAGET ...                                                          */
 /*----------------------------------------------------------------------------*/
 : gridSend_gridObject \handler
 
@@ -40,8 +40,8 @@
 
   op__topology
 
-  // Setup ZK_D_GRIDGET handler
-  find: gridSend_gridObject ZK_D_GRID [op].handler!
+  // Setup EV_D_GRIDGET handler
+  find: gridSend_gridObject EV_D_GRID [op].handler!
   op__loop
 
   _lu_finalise_

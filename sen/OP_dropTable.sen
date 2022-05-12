@@ -5,7 +5,7 @@
 " OP_dropTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : dropTable_StartMarker
 
@@ -24,7 +24,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DESTROY ...                                               */
+/* handler for EV_M_DESTROY ...                                               */
 /*----------------------------------------------------------------------------*/
 : dropTable_DestroyMarker
 
@@ -51,8 +51,8 @@
 
   op__topology
 
-  find: dropTable_StartMarker   ZK_M_START   [op].handler!
-  find: dropTable_DestroyMarker ZK_M_DESTROY [op].handler!
+  find: dropTable_StartMarker   EV_M_START   [op].handler!
+  find: dropTable_DestroyMarker EV_M_DESTROY [op].handler!
 
   op__loop
 

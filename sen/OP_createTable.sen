@@ -37,7 +37,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                             */
+/* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : createTable_StreamDef
 
@@ -89,7 +89,7 @@
 
   op__topology
 
-  find: createTable_StreamDef ZK_D_STREAMDEF [op].handler!
+  find: createTable_StreamDef EV_D_STREAMDEF [op].handler!
 
   op__loop
 

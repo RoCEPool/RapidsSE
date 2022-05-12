@@ -5,11 +5,11 @@
 " OP_totalCount.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMSET...                                                         */
+/* on EV_D_STREAMSET...                                                         */
 /*----------------------------------------------------------------------------*/
 : totalCount_DataMarker \handler
 
-  //"Operand:- ZK_M_DATAPULSE" .verbose
+  //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // find the C_TABLEDEF_COUNT
@@ -45,11 +45,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS...                                                         */
+/* on EV_M_EOS...                                                         */
 /*----------------------------------------------------------------------------*/
 : totalCount_EosMarker \handler
 
-  //"Operand:- ZK_M_EOS" .verbose
+  //"Operand:- EV_M_EOS" .verbose
   PipeIn[].pipeOut
 
   // create a new streamDef
@@ -80,9 +80,9 @@
 
   op__topology
 
-  find: totalCount_EosMarker   ZK_M_EOS        [op].handler!
-  find: totalCount_DataMarker  ZK_M_DATAPULSE  [op].handler!
-  find: totalCount_countInfo   ZK_I_COUNT      [op].handler!
+  find: totalCount_EosMarker   EV_M_EOS        [op].handler!
+  find: totalCount_DataMarker  EV_M_DATAPULSE  [op].handler!
+  find: totalCount_countInfo   EV_I_COUNT      [op].handler!
 
   op__loop
 

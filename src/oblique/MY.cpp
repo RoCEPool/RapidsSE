@@ -415,7 +415,7 @@ LogicUnit* MY::pOpLogicUnit(void)
 /*----------------------------------------------------------------------------*/
 /* get current operand kind                                                   */
 /*----------------------------------------------------------------------------*/
-eZK MY::eOperand(void)
+eEV MY::eOperand(void)
 {
   _static_
 
@@ -424,7 +424,7 @@ eZK MY::eOperand(void)
   if (pLogicUnit)
     return pLogicUnit->m_ePipeInOperand;
   else
-    return ZK_NONE;
+    return EV_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -5,44 +5,44 @@
 " OP_output.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_COMMANDERRORS ...                                         */
+/* handler for EV_I_COMMANDERRORS ...                                         */
 /*----------------------------------------------------------------------------*/
 : output_CommandErrors \handler
 
-  //"Operand:- ZK_I_COMMANDERRORS" .verbose
+  //"Operand:- EV_I_COMMANDERRORS" .verbose
   PipeIn[].pipeToOutput
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                             */
+/* handler for EV_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_CrwBuffer \handler
 
-  //"Operand:- ZK_D_CRWBUFFER" .verbose
+  //"Operand:- EV_D_CRWBUFFER" .verbose
   PipeIn[].pipeToOutput
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CSVBUFFER ...                                             */
+/* handler for EV_D_CSVBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_CsvBuffer \handler
 
-  //"Operand:- ZK_D_CSVBUFFER" .verbose
+  //"Operand:- EV_D_CSVBUFFER" .verbose
   PipeIn[].pipeToOutput
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_DataMarker \handler
 
-  //"Operand:- ZK_M_DATAPULSE" .verbose
+  //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
   Marker[].newDataPulse
   Marker[].pipeToOutput
@@ -51,33 +51,33 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_EACHROWBUFFER ...                                         */
+/* handler for EV_D_EACHROWBUFFER ...                                         */
 /*----------------------------------------------------------------------------*/
 : output_EachRowBuffer \handler
 
-  //"Operand:- ZK_D_EACHROWBUFFER" .verbose
+  //"Operand:- EV_D_EACHROWBUFFER" .verbose
   PipeIn[].pipeToOutput
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ENTBUFFER ...                                             */
+/* handler for EV_D_ENTBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_EntBuffer \handler
 
-  //"Operand:- ZK_D_ENTBUFFER" .verbose
+  //"Operand:- EV_D_ENTBUFFER" .verbose
   PipeIn[].pipeToOutput
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                                   */
+/* handler for EV_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : output_EosMarker \handler
 
-  //"Operand:- ZK_M_EOS" .verbose
+  //"Operand:- EV_M_EOS" .verbose
   PipeIn[].pipeToOutput
   Marker[].newEosMarker
   Marker[].pipeOut
@@ -86,11 +86,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_ERROR ...                                                 */
+/* handler for EV_M_ERROR ...                                                 */
 /*----------------------------------------------------------------------------*/
 : output_ErrorMarker \handler
 
-  //"Operand:- ZK_M_ERROR" .verbose
+  //"Operand:- EV_M_ERROR" .verbose
   PipeIn[].pipeToOutput
   ErrorMarker[].newErrorMarker
   ErrorMarker[].pipeOut
@@ -99,77 +99,77 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_EXECERRORS ...                                            */
+/* handler for EV_I_EXECERRORS ...                                            */
 /*----------------------------------------------------------------------------*/
 : output_ExecErrors \handler
 
-  //"Operand:- ZK_I_EXECERRORS" .verbose
+  //"Operand:- EV_I_EXECERRORS" .verbose
   PipeIn[].pipeToOutput
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_LEAVE ...                                                 */
+/* handler for EV_M_LEAVE ...                                                 */
 /*----------------------------------------------------------------------------*/
 : output_LeaveMarker \handler
 
-  //"Operand:- ZK_M_LEAVE" .verbose
+  //"Operand:- EV_M_LEAVE" .verbose
   //PipeIn[].pipeToOutput
   Pipein[].pipeout
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_LOADRESULT ...                                            */
+/* handler for EV_I_LOADRESULT ...                                            */
 /*----------------------------------------------------------------------------*/
 : output_LoadResult \handler
 
-  //"Operand:- ZK_I_LOADRESULT" .verbose
+  //"Operand:- EV_I_LOADRESULT" .verbose
   PipeIn[].pipeToOutput
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_PROMPTOUT ...                                             */
+/* handler for EV_I_PROMPTOUT ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_promptOut \handler
 
-  //"Operand:- ZK_I_PROMPTOUT" .verbose
+  //"Operand:- EV_I_PROMPTOUT" .verbose
   PipeIn[].pipeToOutput
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                             */
+/* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_RowBuffer \handler
 
-  //"Operand:- ZK_D_ROWBUFFER" .verbose
+  //"Operand:- EV_D_ROWBUFFER" .verbose
   PipeIn[].pipeToOutput
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_SRTBUFFER ...                                             */
+/* handler for EV_D_SRTBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_SrtBuffer \handler
 
-  //"Operand:- ZK_D_SRTBUFFER" .verbose
+  //"Operand:- EV_D_SRTBUFFER" .verbose
   PipeIn[].pipeToOutput
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : output_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
   PipeIn[].pipeToOutput
   Marker[].newStartMarker
   Marker[].pipeOut
@@ -178,22 +178,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                             */
+/* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_StreamDef \handler
 
-  //"Operand:- ZK_D_STREAMDEF" .verbose
+  //"Operand:- EV_D_STREAMDEF" .verbose
   PipeIn[].pipeToOutput
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMSET ...                                             */
+/* handler for EV_D_STREAMSET ...                                             */
 /*----------------------------------------------------------------------------*/
 : output_StreamSet \handler
 
-  //"Operand:- ZK_D_STREAMSET" .verbose
+  //"Operand:- EV_D_STREAMSET" .verbose
   PipeIn[].pipeToOutput
 
   true
@@ -208,25 +208,25 @@
 
   op__topology
 
-  find: output_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
-  find: output_CsvBuffer     ZK_D_CSVBUFFER     [op].handler!
-  find: output_EachRowBuffer ZK_D_EACHROWBUFFER [op].handler!
-  find: output_EntBuffer     ZK_D_ENTBUFFER     [op].handler!
-  find: output_RowBuffer     ZK_D_ROWBUFFER     [op].handler!
-  find: output_SrtBuffer     ZK_D_SRTBUFFER     [op].handler!
-  find: output_StreamDef     ZK_D_STREAMDEF     [op].handler!
-  find: output_StreamDef     ZK_D_STREAMSET     [op].handler!
+  find: output_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
+  find: output_CsvBuffer     EV_D_CSVBUFFER     [op].handler!
+  find: output_EachRowBuffer EV_D_EACHROWBUFFER [op].handler!
+  find: output_EntBuffer     EV_D_ENTBUFFER     [op].handler!
+  find: output_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  find: output_SrtBuffer     EV_D_SRTBUFFER     [op].handler!
+  find: output_StreamDef     EV_D_STREAMDEF     [op].handler!
+  find: output_StreamDef     EV_D_STREAMSET     [op].handler!
 
-  find: output_CommandErrors ZK_I_COMMANDERRORS [op].handler!
-  find: output_ExecErrors    ZK_I_EXECERRORS    [op].handler!
-  find: output_LoadResult    ZK_I_LOADRESULT    [op].handler!
-  find: output_PromptOut     ZK_I_PROMPTOUT     [op].handler!
+  find: output_CommandErrors EV_I_COMMANDERRORS [op].handler!
+  find: output_ExecErrors    EV_I_EXECERRORS    [op].handler!
+  find: output_LoadResult    EV_I_LOADRESULT    [op].handler!
+  find: output_PromptOut     EV_I_PROMPTOUT     [op].handler!
 
-  find: output_DataMarker    ZK_M_DATAPULSE     [op].handler!
-  find: output_EosMarker     ZK_M_EOS           [op].handler!
-  find: output_ErrorMarker   ZK_M_ERROR         [op].handler!
-  find: output_LeaveMarker   ZK_M_LEAVE         [op].handler!
-  find: output_StartMarker   ZK_M_START         [op].handler!
+  find: output_DataMarker    EV_M_DATAPULSE     [op].handler!
+  find: output_EosMarker     EV_M_EOS           [op].handler!
+  find: output_ErrorMarker   EV_M_ERROR         [op].handler!
+  find: output_LeaveMarker   EV_M_LEAVE         [op].handler!
+  find: output_StartMarker   EV_M_START         [op].handler!
 
   op__loop
 

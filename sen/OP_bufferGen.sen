@@ -5,11 +5,11 @@
 " OP_bufferGen.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for EV_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : BufferGen_DataPulse \handler
 
-  "Operand:- ZK_M_DATAPULSE" .verbose
+  "Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   <nBuffers> 0 do
@@ -42,7 +42,7 @@
 
   op__topology
 
-  find: BufferGen_DataPulse ZK_M_DATAPULSE [op].handler!
+  find: BufferGen_DataPulse EV_M_DATAPULSE [op].handler!
 
   op__loop
 

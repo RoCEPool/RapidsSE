@@ -12,7 +12,6 @@
 #include "eDA.h"
 #include "eDR.h"
 #include "eEC.h"
-#include "eEV.h"
 #include "eGA.h"
 #include "eHA.h"
 #include "eLA.h"
@@ -770,7 +769,7 @@ namespace OBLIQUE
     static void vOperandsDec(void);
     static i8   nOperandsGet(void);
     static void vOperandsInc(void);
-    static i8   iOperandZkKind(Operand* pOperand);
+    static i8   iOperandEvKind(Operand* pOperand);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Job* pPipelineJob(void);

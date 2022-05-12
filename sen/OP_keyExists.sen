@@ -9,41 +9,41 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                   END */
+/* on EV_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
 : keyExists_Cleaning \handler
 
-  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+  0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+  EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
+/* on EV_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : keyExists_Start \handler
 
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   <tableNm> <indexNm> op__table_index not if
     false
     exit
   then
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/* on EV_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : keyExists_StreamDef \handler
 
   EC_NONE locals| eError |
 
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
@@ -89,9 +89,9 @@
 
   op__topology
 
-  find: keyExists_Cleaning    ZK_M_CLEANING   [op].handler!
-  find: keyExists_Start       ZK_M_START      [op].handler!
-  find: keyExists_StreamDef   ZK_D_STREAMDEF  [op].handler!
+  find: keyExists_Cleaning    EV_M_CLEANING   [op].handler!
+  find: keyExists_Start       EV_M_START      [op].handler!
+  find: keyExists_StreamDef   EV_D_STREAMDEF  [op].handler!
 
   op__loop
 

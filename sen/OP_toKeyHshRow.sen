@@ -5,7 +5,7 @@
 " OP_toKeyHshRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
+/* on EV_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : toKeyHshRow_StartMarker \handler
 
@@ -31,7 +31,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CSVBUFFER ...                                                 EACH */
+/* on EV_D_CSVBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : toKeyHshRow_CsvBuffer \handler
 
@@ -61,7 +61,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                    END */
+/* on EV_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : toKeyHshRow_EosMarker \handler
 
@@ -114,9 +114,9 @@
 
   op__topology
 
-  find: toKeyHshRow_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
-  find: toKeyHshRow_EosMarker   ZK_M_EOS         [op].handler!
-  find: toKeyHshRow_StartMarker ZK_M_START       [op].handler!
+  find: toKeyHshRow_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
+  find: toKeyHshRow_EosMarker   EV_M_EOS         [op].handler!
+  find: toKeyHshRow_StartMarker EV_M_START       [op].handler!
 
   op__loop
 

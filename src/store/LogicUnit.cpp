@@ -234,7 +234,7 @@ LogicUnit::LogicUnit(void)
   m_aUpperEntry = nullptr;
   m_pEntBufferOuter = nullptr;
 
-  m_ePipeInOperand = ZK_NONE;
+  m_ePipeInOperand = EV_NONE;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -754,11 +754,11 @@ void LogicUnit::vSetPipein(Operand* pOperand)
   m_xpPipein = pOperand;
   
   if (pOperand) {
-    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    eEV eOperand = (eEV)AM::iOperandEvKind(pOperand);
     m_ePipeInOperand = eOperand;
   }
   else {
-    m_ePipeInOperand = ZK_NONE;
+    m_ePipeInOperand = EV_NONE;
   }
 }
 

@@ -548,7 +548,7 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
           continue;
         
         OperandWatch* pOperandWatch = pOp->pOperandWatch();
-        for (i8 i_Operand = 0; i_Operand < ZK_ENUMS; i_Operand++) {
+        for (i8 i_Operand = 0; i_Operand < EV_ENUMS; i_Operand++) {
 
           if (! pOperandWatch->nCnt(i_Operand))
             continue;
@@ -570,7 +570,7 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
                        ,pOp->szOpNm()
 
                        ,i_Operand
-                       ,aZK[i_Operand]
+                       ,aEV[i_Operand]
                        
                        ,pOperandWatch->nCnt(i_Operand)
                        

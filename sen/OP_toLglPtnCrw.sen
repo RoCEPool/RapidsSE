@@ -5,7 +5,7 @@
 " OP_toLglPtnCrw.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                  DEFINITION */
+/* handler for EV_D_STREAMDEF ...                                  DEFINITION */
 /*----------------------------------------------------------------------------*/
 : toLglPtnCrw_StreamDef \handler
 
@@ -22,23 +22,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
+/* on EV_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : toLglPtnCrw_StartMarker \handler
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                BEGIN */
+/* on EV_M_DATAPULSE ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
 : toLglPtnCrw_DataMarker \handler
 
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                 EACH */
+/* on EV_D_ROWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : toLglPtnCrw_RowBuffer \handler
 
@@ -65,7 +65,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                        END */
+/* on EV_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : toLglPtnCrw_EosMarker \handler
 
@@ -105,11 +105,11 @@
 
   op__topology
 
-  find: toLglPtnCrw_EosMarker   ZK_M_EOS         [op].handler!
-  find: toLglPtnCrw_DataMarker  ZK_M_DATAPULSE   [op].handler!
-  find: toLglPtnCrw_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
-  find: toLglPtnCrw_StartMarker ZK_M_START       [op].handler!
-  find: toLglPtnCrw_StreamDef   ZK_D_STREAMDEF   [op].handler!
+  find: toLglPtnCrw_EosMarker   EV_M_EOS         [op].handler!
+  find: toLglPtnCrw_DataMarker  EV_M_DATAPULSE   [op].handler!
+  find: toLglPtnCrw_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: toLglPtnCrw_StartMarker EV_M_START       [op].handler!
+  find: toLglPtnCrw_StreamDef   EV_D_STREAMDEF   [op].handler!
 
   op__loop
 

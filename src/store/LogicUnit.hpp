@@ -226,7 +226,7 @@ namespace STORE
 
     eEC    m_eErrorCode_reg;      // error code
     
-    eZK m_ePipeInOperand;
+    eEV m_ePipeInOperand;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop

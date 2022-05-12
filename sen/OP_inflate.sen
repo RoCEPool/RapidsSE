@@ -9,23 +9,23 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                   END */
+/* on EV_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
 : inflate_Cleaning \handler
 
-  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+  0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+  EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CRWBUFFER ...                                                 EACH */
+/* on EV_D_CRWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : inflate_CrwBuffer \handler
 
-  0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+  0 EV_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
   Pipein[]\clear to CrwBuffer[]
   Tub[] CrwBuffer[].inflateTcc
@@ -37,40 +37,40 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                        END */
+/* on EV_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : inflate_EosMarker \handler
 
-  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
+  0 EV_M_EOS EG_ZK LogicUnit[].diaryNote
 
   // pipeout all PotRlu[]
   Tub[].pipeOutRemainder
   Tub[].delete
 
-  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+  EV_M_EOS EG_ZK PD_PIPE_OUT 0 EV_M_EOS EG_ZK LogicUnit[].diaryAction
 
-  ZK_M_EOS_handler
+  EV_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
+/* on EV_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : inflate_StartMarker \handler
 
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   // new Tub[]
   Tub[].new
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/* on EV_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : inflate_StreamDef \handler
 
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   PipeIn[]\clear to StreamDefLft[]
 
@@ -95,11 +95,11 @@
 
   op__topology
 
-  find: inflate_Cleaning      ZK_M_CLEANING      [op].handler!
-  find: inflate_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
-  find: inflate_EosMarker     ZK_M_EOS           [op].handler!
-  find: inflate_StartMarker   ZK_M_START         [op].handler!
-  find: inflate_StreamDef     ZK_D_STREAMDEF     [op].handler!
+  find: inflate_Cleaning      EV_M_CLEANING      [op].handler!
+  find: inflate_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
+  find: inflate_EosMarker     EV_M_EOS           [op].handler!
+  find: inflate_StartMarker   EV_M_START         [op].handler!
+  find: inflate_StreamDef     EV_D_STREAMDEF     [op].handler!
 
   op__loop
 

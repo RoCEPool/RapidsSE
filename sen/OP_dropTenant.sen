@@ -5,7 +5,7 @@
 " OP_dropTenant.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for EV_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : dropTenant_DataMarker
 
@@ -47,7 +47,7 @@
 
   op__topology
 
-  find: dropTenant_DataMarker ZK_M_DATAPULSE [op].handler!
+  find: dropTenant_DataMarker EV_M_DATAPULSE [op].handler!
 
   op__loop
 

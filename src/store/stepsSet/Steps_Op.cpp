@@ -87,8 +87,8 @@ void Step::vOpEnqueOperand(void)
 void Step::vOpEventCountInc(void)
 {
   ENTRY();
-  
-  eZK eEvent = (eZK) m_pDataStack->iPopInt(__func__);
+
+  eEV eEvent = (eEV) m_pDataStack->iPopInt(__func__);
   
   m_pOp->vEventCountInc(eEvent);
   
@@ -205,7 +205,7 @@ void Step::vOpHandlerAllStore(void)
 
   Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
 
-  for (i8 i_OpKind = 0; i_OpKind < ZK_ENUMS; i_OpKind++)
+  for (i8 i_OpKind = 0; i_OpKind < EV_ENUMS; i_OpKind++)
     m_pOp->vEventHandler(i_OpKind,pHandler);
     
   EXIT();

@@ -6,9 +6,9 @@
 
 /*
 
-  Counter0[] : tracks the number of ZK_M_FINISHED expected
+  Counter0[] : tracks the number of EV_M_FINISHED expected
   
-  Counter1[] : tracks the number of ZK_M_FINISHED processed so far
+  Counter1[] : tracks the number of EV_M_FINISHED processed so far
 
 */
 
@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_COUNT ...                                                 */
+/* handler for EV_I_COUNT ...                                                 */
 /*----------------------------------------------------------------------------*/
 : waitFinished_Count \handler
   
@@ -52,7 +52,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_END ...                                                   */
+/* handler for EV_M_END ...                                                   */
 /*----------------------------------------------------------------------------*/
 : waitFinished_End \handler
 
@@ -78,7 +78,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_FINISHED_handler ...                                      */
+/* handler for EV_M_FINISHED_handler ...                                      */
 /*----------------------------------------------------------------------------*/
 : waitFinished_Finished \handler
 
@@ -106,16 +106,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : waitFinished_Start \handler
   
   [EvMgr].curEventNm@ "waitFinished: %v" .printf
     
-  0 to Counter0[] // tracks the number of ZK_M_FINISHED expected
-  0 to Counter1[] // tracks the number of ZK_M_FINISHED processed so far
+  0 to Counter0[] // tracks the number of EV_M_FINISHED expected
+  0 to Counter1[] // tracks the number of EV_M_FINISHED processed so far
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 
@@ -131,10 +131,10 @@
 
   op__topology
 
-  find: waitFinished_Count     ZK_I_COUNT     [op].handler!
-  find: waitFinished_End       ZK_M_END       [op].handler!
-  find: waitFinished_Finished  ZK_M_FINISHED  [op].handler!
-  find: waitFinished_Start     ZK_M_START     [op].handler!
+  find: waitFinished_Count     EV_I_COUNT     [op].handler!
+  find: waitFinished_End       EV_M_END       [op].handler!
+  find: waitFinished_Finished  EV_M_FINISHED  [op].handler!
+  find: waitFinished_Start     EV_M_START     [op].handler!
 
   op__loop
 

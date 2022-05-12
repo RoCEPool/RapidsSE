@@ -52,7 +52,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : metricsCollect_Start
 
@@ -65,11 +65,11 @@
   //nullptr LogicUnit[].intStack!
 
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : metricsCollect_DataPulse
   
@@ -101,11 +101,11 @@
     
   again
 
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_END ...                                                   */
+/* handler for EV_M_END ...                                                   */
 /*----------------------------------------------------------------------------*/
 : metricsCollect_End
 
@@ -123,9 +123,9 @@
 
   op__topology
 
-  find: metricsCollect_Start       ZK_M_START     [op].handler!
-  find: metricsCollect_DataPulse   ZK_M_DATAPULSE [op].handler!
-  find: metricsCollect_End         ZK_M_END       [op].handler!
+  find: metricsCollect_Start       EV_M_START     [op].handler!
+  find: metricsCollect_DataPulse   EV_M_DATAPULSE [op].handler!
+  find: metricsCollect_End         EV_M_END       [op].handler!
 
   op__loop
 

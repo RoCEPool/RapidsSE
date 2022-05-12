@@ -7,11 +7,14 @@ print "Non-Correlated sub queries";
 _lineitem
 /time load lineitem "<tpch_dir>/lineitem.<suffix>";
 
+select * from dummy;
 
-// SELECT L_ORDERKEY from lineitem;
+trackMemory;
 
-verbose enable;
-
+//----------------------------------------------------
+// subquery pipeline for creating subquery temptable
+// and populating it
+//----------------------------------------------------
 pipeline __subquery0003
   begin
     stage stageStart on origin :
@@ -21,17 +24,16 @@ pipeline __subquery0003
 
     stage stageMarker0889 on all partitions :
       scan rapidsse public lineitem
-      //| project " type INTEGER as l_orderkey $1 "
-      //| combined 0
+      | project " type INTEGER as l_orderkey $1 "
+      | combined 0
       | next
 
     stage stageCreateTable on all nodes :
       createTableNC SQTBL
       | next
 
-   stage stageToCrw on origin :
-      dupCrw
-      | next broadcast
+   stage stageBroadCast on origin :
+      next broadcast
 
    stage stageInsertTable on all nodes :
      insert SQTBL
@@ -43,9 +45,45 @@ pipeline __subquery0003
       | first
   end ;
 
+//----------------------------------------------------
+// select from the subquery temp table
+//----------------------------------------------------
+select * from SQTBL;
+
+//----------------------------------------------------
+// subquery pipeline for deleting the subquery temptable
+//----------------------------------------------------
+
+pipeline __subQueryDropTable
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | next
+
+    stage stageB on all partitions :
+        truncateTable SQTBL
+      | next
+
+    stage stageC on all nodes :
+        dropTable SQTBL
+      | next
+
+    stage stageD on origin :
+        output
+      | sink
+      | first
+
+  end ;
+
+
+MemoryLeaks;
+
 /*
+
 EXPLAIN with_names STAGE transliterate
- SELECT l_orderkey FROM ( SELECT L_ORDERKEY from lineitem);
+ SELECT l_orderkey FROM ( SELECT * from lineitem);
 
 pipeline unamed
 begin
@@ -82,7 +120,10 @@ begin
     output
     | sink
     | stageStart
-end ;
+  end ;
+
+
+
 */
 
 /*

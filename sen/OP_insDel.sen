@@ -5,7 +5,7 @@
 " OP_insDel.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                             */
+/* handler for EV_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : insDel_CrwBuffer \handler
 
@@ -21,7 +21,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                             */
+/* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : insDel_RowBuffer \handler
 
@@ -39,7 +39,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : insDel_StartMarker \handler
 
@@ -54,7 +54,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                             */
+/* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : insDel_StreamDef \handler
 
@@ -74,10 +74,10 @@
 
   op__topology
 
-  find: insDel_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!
-  find: insDel_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
-  find: insDel_StartMarker ZK_M_START [op].handler!
-  find: insDel_StreamDef   ZK_D_STREAMDEF   [op].handler!
+  find: insDel_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
+  find: insDel_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: insDel_StartMarker EV_M_START [op].handler!
+  find: insDel_StreamDef   EV_D_STREAMDEF   [op].handler!
 
   op__loop
 

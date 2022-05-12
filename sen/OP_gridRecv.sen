@@ -5,7 +5,7 @@
 " OP_gridRecv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_PARCEL ...                                                           */
+/* on EV_D_PARCEL ...                                                           */
 /*----------------------------------------------------------------------------*/
 : gridRecv_Parcel \handler
   " gridRecv_Parcel" .
@@ -43,8 +43,8 @@
 
   op__topology
 
-  // Setup ZK_D_PARCEL handler here
-  find: gridRecv_Parcel ZK_D_PARCEL [op].handler!
+  // Setup EV_D_PARCEL handler here
+  find: gridRecv_Parcel EV_D_PARCEL [op].handler!
 
   op__loop
 

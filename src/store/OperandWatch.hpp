@@ -19,7 +19,7 @@ namespace STORE
       i8 m_iFirst;
       i8 m_iLast;
     }
-    m_xaOperand[ZK_ENUMS];
+    m_xaOperand[EV_ENUMS];
   
     // must be last
     Footer m_xFooter;

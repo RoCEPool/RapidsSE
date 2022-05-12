@@ -15,9 +15,9 @@ namespace STORE
   
     EventHandlers* m_pEventHandlers;
 
-    eZK m_eCurEvent;
+    eEV m_eCurEvent;
   
-    i8  m_naEventCount[ZK_ENUMS];  // counts of events (operands piped-in)
+    i8  m_naEventCount[EV_ENUMS];  // counts of events (operands piped-in)
 
     OperandWatch* m_pOperandWatch;
 

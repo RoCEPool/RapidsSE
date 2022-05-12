@@ -2032,6 +2032,7 @@ void vDdlLockAssertNone(void);
   void vTableTablePtnFetch(void);
   void vTableTablePtnGet(void);
   void vTableTablePtnZero(void);
+  void vTableUniqueName(void);
   void vTableVerify(void);
   void vTableVisualize(void);
 

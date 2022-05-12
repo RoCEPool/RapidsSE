@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : rowCount_DataMarker \handler
 
-  //"Operand:- ZK_M_DATAPULSE" .verbose
+  //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // find the __count table
@@ -31,11 +31,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START...                                                           */
+/* on EV_M_START...                                                           */
 /*----------------------------------------------------------------------------*/
 : rowCount_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
   PipeIn[].pipeOut
 
   <tableNm> op__table if
@@ -54,8 +54,8 @@
 
   op__topology
 
-  find: rowCount_DataMarker ZK_M_DATAPULSE [op].handler!
-  find: rowCount_StartMarker ZK_M_START [op].handler!
+  find: rowCount_DataMarker EV_M_DATAPULSE [op].handler!
+  find: rowCount_StartMarker EV_M_START [op].handler!
 
   op__loop
 

@@ -298,14 +298,14 @@ void Queue::vPostMortem(void)
   vContentDump(Stz::szTab(1));
   
   while (Object* pObj = pPop() ) {
-    i8 iOperandKind = ZK_NONE;
+    i8 iOperandKind = EV_NONE;
     if (pObj) {
-      iOperandKind = AM::iOperandZkKind((Operand *) pObj);
+      iOperandKind = AM::iOperandEvKind((Operand *) pObj);
     }
     vTrace("  object %p class %s Operand %s\n"_Stz
            ,pObj
            ,pObj ? pObj->szClassNm() : "none"_Stz
-           ,aZK[(eZK)iOperandKind]);
+           ,aEV[(eEV)iOperandKind]);
   }
 
   vTrace("\n"_Stz);

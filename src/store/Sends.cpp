@@ -86,7 +86,7 @@ bool Sends::bCancellingDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
   if (m_iCancellingMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp received ZK_M_CANCELLING %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp received EV_M_CANCELLING %lld; expected %lld\n"_Stz,
          m_iCancellingMarkers, m_iSends);
   
   if (m_iCancellingMarkers == m_iSends) {
@@ -104,7 +104,7 @@ bool Sends::bCleaningDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
   if (m_iCleaningMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp received ZK_M_CLEANING %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp received EV_M_CLEANING %lld; expected %lld\n"_Stz,
            m_iCleaningMarkers, m_iSends);
 
   if (m_iCleaningMarkers == m_iSends) {
@@ -139,7 +139,7 @@ bool Sends::bDestroyDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   if (m_iDestroyMarkers > m_iSends)
-  vTrace("Warning: ConsumeOp received ZK_M_DESTROY %lld; expected %lld\n"_Stz,
+  vTrace("Warning: ConsumeOp received EV_M_DESTROY %lld; expected %lld\n"_Stz,
          m_iDestroyMarkers, m_iSends);
   
   if (m_iDestroyMarkers == m_iSends) {
@@ -157,7 +157,7 @@ bool Sends::bEndDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
   if (m_iEndMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp ZK_M_END received %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp EV_M_END received %lld; expected %lld\n"_Stz,
            m_iEndMarkers, m_iSends);
 
   if (m_iEndMarkers == m_iSends) {
@@ -175,7 +175,7 @@ bool Sends::bEndingDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
   if (m_iEndingMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp received ZK_M_ENDING %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp received EV_M_ENDING %lld; expected %lld\n"_Stz,
            m_iEndingMarkers, m_iSends);
 
   if (m_iEndingMarkers == m_iSends) {
@@ -193,7 +193,7 @@ bool Sends::bEosDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   if (m_iEosMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp received ZK_M_EOS %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp received EV_M_EOS %lld; expected %lld\n"_Stz,
            m_iEosMarkers, m_iSends);
   
   if (m_iEosMarkers == m_iSends) {
@@ -212,7 +212,7 @@ bool Sends::bErroringDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
   if (m_iErroringMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp received ZK_M_ERRORING %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp received EV_M_ERRORING %lld; expected %lld\n"_Stz,
            m_iErroringMarkers, m_iSends);
 
   if (m_iErroringMarkers == m_iSends) {
@@ -230,7 +230,7 @@ bool Sends::bExitingDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   if (m_iExitingMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp ZK_M_EXITING ZK_M_EXIT %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp EV_M_EXITING EV_M_EXIT %lld; expected %lld\n"_Stz,
            m_iExitingMarkers, m_iSends);
   
   if (m_iExitingMarkers == m_iSends) {
@@ -248,7 +248,7 @@ bool Sends::bLeavingDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
   if (m_iLeavingMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp received ZK_M_LEAVING %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp received EV_M_LEAVING %lld; expected %lld\n"_Stz,
            m_iLeavingMarkers, m_iSends);
 
   if (m_iLeavingMarkers == m_iSends) {
@@ -266,7 +266,7 @@ bool Sends::bStartDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   if (m_iStartMarkers > m_iSends)
-    vTrace("Warning: ConsumeOp ZK_M_START received %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp EV_M_START received %lld; expected %lld\n"_Stz,
            m_iStartMarkers, m_iSends);
   
   if (m_iStartMarkers == 0) {
@@ -284,7 +284,7 @@ bool Sends::bStreamDefDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
   
   if (m_iStreamDefs > m_iSends)
-    vTrace("Warning: ConsumeOp ZK_D_STREAMDEF received %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp EV_D_STREAMDEF received %lld; expected %lld\n"_Stz,
            m_iStreamDefs, m_iSends);
   
   if (m_iStreamDefs == 0) {
@@ -302,7 +302,7 @@ bool Sends::bStreamDefRhtDone(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
   if (m_iStreamDefRhts > m_iSends)
-    vTrace("Warning: ConsumeOp ZK_D_STREAMDEFRHT received %lld; expected %lld\n"_Stz,
+    vTrace("Warning: ConsumeOp EV_D_STREAMDEFRHT received %lld; expected %lld\n"_Stz,
            m_iStreamDefRhts, m_iSends);
 
   if (m_iStreamDefRhts == 0) {

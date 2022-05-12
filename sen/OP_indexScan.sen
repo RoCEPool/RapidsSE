@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                   END */
+/* on EV_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
 : indexScan_Cleaning \handler
 
-  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+  0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   // Need to hold on to the streamDef's till the combined op
   // has created the stencil
@@ -27,17 +27,17 @@
     StreamDefOut[].delete
   then
 
-  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+  EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
+/* on EV_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : indexScan_StartMarker \handler
 
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
@@ -71,8 +71,8 @@
   op__topology
 
   // handle combined operator
-  find: indexScan_Cleaning    ZK_M_CLEANING  [op].handler!
-  find: indexScan_StartMarker ZK_M_START     [op].handler!
+  find: indexScan_Cleaning    EV_M_CLEANING  [op].handler!
+  find: indexScan_StartMarker EV_M_START     [op].handler!
 
   op__loop
 

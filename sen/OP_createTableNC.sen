@@ -37,19 +37,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : createTableNC_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
-  //"Operand Insert:- ZK_M_START" .
+  //"Operand:- EV_M_START" .verbose
+  //"Operand Insert:- EV_M_START" .
   PipeIn[].delete
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                             */
+/* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : createTableNC_StreamDef
 
@@ -111,8 +111,8 @@
 
   op__topology
 
-  find: createTableNC_StartMarker ZK_M_START [op].handler!
-  find: createTableNC_StreamDef   ZK_D_STREAMDEF [op].handler!
+  find: createTableNC_StartMarker EV_M_START [op].handler!
+  find: createTableNC_StreamDef   EV_D_STREAMDEF [op].handler!
 
   op__loop
 
@@ -132,6 +132,7 @@ cmdSyntax: createTableNC :: createTableNC <tableNm> ;
   tags{
     <cmdDesc> = "--desc for op--"
     <opEntry> = "createTableNC_op"
+    <internal> = 1
   }
 ;
     

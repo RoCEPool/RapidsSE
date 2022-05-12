@@ -5,7 +5,7 @@
 " OP_wrCsvFile.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                              */
+/* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : wrCsvFile_Cleaning \handler
 
@@ -14,11 +14,11 @@
     File0[].get file.delete
   then
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                             */
+/* handler for EV_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : wrCsvFile_CrwBuffer \handler
 
@@ -30,7 +30,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CSVBUFFER ...                                             */
+/* handler for EV_D_CSVBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : wrCsvFile_CsvBuffer \handler
 
@@ -42,7 +42,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                             */
+/* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : wrCsvFile_RowBuffer \handler
 
@@ -54,7 +54,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : wrCsvFile_StartMarker \handler
 
@@ -75,11 +75,11 @@
 
   op__topology
 
-  find: wrCsvFile_Cleaning    ZK_M_CLEANING    [op].handler!
-  find: wrCsvFile_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!
-  find: wrCsvFile_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
-  find: wrCsvFile_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
-  find: wrCsvFile_StartMarker ZK_M_START       [op].handler!
+  find: wrCsvFile_Cleaning    EV_M_CLEANING    [op].handler!
+  find: wrCsvFile_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
+  find: wrCsvFile_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
+  find: wrCsvFile_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: wrCsvFile_StartMarker EV_M_START       [op].handler!
 
   op__loop
 

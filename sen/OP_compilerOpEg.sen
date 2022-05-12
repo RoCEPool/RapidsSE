@@ -5,43 +5,43 @@
 " OP_compilerOpEg.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                              */
+/* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_Cleaning \handler
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_DataMarker \handler
  
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                                   */
+/* handler for EV_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_EosMarker \handler
  
-  ZK_M_EOS_handler
+  EV_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_PLANOPERAND ...                                           */
+/* handler for EV_D_PLANOPERAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_PlanNode \handler
  
-  ZK_M_EOS_handler
+  EV_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : compilerOpEg_StartMarker \handler
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -56,11 +56,11 @@
 
   op__topology
 
-  find: compilerOpEg_Cleaning      ZK_M_CLEANING     [op].handler!
-  find: compilerOpEg_DataMarker    ZK_M_DATAPULSE    [op].handler!
-  find: compilerOpEg_EosMarker     ZK_M_EOS          [op].handler!
-  find: compilerOpEg_PlanNode      ZK_D_PLANOPERAND  [op].handler!
-  find: compilerOpEg_StartMarker   ZK_M_START        [op].handler!
+  find: compilerOpEg_Cleaning      EV_M_CLEANING     [op].handler!
+  find: compilerOpEg_DataMarker    EV_M_DATAPULSE    [op].handler!
+  find: compilerOpEg_EosMarker     EV_M_EOS          [op].handler!
+  find: compilerOpEg_PlanNode      EV_D_PLANOPERAND  [op].handler!
+  find: compilerOpEg_StartMarker   EV_M_START        [op].handler!
 
   op__loop
 

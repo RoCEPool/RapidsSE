@@ -129,13 +129,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                              */
+/* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : delete_Cleaning \handler
 
-  //"ZK_M_CLEANING_handler" .verbose
+  //"EV_M_CLEANING_handler" .verbose
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -202,13 +202,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : delete_DataMarker \handler
 
   0 locals| iPhrases |
 
-  //"Operand:- ZK_M_DATAPULSE" .verbose
+  //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // new a stream def
@@ -238,11 +238,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : delete_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
 
   0 locals| iPhrases |
 
@@ -274,10 +274,10 @@
 
   op__topology
 
-  find: delete_Cleaning      ZK_M_CLEANING      [op].handler!
-  //find: delete_CrwBuffer   ZK_D_CRWBUFFER     [op].handler!
-  find: delete_DataMarker    ZK_M_DATAPULSE     [op].handler!
-  find: delete_StartMarker   ZK_M_START         [op].handler!
+  find: delete_Cleaning      EV_M_CLEANING      [op].handler!
+  //find: delete_CrwBuffer   EV_D_CRWBUFFER     [op].handler!
+  find: delete_DataMarker    EV_M_DATAPULSE     [op].handler!
+  find: delete_StartMarker   EV_M_START         [op].handler!
 
   op__loop
 

@@ -5,13 +5,13 @@
 " OP_bktGet0.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : bktGet0_DataPulse  \handler
 
   //"    bktGet0_DataPulse" .
 
-  // pipe out ZK_M_START
+  // pipe out EV_M_START
   PipeIn[].pipeOut
 
   // create an instance of class BktGet : public Operand
@@ -37,7 +37,7 @@
   //"bktGet0_req" .
   op__topology
 
-  find: bktGet0_DataPulse   ZK_M_DATAPULSE   [op].handler!
+  find: bktGet0_DataPulse   EV_M_DATAPULSE   [op].handler!
 
   op__loop
 

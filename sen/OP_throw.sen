@@ -5,7 +5,7 @@
 " OP_Throw.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CRWBUFFER ...                                                      */
+/* on EV_D_CRWBUFFER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : throw_throw \handler
 
@@ -29,7 +29,7 @@
 
   op__topology
 
-  find: throw_throw  ZK_D_CRWBUFFER  [op].handler!
+  find: throw_throw  EV_D_CRWBUFFER  [op].handler!
 
   op__loop
 

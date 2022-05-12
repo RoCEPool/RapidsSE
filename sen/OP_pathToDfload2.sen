@@ -5,7 +5,7 @@
 " OP_pathToDfload2.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_PATH ... an infoset with __path rows                      */
+/* handler for EV_I_PATH ... an infoset with __path rows                      */
 /*----------------------------------------------------------------------------*/
 : pathToDfload2_Path \handler
  
@@ -52,7 +52,7 @@
 
   op__topology
 
-  find: pathToDfload2_Path  ZK_I_PATH  [op].handler!
+  find: pathToDfload2_Path  EV_I_PATH  [op].handler!
 
   op__loop
 

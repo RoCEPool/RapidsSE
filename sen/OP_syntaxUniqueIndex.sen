@@ -59,7 +59,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for EV_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : syntaxUniqueIndex_DataMarker
 
@@ -119,7 +119,7 @@
 
   op__topology
 
-  find: syntaxUniqueIndex_DataMarker ZK_M_DATAPULSE [op].handler!
+  find: syntaxUniqueIndex_DataMarker EV_M_DATAPULSE [op].handler!
 
   op__loop
 

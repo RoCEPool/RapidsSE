@@ -5,7 +5,7 @@
 " OP_dropIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : dropIndex_StartMarker
 
@@ -23,7 +23,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : dropIndex_DestroyMarker
 
@@ -50,8 +50,8 @@
 
   op__topology
 
-  find: dropIndex_StartMarker   ZK_M_START [op].handler!
-  find: dropIndex_DestroyMarker ZK_M_DESTROY [op].handler!
+  find: dropIndex_StartMarker   EV_M_START [op].handler!
+  find: dropIndex_DestroyMarker EV_M_DESTROY [op].handler!
 
   op__loop
 

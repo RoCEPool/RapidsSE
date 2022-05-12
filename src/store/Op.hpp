@@ -6,7 +6,7 @@
 #include "eYX.h"
 #include "eYS.h"
 #include "eXK.h"
-#include "eZK.h"
+#include "eEV.h"
 
 #include "EvMgr.hpp"
 #include "OperandWatch.hpp"
@@ -78,7 +78,7 @@ namespace STORE
   
     void vCreateTaskForOp(void);
     eYX  eCrossTopology(void);
-    eZK  eCurEvent(void);
+    eEV  eCurEvent(void);
     Word* pCurWord(void);
   
     Deck* pDeck(void);
@@ -87,8 +87,8 @@ namespace STORE
     void vDump(void);
   
     Word* pEntryWord(void);
-    i8    nEventCount(eZK eEvent);
-    void vEventCountInc(eZK eEvent);
+    i8    nEventCount(eEV eEvent);
+    void vEventCountInc(eEV eEvent);
     Word* pEventHandler(void);
     Word* pEventHandler(i8 i_OperandKind);
     void vEventHandler(i8 i_OperandKind, Word* pHandler);

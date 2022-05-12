@@ -101,11 +101,11 @@ begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker6340
+    | next
 
-  stage stageMarker6340 on all partitions :
-    scan rapidsse public customer
-    | stageMarker6343 broadcast
+  //stage stageMarker6340 on all partitions :
+ //   scan rapidsse public customer
+  //  | next
 
   stage stageMarker6343 on all partitions :
     //scan rapidsse public orders
@@ -120,7 +120,7 @@ begin
     indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 J1_O_ORDERKEY =="
     | combined 0
     | next
-
+/*
   stage stageMarker6349 on all partitions :
     filter " type BOOLEAN  C_MKTSEGMENT 'BUILDING'  ==
                            //C_CUSTKEY J1_O_CUSTKEY ==  and
@@ -169,7 +169,7 @@ begin
     | limit 10
     | combined 0
     | next
-
+*/
   stage stageLast on origin :
     output
     | sink
