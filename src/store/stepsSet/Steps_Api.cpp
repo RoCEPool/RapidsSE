@@ -221,6 +221,9 @@ void Step::vApiForkGeneric_noWait(void)
   s256 sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
     
+  s48K sCmdTagStr;
+  m_pDataStack->vPopStr(sCmdTagStr,__func__);
+
   JobId tParentId = m_pJob->tParentId();
   JobId tOriginId = m_pJob->tOriginId();
   JobId tDistId   = m_pJob->tDistId();
