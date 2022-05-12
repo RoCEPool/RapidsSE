@@ -7,12 +7,12 @@ print "Non-Correlated sub queries";
 _lineitem
 /time load lineitem "<tpch_dir>/lineitem.<suffix>";
 
+trackMemory;
 
-// SELECT L_ORDERKEY from lineitem;
-
-verbose enable;
-
-
+//----------------------------------------------------
+// subquery pipeline for creating subquery temptable
+// and populating it
+//----------------------------------------------------
 pipeline __subquery0003
   begin
     stage stageStart on origin :
@@ -42,6 +42,37 @@ pipeline __subquery0003
       | sink
       | first
   end ;
+
+
+//----------------------------------------------------
+// subquery pipeline for deleting the subquery temptable
+//----------------------------------------------------
+
+pipeline __subQueryDropTable
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | next
+
+    stage stageB on all partitions :
+        truncateTable SQTBL
+      | next
+
+    stage stageC on all nodes :
+        dropTable SQTBL
+      | next
+
+    stage stageD on origin :
+        output
+      | sink
+      | first
+
+  end ;
+
+
+MemoryLeaks;
 
 /*
 
