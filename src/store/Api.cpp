@@ -54,8 +54,9 @@ Job* Api::pAllocJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistI
 /*----------------------------------------------------------------------------*/
 /* fork a child job for given command                                         */
 /*----------------------------------------------------------------------------*/
-eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
+eEC Api::eForkJob(JobId& rtChildJobId,
                   TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                  JobId tParentId, JobId tOriginId, JobId tDistId,
                   Job*& rpChildJob_tbr)
 {
   _static_
@@ -120,18 +121,6 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alloc job
   
-  JobId tParentId;
-  if (pParentJob)
-    tParentId = pParentJob->tJobId();
-  
-  JobId tOriginId;
-  if (pParentJob)
-    tOriginId = pParentJob->tOriginId();
-  
-  JobId tDistId;
-  if (pParentJob)
-    tDistId = pParentJob->tDistId();
-
   rpChildJob_tbr = Api::pAllocJob(szJobNm,tParentId,tOriginId,tDistId);
   rtChildJobId = rpChildJob_tbr->tJobId();
 
@@ -258,14 +247,16 @@ eEC Api::eForkJob(JobId& rtChildJobId, Job* pParentJob,
 /*----------------------------------------------------------------------------*/
 /* new a generic job        THIS IS TEMP REFACTOR                             */
 /*----------------------------------------------------------------------------*/
-Job* Api::pNewGenericJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
+eEC Api::eNewGenericJob(Stz* szJobNm,
+                        JobId tParentId, JobId tOriginId, JobId tDistId,
+                        Job*& rpChildJob_tbr)
 {
   _static_
   
-  Job* pJobGeneric = new Job(szJobNm,tParentId,tOriginId,tDistId);
+  rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
   
-  pJobGeneric->vParticipantNodeId(AM::pGrid()->iThisNodeId());
-  pJobGeneric->vJobKind(JK_GENERIC);
+  rpChildJob_tbr->vParticipantNodeId(AM::pGrid()->iThisNodeId());
+  rpChildJob_tbr->vJobKind(JK_GENERIC);
 
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szJobNm);
   TagSet*   pCmdTagSet = new TagSet;
@@ -273,23 +264,23 @@ Job* Api::pNewGenericJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId t
   if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {
     delete pCmdTknVec;
     delete pCmdTagSet;
-    return nullptr;
+    return EC_INVALID_COMMAND;
   }
 
   Stz* szJobNm_tag = pCmdTagSet->szValue(C_TAG_JOBNM);
   RASSERT(szJobNm_tag && szJobNm_tag->bSame(szJobNm));
 
-  TagSet* pJobTagSet = pJobGeneric->pJobTags();
+  TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
   
   
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
-  pJobGeneric->vEntryPoint(szEntry);
+  rpChildJob_tbr->vEntryPoint(szEntry);
 
 
   delete pCmdTknVec;
   delete pCmdTagSet;
-  return pJobGeneric;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

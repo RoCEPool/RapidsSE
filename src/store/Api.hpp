@@ -16,11 +16,14 @@ namespace STORE
   
   static Job* pAllocJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId);
 
-  static eEC  eForkJob(JobId& rtChildJobId, Job* pParentJob,
+  static eEC  eForkJob(JobId& rtChildJobId,
                        TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                       JobId tParentId, JobId tOriginId, JobId tDistId,
                        Job*& rpChildJob_tbr);
 
-  static Job* pNewGenericJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId);
+  static eEC eNewGenericJob(Stz* szJobNm,
+                            JobId tParentId, JobId tOriginId, JobId tDistId,
+                            Job*& rpChildJob_tbr);
 
   static void vReapableJob(Job*& rpJob);
 

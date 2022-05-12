@@ -147,8 +147,19 @@ void SeDeputy::vDeputyLoop(void)
 
     JobId tChildJobId;
     
-    m_eError = Api::eForkJob(tChildJobId,m_pRootJob,
+  JobId tParentId;
+  tParentId = m_pRootJob->tJobId();
+
+  JobId tOriginId;
+  tOriginId = m_pRootJob->tOriginId();
+
+  JobId tDistId;
+  tDistId = m_pRootJob->tDistId();
+
+    
+    m_eError = Api::eForkJob(tChildJobId,
                              pInpTknVec,pInpTagSet,
+                             tParentId,tOriginId,tDistId,
                              m_pJob // TO BE REMOVED
                              );
     
