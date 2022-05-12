@@ -248,13 +248,16 @@ eEC Api::eForkJob(JobId& rtChildJobId,
 /* new a generic job        THIS IS TEMP REFACTOR                             */
 /*----------------------------------------------------------------------------*/
 eEC Api::eNewGenericJob(Stz* szJobNm,
+                        JobId& rtChildJobId,
+                        TokenVec* , TagSet* ,
                         JobId tParentId, JobId tOriginId, JobId tDistId,
                         Job*& rpChildJob_tbr)
 {
   _static_
   
   rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
-  
+  rtChildJobId = rpChildJob_tbr->tJobId();
+
   rpChildJob_tbr->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   rpChildJob_tbr->vJobKind(JK_GENERIC);
 

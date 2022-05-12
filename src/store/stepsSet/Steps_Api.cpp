@@ -239,7 +239,10 @@ void Step::vApiForkGeneric_noWait(void)
   tDistId = m_pJob->tDistId();
   
   Job* pJobGeneric = nullptr;
+  JobId tChildJobId;
   eEC eError = Api::eNewGenericJob(sEntryNm,
+                                   tChildJobId,
+                                   nullptr,nullptr,
                                    tParentId,tOriginId,tDistId,
                                    pJobGeneric);
   RASSERT(EC_NONE == eError);
@@ -276,7 +279,10 @@ void Step::vApiNewGenericJob(void)
   tOriginId = m_pJob->tDistId();
   
   Job* pJobGeneric = nullptr;
+  JobId tChildJobId;
   eEC eError = Api::eNewGenericJob(sEntryNm,
+                                   tChildJobId,
+                                   nullptr,nullptr,
                                    tParentId,tOriginId,tDistId,
                                    pJobGeneric);
   RASSERT(EC_NONE == eError);
