@@ -14,8 +14,9 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // external API functions
   
-  static Job* pAllocJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId);
 
+  static void vDeleteRootJob(Job*& rpJob);
+  
   static eEC  eForkJob(JobId& rtChildJobId,
                        TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                        JobId tParentId, JobId tOriginId, JobId tDistId,
@@ -26,6 +27,9 @@ namespace STORE
                             JobId tParentId, JobId tOriginId, JobId tDistId,
                             Job*& rpChildJob_tbr);
 
+  static Job* pNewRootJob(Stz* szJobNm,
+                          JobId tParentId, JobId tOriginId, JobId tDistId);
+  
   static void vReapableJob(Job*& rpJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

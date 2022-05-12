@@ -36,20 +36,16 @@ extern pthread_key_t giTLS_StepKey;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* alloc a new job                                                            */
+/* delete root job                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Api::pAllocJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
+void Api::vDeleteRootJob(Job*& rpRootJob)
 {
   _static_
-  
-  Job* pJob = new Job(szJobNm,tParentId,tOriginId,tDistId);
+        
+  delete rpRootJob;
 
-  return pJob;
+  rpRootJob = nullptr;
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* fork a child job for given command                                         */
@@ -121,7 +117,7 @@ eEC Api::eForkJob(JobId& rtChildJobId,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // alloc job
   
-  rpChildJob_tbr = Api::pAllocJob(szJobNm,tParentId,tOriginId,tDistId);
+  rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
   rtChildJobId = rpChildJob_tbr->tJobId();
 
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
@@ -289,6 +285,18 @@ void Api::vReapableJob(Job*& rpJob)
   rpJob->vReapableJob();
 
   rpJob = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new a dummy/root job                                                       */
+/*----------------------------------------------------------------------------*/
+Job* Api::pNewRootJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
+{
+  _static_
+  
+  Job* pRootJob = new Job(szJobNm,tParentId,tOriginId,tDistId);
+
+  return pRootJob;
 }
 
 
