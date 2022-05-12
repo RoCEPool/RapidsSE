@@ -148,47 +148,13 @@ eEC Api::eForkJob(JobId& rtChildJobId,
   if (EC_NONE != eError)
     return eError;
 
-  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
-  RASSERT(szJobNm);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // alloc job
-  
-
-
-//  TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
-//  pJobTagSet->vCopy(pCmdTagSet);
-//
-//  sSTMT sCmd;
-//  pCmdTknVec->vVecToString(sCmd,0,true);
-//  rpChildJob_tbr->vCmd(sCmd);
-//
-//  Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
-//  rpChildJob_tbr->vEntryPoint(szEntry);
-//
-//  Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
-//  rpChildJob_tbr->vFolderPath(szFolderPath);
-
-  
-  
-  
-  TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
-
-  JobId tLastJobId;
-  tLastJobId = pJobTagSet->iValue(C_TAG_LASTJOBID);
-  rpChildJob_tbr->vLastJobId(tLastJobId);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // fork
-  
+    
   rpChildJob_tbr->vMutexCreate();
   rpChildJob_tbr->vOutputCreate();
   rpChildJob_tbr->vOutputBeginProc();
@@ -285,7 +251,7 @@ eEC Api::eNewGenericJob(JobId& rtChildJobId,
 {
   _static_
   
-
+  RASSERT(pCmdTagSet->bHasName(C_TAG_NOWAIT));
 
   eEC eError = eForkCommon(rtChildJobId,
                            pCmdTknVec, pCmdTagSet,
@@ -294,34 +260,11 @@ eEC Api::eNewGenericJob(JobId& rtChildJobId,
 
   if (EC_NONE != eError)
     return eError;
-
-  Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
-  RASSERT(szJobNm);
-
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-
-//  TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
-//  pJobTagSet->vCopy(pCmdTagSet);
-//
-//  sSTMT sCmd;
-//  pCmdTknVec->vVecToString(sCmd,0,true);
-//  rpChildJob_tbr->vCmd(sCmd);
-//
-//  Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
-//  rpChildJob_tbr->vEntryPoint(szEntry);
-//
-//  Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
-//  rpChildJob_tbr->vFolderPath(szFolderPath);
-
-  
-  
-  
-  
   
   
   rpChildJob_tbr->vTaskCreate();
