@@ -51,13 +51,13 @@ void Api::vDeleteRootJob(Job*& rpRootJob)
 /*----------------------------------------------------------------------------*/
 /* fork a child job for given command                                         */
 /*----------------------------------------------------------------------------*/
-eEC Api::eForkCommon(JobId& rtChildJobId,
-                     TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
-                     JobId tParentId, JobId tOriginId, JobId tDistId,
-                     Job*& rpChildJob_tbr)
+eEC Api::eForkJob(JobId& rtChildJobId,
+                  TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                  JobId tParentId, JobId tOriginId, JobId tDistId,
+                  Job*& rpChildJob_tbr)
 {
   _static_
-  
+    
   rtChildJobId = C_UNKNOWN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -125,29 +125,6 @@ eEC Api::eForkCommon(JobId& rtChildJobId,
   
   Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
   rpChildJob_tbr->vFolderPath(szFolderPath);
-
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* fork a child job for given command                                         */
-/*----------------------------------------------------------------------------*/
-eEC Api::eForkJob(JobId& rtChildJobId,
-                  TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
-                  JobId tParentId, JobId tOriginId, JobId tDistId,
-                  Job*& rpChildJob_tbr)
-{
-  _static_
-  
-
-  eEC eError = eForkCommon(rtChildJobId,
-                           pCmdTknVec, pCmdTagSet,
-                           tParentId, tOriginId, tDistId,
-                           rpChildJob_tbr);
-
-  if (EC_NONE != eError)
-    return eError;
-
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -239,38 +216,6 @@ eEC Api::eForkJob(JobId& rtChildJobId,
 
     //AM::pHeaps()->vSetTraceFree(false);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* new a generic job        THIS IS TEMP REFACTOR                             */
-/*----------------------------------------------------------------------------*/
-eEC Api::eNewGenericJob(JobId& rtChildJobId,
-                        TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
-                        JobId tParentId, JobId tOriginId, JobId tDistId,
-                        Job*& rpChildJob_tbr)
-{
-  _static_
-  
-  RASSERT(pCmdTagSet->bHasName(C_TAG_NOWAIT));
-
-  eEC eError = eForkCommon(rtChildJobId,
-                           pCmdTknVec, pCmdTagSet,
-                           tParentId, tOriginId, tDistId,
-                           rpChildJob_tbr);
-
-  if (EC_NONE != eError)
-    return eError;
-  
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  
-  rpChildJob_tbr->vTaskCreate();
-  Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
-
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

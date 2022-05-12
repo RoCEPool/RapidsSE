@@ -16,21 +16,11 @@ namespace STORE
   
 
   static void vDeleteRootJob(Job*& rpJob);
-  
-  static eEC  eForkCommon(JobId& rtChildJobId,
-                          TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
-                          JobId tParentId, JobId tOriginId, JobId tDistId,
-                          Job*& rpChildJob_tbr);
-  
+    
   static eEC  eForkJob(JobId& rtChildJobId,
                        TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                        JobId tParentId, JobId tOriginId, JobId tDistId,
                        Job*& rpChildJob_tbr);
-
-  static eEC eNewGenericJob(JobId& rtChildJobId,
-                            TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
-                            JobId tParentId, JobId tOriginId, JobId tDistId,
-                            Job*& rpChildJob_tbr);
 
   static Job* pNewRootJob(Stz* szJobNm,
                           JobId tParentId, JobId tOriginId, JobId tDistId);
