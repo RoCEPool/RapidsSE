@@ -262,17 +262,9 @@ eEC Api::eNewGenericJob(JobId& rtChildJobId,
   rpChildJob_tbr->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   rpChildJob_tbr->vJobKind(JK_GENERIC);
 
-  //TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(szJobNm);
-  //TagSet*   pCmdTagSet = new TagSet;
-
   if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {
-    delete pCmdTknVec;
-    delete pCmdTagSet;
     return EC_INVALID_COMMAND;
   }
-
-  //Stz* szJobNm_tag = pCmdTagSet->szValue(C_TAG_JOBNM);
-  //RASSERT(szJobNm_tag && szJobNm_tag->bSame(szJobNm));
 
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
@@ -282,8 +274,8 @@ eEC Api::eNewGenericJob(JobId& rtChildJobId,
   rpChildJob_tbr->vEntryPoint(szEntry);
 
 
-  //delete pCmdTknVec;
-  //delete pCmdTagSet;
+  rpChildJob_tbr->vSpawnReceivedJob();
+
   return EC_NONE;
 }
 

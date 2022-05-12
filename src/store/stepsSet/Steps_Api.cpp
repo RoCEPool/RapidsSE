@@ -221,13 +221,6 @@ void Step::vApiForkGeneric_noWait(void)
   s256 sEntryNm;
   m_pDataStack->vPopStr(sEntryNm,__func__);
     
-//  i8 iDistJobId = m_pDataStack->iPopInt(__func__);
-//  JobId tDistJobId;
-//  tDistJobId = iDistJobId;
-//  Job* pJobBegun = Api::pNewGenericJob(sEntryNm,tDistJobId);
-//
-//  m_pDataStack->vPushPtr(pJobBegun);
-
   JobId tParentId;
   tParentId = m_pJob->tParentId();
   
@@ -253,7 +246,6 @@ void Step::vApiForkGeneric_noWait(void)
   
   delete pCmdTknVec;
   delete pCmdTagSet;
-  pJobGeneric->vSpawnReceivedJob();
  
   EXIT();
 }
