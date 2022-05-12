@@ -34,6 +34,7 @@
 
 #include "Stage.hpp"
 #include "Stream.hpp"
+#include "Grid.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -42,6 +43,7 @@ void Step::vAddSteps_Table(void)
 {
   vAddStep("table::delete"_Stz,            &Step::vTableDelete);
   vAddStep("table::new"_Stz,               &Step::vTableNew);
+  vAddStep("table::uniqueName"_Stz,        &Step::vTableUniqueName);
   
   vAddStep("Table[]"_Stz,                  &Step::vTableGet);
   vAddStep("Table[].set"_Stz,              &Step::vTableSet);
@@ -716,6 +718,20 @@ void Step::vTableNew(void) {
 #endif
   m_pDataStack->vPushPtr(pTable);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table::uniqueName -- generate a table name (unique across the grid)        */
+/*----------------------------------------------------------------------------*/
+void Step::vTableUniqueName(void) {
+  ENTRY();
+
+  s32 sTableNm;
+  sTableNm.vCatSprint("__Grid%s_%lld"_Stz, AM::pGrid()->szGridNm(), TickingDevice::iGetTick());
+
+  m_pDataStack->vPushStr(sTableNm);
+
   EXIT();
 }
 
