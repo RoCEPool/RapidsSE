@@ -38,7 +38,6 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::forkChild_noWait"_Stz,    &Step::vApiForkChild_noWait);
   vAddStep("api::forkChild_wait"_Stz,      &Step::vApiForkChild_wait);
   vAddStep("api::forkGeneric_noWait"_Stz,  &Step::vApiForkGeneric_noWait);
-  vAddStep("api::newGenericJob"_Stz,       &Step::vApiNewGenericJob);
   vAddStep("api::reapJobs"_Stz,            &Step::vApiReapJobs);
   vAddStep("api::spawnJob_noWait"_Stz,     &Step::vApiSpawnJob);
 }
@@ -258,56 +257,6 @@ void Step::vApiForkGeneric_noWait(void)
  
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* api::newGenericJob -- new a pipeline coordination job                      */
-/*----------------------------------------------------------------------------*/
-void Step::vApiNewGenericJob(void)
-{
-  ENTRY();
-  
-  s256 sEntryNm;
-  m_pDataStack->vPopStr(sEntryNm,__func__);
-    
-//  if (sEntryNm.bSame("executed"_Stz))
-//    vTrace("vApiNewGenericJob: executed\n"_Stz);
-  
-//  i8 iDistJobId = m_pDataStack->iPopInt(__func__);
-//  JobId tDistJobId;
-//  tDistJobId = iDistJobId;
-//  Job* pJobBegun = Api::pNewGenericJob(sEntryNm,tDistJobId);
-
-  JobId tParentId;
-  tParentId = m_pJob->tParentId();
-  
-  JobId tDistId;
-  tDistId = m_pJob->tDistId();
-  
-  JobId tOriginId;
-  tOriginId = m_pJob->tDistId();
-  
-  Job* pJobGeneric = nullptr;
-  JobId tChildJobId;
-  
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sEntryNm);
-  TagSet*   pCmdTagSet = new TagSet;
-
-  pCmdTagSet->vReplace(C_TAG_JOBNM,sEntryNm);
-
-  eEC eError = Api::eNewGenericJob(tChildJobId,
-                                   pCmdTknVec,pCmdTagSet,
-                                   tParentId,tOriginId,tDistId,
-                                   pJobGeneric);
-  RASSERT(EC_NONE == eError);
- 
-  delete pCmdTknVec;
-  delete pCmdTagSet;
-  
-  m_pDataStack->vPushPtr(pJobGeneric);
-  
-  EXIT();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* api::reapJobs -- reap retired jobs                                         */
