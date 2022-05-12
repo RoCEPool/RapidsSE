@@ -218,25 +218,20 @@ void Step::vApiForkGeneric_noWait(void)
 {
   ENTRY();
   
-  s256 sEntryNm;
-  m_pDataStack->vPopStr(sEntryNm,__func__);
+  s256 sCmd;
+  m_pDataStack->vPopStr(sCmd,__func__);
     
-  JobId tParentId;
-  tParentId = m_pJob->tParentId();
-  
-  JobId tOriginId;
-  tOriginId = m_pJob->tOriginId();
-  
-  JobId tDistId;
-  tDistId = m_pJob->tDistId();
+  JobId tParentId = m_pJob->tParentId();
+  JobId tOriginId = m_pJob->tOriginId();
+  JobId tDistId   = m_pJob->tDistId();
   
   Job* pJobGeneric = nullptr;
   JobId tChildJobId;
   
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sEntryNm);
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
   TagSet*   pCmdTagSet = new TagSet;
 
-  pCmdTagSet->vReplace(C_TAG_JOBNM,sEntryNm);
+  pCmdTagSet->vReplace(C_TAG_JOBNM,sCmd);
   
   eEC eError = Api::eNewGenericJob(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,

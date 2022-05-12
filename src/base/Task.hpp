@@ -37,7 +37,9 @@ namespace BASE
     Gid_t<CN_TASK>  m_xTaskId;  // task id in grid
     s32 m_sTaskNm;  // name of this task
     eTS m_eState;   // task state (running, sleeping, ...)
-
+    eEP m_eEntryPoint;   // task entry point
+    b8  m_bDedicatedThread;
+  
     SMA<Job,CN_JOB> m_pJob; // which job this task is executing
     SMA<Op,CN_OP>   m_pOp;  // ... or which op this task is executing
 
@@ -49,7 +51,6 @@ namespace BASE
    
     eTR          m_eTransition;   // schedulre transition request
     eQK          m_eQueue;        // which queue the task is currently in
-    eEP          m_eEntryPoint;   // task entry point
     
     Decider      m_oAcksRmg;      // number of acks still waiting for
     Wakeup       m_oWakeup;       // wakeup time from sleeping
@@ -107,6 +108,7 @@ namespace BASE
 
     void vDumpOnException(void);
 
+    // - - - - - - - - - - - - - -  - - - - - -
   
     i8   iAcksOriginal(void);
     i8   iAcksRmg_assert_only_(void);
@@ -121,6 +123,8 @@ namespace BASE
     void vCycleTaskLock(Stz* szFunc);
     Word* pCurWord(void);
   
+    bool bDedicatedThread(void);
+    void vDedicatedThread(bool bDedicatedThread);
     void vDeleteInput(void);
     DicStack* pDicStack(void);
     void vDotPrint(Stz* szFormat, ...);

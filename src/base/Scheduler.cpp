@@ -588,7 +588,7 @@ void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
   
   pNewTask->vEntryPoint(EP_DEDICATED);
   pNewTask->vState(TS_DESISTED);
-    
+  pNewTask->vDedicatedThread(true);
   RASSERT(TS_DESISTED == pNewTask->eState());
   
   Thread* pThread = AM::THREAD::pNewThread();

@@ -112,7 +112,6 @@ void Task::vTask(void)
   
   m_iDebugMark   = 0;
   m_pProfile     = nullptr;
-
   m_pInvokingTask = nullptr;
   m_pThread      = nullptr;
   
@@ -120,7 +119,8 @@ void Task::vTask(void)
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
   m_eEntryPoint  = EP_NONE;
-
+  m_bDedicatedThread = false;
+  
   m_oAcksRmg.vCheckInit();
   // m_oWakeup
   
@@ -663,6 +663,26 @@ void Task::vCycleTaskLock(Stz* szFunc)
   
   vGrabTaskLock(szFunc);
   vDropTaskLock(szFunc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get dedicated thread                                                       */
+/*----------------------------------------------------------------------------*/
+bool Task::bDedicatedThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  return m_bDedicatedThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set dedicated thread                                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vDedicatedThread(bool bDedicatedThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_bDedicatedThread = bDedicatedThread;
 }
 
 /*----------------------------------------------------------------------------*/
