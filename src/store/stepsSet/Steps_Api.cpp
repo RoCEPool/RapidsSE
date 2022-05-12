@@ -277,8 +277,9 @@ void Step::vApiSpawnJob(void)
 //    RASSERT(TR_NONE == pTask->eTransition());
 //  }
   
-  pJob->vSpawnReceivedJob();
-  
+  pJob->vTaskCreate();
+  Scheduler::vTaskApi_Add(pJob->pTask());
+
   EXIT();
 }
 

@@ -50,6 +50,19 @@ void Api::vDeleteRootJob(Job*& rpRootJob)
 /*----------------------------------------------------------------------------*/
 /* fork a child job for given command                                         */
 /*----------------------------------------------------------------------------*/
+eEC Api::eForkCommon(JobId& rtChildJobId,
+                     TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                     JobId tParentId, JobId tOriginId, JobId tDistId,
+                     Job*& rpChildJob_tbr)
+{
+  _static_
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* fork a child job for given command                                         */
+/*----------------------------------------------------------------------------*/
 eEC Api::eForkJob(JobId& rtChildJobId,
                   TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                   JobId tParentId, JobId tOriginId, JobId tDistId,
@@ -57,6 +70,19 @@ eEC Api::eForkJob(JobId& rtChildJobId,
 {
   _static_
   
+  
+  eEC eError = eForkCommon(rtChildJobId,
+                           pCmdTknVec, pCmdTagSet,
+                           tParentId, tOriginId, tDistId,
+                           rpChildJob_tbr);
+
+  if (EC_NONE != eError)
+    return eError;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   rtChildJobId = C_UNKNOWN;
   
   //Job* pChildJob = nullptr;
@@ -169,13 +195,7 @@ eEC Api::eForkJob(JobId& rtChildJobId,
   }
 
   RASSERT(! rpChildJob_tbr->pTask());
-
-  rpChildJob_tbr->vMutexLock();
-  RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
-  
   rpChildJob_tbr->vTaskCreate();
-
-  rpChildJob_tbr->vMutexUnlock();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -269,8 +289,8 @@ eEC Api::eNewGenericJob(JobId& rtChildJobId,
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
   rpChildJob_tbr->vEntryPoint(szEntry);
 
-
-  rpChildJob_tbr->vSpawnReceivedJob();
+  rpChildJob_tbr->vTaskCreate();
+  Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
 
   return EC_NONE;
 }

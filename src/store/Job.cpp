@@ -1248,17 +1248,6 @@ void Job::vResponseTimerUpdate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn given job                                                            */
-/*----------------------------------------------------------------------------*/
-void Job::vSpawnReceivedJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  vTaskCreate();
-  Scheduler::vTaskApi_Add(pTask());
-}
-
-/*----------------------------------------------------------------------------*/
 /* append cascade to statement list                                           */
 /*----------------------------------------------------------------------------*/
 void Job::vStmtListAppend(Stz* szStmt)

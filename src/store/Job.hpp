@@ -221,7 +221,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vResponseTimerStart(void);
     void vResponseTimerUpdate(void);
 
-    void vSpawnReceivedJob(void);
     void vStmtListAppend(Stz* szCascade);
     void vStmtListCreate(void);
     void vStmtListDestroy(void);
