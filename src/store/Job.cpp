@@ -100,7 +100,6 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_pJobMetricsChain  = nullptr;
   
   m_pMutex     = nullptr;
-  m_bSystemCloser  = false;
 
   m_pStmtList = nullptr;
   
@@ -1280,7 +1279,15 @@ bool Job::bSystemCloser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_bSystemCloser;
+  TagSet* pJobTags = this->pJobTags();
+
+  if (! pJobTags->bHasName(C_TAG_SYSTEMCLOSER))
+    return false;
+  
+  if (! pJobTags->iValue(C_TAG_SYSTEMCLOSER))
+    return false;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1289,8 +1296,10 @@ bool Job::bSystemCloser(void)
 void Job::vSystemCloser(bool bSystemCloser)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_bSystemCloser = bSystemCloser;
+
+  TagSet* pJobTags = this->pJobTags();
+
+  pJobTags->vReplace(C_TAG_SYSTEMCLOSER,(i8)bSystemCloser);
 }
 
 /*----------------------------------------------------------------------------*/

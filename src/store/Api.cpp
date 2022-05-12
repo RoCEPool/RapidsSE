@@ -185,8 +185,6 @@ eEC Api::eForkJob(JobId& rtChildJobId,
   tLastJobId = pJobTagSet->iValue(C_TAG_LASTJOBID);
   rpChildJob_tbr->vLastJobId(tLastJobId);
 
-  bool m_bSystemCloser = pJobTagSet->iValue(C_TAG_SYSTEMCLOSER);
-  rpChildJob_tbr->vSystemCloser(m_bSystemCloser);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fork

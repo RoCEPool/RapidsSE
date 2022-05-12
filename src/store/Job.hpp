@@ -99,8 +99,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
  
     b8  m_bReapable;  // can job be reaped?
   
-    b8  m_bSystemCloser; // is this job the system closer?
-
     JobMetrics* m_pJobMetricsChain;                                // POST_RECV
 
 
