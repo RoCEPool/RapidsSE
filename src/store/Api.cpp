@@ -57,36 +57,8 @@ eEC Api::eForkCommon(JobId& rtChildJobId,
 {
   _static_
   
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* fork a child job for given command                                         */
-/*----------------------------------------------------------------------------*/
-eEC Api::eForkJob(JobId& rtChildJobId,
-                  TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
-                  JobId tParentId, JobId tOriginId, JobId tDistId,
-                  Job*& rpChildJob_tbr)
-{
-  _static_
-  
-  
-  eEC eError = eForkCommon(rtChildJobId,
-                           pCmdTknVec, pCmdTagSet,
-                           tParentId, tOriginId, tDistId,
-                           rpChildJob_tbr);
-
-  if (EC_NONE != eError)
-    return eError;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   rtChildJobId = C_UNKNOWN;
-  
-  //Job* pChildJob = nullptr;
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prepare job
 
@@ -106,8 +78,37 @@ eEC Api::eForkJob(JobId& rtChildJobId,
     return EC_INVALID_COMMAND;
   }
 
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* fork a child job for given command                                         */
+/*----------------------------------------------------------------------------*/
+eEC Api::eForkJob(JobId& rtChildJobId,
+                  TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                  JobId tParentId, JobId tOriginId, JobId tDistId,
+                  Job*& rpChildJob_tbr)
+{
+  _static_
+  
+
+  eEC eError = eForkCommon(rtChildJobId,
+                           pCmdTknVec, pCmdTagSet,
+                           tParentId, tOriginId, tDistId,
+                           rpChildJob_tbr);
+
+  if (EC_NONE != eError)
+    return eError;
+
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   RASSERT(szJobNm);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify minimum needed tags
@@ -270,17 +271,30 @@ eEC Api::eNewGenericJob(JobId& rtChildJobId,
 {
   _static_
   
+
+
+  eEC eError = eForkCommon(rtChildJobId,
+                           pCmdTknVec, pCmdTagSet,
+                           tParentId, tOriginId, tDistId,
+                           rpChildJob_tbr);
+
+  if (EC_NONE != eError)
+    return eError;
+
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  RASSERT(szJobNm);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
   rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
   rtChildJobId = rpChildJob_tbr->tJobId();
 
   rpChildJob_tbr->vParticipantNodeId(AM::pGrid()->iThisNodeId());
   rpChildJob_tbr->vJobKind(JK_GENERIC);
-
-  if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {
-    return EC_INVALID_COMMAND;
-  }
 
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
