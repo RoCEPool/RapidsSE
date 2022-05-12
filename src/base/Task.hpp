@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "eEP.h"
+
 #include "eQK.h"
 #include "eTR.h"
 #include "eTS.h"
@@ -37,7 +37,6 @@ namespace BASE
     Gid_t<CN_TASK>  m_xTaskId;  // task id in grid
     s32 m_sTaskNm;  // name of this task
     eTS m_eState;   // task state (running, sleeping, ...)
-    eEP m_eEntryPoint;   // task entry point
     b8  m_bDedicatedThread;
   
     SMA<Job,CN_JOB> m_pJob; // which job this task is executing
@@ -132,8 +131,6 @@ namespace BASE
     void vDropTaskLock(Stz* szFunc);
     void vDump(void);
   
-    void vEntryPoint(eEP eEntryPoint);
-    eEP  eEntryPoint(void);
     Word* pEventHandler(void);
     void vGrabTaskLock(Stz* szFunc);
   

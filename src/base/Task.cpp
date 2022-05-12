@@ -118,7 +118,6 @@ void Task::vTask(void)
   m_eState       = TS_NONE;
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
-  m_eEntryPoint  = EP_NONE;
   m_bDedicatedThread = false;
   
   m_oAcksRmg.vCheckInit();
@@ -781,26 +780,6 @@ void Task::vDump(void)
   vTrace("== End Task Dump ============================================\n"_Stz);
   
   AM::MASTERLOCK::vDropTraceMulti();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get entry point                                                            */
-/*----------------------------------------------------------------------------*/
-eEP Task::eEntryPoint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_eEntryPoint;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set entry point                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vEntryPoint(eEP eEntryPoint)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_eEntryPoint = eEntryPoint;
 }
 
 /*----------------------------------------------------------------------------*/

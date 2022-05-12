@@ -507,7 +507,6 @@ void Scheduler::vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
   RASSERT(QK_NONE == pTaskParticipant->eQueue());
   RASSERT(TR_NONE == pTaskParticipant->eTransition());
   
-  pTaskParticipant->vEntryPoint(EP_NEXTPHASE);
   pTaskParticipant->vState(TS_DESISTED);
 
   vScheduleTask(pTaskParticipant);
@@ -586,7 +585,6 @@ void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
   // called from Api::bSpawnJobDedicated()
   //
   
-  pNewTask->vEntryPoint(EP_DEDICATED);
   pNewTask->vState(TS_DESISTED);
   pNewTask->vDedicatedThread(true);
   RASSERT(TS_DESISTED == pNewTask->eState());
@@ -613,7 +611,6 @@ void Scheduler::vTaskApi_AddConnector(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(TR_NONE == pNewTask->eTransition());
   
-  pNewTask->vEntryPoint(EP_CONNECTOR);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);
@@ -633,7 +630,6 @@ void Scheduler::vTaskApi_AddOp(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(TR_NONE == pNewTask->eTransition());
   
-  pNewTask->vEntryPoint(EP_OP);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);
@@ -653,7 +649,6 @@ void Scheduler::vTaskApi_AddPrompt(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(TR_NONE == pNewTask->eTransition());
   
-  pNewTask->vEntryPoint(EP_PROMPT);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);
@@ -673,7 +668,6 @@ void Scheduler::vTaskApi_AddReceived(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(TR_NONE == pNewTask->eTransition());
   
-  pNewTask->vEntryPoint(EP_RECEIVED);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);
@@ -693,7 +687,6 @@ void Scheduler::vTaskApi_AddService(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(TR_NONE == pNewTask->eTransition());
   
-  pNewTask->vEntryPoint(EP_SERVICE);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);
@@ -713,7 +706,6 @@ void Scheduler::vTaskApi_AddSystem(Task* pNewTask)
   RASSERT(QK_NONE == pNewTask->eQueue());
   RASSERT(TR_NONE == pNewTask->eTransition());
   
-  pNewTask->vEntryPoint(EP_SYSTEM);
   pNewTask->vState(TS_DESISTED);
 
   vScheduleTask(pNewTask);
