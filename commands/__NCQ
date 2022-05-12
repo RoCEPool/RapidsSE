@@ -7,6 +7,8 @@ print "Non-Correlated sub queries";
 _lineitem
 /time load lineitem "<tpch_dir>/lineitem.<suffix>";
 
+select * from dummy;
+
 trackMemory;
 
 //----------------------------------------------------
@@ -43,6 +45,10 @@ pipeline __subquery0003
       | first
   end ;
 
+//----------------------------------------------------
+// select from the subquery temp table
+//----------------------------------------------------
+select * from SQTBL;
 
 //----------------------------------------------------
 // subquery pipeline for deleting the subquery temptable
@@ -75,59 +81,6 @@ pipeline __subQueryDropTable
 MemoryLeaks;
 
 /*
-
-pipeline __internalScan
-  begin
-    stage stageStart on origin :
-      start
-      | pulse once
-      | next
-
-    stage stageMarker0889 on all partitions :
-      scan SQTBL
-      | next
-
-    stage stageLast on origin :
-      output
-      | sink
-      | first
-  end ;
-
-pipeline __subquery0003
-  begin
-    stage stageStart on origin :
-      start
-      | pulse once
-      | next
-
-    stage stageMarker0889 on all partitions :
-      scan rapidsse public lineitem
-      | project " type INTEGER as l_orderkey $1 "
-      | combined 0
-      | next
-
-    stage stageCreateTable on all nodes :
-      createTableNC SQTBL
-      | next
-
-   stage stageToCrw on origin :
-      toCrw
-      | next broadcast
-
-   stage stageInsertTable on all nodes :
-     insert SQTBL
-     | next
-
-    stage stageLast on origin :
-      output
-      | sink
-      | first
-  end ;
-
-
-
-
-
 
 EXPLAIN with_names STAGE transliterate
  SELECT l_orderkey FROM ( SELECT * from lineitem);
