@@ -1684,20 +1684,13 @@ void Op::vSpawnTask(void)
   Job* pJob = this->pJobOfOp();
   pJob->vActiveOpsInc();
   
-  if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD)) {
-    
-    //m_oOpTags.vDumpSet(true);
-    
-    vCreateTaskForOp();
-    
-    Scheduler::vTaskApi_AddDedicated(pTask());
-  }
-  else {
-    
-    vCreateTaskForOp();
-    
-    Scheduler::vTaskApi_Add(pTask());
-  }
+  vCreateTaskForOp();
+  Task* pTask = this->pTask();
+  
+  if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD))
+    pTask->vDedicatedThread(true);
+        
+  Scheduler::vTaskApi_Add(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

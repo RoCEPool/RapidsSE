@@ -47,7 +47,6 @@ namespace BASE
   
   public:
     static void vTaskApi_Add(Task* pNewTask);
-    static void vTaskApi_AddDedicated(Task* pNewTask);
   
     static void vTaskApi_BeginExecutingDedicated(Thread* pThread);
 

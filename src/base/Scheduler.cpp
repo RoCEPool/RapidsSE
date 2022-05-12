@@ -589,31 +589,18 @@ void Scheduler::vTaskApi_Add(Task* pNewTask)
   RASSERT(TR_NONE == pNewTask->eTransition());
   
   pNewTask->vState(TS_DESISTED);
-
-  vScheduleTask(pNewTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new dedicated task into system (spawn a dedicated thread for it)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
-{
-  _static_
   
-  //
-  // called from Api::bSpawnJobDedicated()
-  //
-  
-  pNewTask->vState(TS_DESISTED);
-  pNewTask->vDedicatedThread(true);
-  RASSERT(TS_DESISTED == pNewTask->eState());
-  
-  Thread* pThread = AM::THREAD::pNewThread();
-  
-  pThread->vTask(pNewTask);
-  pThread->vDedicated(CN_JOB);
-  
-  pThread->vSpawnPsxThd_dedicated();
+  if (pNewTask->bDedicatedThread()) {
+    Thread* pThread = AM::THREAD::pNewThread();
+    
+    pThread->vTask(pNewTask);
+    pThread->vDedicated(CN_JOB);
+    
+    pThread->vSpawnPsxThd_dedicated();
+  }
+  else {
+    vScheduleTask(pNewTask);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
