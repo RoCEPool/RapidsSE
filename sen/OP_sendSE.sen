@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CANCELLING operand                                        */
+/* handler for EV_M_CANCELLING operand                                        */
 /*----------------------------------------------------------------------------*/
 : sendSE_CANCELLING \handler
 
@@ -53,7 +53,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING operand                                          */
+/* handler for EV_M_CLEANING operand                                          */
 /*----------------------------------------------------------------------------*/
 : sendSE_CLEANING \handler
 
@@ -62,7 +62,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EXITING operand                                           */
+/* handler for EV_M_EXITING operand                                           */
 /*----------------------------------------------------------------------------*/
 : sendSE_EXITING \handler
 
@@ -86,9 +86,9 @@
 
   find: PipeIn[].sendTo [op].handlerAll!
 
-  find: sendSE_CANCELLING  ZK_M_CANCELLING  [op].handler!
-  find: sendSE_CLEANING    ZK_M_CLEANING    [op].handler!
-  find: sendSE_EXITING     ZK_M_EXITING     [op].handler!
+  find: sendSE_CANCELLING  EV_M_CANCELLING  [op].handler!
+  find: sendSE_CLEANING    EV_M_CLEANING    [op].handler!
+  find: sendSE_EXITING     EV_M_EXITING     [op].handler!
 
   op__loop
 

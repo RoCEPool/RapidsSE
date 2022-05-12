@@ -769,7 +769,7 @@ namespace OBLIQUE
     static void vOperandsDec(void);
     static i8   nOperandsGet(void);
     static void vOperandsInc(void);
-    static i8   iOperandZkKind(Operand* pOperand);
+    static i8   iOperandEvKind(Operand* pOperand);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Job* pPipelineJob(void);

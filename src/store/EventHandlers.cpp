@@ -22,7 +22,7 @@ EventHandlers::EventHandlers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EVENTHANDLERS,_FOOTER_);
   
-  for (i8 i_Event =0 ; i_Event < ZK_ENUMS; i_Event++)
+  for (i8 i_Event =0 ; i_Event < EV_ENUMS; i_Event++)
     m_paEventHandler[i_Event] = nullptr;
   
   _checkInitialised_(CN_EVENTHANDLERS);
@@ -45,7 +45,7 @@ EventHandlers::~EventHandlers(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get a handler                                                              */
 /*----------------------------------------------------------------------------*/
-Word* EventHandlers::pGet(eZK eEvent)
+Word* EventHandlers::pGet(eEV eEvent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EVENTHANDLERS,_FOOTER_);
   
@@ -63,9 +63,9 @@ void EventHandlers::vInitialise(void)
   
   s32 sHandlerNm;
   
-  for (i8 i_Event = 1; i_Event < ZK_ENUMS; i_Event++) {
+  for (i8 i_Event = 1; i_Event < EV_ENUMS; i_Event++) {
     
-    sHandlerNm = aZK[i_Event];
+    sHandlerNm = aEV[i_Event];
     sHandlerNm.vConcat("_handler"_Stz);
         
     Word* pHandler = pDicRoot->pFindWord(sHandlerNm);
@@ -81,7 +81,7 @@ void EventHandlers::vInitialise(void)
 /*----------------------------------------------------------------------------*/
 /* set a handler                                                              */
 /*----------------------------------------------------------------------------*/
-void EventHandlers::vSet(eZK eEvent, Word* pWord)
+void EventHandlers::vSet(eEV eEvent, Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EVENTHANDLERS,_FOOTER_);
   

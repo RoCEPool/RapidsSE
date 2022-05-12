@@ -5,7 +5,7 @@
 " OP_forkCommand.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_COMMAND ...                                               */
+/* handler for EV_I_COMMAND ...                                               */
 /*----------------------------------------------------------------------------*/
 : forkCommand_Command \handler
 
@@ -51,7 +51,7 @@
 
   op__topology
 
-  find: forkCommand_Command  ZK_I_COMMAND   [op].handler!
+  find: forkCommand_Command  EV_I_COMMAND   [op].handler!
 
   op__loop
 

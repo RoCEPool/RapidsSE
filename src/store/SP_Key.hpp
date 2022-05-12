@@ -17,7 +17,7 @@ namespace STORE
     SP_Key(Key* pKey, IndexDef* pIndexDef);
    ~SP_Key(void) noexcept(false);
   
-    char* azKey(void);
+    char* aEVey(void);
 
     Stz* sz(void);
     Stz* sz(Key* pKey, IndexDef* pIndexDef);

@@ -5,13 +5,13 @@
 " OP_toDemon.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                      */
+/* on EV_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
 : OP_toDemon_DataMarker \handler
 
   "OP_toDemon_DataMarker" .
 
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 
   Marker[].newDataPulse Marker[]
     "__anyDemon" find word.object@
@@ -27,7 +27,7 @@
 
   op__topology
 
-  find: OP_toDemon_DataMarker ZK_M_DATAPULSE [op].handler!
+  find: OP_toDemon_DataMarker EV_M_DATAPULSE [op].handler!
 
   op__loop
 

@@ -5,7 +5,7 @@
 " OP_invoke.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : invoke_StartMarker \handler
 
@@ -15,7 +15,7 @@
   
   nullptr to Deck[]
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +27,7 @@
 
   op__topology
 
-  find: invoke_StartMarker  ZK_M_START  [op].handler!
+  find: invoke_StartMarker  EV_M_START  [op].handler!
 
   op__loop
 

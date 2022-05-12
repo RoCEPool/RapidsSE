@@ -5,7 +5,7 @@
 " OP_sigsegv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CRWBUFFER ...                                                      */
+/* on EV_D_CRWBUFFER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : sigsegv_sigsegv \handler
 
@@ -30,7 +30,7 @@
 
   op__topology
 
-  find: sigsegv_sigsegv  ZK_D_CRWBUFFER  [op].handler!
+  find: sigsegv_sigsegv  EV_D_CRWBUFFER  [op].handler!
 
   op__loop
 

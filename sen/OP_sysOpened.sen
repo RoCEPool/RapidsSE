@@ -5,7 +5,7 @@
 " OP_sysOpened.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                      */
+/* on EV_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
 : sysOpened_sysOpened \handler
 
@@ -27,7 +27,7 @@
 
   op__topology
 
-  find: sysOpened_sysOpened  ZK_M_DATAPULSE  [op].handler!
+  find: sysOpened_sysOpened  EV_M_DATAPULSE  [op].handler!
 
   op__loop
 

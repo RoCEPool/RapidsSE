@@ -5,7 +5,7 @@
 " OP_copyRows.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                               EOS */
+/* handler for EV_M_EOS ...                                               EOS */
 /*----------------------------------------------------------------------------*/
 : copyRows_Eos \handler
 
@@ -15,11 +15,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                   ROWBUFFER */
+/* handler for EV_D_ROWBUFFER ...                                   ROWBUFFER */
 /*----------------------------------------------------------------------------*/
 : copyRows_RowBuffer \handler
 
-  //"Operand:- ZK_D_ROWBUFFER" .verbose
+  //"Operand:- EV_D_ROWBUFFER" .verbose
 
   Pipein[]\clear to rowBuffer[]
   rowBuffer[].copy to DataBuffer[]
@@ -46,8 +46,8 @@
 
   op__topology
 
-  find: copyRows_RowBuffer  ZK_D_ROWBUFFER [op].handler!
-  find: copyRows_Eos        ZK_M_EOS [op].handler!
+  find: copyRows_RowBuffer  EV_D_ROWBUFFER [op].handler!
+  find: copyRows_Eos        EV_M_EOS [op].handler!
  
   op__loop
 

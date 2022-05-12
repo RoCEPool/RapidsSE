@@ -5,7 +5,7 @@
 " OP_exemplar.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                        */
+/* on EV_M_EOS ...                                                        */
 /*----------------------------------------------------------------------------*/
 : OP_exemplar_EosMarker \handler
 
@@ -24,7 +24,7 @@
   // set topology, next stage and op
   op__topology
 
-  //find: OP_exemplar_EosMarker ZK_M_EOS [op].handler!
+  //find: OP_exemplar_EosMarker EV_M_EOS [op].handler!
 
   op__loop
 

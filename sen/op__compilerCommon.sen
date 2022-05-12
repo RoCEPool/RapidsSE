@@ -5,7 +5,7 @@
 " op__compilercommon.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_LEAVE ...                                                 */
+/* handler for EV_M_LEAVE ...                                                 */
 /*----------------------------------------------------------------------------*/
 : compiler_LeaveMarker \handler
 
@@ -13,11 +13,11 @@
   StreamSet[].isNull not assert
   StreamSet[].pipeout
 
-  ZK_M_LEAVE_handler
+  EV_M_LEAVE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMSET ...                                             */
+/* handler for EV_D_STREAMSET ...                                             */
 /*----------------------------------------------------------------------------*/
 : compiler_StreamSet \handler
 

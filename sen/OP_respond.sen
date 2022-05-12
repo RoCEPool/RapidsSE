@@ -15,13 +15,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                                   */
+/* handler for EV_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : respond_EosMarker \handler
 
   Marker[].newFlushMarker Marker[]\clear responseOp:enqueOpr
   
-  ZK_M_EOS_handler
+  EV_M_EOS_handler
 ;
 
 
@@ -37,12 +37,12 @@
 
   op__topology
 
-  find: respond_EosMarker  ZK_M_EOS        [op].handler!
+  find: respond_EosMarker  EV_M_EOS        [op].handler!
   
-  find: respond_redirect   ZK_D_CRWBUFFER  [op].handler!
-  find: respond_redirect   ZK_D_CSVBUFFER  [op].handler!
-  find: respond_redirect   ZK_D_ROWBUFFER  [op].handler!
-  find: respond_redirect   ZK_D_STREAMDEF  [op].handler!
+  find: respond_redirect   EV_D_CRWBUFFER  [op].handler!
+  find: respond_redirect   EV_D_CSVBUFFER  [op].handler!
+  find: respond_redirect   EV_D_ROWBUFFER  [op].handler!
+  find: respond_redirect   EV_D_STREAMDEF  [op].handler!
 
   op__loop
 

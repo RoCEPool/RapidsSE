@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_INDEXDEF ...                                              */
+/* handler for EV_D_INDEXDEF ...                                              */
 /*----------------------------------------------------------------------------*/
 : createIndex_IndexDef
 
@@ -134,7 +134,7 @@
 
   op__topology
 
-  find: createIndex_IndexDef ZK_D_INDEXDEF [op].handler!
+  find: createIndex_IndexDef EV_D_INDEXDEF [op].handler!
 
   op__loop
 

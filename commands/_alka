@@ -35,15 +35,16 @@ create table LineItem
  L_TAX           DECIMAL(15,2) NOT NULL,
  L_RETURNFLAG    CHAR(1)       NOT NULL,
  L_LINESTATUS    CHAR(1)       NOT NULL,
- L_SHIPDATE      TIMESTAMP NOT      NULL,
+ L_SHIPDATE      DATE NOT      NULL,
  L_COMMITDATE    DATE NOT      NULL,
  L_RECEIPTDATE   DATE NOT      NULL,
  L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
  L_SHIPMODE      CHAR(10)      NOT NULL,
  L_COMMENT       VARCHAR(44)   NOT NULL
  );
-CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
-create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
+//CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
+//CREATE INDEX IxL ON lineitem(l_returnflag);
+//create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
 
 _nation
 _region
@@ -62,25 +63,30 @@ create table orders (
 
 _part;
 _customer
+_partsupp
+_supplier
+
 CREATE INDEX orders_idx1 ON orders(O_CUSTKEY);
 CREATE INDEX IxO_ORDERKEY ON orders(O_ORDERKEY);
 create index IxC_CUSTKEY ON customer(C_CUSTKEY);
 create index IxR_REGIONKEY on REGION (R_REGIONKEY);
 create index IxR_NAME on REGION (R_NAME);
 create index IxL_PARTKEY ON lineitem(L_PARTKEY);
+
 ///time load region "<tpch_dir>/region.<suffix>";
-/time load nation "<tpch_dir>/nation.<suffix>";
-///time load lineitem "<tpch_dir>/lineitem.<suffix>";
-/time load orders "<tpch_dir>/orders.<suffix>";
-/time load part "<tpch_dir>/part.<suffix>";
+///time load nation "<tpch_dir>/nation.<suffix>";
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+///time load orders "<tpch_dir>/orders.<suffix>";
+///time load part "<tpch_dir>/part.<suffix>";
 ///time load orders "../DATA/TPCH/orders10.csv";
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+///load lineitem "../TPCH/SF_0001/lineitem.csv";
 //load lineitem "../DATA/TPCH/lineitem10.csv";
 
-load customer "../TPCH/SF_0001/customer.csv";
+//load customer "../TPCH/SF_0001/customer.csv";
 
+//load lineitem "../TPCH/SF10/lineitem.tbl";
 //create index lineitem_part ON lineitem(L_PARTKEY);
-
+/*
 create table TABLE9 (
   pcol9   INTEGER NOT NULL,
   scol9   INTEGER NOT NULL,
@@ -122,6 +128,102 @@ create table TABLE4 (
 );
 Load TABLE4 "../DATA/Load/tbl4data.csv" ;
 
+/time pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0858
+  stage stageMarker0858 on all partitions :
+    scan rapidsse public lineitem
+    | filter " type BOOLEAN  $11 DATE '1998-10-01'  <=  "
+    | aggreg " groupBy  type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10
+      aggregates
+      type VARCHAR $K1 , type VARCHAR $K2 ,
+      type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  ,
+      type DECIMAL )  $6 1.  $7 -  *  sum  , type DECIMAL )  $6 1.  $7 -  *  1.  $8 +  *  sum  ,
+      type INTEGER )  $5 count  ,
+      type INTEGER )  $6 count  ,
+      type DECIMAL )  $7 sum  ,
+      type INTEGER )  $7 count  ,
+      type INTEGER )  countAll  "
+    | combined 0
+    | stageMarker0861
+  stage stageMarker0861 on all nodes :
+    aggreg " groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2
+      aggregates
+      type VARCHAR $K1 ,
+      type VARCHAR $K2 ,
+      type DECIMAL )  $3 sum  ,
+      type DECIMAL )  $4 sum  ,
+      type DECIMAL )  $5 sum  ,
+      type DECIMAL )  $6 sum  ,
+      type INTEGER )  $7 sum  ,
+      type INTEGER )  $8 sum  ,
+      type DECIMAL )  $9 sum  ,
+      type INTEGER )  $10 sum  ,
+      type INTEGER )  $11 sum  "
+    | combined 0
+    | stageMarker1032
+  stage stageMarker1032 on origin :
+    aggreg " groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2
+      aggregates
+      type VARCHAR as L_RETURNFLAG $K1 ,
+      type VARCHAR as L_LINESTATUS $K2 ,
+      type DECIMAL as sum_qty )  $3 sum  ,
+      type DECIMAL as sum_base_price )  $4 sum  ,
+      type DECIMAL as sum_disc_price )  $5 sum  ,
+      type DECIMAL as sum_charge )  $6 sum  ,
+      type INTEGER as count_order )  $11 sum  ,
+      type INTEGER )  $7 sum  ,
+      type INTEGER )  $8 sum  ,
+      type INTEGER )  $10 sum  ,
+      type DECIMAL )  $9 sum  "
+    | combined 0
+    | stageMarker0864
+  stage stageMarker0864 on origin :
+    project "
+      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type DECIMAL as SUM_QTY SUM_QTY ,
+      type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE ,
+      type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE ,
+      type DECIMAL as SUM_CHARGE SUM_CHARGE ,
+      type DECIMAL as avg_qty $3 $8 casttype DECIMAL CAST  /  ,
+      type DECIMAL as avg_price $4 $9 casttype DECIMAL CAST  /  ,
+      type DECIMAL as avg_disc $11 $10 casttype DECIMAL CAST  /  ,
+      type INTEGER as count_order $7 "
+      | sort " type VARCHAR as l_returnflag $1 ASC  , type VARCHAR as l_linestatus $2 ASC  "
+      | combined 0
+      | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+*/
+
+EXPLAIN STAGE transliterate
+select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
+     from part, supplier, partsupp, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and p_size < 15
+      and p_type like '%BRASS'
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'EUROPE'
+      and ps_supplycost = (
+      select min(ps_supplycost)
+      from partsupp, supplier, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'EUROPE' )
+       order by s_acctbal desc, n_name, s_name, p_partkey;
+
+/*
 pipeline Q17
 begin
 
@@ -158,7 +260,7 @@ begin
     //project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.20 $2 $3  casttype DECIMAL cast / *"
     | combined 0
     | next broadcast
-/*
+?*
   stage stageQ17_2_a on all partitions :
     indexJoin 2 lineitem IxL_PARTKEY "bound $I1 $L1 =="
     | filter 2 " type BOOLEAN  j1_l_quantity $2 <  "
@@ -166,14 +268,12 @@ begin
     //| project 2 " type DECIMAL as avg_yearly j1_l_extendedprice  "
     | combined 0
     | next
-*/
+*?
   stage stageLast on origin :
     output
     | sink
     | stageStart
 end ;
-
-/*
 
 select sum(l_extendedprice) from lineitem where l_partkey = 53 and l_quantity < 5.4;
 select sum(l_extendedprice) from lineitem where l_partkey = 54 and l_quantity < 5.1;

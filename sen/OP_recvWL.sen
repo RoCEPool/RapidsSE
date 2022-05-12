@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : recvWL_StartMarker \handler
 
@@ -101,7 +101,7 @@
 
   op__topology
 
-  find: recvWL_StartMarker ZK_M_START [op].handler!
+  find: recvWL_StartMarker EV_M_START [op].handler!
 
   // get the pipeline job of the operator
   [op].job@ locals| pPipelineJob |

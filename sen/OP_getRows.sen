@@ -5,7 +5,7 @@
 " OP_getRows.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                               EOS */
+/* handler for EV_M_EOS ...                                               EOS */
 /*----------------------------------------------------------------------------*/
 : getRows_Eos \handler
 
@@ -15,11 +15,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                   ROWBUFFER */
+/* handler for EV_D_ROWBUFFER ...                                   ROWBUFFER */
 /*----------------------------------------------------------------------------*/
 : getRows_RowBuffer \handler
 
-  //"Operand:- ZK_D_ROWBUFFER" .verbose
+  //"Operand:- EV_D_ROWBUFFER" .verbose
 
   Pipein[]\clear to rowBuffer[]
   rowBuffer[].getRows to DataBuffer[]
@@ -47,8 +47,8 @@
 
   op__topology
 
-  find: getRows_RowBuffer  ZK_D_ROWBUFFER [op].handler!
-  find: getRows_Eos        ZK_M_EOS [op].handler!
+  find: getRows_RowBuffer  EV_D_ROWBUFFER [op].handler!
+  find: getRows_Eos        EV_M_EOS [op].handler!
  
   op__loop
 

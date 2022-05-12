@@ -16,7 +16,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : pageout_StartMarker \handler
 
@@ -43,7 +43,7 @@
 
   op__topology
 
-  find: pageout_StartMarker ZK_M_START [op].handler!
+  find: pageout_StartMarker EV_M_START [op].handler!
 
   op__loop
 

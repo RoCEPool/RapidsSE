@@ -5,7 +5,7 @@
 " OP_nodeHeartbeat.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE...                                                       */
+/* on EV_M_DATAPULSE...                                                       */
 /*----------------------------------------------------------------------------*/
 : nodeHeartbeat_DataPulse \handler
 
@@ -44,7 +44,7 @@
 
   op__topology
 
-  find: nodeHeartbeat_DataPulse  ZK_M_DATAPULSE [op].handler!
+  find: nodeHeartbeat_DataPulse  EV_M_DATAPULSE [op].handler!
 
   op__loop
 

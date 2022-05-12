@@ -5,25 +5,25 @@
 " OP_chunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                       */
+/* on EV_M_CLEANING ...                                                       */
 /*----------------------------------------------------------------------------*/
 : chunk_Cleaning \handler
 
-  //"Operand:- ZK_M_CLEANING" .verbose
+  //"Operand:- EV_M_CLEANING" .verbose
   //File0[].isNull not if
   //  File0[].get file.close
   //  File0[].get file.delete
   //then
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                      */
+/* on EV_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
 : chunk_DataMarker \handler
 
-  //"Operand:- ZK_M_DATAPULSE" .verbose
+  //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // find the __seekOffsets table
@@ -54,11 +54,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                          */
+/* on EV_M_START ...                                                          */
 /*----------------------------------------------------------------------------*/
 : chunk_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
 
   0 locals| iFileSizeMb |
 
@@ -100,9 +100,9 @@
 
   op__topology
 
-  find: chunk_Cleaning    ZK_M_CLEANING  [op].handler!
-  find: chunk_DataMarker  ZK_M_DATAPULSE [op].handler!
-  find: chunk_StartMarker ZK_M_START     [op].handler!
+  find: chunk_Cleaning    EV_M_CLEANING  [op].handler!
+  find: chunk_DataMarker  EV_M_DATAPULSE [op].handler!
+  find: chunk_StartMarker EV_M_START     [op].handler!
 
   op__loop
 

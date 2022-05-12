@@ -5,7 +5,7 @@
 " OP_spawnNode.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for EV_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : spawnNode_DataPulse \handler
  
@@ -13,7 +13,7 @@
 
   false <nodeNm> .formNodeList .spawnNamedNode
    
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +27,7 @@
 
   op__topology
 
-  find: spawnNode_DataPulse ZK_M_DATAPULSE [op].handler!
+  find: spawnNode_DataPulse EV_M_DATAPULSE [op].handler!
 
   op__loop
 

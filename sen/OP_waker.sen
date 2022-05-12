@@ -5,7 +5,7 @@
 " OP_waker.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : waker::activity
 
@@ -13,7 +13,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : waker_StartMarker \handler
 
@@ -42,7 +42,7 @@
 
   op__topology
 
-  find: waker_StartMarker ZK_M_START [op].handler!
+  find: waker_StartMarker EV_M_START [op].handler!
 
   op__loop
 

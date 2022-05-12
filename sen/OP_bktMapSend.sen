@@ -5,7 +5,7 @@
 " OP_bktMapSend.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_BKTMAPGET ...                                                        */
+/* on EV_D_BKTMAPGET ...                                                        */
 /*----------------------------------------------------------------------------*/
 : bktMapSend_bktmapGet \handler
 
@@ -43,8 +43,8 @@
 
   op__topology
 
-  // Setup ZK_D_BKTMAPGET handler
-  find: bktMapSend_bktmapGet ZK_D_BKTMAPGET [op].handler!
+  // Setup EV_D_BKTMAPGET handler
+  find: bktMapSend_bktmapGet EV_D_BKTMAPGET [op].handler!
 
   op__loop
 

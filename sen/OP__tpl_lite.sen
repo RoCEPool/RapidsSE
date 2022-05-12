@@ -5,7 +5,7 @@
 " OP__tpl_lite.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                      */
+/* on EV_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
 : OP__tpl_lite_DataMarker
 
@@ -36,7 +36,7 @@
 
   op__topology
 
-  find: /liteOp/_DataMarker  ZK_M_DATAPULSE [op].handler!
+  find: /liteOp/_DataMarker  EV_M_DATAPULSE [op].handler!
 
   op__loop
 

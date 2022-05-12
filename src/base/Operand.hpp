@@ -5,7 +5,7 @@
 
 #include "ePT.h"
 #include "eRV.h"
-#include "eZK.h"
+#include "eEV.h"
 
 namespace BASE
 {
@@ -29,7 +29,6 @@ namespace BASE
     bool bIsMarker(void);
     bool bIsProfile(void);
     bool bIsStreamDef(void);
-    eZK  eZkKind(void);
     ePT  eTailProcessing(void);
     void vTailProcessing(ePT eTailProcessing);
   };

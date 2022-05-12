@@ -91,7 +91,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : answerWL_StartMarker \handler
 
@@ -171,7 +171,7 @@
 
   op__topology
 
-  find: answerWL_StartMarker ZK_M_START [op].handler!
+  find: answerWL_StartMarker EV_M_START [op].handler!
 
   op__loop
 

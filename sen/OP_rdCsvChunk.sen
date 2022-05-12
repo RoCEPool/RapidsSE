@@ -5,28 +5,28 @@
 " OP_rdCsvChunk.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                       */
+/* on EV_M_CLEANING ...                                                       */
 /*----------------------------------------------------------------------------*/
 : rdCsvChunk_Cleaning \handler
 
-  //"Operand:- ZK_M_CLEANING" .verbose
+  //"Operand:- EV_M_CLEANING" .verbose
 
-  // 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+  // 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   //File0[].isNull not if
   //  File0[].get file.close
   //  File0[].get file.delete
   //then
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_I_SEEKOFFSETS ...                                                    */
+/* on EV_I_SEEKOFFSETS ...                                                    */
 /*----------------------------------------------------------------------------*/
 : rdCsvChunk_SeekOffsets \handler
 
-  // 0 ZK_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  // 0 EV_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
 
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
@@ -61,7 +61,7 @@
 
   InfoSet[].delete
 
-  // 1 ZK_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  // 1 EV_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
 
   true
 ;
@@ -69,7 +69,7 @@
 /*
 : rdCsvChunk_SeekOffsets \handler
 
-  // 0 ZK_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  // 0 EV_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
 
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
@@ -106,20 +106,20 @@
 
   InfoSet[].delete
 
-  // 1 ZK_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+  // 1 EV_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
 
   true
 ;
 */
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                      */
+/* on EV_M_START ...                                                      */
 /*----------------------------------------------------------------------------*/
 : rdCsvChunk_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
 
-  // 0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  // 0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   <fileNm> locals| sFileNm_raw |
   
@@ -130,7 +130,7 @@
   // open the file for reading
   sFileNm OPEN_READ op__file discard
 
-  // 1 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  // 1 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   true
 ;
@@ -151,9 +151,9 @@
 
   op__topology
 
-  find: rdCsvChunk_Cleaning      ZK_M_CLEANING     [op].handler!
-  find: rdCsvChunk_SeekOffsets   ZK_I_SEEKOFFSETS  [op].handler!
-  find: rdCsvChunk_StartMarker   ZK_M_START        [op].handler!
+  find: rdCsvChunk_Cleaning      EV_M_CLEANING     [op].handler!
+  find: rdCsvChunk_SeekOffsets   EV_I_SEEKOFFSETS  [op].handler!
+  find: rdCsvChunk_StartMarker   EV_M_START        [op].handler!
 
   op__loop
 

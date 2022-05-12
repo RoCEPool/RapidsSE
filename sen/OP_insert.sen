@@ -5,11 +5,11 @@
 " OP_insert.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                              */
+/* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : insert_Cleaning \handler
 
-  //"Operand:- ZK_M_CLEANING" .verbose
+  //"Operand:- EV_M_CLEANING" .verbose
 
   // get the profile from the task
   //[task] task.profile@ to Operand[]
@@ -18,11 +18,11 @@
 
   Path[].popNamedTableFolder
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER / ZK_D_ROWBUFFER ...                            */
+/* handler for EV_D_CRWBUFFER / EV_D_ROWBUFFER ...                            */
 /*----------------------------------------------------------------------------*/
 : insert_DataBuffer \handler
 
@@ -60,7 +60,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* replicated table handler for ZK_D_CRWBUFFER / ZK_D_ROWBUFFER ...           */
+/* replicated table handler for EV_D_CRWBUFFER / EV_D_ROWBUFFER ...           */
 /*----------------------------------------------------------------------------*/
 : insert_Replicated \handler
 
@@ -98,11 +98,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                                   */
+/* handler for EV_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : insert_EosMarker \handler
 
-  //"Operand:- ZK_M_EOS" .verbose
+  //"Operand:- EV_M_EOS" .verbose
 
   // send out final progress units
 
@@ -121,12 +121,12 @@
   ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : insert_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
-  //"Operand Insert:- ZK_M_START" .
+  //"Operand:- EV_M_START" .verbose
+  //"Operand Insert:- EV_M_START" .
   PipeIn[].pipeOut
 
   // create the infoSetTable for C_TDEF_PROGRESSUNITS
@@ -137,8 +137,8 @@
 
     // change handler for replicated cases
     Table[].isReplicated if
-      find: insert_Replicated  ZK_D_CRWBUFFER  [op].handler!
-      find: insert_Replicated  ZK_D_ROWBUFFER  [op].handler!
+      find: insert_Replicated  EV_D_CRWBUFFER  [op].handler!
+      find: insert_Replicated  EV_D_ROWBUFFER  [op].handler!
     else
       Table[].tablePtn@ to TablePtn[]
     then
@@ -149,12 +149,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                             */
+/* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 /*
 : insert_StreamDef \handler
 
-  //"Operand:- ZK_D_STREAMDEF" .verbose
+  //"Operand:- EV_D_STREAMDEF" .verbose
   PipeIn[].delete
   Table[] StreamDefOut[].newFromTable
   StreamDefOut[].pipeOut
@@ -175,12 +175,12 @@
 
   op__topology
 
-  find: insert_Cleaning      ZK_M_CLEANING     [op].handler!
-  find: insert_DataBuffer    ZK_D_CRWBUFFER    [op].handler!
-  find: insert_EosMarker     ZK_M_EOS          [op].handler!
-  find: insert_DataBuffer    ZK_D_ROWBUFFER    [op].handler!
-  //find: insert_StreamDef   ZK_D_STREAMDEF    [op].handler!
-  find: insert_StartMarker   ZK_M_START        [op].handler!
+  find: insert_Cleaning      EV_M_CLEANING     [op].handler!
+  find: insert_DataBuffer    EV_D_CRWBUFFER    [op].handler!
+  find: insert_EosMarker     EV_M_EOS          [op].handler!
+  find: insert_DataBuffer    EV_D_ROWBUFFER    [op].handler!
+  //find: insert_StreamDef   EV_D_STREAMDEF    [op].handler!
+  find: insert_StartMarker   EV_M_START        [op].handler!
 
   op__loop
 

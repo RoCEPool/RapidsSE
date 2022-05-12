@@ -5,7 +5,7 @@
 " OP_metaRecv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_PARCEL ...                                                         */
+/* on EV_D_PARCEL ...                                                         */
 /*----------------------------------------------------------------------------*/
 : metaRecv_Parcel \handler
   
@@ -44,8 +44,8 @@
 
   op__topology
 
-  // Setup ZK_D_PARCEL handler here
-  find: metaRecv_Parcel ZK_D_PARCEL [op].handler!
+  // Setup EV_D_PARCEL handler here
+  find: metaRecv_Parcel EV_D_PARCEL [op].handler!
 
   op__loop
 

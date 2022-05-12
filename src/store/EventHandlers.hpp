@@ -11,7 +11,7 @@ namespace STORE
   {
   public:
   
-    Word* m_paEventHandler[ZK_ENUMS];  // event handlers
+    Word* m_paEventHandler[EV_ENUMS];  // event handlers
 
     // must be last
     Footer m_xFooter;
@@ -23,9 +23,9 @@ namespace STORE
     EventHandlers(void);
    ~EventHandlers(void) noexcept(false);
       
-    Word* pGet(eZK eEvent);
+    Word* pGet(eEV eEvent);
     void  vInitialise(void);
-    void  vSet(eZK eEvent, Word* pWord);
+    void  vSet(eEV eEvent, Word* pWord);
 
     Footer* aFooter(void);
   };

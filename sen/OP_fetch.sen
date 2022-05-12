@@ -110,19 +110,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                              */
+/* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : fetch_Cleaning \handler
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                             */
+/* handler for EV_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : fetch_CrwBuffer \handler
  
-  //"Operand:- ZK_D_CRWBUFFER" .verbose
+  //"Operand:- EV_D_CRWBUFFER" .verbose
 
   // get the fetchTechnique
   Counter1[] PathIdentifier[].fetchTech@
@@ -200,13 +200,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : fetch_DataMarker \handler
  
   0 locals| iPhrases |
 
-  //"Operand:- ZK_M_DATAPULSE" .verbose
+  //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // new a stream def
@@ -237,11 +237,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : fetch_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
 
   0 locals| iPhrases |
 
@@ -273,10 +273,10 @@
 
   op__topology
 
-  find: fetch_Cleaning      ZK_M_CLEANING      [op].handler!
-  find: fetch_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
-  find: fetch_DataMarker    ZK_M_DATAPULSE     [op].handler!
-  find: fetch_StartMarker   ZK_M_START         [op].handler!
+  find: fetch_Cleaning      EV_M_CLEANING      [op].handler!
+  find: fetch_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
+  find: fetch_DataMarker    EV_M_DATAPULSE     [op].handler!
+  find: fetch_StartMarker   EV_M_START         [op].handler!
 
   op__loop
 

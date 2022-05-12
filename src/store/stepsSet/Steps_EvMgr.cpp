@@ -27,10 +27,10 @@ void Step::vAddSteps_EvMgr(void)
 void Step::vEvMgrCurEventNmFetch(void)
 {
   ENTRY();
+
+  eEV eCurEvent = m_pOp->pEvMgr()->m_eCurEvent;
     
-  eZK eCurEvent = m_pOp->pEvMgr()->m_eCurEvent;
-    
-  m_pDataStack->vPushStz(aZK[eCurEvent]);
+  m_pDataStack->vPushStz(aEV[eCurEvent]);
 
   EXIT();
 }
@@ -41,8 +41,8 @@ void Step::vEvMgrCurEventNmFetch(void)
 void Step::vEvMgrEventCountFetch(void)
 {
   ENTRY();
-  
-  eZK eEvent = (eZK)m_pDataStack->iPopInt(__func__);
+
+  eEV eEvent = (eEV)m_pDataStack->iPopInt(__func__);
   
   i8 nCount = m_pOp->nEventCount(eEvent);
 
@@ -52,7 +52,7 @@ void Step::vEvMgrEventCountFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [EvMgr].decodeEventNm -- deccode eZK into aZK                              */
+/* [EvMgr].decodeEventNm -- deccode eZK into aEV                              */
 /*----------------------------------------------------------------------------*/
 void Step::vEvMgrDecodeEventNm(void)
 {
@@ -60,7 +60,7 @@ void Step::vEvMgrDecodeEventNm(void)
   
   i8 iZK = m_pDataStack->iPopInt(__func__);
 
-  Stz* szEventNm = aZK[iZK];
+  Stz* szEventNm = aEV[iZK];
   
   m_pDataStack->vPushStz(szEventNm);
   
@@ -75,7 +75,7 @@ void Step::vEvMgrDecodeHandlerNm(void)
   ENTRY();
   
   i8 iZK = m_pDataStack->iPopInt(__func__);
-  Stz* szEventNm = aZK[iZK];
+  Stz* szEventNm = aEV[iZK];
 
   s32 sHandlerNm;
   

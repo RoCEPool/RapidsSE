@@ -29,7 +29,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : recurring_StartMarker \handler
 
@@ -62,7 +62,7 @@
 
   op__topology
 
-  find: recurring_StartMarker ZK_M_START [op].handler!
+  find: recurring_StartMarker EV_M_START [op].handler!
 
   op__loop
 

@@ -6,21 +6,21 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                          */
+/* on EV_M_START ...                                                          */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_StartMarker \handler
 
-  //"adaptorWL_StartMarker- ZK_M_START" .verbose
+  //"adaptorWL_StartMarker- EV_M_START" .verbose
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLIENTEVENT ...                                                       */
+/* on EV_M_CLIENTEVENT ...                                                       */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_clientEvent \handler
 
-  //"adaptorWL_StartMarker- ZK_M_WIRELINE" .verbose
+  //"adaptorWL_StartMarker- EV_M_WIRELINE" .verbose
 
   AdaptorWL[].processEventA
 
@@ -28,11 +28,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_APIEVENT ...                                                       */
+/* on EV_M_APIEVENT ...                                                       */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_apiEvent \handler
 
-  //"adaptorWL_StartMarker- ZK_M_WIRELINE" .verbose
+  //"adaptorWL_StartMarker- EV_M_WIRELINE" .verbose
 
   AdaptorWL[].processEventB
 
@@ -49,8 +49,8 @@
   op__topology
 
 
-  find: adaptorWL_StartMarker ZK_M_START     [op].handler!
-//find: adaptorWL_WireLine    ZK_M_WIRELINE  [op].handler!
+  find: adaptorWL_StartMarker EV_M_START     [op].handler!
+//find: adaptorWL_WireLine    EV_M_WIRELINE  [op].handler!
 
   op__loop
 

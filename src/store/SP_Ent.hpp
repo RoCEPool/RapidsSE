@@ -22,7 +22,7 @@ namespace STORE
     SP_Ent(Ent* pEnt, IndexDef* pIndexDef);
    ~SP_Ent(void) noexcept(false);
   
-    char* azKey(void);
+    char* aEVey(void);
 
     Stz* sz(void);
     Stz* sz(Ent* aEnt, IndexDef* pIndexDef);

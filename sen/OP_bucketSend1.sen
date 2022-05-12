@@ -19,7 +19,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                              */
+/* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : bucketSend_Cleaning \handler
 
@@ -34,12 +34,12 @@
   //  ptnStream[] ptnStream.delete
   //then
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_NEXTBUFFER...                                             */
+/* handler for EV_M_NEXTBUFFER...                                             */
 /*----------------------------------------------------------------------------*/
 // ": bucketSend_NextBufferMarker" .
 
@@ -56,7 +56,7 @@
     // pipe out the read crw buffer
     DataBuffer[].pipeOut
 
-    // requeue ZK_M_NEXTBUFFER
+    // requeue EV_M_NEXTBUFFER
     Pipein[].pipeBackin
 
     // call this handler again to process next buffer
@@ -104,7 +104,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for EV_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 // ": bucketSend_DataMarker" .
 
@@ -131,7 +131,7 @@
   // open partition stream to access the crw buffers
   ptnStream[] ptnStream.open if
 
-    // pipe in ZK_M_NEXTBUFFER
+    // pipe in EV_M_NEXTBUFFER
     Marker[].newNextBufferMarker
     Marker[].pipeBackIn
 
@@ -161,7 +161,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 // ": bucketSend_StartMarker" .
 
@@ -196,11 +196,11 @@
 
   op__topology
 
-  find: bucketSend_CancellingMarker  ZK_M_CANCELLING [op].handler!
-  find: bucketSend_Cleaning          ZK_M_CLEANING   [op].handler!
-  find: bucketSend_DataMarker        ZK_M_DATAPULSE  [op].handler!
-  find: bucketSend_NextBufferMarker  ZK_M_NEXTBUFFER [op].handler!
-  find: bucketSend_StartMarker       ZK_M_START      [op].handler!
+  find: bucketSend_CancellingMarker  EV_M_CANCELLING [op].handler!
+  find: bucketSend_Cleaning          EV_M_CLEANING   [op].handler!
+  find: bucketSend_DataMarker        EV_M_DATAPULSE  [op].handler!
+  find: bucketSend_NextBufferMarker  EV_M_NEXTBUFFER [op].handler!
+  find: bucketSend_StartMarker       EV_M_START      [op].handler!
 
   op__loop
 

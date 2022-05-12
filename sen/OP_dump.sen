@@ -5,7 +5,7 @@
 " OP_dump.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CRWBUFFER ...                                                        */
+/* on EV_D_CRWBUFFER ...                                                        */
 /*----------------------------------------------------------------------------*/
 : dump_CrwBuffer \handler
 
@@ -15,11 +15,11 @@
     <detail> >int PipeIn[] crwBuffer.operandDump
   then
 
-  ZK_D_CRWBUFFER_handler
+  EV_D_CRWBUFFER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CSVBUFFER ...                                                        */
+/* on EV_D_CSVBUFFER ...                                                        */
 /*----------------------------------------------------------------------------*/
 : dump_CsvBuffer \handler
 
@@ -29,11 +29,11 @@
     <detail> >int PipeIn[] csvBuffer.operandDump
   then
 
-  ZK_D_CSVBUFFER_handler
+  EV_D_CSVBUFFER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                        */
+/* on EV_D_ROWBUFFER ...                                                        */
 /*----------------------------------------------------------------------------*/
 : dump_RowBuffer \handler
 
@@ -43,11 +43,11 @@
     <detail> >int PipeIn[] rowBuffer.operandDump
   then
 
-  ZK_D_ROWBUFFER_handler
+  EV_D_ROWBUFFER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_I_SEEKOFFSETS ...                                                      */
+/* on EV_I_SEEKOFFSETS ...                                                      */
 /*----------------------------------------------------------------------------*/
 : dump_SeekOffsets \handler
 
@@ -57,7 +57,7 @@
     <detail> >int PipeIn[] seekOffsets.operandDump
   then
 
-  ZK_I_SEEKOFFSETS_handler
+  EV_I_SEEKOFFSETS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -69,10 +69,10 @@
 
   op__topology
 
-  find: dump_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!
-  find: dump_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
-  find: dump_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
-  find: dump_SeekOffsets ZK_I_SEEKOFFSETS [op].handler!
+  find: dump_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
+  find: dump_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
+  find: dump_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: dump_SeekOffsets EV_I_SEEKOFFSETS [op].handler!
 
   op__loop
 

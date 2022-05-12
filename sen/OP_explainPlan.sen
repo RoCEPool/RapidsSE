@@ -5,15 +5,15 @@
 " OP_explainPlan.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                              */
+/* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : explainPlan_Cleaning \handler
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_PLANOPERAND ...                                             */
+/* handler for EV_D_PLANOPERAND ...                                             */
 /*----------------------------------------------------------------------------*/
 : explainPlan_PlanOperand \handler
 
@@ -40,12 +40,12 @@
   op__topology
 
   // common compiler handlers
-  find: compiler_LeaveMarker      ZK_M_LEAVE         [op].handler!
-  find: compiler_StreamSet        ZK_D_STREAMSET     [op].handler!
+  find: compiler_LeaveMarker      EV_M_LEAVE         [op].handler!
+  find: compiler_StreamSet        EV_D_STREAMSET     [op].handler!
 
   // specific handlers
-  find: explainPlan_Cleaning      ZK_M_CLEANING      [op].handler!
-  find: explainPlan_PlanOperand   ZK_D_PLANOPERAND   [op].handler!
+  find: explainPlan_Cleaning      EV_M_CLEANING      [op].handler!
+  find: explainPlan_PlanOperand   EV_D_PLANOPERAND   [op].handler!
 
   op__loop
 

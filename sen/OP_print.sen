@@ -5,22 +5,22 @@
 " OP_print.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_PROMPTOUT ...                                             */
+/* handler for EV_I_PROMPTOUT ...                                             */
 /*----------------------------------------------------------------------------*/
 : print_promptOut \handler
 
-  "print_promptOut:- ZK_I_PROMPTOUT" .
+  "print_promptOut:- EV_I_PROMPTOUT" .
   PipeIn[].delete
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : print_startMarker \handler
 
-  "print_startMarker:- ZK_M_START" .
+  "print_startMarker:- EV_M_START" .
   PipeIn[].delete
 
   true
@@ -35,8 +35,8 @@
 
   op__topology
 
-  find: print_promptOut    ZK_I_PROMPTOUT     [op].handler!
-  find: print_startMarker  ZK_M_START   [op].handler!
+  find: print_promptOut    EV_I_PROMPTOUT     [op].handler!
+  find: print_startMarker  EV_M_START   [op].handler!
 
   op__loop
 

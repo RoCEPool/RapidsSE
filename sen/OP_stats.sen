@@ -5,7 +5,7 @@
 " OP_stats.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                             */
+/* handler for EV_M_START ...                                             */
 /*----------------------------------------------------------------------------*/
 : stats_StartMarker \handler
 
@@ -49,7 +49,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EXITING ...                                               */
+/* handler for EV_M_EXITING ...                                               */
 /*----------------------------------------------------------------------------*/
 : stats_Exiting \handler
 
@@ -65,7 +65,7 @@
   // pipeout the infoset
   InfoSet[].pipeOut
 
-  ZK_M_EXITING_handler // calling op_loop exits
+  EV_M_EXITING_handler // calling op_loop exits
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -77,8 +77,8 @@
 
   op__topology
 
-  find: stats_StartMarker ZK_M_START [op].handler!
-  find: stats_Exiting     ZK_M_EXITING  [op].handler!
+  find: stats_StartMarker EV_M_START [op].handler!
+  find: stats_Exiting     EV_M_EXITING  [op].handler!
 
   op__loop
 

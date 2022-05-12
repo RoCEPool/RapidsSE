@@ -27,9 +27,9 @@ EvMgr::EvMgr(void)
   m_pEventHandlers
     = _pEventHandlers(AM::HANDLERS::pEventHandlers()->pMemoryCopy());
 
-  m_eCurEvent = ZK_NONE;
+  m_eCurEvent = EV_NONE;
 
-  for (i8 i_Event = 0; i_Event < ZK_ENUMS; i_Event++)
+  for (i8 i_Event = 0; i_Event < EV_ENUMS; i_Event++)
     m_naEventCount[i_Event] = 0;
   
   m_pOperandWatch = new OperandWatch;

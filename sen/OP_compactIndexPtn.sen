@@ -5,12 +5,12 @@
 " OP_compactIndexPtn.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : CompactIndexPtn_DataMarker \handler
 
 
-  //"Operand:- ZK_M_DATAPULSE" .verbose
+  //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // compact the index
@@ -23,11 +23,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : CompactIndexPtn_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
 
   // check if we can scan the table
   <tableNm> <indexNm> op__table_index if
@@ -47,8 +47,8 @@
 
   op__topology
 
-  find: CompactIndexPtn_DataMarker ZK_M_DATAPULSE [op].handler!
-  find: CompactIndexPtn_StartMarker ZK_M_START [op].handler!
+  find: CompactIndexPtn_DataMarker EV_M_DATAPULSE [op].handler!
+  find: CompactIndexPtn_StartMarker EV_M_START [op].handler!
 
   op__loop
 

@@ -5,7 +5,7 @@
 " OP_debug.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                      */
+/* on EV_D_ROWBUFFER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : debug_RowBuffer \handler
 
@@ -23,7 +23,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                      */
+/* on EV_D_ROWBUFFER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : debug_SeeRowBuffer \handler
 
@@ -47,7 +47,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                             */
+/* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : debug_StreamDef \handler
   
@@ -68,7 +68,7 @@
 
   1 [pipeline].getAccum 0 [pipeline].getAccum "Total: %v buffers %v rows" .printf
 
-  ZK_M_EOS_handler
+  EV_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -101,19 +101,19 @@
   then
 
   <option> "accum0" str.same if
-    find: debug_EOS ZK_M_EOS [op].handler!
+    find: debug_EOS EV_M_EOS [op].handler!
   then
 
   <option> "streamdef" str.same if
-    find: debug_StreamDef ZK_D_STREAMDEF [op].handler!
+    find: debug_StreamDef EV_D_STREAMDEF [op].handler!
   then
   
   <option> "rowbuffer" str.same if
-    find: debug_RowBuffer ZK_D_ROWBUFFER [op].handler!
+    find: debug_RowBuffer EV_D_ROWBUFFER [op].handler!
   then
   
   <option> "seeRowbuffer" str.same if
-    find: debug_SeeRowBuffer ZK_D_ROWBUFFER [op].handler!
+    find: debug_SeeRowBuffer EV_D_ROWBUFFER [op].handler!
   then
   
   op__loop

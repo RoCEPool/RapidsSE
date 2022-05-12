@@ -6,13 +6,13 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : eachPathTag_DataPulse \handler
  
   "eachPathTag_DataPulse" .
 
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -54,7 +54,7 @@
 
   op__topology
 
-  find: eachPathTag_DataPulse ZK_M_DATAPULSE [op].handler!
+  find: eachPathTag_DataPulse EV_M_DATAPULSE [op].handler!
 
   op__loop
 

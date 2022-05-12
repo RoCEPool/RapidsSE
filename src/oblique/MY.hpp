@@ -5,7 +5,7 @@
 
 //!                    ** Do not include BASE.h **
 
-#include "eZK.h"
+#include "eEV.h"
 
 namespace BASE
 {
@@ -53,7 +53,7 @@ namespace OBLIQUE
     static Node*      pNode(void);
     static Op*        pOp(void);
     static LogicUnit* pOpLogicUnit(void);
-    static eZK        eOperand(void);
+    static eEV        eOperand(void);
     static Pipeline*  pPipeline(void);
     static Dic*       pSchemaDic(void);
     static Stage*     pStage(void);

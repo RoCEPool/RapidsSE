@@ -5,7 +5,7 @@
 " OP_sysClosed.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                      */
+/* on EV_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
 : sysClosed_sysClosed \handler
 
@@ -37,7 +37,7 @@
 
   op__topology
 
-  find: sysClosed_sysClosed  ZK_M_DATAPULSE  [op].handler!
+  find: sysClosed_sysClosed  EV_M_DATAPULSE  [op].handler!
 
   op__loop
 

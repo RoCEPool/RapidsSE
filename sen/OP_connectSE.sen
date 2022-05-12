@@ -94,7 +94,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : connectSE_StartMarker \handler
 
@@ -130,7 +130,7 @@
 
   op__topology
 
-  find: connectSE_StartMarker ZK_M_START [op].handler!
+  find: connectSE_StartMarker EV_M_START [op].handler!
 
   op__loop
 

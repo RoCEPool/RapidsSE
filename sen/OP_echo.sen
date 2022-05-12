@@ -5,13 +5,13 @@
 " OP_echo.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : echo_startMarker \handler
 
   <string> .
   
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +23,7 @@
 
   op__topology
 
-  find: echo_startMarker  ZK_M_START   [op].handler!
+  find: echo_startMarker  EV_M_START   [op].handler!
 
   op__loop
 
