@@ -60,7 +60,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table.getName"_Stz,            &Step::vTableGetName);
-  vAddStep("Table[].isInternallyDefined"_Stz, &Step::vTableIsInternallyDefined);
+  vAddStep("Table[].isInternallyDefined"_Stz,   &Step::vTableIsInternallyDefined);
   vAddStep("Table[].isReplicated"_Stz,     &Step::vTableIsReplicated);
   vAddStep("Table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("Table[].listPartition"_Stz,    &Step::vTableListPartition);
@@ -669,11 +669,14 @@ void Step::vTableNew(void) {
 
   Job *pJob = MY::pJob();
   TagSet *pJobTags = pJob->pJobTags();
+  Op* pOp = MY::pOp();
+  TagSet* pOpTags = pOp ? pOp->pOpTags() : nullptr;
 
   eTT eTableKind = TT_NORMAL;
   if (pJobTags && pJobTags->bHasName(C_TAG_INFOSET))
     eTableKind = TT_INFOSET;
-  else if (pJobTags && pJobTags->bHasName(C_TAG_INTERNAL))
+  else if ((pJobTags && pJobTags->bHasName(C_TAG_INTERNAL)) ||
+           (pOpTags && pOpTags->bHasName(C_TAG_INTERNAL)))
     eTableKind = TT_INTERNAL;
   else if (pJobTags && pJobTags->bHasName(C_TAG_REPLICATED))
     eTableKind = TT_REPLICATED;

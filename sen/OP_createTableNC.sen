@@ -132,6 +132,7 @@ cmdSyntax: createTableNC :: createTableNC <tableNm> ;
   tags{
     <cmdDesc> = "--desc for op--"
     <opEntry> = "createTableNC_op"
+    <internal> = 1
   }
 ;
     

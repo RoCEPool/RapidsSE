@@ -16531,6 +16531,7 @@ void Task::vAddMunged(Task* )
     "  tags{\n"
     "    <cmdDesc> = \"--desc for op--\"\n"
     "    <opEntry> = \"createTableNC_op\"\n"
+    "    <internal> = 1\n"
     "  }\n"
     " ;\n"
     "    \n"

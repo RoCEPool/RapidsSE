@@ -12,6 +12,7 @@ _lineitem
 
 verbose enable;
 
+
 pipeline __subquery0003
   begin
     stage stageStart on origin :
@@ -21,17 +22,16 @@ pipeline __subquery0003
 
     stage stageMarker0889 on all partitions :
       scan rapidsse public lineitem
-      //| project " type INTEGER as l_orderkey $1 "
-      //| combined 0
+      | project " type INTEGER as l_orderkey $1 "
+      | combined 0
       | next
 
     stage stageCreateTable on all nodes :
       createTableNC SQTBL
       | next
 
-   stage stageToCrw on origin :
-      dupCrw
-      | next broadcast
+   stage stageBroadCast on origin :
+      next broadcast
 
    stage stageInsertTable on all nodes :
      insert SQTBL
@@ -44,8 +44,62 @@ pipeline __subquery0003
   end ;
 
 /*
+
+pipeline __internalScan
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+
+    stage stageMarker0889 on all partitions :
+      scan SQTBL
+      | next
+
+    stage stageLast on origin :
+      output
+      | sink
+      | first
+  end ;
+
+pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+
+    stage stageMarker0889 on all partitions :
+      scan rapidsse public lineitem
+      | project " type INTEGER as l_orderkey $1 "
+      | combined 0
+      | next
+
+    stage stageCreateTable on all nodes :
+      createTableNC SQTBL
+      | next
+
+   stage stageToCrw on origin :
+      toCrw
+      | next broadcast
+
+   stage stageInsertTable on all nodes :
+     insert SQTBL
+     | next
+
+    stage stageLast on origin :
+      output
+      | sink
+      | first
+  end ;
+
+
+
+
+
+
 EXPLAIN with_names STAGE transliterate
- SELECT l_orderkey FROM ( SELECT L_ORDERKEY from lineitem);
+ SELECT l_orderkey FROM ( SELECT * from lineitem);
 
 pipeline unamed
 begin
@@ -82,7 +136,10 @@ begin
     output
     | sink
     | stageStart
-end ;
+  end ;
+
+
+
 */
 
 /*
