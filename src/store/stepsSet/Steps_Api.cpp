@@ -37,7 +37,8 @@ void Step::vAddSteps_Api(void)
 {
   vAddStep("api::forkChild_noWait"_Stz,    &Step::vApiForkChild_noWait);
   vAddStep("api::forkChild_wait"_Stz,      &Step::vApiForkChild_wait);
-  vAddStep("api::forkGeneric_noWait"_Stz,  &Step::vApiForkGeneric_noWait);
+  //vAddStep("api::forkGeneric_noWait"_Stz,  &Step::vApiForkGeneric_noWait);
+  vAddStep("api::forkGeneric_noWait"_Stz,  &Step::vApiForkChild_noWait);
   vAddStep("api::reapJobs"_Stz,            &Step::vApiReapJobs);
   vAddStep("api::spawnJob_noWait"_Stz,     &Step::vApiSpawnJob);
 }
@@ -68,6 +69,8 @@ void Step::vApiForkChild_noWait(void)
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
+  Stz* szJobNm = pCmdTknVec->pGet(0)->szChars();
+  pCmdTagSet->vReplace(C_TAG_JOBNM,szJobNm);
   pCmdTagSet->vReplace(C_TAG_NOWAIT,1);
 
   if (m_pJob) {
@@ -114,7 +117,8 @@ void Step::vApiForkChild_noWait(void)
 
   delete pCmdTknVec;
   delete pCmdTagSet;
-  
+  delete pTagTknVec;
+
   m_pDataStack->vPushInt(true);
   
   EXIT();
@@ -224,6 +228,15 @@ void Step::vApiForkGeneric_noWait(void)
   s48K sCmdTagStr;
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
+  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
+  TagSet*   pCmdTagSet = new TagSet;
+
+  Stz* szJobNm = pCmdTknVec->pGet(0)->szChars();
+  pCmdTagSet->vReplace(C_TAG_JOBNM,szJobNm);
+  pCmdTagSet->vReplace(C_TAG_NOWAIT,1);
+  if (! pCmdTagSet->bHasName(C_TAG_PATH))
+    pCmdTagSet->vReplace(C_TAG_PATH,C_SE_PATH_ROOT);
+
   JobId tParentId = m_pJob->tParentId();
   JobId tOriginId = m_pJob->tOriginId();
   JobId tDistId   = m_pJob->tDistId();
@@ -231,12 +244,6 @@ void Step::vApiForkGeneric_noWait(void)
   Job* pJobGeneric = nullptr;
   JobId tChildJobId;
   
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-  TagSet*   pCmdTagSet = new TagSet;
-
-  pCmdTagSet->vReplace(C_TAG_JOBNM,sCmd);
-  pCmdTagSet->vReplace(C_TAG_NOWAIT,1);
-
   eEC eError = Api::eForkJob(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,
