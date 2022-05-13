@@ -47,9 +47,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // -- command and tags
     TagSet m_oJobTags;  // tags for the job
 
-  
-    b8 m_bWasForked;
-  
+    
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
     // information depending on job instance/location           MODAL
@@ -245,8 +243,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vVerifyJobComposition(void);
   
     void vWaitJobMutex(void);
-    bool bWasForked(void);
-    void vWasForked(bool bWasForked);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
   

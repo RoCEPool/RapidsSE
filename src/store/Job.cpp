@@ -60,7 +60,6 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 
   m_bReapable = false;
   
-  m_bWasForked = false;
   // -- a -------------------
   
 
@@ -1538,26 +1537,6 @@ void Job::vVerifyJobComposition(void)
   RASSERT(EC_NONE == eValidHeader());
   RASSERT(CN_JOB == eGetClassNo());
   aFooter()->vAssertFooter();
-}
-
-/*----------------------------------------------------------------------------*/
-/* was job forked (or executed)?                                              */
-/*----------------------------------------------------------------------------*/
-bool Job::bWasForked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_bWasForked;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job forked                                                             */
-/*----------------------------------------------------------------------------*/
-void Job::vWasForked(bool bWasForked)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_bWasForked = bWasForked;
 }
 
 /*----------------------------------------------------------------------------*/

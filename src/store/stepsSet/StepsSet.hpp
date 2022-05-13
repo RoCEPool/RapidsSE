@@ -896,9 +896,6 @@ void vDdlLockAssertNone(void);
   void vJobTscCanceled(void);
   void vJobTscParticipant(void);
 
-  void vJobWasForkedFetch(void);
-  void vJobWasForkedStore(void);
-
   // job metrics
   void vJobMetricsCollect(void);
   void vJobMetricsDelete(void);
