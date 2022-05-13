@@ -193,7 +193,7 @@ void Op::vAckInvokingTask(void)
       SP_Op spOp;
 
       vTraceM("%s "
-              "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pJobOfOp()
+              "%-18s pipelineJob=%p\n"_Stz, spOp.szLeading(this), __func__, pOuterJobOfOp()
       );
     } else {
       vTrace("Op %s (%s (N%lld) (P%02lld)): acking invoking task\n"_Stz,
@@ -891,21 +891,6 @@ bool Op::bIsEventValid(i8 i_OperandKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get job of this op                                                         */
-/*----------------------------------------------------------------------------*/
-Job* Op::pJobOfOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  Stream*   pStream   = this->pStream();
-  Stage*    pStage    = pStream->pStage();
-  Pipeline* pPipeline = pStage->pVertex()->pPipeline();
-  Job*      pJob      = pPipeline->pPipelineJob();
-
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* generate next local round robin                                            */
 /*----------------------------------------------------------------------------*/
 i8 Op::iLocalRobinNext(void)
@@ -1097,7 +1082,7 @@ void Op::vOpTrace(Operand* pOperand
          m_p_Stream->pStage()->szStageNm(),
          iNodeId(),
          tLglPtn().iAsI8(),
-         pJobOfOp(),
+         pOuterJobOfOp(),
 
          szFunNm,
          pOperand ? AM::pOperandName(pOperand) : "null"_Stz,
@@ -1197,6 +1182,21 @@ Stage* Op::pOtherStage(void)
   Stage* pOtherStage = pDeck->pGet(i_OtherStage);
   
   return pOtherStage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job of this op                                                         */
+/*----------------------------------------------------------------------------*/
+Job* Op::pOuterJobOfOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Stream*   pStream   = this->pStream();
+  Stage*    pStage    = pStream->pStage();
+  Pipeline* pPipeline = pStage->pVertex()->pPipeline();
+  Job*      pJob      = pPipeline->pPipelineJob();
+
+  return pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1669,7 +1669,7 @@ void Op::vSetTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  TagSet* pPipeLineJobTags = AM::pJobTags(pJobOfOp());
+  TagSet* pPipeLineJobTags = AM::pJobTags(pOuterJobOfOp());
   m_pOpTags = _pTagSet(pPipeLineJobTags->pMemoryCopy());
   m_pOpTags->vReplace(C_TAG_JOBNM, szOpNm());
 }
@@ -1681,7 +1681,7 @@ void Op::vSpawnTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
       
-  Job* pJob = this->pJobOfOp();
+  Job* pJob = this->pOuterJobOfOp();
   pJob->vActiveOpsInc();
   
   vCreateTaskForOp();

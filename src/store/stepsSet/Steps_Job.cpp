@@ -443,7 +443,7 @@ void Step::vJobEntryPointFetch(void)
   else
   if (m_pOp.bIsNotNull()) {
     RASSERT(m_pJob.bIsNull());
-    pJob = m_pOp->pJobOfOp();
+    pJob = m_pOp->pOuterJobOfOp();
   }
   else {
     NEVER_REACH;
@@ -487,7 +487,7 @@ void Step::vJobErrorFetch(void)
   else
   if (m_pOp.bIsNotNull()) {
     RASSERT(m_pJob.bIsNull());
-    pJob = m_pOp->pJobOfOp();
+    pJob = m_pOp->pOuterJobOfOp();
   }
   else {
     NEVER_REACH;
@@ -545,7 +545,7 @@ void Step::vJobGet(void)
   else
   if (m_pOp.bIsNotNull()) {
     RASSERT(m_pJob.bIsNull());
-    pJob = m_pOp->pJobOfOp();
+    pJob = m_pOp->pOuterJobOfOp();
   }
   else {
     NEVER_REACH;
@@ -897,7 +897,7 @@ void Step::vJobTagSetFetch(void)
   else
   if (m_pOp.bIsNotNull()) {
     RASSERT(m_pJob.bIsNull());
-    pJob = m_pOp->pJobOfOp();
+    pJob = m_pOp->pOuterJobOfOp();
   }
   else {
     NEVER_REACH;

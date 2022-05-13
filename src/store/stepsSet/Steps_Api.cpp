@@ -80,11 +80,10 @@ void Step::vApiForkChild(void)
   JobId tParentId;
   JobId tOriginId;
   JobId tDistId;
-  if (m_pJob) {
-    tParentId = m_pJob->tJobId();
-    tOriginId = m_pJob->tOriginId();
-    tDistId   = m_pJob->tDistId();
-  }
+  Job* pOuterJob = pOuterJobOfTask();
+  tParentId = pOuterJob->tJobId();
+  tOriginId = pOuterJob->tOriginId();
+  tDistId   = pOuterJob->tDistId();
   
   JobId tChildJobId;
   Job* pChildJob_tbr = nullptr;

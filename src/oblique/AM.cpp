@@ -2287,7 +2287,7 @@ void AM::TASK::vRetire(Task* pTask)
   
   if (Op* pOp = pTask->pOp()) {
     // retiring op of job
-    Job* pJob = pOp->pJobOfOp();
+    Job* pJob = pOp->pOuterJobOfOp();
     pJob->vActiveOpsDec();
   }
   else

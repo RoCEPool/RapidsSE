@@ -158,7 +158,7 @@ void Step::vParcelLabel(void)
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-  pParcel->vLabel(pOp->pJobOfOp()->tDistId().iAsI8(),
+  pParcel->vLabel(pOp->pOuterJobOfOp()->tDistId().iAsI8(),
                   pOpSpec->eParcelForward());
 
   EXIT();
