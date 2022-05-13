@@ -54,6 +54,7 @@ void Api::vDeleteRootJob(Job*& rpRootJob)
 eEC Api::eForkJob(JobId& rtChildJobId,
                   TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                   JobId tParentId, JobId tOriginId, JobId tDistId,
+                  Job*& rpParentJob_tbr,
                   Job*& rpChildJob_tbr)
 {
   _static_

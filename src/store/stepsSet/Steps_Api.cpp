@@ -90,6 +90,7 @@ void Step::vApiForkChild(void)
   eEC eError = Api::eForkJob(tChildJobId,
                              pCmdTknVec,pCmdTagSet,
                              tParentId,tOriginId,tDistId,
+                             pOuterJob,    // TO BE REMOVED
                              pChildJob_tbr // TO BE REMOVED
                             );
   RASSERT(EC_NONE == eError);

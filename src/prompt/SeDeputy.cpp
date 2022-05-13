@@ -159,7 +159,8 @@ void SeDeputy::vDeputyLoop(void)
     m_eError = Api::eForkJob(tChildJobId,
                              pInpTknVec,pInpTagSet,
                              tParentId,tOriginId,tDistId,
-                             m_pJob // TO BE REMOVED
+                             m_pRootJob, // TO BE REMOVED
+                             m_pJob      // TO BE REMOVED
                              );
     
     if (EC_NONE != m_eError) {
