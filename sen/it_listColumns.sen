@@ -19,7 +19,7 @@
     isPartitionKey BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 

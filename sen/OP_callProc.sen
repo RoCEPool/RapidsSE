@@ -24,7 +24,7 @@
     STD_PATH_TAG
     <procedureCall> " " str.cat
     0 infoSetRow[].getVchColumn str.cat
-    api::forkChild_wait api:executeCheck not if
+    api::forkChild api:executeCheck not if
       op__execErr
       true
       exit

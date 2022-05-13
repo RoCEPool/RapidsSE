@@ -38,7 +38,7 @@
 
   ) < internal > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBOPERATORS
@@ -83,7 +83,7 @@
 
   ) < internal > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBREPORT
@@ -103,7 +103,7 @@
 
   ) < internal > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -135,7 +135,7 @@
     
   ) < internal > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 
