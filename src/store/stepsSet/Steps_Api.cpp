@@ -61,59 +61,44 @@ void Step::vApiForkChild(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-    
-  TagSet* pCmdTagSet = new TagSet;
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  TagSet*   pCmdTagSet = new TagSet;
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
   Stz* szJobNm = pCmdTknVec->pGet(0)->szChars();
   pCmdTagSet->vReplace(C_TAG_JOBNM,szJobNm);
 
-  if (m_pJob) {
-//    if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
-//      pCmdTagSet->vReplace(C_TAG_LASTJOBID,m_pJob->tJobId().iAsI8());
-//    }
-    if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
-      pCmdTagSet->vReplace(C_TAG_PATH,
-                           m_pJob->pJobTags()->szValue(C_TAG_PATH));
-    }
-  }
-  else {
-//    if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
-//      pCmdTagSet->vReplace(C_TAG_LASTJOBID,C_UNKNOWN);
-//    }
-    if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
+  if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
+    if (m_pJob)
+      pCmdTagSet->vReplace(C_TAG_PATH,m_pJob->pJobTags()->szValue(C_TAG_PATH));
+    else
       pCmdTagSet->vReplace(C_TAG_PATH,C_SE_PATH_ROOT);
-    }
   }
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tParentId;
-  if (m_pJob)
-    tParentId = m_pJob->tJobId();
-
   JobId tOriginId;
-  if (m_pJob)
-    tOriginId = m_pJob->tOriginId();
-
   JobId tDistId;
-  if (m_pJob)
-    tDistId = m_pJob->tDistId();
-
+  if (m_pJob) {
+    tParentId = m_pJob->tJobId();
+    tOriginId = m_pJob->tOriginId();
+    tDistId   = m_pJob->tDistId();
+  }
+  
   JobId tChildJobId;
-  Job* pJob = nullptr;
+  Job* pChildJob_tbr = nullptr;
   eEC eError = Api::eForkJob(tChildJobId,
                              pCmdTknVec,pCmdTagSet,
                              tParentId,tOriginId,tDistId,
-                             pJob // TO BE REMOVED
+                             pChildJob_tbr // TO BE REMOVED
                             );
   RASSERT(EC_NONE == eError);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  delete pCmdTknVec;
   delete pCmdTagSet;
+  delete pCmdTknVec;
   delete pTagTknVec;
 
   m_pDataStack->vPushInt(true);
