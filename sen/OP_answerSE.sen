@@ -16,8 +16,8 @@
 
   // form the tag set string
   pAnsweredNode "<ansNode> = %v " str.format
-  iConnNo "<connectionNo> = %v" str.format str.cat
-
+  iConnNo "<connectionNo> = %v " str.format str.cat
+  STD_NOWAIT_TAG str.cat
     // receiver demon pipeline
       receiverSE_procText api::forkChild_noWait not if
       "Error Code %v" .printf
