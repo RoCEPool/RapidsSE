@@ -177,7 +177,7 @@
 
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      "" "execute" api::forkGeneric_noWait discard
+      "" "execute" api::forkChild_noWait discard
     [task].wait
 
     [job].tscExecuted
@@ -199,7 +199,7 @@
     
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      "" "end" api::forkGeneric_noWait discard
+      "" "end" api::forkChild_noWait discard
     [task].wait
 
     [job].tscEnded
@@ -327,7 +327,7 @@
 
   // send the begun job
   1 [task].debugMark!
-  "" "begun" api::forkGeneric_noWait discard
+  "" "begun" api::forkChild_noWait discard
 
   [ddlLock].testDrop
 
@@ -404,7 +404,7 @@
   
   
   // send the executed job
-  "" "executed" api::forkGeneric_noWait discard
+  "" "executed" api::forkChild_noWait discard
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -435,7 +435,7 @@
   [job].removeParticipant
 
   // send the ended job
-  "" "ended" api::forkGeneric_noWait discard
+  "" "ended" api::forkChild_noWait discard
 
   [job]:retireAndExit
   HAZARD
@@ -460,7 +460,7 @@
   [job].removeParticipant
 
   // send the cancelled job
-  "" "cancelled" api::forkGeneric_noWait discard
+  "" "cancelled" api::forkChild_noWait discard
 
   [job]:retireAndExit
   
