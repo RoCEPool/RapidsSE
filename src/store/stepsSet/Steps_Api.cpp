@@ -122,7 +122,7 @@ void Step::vApiReapJobs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* api::spawnJob -- spawn the job on the stack                         */
+/* api::spawnJob -- spawn the job on the stack                                */
 /*----------------------------------------------------------------------------*/
 void Step::vApiSpawnJob(void)
 {

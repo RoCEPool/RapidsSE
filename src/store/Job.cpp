@@ -72,9 +72,10 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   // -- c -------------------
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
-  m_eError_job    = EC_NONE;
+  m_eError_job  = EC_NONE;
   m_pOutput_job = nullptr;
-  
+  m_pParentJob  = nullptr;
+
   // m_oJobTags
   // m_xResult
 
@@ -933,6 +934,26 @@ void Job::vParentId(JobId tParentId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get parent job  TO BE REMOVED                                              */
+/*----------------------------------------------------------------------------*/
+Job* Job::pParentJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_pParentJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set parent job  TO BE REMOVED                                              */
+/*----------------------------------------------------------------------------*/
+void Job::vParentJob(Job* pParentJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_pParentJob = pParentJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pipeline                                                               */
 /*----------------------------------------------------------------------------*/
 Pipeline* Job::pPipeline(void)
@@ -1032,9 +1053,10 @@ void Job::vPostRecv(void)
   m_pTask        = nullptr;
   m_p_ResponseOp = nullptr;
   m_pOutput_job  = nullptr;
-  m_pMutex   = nullptr;
+  m_pParentJob   = nullptr;
+  m_pMutex       = nullptr;
+  m_pStmtList    = nullptr;
   m_pJobMetricsChain = nullptr;
-  m_pStmtList = nullptr;
 
   m_okLock.vResetLock();
   m_okLock.vResetStats();
@@ -1340,6 +1362,8 @@ void Job::vTaskCreate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  RASSERT(! m_pTask);
+
   m_pTask = new Task(szJobNm(),this);
     
   m_pTask->vSetInxPtr("job::entryPoint"_Stz);
