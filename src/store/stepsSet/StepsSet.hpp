@@ -865,6 +865,8 @@ void vDdlLockAssertNone(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
+  void vJobResponseOpFetch(void);
+  void vJobResponseOpStore(void);
 
   void vJobReportMetrics(void);
   void vJobReportNetDissect(void);

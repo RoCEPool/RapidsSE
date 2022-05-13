@@ -76,7 +76,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("[job].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("[job].removeRetired"_Stz,    &Step::vJobRemoveRetired);
-    
+  vAddStep("[job].responseOp@"_Stz,      &Step::vJobResponseOpFetch);
+  vAddStep("[job].responseOp!"_Stz,      &Step::vJobResponseOpStore);
+
   vAddStep("[job].setOriginId"_Stz,      &Step::vJobSetOriginId);
   vAddStep("[job].signalWaiter"_Stz,     &Step::vJobSignalWaiter);
 
@@ -833,6 +835,36 @@ void Step::vJobRemoveRetired(void)
   
   AM::vJob_RemoveRetired(pJob);
      
+  EXIT();
+}
+  
+/*----------------------------------------------------------------------------*/
+/* [job].responseOp@ -- fetch response op                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJobResponseOpFetch(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob;
+  
+  m_pDataStack->vPushPtr(pJob->p_ResponseOp());
+
+  EXIT();
+}
+  
+/*----------------------------------------------------------------------------*/
+/* [job].responseOp! -- store response op                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJobResponseOpStore(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob;
+  
+  Op* pResponseOp = _pOp(m_pDataStack->pPopPtr(__func__));
+
+  pJob->vResponseOp(pResponseOp);
+  
   EXIT();
 }
   
