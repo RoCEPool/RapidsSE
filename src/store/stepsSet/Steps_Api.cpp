@@ -246,6 +246,8 @@ void Step::vApiForkGeneric_noWait(void)
   delete pCmdTknVec;
   delete pCmdTagSet;
  
+  m_pDataStack->vPushInt(true);
+
   EXIT();
 }
 
