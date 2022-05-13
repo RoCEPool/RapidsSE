@@ -8,7 +8,7 @@
 
   // C_TDEF_PINGINFO
   
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __pingInfo (
     pong      VARCHAR NOT NULL

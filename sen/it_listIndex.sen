@@ -8,7 +8,7 @@
 
   // C_TDEF_LISTINDEX
   
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __listIndex (
     indexName    VARCHAR NOT NULL ,

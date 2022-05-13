@@ -8,7 +8,7 @@
 
   // C_TDEF_ANALYZEINDEX
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
     define table __analyzeIndex (
       nodeName       VARCHAR NOT NULL ,

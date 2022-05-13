@@ -8,7 +8,7 @@
 
   // C_TDEF_PATH
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __path (
     path           VARCHAR NOT NULL ,

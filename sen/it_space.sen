@@ -8,7 +8,7 @@
 
   // C_TDEF_SPACE
   
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __space (
     nodeName   VARCHAR NOT NULL ,

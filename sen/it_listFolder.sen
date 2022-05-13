@@ -8,7 +8,7 @@
 
   // C_TDEF_LISTFOLDER
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __listFolder (
     Name       VARCHAR NOT NULL ,

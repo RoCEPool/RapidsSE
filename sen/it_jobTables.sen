@@ -12,7 +12,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBOPERANDS
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table se__jobOperands
   (
@@ -42,7 +42,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBOPERATORS
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table se__jobOperators
   (
@@ -87,7 +87,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBREPORT
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table se__jobReport
   (
@@ -108,7 +108,7 @@
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBMETRICS
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table se__jobMetrics
   (

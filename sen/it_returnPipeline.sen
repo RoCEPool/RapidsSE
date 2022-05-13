@@ -8,7 +8,7 @@
 
   // C_TDEF_RETURNPIPELINE
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __returnPipeline (
     requestNo      INTEGER NOT NULL ,

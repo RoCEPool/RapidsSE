@@ -8,7 +8,7 @@
 
   // C_TDEF_STATUS
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __status (
     nodeName   VARCHAR NOT NULL ,

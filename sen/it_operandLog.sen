@@ -8,7 +8,7 @@
 
   // C_TDEF_OPERANDLOG
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table se__operandLog (
   

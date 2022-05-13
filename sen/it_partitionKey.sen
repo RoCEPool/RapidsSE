@@ -8,7 +8,7 @@
 
   // C_TDEF_PARTITIONKEY
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __partitionKey (
     catalogName    VARCHAR NOT NULL ,

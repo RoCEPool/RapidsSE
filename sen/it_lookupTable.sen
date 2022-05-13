@@ -8,7 +8,7 @@
 
   // C_TDEF_LOOKUPTABLE
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __lookupTable (
     catalogName   VARCHAR NOT NULL ,

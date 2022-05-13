@@ -8,7 +8,7 @@
 
   // C_TDEF_LISTPARTITIONS
   
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __listPartitions (
     partition     INTEGER NOT NULL ,

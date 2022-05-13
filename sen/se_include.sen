@@ -12,7 +12,8 @@ assert::stack_0
   constant STD_PATH_TAG
   
 "<noWait> = 1" constant STD_NOWAIT_TAG
-"<wait> = 1"   constant STD_WAIT_TAG
+"<wait> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+   constant STD_WAIT_PATH_TAG
 
 "se_boot 9" .verbose
 

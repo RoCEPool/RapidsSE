@@ -8,7 +8,7 @@
 
   // C_TDEF_COMMANDERRORS
   
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __commandErrors (
     nodeName       VARCHAR NOT NULL ,

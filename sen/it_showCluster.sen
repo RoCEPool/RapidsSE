@@ -8,7 +8,7 @@
 
   // C_TDEF_SHOWCLUSTER
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __showCluster (
     NodeName  VARCHAR NOT NULL ,
