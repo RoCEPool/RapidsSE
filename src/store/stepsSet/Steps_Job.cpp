@@ -46,7 +46,7 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("[job].distId@"_Stz,          &Step::vJobDistIdFetch);
   vAddStep("[job].distIdGenerate"_Stz,   &Step::vJobDistIdGenerate);
-
+ 
   vAddStep("[job].entryPoint@"_Stz,      &Step::vJobEntryPointFetch);
   vAddStep("[job].entryPoint!"_Stz,      &Step::vJobEntryPointStore);
 
@@ -84,6 +84,7 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("[job].tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("[job].task@"_Stz,            &Step::vJobTaskFetch);
+  vAddStep("[job].trace"_Stz,            &Step::vJobTrace);
   vAddStep("[job].tscBeginning"_Stz,     &Step::vJobTscBeginning);
   vAddStep("[job].tscBegun"_Stz,         &Step::vJobTscBegun);
   vAddStep("[job].tscExecuting"_Stz,     &Step::vJobTscExecuting);
@@ -281,7 +282,7 @@ void Step::vJobAssertBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].assertOrdinary -- assert job is not in originator nor participant set   */
+/* [job].assertOrdinary -- assert job is not in originator nor participant set*/
 /*----------------------------------------------------------------------------*/
 void Step::vJobAssertOrdinary(void)
 {
@@ -369,7 +370,7 @@ void Step::vJobAssertParticipant(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* [job].assertReceived -- assert job was received                              */
+/* [job].assertReceived -- assert job was received                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAssertReceived(void)
 {
@@ -952,6 +953,18 @@ void Step::vJobTaskFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].trace -- distributed job trace                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTrace(void)
+{
+  ENTRY();
+    
+  m_pJob->vJobTrace();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].tscBeginning -- set tsc for beginning                                */
 /*----------------------------------------------------------------------------*/
 void Step::vJobTscBeginning(void)
@@ -1058,7 +1071,6 @@ void Step::vJobTscParticipant(void)
   
   EXIT();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

@@ -816,6 +816,7 @@ void vDdlLockAssertNone(void);
 
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
+  void vJobTrace(void);
 
   void vJobEntryPointFetch(void);
   void vJobEntryPointStore(void);
