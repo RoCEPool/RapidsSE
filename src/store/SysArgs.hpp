@@ -74,6 +74,7 @@ namespace STORE
     i8   m_nDemonSleep;      // sleep period for demons
     bool m_bDerefMetrics;    // collect deref metrics
     bool m_bDeveloper;       // user is a developer
+    bool m_bDistJob;         // dist job trace
     bool m_bDontFree;        // dont actually free objects back to heap
     i8   m_nDummyThreads;    // number of dummy threads
     i8   m_nDummySleep;      // sleep period for dummy threads
