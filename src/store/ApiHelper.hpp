@@ -25,9 +25,7 @@ namespace STORE
     void* pMetaData(void*);
 
     void vPipeoutResults(Op* pCurrOp, Operand* pOperand, Task* pTriggeringTask);
-  
-    void vPrintResults(Job* pJob);
-  
+    
     void vReapableJob(Job*& rpJob);
     void vResetResults(Job* pJob);
     i8   nRowCount(void);

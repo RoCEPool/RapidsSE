@@ -129,7 +129,7 @@ void Jobs::vReapableJob(Job*& rpJob)
   _static_
       
   if (rpJob && rpJob->bIsPipeline() && ! rpJob->pOutput()->m_bExitMarker)
-    rpJob->pOutput()->vProcessBufferQueue(rpJob);
+    rpJob->pOutput()->vProcessBufferQueue();
 
   rpJob->pOutput()->m_pOutputQueue->vReset();
   rpJob->pOutput()->vEndProcOneCmd();

@@ -276,7 +276,7 @@ void Job::vCascadeReset(void)
   m_pTask->vState(TS_NONE);
   m_pTask->vSetInxPtr("job::entryPoint"_Stz);
 
-  m_pOutput_job->vDrainBufferQueue(this);
+  m_pOutput_job->vDrainBufferQueue();
 
   vDebugPoint();
 }
@@ -1152,7 +1152,7 @@ void Job::vReapableJob(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   if (bIsPipeline() && ! pOutput()->m_bExitMarker)
-    pOutput()->vProcessBufferQueue(this);
+    pOutput()->vProcessBufferQueue();
 
   pOutput()->m_pOutputQueue->vReset();
   pOutput()->vEndProcOneCmd();

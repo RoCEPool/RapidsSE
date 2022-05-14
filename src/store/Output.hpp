@@ -50,18 +50,18 @@ namespace STORE
   
     void vAssertEmptyQueue(void);
     void vBeginProcOneCmd(void);
-    void vDrainBufferQueue(Job* pJob);
+    void vDrainBufferQueue(void);
     void vEndProcOneCmd(void);
     void vFileOut(bool bFileOut);
     void vFilePath(Stz* szFilePath);
-    void vProcessBufferQueue(Job* pJob);
+    void vProcessBufferQueue(void);
     bool bPrintEnabled(void);
     void vPrintEnabled(bool bPrintEnabled);
 
     void vPrintResult(void);
   
 //  private:
-    Operand* pPopBufferQueue_blocking(Job* pJob);
+    Operand* pPopBufferQueue_blocking(void);
     bool bProcessOperand(Operand* pOperand);
         
     Footer* aFooter(void);
