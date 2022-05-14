@@ -17324,7 +17324,7 @@ void Task::vAddMunged(Task* )
     "  pIndex index.isUnique@ if\n"
     "    pIndex index.isValidUniqueIndex not if\n"
     "    \n"
-    "      EC_INVALID_COLUMNS_UNIQUE_INDEX [job].error!\n"
+    "      //EC_INVALID_COLUMNS_UNIQUE_INDEX [job].error!\n"
     "      [ddlLock].testDrop\n"
     "      \n"
     "      EC_INVALID_COLUMNS_UNIQUE_INDEX op__execErr\n"

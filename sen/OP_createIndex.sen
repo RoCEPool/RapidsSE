@@ -44,7 +44,7 @@
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex not if
     
-      EC_INVALID_COLUMNS_UNIQUE_INDEX [job].error!
+      //EC_INVALID_COLUMNS_UNIQUE_INDEX [job].error!
       [ddlLock].testDrop
       
       EC_INVALID_COLUMNS_UNIQUE_INDEX op__execErr

@@ -182,6 +182,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vMutexWait(void);
 
     Output* pOutput(void);
+    void vOutput(Output* pOutput);
     void vOutputBeginProc(void);
     void vOutputCreate(void);
     void vOutputDestroy(void);

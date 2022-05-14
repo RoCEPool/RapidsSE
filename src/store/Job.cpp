@@ -803,6 +803,18 @@ Output* Job::pOutput(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set output processor                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vOutput(Output* pOutput)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(! m_pOutput_job);
+  
+  m_pOutput_job = pOutput;
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin output processor                                                     */
 /*----------------------------------------------------------------------------*/
 void Job::vOutputBeginProc(void)
