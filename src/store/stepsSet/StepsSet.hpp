@@ -665,7 +665,6 @@ void vDdlLockAssertNone(void);
   void vIndexDefNameStore(void);
   void vIndexDefNew(void);
   void vIndexDefParse(void);
-  void vIndexDefParseOLD(void);
   void vIndexDefSet(void);
   void vIndexDefSyntax(void);
   void vIndexDefParseTableName(void);
