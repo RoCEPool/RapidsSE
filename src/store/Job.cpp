@@ -688,14 +688,50 @@ TagSet* Job::pJobTags(void)
 /*----------------------------------------------------------------------------*/
 /* trace job                                                                  */
 /*----------------------------------------------------------------------------*/
-void Job::vJobTrace(void)
+void Job::vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vTrace("Job Trace\n"_Stz);
+  vTrace("Job Trace : %10s : %-14s @ %-20s - "_Stz,
+         szAtCmd,
+         szAtRoutine,
+         szAtPoint
+         );
   
-  
-  
+  if (m_tJobId.bIsUnknown())
+    vTrace("%-11s"_Stz,"J:unknown "_Stz);
+  else
+    vTrace("J%04lld.%04lld "_Stz,
+           m_tJobId.uNodeId(),
+           m_tJobId.uJobNo()
+           );
+
+  if (m_tOriginId.bIsUnknown())
+    vTrace("%-11s"_Stz,"O:unknown "_Stz);
+  else
+    vTrace("O%04lld.%04lld "_Stz,
+           m_tOriginId.uNodeId(),
+           m_tOriginId.uJobNo()
+           );
+
+  if (m_tDistId.bIsUnknown())
+    vTrace("%-11s"_Stz,"D:unknown "_Stz);
+  else
+    vTrace("D%04lld.%04lld "_Stz,
+           m_tDistId.uNodeId(),
+           m_tDistId.uJobNo()
+           );
+
+  if (m_tParentId.bIsUnknown())
+    vTrace("%-11s"_Stz,"P:unknown "_Stz);
+  else
+    vTrace("P%04lld.%04lld "_Stz,
+           m_tParentId.uNodeId(),
+           m_tParentId.uJobNo()
+           );
+
+
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

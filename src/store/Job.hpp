@@ -169,7 +169,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eJP  eJobPhase(void);
     void vJobPhase(eJP eJobPhase);
     TagSet* pJobTags(void);
-    void vJobTrace(void);
+    void vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint);
 
     JobId tLastJobId(void);
     void  vLastJobId(JobId tLastJobId);

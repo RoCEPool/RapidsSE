@@ -15,6 +15,11 @@
 
   //"begun:onOrigin" .
   
+  [args].distJob if
+    "begun" "onOrigin" "<beg ack originTask" [job].trace
+  then
+
+
   // find the originating job
   
   [job].distId@ ListedJob[].findOriginator? if
@@ -36,9 +41,13 @@
 /*----------------------------------------------------------------------------*/
 /* on participating node                                                      */
 /*----------------------------------------------------------------------------*/
-: begun:begun
+: begun:onParticipant
 
   //"begun:begun" .
+
+  [args].distJob if
+    "begun" "onParticipant" "<beg snd origin" [job].trace
+  then
 
   "begun:onOrigin" [job].entryPoint!
 
@@ -61,7 +70,7 @@ cmdSyntax: begun :: begun ;
 : begun_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>     = "--desc for job--"
-    <entryPoint>  = "begun:begun"
+    <entryPoint>  = "begun:onParticipant"
     <path>        = "/"
   }
 ;

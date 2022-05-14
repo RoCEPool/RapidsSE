@@ -959,7 +959,14 @@ void Step::vJobTrace(void)
 {
   ENTRY();
     
-  m_pJob->vJobTrace();
+  s256 sAtPoint;
+  m_pDataStack->vPopStr(sAtPoint,__func__);
+  s256 sAtRoutine;
+  m_pDataStack->vPopStr(sAtRoutine,__func__);
+  s256 sAtCmd;
+  m_pDataStack->vPopStr(sAtCmd,__func__);
+
+  m_pJob->vJobTrace(sAtCmd,sAtRoutine,sAtPoint);
 
   EXIT();
 }

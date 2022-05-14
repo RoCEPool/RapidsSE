@@ -15,6 +15,10 @@
 
   //"execute:onParticipant" .
 
+  [args].distJob if
+    "execute" "onParticipant" ">exe sch next" [job].trace
+  then
+
   // find job to be executed in participating job list
   [job].distId@ ListedJob[].findParticipant? if
 
@@ -43,9 +47,13 @@
 /*----------------------------------------------------------------------------*/
 /* on origin node                                                             */
 /*----------------------------------------------------------------------------*/
-: execute:execute
+: execute:onOrigin
 
   //"execute:execute" .
+
+  [args].distJob if
+    "execute" "onOrigin" ">exe brd all ptp" [job].trace
+  then
 
   "execute:onParticipant" [job].entryPoint!
 
@@ -64,7 +72,7 @@ cmdSyntax: execute :: execute ;
 : execute_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>     = "--desc for job--"
-    <entryPoint>  = "execute:execute"
+    <entryPoint>  = "execute:onOrigin"
     <path>        = "/"
   }
 ;

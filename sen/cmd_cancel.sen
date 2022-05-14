@@ -15,6 +15,10 @@
 
   //"cancel:onParticipant" .
 
+  [args].distJob if
+    "cancel" "onParticipant" "*on participant" [job].trace
+  then
+
   // find job to be canceled in participating job list
   [job].distId@ ListedJob[].findParticipant? if
 
@@ -47,6 +51,11 @@
 : cancel:cancel
 
   //"cancel:cancel" .
+
+  [args].distJob if
+    "cancel" "cancel" "*on origin" [job].trace
+  then
+
 
   "cancel:onParticipant" [job].entryPoint!
 

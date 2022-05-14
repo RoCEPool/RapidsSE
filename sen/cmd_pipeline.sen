@@ -15,6 +15,10 @@
 
   //"pipeline:origin" .
   
+  [args].distJob if
+    "pipeline" "origin" "_org now oridinary" [job].trace
+  then
+  
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
   // ordinary job            / run pre-checks                                 //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
@@ -68,6 +72,10 @@
   [job].distIdGenerate
   [job].addOriginator
   [job].assertOriginator
+
+  [args].distJob if
+    "pipeline" "origin" "_org now originator" [job].trace
+  then
 
   "<show_command>" sysargs::tagSet@ tagSet.hasName if
     <cmd> .
@@ -155,7 +163,11 @@
   [job].error@ not if
     // + compiled without error..
     
-    "pipeline:begin" [job].entryPoint!
+    [args].distJob if
+      "pipeline" "origin" "_org brd begin" [job].trace
+    then
+    
+    "pipeline:ptpBegin" [job].entryPoint!
     
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
@@ -172,6 +184,12 @@
   [job].error@ not if
 
     // "ORIGIN: broadcast execute" .
+
+    [args].distJob if
+      "pipeline" "origin" "_org all begun" [job].trace
+      "pipeline" "origin" "_org brd execute" [job].trace
+    then
+    
 
     [job].tscExecuting
 
@@ -195,6 +213,12 @@
 
     // "ORIGIN: broadcast end" .
     
+    [args].distJob if
+      "pipeline" "origin" "_org all executed" [job].trace
+      "pipeline" "origin" "_org brd end" [job].trace
+    then
+    
+
     [job].tscEnding
     
     [task].grabLock
@@ -211,9 +235,16 @@
   // pipeline has ended      / become ordinary job                            //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
+  [args].distJob if
+    "pipeline" "origin" "_org all ended" [job].trace
+  then
+  
   [job].removeOriginator
   [job].assertOrdinary
 
+  [args].distJob if
+    "pipeline" "origin" "_org now ordinary" [job].trace
+  then
 
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
   // ordinary job            / this job exits                                 //
@@ -238,6 +269,10 @@
   
   ListedJob[].assertNoRef
 
+  [args].distJob if
+    "pipeline" "origin" "_org retiring..." [job].trace
+  then
+
   [job].addRetired
   
   [task].grabLock
@@ -259,9 +294,14 @@
 /*----------------------------------------------------------------------------*/
 /* begin the op sequence for pipeline command on participant node             */
 /*----------------------------------------------------------------------------*/
-: pipeline:begin ( -- )
+: pipeline:ptpBegin ( -- )
 
-  //"pipeline:begin" .
+  //"pipeline:ptpBegin" .
+
+  [args].distJob if
+    "pipeline" "ptpBegin" ".ptp phs begin" [job].trace
+  then
+    
 
   [job].setOriginId
 
@@ -313,7 +353,7 @@
   JP_BEGUN [job].phase!
 
   // what to execute next
-  "pipeline:execute" [job].entryPoint!
+  "pipeline:ptpExecute" [job].entryPoint!
 
   // add job to participant list
   [job].tscParticipant
@@ -324,6 +364,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply begun to originator
+
+  [args].distJob if
+    "pipeline" "ptpBegin" ".ptp has begun" [job].trace
+  then
 
   // send the begun job
   1 [task].debugMark!
@@ -350,10 +394,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute the op sequence for pipeline command on participant node           */
 /*----------------------------------------------------------------------------*/
-: pipeline:execute ( -- )
+: pipeline:ptpExecute ( -- )
 
-  //"pipeline:execute" .
+  //"pipeline:ptpExecute" .
     
+  [args].distJob if
+    "pipeline" "ptpExecute" ".ptp phs execute" [job].trace
+  then
+
   [job].assertStructure
   [job].assertParticipant
 
@@ -393,7 +441,7 @@
   JP_EXECUTED [job].phase!
   
   // what to execute next
-  "pipeline:end" [job].entryPoint!
+  "pipeline:ptpEnd" [job].entryPoint!
 
   [ddlLock].testDrop
   ListedJob[].assertNoRef
@@ -402,7 +450,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply executed to originator
   
-  
+  [args].distJob if
+    "pipeline" "ptpBegin" ".ptp has executed" [job].trace
+  then
+
+
   // send the executed job
   STD_NOWAIT_TAG "executed" api::forkChild discard
 
@@ -420,9 +472,13 @@
 /*----------------------------------------------------------------------------*/
 /* end the op sequence for pipeline command on participant node               */
 /*----------------------------------------------------------------------------*/
-: pipeline:end ( -- )
+: pipeline:ptpEnd ( -- )
 
-  //"pipeline:end" .
+  //"pipeline:ptpEnd" .
+
+  [args].distJob if
+    "pipeline" "ptpEnd" ".ptp phs end" [job].trace
+  then
 
   [job].assertStructure
   [job].assertParticipant
@@ -434,6 +490,11 @@
   JP_ENDED [job].phase!                // this job has ended
   [job].removeParticipant
 
+  [args].distJob if
+    "pipeline" "ptpBegin" ".ptp has ended" [job].trace
+  then
+
+
   // send the ended job
   STD_NOWAIT_TAG "ended" api::forkChild discard
 
@@ -444,10 +505,15 @@
 /*----------------------------------------------------------------------------*/
 /* cancel op sequence for pipeline command on participant node                */
 /*----------------------------------------------------------------------------*/
-: pipeline:cancel ( -- )
+: pipeline:ptpCancel ( -- )
 
-  //"pipeline:cancel" .
-  
+  //"pipeline:ptpCancel" .
+
+  [args].distJob if
+    "pipeline" "ptpCancel" ".cancelling" [job].trace
+  then
+
+
   [job].assertStructure
   [job].assertParticipant
 
@@ -458,6 +524,11 @@
   JP_CANCELED [job].phase!
 
   [job].removeParticipant
+
+  [args].distJob if
+    "pipeline" "ptpBegin" ".ptp has cancelled" [job].trace
+  then
+
 
   // send the cancelled job
   STD_NOWAIT_TAG "cancelled" api::forkChild discard

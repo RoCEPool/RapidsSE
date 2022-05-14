@@ -16,6 +16,11 @@
 
   // "cancelled:cancelled" .
 
+  [args].distJob if
+    "cancelled" "cancelled" "*ack originTask" [job].trace
+  then
+
+
   // find the originating job
   [job].distId@ ListedJob[].findOriginator? discard
 

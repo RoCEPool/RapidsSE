@@ -15,6 +15,10 @@
 
   //"ended:onOrigin" .
 
+  [args].distJob if
+    "ended" "onOrigin" "<edd ack originTask" [job].trace
+  then
+
   // find the originating job
   
   [job].distId@ ListedJob[].findOriginator? if
@@ -39,6 +43,11 @@
 : ended:ended
 
   //"ended:ended" .
+
+  [args].distJob if
+    "ended" "ended" "<edd snd origin" [job].trace
+  then
+
 
   "ended:onOrigin" [job].entryPoint!
 
