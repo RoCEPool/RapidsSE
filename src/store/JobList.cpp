@@ -290,29 +290,15 @@ void JobList::vInsertJob(Job *pJob) {
     pJob->vJobList(m_eJobList);
 
 
+  JobId tJobId_search;
   bool bWasInserted;
 
-  if (JL_RETIRED == m_eJobList || JL_JOBS == m_eJobList) {
-
-    auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
-      bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);
-      return bMoveRight;
-    };
-
-    bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
-                                                bfMoveRightTest,
-                                                Job::vPrintJobNode);
-    RASSERT(bWasInserted);
-  }
-  else {
-    JobId tJobId;
-    
-    if (JL_ORIGINATING == m_eJobList || JL_PARTICIPATING == m_eJobList) {
+  switch (m_eJobList) {
       
-      tJobId = pJob->tDistId();
-
-      auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
-        bool bMoveRight = bMoveRight_distId(tJobId, _pJob(aRightJob), bFoundKey);
+    case JL_JOBS: {
+    
+      auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);
         return bMoveRight;
       };
 
@@ -320,13 +306,13 @@ void JobList::vInsertJob(Job *pJob) {
                                                   bfMoveRightTest,
                                                   Job::vPrintJobNode);
       RASSERT(bWasInserted);
+      break;
     }
-    else {
+      
+    case JL_RETIRED: {
 
-      tJobId = pJob->tJobId();
-
-      auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
-        bool bMoveRight = bMoveRight_jobId(tJobId, _pJob(aRightJob), bFoundKey);
+      auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);
         return bMoveRight;
       };
 
@@ -334,11 +320,78 @@ void JobList::vInsertJob(Job *pJob) {
                                                   bfMoveRightTest,
                                                   Job::vPrintJobNode);
       RASSERT(bWasInserted);
+      break;
     }
+      
+    case JL_DEMON: {
 
+      tJobId_search = pJob->tJobId();
+
+      auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_jobId(tJobId_search, _pJob(aRightJob), bFoundKey);
+        return bMoveRight;
+      };
+
+      bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
+                                                  bfMoveRightTest,
+                                                  Job::vPrintJobNode);
+      RASSERT(bWasInserted);
+      break;
+    }
+      
+    case JL_LOCAL: {
+
+      tJobId_search = pJob->tJobId();
+
+      auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_jobId(tJobId_search, _pJob(aRightJob), bFoundKey);
+        return bMoveRight;
+      };
+
+      bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
+                                                  bfMoveRightTest,
+                                                  Job::vPrintJobNode);
+      RASSERT(bWasInserted);
+      break;
+    }
+      
+    case JL_ORIGINATING: {
+      
+      tJobId_search = pJob->tDistId();
+
+      auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_distId(tJobId_search, _pJob(aRightJob), bFoundKey);
+        return bMoveRight;
+      };
+
+      bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
+                                                  bfMoveRightTest,
+                                                  Job::vPrintJobNode);
+      RASSERT(bWasInserted);
+      break;
+    }
+      
+    case JL_PARTICIPATING: {
     
-    
-  }
+      tJobId_search = pJob->tDistId();
+
+      auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_distId(tJobId_search, _pJob(aRightJob), bFoundKey);
+        return bMoveRight;
+      };
+
+      bWasInserted = m_pJobSkipList->bInsertByKey(pJob,
+                                                  bfMoveRightTest,
+                                                  Job::vPrintJobNode);
+      RASSERT(bWasInserted);
+      break;
+    }
+      
+    default: {
+      NEVER_REACH;
+    }
+      
+  } // end switch(m_eJobList)
 
   ASSERT(bIsLocked());
 
