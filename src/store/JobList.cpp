@@ -184,7 +184,7 @@ bool JobList::bFindJob(Job* pJob, bool bLockJob)
 /*----------------------------------------------------------------------------*/
 /* find job in skip list matching given job id                                */
 /*----------------------------------------------------------------------------*/
-Job *JobList::pFindJob(JobId tJobId, bool bLockJob)
+Job* JobList::pFindJob(JobId tJobId, bool bLockJob)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOBLIST, _FOOTER_);
 
@@ -192,38 +192,91 @@ Job *JobList::pFindJob(JobId tJobId, bool bLockJob)
 
   RASSERT(m_eJobList != JL_RETIRED);
   
-  if (JL_ORIGINATING == m_eJobList || JL_PARTICIPATING == m_eJobList) {
+  switch (m_eJobList) {
 
-    auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
-      bool bMoveRight = bMoveRight_distId(tJobId, _pJob(aRightJob), bFoundKey);
-      return bMoveRight;
-    };
+    case JL_ORIGINATING: {
 
-    vGrabLock();
-    pJob = _pJob(m_pJobSkipList->pFindByKey(bfMoveRightTest,
-                                            Job::vPrintJobNode));
-    
-    if (pJob && bLockJob)
-      pJob->vGrabLock();
-    
-    vDropLock();
-  }
-  else {
-    auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
-      bool bMoveRight = bMoveRight_jobId(tJobId, _pJob(aRightJob), bFoundKey);
-      return bMoveRight;
-    };
+      auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_distId(tJobId, _pJob(aRightJob), bFoundKey);
+        return bMoveRight;
+      };
 
-    vGrabLock();
-    pJob = _pJob(m_pJobSkipList->pFindByKey(bfMoveRightTest,
-                                            Job::vPrintJobNode));
-    
-    if (pJob && bLockJob)
-      pJob->vGrabLock();
-    
-    vDropLock();
+      vGrabLock();
+      pJob = _pJob(m_pJobSkipList->pFindByKey(bfMoveRightTest,
+                                              Job::vPrintJobNode));
+      
+      if (pJob && bLockJob)
+        pJob->vGrabLock();
+      
+      vDropLock();
+      break;
+    }
+      
+    case JL_PARTICIPATING: {
 
-  }
+      auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_distId(tJobId, _pJob(aRightJob), bFoundKey);
+        return bMoveRight;
+      };
+
+      vGrabLock();
+      pJob = _pJob(m_pJobSkipList->pFindByKey(bfMoveRightTest,
+                                              Job::vPrintJobNode));
+      
+      if (pJob && bLockJob)
+        pJob->vGrabLock();
+      
+      vDropLock();
+      break;
+    }
+      
+    case JL_LOCAL: {
+      auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_jobId(tJobId, _pJob(aRightJob), bFoundKey);
+        return bMoveRight;
+      };
+
+      vGrabLock();
+      pJob = _pJob(m_pJobSkipList->pFindByKey(bfMoveRightTest,
+                                              Job::vPrintJobNode));
+      
+      if (pJob && bLockJob)
+        pJob->vGrabLock();
+      
+      vDropLock();
+      break;
+    }
+      
+    case JL_DEMON: {
+      auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_jobId(tJobId, _pJob(aRightJob), bFoundKey);
+        return bMoveRight;
+      };
+
+      vGrabLock();
+      pJob = _pJob(m_pJobSkipList->pFindByKey(bfMoveRightTest,
+                                              Job::vPrintJobNode));
+      
+      if (pJob && bLockJob)
+        pJob->vGrabLock();
+      
+      vDropLock();
+      break;
+    }
+
+    case JL_RETIRED: {
+      NEVER_REACH;
+    }
+      
+    case JL_JOBS: {
+      NEVER_REACH;
+    }
+      
+    default: {
+      NEVER_REACH;
+    }
+      
+  } // end switch(m_eJobList)
   
   return pJob;
 }
