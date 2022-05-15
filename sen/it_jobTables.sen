@@ -12,7 +12,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBOPERANDS
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table se__jobOperands
   (
@@ -38,11 +38,11 @@
 
   ) < internal > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBOPERATORS
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table se__jobOperators
   (
@@ -83,11 +83,11 @@
 
   ) < internal > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBREPORT
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table se__jobReport
   (
@@ -103,12 +103,12 @@
 
   ) < internal > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBMETRICS
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table se__jobMetrics
   (
@@ -135,7 +135,7 @@
     
   ) < internal > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 

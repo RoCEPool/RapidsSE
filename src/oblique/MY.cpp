@@ -335,7 +335,7 @@ Job* MY::pJob(void)
 
   Op* pOp = pTask->pOp();
   if (pOp) {
-    pJob = pOp->pJobOfOp();
+    pJob = pOp->pOuterJobOfOp();
     return pJob;
   }
   

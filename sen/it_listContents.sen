@@ -8,13 +8,13 @@
 
   // C_TDEF_LISTCONTENTS
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __listContents (
     Name       VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 

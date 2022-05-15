@@ -15,6 +15,10 @@
 
   // "end:end" .
 
+  [args].distJob if
+    "end" "onParticipant" ">end sch next" [job].trace
+  then
+
   // find job to be ended in participating job list
   [job].distId@ ListedJob[].findParticipant? if
 
@@ -43,9 +47,13 @@
 /*----------------------------------------------------------------------------*/
 /* on origin node                                                             */
 /*----------------------------------------------------------------------------*/
-: end:end
+: end:onOrigin
 
-  //"end:end" .
+  //"end:onOrigin" .
+
+  [args].distJob if
+    "end" "onOrigin" ">end brd all ptp" [job].trace
+  then
 
   "end:onParticipant" [job].entryPoint!
 
@@ -64,7 +72,7 @@ cmdSyntax: end :: end ;
 : end_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>  = "--desc for job--"
-    <entryPoint>    = "end:end"
+    <entryPoint>    = "end:onOrigin"
     <path>     = "/"
 }
 ;

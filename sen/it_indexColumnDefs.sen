@@ -8,7 +8,7 @@
 
   // C_TDEF_INDEXCOLUMNDEFS
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __indexColumnDefs (
     catalogName    VARCHAR NOT NULL ,
@@ -25,7 +25,7 @@
     isPartitionKey BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 

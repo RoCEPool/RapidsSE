@@ -159,7 +159,8 @@ void SeDeputy::vDeputyLoop(void)
     m_eError = Api::eForkJob(tChildJobId,
                              pInpTknVec,pInpTagSet,
                              tParentId,tOriginId,tDistId,
-                             m_pJob // TO BE REMOVED
+                             m_pRootJob, // TO BE REMOVED
+                             m_pJob      // TO BE REMOVED
                              );
     
     if (EC_NONE != m_eError) {
@@ -168,8 +169,18 @@ void SeDeputy::vDeputyLoop(void)
        continue;
     }
     
-    ApiHelper::vPrintResults(m_pJob);
-    
+    // start the buffer queue processing while the pipeline ops are running
+    if (m_pJob->bIsPipeline())
+      m_pJob->pOutput()->vProcessBufferQueue();
+
+    RASSERT(! m_pJob->pOutput()->m_bExecErr );
+    RASSERT(! m_pJob->pOutput()->m_bCmdErr );
+
+    if (m_pJob->bIsInError()) {
+      vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
+             aEC[m_pJob->eJobError()]);
+    }
+
     vReportTime();
       
     ApiHelper::vResetResults(m_pJob);

@@ -92,6 +92,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("[args].condCode"_Stz,          gxCmdLineArgs.m_xSysArgs.m_iCondCode);
   Constants::vAddConstant("[args].config"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bConfig);
   Constants::vAddConstant("[args].developer"_Stz,         gxCmdLineArgs.m_xSysArgs.m_bDeveloper);
+  Constants::vAddConstant("[args].distJob"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bDistJob);
   Constants::vAddConstant("[args].dontFree"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bDontFree);
   Constants::vAddConstant("[args].freeCB"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bFreeSpecific);
   Constants::vAddConstant("[args].help"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bHelp);

@@ -44,7 +44,6 @@
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex not if
     
-      EC_INVALID_COLUMNS_UNIQUE_INDEX [job].error!
       [ddlLock].testDrop
       
       EC_INVALID_COLUMNS_UNIQUE_INDEX op__execErr
@@ -56,19 +55,6 @@
     then
   then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // populate the index
-/*
-  pIndex index.populate not if ( errorCode )
-    [job].error!
-    [ddlLock].testDrop
-
-    Path[].popIndexesFolder
-    Path[].popNamedTableFolder
-    Folder[].isTables assert
-    exit
-  then
-*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move back to ./tables
 

@@ -8,7 +8,7 @@
 
   // C_TDEF_SPACE
   
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __space (
     nodeName   VARCHAR NOT NULL ,
@@ -17,7 +17,7 @@
     freeSpace  VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 

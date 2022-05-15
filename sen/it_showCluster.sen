@@ -8,7 +8,7 @@
 
   // C_TDEF_SHOWCLUSTER
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __showCluster (
     NodeName  VARCHAR NOT NULL ,
@@ -17,7 +17,7 @@
     Connected BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 

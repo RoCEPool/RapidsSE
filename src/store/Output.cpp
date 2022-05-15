@@ -43,7 +43,7 @@ Output::Output(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
-  m_pJob              = nullptr;
+  m_pJob              = pJob;
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
@@ -135,14 +135,14 @@ void Output::vBeginProcOneCmd(void)
 /*----------------------------------------------------------------------------*/
 /* drain the result/output queue                                              */
 /*----------------------------------------------------------------------------*/
-void Output::vDrainBufferQueue(Job* pJob)
+void Output::vDrainBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   while (! m_bExitMarker   &&
-         ! pJob->bIsInError()) {
+         ! m_pJob->bIsInError()) {
     
-    Operand* pOperand = pPopBufferQueue_blocking(pJob);
+    Operand* pOperand = pPopBufferQueue_blocking();
     
     if (! pOperand) {
       AM::vNapUsec(1000,CN_OUTPUT);
@@ -204,22 +204,23 @@ void Output::vFilePath(Stz* szFilePath)
 /*----------------------------------------------------------------------------*/
 /* process the result/output queue                                            */
 /*----------------------------------------------------------------------------*/
-void Output::vProcessBufferQueue(Job* pJob)
+void Output::vProcessBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
+
   //RASSERT(m_iOutputState);
   
   Operand* pOperand;
   
-  while ( (pOperand = pPopBufferQueue_blocking(pJob)) ) {
+  while ( (pOperand = pPopBufferQueue_blocking()) ) {
 
     if (! bProcessOperand(pOperand))
       break;
 
   }
   
-  vDrainBufferQueue(pJob);
+  vDrainBufferQueue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,10 +299,10 @@ void Output::vPrintResult(void)
 /*----------------------------------------------------------------------------*/
 /* pop next operand from result queue                                         */
 /*----------------------------------------------------------------------------*/
-Operand* Output::pPopBufferQueue_blocking(Job* pJob)
+Operand* Output::pPopBufferQueue_blocking(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-    
+      
   for (;;) {
     
     Operand* pOperand = _pOperand(m_pOutputQueue->pPop());
@@ -311,7 +312,7 @@ Operand* Output::pPopBufferQueue_blocking(Job* pJob)
     
     AM::vNapUsec(1000,CN_OUTPUT);
     
-    if (pJob->bIsInError())
+    if (m_pJob->bIsInError())
       return nullptr;
   }
   

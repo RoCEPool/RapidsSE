@@ -35,17 +35,15 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Api(void)
 {
-  vAddStep("api::forkChild_noWait"_Stz,    &Step::vApiForkChild_noWait);
-  vAddStep("api::forkChild_wait"_Stz,      &Step::vApiForkChild_wait);
-
-  vAddStep("api::reapJobs"_Stz,            &Step::vApiReapJobs);
-  vAddStep("api::spawnJob_noWait"_Stz,     &Step::vApiSpawnJob);
+  vAddStep("api::forkChild"_Stz,    &Step::vApiForkChild);
+  vAddStep("api::reapJobs"_Stz,     &Step::vApiReapJobs);
+  vAddStep("api::spawnJob"_Stz,     &Step::vApiSpawnJob);
 }
 
 /*----------------------------------------------------------------------------*/
-/* api::forkChild_noWait -- fork child job (no wait)                          */
+/* api::forkChild -- fork child job                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vApiForkChild_noWait(void)
+void Step::vApiForkChild(void)
 {
   ENTRY();
   
@@ -56,161 +54,51 @@ void Step::vApiForkChild_noWait(void)
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
   if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("SpawnDemon: %s\n"_Stz,sCmd.szStz());
-    vTrace("  WithTags: %s\n"_Stz,sCmdTagStr.szStz());
+    vTrace("ForkChild: %s\n"_Stz,sCmd.szStz());
+    vTrace("  CmdTags: %s\n"_Stz,sCmdTagStr.szStz());
   }
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-    
-  TagSet* pCmdTagSet = new TagSet;
   TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
+  TagSet*   pCmdTagSet = new TagSet;
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
 
   Stz* szJobNm = pCmdTknVec->pGet(0)->szChars();
   pCmdTagSet->vReplace(C_TAG_JOBNM,szJobNm);
-  pCmdTagSet->vReplace(C_TAG_NOWAIT,1);
 
-  if (m_pJob) {
-    if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
-      pCmdTagSet->vReplace(C_TAG_LASTJOBID,m_pJob->tJobId().iAsI8());
-    }
-    if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
-      pCmdTagSet->vReplace(C_TAG_PATH,
-                           m_pJob->pJobTags()->szValue(C_TAG_PATH));
-    }
-  }
-  else {
-    if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
-      pCmdTagSet->vReplace(C_TAG_LASTJOBID,C_UNKNOWN);
-    }
-    if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
+  if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
+    if (m_pJob)
+      pCmdTagSet->vReplace(C_TAG_PATH,m_pJob->pJobTags()->szValue(C_TAG_PATH));
+    else
       pCmdTagSet->vReplace(C_TAG_PATH,C_SE_PATH_ROOT);
-    }
   }
-
-  JobId tChildJobId;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   JobId tParentId;
-  if (m_pJob)
-    tParentId = m_pJob->tJobId();
-
   JobId tOriginId;
-  if (m_pJob)
-    tOriginId = m_pJob->tOriginId();
-
   JobId tDistId;
-  if (m_pJob)
-    tDistId = m_pJob->tDistId();
-
-  Job* pJob = nullptr;
+  Job* pOuterJob = pOuterJobOfTask();
+  tParentId = pOuterJob->tJobId();
+  tOriginId = pOuterJob->tOriginId();
+  tDistId   = pOuterJob->tDistId();
+  
+  JobId tChildJobId;
+  Job* pChildJob_tbr = nullptr;
   eEC eError = Api::eForkJob(tChildJobId,
                              pCmdTknVec,pCmdTagSet,
                              tParentId,tOriginId,tDistId,
-                             pJob // TO BE REMOVED
+                             pOuterJob,    // TO BE REMOVED
+                             pChildJob_tbr // TO BE REMOVED
                             );
   RASSERT(EC_NONE == eError);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  delete pCmdTknVec;
   delete pCmdTagSet;
-  delete pTagTknVec;
-
-  m_pDataStack->vPushInt(true);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* api::forkChild_wait -- fork child job (wait)                               */
-/*----------------------------------------------------------------------------*/
-void Step::vApiForkChild_wait(void)
-{
-  ENTRY();
-
-  // pop command and tag string
-  
-  s48K sCmd;
-  m_pDataStack->vPopStr(sCmd,__func__);
-
-  s48K sCmdTagStr;
-  m_pDataStack->vPopStr(sCmdTagStr,__func__);
-
-  if (AM::TRACE::bVerbose(C_VB_API)) {
-    vTrace("ExecuteCommand: %s\n"_Stz,sCmd.szStz());
-    vTrace("      WithTags: %s\n"_Stz,sCmdTagStr.szStz());
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  
-  TokenVec* pCmdTknVec = TokenVec::pTokeniseSen(sCmd);
-    
-  TagSet* pCmdTagSet = new TagSet;
-  TokenVec* pTagTknVec = TokenVec::pTokeniseSen(sCmdTagStr);
-  CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
-
-  
-  /*
-  if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
-    
-    if (m_pJob) {
-      TagSet* pParentJobTagSet = m_pJob->pJobTags();
-      if (! pParentJobTagSet->bHasName(C_TAG_PATH)) {
-        pCmdTagSet->vDumpSet();
-        pParentJobTagSet->vDumpSet();
-        THROW("Step::vApiForkChild_noWait: no C_TAG_PATH"_Stz);
-      }
-      pCmdTagSet->vReplace(C_TAG_PATH,pParentJobTagSet->szValue(C_TAG_PATH));
-    }
-    else {
-      // this is a standalone op like answerSE                                  FIX!!
-      pCmdTagSet->vReplace(C_TAG_PATH,C_SE_PATH_ROOT);
-    }
-  }
-  */
-  
-  
-  if (m_pJob) {
-    if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
-      pCmdTagSet->vReplace(C_TAG_LASTJOBID,m_pJob->tJobId().iAsI8());
-    }
-  }
-  else {
-    if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
-      pCmdTagSet->vReplace(C_TAG_LASTJOBID,C_UNKNOWN);
-    }
-  }
-  
-  pCmdTagSet->vReplace(C_TAG_WAIT,1);
-  
-  JobId tChildJobId;
-  
-  
-  JobId tParentId;
-  tParentId = m_pJob->tJobId();
-
-  JobId tOriginId;
-  tOriginId = m_pJob->tOriginId();
-
-  JobId tDistId;
-  tDistId = m_pJob->tDistId();
-
-  
-  Job* pJob = nullptr;
-  eEC eError = Api::eForkJob(tChildJobId,
-                             pCmdTknVec,pCmdTagSet,
-                             tParentId,tOriginId,tDistId,
-                             pJob // TO BE REMOVED
-                             );
-  RASSERT(EC_NONE == eError);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   delete pCmdTknVec;
-  delete pCmdTagSet;
   delete pTagTknVec;
 
   m_pDataStack->vPushInt(true);
@@ -234,7 +122,7 @@ void Step::vApiReapJobs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* api::spawnJob_noWait -- spawn the job on the stack                         */
+/* api::spawnJob -- spawn the job on the stack                                */
 /*----------------------------------------------------------------------------*/
 void Step::vApiSpawnJob(void)
 {
@@ -245,7 +133,7 @@ void Step::vApiSpawnJob(void)
   Task* pTask = pJob->pTask();
   RASSERT(! pTask);
 //  if ( pTask) {
-//    vTrace("****Job: %s has a task in api::spawnJob_noWait\n"_Stz,pJob->szJobNm());
+//    vTrace("****Job: %s has a task in api::spawnJob\n"_Stz,pJob->szJobNm());
 //    RASSERT(QK_NONE == pTask->eQueue());
 //    RASSERT(TR_NONE == pTask->eTransition());
 //  }

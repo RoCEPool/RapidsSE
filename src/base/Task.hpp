@@ -132,12 +132,12 @@ namespace BASE
     void vDump(void);
   
     Word* pEventHandler(void);
+  
     void vGrabTaskLock(Stz* szFunc);
   
     Task* pInvokingTask(void);
     void vInvokingTask(Task* pInvokingTask);
     bool bIsLocked(void);
-
     bool bIsTaskLocked(void);
   
     Job* pJob(void);
@@ -146,8 +146,10 @@ namespace BASE
     void vLocalsPop(void);
     void vLocalsPush(void);
     LogicUnit* pLogicUnit(void);
+  
     void vNewInput(void);
   
+    Job* pOuterJobOfTask(void);
     Op*  pOp(void);
     void vOp(Op* pOp);
   
@@ -163,6 +165,12 @@ namespace BASE
     void vRetire(void);
 
     DicStack* pSaveDicStack(void);
+    void vScheduleBide(void);
+    void vScheduleHibernate(void);
+    void vScheduleRetire(void);
+    void vScheduleSleep(void);
+    void vScheduleYield(void);
+    void vScheduleWait(void);
     void vSeeFrameStack(void);
     void vSeeLockSets(void);
     void vSeeLogicUnitRegisters(void);
@@ -175,22 +183,15 @@ namespace BASE
     void vState(eTS eState);
   
     i8   iTaskId(void);
-  
     Stz* szTaskNm(void);
     void vTaskNm(Stz* szTaskNm);
-
     Thread* pvThread_DONT_DEREF(void);
     void vThread(Thread* pThread);
     void vTracePoint(Stz* aMark);
     void vTraceStep(Stz* aStepNm);
-    void vScheduleBide(void);
-    void vScheduleHibernate(void);
-    void vScheduleRetire(void);
-    void vScheduleSleep(void);
-    void vScheduleYield(void);
-    void vScheduleWait(void);
     eTR  eTransition(void);
     void vTranstionClear(void);
+  
     i8   iWakeup(void);
     void vWakeupClear(void);
     u8   uWakeupInUsec(void);
@@ -210,7 +211,6 @@ namespace BASE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  
     Input* pInput(void);
 
   private:

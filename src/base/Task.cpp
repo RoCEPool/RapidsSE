@@ -982,6 +982,27 @@ Job* Task::pJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the outer job of this task                                             */
+/*----------------------------------------------------------------------------*/
+Job* Task::pOuterJobOfTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Job* pOuterJob = nullptr;
+  
+  // if this task is a job, then the outer job is this tasks job
+  if (m_pJob.bIsNotNull())
+    pOuterJob = m_pJob;
+  
+  // if this task is an op, then the outer job is the job of this op
+  else
+  if (m_pOp.bIsNotNull())
+    pOuterJob = m_pOp->pOuterJobOfOp();
+  
+  return pOuterJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the job of this task                                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vJob(Job* pJob)

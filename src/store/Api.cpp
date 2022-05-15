@@ -54,11 +54,18 @@ void Api::vDeleteRootJob(Job*& rpRootJob)
 eEC Api::eForkJob(JobId& rtChildJobId,
                   TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                   JobId tParentId, JobId tOriginId, JobId tDistId,
+                  Job*& rpParentJob_tbr,
                   Job*& rpChildJob_tbr)
 {
   _static_
     
   rtChildJobId = C_UNKNOWN;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assertions
+  
+  RASSERT(! tParentId.bIsUnknown());
+  RASSERT(rpParentJob_tbr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prepare job
@@ -82,6 +89,10 @@ eEC Api::eForkJob(JobId& rtChildJobId,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify minimum needed tags
   
+  if (! pCmdTagSet->bHasName(C_TAG_JOBNM)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: no C_TAG_JOBNM"_Stz);
+  }
   if (! pCmdTagSet->bHasName(C_TAG_ENTRYPOINT)) {
     pCmdTagSet->vDumpSet();
     THROW("Api::eForkJob: no C_TAG_ENTRYPOINT"_Stz);
@@ -102,16 +113,15 @@ eEC Api::eForkJob(JobId& rtChildJobId,
     THROW("Api::eForkJob: both C_TAG_NOWAIT and C_TAG_WAIT"_Stz);
   }
 
-  // temp
-  if (! pCmdTagSet->bHasName(C_TAG_LASTJOBID)) {
-    pCmdTagSet->vReplace(C_TAG_LASTJOBID,C_UNKNOWN);
-  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
   RASSERT(szJobNm);
-  
+
   rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
-  rtChildJobId = rpChildJob_tbr->tJobId();
+  
 
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
@@ -126,33 +136,16 @@ eEC Api::eForkJob(JobId& rtChildJobId,
   Stz* szFolderPath = pJobTagSet->szValue(C_TAG_PATH);
   rpChildJob_tbr->vFolderPath(szFolderPath);
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     
+  rpChildJob_tbr->vParentJob(rpParentJob_tbr);
+  rtChildJobId = rpChildJob_tbr->tJobId();
+  
   rpChildJob_tbr->vMutexCreate();
   rpChildJob_tbr->vOutputCreate();
   rpChildJob_tbr->vOutputBeginProc();
-
   rpChildJob_tbr->vOutputEnabled(true);
-
-  //JobId tJobId = pJob->tJobId();
- 
   rpChildJob_tbr->vStmtListCreate();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  i8 iPid = AM::PROCESS::iSePid();
-  if (!Process::bTestPid(iPid)) {
-    // SE is not running anymore!
-    vTrace("Cannot find pid %lld\n"_Stz, iPid);
-    rtChildJobId = C_UNKNOWN;
-    return EC_SE_NOT_RUNNING;
-  }
-
-  RASSERT(! rpChildJob_tbr->pTask());
   rpChildJob_tbr->vTaskCreate();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -167,14 +160,11 @@ eEC Api::eForkJob(JobId& rtChildJobId,
       return EC_SE_NOT_RUNNING;
     }
     
-    
     rpChildJob_tbr->vMutexLock();
     RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
     
     RASSERT(rpChildJob_tbr->pTask());
 
-    //rpChildJob_tbr->vTaskCreate();
-    
     rpChildJob_tbr->vResponseTimerStart();
     
     Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
@@ -208,7 +198,6 @@ eEC Api::eForkJob(JobId& rtChildJobId,
     rpChildJob_tbr->vCmd(sStmt);
     
     TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
-    //Stz* szEntry = pCmdTagSet->szValue(C_TAG_ENTRYPOINT);
     Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
     //vTrace("szEntry: %s\n"_Stz,szEntry);
 

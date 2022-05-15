@@ -102,8 +102,6 @@ namespace STORE
   
     i8   iLocalRobinNext(void);
   
-    Job* pJobOfOp(void);
-  
     i8   iMetricsQueued(void);
     void vMetricsQueued(i8 iMetricsQueued);
   
@@ -128,6 +126,8 @@ namespace STORE
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Stage* pOtherStage(void);
+    Job* pOuterJobOfOp(void);
+
 
     Stz* szSpot(void);
     bool bPause(void);

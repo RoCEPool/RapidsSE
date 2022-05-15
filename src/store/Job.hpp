@@ -47,9 +47,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // -- command and tags
     TagSet m_oJobTags;  // tags for the job
 
-  
-    b8 m_bWasForked;
-  
+    
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   
     // information depending on job instance/location           MODAL
@@ -71,6 +69,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
                              // DOUBLE CHECK THIS BELONGS HERE
 
     Output*  m_pOutput_job;  // output processor                       POST_RECV
+    Job*     m_pParentJob;   // output processor                       POST_RECV
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running on participant node                    PARTICIPANT
@@ -170,6 +169,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eJP  eJobPhase(void);
     void vJobPhase(eJP eJobPhase);
     TagSet* pJobTags(void);
+    void vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint);
 
     JobId tLastJobId(void);
     void  vLastJobId(JobId tLastJobId);
@@ -183,6 +183,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vMutexWait(void);
 
     Output* pOutput(void);
+    void vOutput(Output* pOutput);
     void vOutputBeginProc(void);
     void vOutputCreate(void);
     void vOutputDestroy(void);
@@ -196,6 +197,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   
     JobId tParentId(void);
     void vParentId(JobId tParentId);
+    Job* pParentJob(void);
+    void vParentJob(Job* pParentJob);
     Pipeline* pPipeline(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
@@ -245,8 +248,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vVerifyJobComposition(void);
   
     void vWaitJobMutex(void);
-    bool bWasForked(void);
-    void vWasForked(bool bWasForked);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
   

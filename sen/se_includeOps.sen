@@ -49,6 +49,7 @@ assert::stack_0
   "OP_callProc.sen"             include
   "OP_catFile.sen"              include
   "OP_changeFolder.sen"         include
+  "OP_childSelectTest.sen"      include
   "OP_chunk.sen"                include
   "OP_combined.sen"             include
   "OP_compactIdx.sen"           include

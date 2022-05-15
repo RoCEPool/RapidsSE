@@ -15,9 +15,14 @@
 
   //"executed:onOrigin" .
 
+  [args].distJob if
+    "executed" "onOrigin" "<exd ack originTask" [job].trace
+  then
+
+
   // find the originating job
   
-  [job].distId@ ListedJob[].findOriginator? if
+  [job].originId@ ListedJob[].findOriginator? if
   
     ListedJob[].taskAck
   
@@ -40,9 +45,13 @@
 
   //"executed:executed" .
 
+  [args].distJob if
+    "executed" "executed" "<exd snd origin" [job].trace
+  then
+
   "executed:onOrigin" [job].entryPoint!
 
-  [job].parentOriginNodeId@ [grid].findNodeByNo to SendNode[]
+  [job].originNodeId@ [grid].findNodeByNo to SendNode[]
   
   [job] job(Id).send
 

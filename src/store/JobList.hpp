@@ -27,8 +27,10 @@ namespace STORE
     ~JobList(void) noexcept(false);
     
     static bool bMoveRight_addr(Job* pJob, Job* pRightJob, bool& bFoundKey);
-    static bool bMoveRight_distId(JobId tJobId, Job* pRightJob, bool& bFoundKey);
-    static bool bMoveRight_jobId(JobId tJobId, Job* pRightJob, bool& bFoundKey);
+  
+    static bool bMoveRight_distId  (JobId tJobId, Job* pRightJob, bool& bFoundKey);
+    static bool bMoveRight_jobId   (JobId tJobId, Job* pRightJob, bool& bFoundKey);
+    static bool bMoveRight_originId(JobId tJobId, Job* pRightJob, bool& bFoundKey);
 
     void   vDropLock(void);
     bool   bFindJob(Job* pJob, bool bLockJob);

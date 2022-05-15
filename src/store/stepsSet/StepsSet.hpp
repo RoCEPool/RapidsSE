@@ -86,8 +86,7 @@ public:
 
 
   // api
-  void vApiForkChild_noWait(void);
-  void vApiForkChild_wait(void);
+  void vApiForkChild(void);
   void vApiReapJobs(void);
   void vApiSpawnJob(void);
 
@@ -666,7 +665,6 @@ void vDdlLockAssertNone(void);
   void vIndexDefNameStore(void);
   void vIndexDefNew(void);
   void vIndexDefParse(void);
-  void vIndexDefParseOLD(void);
   void vIndexDefSet(void);
   void vIndexDefSyntax(void);
   void vIndexDefParseTableName(void);
@@ -818,6 +816,7 @@ void vDdlLockAssertNone(void);
 
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
+  void vJobTrace(void);
 
   void vJobEntryPointFetch(void);
   void vJobEntryPointStore(void);
@@ -843,6 +842,7 @@ void vDdlLockAssertNone(void);
 
   void vJobIdNameFetch(void);
 
+  void vJobOriginIdFetch(void);
   void vJobOriginNodeIdFetch(void);
 
   void vJobParentIdFetch(void);
@@ -866,6 +866,8 @@ void vDdlLockAssertNone(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
+  void vJobResponseOpFetch(void);
+  void vJobResponseOpStore(void);
 
   void vJobReportMetrics(void);
   void vJobReportNetDissect(void);
@@ -896,9 +898,6 @@ void vDdlLockAssertNone(void);
   void vJobTscCanceling(void);
   void vJobTscCanceled(void);
   void vJobTscParticipant(void);
-
-  void vJobWasForkedFetch(void);
-  void vJobWasForkedStore(void);
 
   // job metrics
   void vJobMetricsCollect(void);

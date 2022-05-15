@@ -8,7 +8,7 @@
 
   // C_TDEF_JOBNETDISSECT
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table se__jobNetDissect
   (
@@ -29,7 +29,7 @@
   ) < internal > = 1 ;
   "
   
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 ;
 
 /*============================================================================*/

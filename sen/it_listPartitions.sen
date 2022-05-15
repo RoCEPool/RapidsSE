@@ -8,14 +8,14 @@
 
   // C_TDEF_LISTPARTITIONS
   
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __listPartitions (
     partition     INTEGER NOT NULL ,
     nodeName      VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 

@@ -8,7 +8,7 @@
 
   // C_TDEF_LOADRESULT
   
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __loadResult (
     iRowsProcessed INTEGER NOT NULL ,
@@ -16,7 +16,7 @@
     iRowsSkipped   INTEGER NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 

@@ -113,7 +113,7 @@
 : job:spawn params| pJob |
 
 
-  pJob api::spawnJob_noWait
+  pJob api::spawnJob
 ;
 
 

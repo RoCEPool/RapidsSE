@@ -76,7 +76,7 @@
 "
   locals| sStmt |
 
-  "" sStmt api::forkChild_wait api:executeCheck
+  "" sStmt api::forkChild api:executeCheck
 ;
 
 /*----------------------------------------------------------------------------*/

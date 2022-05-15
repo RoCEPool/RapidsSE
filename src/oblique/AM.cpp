@@ -1861,6 +1861,18 @@ void AM::SYSARGS::vDerefMetrics(bool bDerefMetrics)
   gpAttachMap->m_xSysArgs.m_bDerefMetrics = bDerefMetrics;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get distributed job watch option                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSARGS::bDistJob(void)
+{
+  _static_
+  
+  if (gpAttachMap)
+    return gpAttachMap->m_xSysArgs.m_bDistJob;
+  else
+    return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get collect job metrics option                                             */
@@ -2287,7 +2299,7 @@ void AM::TASK::vRetire(Task* pTask)
   
   if (Op* pOp = pTask->pOp()) {
     // retiring op of job
-    Job* pJob = pOp->pJobOfOp();
+    Job* pJob = pOp->pOuterJobOfOp();
     pJob->vActiveOpsDec();
   }
   else
