@@ -34,15 +34,15 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // universally immutable information                    UNIVERSAL
 
-    JobId   m_tJobId;      // this job's id
-    JobId   m_tParentId;   // job id of parent
-    JobId   m_tDistId;     // distributed id
-    JobId   m_tOriginId;   // origin id
-    i8      m_iForkNodeId;  // participant node
+    JobId  m_tJobId;      // this job's id
+    JobId  m_tParentId;   // job id of parent
+    JobId  m_tOriginId;   // origin id
+    JobId  m_tDistId;     // distributed id
+    i8     m_iForkNodeId; // node where job was forked
 
-    s32     m_sJobNm;      // name of job
+    s32    m_sJobNm;      // name of job
 
-    Atomic  m_noActiveOps; // number of active ops
+    Atomic m_noActiveOps; // number of active ops
 
     // -- command and tags
     TagSet m_oJobTags;  // tags for the job
@@ -158,7 +158,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
     JobId tJobId(void);
-    void vJobIdFromDist(void);
     eJL  eJobList(void);
     void vJobList(eJL eJobList);
     void vJobMetricsAdd(JobMetrics* pJobMetrics);

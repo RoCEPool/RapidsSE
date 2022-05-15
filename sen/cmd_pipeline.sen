@@ -16,7 +16,7 @@
   //"pipeline:origin" .
   
   [args].distJob if
-    "pipeline" "origin" "_org now oridinary" [job].trace
+    "pipeline" "origin" "org_ now oridinary" [job].trace
   then
   
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
@@ -75,7 +75,7 @@
   [job].assertOriginator
 
   [args].distJob if
-    "pipeline" "origin" "_org now originator" [job].trace
+    "pipeline" "origin" "org_ now originator" [job].trace
   then
 
   "<show_command>" sysargs::tagSet@ tagSet.hasName if
@@ -165,7 +165,7 @@
     // + compiled without error..
     
     [args].distJob if
-      "pipeline" "origin" "_org brd begin" [job].trace
+      "pipeline" "origin" "org_ brd begin" [job].trace
     then
     
     "pipeline:ptpBegin" [job].entryPoint!
@@ -187,8 +187,8 @@
     // "ORIGIN: broadcast execute" .
 
     [args].distJob if
-      "pipeline" "origin" "_org all begun" [job].trace
-      "pipeline" "origin" "_org brd execute" [job].trace
+      "pipeline" "origin" "org_ all begun" [job].trace
+      "pipeline" "origin" "org_ brd execute" [job].trace
     then
     
 
@@ -215,8 +215,8 @@
     // "ORIGIN: broadcast end" .
     
     [args].distJob if
-      "pipeline" "origin" "_org all executed" [job].trace
-      "pipeline" "origin" "_org brd end" [job].trace
+      "pipeline" "origin" "org_ all executed" [job].trace
+      "pipeline" "origin" "org_ brd end" [job].trace
     then
     
 
@@ -237,14 +237,14 @@
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   [args].distJob if
-    "pipeline" "origin" "_org all ended" [job].trace
+    "pipeline" "origin" "org_ all ended" [job].trace
   then
   
   [job].removeOriginator
   [job].assertOrdinary
 
   [args].distJob if
-    "pipeline" "origin" "_org now ordinary" [job].trace
+    "pipeline" "origin" "org_ now ordinary" [job].trace
   then
 
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
@@ -271,7 +271,7 @@
   ListedJob[].assertNoRef
 
   [args].distJob if
-    "pipeline" "origin" "_org retiring..." [job].trace
+    "pipeline" "origin" "org_ retiring..." [job].trace
   then
 
   [job].addRetired
@@ -300,7 +300,7 @@
   //"pipeline:ptpBegin" .
 
   [args].distJob if
-    "pipeline" "ptpBegin" ".ptp phs begin" [job].trace
+    "pipeline" "ptpBegin" "_ptp phs begin" [job].trace
   then
     
   [job].progressReset
@@ -364,7 +364,7 @@
   // reply begun to originator
 
   [args].distJob if
-    "pipeline" "ptpBegin" ".ptp has begun" [job].trace
+    "pipeline" "ptpBegin" "_ptp has begun" [job].trace
   then
 
   // send the begun job
@@ -397,7 +397,7 @@
   //"pipeline:ptpExecute" .
     
   [args].distJob if
-    "pipeline" "ptpExecute" ".ptp phs execute" [job].trace
+    "pipeline" "ptpExecute" "_ptp phs execute" [job].trace
   then
 
   [job].assertStructure
@@ -449,7 +449,7 @@
   // reply executed to originator
   
   [args].distJob if
-    "pipeline" "ptpBegin" ".ptp has executed" [job].trace
+    "pipeline" "ptpBegin" "_ptp has executed" [job].trace
   then
 
 
@@ -475,7 +475,7 @@
   //"pipeline:ptpEnd" .
 
   [args].distJob if
-    "pipeline" "ptpEnd" ".ptp phs end" [job].trace
+    "pipeline" "ptpEnd" "_ptp phs end" [job].trace
   then
 
   [job].assertStructure
@@ -489,13 +489,17 @@
   [job].removeParticipant
 
   [args].distJob if
-    "pipeline" "ptpBegin" ".ptp has ended" [job].trace
+    "pipeline" "ptpBegin" "_ptp has ended" [job].trace
   then
 
 
   // send the ended job
   STD_NOWAIT_TAG "ended" api::forkChild discard
 
+  [args].distJob if
+    "pipeline" "ptpBegin" "_ptp retiring..." [job].trace
+  then
+  
   [job]:retireAndExit
   HAZARD
 ;
@@ -524,7 +528,7 @@
   [job].removeParticipant
 
   [args].distJob if
-    "pipeline" "ptpBegin" ".ptp has cancelled" [job].trace
+    "pipeline" "ptpBegin" "_ptp has cancelled" [job].trace
   then
 
 

@@ -16,7 +16,7 @@
   //"execute:onParticipant" .
 
   [args].distJob if
-    "execute" "onParticipant" ">exe sch next" [job].trace
+    "execute" "onParticipant" ">exe sch next phase" [job].trace
   then
 
   // find job to be executed in participating job list

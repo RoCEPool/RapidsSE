@@ -583,16 +583,6 @@ JobId Job::tJobId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the job id from distributed id                                         */
-/*----------------------------------------------------------------------------*/
-void  Job::vJobIdFromDist(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_tJobId = m_tDistId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the job list                                                           */
 /*----------------------------------------------------------------------------*/
 eJL Job::eJobList(void)
@@ -691,7 +681,7 @@ void Job::vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vTrace("Job Trace : %10s : %-14s @ %-20s - "_Stz,
+  vTrace("vJobTrace - %10s : %-14s @ %-20s - "_Stz,
          szAtCmd,
          szAtRoutine,
          szAtPoint

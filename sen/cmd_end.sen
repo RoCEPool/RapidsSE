@@ -16,7 +16,7 @@
   // "end:end" .
 
   [args].distJob if
-    "end" "onParticipant" ">end sch next" [job].trace
+    "end" "onParticipant" ">end sch next phase" [job].trace
   then
 
   // find job to be ended in participating job list
