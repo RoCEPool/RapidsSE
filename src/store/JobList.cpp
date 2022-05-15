@@ -469,25 +469,14 @@ void JobList::vRemoveJob(Job *pJob) {
 
   ASSERT(JL_JOBS == m_eJobList || m_eJobList == pJob->eJobList());
 
-  if (JL_RETIRED == m_eJobList || JL_JOBS == m_eJobList) {
-    auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
+  JobId tJobId_search;
 
-      bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);
+  switch (m_eJobList) {
+      
+    case JL_JOBS: {
+      auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
 
-      return bMoveRight;
-    };
-
-    bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
-                                               bfMoveRightTest,
-                                               Job::vPrintJobNode);
-  }
-  else {
-    JobId tJobId;
-    if (JL_ORIGINATING == m_eJobList || JL_PARTICIPATING == m_eJobList) {
-      tJobId = pJob->tDistId();
-      auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
-
-        bool bMoveRight = bMoveRight_distId(tJobId, _pJob(aRightJob), bFoundKey);
+        bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);
 
         return bMoveRight;
       };
@@ -495,12 +484,13 @@ void JobList::vRemoveJob(Job *pJob) {
       bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
                                                  bfMoveRightTest,
                                                  Job::vPrintJobNode);
+      break;
     }
-    else {
-      tJobId = pJob->tJobId();
-      auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
+      
+    case JL_RETIRED: {
+      auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
 
-        bool bMoveRight = bMoveRight_jobId(tJobId, _pJob(aRightJob), bFoundKey);
+        bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);
 
         return bMoveRight;
       };
@@ -508,8 +498,73 @@ void JobList::vRemoveJob(Job *pJob) {
       bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
                                                  bfMoveRightTest,
                                                  Job::vPrintJobNode);
+      break;
     }
-  }
+
+    case JL_ORIGINATING: {
+      tJobId_search = pJob->tDistId();
+      auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
+
+        bool bMoveRight = bMoveRight_distId(tJobId_search, _pJob(aRightJob), bFoundKey);
+
+        return bMoveRight;
+      };
+
+      bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
+                                                 bfMoveRightTest,
+                                                 Job::vPrintJobNode);
+      break;
+    }
+      
+    case JL_PARTICIPATING: {
+      tJobId_search = pJob->tDistId();
+      auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
+
+        bool bMoveRight = bMoveRight_distId(tJobId_search, _pJob(aRightJob), bFoundKey);
+
+        return bMoveRight;
+      };
+
+      bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
+                                                 bfMoveRightTest,
+                                                 Job::vPrintJobNode);
+      break;
+    }
+      
+    case JL_LOCAL: {
+      tJobId_search = pJob->tJobId();
+      auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
+
+        bool bMoveRight = bMoveRight_jobId(tJobId_search, _pJob(aRightJob), bFoundKey);
+
+        return bMoveRight;
+      };
+
+      bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
+                                                 bfMoveRightTest,
+                                                 Job::vPrintJobNode);
+      break;
+    }
+      
+    case JL_DEMON: {
+      tJobId_search = pJob->tJobId();
+      auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
+
+        bool bMoveRight = bMoveRight_jobId(tJobId_search, _pJob(aRightJob), bFoundKey);
+
+        return bMoveRight;
+      };
+
+      bWasRemoved = m_pJobSkipList->bRemoveByKey(pJob,
+                                                 bfMoveRightTest,
+                                                 Job::vPrintJobNode);
+      break;
+    }
+      
+    default:
+      NEVER_REACH;
+      
+  } // end switch(m_eJobList)
 
   pJob->vJobList(JL_NONE);
 
