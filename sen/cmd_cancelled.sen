@@ -22,7 +22,7 @@
 
 
   // find the originating job
-  [job].distId@ ListedJob[].findOriginator? discard
+  [job].originId@ ListedJob[].findOriginator? discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

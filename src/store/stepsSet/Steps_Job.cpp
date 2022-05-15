@@ -57,6 +57,7 @@ void Step::vAddSteps_Job(void)
     
   vAddStep("[job].mutex@"_Stz,           &Step::vJobMutexFetch);
   
+  vAddStep("[job].originId@"_Stz,        &Step::vJobOriginIdFetch);
   vAddStep("[job].originNodeId@"_Stz,    &Step::vJobOriginNodeIdFetch);
   
   vAddStep("[job].parentId@"_Stz,        &Step::vJobParentIdFetch);
@@ -330,7 +331,7 @@ void Step::vJobAssertOriginator(void)
            "Job::m_bWasReceived is true [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
   
-  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tDistId());
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tOriginId());
   if (! pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "[job].assertOriginator: "
@@ -567,6 +568,18 @@ void Step::vJobMutexFetch(void)
   Job* pJob = m_pJob;
 
   m_pDataStack->vPushInt(pJob->eMutexSide());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].originId@ -- fetch the origin id of the job                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobOriginIdFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(m_pJob->tOriginId().iAsI8());
   
   EXIT();
 }

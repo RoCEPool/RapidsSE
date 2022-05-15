@@ -924,7 +924,7 @@ Job* Job::pOriginatingParentJob(void)
       
   //RASSERT(bIsOnOrigin());
   
-  Job* pParentJob = AM::OLIST::pFindJob(m_tDistId);
+  Job* pParentJob = AM::OLIST::pFindJob(m_tOriginId);
   
   return pParentJob;
 }

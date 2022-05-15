@@ -22,7 +22,7 @@
 
   // find the originating job
   
-  [job].distId@ ListedJob[].findOriginator? if
+  [job].originId@ ListedJob[].findOriginator? if
   
     ListedJob[].taskAck
   

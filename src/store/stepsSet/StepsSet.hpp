@@ -842,6 +842,7 @@ void vDdlLockAssertNone(void);
 
   void vJobIdNameFetch(void);
 
+  void vJobOriginIdFetch(void);
   void vJobOriginNodeIdFetch(void);
 
   void vJobParentIdFetch(void);
