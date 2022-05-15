@@ -517,6 +517,7 @@ namespace OBLIQUE
       static i8   nDefinedNodes(void);
       static bool bDerefMetrics(void);
       static void vDerefMetrics(bool bDerefMetrics);
+      static bool bDistJob(void);
       static bool bJobMetrics(void);
       static void vJobMetrics(bool bJobMetrics);
       static bool bLockTracking(void);

@@ -69,6 +69,7 @@
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // add this job to originator job list
+  [job].setOriginId
   [job].distIdGenerate
   [job].addOriginator
   [job].assertOriginator

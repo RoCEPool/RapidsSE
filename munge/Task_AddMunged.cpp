@@ -21095,6 +21095,7 @@ void Task::vAddMunged(Task* )
     "  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//\n"
     "\n"
     "  // add this job to originator job list\n"
+    "  [job].setOriginId\n"
     "  [job].distIdGenerate\n"
     "  [job].addOriginator\n"
     "  [job].assertOriginator\n"

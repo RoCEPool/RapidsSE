@@ -706,6 +706,16 @@ void Job::vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint)
            m_tJobId.uJobNo()
            );
 
+  if (m_tParentId.bIsUnknown())
+    vTrace("%-11s"_Stz,"P:unknown "_Stz);
+  else
+    vTrace("P%04lld.%04lld "_Stz,
+           m_tParentId.uNodeId(),
+           m_tParentId.uJobNo()
+           );
+
+  vTrace(":: "_Stz);
+  
   if (m_tOriginId.bIsUnknown())
     vTrace("%-11s"_Stz,"O:unknown "_Stz);
   else
@@ -721,15 +731,6 @@ void Job::vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint)
            m_tDistId.uNodeId(),
            m_tDistId.uJobNo()
            );
-
-  if (m_tParentId.bIsUnknown())
-    vTrace("%-11s"_Stz,"P:unknown "_Stz);
-  else
-    vTrace("P%04lld.%04lld "_Stz,
-           m_tParentId.uNodeId(),
-           m_tParentId.uJobNo()
-           );
-
 
   vTrace("\n"_Stz);
 }
@@ -1122,6 +1123,9 @@ void Job::vPostRecv(void)
   m_okLock.vResetLock();
   m_okLock.vResetStats();
 
+  if (AM::SYSARGS::bDistJob())
+    vJobTrace("Job"_Stz, "vPostRecv"_Stz, "#rcv"_Stz);
+  
   if (bHasTag(C_SEE_JOB))
     vPrintJobContents();
 }
