@@ -16,7 +16,7 @@
   //"ended:onOrigin" .
 
   [args].distJob if
-    "ended" "onOrigin" "<edd ack originTask" [job].trace
+    "ended" "onOrigin" "<edd ack origin task" [job].trace
   then
 
   // find the originating job

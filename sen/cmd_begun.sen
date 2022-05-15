@@ -16,7 +16,7 @@
   //"begun:onOrigin" .
   
   [args].distJob if
-    "begun" "onOrigin" "<beg ack originTask" [job].trace
+    "begun" "onOrigin" "<beg ack origin task" [job].trace
   then
 
 

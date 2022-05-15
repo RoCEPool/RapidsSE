@@ -129,7 +129,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vCmd(Stz* szCmd);
 
     JobId tDistId(void);
-    void vDistId(JobId tDistId);
     void vDistIdGenerate(void);
     void vDotPrint(Stz* szText);
     void vDropLock(void);
@@ -187,9 +186,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vOutputDestroy(void);
     void vOutputEnabled(bool bEnabled);
     void vOutputEndProc(void);
-    Job* pOriginatingParentJob(void);
     JobId tOriginId(void);
     void vOriginId(JobId tOriginId);
+    Job* pOriginJob(void);
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);
   

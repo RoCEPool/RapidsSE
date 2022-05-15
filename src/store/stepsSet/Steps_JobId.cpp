@@ -216,7 +216,7 @@ void Step::vJobIdMasterJob(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  Job* pOriginJob = pJob->pOriginatingParentJob();
+  Job* pOriginJob = pJob->pOriginJob();
   if (pOriginJob) {
     m_pDataStack->vPushPtr(pOriginJob);
   }

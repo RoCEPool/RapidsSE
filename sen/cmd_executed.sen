@@ -16,7 +16,7 @@
   //"executed:onOrigin" .
 
   [args].distJob if
-    "executed" "onOrigin" "<exd ack originTask" [job].trace
+    "executed" "onOrigin" "<exd ack origin task" [job].trace
   then
 
 

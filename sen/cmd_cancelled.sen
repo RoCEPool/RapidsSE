@@ -17,7 +17,7 @@
   // "cancelled:cancelled" .
 
   [args].distJob if
-    "cancelled" "cancelled" "*ack originTask" [job].trace
+    "cancelled" "cancelled" "*ack origin task" [job].trace
   then
 
 

@@ -1366,7 +1366,7 @@ void Op::vPipeToOutput(Operand* pOperand)
   
   Output* pOutput = pJob->pOutput();
   if (! pOutput) {
-    Job* pParentJob = pJob->pOriginatingParentJob();
+    Job* pParentJob = pJob->pOriginJob();
     pOutput = pParentJob->pOutput();
   }
   RASSERT(pOutput);

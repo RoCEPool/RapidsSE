@@ -313,16 +313,6 @@ JobId Job::tDistId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set distributed job id                                                     */
-/*----------------------------------------------------------------------------*/
-void Job::vDistId(JobId tDistId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
-  m_tDistId = tDistId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* generate distributed job id                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vDistIdGenerate(void)
@@ -413,7 +403,9 @@ void Job::vFolderPath(Stz* szFolderPath)
 i8 Job::iForkNodeId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
+
+  RASSERT(m_iForkNodeId == m_tDistId.uNodeId());
+
   return m_iForkNodeId;
 }
 
@@ -424,6 +416,8 @@ void Job::vForkNodeId(i8 iForkNodeId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
+  RASSERT(iForkNodeId == m_tDistId.uNodeId());
+  
   m_iForkNodeId = iForkNodeId;
 }
 
@@ -905,20 +899,6 @@ void Job::vOutputEndProc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the parent originating job (on origin only)                            */
-/*----------------------------------------------------------------------------*/
-Job* Job::pOriginatingParentJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-      
-  //RASSERT(bIsOnOrigin());
-  
-  Job* pParentJob = AM::OLIST::pFindJob(m_tOriginId);
-  
-  return pParentJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get origin job id                                                          */
 /*----------------------------------------------------------------------------*/
 JobId Job::tOriginId(void)
@@ -948,6 +928,20 @@ i8 Job::iOriginNodeId(void)
   i8 iOriginNodeId = m_tOriginId.uNodeId();
   
   return iOriginNodeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the parent originating job (on origin only)                            */
+/*----------------------------------------------------------------------------*/
+Job* Job::pOriginJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+      
+  //RASSERT(bIsOnOrigin());
+  
+  Job* pOriginJob = AM::OLIST::pFindJob(m_tOriginId);
+  
+  return pOriginJob;
 }
 
 /*----------------------------------------------------------------------------*/
