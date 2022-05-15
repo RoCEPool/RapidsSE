@@ -1123,6 +1123,8 @@ void Job::vPostRecv(void)
   m_okLock.vResetLock();
   m_okLock.vResetStats();
 
+  m_tJobId.vNextJobId();
+  
   if (AM::SYSARGS::bDistJob())
     vJobTrace("Job"_Stz, "vPostRecv"_Stz, "#rcv"_Stz);
   
