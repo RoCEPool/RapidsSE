@@ -1002,6 +1002,8 @@ Job* Job::pParentJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
+  RASSERT(m_pParentJob == AM::JLIST::pFindJob(m_tParentId));
+
   return m_pParentJob;
 }
 
@@ -1012,6 +1014,8 @@ void Job::vParentJob(Job* pParentJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
+  RASSERT(pParentJob == AM::JLIST::pFindJob(m_tParentId));
+
   m_pParentJob = pParentJob;
 }
 
