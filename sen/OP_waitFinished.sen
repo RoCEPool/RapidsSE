@@ -17,9 +17,9 @@
 /*----------------------------------------------------------------------------*/
 : waitFinished_mayProceed
   
-  "waitFinished_test" .
+  "  : waitFinished_mayProceed" .
 
-  Counter1[] Counter0[] "waitFinished: expected %v processed %v" .printf
+  Counter1[] Counter0[] "    expected %v processed %v" .printf
   
   Counter0[] not if
     false
@@ -42,11 +42,13 @@
 /*----------------------------------------------------------------------------*/
 : waitFinished_Count \handler
   
+  [EvMgr].curEventNm@ "%v" .printf
+
   PipeIn[]\clear to InfoSet[]
   
   0 C_TDEF_COUNT InfoSet:getCol to Counter0[]
   
-  Counter0[] [EvMgr].curEventNm@ "waitFinished: %v expecting %v" .printf
+  Counter0[] "  expecting %v commands" .printf
 
   true
 ;
@@ -56,11 +58,13 @@
 /*----------------------------------------------------------------------------*/
 : waitFinished_End \handler
 
+  [EvMgr].curEventNm@ "%v" .printf
+
   PipeIn[].delete
 
   waitFinished_mayProceed if
   
-    [EvMgr].curEventNm@ "waitFinished: %v may proceed" .printf
+    "  may proceed" .printf
     
     Marker[].newEndMarker
     Marker[].pipeOut
@@ -68,7 +72,7 @@
     
   else
   
-    [EvMgr].curEventNm@ "waitFinished: %v cannot proceed" .printf
+    "  cannot proceed" .printf
 
     Marker[].newEndMarker
     Marker[].pipeOut
@@ -82,13 +86,15 @@
 /*----------------------------------------------------------------------------*/
 : waitFinished_Finished \handler
 
+  [EvMgr].curEventNm@ "%v" .printf
+
   Counter1[] 1 + to Counter1[]
   
   PipeIn[].delete
 
   waitFinished_mayProceed if
   
-    [EvMgr].curEventNm@ "waitFinished: %v may proceed" .printf
+    [EvMgr].curEventNm@ "  %v may proceed" .printf
     
     Marker[].newEndMarker
     Marker[].pipeOut
@@ -96,7 +102,7 @@
     
   else
   
-    [EvMgr].curEventNm@ "waitFinished: %v cannot proceed" .printf
+    [EvMgr].curEventNm@ "  %v cannot proceed" .printf
 
     Marker[].newEndMarker
     Marker[].pipeOut
@@ -110,7 +116,7 @@
 /*----------------------------------------------------------------------------*/
 : waitFinished_Start \handler
   
-  [EvMgr].curEventNm@ "waitFinished: %v" .printf
+  [EvMgr].curEventNm@ "%v" .printf
     
   0 to Counter0[] // tracks the number of EV_M_FINISHED expected
   0 to Counter1[] // tracks the number of EV_M_FINISHED processed so far

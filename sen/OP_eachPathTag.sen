@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 : eachPathTag_DataPulse \handler
  
-  "eachPathTag_DataPulse" .
+  //"eachPathTag_DataPulse" .
 
   EV_M_DATAPULSE_handler
 
@@ -18,7 +18,7 @@
 
   <paths> locals| nPaths |
   
-  nPaths "eachPathTag: nPaths %v" .printf
+  //nPaths "eachPathTag: nPaths %v" .printf
 
   C_TDEF_COUNT InfoSet:discover
   
@@ -39,7 +39,7 @@
        [job].tagSet@ tagSet.getStr
        to sPath
        
-    iPathOf iPathNo sPath "eachPathTag: %v %v %v" .printf
+    // iPathOf iPathNo sPath "eachPathTag: %v %v %v" .printf
     
     iPathOf iPathNo sPath 3 OI_PATH InfoSet:pipeoutRow
   loop
