@@ -364,8 +364,11 @@ void JobList::vInsertJob(Job *pJob) {
       
     case JL_RETIRED: {
 
-      auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
-        bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);
+      tJobId_search = pJob->tJobId();
+
+      auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_jobId(tJobId_search,
+                                           _pJob(aRightJob), bFoundKey);
         return bMoveRight;
       };
 
@@ -381,7 +384,8 @@ void JobList::vInsertJob(Job *pJob) {
       tJobId_search = pJob->tJobId();
 
       auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
-        bool bMoveRight = bMoveRight_jobId(tJobId_search, _pJob(aRightJob), bFoundKey);
+        bool bMoveRight = bMoveRight_jobId(tJobId_search,
+                                           _pJob(aRightJob), bFoundKey);
         return bMoveRight;
       };
 
@@ -397,7 +401,8 @@ void JobList::vInsertJob(Job *pJob) {
       tJobId_search = pJob->tJobId();
 
       auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
-        bool bMoveRight = bMoveRight_jobId(tJobId_search, _pJob(aRightJob), bFoundKey);
+        bool bMoveRight = bMoveRight_jobId(tJobId_search,
+                                           _pJob(aRightJob), bFoundKey);
         return bMoveRight;
       };
 
@@ -413,7 +418,8 @@ void JobList::vInsertJob(Job *pJob) {
       tJobId_search = pJob->tOriginId();
 
       auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
-        bool bMoveRight = bMoveRight_originId(tJobId_search, _pJob(aRightJob), bFoundKey);
+        bool bMoveRight = bMoveRight_originId(tJobId_search,
+                                              _pJob(aRightJob), bFoundKey);
         return bMoveRight;
       };
 
@@ -429,7 +435,8 @@ void JobList::vInsertJob(Job *pJob) {
       tJobId_search = pJob->tDistId();
 
       auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
-        bool bMoveRight = bMoveRight_distId(tJobId_search, _pJob(aRightJob), bFoundKey);
+        bool bMoveRight = bMoveRight_distId(tJobId_search,
+                                            _pJob(aRightJob), bFoundKey);
         return bMoveRight;
       };
 
@@ -541,9 +548,11 @@ void JobList::vRemoveJob(Job *pJob) {
     }
       
     case JL_RETIRED: {
-      auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
+      tJobId_search = pJob->tJobId();
+      auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
 
-        bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);
+        bool bMoveRight = bMoveRight_jobId(tJobId_search,
+                                           _pJob(aRightJob), bFoundKey);
 
         return bMoveRight;
       };
@@ -558,7 +567,8 @@ void JobList::vRemoveJob(Job *pJob) {
       tJobId_search = pJob->tOriginId();
       auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
 
-        bool bMoveRight = bMoveRight_originId(tJobId_search, _pJob(aRightJob), bFoundKey);
+        bool bMoveRight = bMoveRight_originId(tJobId_search,
+                                              _pJob(aRightJob), bFoundKey);
 
         return bMoveRight;
       };
@@ -573,7 +583,8 @@ void JobList::vRemoveJob(Job *pJob) {
       tJobId_search = pJob->tDistId();
       auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
 
-        bool bMoveRight = bMoveRight_distId(tJobId_search, _pJob(aRightJob), bFoundKey);
+        bool bMoveRight = bMoveRight_distId(tJobId_search,
+                                            _pJob(aRightJob), bFoundKey);
 
         return bMoveRight;
       };
@@ -588,7 +599,8 @@ void JobList::vRemoveJob(Job *pJob) {
       tJobId_search = pJob->tJobId();
       auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
 
-        bool bMoveRight = bMoveRight_jobId(tJobId_search, _pJob(aRightJob), bFoundKey);
+        bool bMoveRight = bMoveRight_jobId(tJobId_search,
+                                           _pJob(aRightJob), bFoundKey);
 
         return bMoveRight;
       };
@@ -603,7 +615,8 @@ void JobList::vRemoveJob(Job *pJob) {
       tJobId_search = pJob->tJobId();
       auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
 
-        bool bMoveRight = bMoveRight_jobId(tJobId_search, _pJob(aRightJob), bFoundKey);
+        bool bMoveRight = bMoveRight_jobId(tJobId_search,
+                                           _pJob(aRightJob), bFoundKey);
 
         return bMoveRight;
       };
