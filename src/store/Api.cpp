@@ -138,7 +138,6 @@ eEC Api::eForkJob(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  rpChildJob_tbr->vParentJob(rpParentJob_tbr);
   rtChildJobId = rpChildJob_tbr->tJobId();
   
   rpChildJob_tbr->vMutexCreate();

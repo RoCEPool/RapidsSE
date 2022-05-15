@@ -74,7 +74,6 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_eJobPhase = JP_NONE;
   m_eError_job  = EC_NONE;
   m_pOutput_job = nullptr;
-  m_pParentJob  = nullptr;
 
   // m_oJobTags
   // m_xResult
@@ -996,27 +995,15 @@ void Job::vParentId(JobId tParentId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get parent job  TO BE REMOVED                                              */
+/* get parent job                                                             */
 /*----------------------------------------------------------------------------*/
 Job* Job::pParentJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  RASSERT(m_pParentJob == AM::JLIST::pFindJob(m_tParentId));
+  Job* pParentJob = AM::JLIST::pFindJob(m_tParentId);
 
-  return m_pParentJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set parent job  TO BE REMOVED                                              */
-/*----------------------------------------------------------------------------*/
-void Job::vParentJob(Job* pParentJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
-  RASSERT(pParentJob == AM::JLIST::pFindJob(m_tParentId));
-
-  m_pParentJob = pParentJob;
+  return pParentJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1047,7 +1034,6 @@ void Job::vPostRecv(void)
   m_pTask        = nullptr;
   m_p_ResponseOp = nullptr;
   m_pOutput_job  = nullptr;
-  m_pParentJob   = nullptr;
   m_pMutex       = nullptr;
   m_pStmtList    = nullptr;
   m_pJobMetricsChain = nullptr;

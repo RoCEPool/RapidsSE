@@ -69,7 +69,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
                              // DOUBLE CHECK THIS BELONGS HERE
 
     Output*  m_pOutput_job;  // output processor                       POST_RECV
-    Job*     m_pParentJob;   // output processor                       POST_RECV
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // job running on participant node                    PARTICIPANT
@@ -198,7 +197,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     JobId tParentId(void);
     void vParentId(JobId tParentId);
     Job* pParentJob(void);
-    void vParentJob(Job* pParentJob);
     Pipeline* pPipeline(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
