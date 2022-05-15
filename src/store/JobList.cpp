@@ -69,13 +69,14 @@ bool JobList::bMoveRight_addr(Job *pJob, Job *pRightJob, bool &bFoundKey) {
 /*----------------------------------------------------------------------------*/
 /* find job in skip list matching given job id                                */
 /*----------------------------------------------------------------------------*/
-bool JobList::bMoveRight_distId(JobId tDistId, Job *pRightJob, bool &bFoundKey)
+bool JobList::bMoveRight_distId(JobId tDistId,
+                                Job *pRightJob, bool &bFoundKey)
 {
   RASSERT(pRightJob);
 
-  //  vTrace("bMoveRight_id: given %lld v. right %lld\n"_Stz
-  //         ,(i8)tJobId.uJobNo()
-  //         ,pRightJob->m_tJobId.uJobNo());
+  //  vTrace("bMoveRight_distId: given %lld v. right %lld\n"_Stz
+  //         ,(i8)tDistId.uJobNo()
+  //         ,pRightJob->tDistId.uJobNo());
 
   // do the id's match?
   if (tDistId == pRightJob->tDistId()) {
@@ -92,10 +93,11 @@ bool JobList::bMoveRight_distId(JobId tDistId, Job *pRightJob, bool &bFoundKey)
 /*----------------------------------------------------------------------------*/
 /* find job in skip list matching given job id                                */
 /*----------------------------------------------------------------------------*/
-bool JobList::bMoveRight_jobId(JobId tJobId, Job *pRightJob, bool &bFoundKey) {
+bool JobList::bMoveRight_jobId(JobId tJobId,
+                               Job *pRightJob, bool &bFoundKey) {
   RASSERT(pRightJob);
 
-  //  vTrace("bMoveRight_id: given %lld v. right %lld\n"_Stz
+  //  vTrace("bMoveRight_jobId: given %lld v. right %lld\n"_Stz
   //         ,(i8)tJobId.uJobNo()
   //         ,pRightJob->m_tJobId.uJobNo());
 
@@ -106,6 +108,29 @@ bool JobList::bMoveRight_jobId(JobId tJobId, Job *pRightJob, bool &bFoundKey) {
   }
 
   if (tJobId > pRightJob->tJobId())
+    return TRUE(move_right);
+  else
+    return FALSE(go_down);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find job in skip list matching given job id                                */
+/*----------------------------------------------------------------------------*/
+bool JobList::bMoveRight_originId(JobId tOriginId,
+                                  Job *pRightJob, bool &bFoundKey) {
+  RASSERT(pRightJob);
+
+  //  vTrace("bMoveRight_originId: given %lld v. right %lld\n"_Stz
+  //         ,(i8)tOriginId.uJobNo()
+  //         ,pRightJob->tOriginId.uJobNo());
+
+  // do the id's match?
+  if (tOriginId == pRightJob->tOriginId()) {
+    bFoundKey = true;
+    return false;
+  }
+
+  if (tOriginId > pRightJob->tOriginId())
     return TRUE(move_right);
   else
     return FALSE(go_down);
