@@ -28,6 +28,7 @@ namespace STORE {
     TypedStack* m_pExprStack;
     TypedStack* m_pNullStack;
     TypedStack* m_pGbyStack;
+    TypedStack* m_pOrdAggStack;
     TypedStack* m_pLowerStack;
     TypedStack* m_pUpperStack;
     TypedStack* m_pInitStack;
