@@ -1031,6 +1031,37 @@ Pipeline* Job::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vPostRecv(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
+  
+  m_bWasReceived = true;
+  m_eJobList     = JL_NONE;
+    
+  m_pTask        = nullptr;
+  m_p_ResponseOp = nullptr;
+  m_pOutput_job  = nullptr;
+  m_pParentJob   = nullptr;
+  m_pMutex       = nullptr;
+  m_pStmtList    = nullptr;
+  m_pJobMetricsChain = nullptr;
+
+  m_okLock.vResetLock();
+  m_okLock.vResetStats();
+
+  m_tJobId.vNextJobId();
+  AM::JLIST::vInsertJob(this);
+
+  if (AM::SYSARGS::bDistJob())
+    vJobTrace("Job"_Stz, "vPostRecv"_Stz, "#rcv"_Stz);
+  
+  if (bHasTag(C_SEE_JOB))
+    vPrintJobContents();
+}
+
+/*----------------------------------------------------------------------------*/
 /* see job dump                                                               */
 /*----------------------------------------------------------------------------*/
 void Job::vPrintJobContents(void)
@@ -1100,36 +1131,6 @@ void Job::vPrintJobContents(void)
   m_oJobTags.vContentDump();
 
   vTrace(";;\n\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* post recv function                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vPostRecv(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
-  
-  m_bWasReceived = true;
-  m_eJobList     = JL_NONE;
-    
-  m_pTask        = nullptr;
-  m_p_ResponseOp = nullptr;
-  m_pOutput_job  = nullptr;
-  m_pParentJob   = nullptr;
-  m_pMutex       = nullptr;
-  m_pStmtList    = nullptr;
-  m_pJobMetricsChain = nullptr;
-
-  m_okLock.vResetLock();
-  m_okLock.vResetStats();
-
-  m_tJobId.vNextJobId();
-  
-  if (AM::SYSARGS::bDistJob())
-    vJobTrace("Job"_Stz, "vPostRecv"_Stz, "#rcv"_Stz);
-  
-  if (bHasTag(C_SEE_JOB))
-    vPrintJobContents();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -392,7 +392,9 @@ EventHandlers* AM::HANDLERS::pEventHandlers(void)
 /*----------------------------------------------------------------------------*/
 bool AM::JLIST::bFindJob(Job* pJob, bool bLockJob)
 {
-  bool bFound = gpAttachMap->m_pJobs->pJobsList()->bFindJob(pJob,bLockJob);
+  Job* pFoundJob = AM::JLIST::pFindJob(pJob->tJobId(),bLockJob);
+
+  bool bFound = pFoundJob ? true : false;
     
   return bFound;
 }

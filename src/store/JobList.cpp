@@ -190,7 +190,7 @@ Job* JobList::pFindJob(JobId tJobId, bool bLockJob)
 
   Job *pJob = nullptr;
 
-  RASSERT(m_eJobList != JL_RETIRED);
+  //RASSERT(m_eJobList != JL_RETIRED);
   
   switch (m_eJobList) {
 
@@ -265,11 +265,37 @@ Job* JobList::pFindJob(JobId tJobId, bool bLockJob)
     }
 
     case JL_RETIRED: {
-      NEVER_REACH;
+      auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_jobId(tJobId, _pJob(aRightJob), bFoundKey);
+        return bMoveRight;
+      };
+
+      vGrabLock();
+      pJob = _pJob(m_pJobSkipList->pFindByKey(bfMoveRightTest,
+                                              Job::vPrintJobNode));
+      
+      if (pJob && bLockJob)
+        pJob->vGrabLock();
+      
+      vDropLock();
+      break;
     }
       
     case JL_JOBS: {
-      NEVER_REACH;
+      auto bfMoveRightTest = [tJobId](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_jobId(tJobId, _pJob(aRightJob), bFoundKey);
+        return bMoveRight;
+      };
+
+      vGrabLock();
+      pJob = _pJob(m_pJobSkipList->pFindByKey(bfMoveRightTest,
+                                              Job::vPrintJobNode));
+      
+      if (pJob && bLockJob)
+        pJob->vGrabLock();
+      
+      vDropLock();
+      break;
     }
       
     default: {
@@ -350,8 +376,11 @@ void JobList::vInsertJob(Job *pJob) {
       
     case JL_JOBS: {
     
-      auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
-        bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);
+      tJobId_search = pJob->tJobId();
+
+      auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
+        bool bMoveRight = bMoveRight_jobId(tJobId_search,
+                                           _pJob(aRightJob), bFoundKey);
         return bMoveRight;
       };
 
@@ -525,18 +554,19 @@ void JobList::vRemoveJob(Job *pJob) {
   pJob->vGrabLock();
   
   vGrabLock();
-  ASSERT(m_okLock.bIsLocked());
+  RASSERT(m_okLock.bIsLocked());
 
-  ASSERT(JL_JOBS == m_eJobList || m_eJobList == pJob->eJobList());
 
   JobId tJobId_search;
 
   switch (m_eJobList) {
       
     case JL_JOBS: {
-      auto bfMoveRightTest = [pJob](void *aRightJob, bool &bFoundKey) {
+      tJobId_search = pJob->tJobId();
+      auto bfMoveRightTest = [tJobId_search](void *aRightJob, bool &bFoundKey) {
 
-        bool bMoveRight = bMoveRight_addr(pJob, _pJob(aRightJob), bFoundKey);
+        bool bMoveRight = bMoveRight_jobId(tJobId_search,
+                                           _pJob(aRightJob), bFoundKey);
 
         return bMoveRight;
       };
