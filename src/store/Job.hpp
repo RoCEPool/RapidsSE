@@ -13,14 +13,6 @@
 #include "Output.hpp"
 #include "Statement.hpp"
 
-
-/*                      IMPORTANT NOTE
- 
-    If you add a pointer member into this class then modify
-      JOBS_fn(vJob_postRecv) to set it to null when the job is received
- 
- */
-
 namespace STORE
 {
 typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
@@ -29,57 +21,41 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
               public CRM<Job>
   {
   private:
-    Lock m_okLock;
+  
+    Lock   m_okLock;      // lock on this job
     
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // universally immutable information                    UNIVERSAL
 
     JobId  m_tJobId;      // this job's id
-    JobId  m_tParentId;   // job id of parent
-    JobId  m_tOriginId;   // origin id
-    JobId  m_tDistId;     // distributed id
+    JobId  m_tParentId;   // id of parent job
+    JobId  m_tOriginId;   // id when job is originator
+    JobId  m_tDistId;     // id when job is distributed participant
 
     s32    m_sJobNm;      // name of job
-
-    Atomic m_noActiveOps; // number of active ops
-
-    // -- command and tags
-    TagSet m_oJobTags;  // tags for the job
-
-    
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
+    s4K    m_sEntryPoint; // sen entry code
+    TagSet m_oJobTags;    // tags for the job
+    s256   m_sFolderPath; // folder path
   
-    // information depending on job instance/location           MODAL
-
-    // -- postage
-    b8 m_bWasReceived;   // was job received over a socket?          POST_RECV
-  
-    // -- state
-    eJP m_eJobPhase;  // current phase: JP_BEGINNING, _BEGUN, ...
-    eJL m_eJobList;   // current list : JL_ORIGINATING, ...            POST_RECV
+    eJP    m_eJobPhase;   // current phase: JP_BEGINNING, _BEGUN, ...
+    eEC    m_eError_job;  // error when starting job
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // job running as originator on origin                 ORIGINATOR
-
-    Op*   m_p_ResponseOp;    // operator to where responses go         POST_RECV
-    Timer m_oResponseTimer;  // timer (on origin only)
+    // reset in Job::vPostRecv()
   
-    eEC   m_eError_job;      // error when starting job
-                             // DOUBLE CHECK THIS BELONGS HERE
-
-    Output*  m_pOutput_job;  // output processor                       POST_RECV
-
+    /* 00 */ Atomic  m_noActiveOps;    // number of active ops
+    /* 01 */ eJL     m_eJobList;       // current list : JL_ORIGINATING, ...
+    /* 02 */ JobMetrics* m_pJobMetrics;// job metrics chain
+    /* 03 */ Mutex*  m_pMutex;         // mutex
+    /* 04 */ Output* m_pOutput_job;    // output processor
+    /* 05 */ b8      m_bReapable;      // can job be reaped?
+    /* 06 */ Op*     m_p_ResponseOp;   // operator to where responses go
+    /* 07 */ Timer   m_oResponseTimer; // timer (on origin only)
+    /* 08 */ StmtList* m_pStmtList;    // list of cascade statements
+    /* 09 */ Task*   m_pTask;          // task executing this job
+    /* 10 */ b8      m_bWasReceived;   // was job received over a socket?
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // job running on participant node                    PARTICIPANT
- 
-  
-    // -- tasking
-    Task* m_pTask;  // task executing this job                         POST_RECV
-  
-    s4K m_sEntryPoint;   // sen entry code
-  
-    s256 m_sFolderPath;   // folder path
-  
+
     i8  m_iTscParticipant;
 
     i8  m_iTscBeginning;
@@ -91,19 +67,11 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     i8  m_iTscCanceling;
     i8  m_iTscCanceled;
 
- 
-    b8  m_bReapable;  // can job be reaped?
-  
-    JobMetrics* m_pJobMetricsChain;                                // POST_RECV
-
-
-    Mutex* m_pMutex;                                               // POST_RECV
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
     // TO BE MOVED
     Timer m_oProgressTimer; // move to register
 
-    StmtList* m_pStmtList;    // list of cascade statements
-  
     // must be last
     Footer m_xFooter;
     
@@ -184,6 +152,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vOutputDestroy(void);
     void vOutputEnabled(bool bEnabled);
     void vOutputEndProc(void);
+    Output* pOutputFind(void);
     JobId tOriginId(void);
     void vOriginId(JobId tOriginId);
     Job* pOriginJob(void);

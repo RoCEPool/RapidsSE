@@ -95,7 +95,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 
   // -- -- -- -- -- --
       
-  m_pJobMetricsChain  = nullptr;
+  m_pJobMetrics  = nullptr;
   
   m_pMutex     = nullptr;
 
@@ -141,11 +141,11 @@ Job::~Job(void) noexcept(false)
 
   RASSERT(m_bReapable);
   
-  if (m_pJobMetricsChain) {
-    while (m_pJobMetricsChain) {
-      JobMetrics* pJobMetricsNext = m_pJobMetricsChain->pNext();
-      delete m_pJobMetricsChain;
-      m_pJobMetricsChain = pJobMetricsNext;
+  if (m_pJobMetrics) {
+    while (m_pJobMetrics) {
+      JobMetrics* pJobMetricsNext = m_pJobMetrics->pNext();
+      delete m_pJobMetrics;
+      m_pJobMetrics = pJobMetricsNext;
     }
 
   }
@@ -590,9 +590,9 @@ void Job::vJobMetricsAdd(JobMetrics *pJobMetrics)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  pJobMetrics->vNext(m_pJobMetricsChain);
+  pJobMetrics->vNext(m_pJobMetrics);
   
-  m_pJobMetricsChain = pJobMetrics;
+  m_pJobMetrics = pJobMetrics;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -602,7 +602,7 @@ JobMetrics* Job::pJobMetricsChain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  return m_pJobMetricsChain;
+  return m_pJobMetrics;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -886,6 +886,40 @@ void Job::vOutputEndProc(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find output processor                                                      */
+/*----------------------------------------------------------------------------*/
+Output* Job::pOutputFind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+ 
+  
+  Output* pOutput = this->pOutput();
+  if (! pOutput) {
+    Job* pOriginJob = this->pOriginJob();
+    pOutput = pOriginJob->pOutput();
+  }
+
+  return pOutput;
+  
+  /* NOT A GOOD IDEA
+  Output* pOutput = this->pOutput();
+  if (pOutput)
+    return pOutput;
+  
+  for (Job* pOuterJob = this->pOriginJob();
+       pOuterJob;
+       pOuterJob = pOuterJob->pParentJob()) {
+    
+    pOutput = pOuterJob->pOutput();
+    if (pOutput)
+      return pOutput;
+  }
+
+  return nullptr;
+  */
+}
+
+/*----------------------------------------------------------------------------*/
 /* get origin job id                                                          */
 /*----------------------------------------------------------------------------*/
 JobId Job::tOriginId(void)
@@ -999,19 +1033,23 @@ void Job::vPostRecv(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
   
-  m_bWasReceived = true;
-  m_eJobList     = JL_NONE;
-    
-  m_pTask        = nullptr;
-  m_p_ResponseOp = nullptr;
-  m_pOutput_job  = nullptr;
-  m_pMutex       = nullptr;
-  m_pStmtList    = nullptr;
-  m_pJobMetricsChain = nullptr;
-
   m_okLock.vResetLock();
   m_okLock.vResetStats();
 
+  /* 00 */ m_noActiveOps.vResetAtomic();
+  /* 01 */ m_eJobList     = JL_NONE;
+  /* 02 */ m_pJobMetrics  = nullptr;
+  /* 03 */ m_pMutex       = nullptr;
+  /* 04 */ m_pOutput_job  = nullptr;
+  /* 05 */ RASSERT(! m_bReapable);
+  /* 06 */ m_p_ResponseOp = nullptr;
+  /* 07 */ m_oResponseTimer.vReset();
+  /* 08 */ m_pStmtList    = nullptr;
+  /* 09 */ m_pTask        = nullptr;
+  /* 10 */ m_bWasReceived = true;
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   m_tJobId.vNextJobId();
   AM::JLIST::vInsertJob(this);
 

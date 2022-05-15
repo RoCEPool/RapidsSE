@@ -1364,11 +1364,7 @@ void Op::vPipeToOutput(Operand* pOperand)
   Job* pJob = MY::pJob();
   RASSERT(pJob);
   
-  Output* pOutput = pJob->pOutput();
-  if (! pOutput) {
-    Job* pParentJob = pJob->pOriginJob();
-    pOutput = pParentJob->pOutput();
-  }
+  Output* pOutput = pJob->pOutputFind();
   RASSERT(pOutput);
   
   Queue* pOutputQueue = pOutput->m_pOutputQueue;
