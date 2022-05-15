@@ -78,7 +78,7 @@ success
 // OPTIMIZED Q12_v1
 // Changed abstractJoin to concrete join with combinedOp
 // removed join columns from the filter
-// added hashOP hashcasts bedore indexJoin stage
+// added hashOP hashcasts before indexJoin stage
 // broadcast changed to hashcast in stageMarker31060
 // ordinals to symbolic
 // added next and first
