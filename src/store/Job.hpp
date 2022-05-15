@@ -38,7 +38,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     JobId  m_tParentId;   // job id of parent
     JobId  m_tOriginId;   // origin id
     JobId  m_tDistId;     // distributed id
-    i8     m_iForkNodeId; // node where job was forked
 
     s32    m_sJobNm;      // name of job
 
@@ -130,6 +129,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     JobId tDistId(void);
     void vDistIdGenerate(void);
+    i8   iDistNodeId(void);
     void vDotPrint(Stz* szText);
     void vDropLock(void);
 
@@ -138,8 +138,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   
     Stz* szFolderPath(void);
     void vFolderPath(Stz* szFolderPath);
-    i8   iForkNodeId(void);
-    void vForkNodeId(i8 iForkNodeId);
 
     void vGrabLock(void);
   

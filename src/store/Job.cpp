@@ -54,7 +54,6 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_tParentId = tParentId;
   m_tDistId   = tDistId;
   m_tOriginId = tOriginId;
-  m_iForkNodeId = MY::pGrid()->iThisNodeId();
 
   m_sJobNm   = szJobNm;
 
@@ -261,7 +260,6 @@ void Job::vCascadeReset(void)
 
   // -- b -------------------
   m_bWasReceived     = false;
-  m_iForkNodeId = C_UNKNOWN;
 
   // -- c -------------------
   m_eJobList  = JL_NONE;
@@ -320,6 +318,18 @@ void Job::vDistIdGenerate(void)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   m_tDistId.vNextJobId();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node where distributed job was forked                                  */
+/*----------------------------------------------------------------------------*/
+i8 Job::iDistNodeId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  i8 iDistNodeId = m_tDistId.uNodeId();
+
+  return iDistNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -397,29 +407,6 @@ void Job::vFolderPath(Stz* szFolderPath)
   m_sFolderPath = szFolderPath;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get node where job was forked                                              */
-/*----------------------------------------------------------------------------*/
-i8 Job::iForkNodeId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  RASSERT(m_iForkNodeId == m_tDistId.uNodeId());
-
-  return m_iForkNodeId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set node where job was forked                                              */
-/*----------------------------------------------------------------------------*/
-void Job::vForkNodeId(i8 iForkNodeId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
-  RASSERT(iForkNodeId == m_tDistId.uNodeId());
-  
-  m_iForkNodeId = iForkNodeId;
-}
 
 /*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
@@ -485,7 +472,7 @@ bool Job::bIsOnOrigin(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   i8 iOrigin = iOriginNodeId();
-  i8 iParticipant = iForkNodeId();
+  i8 iParticipant = iDistNodeId();
  
   if (iParticipant == iOrigin)
     return true;
@@ -1068,7 +1055,6 @@ void Job::vPrintJobContents(void)
          "            iCmdNo "  "%lld"  " \n"  // 6
 
          "      bWasReceived "  "%s"    " \n"  // 7
-         "     i_Participant "  "%lld"  " \n"  // 8
 
          "         eJobState "  "%s"    " \n"  // 10
          "         eJobPhase "  "%s"    " \n"  // 11
@@ -1091,7 +1077,6 @@ void Job::vPrintJobContents(void)
 
          ,m_tParentId.uJobNo()          // 6
          ,m_bWasReceived ? "true" : "false" // 7
-         ,m_iForkNodeId            // 8
          ,aMS[eMutexSide()]           // 10
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
@@ -1126,9 +1111,9 @@ void Job::vPrintJobLine(void)
          ,this->m_tParentId.uJobNo()
          );
 
-  if (C_UNKNOWN != this->iForkNodeId())
+  if (C_UNKNOWN != this->iDistNodeId())
     vTrace("partNode %lld "_Stz
-           ,this->iForkNodeId()
+           ,this->iDistNodeId()
            );
 
   LogicUnit* pLogicUnit = m_pTask->pLogicUnit();

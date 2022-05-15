@@ -62,8 +62,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("[job].parentId@"_Stz,        &Step::vJobParentIdFetch);
   vAddStep("[job].parentOriginNodeId@"_Stz, &Step::vJobParentOriginNodeIdFetch);
-  vAddStep("[job].participantNodeId@"_Stz, &Step::vJobParticipantNodeIdFetch);
-  vAddStep("[job].participantNodeId!"_Stz, &Step::vJobParticipantNodeIdStore);
   vAddStep("[job].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("[job].phase!"_Stz,           &Step::vJobPhaseStore);
   vAddStep("[job].preExecuteTest"_Stz,   &Step::vJobPreExecuteTest);
@@ -628,36 +626,6 @@ void Step::vJobParentOriginNodeIdFetch(void)
   EXIT();
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* [job].participantNodeId@ -- fetch the participant node from the job        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobParticipantNodeIdFetch(void)
-{
-  ENTRY();
-  
-  Job* pJob = * m_pJob;
-
-  m_pDataStack->vPushInt(pJob->iForkNodeId());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [job].participantNodeId! -- store the participant node in the job          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobParticipantNodeIdStore(void)
-{
-  ENTRY();
-  
-  Job* pJob = * m_pJob;
-
-  i8 iParticipantNodeId = m_pDataStack->iPopAsInt(__func__);
-  
-  pJob->vForkNodeId(iParticipantNodeId);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* [job].phase@ -- fetch the job phase                                        */

@@ -847,8 +847,6 @@ void vDdlLockAssertNone(void);
 
   void vJobParentIdFetch(void);
   void vJobParentOriginNodeIdFetch(void);
-  void vJobParticipantNodeIdFetch(void);
-  void vJobParticipantNodeIdStore(void);
   void vJobIdPipeToOp0(void);
   void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);
