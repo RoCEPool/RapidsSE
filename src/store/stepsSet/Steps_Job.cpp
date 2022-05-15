@@ -265,7 +265,7 @@ void Step::vJobAssertBegin(void)
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
   
-  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->tDistId());
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->tOriginId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "[job].assertBegin: "
@@ -295,7 +295,7 @@ void Step::vJobAssertOrdinary(void)
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
   
-  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tDistId());
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tOriginId());
   if (pJobFound)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "[job].assertOrdinary: "
@@ -591,11 +591,11 @@ void Step::vJobOriginNodeIdFetch(void)
 {
   ENTRY();
   
-  JobId tJobId = m_pJob->tJobId();
+  JobId tOriginId = m_pJob->tOriginId();
   
-  i8 iNodeId = (i8)tJobId.uNodeId();
+  i8 iOriginNodeId = (i8)tOriginId.uNodeId();
   
-  m_pDataStack->vPushInt(iNodeId);
+  m_pDataStack->vPushInt(iOriginNodeId);
   
   EXIT();
 }

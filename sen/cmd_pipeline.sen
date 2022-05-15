@@ -303,9 +303,6 @@
     "pipeline" "ptpBegin" ".ptp phs begin" [job].trace
   then
     
-
-  [job].setOriginId
-
   [job].progressReset
   
   [job].assertStructure

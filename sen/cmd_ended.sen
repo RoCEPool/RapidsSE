@@ -51,7 +51,7 @@
 
   "ended:onOrigin" [job].entryPoint!
 
-  [job].parentOriginNodeId@ [grid].findNodeByNo to SendNode[]
+  [job].originNodeId@ [grid].findNodeByNo to SendNode[]
   
   [job] job(Id).send
 
