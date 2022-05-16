@@ -488,28 +488,6 @@ bool Output::bProcessOperand(Operand* pOperand)
       eOM eOpMarker = pMarker->eOpMarker();
 
       switch (eOpMarker) {
-          
-        case OM_CANCELLING: {
-          NEVER_REACH
-          break;
-        }
-
-        case OM_CLEANING: {
-          NEVER_REACH
-          break;
-        }
-          
-        case OM_DESTROYMARKER: {
-          //vTrace("Pipeline Job: DESTROYMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-
-        case OM_EACHSCANEOSMARKER: {
-          //vTrace("Pipeline Job: EACHSCANEOSMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
 
         case OM_EOSMARKER: {
           //vTrace("Pipeline Job: EOSMARKER\n"_Stz);
@@ -518,11 +496,6 @@ bool Output::bProcessOperand(Operand* pOperand)
         }
           
         case OM_ERRORMARKER: {
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-         
-        case OM_ERROREDMARKER: {
           AM::vDeleteOperand(pOperand);
           break;
         }
@@ -542,22 +515,6 @@ bool Output::bProcessOperand(Operand* pOperand)
           break;
         }
 
-        case OM_PULSEDMARKER: {
-          //vTrace("Pipeline Job: PULSEDMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-
-        case OM_RETURNMARKER: {
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-          
-        case OM_RETURNEDMARKER: {
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-          
         case OM_STARTMARKER: {
           //vTrace("Pipeline Job: STARTMARKER\n"_Stz);
           AM::vDeleteOperand(pOperand);
