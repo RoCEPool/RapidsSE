@@ -16,7 +16,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                             */
+/* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : pageIn_RowBuffer \handler
 
@@ -42,7 +42,7 @@
 
   op__topology
 
-  find: pageIn_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+  find: pageIn_RowBuffer   EV_D_ROWBUFFER   [op].handler!
 
   op__loop
 

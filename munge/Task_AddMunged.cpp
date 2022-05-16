@@ -366,6 +366,18 @@ void Task::vAddMunged(Task* )
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for EV_D_ROWBUFFER ...                                             */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": pageout_RowBuffer \\handler\n"
+    "\n"
+    "  Pipein[]\\clear to RowBuffer[]\n"
+    "\n"
+    "  RowBuffer[]\\clear PageOut::pageOutPoolBuffer\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
     "/* execute for pageout req                            (on node where spawned) */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": pageout_op \\operator\n"
@@ -378,7 +390,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  op__topology\n"
     "\n"
-    "  find: pageout_StartMarker EV_M_START [op].handler!\n"
+    "  //find: pageout_StartMarker ZK_M_START [op].handler!\n"
+    "  find: pageout_RowBuffer   EV_D_ROWBUFFER   [op].handler!\n"
     "\n"
     "  op__loop\n"
     "\n"
@@ -396,7 +409,7 @@ void Task::vAddMunged(Task* )
     "\n"
     ": pageout_cmdTags _cmdTags tagCopy: op_tags\n"
     "  tags{\n"
-    "    <dedicatedThd> = 1\n"
+    "    //<dedicatedThd> = 1\n"
     "    <opEntry> = \"pageout_op\"\n"
     "  }\n"
     " ;\n"
@@ -33336,6 +33349,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "\"p\" .verbose\n"
     "\n"
+    "  \"OP_pageIn.sen\"               include\n"
     "  \"OP_pageOut.sen\"              include\n"
     "  \"OP_parser.sen\"               include\n"
     "  \"OP_partitionExplain.sen\"     include\n"
@@ -39322,9 +39336,91 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [389] OP_inflateRows.sen
+  // munge of [389] OP_pageIn.sen
 
   gszaMungedText[389] =
+    "\" munged OP_pageIn.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_pageIn.sen -- Page In Operator                                          */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP_pageIn.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* put the pageIn periodic activity here                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": pageIn::activity\n"
+    "\n"
+    "  //\"Page In Activity\" .\n"
+    "\n"
+    "  // update node status based on heartbeat related info\n"
+    "  pageIn::testPrint\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for EV_D_ROWBUFFER ...                                             */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": pageIn_RowBuffer \\handler\n"
+    "\n"
+    "  PipeIn[].delete\n"
+    "\n"
+    "  pageIn::PageInPoolBuffer\n"
+    "\n"
+    "  RowBuffer[].pipeOut\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* execute for pageIn req                            (on node where spawned) */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": pageIn_op \\operator\n"
+    "\n"
+    "  _lu_initialise_\n"
+    "\n"
+    "  \"<testTag>\" [job].tagSet@ tagSet.hasName if\n"
+    "      <testTag> .\n"
+    "  then\n"
+    "\n"
+    "  op__topology\n"
+    "\n"
+    "  find: pageIn_RowBuffer   EV_D_ROWBUFFER   [op].handler!\n"
+    "\n"
+    "  op__loop\n"
+    "\n"
+    "  _lu_finalise_\n"
+    "\n"
+    "  op__retires\n"
+    "\n"
+    "  HAZARD\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "cmdSyntax: pageIn :: pageIn ;\n"
+    "\n"
+    ": pageIn_cmdTags _cmdTags tagCopy: op_tags\n"
+    "  tags{\n"
+    "    //<dedicatedThd> = 1\n"
+    "    <opEntry> = \"pageIn_op\"\n"
+    "  }\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 389 CONSTANT OP_pageIn.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [390] OP_inflateRows.sen
+
+  gszaMungedText[390] =
     "\" munged OP_inflateRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_inflateRows.sen -- inflate rows from rowBuffer into same                */\n"
@@ -39417,7 +39513,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 389 CONSTANT OP_inflateRows.sen "_Stz;
+  szSubScriptDef = " 390 CONSTANT OP_inflateRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 

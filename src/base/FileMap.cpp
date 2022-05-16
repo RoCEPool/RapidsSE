@@ -53,9 +53,9 @@ FileMap::FileMap(void)
   m_uPageFileSubset = 0;
 
 //  vInitialise();
-
+#ifdef WITH_BUFFER_ID
   m_pPageFile = new PageFile(m_szFilePath);
-
+#endif
   _checkInitialised_(CN_FILEMAP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
