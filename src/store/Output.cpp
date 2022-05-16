@@ -47,8 +47,7 @@ Output::Output(Job* pJob)
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
-  m_bCmdErr           = false;
-  m_bExecErr          = false;
+  m_bError            = false;
   m_bPrintEnabled     = true;
   
   m_bFileOut          = false;
@@ -387,7 +386,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       ASSERT( ! pInfoSet->szBufferNm()->bSame(C_NO_NAME) );
       if (pInfoSet->szBufferNm()->bSame(C_TDEF_COMMANDERRORS)) {
 
-        if ( ! m_bCmdErr) {
+        if ( ! m_bError) {
           Row *pInfoRow = pInfoSet->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
@@ -398,7 +397,7 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; Line: %lld; Column: %lld; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, szErrorText);
-          m_bCmdErr = true;
+          m_bError = true;
         }
         else {
           // LOG error
@@ -407,7 +406,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       }
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS)) {
 
-        if ( ! m_bExecErr) {
+        if ( ! m_bError) {
           Row *pInfoRow = pInfoSet->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
@@ -416,7 +415,7 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], szErrorText);
-          m_bExecErr = true;
+          m_bError = true;
         }
         else {
           // LOG error
@@ -482,10 +481,9 @@ bool Output::bProcessOperand(Operand* pOperand)
           //  vTrace("success: %lld rows fetched\n"_Stz, *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
           m_bExitMarker = true;
-          if ( !m_bCmdErr && !m_bExecErr )
+          if ( !m_bError )
             vPrintResult();
-          m_bCmdErr = false;
-          m_bExecErr = false;
+          m_bError = false;
           bContinue = false;
           goto L_EXIT;
           break;

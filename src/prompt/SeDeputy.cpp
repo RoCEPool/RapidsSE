@@ -173,8 +173,7 @@ void SeDeputy::vDeputyLoop(void)
     if (m_pJob->bIsPipeline())
       m_pJob->pOutput()->vProcessBufferQueue();
 
-    RASSERT(! m_pJob->pOutput()->m_bExecErr );
-    RASSERT(! m_pJob->pOutput()->m_bCmdErr );
+    RASSERT(! m_pJob->pOutput()->m_bError );
 
     if (m_pJob->bIsInError()) {
       vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),

@@ -21,8 +21,7 @@ namespace STORE
     StreamDef* m_pStreamDef_result;
     bool       m_bExitMarker;
 
-    bool       m_bCmdErr;
-    bool       m_bExecErr;
+    bool       m_bError;
     bool       m_bPrintEnabled;
   
     Atomic     m_ixRowsProcessed; // rows processed
