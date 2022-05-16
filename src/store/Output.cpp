@@ -392,14 +392,6 @@ bool Output::bProcessOperand(Operand* pOperand)
       
     // -- -- -- -- -- --
       
-    case CN_INDEXDEF: {
-      //vTrace("Pipeline Job: INDEXDEF\n"_Stz);
-      AM::vDeleteOperand(pOperand);
-      break;
-    }
-      
-    // -- -- -- -- -- --
-      
     case CN_INFOSET: {
       InfoSet* pInfoSet = _pInfoSet(pOperand);
       ASSERT( ! pInfoSet->szBufferNm()->bSame(C_NO_NAME) );
@@ -548,11 +540,6 @@ bool Output::bProcessOperand(Operand* pOperand)
           vTrace("\n%s\n"_Stz, sMetadata.szStz());
         }
       }
-      break;
-    }
-
-    case CN_STREAMDEFRHT: {
-      NEVER_REACH;
       break;
     }
 
