@@ -75,6 +75,7 @@
 
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
+#include "ExitOperand.hpp"
 #include "RowCompactor.hpp"
 #include "OtherOperand.hpp"
 #include "PlanOperand.hpp"
@@ -341,6 +342,7 @@ SizeHeap gxaSizeHeap[]
   { CN_EVENTHANDLERS,            sizeof(EventHandlers),      HT_T_TINY    ,0 FILL },
   { CN_EVMGR,                    sizeof(EvMgr),              HT_T_TINY    ,0 FILL },
   { CN_EXEMPLAR,                 sizeof(Exemplar),           HT_T_TINY    ,0 FILL },
+  { CN_EXITOPERAND,              sizeof(ExitOperand),        HT_T_TINY    ,0 FILL },
 
   { CN__F__,                     'F' - ('A' - 1),            HT_INVALID   ,0 FILL },
   { CN_FIFO,                     sizeof(Fifo),               HT_T_TINY    ,0 FILL },

@@ -96,6 +96,7 @@ enum eCN : u2 // Class Number
   /* */ CN_EVENTHANDLERS,
   /* */ CN_EVMGR,
   /* */ CN_EXEMPLAR,
+  /* */ CN_EXITOPERAND,
 
   /* */ CN__F__,
   /* */ CN_FIFO,
@@ -502,6 +503,7 @@ static Stz* aCN[]
   /* */ "EVENTHANDLERS"_Stz,        // CN_EVENTHANDLERS
   /* */ "EVMGR"_Stz,                // CN_EVMGR
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
+  /* */ "EXITOPERAND"_Stz,          // CN_EXITOPERAND
 
   /* */ "_F__"_Stz,                 // CN__F__
   /* */ "FIFO"_Stz,                 // CN_FIFO
