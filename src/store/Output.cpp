@@ -50,8 +50,6 @@ Output::Output(Job* pJob)
   m_bCmdErr           = false;
   m_bExecErr          = false;
   m_bPrintEnabled     = true;
-
-  m_iOutputState      = 0;
   
   m_bFileOut          = false;
   m_pFileOut          = nullptr;
@@ -110,9 +108,6 @@ void Output::vAssertEmptyQueue(void)
 void Output::vBeginProcOneCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-  
-  //RASSERT(! m_iOutputState);
-  m_iOutputState = 1;
   
  if (!m_bFileOut)
    return;
@@ -176,8 +171,7 @@ void Output::vEndProcOneCmd(void)
     delete m_pFileOut;
     m_pFileOut = nullptr;
   }
-  
-  m_iOutputState = 0;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,9 +200,6 @@ void Output::vFilePath(Stz* szFilePath)
 void Output::vProcessBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-  
-
-  //RASSERT(m_iOutputState);
   
   Operand* pOperand;
   

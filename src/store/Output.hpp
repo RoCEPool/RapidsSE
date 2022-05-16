@@ -28,8 +28,6 @@ namespace STORE
     Atomic     m_ixRowsProcessed; // rows processed
     Atomic     m_ixRowsInvalid;   // invalid rows detected
     Atomic     m_ixRowsSkipped;   // rows skipped
-  
-    i8         m_iOutputState;
 
     bool       m_bFileOut;
     File*      m_pFileOut;
