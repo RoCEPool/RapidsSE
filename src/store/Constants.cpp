@@ -265,7 +265,6 @@ void Constants::vAddConstantsCpp(void)
   /*  6 */ vAddConstant("AT_ENUMS"_Stz,    AT_ENUMS);
   
   // CN_ : class number
-  /*    */ vAddConstant("CN_EACHROWBUFFER"_Stz,CN_EACHROWBUFFER);
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
   /*    */ vAddConstant("CN_JOB"_Stz,          CN_JOB);
   /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
@@ -653,7 +652,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_D_BUCKETMAP_dyn"_Stz,   EV_D_BUCKETMAP_dyn);
   /*  0 */ vAddConstant("EV_D_CRWBUFFER"_Stz,       EV_D_CRWBUFFER);
   /*  0 */ vAddConstant("EV_D_CSVBUFFER"_Stz,       EV_D_CSVBUFFER);
-  /*  0 */ vAddConstant("EV_D_EACHROWBUFFER"_Stz,   EV_D_EACHROWBUFFER);
   /*  0 */ vAddConstant("EV_D_ENTBUFFER"_Stz,       EV_D_ENTBUFFER);
   /*  0 */ vAddConstant("EV_D_GRID"_Stz,            EV_D_GRID);
   /*  0 */ vAddConstant("EV_D_INDEX"_Stz,           EV_D_INDEX);

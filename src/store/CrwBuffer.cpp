@@ -16,7 +16,6 @@
 #include "RowBuffer.hpp"
 #include "RowCompactor.hpp"
 #include "RowInflator.hpp"
-#include "EachRowBuffer.hpp"
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
@@ -858,27 +857,6 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
     ((char*)szRecord)[nBytes-1] = '\0';
   
   return pFirstCsvBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate a EachRowBuffer from a crw buffer for the given row               */
-/*----------------------------------------------------------------------------*/
-EachRowBuffer* CrwBuffer::pToEachRowBuffer(i8 i_Row)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-
-  StreamDef* pStreamDef = this->pStreamDef();
-
-  EachRowBuffer* pEachRowBuffer = new EachRowBuffer(CN_EACHROWBUFFER, pStreamDef);
-
-  // get compact row
-  Crw* aCrw = (Crw*)aGetHead(i_Row);
-
-  //Row* pRow = pEachRowBuffer->pAllotRow();
-
-  RowInflator::vInflate_AllColumns_into_EachRowBuffer(pEachRowBuffer,aCrw);
-
-  return pEachRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

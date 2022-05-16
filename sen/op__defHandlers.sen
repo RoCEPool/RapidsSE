@@ -36,7 +36,6 @@
 : EV_D_BUCKETMAP_dyn_handler    \handler STANDARD_PIPEOUT ;
 : EV_D_CRWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: EV_D_EACHROWBUFFER_handler    \handler STANDARD_PIPEOUT ;
 : EV_D_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_INDEX_handler            \handler STANDARD_PIPEOUT ;
 : EV_D_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
@@ -310,7 +309,6 @@
   abnormalHandler EV_D_BUCKETMAP_dyn    [op].handler!
   abnormalHandler EV_D_CRWBUFFER        [op].handler!
   abnormalHandler EV_D_CSVBUFFER        [op].handler!
-  abnormalHandler EV_D_EACHROWBUFFER    [op].handler!
   abnormalHandler EV_M_ENDCRWRHT        [op].handler!
   abnormalHandler EV_M_ENDROWRHT        [op].handler!
   abnormalHandler EV_D_ENTBUFFER        [op].handler!

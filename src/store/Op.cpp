@@ -604,7 +604,6 @@ bool Op::bIsEventValid(i8 i_OperandKind)
       break;
 
     case EV_D_CRWBUFFER:
-    case EV_D_EACHROWBUFFER:
     case EV_D_ENTBUFFER:
     case EV_D_ROWBUFFER:
     case EV_D_SRTBUFFER:

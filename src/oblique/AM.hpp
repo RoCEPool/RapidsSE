@@ -151,7 +151,6 @@ namespace STORE {
 
   class Dynamo;
 
-  class EachRowBuffer;
   class Encoding;
   class Engine;
   class EntBuffer;

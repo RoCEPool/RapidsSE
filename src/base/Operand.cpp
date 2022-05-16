@@ -28,7 +28,6 @@ bool BASE::_bIsValidOperand(eCN eClass)
   switch(eClass) {
     case CN_CRWBUFFER:
     case CN_CSVBUFFER:
-    case CN_EACHROWBUFFER:
     case CN_INDEXDEF:
     case CN_INFOSET:
     case CN_MARKER:

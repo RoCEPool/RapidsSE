@@ -13,7 +13,6 @@
 #include "Marker.hpp"
 
 #include "RowBuffer.hpp"
-#include "EachRowBuffer.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"

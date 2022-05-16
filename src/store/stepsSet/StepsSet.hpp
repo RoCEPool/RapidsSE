@@ -372,9 +372,7 @@ void vDdlLockAssertNone(void);
 
   // devLftRow
   void vDevLftRowStreamDefStore(void);
-  void vDevLftRowDeleteEachRowBuffer(void);
   void vDevLftRowRowStore(void);
-  void vDevLftRowEachRowBufferStore(void);
   void vDevLftRowRowBufferFetch(void);
   void vDevLftRowRowBufferStore(void);
   void vDevLftRowCrwBufferStore(void);

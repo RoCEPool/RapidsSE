@@ -42,8 +42,6 @@
 #include "DdlLock.hpp"
 #include "DicLock.hpp"
 
-#include "EachRowBuffer.hpp"
-
 #include "IndexDef.hpp"
 
 #include "Index.hpp"
@@ -333,7 +331,6 @@ SizeHeap gxaSizeHeap[]
   { CN_DYNAMO,                   sizeof(Dynamo),             HT_T_TINY    ,0 FILL },
 
   { CN__E__,                     'E' - ('A' - 1),            HT_INVALID   ,0 FILL },
-  { CN_EACHROWBUFFER,            sizeof(EachRowBuffer),      HT_T_MEDIUM  ,0 FILL },
   { CN_EDTVAL,                   sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL },
   { CN_ENCODING,                 sizeof(Encoding),           HT_T_MEDIUM  ,0 FILL },
   { CN_ENT,                      sizeof(Ent),                HT_INVALID   ,0 FILL },

@@ -2755,12 +2755,6 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
 
-    case CN_EACHROWBUFFER: {
-      EachRowBuffer* pEachRowBuffer = _pEachRowBuffer(pOperand);
-      delete pEachRowBuffer;
-      break;
-    }
-
     case CN_ENTBUFFER: {
       // should never be called for permanent ent buffers
       EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
@@ -3460,7 +3454,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_BUCKETMAP: eOperand = EV_D_BUCKETMAP_dyn; break;
     case CN_CRWBUFFER: eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER: eOperand = EV_D_CSVBUFFER; break;
-    case CN_EACHROWBUFFER: eOperand = EV_D_EACHROWBUFFER; break;
     case CN_ENTBUFFER: eOperand = EV_D_ENTBUFFER; break;
     case CN_INDEX:     eOperand = EV_D_INDEX;  break;
     case CN_INDEXDEF:  eOperand = EV_D_INDEXDEF;  break;

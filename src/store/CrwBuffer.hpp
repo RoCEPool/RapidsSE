@@ -5,7 +5,6 @@
 
 namespace STORE { class Tub; }
 
-#include "EachRowBuffer.hpp"
 #include "RowSingle.hpp"
 #include "Crw.hpp"
 #include "Tub.hpp"
@@ -71,7 +70,6 @@ namespace STORE
     void       vPrintRows(StreamDef* pStreamDef);
     void vToCsv(Tub* pTub);
     CsvBuffer* pToCsvBuffer(void);
-    EachRowBuffer* pToEachRowBuffer(i8 i_Row);
     //SrtBuffer* pToSrtBuffer(i8 iKeyCol);
     void       vTruncate(void);
     

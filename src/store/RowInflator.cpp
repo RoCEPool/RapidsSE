@@ -7,7 +7,6 @@
 #include "IndexDef.hpp"
 
 #include "RowBuffer.hpp"
-#include "EachRowBuffer.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
@@ -177,47 +176,6 @@ void RowInflator::vInflate_AllColumns_into_RowBufferAt(RowBuffer* pRowBuffer,
     if (azStrArea != (char*)pRowBuffer->azStrArea()) {
       i8 nBytesTaken = nDifference(azStrArea,pRowBuffer->azStrArea());
       pRowBuffer->vTakeHead(nBytesTaken);
-    }
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* inflate headline into row                                                  */
-/*----------------------------------------------------------------------------*/
-void RowInflator::vInflate_AllColumns_into_EachRowBuffer(EachRowBuffer* pEachRowBuffer,
-                                                     HeadLine* aHeadLine)
-{
-  _static_
-
-  //vTrace("vInflate_AllColumns_into_RowBuffer\n"_Stz);
-
-  i8 nCols = pEachRowBuffer->nColumns();
-
-  u1* auMetaCode;
-  byte* ayDataByte;
-  vPrepare_v2(auMetaCode,ayDataByte,nCols,aHeadLine);
-
-  Row* pRow = pEachRowBuffer->pRowCurrent();
-
-  byte* ayCellArray = (byte*)pRow->aCellArray();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-
-    u1 uMetaCode = *auMetaCode++;
-    u1 uHigh = uMetaCode >> 4;
-    u1 uLow  = uMetaCode & 0x0F;
-
-    char* azStrArea = (char*)pEachRowBuffer->azStrArea();
-
-    vInflate_CodedValue_into_Cell(ayCellArray,azStrArea,SI_STRAREA_OFS,
-                                  aHeadLine,ayDataByte,uHigh,uLow);
-
-    if (azStrArea != (char*)pEachRowBuffer->azStrArea()) {
-      i8 nBytesTaken = nDifference(azStrArea,pEachRowBuffer->azStrArea());
-      pEachRowBuffer->vTakeHead(nBytesTaken);
     }
 
   }
