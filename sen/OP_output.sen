@@ -5,11 +5,11 @@
 " OP_output.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_COMMANDERRORS ...                                         */
+/* handler for EV_I_COMPILEERRORS ...                                         */
 /*----------------------------------------------------------------------------*/
-: output_CommandErrors \handler
+: output_CompileErrors \handler
 
-  //"Operand:- EV_I_COMMANDERRORS" .verbose
+  //"Operand:- EV_I_COMPILEERRORS" .verbose
   PipeIn[].pipeToOutput
 
   true
@@ -32,17 +32,6 @@
 : output_CsvBuffer \handler
 
   //"Operand:- EV_D_CSVBUFFER" .verbose
-  PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_D_EACHROWBUFFER ...                                         */
-/*----------------------------------------------------------------------------*/
-: output_EachRowBuffer \handler
-
-  //"Operand:- EV_D_EACHROWBUFFER" .verbose
   PipeIn[].pipeToOutput
 
   true
@@ -147,14 +136,13 @@
 
   find: output_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
   find: output_CsvBuffer     EV_D_CSVBUFFER     [op].handler!
-  find: output_EachRowBuffer EV_D_EACHROWBUFFER [op].handler!
   find: output_EntBuffer     EV_D_ENTBUFFER     [op].handler!
   find: output_RowBuffer     EV_D_ROWBUFFER     [op].handler!
   find: output_SrtBuffer     EV_D_SRTBUFFER     [op].handler!
   find: output_StreamDef     EV_D_STREAMDEF     [op].handler!
   find: output_StreamDef     EV_D_STREAMSET     [op].handler!
 
-  find: output_CommandErrors EV_I_COMMANDERRORS [op].handler!
+  find: output_CompileErrors EV_I_COMPILEERRORS [op].handler!
   find: output_ExecErrors    EV_I_EXECERRORS    [op].handler!
   find: output_LoadResult    EV_I_LOADRESULT    [op].handler!
   find: output_PromptOut     EV_I_PROMPTOUT     [op].handler!

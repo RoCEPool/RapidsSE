@@ -349,24 +349,6 @@ bool Output::bProcessOperand(Operand* pOperand)
     }
 
     // -- -- -- -- -- --
-
-    case CN_EACHROWBUFFER: {
-
-      EachRowBuffer* pEachRowBuffer = _pEachRowBuffer(pOperand);
-//        if (AM::bDeveloper())
-//          vTrace("[[RowBuffer %s ; Row=%lld]]\n"_Stz,
-//                 spDataBuffer.sz(pRowBuffer),
-//                 pRowBuffer->nRows());
-      m_ixRowsProcessed += pEachRowBuffer->nRows();
-      if (m_bPrintEnabled) {
-        vTrace("\n"_Stz);
-        pEachRowBuffer->vPrintRows();
-      }
-      AM::vDeleteOperand(pOperand);
-      break;
-    }
-
-    // -- -- -- -- -- --
       
     case CN_ENTBUFFER: {
       EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
@@ -384,7 +366,7 @@ bool Output::bProcessOperand(Operand* pOperand)
     case CN_INFOSET: {
       InfoSet* pInfoSet = _pInfoSet(pOperand);
       ASSERT( ! pInfoSet->szBufferNm()->bSame(C_NO_NAME) );
-      if (pInfoSet->szBufferNm()->bSame(C_TDEF_COMMANDERRORS)) {
+      if (pInfoSet->szBufferNm()->bSame(C_TDEF_COMPILEERRORS)) {
 
         if ( ! m_bError) {
           Row *pInfoRow = pInfoSet->pFirstRow();

@@ -210,7 +210,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_CALLPIPELINE"_Stz,  C_TDEF_CALLPIPELINE);
   vAddConstant("C_TDEF_COLUMNDEFS"_Stz,    C_TDEF_COLUMNDEFS);
   vAddConstant("C_TDEF_COMMAND"_Stz,       C_TDEF_COMMAND);
-  vAddConstant("C_TDEF_COMMANDERRORS"_Stz, C_TDEF_COMMANDERRORS);
+  vAddConstant("C_TDEF_COMPILEERRORS"_Stz, C_TDEF_COMPILEERRORS);
   vAddConstant("C_TDEF_COUNT"_Stz,         C_TDEF_COUNT);
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,    C_TDEF_GRIDSANITY);
   vAddConstant("C_TDEF_EXECERRORS"_Stz,    C_TDEF_EXECERRORS);
@@ -265,7 +265,6 @@ void Constants::vAddConstantsCpp(void)
   /*  6 */ vAddConstant("AT_ENUMS"_Stz,    AT_ENUMS);
   
   // CN_ : class number
-  /*    */ vAddConstant("CN_EACHROWBUFFER"_Stz,CN_EACHROWBUFFER);
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
   /*    */ vAddConstant("CN_JOB"_Stz,          CN_JOB);
   /*    */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
@@ -545,7 +544,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_NONE"_Stz,          OI_NONE);
   /*  0 */ vAddConstant("OI_CALLPIPELINE"_Stz,  OI_CALLPIPELINE);
   /*  0 */ vAddConstant("OI_COMMAND"_Stz,       OI_COMMAND);
-  /*  0 */ vAddConstant("OI_COMMANDERRORS"_Stz, OI_COMMANDERRORS);
+  /*  0 */ vAddConstant("OI_COMPILEERRORS"_Stz, OI_COMPILEERRORS);
   /*  0 */ vAddConstant("OI_COUNT"_Stz,         OI_COUNT);
   /*  0 */ vAddConstant("OI_EXECERRORS"_Stz,    OI_EXECERRORS);
   /*  0 */ vAddConstant("OI_FORKCOMMAND"_Stz,   OI_FORKCOMMAND);
@@ -653,7 +652,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_D_BUCKETMAP_dyn"_Stz,   EV_D_BUCKETMAP_dyn);
   /*  0 */ vAddConstant("EV_D_CRWBUFFER"_Stz,       EV_D_CRWBUFFER);
   /*  0 */ vAddConstant("EV_D_CSVBUFFER"_Stz,       EV_D_CSVBUFFER);
-  /*  0 */ vAddConstant("EV_D_EACHROWBUFFER"_Stz,   EV_D_EACHROWBUFFER);
   /*  0 */ vAddConstant("EV_D_ENTBUFFER"_Stz,       EV_D_ENTBUFFER);
   /*  0 */ vAddConstant("EV_D_GRID"_Stz,            EV_D_GRID);
   /*  0 */ vAddConstant("EV_D_INDEX"_Stz,           EV_D_INDEX);
@@ -678,7 +676,7 @@ void Constants::vAddConstantsCpp(void)
 
   /*  0 */ vAddConstant("EV_I_CALLPIPELINE"_Stz,    EV_I_CALLPIPELINE);
   /*  0 */ vAddConstant("EV_I_COMMAND"_Stz,         EV_I_COMMAND);
-  /*  0 */ vAddConstant("EV_I_COMMANDERRORS"_Stz,   EV_I_COMMANDERRORS);
+  /*  0 */ vAddConstant("EV_I_COMPILEERRORS"_Stz,   EV_I_COMPILEERRORS);
   /*  0 */ vAddConstant("EV_I_COUNT"_Stz,           EV_I_COUNT);
   /*  0 */ vAddConstant("EV_I_EXECERRORS"_Stz,      EV_I_EXECERRORS);
   /*  0 */ vAddConstant("EV_I_FORKCOMMAND"_Stz,     EV_I_FORKCOMMAND);
@@ -699,7 +697,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_CLEANED"_Stz,         EV_M_CLEANED);
   /*  0 */ vAddConstant("EV_M_DATAPULSE"_Stz,       EV_M_DATAPULSE);
   /*  0 */ vAddConstant("EV_M_DESTROY"_Stz,         EV_M_DESTROY);
-  /*  0 */ vAddConstant("EV_M_EACHSCANEOS"_Stz,     EV_M_EACHSCANEOS);
   /*  0 */ vAddConstant("EV_M_EOS"_Stz,             EV_M_EOS);
   /*  0 */ vAddConstant("EV_M_END"_Stz,             EV_M_END);
   /*  0 */ vAddConstant("EV_M_ENDED"_Stz,           EV_M_ENDED);

@@ -5,9 +5,9 @@
 " op__errors.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* create the command error info set                                          */
+/* create the compile error info set                                          */
 /*----------------------------------------------------------------------------*/
-: op__createCmdErrInfoSet
+: op__createCompileErrInfoSet
 
   [ddlLock].testDrop
 
@@ -16,18 +16,18 @@
     InfoSet[].delete
   then
 
-  // create the infoSetTable for C_TDEF_COMMANDERRORS
-  C_TDEF_COMMANDERRORS "op__tableDef_infoSet" find execute assert
+  // create the infoSetTable for C_TDEF_COMPILEERRORS
+  C_TDEF_COMPILEERRORS "op__tableDef_infoSet" find execute assert
 
-  // create an infoSet operand for commandErrors
+  // create an infoSet operand for compileErrors
   infoSetTable[] InfoSet[].new
-  OI_COMMANDERRORS infoSet[].opInfoset!
+  OI_COMPILEERRORS infoSet[].opInfoset!
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pipeout error info set                                                     */
+/* pipeout compile error info set                                             */
 /*----------------------------------------------------------------------------*/
-: op__cmdErrOut
+: op__compileErrOut
 
   // toggle to default abnormal handlers
   "default_abnormalHandlers" FIND execute
@@ -52,12 +52,12 @@
     InfoSet[].delete
   then
 
-  // create the infoSetTable for C_TDEF_COMMANDERRORS
-  C_TDEF_COMMANDERRORS "op__tableDef_infoSet" find execute assert
+  // create the infoSetTable for C_TDEF_COMPILEERRORS
+  C_TDEF_COMPILEERRORS "op__tableDef_infoSet" find execute assert
 
   // create an infoSet operand for commandErrors
   infoSetTable[] InfoSet[].new
-  OI_COMMANDERRORS infoSet[].opInfoset!
+  OI_COMPILEERRORS infoSet[].opInfoset!
 
   errorMsg errorCode infoSetTable[] InfoSet[].addCommandError assert
 

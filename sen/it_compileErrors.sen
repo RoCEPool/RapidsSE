@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* it_commandErrors.sen -- Define __commandErrors table                       */
+/* it_compileErrors.sen -- Define __compileErrors table                       */
 /*============================================================================*/
 
-" it_commandErrors.sen" .verbose
+" it_compileErrors.sen" .verbose
 
-: start::it_commandErrors
+: start::it_compileErrors
 
-  // C_TDEF_COMMANDERRORS
+  // C_TDEF_COMPILEERRORS
   
   STD_WAIT_PATH_TAG
   "
-  define table __commandErrors (
+  define table __compileErrors (
     nodeName       VARCHAR NOT NULL ,
     errorCode      INTEGER NOT NULL ,
     line           INTEGER NOT NULL ,

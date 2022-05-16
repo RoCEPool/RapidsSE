@@ -36,7 +36,6 @@
 : EV_D_BUCKETMAP_dyn_handler    \handler STANDARD_PIPEOUT ;
 : EV_D_CRWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
-: EV_D_EACHROWBUFFER_handler    \handler STANDARD_PIPEOUT ;
 : EV_D_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_INDEX_handler            \handler STANDARD_PIPEOUT ;
 : EV_D_INDEXDEF_handler         \handler STANDARD_PIPEOUT ;
@@ -62,7 +61,7 @@
 
 : EV_I_CALLPIPELINE_handler     \handler STANDARD_PIPEOUT ;
 : EV_I_COMMAND_handler          \handler STANDARD_PIPEOUT ;
-: EV_I_COMMANDERRORS_handler    \handler STANDARD_PIPEOUT ;
+: EV_I_COMPILEERRORS_handler    \handler STANDARD_PIPEOUT ;
 : EV_I_COUNT_handler            \handler STANDARD_PIPEOUT ;
 : EV_I_EXECERRORS_handler       \handler STANDARD_PIPEOUT ;
 : EV_I_FORKCOMMAND_handler      \handler STANDARD_PIPEOUT ;
@@ -81,7 +80,6 @@
 
 : EV_M_DATAPULSE_handler        \handler STANDARD_PIPEOUT ;
 : EV_M_DESTROY_handler          \handler STANDARD_PIPEOUT ;
-: EV_M_EACHSCANEOS_handler      \handler STANDARD_PIPEOUT ;
 : EV_M_END_handler              \handler STANDARD_PIPEOUT ;
 : EV_M_ENDING_handler           \handler STANDARD_PIPEOUT ;
 : EV_M_ENDCRWRHT_handler        \handler STANDARD_PIPEOUT ;
@@ -310,7 +308,6 @@
   abnormalHandler EV_D_BUCKETMAP_dyn    [op].handler!
   abnormalHandler EV_D_CRWBUFFER        [op].handler!
   abnormalHandler EV_D_CSVBUFFER        [op].handler!
-  abnormalHandler EV_D_EACHROWBUFFER    [op].handler!
   abnormalHandler EV_M_ENDCRWRHT        [op].handler!
   abnormalHandler EV_M_ENDROWRHT        [op].handler!
   abnormalHandler EV_D_ENTBUFFER        [op].handler!
@@ -338,7 +335,6 @@
   // DEFAULT handlers (pipein pipeout) for MARKERS
   defaultHandler EV_M_DATAPULSE         [op].handler!
   defaultHandler EV_M_DESTROY           [op].handler!
-  defaultHandler EV_M_EACHSCANEOS       [op].handler!
   //defaultHandler EV_M_ENDCRWRHT         [op].handler!
   //defaultHandler EV_M_ENDROWRHT         [op].handler!
   defaultHandler EV_M_EOS               [op].handler!

@@ -82,7 +82,7 @@ void Step::vInfoSetAddCommandError(void)
   StreamDef* pStreamDef = pStreamTable->pStreamDef();
 
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  pInfoSet->vOpInfoSet(OI_COMMANDERRORS);
+  pInfoSet->vOpInfoSet(OI_COMPILEERRORS);
 
   // get the error information
   eEC eErrorCode = (eEC) m_pDataStack->iPopInt(__func__);

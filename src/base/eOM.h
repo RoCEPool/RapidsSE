@@ -18,8 +18,7 @@ enum eOM // operator markers
   
   /*    */ OM_DATAPULSE,
   /*    */ OM_DESTROYMARKER,
-  
-  /*    */ OM_EACHSCANEOSMARKER,
+
   /*    */ OM_ENDMARKER,
   /*    */ OM_ENDEDMARKER,
   /*    */ OM_ENDINGMARKER,
@@ -76,8 +75,7 @@ static Stz* aOM[]
   
   /*    */ "DATAPULSE"_Stz,
   /*    */ "DESTROYMARKER"_Stz,
-  
-  /*    */ "EACHSCANEOSMARKER"_Stz,
+
   /*    */ "ENDMARKER"_Stz,
   /*    */ "ENDEDMARKER"_Stz,
   /*    */ "ENDINGMARKER"_Stz,

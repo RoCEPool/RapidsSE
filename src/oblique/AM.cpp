@@ -2755,12 +2755,6 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
 
-    case CN_EACHROWBUFFER: {
-      EachRowBuffer* pEachRowBuffer = _pEachRowBuffer(pOperand);
-      delete pEachRowBuffer;
-      break;
-    }
-
     case CN_ENTBUFFER: {
       // should never be called for permanent ent buffers
       EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
@@ -3460,7 +3454,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_BUCKETMAP: eOperand = EV_D_BUCKETMAP_dyn; break;
     case CN_CRWBUFFER: eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER: eOperand = EV_D_CSVBUFFER; break;
-    case CN_EACHROWBUFFER: eOperand = EV_D_EACHROWBUFFER; break;
     case CN_ENTBUFFER: eOperand = EV_D_ENTBUFFER; break;
     case CN_INDEX:     eOperand = EV_D_INDEX;  break;
     case CN_INDEXDEF:  eOperand = EV_D_INDEXDEF;  break;
@@ -3473,7 +3466,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
       switch(eInfoSet) {
         case OI_CALLPIPELINE:   eOperand = EV_I_CALLPIPELINE;   break;
         case OI_COMMAND:        eOperand = EV_I_COMMAND;        break;
-        case OI_COMMANDERRORS:  eOperand = EV_I_COMMANDERRORS;  break;
+        case OI_COMPILEERRORS:  eOperand = EV_I_COMPILEERRORS;  break;
         case OI_COUNT:          eOperand = EV_I_COUNT;          break;
         case OI_EXECERRORS:     eOperand = EV_I_EXECERRORS;     break;
         case OI_FORKCOMMAND:    eOperand = EV_I_FORKCOMMAND;    break;
@@ -3508,7 +3501,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_CLEANED:            eOperand = EV_M_CLEANED;      break;
         case OM_DATAPULSE:          eOperand = EV_M_DATAPULSE;    break;
         case OM_DESTROYMARKER:      eOperand = EV_M_DESTROY;      break;
-        case OM_EACHSCANEOSMARKER:  eOperand = EV_M_EACHSCANEOS;  break;
         case OM_ENDMARKER:          eOperand = EV_M_END;          break;
         case OM_ENDEDMARKER:        eOperand = EV_M_ENDED;        break;
         case OM_ENDINGMARKER:       eOperand = EV_M_ENDING;       break;

@@ -4,7 +4,6 @@
 #pragma once
 
 #include "RowSingle.hpp"
-#include "EachRowBuffer.hpp"
 #include "Tub.hpp"
 
 namespace STORE
@@ -68,7 +67,6 @@ namespace STORE
   
     void vToCsv(Tub* pTub);
     CsvBuffer* pToCsvBuffer(void);
-    EachRowBuffer* pToEachRowBuffer(i8 i_Row);
     void vTruncate(void);
 
     bool bVerify(void);

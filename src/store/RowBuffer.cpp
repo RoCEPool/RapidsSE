@@ -5,7 +5,6 @@
 #include "BASE.h"
 
 #include "RowBuffer.hpp"
-#include "EachRowBuffer.hpp"
 #include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -753,23 +752,6 @@ CsvBuffer* RowBuffer::pToCsvBuffer(void)
     ((char*)szRecord)[nSize-1] = '\0';
   
   return pFirstCsvBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate a EachRowBuffer from this row buffer for the given row            */
-/*----------------------------------------------------------------------------*/
-EachRowBuffer* RowBuffer::pToEachRowBuffer(i8 i_Row)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-
-  EachRowBuffer* pEachRowBuffer = new EachRowBuffer(CN_EACHROWBUFFER, pRowPix());
-
-  Row* aFromRow = pRowAddress(i_Row);
-
-  Row* pToRow = pEachRowBuffer->pAllotRow();
-  pEachRowBuffer->vDepositRow(pToRow, aFromRow);
-
-  return pEachRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
