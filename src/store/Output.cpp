@@ -498,12 +498,6 @@ bool Output::bProcessOperand(Operand* pOperand)
           NEVER_REACH
           break;
         }
-
-        case OM_DATAPULSE: {
-          //vTrace("Pipeline Job: PULSEMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
           
         case OM_DESTROYMARKER: {
           //vTrace("Pipeline Job: DESTROYMARKER\n"_Stz);

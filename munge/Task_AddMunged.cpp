@@ -22769,7 +22769,6 @@ void Task::vAddMunged(Task* )
     "  find: output_LoadResult    EV_I_LOADRESULT    [op].handler!\n"
     "  find: output_PromptOut     EV_I_PROMPTOUT     [op].handler!\n"
     "\n"
-    "  find: output_DataMarker    EV_M_DATAPULSE     [op].handler!\n"
     "  find: output_EosMarker     EV_M_EOS           [op].handler!\n"
     "  find: output_ErrorMarker   EV_M_ERROR         [op].handler!\n"
     "  find: output_LeaveMarker   EV_M_LEAVE         [op].handler!\n"
