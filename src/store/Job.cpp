@@ -1229,7 +1229,6 @@ void Job::vReapableJob(void)
   }
   
   pOutput()->m_bExitMarker      = false;
-  pOutput()->m_bExitEarlyMarker = false;
   
   vReapable(true);
 }

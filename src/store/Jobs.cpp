@@ -141,7 +141,6 @@ void Jobs::vReapableJob(Job*& rpJob)
   }
   
   rpJob->pOutput()->m_bExitMarker      = false;
-  rpJob->pOutput()->m_bExitEarlyMarker = false;
   
   rpJob->vReapable(true);
 

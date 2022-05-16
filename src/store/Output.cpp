@@ -47,7 +47,6 @@ Output::Output(Job* pJob)
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
-  m_bExitEarlyMarker  = false;
   m_bCmdErr           = false;
   m_bExecErr          = false;
   m_bPrintEnabled     = true;
