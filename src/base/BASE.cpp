@@ -191,12 +191,7 @@ bool BASE::bTraceWith(Stz* szWith)
   if (szWith->bSame("WITH_MUNGED_SEN"_Stz))
     return true;
 #endif
-    
-#ifdef WITH_PYTHON_SUPPORT
-  if (szWith->bSame("WITH_PYTHON_SUPPORT"_Stz))
-    return true;
-#endif
-  
+      
 #ifdef WITH_RELEASE_VERSION
   if (szWith->bSame("WITH_RELEASE_VERSION"_Stz))
     return true;
@@ -277,10 +272,6 @@ void BASE::vTraceWith(void)
   
 #ifdef WITH_MUNGED_SEN
   vTrace("  WITH_MUNGED_SEN\n"_Stz);
-#endif
-    
-#ifdef WITH_PYTHON_SUPPORT
-  vTrace("  WITH_PYTHON_SUPPORT\n"_Stz);
 #endif
   
 #ifdef WITH_RELEASE_VERSION
@@ -371,11 +362,6 @@ bool BASE::bTraceWithout(Stz* szWith)
   if (szWith->bSame("WITH_MUNGED_SEN"_Stz))
     return true;
 #endif
-    
-#ifndef WITH_PYTHON_SUPPORT
-  if (szWith->bSame("WITH_PYTHON_SUPPORT"_Stz))
-    return true;
-#endif
   
 #ifndef WITH_RELEASE_VERSION
   if (szWith->bSame("WITH_RELEASE_VERSION"_Stz))
@@ -453,11 +439,7 @@ void BASE::vTraceWithout(void)
 #ifndef WITH_MUNGED_SEN
   vTrace("  WITH_MUNGED_SEN\n"_Stz);
 #endif
-    
-#ifndef WITH_PYTHON_SUPPORT
-  vTrace("  WITH_PYTHON_SUPPORT\n"_Stz);
-#endif
-  
+      
 #ifndef WITH_RELEASE_VERSION
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
 #endif

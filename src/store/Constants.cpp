@@ -807,13 +807,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_MUNGED_SEN"_Stz,(i8)false);
   #endif
-            
-  #ifdef WITH_PYTHON_SUPPORT
-  vAddConstant("WITH_PYTHON_SUPPORT"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_PYTHON_SUPPORT"_Stz,(i8)false);
-  #endif
-    
+                
   #ifdef WITH_RELEASE_VERSION
   vAddConstant("WITH_RELEASE_VERSION"_Stz,(i8)true);
   #else
