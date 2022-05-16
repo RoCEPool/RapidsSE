@@ -5,6 +5,8 @@
 
 static const u8 C_SIZE_POOL_BUFFER   = C_1MB;
 
+static const u8 C_SIZE_PAGE_FILE     = C_SIZE_POOL_BUFFER * 100;
+
 static const i8 C_SIZE_TINY_OBJECT   = C_1KB;
 static const i8 C_SIZE_SMALL_OBJECT  = C_4KB;
 static const i8 C_SIZE_MEDIUM_OBJECT = C_64KB;

@@ -16,6 +16,7 @@ namespace BASE
     i8 m_iFileSize;
     i8 m_iCreated;
     PageFile* m_pPageFile; // TODO Arjun: Update to list
+    u8 m_uPageFileSubset; // Temporary use this instead of BufferSubset in BufferId
 
     // Store start and end address of pageable area?
 
@@ -29,6 +30,7 @@ namespace BASE
     FileMap(void);
     ~FileMap(void);
 
+    RowBuffer* pFromDisk(Operand* pOperand);
     void vToDisk(Operand* pOperand);
     static PoolBuffer* pToPoolBuffer(i8 i_PoolBuffer);
 

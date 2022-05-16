@@ -50,11 +50,12 @@ FileMap::FileMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP);
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
+  m_uPageFileSubset = 0;
 
 //  vInitialise();
-
+#ifdef WITH_BUFFER_ID
   m_pPageFile = new PageFile(m_szFilePath);
-
+#endif
   _checkInitialised_(CN_FILEMAP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -70,6 +71,36 @@ FileMap::~FileMap(void)
 _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
 
 NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Find where on disk the buffer is written, and get it                       */
+/*----------------------------------------------------------------------------*/
+RowBuffer* FileMap::pFromDisk(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+
+  //---------------------------------------------------------------------------
+  // Operand should be a buffer id. Check flag bit.
+#ifdef WITH_BUFFER_ID
+  BufferId oBufferId;// TODO Arjun: Code readability
+  oBufferId.m_pvAsAddress = (void*) pOperand;
+
+  ASSERT(0 == BufferId::bIsAddress(oBufferId));
+
+  //---------------------------------------------------------------------------
+  // Look at page no bits in buffer id and get to corresponding PageFile pointer
+
+  // To do once we have multiple page files...
+  // m_pPageFile[oBufferId.m_uPageFile];
+
+  //---------------------------------------------------------------------------
+  // Read from page file
+
+  return m_pPageFile->pReadDataBufferFromPFile(oBufferId);
+#else
+  return nullptr;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,6 +128,7 @@ void FileMap::vToDisk(Operand* pOperand)
 
   //---------------------------------------------------------------------------
   // Write to page file
+  ASSERT(CN_ROWBUFFER == pOperand->eGetClassNo());
 
   RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
 

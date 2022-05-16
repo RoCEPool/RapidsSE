@@ -22,7 +22,7 @@ void Step::vAddSteps_PageOut(void) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* PageOut::poolBuffer -- page out pool buffer to page file on disk           */
+/* PageOut::pageOutPoolBuffer -- page out pool buffer to page file on disk    */
 /*----------------------------------------------------------------------------*/
 void Step::vPageOutPoolBuffer(void) {
   ENTRY();
@@ -30,10 +30,12 @@ void Step::vPageOutPoolBuffer(void) {
   //---------------------------------------------------------------------------
   // Pop an operand address off the stack. It may or may not be a BufferId.
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  vTrace("PageOut Demon: Received operand: %p\n"_Stz, pOperand);
 
   // Let the FileMap decide where it should be written to.
   AM::pFileMap()->vToDisk(pOperand);
 
+  AM::vDeleteOperand(pOperand);
   EXIT();
 }
 
@@ -42,7 +44,7 @@ void Step::vPageOutPoolBuffer(void) {
 /*----------------------------------------------------------------------------*/
 void Step::vPageOutTestPrint(void) {
   ENTRY();
-  printf("Page Out Demon test print...\n");
+  vTrace("Page Out Demon test print...\n"_Stz);
   EXIT();
 }
 

@@ -1298,6 +1298,10 @@ void vDdlLockAssertNone(void);
   void vPagingMetricsDelete(void);
   void vPagingMetricsUpdate(void);
 
+  // page in
+  void vPageInPoolBuffer(void);
+  void vPageInTestPrint(void);
+
   // page out
   void vPageOutPoolBuffer(void);
   void vPageOutTestPrint(void);
