@@ -1114,7 +1114,6 @@ void vDdlLockAssertNone(void);
   void vMarkerNewCleanedupMarker(void);
   void vMarkerNewDataPulse(void);
   void vMarkerNewDestroyMarker(void);
-  void vMarkerNewEachScanEosMarker(void);
   void vMarkerNewEndMarker(void);
   void vMarkerNewEndedMarker(void);
   void vMarkerNewEndingMarker(void);

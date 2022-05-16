@@ -3501,7 +3501,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_CLEANED:            eOperand = EV_M_CLEANED;      break;
         case OM_DATAPULSE:          eOperand = EV_M_DATAPULSE;    break;
         case OM_DESTROYMARKER:      eOperand = EV_M_DESTROY;      break;
-        case OM_EACHSCANEOSMARKER:  eOperand = EV_M_EACHSCANEOS;  break;
         case OM_ENDMARKER:          eOperand = EV_M_END;          break;
         case OM_ENDEDMARKER:        eOperand = EV_M_ENDED;        break;
         case OM_ENDINGMARKER:       eOperand = EV_M_ENDING;       break;

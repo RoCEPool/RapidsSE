@@ -54,7 +54,6 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newCleanedupMarker"_Stz,   &Step::vMarkerNewCleanedupMarker);
   vAddStep("Marker[].newDataPulse"_Stz,         &Step::vMarkerNewDataPulse);
   vAddStep("Marker[].newDestroyMarker"_Stz,     &Step::vMarkerNewDestroyMarker);
-  vAddStep("Marker[].newEachScanEosMarker"_Stz, &Step::vMarkerNewEachScanEosMarker);
   vAddStep("Marker[].newEndMarker"_Stz,         &Step::vMarkerNewEndMarker);
   vAddStep("Marker[].newEndingMarker"_Stz,      &Step::vMarkerNewEndingMarker);
   vAddStep("Marker[].newEndedMarker"_Stz,       &Step::vMarkerNewEndedMarker);
@@ -241,20 +240,6 @@ void Step::vMarkerNewDestroyMarker(void)
   ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
 
   m_pLogicUnit->m_xpMarker = new Marker(OM_DESTROYMARKER);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Marker[].newEachScanEosMarker -- new an each scan end marker               */
-/*----------------------------------------------------------------------------*/
-void Step::vMarkerNewEachScanEosMarker(void)
-{
-  ENTRY();
-
-  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
-
-  m_pLogicUnit->m_xpMarker = new Marker(OM_EACHSCANEOSMARKER);
 
   EXIT();
 }

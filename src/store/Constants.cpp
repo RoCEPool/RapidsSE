@@ -697,7 +697,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_CLEANED"_Stz,         EV_M_CLEANED);
   /*  0 */ vAddConstant("EV_M_DATAPULSE"_Stz,       EV_M_DATAPULSE);
   /*  0 */ vAddConstant("EV_M_DESTROY"_Stz,         EV_M_DESTROY);
-  /*  0 */ vAddConstant("EV_M_EACHSCANEOS"_Stz,     EV_M_EACHSCANEOS);
   /*  0 */ vAddConstant("EV_M_EOS"_Stz,             EV_M_EOS);
   /*  0 */ vAddConstant("EV_M_END"_Stz,             EV_M_END);
   /*  0 */ vAddConstant("EV_M_ENDED"_Stz,           EV_M_ENDED);

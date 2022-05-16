@@ -80,7 +80,6 @@
 
 : EV_M_DATAPULSE_handler        \handler STANDARD_PIPEOUT ;
 : EV_M_DESTROY_handler          \handler STANDARD_PIPEOUT ;
-: EV_M_EACHSCANEOS_handler      \handler STANDARD_PIPEOUT ;
 : EV_M_END_handler              \handler STANDARD_PIPEOUT ;
 : EV_M_ENDING_handler           \handler STANDARD_PIPEOUT ;
 : EV_M_ENDCRWRHT_handler        \handler STANDARD_PIPEOUT ;
@@ -336,7 +335,6 @@
   // DEFAULT handlers (pipein pipeout) for MARKERS
   defaultHandler EV_M_DATAPULSE         [op].handler!
   defaultHandler EV_M_DESTROY           [op].handler!
-  defaultHandler EV_M_EACHSCANEOS       [op].handler!
   //defaultHandler EV_M_ENDCRWRHT         [op].handler!
   //defaultHandler EV_M_ENDROWRHT         [op].handler!
   defaultHandler EV_M_EOS               [op].handler!
