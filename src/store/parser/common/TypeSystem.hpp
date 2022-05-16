@@ -28,6 +28,10 @@ namespace Parser
     static Stz* szNamespace(i8 iTypeId);
     static Stz* szTypeName(i8 iTypeId);
 
+    static constexpr i8 iIdOf(eCT eVal);
+    static constexpr i8 iIdOf(eIV eVal);
+    static i8 iIdOf(Stz* szNamespace, Stz* szTypeName);
+
   };
   
 }
