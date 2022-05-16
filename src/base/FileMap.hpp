@@ -30,6 +30,7 @@ namespace BASE
     FileMap(void);
     ~FileMap(void);
 
+    RowBuffer* pFromDisk(Operand* pOperand);
     void vToDisk(Operand* pOperand);
     static PoolBuffer* pToPoolBuffer(i8 i_PoolBuffer);
 

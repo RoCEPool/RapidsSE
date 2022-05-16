@@ -149,6 +149,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Optimiser();
 
   Step::vAddSteps_PagingMetrics();
+  Step::vAddSteps_PageIn();
   Step::vAddSteps_PageOut();
   Step::vAddSteps_Parcel();
   Step::vAddSteps_Persistence();

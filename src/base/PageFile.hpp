@@ -31,8 +31,10 @@ namespace BASE
     void vCheckMagic(void);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     void vInitialise(void);
+#ifdef WITH_BUFFER_ID
     void vWriteDataBufferToPFile(RowBuffer* pRowBuffer);
-    static void vToDisk(Operand* pOperand);
+    RowBuffer* pReadDataBufferFromPFile(BufferId oBufferId);
+#endif
 
   private:
     Footer* aFooter(void);

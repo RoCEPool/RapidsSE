@@ -187,6 +187,7 @@ assert::stack_0
 
 "p" .verbose
 
+  "OP_pageIn.sen"               include
   "OP_pageOut.sen"              include
   "OP_parser.sen"               include
   "OP_partitionExplain.sen"     include

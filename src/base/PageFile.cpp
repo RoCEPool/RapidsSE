@@ -155,13 +155,14 @@ void PageFile::vInitialise(void)
 
 }
 
+#ifdef WITH_BUFFER_ID
 /*----------------------------------------------------------------------------*/
 /* write data buffer to disk                                                 */
 /*----------------------------------------------------------------------------*/
 void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-#ifdef WITH_BUFFER_ID
+
   Timer oTimer;
 
   BufferId oBufferId = pRowBuffer->oGetBufferId();
@@ -186,9 +187,48 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
 //unlock
   vTrace("Writing data buffer %p took %lld ns\n"_Stz, pRowBuffer, oTimer.iNanoseconds());
   AM::pFileMap()->m_uPageFileSubset++;
-#endif
 }
 
+/*----------------------------------------------------------------------------*/
+/* read data buffer from disk                                                 */
+/*----------------------------------------------------------------------------*/
+RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Timer oTimer;
+
+  // Temporary till BufferId subset has correct values
+//  i8 iSeekOffset = m_uFirstUsableByte + (0 * C_SIZE_POOL_BUFFER);
+
+  i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);
+
+  if(iSeekOffset + C_SIZE_POOL_BUFFER > m_uLastUsableByte)
+  {
+    vTrace("Error: reading buffer at %lld, may read beyond page file size %llu\n"_Stz, iSeekOffset, m_uPFSize);
+    return nullptr;
+  }
+
+  RowBuffer* pRowBuffer = new RowBuffer;
+
+//lock
+  m_pFile->vSeek(iSeekOffset);
+
+  oTimer.vStart();
+
+  bool bResult = m_pFile->nReadBytes((void*)pRowBuffer,C_SIZE_POOL_BUFFER);
+// BufferNo and other members of RowBuffer are overwritten
+// Need to update those values
+
+  ASSERT(bResult);
+  oTimer.vUpdate();
+//unlock
+  vTrace("Reading data buffer %p took %lld ns\n"_Stz, pRowBuffer, oTimer.iNanoseconds());
+
+  return pRowBuffer;
+
+}
+#endif
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

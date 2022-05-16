@@ -1,0 +1,70 @@
+/*============================================================================*/
+/* OP_pageIn.sen -- Page In Operator                                          */
+/*============================================================================*/
+
+" OP_pageIn.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* put the pageIn periodic activity here                                     */
+/*----------------------------------------------------------------------------*/
+: pageIn::activity
+
+  //"Page In Activity" .
+
+  // update node status based on heartbeat related info
+  pageIn::testPrint
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_ROWBUFFER ...                                             */
+/*----------------------------------------------------------------------------*/
+: pageIn_RowBuffer \handler
+
+  PipeIn[].delete
+
+  pageIn::PageInPoolBuffer
+
+  RowBuffer[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for pageIn req                            (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: pageIn_op \operator
+
+  _lu_initialise_
+
+  "<testTag>" [job].tagSet@ tagSet.hasName if
+      <testTag> .
+  then
+
+  op__topology
+
+  find: pageIn_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: pageIn :: pageIn ;
+
+: pageIn_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    //<dedicatedThd> = 1
+    <opEntry> = "pageIn_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
