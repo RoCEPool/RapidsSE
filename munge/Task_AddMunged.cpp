@@ -1884,12 +1884,12 @@ void Task::vAddMunged(Task* )
     "  Pipein[].pipeout\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  <sqlStatement> sqlCompiler::parser to PlanOperand[]\n"
     "\n"
     "  PlanOperand[].isNull if\n"
-    "    op__cmdErrOut\n"
+    "    op__compileErrOut\n"
     "    true\n"
     "    exit\n"
     "  then\n"
@@ -4215,7 +4215,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::stageMarkers to PlanOperand[]\n"
     "\n"
@@ -5923,9 +5923,48 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [54] OP_invoke.sen
+  // munge of [54] it_compileErrors.sen
 
   gszaMungedText[54] =
+    "\" munged it_compileErrors.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* it_compileErrors.sen -- Define __compileErrors table                       */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" it_compileErrors.sen\" .verbose\n"
+    "\n"
+    ": start::it_compileErrors\n"
+    "\n"
+    "  // C_TDEF_COMPILEERRORS\n"
+    "  \n"
+    "  STD_WAIT_PATH_TAG\n"
+    "  \"\n"
+    "  define table __compileErrors (\n"
+    "    nodeName       VARCHAR NOT NULL ,\n"
+    "    errorCode      INTEGER NOT NULL ,\n"
+    "    line           INTEGER NOT NULL ,\n"
+    "    column         INTEGER NOT NULL ,\n"
+    "    text           VARCHAR NOT NULL\n"
+    "  ) < infoSet > = 1 ;\n"
+    "  \"\n"
+    "  api::forkChild api:executeCheck\n"
+    "\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 54 CONSTANT it_compileErrors.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [55] OP_invoke.sen
+
+  gszaMungedText[55] =
     "\" munged OP_invoke.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_invoke.sen -- Invoke Sub-Pipeline operator                              */\n"
@@ -5986,13 +6025,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 54 CONSTANT OP_invoke.sen "_Stz;
+  szSubScriptDef = " 55 CONSTANT OP_invoke.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [55] it_tableSizes.sen
+  // munge of [56] it_tableSizes.sen
 
-  gszaMungedText[55] =
+  gszaMungedText[56] =
     "\" munged it_tableSizes.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_tableSizes.sen -- Define __tableSizes table                             */\n"
@@ -6023,13 +6062,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 55 CONSTANT it_tableSizes.sen "_Stz;
+  szSubScriptDef = " 56 CONSTANT it_tableSizes.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [56] OP_wrFile.sen
+  // munge of [57] OP_wrFile.sen
 
-  gszaMungedText[56] =
+  gszaMungedText[57] =
     "\" munged OP_wrFile.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_wrFile.sen -- write to file                                             */\n"
@@ -6131,13 +6170,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 56 CONSTANT OP_wrFile.sen "_Stz;
+  szSubScriptDef = " 57 CONSTANT OP_wrFile.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [57] se_stepTests.sen
+  // munge of [58] se_stepTests.sen
 
-  gszaMungedText[57] =
+  gszaMungedText[58] =
     "\" munged se_stepTests.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_stepTests.sen -- step tests                                             */\n"
@@ -6218,13 +6257,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 57 CONSTANT se_stepTests.sen "_Stz;
+  szSubScriptDef = " 58 CONSTANT se_stepTests.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [58] se_experiments.sen
+  // munge of [59] se_experiments.sen
 
-  gszaMungedText[58] =
+  gszaMungedText[59] =
     "\" munged se_experiments.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_experiments.sen -- forth experiments                                    */\n"
@@ -6356,13 +6395,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 58 CONSTANT se_experiments.sen "_Stz;
+  szSubScriptDef = " 59 CONSTANT se_experiments.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [59] OP_ping.sen
+  // munge of [60] OP_ping.sen
 
-  gszaMungedText[59] =
+  gszaMungedText[60] =
     "\" munged OP_ping.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_ping.sen -- Operator space                                             */\n"
@@ -6426,13 +6465,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 59 CONSTANT OP_ping.sen "_Stz;
+  szSubScriptDef = " 60 CONSTANT OP_ping.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [60] op__compilerCommon.sen
+  // munge of [61] op__compilerCommon.sen
 
-  gszaMungedText[60] =
+  gszaMungedText[61] =
     "\" munged op__compilerCommon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* op__compilercommon.sen -- SqlCompiler operator common words                */\n"
@@ -6477,7 +6516,7 @@ void Task::vAddMunged(Task* )
     "      StreamSet[].delete\n"
     "    then\n"
     "\n"
-    "    op__cmdErrOut\n"
+    "    op__compileErrOut\n"
     "\n"
     "    true\n"
     "    exit\n"
@@ -6517,13 +6556,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 60 CONSTANT op__compilerCommon.sen "_Stz;
+  szSubScriptDef = " 61 CONSTANT op__compilerCommon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [61] OP_nameValidate.sen
+  // munge of [62] OP_nameValidate.sen
 
-  gszaMungedText[61] =
+  gszaMungedText[62] =
     "\" munged OP_nameValidate.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_nameValidate.sen -- Name Validate Op (SQL Compiler)                     */\n"
@@ -6547,7 +6586,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::nameValidate to PlanOperand[]\n"
     "\n"
@@ -6602,13 +6641,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 61 CONSTANT OP_nameValidate.sen "_Stz;
+  szSubScriptDef = " 62 CONSTANT OP_nameValidate.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [62] OP_tableSizes.sen
+  // munge of [63] OP_tableSizes.sen
 
-  gszaMungedText[62] =
+  gszaMungedText[63] =
     "\" munged OP_tableSizes.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_tableSizes.sen -- Operator table sizes                                  */\n"
@@ -6705,13 +6744,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 62 CONSTANT OP_tableSizes.sen "_Stz;
+  szSubScriptDef = " 63 CONSTANT OP_tableSizes.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [63] op__classWords.sen
+  // munge of [64] op__classWords.sen
 
-  gszaMungedText[63] =
+  gszaMungedText[64] =
     "\" munged op__classWords.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* op__classWords.sen -- class word set                                       */\n"
@@ -6730,13 +6769,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 63 CONSTANT op__classWords.sen "_Stz;
+  szSubScriptDef = " 64 CONSTANT op__classWords.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [64] OP_spawnNode.sen
+  // munge of [65] OP_spawnNode.sen
 
-  gszaMungedText[64] =
+  gszaMungedText[65] =
     "\" munged OP_spawnNode.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_spawnNode.sen -- Operator Spawn Node                                    */\n"
@@ -6797,13 +6836,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 64 CONSTANT OP_spawnNode.sen "_Stz;
+  szSubScriptDef = " 65 CONSTANT OP_spawnNode.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [65] OP_listPartitionColumns.sen
+  // munge of [66] OP_listPartitionColumns.sen
 
-  gszaMungedText[65] =
+  gszaMungedText[66] =
     "\" munged OP_listPartitionColumns.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listPartitionColumns.sen -- Operator list partition columns             */\n"
@@ -6882,13 +6921,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 65 CONSTANT OP_listPartitionColumns.sen "_Stz;
+  szSubScriptDef = " 66 CONSTANT OP_listPartitionColumns.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [66] OP_bktMapGet.sen
+  // munge of [67] OP_bktMapGet.sen
 
-  gszaMungedText[66] =
+  gszaMungedText[67] =
     "\" munged OP_bktMapGet.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bktMapGet.sen -- Operator meta get                                        */\n"
@@ -6951,13 +6990,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 66 CONSTANT OP_bktMapGet.sen "_Stz;
+  szSubScriptDef = " 67 CONSTANT OP_bktMapGet.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [67] dp_exitDemon.sen
+  // munge of [68] dp_exitDemon.sen
 
-  gszaMungedText[67] =
+  gszaMungedText[68] =
     "\" munged dp_exitDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* dp_exitDemon.sen -- Exit Demon                                             */\n"
@@ -6993,13 +7032,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 67 CONSTANT dp_exitDemon.sen "_Stz;
+  szSubScriptDef = " 68 CONSTANT dp_exitDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [68] it_analyzeTable.sen
+  // munge of [69] it_analyzeTable.sen
 
-  gszaMungedText[68] =
+  gszaMungedText[69] =
     "\" munged it_analyzeTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_analyzeTable.sen -- Define __analyzeTable table                         */\n"
@@ -7031,13 +7070,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 68 CONSTANT it_analyzeTable.sen "_Stz;
+  szSubScriptDef = " 69 CONSTANT it_analyzeTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [69] OP_getAndAllotRows.sen
+  // munge of [70] OP_getAndAllotRows.sen
 
-  gszaMungedText[69] =
+  gszaMungedText[70] =
     "\" munged OP_getAndAllotRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_getAndAllotRows.sen -- get rows from rowbuffer and pipeout                      */\n"
@@ -7119,13 +7158,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 69 CONSTANT OP_getAndAllotRows.sen "_Stz;
+  szSubScriptDef = " 70 CONSTANT OP_getAndAllotRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [70] it_columnDefs.sen
+  // munge of [71] it_columnDefs.sen
 
-  gszaMungedText[70] =
+  gszaMungedText[71] =
     "\" munged it_columnDefs.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_columnDefs.sen -- Define __columnDefs table                             */\n"
@@ -7164,13 +7203,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 70 CONSTANT it_columnDefs.sen "_Stz;
+  szSubScriptDef = " 71 CONSTANT it_columnDefs.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [71] OP_insert.sen
+  // munge of [72] OP_insert.sen
 
-  gszaMungedText[71] =
+  gszaMungedText[72] =
     "\" munged OP_insert.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_insert.sen -- Operator insert                                           */\n"
@@ -7384,13 +7423,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 71 CONSTANT OP_insert.sen "_Stz;
+  szSubScriptDef = " 72 CONSTANT OP_insert.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [72] OP_aggregateSplit.sen
+  // munge of [73] OP_aggregateSplit.sen
 
-  gszaMungedText[72] =
+  gszaMungedText[73] =
     "\" munged OP_aggregateSplit.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_aggregateSplit.sen -- Split out multiple aggs from exprs (SQL Compiler) */\n"
@@ -7414,7 +7453,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::aggregateSplit to PlanOperand[]\n"
     "\n"
@@ -7469,13 +7508,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 72 CONSTANT OP_aggregateSplit.sen "_Stz;
+  szSubScriptDef = " 73 CONSTANT OP_aggregateSplit.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [73] it_gridSanity.sen
+  // munge of [74] it_gridSanity.sen
 
-  gszaMungedText[73] =
+  gszaMungedText[74] =
     "\" munged it_gridSanity.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_gridSanity.sen -- Define __gridSanity tables                            */\n"
@@ -7505,13 +7544,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 73 CONSTANT it_gridSanity.sen "_Stz;
+  szSubScriptDef = " 74 CONSTANT it_gridSanity.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [74] OP_bktGet0.sen
+  // munge of [75] OP_bktGet0.sen
 
-  gszaMungedText[74] =
+  gszaMungedText[75] =
     "\" munged OP_bktGet0.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bktGet0.sen -- Operator Bucket get                                       */\n"
@@ -7582,13 +7621,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 74 CONSTANT OP_bktGet0.sen "_Stz;
+  szSubScriptDef = " 75 CONSTANT OP_bktGet0.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [75] OP_jobReport.sen
+  // munge of [76] OP_jobReport.sen
 
-  gszaMungedText[75] =
+  gszaMungedText[76] =
     "\" munged OP_jobReport.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_jobReport.sen -- Operator job report given jobId                      */\n"
@@ -7714,13 +7753,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 75 CONSTANT OP_jobReport.sen "_Stz;
+  szSubScriptDef = " 76 CONSTANT OP_jobReport.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [76] OP_adaptorWL.sen
+  // munge of [77] OP_adaptorWL.sen
 
-  gszaMungedText[76] =
+  gszaMungedText[77] =
     "\" munged OP_adaptorWL.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_adaptorWL.sen -- Operator wire line adaptor                             */\n"
@@ -7804,13 +7843,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 76 CONSTANT OP_adaptorWL.sen "_Stz;
+  szSubScriptDef = " 77 CONSTANT OP_adaptorWL.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [77] OP_catFile.sen
+  // munge of [78] OP_catFile.sen
 
-  gszaMungedText[77] =
+  gszaMungedText[78] =
     "\" munged OP_catFile.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_catFile.sen -- cat file                                                 */\n"
@@ -7893,13 +7932,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 77 CONSTANT OP_catFile.sen "_Stz;
+  szSubScriptDef = " 78 CONSTANT OP_catFile.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [78] pp_compact.sen
+  // munge of [79] pp_compact.sen
 
-  gszaMungedText[78] =
+  gszaMungedText[79] =
     "\" munged pp_compact.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_compact.sen -- define compact related procedures                        */\n"
@@ -7946,13 +7985,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 78 CONSTANT pp_compact.sen "_Stz;
+  szSubScriptDef = " 79 CONSTANT pp_compact.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [79] OP_syntaxUniqueIndex.sen
+  // munge of [80] OP_syntaxUniqueIndex.sen
 
-  gszaMungedText[79] =
+  gszaMungedText[80] =
     "\" munged OP_syntaxUniqueIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_syntaxUniqueIndex.sen -- Operator syntax index                          */\n"
@@ -8105,13 +8144,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 79 CONSTANT OP_syntaxUniqueIndex.sen "_Stz;
+  szSubScriptDef = " 80 CONSTANT OP_syntaxUniqueIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [80] it_progressUnits.sen
+  // munge of [81] it_progressUnits.sen
 
-  gszaMungedText[80] =
+  gszaMungedText[81] =
     "\" munged it_progressUnits.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_progressUnits.sen -- Define __progressUnits table                       */\n"
@@ -8140,13 +8179,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 80 CONSTANT it_progressUnits.sen "_Stz;
+  szSubScriptDef = " 81 CONSTANT it_progressUnits.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [81] OP_gridSanity.sen
+  // munge of [82] OP_gridSanity.sen
 
-  gszaMungedText[81] =
+  gszaMungedText[82] =
     "\" munged OP_gridSanity.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sanity.sen -- Operator sanity                                           */\n"
@@ -8254,13 +8293,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 81 CONSTANT OP_gridSanity.sen "_Stz;
+  szSubScriptDef = " 82 CONSTANT OP_gridSanity.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [82] pp_std_start.sen
+  // munge of [83] pp_std_start.sen
 
-  gszaMungedText[82] =
+  gszaMungedText[83] =
     "\" munged pp_std_start.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_std_start.sen -- standard start stage                                   */\n"
@@ -8292,13 +8331,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 82 CONSTANT pp_std_start.sen "_Stz;
+  szSubScriptDef = " 83 CONSTANT pp_std_start.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [83] OP_toDemon.sen
+  // munge of [84] OP_toDemon.sen
 
-  gszaMungedText[83] =
+  gszaMungedText[84] =
     "\" munged OP_toDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toDemon.sen -- To Demon Operator                                        */\n"
@@ -8360,13 +8399,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 83 CONSTANT OP_toDemon.sen "_Stz;
+  szSubScriptDef = " 84 CONSTANT OP_toDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [84] it_callPipeline.sen
+  // munge of [85] it_callPipeline.sen
 
-  gszaMungedText[84] =
+  gszaMungedText[85] =
     "\" munged it_callPipeline.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_callPipeline.sen -- Define __callPipeline table                         */\n"
@@ -8397,13 +8436,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 84 CONSTANT it_callPipeline.sen "_Stz;
+  szSubScriptDef = " 85 CONSTANT it_callPipeline.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [85] OP_toLglPtnNst.sen
+  // munge of [86] OP_toLglPtnNst.sen
 
-  gszaMungedText[85] =
+  gszaMungedText[86] =
     "\" munged OP_toLglPtnNst.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toLglPtnNst.sen -- Convert row buffer to have normalised strings        */\n"
@@ -8498,13 +8537,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 85 CONSTANT OP_toLglPtnNst.sen "_Stz;
+  szSubScriptDef = " 86 CONSTANT OP_toLglPtnNst.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [86] OP_explainPlan.sen
+  // munge of [87] OP_explainPlan.sen
 
-  gszaMungedText[86] =
+  gszaMungedText[87] =
     "\" munged OP_explainPlan.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_explainPlan.sen -- Explain Plan Op (SQL Compiler)                       */\n"
@@ -8528,7 +8567,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::explainPlan to PlanOperand[]\n"
     "\n"
@@ -8583,13 +8622,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 86 CONSTANT OP_explainPlan.sen "_Stz;
+  szSubScriptDef = " 87 CONSTANT OP_explainPlan.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [87] it_lookupCatalog.sen
+  // munge of [88] it_lookupCatalog.sen
 
-  gszaMungedText[87] =
+  gszaMungedText[88] =
     "\" munged it_lookupCatalog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_lookupCatalog.sen -- Define __lookupCatalog table                       */\n"
@@ -8618,13 +8657,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 87 CONSTANT it_lookupCatalog.sen "_Stz;
+  szSubScriptDef = " 88 CONSTANT it_lookupCatalog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [88] OP_listTenants.sen
+  // munge of [89] OP_listTenants.sen
 
-  gszaMungedText[88] =
+  gszaMungedText[89] =
     "\" munged OP_listTenants.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listTenants.sen -- Operator list tenants                                */\n"
@@ -8704,13 +8743,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 88 CONSTANT OP_listTenants.sen "_Stz;
+  szSubScriptDef = " 89 CONSTANT OP_listTenants.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [89] it_jobTables.sen
+  // munge of [90] it_jobTables.sen
 
-  gszaMungedText[89] =
+  gszaMungedText[90] =
     "\" munged it_jobTables.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_jobTables.sen -- Define Job Tables                                      */\n"
@@ -8860,13 +8899,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 89 CONSTANT it_jobTables.sen "_Stz;
+  szSubScriptDef = " 90 CONSTANT it_jobTables.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [90] OP_sysClosed.sen
+  // munge of [91] OP_sysClosed.sen
 
-  gszaMungedText[90] =
+  gszaMungedText[91] =
     "\" munged OP_sysClosed.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sysClosed.sen -- system has been closed                                 */\n"
@@ -8938,13 +8977,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 90 CONSTANT OP_sysClosed.sen "_Stz;
+  szSubScriptDef = " 91 CONSTANT OP_sysClosed.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [91] pp_create.sen
+  // munge of [92] pp_create.sen
 
-  gszaMungedText[91] =
+  gszaMungedText[92] =
     "\" munged pp_create.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_create.sen -- define create related procedures                          */\n"
@@ -9236,13 +9275,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 91 CONSTANT pp_create.sen "_Stz;
+  szSubScriptDef = " 92 CONSTANT pp_create.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [92] it_listIndex.sen
+  // munge of [93] it_listIndex.sen
 
-  gszaMungedText[92] =
+  gszaMungedText[93] =
     "\" munged it_listIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_listIndex.sen -- Define __listIndex table                               */\n"
@@ -9273,13 +9312,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 92 CONSTANT it_listIndex.sen "_Stz;
+  szSubScriptDef = " 93 CONSTANT it_listIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [93] OP_recvWL.sen
+  // munge of [94] OP_recvWL.sen
 
-  gszaMungedText[93] =
+  gszaMungedText[94] =
     "\" munged OP_recvWL.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_recvWL.sen -- Operator recv for WL Adaptor                              */\n"
@@ -9432,13 +9471,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 93 CONSTANT OP_recvWL.sen "_Stz;
+  szSubScriptDef = " 94 CONSTANT OP_recvWL.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [94] OP_supervisor.sen
+  // munge of [95] OP_supervisor.sen
 
-  gszaMungedText[94] =
+  gszaMungedText[95] =
     "\" munged OP_supervisor.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_supervisor.sen -- Supervisor Operator                                   */\n"
@@ -9521,13 +9560,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 94 CONSTANT OP_supervisor.sen "_Stz;
+  szSubScriptDef = " 95 CONSTANT OP_supervisor.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [95] se_munge.sen
+  // munge of [96] se_munge.sen
 
-  gszaMungedText[95] =
+  gszaMungedText[96] =
     "\" munged se_munge.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_munge.sen -- create the .cpp file from all .sen files                   */\n"
@@ -9831,13 +9870,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 95 CONSTANT se_munge.sen "_Stz;
+  szSubScriptDef = " 96 CONSTANT se_munge.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [96] it_lookupSchema.sen
+  // munge of [97] it_lookupSchema.sen
 
-  gszaMungedText[96] =
+  gszaMungedText[97] =
     "\" munged it_lookupSchema.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_lookupSchema.sen -- Define __lookupSchema table                         */\n"
@@ -9867,13 +9906,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 96 CONSTANT it_lookupSchema.sen "_Stz;
+  szSubScriptDef = " 97 CONSTANT it_lookupSchema.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [97] OP_bktRecv.sen
+  // munge of [98] OP_bktRecv.sen
 
-  gszaMungedText[97] =
+  gszaMungedText[98] =
     "\" munged OP_bktRecv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bktRecv.sen -- Operator meta recv                                      */\n"
@@ -9937,13 +9976,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 97 CONSTANT OP_bktRecv.sen "_Stz;
+  szSubScriptDef = " 98 CONSTANT OP_bktRecv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [98] OP_reapCtl.sen
+  // munge of [99] OP_reapCtl.sen
 
-  gszaMungedText[98] =
+  gszaMungedText[99] =
     "\" munged OP_reapCtl.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_reapCtl.sen -- Reap control                                             */\n"
@@ -9987,13 +10026,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 98 CONSTANT OP_reapCtl.sen "_Stz;
+  szSubScriptDef = " 99 CONSTANT OP_reapCtl.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [99] OP_syntaxIndex.sen
+  // munge of [100] OP_syntaxIndex.sen
 
-  gszaMungedText[99] =
+  gszaMungedText[100] =
     "\" munged OP_syntaxIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_syntaxIndex.sen -- Operator syntax index                                */\n"
@@ -10152,13 +10191,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 99 CONSTANT OP_syntaxIndex.sen "_Stz;
+  szSubScriptDef = " 100 CONSTANT OP_syntaxIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [100] test_unit.sen
+  // munge of [101] test_unit.sen
 
-  gszaMungedText[100] =
+  gszaMungedText[101] =
     "\" munged test_unit.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_unit.sen -- unit testing                                              */\n"
@@ -10192,13 +10231,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 100 CONSTANT test_unit.sen "_Stz;
+  szSubScriptDef = " 101 CONSTANT test_unit.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [101] op__stats.sen
+  // munge of [102] op__stats.sen
 
-  gszaMungedText[101] =
+  gszaMungedText[102] =
     "\" munged op__stats.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* op__stats.sen -- operator stats words                                      */\n"
@@ -10249,13 +10288,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 101 CONSTANT op__stats.sen "_Stz;
+  szSubScriptDef = " 102 CONSTANT op__stats.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [102] OP_bufferGen.sen
+  // munge of [103] OP_bufferGen.sen
 
-  gszaMungedText[102] =
+  gszaMungedText[103] =
     "\" munged OP_bufferGen.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bufferGen.sen -- Operator bufferGen                                     */\n"
@@ -10332,13 +10371,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 102 CONSTANT OP_bufferGen.sen "_Stz;
+  szSubScriptDef = " 103 CONSTANT OP_bufferGen.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [103] pp_sqlCompiler.sen
+  // munge of [104] pp_sqlCompiler.sen
 
-  gszaMungedText[103] =
+  gszaMungedText[104] =
     "\" munged pp_sqlCompiler.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_sqlCompiler.sen -- SQL Compiler pipeline procedure                      */\n"
@@ -10411,13 +10450,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 103 CONSTANT pp_sqlCompiler.sen "_Stz;
+  szSubScriptDef = " 104 CONSTANT pp_sqlCompiler.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [104] OP_rowCount.sen
+  // munge of [105] OP_rowCount.sen
 
-  gszaMungedText[104] =
+  gszaMungedText[105] =
     "\" munged OP_rowCount.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_rowCount.sen -- Operator rowCount                                       */\n"
@@ -10506,13 +10545,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 104 CONSTANT OP_rowCount.sen "_Stz;
+  szSubScriptDef = " 105 CONSTANT OP_rowCount.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [105] it_lookupIndex.sen
+  // munge of [106] it_lookupIndex.sen
 
-  gszaMungedText[105] =
+  gszaMungedText[106] =
     "\" munged it_lookupIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_lookupIndex.sen -- Define __lookupIndex table                           */\n"
@@ -10543,13 +10582,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 105 CONSTANT it_lookupIndex.sen "_Stz;
+  szSubScriptDef = " 106 CONSTANT it_lookupIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [106] OP_sendWL.sen
+  // munge of [107] OP_sendWL.sen
 
-  gszaMungedText[106] =
+  gszaMungedText[107] =
     "\" munged OP_sendWL.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sendWL.sen -- Operator send for WL Adaptor                              */\n"
@@ -10671,13 +10710,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 106 CONSTANT OP_sendWL.sen "_Stz;
+  szSubScriptDef = " 107 CONSTANT OP_sendWL.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [107] OP_verifyTable.sen
+  // munge of [108] OP_verifyTable.sen
 
-  gszaMungedText[107] =
+  gszaMungedText[108] =
     "\" munged OP_verifyTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_verifyTable.sen -- Operator verify table                                */\n"
@@ -10739,13 +10778,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 107 CONSTANT OP_verifyTable.sen "_Stz;
+  szSubScriptDef = " 108 CONSTANT OP_verifyTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [108] OP_jobOperators.sen
+  // munge of [109] OP_jobOperators.sen
 
-  gszaMungedText[108] =
+  gszaMungedText[109] =
     "\" munged OP_jobOperators.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_jobOperators.sen -- Operator job operators                              */\n"
@@ -10832,13 +10871,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 108 CONSTANT OP_jobOperators.sen "_Stz;
+  szSubScriptDef = " 109 CONSTANT OP_jobOperators.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [109] pp_jobRep.sen
+  // munge of [110] pp_jobRep.sen
 
-  gszaMungedText[109] =
+  gszaMungedText[110] =
     "\" munged pp_jobRep.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_jobRep.sen -- define procedure jobRep                                   */\n"
@@ -10880,13 +10919,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 109 CONSTANT pp_jobRep.sen "_Stz;
+  szSubScriptDef = " 110 CONSTANT pp_jobRep.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [110] OP_listCatalogs.sen
+  // munge of [111] OP_listCatalogs.sen
 
-  gszaMungedText[110] =
+  gszaMungedText[111] =
     "\" munged OP_listCatalogs.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listCatalogs.sen -- Operator list catalogs                              */\n"
@@ -10965,13 +11004,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 110 CONSTANT OP_listCatalogs.sen "_Stz;
+  szSubScriptDef = " 111 CONSTANT OP_listCatalogs.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [111] OP_insDel.sen
+  // munge of [112] OP_insDel.sen
 
-  gszaMungedText[111] =
+  gszaMungedText[112] =
     "\" munged OP_insDel.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_insDel.sen -- Insert/operator delete                                    */\n"
@@ -11082,13 +11121,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 111 CONSTANT OP_insDel.sen "_Stz;
+  szSubScriptDef = " 112 CONSTANT OP_insDel.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [112] it_returnPipeline.sen
+  // munge of [113] it_returnPipeline.sen
 
-  gszaMungedText[112] =
+  gszaMungedText[113] =
     "\" munged it_returnPipeline.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_returnPipeline.sen -- Define __returnPipeline table                     */\n"
@@ -11121,13 +11160,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 112 CONSTANT it_returnPipeline.sen "_Stz;
+  szSubScriptDef = " 113 CONSTANT it_returnPipeline.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [113] it_count.sen
+  // munge of [114] it_count.sen
 
-  gszaMungedText[113] =
+  gszaMungedText[114] =
     "\" munged it_count.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_count.sen -- Define __countInfo table                                   */\n"
@@ -11154,13 +11193,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 113 CONSTANT it_count.sen "_Stz;
+  szSubScriptDef = " 114 CONSTANT it_count.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [114] OP_compactIdx.sen
+  // munge of [115] OP_compactIdx.sen
 
-  gszaMungedText[114] =
+  gszaMungedText[115] =
     "\" munged OP_compactIdx.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_compactIndex.sen -- Operator compact index                              */\n"
@@ -11201,13 +11240,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 114 CONSTANT OP_compactIdx.sen "_Stz;
+  szSubScriptDef = " 115 CONSTANT OP_compactIdx.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [115] OP_compilerOpEg.sen
+  // munge of [116] OP_compilerOpEg.sen
 
-  gszaMungedText[115] =
+  gszaMungedText[116] =
     "\" munged OP_compilerOpEg.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_compilerOpEg.sen -- Compiler Op Example                                 */\n"
@@ -11301,13 +11340,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 115 CONSTANT OP_compilerOpEg.sen "_Stz;
+  szSubScriptDef = " 116 CONSTANT OP_compilerOpEg.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [116] OP_listIndexColumns.sen
+  // munge of [117] OP_listIndexColumns.sen
 
-  gszaMungedText[116] =
+  gszaMungedText[117] =
     "\" munged OP_listIndexColumns.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listIndexColumns.sen -- Operator list index columns                             */\n"
@@ -11383,13 +11422,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 116 CONSTANT OP_listIndexColumns.sen "_Stz;
+  szSubScriptDef = " 117 CONSTANT OP_listIndexColumns.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [117] test_iData.sen
+  // munge of [118] test_iData.sen
 
-  gszaMungedText[117] =
+  gszaMungedText[118] =
     "\" munged test_iData.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_iData.sen -- generate iTest data                                      */\n"
@@ -11450,13 +11489,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 117 CONSTANT test_iData.sen "_Stz;
+  szSubScriptDef = " 118 CONSTANT test_iData.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [118] OP_dropTable.sen
+  // munge of [119] OP_dropTable.sen
 
-  gszaMungedText[118] =
+  gszaMungedText[119] =
     "\" munged OP_dropTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropTable.sen -- Operator drop table                                    */\n"
@@ -11543,13 +11582,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 118 CONSTANT OP_dropTable.sen "_Stz;
+  szSubScriptDef = " 119 CONSTANT OP_dropTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [119] OP_createTenant.sen
+  // munge of [120] OP_createTenant.sen
 
-  gszaMungedText[119] =
+  gszaMungedText[120] =
     "\" munged OP_createTenant.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_createTenant.sen -- Operator create tenant                              */\n"
@@ -11639,13 +11678,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 119 CONSTANT OP_createTenant.sen "_Stz;
+  szSubScriptDef = " 120 CONSTANT OP_createTenant.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [120] OP_changeFolder.sen
+  // munge of [121] OP_changeFolder.sen
 
-  gszaMungedText[120] =
+  gszaMungedText[121] =
     "\" munged OP_changeFolder.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_changeFolder.sen -- Operator change flolder                             */\n"
@@ -11759,13 +11798,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 120 CONSTANT OP_changeFolder.sen "_Stz;
+  szSubScriptDef = " 121 CONSTANT OP_changeFolder.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [121] test_1m.sen
+  // munge of [122] test_1m.sen
 
-  gszaMungedText[121] =
+  gszaMungedText[122] =
     "\" munged test_1m.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_1m.sen -- a million loop test                                         */\n"
@@ -11786,13 +11825,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 121 CONSTANT test_1m.sen "_Stz;
+  szSubScriptDef = " 122 CONSTANT test_1m.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [122] OP_copyRows.sen
+  // munge of [123] OP_copyRows.sen
 
-  gszaMungedText[122] =
+  gszaMungedText[123] =
     "\" munged OP_copyRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_copyRows.sen -- copy rows from rowbuffer and pipeout                    */\n"
@@ -11873,13 +11912,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 122 CONSTANT OP_copyRows.sen "_Stz;
+  szSubScriptDef = " 123 CONSTANT OP_copyRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [123] job__words.sen
+  // munge of [124] job__words.sen
 
-  gszaMungedText[123] =
+  gszaMungedText[124] =
     "\" munged job__words.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job__words.sen -- Job related words                                        */\n"
@@ -12295,13 +12334,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 123 CONSTANT job__words.sen "_Stz;
+  szSubScriptDef = " 124 CONSTANT job__words.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [124] OP_dupCrw.sen
+  // munge of [125] OP_dupCrw.sen
 
-  gszaMungedText[124] =
+  gszaMungedText[125] =
     "\" munged OP_dupCrw.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dupCrw.sen -- create temp copies of permanent crw buffers               */\n"
@@ -12365,13 +12404,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 124 CONSTANT OP_dupCrw.sen "_Stz;
+  szSubScriptDef = " 125 CONSTANT OP_dupCrw.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [125] OP_addNode.sen
+  // munge of [126] OP_addNode.sen
 
-  gszaMungedText[125] =
+  gszaMungedText[126] =
     "\" munged OP_addNode.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_addNode.sen -- Operator Add Node                                        */\n"
@@ -12434,13 +12473,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 125 CONSTANT OP_addNode.sen "_Stz;
+  szSubScriptDef = " 126 CONSTANT OP_addNode.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [126] OP_dropSchema.sen
+  // munge of [127] OP_dropSchema.sen
 
-  gszaMungedText[126] =
+  gszaMungedText[127] =
     "\" munged OP_dropSchema.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropSchema.sen -- Operator drop schema                                  */\n"
@@ -12512,13 +12551,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 126 CONSTANT OP_dropSchema.sen "_Stz;
+  szSubScriptDef = " 127 CONSTANT OP_dropSchema.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [127] job_startSystem.sen
+  // munge of [128] job_startSystem.sen
 
-  gszaMungedText[127] =
+  gszaMungedText[128] =
     "\" munged job_startSystem.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* job_startSystem.sen -- Start System Job                                    */\n"
@@ -12563,7 +12602,7 @@ void Task::vAddMunged(Task* )
     "  start::it_callPipeline\n"
     "  start::it_columnDefs\n"
     "  start::it_command\n"
-    "  start::it_commandErrors\n"
+    "  start::it_compileErrors\n"
     "  start::it_count\n"
     "  start::it_deref\n"
     "  start::it_eventLog\n"
@@ -12716,13 +12755,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 127 CONSTANT job_startSystem.sen "_Stz;
+  szSubScriptDef = " 128 CONSTANT job_startSystem.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [128] test_pu.sen
+  // munge of [129] test_pu.sen
 
-  gszaMungedText[128] =
+  gszaMungedText[129] =
     "\" munged test_pu.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_pu.sen -- pu testing                                                  */\n"
@@ -12752,13 +12791,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 128 CONSTANT test_pu.sen "_Stz;
+  szSubScriptDef = " 129 CONSTANT test_pu.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [129] OP_flushDemon.sen
+  // munge of [130] OP_flushDemon.sen
 
-  gszaMungedText[129] =
+  gszaMungedText[130] =
     "\" munged OP_flushDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_flushDemon.sen -- enque flush marker onto demon                         */\n"
@@ -12835,13 +12874,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 129 CONSTANT OP_flushDemon.sen "_Stz;
+  szSubScriptDef = " 130 CONSTANT OP_flushDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [130] OP_sysOpened.sen
+  // munge of [131] OP_sysOpened.sen
 
-  gszaMungedText[130] =
+  gszaMungedText[131] =
     "\" munged OP_sysOpened.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sysOpened.sen -- system has been opened                                 */\n"
@@ -12903,13 +12942,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 130 CONSTANT OP_sysOpened.sen "_Stz;
+  szSubScriptDef = " 131 CONSTANT OP_sysOpened.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [131] OP_noop.sen
+  // munge of [132] OP_noop.sen
 
-  gszaMungedText[131] =
+  gszaMungedText[132] =
     "\" munged OP_noop.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_noop.sen -- Operator no op                                              */\n"
@@ -12954,13 +12993,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 131 CONSTANT OP_noop.sen "_Stz;
+  szSubScriptDef = " 132 CONSTANT OP_noop.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [132] se_recurDemon.sen
+  // munge of [133] se_recurDemon.sen
 
-  gszaMungedText[132] =
+  gszaMungedText[133] =
     "\" munged se_recurDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_demons.sen -- support words for demons                                  */\n"
@@ -13066,13 +13105,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 132 CONSTANT se_recurDemon.sen "_Stz;
+  szSubScriptDef = " 133 CONSTANT se_recurDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [133] pp_export.sen
+  // munge of [134] pp_export.sen
 
-  gszaMungedText[133] =
+  gszaMungedText[134] =
     "\" munged pp_export.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_export.sen -- export pipeline procedures                                */\n"
@@ -13120,13 +13159,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 133 CONSTANT pp_export.sen "_Stz;
+  szSubScriptDef = " 134 CONSTANT pp_export.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [134] dp_monDemon.sen
+  // munge of [135] dp_monDemon.sen
 
-  gszaMungedText[134] =
+  gszaMungedText[135] =
     "\" munged dp_monDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* dp_monDemon.sen -- Monitor Demon                                           */\n"
@@ -13162,13 +13201,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 134 CONSTANT dp_monDemon.sen "_Stz;
+  szSubScriptDef = " 135 CONSTANT dp_monDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [135] OP_indexJoin.sen
+  // munge of [136] OP_indexJoin.sen
 
-  gszaMungedText[135] =
+  gszaMungedText[136] =
     "\" munged OP_indexJoin.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_indexJoin.sen -- Operator index join                                    */\n"
@@ -13315,13 +13354,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 135 CONSTANT OP_indexJoin.sen "_Stz;
+  szSubScriptDef = " 136 CONSTANT OP_indexJoin.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [136] pp_scanTables.sen
+  // munge of [137] pp_scanTables.sen
 
-  gszaMungedText[136] =
+  gszaMungedText[137] =
     "\" munged pp_scanTables.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_scanTables.sen -- define scanTables related procedures                  */\n"
@@ -13379,13 +13418,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 136 CONSTANT pp_scanTables.sen "_Stz;
+  szSubScriptDef = " 137 CONSTANT pp_scanTables.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [137] test_gGen.sen
+  // munge of [138] test_gGen.sen
 
-  gszaMungedText[137] =
+  gszaMungedText[138] =
     "\" munged test_gGen.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_gGen.sen -- generate gGen files                                       */\n"
@@ -13452,13 +13491,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 137 CONSTANT test_gGen.sen "_Stz;
+  szSubScriptDef = " 138 CONSTANT test_gGen.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [138] dp_statDemon.sen
+  // munge of [139] dp_statDemon.sen
 
-  gszaMungedText[138] =
+  gszaMungedText[139] =
     "\" munged dp_statDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* dp_statDemon.sen -- Stat Demon                                             */\n"
@@ -13493,13 +13532,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 138 CONSTANT dp_statDemon.sen "_Stz;
+  szSubScriptDef = " 139 CONSTANT dp_statDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [139] it_totalUnits.sen
+  // munge of [140] it_totalUnits.sen
 
-  gszaMungedText[139] =
+  gszaMungedText[140] =
     "\" munged it_totalUnits.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_totalUnits.sen -- Define __totalUnits table                             */\n"
@@ -13529,13 +13568,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 139 CONSTANT it_totalUnits.sen "_Stz;
+  szSubScriptDef = " 140 CONSTANT it_totalUnits.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [140] it_seekOffsets.sen
+  // munge of [141] it_seekOffsets.sen
 
-  gszaMungedText[140] =
+  gszaMungedText[141] =
     "\" munged it_seekOffsets.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_seekOffsets.sen -- Define __seekOffsets table                           */\n"
@@ -13566,13 +13605,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 140 CONSTANT it_seekOffsets.sen "_Stz;
+  szSubScriptDef = " 141 CONSTANT it_seekOffsets.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [141] OP_truncateTable.sen
+  // munge of [142] OP_truncateTable.sen
 
-  gszaMungedText[141] =
+  gszaMungedText[142] =
     "\" munged OP_truncateTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_truncateTable.sen -- Operator truncate table                            */\n"
@@ -13658,13 +13697,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 141 CONSTANT OP_truncateTable.sen "_Stz;
+  szSubScriptDef = " 142 CONSTANT OP_truncateTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [142] pp_drop.sen
+  // munge of [143] pp_drop.sen
 
-  gszaMungedText[142] =
+  gszaMungedText[143] =
     "\" munged pp_drop.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_drop.sen -- define drop related procedures                              */\n"
@@ -13844,13 +13883,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 142 CONSTANT pp_drop.sen "_Stz;
+  szSubScriptDef = " 143 CONSTANT pp_drop.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [143] OP_dumpIndex.sen
+  // munge of [144] OP_dumpIndex.sen
 
-  gszaMungedText[143] =
+  gszaMungedText[144] =
     "\" munged OP_dumpIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dumpIndex.sen -- Operator dump index                                    */\n"
@@ -13893,13 +13932,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 143 CONSTANT OP_dumpIndex.sen "_Stz;
+  szSubScriptDef = " 144 CONSTANT OP_dumpIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [144] it_sysMetrics.sen
+  // munge of [145] it_sysMetrics.sen
 
-  gszaMungedText[144] =
+  gszaMungedText[145] =
     "\" munged it_sysMetrics.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_sysMetrics.sen -- Define se__sysMetrics table                           */\n"
@@ -13943,13 +13982,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 144 CONSTANT it_sysMetrics.sen "_Stz;
+  szSubScriptDef = " 145 CONSTANT it_sysMetrics.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [145] dp_recurDemon.sen
+  // munge of [146] dp_recurDemon.sen
 
-  gszaMungedText[145] =
+  gszaMungedText[146] =
     "\" munged dp_recurDemon.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* dp_recurDemon.sen -- Recurring Demon                                       */\n"
@@ -13985,13 +14024,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 145 CONSTANT dp_recurDemon.sen "_Stz;
+  szSubScriptDef = " 146 CONSTANT dp_recurDemon.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [146] test_tData.sen
+  // munge of [147] test_tData.sen
 
-  gszaMungedText[146] =
+  gszaMungedText[147] =
     "\" munged test_tData.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* test_tData.sen -- generate tTest data                                      */\n"
@@ -14052,13 +14091,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 146 CONSTANT test_tData.sen "_Stz;
+  szSubScriptDef = " 147 CONSTANT test_tData.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [147] OP_visualizeIndex.sen
+  // munge of [148] OP_visualizeIndex.sen
 
-  gszaMungedText[147] =
+  gszaMungedText[148] =
     "\" munged OP_visualizeIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_visualizeIndex.sen -- Operator visualize index                          */\n"
@@ -14101,13 +14140,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 147 CONSTANT OP_visualizeIndex.sen "_Stz;
+  szSubScriptDef = " 148 CONSTANT OP_visualizeIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [148] OP_corrBySquash.sen
+  // munge of [149] OP_corrBySquash.sen
 
-  gszaMungedText[148] =
+  gszaMungedText[149] =
     "\" munged OP_corrBySquash.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_corrBySquash.sen -- Squash ProjectOps for CORRESPONDING BY clauses      */\n"
@@ -14132,7 +14171,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::corrBySquash to PlanOperand[]\n"
     "\n"
@@ -14187,13 +14226,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 148 CONSTANT OP_corrBySquash.sen "_Stz;
+  szSubScriptDef = " 149 CONSTANT OP_corrBySquash.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [149] se_path.sen
+  // munge of [150] se_path.sen
 
-  gszaMungedText[149] =
+  gszaMungedText[150] =
     "\" munged se_path.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_path.sen -- dictionary related words                                    */\n"
@@ -14298,13 +14337,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 149 CONSTANT se_path.sen "_Stz;
+  szSubScriptDef = " 150 CONSTANT se_path.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [150] op__errors.sen
+  // munge of [151] op__errors.sen
 
-  gszaMungedText[150] =
+  gszaMungedText[151] =
     "\" munged op__errors.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* op__errors.sen -- operator error words                                     */\n"
@@ -14313,9 +14352,9 @@ void Task::vAddMunged(Task* )
     "\" op__errors.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* create the command error info set                                          */\n"
+    "/* create the compile error info set                                          */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": op__createCmdErrInfoSet\n"
+    ": op__createCompileErrInfoSet\n"
     "\n"
     "  [ddlLock].testDrop\n"
     "\n"
@@ -14324,18 +14363,18 @@ void Task::vAddMunged(Task* )
     "    InfoSet[].delete\n"
     "  then\n"
     "\n"
-    "  // create the infoSetTable for C_TDEF_COMMANDERRORS\n"
-    "  C_TDEF_COMMANDERRORS \"op__tableDef_infoSet\" find execute assert\n"
+    "  // create the infoSetTable for C_TDEF_COMPILEERRORS\n"
+    "  C_TDEF_COMPILEERRORS \"op__tableDef_infoSet\" find execute assert\n"
     "\n"
-    "  // create an infoSet operand for commandErrors\n"
+    "  // create an infoSet operand for compileErrors\n"
     "  infoSetTable[] InfoSet[].new\n"
-    "  OI_COMMANDERRORS infoSet[].opInfoset!\n"
+    "  OI_COMPILEERRORS infoSet[].opInfoset!\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* pipeout error info set                                                     */\n"
+    "/* pipeout compile error info set                                             */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": op__cmdErrOut\n"
+    ": op__compileErrOut\n"
     "\n"
     "  // toggle to default abnormal handlers\n"
     "  \"default_abnormalHandlers\" FIND execute\n"
@@ -14360,12 +14399,12 @@ void Task::vAddMunged(Task* )
     "    InfoSet[].delete\n"
     "  then\n"
     "\n"
-    "  // create the infoSetTable for C_TDEF_COMMANDERRORS\n"
-    "  C_TDEF_COMMANDERRORS \"op__tableDef_infoSet\" find execute assert\n"
+    "  // create the infoSetTable for C_TDEF_COMPILEERRORS\n"
+    "  C_TDEF_COMPILEERRORS \"op__tableDef_infoSet\" find execute assert\n"
     "\n"
     "  // create an infoSet operand for commandErrors\n"
     "  infoSetTable[] InfoSet[].new\n"
-    "  OI_COMMANDERRORS infoSet[].opInfoset!\n"
+    "  OI_COMPILEERRORS infoSet[].opInfoset!\n"
     "\n"
     "  errorMsg errorCode infoSetTable[] InfoSet[].addCommandError assert\n"
     "\n"
@@ -14446,13 +14485,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 150 CONSTANT op__errors.sen "_Stz;
+  szSubScriptDef = " 151 CONSTANT op__errors.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [151] OP_bktMapSend.sen
+  // munge of [152] OP_bktMapSend.sen
 
-  gszaMungedText[151] =
+  gszaMungedText[152] =
     "\" munged OP_bktMapSend.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bktMapSend.sen -- Operator meta send                                      */\n"
@@ -14530,13 +14569,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 151 CONSTANT OP_bktMapSend.sen "_Stz;
+  szSubScriptDef = " 152 CONSTANT OP_bktMapSend.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [152] OP_metricsCtl.sen
+  // munge of [153] OP_metricsCtl.sen
 
-  gszaMungedText[152] =
+  gszaMungedText[153] =
     "\" munged OP_metricsCtl.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_metricsCtl.sen -- Metrics control                                       */\n"
@@ -14606,13 +14645,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 152 CONSTANT OP_metricsCtl.sen "_Stz;
+  szSubScriptDef = " 153 CONSTANT OP_metricsCtl.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [153] se_api.sen
+  // munge of [154] se_api.sen
 
-  gszaMungedText[153] =
+  gszaMungedText[154] =
     "\" munged se_api.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_api.sen -- additional api related words                                 */\n"
@@ -14637,13 +14676,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 153 CONSTANT se_api.sen "_Stz;
+  szSubScriptDef = " 154 CONSTANT se_api.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [154] OP_sink.sen
+  // munge of [155] OP_sink.sen
 
-  gszaMungedText[154] =
+  gszaMungedText[155] =
     "\" munged OP_sink.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sink.sen -- Operator sink                                               */\n"
@@ -14888,13 +14927,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 154 CONSTANT OP_sink.sen "_Stz;
+  szSubScriptDef = " 155 CONSTANT OP_sink.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [155] se_op.sen
+  // munge of [156] se_op.sen
 
-  gszaMungedText[155] =
+  gszaMungedText[156] =
     "\" munged se_op.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_op.sen -- additional op related words                                   */\n"
@@ -14925,13 +14964,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 155 CONSTANT se_op.sen "_Stz;
+  szSubScriptDef = " 156 CONSTANT se_op.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [156] it_command.sen
+  // munge of [157] it_command.sen
 
-  gszaMungedText[156] =
+  gszaMungedText[157] =
     "\" munged it_command.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_command.sen -- Define __command table                                   */\n"
@@ -14960,13 +14999,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 156 CONSTANT it_command.sen "_Stz;
+  szSubScriptDef = " 157 CONSTANT it_command.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [157] OP_dumpBktInfo.sen
+  // munge of [158] OP_dumpBktInfo.sen
 
-  gszaMungedText[157] =
+  gszaMungedText[158] =
     "\" munged OP_dumpBktInfo.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dumpBktInfo.sen -- dump file                                            */\n"
@@ -15016,13 +15055,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 157 CONSTANT OP_dumpBktInfo.sen "_Stz;
+  szSubScriptDef = " 158 CONSTANT OP_dumpBktInfo.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [158] it_jobNetwork.sen
+  // munge of [159] it_jobNetwork.sen
 
-  gszaMungedText[158] =
+  gszaMungedText[159] =
     "\" munged it_jobNetwork.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_jobNetwork.sen -- Define se__jobNetwork table                           */\n"
@@ -15069,13 +15108,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 158 CONSTANT it_jobNetwork.sen "_Stz;
+  szSubScriptDef = " 159 CONSTANT it_jobNetwork.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [159] OP_partitionExplain.sen
+  // munge of [160] OP_partitionExplain.sen
 
-  gszaMungedText[159] =
+  gszaMungedText[160] =
     "\" munged OP_partitionExplain.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_partitionExplain.sen -- Explain the partitioned plan Op (SQL Compiler)  */\n"
@@ -15099,7 +15138,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::partitionExplain to PlanOperand[]\n"
     "\n"
@@ -15154,13 +15193,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 159 CONSTANT OP_partitionExplain.sen "_Stz;
+  szSubScriptDef = " 160 CONSTANT OP_partitionExplain.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [160] se_categories.sen
+  // munge of [161] se_categories.sen
 
-  gszaMungedText[160] =
+  gszaMungedText[161] =
     "\" munged se_categories.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_categories.sen -- categories                                            */\n"
@@ -15296,13 +15335,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 160 CONSTANT se_categories.sen "_Stz;
+  szSubScriptDef = " 161 CONSTANT se_categories.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [161] OP_scan.sen
+  // munge of [162] OP_scan.sen
 
-  gszaMungedText[161] =
+  gszaMungedText[162] =
     "\" munged OP_scan.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_scan.sen -- Operator scan                                               */\n"
@@ -15535,13 +15574,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 161 CONSTANT OP_scan.sen "_Stz;
+  szSubScriptDef = " 162 CONSTANT OP_scan.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [162] it_verifyTable.sen
+  // munge of [163] it_verifyTable.sen
 
-  gszaMungedText[162] =
+  gszaMungedText[163] =
     "\" munged it_verifyTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_verifyTable.sen -- Define __verifyTable table                           */\n"
@@ -15572,13 +15611,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 162 CONSTANT it_verifyTable.sen "_Stz;
+  szSubScriptDef = " 163 CONSTANT it_verifyTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [163] OP_bucketSend.sen
+  // munge of [164] OP_bucketSend.sen
 
-  gszaMungedText[163] =
+  gszaMungedText[164] =
     "\" munged OP_bucketSend.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bucketSend.sen -- Operator bucket send                                  */\n"
@@ -15647,13 +15686,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 163 CONSTANT OP_bucketSend.sen "_Stz;
+  szSubScriptDef = " 164 CONSTANT OP_bucketSend.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [164] grid_node.sen
+  // munge of [165] grid_node.sen
 
-  gszaMungedText[164] =
+  gszaMungedText[165] =
     "\" munged grid_node.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* grid_node.sen -- node routines                                             */\n"
@@ -15749,13 +15788,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 164 CONSTANT grid_node.sen "_Stz;
+  szSubScriptDef = " 165 CONSTANT grid_node.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [165] OP_connectWL.sen
+  // munge of [166] OP_connectWL.sen
 
-  gszaMungedText[165] =
+  gszaMungedText[166] =
     "\" munged OP_connectWL.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_connectWL.sen -- Operator connect for WL Adaptor                       */\n"
@@ -15919,13 +15958,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 165 CONSTANT OP_connectWL.sen "_Stz;
+  szSubScriptDef = " 166 CONSTANT OP_connectWL.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [166] cmd_begun.sen
+  // munge of [167] cmd_begun.sen
 
-  gszaMungedText[166] =
+  gszaMungedText[167] =
     "\" munged cmd_begun.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* cmd_begun.sen -- 1sc: given pipeline has begun on participant              */\n"
@@ -16011,13 +16050,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 166 CONSTANT cmd_begun.sen "_Stz;
+  szSubScriptDef = " 167 CONSTANT cmd_begun.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [167] pp_rload.sen
+  // munge of [168] pp_rload.sen
 
-  gszaMungedText[167] =
+  gszaMungedText[168] =
     "\" munged pp_rload.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_rload.sen -- replicated load pipeline procedures                        */\n"
@@ -16116,13 +16155,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 167 CONSTANT pp_rload.sen "_Stz;
+  szSubScriptDef = " 168 CONSTANT pp_rload.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [168] OP_recurring.sen
+  // munge of [169] OP_recurring.sen
 
-  gszaMungedText[168] =
+  gszaMungedText[169] =
     "\" munged OP_recurring.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_recurring.sen -- Operator recurring                                     */\n"
@@ -16218,13 +16257,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 168 CONSTANT OP_recurring.sen "_Stz;
+  szSubScriptDef = " 169 CONSTANT OP_recurring.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [169] se_log.sen
+  // munge of [170] se_log.sen
 
-  gszaMungedText[169] =
+  gszaMungedText[170] =
     "\" munged se_log.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_log.sen -- log related words                                            */\n"
@@ -16272,13 +16311,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 169 CONSTANT se_log.sen "_Stz;
+  szSubScriptDef = " 170 CONSTANT se_log.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [170] OP_childSelectTest.sen
+  // munge of [171] OP_childSelectTest.sen
 
-  gszaMungedText[170] =
+  gszaMungedText[171] =
     "\" munged OP_childSelectTest.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_childSelectTest.sen -- child select test                                */\n"
@@ -16335,13 +16374,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 170 CONSTANT OP_childSelectTest.sen "_Stz;
+  szSubScriptDef = " 171 CONSTANT OP_childSelectTest.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [171] OP_listFolders.sen
+  // munge of [172] OP_listFolders.sen
 
-  gszaMungedText[171] =
+  gszaMungedText[172] =
     "\" munged OP_listFolders.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listFolders.sen -- Operator list folder                                 */\n"
@@ -16423,13 +16462,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 171 CONSTANT OP_listFolders.sen "_Stz;
+  szSubScriptDef = " 172 CONSTANT OP_listFolders.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [172] OP_createTableNC.sen
+  // munge of [173] OP_createTableNC.sen
 
-  gszaMungedText[172] =
+  gszaMungedText[173] =
     "\" munged OP_createTableNC.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_createTableNC.sen -- Operator create table                                */\n"
@@ -16576,13 +16615,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 172 CONSTANT OP_createTableNC.sen "_Stz;
+  szSubScriptDef = " 173 CONSTANT OP_createTableNC.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [173] pp_getMeta.sen
+  // munge of [174] pp_getMeta.sen
 
-  gszaMungedText[173] =
+  gszaMungedText[174] =
     "\" munged pp_getMeta.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_getMeta.sen -- define getMeta procedure                                 */\n"
@@ -16634,13 +16673,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 173 CONSTANT pp_getMeta.sen "_Stz;
+  szSubScriptDef = " 174 CONSTANT pp_getMeta.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [174] it_status.sen
+  // munge of [175] it_status.sen
 
-  gszaMungedText[174] =
+  gszaMungedText[175] =
     "\" munged it_status.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_status.sen -- Define __status table                                     */\n"
@@ -16673,13 +16712,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 174 CONSTANT it_status.sen "_Stz;
+  szSubScriptDef = " 175 CONSTANT it_status.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [175] OP_answerSE.sen
+  // munge of [176] OP_answerSE.sen
 
-  gszaMungedText[175] =
+  gszaMungedText[176] =
     "\" munged OP_answerSE.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_answerSE.sen -- Operator answer for SE Adaptor                          */\n"
@@ -16884,13 +16923,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 175 CONSTANT OP_answerSE.sen "_Stz;
+  szSubScriptDef = " 176 CONSTANT OP_answerSE.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [176] OP_verifyIndexPtn.sen
+  // munge of [177] OP_verifyIndexPtn.sen
 
-  gszaMungedText[176] =
+  gszaMungedText[177] =
     "\" munged OP_verifyIndexPtn.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_verifyIndexPtn.sen -- Operator verify partition of index                */\n"
@@ -16983,13 +17022,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 176 CONSTANT OP_verifyIndexPtn.sen "_Stz;
+  szSubScriptDef = " 177 CONSTANT OP_verifyIndexPtn.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [177] OP_analyzeTable.sen
+  // munge of [178] OP_analyzeTable.sen
 
-  gszaMungedText[177] =
+  gszaMungedText[178] =
     "\" munged OP_analyzeTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_analyzeTable.sen -- Operator analyze table                              */\n"
@@ -17058,13 +17097,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 177 CONSTANT OP_analyzeTable.sen "_Stz;
+  szSubScriptDef = " 178 CONSTANT OP_analyzeTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [178] OP_start.sen
+  // munge of [179] OP_start.sen
 
-  gszaMungedText[178] =
+  gszaMungedText[179] =
     "\" munged OP_start.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_start.sen -- Operator start                                             */\n"
@@ -17302,13 +17341,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 178 CONSTANT OP_start.sen "_Stz;
+  szSubScriptDef = " 179 CONSTANT OP_start.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [179] it_sysLocks.sen
+  // munge of [180] it_sysLocks.sen
 
-  gszaMungedText[179] =
+  gszaMungedText[180] =
     "\" munged it_sysLocks.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* it_sysLocks.sen -- Define se__sysLocks table                               */\n"
@@ -17351,13 +17390,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 179 CONSTANT it_sysLocks.sen "_Stz;
+  szSubScriptDef = " 180 CONSTANT it_sysLocks.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [180] OP_createIndex.sen
+  // munge of [181] OP_createIndex.sen
 
-  gszaMungedText[180] =
+  gszaMungedText[181] =
     "\" munged OP_createIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_createIndex.sen -- Operator create index                                */\n"
@@ -17511,46 +17550,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 180 CONSTANT OP_createIndex.sen "_Stz;
-  vCompileMungedColon(szSubScriptDef);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [181] it_commandErrors.sen
-
-  gszaMungedText[181] =
-    "\" munged it_commandErrors.sen \" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* it_commandErrors.sen -- Define __commandErrors table                       */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\" it_commandErrors.sen\" .verbose\n"
-    "\n"
-    ": start::it_commandErrors\n"
-    "\n"
-    "  // C_TDEF_COMMANDERRORS\n"
-    "  \n"
-    "  STD_WAIT_PATH_TAG\n"
-    "  \"\n"
-    "  define table __commandErrors (\n"
-    "    nodeName       VARCHAR NOT NULL ,\n"
-    "    errorCode      INTEGER NOT NULL ,\n"
-    "    line           INTEGER NOT NULL ,\n"
-    "    column         INTEGER NOT NULL ,\n"
-    "    text           VARCHAR NOT NULL\n"
-    "  ) < infoSet > = 1 ;\n"
-    "  \"\n"
-    "  api::forkChild api:executeCheck\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    ""_Stz
-  ;
-
-  szSubScriptDef = " 181 CONSTANT it_commandErrors.sen "_Stz;
+  szSubScriptDef = " 181 CONSTANT OP_createIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -18783,7 +18783,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::exprValidate to PlanOperand[]\n"
     "\n"
@@ -19025,7 +19025,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::joinOptimisation to PlanOperand[]\n"
     "\n"
@@ -19769,7 +19769,7 @@ void Task::vAddMunged(Task* )
     "\n"
     ": EV_I_CALLPIPELINE_handler     \\handler STANDARD_PIPEOUT ;\n"
     ": EV_I_COMMAND_handler          \\handler STANDARD_PIPEOUT ;\n"
-    ": EV_I_COMMANDERRORS_handler    \\handler STANDARD_PIPEOUT ;\n"
+    ": EV_I_COMPILEERRORS_handler    \\handler STANDARD_PIPEOUT ;\n"
     ": EV_I_COUNT_handler            \\handler STANDARD_PIPEOUT ;\n"
     ": EV_I_EXECERRORS_handler       \\handler STANDARD_PIPEOUT ;\n"
     ": EV_I_FORKCOMMAND_handler      \\handler STANDARD_PIPEOUT ;\n"
@@ -20350,7 +20350,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::postProject to PlanOperand[]\n"
     "\n"
@@ -22548,11 +22548,11 @@ void Task::vAddMunged(Task* )
     "\" OP_output.sen\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for EV_I_COMMANDERRORS ...                                         */\n"
+    "/* handler for EV_I_COMPILEERRORS ...                                         */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": output_CommandErrors \\handler\n"
+    ": output_CompileErrors \\handler\n"
     "\n"
-    "  //\"Operand:- EV_I_COMMANDERRORS\" .verbose\n"
+    "  //\"Operand:- EV_I_COMPILEERRORS\" .verbose\n"
     "  PipeIn[].pipeToOutput\n"
     "\n"
     "  true\n"
@@ -22685,7 +22685,7 @@ void Task::vAddMunged(Task* )
     "  find: output_StreamDef     EV_D_STREAMDEF     [op].handler!\n"
     "  find: output_StreamDef     EV_D_STREAMSET     [op].handler!\n"
     "\n"
-    "  find: output_CommandErrors EV_I_COMMANDERRORS [op].handler!\n"
+    "  find: output_CompileErrors EV_I_COMPILEERRORS [op].handler!\n"
     "  find: output_ExecErrors    EV_I_EXECERRORS    [op].handler!\n"
     "  find: output_LoadResult    EV_I_LOADRESULT    [op].handler!\n"
     "  find: output_PromptOut     EV_I_PROMPTOUT     [op].handler!\n"
@@ -23153,7 +23153,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::setOpValidate to PlanOperand[]\n"
     "\n"
@@ -30412,7 +30412,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::projValidation to PlanOperand[]\n"
     "\n"
@@ -30572,7 +30572,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::partitionPlan to PlanOperand[]\n"
     "\n"
@@ -34506,7 +34506,7 @@ void Task::vAddMunged(Task* )
     "  PipeIn[]\\clear to PlanOperand[]\n"
     "\n"
     "  // create the command error info set\n"
-    "  op__createCmdErrInfoSet\n"
+    "  op__createCompileErrInfoSet\n"
     "\n"
     "  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::exprPushdown to PlanOperand[]\n"
     "\n"
@@ -38833,7 +38833,7 @@ void Task::vAddMunged(Task* )
     "  \"it_callPipeline.sen\"     include\n"
     "  \"it_columnDefs.sen\"       include\n"
     "  \"it_command.sen\"          include\n"
-    "  \"it_commandErrors.sen\"    include\n"
+    "  \"it_compileErrors.sen\"    include\n"
     "  \"it_count.sen\"            include\n"
     "  \"it_deref.sen\"            include\n"
     "  \"it_eventLog.sen\"         include\n"

@@ -37,7 +37,7 @@ enum eEV // events
 
   /*    */ EV_I_CALLPIPELINE,
   /*    */ EV_I_COMMAND,
-  /*    */ EV_I_COMMANDERRORS,
+  /*    */ EV_I_COMPILEERRORS,
   /*    */ EV_I_COUNT,
   /*    */ EV_I_EXECERRORS,
   /*    */ EV_I_FORKCOMMAND,
@@ -120,7 +120,7 @@ static Stz* aEV[]
 
   /*    */ "EV_I_CALLPIPELINE"_Stz,
   /*    */ "EV_I_COMMAND"_Stz,
-  /*    */ "EV_I_COMMANDERRORS"_Stz,
+  /*    */ "EV_I_COMPILEERRORS"_Stz,
   /*    */ "EV_I_COUNT"_Stz,
   /*    */ "EV_I_EXECERRORS"_Stz,
   /*    */ "EV_I_FORKCOMMAND"_Stz,

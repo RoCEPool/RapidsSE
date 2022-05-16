@@ -5,11 +5,11 @@
 " OP_output.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_COMMANDERRORS ...                                         */
+/* handler for EV_I_COMPILEERRORS ...                                         */
 /*----------------------------------------------------------------------------*/
-: output_CommandErrors \handler
+: output_CompileErrors \handler
 
-  //"Operand:- EV_I_COMMANDERRORS" .verbose
+  //"Operand:- EV_I_COMPILEERRORS" .verbose
   PipeIn[].pipeToOutput
 
   true
@@ -142,7 +142,7 @@
   find: output_StreamDef     EV_D_STREAMDEF     [op].handler!
   find: output_StreamDef     EV_D_STREAMSET     [op].handler!
 
-  find: output_CommandErrors EV_I_COMMANDERRORS [op].handler!
+  find: output_CompileErrors EV_I_COMPILEERRORS [op].handler!
   find: output_ExecErrors    EV_I_EXECERRORS    [op].handler!
   find: output_LoadResult    EV_I_LOADRESULT    [op].handler!
   find: output_PromptOut     EV_I_PROMPTOUT     [op].handler!

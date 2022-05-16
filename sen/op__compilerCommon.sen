@@ -41,7 +41,7 @@
       StreamSet[].delete
     then
 
-    op__cmdErrOut
+    op__compileErrOut
 
     true
     exit

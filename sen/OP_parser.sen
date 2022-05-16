@@ -20,12 +20,12 @@
   Pipein[].pipeout
 
   // create the command error info set
-  op__createCmdErrInfoSet
+  op__createCompileErrInfoSet
 
   <sqlStatement> sqlCompiler::parser to PlanOperand[]
 
   PlanOperand[].isNull if
-    op__cmdErrOut
+    op__compileErrOut
     true
     exit
   then

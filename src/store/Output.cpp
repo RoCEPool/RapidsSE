@@ -366,7 +366,7 @@ bool Output::bProcessOperand(Operand* pOperand)
     case CN_INFOSET: {
       InfoSet* pInfoSet = _pInfoSet(pOperand);
       ASSERT( ! pInfoSet->szBufferNm()->bSame(C_NO_NAME) );
-      if (pInfoSet->szBufferNm()->bSame(C_TDEF_COMMANDERRORS)) {
+      if (pInfoSet->szBufferNm()->bSame(C_TDEF_COMPILEERRORS)) {
 
         if ( ! m_bError) {
           Row *pInfoRow = pInfoSet->pFirstRow();

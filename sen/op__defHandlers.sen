@@ -61,7 +61,7 @@
 
 : EV_I_CALLPIPELINE_handler     \handler STANDARD_PIPEOUT ;
 : EV_I_COMMAND_handler          \handler STANDARD_PIPEOUT ;
-: EV_I_COMMANDERRORS_handler    \handler STANDARD_PIPEOUT ;
+: EV_I_COMPILEERRORS_handler    \handler STANDARD_PIPEOUT ;
 : EV_I_COUNT_handler            \handler STANDARD_PIPEOUT ;
 : EV_I_EXECERRORS_handler       \handler STANDARD_PIPEOUT ;
 : EV_I_FORKCOMMAND_handler      \handler STANDARD_PIPEOUT ;

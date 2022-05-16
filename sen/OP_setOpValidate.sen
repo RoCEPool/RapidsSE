@@ -20,7 +20,7 @@
   PipeIn[]\clear to PlanOperand[]
 
   // create the command error info set
-  op__createCmdErrInfoSet
+  op__createCompileErrInfoSet
 
   PlanOperand[] nullptr to PlanOperand[] sqlCompiler::setOpValidate to PlanOperand[]
 
