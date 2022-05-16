@@ -92,6 +92,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("[args].condCode"_Stz,          gxCmdLineArgs.m_xSysArgs.m_iCondCode);
   Constants::vAddConstant("[args].config"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bConfig);
   Constants::vAddConstant("[args].developer"_Stz,         gxCmdLineArgs.m_xSysArgs.m_bDeveloper);
+  Constants::vAddConstant("[args].distJob"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bDistJob);
   Constants::vAddConstant("[args].dontFree"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bDontFree);
   Constants::vAddConstant("[args].freeCB"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bFreeSpecific);
   Constants::vAddConstant("[args].help"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bHelp);
@@ -445,7 +446,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_EC"_Stz,   EG_EC);
   vAddConstant("EG_ED"_Stz,   EG_ED);
   vAddConstant("EG_EO"_Stz,   EG_EO);
-  vAddConstant("EG_EP"_Stz,   EG_EP);
   vAddConstant("EG_FN"_Stz,   EG_FN);
   vAddConstant("EG_GA"_Stz,   EG_GA);
   vAddConstant("EG_HA"_Stz,   EG_HA);
@@ -455,10 +455,9 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_IS"_Stz,   EG_IS);
   vAddConstant("EG_IT"_Stz,   EG_IT);
   vAddConstant("EG_JF"_Stz,   EG_JF);
-  vAddConstant("EG_JK"_Stz,   EG_JK);
   vAddConstant("EG_JL"_Stz,   EG_JL);
   vAddConstant("EG_JP"_Stz,   EG_JP);
-  vAddConstant("EG_JS"_Stz,   EG_JS);
+  vAddConstant("EG_MS"_Stz,   EG_MS);
   vAddConstant("EG_KC"_Stz,   EG_KC);
   vAddConstant("EG_KE"_Stz,   EG_KE);
   vAddConstant("EG_KK"_Stz,   EG_KK);
@@ -512,13 +511,6 @@ void Constants::vAddConstantsCpp(void)
   
   
   
-  // JK_ : job kind
-  /*   */ vAddConstant("JK_NONE"_Stz,      JK_NONE);
-  /*   */ vAddConstant("JK_BOOT"_Stz,      JK_BOOT);
-  /*   */ vAddConstant("JK_PIPELINE"_Stz,   JK_PIPELINE);
-  /*   */ vAddConstant("JK_GENERIC"_Stz,   JK_GENERIC);
-  /*   */ vAddConstant("JK_LOCAL"_Stz,     JK_LOCAL);
-  /*   */ vAddConstant("JK_OP"_Stz,        JK_OP);
 
   /* 0 */ vAddConstant("JL_NONE"_Stz,         JL_NONE);
   /* 1 */ vAddConstant("JL_DEMON"_Stz,        JL_DEMON);
@@ -537,14 +529,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("JP_CANCELING"_Stz, JP_CANCELING);
   /*  0 */ vAddConstant("JP_CANCELED"_Stz,  JP_CANCELED);
   /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
-
-  // JS_ : job state
-  /*  0 */ vAddConstant("JS_NONE"_Stz,      JS_NONE);
-  /*  0 */ vAddConstant("JS_ACTIVE"_Stz,    JS_ACTIVE);
-  /*  0 */ vAddConstant("JS_DELETABLE"_Stz, JS_DELETABLE);
-  /*  0 */ vAddConstant("JS_LOCKED"_Stz,    JS_LOCKED);
-  /*  0 */ vAddConstant("JS_RETIRED"_Stz,   JS_RETIRED);
-  /*  0 */ vAddConstant("JS_SIGNALLED"_Stz, JS_SIGNALLED);
 
   // C_MAX : MAX
   /*  0 */ vAddConstant("C_MAX_BCD_PRECISION"_Stz, C_MAX_BCD_PRECISION);
@@ -662,87 +646,87 @@ void Constants::vAddConstantsCpp(void)
   /*  8 */ vAddConstant("XP_ENUMS"_Stz,       XP_ENUMS);
   
   // ZK_ : operand kind
-  /*  0 */ vAddConstant("ZK_NONE"_Stz,              ZK_NONE);
-  /*  0 */ vAddConstant("ZK_D_BKTMAPGET"_Stz,       ZK_D_BKTMAPGET);
-  /*  0 */ vAddConstant("ZK_D_BUCKETGET"_Stz,       ZK_D_BUCKETGET);
-  /*  0 */ vAddConstant("ZK_D_BUCKETINFO"_Stz,      ZK_D_BUCKETINFO);
-  /*  0 */ vAddConstant("ZK_D_BUCKETMAP_dyn"_Stz,   ZK_D_BUCKETMAP_dyn);
-  /*  0 */ vAddConstant("ZK_D_CRWBUFFER"_Stz,       ZK_D_CRWBUFFER);
-  /*  0 */ vAddConstant("ZK_D_CSVBUFFER"_Stz,       ZK_D_CSVBUFFER);
-  /*  0 */ vAddConstant("ZK_D_EACHROWBUFFER"_Stz,   ZK_D_EACHROWBUFFER);
-  /*  0 */ vAddConstant("ZK_D_ENTBUFFER"_Stz,       ZK_D_ENTBUFFER);
-  /*  0 */ vAddConstant("ZK_D_GRID"_Stz,            ZK_D_GRID);
-  /*  0 */ vAddConstant("ZK_D_INDEX"_Stz,           ZK_D_INDEX);
-  /*  0 */ vAddConstant("ZK_D_INDEXDEF"_Stz,        ZK_D_INDEXDEF);
-  /*  0 */ vAddConstant("ZK_D_JOB"_Stz,             ZK_D_JOB);
-  /*  0 */ vAddConstant("ZK_D_METAGET"_Stz,         ZK_D_METAGET);
-  /*  0 */ vAddConstant("ZK_D_NAMEDBUFFER"_Stz,     ZK_D_NAMEDBUFFER);
-  /*  0 */ vAddConstant("ZK_D_OP"_Stz,              ZK_D_OP);
-  /*  0 */ vAddConstant("ZK_D_OTHEROPERAND"_Stz,    ZK_D_OTHEROPERAND);
-  /*  0 */ vAddConstant("ZK_D_PARCEL"_Stz,          ZK_D_PARCEL);
-  /*  0 */ vAddConstant("ZK_D_PLANOPERAND"_Stz,     ZK_D_PLANOPERAND);
-  /*  0 */ vAddConstant("ZK_D_PROFILE"_Stz,         ZK_D_PROFILE);
-  /*  0 */ vAddConstant("ZK_D_ROWBUFFER"_Stz,       ZK_D_ROWBUFFER);
-  /*  0 */ vAddConstant("ZK_D_SRTBUFFER"_Stz,       ZK_D_SRTBUFFER);
-  /*  0 */ vAddConstant("ZK_D_STREAMDEF"_Stz,       ZK_D_STREAMDEF);
-  /*  0 */ vAddConstant("ZK_D_STREAMDEFRHT"_Stz,    ZK_D_STREAMDEFRHT);
-  /*  0 */ vAddConstant("ZK_D_STREAMSET"_Stz,       ZK_D_STREAMSET);
-  /*  0 */ vAddConstant("ZK_D_TABLE"_Stz,           ZK_D_TABLE);
-  /*  0 */ vAddConstant("ZK_D_TABLEPTN"_Stz,        ZK_D_TABLEPTN);
-  /*  0 */ vAddConstant("ZK_D_JOBMETRICS"_Stz,      ZK_D_JOBMETRICS);
-  /*  0 */ vAddConstant("ZK_D_PAGINGMETRICS"_Stz,   ZK_D_PAGINGMETRICS);
+  /*  0 */ vAddConstant("EV_NONE"_Stz,              EV_NONE);
+  /*  0 */ vAddConstant("EV_D_BKTMAPGET"_Stz,       EV_D_BKTMAPGET);
+  /*  0 */ vAddConstant("EV_D_BUCKETGET"_Stz,       EV_D_BUCKETGET);
+  /*  0 */ vAddConstant("EV_D_BUCKETINFO"_Stz,      EV_D_BUCKETINFO);
+  /*  0 */ vAddConstant("EV_D_BUCKETMAP_dyn"_Stz,   EV_D_BUCKETMAP_dyn);
+  /*  0 */ vAddConstant("EV_D_CRWBUFFER"_Stz,       EV_D_CRWBUFFER);
+  /*  0 */ vAddConstant("EV_D_CSVBUFFER"_Stz,       EV_D_CSVBUFFER);
+  /*  0 */ vAddConstant("EV_D_EACHROWBUFFER"_Stz,   EV_D_EACHROWBUFFER);
+  /*  0 */ vAddConstant("EV_D_ENTBUFFER"_Stz,       EV_D_ENTBUFFER);
+  /*  0 */ vAddConstant("EV_D_GRID"_Stz,            EV_D_GRID);
+  /*  0 */ vAddConstant("EV_D_INDEX"_Stz,           EV_D_INDEX);
+  /*  0 */ vAddConstant("EV_D_INDEXDEF"_Stz,        EV_D_INDEXDEF);
+  /*  0 */ vAddConstant("EV_D_JOB"_Stz,             EV_D_JOB);
+  /*  0 */ vAddConstant("EV_D_METAGET"_Stz,         EV_D_METAGET);
+  /*  0 */ vAddConstant("EV_D_NAMEDBUFFER"_Stz,     EV_D_NAMEDBUFFER);
+  /*  0 */ vAddConstant("EV_D_OP"_Stz,              EV_D_OP);
+  /*  0 */ vAddConstant("EV_D_OTHEROPERAND"_Stz,    EV_D_OTHEROPERAND);
+  /*  0 */ vAddConstant("EV_D_PARCEL"_Stz,          EV_D_PARCEL);
+  /*  0 */ vAddConstant("EV_D_PLANOPERAND"_Stz,     EV_D_PLANOPERAND);
+  /*  0 */ vAddConstant("EV_D_PROFILE"_Stz,         EV_D_PROFILE);
+  /*  0 */ vAddConstant("EV_D_ROWBUFFER"_Stz,       EV_D_ROWBUFFER);
+  /*  0 */ vAddConstant("EV_D_SRTBUFFER"_Stz,       EV_D_SRTBUFFER);
+  /*  0 */ vAddConstant("EV_D_STREAMDEF"_Stz,       EV_D_STREAMDEF);
+  /*  0 */ vAddConstant("EV_D_STREAMDEFRHT"_Stz,    EV_D_STREAMDEFRHT);
+  /*  0 */ vAddConstant("EV_D_STREAMSET"_Stz,       EV_D_STREAMSET);
+  /*  0 */ vAddConstant("EV_D_TABLE"_Stz,           EV_D_TABLE);
+  /*  0 */ vAddConstant("EV_D_TABLEPTN"_Stz,        EV_D_TABLEPTN);
+  /*  0 */ vAddConstant("EV_D_JOBMETRICS"_Stz,      EV_D_JOBMETRICS);
+  /*  0 */ vAddConstant("EV_D_PAGINGMETRICS"_Stz,   EV_D_PAGINGMETRICS);
 
-  /*  0 */ vAddConstant("ZK_I_CALLPIPELINE"_Stz,    ZK_I_CALLPIPELINE);
-  /*  0 */ vAddConstant("ZK_I_COMMAND"_Stz,         ZK_I_COMMAND);
-  /*  0 */ vAddConstant("ZK_I_COMMANDERRORS"_Stz,   ZK_I_COMMANDERRORS);
-  /*  0 */ vAddConstant("ZK_I_COUNT"_Stz,           ZK_I_COUNT);
-  /*  0 */ vAddConstant("ZK_I_EXECERRORS"_Stz,      ZK_I_EXECERRORS);
-  /*  0 */ vAddConstant("ZK_I_FORKCOMMAND"_Stz,     ZK_I_FORKCOMMAND);
-  /*  0 */ vAddConstant("ZK_I_LOADRESULT"_Stz,      ZK_I_LOADRESULT);
-  /*  0 */ vAddConstant("ZK_I_LOCKSTATS"_Stz,       ZK_I_LOCKSTATS);
-  /*  0 */ vAddConstant("ZK_I_NODEINFO"_Stz,        ZK_I_NODEINFO);
-  /*  0 */ vAddConstant("ZK_I_PATH"_Stz,            ZK_I_PATH);
-  /*  0 */ vAddConstant("ZK_I_PROGRESSUNITS"_Stz,   ZK_I_PROGRESSUNITS);
-  /*  0 */ vAddConstant("ZK_I_PROMPTOUT"_Stz,       ZK_I_PROMPTOUT);
-  /*  0 */ vAddConstant("ZK_I_RETURNPIPELINE"_Stz,  ZK_I_RETURNPIPELINE);
-  /*  0 */ vAddConstant("ZK_I_SEEKOFFSETS"_Stz,     ZK_I_SEEKOFFSETS);
-  /*  0 */ vAddConstant("ZK_I_TOTALUNITS"_Stz,      ZK_I_TOTALUNITS);
+  /*  0 */ vAddConstant("EV_I_CALLPIPELINE"_Stz,    EV_I_CALLPIPELINE);
+  /*  0 */ vAddConstant("EV_I_COMMAND"_Stz,         EV_I_COMMAND);
+  /*  0 */ vAddConstant("EV_I_COMMANDERRORS"_Stz,   EV_I_COMMANDERRORS);
+  /*  0 */ vAddConstant("EV_I_COUNT"_Stz,           EV_I_COUNT);
+  /*  0 */ vAddConstant("EV_I_EXECERRORS"_Stz,      EV_I_EXECERRORS);
+  /*  0 */ vAddConstant("EV_I_FORKCOMMAND"_Stz,     EV_I_FORKCOMMAND);
+  /*  0 */ vAddConstant("EV_I_LOADRESULT"_Stz,      EV_I_LOADRESULT);
+  /*  0 */ vAddConstant("EV_I_LOCKSTATS"_Stz,       EV_I_LOCKSTATS);
+  /*  0 */ vAddConstant("EV_I_NODEINFO"_Stz,        EV_I_NODEINFO);
+  /*  0 */ vAddConstant("EV_I_PATH"_Stz,            EV_I_PATH);
+  /*  0 */ vAddConstant("EV_I_PROGRESSUNITS"_Stz,   EV_I_PROGRESSUNITS);
+  /*  0 */ vAddConstant("EV_I_PROMPTOUT"_Stz,       EV_I_PROMPTOUT);
+  /*  0 */ vAddConstant("EV_I_RETURNPIPELINE"_Stz,  EV_I_RETURNPIPELINE);
+  /*  0 */ vAddConstant("EV_I_SEEKOFFSETS"_Stz,     EV_I_SEEKOFFSETS);
+  /*  0 */ vAddConstant("EV_I_TOTALUNITS"_Stz,      EV_I_TOTALUNITS);
 
-  /*  0 */ vAddConstant("ZK_M_CANCEL"_Stz,          ZK_M_CANCEL);
-  /*  0 */ vAddConstant("ZK_M_CANCELLING"_Stz,      ZK_M_CANCELLING);
-  /*  0 */ vAddConstant("ZK_M_CANCELLED"_Stz,       ZK_M_CANCELLED);
-  /*  0 */ vAddConstant("ZK_M_CLEANING"_Stz,        ZK_M_CLEANING);
-  /*  0 */ vAddConstant("ZK_M_CLEANED"_Stz,         ZK_M_CLEANED);
-  /*  0 */ vAddConstant("ZK_M_DATAPULSE"_Stz,       ZK_M_DATAPULSE);
-  /*  0 */ vAddConstant("ZK_M_DESTROY"_Stz,         ZK_M_DESTROY);
-  /*  0 */ vAddConstant("ZK_M_EACHSCANEOS"_Stz,     ZK_M_EACHSCANEOS);
-  /*  0 */ vAddConstant("ZK_M_EOS"_Stz,             ZK_M_EOS);
-  /*  0 */ vAddConstant("ZK_M_END"_Stz,             ZK_M_END);
-  /*  0 */ vAddConstant("ZK_M_ENDED"_Stz,           ZK_M_ENDED);
-  /*  0 */ vAddConstant("ZK_M_ENDING"_Stz,          ZK_M_ENDING);
-  /*  0 */ vAddConstant("ZK_M_ENDCRWRHT"_Stz,       ZK_M_ENDCRWRHT);
-  /*  0 */ vAddConstant("ZK_M_ENDROWRHT"_Stz,       ZK_M_ENDROWRHT);
-  /*  0 */ vAddConstant("ZK_M_ERROR"_Stz,           ZK_M_ERROR);
-  /*  0 */ vAddConstant("ZK_M_ERRORED"_Stz,         ZK_M_ERRORED);
-  /*  0 */ vAddConstant("ZK_M_ERRORING"_Stz,        ZK_M_ERRORING);
-  /*  0 */ vAddConstant("ZK_M_EXITING"_Stz,         ZK_M_EXITING);
-  /*  0 */ vAddConstant("ZK_M_EXITED"_Stz,          ZK_M_EXITED);
-  /*  0 */ vAddConstant("ZK_M_FINISHED"_Stz,        ZK_M_FINISHED);
-  /*  0 */ vAddConstant("ZK_M_FLUSH"_Stz,           ZK_M_FLUSH);
-  /*  0 */ vAddConstant("ZK_M_LEAVE"_Stz,           ZK_M_LEAVE);
-  /*  0 */ vAddConstant("ZK_M_LEAVING"_Stz,         ZK_M_LEAVING);
-  /*  0 */ vAddConstant("ZK_M_LEFT"_Stz,            ZK_M_LEFT);
-  /*  0 */ vAddConstant("ZK_M_LEFTOUTER_CRWLFT"_Stz,ZK_M_LEFTOUTER_CRWLFT);
-  /*  0 */ vAddConstant("ZK_M_LEFTOUTER_ROWLFT"_Stz,ZK_M_LEFTOUTER_ROWLFT);
-  /*  0 */ vAddConstant("ZK_M_NEXTBUFFER"_Stz,      ZK_M_NEXTBUFFER);
-  /*  0 */ vAddConstant("ZK_M_STARTCRWRHT"_Stz,     ZK_M_STARTCRWRHT);
-  /*  0 */ vAddConstant("ZK_M_START"_Stz,           ZK_M_START);
-  /*  0 */ vAddConstant("ZK_M_STARTROWRHT"_Stz,     ZK_M_STARTROWRHT);
-  /*  0 */ vAddConstant("ZK_M_STARTED"_Stz,         ZK_M_STARTED);
-  /*  0 */ vAddConstant("ZK_M_STREAMDEFRHT"_Stz,    ZK_M_STREAMDEFRHT);
-  /*  0 */ vAddConstant("ZK_M_TRIGGER"_Stz,         ZK_M_TRIGGER);
+  /*  0 */ vAddConstant("EV_M_CANCEL"_Stz,          EV_M_CANCEL);
+  /*  0 */ vAddConstant("EV_M_CANCELLING"_Stz,      EV_M_CANCELLING);
+  /*  0 */ vAddConstant("EV_M_CANCELLED"_Stz,       EV_M_CANCELLED);
+  /*  0 */ vAddConstant("EV_M_CLEANING"_Stz,        EV_M_CLEANING);
+  /*  0 */ vAddConstant("EV_M_CLEANED"_Stz,         EV_M_CLEANED);
+  /*  0 */ vAddConstant("EV_M_DATAPULSE"_Stz,       EV_M_DATAPULSE);
+  /*  0 */ vAddConstant("EV_M_DESTROY"_Stz,         EV_M_DESTROY);
+  /*  0 */ vAddConstant("EV_M_EACHSCANEOS"_Stz,     EV_M_EACHSCANEOS);
+  /*  0 */ vAddConstant("EV_M_EOS"_Stz,             EV_M_EOS);
+  /*  0 */ vAddConstant("EV_M_END"_Stz,             EV_M_END);
+  /*  0 */ vAddConstant("EV_M_ENDED"_Stz,           EV_M_ENDED);
+  /*  0 */ vAddConstant("EV_M_ENDING"_Stz,          EV_M_ENDING);
+  /*  0 */ vAddConstant("EV_M_ENDCRWRHT"_Stz,       EV_M_ENDCRWRHT);
+  /*  0 */ vAddConstant("EV_M_ENDROWRHT"_Stz,       EV_M_ENDROWRHT);
+  /*  0 */ vAddConstant("EV_M_ERROR"_Stz,           EV_M_ERROR);
+  /*  0 */ vAddConstant("EV_M_ERRORED"_Stz,         EV_M_ERRORED);
+  /*  0 */ vAddConstant("EV_M_ERRORING"_Stz,        EV_M_ERRORING);
+  /*  0 */ vAddConstant("EV_M_EXITING"_Stz,         EV_M_EXITING);
+  /*  0 */ vAddConstant("EV_M_EXITED"_Stz,          EV_M_EXITED);
+  /*  0 */ vAddConstant("EV_M_FINISHED"_Stz,        EV_M_FINISHED);
+  /*  0 */ vAddConstant("EV_M_FLUSH"_Stz,           EV_M_FLUSH);
+  /*  0 */ vAddConstant("EV_M_LEAVE"_Stz,           EV_M_LEAVE);
+  /*  0 */ vAddConstant("EV_M_LEAVING"_Stz,         EV_M_LEAVING);
+  /*  0 */ vAddConstant("EV_M_LEFT"_Stz,            EV_M_LEFT);
+  /*  0 */ vAddConstant("EV_M_LEFTOUTER_CRWLFT"_Stz,EV_M_LEFTOUTER_CRWLFT);
+  /*  0 */ vAddConstant("EV_M_LEFTOUTER_ROWLFT"_Stz,EV_M_LEFTOUTER_ROWLFT);
+  /*  0 */ vAddConstant("EV_M_NEXTBUFFER"_Stz,      EV_M_NEXTBUFFER);
+  /*  0 */ vAddConstant("EV_M_STARTCRWRHT"_Stz,     EV_M_STARTCRWRHT);
+  /*  0 */ vAddConstant("EV_M_START"_Stz,           EV_M_START);
+  /*  0 */ vAddConstant("EV_M_STARTROWRHT"_Stz,     EV_M_STARTROWRHT);
+  /*  0 */ vAddConstant("EV_M_STARTED"_Stz,         EV_M_STARTED);
+  /*  0 */ vAddConstant("EV_M_STREAMDEFRHT"_Stz,    EV_M_STREAMDEFRHT);
+  /*  0 */ vAddConstant("EV_M_TRIGGER"_Stz,         EV_M_TRIGGER);
   
-  /*  0 */ vAddConstant("ZK_ENUMS"_Stz,             ZK_ENUMS);
+  /*  0 */ vAddConstant("EV_ENUMS"_Stz,             EV_ENUMS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -823,13 +807,7 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_MUNGED_SEN"_Stz,(i8)false);
   #endif
-            
-  #ifdef WITH_PYTHON_SUPPORT
-  vAddConstant("WITH_PYTHON_SUPPORT"_Stz,(i8)true);
-  #else
-  vAddConstant("WITH_PYTHON_SUPPORT"_Stz,(i8)false);
-  #endif
-    
+                
   #ifdef WITH_RELEASE_VERSION
   vAddConstant("WITH_RELEASE_VERSION"_Stz,(i8)true);
   #else

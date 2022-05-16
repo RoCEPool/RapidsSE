@@ -18,6 +18,8 @@
 /*----------------------------------------------------------------------------*/
 TagSet* CmdHelper::pDefTagSet(Stz* szCmdNm)
 {
+  _static_
+
   // form the cmdTag name
   s32 sCmdTagNm(szCmdNm);
   StrLib::vConcat(sCmdTagNm.azChar(),(const char*)"_cmdTags"_Stz);
@@ -32,105 +34,105 @@ TagSet* CmdHelper::pDefTagSet(Stz* szCmdNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract paths                                                              */
+/* extract paths from token vector into tag set                               */
 /*----------------------------------------------------------------------------*/
-void CmdHelper::vExtractCmdPaths(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+void CmdHelper::vExtractCmdPaths(TagSet* pDstCmdTagSet, TokenVec* pSrcCmdTknVec)
 {
   _static_
     
-  i8 i_Paths = pCmdTknVec->iFindToken("paths"_Stz,TN_NAME);
+  i8 i_Paths = pSrcCmdTknVec->iFindToken("paths"_Stz,TN_NAME);
 
   if (C_UNKNOWN == i_Paths)
     return;
   
-  pCmdTknVec->vRemoveToken(i_Paths);
+  pSrcCmdTknVec->vRemoveToken(i_Paths);
 
   s32 sName;
   
   i8 nPaths;
-  for (nPaths = 0; i_Paths < pCmdTknVec->nTokens(); nPaths++) {
+  for (nPaths = 0; i_Paths < pSrcCmdTknVec->nTokens(); nPaths++) {
     sName.vSprint("<path%lld>"_Stz,nPaths);
-    Token* pTkn = pCmdTknVec->pGet(i_Paths);
-    pCmdTagSet->vAppend(sName,pTkn->szChars());
-    pCmdTknVec->vRemoveToken(i_Paths);
+    Token* pTkn = pSrcCmdTknVec->pGet(i_Paths);
+    pDstCmdTagSet->vAppend(sName,pTkn->szChars());
+    pSrcCmdTknVec->vRemoveToken(i_Paths);
   }
   
-  pCmdTagSet->vAppend("<paths>"_Stz,nPaths);
+  pDstCmdTagSet->vAppend("<paths>"_Stz,nPaths);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract tags                                                               */
 /*----------------------------------------------------------------------------*/
-bool CmdHelper::bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
+bool CmdHelper::bExtractCmdTags(TagSet* pDstCmdTagSet, TokenVec* pSrcCmdTknVec)
 {
   _static_
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract leading job control tags (such as /time or /nowait)
   
-  Token* pTkn0 = pCmdTknVec->pGet(0,true);
+  Token* pTkn0 = pSrcCmdTknVec->pGet(0,true);
   
   s32 sTag;
   
   while ('/' == * pTkn0->azChars() ) {
     
-    Token* pTkn1 = pCmdTknVec->pGet(1,true);
+    Token* pTkn1 = pSrcCmdTknVec->pGet(1,true);
     sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
     
-    pCmdTagSet->vInsert(sTag,1);
+    pDstCmdTagSet->vInsert(sTag,1);
     
-    pCmdTknVec->vRemoveToken(0);
-    pCmdTknVec->vRemoveToken(0);
+    pSrcCmdTknVec->vRemoveToken(0);
+    pSrcCmdTknVec->vRemoveToken(0);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract trailing job supplemtntal tags ( such as <field_delimiter> = | )
 
-  i8 i_TagBegin = pCmdTknVec->iFirstTag2();
+  i8 i_TagBegin = pSrcCmdTknVec->iFirstTag2();
   if (C_UNKNOWN == i_TagBegin)
     return true;
 
-  Token* pTkn_begin = pCmdTknVec->pGet(i_TagBegin);
+  Token* pTkn_begin = pSrcCmdTknVec->pGet(i_TagBegin);
   UNUSED(pTkn_begin);
   
-  i8 nTkns = pCmdTknVec->nTokens();
+  i8 nTkns = pSrcCmdTknVec->nTokens();
 
   i8 i_Scan = i_TagBegin;
   while (i_Scan < nTkns) {
   
-    Token* pScan = pCmdTknVec->pGet(i_Scan++);        // <
+    Token* pScan = pSrcCmdTknVec->pGet(i_Scan++);        // <
     if (i_Scan >= nTkns)
       return false;
     if (! pScan->bIsLessThan())
       return false;
     
-    Token* pTkn_name = pCmdTknVec->pGet(i_Scan++);    // name
+    Token* pTkn_name = pSrcCmdTknVec->pGet(i_Scan++);    // name
     if (i_Scan >= nTkns)
       return false;
     if (! pTkn_name->bIsName())
       return false;
 
-    pScan = pCmdTknVec->pGet(i_Scan++);               // >
+    pScan = pSrcCmdTknVec->pGet(i_Scan++);               // >
     if (! pScan->bIsGreaterThan())
       return false;
     
-    pScan = pCmdTknVec->pGet(i_Scan++);               // =
+    pScan = pSrcCmdTknVec->pGet(i_Scan++);               // =
     if (i_Scan >= nTkns)
       return false;
     if (! pScan->bIsAssign())
       return false;
 
-    Token* pTkn_value = pCmdTknVec->pGet(i_Scan++);   // value
+    Token* pTkn_value = pSrcCmdTknVec->pGet(i_Scan++);   // value
     //if (! pTkn_value->bIsString())
     //  return false;
 
     s32 sName;
     sName.vSprint("<%s>"_Stz,pTkn_name->szChars());
-    pCmdTagSet->vAppend(sName,pTkn_value->szChars());
+    pDstCmdTagSet->vAppend(sName,pTkn_value->szChars());
   }
     
-  pCmdTknVec->vTrimTokens(i_TagBegin);
+  pSrcCmdTknVec->vTrimTokens(i_TagBegin);
   
   return true;
 
@@ -142,6 +144,8 @@ bool CmdHelper::bExtractCmdTags(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 /*----------------------------------------------------------------------------*/
 bool CmdHelper::bParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
 {
+  _static_
+
   Dic* pDicRoot = AM::DIC::pRoot();
 
   Word* pCategory = nullptr;
@@ -208,6 +212,38 @@ bool CmdHelper::bParseCmd(TokenVec* pCmdTknVec, TagSet* pCmdTagSet)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* populate tagset from given token vector                                    */
+/*----------------------------------------------------------------------------*/
+void CmdHelper::vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec)
+{
+  _static_
+  
+  i8 nTkns = pTknVec->nTokens();
+
+  i8 i_Scan = 0;
+  while (i_Scan < nTkns) {
+    
+    Token* pTkn_name = pTknVec->pGet(i_Scan++);    // <tagNm>
+    if (i_Scan >= nTkns)
+      break;
+    if (TN_TAG != pTkn_name->eToken())
+      break;
+
+    Token* pTkn_equals = pTknVec->pGet(i_Scan++);  // =
+    UNUSED(pTkn_equals);
+    
+    if (i_Scan >= nTkns)
+      break;
+    //if (! pTkn_equals->bIsAssign())
+    //  break;
+
+    Token* pTkn_value = pTknVec->pGet(i_Scan++);   // value
+    
+    pTagSet->vReplace(pTkn_name->szChars(),pTkn_value->szChars());
+  }
+
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- private -----------------------------------------------------------------*/
@@ -220,6 +256,8 @@ bool CmdHelper::bExtractAllArgs(TagSet* pTagSet,
                                 TagSet* pSynTags,
                                 TokenVec* pTknVec)
 {
+  _static_
+
   i8 nTags = pSynTags->nItems();
   i8 nTokens = pTknVec->nTokens();
     
@@ -279,6 +317,8 @@ bool CmdHelper::bExtractJson(TagSet*   pTagSet,
                              TagSet*   pSynTags, i8& i_Syn_,
                              TokenVec* pTknVec,  i8& i_Tkn_)
 {
+  _static_
+
   Token* pTkn = nullptr;
 
   ASSERT(pSynTags->szName(i_Syn_)->bSame("__json__"_Stz));
@@ -326,6 +366,8 @@ bool CmdHelper::bExtractArg(TagSet*   pArgTags,
                             TagSet*   pSynTags, i8& i_Syn_,
                             TokenVec* pTknVec,  i8& i_Tkn_)
 {
+  _static_
+
   Stz* szValue = pSynTags->szValue(i_Syn_);
   
   Token* pTkn = pTknVec->pGet(i_Tkn_);
@@ -346,6 +388,8 @@ bool CmdHelper::bExtractArg(TagSet*   pArgTags,
 /*----------------------------------------------------------------------------*/
 bool CmdHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynTags)
 {
+  _static_
+
   i8 nTokens = pTknVec->nTokens();
   
   i8 i_Syn = 0;

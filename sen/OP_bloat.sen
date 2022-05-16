@@ -5,7 +5,7 @@
 " OP_bloat.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                       */
+/* on EV_M_CLEANING ...                                                       */
 /*----------------------------------------------------------------------------*/
 : bloat_cleaning \handler
 
@@ -13,12 +13,12 @@
 
   //inject::bloatCleanup
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CRWBUFFER ...                                                      */
+/* on EV_D_CRWBUFFER ...                                                      */
 /*----------------------------------------------------------------------------*/
 : bloat_bloat \handler
 
@@ -40,8 +40,8 @@
 
   op__topology
 
-  find: bloat_bloat    ZK_D_CRWBUFFER   [op].handler!
-  find: bloat_cleaning  ZK_M_CLEANING   [op].handler!
+  find: bloat_bloat    EV_D_CRWBUFFER   [op].handler!
+  find: bloat_cleaning  EV_M_CLEANING   [op].handler!
 
   op__loop
 

@@ -35,7 +35,6 @@ enum eEG // enum groups
   EG_EC,
   EG_ED,
   EG_EO,
-  EG_EP,
 
   EG_FN,
 
@@ -50,10 +49,9 @@ enum eEG // enum groups
   EG_IT,
   
   EG_JF,
-  EG_JK,
   EG_JL,
   EG_JP,
-  EG_JS,
+  EG_MS,
   
   EG_KC,
   EG_KE,

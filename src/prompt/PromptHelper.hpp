@@ -15,7 +15,6 @@ namespace PROMPT
                            i8   iEnumLimit,
                            TokenVec* pTknVec);
   
-    static void vMemoryStatistics(void);
   };
 }
 

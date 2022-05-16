@@ -32,7 +32,11 @@ Mutex::Mutex(Object* pIsFor)
     
   m_pLockedBy = nullptr;
   m_pWaitedBy = nullptr;
+  
+  m_bSignalled = false;
 
+  m_eMutex = MS_INACTIVE;
+  
   // m_ixBroadcast;
   // m_ixSignal;
   // m_ixWaitIndef;
@@ -274,7 +278,7 @@ void Mutex::vLock(Object* pLockFor)
   if (0 == iRetVal) {
     RASSERT(! m_pLockedBy);
     m_pLockedBy = pLockFor;
-    
+    m_eMutex = MS_LOCKED;
     ++ m_ixLocked;
     
     return;
@@ -284,6 +288,16 @@ void Mutex::vLock(Object* pLockFor)
   // failure -- some error has occurred
   
   ++ gixMutex_err;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get eMutex                                                                 */
+/*----------------------------------------------------------------------------*/
+eMS Mutex::eMutex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  return m_eMutex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -373,15 +387,10 @@ void Mutex::vPause(Object* pLockedBy, i8 iMicroSeconds)
 /*----------------------------------------------------------------------------*/
 /* signal the condition variable of this mutex                                */
 /*----------------------------------------------------------------------------*/
-void Mutex::vSignal(Object* pLockedBy)
+void Mutex::vSignalAndUnlock(Object* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
-  
-  // uncomment his if you wish to observe the signal
-//  if (m_bObserve) {
-//    vDebugPoint();
-//  }
-  
+    
   //!
   //! Calling thread must have locked the mutex
   //!
@@ -406,6 +415,8 @@ void Mutex::vSignal(Object* pLockedBy)
   
   if (0 == iRetVal) {
     ASSERT(pLockedBy == m_pLockedBy);
+    m_bSignalled = true;
+    vUnlock(pLockedBy);
     return;
   }
   
@@ -432,6 +443,7 @@ void Mutex::vUnlock(Object* pLockedBy)
   
   // clear tracking of the mutex lock state
   m_pLockedBy = nullptr;
+  m_eMutex = MS_INACTIVE;
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 iRetVal = pthread_mutex_unlock(&m_xMutex);                  // non-blocking
@@ -454,7 +466,7 @@ void Mutex::vUnlock(Object* pLockedBy)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calling thread waits indefinitely to be signaled           (blocking call) */
+/* calling thread waits indefinitely to be signalled          (blocking call) */
 /*----------------------------------------------------------------------------*/
 void Mutex::vWait(Object* pLockedBy)
 {
@@ -482,6 +494,7 @@ void Mutex::vWait(Object* pLockedBy)
   // clear tracking of the mutex lock state
   m_pWaitedBy = m_pLockedBy;
   m_pLockedBy = nullptr;
+  m_bSignalled = false;
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 iRetVal = pthread_cond_wait(&m_xCond,&m_xMutex);                // BLOCKING
@@ -496,6 +509,7 @@ void Mutex::vWait(Object* pLockedBy)
   if (0 == iRetVal) {
     m_pLockedBy = m_pWaitedBy;
     m_pWaitedBy = nullptr;
+    m_eMutex = MS_LOCKED;
 
     ++ m_ixSignaled;
     return;
@@ -506,6 +520,24 @@ void Mutex::vWait(Object* pLockedBy)
 
   ++ gixMutex_err;
 }
+
+/*----------------------------------------------------------------------------*/
+/* calling thread waits indefinitely to be signalled          (blocking call) */
+/*----------------------------------------------------------------------------*/
+void Mutex::vWaitForSignalLoop(Object* pLockedBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  m_eMutex = MS_WAITING;
+  
+  do {
+        
+    vWait(pLockedBy);
+    
+  } while (! m_bSignalled);
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* outline                                                                    */

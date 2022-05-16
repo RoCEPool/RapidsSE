@@ -5,35 +5,35 @@
 " OP_unload.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
+/* on EV_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : unload_StartMarker \handler
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                BEGIN */
+/* on EV_M_DATAPULSE ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
 : unload_DataPulse \handler
 
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CSVBUFFER ...                                                 EACH */
+/* on EV_D_CSVBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : unload_CsvBuffer \handler
 
-  ZK_D_CSVBUFFER_handler
+  EV_D_CSVBUFFER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                        END */
+/* on EV_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : unload_EosMarker \handler
 
-  ZK_M_EOS_handler
+  EV_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -48,10 +48,10 @@
 
   op__topology
 
-  find: unload_CsvBuffer   ZK_D_CSVBUFFER [op].handler!
-  find: unload_EosMarker   ZK_M_EOS       [op].handler!
-  find: unload_DataPulse   ZK_M_DATAPULSE [op].handler!
-  find: unload_StartMarker ZK_M_START     [op].handler!
+  find: unload_CsvBuffer   EV_D_CSVBUFFER [op].handler!
+  find: unload_EosMarker   EV_M_EOS       [op].handler!
+  find: unload_DataPulse   EV_M_DATAPULSE [op].handler!
+  find: unload_StartMarker EV_M_START     [op].handler!
 
   op__loop
 

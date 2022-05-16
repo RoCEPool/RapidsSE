@@ -53,7 +53,6 @@ namespace BASE
    ~Socket(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vStatistics(void);
 
     bool bAcceptClient(int& pSocketId, SysCall& SysCall);
     void vAddrInit(sockaddr_in* aAddr, int iPort);

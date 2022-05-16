@@ -3,9 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-#include "eJK.h"
 #include "eJL.h"
-#include "eJS.h"
+#include "eMS.h"
 #include "eJP.h"
 #include "eRS.h"
 
@@ -13,14 +12,6 @@
 #include "JobId.hpp"
 #include "Output.hpp"
 #include "Statement.hpp"
-
-
-/*                      IMPORTANT NOTE
- 
-    If you add a pointer member into this class then modify
-      JOBS_fn(vJob_postRecv) to set it to null when the job is received
- 
- */
 
 namespace STORE
 {
@@ -30,65 +21,40 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
               public CRM<Job>
   {
   private:
-    Lock m_okLock;
+  
+    Lock   m_okLock;      // lock on this job
     
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // universally immutable information                    UNIVERSAL
 
-    JobId   m_tJobId;      // this job's id
-    JobId   m_tParentId;   // job id of parent
-    JobId   m_tDistId;     // distributed id
-    JobId   m_tOriginId;   // origin id
+    JobId  m_tJobId;      // this job's id
+    JobId  m_tParentId;   // id of parent job
+    JobId  m_tOriginId;   // id when job is originator
+    JobId  m_tDistId;     // id when job is distributed participant
 
-    s32     m_sJobNm;      // name of job
-    eJK     m_eJobKind;    // job kind: (needs work)
-
-    Atomic  m_noActiveOps; // number of active ops
-
-    // -- command and tags
-    TagSet m_oJobTags;  // tags for the job
-
+    s32    m_sJobNm;      // name of job
+    s4K    m_sEntryPoint; // sen entry code
+    TagSet m_oJobTags;    // tags for the job
+    s256   m_sFolderPath; // folder path
   
-    b8 m_bWasForked;
-  
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-  
-    // information depending on job instance/location           MODAL
-
-    // -- postage
-    b8 m_bWasReceived;   // was job received over a socket?          POST_RECV
-    i8   m_iParticipantNodeId;  // participant node
-  
-    // -- state
-    eJS m_eJobState;  // current state: JS_ACTIVE, _LOCKED, ...
-    eJP m_eJobPhase;  // current phase: JP_BEGINNING, begun, ...
-    eJL m_eJobList;   // current list : JL_ORIGINATING, ...            POST_RECV
+    eJP    m_eJobPhase;   // current phase: JP_BEGINNING, _BEGUN, ...
+    eEC    m_eError_job;  // error when starting job
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // job running as originator on origin                 ORIGINATOR
-
-    Op*   m_p_ResponseOp;    // operator to where responses go         POST_RECV
-    Timer m_oResponseTimer;  // timer (on origin only)
+    // reset in Job::vPostRecv()
   
-    eEC   m_eError_job;      // error when starting job
-                             // DOUBLE CHECK THIS BELONGS HERE
-
-    Output*  m_pOutput_job;  // output processor                       POST_RECV
-
+    /* 00 */ Atomic  m_noActiveOps;    // number of active ops
+    /* 01 */ eJL     m_eJobList;       // current list : JL_ORIGINATING, ...
+    /* 02 */ JobMetrics* m_pJobMetrics;// job metrics chain
+    /* 03 */ Mutex*  m_pMutex;         // mutex
+    /* 04 */ Output* m_pOutput_job;    // output processor
+    /* 05 */ b8      m_bReapable;      // can job be reaped?
+    /* 06 */ Op*     m_p_ResponseOp;   // operator to where responses go
+    /* 07 */ Timer   m_oResponseTimer; // timer (on origin only)
+    /* 08 */ StmtList* m_pStmtList;    // list of cascade statements
+    /* 09 */ Task*   m_pTask;          // task executing this job
+    /* 10 */ b8      m_bWasReceived;   // was job received over a socket?
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // job running on participant node                    PARTICIPANT
- 
-    Op*  m_pSingularOp;      // op (api input op )                     POST_RECV
-
-  
-    // -- tasking
-    Task* m_pTask;  // task executing this job                         POST_RECV
-  
-    s4K m_sEntryPoint;   // sen entry code
-  
-    s256 m_sFolderPath;   // folder path
-  
-    JobId m_tLastJobId;    // last job id
 
     i8  m_iTscParticipant;
 
@@ -101,21 +67,11 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     i8  m_iTscCanceling;
     i8  m_iTscCanceled;
 
- 
-    b8  m_bReapable;  // can job be reaped?
-  
-    b8  m_bSystemCloser; // is this job the system closer?
-
-    JobMetrics* m_pJobMetricsChain;                                // POST_RECV
-
-
-    Mutex* m_pMutex_job;                                               // POST_RECV
+    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
     // TO BE MOVED
     Timer m_oProgressTimer; // move to register
 
-    StmtList* m_pStmtList;    // list of cascade statements
-  
     // must be last
     Footer m_xFooter;
     
@@ -140,8 +96,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vCmd(Stz* szCmd);
 
     JobId tDistId(void);
-    void vDistId(JobId tDistId);
     void vDistIdGenerate(void);
+    i8   iDistNodeId(void);
     void vDotPrint(Stz* szText);
     void vDropLock(void);
 
@@ -150,7 +106,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   
     Stz* szFolderPath(void);
     void vFolderPath(Stz* szFolderPath);
-  
+
     void vGrabLock(void);
   
     bool bHasByPromptTag(void);
@@ -167,9 +123,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
     JobId tJobId(void);
-    void vJobIdFromDist(void);
-    eJK  eJobKind(void);
-    void vJobKind(eJK eJobKind);
     eJL  eJobList(void);
     void vJobList(eJL eJobList);
     void vJobMetricsAdd(JobMetrics* pJobMetrics);
@@ -178,9 +131,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vJobNm(Stz* szJobNm);
     eJP  eJobPhase(void);
     void vJobPhase(eJP eJobPhase);
-    eJS  eJobState(void);
-    void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
+    void vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint);
 
     JobId tLastJobId(void);
     void  vLastJobId(JobId tLastJobId);
@@ -188,26 +140,28 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vMutexCreate(void);
     void vMutexDestroy(void);
     void vMutexLock(void);
+    eMS  eMutexSide(void);
     void vMutexSignal(void);
     void vMutexUnlock(void);
     void vMutexWait(void);
 
     Output* pOutput(void);
+    void vOutput(Output* pOutput);
     void vOutputBeginProc(void);
     void vOutputCreate(void);
     void vOutputDestroy(void);
     void vOutputEnabled(bool bEnabled);
     void vOutputEndProc(void);
-    Job* pOriginatingParentJob(void);
+    Output* pOutputFind(void);
     JobId tOriginId(void);
     void vOriginId(JobId tOriginId);
+    Job* pOriginJob(void);
     i8   iOriginNodeId(void);
     Stz* szOriginNodeNm(void);
   
     JobId tParentId(void);
     void vParentId(JobId tParentId);
-    i8   iParticipantNodeId(void);
-    void vParticipantNodeId(i8 i_Node);
+    Job* pParentJob(void);
     Pipeline* pPipeline(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
@@ -216,6 +170,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   
     bool bReapable(void);
     void vReapable(bool bReapable);
+    void vReapableJob(void);
+    void vResetTaskForJob(void);
     Op*  p_ResponseOp(void);
     void vResponseOp(Op* p_ResponseOp);
     i8   iResponseTimerMsec(void);
@@ -223,8 +179,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vResponseTimerStart(void);
     void vResponseTimerUpdate(void);
 
-    Op*  pSingularOp(void);
-    void vSingularOp(Op* pSingularOp);
     void vStmtListAppend(Stz* szCascade);
     void vStmtListCreate(void);
     void vStmtListDestroy(void);
@@ -257,8 +211,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vVerifyJobComposition(void);
   
     void vWaitJobMutex(void);
-    bool bWasForked(void);
-    void vWasForked(bool bWasForked);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
   

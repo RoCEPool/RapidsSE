@@ -163,7 +163,7 @@ void Step::vListedJobReturn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.scheduleNextPhase -- schedule next phase for the job                   */
+/* ListedJob[].scheduleNextPhase -- schedule next phase for the job           */
 /*----------------------------------------------------------------------------*/
 void Step::vListedJobScheduleNextPhase(void)
 {
@@ -175,7 +175,9 @@ void Step::vListedJobScheduleNextPhase(void)
   Task* pTaskParticipant = pJob->pTask();
   RASSERT(pTaskParticipant);
   
-  AM::vScheduleNextPhase(pJob,this);
+  pJob->vResetTaskForJob();
+
+  Scheduler::vTaskCross_ScheduleNextPhase(pTaskParticipant, this);
 
   
   EXIT();

@@ -10,6 +10,10 @@ assert::stack_0
         
 "<path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
   constant STD_PATH_TAG
+  
+"<noWait> = 1" constant STD_NOWAIT_TAG
+"<wait> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+   constant STD_WAIT_PATH_TAG
 
 "se_boot 9" .verbose
 
@@ -84,7 +88,6 @@ assert::stack_0
   "dp_pageOutDemon.sen"     include
   "se_experiments.sen"      include
   "se_llc.sen"              include
-  "se_memoryStats.sen"      include
   "se_munge.sen"            include
   "se_stepTests.sen"        include
   "se_stepTiming.sen"       include

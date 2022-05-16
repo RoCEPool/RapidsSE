@@ -5,7 +5,7 @@
 " OP_emptyLoop.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                               EOS */
+/* handler for EV_M_EOS ...                                               EOS */
 /*----------------------------------------------------------------------------*/
 : emptyLoop_Eos \handler
 
@@ -15,11 +15,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                   ROWBUFFER */
+/* handler for EV_D_ROWBUFFER ...                                   ROWBUFFER */
 /*----------------------------------------------------------------------------*/
 : emptyLoop_RowBuffer \handler
 
-  //"Operand:- ZK_D_ROWBUFFER" .verbose
+  //"Operand:- EV_D_ROWBUFFER" .verbose
 
   Pipein[]\clear to rowBuffer[]
   rowBuffer[].iterate
@@ -45,8 +45,8 @@
 
   op__topology
 
-  find: emptyLoop_RowBuffer  ZK_D_ROWBUFFER [op].handler!
-  find: emptyLoop_Eos        ZK_M_EOS [op].handler!
+  find: emptyLoop_RowBuffer  EV_D_ROWBUFFER [op].handler!
+  find: emptyLoop_Eos        EV_M_EOS [op].handler!
 
   op__loop
 

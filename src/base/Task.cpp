@@ -112,18 +112,14 @@ void Task::vTask(void)
   
   m_iDebugMark   = 0;
   m_pProfile     = nullptr;
-
   m_pInvokingTask = nullptr;
   m_pThread      = nullptr;
   
-  m_bIsStart     = false;
-  m_bIsImmediate = false;
-
   m_eState       = TS_NONE;
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
-  m_eEntryPoint  = EP_NONE;
-
+  m_bDedicatedThread = false;
+  
   m_oAcksRmg.vCheckInit();
   // m_oWakeup
   
@@ -426,7 +422,7 @@ void Task::vDumpOnException(void)
   if (m_pOp) {
     vTrace("EventHandler %lld:%s (+%lld times)\n"_Stz,
          (i8)m_pOp->eCurEvent(),
-         aZK[m_pOp->eCurEvent()],
+         aEV[m_pOp->eCurEvent()],
          m_pOp->nEventCount(m_pOp->eCurEvent())
          );
   }
@@ -669,6 +665,26 @@ void Task::vCycleTaskLock(Stz* szFunc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get dedicated thread                                                       */
+/*----------------------------------------------------------------------------*/
+bool Task::bDedicatedThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  return m_bDedicatedThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set dedicated thread                                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vDedicatedThread(bool bDedicatedThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_bDedicatedThread = bDedicatedThread;
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete input                                                               */
 /*----------------------------------------------------------------------------*/
 void Task::vDeleteInput(void)
@@ -764,26 +780,6 @@ void Task::vDump(void)
   vTrace("== End Task Dump ============================================\n"_Stz);
   
   AM::MASTERLOCK::vDropTraceMulti();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get entry point                                                            */
-/*----------------------------------------------------------------------------*/
-eEP Task::eEntryPoint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_eEntryPoint;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set entry point                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vEntryPoint(eEP eEntryPoint)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_eEntryPoint = eEntryPoint;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -952,26 +948,6 @@ void Task::vInvokingTask(Task* pInvokingTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* immediate task?                                                            */
-/*----------------------------------------------------------------------------*/
-bool Task::bIsImmediate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  return m_bIsImmediate;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set immediate task                                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vIsImmediate(bool bIsImmediate)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  m_bIsImmediate = bIsImmediate;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is task locked?                                                            */
 /*----------------------------------------------------------------------------*/
 bool Task::bIsLocked(void)
@@ -981,26 +957,6 @@ bool Task::bIsLocked(void)
   bool b = m_okLock.bIsLocked();
   
   return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is the start task?                                                         */
-/*----------------------------------------------------------------------------*/
-bool Task::bIsStart(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  return m_bIsStart;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set start task                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vIsStart(bool bIsStart)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  m_bIsStart = bIsStart;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1023,6 +979,27 @@ Job* Task::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   return m_pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the outer job of this task                                             */
+/*----------------------------------------------------------------------------*/
+Job* Task::pOuterJobOfTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Job* pOuterJob = nullptr;
+  
+  // if this task is a job, then the outer job is this tasks job
+  if (m_pJob.bIsNotNull())
+    pOuterJob = m_pJob;
+  
+  // if this task is an op, then the outer job is the job of this op
+  else
+  if (m_pOp.bIsNotNull())
+    pOuterJob = m_pOp->pOuterJobOfOp();
+  
+  return pOuterJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1541,6 +1518,28 @@ void Task::vScheduleBide(void)
   
   RASSERT(bIsLocked());
   m_eTransition = TR_BIDE_FOR_OPERAND;
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule hibernate                                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleHibernate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RASSERT(bIsLocked());
+  m_eTransition = TR_HIBERNATE_THIS_TASK;
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule retire                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleRetire(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RASSERT(bIsLocked());
+  m_eTransition = TR_RETIRE_THIS_TASK;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -5,7 +5,7 @@
 " OP_metricsUpdate.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : metricsUpdate_Start
 
@@ -13,11 +13,11 @@
   
   Tub[].new
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : metricsUpdate_DataPulse
 
@@ -29,7 +29,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_JOBMETRICS ...                                            */
+/* handler for EV_D_JOBMETRICS ...                                            */
 /*----------------------------------------------------------------------------*/
 : metricsUpdate_Job
 
@@ -49,7 +49,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_PAGINGMETRICS ...                                         */
+/* handler for EV_D_PAGINGMETRICS ...                                         */
 /*----------------------------------------------------------------------------*/
 : metricsUpdate_Paging
 
@@ -87,10 +87,10 @@
 
   op__topology
 
-  find: metricsUpdate_Start     ZK_M_START         [op].handler!
-  find: metricsUpdate_DataPulse ZK_M_DATAPULSE     [op].handler!
-  find: metricsUpdate_Job       ZK_D_JOBMETRICS    [op].handler!
-  find: metricsUpdate_Paging    ZK_D_PAGINGMETRICS [op].handler!
+  find: metricsUpdate_Start     EV_M_START         [op].handler!
+  find: metricsUpdate_DataPulse EV_M_DATAPULSE     [op].handler!
+  find: metricsUpdate_Job       EV_D_JOBMETRICS    [op].handler!
+  find: metricsUpdate_Paging    EV_D_PAGINGMETRICS [op].handler!
 
   op__loop
 

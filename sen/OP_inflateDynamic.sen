@@ -69,7 +69,7 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CRWBUFFER ...                                                 EACH */
+/* on EV_D_CRWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : inflateDynamic_CrwBuffer \handler
 
@@ -85,7 +85,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                        END */
+/* on EV_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : inflateDynamic_EosMarker \handler
 
@@ -95,22 +95,22 @@
 
   Combined[].delete
 
-  ZK_M_EOS_handler
+  EV_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
+/* on EV_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : inflateDynamic_StartMarker \handler
 
   Tub[].new
   Combined[].new
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/* on EV_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : inflateDynamic_StreamDef \handler
 
@@ -139,10 +139,10 @@
 
   op__topology
 
-  find: inflateDynamic_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
-  find: inflateDynamic_EosMarker     ZK_M_EOS           [op].handler!
-  find: inflateDynamic_StartMarker   ZK_M_START         [op].handler!
-  find: inflateDynamic_StreamDef     ZK_D_STREAMDEF     [op].handler!
+  find: inflateDynamic_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
+  find: inflateDynamic_EosMarker     EV_M_EOS           [op].handler!
+  find: inflateDynamic_StartMarker   EV_M_START         [op].handler!
+  find: inflateDynamic_StreamDef     EV_D_STREAMDEF     [op].handler!
 
   op__loop
 

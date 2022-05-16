@@ -6,19 +6,19 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : eachPathTag_DataPulse \handler
  
-  "eachPathTag_DataPulse" .
+  //"eachPathTag_DataPulse" .
 
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   <paths> locals| nPaths |
   
-  nPaths "eachPathTag: nPaths %v" .printf
+  //nPaths "eachPathTag: nPaths %v" .printf
 
   C_TDEF_COUNT InfoSet:discover
   
@@ -39,7 +39,7 @@
        [job].tagSet@ tagSet.getStr
        to sPath
        
-    iPathOf iPathNo sPath "eachPathTag: %v %v %v" .printf
+    // iPathOf iPathNo sPath "eachPathTag: %v %v %v" .printf
     
     iPathOf iPathNo sPath 3 OI_PATH InfoSet:pipeoutRow
   loop
@@ -54,7 +54,7 @@
 
   op__topology
 
-  find: eachPathTag_DataPulse ZK_M_DATAPULSE [op].handler!
+  find: eachPathTag_DataPulse EV_M_DATAPULSE [op].handler!
 
   op__loop
 

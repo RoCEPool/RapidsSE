@@ -5,7 +5,7 @@
 " OP_toLglPtnRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
+/* on EV_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : toLglPtnRow_StartMarker \handler
 
@@ -13,19 +13,19 @@
 
   toLglPtnRow[].create
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                BEGIN */
+/* on EV_M_DATAPULSE ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
 : toLglPtnRow_DataMarker \handler
 
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                 EACH */
+/* on EV_D_ROWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : toLglPtnRow_RowBuffer \handler
 
@@ -59,7 +59,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                       END */
+/* on EV_M_EOS ...                                                       END */
 /*----------------------------------------------------------------------------*/
 : toLglPtnRow_EosMarker \handler
 
@@ -96,10 +96,10 @@
 
   op__topology
 
-  find: toLglPtnRow_EosMarker   ZK_M_EOS         [op].handler!
-  find: toLglPtnRow_DataMarker  ZK_M_DATAPULSE   [op].handler!
-  find: toLglPtnRow_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
-  find: toLglPtnRow_StartMarker ZK_M_START       [op].handler!
+  find: toLglPtnRow_EosMarker   EV_M_EOS         [op].handler!
+  find: toLglPtnRow_DataMarker  EV_M_DATAPULSE   [op].handler!
+  find: toLglPtnRow_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: toLglPtnRow_StartMarker EV_M_START       [op].handler!
 
   op__loop
 

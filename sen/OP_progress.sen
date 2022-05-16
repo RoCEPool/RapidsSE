@@ -5,7 +5,7 @@
 " OP_progress.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS...                                                         */
+/* on EV_M_EOS...                                                         */
 /*----------------------------------------------------------------------------*/
 : progress_EosMarker \handler
 
@@ -18,13 +18,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_I_PROGRESSUNITS...                                                     */
+/* on EV_I_PROGRESSUNITS...                                                     */
 /*----------------------------------------------------------------------------*/
 : progress_ProgressUnits \handler
 
   0 0 0 locals| nodeName partitionNo iPercent |
 
-  //"Operand:- ZK_I_PROGRESSUNITS" .verbose
+  //"Operand:- EV_I_PROGRESSUNITS" .verbose
 
   // get operand into InfoSet[]
   PipeIn[] to InfoSet[]
@@ -61,13 +61,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_I_TOTALUNITS...                                                        */
+/* on EV_I_TOTALUNITS...                                                        */
 /*----------------------------------------------------------------------------*/
 : progress_TotalUnits \handler
 
   0 locals| iPercent |
 
-  //"Operand:- ZK_I_TOTALUNITS" .verbose
+  //"Operand:- EV_I_TOTALUNITS" .verbose
 
   // get operand into InfoSet[]
   PipeIn[] to InfoSet[]
@@ -99,9 +99,9 @@
 
   op__topology
 
-  find: Progress_EosMarker     ZK_M_EOS     [op].handler!
-  find: Progress_ProgressUnits ZK_I_PROGRESSUNITS [op].handler!
-  find: Progress_TotalUnits    ZK_I_TOTALUNITS    [op].handler!
+  find: Progress_EosMarker     EV_M_EOS     [op].handler!
+  find: Progress_ProgressUnits EV_I_PROGRESSUNITS [op].handler!
+  find: Progress_TotalUnits    EV_I_TOTALUNITS    [op].handler!
 
   op__loop
 

@@ -507,7 +507,6 @@ void Scheduler::vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
   RASSERT(QK_NONE == pTaskParticipant->eQueue());
   RASSERT(TR_NONE == pTaskParticipant->eTransition());
   
-  pTaskParticipant->vEntryPoint(EP_NEXTPHASE);
   pTaskParticipant->vState(TS_DESISTED);
 
   vScheduleTask(pTaskParticipant);
@@ -576,147 +575,32 @@ void Scheduler::vTaskCross_WakeSleepers(Task* pWakerTask)
 // /////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* add new dedicated task into system (spawn a dedicated thread for it)       */
+/* add new general task into system (start scheduling it as per normal)       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddDedicated(Task* pNewTask)
+void Scheduler::vTaskApi_Add(Task* pNewTask)
 {
   _static_
   
   //
-  // called from Api::bSpawnJobDedicated()
+  // called from Api::bSpawnJob()
   //
+  RASSERT(TS_NONE == pNewTask->eState());
+  RASSERT(QK_NONE == pNewTask->eQueue());
+  RASSERT(TR_NONE == pNewTask->eTransition());
   
-  pNewTask->vEntryPoint(EP_DEDICATED);
   pNewTask->vState(TS_DESISTED);
+  
+  if (pNewTask->bDedicatedThread()) {
+    Thread* pThread = AM::THREAD::pNewThread();
     
-  RASSERT(TS_DESISTED == pNewTask->eState());
-  
-  Thread* pThread = AM::THREAD::pNewThread();
-  
-  pThread->vTask(pNewTask);
-  pThread->vDedicated(CN_JOB);
-  
-  pThread->vSpawnPsxThd_dedicated();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new general task into system (start scheduling it as per normal)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddConnector(Task* pNewTask)
-{
-  _static_
-  
-  //
-  // called from Api::bSpawnJob()
-  //
-  RASSERT(TS_NONE == pNewTask->eState());
-  RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eTransition());
-  
-  pNewTask->vEntryPoint(EP_CONNECTOR);
-  pNewTask->vState(TS_DESISTED);
-
-  vScheduleTask(pNewTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new general task into system (start scheduling it as per normal)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddOp(Task* pNewTask)
-{
-  _static_
-  
-  //
-  // called from Api::bSpawnJob()
-  //
-  RASSERT(TS_NONE == pNewTask->eState());
-  RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eTransition());
-  
-  pNewTask->vEntryPoint(EP_OP);
-  pNewTask->vState(TS_DESISTED);
-
-  vScheduleTask(pNewTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new general task into system (start scheduling it as per normal)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddPrompt(Task* pNewTask)
-{
-  _static_
-  
-  //
-  // called from Api::bSpawnJob()
-  //
-  RASSERT(TS_NONE == pNewTask->eState());
-  RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eTransition());
-  
-  pNewTask->vEntryPoint(EP_PROMPT);
-  pNewTask->vState(TS_DESISTED);
-
-  vScheduleTask(pNewTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new general task into system (start scheduling it as per normal)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddReceived(Task* pNewTask)
-{
-  _static_
-  
-  //
-  // called from Api::bSpawnJob()
-  //
-  RASSERT(TS_NONE == pNewTask->eState());
-  RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eTransition());
-  
-  pNewTask->vEntryPoint(EP_RECEIVED);
-  pNewTask->vState(TS_DESISTED);
-
-  vScheduleTask(pNewTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new general task into system (start scheduling it as per normal)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddService(Task* pNewTask)
-{
-  _static_
-  
-  //
-  // called from Api::bSpawnJob()
-  //
-  RASSERT(TS_NONE == pNewTask->eState());
-  RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eTransition());
-  
-  pNewTask->vEntryPoint(EP_SERVICE);
-  pNewTask->vState(TS_DESISTED);
-
-  vScheduleTask(pNewTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new general task into system (start scheduling it as per normal)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTaskApi_AddSystem(Task* pNewTask)
-{
-  _static_
-  
-  //
-  // called from Api::bSpawnJob()
-  //
-  RASSERT(TS_NONE == pNewTask->eState());
-  RASSERT(QK_NONE == pNewTask->eQueue());
-  RASSERT(TR_NONE == pNewTask->eTransition());
-  
-  pNewTask->vEntryPoint(EP_SYSTEM);
-  pNewTask->vState(TS_DESISTED);
-
-  vScheduleTask(pNewTask);
+    pThread->vTask(pNewTask);
+    pThread->vDedicated(CN_JOB);
+    
+    pThread->vSpawnPsxThd_dedicated();
+  }
+  else {
+    vScheduleTask(pNewTask);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -922,11 +806,8 @@ bool Scheduler::bThread_AssignIdle(Task* pKnownTask)
   RASSERT(HS_IDLE == pThread->eThreadState());
 
   pThread->pMutex()->vLock(pKnownTask);
-  
   pThread->vTask(pKnownTask);
-    
-  pThread->pMutex()->vSignal(pKnownTask);
-  pThread->pMutex()->vUnlock(pKnownTask);
+  pThread->pMutex()->vSignalAndUnlock(pKnownTask);
   
   // mutex can now be acquired by the m_pPsxThd of pThread
   

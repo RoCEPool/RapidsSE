@@ -12,7 +12,6 @@
 #include "eDA.h"
 #include "eDR.h"
 #include "eEC.h"
-#include "eEV.h"
 #include "eGA.h"
 #include "eHA.h"
 #include "eLA.h"
@@ -518,6 +517,7 @@ namespace OBLIQUE
       static i8   nDefinedNodes(void);
       static bool bDerefMetrics(void);
       static void vDerefMetrics(bool bDerefMetrics);
+      static bool bDistJob(void);
       static bool bJobMetrics(void);
       static void vJobMetrics(bool bJobMetrics);
       static bool bLockTracking(void);
@@ -679,7 +679,6 @@ namespace OBLIQUE
     static void vRootConstant(Word* pConstantRoot);
     static Word* pWordRoot(void);
     static void vRootWord(Word* pWordRoot);
-    static Statistics* pStatistics(void);
     static Steps* pSteps(void);
     static PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);
@@ -771,7 +770,7 @@ namespace OBLIQUE
     static void vOperandsDec(void);
     static i8   nOperandsGet(void);
     static void vOperandsInc(void);
-    static i8   iOperandZkKind(Operand* pOperand);
+    static i8   iOperandEvKind(Operand* pOperand);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Job* pPipelineJob(void);
@@ -796,10 +795,6 @@ namespace OBLIQUE
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
-    static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
-    static void vSpawnTaskDedicated_op(Op* pOp);
-    static void vSpawnTask_op(Op* pOp);
-    static void vSpawnTask_receivedJob(Job* pJob);
     static Stz* szSummary(s256& sSummary);
     static Stz* szSummaryDir(s256& sSummary, Stz* szNote);
     static bool bSupervisorHalt(void);

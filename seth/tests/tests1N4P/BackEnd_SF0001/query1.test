@@ -77,6 +77,7 @@ success
 //------------------------------------------------------------------------------
 // OPTIMIZED Q1
 // COMPILER generates aggregate in the last stage, should be project
+// next and first
 // Need multiple threads per partition to improve performance
 //------------------------------------------------------------------------------
 
@@ -100,7 +101,8 @@ begin
       type INTEGER )  $7 count  ,
       type INTEGER )  countAll  "
     | combined 0
-    | stageMarker0861
+    | next
+
   stage stageMarker0861 on all nodes :
     aggreg " groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2
       aggregates
@@ -116,7 +118,7 @@ begin
       type INTEGER )  $10 sum  ,
       type INTEGER )  $11 sum  "
     | combined 0
-    | stageMarker1032
+    | next
   stage stageMarker1032 on origin :
     aggreg " groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2
       aggregates
@@ -132,7 +134,7 @@ begin
       type INTEGER )  $10 sum  ,
       type DECIMAL )  $9 sum  "
     | combined 0
-    | stageMarker0864
+    | next
   stage stageMarker0864 on origin :
     project "
       type VARCHAR $1 ,
@@ -147,11 +149,12 @@ begin
       type INTEGER as count_order $7 "
     | sort " type VARCHAR as l_returnflag $1 ASC  , type VARCHAR as l_linestatus $2 ASC  "
     | combined 0
-    | stageLast
+    | next
+
   stage stageLast on origin :
     output
     | sink
-    | stageStart
+    | first
 end ;
 
 rows:

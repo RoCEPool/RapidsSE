@@ -14,52 +14,27 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // external API functions
   
-  static Job* pAllocJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId);
 
-  static eEC  eForkJob(JobId& rtChildJobId, Job* pParentJob,
+  static void vDeleteRootJob(Job*& rpJob);
+    
+  static eEC  eForkJob(JobId& rtChildJobId,
                        TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                       JobId tParentId, JobId tOriginId, JobId tDistId,
+                       Job*& rpParentJob_tbr,
                        Job*& rpChildJob_tbr);
 
-  static Job* pNewGenericJob(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId);
-
+  static Job* pNewRootJob(Stz* szJobNm,
+                          JobId tParentId, JobId tOriginId, JobId tDistId);
+  
   static void vReapableJob(Job*& rpJob);
-  static void vReapAllJobs(bool bForce = false);
-  static void vReapJobsOnce(bool bForce = false);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  static void vScheduleNextPhase(Job* pJob, Task* pActiviating2PcTask);
     
   // internal
   
-  static void vCallBootSystemJob(void);
-  static void vCallStartSystemJob(void);
-
-  static void vCallTaskImmediate(Task* pImmediateTask);
-
-  static void vSpawnTask_op(Op* pop);
-  static void vSpawnTask_dedicatedOp(Op* pOp);
-
-  static void vSpawnTask_receivedJob(Job* pJob);
+  static void vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms);
       
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  static void vIncStatistics(eAC eApiCall);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  static void vPopulateTagSet(TagSet* pTagSet, TokenVec* pTknVec);
-
   private:
-
-  static void vCreateTaskForOp(Op* pOp);
-  static void vResetTaskForJob(Job* pJob);
-
-  static void vMutexLock(Job* pJob);
-  static void vMutexUnlock(Job* pJob);
-  static void vMutexWaitCond(Job* pJob);
-
-  static bool bReapJob(void);
 
 
   };

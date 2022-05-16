@@ -5,11 +5,11 @@
 " OP_pathToDfload2.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_PATH ... an infoset with __path rows                      */
+/* handler for EV_I_PATH ... an infoset with __path rows                      */
 /*----------------------------------------------------------------------------*/
 : pathToDfload2_Path \handler
  
-  "pathToDfload2_Path" .
+  // "pathToDfload2_Path" .
 
   PipeIn[]\clear to InfoSet[]
 
@@ -21,7 +21,7 @@
   2 InfoSet[].colVal@ locals| iPathOf | 
   
   // print the __path data
-  iPathOf iPathNo sPath "pathToDfload2: %v %v %v" .printf
+  //iPathOf iPathNo sPath "pathToDfload2: %v %v %v" .printf
 
   InfoSet[].delete
   nullptr to InfoSetRow[]
@@ -30,7 +30,7 @@
 
   sPath <tableNm> "dfload2 %v \"%v\"" str.format locals| sCmd |
 
-  sCmd "pathToDfload2: %v" .printf
+  //sCmd "pathToDfload2: %v" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -52,7 +52,7 @@
 
   op__topology
 
-  find: pathToDfload2_Path  ZK_I_PATH  [op].handler!
+  find: pathToDfload2_Path  EV_I_PATH  [op].handler!
 
   op__loop
 

@@ -18,17 +18,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : metricsDistribute_Start
 
   // "metricsDistribute_Start" .
   
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_JOBMETRICS ...                                            */
+/* handler for EV_D_JOBMETRICS ...                                            */
 /*----------------------------------------------------------------------------*/
 
 : metricsDistribute_Metrics
@@ -55,8 +55,8 @@
 
   op__topology
 
-  find: metricsDistribute_Start    ZK_M_START       [op].handler!
-  find: metricsDistribute_Metrics  ZK_D_JOBMETRICS  [op].handler!
+  find: metricsDistribute_Start    EV_M_START       [op].handler!
+  find: metricsDistribute_Metrics  EV_D_JOBMETRICS  [op].handler!
 
   op__loop
 

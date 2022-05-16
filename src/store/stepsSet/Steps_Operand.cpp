@@ -36,9 +36,9 @@
 #include "MY.hpp"
 
 
-#ifdef WITH_PYTHON_SUPPORT
-  #include "/usr/include/python2.7/Python.h"
-#endif
+//#ifdef WITH_PYTHON_SUPPORT
+  //#include "/usr/include/python2.7/Python.h"
+//#endif
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -66,7 +66,7 @@ void Step::vOperandToParcel(void)
 
   pParcel->vAddItem(pOperand);
   
-  pParcel->vLabel(pOp->pJobOfOp()->tDistId().iAsI8(),
+  pParcel->vLabel(pOp->pOuterJobOfOp()->tDistId().iAsI8(),
                   pOpSpec->eParcelForward());
   
   m_pDataStack->vPushPtr(pParcel);

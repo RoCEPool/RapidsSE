@@ -28,31 +28,31 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                              */
+/* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : transliterate_Cleaning \handler
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : transliterate_DataMarker \handler
  
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                                   */
+/* handler for EV_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : transliterate_EosMarker \handler
  
-  ZK_M_EOS_handler
+  EV_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_PLANOPERAND ...                                           */
+/* handler for EV_D_PLANOPERAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
 
@@ -94,15 +94,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : transliterate_StartMarker \handler
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_LEAVE ...                                             */
+/* handler for EV_M_LEAVE ...                                             */
 /*----------------------------------------------------------------------------*/
 : transliterate_LeaveMarker \handler
 
@@ -110,11 +110,11 @@
   StreamSet[].isNull not assert
   StreamSet[].pipeout
 
-  ZK_M_LEAVE_handler
+  EV_M_LEAVE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMSET ...                                               */
+/* handler for EV_D_STREAMSET ...                                               */
 /*----------------------------------------------------------------------------*/
 : transliterate_StreamSet \handler
 
@@ -136,14 +136,14 @@
 
   op__topology
 
-  find: transliterate_Cleaning      ZK_M_CLEANING      [op].handler!
-  find: transliterate_DataMarker    ZK_M_DATAPULSE     [op].handler!
-  find: transliterate_EosMarker     ZK_M_EOS           [op].handler!
-  find: transliterate_PlanOperand   ZK_D_PLANOPERAND   [op].handler!
-  find: transliterate_StartMarker   ZK_M_START         [op].handler!
+  find: transliterate_Cleaning      EV_M_CLEANING      [op].handler!
+  find: transliterate_DataMarker    EV_M_DATAPULSE     [op].handler!
+  find: transliterate_EosMarker     EV_M_EOS           [op].handler!
+  find: transliterate_PlanOperand   EV_D_PLANOPERAND   [op].handler!
+  find: transliterate_StartMarker   EV_M_START         [op].handler!
 
-  find: transliterate_StreamSet    ZK_D_STREAMSET      [op].handler!
-  find: transliterate_LeaveMarker  ZK_M_LEAVE          [op].handler!
+  find: transliterate_StreamSet    EV_D_STREAMSET      [op].handler!
+  find: transliterate_LeaveMarker  EV_M_LEAVE          [op].handler!
 
   op__loop
 

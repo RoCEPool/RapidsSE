@@ -5,7 +5,7 @@
 " OP_wrFile.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                              */
+/* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : wrFile_Cleaning \handler
 
@@ -14,11 +14,11 @@
     //File0[].get file.delete
   //then
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                             */
+/* handler for EV_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : wrFile_CrwBuffer \handler
 
@@ -31,7 +31,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CSVBUFFER ...                                             */
+/* handler for EV_D_CSVBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : wrFile_CsvBuffer \handler
 
@@ -44,7 +44,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : wrFile_StartMarker \handler
 
@@ -65,10 +65,10 @@
 
   op__topology
 
-  find: wrFile_Cleaning    ZK_M_CLEANING    [op].handler!
-  find: wrFile_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!
-  find: wrFile_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
-  find: wrFile_StartMarker ZK_M_START       [op].handler!
+  find: wrFile_Cleaning    EV_M_CLEANING    [op].handler!
+  find: wrFile_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
+  find: wrFile_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
+  find: wrFile_StartMarker EV_M_START       [op].handler!
 
   op__loop
 

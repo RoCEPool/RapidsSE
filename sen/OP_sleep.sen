@@ -5,7 +5,7 @@
 " OP_sleep.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                      */
+/* on EV_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
 : sleep_sleep \handler
 
@@ -27,7 +27,7 @@
 
   op__topology
 
-  find: sleep_sleep  ZK_M_DATAPULSE  [op].handler!
+  find: sleep_sleep  EV_M_DATAPULSE  [op].handler!
 
   op__loop
 

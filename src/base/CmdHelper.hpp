@@ -11,15 +11,18 @@ namespace BASE
   
     static TagSet* pDefTagSet(Stz* szCmdNm);
   
-    static void vExtractCmdPaths(TokenVec* pCmdTknVec,
-                                 TagSet* pCmdTagSet);
+    static void vExtractCmdPaths(TagSet* pDstCmdTagSet,
+                                 TokenVec* pSrcCmdTknVec);
   
-    static bool bExtractCmdTags(TokenVec* pCmdTknVec,
-                                TagSet* pCmdTagSet);
+    static bool bExtractCmdTags(TagSet* pDstCmdTagSet,
+                                TokenVec* pSrcCmdTknVec);
 
     static bool bParseCmd(TokenVec* pTknVec,
                           TagSet*   pArgTags);
     
+    static void vPopulateTagSet(TagSet* pTagSet,
+                                TokenVec* pTknVec);
+
   private:
   
     static bool bExtractAllArgs(TagSet*   pArgTags,

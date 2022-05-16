@@ -206,6 +206,16 @@ void AttachMap::vIndexEntries(i8 nIndexEntries)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get jobs manager                                                           */
+/*----------------------------------------------------------------------------*/
+Jobs* AttachMap::pJobs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  return m_pJobs;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next temp name                                                         */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vNextTempName(s32& sName)
@@ -365,6 +375,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_bDebugMode       = pCmdLineArgs->m_xSysArgs.m_bDebugMode;
   m_xSysArgs.m_bDerefMetrics    = pCmdLineArgs->m_xSysArgs.m_bDerefMetrics;
   m_xSysArgs.m_bDeveloper       = pCmdLineArgs->m_xSysArgs.m_bDeveloper;
+  m_xSysArgs.m_bDistJob         = pCmdLineArgs->m_xSysArgs.m_bDistJob;
   m_xSysArgs.m_nDummyLoop       = pCmdLineArgs->m_xSysArgs.m_nDummyLoop;
   m_xSysArgs.m_nDummySleep      = pCmdLineArgs->m_xSysArgs.m_nDummySleep;
   m_xSysArgs.m_nDummyThreads    = pCmdLineArgs->m_xSysArgs.m_nDummyThreads;
@@ -469,8 +480,6 @@ SysMetrics* AttachMap::pSysMetricsChain(void)
 
   return m_pSysMetricsChain;
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* get trace file                                                             */

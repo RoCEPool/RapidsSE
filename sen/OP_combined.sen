@@ -5,28 +5,28 @@
 " OP_combined.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                   END */
+/* on EV_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
 : combined_Cleaning \handler
 
-  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+  0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   Tub[].delete
   Pot[].delete
   Stencil[].delete
   Combined[].delete
 
-  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+  EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CRWBUFFER ...                                            CRWBUFFER */
+/* on EV_D_CRWBUFFER ...                                            CRWBUFFER */
 /*----------------------------------------------------------------------------*/
 : combined_CrwBuffer \handler
 
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   0 locals| errorCode |
 
@@ -56,11 +56,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                            DATAPULSE */
+/* on EV_M_DATAPULSE ...                                            DATAPULSE */
 /*----------------------------------------------------------------------------*/
 : combined_DataPulse \handler
 
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   //"OP_Combined got a DATAPULSE" .
 
@@ -91,11 +91,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                        END */
+/* on EV_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : combined_EosMarker \handler
 
-  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
+  0 EV_M_EOS EG_ZK LogicUnit[].diaryNote
 
  0 locals| errorCode |
 
@@ -116,17 +116,17 @@
     Tub[].pipeOutRemainder
   then
 
-  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+  EV_M_EOS EG_ZK PD_PIPE_OUT 0 EV_M_EOS EG_ZK LogicUnit[].diaryAction
 
-  ZK_M_EOS_handler
+  EV_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                            ROWBUFFER */
+/* on EV_D_ROWBUFFER ...                                            ROWBUFFER */
 /*----------------------------------------------------------------------------*/
 : combined_RowBuffer \handler
 
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   0 locals| errorCode |
 
@@ -156,11 +156,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                    START */
+/* on EV_M_START ...                                                    START */
 /*----------------------------------------------------------------------------*/
 : combined_StartMarker \handler
 
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   Tub[].new
   Pot[].new
@@ -174,11 +174,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/* on EV_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : combined_StreamDef \handler
 
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   // synthesize the code for the combined OP's
   Combined[] Stencil[].setup
@@ -220,11 +220,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/* on EV_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : combined_StreamDefGen \handler
 
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
@@ -263,17 +263,17 @@
 
   op__topology
 
-  find: combined_Cleaning      ZK_M_CLEANING      [op].handler!
-  find: combined_CrwBuffer     ZK_D_CRWBUFFER     [op].handler!
-  find: combined_DataPulse     ZK_M_DATAPULSE     [op].handler!
-  find: combined_EosMarker     ZK_M_EOS           [op].handler!
-  find: combined_RowBuffer     ZK_D_ROWBUFFER     [op].handler!
-  find: combined_StartMarker   ZK_M_START         [op].handler!
+  find: combined_Cleaning      EV_M_CLEANING      [op].handler!
+  find: combined_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
+  find: combined_DataPulse     EV_M_DATAPULSE     [op].handler!
+  find: combined_EosMarker     EV_M_EOS           [op].handler!
+  find: combined_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  find: combined_StartMarker   EV_M_START         [op].handler!
 
   Counter0[] 0 == if
-    find: combined_StreamDefGen  ZK_D_STREAMDEF     [op].handler!
+    find: combined_StreamDefGen  EV_D_STREAMDEF     [op].handler!
   else
-    find: combined_StreamDef     ZK_D_STREAMDEF     [op].handler!
+    find: combined_StreamDef     EV_D_STREAMDEF     [op].handler!
   then
 
   op__loop

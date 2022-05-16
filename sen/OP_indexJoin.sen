@@ -17,11 +17,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                   END */
+/* on EV_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
 : indexJoin_Cleaning \handler
 
-  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+  0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   // will be null if table not found
   StreamDefLft[].isNull not if
@@ -32,17 +32,17 @@
     StreamDefOut[].delete
   then
 
-  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+  EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                     INIT */
+/* on EV_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : indexJoin_StartMarker \handler
 
-  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   <tableNm> <indexNm> op__table_index not if
     Pipein[].delete
@@ -53,15 +53,15 @@
   // set the indexTree in the devRhtIxt
   //Index[].indexTree DevRhtIxt.indexTree!
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/* on EV_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : indexJoin_StreamDef \handler
 
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
@@ -111,9 +111,9 @@
   op__topology
 
   // handle combined operator
-  find: indexJoin_Cleaning     ZK_M_CLEANING      [op].handler!
-  find: indexJoin_StartMarker  ZK_M_START         [op].handler!
-  find: indexJoin_StreamDef    ZK_D_STREAMDEF     [op].handler!
+  find: indexJoin_Cleaning     EV_M_CLEANING      [op].handler!
+  find: indexJoin_StartMarker  EV_M_START         [op].handler!
+  find: indexJoin_StreamDef    EV_D_STREAMDEF     [op].handler!
 
   op__loop
 

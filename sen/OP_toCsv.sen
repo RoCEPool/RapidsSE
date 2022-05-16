@@ -5,18 +5,18 @@
 " OP_toCsv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                                   */
+/* handler for EV_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : toCsv_EosMarker \handler
 
   Tub[].pipeOutRemainder
   Tub[].delete
 
-  ZK_M_EOS_handler
+  EV_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                             */
+/* handler for EV_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : toCsv_CrwBuffer \handler
 
@@ -32,7 +32,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                             */
+/* handler for EV_D_ROWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : toCsv_RowBuffer \handler
 
@@ -48,7 +48,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                             */
+/* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : toCsv_StreamDef \handler
 
@@ -79,10 +79,10 @@
 
   op__topology
 
-  find: toCsv_CrwBuffer  ZK_D_CRWBUFFER [op].handler!
-  find: toCsv_EosMarker  ZK_M_EOS       [op].handler!
-  find: toCsv_RowBuffer  ZK_D_ROWBUFFER [op].handler!
-  find: toCsv_StreamDef  ZK_D_STREAMDEF [op].handler!
+  find: toCsv_CrwBuffer  EV_D_CRWBUFFER [op].handler!
+  find: toCsv_EosMarker  EV_M_EOS       [op].handler!
+  find: toCsv_RowBuffer  EV_D_ROWBUFFER [op].handler!
+  find: toCsv_StreamDef  EV_D_STREAMDEF [op].handler!
 
   op__loop
 

@@ -571,6 +571,11 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        m_pShapeROW = pSketchInflateRow(pStream, pOp);
+
+        m_bRowBuffer = true;
       }
       else {
 

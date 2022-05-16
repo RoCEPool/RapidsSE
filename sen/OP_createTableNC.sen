@@ -1,0 +1,141 @@
+/*============================================================================*/
+/* OP_createTableNC.sen -- Operator create table                                */
+/*============================================================================*/
+
+" OP_createTableNC.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if <tableNm> is a creatable table                                    */
+/*----------------------------------------------------------------------------*/
+: createTableNC::checkCreate ( -- true | false )
+
+  params| sTableNm |
+
+  // check in tables folder: ../schemas/public/tables
+  check::folderIsTables not if false exit then
+
+  // error if given name already exists
+  sTableNm check::nameIsUnknownTable not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* create table <tableNm> on this particpating node                           */
+/*----------------------------------------------------------------------------*/
+: createTableNC::createNamedTable params| sTableNm |
+
+  // assert initial folder is ./tables
+  //   /tenants/boray/catalogs/rapidsse/schemas/public/tables
+  Folder[].isTables assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the table
+
+  StreamDefLft[] sTableNm table::createTable to Table[]
+  nullptr to StreamDefLft[]
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: createTableNC_StartMarker \handler
+
+  //"Operand:- EV_M_START" .verbose
+  //"Operand Insert:- EV_M_START" .
+  PipeIn[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_STREAMDEF ...                                             */
+/*----------------------------------------------------------------------------*/
+: createTableNC_StreamDef
+
+  0 0 locals| sTableNm errorCode |
+
+  // get the stream def
+  Pipein[]\clear to StreamDefLft[]
+
+  // make the streamDef as for a replicated table
+  StreamDefLft[].replicated
+
+  // duplicate the StreamDefLft
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  // get the table name
+  //"<tableNm>" [job].tagSet@ tagSet.hasName assert
+  <tableNm> to sTableNm
+
+  "***********" .
+  sTableNm .
+
+  // grab the ddl lock
+  [ddlLock].grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check ok to create table
+  sTableNm createTableNC::checkCreate not if ( errorCode )
+    to errorCode
+    //StreamDefLft[].delete
+    errorCode op__execErr
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the table
+  sTableNm createTableNC::createNamedTable
+
+  // should be in tables
+  Folder[].isTables assert
+
+  // table is ready
+  // pipeout a start marker
+  Marker[].newStartMarker
+  Marker[].pipeOut
+
+  // pipe out the StreamDefOut
+  StreamDefOut[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for createTableNC req                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: createTableNC_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: createTableNC_StartMarker EV_M_START [op].handler!
+  find: createTableNC_StreamDef   EV_D_STREAMDEF [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: createTableNC :: createTableNC <tableNm> ;
+
+: createTableNC_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "createTableNC_op"
+    <internal> = 1
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

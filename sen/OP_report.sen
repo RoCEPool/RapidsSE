@@ -5,11 +5,11 @@
 " OP_report.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                               */
+/* handler for EV_D_CRWBUFFER ...                                               */
 /*----------------------------------------------------------------------------*/
 : report_CrwBuffer \handler
 
-  //"Operand:- ZK_D_CRWBUFFER" .verbose
+  //"Operand:- EV_D_CRWBUFFER" .verbose
   PipeIn[]\clear to CrwBuffer[]
 
   CrwBuffer[].isReport if
@@ -22,11 +22,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CSVBUFFER ...                                             */
+/* handler for EV_D_CSVBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : report_CsvBuffer \handler
 
-  //"Operand:- ZK_D_CSVBUFFER" .verbose
+  //"Operand:- EV_D_CSVBUFFER" .verbose
   PipeIn[]\clear to CsvBuffer[]
 
   CsvBuffer[].isReport if
@@ -39,11 +39,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ENTBUFFER ...                                             */
+/* handler for EV_D_ENTBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : report_EntBuffer \handler
 
-  //"Operand:- ZK_D_ENTBUFFER" .verbose
+  //"Operand:- EV_D_ENTBUFFER" .verbose
   /*
   PipeIn[] to EntBuffer[]
   nullptr to EntBuffer[]
@@ -58,11 +58,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                                   */
+/* handler for EV_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : report_EosMarker \handler
 
-  //"Operand:- ZK_M_EOS" .verbose
+  //"Operand:- EV_M_EOS" .verbose
   //File0[].get file.close
   //File0[].get file.delete
   PipeIn[].pipeOut
@@ -71,12 +71,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_SRTBUFFER ...                                             */
+/* handler for EV_D_SRTBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : report_SrtBuffer \handler
 
 /*
-  //"Operand:- ZK_D_SRTBUFFER" .verbose
+  //"Operand:- EV_D_SRTBUFFER" .verbose
   PipeIn[] to SrtBuffer[]
   nullptr to SrtBuffer[]
 
@@ -90,11 +90,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : report_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
 
   PipeIn[].pipeOut
 
@@ -113,12 +113,12 @@
 
   op__topology
 
-  find: report_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!
-  find: report_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
-  find: report_EntBuffer   ZK_D_ENTBUFFER   [op].handler!
-  find: report_EosMarker   ZK_M_EOS   [op].handler!
-  find: report_SrtBuffer   ZK_D_SRTBUFFER   [op].handler!
-  find: report_StartMarker ZK_M_START [op].handler!
+  find: report_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
+  find: report_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
+  find: report_EntBuffer   EV_D_ENTBUFFER   [op].handler!
+  find: report_EosMarker   EV_M_EOS   [op].handler!
+  find: report_SrtBuffer   EV_D_SRTBUFFER   [op].handler!
+  find: report_StartMarker EV_M_START [op].handler!
 
   op__loop
 

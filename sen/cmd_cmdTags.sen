@@ -5,36 +5,6 @@
 " cmd_info.sen" .verbose
     
 /*----------------------------------------------------------------------------*/
-/* test if info word is about a pipeline job                                  */
-/*----------------------------------------------------------------------------*/
-: _cmdTags.aboutPipelineJob params| pwCmdTags |
-
-  pwCmdTags word.TagSet@ locals| pTagSet |
-
-  "<jobKind>" pTagSet tagSet.getInt JK_PIPELINE == if true else false then
-;
-
-/*----------------------------------------------------------------------------*/
-/* test if info word is about a generic job                                   */
-/*----------------------------------------------------------------------------*/
-: _cmdTags.aboutGenericJob params| pwCmdTags |
-
-  pwCmdTags word.TagSet@ locals| pTagSet |
-
-  "<jobKind>" pTagSet tagSet.getInt JK_GENERIC == if true else false then
-;
-
-/*----------------------------------------------------------------------------*/
-/* test if info word is about a local job                                     */
-/*----------------------------------------------------------------------------*/
-: _cmdTags.aboutLocalJob params| pwCmdTags |
-
-  pwCmdTags word.TagSet@ locals| pTagSet |
-
-  "<jobKind>" pTagSet tagSet.getInt JK_LOCAL == if true else false then
-;
-
-/*----------------------------------------------------------------------------*/
 /* test if info word is about a lite op                                       */
 /*----------------------------------------------------------------------------*/
 : _cmdTags.aboutLiteOp params| pwCmdTags |

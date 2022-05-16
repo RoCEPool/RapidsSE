@@ -71,25 +71,6 @@ void ApiHelper::vPipeoutResults(Op* pCurrOp,
 }
 
 /*----------------------------------------------------------------------------*/
-/* print results                                                              */
-/*----------------------------------------------------------------------------*/
-void ApiHelper::vPrintResults(Job* pJob)
-{
-  // start the buffer queue processing while the pipeline ops are running
-  if (pJob->bIsPipeline())
-    pJob->pOutput()->vProcessBufferQueue(pJob);
-
-  RASSERT(! pJob->pOutput()->m_bExecErr );
-  RASSERT(! pJob->pOutput()->m_bCmdErr );
-
-  if (pJob->bIsInError()) {
-    vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
-           aEC[pJob->eJobError()]);
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* reset results                                                              */
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vResetResults(Job* pJob)

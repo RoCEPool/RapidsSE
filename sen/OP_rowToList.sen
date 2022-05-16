@@ -5,7 +5,7 @@
 " OP_rowToList.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                     CLEANING */
+/* handler for EV_M_CLEANING ...                                     CLEANING */
 /*----------------------------------------------------------------------------*/
 : rowToList_Cleaning \handler
 
@@ -13,7 +13,7 @@
 
   //List[].delete
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -36,17 +36,17 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
+/* on EV_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : rowToList_StartMarker \handler
 
   List[].new
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                    DEFINITION */
+/* handler for EV_D_STREAMDEF ...                                    DEFINITION */
 /*----------------------------------------------------------------------------*/
 : rowToList_StreamDef \handler
 
@@ -58,7 +58,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_ROWBUFFER ...                                     ROWBUFFER */
+/* handler for EV_D_ROWBUFFER ...                                     ROWBUFFER */
 /*----------------------------------------------------------------------------*/
 : rowToList_RowBuffer \handler
 
@@ -83,10 +83,10 @@
 
   op__topology
 
-  find: rowToList_Cleaning    ZK_M_CLEANING    [op].handler!
-  find: rowToList_RowBuffer   ZK_D_ROWBUFFER   [op].handler!
-  find: rowToList_StartMarker ZK_M_START       [op].handler!
-  find: rowToList_StreamDef   ZK_D_STREAMDEF   [op].handler!
+  find: rowToList_Cleaning    EV_M_CLEANING    [op].handler!
+  find: rowToList_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: rowToList_StartMarker EV_M_START       [op].handler!
+  find: rowToList_StreamDef   EV_D_STREAMDEF   [op].handler!
 
   op__loop
 

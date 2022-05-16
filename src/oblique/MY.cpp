@@ -335,7 +335,7 @@ Job* MY::pJob(void)
 
   Op* pOp = pTask->pOp();
   if (pOp) {
-    pJob = pOp->pJobOfOp();
+    pJob = pOp->pOuterJobOfOp();
     return pJob;
   }
   
@@ -415,7 +415,7 @@ LogicUnit* MY::pOpLogicUnit(void)
 /*----------------------------------------------------------------------------*/
 /* get current operand kind                                                   */
 /*----------------------------------------------------------------------------*/
-eZK MY::eOperand(void)
+eEV MY::eOperand(void)
 {
   _static_
 
@@ -424,7 +424,7 @@ eZK MY::eOperand(void)
   if (pLogicUnit)
     return pLogicUnit->m_ePipeInOperand;
   else
-    return ZK_NONE;
+    return EV_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

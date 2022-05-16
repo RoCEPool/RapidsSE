@@ -5,7 +5,7 @@
 " OP_inflateRows.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                               EOS */
+/* handler for EV_M_EOS ...                                               EOS */
 /*----------------------------------------------------------------------------*/
 : inflateRows_Eos \handler
 
@@ -17,11 +17,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                   CRWBUFFER */
+/* handler for EV_D_CRWBUFFER ...                                   CRWBUFFER */
 /*----------------------------------------------------------------------------*/
 : inflateRows_CrwBuffer \handler
 
-  //"Operand:- ZK_D_CRWBUFFER" .verbose
+  //"Operand:- EV_D_CRWBUFFER" .verbose
 
   Pipein[]\clear to crwBuffer[]
   StreamDefLft[] crwBuffer[].inflate
@@ -32,7 +32,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                   STREAMDEF */
+/* handler for EV_D_STREAMDEF ...                                   STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : inflateRows_StreamDef \handler
 
@@ -57,9 +57,9 @@
 
   op__topology
 
-  find: inflateRows_CrwBuffer  ZK_D_CRWBUFFER [op].handler!
-  find: inflateRows_StreamDef  ZK_D_STREAMDEF [op].handler!
-  find: inflateRows_Eos        ZK_M_EOS       [op].handler!
+  find: inflateRows_CrwBuffer  EV_D_CRWBUFFER [op].handler!
+  find: inflateRows_StreamDef  EV_D_STREAMDEF [op].handler!
+  find: inflateRows_Eos        EV_M_EOS       [op].handler!
  
   op__loop
 

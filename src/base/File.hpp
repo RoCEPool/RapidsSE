@@ -63,7 +63,6 @@ namespace BASE
     static bool bRemove(Stz* szFilePath);
     static void vRepair(Object* pObject);
     static i8   nSize(Stz* szFilePath);
-    static void vStatistics(void);
   
     static void vInitGlobals(void);
     static void vListOfOpenFiles(TokenVec* pTokenVec);

@@ -46,14 +46,13 @@ Stz* SP_Job::sz(Job* pJob)
 
   vCatf("Job {"
         "%p "
-        "%s %s %s %s"_Stz
+        "%s %s %s"_Stz
 
         ,pJob
         
         ,pJob->szJobNm()
-        ,aJK[pJob->eJobKind()]
         ,aJP[pJob->eJobPhase()]
-        ,aJS[pJob->eJobState()]
+        ,aMS[pJob->eMutexSide()]
 
         );
   

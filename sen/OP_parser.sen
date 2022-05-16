@@ -5,15 +5,15 @@
 " OP_parser.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                              */
+/* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : parser_Cleaning \handler
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : parser_DataPulse \handler
 
@@ -86,8 +86,8 @@
 
   op__topology
 
-  find: parser_Cleaning      ZK_M_CLEANING      [op].handler!
-  find: parser_DataPulse     ZK_M_DATAPULSE     [op].handler!
+  find: parser_Cleaning      EV_M_CLEANING      [op].handler!
+  find: parser_DataPulse     EV_M_DATAPULSE     [op].handler!
 
   op__loop
 

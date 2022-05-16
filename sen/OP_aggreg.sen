@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                   END */
+/* on EV_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
 : aggreg_Cleaning \handler
 
-  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+  0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   // Need to hold on to the streamDef's till the combined op
   // has created the stencil
@@ -31,17 +31,17 @@
     IndexDef[].delete
   then
 
-  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+  EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/* on EV_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : aggreg_StreamDef \handler
 
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
@@ -79,8 +79,8 @@
 
   op__topology
 
-  find: aggreg_Cleaning   ZK_M_CLEANING      [op].handler!
-  find: aggreg_StreamDef  ZK_D_STREAMDEF     [op].handler!
+  find: aggreg_Cleaning   EV_M_CLEANING      [op].handler!
+  find: aggreg_StreamDef  EV_D_STREAMDEF     [op].handler!
 
   op__loop
 

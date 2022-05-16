@@ -177,8 +177,8 @@ void Step::vPipeinIsNull(void)
 void Step::vPipeinKind(void)
 {
   ENTRY();
-    
-  eZK ePipeInOperand = m_pLogicUnit->m_ePipeInOperand;
+
+  eEV ePipeInOperand = m_pLogicUnit->m_ePipeInOperand;
   m_pDataStack->vPushInt(ePipeInOperand);
 
   EXIT();
@@ -256,10 +256,10 @@ void Step::vPipeinSet(void)
   m_pLogicUnit->m_xpPipein = _pOperand(pOperand);
   
   if (m_pLogicUnit->m_xpPipein.bIsNull()) {
-    m_pLogicUnit->m_ePipeInOperand = ZK_NONE;
+    m_pLogicUnit->m_ePipeInOperand = EV_NONE;
   }
   else {
-    eZK eOperand = (eZK)AM::iOperandZkKind(pOperand);
+    eEV eOperand = (eEV)AM::iOperandEvKind(pOperand);
     m_pLogicUnit->m_ePipeInOperand = eOperand;
   }
   

@@ -25,10 +25,13 @@ create table lineitem (
 success
 
 create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
-success;
+success
 
 create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
-success;
+success
+
+create index IxL_ORDER_PART ON lineitem(L_ORDERKEY, L_PARTKEY);
+success
 
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
@@ -47,7 +50,7 @@ create table orders (
 success
 
 create index IxO_ORDERKEY  ON Orders (O_ORDERKEY)  ;
-success;
+success
 
 load Orders "../TPCH/SF_0001/orders.csv";
 success
@@ -487,6 +490,54 @@ contains rows:
   (1380,4.32)
   ( 393,4.33)
   (  21,4.34)
+
+// multi-column ordagg with muli-col indexscan
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexScan lineitem IxL_ORDER_PART "lbound $I1 0 >="
+    | ordAgg " ORDGROUPBY type integer $1 , type integer $2
+                 aggregates type integer $K1 , type integer $K2 , type decimal as total )  $5 sum  "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+  end ;
+
+rows: 3000
+
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexScan lineitem IxL_ORDER_PART "lbound $I1 0 >="
+    | ordAgg " ORDGROUPBY type integer $1 , type integer $2
+                 aggregates type integer $K1 , type integer $K2 , type decimal as total )  $5 sum  "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+contains rows:
+ (1492,92,36.00)
+ (1492,192,71.00)
+ (1493,93,91.00)
+ (1493,193,35.00)
+ (1495,95,59.00)
+ (1495,195,28.00)
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks

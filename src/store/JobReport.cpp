@@ -548,7 +548,7 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
           continue;
         
         OperandWatch* pOperandWatch = pOp->pOperandWatch();
-        for (i8 i_Operand = 0; i_Operand < ZK_ENUMS; i_Operand++) {
+        for (i8 i_Operand = 0; i_Operand < EV_ENUMS; i_Operand++) {
 
           if (! pOperandWatch->nCnt(i_Operand))
             continue;
@@ -570,7 +570,7 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
                        ,pOp->szOpNm()
 
                        ,i_Operand
-                       ,aZK[i_Operand]
+                       ,aEV[i_Operand]
                        
                        ,pOperandWatch->nCnt(i_Operand)
                        
@@ -771,7 +771,7 @@ Job* JobReport::pFindOriginalJobId(JobId tJobId)
 //             : "participant"_Stz
 //           );
     
-    if (tJobNo_test == tJobId && C_UNKNOWN == pJobScan->iParticipantNodeId()) {
+    if (tJobNo_test == tJobId && C_UNKNOWN == pJobScan->iDistNodeId()) {
       pJob = pJobScan;
     }
   }
@@ -823,7 +823,7 @@ Job* JobReport::pFindOriginalJobNo(i8 iJobNo)
 //             : "participant"_Stz
 //           );
     
-    if (iJobNo_test == iJobNo && C_UNKNOWN == pJobScan->iParticipantNodeId()) {
+    if (iJobNo_test == iJobNo && C_UNKNOWN == pJobScan->iDistNodeId()) {
       pJob = pJobScan;
     }
   }
@@ -870,7 +870,7 @@ Job* JobReport::pFindParticipantJobId(JobId tJobId)
 //           ,tJobId.iAsI8()
 //           );
 
-    if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iParticipantNodeId()) {
+    if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iDistNodeId()) {
       if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
         pJob = pJobScan;
     }
@@ -918,7 +918,7 @@ Job* JobReport::pFindParticipantJobNo(i8 iJobNo)
 //           ,iJobNo
 //           );
 
-    if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iParticipantNodeId()) {
+    if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iDistNodeId()) {
       if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
         pJob = pJobScan;
     }

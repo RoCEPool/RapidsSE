@@ -1,12 +1,25 @@
 /*============================================================================*/
-/* se_memoryStats.sen -- memory statistics                                    */
+/* eMS.h -- Mutex Side                                                        */
 /*============================================================================*/
+#pragma once
 
-" se_memoryStats.sen" .verbose
+enum eMS // mutex side
+{
+  /*  0 */ MS_NONE=0,
+  /*  1 */ MS_LOCKED,
+  /*  3 */ MS_INACTIVE,
+  /*  4 */ MS_WAITING,
+  /*  5 */ MS_ENUMS,
+};
 
-: memoryReset memory::reset ;
-
-: memoryStats memory::statistics ;
+static Stz* aMS[]
+{
+  /*  0 */ "MS_NONE"_Stz,
+  /*  1 */ "MS_LOCKED"_Stz,
+  /*  3 */ "MS_INACTIVE"_Stz,
+  /*  4 */ "MS_WAITING"_Stz,
+  /*  5 */ "MS_ENUMS"_Stz,
+};
 
 /*============================================================================*/
 /* end                                                                        */

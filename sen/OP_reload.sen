@@ -5,35 +5,35 @@
 " OP_reload.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
+/* on EV_M_START ...                                                 INIT */
 /*----------------------------------------------------------------------------*/
 : reload_StartMarker \handler
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_DATAPULSE ...                                                BEGIN */
+/* on EV_M_DATAPULSE ...                                                BEGIN */
 /*----------------------------------------------------------------------------*/
 : reload_DataPulse \handler
 
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_CSVBUFFER ...                                                 EACH */
+/* on EV_D_CSVBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : reload_CsvBuffer \handler
 
-  ZK_D_CSVBUFFER_handler
+  EV_D_CSVBUFFER_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                    END */
+/* on EV_M_EOS ...                                                    END */
 /*----------------------------------------------------------------------------*/
 : reload_EosMarker \handler
 
-  ZK_M_EOS_handler
+  EV_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -48,10 +48,10 @@
 
   op__topology
 
-  find: reload_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
-  find: reload_EosMarker   ZK_M_EOS         [op].handler!
-  find: reload_DataPulse   ZK_M_DATAPULSE   [op].handler!
-  find: reload_StartMarker ZK_M_START       [op].handler!
+  find: reload_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
+  find: reload_EosMarker   EV_M_EOS         [op].handler!
+  find: reload_DataPulse   EV_M_DATAPULSE   [op].handler!
+  find: reload_StartMarker EV_M_START       [op].handler!
 
   op__loop
 

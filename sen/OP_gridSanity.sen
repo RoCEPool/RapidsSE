@@ -5,11 +5,11 @@
 " OP_sanity.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_I_NODEINFO...                                                          */
+/* on EV_I_NODEINFO...                                                          */
 /*----------------------------------------------------------------------------*/
 : gridSanity_NodeInfo \handler
 
-  //"Operand:- ZK_I_NODEINFO" .verbose
+  //"Operand:- EV_I_NODEINFO" .verbose
 
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
@@ -43,11 +43,11 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START...                                                       */
+/* on EV_M_START...                                                       */
 /*----------------------------------------------------------------------------*/
 : gridSanity_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
 
   PipeIn[].pipeOut
 
@@ -73,8 +73,8 @@
 
   op__topology
 
-  find: gridSanity_StartMarker ZK_M_START [op].handler!
-  find: gridSanity_NodeInfo    ZK_I_NODEINFO    [op].handler!
+  find: gridSanity_StartMarker EV_M_START [op].handler!
+  find: gridSanity_NodeInfo    EV_I_NODEINFO    [op].handler!
 
   op__loop
 

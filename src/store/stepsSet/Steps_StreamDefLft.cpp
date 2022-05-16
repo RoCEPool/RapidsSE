@@ -44,6 +44,7 @@ void Step::vAddSteps_StreamDefLft(void)
   vAddStep("StreamDef::parse"_Stz,               &Step::vStreamDefLftParse);
   vAddStep("StreamDefLft[].pipeIn"_Stz,          &Step::vStreamDefLftPipeIn);
   vAddStep("StreamDefLft[].print"_Stz,           &Step::vStreamDefLftPrint);
+  vAddStep("StreamDefLft[].replicated"_Stz,      &Step::vStreamDefLftReplicated);
   vAddStep("StreamDefLft[].rowSize"_Stz,         &Step::vStreamDefLftRowSize);
   vAddStep("StreamDefLft[].selectColumns"_Stz,   &Step::vStreamDefLftSelectColumns);
   vAddStep("StreamDefLft[].set"_Stz,             &Step::vStreamDefLftSet);
@@ -301,6 +302,20 @@ void Step::vStreamDefLftPrint(void)
   StreamDef* pStreamDef = _pStreamDef(*m_pLogicUnit->m_xpStreamDefLft);
   
   pStreamDef->vPrint();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefLft[].replicated -- set streamDef as replicated                   */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefLftReplicated(void)
+{
+  ENTRY();
+
+  StreamDef* pStreamDef = _pStreamDef(*m_pLogicUnit->m_xpStreamDefLft);
+
+  pStreamDef->vReplicated(true);
 
   EXIT();
 }

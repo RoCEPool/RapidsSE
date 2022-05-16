@@ -8,6 +8,7 @@
 ../../tests/tests1N4P/Expressions/testList
 ../../tests/tests1N4P/Filter/testList
 ../../tests/tests1N4P/Limit/testList
+../../tests/tests1N4P/Memory/testList
 ../../tests/tests1N4P/Projections/testList
 ../../tests/tests1N4P/Regression/testList
 ../../tests/tests1N4P/Combined/testList

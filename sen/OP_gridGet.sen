@@ -5,11 +5,11 @@
 " OP_gridGet.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_GRIDGet ...                                                 */
+/* handler for EV_D_GRIDGet ...                                                 */
 /*----------------------------------------------------------------------------*/
 : gridGet_getObject  \handler
 
-  // pipe out ZK_M_START
+  // pipe out EV_M_START
   PipeIn[].pipeOut
   ">>>>>>>>>>>>>>>>> gridGet_getObject" .
   //stk displays what in the stack
@@ -38,7 +38,7 @@
   op__topology
 
 
-  find: gridGet_getObject   ZK_M_DATAPULSE   [op].handler!
+  find: gridGet_getObject   EV_M_DATAPULSE   [op].handler!
 
   op__loop
 

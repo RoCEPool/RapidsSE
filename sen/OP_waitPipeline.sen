@@ -5,18 +5,18 @@
 " OP_waitPL.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : waitPipeline_Start \handler
 
   0  to Counter0[]
   -1 to Counter1[]
 
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : waitPipeline_DataPulse \handler
 
@@ -25,7 +25,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_END ...                                                   */
+/* handler for EV_M_END ...                                                   */
 /*----------------------------------------------------------------------------*/
 : waitPipeline_End \handler
 
@@ -34,7 +34,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : waitPipeline_ReturnPipeline \handler
 
@@ -91,10 +91,10 @@
 
   op__topology
 
-  find: waitPipeline_DataPulse      ZK_M_DATAPULSE      [op].handler!
-  find: waitPipeline_End            ZK_M_END            [op].handler!
-  find: waitPipeline_ReturnPipeline ZK_I_RETURNPIPELINE [op].handler!
-  find: waitPipeline_Start          ZK_M_START          [op].handler!
+  find: waitPipeline_DataPulse      EV_M_DATAPULSE      [op].handler!
+  find: waitPipeline_End            EV_M_END            [op].handler!
+  find: waitPipeline_ReturnPipeline EV_I_RETURNPIPELINE [op].handler!
+  find: waitPipeline_Start          EV_M_START          [op].handler!
 
   op__loop
 

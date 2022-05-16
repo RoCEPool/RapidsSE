@@ -86,10 +86,7 @@ public:
 
 
   // api
-  void vApiForkChild_noWait(void);
-  void vApiForkChild_wait(void);
-  void vApiForkGeneric_noWait(void);
-  void vApiNewGenericJob(void);
+  void vApiForkChild(void);
   void vApiReapJobs(void);
   void vApiSpawnJob(void);
 
@@ -331,11 +328,14 @@ public:
   void vDataBufferSet(void);
 
   // ddllock
+void vDdlLockAssertNone(void);
   void vDdlLockDropRead(void);
   void vDdlLockDropWrite(void);
   void vDdlLockGrabRead(void);
   void vDdlLockGrabWrite(void);
-  void vDdlLockNone(void);
+  void vDdlLockHasLock(void);
+  void vDdlLockHasRead(void);
+  void vDdlLockHasWrite(void);
   void vDdlLockTestDrop(void);
 
   // debug
@@ -665,7 +665,6 @@ public:
   void vIndexDefNameStore(void);
   void vIndexDefNew(void);
   void vIndexDefParse(void);
-  void vIndexDefParseOLD(void);
   void vIndexDefSet(void);
   void vIndexDefSyntax(void);
   void vIndexDefParseTableName(void);
@@ -817,6 +816,7 @@ public:
 
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
+  void vJobTrace(void);
 
   void vJobEntryPointFetch(void);
   void vJobEntryPointStore(void);
@@ -842,12 +842,11 @@ public:
 
   void vJobIdNameFetch(void);
 
+  void vJobOriginIdFetch(void);
   void vJobOriginNodeIdFetch(void);
 
   void vJobParentIdFetch(void);
   void vJobParentOriginNodeIdFetch(void);
-  void vJobParticipantNodeIdFetch(void);
-  void vJobParticipantNodeIdStore(void);
   void vJobIdPipeToOp0(void);
   void vJobPreExecuteTest(void);
   void vJobPhaseFetch(void);
@@ -865,6 +864,8 @@ public:
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
+  void vJobResponseOpFetch(void);
+  void vJobResponseOpStore(void);
 
   void vJobReportMetrics(void);
   void vJobReportNetDissect(void);
@@ -878,8 +879,7 @@ public:
 
   void vJobSetOriginId(void);
   void vJobSignalWaiter(void);
-  void vJobStateFetch(void);
-  void vJobStateStore(void);
+  void vJobMutexFetch(void);
   void vJobIdSystemCloserFetch(void);
   void vJobIdSystemCloserStore(void);
 
@@ -896,9 +896,6 @@ public:
   void vJobTscCanceling(void);
   void vJobTscCanceled(void);
   void vJobTscParticipant(void);
-
-  void vJobWasForkedFetch(void);
-  void vJobWasForkedStore(void);
 
   // job metrics
   void vJobMetricsCollect(void);
@@ -1171,7 +1168,6 @@ public:
 
   // memory
   void vMemoryByteDump(void);
-  void vMemoryReset(void);
   void vMemoryStatistics(void);
   void vMemoryWordDump(void);
 
@@ -1879,6 +1875,7 @@ public:
   void vStreamDefLftParse(void);
   void vStreamDefLftPipeIn(void);
   void vStreamDefLftPrint(void);
+  void vStreamDefLftReplicated(void);
   void vStreamDefLftRowSize(void);
   void vStreamDefLftSelectColumns(void);
   void vStreamDefLftSet(void);
@@ -2035,6 +2032,7 @@ public:
   void vTableTablePtnFetch(void);
   void vTableTablePtnGet(void);
   void vTableTablePtnZero(void);
+  void vTableUniqueName(void);
   void vTableVerify(void);
   void vTableVisualize(void);
 
@@ -2087,6 +2085,7 @@ public:
   void vTaskException(void);
   void vTaskGet(void);
   void vTaskGrabLock(void);
+  void vTaskHibernate(void);
   void vTaskIsLocked(void);
   void vTaskIsWaiting(void);
   void vTaskNameFetch(void);
@@ -2094,6 +2093,7 @@ public:
   void vTaskOperandYieldStore(void);
   void vTaskPreHibernate(void);
   void vTaskReleaseLockSets(void);
+  void vTaskRetire(void);
   void vTaskSeeFrameStack(void);
   void vTaskSeeLockSets(void);
   void vTaskSeeLogicUnit(void);

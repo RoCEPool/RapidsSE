@@ -75,7 +75,7 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   JobId tDistId;
   RASSERT(tDistId.bIsUnknown());
 
-  m_pRootJob = new Job("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
+  m_pRootJob = Api::pNewRootJob("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
 
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
@@ -90,8 +90,7 @@ SeDeputy::~SeDeputy(void) noexcept(false)
   while (m_pInput)
     m_pInput = m_pInput->pDeleteInput();
 
-  delete m_pRootJob;
-  m_pRootJob = nullptr;
+  Api::vDeleteRootJob(m_pRootJob);
   
   AM::THREAD::vDeleteThread(m_pThread);
 }
@@ -128,11 +127,10 @@ void SeDeputy::vDeputyLoop(void)
 
     RASSERT(!m_pJob);
 
-    m_pThread->pMutex()->vLock(m_pSePrompt);
+    vMutexLock(this);
     RASSERT(!m_pJob);
     m_bAvailable = true;
-    m_pThread->pMutex()->vWait(m_pSePrompt);
-    m_pThread->pMutex()->vUnlock(m_pSePrompt);
+    vMutexWaitAndUnlock(this);
   
     if (! m_bContinue)
       break;
@@ -141,34 +139,54 @@ void SeDeputy::vDeputyLoop(void)
     TagSet* pInpTagSet   = m_pInput->pInpTagSet();
     
     pInpTagSet->vReplace(C_TAG_WAIT,1);
+    pInpTagSet->vReplace(C_TAG_SIGNALWAITER,1);
     pInpTagSet->vReplace(C_TAG_PATH,m_sFolderPath);
     pInpTagSet->vReplace(C_TAG_LASTJOBID,m_tLastJobId.iAsI8());
     pInpTagSet->vReplace(C_TAG_SYSTEMCLOSER,m_bSystemCloser);
 
     JobId tChildJobId;
     
-    m_eError = Api::eForkJob(tChildJobId,m_pRootJob,
+  JobId tParentId;
+  tParentId = m_pRootJob->tJobId();
+
+  JobId tOriginId;
+  tOriginId = m_pRootJob->tOriginId();
+
+  JobId tDistId;
+  tDistId = m_pRootJob->tDistId();
+
+    
+    m_eError = Api::eForkJob(tChildJobId,
                              pInpTknVec,pInpTagSet,
-                             m_pJob // TO BE REMOVED
+                             tParentId,tOriginId,tDistId,
+                             m_pRootJob, // TO BE REMOVED
+                             m_pJob      // TO BE REMOVED
                              );
     
     if (EC_NONE != m_eError) {
-      m_pSePrompt->pMutex()->vLock(m_pSePrompt);
-      m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
-      m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
-      continue;
+      m_pSePrompt->vMutexLock(this);
+      m_pSePrompt->vMutexSignalAndUnlock(this);
+       continue;
     }
     
-    ApiHelper::vPrintResults(m_pJob);
-    
+    // start the buffer queue processing while the pipeline ops are running
+    if (m_pJob->bIsPipeline())
+      m_pJob->pOutput()->vProcessBufferQueue();
+
+    RASSERT(! m_pJob->pOutput()->m_bError );
+
+    if (m_pJob->bIsInError()) {
+      vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
+             aEC[m_pJob->eJobError()]);
+    }
+
     vReportTime();
       
     ApiHelper::vResetResults(m_pJob);
 
     if (! m_pJob->bHasTag(C_TAG_BG)) {
-      m_pSePrompt->pMutex()->vLock(m_pSePrompt);
-      m_pSePrompt->pMutex()->vSignal(m_pSePrompt);
-      m_pSePrompt->pMutex()->vUnlock(m_pSePrompt);
+      m_pSePrompt->vMutexLock(this);
+      m_pSePrompt->vMutexSignalAndUnlock(this);
     }
     
     // NEEDS CORRECTION
@@ -201,14 +219,13 @@ bool SeDeputy::bAvailable(void)
 /*----------------------------------------------------------------------------*/
 /* signal this deputy to execute its job                                      */
 /*----------------------------------------------------------------------------*/
-void SeDeputy::vDeputiseJob(void)
+void SeDeputy::vDeputiseJob(SePrompt* pSePrompt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
   
-  m_pThread->pMutex()->vLock(m_pThread);
+  m_pThread->pMutex()->vLock(pSePrompt);
   m_bAvailable = false;
-  m_pThread->pMutex()->vSignal(m_pThread);
-  m_pThread->pMutex()->vUnlock(m_pThread);
+  m_pThread->pMutex()->vSignalAndUnlock(pSePrompt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,6 +249,16 @@ void SeDeputy::vError(eEC eError)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get input                                                                  */
+/*----------------------------------------------------------------------------*/
+Input* SeDeputy::pInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+  
+  return m_pInput;
+}
+
+/*----------------------------------------------------------------------------*/
 /* last job run                                                               */
 /*----------------------------------------------------------------------------*/
 JobId SeDeputy::tLastJobId(void)
@@ -242,14 +269,46 @@ JobId SeDeputy::tLastJobId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get input                                                                  */
+/* lock this prompt's mutex                                                   */
 /*----------------------------------------------------------------------------*/
-Input* SeDeputy::pInput(void)
+void SeDeputy::vMutexLock(Object* pLockBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
-  
-  return m_pInput;
+
+  Mutex* pMutex = m_pThread->pMutex();
+
+  pMutex->vLock(pLockBy);
 }
+
+/*----------------------------------------------------------------------------*/
+/* signal this job's mutex                                                    */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vMutexSignalAndUnlock(Object* pLockBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+
+  Mutex* pMutex = m_pThread->pMutex();
+
+  //pMutex->vLock(pLockBy);
+
+  pMutex->vSignalAndUnlock(pLockBy);
+}
+
+/*----------------------------------------------------------------------------*/
+/* wait on this prompt's mutex                                                */
+/*----------------------------------------------------------------------------*/
+void SeDeputy::vMutexWaitAndUnlock(Object* pLockBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
+
+  Mutex* pMutex = m_pThread->pMutex();
+        
+  pMutex->vWaitForSignalLoop(this);
+    
+  pMutex->vUnlock(pLockBy);
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* report time taken by last command                                          */
@@ -316,8 +375,7 @@ void SeDeputy::vTerminate(void)
   
   m_pThread->pMutex()->vLock(m_pThread);
   m_bContinue = false;
-  m_pThread->pMutex()->vSignal(m_pThread);
-  m_pThread->pMutex()->vUnlock(m_pThread);
+  m_pThread->pMutex()->vSignalAndUnlock(m_pThread);
 }
 
 /*----------------------------------------------------------------------------*/

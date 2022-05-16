@@ -13,7 +13,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : reap_StartMarker \handler
 
@@ -38,7 +38,7 @@
 
   op__topology
 
-  find: reap_StartMarker ZK_M_START [op].handler!
+  find: reap_StartMarker EV_M_START [op].handler!
 
   op__loop
 

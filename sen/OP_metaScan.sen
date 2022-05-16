@@ -37,18 +37,18 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_CLEANING ...                                              */
+/* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : metaScan_Cleaning \handler
 
   //Myvan: I don't think we need this
   //nullptr to Operand[]
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for EV_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : metaScan_DataMarker \handler
  
@@ -78,7 +78,7 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : metaScan_StartMarker \handler
 
@@ -106,9 +106,9 @@
 
   op__topology
 
-  find: metaScan_Cleaning      ZK_M_CLEANING   [op].handler!
-  find: metaScan_DataMarker    ZK_M_DATAPULSE  [op].handler!
-  find: metaScan_StartMarker   ZK_M_START      [op].handler!
+  find: metaScan_Cleaning      EV_M_CLEANING   [op].handler!
+  find: metaScan_DataMarker    EV_M_DATAPULSE  [op].handler!
+  find: metaScan_StartMarker   EV_M_START      [op].handler!
 
   op__loop
 

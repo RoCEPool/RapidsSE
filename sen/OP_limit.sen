@@ -17,11 +17,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                   END */
+/* on EV_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
 : limit_Cleaning \handler
 
-  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+  0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   // will be null if table not found
   StreamDefLft[].isNull not if
@@ -32,17 +32,17 @@
     StreamDefOut[].delete
   then
 
-  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+  EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
-  ZK_M_CLEANING_handler
+  EV_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/* on EV_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : limit_StreamDef \handler
 
-  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+  0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
@@ -72,8 +72,8 @@
   op__topology
 
   // handle combined operator
-  find: limit_Cleaning    ZK_M_CLEANING      [op].handler!
-  find: limit_StreamDef   ZK_D_STREAMDEF     [op].handler!
+  find: limit_Cleaning    EV_M_CLEANING      [op].handler!
+  find: limit_StreamDef   EV_D_STREAMDEF     [op].handler!
 
   op__loop
 

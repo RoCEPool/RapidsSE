@@ -522,29 +522,6 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset memory statistics                                                    */
-/*----------------------------------------------------------------------------*/
-void MemLib::vReset(void)
-{
-  Statistics* pStats = AM::pStatistics();
-
-  pStats->Memory.m_iCopyTotal = 0;
-  pStats->Memory.m_iCompareTotal = 0;
-  pStats->Memory.m_iMoveTotal = 0;
-  pStats->Memory.m_iScribbleTotal = 0;
-  pStats->Memory.m_iSetTotal  = 0;
-  pStats->Memory.m_iZeroTotal = 0;
-  
-  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    pStats->Memory.m_iaCopy[i_Class] = 0;
-    pStats->Memory.m_iaMove[i_Class] = 0;
-    pStats->Memory.m_iaScribble[i_Class] = 0;
-    pStats->Memory.m_iaSet[i_Class] = 0;
-    pStats->Memory.m_iaZero[i_Class] = 0;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* rotate memory by given number of bytes                                     */
 /*----------------------------------------------------------------------------*/
 void MemLib::vRotate(void* avArg, i8 nBytes, i8 nBy)

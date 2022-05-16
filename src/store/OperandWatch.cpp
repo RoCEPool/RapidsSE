@@ -136,7 +136,7 @@ void OperandWatch::vReset(void)
   
   m_iFirst = 0;
   
-  for (i8 i_Operand = 0; i_Operand < ZK_ENUMS; i_Operand++) {
+  for (i8 i_Operand = 0; i_Operand < EV_ENUMS; i_Operand++) {
     
     m_xaOperand[i_Operand].m_nCnt   = 0;
     m_xaOperand[i_Operand].m_iFirst = 0;

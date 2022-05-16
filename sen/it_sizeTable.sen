@@ -8,14 +8,14 @@
 
   // C_TDEF_SIZETABLE
   
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __sizeTable (
     NodeName  VARCHAR NOT NULL ,
     size      VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 

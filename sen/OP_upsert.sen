@@ -5,11 +5,11 @@
 " OP_upsert.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                             */
+/* handler for EV_D_CRWBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : upsertOp_CrwBuffer \handler
 
-  //"Operand:- ZK_D_CRWBUFFER" .verbose
+  //"Operand:- EV_D_CRWBUFFER" .verbose
   PipeIn[]\clear to CrwBuffer[]
 
   tx[].begin
@@ -23,13 +23,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : upsertOp_StartMarker \handler
 
   PipeIn[].pipeOut
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
   // check if we can insert into the table
   <tableNm> op__table if
     Table[].tablePtn@ to TablePtn[]
@@ -39,11 +39,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_STREAMDEF ...                                             */
+/* handler for EV_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : upsertOp_StreamDef \handler
 
-  //"Operand:- ZK_D_STREAMDEF" .verbose
+  //"Operand:- EV_D_STREAMDEF" .verbose
   PipeIn[].delete
   Table[] StreamDefOut[].newFromTable
   StreamDefOut[].pipeOut
@@ -60,9 +60,9 @@
 
   op__topology
 
-  find: upsertOp_CrwBuffer   ZK_D_CRWBUFFER   [op].handler!
-  find: upsertOp_StartMarker ZK_M_START [op].handler!
-  find: upsertOp_StreamDef   ZK_D_STREAMDEF   [op].handler!
+  find: upsertOp_CrwBuffer   EV_D_CRWBUFFER   [op].handler!
+  find: upsertOp_StartMarker EV_M_START [op].handler!
+  find: upsertOp_StreamDef   EV_D_STREAMDEF   [op].handler!
 
   op__loop
 

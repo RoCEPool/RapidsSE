@@ -15,6 +15,10 @@
 
   //"cancel:onParticipant" .
 
+  [args].distJob if
+    "cancel" "onParticipant" "*on participant" [job].trace
+  then
+
   // find job to be canceled in participating job list
   [job].distId@ ListedJob[].findParticipant? if
 
@@ -34,7 +38,7 @@
   
   then
   
-  [job]:retire
+  [job]:retireAndExit
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,11 +52,16 @@
 
   //"cancel:cancel" .
 
+  [args].distJob if
+    "cancel" "cancel" "*on origin" [job].trace
+  then
+
+
   "cancel:onParticipant" [job].entryPoint!
 
-  [job] job:broadcast
+  [job]:broadcast
 
-  [job]:retire
+  [job]:retireAndExit
   HAZARD
 ;
 

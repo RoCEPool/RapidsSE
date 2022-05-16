@@ -43,16 +43,12 @@ Output::Output(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
-  m_pJob              = nullptr;
+  m_pJob              = pJob;
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
-  m_bExitEarlyMarker  = false;
-  m_bCmdErr           = false;
-  m_bExecErr          = false;
+  m_bError            = false;
   m_bPrintEnabled     = true;
-
-  m_iOutputState      = 0;
   
   m_bFileOut          = false;
   m_pFileOut          = nullptr;
@@ -112,9 +108,6 @@ void Output::vBeginProcOneCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
-  //RASSERT(! m_iOutputState);
-  m_iOutputState = 1;
-  
  if (!m_bFileOut)
    return;
     
@@ -135,14 +128,14 @@ void Output::vBeginProcOneCmd(void)
 /*----------------------------------------------------------------------------*/
 /* drain the result/output queue                                              */
 /*----------------------------------------------------------------------------*/
-void Output::vDrainBufferQueue(Job* pJob)
+void Output::vDrainBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   while (! m_bExitMarker   &&
-         ! pJob->bIsInError()) {
+         ! m_pJob->bIsInError()) {
     
-    Operand* pOperand = pPopBufferQueue_blocking(pJob);
+    Operand* pOperand = pPopBufferQueue_blocking();
     
     if (! pOperand) {
       AM::vNapUsec(1000,CN_OUTPUT);
@@ -177,8 +170,7 @@ void Output::vEndProcOneCmd(void)
     delete m_pFileOut;
     m_pFileOut = nullptr;
   }
-  
-  m_iOutputState = 0;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -204,22 +196,20 @@ void Output::vFilePath(Stz* szFilePath)
 /*----------------------------------------------------------------------------*/
 /* process the result/output queue                                            */
 /*----------------------------------------------------------------------------*/
-void Output::vProcessBufferQueue(Job* pJob)
+void Output::vProcessBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
-  //RASSERT(m_iOutputState);
-  
   Operand* pOperand;
   
-  while ( (pOperand = pPopBufferQueue_blocking(pJob)) ) {
+  while ( (pOperand = pPopBufferQueue_blocking()) ) {
 
     if (! bProcessOperand(pOperand))
       break;
 
   }
   
-  vDrainBufferQueue(pJob);
+  vDrainBufferQueue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,10 +288,10 @@ void Output::vPrintResult(void)
 /*----------------------------------------------------------------------------*/
 /* pop next operand from result queue                                         */
 /*----------------------------------------------------------------------------*/
-Operand* Output::pPopBufferQueue_blocking(Job* pJob)
+Operand* Output::pPopBufferQueue_blocking(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-    
+      
   for (;;) {
     
     Operand* pOperand = _pOperand(m_pOutputQueue->pPop());
@@ -311,7 +301,7 @@ Operand* Output::pPopBufferQueue_blocking(Job* pJob)
     
     AM::vNapUsec(1000,CN_OUTPUT);
     
-    if (pJob->bIsInError())
+    if (m_pJob->bIsInError())
       return nullptr;
   }
   
@@ -391,20 +381,12 @@ bool Output::bProcessOperand(Operand* pOperand)
       
     // -- -- -- -- -- --
       
-    case CN_INDEXDEF: {
-      //vTrace("Pipeline Job: INDEXDEF\n"_Stz);
-      AM::vDeleteOperand(pOperand);
-      break;
-    }
-      
-    // -- -- -- -- -- --
-      
     case CN_INFOSET: {
       InfoSet* pInfoSet = _pInfoSet(pOperand);
       ASSERT( ! pInfoSet->szBufferNm()->bSame(C_NO_NAME) );
       if (pInfoSet->szBufferNm()->bSame(C_TDEF_COMMANDERRORS)) {
 
-        if ( ! m_bCmdErr) {
+        if ( ! m_bError) {
           Row *pInfoRow = pInfoSet->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
@@ -415,7 +397,7 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; Line: %lld; Column: %lld; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, szErrorText);
-          m_bCmdErr = true;
+          m_bError = true;
         }
         else {
           // LOG error
@@ -424,7 +406,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       }
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS)) {
 
-        if ( ! m_bExecErr) {
+        if ( ! m_bError) {
           Row *pInfoRow = pInfoSet->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
@@ -433,7 +415,7 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], szErrorText);
-          m_bExecErr = true;
+          m_bError = true;
         }
         else {
           // LOG error
@@ -488,84 +470,17 @@ bool Output::bProcessOperand(Operand* pOperand)
 
       switch (eOpMarker) {
           
-        case OM_CANCELLING: {
-          NEVER_REACH
-          break;
-        }
-
-        case OM_CLEANING: {
-          NEVER_REACH
-          break;
-        }
-
-        case OM_DATAPULSE: {
-          //vTrace("Pipeline Job: PULSEMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-          
-        case OM_DESTROYMARKER: {
-          //vTrace("Pipeline Job: DESTROYMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-
-        case OM_EACHSCANEOSMARKER: {
-          //vTrace("Pipeline Job: EACHSCANEOSMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-
-        case OM_EOSMARKER: {
-          //vTrace("Pipeline Job: EOSMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-          
-        case OM_ERRORMARKER: {
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-         
-        case OM_ERROREDMARKER: {
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-          
         case OM_EXITING: {
           //vTrace("Pipeline Job: EXITMARKER\n"_Stz);
           //if ( ! bHasError )
           //  vTrace("success: %lld rows fetched\n"_Stz, *m_ixRowsProcessed);
           AM::vDeleteOperand(pOperand);
           m_bExitMarker = true;
-          if ( !m_bCmdErr && !m_bExecErr )
+          if ( !m_bError )
             vPrintResult();
-          m_bCmdErr = false;
-          m_bExecErr = false;
+          m_bError = false;
           bContinue = false;
           goto L_EXIT;
-          break;
-        }
-
-        case OM_PULSEDMARKER: {
-          //vTrace("Pipeline Job: PULSEDMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-
-        case OM_RETURNMARKER: {
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-          
-        case OM_RETURNEDMARKER: {
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-          
-        case OM_STARTMARKER: {
-          //vTrace("Pipeline Job: STARTMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
           break;
         }
           
@@ -608,11 +523,6 @@ bool Output::bProcessOperand(Operand* pOperand)
           vTrace("\n%s\n"_Stz, sMetadata.szStz());
         }
       }
-      break;
-    }
-
-    case CN_STREAMDEFRHT: {
-      NEVER_REACH;
       break;
     }
 

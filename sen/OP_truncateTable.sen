@@ -5,12 +5,12 @@
 " OP_truncateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : truncateTable_DataPulse \handler
 
 
-  //"Operand:- ZK_M_DATAPULSE" .verbose
+  //"Operand:- EV_M_DATAPULSE" .verbose
 
   // truncate the buffers of the tablePtn
   TablePtn[].truncate
@@ -24,11 +24,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : truncateTable_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
 
   PipeIn[].pipeOut
 
@@ -50,8 +50,8 @@
 
   op__topology
 
-  find: truncateTable_StartMarker ZK_M_START     [op].handler!
-  find: truncateTable_DataPulse   ZK_M_DATAPULSE [op].handler!
+  find: truncateTable_StartMarker EV_M_START     [op].handler!
+  find: truncateTable_DataPulse   EV_M_DATAPULSE [op].handler!
 
   op__loop
 

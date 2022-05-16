@@ -15,6 +15,10 @@
 
   //"pipeline:origin" .
   
+  [args].distJob if
+    "pipeline" "origin" "org_ now oridinary" [job].trace
+  then
+  
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
   // ordinary job            / run pre-checks                                 //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
@@ -29,7 +33,7 @@
   Pipeline[] not assert
   
   // immutable op, subPLineOfOp and pipelineOfOp should be null
-  [op]           not assert
+  [op]       not assert
   [pipeline] not assert
 
   // and so we start...
@@ -49,12 +53,11 @@
 
       [job].addRetired
       
-      JS_SIGNALLED [job].state!
       [job].signalWaiter
 
       [task].grabLock
-        TR_RETIRE_THIS_TASK [task].transition!
-      
+        [task].retire // does not queue onto exit demon
+        
       HAZARD
 
     then
@@ -66,9 +69,14 @@
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
   // add this job to originator job list
+  [job].setOriginId
   [job].distIdGenerate
   [job].addOriginator
   [job].assertOriginator
+
+  [args].distJob if
+    "pipeline" "origin" "org_ now originator" [job].trace
+  then
 
   "<show_command>" sysargs::tagSet@ tagSet.hasName if
     <cmd> .
@@ -156,11 +164,15 @@
   [job].error@ not if
     // + compiled without error..
     
-    "pipeline:begin" [job].entryPoint!
+    [args].distJob if
+      "pipeline" "origin" "org_ brd begin" [job].trace
+    then
+    
+    "pipeline:ptpBegin" [job].entryPoint!
     
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      [job] job:broadcast
+      [job]:broadcast
     [task].wait
 
     [job].tscBegun
@@ -174,11 +186,17 @@
 
     // "ORIGIN: broadcast execute" .
 
+    [args].distJob if
+      "pipeline" "origin" "org_ all begun" [job].trace
+      "pipeline" "origin" "org_ brd execute" [job].trace
+    then
+    
+
     [job].tscExecuting
 
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      "execute" api::forkGeneric_noWait
+      STD_NOWAIT_TAG "execute" api::forkChild discard
     [task].wait
 
     [job].tscExecuted
@@ -196,11 +214,17 @@
 
     // "ORIGIN: broadcast end" .
     
+    [args].distJob if
+      "pipeline" "origin" "org_ all executed" [job].trace
+      "pipeline" "origin" "org_ brd end" [job].trace
+    then
+    
+
     [job].tscEnding
     
     [task].grabLock
       [grid].knownNodes [task].acksRemaining!
-      "end" api::forkGeneric_noWait
+      STD_NOWAIT_TAG "end" api::forkChild discard
     [task].wait
 
     [job].tscEnded
@@ -212,58 +236,53 @@
   // pipeline has ended      / become ordinary job                            //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
 
+  [args].distJob if
+    "pipeline" "origin" "org_ all ended" [job].trace
+  then
+  
   [job].removeOriginator
   [job].assertOrdinary
 
+  [args].distJob if
+    "pipeline" "origin" "org_ now ordinary" [job].trace
+  then
 
   // + + 1 + + + + 2 + + + + 3 + + + + 4 + + + + 5 + + + + 6 + + + + 7 + + + +//
   // ordinary job            / this job exits                                 //
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +//
   
-  [job].wasForked? if
-    "JOB WAS FORKED" .
-        
-    HAZARD // temp
-    
-    [ddlLock].testDrop
-    ListedJob[].assertNoRef
+  [job] job(Id).hasCascade@ if
 
-    [job].addRetired
-          
-    [task].grabLock
-      TR_RETIRE_THIS_TASK [task].transition!
-      
-    HAZARD
-
-  else
-  [job] job(Id).hasCascade@ not if
-    [ddlLock].testDrop
-    ListedJob[].assertNoRef
-
-    [job].addRetired
-    
-    JS_SIGNALLED [job].state!
-    [job].signalWaiter
-      
-    [task].grabLock
-      TR_RETIRE_THIS_TASK [task].transition!
-      
-    HAZARD
-
-  else
-      
     [ddlLock].testDrop
     
     [task].grabLock
     
-      JS_SIGNALLED [job].state!
+      "<signalWaiter>" [job].tagSet@ tagSet.hasName assert
       [job].signalWaiter
  
-      TR_HIBERNATE_THIS_TASK [task].transition!
-  
+      [task].hibernate
+      
     HAZARD
     
-  then then
+  then
+  
+  [ddlLock].testDrop
+  
+  ListedJob[].assertNoRef
+
+  [args].distJob if
+    "pipeline" "origin" "org_ retiring..." [job].trace
+  then
+
+  [job].addRetired
+  
+  [task].grabLock
+  
+    "<signalWaiter>" [job].tagSet@ tagSet.hasName if
+      [job].signalWaiter
+    then
+    
+    [task].retire // does not queue onto exit demon
 
   HAZARD
 ;
@@ -276,12 +295,14 @@
 /*----------------------------------------------------------------------------*/
 /* begin the op sequence for pipeline command on participant node             */
 /*----------------------------------------------------------------------------*/
-: pipeline:begin ( -- )
+: pipeline:ptpBegin ( -- )
 
-  //"pipeline:begin" .
+  //"pipeline:ptpBegin" .
 
-  [job].setOriginId
-
+  [args].distJob if
+    "pipeline" "ptpBegin" "_ptp phs begin" [job].trace
+  then
+    
   [job].progressReset
   
   [job].assertStructure
@@ -296,9 +317,6 @@
   //"pipeline:begin post [job]..phase!" [job].progress
 
   <path> str.toStrVec Path[].set
-
-  // set participant node of job
-  [grid].thisNodeId@ [job].participantNodeId!
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -330,7 +348,7 @@
   JP_BEGUN [job].phase!
 
   // what to execute next
-  "pipeline:execute" [job].entryPoint!
+  "pipeline:ptpExecute" [job].entryPoint!
 
   // add job to participant list
   [job].tscParticipant
@@ -342,9 +360,13 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply begun to originator
 
+  [args].distJob if
+    "pipeline" "ptpBegin" "_ptp has begun" [job].trace
+  then
+
   // send the begun job
   1 [task].debugMark!
-  "begun" api::forkGeneric_noWait
+  STD_NOWAIT_TAG "begun" api::forkChild discard
 
   [ddlLock].testDrop
 
@@ -358,7 +380,8 @@
         
     //1 [task].trace!
     //[task].preHibernate
-    TR_HIBERNATE_THIS_TASK [task].transition!
+
+    [task].hibernate
 
   HAZARD
 ;
@@ -366,10 +389,14 @@
 /*----------------------------------------------------------------------------*/
 /* execute the op sequence for pipeline command on participant node           */
 /*----------------------------------------------------------------------------*/
-: pipeline:execute ( -- )
+: pipeline:ptpExecute ( -- )
 
-  //"pipeline:execute" .
+  //"pipeline:ptpExecute" .
     
+  [args].distJob if
+    "pipeline" "ptpExecute" "_ptp phs execute" [job].trace
+  then
+
   [job].assertStructure
   [job].assertParticipant
 
@@ -409,7 +436,7 @@
   JP_EXECUTED [job].phase!
   
   // what to execute next
-  "pipeline:end" [job].entryPoint!
+  "pipeline:ptpEnd" [job].entryPoint!
 
   [ddlLock].testDrop
   ListedJob[].assertNoRef
@@ -418,9 +445,13 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reply executed to originator
   
-  
+  [args].distJob if
+    "pipeline" "ptpBegin" "_ptp has executed" [job].trace
+  then
+
+
   // send the executed job
-  "executed" api::forkGeneric_noWait
+  STD_NOWAIT_TAG "executed" api::forkChild discard
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -428,7 +459,7 @@
 
   [task].grabLock
       
-    TR_HIBERNATE_THIS_TASK [task].transition!
+    [task].hibernate
 
   HAZARD
 ;
@@ -436,9 +467,13 @@
 /*----------------------------------------------------------------------------*/
 /* end the op sequence for pipeline command on participant node               */
 /*----------------------------------------------------------------------------*/
-: pipeline:end ( -- )
+: pipeline:ptpEnd ( -- )
 
-  //"pipeline:end" .
+  //"pipeline:ptpEnd" .
+
+  [args].distJob if
+    "pipeline" "ptpEnd" "_ptp phs end" [job].trace
+  then
 
   [job].assertStructure
   [job].assertParticipant
@@ -450,20 +485,34 @@
   JP_ENDED [job].phase!                // this job has ended
   [job].removeParticipant
 
-  // send the ended job
-  "ended" api::forkGeneric_noWait
+  [args].distJob if
+    "pipeline" "ptpBegin" "_ptp has ended" [job].trace
+  then
 
-  [job]:retire
+
+  // send the ended job
+  STD_NOWAIT_TAG "ended" api::forkChild discard
+
+  [args].distJob if
+    "pipeline" "ptpBegin" "_ptp retiring..." [job].trace
+  then
+  
+  [job]:retireAndExit
   HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
 /* cancel op sequence for pipeline command on participant node                */
 /*----------------------------------------------------------------------------*/
-: pipeline:cancel ( -- )
+: pipeline:ptpCancel ( -- )
 
-  //"pipeline:cancel" .
-  
+  //"pipeline:ptpCancel" .
+
+  [args].distJob if
+    "pipeline" "ptpCancel" ".cancelling" [job].trace
+  then
+
+
   [job].assertStructure
   [job].assertParticipant
 
@@ -475,10 +524,15 @@
 
   [job].removeParticipant
 
-  // send the cancelled job
-  "cancelled" api::forkGeneric_noWait
+  [args].distJob if
+    "pipeline" "ptpBegin" "_ptp has cancelled" [job].trace
+  then
 
-  [job]:retire
+
+  // send the cancelled job
+  STD_NOWAIT_TAG "cancelled" api::forkChild discard
+
+  [job]:retireAndExit
   
   HAZARD
 ;

@@ -5,11 +5,11 @@
 " OP_passThru.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CSVBUFFER ...                                             */
+/* handler for EV_D_CSVBUFFER ...                                             */
 /*----------------------------------------------------------------------------*/
 : passThru_CsvBuffer \handler
 
-  //"Operand:- ZK_D_CSVBUFFER" .verbose
+  //"Operand:- EV_D_CSVBUFFER" .verbose
   Counter0[] 1 + to  Counter0[]
   PipeIn[].delete
 
@@ -17,11 +17,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_EOS ...                                                   */
+/* handler for EV_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : passThru_EosMarker \handler
 
-  //"Operand:- ZK_M_EOS" .verbose
+  //"Operand:- EV_M_EOS" .verbose
   PipeIn[].delete
   CsvBuffer[].new
   CsvBuffer[].report
@@ -35,11 +35,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : passThru_DataMarker \handler
 
-  //"Operand:- ZK_M_DATAPULSE" .verbose
+  //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // new a stream def
@@ -50,11 +50,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : passThru_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
 
   "__REPORT" locals| sReportTable |
 
@@ -80,10 +80,10 @@
 
   op__topology
 
-  find: passThru_CsvBuffer   ZK_D_CSVBUFFER   [op].handler!
-  find: passThru_EosMarker   ZK_M_EOS   [op].handler!
-  find: passThru_DataMarker  ZK_M_DATAPULSE [op].handler!
-  find: passThru_StartMarker ZK_M_START [op].handler!
+  find: passThru_CsvBuffer   EV_D_CSVBUFFER   [op].handler!
+  find: passThru_EosMarker   EV_M_EOS   [op].handler!
+  find: passThru_DataMarker  EV_M_DATAPULSE [op].handler!
+  find: passThru_StartMarker EV_M_START [op].handler!
 
   op__loop
 

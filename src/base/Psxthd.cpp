@@ -226,29 +226,6 @@ void PsxThd::vMarkNonSeThread(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sleeper statistics                                                         */
-/*----------------------------------------------------------------------------*/
-void PsxThd::vSleepers(void)
-{
-  s32 sUnitMag;
-  s32 sTimeMag;
-
-  Statistics* pStats = AM::pStatistics();
-  
-  MagLib::vUnitMag(pStats->Thread.m_nSleeps,sUnitMag);
-  vTrace("PsxThd::vSleep() total %s\n"_Stz,sUnitMag.szStz());
-  
-  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (pStats->Thread.m_iaSleeps[i_Class]) {
-      MagLib::vUnitMag(pStats->Thread.m_iaSleeps[i_Class],   sUnitMag);
-      MagLib::vTimeMag(pStats->Thread.m_iaDuration[i_Class], sTimeMag);
-      vTrace("  %s: %s times for duration of %s\n"_Stz,
-             aCN[i_Class],sUnitMag.szStz(),sTimeMag.szStz());
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* create thread, passing it function to execute                              */
 /*----------------------------------------------------------------------------*/
 i8 PsxThd::iSpawnPosixThread(void* aFun(void*), void* aArg)

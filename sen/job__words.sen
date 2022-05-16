@@ -113,7 +113,7 @@
 : job:spawn params| pJob |
 
 
-  pJob api::spawnJob_noWait
+  pJob api::spawnJob
 ;
 
 
@@ -223,20 +223,18 @@
 /*----------------------------------------------------------------------------*/
 /* retire this job and its task                                               */
 /*----------------------------------------------------------------------------*/
-: [job]:retire
+: [job]:retireAndExit
 
   [ddlLock].testDrop
   
   // check this task has no job reference
   ListedJob[].assertNoRef
 
-  JS_DELETABLE [job].state!
-
   [job].addRetired
   [task].grabLock
     [job] [exitDemon]:queueJob
-    TR_RETIRE_THIS_TASK [task].transition!
 
+    [task].retire
   
   HAZARD
 ;
@@ -279,7 +277,6 @@
 : pipelineJob_tags
   tags{
     <distJob> = 1
-    <jobKind>  = JK_PIPELINE
   }
 ;
         
@@ -289,7 +286,6 @@
 : genericJob_tags
   tags{
     <genericJob> = 1
-    <jobKind>  = JK_GENERIC
   }
 ;
 
@@ -299,7 +295,6 @@
 : localJob_tags
   tags{
     <localJob> = 1
-    <jobKind>  = JK_LOCAL
   }
 ;
         
@@ -329,7 +324,6 @@
 : liteOp_tags tagCopy: operator_tags
   tags{
     <liteOp> = 1
-    <jobKind>  = JK_LOCAL
   }
 ;
 
@@ -339,7 +333,6 @@
 : localLiteOp_tags tagCopy: operator_tags
   tags{
     <localLiteOp> = 1
-    <jobKind>     = JK_LOCAL
   }
 ;
 
@@ -387,9 +380,9 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* distribute given job to all nodes                                          */
+/* distribute [job] to all nodes                                              */
 /*----------------------------------------------------------------------------*/
-: job:broadcast params| pJob |
+: [job]:broadcast
 
   0 locals| pNode |
   
@@ -399,7 +392,7 @@
     node_I[].node to pNode
 
     pNode node.sendSocket@ if
-      pNode node.id pJob job(Id).forward
+      pNode node.id [job] job(Id).forward
     else
       "++++++++++++++++++++++++++++++++++ NO SOCKET FOR NODE" .
     then
@@ -410,23 +403,6 @@
   repeat
 
   node_I[].delete
-;
-
-
-/*----------------------------------------------------------------------------*/
-/* retired this [job] + [task]                                                */
-/*----------------------------------------------------------------------------*/
-: [cmd]:retire
-
-  // [job].tagSet@ tagSet.asStr .
-  
-  [job].addRetired
-  
-  JS_SIGNALLED [job].state!
-  [job].signalWaiter
-
-  [task].grabLock
-    TR_RETIRE_THIS_TASK [task].transition!
 ;
 
 /*============================================================================*/

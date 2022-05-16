@@ -6,7 +6,7 @@
 #include "eYX.h"
 #include "eYS.h"
 #include "eXK.h"
-#include "eZK.h"
+#include "eEV.h"
 
 #include "EvMgr.hpp"
 #include "OperandWatch.hpp"
@@ -76,8 +76,9 @@ namespace STORE
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
   
+    void vCreateTaskForOp(void);
     eYX  eCrossTopology(void);
-    eZK  eCurEvent(void);
+    eEV  eCurEvent(void);
     Word* pCurWord(void);
   
     Deck* pDeck(void);
@@ -86,8 +87,8 @@ namespace STORE
     void vDump(void);
   
     Word* pEntryWord(void);
-    i8    nEventCount(eZK eEvent);
-    void vEventCountInc(eZK eEvent);
+    i8    nEventCount(eEV eEvent);
+    void vEventCountInc(eEV eEvent);
     Word* pEventHandler(void);
     Word* pEventHandler(i8 i_OperandKind);
     void vEventHandler(i8 i_OperandKind, Word* pHandler);
@@ -100,8 +101,6 @@ namespace STORE
     bool bIsEventValid(i8 i_OperandKind);
   
     i8   iLocalRobinNext(void);
-  
-    Job* pJobOfOp(void);
   
     i8   iMetricsQueued(void);
     void vMetricsQueued(i8 iMetricsQueued);
@@ -127,6 +126,8 @@ namespace STORE
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Stage* pOtherStage(void);
+    Job* pOuterJobOfOp(void);
+
 
     Stz* szSpot(void);
     bool bPause(void);

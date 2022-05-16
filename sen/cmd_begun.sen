@@ -15,9 +15,14 @@
 
   //"begun:onOrigin" .
   
+  [args].distJob if
+    "begun" "onOrigin" "<beg ack origin task" [job].trace
+  then
+
+
   // find the originating job
   
-  [job].distId@ ListedJob[].findOriginator? if
+  [job].originId@ ListedJob[].findOriginator? if
 
     ListedJob[].taskAck
   
@@ -25,7 +30,7 @@
     
   then
   
-  [job]:retire
+  [job]:retireAndExit
   HAZARD
 ;
 
@@ -36,19 +41,23 @@
 /*----------------------------------------------------------------------------*/
 /* on participating node                                                      */
 /*----------------------------------------------------------------------------*/
-: begun:begun
+: begun:onParticipant
 
   //"begun:begun" .
 
+  [args].distJob if
+    "begun" "onParticipant" "<beg snd origin" [job].trace
+  then
+
   "begun:onOrigin" [job].entryPoint!
 
-  [job].parentOriginNodeId@ [grid].findNodeByNo to SendNode[]
+  [job].originNodeId@ [grid].findNodeByNo to SendNode[]
   
   [job] job(Id).send
 
   nullptr to SendNode[]
   
-  [job]:retire
+  [job]:retireAndExit
   HAZARD
 ;
 
@@ -61,7 +70,7 @@ cmdSyntax: begun :: begun ;
 : begun_cmdTags _cmdTags tagCopy: genericJob_tags
   tags{
     <cmdDesc>     = "--desc for job--"
-    <entryPoint>  = "begun:begun"
+    <entryPoint>  = "begun:onParticipant"
     <path>        = "/"
   }
 ;

@@ -44,7 +44,6 @@
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex not if
     
-      EC_INVALID_COLUMNS_UNIQUE_INDEX [job].error!
       [ddlLock].testDrop
       
       EC_INVALID_COLUMNS_UNIQUE_INDEX op__execErr
@@ -57,19 +56,6 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // populate the index
-/*
-  pIndex index.populate not if ( errorCode )
-    [job].error!
-    [ddlLock].testDrop
-
-    Path[].popIndexesFolder
-    Path[].popNamedTableFolder
-    Folder[].isTables assert
-    exit
-  then
-*/
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move back to ./tables
 
   Path[].popIndexesFolder
@@ -80,7 +66,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_INDEXDEF ...                                              */
+/* handler for EV_D_INDEXDEF ...                                              */
 /*----------------------------------------------------------------------------*/
 : createIndex_IndexDef
 
@@ -134,7 +120,7 @@
 
   op__topology
 
-  find: createIndex_IndexDef ZK_D_INDEXDEF [op].handler!
+  find: createIndex_IndexDef EV_D_INDEXDEF [op].handler!
 
   op__loop
 

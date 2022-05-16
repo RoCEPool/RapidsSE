@@ -9,7 +9,7 @@ based on the existing "nameValidate" stage.
  3. We need to add a new file sen/OP_exprValidate.sen. Copy an existing operator
    (e.g. sen/OP_nameValidate.sen) and rename it.
  4. In the new file, change all of the references to "nameValidate" to "exprValidate". Don't
-    forget the literal value in the ZK_D_PLANOPERAND handler (around line 27).
+    forget the literal value in the EV_D_PLANOPERAND handler (around line 27).
  5. Open the file sen/se_includeOps.sen.
  6. Since the newly added sen file is called OP_exprValidate.sen, add a line under the "e" section:
     "OP_exprValidate.sen" include

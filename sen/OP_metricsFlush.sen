@@ -5,27 +5,27 @@
 " OP_metricsFlush.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : metricsFlush_Start
 
   // "metricsFlush_Start" .
   
-  ZK_M_START_handler
+  EV_M_START_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : metricsFlush_DataPulse
 
   // "metricsFlush_DataPulse" .
     
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_FLUSH ...                                                 */
+/* handler for EV_M_FLUSH ...                                                 */
 /*----------------------------------------------------------------------------*/
 : metricsFlush_Flush
 
@@ -33,7 +33,7 @@
   
   flush::derefMetrics
   
-  ZK_M_FLUSH_handler
+  EV_M_FLUSH_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -45,9 +45,9 @@
 
   op__topology
 
-  find: metricsFlush_Start     ZK_M_START         [op].handler!
-  find: metricsFlush_DataPulse ZK_M_DATAPULSE     [op].handler!
-  find: metricsFlush_Flush     ZK_M_FLUSH         [op].handler!
+  find: metricsFlush_Start     EV_M_START         [op].handler!
+  find: metricsFlush_DataPulse EV_M_DATAPULSE     [op].handler!
+  find: metricsFlush_Flush     EV_M_FLUSH         [op].handler!
 
   op__loop
 

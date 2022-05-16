@@ -8,7 +8,7 @@
 
   // C_TDEF_STATUS
 
-  STD_PATH_TAG
+  STD_WAIT_PATH_TAG
   "
   define table __status (
     nodeName   VARCHAR NOT NULL ,
@@ -18,7 +18,7 @@
     isRecvSocket BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild_wait api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 

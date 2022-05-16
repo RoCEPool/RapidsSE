@@ -5,7 +5,7 @@
 " OP_addNode.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for EV_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : addNode_DataPulse \handler
  
@@ -13,7 +13,7 @@
 
   <portNo> >int <ipAddr> <nodeNm> node::new locals| pNewNode |
    
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -29,7 +29,7 @@
 
   op__topology
 
-  find: addNode_DataPulse ZK_M_DATAPULSE [op].handler!
+  find: addNode_DataPulse EV_M_DATAPULSE [op].handler!
 
   op__loop
 

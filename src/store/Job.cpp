@@ -56,11 +56,9 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_tOriginId = tOriginId;
 
   m_sJobNm   = szJobNm;
-  m_eJobKind = JK_NONE;
 
   m_bReapable = false;
   
-  m_bWasForked = false;
   // -- a -------------------
   
 
@@ -69,20 +67,17 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 
   // -- b -------------------
   m_bWasReceived     = false;
-  m_iParticipantNodeId = C_UNKNOWN;
   
   // -- c -------------------
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
-  m_eJobState = JS_ACTIVE;
-  m_eError_job    = EC_NONE;
+  m_eError_job  = EC_NONE;
   m_pOutput_job = nullptr;
-  
+
   // m_oJobTags
   // m_xResult
 
   // -- e -------------------
-  m_pSingularOp  = nullptr;
 
   // -- g -------------------
   m_pTask     = nullptr;
@@ -100,10 +95,9 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
 
   // -- -- -- -- -- --
       
-  m_pJobMetricsChain  = nullptr;
+  m_pJobMetrics  = nullptr;
   
-  m_pMutex_job     = nullptr;
-  m_bSystemCloser  = false;
+  m_pMutex     = nullptr;
 
   m_pStmtList = nullptr;
   
@@ -139,22 +133,19 @@ Job::~Job(void) noexcept(false)
   
   //! this assert may fail if a job completes before its references
   //! are completely returned
-  if (JK_GENERIC != m_eJobKind && JK_NONE != m_eJobKind) {
-    while (nReferences() || TS_RETIRED != m_pTask->eState() ) {
-      vTrace("Napping\n"_Stz);
-      AM::vNapMsec(10, eGetClassNo());
-    }
+  while (nReferences() ||
+         (m_pTask && TS_RETIRED != m_pTask->eState()) ) {
+    vTrace("Napping ... job still has references???\n"_Stz);
+    AM::vNapMsec(10, eGetClassNo());
   }
 
-  RASSERT(JK_GENERIC == m_eJobKind ||
-          JK_NONE    == m_eJobKind ||
-          m_bReapable);
+  RASSERT(m_bReapable);
   
-  if (m_pJobMetricsChain) {
-    while (m_pJobMetricsChain) {
-      JobMetrics* pJobMetricsNext = m_pJobMetricsChain->pNext();
-      delete m_pJobMetricsChain;
-      m_pJobMetricsChain = pJobMetricsNext;
+  if (m_pJobMetrics) {
+    while (m_pJobMetrics) {
+      JobMetrics* pJobMetricsNext = m_pJobMetrics->pNext();
+      delete m_pJobMetrics;
+      m_pJobMetrics = pJobMetricsNext;
     }
 
   }
@@ -169,7 +160,7 @@ Job::~Job(void) noexcept(false)
   
   AM::JOBS::vJobsActiveDec();
 
-  if (m_pMutex_job)
+  if (m_pMutex)
     vMutexDestroy();
   if (m_pOutput_job)
     vOutputDestroy();
@@ -269,27 +260,20 @@ void Job::vCascadeReset(void)
 
   // -- b -------------------
   m_bWasReceived     = false;
-  m_iParticipantNodeId = C_UNKNOWN;
 
   // -- c -------------------
-  m_eJobKind  = JK_NONE;
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
-  m_eJobState = JS_ACTIVE;
   
   // m_oJobTags
   // m_xResult ???
   
   // -- e -------------------
-  if (m_pSingularOp) {
-    delete m_pSingularOp;
-    m_pSingularOp  = nullptr;
-  }
 
   m_pTask->vState(TS_NONE);
   m_pTask->vSetInxPtr("job::entryPoint"_Stz);
 
-  m_pOutput_job->vDrainBufferQueue(this);
+  m_pOutput_job->vDrainBufferQueue();
 
   vDebugPoint();
 }
@@ -327,16 +311,6 @@ JobId Job::tDistId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set distributed job id                                                     */
-/*----------------------------------------------------------------------------*/
-void Job::vDistId(JobId tDistId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
-  m_tDistId = tDistId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* generate distributed job id                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vDistIdGenerate(void)
@@ -344,6 +318,18 @@ void Job::vDistIdGenerate(void)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   m_tDistId.vNextJobId();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node where distributed job was forked                                  */
+/*----------------------------------------------------------------------------*/
+i8 Job::iDistNodeId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  i8 iDistNodeId = m_tDistId.uNodeId();
+
+  return iDistNodeId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -421,6 +407,7 @@ void Job::vFolderPath(Stz* szFolderPath)
   m_sFolderPath = szFolderPath;
 }
 
+
 /*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -485,7 +472,7 @@ bool Job::bIsOnOrigin(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   i8 iOrigin = iOriginNodeId();
-  i8 iParticipant = iParticipantNodeId();
+  i8 iParticipant = iDistNodeId();
  
   if (iParticipant == iOrigin)
     return true;
@@ -547,16 +534,6 @@ bool Job::bIsPipelineLocal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set job error                                                              */
-/*----------------------------------------------------------------------------*/
-void Job::vJobError(eEC eErrorCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_eError_job = eErrorCode;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get job error                                                              */
 /*----------------------------------------------------------------------------*/
 eEC Job::eJobError(void)
@@ -567,6 +544,16 @@ eEC Job::eJobError(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set job error                                                              */
+/*----------------------------------------------------------------------------*/
+void Job::vJobError(eEC eErrorCode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_eError_job = eErrorCode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the job id                                                             */
 /*----------------------------------------------------------------------------*/
 JobId Job::tJobId(void)
@@ -574,36 +561,6 @@ JobId Job::tJobId(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_tJobId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job id from distributed id                                         */
-/*----------------------------------------------------------------------------*/
-void  Job::vJobIdFromDist(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_tJobId = m_tDistId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the job kind                                                           */
-/*----------------------------------------------------------------------------*/
-eJK Job::eJobKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_eJobKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job kind                                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vJobKind(eJK eJobKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eJobKind = eJobKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -633,9 +590,9 @@ void Job::vJobMetricsAdd(JobMetrics *pJobMetrics)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  pJobMetrics->vNext(m_pJobMetricsChain);
+  pJobMetrics->vNext(m_pJobMetrics);
   
-  m_pJobMetricsChain = pJobMetrics;
+  m_pJobMetrics = pJobMetrics;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -645,7 +602,7 @@ JobMetrics* Job::pJobMetricsChain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  return m_pJobMetricsChain;
+  return m_pJobMetrics;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -689,26 +646,6 @@ void Job::vJobPhase(eJP eJobPhase)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the job state                                                          */
-/*----------------------------------------------------------------------------*/
-eJS Job::eJobState(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_eJobState;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job state                                                          */
-/*----------------------------------------------------------------------------*/
-void Job::vJobState(eJS eJobState)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eJobState = eJobState;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get ename set                                                              */
 /*----------------------------------------------------------------------------*/
 TagSet* Job::pJobTags(void)
@@ -719,13 +656,70 @@ TagSet* Job::pJobTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* trace job                                                                  */
+/*----------------------------------------------------------------------------*/
+void Job::vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  vTrace("vJobTrace - %10s : %-14s @ %-20s - "_Stz,
+         szAtCmd,
+         szAtRoutine,
+         szAtPoint
+         );
+  
+  if (m_tJobId.bIsUnknown())
+    vTrace("%-11s"_Stz,"J:unknown "_Stz);
+  else
+    vTrace("J%04lld.%04lld "_Stz,
+           m_tJobId.uNodeId(),
+           m_tJobId.uJobNo()
+           );
+
+  if (m_tParentId.bIsUnknown())
+    vTrace("%-11s"_Stz,"P:unknown "_Stz);
+  else
+    vTrace("P%04lld.%04lld "_Stz,
+           m_tParentId.uNodeId(),
+           m_tParentId.uJobNo()
+           );
+
+  vTrace(":: "_Stz);
+  
+  if (m_tOriginId.bIsUnknown())
+    vTrace("%-11s"_Stz,"O:unknown "_Stz);
+  else
+    vTrace("O%04lld.%04lld "_Stz,
+           m_tOriginId.uNodeId(),
+           m_tOriginId.uJobNo()
+           );
+
+  if (m_tDistId.bIsUnknown())
+    vTrace("%-11s"_Stz,"D:unknown "_Stz);
+  else
+    vTrace("D%04lld.%04lld "_Stz,
+           m_tDistId.uNodeId(),
+           m_tDistId.uJobNo()
+           );
+
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get last job id                                                            */
 /*----------------------------------------------------------------------------*/
 JobId Job::tLastJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_tLastJobId;
+  TagSet* pJobTags = this->pJobTags();
+
+  if (! pJobTags->bHasName(C_TAG_LASTJOBID))
+    return C_UNKNOWN;
+  
+  JobId tLastJobId = pJobTags->iValue(C_TAG_LASTJOBID);
+  
+  return tLastJobId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -735,7 +729,21 @@ void Job::vLastJobId(JobId tLastJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_tLastJobId = tLastJobId;
+  TagSet* pJobTags = this->pJobTags();
+
+  pJobTags->vReplace(C_TAG_LASTJOBID,tLastJobId.iAsI8());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the mutex state                                                        */
+/*----------------------------------------------------------------------------*/
+eMS Job::eMutexSide(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  eMS eMutex = m_pMutex->eMutex();
+
+  return eMutex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -745,9 +753,9 @@ void Job::vMutexCreate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(! m_pMutex_job);
+  RASSERT(! m_pMutex);
   
-  m_pMutex_job = new Mutex(this);
+  m_pMutex = new Mutex(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -757,10 +765,10 @@ void Job::vMutexDestroy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(m_pMutex_job);
+  RASSERT(m_pMutex);
   
-  delete m_pMutex_job;
-  m_pMutex_job = nullptr;
+  delete m_pMutex;
+  m_pMutex = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -770,7 +778,7 @@ void Job::vMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_pMutex_job->vLock(this);
+  m_pMutex->vLock(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -780,7 +788,8 @@ void Job::vMutexSignal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_pMutex_job->vSignal(this);
+  m_pMutex->vLock(this);
+  m_pMutex->vSignalAndUnlock(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -790,7 +799,7 @@ void Job::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_pMutex_job->vUnlock(this);
+  m_pMutex->vUnlock(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -799,8 +808,8 @@ void Job::vMutexUnlock(void)
 void Job::vMutexWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-    
-  m_pMutex_job->vWait(this);
+      
+  m_pMutex->vWaitForSignalLoop(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -811,6 +820,18 @@ Output* Job::pOutput(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_pOutput_job;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set output processor                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vOutput(Output* pOutput)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(! m_pOutput_job);
+  
+  m_pOutput_job = pOutput;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -865,17 +886,37 @@ void Job::vOutputEndProc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the parent originating job (on origin only)                            */
+/* find output processor                                                      */
 /*----------------------------------------------------------------------------*/
-Job* Job::pOriginatingParentJob(void)
+Output* Job::pOutputFind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-      
-  //RASSERT(bIsOnOrigin());
+ 
   
-  Job* pParentJob = AM::OLIST::pFindJob(m_tDistId);
+  Output* pOutput = this->pOutput();
+  if (! pOutput) {
+    Job* pOriginJob = this->pOriginJob();
+    pOutput = pOriginJob->pOutput();
+  }
+
+  return pOutput;
   
-  return pParentJob;
+  /* NOT A GOOD IDEA
+  Output* pOutput = this->pOutput();
+  if (pOutput)
+    return pOutput;
+  
+  for (Job* pOuterJob = this->pOriginJob();
+       pOuterJob;
+       pOuterJob = pOuterJob->pParentJob()) {
+    
+    pOutput = pOuterJob->pOutput();
+    if (pOutput)
+      return pOutput;
+  }
+
+  return nullptr;
+  */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -908,6 +949,20 @@ i8 Job::iOriginNodeId(void)
   i8 iOriginNodeId = m_tOriginId.uNodeId();
   
   return iOriginNodeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the parent originating job (on origin only)                            */
+/*----------------------------------------------------------------------------*/
+Job* Job::pOriginJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+      
+  //RASSERT(bIsOnOrigin());
+  
+  Job* pOriginJob = AM::OLIST::pFindJob(m_tOriginId);
+  
+  return pOriginJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -945,23 +1000,15 @@ void Job::vParentId(JobId tParentId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the participant node                                                   */
+/* get parent job                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Job::iParticipantNodeId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iParticipantNodeId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job id                                                             */
-/*----------------------------------------------------------------------------*/
-void Job::vParticipantNodeId(i8 iNodeId)
+Job* Job::pParentJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_iParticipantNodeId = iNodeId;
+  Job* pParentJob = AM::JLIST::pFindJob(m_tParentId);
+
+  return pParentJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -977,6 +1024,40 @@ Pipeline* Job::pPipeline(void)
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
   return pPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vPostRecv(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
+  
+  m_okLock.vResetLock();
+  m_okLock.vResetStats();
+
+  /* 00 */ m_noActiveOps.vResetAtomic();
+  /* 01 */ m_eJobList     = JL_NONE;
+  /* 02 */ m_pJobMetrics  = nullptr;
+  /* 03 */ m_pMutex       = nullptr;
+  /* 04 */ m_pOutput_job  = nullptr;
+  /* 05 */ RASSERT(! m_bReapable);
+  /* 06 */ m_p_ResponseOp = nullptr;
+  /* 07 */ m_oResponseTimer.vReset();
+  /* 08 */ m_pStmtList    = nullptr;
+  /* 09 */ m_pTask        = nullptr;
+  /* 10 */ m_bWasReceived = true;
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_tJobId.vNextJobId();
+  AM::JLIST::vInsertJob(this);
+
+  if (AM::SYSARGS::bDistJob())
+    vJobTrace("Job"_Stz, "vPostRecv"_Stz, "#rcv"_Stz);
+  
+  if (bHasTag(C_SEE_JOB))
+    vPrintJobContents();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1004,7 +1085,6 @@ void Job::vPrintJobContents(void)
          
          "            sJobId "  "%s"    " \n"  // 0
          "            sJobNm "  "%s"    " \n"  // 1
-         "          sJobKind "  "%s"    " \n"  // 2
 
          "              sCmd "  "%s"    " \n"  // 3
          
@@ -1013,7 +1093,6 @@ void Job::vPrintJobContents(void)
          "            iCmdNo "  "%lld"  " \n"  // 6
 
          "      bWasReceived "  "%s"    " \n"  // 7
-         "     i_Participant "  "%lld"  " \n"  // 8
 
          "         eJobState "  "%s"    " \n"  // 10
          "         eJobPhase "  "%s"    " \n"  // 11
@@ -1021,8 +1100,6 @@ void Job::vPrintJobContents(void)
          
          "            oTimer "  "%s"    " \n"  // 13
          "            eError "  "%s"    " \n"  // 15
-
-         "       pSingularOp "  "%s"    " \n"  // 17
 
  
          "             pTask "  "%s"    " \n"  // 21
@@ -1033,19 +1110,16 @@ void Job::vPrintJobContents(void)
          
          ,spJobId.sz(m_tJobId.iAsI8())     // 0
          ,m_sJobNm.szStz()           // 1
-         ,aJK[m_eJobKind]            // 2
          ,szCmd()                    // 3
          ,iOriginNodeId()            // 4
 
          ,m_tParentId.uJobNo()          // 6
          ,m_bWasReceived ? "true" : "false" // 7
-         ,m_iParticipantNodeId            // 8
-         ,aJS[m_eJobState]           // 10
+         ,aMS[eMutexSide()]           // 10
          ,aJP[m_eJobPhase]           // 11
          ,aJL[m_eJobList]            // 12
          ,spTimer.sz(& m_oResponseTimer)     // 13
          ,aEC[m_eError_job]          // 15
-         ,spvSingularOp.sz(m_pSingularOp)  // 17
          ,spvTask.sz(m_pTask)        // 21
          ,spvJobLogicUnit.sz(pLogicUnit) // 22
          
@@ -1054,31 +1128,6 @@ void Job::vPrintJobContents(void)
   m_oJobTags.vContentDump();
 
   vTrace(";;\n\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* post recv function                                                         */
-/*----------------------------------------------------------------------------*/
-void Job::vPostRecv(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB,_FOOTER_);
-  
-  m_bWasReceived = true;
-  m_eJobList     = JL_NONE;
-    
-  m_pTask        = nullptr;
-  m_p_ResponseOp = nullptr;
-  m_pOutput_job  = nullptr;
-  m_pSingularOp  = nullptr;
-  m_pMutex_job   = nullptr;
-  m_pJobMetricsChain = nullptr;
-  m_pStmtList = nullptr;
-
-  m_okLock.vResetLock();
-  m_okLock.vResetStats();
-
-  if (bHasTag(C_SEE_JOB))
-    vPrintJobContents();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1100,9 +1149,9 @@ void Job::vPrintJobLine(void)
          ,this->m_tParentId.uJobNo()
          );
 
-  if (C_UNKNOWN != this->iParticipantNodeId())
+  if (C_UNKNOWN != this->iDistNodeId())
     vTrace("partNode %lld "_Stz
-           ,this->iParticipantNodeId()
+           ,this->iDistNodeId()
            );
 
   LogicUnit* pLogicUnit = m_pTask->pLogicUnit();
@@ -1158,6 +1207,50 @@ void Job::vReapable(bool bReapable)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_bReapable = bReapable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job as reapable                                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vReapableJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (bIsPipeline() && ! pOutput()->m_bExitMarker)
+    pOutput()->vProcessBufferQueue();
+
+  pOutput()->m_pOutputQueue->vReset();
+  pOutput()->vEndProcOneCmd();
+  
+  if (pOutput()->m_pStreamDef_result) {
+    StreamDef* pStreamDef = pOutput()->m_pStreamDef_result;
+    pOutput()->m_pStreamDef_result = nullptr;
+    delete pStreamDef;
+  }
+  
+  pOutput()->m_bExitMarker      = false;
+  
+  vReapable(true);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset task for given job                                                   */
+/*----------------------------------------------------------------------------*/
+void Job::vResetTaskForJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Stz* szEntry = "job::entryPoint"_Stz;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Task* pTask = this->pTask();
+    
+  pTask->vSetInxPtr(szEntry);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vResponseTimerStart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1221,26 +1314,6 @@ void Job::vResponseTimerUpdate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the singular operator                                                  */
-/*----------------------------------------------------------------------------*/
-Op* Job::pSingularOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_pSingularOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the singular operator                                                  */
-/*----------------------------------------------------------------------------*/
-void Job::vSingularOp(Op* pSingularOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_pSingularOp = pSingularOp;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append cascade to statement list                                           */
 /*----------------------------------------------------------------------------*/
 void Job::vStmtListAppend(Stz* szStmt)
@@ -1300,7 +1373,15 @@ bool Job::bSystemCloser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_bSystemCloser;
+  TagSet* pJobTags = this->pJobTags();
+
+  if (! pJobTags->bHasName(C_TAG_SYSTEMCLOSER))
+    return false;
+  
+  if (! pJobTags->iValue(C_TAG_SYSTEMCLOSER))
+    return false;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1309,8 +1390,10 @@ bool Job::bSystemCloser(void)
 void Job::vSystemCloser(bool bSystemCloser)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_bSystemCloser = bSystemCloser;
+
+  TagSet* pJobTags = this->pJobTags();
+
+  pJobTags->vReplace(C_TAG_SYSTEMCLOSER,(i8)bSystemCloser);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1343,6 +1426,8 @@ void Job::vTaskCreate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  RASSERT(! m_pTask);
+
   m_pTask = new Task(szJobNm(),this);
     
   m_pTask->vSetInxPtr("job::entryPoint"_Stz);
@@ -1540,26 +1625,6 @@ void Job::vVerifyJobComposition(void)
   RASSERT(EC_NONE == eValidHeader());
   RASSERT(CN_JOB == eGetClassNo());
   aFooter()->vAssertFooter();
-}
-
-/*----------------------------------------------------------------------------*/
-/* was job forked (or executed)?                                              */
-/*----------------------------------------------------------------------------*/
-bool Job::bWasForked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_bWasForked;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job forked                                                             */
-/*----------------------------------------------------------------------------*/
-void Job::vWasForked(bool bWasForked)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_bWasForked = bWasForked;
 }
 
 /*----------------------------------------------------------------------------*/

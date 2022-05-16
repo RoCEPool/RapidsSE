@@ -5,7 +5,7 @@
 " OP_metaSend.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_METAGET ...                                                        */
+/* on EV_D_METAGET ...                                                        */
 /*----------------------------------------------------------------------------*/
 : metaSend_MetaGet \handler
 
@@ -31,7 +31,7 @@
 
   op__topology
 
-  find: metaSend_MetaGet ZK_D_METAGET [op].handler!
+  find: metaSend_MetaGet EV_D_METAGET [op].handler!
 
   op__loop
 

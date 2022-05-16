@@ -5,7 +5,7 @@
 " OP_jobExit.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_FLUSH ...                                                 */
+/* handler for EV_M_FLUSH ...                                                 */
 /*----------------------------------------------------------------------------*/
 : jobExit_Flush
 
@@ -31,7 +31,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_JOB ...                                                   */
+/* handler for EV_D_JOB ...                                                   */
 /*----------------------------------------------------------------------------*/
 : jobExit_Job
 
@@ -80,8 +80,8 @@
 
   op__topology
 
-  find: jobExit_Flush  ZK_M_FLUSH [op].handler!
-  find: jobExit_Job    ZK_D_JOB   [op].handler!
+  find: jobExit_Flush  EV_M_FLUSH [op].handler!
+  find: jobExit_Job    EV_D_JOB   [op].handler!
 
   jobExit_initialise
   

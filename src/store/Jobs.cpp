@@ -122,6 +122,133 @@ JobList* Jobs::pParticipatingJobs(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set job as reapable                                                        */
+/*----------------------------------------------------------------------------*/
+void Jobs::vReapableJob(Job*& rpJob)
+{
+  _static_
+      
+  if (rpJob && rpJob->bIsPipeline() && ! rpJob->pOutput()->m_bExitMarker)
+    rpJob->pOutput()->vProcessBufferQueue();
+
+  rpJob->pOutput()->m_pOutputQueue->vReset();
+  rpJob->pOutput()->vEndProcOneCmd();
+  
+  if (rpJob->pOutput()->m_pStreamDef_result) {
+    StreamDef* pStreamDef = rpJob->pOutput()->m_pStreamDef_result;
+    rpJob->pOutput()->m_pStreamDef_result = nullptr;
+    delete pStreamDef;
+  }
+  
+  rpJob->pOutput()->m_bExitMarker      = false;
+  
+  rpJob->vReapable(true);
+
+  rpJob = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to reap one job from the retired list                              */
+/*----------------------------------------------------------------------------*/
+void Jobs::vReapAllJobs(bool bForce)
+{
+  _static_
+  
+  if (bForce || AM::SYSTEM::bReapEnabled())
+    while (AM::pRetiredJobs()->nJobs())
+      while (bReapJob())
+        {;}
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to reap one job from the retired list                              */
+/*----------------------------------------------------------------------------*/
+bool Jobs::bReapJob(void)
+{
+  _static_
+   
+  JobList* pRetiredJobs = AM::pRetiredJobs();
+
+  if (! pRetiredJobs->nJobs()) {
+    //vTrace("Empty retired list\n"_Stz);
+    return FALSE(empty_list);
+  }
+  
+  AM::MASTERLOCK::vGrabReap(nullptr);
+  
+  pRetiredJobs->vGrabLock();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Job* pReapableJob = nullptr;
+  
+  for (SkipNode* pCursor = pRetiredJobs->pFirst();
+       pCursor;
+       pCursor = pRetiredJobs->pNext(pCursor)) {
+    
+    Job* pRetiredJob = _pJob(pCursor->m_pObject);
+    
+    if (pRetiredJob) {
+      i8 nActiveOps = pRetiredJob->nActiveOps();
+//      vTrace("REAP CANDIDATE Job %p Reapable %lld Active Ops %lld\n"_Stz
+//             ,pRetiredJob,(i8)pRetiredJob->m_bReapable,nActiveOps);
+      if (pRetiredJob->bReapable() && ! nActiveOps) {
+        pReapableJob = pRetiredJob;
+        break;
+      }
+      else {
+        vTrace("Cant reap retired job %p %lld "
+               "%s "
+               "activeOps %lld %s "
+               "\n"_Stz
+
+               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
+               ,pRetiredJob->szJobNm()
+               ,nActiveOps,pRetiredJob->bReapable() ? "reapable" : "not-reapable"
+               );
+      }
+    }
+  }
+
+  pRetiredJobs->vDropLock();
+  
+  if (! pReapableJob) {
+    AM::MASTERLOCK::vDropReap(nullptr);
+    return FALSE(nothing_to_reap);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pRetiredJobs->vRemoveJob(pReapableJob);
+
+  AM::MASTERLOCK::vDropReap(nullptr);
+
+  // delete the reapavle job
+  
+  RASSERT(pReapableJob->pTask());
+  pReapableJob->pTask()->vGrabTaskLock((Stz*)__func__);
+  pReapableJob->pTask()->vDropTaskLock((Stz*)__func__);
+
+
+  delete pReapableJob;
+
+  return TRUE(reaped_a_job);
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to reap one job from the retired list                              */
+/*----------------------------------------------------------------------------*/
+void Jobs::vReapJobsOnce(bool bForce)
+{
+  _static_
+  
+  if (bForce || AM::SYSTEM::bReapEnabled())
+    while (bReapJob())
+      {;}
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get retired job list                                                       */
 /*----------------------------------------------------------------------------*/
 JobList* Jobs::pRetiredJobs(void)

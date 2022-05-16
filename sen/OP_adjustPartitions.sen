@@ -5,7 +5,7 @@
 " OP_adjustPartitions.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                               */
+/* handler for EV_M_DATAPULSE ...                                               */
 /*----------------------------------------------------------------------------*/
 : adjustPtns_DataPulse \handler
  
@@ -13,7 +13,7 @@
    
   ptnMap::adjust
 
-  ZK_M_DATAPULSE_handler
+  EV_M_DATAPULSE_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +25,7 @@
 
   op__topology
 
-  find: adjustPtns_DataPulse ZK_M_DATAPULSE [op].handler!
+  find: adjustPtns_DataPulse EV_M_DATAPULSE [op].handler!
 
   op__loop
   

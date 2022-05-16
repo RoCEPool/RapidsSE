@@ -5,12 +5,12 @@
 " OP_truncateIndex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : TruncateIndex_DataPulse \handler
 
 
-  //"Operand:- ZK_M_DATAPULSE" .verbose
+  //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
   // truncate the buffers of the tablePtn
@@ -23,11 +23,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_START ...                                                 */
+/* handler for EV_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : TruncateIndex_StartMarker \handler
 
-  //"Operand:- ZK_M_START" .verbose
+  //"Operand:- EV_M_START" .verbose
 
   // check if we can scan the table
   <tableNm> <indexNm> op__table_index if
@@ -48,8 +48,8 @@
 
   op__topology
 
-  find: TruncateIndex_DataPulse ZK_M_DATAPULSE [op].handler!
-  find: TruncateIndex_StartMarker ZK_M_START [op].handler!
+  find: TruncateIndex_DataPulse EV_M_DATAPULSE [op].handler!
+  find: TruncateIndex_StartMarker EV_M_START [op].handler!
 
   op__loop
 

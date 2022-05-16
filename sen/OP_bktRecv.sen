@@ -5,7 +5,7 @@
 " OP_bktRecv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_PARCEL ...                                                         */
+/* on EV_D_PARCEL ...                                                         */
 /*----------------------------------------------------------------------------*/
 : bktRecv_Parcel \handler
 
@@ -29,8 +29,8 @@
 
   op__topology
 
-  // Setup ZK_D_PARCEL handler here
-  find: bktRecv_Parcel ZK_D_PARCEL [op].handler!
+  // Setup EV_D_PARCEL handler here
+  find: bktRecv_Parcel EV_D_PARCEL [op].handler!
 
   op__loop
 

@@ -5,7 +5,7 @@
 " OP_bktMapGet.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
+/* handler for EV_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : bktMapGet_getTable  \handler
 
@@ -29,7 +29,7 @@
   //"bktMapGet_req" .
   op__topology
 
-  find: bktMapGet_getTable   ZK_M_DATAPULSE   [op].handler!
+  find: bktMapGet_getTable   EV_M_DATAPULSE   [op].handler!
 
   op__loop
 

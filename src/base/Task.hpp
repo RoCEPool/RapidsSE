@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "eEP.h"
+
 #include "eQK.h"
 #include "eTR.h"
 #include "eTS.h"
@@ -37,7 +37,8 @@ namespace BASE
     Gid_t<CN_TASK>  m_xTaskId;  // task id in grid
     s32 m_sTaskNm;  // name of this task
     eTS m_eState;   // task state (running, sleeping, ...)
-
+    b8  m_bDedicatedThread;
+  
     SMA<Job,CN_JOB> m_pJob; // which job this task is executing
     SMA<Op,CN_OP>   m_pOp;  // ... or which op this task is executing
 
@@ -47,12 +48,8 @@ namespace BASE
 
     Lock         m_okLock;        // lock for this task
    
-    bool         m_bIsStart;      // is this the start task?
-    bool         m_bIsImmediate;  // is this an immediate task?
-
     eTR          m_eTransition;   // schedulre transition request
     eQK          m_eQueue;        // which queue the task is currently in
-    eEP          m_eEntryPoint;   // task entry point
     
     Decider      m_oAcksRmg;      // number of acks still waiting for
     Wakeup       m_oWakeup;       // wakeup time from sleeping
@@ -110,6 +107,7 @@ namespace BASE
 
     void vDumpOnException(void);
 
+    // - - - - - - - - - - - - - -  - - - - - -
   
     i8   iAcksOriginal(void);
     i8   iAcksRmg_assert_only_(void);
@@ -124,6 +122,8 @@ namespace BASE
     void vCycleTaskLock(Stz* szFunc);
     Word* pCurWord(void);
   
+    bool bDedicatedThread(void);
+    void vDedicatedThread(bool bDedicatedThread);
     void vDeleteInput(void);
     DicStack* pDicStack(void);
     void vDotPrint(Stz* szFormat, ...);
@@ -131,18 +131,13 @@ namespace BASE
     void vDropTaskLock(Stz* szFunc);
     void vDump(void);
   
-    void vEntryPoint(eEP eEntryPoint);
-    eEP  eEntryPoint(void);
     Word* pEventHandler(void);
+  
     void vGrabTaskLock(Stz* szFunc);
   
     Task* pInvokingTask(void);
     void vInvokingTask(Task* pInvokingTask);
-    bool bIsImmediate(void);
-    void vIsImmediate(bool bIsImmediate);
     bool bIsLocked(void);
-    bool bIsStart(void);
-    void vIsStart(bool bIsStart);
     bool bIsTaskLocked(void);
   
     Job* pJob(void);
@@ -151,8 +146,10 @@ namespace BASE
     void vLocalsPop(void);
     void vLocalsPush(void);
     LogicUnit* pLogicUnit(void);
+  
     void vNewInput(void);
   
+    Job* pOuterJobOfTask(void);
     Op*  pOp(void);
     void vOp(Op* pOp);
   
@@ -168,6 +165,12 @@ namespace BASE
     void vRetire(void);
 
     DicStack* pSaveDicStack(void);
+    void vScheduleBide(void);
+    void vScheduleHibernate(void);
+    void vScheduleRetire(void);
+    void vScheduleSleep(void);
+    void vScheduleYield(void);
+    void vScheduleWait(void);
     void vSeeFrameStack(void);
     void vSeeLockSets(void);
     void vSeeLogicUnitRegisters(void);
@@ -180,20 +183,15 @@ namespace BASE
     void vState(eTS eState);
   
     i8   iTaskId(void);
-  
     Stz* szTaskNm(void);
     void vTaskNm(Stz* szTaskNm);
-
     Thread* pvThread_DONT_DEREF(void);
     void vThread(Thread* pThread);
     void vTracePoint(Stz* aMark);
     void vTraceStep(Stz* aStepNm);
-    void vScheduleBide(void);
-    void vScheduleSleep(void);
-    void vScheduleYield(void);
-    void vScheduleWait(void);
     eTR  eTransition(void);
     void vTranstionClear(void);
+  
     i8   iWakeup(void);
     void vWakeupClear(void);
     u8   uWakeupInUsec(void);
@@ -213,7 +211,6 @@ namespace BASE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  
     Input* pInput(void);
 
   private:

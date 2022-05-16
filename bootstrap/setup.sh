@@ -113,7 +113,10 @@ debugPrint "ADV_WIZARD = ${ADV_WIZARD}"
 debugPrint "DEBUG = ${DEBUG}"
 debugPrint "INSTALL_FILE = ${INSTALL_FILE}"
 debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
-debugPrint "CONFIG_FILE contents: \n$(<"${CONFIG_FILE}")"
+
+if [ -f "${CONFIG_FILE}" ]; then
+  debugPrint "CONFIG_FILE contents: \n$(<"${CONFIG_FILE}")"
+fi
 debugPrint 
 
 

@@ -5,28 +5,28 @@
 " OP_forkCommand.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_COMMAND ...                                               */
+/* handler for EV_I_COMMAND ...                                               */
 /*----------------------------------------------------------------------------*/
 : forkCommand_Command \handler
 
-  [EvMgr].curEventNm@ "forkCommand: %v" .printf
+  [EvMgr].curEventNm@ "%v" .printf
   
   0 0 locals| eError tForkedJobId |
   
   PipeIn[]\clear to InfoSet[]
 
-  0 C_TDEF_COMMAND InfoSet:getCol locals| sCmd |
+  0 C_TDEF_COMMAND InfoSet:getCol locals| sForkCmd |
 
-  sCmd "forkCommand: cmd %v" .printf
+  sForkCmd "  forkCmd=%v" .printf
 
 
   <responseOpNm> [stream].findOp locals| pResponseOp |
   
-  pResponseOp op.name@ "forkCommand: responseOp %v" .printf
+  pResponseOp op.name@ "  responseOp=%v" .printf
     
 /*
 
-  "" sCmd pResponseOp api::forkChild_noWait if
+  STD_NOWAIT_TAG sForkCmd pResponseOp api::forkChild if
     to tForkedJobId
     tForkedJobId "forkCommand: job %v" .printf
   else
@@ -51,7 +51,7 @@
 
   op__topology
 
-  find: forkCommand_Command  ZK_I_COMMAND   [op].handler!
+  find: forkCommand_Command  EV_I_COMMAND   [op].handler!
 
   op__loop
 

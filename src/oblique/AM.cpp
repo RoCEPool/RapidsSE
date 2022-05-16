@@ -392,7 +392,9 @@ EventHandlers* AM::HANDLERS::pEventHandlers(void)
 /*----------------------------------------------------------------------------*/
 bool AM::JLIST::bFindJob(Job* pJob, bool bLockJob)
 {
-  bool bFound = gpAttachMap->m_pJobs->pJobsList()->bFindJob(pJob,bLockJob);
+  Job* pFoundJob = AM::JLIST::pFindJob(pJob->tJobId(),bLockJob);
+
+  bool bFound = pFoundJob ? true : false;
     
   return bFound;
 }
@@ -1861,6 +1863,18 @@ void AM::SYSARGS::vDerefMetrics(bool bDerefMetrics)
   gpAttachMap->m_xSysArgs.m_bDerefMetrics = bDerefMetrics;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get distributed job watch option                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSARGS::bDistJob(void)
+{
+  _static_
+  
+  if (gpAttachMap)
+    return gpAttachMap->m_xSysArgs.m_bDistJob;
+  else
+    return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get collect job metrics option                                             */
@@ -2287,7 +2301,7 @@ void AM::TASK::vRetire(Task* pTask)
   
   if (Op* pOp = pTask->pOp()) {
     // retiring op of job
-    Job* pJob = pOp->pJobOfOp();
+    Job* pJob = pOp->pOuterJobOfOp();
     pJob->vActiveOpsDec();
   }
   else
@@ -2680,7 +2694,6 @@ Resources* AM::pResources(void) {
 
 Word* AM::pConstantRoot(void) { return gpAttachMap->m_pConstantRoot;          }
 Word* AM::pWordRoot(void)     { return gpAttachMap->m_pWordRoot;              }
-Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
 Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
 MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
@@ -3161,38 +3174,6 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* spawn op                                                                   */
-/*----------------------------------------------------------------------------*/
-void AM::vSpawnTaskDedicated_op(Op* pOp)
-{
-  Api::vSpawnTask_dedicatedOp(pOp);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn task for given op                                                    */
-/*----------------------------------------------------------------------------*/
-void AM::vSpawnTask_op(Op* pOp)
-{
-  Api::vSpawnTask_op(pOp);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
-void AM::vSpawnTask_receivedJob(Job* pJob)
-{
-  Api::vSpawnTask_receivedJob(pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
-void AM::vScheduleNextPhase(Job* pParticipantJob, Task* pActiviating2PcTask)
-{
-  Api::vScheduleNextPhase(pParticipantJob,pActiviating2PcTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* quick config summary                                                       */
 /*----------------------------------------------------------------------------*/
 Stz* AM::szSummary(s256& sSummary)
@@ -3468,21 +3449,21 @@ void AM::vOperandsInc(void)
 /*----------------------------------------------------------------------------*/
 /* what kind of operand                                                       */
 /*----------------------------------------------------------------------------*/
-i8 AM::iOperandZkKind(Operand* pOperand)
+i8 AM::iOperandEvKind(Operand* pOperand)
 {
-  eZK eOperand = ZK_NONE;
+  eEV eOperand = EV_NONE;
   
   eCN eClass_opd = pOperand->eGetClassNo();
   
   switch (eClass_opd) {
 
-    case CN_BUCKETMAP: eOperand = ZK_D_BUCKETMAP_dyn; break;
-    case CN_CRWBUFFER: eOperand = ZK_D_CRWBUFFER; break;
-    case CN_CSVBUFFER: eOperand = ZK_D_CSVBUFFER; break;
-    case CN_EACHROWBUFFER: eOperand = ZK_D_EACHROWBUFFER; break;
-    case CN_ENTBUFFER: eOperand = ZK_D_ENTBUFFER; break;
-    case CN_INDEX:     eOperand = ZK_D_INDEX;  break;
-    case CN_INDEXDEF:  eOperand = ZK_D_INDEXDEF;  break;
+    case CN_BUCKETMAP: eOperand = EV_D_BUCKETMAP_dyn; break;
+    case CN_CRWBUFFER: eOperand = EV_D_CRWBUFFER; break;
+    case CN_CSVBUFFER: eOperand = EV_D_CSVBUFFER; break;
+    case CN_EACHROWBUFFER: eOperand = EV_D_EACHROWBUFFER; break;
+    case CN_ENTBUFFER: eOperand = EV_D_ENTBUFFER; break;
+    case CN_INDEX:     eOperand = EV_D_INDEX;  break;
+    case CN_INDEXDEF:  eOperand = EV_D_INDEXDEF;  break;
       
     case CN_INFOSET:
     {
@@ -3490,29 +3471,29 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       
       eOI eInfoSet = pInfoSet->eOpInfoSet();
       switch(eInfoSet) {
-        case OI_CALLPIPELINE:   eOperand = ZK_I_CALLPIPELINE;   break;
-        case OI_COMMAND:        eOperand = ZK_I_COMMAND;        break;
-        case OI_COMMANDERRORS:  eOperand = ZK_I_COMMANDERRORS;  break;
-        case OI_COUNT:          eOperand = ZK_I_COUNT;          break;
-        case OI_EXECERRORS:     eOperand = ZK_I_EXECERRORS;     break;
-        case OI_FORKCOMMAND:    eOperand = ZK_I_FORKCOMMAND;    break;
-        case OI_LOADRESULT:     eOperand = ZK_I_LOADRESULT;     break;
-        case OI_LOCKSTATS:      eOperand = ZK_I_LOCKSTATS;      break;
-        case OI_NODEINFO:       eOperand = ZK_I_NODEINFO;       break;
-        case OI_PATH:           eOperand = ZK_I_PATH;           break;
-        case OI_PROGRESSUNITS:  eOperand = ZK_I_PROGRESSUNITS;  break;
-        case OI_PROMPTOUT:      eOperand = ZK_I_PROMPTOUT;      break;
-        case OI_RETURNPIPELINE: eOperand = ZK_I_RETURNPIPELINE; break;
-        case OI_SEEKOFFSETS:    eOperand = ZK_I_SEEKOFFSETS;    break;
-        case OI_TOTALUNITS:     eOperand = ZK_I_TOTALUNITS;     break;
+        case OI_CALLPIPELINE:   eOperand = EV_I_CALLPIPELINE;   break;
+        case OI_COMMAND:        eOperand = EV_I_COMMAND;        break;
+        case OI_COMMANDERRORS:  eOperand = EV_I_COMMANDERRORS;  break;
+        case OI_COUNT:          eOperand = EV_I_COUNT;          break;
+        case OI_EXECERRORS:     eOperand = EV_I_EXECERRORS;     break;
+        case OI_FORKCOMMAND:    eOperand = EV_I_FORKCOMMAND;    break;
+        case OI_LOADRESULT:     eOperand = EV_I_LOADRESULT;     break;
+        case OI_LOCKSTATS:      eOperand = EV_I_LOCKSTATS;      break;
+        case OI_NODEINFO:       eOperand = EV_I_NODEINFO;       break;
+        case OI_PATH:           eOperand = EV_I_PATH;           break;
+        case OI_PROGRESSUNITS:  eOperand = EV_I_PROGRESSUNITS;  break;
+        case OI_PROMPTOUT:      eOperand = EV_I_PROMPTOUT;      break;
+        case OI_RETURNPIPELINE: eOperand = EV_I_RETURNPIPELINE; break;
+        case OI_SEEKOFFSETS:    eOperand = EV_I_SEEKOFFSETS;    break;
+        case OI_TOTALUNITS:     eOperand = EV_I_TOTALUNITS;     break;
         default:
           RASSERT(0);
       }
       break;
     }
 
-    case CN_JOB:                eOperand = ZK_D_JOB;            break;
-    case CN_JOBMETRICS:         eOperand = ZK_D_JOBMETRICS;     break;
+    case CN_JOB:                eOperand = EV_D_JOB;            break;
+    case CN_JOBMETRICS:         eOperand = EV_D_JOBMETRICS;     break;
 
     case CN_MARKER:
     {
@@ -3520,69 +3501,69 @@ i8 AM::iOperandZkKind(Operand* pOperand)
 
       eOM eMarker = pMarker->eOpMarker();
       switch(eMarker) {
-        case OM_CANCELMARKER:       eOperand = ZK_M_CANCEL;       break;
-        case OM_CANCELLING:         eOperand = ZK_M_CANCELLING;   break;
-        case OM_CANCELLEDMARKER:    eOperand = ZK_M_CANCELLED;    break;
-        case OM_CLEANING:           eOperand = ZK_M_CLEANING;     break;
-        case OM_CLEANED:            eOperand = ZK_M_CLEANED;      break;
-        case OM_DATAPULSE:          eOperand = ZK_M_DATAPULSE;    break;
-        case OM_DESTROYMARKER:      eOperand = ZK_M_DESTROY;      break;
-        case OM_EACHSCANEOSMARKER:  eOperand = ZK_M_EACHSCANEOS;  break;
-        case OM_ENDMARKER:          eOperand = ZK_M_END;          break;
-        case OM_ENDEDMARKER:        eOperand = ZK_M_ENDED;        break;
-        case OM_ENDINGMARKER:       eOperand = ZK_M_ENDING;       break;
-        case OM_ENDCRWRHT:          eOperand = ZK_M_ENDCRWRHT;    break;
-        case OM_ENDROWRHT:          eOperand = ZK_M_ENDROWRHT;    break;
-        case OM_EOSMARKER:          eOperand = ZK_M_EOS;          break;
-        case OM_ERRORMARKER:        eOperand = ZK_M_ERROR;        break;
-        case OM_ERROREDMARKER:      eOperand = ZK_M_ERRORED;      break;
-        case OM_ERRORINGMARKER:     eOperand = ZK_M_ERRORING;     break;
-        case OM_EXITING:            eOperand = ZK_M_EXITING;      break;
-        case OM_EXITED:             eOperand = ZK_M_EXITED;       break;
-        case OM_FINISHED:           eOperand = ZK_M_FINISHED;     break;
-        case OM_FLUSH:              eOperand = ZK_M_FLUSH;        break;
-        case OM_INVOKEMARKER:       eOperand = ZK_M_INVOKE;       break;
-        case OM_LEAVEMARKER:        eOperand = ZK_M_LEAVE;        break;
-        case OM_LEAVINGMARKER:      eOperand = ZK_M_LEAVING;      break;
-        case OM_LEFTMARKER:         eOperand = ZK_M_LEFT;         break;
-        case OM_LEFTOUTER_CRWLFT:   eOperand = ZK_M_LEFTOUTER_CRWLFT; break;
-        case OM_LEFTOUTER_ROWLFT:   eOperand = ZK_M_LEFTOUTER_ROWLFT; break;
-        case OM_NEXTBUFFERMARKER:   eOperand = ZK_M_NEXTBUFFER;   break;
-        case OM_STARTEDMARKER:      eOperand = ZK_M_STARTED;      break;
-        case OM_STARTCRWRHT:        eOperand = ZK_M_STARTCRWRHT;  break;
-        case OM_STARTMARKER:        eOperand = ZK_M_START;        break;
-        case OM_STARTROWRHT:        eOperand = ZK_M_STARTROWRHT;  break;
-        case OM_STREAMDEFRHT:       eOperand = ZK_M_STREAMDEFRHT; break;
-        case OM_TRIGGER:            eOperand = ZK_M_TRIGGER;      break;
+        case OM_CANCELMARKER:       eOperand = EV_M_CANCEL;       break;
+        case OM_CANCELLING:         eOperand = EV_M_CANCELLING;   break;
+        case OM_CANCELLEDMARKER:    eOperand = EV_M_CANCELLED;    break;
+        case OM_CLEANING:           eOperand = EV_M_CLEANING;     break;
+        case OM_CLEANED:            eOperand = EV_M_CLEANED;      break;
+        case OM_DATAPULSE:          eOperand = EV_M_DATAPULSE;    break;
+        case OM_DESTROYMARKER:      eOperand = EV_M_DESTROY;      break;
+        case OM_EACHSCANEOSMARKER:  eOperand = EV_M_EACHSCANEOS;  break;
+        case OM_ENDMARKER:          eOperand = EV_M_END;          break;
+        case OM_ENDEDMARKER:        eOperand = EV_M_ENDED;        break;
+        case OM_ENDINGMARKER:       eOperand = EV_M_ENDING;       break;
+        case OM_ENDCRWRHT:          eOperand = EV_M_ENDCRWRHT;    break;
+        case OM_ENDROWRHT:          eOperand = EV_M_ENDROWRHT;    break;
+        case OM_EOSMARKER:          eOperand = EV_M_EOS;          break;
+        case OM_ERRORMARKER:        eOperand = EV_M_ERROR;        break;
+        case OM_ERROREDMARKER:      eOperand = EV_M_ERRORED;      break;
+        case OM_ERRORINGMARKER:     eOperand = EV_M_ERRORING;     break;
+        case OM_EXITING:            eOperand = EV_M_EXITING;      break;
+        case OM_EXITED:             eOperand = EV_M_EXITED;       break;
+        case OM_FINISHED:           eOperand = EV_M_FINISHED;     break;
+        case OM_FLUSH:              eOperand = EV_M_FLUSH;        break;
+        case OM_INVOKEMARKER:       eOperand = EV_M_INVOKE;       break;
+        case OM_LEAVEMARKER:        eOperand = EV_M_LEAVE;        break;
+        case OM_LEAVINGMARKER:      eOperand = EV_M_LEAVING;      break;
+        case OM_LEFTMARKER:         eOperand = EV_M_LEFT;         break;
+        case OM_LEFTOUTER_CRWLFT:   eOperand = EV_M_LEFTOUTER_CRWLFT; break;
+        case OM_LEFTOUTER_ROWLFT:   eOperand = EV_M_LEFTOUTER_ROWLFT; break;
+        case OM_NEXTBUFFERMARKER:   eOperand = EV_M_NEXTBUFFER;   break;
+        case OM_STARTEDMARKER:      eOperand = EV_M_STARTED;      break;
+        case OM_STARTCRWRHT:        eOperand = EV_M_STARTCRWRHT;  break;
+        case OM_STARTMARKER:        eOperand = EV_M_START;        break;
+        case OM_STARTROWRHT:        eOperand = EV_M_STARTROWRHT;  break;
+        case OM_STREAMDEFRHT:       eOperand = EV_M_STREAMDEFRHT; break;
+        case OM_TRIGGER:            eOperand = EV_M_TRIGGER;      break;
         default:
           RASSERT(0);
       }
       break;
     }
 
-    case CN_NAMEDBUFFER:  eOperand = ZK_D_NAMEDBUFFER;    break;
-    case CN_OP:           eOperand = ZK_D_OP;             break;
-    case CN_OTHEROPERAND: eOperand = ZK_D_OTHEROPERAND;   break;
-    case CN_PAGINGMETRICS:eOperand = ZK_D_PAGINGMETRICS;  break;
-    case CN_PLANOPERAND:  eOperand = ZK_D_PLANOPERAND;    break;
-    case CN_PROFILE:      eOperand = ZK_D_PROFILE;        break;
-    case CN_ROWBUFFER:    eOperand = ZK_D_ROWBUFFER;      break;
-    //case CN_SRTBUFFER:    eOperand = ZK_D_SRTBUFFER;      break;
-    case CN_STREAMDEF:    eOperand = ZK_D_STREAMDEF;      break;
-    case CN_STREAMDEFRHT: eOperand = ZK_D_STREAMDEFRHT;   break;
-    case CN_STREAMSET:    eOperand = ZK_D_STREAMSET;      break;
-    case CN_METAGET:      eOperand = ZK_D_METAGET;        break;
-    case CN_PARCEL:       eOperand = ZK_D_PARCEL;         break;
-    case CN_TABLE:        eOperand = ZK_D_TABLE;          break;
-    case CN_GRID:         eOperand = ZK_D_GRID;           break;
-    case CN_BKTMAPGET:       eOperand = ZK_D_BKTMAPGET;      break;
-    case CN_BUCKETGET:       eOperand = ZK_D_BUCKETGET;      break;
-    case CN_BUCKETINFO:       eOperand = ZK_D_BUCKETINFO;      break;
-    case CN_TABLEPTN:     eOperand = ZK_D_TABLEPTN;      break;
-    //case CN_BUCKET:     eOperand = ZK_D_BUCKET;      break;
+    case CN_NAMEDBUFFER:  eOperand = EV_D_NAMEDBUFFER;    break;
+    case CN_OP:           eOperand = EV_D_OP;             break;
+    case CN_OTHEROPERAND: eOperand = EV_D_OTHEROPERAND;   break;
+    case CN_PAGINGMETRICS:eOperand = EV_D_PAGINGMETRICS;  break;
+    case CN_PLANOPERAND:  eOperand = EV_D_PLANOPERAND;    break;
+    case CN_PROFILE:      eOperand = EV_D_PROFILE;        break;
+    case CN_ROWBUFFER:    eOperand = EV_D_ROWBUFFER;      break;
+    //case CN_SRTBUFFER:    eOperand = EV_D_SRTBUFFER;      break;
+    case CN_STREAMDEF:    eOperand = EV_D_STREAMDEF;      break;
+    case CN_STREAMDEFRHT: eOperand = EV_D_STREAMDEFRHT;   break;
+    case CN_STREAMSET:    eOperand = EV_D_STREAMSET;      break;
+    case CN_METAGET:      eOperand = EV_D_METAGET;        break;
+    case CN_PARCEL:       eOperand = EV_D_PARCEL;         break;
+    case CN_TABLE:        eOperand = EV_D_TABLE;          break;
+    case CN_GRID:         eOperand = EV_D_GRID;           break;
+    case CN_BKTMAPGET:       eOperand = EV_D_BKTMAPGET;      break;
+    case CN_BUCKETGET:       eOperand = EV_D_BUCKETGET;      break;
+    case CN_BUCKETINFO:       eOperand = EV_D_BUCKETINFO;      break;
+    case CN_TABLEPTN:     eOperand = EV_D_TABLEPTN;      break;
+    //case CN_BUCKET:     eOperand = EV_D_BUCKET;      break;
 
     default:
-      vTrace("iOperandZkKind() what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);
+      vTrace("iOperandEvKind() what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);
       RASSERT(0);
       break;
   }
@@ -4077,7 +4058,6 @@ static Stz* aEG[]
   "EG_ED"_Stz,
   "EG_EK"_Stz,
   "EG_EO"_Stz,
-  "EG_EP"_Stz,
 
   "EG_FN"_Stz,
 
@@ -4092,10 +4072,9 @@ static Stz* aEG[]
   "EG_IT"_Stz,
 
   "EG_JF"_Stz,
-  "EG_JK"_Stz,
   "EG_JL"_Stz,
   "EG_JP"_Stz,
-  "EG_JS"_Stz,
+  "EG_MX"_Stz,
   
   "EG_KC"_Stz,
   "EG_KE"_Stz,
@@ -4195,7 +4174,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 
     case EG_EC: return aEC[i_Enum];
     case EG_ED: return aED[i_Enum];
-    case EG_EP: return aEP[i_Enum];
 
     case EG_FN: return aFN[i_Enum];
 
@@ -4210,10 +4188,9 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_IT: return aIT[i_Enum];
       
     case EG_JF: return aJF[i_Enum];
-    case EG_JK: return aJK[i_Enum];
     case EG_JL: return aJL[i_Enum];
     case EG_JP: return aJP[i_Enum];
-    case EG_JS: return aJS[i_Enum];
+    case EG_MS: return aMS[i_Enum];
       
     case EG_KC: return aKC[i_Enum];
     case EG_KE: return aKE[i_Enum];
@@ -4277,7 +4254,7 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_YG: return aYG[i_Enum];
     case EG_YX: return aYX[i_Enum];
 
-    case EG_ZK: return aZK[i_Enum];
+    case EG_ZK: return aEV[i_Enum];
 
     default:
       vTrace("AM::szEnumText: Unknown enum group %lld\n"_Stz, i_EnumGroup);
