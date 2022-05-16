@@ -262,16 +262,27 @@ void Step::vStreamDefLftParse(void)
   eEC eResult = pStreamDef->eParseCmd(sCmd);
   
   if (eResult != EC_NONE) {
-    
-    pJob->vJobError(eResult);
+
+    // push the error on the stack
+    m_pDataStack->vPushInt(eResult);
+
+    // push false
+    m_pDataStack->vPushInt(false);
     
     // delete tabledef
     delete pStreamDef;
     
     pStreamDef = nullptr;
   }
-  
-  m_pDataStack->vPushPtr(pStreamDef);
+  else {
+
+    // push the streamDef
+    m_pDataStack->vPushPtr(pStreamDef);
+
+    // push true
+    m_pDataStack->vPushInt(true);
+
+  }
   
   EXIT();
 }

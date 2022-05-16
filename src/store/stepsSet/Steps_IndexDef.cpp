@@ -163,17 +163,25 @@ void Step::vIndexDefParse(void)
   eEC eResult = pIndexDef->eParse(pTable,sCmd);
   
   if (eResult != EC_NONE) {
-    
-    // set the error in the job
-    pJob->vJobError(eResult);
-    
+
+    // push the error on the stack
+    m_pDataStack->vPushInt(eResult);
+
+    // push false
+    m_pDataStack->vPushInt(false);
+
     // delete IndexDef
     delete pIndexDef;
     
     pIndexDef = nullptr;
   }
-  
-  m_pDataStack->vPushPtr(pIndexDef);
+  else {
+    /// push the indexDef
+    m_pDataStack->vPushPtr(pIndexDef);
+
+    // push false
+    m_pDataStack->vPushInt(true);
+  }
   
   EXIT();
 }
@@ -229,11 +237,20 @@ void Step::vIndexDefParseTableName(void)
   
   if (eResult != EC_NONE) {
     
-    // set the error in the job
-    pJob->vJobError(eResult);
+    // push the error on the stack
+    m_pDataStack->vPushInt(eResult);
+
+    // push false
+    m_pDataStack->vPushInt(false);
   }
-  
-  m_pDataStack->vPushStr(sTableNm);
+  else {
+
+    // push the table name
+    m_pDataStack->vPushStr(sTableNm);
+
+    // push true
+    m_pDataStack->vPushInt(true);
+  }
   
   EXIT();
 }
