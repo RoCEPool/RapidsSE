@@ -470,11 +470,6 @@ bool Output::bProcessOperand(Operand* pOperand)
 
       switch (eOpMarker) {
           
-        case OM_ERRORMARKER: {
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
-          
         case OM_EXITING: {
           //vTrace("Pipeline Job: EXITMARKER\n"_Stz);
           //if ( ! bHasError )
