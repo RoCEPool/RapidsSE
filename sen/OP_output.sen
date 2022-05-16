@@ -38,19 +38,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_DATAPULSE ...                                             */
-/*----------------------------------------------------------------------------*/
-: output_DataMarker \handler
-
-  //"Operand:- EV_M_DATAPULSE" .verbose
-  PipeIn[].pipeOut
-  Marker[].newDataPulse
-  Marker[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_EACHROWBUFFER ...                                         */
 /*----------------------------------------------------------------------------*/
 : output_EachRowBuffer \handler
@@ -68,19 +55,6 @@
 
   //"Operand:- EV_D_ENTBUFFER" .verbose
   PipeIn[].pipeToOutput
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_M_ERROR ...                                                 */
-/*----------------------------------------------------------------------------*/
-: output_ErrorMarker \handler
-
-  //"Operand:- EV_M_ERROR" .verbose
-  PipeIn[].pipeToOutput
-  ErrorMarker[].newErrorMarker
-  ErrorMarker[].pipeOut
 
   true
 ;
@@ -184,8 +158,6 @@
   find: output_ExecErrors    EV_I_EXECERRORS    [op].handler!
   find: output_LoadResult    EV_I_LOADRESULT    [op].handler!
   find: output_PromptOut     EV_I_PROMPTOUT     [op].handler!
-
-  find: output_ErrorMarker   EV_M_ERROR         [op].handler!
 
   op__loop
 
