@@ -488,12 +488,6 @@ bool Output::bProcessOperand(Operand* pOperand)
       eOM eOpMarker = pMarker->eOpMarker();
 
       switch (eOpMarker) {
-
-        case OM_EOSMARKER: {
-          //vTrace("Pipeline Job: EOSMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
-          break;
-        }
           
         case OM_ERRORMARKER: {
           AM::vDeleteOperand(pOperand);
@@ -512,12 +506,6 @@ bool Output::bProcessOperand(Operand* pOperand)
           m_bExecErr = false;
           bContinue = false;
           goto L_EXIT;
-          break;
-        }
-
-        case OM_STARTMARKER: {
-          //vTrace("Pipeline Job: STARTMARKER\n"_Stz);
-          AM::vDeleteOperand(pOperand);
           break;
         }
           
