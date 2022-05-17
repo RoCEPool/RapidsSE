@@ -180,6 +180,7 @@ Stz* TypeSystem::szTypeName(i8 iTypeId)
 
 /*----------------------------------------------------------------------------*/
 /* Get the typeId of a given eCT type.                                        */
+/* Should not be used for interval types. Instead use iIdOf(eIV).             */
 /*----------------------------------------------------------------------------*/
 constexpr i8 TypeSystem::iIdOf(eCT eVal)
 {
@@ -188,11 +189,15 @@ constexpr i8 TypeSystem::iIdOf(eCT eVal)
   ASSERT(eVal != CT_INTERVAL_DT);
   ASSERT(eVal != CT_INTERVAL_YM);
 
-  return aiTypeIdOfCT[eVal];
+  i8 iTypeId = aiTypeIdOfCT[eVal];
+  ASSERT(iTypeId >= 0);
+  ASSERT(iTypeId < C_MAX_TYPE_ID);
+
+  return iTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
-/* Get the typeId of a given eCT type.                                        */
+/* Get the typeId of a given eIV type.                                        */
 /*----------------------------------------------------------------------------*/
 constexpr i8 TypeSystem::iIdOf(eIV eVal)
 {
@@ -201,7 +206,33 @@ constexpr i8 TypeSystem::iIdOf(eIV eVal)
   ASSERT( (eVal > IV_SUBCATEGORY_YEARMONTH_START && eVal < IV_SUBCATEGORY_YEARMONTH_END) ||
           (eVal > IV_SUBCATEGORY_DAYTIME_START   && eVal < IV_SUBCATEGORY_DAYTIME_END) );
 
-  return aiTypeIdOfIV[eVal];
+  i8 iTypeId = aiTypeIdOfIV[eVal];
+  ASSERT(iTypeId >= 0);
+  ASSERT(iTypeId < C_MAX_TYPE_ID);
+
+  return iTypeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the typeId of a given namespace and typename. Currently a slow search. */
+/* Returns -1 if not found.                                                   */
+/*----------------------------------------------------------------------------*/
+i8 TypeSystem::iIdOf(Stz* szNamespace, Stz* szTypeName)
+{
+  ASSERT(szNamespace);
+  ASSERT(szTypeName);
+
+  for (i8 i=0; i<C_MAX_TYPE_ID; i++) {
+
+    if (axTypes[i].m_szNamespace->bSame(szNamespace) &&
+        axTypes[i].m_szTypeName->bSame(szTypeName) ) {
+      return axTypes[i].m_iTypeId;
+    }
+
+  }
+
+  // Not found
+  return -1;
 }
 
 /*============================================================================*/
