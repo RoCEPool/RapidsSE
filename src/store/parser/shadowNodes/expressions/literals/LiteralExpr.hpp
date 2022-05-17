@@ -27,13 +27,13 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
 
     // Returns the resulting type of the expression operation
-    static eCT  eType(QueryNode* pNode, PlanNode* pRootNode);
+    static i8 iType(QueryNode* pNode, PlanNode* pRootNode);
 
     // Returns true if an expression can be coerced to a given data type
-    static b1 bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);
+    static b1 bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
 
     // Returns a new expression object which represents pExpr coerced to eTarget
-    static QueryNode* pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);
+    static QueryNode* pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
   };
 
 }

@@ -90,7 +90,7 @@ b1 StringLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT StringLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 StringLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));

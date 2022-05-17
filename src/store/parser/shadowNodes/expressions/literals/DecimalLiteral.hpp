@@ -30,7 +30,7 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
 
     // Returns the resulting type of the expression operation
-    static eCT eType(QueryNode* pNode, PlanNode* pRootNode);
+    static i8 iType(QueryNode* pNode, PlanNode* pRootNode);
 
     // Parse a string into a Bcd, setting bResult to true if successful
     static Bcd xParseStr(Stz* szStr, b1& bResult);

@@ -11,6 +11,7 @@
 #include "SubqueryRefExpr.hpp"
 #include "ShadowRoot.hpp"
 #include "GraphEditor.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -100,7 +101,7 @@ b1 ElseExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-eCT ElseExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 ElseExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -108,9 +109,9 @@ eCT ElseExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   // Get the types of the two operands
   QueryNode* pChild1 = ElseExpr::pElseExpr(pExprNode);
 
-  eCT eType1 = Expr::eType(pChild1, pRootNode);
+  i8 iTypeId1 = Expr::iType(pChild1, pRootNode);
 
-  return eType1;
+  return iTypeId1;
 }
 
 /*----------------------------------------------------------------------------*/

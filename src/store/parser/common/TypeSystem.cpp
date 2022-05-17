@@ -91,6 +91,7 @@ static constexpr i8 aiTypeIdOfIV[IV_ENUMS] = {
     /* 17 IV_SUBCATEGORY_DAYTIME_END      */ -1,
 };
 
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -111,6 +112,14 @@ TypeSystem::~TypeSystem()
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Check that this is a valid type ID                                         */
+/*----------------------------------------------------------------------------*/
+b1 TypeSystem::bIsValid(i8 iTypeId)
+{
+  return (iTypeId >= 0) && (iTypeId < C_MAX_TYPE_ID);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Get the typeId of the parent of this type                                  */
@@ -182,7 +191,7 @@ Stz* TypeSystem::szTypeName(i8 iTypeId)
 /* Get the typeId of a given eCT type.                                        */
 /* Should not be used for interval types. Instead use iIdOf(eIV).             */
 /*----------------------------------------------------------------------------*/
-constexpr i8 TypeSystem::iIdOf(eCT eVal)
+i8 TypeSystem::iIdOf(eCT eVal)
 {
   ASSERT(eVal >= CT_NONE);
   ASSERT(eVal < CT_ENUMS);
@@ -199,7 +208,7 @@ constexpr i8 TypeSystem::iIdOf(eCT eVal)
 /*----------------------------------------------------------------------------*/
 /* Get the typeId of a given eIV type.                                        */
 /*----------------------------------------------------------------------------*/
-constexpr i8 TypeSystem::iIdOf(eIV eVal)
+i8 TypeSystem::iIdOf(eIV eVal)
 {
   ASSERT(eVal >= IV_NONE);
   ASSERT(eVal < IV_ENUMS);

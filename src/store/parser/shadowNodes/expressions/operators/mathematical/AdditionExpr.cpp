@@ -10,6 +10,7 @@
 #include "eCT.h"
 #include "NodeNamer.hpp"
 #include "SubqueryRefExpr.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -170,7 +171,7 @@ b1 AdditionExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-eCT AdditionExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 AdditionExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -179,13 +180,13 @@ eCT AdditionExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pChild1 = AdditionExpr::pChild1(pExprNode);
   QueryNode* pChild2 = AdditionExpr::pChild2(pExprNode);
 
-  eCT eOperand1 = Expr::eType(pChild1, pRootNode);
-  eCT eOperand2 = Expr::eType(pChild2, pRootNode);
+  eCT eOperand1 = TypeSystem::eCTVal(Expr::iType(pChild1, pRootNode));
+  eCT eOperand2 = TypeSystem::eCTVal(Expr::iType(pChild2, pRootNode));
 
   // Lookup the type of the result
   eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
 
-  return eResult;
+  return TypeSystem::iIdOf(eResult);
 }
 
 /*============================================================================*/

@@ -28,7 +28,7 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
 
     // Returns the resulting type of the expression operation
-    static eCT   eType(QueryNode* pNode, PlanNode* pRootNode);
+    static i8 iType(QueryNode* pNode, PlanNode* pRootNode);
 
     // Returns the 1-based ordinal number of this column
     static i8 iOrdinal(QueryNode* pNode);

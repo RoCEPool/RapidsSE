@@ -22,8 +22,8 @@
 #include "SqlOperator.hpp"
 #include "OrdinalSubqueryRefExpr.hpp"
 
-
 #include "GraphNav.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -141,7 +141,7 @@ b1 SubqueryRefExpr::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT SubqueryRefExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
+i8 SubqueryRefExpr::iType(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -164,7 +164,7 @@ eCT SubqueryRefExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(eType > CT_NONE);
   ASSERT(eType < CT_ENUMS);
 
-  return eType;
+  return TypeSystem::iIdOf(eType);
 }
 
 /*----------------------------------------------------------------------------*/

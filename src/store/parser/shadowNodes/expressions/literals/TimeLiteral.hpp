@@ -29,7 +29,7 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
 
     // Returns the resulting type of the expression operation
-    static eCT eType(QueryNode* pNode, PlanNode* pRootNode);
+    static i8 iType(QueryNode* pNode, PlanNode* pRootNode);
 
     // Returns true if the given string validly represents a time
     static b1 bIsTimeStr(Stz* szStr);

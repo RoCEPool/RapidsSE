@@ -69,20 +69,20 @@ b1 MathematicalExpr::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT MathematicalExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 MathematicalExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
 
   // TODO: manual expression polymorphism here
 
-  if      (      AdditionExpr::bIsOfType(pExprNode))  { return       AdditionExpr::eType(pExprNode, pRootNode); }
-  else if (   SubtractionExpr::bIsOfType(pExprNode))  { return    SubtractionExpr::eType(pExprNode, pRootNode); }
-  else if (MultiplicationExpr::bIsOfType(pExprNode))  { return MultiplicationExpr::eType(pExprNode, pRootNode); }
-  else if (      DivisionExpr::bIsOfType(pExprNode))  { return       DivisionExpr::eType(pExprNode, pRootNode); }
-  else if (       ModulusExpr::bIsOfType(pExprNode))  { return        ModulusExpr::eType(pExprNode, pRootNode); }
-  else if (      NegationExpr::bIsOfType(pExprNode))  { return       NegationExpr::eType(pExprNode, pRootNode); }
-  else if (       ExtractExpr::bIsOfType(pExprNode))  { return        ExtractExpr::eType(pExprNode, pRootNode); }
+  if      (      AdditionExpr::bIsOfType(pExprNode))  { return AdditionExpr::iType(pExprNode, pRootNode); }
+  else if (   SubtractionExpr::bIsOfType(pExprNode))  { return SubtractionExpr::iType(pExprNode, pRootNode); }
+  else if (MultiplicationExpr::bIsOfType(pExprNode))  { return MultiplicationExpr::iType(pExprNode, pRootNode); }
+  else if (      DivisionExpr::bIsOfType(pExprNode))  { return DivisionExpr::iType(pExprNode, pRootNode); }
+  else if (       ModulusExpr::bIsOfType(pExprNode))  { return ModulusExpr::iType(pExprNode, pRootNode); }
+  else if (      NegationExpr::bIsOfType(pExprNode))  { return NegationExpr::iType(pExprNode, pRootNode); }
+  else if (       ExtractExpr::bIsOfType(pExprNode))  { return ExtractExpr::iType(pExprNode, pRootNode); }
 //  else if (       PowerExpr::bIsOfType(pExprNode))  { return          PowerExpr::eType(pExprNode, pRootNode); }
 //  else if (         LogExpr::bIsOfType(pExprNode))  { return            LogExpr::eType(pExprNode, pRootNode); }
   else NEVER_REACH

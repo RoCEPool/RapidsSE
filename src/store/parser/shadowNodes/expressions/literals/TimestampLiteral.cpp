@@ -120,7 +120,7 @@ b1 TimestampLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT TimestampLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 TimestampLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));

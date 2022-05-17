@@ -95,7 +95,7 @@ b1 DateLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT DateLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 DateLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));

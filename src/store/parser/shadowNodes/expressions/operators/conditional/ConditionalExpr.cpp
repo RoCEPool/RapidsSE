@@ -59,16 +59,16 @@ b1 ConditionalExpr::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT ConditionalExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 ConditionalExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
       ASSERT(bIsOfType(pExprNode));
 
   // TODO: manual expression polymorphism here
 
-  if      (CaseExpr::bIsOfType(pExprNode))    { return   CaseExpr::eType(pExprNode, pRootNode);  }
-  else if (WhenExpr::bIsOfType(pExprNode))    { return   WhenExpr::eType(pExprNode, pRootNode);  }
-  else if (ElseExpr::bIsOfType(pExprNode))    { return   ElseExpr::eType(pExprNode, pRootNode);  }
+  if      (CaseExpr::bIsOfType(pExprNode))    { return CaseExpr::iType(pExprNode, pRootNode);  }
+  else if (WhenExpr::bIsOfType(pExprNode))    { return WhenExpr::iType(pExprNode, pRootNode);  }
+  else if (ElseExpr::bIsOfType(pExprNode))    { return ElseExpr::iType(pExprNode, pRootNode);  }
   else NEVER_REACH
 }
 

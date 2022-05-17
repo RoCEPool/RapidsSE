@@ -79,7 +79,7 @@ b1 ColumnOrdinal::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT ColumnOrdinal::eType(QueryNode* pNode, PlanNode* pRootNode)
+i8 ColumnOrdinal::iType(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

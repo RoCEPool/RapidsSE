@@ -17,6 +17,7 @@
 #include "CteDef.hpp"
 
 #include "GraphNav.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -164,7 +165,7 @@ b1 ColumnRef::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT ColumnRef::eType(QueryNode* pNode, PlanNode* pRootNode)
+i8 ColumnRef::iType(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -203,7 +204,7 @@ eCT ColumnRef::eType(QueryNode* pNode, PlanNode* pRootNode)
     ASSERT(eType > CT_NONE);
     ASSERT(eType < CT_ENUMS);
 
-    return eType;
+    return TypeSystem::iIdOf(eType);
   }
 
   QueryNode* pColumnDef = MetadataNode::pColumnDef(pMetadata,
@@ -217,7 +218,7 @@ eCT ColumnRef::eType(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(eType > CT_NONE);
   ASSERT(eType < CT_ENUMS);
 
-  return eType;
+  return TypeSystem::iIdOf(eType);
 }
 
 /*----------------------------------------------------------------------------*/

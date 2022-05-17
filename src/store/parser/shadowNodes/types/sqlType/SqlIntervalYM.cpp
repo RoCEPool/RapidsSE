@@ -10,6 +10,7 @@
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -33,8 +34,11 @@ PlanNode* SqlIntervalYM::pCreate()
   // Create a unique name for this object
   s256 sName;
   NodeNamer::vGenerateName(C_SQLINTERVAL_DEFN, sName);
-  Value xTypeValue((i8) CT_INTERVAL_YM);
-  PlanNode* pNode = new QueryNode(sName, C_SQLINTERVAL_DEFN, static_cast<Value&&>(xTypeValue));
+  QueryNode* pNode = new QueryNode(sName, C_SQLINTERVAL_DEFN);
+
+  // Add in any common properties
+  // TODO: Set the correct typeId below
+  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(IV_YEAR_TO_MONTH));
 
   return pNode;
 }

@@ -10,6 +10,7 @@
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -34,8 +35,10 @@ PlanNode* SqlTimestamp::pCreate()
   // Create a unique name for this object
   s256 sName;
   NodeNamer::vGenerateName(C_SQLTIMESTAMP_DEFN, sName);
-  Value xTypeValue((i8) CT_TIMESTAMP);
-  PlanNode* pNode = new QueryNode(sName, C_SQLTIMESTAMP_DEFN, static_cast<Value&&>(xTypeValue));
+  QueryNode* pNode = new QueryNode(sName, C_SQLTIMESTAMP_DEFN);
+
+  // Add in any common properties
+  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(CT_TIMESTAMP));
 
   return pNode;
 }
@@ -50,8 +53,10 @@ PlanNode* SqlTimestamp::pCreate(i8 iMinOffset)
   // Create a unique name for this object
   s256 sName;
   NodeNamer::vGenerateName(C_SQLTIMESTAMP_DEFN, sName);
-  Value xTypeValue((i8) CT_TIMESTAMP);
-  QueryNode* pNode = new QueryNode(sName, C_SQLTIMESTAMP_DEFN, static_cast<Value&&>(xTypeValue));
+  QueryNode* pNode = new QueryNode(sName, C_SQLTIMESTAMP_DEFN);
+
+  // Add in any common properties
+  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(CT_TIMESTAMP));
 
   // Create the offset property
   Value xValue(iMinOffset);

@@ -11,6 +11,7 @@
 #include "SubqueryRefExpr.hpp"
 #include "GraphEditor.hpp"
 #include "ShadowRoot.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -128,25 +129,25 @@ b1 WhenExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-eCT WhenExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 WhenExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
 
   // First check that the predicate doesn't need coercing
   QueryNode* pPredicate = WhenExpr::pPredicateExpr(pExprNode);
-  eCT ePredicateType = Expr::eType(pPredicate, pRootNode);
+  eCT ePredicateType = TypeSystem::eCTVal(Expr::iType(pPredicate, pRootNode));
 
   if (ePredicateType == CT_NONE) {
     // This will try a coercion
-    return ePredicateType;
+    return TypeSystem::iIdOf(ePredicateType);
   }
 
   // Get the types of the result expression
   QueryNode* pResult = WhenExpr::pResultExpr(pExprNode);
-  eCT eResultType = Expr::eType(pResult, pRootNode);
+  eCT eResultType = TypeSystem::eCTVal(Expr::iType(pResult, pRootNode));
 
-  return eResultType;
+  return TypeSystem::iIdOf(eResultType);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,8 +166,8 @@ void WhenExpr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
   QueryNode* pPredicate = WhenExpr::pPredicateExpr(pExpr);
   QueryNode* pResult    = WhenExpr::pResultExpr(pExpr);
 
-  eCT ePredicateType = Expr::eType(pPredicate, pRootNode);
-  eCT eResultType    = Expr::eType(pResult, pRootNode);
+  eCT ePredicateType = TypeSystem::eCTVal(Expr::iType(pPredicate, pRootNode));
+  eCT eResultType    = TypeSystem::eCTVal(Expr::iType(pResult, pRootNode));
 
   if (ePredicateType == CT_NONE) {
     Expr::vCoerceSubExprs(pPredicate, pRootNode);

@@ -18,7 +18,7 @@ namespace Parser
 
 
   public:
-    static QueryNode* pCreate(eCT eType);
+    static QueryNode* pCreate(i8 iTypeId);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **
@@ -28,7 +28,13 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
 
     static Stz* szTypeName(PlanNode* pNode);
+    static i8   iTypeId(PlanNode* pNode);
+
+    [[deprecated]]
     static eCT  eType(PlanNode* pNode);
+
+  protected:
+    static void vCreateCommon(QueryNode* pNode, i8 iTypeId);
   };
 
 }

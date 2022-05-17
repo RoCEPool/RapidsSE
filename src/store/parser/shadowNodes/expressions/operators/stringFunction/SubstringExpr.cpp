@@ -12,6 +12,7 @@
 #include "SubqueryRefExpr.hpp"
 #include "ShadowRoot.hpp"
 #include "GraphEditor.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -222,7 +223,7 @@ b1 SubstringExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-eCT SubstringExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 SubstringExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -232,9 +233,9 @@ eCT SubstringExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pFromExprNode   = SubstringExpr::pFromExpr(pExprNode);
   QueryNode* pLengthExprNode = SubstringExpr::pLengthExpr(pExprNode);
 
-  eCT eSrcType    = Expr::eType(pSrcExprNode, pRootNode);
-  eCT eFromType   = Expr::eType(pFromExprNode, pRootNode);
-  eCT eLengthType = (pLengthExprNode ? Expr::eType(pLengthExprNode, pRootNode) : CT_INTEGER);
+  eCT eSrcType    = TypeSystem::eCTVal(Expr::iType(pSrcExprNode, pRootNode));
+  eCT eFromType   = TypeSystem::eCTVal(Expr::iType(pFromExprNode, pRootNode));
+  eCT eLengthType = (pLengthExprNode ? TypeSystem::eCTVal(Expr::iType(pLengthExprNode, pRootNode)) : CT_INTEGER);
 
   eCT eResultSrcType    = aeSrcExprTypeCalculus[eSrcType];
   eCT eResultFromType   = aeFromExprTypeCalculus[eFromType];
@@ -243,16 +244,16 @@ eCT SubstringExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   if (eResultSrcType    == CT_NONE ||
       eResultFromType   == CT_NONE ||
       eResultLengthType == CT_NONE) {
-    return CT_NONE;
+    return TypeSystem::iIdOf(CT_NONE);
   }
 
   if (eResultSrcType    == CT_UNKNOWN ||
       eResultFromType   == CT_UNKNOWN ||
       eResultLengthType == CT_UNKNOWN) {
-    return CT_UNKNOWN;
+    return TypeSystem::iIdOf(CT_UNKNOWN);
   }
 
-  return eResultSrcType;
+  return TypeSystem::iIdOf(eResultSrcType);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,7 +274,7 @@ void SubstringExpr::vCoerceSubExprs(QueryNode* pSubstringExpr, PlanNode* pRootNo
   // Substring Length
   QueryNode* pLength = pLengthExpr(pSubstringExpr);
 
-  if (pLength && Expr::eType(pLength, pRootNode) != CT_INTEGER) {
+  if (pLength && Expr::iType(pLength, pRootNode) != CT_INTEGER) {
     Expr::vCoerceSubExprs(pLength, pRootNode);
   }
 
@@ -281,7 +282,7 @@ void SubstringExpr::vCoerceSubExprs(QueryNode* pSubstringExpr, PlanNode* pRootNo
   QueryNode* pStartPos = pFromExpr(pSubstringExpr);
   ASSERT(pStartPos);
 
-  if (Expr::eType(pStartPos, pRootNode) != CT_INTEGER) {
+  if (Expr::iType(pStartPos, pRootNode) != CT_INTEGER) {
     Expr::vCoerceSubExprs(pStartPos, pRootNode);
   }
 
@@ -289,7 +290,7 @@ void SubstringExpr::vCoerceSubExprs(QueryNode* pSubstringExpr, PlanNode* pRootNo
   QueryNode* pStrSrc = pSrcExpr(pSubstringExpr);
   ASSERT(pStartPos);
 
-  eCT eStrSrcType = Expr::eType(pStrSrc, pRootNode);
+  eCT eStrSrcType = TypeSystem::eCTVal(Expr::iType(pStrSrc, pRootNode));
   if (eStrSrcType != CT_CHAR &&
       eStrSrcType != CT_VARCHAR &&
       eStrSrcType != CT_UNKNOWN &&

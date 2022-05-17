@@ -2135,13 +2135,13 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
     QueryNode* pExpr    = _pQueryNode(pNode);
 
     ASSERT(Expr::bIsOfType(pNode));
-    if (Expr::eType(pExpr, pRootNode) == CT_NONE) {
+    if (Expr::iType(pExpr, pRootNode) == CT_NONE) {
       // We might need type coercion here
       Expr::vCoerceSubExprs(pExpr, pRootNode);
 
       // If we still haven't been able to correct the problem then abort any
       // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().
-      if (Expr::eType(pExpr, pRootNode) == CT_NONE) {
+      if (Expr::iType(pExpr, pRootNode) == CT_NONE) {
         return GraphNav::WALK_ABORT;
       }
     }
@@ -2186,7 +2186,7 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
       if (!bResult) {
         // If we still haven't been able to correct the problem then abort any
         // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().
-        ASSERT(Expr::eType(pProjectedExpr, pRootNode) == CT_NONE);
+        ASSERT(Expr::iType(pProjectedExpr, pRootNode) == CT_NONE);
         delete pIter;
         return GraphNav::WALK_ABORT;
       }
@@ -2335,7 +2335,7 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
       }
     }
 
-    eCT eType = Expr::eType(pColExpr, pRootNode);
+    eCT eType = Expr::iType(pColExpr, pRootNode);
 
     if (eType == CT_NONE) {
       s2K sBuf;

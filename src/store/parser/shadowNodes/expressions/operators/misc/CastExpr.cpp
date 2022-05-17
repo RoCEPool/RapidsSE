@@ -12,6 +12,7 @@
 #include "SubqueryRefExpr.hpp"
 #include "SqlType.hpp"
 #include "GraphNav.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -67,11 +68,12 @@ static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-QueryNode* CastExpr::pCreate(QueryNode* pTargetExpr, eCT eTargetType)
+QueryNode* CastExpr::pCreate(QueryNode* pTargetExpr, i8 iTypeId)
 {
   _static_
   ASSERT(pTargetExpr);
   ASSERT(Expr::bIsOfType(pTargetExpr));
+  ASSERT(TypeSystem::bIsValid(iTypeId));
   ASSERT(eTargetType > CT_NONE);
   ASSERT(eTargetType < CT_ENUMS);
 
@@ -82,7 +84,7 @@ QueryNode* CastExpr::pCreate(QueryNode* pTargetExpr, eCT eTargetType)
   QueryNode* pCastExpr = new QueryNode(sName, C_DEFN);
   pCastExpr->vAppendChild(pTargetExpr);
 
-  QueryNode* pTargetType = SqlType::pCreate(eTargetType);
+  QueryNode* pTargetType = SqlType::pCreate(iTypeId);
   pTargetType->vSetName(C_TARGETTYPE_PROP);
   pCastExpr->vAppendProperty(pTargetType);
 
@@ -159,9 +161,9 @@ b1 CastExpr::bIsExactType(PlanNode *pNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation.                    */
-/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/* A returned value of -1 means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-eCT CastExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
+i8 CastExpr::iType(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -170,26 +172,33 @@ eCT CastExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
   QueryNode* pTargetExprNode = CastExpr::pTargetExpr(pNode);
   QueryNode* pSqlTypeNode    = CastExpr::pSqlTypeNode(pNode);
 
-  eCT eExprType = Expr::eType(pTargetExprNode, pRootNode);
+  i8 iTargetExprTypeId = Expr::iType(pTargetExprNode, pRootNode);
+  eCT eTargetExprType  = TypeSystem::eCTVal(iTargetExprTypeId);
+
   eCT eSqlType  = SqlType::eType(pSqlTypeNode);
 
-  eCT eResultSrcType = aeTypeCalculus[eExprType][eSqlType];
-  return eResultSrcType;
+  eCT eResultSrcType = aeTypeCalculus[eTargetExprType][eSqlType];
+
+  // TODO: Handle intervals
+  return TypeSystem::iIdOf(eResultSrcType);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if an expr can be coerced to a given data type via a cast     */
 /*----------------------------------------------------------------------------*/
-b1 CastExpr::bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
+b1 CastExpr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
 
-  eCT eCurrentType = Expr::eType(pExpr, pRootNode);
+  i8 iCurrentType = Expr::iType(pExpr, pRootNode);
+  eCT eCurrentType = TypeSystem::eCTVal(iCurrentType);
+
+  eCT eTargetTypeId = TypeSystem::eCTVal(iTargetTypeId);
 
   // We can always cast the current type to itself
-  if (eCurrentType == eTarget) {
-    ASSERT(aeTypeCalculus[eCurrentType][eTarget]);
+  if (iCurrentType == iTargetTypeId) {
+    ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
     return true;
   }
 
@@ -201,32 +210,32 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* p
 
   switch (eCurrentType) {
     case CT_INTEGER:
-      if (eTarget == CT_DECIMAL || eTarget == CT_FLOAT)   {
-        ASSERT(aeTypeCalculus[eCurrentType][eTarget]);
+      if (eTargetTypeId == CT_DECIMAL || eTargetTypeId == CT_FLOAT)   {
+        ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
         return true;
       }
       break;
 
     case CT_DECIMAL:
-      if (eTarget == CT_FLOAT)
+      if (eTargetTypeId == CT_FLOAT)
       {
-        ASSERT(aeTypeCalculus[eCurrentType][eTarget]);
+        ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
         return true;
       }
       break;
 
     case CT_DATE:
-      if (eTarget == CT_TIMESTAMP)
+      if (eTargetTypeId == CT_TIMESTAMP)
       {
-        ASSERT(aeTypeCalculus[eCurrentType][eTarget]);
+        ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
         return true;
       }
       break;
 
     case CT_BOOLEAN:
-      if (eTarget == CT_VARCHAR || eTarget == CT_CHAR)
+      if (eTargetTypeId == CT_VARCHAR || eTargetTypeId == CT_CHAR)
       {
-        ASSERT(aeTypeCalculus[eCurrentType][eTarget]);
+        ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
         return true;
       }
       break;
@@ -239,20 +248,21 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* p
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns a new expression object which represents pExpr coerced to eTarget  */
+/* Returns a new expression object which represents pExpr coerced to iTypeId  */
 /*----------------------------------------------------------------------------*/
-QueryNode* CastExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
+QueryNode* CastExpr::pCoerceTo(i8 iTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
-  ASSERT(eTarget > CT_NONE);
-  ASSERT(eTarget < CT_ENUMS);
+  ASSERT(TypeSystem::bIsValid(iTypeId));
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
-  ASSERT(Expr::eType(pExpr, pRootNode) != CT_NONE);
+  ASSERT(TypeSystem::bIsValid(Expr::iTypeId(pExpr, pRootNode)));
 
-  ASSERT(aeTypeCalculus[Expr::eType(pExpr, pRootNode)][eTarget]);
+  // TODO: Can we do this in terms of iTypeId?
+  eCT eType = TypeSystem::eCTVal(iTypeId);
+  ASSERT(aeTypeCalculus[Expr::iType(pExpr, pRootNode)][eTargetTypeId]);
 
   QueryNode* pExprCopy = pExpr->pDeepCopy(true);
-  QueryNode* pCastExpr = CastExpr::pCreate(pExprCopy, eTarget);
+  QueryNode* pCastExpr = CastExpr::pCreate(pExprCopy, iTypeId);
   return pCastExpr;
 }
 

@@ -116,6 +116,7 @@
 #include "UnionOp.hpp"
 
 #include "ConditionalQueryNodeIter.hpp"
+#include "TypeSystem.hpp"
 
 #include "SP_Dte.hpp"
 #include "SP_Tme.hpp"
@@ -359,7 +360,7 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // type
-  eCT eType = Expr::eType(pExprNode, pBackend->m_pPlanRoot);
+  eCT eType = TypeSystem::eCTVal(Expr::iType(pExprNode, pBackend->m_pPlanRoot));
   sPipeline->vCatSprint(
       " type %s"
       ""_Stz,
@@ -395,7 +396,7 @@ void Backend::vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNo
 
   String* sPipeline = pBackend->m_sPipeline;
 
-  eCT eType = Expr::eType(pExprNode, pBackend->m_pPlanRoot);
+  eCT eType = TypeSystem::eCTVal(Expr::iType(pExprNode, pBackend->m_pPlanRoot));
 
   sPipeline->vCatSprint(
     " type %s"
@@ -1450,7 +1451,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       QueryNode* pSymbolicExpr = Expr::pOrdinalToSymbolic(pOrdinalExpr, pBackend->m_pColExprList,
                                                     pBackend->m_pPlanRoot);
 
-      eCT eType = CastExpr::eType(pSymbolicExpr, pBackend->m_pPlanRoot);
+      eCT eType = TypeSystem::eCTVal(CastExpr::iType(pSymbolicExpr, pBackend->m_pPlanRoot));
 
       sPipeline->vCatSprint(
           " casttype %s CAST "

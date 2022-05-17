@@ -91,7 +91,7 @@ b1 BooleanLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT BooleanLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 BooleanLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));

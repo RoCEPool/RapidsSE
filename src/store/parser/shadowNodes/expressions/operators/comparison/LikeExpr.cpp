@@ -11,6 +11,7 @@
 #include "SubqueryRefExpr.hpp"
 #include "StringObject.hpp"
 #include "GraphNav.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -205,7 +206,7 @@ b1 LikeExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-eCT LikeExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 LikeExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -215,7 +216,7 @@ eCT LikeExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pEscapeNode    = pEscape(pExprNode);
 
   if (pEscapeNode) {
-    eCT eEscapeType = Expr::eType(pEscapeNode, pRootNode);
+    eCT eEscapeType = TypeSystem::eCTVal(Expr::iType(pEscapeNode, pRootNode));
   
     switch (eEscapeType) {
       case CT_UNKNOWN:
@@ -230,13 +231,13 @@ eCT LikeExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
     }
   }
 
-  eCT ePredicand = Expr::eType(pPredicandNode, pRootNode);
-  eCT ePattern   = Expr::eType(pPatternNode, pRootNode);
+  eCT ePredicand = TypeSystem::eCTVal(Expr::iType(pPredicandNode, pRootNode));
+  eCT ePattern   = TypeSystem::eCTVal(Expr::iType(pPatternNode, pRootNode));
 
   // Lookup the type of the result
   eCT eResult = aeTypeCalculus[ePredicand][ePattern];
 
-  return eResult;
+  return TypeSystem::iIdOf(eResult);
 }
 
 /*============================================================================*/

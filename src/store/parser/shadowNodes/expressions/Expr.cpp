@@ -46,6 +46,7 @@
 #include "GraphNav.hpp"
 #include "GraphEditor.hpp"
 #include "SqlException.hpp"
+#include "TypeSystem.hpp"
 
 
 using namespace Parser;
@@ -110,22 +111,22 @@ b1 Expr::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT Expr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 Expr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
 
   // TODO: manual expression polymorphism here
 
-  if      (    LiteralExpr::bIsOfType(pExprNode))  { return     LiteralExpr::eType(pExprNode, pRootNode); }
-  else if (      ColumnRef::bIsOfType(pExprNode))  { return       ColumnRef::eType(pExprNode, pRootNode); }
-  else if (       AliasRef::bIsOfType(pExprNode))  { return        AliasRef::eType(pExprNode, pRootNode); }
-  else if ( ColumnWildcard::bIsOfType(pExprNode))  { return  ColumnWildcard::eType(pExprNode, pRootNode); }
-  else if (  ColumnOrdinal::bIsOfType(pExprNode))  { return   ColumnOrdinal::eType(pExprNode, pRootNode); }
-  else if (ColumnParameter::bIsOfType(pExprNode))  { return ColumnParameter::eType(pExprNode, pRootNode); }
-  else if (   OperatorExpr::bIsOfType(pExprNode))  { return    OperatorExpr::eType(pExprNode, pRootNode); }
-  else if (SubqueryRefExpr::bIsOfType(pExprNode))  { return SubqueryRefExpr::eType(pExprNode, pRootNode); }
-  else if (       MiscExpr::bIsOfType(pExprNode))  { return        MiscExpr::eType(pExprNode, pRootNode); }
+  if      (    LiteralExpr::bIsOfType(pExprNode))  { return LiteralExpr::iType(pExprNode, pRootNode); }
+  else if (      ColumnRef::bIsOfType(pExprNode))  { return ColumnRef::iType(pExprNode, pRootNode); }
+  else if (       AliasRef::bIsOfType(pExprNode))  { return AliasRef::iType(pExprNode, pRootNode); }
+  else if ( ColumnWildcard::bIsOfType(pExprNode))  { return ColumnWildcard::iType(pExprNode, pRootNode); }
+  else if (  ColumnOrdinal::bIsOfType(pExprNode))  { return ColumnOrdinal::iType(pExprNode, pRootNode); }
+  else if (ColumnParameter::bIsOfType(pExprNode))  { return ColumnParameter::iType(pExprNode, pRootNode); }
+  else if (   OperatorExpr::bIsOfType(pExprNode))  { return OperatorExpr::iType(pExprNode, pRootNode); }
+  else if (SubqueryRefExpr::bIsOfType(pExprNode))  { return SubqueryRefExpr::iType(pExprNode, pRootNode); }
+  else if (       MiscExpr::bIsOfType(pExprNode))  { return MiscExpr::iType(pExprNode, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -277,7 +278,8 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
   // expression tree should be ok (because no combination of CT_NONE should
   // produce a valid type).
 
-  eCT eResultType = eType(pExprNode, pRootNode);
+  i8 iResultTypeId = iType(pExprNode, pRootNode);
+  eCT eResultType = TypeSystem::eCTVal(iResultTypeId);
 
   if (eResultType != CT_NONE) {
     // This expression will produce a valid type
@@ -901,10 +903,11 @@ void Expr::vSuperAggregate(QueryNode* pExpr, PlanNode* pRootNode)
       // DECIMAL if x is an INTEGER.
       //
       // First get the resulting type of the original AVG operation.
-      eCT eAvgType = Expr::eType(pExpr, pRootNode);
+      i8 iAvgTypeId = Expr::iType(pExpr, pRootNode);
+      eCT eAvgType = TypeSystem::eCTVal(iAvgTypeId);
 
       // Now check if it is the same type as the numerator and denominator
-      if (Expr::eType(pNumerator, pRootNode) != eAvgType) {
+      if (Expr::iType(pNumerator, pRootNode) != eAvgType) {
         // Numerator needs to be cast
         QueryNode* pCastExpr = CastExpr::pCoerceTo(eAvgType, pNumerator, pRootNode);
 
@@ -913,7 +916,7 @@ void Expr::vSuperAggregate(QueryNode* pExpr, PlanNode* pRootNode)
         pNumerator = pCastExpr;
       }
 
-      if (Expr::eType(pDenominator, pRootNode) != eAvgType) {
+      if (Expr::iType(pDenominator, pRootNode) != eAvgType) {
         // Denominator needs to be cast
         QueryNode* pCastExpr = CastExpr::pCoerceTo(eAvgType, pDenominator, pRootNode);
 
@@ -1028,7 +1031,7 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
     return;
   }
 
-  ASSERT(Expr::eType(pExpr, pRootNode) == CT_NONE);
+  ASSERT(Expr::iType(pExpr, pRootNode) == CT_NONE);
 
   // Take a copy of the expression so it can be modified freely.
   QueryNode* pExprCopy = pExpr->pDeepCopy(false);
@@ -1040,7 +1043,7 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
   b1 bResult = bCoerceChildrenToCommonType(pExprCopy, pRootNode);
 
   if (bResult) {
-    ASSERT(Expr::eType(pExprCopy, pRootNode) != CT_NONE);
+    ASSERT(Expr::iType(pExprCopy, pRootNode) != CT_NONE);
 
     // We need to replace the children of pExpr with the children of pExprCopy,
     // then clean up.
@@ -1116,7 +1119,9 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   QueryNode* pChild;
   while ((pChild = pExprCopy->pPopChild()) != nullptr) {
 
-    eCT eChildType = Expr::eType(pChild, pRootNode);
+    i8 iChildTypeId = Expr::iType(pChild, pRootNode);
+    eCT eChildType = TypeSystem::eCTVal(iChildTypeId);
+
     QueryNode* pCoercedChild;
 
     if (eChildType == eCoercibleTarget) {
@@ -1146,7 +1151,7 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   delete pChildList;
 
   // Finally, did this do enough to make the expression viable?
-  bFixed = (Expr::eType(pExprCopy, pRootNode) != CT_NONE);
+  bFixed = (Expr::iType(pExprCopy, pRootNode) != CT_NONE);
   return bFixed;
 }
 
@@ -1239,41 +1244,41 @@ eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[CT_ENUMS], i8 iMaxCoun
 /* Note that the system may support additional explicit casts, but only the   */
 /* implicit ones are done automatically.                                      */
 /*----------------------------------------------------------------------------*/
-b1 Expr::bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
+b1 Expr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
-  ASSERT(Expr::eType(pExpr, pRootNode) != CT_NONE);
+  ASSERT(Expr::iType(pExpr, pRootNode) != CT_NONE);
 
   // If we have a literal then we need to check whether we can convert it appropriately.
   // e.g. we can convert '2000-01-01' to a CT_DATE, but not '2000_01_01'.
 
   if (LiteralExpr::bIsOfType(pExpr)) {
-    return LiteralExpr::bIsImplicitlyCoercibleTo(eTarget, pExpr, pRootNode);
+    return LiteralExpr::bIsImplicitlyCoercibleTo(iTargetTypeId, pExpr, pRootNode);
   }
 
   // Otherwise we need to cast the expression, so let's ask it whether it can be coerced.
-  return CastExpr::bIsImplicitlyCoercibleTo(eTarget, pExpr, pRootNode);
+  return CastExpr::bIsImplicitlyCoercibleTo(iTargetTypeId, pExpr, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns a new expression object which represents pExpr coerced to eTarget  */
 /*----------------------------------------------------------------------------*/
-QueryNode* Expr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
+QueryNode* Expr::pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
-  ASSERT(eTarget > CT_NONE);
-  ASSERT(eTarget < CT_ENUMS);
+  ASSERT(iTargetTypeId > CT_NONE);
+  ASSERT(iTargetTypeId < CT_ENUMS);
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
-  ASSERT(Expr::eType(pExpr, pRootNode) != CT_NONE);
+  ASSERT(Expr::iType(pExpr, pRootNode) != CT_NONE);
 
   // If we have a literal then we will simply replace it with another literal.
   if (LiteralExpr::bIsOfType(pExpr)) {
-    return LiteralExpr::pCoerceTo(eTarget, pExpr, pRootNode);
+    return LiteralExpr::pCoerceTo(iTargetTypeId, pExpr, pRootNode);
   }
 
   // Otherwise we need to cast the expression.
-  return CastExpr::pCoerceTo(eTarget, pExpr, pRootNode);
+  return CastExpr::pCoerceTo(iTargetTypeId, pExpr, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

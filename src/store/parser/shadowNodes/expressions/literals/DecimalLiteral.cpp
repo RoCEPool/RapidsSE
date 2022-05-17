@@ -108,7 +108,7 @@ b1 DecimalLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT DecimalLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+i8 DecimalLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));

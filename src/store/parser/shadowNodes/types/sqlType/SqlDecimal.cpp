@@ -10,6 +10,7 @@
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -46,8 +47,10 @@ PlanNode* SqlDecimal::pCreate(i8 iPrecision, i8 iScale)
   // Create a unique name for this object
   s256 sName;
   NodeNamer::vGenerateName(C_SQLDECIMAL_DEFN, sName);
-  Value xTypeValue((i8) CT_DECIMAL);
-  QueryNode* pNode = new QueryNode(sName, C_SQLDECIMAL_DEFN, static_cast<Value&&>(xTypeValue));
+  QueryNode* pNode = new QueryNode(sName, C_SQLDECIMAL_DEFN);
+
+  // Add in any common properties
+  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(CT_DECIMAL));
 
   if (iPrecision != -1) {
     ASSERT(iPrecision > 0);
