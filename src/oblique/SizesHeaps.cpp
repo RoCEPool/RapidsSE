@@ -528,6 +528,7 @@ SizeHeap gxaSizeHeap[]
 
   { CN__S__,                     'S' - ('A' - 1),            HT_INVALID   ,0 FILL },
   { CN_SCANNER,                  sizeof(Scanner),            HT_T_TINY    ,0 FILL },
+  { CN_SCHEDULE,                 sizeof(Schedule),           HT_T_TINY    ,0 FILL },
   { CN_SCHEDULER,                sizeof(Scheduler),          HT_INVALID   ,0 FILL },
   { CN_SCHEMA,                   sizeof(Schema),             HT_T_TINY    ,0 FILL },
   { CN_SEAPI,                    sizeof(SeApi),              HT_T_LARGE   ,0 FILL },
@@ -589,7 +590,6 @@ SizeHeap gxaSizeHeap[]
   { CN_SYSCALL,                  sizeof(SysCall),            HT_INVALID   ,0 FILL },
   { CN_SYSMETRICS,               sizeof(SysMetrics),         HT_T_TINY    ,0 FILL },
   { CN_SYSREPORT,                sizeof(SysReport),          HT_T_TINY    ,0 FILL },
-  { CN_SCHEDULE,                 sizeof(Schedule),           HT_T_TINY    ,0 FILL },
 
   { CN__T__,                     'T' - ('A' - 1),            HT_INVALID   ,0 FILL },
   { CN_TABLE,                    sizeof(Table),              HT_T_TINY    ,0 FILL },

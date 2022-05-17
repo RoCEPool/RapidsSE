@@ -743,6 +743,40 @@ void PoolHelper::vValidateEnums(void)
       vTrace("[%lld] class %18s heap %18s size %lldB\n"_Stz,
              i_Class,aCN[eClass],aHT[eHeap],iSize);
     
+
+    // sanity check the class names seem roughly in order
+    switch (eClass) {
+      case CN_NONE:  RASSERT(aCN[CN_NONE]->bSame("NONE"_Stz));  break;
+      case CN__A__:  RASSERT(aCN[CN__A__]->bSame("_A__"_Stz));  break;
+      case CN__B__:  RASSERT(aCN[CN__B__]->bSame("_B__"_Stz));  break;
+      case CN__C__:  RASSERT(aCN[CN__C__]->bSame("_C__"_Stz));  break;
+      case CN__D__:  RASSERT(aCN[CN__D__]->bSame("_D__"_Stz));  break;
+      case CN__E__:  RASSERT(aCN[CN__E__]->bSame("_E__"_Stz));  break;
+      case CN__F__:  RASSERT(aCN[CN__F__]->bSame("_F__"_Stz));  break;
+      case CN__G__:  RASSERT(aCN[CN__G__]->bSame("_G__"_Stz));  break;
+      case CN__H__:  RASSERT(aCN[CN__H__]->bSame("_H__"_Stz));  break;
+      case CN__I__:  RASSERT(aCN[CN__I__]->bSame("_I__"_Stz));  break;
+      case CN__J__:  RASSERT(aCN[CN__J__]->bSame("_J__"_Stz));  break;
+      case CN__K__:  RASSERT(aCN[CN__K__]->bSame("_K__"_Stz));  break;
+      case CN__L__:  RASSERT(aCN[CN__L__]->bSame("_L__"_Stz));  break;
+      case CN__M__:  RASSERT(aCN[CN__M__]->bSame("_M__"_Stz));  break;
+      case CN__N__:  RASSERT(aCN[CN__N__]->bSame("_N__"_Stz));  break;
+      case CN__O__:  RASSERT(aCN[CN__O__]->bSame("_O__"_Stz));  break;
+      case CN__P__:  RASSERT(aCN[CN__P__]->bSame("_P__"_Stz));  break;
+      case CN__Q__:  RASSERT(aCN[CN__Q__]->bSame("_Q__"_Stz));  break;
+      case CN__R__:  RASSERT(aCN[CN__R__]->bSame("_R__"_Stz));  break;
+      case CN__S__:  RASSERT(aCN[CN__S__]->bSame("_S__"_Stz));  break;
+      case CN__T__:  RASSERT(aCN[CN__T__]->bSame("_T__"_Stz));  break;
+      case CN__U__:  RASSERT(aCN[CN__U__]->bSame("_U__"_Stz));  break;
+      case CN__V__:  RASSERT(aCN[CN__V__]->bSame("_V__"_Stz));  break;
+      case CN__W__:  RASSERT(aCN[CN__W__]->bSame("_W__"_Stz));  break;
+      case CN__X__:  RASSERT(aCN[CN__X__]->bSame("_X__"_Stz));  break;
+      case CN__Y__:  RASSERT(aCN[CN__Y__]->bSame("_Y__"_Stz));  break;
+      case CN__Z__:  RASSERT(aCN[CN__Z__]->bSame("_Z__"_Stz));  break;
+      case CN_ENUMS: RASSERT(aCN[CN_ENUMS]->bSame("ENUMS"_Stz)); break;
+      default: break;
+    }
+    
     RASSERT(eClass == gxaSizeHeap[eClass].m_eClassType);
     
     switch(eHeap) {

@@ -14,6 +14,7 @@ namespace BASE
 enum eCN : u2 // Class Number
 {
   /* */ CN_NONE,
+  
   /* */ CN__A__,
   /* */ CN_ACCESSPATH,
   /* */ CN_ACTION,
@@ -282,6 +283,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__S__,
   /* */ CN_SCANNER,
+  /* */ CN_SCHEDULE,
   /* */ CN_SCHEDULER,
   /* */ CN_SCHEMA,
   /* */ CN_SEAPI,
@@ -343,7 +345,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SYSCALL,
   /* */ CN_SYSMETRICS,
   /* */ CN_SYSREPORT,
-  /* */ CN_SCHEDULE,
 
   /* */ CN__T__,
   /* */ CN_TABLE,
@@ -659,7 +660,7 @@ static Stz* aCN[]
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RECVWL"_Stz,               // CN_RECVWL
   /* */ "RELOP"_Stz,                // CN_RELOP
-  /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
+  /* */ "RESOURCES"_Stz,            // CN_RESOURCES
   /* */ "RIBBON"_Stz,               // CN_RIBBON
   /* */ "RIBBONLINE"_Stz,           // CN_RIBBONLINE
   /* */ "RLUDIARY"_Stz,             // CN_RLUDIARY
@@ -689,6 +690,7 @@ static Stz* aCN[]
 
   /* */ "_S__"_Stz,                 // CN__S__
   /* */ "SCANNER"_Stz,              // CN_SCANNER
+  /* */ "SCHEDULE"_Stz,             // CN_SCHEDULE
   /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
   /* */ "SEAPI"_Stz,                // CN_SEAPI
@@ -750,7 +752,6 @@ static Stz* aCN[]
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS
   /* */ "SYSREPORT"_Stz,            // CN_SYSREPORT
-  /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SCHEDULE
 
   /* */ "_T__"_Stz,                 // CN__T__
   /* */ "TABLE"_Stz,                // CN_TABLE
