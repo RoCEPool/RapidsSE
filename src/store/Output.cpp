@@ -131,7 +131,8 @@ void Output::vBeginProcOneCmd(void)
 void Output::vDrainBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-  
+
+  vTrace("vDrainBufferQueue: %lld\n"_Stz, m_bExitMarker);
   while (! m_bExitMarker   &&
          ! m_pJob->bIsInError()) {
     
@@ -144,17 +145,12 @@ void Output::vDrainBufferQueue(void)
     
     eCN eOperandClass = pOperand->eGetClassNo();
 
-    if (eOperandClass == CN_MARKER) {
-      Marker *pMarker = _pMarker(pOperand);
-      eOM eOpMarker = pMarker->eOpMarker();
-
-      if (eOpMarker == OM_EXITING)
-        m_bExitMarker = true;
+    if (eOperandClass == CN_EXITOPERAND) {
+      m_bExitMarker = true;
     }
 
     AM::vDeleteOperand(pOperand);
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,7 +315,7 @@ bool Output::bProcessOperand(Operand* pOperand)
   //SP_DataBuffer spDataBuffer;
     
   eCN eOperandClass = pOperand->eGetClassNo();
-  
+
   switch (eOperandClass) {
       
     // -- -- -- -- -- --
@@ -442,36 +438,20 @@ bool Output::bProcessOperand(Operand* pOperand)
       }
       break;
     }
-      
-    // -- -- -- -- -- --
-      
-    case CN_MARKER: {
-      Marker* pMarker = _pMarker(pOperand);
-      
-      eOM eOpMarker = pMarker->eOpMarker();
 
-      switch (eOpMarker) {
-          
-        case OM_EXITING: {
-          //vTrace("Pipeline Job: EXITMARKER\n"_Stz);
-          //if ( ! bHasError )
-          //  vTrace("success: %lld rows fetched\n"_Stz, *m_ixRowsProcessed);
-          AM::vDeleteOperand(pOperand);
-          m_bExitMarker = true;
-          if ( !m_bError )
-            vPrintResult();
-          m_bError = false;
-          bContinue = false;
-          goto L_EXIT;
-          break;
-        }
-          
-        default:
-          ASSERT(0);
-      }
+    // -- -- -- -- -- --
+
+    case CN_EXITOPERAND: {
+      AM::vDeleteOperand(pOperand);
+      m_bExitMarker = true;
+      if ( !m_bError )
+        vPrintResult();
+      m_bError = false;
+      bContinue = false;
+      goto L_EXIT;
       break;
     }
-      
+
     // -- -- -- -- -- --
       
     case CN_ROWBUFFER: {
@@ -488,8 +468,6 @@ bool Output::bProcessOperand(Operand* pOperand)
       AM::vDeleteOperand(pOperand);
       break;
     }
-      
-    // -- -- -- -- -- --
             
     // -- -- -- -- -- --
 
@@ -529,6 +507,7 @@ bool Output::bProcessOperand(Operand* pOperand)
   }
     
 L_EXIT:
+  vTrace("Returning %lld\n"_Stz, bContinue);
   return bContinue;
 }
 

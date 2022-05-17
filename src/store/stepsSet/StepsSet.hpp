@@ -1163,6 +1163,18 @@ void vDdlLockAssertNone(void);
   void vErrorMarkerPipeToOutput(void);
   void vErrorMarkerSet(void);
 
+  // ExitOperand[]
+  void vExitOperandDelete(void);
+  void vExitOperandGet(void);
+  void vExitOperandGetAndClear(void);
+  void vExitOperandIsNotNull(void);
+  void vExitOperandIsNull(void);
+  void vExitOperandNewExitOperand(void);
+  void vExitOperandPipeIn(void);
+  void vExitOperandPipeOut(void);
+  void vExitOperandPipeToOutput(void);
+  void vExitOperandSet(void);
+
   // memory
   void vMemoryByteDump(void);
   void vMemoryStatistics(void);

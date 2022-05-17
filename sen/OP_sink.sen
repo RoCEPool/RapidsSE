@@ -106,9 +106,17 @@
 : sink_Exiting \handler
 
   //"Operand:- EV_M_EXITING" .verbose
-  PipeIn[].pipeToOutput
+  PipeIn[].delete
+
+  // pipeout an exit operand to output
+  ExitOperand[].newExitOperand
+  ExitOperand[].pipeToOutput
+
+  // pipe out and exited marker
   Marker[].newExitedMarker
   Marker[].pipeOut
+
+  // ack the invoking task
   [op].ackInvokingTask
 
   false

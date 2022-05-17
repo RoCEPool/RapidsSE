@@ -8,8 +8,7 @@ namespace STORE
   class ExitOperand : public Operand
   {
   protected:
-    Object* m_pObject;
-    
+
     // must be last
     Footer m_xFooter;
 
@@ -17,10 +16,8 @@ namespace STORE
     void* operator new(size_t);
     void operator delete(void*);
 
-    ExitOperand(Object* pObject);
+    ExitOperand(void);
    ~ExitOperand(void) noexcept(false);
-
-    Object* pObject(void);
   
   private:
     Footer* aFooter(void);

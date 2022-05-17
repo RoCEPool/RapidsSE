@@ -19,12 +19,11 @@ __aFooterFunction(ExitOperand)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ExitOperand::ExitOperand(Object* pObject)
+ExitOperand::ExitOperand(void)
 : Operand(CN_EXITOPERAND)
 {
   _precondition_(_MAGIC_,CN_EXITOPERAND);
-  
-  m_pObject = pObject;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,16 +32,6 @@ ExitOperand::ExitOperand(Object* pObject)
 ExitOperand::~ExitOperand(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the object                                                             */
-/*----------------------------------------------------------------------------*/
-Object* ExitOperand::pObject(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_pObject;
 }
 
 /*============================================================================*/

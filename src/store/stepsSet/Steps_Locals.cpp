@@ -273,6 +273,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("ExitOperand[]"_Stz)) {
+    pCurrentWord->vEncodeCall("ExitOperand[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("File0[]"_Stz)) {
     pCurrentWord->vEncodeCall("File0[].set"_Stz);
     EXIT();

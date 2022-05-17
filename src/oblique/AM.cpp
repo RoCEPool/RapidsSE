@@ -58,6 +58,7 @@
 
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
+#include "ExitOperand.hpp"
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
@@ -2762,7 +2763,13 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pEntBuffer;
       break;
     }
-      
+
+    case CN_EXITOPERAND: {
+      ExitOperand* pExitOperand = _pExitOperand(pOperand);
+      delete pExitOperand;
+      break;
+    }
+
     case CN_INDEXDEF: {
       IndexDef* pIndexDef = _pIndexDef(pOperand);
       delete pIndexDef;
