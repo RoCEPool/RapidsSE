@@ -740,7 +740,10 @@ void PoolHelper::vValidateEnums(void)
     i8  iSize = gxaSizeHeap[eClass].m_nClassSize;
     
     if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-      vTrace("class %18s heap %18s size %lldB\n"_Stz,aCN[eClass],aHT[eHeap],iSize);
+      vTrace("[%lld] class %18s heap %18s size %lldB\n"_Stz,
+             i_Class,aCN[eClass],aHT[eHeap],iSize);
+    
+    RASSERT(eClass == gxaSizeHeap[eClass].m_eClassType);
     
     switch(eHeap) {
       case HT_INVALID:
