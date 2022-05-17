@@ -1793,83 +1793,10 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the ordAgg aggregation
   vGenerateExprCode(m_pOrdAggStack, ""_Stz);
 
-
-  // is it a new key ?
-/*
-  s256 sColOutNm;
-  i8 i_DupCtr = 1;
-  for (i8 i_Col = 0; i_Col < m_pIndexDef->nColumns(); i_Col++) {
-
-    if (i_Col) {
-      sOperation = aFM[FM_AND_BOLBOL];
-      sCopy.vSprint("\n    %s(aCombinedT->m_iErrorCode)"_Stz, sOperation.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    }
-
-    Column* pColumn = m_pIndexDef->pGetColumn(i_Col);
-
-    // get the streamDef col no matching the index column
-    i8 iStreamDefCol = m_pIndexDef->iGetColumn(i_Col);
-
-    vMakeColumnNmStruct(m_pStreamDefLft, sColNm, i_DupCtr, iStreamDefCol);
-
-    // NOT SURE: COME BACK
-    // make the column name
-    vMakeColumnNmStruct(m_pStreamDefOut, sColOutNm, i_DupCtr, i_Col);
-
-    sOperation = aFM[eMacro_Push[Column::eDatum(pColumn->eColumnType())]];
-
-    if (m_pIndexDef->eKeyKind()) {
-      sCopy.vSprint("\n    %s(p%s->%s)"_Stz,
-                    sOperation.azChar(),
-                    xRowRef[m_eStencilTo].m_szInclude, sColOutNm.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-      sCopy.vSprint("\n    %s(p%s->%s)"_Stz,
-                    sOperation.azChar(),
-                    xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n    _EQ_INTINT(aCombinedT->m_iErrorCode)");
-    }
-    else {
-
-      if (pColumn->eColumnType() == CT_VARCHAR ||
-          pColumn->eColumnType() == CT_CHAR) {
-        sCopy.vSprint("\n    %s(p%s->%s)"_Stz,
-                      sOperation.azChar(),
-                      xRowRef[m_eStencilTo].m_szInclude, sColOutNm.azChar());
-        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-        sCopy.vSprint("\n    %s(p%s->%s)"_Stz,
-                      sOperation.azChar(),
-                      xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
-        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-        StrLib::vAppendString(&m_azCodeCrs, "\n    _EQ_VCHVCH(aCombinedT->m_iErrorCode)");
-      }
-      else {
-        sCopy.vSprint("\n    %s(p%s->%s)"_Stz,
-                      sOperation.azChar(),
-                      xRowRef[m_eStencilTo].m_szInclude, sColOutNm.azChar());
-        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-        sCopy.vSprint("\n    %s(p%s->%s)"_Stz,
-                      sOperation.azChar(),
-                      xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
-        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-        StrLib::vAppendString(&m_azCodeCrs, "\n    _EQ_INTINT(aCombinedT->m_iErrorCode)");
-      }
-    }
-
-  }
-*/
   StrLib::vAppendString(&m_azCodeCrs, "\n     _ASSIGN(bKeyMatch)");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n     if (bKeyMatch) {");
@@ -3794,6 +3721,10 @@ void CodeSynth::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, Stream
   pTypeStack->vPush(Column::eDatum(pColumn->eColumnType()));
   pExprStack->vPushStz(sOperation);
 
+  if (pExprStack == m_pGbyStack) {
+    m_pOrdAggStack->vPushStz(sOperation);
+  }
+
   // if column nullable generate null check expressions
   if (pColumn->bIsNullable()) {
     sOperation.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
@@ -4061,7 +3992,6 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE eP
     pExprStack->vPushStz(sPush);
 
   if (pExprStack == m_pGbyStack) {
-    sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
     m_pOrdAggStack->vPushStz(sPush);
   }
 //  }

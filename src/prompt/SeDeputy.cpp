@@ -168,16 +168,16 @@ void SeDeputy::vDeputyLoop(void)
       m_pSePrompt->vMutexSignalAndUnlock(this);
        continue;
     }
-    
-    // start the buffer queue processing while the pipeline ops are running
-    if (m_pJob->bIsPipeline())
-      m_pJob->pOutput()->vProcessBufferQueue();
 
-    RASSERT(! m_pJob->pOutput()->m_bError );
-
+    // check if job is inError
     if (m_pJob->bIsInError()) {
       vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
              aEC[m_pJob->eJobError()]);
+    }
+    else {
+      // process the output bufferQueue
+      if (m_pJob->bIsPipeline())
+        m_pJob->pOutput()->vProcessBufferQueue();
     }
 
     vReportTime();

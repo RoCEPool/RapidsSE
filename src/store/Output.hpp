@@ -15,14 +15,10 @@ namespace STORE
   {
 
   public:
-    Job*       m_pJob;
     Queue*     m_pOutputQueue;     // queue of buffers being the job output
 
     StreamDef* m_pStreamDef_result;
     bool       m_bToExit;
-
-    bool       m_bError;
-    bool       m_bPrintEnabled;
   
     Atomic     m_ixRowsProcessed; // rows processed
     Atomic     m_ixRowsInvalid;   // invalid rows detected
@@ -41,7 +37,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Output(Job* pJob);
+    Output(void);
    ~Output(void) noexcept(false);
   
     void vAssertEmptyQueue(void);
@@ -51,8 +47,6 @@ namespace STORE
     void vFileOut(bool bFileOut);
     void vFilePath(Stz* szFilePath);
     void vProcessBufferQueue(void);
-    bool bPrintEnabled(void);
-    void vPrintEnabled(bool bPrintEnabled);
 
     void vPrintResult(void);
   
