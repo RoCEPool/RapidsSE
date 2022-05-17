@@ -15,7 +15,6 @@ namespace STORE
   {
 
   public:
-    Job*       m_pJob;
     Queue*     m_pOutputQueue;     // queue of buffers being the job output
 
     StreamDef* m_pStreamDef_result;
@@ -41,7 +40,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Output(Job* pJob);
+    Output(void);
    ~Output(void) noexcept(false);
   
     void vAssertEmptyQueue(void);

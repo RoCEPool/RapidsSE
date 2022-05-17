@@ -38,12 +38,11 @@ __aFooterFunction(Output)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Output::Output(Job* pJob)
+Output::Output(void)
 : Object(CN_OUTPUT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
-  m_pJob              = pJob;
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bToExit           = false;
@@ -69,7 +68,6 @@ Output::~Output(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   if (m_pOutputQueue) {
-    //vDrainBufferQueue(m_pJob);
     
     while (Operand* pOperand = _pOperand(m_pOutputQueue->pPop()))
       AM::vDeleteOperand(pOperand);
@@ -132,9 +130,7 @@ void Output::vDrainBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
-  vTrace("vDrainBufferQueue: %lld\n"_Stz, m_bToExit);
-  while (! m_bToExit   &&
-         ! m_pJob->bIsInError()) {
+  while (! m_bToExit ) {
     
     Operand* pOperand = pPopBufferQueue_blocking();
     
@@ -154,7 +150,7 @@ void Output::vDrainBufferQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end procssing queue for one command                                        */
+/* end processing queue for one command                                       */
 /*----------------------------------------------------------------------------*/
 void Output::vEndProcOneCmd(void)
 {
@@ -296,9 +292,6 @@ Operand* Output::pPopBufferQueue_blocking(void)
       return pOperand;
     
     AM::vNapUsec(1000,CN_OUTPUT);
-    
-    if (m_pJob->bIsInError())
-      return nullptr;
   }
   
 }
