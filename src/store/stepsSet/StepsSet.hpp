@@ -1547,6 +1547,7 @@ void vDdlLockAssertNone(void);
   // dicStack
   void vRegPathDepth(void);
   void vRegPathDiscard(void);
+  void vRegPathDiscardAll(void);
   void vRegPathDump(void);
   void vRegPathPick(void);
   void vRegPathPush(void);
