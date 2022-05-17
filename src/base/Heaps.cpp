@@ -85,6 +85,7 @@ Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  RASSERT(eAllocClass == gxaSizeHeap[eAllocClass].m_eClassType);
   eHT eHeap = gxaSizeHeap[eAllocClass].m_eWhichHeap;
   
   Heap* pHeap = pHeaps->pGetHeap(eHeap);
@@ -237,6 +238,7 @@ void Heaps::vFree(Object* pObject, bool bPersistent)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // actually free the object and return its space for reuse
   
+  RASSERT(eFreeClass == gxaSizeHeap[eFreeClass].m_eClassType);
   eHT eHeap = gxaSizeHeap[eFreeClass].m_eWhichHeap;
   
   if (! (eHeap > HT_INVALID && eHeap < HT_ENUMS) ) {
