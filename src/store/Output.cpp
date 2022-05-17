@@ -46,7 +46,7 @@ Output::Output(Job* pJob)
   m_pJob              = pJob;
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
-  m_bExitMarker       = false;
+  m_bToExit           = false;
   m_bError            = false;
   m_bPrintEnabled     = true;
   
@@ -98,7 +98,7 @@ void Output::vAssertEmptyQueue(void)
   
   RASSERT(! m_pOutputQueue->nItems());
   
-  RASSERT(! m_bExitMarker);
+  RASSERT(! m_bToExit);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,8 +132,8 @@ void Output::vDrainBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
-  vTrace("vDrainBufferQueue: %lld\n"_Stz, m_bExitMarker);
-  while (! m_bExitMarker   &&
+  vTrace("vDrainBufferQueue: %lld\n"_Stz, m_bToExit);
+  while (! m_bToExit   &&
          ! m_pJob->bIsInError()) {
     
     Operand* pOperand = pPopBufferQueue_blocking();
@@ -146,7 +146,7 @@ void Output::vDrainBufferQueue(void)
     eCN eOperandClass = pOperand->eGetClassNo();
 
     if (eOperandClass == CN_EXITOPERAND) {
-      m_bExitMarker = true;
+      m_bToExit = true;
     }
 
     AM::vDeleteOperand(pOperand);
@@ -443,7 +443,7 @@ bool Output::bProcessOperand(Operand* pOperand)
 
     case CN_EXITOPERAND: {
       AM::vDeleteOperand(pOperand);
-      m_bExitMarker = true;
+      m_bToExit = true;
       if ( !m_bError )
         vPrintResult();
       m_bError = false;
@@ -507,7 +507,7 @@ bool Output::bProcessOperand(Operand* pOperand)
   }
     
 L_EXIT:
-  vTrace("Returning %lld\n"_Stz, bContinue);
+
   return bContinue;
 }
 

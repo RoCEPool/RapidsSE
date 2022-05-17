@@ -19,7 +19,7 @@ namespace STORE
     Queue*     m_pOutputQueue;     // queue of buffers being the job output
 
     StreamDef* m_pStreamDef_result;
-    bool       m_bExitMarker;
+    bool       m_bToExit;
 
     bool       m_bError;
     bool       m_bPrintEnabled;

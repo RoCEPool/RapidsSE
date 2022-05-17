@@ -1216,7 +1216,7 @@ void Job::vReapableJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  if (bIsPipeline() && ! pOutput()->m_bExitMarker)
+  if (bIsPipeline() && ! pOutput()->m_bToExit)
     pOutput()->vProcessBufferQueue();
 
   pOutput()->m_pOutputQueue->vReset();
@@ -1228,7 +1228,7 @@ void Job::vReapableJob(void)
     delete pStreamDef;
   }
   
-  pOutput()->m_bExitMarker      = false;
+  pOutput()->m_bToExit      = false;
   
   vReapable(true);
 }
