@@ -230,6 +230,8 @@
   // check this task has no job reference
   ListedJob[].assertNoRef
 
+  Path[].discardAll
+
   [job].addRetired
   [task].grabLock
     [job] [exitDemon]:queueJob

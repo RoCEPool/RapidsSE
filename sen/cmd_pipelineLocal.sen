@@ -13,6 +13,8 @@
 
   ListedJob[].assertNoRef
 
+  Path[].discardAll
+
   [job].addRetired
   [task].grabLock
     [task].retire // does not queue onto exit demon
@@ -119,6 +121,8 @@
   
   [ddlLock].testDrop
   ListedJob[].assertNoRef
+
+  Path[].discardAll
 
   [job].addRetired
   
