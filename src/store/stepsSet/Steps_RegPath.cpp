@@ -75,7 +75,8 @@ void Step::vRegPathDiscardAll(void)
   ENTRY();
   
    m_oDicStack.vDiscardAll();
-  
+   m_oSaveDicStack.vDiscardAll();
+
   EXIT();
 }
 
