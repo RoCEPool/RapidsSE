@@ -178,8 +178,6 @@ void SeDeputy::vDeputyLoop(void)
       // process the output bufferQueue
       if (m_pJob->bIsPipeline())
         m_pJob->pOutput()->vProcessBufferQueue();
-
-      RASSERT(! m_pJob->pOutput()->m_bError );
     }
 
     vReportTime();

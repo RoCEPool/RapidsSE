@@ -46,8 +46,6 @@ Output::Output(void)
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bToExit           = false;
-  m_bError            = false;
-  m_bPrintEnabled     = true;
   
   m_bFileOut          = false;
   m_pFileOut          = nullptr;
@@ -205,26 +203,6 @@ void Output::vProcessBufferQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get print enable/disabled                                                  */
-/*----------------------------------------------------------------------------*/
-bool Output::bPrintEnabled(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-  
-  return m_bPrintEnabled;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set print enable/disabled                                                  */
-/*----------------------------------------------------------------------------*/
-void Output::vPrintEnabled(bool bPrintEnabled)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-  
-  m_bPrintEnabled = bPrintEnabled;
-}
-
-/*----------------------------------------------------------------------------*/
 /* print result                                                               */
 /*----------------------------------------------------------------------------*/
 void Output::vPrintResult(void)
@@ -304,6 +282,7 @@ bool Output::bProcessOperand(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   bool bContinue = true;
+  bool bError    = false;
 
   //SP_DataBuffer spDataBuffer;
     
@@ -316,10 +295,8 @@ bool Output::bProcessOperand(Operand* pOperand)
     case CN_CRWBUFFER: {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       m_ixRowsProcessed += pCrwBuffer->nRows();
-      if (m_bPrintEnabled) {
-        vTrace("\n"_Stz);
-        pCrwBuffer->vPrintRows(m_pStreamDef_result);
-      }
+      vTrace("\n"_Stz);
+      pCrwBuffer->vPrintRows(m_pStreamDef_result);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -329,10 +306,8 @@ bool Output::bProcessOperand(Operand* pOperand)
     case CN_CSVBUFFER: {
       CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
       m_ixRowsProcessed += pCsvBuffer->nRecords();
-      if (m_bPrintEnabled) {
-        vTrace("\n"_Stz);
-        pCsvBuffer->vPrintRecords();
-      }
+      vTrace("\n"_Stz);
+      pCsvBuffer->vPrintRecords();
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -342,10 +317,8 @@ bool Output::bProcessOperand(Operand* pOperand)
     case CN_ENTBUFFER: {
       EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
       m_ixRowsProcessed += pEntBuffer->nItems();
-      if (m_bPrintEnabled) {
-        vTrace("\n"_Stz);
-        pEntBuffer->vPrintRefdRows();
-      }
+      vTrace("\n"_Stz);
+      pEntBuffer->vPrintRefdRows();
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -357,7 +330,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       ASSERT( ! pInfoSet->szBufferNm()->bSame(C_NO_NAME) );
       if (pInfoSet->szBufferNm()->bSame(C_TDEF_COMPILEERRORS)) {
 
-        if ( ! m_bError) {
+        if ( ! bError) {
           Row *pInfoRow = pInfoSet->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
@@ -368,7 +341,7 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; Line: %lld; Column: %lld; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, szErrorText);
-          m_bError = true;
+          bError = true;
         }
         else {
           // LOG error
@@ -377,7 +350,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       }
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS)) {
 
-        if ( ! m_bError) {
+        if ( ! bError) {
           Row *pInfoRow = pInfoSet->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
@@ -386,7 +359,7 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], szErrorText);
-          m_bError = true;
+          bError = true;
         }
         else {
           // LOG error
@@ -423,10 +396,8 @@ bool Output::bProcessOperand(Operand* pOperand)
       
       else {
         m_ixRowsProcessed += pInfoSet->nRows();
-        if (m_bPrintEnabled) {
-          vTrace("\n"_Stz);
-          pInfoSet->vPrintRows(m_pStreamDef_result);
-        }
+        vTrace("\n"_Stz);
+        pInfoSet->vPrintRows(m_pStreamDef_result);
         AM::vDeleteOperand(pOperand);
       }
       break;
@@ -437,9 +408,9 @@ bool Output::bProcessOperand(Operand* pOperand)
     case CN_EXITOPERAND: {
       AM::vDeleteOperand(pOperand);
       m_bToExit = true;
-      if ( !m_bError )
+      if ( !bError )
         vPrintResult();
-      m_bError = false;
+      bError = false;
       bContinue = false;
       goto L_EXIT;
       break;
@@ -454,10 +425,8 @@ bool Output::bProcessOperand(Operand* pOperand)
 //                 spDataBuffer.sz(pRowBuffer),
 //                 pRowBuffer->nRows());
       m_ixRowsProcessed += pRowBuffer->nRows();
-      if (m_bPrintEnabled) {
-        vTrace("\n"_Stz);
-        pRowBuffer->vPrintRows(m_pFileOut,nullptr);
-      }
+      vTrace("\n"_Stz);
+      pRowBuffer->vPrintRows(m_pFileOut,nullptr);
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -484,10 +453,8 @@ bool Output::bProcessOperand(Operand* pOperand)
       StreamSet* pStreamSet = _pStreamSet(pOperand);
       ASSERT( ! pStreamSet->szBufferNm()->bSame(C_NO_NAME) );
       m_ixRowsProcessed += pStreamSet->nRows();
-      if (m_bPrintEnabled) {
-        vTrace("\n"_Stz);
-        pStreamSet->vPrintRows(m_pStreamDef_result);
-      }
+      vTrace("\n"_Stz);
+      pStreamSet->vPrintRows(m_pStreamDef_result);
       AM::vDeleteOperand(pOperand);
       break;
     }

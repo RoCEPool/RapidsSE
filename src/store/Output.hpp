@@ -19,9 +19,6 @@ namespace STORE
 
     StreamDef* m_pStreamDef_result;
     bool       m_bToExit;
-
-    bool       m_bError;
-    bool       m_bPrintEnabled;
   
     Atomic     m_ixRowsProcessed; // rows processed
     Atomic     m_ixRowsInvalid;   // invalid rows detected
@@ -50,8 +47,6 @@ namespace STORE
     void vFileOut(bool bFileOut);
     void vFilePath(Stz* szFilePath);
     void vProcessBufferQueue(void);
-    bool bPrintEnabled(void);
-    void vPrintEnabled(bool bPrintEnabled);
 
     void vPrintResult(void);
   
