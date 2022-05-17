@@ -140,8 +140,6 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  RASSERT(eAllocClass == gxaSizeHeap[eAllocClass].m_eClassType);
-
   ASSERT(gxaSizeHeap[eAllocClass].m_nClassSize < m_nObjectSize);
   UNUSED(eAllocClass);
   
@@ -371,7 +369,6 @@ void Heap::vFreeObject(Object* pObject)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   eCN eClassNo = pObject->eGetClassNo();
-  RASSERT(eClassNo == gxaSizeHeap[eClassNo].m_eClassType);
 
 //  if ((Object*)0x2048091aa040 == pObject) {
 //    vTrace("FreeObject:: %p %s:%-3lld (address)\n"_Stz,
