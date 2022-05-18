@@ -233,18 +233,18 @@ Stz* ColumnDef::szColumnName(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the SQL data type of this column                                       */
+/* get the SQL data type Id of this column                                    */
 /*----------------------------------------------------------------------------*/
-eCT ColumnDef::eColumnType(QueryNode* pNode)
+i8 ColumnDef::iColumnType(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
   QueryNode* pTypeNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNTYPE_PROP, pNode));
   ASSERT(pTypeNode);
 
-  eCT eType = SqlType::eType(pTypeNode);
+  i8 iTypeId = SqlType::iTypeId(pTypeNode);
 
-  return eType;
+  return iTypeId;
 }
 
 /*----------------------------------------------------------------------------*/

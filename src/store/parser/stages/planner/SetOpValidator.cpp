@@ -219,10 +219,10 @@ void SetOpValidator::vValidateSetOp(QueryNode* pStatementMarker, PlanNode *pRoot
     QueryNode* pExpr1 = ProjectedColumn::pExprNode(pProjectedColumn1);
     QueryNode* pExpr2 = ProjectedColumn::pExprNode(pProjectedColumn2);
 
-    eCT eType1 = Expr::iType(pExpr1, pRootNode);
-    eCT eType2 = Expr::iType(pExpr2, pRootNode);
+    i8 iType1 = Expr::iType(pExpr1, pRootNode);
+    i8 iType2 = Expr::iType(pExpr2, pRootNode);
 
-    if (eType1 != eType2) {
+    if (iType1 != iType2) {
       delete pIter1;
       delete pIter2;
 
@@ -233,8 +233,8 @@ void SetOpValidator::vValidateSetOp(QueryNode* pStatementMarker, PlanNode *pRoot
 
       SemanticException::vThrow(EC_COLUMN_COUNT_MISMATCH,
                                 ": %s vs %s, column ordinal %lld, %s operator"_Stz,
-                                aCT[eType1],
-                                aCT[eType2],
+                                aCT[iType1],
+                                aCT[iType2],
                                 iOrdinal,
                                 SetOp::szSqlKeyword(pSetOp) );
     }
@@ -487,10 +487,10 @@ void SetOpValidator::vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRoo
     ASSERT(Expr::bIsOfType(pExpr1));
     ASSERT(Expr::bIsOfType(pExpr2));
 
-    eCT eType1 = Expr::iType(pExpr1, pRootNode);
-    eCT eType2 = Expr::iType(pExpr2, pRootNode);
+    i8 iType1 = Expr::iType(pExpr1, pRootNode);
+    i8 iType2 = Expr::iType(pExpr2, pRootNode);
 
-    if (eType1 != eType2) {
+    if (iType1 != iType2) {
       // Cleanup then throw an error
       delete pCorrByIter;
 
@@ -508,8 +508,8 @@ void SetOpValidator::vConvertCorrByToProjectOp(QueryNode* pSetOp, PlanNode* pRoo
       SemanticException::vThrow(EC_CORRBY_COLUMN_TYPE_MISMATCH,
                                 ": %s - %s, %s "_Stz,
                                 szColumnName,
-                                aCT[eType1],
-                                aCT[eType2]);
+                                aCT[iType1],
+                                aCT[iType2]);
     }
 
     // Found the column name in each list and the types match

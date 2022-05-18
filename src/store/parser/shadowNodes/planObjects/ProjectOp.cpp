@@ -17,6 +17,7 @@
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -177,7 +178,7 @@ void ProjectOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* 
         if (ExplainOp::bWithTypes(pExplainNode)) {
           QueryNode* pProjectedExpr = ProjectedColumn::pExprNode(pProjColumn);
           ASSERT(Expr::bIsOfType(pProjectedExpr));
-          eCT eColType = Expr::iType(pProjectedExpr, pRootNode);
+          eCT eColType = TypeSystem::eCTVal(Expr::iType(pProjectedExpr, pRootNode));
 
           sBuf.vCatSprint(" ; type: %s"_Stz, aCT[eColType]);
         }

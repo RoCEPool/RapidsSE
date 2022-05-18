@@ -30,9 +30,6 @@ namespace Parser
     static Stz* szTypeName(PlanNode* pNode);
     static i8   iTypeId(PlanNode* pNode);
 
-    [[deprecated]]
-    static eCT  eType(PlanNode* pNode);
-
   protected:
     static void vCreateCommon(QueryNode* pNode, i8 iTypeId);
   };

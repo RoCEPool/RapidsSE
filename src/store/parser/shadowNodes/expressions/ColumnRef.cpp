@@ -200,11 +200,10 @@ i8 ColumnRef::iType(QueryNode* pNode, PlanNode* pRootNode)
     ASSERT(pColumnDef);
     ASSERT(ColumnDef::bIsOfType(pColumnDef));
 
-    eCT eType = ColumnDef::eColumnType(pColumnDef);
-    ASSERT(eType > CT_NONE);
-    ASSERT(eType < CT_ENUMS);
+    i8 iTypeId = ColumnDef::iColumnType(pColumnDef);
+    ASSERT(TypeSystem::bIsValid(iTypeId));
 
-    return TypeSystem::iIdOf(eType);
+    return iTypeId;
   }
 
   QueryNode* pColumnDef = MetadataNode::pColumnDef(pMetadata,
@@ -214,11 +213,10 @@ i8 ColumnRef::iType(QueryNode* pNode, PlanNode* pRootNode)
                                                    szColumn);
   ASSERT(pColumnDef);
 
-  eCT eType = ColumnDef::eColumnType(pColumnDef);
-  ASSERT(eType > CT_NONE);
-  ASSERT(eType < CT_ENUMS);
+  i8 iTypeId = ColumnDef::iColumnType(pColumnDef);
+  ASSERT(TypeSystem::bIsValid(iTypeId));
 
-  return TypeSystem::iIdOf(eType);
+  return iTypeId;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -74,8 +74,6 @@ QueryNode* CastExpr::pCreate(QueryNode* pTargetExpr, i8 iTypeId)
   ASSERT(pTargetExpr);
   ASSERT(Expr::bIsOfType(pTargetExpr));
   ASSERT(TypeSystem::bIsValid(iTypeId));
-  ASSERT(eTargetType > CT_NONE);
-  ASSERT(eTargetType < CT_ENUMS);
 
   // Create a unique name for this object
   s256 sName;
@@ -175,7 +173,7 @@ i8 CastExpr::iType(QueryNode* pNode, PlanNode* pRootNode)
   i8 iTargetExprTypeId = Expr::iType(pTargetExprNode, pRootNode);
   eCT eTargetExprType  = TypeSystem::eCTVal(iTargetExprTypeId);
 
-  eCT eSqlType  = SqlType::eType(pSqlTypeNode);
+  eCT eSqlType  = TypeSystem::eCTVal(SqlType::iTypeId(pSqlTypeNode));
 
   eCT eResultSrcType = aeTypeCalculus[eTargetExprType][eSqlType];
 
@@ -250,19 +248,19 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNo
 /*----------------------------------------------------------------------------*/
 /* Returns a new expression object which represents pExpr coerced to iTypeId  */
 /*----------------------------------------------------------------------------*/
-QueryNode* CastExpr::pCoerceTo(i8 iTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+QueryNode* CastExpr::pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
-  ASSERT(TypeSystem::bIsValid(iTypeId));
+  ASSERT(TypeSystem::bIsValid(iTargetTypeId));
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
-  ASSERT(TypeSystem::bIsValid(Expr::iTypeId(pExpr, pRootNode)));
+  ASSERT(TypeSystem::bIsValid(Expr::iType(pExpr, pRootNode)));
 
   // TODO: Can we do this in terms of iTypeId?
-  eCT eType = TypeSystem::eCTVal(iTypeId);
-  ASSERT(aeTypeCalculus[Expr::iType(pExpr, pRootNode)][eTargetTypeId]);
+  eCT eTargetType = TypeSystem::eCTVal(iTargetTypeId);
+  ASSERT(aeTypeCalculus[Expr::iType(pExpr, pRootNode)][eTargetType]);
 
   QueryNode* pExprCopy = pExpr->pDeepCopy(true);
-  QueryNode* pCastExpr = CastExpr::pCreate(pExprCopy, iTypeId);
+  QueryNode* pCastExpr = CastExpr::pCreate(pExprCopy, iTargetTypeId);
   return pCastExpr;
 }
 

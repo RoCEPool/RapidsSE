@@ -37,7 +37,7 @@ namespace Parser
     static b1 bIsImplicitlyCoercibleTo(i8 iTypeId, QueryNode* pExpr, PlanNode* pRootNode);
 
     // Returns a new expression object which represents pExpr coerced to eTarget
-    static QueryNode* pCoerceTo(i8 iTypeId, QueryNode* pExpr, PlanNode* pRootNode);
+    static QueryNode* pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
   };
 
 }

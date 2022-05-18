@@ -36,6 +36,8 @@
 #include "CaseExpr.hpp"
 #include "WhenExpr.hpp"
 
+#include "TypeSystem.hpp"
+
 
 using namespace Parser;
 
@@ -243,7 +245,7 @@ void ExprValidator::vValidateCasePredicatesAreBoolean(PlanNode *pRootNode, Query
     QueryNode* pPredicate = WhenExpr::pPredicateExpr(pWhenExpr);
     ASSERT(Expr::bIsOfType(pPredicate));
 
-    eCT eType = Expr::iType(pPredicate, pRootNode);
+    eCT eType = TypeSystem::eCTVal(Expr::iType(pPredicate, pRootNode));
 
     if (eType == CT_BOOLEAN) {
       // All good, keep looking for more filterOps
@@ -291,7 +293,7 @@ void ExprValidator::vValidateOperatorPredicatesAreBoolean(PlanNode *pRootNode, Q
     QueryNode* pFilterNode = _pQueryNode(pNode);
     QueryNode* pExprNode = FilterOp::pFilterExpr(pFilterNode);
 
-    eCT eType = Expr::iType(pExprNode, pRootNode);
+    eCT eType = TypeSystem::eCTVal(Expr::iType(pExprNode, pRootNode));
 
     if (eType == CT_BOOLEAN) {
       // All good, keep looking for more filterOps
@@ -338,7 +340,7 @@ void ExprValidator::vValidateJoinPredicatesAreBoolean(PlanNode *pRootNode, Query
     QueryNode* pJoinNode = _pQueryNode(pNode);
     QueryNode* pExprNode = JoinOp::pJoinPredicate(pJoinNode);
 
-    eCT eType = Expr::iType(pExprNode, pRootNode);
+    eCT eType = TypeSystem::eCTVal(Expr::iType(pExprNode, pRootNode));
 
     if (eType == CT_BOOLEAN) {
       // All good, keep looking for more JoinOps

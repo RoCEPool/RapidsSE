@@ -1839,8 +1839,8 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
     }
     else {
 
-      if (pColumn->eColumnType() == CT_VARCHAR ||
-          pColumn->eColumnType() == CT_CHAR) {
+      if (pColumn->iColumnType() == TypeSystem::eCTVal(CT_VARCHAR) ||
+          pColumn->iColumnType() == TypeSystem::eCTVal(CT_CHAR)) {
         sCopy.vSprint("\n    %s(p%s->%s)"_Stz,
                       sOperation.azChar(),
                       xRowRef[m_eStencilTo].m_szInclude, sColOutNm.azChar());

@@ -202,15 +202,10 @@ Stz* SqlType::szTypeName(PlanNode *pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  i8 iType = pNode->iValue();
-  if (iType > CT_NONE && iType < CT_ENUMS) {
-    return aCT[iType];
-  }
+  i8 iTypeId = SqlType::iTypeId(pNode);
+  ASSERT(TypeSystem::bIsValid(iTypeId));
 
-  eCT eType = SqlType::eType(pNode);
-  ASSERT(eType > CT_NONE);
-  ASSERT(eType < CT_ENUMS);
-  return aCT[eType];
+  return TypeSystem::szTypeName(iTypeId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,37 +220,6 @@ i8 SqlType::iTypeId(PlanNode* pNode)
 
   i8 iTypeId = pTypeIdNode->iValue();
   return iTypeId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns the enum of a SQL data type given a node                           */
-/*----------------------------------------------------------------------------*/
-eCT SqlType::eType(PlanNode* pNode)
-{
-  ASSERT(bIsOfType(pNode));
-
-  i8 iType = pNode->iValue();
-  if (iType > CT_NONE && iType < CT_ENUMS) {
-    return static_cast<eCT>(iType);
-  }
-
-  // Manual Polymorphism
-  if      (   SqlBoolean::bIsOfType(pNode))   { return CT_BOOLEAN;     }
-  else if (   SqlInteger::bIsOfType(pNode))   { return CT_INTEGER;     }
-  else if (     SqlFloat::bIsOfType(pNode))   { return CT_FLOAT;       }
-  else if (   SqlDecimal::bIsOfType(pNode))   { return CT_DECIMAL;     }
-  else if (   SqlVarchar::bIsOfType(pNode))   { return CT_VARCHAR;     }
-  else if (      SqlChar::bIsOfType(pNode))   { return CT_CHAR;        }
-  else if (      SqlDate::bIsOfType(pNode))   { return CT_DATE;        }
-  else if (      SqlTime::bIsOfType(pNode))   { return CT_TIME;        }
-  else if ( SqlTimestamp::bIsOfType(pNode))   { return CT_TIMESTAMP;   }
-  else if (SqlIntervalDT::bIsOfType(pNode))   { return CT_INTERVAL_DT; }
-  else if (SqlIntervalYM::bIsOfType(pNode))   { return CT_INTERVAL_YM; }
-  else if (   SqlUnknown::bIsOfType(pNode))   { return CT_UNKNOWN;     }
-  else {
-    // Need to add in manual polymorphism here
-    NEVER_REACH
-  }
 }
 
 

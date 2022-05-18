@@ -55,6 +55,8 @@
 #include "TableScanOp.hpp"
 #include "ProjectedColumns.hpp"
 
+#include "TypeSystem.hpp"
+
 
 using namespace Parser;
 
@@ -2335,7 +2337,7 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
       }
     }
 
-    eCT eType = Expr::iType(pColExpr, pRootNode);
+    eCT eType = TypeSystem::eCTVal(Expr::iType(pColExpr, pRootNode));
 
     if (eType == CT_NONE) {
       s2K sBuf;
