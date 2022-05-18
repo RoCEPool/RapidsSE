@@ -37,6 +37,10 @@ RowBuffer::RowBuffer(void)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
   m_bDeletable = false;
+
+#ifdef WITH_BUFFER_ID
+    m_oBufferId  = AM::pFileMap()->oGetNewBufferId();
+#endif
   
   m_oDecider.vSetRemaining(1);
   
@@ -62,6 +66,10 @@ RowBuffer::RowBuffer(eCN eClassNo)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
   m_bDeletable = true;
+
+#ifdef WITH_BUFFER_ID
+  m_oBufferId  = AM::pFileMap()->oGetNewBufferId();
+#endif
   
   if (CN_CRWBUFFER == eClassNo)
     AM::METRICS::vDerefMetrics((i8)this,CN_CRWBUFFER,DR_NEW);
@@ -88,6 +96,10 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
   m_bDeletable = true;
+
+#ifdef WITH_BUFFER_ID
+  m_oBufferId  = AM::pFileMap()->oGetNewBufferId();
+#endif
   
   if (CN_ROWBUFFER == eClassNo)
     AM::METRICS::vDerefMetrics((i8)this,CN_ROWBUFFER,DR_NEW);
@@ -520,6 +532,18 @@ void RowBuffer::vDepositRow(Row* pRow, i8 iVargsBegin, ...)
   va_end(xVarArgs);
 }
 
+#ifdef WITH_BUFFER_ID
+/*----------------------------------------------------------------------------*/
+/* get the buffer id of this row buffer                                       */
+/*----------------------------------------------------------------------------*/
+BufferId RowBuffer::oGetBufferId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  return m_oBufferId;
+}
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
@@ -623,6 +647,18 @@ void RowBuffer::vRestorePointers(void)
     
   RowBox_t<C_WSP_ROWBUFFER>::vResetRowPix();
 }
+
+#ifdef WITH_BUFFER_ID
+/*----------------------------------------------------------------------------*/
+/* set the buffer id                                                          */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vSetBufferId(BufferId oBufferId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  m_oBufferId = oBufferId;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */

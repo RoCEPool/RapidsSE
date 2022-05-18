@@ -50,11 +50,10 @@ FileMap::FileMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP);
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
-  m_uPageFileSubset = 0;
 
 //  vInitialise();
 #ifdef WITH_BUFFER_ID
-  m_pPageFile = new PageFile(m_szFilePath);
+  m_pPageFile = new PageFile(m_szFilePath, 0);
 #endif
   _checkInitialised_(CN_FILEMAP);
 
@@ -135,6 +134,25 @@ void FileMap::vToDisk(Operand* pOperand)
   m_pPageFile->vWriteDataBufferToPFile(pRowBuffer);
 #endif
 }
+
+#ifdef WITH_BUFFER_ID
+/*----------------------------------------------------------------------------*/
+/* Find a free chunk in a page file and return that address                   */
+/*----------------------------------------------------------------------------*/
+BufferId FileMap::oGetNewBufferId(void)
+{
+  //---------------------------------------------------------------------------
+  // Figure out which PageFile has space for a new RowBuffer
+
+  BufferId oFreeBuffId = m_pPageFile->oNextFreeBufferId();
+
+//  while(oFreeBuffId.m_iAsI8 == C_DATUM_NULL) {
+//    // This page file is full. Try the next one..
+//  }
+
+  return oFreeBuffId;
+}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* translate pool buffer number to allocated buffer                           */

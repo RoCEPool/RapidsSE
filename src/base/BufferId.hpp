@@ -24,6 +24,9 @@ namespace BASE
     static void* vAddressFromId(BufferId oBuffId);
     static BufferId vBufferIdFromNo(i8 iBufferNo);
     static bool bIsAddress(BufferId oBufferId);
+    void vSetBuffSubscript(u8 uBuffSubscript);
+    void vSetPageFile(u8 uPageFile);
+    void vSetIdFlag(bool bFlag);
 
   };
 }

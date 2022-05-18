@@ -44,16 +44,18 @@ void PageFile::operator delete(void* pPageFileAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PageFile::PageFile(Stz* sPath)
+PageFile::PageFile(Stz* sPath, u8 uIndex)
     : Object(CN_PAGEFILE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PAGEFILE,_FOOTER_);
 
+  m_uPFIndex = uIndex;
   m_szPFilePath = sPath;
   m_pFile = new File(this);
   m_uPFSize = C_SIZE_PAGE_FILE;
   m_uFirstUsableByte = sizeof(C_MAGIC);
   m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
+  m_uWilderness = 0;
 
   vInitialise();
   _checkInitialised_(CN_PAGEFILE);
@@ -75,7 +77,7 @@ PageFile::~PageFile(void)
 /*----------------------------------------------------------------------------*/
 /* check or initialize footer in page file                                    */
 /*----------------------------------------------------------------------------*/
-void PageFile::vCheckFooter(void)
+void PageFile::vInitFooter(void)
 {
   u8 uFooter;
   i8 iSeekOffset = m_uPFSize - sizeof(C_FOOTER);
@@ -93,14 +95,13 @@ void PageFile::vCheckFooter(void)
 /*----------------------------------------------------------------------------*/
 /* check or initialize magic in page file                                     */
 /*----------------------------------------------------------------------------*/
-void PageFile::vCheckMagic(void)
+void PageFile::vInitMagic(void)
 {
   u8 uMagic = 0;
   m_pFile->vSeekStart();
   m_pFile->nReadBytes(&uMagic, sizeof(C_MAGIC));
 
-  if(uMagic != C_MAGIC)
-  {
+  if(uMagic != C_MAGIC) {
     uMagic = C_MAGIC;
     m_pFile->vSeekStart();
     bool bResult = m_pFile->bWriteBytes(&uMagic,sizeof(C_MAGIC));
@@ -141,15 +142,15 @@ void PageFile::vInitialise(void)
   // Check if magic header and footer are written to file
   // If not, initialize file
 
-  vCheckMagic();
+  vInitMagic();
 
-  vCheckFooter();
+  vInitFooter();
 
   m_pFile->vFlush();
 
-  m_uFirstUsableByte = sizeof(C_MAGIC);
-
-  m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
+//  m_uFirstUsableByte = sizeof(C_MAGIC);
+//
+//  m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
   //---------------------------------------------------------------------------
   // Check which areas are written to?
 
@@ -157,7 +158,51 @@ void PageFile::vInitialise(void)
 
 #ifdef WITH_BUFFER_ID
 /*----------------------------------------------------------------------------*/
-/* write data buffer to disk                                                 */
+/* get the next available address of the free disk chunk in this page file    */
+/*----------------------------------------------------------------------------*/
+BufferId PageFile::oNextFreeBufferId(void)
+{
+  BufferId oBufferId;
+
+  if(C_DATUM_NULL == uNextFreeSubset()) {
+    vTrace("Page File %u is full\n"_Stz, m_uPFIndex);
+    oBufferId.m_iAsI8 = C_DATUM_NULL;
+    return oBufferId;
+  }
+
+  oBufferId.vSetBuffSubscript(m_uWilderness);
+
+  // If multiple threads request for BufferIds at the same time,
+  // we need to ensure it happens sequentially.
+  m_uWilderness++;
+
+  oBufferId.vSetPageFile(0);
+  oBufferId.vSetIdFlag(1);
+
+  return oBufferId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the next free subset in this page file                                 */
+/*----------------------------------------------------------------------------*/
+u8 PageFile::uNextFreeSubset(void)
+{
+  //Check if the end of a new free chunk would exceed the PageFile size
+  if(
+      m_uFirstUsableByte +
+      C_SIZE_POOL_BUFFER +
+      (m_uWilderness *
+      C_SIZE_POOL_BUFFER) >
+      m_uLastUsableByte
+    ) {
+    vTrace("Page File %u is full\n"_Stz, m_uPFIndex);
+    return C_DATUM_NULL; // TODO Arjun: this is i8, what u8 value can we send?
+  }
+
+  return m_uWilderness;
+}
+/*----------------------------------------------------------------------------*/
+/* write data buffer to disk                                                  */
 /*----------------------------------------------------------------------------*/
 void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
 {
@@ -168,8 +213,8 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
   BufferId oBufferId = pRowBuffer->oGetBufferId();
 
   // Temporary till BufferId subset has correct values
-  i8 iSeekOffset = m_uFirstUsableByte + (AM::pFileMap()->m_uPageFileSubset * C_SIZE_POOL_BUFFER);
-  // i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);
+//  i8 iSeekOffset = m_uFirstUsableByte + (AM::pFileMap()->m_uPageFileSubset * C_SIZE_POOL_BUFFER);
+   i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);
 
   if(iSeekOffset + C_SIZE_POOL_BUFFER > m_uLastUsableByte)
   {
@@ -186,7 +231,6 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
   oTimer.vUpdate();
 //unlock
   vTrace("Writing data buffer %p took %lld ns\n"_Stz, pRowBuffer, oTimer.iNanoseconds());
-  AM::pFileMap()->m_uPageFileSubset++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +245,7 @@ RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
   // Temporary till BufferId subset has correct values
 //  i8 iSeekOffset = m_uFirstUsableByte + (0 * C_SIZE_POOL_BUFFER);
 
-  i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);
+  i8 iSeekOffset = m_uFirstUsableByte + (oBufferId.m_uBuffSubscript * C_SIZE_POOL_BUFFER);//TODO Arjun: Check i8 and u8 overflows
 
   if(iSeekOffset + C_SIZE_POOL_BUFFER > m_uLastUsableByte)
   {

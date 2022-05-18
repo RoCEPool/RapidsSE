@@ -16,7 +16,10 @@ namespace STORE
                     public RowBox_t<C_WSP_ROWBUFFER>
   {
   protected:
-  
+
+#ifdef WITH_BUFFER_ID
+    BufferId     m_oBufferId;     // Location to where this buffer can be paged out to in page file on disk
+#endif
     bool    m_bDeletable;
     Decider m_oDecider;
   
@@ -50,7 +53,9 @@ namespace STORE
     i8   iDecile(void);
     bool bDepositColumns(Row* pRow, va_list xVarArgs);
     void vDepositRow(Row* pRow, i8 iVargsBegin, ...);
-
+#ifdef WITH_BUFFER_ID
+    BufferId oGetBufferId(void);
+#endif
     RowBuffer* pNextRowBuffer(void);
     void       vNextRowBuffer(RowBuffer* pNextBuffer);
     RowBuffer* pPrevRowBuffer(void);
@@ -60,7 +65,9 @@ namespace STORE
     void vPrintRows(StreamDef* pStreamDef);
   
     void vRestorePointers(void);
-  
+#ifdef WITH_BUFFER_ID
+    void vSetBufferId(BufferId oBufferId);
+#endif
     void vShow(StreamDef* pStreamDef);
   
     char* azStrArea(void);
