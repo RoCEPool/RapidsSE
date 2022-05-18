@@ -259,6 +259,9 @@ rows: 0
 
 CLEANUP {
 
+  drop table lineitem;
+  mute
+
   bye;
   mute
 }

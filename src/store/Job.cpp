@@ -1216,19 +1216,22 @@ void Job::vReapableJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-//  if (bIsPipeline() && ! pOutput()->m_bToExit)
-//    pOutput()->vProcessBufferQueue();
-//
-//  pOutput()->m_pOutputQueue->vReset();
-//  pOutput()->vEndProcOneCmd();
-//
-//  if (pOutput()->m_pStreamDef_result) {
-//    StreamDef* pStreamDef = pOutput()->m_pStreamDef_result;
-//    pOutput()->m_pStreamDef_result = nullptr;
-//    delete pStreamDef;
-//  }
-//
-//  pOutput()->m_bToExit      = false;
+  if ( ! bIsInError() ) {
+    if (bIsPipeline() && ! pOutput()->m_bToExit)
+      pOutput()->vProcessBufferQueue();
+
+    pOutput()->m_pOutputQueue->vReset();
+    pOutput()->vEndProcOneCmd();
+
+    if (pOutput()->m_pStreamDef_result) {
+      StreamDef* pStreamDef = pOutput()->m_pStreamDef_result;
+      pOutput()->m_pStreamDef_result = nullptr;
+      delete pStreamDef;
+    }
+
+  }
+
+  pOutput()->m_bToExit      = false;
   
   vReapable(true);
 }

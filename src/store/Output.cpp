@@ -46,7 +46,8 @@ Output::Output(void)
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bToExit           = false;
-  
+  m_bHasError         = false;
+
   m_bFileOut          = false;
   m_pFileOut          = nullptr;
   //m_sFilePath
@@ -282,11 +283,12 @@ bool Output::bProcessOperand(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   bool bContinue = true;
-  bool bError    = false;
 
   //SP_DataBuffer spDataBuffer;
     
   eCN eOperandClass = pOperand->eGetClassNo();
+
+  vTrace("OPERAND: %s\n"_Stz, aCN[eOperandClass]);
 
   switch (eOperandClass) {
       
@@ -330,7 +332,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       ASSERT( ! pInfoSet->szBufferNm()->bSame(C_NO_NAME) );
       if (pInfoSet->szBufferNm()->bSame(C_TDEF_COMPILEERRORS)) {
 
-        if ( ! bError) {
+        if ( ! m_bHasError) {
           Row *pInfoRow = pInfoSet->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
@@ -341,7 +343,7 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; Line: %lld; Column: %lld; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, szErrorText);
-          bError = true;
+          m_bHasError = true;
         }
         else {
           // LOG error
@@ -350,7 +352,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       }
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS)) {
 
-        if ( ! bError) {
+        if ( ! m_bHasError) {
           Row *pInfoRow = pInfoSet->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
@@ -359,7 +361,7 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], szErrorText);
-          bError = true;
+          m_bHasError = true;
         }
         else {
           // LOG error
@@ -408,9 +410,9 @@ bool Output::bProcessOperand(Operand* pOperand)
     case CN_EXITOPERAND: {
       AM::vDeleteOperand(pOperand);
       m_bToExit = true;
-      if ( !bError )
+      if ( !m_bHasError )
         vPrintResult();
-      bError = false;
+      m_bHasError = false;
       bContinue = false;
       goto L_EXIT;
       break;
