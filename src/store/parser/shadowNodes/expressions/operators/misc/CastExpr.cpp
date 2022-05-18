@@ -28,26 +28,26 @@ static Stz* C_TARGETTYPE_PROP = "targetType"_Stz;
 // * The left header column represents the type of the current expression (the 'from' type)
 // * The top header row represents the target type of the cast operation (the 'to' type).
 // * The corresponding cell in the matrix represents the type of the resultant from this operation.
-// * Invalid/unsupported combinations are represented with CT_NONE.
+// * Invalid/unsupported combinations are represented with eCT::CT_NONE.
 // * Fields marked with /*?*/ are not currently supported but could be.  Refer to
 //   the documentation below marked with this symbol for more information.
 // * Fields marked with /*X*/ are not currently supported but should be.
-static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
+static eCT aeTypeCalculus[eCT::CT_ENUMS][eCT::CT_ENUMS] = {
 
                  //   NONE     BOOLEAN     CHAR     DATE     DECIMAL         FLOAT     INTEGER         INTERVAL_DT      INTERVAL_YM      TIME     TIMESTAMP     VARCHAR     UNKNOWN
-/*  0 NONE       */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE, CT_NONE,        CT_NONE,  CT_NONE,        CT_NONE,         CT_NONE,         CT_NONE, CT_NONE,      CT_NONE,    CT_NONE    },
-/*  1 BOOLEAN    */ { CT_NONE, CT_BOOLEAN, CT_CHAR, CT_NONE, CT_NONE,        CT_NONE,  CT_NONE,        CT_NONE,         CT_NONE,         CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
-/*  2 CHAR       */ { CT_NONE, CT_NONE,    CT_CHAR, CT_DATE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_INTERVAL_DT,  CT_INTERVAL_YM,  CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN },
-/*  3 DATE       */ { CT_NONE, CT_NONE,    CT_CHAR, CT_DATE, CT_NONE,        CT_NONE,  CT_NONE,        CT_NONE,         CT_NONE,         CT_NONE, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN },
-/*  4 DECIMAL    */ { CT_NONE, CT_NONE,    CT_CHAR, CT_NONE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_NONE,/*?1*/   CT_NONE,/*?1*/   CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
-/*  5 FLOAT      */ { CT_NONE, CT_NONE,    CT_CHAR, CT_NONE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_NONE,         CT_NONE,         CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
-/*  6 INTEGER    */ { CT_NONE, CT_NONE,    CT_CHAR, CT_NONE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_NONE,/*?1*/   CT_NONE,/*?1*/   CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
-/*  7 INTERVAL_DT*/ { CT_NONE, CT_NONE,    CT_CHAR, CT_NONE, CT_NONE/*?2*/,  CT_NONE,  CT_NONE/*?2*/,  CT_INTERVAL_DT,  CT_NONE,         CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
-/*  8 INTERVAL_YM*/ { CT_NONE, CT_NONE,    CT_CHAR, CT_NONE, CT_NONE/*?2*/,  CT_NONE,  CT_NONE/*?2*/,  CT_NONE,         CT_INTERVAL_YM,  CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
-/*  9 TIME       */ { CT_NONE, CT_NONE,    CT_CHAR, CT_NONE, CT_NONE,        CT_NONE,  CT_NONE,        CT_NONE,         CT_NONE,         CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN },
-/* 10 TIMESTAMP  */ { CT_NONE, CT_NONE,    CT_CHAR, CT_DATE, CT_NONE,        CT_NONE,  CT_NONE,        CT_NONE,         CT_NONE,         CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN },
-/* 11 VARCHAR    */ { CT_NONE, CT_NONE,    CT_CHAR, CT_DATE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_INTERVAL_DT,  CT_INTERVAL_YM,  CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN },
-/* 12 UNKNOWN    */ { CT_NONE, CT_BOOLEAN, CT_CHAR, CT_DATE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_INTERVAL_DT,  CT_INTERVAL_YM,  CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN }
+/*  0 NONE       */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_NONE,    eCT::CT_NONE    },
+/*  1 BOOLEAN    */ { eCT::CT_NONE, eCT::CT_BOOLEAN, eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/*  2 CHAR       */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_INTERVAL_DT,  eCT::CT_INTERVAL_YM,  eCT::CT_TIME, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/*  3 DATE       */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_NONE, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/*  4 DECIMAL    */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_NONE,/*?1*/   eCT::CT_NONE,/*?1*/   eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/*  5 FLOAT      */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/*  6 INTEGER    */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_NONE,/*?1*/   eCT::CT_NONE,/*?1*/   eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/*  7 INTERVAL_DT*/ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_NONE/*?2*/,  eCT::CT_NONE,  eCT::CT_NONE/*?2*/,  eCT::CT_INTERVAL_DT,  eCT::CT_NONE,         eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/*  8 INTERVAL_YM*/ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_NONE/*?2*/,  eCT::CT_NONE,  eCT::CT_NONE/*?2*/,  eCT::CT_NONE,         eCT::CT_INTERVAL_YM,  eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/*  9 TIME       */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_TIME, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/* 10 TIMESTAMP  */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_TIME, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/* 11 VARCHAR    */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_INTERVAL_DT,  eCT::CT_INTERVAL_YM,  eCT::CT_TIME, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/* 12 UNKNOWN    */ { eCT::CT_NONE, eCT::CT_BOOLEAN, eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_INTERVAL_DT,  eCT::CT_INTERVAL_YM,  eCT::CT_TIME, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN }
 };
 
 // References:
@@ -207,31 +207,31 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNo
   //       explicitly by the user, not implicitly by the planner.
 
   switch (eCurrentType) {
-    case CT_INTEGER:
-      if (eTargetTypeId == CT_DECIMAL || eTargetTypeId == CT_FLOAT)   {
+    case eCT::CT_INTEGER:
+      if (eTargetTypeId == eCT::CT_DECIMAL || eTargetTypeId == eCT::CT_FLOAT)   {
         ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
         return true;
       }
       break;
 
-    case CT_DECIMAL:
-      if (eTargetTypeId == CT_FLOAT)
+    case eCT::CT_DECIMAL:
+      if (eTargetTypeId == eCT::CT_FLOAT)
       {
         ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
         return true;
       }
       break;
 
-    case CT_DATE:
-      if (eTargetTypeId == CT_TIMESTAMP)
+    case eCT::CT_DATE:
+      if (eTargetTypeId == eCT::eCT::CT_TIMESTAMP)
       {
         ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
         return true;
       }
       break;
 
-    case CT_BOOLEAN:
-      if (eTargetTypeId == CT_VARCHAR || eTargetTypeId == CT_CHAR)
+    case eCT::CT_BOOLEAN:
+      if (eTargetTypeId == eCT::CT_VARCHAR || eTargetTypeId == eCT::CT_CHAR)
       {
         ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
         return true;

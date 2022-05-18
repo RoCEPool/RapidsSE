@@ -22,14 +22,14 @@ static Stz* C_MAX_EXPR_DEFN = "/__root__/definitions/object/expr/operator/aggreg
 // What is the resulting type when we combine these inputs?
 // * The top header row represents the type of the first operand.
 // * The corresponding cell in the matrix represents the type of the resultant from this operation.
-// * Invalid/unsupported combinations are represented with CT_NONE.
+// * Invalid/unsupported combinations are represented with eCT::CT_NONE.
 // * Fields marked with /*?*/ are not currently supported but could be.  Refer to
 //   the documentation below marked with this symbol for more information.
 // * Fields marked with /*X*/ are not currently supported but should be.
-static eCT aeTypeCalculus[CT_ENUMS] =
+static eCT aeTypeCalculus[eCT::CT_ENUMS] =
 
 //    NONE     BOOLEAN     CHAR        DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT     INTERVAL_YM     TIME     TIMESTAMP     VARCHAR     UNKNOWN
-    { CT_NONE, CT_NONE,    CT_VARCHAR, CT_DATE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_NONE/*X*/,   CT_NONE/*X*/,   CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_NONE };
+    { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_VARCHAR, eCT::CT_DATE, eCT::CT_DECIMAL, eCT::CT_FLOAT, eCT::CT_INTEGER, eCT::CT_NONE/*X*/,   eCT::CT_NONE/*X*/,   eCT::CT_TIME, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_NONE };
 
 // References:
 //  If MAX or MIN is specified, then the declared type of the result is the
@@ -129,7 +129,7 @@ b1 MaxExpr::bIsExactType(PlanNode *pNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation.                    */
-/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/* A returned value of eCT::CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
 i8 MaxExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {

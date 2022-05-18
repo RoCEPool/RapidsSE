@@ -23,54 +23,54 @@ static Stz* C_NAME_PREFIX = "SubstringExpr"_Stz;
 static Stz* C_DEFN = "/__root__/definitions/object/expr/operator/stringFunction/substring"_Stz;
 
 // What is the resulting type when the source expression is of a given type?
-static eCT aeSrcExprTypeCalculus[CT_ENUMS] = {
-/*  0 NONE       */  CT_NONE,
-/*  1 BOOLEAN    */  CT_NONE,
-/*  2 CHAR       */  CT_VARCHAR,
-/*  3 DATE       */  CT_NONE,
-/*  4 DECIMAL    */  CT_NONE,
-/*  5 FLOAT      */  CT_NONE,
-/*  6 INTEGER    */  CT_NONE,
-/*  7 INTERVAL_DT*/  CT_NONE,
-/*  8 INTERVAL_YM*/  CT_NONE,
-/*  9 TIME       */  CT_NONE,
-/* 10 TIMESTAMP  */  CT_NONE,
-/* 11 VARCHAR    */  CT_VARCHAR,
-/* 12 UNKNOWN    */  CT_UNKNOWN 
+static eCT aeSrcExprTypeCalculus[eCT::CT_ENUMS] = {
+/*  0 NONE       */  eCT::CT_NONE,
+/*  1 BOOLEAN    */  eCT::CT_NONE,
+/*  2 CHAR       */  eCT::CT_VARCHAR,
+/*  3 DATE       */  eCT::CT_NONE,
+/*  4 DECIMAL    */  eCT::CT_NONE,
+/*  5 FLOAT      */  eCT::CT_NONE,
+/*  6 INTEGER    */  eCT::CT_NONE,
+/*  7 INTERVAL_DT*/  eCT::CT_NONE,
+/*  8 INTERVAL_YM*/  eCT::CT_NONE,
+/*  9 TIME       */  eCT::CT_NONE,
+/* 10 TIMESTAMP  */  eCT::CT_NONE,
+/* 11 VARCHAR    */  eCT::CT_VARCHAR,
+/* 12 UNKNOWN    */  eCT::CT_UNKNOWN
 };
 
 // What is the resulting type when the FROM expression is of a given type?
-static eCT aeFromExprTypeCalculus[CT_ENUMS] = {
-/*  0 NONE       */  CT_NONE,
-/*  1 BOOLEAN    */  CT_NONE,
-/*  2 CHAR       */  CT_NONE,
-/*  3 DATE       */  CT_NONE,
-/*  4 DECIMAL    */  CT_NONE,
-/*  5 FLOAT      */  CT_NONE,
-/*  6 INTEGER    */  CT_INTEGER,
-/*  7 INTERVAL_DT*/  CT_NONE,
-/*  8 INTERVAL_YM*/  CT_NONE,
-/*  9 TIME       */  CT_NONE,
-/* 10 TIMESTAMP  */  CT_NONE,
-/* 11 VARCHAR    */  CT_NONE,
-/* 12 UNKNOWN    */  CT_UNKNOWN
+static eCT aeFromExprTypeCalculus[eCT::CT_ENUMS] = {
+/*  0 NONE       */  eCT::CT_NONE,
+/*  1 BOOLEAN    */  eCT::CT_NONE,
+/*  2 CHAR       */  eCT::CT_NONE,
+/*  3 DATE       */  eCT::CT_NONE,
+/*  4 DECIMAL    */  eCT::CT_NONE,
+/*  5 FLOAT      */  eCT::CT_NONE,
+/*  6 INTEGER    */  eCT::CT_INTEGER,
+/*  7 INTERVAL_DT*/  eCT::CT_NONE,
+/*  8 INTERVAL_YM*/  eCT::CT_NONE,
+/*  9 TIME       */  eCT::CT_NONE,
+/* 10 TIMESTAMP  */  eCT::CT_NONE,
+/* 11 VARCHAR    */  eCT::CT_NONE,
+/* 12 UNKNOWN    */  eCT::CT_UNKNOWN
 };
 
 // What is the resulting type when the LENGTH expression is of a given type?
-static eCT aeLengthExprTypeCalculus[CT_ENUMS] = {
-/*  0 NONE       */  CT_NONE,
-/*  1 BOOLEAN    */  CT_NONE,
-/*  2 CHAR       */  CT_NONE,
-/*  3 DATE       */  CT_NONE,
-/*  4 DECIMAL    */  CT_NONE,
-/*  5 FLOAT      */  CT_NONE,
-/*  6 INTEGER    */  CT_INTEGER,
-/*  7 INTERVAL_DT*/  CT_NONE,
-/*  8 INTERVAL_YM*/  CT_NONE,
-/*  9 TIME       */  CT_NONE,
-/* 10 TIMESTAMP  */  CT_NONE,
-/* 11 VARCHAR    */  CT_NONE,
-/* 12 UNKNOWN    */  CT_UNKNOWN
+static eCT aeLengthExprTypeCalculus[eCT::CT_ENUMS] = {
+/*  0 NONE       */  eCT::CT_NONE,
+/*  1 BOOLEAN    */  eCT::CT_NONE,
+/*  2 CHAR       */  eCT::CT_NONE,
+/*  3 DATE       */  eCT::CT_NONE,
+/*  4 DECIMAL    */  eCT::CT_NONE,
+/*  5 FLOAT      */  eCT::CT_NONE,
+/*  6 INTEGER    */  eCT::CT_INTEGER,
+/*  7 INTERVAL_DT*/  eCT::CT_NONE,
+/*  8 INTERVAL_YM*/  eCT::CT_NONE,
+/*  9 TIME       */  eCT::CT_NONE,
+/* 10 TIMESTAMP  */  eCT::CT_NONE,
+/* 11 VARCHAR    */  eCT::CT_NONE,
+/* 12 UNKNOWN    */  eCT::CT_UNKNOWN
 };
 
 
@@ -221,7 +221,7 @@ b1 SubstringExpr::bIsExactType(PlanNode *pNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation.                    */
-/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/* A returned value of eCT::CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
 i8 SubstringExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
@@ -235,22 +235,22 @@ i8 SubstringExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 
   eCT eSrcType    = TypeSystem::eCTVal(Expr::iType(pSrcExprNode, pRootNode));
   eCT eFromType   = TypeSystem::eCTVal(Expr::iType(pFromExprNode, pRootNode));
-  eCT eLengthType = (pLengthExprNode ? TypeSystem::eCTVal(Expr::iType(pLengthExprNode, pRootNode)) : CT_INTEGER);
+  eCT eLengthType = (pLengthExprNode ? TypeSystem::eCTVal(Expr::iType(pLengthExprNode, pRootNode)) : eCT::CT_INTEGER);
 
   eCT eResultSrcType    = aeSrcExprTypeCalculus[eSrcType];
   eCT eResultFromType   = aeFromExprTypeCalculus[eFromType];
   eCT eResultLengthType = aeLengthExprTypeCalculus[eLengthType];
   
-  if (eResultSrcType    == CT_NONE ||
-      eResultFromType   == CT_NONE ||
-      eResultLengthType == CT_NONE) {
-    return TypeSystem::iIdOf(CT_NONE);
+  if (eResultSrcType    == eCT::CT_NONE ||
+      eResultFromType   == eCT::CT_NONE ||
+      eResultLengthType == eCT::CT_NONE) {
+    return TypeSystem::iIdOf(eCT::CT_NONE);
   }
 
-  if (eResultSrcType    == CT_UNKNOWN ||
-      eResultFromType   == CT_UNKNOWN ||
-      eResultLengthType == CT_UNKNOWN) {
-    return TypeSystem::iIdOf(CT_UNKNOWN);
+  if (eResultSrcType    == eCT::CT_UNKNOWN ||
+      eResultFromType   == eCT::CT_UNKNOWN ||
+      eResultLengthType == eCT::CT_UNKNOWN) {
+    return TypeSystem::iIdOf(eCT::CT_UNKNOWN);
   }
 
   return TypeSystem::iIdOf(eResultSrcType);
@@ -274,7 +274,7 @@ void SubstringExpr::vCoerceSubExprs(QueryNode* pSubstringExpr, PlanNode* pRootNo
   // Substring Length
   QueryNode* pLength = pLengthExpr(pSubstringExpr);
 
-  if (pLength && Expr::iType(pLength, pRootNode) != CT_INTEGER) {
+  if (pLength && Expr::iType(pLength, pRootNode) != eCT::CT_INTEGER) {
     Expr::vCoerceSubExprs(pLength, pRootNode);
   }
 
@@ -282,7 +282,7 @@ void SubstringExpr::vCoerceSubExprs(QueryNode* pSubstringExpr, PlanNode* pRootNo
   QueryNode* pStartPos = pFromExpr(pSubstringExpr);
   ASSERT(pStartPos);
 
-  if (Expr::iType(pStartPos, pRootNode) != CT_INTEGER) {
+  if (Expr::iType(pStartPos, pRootNode) != eCT::CT_INTEGER) {
     Expr::vCoerceSubExprs(pStartPos, pRootNode);
   }
 
@@ -291,16 +291,16 @@ void SubstringExpr::vCoerceSubExprs(QueryNode* pSubstringExpr, PlanNode* pRootNo
   ASSERT(pStartPos);
 
   eCT eStrSrcType = TypeSystem::eCTVal(Expr::iType(pStrSrc, pRootNode));
-  if (eStrSrcType != CT_CHAR &&
-      eStrSrcType != CT_VARCHAR &&
-      eStrSrcType != CT_UNKNOWN &&
-      Expr::bIsImplicitlyCoercibleTo(CT_VARCHAR, pStrSrc, pRootNode)) {
+  if (eStrSrcType != eCT::CT_CHAR &&
+      eStrSrcType != eCT::CT_VARCHAR &&
+      eStrSrcType != eCT::CT_UNKNOWN &&
+      Expr::bIsImplicitlyCoercibleTo(eCT::CT_VARCHAR, pStrSrc, pRootNode)) {
 
     // We don't need to worry about pStrSrc being a compound expression where a
     // lower branch of it requires coercion because we walk the expression graphs
     // in nameValidate and exprValidate and this would have already been corrected
     // if needed. So we only need to ensure that the type of pStrSrc is a string.
-    QueryNode* pNewStrSrc = Expr::pCoerceTo(CT_VARCHAR, pStrSrc, pRootNode);
+    QueryNode* pNewStrSrc = Expr::pCoerceTo(eCT::CT_VARCHAR, pStrSrc, pRootNode);
     GraphEditor::vReplaceChild(pSubstringExpr, pStrSrc, pNewStrSrc);
   }
 }

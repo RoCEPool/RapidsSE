@@ -2118,7 +2118,7 @@ void NameValidator::vValidateSubqueryReferences(PlanNode* pRootNode, QueryNode* 
 
 /*----------------------------------------------------------------------------*/
 /* Try to coerce any projected expressions that have an invalid data type     */
-/* (i.e. CT_NONE)                                                             */
+/* (i.e. eCT::CT_NONE)                                                             */
 /*----------------------------------------------------------------------------*/
 void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStartNode)
 {
@@ -2137,13 +2137,13 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
     QueryNode* pExpr    = _pQueryNode(pNode);
 
     ASSERT(Expr::bIsOfType(pNode));
-    if (Expr::iType(pExpr, pRootNode) == CT_NONE) {
+    if (Expr::iType(pExpr, pRootNode) == eCT::CT_NONE) {
       // We might need type coercion here
       Expr::vCoerceSubExprs(pExpr, pRootNode);
 
       // If we still haven't been able to correct the problem then abort any
       // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().
-      if (Expr::iType(pExpr, pRootNode) == CT_NONE) {
+      if (Expr::iType(pExpr, pRootNode) == eCT::CT_NONE) {
         return GraphNav::WALK_ABORT;
       }
     }
@@ -2188,7 +2188,7 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
       if (!bResult) {
         // If we still haven't been able to correct the problem then abort any
         // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().
-        ASSERT(Expr::iType(pProjectedExpr, pRootNode) == CT_NONE);
+        ASSERT(Expr::iType(pProjectedExpr, pRootNode) == eCT::CT_NONE);
         delete pIter;
         return GraphNav::WALK_ABORT;
       }
@@ -2339,7 +2339,7 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
 
     eCT eType = TypeSystem::eCTVal(Expr::iType(pColExpr, pRootNode));
 
-    if (eType == CT_NONE) {
+    if (eType == eCT::CT_NONE) {
       s2K sBuf;
       Expr::vDescribe(pColExpr, sBuf, pRootNode);
 

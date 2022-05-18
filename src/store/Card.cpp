@@ -2135,12 +2135,12 @@ char Card::cTypeShort(void)
   
   Stz* szType = szGetProperty("szType"_Stz);
   
-  for (i8 i_CT = 0; i_CT < CT_ENUMS; i_CT++) {
+  for (i8 i_CT = 0; i_CT < eCT::CT_ENUMS; i_CT++) {
     if (szType->bSame(aCT[i_CT]))
-      return cCT_char[i_CT];
+      return ceCT::CT_CHAR[i_CT];
   }
 
-  return cCT_char[CT_ENUMS];
+  return ceCT::CT_CHAR[eCT::CT_ENUMS];
 }
 
 /*----------------------------------------------------------------------------*/

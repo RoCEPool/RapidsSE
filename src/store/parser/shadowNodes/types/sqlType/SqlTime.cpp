@@ -38,7 +38,7 @@ PlanNode* SqlTime::pCreate()
   QueryNode* pNode = new QueryNode(sName, C_SQLTIME_DEFN);
 
   // Add in any common properties
-  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(CT_TIME));
+  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(eCT::CT_TIME));
 
   return pNode;
 }
@@ -56,7 +56,7 @@ PlanNode* SqlTime::pCreate(i8 iMinOffset)
   QueryNode* pNode = new QueryNode(sName, C_SQLTIME_DEFN);
 
   // Add in any common properties
-  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(CT_TIME));
+  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(eCT::CT_TIME));
 
   // Create the offset property
   Value xValue(iMinOffset);

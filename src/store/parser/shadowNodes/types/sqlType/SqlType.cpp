@@ -80,56 +80,56 @@ QueryNode* SqlType::pCreate(i8 iTypeId)
 
   // Manual Polymorphism
   switch (eType) {
-    case CT_BOOLEAN:
+    case eCT::CT_BOOLEAN:
       pNode = _pQueryNode(SqlBoolean::pCreate());
       break;
 
-    case CT_CHAR:
+    case eCT::CT_CHAR:
       pNode = _pQueryNode(SqlChar::pCreate());
       break;
 
-    case CT_DATE:
+    case eCT::CT_DATE:
       pNode = _pQueryNode(SqlDate::pCreate());
       break;
 
-    case CT_DECIMAL:
+    case eCT::CT_DECIMAL:
       pNode = _pQueryNode(SqlDecimal::pCreate());
       break;
 
-    case CT_FLOAT:
+    case eCT::CT_FLOAT:
       pNode = _pQueryNode(SqlFloat::pCreate());
       break;
 
-    case CT_INTEGER:
+    case eCT::CT_INTEGER:
       pNode = _pQueryNode(SqlInteger::pCreate());
       break;
 
-    case CT_INTERVAL_DT:
+    case eCT::CT_INTERVAL_DT:
       pNode = _pQueryNode(SqlIntervalDT::pCreate());
       break;
 
-    case CT_INTERVAL_YM:
+    case eCT::CT_INTERVAL_YM:
       pNode = _pQueryNode(SqlIntervalYM::pCreate());
       break;
 
-    case CT_TIME:
+    case eCT::CT_TIME:
       pNode = _pQueryNode(SqlTime::pCreate());
       break;
 
-    case CT_TIMESTAMP:
+    case eCT::eCT::CT_TIMESTAMP:
       pNode = _pQueryNode(SqlTimestamp::pCreate());
       break;
 
-    case CT_VARCHAR:
+    case eCT::CT_VARCHAR:
       pNode = _pQueryNode(SqlVarchar::pCreate());
       break;
 
-    case CT_UNKNOWN:
+    case eCT::CT_UNKNOWN:
       pNode = _pQueryNode(SqlUnknown::pCreate());
       break;
 
-    case CT_NONE:
-    case CT_ENUMS:
+    case eCT::CT_NONE:
+    case eCT::CT_ENUMS:
     default:
       NEVER_REACH
   }

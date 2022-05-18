@@ -127,7 +127,7 @@ b1 WhenExpr::bIsExactType(PlanNode *pNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation.                    */
-/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/* A returned value of eCT::CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
 i8 WhenExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
@@ -138,7 +138,7 @@ i8 WhenExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pPredicate = WhenExpr::pPredicateExpr(pExprNode);
   eCT ePredicateType = TypeSystem::eCTVal(Expr::iType(pPredicate, pRootNode));
 
-  if (ePredicateType == CT_NONE) {
+  if (ePredicateType == eCT::CT_NONE) {
     // This will try a coercion
     return TypeSystem::iIdOf(ePredicateType);
   }
@@ -169,11 +169,11 @@ void WhenExpr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
   eCT ePredicateType = TypeSystem::eCTVal(Expr::iType(pPredicate, pRootNode));
   eCT eResultType    = TypeSystem::eCTVal(Expr::iType(pResult, pRootNode));
 
-  if (ePredicateType == CT_NONE) {
+  if (ePredicateType == eCT::CT_NONE) {
     Expr::vCoerceSubExprs(pPredicate, pRootNode);
   }
 
-  if (eResultType == CT_NONE) {
+  if (eResultType == eCT::CT_NONE) {
     Expr::vCoerceSubExprs(pResult, pRootNode);
   }
 }
@@ -188,8 +188,8 @@ void WhenExpr::vCoerceResultExprTo(eCT eCoercibleTarget, QueryNode* pWhenExpr, P
   ASSERT(bIsOfType(pWhenExpr));
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
-  ASSERT(eCoercibleTarget > CT_NONE);
-  ASSERT(eCoercibleTarget < CT_ENUMS);
+  ASSERT(eCoercibleTarget > eCT::CT_NONE);
+  ASSERT(eCoercibleTarget < eCT::CT_ENUMS);
 
   QueryNode* pResult = WhenExpr::pResultExpr(pWhenExpr);
   QueryNode* pCoercedResult = Expr::pCoerceTo(eCoercibleTarget, pResult, pRootNode);

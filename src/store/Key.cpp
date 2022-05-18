@@ -208,8 +208,8 @@ i8 Key::iGetStrElm(IndexDef* pIndexDef, i8 i_Element, char* sKeyValue)
   for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
 
     Column* pCol = pIndexDef->pGetColumn(i_Col);
-    RASSERT(pCol->eColumnType() == CT_VARCHAR ||
-                     pCol->eColumnType() == CT_CHAR);
+    RASSERT(pCol->eColumnType() == eCT::CT_VARCHAR ||
+                     pCol->eColumnType() == eCT::CT_CHAR);
 
     ayElm = EntWrk::ayEachElm(pCol,nBytes,(byte**)&ayCursor);
 

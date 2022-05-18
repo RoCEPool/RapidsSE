@@ -102,7 +102,7 @@ i8 TimeLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return CT_TIME;
+  return eCT::CT_TIME;
 }
 
 /*----------------------------------------------------------------------------*/

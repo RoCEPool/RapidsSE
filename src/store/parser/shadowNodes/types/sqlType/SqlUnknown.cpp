@@ -37,7 +37,7 @@ PlanNode* SqlUnknown::pCreate()
   QueryNode* pNode = new QueryNode(sName, C_SQLUNKNOWN_DEFN);
 
   // Add in any common properties
-  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(CT_UNKNOWN));
+  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(eCT::CT_UNKNOWN));
 
   return pNode;
 }

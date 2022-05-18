@@ -189,7 +189,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 {
   _static_;
 
-  eCT eColExprType = CT_NONE;
+  eCT eColExprType = eCT::CT_NONE;
   ePE ePreExp      = PE_EXP;
   eEC eError       = EC_NONE;
 
@@ -367,7 +367,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       pColumnExpr->vColumnType(eColExprType);
 
       // HACK!!!
-      if (eColExprType == CT_DECIMAL) {
+      if (eColExprType == eCT::CT_DECIMAL) {
         pColumnExpr->vColumnScale(2);
         pColumnExpr->vColumnLength(19);
       }
@@ -790,7 +790,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
     }
 
-    RASSERT(pColumnExpr->eColumnType() != CT_NONE);
+    RASSERT(pColumnExpr->eColumnType() != eCT::CT_NONE);
 
     // add the last column to the streamDefOut
     if (ePreExp != PE_SRT && ePreExp != PE_TOP)

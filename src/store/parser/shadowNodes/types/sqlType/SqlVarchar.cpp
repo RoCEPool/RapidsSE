@@ -48,7 +48,7 @@ PlanNode* SqlVarchar::pCreate(i8 iLength)
   QueryNode* pNode = new QueryNode(sName, C_SQLVARCHAR_DEFN);
 
   // Add in any common properties
-  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(CT_VARCHAR));
+  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(eCT::CT_VARCHAR));
 
   if (iLength != -1) {
     ASSERT(iLength > 0);

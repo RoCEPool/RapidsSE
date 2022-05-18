@@ -115,7 +115,7 @@ i8 DecimalLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return CT_DECIMAL;
+  return eCT::CT_DECIMAL;
 }
 
 /*----------------------------------------------------------------------------*/

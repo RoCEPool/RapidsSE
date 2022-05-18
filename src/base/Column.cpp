@@ -24,7 +24,7 @@ Column::Column(void)
   
   m_iColumnNo     = C_UNKNOWN;
   m_sColumnNm     = C_NO_NAME;
-  m_eColumnType   = CT_NONE;
+  m_eColumnType   = eCT::CT_NONE;
 
   m_bIsUnique     = false;
   m_bIsLastColumn = false;
@@ -71,9 +71,9 @@ eCT Column::eColumn(Stz* szType)
   }
   
   if (szType->bSame("interval"_Stz))
-    return CT_INTERVAL_DT;
+    return eCT::CT_INTERVAL_DT;
   
-  return (eCT)CT_NONE;
+  return (eCT)eCT::CT_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,17 +82,17 @@ eCT Column::eColumn(Stz* szType)
 eCT Column::eColumnType(eDM eDatum)
 {
   switch(eDatum) {
-    case DM_BOL     : return CT_BOOLEAN;
-    case DM_VCH     : return CT_VARCHAR;
-    case DM_DTE     : return CT_DATE;
-    case DM_BCD     : return CT_DECIMAL;
-    case DM_FLT     : return CT_FLOAT;
-    case DM_INT     : return CT_INTEGER;
-    case DM_IVL     : return CT_INTERVAL_DT;
-    case DM_IVY     : return CT_INTERVAL_YM;
-    case DM_TME     : return CT_TIME;
-    case DM_TSP     : return CT_TIMESTAMP;
-    case DM_UNK     : return CT_UNKNOWN;
+    case DM_BOL     : return eCT::CT_BOOLEAN;
+    case DM_VCH     : return eCT::CT_VARCHAR;
+    case DM_DTE     : return eCT::CT_DATE;
+    case DM_BCD     : return eCT::CT_DECIMAL;
+    case DM_FLT     : return eCT::CT_FLOAT;
+    case DM_INT     : return eCT::CT_INTEGER;
+    case DM_IVL     : return eCT::CT_INTERVAL_DT;
+    case DM_IVY     : return eCT::CT_INTERVAL_YM;
+    case DM_TME     : return eCT::CT_TIME;
+    case DM_TSP     : return eCT::eCT::CT_TIMESTAMP;
+    case DM_UNK     : return eCT::CT_UNKNOWN;
     default:
       RASSERT(0);
   }
@@ -104,18 +104,18 @@ eCT Column::eColumnType(eDM eDatum)
 eDM Column::eDatum(eCT eColumnType)
 {
   switch(eColumnType) {
-    case CT_BOOLEAN     : return DM_BOL;
-    case CT_CHAR        : return DM_VCH;
-    case CT_DATE        : return DM_DTE;
-    case CT_DECIMAL     : return DM_BCD;
-    case CT_FLOAT       : return DM_FLT;
-    case CT_INTEGER     : return DM_INT;
-    case CT_INTERVAL_DT : return DM_IVL;
-    case CT_INTERVAL_YM : NEVER_REACH;
-    case CT_TIME        : return DM_TME;
-    case CT_TIMESTAMP   : return DM_TSP;
-    case CT_VARCHAR     : return DM_VCH;
-    case CT_UNKNOWN     : return DM_UNK;
+    case eCT::CT_BOOLEAN     : return DM_BOL;
+    case eCT::eCT::CT_CHAR        : return DM_VCH;
+    case eCT::CT_DATE        : return DM_DTE;
+    case eCT::CT_DECIMAL     : return DM_BCD;
+    case eCT::CT_FLOAT       : return DM_FLT;
+    case eCT::CT_INTEGER     : return DM_INT;
+    case eCT::CT_INTERVAL_DT : return DM_IVL;
+    case eCT::CT_INTERVAL_YM : NEVER_REACH;
+    case eCT::CT_TIME        : return DM_TME;
+    case eCT::eCT::CT_TIMESTAMP   : return DM_TSP;
+    case eCT::CT_VARCHAR     : return DM_VCH;
+    case eCT::CT_UNKNOWN     : return DM_UNK;
     default:
       RASSERT(0);
   }
@@ -466,18 +466,18 @@ char Column::cTypeShort(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   switch (m_eColumnType) {
-    case CT_BOOLEAN     : return 'b';
-    case CT_CHAR        : return 'c';
-    case CT_DATE        : return 'd';
-    case CT_DECIMAL     : return 'm';
-    case CT_FLOAT       : return 'f';
-    case CT_INTEGER     : return 'i';
-    case CT_INTERVAL_DT : return 'l';
-    case CT_INTERVAL_YM : return 'y';
-    case CT_TIME        : return 't';
-    case CT_TIMESTAMP   : return 's';
-    case CT_VARCHAR     : return 'v';
-    case CT_UNKNOWN     : return 'u';
+    case eCT::CT_BOOLEAN     : return 'b';
+    case eCT::CT_CHAR        : return 'c';
+    case eCT::CT_DATE        : return 'd';
+    case eCT::CT_DECIMAL     : return 'm';
+    case eCT::CT_FLOAT       : return 'f';
+    case eCT::CT_INTEGER     : return 'i';
+    case eCT::CT_INTERVAL_DT : return 'l';
+    case eCT::CT_INTERVAL_YM : return 'y';
+    case eCT::CT_TIME        : return 't';
+    case eCT::eCT::CT_TIMESTAMP   : return 's';
+    case eCT::CT_VARCHAR     : return 'v';
+    case eCT::CT_UNKNOWN     : return 'u';
     default:
       RASSERT(0);
   }

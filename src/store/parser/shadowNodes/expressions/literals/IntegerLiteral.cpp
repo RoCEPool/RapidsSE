@@ -109,7 +109,7 @@ i8 IntegerLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return CT_INTEGER;
+  return eCT::CT_INTEGER;
 }
 
 /*============================================================================*/

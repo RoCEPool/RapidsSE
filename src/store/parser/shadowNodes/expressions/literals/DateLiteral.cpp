@@ -102,7 +102,7 @@ i8 DateLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return CT_DATE;
+  return eCT::CT_DATE;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -77,7 +77,7 @@ b1 ExistsExpr::bIsExactType(PlanNode *pNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation.                    */
-/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/* A returned value of eCT::CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
 i8 ExistsExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
@@ -85,7 +85,7 @@ i8 ExistsExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   ASSERT(bIsOfType(pExprNode));
 
   // EXISTS clauses always return a boolean
-  return CT_BOOLEAN;
+  return eCT::CT_BOOLEAN;
 }
 
 

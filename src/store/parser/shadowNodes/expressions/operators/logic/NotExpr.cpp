@@ -22,14 +22,14 @@ static Stz* C_NOT_DEFN = "/__root__/definitions/object/expr/operator/logic/not"_
 // What is the resulting type when we combine these inputs?
 // * The top header row represents the type of the first operand.
 // * The corresponding cell in the matrix represents the type of the resultant from this operation.
-// * Invalid/unsupported combinations are represented with CT_NONE.
+// * Invalid/unsupported combinations are represented with eCT::CT_NONE.
 // * Fields marked with /*?*/ are not currently supported but could be.  Refer to
 //   the documentation below marked with this symbol for more information.
 // * Fields marked with /*X*/ are not currently supported but should be.
-static eCT aeTypeCalculus[CT_ENUMS] =
+static eCT aeTypeCalculus[eCT::CT_ENUMS] =
 
 //    NONE     BOOLEAN     CHAR     DATE     DECIMAL  FLOAT    INTEGER  INTERVAL_DT INTERVAL_YM TIME     TIMESTAMP  VARCHAR  UNKNOWN
-    { CT_NONE, CT_BOOLEAN, CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_NONE,    CT_NONE,    CT_NONE, CT_NONE,   CT_NONE, CT_BOOLEAN };
+    { eCT::CT_NONE, eCT::CT_BOOLEAN, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_NONE,    eCT::CT_NONE, eCT::CT_NONE,   eCT::CT_NONE, eCT::CT_BOOLEAN };
 
 // References:
 //  NOT of a NULL literal will produce a NULL value, but the output type will still be a boolean.
@@ -108,7 +108,7 @@ b1 NotExpr::bIsExactType(PlanNode *pNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation.                    */
-/* A returned value of CT_NONE means that it is not supported or invalid.     */
+/* A returned value of eCT::CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
 i8 NotExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {

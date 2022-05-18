@@ -3507,18 +3507,18 @@ eCT SqlPlanner::eExtractDataType(sqlParser::DataTypeContext* pCtx)
   ASSERT(pCtx);
   sqlParser::SqlDataTypeContext* pSqlCtx = pCtx->sqlDataType();
 
-  eCT eDataType = CT_NONE;
+  eCT eDataType = eCT::CT_NONE;
 
-  if      (pSqlCtx->BOOLEAN())            { eDataType = CT_BOOLEAN;     }
-  else if (pSqlCtx->INTEGER())            { eDataType = CT_INTEGER;     }
-  else if (pSqlCtx->DECIMAL())            { eDataType = CT_DECIMAL;     }
-  else if (pSqlCtx->FLOAT())              { eDataType = CT_FLOAT;       }
-  else if (pSqlCtx->DATE())               { eDataType = CT_DATE;        }
-  else if (pSqlCtx->TIME())               { eDataType = CT_TIME;        }
-  else if (pSqlCtx->TIMESTAMP())          { eDataType = CT_TIMESTAMP;   }
-//TODO:  else if (pSqlCtx->INTERVAL())           { eDataType = CT_INTERVAL_YM; }
-  else if (pSqlCtx->fixedLenChar())       { eDataType = CT_CHAR;        }
-  else if (pSqlCtx->varyingLenChar())     { eDataType = CT_VARCHAR;     }
+  if      (pSqlCtx->BOOLEAN())            { eDataType = eCT::CT_BOOLEAN;     }
+  else if (pSqlCtx->INTEGER())            { eDataType = eCT::CT_INTEGER;     }
+  else if (pSqlCtx->DECIMAL())            { eDataType = eCT::CT_DECIMAL;     }
+  else if (pSqlCtx->FLOAT())              { eDataType = eCT::CT_FLOAT;       }
+  else if (pSqlCtx->DATE())               { eDataType = eCT::CT_DATE;        }
+  else if (pSqlCtx->TIME())               { eDataType = eCT::CT_TIME;        }
+  else if (pSqlCtx->TIMESTAMP())          { eDataType = eCT::eCT::CT_TIMESTAMP;   }
+//TODO:  else if (pSqlCtx->INTERVAL())           { eDataType = eCT::CT_INTERVAL_YM; }
+  else if (pSqlCtx->fixedLenChar())       { eDataType = eCT::CT_CHAR;        }
+  else if (pSqlCtx->varyingLenChar())     { eDataType = eCT::CT_VARCHAR;     }
   else if (pSqlCtx->BINARY())             {  __NOT_IMPL3("BINARY data type") }
   else if (pSqlCtx->VARBINARY())          {  __NOT_IMPL3("VARBINARY data type") }
   else if (pSqlCtx->BLOB())               {  __NOT_IMPL3("BLOB data type") }

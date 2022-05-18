@@ -274,20 +274,20 @@ void Constants::vAddConstantsCpp(void)
 
   
   // CT_ : columne type
-  /*  0 */ vAddConstant("CT_NONE"_Stz,        CT_NONE);
-  /*  1 */ vAddConstant("CT_BOOLEAN"_Stz,     CT_BOOLEAN);
-  /*  2 */ vAddConstant("CT_CHAR"_Stz,        CT_CHAR);
-  /*  3 */ vAddConstant("CT_DATE"_Stz,        CT_DATE);
-  /*  4 */ vAddConstant("CT_DECIMAL"_Stz,     CT_DECIMAL);
-  /*  5 */ vAddConstant("CT_FLOAT"_Stz,       CT_FLOAT);
-  /*  6 */ vAddConstant("CT_INTEGER"_Stz,     CT_INTEGER);
-  /*  7 */ vAddConstant("CT_INTERVAL_DT"_Stz, CT_INTERVAL_DT);
-  /*  8 */ vAddConstant("CT_INTERVAL_YM"_Stz, CT_INTERVAL_YM);
-  /*  9 */ vAddConstant("CT_TIME"_Stz,        CT_TIME);
-  /* 10 */ vAddConstant("CT_TIMESTAMP"_Stz,   CT_TIMESTAMP);
-  /* 11 */ vAddConstant("CT_VARCHAR"_Stz,     CT_VARCHAR);
-  /* 12 */ vAddConstant("CT_UNKNOWN"_Stz,     CT_UNKNOWN);
-  /* 13 */ vAddConstant("CT_ENUMS"_Stz,       CT_ENUMS);
+  /*  0 */ vAddConstant("eCT::CT_NONE"_Stz,        eCT::CT_NONE);
+  /*  1 */ vAddConstant("eCT::CT_BOOLEAN"_Stz,     eCT::CT_BOOLEAN);
+  /*  2 */ vAddConstant("eCT::CT_CHAR"_Stz,        eCT::CT_CHAR);
+  /*  3 */ vAddConstant("eCT::CT_DATE"_Stz,        eCT::CT_DATE);
+  /*  4 */ vAddConstant("eCT::CT_DECIMAL"_Stz,     eCT::CT_DECIMAL);
+  /*  5 */ vAddConstant("eCT::CT_FLOAT"_Stz,       eCT::CT_FLOAT);
+  /*  6 */ vAddConstant("eCT::CT_INTEGER"_Stz,     eCT::CT_INTEGER);
+  /*  7 */ vAddConstant("eCT::CT_INTERVAL_DT"_Stz, eCT::CT_INTERVAL_DT);
+  /*  8 */ vAddConstant("eCT::CT_INTERVAL_YM"_Stz, eCT::CT_INTERVAL_YM);
+  /*  9 */ vAddConstant("eCT::CT_TIME"_Stz,        eCT::CT_TIME);
+  /* 10 */ vAddConstant("eCT::eCT::CT_TIMESTAMP"_Stz,   eCT::eCT::CT_TIMESTAMP);
+  /* 11 */ vAddConstant("eCT::CT_VARCHAR"_Stz,     eCT::CT_VARCHAR);
+  /* 12 */ vAddConstant("eCT::CT_UNKNOWN"_Stz,     eCT::CT_UNKNOWN);
+  /* 13 */ vAddConstant("eCT::CT_ENUMS"_Stz,       eCT::CT_ENUMS);
 
   // DE_ : directory entry type -- n.b. the DT_FIFO etc are from dirent.h
   /*  1 */ vAddConstant("DE_FIFO"_Stz, DT_FIFO);

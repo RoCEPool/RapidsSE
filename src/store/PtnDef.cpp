@@ -450,7 +450,7 @@ void PtnDef::vToColPix(RowPix* pRowPixDst, bool bAddPtnHash)
     axColPixDst->m_uNumber   = (u8)i_Col;
     // name
     axColPixDst->m_uKind     = (u8)CX_PTNHASH;
-    axColPixDst->m_uType     = (u8)CT_INTEGER;
+    axColPixDst->m_uType     = (u8)eCT::CT_INTEGER;
     axColPixDst->m_uDatum    = (u8)DM_INT;
     axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
     axColPixDst->m_uScale    = (u8)0;
@@ -582,17 +582,17 @@ eEC PtnDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   
   switch (eColumn) {
       
-    case CT_BOOLEAN:   eError = eParseColumnBoolean   (pTknVec,pCol);  break;
-    case CT_DATE:      eError = eParseColumnDate      (pTknVec,pCol);  break;
-    case CT_DECIMAL:   eError = eParseColumnDecimal   (pTknVec,pCol);  break;
-    case CT_FLOAT:     eError = eParseColumnFloat     (pTknVec,pCol);  break;
-    case CT_INTEGER:   eError = eParseColumnInteger   (pTknVec,pCol);  break;
-    case CT_INTERVAL_DT: eError = eParseColumnInterval(pTknVec,pCol);  break;
-    case CT_INTERVAL_YM: NEVER_REACH;                                  break;
-    case CT_TIME:      eError = eParseColumnTime      (pTknVec,pCol);  break;
-    case CT_TIMESTAMP: eError = eParseColumnTimestamp (pTknVec,pCol);  break;
-    case CT_VARCHAR:   eError = eParseColumnVarchar   (pTknVec,pCol);  break;
-    case CT_UNKNOWN:   NEVER_REACH;                                    break;
+    case eCT::CT_BOOLEAN:   eError = eParseColumnBoolean   (pTknVec,pCol);  break;
+    case eCT::CT_DATE:      eError = eParseColumnDate      (pTknVec,pCol);  break;
+    case eCT::CT_DECIMAL:   eError = eParseColumnDecimal   (pTknVec,pCol);  break;
+    case eCT::CT_FLOAT:     eError = eParseColumnFloat     (pTknVec,pCol);  break;
+    case eCT::CT_INTEGER:   eError = eParseColumnInteger   (pTknVec,pCol);  break;
+    case eCT::CT_INTERVAL_DT: eError = eParseColumnInterval(pTknVec,pCol);  break;
+    case eCT::CT_INTERVAL_YM: NEVER_REACH;                                  break;
+    case eCT::CT_TIME:      eError = eParseColumnTime      (pTknVec,pCol);  break;
+    case eCT::eCT::CT_TIMESTAMP: eError = eParseColumnTimestamp (pTknVec,pCol);  break;
+    case eCT::CT_VARCHAR:   eError = eParseColumnVarchar   (pTknVec,pCol);  break;
+    case eCT::CT_UNKNOWN:   NEVER_REACH;                                    break;
 
     default:
       if (pTkn->bSame("char"_Stz) ||
@@ -623,7 +623,7 @@ eEC PtnDef::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
   
-  pCol->vColumnType(CT_BOOLEAN);
+  pCol->vColumnType(eCT::CT_BOOLEAN);
   pCol->vDatum(DM_BOL);
   
   return EC_NONE;
@@ -637,7 +637,7 @@ eEC PtnDef::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(CT_DATE);
+  pCol->vColumnType(eCT::CT_DATE);
   pCol->vDatum(DM_DTE);
   
   return EC_NONE;
@@ -655,7 +655,7 @@ eEC PtnDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   i8 iScale = 0;
   
   // set column type in column
-  pCol->vColumnType(CT_DECIMAL);
+  pCol->vColumnType(eCT::CT_DECIMAL);
   pCol->vDatum(DM_BCD);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
@@ -717,7 +717,7 @@ eEC PtnDef::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
   i8 iSize = C_MAX_FLT_PRECISION;
   
   // set column type
-  pCol->vColumnType(CT_FLOAT);
+  pCol->vColumnType(eCT::CT_FLOAT);
   pCol->vDatum(DM_FLT);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
@@ -765,7 +765,7 @@ eEC PtnDef::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(CT_INTEGER);
+  pCol->vColumnType(eCT::CT_INTEGER);
   pCol->vDatum(DM_INT);
   pCol->vColumnLength(C_MAX_INT_PRECISION);
   
@@ -780,7 +780,7 @@ eEC PtnDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(CT_INTERVAL_DT);
+  pCol->vColumnType(eCT::CT_INTERVAL_DT);
   pCol->vDatum(DM_IVL);
   
   return EC_NONE;
@@ -794,7 +794,7 @@ eEC PtnDef::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(CT_TIME);
+  pCol->vColumnType(eCT::CT_TIME);
   pCol->vDatum(DM_TME);
   
   return EC_NONE;
@@ -808,7 +808,7 @@ eEC PtnDef::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(CT_TIMESTAMP);
+  pCol->vColumnType(eCT::eCT::CT_TIMESTAMP);
   pCol->vDatum(DM_TSP);
   
   return EC_NONE;
@@ -825,7 +825,7 @@ eEC PtnDef::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   i8 iSize = C_64K;
   
   // set column type
-  pCol->vColumnType(CT_VARCHAR);
+  pCol->vColumnType(eCT::CT_VARCHAR);
   pCol->vDatum(DM_VCH);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
