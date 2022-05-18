@@ -865,6 +865,7 @@ void vDdlLockAssertNone(void);
   void vJobResponseOpFetch(void);
   void vJobResponseOpStore(void);
 
+  void vJobReportAll(void);
   void vJobReportMetrics(void);
   void vJobReportNetDissect(void);
   void vJobReportNetwork(void);
