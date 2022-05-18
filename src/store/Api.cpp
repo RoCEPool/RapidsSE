@@ -141,9 +141,9 @@ eEC Api::eForkJob(JobId& rtChildJobId,
   rtChildJobId = rpChildJob_tbr->tJobId();
   
   rpChildJob_tbr->vMutexCreate();
-  rpChildJob_tbr->vOutputCreate();
-  rpChildJob_tbr->vOutputBeginProc();
-  rpChildJob_tbr->vOutputEnabled(true);
+  //rpChildJob_tbr->vOutputCreate();
+  //rpChildJob_tbr->vOutputBeginProc();
+  //rpChildJob_tbr->vOutputEnabled(true);
   rpChildJob_tbr->vStmtListCreate();
   rpChildJob_tbr->vTaskCreate();
 
@@ -248,12 +248,21 @@ void Api::vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms)
 
   JobId tParentId;
   RASSERT(tParentId.bIsUnknown());
-  
+
   JobId tOriginId;
   RASSERT(tOriginId.bIsUnknown());
 
   JobId tDistId;
   RASSERT(tDistId.bIsUnknown());
+
+  Job* pRootJob = Api::pNewRootJob("startSystemRoot"_Stz,tParentId,tOriginId,tDistId);
+  pRootJob->vOutputCreate();
+  pRootJob->vOutputBeginProc();
+  pRootJob->vOutputEnabled(true);
+
+  tParentId = pRootJob->tJobId();
+  tOriginId = pRootJob->tOriginId();
+  tDistId = pRootJob->tDistId();
 
   Job* pEngineJob   = new Job(szJobNm,tParentId,tOriginId,tDistId);
   Task* pEngineTask = new Task(szJobNm,pEngineJob);
@@ -292,7 +301,8 @@ void Api::vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms)
   PsxThd::vTlsSet(giTLS_TaskKey,pSaveTask);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  Api::vDeleteRootJob(pRootJob);
+
   pEngineTask->vState(TS_RETIRED);
   pEngineTask->vDropTaskLock((Stz*)__func__);
 

@@ -46,7 +46,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 01 */ eJL     m_eJobList;       // current list : JL_ORIGINATING, ...
     /* 02 */ JobMetrics* m_pJobMetrics;// job metrics chain
     /* 03 */ Mutex*  m_pMutex;         // mutex
-    /* 04 */ Output* m_pOutput_job;    // output processor
+    /* 04 */ Output* m_pOutput;    // output processor
     /* 05 */ b8      m_bReapable;      // can job be reaped?
     /* 06 */ Op*     m_p_ResponseOp;   // operator to where responses go
     /* 07 */ Timer   m_oResponseTimer; // timer (on origin only)
@@ -92,6 +92,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vActiveOpsInc(void);
 
     void vCascadeReset(void);
+    void vCleanupOutput(void);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
@@ -99,6 +100,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vDistIdGenerate(void);
     i8   iDistNodeId(void);
     void vDotPrint(Stz* szText);
+    void vDrainOutput(void);
     void vDropLock(void);
 
     Stz* szEntryPoint(void);
@@ -163,14 +165,17 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vParentId(JobId tParentId);
     Job* pParentJob(void);
     Pipeline* pPipeline(void);
+    void vPipeout(Operand* pOperand);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
     void vPostRecv(void);
+    void vProcessOutput(void);
     Timer* pProgressTimer(void);
   
     bool bReapable(void);
     void vReapable(bool bReapable);
     void vReapableJob(void);
+    void vResetOutput(void);
     void vResetTaskForJob(void);
     Op*  p_ResponseOp(void);
     void vResponseOp(Op* p_ResponseOp);

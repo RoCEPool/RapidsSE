@@ -75,9 +75,10 @@ void ApiHelper::vPipeoutResults(Op* pCurrOp,
 /*----------------------------------------------------------------------------*/
 void ApiHelper::vResetResults(Job* pJob)
 {
-  pJob->pOutput()->m_pOutputQueue->vReset();
+  //pJob->pOutput()->m_pOutputQueue->vReset();
   
-  pJob->pOutput()->vEndProcOneCmd();
+  //pJob->pOutput()->vEndProcOneCmd();
+  pJob->vResetOutput();
 }
 
 /*============================================================================*/

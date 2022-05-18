@@ -128,23 +128,29 @@ void Jobs::vReapableJob(Job*& rpJob)
 {
   _static_
       
-  if (rpJob && rpJob->bIsPipeline() && ! rpJob->pOutput()->m_bToExit)
-    rpJob->pOutput()->vProcessBufferQueue();
+//  if (rpJob && rpJob->bIsPipeline() && ! rpJob->pOutput()->m_bToExit)
+//    rpJob->pOutput()->vProcessBufferQueue();
+//
+//  rpJob->pOutput()->m_pOutputQueue->vReset();
+//  rpJob->pOutput()->vEndProcOneCmd();
+//
+//  if (rpJob->pOutput()->m_pStreamDef_result) {
+//    StreamDef* pStreamDef = rpJob->pOutput()->m_pStreamDef_result;
+//    rpJob->pOutput()->m_pStreamDef_result = nullptr;
+//    delete pStreamDef;
+//  }
+//
 
-  rpJob->pOutput()->m_pOutputQueue->vReset();
-  rpJob->pOutput()->vEndProcOneCmd();
-  
-  if (rpJob->pOutput()->m_pStreamDef_result) {
-    StreamDef* pStreamDef = rpJob->pOutput()->m_pStreamDef_result;
-    rpJob->pOutput()->m_pStreamDef_result = nullptr;
-    delete pStreamDef;
+  if (rpJob) {
+
+    if (rpJob->bIsPipeline())
+      rpJob->vCleanupOutput();
+
+    rpJob->vReapable(true);
+
+    rpJob = nullptr;
   }
-  
-  rpJob->pOutput()->m_bToExit      = false;
-  
-  rpJob->vReapable(true);
 
-  rpJob = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

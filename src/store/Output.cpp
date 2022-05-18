@@ -185,6 +185,16 @@ void Output::vFilePath(Stz* szFilePath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pipe to out buffer queue                                                   */
+/*----------------------------------------------------------------------------*/
+void Output::vPipeToThis(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+
+  IGNORE_RETURN(m_pOutputQueue->iAppend(pOperand));
+}
+
+/*----------------------------------------------------------------------------*/
 /* process the result/output queue                                            */
 /*----------------------------------------------------------------------------*/
 void Output::vProcessBufferQueue(void)
@@ -288,7 +298,7 @@ bool Output::bProcessOperand(Operand* pOperand)
     
   eCN eOperandClass = pOperand->eGetClassNo();
 
-  vTrace("OPERAND: %s\n"_Stz, aCN[eOperandClass]);
+  //vTrace("OPERAND: %s\n"_Stz, aCN[eOperandClass]);
 
   switch (eOperandClass) {
       

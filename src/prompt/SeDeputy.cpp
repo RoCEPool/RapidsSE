@@ -76,6 +76,9 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   RASSERT(tDistId.bIsUnknown());
 
   m_pRootJob = Api::pNewRootJob("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
+  m_pRootJob->vOutputCreate();
+  m_pRootJob->vOutputBeginProc();
+  m_pRootJob->vOutputEnabled(true);
 
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
@@ -177,7 +180,7 @@ void SeDeputy::vDeputyLoop(void)
     else {
       // process the output bufferQueue
       if (m_pJob->bIsPipeline())
-        m_pJob->pOutput()->vProcessBufferQueue();
+        m_pJob->vProcessOutput();
     }
 
     vReportTime();

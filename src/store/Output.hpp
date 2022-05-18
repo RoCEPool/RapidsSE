@@ -47,6 +47,7 @@ namespace STORE
     void vEndProcOneCmd(void);
     void vFileOut(bool bFileOut);
     void vFilePath(Stz* szFilePath);
+    void vPipeToThis(Operand* pOperand);
     void vProcessBufferQueue(void);
 
     void vPrintResult(void);

@@ -424,17 +424,17 @@ void Stencil::vCombine(void)
   else {
 #ifdef WITH_DEBUG_VERSION
 
-    sFileName.vSprint("../tmp/FlatQuery.hpp"_Stz, iQueryNo,
-                      AM::pGrid()->pThisNode()->szNodeNm());
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // write to a .c file
-
-    sFileName.vSprint("../tmp/FlatQuery%lld_%s.c"_Stz, iQueryNo,
-                      AM::pGrid()->pThisNode()->szNodeNm());
-    bool bResult = oFile.bOpenWrite(sFileName);
-    oFile.vPrint((Stz*)m_pOpSource->azCode());
-    oFile.vClose();
+//    sFileName.vSprint("../tmp/FlatQuery.hpp"_Stz, iQueryNo,
+//                      AM::pGrid()->pThisNode()->szNodeNm());
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // write to a .c file
+//
+//    sFileName.vSprint("../tmp/FlatQuery%lld_%s.c"_Stz, iQueryNo,
+//                      AM::pGrid()->pThisNode()->szNodeNm());
+//    bool bResult = oFile.bOpenWrite(sFileName);
+//    oFile.vPrint((Stz*)m_pOpSource->azCode());
+//    oFile.vClose();
 
 #endif
   }
