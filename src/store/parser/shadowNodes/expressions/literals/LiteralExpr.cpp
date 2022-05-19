@@ -98,7 +98,7 @@ i8 LiteralExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (     DecimalLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(eCT::CT_DECIMAL);     }
   else if (        DateLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(eCT::CT_DATE);        }
   else if (        TimeLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(eCT::CT_TIME);        }
-  else if (   TimestampLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(eCT::CT_TIMESTAMP);   }
+  else if (   TimestampLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(eCT::eCT::CT_TIMESTAMP);   }
 //  else if (IntervalYMLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(eCT::CT_INTERVAL_YM); }
 //  else if (IntervalDTLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(eCT::CT_INTERVAL_DT); }
   else if (      NullLiteral::bIsOfType(pExprNode))    { return TypeSystem::iIdOf(eCT::CT_UNKNOWN);     }
@@ -156,7 +156,7 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, Pla
           ))   { return true; }
       if (iTargetTypeId == eCT::CT_DATE && DateLiteral::bIsDateStr(szStr))              { return true; }
       if (iTargetTypeId == eCT::CT_TIME && TimeLiteral::bIsTimeStr(szStr))              { return true; }
-      if (iTargetTypeId == eCT::CT_TIMESTAMP &&
+      if (iTargetTypeId == eCT::eCT::CT_TIMESTAMP &&
           (
               DateLiteral::bIsDateStr(szStr) ||
               TimestampLiteral::bIsTimestampStr(szStr)
@@ -165,7 +165,7 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, Pla
       break;
 
     case eCT::CT_DATE:
-      if (iTargetTypeId == eCT::CT_TIMESTAMP)                          { return true; }
+      if (iTargetTypeId == eCT::eCT::CT_TIMESTAMP)                          { return true; }
       break;
 
     case eCT::CT_BOOLEAN:
@@ -268,7 +268,7 @@ QueryNode* LiteralExpr::pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* 
         ASSERT(bParseResult);
         return pCoercedLiteral;
 
-      } else if (iTargetTypeId == eCT::CT_TIMESTAMP) {
+      } else if (iTargetTypeId == eCT::eCT::CT_TIMESTAMP) {
         if (TimestampLiteral::bIsTimestampStr(szStr)){
           pCoercedLiteral = TimestampLiteral::pCreate(TimestampLiteral::xParseStr(szStr, bParseResult));
 
@@ -291,7 +291,7 @@ QueryNode* LiteralExpr::pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* 
       NEVER_REACH
 
     case eCT::CT_DATE:
-      if (iTargetTypeId == eCT::CT_TIMESTAMP) {
+      if (iTargetTypeId == eCT::eCT::CT_TIMESTAMP) {
         Dte xDte = pExpr->xDateVal();
         Tsp xTsp;
         xTsp.vSet(xDte.iYear(), xDte.iMonth(), xDte.iDay(), 0, 0, 0, 0);

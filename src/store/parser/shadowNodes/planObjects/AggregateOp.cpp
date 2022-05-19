@@ -219,7 +219,7 @@ void AggregateOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
 
         if (ExplainOp::bWithTypes(pExplainNode)) {
           eCT eColType = TypeSystem::eCTVal(Expr::iType(pGroupByExpr, pRootNode));
-          sBuf.vCatSprint(" ; type: %s"_Stz, aCT[static_cast<i8>(eColType)]);
+          sBuf.vCatSprint(" ; type: %s"_Stz, aCT[eColType]);
         }
       }
 

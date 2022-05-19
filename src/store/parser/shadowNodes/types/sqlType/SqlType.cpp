@@ -116,7 +116,7 @@ QueryNode* SqlType::pCreate(i8 iTypeId)
       pNode = _pQueryNode(SqlTime::pCreate());
       break;
 
-    case eCT::CT_TIMESTAMP:
+    case eCT::eCT::CT_TIMESTAMP:
       pNode = _pQueryNode(SqlTimestamp::pCreate());
       break;
 

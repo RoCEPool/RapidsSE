@@ -4944,7 +4944,7 @@ void CodeSynth::vGenerateStruct(u8 uSelectColumns, IndexDef* pIndexDef) {
       case eCT::CT_TIME:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Tme_T %s;\n"_Stz, sColNm.azChar());
         break;
-      case eCT::CT_TIMESTAMP:
+      case eCT::eCT::CT_TIMESTAMP:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Tsp_T %s;\n"_Stz, sColNm.azChar());
         break;
       case eCT::CT_UNKNOWN:

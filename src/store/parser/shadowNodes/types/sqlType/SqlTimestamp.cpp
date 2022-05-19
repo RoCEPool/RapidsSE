@@ -38,7 +38,7 @@ PlanNode* SqlTimestamp::pCreate()
   QueryNode* pNode = new QueryNode(sName, C_SQLTIMESTAMP_DEFN);
 
   // Add in any common properties
-  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(eCT::CT_TIMESTAMP));
+  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(eCT::eCT::CT_TIMESTAMP));
 
   return pNode;
 }
@@ -56,7 +56,7 @@ PlanNode* SqlTimestamp::pCreate(i8 iMinOffset)
   QueryNode* pNode = new QueryNode(sName, C_SQLTIMESTAMP_DEFN);
 
   // Add in any common properties
-  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(eCT::CT_TIMESTAMP));
+  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(eCT::eCT::CT_TIMESTAMP));
 
   // Create the offset property
   Value xValue(iMinOffset);

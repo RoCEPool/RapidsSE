@@ -274,20 +274,20 @@ void Constants::vAddConstantsCpp(void)
 
   
   // CT_ : columne type
-  /*  0 */ vAddConstant("eCT::CT_NONE"_Stz,        static_cast<i8>(eCT::CT_NONE));
-  /*  1 */ vAddConstant("eCT::CT_BOOLEAN"_Stz,     static_cast<i8>(eCT::CT_BOOLEAN));
-  /*  2 */ vAddConstant("eCT::CT_CHAR"_Stz,        static_cast<i8>(eCT::CT_CHAR));
-  /*  3 */ vAddConstant("eCT::CT_DATE"_Stz,        static_cast<i8>(eCT::CT_DATE));
-  /*  4 */ vAddConstant("eCT::CT_DECIMAL"_Stz,     static_cast<i8>(eCT::CT_DECIMAL));
-  /*  5 */ vAddConstant("eCT::CT_FLOAT"_Stz,       static_cast<i8>(eCT::CT_FLOAT));
-  /*  6 */ vAddConstant("eCT::CT_INTEGER"_Stz,     static_cast<i8>(eCT::CT_INTEGER));
-  /*  7 */ vAddConstant("eCT::CT_INTERVAL_DT"_Stz, static_cast<i8>(eCT::CT_INTERVAL_DT));
-  /*  8 */ vAddConstant("eCT::CT_INTERVAL_YM"_Stz, static_cast<i8>(eCT::CT_INTERVAL_YM));
-  /*  9 */ vAddConstant("eCT::CT_TIME"_Stz,        static_cast<i8>(eCT::CT_TIME));
-  /* 10 */ vAddConstant("eCT::CT_TIMESTAMP"_Stz,   static_cast<i8>(eCT::CT_TIMESTAMP));
-  /* 11 */ vAddConstant("eCT::CT_VARCHAR"_Stz,     static_cast<i8>(eCT::CT_VARCHAR));
-  /* 12 */ vAddConstant("eCT::CT_UNKNOWN"_Stz,     static_cast<i8>(eCT::CT_UNKNOWN));
-  /* 13 */ vAddConstant("eCT::CT_ENUMS"_Stz,       static_cast<i8>(eCT::CT_ENUMS));
+  /*  0 */ vAddConstant("eCT::CT_NONE"_Stz,        eCT::CT_NONE);
+  /*  1 */ vAddConstant("eCT::CT_BOOLEAN"_Stz,     eCT::CT_BOOLEAN);
+  /*  2 */ vAddConstant("eCT::CT_CHAR"_Stz,        eCT::CT_CHAR);
+  /*  3 */ vAddConstant("eCT::CT_DATE"_Stz,        eCT::CT_DATE);
+  /*  4 */ vAddConstant("eCT::CT_DECIMAL"_Stz,     eCT::CT_DECIMAL);
+  /*  5 */ vAddConstant("eCT::CT_FLOAT"_Stz,       eCT::CT_FLOAT);
+  /*  6 */ vAddConstant("eCT::CT_INTEGER"_Stz,     eCT::CT_INTEGER);
+  /*  7 */ vAddConstant("eCT::CT_INTERVAL_DT"_Stz, eCT::CT_INTERVAL_DT);
+  /*  8 */ vAddConstant("eCT::CT_INTERVAL_YM"_Stz, eCT::CT_INTERVAL_YM);
+  /*  9 */ vAddConstant("eCT::CT_TIME"_Stz,        eCT::CT_TIME);
+  /* 10 */ vAddConstant("eCT::eCT::CT_TIMESTAMP"_Stz,   eCT::eCT::CT_TIMESTAMP);
+  /* 11 */ vAddConstant("eCT::CT_VARCHAR"_Stz,     eCT::CT_VARCHAR);
+  /* 12 */ vAddConstant("eCT::CT_UNKNOWN"_Stz,     eCT::CT_UNKNOWN);
+  /* 13 */ vAddConstant("eCT::CT_ENUMS"_Stz,       eCT::CT_ENUMS);
 
   // DE_ : directory entry type -- n.b. the DT_FIFO etc are from dirent.h
   /*  1 */ vAddConstant("DE_FIFO"_Stz, DT_FIFO);

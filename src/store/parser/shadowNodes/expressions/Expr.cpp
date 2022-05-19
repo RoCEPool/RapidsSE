@@ -1159,16 +1159,15 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
 /* Increments the integer elements of an array if the given expression is     */
 /* coercible to each eCT data type.                                           */
 /*----------------------------------------------------------------------------*/
-void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)[static_cast<i8>(eCT::CT_ENUMS)], PlanNode* pRootNode)
+void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)[eCT::CT_ENUMS], PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
 
    i8 i = 0;
-   // TODO: Handle all types
 
-  while (++i != static_cast<i8>(eCT::CT_ENUMS)) {
-    eCT eTarget = static_cast<eCT>(i);
+  while (++i != eCT::CT_ENUMS) {
+    eCT eTarget = (eCT) i;
 
     if (bIsImplicitlyCoercibleTo(eTarget, pExpr, pRootNode)) {
       aiCoercibleTargets[i] += 1;
@@ -1182,7 +1181,7 @@ void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)
 /* choose the data type that should be coerced to, or eCT::CT_NONE if none of      */
 /* them reached iMaxCount.                                                    */
 /*----------------------------------------------------------------------------*/
-eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[static_cast<i8>(eCT::CT_ENUMS)], i8 iMaxCount)
+eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[eCT::CT_ENUMS], i8 iMaxCount)
 {
   i8 iNumAtMaxCount = 0;
   eCT eCommonTarget = eCT::CT_NONE;
@@ -1222,7 +1221,7 @@ eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[static_cast<i8>(eCT::C
       /*  5 */ eCT::CT_TIME,
       /*  6 */ eCT::CT_INTERVAL_DT,  // day-time interval
       /*  7 */ eCT::CT_INTERVAL_YM,  // year-month interval
-      /*  8 */ eCT::CT_TIMESTAMP,
+      /*  8 */ eCT::eCT::CT_TIMESTAMP,
       /*  9 */ eCT::CT_VARCHAR,
       /* 10 */ eCT::CT_CHAR,
       /* 11 */ eCT::CT_UNKNOWN
