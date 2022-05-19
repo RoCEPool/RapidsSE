@@ -268,25 +268,25 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
   ASSERT(bIsOfType(pExprNode));
 
   // We check for an invalid result type by calling eType() and looking for
-  // eCT::CT_NONE. If an expression produces this result type then we try to
+  // CT_NONE. If an expression produces this result type then we try to
   // decompose the expression to find the root cause. We can do this without
   // manual polymorphism because we know that expressions are nested in
   // parent-child trees, so we can just ask each child of this node for its
   // result type to help narrow it down.
 
-  // First check the overall result. If it is not eCT::CT_NONE then the entire
-  // expression tree should be ok (because no combination of eCT::CT_NONE should
+  // First check the overall result. If it is not CT_NONE then the entire
+  // expression tree should be ok (because no combination of CT_NONE should
   // produce a valid type).
 
   i8 iResultTypeId = iType(pExprNode, pRootNode);
   eCT eResultType = TypeSystem::eCTVal(iResultTypeId);
 
-  if (eResultType != eCT::CT_NONE) {
+  if (eResultType != CT_NONE) {
     // This expression will produce a valid type
     // (though this doesn't mean it will produce the correct type for it's location
     // in the plan)
-    ASSERT(eResultType > eCT::CT_NONE);
-    ASSERT(eResultType < eCT::CT_ENUMS);
+    ASSERT(eResultType > CT_NONE);
+    ASSERT(eResultType < CT_ENUMS);
     return;
   }
 
@@ -1031,19 +1031,19 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
     return;
   }
 
-  ASSERT(Expr::iType(pExpr, pRootNode) == eCT::CT_NONE);
+  ASSERT(Expr::iType(pExpr, pRootNode) == CT_NONE);
 
   // Take a copy of the expression so it can be modified freely.
   QueryNode* pExprCopy = pExpr->pDeepCopy(false);
 
   // Now we can call a function that tries to coerce the children of this
   // expression to a common type. The first combination that succeeds in
-  // returning a type that is not eCT::CT_NONE will be used.
+  // returning a type that is not CT_NONE will be used.
 
   b1 bResult = bCoerceChildrenToCommonType(pExprCopy, pRootNode);
 
   if (bResult) {
-    ASSERT(Expr::iType(pExprCopy, pRootNode) != eCT::CT_NONE);
+    ASSERT(Expr::iType(pExprCopy, pRootNode) != CT_NONE);
 
     // We need to replace the children of pExpr with the children of pExprCopy,
     // then clean up.
@@ -1073,7 +1073,7 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /* Try to find a common type that all children of pExpr can be coerced to.    */
 /* Return true if the coerced and modified pExpr now returns a value for      */
-/* eType() that is not eCT::CT_NONE.                                               */
+/* eType() that is not CT_NONE.                                               */
 /*----------------------------------------------------------------------------*/
 b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
 {
@@ -1089,10 +1089,10 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   // that is the common type that will be used.
   // If there is no common type then coercion is not possible and we abort. Otherwise we
   // try to coerce the necessary children and see if that allows the parent expr to return
-  // a non-eCT::CT_NONE type.
+  // a non-CT_NONE type.
 
   // An array with an occurrence count for each coercible data type
-  i8 aiCoercibleTargets[eCT::CT_ENUMS] = { 0 };
+  i8 aiCoercibleTargets[CT_ENUMS] = { 0 };
 
   b1 bFixed = false;
   PlanNodeIter* pChildIter = pExprCopy->pNewChildrenIter();
@@ -1110,7 +1110,7 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   // Determine the common coercible data type, if any
   eCT eCoercibleTarget = eCommonCoercibleTarget(aiCoercibleTargets, pExprCopy->nChildren());
 
-  if (eCoercibleTarget == eCT::CT_NONE) {
+  if (eCoercibleTarget == CT_NONE) {
     return false;
   }
 
@@ -1151,7 +1151,7 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   delete pChildList;
 
   // Finally, did this do enough to make the expression viable?
-  bFixed = (Expr::iType(pExprCopy, pRootNode) != eCT::CT_NONE);
+  bFixed = (Expr::iType(pExprCopy, pRootNode) != CT_NONE);
   return bFixed;
 }
 
@@ -1159,14 +1159,14 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
 /* Increments the integer elements of an array if the given expression is     */
 /* coercible to each eCT data type.                                           */
 /*----------------------------------------------------------------------------*/
-void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)[eCT::CT_ENUMS], PlanNode* pRootNode)
+void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)[CT_ENUMS], PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
 
    i8 i = 0;
 
-  while (++i != eCT::CT_ENUMS) {
+  while (++i != CT_ENUMS) {
     eCT eTarget = (eCT) i;
 
     if (bIsImplicitlyCoercibleTo(eTarget, pExpr, pRootNode)) {
@@ -1178,17 +1178,17 @@ void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)
 
 /*----------------------------------------------------------------------------*/
 /* Given an array of counts for each data types and a maximum count value,    */
-/* choose the data type that should be coerced to, or eCT::CT_NONE if none of      */
+/* choose the data type that should be coerced to, or CT_NONE if none of      */
 /* them reached iMaxCount.                                                    */
 /*----------------------------------------------------------------------------*/
-eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[eCT::CT_ENUMS], i8 iMaxCount)
+eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[CT_ENUMS], i8 iMaxCount)
 {
   i8 iNumAtMaxCount = 0;
-  eCT eCommonTarget = eCT::CT_NONE;
+  eCT eCommonTarget = CT_NONE;
 
   // First check to see how many data types have a count of iMaxCount.
   // If there is only one then that's our answer.
-  for (i8 i=0; i<eCT::CT_ENUMS; i++) {
+  for (i8 i=0; i<CT_ENUMS; i++) {
     if (aiCoercibleTargets[i] == iMaxCount) {
       ++iNumAtMaxCount;
       eCommonTarget = (eCT) i;
@@ -1196,12 +1196,12 @@ eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[eCT::CT_ENUMS], i8 iMa
   }
 
   if (iNumAtMaxCount == 1) {
-    ASSERT(eCommonTarget != eCT::CT_NONE);
-    ASSERT(eCommonTarget != eCT::CT_ENUMS);
+    ASSERT(eCommonTarget != CT_NONE);
+    ASSERT(eCommonTarget != CT_ENUMS);
     return eCommonTarget;
 
   } else if (iNumAtMaxCount == 0) {
-    return eCT::CT_NONE;
+    return CT_NONE;
   }
 
   // We have multiple data types that we can coerce to and we have to pick one.
@@ -1212,19 +1212,19 @@ eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[eCT::CT_ENUMS], i8 iMa
   // If there are multiple common coercible targets, this is the order of
   // data types that we will try to coerce to. They are tried from first
   // entry to the last.
-  static eCT aeCoercionOrdering[eCT::CT_ENUMS - 1] = {
-      /*  0 */ eCT::CT_INTEGER,
-      /*  1 */ eCT::CT_DECIMAL,
-      /*  2 */ eCT::CT_FLOAT,
-      /*  3 */ eCT::CT_BOOLEAN,
-      /*  4 */ eCT::CT_DATE,
-      /*  5 */ eCT::CT_TIME,
-      /*  6 */ eCT::CT_INTERVAL_DT,  // day-time interval
-      /*  7 */ eCT::CT_INTERVAL_YM,  // year-month interval
-      /*  8 */ eCT::eCT::CT_TIMESTAMP,
-      /*  9 */ eCT::CT_VARCHAR,
-      /* 10 */ eCT::CT_CHAR,
-      /* 11 */ eCT::CT_UNKNOWN
+  static eCT aeCoercionOrdering[CT_ENUMS - 1] = {
+      /*  0 */ CT_INTEGER,
+      /*  1 */ CT_DECIMAL,
+      /*  2 */ CT_FLOAT,
+      /*  3 */ CT_BOOLEAN,
+      /*  4 */ CT_DATE,
+      /*  5 */ CT_TIME,
+      /*  6 */ CT_INTERVAL_DT,  // day-time interval
+      /*  7 */ CT_INTERVAL_YM,  // year-month interval
+      /*  8 */ CT_TIMESTAMP,
+      /*  9 */ CT_VARCHAR,
+      /* 10 */ CT_CHAR,
+      /* 11 */ CT_UNKNOWN
   };
 
   ASSERT(iNumAtMaxCount > 1);
@@ -1248,10 +1248,10 @@ b1 Expr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* 
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
-  ASSERT(Expr::iType(pExpr, pRootNode) != eCT::CT_NONE);
+  ASSERT(Expr::iType(pExpr, pRootNode) != CT_NONE);
 
   // If we have a literal then we need to check whether we can convert it appropriately.
-  // e.g. we can convert '2000-01-01' to a eCT::CT_DATE, but not '2000_01_01'.
+  // e.g. we can convert '2000-01-01' to a CT_DATE, but not '2000_01_01'.
 
   if (LiteralExpr::bIsOfType(pExpr)) {
     return LiteralExpr::bIsImplicitlyCoercibleTo(iTargetTypeId, pExpr, pRootNode);
@@ -1266,11 +1266,11 @@ b1 Expr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* 
 /*----------------------------------------------------------------------------*/
 QueryNode* Expr::pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
-  ASSERT(iTargetTypeId > eCT::CT_NONE);
-  ASSERT(iTargetTypeId < eCT::CT_ENUMS);
+  ASSERT(iTargetTypeId > CT_NONE);
+  ASSERT(iTargetTypeId < CT_ENUMS);
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
-  ASSERT(Expr::iType(pExpr, pRootNode) != eCT::CT_NONE);
+  ASSERT(Expr::iType(pExpr, pRootNode) != CT_NONE);
 
   // If we have a literal then we will simply replace it with another literal.
   if (LiteralExpr::bIsOfType(pExpr)) {

@@ -27,20 +27,20 @@ static Stz* C_EXTRACT_FIELD_PROP = "field"_Stz;
 // * The left header column represents the type of the first operand (extract field).
 // * The top header row represents the type of the second operand (source expression).
 // * The corresponding cell in the matrix represents the type of the resultant from this operation.
-// * Invalid/unsupported combinations are represented with eCT::CT_NONE.
+// * Invalid/unsupported combinations are represented with CT_NONE.
 // * Fields marked with /*?*/ are not currently supported but could be.  Refer to
 //   the documentation below marked with this symbol for more information.
 // * Fields marked with /*X*/ are not currently supported but should be.
-static eCT aeTypeCalculus[ExtractField::EF_NENUMS][eCT::CT_ENUMS] = {
+static eCT aeTypeCalculus[ExtractField::EF_NENUMS][CT_ENUMS] = {
 
                  //   NONE     BOOLEAN  CHAR     DATE          DECIMAL     FLOAT       INTEGER       INTERVAL_DT     INTERVAL_YM     TIME          TIMESTAMP     VARCHAR  UNKNOWN
-/*  0 EF_NONE    */ { eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_NONE,    eCT::CT_NONE,    eCT::CT_NONE,      eCT::CT_NONE,        eCT::CT_NONE,        eCT::CT_NONE,      eCT::CT_NONE,      eCT::CT_NONE, eCT::CT_NONE    },
-/*  1 EF_YEAR    */ { eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_INTEGER,   eCT::CT_NONE,    eCT::CT_NONE,    eCT::CT_NONE,      eCT::CT_NONE,        eCT::CT_INTEGER,     eCT::CT_NONE,      eCT::CT_INTEGER,   eCT::CT_NONE, eCT::CT_UNKNOWN },
-/*  2 EF_MONTH   */ { eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_INTEGER,   eCT::CT_NONE,    eCT::CT_NONE,    eCT::CT_NONE,      eCT::CT_NONE,        eCT::CT_INTEGER,     eCT::CT_NONE,      eCT::CT_INTEGER,   eCT::CT_NONE, eCT::CT_UNKNOWN },
-/*  3 EF_DAY     */ { eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_INTEGER,   eCT::CT_NONE,    eCT::CT_NONE,    eCT::CT_NONE,      eCT::CT_INTEGER,     eCT::CT_DATE,        eCT::CT_NONE,      eCT::CT_INTEGER,   eCT::CT_NONE, eCT::CT_UNKNOWN },
-/*  4 EF_HOUR    */ { eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_NONE,    eCT::CT_NONE,    eCT::CT_NONE,      eCT::CT_INTEGER,     eCT::CT_NONE,        eCT::CT_INTEGER,   eCT::CT_INTEGER,   eCT::CT_NONE, eCT::CT_UNKNOWN },
-/*  5 EF_MINUTE  */ { eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_NONE,    eCT::CT_NONE,    eCT::CT_NONE,      eCT::CT_INTEGER,     eCT::CT_NONE,        eCT::CT_INTEGER,   eCT::CT_INTEGER,   eCT::CT_NONE, eCT::CT_UNKNOWN },
-/*  6 EF_SECOND  */ { eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_NONE,    eCT::CT_NONE,    eCT::CT_NONE,      eCT::CT_INTEGER,     eCT::CT_NONE,        eCT::CT_INTEGER,   eCT::CT_DECIMAL,   eCT::CT_NONE, eCT::CT_UNKNOWN },
+/*  0 EF_NONE    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,        CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE, CT_NONE    },
+/*  1 EF_YEAR    */ { CT_NONE, CT_NONE, CT_NONE, CT_INTEGER,   CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,        CT_INTEGER,     CT_NONE,      CT_INTEGER,   CT_NONE, CT_UNKNOWN },
+/*  2 EF_MONTH   */ { CT_NONE, CT_NONE, CT_NONE, CT_INTEGER,   CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,        CT_INTEGER,     CT_NONE,      CT_INTEGER,   CT_NONE, CT_UNKNOWN },
+/*  3 EF_DAY     */ { CT_NONE, CT_NONE, CT_NONE, CT_INTEGER,   CT_NONE,    CT_NONE,    CT_NONE,      CT_INTEGER,     CT_DATE,        CT_NONE,      CT_INTEGER,   CT_NONE, CT_UNKNOWN },
+/*  4 EF_HOUR    */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_INTEGER,     CT_NONE,        CT_INTEGER,   CT_INTEGER,   CT_NONE, CT_UNKNOWN },
+/*  5 EF_MINUTE  */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_INTEGER,     CT_NONE,        CT_INTEGER,   CT_INTEGER,   CT_NONE, CT_UNKNOWN },
+/*  6 EF_SECOND  */ { CT_NONE, CT_NONE, CT_NONE, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_INTEGER,     CT_NONE,        CT_INTEGER,   CT_DECIMAL,   CT_NONE, CT_UNKNOWN },
 };
 
 // References:
@@ -153,7 +153,7 @@ b1 ExtractExpr::bIsExactType(PlanNode *pNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation.                    */
-/* A returned value of eCT::CT_NONE means that it is not supported or invalid.     */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
 i8 ExtractExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {

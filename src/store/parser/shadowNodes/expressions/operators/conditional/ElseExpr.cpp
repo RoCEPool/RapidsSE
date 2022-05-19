@@ -99,7 +99,7 @@ b1 ElseExpr::bIsExactType(PlanNode *pNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation.                    */
-/* A returned value of eCT::CT_NONE means that it is not supported or invalid.     */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
 i8 ElseExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {
@@ -124,8 +124,8 @@ void ElseExpr::vCoerceResultExprTo(eCT eCoercibleTarget, QueryNode* pElseExpr, P
   ASSERT(bIsOfType(pElseExpr));
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
-  ASSERT(eCoercibleTarget > eCT::CT_NONE);
-  ASSERT(eCoercibleTarget < eCT::CT_ENUMS);
+  ASSERT(eCoercibleTarget > CT_NONE);
+  ASSERT(eCoercibleTarget < CT_ENUMS);
 
   QueryNode* pResult = ElseExpr::pElseExpr(pElseExpr);
   QueryNode* pCoercedResult = Expr::pCoerceTo(eCoercibleTarget, pResult, pRootNode);

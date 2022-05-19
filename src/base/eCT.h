@@ -6,7 +6,7 @@
 // NOTE: Any additions/subtractions or reordering of eCT will affect the expression type
 // calculus in a bunch of files under store/parser/shadowNodes/expressions/operators
 
-enum struct eCT // Column Type
+enum eCT // Column Type
 {
   /*  0 */ CT_NONE=0,
   /*  1 */ CT_BOOLEAN,

@@ -23,14 +23,14 @@ static Stz* C_NEGATION_DEFN = "/__root__/definitions/object/expr/operator/mathem
 // * The left header column represents the type of the first operand.
 // * The top header row represents the type of the second operand.
 // * The corresponding cell in the matrix represents the type of the resultant from this operation.
-// * Invalid/unsupported combinations are represented with eCT::CT_NONE.
+// * Invalid/unsupported combinations are represented with CT_NONE.
 // * Fields marked with /*?*/ are not currently supported but could be.  Refer to
 //   the documentation below marked with this symbol for more information.
 // * Fields marked with /*X*/ are not currently supported but should be.
-static eCT aeTypeCalculus[eCT::CT_ENUMS] =
+static eCT aeTypeCalculus[CT_ENUMS] =
 
 //   NONE     BOOLEAN  CHAR     DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT     INTERVAL_YM     TIME          TIMESTAMP VARCHAR  UNKNOWN
-   { eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE, eCT::CT_DECIMAL, eCT::CT_FLOAT, eCT::CT_INTEGER, eCT::CT_INTERVAL_DT, eCT::CT_INTERVAL_YM, eCT::CT_NONE/*?*/, eCT::CT_NONE,  eCT::CT_NONE, eCT::CT_NONE };
+   { CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_INTERVAL_DT, CT_INTERVAL_YM, CT_NONE/*?*/, CT_NONE,  CT_NONE, CT_NONE };
 
 // References:
 //  /*?*/
@@ -108,7 +108,7 @@ b1 NegationExpr::bIsExactType(PlanNode *pNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation.                    */
-/* A returned value of eCT::CT_NONE means that it is not supported or invalid.     */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
 i8 NegationExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
 {

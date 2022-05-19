@@ -127,7 +127,7 @@ i8 TimestampLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return eCT::eCT::CT_TIMESTAMP;
+  return CT_TIMESTAMP;
 }
 
 /*----------------------------------------------------------------------------*/

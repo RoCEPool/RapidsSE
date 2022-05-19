@@ -80,7 +80,7 @@ i8 NullLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return eCT::CT_UNKNOWN;
+  return CT_UNKNOWN;
 }
 
 /*============================================================================*/

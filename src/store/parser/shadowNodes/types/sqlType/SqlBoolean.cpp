@@ -37,7 +37,7 @@ PlanNode* SqlBoolean::pCreate()
   QueryNode* pNode = new QueryNode(sName, C_SQLBOOLEAN_DEFN);
 
   // Add in any common properties
-  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(eCT::CT_BOOLEAN));
+  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(CT_BOOLEAN));
 
   return pNode;
 }

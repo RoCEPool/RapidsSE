@@ -275,8 +275,8 @@ void CodeSynth::vMakeColumnNmStruct_O(StreamDef* pStreamDef, s256& sColNm, i8& i
   sUpper = pColumn->szColNm();
   StrLib::vToUpper((char *) sUpper.azChar());
 
-  if (pColumn->eColumnType() == eCT::CT_VARCHAR ||
-      pColumn->eColumnType() == eCT::CT_CHAR) {
+  if (pColumn->eColumnType() == CT_VARCHAR ||
+      pColumn->eColumnType() == CT_CHAR) {
     if (pStreamDef->bIsDuplicateName(pColumn))
       sColNm.vSprint("%s%lld.m_iOffset"_Stz, sUpper.azChar(), i_DupCtr++);
     else
@@ -324,8 +324,8 @@ void CodeSynth::vMakeIdxColNmStruct_O(IndexDef* pIndexDef, s256& sColNm, i8 i_Co
   sUpper = pColumn->szColNm();
   StrLib::vToUpper((char *) sUpper.azChar());
 
-  if (pColumn->eColumnType() == eCT::CT_VARCHAR ||
-      pColumn->eColumnType() == eCT::CT_CHAR) {
+  if (pColumn->eColumnType() == CT_VARCHAR ||
+      pColumn->eColumnType() == CT_CHAR) {
     sColNm.vSprint("%s.m_iOffset"_Stz, sUpper.azChar());
   }
   else {
@@ -936,8 +936,8 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel, Stz* sLabelOrdAgg) {
 
   for (i8 i_Col = 0; i_Col < m_pStreamDefLft->nColumns(); i_Col++) {
     Column *pColumn = m_pStreamDefLft->pGetColumn(i_Col);
-    if (pColumn->eColumnType() == eCT::CT_VARCHAR ||
-        pColumn->eColumnType() == eCT::CT_CHAR) {
+    if (pColumn->eColumnType() == CT_VARCHAR ||
+        pColumn->eColumnType() == CT_CHAR) {
 
       sCopy.vSprint("\n    iOffset = piColumn[%lld];"_Stz, i_Col);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -1419,8 +1419,8 @@ void CodeSynth::vGenerateAssign(u8 uSelectColumns) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // VARCHAR column
-    if (pColumn->eColumnType() == eCT::CT_VARCHAR ||
-        pColumn->eColumnType() == eCT::CT_CHAR) {
+    if (pColumn->eColumnType() == CT_VARCHAR ||
+        pColumn->eColumnType() == CT_CHAR) {
 
       StrLib::vAppendString(&m_azCodeCrs, "\n    // get the source string");
       sCopy.vSprint("\n     szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
@@ -1839,8 +1839,8 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
     }
     else {
 
-      if (pColumn->iColumnType() == TypeSystem::eCTVal(eCT::CT_VARCHAR) ||
-          pColumn->iColumnType() == TypeSystem::eCTVal(eCT::CT_CHAR)) {
+      if (pColumn->iColumnType() == TypeSystem::eCTVal(CT_VARCHAR) ||
+          pColumn->iColumnType() == TypeSystem::eCTVal(CT_CHAR)) {
         sCopy.vSprint("\n    %s(p%s->%s)"_Stz,
                       sOperation.azChar(),
                       xRowRef[m_eStencilTo].m_szInclude, sColOutNm.azChar());
@@ -2020,8 +2020,8 @@ void CodeSynth::vPayloadPopulate(ePL ePayload) {
     // make the column name
     vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
 
-    if ((pColumn->eColumnType() == eCT::CT_VARCHAR) ||
-        (pColumn->eColumnType() == eCT::CT_CHAR)) {
+    if ((pColumn->eColumnType() == CT_VARCHAR) ||
+        (pColumn->eColumnType() == CT_CHAR)) {
 
       sCopy.vSprint("\n      szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -2206,8 +2206,8 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // VARCHAR column
-      if (pColumn->eColumnType() == eCT::CT_VARCHAR ||
-          pColumn->eColumnType() == eCT::CT_CHAR) {
+      if (pColumn->eColumnType() == CT_VARCHAR ||
+          pColumn->eColumnType() == CT_CHAR) {
 
         RASSERT(pIndexDef->eKeyKind() == KE_GENERAL);
 
@@ -2286,8 +2286,8 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // VARCHAR column
-    if (pColumn->eColumnType() == eCT::CT_VARCHAR ||
-        pColumn->eColumnType() == eCT::CT_CHAR) {
+    if (pColumn->eColumnType() == CT_VARCHAR ||
+        pColumn->eColumnType() == CT_CHAR) {
 
       sCopy.vSprint("\n      szSrcStz = (char*)&aCombinedT->m_aiPayload[%lld];"_Stz, iPayLoad);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -3470,8 +3470,8 @@ void CodeSynth::vSynthAllocPotRow(TypedStack* pPostStack, Stz* sHashExpr, bool b
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // VARCHAR column
-    if (pColumn->eColumnType() == eCT::CT_VARCHAR ||
-        pColumn->eColumnType() == eCT::CT_CHAR) {
+    if (pColumn->eColumnType() == CT_VARCHAR ||
+        pColumn->eColumnType() == CT_CHAR) {
 
       StrLib::vAppendString(&m_azCodeCrs, "\n    // get the source string");
       sCopy.vSprint("\n    szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
@@ -4067,7 +4067,7 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE eP
 //  }
 
 
-  if (pColumn->eColumnType() == eCT::CT_VARCHAR && ePreExp == PE_EXP &&
+  if (pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP &&
       eExprKind != EK_FILTER && eExprKind != EK_SORT)
     pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
 
@@ -4232,8 +4232,8 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
       else {
         pColumn = m_pIndexDef->pGetColumn(i_Col);
 
-        if (pColumn->eColumnType() == eCT::CT_VARCHAR ||
-            pColumn->eColumnType() == eCT::CT_CHAR) {
+        if (pColumn->eColumnType() == CT_VARCHAR ||
+            pColumn->eColumnType() == CT_CHAR) {
           sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkPL)\n"_Stz);
         }
         else {
@@ -4300,8 +4300,8 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
       }
       else {
         pColumn = m_pIndexDef->pGetColumn(i_Col);
-        if (pColumn->eColumnType() == eCT::CT_VARCHAR ||
-            pColumn->eColumnType() == eCT::CT_CHAR) {
+        if (pColumn->eColumnType() == CT_VARCHAR ||
+            pColumn->eColumnType() == CT_CHAR) {
           sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkT)\n"_Stz);
         }
         else {
@@ -4337,8 +4337,8 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, e
       else {
         pColumn = m_pIndexDef->pGetColumn(i_Col);
 
-        if (pColumn->eColumnType() == eCT::CT_VARCHAR ||
-            pColumn->eColumnType() == eCT::CT_CHAR) {
+        if (pColumn->eColumnType() == CT_VARCHAR ||
+            pColumn->eColumnType() == CT_CHAR) {
           sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkPL)\n"_Stz);
         }
         else {
@@ -4666,8 +4666,8 @@ void CodeSynth::vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler,
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // VARCHAR column
-    if (pColumn->eColumnType() == eCT::CT_VARCHAR ||
-        pColumn->eColumnType() == eCT::CT_CHAR) {
+    if (pColumn->eColumnType() == CT_VARCHAR ||
+        pColumn->eColumnType() == CT_CHAR) {
 
       StrLib::vAppendString(&m_azCodeCrs, "\n    // get the source string");
       sCopy.vSprint("\n    szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
@@ -4920,38 +4920,38 @@ void CodeSynth::vGenerateStruct(u8 uSelectColumns, IndexDef* pIndexDef) {
 //
 //    }
     switch(pColumn->eColumnType()) {
-      case eCT::CT_BOOLEAN:
+      case CT_BOOLEAN:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Bol_T %s;\n"_Stz, sColNm.azChar());
         break;
-      case eCT::CT_DATE:
+      case CT_DATE:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Dte_T %s;\n"_Stz, sColNm.azChar());
         break;
-      case eCT::CT_DECIMAL:
+      case CT_DECIMAL:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Bcd_T %s;\n"_Stz, sColNm.azChar());
         break;
-      case eCT::CT_FLOAT:
+      case CT_FLOAT:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Flt_T %s;\n"_Stz, sColNm.azChar());
         break;
-      case eCT::CT_INTEGER:
+      case CT_INTEGER:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Int_T %s;\n"_Stz, sColNm.azChar());
         break;
-      case eCT::CT_INTERVAL_DT:
+      case CT_INTERVAL_DT:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Ivl_T %s;\n"_Stz, sColNm.azChar());
         break;
-      case eCT::CT_INTERVAL_YM:
+      case CT_INTERVAL_YM:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Ivl_T %s;\n"_Stz, sColNm.azChar());
         break;
-      case eCT::CT_TIME:
+      case CT_TIME:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Tme_T %s;\n"_Stz, sColNm.azChar());
         break;
-      case eCT::eCT::CT_TIMESTAMP:
+      case CT_TIMESTAMP:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Tsp_T %s;\n"_Stz, sColNm.azChar());
         break;
-      case eCT::CT_UNKNOWN:
+      case CT_UNKNOWN:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Unk_T %s;\n"_Stz, sColNm.azChar());
         break;
-      case eCT::CT_CHAR:
-      case eCT::CT_VARCHAR:
+      case CT_CHAR:
+      case CT_VARCHAR:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Vch_T %s;\n"_Stz, sColNm.azChar());
         break;
       default:

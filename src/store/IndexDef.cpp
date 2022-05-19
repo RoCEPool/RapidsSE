@@ -175,7 +175,7 @@ void IndexDef::vAddColumn(Stz* szColumnNm, eCT eColumnType)
     return;
   }
   
-  if (eCT::CT_FLOAT == eColumnType || eCT::CT_VARCHAR == eColumnType) {
+  if (CT_FLOAT == eColumnType || CT_VARCHAR == eColumnType) {
     m_eKeyKind = KE_GENERAL;
     return;
   }
@@ -227,7 +227,7 @@ void IndexDef::vDetermineKeyKind(void)
   
   eCT eColumnType = m_xaColumn[0].eColumnType();
   
-  if (eCT::CT_FLOAT == eColumnType || eCT::CT_VARCHAR == eColumnType) {
+  if (CT_FLOAT == eColumnType || CT_VARCHAR == eColumnType) {
     m_eKeyKind = KE_GENERAL;
     return;
   }

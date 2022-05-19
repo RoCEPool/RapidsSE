@@ -97,7 +97,7 @@ i8 StringLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return eCT::CT_VARCHAR;
+  return CT_VARCHAR;
 }
 
 /*============================================================================*/

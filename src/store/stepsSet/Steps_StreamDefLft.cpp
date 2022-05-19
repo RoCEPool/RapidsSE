@@ -228,13 +228,13 @@ void Step::vStreamDefLftNewToCsv(void)
   // create an integer column
 //  pStreamDef->m_xaColumn[0].vColumnNo(0);
 //  pStreamDef->m_xaColumn[0].vColumnNm("row"_Stz);
-//  pStreamDef->m_xaColumn[0].vColumnType(eCT::CT_VARCHAR);
+//  pStreamDef->m_xaColumn[0].vColumnType(CT_VARCHAR);
 //  pStreamDef->m_xaColumn[0].vDatum(DM_VCH);
 //
 //  pStreamDef->m_nColumns = 1;
 
   ASSERT(0 == pStreamDef->nColumns());
-  pStreamDef->vAddColumn("row"_Stz,eCT::CT_VARCHAR,0,0);
+  pStreamDef->vAddColumn("row"_Stz,CT_VARCHAR,0,0);
   
   m_pLogicUnit->m_xpStreamDefLft = pStreamDef;
 

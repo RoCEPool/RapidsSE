@@ -98,7 +98,7 @@ i8 BooleanLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return eCT::CT_BOOLEAN;
+  return CT_BOOLEAN;
 }
 
 /*============================================================================*/

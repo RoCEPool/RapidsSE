@@ -155,7 +155,7 @@ b1 CaseExpr::bIsExactType(PlanNode *pNode)
 
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation.                    */
-/* A returned value of eCT::CT_NONE means that it is not supported or invalid.     */
+/* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
 i8 CaseExpr::iType(QueryNode* pNode, PlanNode* pRootNode)
 {
@@ -164,9 +164,9 @@ i8 CaseExpr::iType(QueryNode* pNode, PlanNode* pRootNode)
 
   // Inspect all of the types of the WHEN and ELSE statements.
   // Ensure they are consistent.
-  // Look for the first non-null type otherwise return eCT::CT_UNKNOWN.
+  // Look for the first non-null type otherwise return CT_UNKNOWN.
 
-  eCT eResultType = eCT::CT_UNKNOWN;
+  eCT eResultType = CT_UNKNOWN;
 
   PlanNodeIter* pIter = pNode->pNewChildrenIter();
   while (pIter->bHasNext()) {
@@ -175,7 +175,7 @@ i8 CaseExpr::iType(QueryNode* pNode, PlanNode* pRootNode)
 
     eCT eChildType = TypeSystem::eCTVal(Expr::iType(pChild, pRootNode));
 
-    if (eChildType == eCT::CT_NONE) {
+    if (eChildType == CT_NONE) {
       // error
       delete pIter;
       return TypeSystem::iIdOf(eChildType);
@@ -187,28 +187,28 @@ i8 CaseExpr::iType(QueryNode* pNode, PlanNode* pRootNode)
 
     // So eResultType != eChildType
 
-    if (eResultType == eCT::CT_UNKNOWN) {
+    if (eResultType == CT_UNKNOWN) {
       // Accept the return type of this child
-      ASSERT(eChildType != eCT::CT_UNKNOWN);
+      ASSERT(eChildType != CT_UNKNOWN);
       eResultType = eChildType;
       continue;
 
-    } else if (eChildType == eCT::CT_UNKNOWN) {
+    } else if (eChildType == CT_UNKNOWN) {
       // No change to the overall return type
       continue;
     }
 
     // eResultType != eChildType,
-    // eResultType != eCT::CT_UNKNOWN
-    // eChildType  != eCT::CT_UNKNOWN
-    // eChildType  != eCT::CT_NONE
-    // eResultType != eCT::CT_NONE
+    // eResultType != CT_UNKNOWN
+    // eChildType  != CT_UNKNOWN
+    // eChildType  != CT_NONE
+    // eResultType != CT_NONE
 
     // Since eResultType != eChildType either an incorrect CASE statement has
     // been specified, or we will need to coerce some values. So return
-    // eCT::CT_NONE to force this to happen.
+    // CT_NONE to force this to happen.
     delete pIter;
-    return TypeSystem::iIdOf(eCT::CT_NONE);
+    return TypeSystem::iIdOf(CT_NONE);
   }
 
   delete pIter;
@@ -231,13 +231,13 @@ void CaseExpr::vCoerceSubExprs(QueryNode* pCaseExpr, PlanNode* pRootNode)
   // We don't need to check if the predicate needs coercing
   // because we will walk the expression graph bottom-up in
   // the ExprValidate stage and handle it there. Similarly,
-  // each WHEN result expr should also be non-eCT::CT_NONE.
+  // each WHEN result expr should also be non-CT_NONE.
   // Where we may have problems is where the different WHEN
   // expressions return different result types.
   // We need to try to find a common coercible data type
 
   // An array with an occurrence count for each coercible data type
-  i8 aiCoercibleTargets[eCT::CT_ENUMS] = { 0 };
+  i8 aiCoercibleTargets[CT_ENUMS] = { 0 };
 
   PlanNodeIter* pWhenOrElseIter = pCaseExpr->pNewChildrenIter();
 
@@ -258,7 +258,7 @@ void CaseExpr::vCoerceSubExprs(QueryNode* pCaseExpr, PlanNode* pRootNode)
     }
 
     ASSERT(Expr::bIsOfType(pValueExpr));
-    ASSERT(Expr::iType(pValueExpr, pRootNode) != eCT::CT_NONE);
+    ASSERT(Expr::iType(pValueExpr, pRootNode) != CT_NONE);
 
     // Increment the aiCoercibleTargets array if this child can be coerced
     // to each of the data types.
@@ -268,7 +268,7 @@ void CaseExpr::vCoerceSubExprs(QueryNode* pCaseExpr, PlanNode* pRootNode)
   // Determine the common coercible data type, if any
   eCT eCoercibleTarget = eCommonCoercibleTarget(aiCoercibleTargets, pCaseExpr->nChildren());
 
-  if (eCoercibleTarget == eCT::CT_NONE) {
+  if (eCoercibleTarget == CT_NONE) {
     delete pWhenOrElseIter;
     return;
   }

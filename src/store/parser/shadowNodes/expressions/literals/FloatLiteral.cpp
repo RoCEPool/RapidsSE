@@ -109,7 +109,7 @@ i8 FloatLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return eCT::CT_FLOAT;
+  return CT_FLOAT;
 }
 
 /*============================================================================*/

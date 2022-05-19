@@ -156,7 +156,7 @@ void ExprValidator::vExprTypeCoercion(PlanNode *pRootNode, QueryNode* pStartNode
 
     // How do we know if an expr needs to be coerced? One way is to check
     // the return type of the expression. It it is invalid it will be set
-    // to eCT::CT_NONE. Then we can try to coerce the sub-expressions involved.
+    // to CT_NONE. Then we can try to coerce the sub-expressions involved.
     //
     // But this doesn't work for all expressions - there are some special
     // cases such as IN expr. An IN expr always returns a BOOLEAN but some
@@ -166,13 +166,13 @@ void ExprValidator::vExprTypeCoercion(PlanNode *pRootNode, QueryNode* pStartNode
     // Expression coercion might not succeed. In that case we will pick up
     // the error in vValidateExprResultType() and throw an error there.
 
-    if (Expr::iType(pExprNode, pRootNode) == eCT::CT_NONE) {
+    if (Expr::iType(pExprNode, pRootNode) == CT_NONE) {
       // We might need type coercion here
       Expr::vCoerceSubExprs(pExprNode, pRootNode);
 
       // If we still haven't been able to correct the problem then abort any
       // further coercions. This error will be picked up in vValidateExprResultType().
-      if (Expr::iType(pExprNode, pRootNode) == eCT::CT_NONE) {
+      if (Expr::iType(pExprNode, pRootNode) == CT_NONE) {
         return GraphNav::WALK_ABORT;
       }
     }
@@ -188,7 +188,7 @@ void ExprValidator::vExprTypeCoercion(PlanNode *pRootNode, QueryNode* pStartNode
 
 /*----------------------------------------------------------------------------*/
 /* Validate that the result types of any expressions are not invalid.         */
-/* An invalid combination of exprs is one that returns eCT::CT_NONE for its type.  */
+/* An invalid combination of exprs is one that returns CT_NONE for its type.  */
 /*----------------------------------------------------------------------------*/
 void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pStartNode)
 {
@@ -247,7 +247,7 @@ void ExprValidator::vValidateCasePredicatesAreBoolean(PlanNode *pRootNode, Query
 
     eCT eType = TypeSystem::eCTVal(Expr::iType(pPredicate, pRootNode));
 
-    if (eType == eCT::CT_BOOLEAN) {
+    if (eType == CT_BOOLEAN) {
       // All good, keep looking for more filterOps
       return GraphNav::WALK_CONTINUE;
     }
@@ -295,7 +295,7 @@ void ExprValidator::vValidateOperatorPredicatesAreBoolean(PlanNode *pRootNode, Q
 
     eCT eType = TypeSystem::eCTVal(Expr::iType(pExprNode, pRootNode));
 
-    if (eType == eCT::CT_BOOLEAN) {
+    if (eType == CT_BOOLEAN) {
       // All good, keep looking for more filterOps
       return GraphNav::WALK_CONTINUE;
     }
@@ -342,7 +342,7 @@ void ExprValidator::vValidateJoinPredicatesAreBoolean(PlanNode *pRootNode, Query
 
     eCT eType = TypeSystem::eCTVal(Expr::iType(pExprNode, pRootNode));
 
-    if (eType == eCT::CT_BOOLEAN) {
+    if (eType == CT_BOOLEAN) {
       // All good, keep looking for more JoinOps
       return GraphNav::WALK_CONTINUE;
     }

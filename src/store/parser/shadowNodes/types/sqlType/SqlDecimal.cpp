@@ -50,7 +50,7 @@ PlanNode* SqlDecimal::pCreate(i8 iPrecision, i8 iScale)
   QueryNode* pNode = new QueryNode(sName, C_SQLDECIMAL_DEFN);
 
   // Add in any common properties
-  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(eCT::CT_DECIMAL));
+  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(CT_DECIMAL));
 
   if (iPrecision != -1) {
     ASSERT(iPrecision > 0);
