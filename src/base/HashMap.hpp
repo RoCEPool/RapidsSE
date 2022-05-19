@@ -43,14 +43,14 @@ namespace BASE
     ~HashMap(void) noexcept(false);
 
     void    vAnalysis(void);
-    void    vDeleteKey(Object* pKey);
-    bool    bExists(Object* pKey);
-    u8      uHashFunction(Object* pKey);
-    void    vInsertAtFront(Object* pKey, Object* pValue);
-    Object* pValueAt(Object* pKey);
+    void    vDeleteKey(void* pKey);
+    bool    bExists(void* pKey);
+    u8      uHashFunction(void* pKey);
+    void    vInsertAtFront(void* pKey, Object* pValue);
+    Object* pValueAt(void* pKey);
 
 #ifdef WITH_HASHMAP_DEBUG
-    void    vAppendHistory(Object* pKey,
+    void    vAppendHistory(void* pKey,
                            bool bDeleted,
                            bool bInserted);
 #endif

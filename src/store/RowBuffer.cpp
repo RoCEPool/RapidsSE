@@ -41,7 +41,7 @@ RowBuffer::RowBuffer(void)
 #ifdef WITH_BUFFER_ID
   m_oBufferId  = AM::pFileMap()->oGetNewBufferId();
 #ifdef WITH_HASHMAP
-  AM::pHashMap()->vInsertAtFront((Object*)m_oBufferId.m_pvAsAddress, (Object*)this);
+  AM::pHashMap()->vInsertAtFront((void*)m_oBufferId.m_pvAsAddress, (Object*)this);
 #endif
 #endif
   
@@ -69,7 +69,7 @@ RowBuffer::RowBuffer(eCN eClassNo)
 #ifdef WITH_BUFFER_ID
   m_oBufferId  = AM::pFileMap()->oGetNewBufferId();
 #ifdef WITH_HASHMAP
-  AM::pHashMap()->vInsertAtFront((Object*)m_oBufferId.m_pvAsAddress, (Object*)this);
+  AM::pHashMap()->vInsertAtFront((void*)m_oBufferId.m_pvAsAddress, (Object*)this);
 #endif
 #endif
   
@@ -98,7 +98,7 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
 #ifdef WITH_BUFFER_ID
   m_oBufferId  = AM::pFileMap()->oGetNewBufferId();
 #ifdef WITH_HASHMAP
-  AM::pHashMap()->vInsertAtFront((Object*)m_oBufferId.m_pvAsAddress, (Object*)this);
+  AM::pHashMap()->vInsertAtFront((void*)m_oBufferId.m_pvAsAddress, (Object*)this);
 #endif
 #endif
   

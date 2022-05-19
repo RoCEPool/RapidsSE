@@ -146,7 +146,7 @@ void HashMap::vAppendHistory(Object* pKey, bool bDeleted, bool bInserted)
 /*----------------------------------------------------------------------------*/
 /* delete a given key                                                         */
 /*----------------------------------------------------------------------------*/
-void HashMap::vDeleteKey(Object* pKey)
+void HashMap::vDeleteKey(void* pKey)
 {
   u8 uIndex = uHashFunction(pKey);
   HashMapSlot* pIter = m_paMap[uIndex];
@@ -182,7 +182,7 @@ void HashMap::vDeleteKey(Object* pKey)
 /*----------------------------------------------------------------------------*/
 /* Does the given key exist in the hashmap                                    */
 /*----------------------------------------------------------------------------*/
-bool HashMap::bExists(Object* pKey)
+bool HashMap::bExists(void* pKey)
 {
   u8 uIndex = uHashFunction(pKey);
   HashMapSlot* pIter = m_paMap[uIndex];
@@ -201,7 +201,7 @@ bool HashMap::bExists(Object* pKey)
 /*----------------------------------------------------------------------------*/
 /* hash key                                                                   */
 /*----------------------------------------------------------------------------*/
-u8 HashMap::uHashFunction(Object* pKey)
+u8 HashMap::uHashFunction(void* pKey)
 {
   return ( (u8) pKey % m_uNoOfSlots );
 }
@@ -210,7 +210,7 @@ u8 HashMap::uHashFunction(Object* pKey)
 /* Insert a key,value at the front of the chain.                              */
 /* Update value if key already exists                                         */
 /*----------------------------------------------------------------------------*/
-void HashMap::vInsertAtFront(Object* pKey, Object* pValue)
+void HashMap::vInsertAtFront(void* pKey, Object* pValue)
 {
   u8 uIndex = uHashFunction(pKey);
   HashMapSlot* pIter = m_paMap[uIndex];
@@ -244,7 +244,7 @@ void HashMap::vInsertAtFront(Object* pKey, Object* pValue)
 /*----------------------------------------------------------------------------*/
 /* Get value stored at key if it exists                                       */
 /*----------------------------------------------------------------------------*/
-Object* HashMap::pValueAt(Object* pKey)
+Object* HashMap::pValueAt(void* pKey)
 {
   u8 uIndex = uHashFunction(pKey);
   HashMapSlot* pIter = m_paMap[uIndex];

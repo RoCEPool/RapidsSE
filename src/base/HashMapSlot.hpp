@@ -11,7 +11,7 @@ namespace BASE
   friend HashMap;
 
   private:
-    Object* m_pKeyObject;
+    void* m_pKeyObject;
     Object* m_pValObject;
 
     HashMapSlot* m_pNext;
@@ -23,7 +23,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void* pHashMapSlotAddress);
 
-    HashMapSlot(Object* pKey, Object* pValue);
+    HashMapSlot(void* pKey, Object* pValue);
     ~HashMapSlot(void) noexcept(false);
 
   private:

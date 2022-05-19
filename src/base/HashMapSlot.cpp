@@ -43,7 +43,7 @@ void HashMapSlot::operator delete(void* pHashMapSlotAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashMapSlot::HashMapSlot(Object* pKey, Object* pValue)
+HashMapSlot::HashMapSlot(void* pKey, Object* pValue)
     : Object(CN_HASHMAPSLOT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAPSLOT,_FOOTER_);
