@@ -30,6 +30,7 @@
 #include "SP_Timer.hpp"
 
 #include "SP_Pointer.hpp"
+#include "ExitOperand.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -1062,6 +1063,12 @@ void Job::vPipeout(Operand* pOperand)
   else if (m_p_ResponseOp) {
     Task* pCurTask = MY::pTask();
     m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
+
+    if (m_pOutput && pOperand->eGetClassNo() == CN_EXITOPERAND) {
+      Operand* pExitOperand = new ExitOperand;
+      m_pOutput->vPipeToThis(pExitOperand);
+    }
+
   }
   else if (m_pOutput) {
     m_pOutput->vPipeToThis(pOperand);
@@ -1069,6 +1076,7 @@ void Job::vPipeout(Operand* pOperand)
   else {
     vTrace("Job sending response (operand): %s\n"_Stz, aCN[pOperand->eGetClassNo()]);
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1112,7 +1120,7 @@ void Job::vProcessOutput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  RASSERT( ! m_p_ResponseOp );
+  //RASSERT( ! m_p_ResponseOp );
 
   Job* pParentJob = this->pParentJob();
 
@@ -1299,7 +1307,7 @@ void Job::vResetOutput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  RASSERT( ! m_p_ResponseOp );
+  //RASSERT( ! m_p_ResponseOp );
 
   Job* pParentJob = this->pParentJob();
 
@@ -1320,7 +1328,7 @@ void Job::vCleanupOutput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  RASSERT( ! m_p_ResponseOp );
+  //RASSERT( ! m_p_ResponseOp );
 
   Job* pParentJob = this->pParentJob();
 
