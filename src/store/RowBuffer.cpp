@@ -123,7 +123,7 @@ RowBuffer::~RowBuffer(void) noexcept(false)
     AM::METRICS::vDerefMetrics((i8)this,CN_ROWBUFFER,DR_NEW);
 #ifdef WITH_BUFFER_ID
 #ifdef WITH_HASHMAP
-  AM::pHashMap()->vDeleteKey((Object*)m_oBufferId.m_pvAsAddress);
+  AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
 #endif
 #endif
 }
