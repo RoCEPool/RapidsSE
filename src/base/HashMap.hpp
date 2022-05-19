@@ -2,7 +2,7 @@
 /* HashMap.hpp -- HashMap                                                     */
 /*============================================================================*/
 #pragma once
-#define C_HASHMAP_SIZE 1000
+#define C_INIT_HASHMAP_SIZE 1000
 
 #ifdef WITH_HASHMAP_DEBUG
 #define C_HISTORY_DUR 100
@@ -18,7 +18,7 @@ namespace BASE
     u8 m_uNoOfSlots;
     u8 m_uNoOfEntries;
 
-    HashMapSlot* m_paMap[C_HASHMAP_SIZE];
+    HashMapSlot** m_paHashMapSlots;
 
 #ifdef WITH_HASHMAP_DEBUG
     u8 m_nHistory;
@@ -26,7 +26,7 @@ namespace BASE
     struct {
       u8      m_uHistoryIndex;
       u8      m_uCurrTotalEntries;
-      Object* m_pKey;
+      void*   m_pKey;
       bool    m_bDeleted;
       bool    m_bInserted;
     } xHistory[C_HISTORY_DUR];
@@ -39,7 +39,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void* pHashMapAddress);
  
-    HashMap(u8 uNoOfSlots=C_HASHMAP_SIZE);
+    HashMap(u8 uNoOfSlots=C_INIT_HASHMAP_SIZE);
     ~HashMap(void) noexcept(false);
 
     void    vAnalysis(void);
