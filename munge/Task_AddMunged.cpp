@@ -13410,7 +13410,7 @@ void Task::vAddMunged(Task* )
     "    eCT::CT_INTEGER   of \"integer\"   endof\n"
     "    eCT::CT_INTERVAL_DT  of \"interval\"  endof\n"
     "    eCT::CT_TIME      of \"time\"      endof\n"
-    "    eCT::eCT::CT_TIMESTAMP of \"timestamp\" endof\n"
+    "    eCT::CT_TIMESTAMP of \"timestamp\" endof\n"
     "    eCT::CT_VARCHAR   of \"varchar\"   endof\n"
     "\n"
     "  endcase\n"

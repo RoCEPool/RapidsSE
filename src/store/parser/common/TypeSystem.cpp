@@ -33,7 +33,7 @@ static TypeDescriptor axTypes[] = {
  {C_MAX_TYPE_ID++, -1, eCT::CT_FLOAT,       IV_NONE,             false, aCT[eCT::CT_FLOAT],            C_DEFAULT_NAMESPACE },
  {C_MAX_TYPE_ID++, -1, eCT::CT_INTEGER,     IV_NONE,             false, aCT[eCT::CT_INTEGER],          C_DEFAULT_NAMESPACE },
  {C_MAX_TYPE_ID++, -1, eCT::CT_TIME,        IV_NONE,             false, aCT[eCT::CT_TIME],             C_DEFAULT_NAMESPACE },
- {C_MAX_TYPE_ID++, -1, eCT::eCT::CT_TIMESTAMP,   IV_NONE,             false, aCT[eCT::eCT::CT_TIMESTAMP],        C_DEFAULT_NAMESPACE },
+ {C_MAX_TYPE_ID++, -1, eCT::CT_TIMESTAMP,   IV_NONE,             false, aCT[eCT::CT_TIMESTAMP],        C_DEFAULT_NAMESPACE },
  {C_MAX_TYPE_ID++, -1, eCT::CT_VARCHAR,     IV_NONE,             false, aCT[eCT::CT_VARCHAR],          C_DEFAULT_NAMESPACE },
  {C_MAX_TYPE_ID++, -1, eCT::CT_UNKNOWN,     IV_NONE,             false, aCT[eCT::CT_UNKNOWN],          C_DEFAULT_NAMESPACE },
 
@@ -64,7 +64,7 @@ static constexpr i8 aiTypeIdOfCT[eCT::CT_ENUMS] = {
     /*  7 eCT::CT_INTERVAL_DT  */ -1,
     /*  8 eCT::CT_INTERVAL_YM  */ -1,
     /*  9 eCT::CT_TIME         */ 6,
-    /* 10 eCT::eCT::CT_TIMESTAMP    */ 7,
+    /* 10 eCT::CT_TIMESTAMP    */ 7,
     /* 11 eCT::CT_VARCHAR      */ 8,
     /* 12 eCT::CT_UNKNOWN      */ 9
 };

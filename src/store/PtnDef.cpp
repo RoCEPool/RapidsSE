@@ -142,7 +142,7 @@ void PtnDef::vAsString(String* pString)
 
     pString->vCatSprint("%s %s"_Stz,
                         m_xaColumn[i_DefColumn].szColNm(),
-                        aCT[m_xaColumn[i_DefColumn].eColumnType()]);
+                        aCT[static_cast<i8>(m_xaColumn[i_DefColumn].eColumnType())]);
   }
 
   pString->vConcat(")"_Stz);
@@ -529,7 +529,7 @@ void PtnDef::vToMetadata(Stz* sMetadata)
       sMetadata->vConcat(","_Stz);
 
     sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
-                          aCT[m_xaColumn[i_DefColumn].eColumnType()]);
+                          aCT[static_cast<i8>(m_xaColumn[i_DefColumn].eColumnType())]);
   }
 
   sMetadata->vConcat(")"_Stz);
@@ -590,7 +590,7 @@ eEC PtnDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
     case eCT::CT_INTERVAL_DT: eError = eParseColumnInterval(pTknVec,pCol);  break;
     case eCT::CT_INTERVAL_YM: NEVER_REACH;                                  break;
     case eCT::CT_TIME:      eError = eParseColumnTime      (pTknVec,pCol);  break;
-    case eCT::eCT::CT_TIMESTAMP: eError = eParseColumnTimestamp (pTknVec,pCol);  break;
+    case eCT::CT_TIMESTAMP: eError = eParseColumnTimestamp (pTknVec,pCol);  break;
     case eCT::CT_VARCHAR:   eError = eParseColumnVarchar   (pTknVec,pCol);  break;
     case eCT::CT_UNKNOWN:   NEVER_REACH;                                    break;
 
@@ -808,7 +808,7 @@ eEC PtnDef::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNDEF,_FOOTER_);
   UNUSED(pTknVec);
 
-  pCol->vColumnType(eCT::eCT::CT_TIMESTAMP);
+  pCol->vColumnType(eCT::CT_TIMESTAMP);
   pCol->vDatum(DM_TSP);
   
   return EC_NONE;

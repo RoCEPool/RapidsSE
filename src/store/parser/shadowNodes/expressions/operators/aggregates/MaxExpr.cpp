@@ -29,7 +29,7 @@ static Stz* C_MAX_EXPR_DEFN = "/__root__/definitions/object/expr/operator/aggreg
 static eCT aeTypeCalculus[eCT::CT_ENUMS] =
 
 //    NONE     BOOLEAN     CHAR        DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT     INTERVAL_YM     TIME     TIMESTAMP     VARCHAR     UNKNOWN
-    { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_VARCHAR, eCT::CT_DATE, eCT::CT_DECIMAL, eCT::CT_FLOAT, eCT::CT_INTEGER, eCT::CT_NONE/*X*/,   eCT::CT_NONE/*X*/,   eCT::CT_TIME, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_NONE };
+    { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_VARCHAR, eCT::CT_DATE, eCT::CT_DECIMAL, eCT::CT_FLOAT, eCT::CT_INTEGER, eCT::CT_NONE/*X*/,   eCT::CT_NONE/*X*/,   eCT::CT_TIME, eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_NONE };
 
 // References:
 //  If MAX or MIN is specified, then the declared type of the result is the

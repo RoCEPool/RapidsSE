@@ -3515,7 +3515,7 @@ eCT SqlPlanner::eExtractDataType(sqlParser::DataTypeContext* pCtx)
   else if (pSqlCtx->FLOAT())              { eDataType = eCT::CT_FLOAT;       }
   else if (pSqlCtx->DATE())               { eDataType = eCT::CT_DATE;        }
   else if (pSqlCtx->TIME())               { eDataType = eCT::CT_TIME;        }
-  else if (pSqlCtx->TIMESTAMP())          { eDataType = eCT::eCT::CT_TIMESTAMP;   }
+  else if (pSqlCtx->TIMESTAMP())          { eDataType = eCT::CT_TIMESTAMP;   }
 //TODO:  else if (pSqlCtx->INTERVAL())           { eDataType = eCT::CT_INTERVAL_YM; }
   else if (pSqlCtx->fixedLenChar())       { eDataType = eCT::CT_CHAR;        }
   else if (pSqlCtx->varyingLenChar())     { eDataType = eCT::CT_VARCHAR;     }

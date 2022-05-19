@@ -37,17 +37,17 @@ static eCT aeTypeCalculus[eCT::CT_ENUMS][eCT::CT_ENUMS] = {
                  //   NONE     BOOLEAN     CHAR     DATE     DECIMAL         FLOAT     INTEGER         INTERVAL_DT      INTERVAL_YM      TIME     TIMESTAMP     VARCHAR     UNKNOWN
 /*  0 NONE       */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_NONE, eCT::CT_NONE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_NONE,    eCT::CT_NONE    },
 /*  1 BOOLEAN    */ { eCT::CT_NONE, eCT::CT_BOOLEAN, eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
-/*  2 CHAR       */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_INTERVAL_DT,  eCT::CT_INTERVAL_YM,  eCT::CT_TIME, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
-/*  3 DATE       */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_NONE, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/*  2 CHAR       */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_INTERVAL_DT,  eCT::CT_INTERVAL_YM,  eCT::CT_TIME, eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/*  3 DATE       */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_NONE, eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
 /*  4 DECIMAL    */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_NONE,/*?1*/   eCT::CT_NONE,/*?1*/   eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
 /*  5 FLOAT      */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
 /*  6 INTEGER    */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_NONE,/*?1*/   eCT::CT_NONE,/*?1*/   eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
 /*  7 INTERVAL_DT*/ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_NONE/*?2*/,  eCT::CT_NONE,  eCT::CT_NONE/*?2*/,  eCT::CT_INTERVAL_DT,  eCT::CT_NONE,         eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
 /*  8 INTERVAL_YM*/ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_NONE/*?2*/,  eCT::CT_NONE,  eCT::CT_NONE/*?2*/,  eCT::CT_NONE,         eCT::CT_INTERVAL_YM,  eCT::CT_NONE, eCT::CT_NONE,      eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
-/*  9 TIME       */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_TIME, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
-/* 10 TIMESTAMP  */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_TIME, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
-/* 11 VARCHAR    */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_INTERVAL_DT,  eCT::CT_INTERVAL_YM,  eCT::CT_TIME, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
-/* 12 UNKNOWN    */ { eCT::CT_NONE, eCT::CT_BOOLEAN, eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_INTERVAL_DT,  eCT::CT_INTERVAL_YM,  eCT::CT_TIME, eCT::eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN }
+/*  9 TIME       */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_NONE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_TIME, eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/* 10 TIMESTAMP  */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_NONE,        eCT::CT_NONE,  eCT::CT_NONE,        eCT::CT_NONE,         eCT::CT_NONE,         eCT::CT_TIME, eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/* 11 VARCHAR    */ { eCT::CT_NONE, eCT::CT_NONE,    eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_INTERVAL_DT,  eCT::CT_INTERVAL_YM,  eCT::CT_TIME, eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN },
+/* 12 UNKNOWN    */ { eCT::CT_NONE, eCT::CT_BOOLEAN, eCT::CT_CHAR, eCT::CT_DATE, eCT::CT_DECIMAL,     eCT::CT_FLOAT, eCT::CT_INTEGER,     eCT::CT_INTERVAL_DT,  eCT::CT_INTERVAL_YM,  eCT::CT_TIME, eCT::CT_TIMESTAMP, eCT::CT_VARCHAR, eCT::CT_UNKNOWN }
 };
 
 // References:
@@ -223,7 +223,7 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNo
       break;
 
     case eCT::CT_DATE:
-      if (eTargetTypeId == eCT::eCT::CT_TIMESTAMP)
+      if (eTargetTypeId == eCT::CT_TIMESTAMP)
       {
         ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
         return true;

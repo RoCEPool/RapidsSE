@@ -91,7 +91,7 @@ eCT Column::eColumnType(eDM eDatum)
     case DM_IVL     : return eCT::CT_INTERVAL_DT;
     case DM_IVY     : return eCT::CT_INTERVAL_YM;
     case DM_TME     : return eCT::CT_TIME;
-    case DM_TSP     : return eCT::eCT::CT_TIMESTAMP;
+    case DM_TSP     : return eCT::CT_TIMESTAMP;
     case DM_UNK     : return eCT::CT_UNKNOWN;
     default:
       RASSERT(0);
@@ -105,7 +105,7 @@ eDM Column::eDatum(eCT eColumnType)
 {
   switch(eColumnType) {
     case eCT::CT_BOOLEAN     : return DM_BOL;
-    case eCT::eCT::CT_CHAR        : return DM_VCH;
+    case eCT::CT_CHAR        : return DM_VCH;
     case eCT::CT_DATE        : return DM_DTE;
     case eCT::CT_DECIMAL     : return DM_BCD;
     case eCT::CT_FLOAT       : return DM_FLT;
@@ -113,7 +113,7 @@ eDM Column::eDatum(eCT eColumnType)
     case eCT::CT_INTERVAL_DT : return DM_IVL;
     case eCT::CT_INTERVAL_YM : NEVER_REACH;
     case eCT::CT_TIME        : return DM_TME;
-    case eCT::eCT::CT_TIMESTAMP   : return DM_TSP;
+    case eCT::CT_TIMESTAMP   : return DM_TSP;
     case eCT::CT_VARCHAR     : return DM_VCH;
     case eCT::CT_UNKNOWN     : return DM_UNK;
     default:
@@ -419,7 +419,7 @@ void Column::vListContents(i8 i_Depth)
 
          m_iColumnNo,
          m_sColumnNm.szStz(),
-         aCT[m_eColumnType],
+         aCT[static_cast<i8>(m_eColumnType)],
          m_iColumnLength,
          m_iColumnScale,
          aDM[m_eDatum],
@@ -450,7 +450,7 @@ void Column::vShow(void)
   vTrace("Column %02lld %s type %s length %lld scale %lld datum %s %s %s\n"_Stz,
          m_iColumnNo,
          m_sColumnNm.szStz(),
-         aCT[m_eColumnType],
+         aCT[static_cast<i8>(m_eColumnType)],
          m_iColumnLength,
          m_iColumnScale,
          aDM[m_eDatum],
@@ -475,7 +475,7 @@ char Column::cTypeShort(void)
     case eCT::CT_INTERVAL_DT : return 'l';
     case eCT::CT_INTERVAL_YM : return 'y';
     case eCT::CT_TIME        : return 't';
-    case eCT::eCT::CT_TIMESTAMP   : return 's';
+    case eCT::CT_TIMESTAMP   : return 's';
     case eCT::CT_VARCHAR     : return 'v';
     case eCT::CT_UNKNOWN     : return 'u';
     default:
