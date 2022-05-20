@@ -827,8 +827,9 @@ void Step::vJobResponseOpFetch(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob;
-  
+  //Job* pJob = * m_pJob;
+  Job* pJob = MY::pJob()->pParentJob();
+
   m_pDataStack->vPushPtr(pJob->p_ResponseOp());
 
   EXIT();
@@ -841,8 +842,9 @@ void Step::vJobResponseOpStore(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob;
-  
+  //Job* pJob = * m_pJob;
+  Job* pJob = MY::pJob()->pParentJob();
+
   Op* pResponseOp = _pOp(m_pDataStack->pPopPtr(__func__));
 
   pJob->vResponseOp(pResponseOp);

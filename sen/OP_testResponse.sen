@@ -1,0 +1,133 @@
+/*============================================================================*/
+/* OP_testResponse.sen -- Operator test response                              */
+/*============================================================================*/
+
+" OP_testResponse.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* support for seapi immediate                                                */
+/*----------------------------------------------------------------------------*/
+: testResponse_seapi
+
+  "testResponse_seapi" .
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* on EV_D_EXITOPERAND ...                                   EV_D_EXITOPERAND */
+/*----------------------------------------------------------------------------*/
+: testResponse_ExitOperand \handler
+
+  0 EV_D_EXITOPERAND EG_ZK LogicUnit[].diaryNote
+
+  nullptr [job].responseOp!
+
+  "testResponse_ExitOperand" .
+  Pipein[].delete
+
+  [job] assert
+  [task] assert
+
+  [op].ackInvokingTask
+
+  false // calling op_loop exits
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_M_START ...                                                    START */
+/*----------------------------------------------------------------------------*/
+: testResponse_Start \handler
+
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
+  [Op] [job].responseOp!
+
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_D_CRWBUFFER ...                                            CRWBUFFER */
+/*----------------------------------------------------------------------------*/
+: testResponse_CrwBuffer \handler
+
+  EC_NONE locals| eError |
+
+  0 EV_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  "testResponse_CrwBuffer: GOT A CRWBUFFER" .
+  Pipein[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_EXITING ...                                               */
+/*----------------------------------------------------------------------------*/
+: testResponse_Exiting \handler
+
+  //"EV_M_EXITING_handler" .verbose
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_STRAEMDEF ...                                             */
+/*----------------------------------------------------------------------------*/
+: testResponse_StreamDef \handler
+
+  //"EV_D_STRAEMDEF_handler" .verbose
+
+  PipeIn[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* testResponse request                                                 SPAWN */
+/*----------------------------------------------------------------------------*/
+: testResponse_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: testResponse_CrwBuffer    EV_D_CRWBUFFER     [op].handler!
+  find: testResponse_ExitOperand  EV_D_EXITOPERAND   [op].handler!
+  find: testResponse_StreamDef    EV_D_STREAMDEF     [op].handler!
+
+  find: testResponse_Exiting      EV_M_EXITING       [op].handler!
+  find: testResponse_Start        EV_M_START         [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: testResponse :: testResponse ;
+
+: testResponse_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "testResponse_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
