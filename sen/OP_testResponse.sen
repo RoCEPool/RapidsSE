@@ -31,6 +31,7 @@
   [job] assert
   [task] assert
 
+  // ack the parent job task
   [op].ackInvokingTask
 
   false // calling op_loop exits

@@ -166,6 +166,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Job* pParentJob(void);
     Pipeline* pPipeline(void);
     void vPipeout(Operand* pOperand);
+    void vPipeoutExit(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
     void vPostRecv(void);
