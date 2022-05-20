@@ -101,7 +101,7 @@ b1 ElseExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-i8 ElseExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId ElseExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -109,26 +109,25 @@ i8 ElseExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   // Get the types of the two operands
   QueryNode* pChild1 = ElseExpr::pElseExpr(pExprNode);
 
-  i8 iTypeId1 = Expr::iType(pChild1, pRootNode);
+  TypeId xTypeId1 = Expr::xTypeId(pChild1, pRootNode);
 
-  return iTypeId1;
+  return xTypeId1;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Tries to coerce the result expr of this ELSE statement to a given type     */
 /*----------------------------------------------------------------------------*/
-void ElseExpr::vCoerceResultExprTo(eCT eCoercibleTarget, QueryNode* pElseExpr, PlanNode* pRootNode)
+void ElseExpr::vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pElseExpr, PlanNode* pRootNode)
 {
   _static_
   ASSERT(pElseExpr);
   ASSERT(bIsOfType(pElseExpr));
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
-  ASSERT(eCoercibleTarget > CT_NONE);
-  ASSERT(eCoercibleTarget < CT_ENUMS);
+  ASSERT(xCoercibleTargetId.bIsValid());
 
   QueryNode* pResult = ElseExpr::pElseExpr(pElseExpr);
-  QueryNode* pCoercedResult = Expr::pCoerceTo(eCoercibleTarget, pResult, pRootNode);
+  QueryNode* pCoercedResult = Expr::pCoerceTo(xCoercibleTargetId, pResult, pRootNode);
 
   ASSERT(pCoercedResult);
   ASSERT(Expr::bIsOfType(pCoercedResult));

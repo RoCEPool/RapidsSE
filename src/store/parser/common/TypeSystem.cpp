@@ -20,6 +20,7 @@ typedef struct {
 } TypeDescriptor;
 
 static Stz* C_DEFAULT_NAMESPACE = "rapids"_Stz;
+static i8 C_INVALID_TYPEID = -1;
 
 // The set of known types in the system, indexed by their typeId.
 // When we fully support dynamic types then this will change to a
@@ -100,14 +101,6 @@ TypeSystem::TypeSystem()
   
 }
 
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-TypeSystem::~TypeSystem()
-{
- 
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -116,117 +109,109 @@ TypeSystem::~TypeSystem()
 /*----------------------------------------------------------------------------*/
 /* Check that this is a valid type ID                                         */
 /*----------------------------------------------------------------------------*/
-b1 TypeSystem::bIsValid(i8 iTypeId)
+b1 TypeSystem::bIsValid(TypeId xTypeId)
 {
-  return (iTypeId >= 0) && (iTypeId < C_MAX_TYPE_ID);
+  return (xTypeId.iIdVal() > C_INVALID_TYPEID) && (xTypeId.iIdVal() < C_MAX_TYPE_ID);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the typeId of the parent of this type                                  */
 /*----------------------------------------------------------------------------*/
-i8 TypeSystem::iParentId(i8 iTypeId)
+TypeId TypeSystem::xParentTypeId(TypeId xTypeId)
 {
-  ASSERT(iTypeId >= 0);
-  ASSERT(iTypeId < C_MAX_TYPE_ID);
+  ASSERT(bIsValid(xTypeId));
 
-  return axTypes[iTypeId].m_iParentId;
+  return TypeId{axTypes[xTypeId.iIdVal()].m_iParentId};
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the eCT value of the parent of this type. May be CT_NONE.              */
 /*----------------------------------------------------------------------------*/
-eCT TypeSystem::eCTVal(i8 iTypeId)
+eCT TypeSystem::eCTVal(TypeId xTypeId)
 {
-  ASSERT(iTypeId >= 0);
-  ASSERT(iTypeId < C_MAX_TYPE_ID);
+  ASSERT(bIsValid(xTypeId));
 
-  return axTypes[iTypeId].m_eCTVal;
+  return axTypes[xTypeId.iIdVal()].m_eCTVal;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the eIV value of the parent of this type. May be IV_NONE.              */
 /*----------------------------------------------------------------------------*/
-eIV TypeSystem::eIVVal(i8 iTypeId)
+eIV TypeSystem::eIVVal(TypeId xTypeId)
 {
-  ASSERT(iTypeId >= 0);
-  ASSERT(iTypeId < C_MAX_TYPE_ID);
+  ASSERT(bIsValid(xTypeId));
 
-  return axTypes[iTypeId].m_eIVVal;
+  return axTypes[xTypeId.iIdVal()].m_eIVVal;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Return true if this type is an abstract type and cannot be instantiated.   */
 /*----------------------------------------------------------------------------*/
-b1 TypeSystem::bIsAbstract(i8 iTypeId)
+b1 TypeSystem::bIsAbstract(TypeId xTypeId)
 {
-  ASSERT(iTypeId >= 0);
-  ASSERT(iTypeId < C_MAX_TYPE_ID);
+  ASSERT(bIsValid(xTypeId));
 
-  return axTypes[iTypeId].m_bIsAbstract;
+  return axTypes[xTypeId.iIdVal()].m_bIsAbstract;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the namespace to which this type belongs.                              */
 /*----------------------------------------------------------------------------*/
-Stz* TypeSystem::szNamespace(i8 iTypeId)
+Stz* TypeSystem::szNamespace(TypeId xTypeId)
 {
-  ASSERT(iTypeId >= 0);
-  ASSERT(iTypeId < C_MAX_TYPE_ID);
+  ASSERT(bIsValid(xTypeId));
 
-  return axTypes[iTypeId].m_szNamespace;
+  return axTypes[xTypeId.iIdVal()].m_szNamespace;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the name of this type (unique within its namespace).                   */
 /*----------------------------------------------------------------------------*/
-Stz* TypeSystem::szTypeName(i8 iTypeId)
+Stz* TypeSystem::szTypeName(TypeId xTypeId)
 {
-  ASSERT(iTypeId >= 0);
-  ASSERT(iTypeId < C_MAX_TYPE_ID);
+  ASSERT(bIsValid(xTypeId));
 
-  return axTypes[iTypeId].m_szTypeName;
+  return axTypes[xTypeId.iIdVal()].m_szTypeName;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the typeId of a given eCT type.                                        */
 /* Should not be used for interval types. Instead use iIdOf(eIV).             */
 /*----------------------------------------------------------------------------*/
-i8 TypeSystem::iIdOf(eCT eVal)
+TypeId TypeSystem::xIdOf(eCT eVal)
 {
   ASSERT(eVal >= CT_NONE);
   ASSERT(eVal < CT_ENUMS);
   ASSERT(eVal != CT_INTERVAL_DT);
   ASSERT(eVal != CT_INTERVAL_YM);
 
-  i8 iTypeId = aiTypeIdOfCT[eVal];
-  ASSERT(iTypeId >= 0);
-  ASSERT(iTypeId < C_MAX_TYPE_ID);
+  TypeId xTypeId = TypeId{aiTypeIdOfCT[eVal]};
+  ASSERT(bIsValid(xTypeId));
 
-  return iTypeId;
+  return xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the typeId of a given eIV type.                                        */
 /*----------------------------------------------------------------------------*/
-i8 TypeSystem::iIdOf(eIV eVal)
+TypeId TypeSystem::xIdOf(eIV eVal)
 {
   ASSERT(eVal >= IV_NONE);
   ASSERT(eVal < IV_ENUMS);
   ASSERT( (eVal > IV_SUBCATEGORY_YEARMONTH_START && eVal < IV_SUBCATEGORY_YEARMONTH_END) ||
           (eVal > IV_SUBCATEGORY_DAYTIME_START   && eVal < IV_SUBCATEGORY_DAYTIME_END) );
 
-  i8 iTypeId = aiTypeIdOfIV[eVal];
-  ASSERT(iTypeId >= 0);
-  ASSERT(iTypeId < C_MAX_TYPE_ID);
+  TypeId xTypeId = TypeId{aiTypeIdOfIV[eVal]};
+  ASSERT(bIsValid(xTypeId));
 
-  return iTypeId;
+  return xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Get the typeId of a given namespace and typename. Currently a slow search. */
-/* Returns -1 if not found.                                                   */
+/* Returns an invalid TypeId if not found (check bIsValid()).                 */
 /*----------------------------------------------------------------------------*/
-i8 TypeSystem::iIdOf(Stz* szNamespace, Stz* szTypeName)
+TypeId TypeSystem::xIdOf(Stz* szNamespace, Stz* szTypeName)
 {
   ASSERT(szNamespace);
   ASSERT(szTypeName);
@@ -235,13 +220,13 @@ i8 TypeSystem::iIdOf(Stz* szNamespace, Stz* szTypeName)
 
     if (axTypes[i].m_szNamespace->bSame(szNamespace) &&
         axTypes[i].m_szTypeName->bSame(szTypeName) ) {
-      return axTypes[i].m_iTypeId;
+      return TypeId{axTypes[i].m_iTypeId};
     }
 
   }
 
   // Not found
-  return -1;
+  return TypeId{C_INVALID_TYPEID};
 }
 
 /*============================================================================*/

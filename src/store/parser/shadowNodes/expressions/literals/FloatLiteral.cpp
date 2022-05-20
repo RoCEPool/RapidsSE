@@ -102,14 +102,14 @@ b1 FloatLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-i8 FloatLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId FloatLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return CT_FLOAT;
+  return TypeId::xIdOf(CT_FLOAT);
 }
 
 /*============================================================================*/

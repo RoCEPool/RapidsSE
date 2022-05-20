@@ -17,7 +17,7 @@ namespace Parser
     CastExpr();
 
   public:
-    static QueryNode* pCreate(QueryNode* pTargetExpr, i8 iTypeId);
+    static QueryNode* pCreate(QueryNode* pTargetExpr, TypeId xTypeId);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
     static QueryNode* pSqlTypeNode(QueryNode* pNode);
@@ -31,13 +31,13 @@ namespace Parser
 
     // Returns the resulting type of the expression operation.
     // A returned value of CT_NONE means that it is not supported or invalid.
-    static i8 iType(QueryNode* pNode, PlanNode* pRootNode);
+    static TypeId xTypeId(QueryNode* pNode, PlanNode* pRootNode);
 
     // Returns true if an expression can be coerced to a given data type via a cast
-    static b1 bIsImplicitlyCoercibleTo(i8 iTypeId, QueryNode* pExpr, PlanNode* pRootNode);
+    static b1 bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
 
     // Returns a new expression object which represents pExpr coerced to eTarget
-    static QueryNode* pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
+    static QueryNode* pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
   };
 
 }

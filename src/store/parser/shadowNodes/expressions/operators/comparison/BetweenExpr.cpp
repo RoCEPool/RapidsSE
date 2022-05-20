@@ -201,7 +201,7 @@ b1 BetweenExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-i8 BetweenExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId BetweenExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -210,21 +210,21 @@ i8 BetweenExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pLowerBound    = BetweenExpr::pLowerBound(pExprNode);
   QueryNode* pUpperBound    = BetweenExpr::pUpperBound(pExprNode);
 
-  eCT ePredicand = TypeSystem::eCTVal(Expr::iType(pPredicandNode, pRootNode));
-  eCT eLower     = TypeSystem::eCTVal(Expr::iType(pLowerBound, pRootNode));
-  eCT eUpper     = TypeSystem::eCTVal(Expr::iType(pUpperBound, pRootNode));
+  eCT ePredicand = Expr::xTypeId(pPredicandNode, pRootNode).eCTVal();
+  eCT eLower     = Expr::xTypeId(pLowerBound, pRootNode).eCTVal();
+  eCT eUpper     = Expr::xTypeId(pUpperBound, pRootNode).eCTVal();
 
   if (eLower != eUpper &&
       eLower != CT_UNKNOWN &&
       eUpper != CT_UNKNOWN &&
       ePredicand != CT_UNKNOWN) {
     // coercion is required
-    return CT_NONE;
+    return TypeId::xIdOf(CT_NONE);
   }
 
   // Lookup the type of the result between the predicand and the lower bound
   eCT eResult = aeTypeCalculus[ePredicand][eLower];
-  return TypeSystem::iIdOf(eResult);
+  return TypeId::xIdOf(eResult);
 }
 
 /*============================================================================*/

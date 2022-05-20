@@ -38,7 +38,7 @@ PlanNode* SqlIntervalDT::pCreate()
 
   // Add in any common properties
   // TODO: Set the correct type below
-  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(IV_DAY_TO_SECOND));
+  SqlType::vCreateCommon(pNode, TypeId::xIdOf(IV_DAY_TO_SECOND));
 
   return pNode;
 }

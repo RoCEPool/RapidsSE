@@ -55,14 +55,14 @@ b1 MiscExpr::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-i8 MiscExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId MiscExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
 
   // manual expression polymorphism here
 
-  if      (CastExpr::bIsOfType(pExprNode))  { return CastExpr::iType(pExprNode, pRootNode); }
+  if      (CastExpr::bIsOfType(pExprNode))  { return CastExpr::xTypeId(pExprNode, pRootNode); }
   else NEVER_REACH
 }
 

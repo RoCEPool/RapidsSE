@@ -360,7 +360,7 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // type
-  eCT eType = TypeSystem::eCTVal(Expr::iType(pExprNode, pBackend->m_pPlanRoot));
+  eCT eType = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot).eCTVal();
   sPipeline->vCatSprint(
       " type %s"
       ""_Stz,
@@ -396,7 +396,7 @@ void Backend::vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNo
 
   String* sPipeline = pBackend->m_sPipeline;
 
-  eCT eType = TypeSystem::eCTVal(Expr::iType(pExprNode, pBackend->m_pPlanRoot));
+  eCT eType = Expr::xTypeId(pExprNode, pBackend->m_pPlanRoot).eCTVal();
 
   sPipeline->vCatSprint(
     " type %s"
@@ -1451,7 +1451,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       QueryNode* pSymbolicExpr = Expr::pOrdinalToSymbolic(pOrdinalExpr, pBackend->m_pColExprList,
                                                     pBackend->m_pPlanRoot);
 
-      eCT eType = TypeSystem::eCTVal(CastExpr::iType(pSymbolicExpr, pBackend->m_pPlanRoot));
+      eCT eType = CastExpr::xTypeId(pSymbolicExpr, pBackend->m_pPlanRoot).eCTVal();
 
       sPipeline->vCatSprint(
           " casttype %s CAST "

@@ -111,22 +111,22 @@ b1 Expr::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-i8 Expr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId Expr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
 
   // TODO: manual expression polymorphism here
 
-  if      (    LiteralExpr::bIsOfType(pExprNode))  { return LiteralExpr::iType(pExprNode, pRootNode); }
-  else if (      ColumnRef::bIsOfType(pExprNode))  { return ColumnRef::iType(pExprNode, pRootNode); }
-  else if (       AliasRef::bIsOfType(pExprNode))  { return AliasRef::iType(pExprNode, pRootNode); }
-  else if ( ColumnWildcard::bIsOfType(pExprNode))  { return ColumnWildcard::iType(pExprNode, pRootNode); }
-  else if (  ColumnOrdinal::bIsOfType(pExprNode))  { return ColumnOrdinal::iType(pExprNode, pRootNode); }
-  else if (ColumnParameter::bIsOfType(pExprNode))  { return ColumnParameter::iType(pExprNode, pRootNode); }
-  else if (   OperatorExpr::bIsOfType(pExprNode))  { return OperatorExpr::iType(pExprNode, pRootNode); }
-  else if (SubqueryRefExpr::bIsOfType(pExprNode))  { return SubqueryRefExpr::iType(pExprNode, pRootNode); }
-  else if (       MiscExpr::bIsOfType(pExprNode))  { return MiscExpr::iType(pExprNode, pRootNode); }
+  if      (    LiteralExpr::bIsOfType(pExprNode))  { return LiteralExpr::xTypeId(pExprNode, pRootNode); }
+  else if (      ColumnRef::bIsOfType(pExprNode))  { return ColumnRef::xTypeId(pExprNode, pRootNode); }
+  else if (       AliasRef::bIsOfType(pExprNode))  { return AliasRef::xTypeId(pExprNode, pRootNode); }
+  else if ( ColumnWildcard::bIsOfType(pExprNode))  { return ColumnWildcard::xTypeId(pExprNode, pRootNode); }
+  else if (  ColumnOrdinal::bIsOfType(pExprNode))  { return ColumnOrdinal::xTypeId(pExprNode, pRootNode); }
+  else if (ColumnParameter::bIsOfType(pExprNode))  { return ColumnParameter::xTypeId(pExprNode, pRootNode); }
+  else if (   OperatorExpr::bIsOfType(pExprNode))  { return OperatorExpr::xTypeId(pExprNode, pRootNode); }
+  else if (SubqueryRefExpr::bIsOfType(pExprNode))  { return SubqueryRefExpr::xTypeId(pExprNode, pRootNode); }
+  else if (       MiscExpr::bIsOfType(pExprNode))  { return MiscExpr::xTypeId(pExprNode, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -278,8 +278,8 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
   // expression tree should be ok (because no combination of CT_NONE should
   // produce a valid type).
 
-  i8 iResultTypeId = iType(pExprNode, pRootNode);
-  eCT eResultType = TypeSystem::eCTVal(iResultTypeId);
+  TypeId xResultTypeId = xTypeId(pExprNode, pRootNode);
+  eCT eResultType = xResultTypeId.eCTVal();
 
   if (eResultType != CT_NONE) {
     // This expression will produce a valid type
@@ -903,22 +903,22 @@ void Expr::vSuperAggregate(QueryNode* pExpr, PlanNode* pRootNode)
       // DECIMAL if x is an INTEGER.
       //
       // First get the resulting type of the original AVG operation.
-      i8 iAvgTypeId = Expr::iType(pExpr, pRootNode);
-      eCT eAvgType = TypeSystem::eCTVal(iAvgTypeId);
+      TypeId xAvgTypeId = Expr::xTypeId(pExpr, pRootNode);
+      eCT eAvgType = xAvgTypeId.eCTVal();
 
       // Now check if it is the same type as the numerator and denominator
-      if (Expr::iType(pNumerator, pRootNode) != eAvgType) {
+      if (Expr::xTypeId(pNumerator, pRootNode) != xAvgTypeId) {
         // Numerator needs to be cast
-        QueryNode* pCastExpr = CastExpr::pCoerceTo(eAvgType, pNumerator, pRootNode);
+        QueryNode* pCastExpr = CastExpr::pCoerceTo(xAvgTypeId, pNumerator, pRootNode);
 
         // Numerator was copied above, so clean up
         delete pNumerator;
         pNumerator = pCastExpr;
       }
 
-      if (Expr::iType(pDenominator, pRootNode) != eAvgType) {
+      if (Expr::xTypeId(pDenominator, pRootNode) != xAvgTypeId) {
         // Denominator needs to be cast
-        QueryNode* pCastExpr = CastExpr::pCoerceTo(eAvgType, pDenominator, pRootNode);
+        QueryNode* pCastExpr = CastExpr::pCoerceTo(xAvgTypeId, pDenominator, pRootNode);
 
         // Denominator was copied above, so clean up
         delete pDenominator;
@@ -1031,7 +1031,7 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
     return;
   }
 
-  ASSERT(Expr::iType(pExpr, pRootNode) == CT_NONE);
+  ASSERT(Expr::xTypeId(pExpr, pRootNode).eCTVal() == CT_NONE);
 
   // Take a copy of the expression so it can be modified freely.
   QueryNode* pExprCopy = pExpr->pDeepCopy(false);
@@ -1043,7 +1043,7 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
   b1 bResult = bCoerceChildrenToCommonType(pExprCopy, pRootNode);
 
   if (bResult) {
-    ASSERT(Expr::iType(pExprCopy, pRootNode) != CT_NONE);
+    ASSERT(Expr::xTypeId(pExprCopy, pRootNode).eCTVal() != CT_NONE);
 
     // We need to replace the children of pExpr with the children of pExprCopy,
     // then clean up.
@@ -1109,6 +1109,7 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
 
   // Determine the common coercible data type, if any
   eCT eCoercibleTarget = eCommonCoercibleTarget(aiCoercibleTargets, pExprCopy->nChildren());
+  TypeId xCoercibleTarget = TypeId::xIdOf(eCoercibleTarget);
 
   if (eCoercibleTarget == CT_NONE) {
     return false;
@@ -1119,8 +1120,8 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   QueryNode* pChild;
   while ((pChild = pExprCopy->pPopChild()) != nullptr) {
 
-    i8 iChildTypeId = Expr::iType(pChild, pRootNode);
-    eCT eChildType = TypeSystem::eCTVal(iChildTypeId);
+    TypeId xChildTypeId = Expr::xTypeId(pChild, pRootNode);
+    eCT eChildType = xChildTypeId.eCTVal();
 
     QueryNode* pCoercedChild;
 
@@ -1130,7 +1131,7 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
 
     } else {
     // Coerce it to the new type. This will create a new expression object.
-      pCoercedChild = Expr::pCoerceTo(eCoercibleTarget, pChild, pRootNode);
+      pCoercedChild = Expr::pCoerceTo(xCoercibleTarget, pChild, pRootNode);
     }
 
     ASSERT(pCoercedChild);
@@ -1151,7 +1152,7 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   delete pChildList;
 
   // Finally, did this do enough to make the expression viable?
-  bFixed = (Expr::iType(pExprCopy, pRootNode) != CT_NONE);
+  bFixed = (Expr::xTypeId(pExprCopy, pRootNode).eCTVal() != CT_NONE);
   return bFixed;
 }
 
@@ -1168,8 +1169,9 @@ void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)
 
   while (++i != CT_ENUMS) {
     eCT eTarget = (eCT) i;
+    TypeId xTargetTypeId = TypeId::xIdOf(eTarget);
 
-    if (bIsImplicitlyCoercibleTo(eTarget, pExpr, pRootNode)) {
+    if (bIsImplicitlyCoercibleTo(xTargetTypeId, pExpr, pRootNode)) {
       aiCoercibleTargets[i] += 1;
     }
   }
@@ -1244,41 +1246,40 @@ eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[CT_ENUMS], i8 iMaxCoun
 /* Note that the system may support additional explicit casts, but only the   */
 /* implicit ones are done automatically.                                      */
 /*----------------------------------------------------------------------------*/
-b1 Expr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+b1 Expr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
-  ASSERT(Expr::iType(pExpr, pRootNode) != CT_NONE);
+  ASSERT(Expr::xTypeId(pExpr, pRootNode).bIsValid());
 
   // If we have a literal then we need to check whether we can convert it appropriately.
   // e.g. we can convert '2000-01-01' to a CT_DATE, but not '2000_01_01'.
 
   if (LiteralExpr::bIsOfType(pExpr)) {
-    return LiteralExpr::bIsImplicitlyCoercibleTo(iTargetTypeId, pExpr, pRootNode);
+    return LiteralExpr::bIsImplicitlyCoercibleTo(xTargetTypeId, pExpr, pRootNode);
   }
 
   // Otherwise we need to cast the expression, so let's ask it whether it can be coerced.
-  return CastExpr::bIsImplicitlyCoercibleTo(iTargetTypeId, pExpr, pRootNode);
+  return CastExpr::bIsImplicitlyCoercibleTo(xTargetTypeId, pExpr, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns a new expression object which represents pExpr coerced to eTarget  */
 /*----------------------------------------------------------------------------*/
-QueryNode* Expr::pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+QueryNode* Expr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
-  ASSERT(iTargetTypeId > CT_NONE);
-  ASSERT(iTargetTypeId < CT_ENUMS);
+  ASSERT(xTargetTypeId.bIsValid());
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
-  ASSERT(Expr::iType(pExpr, pRootNode) != CT_NONE);
+  ASSERT(Expr::xTypeId(pExpr, pRootNode).bIsValid());
 
   // If we have a literal then we will simply replace it with another literal.
   if (LiteralExpr::bIsOfType(pExpr)) {
-    return LiteralExpr::pCoerceTo(iTargetTypeId, pExpr, pRootNode);
+    return LiteralExpr::pCoerceTo(xTargetTypeId, pExpr, pRootNode);
   }
 
   // Otherwise we need to cast the expression.
-  return CastExpr::pCoerceTo(iTargetTypeId, pExpr, pRootNode);
+  return CastExpr::pCoerceTo(xTargetTypeId, pExpr, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

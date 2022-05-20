@@ -38,7 +38,7 @@ PlanNode* SqlIntervalYM::pCreate()
 
   // Add in any common properties
   // TODO: Set the correct typeId below
-  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(IV_YEAR_TO_MONTH));
+  SqlType::vCreateCommon(pNode, TypeId::xIdOf(IV_YEAR_TO_MONTH));
 
   return pNode;
 }

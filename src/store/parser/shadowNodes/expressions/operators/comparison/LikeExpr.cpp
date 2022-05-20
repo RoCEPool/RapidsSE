@@ -206,7 +206,7 @@ b1 LikeExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-i8 LikeExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId LikeExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -216,28 +216,28 @@ i8 LikeExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pEscapeNode    = pEscape(pExprNode);
 
   if (pEscapeNode) {
-    eCT eEscapeType = TypeSystem::eCTVal(Expr::iType(pEscapeNode, pRootNode));
+    eCT eEscapeType = Expr::xTypeId(pEscapeNode, pRootNode).eCTVal();
   
     switch (eEscapeType) {
       case CT_UNKNOWN:
-        return CT_UNKNOWN;
+        return TypeId::xIdOf(CT_UNKNOWN);
 
       case CT_CHAR:
       case CT_VARCHAR:
         break;
 
       default:
-        return CT_NONE;
+        return TypeId::xIdOf(CT_NONE);
     }
   }
 
-  eCT ePredicand = TypeSystem::eCTVal(Expr::iType(pPredicandNode, pRootNode));
-  eCT ePattern   = TypeSystem::eCTVal(Expr::iType(pPatternNode, pRootNode));
+  eCT ePredicand = Expr::xTypeId(pPredicandNode, pRootNode).eCTVal();
+  eCT ePattern   = Expr::xTypeId(pPatternNode, pRootNode).eCTVal();
 
   // Lookup the type of the result
   eCT eResult = aeTypeCalculus[ePredicand][ePattern];
 
-  return TypeSystem::iIdOf(eResult);
+  return TypeId::xIdOf(eResult);
 }
 
 /*============================================================================*/

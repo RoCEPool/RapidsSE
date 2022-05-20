@@ -5,6 +5,7 @@
 
 #include "LiteralExpr.hpp"
 #include "PlanNode.hpp"
+#include "TypeId.hpp"
 
 namespace Parser
 {
@@ -30,7 +31,7 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
 
     // Returns the resulting type of the expression operation
-    static i8 iType(QueryNode* pNode, PlanNode* pRootNode);
+    static TypeId xTypeId(QueryNode* pNode, PlanNode* pRootNode);
 
     // Parse a string into a Bcd, setting bResult to true if successful
     static Bcd xParseStr(Stz* szStr, b1& bResult);

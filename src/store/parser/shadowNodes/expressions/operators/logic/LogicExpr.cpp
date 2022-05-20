@@ -65,19 +65,19 @@ b1 LogicExpr::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-i8 LogicExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId LogicExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
       ASSERT(bIsOfType(pExprNode));
 
   // TODO: manual expression polymorphism here
 
-  if      (   AndExpr::bIsOfType(pExprNode))    { return AndExpr::iType(pExprNode, pRootNode);  }
-  else if (    OrExpr::bIsOfType(pExprNode))    { return OrExpr::iType(pExprNode, pRootNode);  }
-  else if (   XorExpr::bIsOfType(pExprNode))    { return XorExpr::iType(pExprNode, pRootNode);  }
-  else if (   NotExpr::bIsOfType(pExprNode))    { return NotExpr::iType(pExprNode, pRootNode);  }
-  else if (IsNullExpr::bIsOfType(pExprNode))    { return IsNullExpr::iType(pExprNode, pRootNode);  }
-//  else if (LikeExpr::bIsOfType(pExprNode))    { return   LikeExpr::eType(pExprNode, pRootNode);  }
+  if      (   AndExpr::bIsOfType(pExprNode))    { return    AndExpr::xTypeId(pExprNode, pRootNode);  }
+  else if (    OrExpr::bIsOfType(pExprNode))    { return     OrExpr::xTypeId(pExprNode, pRootNode);  }
+  else if (   XorExpr::bIsOfType(pExprNode))    { return    XorExpr::xTypeId(pExprNode, pRootNode);  }
+  else if (   NotExpr::bIsOfType(pExprNode))    { return    NotExpr::xTypeId(pExprNode, pRootNode);  }
+  else if (IsNullExpr::bIsOfType(pExprNode))    { return IsNullExpr::xTypeId(pExprNode, pRootNode);  }
+//else if (LikeExpr::bIsOfType(pExprNode))             { return   LikeExpr::eType(pExprNode, pRootNode);           }
   else NEVER_REACH
 }
 

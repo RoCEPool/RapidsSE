@@ -141,7 +141,7 @@ b1 SubqueryRefExpr::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-i8 SubqueryRefExpr::iType(QueryNode* pNode, PlanNode* pRootNode)
+TypeId SubqueryRefExpr::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -160,10 +160,10 @@ i8 SubqueryRefExpr::iType(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pColumnDef);
   ASSERT(ColumnDef::bIsOfType(pColumnDef));
 
-  i8 iTypeId = ColumnDef::iColumnType(pColumnDef);
-  ASSERT(TypeSystem::bIsValid(iTypeId));
+  TypeId xTypeId = ColumnDef::xColumnType(pColumnDef);
+  ASSERT(xTypeId.bIsValid());
 
-  return iTypeId;
+  return xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -37,7 +37,7 @@ PlanNode* SqlFloat::pCreate()
   QueryNode* pNode = new QueryNode(sName, C_SQLFLOAT_DEFN);
 
   // Add in any common properties
-  SqlType::vCreateCommon(pNode, TypeSystem::iIdOf(CT_FLOAT));
+  SqlType::vCreateCommon(pNode, TypeId::xIdOf(CT_FLOAT));
 
   return pNode;
 }

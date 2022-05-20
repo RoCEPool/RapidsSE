@@ -172,7 +172,7 @@ PlanNodeIter* InExpr::pRightExprIter(PlanNode* pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-i8 InExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId InExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -182,14 +182,14 @@ i8 InExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pChild1 = _pQueryNode(pExprNode->pFirstChild());
   QueryNode* pChild2 = _pQueryNode(pExprNode->pSecondChild());
 
-  eCT eOperand1 = TypeSystem::eCTVal(Expr::iType(pChild1, pRootNode));
-  eCT eOperand2 = TypeSystem::eCTVal(Expr::iType(pChild2, pRootNode));
+  eCT eOperand1 = Expr::xTypeId(pChild1, pRootNode).eCTVal();
+  eCT eOperand2 = Expr::xTypeId(pChild2, pRootNode).eCTVal();
 
   // Lookup the type of the result
   eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
 
   if (eResult == CT_NONE || pExprNode->nChildren() <= 2) {
-    return eResult;
+    return TypeId::xIdOf(eResult);
   }
 
   // Check that all subsequent operands are of the same type as eOperand2
@@ -201,7 +201,7 @@ i8 InExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
     QueryNode* pChild = _pQueryNode(pIter->pNext());
     ASSERT(Expr::bIsOfType(pChild));
 
-    eCT eChildType = TypeSystem::eCTVal(Expr::iType(pChild, pRootNode));
+    eCT eChildType = Expr::xTypeId(pChild, pRootNode).eCTVal();
 
     if (eChildType != eOperand2) {
       eResult = CT_NONE;
@@ -210,7 +210,7 @@ i8 InExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   }
 
   delete pIter;
-  return TypeSystem::iIdOf(eResult);
+  return TypeId::xIdOf(eResult);
 }
 
 /*============================================================================*/

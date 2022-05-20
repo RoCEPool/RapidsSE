@@ -8,6 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "NodeNamer.hpp"
+#include "TypeId.hpp"
 
 using namespace Parser;
 
@@ -95,14 +96,14 @@ b1 TimeLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-i8 TimeLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId TimeLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return CT_TIME;
+  return TypeId::xIdOf(CT_TIME);
 }
 
 /*----------------------------------------------------------------------------*/

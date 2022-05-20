@@ -68,12 +68,12 @@ static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-QueryNode* CastExpr::pCreate(QueryNode* pTargetExpr, i8 iTypeId)
+QueryNode* CastExpr::pCreate(QueryNode* pTargetExpr, TypeId xTypeId)
 {
   _static_
   ASSERT(pTargetExpr);
   ASSERT(Expr::bIsOfType(pTargetExpr));
-  ASSERT(TypeSystem::bIsValid(iTypeId));
+  ASSERT(xTypeId.bIsValid());
 
   // Create a unique name for this object
   s256 sName;
@@ -82,7 +82,7 @@ QueryNode* CastExpr::pCreate(QueryNode* pTargetExpr, i8 iTypeId)
   QueryNode* pCastExpr = new QueryNode(sName, C_DEFN);
   pCastExpr->vAppendChild(pTargetExpr);
 
-  QueryNode* pTargetType = SqlType::pCreate(iTypeId);
+  QueryNode* pTargetType = SqlType::pCreate(xTypeId);
   pTargetType->vSetName(C_TARGETTYPE_PROP);
   pCastExpr->vAppendProperty(pTargetType);
 
@@ -161,7 +161,7 @@ b1 CastExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of -1 means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-i8 CastExpr::iType(QueryNode* pNode, PlanNode* pRootNode)
+TypeId CastExpr::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -170,32 +170,34 @@ i8 CastExpr::iType(QueryNode* pNode, PlanNode* pRootNode)
   QueryNode* pTargetExprNode = CastExpr::pTargetExpr(pNode);
   QueryNode* pSqlTypeNode    = CastExpr::pSqlTypeNode(pNode);
 
-  i8 iTargetExprTypeId = Expr::iType(pTargetExprNode, pRootNode);
-  eCT eTargetExprType  = TypeSystem::eCTVal(iTargetExprTypeId);
+  TypeId xTargetExprTypeId = Expr::xTypeId(pTargetExprNode, pRootNode);
+  eCT eTargetExprType  = xTargetExprTypeId.eCTVal();
 
-  eCT eSqlType  = TypeSystem::eCTVal(SqlType::iTypeId(pSqlTypeNode));
+  eCT eSqlType  = SqlType::xTypeId(pSqlTypeNode).eCTVal();
 
   eCT eResultSrcType = aeTypeCalculus[eTargetExprType][eSqlType];
 
   // TODO: Handle intervals
-  return TypeSystem::iIdOf(eResultSrcType);
+  return TypeId::xIdOf(eResultSrcType);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if an expr can be coerced to a given data type via a cast     */
 /*----------------------------------------------------------------------------*/
-b1 CastExpr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
 
-  i8 iCurrentType = Expr::iType(pExpr, pRootNode);
-  eCT eCurrentType = TypeSystem::eCTVal(iCurrentType);
+  TypeId xCurrentType = Expr::xTypeId(pExpr, pRootNode);
+  eCT eCurrentType = xCurrentType.eCTVal();
 
-  eCT eTargetTypeId = TypeSystem::eCTVal(iTargetTypeId);
+  eCT eTargetTypeId = xTargetTypeId.eCTVal();
+
+  // TODO: Handle intervals
 
   // We can always cast the current type to itself
-  if (iCurrentType == iTargetTypeId) {
+  if (xCurrentType == xTargetTypeId) {
     ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
     return true;
   }
@@ -246,21 +248,22 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNo
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns a new expression object which represents pExpr coerced to iTypeId  */
+/* Returns a new expression object which represents pExpr coerced to xTypeId  */
 /*----------------------------------------------------------------------------*/
-QueryNode* CastExpr::pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+QueryNode* CastExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
-  ASSERT(TypeSystem::bIsValid(iTargetTypeId));
+  ASSERT(xTargetTypeId.bIsValid());
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
-  ASSERT(TypeSystem::bIsValid(Expr::iType(pExpr, pRootNode)));
+  ASSERT(Expr::xTypeId(pExpr, pRootNode).bIsValid());
 
   // TODO: Can we do this in terms of iTypeId?
-  eCT eTargetType = TypeSystem::eCTVal(iTargetTypeId);
-  ASSERT(aeTypeCalculus[Expr::iType(pExpr, pRootNode)][eTargetType]);
+  eCT eCurrentType = Expr::xTypeId(pExpr, pRootNode).eCTVal();
+  eCT eTargetType = xTargetTypeId.eCTVal();
+  ASSERT(aeTypeCalculus[eCurrentType][eTargetType]);
 
   QueryNode* pExprCopy = pExpr->pDeepCopy(true);
-  QueryNode* pCastExpr = CastExpr::pCreate(pExprCopy, iTargetTypeId);
+  QueryNode* pCastExpr = CastExpr::pCreate(pExprCopy, xTargetTypeId);
   return pCastExpr;
 }
 

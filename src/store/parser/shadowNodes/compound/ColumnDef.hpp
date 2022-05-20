@@ -5,6 +5,7 @@
 
 #include "ShadowNode.hpp"
 #include "SqlType.hpp"
+#include "TypeId.hpp"
 
 namespace Parser
 {
@@ -36,7 +37,7 @@ namespace Parser
     static Stz* szSchemaName(QueryNode* pNode);
     static Stz* szTableName(QueryNode* pNode);
     static Stz* szColumnName(QueryNode* pNode);
-    static i8   iColumnType(QueryNode* pNode);
+    static TypeId xColumnType(QueryNode* pNode);
     static b1   bNotNull(QueryNode* pNode);
     static i8   iOrdinal(QueryNode* pNode);   // 0 based column number
     static i8   iPrecision(QueryNode* pNode); // returns -1 if not set or n/a

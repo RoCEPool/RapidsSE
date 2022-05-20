@@ -155,7 +155,7 @@ b1 ExtractExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-i8 ExtractExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId ExtractExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -164,12 +164,12 @@ i8 ExtractExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pExpr = ExtractExpr::pSourceExpr(pExprNode);
 
   ExtractField::eEF eOperand1 = eExtractField(pExprNode);
-  eCT               eOperand2 = TypeSystem::eCTVal(Expr::iType(pExpr, pRootNode));
+  eCT               eOperand2 = Expr::xTypeId(pExpr, pRootNode).eCTVal();
 
   // Lookup the type of the result
   eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
 
-  return TypeSystem::iIdOf(eResult);
+  return TypeId::xIdOf(eResult);
 }
 
 /*============================================================================*/

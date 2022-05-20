@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "TypeId.hpp"
 #include "eCT.h"
 #include "eIV.h"
 
@@ -14,24 +15,23 @@ namespace Parser
 {
   class TypeSystem
   {
+    friend class TypeId;
+
     private:
     TypeSystem(); // Not to be initialised. Static class only
-    ~TypeSystem();
 
+    static b1 bIsValid(TypeId xTypeId);
 
-    public:
-    static b1 bIsValid(i8 iTypeId);
+    static TypeId xParentTypeId(TypeId xTypeId);
+    static eCT    eCTVal(TypeId xTypeId);
+    static eIV    eIVVal(TypeId xTypeId);
+    static b1     bIsAbstract(TypeId xTypeId);
+    static Stz*   szNamespace(TypeId xTypeId);
+    static Stz*   szTypeName(TypeId xTypeId);
 
-    static i8   iParentId(i8 iTypeId);
-    static eCT  eCTVal(i8 iTypeId);
-    static eIV  eIVVal(i8 iTypeId);
-    static b1   bIsAbstract(i8 iTypeId);
-    static Stz* szNamespace(i8 iTypeId);
-    static Stz* szTypeName(i8 iTypeId);
-
-    static i8 iIdOf(eCT eVal);
-    static i8 iIdOf(eIV eVal);
-    static i8 iIdOf(Stz* szNamespace, Stz* szTypeName);
+    static TypeId xIdOf(eCT eVal);
+    static TypeId xIdOf(eIV eVal);
+    static TypeId xIdOf(Stz* szNamespace, Stz* szTypeName);
 
 
   };

@@ -167,7 +167,7 @@ b1 SubtractionExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-i8 SubtractionExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId SubtractionExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -176,13 +176,13 @@ i8 SubtractionExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pChild1 = SubtractionExpr::pChild1(pExprNode);
   QueryNode* pChild2 = SubtractionExpr::pChild2(pExprNode);
 
-  eCT eOperand1 = TypeSystem::eCTVal(Expr::iType(pChild1, pRootNode));
-  eCT eOperand2 = TypeSystem::eCTVal(Expr::iType(pChild2, pRootNode));
+  eCT eOperand1 = Expr::xTypeId(pChild1, pRootNode).eCTVal();
+  eCT eOperand2 = Expr::xTypeId(pChild2, pRootNode).eCTVal();
 
   // Lookup the type of the result
   eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
 
-  return TypeSystem::iIdOf(eResult);
+  return TypeId::xIdOf(eResult);
 }
 
 /*============================================================================*/

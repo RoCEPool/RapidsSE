@@ -70,12 +70,12 @@ static Stz* C_TYPEID_PROP  = "typeId"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Create a type from enum with default properties                            */
 /*----------------------------------------------------------------------------*/
-QueryNode* SqlType::pCreate(i8 iTypeId)
+QueryNode* SqlType::pCreate(TypeId xTypeId)
 {
   _static_
-  ASSERT(TypeSystem::bIsValid(iTypeId));
+  ASSERT(xTypeId.bIsValid());
 
-  eCT eType = TypeSystem::eCTVal(iTypeId);
+  eCT eType = xTypeId.eCTVal();
   QueryNode* pNode;
 
   // Manual Polymorphism
@@ -140,15 +140,15 @@ QueryNode* SqlType::pCreate(i8 iTypeId)
 /*----------------------------------------------------------------------------*/
 /* Create common properties in the given node                                 */
 /*----------------------------------------------------------------------------*/
-void SqlType::vCreateCommon(QueryNode* pNode, i8 iTypeId)
+void SqlType::vCreateCommon(QueryNode* pNode, TypeId xTypeId)
 {
   _static_
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));
-  ASSERT(TypeSystem::bIsValid(iTypeId));
+  ASSERT(xTypeId.bIsValid());
 
   // Add in the typeId property
-  QueryNode* pTypeIdNode = IntegerObject::pCreate(iTypeId);
+  QueryNode* pTypeIdNode = IntegerObject::pCreate(xTypeId.iIdVal());
   pTypeIdNode->vSetName(C_TYPEID_PROP);
   pNode->vAppendProperty(pTypeIdNode);
 }
@@ -202,24 +202,24 @@ Stz* SqlType::szTypeName(PlanNode *pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  i8 iTypeId = SqlType::iTypeId(pNode);
-  ASSERT(TypeSystem::bIsValid(iTypeId));
+  TypeId xTypeId = SqlType::xTypeId(pNode);
+  ASSERT(xTypeId.bIsValid());
 
-  return TypeSystem::szTypeName(iTypeId);
+  return xTypeId.szTypeName();
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns the typeId of a SQL data type given a node                         */
 /*----------------------------------------------------------------------------*/
-i8 SqlType::iTypeId(PlanNode* pNode)
+TypeId SqlType::xTypeId(PlanNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
   QueryNode* pTypeIdNode = _pQueryNode(GraphNav::pFindProperty(C_TYPEID_PROP, pNode));
   ASSERT(IntegerObject::bIsOfType(pTypeIdNode));
 
-  i8 iTypeId = pTypeIdNode->iValue();
-  return iTypeId;
+  TypeId xTypeId{pTypeIdNode->iValue()};
+  return xTypeId;
 }
 
 

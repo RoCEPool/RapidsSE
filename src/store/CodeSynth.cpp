@@ -1840,7 +1840,7 @@ void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
     else {
 
       if (pColumn->iColumnType() == TypeSystem::eCTVal(CT_VARCHAR) ||
-          pColumn->iColumnType() == TypeSystem::eCTVal(CT_CHAR)) {
+          pColumn->xColumnType() == TypeSystem::eCTVal(CT_CHAR)) {
         sCopy.vSprint("\n    %s(p%s->%s)"_Stz,
                       sOperation.azChar(),
                       xRowRef[m_eStencilTo].m_szInclude, sColOutNm.azChar());

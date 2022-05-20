@@ -81,18 +81,18 @@ b1 AggregateExpr::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-i8 AggregateExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId AggregateExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
 
   // TODO: manual expression polymorphism here
 
-  if      (CountExpr::bIsOfType(pExprNode))  { return CountExpr::iType(pExprNode, pRootNode); }
-  else if (  SumExpr::bIsOfType(pExprNode))  { return SumExpr::iType(pExprNode, pRootNode); }
-  else if (  MinExpr::bIsOfType(pExprNode))  { return MinExpr::iType(pExprNode, pRootNode); }
-  else if (  MaxExpr::bIsOfType(pExprNode))  { return MaxExpr::iType(pExprNode, pRootNode); }
-  else if (  AvgExpr::bIsOfType(pExprNode))  { return AvgExpr::iType(pExprNode, pRootNode); }
+  if      (CountExpr::bIsOfType(pExprNode))  { return CountExpr::xTypeId(pExprNode, pRootNode); }
+  else if (  SumExpr::bIsOfType(pExprNode))  {   return SumExpr::xTypeId(pExprNode, pRootNode); }
+  else if (  MinExpr::bIsOfType(pExprNode))  {   return MinExpr::xTypeId(pExprNode, pRootNode); }
+  else if (  MaxExpr::bIsOfType(pExprNode))  {   return MaxExpr::xTypeId(pExprNode, pRootNode); }
+  else if (  AvgExpr::bIsOfType(pExprNode))  {   return AvgExpr::xTypeId(pExprNode, pRootNode); }
   else NEVER_REACH
 }
 

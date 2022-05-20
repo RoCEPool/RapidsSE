@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Types.hpp"
+#include "TypeId.hpp"
 
 namespace Parser
 {
@@ -18,7 +19,7 @@ namespace Parser
 
 
   public:
-    static QueryNode* pCreate(i8 iTypeId);
+    static QueryNode* pCreate(TypeId xTypeId);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **
@@ -28,10 +29,10 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
 
     static Stz* szTypeName(PlanNode* pNode);
-    static i8   iTypeId(PlanNode* pNode);
+    static TypeId xTypeId(PlanNode* pNode);
 
   protected:
-    static void vCreateCommon(QueryNode* pNode, i8 iTypeId);
+    static void vCreateCommon(QueryNode* pNode, TypeId xTypeId);
   };
 
 }

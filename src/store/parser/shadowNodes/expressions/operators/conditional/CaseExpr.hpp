@@ -40,7 +40,7 @@ namespace Parser
 
     // Returns the resulting type of the expression operation.
     // A returned value of CT_NONE means that it is not supported or invalid.
-    static i8 iType(QueryNode* pNode, PlanNode* pRootNode);
+    static TypeId xTypeId(QueryNode* pNode, PlanNode* pRootNode);
 
     // Modifies subexpressions by promoting/casting data types so that they
     // are type compatible with this expression. Modifies the expression

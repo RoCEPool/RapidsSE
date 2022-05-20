@@ -223,7 +223,7 @@ b1 SubstringExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-i8 SubstringExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId SubstringExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -233,9 +233,9 @@ i8 SubstringExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pFromExprNode   = SubstringExpr::pFromExpr(pExprNode);
   QueryNode* pLengthExprNode = SubstringExpr::pLengthExpr(pExprNode);
 
-  eCT eSrcType    = TypeSystem::eCTVal(Expr::iType(pSrcExprNode, pRootNode));
-  eCT eFromType   = TypeSystem::eCTVal(Expr::iType(pFromExprNode, pRootNode));
-  eCT eLengthType = (pLengthExprNode ? TypeSystem::eCTVal(Expr::iType(pLengthExprNode, pRootNode)) : CT_INTEGER);
+  eCT eSrcType    = Expr::xTypeId(pSrcExprNode, pRootNode).eCTVal();
+  eCT eFromType   = Expr::xTypeId(pFromExprNode, pRootNode).eCTVal();
+  eCT eLengthType = (pLengthExprNode ? Expr::xTypeId(pLengthExprNode, pRootNode).eCTVal() : CT_INTEGER);
 
   eCT eResultSrcType    = aeSrcExprTypeCalculus[eSrcType];
   eCT eResultFromType   = aeFromExprTypeCalculus[eFromType];
@@ -244,16 +244,16 @@ i8 SubstringExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   if (eResultSrcType    == CT_NONE ||
       eResultFromType   == CT_NONE ||
       eResultLengthType == CT_NONE) {
-    return TypeSystem::iIdOf(CT_NONE);
+    return TypeId::xIdOf(CT_NONE);
   }
 
   if (eResultSrcType    == CT_UNKNOWN ||
       eResultFromType   == CT_UNKNOWN ||
       eResultLengthType == CT_UNKNOWN) {
-    return TypeSystem::iIdOf(CT_UNKNOWN);
+    return TypeId::xIdOf(CT_UNKNOWN);
   }
 
-  return TypeSystem::iIdOf(eResultSrcType);
+  return TypeId::xIdOf(eResultSrcType);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -274,7 +274,7 @@ void SubstringExpr::vCoerceSubExprs(QueryNode* pSubstringExpr, PlanNode* pRootNo
   // Substring Length
   QueryNode* pLength = pLengthExpr(pSubstringExpr);
 
-  if (pLength && Expr::iType(pLength, pRootNode) != CT_INTEGER) {
+  if (pLength && Expr::xTypeId(pLength, pRootNode) != TypeId::xIdOf(CT_INTEGER)) {
     Expr::vCoerceSubExprs(pLength, pRootNode);
   }
 
@@ -282,7 +282,7 @@ void SubstringExpr::vCoerceSubExprs(QueryNode* pSubstringExpr, PlanNode* pRootNo
   QueryNode* pStartPos = pFromExpr(pSubstringExpr);
   ASSERT(pStartPos);
 
-  if (Expr::iType(pStartPos, pRootNode) != CT_INTEGER) {
+  if (Expr::xTypeId(pStartPos, pRootNode) != TypeId::xIdOf(CT_INTEGER)) {
     Expr::vCoerceSubExprs(pStartPos, pRootNode);
   }
 
@@ -290,17 +290,17 @@ void SubstringExpr::vCoerceSubExprs(QueryNode* pSubstringExpr, PlanNode* pRootNo
   QueryNode* pStrSrc = pSrcExpr(pSubstringExpr);
   ASSERT(pStartPos);
 
-  eCT eStrSrcType = TypeSystem::eCTVal(Expr::iType(pStrSrc, pRootNode));
+  eCT eStrSrcType = Expr::xTypeId(pStrSrc, pRootNode).eCTVal();
   if (eStrSrcType != CT_CHAR &&
       eStrSrcType != CT_VARCHAR &&
       eStrSrcType != CT_UNKNOWN &&
-      Expr::bIsImplicitlyCoercibleTo(CT_VARCHAR, pStrSrc, pRootNode)) {
+      Expr::bIsImplicitlyCoercibleTo(TypeId::xIdOf(CT_VARCHAR), pStrSrc, pRootNode)) {
 
     // We don't need to worry about pStrSrc being a compound expression where a
     // lower branch of it requires coercion because we walk the expression graphs
     // in nameValidate and exprValidate and this would have already been corrected
     // if needed. So we only need to ensure that the type of pStrSrc is a string.
-    QueryNode* pNewStrSrc = Expr::pCoerceTo(CT_VARCHAR, pStrSrc, pRootNode);
+    QueryNode* pNewStrSrc = Expr::pCoerceTo(TypeId::xIdOf(CT_VARCHAR), pStrSrc, pRootNode);
     GraphEditor::vReplaceChild(pSubstringExpr, pStrSrc, pNewStrSrc);
   }
 }

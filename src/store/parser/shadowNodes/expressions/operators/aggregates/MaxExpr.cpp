@@ -131,7 +131,7 @@ b1 MaxExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-i8 MaxExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId MaxExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -139,13 +139,13 @@ i8 MaxExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
   // Get the types of the operand
   QueryNode* pChild1 = MaxExpr::pChild1(pExprNode);
 
-  i8 iOperand1TypeId = Expr::iType(pChild1, pRootNode);
-  eCT eOperand1 = TypeSystem::eCTVal(iOperand1TypeId);
+  TypeId xOperand1TypeId = Expr::xTypeId(pChild1, pRootNode);
+  eCT eOperand1 = xOperand1TypeId.eCTVal();
 
   // Lookup the type of the result
   eCT eResult = aeTypeCalculus[eOperand1];
 
-  return TypeSystem::iIdOf(eResult);
+  return TypeId::xIdOf(eResult);
 }
 
 /*============================================================================*/

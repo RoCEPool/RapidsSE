@@ -165,7 +165,7 @@ b1 ColumnRef::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-i8 ColumnRef::iType(QueryNode* pNode, PlanNode* pRootNode)
+TypeId ColumnRef::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -200,23 +200,23 @@ i8 ColumnRef::iType(QueryNode* pNode, PlanNode* pRootNode)
     ASSERT(pColumnDef);
     ASSERT(ColumnDef::bIsOfType(pColumnDef));
 
-    i8 iTypeId = ColumnDef::iColumnType(pColumnDef);
-    ASSERT(TypeSystem::bIsValid(iTypeId));
+    TypeId xTypeId = ColumnDef::xColumnType(pColumnDef);
+    ASSERT(xTypeId.bIsValid());
 
-    return iTypeId;
+    return xTypeId;
   }
 
   QueryNode* pColumnDef = MetadataNode::pColumnDef(pMetadata,
                                                    szCatalog,
                                                    szSchema,
-                                                   szTable,
+                                                     szTable,
                                                    szColumn);
   ASSERT(pColumnDef);
 
-  i8 iTypeId = ColumnDef::iColumnType(pColumnDef);
-  ASSERT(TypeSystem::bIsValid(iTypeId));
+  TypeId xTypeId = ColumnDef::xColumnType(pColumnDef);
+  ASSERT(xTypeId.bIsValid());
 
-  return iTypeId;
+  return xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/

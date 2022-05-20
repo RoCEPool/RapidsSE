@@ -99,7 +99,7 @@ b1 AliasRef::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-i8 AliasRef::iType(QueryNode* pNode, PlanNode* pRootNode)
+TypeId AliasRef::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -110,8 +110,8 @@ i8 AliasRef::iType(QueryNode* pNode, PlanNode* pRootNode)
   QueryNode* pAliasExpr = _pQueryNode(GraphNav::pFindProperty(C_ALIASEXPR_PROP, pNode));
   ASSERT(pAliasExpr);
 
-  i8 iTypeId = Expr::iType(pAliasExpr, pRootNode);
-  return iTypeId;
+  TypeId xTypeId = Expr::xTypeId(pAliasExpr, pRootNode);
+  return xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/

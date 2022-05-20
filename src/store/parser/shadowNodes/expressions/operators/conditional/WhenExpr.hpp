@@ -34,7 +34,7 @@ namespace Parser
 
     // Returns the resulting type of the expression operation.
     // A returned value of CT_NONE means that it is not supported or invalid.
-    static i8 iType(QueryNode* pNode, PlanNode* pRootNode);
+    static TypeId xTypeId(QueryNode* pNode, PlanNode* pRootNode);
 
     // Modifies subexpressions by promoting/casting data types so that they
     // are type compatible with this expression. Modifies the expression
@@ -42,7 +42,7 @@ namespace Parser
     static void vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode);
 
     // Tries to coerce the result expression of this WHEN statement to a given type
-    static void vCoerceResultExprTo(eCT eCoercibleTarget, QueryNode* pWhenExpr, PlanNode* pRootNode);
+    static void vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pWhenExpr, PlanNode* pRootNode);
   };
 
 }

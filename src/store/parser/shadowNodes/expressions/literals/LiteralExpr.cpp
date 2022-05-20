@@ -85,30 +85,30 @@ b1 LiteralExpr::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-i8 LiteralExpr::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId LiteralExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
   UNUSED(pRootNode);
 
-  if      (      StringLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(CT_VARCHAR);     }
-  else if (     BooleanLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(CT_BOOLEAN);     }
-  else if (     IntegerLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(CT_INTEGER);     }
-  else if (       FloatLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(CT_FLOAT);       }
-  else if (     DecimalLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(CT_DECIMAL);     }
-  else if (        DateLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(CT_DATE);        }
-  else if (        TimeLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(CT_TIME);        }
-  else if (   TimestampLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(CT_TIMESTAMP);   }
-//  else if (IntervalYMLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(CT_INTERVAL_YM); }
-//  else if (IntervalDTLiteral::bIsOfType(pExprNode))  { return TypeSystem::iIdOf(CT_INTERVAL_DT); }
-  else if (      NullLiteral::bIsOfType(pExprNode))    { return TypeSystem::iIdOf(CT_UNKNOWN);     }
+  if      (      StringLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_VARCHAR);     }
+  else if (     BooleanLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_BOOLEAN);     }
+  else if (     IntegerLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_INTEGER);     }
+  else if (       FloatLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_FLOAT);       }
+  else if (     DecimalLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_DECIMAL);     }
+  else if (        DateLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_DATE);        }
+  else if (        TimeLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_TIME);        }
+  else if (   TimestampLiteral::bIsOfType(pExprNode))  { return TypeId::xIdOf(CT_TIMESTAMP);   }
+//else if (  IntervalYMLiteral::bIsOfType(pExprNode))         { return TypeId::xIdOf(CT_INTERVAL_YM); }
+//else if (  IntervalDTLiteral::bIsOfType(pExprNode))         { return TypeId::xIdOf(CT_INTERVAL_DT); }
+  else if (      NullLiteral::bIsOfType(pExprNode))    { return TypeId::xIdOf(CT_UNKNOWN);     }
   else NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if an expr can be implicitly coerced to a given data type     */
 /*----------------------------------------------------------------------------*/
-b1 LiteralExpr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+b1 LiteralExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(LiteralExpr::bIsOfType(pExpr));
@@ -118,23 +118,24 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, Pla
   //       supported, it's just that the system isn't doing it automatically and
   //       therefore it is up to the user to *explicitly* apply a cast expression.
 
-  i8 iCurrentTypeId = LiteralExpr::iType(pExpr, pRootNode);
-  eCT eCurrentType = TypeSystem::eCTVal(iCurrentTypeId);
+  TypeId xCurrentTypeId = LiteralExpr::xTypeId(pExpr, pRootNode);
+  eCT eCurrentType = xCurrentTypeId.eCTVal();
+  eCT eTargetType = xTargetTypeId.eCTVal();
   // TODO: handle intervals
 
   // We can always coerce the current type to itself
-  if (eCurrentType == iTargetTypeId)                              { return true; }
+  if (xCurrentTypeId == xTargetTypeId)                              { return true; }
 
   Stz* szStr;
 
   switch (eCurrentType) {
 
     case CT_INTEGER:
-      if (iTargetTypeId == CT_DECIMAL || iTargetTypeId == CT_FLOAT)     { return true; }
+      if (eTargetType == CT_DECIMAL || eTargetType == CT_FLOAT)     { return true; }
       break;
 
     case CT_DECIMAL:
-      if (iTargetTypeId == CT_FLOAT)                              { return true; }
+      if (eTargetType == CT_FLOAT)                              { return true; }
       break;
 
     // Note: The string conversions are dependent on value of the string itself.
@@ -142,34 +143,34 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, Pla
     case CT_CHAR:
       szStr = StringLiteral::szValue(pExpr);
 
-      if (iTargetTypeId == CT_INTEGER && StrLib::bIsInteger(szStr->azChar()))         { return true; }
-      if (iTargetTypeId == CT_DECIMAL &&
+      if (eTargetType == CT_INTEGER && StrLib::bIsInteger(szStr->azChar()))         { return true; }
+      if (eTargetType == CT_DECIMAL &&
           (
               StrLib::bIsInteger(szStr->azChar()) ||
               StrLib::bIsDecimal(szStr->azChar())
           ))   { return true; }
-      if (iTargetTypeId == CT_FLOAT &&
+      if (eTargetType == CT_FLOAT &&
           (
               StrLib::bIsInteger(szStr->azChar()) ||
               StrLib::bIsDecimal(szStr->azChar()) ||
               StrLib::bIsFloat(szStr->azChar())
           ))   { return true; }
-      if (iTargetTypeId == CT_DATE && DateLiteral::bIsDateStr(szStr))              { return true; }
-      if (iTargetTypeId == CT_TIME && TimeLiteral::bIsTimeStr(szStr))              { return true; }
-      if (iTargetTypeId == CT_TIMESTAMP &&
+      if (eTargetType == CT_DATE && DateLiteral::bIsDateStr(szStr))              { return true; }
+      if (eTargetType == CT_TIME && TimeLiteral::bIsTimeStr(szStr))              { return true; }
+      if (eTargetType == CT_TIMESTAMP &&
           (
               DateLiteral::bIsDateStr(szStr) ||
               TimestampLiteral::bIsTimestampStr(szStr)
           ))   { return true; }
-      if (iTargetTypeId == CT_CHAR || iTargetTypeId == CT_VARCHAR)      { return true; }
+      if (eTargetType == CT_CHAR || eTargetType == CT_VARCHAR)      { return true; }
       break;
 
     case CT_DATE:
-      if (iTargetTypeId == CT_TIMESTAMP)                          { return true; }
+      if (eTargetType == CT_TIMESTAMP)                          { return true; }
       break;
 
     case CT_BOOLEAN:
-      if (iTargetTypeId == CT_VARCHAR || iTargetTypeId == CT_CHAR)      { return true; }
+      if (eTargetType == CT_VARCHAR || eTargetType == CT_CHAR)      { return true; }
       break;
 
     case CT_UNKNOWN:
@@ -186,24 +187,25 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, Pla
 /*----------------------------------------------------------------------------*/
 /* Returns a new expression object which represents pExpr coerced to eTarget  */
 /*----------------------------------------------------------------------------*/
-QueryNode* LiteralExpr::pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
-  ASSERT(iTargetTypeId > CT_NONE);
-  ASSERT(iTargetTypeId < CT_ENUMS);
+  ASSERT(xTargetTypeId.bIsValid());
   ASSERT(pExpr);
   ASSERT(LiteralExpr::bIsOfType(pExpr));
-  ASSERT(LiteralExpr::iType(pExpr, pRootNode) != CT_NONE);
+  ASSERT(LiteralExpr::xTypeId(pExpr, pRootNode).eCTVal() != CT_NONE);
 
   QueryNode* pCoercedLiteral = nullptr;
   Stz* szStr;
   b1 bParseResult;
   char* pEndPtr;
-  i8 iCurrentTypeId = Expr::iType(pExpr, pRootNode);
-  eCT eCurrentType = TypeSystem::eCTVal(iCurrentTypeId);
+  TypeId xCurrentTypeId = Expr::xTypeId(pExpr, pRootNode);
+  eCT eCurrentType = xCurrentTypeId.eCTVal();
+  eCT eTargetType = xTargetTypeId.eCTVal();
+
   // TODO: handle intervals
 
   // Are we coercing the type to itself?
-  if (eCurrentType == iTargetTypeId) {
+  if (xCurrentTypeId == xTargetTypeId) {
     // Return a new copy as that is what is being expected
     return pExpr->pDeepCopy(false);
   }
@@ -212,18 +214,18 @@ QueryNode* LiteralExpr::pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* 
   switch (eCurrentType) {
 
     case CT_INTEGER:
-      if (iTargetTypeId == CT_DECIMAL) {
+      if (eTargetType == CT_DECIMAL) {
         Bcd xBcd;
         xBcd.vSet(pExpr->iValue(), 0);
         return DecimalLiteral::pCreate(xBcd);
 
-      } else if (iTargetTypeId == CT_FLOAT) {
+      } else if (eTargetType == CT_FLOAT) {
         return FloatLiteral::pCreate((d8) pExpr->iValue());
       }
       NEVER_REACH
 
     case CT_DECIMAL:
-      if (iTargetTypeId == CT_FLOAT) {
+      if (eTargetType == CT_FLOAT) {
         Bcd xBcd = pExpr->xDecimalVal();
 
         // Check to see if the decimal is bigger than what we can fit into a float.
@@ -245,30 +247,30 @@ QueryNode* LiteralExpr::pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* 
     case CT_CHAR:
       szStr = StringLiteral::szValue(pExpr);
 
-      if (iTargetTypeId == CT_INTEGER) {
+      if (eTargetType == CT_INTEGER) {
         return IntegerLiteral::pCreate(StrLib::iToI8(szStr->azChar()));
 
-      } else if (iTargetTypeId == CT_DECIMAL) {
+      } else if (eTargetType == CT_DECIMAL) {
         pCoercedLiteral = DecimalLiteral::pCreate(DecimalLiteral::xParseStr(szStr, bParseResult));
         ASSERT(bParseResult);
         return pCoercedLiteral;
 
-      } else if (iTargetTypeId == CT_FLOAT) {
+      } else if (eTargetType == CT_FLOAT) {
         d8 dVal = strtod(szStr->azChar(), &pEndPtr);
         ASSERT(pEndPtr == nullptr || *pEndPtr == 0);
         return FloatLiteral::pCreate(dVal);
 
-      } else if (iTargetTypeId == CT_DATE) {
+      } else if (eTargetType == CT_DATE) {
         pCoercedLiteral = DateLiteral::pCreate(DateLiteral::xParseStr(szStr, bParseResult));
         ASSERT(bParseResult);
         return pCoercedLiteral;
 
-      } else if (iTargetTypeId == CT_TIME) {
+      } else if (eTargetType == CT_TIME) {
         pCoercedLiteral = TimeLiteral::pCreate(TimeLiteral::xParseStr(szStr, bParseResult));
         ASSERT(bParseResult);
         return pCoercedLiteral;
 
-      } else if (iTargetTypeId == CT_TIMESTAMP) {
+      } else if (eTargetType == CT_TIMESTAMP) {
         if (TimestampLiteral::bIsTimestampStr(szStr)){
           pCoercedLiteral = TimestampLiteral::pCreate(TimestampLiteral::xParseStr(szStr, bParseResult));
 
@@ -285,13 +287,13 @@ QueryNode* LiteralExpr::pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* 
           ASSERT(bParseResult);
         return pCoercedLiteral;
 
-      } else if (iTargetTypeId == CT_CHAR || iTargetTypeId == CT_VARCHAR) {
+      } else if (eTargetType == CT_CHAR || eTargetType == CT_VARCHAR) {
         return pExpr->pDeepCopy(false);
       }
       NEVER_REACH
 
     case CT_DATE:
-      if (iTargetTypeId == CT_TIMESTAMP) {
+      if (eTargetType == CT_TIMESTAMP) {
         Dte xDte = pExpr->xDateVal();
         Tsp xTsp;
         xTsp.vSet(xDte.iYear(), xDte.iMonth(), xDte.iDay(), 0, 0, 0, 0);
@@ -300,7 +302,7 @@ QueryNode* LiteralExpr::pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* 
       NEVER_REACH
 
     case CT_BOOLEAN:
-      if (iTargetTypeId == CT_VARCHAR || iTargetTypeId == CT_CHAR) {
+      if (eTargetType == CT_VARCHAR || eTargetType == CT_CHAR) {
         return StringLiteral::pCreate(pExpr->bValue() ? new Text("TRUE"_Stz) : new Text("FALSE"_Stz));
       }
       NEVER_REACH

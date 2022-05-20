@@ -836,7 +836,8 @@ QueryNode* NameValidator::pCreateBaseTableColumnDefs(Stz* szCatalogName, Stz* sz
 
     // Convert the metadata type string to an enum and use this to create
     // a QueryNode of the correct type.
-    QueryNode* pTypeNode = SqlType::pCreate(static_cast<eCT>(pColMeta->iTypeEnum()));
+    TypeId xTypeId = TypeId::xIdOf(static_cast<eCT>(pColMeta->iTypeEnum()));
+    QueryNode* pTypeNode = SqlType::pCreate(xTypeId);
 
     // Make the column definition node and add it to the list of column definitions
     QueryNode* pColumnDef = ColumnDef::pCreate(pColMeta->szCatalogName(),
@@ -2137,13 +2138,13 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
     QueryNode* pExpr    = _pQueryNode(pNode);
 
     ASSERT(Expr::bIsOfType(pNode));
-    if (Expr::iType(pExpr, pRootNode) == CT_NONE) {
+    if (Expr::xTypeId(pExpr, pRootNode).eCTVal() == CT_NONE) {
       // We might need type coercion here
       Expr::vCoerceSubExprs(pExpr, pRootNode);
 
       // If we still haven't been able to correct the problem then abort any
       // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().
-      if (Expr::iType(pExpr, pRootNode) == CT_NONE) {
+      if (Expr::xTypeId(pExpr, pRootNode).eCTVal() == CT_NONE) {
         return GraphNav::WALK_ABORT;
       }
     }
@@ -2188,7 +2189,7 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
       if (!bResult) {
         // If we still haven't been able to correct the problem then abort any
         // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().
-        ASSERT(Expr::iType(pProjectedExpr, pRootNode) == CT_NONE);
+        ASSERT(Expr::xTypeId(pProjectedExpr, pRootNode).eCTVal() == CT_NONE);
         delete pIter;
         return GraphNav::WALK_ABORT;
       }
@@ -2337,7 +2338,7 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
       }
     }
 
-    eCT eType = TypeSystem::eCTVal(Expr::iType(pColExpr, pRootNode));
+    eCT eType = Expr::xTypeId(pColExpr, pRootNode).eCTVal();
 
     if (eType == CT_NONE) {
       s2K sBuf;
@@ -2353,7 +2354,7 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
                                 sBuf.szStz() );
     }
 
-    QueryNode* pTypeNode = SqlType::pCreate(eType);
+    QueryNode* pTypeNode = SqlType::pCreate(TypeId::xIdOf(eType));
     b1 bNotNull = false;
     i8 iPrecision = -1;
     i8 iScale = -1;

@@ -178,7 +178,7 @@ void ProjectOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* 
         if (ExplainOp::bWithTypes(pExplainNode)) {
           QueryNode* pProjectedExpr = ProjectedColumn::pExprNode(pProjColumn);
           ASSERT(Expr::bIsOfType(pProjectedExpr));
-          eCT eColType = TypeSystem::eCTVal(Expr::iType(pProjectedExpr, pRootNode));
+          eCT eColType = Expr::xTypeId(pProjectedExpr, pRootNode).eCTVal();
 
           sBuf.vCatSprint(" ; type: %s"_Stz, aCT[eColType]);
         }

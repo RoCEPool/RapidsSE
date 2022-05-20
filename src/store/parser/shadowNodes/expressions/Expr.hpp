@@ -6,6 +6,7 @@
 #include "ShadowNode.hpp"
 #include "PlanNode.hpp"
 #include "QueryNodeList.hpp"
+#include "TypeId.hpp"
 
 namespace Parser
 {
@@ -45,7 +46,7 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
 
     // Returns the resulting typeId of the expression operation
-    static i8 iType(QueryNode* pExprNode, PlanNode* pRootNode);
+    static TypeId xTypeId(QueryNode* pExprNode, PlanNode* pRootNode);
 
     // Returns true if this expression (and therefore any subexpression elements
     // it contains) is an aggregate expression. It may also contain non-aggregated
@@ -170,10 +171,10 @@ namespace Parser
     //   string (timestamp) -> timestamp   (from a literal only)
     //   date               -> timestamp
     //   boolean            -> string
-    static b1 bIsImplicitlyCoercibleTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
+    static b1 bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
 
     // Returns a new expression object which represents pExpr coerced to eTarget
-    static QueryNode* pCoerceTo(i8 iTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
+    static QueryNode* pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
   };
 
 }

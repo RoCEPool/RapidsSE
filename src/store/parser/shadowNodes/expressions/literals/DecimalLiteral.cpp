@@ -108,14 +108,14 @@ b1 DecimalLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-i8 DecimalLiteral::iType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId DecimalLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return CT_DECIMAL;
+  return TypeId::xIdOf(CT_DECIMAL);
 }
 
 /*----------------------------------------------------------------------------*/
