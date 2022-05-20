@@ -70,8 +70,6 @@ TypeId TypeId::xParentTypeId()
 /*----------------------------------------------------------------------------*/
 eCT TypeId::eCTVal()
 {
-  ASSERT(bIsValid());
-
   return TypeSystem::eCTVal(*this);
 }
 
@@ -80,8 +78,6 @@ eCT TypeId::eCTVal()
 /*----------------------------------------------------------------------------*/
 eIV TypeId::eIVVal()
 {
-  ASSERT(bIsValid());
-
   return TypeSystem::eIVVal(*this);
 }
 

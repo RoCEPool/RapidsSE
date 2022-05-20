@@ -1169,6 +1169,12 @@ void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)
 
   while (++i != CT_ENUMS) {
     eCT eTarget = (eCT) i;
+
+    // TODO: come back and handle intervals
+    if (eTarget == CT_INTERVAL_YM || eTarget == CT_INTERVAL_DT) {
+      continue;
+    }
+
     TypeId xTargetTypeId = TypeId::xIdOf(eTarget);
 
     if (bIsImplicitlyCoercibleTo(xTargetTypeId, pExpr, pRootNode)) {

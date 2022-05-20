@@ -129,7 +129,11 @@ TypeId TypeSystem::xParentTypeId(TypeId xTypeId)
 /*----------------------------------------------------------------------------*/
 eCT TypeSystem::eCTVal(TypeId xTypeId)
 {
-  ASSERT(bIsValid(xTypeId));
+  ASSERT(bIsValid(xTypeId) || xTypeId.iIdVal() == C_INVALID_TYPEID);
+
+  if (xTypeId.iIdVal() == C_INVALID_TYPEID) {
+    return CT_NONE;
+  }
 
   return axTypes[xTypeId.iIdVal()].m_eCTVal;
 }
@@ -139,7 +143,11 @@ eCT TypeSystem::eCTVal(TypeId xTypeId)
 /*----------------------------------------------------------------------------*/
 eIV TypeSystem::eIVVal(TypeId xTypeId)
 {
-  ASSERT(bIsValid(xTypeId));
+  ASSERT(bIsValid(xTypeId) || xTypeId.iIdVal() == C_INVALID_TYPEID);
+
+  if (xTypeId.iIdVal() == C_INVALID_TYPEID) {
+    return IV_NONE;
+  }
 
   return axTypes[xTypeId.iIdVal()].m_eIVVal;
 }
@@ -186,7 +194,6 @@ TypeId TypeSystem::xIdOf(eCT eVal)
   ASSERT(eVal != CT_INTERVAL_YM);
 
   TypeId xTypeId = TypeId{aiTypeIdOfCT[eVal]};
-  ASSERT(bIsValid(xTypeId));
 
   return xTypeId;
 }
