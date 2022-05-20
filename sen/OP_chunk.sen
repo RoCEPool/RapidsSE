@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* on EV_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
-: chunk_DataMarker \handler
+: chunk_DataPulse \handler
 
   //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
@@ -101,7 +101,7 @@
   op__topology
 
   find: chunk_Cleaning    EV_M_CLEANING  [op].handler!
-  find: chunk_DataMarker  EV_M_DATAPULSE [op].handler!
+  find: chunk_DataPulse   EV_M_DATAPULSE [op].handler!
   find: chunk_StartMarker EV_M_START     [op].handler!
 
   op__loop

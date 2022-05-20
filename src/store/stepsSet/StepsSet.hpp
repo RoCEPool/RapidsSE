@@ -548,6 +548,7 @@ void vDdlLockAssertNone(void);
   void vFile0Get(void);
   void vFile0GetEofLocation(void);
   void vFile0IsNull(void);
+  void vFile0IsOpen(void);
   void vFile0Set(void);
   void vFile0Size(void);
   void vFileClose(void);
