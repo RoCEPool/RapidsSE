@@ -25,6 +25,12 @@
 
   //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
+  
+  File0[].isOpen? not if
+    true
+    exit
+  then
+  
 
   // find the __seekOffsets table
   C_TDEF_SEEKOFFSETS op__tableDef_infoSet assert
