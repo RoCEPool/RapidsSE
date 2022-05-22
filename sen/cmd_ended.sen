@@ -12,25 +12,24 @@
 /* on originating node                                                        */
 /*----------------------------------------------------------------------------*/
 : ended:onOrigin
-
   //"ended:onOrigin" .
 
-  [args].distJob if
-    "ended" "onOrigin" "<edd ack origin task" [job].trace
-  then
-
-  // find the originating job
-  
-  [job].originId@ ListedJob[].findOriginator? if
-
-    ListedJob[].taskAck
-  
-    ListedJob[].returnReference
-    
-  then
-  
-  [job]:retireAndExit
-  HAZARD
+/* <edd org */  [args].distJob if
+/* <edd org */    "ended" "onOrigin" "<edd org ack origin task" [job].trace
+/* <edd org */  then
+/* <edd org */
+/* <edd org */  // find the originating job
+/* <edd org */
+/* <edd org */  [job].originId@ ListedJob[].findOriginator? if
+/* <edd org */
+/* <edd org */    ListedJob[].taskAck
+/* <edd org */
+/* <edd org */    ListedJob[].returnReference
+/* <edd org */
+/* <edd org */  then
+/* <edd org */
+/* <edd org */  [job]:retireAndExit
+/* <edd org */  HAZARD
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -38,27 +37,26 @@
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job_Ended on originating node                                 */
+/* on participating node                                                      */
 /*----------------------------------------------------------------------------*/
 : ended:ended
-
   //"ended:ended" .
 
-  [args].distJob if
-    "ended" "ended" "<edd snd origin" [job].trace
-  then
-
-
-  "ended:onOrigin" [job].entryPoint!
-
-  [job].originNodeId@ [grid].findNodeByNo to SendNode[]
-  
-  [job] job(Id).send
-
-  nullptr to SendNode[]
-  
-  [job]:retireAndExit
-  HAZARD
+/* <edd ptp */  [args].distJob if
+/* <edd ptp */    "ended" "ended" "<edd ptp snd origin" [job].trace
+/* <edd ptp */  then
+/* <edd ptp */
+/* <edd ptp */
+/* <edd ptp */  "ended:onOrigin" [job].entryPoint!
+/* <edd ptp */
+/* <edd ptp */  [job].originNodeId@ [grid].findNodeByNo to SendNode[]
+/* <edd ptp */
+/* <edd ptp */  [job] job(Id).send
+/* <edd ptp */
+/* <edd ptp */  nullptr to SendNode[]
+/* <edd ptp */
+/* <edd ptp */  [job]:retireAndExit
+/* <edd ptp */  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

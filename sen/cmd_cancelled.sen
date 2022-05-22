@@ -9,27 +9,28 @@
 /*                    ON ORIGINATING NODE OF GIVEN PIPELINE                   */
 /////////1/////////2/////////3/////////4/////////5/////////6/////////7//////////
 
-/*----------------------------------------------------------------------------*/
-/* run recieved Job_Cancelled on originating node                             */
-/*----------------------------------------------------------------------------*/
-: cancelled:cancelled
 
+
+/*----------------------------------------------------------------------------*/
+/* on originating node                                                        */
+/*----------------------------------------------------------------------------*/
+
+: cancelled:cancelled
   // "cancelled:cancelled" .
 
-  [args].distJob if
-    "cancelled" "cancelled" "*ack origin task" [job].trace
-  then
-
-
-  // find the originating job
-  [job].originId@ ListedJob[].findOriginator? discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  ListedJob[].taskAck
-  
-  ListedJob[].returnReference
-  [job]:retireAndExit
+/* <cnd ptp */  [args].distJob if
+/* <cnd ptp */    "cancelled" "cancelled" "*<edd ptp snd origin" [job].trace
+/* <cnd ptp */  then
+/* <cnd ptp */
+/* <cnd ptp */
+/* <cnd ptp */  // find the originating job
+/* <cnd ptp */  [job].originId@ ListedJob[].findOriginator? discard
+/* <cnd ptp */
+/* <cnd ptp */
+/* <cnd ptp */  ListedJob[].taskAck
+/* <cnd ptp */
+/* <cnd ptp */  ListedJob[].returnReference
+/* <cnd ptp */  [job]:retireAndExit
 ;
 
 /*----------------------------------------------------------------------------*/

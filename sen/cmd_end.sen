@@ -12,32 +12,31 @@
 /* on participating node                                                      */
 /*----------------------------------------------------------------------------*/
 : end:onParticipant
-
   // "end:end" .
 
-  [args].distJob if
-    "end" "onParticipant" ">end sch next phase" [job].trace
-  then
-
-  // find job to be ended in participating job list
-  [job].distId@ ListedJob[].findParticipant? if
-
-    // stall till job's previous phase (task) has completed
-    begin
-      ListedJob[].taskState@ TS_HIBERNATING !=
-    while
-      "job to be ended still has non-hibernating task" .
-      [task].yield
-    repeat
-    ListedJob[].cycleTaskLock
-      
-    // execute the job on this participating node
-    ListedJob[].scheduleNextPhase
-    
-    ListedJob[].returnReference
-  then
-  
-  [job]:retireAndExit
+/* >end ptp */  [args].distJob if
+/* >end ptp */    "end" "onParticipant" ">end ptp sch next phase" [job].trace
+/* >end ptp */  then
+/* >end ptp */
+/* >end ptp */  // find job to be ended in participating job list
+/* >end ptp */  [job].distId@ ListedJob[].findParticipant? if
+/* >end ptp */
+/* >end ptp */    // stall till job's previous phase (task) has completed
+/* >end ptp */    begin
+/* >end ptp */      ListedJob[].taskState@ TS_HIBERNATING !=
+/* >end ptp */    while
+/* >end ptp */      "job to be ended still has non-hibernating task" .
+/* >end ptp */      [task].yield
+/* >end ptp */    repeat
+/* >end ptp */    ListedJob[].cycleTaskLock
+/* >end ptp */
+/* >end ptp */    // execute the job on this participating node
+/* >end ptp */    ListedJob[].scheduleNextPhase
+/* >end ptp */
+/* >end ptp */    ListedJob[].returnReference
+/* >end ptp */  then
+/* >end ptp */
+/* >end ptp */  [job]:retireAndExit
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,19 +47,18 @@
 /* on origin node                                                             */
 /*----------------------------------------------------------------------------*/
 : end:onOrigin
-
   //"end:onOrigin" .
 
-  [args].distJob if
-    "end" "onOrigin" ">end brd all ptp" [job].trace
-  then
-
-  "end:onParticipant" [job].entryPoint!
-
-  [job]:broadcast
-
-  [job]:retireAndExit
-  HAZARD
+/* >end org */  [args].distJob if
+/* >end org */    "end" "onOrigin" ">end org brd all ptp" [job].trace
+/* >end org */  then
+/* >end org */
+/* >end org */  "end:onParticipant" [job].entryPoint!
+/* >end org */
+/* >end org */  [job]:broadcast
+/* >end org */
+/* >end org */  [job]:retireAndExit
+/* >end org */  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

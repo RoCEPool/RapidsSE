@@ -685,7 +685,7 @@ void Job::vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vTrace("vJobTrace - %10s : %-14s @ %-20s - "_Stz,
+  vTrace("vJobTrace - %10s : %-14s @ %-24s - "_Stz,
          szAtCmd,
          szAtRoutine,
          szAtPoint

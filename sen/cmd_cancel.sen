@@ -12,33 +12,32 @@
 /* on participating node                                                      */
 /*----------------------------------------------------------------------------*/
 : cancel:onParticipant
-
   //"cancel:onParticipant" .
 
-  [args].distJob if
-    "cancel" "onParticipant" "*on participant" [job].trace
-  then
-
-  // find job to be canceled in participating job list
-  [job].distId@ ListedJob[].findParticipant? if
-
-    // stall till job's previous phase (task) has completed
-    begin
-      ListedJob[].taskState@ TS_HIBERNATING !=
-    while
-      "job to be cancelled still has non-hibernating task" .
-      [task].yield
-    repeat
-    ListedJob[].cycleTaskLock
-      
-    // execute the job on this participating node
-    ListedJob[].scheduleNextPhase
-    
-    ListedJob[].returnReference
-  
-  then
-  
-  [job]:retireAndExit
+/* >can ptp */  [args].distJob if
+/* >can ptp */    "cancel" "onParticipant" ">can ptp cancel" [job].trace
+/* >can ptp */  then
+/* >can ptp */
+/* >can ptp */  // find job to be canceled in participating job list
+/* >can ptp */  [job].distId@ ListedJob[].findParticipant? if
+/* >can ptp */
+/* >can ptp */    // stall till job's previous phase (task) has completed
+/* >can ptp */    begin
+/* >can ptp */      ListedJob[].taskState@ TS_HIBERNATING !=
+/* >can ptp */    while
+/* >can ptp */      "job to be cancelled still has non-hibernating task" .
+/* >can ptp */      [task].yield
+/* >can ptp */    repeat
+/* >can ptp */    ListedJob[].cycleTaskLock
+/* >can ptp */
+/* >can ptp */    // execute the job on this participating node
+/* >can ptp */    ListedJob[].scheduleNextPhase
+/* >can ptp */
+/* >can ptp */    ListedJob[].returnReference
+/* >can ptp */
+/* >can ptp */  then
+/* >can ptp */
+/* >can ptp */  [job]:retireAndExit
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -49,20 +48,19 @@
 /* on origin node                                                             */
 /*----------------------------------------------------------------------------*/
 : cancel:cancel
-
   //"cancel:cancel" .
 
-  [args].distJob if
-    "cancel" "cancel" "*on origin" [job].trace
-  then
-
-
-  "cancel:onParticipant" [job].entryPoint!
-
-  [job]:broadcast
-
-  [job]:retireAndExit
-  HAZARD
+/* >can org */  [args].distJob if
+/* >can org */    "cancel" "cancel" ">can org brd all ptp" [job].trace
+/* >can org */  then
+/* >can org */
+/* >can org */
+/* >can org */  "cancel:onParticipant" [job].entryPoint!
+/* >can org */
+/* >can org */  [job]:broadcast
+/* >can org */
+/* >can org */  [job]:retireAndExit
+/* >can org */  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
