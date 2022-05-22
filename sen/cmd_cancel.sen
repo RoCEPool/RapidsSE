@@ -15,7 +15,7 @@
   //"cancel:onParticipant" .
 
 /* >can ptp */  [args].distJob if
-/* >can ptp */    "cancel" "onParticipant" ">can ptp cancel" [job].trace
+/* >can ptp */    "cancel" "onParticipant" ">can ptp cancel" "r" [job].trace
 /* >can ptp */  then
 /* >can ptp */
 /* >can ptp */  // find job to be canceled in participating job list
@@ -51,7 +51,7 @@
   //"cancel:cancel" .
 
 /* >can org */  [args].distJob if
-/* >can org */    "cancel" "cancel" ">can org brd all ptp" [job].trace
+/* >can org */    "cancel" "cancel" ">can org brd all ptp" "r" [job].trace
 /* >can org */  then
 /* >can org */
 /* >can org */

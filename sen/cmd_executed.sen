@@ -15,7 +15,7 @@
   //"executed:onOrigin" .
 
 /* <exd org */  [args].distJob if
-/* <exd org */    "executed" "onOrigin" "<exd ack origin task" [job].trace
+/* <exd org */    "executed" "onOrigin" "<exd ack origin task" "r" [job].trace
 /* <exd org */  then
 /* <exd org */
 /* <exd org */
@@ -44,7 +44,7 @@
   //"executed:executed" .
 
 /* <exd ptp */  [args].distJob if
-/* <exd ptp */    "executed" "executed" "<exd snd origin" [job].trace
+/* <exd ptp */    "executed" "executed" "<exd snd origin" "r" [job].trace
 /* <exd ptp */  then
 /* <exd ptp */
 /* <exd ptp */  "executed:onOrigin" [job].entryPoint!

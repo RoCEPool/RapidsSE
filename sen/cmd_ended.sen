@@ -15,7 +15,7 @@
   //"ended:onOrigin" .
 
 /* <edd org */  [args].distJob if
-/* <edd org */    "ended" "onOrigin" "<edd org ack origin task" [job].trace
+/* <edd org */    "ended" "onOrigin" "<edd org ack origin task" "r" [job].trace
 /* <edd org */  then
 /* <edd org */
 /* <edd org */  // find the originating job
@@ -43,7 +43,7 @@
   //"ended:ended" .
 
 /* <edd ptp */  [args].distJob if
-/* <edd ptp */    "ended" "ended" "<edd ptp snd origin" [job].trace
+/* <edd ptp */    "ended" "ended" "<edd ptp snd origin" "r" [job].trace
 /* <edd ptp */  then
 /* <edd ptp */
 /* <edd ptp */

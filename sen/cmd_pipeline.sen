@@ -19,7 +19,7 @@
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */
 /* org_ org */  [args].distJob if
-/* org_ org */    "pipeline" "origin" "org_ org now ordinary" [job].trace
+/* org_ org */    "pipeline" "origin" "org_ org now ordinary" "r" [job].trace
 /* org_ org */  then
 /* org_ org */
 /* org_ org */
@@ -84,7 +84,7 @@
 /* org_ org */  [job].assertOriginator
 /* org_ org */
 /* org_ org */  [args].distJob if
-/* org_ org */    "pipeline" "origin" "org_ org now originator" [job].trace
+/* org_ org */    "pipeline" "origin" "org_ org now originator" "r" [job].trace
 /* org_ org */  then
 /* org_ org */
 /* org_ org */  "<show_command>" sysargs::tagSet@ tagSet.hasName if
@@ -176,7 +176,7 @@
 /* org_ beg */    // + compiled without error..
 /* org_ beg */
 /* org_ beg */    [args].distJob if
-/* org_ beg */      "pipeline" "origin" "org_ beg brd begin" [job].trace
+/* org_ beg */      "pipeline" "origin" "org_ beg brd begin" "r" [job].trace
 /* org_ beg */    then
 /* org_ beg */
 /* org_ beg */    "pipeline:ptpBegin" [job].entryPoint!
@@ -203,8 +203,8 @@
 /* org_ exe */    // "ORIGIN: broadcast execute" .
 /* org_ exe */
 /* org_ exe */    [args].distJob if
-/* org_ exe */      "pipeline" "origin" "org_ exd all begun" [job].trace
-/* org_ exe */      "pipeline" "origin" "org_ exe brd execute" [job].trace
+/* org_ exe */      "pipeline" "origin" "org_ exd all begun" "r" [job].trace
+/* org_ exe */      "pipeline" "origin" "org_ exe brd execute" "r" [job].trace
 /* org_ exe */    then
 /* org_ exe */
 /* org_ exe */    [job].tscExecuting
@@ -234,8 +234,8 @@
 /* org_ end */    // "ORIGIN: broadcast end" .
 /* org_ end */
 /* org_ end */    [args].distJob if
-/* org_ end */      "pipeline" "origin" "org_ end all executed" [job].trace
-/* org_ end */      "pipeline" "origin" "org_ end brd end" [job].trace
+/* org_ end */      "pipeline" "origin" "org_ end all executed" "r" [job].trace
+/* org_ end */      "pipeline" "origin" "org_ end brd end" "r" [job].trace
 /* org_ end */    then
 /* org_ end */
 /* org_ end */    [job].tscEnding
@@ -259,7 +259,7 @@
 /* org_ edd */  // - - - - - - - - - - - - - - - - - - - -
 /* org_ edd */
 /* org_ edd */  [args].distJob if
-/* org_ edd */    "pipeline" "origin" "org_ edd all ended" [job].trace
+/* org_ edd */    "pipeline" "origin" "org_ edd all ended" "r" [job].trace
 /* org_ edd */  then
 /* org_ edd */
 /* org_ edd */  [job].removeOriginator
@@ -268,7 +268,7 @@
 
 /* ---- --- */  // !!! ovr !!! ovr !!! ovr !!! ovr !!! ovr !!! ovr !!! ovr !!!
 /* org_ ovr */  [args].distJob if
-/* org_ ovr */    "pipeline" "origin" "org_ ovr now ordinary" [job].trace
+/* org_ ovr */    "pipeline" "origin" "org_ ovr now ordinary" "r" [job].trace
 /* org_ ovr */  then
 /* org_ ovr */
 /* org_ ovr */
@@ -296,7 +296,7 @@
 /* org_ ovr */  ListedJob[].assertNoRef
 /* org_ ovr */
 /* org_ ovr */  [args].distJob if
-/* org_ ovr */    "pipeline" "origin" "org_ ovr retiring..." [job].trace
+/* org_ ovr */    "pipeline" "origin" "org_ ovr retiring..." "r" [job].trace
 /* org_ ovr */  then
 /* org_ ovr */
 /* org_ ovr */  Path[].discardAll
@@ -328,7 +328,7 @@
 /* ---- --- */  // >>> beg >>> beg >>> beg >>> beg >>> beg >>> beg >>> beg >>>
 /* _ptp beg */
 /* _ptp beg */  [args].distJob if
-/* _ptp beg */    "pipeline" "ptpBegin" "_ptp beg phs begin" [job].trace
+/* _ptp beg */    "pipeline" "ptpBegin" "_ptp beg phs begin" "r" [job].trace
 /* _ptp beg */  then
 /* _ptp beg */
 /* _ptp beg */  [job].progressReset
@@ -398,7 +398,7 @@
 /* _ptp beg */  // - - - - - - - - - - - - -
 /* _ptp beg */
 /* _ptp beg */  [args].distJob if
-/* _ptp beg */    "pipeline" "ptpBegin" "_ptp beg has begun" [job].trace
+/* _ptp beg */    "pipeline" "ptpBegin" "_ptp beg has begun" "r" [job].trace
 /* _ptp beg */  then
 /* _ptp beg */
 /* _ptp beg */  // send the begun job
@@ -435,7 +435,7 @@
 /* ---- --- */  // >>> exe >>> exe >>> exe >>> exe >>> exe >>> exe >>> exe >>>
 /* _ptp exe */
 /* _ptp exe */  [args].distJob if
-/* _ptp exe */    "pipeline" "ptpExecute" "_ptp exe phs execute" [job].trace
+/* _ptp exe */    "pipeline" "ptpExecute" "_ptp exe phs execute" "r" [job].trace
 /* _ptp exe */  then
 /* _ptp exe */
 /* _ptp exe */  [job].assertStructure
@@ -493,7 +493,7 @@
 /* _ptp exe */  // - - - - - - - - - - - - - - -
 /* _ptp exe */
 /* _ptp exe */  [args].distJob if
-/* _ptp exe */    "pipeline" "ptpBegin" "_ptp exe has executed" [job].trace
+/* _ptp exe */    "pipeline" "ptpBegin" "_ptp exe has executed" "r" [job].trace
 /* _ptp exe */  then
 /* _ptp exe */
 /* _ptp exe */  // send the executed job
@@ -523,7 +523,7 @@
 /* ---- --- */  // >>> end >>> end >>> end >>> end >>> end >>> end >>> end >>>
 /* _ptp end */
 /* _ptp end */  [args].distJob if
-/* _ptp end */    "pipeline" "ptpEnd" "_ptp end phs end" [job].trace
+/* _ptp end */    "pipeline" "ptpEnd" "_ptp end phs end" "r" [job].trace
 /* _ptp end */  then
 /* _ptp end */
 /* _ptp end */  [job].assertStructure
@@ -539,14 +539,14 @@
 /* _ptp end */  [job].removeParticipant
 /* _ptp end */
 /* _ptp end */  [args].distJob if
-/* _ptp end */    "pipeline" "ptpEnd" "_ptp end has ended" [job].trace
+/* _ptp end */    "pipeline" "ptpEnd" "_ptp end has ended" "r" [job].trace
 /* _ptp end */  then
 /* _ptp end */
 /* _ptp end */  // send the ended job
 /* _ptp end */  STD_NOWAIT_TAG "ended" api::forkChild discard
 /* _ptp end */
 /* _ptp end */  [args].distJob if
-/* _ptp end */    "pipeline" "ptpBegin" "_ptp end retiring..." [job].trace
+/* _ptp end */    "pipeline" "ptpBegin" "_ptp end retiring..." "r" [job].trace
 /* _ptp end */  then
 /* _ptp end */
 /* _ptp end */  [job]:retireAndExit
@@ -564,7 +564,7 @@
 /* ---- --- */  // >>> can >>> can >>> can >>> can >>> can >>> can >>> can >>>
 /* _ptp can */
 /* _ptp can */  [args].distJob if
-/* _ptp can */    "pipeline" "ptpCancel" "_ptp can phs cancel" [job].trace
+/* _ptp can */    "pipeline" "ptpCancel" "_ptp can phs cancel" "r" [job].trace
 /* _ptp can */  then
 /* _ptp can */
 /* _ptp can */  [job].assertStructure
@@ -579,7 +579,7 @@
 /* _ptp can */  [job].removeParticipant
 /* _ptp can */
 /* _ptp can */  [args].distJob if
-/* _ptp can */    "pipeline" "ptpCancel" "_ptp can has cancelled" [job].trace
+/* _ptp can */    "pipeline" "ptpCancel" "_ptp can has cancelled" "r" [job].trace
 /* _ptp can */  then
 /* _ptp can */
 /* _ptp can */  // send the cancelled job

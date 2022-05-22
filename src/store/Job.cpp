@@ -681,14 +681,15 @@ TagSet* Job::pJobTags(void)
 /*----------------------------------------------------------------------------*/
 /* trace job                                                                  */
 /*----------------------------------------------------------------------------*/
-void Job::vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint)
+void Job::vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint, Stz* szR)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vTrace("vJobTrace - %10s : %-14s @ %-24s - "_Stz,
+  vTrace("vJobTrace - %10s : %-14s @ %-32s %32s - "_Stz,
          szAtCmd,
          szAtRoutine,
-         szAtPoint
+         szAtPoint,
+         szR
          );
   
   if (m_tJobId.bIsUnknown())
@@ -1134,7 +1135,7 @@ void Job::vPostRecv(void)
   AM::JLIST::vInsertJob(this);
 
   if (AM::SYSARGS::bDistJob())
-    vJobTrace("Job"_Stz, "vPostRecv"_Stz, "#rcv"_Stz);
+    vJobTrace("Job"_Stz, "vPostRecv"_Stz, "#rcv"_Stz,""_Stz);
   
   if (bHasTag(C_SEE_JOB))
     vPrintJobContents();
