@@ -113,8 +113,6 @@ ordered rows:
 
 // Source file: ../queries/like/rlike2.sql
 // Result file: ../queries/like/results/like2.res
-// TODO : FIX
-/*
 select * from table4 where colb4 like '%e' and ucolvc in ('ddd','ggg','ttt') order by pcol4;
 ordered rows:
   (6, 139, 936, 'ddd', 399, 'orange', TIMESTAMP '2015-05-08 00:00:00.0', 40.85)
@@ -135,7 +133,6 @@ ordered rows:
   ('tan', 50)
   ('tan', 52)
   ('maroon', 61)
-*/
 
 // Source file: ../queries/like/rlike6.sql
 // Result file: ../queries/like/results/like6.res
