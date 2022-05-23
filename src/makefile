@@ -54,8 +54,8 @@ endif
 # Variables
 CPP = g++
 
-CPPFLAGS = -std=c++11 -Wall -Wextra -g -O3 $(strip $(LINUX_CPPFLAGS) $(MACOS_CPPFLAGS))
-CPPFLAGS_DEBUG = -std=c++11 -DWITH_DEBUG_VERSION -Wall -Wno-unused -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
+CPPFLAGS = -std=c++14 -Wall -Wextra -g -O3 $(strip $(LINUX_CPPFLAGS) $(MACOS_CPPFLAGS))
+CPPFLAGS_DEBUG = -std=c++14 -DWITH_DEBUG_VERSION -Wall -Wno-unused -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
 
 CFLAGS = -Wall -Wextra -g -O3 $(strip $(LINUX_CPPFLAGS) $(MACOS_CFLAGS))
 CFLAGS_DEBUG =  -DWITH_DEBUG_VERSION -Wall -Wno-unused -O0 -g3 $(strip $(LINUX_CFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))

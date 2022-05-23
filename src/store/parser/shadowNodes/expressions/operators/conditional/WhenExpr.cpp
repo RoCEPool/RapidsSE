@@ -11,6 +11,7 @@
 #include "SubqueryRefExpr.hpp"
 #include "GraphEditor.hpp"
 #include "ShadowRoot.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -128,25 +129,25 @@ b1 WhenExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-eCT WhenExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId WhenExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
 
   // First check that the predicate doesn't need coercing
   QueryNode* pPredicate = WhenExpr::pPredicateExpr(pExprNode);
-  eCT ePredicateType = Expr::eType(pPredicate, pRootNode);
+  eCT ePredicateType = Expr::xTypeId(pPredicate, pRootNode).eCTVal();
 
   if (ePredicateType == CT_NONE) {
     // This will try a coercion
-    return ePredicateType;
+    return TypeId::xIdOf(ePredicateType);
   }
 
   // Get the types of the result expression
   QueryNode* pResult = WhenExpr::pResultExpr(pExprNode);
-  eCT eResultType = Expr::eType(pResult, pRootNode);
+  eCT eResultType = Expr::xTypeId(pResult, pRootNode).eCTVal();
 
-  return eResultType;
+  return TypeId::xIdOf(eResultType);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,8 +166,8 @@ void WhenExpr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
   QueryNode* pPredicate = WhenExpr::pPredicateExpr(pExpr);
   QueryNode* pResult    = WhenExpr::pResultExpr(pExpr);
 
-  eCT ePredicateType = Expr::eType(pPredicate, pRootNode);
-  eCT eResultType    = Expr::eType(pResult, pRootNode);
+  eCT ePredicateType = Expr::xTypeId(pPredicate, pRootNode).eCTVal();
+  eCT eResultType    = Expr::xTypeId(pResult, pRootNode).eCTVal();
 
   if (ePredicateType == CT_NONE) {
     Expr::vCoerceSubExprs(pPredicate, pRootNode);
@@ -180,18 +181,17 @@ void WhenExpr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /* Tries to coerce the result expr of this WHEN statement to a given type     */
 /*----------------------------------------------------------------------------*/
-void WhenExpr::vCoerceResultExprTo(eCT eCoercibleTarget, QueryNode* pWhenExpr, PlanNode* pRootNode)
+void WhenExpr::vCoerceResultExprTo(TypeId xCoercibleTargetId, QueryNode* pWhenExpr, PlanNode* pRootNode)
 {
   _static_
   ASSERT(pWhenExpr);
   ASSERT(bIsOfType(pWhenExpr));
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
-  ASSERT(eCoercibleTarget > CT_NONE);
-  ASSERT(eCoercibleTarget < CT_ENUMS);
+  ASSERT(xCoercibleTargetId.bIsValid());
 
   QueryNode* pResult = WhenExpr::pResultExpr(pWhenExpr);
-  QueryNode* pCoercedResult = Expr::pCoerceTo(eCoercibleTarget, pResult, pRootNode);
+  QueryNode* pCoercedResult = Expr::pCoerceTo(xCoercibleTargetId, pResult, pRootNode);
 
   ASSERT(pCoercedResult);
   ASSERT(Expr::bIsOfType(pCoercedResult));

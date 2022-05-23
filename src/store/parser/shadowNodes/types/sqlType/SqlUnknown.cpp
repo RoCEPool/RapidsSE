@@ -10,6 +10,7 @@
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -33,8 +34,10 @@ PlanNode* SqlUnknown::pCreate()
   // Create a unique name for this object
   s256 sName;
   NodeNamer::vGenerateName(C_SQLUNKNOWN_DEFN, sName);
-  Value xTypeValue((i8) CT_UNKNOWN);
-  PlanNode* pNode = new QueryNode(sName, C_SQLUNKNOWN_DEFN, static_cast<Value&&>(xTypeValue));
+  QueryNode* pNode = new QueryNode(sName, C_SQLUNKNOWN_DEFN);
+
+  // Add in any common properties
+  SqlType::vCreateCommon(pNode, TypeId::xIdOf(CT_UNKNOWN));
 
   return pNode;
 }

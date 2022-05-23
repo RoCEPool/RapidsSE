@@ -17,6 +17,7 @@
 #include "CteDef.hpp"
 
 #include "GraphNav.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -164,7 +165,7 @@ b1 ColumnRef::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT ColumnRef::eType(QueryNode* pNode, PlanNode* pRootNode)
+TypeId ColumnRef::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -199,25 +200,23 @@ eCT ColumnRef::eType(QueryNode* pNode, PlanNode* pRootNode)
     ASSERT(pColumnDef);
     ASSERT(ColumnDef::bIsOfType(pColumnDef));
 
-    eCT eType = ColumnDef::eColumnType(pColumnDef);
-    ASSERT(eType > CT_NONE);
-    ASSERT(eType < CT_ENUMS);
+    TypeId xTypeId = ColumnDef::xColumnType(pColumnDef);
+    ASSERT(xTypeId.bIsValid());
 
-    return eType;
+    return xTypeId;
   }
 
   QueryNode* pColumnDef = MetadataNode::pColumnDef(pMetadata,
                                                    szCatalog,
                                                    szSchema,
-                                                   szTable,
+                                                     szTable,
                                                    szColumn);
   ASSERT(pColumnDef);
 
-  eCT eType = ColumnDef::eColumnType(pColumnDef);
-  ASSERT(eType > CT_NONE);
-  ASSERT(eType < CT_ENUMS);
+  TypeId xTypeId = ColumnDef::xColumnType(pColumnDef);
+  ASSERT(xTypeId.bIsValid());
 
-  return eType;
+  return xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/

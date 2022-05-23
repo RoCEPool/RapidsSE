@@ -9,6 +9,7 @@
 #include "QueryNode.hpp"
 #include "NodeNamer.hpp"
 #include "SubqueryRefExpr.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -148,7 +149,7 @@ b1 XorExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-eCT XorExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId XorExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -157,13 +158,13 @@ eCT XorExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pChild1 = XorExpr::pChild1(pExprNode);
   QueryNode* pChild2 = XorExpr::pChild2(pExprNode);
 
-  eCT eOperand1 = Expr::eType(pChild1, pRootNode);
-  eCT eOperand2 = Expr::eType(pChild2, pRootNode);
+  eCT eOperand1 = Expr::xTypeId(pChild1, pRootNode).eCTVal();
+  eCT eOperand2 = Expr::xTypeId(pChild2, pRootNode).eCTVal();
 
   // Lookup the type of the result
   eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
 
-  return eResult;
+  return TypeId::xIdOf(eResult);
 }
 
 /*============================================================================*/

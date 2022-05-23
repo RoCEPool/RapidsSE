@@ -10,6 +10,7 @@
 #include "PlanConstants.hpp"
 
 #include "GraphNav.hpp"
+#include "TypeId.hpp"
 
 using namespace Parser;
 
@@ -233,18 +234,18 @@ Stz* ColumnDef::szColumnName(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the SQL data type of this column                                       */
+/* get the SQL data type Id of this column                                    */
 /*----------------------------------------------------------------------------*/
-eCT ColumnDef::eColumnType(QueryNode* pNode)
+TypeId ColumnDef::xColumnType(QueryNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
   QueryNode* pTypeNode = _pQueryNode(GraphNav::pFindProperty(C_COLUMNTYPE_PROP, pNode));
   ASSERT(pTypeNode);
 
-  eCT eType = SqlType::eType(pTypeNode);
+  TypeId xTypeId = SqlType::xTypeId(pTypeNode);
 
-  return eType;
+  return xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/
