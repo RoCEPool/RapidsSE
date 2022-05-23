@@ -45,8 +45,12 @@ namespace BASE
     void    vAnalysis(void);
     void    vDeleteKey(void* pKey);
     bool    bExists(void* pKey);
-    u8      uHashFunction(void* pKey);
-    void    vInsertAtFront(void* pKey, Object* pValue);
+
+    static u8 uHashFunction(void* pKey, u8 NoOfSlots);
+
+    void    vInsertSlotAtIndex(HashMapSlot* pSlot, u8 uIndex);
+    void    vInsertKeyValue(void* pKey, Object* pValue);
+    void    vReHash(void);
     Object* pValueAt(void* pKey);
 
 #ifdef WITH_HASHMAP_DEBUG

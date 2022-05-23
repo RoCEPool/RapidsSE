@@ -47,10 +47,10 @@ HashMap::HashMap(u8 uNoOfSlots)
 : Object(CN_HASHMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
-  m_uNoOfSlots          = C_INIT_HASHMAP_SIZE;
+  m_uNoOfSlots          = uNoOfSlots;
   m_uNoOfEntries        = 0;
 
-  m_paHashMapSlots = new HashMapSlot*[C_INIT_HASHMAP_SIZE];
+  m_paHashMapSlots = new HashMapSlot*[uNoOfSlots];
 
   for(u8 i = 0; i < m_uNoOfSlots; i++)
     m_paHashMapSlots[i] = nullptr;
@@ -150,9 +150,13 @@ void HashMap::vAppendHistory(void* pKey, bool bDeleted, bool bInserted)
 /*----------------------------------------------------------------------------*/
 void HashMap::vDeleteKey(void* pKey)
 {
-  u8 uIndex = uHashFunction(pKey);
+  u8 uIndex = uHashFunction(pKey, m_uNoOfSlots);
   HashMapSlot* pIter = m_paHashMapSlots[uIndex];
   HashMapSlot* pPrevIter = nullptr;
+
+#ifdef WITH_HASHMAP_DEBUG
+  vAppendHistory(pKey, true, false);
+#endif
 
   while ( pIter != nullptr ) {
 
@@ -169,10 +173,6 @@ void HashMap::vDeleteKey(void* pKey)
       ASSERT(1 <= m_uNoOfEntries);
       m_uNoOfEntries--;
 
-#ifdef WITH_HASHMAP_DEBUG
-      vAppendHistory(pKey, true, false);
-#endif
-
       return;
     }
 
@@ -186,7 +186,7 @@ void HashMap::vDeleteKey(void* pKey)
 /*----------------------------------------------------------------------------*/
 bool HashMap::bExists(void* pKey)
 {
-  u8 uIndex = uHashFunction(pKey);
+  u8 uIndex = uHashFunction(pKey, m_uNoOfSlots);
   HashMapSlot* pIter = m_paHashMapSlots[uIndex];
 
   while ( pIter != nullptr ) {
@@ -203,18 +203,33 @@ bool HashMap::bExists(void* pKey)
 /*----------------------------------------------------------------------------*/
 /* hash key                                                                   */
 /*----------------------------------------------------------------------------*/
-u8 HashMap::uHashFunction(void* pKey)
+u8 HashMap::uHashFunction(void* pKey, u8 NoOfSlots)
 {
-  return ( (u8) pKey % m_uNoOfSlots );
+  _static_
+  return ( (u8) pKey % NoOfSlots );
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash key                                                                   */
+/*----------------------------------------------------------------------------*/
+void HashMap::vInsertSlotAtIndex(HashMapSlot* pSlot, u8 uIndex)
+{
+  pSlot->m_pNext = m_paHashMapSlots[uIndex];
+  m_paHashMapSlots[uIndex] = pSlot;
+  m_uNoOfEntries++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Insert a key,value at the front of the chain.                              */
 /* Update value if key already exists                                         */
 /*----------------------------------------------------------------------------*/
-void HashMap::vInsertAtFront(void* pKey, Object* pValue)
+void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
 {
-  u8 uIndex = uHashFunction(pKey);
+  if(m_uNoOfEntries/m_uNoOfSlots > 0.75) {
+    vReHash();
+  }
+
+  u8 uIndex = uHashFunction(pKey, m_uNoOfSlots);
   HashMapSlot* pIter = m_paHashMapSlots[uIndex];
 
   while ( pIter != nullptr ) {
@@ -234,9 +249,8 @@ void HashMap::vInsertAtFront(void* pKey, Object* pValue)
   }
 
   HashMapSlot* pTmpSlot = new HashMapSlot(pKey, pValue);
-  pTmpSlot->m_pNext = m_paHashMapSlots[uIndex];
-  m_paHashMapSlots[uIndex] = pTmpSlot;
-  m_uNoOfEntries++;
+
+  vInsertSlotAtIndex(pTmpSlot, uIndex);
 
 #ifdef WITH_HASHMAP_DEBUG
   vAppendHistory(pKey, false, true);
@@ -244,11 +258,55 @@ void HashMap::vInsertAtFront(void* pKey, Object* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Create a new Slot array twice the size of the old one. Rehash and move all */
+/* key-value pairs in old slot array to new slot array. Delete old slot array */
+/*----------------------------------------------------------------------------*/
+void HashMap::vReHash(void)
+{
+  // We would need to lock the HashMap (Write lock)
+  // Two types of locks
+  // One for full hash map
+  // One per slot
+  u8 uOldNoOfSlots = m_uNoOfSlots;
+  m_uNoOfSlots = m_uNoOfSlots * 2;
+
+  HashMapSlot** paOldHashMapSlots = m_paHashMapSlots;
+  m_paHashMapSlots = new HashMapSlot*[m_uNoOfSlots];
+
+  for(u8 i = 0; i < m_uNoOfSlots; i++)
+    m_paHashMapSlots[i] = nullptr;
+
+  u8 uCount = m_uNoOfEntries;
+  for(u8 i = 0; i < uOldNoOfSlots && uCount > 0; i++)
+  {
+    HashMapSlot* pSlot = paOldHashMapSlots[i];
+    while(pSlot != nullptr && uCount > 0)
+    {
+      u8 uIndex = uHashFunction(pSlot->m_pKeyObject, m_uNoOfSlots);
+
+      HashMapSlot* pTmpSlot = pSlot->m_pNext;
+
+      //Move Slot from old hash map to new hash map
+      pSlot->m_pNext = m_paHashMapSlots[uIndex];
+
+      m_paHashMapSlots[uIndex] = pSlot;
+
+      uCount--;
+
+      pSlot = pTmpSlot;
+    }
+  }
+
+  ASSERT(0 == uCount);
+
+  delete paOldHashMapSlots;
+}
+/*----------------------------------------------------------------------------*/
 /* Get value stored at key if it exists                                       */
 /*----------------------------------------------------------------------------*/
 Object* HashMap::pValueAt(void* pKey)
 {
-  u8 uIndex = uHashFunction(pKey);
+  u8 uIndex = uHashFunction(pKey, m_uNoOfSlots);
   HashMapSlot* pIter = m_paHashMapSlots[uIndex];
 
   while ( pIter != nullptr ) {
