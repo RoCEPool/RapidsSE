@@ -3535,6 +3535,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_STARTROWRHT:        eOperand = EV_M_STARTROWRHT;  break;
         case OM_STREAMDEFRHT:       eOperand = EV_M_STREAMDEFRHT; break;
         case OM_TRIGGER:            eOperand = EV_M_TRIGGER;      break;
+        case OM_TRIGGERED:          eOperand = EV_M_TRIGGERED;    break;
         default:
           RASSERT(0);
       }

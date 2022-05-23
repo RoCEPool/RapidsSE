@@ -33,6 +33,7 @@ void Step::vAddSteps_RegSends(void)
   vAddStep("Sends[].handleStart"_Stz,    &Step::vRegSendsHandleStart);
   vAddStep("Sends[].handleStreamDef"_Stz,&Step::vRegSendsHandleStreamDef);
   vAddStep("Sends[].handleStreamDefRht"_Stz,&Step::vRegSendsHandleStreamDefRht);
+  vAddStep("Sends[].handleTriggered"_Stz,&Step::vRegSendsHandleTriggered);
   vAddStep("Sends[].isNull"_Stz,         &Step::vRegSendsIsNull);
   vAddStep("Sends[].new"_Stz,            &Step::vRegSendsNew);
 }
@@ -273,6 +274,24 @@ void Step::vRegSendsHandleStreamDefRht(void)
   pSends->vIncStreamDefRht();
 
   m_pDataStack->vPushInt(bStreamDefRhtDone);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sends[].handleTriggered -- handle consume of triggered                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRegSendsHandleTriggered(void)
+{
+  ENTRY();
+
+  Sends* pSends = _pSends(*m_pLogicUnit->m_xpSends);
+
+  bool bTriggeredDone = pSends->bTriggeredDone();
+
+  pSends->vIncTriggered();
+
+  m_pDataStack->vPushInt(bTriggeredDone);
 
   EXIT();
 }

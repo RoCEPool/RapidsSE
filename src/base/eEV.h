@@ -85,6 +85,7 @@ enum eEV // events
   /*    */ EV_M_STARTROWRHT,
   /*    */ EV_M_STREAMDEFRHT,
   /*    */ EV_M_TRIGGER,
+  /*    */ EV_M_TRIGGERED,
 
   /*    */ EV_ENUMS
 };
@@ -170,6 +171,7 @@ static Stz* aEV[]
   /*    */ "EV_M_STARTROWRHT"_Stz,
   /*    */ "EV_M_STREAMDEFRHT"_Stz,
   /*    */ "EV_M_TRIGGER"_Stz,
+  /*    */ "EV_M_TRIGGERED"_Stz,
   /*    */ "ENUMS"_Stz
 };
 

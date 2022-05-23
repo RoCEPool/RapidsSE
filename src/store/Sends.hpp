@@ -23,6 +23,7 @@ namespace STORE
     i8             m_iStartMarkers;      // start markers received by consumeOp
     i8             m_iStreamDefRhts;     // streamDefRht's received by consumeOp
     i8             m_iStreamDefs;        // stream def's received by consumeOp
+    i8             m_iTriggeredMarkers;  // triggered markers received by consumeOp
     
     // must be last
     Footer m_xFooter;
@@ -47,6 +48,7 @@ namespace STORE
     bool bStartDone(void);
     bool bStreamDefDone(void);
     bool bStreamDefRhtDone(void);
+    bool bTriggeredDone(void);
     
     void vIncCancelling(void);
     void vIncCleaning(void);
@@ -61,6 +63,7 @@ namespace STORE
     void vIncStart(void);
     void vIncStreamDef(void);
     void vIncStreamDefRht(void);
+    void vIncTriggered(void);
     
     Footer* aFooter(void);
     

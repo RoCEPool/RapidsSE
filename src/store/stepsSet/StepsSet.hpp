@@ -1139,6 +1139,7 @@ void vDdlLockAssertNone(void);
   void vMarkerNewStartRowRhtMarker(void);
   void vMarkerNewStreamDefRht(void);
   void vMarkerNewTrigger(void);
+  void vMarkerNewTriggeredMarker(void);
   void vMarkerPipeIn(void);
   void vMarkerPipeToOutput(void);
   void vMarkerSet(void);
@@ -1532,6 +1533,7 @@ void vDdlLockAssertNone(void);
   void vRegSendsHandleStart(void);
   void vRegSendsHandleStreamDef(void);
   void vRegSendsHandleStreamDefRht(void);
+  void vRegSendsHandleTriggered(void);
   void vRegSendsIsNull(void);
   void vRegSendsNew(void);
 

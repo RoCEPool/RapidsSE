@@ -77,6 +77,7 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newStartRowRhtMarker"_Stz, &Step::vMarkerNewStartRowRhtMarker);
   vAddStep("Marker[].newStreamDefRht"_Stz,      &Step::vMarkerNewStreamDefRht);
   vAddStep("Marker[].newTrigger"_Stz,           &Step::vMarkerNewTrigger);
+  vAddStep("Marker[].newTriggeredMarker"_Stz,   &Step::vMarkerNewTriggeredMarker);
   vAddStep("Marker[].pipeIn"_Stz,               &Step::vMarkerPipeIn);
   vAddStep("Marker[].pipeToOutput"_Stz,         &Step::vMarkerPipeToOutput);
   vAddStep("Marker[].set"_Stz,                  &Step::vMarkerSet);
@@ -571,7 +572,19 @@ void Step::vMarkerNewTrigger(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Marker[].newTriggered -- new a triggered marker                            */
+/*----------------------------------------------------------------------------*/
+void Step::vMarkerNewTriggeredMarker(void)
+{
+  ENTRY();
 
+  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
+
+  m_pLogicUnit->m_xpMarker = new Marker(OM_TRIGGERED);
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* Marker[].pipeIn -- move pipein operand into Marker                         */

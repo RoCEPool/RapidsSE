@@ -200,6 +200,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_TRIGGERED ...                                             */
+/*----------------------------------------------------------------------------*/
+: consumeOp_TriggeredMarker \handler
+
+  //"Operand:- EV_M_TRIGGERED" .verbose
+  Sends[].handleTriggered if
+    PipeIn[].pipeOut
+  else
+    PipeIn[].delete
+  then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for consumeOp req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : consumeOp_op \operator
@@ -223,6 +237,8 @@
   find: consumeOp_Exiting        EV_M_EXITING    [op].handler!
   find: consumeOp_LeavingMarker  EV_M_LEAVING    [op].handler!
   find: consumeOp_StartMarker    EV_M_START      [op].handler!
+  find: consumeOp_TriggeredMarker EV_M_TRIGGERED [op].handler!
+
   find: consumeOp_StreamDef      EV_D_STREAMDEF  [op].handler!
   find: consumeOp_StreamDefRht   EV_D_STREAMDEFRHT  [op].handler!
 

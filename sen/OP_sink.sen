@@ -181,7 +181,7 @@
     exit
   then
 
-  Marker[].newEndingMarker
+  Marker[].newTriggeredMarker
   Marker[].pipeOut
   true
 ;

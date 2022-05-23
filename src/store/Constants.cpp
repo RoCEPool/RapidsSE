@@ -723,6 +723,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_STARTED"_Stz,         EV_M_STARTED);
   /*  0 */ vAddConstant("EV_M_STREAMDEFRHT"_Stz,    EV_M_STREAMDEFRHT);
   /*  0 */ vAddConstant("EV_M_TRIGGER"_Stz,         EV_M_TRIGGER);
+  /*  0 */ vAddConstant("EV_M_TRIGGERED"_Stz,       EV_M_TRIGGERED);
   
   /*  0 */ vAddConstant("EV_ENUMS"_Stz,             EV_ENUMS);
 

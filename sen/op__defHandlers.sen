@@ -297,6 +297,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* default handler for EV_M_TRIGGERED operand        (deletes pipein operand) */
+/*----------------------------------------------------------------------------*/
+: EV_M_TRIGGERED_handler \handler
+
+  //"EV_M_TRIGGERED_handler" .verbose
+
+  PipeIn[].delete
+
+  // an error if any other operator receives this operand
+  EC_PIPELINE_PROTOCOL_ERROR op__execErr
+
+  true // calling op_loop continues
+;
+
+/*----------------------------------------------------------------------------*/
 /*                       ABNORMAL EVENT HANDLERS                              */
 /*----------------------------------------------------------------------------*/
 : default_abnormalHandlers
@@ -351,7 +366,7 @@
   //defaultHandler EV_M_STARTCRWRHT       [op].handler!
   //defaultHandler EV_M_STARTROWRHT       [op].handler!
   //defaultHandler EV_M_STREAMDEFRHT      [op].handler!
-  defaultHandler EV_M_TRIGGER           [op].handler!
+  //defaultHandler EV_M_TRIGGERED         [op].handler!
 
   //EV_M_CANCEL
   //EV_M_CANCELLING
@@ -370,6 +385,7 @@
   //EV_M_LEAVING
   //EV_M_LEFT
   //EV_M_STARTED
+  //EV_M_TRIGGERED
 ;
 
 
