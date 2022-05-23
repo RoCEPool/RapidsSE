@@ -15,7 +15,8 @@
   // "end:end" .
 
 /* >end ptp */  [args].distJob if
-/* >end ptp */    "end" "onParticipant" ">end ptp sch next phase" "r" [job].trace
+/* >end ptp */    "end" "onParticipant" ">end ptp"
+/* >end ptp */      "sch next phase of ptp"                          [job].trace
 /* >end ptp */  then
 /* >end ptp */
 /* >end ptp */  // find job to be ended in participating job list
@@ -50,7 +51,8 @@
   //"end:onOrigin" .
 
 /* >end org */  [args].distJob if
-/* >end org */    "end" "onOrigin" ">end org brd all ptp" "r" [job].trace
+/* >end org */    "end" "onOrigin"
+/* >end org */      ">end org" "brd end to all ptp"                  [job].trace
 /* >end org */  then
 /* >end org */
 /* >end org */  "end:onParticipant" [job].entryPoint!

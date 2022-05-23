@@ -15,7 +15,8 @@
   //"begun:onOrigin" .
   
 /* <bgn org */  [args].distJob if
-/* <bgn org */    "begun" "onOrigin" "<bgn org ack origin task" "r" [job].trace
+/* <bgn org */    "begun" "onOrigin" "<bgn org"
+/* <bgn org */      "ack origin job-task"                            [job].trace
 /* <bgn org */  then
 /* <bgn org */
 /* <bgn org */
@@ -44,7 +45,8 @@
   //"begun:begun" .
 
 /* <bgn ptp */  [args].distJob if
-/* <bgn ptp */    "begun" "onParticipant" "<bgn ptp snd origin" "r" [job].trace
+/* <bgn ptp */    "begun" "onParticipant"
+/* <bgn ptp */      "<bgn ptp" "snd begun to origin"                 [job].trace
 /* <bgn ptp */  then
 /* <bgn ptp */
 /* <bgn ptp */  "begun:onOrigin" [job].entryPoint!

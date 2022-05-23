@@ -19,7 +19,8 @@
   // "cancelled:cancelled" .
 
 /* <cnd ptp */  [args].distJob if
-/* <cnd ptp */    "cancelled" "cancelled" "*<edd ptp snd origin" "r" [job].trace
+/* <cnd ptp */    "cancelled" "cancelled" "<edd ptp"
+/* <cnd ptp */      "snd cancelled origin"                           [job].trace
 /* <cnd ptp */  then
 /* <cnd ptp */
 /* <cnd ptp */

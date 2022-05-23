@@ -15,7 +15,8 @@
   //"execute:onParticipant" .
 
 /* >exe ptp */  [args].distJob if
-/* >exe ptp */    "execute" "onParticipant" ">exe ptp sch next phase" "r" [job].trace
+/* >exe ptp */    "execute" "onParticipant"
+/* >exe ptp */      ">exe ptp" "sch next phase of ptp"               [job].trace
 /* >exe ptp */  then
 /* >exe ptp */
 /* >exe ptp */  // find job to be executed in participating job list
@@ -50,7 +51,8 @@
   //"execute:execute" .
 
 /* >exe org */  [args].distJob if
-/* >exe org */    "execute" "onOrigin" ">exe org brd all ptp" "r" [job].trace
+/* >exe org */    "execute" "onOrigin" ">exe org"
+/* >exe org */      "brd execute to all ptp"                         [job].trace
 /* >exe org */  then
 /* >exe org */
 /* >exe org */  "execute:onParticipant" [job].entryPoint!
