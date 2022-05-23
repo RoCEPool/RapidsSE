@@ -17,6 +17,7 @@
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -217,7 +218,7 @@ void AggregateOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
         sBuf.vConcat(")"_Stz);
 
         if (ExplainOp::bWithTypes(pExplainNode)) {
-          eCT eColType = Expr::eType(pGroupByExpr, pRootNode);
+          eCT eColType = Expr::xTypeId(pGroupByExpr, pRootNode).eCTVal();
           sBuf.vCatSprint(" ; type: %s"_Stz, aCT[eColType]);
         }
       }

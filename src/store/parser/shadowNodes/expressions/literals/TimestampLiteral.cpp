@@ -120,14 +120,14 @@ b1 TimestampLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT TimestampLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId TimestampLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return CT_TIMESTAMP;
+  return TypeId::xIdOf(CT_TIMESTAMP);
 }
 
 /*----------------------------------------------------------------------------*/

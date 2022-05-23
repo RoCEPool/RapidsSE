@@ -33,7 +33,7 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
 
     // Returns the resulting type of the expression operation
-    static eCT   eType(QueryNode* pNode, PlanNode* pRootNode);
+    static TypeId xTypeId(QueryNode* pNode, PlanNode* pRootNode);
 
     // Returns true if the expression does not contain any column references.
     // All expressions are relative column ordinals, operators or literals only.

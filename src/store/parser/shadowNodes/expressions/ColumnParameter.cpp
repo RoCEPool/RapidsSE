@@ -89,7 +89,7 @@ b1 ColumnParameter::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT ColumnParameter::eType(QueryNode* pNode, PlanNode* pRootNode)
+TypeId ColumnParameter::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
