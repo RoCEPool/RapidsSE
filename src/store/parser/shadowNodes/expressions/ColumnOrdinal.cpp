@@ -14,6 +14,7 @@
 #include "MetadataNode.hpp"
 
 #include "GraphNav.hpp"
+#include "TypeId.hpp"
 
 using namespace Parser;
 
@@ -79,7 +80,7 @@ b1 ColumnOrdinal::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT ColumnOrdinal::eType(QueryNode* pNode, PlanNode* pRootNode)
+TypeId ColumnOrdinal::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

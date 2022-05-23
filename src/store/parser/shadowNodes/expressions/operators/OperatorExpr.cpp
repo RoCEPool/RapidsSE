@@ -67,20 +67,20 @@ b1 OperatorExpr::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT OperatorExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId OperatorExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
 
   // TODO: manual expression polymorphism here
 
-  if      (  MathematicalExpr::bIsOfType(pExprNode))  { return   MathematicalExpr::eType(pExprNode, pRootNode); }
-  else if (    ComparisonExpr::bIsOfType(pExprNode))  { return     ComparisonExpr::eType(pExprNode, pRootNode); }
-  else if (         LogicExpr::bIsOfType(pExprNode))  { return          LogicExpr::eType(pExprNode, pRootNode); }
-  else if (     AggregateExpr::bIsOfType(pExprNode))  { return      AggregateExpr::eType(pExprNode, pRootNode); }
-  else if (StringFunctionExpr::bIsOfType(pExprNode))  { return StringFunctionExpr::eType(pExprNode, pRootNode); }
-  else if (   ConditionalExpr::bIsOfType(pExprNode))  { return    ConditionalExpr::eType(pExprNode, pRootNode); }
-  else if (          MiscExpr::bIsOfType(pExprNode))  { return           MiscExpr::eType(pExprNode, pRootNode); }
+  if      (  MathematicalExpr::bIsOfType(pExprNode))  { return   MathematicalExpr::xTypeId(pExprNode, pRootNode); }
+  else if (    ComparisonExpr::bIsOfType(pExprNode))  { return     ComparisonExpr::xTypeId(pExprNode, pRootNode); }
+  else if (         LogicExpr::bIsOfType(pExprNode))  { return          LogicExpr::xTypeId(pExprNode, pRootNode); }
+  else if (     AggregateExpr::bIsOfType(pExprNode))  { return      AggregateExpr::xTypeId(pExprNode, pRootNode); }
+  else if (StringFunctionExpr::bIsOfType(pExprNode))  { return StringFunctionExpr::xTypeId(pExprNode, pRootNode); }
+  else if (   ConditionalExpr::bIsOfType(pExprNode))  { return    ConditionalExpr::xTypeId(pExprNode, pRootNode); }
+  else if (          MiscExpr::bIsOfType(pExprNode))  { return           MiscExpr::xTypeId(pExprNode, pRootNode); }
   else NEVER_REACH
 }
 

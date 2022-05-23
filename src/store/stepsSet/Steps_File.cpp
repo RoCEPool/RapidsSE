@@ -26,6 +26,7 @@ void Step::vAddSteps_File(void)
   vAddStep("file0[].get"_Stz,            &Step::vFile0Get);
   vAddStep("file0[].getEofLocation"_Stz, &Step::vFile0GetEofLocation);
   vAddStep("file0[].isNull"_Stz,         &Step::vFile0IsNull);
+  vAddStep("file0[].isOpen?"_Stz,        &Step::vFile0IsOpen);
   vAddStep("file0[].size"_Stz,           &Step::vFile0Size);
   vAddStep("file0[].set"_Stz,            &Step::vFile0Set);
   
@@ -87,6 +88,26 @@ void Step::vFile0IsNull(void)
   ENTRY();
   
   m_pDataStack->vPushInt(m_pLogicUnit->m_xpFile0.bIsNull() ? 1 : 0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file0[].isOpen? -- is file open ?                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vFile0IsOpen(void)
+{
+  ENTRY();
+  
+  if (m_pLogicUnit->m_xpFile0.bIsNull()) {
+    m_pDataStack->vPushInt(0);
+  }
+  else {
+    if (m_pLogicUnit->m_xpFile0->bIsOpen())
+      m_pDataStack->vPushInt(1);
+    else
+      m_pDataStack->vPushInt(0);
+  }
   
   EXIT();
 }

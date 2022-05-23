@@ -9,6 +9,7 @@
 #include "QueryNode.hpp"
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -135,7 +136,7 @@ b1 AvgExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-eCT AvgExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId AvgExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
@@ -143,12 +144,13 @@ eCT AvgExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   // Get the types of the operand
   QueryNode* pChild1 = AvgExpr::pChild1(pExprNode);
 
-  eCT eOperand1 = Expr::eType(pChild1, pRootNode);
+  TypeId xOperand1TypeId = Expr::xTypeId(pChild1, pRootNode);
+  eCT eOperand1 = xOperand1TypeId.eCTVal();
 
   // Lookup the type of the result
   eCT eResult = aeTypeCalculus[eOperand1];
 
-  return eResult;
+  return TypeId::xIdOf(eResult);
 }
 
 /*============================================================================*/

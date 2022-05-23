@@ -40,6 +40,7 @@ namespace STORE
     static Job* pFindParticipantJobId(JobId tJobId);
     static Job* pFindParticipantJobNo(i8 iJobNo);
   
+    static eEC eAllReport(i8 iJobNo, Tub* pTub);
     static eEC eMetricsReport(i8 iJobNo, Tub* pTub);
     static eEC eNetDissectReport(i8 iJobNo, Tub* pTub);
     static eEC eNetworkReport(i8 iJobNo, Tub* pTub);

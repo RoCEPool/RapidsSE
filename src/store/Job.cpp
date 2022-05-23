@@ -681,51 +681,57 @@ TagSet* Job::pJobTags(void)
 /*----------------------------------------------------------------------------*/
 /* trace job                                                                  */
 /*----------------------------------------------------------------------------*/
-void Job::vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint)
+void Job::vJobTrace(Stz* szAtCmd, Stz* szAtRoutine,
+                    Stz* szAtPoint, Stz* szNote)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vTrace("vJobTrace - %10s : %-14s @ %-20s - "_Stz,
-         szAtCmd,
-         szAtRoutine,
-         szAtPoint
-         );
+  s4K sLine;
+  
+  sLine.vSprint("vJobTrace - %10s : %-14s @ %-8s # %-24s - "_Stz,
+                szAtCmd,
+                szAtRoutine,
+                szAtPoint,
+                szNote
+                );
   
   if (m_tJobId.bIsUnknown())
-    vTrace("%-11s"_Stz,"J:unknown "_Stz);
+    sLine.vCatSprint("%-11s"_Stz,"J:unknown "_Stz);
   else
-    vTrace("J%04lld.%04lld "_Stz,
-           m_tJobId.uNodeId(),
-           m_tJobId.uJobNo()
-           );
+    sLine.vCatSprint("J%04lld.%04lld "_Stz,
+                     m_tJobId.uNodeId(),
+                     m_tJobId.uJobNo()
+                    );
 
   if (m_tParentId.bIsUnknown())
-    vTrace("%-11s"_Stz,"P:unknown "_Stz);
+    sLine.vCatSprint("%-11s"_Stz,"P:unknown "_Stz);
   else
-    vTrace("P%04lld.%04lld "_Stz,
-           m_tParentId.uNodeId(),
-           m_tParentId.uJobNo()
-           );
+    sLine.vCatSprint("P%04lld.%04lld "_Stz,
+                     m_tParentId.uNodeId(),
+                     m_tParentId.uJobNo()
+                    );
 
-  vTrace(":: "_Stz);
+  sLine.vCatSprint(":: "_Stz);
   
   if (m_tOriginId.bIsUnknown())
-    vTrace("%-11s"_Stz,"O:unknown "_Stz);
+    sLine.vCatSprint("%-11s"_Stz,"O:unknown "_Stz);
   else
-    vTrace("O%04lld.%04lld "_Stz,
-           m_tOriginId.uNodeId(),
-           m_tOriginId.uJobNo()
-           );
+    sLine.vCatSprint("O%04lld.%04lld "_Stz,
+                     m_tOriginId.uNodeId(),
+                     m_tOriginId.uJobNo()
+                    );
 
   if (m_tDistId.bIsUnknown())
-    vTrace("%-11s"_Stz,"D:unknown "_Stz);
+    sLine.vCatSprint("%-11s"_Stz,"D:unknown "_Stz);
   else
-    vTrace("D%04lld.%04lld "_Stz,
-           m_tDistId.uNodeId(),
-           m_tDistId.uJobNo()
-           );
+    sLine.vCatSprint("D%04lld.%04lld "_Stz,
+                     m_tDistId.uNodeId(),
+                     m_tDistId.uJobNo()
+                    );
 
-  vTrace("\n"_Stz);
+  sLine.vCatSprint("\n"_Stz);
+  
+  vTrace("%s"_Stz,sLine.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1134,7 +1140,7 @@ void Job::vPostRecv(void)
   AM::JLIST::vInsertJob(this);
 
   if (AM::SYSARGS::bDistJob())
-    vJobTrace("Job"_Stz, "vPostRecv"_Stz, "#rcv"_Stz);
+    vJobTrace("Job"_Stz, "vPostRecv"_Stz, "#rcv"_Stz,""_Stz);
   
   if (bHasTag(C_SEE_JOB))
     vPrintJobContents();
