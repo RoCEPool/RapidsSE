@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Schedule* BASE::_pQueues(void* aAddr)
+Schedule* ENGINE::_pQueues(void* aAddr)
 {
   Schedule* pSchedule = reinterpret_cast<Schedule*>(aAddr);
   

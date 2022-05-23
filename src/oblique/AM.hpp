@@ -90,17 +90,12 @@ namespace BASE {
   class Resource;
   class Resources;
 
-  class Schedule;
-  class Scheduler;
   class Socket;
   class Starter;
   class Statistics;
   class String;
 
   class TagSet;
-  class Task;
-  class Thread;
-  class ThreadVec;
   class Timer;
   class Token;
   class TokenVec;
@@ -214,6 +209,13 @@ using namespace STORE;
 
 namespace ENGINE {
   class Engine;
+  class Schedule;
+  class Scheduler;
+  class Task;
+  class TaskList;
+  class Thread;
+  class ThreadQueue;
+  class ThreadVec;
 }
 
 using namespace ENGINE;

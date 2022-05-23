@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace BASE
+namespace ENGINE
 {
   class ThreadVec : public VectorNL_t<CN_THREADVEC,Thread,C_MAX_THREADS>
   {

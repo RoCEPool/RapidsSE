@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace BASE
+namespace ENGINE
 {
   class ThreadQueue : public ListNL_t<Thread>
   {
