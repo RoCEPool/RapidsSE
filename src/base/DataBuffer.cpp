@@ -39,8 +39,9 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 
   m_iBufferNo  = iBufferNo();
+#ifdef WITH_BUFFER_ID
   m_oBufferId = AM::pFileMap()->oGetNewBufferId();
-
+#endif
   m_iBucketNo  = C_UNKNOWN;
   m_tLglPtn     = C_UNKNOWN;
   

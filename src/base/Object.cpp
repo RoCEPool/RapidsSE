@@ -124,7 +124,7 @@ Object* Object::pMemoryCopy(void)
     i8 iBufferNo = pRowBuffer->iBufferNo();
     pRowBuffer->vSetBufferNo(iBufferNo);
     pRowBuffer->vSetBufferId(
-        BufferId::vBufferIdFromNo(iBufferNo));
+        AM::pFileMap()->oGetNewBufferId());
   }
 #endif
 
