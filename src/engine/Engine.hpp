@@ -7,7 +7,7 @@ namespace STORE { class Error; }
 
 #include "eBO.h"
 
-namespace STORE
+namespace ENGINE
 {
   class Engine
   {

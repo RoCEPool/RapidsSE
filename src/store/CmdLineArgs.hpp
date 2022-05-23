@@ -14,7 +14,7 @@ namespace STORE
   class CmdLineArgs : public Object
   {
     friend class OBLIQUE::AM;
-    friend class STORE::Engine;
+    friend class Engine;
     friend class BASE::Charser;
     friend class BASE::Input;
 

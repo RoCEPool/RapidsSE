@@ -22,7 +22,7 @@ namespace STORE
   class AttachMap : public Object
   {
   friend class OBLIQUE::AM;
-  friend class Engine;
+  friend class ENGINE::Engine;
   friend class PROMPT::SePrompt;
 
   private:

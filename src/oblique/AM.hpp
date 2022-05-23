@@ -152,7 +152,6 @@ namespace STORE {
   class Dynamo;
 
   class Encoding;
-  class Engine;
   class EntBuffer;
   class EventHandlers;
 
@@ -210,6 +209,14 @@ namespace STORE {
 }
 
 using namespace STORE;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace ENGINE {
+  class Engine;
+}
+
+using namespace ENGINE;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

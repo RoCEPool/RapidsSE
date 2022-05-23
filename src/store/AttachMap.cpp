@@ -21,6 +21,8 @@
 #include "TagConstants.h"
 #include "BucketMap.hpp"
 
+#include "AM.hpp"
+
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
 
