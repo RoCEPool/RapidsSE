@@ -15,8 +15,9 @@ namespace BASE
   friend HashMapSlot;
 
   private:
-    u8 m_uNoOfSlots;
-    u8 m_uNoOfEntries;
+    Lock          m_okLock;        // lock for the entire hash map
+    u8            m_uNoOfSlots;
+    u8            m_uNoOfEntries;
 
     HashMapSlot** m_paHashMapSlots;
 

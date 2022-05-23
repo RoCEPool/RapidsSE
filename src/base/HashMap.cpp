@@ -45,6 +45,7 @@ void HashMap::operator delete(void* pHashMapAddress)
 /*----------------------------------------------------------------------------*/
 HashMap::HashMap(u8 uNoOfSlots)
 : Object(CN_HASHMAP)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHMAP,_FOOTER_);
   m_uNoOfSlots          = uNoOfSlots;
@@ -157,6 +158,7 @@ void HashMap::vDeleteKey(void* pKey)
 #ifdef WITH_HASHMAP_DEBUG
   vAppendHistory(pKey, true, false);
 #endif
+  m_okLock.vGrabWrite();
 
   while ( pIter != nullptr ) {
 
@@ -173,12 +175,15 @@ void HashMap::vDeleteKey(void* pKey)
       ASSERT(1 <= m_uNoOfEntries);
       m_uNoOfEntries--;
 
+      m_okLock.vDropWrite();
+
       return;
     }
 
     pPrevIter = pIter;
     pIter = pIter->m_pNext;
   }
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,14 +194,19 @@ bool HashMap::bExists(void* pKey)
   u8 uIndex = uHashFunction(pKey, m_uNoOfSlots);
   HashMapSlot* pIter = m_paHashMapSlots[uIndex];
 
+  m_okLock.vGrabRead();
+
   while ( pIter != nullptr ) {
 
-    if ( pIter->m_pKeyObject == pKey )
+    if ( pIter->m_pKeyObject == pKey ) {
+      m_okLock.vDropRead();
       return true;
+    }
 
     pIter = pIter->m_pNext;
   }
 
+  m_okLock.vDropRead();
   return false;
 }
 
@@ -214,9 +224,14 @@ u8 HashMap::uHashFunction(void* pKey, u8 NoOfSlots)
 /*----------------------------------------------------------------------------*/
 void HashMap::vInsertSlotAtIndex(HashMapSlot* pSlot, u8 uIndex)
 {
+  m_okLock.vGrabWrite();
+
   pSlot->m_pNext = m_paHashMapSlots[uIndex];
   m_paHashMapSlots[uIndex] = pSlot;
+
   m_uNoOfEntries++;
+
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,10 +278,11 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
 /*----------------------------------------------------------------------------*/
 void HashMap::vReHash(void)
 {
-  // We would need to lock the HashMap (Write lock)
-  // Two types of locks
-  // One for full hash map
-  // One per slot
+  // Low memory check?
+  // Can we lock individual slot chains?
+
+  m_okLock.vGrabWrite();
+
   u8 uOldNoOfSlots = m_uNoOfSlots;
   m_uNoOfSlots = m_uNoOfSlots * 2;
 
@@ -300,6 +316,8 @@ void HashMap::vReHash(void)
   ASSERT(0 == uCount);
 
   delete paOldHashMapSlots;
+
+  m_okLock.vDropWrite();
 }
 /*----------------------------------------------------------------------------*/
 /* Get value stored at key if it exists                                       */
@@ -309,14 +327,18 @@ Object* HashMap::pValueAt(void* pKey)
   u8 uIndex = uHashFunction(pKey, m_uNoOfSlots);
   HashMapSlot* pIter = m_paHashMapSlots[uIndex];
 
+  m_okLock.vGrabRead();
   while ( pIter != nullptr ) {
 
-    if ( pIter->m_pKeyObject == pKey )
+    if ( pIter->m_pKeyObject == pKey ) {
+      m_okLock.vDropRead();
       return pIter->m_pValObject;
+    }
 
     pIter = pIter->m_pNext;
   }
 
+  m_okLock.vDropRead();
   return nullptr;
 }
 
