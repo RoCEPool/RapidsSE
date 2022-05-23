@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace BASE
+namespace PRIMITIVES
 {
   class Atomic : public Object
   {

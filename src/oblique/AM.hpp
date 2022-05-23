@@ -27,7 +27,6 @@
 #include "KeyBkt.hpp"
 
 
-class LglPtn;
 
 namespace OBLIQUE {
   class AM;
@@ -37,6 +36,17 @@ using namespace OBLIQUE;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+namespace PRIMITIVES {
+  class Atomic;
+  class Footer;
+  class Header;
+  class Mutex;
+  class Object;
+}
+
+using namespace PRIMITIVES;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 namespace BASE {
          
   class Birth;
@@ -59,7 +69,6 @@ namespace BASE {
 #ifdef WITH_HASHMAP
   class HashMap;
 #endif
-  class Header;
   class Heap;
   class Heaps;
   class HeapBuffer;
@@ -73,11 +82,9 @@ namespace BASE {
   class Locks;
 
   class MasterLock;
-  class Mutex;
 
   class Now;
 
-  class Object;
   class ObjectSnapshot;
   class Operand;
 
@@ -164,6 +171,7 @@ namespace STORE {
   class Job;
   class JobList;
 
+  class LglPtn;
   class LogicUnit;
 
   class Node;

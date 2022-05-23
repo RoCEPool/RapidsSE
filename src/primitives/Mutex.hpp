@@ -5,7 +5,7 @@
 
 #include "eMS.h"
 
-namespace BASE
+namespace PRIMITIVES
 {
   class Mutex : public Object
   {

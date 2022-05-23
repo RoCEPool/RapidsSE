@@ -22,7 +22,7 @@ Object::Object(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* macro for standard safe cast function                                      */
 /*----------------------------------------------------------------------------*/
-Object* BASE::_pObject(void* aAddr)
+Object* PRIMITIVES::_pObject(void* aAddr)
 {
   Object* pObject = reinterpret_cast<Object*>(aAddr);
 

@@ -5,7 +5,7 @@
 
 //#include "eEC.h"
 
-namespace BASE
+namespace PRIMITIVES
 {
   // magic signature
   static const u4 C_MAGIC = 0x4B696A4D; // spells MjiK

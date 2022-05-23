@@ -33,7 +33,7 @@ namespace BASE
   friend class BASE::Birth;
   friend class BASE::Now;
   
-  friend class BASE::Mutex;
+  friend class PRIMITIVES::Mutex;
   friend class BASE::IvlLib;
   
 
