@@ -39,7 +39,6 @@ RowBuffer::RowBuffer(void)
   m_bDeletable = false;
 
 #ifdef WITH_BUFFER_ID
-  m_oBufferId  = AM::pFileMap()->oGetNewBufferId();
 #ifdef WITH_HASHMAP
   AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
 #endif
@@ -67,7 +66,6 @@ RowBuffer::RowBuffer(eCN eClassNo)
   m_bDeletable = true;
 
 #ifdef WITH_BUFFER_ID
-  m_oBufferId  = AM::pFileMap()->oGetNewBufferId();
 #ifdef WITH_HASHMAP
   AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
 #endif
@@ -96,7 +94,6 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
   m_bDeletable = true;
 
 #ifdef WITH_BUFFER_ID
-  m_oBufferId  = AM::pFileMap()->oGetNewBufferId();
 #ifdef WITH_HASHMAP
   AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
 #endif
@@ -530,18 +527,6 @@ void RowBuffer::vDepositRow(Row* pRow, i8 iVargsBegin, ...)
   va_end(xVarArgs);
 }
 
-#ifdef WITH_BUFFER_ID
-/*----------------------------------------------------------------------------*/
-/* get the buffer id of this row buffer                                       */
-/*----------------------------------------------------------------------------*/
-BufferId RowBuffer::oGetBufferId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-
-  return m_oBufferId;
-}
-#endif
-
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
@@ -645,18 +630,6 @@ void RowBuffer::vRestorePointers(void)
     
   RowBox_t<C_WSP_ROWBUFFER>::vResetRowPix();
 }
-
-#ifdef WITH_BUFFER_ID
-/*----------------------------------------------------------------------------*/
-/* set the buffer id                                                          */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vSetBufferId(BufferId oBufferId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-
-  m_oBufferId = oBufferId;
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */

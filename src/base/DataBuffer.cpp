@@ -39,7 +39,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 
   m_iBufferNo  = iBufferNo();
-
+  m_oBufferId = AM::pFileMap()->oGetNewBufferId();
 
   m_iBucketNo  = C_UNKNOWN;
   m_tLglPtn     = C_UNKNOWN;
@@ -342,6 +342,28 @@ void DataBuffer::vSetBufferNo(i8 iBufferNo)
 
   m_iBufferNo = iBufferNo;
 }
+
+#ifdef WITH_BUFFER_ID
+/*----------------------------------------------------------------------------*/
+/* get the buffer id of this row buffer                                       */
+/*----------------------------------------------------------------------------*/
+BufferId DataBuffer::oGetBufferId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_oBufferId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the buffer id                                                          */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vSetBufferId(BufferId oBufferId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_oBufferId = oBufferId;
+}
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

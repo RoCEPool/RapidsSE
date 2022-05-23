@@ -11,6 +11,10 @@ namespace BASE
     Lock         m_okLock;        // lock
     i8           m_iBufferNo;     // this DataBuffer's buffer number
 
+#ifdef WITH_BUFFER_ID
+    BufferId     m_oBufferId;     // Location to where this buffer can be paged out to in page file on disk
+#endif
+
     LglPtn m_tLglPtn;
     i8     m_iBucketNo;     // this DataBuffer's bucket number
 
@@ -23,7 +27,11 @@ namespace BASE
 
     tXN m_tTxnNo; // transaction number
 
+#ifdef WITH_BUFFER_ID
+    PadWord m__PadToCacheLine[17];
+#else
     PadWord m__PadToCacheLine[18];
+#endif
 
 
   public:
@@ -80,6 +88,10 @@ namespace BASE
     i8   iBufferNo(void);
 
     void     vSetBufferNo(i8 iBufferNo);
+#ifdef WITH_BUFFER_ID
+    BufferId oGetBufferId(void);
+    void vSetBufferId(BufferId oBufferId);
+#endif
   };
   
   DataBuffer* _pDataBuffer(void* aAddr);
