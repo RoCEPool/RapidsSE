@@ -18,6 +18,7 @@
 #include "SN_Flt.hpp"
 #include "SN_Bcd.hpp"
 #include "eFM.h"
+#include "eIV.h"
 
 RowRef xRowRef[]
 {
@@ -2487,11 +2488,11 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
           sOperation.vSprintCat("_PSH_INT(%lld)"_Stz, iInitValue);
           break;
         case DM_IVL:
-          iInitValue = Ivl::iMaxValue();
+          iInitValue = Ivl::iMaxValue(IV_SECOND); // TODO: which interval subtype?
           sOperation.vSprintCat("_PSH_IVL(%lld)"_Stz, iInitValue);
           break;
         case DM_IVY:
-          iInitValue = Ivl::iMaxValue();
+          iInitValue = Ivl::iMaxValue(IV_MONTH);
           sOperation.vSprintCat("_PSH_IVY(%lld)"_Stz, iInitValue);
           break;
         case DM_TME:
@@ -2532,10 +2533,10 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
         case DM_INT: iInitValue = Int::iMinValue();
           sOperation.vSprintCat("_PSH_INT(%lld)"_Stz, iInitValue);
           break;
-        case DM_IVL: iInitValue = Ivl::iMinValue();
+        case DM_IVL: iInitValue = Ivl::iMinValue(IV_SECOND); // TODO: which interval subtype?
           sOperation.vSprintCat("_PSH_IVL(%lld)"_Stz, iInitValue);
           break;
-        case DM_IVY: iInitValue = Ivl::iMinValue();
+        case DM_IVY: iInitValue = Ivl::iMinValue(IV_MONTH); // TODO: which interval subtype?
           sOperation.vSprintCat("_PSH_IVY(%lld)"_Stz, iInitValue);
           break;
         case DM_TME: iInitValue = Tme::iMinValue();

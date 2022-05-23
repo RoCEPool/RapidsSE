@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "eIV.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -50,14 +51,14 @@ Tsp TspLib::wGetCurrTsp_utc(void)
   // currently we don't generate any UTC tsp's
   RASSERT(0);
   
-  Ivl wIvl;
+  Ivl wIvl{IV_SECOND};
   Tsp wTsp;
   
   // get current epoch interval
   wIvl = IvlLib::wGetCurrIvl();
   
   // convert current epoch interval into utc timestamp
-  time_t iSecondsSincePosixEpoch = wIvl.T.m_uSecond;
+  time_t iSecondsSincePosixEpoch = wIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds;
   struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
   if (! aUtcDateTime) {
     vTrace("wGetCurrTsp_utc: gmtime() error; errno=%d"_Stz,errno);
@@ -71,7 +72,7 @@ Tsp TspLib::wGetCurrTsp_utc(void)
   wTsp.T.m_uHour      = aUtcDateTime->tm_hour;
   wTsp.T.m_uMinute    = aUtcDateTime->tm_min;
   wTsp.T.m_uSecond    = aUtcDateTime->tm_sec;
-  wTsp.T.m_uMicro     = wIvl.T.m_uMicro;
+  wTsp.T.m_uMicro     = wIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros;
   wTsp.T.m_uLocal     = C_TSP_UTC;
   wTsp.T.m_uSpare     = 0;
   
@@ -85,7 +86,7 @@ Tsp TspLib::wToTsp_local(Ivl wIvl)
 {
   Tsp wTsp;
   
-  time_t iSecondsSincePosixEpoch = wIvl.T.m_uSecond;
+  time_t iSecondsSincePosixEpoch = wIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds;
   
   // convert secondsSince into a tm structure for local time zone
   struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
@@ -102,7 +103,7 @@ Tsp TspLib::wToTsp_local(Ivl wIvl)
   wTsp.T.m_uHour      = aLocalDateTime->tm_hour;
   wTsp.T.m_uMinute    = aLocalDateTime->tm_min;
   wTsp.T.m_uSecond    = aLocalDateTime->tm_sec;
-  wTsp.T.m_uMicro     = wIvl.T.m_uMicro;
+  wTsp.T.m_uMicro     = wIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros;
   wTsp.T.m_uLocal     = C_TSP_LOCAL;
   wTsp.T.m_uSpare     = 0;
 
@@ -120,7 +121,7 @@ Tsp TspLib::wToTsp_utc(Ivl wIvl)
   
   Tsp wTsp;
   
-  time_t iSecondsSincePosixEpoch = wIvl.T.m_uSecond;
+  time_t iSecondsSincePosixEpoch = wIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds;
   
   // convert secondsSince into a tm structure for UTC/GMT time zone
   struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
@@ -137,7 +138,7 @@ Tsp TspLib::wToTsp_utc(Ivl wIvl)
   wTsp.T.m_uHour      = aUtcDateTime->tm_hour;
   wTsp.T.m_uMinute    = aUtcDateTime->tm_min;
   wTsp.T.m_uSecond    = aUtcDateTime->tm_sec;
-  wTsp.T.m_uMicro     = wIvl.T.m_uMicro;
+  wTsp.T.m_uMicro     = wIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros;
   wTsp.T.m_uLocal     = C_TSP_UTC;
   wTsp.T.m_uSpare     = 0;
 

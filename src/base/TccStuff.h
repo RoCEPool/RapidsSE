@@ -75,14 +75,107 @@ union Int_T {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // IVL
+// Notes:
+// We present a number of unioned structures below to represent the 13 different
+// interval types. Each structure is optimised to hold as wide a range of values
+// as possible within a 64 bit limit. This is good enough for a TPC-H demo but we
+// will need to expand this to a 16 byte field in good time.
+//
+// We don't necessarily store every field. That is, some fields are normalised
+// down into a lower field. e.g. hours should be normalised into minutes and
+// years should be normalised into months.
+//
+// However there are also fields that we cannot normalised. e.g
+// We can't normalise minutes into seconds because there may be between 58 and 62
+// seconds in a minute (due to leap seconds). Similarly we cannot normalise days
+// into hours because there could be 23-25 hours in a day (thanks to daylight
+// savings time). We also cannot normalise months into days for obvious reasons.
+//
+// Therefore:
+//   - Don't store hours; instead store them as minutes.
+//     (The only exception here is the IvalHours structure that only represents hours)
+//   - Don't store years; instead store them as months
+//   - Do any interval/timestamp arithmetic with these normalised fields.
+//   - When displaying intervals, convert minutes into hours, etc.
+//
+// The "__attribute__((__packed__))" is required to ensure each of the structures
+// are not padded out to 8 bytes each.
+//
 union Ivl_T {
-  struct {
-    u8 m_uMicro     : 20 ; // 0..1M
-    u8 m_uSecond    : 44 ; // 0..1.7E13
-    //               ---
-    //                64
-    //               ===
-  };
+  struct  __attribute__((__packed__)) {
+    u8 m_eType    : 4 ; // 0..15
+    u8 m_bIsNeg   : 1 ;
+    u8 m_bIsNull  : 1 ;
+    u8 m_iSpare   : 2 ;
+
+    union __attribute__((__packed__)) {
+
+      // Year-Month interval types:
+      struct __attribute__((__packed__)) {
+        u8 m_uMonths        : 56; // 0..7.2E16
+      } m_xIvlYr;
+
+      struct __attribute__((__packed__)) {
+        u8 m_uMonths        : 56; // 0..7.2E16
+      } m_xIvlMon;
+
+      struct __attribute__((__packed__)) {
+        u8 m_uMonths        : 56; // 0..7.2E16
+      } m_xIvlYrToMon;
+
+      // Day-time interval types:
+      struct __attribute__((__packed__)) {
+        u8 m_uDays          : 12; // 0..4,095
+        u8 m_uMinutes       : 12; // 0..4,095
+        u8 m_uSeconds       : 12; // 0..4,095
+        u8 m_uFrac          : 20; // 0..1,048,575
+      } m_xIvlDayToSec;
+
+      struct __attribute__((__packed__)) {
+        u8 m_uDays          : 28; // 0..268,435,456
+        u8 m_uMinutes       : 28; // 0..268,435,456
+      } m_xIvlDayToMin;
+
+      struct __attribute__((__packed__)) {
+        u8 m_uDays          : 28; // 0..268,435,456
+        u8 m_uMinutes       : 28; // 0..268,435,456
+      } m_xIvlDayToHr;
+
+      struct __attribute__((__packed__)) {
+        u8 m_uMinutes       : 18; // 0..262,143
+        u8 m_uSeconds       : 18; // 0..262,143
+        u8 m_uFrac          : 20; // 0..1,048,575
+      } m_xIvlHrToSec;
+
+      struct __attribute__((__packed__)) {
+        u8 m_uMinutes       : 56; // 0..7.2E16
+      } m_xIvlHrToMin;
+
+      struct __attribute__((__packed__)) {
+        u8 m_uMinutes       : 18; // 0..262,143
+        u8 m_uSeconds       : 18; // 0..262,143
+        u8 m_uFrac          : 20; // 0..1,048,575
+      } m_xIvlMinToSec;
+
+      struct __attribute__((__packed__)) {
+        u8 m_uDays          : 56; // 0..7.2E16
+      } m_xIvlDay;
+
+      struct __attribute__((__packed__)) {
+        u8 m_uHours         : 56; // 0..7.2E16
+      } m_xIvlHr;
+
+      struct __attribute__((__packed__)) {
+        u8 m_uMinutes       : 56; // 0..7.2E16
+      } m_xIvlMin;
+
+      struct __attribute__((__packed__)) {
+        u8 m_uSeconds       : 36; // 0..68,719,476,736
+        u8 m_uMicros        : 20; // 0..1,048,575
+      } m_xIvlSec;
+    } u;
+  } m_xIvl;
+
   i8 m_iAsI8;
 };
 

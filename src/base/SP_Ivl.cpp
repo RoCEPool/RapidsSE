@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "SP_Ivl.hpp"
+#include "eIV.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -51,13 +52,13 @@ Stz* SP_Ivl::sz(i8 iIvl, i8 iScale)
   _precondition_(_MAGIC_,_FOOTER_);
   UNUSED(iScale);
   
-  Ivl wIvl;
+  Ivl wIvl{IV_SECOND};
   wIvl = iIvl;
 
   StrLib::vSprint(m_caResult,
                   (Stz*)m_caFormat,
-                  wIvl.T.m_uSecond,
-                  wIvl.T.m_uMicro);
+                  wIvl.T.m_xIvl.u.m_xIvlSec.m_uSeconds,
+                  wIvl.T.m_xIvl.u.m_xIvlSec.m_uMicros);
 
   return (Stz*) &m_caResult[0];
 }

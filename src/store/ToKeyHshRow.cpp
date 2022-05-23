@@ -17,6 +17,7 @@
 #include "Pipeline.hpp"
 #include "Stream.hpp"
 #include "KeyHsh.hpp"
+#include "eIV.h"
 
 static i8 iDaysPerMonth[13]     = { -1,31,28,31,30,31,30,31,31,30,31,30,31};
 static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};
@@ -707,7 +708,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   u8 uWholeNumber;
   i8 nWholeDigits;
 
-  Ivl wxColVal_interval;  // interval
+  Ivl wxColVal_interval{IV_SECOND};  // interval
   i8 nMicrosecondShift;
 
   d8 dColVal_float;       // float
@@ -1613,8 +1614,8 @@ L_Interval:
   vWHITE_SPACE_trailing(EC_CSV_INTERVAL_INVALID);
 
   // compute final field value
-  wxColVal_interval.T.m_uSecond = uSecondComponent;
-  wxColVal_interval.T.m_uMicro  = uMicrosecondComponent;
+  wxColVal_interval.T.m_xIvl.u.m_xIvlSec.m_uSeconds = uSecondComponent;
+  wxColVal_interval.T.m_xIvl.u.m_xIvlSec.m_uMicros  = uMicrosecondComponent;
   
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                           deposit interval

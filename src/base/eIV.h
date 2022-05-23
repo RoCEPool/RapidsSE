@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-enum eIV // Interval Type
+enum eIV : i1 // Interval Type
 {
   /* 0  */ IV_NONE=0,
   /* 1  */ IV_SUBCATEGORY_YEARMONTH_START,   // Subcategory start (not a concrete type)
