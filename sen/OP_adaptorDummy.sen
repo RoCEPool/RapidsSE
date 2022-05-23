@@ -1,0 +1,145 @@
+/*============================================================================*/
+/* OP_adaptorDummpy.sen -- dummy adaptor                                      */
+/*============================================================================*/
+
+" OP_adaptorDummpy.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* support for seapi immediate                                                */
+/*----------------------------------------------------------------------------*/
+: adaptorDummy_seapi
+
+  "adaptorDummy_seapi" .
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* on EV_D_EXITOPERAND ...                                   EV_D_EXITOPERAND */
+/*----------------------------------------------------------------------------*/
+: adaptorDummy_ExitOperand \handler
+
+  0 EV_D_EXITOPERAND EG_ZK LogicUnit[].diaryNote
+
+  nullptr [job].responseOp!
+
+  "adaptorDummy_ExitOperand" .
+  Pipein[].delete
+
+  [job] assert
+  [task] assert
+
+  // ack the parent job task
+  [op].ackInvokingTask
+
+  false // calling op_loop exits
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_M_START ...                                                    START */
+/*----------------------------------------------------------------------------*/
+: adaptorDummy_Start \handler
+
+  0 locals| sSmt |
+
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
+
+  <etc> "sqlCompiler \"%v\"" str.format to sSmt
+  sSmt .
+
+  // spawn a job for the smt
+  STD_NOWAIT_TAG sSmt api::forkChild not if
+     "Error Code %v" .printf
+  then
+
+  //[Op] [job].responseOp!
+
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_D_CRWBUFFER ...                                            CRWBUFFER */
+/*----------------------------------------------------------------------------*/
+: adaptorDummy_CrwBuffer \handler
+
+  EC_NONE locals| eError |
+
+  0 EV_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  "adaptorDummy_CrwBuffer: GOT A CRWBUFFER" .
+  Pipein[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_EXITING ...                                               */
+/*----------------------------------------------------------------------------*/
+: adaptorDummy_Exiting \handler
+
+  //"EV_M_EXITING_handler" .verbose
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_STRAEMDEF ...                                             */
+/*----------------------------------------------------------------------------*/
+: adaptorDummy_StreamDef \handler
+
+  //"EV_D_STRAEMDEF_handler" .verbose
+
+  PipeIn[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* adaptorDummy request                                                 SPAWN */
+/*----------------------------------------------------------------------------*/
+: adaptorDummy_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: adaptorDummy_CrwBuffer    EV_D_CRWBUFFER     [op].handler!
+  find: adaptorDummy_ExitOperand  EV_D_EXITOPERAND   [op].handler!
+  find: adaptorDummy_StreamDef    EV_D_STREAMDEF     [op].handler!
+
+  find: adaptorDummy_Exiting      EV_M_EXITING       [op].handler!
+  find: adaptorDummy_Start        EV_M_START         [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: adaptorDummy :: adaptorDummy <etc> ;
+
+: adaptorDummy_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "adaptorDummy_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

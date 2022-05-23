@@ -18,6 +18,7 @@ assert::stack_0
 
 "a" .verbose
 
+  "OP_adaptorDummy.sen"         include
   "OP_adaptorWL.sen"            include
   "OP_addNode.sen"              include
   "OP_adjustPartitions.sen"     include
