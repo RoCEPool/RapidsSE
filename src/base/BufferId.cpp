@@ -29,20 +29,6 @@ void* BufferId::vAddressFromId(BufferId oBufferId)
 
 }
 
-BufferId BufferId::vBufferIdFromNo(i8 iBufferNo)
-{
-  _static_
-
-  BufferId oBufferId;
-
-  oBufferId.m_iAsI8 =  iBufferNo;
-
-  oBufferId.m_bIdFlag = 1;
-
-  return oBufferId;
-
-}
-
 bool BufferId::bIsAddress(BufferId oBufferId)
 {
   _static_
