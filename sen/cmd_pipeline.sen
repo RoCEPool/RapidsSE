@@ -14,15 +14,13 @@
 : pipeline:origin
   //"pipeline:origin" .
 
+/* org_ org */  // - - - - - - - - - - - - - - - - - -
+/* org_ org */  // start as ordinary job on this node
+/* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  [args].distJob if
 /* org_ org */    "pipeline" "origin"
 /* org_ org */      "org_ org" "job org"                             [job].trace
 /* org_ org */  then
-/* org_ org */
-/* org_ org */  // - - - - - - - - - - - - - - - - - -
-/* org_ org */  // start as ordinary job on this node
-/* org_ org */  // - - - - - - - - - - - - - - - - - -
-/* org_ org */
 /* org_ org */  [args].distJob if
 /* org_ org */    "pipeline" "origin"
 /* org_ org */      "org_ org" "lst ordinary"                        [job].trace
@@ -32,27 +30,15 @@
 /* org_ org */  // - - - - - -
 /* org_ org */  // pre-checks
 /* org_ org */  // - - - - - -
-/* org_ org */
-/* org_ org */  // there should be this immutable job
-/* org_ org */  //   and it shouldnt be in any job list (yet)
 /* org_ org */  [job] assert
 /* org_ org */  [job].assertStructure
 /* org_ org */  [job].assertOrdinary
-/* org_ org */
-/* org_ org */  // mutable pipeSpec, pipeline and subpipeline
-/* org_ org */  //   in logicUnit should be null
 /* org_ org */  PipeSpec[] not assert
 /* org_ org */  Pipeline[] not assert
-/* org_ org */
-/* org_ org */  // immutable op, subPLineOfOp and
-/* org_ org */  //   pipelineOfOp should be null
 /* org_ org */  [op]       not assert
-/* org_ org */  [pipeline] not assert
 /* org_ org */
-/* org_ org */  // and so we start...
 /* org_ org */  [job].tscBeginning
 /* org_ org */
-/* org_ org */  // pre-check
 /* org_ org */  "<preCheck>" [job].tagSet@ tagSet.hasName if
 /* org_ org */    // + tag exists
 /* org_ org */
@@ -82,8 +68,6 @@
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // become the originator on this node
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
-/* org_ org */
-/* org_ org */  // add this job to originator job list
 /* org_ org */  [job].setOriginId
 /* org_ org */  [job].distIdGenerate
 /* org_ org */  [job].addOriginator
@@ -105,11 +89,8 @@
 /* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
 /* org_ org */  // compile pipeline statement to check its syntax
 /* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
-/* org_ org */
 /* org_ org */  Dynamo[].new
-/* org_ org */
 /* org_ org */  <cmd> Dynamo[].compile to ErrorCode[]
-/* org_ org */
 /* org_ org */  ErrorCode[] EC_NONE == if
 /* org_ org */    // + clean compile
 /* org_ org */    to PipeSpec[]
@@ -118,14 +99,12 @@
 /* org_ org */    ErrorCode[] [job].error!
 /* org_ org */    [ddlLock].testDrop
 /* org_ org */  then
-/* org_ org */
 /* org_ org */  Dynamo[].delete
 /* org_ org */
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // test if distributed job may execute
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
-/* org_ org */
 /* org_ org */  [job].error@ not if
 /* org_ org */    [job].preExecuteTest to ErrorCode[]
 /* org_ org */    ErrorCode[] if
@@ -138,9 +117,7 @@
 /* org_ org */  // - - - - - - - - - -
 /* org_ org */  // test if optimising
 /* org_ org */  // - - - - - - - - - -
-/* org_ org */
 /* org_ org */  [job].error@ not if
-/* org_ org */
 /* org_ org */    "<optimise>" [job].tagSet@ tagSet.hasName
 /* org_ org */    PipeSpec[].optimisable
 /* org_ org */    and
@@ -148,14 +125,10 @@
 /* org_ org */      "Would Optimise" .
 /* org_ org */      <cmd> .
 /* org_ org */    then
-/* org_ org */
-/* org_ org */
 /* org_ org */    Optimiser[].new
-/* org_ org */
 /* org_ org *///    PipeSpec[] Optimiser[].dissect
 /* org_ org *///    Optimiser[].optimise
 /* org_ org *///    Optimiser[].weave discard
-/* org_ org */
 /* org_ org */    Optimiser[].delete
 /* org_ org */  then
 /* org_ org */
@@ -163,24 +136,20 @@
 /* org_ org */  // - - - -
 /* org_ org */  // tidy up
 /* org_ org */  // - - - -
-/* org_ org */
 /* org_ org */  PipeSpec[] if
 /* org_ org */    PipeSpec[].delete
 /* org_ org */  then
-/* org_ org */
 /* org_ org */  Dynamo[]    not assert
 /* org_ org */  Optimiser[] not assert
 /* org_ org */  PipeSpec[]  not assert
 
 /* ---- --- */  // >>> beg >>> beg >>> beg >>> beg >>> beg >>> beg >>> beg >>>
-/* org_ beg */
-/* org_ beg */  // - - - - - - - - - - - - - - - - - - - - - - - -
-/* org_ beg */  // broadcast this job as the distributed pipeline
-/* org_ beg */  // - - - - - - - - - - - - - - - - - - - - - - - -
-/* org_ beg */
+
+/* org_ beg */  // - - - - - - - - - - - - - - - - - - - - - -
+/* org_ beg */  // broadcast this job as the participant jobs
+/* org_ beg */  // - - - - - - - - - - - - - - - - - - - - - -
 /* org_ beg */  [job].error@ not if
 /* org_ beg */    // + compiled without error..
-/* org_ beg */
 /* org_ beg */    [args].distJob if
 /* org_ beg */      "pipeline" "origin"
 /* org_ beg */        "org_ beg" "brd job as begin"                  [job].trace
@@ -195,14 +164,12 @@
 /* org_ beg */
 /* org_ beg */    [job].tscBegun
 /* org_ beg */  then
-/* org_ beg */
 
 /* ---- --- */  // <<< bgn <<< bgn <<< bgn <<< bgn <<< bgn <<< bgn <<< bgn <<<
-/* org_ beg */
-/* org_ beg */  // - - - - - - - - - -
-/* org_ beg */  //
-/* org_ beg */  // - - - - - - - - - -
-/* org_ beg */
+
+/* org_ bgn */  // - - - - - - - - - -
+/* org_ bgn */  //
+/* org_ bgn */  // - - - - - - - - - -
 /* org_ bgn */  [job].error@ not if
 /* org_ bgn */    [args].distJob if
 /* org_ bgn */      "pipeline" "origin"
@@ -211,15 +178,11 @@
 /* org_ bgn */  then
 
 /* ---- --- */  // >>> exe >>> exe >>> exe >>> exe >>> exe >>> exe >>> exe >>>
-/* org_ exe */
-/* org_ exe */  // - - - - - - - - - - - - - - - - - - - - - - - -
-/* org_ exe */  // broadcast a job to schedule pipeline to execute
-/* org_ exe */  // - - - - - - - - - - - - - - - - - - - - - - - -
-/* org_ exe */
+
+/* org_ exe */  // - - - - - - - - - - - - - - - - - - -
+/* org_ exe */  // broadcast execute to participant jobs
+/* org_ exe */  // - - - - - - - - - - - - - - - - - - -
 /* org_ exe */  [job].error@ not if
-/* org_ exe */
-/* org_ exe */    // "ORIGIN: broadcast execute" .
-/* org_ exe */
 /* org_ exe */    [args].distJob if
 /* org_ exe */      "pipeline" "origin"
 /* org_ exe */        "org_ exe" "brd execute"                       [job].trace
@@ -235,15 +198,12 @@
 /* org_ exe */    [job].tscExecuted
 /* org_ exe */
 /* org_ exe */  then
-/* org_ exe */
 
 /* ---- --- */  // <<< exd <<< exd <<< exd <<< exd <<< exd <<< exd <<< exd <<<
-/* org_ exd */
-/* org_ exd */
+
 /* org_ exd */  // - - - - - - - - - -
 /* org_ exd */  //
 /* org_ exd */  // - - - - - - - - - -
-/* org_ exd */
 /* org_ exd */  [job].error@ not if
 /* org_ exd */    [args].distJob if
 /* org_ exd */      "pipeline" "origin"
@@ -252,17 +212,11 @@
 /* org_ exd */  then
 
 /* ---- --- */  // >>> end >>> end >>> end >>> end >>> end >>> end >>> end >>>
-/* org_ end */
-/* org_ end */  // - - - - - - - - - - - - - - - - - - - - - -
-/* org_ end */  //  broadcast end job to get pipeline to end
-/* org_ end */  // - - - - - - - - - - - - - - - - - - - - - -
-/* org_ end */
-/* org_ end */  // distribute end
-/* org_ end */
+
+/* org_ end */  // - - - - - - - - - - - - - - - - - -
+/* org_ end */  //  broadcast end to participant jobs
+/* org_ end */  // - - - - - - - - - - - - - - - - - -
 /* org_ end */  [job].error@ not if
-/* org_ end */
-/* org_ end */    // "ORIGIN: broadcast end" .
-/* org_ end */
 /* org_ end */    [args].distJob if
 /* org_ end */      "pipeline" "origin"
 /* org_ end */        "org_ end" "brd end"                           [job].trace
@@ -276,16 +230,14 @@
 /* org_ end */    [task].wait
 /* org_ end */
 /* org_ end */    [job].tscEnded
-/* org_ end */
 /* org_ end */  then
 /* org_ end */
 
 /* ---- --- */  // <<< edd <<< edd <<< edd <<< edd <<< edd <<< edd <<< edd <<<
-/* org_ edd */
-/* org_ edd */  // - - - - - - - - - - - - - - - - - - - -
-/* org_ edd */  // pipeline has ended; become ordinary job
-/* org_ edd */  // - - - - - - - - - - - - - - - - - - - -
-/* org_ edd */
+
+/* org_ edd */  // - - - - - - - - - -
+/* org_ edd */  // pipeline has ended
+/* org_ edd */  // - - - - - - - - - -
 /* org_ edd */  [job].error@ not if
 /* org_ edd */    [args].distJob if
 /* org_ edd */      "pipeline" "origin"
@@ -294,33 +246,26 @@
 /* org_ edd */  then
 
 /* ---- --- */  // !!! ovr !!! ovr !!! ovr !!! ovr !!! ovr !!! ovr !!! ovr !!!
-/* org_ ovr */
+
 /* org_ ovr */  // - - - - - - - - - - - - - - -
 /* org_ ovr */  // pipeline becomes ordinary job
 /* org_ ovr */  // - - - - - - - - - - - - - - -
-/* org_ ovr */
 /* org_ ovr */  [job].removeOriginator
 /* org_ ovr */  [job].assertOrdinary
-/* org_ ovr */
 /* org_ ovr */  [args].distJob if
 /* org_ ovr */    "pipeline" "origin"
 /* org_ ovr */      "org_ ovr" "lst ordinary again"                  [job].trace
 /* org_ ovr */  then
 /* org_ ovr */
 /* org_ ovr */
-/* org_ ovr */  // - - - - - - - -
-/* org_ ovr */  // this job exits
-/* org_ ovr */  // - - - - - - - -
-/* org_ ovr */
+/* org_ ovr */  // - - - - - - - - -
+/* org_ ovr */  // this job retires
+/* org_ ovr */  // - - - - - - - - -
 /* org_ ovr */  [job] job(Id).hasCascade@ if
-/* org_ ovr */
 /* org_ ovr */    [ddlLock].testDrop
-/* org_ ovr */
 /* org_ ovr */    [task].grabLock
-/* org_ ovr */
 /* org_ ovr */      "<signalWaiter>" [job].tagSet@ tagSet.hasName assert
 /* org_ ovr */      [job].signalWaiter
-/* org_ ovr */
 /* org_ ovr */      [task].hibernate
 /* org_ ovr */
 /* org_ ovr */    HAZARD
@@ -328,7 +273,6 @@
 /* org_ ovr */  then
 /* org_ ovr */
 /* org_ ovr */  [ddlLock].testDrop
-/* org_ ovr */
 /* org_ ovr */  ListedJob[].assertNoRef
 /* org_ ovr */
 /* org_ ovr */  [args].distJob if
@@ -337,11 +281,9 @@
 /* org_ ovr */  then
 /* org_ ovr */
 /* org_ ovr */  Path[].discardAll
-/* org_ ovr */
 /* org_ ovr */  [job].addRetired
 /* org_ ovr */
 /* org_ ovr */  [task].grabLock
-/* org_ ovr */
 /* org_ ovr */    "<signalWaiter>" [job].tagSet@ tagSet.hasName if
 /* org_ ovr */      [job].signalWaiter
 /* org_ ovr */    then
@@ -349,6 +291,8 @@
 /* org_ ovr */    [task].retire // does not queue onto exit demon
 /* org_ ovr */
 /* org_ ovr */  HAZARD
+
+/* ---- --- */  // $$$ $$$ $$$ $$$ $$$ $$$ $$$ $$$ $$$ $$$ $$$ $$$ $$$ $$$ $$$
 
 ;
 
@@ -363,34 +307,32 @@
   //"pipeline:ptpBegin" .
   
 /* ---- --- */  // >>> beg >>> beg >>> beg >>> beg >>> beg >>> beg >>> beg >>>
-/* _ptp beg */
+
+/* _ptp beg */  // - - - - - - - - - -
+/* _ptp beg */  //
+/* _ptp beg */  // - - - - - - - - - -
 /* _ptp beg */  [args].distJob if
 /* _ptp beg */    "pipeline" "ptpBegin"
 /* _ptp org */      "_ptp beg" "job ptp"                             [job].trace
 /* _ptp beg */  then
-/* _ptp beg */
-/* _ptp beg */  // - - - - - - - - - -
-/* _ptp beg */  //
-/* _ptp beg */  // - - - - - - - - - -
-/* _ptp beg */
 /* _ptp beg */  [args].distJob if
-/* _ptp beg */    "pipeline" "ptpBegin" "_ptp beg" "phs begin"       [job].trace
+/* _ptp beg */    "pipeline" "ptpBegin"
+/* _ptp beg */      "_ptp beg" "phs begin"                           [job].trace
 /* _ptp beg */  then
-/* _ptp beg */
 /* _ptp beg */  [job].progressReset
-/* _ptp beg */
 /* _ptp beg */  [job].assertStructure
-/* _ptp beg */
 /* _ptp beg */  ListedJob[].assertNoRef
 /* _ptp beg */
 /* _ptp beg */
 /* _ptp beg */  // - - - - - - - - - - -
 /* _ptp beg */  // this job is beginning
 /* _ptp beg */  // - - - - - - - - - - -
-/* _ptp beg */
 /* _ptp beg */  JP_BEGINNING [job].phase!
-/* _ptp beg */  //"pipeline:begin post [job]..phase!" [job].progress
 /* _ptp beg */
+/* _ptp beg */
+/* _ptp beg */  // - - - - -
+/* _ptp beg */  // set path
+/* _ptp beg */  // - - - - -
 /* _ptp beg */  <path> str.toStrVec Path[].set
 /* _ptp beg */
 /* _ptp beg */
@@ -398,15 +340,10 @@
 /* _ptp beg */  // compile pipeline statement into spec
 /* _ptp beg */  //   (should not expect an error)
 /* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
-/* _ptp beg */
 /* _ptp beg */  Dynamo[].new
-/* _ptp beg */
-/* _ptp beg */  //"pipeline:begin pre dynamo" [job].progress
 /* _ptp beg */  <cmd> Dynamo[].compile
 /* _ptp beg */    EC_NONE == assert
 /* _ptp beg */    to PipeSpec[]
-/* _ptp beg */  //"pipeline:begin post Dynamo[].compile" [job].progress
-/* _ptp beg */
 /* _ptp beg */  Dynamo[].delete
 /* _ptp beg */
 /* _ptp beg */
@@ -414,11 +351,8 @@
 /* _ptp beg */  // create pipeline from spec
 /* _ptp beg */  //   and spawn tasks for ops
 /* _ptp beg */  // - - - - - - - - - - - - - -
-/* _ptp beg */
 /* _ptp beg */  PipeSpec[] Pipeline[].create
-/* _ptp beg */
 /* _ptp beg */  // Pipeline[].dump
-/* _ptp beg */
 /* _ptp beg */  Pipeline[].spawnOpTasks
 
 /* ---- --- */  // !!! bgn !!! bgn !!! bgn !!! bgn !!! bgn !!! bgn !!! bgn !!!
@@ -426,18 +360,12 @@
 /* _ptp bgn */  // - - - - - - - - - - - - - - - -
 /* _ptp bgn */  // this job has begun on this node
 /* _ptp bgn */  // - - - - - - - - - - - - - - - -
-/* _ptp bgn */
 /* _ptp bgn */  JP_BEGUN [job].phase!
-/* _ptp bgn */
-/* _ptp bgn */  // what to execute next
 /* _ptp bgn */  "pipeline:ptpExecute" [job].entryPoint!
-/* _ptp bgn */
-/* _ptp bgn */  // add job to participant list
 /* _ptp bgn */  [job].tscParticipant
 /* _ptp bgn */  [job].addParticipant
 /* _ptp bgn */  [job].assertParticipant
 /* _ptp bgn */  [job].assertStructure
-/* _ptp bgn */
 /* _ptp bgn */  [args].distJob if
 /* _ptp bgn */    "pipeline" "ptpBegin"
 /* _ptp bgn */      "_ptp bgn" "lst particpant"                      [job].trace
@@ -447,37 +375,30 @@
 /* _ptp bgn */  // - - - - - - - - - - - - -
 /* _ptp bgn */  // reply begun to originator
 /* _ptp bgn */  // - - - - - - - - - - - - -
-/* _ptp bgn */
 /* _ptp bgn */  [args].distJob if
 /* _ptp bgn */    "pipeline" "ptpBegin"
 /* _ptp bgn */      "_ptp bgn" "has begun"                           [job].trace
 /* _ptp bgn */  then
-/* _ptp bgn */
-/* _ptp bgn */  // send the begun job
 /* _ptp bgn */  1 [task].debugMark!
 /* _ptp bgn */  STD_NOWAIT_TAG "begun" api::forkChild discard
-/* _ptp bgn */
 /* _ptp bgn */  [ddlLock].testDrop
 /* _ptp bgn */
 /* _ptp bgn */
 /* _ptp bgn */  // - - - - - - - - - - - - - - - - - - - - - - - -
 /* _ptp bgn */  // task hibernates (with job in participant list)
 /* _ptp bgn */  // - - - - - - - - - - - - - - - - - - - - - - - -
-/* _ptp bgn */
 /* _ptp bgn */  //[task].dump
-/* _ptp bgn */
 /* _ptp bgn */  [args].distJob if
 /* _ptp bgn */    "pipeline" "ptpBegin"
 /* _ptp bgn */      "_ptp exd" "hibernating as ptp..."               [job].trace
 /* _ptp bgn */  then
 /* _ptp bgn */  [task].grabLock
-/* _ptp bgn */
 /* _ptp bgn */    //1 [task].trace!
 /* _ptp bgn */    //[task].preHibernate
-/* _ptp bgn */
 /* _ptp bgn */    [task].hibernate
 /* _ptp bgn */
 /* _ptp bgn */  HAZARD
+
 /* ---- --- */  // <<< bgn <<< bgn <<< bgn <<< bgn <<< bgn <<< bgn <<< bgn <<<
 
 ;
@@ -489,16 +410,14 @@
   //"pipeline:ptpExecute" .
   
 /* ---- --- */  // >>> exe >>> exe >>> exe >>> exe >>> exe >>> exe >>> exe >>>
-/* _ptp exe */
+
 /* _ptp exe */  // - - - - - - - - - -
 /* _ptp exe */  //
 /* _ptp exe */  // - - - - - - - - - -
-/* _ptp exe */
 /* _ptp exe */  [args].distJob if
 /* _ptp exe */    "pipeline" "ptpExecute"
 /* _ptp exe */      "_ptp exe" "phs execute"                         [job].trace
 /* _ptp exe */  then
-/* _ptp exe */
 /* _ptp exe */  [job].assertStructure
 /* _ptp exe */  [job].assertParticipant
 /* _ptp exe */
@@ -506,30 +425,25 @@
 /* _ptp exe */  // - - - - - - - - - - -
 /* _ptp exe */  // this job is executing
 /* _ptp exe */  // - - - - - - - - - - -
-/* _ptp exe */
 /* _ptp exe */  JP_EXECUTING [job].phase!
 /* _ptp exe */
-/* _ptp exe */  // set task's dictionary stack from path in job
-/* _ptp exe */  //<path> str.toStrVec Path[].set
 /* _ptp exe */
+/* _ptp exe */  // - - - - - - - - - - -
 /* _ptp exe */  // acquire ddl lock
+/* _ptp exe */  // - - - - - - - - - - -
 /* _ptp exe */  [ddlLock]:acquireLock
-/* _ptp exe */
-/* _ptp exe */  [job].assertStructure
 /* _ptp exe */
 /* _ptp exe */
 /* _ptp exe */  // - - - - - - - - - - - - - - - - -
 /* _ptp exe */  // run optional <pre_execute> word
 /* _ptp exe */  // - - - - - - - - - - - - - - - - -
-/* _ptp exe */
 /* _ptp exe */  [job]:pre_execute
 /* _ptp exe */
 /* _ptp exe */
 /* _ptp exe */  // - - - - - - - - - - - - - - - - -
-/* _ptp exe */  // enqueue start-marker to start op
+/* _ptp exe */  // enqueue invoke-marker to start op
 /* _ptp exe */  //   to execute the pipeline job
 /* _ptp exe */  // - - - - - - - - - - - - - - - - -
-/* _ptp exe */
 /* _ptp exe */  Pipeline[].rootDeck@ to Deck[]
 /* _ptp exe */  deck:invoke
 /* _ptp exe */  nullptr to Deck[]
@@ -539,12 +453,8 @@
 /* _ptp exd */  // - - - - - - - - - - - -
 /* _ptp exd */  // this job has executed
 /* _ptp exd */  // - - - - - - - - - - - -
-/* _ptp exd */
 /* _ptp exd */  JP_EXECUTED [job].phase!
-/* _ptp exd */
-/* _ptp exd */  // what to execute next
 /* _ptp exd */  "pipeline:ptpEnd" [job].entryPoint!
-/* _ptp exd */
 /* _ptp exd */  [ddlLock].testDrop
 /* _ptp exd */  ListedJob[].assertNoRef
 /* _ptp exd */
@@ -552,13 +462,10 @@
 /* _ptp exd */  // - - - - - - - - - - - - - - -
 /* _ptp exd */  // reply executed to originator
 /* _ptp exd */  // - - - - - - - - - - - - - - -
-/* _ptp exd */
 /* _ptp exd */  [args].distJob if
 /* _ptp exd */    "pipeline" "ptpExecute"
 /* _ptp exd */      "_ptp exd" "has executed"                        [job].trace
 /* _ptp exd */  then
-/* _ptp exd */
-/* _ptp exd */  // send the executed job
 /* _ptp exd */  STD_NOWAIT_TAG "executed" api::forkChild discard
 /* _ptp exd */
 /* _ptp exd */
@@ -566,16 +473,16 @@
 /* _ptp exd */  // task hibernates
 /* _ptp exd */  //   (with job in participant list)
 /* _ptp exd */  // - - - - - - - - - - - - - - - - -
-/* _ptp exd */
 /* _ptp exd */  [args].distJob if
 /* _ptp exd */    "pipeline" "ptpExecute"
 /* _ptp exd */      "_ptp exd" "hibernating as ptp..."               [job].trace
 /* _ptp exd */  then
+/* _ptp exe */
 /* _ptp exd */  [task].grabLock
-/* _ptp exd */
 /* _ptp exd */    [task].hibernate
 /* _ptp exd */
 /* _ptp exd */  HAZARD
+
 /* ---- --- */  // <<< exd <<< exd <<< exd <<< exd <<< exd <<< exd <<< exd <<<
 
 ;
@@ -587,42 +494,44 @@
   //"pipeline:ptpEnd" .
 
 /* ---- --- */  // >>> end >>> end >>> end >>> end >>> end >>> end >>> end >>>
-/* _ptp end */
+
+/* _ptp end */  // - - - - - - - - - -
+/* _ptp end */  //
+/* _ptp end */  // - - - - - - - - - -
 /* _ptp end */  [args].distJob if
 /* _ptp end */    "pipeline" "ptpEnd"
 /* _ptp end */      "_ptp end" "phs end"                             [job].trace
 /* _ptp end */  then
-/* _ptp end */
 /* _ptp end */  [job].assertStructure
 /* _ptp end */  [job].assertParticipant
-/* _ptp end */
 /* _ptp end */  JP_ENDING [job].phase!
 /* _ptp end */  [ddlLock].testDrop
 /* _ptp end */
 
 /* ---- --- */  // !!! edd !!! edd !!! edd !!! edd !!! edd !!! edd !!! edd !!!
 
+/* _ptp edd */  // - - - - - - - - - -
+/* _ptp edd */  //
+/* _ptp edd */  // - - - - - - - - - -
 /* _ptp edd */  JP_ENDED [job].phase!
 /* _ptp edd */  [args].distJob if
 /* _ptp edd */    "pipeline" "ptpEnd"
 /* _ptp edd */      "_ptp edd" "has ended"                           [job].trace
 /* _ptp edd */  then
-/* _ptp edd */
 /* _ptp edd */  [job].removeParticipant
 /* _ptp edd */  [args].distJob if
 /* _ptp edd */    "pipeline" "ptpEnd"
 /* _ptp edd */      "_ptp edd" "lst ordinary again"                  [job].trace
 /* _ptp edd */  then
-/* _ptp edd */
-/* _ptp edd */  // send the ended job
 /* _ptp edd */  STD_NOWAIT_TAG "ended" api::forkChild discard
-/* _ptp edd */
 /* _ptp edd */  [args].distJob if
 /* _ptp edd */    "pipeline" "ptpEnd"
 /* _ptp edd */      "_ptp edd" "retiring as ptp..."                  [job].trace
 /* _ptp edd */  then
 /* _ptp edd */  [job]:retireAndExit
+/* _ptp edd */
 /* _ptp edd */  HAZARD
+
 /* ---- --- */  // <<< edd <<< edd <<< edd <<< edd <<< edd <<< edd <<< edd <<<
 
 ;
@@ -634,7 +543,10 @@
   //"pipeline:ptpCancel" .
 
 /* ---- --- */  // >>> can >>> can >>> can >>> can >>> can >>> can >>> can >>>
-/* _ptp can */
+
+/* _ptp can */  // - - - - - - - - - -
+/* _ptp can */  //
+/* _ptp can */  // - - - - - - - - - -
 /* _ptp can */  [args].distJob if
 /* _ptp can */    "pipeline" "ptpCancel"
 /* _ptp can */      "_ptp can" "phs cancel"                          [job].trace
@@ -662,6 +574,7 @@
 /* _ptp can */  [job]:retireAndExit
 /* _ptp can */
 /* _ptp can */  HAZARD
+
 /* ---- --- */  // <<< cnd <<< cnd <<< cnd <<< cnd <<< cnd <<< cnd <<< cnd <<<
 
 ;
