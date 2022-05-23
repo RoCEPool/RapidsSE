@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace BASE
+namespace PRIMITIVES
 {  
   template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
   class VectorNL_t : public Object
@@ -59,7 +59,7 @@ namespace BASE
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
-VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>* BASE::_pVector_NL(void* aAddr)
+VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>* PRIMITIVES::_pVector_NL(void* aAddr)
 {
   VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>* pVector =
     reinterpret_cast<VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>*>(aAddr);
