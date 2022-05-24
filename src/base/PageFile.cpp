@@ -57,7 +57,9 @@ PageFile::PageFile(Stz* sPath, u8 uIndex)
   m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
   m_uWilderness = 0;
 
+#ifdef WITH_PAGE_FILE
   vInitialise();
+#endif
   _checkInitialised_(CN_PAGEFILE);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PAGEFILE,_FOOTER_);
 }

@@ -85,6 +85,8 @@
 
 #define WITH_BUFFER_ID EndDefine
 
+//#define WITH_PAGE_FILE EndDefine
+
 #define WITH_API_FORK EndDefine       // RAY
 
 /*============================================================================*/
