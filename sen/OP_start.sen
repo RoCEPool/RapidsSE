@@ -155,7 +155,7 @@
 
   // delete the triggered marker
   Pipein[].delete
-  
+
   // pipeline should not be cancelled
   [pipeline].cancelled@ not assert
 

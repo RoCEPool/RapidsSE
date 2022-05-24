@@ -192,7 +192,7 @@
 /* org_ exe */
 /* org_ exe */    [task].grabLock
 /* org_ exe */      [grid].knownNodes [task].acksRemaining!
-/* org_ exe */      STD_NOWAIT_TAG "execute" api::forkChild discard
+/* org_ exe */      STD_NOWAIT_TAG "execute" api::forkChild2PC discard
 /* org_ exe */    [task].wait
 /* org_ exe */
 /* org_ exe */    [job].tscExecuted
@@ -226,7 +226,7 @@
 /* org_ end */
 /* org_ end */    [task].grabLock
 /* org_ end */      [grid].knownNodes [task].acksRemaining!
-/* org_ end */      STD_NOWAIT_TAG "end" api::forkChild discard
+/* org_ end */      STD_NOWAIT_TAG "end" api::forkChild2PC discard
 /* org_ end */    [task].wait
 /* org_ end */
 /* org_ end */    [job].tscEnded
@@ -380,7 +380,7 @@
 /* _ptp bgn */      "_ptp bgn" "has begun"                           [job].trace
 /* _ptp bgn */  then
 /* _ptp bgn */  1 [task].debugMark!
-/* _ptp bgn */  STD_NOWAIT_TAG "begun" api::forkChild discard
+/* _ptp bgn */  STD_NOWAIT_TAG "begun" api::forkChild2PC discard
 /* _ptp bgn */  [ddlLock].testDrop
 /* _ptp bgn */
 /* _ptp bgn */
@@ -466,7 +466,7 @@
 /* _ptp exd */    "pipeline" "ptpExecute"
 /* _ptp exd */      "_ptp exd" "has executed"                        [job].trace
 /* _ptp exd */  then
-/* _ptp exd */  STD_NOWAIT_TAG "executed" api::forkChild discard
+/* _ptp exd */  STD_NOWAIT_TAG "executed" api::forkChild2PC discard
 /* _ptp exd */
 /* _ptp exd */
 /* _ptp exd */  // - - - - - - - - - - - - - - - - -
@@ -523,7 +523,7 @@
 /* _ptp edd */    "pipeline" "ptpEnd"
 /* _ptp edd */      "_ptp edd" "lst ordinary again"                  [job].trace
 /* _ptp edd */  then
-/* _ptp edd */  STD_NOWAIT_TAG "ended" api::forkChild discard
+/* _ptp edd */  STD_NOWAIT_TAG "ended" api::forkChild2PC discard
 /* _ptp edd */  [args].distJob if
 /* _ptp edd */    "pipeline" "ptpEnd"
 /* _ptp edd */      "_ptp edd" "retiring as ptp..."                  [job].trace
@@ -569,7 +569,7 @@
 /* _ptp can */  then
 /* _ptp can */
 /* _ptp can */  // send the cancelled job
-/* _ptp can */  STD_NOWAIT_TAG "cancelled" api::forkChild discard
+/* _ptp can */  STD_NOWAIT_TAG "cancelled" api::forkChild2PC discard
 /* _ptp can */
 /* _ptp can */  [job]:retireAndExit
 /* _ptp can */

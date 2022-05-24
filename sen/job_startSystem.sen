@@ -99,69 +99,69 @@
   "spawning demons" .verbose
 
   // spawn metrics update
-  STD_NOWAIT_TAG metricsDemonPipeline api::forkChild not if
+  STD_NOWAIT_TAG metricsDemonPipeline api::forkChildOld not if
     "Error Code %v" .printf
   then
 
   // spawn metrics collect
-  STD_NOWAIT_TAG collectDemonPipeline api::forkChild not if
+  STD_NOWAIT_TAG collectDemonPipeline api::forkChildOld not if
     "Error Code %v" .printf
   then
 
   // spawn supervisor demon
-  STD_NOWAIT_TAG superDemonPipeline api::forkChild not if
+  STD_NOWAIT_TAG superDemonPipeline api::forkChildOld not if
     "Error Code %v" .printf
   then
 
   // spawn monitor demon
-  STD_NOWAIT_TAG monDemonPipeline api::forkChild not if
+  STD_NOWAIT_TAG monDemonPipeline api::forkChildOld not if
     "Error Code %v" .printf
   then
 
   // spawn page out demon
-  //STD_NOWAIT_TAG pageOutDemonPipeline api::forkChild not if
+  //STD_NOWAIT_TAG pageOutDemonPipeline api::forkChildOld not if
   //  "Error Code %v" .printf
   //then
 
   // spawn reaper demon
-  STD_NOWAIT_TAG reaperDemonPipeline api::forkChild not if
+  STD_NOWAIT_TAG reaperDemonPipeline api::forkChildOld not if
     "Error Code %v" .printf
   then
 
   //spawn report demon
-  STD_NOWAIT_TAG exitDemonPipeline api::forkChild not if
+  STD_NOWAIT_TAG exitDemonPipeline api::forkChildOld not if
     "Error Code %v" .printf
   then
 
   //spawn recurring demon
-  STD_NOWAIT_TAG recurDemonPipeline api::forkChild not if
+  STD_NOWAIT_TAG recurDemonPipeline api::forkChildOld not if
     "Error Code %v" .printf
   then
 
   // spawn stat demon
-  STD_NOWAIT_TAG statDemonPipeline api::forkChild not if
+  STD_NOWAIT_TAG statDemonPipeline api::forkChildOld not if
     "Error Code %v" .printf
   then
 
   // spawn waker demon
-  STD_NOWAIT_TAG wakerDemonPipeline api::forkChild not if
+  STD_NOWAIT_TAG wakerDemonPipeline api::forkChildOld not if
     "Error Code %v" .printf
   then
   
   // spawn event demon
-  STD_NOWAIT_TAG eventDemonPipeline api::forkChild not if
+  STD_NOWAIT_TAG eventDemonPipeline api::forkChildOld not if
     "Error Code %v" .printf
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // spawn answer demon for SE Adaptor
-  STD_NOWAIT_TAG answerSE_procText api::forkChild not if
+  STD_NOWAIT_TAG answerSE_procText api::forkChildOld not if
     "Error Code %v" .printf
   then
 
   // spawn connector demon for SE Adaptor
-  STD_NOWAIT_TAG connectorSE_procText api::forkChild not if
+  STD_NOWAIT_TAG connectorSE_procText api::forkChildOld not if
     "Error Code %v" .printf
   then
 

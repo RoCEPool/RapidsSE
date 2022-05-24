@@ -50,7 +50,7 @@
   sSmt .
 
   // spawn a job for the smt
-  STD_NOWAIT_TAG sSmt api::forkChild not if
+  STD_NOWAIT_TAG sSmt api::forkChildOld not if
      "Error Code %v" .printf
   then
 

@@ -20,7 +20,7 @@
   STD_NOWAIT_TAG str.cat
 
     // receiver demon pipeline
-      receiverWL_procText api::forkChild not if
+      receiverWL_procText api::forkChildOld not if
       "Error Code %v" .printf
     then
 ;
