@@ -265,7 +265,8 @@
 /* org_ ovr */    [ddlLock].testDrop
 /* org_ ovr */    [task].grabLock
 /* org_ ovr */      "<signalWaiter>" [job].tagSet@ tagSet.hasName assert
-/* org_ ovr */      [job].signalWaiter
+/* org_ ovr */      //[job].errorCode@ [job].signalParent
+                    [job].signalWaiter
 /* org_ ovr */      [task].hibernate
 /* org_ ovr */
 /* org_ ovr */    HAZARD

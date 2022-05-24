@@ -23,6 +23,18 @@ namespace STORE
                        Job*& rpParentJob_tbr,
                        Job*& rpChildJob_tbr);
 
+  static eEC  eForkJobOld(JobId& rtChildJobId,
+                          TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                          JobId tParentId, JobId tOriginId, JobId tDistId,
+                          Job*& rpParentJob_tbr,
+                          Job*& rpChildJob_tbr);
+
+  static eEC  eForkJob2PC(JobId& rtChildJobId,
+                          TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                          JobId tParentId, JobId tOriginId, JobId tDistId,
+                          Job*& rpParentJob_tbr,
+                          Job*& rpChildJob_tbr);
+
   static Job* pNewRootJob(Stz* szJobNm,
                           JobId tParentId, JobId tOriginId, JobId tDistId);
   

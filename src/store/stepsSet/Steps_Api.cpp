@@ -109,7 +109,7 @@ void Step::vApiForkChild(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* api::forkChildOld -- old (to go)                                              */
+/* api::forkChildOld -- old (to go)                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vApiForkChildOld(void)
 {
@@ -155,7 +155,7 @@ void Step::vApiForkChildOld(void)
 
   JobId tChildJobId;
   Job* pChildJob_tbr = nullptr;
-  eEC eError = Api::eForkJob(tChildJobId,
+  eEC eError = Api::eForkJobOld(tChildJobId,
                              pCmdTknVec,pCmdTagSet,
                              tParentId,tOriginId,tDistId,
                              pOuterJob,    // TO BE REMOVED
@@ -221,7 +221,7 @@ void Step::vApiForkChild2PC(void)
 
   JobId tChildJobId;
   Job* pChildJob_tbr = nullptr;
-  eEC eError = Api::eForkJob(tChildJobId,
+  eEC eError = Api::eForkJob2PC(tChildJobId,
                              pCmdTknVec,pCmdTagSet,
                              tParentId,tOriginId,tDistId,
                              pOuterJob,    // TO BE REMOVED

@@ -8,7 +8,7 @@
 
   // C_TDEF_ANALYZETABLE
 
-  STD_WAIT_PATH_TAG
+  STD_BOOTFORK_TAG
   "
   define table __analyzeTable (
      nodeName       VARCHAR NOT NULL ,
@@ -17,7 +17,7 @@
      entries        INTEGER NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChildOld api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 

@@ -24,7 +24,7 @@
     isPartitionKey BOOLEAN NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChildOld api:executeCheck
+  api::forkChild api:executeCheck
 
 ;
 
