@@ -55,13 +55,10 @@ PageFile::PageFile(Stz* sPath, u8 uIndex)
   m_uPFSize = C_SIZE_PAGE_FILE;
   m_uFirstUsableByte = sizeof(C_MAGIC);
   m_uWilderness = 0;
-
-#ifdef WITH_PAGE_FILE
   m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
+
   vInitialise();
-#else
-  m_uLastUsableByte = 0;
-#endif
+
   _checkInitialised_(CN_PAGEFILE);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PAGEFILE,_FOOTER_);
 }
@@ -72,9 +69,11 @@ PageFile::PageFile(Stz* sPath, u8 uIndex)
 PageFile::~PageFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PAGEFILE,_FOOTER_);
+#ifdef WITH_PAGE_FILE
   if (m_pFile->bIsOpen()) {
     m_pFile->vClose();
   }
+#endif
   delete m_pFile;
 }
 
@@ -83,6 +82,7 @@ PageFile::~PageFile(void)
 /*----------------------------------------------------------------------------*/
 void PageFile::vInitFooter(void)
 {
+#ifdef WITH_PAGE_FILE
   u8 uFooter;
   i8 iSeekOffset = m_uPFSize - sizeof(C_FOOTER);
   m_pFile->vSeek(iSeekOffset);
@@ -94,6 +94,7 @@ void PageFile::vInitFooter(void)
     bool bResult = m_pFile->bWriteBytes((void*)&uFooter,sizeof(C_FOOTER));
     ASSERT(bResult);
   }
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,6 +102,7 @@ void PageFile::vInitFooter(void)
 /*----------------------------------------------------------------------------*/
 void PageFile::vInitMagic(void)
 {
+#ifdef WITH_PAGE_FILE
   u8 uMagic = 0;
   m_pFile->vSeekStart();
   m_pFile->nReadBytes(&uMagic, sizeof(C_MAGIC));
@@ -111,6 +113,7 @@ void PageFile::vInitMagic(void)
     bool bResult = m_pFile->bWriteBytes(&uMagic,sizeof(C_MAGIC));
     ASSERT(bResult);
   }
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -131,7 +134,7 @@ void PageFile::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void PageFile::vInitialise(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PAGEFILE,_FOOTER_);
-
+#ifdef WITH_PAGE_FILE
   //---------------------------------------------------------------------------
   // Sanity check page file path
 
@@ -157,7 +160,7 @@ void PageFile::vInitialise(void)
 //  m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
   //---------------------------------------------------------------------------
   // Check which areas are written to?
-
+#endif
 }
 
 #ifdef WITH_BUFFER_ID
@@ -212,7 +215,7 @@ u8 PageFile::uNextFreeSubset(void)
 void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-
+#ifdef WITH_PAGE_FILE
   Timer oTimer;
 
   BufferId oBufferId = pRowBuffer->oGetBufferId();
@@ -236,6 +239,7 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
   oTimer.vUpdate();
 //unlock
   vTrace("Writing data buffer %p took %lld ns\n"_Stz, pRowBuffer, oTimer.iNanoseconds());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,7 +248,7 @@ void PageFile::vWriteDataBufferToPFile(RowBuffer* pRowBuffer)
 RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-
+#ifdef WITH_PAGE_FILE
   Timer oTimer;
 
   // Temporary till BufferId subset has correct values
@@ -275,7 +279,9 @@ RowBuffer* PageFile::pReadDataBufferFromPFile(BufferId oBufferId)
   vTrace("Reading data buffer %p took %lld ns\n"_Stz, pRowBuffer, oTimer.iNanoseconds());
 
   return pRowBuffer;
-
+#else
+  return nullptr;
+#endif
 }
 #endif
 /*----------------------------------------------------------------------------*/
