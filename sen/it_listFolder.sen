@@ -15,7 +15,7 @@
     Type       VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
-  api::forkChild api:executeCheck
+  api::forkChildBoot   api:executeCheck
 
 ;
 

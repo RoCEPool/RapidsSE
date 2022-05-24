@@ -86,7 +86,10 @@ public:
 
 
   // api
-  void vApiForkChild(void);
+  void vApiForkChildBoot(void);
+  void vApiForkChildDemon(void);
+  void vApiForkChildDeputy(void);
+  void vApiForkChildNew(void);
   void vApiForkChildOld(void);
   void vApiForkChild2PC(void);
   void vApiReapJobs(void);
@@ -880,6 +883,7 @@ void vDdlLockAssertNone(void);
   void vJobIdShow(void);
 
   void vJobSetOriginId(void);
+  void vJobSignalParent(void);
   void vJobSignalWaiter(void);
   void vJobMutexFetch(void);
   void vJobIdSystemCloserFetch(void);

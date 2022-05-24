@@ -79,6 +79,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].responseOp!"_Stz,      &Step::vJobResponseOpStore);
 
   vAddStep("[job].setOriginId"_Stz,      &Step::vJobSetOriginId);
+  vAddStep("[job].signalParent"_Stz,     &Step::vJobSignalParent);
   vAddStep("[job].signalWaiter"_Stz,     &Step::vJobSignalWaiter);
 
   vAddStep("[job].tagSet@"_Stz,          &Step::vJobTagSetFetch);
@@ -865,6 +866,35 @@ void Step::vJobSetOriginId(void)
 
   tJobId = pJob->tJobId();
   pJob->vOriginId(tJobId);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].signalParent -- signal parent job waiting on this job/session mutex  */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSignalParent(void)
+{
+  ENTRY();
+
+  // there will be a thread (of parent job) waiting on completion of the job
+  // this could be a prompt thread
+
+  //Job* pJob = MY::pJob();
+  Job* pJob = * m_pJob;
+
+  eEC eErrorCode = (eEC)m_pDataStack->iPopInt(__func__);
+
+  eJL eJobList = pJob->eJobList();
+  RASSERT(JL_NONE == eJobList || JL_RETIRED == eJobList)
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the error as childError in parent
+  pJob->pParentJob()->vChildError(eErrorCode);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pJob->vMutexSignal();
 
   EXIT();
 }

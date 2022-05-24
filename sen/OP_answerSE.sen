@@ -19,7 +19,7 @@
   iConnNo "<connectionNo> = %v " str.format str.cat
   STD_NOWAIT_TAG str.cat
     // receiver demon pipeline
-      receiverSE_procText api::forkChildOld not if
+      receiverSE_procText api::forkChildDemon not if
       "Error Code %v" .printf
     then
 ;

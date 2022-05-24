@@ -17,11 +17,29 @@ namespace STORE
 
   static void vDeleteRootJob(Job*& rpJob);
     
-  static eEC  eForkJob(JobId& rtChildJobId,
-                       TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
-                       JobId tParentId, JobId tOriginId, JobId tDistId,
-                       Job*& rpParentJob_tbr,
-                       Job*& rpChildJob_tbr);
+ static eEC  eForkJobBoot(JobId& rtChildJobId,
+                          TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                          JobId tParentId, JobId tOriginId, JobId tDistId,
+                          Job*& rpParentJob_tbr,
+                          Job*& rpChildJob_tbr);
+
+ static eEC  eForkJobDemon(JobId& rtChildJobId,
+                           TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                           JobId tParentId, JobId tOriginId, JobId tDistId,
+                           Job*& rpParentJob_tbr,
+                           Job*& rpChildJob_tbr);
+
+ static eEC  eForkJobDeputy(JobId& rtChildJobId,
+                            TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                            JobId tParentId, JobId tOriginId, JobId tDistId,
+                            Job*& rpParentJob_tbr,
+                            Job*& rpChildJob_tbr);
+
+  static eEC  eForkJobNew(JobId& rtChildJobId,
+                          TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                          JobId tParentId, JobId tOriginId, JobId tDistId,
+                          Job*& rpParentJob_tbr,
+                          Job*& rpChildJob_tbr);
 
   static eEC  eForkJobOld(JobId& rtChildJobId,
                           TokenVec* pCmdTknVec, TagSet* pCmdTagSet,

@@ -17,7 +17,7 @@
   ) < infoSet > = 1 ;
   "
   
-  api::forkChild api:executeCheck
+  api::forkChildBoot   api:executeCheck
 ;
 
 /*============================================================================*/
