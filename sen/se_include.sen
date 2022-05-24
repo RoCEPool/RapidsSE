@@ -19,6 +19,9 @@ assert::stack_0
 "<wait> = 1 <parent> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
    constant STD_BOOTFORK_TAG
 
+"<nowait> = 1 <parent> = 0 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+   constant STD_DEMONFORK_TAG
+
 "se_boot 9" .verbose
 
   "se_word.sen"             include

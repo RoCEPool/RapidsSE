@@ -17,7 +17,7 @@
   // form the tag set string
   pAnsweredNode "<ansNode> = %v " str.format
   iConnNo "<connectionNo> = %v " str.format str.cat
-  STD_NOWAIT_TAG str.cat
+  STD_DEMONFORK_TAG str.cat
 
     // receiver demon pipeline
       receiverWL_procText api::forkChildDemon not if
