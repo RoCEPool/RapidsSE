@@ -54,11 +54,13 @@ PageFile::PageFile(Stz* sPath, u8 uIndex)
   m_pFile = new File(this);
   m_uPFSize = C_SIZE_PAGE_FILE;
   m_uFirstUsableByte = sizeof(C_MAGIC);
-  m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
   m_uWilderness = 0;
 
 #ifdef WITH_PAGE_FILE
+  m_uLastUsableByte = m_uPFSize - sizeof(C_FOOTER) - 1;
   vInitialise();
+#else
+  m_uLastUsableByte = 0;
 #endif
   _checkInitialised_(CN_PAGEFILE);
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PAGEFILE,_FOOTER_);
@@ -178,7 +180,7 @@ BufferId PageFile::oNextFreeBufferId(void)
   // we need to ensure it happens sequentially.
   m_uWilderness++;
 
-  oBufferId.vSetPageFile(0);
+  oBufferId.vSetPageFile(m_uPFIndex);
   oBufferId.vSetIdFlag(1);
 
   return oBufferId;
@@ -190,6 +192,7 @@ BufferId PageFile::oNextFreeBufferId(void)
 u8 PageFile::uNextFreeSubset(void)
 {
   //Check if the end of a new free chunk would exceed the PageFile size
+#ifdef WITH_PAGE_FILE
   if(
       m_uFirstUsableByte +
       C_SIZE_POOL_BUFFER +
@@ -200,7 +203,7 @@ u8 PageFile::uNextFreeSubset(void)
     vTrace("Page File %u is full\n"_Stz, m_uPFIndex);
     return C_DATUM_NULL; // TODO Arjun: this is i8, what u8 value can we send?
   }
-
+#endif
   return m_uWilderness;
 }
 /*----------------------------------------------------------------------------*/
