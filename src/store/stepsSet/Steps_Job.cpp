@@ -893,6 +893,10 @@ void Step::vJobSignalParent(void)
   pJob->pParentJob()->vChildError(eErrorCode);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // clear the error from parent
+  pJob->pParentJob()->vJobError(EC_NONE);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pJob->vMutexSignal();
 
