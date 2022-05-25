@@ -192,9 +192,10 @@ void HashMap::vDeleteKey(void* pKey)
 bool HashMap::bExists(void* pKey)
 {
   u8 uIndex = uHashFunction(pKey, m_uNoOfSlots);
-  HashMapSlot* pIter = m_paHashMapSlots[uIndex];
 
   m_okLock.vGrabRead();
+
+  HashMapSlot* pIter = m_paHashMapSlots[uIndex];
 
   while ( pIter != nullptr ) {
 
@@ -224,14 +225,10 @@ u8 HashMap::uHashFunction(void* pKey, u8 NoOfSlots)
 /*----------------------------------------------------------------------------*/
 void HashMap::vInsertSlotAtIndex(HashMapSlot* pSlot, u8 uIndex)
 {
-  m_okLock.vGrabWrite();
-
   pSlot->m_pNext = m_paHashMapSlots[uIndex];
   m_paHashMapSlots[uIndex] = pSlot;
 
   m_uNoOfEntries++;
-
-  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -245,6 +242,9 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
   }
 
   u8 uIndex = uHashFunction(pKey, m_uNoOfSlots);
+
+  m_okLock.vGrabWrite();
+
   HashMapSlot* pIter = m_paHashMapSlots[uIndex];
 
   while ( pIter != nullptr ) {
@@ -256,7 +256,7 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
       vTrace("Key %p already exists, updating value\n"_Stz, pKey);
       vAppendHistory(pKey, false, true);
 #endif
-
+      m_okLock.vDropWrite();
       return;
     }
 
@@ -266,6 +266,8 @@ void HashMap::vInsertKeyValue(void* pKey, Object* pValue)
   HashMapSlot* pTmpSlot = new HashMapSlot(pKey, pValue);
 
   vInsertSlotAtIndex(pTmpSlot, uIndex);
+
+  m_okLock.vDropWrite();
 
 #ifdef WITH_HASHMAP_DEBUG
   vAppendHistory(pKey, false, true);
@@ -325,9 +327,11 @@ void HashMap::vReHash(void)
 Object* HashMap::pValueAt(void* pKey)
 {
   u8 uIndex = uHashFunction(pKey, m_uNoOfSlots);
-  HashMapSlot* pIter = m_paHashMapSlots[uIndex];
 
   m_okLock.vGrabRead();
+
+  HashMapSlot* pIter = m_paHashMapSlots[uIndex];
+
   while ( pIter != nullptr ) {
 
     if ( pIter->m_pKeyObject == pKey ) {
