@@ -38,7 +38,7 @@ void Step::vAddSteps_Api(void)
   vAddStep("api::forkChildBoot"_Stz,   &Step::vApiForkChildBoot);
   vAddStep("api::forkChildDemon"_Stz,  &Step::vApiForkChildDemon);
   vAddStep("api::forkChildDeputy"_Stz, &Step::vApiForkChildDeputy);
-  vAddStep("api::forkChildNew"_Stz,    &Step::vApiForkChildNew);
+  vAddStep("api::forkChildNormal"_Stz, &Step::vApiForkChildNormal);
   vAddStep("api::forkChildOld"_Stz,    &Step::vApiForkChildOld);
   vAddStep("api::forkChild2PC"_Stz,    &Step::vApiForkChild2PC);
   vAddStep("api::reapJobs"_Stz,        &Step::vApiReapJobs);
@@ -244,9 +244,9 @@ void Step::vApiForkChildDeputy(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ap::forkChildNew --                                                        */
+/* ap::forkChildNormal --                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vApiForkChildNew(void)
+void Step::vApiForkChildNormal(void)
 {
   ENTRY();
 
@@ -285,17 +285,21 @@ void Step::vApiForkChildNew(void)
   JobId tDistId;
   Job* pOuterJob = pOuterJobOfTask();
   tParentId = pOuterJob->tJobId();
-  tOriginId = pOuterJob->tOriginId();
-  tDistId   = pOuterJob->tDistId();
+  //tOriginId = pOuterJob->tOriginId();
+  RASSERT(tOriginId.bIsUnknown());
+  //tDistId   = pOuterJob->tDistId();
+  RASSERT(tDistId.bIsUnknown());
 
   JobId tChildJobId;
   Job* pChildJob_tbr = nullptr;
-  eEC eError = Api::eForkJobNew(tChildJobId,
-                                   pCmdTknVec,pCmdTagSet,
-                                   tParentId,tOriginId,tDistId,
-                                   pOuterJob,    // TO BE REMOVED
-                                   pChildJob_tbr // TO BE REMOVED
+  eEC eError = Api::eForkJobNormal(tChildJobId,
+                                pCmdTknVec,pCmdTagSet,
+                                tParentId,tOriginId,tDistId,
+                                pOuterJob,    // TO BE REMOVED
+                                pChildJob_tbr // TO BE REMOVED
   );
+
+  // come back to this
   RASSERT(EC_NONE == eError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

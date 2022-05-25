@@ -293,20 +293,24 @@ void Step::vJobAssertOrdinary(void)
            "[job].assertOrdinary: "
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
-  
-  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tOriginId());
-  if (pJobFound)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "[job].assertOrdinary: "
-           "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
 
-  pJobFound = AM::pParticipatingJobs()->pFindJob(m_pJob->tDistId());
-  if (pJobFound)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "[job].assertOrdinary: "
-           "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[m_pJob->eGetClassNo()],AM::pGrid()->iThisNodeId());
+  if ( ! m_pJob->tOriginId().bIsUnknown() ) {
+    Job *pJobFound = AM::pOriginatingJobs()->pFindJob(m_pJob->tOriginId());
+    if (pJobFound)
+      vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
+             "[job].assertOrdinary: "
+             "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
+             aCN[m_pJob->eGetClassNo()], AM::pGrid()->iThisNodeId());
+  }
+
+  if ( ! m_pJob->tDistId().bIsUnknown() ) {
+    Job *pJobFound = AM::pParticipatingJobs()->pFindJob(m_pJob->tDistId());
+    if (pJobFound)
+      vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
+             "[job].assertOrdinary: "
+             "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
+             aCN[m_pJob->eGetClassNo()], AM::pGrid()->iThisNodeId());
+  }
 
   EXIT();
 }

@@ -530,7 +530,7 @@ eEC Api::eForkJobDeputy(JobId& rtChildJobId,
 /*----------------------------------------------------------------------------*/
 /* fork a child job for given command                                         */
 /*----------------------------------------------------------------------------*/
-eEC Api::eForkJobNew(JobId& rtChildJobId,
+eEC Api::eForkJobNormal(JobId& rtChildJobId,
                         TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
                         JobId tParentId, JobId tOriginId, JobId tDistId,
                         Job*& rpParentJob_tbr,
@@ -581,16 +581,7 @@ eEC Api::eForkJobNew(JobId& rtChildJobId,
     THROW("Api::eForkJob: no C_TAG_PATH"_Stz);
   }
 
-  if ((! pCmdTagSet->bHasName(C_TAG_NOWAIT)) &&
-      (! pCmdTagSet->bHasName(C_TAG_WAIT))) {
-    pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: neither C_TAG_NOWAIT or C_TAG_WAIT"_Stz);
-  }
-  if (pCmdTagSet->bHasName(C_TAG_NOWAIT) &&
-      pCmdTagSet->bHasName(C_TAG_WAIT)) {
-    pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: both C_TAG_NOWAIT and C_TAG_WAIT"_Stz);
-  }
+  RASSERT(pCmdTagSet->bHasName(C_TAG_NOWAIT));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -600,7 +591,6 @@ eEC Api::eForkJobNew(JobId& rtChildJobId,
   RASSERT(szJobNm);
 
   rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
-
 
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
@@ -647,20 +637,17 @@ eEC Api::eForkJobNew(JobId& rtChildJobId,
 
     Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
 
-    if (rpChildJob_tbr->bHasTag(C_TAG_NOWAIT)) {
-      RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_WAIT));
-      rpChildJob_tbr->vMutexUnlock();
-      return EC_NONE;
-    }
-
-    RASSERT(rpChildJob_tbr->bHasTag(C_TAG_WAIT));
-    RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_NOWAIT));
-
-
-    rpChildJob_tbr->vMutexWait();
     rpChildJob_tbr->vMutexUnlock();
+    //return EC_NONE;
 
-    rpChildJob_tbr->vResponseTimerUpdate();
+//    RASSERT(rpChildJob_tbr->bHasTag(C_TAG_WAIT));
+//    RASSERT(! rpChildJob_tbr->bHasTag(C_TAG_NOWAIT));
+//
+//
+//    rpChildJob_tbr->vMutexWait();
+//    rpChildJob_tbr->vMutexUnlock();
+//
+//    rpChildJob_tbr->vResponseTimerUpdate();
 
 
     rpChildJob_tbr->pTask()->vCycleTaskLock((Stz*)__func__);

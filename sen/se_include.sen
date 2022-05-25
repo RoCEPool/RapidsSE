@@ -16,6 +16,9 @@ assert::stack_0
 "<wait> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
    constant STD_WAIT_PATH_TAG
 
+"<nowait> = 1 <parent> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
+   constant STD_NORMALFORK_TAG
+
 "<wait> = 1 <parent> = 1 <path> = /tenants/boray/catalogs/rapidsse/schemas/public/tables"
    constant STD_BOOTFORK_TAG
 
