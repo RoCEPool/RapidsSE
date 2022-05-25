@@ -38,11 +38,11 @@ RowBuffer::RowBuffer(void)
 
   m_bDeletable = false;
 
-#ifdef WITH_BUFFER_ID
-#ifdef WITH_HASHMAP
-  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
-#endif
-#endif
+//#ifdef WITH_BUFFER_ID
+//#ifdef WITH_HASHMAP
+//  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
+//#endif
+//#endif
   
   m_oDecider.vSetRemaining(1);
   
@@ -65,11 +65,11 @@ RowBuffer::RowBuffer(eCN eClassNo)
 
   m_bDeletable = true;
 
-#ifdef WITH_BUFFER_ID
-#ifdef WITH_HASHMAP
-  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
-#endif
-#endif
+//#ifdef WITH_BUFFER_ID
+//#ifdef WITH_HASHMAP
+//  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
+//#endif
+//#endif
   
   if (CN_CRWBUFFER == eClassNo)
     AM::METRICS::vDerefMetrics((i8)this,CN_CRWBUFFER,DR_NEW);
@@ -93,11 +93,11 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
 
   m_bDeletable = true;
 
-#ifdef WITH_BUFFER_ID
-#ifdef WITH_HASHMAP
-  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
-#endif
-#endif
+//#ifdef WITH_BUFFER_ID
+//#ifdef WITH_HASHMAP
+//  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
+//#endif
+//#endif
   
   if (CN_ROWBUFFER == eClassNo)
     AM::METRICS::vDerefMetrics((i8)this,CN_ROWBUFFER,DR_NEW);
@@ -118,11 +118,11 @@ RowBuffer::~RowBuffer(void) noexcept(false)
   
   if (CN_ROWBUFFER == eGetClassNo())
     AM::METRICS::vDerefMetrics((i8)this,CN_ROWBUFFER,DR_NEW);
-#ifdef WITH_BUFFER_ID
-#ifdef WITH_HASHMAP
-  AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
-#endif
-#endif
+//#ifdef WITH_BUFFER_ID
+//#ifdef WITH_HASHMAP
+//  AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
+//#endif
+//#endif
 }
 
 /*----------------------------------------------------------------------------*/

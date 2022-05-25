@@ -152,13 +152,15 @@ void HashMap::vAppendHistory(void* pKey, bool bDeleted, bool bInserted)
 void HashMap::vDeleteKey(void* pKey)
 {
   u8 uIndex = uHashFunction(pKey, m_uNoOfSlots);
+
+  m_okLock.vGrabWrite();
+  
   HashMapSlot* pIter = m_paHashMapSlots[uIndex];
   HashMapSlot* pPrevIter = nullptr;
 
 #ifdef WITH_HASHMAP_DEBUG
   vAppendHistory(pKey, true, false);
 #endif
-  m_okLock.vGrabWrite();
 
   while ( pIter != nullptr ) {
 
