@@ -64,6 +64,46 @@
 /* org_ org */    then
 /* org_ org */  then
 
+/* org_ org */
+/* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
+/* org_ org */  // compile pipeline statement to check its syntax
+/* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
+/* org_ org */  Dynamo[].new
+/* org_ org */  <cmd> Dynamo[].compile to ErrorCode[]
+/* org_ org */  ErrorCode[] EC_NONE == if
+/* org_ org */    // + clean compile
+/* org_ org */    to PipeSpec[]
+/* org_ org */  else
+/* org_ org */    // - didnt compile
+/* org_ org */    ErrorCode[] [job].error!
+/* org_ org */    [ddlLock].testDrop
+
+
+
+
+
+/* org_ org */    Dynamo[].delete
+/* org_ org */    ListedJob[].assertNoRef
+/* org_ org */
+/* org_ org */    Path[].discardAll
+/* org_ org */    [job].addRetired
+/* org_ org */
+/* org_ org */    //[job].signalWaiter
+/* org_ ovr */    [job].error@ [job].signalParent
+/* org_ org */
+/* org_ org */    [task].grabLock
+/* org_ org */      [task].retire // does not queue onto exit demon
+/* org_ org */
+/* org_ org */    HAZARD
+
+
+
+
+
+/* org_ org */  then
+/* org_ org */  Dynamo[].delete
+/* org_ org */
+
 /* ---- --- */  // !!! org !!! org !!! org !!! org !!! org !!! org !!! org !!!
 
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
@@ -86,48 +126,9 @@
 /* org_ org */    //[system].bpa
 /* org_ org */  then
 /* org_ org */
-/* org_ org */
-/* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
-/* org_ org */  // compile pipeline statement to check its syntax
-/* org_ org */  // - - - - - - - - - - - - - - - - - - - - - - - -
-/* org_ org */  Dynamo[].new
-/* org_ org */  <cmd> Dynamo[].compile to ErrorCode[]
-/* org_ org */  ErrorCode[] EC_NONE == if
-/* org_ org */    // + clean compile
-/* org_ org */    to PipeSpec[]
-/* org_ org */  else
-/* org_ org */    // - didnt compile
-/* org_ org */    ErrorCode[] [job].error!
-/* org_ org */    [ddlLock].testDrop
 
 
 
-
-
-/* org_ org */    Dynamo[].delete
-/* org_ ovr */    [job].removeOriginator
-/* org_ ovr */    [job].assertOrdinary
-/* org_ org */    ListedJob[].assertNoRef
-/* org_ org */
-/* org_ org */    Path[].discardAll
-/* org_ org */    [job].addRetired
-/* org_ org */
-/* org_ org */    //[job].signalWaiter
-/* org_ ovr */    [job].error@ [job].signalParent
-/* org_ org */
-/* org_ org */    [task].grabLock
-/* org_ org */      [task].retire // does not queue onto exit demon
-/* org_ org */
-/* org_ org */    HAZARD
-
-
-
-
-
-
-/* org_ org */  then
-/* org_ org */  Dynamo[].delete
-/* org_ org */
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // test if distributed job may execute
