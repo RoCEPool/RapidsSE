@@ -53,7 +53,8 @@
 /* org_ org */      Path[].discardAll
 /* org_ org */      [job].addRetired
 /* org_ org */
-/* org_ org */      [job].signalWaiter
+/* org_ org */      //[job].signalWaiter
+/* org_ ovr */      [job].error@ [job].signalParent
 /* org_ org */
 /* org_ org */      [task].grabLock
 /* org_ org */        [task].retire // does not queue onto exit demon
@@ -265,8 +266,8 @@
 /* org_ ovr */    [ddlLock].testDrop
 /* org_ ovr */    [task].grabLock
 /* org_ ovr */      "<signalWaiter>" [job].tagSet@ tagSet.hasName assert
-/* org_ ovr */      //[job].errorCode@ [job].signalParent
-                    [job].signalWaiter
+/* org_ ovr */      [job].error@ [job].signalParent
+/* org_ ovr */      //[job].signalWaiter
 /* org_ ovr */      [task].hibernate
 /* org_ ovr */
 /* org_ ovr */    HAZARD
@@ -286,7 +287,13 @@
 /* org_ ovr */
 /* org_ ovr */  [task].grabLock
 /* org_ ovr */    "<signalWaiter>" [job].tagSet@ tagSet.hasName if
-/* org_ ovr */      [job].signalWaiter
+/* org_ ovr */      [job].error@ [job].signalParent
+/* org_ ovr */      //[job].signalWaiter
+/* org_ ovr */    then
+/* org_ ovr */
+/* org_ ovr */    [args].distJob if
+/* org_ ovr */      "pipeline" "origin"
+/* org_ ovr */        "org_ ovr" "signalled..."                  [job].trace
 /* org_ ovr */    then
 /* org_ ovr */
 /* org_ ovr */    [task].retire // does not queue onto exit demon
