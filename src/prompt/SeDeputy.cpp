@@ -168,7 +168,10 @@ void SeDeputy::vDeputyLoop(void)
     if (EC_NONE != m_eError) {
       m_pSePrompt->vMutexLock(this);
       m_pSePrompt->vMutexSignalAndUnlock(this);
-      Api::vReapableJob(m_pJob);
+
+      // if command was invalid we may not have a job
+      if (m_pJob)
+        Api::vReapableJob(m_pJob);
       continue;
     }
 
