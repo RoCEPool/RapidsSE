@@ -119,12 +119,13 @@ Object* Object::pMemoryCopy(void)
   // when we do a memcpy. Below code extracts the buffer no from the pool buffer that
   // the object lives in and then set that rowbuffer member which was overwritten.
 #ifdef WITH_BUFFER_ID
-  if (eClass == CN_ROWBUFFER) {
-    RowBuffer* pRowBuffer = _pRowBuffer(pCopy);
-    i8 iBufferNo = pRowBuffer->iBufferNo();
-    pRowBuffer->vSetBufferNo(iBufferNo);
-    pRowBuffer->vSetBufferId(
+  if (eClass == CN_ROWBUFFER || eClass == CN_INFOSET || eClass == CN_NAMEDBUFFER) {
+    DataBuffer* pDataBuffer = _pDataBuffer(pCopy);
+    i8 iBufferNo = pDataBuffer->iBufferNo();
+    pDataBuffer->vSetBufferNo(iBufferNo);
+    pDataBuffer->vSetBufferId(
         AM::pFileMap()->oGetNewBufferId());
+    AM::pHashMap()->vInsertKeyValue((void *) pDataBuffer->oGetBufferId().m_pvAsAddress, (Object *) pCopy);
   }
 #endif
 

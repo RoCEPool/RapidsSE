@@ -613,7 +613,16 @@ Object* Socket::pRecvObject(void)
      vSuccess(false);
      return nullptr;
     }
-
+#ifdef WITH_BUFFER_ID
+    if (eClass == CN_ROWBUFFER || eClass == CN_INFOSET || eClass == CN_NAMEDBUFFER) {
+      DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
+      i8 iBufferNo = pDataBuffer->iBufferNo();
+      pDataBuffer->vSetBufferNo(iBufferNo);
+      pDataBuffer->vSetBufferId(
+          AM::pFileMap()->oGetNewBufferId());
+      AM::pHashMap()->vInsertKeyValue((void *) pDataBuffer->oGetBufferId().m_pvAsAddress, (Object *) pReceivedObject);
+    }
+#endif
     pReceivedObject->vRunPostRecv();
 
     m_pTotup->vAdd(eClass,nSize);
