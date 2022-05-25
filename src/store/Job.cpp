@@ -73,6 +73,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_eJobList  = JL_NONE;
   m_eJobPhase = JP_NONE;
   m_eError_job  = EC_NONE;
+  m_eChildError = EC_NONE;
   m_pOutput = nullptr;
 
   // m_oJobTags
