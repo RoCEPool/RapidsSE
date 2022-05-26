@@ -620,7 +620,11 @@ Object* Socket::pRecvObject(void)
       pDataBuffer->vSetBufferNo(iBufferNo);
       pDataBuffer->vSetBufferId(
           AM::pFileMap()->oGetNewBufferId());
-      AM::pHashMap()->vInsertKeyValue((void *) pDataBuffer->oGetBufferId().m_pvAsAddress, (Object *) pReceivedObject);
+#ifdef WITH_HASHMAP
+      AM::pHashMap()->vInsertKeyValue(
+          (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+          (Object *) pReceivedObject);
+#endif
     }
 #endif
     pReceivedObject->vRunPostRecv();

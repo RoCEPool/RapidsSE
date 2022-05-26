@@ -125,7 +125,11 @@ Object* Object::pMemoryCopy(void)
     pDataBuffer->vSetBufferNo(iBufferNo);
     pDataBuffer->vSetBufferId(
         AM::pFileMap()->oGetNewBufferId());
-    AM::pHashMap()->vInsertKeyValue((void *) pDataBuffer->oGetBufferId().m_pvAsAddress, (Object *) pCopy);
+#ifdef WITH_HASHMAP
+    AM::pHashMap()->vInsertKeyValue(
+        (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
+        (Object *) pCopy);
+#endif
   }
 #endif
 
