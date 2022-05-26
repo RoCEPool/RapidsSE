@@ -12,6 +12,7 @@
 #include "JobId.hpp"
 #include "Output.hpp"
 #include "Statement.hpp"
+#include "MarkerChain.hpp"
 
 namespace STORE
 {
@@ -46,14 +47,15 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 01 */ eJL     m_eJobList;       // current list : JL_ORIGINATING, ...
     /* 02 */ JobMetrics* m_pJobMetrics;// job metrics chain
     /* 03 */ Mutex*  m_pMutex;         // mutex
-    /* 04 */ Output* m_pOutput;    // output processor
+    /* 04 */ Output* m_pOutput;        // output processor
     /* 05 */ b8      m_bReapable;      // can job be reaped?
     /* 06 */ Op*     m_p_ResponseOp;   // operator to where responses go
     /* 07 */ Timer   m_oResponseTimer; // timer (on origin only)
     /* 08 */ StmtList* m_pStmtList;    // list of cascade statements
     /* 09 */ Task*   m_pTask;          // task executing this job
     /* 10 */ b8      m_bWasReceived;   // was job received over a socket?
-  
+    /* 11 */ MarkerChain* m_pMarkerChain; // chain of free markers
+
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
     i8  m_iTscParticipant;

@@ -55,6 +55,8 @@ Marker::Marker(void)
   
   m_eOpMarker = OM_NONE;
   
+  m_pNextItem = nullptr;
+  
   //vTrace("new Marker() %p\n"_Stz,this);
 }
 
@@ -88,7 +90,7 @@ void Marker::vPostRecv(void* aMarker)
 {
   _static_
   
-  Marker* pMarker = _pMarker(aMarker);
+  //Marker* pMarker = _pMarker(aMarker);
 }
 
 
@@ -107,6 +109,26 @@ bool Marker::bInspect(Object* pObject)
          pMarker->m_xFooter.iWhenAllocated());
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the next chain item                                                    */
+/*----------------------------------------------------------------------------*/
+Marker* Marker::pNextItem(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pNextItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the next chain item                                                    */
+/*----------------------------------------------------------------------------*/
+void Marker::vNextItem(Marker* pNextItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pNextItem = pNextItem;
 }
 
 /*----------------------------------------------------------------------------*/

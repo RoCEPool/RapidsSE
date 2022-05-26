@@ -12,6 +12,8 @@ namespace STORE
   protected:
     eOM  m_eOpMarker;
     
+    Marker* m_pNextItem;
+  
     // must be last
     Footer m_xFooter;
 
@@ -26,6 +28,9 @@ namespace STORE
     static bool bInspect(Object* pObject);
   
     static void vPostRecv(void* aMarker);
+
+    Marker* pNextItem(void);
+    void vNextItem(Marker* pNext);
 
     eOM eOpMarker(void);
   };

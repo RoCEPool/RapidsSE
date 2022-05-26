@@ -57,32 +57,26 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_tOriginId = tOriginId;
 
   m_sJobNm   = szJobNm;
-
-  m_bReapable = false;
+  //m_sEntryPoint
+  //m_oJobTags
+  //m_sFolderPath
   
-  // -- a -------------------
+  m_eJobPhase  = JP_NONE;
+  m_eError_job = EC_NONE;
+
+  /* 00 */ m_noActiveOps.vResetAtomic();
+  /* 01 */ m_eJobList     = JL_NONE;
+  /* 02 */ m_pJobMetrics  = nullptr;
+  /* 03 */ m_pMutex       = nullptr;
+  /* 04 */ m_pOutput      = nullptr;
+  /* 05 */ m_bReapable    = false;
+  /* 06 */ m_p_ResponseOp = nullptr;
+  /* 07 */ m_oResponseTimer.vStart();
+  /* 08 */ m_pStmtList    = nullptr;
+  /* 09 */ m_pTask        = nullptr;
+  /* 10 */ m_bWasReceived = false;
+  /* 11 */ m_pMarkerChain = nullptr;
   
-
-  m_p_ResponseOp = nullptr;
-  m_oResponseTimer.vStart();
-
-  // -- b -------------------
-  m_bWasReceived     = false;
-  
-  // -- c -------------------
-  m_eJobList  = JL_NONE;
-  m_eJobPhase = JP_NONE;
-  m_eError_job  = EC_NONE;
-  m_pOutput = nullptr;
-
-  // m_oJobTags
-  // m_xResult
-
-  // -- e -------------------
-
-  // -- g -------------------
-  m_pTask     = nullptr;
-
   m_iTscParticipant = 0;
   
   m_iTscBeginning   = 0;
@@ -95,13 +89,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_iTscCanceled    = 0;
 
   // -- -- -- -- -- --
-      
-  m_pJobMetrics  = nullptr;
-  
-  m_pMutex     = nullptr;
-
-  m_pStmtList = nullptr;
-  
+        
   _checkInitialised_(CN_JOB);
   
   AM::JOBS::vJobsActiveInc();
@@ -1126,14 +1114,15 @@ void Job::vPostRecv(void)
   /* 01 */ m_eJobList     = JL_NONE;
   /* 02 */ m_pJobMetrics  = nullptr;
   /* 03 */ m_pMutex       = nullptr;
-  /* 04 */ m_pOutput  = nullptr;
+  /* 04 */ m_pOutput      = nullptr;
   /* 05 */ RASSERT(! m_bReapable);
   /* 06 */ m_p_ResponseOp = nullptr;
   /* 07 */ m_oResponseTimer.vReset();
   /* 08 */ m_pStmtList    = nullptr;
   /* 09 */ m_pTask        = nullptr;
   /* 10 */ m_bWasReceived = true;
-    
+  /* 11 */ m_pMarkerChain = nullptr;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_tJobId.vNextJobId();

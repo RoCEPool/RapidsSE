@@ -20,7 +20,7 @@ namespace PRIMITIVES
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Chain_t(void);
+    Chain_t(eCN eClass);
    ~Chain_t(void) noexcept(false);
 
     void  vDeleteAll(void);
@@ -72,8 +72,9 @@ void Chain_t<CLASSNO,ITEM>::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <eCN CLASSNO, class ITEM>
-Chain_t<CLASSNO,ITEM>::Chain_t(void)
-: m_okLock(this)
+Chain_t<CLASSNO,ITEM>::Chain_t(eCN eClass)
+: Object(eClass)
+, m_okLock(this)
 {
   m_nItems = 0;
   m_pHead  = nullptr;
@@ -198,15 +199,6 @@ template <eCN CLASSNO, class ITEM>
 ITEM* Chain_t<CLASSNO,ITEM>::pHead(void)
 {
   return m_pHead;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get tail item of list                                                      */
-/*----------------------------------------------------------------------------*/
-template <eCN CLASSNO, class ITEM>
-ITEM* Chain_t<CLASSNO,ITEM>::pTail(void)
-{
-  return m_pTail;
 }
 
 /*----------------------------------------------------------------------------*/

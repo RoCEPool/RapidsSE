@@ -234,6 +234,7 @@
 #include "AdaptorWL.hpp"
 #include "PipeIn.hpp"
 #include "EvMgr.hpp"
+#include "MarkerChain.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -421,6 +422,7 @@ SizeHeap gxaSizeHeap[]
 
   { CN__M__,                     'M' - ('A' - 1),            HT_INVALID   ,0 FILL },
   { CN_MARKER,                   sizeof(Marker),             HT_T_TINY    ,0 FILL },
+  { CN_MARKERCHAIN,              sizeof(MarkerChain),        HT_T_TINY    ,0 FILL },
   { CN_MEDIUMPERSISTENT,         sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL },
   { CN_MEDIUMTRANSIENT,          sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL },
   { CN_MEDIUMVIRTUAL,            sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL },
