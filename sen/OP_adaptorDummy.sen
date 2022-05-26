@@ -25,6 +25,9 @@
 
   nullptr [job].responseOp!
 
+  Marker[].newExitingMarker
+  Marker[].pipeout
+
   "adaptorDummy_ExitOperand" .
   Pipein[].delete
 
@@ -47,14 +50,15 @@
   0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   <etc> "sqlCompiler \"%v\"" str.format to sSmt
-  sSmt .
+
+  [Op] [job].responseOp!
+
+  sSmt "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
   // spawn a job for the smt
   STD_NORMALFORK_TAG sSmt api::forkChildNormal not if
      "Error Code %v" .printf
   then
-
-  //[Op] [job].responseOp!
 
   Pipein[].pipeout
 
@@ -77,13 +81,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on EV_D_ROWBUFFER ...                                            CRWBUFFER */
+/*----------------------------------------------------------------------------*/
+: adaptorDummy_RowBuffer \handler
+
+  EC_NONE locals| eError |
+
+  0 EV_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  "adaptorDummy_RowBuffer: GOT A ROWBUFFER" .
+  Pipein[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_EXITING ...                                               */
 /*----------------------------------------------------------------------------*/
 : adaptorDummy_Exiting \handler
 
   //"EV_M_EXITING_handler" .verbose
 
-  PipeIn[].pipeOut
+  PipeIn[].delete
 
   true
 ;
@@ -113,6 +132,7 @@
   op__topology
 
   find: adaptorDummy_CrwBuffer    EV_D_CRWBUFFER     [op].handler!
+  find: adaptorDummy_RowBuffer    EV_D_ROWBUFFER     [op].handler!
   find: adaptorDummy_ExitOperand  EV_D_EXITOPERAND   [op].handler!
   find: adaptorDummy_StreamDef    EV_D_STREAMDEF     [op].handler!
 

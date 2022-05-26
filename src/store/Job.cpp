@@ -1083,15 +1083,13 @@ void Job::vPipeout(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   Job* pParentJob = this->pParentJob();
+  if (pOperand->eGetClassNo() == CN_STREAMDEF) {
+    i8 i = 1;
+  }
 
-  if (m_p_ResponseOp) {
+  if (pParentJob && pParentJob->m_p_ResponseOp) {
     Task* pCurTask = MY::pTask();
-    m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
-
-    if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
-      vPipeoutExit();
-    }
-
+    pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
   }
   else if (pParentJob) {
     pParentJob->vPipeout(pOperand);

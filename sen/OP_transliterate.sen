@@ -52,6 +52,42 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_EXITING ...                                               */
+/*----------------------------------------------------------------------------*/
+: transliterate_Exiting \handler
+
+  //"EV_M_EXITING_handler" .verbose
+
+  PipeIn[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_D_EXITOPERAND ...                                   EV_D_EXITOPERAND */
+/*----------------------------------------------------------------------------*/
+: transliterate_ExitOperand \handler
+
+  0 EV_D_EXITOPERAND EG_ZK LogicUnit[].diaryNote
+
+  nullptr [job].responseOp!
+
+  Marker[].newExitingMarker
+  Marker[].pipeout
+
+  "transliterate_ExitOperand" .
+  Pipein[].delete
+
+  [job] assert
+  [task] assert
+
+  // ack the parent job task
+  [op].ackInvokingTask
+
+  false // calling op_loop exits
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_D_PLANOPERAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
@@ -85,11 +121,19 @@
   PlanOperand[] sqlCompiler::deletePlan
   PlanOperand[].delete
 
-  //sPipeline .
+  find: transliterate_Exiting       EV_M_EXITING       [op].handler!
+  find: transliterate_ExitOperand   EV_D_EXITOPERAND   [op].handler!
 
-  sPipeline [op].job@ job(Id).masterJob job(Id).cascade!
+  [Op] [job].responseOp!
 
-  
+  sPipeline "FORKING CHILD FOR PIPELINE: %v"  str.format .
+
+  //sPipeline [op].job@ job(Id).masterJob job(Id).cascade!
+
+  STD_NORMALFORK_TAG sPipeline api::forkChildNormal not if
+     "Error Code %v" .printf
+  then
+
   true
 ;
 
@@ -102,7 +146,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_LEAVE ...                                             */
+/* handler for EV_M_LEAVE ...                                                 */
 /*----------------------------------------------------------------------------*/
 : transliterate_LeaveMarker \handler
 
