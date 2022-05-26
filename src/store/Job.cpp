@@ -156,6 +156,9 @@ Job::~Job(void) noexcept(false)
   
   if (m_pStmtList)
     vStmtListDestroy();
+  
+  if (m_pMarkerChain)
+    delete m_pMarkerChain;
 }
 
 
@@ -827,6 +830,16 @@ void Job::vMutexWait(void)
   _precondition_(_ADDRESS_,_MAGIC_);
       
   m_pMutex->vWaitForSignalLoop(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* new the marker chain                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vNewMarkerChain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+      
+  m_pMarkerChain = new MarkerChain;
 }
 
 /*----------------------------------------------------------------------------*/

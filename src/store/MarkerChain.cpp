@@ -10,50 +10,25 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-MarkerChain* STORE::_pMarkerChain(void* aAddr)
-{
-  MarkerChain* pMarkerChain = reinterpret_cast<MarkerChain*>(aAddr);
-  
-  if (pMarkerChain && CN_CATALOG != pMarkerChain->eGetClassNo())
-    vTrace("_pMarkerChain got class %s\n"_Stz,aCN[pMarkerChain->eGetClassNo()]);
-  
-  RASSERT_TYPE(pMarkerChain,CN_CATALOG);
-  
-  return pMarkerChain;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* MarkerChain::operator new(size_t)
-{
-  MarkerChain* pMarkerChain = nullptr;
-  
-  return pMarkerChain;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void MarkerChain::operator delete(void*)
-{
-}
+__pCastFunction(STORE,MarkerChain,CN_MARKERCHAIN)
+__aNewFunction(MarkerChain,CN_MARKERCHAIN)
+__vDeleteFunction(MarkerChain,CN_MARKERCHAIN)
+__aFooterFunction(MarkerChain)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MarkerChain::MarkerChain(void)
-: Chain_t(CN_CATALOG)
+: Chain_t(CN_MARKERCHAIN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CATALOG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKERCHAIN,_FOOTER_);
   
+  _checkInitialised_(CN_MARKERCHAIN);
   
-  _checkInitialised_(CN_CATALOG);
+  for (i8 i_Marker = 0; i_Marker < 128; i_Marker++)
+    vPush(new Marker);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CATALOG,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_MARKERCHAIN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,28 +36,16 @@ MarkerChain::MarkerChain(void)
 /*----------------------------------------------------------------------------*/
 MarkerChain::~MarkerChain(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CATALOG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MARKERCHAIN,_FOOTER_);
+  
+  for (Marker* pMarker = pPop(); pMarker; pMarker = pPop())
+    delete pMarker;
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* MarkerChain::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CATALOG);
-  
-  return &m_xFooter;
-}
 
 
 /*============================================================================*/

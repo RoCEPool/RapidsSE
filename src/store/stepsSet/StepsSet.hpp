@@ -880,6 +880,8 @@ void vDdlLockAssertNone(void);
   void vJobSetOriginId(void);
   void vJobSignalWaiter(void);
   void vJobMutexFetch(void);
+  void vJobNewMarkerChain(void);
+
   void vJobIdSystemCloserFetch(void);
   void vJobIdSystemCloserStore(void);
 

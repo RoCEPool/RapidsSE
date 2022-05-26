@@ -324,6 +324,12 @@
 /* _ptp beg */  ListedJob[].assertNoRef
 /* _ptp beg */
 /* _ptp beg */
+/* _ptp beg */  // - - - - - - - - - - - - - -
+/* _ptp beg */  // new all the markers needed
+/* _ptp beg */  // - - - - - - - - - - - - - -
+/* _ptp beg */  [job].newMarkerChain
+/* _ptp beg */
+/* _ptp beg */
 /* _ptp beg */  // - - - - - - - - - - -
 /* _ptp beg */  // this job is beginning
 /* _ptp beg */  // - - - - - - - - - - -

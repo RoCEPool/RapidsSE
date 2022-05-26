@@ -57,6 +57,8 @@ void Step::vAddSteps_Job(void)
     
   vAddStep("[job].mutex@"_Stz,           &Step::vJobMutexFetch);
   
+  vAddStep("[job].newMarkerChain"_Stz,   &Step::vJobNewMarkerChain);
+
   vAddStep("[job].originId@"_Stz,        &Step::vJobOriginIdFetch);
   vAddStep("[job].originNodeId@"_Stz,    &Step::vJobOriginNodeIdFetch);
   
@@ -566,6 +568,20 @@ void Step::vJobMutexFetch(void)
   Job* pJob = m_pJob;
 
   m_pDataStack->vPushInt(pJob->eMutexSide());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].newMarkerChain -- new the job marker chain                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobNewMarkerChain(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob;
+
+  pJob->vNewMarkerChain();
   
   EXIT();
 }

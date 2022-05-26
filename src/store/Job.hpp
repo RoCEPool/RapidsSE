@@ -149,6 +149,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vMutexUnlock(void);
     void vMutexWait(void);
 
+    void vNewMarkerChain(void);
+
     Output* pOutput(void);
     void vOutput(Output* pOutput);
     void vOutputBeginProc(void);
