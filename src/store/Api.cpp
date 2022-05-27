@@ -477,18 +477,24 @@ eEC Api::eForkJobDeputy(JobId& rtChildJobId,
   //rpChildJob_tbr->vOutputEnabled(true);
   rpChildJob_tbr->vStmtListCreate();
   rpChildJob_tbr->vTaskCreate();
-
+  vTrace("Task created %p\n"_Stz, rpChildJob_tbr->pTask());
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 
   rpChildJob_tbr->vMutexLock();
+  vTrace("Locking mutex\n"_Stz);
+
   RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
+  vTrace("Mutex locaked\n"_Stz);
+  vTrace("Job has task %p\n"_Stz, rpChildJob_tbr->pTask());
 
   RASSERT(rpChildJob_tbr->pTask());
 
+  vTrace("Job starting timer\n"_Stz);
   rpChildJob_tbr->vResponseTimerStart();
 
+  vTrace("Task to scheduler %p\n"_Stz, rpChildJob_tbr->pTask());
   Scheduler::vTaskApi_Add(rpChildJob_tbr->pTask());
 
 //    if (rpChildJob_tbr->bHasTag(C_TAG_NOWAIT)) {
