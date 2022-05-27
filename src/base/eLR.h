@@ -16,7 +16,8 @@ enum eLR // Logic Unit Registers
   /*  */ LR_BUCKET,
   /*  */ LR_BUCKETGET,
   /*  */ LR_BUCKETINFO,
-  
+
+  /*  */ LR_CHILDEXIT,
   /*  */ LR_COMBINED,
   /*  */ LR_CRWBUFFER,
   /*  */ LR_CRWTOROW,

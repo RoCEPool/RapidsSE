@@ -455,6 +455,8 @@ eEC Api::eForkJobDeputy(JobId& rtChildJobId,
   TagSet* pJobTagSet = rpChildJob_tbr->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
 
+  RASSERT(rpChildJob_tbr->bHasTag(C_TAG_WAIT));
+
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
   rpChildJob_tbr->vCmd(sCmd);
@@ -494,8 +496,6 @@ eEC Api::eForkJobDeputy(JobId& rtChildJobId,
 //      rpChildJob_tbr->vMutexUnlock();
 //      return EC_NONE;
 //    }
-
-  RASSERT(rpChildJob_tbr->bHasTag(C_TAG_WAIT));
 
   rpChildJob_tbr->vMutexWait();
   rpChildJob_tbr->vMutexUnlock();

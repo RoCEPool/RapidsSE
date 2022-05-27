@@ -56,6 +56,7 @@
 
 #include "LglPtnMap.hpp"
 
+#include "ChildExit.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "ExitOperand.hpp"
@@ -2738,7 +2739,13 @@ void AM::vDeleteOperand(Operand* pOperand)
   eCN eClass = pOperand->eGetClassNo();
   
   switch(eClass) {
-      
+
+    case CN_CHILDEXIT: {
+      ChildExit* pChildExit = _pChildExit(pOperand);
+      delete pChildExit;
+      break;
+    }
+
     case CN_CRWBUFFER: {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       
@@ -3459,12 +3466,13 @@ i8 AM::iOperandEvKind(Operand* pOperand)
   switch (eClass_opd) {
 
     case CN_BUCKETMAP:   eOperand = EV_D_BUCKETMAP_dyn; break;
+    case CN_CHILDEXIT:   eOperand = EV_X_CHILDEXIT; break;
     case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
     case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;
-    case CN_EXITOPERAND: eOperand = EV_D_EXITOPERAND;   break;
+    case CN_EXITOPERAND: eOperand = EV_D_EXITOPERAND; break;
     case CN_INDEX:       eOperand = EV_D_INDEX;  break;
-    case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF;  break;
+    case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF; break;
       
     case CN_INFOSET:
     {

@@ -73,6 +73,7 @@
 #include "BucketMap.hpp"
 #include "BufferMap.hpp"
 
+#include "ChildExit.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
 #include "ExitOperand.hpp"
@@ -299,6 +300,7 @@ SizeHeap gxaSizeHeap[]
   { CN_CATALOG,                  sizeof(Catalog),            HT_INVALID   ,0 FILL },
   { CN_CELLSINGLE,               sizeof(CellSingle),         HT_INVALID   ,0 FILL },
   { CN_CHARSER,                  sizeof(Charser),            HT_T_LARGE   ,0 FILL },
+  { CN_CHILDEXIT,                sizeof(ChildExit),          HT_T_TINY    ,0 FILL },
   { CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder),   HT_T_LARGE   ,0 FILL },   
   { CN_CMDLINEARGS,              sizeof(CmdLineArgs),        HT_INVALID   ,0 FILL },
   { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_SMALL   ,0 FILL },
