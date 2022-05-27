@@ -1617,10 +1617,10 @@ bool AM::SHOW::bBoot(void)
 {
   _static_
   
-  //if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_BOOT))
+  if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_BOOT))
     return true;
-  //else
-  //  return false;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
