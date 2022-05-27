@@ -123,6 +123,8 @@
 
   [Op] [job].responseOp!
 
+  find: transliterate_Exiting       EV_M_EXITING       [op].handler!
+
   sPipeline "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
   //sPipeline [op].job@ job(Id).masterJob job(Id).cascade!
@@ -180,7 +182,6 @@
   find: transliterate_Cleaning      EV_M_CLEANING      [op].handler!
   find: transliterate_DataMarker    EV_M_DATAPULSE     [op].handler!
   find: transliterate_EosMarker     EV_M_EOS           [op].handler!
-  find: transliterate_Exiting       EV_M_EXITING       [op].handler!
   find: transliterate_PlanOperand   EV_D_PLANOPERAND   [op].handler!
   find: transliterate_StartMarker   EV_M_START         [op].handler!
 
