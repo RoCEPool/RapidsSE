@@ -112,7 +112,7 @@ void Step::vPipeinDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpPipein);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpPipein,nullptr);
   
   m_pLogicUnit->m_xpPipein = nullptr;
   

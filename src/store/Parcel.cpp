@@ -356,7 +356,7 @@ void Parcel::vDistribute(Op *pSendOp)
 
   // delete the operand
   if (m_bDeleteOperand)
-    AM::vDeleteOperand(pOperand);
+    AM::vDeleteOperand(pOperand,nullptr);
 }
 
 

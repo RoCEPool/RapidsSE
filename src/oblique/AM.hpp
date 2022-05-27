@@ -653,7 +653,7 @@ namespace OBLIQUE
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
     static ClassFlags* pClassFlags(void);
-    static void vDeleteOperand(Operand* pOperand);
+    static void vDeleteOperand(Operand* pOperand, Job* pJob);
     static MasterLock* pDicLock(void);
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);

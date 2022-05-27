@@ -159,7 +159,7 @@ void RowBuffer::vRepairList(Object* pObject)
 
   while (pRowBuffer) {
     pNextRowBuffer = pRowBuffer->pNextRowBuffer();
-    AM::vDeleteOperand(pRowBuffer);
+    AM::vDeleteOperand(pRowBuffer,nullptr);
     pRowBuffer = pNextRowBuffer;
   }
 }

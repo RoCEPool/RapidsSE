@@ -40,7 +40,7 @@ void Step::vExitOperandDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpExitOperand);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpExitOperand,nullptr);
 
   m_pLogicUnit->m_xpExitOperand = nullptr;
 

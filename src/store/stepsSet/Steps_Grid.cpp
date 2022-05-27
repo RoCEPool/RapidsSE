@@ -374,7 +374,7 @@ void Step::vGridDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpGrid);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpGrid,nullptr);
 
   m_pLogicUnit->m_xpGrid = nullptr;
 

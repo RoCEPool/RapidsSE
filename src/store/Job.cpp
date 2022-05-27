@@ -833,6 +833,18 @@ void Job::vMutexWait(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new a marker from the chain                                                */
+/*----------------------------------------------------------------------------*/
+Marker* Job::pNewMarker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+      
+  Marker* pMarker = m_pMarkerChain->pPop();
+  
+  return pMarker;
+}
+
+/*----------------------------------------------------------------------------*/
 /* new the marker chain                                                       */
 /*----------------------------------------------------------------------------*/
 void Job::vNewMarkerChain(void)

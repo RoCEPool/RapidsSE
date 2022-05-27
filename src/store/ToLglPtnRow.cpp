@@ -71,7 +71,7 @@ void ToLglPtnRow::vRepairHashSet(Object* pObject)
     // delete all completed buffers
     RowBuffer* pRowBuffer = pToLglPtnRow->pCompleted(i_Ptn);
     while(pRowBuffer) {
-      AM::vDeleteOperand(pRowBuffer);
+      AM::vDeleteOperand(pRowBuffer,nullptr);
       pRowBuffer = pToLglPtnRow->pCompleted(i_Ptn);
     }
 

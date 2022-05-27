@@ -30,7 +30,20 @@ Marker* STORE::_pMarker(void* aAddr)
 void* Marker::operator new(size_t)
 {
   Marker* pMarker =
-  static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));
+    static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));
+  
+  return pMarker;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate from job marker chain                                             */
+/*----------------------------------------------------------------------------*/
+void* Marker::operator new(size_t, Job* pJob)
+{
+  RASSERT(! pJob);
+  
+  Marker* pMarker =
+    static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));
   
   return pMarker;
 }

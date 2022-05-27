@@ -69,7 +69,7 @@ Output::~Output(void) noexcept(false)
   if (m_pOutputQueue) {
     
     while (Operand* pOperand = _pOperand(m_pOutputQueue->pPop()))
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
 
     RASSERT(! m_pOutputQueue->nItems());
     delete m_pOutputQueue;
@@ -144,7 +144,7 @@ void Output::vDrainBufferQueue(void)
       m_bToExit = true;
     }
 
-    AM::vDeleteOperand(pOperand);
+    AM::vDeleteOperand(pOperand,nullptr);
   }
 }
 
@@ -309,7 +309,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       m_ixRowsProcessed += pCrwBuffer->nRows();
       vTrace("\n"_Stz);
       pCrwBuffer->vPrintRows(m_pStreamDef_result);
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
       
@@ -320,7 +320,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       m_ixRowsProcessed += pCsvBuffer->nRecords();
       vTrace("\n"_Stz);
       pCsvBuffer->vPrintRecords();
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
 
@@ -331,7 +331,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       m_ixRowsProcessed += pEntBuffer->nItems();
       vTrace("\n"_Stz);
       pEntBuffer->vPrintRefdRows();
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
       
@@ -358,7 +358,7 @@ bool Output::bProcessOperand(Operand* pOperand)
         else {
           // LOG error
         }
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS)) {
 
@@ -376,7 +376,7 @@ bool Output::bProcessOperand(Operand* pOperand)
         else {
           // LOG error
         }
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_LOADRESULT)) {
         
@@ -393,7 +393,7 @@ bool Output::bProcessOperand(Operand* pOperand)
         //vTrace("INFOSET: %lld, %lld, %lld\n"_Stz,
         //       iRowsProcessed,iRowsInvalid,iRowsSkipped);
 
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
 
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_PROMPTOUT)) {
@@ -403,14 +403,14 @@ bool Output::bProcessOperand(Operand* pOperand)
 
         vTrace("%s\n"_Stz,szPromptLine);
 
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
       
       else {
         m_ixRowsProcessed += pInfoSet->nRows();
         vTrace("\n"_Stz);
         pInfoSet->vPrintRows(m_pStreamDef_result);
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
       break;
     }
@@ -418,7 +418,7 @@ bool Output::bProcessOperand(Operand* pOperand)
     // -- -- -- -- -- --
 
     case CN_EXITOPERAND: {
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
       m_bToExit = true;
       if ( !m_bHasError )
         vPrintResult();
@@ -439,7 +439,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       m_ixRowsProcessed += pRowBuffer->nRows();
       vTrace("\n"_Stz);
       pRowBuffer->vPrintRows(m_pFileOut,nullptr);
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
             
@@ -467,7 +467,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       m_ixRowsProcessed += pStreamSet->nRows();
       vTrace("\n"_Stz);
       pStreamSet->vPrintRows(m_pStreamDef_result);
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
       

@@ -330,7 +330,7 @@ void Step::vParcelPipeOut(void)
 
       // delete the original operand (to be optimised)
       if (CN_ROWBUFFER != eOperandClass)
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       
       delete pParcel;
 
@@ -423,7 +423,7 @@ void Step::vParcelDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpParcel);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpParcel,nullptr);
 
   m_pLogicUnit->m_xpParcel = nullptr;
 

@@ -19,6 +19,7 @@ namespace STORE
 
   public:
     void* operator new(size_t);
+    void* operator new(size_t, Job* pJob);
     void operator delete(void*);
   
     Marker(void);

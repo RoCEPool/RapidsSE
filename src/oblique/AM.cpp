@@ -2732,8 +2732,9 @@ void AM::vBootError(bool bBootError) {
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vDeleteOperand(Operand* pOperand)
+void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
 {
+  RASSERT(! pJob);
   
   eCN eClass = pOperand->eGetClassNo();
   
@@ -3369,7 +3370,7 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
 {
   if (pOperand->eGetClassNo() == CN_MARKER) {
     Marker* pMarker = _pMarker(pOperand);
-    Marker* pNewMarker = new Marker(pMarker->eOpMarker());
+    Marker* pNewMarker = new (nullptr)Marker(pMarker->eOpMarker());
     return pNewMarker;
   }
   else {
