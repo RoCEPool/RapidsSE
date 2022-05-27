@@ -390,12 +390,15 @@ eEC Api::eForkJobDeputy(JobId& rtChildJobId,
 
   bool b = CmdHelper::bExtractCmdTags(pCmdTagSet,pCmdTknVec);
   UNUSED(b);
+  pCmdTagSet->vDumpSet();
 
   sSTMT sMaybePipelineSmt;
   if (Procedure::bTranslateToPipeline(sMaybePipelineSmt.pString(),pCmdTknVec)) {
     pCmdTknVec->vSoftReset();
     pCmdTknVec->vTokeniseSen(sMaybePipelineSmt);
   }
+
+  pCmdTagSet->vDumpSet();
 
   if (! CmdHelper::bParseCmd(pCmdTknVec,pCmdTagSet)) {
     rtChildJobId = C_UNKNOWN;
@@ -404,6 +407,8 @@ eEC Api::eForkJobDeputy(JobId& rtChildJobId,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify minimum needed tags
+
+  pCmdTagSet->vDumpSet();
 
   if (! pCmdTagSet->bHasName(C_TAG_JOBNM)) {
     pCmdTagSet->vDumpSet();
@@ -435,7 +440,13 @@ eEC Api::eForkJobDeputy(JobId& rtChildJobId,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (! pCmdTagSet->bHasName(C_TAG_JOBNM)) {
+    pCmdTagSet->vDumpSet();
+    THROW("Api::eForkJob: no C_TAG_JOBNM"_Stz);
+  }
+
   Stz* szJobNm = pCmdTagSet->szValue(C_TAG_JOBNM);
+  vTrace("C_TAG_JOBNM=%s\n"_Stz, szJobNm->azChar());
   RASSERT(szJobNm);
 
   rpChildJob_tbr = new Job(szJobNm,tParentId,tOriginId,tDistId);
