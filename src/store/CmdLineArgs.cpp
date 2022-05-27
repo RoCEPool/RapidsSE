@@ -340,10 +340,10 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //if (szArg->bSame("--distJob"_Stz)) {
+    if (szArg->bSame("--distJob"_Stz)) {
       m_xSysArgs.m_bDistJob = true;
-    //  continue;
-    //}
+      continue;
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--dontFree"_Stz)) {
