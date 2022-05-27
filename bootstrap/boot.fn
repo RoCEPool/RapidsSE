@@ -40,7 +40,7 @@ readonly STOP_SCRIPT="stopSE.sh"
 readonly COLLECTLOGS_SCRIPT="collectLogs.sh"
 
 readonly DEFAULT_BOOT_TIMEOUT="60" # seconds
-readonly DEFAULT_CLUSTER_XCONNECT_TIMEOUT="15"  # seconds, or -1 to wait indefinitely
+readonly DEFAULT_CLUSTER_XCONNECT_TIMEOUT="30"  # seconds, or -1 to wait indefinitely
 readonly DEFAULT_CLUSTER_REBALANCE_TIMEOUT="-1" # seconds, or -1 to wait indefinitely
 readonly DEFAULT_CLUSTER_FORGET_NODE_TIMEOUT="-1" # seconds, or -1 to wait indefinitely
 
