@@ -125,7 +125,7 @@
 
   find: transliterate_Exiting       EV_M_EXITING       [op].handler!
 
-  sPipeline "FORKING CHILD FOR PIPELINE: %v"  str.format .
+  //sPipeline "FORKING CHILD FOR PIPELINE: %v"  str.format .
 
   //sPipeline [op].job@ job(Id).masterJob job(Id).cascade!
 

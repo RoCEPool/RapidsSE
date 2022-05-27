@@ -28824,7 +28824,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  find: transliterate_Exiting       EV_M_EXITING       [op].handler!\n"
     "\n"
-    "  sPipeline \"FORKING CHILD FOR PIPELINE: %v\"  str.format .\n"
+    "  //sPipeline \"FORKING CHILD FOR PIPELINE: %v\"  str.format .\n"
     "\n"
     "  //sPipeline [op].job@ job(Id).masterJob job(Id).cascade!\n"
     "\n"
