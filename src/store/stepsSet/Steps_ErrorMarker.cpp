@@ -106,7 +106,7 @@ void Step::vErrorMarkerNewErrorMarker(void)
 
   ASSERT (m_pLogicUnit->m_xpErrorMarker.bIsNull());
 
-  m_pLogicUnit->m_xpErrorMarker = new (nullptr)Marker(OM_ERRORMARKER);
+  m_pLogicUnit->m_xpErrorMarker = new (pOuterJobOfTask())Marker(OM_ERRORMARKER);
 
   EXIT();
 }

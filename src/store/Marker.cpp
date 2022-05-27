@@ -7,6 +7,7 @@
 #include "Marker.hpp"
 
 #include "eCF.h"
+#include "Job.hpp"
 
 ClassFn __Marker_fn (CN_MARKER,CF_INSPECT,(fpCLASSFN*)Marker::bInspect,-1);
 
@@ -40,10 +41,13 @@ void* Marker::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Marker::operator new(size_t, Job* pJob)
 {
-  RASSERT(! pJob);
+  if (! pJob)
+    RASSERT(pJob);
   
-  Marker* pMarker =
-    static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));
+  Marker* pMarker = pJob->pNewMarker();
+  
+  if (! pMarker)
+    pMarker =  static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));
   
   return pMarker;
 }
@@ -82,6 +86,9 @@ Marker::Marker(eOM eOpMarker)
   _precondition_(_MAGIC_,CN_MARKER);
   
   m_eOpMarker = eOpMarker;
+  
+  m_pNextItem = nullptr;
+
 //  vTrace("new Marker(%s) %p @%lld\n"_Stz,
 //         aOM[m_eOpMarker],this,m_xFooter.iWhenAllocated());
 }

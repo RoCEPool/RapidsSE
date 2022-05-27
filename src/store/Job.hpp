@@ -110,6 +110,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   
     Stz* szFolderPath(void);
     void vFolderPath(Stz* szFolderPath);
+    void vFreeMarker(Marker* pMarker);
 
     void vGrabLock(void);
   

@@ -330,7 +330,7 @@ void Parcel::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* send this parcel out                                                       */
 /*----------------------------------------------------------------------------*/
-void Parcel::vDistribute(Op *pSendOp)
+void Parcel::vDistribute(Op *pSendOp, Job* pJob)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
@@ -356,7 +356,7 @@ void Parcel::vDistribute(Op *pSendOp)
 
   // delete the operand
   if (m_bDeleteOperand)
-    AM::vDeleteOperand(pOperand,nullptr);
+    AM::vDeleteOperand(pOperand,pJob);
 }
 
 

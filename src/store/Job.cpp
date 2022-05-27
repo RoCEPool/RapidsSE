@@ -421,6 +421,18 @@ void Job::vFolderPath(Stz* szFolderPath)
   m_sFolderPath = szFolderPath;
 }
 
+/*----------------------------------------------------------------------------*/
+/* free given marker                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vFreeMarker(Marker* pMarker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if (m_pMarkerChain)
+    m_pMarkerChain->vPush(pMarker);
+  else
+    delete pMarker;
+}
 
 /*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */

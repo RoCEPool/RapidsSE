@@ -2734,7 +2734,7 @@ void AM::vBootError(bool bBootError) {
 /*----------------------------------------------------------------------------*/
 void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
 {
-  RASSERT(! pJob);
+  //RASSERT(! pJob);
   
   eCN eClass = pOperand->eGetClassNo();
   
@@ -2785,7 +2785,11 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       
     case CN_MARKER: {
       Marker* pMarker = _pMarker(pOperand);
-      delete pMarker;
+      if (pJob)
+        pJob->vFreeMarker(pMarker);
+      else {
+        delete pMarker;
+      }
       break;
     }
 
