@@ -486,7 +486,7 @@ eEC Api::eForkJobDeputy(JobId& rtChildJobId,
   vTrace("Locking mutex\n"_Stz);
 
   RASSERT(MS_LOCKED == rpChildJob_tbr->eMutexSide());
-  vTrace("Mutex locaked\n"_Stz);
+  vTrace("Mutex locked\n"_Stz);
   vTrace("Job has task %p\n"_Stz, rpChildJob_tbr->pTask());
 
   RASSERT(rpChildJob_tbr->pTask());
@@ -503,12 +503,16 @@ eEC Api::eForkJobDeputy(JobId& rtChildJobId,
 //      return EC_NONE;
 //    }
 
+  vTrace("Mutex wait\n"_Stz);
   rpChildJob_tbr->vMutexWait();
   rpChildJob_tbr->vMutexUnlock();
 
+  vTrace("vResponseTimerUpdate\n"_Stz);
   rpChildJob_tbr->vResponseTimerUpdate();
 
   eEC eChildError = rpParentJob_tbr->eChildError();
+  vTrace("eChildError: %s\n"_Stz, aEC[eChildError]);
+
   if (eChildError != EC_NONE) {
     rpChildJob_tbr->vJobError(eChildError);
     return eChildError;
@@ -574,6 +578,8 @@ eEC Api::eForkJobDeputy(JobId& rtChildJobId,
     //AM::pHeaps()->vSetTraceFree(false);
   }
   */
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

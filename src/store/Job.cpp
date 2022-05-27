@@ -31,6 +31,7 @@
 
 #include "SP_Pointer.hpp"
 #include "ExitOperand.hpp"
+#include "ChildExit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -1089,6 +1090,10 @@ void Job::vPipeout(Operand* pOperand)
 
   if (pParentJob && pParentJob->m_p_ResponseOp) {
     Task* pCurTask = MY::pTask();
+    if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
+      AM::vDeleteOperand(pOperand);
+      pOperand = new ChildExit;
+    }
     pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
   }
   else if (pParentJob) {

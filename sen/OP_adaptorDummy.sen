@@ -17,9 +17,9 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_EXITOPERAND ...                                   EV_D_EXITOPERAND */
+/* on EV_D_CHILDEXIT ...                                       EV_D_CHILDEXIT */
 /*----------------------------------------------------------------------------*/
-: adaptorDummy_ExitOperand \handler
+: adaptorDummy_ChildExit \handler
 
   0 EV_D_EXITOPERAND EG_ZK LogicUnit[].diaryNote
 
@@ -28,7 +28,7 @@
   Marker[].newExitingMarker
   Marker[].pipeout
 
-  "adaptorDummy_ExitOperand" .
+  "adaptorDummy_ChildExit" .
   Pipein[].delete
 
   [job] assert
@@ -57,7 +57,7 @@
 
   // spawn a job for the smt
   STD_NORMALFORK_TAG sSmt api::forkChildNormal not if
-     "Error Code %v" .printf
+    "Error Code %v" .printf
   then
 
   Pipein[].pipeout
@@ -133,11 +133,12 @@
 
   find: adaptorDummy_CrwBuffer    EV_D_CRWBUFFER     [op].handler!
   find: adaptorDummy_RowBuffer    EV_D_ROWBUFFER     [op].handler!
-  find: adaptorDummy_ExitOperand  EV_D_EXITOPERAND   [op].handler!
   find: adaptorDummy_StreamDef    EV_D_STREAMDEF     [op].handler!
 
   find: adaptorDummy_Exiting      EV_M_EXITING       [op].handler!
   find: adaptorDummy_Start        EV_M_START         [op].handler!
+
+  find: adaptorDummy_ChildExit    EV_X_CHILDEXIT     [op].handler!
 
   op__loop
 

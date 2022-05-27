@@ -28,6 +28,30 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_X_CHILDEXIT ...                                             */
+/*----------------------------------------------------------------------------*/
+: transliterate_ChildExit \handler
+
+  //"EV_X_CHILDEXIT" .verbose
+
+  nullptr [job].responseOp!
+
+  Marker[].newExitingMarker
+  Marker[].pipeout
+
+  "transliterate_ChildExit" .
+  Pipein[].delete
+
+  [job] assert
+  [task] assert
+
+  // ack the parent job task
+  [op].ackInvokingTask
+
+  false // calling op_loop exits
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_CLEANING ...                                              */
 /*----------------------------------------------------------------------------*/
 : transliterate_Cleaning \handler
@@ -64,30 +88,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on EV_D_EXITOPERAND ...                                   EV_D_EXITOPERAND */
-/*----------------------------------------------------------------------------*/
-: transliterate_ExitOperand \handler
-
-  0 EV_D_EXITOPERAND EG_ZK LogicUnit[].diaryNote
-
-  nullptr [job].responseOp!
-
-  Marker[].newExitingMarker
-  Marker[].pipeout
-
-  "transliterate_ExitOperand" .
-  Pipein[].delete
-
-  [job] assert
-  [task] assert
-
-  // ack the parent job task
-  [op].ackInvokingTask
-
-  false // calling op_loop exits
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for EV_D_PLANOPERAND ...                                           */
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
@@ -120,9 +120,6 @@
   // it might have needed to have been explained
   PlanOperand[] sqlCompiler::deletePlan
   PlanOperand[].delete
-
-  find: transliterate_Exiting       EV_M_EXITING       [op].handler!
-  find: transliterate_ExitOperand   EV_D_EXITOPERAND   [op].handler!
 
   [Op] [job].responseOp!
 
@@ -183,11 +180,14 @@
   find: transliterate_Cleaning      EV_M_CLEANING      [op].handler!
   find: transliterate_DataMarker    EV_M_DATAPULSE     [op].handler!
   find: transliterate_EosMarker     EV_M_EOS           [op].handler!
+  find: transliterate_Exiting       EV_M_EXITING       [op].handler!
   find: transliterate_PlanOperand   EV_D_PLANOPERAND   [op].handler!
   find: transliterate_StartMarker   EV_M_START         [op].handler!
 
-  find: transliterate_StreamSet    EV_D_STREAMSET      [op].handler!
-  find: transliterate_LeaveMarker  EV_M_LEAVE          [op].handler!
+  find: transliterate_StreamSet     EV_D_STREAMSET     [op].handler!
+  find: transliterate_LeaveMarker   EV_M_LEAVE         [op].handler!
+
+  find: transliterate_ChildExit     EV_X_CHILDEXIT     [op].handler!
 
   op__loop
 
