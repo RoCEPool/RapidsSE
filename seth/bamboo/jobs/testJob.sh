@@ -120,6 +120,7 @@ function copyLogs() {
     installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
     cp "${installDir}/se.log" "${outputDir}/se.${nodeName}.log" || true
+    cp "${installDir}/clusterStatus.log" "${outputDir}/clusterStatus.${nodeName}.log" || true
   done
 
   mv "${BAMBOO_RESULTS_DIR}"/log-* "${outputDir}/seth.log" &>/dev/null || true
