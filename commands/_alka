@@ -2,6 +2,22 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
+/time pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker0858 on all p :
+    | scan rapidsse public lineitem
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*
 create table datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
@@ -86,7 +102,7 @@ create index IxL_PARTKEY ON lineitem(L_PARTKEY);
 
 //load lineitem "../TPCH/SF10/lineitem.tbl";
 //create index lineitem_part ON lineitem(L_PARTKEY);
-/*
+
 create table TABLE9 (
   pcol9   INTEGER NOT NULL,
   scol9   INTEGER NOT NULL,
@@ -133,75 +149,16 @@ begin
   stage stageStart on origin :
     start
     | pulse once
-    | stageMarker0858
+    | next
   stage stageMarker0858 on all partitions :
-    scan rapidsse public lineitem
-    | filter " type BOOLEAN  $11 DATE '1998-10-01'  <=  "
-    | aggreg " groupBy  type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10
-      aggregates
-      type VARCHAR $K1 , type VARCHAR $K2 ,
-      type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  ,
-      type DECIMAL )  $6 1.  $7 -  *  sum  , type DECIMAL )  $6 1.  $7 -  *  1.  $8 +  *  sum  ,
-      type INTEGER )  $5 count  ,
-      type INTEGER )  $6 count  ,
-      type DECIMAL )  $7 sum  ,
-      type INTEGER )  $7 count  ,
-      type INTEGER )  countAll  "
-    | combined 0
-    | stageMarker0861
-  stage stageMarker0861 on all nodes :
-    aggreg " groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2
-      aggregates
-      type VARCHAR $K1 ,
-      type VARCHAR $K2 ,
-      type DECIMAL )  $3 sum  ,
-      type DECIMAL )  $4 sum  ,
-      type DECIMAL )  $5 sum  ,
-      type DECIMAL )  $6 sum  ,
-      type INTEGER )  $7 sum  ,
-      type INTEGER )  $8 sum  ,
-      type DECIMAL )  $9 sum  ,
-      type INTEGER )  $10 sum  ,
-      type INTEGER )  $11 sum  "
-    | combined 0
-    | stageMarker1032
-  stage stageMarker1032 on origin :
-    aggreg " groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2
-      aggregates
-      type VARCHAR as L_RETURNFLAG $K1 ,
-      type VARCHAR as L_LINESTATUS $K2 ,
-      type DECIMAL as sum_qty )  $3 sum  ,
-      type DECIMAL as sum_base_price )  $4 sum  ,
-      type DECIMAL as sum_disc_price )  $5 sum  ,
-      type DECIMAL as sum_charge )  $6 sum  ,
-      type INTEGER as count_order )  $11 sum  ,
-      type INTEGER )  $7 sum  ,
-      type INTEGER )  $8 sum  ,
-      type INTEGER )  $10 sum  ,
-      type DECIMAL )  $9 sum  "
-    | combined 0
-    | stageMarker0864
-  stage stageMarker0864 on origin :
-    project "
-      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
-      type DECIMAL as SUM_QTY SUM_QTY ,
-      type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE ,
-      type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE ,
-      type DECIMAL as SUM_CHARGE SUM_CHARGE ,
-      type DECIMAL as avg_qty $3 $8 casttype DECIMAL CAST  /  ,
-      type DECIMAL as avg_price $4 $9 casttype DECIMAL CAST  /  ,
-      type DECIMAL as avg_disc $11 $10 casttype DECIMAL CAST  /  ,
-      type INTEGER as count_order $7 "
-      | sort " type VARCHAR as l_returnflag $1 ASC  , type VARCHAR as l_linestatus $2 ASC  "
-      | combined 0
-      | stageLast
+    | scan rapidsse public lineitem
+    | stageLast
   stage stageLast on origin :
     output
     | sink
     | stageStart
 end ;
-*/
+
 
 EXPLAIN STAGE transliterate
 select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
@@ -223,7 +180,7 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
       and r_name = 'EUROPE' )
        order by s_acctbal desc, n_name, s_name, p_partkey;
 
-/*
+
 pipeline Q17
 begin
 
