@@ -21,6 +21,8 @@
 #include "TagConstants.h"
 #include "BucketMap.hpp"
 
+#include "AM.hpp"
+
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
 
@@ -89,8 +91,9 @@ AttachMap::AttachMap(bool bNoFree)
   m_pDicRoot        = new Dic("__dicRoot"_Stz);
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;
+  m_pMarkerMgr      = new MarkerMgr;
   m_pNumbering      = new Numbering;
-  m_pLglPtnMap         = nullptr;
+  m_pLglPtnMap      = nullptr;
   m_bReapEnabled    = true;
   m_pStarter        = new Starter;
   m_pTxSet          = new TxSet;
@@ -213,6 +216,16 @@ Jobs* AttachMap::pJobs(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
   return m_pJobs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get marker manager                                                         */
+/*----------------------------------------------------------------------------*/
+MarkerMgr* AttachMap::pMarkerMgr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  return m_pMarkerMgr;
 }
 
 /*----------------------------------------------------------------------------*/

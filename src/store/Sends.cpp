@@ -313,6 +313,24 @@ bool Sends::bStreamDefRhtDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* triggered done ?                                                           */
+/*----------------------------------------------------------------------------*/
+bool Sends::bTriggeredDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  if (m_iTriggeredMarkers > m_iSends)
+    vTrace("Warning: ConsumeOp received EV_M_TRIGGERED %lld; expected %lld\n"_Stz,
+           m_iTriggeredMarkers, m_iSends);
+
+  if (m_iTriggeredMarkers == m_iSends) {
+    return true;
+  }
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inc cancelling                                                             */
 /*----------------------------------------------------------------------------*/
 void Sends::vIncCancelling(void)
@@ -440,6 +458,16 @@ void Sends::vIncStreamDefRht(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
 
   m_iStreamDefRhts++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc triggered                                                              */
+/*----------------------------------------------------------------------------*/
+void Sends::vIncTriggered(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SENDS,_FOOTER_);
+
+  m_iTriggeredMarkers++;
 }
 
 /*----------------------------------------------------------------------------*/

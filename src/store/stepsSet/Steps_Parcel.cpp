@@ -330,7 +330,7 @@ void Step::vParcelPipeOut(void)
 
       // delete the original operand (to be optimised)
       if (CN_ROWBUFFER != eOperandClass)
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,pOuterJobOfTask());
       
       delete pParcel;
 
@@ -411,7 +411,7 @@ void Step::vParcelSendOut(void)
     pLogicUnit->m_xpStats->m_nObjectsSent += pParcel->nItems();
   }
 
-  pParcel->vDistribute(pCurrOp);
+  pParcel->vDistribute(pCurrOp,pOuterJobOfTask());
 
   EXIT();
 }
@@ -423,7 +423,7 @@ void Step::vParcelDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpParcel);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpParcel,pOuterJobOfTask());
 
   m_pLogicUnit->m_xpParcel = nullptr;
 

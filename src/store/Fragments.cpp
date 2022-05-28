@@ -42,7 +42,7 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n"
       "\n  #include \"tcclib.h\" // include libc header for TCC"
       "\n"
-      "\n  #include \"../src/base/BaseTypes_tcc.h\""
+      "\n  #include \"../src/primitives/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
       "";
 

@@ -122,7 +122,7 @@ b1 ColumnWildcard::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT ColumnWildcard::eType(QueryNode* pNode, PlanNode* pRootNode)
+TypeId ColumnWildcard::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

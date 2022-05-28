@@ -18,6 +18,7 @@ assert::stack_0
 
 "a" .verbose
 
+  "OP_adaptorDummy.sen"         include
   "OP_adaptorWL.sen"            include
   "OP_addNode.sen"              include
   "OP_adjustPartitions.sen"     include
@@ -258,6 +259,7 @@ assert::stack_0
 "t" .verbose
 
   "OP_tableSizes.sen"           include
+  "OP_testResponse.sen"         include
   "OP_throw.sen"                include
   "OP_toKeyHshRow.sen"          include
   "OP_toLglPtnCrw.sen"          include
@@ -266,7 +268,7 @@ assert::stack_0
   "OP_toCsv.sen"                include
   "OP_toDemon.sen"              include
   "OP_toDfload.sen"             include
-  "OP_pathToDfload2.sen"            include
+  "OP_pathToDfload2.sen"        include
   "OP_top.sen"                  include
   "OP_toStatDemon.sen"          include
   "OP_totalCount.sen"           include

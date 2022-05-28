@@ -14,6 +14,7 @@ enum eEV // events
   /*    */ EV_D_CRWBUFFER,
   /*    */ EV_D_CSVBUFFER,
   /*    */ EV_D_ENTBUFFER,
+  /*    */ EV_D_EXITOPERAND,
   /*    */ EV_D_GRID,
   /*    */ EV_D_INDEX,
   /*    */ EV_D_INDEXDEF,
@@ -84,6 +85,8 @@ enum eEV // events
   /*    */ EV_M_STARTROWRHT,
   /*    */ EV_M_STREAMDEFRHT,
   /*    */ EV_M_TRIGGER,
+  /*    */ EV_M_TRIGGERED,
+
   /*    */ EV_ENUMS
 };
 
@@ -97,6 +100,7 @@ static Stz* aEV[]
   /*    */ "EV_D_CRWBUFFER"_Stz,
   /*    */ "EV_D_CSVBUFFER"_Stz,
   /*    */ "EV_D_ENTBUFFER"_Stz,
+  /*    */ "EV_D_EXITOPERAND"_Stz,
   /*    */ "EV_D_GRID"_Stz,
   /*    */ "EV_D_INDEX"_Stz,
   /*    */ "EV_D_INDEXDEF"_Stz,
@@ -167,6 +171,7 @@ static Stz* aEV[]
   /*    */ "EV_M_STARTROWRHT"_Stz,
   /*    */ "EV_M_STREAMDEFRHT"_Stz,
   /*    */ "EV_M_TRIGGER"_Stz,
+  /*    */ "EV_M_TRIGGERED"_Stz,
   /*    */ "ENUMS"_Stz
 };
 

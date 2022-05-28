@@ -106,7 +106,7 @@ void DataBuffer::vRepairList(Object* pObject)
 
   while (pDataBuffer) {
     pNextDataBuffer = _pDataBuffer(pDataBuffer->pNextLinkedBuffer());
-    AM::vDeleteOperand(pDataBuffer);
+    AM::vDeleteOperand(pDataBuffer,nullptr);
     pDataBuffer = pNextDataBuffer;
   }
 }

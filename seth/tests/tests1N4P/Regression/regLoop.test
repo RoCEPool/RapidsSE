@@ -22,14 +22,22 @@ INCLUDE 'regrLoadData.test';
 
 //------------------------------------------------------------------------------
 //INCLUDE 'AndOrNot.test';
+
+//LOG 'inNotIn.test ...';
 //INCLUDE 'InNotIn.test';
+
 //INCLUDE 'PartKey1way.test';
 //INCLUDE 'PartKey2way.test';
 //INCLUDE 'Stage9.test';
 //INCLUDE 'Using1way.test';
 //INCLUDE 'aggs-avg.test';
+
+//LOG 'aggs-count.test ...';
 //INCLUDE 'aggs-count.test';
+
+//LOG 'aggs-max.test ...';
 //INCLUDE 'aggs-max.test';
+
 //INCLUDE 'aggs-min.test';
 //INCLUDE 'aggs-sum.test';
 //INCLUDE 'alias.test';
@@ -59,12 +67,21 @@ INCLUDE 'regrLoadData.test';
 //INCLUDE 'functions-substr.test';
 //INCLUDE 'functions-trim.test';
 //INCLUDE 'functions-upper.test';
-INCLUDE 'having.test';
+
+//LOG 'having.test ...';
+//INCLUDE 'having.test';
+
 //INCLUDE 'intersect.test';
 //INCLUDE 'intervals.test';
-INCLUDE 'isnull.test';
+
+//LOG 'isnull.test ...';
+//INCLUDE 'isnull.test';
+
 //INCLUDE 'joinTests.test';
-INCLUDE 'like.test';
+
+//LOG 'like.test ...';
+//INCLUDE 'like.test';
+
 //INCLUDE 'subqueries-select.test';
 //INCLUDE 'subqueries-where-single.test';
 

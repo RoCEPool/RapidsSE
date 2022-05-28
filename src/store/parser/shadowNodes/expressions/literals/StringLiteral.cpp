@@ -90,14 +90,14 @@ b1 StringLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT StringLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId StringLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return CT_VARCHAR;
+  return TypeId::xIdOf(CT_VARCHAR);
 }
 
 /*============================================================================*/

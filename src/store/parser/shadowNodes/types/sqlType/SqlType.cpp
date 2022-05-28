@@ -7,6 +7,9 @@
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
+#include "IntegerObject.hpp"
+#include "TypeSystem.hpp"
+#include "GraphNav.hpp"
 
 #include "SqlBoolean.hpp"
 #include "SqlInteger.hpp"
@@ -23,10 +26,41 @@
 
 using namespace Parser;
 
+/*
+ * Types are hard. On one hand we want the type system to be fully dynamic, but
+ * we also want to optimise for the built-in types. And these built-in types
+ * are...quirky.
+ *
+ * When we ask for the type of a column we expect something like INTEGER, DATE,
+ * etc. But it can also be things like VARCHAR(10) or DECIMAL(5,2). So the
+ * length/precision/scale is also a property of the type.
+ *
+ * But at the same time if there were no built-in types we wouldn't expect to
+ * create a new type of DECIMAL(5,2) which is a different type from DECIMAL(9)6,2).
+ * So how do we think of types when some of them can have different properties?
+ *
+ * The TypeSystem class tries to represent the raw type (e.g. DECIMAL). It does
+ * not try to encapsulate the properties of that type (e.g. DECIMAL(5,2)).
+ *
+ * This SqlType class tries to represent the types with their properties. This is
+ * important because we need to do things like describe the type with their properties
+ * and this is not as straight forward as just printing the raw type and then its
+ * properties in parentheses. e.g. consider the following examples:
+ *   VARCHAR(10)
+ *   DECIMAL(5,2)
+ *   INTERVAL HOUR (2) TO SECOND (6)
+ *
+ * Hence we still represent types in the graph with properties. We try to minimise
+ * the use of eCT and prefer typeId where possible, however eCT is useful for
+ * optimising the built-in types.
+ */
+
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 static Stz* C_SQLTYPE_DEFN = "/__root__/definitions/types/sqlType"_Stz;
+
+static Stz* C_TYPEID_PROP  = "typeId"_Stz;
 
 
 /*----------------------------------------------------------------------------*/
@@ -36,53 +70,87 @@ static Stz* C_SQLTYPE_DEFN = "/__root__/definitions/types/sqlType"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Create a type from enum with default properties                            */
 /*----------------------------------------------------------------------------*/
-QueryNode* SqlType::pCreate(eCT eType)
+QueryNode* SqlType::pCreate(TypeId xTypeId)
 {
   _static_
+  ASSERT(xTypeId.bIsValid());
+
+  eCT eType = xTypeId.eCTVal();
+  QueryNode* pNode;
 
   // Manual Polymorphism
   switch (eType) {
     case CT_BOOLEAN:
-      return _pQueryNode(SqlBoolean::pCreate());
+      pNode = _pQueryNode(SqlBoolean::pCreate());
+      break;
 
     case CT_CHAR:
-      return _pQueryNode(SqlChar::pCreate());
+      pNode = _pQueryNode(SqlChar::pCreate());
+      break;
 
     case CT_DATE:
-      return _pQueryNode(SqlDate::pCreate());
+      pNode = _pQueryNode(SqlDate::pCreate());
+      break;
 
     case CT_DECIMAL:
-      return _pQueryNode(SqlDecimal::pCreate());
+      pNode = _pQueryNode(SqlDecimal::pCreate());
+      break;
 
     case CT_FLOAT:
-      return _pQueryNode(SqlFloat::pCreate());
+      pNode = _pQueryNode(SqlFloat::pCreate());
+      break;
 
     case CT_INTEGER:
-      return _pQueryNode(SqlInteger::pCreate());
+      pNode = _pQueryNode(SqlInteger::pCreate());
+      break;
 
     case CT_INTERVAL_DT:
-      return _pQueryNode(SqlIntervalDT::pCreate());
+      pNode = _pQueryNode(SqlIntervalDT::pCreate());
+      break;
 
     case CT_INTERVAL_YM:
-      return _pQueryNode(SqlIntervalYM::pCreate());
+      pNode = _pQueryNode(SqlIntervalYM::pCreate());
+      break;
 
     case CT_TIME:
-      return _pQueryNode(SqlTime::pCreate());
+      pNode = _pQueryNode(SqlTime::pCreate());
+      break;
 
     case CT_TIMESTAMP:
-      return _pQueryNode(SqlTimestamp::pCreate());
+      pNode = _pQueryNode(SqlTimestamp::pCreate());
+      break;
 
     case CT_VARCHAR:
-      return _pQueryNode(SqlVarchar::pCreate());
+      pNode = _pQueryNode(SqlVarchar::pCreate());
+      break;
 
     case CT_UNKNOWN:
-      return _pQueryNode(SqlUnknown::pCreate());
+      pNode = _pQueryNode(SqlUnknown::pCreate());
+      break;
 
     case CT_NONE:
     case CT_ENUMS:
     default:
       NEVER_REACH
   }
+
+  return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Create common properties in the given node                                 */
+/*----------------------------------------------------------------------------*/
+void SqlType::vCreateCommon(QueryNode* pNode, TypeId xTypeId)
+{
+  _static_
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(xTypeId.bIsValid());
+
+  // Add in the typeId property
+  QueryNode* pTypeIdNode = IntegerObject::pCreate(xTypeId.iIdVal());
+  pTypeIdNode->vSetName(C_TYPEID_PROP);
+  pNode->vAppendProperty(pTypeIdNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,46 +202,24 @@ Stz* SqlType::szTypeName(PlanNode *pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  i8 iType = pNode->iValue();
-  if (iType > CT_NONE && iType < CT_ENUMS) {
-    return aCT[iType];
-  }
+  TypeId xTypeId = SqlType::xTypeId(pNode);
+  ASSERT(xTypeId.bIsValid());
 
-  eCT eType = SqlType::eType(pNode);
-  ASSERT(eType > CT_NONE);
-  ASSERT(eType < CT_ENUMS);
-  return aCT[eType];
+  return xTypeId.szTypeName();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns the enum of a SQL data type given a node                           */
+/* Returns the typeId of a SQL data type given a node                         */
 /*----------------------------------------------------------------------------*/
-eCT SqlType::eType(PlanNode* pNode)
+TypeId SqlType::xTypeId(PlanNode* pNode)
 {
   ASSERT(bIsOfType(pNode));
 
-  i8 iType = pNode->iValue();
-  if (iType > CT_NONE && iType < CT_ENUMS) {
-    return static_cast<eCT>(iType);
-  }
+  QueryNode* pTypeIdNode = _pQueryNode(GraphNav::pFindProperty(C_TYPEID_PROP, pNode));
+  ASSERT(IntegerObject::bIsOfType(pTypeIdNode));
 
-  // Manual Polymorphism
-  if      (   SqlBoolean::bIsOfType(pNode))   { return CT_BOOLEAN;     }
-  else if (   SqlInteger::bIsOfType(pNode))   { return CT_INTEGER;     }
-  else if (     SqlFloat::bIsOfType(pNode))   { return CT_FLOAT;       }
-  else if (   SqlDecimal::bIsOfType(pNode))   { return CT_DECIMAL;     }
-  else if (   SqlVarchar::bIsOfType(pNode))   { return CT_VARCHAR;     }
-  else if (      SqlChar::bIsOfType(pNode))   { return CT_CHAR;        }
-  else if (      SqlDate::bIsOfType(pNode))   { return CT_DATE;        }
-  else if (      SqlTime::bIsOfType(pNode))   { return CT_TIME;        }
-  else if ( SqlTimestamp::bIsOfType(pNode))   { return CT_TIMESTAMP;   }
-  else if (SqlIntervalDT::bIsOfType(pNode))   { return CT_INTERVAL_DT; }
-  else if (SqlIntervalYM::bIsOfType(pNode))   { return CT_INTERVAL_YM; }
-  else if (   SqlUnknown::bIsOfType(pNode))   { return CT_UNKNOWN;     }
-  else {
-    // Need to add in manual polymorphism here
-    NEVER_REACH
-  }
+  TypeId xTypeId{pTypeIdNode->iValue()};
+  return xTypeId;
 }
 
 

@@ -36,6 +36,8 @@
 #include "CaseExpr.hpp"
 #include "WhenExpr.hpp"
 
+#include "TypeSystem.hpp"
+
 
 using namespace Parser;
 
@@ -164,13 +166,13 @@ void ExprValidator::vExprTypeCoercion(PlanNode *pRootNode, QueryNode* pStartNode
     // Expression coercion might not succeed. In that case we will pick up
     // the error in vValidateExprResultType() and throw an error there.
 
-    if (Expr::eType(pExprNode, pRootNode) == CT_NONE) {
+    if (Expr::xTypeId(pExprNode, pRootNode).eCTVal() == CT_NONE) {
       // We might need type coercion here
       Expr::vCoerceSubExprs(pExprNode, pRootNode);
 
       // If we still haven't been able to correct the problem then abort any
       // further coercions. This error will be picked up in vValidateExprResultType().
-      if (Expr::eType(pExprNode, pRootNode) == CT_NONE) {
+      if (Expr::xTypeId(pExprNode, pRootNode).eCTVal() == CT_NONE) {
         return GraphNav::WALK_ABORT;
       }
     }
@@ -243,7 +245,7 @@ void ExprValidator::vValidateCasePredicatesAreBoolean(PlanNode *pRootNode, Query
     QueryNode* pPredicate = WhenExpr::pPredicateExpr(pWhenExpr);
     ASSERT(Expr::bIsOfType(pPredicate));
 
-    eCT eType = Expr::eType(pPredicate, pRootNode);
+    eCT eType = Expr::xTypeId(pPredicate, pRootNode).eCTVal();
 
     if (eType == CT_BOOLEAN) {
       // All good, keep looking for more filterOps
@@ -291,7 +293,7 @@ void ExprValidator::vValidateOperatorPredicatesAreBoolean(PlanNode *pRootNode, Q
     QueryNode* pFilterNode = _pQueryNode(pNode);
     QueryNode* pExprNode = FilterOp::pFilterExpr(pFilterNode);
 
-    eCT eType = Expr::eType(pExprNode, pRootNode);
+    eCT eType = Expr::xTypeId(pExprNode, pRootNode).eCTVal();
 
     if (eType == CT_BOOLEAN) {
       // All good, keep looking for more filterOps
@@ -338,7 +340,7 @@ void ExprValidator::vValidateJoinPredicatesAreBoolean(PlanNode *pRootNode, Query
     QueryNode* pJoinNode = _pQueryNode(pNode);
     QueryNode* pExprNode = JoinOp::pJoinPredicate(pJoinNode);
 
-    eCT eType = Expr::eType(pExprNode, pRootNode);
+    eCT eType = Expr::xTypeId(pExprNode, pRootNode).eCTVal();
 
     if (eType == CT_BOOLEAN) {
       // All good, keep looking for more JoinOps

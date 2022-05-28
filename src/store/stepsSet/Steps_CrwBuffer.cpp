@@ -133,7 +133,7 @@ void Step::vCrwBufferDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpCrwBuffer);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpCrwBuffer,nullptr);
 
   m_pLogicUnit->m_xpCrwBuffer = nullptr;
 

@@ -91,14 +91,14 @@ b1 BooleanLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT BooleanLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId BooleanLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return CT_BOOLEAN;
+  return TypeId::xIdOf(CT_BOOLEAN);
 }
 
 /*============================================================================*/

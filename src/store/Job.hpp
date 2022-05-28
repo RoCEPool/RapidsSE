@@ -12,6 +12,7 @@
 #include "JobId.hpp"
 #include "Output.hpp"
 #include "Statement.hpp"
+#include "MarkerChain.hpp"
 
 namespace STORE
 {
@@ -46,14 +47,15 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 01 */ eJL     m_eJobList;       // current list : JL_ORIGINATING, ...
     /* 02 */ JobMetrics* m_pJobMetrics;// job metrics chain
     /* 03 */ Mutex*  m_pMutex;         // mutex
-    /* 04 */ Output* m_pOutput_job;    // output processor
+    /* 04 */ Output* m_pOutput;        // output processor
     /* 05 */ b8      m_bReapable;      // can job be reaped?
     /* 06 */ Op*     m_p_ResponseOp;   // operator to where responses go
     /* 07 */ Timer   m_oResponseTimer; // timer (on origin only)
     /* 08 */ StmtList* m_pStmtList;    // list of cascade statements
     /* 09 */ Task*   m_pTask;          // task executing this job
     /* 10 */ b8      m_bWasReceived;   // was job received over a socket?
-  
+    /* 11 */ MarkerChain* m_pMarkerChain; // chain of free markers
+
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
     i8  m_iTscParticipant;
@@ -92,6 +94,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vActiveOpsInc(void);
 
     void vCascadeReset(void);
+    void vCleanupOutput(void);
     Stz* szCmd(void);
     void vCmd(Stz* szCmd);
 
@@ -99,6 +102,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vDistIdGenerate(void);
     i8   iDistNodeId(void);
     void vDotPrint(Stz* szText);
+    void vDrainOutput(void);
     void vDropLock(void);
 
     Stz* szEntryPoint(void);
@@ -106,6 +110,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
   
     Stz* szFolderPath(void);
     void vFolderPath(Stz* szFolderPath);
+    void vFreeMarker(Marker* pMarker);
 
     void vGrabLock(void);
   
@@ -132,7 +137,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eJP  eJobPhase(void);
     void vJobPhase(eJP eJobPhase);
     TagSet* pJobTags(void);
-    void vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint);
+    void vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint, Stz* szNote);
 
     JobId tLastJobId(void);
     void  vLastJobId(JobId tLastJobId);
@@ -144,6 +149,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vMutexSignal(void);
     void vMutexUnlock(void);
     void vMutexWait(void);
+
+    Marker* pNewMarker(void);
+    void vNewMarkerChain(void);
 
     Output* pOutput(void);
     void vOutput(Output* pOutput);
@@ -163,14 +171,18 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vParentId(JobId tParentId);
     Job* pParentJob(void);
     Pipeline* pPipeline(void);
+    void vPipeout(Operand* pOperand);
+    void vPipeoutExit(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
     void vPostRecv(void);
+    void vProcessOutput(void);
     Timer* pProgressTimer(void);
   
     bool bReapable(void);
     void vReapable(bool bReapable);
     void vReapableJob(void);
+    void vResetOutput(void);
     void vResetTaskForJob(void);
     Op*  p_ResponseOp(void);
     void vResponseOp(Op* p_ResponseOp);

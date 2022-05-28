@@ -178,6 +178,8 @@
 
   "end startSystem::startSystem" .verbose
 
+  Path[].discardAll
+
   [job].addRetired
   [task].grabLock
     [job] [exitDemon]:queueJob

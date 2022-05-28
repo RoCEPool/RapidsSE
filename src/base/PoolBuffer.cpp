@@ -57,6 +57,8 @@ PoolBuffer::PoolBuffer(eCN eClassNo)
   ASSERT(m_iBufferNo >= gpBufferPool->iBufferFirst());
   ASSERT(m_iBufferNo <= gpBufferPool->iBufferLast());
   
+  m__spare = C_UNKNOWN;
+
   _checkInitialised_(CN_FREEPOOLBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
@@ -93,8 +95,6 @@ void PoolBuffer::vBufferNo(i8 iBufferNo)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   m_iBufferNo = iBufferNo;
-  
-  m_nUnits = 1;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* _rspEx - response API example                                              */
+/*============================================================================*/
+
+_nation;
+load nation "../DATA/TPCH/nation.tbl";
+
+pipeline rsp
+begin
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageA on origin :
+    AdaptorDummy "select * from nation;"
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+ end ;

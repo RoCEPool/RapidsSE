@@ -102,6 +102,7 @@ LogicUnit::LogicUnit(void)
 ,         m_xpDynamo(this,RF_REPAIR_DELETE,        Dynamo::vRepair,         LR_DYNAMO)
 
 ,    m_xpErrorMarker(this,RF_REPAIR_DELETE,       Operand::vRepair,    LR_ERRORMARKER)
+,    m_xpExitOperand(this,RF_REPAIR_DELETE,       Operand::vRepair,    LR_EXITOPERAND)
 
 ,          m_xpFile0(this,RF_REPAIR_DELETE,          File::vRepair,          LR_FILE0)
 ,          m_xpFile1(this,RF_REPAIR_DELETE,          File::vRepair,          LR_FILE1)
@@ -298,6 +299,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpDir1.bIsNull());
 
   RASSERT(m_xpErrorMarker.bIsNull());
+  RASSERT(m_xpExitOperand.bIsNull());
 
   RASSERT(m_xpFile0.bIsNull());
   RASSERT(m_xpFile1.bIsNull());

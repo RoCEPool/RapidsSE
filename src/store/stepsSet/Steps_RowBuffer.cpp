@@ -99,7 +99,7 @@ void Step::vRowBufferDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpRowBuffer);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpRowBuffer,nullptr);
 
   m_pLogicUnit->m_xpRowBuffer = nullptr;
 

@@ -92,6 +92,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_ErrorMarker();
   Step::vAddSteps_EvMgr();
   Step::vAddSteps_Executable();
+  Step::vAddSteps_ExitOperand();
 
   Step::vAddSteps_File();
   Step::vAddSteps_Flush();

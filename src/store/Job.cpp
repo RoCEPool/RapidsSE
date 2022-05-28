@@ -30,6 +30,7 @@
 #include "SP_Timer.hpp"
 
 #include "SP_Pointer.hpp"
+#include "ExitOperand.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -56,32 +57,26 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_tOriginId = tOriginId;
 
   m_sJobNm   = szJobNm;
-
-  m_bReapable = false;
+  //m_sEntryPoint
+  //m_oJobTags
+  //m_sFolderPath
   
-  // -- a -------------------
+  m_eJobPhase  = JP_NONE;
+  m_eError_job = EC_NONE;
+
+  /* 00 */ m_noActiveOps.vResetAtomic();
+  /* 01 */ m_eJobList     = JL_NONE;
+  /* 02 */ m_pJobMetrics  = nullptr;
+  /* 03 */ m_pMutex       = nullptr;
+  /* 04 */ m_pOutput      = nullptr;
+  /* 05 */ m_bReapable    = false;
+  /* 06 */ m_p_ResponseOp = nullptr;
+  /* 07 */ m_oResponseTimer.vStart();
+  /* 08 */ m_pStmtList    = nullptr;
+  /* 09 */ m_pTask        = nullptr;
+  /* 10 */ m_bWasReceived = false;
+  /* 11 */ m_pMarkerChain = nullptr;
   
-
-  m_p_ResponseOp = nullptr;
-  m_oResponseTimer.vStart();
-
-  // -- b -------------------
-  m_bWasReceived     = false;
-  
-  // -- c -------------------
-  m_eJobList  = JL_NONE;
-  m_eJobPhase = JP_NONE;
-  m_eError_job  = EC_NONE;
-  m_pOutput_job = nullptr;
-
-  // m_oJobTags
-  // m_xResult
-
-  // -- e -------------------
-
-  // -- g -------------------
-  m_pTask     = nullptr;
-
   m_iTscParticipant = 0;
   
   m_iTscBeginning   = 0;
@@ -94,13 +89,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId)
   m_iTscCanceled    = 0;
 
   // -- -- -- -- -- --
-      
-  m_pJobMetrics  = nullptr;
-  
-  m_pMutex     = nullptr;
-
-  m_pStmtList = nullptr;
-  
+        
   _checkInitialised_(CN_JOB);
   
   AM::JOBS::vJobsActiveInc();
@@ -162,11 +151,14 @@ Job::~Job(void) noexcept(false)
 
   if (m_pMutex)
     vMutexDestroy();
-  if (m_pOutput_job)
+  if (m_pOutput)
     vOutputDestroy();
   
   if (m_pStmtList)
     vStmtListDestroy();
+  
+  if (m_pMarkerChain)
+    delete m_pMarkerChain;
 }
 
 
@@ -273,7 +265,9 @@ void Job::vCascadeReset(void)
   m_pTask->vState(TS_NONE);
   m_pTask->vSetInxPtr("job::entryPoint"_Stz);
 
-  m_pOutput_job->vDrainBufferQueue();
+  //m_pOutput->vDrainBufferQueue();
+
+  vDrainOutput();
 
   vDebugPoint();
 }
@@ -330,6 +324,26 @@ i8 Job::iDistNodeId(void)
   i8 iDistNodeId = m_tDistId.uNodeId();
 
   return iDistNodeId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drain the output queue                                                     */
+/*----------------------------------------------------------------------------*/
+void Job::vDrainOutput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  RASSERT( ! m_p_ResponseOp );
+
+  Job* pParentJob = this->pParentJob();
+
+  if (pParentJob) {
+    pParentJob->vDrainOutput();
+  }
+  else {
+    RASSERT(m_pOutput);
+    m_pOutput->vDrainBufferQueue();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -407,6 +421,18 @@ void Job::vFolderPath(Stz* szFolderPath)
   m_sFolderPath = szFolderPath;
 }
 
+/*----------------------------------------------------------------------------*/
+/* free given marker                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vFreeMarker(Marker* pMarker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+//  if (m_pMarkerChain)
+//    m_pMarkerChain->vPush(pMarker);
+//  else
+    delete pMarker;
+}
 
 /*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
@@ -658,51 +684,57 @@ TagSet* Job::pJobTags(void)
 /*----------------------------------------------------------------------------*/
 /* trace job                                                                  */
 /*----------------------------------------------------------------------------*/
-void Job::vJobTrace(Stz* szAtCmd, Stz* szAtRoutine, Stz* szAtPoint)
+void Job::vJobTrace(Stz* szAtCmd, Stz* szAtRoutine,
+                    Stz* szAtPoint, Stz* szNote)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  vTrace("vJobTrace - %10s : %-14s @ %-20s - "_Stz,
-         szAtCmd,
-         szAtRoutine,
-         szAtPoint
-         );
+  s4K sLine;
+  
+  sLine.vSprint("vJobTrace - %10s : %-14s @ %-8s # %-24s - "_Stz,
+                szAtCmd,
+                szAtRoutine,
+                szAtPoint,
+                szNote
+                );
   
   if (m_tJobId.bIsUnknown())
-    vTrace("%-11s"_Stz,"J:unknown "_Stz);
+    sLine.vCatSprint("%-11s"_Stz,"J:unknown "_Stz);
   else
-    vTrace("J%04lld.%04lld "_Stz,
-           m_tJobId.uNodeId(),
-           m_tJobId.uJobNo()
-           );
+    sLine.vCatSprint("J%04lld.%04lld "_Stz,
+                     m_tJobId.uNodeId(),
+                     m_tJobId.uJobNo()
+                    );
 
   if (m_tParentId.bIsUnknown())
-    vTrace("%-11s"_Stz,"P:unknown "_Stz);
+    sLine.vCatSprint("%-11s"_Stz,"P:unknown "_Stz);
   else
-    vTrace("P%04lld.%04lld "_Stz,
-           m_tParentId.uNodeId(),
-           m_tParentId.uJobNo()
-           );
+    sLine.vCatSprint("P%04lld.%04lld "_Stz,
+                     m_tParentId.uNodeId(),
+                     m_tParentId.uJobNo()
+                    );
 
-  vTrace(":: "_Stz);
+  sLine.vCatSprint(":: "_Stz);
   
   if (m_tOriginId.bIsUnknown())
-    vTrace("%-11s"_Stz,"O:unknown "_Stz);
+    sLine.vCatSprint("%-11s"_Stz,"O:unknown "_Stz);
   else
-    vTrace("O%04lld.%04lld "_Stz,
-           m_tOriginId.uNodeId(),
-           m_tOriginId.uJobNo()
-           );
+    sLine.vCatSprint("O%04lld.%04lld "_Stz,
+                     m_tOriginId.uNodeId(),
+                     m_tOriginId.uJobNo()
+                    );
 
   if (m_tDistId.bIsUnknown())
-    vTrace("%-11s"_Stz,"D:unknown "_Stz);
+    sLine.vCatSprint("%-11s"_Stz,"D:unknown "_Stz);
   else
-    vTrace("D%04lld.%04lld "_Stz,
-           m_tDistId.uNodeId(),
-           m_tDistId.uJobNo()
-           );
+    sLine.vCatSprint("D%04lld.%04lld "_Stz,
+                     m_tDistId.uNodeId(),
+                     m_tDistId.uJobNo()
+                    );
 
-  vTrace("\n"_Stz);
+  sLine.vCatSprint("\n"_Stz);
+  
+  vTrace("%s"_Stz,sLine.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -813,13 +845,38 @@ void Job::vMutexWait(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new a marker from the chain                                                */
+/*----------------------------------------------------------------------------*/
+Marker* Job::pNewMarker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+      
+  Marker* pMarker = m_pMarkerChain->pPop();
+  
+  if (! pMarker)
+    pMarker = new (this)Marker(OM_NONE);
+  
+  return pMarker;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new the marker chain                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vNewMarkerChain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+      
+  m_pMarkerChain = new MarkerChain;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get output processor                                                       */
 /*----------------------------------------------------------------------------*/
 Output* Job::pOutput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_pOutput_job;
+  return m_pOutput;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -829,9 +886,9 @@ void Job::vOutput(Output* pOutput)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(! m_pOutput_job);
+  RASSERT(! m_pOutput);
   
-  m_pOutput_job = pOutput;
+  m_pOutput = pOutput;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -841,7 +898,7 @@ void Job::vOutputBeginProc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pOutput_job->vBeginProcOneCmd();
+  m_pOutput->vBeginProcOneCmd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -851,9 +908,9 @@ void Job::vOutputCreate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(! m_pOutput_job);
+  RASSERT(! m_pOutput);
   
-  m_pOutput_job = new Output(this);
+  m_pOutput = new Output;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -863,8 +920,8 @@ void Job::vOutputDestroy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  delete m_pOutput_job;
-  m_pOutput_job = nullptr;
+  delete m_pOutput;
+  m_pOutput = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -882,7 +939,7 @@ void Job::vOutputEndProc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pOutput_job->vEndProcOneCmd();
+  m_pOutput->vEndProcOneCmd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -891,8 +948,7 @@ void Job::vOutputEndProc(void)
 Output* Job::pOutputFind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
- 
-  
+
   Output* pOutput = this->pOutput();
   if (! pOutput) {
     Job* pOriginJob = this->pOriginJob();
@@ -1027,6 +1083,64 @@ Pipeline* Job::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pipeout the operand                                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vPipeout(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Job* pParentJob = this->pParentJob();
+
+  if (m_p_ResponseOp) {
+    Task* pCurTask = MY::pTask();
+    m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
+
+    if (pOperand->eGetClassNo() == CN_EXITOPERAND) {
+      vPipeoutExit();
+    }
+
+  }
+  else if (pParentJob) {
+    pParentJob->vPipeout(pOperand);
+  }
+  else if (m_pOutput) {
+    m_pOutput->vPipeToThis(pOperand);
+  }
+  else {
+    vTrace("Job sending response (operand): %s\n"_Stz, aCN[pOperand->eGetClassNo()]);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* pipeout exit operand to output                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vPipeoutExit(void) {
+
+  _precondition_(_ADDRESS_, _MAGIC_);
+
+  Job* pParentJob = this->pParentJob();
+
+  // get output of this job
+  Output *pOutput = m_pOutput;
+
+  // check if job has output
+  if (m_pOutput) {
+    // pipe out exit to output
+    Operand *pExitOperand = new ExitOperand;
+    pOutput->vPipeToThis(pExitOperand);
+  }
+  else {
+    // job should have a parent
+    RASSERT(pParentJob);
+
+    // pipe out exit to parent output
+    pParentJob->vPipeoutExit();
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
 void Job::vPostRecv(void)
@@ -1040,24 +1154,43 @@ void Job::vPostRecv(void)
   /* 01 */ m_eJobList     = JL_NONE;
   /* 02 */ m_pJobMetrics  = nullptr;
   /* 03 */ m_pMutex       = nullptr;
-  /* 04 */ m_pOutput_job  = nullptr;
+  /* 04 */ m_pOutput      = nullptr;
   /* 05 */ RASSERT(! m_bReapable);
   /* 06 */ m_p_ResponseOp = nullptr;
   /* 07 */ m_oResponseTimer.vReset();
   /* 08 */ m_pStmtList    = nullptr;
   /* 09 */ m_pTask        = nullptr;
   /* 10 */ m_bWasReceived = true;
-    
+  /* 11 */ m_pMarkerChain = nullptr;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_tJobId.vNextJobId();
   AM::JLIST::vInsertJob(this);
 
   if (AM::SYSARGS::bDistJob())
-    vJobTrace("Job"_Stz, "vPostRecv"_Stz, "#rcv"_Stz);
+    vJobTrace("Job"_Stz, "vPostRecv"_Stz, "#rcv"_Stz,""_Stz);
   
   if (bHasTag(C_SEE_JOB))
     vPrintJobContents();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pipeout the operand                                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vProcessOutput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  Job* pParentJob = this->pParentJob();
+
+  if (pParentJob) {
+    pParentJob->vProcessOutput();
+  }
+  else {
+    RASSERT(m_pOutput);
+    m_pOutput->vProcessBufferQueue();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1216,21 +1349,68 @@ void Job::vReapableJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  if (bIsPipeline() && ! pOutput()->m_bExitMarker)
-    pOutput()->vProcessBufferQueue();
+  if ( ! bIsInError() ) {
 
-  pOutput()->m_pOutputQueue->vReset();
-  pOutput()->vEndProcOneCmd();
-  
-  if (pOutput()->m_pStreamDef_result) {
-    StreamDef* pStreamDef = pOutput()->m_pStreamDef_result;
-    pOutput()->m_pStreamDef_result = nullptr;
-    delete pStreamDef;
+    if (bIsPipeline()) {
+      vCleanupOutput();
+    }
+
   }
   
-  pOutput()->m_bExitMarker      = false;
-  
   vReapable(true);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset output                                                               */
+/*----------------------------------------------------------------------------*/
+void Job::vResetOutput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  //RASSERT( ! m_p_ResponseOp );
+
+  Job* pParentJob = this->pParentJob();
+
+  if (pParentJob) {
+    pParentJob->vResetOutput();
+  }
+  else {
+    RASSERT(m_pOutput);
+    m_pOutput->m_pOutputQueue->vReset();
+    m_pOutput->vEndProcOneCmd();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* cleanup output                                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vCleanupOutput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  //RASSERT( ! m_p_ResponseOp );
+
+  Job* pParentJob = this->pParentJob();
+
+  if (pParentJob) {
+    pParentJob->vCleanupOutput();
+  }
+  else {
+    RASSERT(m_pOutput);
+    if (! pOutput()->m_bToExit)
+      pOutput()->vProcessBufferQueue();
+
+    pOutput()->m_pOutputQueue->vReset();
+    pOutput()->vEndProcOneCmd();
+
+    if (pOutput()->m_pStreamDef_result) {
+      StreamDef* pStreamDef = pOutput()->m_pStreamDef_result;
+      pOutput()->m_pStreamDef_result = nullptr;
+      delete pStreamDef;
+    }
+
+    pOutput()->m_bToExit      = false;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

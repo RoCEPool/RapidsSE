@@ -78,13 +78,13 @@
   // sSmt .
 
   // parse the smt and get the table name
-  sSmt [job] indexDef::parseTableName to sTableNm
-  [job].error@ to errorCode
-  sTableNm "" str.equal if
-    [job].error@ to errorCode
+  sSmt [job] indexDef::parseTableName not if ( errorCode )
+    to errorCode
     errorCode op__execErr
     true
     exit
+  else
+    to sTableNm
   then
 
   // check ok to create index
@@ -95,13 +95,13 @@
     exit
   then
 
-  sSmt Table[] [job] indexDef::parse to IndexDef[]
-
-  IndexDef[].isNull if
-    [job].error@ to errorCode
+  sSmt Table[] [job] indexDef::parse not if ( errorCode )
+    to errorCode
     errorCode op__execErr
     true
     exit
+  else
+    to indexDef[]
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

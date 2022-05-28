@@ -58,6 +58,7 @@
 
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
+#include "ExitOperand.hpp"
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
@@ -2731,8 +2732,9 @@ void AM::vBootError(bool bBootError) {
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vDeleteOperand(Operand* pOperand)
+void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
 {
+  //RASSERT(! pJob);
   
   eCN eClass = pOperand->eGetClassNo();
   
@@ -2762,7 +2764,13 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pEntBuffer;
       break;
     }
-      
+
+    case CN_EXITOPERAND: {
+      ExitOperand* pExitOperand = _pExitOperand(pOperand);
+      delete pExitOperand;
+      break;
+    }
+
     case CN_INDEXDEF: {
       IndexDef* pIndexDef = _pIndexDef(pOperand);
       delete pIndexDef;
@@ -2777,7 +2785,17 @@ void AM::vDeleteOperand(Operand* pOperand)
       
     case CN_MARKER: {
       Marker* pMarker = _pMarker(pOperand);
-      delete pMarker;
+      if (MG_CHAIN == pMarker->eMarker()) {
+        RASSERT(pJob);
+        pJob->vFreeMarker(pMarker);
+      }
+      else
+      if (MG_MANAGER == pMarker->eMarker()) {
+        NEVER_REACH;
+      }
+      else {
+        delete pMarker;
+      }
       break;
     }
 
@@ -3362,7 +3380,8 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
 {
   if (pOperand->eGetClassNo() == CN_MARKER) {
     Marker* pMarker = _pMarker(pOperand);
-    Marker* pNewMarker = new Marker(pMarker->eOpMarker());
+    Marker* pNewMarker =
+      new (nullptr)Marker(pMarker->eOpMarker());
     return pNewMarker;
   }
   else {
@@ -3451,12 +3470,13 @@ i8 AM::iOperandEvKind(Operand* pOperand)
   
   switch (eClass_opd) {
 
-    case CN_BUCKETMAP: eOperand = EV_D_BUCKETMAP_dyn; break;
-    case CN_CRWBUFFER: eOperand = EV_D_CRWBUFFER; break;
-    case CN_CSVBUFFER: eOperand = EV_D_CSVBUFFER; break;
-    case CN_ENTBUFFER: eOperand = EV_D_ENTBUFFER; break;
-    case CN_INDEX:     eOperand = EV_D_INDEX;  break;
-    case CN_INDEXDEF:  eOperand = EV_D_INDEXDEF;  break;
+    case CN_BUCKETMAP:   eOperand = EV_D_BUCKETMAP_dyn; break;
+    case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
+    case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
+    case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;
+    case CN_EXITOPERAND: eOperand = EV_D_EXITOPERAND;   break;
+    case CN_INDEX:       eOperand = EV_D_INDEX;  break;
+    case CN_INDEXDEF:    eOperand = EV_D_INDEXDEF;  break;
       
     case CN_INFOSET:
     {
@@ -3527,6 +3547,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_STARTROWRHT:        eOperand = EV_M_STARTROWRHT;  break;
         case OM_STREAMDEFRHT:       eOperand = EV_M_STREAMDEFRHT; break;
         case OM_TRIGGER:            eOperand = EV_M_TRIGGER;      break;
+        case OM_TRIGGERED:          eOperand = EV_M_TRIGGERED;    break;
         default:
           RASSERT(0);
       }

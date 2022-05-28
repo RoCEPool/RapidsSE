@@ -15,13 +15,13 @@
   Pipein[].pipeout
 
   <etc> <tableNm> "create table %v %v ;" str.format // dup .
-  [job] streamDef::parse to StreamDefLft[]
-
-  StreamDefLft[].isNull if
-    [job].error@ to errorCode
+  [job] streamDef::parse not if
+    to errorCode
     errorCode op__execErr
     true
     exit
+  else
+   to StreamDefLft[]
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

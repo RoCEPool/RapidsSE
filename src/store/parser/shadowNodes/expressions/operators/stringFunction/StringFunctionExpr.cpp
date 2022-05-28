@@ -59,14 +59,14 @@ b1 StringFunctionExpr::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT StringFunctionExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId StringFunctionExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
 
   // manual expression polymorphism here
 
-  if      (SubstringExpr::bIsOfType(pExprNode))  { return SubstringExpr::eType(pExprNode, pRootNode); }
+  if      (SubstringExpr::bIsOfType(pExprNode))  { return SubstringExpr::xTypeId(pExprNode, pRootNode); }
 //  else if (     TrimExpr::bIsOfType(pExprNode))  { return      TrimExpr::eType(pExprNode, pRootNode); }
 //  else if (   ConcatExpr::bIsOfType(pExprNode))  { return    ConcatExpr::eType(pExprNode, pRootNode); }
   else NEVER_REACH

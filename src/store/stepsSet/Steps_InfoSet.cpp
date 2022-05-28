@@ -554,7 +554,7 @@ void Step::vInfoSetDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpInfoSet);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpInfoSet,nullptr);
   
   m_pLogicUnit->m_xpInfoSet = nullptr;
   

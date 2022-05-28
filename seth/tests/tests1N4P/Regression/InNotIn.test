@@ -11,6 +11,8 @@ ordered rows:
 
 // Source file: ../queries/InNotIn/rini3.sql
 // Result file: ../queries/InNotIn/results/ini3.res
+// TODO: ENABLE WHEN JOINS
+/*
 select pcol1, pcol9, colb1, colb9 from table1 a, table9 b where a.pcol1 = b.pcol9 and (colb1 in ('indigo', 'purple') and colb9 not in ('violet', 'pink' )) order by pcol1;
 ordered rows:
   (24, 24, 'indigo', 'yellow')
@@ -19,7 +21,7 @@ ordered rows:
   (87, 87, 'indigo', 'red')
   (89, 89, 'indigo', 'blue')
   (94, 94, 'purple', 'indigo')
-
+*/
 
 // Source file: ../queries/InNotIn/rini1.sql
 // Result file: ../queries/InNotIn/results/ini1.res

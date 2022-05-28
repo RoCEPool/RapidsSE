@@ -548,6 +548,7 @@ void vDdlLockAssertNone(void);
   void vFile0Get(void);
   void vFile0GetEofLocation(void);
   void vFile0IsNull(void);
+  void vFile0IsOpen(void);
   void vFile0Set(void);
   void vFile0Size(void);
   void vFileClose(void);
@@ -865,6 +866,7 @@ void vDdlLockAssertNone(void);
   void vJobResponseOpFetch(void);
   void vJobResponseOpStore(void);
 
+  void vJobReportAll(void);
   void vJobReportMetrics(void);
   void vJobReportNetDissect(void);
   void vJobReportNetwork(void);
@@ -878,6 +880,8 @@ void vDdlLockAssertNone(void);
   void vJobSetOriginId(void);
   void vJobSignalWaiter(void);
   void vJobMutexFetch(void);
+  void vJobNewMarkerChain(void);
+
   void vJobIdSystemCloserFetch(void);
   void vJobIdSystemCloserStore(void);
 
@@ -1137,6 +1141,7 @@ void vDdlLockAssertNone(void);
   void vMarkerNewStartRowRhtMarker(void);
   void vMarkerNewStreamDefRht(void);
   void vMarkerNewTrigger(void);
+  void vMarkerNewTriggeredMarker(void);
   void vMarkerPipeIn(void);
   void vMarkerPipeToOutput(void);
   void vMarkerSet(void);
@@ -1162,6 +1167,18 @@ void vDdlLockAssertNone(void);
   void vErrorMarkerPipeOut(void);
   void vErrorMarkerPipeToOutput(void);
   void vErrorMarkerSet(void);
+
+  // ExitOperand[]
+  void vExitOperandDelete(void);
+  void vExitOperandGet(void);
+  void vExitOperandGetAndClear(void);
+  void vExitOperandIsNotNull(void);
+  void vExitOperandIsNull(void);
+  void vExitOperandNewExitOperand(void);
+  void vExitOperandPipeIn(void);
+  void vExitOperandPipeOut(void);
+  void vExitOperandPipeToOutput(void);
+  void vExitOperandSet(void);
 
   // memory
   void vMemoryByteDump(void);
@@ -1518,6 +1535,7 @@ void vDdlLockAssertNone(void);
   void vRegSendsHandleStart(void);
   void vRegSendsHandleStreamDef(void);
   void vRegSendsHandleStreamDefRht(void);
+  void vRegSendsHandleTriggered(void);
   void vRegSendsIsNull(void);
   void vRegSendsNew(void);
 
@@ -1535,6 +1553,7 @@ void vDdlLockAssertNone(void);
   // dicStack
   void vRegPathDepth(void);
   void vRegPathDiscard(void);
+  void vRegPathDiscardAll(void);
   void vRegPathDump(void);
   void vRegPathPick(void);
   void vRegPathPush(void);

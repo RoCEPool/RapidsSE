@@ -57,6 +57,8 @@ void Step::vAddSteps_Job(void)
     
   vAddStep("[job].mutex@"_Stz,           &Step::vJobMutexFetch);
   
+  vAddStep("[job].newMarkerChain"_Stz,   &Step::vJobNewMarkerChain);
+
   vAddStep("[job].originId@"_Stz,        &Step::vJobOriginIdFetch);
   vAddStep("[job].originNodeId@"_Stz,    &Step::vJobOriginNodeIdFetch);
   
@@ -571,6 +573,20 @@ void Step::vJobMutexFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* [job].newMarkerChain -- new the job marker chain                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobNewMarkerChain(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob;
+
+  pJob->vNewMarkerChain();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* [job].originId@ -- fetch the origin id of the job                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobOriginIdFetch(void)
@@ -827,8 +843,9 @@ void Step::vJobResponseOpFetch(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob;
-  
+  //Job* pJob = * m_pJob;
+  Job* pJob = MY::pJob();
+
   m_pDataStack->vPushPtr(pJob->p_ResponseOp());
 
   EXIT();
@@ -841,8 +858,9 @@ void Step::vJobResponseOpStore(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob;
-  
+  //Job* pJob = * m_pJob;
+  Job* pJob = MY::pJob();
+
   Op* pResponseOp = _pOp(m_pDataStack->pPopPtr(__func__));
 
   pJob->vResponseOp(pResponseOp);
@@ -940,6 +958,8 @@ void Step::vJobTrace(void)
 {
   ENTRY();
     
+  s256 sNote;
+  m_pDataStack->vPopStr(sNote,__func__);
   s256 sAtPoint;
   m_pDataStack->vPopStr(sAtPoint,__func__);
   s256 sAtRoutine;
@@ -947,7 +967,7 @@ void Step::vJobTrace(void)
   s256 sAtCmd;
   m_pDataStack->vPopStr(sAtCmd,__func__);
 
-  m_pJob->vJobTrace(sAtCmd,sAtRoutine,sAtPoint);
+  m_pJob->vJobTrace(sAtCmd,sAtRoutine,sAtPoint,sNote);
 
   EXIT();
 }

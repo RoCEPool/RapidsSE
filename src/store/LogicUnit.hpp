@@ -106,6 +106,7 @@ namespace STORE
     REG<Dynamo,         CN_DYNAMO        > m_xpDynamo;
 
     REG<Operand,        CN_NONE          > m_xpErrorMarker;
+    REG<Operand,        CN_NONE          > m_xpExitOperand;
 
     REG<File,           CN_FILE          > m_xpFile0;
     REG<File,           CN_FILE          > m_xpFile1;

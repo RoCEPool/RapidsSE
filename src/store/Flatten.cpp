@@ -156,7 +156,7 @@ bool Flatten::bCompileCode(CodeSynth* pCodeSynth)
 //    RASSERT(0);
 
   m_afFlatten =
-      (bool (*)(void*))m_pTinyC->pFindSymbol("bFlatten");
+      (bool (*)(void*))m_pTinyC->pFindSymbol(const_cast<char*>("bFlatten"));
 
   RASSERT(m_afFlatten);
 

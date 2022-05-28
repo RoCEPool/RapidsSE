@@ -76,6 +76,9 @@ SeDeputy::SeDeputy(i8 i_Deputy, SePrompt* pSePrompt)
   RASSERT(tDistId.bIsUnknown());
 
   m_pRootJob = Api::pNewRootJob("SeDeputy"_Stz,tParentId,tOriginId,tDistId);
+  m_pRootJob->vOutputCreate();
+  m_pRootJob->vOutputBeginProc();
+  m_pRootJob->vOutputEnabled(true);
 
   m_pThread->vSpawnPsxThd(SeDeputy::aEntryPoint,this);
 }
@@ -168,16 +171,16 @@ void SeDeputy::vDeputyLoop(void)
       m_pSePrompt->vMutexSignalAndUnlock(this);
        continue;
     }
-    
-    // start the buffer queue processing while the pipeline ops are running
-    if (m_pJob->bIsPipeline())
-      m_pJob->pOutput()->vProcessBufferQueue();
 
-    RASSERT(! m_pJob->pOutput()->m_bError );
-
+    // check if job is inError
     if (m_pJob->bIsInError()) {
       vTrace("error: (node%lld) %s\n"_Stz, AM::NODE::iThisNodeId(),
              aEC[m_pJob->eJobError()]);
+    }
+    else {
+      // process the output bufferQueue
+      if (m_pJob->bIsPipeline())
+        m_pJob->vProcessOutput();
     }
 
     vReportTime();

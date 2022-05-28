@@ -6,17 +6,18 @@
 //!                    ** Do not include BASE.h **
 
 #include "eEV.h"
+#include "AM.hpp"
 
-namespace BASE
-{
-  class Task;
-}
-
-namespace STORE
-{
-  class Job;
-  class Session;
-}
+//namespace BASE
+//{
+//  class Task;
+//}
+//
+//namespace STORE
+//{
+//  class Job;
+//  class Session;
+//}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

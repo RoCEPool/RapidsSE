@@ -29,6 +29,7 @@ enum eLR // Logic Unit Registers
   /*  */ LR_DYNAMO,
   
   /*  */ LR_ERRORMARKER,
+  /*  */ LR_EXITOPERAND,
   /*  */ LR_EXPEVAL,
   
   /*  */ LR_FILE0,
@@ -141,6 +142,7 @@ static Stz* aLR[]
   /*  */ "LR_DYNAMO"_Stz,
   
   /*  */ "LR_ERRORMARKER"_Stz,
+  /*  */ "LR_EXITOPERAND"_Stz,
   /*  */ "LR_EXPEVAL"_Stz,
   
   /*  */ "LR_FILE0"_Stz,

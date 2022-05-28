@@ -38,18 +38,16 @@ __aFooterFunction(Output)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Output::Output(Job* pJob)
+Output::Output(void)
 : Object(CN_OUTPUT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
-  m_pJob              = pJob;
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
-  m_bExitMarker       = false;
-  m_bError            = false;
-  m_bPrintEnabled     = true;
-  
+  m_bToExit           = false;
+  m_bHasError         = false;
+
   m_bFileOut          = false;
   m_pFileOut          = nullptr;
   //m_sFilePath
@@ -69,10 +67,9 @@ Output::~Output(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   if (m_pOutputQueue) {
-    //vDrainBufferQueue(m_pJob);
     
     while (Operand* pOperand = _pOperand(m_pOutputQueue->pPop()))
-      AM::vDeleteOperand(pOperand);
+      AM::vDeleteOperand(pOperand,nullptr);
 
     RASSERT(! m_pOutputQueue->nItems());
     delete m_pOutputQueue;
@@ -98,7 +95,7 @@ void Output::vAssertEmptyQueue(void)
   
   RASSERT(! m_pOutputQueue->nItems());
   
-  RASSERT(! m_bExitMarker);
+  RASSERT(! m_bToExit);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -131,9 +128,8 @@ void Output::vBeginProcOneCmd(void)
 void Output::vDrainBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-  
-  while (! m_bExitMarker   &&
-         ! m_pJob->bIsInError()) {
+
+  while (! m_bToExit ) {
     
     Operand* pOperand = pPopBufferQueue_blocking();
     
@@ -144,21 +140,16 @@ void Output::vDrainBufferQueue(void)
     
     eCN eOperandClass = pOperand->eGetClassNo();
 
-    if (eOperandClass == CN_MARKER) {
-      Marker *pMarker = _pMarker(pOperand);
-      eOM eOpMarker = pMarker->eOpMarker();
-
-      if (eOpMarker == OM_EXITING)
-        m_bExitMarker = true;
+    if (eOperandClass == CN_EXITOPERAND) {
+      m_bToExit = true;
     }
 
-    AM::vDeleteOperand(pOperand);
+    AM::vDeleteOperand(pOperand,nullptr);
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
-/* end procssing queue for one command                                        */
+/* end processing queue for one command                                       */
 /*----------------------------------------------------------------------------*/
 void Output::vEndProcOneCmd(void)
 {
@@ -194,6 +185,16 @@ void Output::vFilePath(Stz* szFilePath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pipe to out buffer queue                                                   */
+/*----------------------------------------------------------------------------*/
+void Output::vPipeToThis(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+
+  IGNORE_RETURN(m_pOutputQueue->iAppend(pOperand));
+}
+
+/*----------------------------------------------------------------------------*/
 /* process the result/output queue                                            */
 /*----------------------------------------------------------------------------*/
 void Output::vProcessBufferQueue(void)
@@ -210,26 +211,6 @@ void Output::vProcessBufferQueue(void)
   }
   
   vDrainBufferQueue();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get print enable/disabled                                                  */
-/*----------------------------------------------------------------------------*/
-bool Output::bPrintEnabled(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-  
-  return m_bPrintEnabled;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set print enable/disabled                                                  */
-/*----------------------------------------------------------------------------*/
-void Output::vPrintEnabled(bool bPrintEnabled)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-  
-  m_bPrintEnabled = bPrintEnabled;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,9 +281,6 @@ Operand* Output::pPopBufferQueue_blocking(void)
       return pOperand;
     
     AM::vNapUsec(1000,CN_OUTPUT);
-    
-    if (m_pJob->bIsInError())
-      return nullptr;
   }
   
 }
@@ -319,7 +297,9 @@ bool Output::bProcessOperand(Operand* pOperand)
   //SP_DataBuffer spDataBuffer;
     
   eCN eOperandClass = pOperand->eGetClassNo();
-  
+
+  //vTrace("OPERAND: %s\n"_Stz, aCN[eOperandClass]);
+
   switch (eOperandClass) {
       
     // -- -- -- -- -- --
@@ -327,11 +307,9 @@ bool Output::bProcessOperand(Operand* pOperand)
     case CN_CRWBUFFER: {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       m_ixRowsProcessed += pCrwBuffer->nRows();
-      if (m_bPrintEnabled) {
-        vTrace("\n"_Stz);
-        pCrwBuffer->vPrintRows(m_pStreamDef_result);
-      }
-      AM::vDeleteOperand(pOperand);
+      vTrace("\n"_Stz);
+      pCrwBuffer->vPrintRows(m_pStreamDef_result);
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
       
@@ -340,11 +318,9 @@ bool Output::bProcessOperand(Operand* pOperand)
     case CN_CSVBUFFER: {
       CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
       m_ixRowsProcessed += pCsvBuffer->nRecords();
-      if (m_bPrintEnabled) {
-        vTrace("\n"_Stz);
-        pCsvBuffer->vPrintRecords();
-      }
-      AM::vDeleteOperand(pOperand);
+      vTrace("\n"_Stz);
+      pCsvBuffer->vPrintRecords();
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
 
@@ -353,11 +329,9 @@ bool Output::bProcessOperand(Operand* pOperand)
     case CN_ENTBUFFER: {
       EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
       m_ixRowsProcessed += pEntBuffer->nItems();
-      if (m_bPrintEnabled) {
-        vTrace("\n"_Stz);
-        pEntBuffer->vPrintRefdRows();
-      }
-      AM::vDeleteOperand(pOperand);
+      vTrace("\n"_Stz);
+      pEntBuffer->vPrintRefdRows();
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
       
@@ -368,7 +342,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       ASSERT( ! pInfoSet->szBufferNm()->bSame(C_NO_NAME) );
       if (pInfoSet->szBufferNm()->bSame(C_TDEF_COMPILEERRORS)) {
 
-        if ( ! m_bError) {
+        if ( ! m_bHasError) {
           Row *pInfoRow = pInfoSet->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
@@ -379,16 +353,16 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; Line: %lld; Column: %lld; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], iLineNo, iColumnNo, szErrorText);
-          m_bError = true;
+          m_bHasError = true;
         }
         else {
           // LOG error
         }
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS)) {
 
-        if ( ! m_bError) {
+        if ( ! m_bHasError) {
           Row *pInfoRow = pInfoSet->pFirstRow();
 
           Stz *sNodeName = pInfoRow->szColVal_ofs(0);
@@ -397,12 +371,12 @@ bool Output::bProcessOperand(Operand* pOperand)
 
           vTrace("\nerror: %s; %s; %s; \n"_Stz,
                  sNodeName, aEC2[eErrorCode], szErrorText);
-          m_bError = true;
+          m_bHasError = true;
         }
         else {
           // LOG error
         }
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_LOADRESULT)) {
         
@@ -419,7 +393,7 @@ bool Output::bProcessOperand(Operand* pOperand)
         //vTrace("INFOSET: %lld, %lld, %lld\n"_Stz,
         //       iRowsProcessed,iRowsInvalid,iRowsSkipped);
 
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
 
       else if (pInfoSet->szBufferNm()->bSame(C_TDEF_PROMPTOUT)) {
@@ -429,49 +403,31 @@ bool Output::bProcessOperand(Operand* pOperand)
 
         vTrace("%s\n"_Stz,szPromptLine);
 
-        AM::vDeleteOperand(pOperand);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
       
       else {
         m_ixRowsProcessed += pInfoSet->nRows();
-        if (m_bPrintEnabled) {
-          vTrace("\n"_Stz);
-          pInfoSet->vPrintRows(m_pStreamDef_result);
-        }
-        AM::vDeleteOperand(pOperand);
+        vTrace("\n"_Stz);
+        pInfoSet->vPrintRows(m_pStreamDef_result);
+        AM::vDeleteOperand(pOperand,nullptr);
       }
       break;
     }
-      
-    // -- -- -- -- -- --
-      
-    case CN_MARKER: {
-      Marker* pMarker = _pMarker(pOperand);
-      
-      eOM eOpMarker = pMarker->eOpMarker();
 
-      switch (eOpMarker) {
-          
-        case OM_EXITING: {
-          //vTrace("Pipeline Job: EXITMARKER\n"_Stz);
-          //if ( ! bHasError )
-          //  vTrace("success: %lld rows fetched\n"_Stz, *m_ixRowsProcessed);
-          AM::vDeleteOperand(pOperand);
-          m_bExitMarker = true;
-          if ( !m_bError )
-            vPrintResult();
-          m_bError = false;
-          bContinue = false;
-          goto L_EXIT;
-          break;
-        }
-          
-        default:
-          ASSERT(0);
-      }
+    // -- -- -- -- -- --
+
+    case CN_EXITOPERAND: {
+      AM::vDeleteOperand(pOperand,nullptr);
+      m_bToExit = true;
+      if ( !m_bHasError )
+        vPrintResult();
+      m_bHasError = false;
+      bContinue = false;
+      goto L_EXIT;
       break;
     }
-      
+
     // -- -- -- -- -- --
       
     case CN_ROWBUFFER: {
@@ -481,15 +437,11 @@ bool Output::bProcessOperand(Operand* pOperand)
 //                 spDataBuffer.sz(pRowBuffer),
 //                 pRowBuffer->nRows());
       m_ixRowsProcessed += pRowBuffer->nRows();
-      if (m_bPrintEnabled) {
-        vTrace("\n"_Stz);
-        pRowBuffer->vPrintRows(m_pFileOut,nullptr);
-      }
-      AM::vDeleteOperand(pOperand);
+      vTrace("\n"_Stz);
+      pRowBuffer->vPrintRows(m_pFileOut,nullptr);
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
-      
-    // -- -- -- -- -- --
             
     // -- -- -- -- -- --
 
@@ -513,11 +465,9 @@ bool Output::bProcessOperand(Operand* pOperand)
       StreamSet* pStreamSet = _pStreamSet(pOperand);
       ASSERT( ! pStreamSet->szBufferNm()->bSame(C_NO_NAME) );
       m_ixRowsProcessed += pStreamSet->nRows();
-      if (m_bPrintEnabled) {
-        vTrace("\n"_Stz);
-        pStreamSet->vPrintRows(m_pStreamDef_result);
-      }
-      AM::vDeleteOperand(pOperand);
+      vTrace("\n"_Stz);
+      pStreamSet->vPrintRows(m_pStreamDef_result);
+      AM::vDeleteOperand(pOperand,nullptr);
       break;
     }
       
@@ -529,6 +479,7 @@ bool Output::bProcessOperand(Operand* pOperand)
   }
     
 L_EXIT:
+
   return bContinue;
 }
 

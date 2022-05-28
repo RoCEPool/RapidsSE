@@ -14,6 +14,7 @@ namespace BASE
 enum eCN : u2 // Class Number
 {
   /* */ CN_NONE,
+  
   /* */ CN__A__,
   /* */ CN_ACCESSPATH,
   /* */ CN_ACTION,
@@ -96,6 +97,7 @@ enum eCN : u2 // Class Number
   /* */ CN_EVENTHANDLERS,
   /* */ CN_EVMGR,
   /* */ CN_EXEMPLAR,
+  /* */ CN_EXITOPERAND,
 
   /* */ CN__F__,
   /* */ CN_FIFO,
@@ -175,6 +177,8 @@ enum eCN : u2 // Class Number
 
   /* */ CN__M__,
   /* */ CN_MARKER,
+  /* */ CN_MARKERCHAIN,
+  /* */ CN_MARKERMGR,
   /* */ CN_MEDIUMPERSISTENT,
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEDIUMVIRTUAL,
@@ -282,6 +286,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__S__,
   /* */ CN_SCANNER,
+  /* */ CN_SCHEDULE,
   /* */ CN_SCHEDULER,
   /* */ CN_SCHEMA,
   /* */ CN_SEAPI,
@@ -343,7 +348,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SYSCALL,
   /* */ CN_SYSMETRICS,
   /* */ CN_SYSREPORT,
-  /* */ CN_SCHEDULE,
 
   /* */ CN__T__,
   /* */ CN_TABLE,
@@ -503,6 +507,7 @@ static Stz* aCN[]
   /* */ "EVENTHANDLERS"_Stz,        // CN_EVENTHANDLERS
   /* */ "EVMGR"_Stz,                // CN_EVMGR
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
+  /* */ "EXITOPERAND"_Stz,          // CN_EXITOPERAND
 
   /* */ "_F__"_Stz,                 // CN__F__
   /* */ "FIFO"_Stz,                 // CN_FIFO
@@ -582,6 +587,8 @@ static Stz* aCN[]
 
   /* */ "_M__"_Stz,                 // CN__M__
   /* */ "MARKER"_Stz,               // CN_MARKER
+  /* */ "MARKERCHAIN"_Stz,          // CN_MARKERCHAIN
+  /* */ "MARKERMGR"_Stz,            // CN_MARKERMGR
   /* */ "MEDIUMPERSISTENT"_Stz,     // CN_MEDIUMPERSISTENT
   /* */ "MEDIUMTRANSIENT"_Stz,      // CN_MEDIUMTRANSIENT
   /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
@@ -659,7 +666,7 @@ static Stz* aCN[]
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RECVWL"_Stz,               // CN_RECVWL
   /* */ "RELOP"_Stz,                // CN_RELOP
-  /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
+  /* */ "RESOURCES"_Stz,            // CN_RESOURCES
   /* */ "RIBBON"_Stz,               // CN_RIBBON
   /* */ "RIBBONLINE"_Stz,           // CN_RIBBONLINE
   /* */ "RLUDIARY"_Stz,             // CN_RLUDIARY
@@ -689,6 +696,7 @@ static Stz* aCN[]
 
   /* */ "_S__"_Stz,                 // CN__S__
   /* */ "SCANNER"_Stz,              // CN_SCANNER
+  /* */ "SCHEDULE"_Stz,             // CN_SCHEDULE
   /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
   /* */ "SEAPI"_Stz,                // CN_SEAPI
@@ -750,7 +758,6 @@ static Stz* aCN[]
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS
   /* */ "SYSREPORT"_Stz,            // CN_SYSREPORT
-  /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SCHEDULE
 
   /* */ "_T__"_Stz,                 // CN__T__
   /* */ "TABLE"_Stz,                // CN_TABLE

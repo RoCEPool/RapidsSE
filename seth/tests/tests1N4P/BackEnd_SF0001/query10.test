@@ -17,6 +17,230 @@ select c_custkey, c_name, sum(l_extendedprice * (1 - l_discount)) as revenue,
 
 */
 
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+
+/*
+EXPLAIN STAGE TRANSLITERATE
+select c_custkey, c_name, sum(l_extendedprice * (1 - l_discount)) as revenue,
+     c_acctbal, n_name, c_address, c_phone, c_comment
+     from customer, orders, lineitem, nation
+     where c_custkey = o_custkey
+     and l_orderkey = o_orderkey
+     and o_orderdate >= '1993-10-01'
+     and o_orderdate < '1994-01-01'
+     and l_returnflag = 'R'
+     and c_nationkey = n_nationkey
+     group by c_custkey, c_name, c_acctbal, c_phone, n_name, c_address, c_comment
+     order by revenue desc limit 100;
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker27159
+  stage stageMarker27159 on all partitions :
+    scan rapidsse public customer
+    | stageMarker27162 broadcast
+  stage stageMarker27162 on all partitions :
+    scan rapidsse public orders
+    | abstractJoin " 1  "
+    | stageMarker27165 broadcast
+  stage stageMarker27165 on all partitions :
+    scan rapidsse public lineitem
+    | abstractJoin " 1  "
+    | stageMarker27168 broadcast
+  stage stageMarker27168 on all partitions :
+    scan rapidsse public nation
+    | abstractJoin " 1  "
+    | stageMarker27171
+  stage stageMarker27171 on all partitions :
+    filter " type BOOLEAN  $1 $10 ==  $18 $9 ==  and  $13 TIMESTAMP ''1993-10-01 00:00:00''  >=  and  $13 TIMESTAMP ''1994-01-01 00:00:00''  <  and  $26 ''R''  ==  and  $4 $34 ==  and  "
+    | aggreg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $6 , type VARCHAR as c_phone $5 , type VARCHAR as n_name $35 , type VARCHAR as c_address $3 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL )  $23 1.  $24 -  *  sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
+    | combined 0
+    | stageMarker27174
+  stage stageMarker27174 on all nodes :
+    aggreg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $4 , type VARCHAR as c_phone $7 , type VARCHAR as n_name $5 , type VARCHAR as c_address $6 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL )  $3 sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
+    | combined 0
+    | stageMarker27177
+  stage stageMarker27177 on origin :
+    aggreg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $4 , type VARCHAR as c_phone $7 , type VARCHAR as n_name $5 , type VARCHAR as c_address $6 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL as revenue )  $3 sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
+    | sort " type DECIMAL $3 DESC  "
+    | limit 100
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+*/
+
+//------------------------------------------------------------------------------
+// OPTIMIZED Q3_v1
+// Changed all pipe to - next and first (makes it easier)
+// Changed all Ordinal columns to Symbolic (makes it easier)
+// Changed Scans followed by AbstractJoins to concrete joins
+// Removed C_CUSTKEY J1_O_CUSTKEY ==  and
+//                   J2_L_ORDERKEY J1_O_ORDERKEY ==
+//   from filter in stage stageMarker6349 as part of join keys
+// Moved SORT to a new stage as CodeSynthesizer does not allow
+//     aggregates and sort operators in the same stage
+// Modified DESC to ASC as DESC not yet supported
+//------------------------------------------------------------------------------
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker27159 on all partitions :
+    scan rapidsse public customer
+    | next
+
+  stage stageMarker27162 on all partitions :
+    //scan rapidsse public orders
+    //| abstractJoin " 1  "
+    indexjoin Orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="  // J1 - Orders
+    | hash "type INTEGER J1_O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker27165 on all partitions :
+    //scan rapidsse public lineitem
+    //| abstractJoin " 1  "
+    indexjoin Lineitem IxL_ORDERKEY "BOUND $I1 J1_O_ORDERKEY ==" // J2 - Lineitem
+    | hash "type INTEGER C_NATIONKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker27168 on all partitions :
+    //scan rapidsse public nation
+    //| abstractJoin " 1  "
+    indexjoin Nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY ==" // J3 - Nation
+    | combined 0
+    | next
+
+  stage stageMarker27171 on all partitions :
+    filter " type BOOLEAN  //C_CUSTKEY J1_O_CUSTKEY ==
+                               //J2_L_ORDERKEY J1_O_ORDERKEY ==  and
+                               J1_O_ORDERDATE DATE '1993-10-01'  >=
+                               J1_O_ORDERDATE DATE '1994-01-01'  <  and
+                               J2_L_RETURNFLAG 'R'  ==  and"
+                               //C_NATIONKEY J3_N_NATIONKEY ==  and  "
+
+    | aggreg " groupBy  type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                        type VARCHAR as C_NAME C_NAME ,
+                        type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+                        type VARCHAR as C_PHONE C_PHONE ,
+                        type VARCHAR as J3_N_NAME J3_N_NAME ,
+                        type VARCHAR as C_ADDRESS C_ADDRESS ,
+                        type VARCHAR as C_COMMENT C_COMMENT
+                        aggregates
+                        type INTEGER $K1 ,
+                        type VARCHAR $K2 ,
+                        type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  ,
+                        type DECIMAL $K3 ,
+                        type VARCHAR $K5 ,
+                        type VARCHAR $K6 ,
+                        type VARCHAR $K4 ,
+                        type VARCHAR $K7 "
+
+    | combined 0
+    | next
+
+  stage stageMarker27174 on all nodes :
+    aggreg " groupBy  type INTEGER as C_CUSTKEY $1 ,
+                      type VARCHAR as C_NAME $2 ,
+                      type DECIMAL as C_ACCTBAL $4 ,
+                      type VARCHAR as C_PHONE $7 ,
+                      type VARCHAR as J3_N_NAME $5 ,
+                      type VARCHAR as C_ADDRESS $6 ,
+                      type VARCHAR as C_COMMENT $8
+                      aggregates
+                      type INTEGER $K1 ,
+                      type VARCHAR $K2 ,
+                      type DECIMAL )  $3 sum  ,
+                      type DECIMAL $K3 ,
+                      type VARCHAR $K5 ,
+                      type VARCHAR $K6 ,
+                      type VARCHAR $K4 ,
+                      type VARCHAR $K7 "
+    | combined 0
+    | next
+  stage stageMarker27177 on origin :
+    aggreg " groupBy  type INTEGER as C_CUSTKEY $1 ,
+                      type VARCHAR as C_NAME $2 ,
+                      type DECIMAL as C_ACCTBAL $4 ,
+                      type VARCHAR as C_PHONE $7 ,
+                      type VARCHAR as J3_N_NAME $5 ,
+                      type VARCHAR as C_ADDRESS $6 ,
+                      type VARCHAR as C_COMMENT $8
+                      aggregates
+                      type INTEGER $K1 ,
+                      type VARCHAR $K2 ,
+                      type DECIMAL )  $3 sum  ,
+                      type DECIMAL $K3 ,
+                      type VARCHAR $K5 ,
+                      type VARCHAR $K6 ,
+                      type VARCHAR $K4 ,
+                      type VARCHAR $K7 "
+      | combined 0
+       | next
+  stage stageNew on origin :
+    sort " type DECIMAL $3 ASC  "
+    | limit 100
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+ (43,'Custome',-12450.59,9904.28,'ROMANIA','ouSbjHk','29-316-','ial req')
+ (51,'Custome',-8347.41,855.87,'JAPAN','uR:wEai','22-344-','eposits')
+ (23,'Custome',-7809.36,3332.02,'CANADA','OdY W13','13-312-','deposit')
+ (62,'Custome',-7646.73,595.61,'GERMANY','upJK2Dn','17-361-','kly spe')
+ (45,'Custome',-6865.70,9983.38,'INDONES','4v3OcpF','19-715-','nto bea')
+ (36,'Custome',-6544.60,4987.27,'VIETNAM','3TvCzju','31-704-','haggle.')
+ (136,'Custome',-6205.14,-842.39,'GERMANY','QoLsJ0v','17-501-','ackages')
+ (67,'Custome',-6131.40,8166.59,'INDONES','rfG0cOg','19-403-','indle f')
+ (138,'Custome',-5650.11,430.59,'ETHIOPI','5uyLAeY','15-394-','ts doze')
+ (88,'Custome',-4781.01,8031.44,'MOZAMBI','wtkjBN9','26-516-','s are q')
+ (75,'Custome',-4737.86,6684.10,'CHINA','Dh 6jZ:','28-247-',' instru')
+ (9,'Custome',-4679.64,8324.07,'INDIA','xKiAFTj','18-338-','r theod')
+ (85,'Custome',-4161.28,3386.64,'ETHIOPI','siRerlD','15-745-','ronic i')
+ (137,'Custome',-4056.08,7838.30,'MOZAMBI','cdW91p9','26-777-','careful')
+ (22,'Custome',-4042.70,591.98,'CANADA','QI6p41:','13-806-','s nod f')
+ (60,'Custome',-3497.38,2741.87,'JAPAN','Fyodhjw','22-480-','latelet')
+ (129,'Custome',-3109.03,9127.27,'GERMANY','q7m7rbM','17-415-',' unusua')
+ (12,'Custome',-2937.30,3396.49,'JORDAN','9PWKuhz','23-791-',' to the')
+ (27,'Custome',-2753.25,5679.84,'CANADA','IS8GIyx','13-137-',' about ')
+ (25,'Custome',-2643.40,7133.70,'JAPAN','Hp8GyFQ','22-603-','y. acco')
+ (89,'Custome',-2570.76,1530.76,'KENYA','dtR: y9','24-394-','counts ')
+ (141,'Custome',-2275.06,6706.14,'ARGENTI','5IW:WRO','11-936-','package')
+ (94,'Custome',-2008.57,5500.11,'INDONES','IfVNIN9','19-953-','latelet')
+ (121,'Custome',-1954.31,6428.32,'PERU','tv nCR2','27-411-','uriousl')
+ (32,'Custome',-1221.62,3471.53,'MOROCCO','jD2xZzi','25-430-','cial id')
+ (64,'Custome',-1063.07,-646.64,'CANADA','MbCeGY2','13-558-','structi')
+ (143,'Custome',-977.05,2186.50,'MOZAMBI','681r22u','26-314-','across ')
+ (39,'Custome',-938.95,6264.31,'BRAZIL','nnbRg:P','12-387-','tions. ')
+ (77,'Custome',-739.20,1738.87,'PERU','4tAE5Kd','27-269-','uffily ')
+ (57,'Custome',-619.61,4151.93,'VIETNAM','97XYbsu','31-835-','ove the')
+ (95,'Custome',-608.84,5327.38,'MOROCCO','EU0xvmW','25-923-','ithely.')
+ (66,'Custome',-391.72,242.77,'RUSSIA','XbsEqXH','32-213-','le slyl')
+ (142,'Custome',-238.00,2209.81,'INDONES','AnJ5lxt','19-407-','. even:')
+ (148,'Custome',-226.12,2135.60,'IRAQ','BhSPlEW','21-562-','ing to ')
+ (26,'Custome',-219.09,5182.05,'RUSSIA','8ljrc5Z','32-363-','c reque')
+ (98,'Custome',0.00,-551.37,'JAPAN','7yiheXN','22-885-','ages. f')
+ (61,'Custome',0.00,1536.24,'PERU','9kndve4','27-626-','egular ')
+ (13,'Custome',0.00,3857.34,'CANADA','nsXQu0o','13-761-','ounts s')
 
 CLEANUP {
   bye;

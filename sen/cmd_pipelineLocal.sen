@@ -13,6 +13,8 @@
 
   ListedJob[].assertNoRef
 
+  Path[].discardAll
+
   [job].addRetired
   [task].grabLock
     [task].retire // does not queue onto exit demon
@@ -72,6 +74,12 @@
   
   PipeSpec[] assert
 
+
+/* local */  // - - - - - - - - - - - - - -
+/* local */  // new all the markers needed
+/* local */  // - - - - - - - - - - - - - -
+/* local */  [job].newMarkerChain
+
   PipeSpec[] Pipeline[].create
   Pipeline[].spawnOpTasks
   
@@ -119,6 +127,8 @@
   
   [ddlLock].testDrop
   ListedJob[].assertNoRef
+
+  Path[].discardAll
 
   [job].addRetired
   

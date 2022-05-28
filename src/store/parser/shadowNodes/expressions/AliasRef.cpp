@@ -14,6 +14,7 @@
 #include "MetadataNode.hpp"
 
 #include "GraphNav.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -98,7 +99,7 @@ b1 AliasRef::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT AliasRef::eType(QueryNode* pNode, PlanNode* pRootNode)
+TypeId AliasRef::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -109,8 +110,8 @@ eCT AliasRef::eType(QueryNode* pNode, PlanNode* pRootNode)
   QueryNode* pAliasExpr = _pQueryNode(GraphNav::pFindProperty(C_ALIASEXPR_PROP, pNode));
   ASSERT(pAliasExpr);
 
-  eCT eType = Expr::eType(pAliasExpr, pRootNode);
-  return eType;
+  TypeId xTypeId = Expr::xTypeId(pAliasExpr, pRootNode);
+  return xTypeId;
 }
 
 /*----------------------------------------------------------------------------*/

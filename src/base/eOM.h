@@ -56,6 +56,7 @@ enum eOM // operator markers
   /*    */ OM_STREAMDEFRHT,
   
   /*    */ OM_TRIGGER,
+  /*    */ OM_TRIGGERED,
 
   /*    */ OM_ENUMS,
 };
@@ -113,6 +114,7 @@ static Stz* aOM[]
   /*    */ "STREAMDEFRHT"_Stz,
   
   /*    */ "TRIGGER"_Stz,
+  /*    */ "TRIGGEREDMARKER"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };

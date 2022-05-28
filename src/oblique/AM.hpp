@@ -27,7 +27,6 @@
 #include "KeyBkt.hpp"
 
 
-class LglPtn;
 
 namespace OBLIQUE {
   class AM;
@@ -37,6 +36,17 @@ using namespace OBLIQUE;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+namespace PRIMITIVES {
+  class Atomic;
+  class Footer;
+  class Header;
+  class Mutex;
+  class Object;
+}
+
+using namespace PRIMITIVES;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 namespace BASE {
          
   class Birth;
@@ -59,8 +69,6 @@ namespace BASE {
   class HashMap;
   class HashMapEntry;
   class HashMapSlot;
-
-  class Header;
   class Heap;
   class Heaps;
   class HeapBuffer;
@@ -74,11 +82,9 @@ namespace BASE {
   class Locks;
 
   class MasterLock;
-  class Mutex;
 
   class Now;
 
-  class Object;
   class ObjectSnapshot;
   class Operand;
 
@@ -91,17 +97,12 @@ namespace BASE {
   class Resource;
   class Resources;
 
-  class Schedule;
-  class Scheduler;
   class Socket;
   class Starter;
   class Statistics;
   class String;
 
   class TagSet;
-  class Task;
-  class Thread;
-  class ThreadVec;
   class Timer;
   class Token;
   class TokenVec;
@@ -153,7 +154,6 @@ namespace STORE {
   class Dynamo;
 
   class Encoding;
-  class Engine;
   class EntBuffer;
   class EventHandlers;
 
@@ -171,6 +171,7 @@ namespace STORE {
   class Job;
   class JobList;
 
+  class LglPtn;
   class LogicUnit;
 
   class Node;
@@ -211,6 +212,21 @@ namespace STORE {
 }
 
 using namespace STORE;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace ENGINE {
+  class Engine;
+  class Schedule;
+  class Scheduler;
+  class Task;
+  class TaskList;
+  class Thread;
+  class ThreadQueue;
+  class ThreadVec;
+}
+
+using namespace ENGINE;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -637,7 +653,7 @@ namespace OBLIQUE
     static i8   nBuckets(void);
     static BufferPool* pBufferPool(void);
     static ClassFlags* pClassFlags(void);
-    static void vDeleteOperand(Operand* pOperand);
+    static void vDeleteOperand(Operand* pOperand, Job* pJob);
     static MasterLock* pDicLock(void);
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);

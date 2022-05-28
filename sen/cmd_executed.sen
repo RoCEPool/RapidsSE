@@ -12,26 +12,26 @@
 /* on originating node                                                        */
 /*----------------------------------------------------------------------------*/
 : executed:onOrigin
-
   //"executed:onOrigin" .
 
-  [args].distJob if
-    "executed" "onOrigin" "<exd ack origin task" [job].trace
-  then
-
-
-  // find the originating job
-  
-  [job].originId@ ListedJob[].findOriginator? if
-  
-    ListedJob[].taskAck
-  
-    ListedJob[].returnReference
-  
-  then
-  
-  [job]:retireAndExit
-  HAZARD
+/* <exd org */  [args].distJob if
+/* <exd org */    "executed" "onOrigin"
+/* <exd org */      "<exd org" "ack origin job-task"                 [job].trace
+/* <exd org */  then
+/* <exd org */
+/* <exd org */
+/* <exd org */  // find the originating job
+/* <exd org */
+/* <exd org */  [job].originId@ ListedJob[].findOriginator? if
+/* <exd org */
+/* <exd org */    ListedJob[].taskAck
+/* <exd org */
+/* <exd org */    ListedJob[].returnReference
+/* <exd org */
+/* <exd org */  then
+/* <exd org */
+/* <exd org */  [job]:retireAndExit
+/* <exd org */  HAZARD
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42,23 +42,23 @@
 /* on participating node                                                      */
 /*----------------------------------------------------------------------------*/
 : executed:executed
-
   //"executed:executed" .
 
-  [args].distJob if
-    "executed" "executed" "<exd snd origin" [job].trace
-  then
-
-  "executed:onOrigin" [job].entryPoint!
-
-  [job].originNodeId@ [grid].findNodeByNo to SendNode[]
-  
-  [job] job(Id).send
-
-  nullptr to SendNode[]
-  
-  [job]:retireAndExit
-  HAZARD
+/* <exd ptp */  [args].distJob if
+/* <exd ptp */    "executed" "executed"
+/* <exd ptp */      "<exd ptp" "snd executed to origin"              [job].trace
+/* <exd ptp */  then
+/* <exd ptp */
+/* <exd ptp */  "executed:onOrigin" [job].entryPoint!
+/* <exd ptp */
+/* <exd ptp */  [job].originNodeId@ [grid].findNodeByNo to SendNode[]
+/* <exd ptp */
+/* <exd ptp */  [job] job(Id).send
+/* <exd ptp */
+/* <exd ptp */  nullptr to SendNode[]
+/* <exd ptp */
+/* <exd ptp */  [job]:retireAndExit
+/* <exd ptp */  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

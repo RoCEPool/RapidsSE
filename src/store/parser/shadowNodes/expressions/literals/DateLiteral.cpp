@@ -95,14 +95,14 @@ b1 DateLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT DateLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId DateLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return CT_DATE;
+  return TypeId::xIdOf(CT_DATE);
 }
 
 /*----------------------------------------------------------------------------*/

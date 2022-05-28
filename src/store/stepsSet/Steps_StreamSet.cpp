@@ -832,7 +832,7 @@ void Step::vStreamSetDelete(void)
 {
   ENTRY();
   
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpStreamSet);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpStreamSet,nullptr);
   
   m_pLogicUnit->m_xpStreamSet = nullptr;
   

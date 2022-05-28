@@ -2733,8 +2733,9 @@ antlrcpp::Any SqlPlanner::visitCastOp(sqlParser::CastOpContext* pCtx)
   ASSERT(Expr::bIsOfType(pTargetExpr));
 
   eCT eDataType = eExtractDataType(pCtx->dataType());
+  TypeId xTypeId = TypeId::xIdOf(eDataType);
 
-  QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, eDataType);
+  QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, xTypeId);
   m_pExprStack->vPush(pCastExpr);
 
   return nullptr;
@@ -2752,8 +2753,9 @@ antlrcpp::Any SqlPlanner::visitInlineCast(sqlParser::InlineCastContext* pCtx)
   ASSERT(Expr::bIsOfType(pTargetExpr));
 
   eCT eDataType = eExtractDataType(pCtx->dataType());
+  TypeId xTypeId = TypeId::xIdOf(eDataType);
 
-  QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, eDataType);
+  QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, xTypeId);
   m_pExprStack->vPush(pCastExpr);
 
   return nullptr;

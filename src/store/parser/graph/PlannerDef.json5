@@ -2828,6 +2828,13 @@
             {
               name: "sqlType",
               value: "Covers the main SQL data types used in planning queries",
+              properties: [
+                {
+                  name: "typeId",
+                  value: "The numeric ID of this type",
+                  type: "/__root__/definitions/object/valueObject/integerObject"
+                }
+              ],
               children: [
 // Path: /__root__/definitions/types/sqlType/boolean
                 {

@@ -49,7 +49,7 @@ void Step::vStreamDefRhtDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_pLogicUnit->m_xpStreamDefRht);
+  AM::vDeleteOperand(*m_pLogicUnit->m_xpStreamDefRht,nullptr);
   
   m_pLogicUnit->m_xpStreamDefRht = nullptr;
   

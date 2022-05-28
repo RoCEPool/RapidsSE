@@ -17,11 +17,29 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobReport(void)
 {
+  vAddStep("jobReport::all"_Stz,             &Step::vJobReportAll);
   vAddStep("jobReport::metrics"_Stz,         &Step::vJobReportMetrics);
   vAddStep("jobReport::netDissect"_Stz,      &Step::vJobReportNetDissect);
   vAddStep("jobReport::network"_Stz,         &Step::vJobReportNetwork);
   vAddStep("jobReport::operands"_Stz,        &Step::vJobReportOperands);
   vAddStep("jobReport::operators"_Stz,       &Step::vJobReportOperators);
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobReport::all -- report on job                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobReportAll(void)
+{
+  ENTRY();
+  
+  i8 iJobNo = m_pDataStack->iPopInt(__func__);
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+
+  eEC eError = JobReport::eMetricsReport(iJobNo, pTub);
+
+  m_pDataStack->vPushInt(eError);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

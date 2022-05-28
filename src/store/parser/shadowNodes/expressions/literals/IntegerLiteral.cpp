@@ -102,14 +102,14 @@ b1 IntegerLiteral::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the resulting type of the expression operation                     */
 /*----------------------------------------------------------------------------*/
-eCT IntegerLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
+TypeId IntegerLiteral::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pExprNode));
   UNUSED(pExprNode);
   UNUSED(pRootNode);
 
-  return CT_INTEGER;
+  return TypeId::xIdOf(CT_INTEGER);
 }
 
 /*============================================================================*/

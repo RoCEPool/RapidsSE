@@ -12,26 +12,26 @@
 /* on originating node                                                        */
 /*----------------------------------------------------------------------------*/
 : begun:onOrigin
-
   //"begun:onOrigin" .
   
-  [args].distJob if
-    "begun" "onOrigin" "<beg ack origin task" [job].trace
-  then
-
-
-  // find the originating job
-  
-  [job].originId@ ListedJob[].findOriginator? if
-
-    ListedJob[].taskAck
-  
-    ListedJob[].returnReference
-    
-  then
-  
-  [job]:retireAndExit
-  HAZARD
+/* <bgn org */  [args].distJob if
+/* <bgn org */    "begun" "onOrigin" "<bgn org"
+/* <bgn org */      "ack origin job-task"                            [job].trace
+/* <bgn org */  then
+/* <bgn org */
+/* <bgn org */
+/* <bgn org */  // find the originating job
+/* <bgn org */
+/* <bgn org */  [job].originId@ ListedJob[].findOriginator? if
+/* <bgn org */
+/* <bgn org */    ListedJob[].taskAck
+/* <bgn org */
+/* <bgn org */    ListedJob[].returnReference
+/* <bgn org */
+/* <bgn org */  then
+/* <bgn org */
+/* <bgn org */  [job]:retireAndExit
+/* <bgn org */  HAZARD
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42,23 +42,23 @@
 /* on participating node                                                      */
 /*----------------------------------------------------------------------------*/
 : begun:onParticipant
-
   //"begun:begun" .
 
-  [args].distJob if
-    "begun" "onParticipant" "<beg snd origin" [job].trace
-  then
-
-  "begun:onOrigin" [job].entryPoint!
-
-  [job].originNodeId@ [grid].findNodeByNo to SendNode[]
-  
-  [job] job(Id).send
-
-  nullptr to SendNode[]
-  
-  [job]:retireAndExit
-  HAZARD
+/* <bgn ptp */  [args].distJob if
+/* <bgn ptp */    "begun" "onParticipant"
+/* <bgn ptp */      "<bgn ptp" "snd begun to origin"                 [job].trace
+/* <bgn ptp */  then
+/* <bgn ptp */
+/* <bgn ptp */  "begun:onOrigin" [job].entryPoint!
+/* <bgn ptp */
+/* <bgn ptp */  [job].originNodeId@ [grid].findNodeByNo to SendNode[]
+/* <bgn ptp */
+/* <bgn ptp */  [job] job(Id).send
+/* <bgn ptp */
+/* <bgn ptp */  nullptr to SendNode[]
+/* <bgn ptp */
+/* <bgn ptp */  [job]:retireAndExit
+/* <bgn ptp */  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

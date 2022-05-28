@@ -80,7 +80,7 @@ void Operand::vRepair(Object* pObject)
   Operand* pOperand = _pOperand(pObject);
 
   // delete the operand
-  AM::vDeleteOperand(pOperand);
+  AM::vDeleteOperand(pOperand,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +96,7 @@ void Operand::vRepairList(Object* pObject)
 
   while (pOperand) {
     pNextOperand = pOperand->pNextItem();
-    AM::vDeleteOperand(pOperand);
+    AM::vDeleteOperand(pOperand,nullptr);
     pOperand = pNextOperand;
   }
 

@@ -13,6 +13,7 @@
 #include "ElseExpr.hpp"
 #include "ConditionalQueryNodeIter.hpp"
 #include "ShadowRoot.hpp"
+#include "TypeSystem.hpp"
 
 using namespace Parser;
 
@@ -156,7 +157,7 @@ b1 CaseExpr::bIsExactType(PlanNode *pNode)
 /* Returns the resulting type of the expression operation.                    */
 /* A returned value of CT_NONE means that it is not supported or invalid.     */
 /*----------------------------------------------------------------------------*/
-eCT CaseExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
+TypeId CaseExpr::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -172,12 +173,12 @@ eCT CaseExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
     QueryNode* pChild = _pQueryNode(pIter->pNext());
     ASSERT(WhenExpr::bIsOfType(pChild) || ElseExpr::bIsOfType(pChild));
 
-    eCT eChildType = Expr::eType(pChild, pRootNode);
+    eCT eChildType = Expr::xTypeId(pChild, pRootNode).eCTVal();
 
     if (eChildType == CT_NONE) {
       // error
       delete pIter;
-      return eChildType;
+      return TypeId::xIdOf(eChildType);
     }
 
     if (eResultType == eChildType) {
@@ -207,11 +208,11 @@ eCT CaseExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
     // been specified, or we will need to coerce some values. So return
     // CT_NONE to force this to happen.
     delete pIter;
-    return CT_NONE;
+    return TypeId::xIdOf(CT_NONE);
   }
 
   delete pIter;
-  return eResultType;
+  return TypeId::xIdOf(eResultType);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -257,7 +258,7 @@ void CaseExpr::vCoerceSubExprs(QueryNode* pCaseExpr, PlanNode* pRootNode)
     }
 
     ASSERT(Expr::bIsOfType(pValueExpr));
-    ASSERT(Expr::eType(pValueExpr, pRootNode) != CT_NONE);
+    ASSERT(Expr::xTypeId(pValueExpr, pRootNode).eCTVal() != CT_NONE);
 
     // Increment the aiCoercibleTargets array if this child can be coerced
     // to each of the data types.
@@ -266,6 +267,7 @@ void CaseExpr::vCoerceSubExprs(QueryNode* pCaseExpr, PlanNode* pRootNode)
 
   // Determine the common coercible data type, if any
   eCT eCoercibleTarget = eCommonCoercibleTarget(aiCoercibleTargets, pCaseExpr->nChildren());
+  TypeId xCoercibleTarget = TypeId::xIdOf(eCoercibleTarget);
 
   if (eCoercibleTarget == CT_NONE) {
     delete pWhenOrElseIter;
@@ -277,15 +279,15 @@ void CaseExpr::vCoerceSubExprs(QueryNode* pCaseExpr, PlanNode* pRootNode)
   while (pWhenOrElseIter->bHasNext()) {
     QueryNode* pWhenOrElseExpr = _pQueryNode(pWhenOrElseIter->pNext());
 
-    if (Expr::eType(pWhenOrElseExpr, pRootNode) == eCoercibleTarget) {
+    if (Expr::xTypeId(pWhenOrElseExpr, pRootNode) == xCoercibleTarget) {
       continue;
     }
 
     if (WhenExpr::bIsOfType(pWhenOrElseExpr)) {
-      WhenExpr::vCoerceResultExprTo(eCoercibleTarget, pWhenOrElseExpr, pRootNode);
+      WhenExpr::vCoerceResultExprTo(xCoercibleTarget, pWhenOrElseExpr, pRootNode);
 
     } else if (ElseExpr::bIsOfType(pWhenOrElseExpr)) {
-      ElseExpr::vCoerceResultExprTo(eCoercibleTarget, pWhenOrElseExpr, pRootNode);
+      ElseExpr::vCoerceResultExprTo(xCoercibleTarget, pWhenOrElseExpr, pRootNode);
 
     } else {
       NEVER_REACH

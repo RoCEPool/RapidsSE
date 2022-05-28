@@ -75,6 +75,7 @@
 
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
+#include "ExitOperand.hpp"
 #include "RowCompactor.hpp"
 #include "OtherOperand.hpp"
 #include "PlanOperand.hpp"
@@ -233,6 +234,8 @@
 #include "AdaptorWL.hpp"
 #include "PipeIn.hpp"
 #include "EvMgr.hpp"
+#include "MarkerChain.hpp"
+#include "MarkerMgr.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -265,8 +268,8 @@ SizeHeap gxaSizeHeap[]
   { CN_ADAPTORWL,                sizeof(AdaptorWL),          HT_T_TINY    ,0 FILL },
   { CN_AGGTIMER,                 sizeof(AggTimer),           HT_T_TINY    ,0 FILL },
   { CN_AM,                       0,                          HT_INVALID   ,0 FILL },
-  { CN_API,                      sizeof(Api),                HT_INVALID   ,0 FILL },
   { CN_ANSWERWL,                 sizeof(AnswerWL),           HT_T_TINY    ,0 FILL },
+  { CN_API,                      sizeof(Api),                HT_INVALID   ,0 FILL },
   { CN_ARG,                      sizeof(Arg),                HT_T_TINY    ,0 FILL },
   { CN_ARRANGE,                  sizeof(Arrange),            HT_T_TINY    ,0 FILL },
   { CN_ATOMIC,                   sizeof(Atomic),             HT_INVALID   ,0 FILL },
@@ -341,6 +344,7 @@ SizeHeap gxaSizeHeap[]
   { CN_EVENTHANDLERS,            sizeof(EventHandlers),      HT_T_TINY    ,0 FILL },
   { CN_EVMGR,                    sizeof(EvMgr),              HT_T_TINY    ,0 FILL },
   { CN_EXEMPLAR,                 sizeof(Exemplar),           HT_T_TINY    ,0 FILL },
+  { CN_EXITOPERAND,              sizeof(ExitOperand),        HT_T_TINY    ,0 FILL },
 
   { CN__F__,                     'F' - ('A' - 1),            HT_INVALID   ,0 FILL },
   { CN_FIFO,                     sizeof(Fifo),               HT_T_TINY    ,0 FILL },
@@ -420,6 +424,8 @@ SizeHeap gxaSizeHeap[]
 
   { CN__M__,                     'M' - ('A' - 1),            HT_INVALID   ,0 FILL },
   { CN_MARKER,                   sizeof(Marker),             HT_T_TINY    ,0 FILL },
+  { CN_MARKERCHAIN,              sizeof(MarkerChain),        HT_T_TINY    ,0 FILL },
+  { CN_MARKERMGR,                sizeof(MarkerMgr),          HT_T_TINY    ,0 FILL },
   { CN_MEDIUMPERSISTENT,         sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL },
   { CN_MEDIUMTRANSIENT,          sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL },
   { CN_MEDIUMVIRTUAL,            sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL },
@@ -527,6 +533,7 @@ SizeHeap gxaSizeHeap[]
 
   { CN__S__,                     'S' - ('A' - 1),            HT_INVALID   ,0 FILL },
   { CN_SCANNER,                  sizeof(Scanner),            HT_T_TINY    ,0 FILL },
+  { CN_SCHEDULE,                 sizeof(Schedule),           HT_T_TINY    ,0 FILL },
   { CN_SCHEDULER,                sizeof(Scheduler),          HT_INVALID   ,0 FILL },
   { CN_SCHEMA,                   sizeof(Schema),             HT_T_TINY    ,0 FILL },
   { CN_SEAPI,                    sizeof(SeApi),              HT_T_LARGE   ,0 FILL },
@@ -571,8 +578,8 @@ SizeHeap gxaSizeHeap[]
   { CN_STATEMENT,                sizeof(Statement),          HT_T_MEDIUM  ,0 FILL },
   { CN_STATS,                    sizeof(Stats),              HT_T_TINY    ,0 FILL },
   { CN_STENCIL,                  sizeof(Stencil),            HT_T_SMALL   ,0 FILL },
-  { CN_STEPACCUM,                sizeof(StepAccum),          HT_INVALID   ,0 FILL },
   { CN_STEP,                     0,                          HT_INVALID   ,0 FILL },
+  { CN_STEPACCUM,                sizeof(StepAccum),          HT_INVALID   ,0 FILL },
   { CN_STEPS,                    sizeof(Steps),              HT_T_LARGE   ,0 FILL },
   { CN_STMTLIST,                 sizeof(StmtList),           HT_T_TINY    ,0 FILL },
   { CN_STREAM,                   sizeof(Stream),             HT_T_SMALL   ,0 FILL },
@@ -588,7 +595,6 @@ SizeHeap gxaSizeHeap[]
   { CN_SYSCALL,                  sizeof(SysCall),            HT_INVALID   ,0 FILL },
   { CN_SYSMETRICS,               sizeof(SysMetrics),         HT_T_TINY    ,0 FILL },
   { CN_SYSREPORT,                sizeof(SysReport),          HT_T_TINY    ,0 FILL },
-  { CN_SCHEDULE,                 sizeof(Schedule),           HT_T_TINY    ,0 FILL },
 
   { CN__T__,                     'T' - ('A' - 1),            HT_INVALID   ,0 FILL },
   { CN_TABLE,                    sizeof(Table),              HT_T_TINY    ,0 FILL },
@@ -598,11 +604,11 @@ SizeHeap gxaSizeHeap[]
   { CN_TAGSET,                   sizeof(TagSet),             HT_T_MEDIUM  ,0 FILL },
   { CN_TASK,                     sizeof(Task),               HT_T_SMALL   ,0 FILL },
   { CN_TASKLIST,                 sizeof(TaskList),           HT_T_TINY    ,0 FILL },
-  { CN_TEMPNAME,                 sizeof(TaskQueue),          HT_T_TINY    ,0 FILL },
+  { CN_TASKQUEUE,                sizeof(TaskQueue),          HT_T_TINY    ,0 FILL },
   { CN_TCCLOCK,                  sizeof(TccLock),            HT_T_TINY    ,0 FILL },
-  { CN_TENANT,                   sizeof(TempName),           HT_T_TINY    ,0 FILL },
-  { CN_TENANTS,                  sizeof(Tenant),             HT_T_TINY    ,0 FILL },
-  { CN_TASKQUEUE,                sizeof(Tenants),            HT_T_TINY    ,0 FILL },
+  { CN_TEMPNAME,                 sizeof(TempName),           HT_T_TINY    ,0 FILL },
+  { CN_TENANT,                   sizeof(Tenant),             HT_T_TINY    ,0 FILL },
+  { CN_TENANTS,                  sizeof(Tenants),            HT_T_TINY    ,0 FILL },
   { CN_TEXT,                     sizeof(Text),               HT_T_TINY    ,0 FILL },
   { CN_TEXTLARGE,                sizeof(TextLarge),          HT_T_LARGE   ,-8 FILL },
   { CN_TEXTMEDIUM,               sizeof(TextMedium),         HT_T_MEDIUM  ,-8 FILL },
