@@ -28,8 +28,10 @@ Marker* STORE::_pMarker(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* allocate from heap                                                         */
 /*----------------------------------------------------------------------------*/
-void* Marker::operator new(size_t)
+void* Marker::operator new(size_t, eMG eMarker)
 {
+  RASSERT(MG_CHAIN == eMarker || MG_MANAGER == eMarker);
+  
   Marker* pMarker =
     static_cast<Marker*>(Heaps::pAllocate(CN_MARKER));
   
@@ -41,8 +43,7 @@ void* Marker::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Marker::operator new(size_t, Job* pJob)
 {
-  if (! pJob)
-    RASSERT(pJob);
+  RASSERT(pJob);
   
   Marker* pMarker = pJob->pNewMarker();
   
@@ -65,29 +66,16 @@ void Marker::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Marker::Marker(void)
-: Operand(CN_MARKER)
-{
-  _precondition_(_MAGIC_,CN_MARKER);
-  
-  m_eOpMarker = OM_NONE;
-  
-  m_pNextItem = nullptr;
-  
-  //vTrace("new Marker() %p\n"_Stz,this);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Marker::Marker(eOM eOpMarker)
 : Operand(CN_MARKER)
 {
   _precondition_(_MAGIC_,CN_MARKER);
   
   m_eOpMarker = eOpMarker;
-  
+  m_eMarker   = MG_ORDINARY;
   m_pNextItem = nullptr;
+
+  _checkInitialised_(CN_MARKER);
 
 //  vTrace("new Marker(%s) %p @%lld\n"_Stz,
 //         aOM[m_eOpMarker],this,m_xFooter.iWhenAllocated());
@@ -129,6 +117,26 @@ bool Marker::bInspect(Object* pObject)
          pMarker->m_xFooter.iWhenAllocated());
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get marker category                                                        */
+/*----------------------------------------------------------------------------*/
+eMG Marker::eMarker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_eMarker;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set marker category                                                        */
+/*----------------------------------------------------------------------------*/
+void Marker::vMarker(eMG eMarker)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eMarker = eMarker;
 }
 
 /*----------------------------------------------------------------------------*/

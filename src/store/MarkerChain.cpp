@@ -25,8 +25,11 @@ MarkerChain::MarkerChain(void)
   
   _checkInitialised_(CN_MARKERCHAIN);
   
-  for (i8 i_Marker = 0; i_Marker < 128; i_Marker++)
-    vPush(new Marker);
+  for (i8 i_Marker = 0; i_Marker < 128; i_Marker++) {
+    Marker* pMarker = new (MG_CHAIN)Marker(OM_NONE);
+    pMarker->vMarker(MG_CHAIN);
+    vPush(pMarker);
+  }
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MARKERCHAIN,_FOOTER_);
 }

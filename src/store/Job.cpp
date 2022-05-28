@@ -428,9 +428,9 @@ void Job::vFreeMarker(Marker* pMarker)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (m_pMarkerChain)
-    m_pMarkerChain->vPush(pMarker);
-  else
+//  if (m_pMarkerChain)
+//    m_pMarkerChain->vPush(pMarker);
+//  else
     delete pMarker;
 }
 
@@ -852,6 +852,9 @@ Marker* Job::pNewMarker(void)
   _precondition_(_ADDRESS_,_MAGIC_);
       
   Marker* pMarker = m_pMarkerChain->pPop();
+  
+  if (! pMarker)
+    pMarker = new (this)Marker(OM_NONE);
   
   return pMarker;
 }

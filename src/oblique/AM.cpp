@@ -2785,8 +2785,14 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       
     case CN_MARKER: {
       Marker* pMarker = _pMarker(pOperand);
-      if (pJob)
+      if (MG_CHAIN == pMarker->eMarker()) {
+        RASSERT(pJob);
         pJob->vFreeMarker(pMarker);
+      }
+      else
+      if (MG_MANAGER == pMarker->eMarker()) {
+        NEVER_REACH;
+      }
       else {
         delete pMarker;
       }
@@ -3374,7 +3380,8 @@ Operand* AM::pDuplicateOperand(Operand* pOperand)
 {
   if (pOperand->eGetClassNo() == CN_MARKER) {
     Marker* pMarker = _pMarker(pOperand);
-    Marker* pNewMarker = new (nullptr)Marker(pMarker->eOpMarker());
+    Marker* pNewMarker =
+      new (nullptr)Marker(pMarker->eOpMarker());
     return pNewMarker;
   }
   else {
